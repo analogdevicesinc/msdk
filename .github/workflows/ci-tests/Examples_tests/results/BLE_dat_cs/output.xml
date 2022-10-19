@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.8.10 on linux)" generated="20220928 14:52:40.827" rpa="false" schemaversion="3">
+<suite id="s1" name="BLE dat cs" source="/home/btm-ci/Workspace/BLE-examples-test/Examples_tests/tests/BLE_dat_cs.robot">
+<kw name="Open Serial Port" library="Serial" type="SETUP">
+<arg>${SERIAL_PORT_1}</arg>
+<arg>${SERIAL_PORT_2}</arg>
+<kw name="Add Port" library="SerialLibrary">
+<arg>${SERIAL_PORT_1}</arg>
+<arg>baudrate=115200</arg>
+<arg>bytesize=8</arg>
+<arg>parity=N</arg>
+<arg>stopbits=1</arg>
+<arg>timeout=999</arg>
+<doc>Adds new port with specified locator.</doc>
+<status status="PASS" starttime="20220928 14:52:40.890" endtime="20220928 14:52:40.892"/>
+</kw>
+<if>
+<branch type="IF" condition="&quot;${SERIAL_PORT_2}&quot; != &quot;NONE&quot;">
+<kw name="Add Port" library="SerialLibrary">
+<arg>${SERIAL_PORT_2}</arg>
+<arg>baudrate=115200</arg>
+<arg>bytesize=8</arg>
+<arg>parity=N</arg>
+<arg>stopbits=1</arg>
+<arg>timeout=999</arg>
+<doc>Adds new port with specified locator.</doc>
+<status status="PASS" starttime="20220928 14:52:40.893" endtime="20220928 14:52:40.894"/>
+</kw>
+<status status="PASS" starttime="20220928 14:52:40.893" endtime="20220928 14:52:40.894"/>
+</branch>
+<status status="PASS" starttime="20220928 14:52:40.892" endtime="20220928 14:52:40.894"/>
+</if>
+<status status="PASS" starttime="20220928 14:52:40.889" endtime="20220928 14:52:40.895"/>
+</kw>
+<test id="s1-t1" name="Secured Connection Test" line="16">
+<kw name="Sleep" library="BuiltIn">
+<arg>5</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20220928 14:52:45.896" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" starttime="20220928 14:52:40.896" endtime="20220928 14:52:45.897"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>pin 1 1234\n</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Write Data" library="SerialLibrary">
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" starttime="20220928 14:52:45.898" endtime="20220928 14:52:45.899"/>
+</kw>
+<status status="PASS" starttime="20220928 14:52:45.897" endtime="20220928 14:52:45.900"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>2</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20220928 14:52:47.901" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20220928 14:52:45.900" endtime="20220928 14:52:47.901"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>pin 1 1234\n</arg>
+<arg>${SERIAL_PORT_2}</arg>
+<kw name="Write Data" library="SerialLibrary">
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" starttime="20220928 14:52:47.903" endtime="20220928 14:52:47.904"/>
+</kw>
+<status status="PASS" starttime="20220928 14:52:47.902" endtime="20220928 14:52:47.904"/>
+</kw>
+<kw name="Expect And Timeout" library="Serial">
+<arg>&gt;&gt;&gt; Pairing completed successfully &lt;&lt;&lt;</arg>
+<arg>15s</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Read Until" library="SerialLibrary">
+<var>${read}</var>
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20220928 14:52:48.756" level="INFO">${read} = 
+pin 1 1234
+&gt; smpSmExecute event=4 state=11
+Rand Na
+[761ffee0 c79ad9cf 9f3030af 027e9df6]
+smpSmExecute event=28 state=12
+Cai
+[b50d11a0 72759c47 3eefd318 98e0cb9d]
+connId=1 idleMask=0x0001
+smp...</msg>
+<status status="PASS" starttime="20220928 14:52:47.906" endtime="20220928 14:52:48.756"/>
+</kw>
+<kw name="Log Serial Traffic" library="Serial">
+<arg>${read}</arg>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:48.757" endtime="20220928 14:52:48.758"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${data}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:48.758" endtime="20220928 14:52:48.759"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:48.759" endtime="20220928 14:52:48.760"/>
+</kw>
+<status status="PASS" starttime="20220928 14:52:48.756" endtime="20220928 14:52:48.760"/>
+</kw>
+<timeout value="15 seconds"/>
+<status status="PASS" starttime="20220928 14:52:47.905" endtime="20220928 14:52:48.760"/>
+</kw>
+<timeout value="30 seconds"/>
+<status status="PASS" starttime="20220928 14:52:40.895" endtime="20220928 14:52:48.761"/>
+</test>
+<test id="s1-t2" name="Write Characteristic Test" line="26">
+<kw name="Sleep" library="BuiltIn">
+<arg>5</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20220928 14:52:53.763" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" starttime="20220928 14:52:48.762" endtime="20220928 14:52:53.763"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>btn 2 l\n</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Write Data" library="SerialLibrary">
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" starttime="20220928 14:52:53.765" endtime="20220928 14:52:53.766"/>
+</kw>
+<status status="PASS" starttime="20220928 14:52:53.763" endtime="20220928 14:52:53.766"/>
+</kw>
+<kw name="Expect And Timeout" library="Serial">
+<arg>hello back</arg>
+<arg>5s</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Read Until" library="SerialLibrary">
+<var>${read}</var>
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20220928 14:52:53.789" level="INFO">${read} = 
+dmDevPassEvtToDevPriv: event: 13, param: 1, advHandle: 0
+Datc got evt 58
+Datc got evt 63
+btn 2 l
+Long Button 2 Press
+&gt; Datc got evt 10
+Datc got evt 13
+hello back</msg>
+<status status="PASS" starttime="20220928 14:52:53.767" endtime="20220928 14:52:53.789"/>
+</kw>
+<kw name="Log Serial Traffic" library="Serial">
+<arg>${read}</arg>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:53.791" endtime="20220928 14:52:53.792"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${data}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:53.792" endtime="20220928 14:52:53.793"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:53.793" endtime="20220928 14:52:53.793"/>
+</kw>
+<status status="PASS" starttime="20220928 14:52:53.789" endtime="20220928 14:52:53.794"/>
+</kw>
+<timeout value="5 seconds"/>
+<status status="PASS" starttime="20220928 14:52:53.766" endtime="20220928 14:52:53.794"/>
+</kw>
+<timeout value="30 seconds"/>
+<status status="PASS" starttime="20220928 14:52:48.761" endtime="20220928 14:52:53.795"/>
+</test>
+<test id="s1-t3" name="Write Secure Characteristic Test" line="32">
+<kw name="Sleep" library="BuiltIn">
+<arg>5</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20220928 14:52:58.797" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" starttime="20220928 14:52:53.797" endtime="20220928 14:52:58.798"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>btn 2 m\n</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Write Data" library="SerialLibrary">
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" starttime="20220928 14:52:58.799" endtime="20220928 14:52:58.800"/>
+</kw>
+<status status="PASS" starttime="20220928 14:52:58.798" endtime="20220928 14:52:58.801"/>
+</kw>
+<kw name="Expect And Timeout" library="Serial">
+<arg>Notification from secure data service</arg>
+<arg>5s</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Read Until" library="SerialLibrary">
+<var>${read}</var>
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20220928 14:52:58.839" level="INFO">${read} = 
+btn 2 m
+Medium Button 2 Press
+&gt; Datc got evt 10
+Datc got evt 13
+&gt;&gt; Notification from secure data service</msg>
+<status status="PASS" starttime="20220928 14:52:58.802" endtime="20220928 14:52:58.840"/>
+</kw>
+<kw name="Log Serial Traffic" library="Serial">
+<arg>${read}</arg>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:58.841" endtime="20220928 14:52:58.842"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${data}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:58.842" endtime="20220928 14:52:58.843"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:52:58.843" endtime="20220928 14:52:58.843"/>
+</kw>
+<status status="PASS" starttime="20220928 14:52:58.840" endtime="20220928 14:52:58.844"/>
+</kw>
+<timeout value="5 seconds"/>
+<status status="PASS" starttime="20220928 14:52:58.801" endtime="20220928 14:52:58.844"/>
+</kw>
+<timeout value="30 seconds"/>
+<status status="PASS" starttime="20220928 14:52:53.796" endtime="20220928 14:52:58.844"/>
+</test>
+<test id="s1-t4" name="Phy Switching Test" line="39">
+<kw name="Sleep" library="BuiltIn">
+<arg>2</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20220928 14:53:00.847" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" starttime="20220928 14:52:58.846" endtime="20220928 14:53:00.847"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>btn 2 s\n</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Write Data" library="SerialLibrary">
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" starttime="20220928 14:53:00.848" endtime="20220928 14:53:00.849"/>
+</kw>
+<status status="PASS" starttime="20220928 14:53:00.848" endtime="20220928 14:53:00.849"/>
+</kw>
+<kw name="Expect And Timeout" library="Serial">
+<arg>DM_PHY_UPDATE_IND - RX: 2, TX: 2</arg>
+<arg>5s</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Read Until" library="SerialLibrary">
+<var>${read}</var>
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20220928 14:53:00.947" level="INFO">${read} =  &lt;&lt;&lt;
+Secure data received!
+btn 2 s
+Short Button 2 Press
+2 MBit TX and RX PHY Requested
+&gt; Datc got evt 70
+DM_PHY_UPDATE_IND - RX: 2, TX: 2</msg>
+<status status="PASS" starttime="20220928 14:53:00.850" endtime="20220928 14:53:00.947"/>
+</kw>
+<kw name="Log Serial Traffic" library="Serial">
+<arg>${read}</arg>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:53:00.948" endtime="20220928 14:53:00.949"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${data}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:53:00.949" endtime="20220928 14:53:00.950"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20220928 14:53:00.950" endtime="20220928 14:53:00.950"/>
+</kw>
+<status status="PASS" starttime="20220928 14:53:00.947" endtime="20220928 14:53:00.951"/>
+</kw>
+<timeout value="5 seconds"/>
+<status status="PASS" starttime="20220928 14:53:00.850" endtime="20220928 14:53:00.951"/>
+</kw>
+<timeout value="30 seconds"/>
+<status status="PASS" starttime="20220928 14:52:58.845" endtime="20220928 14:53:00.951"/>
+</test>
+<test id="s1-t5" name="Speed Test" line="46">
+<kw name="Sleep" library="BuiltIn">
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20220928 14:53:05.954" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" starttime="20220928 14:53:00.953" endtime="20220928 14:53:05.954"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>btn 2 x\n</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Write Data" library="SerialLibrary">
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" starttime="20220928 14:53:05.956" endtime="20220928 14:53:05.957"/>
+</kw>
+<status status="PASS" starttime="20220928 14:53:05.955" endtime="20220928 14:53:05.957"/>
+</kw>
+<kw name="Expect And Timeout No Verbose" library="Serial">
+<arg>bits transferred in</arg>
+<arg>120s</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Read Until" library="SerialLibrary">
+<var>${read}</var>
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20220928 14:55:00.953" level="FAIL">Test timeout 2 minutes exceeded.</msg>
+<status status="FAIL" starttime="20220928 14:53:05.959" endtime="20220928 14:55:00.953"/>
+</kw>
+<timeout value="2 minutes"/>
+<status status="FAIL" starttime="20220928 14:53:05.957" endtime="20220928 14:55:00.953"/>
+</kw>
+<timeout value="2 minutes"/>
+<status status="FAIL" starttime="20220928 14:53:00.952" endtime="20220928 14:55:00.954">Test timeout 2 minutes exceeded.</status>
+</test>
+<kw name="Close Serial Port" library="Serial" type="TEARDOWN">
+<kw name="Delete All Ports" library="SerialLibrary">
+<doc>Deletes all ports maintained in the library instance.</doc>
+<status status="PASS" starttime="20220928 14:55:00.956" endtime="20220928 14:55:00.964"/>
+</kw>
+<status status="PASS" starttime="20220928 14:55:00.955" endtime="20220928 14:55:00.964"/>
+</kw>
+<status status="FAIL" starttime="20220928 14:52:40.828" endtime="20220928 14:55:00.964"/>
+</suite>
+<statistics>
+<total>
+<stat pass="4" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="4" fail="1" skip="0" id="s1" name="BLE dat cs">BLE dat cs</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
