@@ -1,2 +1,0 @@
-#!/bin/bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max32570.cfg

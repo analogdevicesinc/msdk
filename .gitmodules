@@ -28,3 +28,6 @@
 [submodule "Libraries/FreeRTOS-Plus"]
 	path = Libraries/FreeRTOS-Plus
 	url = git@github.com:Analog-Devices-MSDK/Libraries-freeRTOS_plus.git
+[submodule "Examples/MAX32570"]
+	path = Examples/MAX32570
+	url = git@github.com:Analog-Devices-MSDK/Examples-MAX32570.git
