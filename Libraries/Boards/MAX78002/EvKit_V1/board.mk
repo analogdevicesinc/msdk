@@ -44,15 +44,27 @@ SRCS += adafruit_3315_tft.c
 SRCS += adafruit_3315_touch.c
 SRCS += camera.c
 SRCS += mipi_camera.c
+
+ifeq "$(CAMERA)" "HM0360"
+$(warning Using mono HM0360 by default.)
+$(warning Use CAMERA=HM0360_COLOR for color drivers, or CAMERA=HM0360_MONO to clear this warning.)
+CAMERA=HM0360_MONO
+endif
+
 ifeq "$(CAMERA)" "OV5640"
 SRCS += ov5640.c
 PROJ_CFLAGS+=-DCAMERA_OV5640
 else ifeq "$(CAMERA)" "HM01B0"
 SRCS += hm01b0.c
 PROJ_CFLAGS+=-DCAMERA_HM01B0
-else ifeq "$(CAMERA)" "HM0360"
-SRCS += hm0360.c
-PROJ_CFLAGS+=-DCAMERA_HM0360
+else ifeq "$(CAMERA)" "HM0360_MONO"
+SRCS += hm0360_mono.c
+PROJ_CFLAGS+=-DCAMERA_HM0360_MONO
+PROJ_CFLAGS+=-DCAMERA_MONO
+else ifeq "$(CAMERA)" "HM0360_COLOR"
+SRCS += hm0360_color.c
+PROJ_CFLAGS+=-DCAMERA_BAYER
+PROJ_CFLAGS+=-DCAMERA_HM0360_COLOR
 else ifeq "$(CAMERA)" "OV5642"
 SRCS += ov5642.c
 PROJ_CFLAGS+=-DCAMERA_OV5642
