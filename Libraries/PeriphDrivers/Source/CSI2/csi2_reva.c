@@ -201,7 +201,9 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t *csi2, int num_data_lanes)
 
     // This function assumes configured data lanes are used sequentially (e.g. x2 data lanes = data lane0 and lane1).
     enable_dlanes = 0;
-    for (i = 0; i < num_data_lanes; i++) { enable_dlanes |= (1 << i); }
+    for (i = 0; i < num_data_lanes; i++) {
+        enable_dlanes |= (1 << i);
+    }
 
     csi2->cfg_data_lane_en = enable_dlanes;
 
@@ -271,7 +273,9 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
 
     // Enable Stop State interrupts for all used data lanes
     dlane_stop_inten = 0;
-    for (i = 0; i < num_data_lanes; i++) { dlane_stop_inten |= (1 << i); }
+    for (i = 0; i < num_data_lanes; i++) {
+        dlane_stop_inten |= (1 << i);
+    }
 
     dlane_stop_inten <<= MXC_F_CSI2_RX_EINT_PPI_IE_DL0STOP_POS;
     MXC_CSI2_PPI_EnableInt(dlane_stop_inten);

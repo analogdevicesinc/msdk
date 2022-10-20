@@ -89,7 +89,9 @@ static void utils_send_bytes(mxc_uart_regs_t *uart, uint8_t *ptr, int length)
 {
     int i;
 
-    for (i = 0; i < length; i++) { utils_send_byte(uart, ptr[i]); }
+    for (i = 0; i < length; i++) {
+        utils_send_byte(uart, ptr[i]);
+    }
 }
 
 int utils_send_img_to_pc(uint8_t *img, uint32_t imgLen, int w, int h, uint8_t *pixelformat)
