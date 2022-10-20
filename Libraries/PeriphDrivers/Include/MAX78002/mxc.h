@@ -50,16 +50,6 @@
 #include "led.h"
 #include "pb.h"
 
-#ifdef BOARD_EVKIT_V1
-#ifdef	TFT_ADAFRUIT
-#include "adafruit_3315_tft.h"
-#include "adafruit_3315_touch.h"
-#endif
-#ifdef	TFT_NEWHAVEN
-#include "tft_st7789v.h"
-#endif
-#endif
-
 /*
  *  Peripheral Driver Includes
  */

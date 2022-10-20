@@ -37,6 +37,14 @@
  */
 
 #include <stdio.h>
+#ifdef	TFT_ADAFRUIT
+#include "adafruit_3315_tft.h"
+#include "adafruit_3315_touch.h"
+#endif
+#ifdef	TFT_NEWHAVEN
+#include "tft_st7789v.h"
+#endif
+
 
 #ifndef LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_BOARD_H_
