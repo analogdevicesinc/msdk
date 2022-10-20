@@ -35,8 +35,10 @@ ifeq "$(BOARD_DIR)" ""
 $(error BOARD_DIR must be set)
 endif
 
-TFT=ADAFRUIT
-#TFT=NEWHAVEN
+TFT?=ADAFRUIT
+# Supported values for TFT:
+# - ADAFRUIT (default)
+# - NEWHAVEN
 
 # Source files for this application (add path to VPATH below)
 SRCS += board.c
