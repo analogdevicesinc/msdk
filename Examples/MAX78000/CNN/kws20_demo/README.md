@@ -6,7 +6,7 @@
 
 The Keyword Spotting Demo software demonstrates recognition of a number of keywords using MAX78000 EVKIT.  
 
-A new option `-DSEND_MIC_OUT_SDCARD` has been add to `project.mk` to enable saving the detected sound snippets to SD card interface of the MAX78000 Feather board. This feature is not available for MAX7800 EVKIT.
+A new option `-DSEND_MIC_OUT_SDCARD` has been add to [`project.mk`](project.mk) to enable saving the detected sound snippets to SD card interface of the MAX78000 Feather board. This feature is not available for MAX7800 EVKIT.
 
 The KWS20 demo software utilizes 2nd version of Google speech commands dataset which consists of 35 keywords and more than 100K utterances:
 
@@ -39,7 +39,7 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in `project.mk`:
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in [`project.mk`](project.mk):
 
 ```bash
 # Specify the board used
@@ -49,7 +49,7 @@ BOARD=EvKit_V1
 endif
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in `project.mk`:
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in [`project.mk`](project.mk):
 
 ```bash
 # Specify the board used
@@ -147,7 +147,7 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
-To compile code with enabled TFT feature use following setting in `project.mk`:
+To compile code with enabled TFT feature use following setting in [`project.mk`](project.mk):
 
 ```bash
 ifeq "$(BOARD)" "FTHR_RevA"
@@ -342,7 +342,7 @@ $ python RealtimeAudio.py -i voicefile.wav -o voicefile.h
 
 ### Saving Sound Snippets to SD Card
 
-The following option has been add to `project.mk`. To enable saving the detected sound snippets to SD card make sure the `PROJ_CFLAGS" line is uncommented.
+The following option has been add to [`project.mk`](project.mk). To enable saving the detected sound snippets to SD card make sure the `PROJ_CFLAGS" line is uncommented.
 
 ```make
 # If enabled, it saves out the Mic samples used for inference to SDCARD
