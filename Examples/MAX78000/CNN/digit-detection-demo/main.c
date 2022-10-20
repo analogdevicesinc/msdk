@@ -259,7 +259,8 @@ int main(void)
 
         printf("CNN time: %d us\n\n", cnn_time);
 #ifdef TFT_ENABLE
-        TFT_Print(buff, 10, 210, font, snprintf(buff, sizeof(buff), "CNN Time: %.3f ms", (float)cnn_time / 1000));
+        TFT_Print(buff, 10, 210, font,
+                  snprintf(buff, sizeof(buff), "CNN Time: %.3f ms", (float)cnn_time / 1000));
 #endif
         MXC_Delay(SEC(1));
     }

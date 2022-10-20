@@ -758,13 +758,14 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
             memset(buff, 32, TFT_BUFF_SIZE);
             TFT_Print(buff, 20, 30, font_2,
                       snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
-                              (double)100.0 * max / 32768.0));
-            TFT_Print(buff, 1, 50, font_1, snprintf(buff, sizeof(buff), "__________________________ "));
+                               (double)100.0 * max / 32768.0));
+            TFT_Print(buff, 1, 50, font_1,
+                      snprintf(buff, sizeof(buff), "__________________________ "));
             TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
         } else {
             TFT_Print(buff, 20, 80 + 20 * top, font_1,
                       snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
-                              (double)100.0 * max / 32768.0));
+                               (double)100.0 * max / 32768.0));
         }
 
         /* reset for next top */
@@ -773,7 +774,8 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
         max_index = -1;
 
         if (top == 4) {
-            TFT_Print(buff, 20, 200, font_1, snprintf(buff, sizeof(buff), "Sample Min: %d    Max: %d", Min, Max));
+            TFT_Print(buff, 20, 200, font_1,
+                      snprintf(buff, sizeof(buff), "Sample Min: %d    Max: %d", Min, Max));
         }
 
 #endif

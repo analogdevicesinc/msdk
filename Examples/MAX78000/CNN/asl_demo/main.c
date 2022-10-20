@@ -468,7 +468,8 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
             *out_prob = 100.0 * max / 32768.0;
             /// MXC_TFT_ClearScreen();
             memset(buff, 32, TFT_BUFF_SIZE);
-            snprintf(buff, sizeof(buff), "%s (%0.1f%%)", classes[max_index], (double)100.0 * max / 32768.0);
+            snprintf(buff, sizeof(buff), "%s (%0.1f%%)", classes[max_index],
+                     (double)100.0 * max / 32768.0);
             TFT_Print(buff, 100, 8, font_1);
             //snprintf(buff, sizeof(buff), "__________________________ ");
             //TFT_Print(buff, 1, 50, urw_gothic_12_white_bg_grey);

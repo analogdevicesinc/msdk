@@ -469,7 +469,8 @@ int main(void)
         memset(buff, 32, TFT_BUFF_SIZE);
 #endif
         if (result[0] == result[1]) {
-            TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1, snprintf(buff, sizeof(buff), "Unknown"));
+            TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
+                      snprintf(buff, sizeof(buff), "Unknown"));
             LED_On(LED1);
             LED_On(LED2);
 

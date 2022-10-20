@@ -387,9 +387,11 @@ int main(void)
             //MXC_TFT_ShowImage(0, 0, image_bitmap_2);
             memset(buff, 0, TFT_BUFF_SIZE);
             TFT_Print(buff, 100, 80, font_2, snprintf(buff, sizeof(buff), "GAME OVER"));
-            TFT_Print(buff, 95, 110, font_2, snprintf(buff, sizeof(buff), "Your Score: %d  ", score));
+            TFT_Print(buff, 95, 110, font_2,
+                      snprintf(buff, sizeof(buff), "Your Score: %d  ", score));
             memset(buff, 32, TFT_BUFF_SIZE);
-            TFT_Print(buff, 10, 210, font_1, snprintf(buff, sizeof(buff), "SAY 'GO' TO RESTART GAME"));
+            TFT_Print(buff, 10, 210, font_1,
+                      snprintf(buff, sizeof(buff), "SAY 'GO' TO RESTART GAME"));
             MXC_Delay(100);
             MXC_I2S_Shutdown();
             LED_Off(LED2);
@@ -935,7 +937,8 @@ void snakeIntro(void)
     memset(buff, 32, TFT_BUFF_SIZE);
     TFT_Print(buff, 5, 40, font_1, snprintf(buff, sizeof(buff), "Following keywords are used in"));
     TFT_Print(buff, 5, 65, font_1, snprintf(buff, sizeof(buff), "this game:"));
-    TFT_Print(buff, 10, 90, font_1, snprintf(buff, sizeof(buff), "1...4, go, up, down, left, right"));
+    TFT_Print(buff, 10, 90, font_1,
+              snprintf(buff, sizeof(buff), "1...4, go, up, down, left, right"));
     TFT_Print(buff, 10, 115, font_1, snprintf(buff, sizeof(buff), "STOP command exits game"));
     MXC_Delay(2000000);
     TFT_Print(buff, 5, 160, font_2, snprintf(buff, sizeof(buff), "Choose game level now...."));
@@ -1087,8 +1090,10 @@ void setSnakeDirection(int top_index)
                 chooseLevel = 1;
                 area_t area = { 0, 160, 320, 80 };
                 MXC_TFT_ClearArea(&area, 4);
-                TFT_Print(buff, 5, 160, font_1, snprintf(buff, sizeof(buff), "Level Selected: %d ", gameSpeed));
-                TFT_Print(buff, 5, 190, font_1, snprintf(buff, sizeof(buff), "Say 'GO' to start the game"));
+                TFT_Print(buff, 5, 160, font_1,
+                          snprintf(buff, sizeof(buff), "Level Selected: %d ", gameSpeed));
+                TFT_Print(buff, 5, 190, font_1,
+                          snprintf(buff, sizeof(buff), "Say 'GO' to start the game"));
             }
         }
     }

@@ -603,7 +603,8 @@ int main(void)
                 break;
             }
         } else {
-            TFT_Print(buff, 10, 155, font_2, snprintf(buff, sizeof(buff), "Invalid User Selection."));
+            TFT_Print(buff, 10, 155, font_2,
+                      snprintf(buff, sizeof(buff), "Invalid User Selection."));
             TFT_Print(buff, 10, 175, font_2, snprintf(buff, sizeof(buff), "Try again."));
         }
 
