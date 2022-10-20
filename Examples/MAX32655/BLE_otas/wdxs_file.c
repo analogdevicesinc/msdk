@@ -42,6 +42,7 @@
 #define EXT_FLASH_PAGE_SIZE 256
 #define EXT_FLASH_SECTOR_SIZE ((uint32_t)0x00010000)
 #define HEADER_LOCATION ((uint32_t)0x00000000)
+#define WDXS_FILE_BLOCK_SIZE 224
 static volatile uint32_t verifyLen;
 static volatile uint8_t *lastWriteAddr;
 static volatile uint32_t lastWriteLen;
@@ -213,7 +214,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
         savedHeader = TRUE;
         APP_TRACE_INFO2("Receiving file:\r\nLen: %08x\r\nCRC: %08x\r\n", fileHeader.fileLen,
                         fileHeader.fileCRC);
-        modFileSize = fileHeader.fileLen / 2240;
+        modFileSize = fileHeader.fileLen / WDXS_FILE_BLOCK_SIZE * 10;
         crcResult = 0;
     }
     /* offset by the header thats already written */
@@ -245,7 +246,9 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
         /* done receiving*/
         if (packetCount >= (fileHeader.fileLen / 224) + 1) {
             percentComplete = 1;
-            for (int i = 1; i < 11; i++) { progressbar[i] = '-'; }
+            for (int i = 1; i < 11; i++) {
+                progressbar[i] = '-';
+            }
             packetCount = 0;
             savedHeader = FALSE;
         }

@@ -772,10 +772,11 @@ static void datcBtnCback(uint8_t btn)
                 datcCb.blockOffset[connId - 1] = BLOCK_OFFSET_INIT;
 
                 /* Put file request only if file has been discovered*/
-                if (fileDiscovered)
+                if (fileDiscovered) {
                     WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle,
                                       BLOCK_OFFSET_INIT, FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE,
                                       0);
+                }
                 fileDiscovered = false;
             }
             break;
