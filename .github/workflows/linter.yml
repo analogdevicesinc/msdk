@@ -35,30 +35,12 @@ jobs:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on
-    runs-on: [ self-hosted, lint ]
+    runs-on: [ ubuntu-latest ]
 
     ##################
     # Load all steps #
     ##################
     steps:
-      - name: Clean
-        continue-on-error: true
-        run: |
-          # Remove local modifications
-          set +e
-
-          # Attempt to clean the repo
-          git scorch
-          retval=$?
-
-          # Remove everything if this fails
-          if [[ $retval -ne 0 ]]
-          then
-            rm -rf *
-          fi
-
-          set -e
-
       ##########################
       # Checkout the code base #
       ##########################
