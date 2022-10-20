@@ -126,13 +126,17 @@ int main(void)
 
     //Fit into four byte array
     printf("Computed:\n");
-    for (i = 0; i < len / 4; ++i) { printf("result[%d] = 0x%x\n", i, *(result + i)); }
+    for (i = 0; i < len / 4; ++i) {
+        printf("result[%d] = 0x%x\n", i, *(result + i));
+    }
 
     //Print out expected array to compare to calculated result
     printf("\nExpected:\n");
     for (i = 1; i <= len / 4; ++i) {
         printf("expected[%d] = 0x", i - 1);
-        for (j = 0; j < 4; ++j) { printf("%02x", result_data[i * len / 4 - 1 - j]); }
+        for (j = 0; j < 4; ++j) {
+            printf("%02x", result_data[i * len / 4 - 1 - j]);
+        }
         printf("\n");
     }
 
