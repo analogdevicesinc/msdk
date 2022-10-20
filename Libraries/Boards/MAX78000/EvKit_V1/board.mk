@@ -44,6 +44,13 @@ SRCS += pb.c
 SRCS += tft_ssd2119.c
 SRCS += tsc2046.c
 SRCS += camera.c
+
+ifeq "$(CAMERA)" "HM0360"
+$(warning Using mono HM0360 by default.)
+$(warning Use CAMERA=HM0360_COLOR for color drivers, or CAMERA=HM0360_MONO to clear this warning.)
+CAMERA=HM0360_MONO
+endif
+
 ifeq "$(CAMERA)" "HM01B0"
 SRCS += hm01b0.c
 PROJ_CFLAGS+=-DCAMERA_HM01B0
@@ -54,6 +61,7 @@ PROJ_CFLAGS+=-DCAMERA_HM0360_MONO
 PROJ_CFLAGS+=-DCAMERA_MONO
 else ifeq "$(CAMERA)" "HM0360_COLOR"
 SRCS += hm0360_color.c
+PROJ_CFLAGS+=-DCAMERA_BAYER
 PROJ_CFLAGS+=-DCAMERA_HM0360_COLOR
 else ifeq "$(CAMERA)" "OV5642"
 SRCS += ov5642.c

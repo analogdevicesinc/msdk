@@ -1,35 +1,35 @@
-/*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 /**
  * @file    main.c
  * @brief   Example and utility for capturing an image using the PCIF interface and Camera drivers.
@@ -80,6 +80,12 @@ typedef struct {
     uint8_t *pixel_format; // Pixel format string
 } cnn_img_data_t;
 
+typedef enum {
+    BAYER_FUNCTION_PASSTHROUGH = 0,
+    BAYER_FUNCTION_BILINEAR,
+    BAYER_FUNCTION_MALVARCUTLER
+} bayer_function_t;
+
 // This contains global application settings
 typedef struct {
     int dma_channel;
@@ -87,6 +93,7 @@ typedef struct {
     unsigned int imgres_w;
     unsigned int imgres_h;
     pixformat_t pixel_format;
+    bayer_function_t bayer_function;
 } app_settings_t;
 
 app_settings_t g_app_settings;
@@ -464,7 +471,36 @@ void service_console()
                                               g_app_settings.pixel_format, g_app_settings.dma_mode,
                                               g_app_settings.dma_channel);
 
+#ifdef CAMERA_BAYER
+            uint8_t *bayer_data = (uint8_t *)malloc(img_data.w * img_data.h * 2);
+            if (bayer_data != NULL) {
+                MXC_TMR_SW_Start(MXC_TMR0);
+                if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
+                    bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
+                } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
+                    bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h,
+                                               (uint16_t *)bayer_data);
+                } else if (g_app_settings.bayer_function == BAYER_FUNCTION_MALVARCUTLER) {
+                    bayer_malvarcutler_demosaicing(img_data.raw, img_data.w, img_data.h,
+                                                   (uint16_t *)bayer_data);
+                }
+
+                img_data.raw = bayer_data;
+                img_data.imglen *= 2;
+                img_data.pixel_format = (uint8_t *)"RGB565";
+                unsigned int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
+                printf("Debayering complete. (Took %u us)\n", elapsed_us);
+            } else {
+                printf("Failed to allocate memory for debayering!\n");
+                return;
+            }
+#endif
+
             transmit_capture_uart(img_data);
+
+#ifdef CAMERA_BAYER
+            free(bayer_data);
+#endif
         } else if (cmd == CMD_STREAM) {
             // Perform a streaming image capture with the current camera settings.
             cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
@@ -484,15 +520,32 @@ void service_console()
 
             sscanf(g_serial_buffer, "%s %u %u", cmd_table[cmd], &reg, &val);
             printf("Writing 0x%x to camera reg 0x%x\n", val, reg);
-            camera_write_reg((uint8_t)reg, (uint8_t)val);
+            camera_write_reg(reg, val);
         } else if (cmd == CMD_GETREG) {
             // Read a camera register
             unsigned int reg;
             uint8_t val;
             sscanf(g_serial_buffer, "%s %u", cmd_table[cmd], &reg);
-            camera_read_reg((uint8_t)reg, &val);
+            camera_read_reg(reg, &val);
             snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Camera reg 0x%x=0x%x", reg, val);
             send_msg(g_serial_buffer);
+#ifdef CAMERA_BAYER
+        } else if (cmd == CMD_SETDEBAYER) {
+            char buffer[20] = "\0";
+            sscanf(g_serial_buffer, "%s %s", cmd_table[cmd], buffer);
+            if (!strcmp("passthrough", buffer)) {
+                g_app_settings.bayer_function = BAYER_FUNCTION_PASSTHROUGH;
+                printf("Set %s\n", buffer);
+            } else if (!strcmp("bilinear", buffer)) {
+                g_app_settings.bayer_function = BAYER_FUNCTION_BILINEAR;
+                printf("Set %s\n", buffer);
+            } else if (!strcmp("malvarcutler", buffer)) {
+                g_app_settings.bayer_function = BAYER_FUNCTION_MALVARCUTLER;
+                printf("Set %s\n", buffer);
+            } else {
+                printf("Unknown debayering function '%s'\n", buffer);
+            }
+#endif
 #ifdef SD
         } else if (cmd == CMD_SD_MOUNT) {
             // Mount the SD card
@@ -584,8 +637,15 @@ int main(void)
     g_app_settings.imgres_h = IMAGE_YRES;
     g_app_settings.pixel_format = PIXFORMAT_RGB565; // This default may change during initialization
 
-#ifdef CAMERA_MONO
+#if defined(CAMERA_MONO)
     g_app_settings.pixel_format = PIXFORMAT_BAYER;
+#endif
+
+#if defined(CAMERA_BAYER)
+    g_app_settings.pixel_format = PIXFORMAT_BAYER;
+    g_app_settings.imgres_w = 160;
+    g_app_settings.imgres_h = 120;
+    g_app_settings.bayer_function = BAYER_FUNCTION_MALVARCUTLER;
 #endif
 
     /* Enable cache */
