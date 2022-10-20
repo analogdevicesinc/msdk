@@ -78,7 +78,7 @@ export CMSIS_ROOT
 
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
-SRCS += sla_header.c
+SRCS += header_MAX32572.c
 SRCS += resources/all_imgs.c
 
 # Where to find source files for this test
