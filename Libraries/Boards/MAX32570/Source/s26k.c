@@ -325,7 +325,9 @@ int S26K_Write(uint32_t addr, uint16_t *data, unsigned len)
         S26K_WRITE16(sector_addr, buffer_len - 1);
 
         // Write the data to the buffer
-        for (i = 0; i < buffer_len; i++) { S26K_WRITE16(sector_addr + offset + i, data[i]); }
+        for (i = 0; i < buffer_len; i++) {
+            S26K_WRITE16(sector_addr + offset + i, data[i]);
+        }
 
         // Issue write to buffer conform sequence
         S26K_WRITE16(sector_addr, S26K_CMDWRITE_BUFFER);
@@ -360,7 +362,9 @@ void S26K_GetID(uint32_t offset, uint16_t *data, unsigned len)
     S26K_WRITE16(S26K_UNLOCKADDR0, S26K_CMDREAD_ID);
 
     // Issue ID/CFI read
-    for (i = 0; i < len; i++) { S26K_READ16(offset + 2 * i, data[i]); }
+    for (i = 0; i < len; i++) {
+        S26K_READ16(offset + 2 * i, data[i]);
+    }
 
     // Exit ASO
     S26K_WRITE16(0x0, S26K_CMDEXIT_ASO);
@@ -375,7 +379,9 @@ void S26K_GetCFI(uint32_t offset, uint16_t *data, unsigned len)
     S26K_WRITE16(S26K_CFI_ADDR, S26K_CMDREAD_CFI);
 
     // Issue ID/CFI read
-    for (i = 0; i < len; i++) { S26K_READ16((offset + 2 * i), data[i]); }
+    for (i = 0; i < len; i++) {
+        S26K_READ16((offset + 2 * i), data[i]);
+    }
 
     // Exit ASO
     S26K_WRITE16(s26k_base_addr, S26K_CMDEXIT_ASO);

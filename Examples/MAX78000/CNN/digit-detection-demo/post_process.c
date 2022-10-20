@@ -55,7 +55,9 @@ int get_prior_idx(int ar_idx, int scale_idx, int rel_idx)
 {
     int prior_idx = 0;
 
-    for (int s = 0; s < scale_idx; ++s) { prior_idx += NUM_ARS * SQUARE(dims[s]); }
+    for (int s = 0; s < scale_idx; ++s) {
+        prior_idx += NUM_ARS * SQUARE(dims[s]);
+    }
 
     prior_idx += NUM_ARS * rel_idx + ar_idx;
     return prior_idx;
@@ -78,7 +80,9 @@ void get_indices(int *ar_idx, int *scale_idx, int *rel_idx, int prior_idx)
 
     int in_scale_idx = prior_idx;
 
-    for (s = 0; s < *scale_idx; ++s) { in_scale_idx -= (NUM_ARS * SQUARE(dims[s])); }
+    for (s = 0; s < *scale_idx; ++s) {
+        in_scale_idx -= (NUM_ARS * SQUARE(dims[s]));
+    }
 
     *ar_idx = in_scale_idx % NUM_ARS;
     *rel_idx = in_scale_idx / NUM_ARS; //SQUARE(dims[*scale_idx]);
@@ -222,7 +226,9 @@ void gcxgcy_to_cxcy(float *cxcy, int prior_idx, float *priors_cxcy)
 {
     float gcxgcy[4];
 
-    for (int i = 0; i < 4; i++) { gcxgcy[i] = (float)prior_locs[4 * prior_idx + i] / 128.0; }
+    for (int i = 0; i < 4; i++) {
+        gcxgcy[i] = (float)prior_locs[4 * prior_idx + i] / 128.0;
+    }
 
     cxcy[0] = priors_cxcy[0] + gcxgcy[0] * priors_cxcy[2] / 10;
     cxcy[1] = priors_cxcy[1] + gcxgcy[1] * priors_cxcy[3] / 10;
@@ -244,7 +250,9 @@ void insert_val(uint16_t val, uint16_t *arr, int arr_len, int idx)
         arr[arr_len] = arr[arr_len - 1];
     }
 
-    for (int j = (arr_len - 1); j > idx; --j) { arr[j] = arr[j - 1]; }
+    for (int j = (arr_len - 1); j > idx; --j) {
+        arr[j] = arr[j - 1];
+    }
 
     arr[idx] = val;
 }
@@ -255,7 +263,9 @@ void insert_idx(uint16_t val, uint16_t *arr, int arr_len, int idx)
         arr[arr_len] = arr[arr_len - 1];
     }
 
-    for (int j = (arr_len - 1); j > idx; --j) { arr[j] = arr[j - 1]; }
+    for (int j = (arr_len - 1); j > idx; --j) {
+        arr[j] = arr[j - 1];
+    }
 
     arr[idx] = val;
 }
