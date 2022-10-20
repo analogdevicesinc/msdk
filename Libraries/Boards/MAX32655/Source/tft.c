@@ -127,7 +127,9 @@ static int concat(unsigned char *var, int size)
 {
     int result = 0;
 
-    for (int i = 1; i <= size; i++) { result |= var[size - i] << (8 * (size - i)); }
+    for (int i = 1; i <= size; i++) {
+        result |= var[size - i] << (8 * (size - i));
+    }
 
     return result;
 }
@@ -282,14 +284,18 @@ static void print_line(const uint8_t *line, int nb_of_pixel)
     int loop_counter = nb_of_pixel >> 2; // div 4
 
     for (x = 0; x < loop_counter; x++) {
-        for (i = 0; i < 4; i++) { g_fifo[i] = *(g_palette_ram + line[(x << 2) + i]); }
+        for (i = 0; i < 4; i++) {
+            g_fifo[i] = *(g_palette_ram + line[(x << 2) + i]);
+        }
 
         spi_transmit((uint16_t *)g_fifo, 8);
     }
 
     x <<= 2;
 
-    for (; x < nb_of_pixel; x++) { write_color(*(g_palette_ram + line[x])); }
+    for (; x < nb_of_pixel; x++) {
+        write_color(*(g_palette_ram + line[x]));
+    }
 }
 
 static void print_line_rgb565(const unsigned char *line, int nb_of_pixel)
@@ -389,7 +395,9 @@ static void RLE_decode(unsigned char const *in, unsigned int length, int img_h, 
                 switch (data) {
                 case 0:
                 case 1:
-                    while (nb_of_pixel < (uint32_t)img_w) { line[nb_of_pixel++] = 0; }
+                    while (nb_of_pixel < (uint32_t)img_w) {
+                        line[nb_of_pixel++] = 0;
+                    }
 
                     print_line(line, img_w);
                     is_ended = 1;
@@ -400,13 +408,19 @@ static void RLE_decode(unsigned char const *in, unsigned int length, int img_h, 
                     x = in[inpos++];
                     y = in[inpos++];
 
-                    for (i = 0; i < x; i++) { line[nb_of_pixel++] = 0; }
+                    for (i = 0; i < x; i++) {
+                        line[nb_of_pixel++] = 0;
+                    }
 
-                    for (i = 0; i < y; i++) { print_line(line, img_w); }
+                    for (i = 0; i < y; i++) {
+                        print_line(line, img_w);
+                    }
                 } break;
 
                 default:
-                    for (i = 0; i < data; i++) { line[nb_of_pixel++] = in[inpos++]; }
+                    for (i = 0; i < data; i++) {
+                        line[nb_of_pixel++] = in[inpos++];
+                    }
 
                     if (data % 2) {
                         inpos++;
@@ -415,7 +429,9 @@ static void RLE_decode(unsigned char const *in, unsigned int length, int img_h, 
                     break;
                 }
             } else {
-                for (i = 0; i < cmd; i++) { line[nb_of_pixel++] = data; }
+                for (i = 0; i < cmd; i++) {
+                    line[nb_of_pixel++] = data;
+                }
             }
 
             if (is_ended == 1) {
@@ -879,7 +895,9 @@ void MXC_TFT_SetBackGroundColor(uint32_t color)
 
     for (y = 0; y < DISPLAY_HEIGHT; y++) {
         for (x = 0; x < (uint32_t)(DISPLAY_WIDTH >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = g_palette_ram[color]; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = g_palette_ram[color];
+            }
 
             spi_transmit((uint16_t *)g_fifo, 8);
         }
@@ -963,7 +981,9 @@ void MXC_TFT_ShowImage(int x0, int y0, int id)
     } else {
         img_w_rounded = ((8 * bitmap_info.w + 31) / 32) * 4;
 
-        for (y = height - 1; y >= 0; y--) { print_line(&pixel[y * img_w_rounded], width); }
+        for (y = height - 1; y >= 0; y--) {
+            print_line(&pixel[y * img_w_rounded], width);
+        }
     }
 }
 
@@ -982,7 +1002,9 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int width, in
 
         displaySub(x0, y0, width, height);
 
-        for (y = 0; y < height; y++) { print_line_rgb565(&image[y * width * 2], width); }
+        for (y = 0; y < height; y++) {
+            print_line_rgb565(&image[y * width * 2], width);
+        }
     } else if (tft_rotation == SCREEN_ROTATE) {
         if ((x0 + width) > DISPLAY_HEIGHT) {
             width = DISPLAY_HEIGHT - x0;
@@ -997,7 +1019,9 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int width, in
 
         displaySub_Special(x0, y0, width, height);
 
-        for (x = 0; x < width; x++) { print_line_rgb565(&image[x * height * 2], height); }
+        for (x = 0; x < width; x++) {
+            print_line_rgb565(&image[x * height * 2], height);
+        }
 
         write_command(0x0011); // Entry Mode
         write_data(0x6858);
@@ -1029,14 +1053,18 @@ void MXC_TFT_FillRect(area_t *area, int color)
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = g_palette_ram[color]; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = g_palette_ram[color];
+            }
 
             spi_transmit((uint16_t *)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(g_palette_ram[color]); }
+        for (; x < w; x++) {
+            write_color(g_palette_ram[color]);
+        }
     }
 
     __enable_irq();
@@ -1071,14 +1099,18 @@ void MXC_TFT_WritePixel(int pixelX, int pixelY, int width, int height, uint32_t 
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = color; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = color;
+            }
 
             spi_transmit((uint16_t *)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(color); }
+        for (; x < w; x++) {
+            write_color(color);
+        }
     }
 
     __enable_irq();
@@ -1214,14 +1246,18 @@ void MXC_TFT_ClearArea(area_t *area, int color)
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = *(g_palette_ram + color); }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = *(g_palette_ram + color);
+            }
 
             spi_transmit((uint16_t *)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(*(g_palette_ram + color)); }
+        for (; x < w; x++) {
+            write_color(*(g_palette_ram + color));
+        }
     }
 }
 

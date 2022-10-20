@@ -67,7 +67,9 @@ void utils_send_bytes(mxc_uart_regs_t *uart, uint8_t *ptr, int length)
 {
     int i;
 
-    for (i = 0; i < length; i++) { utils_send_byte(uart, ptr[i]); }
+    for (i = 0; i < length; i++) {
+        utils_send_byte(uart, ptr[i]);
+    }
 }
 
 #pragma GCC optimize("-O0")
