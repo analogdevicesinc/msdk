@@ -104,7 +104,9 @@ void cnn_wait(void)
 
 void memcpy32(uint32_t *dst, const uint32_t *src, int n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 #ifdef USE_SAMPLEDATA
@@ -330,7 +332,9 @@ static const uint8_t bias_0[] = BIAS_0;
 
 void memcpy_8to32(uint32_t *dst, const uint8_t *src, size_t n)
 {
-    while (n-- > 0) { *dst++ = *src++; }
+    while (n-- > 0) {
+        *dst++ = *src++;
+    }
 }
 
 void load_bias(void)

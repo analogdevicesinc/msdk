@@ -521,7 +521,9 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
         for (int c = 0; c < 16; c++) {
             int idx = 22 * r + 88 * 22 * c;
 
-            for (int d = 0; d < 22; d++) { out_buff[index + d] = in_buff[idx + d]; }
+            for (int d = 0; d < 22; d++) {
+                out_buff[index + d] = in_buff[idx + d];
+            }
 
             index += 22;
         }
@@ -582,7 +584,9 @@ void unfold_display_packed_fast(unsigned char *in_buff, unsigned char *out_buff)
         for (int c = 0; c < 16; c++) {
             int idx = 22 * r + 88 * 22 * c;
 
-            for (int d = 0; d < 22; d++) { out_buff[index + d] = in_buff[idx + d]; }
+            for (int d = 0; d < 22; d++) {
+                out_buff[index + d] = in_buff[idx + d];
+            }
 
             index += 22;
         }
