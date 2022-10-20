@@ -214,7 +214,7 @@ void i2s_isr(void)
 #ifdef SEND_MIC_OUT_SDCARD
 extern int sd_init(void);
 extern int mkdirSoundSnippet_CD();
-extern int writeSoundSnippet(char* snippetFilename, unsigned int snippetLength, int8_t* snippet);
+extern int writeSoundSnippet(char *snippetFilename, unsigned int snippetLength, int8_t *snippet);
 #endif
 void fail(void);
 uint8_t cnn_load_data(uint8_t *pIn);
@@ -343,8 +343,8 @@ int main(void)
     if (mkdirSoundSnippet_CD() != E_NO_ERROR) {
         printf("*** !!!SD ERROR (mounting) !!! ***\n");
         LED_Off(LED_GREEN);
-        LED_On(LED_RED);          // Permanent Red Led
-        while(1)
+        LED_On(LED_RED); // Permanent Red Led
+        while (1)
             ;
     }
 #endif
@@ -473,7 +473,9 @@ int main(void)
 #ifdef ENABLE_PRINT_ENVELOPE
         PR_DEBUG("%.6d|", sampleCounter);
 
-        for (int i = 0; i < avg / 10; i++) { PR_DEBUG("="); }
+        for (int i = 0; i < avg / 10; i++) {
+            PR_DEBUG("=");
+        }
 
         if (avg >= thresholdHigh) {
             PR_DEBUG("*");
@@ -602,11 +604,15 @@ int main(void)
 #if SLEEP_MODE == 0
 
                 /* Wait for CNN  to complete */
-                while (cnn_time == 0) { __WFI(); }
+                while (cnn_time == 0) {
+                    __WFI();
+                }
 
 #elif SLEEP_MODE == 1
 
-                while (cnn_time == 0) { __WFI(); }
+                while (cnn_time == 0) {
+                    __WFI();
+                }
 
 #elif SLEEP_MODE == 2
                 SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=1
@@ -691,36 +697,37 @@ int main(void)
                  *  - Solid Red if there is error with SD card interface
                  *
                  **/
-				LED_Off(LED_GREEN);
+                LED_Off(LED_GREEN);
                 if (!ret) {
                     // Low Confidence
                     LED_On(LED_GREEN);
                     LED_On(LED_RED);
                 }
-                if (out_class == 20)   // Unknown class
+                if (out_class == 20) // Unknown class
                     LED_On(LED_RED);
 
                 if (ret) {
                     // High confidence
                     int i = 0;
-                    for (i=0; i<SAMPLE_SIZE; i++) {
+                    for (i = 0; i < SAMPLE_SIZE; i++) {
                         // printf("%d\n",serialMicBuff[(serialMicBufIndex+i)%SAMPLE_SIZE]);
-                        snippet[i] = serialMicBuff[(serialMicBufIndex+i)%SAMPLE_SIZE];
+                        snippet[i] = serialMicBuff[(serialMicBufIndex + i) % SAMPLE_SIZE];
                     }
-                    snprintf(fileName, sizeof(fileName),"%04d_%s", fileCount, keywords[out_class]);
-                    if (writeSoundSnippet((char*)fileName, snippetLength,  &snippet[0]) != E_NO_ERROR) {
+                    snprintf(fileName, sizeof(fileName), "%04d_%s", fileCount, keywords[out_class]);
+                    if (writeSoundSnippet((char *)fileName, snippetLength, &snippet[0]) !=
+                        E_NO_ERROR) {
                         printf("*** !!!SD ERROR!!! ***\n");
                         LED_Off(LED_GREEN);
-                        LED_On(LED_RED);     // Permanent Red Led
-                        while(1)
-                           ;
+                        LED_On(LED_RED); // Permanent Red Led
+                        while (1)
+                            ;
                     }
-                    fileCount ++;
+                    fileCount++;
                     LED_Off(LED_RED);
                     LED_On(LED_GREEN);
                 }
 #endif
-            PR_INFO("\n\n*** READY ***\n");
+                PR_INFO("\n\n*** READY ***\n");
             }
         }
 
@@ -1108,8 +1115,8 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
         /* Convert to 8 bit unsigned */
         pBuff[chunkCount] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
 #ifdef SEND_MIC_OUT_SDCARD
-		serialMicBuff[serialMicBufIndex++] = (sample) * SAMPLE_SCALE_FACTOR / 256;
-		serialMicBufIndex = serialMicBufIndex%SAMPLE_SIZE;
+        serialMicBuff[serialMicBufIndex++] = (sample)*SAMPLE_SCALE_FACTOR / 256;
+        serialMicBufIndex = serialMicBufIndex % SAMPLE_SIZE;
 #endif
         temp = (int8_t)pBuff[chunkCount];
 
