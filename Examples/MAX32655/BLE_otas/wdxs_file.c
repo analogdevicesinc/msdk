@@ -246,9 +246,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
         /* done receiving*/
         if (packetCount >= (fileHeader.fileLen / 224) + 1) {
             percentComplete = 1;
-            for (int i = 1; i < 11; i++) {
-                progressbar[i] = '-';
-            }
+            for (int i = 1; i < 11; i++) { progressbar[i] = '-'; }
             packetCount = 0;
             savedHeader = FALSE;
         }
