@@ -218,6 +218,6 @@ int main(void)
             yy = rescale(y, TS_Y_MIN, TS_Y_MAX, 0, DISPLAY_WIDTH);
             printf("%d,%d\n", xx, yy);
         }
-#endif		
+#endif
     }
 }
