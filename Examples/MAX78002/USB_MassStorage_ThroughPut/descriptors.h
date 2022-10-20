@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32665_USB_MASSSTORAGE_DESCRIPTORS_H_
-#define EXAMPLES_MAX32665_USB_MASSSTORAGE_DESCRIPTORS_H_
+#ifndef EXAMPLES_MAX78002_USB_MASSSTORAGE_THROUGHPUT_DESCRIPTORS_H_
+#define EXAMPLES_MAX78002_USB_MASSSTORAGE_THROUGHPUT_DESCRIPTORS_H_
 
 #include <stdint.h>
 #include "usb.h"
@@ -190,4 +190,4 @@ uint8_t serial_id_desc[] = { 26, /* bLength */
                              '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0,
                              '0',  0, '0', 0, '0', 0, '0', 0, '0', 0, '1', 0 };
 
-#endif // EXAMPLES_MAX32665_USB_MASSSTORAGE_DESCRIPTORS_H_
+#endif // EXAMPLES_MAX78002_USB_MASSSTORAGE_THROUGHPUT_DESCRIPTORS_H_
