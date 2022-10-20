@@ -67,7 +67,7 @@
 #include "bitmap.h"
 #endif
 
-#define VERSION "3.0.2 (02/08/21)" // Low power mode
+#define VERSION "3.1.0 (10/17/22)" // SD card write
 /* **** Definitions **** */
 #define CLOCK_SOURCE 0 // 0: IPO,  1: ISO, 2: IBRO
 #define SLEEP_MODE 0 // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
@@ -78,6 +78,15 @@
 #if SLEEP_MODE == 2 // need WakeUp Timer (WUT) for deepsleep (LPM)
 #ifndef WUT_ENABLE
 #define WUT_ENABLE
+#endif
+#endif
+
+#ifdef SEND_MIC_OUT_SDCARD
+#undef WUT_ENABLE
+#warning !!! Disabling WUT_ENABLE option when SD card is enabled !!!
+#ifdef ENABLE_TFT
+#undef ENABLE_TFT
+#warning !!! TFT cannot be used when SD card is enabled  !!!
 #endif
 #endif
 
@@ -105,7 +114,7 @@
 #define TFT_BUFF_SIZE 50 // TFT buffer size
 /*-----------------------------*/
 
-/* Adjustables */
+/* Adjustable Parameters */
 #ifdef ENABLE_MIC_PROCESSING
 #define SAMPLE_SCALE_FACTOR \
     4 // multiplies 16-bit samples by this scale factor before converting to 8-bit
@@ -145,6 +154,13 @@
 
 /* **** Globals **** */
 volatile uint32_t cnn_time; // Stopwatch
+volatile uint32_t fileCount = 0;
+
+#ifdef SEND_MIC_OUT_SDCARD
+int8_t serialMicBuff[SAMPLE_SIZE];
+int8_t snippet[SAMPLE_SIZE];
+int serialMicBufIndex = 0;
+#endif
 
 static int32_t ml_data[NUM_OUTPUTS];
 static q15_t ml_softmax[NUM_OUTPUTS];
@@ -170,6 +186,11 @@ const char keywords[NUM_OUTPUTS][10] = { "UP",    "DOWN", "LEFT",   "RIGHT", "ST
                                          "THREE", "FOUR", "FIVE",   "SIX",   "SEVEN", "EIGHT",
                                          "NINE",  "ZERO", "Unknown" };
 
+#ifdef SEND_MIC_OUT_SDCARD
+static char fileName[16];
+unsigned int snippetLength = 16384;
+#endif
+
 #ifndef ENABLE_MIC_PROCESSING
 
 #ifndef EIGHT_BIT_SAMPLES
@@ -190,6 +211,11 @@ void i2s_isr(void)
 #endif
 
 /* **** Functions Prototypes **** */
+#ifdef SEND_MIC_OUT_SDCARD
+extern int sd_init(void);
+extern int mkdirSoundSnippet_CD();
+extern int writeSoundSnippet(char* snippetFilename, unsigned int snippetLength, int8_t* snippet);
+#endif
 void fail(void);
 uint8_t cnn_load_data(uint8_t *pIn);
 uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg);
@@ -294,7 +320,7 @@ int main(void)
     /* Configure P2.5, turn on the CNN Boost */
     cnn_boost_enable(MXC_GPIO2, MXC_GPIO_PIN_5);
 
-    PR_INFO("ANALOG DEVICES \nKeyword Spotting Demo\nVer. %s \n", VERSION);
+    PR_INFO("\n\nANALOG DEVICES \nKeyword Spotting Demo\nVer. %s \n", VERSION);
     PR_INFO("\n***** Init *****\n");
     memset(pAI85Buffer, 0x0, sizeof(pAI85Buffer));
     memset(pPreambleCircBuffer, 0x0, sizeof(pPreambleCircBuffer));
@@ -302,13 +328,26 @@ int main(void)
     PR_DEBUG("pChunkBuff: %d\n", sizeof(pChunkBuff));
     PR_DEBUG("pPreambleCircBuffer: %d\n", sizeof(pPreambleCircBuffer));
     PR_DEBUG("pAI85Buffer: %d\n", sizeof(pAI85Buffer));
-
+#ifdef SEND_MIC_OUT_SDCARD
+    /* SD card support */
+    sd_init();
+#endif
     /* Bring state machine into consistent state */
     cnn_init();
     /* Load kernels */
     cnn_load_weights();
     /* Configure state machine */
     cnn_configure();
+#ifdef SEND_MIC_OUT_SDCARD
+    /* Make Incremental Directory */
+    if (mkdirSoundSnippet_CD() != E_NO_ERROR) {
+        printf("*** !!!SD ERROR (mounting) !!! ***\n");
+        LED_Off(LED_GREEN);
+        LED_On(LED_RED);          // Permanent Red Led
+        while(1)
+            ;
+    }
+#endif
 
 #if SLEEP_MODE == 1
     NVIC_EnableIRQ(CNN_IRQn);
@@ -355,7 +394,7 @@ int main(void)
 
     MXC_TFT_SetPalette(logo_white_bg_darkgrey_bmp);
     MXC_TFT_SetBackGroundColor(4);
-    PR_INFO("if RED LED is not on, disconnect PICO SWD and powercycle!\n");
+    PR_INFO("if RED LED is not on, disconnect PICO SWD and power cycle!\n");
 #endif
 #ifdef BOARD_FTHR_REVA
     /* Initialize TFT display */
@@ -642,6 +681,44 @@ int main(void)
                 Max = 0;
                 Min = 0;
                 //------------------------------------------------------------
+
+#ifdef SEND_MIC_OUT_SDCARD
+                /**
+                 *
+                 *  - Blink Green led if a keyword is detected
+                 *  - Blink Red led if an unkown keyword is detected
+                 *  - Blink Yellow if detection is low confidence
+                 *  - Solid Red if there is error with SD card interface
+                 *
+                 **/
+				LED_Off(LED_GREEN);
+                if (!ret) {
+                    // Low Confidence
+                    LED_On(LED_GREEN);
+                    LED_On(LED_RED);
+                }
+                if (out_class == 20)   // Unknown class
+                    LED_On(LED_RED);
+
+				int i = 0;
+				for (i=0; i<SAMPLE_SIZE; i++) {
+					// printf("%d\n",serialMicBuff[(serialMicBufIndex+i)%SAMPLE_SIZE]);
+                    snippet[i] = serialMicBuff[(serialMicBufIndex+i)%SAMPLE_SIZE];
+                }
+                snprintf(fileName, sizeof(fileName),"%04d_%s", fileCount, keywords[out_class]);
+                if (writeSoundSnippet((char*)fileName, snippetLength,  &snippet[0]) != E_NO_ERROR) {
+                    printf("*** !!!SD ERROR!!! ***\n");
+                    LED_Off(LED_GREEN);
+                    LED_On(LED_RED);     // Permanent Red Led
+                    while(1)
+                       ;
+                }
+                fileCount ++;
+                //MXC_Delay(MSEC(200));
+                LED_Off(LED_RED);
+                LED_On(LED_GREEN);
+                PR_INFO("\n\n*** READY ***\n");
+#endif
             }
         }
 
@@ -796,7 +873,7 @@ uint8_t cnn_load_data(uint8_t *pIn)
     uint32_t mem;
     uint16_t index = 0;
 
-    /* data should already be formated correctly */
+    /* data should already be formatted correctly */
     /* pIn is 16KB, each 1KB belongs to a memory group */
     for (mem = 0x50400000; mem <= 0x50418000; mem += 0x8000) {
         memcpy((uint8_t *)mem, &pIn[index], 1024);
@@ -826,7 +903,7 @@ uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outS
 {
     /* Data order in Ai85 memory (transpose is included):
     input(series of 8 bit samples): (0,0) ...  (0,127)  (1,0) ... (1,127) ...... (127,0)...(127,127)    16384 samples
-    output (32bit word): 16K samples in a buffer. Later, each 1K goes to a seperate CNN memory group
+    output (32bit word): 16K samples in a buffer. Later, each 1K goes to a separate CNN memory group
     0x0000:
         (0,3)(0,2)(0,1)(0,0)
         (0,67)(0,66)(0,65)(0,64)
@@ -1028,7 +1105,10 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
 
         /* Convert to 8 bit unsigned */
         pBuff[chunkCount] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
-
+#ifdef SEND_MIC_OUT_SDCARD
+		serialMicBuff[serialMicBufIndex++] = (sample) * SAMPLE_SCALE_FACTOR / 256;
+		serialMicBufIndex = serialMicBufIndex%SAMPLE_SIZE;
+#endif
         temp = (int8_t)pBuff[chunkCount];
 
         chunkCount++;
