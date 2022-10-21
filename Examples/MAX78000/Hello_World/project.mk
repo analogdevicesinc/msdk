@@ -13,5 +13,5 @@
 
 # Add your config here!
 
-SRCS += ./test.S
+
 
