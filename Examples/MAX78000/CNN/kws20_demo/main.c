@@ -714,10 +714,10 @@ int main(void)
                 if (ret) {
                     // High confidence
                     snprintf(fileName, sizeof(fileName), "%04d_%s", fileCount, keywords[out_class]);
-                }
-                else {
+                } else {
                 	// Low confidence: add "L" at the end of file name
-                	snprintf(fileName, sizeof(fileName), "%04d_%s_L", fileCount, keywords[out_class]);
+                	snprintf(fileName, sizeof(fileName), "%04d_%s_L", fileCount, 
+                             keywords[out_class]);
                 }
                 if (writeSoundSnippet((char *)fileName, snippetLength, &snippet[0]) != E_NO_ERROR) {
                     printf("*** !!!SD ERROR!!! ***\n");
