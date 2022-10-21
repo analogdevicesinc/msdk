@@ -329,10 +329,14 @@ int main(void)
     printf("--> Blocking, 4-bit data bus, multi-block example <--\n");
 
     if (multi_block_check(MXC_SDHC_LIB_QUAD_DATA)) {
+    	result = -1;
         printf(" FAIL \n");
     } else {
+    	result = 0;
         printf(" PASS \n");
     }
 
     printf(" *** END OF EXAMPLE *** \n");
+
+    return result;
 }
