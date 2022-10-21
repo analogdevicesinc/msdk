@@ -57,7 +57,7 @@
 // *****************************************************************************
 int main()
 {
-	uint8_t counter = 0;
+    uint8_t counter = 0;
 
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");
@@ -69,7 +69,7 @@ int main()
     //Setup the I2CM
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
-    	printf("-->I2C Master Initialization failed, error:%d\n", error);
+        printf("-->I2C Master Initialization failed, error:%d\n", error);
         return -1;
     } else {
         printf("\n-->I2C Master Initialization Complete\n");
