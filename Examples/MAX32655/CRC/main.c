@@ -140,8 +140,10 @@ int main(void)
 
     if (fail) {
         printf("\Example Failed");
+        return -1;
     } else {
         printf("\nExample Succeeded");
+        return 0;
     }
 
     printf("\n\n");
