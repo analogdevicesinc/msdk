@@ -211,10 +211,12 @@ int main(void)
 
     if (fails != 0) {
         printf("\nTest failed!\n");
+        return -1;
     } else {
         printf("\nTest successful!\n");
         LED_Init();
         LED_On(0);
+        return 0;
     }
 
     return 0;
