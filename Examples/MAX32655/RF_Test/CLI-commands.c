@@ -303,21 +303,15 @@ static BaseType_t cmd_StartBleRXTest(char *pcWriteBuffer, size_t xWriteBufferLen
             &lParameterStringLength /* Store the parameter string length. */
         );
 
-        (memcmp(newPhy, "1M", 2) == 0) ?
-            phyVal = LL_TEST_PHY_LE_1M :
-            (memcmp(newPhy, "1m", 2) == 0) ?
-            phyVal = LL_TEST_PHY_LE_1M :
-            (memcmp(newPhy, "2M", 2) == 0) ?
-            phyVal = LL_TEST_PHY_LE_2M :
-            (memcmp(newPhy, "2m", 2) == 0) ?
-            phyVal = LL_TEST_PHY_LE_2M :
-            (memcmp(newPhy, "S2", 2) == 0) ?
-            phyVal = LL_TEST_PHY_LE_CODED_S2 :
-            (memcmp(newPhy, "s2", 2) == 0) ?
-            phyVal = LL_TEST_PHY_LE_CODED_S2 :
-            (memcmp(newPhy, "S8", 2) == 0) ?
-            phyVal = LL_TEST_PHY_LE_CODED_S8 :
-            (memcmp(newPhy, "s8", 2) == 0) ? phyVal = LL_TEST_PHY_LE_CODED_S8 : err++;
+        (memcmp(newPhy, "1M", 2) == 0) ? phyVal = LL_TEST_PHY_LE_1M :
+        (memcmp(newPhy, "1m", 2) == 0) ? phyVal = LL_TEST_PHY_LE_1M :
+        (memcmp(newPhy, "2M", 2) == 0) ? phyVal = LL_TEST_PHY_LE_2M :
+        (memcmp(newPhy, "2m", 2) == 0) ? phyVal = LL_TEST_PHY_LE_2M :
+        (memcmp(newPhy, "S2", 2) == 0) ? phyVal = LL_TEST_PHY_LE_CODED_S2 :
+        (memcmp(newPhy, "s2", 2) == 0) ? phyVal = LL_TEST_PHY_LE_CODED_S2 :
+        (memcmp(newPhy, "S8", 2) == 0) ? phyVal = LL_TEST_PHY_LE_CODED_S8 :
+        (memcmp(newPhy, "s8", 2) == 0) ? phyVal = LL_TEST_PHY_LE_CODED_S8 :
+                                         err++;
 
         /* fetch duration parameter which is optional */
         rfCommand.duration_ms = atoi(FreeRTOS_CLIGetParameter(
@@ -625,41 +619,29 @@ static bool isChannel(const char *commandstring, uint8_t paramIndex)
 static int getPacketType(const char *str_type, uint8_t *ptr_packetTypeVal)
 {
     int err = E_NO_ERROR;
-    (memcmp(str_type, "PRBS9", 5) == 0) ?
-        (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_PRBS9 :
-        (memcmp(str_type, "PRBS15", 6) == 0) ?
-        (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_PRBS15 :
-        (memcmp(str_type, "0F", 2) == 0) ?
-        (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_0F :
-        (memcmp(str_type, "55", 2) == 0) ?
-        (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_55 :
-        (memcmp(str_type, "FF", 2) == 0) ?
-        (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_FF :
-        (memcmp(str_type, "00", 2) == 0) ?
-        (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_00 :
-        (memcmp(str_type, "F0", 2) == 0) ?
-        (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_F0 :
-        (memcmp(str_type, "AA", 2) == 0) ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_AA : err++;
+    (memcmp(str_type, "PRBS9", 5) == 0)  ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_PRBS9 :
+    (memcmp(str_type, "PRBS15", 6) == 0) ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_PRBS15 :
+    (memcmp(str_type, "0F", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_0F :
+    (memcmp(str_type, "55", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_55 :
+    (memcmp(str_type, "FF", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_FF :
+    (memcmp(str_type, "00", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_00 :
+    (memcmp(str_type, "F0", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_F0 :
+    (memcmp(str_type, "AA", 2) == 0)     ? (*ptr_packetTypeVal) = LL_TEST_PKT_TYPE_AA :
+                                           err++;
     return err;
 }
 static int getNewPhy(const char *str_phy, uint8_t *ptr_newPhy)
 {
     int err = E_NO_ERROR;
-    (memcmp(str_phy, "1M", 2) == 0) ?
-        (*ptr_newPhy) = LL_TEST_PHY_LE_1M :
-        (memcmp(str_phy, "1m", 2) == 0) ?
-        (*ptr_newPhy) = LL_TEST_PHY_LE_1M :
-        (memcmp(str_phy, "2M", 2) == 0) ?
-        (*ptr_newPhy) = LL_TEST_PHY_LE_2M :
-        (memcmp(str_phy, "2m", 2) == 0) ?
-        (*ptr_newPhy) = LL_TEST_PHY_LE_2M :
-        (memcmp(str_phy, "S2", 2) == 0) ?
-        (*ptr_newPhy) = LL_TEST_PHY_LE_CODED_S2 :
-        (memcmp(str_phy, "s2", 2) == 0) ?
-        (*ptr_newPhy) = LL_TEST_PHY_LE_CODED_S2 :
-        (memcmp(str_phy, "S8", 2) == 0) ?
-        (*ptr_newPhy) = LL_TEST_PHY_LE_CODED_S8 :
-        (memcmp(str_phy, "s8", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_CODED_S8 : err++;
+    (memcmp(str_phy, "1M", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_1M :
+    (memcmp(str_phy, "1m", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_1M :
+    (memcmp(str_phy, "2M", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_2M :
+    (memcmp(str_phy, "2m", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_2M :
+    (memcmp(str_phy, "S2", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_CODED_S2 :
+    (memcmp(str_phy, "s2", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_CODED_S2 :
+    (memcmp(str_phy, "S8", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_CODED_S8 :
+    (memcmp(str_phy, "s8", 2) == 0) ? (*ptr_newPhy) = LL_TEST_PHY_LE_CODED_S8 :
+                                      err++;
 
     return err;
 }
