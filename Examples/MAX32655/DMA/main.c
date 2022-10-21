@@ -96,8 +96,8 @@ void example1(void)
 
     if (retval != E_NO_ERROR) {
         printf("Failed MXC_DMA_Init().\n");
-
-        while (1) {}
+        fail += 1;
+        return;
     }
 
     flag = 0;
@@ -108,9 +108,6 @@ void example1(void)
     //Validate
     if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
-
-        while (1) {}
-
         fail += 1;
     } else {
         printf("Data verified.\n");
@@ -194,9 +191,6 @@ void example2(void)
     // Validate
     if (memcmp(srcdata, dstdata, MAX_SIZE) != 0 || memcmp(srcdata2, dstdata2, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
-
-        while (1) {}
-
         fail += 1;
     } else {
         printf("Data verified.\n");
@@ -204,8 +198,7 @@ void example2(void)
 
     if (MXC_DMA_ReleaseChannel(mychannel) != E_NO_ERROR) {
         printf("Failed to release channel 0\n");
-
-        while (1) {}
+        fail += 1;
     }
 
     free(srcdata);
@@ -229,8 +222,10 @@ int main(void)
 
     if (fail == 0) {
         printf("Example Succeeded\n");
+        return 0;
     } else {
         printf("Example Failed\n");
+        return -1;
     }
 
     return 0;
