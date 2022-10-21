@@ -55,7 +55,7 @@ def command_parser():
     Return the argument parser
     """
     parser = argparse.ArgumentParser(description='Convert bin to audio wav')
-    parser.add_argument('-i', '--input', type=str, default = 'HEY BLIND', required = False,
+    parser.add_argument('-i', '--input', type=str, required = True,
                         help='input bin file')
 
     parser.add_argument('-o', '--output', type=str, required = False, default = 'out.wav',

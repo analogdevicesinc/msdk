@@ -352,7 +352,7 @@ PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
 When this mode is enabled, a new sequential directory is created on the SD card on every power up or reset.
 ![directory](Resources/SDcard_files.PNG)
 
-After a few moment, the green LED lights up and upon detecting a new word, the LED blinks and a file is created with 8-bit sample recorded audio. The file name includes an index and the detected word.
+After a few moment, the green LED lights up and upon detecting a new word, the LED blinks and a file is created with 8-bit sample recorded audio. The file name includes an index and the detected word. If the detection has low confidence, the file name will have a "_L" suffix. (for example `0003_RIGHT_L`)
 
 ![snippets](Resources/soundSnippet.PNG)
 

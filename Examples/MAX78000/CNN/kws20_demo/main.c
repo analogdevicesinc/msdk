@@ -706,26 +706,30 @@ int main(void)
                 if (out_class == 20) // Unknown class
                     LED_On(LED_RED);
 
+				int i = 0;
+				for (i = 0; i < SAMPLE_SIZE; i++) {
+					// printf("%d\n",serialMicBuff[(serialMicBufIndex+i)%SAMPLE_SIZE]);
+					snippet[i] = serialMicBuff[(serialMicBufIndex + i) % SAMPLE_SIZE];
+				}
                 if (ret) {
-                    // High confidence
-                    int i = 0;
-                    for (i = 0; i < SAMPLE_SIZE; i++) {
-                        // printf("%d\n",serialMicBuff[(serialMicBufIndex+i)%SAMPLE_SIZE]);
-                        snippet[i] = serialMicBuff[(serialMicBufIndex + i) % SAMPLE_SIZE];
-                    }
-                    snprintf(fileName, sizeof(fileName), "%04d_%s", fileCount, keywords[out_class]);
-                    if (writeSoundSnippet((char *)fileName, snippetLength, &snippet[0]) !=
-                        E_NO_ERROR) {
-                        printf("*** !!!SD ERROR!!! ***\n");
-                        LED_Off(LED_GREEN);
-                        LED_On(LED_RED); // Permanent Red Led
-                        while (1)
-                            ;
-                    }
-                    fileCount++;
-                    LED_Off(LED_RED);
-                    LED_On(LED_GREEN);
+                	// High confidence
+                	snprintf(fileName, sizeof(fileName), "%04d_%s", fileCount, keywords[out_class]);
                 }
+                else {
+                	// Low confidence: add "L" at the end of file name
+                	snprintf(fileName, sizeof(fileName), "%04d_%s_L", fileCount, keywords[out_class]);
+                }
+				if (writeSoundSnippet((char *)fileName, snippetLength, &snippet[0]) !=
+					E_NO_ERROR) {
+					printf("*** !!!SD ERROR!!! ***\n");
+					LED_Off(LED_GREEN);
+					LED_On(LED_RED); // Permanent Red Led
+					while (1)
+						;
+				}
+				fileCount++;
+				LED_Off(LED_RED);
+				LED_On(LED_GREEN);
 #endif
                 PR_INFO("\n\n*** READY ***\n");
             }
