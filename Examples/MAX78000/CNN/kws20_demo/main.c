@@ -716,7 +716,7 @@ int main(void)
                     snprintf(fileName, sizeof(fileName), "%04d_%s", fileCount, keywords[out_class]);
                 } else {
                     // Low confidence: add "L" at the end of file name
-                    snprintf(fileName, sizeof(fileName), "%04d_%s_L", fileCount, 
+                    snprintf(fileName, sizeof(fileName), "%04d_%s_L", fileCount,
                              keywords[out_class]);
                 }
                 if (writeSoundSnippet((char *)fileName, snippetLength, &snippet[0]) != E_NO_ERROR) {
