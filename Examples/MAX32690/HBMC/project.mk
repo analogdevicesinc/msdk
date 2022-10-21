@@ -8,6 +8,3 @@
 # **********************************************************
 
 # Add your config here!
-
-# Override the default linkerfile
-LINKERFILE=$(TARGET_LC)_hpb.ld
