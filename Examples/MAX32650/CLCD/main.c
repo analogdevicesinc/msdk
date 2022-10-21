@@ -1,12 +1,3 @@
-/**
- * @file
- * @brief      CLCD Example
- * @details    Shows the Maxim Integrated Logo and then shows a gray screen.
- *             When running this example make sure none of the pins used have
- *             jumpers connected to them otherwise the color may be wrong or may
- *             not work properly.
- */
-
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -40,12 +31,20 @@
  *
  ******************************************************************************/
 
+/**
+ * @file
+ * @brief      CLCD Example
+ * @details    Shows the Maxim Integrated Logo and then shows a gray screen.
+ *             When running this example make sure none of the pins used have
+ *             jumpers connected to them otherwise the color may be wrong or may
+ *             not work properly.
+ */
+
 #include <stdio.h>
 #include <stdint.h>
-#include "mxc_errors.h"
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
+#include "mxc_errors.h"
 #include "mxc_pins.h"
 #include "gpio.h"
 #include "clcd.h"
@@ -57,9 +56,10 @@
 #define IRAM_BUFFER_SIZE 0x00012C00
 #define PANEL_WIDTH 320
 #define PANEL_HEIGHT 240
+#define FRAME_BUFFER_SIZE (IRAM_BUFFER_SIZE + ((PANEL_WIDTH * PANEL_HEIGHT * LOGO_BPP) >> 3) + 31)
 
 /* **** Globals **** */
-uint8_t framebuffer[IRAM_BUFFER_SIZE + ((PANEL_WIDTH * PANEL_HEIGHT * LOGO_BPP) >> 3) + 31];
+uint8_t framebuffer[FRAME_BUFFER_SIZE];
 
 /* **** Functions **** */
 

@@ -102,7 +102,7 @@ void ledFailPattern(void)
     }
 }
 
-/* http://home.thep.lu.se/~bjorn/crc/ */
+// http://home.thep.lu.se/~bjorn/crc/
 /*************************************************************************************************/
 /*!
  *  \brief  Create the CRC32 table.
@@ -132,10 +132,15 @@ uint32_t crc32_for_byte(uint32_t r)
 static uint32_t table[0x100] = { 0 };
 void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 {
-    if (!*table)
-        for (size_t i = 0; i < 0x100; ++i) table[i] = crc32_for_byte(i);
-    for (size_t i = 0; i < n_bytes; ++i)
+    if (!*table) {
+        for (size_t i = 0; i < 0x100; ++i) {
+            table[i] = crc32_for_byte(i);
+        }
+    }
+
+    for (size_t i = 0; i < n_bytes; ++i) {
         *crc = table[(uint8_t)*crc ^ ((uint8_t *)data)[i]] ^ *crc >> 8;
+    }
 }
 
 void bootError(void)
@@ -187,23 +192,20 @@ uint32_t findUpperLen(void)
     return (uint32_t)(flashPagePointer - (4 / 4) - (FLASH1_START / 4));
 }
 
-static int multiPageErase(uint8_t *address, uint32_t size)
+static int multiPageErase(uint8_t *address, uint32_t pages)
 {
     int err;
     volatile uint32_t address32 = (uint32_t)address;
     address32 &= 0xFFFFF;
 
-    /* Page align the size */
-    size += MXC_FLASH_PAGE_SIZE - (size % MXC_FLASH_PAGE_SIZE);
-
-    while (size) {
+    while (pages) {
         err = MXC_FLC_PageErase((uint32_t)address);
         if (err != E_NO_ERROR) {
             return err;
         }
 
         address += MXC_FLASH_PAGE_SIZE;
-        size -= MXC_FLASH_PAGE_SIZE;
+        pages--;
     }
 
     return E_NO_ERROR;
@@ -274,20 +276,30 @@ uint32_t externFileOperation(externFileOp_t fileOperation)
 
 int main(void)
 {
-    /* Delay to prevent bricks */
     volatile int i;
-    DELAY(0x3FFFFF);
-
     int err = 0x00000000;
     uint32_t startingAddress = 0x00000000;
     uint32_t crcResult = 0x00000000;
+    int numLedsBlink;
+
+    /* Limit the number of LED blinks */
+    if (num_leds > 2) {
+        numLedsBlink = 2;
+    } else {
+        numLedsBlink = num_leds;
+    }
+
+    /* Prevent bricks */
+    if (numLedsBlink == 0) {
+        DELAY(0x3FFFFF);
+    }
 
     LED_Init();
-    for (int led = 0; led < num_leds; led++) {
+    for (int led = 0; led < numLedsBlink; led++) {
         LED_On(led);
-        DELAY(0x3FFFFF);
+        DELAY(0x1FFFFF);
         LED_Off(led);
-        DELAY(0x3FFFFF);
+        DELAY(0x1FFFFF);
     }
 
     /* disable interrupts to prevent these operations from being interrupted */
@@ -320,6 +332,15 @@ int main(void)
                 err = externFileOperation(COPY_FILE_OP);
                 if (err) {
                     bootError();
+                }
+                /* check what was written to flash */
+                crcResult = 0;
+                crc32(FLASH0_START, fileHeader.fileLen, &crcResult);
+                if (crcResult != fileHeader.fileCRC) {
+                    /* Bad firmware was written to internal flash */
+                    while (1) {
+                        ledFailPattern();
+                    }
                 }
                 /* As long as first sector is erased so the bootloader does not try to reload its contents */
                 Ext_Flash_Erase(0x00000000, Ext_Flash_Erase_64K);

@@ -9,11 +9,6 @@
       <size>0x1000</size>
       <usage>registers</usage>
     </addressBlock>
-    <interupt>
-      <name>HyperBus_Memory_Controller</name>
-      <description>HyperBus Memory Controller interrupt.</description>
-      <value>61</value>
-    </interupt>
     <registers>
       <register>
         <name>STAT</name>

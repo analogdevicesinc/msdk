@@ -30,6 +30,7 @@
  * ownership rights.
  *
  ******************************************************************************/
+
 __attribute__((section(".bin_storage_img"))) __attribute__((__used__)) __attribute__((aligned(2)))
 const unsigned char img_1_rgb565[153604] = { // 320x240x2 + 4(header)
     0x40, 0x01, 0xF0, 0x00, // width = 0x0140, height = 0x00F0

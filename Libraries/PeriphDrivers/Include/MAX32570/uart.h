@@ -639,6 +639,8 @@ void MXC_UART_DMACallback(int ch, int error);
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal);
+int MXC_UART_TxAsyncCallback(mxc_uart_regs_t *uart, int retVal);
+int MXC_UART_RxAsyncCallback(mxc_uart_regs_t *uart, int retVal);
 
 /**
  * @brief   stop any async callbacks
@@ -648,6 +650,8 @@ int MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal);
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_AsyncStop(mxc_uart_regs_t *uart);
+int MXC_UART_TxAsyncStop(mxc_uart_regs_t *uart);
+int MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart);
 
 /**
  * @brief   Abort any asynchronous requests in progress.
@@ -661,6 +665,8 @@ int MXC_UART_AsyncStop(mxc_uart_regs_t *uart);
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_UART_AbortAsync(mxc_uart_regs_t *uart);
+int MXC_UART_TxAbortAsync(mxc_uart_regs_t *uart);
+int MXC_UART_RxAbortAsync(mxc_uart_regs_t *uart);
 
 /**
  * @brief   The processing function for asynchronous transactions.

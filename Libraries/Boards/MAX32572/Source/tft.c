@@ -54,66 +54,66 @@
 //
 #define PALETTE_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_palatte + 1 /* nb_palette */ + \
-               (x) * sizeof(unsigned int),                                              \
+               (x) * sizeof(uint32_t),                                                  \
            4)
 #define FONT_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_font + 1 /* nb_font    */ + \
-               (x) * sizeof(unsigned int),                                           \
+               (x) * sizeof(uint32_t),                                               \
            4)
 #define BITMAP_OFFSET(x)                                                               \
     concat(images_start_addr + images_header.offset2info_bitmap + 1 /* nb_bitmap  */ + \
-               (x) * sizeof(unsigned int),                                             \
+               (x) * sizeof(uint32_t),                                                 \
            4)
 
 /********************************* TYPE DEFINES ******************************/
 #pragma pack(1)
 
 typedef struct {
-    unsigned int w;
-    unsigned int h;
-    unsigned char id_palette;
-    unsigned char rle;
-    unsigned int data_size;
+    uint32_t w;
+    uint32_t h;
+    uint8_t id_palette;
+    uint8_t rle;
+    uint32_t data_size;
 } bitmap_info_t;
 
 typedef struct {
-    unsigned short x;
-    unsigned char w;
+    uint16_t x;
+    uint8_t w;
 } font_char_t;
 
 typedef struct {
-    //unsigned char size;
-    unsigned char nb_char;
-    unsigned char bitmap_id;
+    //uint8_t size;
+    uint8_t nb_char;
+    uint8_t bitmap_id;
     //font_char_t    *char_info; // X nb_char
 } font_info_t;
 
 typedef struct {
-    //unsigned short    type;                        /* Magic identifier               */
-    //unsigned short    reserved1, reserved2;
-    //unsigned short    bits;                        /* Bits per pixel                 */
+    //uint16_t    type;                        /* Magic identifier               */
+    //uint16_t    reserved1, reserved2;
+    //uint16_t    bits;                        /* Bits per pixel                 */
     //
-    unsigned int offset2info_palatte; // Palettes start address
-    unsigned int offset2info_font; // Fonts start address
-    unsigned int offset2info_bitmap; // Bitmap start address
+    uint32_t offset2info_palatte; // Palettes start address
+    uint32_t offset2info_font; // Fonts start address
+    uint32_t offset2info_bitmap; // Bitmap start address
     //
-    unsigned int nb_palette; // number of palette
-    unsigned int nb_font; // number of fonts
-    unsigned int nb_bitmap; // number of bitmap
+    uint32_t nb_palette; // number of palette
+    uint32_t nb_font; // number of fonts
+    uint32_t nb_bitmap; // number of bitmap
 } Header_images_t;
 
 #pragma pack()
 
-extern unsigned int _bin_start_; // binary start address, defined in linker file
-static unsigned char *images_start_addr = NULL;
+extern uint32_t _bin_start_; // binary start address, defined in linker file
+static uint8_t *images_start_addr = NULL;
 static Header_images_t images_header;
 
-static unsigned int g_background_color;
-static unsigned int g_palette_ram[256];
-static unsigned int g_fifo[4];
+static uint32_t g_background_color;
+static uint32_t g_palette_ram[256];
+static uint32_t g_fifo[4];
 
-static unsigned int cursor_x;
-static unsigned int cursor_y;
+static uint32_t cursor_x;
+static uint32_t cursor_y;
 
 static area_t pf_area;
 static int g_font_id = 0;
@@ -124,35 +124,37 @@ static void __attribute__((noinline)) halfClockDelay(void)
     __asm volatile("nop\n");
 }
 
-static int concat(unsigned char *var, int size)
+static int concat(uint8_t *var, int size)
 {
     int result = 0;
 
-    for (int i = 1; i <= size; i++) { result |= var[size - i] << (8 * (size - i)); }
+    for (int i = 1; i <= size; i++) {
+        result |= var[size - i] << (8 * (size - i));
+    }
 
     return result;
 }
 
 static void get_font_info(int font_id, font_info_t *font_info, font_char_t **chr_pos)
 {
-    unsigned int offset;
+    uint32_t offset;
 
     offset = FONT_OFFSET(font_id);
     memcpy(font_info, (images_start_addr + offset), sizeof(font_info_t));
     *chr_pos = (font_char_t *)(images_start_addr + offset + sizeof(font_info_t));
 }
 
-static void get_bitmap_info(int bitmap_id, bitmap_info_t *bitmap_info, unsigned char **pixel)
+static void get_bitmap_info(int bitmap_id, bitmap_info_t *bitmap_info, uint8_t **pixel)
 {
-    unsigned int offset;
+    uint32_t offset;
 
     offset = BITMAP_OFFSET(bitmap_id);
     memcpy(bitmap_info, (images_start_addr + offset), sizeof(bitmap_info_t));
-    *pixel = (unsigned char *)((images_start_addr + offset + sizeof(bitmap_info_t)));
+    *pixel = (uint8_t *)((images_start_addr + offset + sizeof(bitmap_info_t)));
 }
 
 #if 0
-static void spi_transmit(void* datain, unsigned int count)
+static void spi_transmit(void* datain, uint32_t count)
 {
     mxc_spi_req_t request = {
         TFT_SPI,    // spi
@@ -163,16 +165,16 @@ static void spi_transmit(void* datain, unsigned int count)
         count,      // txCnt
         0       // rxCnt
     };
-    
+
     MXC_SPI_MasterTransaction(&request);
 }
 #else
-static void spi_transmit(void *datain, unsigned int count)
+static void spi_transmit(void *datain, uint32_t count)
 {
-    unsigned int offset;
-    unsigned int fifo;
-    volatile unsigned short *u16ptrin = (volatile unsigned short *)datain;
-    unsigned int start = 0;
+    uint32_t offset;
+    uint32_t fifo;
+    volatile uint16_t *u16ptrin = (volatile uint16_t *)datain;
+    uint32_t start = 0;
 
     // HW requires disabling/renabling SPI block at end of each transaction (when SS is inactive).
     TFT_SPI->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
@@ -248,60 +250,64 @@ static void spi_transmit(void *datain, unsigned int count)
 }
 #endif
 
-static void write_command(unsigned short command)
+static void write_command(uint16_t command)
 {
-    unsigned short val = command & 0xFF;
+    uint16_t val = command & 0xFF;
     spi_transmit(&val, 1);
 }
 
-static void write_data(unsigned short data)
+static void write_data(uint16_t data)
 {
-    unsigned short val = ((data >> 8) & 0xFF) | 0x0100;
+    uint16_t val = ((data >> 8) & 0xFF) | 0x0100;
 
     spi_transmit(&val, 1);
     val = (data & 0xFF) | 0x0100;
     spi_transmit(&val, 1);
 }
 
-static void write_color(unsigned int color_palette)
+static void write_color(uint32_t color_palette)
 {
-    unsigned short val = color_palette & 0xFFFF;
+    uint16_t val = color_palette & 0xFFFF;
 
     spi_transmit(&val, 1);
     val = (color_palette >> 16) & 0xFFFF;
     spi_transmit(&val, 1);
 }
 
-static void print_line(const unsigned char *line, int nb_of_pixel)
+static void print_line(const uint8_t *line, int nb_of_pixel)
 {
     int i;
     int x;
     int loop_counter = nb_of_pixel >> 2; // div 4
 
     for (x = 0; x < loop_counter; x++) {
-        for (i = 0; i < 4; i++) { g_fifo[i] = *(g_palette_ram + line[(x << 2) + i]); }
+        for (i = 0; i < 4; i++) {
+            g_fifo[i] = *(g_palette_ram + line[(x << 2) + i]);
+        }
 
-        spi_transmit((unsigned short *)g_fifo, 8);
+        spi_transmit((uint16_t *)g_fifo, 8);
     }
 
     x <<= 2;
 
-    for (; x < nb_of_pixel; x++) { write_color(*(g_palette_ram + line[x])); }
+    for (; x < nb_of_pixel; x++) {
+        write_color(*(g_palette_ram + line[x]));
+    }
 }
 
-static void RLE_decode(unsigned char const *in, unsigned int length, int img_h, int img_w)
+static void RLE_decode(uint8_t const *in, uint32_t length, int img_h, int img_w)
 {
-    unsigned char cmd, data;
-    unsigned int i, inpos;
-    unsigned char line[320] = {
+    uint8_t cmd, data;
+    uint32_t i, inpos;
+    uint8_t line[320] = {
         0,
     };
-    unsigned int line_start_pos[320] = {
+    uint32_t line_start_pos[320] = {
         0,
     };
     int index = 0;
     int is_ended = 0;
-    unsigned int nb_of_pixel = 0;
+    uint32_t nb_of_pixel = 0;
 
     if (length < 1) {
         return;
@@ -363,24 +369,32 @@ static void RLE_decode(unsigned char const *in, unsigned int length, int img_h, 
                 switch (data) {
                 case 0:
                 case 1:
-                    while (nb_of_pixel < (unsigned int)img_w) { line[nb_of_pixel++] = 0; }
+                    while (nb_of_pixel < (uint32_t)img_w) {
+                        line[nb_of_pixel++] = 0;
+                    }
 
                     print_line(line, img_w);
                     is_ended = 1;
                     break;
 
                 case 2: {
-                    unsigned int x, y;
+                    uint32_t x, y;
                     x = in[inpos++];
                     y = in[inpos++];
 
-                    for (i = 0; i < x; i++) { line[nb_of_pixel++] = 0; }
+                    for (i = 0; i < x; i++) {
+                        line[nb_of_pixel++] = 0;
+                    }
 
-                    for (i = 0; i < y; i++) { print_line(line, img_w); }
+                    for (i = 0; i < y; i++) {
+                        print_line(line, img_w);
+                    }
                 } break;
 
                 default:
-                    for (i = 0; i < data; i++) { line[nb_of_pixel++] = in[inpos++]; }
+                    for (i = 0; i < data; i++) {
+                        line[nb_of_pixel++] = in[inpos++];
+                    }
 
                     if (data % 2) {
                         inpos++;
@@ -389,7 +403,9 @@ static void RLE_decode(unsigned char const *in, unsigned int length, int img_h, 
                     break;
                 }
             } else {
-                for (i = 0; i < cmd; i++) { line[nb_of_pixel++] = data; }
+                for (i = 0; i < cmd; i++) {
+                    line[nb_of_pixel++] = data;
+                }
             }
 
             if (is_ended == 1) {
@@ -405,7 +421,7 @@ static void tft_spi_init(void)
     int quadMode = 0;
     int numSlaves = 1;
     int ssPol = 0;
-    unsigned int tft_hz = 12 * 1000 * 1000;
+    uint32_t tft_hz = 12 * 1000 * 1000;
 
     MXC_SPI_Init(TFT_SPI, master, quadMode, numSlaves, ssPol, tft_hz);
 
@@ -430,12 +446,16 @@ static void displayInit(void)
     // CLR Reset pin;
     MXC_GPIO_OutClr(TFT_RESET_GPIO_PORT, TFT_RESET_GPIO_PIN);
 
-    for (i = 0; i < 50000; i++) { halfClockDelay(); }
+    for (i = 0; i < 50000; i++) {
+        halfClockDelay();
+    }
 
     // SET Reset pin;
     MXC_GPIO_OutSet(TFT_RESET_GPIO_PORT, TFT_RESET_GPIO_PIN);
 
-    for (i = 0; i < 150000; i++) { halfClockDelay(); }
+    for (i = 0; i < 150000; i++) {
+        halfClockDelay();
+    }
 
     write_command(0x0000);
     write_command(0x0028); // VCOM OTP
@@ -529,21 +549,23 @@ static void displayInit(void)
     write_command(0x0007); // Display Control
     write_data(0x0033); // Page 45 of SSD2119 datasheet
 
-    for (i = 0; i < 50000; i++) { halfClockDelay(); }
+    for (i = 0; i < 50000; i++) {
+        halfClockDelay();
+    }
 
     write_command(0x0022); // RAM data write/read
 }
 
-static void setPalette(unsigned char id)
+static void setPalette(uint8_t id)
 {
     int i;
-    unsigned char *palette;
+    uint8_t *palette;
 
     if (id >= images_header.nb_palette) {
         return;
     }
 
-    palette = (unsigned char *)(images_start_addr + PALETTE_OFFSET(id));
+    palette = (uint8_t *)(images_start_addr + PALETTE_OFFSET(id));
 
     /* set palette only if it was changed */
     for (i = 0; i < 16; i++) { //only test the first 16
@@ -598,8 +620,8 @@ static void displaySub(int x0, int y0, int width, int height)
     write_command(0x0022); // RAM data write/read
 }
 
-static void writeSubBitmap(int x0, int y0, int img_w, int img_h, const unsigned char *img_data,
-                           int sub_x, int sub_w)
+static void writeSubBitmap(int x0, int y0, int img_w, int img_h, const uint8_t *img_data, int sub_x,
+                           int sub_w)
 {
     __disable_irq();
     int y, x, i;
@@ -621,7 +643,7 @@ static void writeSubBitmap(int x0, int y0, int img_w, int img_h, const unsigned 
                 g_fifo[i] = *(g_palette_ram + img_data[y * img_w_rounded + sub_x + (x << 2) + i]);
             }
 
-            spi_transmit((unsigned short *)g_fifo, 8);
+            spi_transmit((uint16_t *)g_fifo, 8);
         }
 
         x <<= 2;
@@ -661,11 +683,11 @@ static void printCursor(char *str)
     bitmap_info_t bitmap_info;
     font_info_t font_info;
     font_char_t *chr_pos;
-    unsigned char chId;
-    unsigned char *pixel;
+    uint8_t chId;
+    uint8_t *pixel;
     int len;
 
-    if ((unsigned int)g_font_id >= images_header.nb_font) {
+    if ((uint32_t)g_font_id >= images_header.nb_font) {
         return;
     }
 
@@ -699,7 +721,7 @@ int MXC_TFT_Init(void)
 
     // set images start addr
     if (images_start_addr == NULL) {
-        images_start_addr = (unsigned char *)&_bin_start_;
+        images_start_addr = (uint8_t *)&_bin_start_;
     }
 
     // set header
@@ -739,18 +761,20 @@ int MXC_TFT_Init(void)
     return result;
 }
 
-void MXC_TFT_SetBackGroundColor(unsigned int color)
+void MXC_TFT_SetBackGroundColor(uint32_t color)
 {
     __disable_irq();
-    unsigned int x, y, i;
+    uint32_t x, y, i;
 
     displayAll();
 
     for (y = 0; y < DISPLAY_HEIGHT; y++) {
-        for (x = 0; x < (unsigned int)(DISPLAY_WIDTH >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = g_palette_ram[color]; }
+        for (x = 0; x < (uint32_t)(DISPLAY_WIDTH >> 2); x++) {
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = g_palette_ram[color];
+            }
 
-            spi_transmit((unsigned short *)g_fifo, 8);
+            spi_transmit((uint16_t *)g_fifo, 8);
         }
     }
 
@@ -764,9 +788,9 @@ void MXC_TFT_SetBackGroundColor(unsigned int color)
 int MXC_TFT_SetPalette(int img_id)
 {
     bitmap_info_t bitmap_info;
-    unsigned char *pixel;
+    uint8_t *pixel;
 
-    if ((unsigned int)img_id >= images_header.nb_bitmap) {
+    if ((uint32_t)img_id >= images_header.nb_bitmap) {
         return E_BAD_PARAM;
     }
 
@@ -789,7 +813,7 @@ void MXC_TFT_ShowImage(int x0, int y0, int id)
 {
     int y, width, height, img_w_rounded;
     bitmap_info_t bitmap_info;
-    unsigned char *pixel;
+    uint8_t *pixel;
 
     if ((unsigned int)id >= images_header.nb_bitmap) {
         return;
@@ -817,7 +841,9 @@ void MXC_TFT_ShowImage(int x0, int y0, int id)
     } else {
         img_w_rounded = ((8 * bitmap_info.w + 31) / 32) * 4;
 
-        for (y = height - 1; y >= 0; y--) { print_line(&pixel[y * img_w_rounded], width); }
+        for (y = height - 1; y >= 0; y--) {
+            print_line(&pixel[y * img_w_rounded], width);
+        }
     }
 }
 
@@ -846,14 +872,18 @@ void MXC_TFT_FillRect(area_t *area, int color)
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = g_palette_ram[color]; }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = g_palette_ram[color];
+            }
 
-            spi_transmit((unsigned short *)g_fifo, 8);
+            spi_transmit((uint16_t *)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(g_palette_ram[color]); }
+        for (; x < w; x++) {
+            write_color(g_palette_ram[color]);
+        }
     }
 
     __enable_irq();
@@ -893,7 +923,7 @@ void MXC_TFT_Printf(const char *format, ...)
 {
     char str[100];
 
-    sprintf(str, format, *((&format) + 1), *((&format) + 2), *((&format) + 3));
+    snprintf(str, sizeof(str), format, *((&format) + 1), *((&format) + 2), *((&format) + 3));
 
     printCursor(str); //printf_message
 }
@@ -915,10 +945,10 @@ void MXC_TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)
     bitmap_info_t bitmap_info;
     font_info_t font_info;
     font_char_t *chr_pos;
-    unsigned char chId;
-    unsigned char *pixel;
+    uint8_t chId;
+    uint8_t *pixel;
 
-    if ((unsigned int)id >= images_header.nb_font) {
+    if ((uint32_t)id >= images_header.nb_font) {
         return;
     }
 
@@ -970,13 +1000,17 @@ void MXC_TFT_ClearArea(area_t *area, int color)
 
     for (y = 0; y < h; y++) {
         for (x = 0; x < (w >> 2); x++) {
-            for (i = 0; i < 4; i++) { g_fifo[i] = *(g_palette_ram + color); }
+            for (i = 0; i < 4; i++) {
+                g_fifo[i] = *(g_palette_ram + color);
+            }
 
-            spi_transmit((unsigned short *)g_fifo, 8);
+            spi_transmit((uint16_t *)g_fifo, 8);
         }
 
         x <<= 2;
 
-        for (; x < w; x++) { write_color(*(g_palette_ram + color)); }
+        for (; x < w; x++) {
+            write_color(*(g_palette_ram + color));
+        }
     }
 }

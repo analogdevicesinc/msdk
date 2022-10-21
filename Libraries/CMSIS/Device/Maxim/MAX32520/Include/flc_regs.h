@@ -1,44 +1,44 @@
 /**
  * @file    flc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the FLC Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- *
- *************************************************************************** */
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
-#ifndef _FLC_REGS_H_
-#define _FLC_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_FLC_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_FLC_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     flc
  * @defgroup    flc_registers FLC_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the FLC Peripheral Module.
- * @details Flash Memory Control.
+ * @details     Flash Memory Control.
  */
 
 /**
@@ -90,7 +90,7 @@ typedef struct {
     __IO uint32_t flsh_clkdiv;          /**< <tt>\b 0x04:</tt> FLC FLSH_CLKDIV Register */
     __IO uint32_t flsh_cn;              /**< <tt>\b 0x08:</tt> FLC FLSH_CN Register */
     __R  uint32_t rsv_0xc_0x23[6];
-    __IO uint32_t flsh_int;             /**< <tt>\b 0x024:</tt> FLC FLSH_INT Register */
+    __IO uint32_t flsh_int;             /**< <tt>\b 0x24:</tt> FLC FLSH_INT Register */
     __R  uint32_t rsv_0x28_0x2f[2];
     __IO uint32_t flsh_data[4];         /**< <tt>\b 0x30:</tt> FLC FLSH_DATA Register */
     __O  uint32_t acntl;                /**< <tt>\b 0x40:</tt> FLC ACNTL Register */
@@ -100,15 +100,15 @@ typedef struct {
 /**
  * @ingroup    flc_registers
  * @defgroup   FLC_Register_Offsets Register Offsets
- * @brief      FLC Peripheral Register Offsets from the FLC Base Peripheral Address. 
+ * @brief      FLC Peripheral Register Offsets from the FLC Base Peripheral Address.
  * @{
  */
- #define MXC_R_FLC_FLSH_ADDR                ((uint32_t)0x00000000UL) /**< Offset from FLC Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_FLC_FLSH_CLKDIV              ((uint32_t)0x00000004UL) /**< Offset from FLC Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_FLC_FLSH_CN                  ((uint32_t)0x00000008UL) /**< Offset from FLC Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_FLC_FLSH_INT                 ((uint32_t)0x00000024UL) /**< Offset from FLC Base Address: <tt> 0x0024</tt> */ 
- #define MXC_R_FLC_FLSH_DATA                ((uint32_t)0x00000030UL) /**< Offset from FLC Base Address: <tt> 0x0030</tt> */ 
- #define MXC_R_FLC_ACNTL                    ((uint32_t)0x00000040UL) /**< Offset from FLC Base Address: <tt> 0x0040</tt> */ 
+#define MXC_R_FLC_FLSH_ADDR                ((uint32_t)0x00000000UL) /**< Offset from FLC Base Address: <tt> 0x0000</tt> */
+#define MXC_R_FLC_FLSH_CLKDIV              ((uint32_t)0x00000004UL) /**< Offset from FLC Base Address: <tt> 0x0004</tt> */
+#define MXC_R_FLC_FLSH_CN                  ((uint32_t)0x00000008UL) /**< Offset from FLC Base Address: <tt> 0x0008</tt> */
+#define MXC_R_FLC_FLSH_INT                 ((uint32_t)0x00000024UL) /**< Offset from FLC Base Address: <tt> 0x0024</tt> */
+#define MXC_R_FLC_FLSH_DATA                ((uint32_t)0x00000030UL) /**< Offset from FLC Base Address: <tt> 0x0030</tt> */
+#define MXC_R_FLC_ACNTL                    ((uint32_t)0x00000040UL) /**< Offset from FLC Base Address: <tt> 0x0040</tt> */
 /**@} end of group flc_registers */
 
 /**
@@ -117,8 +117,8 @@ typedef struct {
  * @brief    Flash Write Address.
  * @{
  */
- #define MXC_F_FLC_FLSH_ADDR_ADDR_POS                   0 /**< FLSH_ADDR_ADDR Position */
- #define MXC_F_FLC_FLSH_ADDR_ADDR                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_FLSH_ADDR_ADDR_POS)) /**< FLSH_ADDR_ADDR Mask */
+#define MXC_F_FLC_FLSH_ADDR_ADDR_POS                   0 /**< FLSH_ADDR_ADDR Position */
+#define MXC_F_FLC_FLSH_ADDR_ADDR                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_FLSH_ADDR_ADDR_POS)) /**< FLSH_ADDR_ADDR Mask */
 
 /**@} end of group FLC_FLSH_ADDR_Register */
 
@@ -129,8 +129,8 @@ typedef struct {
  *           MHz clock for Flash controller.
  * @{
  */
- #define MXC_F_FLC_FLSH_CLKDIV_CLKDIV_POS               0 /**< FLSH_CLKDIV_CLKDIV Position */
- #define MXC_F_FLC_FLSH_CLKDIV_CLKDIV                   ((uint32_t)(0xFFUL << MXC_F_FLC_FLSH_CLKDIV_CLKDIV_POS)) /**< FLSH_CLKDIV_CLKDIV Mask */
+#define MXC_F_FLC_FLSH_CLKDIV_CLKDIV_POS               0 /**< FLSH_CLKDIV_CLKDIV Position */
+#define MXC_F_FLC_FLSH_CLKDIV_CLKDIV                   ((uint32_t)(0xFFUL << MXC_F_FLC_FLSH_CLKDIV_CLKDIV_POS)) /**< FLSH_CLKDIV_CLKDIV Mask */
 
 /**@} end of group FLC_FLSH_CLKDIV_Register */
 
@@ -140,33 +140,33 @@ typedef struct {
  * @brief    Flash Control Register.
  * @{
  */
- #define MXC_F_FLC_FLSH_CN_WR_POS                       0 /**< FLSH_CN_WR Position */
- #define MXC_F_FLC_FLSH_CN_WR                           ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_CN_WR_POS)) /**< FLSH_CN_WR Mask */
+#define MXC_F_FLC_FLSH_CN_WR_POS                       0 /**< FLSH_CN_WR Position */
+#define MXC_F_FLC_FLSH_CN_WR                           ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_CN_WR_POS)) /**< FLSH_CN_WR Mask */
 
- #define MXC_F_FLC_FLSH_CN_ME_POS                       1 /**< FLSH_CN_ME Position */
- #define MXC_F_FLC_FLSH_CN_ME                           ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_CN_ME_POS)) /**< FLSH_CN_ME Mask */
+#define MXC_F_FLC_FLSH_CN_ME_POS                       1 /**< FLSH_CN_ME Position */
+#define MXC_F_FLC_FLSH_CN_ME                           ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_CN_ME_POS)) /**< FLSH_CN_ME Mask */
 
- #define MXC_F_FLC_FLSH_CN_PGE_POS                      2 /**< FLSH_CN_PGE Position */
- #define MXC_F_FLC_FLSH_CN_PGE                          ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_CN_PGE_POS)) /**< FLSH_CN_PGE Mask */
+#define MXC_F_FLC_FLSH_CN_PGE_POS                      2 /**< FLSH_CN_PGE Position */
+#define MXC_F_FLC_FLSH_CN_PGE                          ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_CN_PGE_POS)) /**< FLSH_CN_PGE Mask */
 
- #define MXC_F_FLC_FLSH_CN_ERASE_CODE_POS               8 /**< FLSH_CN_ERASE_CODE Position */
- #define MXC_F_FLC_FLSH_CN_ERASE_CODE                   ((uint32_t)(0xFFUL << MXC_F_FLC_FLSH_CN_ERASE_CODE_POS)) /**< FLSH_CN_ERASE_CODE Mask */
- #define MXC_V_FLC_FLSH_CN_ERASE_CODE_NOP               ((uint32_t)0x0UL) /**< FLSH_CN_ERASE_CODE_NOP Value */
- #define MXC_S_FLC_FLSH_CN_ERASE_CODE_NOP               (MXC_V_FLC_FLSH_CN_ERASE_CODE_NOP << MXC_F_FLC_FLSH_CN_ERASE_CODE_POS) /**< FLSH_CN_ERASE_CODE_NOP Setting */
- #define MXC_V_FLC_FLSH_CN_ERASE_CODE_ERASEPAGE         ((uint32_t)0x55UL) /**< FLSH_CN_ERASE_CODE_ERASEPAGE Value */
- #define MXC_S_FLC_FLSH_CN_ERASE_CODE_ERASEPAGE         (MXC_V_FLC_FLSH_CN_ERASE_CODE_ERASEPAGE << MXC_F_FLC_FLSH_CN_ERASE_CODE_POS) /**< FLSH_CN_ERASE_CODE_ERASEPAGE Setting */
- #define MXC_V_FLC_FLSH_CN_ERASE_CODE_ERASEALL          ((uint32_t)0xAAUL) /**< FLSH_CN_ERASE_CODE_ERASEALL Value */
- #define MXC_S_FLC_FLSH_CN_ERASE_CODE_ERASEALL          (MXC_V_FLC_FLSH_CN_ERASE_CODE_ERASEALL << MXC_F_FLC_FLSH_CN_ERASE_CODE_POS) /**< FLSH_CN_ERASE_CODE_ERASEALL Setting */
+#define MXC_F_FLC_FLSH_CN_ERASE_CODE_POS               8 /**< FLSH_CN_ERASE_CODE Position */
+#define MXC_F_FLC_FLSH_CN_ERASE_CODE                   ((uint32_t)(0xFFUL << MXC_F_FLC_FLSH_CN_ERASE_CODE_POS)) /**< FLSH_CN_ERASE_CODE Mask */
+#define MXC_V_FLC_FLSH_CN_ERASE_CODE_NOP               ((uint32_t)0x0UL) /**< FLSH_CN_ERASE_CODE_NOP Value */
+#define MXC_S_FLC_FLSH_CN_ERASE_CODE_NOP               (MXC_V_FLC_FLSH_CN_ERASE_CODE_NOP << MXC_F_FLC_FLSH_CN_ERASE_CODE_POS) /**< FLSH_CN_ERASE_CODE_NOP Setting */
+#define MXC_V_FLC_FLSH_CN_ERASE_CODE_ERASEPAGE         ((uint32_t)0x55UL) /**< FLSH_CN_ERASE_CODE_ERASEPAGE Value */
+#define MXC_S_FLC_FLSH_CN_ERASE_CODE_ERASEPAGE         (MXC_V_FLC_FLSH_CN_ERASE_CODE_ERASEPAGE << MXC_F_FLC_FLSH_CN_ERASE_CODE_POS) /**< FLSH_CN_ERASE_CODE_ERASEPAGE Setting */
+#define MXC_V_FLC_FLSH_CN_ERASE_CODE_ERASEALL          ((uint32_t)0xAAUL) /**< FLSH_CN_ERASE_CODE_ERASEALL Value */
+#define MXC_S_FLC_FLSH_CN_ERASE_CODE_ERASEALL          (MXC_V_FLC_FLSH_CN_ERASE_CODE_ERASEALL << MXC_F_FLC_FLSH_CN_ERASE_CODE_POS) /**< FLSH_CN_ERASE_CODE_ERASEALL Setting */
 
- #define MXC_F_FLC_FLSH_CN_PEND_POS                     24 /**< FLSH_CN_PEND Position */
- #define MXC_F_FLC_FLSH_CN_PEND                         ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_CN_PEND_POS)) /**< FLSH_CN_PEND Mask */
+#define MXC_F_FLC_FLSH_CN_PEND_POS                     24 /**< FLSH_CN_PEND Position */
+#define MXC_F_FLC_FLSH_CN_PEND                         ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_CN_PEND_POS)) /**< FLSH_CN_PEND Mask */
 
- #define MXC_F_FLC_FLSH_CN_UNLOCK_POS                   28 /**< FLSH_CN_UNLOCK Position */
- #define MXC_F_FLC_FLSH_CN_UNLOCK                       ((uint32_t)(0xFUL << MXC_F_FLC_FLSH_CN_UNLOCK_POS)) /**< FLSH_CN_UNLOCK Mask */
- #define MXC_V_FLC_FLSH_CN_UNLOCK_UNLOCKED              ((uint32_t)0x2UL) /**< FLSH_CN_UNLOCK_UNLOCKED Value */
- #define MXC_S_FLC_FLSH_CN_UNLOCK_UNLOCKED              (MXC_V_FLC_FLSH_CN_UNLOCK_UNLOCKED << MXC_F_FLC_FLSH_CN_UNLOCK_POS) /**< FLSH_CN_UNLOCK_UNLOCKED Setting */
- #define MXC_V_FLC_FLSH_CN_UNLOCK_LOCKED                ((uint32_t)0x3UL) /**< FLSH_CN_UNLOCK_LOCKED Value */
- #define MXC_S_FLC_FLSH_CN_UNLOCK_LOCKED                (MXC_V_FLC_FLSH_CN_UNLOCK_LOCKED << MXC_F_FLC_FLSH_CN_UNLOCK_POS) /**< FLSH_CN_UNLOCK_LOCKED Setting */
+#define MXC_F_FLC_FLSH_CN_UNLOCK_POS                   28 /**< FLSH_CN_UNLOCK Position */
+#define MXC_F_FLC_FLSH_CN_UNLOCK                       ((uint32_t)(0xFUL << MXC_F_FLC_FLSH_CN_UNLOCK_POS)) /**< FLSH_CN_UNLOCK Mask */
+#define MXC_V_FLC_FLSH_CN_UNLOCK_UNLOCKED              ((uint32_t)0x2UL) /**< FLSH_CN_UNLOCK_UNLOCKED Value */
+#define MXC_S_FLC_FLSH_CN_UNLOCK_UNLOCKED              (MXC_V_FLC_FLSH_CN_UNLOCK_UNLOCKED << MXC_F_FLC_FLSH_CN_UNLOCK_POS) /**< FLSH_CN_UNLOCK_UNLOCKED Setting */
+#define MXC_V_FLC_FLSH_CN_UNLOCK_LOCKED                ((uint32_t)0x3UL) /**< FLSH_CN_UNLOCK_LOCKED Value */
+#define MXC_S_FLC_FLSH_CN_UNLOCK_LOCKED                (MXC_V_FLC_FLSH_CN_UNLOCK_LOCKED << MXC_F_FLC_FLSH_CN_UNLOCK_POS) /**< FLSH_CN_UNLOCK_LOCKED Setting */
 
 /**@} end of group FLC_FLSH_CN_Register */
 
@@ -176,17 +176,17 @@ typedef struct {
  * @brief    Flash Interrupt Register.
  * @{
  */
- #define MXC_F_FLC_FLSH_INT_DONE_POS                    0 /**< FLSH_INT_DONE Position */
- #define MXC_F_FLC_FLSH_INT_DONE                        ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_INT_DONE_POS)) /**< FLSH_INT_DONE Mask */
+#define MXC_F_FLC_FLSH_INT_DONE_POS                    0 /**< FLSH_INT_DONE Position */
+#define MXC_F_FLC_FLSH_INT_DONE                        ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_INT_DONE_POS)) /**< FLSH_INT_DONE Mask */
 
- #define MXC_F_FLC_FLSH_INT_AF_POS                      1 /**< FLSH_INT_AF Position */
- #define MXC_F_FLC_FLSH_INT_AF                          ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_INT_AF_POS)) /**< FLSH_INT_AF Mask */
+#define MXC_F_FLC_FLSH_INT_AF_POS                      1 /**< FLSH_INT_AF Position */
+#define MXC_F_FLC_FLSH_INT_AF                          ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_INT_AF_POS)) /**< FLSH_INT_AF Mask */
 
- #define MXC_F_FLC_FLSH_INT_DONEIE_POS                  8 /**< FLSH_INT_DONEIE Position */
- #define MXC_F_FLC_FLSH_INT_DONEIE                      ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_INT_DONEIE_POS)) /**< FLSH_INT_DONEIE Mask */
+#define MXC_F_FLC_FLSH_INT_DONEIE_POS                  8 /**< FLSH_INT_DONEIE Position */
+#define MXC_F_FLC_FLSH_INT_DONEIE                      ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_INT_DONEIE_POS)) /**< FLSH_INT_DONEIE Mask */
 
- #define MXC_F_FLC_FLSH_INT_AFIE_POS                    9 /**< FLSH_INT_AFIE Position */
- #define MXC_F_FLC_FLSH_INT_AFIE                        ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_INT_AFIE_POS)) /**< FLSH_INT_AFIE Mask */
+#define MXC_F_FLC_FLSH_INT_AFIE_POS                    9 /**< FLSH_INT_AFIE Position */
+#define MXC_F_FLC_FLSH_INT_AFIE                        ((uint32_t)(0x1UL << MXC_F_FLC_FLSH_INT_AFIE_POS)) /**< FLSH_INT_AFIE Mask */
 
 /**@} end of group FLC_FLSH_INT_Register */
 
@@ -196,8 +196,8 @@ typedef struct {
  * @brief    Flash Write Data.
  * @{
  */
- #define MXC_F_FLC_FLSH_DATA_DATA_POS                   0 /**< FLSH_DATA_DATA Position */
- #define MXC_F_FLC_FLSH_DATA_DATA                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_FLSH_DATA_DATA_POS)) /**< FLSH_DATA_DATA Mask */
+#define MXC_F_FLC_FLSH_DATA_DATA_POS                   0 /**< FLSH_DATA_DATA Position */
+#define MXC_F_FLC_FLSH_DATA_DATA                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_FLSH_DATA_DATA_POS)) /**< FLSH_DATA_DATA Mask */
 
 /**@} end of group FLC_FLSH_DATA_Register */
 
@@ -212,8 +212,8 @@ typedef struct {
  *           this register is always zero.
  * @{
  */
- #define MXC_F_FLC_ACNTL_ADATA_POS                      0 /**< ACNTL_ADATA Position */
- #define MXC_F_FLC_ACNTL_ADATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_ACNTL_ADATA_POS)) /**< ACNTL_ADATA Mask */
+#define MXC_F_FLC_ACNTL_ADATA_POS                      0 /**< ACNTL_ADATA Position */
+#define MXC_F_FLC_ACNTL_ADATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_FLC_ACNTL_ADATA_POS)) /**< ACNTL_ADATA Mask */
 
 /**@} end of group FLC_ACNTL_Register */
 
@@ -221,4 +221,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _FLC_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_FLC_REGS_H_

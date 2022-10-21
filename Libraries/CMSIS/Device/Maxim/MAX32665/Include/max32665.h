@@ -34,8 +34,8 @@
  *
  ******************************************************************************/
 
-#ifndef _MAX32665_REGS_H_
-#define _MAX32665_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_MAX32665_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_MAX32665_H_
 
 #ifndef TARGET_NUM
 #define TARGET_NUM 32665
@@ -340,34 +340,39 @@ typedef enum {
 
 #define MXC_TMR_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn : \
-                           (i) == 1 ?  \
-                           TMR1_IRQn : \
-                           (i) == 2 ?  \
-                           TMR2_IRQn : \
-                           (i) == 3 ? TMR3_IRQn : (i) == 4 ? TMR4_IRQn : (i) == 5 ? TMR5_IRQn : 0)
+                (i) == 1 ? TMR1_IRQn : \
+                (i) == 2 ? TMR2_IRQn : \
+                (i) == 3 ? TMR3_IRQn : \
+                (i) == 4 ? TMR4_IRQn : \
+                (i) == 5 ? TMR5_IRQn : \
+                           0)
 
-#define MXC_TMR_GET_BASE(i)                               \
-    ((i) == 0 ?                                           \
-         MXC_BASE_TMR0 :                                  \
-         (i) == 1 ? MXC_BASE_TMR1 :                       \
-                    (i) == 2 ? MXC_BASE_TMR2 :            \
-                               (i) == 3 ? MXC_BASE_TMR3 : \
-                                          (i) == 4 ? MXC_BASE_TMR4 : (i) == 5 ? MXC_BASE_TMR5 : 0)
+#define MXC_TMR_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_TMR0 : \
+     (i) == 1 ? MXC_BASE_TMR1 : \
+     (i) == 2 ? MXC_BASE_TMR2 : \
+     (i) == 3 ? MXC_BASE_TMR3 : \
+     (i) == 4 ? MXC_BASE_TMR4 : \
+     (i) == 5 ? MXC_BASE_TMR5 : \
+                0)
 
-#define MXC_TMR_GET_TMR(i)            \
-    ((i) == 0 ? MXC_TMR0 :            \
-                (i) == 1 ?            \
-                MXC_TMR1 :            \
-                (i) == 2 ? MXC_TMR2 : \
-                           (i) == 3 ? MXC_TMR3 : (i) == 4 ? MXC_TMR4 : (i) == 5 ? MXC_TMR5 : 0)
+#define MXC_TMR_GET_TMR(i) \
+    ((i) == 0 ? MXC_TMR0 : \
+     (i) == 1 ? MXC_TMR1 : \
+     (i) == 2 ? MXC_TMR2 : \
+     (i) == 3 ? MXC_TMR3 : \
+     (i) == 4 ? MXC_TMR4 : \
+     (i) == 5 ? MXC_TMR5 : \
+                0)
 
-#define MXC_TMR_GET_IDX(p)     \
-    ((p) == MXC_TMR0 ?         \
-         0 :                   \
-         (p) == MXC_TMR1 ?     \
-         1 :                   \
-         (p) == MXC_TMR2 ? 2 : \
-                           (p) == MXC_TMR3 ? 3 : (p) == MXC_TMR4 ? 4 : (p) == MXC_TMR5 ? 5 : -1)
+#define MXC_TMR_GET_IDX(p) \
+    ((p) == MXC_TMR0 ? 0 : \
+     (p) == MXC_TMR1 ? 1 : \
+     (p) == MXC_TMR2 ? 2 : \
+     (p) == MXC_TMR3 ? 3 : \
+     (p) == MXC_TMR4 ? 4 : \
+     (p) == MXC_TMR5 ? 5 : \
+                       -1)
 
 /******************************************************************************/
 /*                                                           High Speed Timer */
@@ -394,44 +399,41 @@ typedef enum {
 #define MXC_BASE_I2C2_BUS1 ((uint32_t)0x4011F000UL)
 #define MXC_I2C2_BUS1 ((mxc_i2c_regs_t *)MXC_BASE_I2C2_BUS1)
 
-#define MXC_I2C_GET_IRQ(i)                      \
-    (IRQn_Type)((i) == 0x0 ?                    \
-                    I2C0_IRQn :                 \
-                    (i) == 0x1 ?                \
-                    I2C1_IRQn :                 \
-                    (i) == 0x2 ?                \
-                    I2C2_IRQn :                 \
-                    (i) == 0x8000 ? I2C0_IRQn : \
-                                    (i) == 0x8001 ? I2C1_IRQn : (i) == 0x8002 ? I2C2_IRQn : 0)
+#define MXC_I2C_GET_IRQ(i)                  \
+    (IRQn_Type)((i) == 0x0    ? I2C0_IRQn : \
+                (i) == 0x1    ? I2C1_IRQn : \
+                (i) == 0x2    ? I2C2_IRQn : \
+                (i) == 0x8000 ? I2C0_IRQn : \
+                (i) == 0x8001 ? I2C1_IRQn : \
+                (i) == 0x8002 ? I2C2_IRQn : \
+                                0)
 
-#define MXC_I2C_GET_BASE(i)                \
-    ((i) == 0x0 ?                          \
-         MXC_BASE_I2C0_BUS0 :              \
-         (i) == 0x1 ?                      \
-         MXC_BASE_I2C1_BUS0 :              \
-         (i) == 0x2 ? MXC_BASE_I2C2_BUS0 : \
-                      (i) == 0x8000 ?      \
-                      MXC_BASE_I2C0_BUS1 : \
-                      (i) == 0x8001 ? MXC_BASE_I2C1_BUS1 : (i) == 0x8002 ? MXC_BASE_I2C2_BUS1 : 0)
+#define MXC_I2C_GET_BASE(i)               \
+    ((i) == 0x0    ? MXC_BASE_I2C0_BUS0 : \
+     (i) == 0x1    ? MXC_BASE_I2C1_BUS0 : \
+     (i) == 0x2    ? MXC_BASE_I2C2_BUS0 : \
+     (i) == 0x8000 ? MXC_BASE_I2C0_BUS1 : \
+     (i) == 0x8001 ? MXC_BASE_I2C1_BUS1 : \
+     (i) == 0x8002 ? MXC_BASE_I2C2_BUS1 : \
+                     0)
 
-#define MXC_I2C_GET_IDX(p)                         \
-    ((p) == MXC_I2C0_BUS0 ? 0x0 :                  \
-                            (p) == MXC_I2C1_BUS0 ? \
-                            0x1 :                  \
-                            (p) == MXC_I2C2_BUS0 ? \
-                            0x2 :                  \
-                            (p) == MXC_I2C0_BUS1 ? \
-                            0x8000 :               \
-                            (p) == MXC_I2C1_BUS1 ? 0x8001 : (p) == MXC_I2C2_BUS1 ? 0x8002 : -1)
+#define MXC_I2C_GET_IDX(p)           \
+    ((p) == MXC_I2C0_BUS0 ? 0x0 :    \
+     (p) == MXC_I2C1_BUS0 ? 0x1 :    \
+     (p) == MXC_I2C2_BUS0 ? 0x2 :    \
+     (p) == MXC_I2C0_BUS1 ? 0x8000 : \
+     (p) == MXC_I2C1_BUS1 ? 0x8001 : \
+     (p) == MXC_I2C2_BUS1 ? 0x8002 : \
+                            -1)
 
-#define MXC_I2C_GET_I2C(p)                     \
-    ((p) == 0x0 ? MXC_I2C0_BUS0 :              \
-                  (p) == 0x1 ?                 \
-                  MXC_I2C1_BUS0 :              \
-                  (p) == 0x2 ? MXC_I2C2_BUS0 : \
-                               (p) == 0x8000 ? \
-                               MXC_I2C0_BUS1 : \
-                               (p) == 0x8001 ? MXC_I2C1_BUS1 : (p) == 0x8002 ? MXC_I2C2_BUS1 : 0)
+#define MXC_I2C_GET_I2C(p)           \
+    ((p) == 0x0    ? MXC_I2C0_BUS0 : \
+     (p) == 0x1    ? MXC_I2C1_BUS0 : \
+     (p) == 0x2    ? MXC_I2C2_BUS0 : \
+     (p) == 0x8000 ? MXC_I2C0_BUS1 : \
+     (p) == 0x8001 ? MXC_I2C1_BUS1 : \
+     (p) == 0x8002 ? MXC_I2C2_BUS1 : \
+                     0)
 #define MXC_I2C_FIFO_DEPTH (8)
 
 /******************************************************************************/
@@ -479,9 +481,6 @@ typedef enum {
 #define MXC_BASE_FLC1 ((uint32_t)0x40029400UL)
 #define MXC_FLC1 ((mxc_flc_regs_t *)MXC_BASE_FLC1)
 
-// TODO: remove this when creating drivers to accept two instance of these.
-// #define MXC_FLC     MXC_FLC0
-
 #define MXC_FLC_GET_IRQ(i) (IRQn_Type)((i) == 0 ? FLC0_IRQn : (i) == 1 ? FLC1_IRQn : 0)
 
 #define MXC_FLC_GET_BASE(i) ((i) == 0 ? MXC_BASE_FLC0 : (i) == 1 ? MXC_BASE_FLC1 : 0)
@@ -498,7 +497,6 @@ typedef enum {
 #define MXC_BASE_ICC1 ((uint32_t)0x4002A800UL)
 #define MXC_ICC1 ((mxc_icc_regs_t *)MXC_BASE_ICC1)
 
-// TODO: remove this when creating drivers to accept two instance of these.
 #define MXC_ICC MXC_ICC0
 
 #define MXC_ICC_GET_BASE(i) ((i) == 0 ? MXC_BASE_ICC0 : (i) == 1 ? MXC_BASE_ICC1 : 0)
@@ -615,189 +613,110 @@ typedef enum {
 #define MXC_BASE_PT15_BUS1 ((uint32_t)0x4013C200UL)
 #define MXC_PT15_BUS1 ((mxc_pt_regs_t *)MXC_BASE_PT15_BUS1)
 
-#define MXC_PT_GET_BASE(i)                                                    \
-    ((i) == 0x0 ? MXC_BASE_PT0_BUS0 :                                         \
-                  (i) == 0x1 ?                                                \
-                  MXC_BASE_PT1_BUS0 :                                         \
-                  (i) == 0x2 ?                                                \
-                  MXC_BASE_PT2_BUS0 :                                         \
-                  (i) == 0x3 ?                                                \
-                  MXC_BASE_PT3_BUS0 :                                         \
-                  (i) == 0x4 ?                                                \
-                  MXC_BASE_PT4_BUS0 :                                         \
-                  (i) == 0x5 ?                                                \
-                  MXC_BASE_PT5_BUS0 :                                         \
-                  (i) == 0x6 ?                                                \
-                  MXC_BASE_PT6_BUS0 :                                         \
-                  (i) == 0x7 ?                                                \
-                  MXC_BASE_PT7_BUS0 :                                         \
-                  (i) == 0x8 ?                                                \
-                  MXC_BASE_PT8_BUS0 :                                         \
-                  (i) == 0x9 ?                                                \
-                  MXC_BASE_PT9_BUS0 :                                         \
-                  (i) == 0xA ?                                                \
-                  MXC_BASE_PT10_BUS0 :                                        \
-                  (i) == 0xB ?                                                \
-                  MXC_BASE_PT11_BUS0 :                                        \
-                  (i) == 0xC ?                                                \
-                  MXC_BASE_PT12_BUS0 :                                        \
-                  (i) == 0xD ? MXC_BASE_PT13_BUS0 :                           \
-                               (i) == 0xE ? MXC_BASE_PT14_BUS0 :              \
-                                            (i) == 0xF ? MXC_BASE_PT15_BUS0 : \
-                                                         (i) == 0x8000 ?      \
-                                                         MXC_BASE_PT0_BUS1 :  \
-                                                         (i) == 0x8001 ?      \
-                                                         MXC_BASE_PT1_BUS1 :  \
-                                                         (i) == 0x8002 ?      \
-                                                         MXC_BASE_PT2_BUS1 :  \
-                                                         (i) == 0x8003 ?      \
-                                                         MXC_BASE_PT3_BUS1 :  \
-                                                         (i) == 0x8004 ?      \
-                                                         MXC_BASE_PT4_BUS1 :  \
-                                                         (i) == 0x8005 ?      \
-                                                         MXC_BASE_PT5_BUS1 :  \
-                                                         (i) == 0x8006 ?      \
-                                                         MXC_BASE_PT6_BUS1 :  \
-                                                         (i) == 0x8007 ?      \
-                                                         MXC_BASE_PT7_BUS1 :  \
-                                                         (i) == 0x8008 ?      \
-                                                         MXC_BASE_PT8_BUS1 :  \
-                                                         (i) == 0x8009 ?      \
-                                                         MXC_BASE_PT9_BUS1 :  \
-                                                         (i) == 0x800A ?      \
-                                                         MXC_BASE_PT10_BUS1 : \
-                                                         (i) == 0x800B ?      \
-                                                         MXC_BASE_PT11_BUS1 : \
-                                                         (i) == 0x800C ?      \
-                                                         MXC_BASE_PT12_BUS1 : \
-                                                         (i) == 0x800D ?      \
-                                                         MXC_BASE_PT13_BUS1 : \
-                                                         (i) == 0x800E ?      \
-                                                         MXC_BASE_PT14_BUS1 : \
-                                                         (i) == 0x800F ? MXC_BASE_PT15_BUS1 : 0)
+#define MXC_PT_GET_BASE(i)                \
+    ((i) == 0x0    ? MXC_BASE_PT0_BUS0 :  \
+     (i) == 0x1    ? MXC_BASE_PT1_BUS0 :  \
+     (i) == 0x2    ? MXC_BASE_PT2_BUS0 :  \
+     (i) == 0x3    ? MXC_BASE_PT3_BUS0 :  \
+     (i) == 0x4    ? MXC_BASE_PT4_BUS0 :  \
+     (i) == 0x5    ? MXC_BASE_PT5_BUS0 :  \
+     (i) == 0x6    ? MXC_BASE_PT6_BUS0 :  \
+     (i) == 0x7    ? MXC_BASE_PT7_BUS0 :  \
+     (i) == 0x8    ? MXC_BASE_PT8_BUS0 :  \
+     (i) == 0x9    ? MXC_BASE_PT9_BUS0 :  \
+     (i) == 0xA    ? MXC_BASE_PT10_BUS0 : \
+     (i) == 0xB    ? MXC_BASE_PT11_BUS0 : \
+     (i) == 0xC    ? MXC_BASE_PT12_BUS0 : \
+     (i) == 0xD    ? MXC_BASE_PT13_BUS0 : \
+     (i) == 0xE    ? MXC_BASE_PT14_BUS0 : \
+     (i) == 0xF    ? MXC_BASE_PT15_BUS0 : \
+     (i) == 0x8000 ? MXC_BASE_PT0_BUS1 :  \
+     (i) == 0x8001 ? MXC_BASE_PT1_BUS1 :  \
+     (i) == 0x8002 ? MXC_BASE_PT2_BUS1 :  \
+     (i) == 0x8003 ? MXC_BASE_PT3_BUS1 :  \
+     (i) == 0x8004 ? MXC_BASE_PT4_BUS1 :  \
+     (i) == 0x8005 ? MXC_BASE_PT5_BUS1 :  \
+     (i) == 0x8006 ? MXC_BASE_PT6_BUS1 :  \
+     (i) == 0x8007 ? MXC_BASE_PT7_BUS1 :  \
+     (i) == 0x8008 ? MXC_BASE_PT8_BUS1 :  \
+     (i) == 0x8009 ? MXC_BASE_PT9_BUS1 :  \
+     (i) == 0x800A ? MXC_BASE_PT10_BUS1 : \
+     (i) == 0x800B ? MXC_BASE_PT11_BUS1 : \
+     (i) == 0x800C ? MXC_BASE_PT12_BUS1 : \
+     (i) == 0x800D ? MXC_BASE_PT13_BUS1 : \
+     (i) == 0x800E ? MXC_BASE_PT14_BUS1 : \
+     (i) == 0x800F ? MXC_BASE_PT15_BUS1 : \
+                     0)
 
-#define MXC_PT_GET_PT(i)                       \
-    ((i) == 0x0 ? MXC_PT0_BUS0 :               \
-                  (i) == 0x1 ?                 \
-                  MXC_PT1_BUS0 :               \
-                  (i) == 0x2 ?                 \
-                  MXC_PT2_BUS0 :               \
-                  (i) == 0x3 ?                 \
-                  MXC_PT3_BUS0 :               \
-                  (i) == 0x4 ?                 \
-                  MXC_PT4_BUS0 :               \
-                  (i) == 0x5 ?                 \
-                  MXC_PT5_BUS0 :               \
-                  (i) == 0x6 ?                 \
-                  MXC_PT6_BUS0 :               \
-                  (i) == 0x7 ?                 \
-                  MXC_PT7_BUS0 :               \
-                  (i) == 0x8 ?                 \
-                  MXC_PT8_BUS0 :               \
-                  (i) == 0x9 ?                 \
-                  MXC_PT9_BUS0 :               \
-                  (i) == 0xA ?                 \
-                  MXC_PT10_BUS0 :              \
-                  (i) == 0xB ?                 \
-                  MXC_PT11_BUS0 :              \
-                  (i) == 0xC ?                 \
-                  MXC_PT12_BUS0 :              \
-                  (i) == 0xD ?                 \
-                  MXC_PT13_BUS0 :              \
-                  (i) == 0xE ?                 \
-                  MXC_PT14_BUS0 :              \
-                  (i) == 0xF ? MXC_PT15_BUS0 : \
-                               (i) == 0x8000 ? \
-                               MXC_PT0_BUS1 :  \
-                               (i) == 0x8001 ? \
-                               MXC_PT1_BUS1 :  \
-                               (i) == 0x8002 ? \
-                               MXC_PT2_BUS1 :  \
-                               (i) == 0x8003 ? \
-                               MXC_PT3_BUS1 :  \
-                               (i) == 0x8004 ? \
-                               MXC_PT4_BUS1 :  \
-                               (i) == 0x8005 ? \
-                               MXC_PT5_BUS1 :  \
-                               (i) == 0x8006 ? \
-                               MXC_PT6_BUS1 :  \
-                               (i) == 0x8007 ? \
-                               MXC_PT7_BUS1 :  \
-                               (i) == 0x8008 ? \
-                               MXC_PT8_BUS1 :  \
-                               (i) == 0x8009 ? \
-                               MXC_PT9_BUS1 :  \
-                               (i) == 0x800A ? \
-                               MXC_PT10_BUS1 : \
-                               (i) == 0x800B ? \
-                               MXC_PT11_BUS1 : \
-                               (i) == 0x800C ? \
-                               MXC_PT12_BUS1 : \
-                               (i) == 0x800D ? \
-                               MXC_PT13_BUS1 : \
-                               (i) == 0x800E ? MXC_PT14_BUS1 : (i) == 0x800F ? MXC_PT15_BUS1 : 0)
+#define MXC_PT_GET_PT(i)             \
+    ((i) == 0x0    ? MXC_PT0_BUS0 :  \
+     (i) == 0x1    ? MXC_PT1_BUS0 :  \
+     (i) == 0x2    ? MXC_PT2_BUS0 :  \
+     (i) == 0x3    ? MXC_PT3_BUS0 :  \
+     (i) == 0x4    ? MXC_PT4_BUS0 :  \
+     (i) == 0x5    ? MXC_PT5_BUS0 :  \
+     (i) == 0x6    ? MXC_PT6_BUS0 :  \
+     (i) == 0x7    ? MXC_PT7_BUS0 :  \
+     (i) == 0x8    ? MXC_PT8_BUS0 :  \
+     (i) == 0x9    ? MXC_PT9_BUS0 :  \
+     (i) == 0xA    ? MXC_PT10_BUS0 : \
+     (i) == 0xB    ? MXC_PT11_BUS0 : \
+     (i) == 0xC    ? MXC_PT12_BUS0 : \
+     (i) == 0xD    ? MXC_PT13_BUS0 : \
+     (i) == 0xE    ? MXC_PT14_BUS0 : \
+     (i) == 0xF    ? MXC_PT15_BUS0 : \
+     (i) == 0x8000 ? MXC_PT0_BUS1 :  \
+     (i) == 0x8001 ? MXC_PT1_BUS1 :  \
+     (i) == 0x8002 ? MXC_PT2_BUS1 :  \
+     (i) == 0x8003 ? MXC_PT3_BUS1 :  \
+     (i) == 0x8004 ? MXC_PT4_BUS1 :  \
+     (i) == 0x8005 ? MXC_PT5_BUS1 :  \
+     (i) == 0x8006 ? MXC_PT6_BUS1 :  \
+     (i) == 0x8007 ? MXC_PT7_BUS1 :  \
+     (i) == 0x8008 ? MXC_PT8_BUS1 :  \
+     (i) == 0x8009 ? MXC_PT9_BUS1 :  \
+     (i) == 0x800A ? MXC_PT10_BUS1 : \
+     (i) == 0x800B ? MXC_PT11_BUS1 : \
+     (i) == 0x800C ? MXC_PT12_BUS1 : \
+     (i) == 0x800D ? MXC_PT13_BUS1 : \
+     (i) == 0x800E ? MXC_PT14_BUS1 : \
+     (i) == 0x800F ? MXC_PT15_BUS1 : \
+                     0)
 
-#define MXC_PT_GET_IDX(p)                             \
-    ((p) == MXC_PT0_BUS0 ?                            \
-         0x0 :                                        \
-         (p) == MXC_PT1_BUS0 ?                        \
-         0x1 :                                        \
-         (p) == MXC_PT2_BUS0 ?                        \
-         0x2 :                                        \
-         (p) == MXC_PT3_BUS0 ?                        \
-         0x3 :                                        \
-         (p) == MXC_PT4_BUS0 ?                        \
-         0x4 :                                        \
-         (p) == MXC_PT5_BUS0 ?                        \
-         0x5 :                                        \
-         (p) == MXC_PT6_BUS0 ?                        \
-         0x6 :                                        \
-         (p) == MXC_PT7_BUS0 ?                        \
-         0x7 :                                        \
-         (p) == MXC_PT8_BUS0 ?                        \
-         0x8 :                                        \
-         (p) == MXC_PT9_BUS0 ?                        \
-         0x9 :                                        \
-         (p) == MXC_PT10_BUS0 ?                       \
-         0xA :                                        \
-         (p) == MXC_PT11_BUS0 ?                       \
-         0xB :                                        \
-         (p) == MXC_PT12_BUS0 ?                       \
-         0xC :                                        \
-         (p) == MXC_PT13_BUS0 ?                       \
-         0xD :                                        \
-         (p) == MXC_PT14_BUS0 ?                       \
-         0xE :                                        \
-         (p) == MXC_PT15_BUS0 ?                       \
-         0xF :                                        \
-         (p) == MXC_PT0_BUS1 ?                        \
-         0x8000 :                                     \
-         (p) == MXC_PT1_BUS1 ?                        \
-         0x8001 :                                     \
-         (p) == MXC_PT2_BUS1 ?                        \
-         0x8002 :                                     \
-         (p) == MXC_PT3_BUS1 ?                        \
-         0x8003 :                                     \
-         (p) == MXC_PT4_BUS1 ?                        \
-         0x8004 :                                     \
-         (p) == MXC_PT5_BUS1 ?                        \
-         0x8005 :                                     \
-         (p) == MXC_PT6_BUS1 ?                        \
-         0x8006 :                                     \
-         (p) == MXC_PT7_BUS1 ?                        \
-         0x8007 :                                     \
-         (p) == MXC_PT8_BUS1 ?                        \
-         0x8008 :                                     \
-         (p) == MXC_PT9_BUS1 ? 0x8009 :               \
-                               (p) == MXC_PT10_BUS1 ? \
-                               0x800A :               \
-                               (p) == MXC_PT11_BUS1 ? \
-                               0x800B :               \
-                               (p) == MXC_PT12_BUS1 ? \
-                               0x800C :               \
-                               (p) == MXC_PT13_BUS1 ? \
-                               0x800D :               \
-                               (p) == MXC_PT14_BUS1 ? 0x800E : (p) == MXC_PT15_BUS1 ? 0x800F : -1)
+#define MXC_PT_GET_IDX(p)            \
+    ((p) == MXC_PT0_BUS0  ? 0x0 :    \
+     (p) == MXC_PT1_BUS0  ? 0x1 :    \
+     (p) == MXC_PT2_BUS0  ? 0x2 :    \
+     (p) == MXC_PT3_BUS0  ? 0x3 :    \
+     (p) == MXC_PT4_BUS0  ? 0x4 :    \
+     (p) == MXC_PT5_BUS0  ? 0x5 :    \
+     (p) == MXC_PT6_BUS0  ? 0x6 :    \
+     (p) == MXC_PT7_BUS0  ? 0x7 :    \
+     (p) == MXC_PT8_BUS0  ? 0x8 :    \
+     (p) == MXC_PT9_BUS0  ? 0x9 :    \
+     (p) == MXC_PT10_BUS0 ? 0xA :    \
+     (p) == MXC_PT11_BUS0 ? 0xB :    \
+     (p) == MXC_PT12_BUS0 ? 0xC :    \
+     (p) == MXC_PT13_BUS0 ? 0xD :    \
+     (p) == MXC_PT14_BUS0 ? 0xE :    \
+     (p) == MXC_PT15_BUS0 ? 0xF :    \
+     (p) == MXC_PT0_BUS1  ? 0x8000 : \
+     (p) == MXC_PT1_BUS1  ? 0x8001 : \
+     (p) == MXC_PT2_BUS1  ? 0x8002 : \
+     (p) == MXC_PT3_BUS1  ? 0x8003 : \
+     (p) == MXC_PT4_BUS1  ? 0x8004 : \
+     (p) == MXC_PT5_BUS1  ? 0x8005 : \
+     (p) == MXC_PT6_BUS1  ? 0x8006 : \
+     (p) == MXC_PT7_BUS1  ? 0x8007 : \
+     (p) == MXC_PT8_BUS1  ? 0x8008 : \
+     (p) == MXC_PT9_BUS1  ? 0x8009 : \
+     (p) == MXC_PT10_BUS1 ? 0x800A : \
+     (p) == MXC_PT11_BUS1 ? 0x800B : \
+     (p) == MXC_PT12_BUS1 ? 0x800C : \
+     (p) == MXC_PT13_BUS1 ? 0x800D : \
+     (p) == MXC_PT14_BUS1 ? 0x800E : \
+     (p) == MXC_PT15_BUS1 ? 0x800F : \
+                            -1)
 
 #define MXC_PT_GET_BUS(i) (((i)&0x00100000UL) >> 20)
 
@@ -948,7 +867,7 @@ typedef enum {
 #define MXC_SETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit) = 1)
 #define MXC_GETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit))
 
-#define MXC_SETFIELD(reg, mask, setting) (reg = (reg & ~mask) | (setting & mask))
+#define MXC_SETFIELD(reg, mask, setting) (reg = ((reg) & ~(mask)) | ((setting) & (mask)))
 
 /******************************************************************************/
 /*                                                                  SCB CPACR */
@@ -959,4 +878,4 @@ typedef enum {
 #define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
 #define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
 
-#endif /* _MAX32665_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_MAX32665_H_

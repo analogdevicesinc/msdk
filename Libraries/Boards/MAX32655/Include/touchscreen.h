@@ -35,8 +35,8 @@
  *
  ******************************************************************************/
 
-#ifndef _TOUCHSCREEN_H_
-#define _TOUCHSCREEN_H_
+#ifndef LIBRARIES_BOARDS_MAX32655_INCLUDE_TOUCHSCREEN_H_
+#define LIBRARIES_BOARDS_MAX32655_INCLUDE_TOUCHSCREEN_H_
 
 #include <spi.h>
 #include <gpio.h>
@@ -115,4 +115,4 @@ void MXC_TS_RemoveAllButton(void);
  */
 int MXC_TS_GetKey(void);
 
-#endif /* _TOUCHSCREEN_H_ */
+#endif // LIBRARIES_BOARDS_MAX32655_INCLUDE_TOUCHSCREEN_H_

@@ -37,6 +37,8 @@
  * $Revision: 26756 $
  *
  *************************************************************************** */
+#ifndef LIBRARIES_BOARDS_MAX32572_INCLUDE_CIRCLE_H_
+#define LIBRARIES_BOARDS_MAX32572_INCLUDE_CIRCLE_H_
 
 #include "touchscreen.h"
 
@@ -207,3 +209,5 @@ unsigned char circle_image[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
+
+#endif // LIBRARIES_BOARDS_MAX32572_INCLUDE_CIRCLE_H_

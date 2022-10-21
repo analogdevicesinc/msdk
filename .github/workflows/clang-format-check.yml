@@ -22,6 +22,24 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Clean
+        continue-on-error: true
+        run: |
+          # Remove local modifications
+          set +e
+
+          # Attempt to clean the repo
+          git scorch
+          retval=$?
+
+          # Remove everything if this fails
+          if [[ $retval -ne 0 ]]
+          then
+            rm -rf *
+          fi
+
+          set -e
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
@@ -32,6 +50,7 @@ jobs:
       #   Exclude register header files. Those don't follow clang formatting or it becomes unreadable
       - name: clang-format-check
         run: |
+          CLANG_VERSION=14
           cat .clang-format
 
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h' ':!*_regs.h')
@@ -42,9 +61,12 @@ jobs:
           do
             if [ -f ${change_file} ];
             then
-            clang-format --verbose --style=file -n --ferror-limit=1 -Werror ${change_file}
+            clang-format-${CLANG_VERSION} --verbose --style=file -n -Werror ${change_file}
             if [ $? != 0 ];
             then
+              clang-format-${CLANG_VERSION} --style=file ${change_file} > ${change_file}.clang
+              diff -u --color=always ${change_file} ${change_file}.clang
+              rm ${change_file}.clang
               CHECK_FAIL=1
             fi
             fi

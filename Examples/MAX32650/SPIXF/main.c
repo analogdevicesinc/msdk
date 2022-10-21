@@ -57,6 +57,8 @@
 #define EXT_FLASH_ADDR 0
 #define EXT_FLASH_SPIXFC_WIDTH Ext_Flash_DataLine_Quad
 
+#define BUFF_SIZE 64
+
 int fail = 0;
 
 /***** Functions *****/
@@ -108,6 +110,9 @@ int main(void)
 {
     uint32_t id;
     void (*func)(void);
+    uint8_t rx_buf[BUFF_SIZE];
+    int rx_len = (uint32_t)(&__load_length_xip);
+    int remain = rx_len;
 
     printf("\n\n********************* SPIX Example *********************\n");
     printf("This example communicates with an %s flash on the EvKit\n", EXT_FLASH_NAME);
@@ -122,7 +127,7 @@ int main(void)
         printf("Example Failed\n");
         while (1) {}
     }
-    printf("%s Initialized.\n\n", EXT_FLASH_NAME);
+    printf("External flash Initialized.\n\n");
 
     Ext_Flash_Reset();
 
@@ -169,6 +174,24 @@ int main(void)
         fail++;
     } else {
         printf("Programmed\n\n");
+    }
+
+    printf("Verifying external flash\n");
+    while (remain) {
+        int chunk = ((remain > BUFF_SIZE) ? BUFF_SIZE : remain);
+        if ((err = Ext_Flash_Read(EXT_FLASH_ADDR + rx_len - remain, rx_buf, chunk,
+                                  EXT_FLASH_SPIXFC_WIDTH)) != E_NO_ERROR) {
+            printf("Error verifying data %d\n", err);
+            fail++;
+            break;
+        } else if (memcmp(rx_buf, &__load_start_xip + rx_len - remain, chunk) != E_NO_ERROR) {
+            printf("Error invalid data\n");
+            fail++;
+            break;
+        } else if (remain == chunk) {
+            printf("Verified\n\n");
+        }
+        remain -= chunk;
     }
 
     // Setup SPIX

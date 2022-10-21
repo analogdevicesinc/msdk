@@ -64,7 +64,7 @@ extern void bleStartup(void);
  *
  * =======================================================
  */
-void vAssertCalled(const char *const pcFileName, unsigned long ulLine)
+void vAssertCalled(const char *const pcFileName, uint32_t ulLine)
 {
     volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 
@@ -132,7 +132,9 @@ int main(void)
 
     /* This code is only reached if the scheduler failed to start */
     printf("ERROR: FreeRTOS did not start due to above error!\n");
-    while (1) { __NOP(); }
+    while (1) {
+        __NOP();
+    }
 
     /* Quiet GCC warnings */
     return -1;

@@ -39,8 +39,8 @@
  *
  ******************************************************************************/
 
-#ifndef _MAX32660_REGS_H_
-#define _MAX32660_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32660_INCLUDE_MAX32660_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32660_INCLUDE_MAX32660_H_
 
 #ifndef TARGET_NUM
 #define TARGET_NUM 32660
@@ -381,7 +381,7 @@ typedef enum {
 #define MXC_SETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit) = 1)
 #define MXC_GETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit))
 
-#define MXC_SETFIELD(reg, mask, value) (reg = (reg & ~mask) | (value & mask))
+#define MXC_SETFIELD(reg, mask, value) ((reg) = ((reg) & ~(mask)) | ((value) & (mask)))
 
 /******************************************************************************/
 /*                                                                  SCB CPACR */
@@ -392,4 +392,4 @@ typedef enum {
 #define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
 #define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
 
-#endif /* _MAX32660_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32660_INCLUDE_MAX32660_H_

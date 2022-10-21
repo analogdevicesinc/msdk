@@ -98,7 +98,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH1_IEN</name>
             <description>Channel 1 Interrupt Enable.</description>
             <bitOffset>1</bitOffset>
@@ -116,7 +116,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH2_IEN</name>
             <description>Channel 2 Interrupt Enable.</description>
             <bitOffset>2</bitOffset>
@@ -134,7 +134,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH3_IEN</name>
             <description>Channel 3 Interrupt Enable.</description>
             <bitOffset>3</bitOffset>
@@ -152,7 +152,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH4_IEN</name>
             <description>Channel 4 Interrupt Enable.</description>
             <bitOffset>4</bitOffset>
@@ -170,7 +170,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH5_IEN</name>
             <description>Channel 5 Interrupt Enable.</description>
             <bitOffset>5</bitOffset>
@@ -188,7 +188,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH6_IEN</name>
             <description>Channel 6 Interrupt Enable.</description>
             <bitOffset>6</bitOffset>
@@ -206,7 +206,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH7_IEN</name>
             <description>Channel 7 Interrupt Enable.</description>
             <bitOffset>7</bitOffset>
@@ -224,7 +224,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH8_IEN</name>
             <description>Channel 8 Interrupt Enable.</description>
             <bitOffset>8</bitOffset>
@@ -242,7 +242,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH9_IEN</name>
             <description>Channel 9 Interrupt Enable.</description>
             <bitOffset>9</bitOffset>
@@ -260,7 +260,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH10_IEN</name>
             <description>Channel 10 Interrupt Enable.</description>
             <bitOffset>10</bitOffset>
@@ -278,7 +278,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH11_IEN</name>
             <description>Channel 11 Interrupt Enable.</description>
             <bitOffset>11</bitOffset>
@@ -296,7 +296,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH12_IEN</name>
             <description>Channel 12 Interrupt Enable.</description>
             <bitOffset>12</bitOffset>
@@ -314,7 +314,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH13_IEN</name>
             <description>Channel 13 Interrupt Enable.</description>
             <bitOffset>13</bitOffset>
@@ -332,7 +332,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH14_IEN</name>
             <description>Channel 14 Interrupt Enable.</description>
             <bitOffset>14</bitOffset>
@@ -350,7 +350,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
+          <field>
             <name>CH15_IEN</name>
             <description>Channel 15 Interrupt Enable.</description>
             <bitOffset>15</bitOffset>
@@ -394,7 +394,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH1_IPEND</name>
             <description>Channel 1 Interrupt Pending.</description>
             <bitOffset>1</bitOffset>
@@ -412,7 +412,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH2_IPEND</name>
             <description>Channel 2 Interrupt Pending.</description>
             <bitOffset>2</bitOffset>
@@ -430,7 +430,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH3_IPEND</name>
             <description>Channel 3 Interrupt Pending.</description>
             <bitOffset>3</bitOffset>
@@ -448,7 +448,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH4_IPEND</name>
             <description>Channel 4 Interrupt Pending.</description>
             <bitOffset>4</bitOffset>
@@ -466,7 +466,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH5_IPEND</name>
             <description>Channel 5 Interrupt Pending.</description>
             <bitOffset>5</bitOffset>
@@ -484,7 +484,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH6_IPEND</name>
             <description>Channel 6 Interrupt Pending.</description>
             <bitOffset>6</bitOffset>
@@ -502,7 +502,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH7_IPEND</name>
             <description>Channel 7 Interrupt Pending.</description>
             <bitOffset>7</bitOffset>
@@ -520,7 +520,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH8_IPEND</name>
             <description>Channel 8 Interrupt Pending.</description>
             <bitOffset>8</bitOffset>
@@ -538,7 +538,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH9_IPEND</name>
             <description>Channel 9 Interrupt Pending.</description>
             <bitOffset>9</bitOffset>
@@ -556,7 +556,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH10_IPEND</name>
             <description>Channel 10 Interrupt Pending.</description>
             <bitOffset>10</bitOffset>
@@ -574,7 +574,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH11_IPEND</name>
             <description>Channel 11 Interrupt Pending.</description>
             <bitOffset>11</bitOffset>
@@ -592,7 +592,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH12_IPEND</name>
             <description>Channel 12 Interrupt Pending.</description>
             <bitOffset>12</bitOffset>
@@ -610,7 +610,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH13_IPEND</name>
             <description>Channel 13 Interrupt Pending.</description>
             <bitOffset>13</bitOffset>
@@ -628,7 +628,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH14_IPEND</name>
             <description>Channel 14 Interrupt Pending.</description>
             <bitOffset>14</bitOffset>
@@ -646,7 +646,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
+          <field>
             <name>CH15_IPEND</name>
             <description>Channel 15 Interrupt Pending.</description>
             <bitOffset>15</bitOffset>

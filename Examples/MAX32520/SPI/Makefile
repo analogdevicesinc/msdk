@@ -139,12 +139,12 @@ export CMSIS_ROOT
 
 # The following paths are searched by default, where "./" is the project directory.
 # ./
-# ├─ *.h
-# ├─ *.c
-# ├─include (optional)
-#   └─ *.h
-# ├─src (optional)
-#   └─ *.c
+# |- *.h
+# |- *.c
+# |-include (optional)
+#   |- *.h
+# |-src (optional)
+#   |- *.c
 
 # Configuration Variables:
 # - VPATH : Tell this Makefile to search additional locations for source (.c) files.
@@ -208,7 +208,10 @@ PROJECT ?= $(TARGET_LC)
 #			Ex: MFLOAT_ABI = hard
 # - LINKERFILE : Override the default linkerfile.
 #			Ex: LINKERFILE = customlinkerfile.ld
-
+# - LINKERPATH : Override the default search location for $(LINKERFILE)
+#			The default search location is $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+#			If $(LINKERFILE) cannot be found at this path, then the root project
+#			directory will be used as a fallback.
 
 # Select 'GCC' or 'IAR' compiler
 ifeq "$(COMPILER)" ""
@@ -248,26 +251,92 @@ MFLOAT_ABI ?= softfp
 # MFLOAT_ABI must be exported to other Makefiles, who check this too
 export MFLOAT_ABI
 
-# Set the default linkerfile.  Since the core Makefiles later add the location of Maxim's
-# linkerfiles to VPATH, and the local project directory has also been added to VPATH, Make
-# will search both locations for the specified linkerfile if it can't find it by its path alone.
-# The result is that overriding LINKERFILE with the filename of one of Maxim's alternate linkerfiles
-# (ex: LINKERFILE=max78000_arm.ld) will work just the same as LINKERFILE=mycustom.ld 
-# even if mycustom.ld lives locally to this project.
-
 ifeq "$(RISCV_CORE)" ""
 # Default linkerfile is only specified for standard Arm-core projects.
 # Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
-LINKER = $(TARGET_LC).ld
-LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER)
+LINKERFILE ?= $(TARGET_LC).ld
+LINKERPATH ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+
+# Check if linkerfile exists
+ifeq ("$(wildcard $(LINKERPATH)/$(LINKERFILE))","")
+# Doesn't exists, attempt to use root project folder.
+LINKERPATH:=.
+endif
+
+# Form full path to linkerfile.  Works around MSYS2 edge case from (see MSDK-903).
+LINKERFILE:=$(LINKERPATH)/$(LINKERFILE)
 endif
 
 # This path contains system-level intialization files for the target micro.  Add to the build.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
-# Get .DEFAULT_GOAL working.
+# *******************************************************************************
+# Secure Boot Tools (SBT)
+
+# This section integrates the Secure Boot Tools.  It's intended for use with
+# microcontrollers that have a secure bootloader.
+
+# Enabling SBT integration will add some special rules, such as "make sla", "make scpa", etc.
+
+# Configuration variables:
+#	SBT : 	Toggle SBT integration.  Set to 1 to enable, or 0
+# 			to disable
+#	MAXIM_SBT_DIR : Specify the location of the SBT tool binaries.  This defaults to
+#					Tools/SBT in the MaximSDK.  The standalone SBT installer will override
+#					this via an environment variable.
+#	TARGET_SEC : 	Specify the part number to be passed into the SBT.  This should match
+#					the secure variant part #.  The default value will depend on TARGET.
+#					For example, TARGET=MAX32650 will result in TARGET_SEC=MAX32651, and
+#					the default selection happens in Tools/SBT/SBT-config.
+#					However, if there are multiple secure part #s for the target
+#					microcontroller this variable may need to be changed.
+
+SBT ?= 1
+ifeq ($(SBT), 1)
+MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
+MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
+# ^ Must sanitize path for \ on Windows, since this may come from an environment
+# variable.
+
+export MAXIM_SBT_DIR # SBTs must have this environment variable defined to work
+
+# SBT-config.mk and SBT-rules.mk are included further down this Makefile.
+
+endif # SBT
+
+# *******************************************************************************
+# Default goal selection.  This section allows you to override the default goal
+# that will run if no targets are specified on the command-line.
+# (ie. just running 'make' instead of 'make all')
+
+# Configuration variables:
+#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the 
+#			command-line
+#			** "override" must be used with this variable. **
+#			Ex: "override .DEFAULT_GOAL = mygoal"
+
+ifeq "$(.DEFAULT_GOAL)" ""
+ifeq ($(SBT),1)
+override .DEFAULT_GOAL := sla
+else
+override .DEFAULT_GOAL := all
+endif
+endif
+
+# Developer note:  'override' is used above for legacy Makefile compatibility.
+# gcc.mk/gcc_riscv.mk need to hard-set 'all' internally, so this new system
+# uses 'override' to come in over the top without breaking old projects.
+
+# It's also necessary to explicitly set MAKECMDGOALS...
 ifeq "$(MAKECMDGOALS)" ""
 MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
+# *******************************************************************************
+# Include SBT config.  We need to do this here because it needs to know
+# the current MAKECMDGOAL.
+ifeq ($(SBT),1)
+include $(MAXIM_PATH)/Tools/SBT/SBT-config.mk
 endif
 
 # *******************************************************************************
@@ -295,39 +364,6 @@ endif
 
 include $(LIBS_DIR)/libs.mk
 
-# *******************************************************************************
-# Secure Boot Tools (SBT)
-
-# This section integrates the Secure Boot Tools.  It's intended for use with
-# microcontrollers that have a secure bootloader.
-
-# Enabling SBT integration will add some special rules, such as "make sla", "make scpa", etc.
-
-# Configuration variables:
-#	SBT : 	Toggle SBT integration.  Set to 1 to enable, or 0
-# 			to disable
-#	MAXIM_SBT_DIR : Specify the location of the SBT tool binaries.  This defaults to
-#					Tools/SBT in the MaximSDK.  The standalone SBT installer will override
-#					this via an environment variable.
-#	TARGET_SEC : 	Specify the part number to be passed into the SBT.  This should match
-#					the secure variant part #.  The default value will depend on TARGET.
-#					For example, TARGET=MAX32650 will result in TARGET_SEC=MAX32651, and
-#					the default selection happens in Tools/SBT/SBT-config.
-#					However, if there are multiple secure part #s for the target
-#					microcontroller this variable may need to be changed.
-
-SBT ?= 0
-ifeq ($(SBT), 1)
-MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
-MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
-# ^ Must sanitize path for \ on Windows, since this may come from an environment
-# variable.
-
-export MAXIM_SBT_DIR # SBTs must have this environment variable defined to work
-
-include $(MAXIM_SBT_DIR)/SBT-config.mk
-
-endif
 
 # *******************************************************************************
 # Rules
@@ -339,8 +375,15 @@ include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).
 # Include the rules that integrate the SBTs.  SBTs are a special case that must be
 # include after the core gcc rules to extend them.
 ifeq ($(SBT), 1)
-include $(MAXIM_SBT_DIR)/SBT-rules.mk
+include $(MAXIM_PATH)/Tools/SBT/SBT-rules.mk
 endif
+
+
+# Get .DEFAULT_GOAL working.
+ifeq "$(MAKECMDGOALS)" ""
+MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
 
 all:
 # 	Extend the functionality of the "all" recipe here

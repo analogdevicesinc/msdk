@@ -1,6 +1,7 @@
 /**
  * @file    puf_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the PUF Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -33,10 +34,11 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************/
+*
+******************************************************************************/
 
-#ifndef _PUF_REGS_H_
-#define _PUF_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_PUF_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_PUF_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -76,7 +78,7 @@ extern "C" {
  * @ingroup     puf
  * @defgroup    puf_registers PUF_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the PUF Peripheral Module.
- * @details PUF Registers
+ * @details     PUF Registers
  */
 
 /**
@@ -95,8 +97,8 @@ typedef struct {
  * @brief      PUF Peripheral Register Offsets from the PUF Base Peripheral Address.
  * @{
  */
- #define MXC_R_PUF_CTRL                     ((uint32_t)0x00000000UL) /**< Offset from PUF Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_PUF_STAT                     ((uint32_t)0x00000004UL) /**< Offset from PUF Base Address: <tt> 0x0004</tt> */ 
+#define MXC_R_PUF_CTRL                     ((uint32_t)0x00000000UL) /**< Offset from PUF Base Address: <tt> 0x0000</tt> */
+#define MXC_R_PUF_STAT                     ((uint32_t)0x00000004UL) /**< Offset from PUF Base Address: <tt> 0x0004</tt> */
 /**@} end of group puf_registers */
 
 /**
@@ -105,26 +107,26 @@ typedef struct {
  * @brief    PUF Control Register.
  * @{
  */
- #define MXC_F_PUF_CTRL_PUF_EN_POS                      0 /**< CTRL_PUF_EN Position */
- #define MXC_F_PUF_CTRL_PUF_EN                          ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_PUF_EN_POS)) /**< CTRL_PUF_EN Mask */
+#define MXC_F_PUF_CTRL_PUF_EN_POS                      0 /**< CTRL_PUF_EN Position */
+#define MXC_F_PUF_CTRL_PUF_EN                          ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_PUF_EN_POS)) /**< CTRL_PUF_EN Mask */
 
- #define MXC_F_PUF_CTRL_KEY_CLR_EN_POS                  1 /**< CTRL_KEY_CLR_EN Position */
- #define MXC_F_PUF_CTRL_KEY_CLR_EN                      ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY_CLR_EN_POS)) /**< CTRL_KEY_CLR_EN Mask */
+#define MXC_F_PUF_CTRL_KEY_CLR_EN_POS                  1 /**< CTRL_KEY_CLR_EN Position */
+#define MXC_F_PUF_CTRL_KEY_CLR_EN                      ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY_CLR_EN_POS)) /**< CTRL_KEY_CLR_EN Mask */
 
- #define MXC_F_PUF_CTRL_KEY0_GEN_EN_POS                 8 /**< CTRL_KEY0_GEN_EN Position */
- #define MXC_F_PUF_CTRL_KEY0_GEN_EN                     ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY0_GEN_EN_POS)) /**< CTRL_KEY0_GEN_EN Mask */
+#define MXC_F_PUF_CTRL_KEY0_GEN_EN_POS                 8 /**< CTRL_KEY0_GEN_EN Position */
+#define MXC_F_PUF_CTRL_KEY0_GEN_EN                     ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY0_GEN_EN_POS)) /**< CTRL_KEY0_GEN_EN Mask */
 
- #define MXC_F_PUF_CTRL_KEY1_GEN_EN_POS                 9 /**< CTRL_KEY1_GEN_EN Position */
- #define MXC_F_PUF_CTRL_KEY1_GEN_EN                     ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY1_GEN_EN_POS)) /**< CTRL_KEY1_GEN_EN Mask */
+#define MXC_F_PUF_CTRL_KEY1_GEN_EN_POS                 9 /**< CTRL_KEY1_GEN_EN Position */
+#define MXC_F_PUF_CTRL_KEY1_GEN_EN                     ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY1_GEN_EN_POS)) /**< CTRL_KEY1_GEN_EN Mask */
 
- #define MXC_F_PUF_CTRL_KEYGEN_ERR_IE_POS               16 /**< CTRL_KEYGEN_ERR_IE Position */
- #define MXC_F_PUF_CTRL_KEYGEN_ERR_IE                   ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEYGEN_ERR_IE_POS)) /**< CTRL_KEYGEN_ERR_IE Mask */
+#define MXC_F_PUF_CTRL_KEYGEN_ERR_IE_POS               16 /**< CTRL_KEYGEN_ERR_IE Position */
+#define MXC_F_PUF_CTRL_KEYGEN_ERR_IE                   ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEYGEN_ERR_IE_POS)) /**< CTRL_KEYGEN_ERR_IE Mask */
 
- #define MXC_F_PUF_CTRL_KEY0_DN_IE_POS                  24 /**< CTRL_KEY0_DN_IE Position */
- #define MXC_F_PUF_CTRL_KEY0_DN_IE                      ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY0_DN_IE_POS)) /**< CTRL_KEY0_DN_IE Mask */
+#define MXC_F_PUF_CTRL_KEY0_DN_IE_POS                  24 /**< CTRL_KEY0_DN_IE Position */
+#define MXC_F_PUF_CTRL_KEY0_DN_IE                      ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY0_DN_IE_POS)) /**< CTRL_KEY0_DN_IE Mask */
 
- #define MXC_F_PUF_CTRL_KEY1_DN_IE_POS                  25 /**< CTRL_KEY1_DN_IE Position */
- #define MXC_F_PUF_CTRL_KEY1_DN_IE                      ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY1_DN_IE_POS)) /**< CTRL_KEY1_DN_IE Mask */
+#define MXC_F_PUF_CTRL_KEY1_DN_IE_POS                  25 /**< CTRL_KEY1_DN_IE Position */
+#define MXC_F_PUF_CTRL_KEY1_DN_IE                      ((uint32_t)(0x1UL << MXC_F_PUF_CTRL_KEY1_DN_IE_POS)) /**< CTRL_KEY1_DN_IE Mask */
 
 /**@} end of group PUF_CTRL_Register */
 
@@ -134,38 +136,38 @@ typedef struct {
  * @brief    PUF Status Register.
  * @{
  */
- #define MXC_F_PUF_STAT_BUSY_POS                        0 /**< STAT_BUSY Position */
- #define MXC_F_PUF_STAT_BUSY                            ((uint32_t)(0x1UL << MXC_F_PUF_STAT_BUSY_POS)) /**< STAT_BUSY Mask */
+#define MXC_F_PUF_STAT_BUSY_POS                        0 /**< STAT_BUSY Position */
+#define MXC_F_PUF_STAT_BUSY                            ((uint32_t)(0x1UL << MXC_F_PUF_STAT_BUSY_POS)) /**< STAT_BUSY Mask */
 
- #define MXC_F_PUF_STAT_MAGIC_ERR_POS                   1 /**< STAT_MAGIC_ERR Position */
- #define MXC_F_PUF_STAT_MAGIC_ERR                       ((uint32_t)(0x1UL << MXC_F_PUF_STAT_MAGIC_ERR_POS)) /**< STAT_MAGIC_ERR Mask */
+#define MXC_F_PUF_STAT_MAGIC_ERR_POS                   1 /**< STAT_MAGIC_ERR Position */
+#define MXC_F_PUF_STAT_MAGIC_ERR                       ((uint32_t)(0x1UL << MXC_F_PUF_STAT_MAGIC_ERR_POS)) /**< STAT_MAGIC_ERR Mask */
 
- #define MXC_F_PUF_STAT_KEYGEN_EN_ERR_POS               2 /**< STAT_KEYGEN_EN_ERR Position */
- #define MXC_F_PUF_STAT_KEYGEN_EN_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEYGEN_EN_ERR_POS)) /**< STAT_KEYGEN_EN_ERR Mask */
+#define MXC_F_PUF_STAT_KEYGEN_EN_ERR_POS               2 /**< STAT_KEYGEN_EN_ERR Position */
+#define MXC_F_PUF_STAT_KEYGEN_EN_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEYGEN_EN_ERR_POS)) /**< STAT_KEYGEN_EN_ERR Mask */
 
- #define MXC_F_PUF_STAT_KEYGEN_ERR_POS                  3 /**< STAT_KEYGEN_ERR Position */
- #define MXC_F_PUF_STAT_KEYGEN_ERR                      ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEYGEN_ERR_POS)) /**< STAT_KEYGEN_ERR Mask */
+#define MXC_F_PUF_STAT_KEYGEN_ERR_POS                  3 /**< STAT_KEYGEN_ERR Position */
+#define MXC_F_PUF_STAT_KEYGEN_ERR                      ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEYGEN_ERR_POS)) /**< STAT_KEYGEN_ERR Mask */
 
- #define MXC_F_PUF_STAT_ADC_FREQ_FL_POS                 7 /**< STAT_ADC_FREQ_FL Position */
- #define MXC_F_PUF_STAT_ADC_FREQ_FL                     ((uint32_t)(0x1UL << MXC_F_PUF_STAT_ADC_FREQ_FL_POS)) /**< STAT_ADC_FREQ_FL Mask */
+#define MXC_F_PUF_STAT_ADC_FREQ_FL_POS                 7 /**< STAT_ADC_FREQ_FL Position */
+#define MXC_F_PUF_STAT_ADC_FREQ_FL                     ((uint32_t)(0x1UL << MXC_F_PUF_STAT_ADC_FREQ_FL_POS)) /**< STAT_ADC_FREQ_FL Mask */
 
- #define MXC_F_PUF_STAT_KEY0_INIT_ERR_POS               8 /**< STAT_KEY0_INIT_ERR Position */
- #define MXC_F_PUF_STAT_KEY0_INIT_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY0_INIT_ERR_POS)) /**< STAT_KEY0_INIT_ERR Mask */
+#define MXC_F_PUF_STAT_KEY0_INIT_ERR_POS               8 /**< STAT_KEY0_INIT_ERR Position */
+#define MXC_F_PUF_STAT_KEY0_INIT_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY0_INIT_ERR_POS)) /**< STAT_KEY0_INIT_ERR Mask */
 
- #define MXC_F_PUF_STAT_KEY0_CNST_ERR_POS               9 /**< STAT_KEY0_CNST_ERR Position */
- #define MXC_F_PUF_STAT_KEY0_CNST_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY0_CNST_ERR_POS)) /**< STAT_KEY0_CNST_ERR Mask */
+#define MXC_F_PUF_STAT_KEY0_CNST_ERR_POS               9 /**< STAT_KEY0_CNST_ERR Position */
+#define MXC_F_PUF_STAT_KEY0_CNST_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY0_CNST_ERR_POS)) /**< STAT_KEY0_CNST_ERR Mask */
 
- #define MXC_F_PUF_STAT_KEY1_INIT_ERR_POS               16 /**< STAT_KEY1_INIT_ERR Position */
- #define MXC_F_PUF_STAT_KEY1_INIT_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY1_INIT_ERR_POS)) /**< STAT_KEY1_INIT_ERR Mask */
+#define MXC_F_PUF_STAT_KEY1_INIT_ERR_POS               16 /**< STAT_KEY1_INIT_ERR Position */
+#define MXC_F_PUF_STAT_KEY1_INIT_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY1_INIT_ERR_POS)) /**< STAT_KEY1_INIT_ERR Mask */
 
- #define MXC_F_PUF_STAT_KEY1_CNST_ERR_POS               17 /**< STAT_KEY1_CNST_ERR Position */
- #define MXC_F_PUF_STAT_KEY1_CNST_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY1_CNST_ERR_POS)) /**< STAT_KEY1_CNST_ERR Mask */
+#define MXC_F_PUF_STAT_KEY1_CNST_ERR_POS               17 /**< STAT_KEY1_CNST_ERR Position */
+#define MXC_F_PUF_STAT_KEY1_CNST_ERR                   ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY1_CNST_ERR_POS)) /**< STAT_KEY1_CNST_ERR Mask */
 
- #define MXC_F_PUF_STAT_KEY0_DN_POS                     24 /**< STAT_KEY0_DN Position */
- #define MXC_F_PUF_STAT_KEY0_DN                         ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY0_DN_POS)) /**< STAT_KEY0_DN Mask */
+#define MXC_F_PUF_STAT_KEY0_DN_POS                     24 /**< STAT_KEY0_DN Position */
+#define MXC_F_PUF_STAT_KEY0_DN                         ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY0_DN_POS)) /**< STAT_KEY0_DN Mask */
 
- #define MXC_F_PUF_STAT_KEY1_DN_POS                     25 /**< STAT_KEY1_DN Position */
- #define MXC_F_PUF_STAT_KEY1_DN                         ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY1_DN_POS)) /**< STAT_KEY1_DN Mask */
+#define MXC_F_PUF_STAT_KEY1_DN_POS                     25 /**< STAT_KEY1_DN Position */
+#define MXC_F_PUF_STAT_KEY1_DN                         ((uint32_t)(0x1UL << MXC_F_PUF_STAT_KEY1_DN_POS)) /**< STAT_KEY1_DN Mask */
 
 /**@} end of group PUF_STAT_Register */
 
@@ -173,4 +175,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _PUF_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_PUF_REGS_H_

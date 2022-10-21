@@ -44,6 +44,7 @@
 #include "pwrseq_regs.h"
 #include "simo_regs.h"
 #include "mcr_regs.h"
+#include "lp.h"
 
 // Backup mode entry point
 extern void Reset_Handler(void);
@@ -140,7 +141,7 @@ __weak void SystemInit(void)
     /* Configure the interrupt controller to use the application vector 
      * table in flash. Initially, VTOR points to the ROM's table.
      */
-    SCB->VTOR = (unsigned long)&__isr_vector;
+    SCB->VTOR = (uint32_t)&__isr_vector;
 
     /* We'd like to switch to the fast clock, but can only do so if the 
      * core's operating voltage (VregO_B) is high enough to support it
@@ -187,6 +188,9 @@ __weak void SystemInit(void)
     MXC_GPIO1->ps |= 0xFFFFFFFF;
     MXC_GPIO1->pad_cfg1 |= 0xFFFFFFFF;
     MXC_GPIO1->pad_cfg2 &= ~(0xFFFFFFFF);
+
+    /* Disable fast wakeup due to issues with SIMO in wakeup */
+    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_FWKM;
 
     Board_Init();
 

@@ -26,29 +26,6 @@
             <description>Reset. This bit is used to reset the crypto accelerator.  All crypto internal states and related registers are reset to their default reset values. Control register such as CRYPTO_CTRL, CIPHER_CTRL, HASH_CTRL, CRC_CTRL, MAA_CTRL (with the exception of the STC bit), HASH_MSG_SZ_[3:0] and MAA_MAWS will retain their values. This bit will automatically clear itself after one cycle.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <name>reset_write</name>
-              <usage>write</usage>
-              <enumeratedValue>
-                <name>reset</name>
-                <description>Starts reset operation.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-            <enumeratedValues>
-              <name>reset_read</name>
-              <usage>read</usage>
-              <enumeratedValue>
-                <name>reset_done</name>
-                <description>Reset complete.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>busy</name>
-                <description>Reset in progress.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>INT</name>

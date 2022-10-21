@@ -3,8 +3,8 @@
  * @brief   descriptors listed here
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-07-18 15:43:10 -0500 (Wed, 18 Jul 2018) $
- * $Revision: 36263 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef EXAMPLES_MAX78002_USB_CDCACM_DESCRIPTORS_H_
@@ -213,7 +210,7 @@ config_descriptor_hs = {
     {
         0x09, /*  bLength                          */
         0x02, /*  bDescriptorType = Config         */
-        0x0043, /*  wTotalLength(L/H)			     */
+        0x0043, /*  wTotalLength(L/H)                */
         0x02, /*  bNumInterfaces                   */
         0x01, /*  bConfigurationValue              */
         0x02, /*  iConfiguration                   */

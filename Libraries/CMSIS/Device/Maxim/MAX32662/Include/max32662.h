@@ -36,8 +36,8 @@
  *
  ******************************************************************************/
 
-#ifndef _MAX32662_REGS_H_
-#define _MAX32662_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_MAX32662_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_MAX32662_H_
 
 #ifndef TARGET_NUM
 #define TARGET_NUM 32662
@@ -305,7 +305,7 @@ typedef enum {
 #define MXC_GPIO_GET_IRQ(i) ((i) == 0 ? GPIO0_IRQn : 0)
 
 /******************************************************************************/
-#define SEC(s) (((unsigned long)s) * 1000000UL)
+#define SEC(s) (((uint32_t)s) * 1000000UL)
 #define MSEC(ms) (ms * 1000UL)
 #define USEC(us) (us)
 /*                                                                      Timer */
@@ -322,12 +322,17 @@ typedef enum {
 
 #define MXC_TMR_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn : \
-                           (i) == 1 ? TMR1_IRQn : (i) == 2 ? TMR2_IRQn : (i) == 3 ? TMR3_IRQn : 0)
+                (i) == 1 ? TMR1_IRQn : \
+                (i) == 2 ? TMR2_IRQn : \
+                (i) == 3 ? TMR3_IRQn : \
+                           0)
 
-#define MXC_TMR_GET_BASE(i) \
-    ((i) == 0 ?             \
-         MXC_BASE_TMR0 :    \
-         (i) == 1 ? MXC_BASE_TMR1 : (i) == 2 ? MXC_BASE_TMR2 : (i) == 3 ? MXC_BASE_TMR3 : 0)
+#define MXC_TMR_GET_BASE(i)     \
+    ((i) == 0 ? MXC_BASE_TMR0 : \
+     (i) == 1 ? MXC_BASE_TMR1 : \
+     (i) == 2 ? MXC_BASE_TMR2 : \
+     (i) == 3 ? MXC_BASE_TMR3 : \
+                0)
 
 #define MXC_TMR_GET_TMR(i) \
     ((i) == 0 ? MXC_TMR0 : (i) == 1 ? MXC_TMR1 : (i) == 2 ? MXC_TMR2 : (i) == 3 ? MXC_TMR3 : 0)
@@ -408,7 +413,10 @@ typedef enum {
 
 #define MXC_PT_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_PT0 : \
-                (i) == 1 ? MXC_BASE_PT1 : (i) == 2 ? MXC_BASE_PT2 : (i) == 3 ? MXC_BASE_PT3 : 0)
+     (i) == 1 ? MXC_BASE_PT1 : \
+     (i) == 2 ? MXC_BASE_PT2 : \
+     (i) == 3 ? MXC_BASE_PT3 : \
+                0)
 
 #define MXC_PT_GET_PT(i) \
     ((i) == 0 ? MXC_PT0 : (i) == 1 ? MXC_PT1 : (i) == 2 ? MXC_PT2 : (i) == 3 ? MXC_PT3 : 0)
@@ -524,7 +532,7 @@ typedef enum {
 #define MXC_SETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit) = 1)
 #define MXC_GETBIT(reg, bit) (*(volatile uint32_t *)BITBAND(reg, bit))
 
-#define MXC_SETFIELD(reg, mask, value) (reg = (reg & ~mask) | (value & mask))
+#define MXC_SETFIELD(reg, mask, value) ((reg) = ((reg) & ~(mask)) | ((value) & (mask)))
 
 /******************************************************************************/
 /*                                                                  SCB CPACR */
@@ -535,4 +543,4 @@ typedef enum {
 #define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
 #define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
 
-#endif /* _MAX32662_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32662_INCLUDE_MAX32662_H_

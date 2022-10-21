@@ -80,7 +80,7 @@ static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
     return 0;
 }
 
-static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short *dataout)
+static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, uint16_t *dataout)
 {
     int i = 0;
     uint8_t rx[3] = { 0, 0, 0 };
@@ -101,7 +101,9 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short *data
     MXC_SPI_MasterTransaction(&request);
 
     // Wait to clear TS busy signal
-    for (i = 0; i < 100; i++) { __asm volatile("nop\n"); }
+    for (i = 0; i < 100; i++) {
+        __asm volatile("nop\n");
+    }
 
     request.txLen = 3;
     request.rxLen = 3;
@@ -113,9 +115,9 @@ static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, unsigned short *data
     }
 }
 
-static int tsGetXY(unsigned short *x, unsigned short *y)
+static int tsGetXY(uint16_t *x, uint16_t *y)
 {
-    unsigned short tsX, tsY, tsZ1;
+    uint16_t tsX, tsY, tsZ1;
     int ret;
 
     spi_transmit_tsc2046(TSC_DIFFZ1, &tsZ1);
@@ -135,7 +137,7 @@ static int tsGetXY(unsigned short *x, unsigned short *y)
         *x = X_RES_T - *x;
         *y = Y_RES_T - *y;
 #elif (ROTATE_SCREEN == 1)
-        unsigned short swap = *x;
+        uint16_t swap = *x;
         *x = 240 - *y - 1;
         *y = swap;
 #endif
@@ -161,7 +163,7 @@ static int tsGetXY(unsigned short *x, unsigned short *y)
 
 static void tsHandler(void)
 {
-    unsigned short touch_x, touch_y;
+    uint16_t touch_x, touch_y;
     int i;
 
     MXC_TS_Stop();
@@ -302,7 +304,9 @@ void MXC_TS_RemoveAllButton(void)
 {
     int i;
 
-    for (i = 0; i < TS_MAX_BUTTONS; i++) { ts_buttons[i].key_code = TS_INVALID_KEY_CODE; }
+    for (i = 0; i < TS_MAX_BUTTONS; i++) {
+        ts_buttons[i].key_code = TS_INVALID_KEY_CODE;
+    }
 }
 
 int MXC_TS_GetKey(void)

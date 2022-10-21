@@ -4,7 +4,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make -r -j 8 all TARGET=${config:target} BOARD=${config:board} MAXIM_PATH=${config:MAXIM_PATH} MAKE=make PROJECT=${config:project_name}",
+            "command": "make -r -j 8 TARGET=${config:target} BOARD=${config:board} MAXIM_PATH=${config:MAXIM_PATH} MAKE=make PROJECT=${config:project_name}",
             "group": "build",
             "problemMatcher": []
         },
@@ -26,11 +26,11 @@
             "label": "flash",
             "type": "shell",
             "command": "arm-none-eabi-gdb",
-            "args": [                
+            "args": [
                 "--cd=\"${workspaceFolder}\"",
                 "--se=\"build/${config:program_file}\"",
                 "--symbols=build/${config:symbol_file}",
-                "-x=\"${workspaceFolder}/.vscode/flash.gdb\"",                
+                "-x=\"${workspaceFolder}/.vscode/flash.gdb\"",
                 "--ex=\"flash_m4 ${config:OCD_path} ${config:M4_OCD_interface_file} ${config:M4_OCD_target_file}\"",
                 "--batch"
             ],
@@ -39,12 +39,43 @@
             "dependsOn":["build"]
         },
         {
+            "label": "flash & run",
+            "type": "shell",
+            "command": "arm-none-eabi-gdb",
+            "args": [                
+                "--cd=\"${workspaceFolder}\"",
+                "--se=\"build/${config:program_file}\"",
+                "--symbols=build/${config:symbol_file}",
+                "-x=\"${workspaceFolder}/.vscode/flash.gdb\"",                
+                "--ex=\"flash_m4_run ${config:OCD_path} ${config:M4_OCD_interface_file} ${config:M4_OCD_target_file}\"",
+                "--batch"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "dependsOn":["build"]
+        },
+        {
+            "label": "erase flash",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-s", "${config:OCD_path}/scripts",
+                "-f", "interface/${config:M4_OCD_interface_file}",
+                "-f", "target/${config:M4_OCD_target_file}",
+                "-c", "\"init; reset halt; max32xxx mass_erase 0;\"",
+                "-c", "exit"
+            ],
+            "group":"build",
+            "problemMatcher": [],
+            "dependsOn":[]
+        },
+        {
             "label": "openocd (m4)",
             "type": "shell",
             "command": "openocd",
             "args": [
                 "-s",
-                "${config:MAXIM_PATH}/Tools/OpenOCD/scripts",
+                "${config:OCD_path}/scripts",
                 "-f",
                 "interface/${config:M4_OCD_interface_file}",
                 "-f",

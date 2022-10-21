@@ -14,3 +14,5 @@ Tools/GNUTools
 Tools/xPack
 *.o
 *.d
+session.txt.log
+flash.log

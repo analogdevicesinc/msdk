@@ -1,6 +1,7 @@
 /**
  * @file    lpcmp_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the LPCMP Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -33,10 +34,11 @@
 * trademarks, maskwork rights, or any other form of intellectual
 * property whatsoever. Maxim Integrated Products, Inc. retains all
 * ownership rights.
-*******************************************************************************/
+*
+******************************************************************************/
 
-#ifndef _LPCMP_REGS_H_
-#define _LPCMP_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_LPCMP_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_LPCMP_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -76,7 +78,7 @@ extern "C" {
  * @ingroup     lpcmp
  * @defgroup    lpcmp_registers LPCMP_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the LPCMP Peripheral Module.
- * @details Low Power Comparator
+ * @details     Low Power Comparator
  */
 
 /**
@@ -94,7 +96,7 @@ typedef struct {
  * @brief      LPCMP Peripheral Register Offsets from the LPCMP Base Peripheral Address.
  * @{
  */
- #define MXC_R_LPCMP_CTRL                   ((uint32_t)0x00000000UL) /**< Offset from LPCMP Base Address: <tt> 0x0000</tt> */ 
+#define MXC_R_LPCMP_CTRL                   ((uint32_t)0x00000000UL) /**< Offset from LPCMP Base Address: <tt> 0x0000</tt> */
 /**@} end of group lpcmp_registers */
 
 /**
@@ -103,20 +105,20 @@ typedef struct {
  * @brief    Comparator Control Register.
  * @{
  */
- #define MXC_F_LPCMP_CTRL_EN_POS                        0 /**< CTRL_EN Position */
- #define MXC_F_LPCMP_CTRL_EN                            ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_EN_POS)) /**< CTRL_EN Mask */
+#define MXC_F_LPCMP_CTRL_EN_POS                        0 /**< CTRL_EN Position */
+#define MXC_F_LPCMP_CTRL_EN                            ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_EN_POS)) /**< CTRL_EN Mask */
 
- #define MXC_F_LPCMP_CTRL_POL_POS                       5 /**< CTRL_POL Position */
- #define MXC_F_LPCMP_CTRL_POL                           ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_POL_POS)) /**< CTRL_POL Mask */
+#define MXC_F_LPCMP_CTRL_POL_POS                       5 /**< CTRL_POL Position */
+#define MXC_F_LPCMP_CTRL_POL                           ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_POL_POS)) /**< CTRL_POL Mask */
 
- #define MXC_F_LPCMP_CTRL_INT_EN_POS                    6 /**< CTRL_INT_EN Position */
- #define MXC_F_LPCMP_CTRL_INT_EN                        ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INT_EN_POS)) /**< CTRL_INT_EN Mask */
+#define MXC_F_LPCMP_CTRL_INT_EN_POS                    6 /**< CTRL_INT_EN Position */
+#define MXC_F_LPCMP_CTRL_INT_EN                        ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INT_EN_POS)) /**< CTRL_INT_EN Mask */
 
- #define MXC_F_LPCMP_CTRL_OUT_POS                       14 /**< CTRL_OUT Position */
- #define MXC_F_LPCMP_CTRL_OUT                           ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_OUT_POS)) /**< CTRL_OUT Mask */
+#define MXC_F_LPCMP_CTRL_OUT_POS                       14 /**< CTRL_OUT Position */
+#define MXC_F_LPCMP_CTRL_OUT                           ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_OUT_POS)) /**< CTRL_OUT Mask */
 
- #define MXC_F_LPCMP_CTRL_INT_FL_POS                    15 /**< CTRL_INT_FL Position */
- #define MXC_F_LPCMP_CTRL_INT_FL                        ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INT_FL_POS)) /**< CTRL_INT_FL Mask */
+#define MXC_F_LPCMP_CTRL_INT_FL_POS                    15 /**< CTRL_INT_FL Position */
+#define MXC_F_LPCMP_CTRL_INT_FL                        ((uint32_t)(0x1UL << MXC_F_LPCMP_CTRL_INT_FL_POS)) /**< CTRL_INT_FL Mask */
 
 /**@} end of group LPCMP_CTRL_Register */
 
@@ -124,4 +126,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _LPCMP_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_LPCMP_REGS_H_

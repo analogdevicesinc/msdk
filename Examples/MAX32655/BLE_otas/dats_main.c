@@ -720,6 +720,9 @@ static void datsBtnCback(uint8_t btn)
         }
 
 #endif /* BT_VER */
+        case APP_UI_BTN_2_MED:
+            APP_TRACE_INFO1("FW_VERSION: %d", WdxsFileGetFirmwareVersion());
+            break;
 
         default:
             APP_TRACE_INFO0(" - No action assigned");
@@ -753,7 +756,9 @@ static void datsBtnCback(uint8_t btn)
             /* stop advertising */
             AppAdvStop();
             break;
-
+        case APP_UI_BTN_2_MED:
+            APP_TRACE_INFO1("FW_VERSION: %d", WdxsFileGetFirmwareVersion());
+            break;
         default:
             APP_TRACE_INFO0(" - No action assigned");
             break;
@@ -850,9 +855,8 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
             /* process server-related ATT messages */
             AppServerProcAttMsg(pMsg);
-        }
-        /* process DM messages */
-        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+        } else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+            /* process DM messages */
             /* process advertising and connection-related messages */
             AppSlaveProcDmMsg((dmEvt_t *)pMsg);
 

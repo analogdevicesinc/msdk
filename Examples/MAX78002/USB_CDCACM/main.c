@@ -1,15 +1,5 @@
-/**
- * @file
- * @brief   USB CDC-ACM example
- * @details This project creates a virtual COM port, which loops back data sent to it.
- *          Load the project, connect a cable from the PC to the USB connector
- *          on the Evaluation Kit, and observe that the PC now recognizes a new COM port.
- *          A driver for the COM port, if needed, is located in the Driver/ subdirectory.
- *
- */
-
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -39,10 +29,17 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-04-15 15:22:02 -0500 (Mon, 15 Apr 2019) $
- * $Revision: 42529 $
+ ******************************************************************************/
+
+/**
+ * @file
+ * @brief   USB CDC-ACM example
+ * @details This project creates a virtual COM port, which loops back data sent to it.
+ *          Load the project, connect a cable from the PC to the USB connector
+ *          on the Evaluation Kit, and observe that the PC now recognizes a new COM port.
+ *          A driver for the COM port, if needed, is located in the Driver/ subdirectory.
  *
- **************************************************************************** */
+ */
 
 /* **** Includes **** */
 #include <stdio.h>

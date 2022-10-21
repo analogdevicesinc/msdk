@@ -17,8 +17,8 @@
  */
 /*************************************************************************************************/
 
-#ifndef WDXS_FILE_H
-#define WDXS_FILE_H
+#ifndef EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_
+#define EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,6 +69,14 @@ uint32_t WdxsFileGetVerifiedLength(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief  Get the firmware version of the WDXS file.
+ *
+ *  \return Firmware version of the WDXS file.
+ */
+/*************************************************************************************************/
+uint8_t WdxsFileGetFirmwareVersion(void);
+/*************************************************************************************************/
+/*!
  *  \brief  set the length of the expected file
  *
  *  \return None.
@@ -81,4 +89,4 @@ void initHeader(fileHeader_t *header);
 }
 #endif
 
-#endif /* WDXS_FILE_H */
+#endif // EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_

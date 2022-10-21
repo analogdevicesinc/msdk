@@ -143,7 +143,9 @@ void setTrigger(int waitForTrigger)
     }
 
     // Debounce the button press.
-    for (tmp = 0; tmp < 0x800000; tmp++) { __NOP(); }
+    for (tmp = 0; tmp < 0x800000; tmp++) {
+        __NOP();
+    }
 
 // Wait for serial transactions to complete.
 #if USE_CONSOLE
@@ -194,7 +196,8 @@ void prepForDeepSleep(void)
     /* Shutdown unused power domains */
     MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
 
-    MXC_LP_FastWakeupEnable();
+    /* Prevent SIMO soft start on wakeup */
+    MXC_LP_FastWakeupDisable();
 
     /* Enable VDDCSWEN=1 prior to enter backup/deepsleep mode */
     MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;

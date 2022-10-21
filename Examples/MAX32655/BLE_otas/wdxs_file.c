@@ -18,6 +18,7 @@
 /*************************************************************************************************/
 
 #include <string.h>
+#include <stdlib.h>
 #include "mxc_device.h"
 #include "wsf_types.h"
 #include "util/wstr.h"
@@ -136,7 +137,7 @@ static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
     return WSF_EFS_SUCCESS;
 }
 
-/* http://home.thep.lu.se/~bjorn/crc/ */
+// http://home.thep.lu.se/~bjorn/crc/
 /*************************************************************************************************/
 /*!
  *  \brief  Create the CRC32 table.
@@ -189,7 +190,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     static bool_t savedHeader = FALSE;
     int err = 0;
     uint8_t attempts = 2;
-    uint8_t tempBuff[size];
+    uint8_t *tempBuff = (uint8_t *)malloc(size);
     /* helps silence compiler warnings over discarded const qualifier */
     uint32_t addressToBuf = (uint32_t)pBuf;
     /* write the header in flash device */
@@ -216,17 +217,23 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
             attempts--;
             if (attempts == 0)
                 err++;
-        } else
+        } else {
             attempts = 0;
+        }
     }
     if (err == E_NO_ERROR) {
         lastWriteAddr = pAddress;
         lastWriteLen = size;
-        return WSF_EFS_SUCCESS;
+        APP_TRACE_INFO2("Ext Flash: Wrote %d bytes @ 0x%08x", size, pAddress);
+    } else {
+        APP_TRACE_ERR1("Error writing to flash 0x%08X", (uint32_t)pAddress);
+        /* force a crc error so device does not reboot into bootloader */
+        crcResult = 0;
+        err = WSF_EFS_FAILURE;
     }
-    APP_TRACE_ERR1("Error writing to flash 0x%08X", (uint32_t)pAddress);
 
-    return WSF_EFS_FAILURE;
+    free(tempBuff);
+    return err;
 }
 
 /*************************************************************************************************/
@@ -336,6 +343,18 @@ uint32_t WdxsFileGetBaseAddr(void)
 uint32_t WdxsFileGetVerifiedLength(void)
 {
     return verifyLen;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Get the firmware version of the WDXS file.
+ *
+ *  \return Firmware version of WDXS file.
+ */
+/*************************************************************************************************/
+uint8_t WdxsFileGetFirmwareVersion(void)
+{
+    return FW_VERSION;
 }
 
 void initHeader(fileHeader_t *header)

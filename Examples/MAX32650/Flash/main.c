@@ -331,7 +331,9 @@ int main(void)
     printf("Writing %d 128-bit words to flash\n", TESTSIZE / 4);
     printf("Size of testdata : %d\n", sizeof(testdata));
     // Initializing Test Data
-    for (i = 0; i < TESTSIZE; i++) { testdata[i] = i; }
+    for (i = 0; i < TESTSIZE; i++) {
+        testdata[i] = i;
+    }
 
     i = 0;
     for (testaddr = (MXC_FLASH_MEM_BASE); i < TESTSIZE; testaddr += 16) {

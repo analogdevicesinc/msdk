@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _BOOTLOADER_CMD_H_
-#define _BOOTLOADER_CMD_H_
+#ifndef EXAMPLES_MAX32660_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_
+#define EXAMPLES_MAX32660_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -181,4 +181,4 @@ typedef union {
 
 /******************************* Public Functions ****************************/
 
-#endif // _BOOTLOADER_CMD_H_
+#endif // EXAMPLES_MAX32660_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_CMD_H_

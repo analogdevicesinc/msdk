@@ -37,6 +37,9 @@
  *
  ******************************************************************************/
 
+#ifndef LIBRARIES_BOARDS_MAX32570_INCLUDE_CIRCLE_H_
+#define LIBRARIES_BOARDS_MAX32570_INCLUDE_CIRCLE_H_
+
 #include "touchscreen.h"
 
 uint32_t circle_palette[256] = {
@@ -206,3 +209,5 @@ unsigned char circle_image[] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
+
+#endif // LIBRARIES_BOARDS_MAX32570_INCLUDE_CIRCLE_H_

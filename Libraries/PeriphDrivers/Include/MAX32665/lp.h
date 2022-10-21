@@ -44,9 +44,9 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_LP_H_
 
 /* **** Includes **** */
+#include <stdint.h>
 #include "gpio.h"
 #include "pwrseq_regs.h"
-#include <stdint.h>
 #include "mcr_regs.h"
 #include "gcr_regs.h"
 
@@ -358,8 +358,9 @@ void MXC_LP_SIMOVregDPowerUp(void);
 
 /**
  * @brief Enable Fast Wakeup
+ * @details Deprecated due to issues with SIMO in wakeup.
  */
-void MXC_LP_FastWakeupEnable(void);
+void __attribute__((deprecated("Causes SIMO soft start in wakeup"))) MXC_LP_FastWakeupEnable(void);
 
 /**
  * @brief Disable Fast Wakeup
