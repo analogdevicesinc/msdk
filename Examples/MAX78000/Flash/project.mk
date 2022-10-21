@@ -11,5 +11,5 @@
 
 # **********************************************************
 
-+LINKERFILE=$(TARGET_LC)_ram.ld
-+$(info This example executes out of RAM using a special linkerfile: $(LINKERFILE))
+LINKERFILE=$(TARGET_LC)_ram.ld
+$(info This example executes out of RAM using a special linkerfile: $(LINKERFILE))
