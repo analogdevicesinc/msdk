@@ -125,7 +125,7 @@ int main(void)
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("Board Init Failed\n");
         printf("Example Failed\n");
-        while (1) {}
+        return -1;
     }
     printf("External flash Initialized.\n\n");
 
@@ -137,7 +137,7 @@ int main(void)
     } else {
         printf("Error verifying external flash ID: 0x%x\n", id);
         printf("Example Failed\n");
-        while (1) {}
+        return -1;
     }
 
     int err;
@@ -205,8 +205,10 @@ int main(void)
 
     if (fail == 0) {
         printf("Example Succeeded\n\n");
+        return 0;
     } else {
         printf("Example Failed\n\n");
+        return -1;
     }
     return 0;
 }

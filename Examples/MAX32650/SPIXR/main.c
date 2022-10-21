@@ -71,15 +71,15 @@ mxc_spixr_cfg_t init_cfg = {
 /* **** Functions **** */
 
 /* ************************************************************************** */
-void setup(void)
+int setup(void)
 {
     uint8_t quad_cmd = A1024_EQIO; /* pre-defined command to use quad mode         */
 
-    // Initialize the desired configuration
-    if (MXC_SPIXR_Init(&init_cfg) == E_NO_ERROR) {
-        printf("SPIXR was initialized properly.\n");
-    } else {
-        printf("SPIXR was not initialized properly.\n");
+    // // Initialize the desired configuration
+    if (MXC_SPIXR_Init(&init_cfg) != E_NO_ERROR) {
+        printf("\nSPIXR was not initialized properly.\n");
+        printf("\nExample Failed\n");
+        return E_UNINITIALIZED;
     }
 
     /* Hide this with function in SPIXR.C later */
@@ -102,8 +102,7 @@ void setup(void)
                            (A1024_WRITE << MXC_F_SPIXR_XMEM_CTRL_XMEM_WR_CMD_POS) |
                            MXC_F_SPIXR_XMEM_CTRL_XMEM_EN;
 
-    // Do some sort of checking mechanism to see whether it is being initialized properly or no
-    // Return 1 if success and 0 if not
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************
@@ -115,13 +114,16 @@ int main(void)
 
     /* Variable to store address of RAM */
     int temp, i;
+    int fail = 0;
     unsigned int seed = 0;
 
     printf("\n***** SPIXR Example communicating with RAM in SPI Quad Mode *****\n");
 
     // Configure the SPIXR
     printf("Setting up the SPIXR to communicate with RAM in Quad Mode \n");
-    setup();
+    if(E_NO_ERROR != setup()) {
+    	fail += 1;
+    }
 
     // Initialize & write pseudo-random data to be written to the RAM
     printf("Initializing & Writing pseudo-random data to be written to RAM \n");
@@ -141,12 +143,21 @@ int main(void)
     // Verify data being read from RAM
     if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
         printf("Data is not verified.\n\n");
+        fail += 1;
     } else {
         printf("Data is verified.\n\n");
     }
 
     // Disable the SPIXR
     MXC_SPIXR_Disable();
+
+    if (fail == 0) {
+        printf("EXAMPLE SUCCEEDED\n");
+        return 0;
+    } else {
+        printf("EXAMPLE FAILED\n");
+        return -1;
+    }
 
     return 0;
 }

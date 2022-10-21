@@ -226,6 +226,7 @@ int main(void)
         printf("Returned from external flash\n");
     } else {
         printf("MEMORY MIS-COMPARE!\n");
+        return -1;
     }
 
     printf("\nEND OF LINE.\n");

@@ -279,9 +279,9 @@ int main()
     printf("\n");
     if (verifyData()) {
         printf("\n-->I2C Transaction Successful\n");
-        return PASSED;
+        return 0;
     } else {
         printf("\n-->I2C Transaction Failed\n");
-        return FAILED;
+        return -1;
     }
 }

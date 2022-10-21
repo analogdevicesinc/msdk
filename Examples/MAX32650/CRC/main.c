@@ -102,6 +102,7 @@ int main(void)
 
     if (hw_crc != sw_crc) {
         printf("CRC Failed!\n");
+        return -1;
     } else {
         printf("CRC Passed!\n");
     }
@@ -130,8 +131,10 @@ int main(void)
 
     if (hw_crc != sw_crc) {
         printf("CRC Failed!\n");
+        return -1;
     } else {
         printf("CRC Passed!\n");
+        return 0;
     }
 
     printf("\nExample complete.\n");
