@@ -52,6 +52,7 @@ import re
 from imgConverter import convert
 import argparse
 import cv2
+from pathlib import Path
 
 # Utility printer for printing a tracking console prompt "$"
 # after the message.  Is there a better way to do this?  Probably...
@@ -212,7 +213,7 @@ class CameraIFConsole():
                                 else:
                                     filename = "Image.png"
                                     convert(img_raw, filename, w, h, pixel_format)
-                                    _print(f"Saved image to '{filename}'")
+                                    _print(f"Saved image to '{Path(filename).absolute()}'")
 
                                     # The code below will display the image in an OpenCV
                                     # window.  It's disabled by default because it won't

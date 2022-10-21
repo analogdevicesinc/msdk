@@ -52,7 +52,9 @@ char *my_itoa(int value, char *str, int base)
     int tmpValue = value;
 
     // find number chrachter
-    for (i = 0; tmpValue; i++) { tmpValue /= base; }
+    for (i = 0; tmpValue; i++) {
+        tmpValue /= base;
+    }
 
     if (i == 0) {
         i = 1; // 0 case

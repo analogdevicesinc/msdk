@@ -26,7 +26,7 @@ The MSDK code-base, for the most-part, follows the [Linux Kernel coding style](h
 
 * Indentations are 4 spaces.
 
-Formatting and styling is enforced via [clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html) and [cpplint](https://github.com/cpplint/cpplint), which automatically run checks against all PRs.  A PR cannot be merged until it passes these checks.
+Formatting and styling is enforced via [clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html) **version 14** and [cpplint](https://github.com/cpplint/cpplint), which automatically run checks against all PRs.  A PR cannot be merged until it passes these checks.
 
 ### Running the Linter & Formatter
 
@@ -70,6 +70,7 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
 #### clang-format
 
 [clang-format](https://www.kernel.org/doc/html/latest/process/clang-format.html) is a code formatter and style checker that enforces a common style for the code-base.
+**The MSDK uses version 14**, which is sometimes not available by default on some Linux distributions.  It can be retrieved from [https://apt.llvm.org/](https://apt.llvm.org/). 
 
 1. `cd` into the root directory of the MSDK repo.
 
@@ -79,12 +80,12 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
 
     To run a clang-format _check_ on a file, use the `-n` "dry-run" flag.  
 
-    `clang-format --style=file --Werror --verbose -n <filename>`
+    `clang-format-14 --style=file --Werror --verbose -n <filename>`
 
     For example:
 
     ```shell
-    $ clang-format --style=file --Werror --verbose -n Examples/MAX78000/CRC/main.c
+    $ clang-format-14 --style=file --Werror --verbose -n Examples/MAX78000/CRC/main.c
 
     Formatting [1/1] Examples/MAX78000/CRC/main.c
     Examples/MAX78000/CRC/main.c:86:40: error: code should be clang-formatted [-Wclang-format-violations]
@@ -94,12 +95,12 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
 
     To _apply_ the formatter to automatically format a file, use the `-i` flag.
 
-    `clang-format --style=file --Werror --verbose -i <filename>`
+    `clang-format-14 --style=file --Werror --verbose -i <filename>`
 
     For example:
 
     ```shell
-    clang-format --style=file --verbose -i Examples/MAX78000/CRC/main.c
+    clang-format-14 --style=file --verbose -i Examples/MAX78000/CRC/main.c
     Formatting [1/1] Examples/MAX78000/CRC/main.c
     ```
 
@@ -124,12 +125,12 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
 
     To recursively run clang-format on all C files in an entire directory, use:
 
-    `clang-format --style=file --verbose -n <filepath>/**/*.c`.
+    `clang-format-14 --style=file --verbose -n <filepath>/**/*.c`.
 
     For example:
 
     ```shell
-    $ clang-format --style=file --verbose -i Examples/MAX78000/ARM-DSP/**/*.c
+    $ clang-format-14 --style=file --verbose -i Examples/MAX78000/ARM-DSP/**/*.c
 
     Formatting [1/24] Examples/MAX78000/ARM-DSP/arm_bayes_example/arm_bayes_example_f32.c
     Formatting [2/24] Examples/MAX78000/ARM-DSP/arm_class_marks_example/arm_class_marks_example_f32.c
@@ -139,7 +140,7 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
     ...
     ```
 
-    ... which runs the formatter for all C files in the `Examples/MAX78000/ARM-DSP` directory _and all its subdirectories_.
+    ... which runs the formatter for all C files in the `Examples/MAX78000/ARM-DSP` directory _and all its subdirectories_.  It should be noted that `**` is not supported on native Windows, but `*` is.
 
 4. `git add` and `git commit` any changes to your code.  Now, it's ready for a PR!  The same checks will be automatically run against any PRs that are opened in the MSDK, and they must pass before the code can be approved.
 

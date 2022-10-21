@@ -19,10 +19,12 @@ on:
     # Remove the line above to run when pushing to master
   pull_request:
     branches: [master, main]
+
+  workflow_dispatch:
     
 # Prevent duplicate runs
 concurrency: 
-  group: ${{ github.head_ref }}
+  group: ${{ github.ref }}
   cancel-in-progress: true
 
 ###############
@@ -33,7 +35,7 @@ jobs:
     # Name the Job
     name: Lint Code Base
     # Set the agent to run on
-    runs-on: [ self-hosted, lint ]
+    runs-on: [ ubuntu-latest ]
 
     ##################
     # Load all steps #
@@ -54,7 +56,7 @@ jobs:
       - name: Lint Code Base
         uses: github/super-linter/slim@v4
         env:
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           

@@ -226,7 +226,9 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     //
     // Transmit the data
     //
-    for (i = 0; i < byte_length; i++) { pSPIm->fifo8[0] = data[i]; }
+    for (i = 0; i < byte_length; i++) {
+        pSPIm->fifo8[0] = data[i];
+    }
 
     //
     // Receive the data

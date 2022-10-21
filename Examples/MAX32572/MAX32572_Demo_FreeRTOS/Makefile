@@ -86,7 +86,7 @@ endif
 
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
-SRCS += sla_header.c
+SRCS += header_MAX32572.c
 SRCS += resources/all_imgs.c
 SRCS += src/wrapper_tft.c
 SRCS += src/utils.c
