@@ -121,10 +121,10 @@ int main(void)
         }
 
         // Configure the peripheral
-        if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, MAP_A) != E_NO_ERROR) {
+        retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, MAP_A);
+        if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
-
-            while (1) {}
+            return retVal;
         }
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));

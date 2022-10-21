@@ -49,12 +49,16 @@
 
 char temp[] = { 0x00, 0x00, 0x00 };
 
-void Test_Result(int result)
+int Test_Result(int result)
 {
-    if (result)
+    if (result) {
         printf(" * Failed *\n\n");
-    else
+        return -1;
+    }
+    else {
         printf("   Passed  \n\n");
+        return 0;
+    }
 }
 
 void ascii_to_byte(const char *src, char *dst, int len)
@@ -71,8 +75,9 @@ void ascii_to_byte(const char *src, char *dst, int len)
     }
 }
 
-void Test_Hash(void)
+int Test_Hash(void)
 {
+	int ret;
     printf("Test Hash\n");
 
     unsigned char sha256_msg[] =
@@ -95,20 +100,27 @@ void Test_Hash(void)
 
     MXC_TPU_Hash_SHA((char *)sha256_msg, MXC_TPU_HASH_SHA256, msgLen, (char *)destination);
 
-    Test_Result(memcmp(sha256_result, destination, 32));
+    ret = Test_Result(memcmp(sha256_result, destination, 32));
 
     MXC_TPU_Shutdown(MXC_SYS_PERIPH_CLOCK_TPU);
 
-    return;
+    return ret;
 }
 
 int main(void)
 {
     printf("\n\n********** CTB Hash Example **********\n\n");
 
-    Test_Hash();
+    int fail = 0;
+    fail += Test_Hash();
 
-    printf("\n*** Done ***\n");
+    if (fail == 0) {
+        printf("Example Succeeded\n");
+        return 0;
+    } else {
+        printf("Example Failed\n");
+        return -1;
+    }
 
     return 0;
 }
