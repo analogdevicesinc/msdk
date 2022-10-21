@@ -1,0 +1,537 @@
+###############################################################################
+# usage: ./verify_tifs.sh path_of_MaximSDK                                    #
+# example: ./verify_tifs.sh /home/$USER/Workspace/msdk-main                   #
+###############################################################################
+
+MSDK_DIR: /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk
+nRF51 dongle: /dev/ttyACM6
+Found Serial Device 1: /dev/ttyUSB4
+Found Serial Device 2: /dev/ttyUSB1
+DevKit UART3 1: /dev/ttyUSB3
+DevKit UART3 2: /dev/ttyUSB0
+Synchronizing submodule url for 'Libraries/Cordio'
+Synchronizing submodule url for 'Libraries/FCL'
+Synchronizing submodule url for 'Libraries/FreeRTOS'
+Synchronizing submodule url for 'Libraries/FreeRTOS-Plus'
+Synchronizing submodule url for 'Libraries/LC3'
+Synchronizing submodule url for 'Libraries/MAXUSB'
+Synchronizing submodule url for 'Libraries/MiscDrivers'
+Synchronizing submodule url for 'Libraries/SDHC'
+Synchronizing submodule url for 'Libraries/littlefs'
+Synchronizing submodule url for 'Libraries/lwIP'
+Submodule path 'Libraries/Cordio': checked out '31304222a76634093b009a2f90c042d45ed775f5'
+Submodule path 'Libraries/FCL': checked out '65682769e724c5eb8c2d84ea529b7bf82c4bba5f'
+Submodule path 'Libraries/FreeRTOS': checked out '8f65d437aa1905e78020fed90033516f8b6edcd4'
+Submodule path 'Libraries/FreeRTOS-Plus': checked out '600d0dab88bf362ba90b55ca242d0ae616e619bf'
+Submodule path 'Libraries/LC3': checked out '8baca9c7f240fed5c567fca2224deb7508231fb9'
+Submodule path 'Libraries/MAXUSB': checked out '3940dc35c34127ecffb27d515abff4769999ab0d'
+Submodule path 'Libraries/MiscDrivers': checked out '79c08c962b002085da27ddef601eb16c41814fde'
+Submodule path 'Libraries/SDHC': checked out '76cd6bcfe6e2afeccc58652f05c71b7278e762e7'
+Submodule path 'Libraries/littlefs': checked out '47a7aa5db0558a8a8294147eda2b3a50f1381e34'
+Submodule path 'Libraries/lwIP': checked out '6b8cc865e227ce63ca5976ccfe9d5a268cfe42d9'
+/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655
+./BLE5_ctr
+---------------------------------------
+ Validation build for ./BLE5_ctr
+---------------------------------------
+make: Entering directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+Loaded project.mk
+make: Leaving directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+make: Entering directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+Loaded project.mk
+make  -f /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/PeriphDrivers/periphdriver.mk clean.periph
+make[1]: Entering directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+make[1]: Leaving directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+make: Leaving directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+make: Entering directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+Loaded project.mk
+make -f /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/PeriphDrivers/libPeriphDriver.mk  lib BUILD_DIR=/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/PeriphDrivers/bin/MAX32655/softfp PROJ_CFLAGS="-Wall  -DMXC_ASSERT_ENABLE -DEXT_FLASH_W25 -DATT_TRACE_ENABLED=0 -DHCI_TRACE_ENABLED=0 -DBT_VER=9 -DSCH_CHECK_LIST_INTEGRITY=1 -DuECC_ASM=2 -DINIT_BROADCASTER -DINIT_PERIPHERAL -DINIT_OBSERVER -DINIT_CENTRAL -DINIT_ENCRYPTED -DWSF_BUF_FREE_CHECK_ASSERT=1 -DWSF_BUF_STATS=1 -DWSF_CS_STATS=1 -DWSF_ASSERT_ENABLED=1 -DWSF_TRACE_ENABLED=1 -DSEC_CMAC_CFG=1 -DSEC_ECC_CFG=2 -DSEC_CCM_CFG=1 -DHCI_TR_EXACTLE=1 -DWSF_BUF_STATS=1 -DWSF_ASSERT_ENABLED=1 -DWSF_TRACE_ENABLED=1 -DWSF_HEAP_SIZE=0x10000 -DBB_CLK_RATE_HZ=1000000 -DLCTR_CONN_NO_TIFS_REASSEMBLY=1 -DCHCI_TR_UART=1 -DUART_BAUD=115200 -DUART_HWFC=0 -DBB_ENABLE_INLINE_ENC_TX=1 -DBB_ENABLE_INLINE_DEC_RX=1 -DPAL_MAX_RTC_COUNTER_VAL=0xFFFFFFFF -DLL_WW_RX_DEVIATION_USEC=0 -DBOARD=EvKit_V1 -DMAILBOX_SIZE=0 " PROJ_LDFLAGS="" MXC_OPTIMIZE_CFLAGS=-Os MFLOAT_ABI=softfp DUAL_CORE= RISCV_CORE=
+make[1]: Entering directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+  CC    main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Boards/MAX32655/EvKit_V1/Source/board.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Boards/MAX32655/EvKit_V1/../Source/stdio.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Boards/MAX32655/EvKit_V1/../Source/led.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Boards/MAX32655/EvKit_V1/../Source/pb.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/MiscDrivers/Display/tft_ssd2119.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SYS/mxc_assert.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/MiscDrivers/Touchscreen/tsc2046.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SYS/mxc_delay.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/MiscDrivers/ExtMemory/w25.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_disc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SYS/mxc_lock.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SYS/pins_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SYS/sys_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SYS/nvic_table.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_master_leg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/ADC/adc_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/ADC/adc_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/AES/aes_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/AES/aes_revb.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_server.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/DMA/dma_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/DMA/dma_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_slave_leg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/app_terminal.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/common/app_db.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/common/app_hw.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/CRC/crc_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/common/app_ui.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/common/ui_console.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/common/ui_lcd.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/common/ui_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/common/ui_platform.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/af/common/ui_timer.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/CRC/crc_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/LP/lp_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/LPCMP/lpcmp_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/anpc/anpc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/LPCMP/lpcmp_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/FLC/flc_common.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/FLC/flc_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/FLC/flc_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/GPIO/gpio_common.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/GPIO/gpio_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/GPIO/gpio_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/I2C/i2c_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/atpc/atpc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/atps/atps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/bas/bas_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/blpc/blpc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/I2C/i2c_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/blps/blps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/I2S/i2s_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/I2S/i2s_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/ICC/icc_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/cpp/cpps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/ICC/icc_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/cscp/cscps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/dis/dis_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/fmpl/fmpl_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/gap/gap_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/gatt/gatt_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/glpc/glpc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/glps/glps_db.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/OWM/owm_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/glps/glps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/OWM/owm_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/hid/hid_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/PT/pt_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/PT/pt_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/RTC/rtc_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/RTC/rtc_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SEMA/sema_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SEMA/sema_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/hrpc/hrpc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SIMO/simo_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SIMO/simo_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SPI/spi_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/hrps/hrps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/SPI/spi_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/htpc/htpc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/TRNG/trng_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/htps/htps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/TRNG/trng_revb.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/paspc/paspc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/plxpc/plxpc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/plxps/plxps_db.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/TMR/tmr_common.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/plxps/plxps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/TMR/tmr_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/rscp/rscps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/scpps/scpps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/TMR/tmr_revb.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/sensor/gyro_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/sensor/temp_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/UART/uart_common.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/tipc/tipc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/UART/uart_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/udsc/udsc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/uribeacon/uricfg_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_dc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/UART/uart_revb.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/WDT/wdt_common.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_ft.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/WDT/wdt_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/WDT/wdt_revb.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/WUT/wut_me17.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxc/wdxc_stream.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/../PeriphDrivers/Source/WUT/wut_reva.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_au.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_dc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_ft.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wdxs/wdxs_stream.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wpc/wpc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wspc/wspc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/profiles/wsps/wsps_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_alert.c
+  AR    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/PeriphDrivers/bin/MAX32655/softfp/libPeriphDriver_softfp.a
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_batt.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_bps.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_core.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_cps.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_cscs.c
+make[1]: Leaving directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_cte.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_dis.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_gls.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_gyro.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_hid.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_hrs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_hts.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_ipss.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_plxs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_px.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_rscs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_scpss.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_temp.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_time.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_uricfg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_wdxs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_wp.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-profiles/sources/services/svc_wss.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/att_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/att_uuid.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/att_eatt.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/attc_disc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/attc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/attc_proc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/attc_read.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/attc_sign.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/attc_write.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/attc_eatt.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_ccc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_csf.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_dyn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_ind.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_proc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_read.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_sign.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_write.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/att/atts_eatt.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/cfg/cfg_stack.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_adv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_adv_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_adv_leg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_bis_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_bis_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_cis.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_cis_sm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_cte.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_master_leg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_slave_leg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_conn_sm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_dev.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_dev_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_iso.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_past.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_scan.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_scan_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_scan_leg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_sec.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_lesc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_sec_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/dm/dm_sync_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/hci/hci_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/l2c/l2c_coc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/l2c/l2c_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/l2c/l2c_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/l2c/l2c_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smp_act.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smp_db.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smp_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smp_non.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smp_sc_act.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smp_sc_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smpi_act.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smpi_sc_act.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smpi_sc_sm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smpi_sm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smpr_act.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smpr_sc_act.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smpr_sc_sm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/stack/smp/smpr_sm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/sec/common/sec_aes.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/sec/common/sec_aes_rev.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/sec/common/sec_ccm_hci.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/sec/common/sec_cmac_hci.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/sec/common/sec_ecc_debug.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/sec/common/sec_ecc_hci.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/sec/common/sec_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_conn_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_pdufilt.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_periodiclist.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_reslist.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_sniffer.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_dtm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/bb/bb_ble_whitelist.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/init/init.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/init/init_ctr.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_conn_past.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_enc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_enc_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_init_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_init_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_pc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_act_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_conn_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_init_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_isr_init_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_cs2.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_data.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_conn_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_enc_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_enc_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_init_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_init_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_master_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_past.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_pc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_sc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_main_slave_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_pdu_enc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_conn_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_init_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_init_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_conn_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_enc_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_enc_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_master_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_pc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lctr/lctr_sm_llcp_slave_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_conn_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_enc_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_enc_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_past.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_pc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_sc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_enc_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_cmd_vs_sc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_cs2.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_conn_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_enc_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_enc_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_pc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_sc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_evt_vs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_cs2.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_conn_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_enc_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_enc_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_past.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_pc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_init_sc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lhci/lhci_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_cs2.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_conn_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_enc_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_enc_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_init_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_init_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_master_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_pc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_past.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_sc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_init_slave_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_conn_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_diag.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_dtm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_enc_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_enc_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_past.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_pc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_main_sc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/ll/ll_math.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_events.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_adv_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_adv_slave_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_conn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_priv.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_sc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/lmgr/lmgr_main_slave.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/sch/sch_ble.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/sch/sch_rm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/ble/sch/sch_tm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/common/bb/bb_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/common/chci/chci_tr.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/common/sch/sch_list.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/controller/sources/common/sch/sch_main.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/common/hci_core.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/common/hci_tr.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_bis.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_cis.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_cte.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_enc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_iso.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_master.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_master_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_past.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_cmd_phy.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_core_ps.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_evt.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_vs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/ble-host/sources/hci/exactle/hci_vs_ae.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/bda.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/bstream.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/calc128.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/crc32.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/fcs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/prand.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/print.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/terminal.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/util/wstr.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_assert.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_buf.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_bufio.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_cs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_detoken.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_efs.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_heap_sbrk.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_msg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_nvm.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_os.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_queue.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_timer.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/wsf/sources/targets/baremetal/wsf_trace.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_btn.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_cfg.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_codec.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_crypto.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_flash.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_i2s.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_led.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_rtc.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_sys.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_timer.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_twi.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_uart.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/Cordio/thirdparty/uecc/uECC_ll.c
+  AS    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/Device/Maxim/MAX32655/Source/GCC/startup_max32655.S
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/Device/Maxim/MAX32655/Source/heap.c
+  CC    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Libraries/CMSIS/Device/Maxim/MAX32655/Source/system_max32655.c
+  LD    /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr/build/max32655.elf 
+arm-none-eabi-size --format=berkeley /home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr/build/max32655.elf
+   text	   data	    bss	    dec	    hex	filename
+ 202664	   3404	  49552	 255620	  3e684	/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr/build/max32655.elf
+make: Leaving directory '/home/btm-ci/Workspace/btm-ci-github-runner2/_work/msdk/msdk/Examples/MAX32655/BLE5_ctr'
+PROJECT_NAME: BLE5_ctr
+==============================================================================
+
+BLE5_ctr Flashing Procedure 
+
+> Flashing BLE5_ctr
+=== DONE ===
