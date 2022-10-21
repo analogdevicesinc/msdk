@@ -180,9 +180,11 @@ int main(void)
         Fail();
         printf("Overdrive results: %d; %08x; %08x \n", retval, MXC_OWM->cfg, MXC_OWM->intfl);
         printf("Example Failed\n");
+        return -1;
     } else {
         Pass();
         printf("Example Succeeded\n");
+        return 0;
     }
 
     Done();
