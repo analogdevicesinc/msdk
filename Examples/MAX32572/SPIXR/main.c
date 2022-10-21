@@ -77,8 +77,7 @@ void setup(void)
     if (MXC_SPIXR_Init(&init_cfg) != E_NO_ERROR) {
         printf("\nSPIXR was not initialized properly.\n");
         printf("\nExample Failed\n");
-
-        while (1) {}
+        return E_UNINITIALIZED;
     }
 
     MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_SRCC_DIS;
@@ -104,6 +103,8 @@ void setup(void)
     MXC_SPIXR_ExMemSetReadCommand(A1024_READ);
     MXC_SPIXR_ExMemSetWriteCommand(A1024_WRITE);
     MXC_SPIXR_ExMemEnable();
+
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************
@@ -126,7 +127,9 @@ int main(void)
     // Configure the SPIXR
     printf("\nSetting up the SPIXR\n");
 
-    setup();
+    if(E_NO_ERROR != setup()) {
+    	fail += 1;
+    }
 
     // Initialize & write pseudo-random data to be written to the RAM
     printf("\nTX BUFFER:\t ");
@@ -161,9 +164,11 @@ int main(void)
 
     if (fail == 0) {
         printf("EXAMPLE SUCCEEDED\n");
+        return 0;
     } else {
         printf("EXAMPLE FAILED\n");
+        return -1;
     }
 
-    while (1) {}
+    return 0;
 }

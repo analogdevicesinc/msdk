@@ -58,6 +58,7 @@
 #define ITERATIONS 5000
 
 /***** Globals *****/
+int fail = 0;
 int s, ss;
 
 mxc_spixr_cfg_t init_cfg = {
@@ -71,14 +72,14 @@ mxc_spixr_cfg_t init_cfg = {
 
 /***** Functions *****/
 
-void setup(void)
+int setup(void)
 {
     uint8_t quad_cmd = A1024_EQIO; /* pre-defined command to use quad mode         */
 
     // Initialize the desired configuration
     if (MXC_SPIXR_Init(&init_cfg) != E_NO_ERROR) {
         printf("FAILED: SPIXR was not initialized properly.\n");
-        return;
+        return E_UNINITIALIZED;
     }
 
     /* Hide this with function in SPIXR.C later */
@@ -103,6 +104,8 @@ void setup(void)
     MXC_SPIXR_ExMemSetReadCommand(A1024_READ);
     MXC_SPIXR_ExMemSetWriteCommand(A1024_WRITE);
     MXC_SPIXR_ExMemEnable();
+
+    return E_NO_ERROR;
 }
 
 void start_timer(void)
@@ -132,7 +135,9 @@ void test_function(void)
     unsigned int seed = 0;
 
     // Configure the SPIXR
-    setup();
+    if(E_NO_ERROR != setup()) {
+    	fail += 1;
+    }
 
     // Initialize & write pseudo-random data to be written to the RAM
     for (i = 0; i < BUFFER_SIZE; i++) {
@@ -153,6 +158,7 @@ void test_function(void)
         // Verify data being read from RAM
         if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
             printf("FAILED: Data was not read properly.\n\n");
+            fail += 1;
             break;
         }
     }
@@ -178,7 +184,13 @@ int main(void)
     MXC_SRCC_Disable();
     test_function();
 
-    printf("Example complete.\n");
+    if (fail == 0) {
+        printf("EXAMPLE SUCCEEDED\n");
+        return 0;
+    } else {
+        printf("EXAMPLE FAILED\n");
+        return -1;
+    }
 
-    while (1) {}
+    return 0;
 }
