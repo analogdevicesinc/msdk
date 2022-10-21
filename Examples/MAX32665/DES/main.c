@@ -565,7 +565,10 @@ int main(void)
 
     if (errCnt == 0) {
         printf("Example Complete.\n");
+        return 0;
     } else {
         printf("%d Operations FAILED!\n", errCnt);
+        return -1;
     }
+    return 0;
 }
