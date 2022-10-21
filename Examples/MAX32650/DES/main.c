@@ -77,7 +77,7 @@ void ascii_to_byte(const char *src, char *dst, int len)
 }
 
 /* Verify by comparing calculated to expected */
-void DES_check(char *calculated, char *expected, int len)
+int DES_check(char *calculated, char *expected, int len)
 {
     int i, fail = 0;
 
@@ -89,14 +89,16 @@ void DES_check(char *calculated, char *expected, int len)
 
     if (fail > 0) {
         printf("Fail.\n");
+        return -1;
     } else {
         printf("Pass.\n");
+        return 0;
     }
 
-    return;
+    return 0;
 }
 
-void DES_ECB_enc(void)
+int DES_ECB_enc(void)
 {
     char *xkey = "2f5d4b8c12a4a9c1";
     char key[MXC_DES_KEY_LEN];
@@ -116,11 +118,10 @@ void DES_ECB_enc(void)
 
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
 
-    DES_check(result, expected, MXC_DES_DATA_LEN);
-    return;
+    return DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
-void DES_ECB_dec(void)
+int DES_ECB_dec(void)
 {
     char *xkey = "00c3de5446614d35";
     char key[MXC_DES_KEY_LEN];
@@ -142,11 +143,10 @@ void DES_ECB_dec(void)
 
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
 
-    DES_check(result, expected, MXC_DES_DATA_LEN);
-    return;
+    return DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
-void TDES_ECB_enc(void)
+int TDES_ECB_enc(void)
 {
     char *xkey = "0fb5b906471296bc1ab269585e1c99dcf10dd7b047cdee29";
     char key[MXC_TDES_KEY_LEN];
@@ -168,11 +168,10 @@ void TDES_ECB_enc(void)
 
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
 
-    DES_check(result, expected, MXC_DES_DATA_LEN);
-    return;
+    return DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
-void TDES_ECB_dec(void)
+int TDES_ECB_dec(void)
 {
     char *xkey = "2e0a67fe76bc3d3c1081c45a48784f49c876033acc85f69c";
     char key[MXC_TDES_KEY_LEN];
@@ -192,8 +191,7 @@ void TDES_ECB_dec(void)
 
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
 
-    DES_check(result, expected, MXC_DES_DATA_LEN);
-    return;
+    return DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
 // *****************************************************************************
@@ -201,15 +199,24 @@ int main(void)
 {
     printf("\n***** DES Example *****\n");
 
-    printf("DES ECB Encryption ... ");
-    DES_ECB_enc();
-    printf("DES ECB Decryption ... ");
-    DES_ECB_dec();
-    printf("Triple DES ECB Encryption ... ");
-    TDES_ECB_enc();
-    printf("Triple DES ECB Decryption ... ");
-    TDES_ECB_dec();
+    int fail = 0;
 
-    printf("\nExample complete.\n");
-    while (1) {}
+    printf("DES ECB Encryption ... ");
+    fail += DES_ECB_enc();
+    printf("DES ECB Decryption ... ");
+    fail += DES_ECB_dec();
+    printf("Triple DES ECB Encryption ... ");
+    fail += TDES_ECB_enc();
+    printf("Triple DES ECB Decryption ... ");
+    fail += TDES_ECB_dec();
+
+    if (fail == 0) {
+        printf("\nExample Succeeded\n");
+        return 0;
+    } else {
+        printf("\nExample Failed\n");
+        return -1;
+    }
+
+    return 0;
 }
