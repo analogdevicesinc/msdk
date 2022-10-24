@@ -1402,7 +1402,7 @@
       </register>
       <register>
         <dim>4</dim>
-        <dimIncrement>1</dimIncrement>
+        <dimIncrement>4</dimIncrement>
         <name>SLAVE_MULTI[%s]</name>
         <description>Slave Address Register.</description>
         <alternateRegister>SLAVE0</alternateRegister>

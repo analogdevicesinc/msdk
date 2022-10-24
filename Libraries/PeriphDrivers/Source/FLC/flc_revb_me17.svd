@@ -44,7 +44,7 @@
         </fields>
       </register>
       <register>
-        <name>CN</name>
+        <name>CTRL</name>
         <description>Flash Control Register.</description>
         <addressOffset>0x08</addressOffset>
         <fields>
@@ -213,9 +213,28 @@
         </fields>
       </register>
       <register>
+        <name>ECCDATA</name>
+        <description>ECC Data Register.</description>
+        <addressOffset>0x28</addressOffset>
+        <fields>
+          <field>
+            <name>EVEN</name>
+            <description>Error Correction Code Odd Data.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+          <field>
+            <name>ODD</name>
+            <description>Error Correction Code Even Data.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>9</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>DATA</name>
+        <name>DATA[%s]</name>
         <description>Flash Write Data.</description>
         <addressOffset>0x30</addressOffset>
         <fields>
@@ -228,7 +247,7 @@
         </fields>
       </register>
       <register>
-        <name>ACNTL</name>
+        <name>ACTRL</name>
         <description>Access Control Register. Writing the ACTRL register with the following values in the order shown, allows read and write access to the system and user Information block:
     pflc-actrl = 0x3a7f5ca3;
     pflc-actrl = 0xa1e34f20;
