@@ -231,25 +231,6 @@
         </fields>
       </register>
       <register>
-        <name>ECCDATA</name>
-        <description>ECC Data Register.</description>
-        <addressOffset>0x2C</addressOffset>
-        <fields>
-          <field>
-            <name>EVEN</name>
-            <description>Error Correction Code Odd Data.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>9</bitWidth>
-          </field>
-          <field>
-            <name>ODD</name>
-            <description>Error Correction Code Even Data.</description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>9</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
         <name>DATA[%s]</name>
