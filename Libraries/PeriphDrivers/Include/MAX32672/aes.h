@@ -40,8 +40,8 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_AES_H_
 
 /***** Includes *****/
-#include "sys_aes_regs.h"
-#include "sys_aes_key_regs.h"
+#include "aes_regs.h"
+#include "aes_key_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,9 +66,9 @@ typedef void (*mxc_aes_complete_t)(void *req, int result);
   *
   */
 typedef enum {
-    MXC_AES_128BITS = MXC_S_SYS_AES_CTRL_KEY_SIZE_AES128, ///< Select AES-128 bit key
-    MXC_AES_192BITS = MXC_S_SYS_AES_CTRL_KEY_SIZE_AES192, ///< Select AES-192 bit key
-    MXC_AES_256BITS = MXC_S_SYS_AES_CTRL_KEY_SIZE_AES256, ///< Select AES-256 bit key
+    MXC_AES_128BITS = MXC_S_AES_CTRL_KEY_SIZE_AES128, ///< Select AES-128 bit key
+    MXC_AES_192BITS = MXC_S_AES_CTRL_KEY_SIZE_AES192, ///< Select AES-192 bit key
+    MXC_AES_256BITS = MXC_S_AES_CTRL_KEY_SIZE_AES256, ///< Select AES-256 bit key
 } mxc_aes_keys_t;
 
 /**
