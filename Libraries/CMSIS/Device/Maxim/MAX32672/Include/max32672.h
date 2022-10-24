@@ -285,7 +285,9 @@ typedef enum {
 
 // DEPRECATED(10-24-2022): Scheduled for removal.
 // mxc_sys_aes_key_regs_t struct deprecated. Use mxc_aes_key_regs_t.
-typedef __attribute__((deprecated("Use MXC_AESKEY (mxc_aes_key_regs_t), not the deprecated MXC_SYS_AESKEY (mxc_sys_aes_key_regs_t) instance name and struct. 10-24-2022"))) mxc_aes_key_regs_t mxc_sys_aes_key_regs_t;
+typedef __attribute__((deprecated(
+    "Use MXC_AESKEY (mxc_aes_key_regs_t), not the deprecated MXC_SYS_AESKEY (mxc_sys_aes_key_regs_t) instance name and struct. 10-24-2022")))
+mxc_aes_key_regs_t mxc_sys_aes_key_regs_t;
 #define MXC_SYS_AESKEY ((mxc_sys_aes_key_regs_t *)MXC_BASE_AESKEY)
 
 /******************************************************************************/
@@ -309,7 +311,9 @@ typedef __attribute__((deprecated("Use MXC_AESKEY (mxc_aes_key_regs_t), not the 
 #define MXC_AES ((mxc_aes_regs_t *)MXC_BASE_AES)
 
 // DEPRECATED(10-24-2022): Scheduled for removal.
-typedef __attribute__((deprecated("Use MXC_AES (mxc_aes_regs_t), not the deprecated MXC_SYS_AES (mxc_sys_aes_regs_t) instance name and struct. 10-24-2022"))) mxc_aes_regs_t mxc_sys_aes_regs_t;
+typedef __attribute__((deprecated(
+    "Use MXC_AES (mxc_aes_regs_t), not the deprecated MXC_SYS_AES (mxc_sys_aes_regs_t) instance name and struct. 10-24-2022")))
+mxc_aes_regs_t mxc_sys_aes_regs_t;
 #define MXC_SYS_AES ((mxc_sys_aes_regs_t *)MXC_BASE_AES)
 
 /******************************************************************************/
