@@ -413,8 +413,10 @@ int main(void)
 
     if (fail == 0) {
         printf("Example Succeeded\n");
+        return 0;
     } else {
         printf("Example Failed\n");
+        return -1;
     }
 
     return 0;
