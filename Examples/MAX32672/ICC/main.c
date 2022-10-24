@@ -154,8 +154,10 @@ int main(void)
 
     if (fail == 0) {
         printf("\nEXAMPLE SUCCEEDED\n");
+        return 0;
     } else {
         printf("\nEXAMPLE FAILED\n");
+        return -1;
     }
 
     return 0;
