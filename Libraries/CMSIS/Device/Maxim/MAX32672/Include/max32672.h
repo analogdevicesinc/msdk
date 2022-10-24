@@ -41,7 +41,8 @@
 #define MXC_NUMCORES 1
 
 #include <stdint.h>
-// TODO(ADI): Remove below after grace period. Temporarily added these includes to resolve errors 
+
+// TODO(ADI): Remove below after grace period. Temporarily added these includes to resolve errors
 // for grace period before eventually removing support for deprecated features. 10-24-2022
 //>>>
 #include "trimsir_regs.h"
