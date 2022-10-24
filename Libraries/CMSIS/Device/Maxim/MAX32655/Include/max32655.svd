@@ -364,7 +364,7 @@
   <peripheral>
    <name>AES_KEY</name>
    <description>AES Key Registers.</description>
-   <baseAddress>0x40078000</baseAddress>
+   <baseAddress>0x40007800</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -425,10 +425,10 @@
   <peripheral>
    <name>AES</name>
    <description>AES Keys.</description>
-   <baseAddress>0x40074000</baseAddress>
+   <baseAddress>0x40007400</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x800</size>
+    <size>0x400</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
