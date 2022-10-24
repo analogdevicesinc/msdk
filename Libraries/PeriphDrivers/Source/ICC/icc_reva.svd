@@ -6,7 +6,7 @@
     <baseAddress>0x4002A000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
-      <size>0x400</size>
+      <size>0x800</size>
       <usage>registers</usage>
     </addressBlock>
     <registers>
