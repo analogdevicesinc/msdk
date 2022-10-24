@@ -1,12 +1,14 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -32,24 +34,21 @@
  ******************************************************************************/
 
 #include "mxc_device.h"
-#include "led.h"
+#include "gpio.h"
 
 /******************************************************************************/
 __attribute__((section(".xip_section"))) void xip_function(void)
 {
     volatile int i;
     int j;
-    printf("Running code from external flash\n");
 
-    for (j = 0; j < 25; j++) {
-        LED_Off(0);
+    for (j = 0; j < 10; j++) {
+        MXC_GPIO1->out_set = MXC_GPIO_PIN_14;
 
-        for (i = 0; i < 0xFFF; i++) {}
+        for (i = 0; i < 0x100000; i++) {}
 
-        LED_On(0);
+        MXC_GPIO1->out_clr = MXC_GPIO_PIN_14;
 
-        for (i = 0; i < 0xFFF; i++) {}
+        for (i = 0; i < 0x100000; i++) {}
     }
-
-    LED_Off(0);
 }
