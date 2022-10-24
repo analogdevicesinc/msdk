@@ -471,15 +471,8 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
             snprintf(buff, sizeof(buff), "%s (%0.1f%%)", classes[max_index],
                      (double)100.0 * max / 32768.0);
             TFT_Print(buff, 100, 8, font_1);
-            //snprintf(buff, sizeof(buff), "__________________________ ");
-            //TFT_Print(buff, 1, 50, urw_gothic_12_white_bg_grey);
-            //snprintf(buff, sizeof(buff), "Top classes:");
-            //TFT_Print(buff, 1, 80, urw_gothic_13_white_bg_grey);
-        } else {
-            //snprintf(buff, sizeof(buff), "%s (%0.1f%%)", classes[max_index],
-            //         (double) 100.0 * max / 32768.0);
-            //TFT_Print(buff, 20, 80 + 20 * top, urw_gothic_12_white_bg_grey);
-        }
+        } 
+
         /* reset for next top */
         temp[max_index] = 1 << 31;
         max_ml = 1 << 31;
