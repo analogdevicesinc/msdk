@@ -95,25 +95,25 @@ void MXC_ICC_Flush(void);
  * @param   cid     Selects what information to get from the Cache ID Register
  * @retval  Returns the selected value from the Cache ID Register.
  */
-int MXC_ICC_IDInst(mxc_icc_regs_t* icc, mxc_icc_info_t cid);
+int MXC_ICC_IDInst(mxc_icc_regs_t *icc, mxc_icc_info_t cid);
 
 /**
  * @brief   Enables one of the ICC's.
  * @param   icc     Pointer to ICC instance to enable.
  */
-void MXC_ICC_EnableInst(mxc_icc_regs_t* icc);
+void MXC_ICC_EnableInst(mxc_icc_regs_t *icc);
 
 /**
  * @brief   Disables one of the ICC's.
  * @param   icc     Pointer to ICC instance to disable.
  */
-void MXC_ICC_DisableInst(mxc_icc_regs_t* icc);
+void MXC_ICC_DisableInst(mxc_icc_regs_t *icc);
 
 /**
  * @brief   Flushes data from one of the ICC's.
  * @param   icc     Pointer to ICC instance to flush.
  */
-void MXC_ICC_FlushInst(mxc_icc_regs_t* icc);
+void MXC_ICC_FlushInst(mxc_icc_regs_t *icc);
 
 /**@} end of group icc */
 

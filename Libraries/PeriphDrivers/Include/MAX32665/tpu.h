@@ -99,9 +99,10 @@ typedef enum {
   * Enumeration type to select which key is used in Cipher operations
   */
 typedef enum {
-    MXC_TPU_KEYSRC_CIPHER_KEY = MXC_S_TPU_CIPHER_CTRL_SRC_CIPHERKEY,       // Use key in CIPHER_KEY[0:7]
-    MXC_TPU_KEYSRC_AES_KEY2 = MXC_S_TPU_CIPHER_CTRL_SRC_REGFILE,         // Use key 0 in AES_KEY registers
-    MXC_TPU_KEYSRC_AES_KEY3 = MXC_S_TPU_CIPHER_CTRL_SRC_QSPIKEY_REGFILE  // Use key 1 in AES_KEY registers
+    MXC_TPU_KEYSRC_CIPHER_KEY = MXC_S_TPU_CIPHER_CTRL_SRC_CIPHERKEY, // Use key in CIPHER_KEY[0:7]
+    MXC_TPU_KEYSRC_AES_KEY2 = MXC_S_TPU_CIPHER_CTRL_SRC_REGFILE, // Use key 0 in AES_KEY registers
+    MXC_TPU_KEYSRC_AES_KEY3 =
+        MXC_S_TPU_CIPHER_CTRL_SRC_QSPIKEY_REGFILE // Use key 1 in AES_KEY registers
 } mxc_tpu_keysrc_t;
 
 /**

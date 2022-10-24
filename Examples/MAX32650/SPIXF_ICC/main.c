@@ -50,11 +50,11 @@
 #include "tmr.h"
 
 /* **** Definitions **** */
-#define EXT_FLASH_ADDR         0
+#define EXT_FLASH_ADDR 0
 #define EXT_FLASH_SPIXFC_WIDTH Ext_Flash_DataLine_Quad
-#define SSEC_TO_MSEC(ssec)     ((ssec * 1000) / 4096)
-#define SEC_TO_MIN(sec)        (sec / 60)
-#define SEC_REMAIN(sec)        (sec % 60)
+#define SSEC_TO_MSEC(ssec) ((ssec * 1000) / 4096)
+#define SEC_TO_MIN(sec) (sec / 60)
+#define SEC_REMAIN(sec) (sec % 60)
 
 /***** Globals *****/
 int fail = 0;
@@ -69,7 +69,7 @@ extern uint8_t __load_start_xip, __load_length_xip;
 // Note: This demo has not been tested under IAR and should be considered non-functional
 extern int Image$$RW_IRAM2$$Length;
 extern char Image$$RW_IRAM2$$Base[];
-uint8_t* __xip_addr;
+uint8_t *__xip_addr;
 #endif
 
 /******************************************************************************/
@@ -83,7 +83,7 @@ __attribute__((section(".xip_section"))) void icc_test_func(void)
 {
     volatile int i, j;
     volatile int k = 0;
-    (void) k; // Suppress unused variable warning
+    (void)k; // Suppress unused variable warning
 
     // Perform operations
     for (i = 0; i < 500; i++) {
@@ -133,9 +133,9 @@ void start_timer(void)
 /* ************************************************************************** */
 int stop_timer(int test_num)
 {
-    int time_elapsed   = MXC_TMR_SW_Stop(MXC_TMR0);
-    unsigned int sec   = time_elapsed / 1000000;
-    unsigned int mili  = (time_elapsed - (sec * 1000000)) / 1000;
+    int time_elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    unsigned int sec = time_elapsed / 1000000;
+    unsigned int mili = (time_elapsed - (sec * 1000000)) / 1000;
     unsigned int micro = time_elapsed - (sec * 1000000) - (mili * 1000);
 
     printf("Test %d complete.\n", test_num);
@@ -161,8 +161,7 @@ int main(void)
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("External flash initialization Failed\n");
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) {}
     }
     printf("%s Initialized.\n", EXT_FLASH_NAME);
     Ext_Flash_Reset();
@@ -171,30 +170,26 @@ int main(void)
     if ((id = Ext_Flash_ID()) != EXT_FLASH_EXP_ID) {
         printf("Error verifying external flash ID: 0x%x\n", id);
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) {}
     }
 
     // Erase sector of external flash to store test function
     if ((err = Ext_Flash_Erase(0x00000, Ext_Flash_Erase_64K)) != E_NO_ERROR) {
         printf("Flash erase failed with error code: %d\n", err);
         printf("Example Failed\n");
-        while (1)
-            ;
+        while (1) {}
     }
 
     // Enable Quad mode if necessary
     if (EXT_FLASH_SPIXFC_WIDTH == Ext_Flash_DataLine_Quad) {
         if (Ext_Flash_Quad(1) != E_NO_ERROR) {
             printf("Error enabling quad mode\n\n");
-            while (1)
-                ;
+            while (1) {}
         }
     } else {
         if (Ext_Flash_Quad(0) != E_NO_ERROR) {
             printf("Error disabling quad mode\n\n");
-            while (1)
-                ;
+            while (1) {}
         }
     }
 
@@ -213,8 +208,7 @@ int main(void)
     spixf_cfg_setup();
 
     printf("Setup complete. Press SW2 to run ICC1 test.\n\n");
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) {}
 
     /***** ICC Enabled Test *****/
     MXC_ICC_EnableInst(MXC_ICC1);

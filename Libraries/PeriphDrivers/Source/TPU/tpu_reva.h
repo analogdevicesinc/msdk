@@ -57,9 +57,12 @@ typedef enum {
   * Enumeration type to select which key is used in Cipher operations
   */
 typedef enum {
-    MXC_TPU_REVA_KEYSRC_KEY0 = MXC_S_TPU_REVA_CIPHER_CTRL_SRC_CIPHERKEY,       // Use key in CIPHER_KEY[0:7]
-    MXC_TPU_REVA_KEYSRC_KEY2 = MXC_S_TPU_REVA_CIPHER_CTRL_SRC_REGFILE,         // Use key 0 in AES_KEY registers
-    MXC_TPU_REVA_KEYSRC_KEY3 = MXC_S_TPU_REVA_CIPHER_CTRL_SRC_QSPIKEY_REGFILE  // Use key 1 in AES_KEY registers
+    MXC_TPU_REVA_KEYSRC_KEY0 =
+        MXC_S_TPU_REVA_CIPHER_CTRL_SRC_CIPHERKEY, // Use key in CIPHER_KEY[0:7]
+    MXC_TPU_REVA_KEYSRC_KEY2 =
+        MXC_S_TPU_REVA_CIPHER_CTRL_SRC_REGFILE, // Use key 0 in AES_KEY registers
+    MXC_TPU_REVA_KEYSRC_KEY3 =
+        MXC_S_TPU_REVA_CIPHER_CTRL_SRC_QSPIKEY_REGFILE // Use key 1 in AES_KEY registers
 } mxc_tpu_reva_keysrc_t;
 
 /**
