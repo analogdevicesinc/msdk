@@ -274,20 +274,31 @@ int MXC_TPU_RevA_Cipher_Config(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_modesel_t 
     return E_SUCCESS;
 }
 
+// ******************************* Function to Select the Source of the Cipher Key *************************************
+int MXC_TPU_RevA_Cipher_KeySelect(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_keysrc_t key_src)
+{
+    MXC_SETFIELD(tpu->cipher_ctrl, MXC_F_TPU_REVA_CIPHER_CTRL_SRC, key_src);
+
+    return E_SUCCESS;
+}
+
 // ************************************ Function to Test Cipher Algorithm ***********************************
 int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t *tpu, const char *src, const char *iv,
                                     const char *key, mxc_tpu_ciphersel_t cipher,
                                     mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr)
 {
     unsigned int keyLength, dataLength, numBlocks, i;
+    uint32_t key_src = tpu->cipher_ctrl & MXC_F_TPU_REVA_CIPHER_CTRL_SRC;
 
     if (data_size == 0) {
         return E_INVALID;
     }
 
     // Check if src, key, iv is a null pointer
-    if (src == NULL || (iv == NULL && mode != (mxc_tpu_modesel_t)MXC_TPU_REVA_MODE_ECB) ||
-        key == NULL) {
+    if (src == NULL || (iv == NULL && mode != (mxc_tpu_modesel_t)MXC_TPU_REVA_MODE_ECB)) {
+        return E_NULL_PTR;
+    }
+    else if (key == NULL && key_src == MXC_TPU_REVA_KEYSRC_KEY0) {  // Key source 0 requires valid key to copy into CIPHER_KEY[0:7]
         return E_NULL_PTR;
     }
 
@@ -296,8 +307,10 @@ int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t *tpu, const char *src, c
     keyLength = MXC_TPU_Cipher_Get_Key_Size(cipher);
     dataLength = MXC_TPU_Cipher_Get_Block_Size(cipher);
 
-    // Load key into cipher key register
-    memcpy32((void *)&tpu->cipher_key[0], (void *)key, keyLength);
+    // If using key source 0, copy key into CIPHER_KEY[0:7]
+     if(key_src == MXC_TPU_REVA_KEYSRC_KEY0) {
+        memcpy32((void *)&tpu->cipher_key[0], (void *)key, keyLength);
+    }
 
     // Load Initial Vector if necessary
     if (mode != MXC_TPU_MODE_ECB) {

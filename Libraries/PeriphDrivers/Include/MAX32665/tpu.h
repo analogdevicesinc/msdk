@@ -96,6 +96,15 @@ typedef enum {
 } mxc_tpu_ciphersel_t;
 
 /**
+  * Enumeration type to select which key is used in Cipher operations
+  */
+typedef enum {
+    MXC_TPU_KEYSRC_CIPHER_KEY = MXC_S_TPU_CIPHER_CTRL_SRC_CIPHERKEY,       // Use key in CIPHER_KEY[0:7]
+    MXC_TPU_KEYSRC_AES_KEY2 = MXC_S_TPU_CIPHER_CTRL_SRC_REGFILE,         // Use key 0 in AES_KEY registers
+    MXC_TPU_KEYSRC_AES_KEY3 = MXC_S_TPU_CIPHER_CTRL_SRC_QSPIKEY_REGFILE  // Use key 1 in AES_KEY registers
+} mxc_tpu_keysrc_t;
+
+/**
   * Enumeration type for the Crypto Mode Select
   */
 typedef enum {
@@ -223,6 +232,13 @@ void MXC_TPU_Cipher_EncDecSelect(int enc);
  * @return    #E_SUCCESS     Cipher algorithm configured successfully
  */
 int MXC_TPU_Cipher_Config(mxc_tpu_modesel_t mode, mxc_tpu_ciphersel_t cipher);
+
+/**
+ * @brief      Select the source of the cipher key used in cipher operations
+ * @param      key_src      Selects the key used in cipher operations
+ * @return     #E_SUCCESS   Cipher key selected successfully
+ */
+int MXC_TPU_Cipher_KeySelect(mxc_tpu_keysrc_t key_src);
 
 /**
  * @brief      Test Cipher Algorithm
