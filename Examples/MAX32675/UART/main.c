@@ -130,13 +130,13 @@ int main(void)
     if ((error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        return -1;
     }
 
     if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        return -1;
     }
 
     // Max baud rate for most serial ports is 115200
@@ -170,7 +170,7 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        return -1;
     }
 
     error = MXC_UART_Transaction(&write_req);
@@ -178,7 +178,7 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        return -1;
     }
 
 #ifdef DMA
@@ -208,9 +208,11 @@ int main(void)
     if (fail == 0) {
         LED_On(1);
         printf("-->EXAMPLE SUCCEEDED\n");
+        return 0;
     } else {
         LED_On(0);
         printf("-->EXAMPLE FAILED\n");
+        return -1;
     }
 
     return 0;
