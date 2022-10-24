@@ -126,16 +126,6 @@
                 <description>Capture/Compare Mode</description>
                 <value>7</value>
               </enumeratedValue>
-              <enumeratedValue>
-                <name>DUAL_EDGE</name>
-                <description>Dual Edge Capture Mode</description>
-                <value>8</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>IGATED</name>
-                <description>Inactive Gated Mode</description>
-                <value>12</value>
-              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
@@ -187,32 +177,32 @@
               <enumeratedValue>
                 <name>DIV_BY_256</name>
                 <description>Prescaler Divide-By-256</description>
-                <value>8</value>
+                <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>DIV_BY_512</name>
                 <description>Prescaler Divide-By-512</description>
-                <value>9</value>
+                <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>DIV_BY_1024</name>
                 <description>Prescaler Divide-By-1024</description>
-                <value>10</value>
+                <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>DIV_BY_2048</name>
                 <description>Prescaler Divide-By-2048</description>
-                <value>11</value>
+                <value>3</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>DIV_BY_4096</name>
                 <description>Prescaler Divide-By-4096</description>
-                <value>12</value>
+                <value>4</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>DIV_BY_8192</name>
                 <description>Prescaler Divide-By-8192</description>
-                <value>13</value>
+                <value>5</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
