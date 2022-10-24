@@ -46,23 +46,55 @@
 /* **************************************************************************** */
 int MXC_ICC_ID(mxc_icc_info_t cid)
 {
-    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t *)MXC_ICC, cid);
+    int err = 0;
+
+    err += MXC_ICC_RevA_ID((mxc_icc_reva_regs_t *)MXC_ICC0, cid);
+    err += MXC_ICC_RevA_ID((mxc_icc_reva_regs_t *)MXC_ICC1, cid);
+
+    return err;
 }
 
 /* **************************************************************************** */
 void MXC_ICC_Enable(void)
 {
-    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)MXC_ICC);
+    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)MXC_ICC0);
+    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)MXC_ICC1);
 }
 
 /* **************************************************************************** */
 void MXC_ICC_Disable(void)
 {
-    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)MXC_ICC);
+    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)MXC_ICC0);
+    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)MXC_ICC1);
 }
 
 /* **************************************************************************** */
 void MXC_ICC_Flush(void)
 {
     MXC_ICC_Com_Flush();
+}
+
+/* **************************************************************************** */
+int MXC_ICC_IDInst(mxc_icc_regs_t* icc, mxc_icc_info_t cid)
+{
+    return MXC_ICC_RevA_ID((mxc_icc_reva_regs_t *)icc, cid);
+}
+
+/* **************************************************************************** */
+void MXC_ICC_EnableInst(mxc_icc_regs_t* icc)
+{
+    MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)icc);
+}
+
+/* **************************************************************************** */
+void MXC_ICC_DisableInst(mxc_icc_regs_t* icc)
+{
+    MXC_ICC_RevA_Disable((mxc_icc_reva_regs_t *)icc);
+}
+
+/* **************************************************************************** */
+void MXC_ICC_FlushInst(mxc_icc_regs_t* icc)
+{
+    MXC_ICC_DisableInst(icc);
+    MXC_ICC_EnableInst(icc);
 }

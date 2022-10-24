@@ -68,26 +68,52 @@ typedef enum {
 } mxc_icc_info_t;
 
 /**
- * @brief   Reads the data from the Cache Id Register.
- * @param   cid Enumeration type for Cache Id Register.
- * @retval  Returns the contents of Cache Id Register.
+ * @brief   Reads ID information from the MXC_ICC0 Cache ID Register.
+ * @param   cid     Selects what information to get from the MXC_ICC0 Cache ID Register
+ * @retval  Returns the selected value from the MXC_ICC0 Cache ID Register.
  */
 int MXC_ICC_ID(mxc_icc_info_t cid);
 
 /**
- * @brief	Enable the instruction cache controller.
+ * @brief	Enables both of the instruction cache controllers.
  */
 void MXC_ICC_Enable(void);
 
 /**
- * @brief	Disable the instruction cache controller.
+ * @brief	Disables both of the instruction cache controllers.
  */
 void MXC_ICC_Disable(void);
 
 /**
- * @brief	Flush the instruction cache controller.
+ * @brief	Flushes both of the instruction cache controllers.
  */
 void MXC_ICC_Flush(void);
+
+/**
+ * @brief   Reads ID information from one of the ICC's Cache ID Register.
+ * @param   icc     Pointer ICC instance to get ID information from.
+ * @param   cid     Selects what information to get from the Cache ID Register
+ * @retval  Returns the selected value from the Cache ID Register.
+ */
+int MXC_ICC_IDInst(mxc_icc_regs_t* icc, mxc_icc_info_t cid);
+
+/**
+ * @brief   Enables one of the ICC's.
+ * @param   icc     Pointer to ICC instance to enable.
+ */
+void MXC_ICC_EnableInst(mxc_icc_regs_t* icc);
+
+/**
+ * @brief   Disables one of the ICC's.
+ * @param   icc     Pointer to ICC instance to disable.
+ */
+void MXC_ICC_DisableInst(mxc_icc_regs_t* icc);
+
+/**
+ * @brief   Flushes data from one of the ICC's.
+ * @param   icc     Pointer to ICC instance to flush.
+ */
+void MXC_ICC_FlushInst(mxc_icc_regs_t* icc);
 
 /**@} end of group icc */
 
