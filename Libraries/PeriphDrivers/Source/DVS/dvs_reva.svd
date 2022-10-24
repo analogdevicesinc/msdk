@@ -380,9 +380,8 @@
       </register>
       <register>
         <dim>5</dim>
-        <dimIncrement>5</dimIncrement>
-        <dimIndex>0,1,2,3,4</dimIndex>
-        <name>TAP_SEL</name>
+        <dimIncrement>4</dimIncrement>
+        <name>TAP_SEL[%s]</name>
         <description>DVS Tap Select Register</description>
         <addressOffset>0x1C</addressOffset>
         <fields>
