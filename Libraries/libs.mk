@@ -222,3 +222,32 @@ endif
 include $(EMV_DIR)/emv.mk
 endif
 # ************************
+
+# UCL (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_UCL ?= 0
+ifeq ($(LIB_UCL), 1)
+
+PROJ_CFLAGS += -DWORD32
+PROJ_CFLAGS += -DM_SDK
+
+ifeq ($(TARGET_UC), MAX32520)
+PROJ_CFLAGS += -D__arm_m3__  -D__me13
+else ifeq ($(TARGET_UC), MAX32570)
+PROJ_CFLAGS += -DLARGE_MEMORY  -D__me13
+else ifeq ($(TARGET_UC), MAX32672)
+PROJ_CFLAGS += -DLARGE_MEMORY
+else ifeq ($(TARGET_UC), MAX32690)
+PROJ_CFLAGS += -DLARGE_MEMORY
+endif
+
+PROJ_CFLAGS += -D__$(TARGET_LC)
+
+UCL_DIR ?= $(LIBS_DIR)/UCL
+IPATH += $(UCL_DIR)/$(TARGET_UC)/include
+PROJ_LDFLAGS += -L $(UCL_DIR)/$(TARGET_UC)
+PROJ_LIBS += ucl_$(UCL_VERSION)_$(TARGET_LC)
+
+endif
+# ************************
