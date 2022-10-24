@@ -8734,12 +8734,6 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>BLKDET</name>
-       <description>Backlight Detection.</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>BCKGRND</name>
        <description>Background Mode ENable. This bit allows low-power background mode operations, while the CPU is in DeepSleep.</description>
        <bitOffset>9</bitOffset>
@@ -10495,7 +10489,7 @@
        <name>SSEC</name>
        <description>RTC Sub-second Counter.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>11</bitWidth>
+       <bitWidth>12</bitWidth>
       </field>
      </fields>
     </register>
@@ -23093,20 +23087,6 @@
      </fields>
     </register>
     <register>
-     <name>PWM</name>
-     <description>Wakeup Timer PWM Register</description>
-     <addressOffset>0x0008</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>PWM</name>
-       <description>Timer PWM Value.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>INTFL</name>
      <description>Wakeup Timer Interrupt Register</description>
      <addressOffset>0x000C</addressOffset>
@@ -23236,7 +23216,7 @@
       </field>
       <field>
        <name>TPOL</name>
-       <description>Timer pOLARITY.</description>
+       <description>Timer Polarity.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -23316,30 +23296,6 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field>
-       <name>PWMSYNC</name>
-       <description>PWM SYNC mode.</description>
-       <bitOffset>9</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>NOLHPOL</name>
-       <description>PWM output high polarity.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>NOLLPOL</name>
-       <description>PWM output high polarity.</description>
-       <bitOffset>11</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PWMCKBD</name>
-       <description>PWM output disable.</description>
-       <bitOffset>12</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
      </fields>
     </register>
     <register>
@@ -23365,17 +23321,17 @@
     <register>
      <name>PRESET</name>
      <description>Preset register.</description>
-     <addressOffset>0x18</addressOffset>
+     <addressOffset>0x0018</addressOffset>
     </register>
     <register>
      <name>RELOAD</name>
      <description>Reload register.</description>
-     <addressOffset>0x1C</addressOffset>
+     <addressOffset>0x001C</addressOffset>
     </register>
     <register>
      <name>SNAPSHOT</name>
      <description>Snapshot register.</description>
-     <addressOffset>0x20</addressOffset>
+     <addressOffset>0x0020</addressOffset>
     </register>
    </registers>
   </peripheral>

@@ -130,7 +130,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_RTC_SSEC_SSEC_POS                        0 /**< SSEC_SSEC Position */
-#define MXC_F_RTC_SSEC_SSEC                            ((uint32_t)(0x7FFUL << MXC_F_RTC_SSEC_SSEC_POS)) /**< SSEC_SSEC Mask */
+#define MXC_F_RTC_SSEC_SSEC                            ((uint32_t)(0xFFFUL << MXC_F_RTC_SSEC_SSEC_POS)) /**< SSEC_SSEC Mask */
 
 /**@} end of group RTC_SSEC_Register */
 
