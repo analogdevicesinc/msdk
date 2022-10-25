@@ -105,8 +105,8 @@ riscv-none-embed-gcc -std=c99 -Wall -Wextra -Wno-unused-parameter -Wshadow -Wund
     CFG_DEV          = BB_CLK_RATE_HZ=1000000 FORCE_PMU_WAKEUP=1 TARGET=MAX32655 TARGET_REV=0x4131
 +++ Archiving: ../../libphy_riscv.a
 riscv-none-embed-gcc-ar --version
-GNU ar (xPack GNU RISC-V Embedded GCC, 64-bit) 2.32
-Copyright (C) 2019 Free Software Foundation, Inc.
+GNU ar (xPack GNU RISC-V Embedded GCC x86_64) 2.35
+Copyright (C) 2020 Free Software Foundation, Inc.
 This program is free software; you may redistribute it under the terms of
 the GNU General Public License version 3 or (at your option) any later version.
 This program has absolutely no warranty.
@@ -115,4 +115,4 @@ riscv-none-embed-gcc-ar rcs -o ../../libphy_riscv.a obj/pal_bb.o obj/pal_bb_ble.
 riscv-none-embed-strip --strip-unneeded ../../libphy_riscv.a
 +++ Copying: ../../libphy_riscv.a to msdk
 cp ../../libphy_riscv.a ../../../../../Libraries/BlePhy/MAX32655/libphy_riscv.a
-revision: 1b09530
+revision: 0beaf45
