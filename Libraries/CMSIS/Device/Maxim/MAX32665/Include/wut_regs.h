@@ -226,6 +226,39 @@ typedef struct {
 
 /**@} end of group WUT_NOLCMP_Register */
 
+/**
+ * @ingroup  wut_registers
+ * @defgroup WUT_PRESET WUT_PRESET
+ * @brief    Preset register.
+ * @{
+ */
+#define MXC_F_WUT_PRESET_PRESET_POS                    0 /**< PRESET_PRESET Position */
+#define MXC_F_WUT_PRESET_PRESET                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_WUT_PRESET_PRESET_POS)) /**< PRESET_PRESET Mask */
+
+/**@} end of group WUT_PRESET_Register */
+
+/**
+ * @ingroup  wut_registers
+ * @defgroup WUT_RELOAD WUT_RELOAD
+ * @brief    Reload register.
+ * @{
+ */
+#define MXC_F_WUT_RELOAD_RELOAD_POS                    0 /**< RELOAD_RELOAD Position */
+#define MXC_F_WUT_RELOAD_RELOAD                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_WUT_RELOAD_RELOAD_POS)) /**< RELOAD_RELOAD Mask */
+
+/**@} end of group WUT_RELOAD_Register */
+
+/**
+ * @ingroup  wut_registers
+ * @defgroup WUT_SNAPSHOT WUT_SNAPSHOT
+ * @brief    Snapshot register.
+ * @{
+ */
+#define MXC_F_WUT_SNAPSHOT_SNAPSHOT_POS                0 /**< SNAPSHOT_SNAPSHOT Position */
+#define MXC_F_WUT_SNAPSHOT_SNAPSHOT                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_WUT_SNAPSHOT_SNAPSHOT_POS)) /**< SNAPSHOT_SNAPSHOT Mask */
+
+/**@} end of group WUT_SNAPSHOT_Register */
+
 #ifdef __cplusplus
 }
 #endif

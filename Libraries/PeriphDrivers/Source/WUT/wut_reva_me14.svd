@@ -280,16 +280,40 @@
         <name>PRESET</name>
         <description>Preset register.</description>
         <addressOffset>0x0018</addressOffset>
+        <fields>
+          <field>
+            <name>PRESET</name>
+            <description>Preset Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
       <register>
         <name>RELOAD</name>
         <description>Reload register.</description>
         <addressOffset>0x001C</addressOffset>
+        <fields>
+          <field>
+            <name>RELOAD</name>
+            <description>Reload Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
       <register>
         <name>SNAPSHOT</name>
         <description>Snapshot register.</description>
         <addressOffset>0x0020</addressOffset>
+        <fields>
+          <field>
+            <name>SNAPSHOT</name>
+            <description>Snapshot Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
     </registers>
   </peripheral>

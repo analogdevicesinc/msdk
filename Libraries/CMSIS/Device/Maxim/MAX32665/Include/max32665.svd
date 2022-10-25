@@ -22417,35 +22417,6 @@
      </fields>
     </register>
     <register>
-     <name>DMA_INTR</name>
-     <description>Sets delay between HS resume to UTM normal operating mode.</description>
-     <addressOffset>0x200</addressOffset>
-    </register>
-    <cluster>
-     <dim>8</dim>
-     <dimIncrement>0x10</dimIncrement>
-     <name>dma[%s]</name>
-     <description>USB DMA Registers.</description>
-     <headerStructName>usbhs_dma</headerStructName>
-     <addressOffset>0x204</addressOffset>
-     <access>read-write</access>
-     <register>
-      <name>CTRL</name>
-      <description>DMA Control Register.</description>
-      <addressOffset>0x000</addressOffset>
-     </register>
-     <register>
-      <name>ADDR</name>
-      <description>DMA Address Register.</description>
-      <addressOffset>0x004</addressOffset>
-     </register>
-     <register>
-      <name>COUNT</name>
-      <description>DMA Count Register.</description>
-      <addressOffset>0x008</addressOffset>
-     </register>
-    </cluster>
-    <register>
      <name>MXM_USB_REG_00</name>
      <description>MXM_USB_REG_00</description>
      <addressOffset>0x400</addressOffset>
@@ -23322,16 +23293,40 @@
      <name>PRESET</name>
      <description>Preset register.</description>
      <addressOffset>0x0018</addressOffset>
+     <fields>
+      <field>
+       <name>PRESET</name>
+       <description>Preset Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>RELOAD</name>
      <description>Reload register.</description>
      <addressOffset>0x001C</addressOffset>
+     <fields>
+      <field>
+       <name>RELOAD</name>
+       <description>Reload Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>SNAPSHOT</name>
      <description>Snapshot register.</description>
      <addressOffset>0x0020</addressOffset>
+     <fields>
+      <field>
+       <name>SNAPSHOT</name>
+       <description>Snapshot Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
    </registers>
   </peripheral>
