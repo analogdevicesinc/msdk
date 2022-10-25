@@ -55,7 +55,7 @@
 #define DATA_LEN        	1024     	// Words
 #define DATA_SIZE			8
 #define VALUE				0xFF
-#define SPI_SPEED       	100000      // Bit Rate
+#define SPI_SPEED       	100000      // Bit Rate (Max.: 1,850,000)
 
 #define SPI_MASTER    		MXC_SPI1
 #define SPI_MASTER_SSIDX 	1
