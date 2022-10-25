@@ -239,7 +239,7 @@
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
         <name>MEMBADDR[%s]</name>
-        <description>Memory Base Address register. This is the base address of the addressable memory region in this microcontroller’s RAM. Because the addressable memory is mapped in 16M boundaries, the lower 24 bits are fixed to 0.</description>
+        <description>Memory Base Address register. This is the base address of the addressable memory region in this microcontrollers RAM. Because the addressable memory is mapped in 16M boundaries, the lower 24 bits are fixed to 0.</description>
         <addressOffset>0x0010</addressOffset>
         <fields>
           <field>
