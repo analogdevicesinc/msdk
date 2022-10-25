@@ -104,6 +104,16 @@ void SW2_Callback()
     MXC_WDT_Enable(MXC_WDT0);
 }
 
+void blinkled(int led, int num_of_blink, unsigned int ms_delay)
+{
+    for (int i = 0; i < num_of_blink; i++) {
+        LED_On(led);
+        MXC_Delay(MXC_DELAY_MSEC(ms_delay));
+        LED_Off(led);
+        MXC_Delay(MXC_DELAY_MSEC(ms_delay));
+    }
+}
+
 // *****************************************************************************
 int main(void)
 {
@@ -131,19 +141,8 @@ int main(void)
     printf("\nPress a button to create watchdog interrupt and reset:\n");
     printf("SW2 (P4.0) = timeout and reset program\n\n");
 
-    //Blink LED
-    LED_Off(0);
-
-    //Blink LED three times at startup
-    int numBlinks = 3;
-
-    while (numBlinks) {
-        LED_On(0);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        LED_Off(0);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        numBlinks--;
-    }
+    //Blink LED0 three times at startup
+    blinkled(0, 3, 100);
 
     //Setup watchdog
     MXC_WDT_Setup();
@@ -165,10 +164,7 @@ int main(void)
         }
 
         //blink LED0
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        LED_On(0);
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        LED_Off(0);
+        blinkled(0, 1, 500);
 
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
