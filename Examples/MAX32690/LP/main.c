@@ -87,6 +87,12 @@
 #error "You must select either DO_BACKUP or DO_STORAGE or neither, not both."
 #endif
 
+#if USE_CONSOLE
+#define PRINT(...) printf(__VA_ARGS__)
+#else
+#define PRINT(...)
+#endif
+
 // *****************************************************************************
 
 #if USE_ALARM
@@ -167,33 +173,26 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-#if USE_CONSOLE
-    printf("****Low Power Mode Example****\n\n");
-#endif // USE_CONSOLE
+    PRINT("****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32690 power modes, using the RTC alarm \nto exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
-#endif // USE_CONSOLE
+    PRINT("This code cycles through the MAX32690 power modes, using the RTC alarm \nto exit from "
+          "each mode.  The modes will change every %d seconds.\n\n",
+          DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32690 power modes. Use push button (SW2)\nto exit from "
-           "each power mode and enter the next.\n\n");
-#endif // USE_CONSOLE
+    PRINT("This code cycles through the MAX32690 power modes. Use push button (SW2)\nto exit from "
+          "each power mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
     PB_IntEnable(0);
 #endif // USE_BUTTON
 
-#if USE_CONSOLE
-    printf("Running in ACTIVE mode.\n");
-#else
+    PRINT("Running in ACTIVE mode.\n");
+#if !USE_CONSOLE
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
-#endif // USE_CONSOLE
+#endif
     setTrigger(1);
 
 #if USE_BUTTON
@@ -205,44 +204,34 @@ int main(void)
 
     while (1) {
 #if DO_SLEEP
-#if USE_CONSOLE
-        printf("Entering SLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
-        printf("Waking up from SLEEP mode.\n");
+        PRINT("Waking up from SLEEP mode.\n");
 #endif // DO_SLEEP
 
 #if DO_LPM
-#if USE_CONSOLE
-        printf("Entering LPM mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering LPM mode.\n");
         setTrigger(0);
         MXC_LP_EnterLowPowerMode();
-        printf("Waking up from LPM mode.\n");
+        PRINT("Waking up from LPM mode.\n");
 #endif // DO_LPM
 
 #if DO_UPM
-#if USE_CONSOLE
-        printf("Entering UPM mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering UPM mode.\n");
         setTrigger(0);
         MXC_LP_EnterMicroPowerMode();
-        printf("Waking up from UPM mode.\n");
+        PRINT("Waking up from UPM mode.\n");
 #endif // DO_UPM
 
 #if DO_BACKUP
-#if USE_CONSOLE
-        printf("Entering BACKUP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP
 
 #if DO_STANDBY
-#if USE_CONSOLE
-        printf("Entering STANDBY mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering STANDBY mode.\n");
         setTrigger(0);
         MXC_LP_EnterStandbyMode();
 #endif // DO_STANDBY

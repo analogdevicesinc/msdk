@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,9 +30,11 @@
  * ownership rights.
  *
  ******************************************************************************/
+ARM_SLA_HEADER_ORIGIN = _FLASH_ORIGIN;
+ARM_SLA_HEADER_SIZE = 0x200;
 
-ARM_FLASH_ORIGIN = _FLASH_ORIGIN;
-ARM_FLASH_SIZE = _FLASH_SIZE - _RISCV_FLASH_SIZE - _PAL_NVM_SIZE;
+ARM_FLASH_ORIGIN = ARM_SLA_HEADER_ORIGIN + ARM_SLA_HEADER_SIZE;
+ARM_FLASH_SIZE = _FLASH_SIZE - _RISCV_FLASH_SIZE - _PAL_NVM_SIZE - ARM_SLA_HEADER_SIZE;
 
 PAL_NVM_ORIGIN = _FLASH_SIZE - _PAL_NVM_SIZE + _FLASH_ORIGIN;
 
@@ -47,8 +49,9 @@ MAILBOX_ORIGIN = _RISCV_SRAM_ORIGIN;
 RISCV_SRAM_ORIGIN = _RISCV_SRAM_ORIGIN;
 RISCV_SRAM_SIZE = _RISCV_SRAM_SIZE;
 
-MEMORY {
-    ROM        (rx) : ORIGIN = 0x00000000,          LENGTH = 0x00020000 /* 128kB ROM */
+MEMORY {    
+    ROM        (rx) : ORIGIN = 0x00000000,    LENGTH = 0x00020000 /* 128kB ROM */
+    HEADER     (rx) : ORIGIN = ARM_SLA_HEADER_ORIGIN,    LENGTH = ARM_SLA_HEADER_SIZE
     FLASH      (rx) : ORIGIN = ARM_FLASH_ORIGIN,    LENGTH = ARM_FLASH_SIZE
     PAL_NVM_DB (r)  : ORIGIN = PAL_NVM_ORIGIN,      LENGTH = _PAL_NVM_SIZE
     RISCV_FLASH(rx) : ORIGIN = RISCV_FLASH_ORIGIN,  LENGTH = RISCV_FLASH_SIZE
@@ -62,7 +65,13 @@ MEMORY {
      */
     HPB_CS0 (rwx)  : ORIGIN = 0x60000000, LENGTH = 0x10000000  /* External Hyperbus/Xccelabus chip select 0 */
     HPB_CS1 (rwx)  : ORIGIN = 0x70000000, LENGTH = 0x10000000  /* External Hyperbus/Xccelabus chip select 1 */
+	
 }
+
+ENTRY(Reset_Handler)
+PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
+PROVIDE_HIDDEN( _SLA_Size = _endimage - __end_header );
+PROVIDE( _SLA_Size_SWAP = (((_SLA_Size) >> 24) | (((_SLA_Size) & 0x00FF0000) >> 8) | (((_SLA_Size) & 0x0000FF00) << 8) | ((_SLA_Size) << 24)));
 
 SECTIONS {
     .rom :
@@ -71,6 +80,14 @@ SECTIONS {
         *(.rom_handlers*)
     } > ROM
 
+     .sb_sla_header : ALIGN(4)
+    {
+       FILL(0xFF)
+        KEEP(*(.sb_sla_header)) /* Header for ROM code */ 
+         __end_header = . ;
+        . = ALIGN(512);
+    } > HEADER
+    
     .text :
     {
         _text = .;
@@ -158,7 +175,25 @@ SECTIONS {
         _edata = ALIGN(., 4);
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
+    _enddata = LOADADDR(.data)+SIZEOF(.data);
+    
+    .sb_sla_trailer : AT(_enddata)
+    {
+        KEEP(*(.sb_sla_trailer))
+        /* Align image with 16 byte boundary to conform to flash encryption block size. */
+        FILL(0xDEADC0DE);
+        /* NOTE: The FILL and ALIGN will not work unless something is written to the section.  So, we use LONG. */
+        LONG(0xDEADC0DE);
+        . = ALIGN(16);
+    }  > FLASH
+    _endimage = LOADADDR(.sb_sla_trailer)+SIZEOF(.sb_sla_trailer);
+    .sig :
+    {
+        KEEP(*(.sig))
+        LONG(0xDEADBEEF);
 
+    }  > FLASH
+    
     .bss :
     {
         . = ALIGN(4);
