@@ -1,10 +1,12 @@
-# MAX78000 Keyword Spotting Demo v.3
+# MAX78000 Keyword Spotting Demo v.3.1
 
 
 
 ## Overview
 
 The Keyword Spotting Demo software demonstrates recognition of a number of keywords using MAX78000 EVKIT.  
+
+A new option `-DSEND_MIC_OUT_SDCARD` has been add to [`project.mk`](project.mk) to enable saving the detected sound snippets to SD card interface of the MAX78000 Feather board. This feature is not available for MAX7800 EVKIT.
 
 The KWS20 demo software utilizes 2nd version of Google speech commands dataset which consists of 35 keywords and more than 100K utterances:
 
@@ -22,7 +24,7 @@ Rest of keywords and unrecognized words fall into "**Unknown**" category.
 
 ## Keyword Spotting Demo Software
 
-### Building firmware:
+### Building firmware
 
 Navigate directory where KWS20 demo software is located and build the project:
 
@@ -37,7 +39,7 @@ If this is the first time after installing tools, or peripheral files have been 
 $ make distclean
 ```
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
+To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in [`project.mk`](project.mk):
 
 ```bash
 # Specify the board used
@@ -47,7 +49,7 @@ BOARD=EvKit_V1
 endif
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
+To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in [`project.mk`](project.mk):
 
 ```bash
 # Specify the board used
@@ -57,9 +59,7 @@ BOARD=FTHR_RevA
 endif
 ```
 
-**Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
-
-*right click project name > Properties > C/C++ Build > Environment > Board"*
+**Note: If you are using Eclipse, please also make sure to change the value of `BOARD` environment variable to `FTHR_RevA` by right clicking on *"[project name] > Properties > C/C++ Build > Environment > BOARD"***
 
 <img src="Resources/eclipse_board.png" style="zoom:33%;" />
 
@@ -147,13 +147,15 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
-To compile code with enabled TFT feature use following setting in project.mk:
+To compile code with enabled TFT feature use following setting in [`project.mk`](project.mk):
 
 ```bash
 ifeq "$(BOARD)" "FTHR_RevA"
 PROJ_CFLAGS += -DENABLE_TFT
 endif
 ```
+
+***Note: If SD card option is enabled, the TFT support will automatically be disabled regardless of above setting.***
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
 Press PB1 (SW1) button to start demo.
@@ -338,6 +340,40 @@ $ python VoiceRecorder.py -d 3 -o voicefile.wav
 $ python RealtimeAudio.py -i voicefile.wav -o voicefile.h
 ```
 
+### Saving Sound Snippets to SD Card
+
+The following option has been add to [`project.mk`](project.mk). To enable saving the detected sound snippets to SD card make sure the `PROJ_CFLAGS" line is uncommented.
+
+```make
+# If enabled, it saves out the Mic samples used for inference to SDCARD
+PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
+```
+
+When this mode is enabled, a new sequential directory is created on the SD card on every power up or reset.
+![directory](Resources/SDcard_files.PNG)
+
+After a few moment, the green LED lights up and upon detecting a new word, the LED blinks and a file is created with 8-bit sample recorded audio. The file name includes an index and the detected word. If the detection has low confidence, the file name will have a "_L" suffix. (for example `0003_RIGHT_L`)
+
+![snippets](Resources/soundSnippet.PNG)
+
+The LED
+
+- stays *green* when it is listening
+- blinks *green* if a keyword is detected
+- blinks *red* if an unknown keyword is detected
+- blinks *yellow* if detection confidence is low
+- stays *red* if there is an error in the SD card interface
+
+A utility (`bin2wav.py`) is provided in the `/Utility` folder to convert these files into wave (.wav) format to listen to.
+
+```bash
+$ python bin2wav.py -i <sound snippet file>
+```
+
+***Note 1: When `SEND_MIC_OUT_SDCARD` is selected, the Wake Up Timer (WUT) is disabled.***
+
+***Note 2: When `SEND_MIC_OUT_SDCARD` is selected, the `ENABLE_TFT` is disabled regardless of make options.***
+
 ### KWS20 Demo Firmware Structure
 
 Following figure shows the processing in KWS20 Demo firmware:
@@ -350,7 +386,7 @@ Following parameters in the firmware can be tuned:
 
 ```c
 #define SAMPLE_SCALE_FACTOR    		4		// multiplies 16-bit samples by this scale factor before converting to 8-bit
-#define THRESHOLD_HGIH				350  	// voice detection threshold to find beginning of a keyword
+#define THRESHOLD_HIGH				350  	// voice detection threshold to find beginning of a keyword
 #define THRESHOLD_LOW				100  	// voice detection threshold to find end of a keyword
 #define SILENCE_COUNTER_THRESHOLD 	20 		// [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of a word
 #define PREAMBLE_SIZE				30*CHUNK// how many samples before beginning of a keyword to include

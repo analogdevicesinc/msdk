@@ -509,7 +509,9 @@ static int set_pixformat(pixformat_t pixformat)
     }
 
     // Write registers
-    for (int i = 0; regs[i][0]; i++) { ret |= cambus_writeb(regs[i][0], regs[i][1]); }
+    for (int i = 0; regs[i][0]; i++) {
+        ret |= cambus_writeb(regs[i][0], regs[i][1]);
+    }
 
     utils_delay_ms(50);
 
@@ -547,7 +549,9 @@ static int set_framesize(framesize_t framesize)
     }
 
     // Write setup regsiters
-    for (int i = 0; regs[i][0]; i++) { ret |= cambus_writeb(regs[i][0], regs[i][1]); }
+    for (int i = 0; regs[i][0]; i++) {
+        ret |= cambus_writeb(regs[i][0], regs[i][1]);
+    }
 
     uint64_t tmp_div = IM_MIN(sensor_w / w, sensor_h / h);
     uint16_t log_div = IM_MIN(IM_LOG2(tmp_div) - 1, 3);

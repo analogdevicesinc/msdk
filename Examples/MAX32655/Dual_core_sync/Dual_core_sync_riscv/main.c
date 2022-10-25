@@ -39,16 +39,15 @@
  */
 
 /***** Includes *****/
-#include "board.h"
-#include "led.h"
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "pb.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "sema_reva.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "board.h"
+#include "led.h"
+#include "pb.h"
+#include "sema.h"
 
 /***** Definitions *****/
 #define DUAL_CORE_SYNC (1)
@@ -66,7 +65,6 @@ typedef struct {
 #else
     uint8_t payload[MAILBOX_PAYLOAD_LEN];
 #endif
-
 } mxcSemaBox_t;
 
 /***** Globals *****/

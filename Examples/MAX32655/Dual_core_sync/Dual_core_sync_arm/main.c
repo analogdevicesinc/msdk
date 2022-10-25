@@ -40,14 +40,13 @@
  */
 
 /***** Includes *****/
-#include "mxc_delay.h"
-#include "mxc_device.h"
-#include "mxc_sys.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "sema_reva.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "mxc_sys.h"
+#include "sema.h"
 
 /***** Definitions *****/
 #define DUAL_CORE_SYNC (1)
@@ -65,7 +64,6 @@ typedef struct {
 #else
     uint8_t payload[MAILBOX_PAYLOAD_LEN];
 #endif
-
 } mxcSemaBox_t;
 
 /***** Globals *****/
@@ -108,7 +106,9 @@ int main(void)
 #if DUAL_CORE_SYNC
     /* Wait the RISC-V core to start */
     ret = E_BUSY;
-    while (E_BUSY == ret) { ret = MXC_SEMA_CheckSema(NDX_ARM); }
+    while (E_BUSY == ret) {
+        ret = MXC_SEMA_CheckSema(NDX_ARM);
+    }
     MXC_SEMA_GetSema(NDX_ARM);
 
     /* Init code here. */
