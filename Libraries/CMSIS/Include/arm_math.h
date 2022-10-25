@@ -594,7 +594,9 @@ static __INLINE q31_t __SSAT(q31_t x, uint32_t y)
     uint32_t i;
 
     posMax = 1;
-    for (i = 0; i < (y - 1); i++) { posMax = posMax * 2; }
+    for (i = 0; i < (y - 1); i++) {
+        posMax = posMax * 2;
+    }
 
     if (x > 0) {
         posMax = (posMax - 1);

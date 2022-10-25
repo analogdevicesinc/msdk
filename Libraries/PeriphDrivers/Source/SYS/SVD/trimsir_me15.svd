@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>ECC</name>
+    <description>Trim System Initilazation Registers. ECC Registers for MAX32670.</description>
+    <baseAddress>0x40105400</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>EN</name>
+        <description>ECC Enable Register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>SRAM</name>
+            <description>System RAM0 ECC Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ICC</name>
+            <description>ICC0 ECC Enable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FLASH</name>
+            <description>Flash ECC Enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- TRIMSIR:Trim System Initilazation Registers -->
+</device>

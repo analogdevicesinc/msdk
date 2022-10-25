@@ -95,7 +95,9 @@ int main(void)
     printf("\n-->Test Length \t: %d bytes\n", BUFF_SIZE);
 
     // Initialize the data buffers
-    for (i = 0; i < BUFF_SIZE; i++) { TxData[i] = i; }
+    for (i = 0; i < BUFF_SIZE; i++) {
+        TxData[i] = i;
+    }
 
     memset(RxData, 0x0, BUFF_SIZE);
 
@@ -186,15 +188,13 @@ int main(void)
         printf("-->Data verified\n");
     }
 
-    printf("\n");
-
     if (fail == 0) {
         LED_On(LED_GREEN);
-        printf("-->EXAMPLE SUCCEEDED\n");
+        printf("\n-->EXAMPLE SUCCEEDED\n");
     } else {
         LED_On(LED_RED);
-        printf("-->EXAMPLE FAILED\n");
+        printf("\n-->EXAMPLE FAILED\n");
     }
 
-    while (1) {}
+    return 0;
 }

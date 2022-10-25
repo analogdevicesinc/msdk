@@ -85,7 +85,9 @@ int MXC_ADC_RevA_Init(mxc_adc_reva_regs_t *adc)
     //set lock variables initially to NULL
     async_callback = NULL;
 
-    for (uint8_t i = 0; i < MXC_MONITOR_NUM; i++) { states[i] = NULL; }
+    for (uint8_t i = 0; i < MXC_MONITOR_NUM; i++) {
+        states[i] = NULL;
+    }
 
     async_req = NULL;
 

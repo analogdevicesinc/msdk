@@ -175,5 +175,5 @@ int main(void)
     // Return the ECC back to its POR state (disabled)
     MXC_MCR->eccen &= ~MXC_F_MCR_ECCEN_RAM0;
 
-    while (1) {}
+    return test_fail;
 }

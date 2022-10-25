@@ -45,7 +45,6 @@
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "dma.h"
-#include "dma_regs.h"
 
 /***** Definitions *****/
 
@@ -231,11 +230,7 @@ int main(void)
         printf("Example Succeeded\n");
     } else {
         printf("Example Failed\n");
-
-        while (1) {}
     }
 
-    while (1) {}
-
-    return 0;
+    return fail;
 }
