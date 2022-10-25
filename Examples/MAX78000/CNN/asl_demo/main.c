@@ -471,7 +471,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
             snprintf(buff, sizeof(buff), "%s (%0.1f%%)", classes[max_index],
                      (double)100.0 * max / 32768.0);
             TFT_Print(buff, 100, 8, font_1);
-        } 
+        }
 
         /* reset for next top */
         temp[max_index] = 1 << 31;
