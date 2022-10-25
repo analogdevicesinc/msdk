@@ -103,7 +103,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         if (pins.ss2) {
             MXC_GPIO_Config(&gpio_cfg_spi1_ss2);
         }
-    } else if (MXC_SPI2) {
+    } else if (spi == MXC_SPI2) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI2);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI2);
         MXC_GPIO_Config(&gpio_cfg_spi2);
@@ -121,7 +121,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
             MXC_GPIO_Config(&gpio_cfg_spi2_ss2);
         }
 #ifndef __riscv
-    } else if (MXC_SPI3) {
+    } else if (spi == MXC_SPI3) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI3);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI3);
         MXC_GPIO_Config(&gpio_cfg_spi3);
@@ -138,7 +138,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         if (pins.ss2) {
             MXC_GPIO_Config(&gpio_cfg_spi3_ss2);
         }
-    } else if (MXC_SPI4) {
+    } else if (spi == MXC_SPI4) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI4);
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI4);
         MXC_GPIO_Config(&gpio_cfg_spi4);

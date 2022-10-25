@@ -4,7 +4,7 @@
     <!--    AFE_DAC: Stacked Die    -->
     <name>AFE_DAC</name>
     <description>Analog Front End DAC on Stacked Die via SPI</description>
-    <baseAddress>0x00000000</baseAddress>
+    <baseAddress>0x4FC00000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
       <size>0x200</size>

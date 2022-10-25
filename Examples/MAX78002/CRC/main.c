@@ -138,12 +138,10 @@ int main(void)
     Test_CRC(1);
 
     if (fail) {
-        printf("\Example Failed");
+        printf("\nExample Failed\n");
     } else {
-        printf("\nExample Succeeded");
+        printf("\nExample Succeeded\n");
     }
 
-    printf("\n\n");
-
-    while (1) {}
+    return fail;
 }

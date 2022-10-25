@@ -33,22 +33,34 @@
  *
  ******************************************************************************/
 
-#include "mxc_device.h"
-#include "gpio.h"
 
-/******************************************************************************/
-__attribute__((section(".xip_section"))) void xip_function(void)
+#include "led.h"
+#include "mxc_device.h"
+
+/* ************************************************************************** */
+__attribute__((section(".hpb_cs0_section"))) void hbmc_cs0_function(void)
 {
     volatile int i;
     int j;
 
-    for (j = 0; j < 10; j++) {
-        MXC_GPIO0->out_set = MXC_GPIO_PIN_14;
+    for (j = 0; j < 25; j++) {
+        MXC_GPIO0->out_set |= led_pin[0].mask;
+        for (i = 0; i < 0xFFFFF; i++) {}
+        MXC_GPIO0->out_clr |= led_pin[0].mask;
+        for (i = 0; i < 0xFFFFF; i++) {}
+    }
+}
 
-        for (i = 0; i < 0x100000; i++) {}
+/* ************************************************************************** */
+__attribute__((section(".hpb_cs1_section"))) void hbmc_cs1_function(void)
+{
+    volatile int i;
+    int j;
 
-        MXC_GPIO0->out_clr = MXC_GPIO_PIN_14;
-
-        for (i = 0; i < 0x100000; i++) {}
+    for (j = 0; j < 25; j++) {
+        MXC_GPIO0->out_set |= led_pin[0].mask;
+        for (i = 0; i < 0xFFFFF; i++) {}
+        MXC_GPIO0->out_clr |= led_pin[0].mask;
+        for (i = 0; i < 0xFFFFF; i++) {}
     }
 }

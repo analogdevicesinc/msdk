@@ -24,10 +24,12 @@ CameraIF
 DMA
 ECC
 Flash
+Flash_CLI
 FreeRTOSDemo
 GPIO
 Hello_World
 I2C
+I2C_SCAN
 I2S
 I2S_DMA
 ICC
@@ -35,6 +37,7 @@ LP
 LPCMP
 Pulse_Train
 RTC
+RTC_Backup
 SPI
 TFT_Demo
 TMR
