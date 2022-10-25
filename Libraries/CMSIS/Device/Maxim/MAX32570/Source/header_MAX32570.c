@@ -47,7 +47,7 @@ extern unsigned int _start_SWAP;
 extern unsigned int _SLA_Size_SWAP;
 
 typedef enum {
-    MagicH = 0x46495357,
+    MagicH = 0x44495357,
     /* NOTE: The 0xF nibble means something called stack_method=1.
  * If set to 0xF, the ROM fetches SP and PC immediately after the header at offset 0x20.
  * If set to 0x4, the ROM uses the PC in the header at offset 0x14.
