@@ -43,6 +43,7 @@
 /* **** Includes **** */
 #include <stdint.h>
 #include <stdio.h>
+#include "trimsir_regs.h"
 
 #warning "DEPRECATED(10-24-2022): ecc_regs.h - Scheduled for removal. Please use trimsir_regs.h."
 
@@ -109,23 +110,23 @@ typedef struct __attribute__((deprecated("struct and ecc_regs.h no longer suppor
  * @brief    ECC Enable Register
  * @{
  */
- #define MXC_F_ECC_EN_RAM0_1_POS                        8 /**< EN_RAM0_1 Position */
- #define MXC_F_ECC_EN_RAM0_1                            ((uint32_t)(0x1UL << MXC_F_ECC_EN_RAM0_1_POS)) /**< EN_RAM0_1 Mask */
+ #define MXC_F_ECC_EN_RAM0_1_POS                        MXC_F_TRIMSIR_BB_SIR2_RAM0_1ECCEN_POS /**< EN_RAM0_1 Position */
+ #define MXC_F_ECC_EN_RAM0_1                            MXC_F_TRIMSIR_BB_SIR2_RAM0_1ECCEN /**< EN_RAM0_1 Mask */
 
- #define MXC_F_ECC_EN_RAM2_POS                          9 /**< EN_RAM2 Position */
- #define MXC_F_ECC_EN_RAM2                              ((uint32_t)(0x1UL << MXC_F_ECC_EN_RAM2_POS)) /**< EN_RAM2 Mask */
+ #define MXC_F_ECC_EN_RAM2_POS                          MXC_F_TRIMSIR_BB_SIR2_RAM2ECCEN_POS /**< EN_RAM2 Position */
+ #define MXC_F_ECC_EN_RAM2                              MXC_F_TRIMSIR_BB_SIR2_RAM2ECCEN /**< EN_RAM2 Mask */
 
- #define MXC_F_ECC_EN_RAM3_POS                          10 /**< EN_RAM3 Position */
- #define MXC_F_ECC_EN_RAM3                              ((uint32_t)(0x1UL << MXC_F_ECC_EN_RAM3_POS)) /**< EN_RAM3 Mask */
+ #define MXC_F_ECC_EN_RAM3_POS                          MXC_F_TRIMSIR_BB_SIR2_RAM3ECCEN_POS /**< EN_RAM3 Position */
+ #define MXC_F_ECC_EN_RAM3                              MXC_F_TRIMSIR_BB_SIR2_RAM3ECCEN /**< EN_RAM3 Mask */
 
- #define MXC_F_ECC_EN_ICC0_POS                          11 /**< EN_ICC0 Position */
- #define MXC_F_ECC_EN_ICC0                              ((uint32_t)(0x1UL << MXC_F_ECC_EN_ICC0_POS)) /**< EN_ICC0 Mask */
+ #define MXC_F_ECC_EN_ICC0_POS                          MXC_F_TRIMSIR_BB_SIR2_ICC0ECCEN_POS /**< EN_ICC0 Position */
+ #define MXC_F_ECC_EN_ICC0                              MXC_F_TRIMSIR_BB_SIR2_ICC0ECCEN /**< EN_ICC0 Mask */
 
- #define MXC_F_ECC_EN_FL0_POS                           12 /**< EN_FL0 Position */
- #define MXC_F_ECC_EN_FL0                               ((uint32_t)(0x1UL << MXC_F_ECC_EN_FL0_POS)) /**< EN_FL0 Mask */
+ #define MXC_F_ECC_EN_FL0_POS                           MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN_POS /**< EN_FL0 Position */
+ #define MXC_F_ECC_EN_FL0                               MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN /**< EN_FL0 Mask */
 
- #define MXC_F_ECC_EN_FL1_POS                           13 /**< EN_FL1 Position */
- #define MXC_F_ECC_EN_FL1                               ((uint32_t)(0x1UL << MXC_F_ECC_EN_FL1_POS)) /**< EN_FL1 Mask */
+ #define MXC_F_ECC_EN_FL1_POS                           MXC_F_TRIMSIR_BB_SIR2_FL1ECCEN_POS /**< EN_FL1 Position */
+ #define MXC_F_ECC_EN_FL1                               MXC_F_TRIMSIR_BB_SIR2_FL1ECCEN /**< EN_FL1 Mask */
 
 /**@} end of group ECC_EN_Register */
 
