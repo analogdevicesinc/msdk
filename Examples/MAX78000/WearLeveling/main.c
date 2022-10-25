@@ -111,7 +111,9 @@ int main(void)
 
 #if (FULL_WRITE_TEST == 1) || (FULL_READ_TEST == 1)
     // Initializing Test Data
-    for (int i = 0; i < TESTSIZE; i++) { testdata[i] = i; }
+    for (int i = 0; i < TESTSIZE; i++) {
+        testdata[i] = i;
+    }
 #endif
 #if FULL_WRITE_TEST == 1
     //Erase page-by-page
@@ -185,7 +187,5 @@ int main(void)
         printf("\nExample Succeeded\n");
     }
 
-    while (1) {}
-
-    return 0;
+    return error_status;
 }

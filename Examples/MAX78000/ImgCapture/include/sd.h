@@ -44,6 +44,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef __cplusplus
+// This is only to get the linter happy...
+#include <string>
+#endif
 
 #include "ff.h"
 

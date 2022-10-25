@@ -83,7 +83,9 @@ void clear_ram(void)
     uint32_t sysram0_end = 0x20007fff; // end of SRAM0
 
     // clear SRAM0 (after bss section)
-    for (ptr = (uint32_t *)&_ebss; (uint32_t)ptr < sysram0_end; ptr++) { *ptr = 0; }
+    for (ptr = (uint32_t *)&_ebss; (uint32_t)ptr < sysram0_end; ptr++) {
+        *ptr = 0;
+    }
 
     // clear SRAM1, SRAM2, ... SRAM6
     MXC_GCR->memzcn |= 0x3E;

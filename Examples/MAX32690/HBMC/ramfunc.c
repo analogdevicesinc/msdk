@@ -31,25 +31,33 @@
  *
  ******************************************************************************/
 
-#include "mxc_device.h"
 #include "led.h"
+#include "max32690.h"
 
-/******************************************************************************/
-__attribute__((section(".xip_section"))) void xip_function(void)
+/* ************************************************************************** */
+__attribute__((section(".hpb_cs0_section"))) void hbmc_cs0_function(void)
 {
     volatile int i;
     int j;
-    printf("Running code from external flash\n");
 
     for (j = 0; j < 25; j++) {
-        LED_Off(0);
-
-        for (i = 0; i < 0xFFF; i++) {}
-
-        LED_On(0);
-
-        for (i = 0; i < 0xFFF; i++) {}
+        MXC_GPIO0->out_set |= led_pin[0].mask;
+        for (i = 0; i < 0xFFFFF; i++) {}
+        MXC_GPIO0->out_clr |= led_pin[0].mask;
+        for (i = 0; i < 0xFFFFF; i++) {}
     }
+}
 
-    LED_Off(0);
+/* ************************************************************************** */
+__attribute__((section(".hpb_cs1_section"))) void hbmc_cs1_function(void)
+{
+    volatile int i;
+    int j;
+
+    for (j = 0; j < 25; j++) {
+        MXC_GPIO0->out_set |= led_pin[0].mask;
+        for (i = 0; i < 0xFFFFF; i++) {}
+        MXC_GPIO0->out_clr |= led_pin[0].mask;
+        for (i = 0; i < 0xFFFFF; i++) {}
+    }
 }
