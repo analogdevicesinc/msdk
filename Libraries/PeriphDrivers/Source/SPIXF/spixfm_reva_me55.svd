@@ -590,8 +590,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SCK_DELAY</name>
-            <description>SCK Delay.</description>
+            <name>SCLK_DELAY</name>
+            <description>SCLK Delay.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>3</bitWidth>
             <enumeratedValues>

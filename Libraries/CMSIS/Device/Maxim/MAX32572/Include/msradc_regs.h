@@ -5,37 +5,37 @@
  */
 
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_MSRADC_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_MSRADC_REGS_H_
@@ -255,8 +255,8 @@ typedef struct {
 #define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8      ((uint32_t)0x7UL) /**< INTEN_SET_FIFOLVL_AT_LEAST_8 Value */
 #define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8      (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_8 Setting */
 
-#define MXC_F_MSRADC_INTEN_DMAREQ_POS                  3 /**< INTEN_DMAREQ Position */
-#define MXC_F_MSRADC_INTEN_DMAREQ                      ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_DMAREQ_POS)) /**< INTEN_DMAREQ Mask */
+#define MXC_F_MSRADC_INTEN_DMAREQ_EN_POS               3 /**< INTEN_DMAREQ_EN Position */
+#define MXC_F_MSRADC_INTEN_DMAREQ_EN                   ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_DMAREQ_EN_POS)) /**< INTEN_DMAREQ_EN Mask */
 
 #define MXC_F_MSRADC_INTEN_FIFO_OV_POS                 6 /**< INTEN_FIFO_OV Position */
 #define MXC_F_MSRADC_INTEN_FIFO_OV                     ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_FIFO_OV_POS)) /**< INTEN_FIFO_OV Mask */
@@ -275,7 +275,7 @@ typedef struct {
 /**
  * @ingroup  msradc_registers
  * @defgroup MSRADC_INTFL MSRADC_INTFL
- * @brief    MSRADC INTFL
+ * @brief    ADC Interrupt Flag Register.
  * @{
  */
 #define MXC_F_MSRADC_INTFL_FIFOCNT_POS                 0 /**< INTFL_FIFOCNT Position */
@@ -296,8 +296,8 @@ typedef struct {
 #define MXC_F_MSRADC_INTFL_FIFO_LVL_POS                8 /**< INTFL_FIFO_LVL Position */
 #define MXC_F_MSRADC_INTFL_FIFO_LVL                    ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_FIFO_LVL_POS)) /**< INTFL_FIFO_LVL Mask */
 
-#define MXC_F_MSRADC_INTFL_GLOBAL_ST_POS               9 /**< INTFL_GLOBAL_ST Position */
-#define MXC_F_MSRADC_INTFL_GLOBAL_ST                   ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_GLOBAL_ST_POS)) /**< INTFL_GLOBAL_ST Mask */
+#define MXC_F_MSRADC_INTFL_GLOBAL_POS                  9 /**< INTFL_GLOBAL Position */
+#define MXC_F_MSRADC_INTFL_GLOBAL                      ((uint32_t)(0x1UL << MXC_F_MSRADC_INTFL_GLOBAL_POS)) /**< INTFL_GLOBAL Mask */
 
 /**@} end of group MSRADC_INTFL_Register */
 

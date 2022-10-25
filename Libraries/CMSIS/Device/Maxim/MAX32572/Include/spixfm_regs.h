@@ -5,37 +5,37 @@
  */
 
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_SPIXFM_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_SPIXFM_REGS_H_
@@ -347,24 +347,24 @@ typedef struct {
 #define MXC_V_SPIXFM_BYPASS_MODE_FCLK_DELAY_3P5_NS     ((uint32_t)0x7UL) /**< BYPASS_MODE_FCLK_DELAY_3P5_NS Value */
 #define MXC_S_SPIXFM_BYPASS_MODE_FCLK_DELAY_3P5_NS     (MXC_V_SPIXFM_BYPASS_MODE_FCLK_DELAY_3P5_NS << MXC_F_SPIXFM_BYPASS_MODE_FCLK_DELAY_POS) /**< BYPASS_MODE_FCLK_DELAY_3P5_NS Setting */
 
-#define MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS         4 /**< BYPASS_MODE_SCK_DELAY Position */
-#define MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY             ((uint32_t)(0x7UL << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS)) /**< BYPASS_MODE_SCK_DELAY Mask */
-#define MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_0_NS        ((uint32_t)0x0UL) /**< BYPASS_MODE_SCK_DELAY_0_NS Value */
-#define MXC_S_SPIXFM_BYPASS_MODE_SCK_DELAY_0_NS        (MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_0_NS << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS) /**< BYPASS_MODE_SCK_DELAY_0_NS Setting */
-#define MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_0P5_NS      ((uint32_t)0x1UL) /**< BYPASS_MODE_SCK_DELAY_0P5_NS Value */
-#define MXC_S_SPIXFM_BYPASS_MODE_SCK_DELAY_0P5_NS      (MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_0P5_NS << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS) /**< BYPASS_MODE_SCK_DELAY_0P5_NS Setting */
-#define MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_1P0_NS      ((uint32_t)0x2UL) /**< BYPASS_MODE_SCK_DELAY_1P0_NS Value */
-#define MXC_S_SPIXFM_BYPASS_MODE_SCK_DELAY_1P0_NS      (MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_1P0_NS << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS) /**< BYPASS_MODE_SCK_DELAY_1P0_NS Setting */
-#define MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_1P5_NS      ((uint32_t)0x3UL) /**< BYPASS_MODE_SCK_DELAY_1P5_NS Value */
-#define MXC_S_SPIXFM_BYPASS_MODE_SCK_DELAY_1P5_NS      (MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_1P5_NS << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS) /**< BYPASS_MODE_SCK_DELAY_1P5_NS Setting */
-#define MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_2P0_NS      ((uint32_t)0x4UL) /**< BYPASS_MODE_SCK_DELAY_2P0_NS Value */
-#define MXC_S_SPIXFM_BYPASS_MODE_SCK_DELAY_2P0_NS      (MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_2P0_NS << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS) /**< BYPASS_MODE_SCK_DELAY_2P0_NS Setting */
-#define MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_2P5_NS      ((uint32_t)0x5UL) /**< BYPASS_MODE_SCK_DELAY_2P5_NS Value */
-#define MXC_S_SPIXFM_BYPASS_MODE_SCK_DELAY_2P5_NS      (MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_2P5_NS << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS) /**< BYPASS_MODE_SCK_DELAY_2P5_NS Setting */
-#define MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_3P0_NS      ((uint32_t)0x6UL) /**< BYPASS_MODE_SCK_DELAY_3P0_NS Value */
-#define MXC_S_SPIXFM_BYPASS_MODE_SCK_DELAY_3P0_NS      (MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_3P0_NS << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS) /**< BYPASS_MODE_SCK_DELAY_3P0_NS Setting */
-#define MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_3P5_NS      ((uint32_t)0x7UL) /**< BYPASS_MODE_SCK_DELAY_3P5_NS Value */
-#define MXC_S_SPIXFM_BYPASS_MODE_SCK_DELAY_3P5_NS      (MXC_V_SPIXFM_BYPASS_MODE_SCK_DELAY_3P5_NS << MXC_F_SPIXFM_BYPASS_MODE_SCK_DELAY_POS) /**< BYPASS_MODE_SCK_DELAY_3P5_NS Setting */
+#define MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS        4 /**< BYPASS_MODE_SCLK_DELAY Position */
+#define MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY            ((uint32_t)(0x7UL << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS)) /**< BYPASS_MODE_SCLK_DELAY Mask */
+#define MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_0_NS       ((uint32_t)0x0UL) /**< BYPASS_MODE_SCLK_DELAY_0_NS Value */
+#define MXC_S_SPIXFM_BYPASS_MODE_SCLK_DELAY_0_NS       (MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_0_NS << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS) /**< BYPASS_MODE_SCLK_DELAY_0_NS Setting */
+#define MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_0P5_NS     ((uint32_t)0x1UL) /**< BYPASS_MODE_SCLK_DELAY_0P5_NS Value */
+#define MXC_S_SPIXFM_BYPASS_MODE_SCLK_DELAY_0P5_NS     (MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_0P5_NS << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS) /**< BYPASS_MODE_SCLK_DELAY_0P5_NS Setting */
+#define MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_1P0_NS     ((uint32_t)0x2UL) /**< BYPASS_MODE_SCLK_DELAY_1P0_NS Value */
+#define MXC_S_SPIXFM_BYPASS_MODE_SCLK_DELAY_1P0_NS     (MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_1P0_NS << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS) /**< BYPASS_MODE_SCLK_DELAY_1P0_NS Setting */
+#define MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_1P5_NS     ((uint32_t)0x3UL) /**< BYPASS_MODE_SCLK_DELAY_1P5_NS Value */
+#define MXC_S_SPIXFM_BYPASS_MODE_SCLK_DELAY_1P5_NS     (MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_1P5_NS << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS) /**< BYPASS_MODE_SCLK_DELAY_1P5_NS Setting */
+#define MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_2P0_NS     ((uint32_t)0x4UL) /**< BYPASS_MODE_SCLK_DELAY_2P0_NS Value */
+#define MXC_S_SPIXFM_BYPASS_MODE_SCLK_DELAY_2P0_NS     (MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_2P0_NS << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS) /**< BYPASS_MODE_SCLK_DELAY_2P0_NS Setting */
+#define MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_2P5_NS     ((uint32_t)0x5UL) /**< BYPASS_MODE_SCLK_DELAY_2P5_NS Value */
+#define MXC_S_SPIXFM_BYPASS_MODE_SCLK_DELAY_2P5_NS     (MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_2P5_NS << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS) /**< BYPASS_MODE_SCLK_DELAY_2P5_NS Setting */
+#define MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_3P0_NS     ((uint32_t)0x6UL) /**< BYPASS_MODE_SCLK_DELAY_3P0_NS Value */
+#define MXC_S_SPIXFM_BYPASS_MODE_SCLK_DELAY_3P0_NS     (MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_3P0_NS << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS) /**< BYPASS_MODE_SCLK_DELAY_3P0_NS Setting */
+#define MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_3P5_NS     ((uint32_t)0x7UL) /**< BYPASS_MODE_SCLK_DELAY_3P5_NS Value */
+#define MXC_S_SPIXFM_BYPASS_MODE_SCLK_DELAY_3P5_NS     (MXC_V_SPIXFM_BYPASS_MODE_SCLK_DELAY_3P5_NS << MXC_F_SPIXFM_BYPASS_MODE_SCLK_DELAY_POS) /**< BYPASS_MODE_SCLK_DELAY_3P5_NS Setting */
 
 /**@} end of group SPIXFM_BYPASS_MODE_Register */
 

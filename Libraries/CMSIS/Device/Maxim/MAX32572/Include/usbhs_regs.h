@@ -5,37 +5,37 @@
  */
 
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_USBHS_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_USBHS_REGS_H_
@@ -85,12 +85,6 @@ extern "C" {
  * @ingroup usbhs_registers
  * Structure type to access the USBHS Registers.
  */
-typedef struct {
-    __IO uint32_t ctrl;                 /**< <tt>\b 0x000:</tt> USBHS CTRL Register */
-    __IO uint32_t addr;                 /**< <tt>\b 0x004:</tt> USBHS ADDR Register */
-    __IO uint32_t count;                /**< <tt>\b 0x008:</tt> USBHS COUNT Register */
-} mxc_usbhs_dma_regs_t;
-
 typedef struct {
     __IO uint8_t  faddr;                /**< <tt>\b 0x00:</tt> USBHS FADDR Register */
     __IO uint8_t  power;                /**< <tt>\b 0x01:</tt> USBHS POWER Register */
@@ -143,10 +137,7 @@ typedef struct {
     __R  uint32_t rsv_0x7c;
     __IO uint16_t ctuch;                /**< <tt>\b 0x80:</tt> USBHS CTUCH Register */
     __IO uint16_t cthsrtn;              /**< <tt>\b 0x82:</tt> USBHS CTHSRTN Register */
-    __R  uint32_t rsv_0x84_0x1ff[95];
-    __IO uint32_t dma_intr;             /**< <tt>\b 0x200:</tt> USBHS DMA_INTR Register */
-    __IO mxc_usbhs_dma_regs_t dma[8];   /**< <tt>\b 0x204:</tt> USBHS DMA Register */
-    __R  uint32_t rsv_0x224_0x3ff[119];
+    __R  uint32_t rsv_0x84_0x3ff[223];
     __IO uint32_t mxm_usb_reg_00;       /**< <tt>\b 0x400:</tt> USBHS MXM_USB_REG_00 Register */
     __IO uint32_t m31_phy_utmi_reset;   /**< <tt>\b 0x404:</tt> USBHS M31_PHY_UTMI_RESET Register */
     __IO uint32_t m31_phy_utmi_vcontrol; /**< <tt>\b 0x408:</tt> USBHS M31_PHY_UTMI_VCONTROL Register */
@@ -198,9 +189,6 @@ typedef struct {
  * @brief      USBHS Peripheral Register Offsets from the USBHS Base Peripheral Address.
  * @{
  */
-#define MXC_R_USBHS_CTRL                   ((uint32_t)0x00000000UL) /**< Offset from USBHS Base Address: <tt> 0x0000</tt> */
-#define MXC_R_USBHS_ADDR                   ((uint32_t)0x00000004UL) /**< Offset from USBHS Base Address: <tt> 0x0004</tt> */
-#define MXC_R_USBHS_COUNT                  ((uint32_t)0x00000008UL) /**< Offset from USBHS Base Address: <tt> 0x0008</tt> */
 #define MXC_R_USBHS_FADDR                  ((uint32_t)0x00000000UL) /**< Offset from USBHS Base Address: <tt> 0x0000</tt> */
 #define MXC_R_USBHS_POWER                  ((uint32_t)0x00000001UL) /**< Offset from USBHS Base Address: <tt> 0x0001</tt> */
 #define MXC_R_USBHS_INTRIN                 ((uint32_t)0x00000002UL) /**< Offset from USBHS Base Address: <tt> 0x0002</tt> */
@@ -244,8 +232,6 @@ typedef struct {
 #define MXC_R_USBHS_EARLYDMA               ((uint32_t)0x0000007BUL) /**< Offset from USBHS Base Address: <tt> 0x007B</tt> */
 #define MXC_R_USBHS_CTUCH                  ((uint32_t)0x00000080UL) /**< Offset from USBHS Base Address: <tt> 0x0080</tt> */
 #define MXC_R_USBHS_CTHSRTN                ((uint32_t)0x00000082UL) /**< Offset from USBHS Base Address: <tt> 0x0082</tt> */
-#define MXC_R_USBHS_DMA_INTR               ((uint32_t)0x00000200UL) /**< Offset from USBHS Base Address: <tt> 0x0200</tt> */
-#define MXC_R_USBHS_DMA                    ((uint32_t)0x00000204UL) /**< Offset from USBHS Base Address: <tt> 0x0204</tt> */
 #define MXC_R_USBHS_MXM_USB_REG_00         ((uint32_t)0x00000400UL) /**< Offset from USBHS Base Address: <tt> 0x0400</tt> */
 #define MXC_R_USBHS_M31_PHY_UTMI_RESET     ((uint32_t)0x00000404UL) /**< Offset from USBHS Base Address: <tt> 0x0404</tt> */
 #define MXC_R_USBHS_M31_PHY_UTMI_VCONTROL  ((uint32_t)0x00000408UL) /**< Offset from USBHS Base Address: <tt> 0x0408</tt> */

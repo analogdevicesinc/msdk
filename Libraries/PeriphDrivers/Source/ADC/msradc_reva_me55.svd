@@ -299,7 +299,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>DMAREQ</name>
+            <name>DMAREQ_EN</name>
             <description>DMA Request Enable.</description>
             <bitRange>[3:3]</bitRange>
             <access>read-write</access>
@@ -333,7 +333,7 @@
       <!--INTFL: MSRADC Interrupt Flag Register-->
       <register>
         <name>INTFL</name>
-        <description>MSRADC INTFL</description>
+        <description>ADC Interrupt Flag Register.</description>
         <access>read-write</access>
         <addressOffset>0x0010</addressOffset>
         <fields>
@@ -374,8 +374,8 @@
             <access>read-only</access>
           </field>
           <field>
-            <name>GLOBAL_ST</name>
-            <description>ADC Global Interrupt Status.</description>
+            <name>GLOBAL</name>
+            <description>ADC Global Interrupt Flag.</description>
             <bitRange>[9:9]</bitRange>
             <access>read-only</access>
           </field>
