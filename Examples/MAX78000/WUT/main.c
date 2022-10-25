@@ -40,8 +40,6 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
-#include "mxc_device.h"
-#include "mxc_delay.h"
 #include "mxc.h"
 
 /***** Definitions *****/

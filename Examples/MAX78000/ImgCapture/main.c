@@ -45,15 +45,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include "mxc.h"
-#include "mxc_device.h"
-#include "mxc_delay.h"
-#include "uart.h"
 #include "led.h"
 #include "board.h"
 
 #include "camera.h"
-#include "cameraif.h"
-#include "dma.h"
 #include "example_config.h"
 #include "cnn_memutils.h"
 

@@ -49,7 +49,6 @@
 #include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "csi2.h"
-#include "csi2_regs.h"
 #include "dma.h"
 #include "icc.h"
 #include "pb.h"

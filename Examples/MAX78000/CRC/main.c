@@ -147,12 +147,10 @@ int main(void)
     Test_CRC(ASYNC);
 
     if (fail) {
-        printf("\nExample Failed");
+        printf("\nExample Failed\n");
     } else {
-        printf("\nExample Succeeded");
+        printf("\nExample Succeeded\n");
     }
 
-    printf("\n\n");
-
-    while (1) {}
+    return fail;
 }
