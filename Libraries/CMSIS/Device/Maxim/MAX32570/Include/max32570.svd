@@ -24025,35 +24025,6 @@
      </fields>
     </register>
     <register>
-     <name>DMA_INTR</name>
-     <description>Sets delay between HS resume to UTM normal operating mode.</description>
-     <addressOffset>0x200</addressOffset>
-    </register>
-    <cluster>
-     <dim>8</dim>
-     <dimIncrement>0x10</dimIncrement>
-     <name>dma[%s]</name>
-     <description>USB DMA Registers.</description>
-     <headerStructName>usbhs_dma</headerStructName>
-     <addressOffset>0x204</addressOffset>
-     <access>read-write</access>
-     <register>
-      <name>CTRL</name>
-      <description>DMA Control Register.</description>
-      <addressOffset>0x000</addressOffset>
-     </register>
-     <register>
-      <name>ADDR</name>
-      <description>DMA Address Register.</description>
-      <addressOffset>0x004</addressOffset>
-     </register>
-     <register>
-      <name>COUNT</name>
-      <description>DMA Count Register.</description>
-      <addressOffset>0x008</addressOffset>
-     </register>
-    </cluster>
-    <register>
      <name>MXM_USB_REG_00</name>
      <description>MXM_USB_REG_00</description>
      <addressOffset>0x400</addressOffset>
