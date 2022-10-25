@@ -50,14 +50,14 @@ ifeq ($(RTOS), baremetal)
 WSF_HEAP_SBRK   ?= 1
 endif
 
+# Configure for both the host and controller by default
+BLE_HOST        ?= 1
+BLE_CONTROLLER  ?= 1
+
 # Use ExactLE if we're loading both the controller and host
-ifneq ($(BLE_HOST),)
-ifneq ($(BLE_CONTROLLER),)
 ifneq ($(BLE_HOST),0)
 ifneq ($(BLE_CONTROLLER),0)
 USE_EXACTLE     := 1
-endif
-endif
 endif
 endif
 
@@ -66,14 +66,14 @@ include $(ROOT_DIR)/controller/build/common/gcc/config.mk
 endif
 
 # Host includes
-ifneq ($(BLE_HOST),)
+ifneq ($(BLE_HOST),0)
 include $(CORDIO_DIR)/ble-apps/build/common/gcc/config.mk
 include $(CORDIO_DIR)/ble-apps/build/common/gcc/sources.mk
 endif
 
 # Controller only includes
-ifneq ($(BLE_CONTROLLER),)
-ifeq ($(BLE_HOST),)
+ifneq ($(BLE_CONTROLLER),0)
+ifeq ($(BLE_HOST),0)
 
 include $(ROOT_DIR)/controller/build/common/gcc/config.mk
 include $(ROOT_DIR)/wsf/build/sources.mk
