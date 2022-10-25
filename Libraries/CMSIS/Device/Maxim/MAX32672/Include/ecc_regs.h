@@ -121,7 +121,7 @@ typedef struct __attribute__((deprecated("struct and ecc_regs.h no longer suppor
  #define MXC_F_ECC_EN_ICC0_POS                          11 /**< EN_ICC0 Position */
  #define MXC_F_ECC_EN_ICC0                              ((uint32_t)(0x1UL << MXC_F_ECC_EN_ICC0_POS)) /**< EN_ICC0 Mask */
 
- #define MXC_F_ECC_EN_FL0_POS                           _Pragma ("This field is deprecated. Use MXC_R_TRIMSIR_BB_SIR2. 10-24-2022.")12 /**< EN_FL0 Position */
+ #define MXC_F_ECC_EN_FL0_POS                           12 /**< EN_FL0 Position */
  #define MXC_F_ECC_EN_FL0                               ((uint32_t)(0x1UL << MXC_F_ECC_EN_FL0_POS)) /**< EN_FL0 Mask */
 
  #define MXC_F_ECC_EN_FL1_POS                           13 /**< EN_FL1 Position */
