@@ -232,7 +232,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
 {
     // Enable CNN accelerator memory.
     // CNN clock: APB (50 MHz - PCLK) div 1
-    cnn_enable((0 << MXC_S_GCR_PCLKDIV_CNNCLKSEL_POS), MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+    cnn_enable((0 << MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS), MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
     cnn_init();
 
     cnn_img_data_t img_data;
