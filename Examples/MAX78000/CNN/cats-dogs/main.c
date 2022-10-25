@@ -121,7 +121,7 @@ int main(void)
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: APB (50 MHz) div 1
-    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+    cnn_enable((0 << MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS), MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
 
     printf("\n*** CNN Inference Test ***\n");
 
