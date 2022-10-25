@@ -407,7 +407,9 @@ int main(void)
 
     /* This code is only reached if the scheduler failed to start */
     printf("ERROR: FreeRTOS did not start due to above error!\n");
-    while (1) { __NOP(); }
+    while (1) {
+        __NOP();
+    }
 
     /* Quiet GCC warnings */
     return -1;

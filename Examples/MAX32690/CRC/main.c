@@ -82,7 +82,9 @@ void Test_CRC(int asynchronous)
 
     printf(asynchronous ? "Test CRC Async\n" : "Test CRC Sync\n");
 
-    for (i = 0; i < 100; i++) { array[i] = i; }
+    for (i = 0; i < 100; i++) {
+        array[i] = i;
+    }
 
     MXC_CTB_Init(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
 
@@ -129,5 +131,5 @@ int main(void)
     NVIC_EnableIRQ(CRYPTO_IRQn);
     Test_CRC(1);
 
-    while (1) {}
+    return 0;
 }

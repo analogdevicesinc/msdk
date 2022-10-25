@@ -58,7 +58,7 @@ int font_4 = (int)&SansSerif16x16[0];
 int font_5 = (int)&SansSerif19x19[0];
 const int font_5_width = 19;
 const int font_5_height = 19;
-int seed = 78002;
+unsigned int seed = 78002;
 
 void TFT_Print(char *str, int x, int y, int font, int length)
 {

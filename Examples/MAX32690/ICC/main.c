@@ -153,13 +153,11 @@ int main(void)
         fail += 1;
     }
 
-    printf("\n\n");
-
     if (fail == 0) {
-        printf("EXAMPLE SUCCEEDED\n");
+        printf("\nEXAMPLE SUCCEEDED\n");
     } else {
-        printf("EXAMPLE FAILED\n");
+        printf("\nEXAMPLE FAILED\n");
     }
 
-    while (1) {}
+    return 0;
 }
