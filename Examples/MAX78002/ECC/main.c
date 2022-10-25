@@ -184,5 +184,5 @@ int main(void)
            test_fail ? "FAIL!" : "Ok");
     printf("Example Complete\n");
 
-    while (1) {}
+    return test_fail;
 }

@@ -181,4 +181,6 @@ int main(void)
     while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
 
     MXC_LP_EnterBackupMode(); // Enter a backup mode
+
+    return 0;
 }

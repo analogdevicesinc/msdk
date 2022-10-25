@@ -92,6 +92,12 @@
 #error "You must select either DO_BACKUP or DO_POWERDOWN or neither, not both."
 #endif
 
+#if USE_CONSOLE
+#define PRINT(...) printf(__VA_ARGS__)
+#else
+#define PRINT(...)
+#endif
+
 // *****************************************************************************
 
 #if USE_ALARM
@@ -170,28 +176,22 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-#if USE_CONSOLE
-    printf("****Low Power Mode Example****\n\n");
-#endif // USE_CONSOLE
+    PRINT("****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
-#if USE_CONSOLE
-    printf("This code cycles through the MAX78002 power modes, using the RTC alarm to exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
+    PRINT("This code cycles through the MAX78002 power modes, using the RTC alarm to exit from "
+          "each mode.  The modes will change every %d seconds.\n\n",
+          DELAY_IN_SEC);
 #if !DISABLE_GPIO
-    printf("Set the EvKit power monitor display to System Power Mode to measure the power in each "
-           "mode.\n\n");
+    PRINT("Set the EvKit power monitor display to System Power Mode to measure the power in each "
+          "mode.\n\n");
 #endif
-#endif // USE_CONSOLE
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
-#if USE_CONSOLE
-    printf("This code cycles through the MAX78002 power modes, using a push button (PB1) to exit "
-           "from each mode and enter the next.\n\n");
-#endif // USE_CONSOLE
+    PRINT("This code cycles through the MAX78002 power modes, using a push button (PB1) to exit "
+          "from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 #endif // USE_BUTTON
 
@@ -232,16 +232,14 @@ int main(void)
 
 #endif
 
-#if USE_CONSOLE
-    printf("Running in ACTIVE mode.\n");
-#else
+    PRINT("Running in ACTIVE mode.\n");
+#if !USE_CONSOLE
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
 #endif // USE_CONSOLE
     LED_On(LED1);
     MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
     setTrigger(1);
-    {
-    }
+
     MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
     LED_Off(LED1);
 
@@ -254,50 +252,42 @@ int main(void)
 
     while (1) {
 #if DO_SLEEP
-#if USE_CONSOLE
-        printf("Entering SLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
         LED_On(LED1);
         MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
         MXC_LP_EnterSleepMode();
         MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
         LED_Off(LED1);
-        printf("Waking up from SLEEP mode.\n");
+        PRINT("Waking up from SLEEP mode.\n");
         MXC_Delay(SEC(2));
 #endif // DO_SLEEP
 
 #if DO_LPM
-#if USE_CONSOLE
-        printf("Entering Low power mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering Low power mode.\n");
         setTrigger(0);
         LED_On(LED1);
         MXC_LP_EnterLowPowerMode();
         MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
         LED_Off(LED1);
-        printf("Waking up from Low power mode.\n");
+        PRINT("Waking up from Low power mode.\n");
         MXC_Delay(SEC(2));
 #endif // DO_LPM
 
 #if DO_UPM
-#if USE_CONSOLE
-        printf("Entering Micro power mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering Micro power mode.\n");
         setTrigger(0);
         LED_On(LED1);
         MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
         MXC_LP_EnterMicroPowerMode();
         MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
         LED_Off(LED1);
-        printf("Waking up from Micro power mode.\n");
+        PRINT("Waking up from Micro power mode.\n");
         MXC_Delay(SEC(2));
 #endif // DO_UPM
 
 #if DO_STANDBY
-#if USE_CONSOLE
-        printf("Entering STANDBY mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering STANDBY mode.\n");
         setTrigger(0);
         LED_On(LED1);
         MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
@@ -305,14 +295,12 @@ int main(void)
         MXC_LP_EnterStandbyMode();
         MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
         LED_Off(LED1);
-        printf("Waking up from STANDBY mode.\n");
+        PRINT("Waking up from STANDBY mode.\n");
         MXC_Delay(SEC(2));
 #endif // DO_STANDBY
 
 #if DO_BACKUP
-#if USE_CONSOLE
-        printf("Entering BACKUP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_ClearWakeStatus();
         LED_On(LED1);
@@ -324,9 +312,7 @@ int main(void)
 #endif // DO_BACKUP
 
 #if DO_POWERDOWN
-#if USE_CONSOLE
-        printf("Entering Power Down mode, press reset or P3.0/1 = 0 to restart.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering Power Down mode, press reset or P3.0/1 = 0 to restart.\n");
         setTrigger(0);
 
         mxc_gpio_cfg_t gpio_in;

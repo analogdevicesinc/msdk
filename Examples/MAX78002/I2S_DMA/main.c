@@ -47,7 +47,6 @@
 #include "board.h"
 #include "icc.h"
 #include "i2s.h"
-#include "i2s_regs.h"
 #include "led.h"
 #include "mxc_delay.h"
 #include "mxc_device.h"

@@ -48,7 +48,6 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 #include "mxc_delay.h"
 #include "pb.h"
@@ -249,13 +248,7 @@ int main(void)
     printf("will mass erase the entire flash contents before\n");
     printf("writing and verifying a test pattern from\n");
     printf("ADDR: 0x%x to ADDR: 0x%x\n", MXC_FLASH_MEM_BASE, MXC_FLASH_MEM_BASE + TESTSIZE);
-#ifdef BOARD_FTHR_REVA
-    printf("Push SW1 to begin\n");
-#else
-#ifdef BOARD_EVKIT_V1
-    printf("Push PB1 to begin\n");
-#endif
-#endif
+    printf("Press Push Button 1 (PB1/SW1) to begin\n");
 
     while (!PB_Get(0)) {}
 

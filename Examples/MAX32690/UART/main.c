@@ -188,15 +188,13 @@ int main(void)
         printf("-->Data verified\n");
     }
 
-    printf("\n");
-
     if (fail == 0) {
         LED_On(LED_GREEN);
-        printf("-->EXAMPLE SUCCEEDED\n");
+        printf("\n-->EXAMPLE SUCCEEDED\n");
     } else {
         LED_On(LED_RED);
-        printf("-->EXAMPLE FAILED\n");
+        printf("\n-->EXAMPLE FAILED\n");
     }
 
-    while (1) {}
+    return 0;
 }
