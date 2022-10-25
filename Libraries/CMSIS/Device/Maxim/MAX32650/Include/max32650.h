@@ -417,14 +417,14 @@ typedef enum {
 #define MXC_BASE_ICC0 ((uint32_t)0x4002A000UL)
 #define MXC_ICC0 ((mxc_icc_regs_t *)MXC_BASE_ICC0)
 
-#define MXC_ICC     MXC_ICC0
+#define MXC_ICC MXC_ICC0
 
 /* ************************************************************************** */
 /*                                                      Instruction Cache XIP */
 #define MXC_BASE_ICC1 ((uint32_t)0x4002F000UL)
 #define MXC_ICC1 ((mxc_icc_regs_t *)MXC_BASE_ICC1)
 
-#define MXC_ICX     MXC_ICC1
+#define MXC_ICX MXC_ICC1
 
 /* ************************************************************************** */
 /*                                                                        CLCD */

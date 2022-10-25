@@ -297,8 +297,9 @@ int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t *tpu, const char *src, c
     // Check if src, key, iv is a null pointer
     if (src == NULL || (iv == NULL && mode != (mxc_tpu_modesel_t)MXC_TPU_REVA_MODE_ECB)) {
         return E_NULL_PTR;
-    }
-    else if (key == NULL && key_src == MXC_TPU_REVA_KEYSRC_KEY0) {  // Key source 0 requires valid key to copy into CIPHER_KEY[0:7]
+    } else if (key == NULL &&
+               key_src ==
+                   MXC_TPU_REVA_KEYSRC_KEY0) { // Key source 0 requires valid key to copy into CIPHER_KEY[0:7]
         return E_NULL_PTR;
     }
 
@@ -308,7 +309,7 @@ int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t *tpu, const char *src, c
     dataLength = MXC_TPU_Cipher_Get_Block_Size(cipher);
 
     // If using key source 0, copy key into CIPHER_KEY[0:7]
-     if(key_src == MXC_TPU_REVA_KEYSRC_KEY0) {
+    if (key_src == MXC_TPU_REVA_KEYSRC_KEY0) {
         memcpy32((void *)&tpu->cipher_key[0], (void *)key, keyLength);
     }
 
