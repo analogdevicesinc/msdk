@@ -25,7 +25,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job
-  Check_Register_And_SVD_Files:
+  Verifying:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -62,6 +62,7 @@ jobs:
         with:
           repository: Analog-Devices-MSDK/msdk-internal
           fetch-depth: 0
+          branch: main
           token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ env.MSDK-INTERNAL_DIR }}
           
@@ -90,9 +91,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Find all parts relating to updated register files
         run: |
-          # Remove local modifications
-          git scorch
-          
           # Check only for register files.
           CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*_regs.h')
           
