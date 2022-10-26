@@ -33,6 +33,7 @@
  * $Revision: 22537 $
  *
  ******************************************************************************/
+
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_MAX32572_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_MAX32572_H_
 
@@ -40,7 +41,7 @@
 #define TARGET_NUM 32572
 #endif
 
-#define MXC_NUMCORES 1
+#define MXC_NUMCORES 2
 
 #include <stdint.h>
 
@@ -107,7 +108,7 @@ typedef enum {
     RSV23_IRQn, /* 0x27  0x009C  39: Reserved */
     GPIO0_IRQn, /* 0x28  0x00A0  40: GPIO0 */
     GPIO1_IRQn, /* 0x29  0x00A4  41: GPIO1 */
-    GPIO2_IRQn, /* 0x2A  0x00A8  42: GPIO2 */
+    RSV26_IRQn, /* 0x2A  0x00A8  42: Reserved */
     CRYPTO_IRQn, /* 0x2B  0x00AC  43: Crypto */
     DMA0_IRQn, /* 0x2C  0x00B0  44: DMA0 */
     DMA1_IRQn, /* 0x2D  0x00B4  45: DMA1 */
@@ -139,12 +140,12 @@ typedef enum {
     RSV55_IRQn, /* 0x47  0x011C  71: Reserved */
     SPI2_IRQn, /* 0x48  0x0120  72: SPI2 */
     WDT1_IRQn, /* 0x49  0x0124  73: Watchdog 1 */
-    GPIO3_IRQn, /* 0x4A  0x0128  74: GPIO3 */
+    RSV58_IRQn, /* 0x4A  0x0128  74: Reserved */
     PT_IRQn, /* 0x4B  0x012C  75: Pulse train */
     RSV60_IRQn, /* 0x4C  0x0130  76: Reserved */
     RSV61_IRQn, /* 0x4D  0x0134  77: Reserved */
     RSV62_IRQn, /* 0x4E  0x0138  78: Reserved */
-    RSV63_IRQn, /* 0x4F  0x013C  79: Reserved */
+    RISCV_IRQn, /* 0x4F  0x013C  79: RISCV */
     RSV64_IRQn, /* 0x50  0x0140  80: Reserved */
     RSV65_IRQn, /* 0x51  0x0144  81: Reserved */
     RSV66_IRQn, /* 0x52  0x0148  82: Reserved */
@@ -166,7 +167,7 @@ typedef enum {
     ECC_IRQn, /* 0x62  0x0188  98: Error Correction */
     RSV83_IRQn, /* 0x63  0x018C  99: Reserved */
     RSV84_IRQn, /* 0x64  0x0190  100: Reserved */
-    RSV85_IRQn, /* 0x65  0x0194  101: Reserved */
+    SCA_IRQn, /* 0x65  0x0194  101: SCA Crypto Accelerator */
     RSV86_IRQn, /* 0x66  0x0198  102: Reserved */
     RSV87_IRQn, /* 0x67  0x019C  103: Reserved */
     UART3_IRQn, /* 0x68  0x01A0  104: UART 3 */
@@ -194,66 +195,67 @@ typedef enum {
     RSV110_IRQn, /* 0x7E  0x01F8  126: Reserved */
     RSV111_IRQn, /* 0x7F  0x01FC  127: Reserved */
 #else // __riscv
-    RTC_IRQn = 4, /* 0x04,4 RTC */
-    I2C0_IRQn, /* 0x05,5 I2C 0 */
-    I2C1_IRQn, /* 0x06,6 I2C 1 */
-    UART0_IRQn, /* 0x07,7 UART 0 */
-    UART1_IRQn, /* 0x08,8 UART 1 */
-    SPI0_IRQn, /* 0x09,9 SPI 0 */
-    SPI1_IRQn, /* 0x0A,10 SPI 1 */
-    GPIO0_IRQn, /* 0x0B,11 GPIO 0 */
-    GPIO1_IRQn, /* 0x0C,12 GPIO 1 */
-    GPIO2_IRQn, /* 0x0D,13 GPIO 2 */
-    MSRADC_IRQn, /* 0x0E,14 MSR ADC */
-    CM4_IRQn, /* 0x0F,15 CM4 */
-    DMA_MEM2MEM_IRQn, /* 0x10,16 DMA Mem to Mem */
-    DMA_SPI0_RX_IRQn, /* 0x11,17 DMA RX SPI0 */
-    DMA_SPI1_RX_IRQn, /* 0x12,18 DMA RX SPI1 */
-    DMA_SPI2_RX_IRQn, /* 0x13,19 DMA RX SPI2 */
-    DMA_UART0_RX_IRQn, /* 0x14,20 DMA RX UART0 */
-    DMA_UART1_RX_IRQn, /* 0x15,21 DMA RX UART1 */
-    DMA_SC0_RX_IRQn, /* 0x16,22 DMA RX SC0 */
-    DMA_I2C0_RX_IRQn, /* 0x17,23 DMA RX I2C0 */
-    DMA_I2C1_RX_IRQn, /* 0x18,24 DMA RX I2C1 */
-    DMA_ADC_RX_IRQn, /* 0x19,25 DMA RX ADC */
-    DMA_I2C2_RX_IRQn, /* 0x1A,26 DMA RX I2C2 */
-    DMA_MSRADC_IRQn, /* 0x1B,27 DMA RX MSR ADC*/
+    HardFault_IRQn = 3, /* 0x03,3 HardFault */
+    RSV4_IRQn = 4, /* 0x04,4 Reserved */
+    RSV5_IRQn, /* 0x05,5 Reserved */
+    MSRADC_IRQn, /* 0x06,6 Magstripe DSP */
+    RSV7_IRQn, /* 0x07,7 Reserved */
+    RSV8_IRQn, /* 0x08,8 Reserved */
+    RSV9_IRQn, /* 0x09,9 Reserved */
+    RSV10_IRQn, /* 0x0A,10 Reserved */
+    RSV11_IRQn, /* 0x0B,11 Reserved */
+    RSV12_IRQn, /* 0x0C,12 Reserved */
+    TMR5_IRQn, /* 0x0D,13 Timer 5 */
+    RSV14_IRQn, /* 0x0E,14 Reserved */
+    RSV15_IRQn, /* 0x0F,15 Reserved */
+    CM4_IRQn, /* 0x10,16 CM4 */
+    RSV17_IRQn, /* 0x11,17 Reserved */
+    RSV18_IRQn, /* 0x12,18 Reserved */
+    RSV19_IRQn, /* 0x13,19 Reserved */
+    RSV20_IRQn, /* 0x14,20 Reserved */
+    RSV21_IRQn, /* 0x15,21 Reserved */
+    RSV22_IRQn, /* 0x16,22 Reserved */
+    RSV23_IRQn, /* 0x17,23 Reserved */
+    RSV24_IRQn, /* 0x18,24 Reserved */
+    GPIO0_IRQn, /* 0x19,25 GPIO0 */
+    GPIO1_IRQn, /* 0x1A,26 GPIO1 */
+    RSV27_IRQn, /* 0x1B,27 Reserved */
     RSV28_IRQn, /* 0x1C,28 Reserved */
-    DMA_PCIF_RX_IRQn, /* 0x1D,29 DMA RX PCIF */
-    DMA_UART2_RX_IRQn, /* 0x1E,30 DMA RX UART2 */
-    DMA_SPI3_RX_IRQn, /* 0x1F,31 DMA RX SPI3 */
+    RSV29_IRQn, /* 0x1D,29 Reserved */
+    RSV30_IRQn, /* 0x1E,30 Reserved */
+    RSV31_IRQn, /* 0x1F,31 Reserved */
     RSV32_IRQn, /* 0x20,32 Reserved */
-    DMA_USBEP1_RX_IRQn, /* 0x21,33 DMA RX USBHF EP1 */
-    DMA_USBEP2_RX_IRQn, /* 0x22,34 DMA RX USBHF EP2 */
-    DMA_USBEP3_RX_IRQn, /* 0x23,35 DMA RX USBHF EP3 */
-    DMA_USBEP4_RX_IRQn, /* 0x24,36 DMA RX USBHF EP4 */
-    DMA_USBEP5_RX_IRQn, /* 0x25,37 DMA RX USBHF EP5 */
-    DMA_USBEP6_RX_IRQn, /* 0x26,38 DMA RX USBHF EP6 */
-    DMA_USBEP7_RX_IRQn, /* 0x27,39 DMA RX USBHF EP7 */
-    DMA_USBEP8_RX_IRQn, /* 0x28,40 DMA RX USBHF EP8 */
-    DMA_USBEP9_RX_IRQn, /* 0x29,41 DMA RX USBHF EP9 */
-    DMA_USBEP10_RX_IRQn, /* 0x2A,42 DMA RX USBHF EP10 */
-    DMA_USBEP11_RX_IRQn, /* 0x2B,43 DMA RX USBHF EP11 */
-    DMA_UART3_RX_IRQn, /* 0x2C,44 DMA RX UART3 */
-    DMA_UART4_RX_IRQn, /* 0x2D,45 DMA RX UART4 */
-    DMA_UART5_RX_IRQn, /* 0x2E,46 DMA RX UART5 */
-    DMA_SC1_RX_IRQn, /* 0x2F,47 DMA RX SC1 */
+    RSV33_IRQn, /* 0x21,33 Reserved */
+    RSV34_IRQn, /* 0x22,34 Reserved */
+    RSV35_IRQn, /* 0x23,35 Reserved */
+    RSV36_IRQn, /* 0x24,36 Reserved */
+    RSV37_IRQn, /* 0x25,37 Reserved */
+    RSV38_IRQn, /* 0x26,38 Reserved */
+    RSV39_IRQn, /* 0x27,39 Reserved */
+    RSV40_IRQn, /* 0x28,40 Reserved */
+    RSV41_IRQn, /* 0x29,41 Reserved */
+    RSV42_IRQn, /* 0x2A,42 Reserved */
+    RSV43_IRQn, /* 0x2B,43 Reserved */
+    RSV44_IRQn, /* 0x2C,44 Reserved */
+    RSV45_IRQn, /* 0x2D,45 Reserved */
+    RSV46_IRQn, /* 0x2E,46 Reserved */
+    RSV47_IRQn, /* 0x2F,47 Reserved */
     RSV48_IRQn, /* 0x30,48 Reserved */
-    DMA_SPI0_TX_IRQn, /* 0x31,49 DMA TX SPI0 */
-    DMA_SPI1_TX_IRQn, /* 0x32,50 DMA TX SPI1 */
-    DMA_SPI2_TX_IRQn, /* 0x33,51 DMA TX SPI2 */
-    DMA_UART0_TX_IRQn, /* 0x34,52 DMA TX UART0 */
-    DMA_UART1_TX_IRQn, /* 0x35,53 DMA TX UART1 */
-    DMA_SC0_TX_IRQn, /* 0x36,54 DMA TX SC0 */
-    DMA_I2C0_TX_IRQn, /* 0x37,55 DMA TX I2C0 */
-    DMA_I2C1_TX_IRQn, /* 0x38,56 DMA TX I2C1 */
+    RSV49_IRQn, /* 0x31,49 Reserved */
+    RSV50_IRQn, /* 0x32,50 Reserved */
+    RSV51_IRQn, /* 0x33,51 Reserved */
+    RSV52_IRQn, /* 0x34,52 Reserved */
+    RSV53_IRQn, /* 0x35,53 Reserved */
+    RSV54_IRQn, /* 0x36,54 Reserved */
+    RSV55_IRQn, /* 0x37,55 Reserved */
+    RSV56_IRQn, /* 0x38,56 Reserved */
     RSV57_IRQn, /* 0x39,57 Reserved */
-    DMA_I2C2_TX_IRQn, /* 0x3A,58 DMA TX I2C2 */
+    RSV58_IRQn, /* 0x3A,58 Reserved */
     RSV59_IRQn, /* 0x3B,59 Reserved */
     RSV60_IRQn, /* 0x3C,60 Reserved */
     RSV61_IRQn, /* 0x3D,61 Reserved */
-    DMA_UART2_TX_IRQn, /* 0x3E,62 DMA TX UART2 */
-    DMA_SPI3_TX_IRQn, /* 0x3F,63 DMA TX SPI3 */
+    RSV62_IRQn, /* 0x3E,62 Reserved */
+    RSV63_IRQn, /* 0x3F,63 Reserved */
 #endif // __riscv
     MXC_IRQ_EXT_COUNT
 } IRQn_Type;
@@ -286,23 +288,18 @@ typedef enum {
 /* ==================       Device Specific Memory Section       ================== */
 /* ================================================================================ */
 
-#define MXC_ROM_MEM_BASE 0x00000000UL
-#define MXC_ROM_MEM_SIZE 0x00010000UL
+#define MXC_ROM0_MEM_BASE 0x00000000UL
+#define MXC_ROM0_MEM_SIZE 0x00020000UL
+#define MXC_ROM1_MEM_BASE 0x2006C000UL
+#define MXC_ROM1_MEM_SIZE 0x00008000UL
+#define MXC_ROM_MEM_BASE MXC_ROM0_MEM_BASE
+#define MXC_ROM_MEM_SIZE MXC_ROM0_MEM_SIZE
 #define MXC_XIP_MEM_BASE 0x08000000UL
 #define MXC_XIP_MEM_SIZE 0x08000000UL
-#define MXC_FLASH0_MEM_BASE 0x10000000UL
-#define MXC_FLASH1_MEM_BASE 0x10080000UL
-#define MXC_FLASH_MEM_BASE MXC_FLASH0_MEM_BASE
-#define MXC_FLASH_PAGE_SIZE 0x00002000UL
-#define MXC_FLASH_MEM_SIZE 0x00080000UL
-#define MXC_INFO0_MEM_BASE 0x10800000UL
-#define MXC_INFO1_MEM_BASE 0x10804000UL
-#define MXC_INFO_MEM_BASE MXC_INFO0_MEM_BASE
-#define MXC_INFO_MEM_SIZE 0x00004000UL
 #define MXC_SRAM_MEM_BASE 0x20000000UL
-#define MXC_SRAM_MEM_SIZE 0x00050000UL
-#define MXC_XIP_DATA_MEM_BASE 0x80000000UL
-#define MXC_XIP_DATA_MEM_SIZE 0x20000000UL
+#define MXC_SRAM_MEM_SIZE 0x0006C000UL
+#define MXC_OTP_MEM_BASE 0x400C0000UL
+#define MXC_OTP_MEM_SIZE 0x00000800UL
 
 /* ================================================================================ */
 /* ================       Device Specific Peripheral Section       ================ */
@@ -371,30 +368,21 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                       GPIO */
-#define MXC_CFG_GPIO_INSTANCES (4)
+#define MXC_CFG_GPIO_INSTANCES (2)
 #define MXC_CFG_GPIO_PINS_PORT (32)
 
 #define MXC_BASE_GPIO0 ((uint32_t)0x40008000UL)
 #define MXC_GPIO0 ((mxc_gpio_regs_t *)MXC_BASE_GPIO0)
 #define MXC_BASE_GPIO1 ((uint32_t)0x40009000UL)
 #define MXC_GPIO1 ((mxc_gpio_regs_t *)MXC_BASE_GPIO1)
-#define MXC_BASE_GPIO2 ((uint32_t)0x4000A000UL)
-#define MXC_GPIO2 ((mxc_gpio_regs_t *)MXC_BASE_GPIO2)
-#define MXC_BASE_GPIO3 ((uint32_t)0x4000B000UL)
-#define MXC_GPIO3 ((mxc_gpio_regs_t *)MXC_BASE_GPIO3)
 
-#define MXC_GPIO_GET_IDX(p) \
-    ((p) == MXC_GPIO0 ? 0 : (p) == MXC_GPIO1 ? 1 : (p) == MXC_GPIO2 ? 2 : (p) == MXC_GPIO3 ? 3 : -1)
+#define MXC_GPIO_GET_IDX(p) ((p) == MXC_GPIO0 ? 0 : (p) == MXC_GPIO1 ? 1 : -1)
 
-#define MXC_GPIO_GET_GPIO(i) \
-    ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : (i) == 2 ? MXC_GPIO2 : (i) == 3 ? MXC_GPIO3 : 0)
+#define MXC_GPIO_GET_GPIO(i) ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : 0)
 
-#define MXC_GPIO_GET_IRQ(i)  \
-    ((i) == 0 ? GPIO0_IRQn : \
-     (i) == 1 ? GPIO1_IRQn : \
-     (i) == 2 ? GPIO2_IRQn : \
-     (i) == 3 ? GPIO3_IRQn : \
-                0)
+#ifndef __riscv
+#define MXC_GPIO_GET_IRQ(i) ((i) == 0 ? GPIO0_IRQn : (i) == 1 ? GPIO1_IRQn : 0)
+#endif
 
 /******************************************************************************/
 /*                                                       Magstripe Reader ADC */
@@ -421,6 +409,7 @@ typedef enum {
 #define MXC_BASE_TMR5 ((uint32_t)0x40115000UL)
 #define MXC_TMR5 ((mxc_tmr_regs_t *)MXC_BASE_TMR5)
 
+#ifndef __riscv
 #define MXC_TMR_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? TMR0_IRQn : \
                 (i) == 1 ? TMR1_IRQn : \
@@ -429,6 +418,9 @@ typedef enum {
                 (i) == 4 ? TMR4_IRQn : \
                 (i) == 5 ? TMR5_IRQn : \
                            0)
+#else
+#define MXC_TMR_GET_IRQ(i) ((i) == 5 ? TMR5_IRQn : 0)
+#endif
 
 #define MXC_TMR_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_TMR0 : \
@@ -474,7 +466,9 @@ typedef enum {
 #define MXC_BASE_I2C1 ((uint32_t)0x4001E000UL)
 #define MXC_I2C1 ((mxc_i2c_regs_t *)MXC_BASE_I2C1)
 
+#ifndef __riscv
 #define MXC_I2C_GET_IRQ(i) (IRQn_Type)((i) == 0 ? I2C0_IRQn : (i) == 1 ? I2C1_IRQn : 0)
+#endif
 
 #define MXC_I2C_GET_BASE(i) ((i) == 0 ? MXC_BASE_I2C0 : (i) == 1 ? MXC_BASE_I2C1 : 0)
 
@@ -515,7 +509,9 @@ typedef enum {
 #define MXC_BASE_SC1 ((uint32_t)0x4002D000UL)
 #define MXC_SC1 ((mxc_scn_regs_t *)MXC_BASE_SC1)
 
+#ifndef __riscv
 #define MXC_SC_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SC0_IRQn : (i) == 1 ? SC1_IRQn : 0)
+#endif
 
 #define MXC_SC_GET_BASE(i) ((i) == 0 ? MXC_BASE_SC0 : (i) == 1 ? MXC_BASE_SC1 : 0)
 
@@ -593,18 +589,15 @@ typedef enum {
      (p) == MXC_PT7 ? 7 : \
                       -1)
 
-//FIXME: Difference between OTP controller and OTP? Their respective addresses
-//          are assigned below according to Fanily Resource Map document.
+/******************************************************************************/
+/*                                                                 Semaphores */
+#define MXC_BASE_SEMA ((uint32_t)0x4003E000UL)
+#define MXC_SEMA ((mxc_sema_regs_t *)MXC_BASE_SEMA)
+
 /******************************************************************************/
 /*                                                             OTP Controller */
-//FIXME: Uncomment when OTP registers are included
-// #define MXC_BASE_OTP                    ((uint32_t)0x40041000UL)
-// #define MXC_OTP                         ((mxc_otp_regs_t*)MXC_BASE_OTP)
-/******************************************************************************/
-/*                                                                        OTP */
-//FIXME: Uncomment when OTP registers are included
-// #define MXC_BASE_OTP                    ((uint32_t)0x400C0000UL)
-// #define MXC_OTP                         ((mxc_otp_regs_t*)MXC_BASE_OTP)
+#define MXC_BASE_OTP ((uint32_t)0x40041000UL)
+#define MXC_OTP ((mxc_otp_regs_t *)MXC_BASE_OTP)
 
 /******************************************************************************/
 /*                                               UART / Serial Port Interface */
@@ -620,12 +613,14 @@ typedef enum {
 #define MXC_BASE_UART3 ((uint32_t)0x40045000UL)
 #define MXC_UART3 ((mxc_uart_regs_t *)MXC_BASE_UART3)
 
+#ifndef __riscv
 #define MXC_UART_GET_IRQ(i)             \
     (IRQn_Type)((i) == 0 ? UART0_IRQn : \
                 (i) == 1 ? UART1_IRQn : \
                 (i) == 2 ? UART2_IRQn : \
                 (i) == 3 ? UART3_IRQn : \
                            0)
+#endif
 
 #define MXC_UART_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_UART0 : \
@@ -642,11 +637,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                        SPI */
-#ifndef __riscv
-#define MXC_SPI_INSTANCES (3) // TODO(ADI): Update
-#else
-#define MXC_SPI_INSTANCES (2)
-#endif // __riscv
+#define MXC_SPI_INSTANCES (3)
 #define MXC_SPI_SS_INSTANCES (4)
 #define MXC_SPI_FIFO_DEPTH (32)
 
@@ -654,8 +645,6 @@ typedef enum {
 #define MXC_SPI0 ((mxc_spi_regs_t *)MXC_BASE_SPI0)
 #define MXC_BASE_SPI1 ((uint32_t)0x40047000UL)
 #define MXC_SPI1 ((mxc_spi_regs_t *)MXC_BASE_SPI1)
-
-#ifndef __riscv
 #define MXC_BASE_SPI2 ((uint32_t)0x400BE000UL)
 #define MXC_SPI2 ((mxc_spi_regs_t *)MXC_BASE_SPI2)
 
@@ -666,19 +655,9 @@ typedef enum {
 
 #define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI0 : (i) == 1 ? MXC_SPI1 : (i) == 2 ? MXC_SPI2 : 0)
 
+#ifndef __riscv
 #define MXC_SPI_GET_IRQ(i) \
     (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : (i) == 2 ? SPI2_IRQn : 0)
-
-#else // __riscv
-
-#define MXC_SPI_GET_IDX(p) ((p) == MXC_SPI0 ? 0 : (p) == MXC_SPI1 ? 1 : -1)
-
-#define MXC_SPI_GET_BASE(i) ((i) == 0 ? MXC_BASE_SPI0 : (i) == 1 ? MXC_BASE_SPI1 : 0)
-
-#define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI0 : (i) == 1 ? MXC_SPI1 : 0)
-
-#define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : 0)
-
 #endif // __riscv
 
 /******************************************************************************/

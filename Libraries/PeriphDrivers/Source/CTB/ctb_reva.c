@@ -460,7 +460,9 @@ void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t *trng, uint8_t *data, ui
 
     while (MXC_GetLock((void *)&MXC_CTB_Callbacks[RNG_ID], 1) != E_NO_ERROR) {}
 
+#ifndef __riscv
     NVIC_DisableIRQ(TRNG_IRQn);
+#endif
 
     TRNG_data = data;
     TRNG_count = 0;
@@ -469,7 +471,10 @@ void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t *trng, uint8_t *data, ui
 
     // Enable interrupts
     trng->ctrl |= MXC_F_TRNG_REVA_CTRL_RND_IE;
+
+#ifndef __riscv
     NVIC_EnableIRQ(TRNG_IRQn);
+#endif
 }
 
 /* ************************************************************************* */
