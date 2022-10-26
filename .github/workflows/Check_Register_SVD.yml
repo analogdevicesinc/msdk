@@ -66,9 +66,6 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           path: ${{ env.MSDK-INTERNAL_DIR }}
           
-      - run: |
-          echo $GITHUB_WORKSPACE
-          
       # We grab the chip name, but the SVD Scripts references the equivalent die name
       - name: Create Part-Die Name Dictionary
         run: |
@@ -91,9 +88,9 @@ jobs:
           CHIP_DIE_NAMES[MAX32680]=ME20
           CHIP_DIE_NAMES[MAX32672]=ME21
 
-      # Runs a set of commands using the runners shell
-      - name: Find all parts relating to updated register files
-        run: |
+          # Runs a set of commands using the runners shell
+          #- name: Find all parts relating to updated register files
+          #run: |
           # Check only for register files.
           CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*_regs.h')
           
@@ -133,16 +130,40 @@ jobs:
           # Update environment variable for next steps.
           echo "EFECTED_PARTS=EFFECTED_DIE_LIST" >> $GITHUB_ENV
           
-      - name: Run SVD scripts to generate register files
-        run: |
+          #- name: Run SVD scripts to generate register files
+          #run: |
           cd  ${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
           echo $GITHUB_WORKSPACE
-#           for die_name in ${{ env.EFFECTED_PARTS}}
-#           do
-#             cd die_name
+          for die_name in ${{ env.EFFECTED_PARTS}}
+          do
+            cd die_name
             
-#             ./makeRegs.sh
-            
-#             cd ../
-#           done            
+            ./makeRegs.sh
+           
+            cd ../
+          done            
           
+          #- name: Compare updated register files to SVD files
+          #run: |
+          CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*_regs.h')
+        
+          for reg_h_file in ${CHANGED_FILES}
+          do
+            # Get register file name only. Remove path.
+            svd_register_file=${reg_h_file%/*}
+            
+            # Removing (prefix) path to [CHIP_NAME]/Include/*_regs.h
+            CHIP_NAME=${reg_h_file#*/Maxim/}
+            # Remove (suffix) following path /Include/*_regs.h to get the [CHIP_NAME]
+            CHIP_NAME=${CHIP_NAME%%/*}
+            
+            DIE_NAME="${CHIP_DIE_NAME[$CHIP_NAME]}
+            
+            svd_register_file=${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/${DIE_NAME}/${reg_h_file%/*}
+            
+            # Compare changed register file with the generated register file.
+            # If different, then check fails
+            if [[diff reg_h_file r]]; then
+              exit
+            fi
+          done
