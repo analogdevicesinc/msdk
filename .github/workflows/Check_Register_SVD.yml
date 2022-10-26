@@ -52,7 +52,6 @@ jobs:
       - name: Checkout msdk repository
         uses: actions/checkout@v3
         with:
-          repository: Analog-Devices-MSDK/msdk-internal
           # Update the submodules below, doing so here will convert ssh to https
           submodules: false
           fetch-depth: 0
