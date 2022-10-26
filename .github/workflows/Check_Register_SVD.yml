@@ -1,0 +1,149 @@
+name: Check_Register_SVD
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+env:
+  MSDK_DIR: msdk
+  MSDK-INTERNAL_DIR: msdk-internal
+  
+  # Check effected parts.
+  # GLOSSARY:
+  # Chip name will mean the designation number of microcontroller like MAX32670 and MAX78000
+  # Die name will refer to the die type name of micrcontroller like ME15 and AI85
+  # Part will mean the microcontroller product itself, could refer to chip name or die name
+  EFFECTED_PARTS: none
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job
+  Check_Register_And_SVD_Files:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clean
+        continue-on-error: true
+        run: |
+          # Remove local modifications
+          set +e
+
+          # Attempt to clean the repo
+          git scorch
+          retval=$?
+
+          # Remove everything if this fails
+          if [[ $retval -ne 0 ]]
+          then
+            rm -rf *
+          fi
+
+          set -e
+
+      # Checks-out MSDK and MSDK-INTERNAL repositories under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout msdk repository
+        uses: actions/checkout@v3
+        with:
+          repository: Analog-Devices-MSDK/msdk-internal
+          # Update the submodules below, doing so here will convert ssh to https
+          submodules: false
+          fetch-depth: 0
+          # Token should be same under $GITHUB_TOKEN
+          path: ${{ env.MSDK_DIR }}
+      
+      - name: Checkout msdk internal repository
+        uses: actions/checkout@v3
+        with:
+          repository: Analog-Devices-MSDK/msdk-internal
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ env.MSDK-INTERNAL_DIR }}
+          
+      # We grab the chip name, but the SVD Scripts references the equivalent die name
+      - name: Create Part-Die Name Dictionary
+        run: |
+          # Create associative array for dictionary
+          declare -A CHIP_DIE_NAMES
+          
+          # Add future parts to this dictionary
+          CHIP_DIE_NAMES[MAX78000]=AI85
+          CHIP_DIE_NAMES[MAX78002]=AI87
+          CHIP_DIE_NAMES[MAX32520]=ES17
+          CHIP_DIE_NAMES[MAX32650]=ME10
+          CHIP_DIE_NAMES[MAX32660]=ME11
+          CHIP_DIE_NAMES[MAX32662]=ME12
+          CHIP_DIE_NAMES[MAX32570]=ME13
+          CHIP_DIE_NAMES[MAX32665]=ME14
+          CHIP_DIE_NAMES[MAX32670]=ME15
+          CHIP_DIE_NAMES[MAX32675]=ME16
+          CHIP_DIE_NAMES[MAX32655]=ME17
+          CHIP_DIE_NAMES[MAX32690]=ME18
+          CHIP_DIE_NAMES[MAX32680]=ME20
+          CHIP_DIE_NAMES[MAX32672]=ME21
+
+      # Runs a set of commands using the runners shell
+      - name: Find all parts relating to updated register files
+        run: |
+          # Remove local modifications
+          git scorch
+          
+          # Check only for register files.
+          CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*_regs.h')
+          
+          # This set keeps tracks of all the parts with updated register files. (No duplicates).
+          # The MSDK will be using the Chips names in the path to register files.
+          EFFECTED_CHIP_SET=()
+          
+          # Formatted list that will be assigned to environment variable for next step:
+          #   "Run SVD scripts to generate register files"
+          EFFECTED_DIE_LIST=""
+          
+          # Grab the part relating to the changed register file and add to list for env variable assignment.
+          # Note: This only works for register files in this path:
+          #   msdk/Libraries/CMSIS/Device/Maxim/[CHIP_NAME]/Include/*_regs.h
+          for chip in ${CHANGED_FILES}
+          do
+            # Removing (prefix) path to [CHIP_NAME]/Include/*_regs.h
+            CHIP_NAME=${chip#*/Maxim/}
+            # Remove (suffix) following path /Include/*_regs.h to get the [CHIP_NAME]
+            CHIP_NAME=${CHIP_NAME%%/*}
+            
+            # Keep track of effected parts, don't add duplicates.
+            if [[ ! "${EFFECTED_CHIP_SET[*]}" =~ "${CHIP_NAME}" ]]; then
+              EFFECTED_CHIP_SET+=("$CHIP_NAME")
+              
+              # Create list with die name of effected parts for SVD scripts as you go
+              # List will have " " (space) as the delimiter
+              # Only add space when you're adding more than one item into list.
+              if [[ ! -z "$EFFECTED_DIE_LIST" ]]; then
+                EFFECTED_DIE_LIST+=" "
+              fi
+              EFFECTED_DIE_LIST+="${CHIP_DIE_NAMES[$CHIP_NAME]}"
+              
+            fi
+          done
+          
+          # Update environment variable for next steps.
+          echo "EFECTED_PARTS=EFFECTED_DIE_LIST" >> $GITHUB_ENV
+          
+      - name: Run SVD scripts to generate register files
+        run: |
+          cd  ${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
+          echo $GITHUB_WORKSPACE
+#           for die_name in ${{ env.EFFECTED_PARTS}}
+#           do
+#             cd die_name
+            
+#             ./makeRegs.sh
+            
+#             cd ../
+#           done            
+          
