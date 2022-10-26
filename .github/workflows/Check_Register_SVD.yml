@@ -62,7 +62,7 @@ jobs:
         with:
           repository: Analog-Devices-MSDK/msdk-internal
           fetch-depth: 0
-          #token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ env.MSDK-INTERNAL_DIR }}
           
       # We grab the chip name, but the SVD Scripts references the equivalent die name
