@@ -62,7 +62,6 @@ jobs:
         with:
           repository: Analog-Devices-MSDK/msdk-internal
           fetch-depth: 0
-          branch: main
           token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ env.MSDK-INTERNAL_DIR }}
           
