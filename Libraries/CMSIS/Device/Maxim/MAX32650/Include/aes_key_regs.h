@@ -36,8 +36,8 @@
 *
 ******************************************************************************/
 
-#ifndef _AES_KEY_REGS_H_
-#define _AES_KEY_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_AES_KEY_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_AES_KEY_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -111,4 +111,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _AES_KEY_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_AES_KEY_REGS_H_
