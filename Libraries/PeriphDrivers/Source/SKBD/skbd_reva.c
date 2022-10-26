@@ -46,6 +46,7 @@
 /* ***** SKBD context info ***** */
 static mxc_skbd_reva_req_t mxc_skbd_req;
 
+#ifndef __riscv
 static void SKBD_RevA_IRQHandler(void)
 {
     if (mxc_skbd_req.irq_handler) {
@@ -55,14 +56,17 @@ static void SKBD_RevA_IRQHandler(void)
     /* Acknowledge interrupt at platform level */
     NVIC_ClearPendingIRQ(SKB_IRQn);
 }
+#endif
 
 int MXC_SKBD_RevA_PreInit(void)
 {
     mxc_skbd_req.first_init = 0;
 
+#ifndef __riscv
     NVIC_ClearPendingIRQ(SKB_IRQn);
     /* Attach vector */
     MXC_NVIC_SetVector(SKB_IRQn, SKBD_RevA_IRQHandler);
+#endif
 
     return E_NO_ERROR;
 }
@@ -209,7 +213,10 @@ int MXC_SKBD_RevA_ReadKeys(mxc_skbd_reva_regs_t *skbd, mxc_skbd_reva_keys_t *key
 
 int MXC_SKBD_RevA_Close(void)
 {
+#ifndef __riscv
     NVIC_DisableIRQ(SKB_IRQn);
+#endif
+
     mxc_skbd_req.state = MXC_SKBD_REVA_STATE_CLOSED;
     mxc_skbd_req.first_init = 0;
     return E_NO_ERROR;

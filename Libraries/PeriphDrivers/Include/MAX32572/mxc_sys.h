@@ -3,8 +3,8 @@
  * @brief   System level header file.
  */
 
-/*******************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -41,6 +41,7 @@
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
+#include "mcr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,21 +53,18 @@ typedef enum {
     MXC_SYS_RESET0_WDT = MXC_F_GCR_RST0_WDT0_POS, /**< Reset WDT */
     MXC_SYS_RESET0_GPIO0 = MXC_F_GCR_RST0_GPIO0_POS, /**< Reset GPIO0 */
     MXC_SYS_RESET0_GPIO1 = MXC_F_GCR_RST0_GPIO1_POS, /**< Reset GPIO1 */
-    MXC_SYS_RESET0_GPIO2 = MXC_F_GCR_RST0_GPIO2_POS, /**< Reset GPIO2 */
     MXC_SYS_RESET0_TMR0 = MXC_F_GCR_RST0_TMR0_POS, /**< Reset TMR0 */
     MXC_SYS_RESET0_TMR1 = MXC_F_GCR_RST0_TMR1_POS, /**< Reset TMR1 */
     MXC_SYS_RESET0_TMR2 = MXC_F_GCR_RST0_TMR2_POS, /**< Reset TMR2 */
     MXC_SYS_RESET0_TMR3 = MXC_F_GCR_RST0_TMR3_POS, /**< Reset TMR3 */
     MXC_SYS_RESET0_TMR4 = MXC_F_GCR_RST0_TMR4_POS, /**< Reset TMR4 */
     MXC_SYS_RESET0_TMR5 = MXC_F_GCR_RST0_TMR5_POS, /**< Reset TMR5 */
-    MXC_SYS_RESET0_TMR6 = MXC_F_GCR_RST0_TMR6_POS, /**< Reset TMR6 */
-    MXC_SYS_RESET0_TMR7 = MXC_F_GCR_RST0_TMR7_POS, /**< Reset TMR7 */
     MXC_SYS_RESET0_UART0 = MXC_F_GCR_RST0_UART0_POS, /**< Reset UART0 */
     MXC_SYS_RESET0_UART1 = MXC_F_GCR_RST0_UART1_POS, /**< Reset UART1 */
     MXC_SYS_RESET0_SPI0 = MXC_F_GCR_RST0_SPI0_POS, /**< Reset SPI0 */
     MXC_SYS_RESET0_SPI1 = MXC_F_GCR_RST0_SPI1_POS, /**< Reset SPI1 */
     MXC_SYS_RESET0_I2C0 = MXC_F_GCR_RST0_I2C0_POS, /**< Reset I2C0 */
-    MXC_SYS_RESET0_RTC = MXC_F_GCR_RST0_RTC_POS, /**< Reset RTC */
+    MXC_SYS_RESET0_RTC = MXC_F_MCR_RST_RTC, /**< Reset RTC */
     MXC_SYS_RESET0_CTB = MXC_F_GCR_RST0_CRYPTO_POS, /**< Reset CRYPTO */
     MXC_SYS_RESET0_USB = MXC_F_GCR_RST0_USB_POS, /**< Reset USB */
     MXC_SYS_RESET0_TRNG = MXC_F_GCR_RST0_TRNG_POS, /**< Reset TRNG */
@@ -80,22 +78,17 @@ typedef enum {
     MXC_SYS_RESET1_PT = (MXC_F_GCR_RST1_PT_POS + 32), /**< Reset PT */
     MXC_SYS_RESET1_SPIXIP = (MXC_F_GCR_RST1_SPIXIP_POS + 32), /**< Reset SPIXIP */
     MXC_SYS_RESET1_SPIXIPM = (MXC_F_GCR_RST1_SPIXIPM_POS + 32), /**< Reset SPIXIPM */
-    MXC_SYS_RESET1_GPIO3 = (MXC_F_GCR_RST1_GPIO3_POS + 32), /**< Reset GPIO4 */
-    MXC_SYS_RESET1_SDHC = (MXC_F_GCR_RST1_SDHC_POS + 32), /**< Reset SDHC */
     MXC_SYS_RESET1_WDT1 = (MXC_F_GCR_RST1_WDT1_POS + 32), /**< Reset WDT1 */
     MXC_SYS_RESET1_SPI2 = (MXC_F_GCR_RST1_SPI2_POS + 32), /**< Reset SPI2 */
-    MXC_SYS_RESET1_I2C2 = (MXC_F_GCR_RST1_I2C2_POS + 32), /**< Reset I2C2 */
+    MXC_SYS_RESET1_AC = (MXC_F_GCR_RST1_AC_POS + 32), /**< Reset AC */
     MXC_SYS_RESET1_UART3 = (MXC_F_GCR_RST1_UART3_POS + 32), /**< Reset UART3 */
-    MXC_SYS_RESET1_UART4 = (MXC_F_GCR_RST1_UART4_POS + 32), /**< Reset USRT4 */
-    MXC_SYS_RESET1_UART5 = (MXC_F_GCR_RST1_UART5_POS + 32), /**< Reset UART5 */
     MXC_SYS_RESET1_SKBD = (MXC_F_GCR_RST1_SKBD_POS + 32), /**< Reset SKBD */
     MXC_SYS_RESET1_MSRADC = (MXC_F_GCR_RST1_MSRADC_POS + 32), /**< Reset MSRADC */
     MXC_SYS_RESET1_SC0 = (MXC_F_GCR_RST1_SC0_POS + 32), /**< Reset SC0 */
     MXC_SYS_RESET1_SC1 = (MXC_F_GCR_RST1_SC1_POS + 32), /**< Reset SC1 */
-    MXC_SYS_RESET1_EMAC = (MXC_F_GCR_RST1_EMAC_POS + 32), /**< Reset EMAC */
     MXC_SYS_RESET1_HTMR0 = (MXC_F_GCR_RST1_HTMR0_POS + 32), /**< Reset HTMR0 */
     MXC_SYS_RESET1_HTMR1 = (MXC_F_GCR_RST1_HTMR1_POS + 32), /**< Reset HTMR1 */
-    MXC_SYS_RESET1_AC = (MXC_F_GCR_RST1_AC_POS + 32), /**< Reset AC */
+    MXC_SYS_RESET1_CPU1 = (MXC_F_GCR_RST1_CPU1_POS + 32), /**< Reset CPU1 */
 } mxc_sys_reset_t;
 
 /** @brief System clock disable enumeration. Used in MXC_SYS_ClockDisable and MXC_SYS_ClockEnable functions */
@@ -104,12 +97,8 @@ typedef enum {
         MXC_F_GCR_PCLKDIS0_GPIO0_POS, /**< Disable MXC_F_GCR_PCLKDIS0_GPIO0 clock */
     MXC_SYS_PERIPH_CLOCK_GPIO1 =
         MXC_F_GCR_PCLKDIS0_GPIO1_POS, /**< Disable MXC_F_GCR_PCLKDIS0_GPIO1 clock */
-    MXC_SYS_PERIPH_CLOCK_GPIO2 =
-        MXC_F_GCR_PCLKDIS0_GPIO2_POS, /**< Disable MXC_F_GCR_PCLKDIS0_GPIO2 clock */
     MXC_SYS_PERIPH_CLOCK_USB =
         MXC_F_GCR_PCLKDIS0_USB_POS, /**< Disable MXC_F_GCR_PCLKDIS0_USB clock */
-    MXC_SYS_PERIPH_CLOCK_TFT =
-        MXC_F_GCR_PCLKDIS0_TFT_POS, /**< Disable MXC_F_GCR_PCLKDIS0_TFT clock */
     MXC_SYS_PERIPH_CLOCK_DMA =
         MXC_F_GCR_PCLKDIS0_DMA_POS, /**< Disable MXC_F_GCR_PCLKDIS0_DMA clock */
     MXC_SYS_PERIPH_CLOCK_SPI0 =
@@ -136,10 +125,6 @@ typedef enum {
         MXC_F_GCR_PCLKDIS0_TMR4_POS, /**< Disable MXC_F_GCR_PCLKDIS0_TMR4 clock */
     MXC_SYS_PERIPH_CLOCK_TMR5 =
         MXC_F_GCR_PCLKDIS0_TMR5_POS, /**< Disable MXC_F_GCR_PCLKDIS0_TMR5 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR6 =
-        MXC_F_GCR_PCLKDIS0_TMR6_POS, /**< Disable MXC_F_GCR_PCLKDIS0_TMR6 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR7 =
-        MXC_F_GCR_PCLKDIS0_TMR7_POS, /**< Disable MXC_F_GCR_PCLKDIS0_TMR7 clock */
     MXC_SYS_PERIPH_CLOCK_SKBD =
         MXC_F_GCR_PCLKDIS0_SKBD_POS, /**< Disable MXC_F_GCR_PCLKDIS0_ADC clock */
     MXC_SYS_PERIPH_CLOCK_ADC =
@@ -160,34 +145,26 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_UART2_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART2 clock */
     MXC_SYS_PERIPH_CLOCK_TRNG =
         (MXC_F_GCR_PCLKDIS1_TRNG_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_TRNG clock */
+    MXC_SYS_PERIPH_CLOCK_OTP =
+        (MXC_F_GCR_PCLKDIS1_OTP_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_OTP clock */
     MXC_SYS_PERIPH_CLOCK_WDT0 =
         (MXC_F_GCR_PCLKDIS1_WDT0_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_WDT0 clock */
     MXC_SYS_PERIPH_CLOCK_WDT1 =
         (MXC_F_GCR_PCLKDIS1_WDT1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_WDT1 clock */
-    MXC_SYS_PERIPH_CLOCK_GPIO3 =
-        (MXC_F_GCR_PCLKDIS1_GPIO3_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_GPIO3 clock */
-    MXC_SYS_PERIPH_CLOCK_SDHC =
-        (MXC_F_GCR_PCLKDIS1_SDHC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SDHC clock */
     MXC_SYS_PERIPH_CLOCK_ICACHEXIP =
         (MXC_F_GCR_PCLKDIS1_ICCXIP_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_ICACHEXIP clock */
     MXC_SYS_PERIPH_CLOCK_SPI2 =
         (MXC_F_GCR_PCLKDIS1_SPI2_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SPI2 clock */
-    MXC_SYS_PERIPH_CLOCK_I2C2 =
-        (MXC_F_GCR_PCLKDIS1_I2C2_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_I2C2 clock */
     MXC_SYS_PERIPH_CLOCK_UART3 =
         (MXC_F_GCR_PCLKDIS1_UART3_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART3 clock */
-    MXC_SYS_PERIPH_CLOCK_UART4 =
-        (MXC_F_GCR_PCLKDIS1_UART4_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART4 clock */
-    MXC_SYS_PERIPH_CLOCK_UART5 =
-        (MXC_F_GCR_PCLKDIS1_UART5_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART5 clock */
     MXC_SYS_PERIPH_CLOCK_MSRADC =
         (MXC_F_GCR_PCLKDIS1_MSRADC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_MSRADC clock */
     MXC_SYS_PERIPH_CLOCK_SC0 =
         (MXC_F_GCR_PCLKDIS1_SC0_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SC0 clock */
     MXC_SYS_PERIPH_CLOCK_SC1 =
         (MXC_F_GCR_PCLKDIS1_SC1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SC1 clock */
-    MXC_SYS_PERIPH_CLOCK_EMAC =
-        (MXC_F_GCR_PCLKDIS1_EMAC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_EMAC clock */
+    MXC_SYS_PERIPH_CLOCK_CPU1 =
+        (MXC_F_GCR_PCLKDIS1_CPU1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_CPU1 clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */

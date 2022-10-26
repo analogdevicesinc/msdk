@@ -420,6 +420,11 @@
                   <value>0x09</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>MSRADC</name>
+                  <description>MSR 9 bit ADC.</description>
+                  <value>0x0B</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>UART2RX</name>
                   <description>UART2 RX</description>
                   <value>0x0E</value>

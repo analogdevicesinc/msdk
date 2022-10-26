@@ -1,7 +1,3 @@
-/**
- * @file    mxc_errors.h
- * @brief   List of common error return codes for Maxim Integrated libraries.
-*/
 /******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -35,57 +31,34 @@
  *
  ******************************************************************************/
 
-/* Define to prevent redundant inclusion */
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_ERRORS_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_ERRORS_H_
+/* **** Includes **** */
+#include <stdint.h>
+#include "otp_reva_regs.h"
 
-/**
- * @ingroup syscfg
- * @defgroup MXC_Error_Codes Error Codes
- * @brief      A list of common error codes used by the API.
- * @note       A Negative Error Convention is used to avoid conflict with
- *             positive, Non-Error, returns.
- * @{
- */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/** No Error */
-#define E_NO_ERROR 0
-/** No Error, success */
-#define E_SUCCESS 0
-/** Pointer is NULL */
-#define E_NULL_PTR -1
-/** No such device */
-#define E_NO_DEVICE -2
-/** Parameter not acceptable */
-#define E_BAD_PARAM -3
-/** Value not valid or allowed */
-#define E_INVALID -4
-/** Module not initialized */
-#define E_UNINITIALIZED -5
-/** Busy now, try again later */
-#define E_BUSY -6
-/** Operation not allowed in current state */
-#define E_BAD_STATE -7
-/** Generic error */
-#define E_UNKNOWN -8
-/** General communications error */
-#define E_COMM_ERR -9
-/** Operation timed out */
-#define E_TIME_OUT -10
-/** Expected response did not occur */
-#define E_NO_RESPONSE -11
-/** Operations resulted in unexpected overflow */
-#define E_OVERFLOW -12
-/** Operations resulted in unexpected underflow */
-#define E_UNDERFLOW -13
-/** Data or resource not available at this time */
-#define E_NONE_AVAIL -14
-/** Event was shutdown */
-#define E_SHUTDOWN -15
-/** Event was aborted */
-#define E_ABORT -16
-/** The requested operation is not supported */
-#define E_NOT_SUPPORTED -17
-/**@} end of MXC_Error_Codes group */
+/* **** Function Prototypes **** */
 
-#endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_MXC_ERRORS_H_
+int MXC_OTP_RevA_Init(mxc_otp_reva_regs_t *otp, mxc_otp_clkdiv_t pclkdiv);
+
+int MXC_OTP_RevA_IsLocked(mxc_otp_reva_regs_t *otp);
+
+void MXC_OTP_RevA_Unlock(mxc_otp_reva_regs_t *otp);
+
+void MXC_OTP_RevA_Lock(mxc_otp_reva_regs_t *otp);
+
+int MXC_OTP_RevA_Write(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size);
+
+int MXC_OTP_RevA_Write32(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t data);
+
+int MXC_OTP_RevA_Read(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data, uint16_t size);
+
+int MXC_OTP_RevA_Read32(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data);
+
+/**@} end of group otp */
+
+#ifdef __cplusplus
+}
+#endif

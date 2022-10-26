@@ -77,18 +77,6 @@ void MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
         MXC_GPIO_Config(&gpio_cfg_tmr5);
         break;
-
-    case 6:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR6);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR6);
-        // Timer 6 on MAX32570 has no external pins
-        break;
-
-    case 7:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_TMR7);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR7);
-        // Timer 7 on MAX32570 has no external pins
-        break;
     }
 
     MXC_TMR_RevA_Init((mxc_tmr_reva_regs_t *)tmr, cfg);
@@ -126,14 +114,6 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 
     case 5:
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR5);
-        break;
-
-    case 6:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR6);
-        break;
-
-    case 7:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR7);
         break;
     }
 }

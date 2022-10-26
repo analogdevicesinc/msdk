@@ -226,7 +226,7 @@
         </fields>
       </register>
       <register>
-        <name>INT_EN</name>
+        <name>INTEN</name>
         <description>Interrupt Enable control register</description>
         <addressOffset>0x0008</addressOffset>
         <fields>
@@ -261,6 +261,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>TX_OB</name>
+            <description>Enable Interrupt For TX FIFO when only one byte is remaining.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>TX_HE</name>
             <description>Enable Interrupt For TX FIFO has half empty</description>
             <bitOffset>6</bitOffset>
@@ -269,7 +275,7 @@
         </fields>
       </register>
       <register>
-        <name>INT_FL</name>
+        <name>INTFL</name>
         <description>Interrupt status flags Control register</description>
         <addressOffset>0x000C</addressOffset>
         <fields>
@@ -301,6 +307,12 @@
             <name>RX_THD</name>
             <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
             <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_OB</name>
+            <description>Flag for interrupt when TX FIFO has only one byte is remaining.</description>
+            <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
