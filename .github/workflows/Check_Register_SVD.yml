@@ -25,7 +25,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job
-  Verifying:
+  verify:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -65,6 +65,9 @@ jobs:
           branch: main
           token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ env.MSDK-INTERNAL_DIR }}
+          
+      - run: |
+          echo $GITHUB_WORKSPACE
           
       # We grab the chip name, but the SVD Scripts references the equivalent die name
       - name: Create Part-Die Name Dictionary
