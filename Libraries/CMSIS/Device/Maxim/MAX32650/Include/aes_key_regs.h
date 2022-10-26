@@ -1,7 +1,6 @@
 /**
  * @file    aes_key_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
- * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -37,8 +36,8 @@
 *
 ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_AES_KEY_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_AES_KEY_REGS_H_
+#ifndef _AES_KEY_REGS_H_
+#define _AES_KEY_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -78,7 +77,7 @@ extern "C" {
  * @ingroup     aes_key
  * @defgroup    aes_key_registers AES_KEY_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
- * @details     AES Key Registers.
+ * @details AES Key Registers.
  */
 
 /**
@@ -86,13 +85,13 @@ extern "C" {
  * Structure type to access the AES_KEY Registers.
  */
 typedef struct {
-    __IO uint32_t aes_key0;             /**< <tt>\b 0x000:</tt> AES_KEY AES_KEY0 Register */
-    __R  uint32_t rsv_0x4_0x7f[31];
-    __IO uint32_t aes_key1;             /**< <tt>\b 0x080:</tt> AES_KEY AES_KEY1 Register */
-    __R  uint32_t rsv_0x84_0xff[31];
-    __IO uint32_t aes_key2;             /**< <tt>\b 0x100:</tt> AES_KEY AES_KEY2 Register */
-    __R  uint32_t rsv_0x104_0x17f[31];
-    __IO uint32_t aes_key3;             /**< <tt>\b 0x180:</tt> AES_KEY AES_KEY3 Register */
+    __IO uint32_t aes_key0[4];          /**< <tt>\b 0x00:</tt> AES_KEY AES_KEY0 Register */
+    __R  uint32_t rsv_0x10_0x1f[4];
+    __IO uint32_t aes_key1[4];          /**< <tt>\b 0x20:</tt> AES_KEY AES_KEY1 Register */
+    __R  uint32_t rsv_0x30_0xff[52];
+    __IO uint32_t aes_key2[4];          /**< <tt>\b 0x100:</tt> AES_KEY AES_KEY2 Register */
+    __R  uint32_t rsv_0x110_0x17f[28];
+    __IO uint32_t aes_key3[4];          /**< <tt>\b 0x180:</tt> AES_KEY AES_KEY3 Register */
 } mxc_aes_key_regs_t;
 
 /* Register offsets for module AES_KEY */
@@ -102,14 +101,14 @@ typedef struct {
  * @brief      AES_KEY Peripheral Register Offsets from the AES_KEY Base Peripheral Address.
  * @{
  */
-#define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */
-#define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000080UL) /**< Offset from AES_KEY Base Address: <tt> 0x0080</tt> */
-#define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000100UL) /**< Offset from AES_KEY Base Address: <tt> 0x0100</tt> */
-#define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x00000180UL) /**< Offset from AES_KEY Base Address: <tt> 0x0180</tt> */
+ #define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000020UL) /**< Offset from AES_KEY Base Address: <tt> 0x0020</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000100UL) /**< Offset from AES_KEY Base Address: <tt> 0x0100</tt> */ 
+ #define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x00000180UL) /**< Offset from AES_KEY Base Address: <tt> 0x0180</tt> */ 
 /**@} end of group aes_key_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_AES_KEY_REGS_H_
+#endif /* _AES_KEY_REGS_H_ */
