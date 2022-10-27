@@ -148,11 +148,11 @@ int main(void)
 
     if (fail == 0) {
         printf("\nExample Succeeded\n");
+        return 0;
     } else {
         printf("Example Failed\n");
+        return -1;
     }
-
-    while (1) {}
 
     return 0;
 }

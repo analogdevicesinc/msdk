@@ -140,11 +140,13 @@ int main(void)
 
     if (fail) {
         printf("\nExample Failed");
+        return -1;
     } else {
         printf("\nExample Succeeded");
+        return 0;
     }
 
     printf("\n\n");
 
-    while (1) {}
+    return 0;
 }
