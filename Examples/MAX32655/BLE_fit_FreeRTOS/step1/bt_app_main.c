@@ -1,6 +1,6 @@
 /*************************************************************************************************/
 /*!
- *  \file
+ *  \file   bt_app_main.c
  *
  *  \brief  application main program.
  *
@@ -652,6 +652,31 @@ static void appProcMsg(fitMsg_t *pMsg)
 
 /*************************************************************************************************/
 /*!
+ *  \brief  User command to display FreeRTOS task list.
+ *
+ *  \param  pRese  Pointer to the display content buffer.
+ *
+ *  \return Error code.
+ */
+/*************************************************************************************************/
+uint8_t CmdPsList(char *pResp, size_t xWriteBufferLen)
+{
+    uint8_t ret = 0;
+
+    const char *const pcHeader = "Task          State  Priority  Stack    #"
+                                 "\r\n**************************************\r\n";
+
+    configASSERT(pResp);
+
+    /* Generate a table of task stats. */    
+    snprintf(pResp, xWriteBufferLen, "%s", pcHeader);
+    vTaskList(pResp + strlen(pcHeader));
+    
+    return ret;
+}
+
+/*************************************************************************************************/
+/*!
  *  \brief  User command to display FreeRTOS task statistics.
  *
  *  \param  pRese  Pointer to the display content buffer.
@@ -659,27 +684,18 @@ static void appProcMsg(fitMsg_t *pMsg)
  *  \return Error code.
  */
 /*************************************************************************************************/
-uint8_t CmdPs(char *pResp, size_t xWriteBufferLen)
+uint8_t CmdPsStats(char *pResp, size_t xWriteBufferLen)
 {
     uint8_t ret = 0;
 
-    const char *const pcHeader1 = "Task          State  Priority  Stack    #"
-                                 "\r\n************************************************\r\n";
-
-    const char *const pcHeader2= "\r\nTask            Run time cnt    Run time percentage"
-                                 "\r\n************************************************\r\n";
+    const char *const pcHeader= "Task            Run time cnt    Run time percentage"
+                                 "\r\n***************************************************\r\n";
 
     configASSERT(pResp);
 
-    /* Generate a table of task stats. */
-    snprintf(pResp, xWriteBufferLen, "%s", pcHeader1);
-    vTaskList(pResp + strlen(pcHeader1));
-    
-    uint32_t len = strlen(pResp);
-    snprintf(pResp + len, xWriteBufferLen, "%s", pcHeader2);
-    
-    len = strlen(pResp);
-    vTaskGetRunTimeStats(pResp + len);
+    /* Generate a table of task stats. */    
+    snprintf(pResp, xWriteBufferLen, "%s", pcHeader);
+    vTaskGetRunTimeStats(pResp + strlen(pcHeader));
 
     return ret;
 }
@@ -687,16 +703,20 @@ uint8_t CmdPs(char *pResp, size_t xWriteBufferLen)
 /*************************************************************************************************/
 /*!
  *  \brief  Handler for a user terminal command.
- *
+ *  
+ *  cmd ps l          list the FreeRTOS task info
+ *  cmd ps s          display the FreeRTOS task statistics
+ * 
  *  \param  argc      The number of arguments passed to the command.
  *  \param  argv      The array of arguments; the 0th argument is the command.
  *
  *  \return Error code.
  */
 /*************************************************************************************************/
+#define TERM_CMD_RESP_BUF_SIZE          1000
 uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
 {
-    char Resp[500];
+    char Resp[TERM_CMD_RESP_BUF_SIZE];
     Resp[0] = 0;
     uint8_t ret = 0;
 
@@ -706,12 +726,23 @@ uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
     }
     else
     { 
-        if (strcmp(argv[2], "ps") == 0) 
+        if (strcmp(argv[1], "ps") == 0) 
         {
-            ret = CmdPs(Resp, 500);
-            if (ret != 0) 
+            if (argv[2][0] == 'l')
             {
-                return TERMINAL_ERROR_EXEC;
+                ret = CmdPsList(Resp, TERM_CMD_RESP_BUF_SIZE);
+                if (ret != 0) 
+                {
+                    return TERMINAL_ERROR_EXEC;
+                }
+            }
+            else if (argv[2][0] == 's')
+            {
+                ret = CmdPsStats(Resp, TERM_CMD_RESP_BUF_SIZE);
+                if (ret != 0) 
+                {
+                    return TERMINAL_ERROR_EXEC;
+                }
             }
         }
     }

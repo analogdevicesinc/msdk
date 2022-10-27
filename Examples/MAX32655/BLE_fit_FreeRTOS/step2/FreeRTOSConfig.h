@@ -52,15 +52,12 @@
 /* CMSIS keeps a global updated with current system clock in Hz */
 #define configCPU_CLOCK_HZ ((uint32_t)IPO_FREQ)
 
-#define SLEEP_LED 1
-#define DEEPSLEEP_LED 0
-
 // #define configUSE_TICKLESS_IDLE     1
 
 #define configTICK_RATE_HZ ((portTickType)1000)
 #define configRTC_TICK_RATE_HZ (32768)
 
-#define configTOTAL_HEAP_SIZE ((size_t)(100 * 1024))
+#define configTOTAL_HEAP_SIZE ((size_t)(26 * 1024))
 
 #define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
@@ -71,11 +68,6 @@
 #define configUSE_CO_ROUTINES 0
 #define configUSE_16_BIT_TICKS 0
 #define configUSE_MUTEXES 1
-
-#define configUSE_TIMERS 1
-#define configTIMER_TASK_PRIORITY (configMAX_PRIORITIES - 3)
-#define configTIMER_QUEUE_LENGTH 8
-#define configTIMER_TASK_STACK_DEPTH configMINIMAL_STACK_SIZE
 
 /* Run time and task stats gathering related definitions. */
 #define configGENERATE_RUN_TIME_STATS           1
