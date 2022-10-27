@@ -31,36 +31,37 @@
  *
  ******************************************************************************/
 
-/* MXC */
+/* Maxim CMSIS */
 #include "mxc_device.h"
 #include "board.h"
 #include "mxc_assert.h"
+#include "lp.h"
+#include "pwrseq_regs.h"
+#include "wut.h"
+#include "mcr_regs.h"
+#include "icc.h"
+#include "pb.h"
+#include "led.h"
+#include "uart.h"
 
 /* FreeRTOS includes */
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
 #include "task.h"
 
-/* Maxim CMSIS */
-#include "lp.h"
-#include "pwrseq_regs.h"
-#include "wut.h"
-#include "mcr_regs.h"
-#include "simo.h"
-#include "icc.h"
-#include "pb.h"
-#include "led.h"
+/* Bluetooth Cordio library */
+#include "pal_timer.h"
+#include "pal_uart.h"
+#include "pal_bb.h"
 
-#define WUT_RATIO (configRTC_TICK_RATE_HZ / configTICK_RATE_HZ)
-#define MAX_WUT_SNOOZE (5 * configRTC_TICK_RATE_HZ)
-#define MIN_SYSTICK 2
-#define MIN_WUT_TICKS 50
+#define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
+#define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
+#define WAKEUP_US 700 /* Deep sleep recovery time, units of us */
 
-static uint32_t wutSnooze = 0;
-static int wutSnoozeValid = 0;
-
-extern mxc_gpio_cfg_t uart_cts;
-extern mxc_gpio_cfg_t uart_rts;
+/* Minimum ticks before SysTick interrupt, units of system clock ticks.
+ * Convert CPU_CLOCK_HZ to units of ticks per us 
+ */
+#define MIN_SYSTICK (configCPU_CLOCK_HZ / 1000000 /* ticks / us */ * 10 /* us */)
 
 /*
  * Sleep-check function
@@ -69,20 +70,25 @@ extern mxc_gpio_cfg_t uart_rts;
  * tickless sleep is permissible (ie. no UART/SPI/I2C activity). Any other
  * return code will prevent FreeRTOS from entering tickless idle.
  */
-__attribute__((weak)) int freertos_permit_tickless(void)
+int freertos_permit_tickless(void)
 {
-    return E_NO_ERROR;
-}
+    /* Can not disable BLE DBB and 32 MHz clock while trim procedure is ongoing */
+    if (MXC_WUT_TrimPending() != E_NO_ERROR) {
+        return E_BUSY;
+    }
 
-/*
- *  Snooze the wake up timer
- *
- *  Prevent the system from entering deep sleep for MAX_WUT_SNOOZE WUT ticks.
- */
-void wutHitSnooze(void)
-{
-    wutSnooze = MXC_WUT_GetCount() + MAX_WUT_SNOOZE;
-    wutSnoozeValid = 1;
+    /* Figure out if the UART is active */
+    if (PalUartGetState(PAL_UART_ID_TERMINAL) == PAL_UART_STATE_BUSY) {
+        return E_BUSY;
+    }
+
+    /* Prevent characters from being corrupted if still transmitting,
+      UART will shutdown in deep sleep  */
+    if (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {
+        return E_BUSY;
+    }
+
+    return E_NO_ERROR;
 }
 
 /*
@@ -95,9 +101,9 @@ void wutHitSnooze(void)
  */
 void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 {
-    uint32_t wut_ticks;
-    uint32_t actual_ticks;
-    uint32_t pre_capture, post_capture;
+    uint32_t preCapture, postCapture, schUsec, dsTicks, dsWutTicks;
+    uint64_t bleSleepTicks, idleTicks, dsSysTickPeriods, schUsecElapsed;
+    bool_t schTimerActive;
 
     /* We do not currently handle to case where the WUT is slower than the RTOS tick */
     MXC_ASSERT(configRTC_TICK_RATE_HZ >= configTICK_RATE_HZ);
@@ -108,78 +114,158 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     }
 
     /* Calculate the number of WUT ticks, but we need one to synchronize */
-    wut_ticks = (xExpectedIdleTime - 1) * WUT_RATIO;
+    idleTicks = (uint64_t)(xExpectedIdleTime - 1) * (uint64_t)configRTC_TICK_RATE_HZ /
+                (uint64_t)configTICK_RATE_HZ;
 
-    if (wut_ticks > MAX_WUT_SNOOZE) {
-        wut_ticks = MAX_WUT_SNOOZE;
+    if (idleTicks > MAX_WUT_TICKS) {
+        idleTicks = MAX_WUT_TICKS;
     }
 
     /* Check to see if we meet the minimum requirements for deep sleep */
-    if (wut_ticks < MIN_WUT_TICKS) {
-        /* Finish out the rest of this tick with normal sleep */
-        MXC_LP_EnterSleepMode();
+    if (idleTicks < (MIN_WUT_TICKS + WAKEUP_US)) {
         return;
     }
-
-    /* Check the WUT snooze */
-    if (wutSnoozeValid && (MXC_WUT_GetCount() < wutSnooze)) {
-        /* Finish out the rest of this tick with normal sleep */
-        MXC_LP_EnterSleepMode();
-        return;
-    }
-    wutSnoozeValid = 0;
 
     /* Enter a critical section but don't use the taskENTER_CRITICAL()
-     method as that will mask interrupts that should exit sleep mode. */
+       method as that will mask interrupts that should exit sleep mode. */
     __asm volatile("cpsid i");
 
     /* If a context switch is pending or a task is waiting for the scheduler
-     to be unsuspended then abandon the low power entry. */
+       to be unsuspended then abandon the low power entry. */
     /* Also check the MXC drivers for any in-progress activity */
     if ((eTaskConfirmSleepModeStatus() == eAbortSleep) ||
         (freertos_permit_tickless() != E_NO_ERROR)) {
         /* Re-enable interrupts - see comments above the cpsid instruction()
-       above. */
+           above. */
         __asm volatile("cpsie i");
+
         return;
     }
 
-    /* Set RTS to prevent the console UART from transmitting */
-    MXC_GPIO_OutSet(uart_rts.port, uart_rts.mask);
-
-    /* Snapshot the current WUT value */
-    MXC_WUT_Edge();
-    pre_capture = MXC_WUT_GetCount();
-    MXC_WUT_SetCompare(pre_capture + wut_ticks);
-    MXC_WUT_Edge();
-
-    LED_Off(1);
-
-    MXC_LP_EnterStandbyMode();
-
-    post_capture = MXC_WUT_GetCount();
-    actual_ticks = post_capture - pre_capture;
-
-    LED_On(1);
-
-    /*  Snooze the deep sleep if we woke up on the UART CTS GPIO */
-    if ((uart_cts.port == MXC_GPIO0) && (MXC_PWRSEQ->lpwkst0 & uart_cts.mask)) {
-        wutHitSnooze();
-    } else if ((uart_cts.port == MXC_GPIO1) && (MXC_PWRSEQ->lpwkst1 & uart_cts.mask)) {
-        wutHitSnooze();
+    /* Determine if the Bluetooth scheduler is running */
+    if (PalTimerGetState() == PAL_TIMER_STATE_BUSY) {
+        schTimerActive = TRUE;
+    } else {
+        schTimerActive = FALSE;
     }
 
-    /* Clear RTS */
-    MXC_GPIO_OutClr(uart_rts.port, uart_rts.mask);
+    if (!schTimerActive) {
+        uint32_t ts;
+        if (PalBbGetTimestamp(&ts)) {
+            /*Determine if PalBb is active, return if we get a valid time stamp indicating 
+             * that the scheduler is waiting for a PalBb event */
 
-    /* Re-enable interrupts - see comments above the cpsid instruction()
-     above. */
-    __asm volatile("cpsie i");
+            /* Re-enable interrupts - see comments above the cpsid instruction()
+               above. */
+            __asm volatile("cpsie i");
+
+            return;
+        }
+    }
+
+    /* Disable SysTick */
+    SysTick->CTRL &= ~(SysTick_CTRL_ENABLE_Msk);
+
+    /* Enable wakeup from WUT */
+    NVIC_EnableIRQ(WUT_IRQn);
+    MXC_LP_EnableWUTAlarmWakeup();
+
+    /* Determine if we need to snapshot the PalBb clock */
+    if (schTimerActive) {
+        /* Snapshot the current WUT value with the PalBb clock */
+        MXC_WUT_Store();
+        preCapture = MXC_WUT_GetCount();
+        schUsec = PalTimerGetExpTime();
+
+        /* Adjust idleTicks for the time it takes to restart the BLE hardware */
+        idleTicks -= ((WAKEUP_US)*configRTC_TICK_RATE_HZ / 1000000);
+
+        /* Calculate the time to the next BLE scheduler event */
+        if (schUsec < WAKEUP_US) {
+            bleSleepTicks = 0;
+        } else {
+            bleSleepTicks = ((uint64_t)schUsec - (uint64_t)WAKEUP_US) *
+                            (uint64_t)configRTC_TICK_RATE_HZ / (uint64_t)BB_CLK_RATE_HZ;
+        }
+    } else {
+        /* Snapshot the current WUT value */
+        MXC_WUT_Edge();
+        preCapture = MXC_WUT_GetCount();
+        bleSleepTicks = 0;
+        schUsec = 0;
+    }
+
+    /* Sleep for the shortest tick duration */
+    if ((schTimerActive) && (bleSleepTicks < idleTicks)) {
+        dsTicks = bleSleepTicks;
+    } else {
+        dsTicks = idleTicks;
+    }
+
+    /* Bound the deep sleep time */
+    if (dsTicks > MAX_WUT_TICKS) {
+        dsTicks = MAX_WUT_TICKS;
+    }
+
+    /* Don't deep sleep if we don't have time */
+    if (dsTicks >= MIN_WUT_TICKS) {
+        /* Arm the WUT interrupt */
+        MXC_WUT->cmp = preCapture + dsTicks;
+
+        if (schTimerActive) {
+            /* Stop the BLE scheduler timer */
+            PalTimerStop();
+
+            /* Shutdown BB hardware */
+            PalBbDisable();
+        }
+
+        LED_Off(SLEEP_LED);
+        LED_Off(DEEPSLEEP_LED);
+
+        MXC_LP_EnterStandbyMode();
+
+        LED_On(DEEPSLEEP_LED);
+        LED_On(SLEEP_LED);
+
+        if (schTimerActive) {
+            /* Enable and restore the BB hardware */
+            PalBbEnable();
+
+            PalBbRestore();
+
+            /* Restore the BB counter */
+            MXC_WUT_RestoreBBClock(BB_CLK_RATE_HZ);
+
+            /* Restart the BLE scheduler timer */
+            dsWutTicks = MXC_WUT->cnt - preCapture;
+            schUsecElapsed =
+                (uint64_t)dsWutTicks * (uint64_t)1000000 / (uint64_t)configRTC_TICK_RATE_HZ;
+
+            int palTimerStartTicks = schUsec - schUsecElapsed;
+            if (palTimerStartTicks < 1) {
+                palTimerStartTicks = 1;
+            }
+            PalTimerStart(palTimerStartTicks);
+        }
+    }
+
+    /* Recalculate dsWutTicks for the FreeRTOS tick counter update */
+    MXC_WUT_Edge();
+    postCapture = MXC_WUT_GetCount();
+    dsWutTicks = postCapture - preCapture;
 
     /*
-   * Advance ticks by # actually elapsed
-   */
-    portENTER_CRITICAL();
-    vTaskStepTick((actual_ticks / WUT_RATIO));
-    portEXIT_CRITICAL();
+     * Advance ticks by # actually elapsed
+     */
+    dsSysTickPeriods =
+        (uint64_t)dsWutTicks * (uint64_t)configTICK_RATE_HZ / (uint64_t)configRTC_TICK_RATE_HZ;
+    vTaskStepTick(dsSysTickPeriods);
+
+    /* Re-enable SysTick */
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+
+    /* Re-enable interrupts - see comments above the cpsid instruction()
+       above. */
+    __asm volatile("cpsie i");
 }

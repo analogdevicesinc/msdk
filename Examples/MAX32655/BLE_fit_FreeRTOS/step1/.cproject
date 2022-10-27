@@ -32,7 +32,19 @@
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/PeriphDrivers/Include/${TARGET}/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/${TARGET}/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/${TARGET}/${BOARD}/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS-Plus/Source/FreeRTOS-Plus-CLI&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-apps/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-model/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-profile/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-profiles/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/controller/include/ble&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/controller/include/common&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/platform/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/wsf/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/wsf/include/util&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/include&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/RISC-V&quot;"/>
