@@ -24,12 +24,12 @@
 
 #include <string.h>
 
-#include "app_api.h"
+#include "bt_app_api.h"
 #include "app_terminal.h"
 #include "app_ui.h"
 #include "att_api.h"
 #include "att_handler.h"
-#include "dats_api.h"
+#include "app_api.h"
 #include "dm_handler.h"
 #include "hci_core.h"
 #include "hci_defs.h"
@@ -308,8 +308,21 @@ void bleStartup(void)
     WsfHeapAlloc(memUsed);
 
     mainWsfInit();
-
+#if 0
     AppTerminalInit();
+#else
+    wsfHandlerId_t handlerId;
+
+    /* Initialize Serial Communication. */
+    WsfBufIoUartRegister(TerminalRx);
+    TerminalRegisterUartTxFunc(WsfBufIoWrite);
+    handlerId = WsfOsSetNextHandler(TerminalHandler);
+    TerminalInit(handlerId);
+
+    /* Register commands. */
+    TerminalRegisterCommand(&appTerminalButtonPress);
+    TerminalRegisterCommand(&appTerminalPinCode);
+#endif
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,

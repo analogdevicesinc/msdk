@@ -44,7 +44,7 @@
 #include "svc_wp.h"
 #include "util/calc128.h"
 #include "gatt/gatt_api.h"
-#include "dats_api.h"
+#include "bt_app_api.h"
 #include "wut.h"
 #include "trimsir_regs.h"
 #include "pal_btn.h"
