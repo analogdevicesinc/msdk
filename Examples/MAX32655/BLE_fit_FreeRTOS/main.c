@@ -33,7 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   step1
+ * @brief   BLE_fit_FreeRTOS
  * @details This example demonstrates FreeRTOS with BLE capabilities.
  */
 
