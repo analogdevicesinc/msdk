@@ -66,25 +66,26 @@ void Test_Callback(void *req, int result)
     callback_result = result;
 }
 
-void Test_Result(int result)
+int Test_Result(int result)
 {
     if (result) {
         printf(" * Failed *\n\n");
+        return -1;
     } else {
         printf("   Passed  \n\n");
+        return 0;
     }
 }
 
 void Test_CRC(int asynchronous)
 {
+	int ret;
     uint32_t array[101];
     int i;
 
     printf(asynchronous ? "Test CRC Async\n" : "Test CRC Sync\n");
 
-    for (i = 0; i < 100; i++) {
-        array[i] = i;
-    }
+    for (i = 0; i < 100; i++) { array[i] = i; }
 
     MXC_CTB_Init(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
 
@@ -117,19 +118,29 @@ void Test_CRC(int asynchronous)
         MXC_CTB_CRC_Compute(&crc_req);
     }
 
-    Test_Result(CHECK != crc_req.resultCRC);
+    ret = Test_Result(CHECK != crc_req.resultCRC);
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
+    return ret;
 }
 
 // *****************************************************************************
 int main(void)
 {
+	int fail = 0;
     printf("\n************ CRC Example ***********\n");
 
-    Test_CRC(0);
+    fail += Test_CRC(0);
 
     NVIC_EnableIRQ(CRYPTO_IRQn);
-    Test_CRC(1);
+    fail += Test_CRC(1);
+
+    if (fail == 0) {
+        printf("\nExample Succeeded\n");
+        return 0;
+    } else {
+        printf("\nExample Failed\n");
+        return -1;
+    }
 
     return 0;
 }
