@@ -61,7 +61,7 @@ jobs:
       - name: Test BLE examples
         run: |
           
-          cp -r /home/btm-ci/Workspace/BLE-examples-test/Examples_tests .
+          cp -r .github/workflows/ci-tests/Examples_tests .
           chmod +x Examples_tests/local_testLauncher.sh
           cd Examples_tests/
           ./local_testLauncher.sh
