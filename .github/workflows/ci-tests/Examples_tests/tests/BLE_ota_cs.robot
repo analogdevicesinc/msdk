@@ -51,4 +51,6 @@ Firmware Update Verification Test
     Serial.Flush Serial Port    ${SERIAL_PORT_2}
     Sleep     1
     Serial.send    btn 2 m\n    ${SERIAL_PORT_2}
+    Serial.Expect And Timeout    FW_VERSION: 2    5s    ${SERIAL_PORT_2}
+
 
