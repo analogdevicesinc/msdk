@@ -68,7 +68,7 @@ increase the amount of time spent in standby mode, thus reducing average power c
 
 #define configRTC_TICK_RATE_HZ (32768)
 
-#define configTOTAL_HEAP_SIZE ((size_t)(108 * 1024))
+#define configTOTAL_HEAP_SIZE ((size_t)(100 * 1024))  // 108 good, 75 bad
 
 #define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
@@ -89,6 +89,14 @@ void vAssertCalled(const char *const pcFileName, uint32_t ulLine);
 #define configTIMER_TASK_PRIORITY (configMAX_PRIORITIES - 3)
 #define configTIMER_QUEUE_LENGTH 8
 #define configTIMER_TASK_STACK_DEPTH configMINIMAL_STACK_SIZE
+
+/* Run time and task stats gathering related definitions. */
+#define configGENERATE_RUN_TIME_STATS           1
+
+#if configGENERATE_RUN_TIME_STATS == 1
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
+#define portGET_RUN_TIME_COUNTER_VALUE()        xTaskGetTickCount()
+#endif
 
 /* Run time and task stats gathering related definitions. */
 #define configUSE_TRACE_FACILITY 1

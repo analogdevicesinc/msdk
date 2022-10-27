@@ -23,6 +23,8 @@
 /*************************************************************************************************/
 
 #include <string.h>
+#include <stdio.h>
+
 #include "app_api.h"
 #include "app_main.h"
 #include "app_db.h"
@@ -59,6 +61,11 @@
 #include "pal_btn.h"
 
 #include "bt_app_api.h"
+
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "FreeRTOSConfig.h"
+#include "task.h"
 
 /**************************************************************************************************
   Macros
@@ -645,6 +652,40 @@ static void appProcMsg(fitMsg_t *pMsg)
 
 /*************************************************************************************************/
 /*!
+ *  \brief  User command to display FreeRTOS task statistics.
+ *
+ *  \param  pRese  Pointer to the display content buffer.
+ *
+ *  \return Error code.
+ */
+/*************************************************************************************************/
+uint8_t CmdPs(char *pResp, size_t xWriteBufferLen)
+{
+    uint8_t ret = 0;
+
+    const char *const pcHeader1 = "Task          State  Priority  Stack    #"
+                                 "\r\n************************************************\r\n";
+
+    const char *const pcHeader2= "\r\nTask            Run time cnt    Run time percentage"
+                                 "\r\n************************************************\r\n";
+
+    configASSERT(pResp);
+
+    /* Generate a table of task stats. */
+    snprintf(pResp, xWriteBufferLen, "%s", pcHeader1);
+    vTaskList(pResp + strlen(pcHeader1));
+    
+    uint32_t len = strlen(pResp);
+    snprintf(pResp + len, xWriteBufferLen, "%s", pcHeader2);
+    
+    len = strlen(pResp);
+    vTaskGetRunTimeStats(pResp + len);
+
+    return ret;
+}
+
+/*************************************************************************************************/
+/*!
  *  \brief  Handler for a user terminal command.
  *
  *  \param  argc      The number of arguments passed to the command.
@@ -655,16 +696,32 @@ static void appProcMsg(fitMsg_t *pMsg)
 /*************************************************************************************************/
 uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
 {
-  if (argc < 2)
-  {
-    return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
-  }
-  else
-  {    
-    TerminalTxPrint("new response: cmd argc:%d\r\n", argc);
-  }
+    char Resp[500];
+    Resp[0] = 0;
+    uint8_t ret = 0;
 
-  return TERMINAL_ERROR_OK;
+    if (argc < 2)
+    {
+        return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
+    }
+    else
+    { 
+        if (strcmp(argv[2], "ps") == 0) 
+        {
+            ret = CmdPs(Resp, 500);
+            if (ret != 0) 
+            {
+                return TERMINAL_ERROR_EXEC;
+            }
+        }
+    }
+
+    if (Resp[0] != 0)
+    {
+        TerminalTxPrint(Resp);
+    }
+
+    return TERMINAL_ERROR_OK;
 }
 
 /*************************************************************************************************/
