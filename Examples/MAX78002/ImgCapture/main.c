@@ -499,6 +499,7 @@ void service_console()
             transmit_capture_uart(img_data);
 
 #ifdef CAMERA_BAYER
+            memset(bayer_data, 0, img_data.imglen);
             free(bayer_data);
 #endif
         } else if (cmd == CMD_STREAM) {
