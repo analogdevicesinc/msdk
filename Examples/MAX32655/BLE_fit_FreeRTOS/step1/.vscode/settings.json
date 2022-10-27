@@ -96,6 +96,13 @@
     ],
     "C_Cpp.default.defines": [
         "${config:board}"
-    ]
+    ],
+    "files.associations": {
+        "string.h": "c",
+        "wsf_types.h": "c",
+        "wsf_msg.h": "c",
+        "wsf_trace.h": "c",
+        "dm_api.h": "c"
+    }
 }
 

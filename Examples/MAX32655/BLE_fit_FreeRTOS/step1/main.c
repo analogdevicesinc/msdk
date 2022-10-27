@@ -53,7 +53,7 @@
 #define STRING(x) STRING_(x)
 #define STRING_(x) #x
 
-extern void bleStartup(void);
+extern void btStartup(void);
 
 /***** Functions *****/
 
@@ -126,8 +126,8 @@ int main(void)
     volatile int i;
     for (i = 0; i < 0x3FFFFF; i++) {}
 
-    /* Start the BLE application */
-    bleStartup();
+    /* Start the Bluetooth application */
+    btStartup();
 
     /* Start scheduler */
     vTaskStartScheduler();

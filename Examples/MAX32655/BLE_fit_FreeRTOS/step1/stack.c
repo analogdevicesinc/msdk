@@ -45,6 +45,7 @@
 #include "svc_core.h"
 #include "svc_dis.h"
 #include "util/bstream.h"
+#include "util/terminal.h"
 #include "wdxs/wdxs_api.h"
 #include "wsf_assert.h"
 #include "wsf_buf.h"
@@ -86,9 +87,19 @@ static LlRtCfg_t mainLlRtCfg;
 
 volatile int wutTrimComplete;
 
+#if 0
+/*! \brief    Terminal User commands. */
+static uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
+static terminalCommand_t appTerminalCmd = { NULL, "pin", "pin <ConnID> <Pin Code>", appTerminalCmdHandler };
+#endif
+
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
+static uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
+{
+    __NOP();
+}
 
 /*************************************************************************************************/
 /*!
@@ -100,6 +111,41 @@ volatile int wutTrimComplete;
 void CordioStackInit(void)
 {
     wsfHandlerId_t handlerId;
+
+    /* APPLICATION RELATED INIT */
+    SecInit();
+    SecAesInit();
+    SecCmacInit();
+    SecEccInit();
+
+    handlerId = WsfOsSetNextHandler(HciHandler);
+    HciHandlerInit(handlerId);
+
+    handlerId = WsfOsSetNextHandler(DmHandler);
+    DmDevVsInit(0);
+    DmConnInit();
+    DmAdvInit();
+    DmConnSlaveInit();
+    DmSecInit();
+    DmSecLescInit();
+    DmPrivInit();
+    DmHandlerInit(handlerId);
+
+    handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
+    L2cSlaveHandlerInit(handlerId);
+    L2cInit();
+    L2cSlaveInit();
+
+    handlerId = WsfOsSetNextHandler(AttHandler);
+    AttHandlerInit(handlerId);
+    AttsInit();
+    AttsIndInit();
+
+    handlerId = WsfOsSetNextHandler(SmpHandler);
+    SmpHandlerInit(handlerId);
+    SmprInit();
+    SmprScInit();
+    HciSetMaxRxAclLen(256);
 
     handlerId = WsfOsSetNextHandler(AppHandler);
     AppHandlerInit(handlerId);
@@ -270,7 +316,7 @@ void trim32k(void)
  *  \return     None.
  */
 /*************************************************************************************************/
-void bleStartup(void)
+void btStartup(void)
 {
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     /* Configurations must be persistent. */
@@ -308,21 +354,11 @@ void bleStartup(void)
     WsfHeapAlloc(memUsed);
 
     mainWsfInit();
-#if 0
+
     AppTerminalInit();
-#else
-    wsfHandlerId_t handlerId;
+    // YC-TODO
+    //TerminalRegisterCommand(&appTerminalCmd);
 
-    /* Initialize Serial Communication. */
-    WsfBufIoUartRegister(TerminalRx);
-    TerminalRegisterUartTxFunc(WsfBufIoWrite);
-    handlerId = WsfOsSetNextHandler(TerminalHandler);
-    TerminalInit(handlerId);
-
-    /* Register commands. */
-    TerminalRegisterCommand(&appTerminalButtonPress);
-    TerminalRegisterCommand(&appTerminalPinCode);
-#endif
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
