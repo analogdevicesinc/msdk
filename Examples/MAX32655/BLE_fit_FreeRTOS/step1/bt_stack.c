@@ -87,19 +87,9 @@ static LlRtCfg_t mainLlRtCfg;
 
 volatile int wutTrimComplete;
 
-#if 0
-/*! \brief    Terminal User commands. */
-static uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
-static terminalCommand_t appTerminalCmd = { NULL, "pin", "pin <ConnID> <Pin Code>", appTerminalCmdHandler };
-#endif
-
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
-static uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
-{
-    __NOP();
-}
 
 /*************************************************************************************************/
 /*!
@@ -356,10 +346,7 @@ void btStartup(void)
     mainWsfInit();
 
     AppTerminalInit();
-    // YC-TODO
-    //TerminalRegisterCommand(&appTerminalCmd);
-
-
+    
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,

@@ -645,6 +645,30 @@ static void appProcMsg(fitMsg_t *pMsg)
 
 /*************************************************************************************************/
 /*!
+ *  \brief  Handler for a user terminal command.
+ *
+ *  \param  argc      The number of arguments passed to the command.
+ *  \param  argv      The array of arguments; the 0th argument is the command.
+ *
+ *  \return Error code.
+ */
+/*************************************************************************************************/
+uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
+{
+  if (argc < 2)
+  {
+    return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
+  }
+  else
+  {    
+    TerminalTxPrint("new response: cmd argc:%d\r\n", argc);
+  }
+
+  return TERMINAL_ERROR_OK;
+}
+
+/*************************************************************************************************/
+/*!
  *  \brief     Platform button press handler.
  *
  *  \param[in] btnId  button ID.
@@ -778,14 +802,17 @@ void AppStart(void)
     /* Register for stack callbacks */
     DmRegister(fitDmCback);
     DmConnRegister(DM_CLIENT_ID_APP, fitDmCback);
+
     AttRegister(fitAttCback);
     AttConnRegister(AppServerConnCback);
     AttsCccRegister(FIT_NUM_CCC_IDX, (attsCccSet_t *)fitCccSet, fitCccCback);
 
-    /* Register for app framework callbacks */
-    AppUiBtnRegister(fitBtnCback);
     /* Initialize with button press handler */
     PalBtnInit(btnPressHandler);
+
+    /* Register for app framework callbacks */
+    AppUiBtnRegister(fitBtnCback);
+
     /* Initialize attribute server database */
     SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
     SvcCoreAddGroup();
