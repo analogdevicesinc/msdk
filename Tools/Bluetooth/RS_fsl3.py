@@ -249,7 +249,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Create the object
-    rs_fsl3 = RS_FSL3(args)
+    rs_fsl3 = RS_fsl3(args)
 
     if ("obw" in args.cmd):
         # Run the OBW test
