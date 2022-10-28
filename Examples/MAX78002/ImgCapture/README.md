@@ -9,7 +9,7 @@ This example demonstrates how to capture an image using the PCIF peripheral and 
 
 Collecting images can be a challenge when dealing with low-power CMOS camera sensors, which usually don't have memory buffers of any significant size.  Most will internally buffer a single row and then immediately stream it out to a high-speed Parallel Camera Interface (PCIF).  As a result, exposure time is proportional to the clock speed of the camera.  Therefore, the host microcontroller must be able to process, forward, and/or store the incoming image data within the strict timing limitations imposed by the camera module.  The limited general purpose SRAM size of microcontrollers make alternate output destinations (host PC, external memory, SD card, etc.) attractive, but these often have much lower bandwidth than the PCIF peripheral.  Slowing the PCIF clock speed can work for these, but is not an ideal solution because of the relationship between clock speed and exposure time.
 
-In order to collect useful high resolution images, the 512KB of data SRAM in the MAX78000's CNN accelerator is stitched into a virtually contiguous data buffer.  From there, the data can then be forwarded on to any secondary destination by the host firmware.  This method requires cusof the PCIF peripheral.  The implementation can be found in [src/cnn_memutils.h](src/cnn_memutils.h).  High-level usage examples for supported output destinations can be found in [src/main.c](src/main.c).
+In order to collect useful high resolution images, the data SRAM in the MAX78000/MAX78002's CNN accelerator is stitched into a virtually contiguous data buffer.  **This is not the correct way to load data for ML inferences**, but it allows high resolution images to be buffered.  From there, the data can then be forwarded on to any secondary destination by the host firmware.  The implementation can be found in [src/cnn_memutils.h](src/cnn_memutils.h).  High-level usage examples for supported output destinations can be found in [src/main.c](src/main.c).
 
 The example can perform standard blocking captures up to the memory limits of the device, and streaming DMA captures (using cnn_memutils) up to 352x352, including QVGA (320x240) at max camera clock speeds.  Image captures are controlled from a host PC running [utils/console.py](utils/console.py).
 
@@ -17,7 +17,7 @@ It supports the following output destinations:
 
 * Transmit image to a host PC.
 
-* Save image to SD card.
+* Save image to SD card. (MAX7800FTHR only)
 
 ## Building, Flashing, & Debugging
 
@@ -33,7 +33,7 @@ Full documentation on the build system can be found in the "Build Configuration"
 
 ### Enabling Firmware Features
 
-Firmware features can be toggled in [src/example_config.h](src/example_config.h).
+Firmware features can be toggled in [project.mk](project.mk).
 
 * The console is enabled by default.  It will wait for a valid connection from [utils/console.py](utils/console.py) on startup.
 
@@ -41,24 +41,23 @@ Firmware features can be toggled in [src/example_config.h](src/example_config.h)
 
 After making any changes, fully clean the project and then rebuild.
 
-### Setting BOARD Correctly
-
-Before you build, ensure you've set the `BOARD` value to match your evaluation platform.
-
-For the MAX78000EVKIT, use `EvKit_V1`.
-For the MAX78000FTHR, use `FTHR_RevA`.
-
-**Where exactly you set `BOARD` will depend on your development environment.**
-
-* If you're developing on the command-line, set this value in [project.mk](project.mk) or on the command-line (`make BOARD=FTHR_RevA all`)
-
-* If you're developing with Visual Studio Code, set `"board"` in [.vscode/settings.json](.vscode/settings.json).  See the VSCode-Maxim [readme](.vscode/readme.md) for more details.
-
-* If you're developing with Eclipse, set the `"BOARD"` environment variable.  Right click project -> Properties -> C/C++ Build -> Environment -> `"BOARD"`.  Apply, clean, and rebuild.
-
 ### Setting CAMERA
 
 The `CAMERA` variable in [project.mk](project.mk) is used to select the correct drivers for the attached camera.  When this variable is changed, you should also ensure the `CAMERA_xxx` compiler definitions in [.vscode/settings.json](.vscode/settings.json) is also changed to match.  The project settings cannot automatically changes in the compiler definitons to match the camera.
+
+For the OV7692:
+
+* Define `CAMERA_OV7692`
+
+For the HM0360 (mono):
+
+* Define `CAMERA_HM0360_MONO`
+* Define `CAMERA_MONO`
+
+For the HM0360 (color):
+
+* Define `CAMERA_HM0360_COLOR`
+* Define `CAMERA_BAYER`
 
 ## OVM7692 Quick-Start
 
@@ -110,7 +109,7 @@ The `CAMERA` variable in [project.mk](project.mk) is used to select the correct 
     MCU: Captured 64x64 RGB565 image to buffer location 0x20001b98 (8192 bytes)
     MCU: *IMG* RGB565 8192 64 64
     Collecting 8192 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 88480 us)
     ```
 
@@ -128,7 +127,7 @@ The `CAMERA` variable in [project.mk](project.mk) is used to select the correct 
     MCU: Captured 128x128 RGB565 image to buffer location 0x20001b98 (32768 bytes)
     MCU: *IMG* RGB565 32768 128 128
     Collecting 32768 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 353104 us)
     ```
 
@@ -148,7 +147,7 @@ The `CAMERA` variable in [project.mk](project.mk) is used to select the correct 
     MCU: Transmitting image data over UART...
     MCU: *IMG* RGB565 153600 320 240
     Collecting 153600 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 1653952 us)
     ```
 
@@ -203,7 +202,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
     MCU: Captured 320x240 BAYER image to buffer location 0x20001b98 (76800 bytes)
     MCU: *IMG* BAYER 76800 320 240
     Collecting 76800 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 827340 us)
     ```
 
@@ -211,7 +210,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
 
 8. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
 
-    The active context can be retrieved from register `0x3024`.
+    The active context is selected via register `0x3024`.
 
     * `0x3024 = 0` shows Context A is active (320x240).
     * `0x3024 = 1` show Context B is active (160x120).
@@ -239,7 +238,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
     MCU: Captured 160x120 BAYER image to buffer location 0x20001b98 (19200 bytes)
     MCU: *IMG* BAYER 19200 160 120
     Collecting 19200 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 206999 us)
     ```
 
@@ -247,7 +246,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
 
 ## HM0360 (Color) Quick-Start
 
-This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/products/detail/himax/HM0360-AWA/14109822) **color** sensor.  In practice, this is the same sensor hardware as the "MWA" mono variant but with a bayer-patterned color filter.  As a result, de-bayering functions are required to reproduce the color image.
+This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/products/detail/himax/HM0360-AWA/14109822) **color** sensor.  In practice, this is the same sensor hardware as the "MWA" mono variant but with a bayer-patterned color filter.  As a result, de-bayering and color-correction functions are required to reproduce the image.
 
 1. Set `CAMERA=HM0360_COLOR` in [project.mk](project.mk)
 
@@ -264,7 +263,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     ```shell
     $ python console.py COM19
 
-    Started ImgCapture console and opened COM19
+    Started ImgCapture console and opened COM6
     MCU: *SYNC*
     MCU: Established communications with host!
     MCU: Registered 8 total commands:
@@ -276,7 +275,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     MCU: 'stream' : Performs a line-by-line streaming DMA capture of a single image, capable of higher resolutions
     MCU: 'set-reg' <register> <value> : Write a value to a camera register.
     MCU: 'get-reg' <register> : Prints the value in a camera register.
-    MCU: 'set-debayer' <function> : Set the debayering function ('passthrough','bilinear', or 'malvarcutler')   
+    MCU: 'set-debayer' <function> : Set the debayering function ('passthrough','bilinear')
     MCU: -----
     MCU: Initializing DMA
     MCU: Initializing camera
@@ -286,48 +285,43 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     $
     ```
 
-7. Run a standard `capture` with default settings (Malvar-He-Cutler debayering).
+7. Run a standard `capture` with default settings.
 
     ```shell
     $ capture
 
     MCU: Configuring camera
     MCU: Capturing image
-    MCU: Done! (Took 98776 us)
-    MCU: Captured 160x120 BAYER image to buffer location 0x20001b98 (19200 bytes)
-    MCU: Debayering complete. (Took 32186 us)
-    MCU: *IMG* RGB565 38400 160 120
-    Collecting 38400 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
-    MCU: Done! (serial transmission took 413863 us)
+    MCU: Done! (Took 48117 us)
+    MCU: Captured 320x240 BAYER image to buffer location 0x200018b0 (76800 bytes)
+    MCU: R average: 84      G average: 102  B average: 64
+    MCU: R correction: 1.21 B correction: 1.59
+    MCU: Debayering complete. (Took 66333 us)
+    MCU: *IMG* RGB565 153600 320 240
+    Collecting 153600 bytes...
+    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    MCU: Done! (serial transmission took 1664200 us)
     ```
 
-    ![HM0360_MalvarCutler_320_240](res/HM0360_MalvarCutler_160_120.png)
+    ![HM0360_Bilinear_320_240](res/HM0360_Bilinear_320_240.png)
 
-8. Change the debayering function using `set-debayer` and recapture.
+8. The raw debayer pattern can also be viewed using the `set-debayer` command.  This is useful for testing and development of additional debayering algorithms.
 
     ```shell
-    $ set-debayer bilinear
+    $ set-debayer passthrough 
 
-    MCU: Set bilinear
+    MCU: Set passthrough
     $ capture
 
     MCU: Configuring camera
     MCU: Capturing image
-    MCU: Done! (Took 89870 us)
-    MCU: Captured 160x120 BAYER image to buffer location 0x20001b98 (19200 bytes)
-    MCU: Debayering complete. (Took 11196 us)
-    MCU: *IMG* RGB565 38400 160 120
-    Collecting 38400 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
-    MCU: Done! (serial transmission took 413747 us)
+    MCU: Done! (Took 30723 us)
+    MCU: Captured 320x240 BAYER image to buffer location 0x200018b0 (76800 bytes)
+    MCU: Debayering complete. (Took 9656 us)
+    MCU: *IMG* RGB565 153600 320 240
+    Collecting 153600 bytes...
+    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    MCU: Done! (serial transmission took 1664091 us)
     ```
 
-    The 'malvarcutler' setting is the most accurate, but most computationally expensive.  'bilinear' is computationally inexpensive but inaccurate.  'passthrough' shows the received Bayer pattern on the image sensor.
-
-    * `malvarcutler`:
-        * ![HM0360_MalvarCutler_320_240](res/HM0360_MalvarCutler_160_120.png)
-    * `bilinear`:
-        * ![HM0360_Bilinear_160_120](res/HM0360_Bilinear_160_120.png)
-    * `passthrough`:
-        * ![HM0360_Passthrough_160_120](res/HM0360_Passthrough_160_120.png)
+    ![HM0360_Passthrough_320_240](res/HM0360_Passthrough_320_240.png)
