@@ -78,15 +78,15 @@
 #define configTIMER_TASK_STACK_DEPTH configMINIMAL_STACK_SIZE
 
 /* Run time and task stats gathering related definitions. */
-#define configGENERATE_RUN_TIME_STATS           1
+#define configGENERATE_RUN_TIME_STATS 1
 
 #if configGENERATE_RUN_TIME_STATS == 1
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()
 #define portGET_RUN_TIME_COUNTER_VALUE() xTaskGetTickCount()
 #endif
 
-#define configUSE_TRACE_FACILITY                1
-#define configUSE_STATS_FORMATTING_FUNCTIONS    1
+#define configUSE_TRACE_FACILITY 1
+#define configUSE_STATS_FORMATTING_FUNCTIONS 1
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */

@@ -15,5 +15,6 @@ Tools/OpenOCD
 Tools/xPack
 *.o
 *.d
+/**/make.log
 session.txt.log
 flash.log

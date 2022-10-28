@@ -668,10 +668,10 @@ uint8_t CmdPsList(char *pResp, size_t xWriteBufferLen)
 
     configASSERT(pResp);
 
-    /* Generate a table of task stats. */    
+    /* Generate a table of task stats. */
     snprintf(pResp, xWriteBufferLen, "%s", pcHeader);
     vTaskList(pResp + strlen(pcHeader));
-    
+
     return ret;
 }
 
@@ -688,12 +688,12 @@ uint8_t CmdPsStats(char *pResp, size_t xWriteBufferLen)
 {
     uint8_t ret = 0;
 
-    const char *const pcHeader= "Task            Run time cnt    Run time percentage"
+    const char *const pcHeader = "Task            Run time cnt    Run time percentage"
                                  "\r\n***************************************************\r\n";
 
     configASSERT(pResp);
 
-    /* Generate a table of task stats. */    
+    /* Generate a table of task stats. */
     snprintf(pResp, xWriteBufferLen, "%s", pcHeader);
     vTaskGetRunTimeStats(pResp + strlen(pcHeader));
 
@@ -713,42 +713,32 @@ uint8_t CmdPsStats(char *pResp, size_t xWriteBufferLen)
  *  \return Error code.
  */
 /*************************************************************************************************/
-#define TERM_CMD_RESP_BUF_SIZE          1000
+#define TERM_CMD_RESP_BUF_SIZE 1000
 uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
 {
     char Resp[TERM_CMD_RESP_BUF_SIZE];
     Resp[0] = 0;
     uint8_t ret = 0;
 
-    if (argc < 2)
-    {
+    if (argc < 2) {
         return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
-    }
-    else
-    { 
-        if (strcmp(argv[1], "ps") == 0) 
-        {
-            if (argv[2][0] == 'l')
-            {
+    } else {
+        if (strcmp(argv[1], "ps") == 0) {
+            if (argv[2][0] == 'l') {
                 ret = CmdPsList(Resp, TERM_CMD_RESP_BUF_SIZE);
-                if (ret != 0) 
-                {
+                if (ret != 0) {
                     return TERMINAL_ERROR_EXEC;
                 }
-            }
-            else if (argv[2][0] == 's')
-            {
+            } else if (argv[2][0] == 's') {
                 ret = CmdPsStats(Resp, TERM_CMD_RESP_BUF_SIZE);
-                if (ret != 0) 
-                {
+                if (ret != 0) {
                     return TERMINAL_ERROR_EXEC;
                 }
             }
         }
     }
 
-    if (Resp[0] != 0)
-    {
+    if (Resp[0] != 0) {
         TerminalTxPrint(Resp);
     }
 

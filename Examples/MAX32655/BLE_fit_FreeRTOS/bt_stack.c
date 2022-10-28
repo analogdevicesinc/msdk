@@ -346,7 +346,7 @@ void btStartup(void)
     mainWsfInit();
 
     AppTerminalInit();
-    
+
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,
@@ -374,6 +374,6 @@ void btStartup(void)
 #endif
 
     CordioStackInit();
-    
+
     AppStart();
 }
