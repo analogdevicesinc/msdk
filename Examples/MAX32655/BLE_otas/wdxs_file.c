@@ -37,7 +37,7 @@
 #include "flc.h"
 #include "Ext_Flash.h"
 #ifndef FW_VERSION
-#define FW_VERSION 1
+#define FW_VERSION 2
 #endif
 #define EXT_FLASH_PAGE_SIZE 256
 #define EXT_FLASH_SECTOR_SIZE ((uint32_t)0x00010000)
