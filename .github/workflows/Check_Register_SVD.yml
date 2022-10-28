@@ -62,8 +62,12 @@ jobs:
           pwd
           cd ..
           pwd
-          cd ..
-          pwd
+          
+          # Grab SVD files
+          git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
+          
+          cd msdk-internal
+          git status
       
       - name: Checkout msdk internal repository
         uses: actions/checkout@v3
