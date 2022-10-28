@@ -54,6 +54,18 @@ typedef enum {
 } mxc_tpu_reva_ciphersel_t;
 
 /**
+  * Enumeration type to select which key is used in Cipher operations
+  */
+typedef enum {
+    MXC_TPU_REVA_KEYSRC_KEY0 =
+        MXC_S_TPU_REVA_CIPHER_CTRL_SRC_CIPHERKEY, // Use key in CIPHER_KEY[0:7]
+    MXC_TPU_REVA_KEYSRC_KEY2 =
+        MXC_S_TPU_REVA_CIPHER_CTRL_SRC_REGFILE, // Use key 0 in AES_KEY registers
+    MXC_TPU_REVA_KEYSRC_KEY3 =
+        MXC_S_TPU_REVA_CIPHER_CTRL_SRC_QSPIKEY_REGFILE // Use key 1 in AES_KEY registers
+} mxc_tpu_reva_keysrc_t;
+
+/**
   * Enumeration type for the Crypto Mode Select
   */
 typedef enum {
@@ -113,6 +125,7 @@ unsigned int MXC_TPU_RevA_Cipher_GetLength(mxc_tpu_ciphersel_t cipher, unsigned 
 void MXC_TPU_RevA_Cipher_EncDecSelect(mxc_tpu_reva_regs_t *tpu, int enc);
 int MXC_TPU_RevA_Cipher_Config(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_modesel_t mode,
                                mxc_tpu_reva_ciphersel_t cipher);
+int MXC_TPU_RevA_Cipher_KeySelect(mxc_tpu_reva_regs_t *tpu, mxc_tpu_reva_keysrc_t key_src);
 int MXC_TPU_RevA_Cipher_DoOperation(mxc_tpu_reva_regs_t *tpu, const char *src, const char *iv,
                                     const char *key, mxc_tpu_ciphersel_t cipher,
                                     mxc_tpu_modesel_t mode, unsigned int data_size, char *outptr);

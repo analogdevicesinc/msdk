@@ -746,29 +746,29 @@ int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_re
 {
     uint32_t clocks, hi_clk, lo_clk;
 
+    // Check if frequency is too high
+    if (hz > SystemCoreClock) {
+        return E_BAD_PARAM;
+    }
+
+    // Make sure that we can generate this frequency
+    clocks = SystemCoreClock / hz;
+    hi_clk = clocks / 2;
+    lo_clk = clocks / 2;
+
+    if (clocks % 2) {
+        hi_clk += 1;
+    }
+
     if (spixfm) {
-        // Check if frequency is too high
-        if (hz > PeripheralClock) {
-            return E_BAD_PARAM;
-        }
-
-        // Make sure that we can generate this frequency
-        clocks = (PeripheralClock / (2 * hz));
-        hi_clk = clocks / 2;
-        lo_clk = clocks / 2;
-
-        if (clocks % 2) {
-            hi_clk += 1;
-        }
-
         if (hi_clk == 0) {
-            spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_LO_CLK;
-            spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_HI_CLK;
-        } else if (hi_clk > 15) {
             MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK,
                          1 << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
             MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_HI_CLK,
                          1 << MXC_F_SPIXFM_REVA_CFG_HI_CLK_POS);
+        } else if (hi_clk > 15) {
+            spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_LO_CLK;
+            spixfm->cfg |= MXC_F_SPIXFM_REVA_CFG_HI_CLK;
         } else {
             MXC_SETFIELD(spixfm->cfg, MXC_F_SPIXFM_REVA_CFG_LO_CLK,
                          lo_clk << MXC_F_SPIXFM_REVA_CFG_LO_CLK_POS);
@@ -778,28 +778,14 @@ int MXC_SPIXF_RevA_SetSPIFrequency(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_re
     }
 
     if (spixfc) {
-        // Check if frequency is too high
-        if (hz > SystemCoreClock) {
-            return E_BAD_PARAM;
-        }
-
-        // Make sure that we can generate this frequency
-        clocks = (SystemCoreClock / (2 * hz));
-        hi_clk = clocks / 2;
-        lo_clk = clocks / 2;
-
-        if (clocks % 2) {
-            hi_clk += 1;
-        }
-
         if (hi_clk == 0) {
-            spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_LO_CLK;
-            spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_HI_CLK;
-        } else if (hi_clk > 15) {
             MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK,
                          1 << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
             MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_HI_CLK,
                          1 << MXC_F_SPIXFC_REVA_CFG_HI_CLK_POS);
+        } else if (hi_clk > 15) {
+            spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_LO_CLK;
+            spixfc->cfg |= MXC_F_SPIXFC_REVA_CFG_HI_CLK;
         } else {
             MXC_SETFIELD(spixfc->cfg, MXC_F_SPIXFC_REVA_CFG_LO_CLK,
                          lo_clk << MXC_F_SPIXFC_REVA_CFG_LO_CLK_POS);
