@@ -77,8 +77,20 @@
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
+// Select the active context
+// 0 = Context A (320x240)
+// 1 = Context B (160x120)
+#define CONTEXT 1
+
+#if CONTEXT == 0
 #define IMAGE_XRES 320
 #define IMAGE_YRES 240
+#endif
+
+#if CONTEXT == 1
+#define IMAGE_XRES 160
+#define IMAGE_YRES 120
+#endif
 
 //UART baudrate used for sending data to PC, use max 921600 for serial stream
 #define CON_BAUD 115200 * 8
@@ -195,7 +207,10 @@ int main(void)
     // hmirror and vflip must be disabled for demosaicing functions to work properly
     camera_set_hmirror(0);
     camera_set_vflip(0);
+
+#if CONTEXT == 0
     camera_write_reg(0x3024, 0); // Select context A (320x240)
+#endif
 
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
