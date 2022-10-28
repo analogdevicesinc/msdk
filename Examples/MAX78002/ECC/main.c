@@ -184,5 +184,14 @@ int main(void)
            test_fail ? "FAIL!" : "Ok");
     printf("Example Complete\n");
 
-    return test_fail;
+
+    if (test_fail == 0) {
+        printf("\nExample Succeeded\n");
+        return 0;
+    } else {
+        printf("\nExample Failed\n");
+        return -1;
+    }
+
+    return 0;
 }

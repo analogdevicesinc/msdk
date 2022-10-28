@@ -47,6 +47,7 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
+#include "flc_regs.h"
 #include "gcr_regs.h"
 
 /***** Definitions *****/
@@ -293,9 +294,7 @@ int main(void)
     printf("Size of testdata : %d\n", sizeof(testdata));
 
     // Initializing Test Data
-    for (i = 0; i < TESTSIZE; i++) {
-        testdata[i] = i;
-    }
+    for (i = 0; i < TESTSIZE; i++) { testdata[i] = i; }
 
     MXC_ICC_Disable(MXC_ICC0);
     i = 0;
@@ -363,9 +362,11 @@ int main(void)
 
     if (fail == 0) {
         printf("\nExample Succeeded\n");
+        return 0;
     } else {
         printf("\nExample Failed\n");
+        return -1;
     }
 
-    return fail;
+    return 0;
 }

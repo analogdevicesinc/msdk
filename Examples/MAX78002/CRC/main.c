@@ -81,9 +81,7 @@ void Test_CRC(int asynchronous)
 
     printf(asynchronous ? "TEST CRC ASYNC\n" : "TEST CRC SYNC\n");
 
-    for (i = 0; i < 100; i++) {
-        array[i] = i;
-    }
+    for (i = 0; i < 100; i++) { array[i] = i; }
 
     mxc_crc_req_t crc_req = { array, 100, 0 };
 
@@ -138,10 +136,12 @@ int main(void)
     Test_CRC(1);
 
     if (fail) {
-        printf("\nExample Failed\n");
+        printf("\nExample Failed");
+        return -1;
     } else {
-        printf("\nExample Succeeded\n");
+        printf("\nExample Succeeded");
+        return 0;
     }
 
-    return fail;
+    return 0;
 }

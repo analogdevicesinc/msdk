@@ -238,6 +238,7 @@ int multi_block_check(unsigned int width)
 /******************************************************************************/
 int main(void)
 {
+	int fail = 0;
     mxc_sdhc_cfg_t cfg;
     int result;
 
@@ -267,6 +268,7 @@ int main(void)
         printf("Card Initialized.\n");
     } else {
         printf("No card response!\n");
+        fail += 1;
     }
 
     if (MXC_SDHC_Lib_Get_Card_Type() == CARD_SDHC) {
@@ -289,18 +291,21 @@ int main(void)
 
     if ((result = blocking_transactions(MXC_SDHC_LIB_SINGLE_DATA)) != 0) {
         printf("blocking error %d\n", result);
+        fail += 1;
     } else {
         printf("Passed blocking\n");
     }
 
     if ((result = erase(MXC_SDHC_LIB_SINGLE_DATA)) != 0) {
         printf("Erase failed %d\n", result);
+        fail += 1;
     } else {
         printf("Passed erase\n");
     }
 
     if ((result = async_transactions(MXC_SDHC_LIB_SINGLE_DATA)) != 0) {
         printf("async error %d\n", result);
+        fail += 1;
     } else {
         printf("Passed async\n");
     }
@@ -310,18 +315,21 @@ int main(void)
 
     if ((result = blocking_transactions(MXC_SDHC_LIB_QUAD_DATA)) != 0) {
         printf("blocking error %d\n", result);
+        fail += 1;
     } else {
         printf("Passed blocking\n");
     }
 
     if ((result = erase(MXC_SDHC_LIB_QUAD_DATA)) != 0) {
         printf("Erase failed %d\n", result);
+        fail += 1;
     } else {
         printf("Passed erase\n");
     }
 
     if ((result = async_transactions(MXC_SDHC_LIB_QUAD_DATA)) != 0) {
         printf("async error %d\n", result);
+        fail += 1;
     } else {
         printf("Passed async\n");
     }
@@ -329,14 +337,19 @@ int main(void)
     printf("--> Blocking, 4-bit data bus, multi-block example <--\n");
 
     if (multi_block_check(MXC_SDHC_LIB_QUAD_DATA)) {
-        result = -1;
         printf(" FAIL \n");
+        fail += 1;
     } else {
-        result = 0;
         printf(" PASS \n");
     }
 
-    printf(" *** END OF EXAMPLE *** \n");
+    if (fail == 0) {
+        printf("Example Succeeded\n");
+        return 0;
+    } else {
+        printf("Example Failed\n");
+        return -1;
+    }
 
-    return result;
+    return 0;
 }
