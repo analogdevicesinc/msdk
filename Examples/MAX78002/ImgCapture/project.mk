@@ -22,8 +22,8 @@ SD = 0
 CAMERA=HM0360_COLOR
 # CAMERA=HM01B0
 
-# Uncomment to set higher optimization level (faster code but shouldn't be used while debugging)
-# MXC_OPTIMIZE_CFLAGS=-O2
+# Set higher optimization level (faster code but shouldn't be used while debugging)
+MXC_OPTIMIZE_CFLAGS=-O2
 
 ifeq ($(CONSOLE),1)
 # If CONSOLE enabled, add "CONSOLE"
