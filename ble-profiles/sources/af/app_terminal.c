@@ -66,7 +66,7 @@ static terminalCommand_t appTerminalPinCode = { NULL, "pin", "pin <ConnID> <Pin 
 /*! \brief    User Command. */
 /* <param_cnt> indicates the number of the parameters in the command. */
 /* <params> is the parameter list. */
-/* For example: cmd 7 set_addr 00 11 22 33 44 55 */
+/* For example: cmd set_addr 00 11 22 33 44 55 */
 static terminalCommand_t appTerminalCmd = { NULL, "cmd", "cmd <parameter list>",
                                             appTerminalCmdHandler };
 
