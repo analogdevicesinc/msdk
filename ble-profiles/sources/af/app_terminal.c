@@ -48,15 +48,27 @@ static uint8_t appTerminalCommandBtnHandler(uint32_t argc, char **argv);
 /*! \brief    Security Pin Code Command Handler. */
 static uint8_t appTerminalPinCodeHandler(uint32_t argc, char **argv);
 
+/*! \brief    User Command Handler. */
+__attribute__((weak)) uint8_t appTerminalCmdHandler(uint32_t argc, char **argv);
+
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! \brief    Button command. */
-static terminalCommand_t appTerminalButtonPress = { NULL, "btn", "btn <ID> <s|m|l|x>", appTerminalCommandBtnHandler };
+static terminalCommand_t appTerminalButtonPress = { NULL, "btn", "btn <ID> <s|m|l|x>",
+                                                    appTerminalCommandBtnHandler };
 
 /*! \brief    Security Pin Code commands. */
-static terminalCommand_t appTerminalPinCode = { NULL, "pin", "pin <ConnID> <Pin Code>", appTerminalPinCodeHandler };
+static terminalCommand_t appTerminalPinCode = { NULL, "pin", "pin <ConnID> <Pin Code>",
+                                                appTerminalPinCodeHandler };
+
+/*! \brief    User Command. */
+/* <param_cnt> indicates the number of the parameters in the command. */
+/* <params> is the parameter list. */
+/* For example: cmd set_addr 00 11 22 33 44 55 */
+static terminalCommand_t appTerminalCmd = { NULL, "cmd", "cmd <parameter list>",
+                                            appTerminalCmdHandler };
 
 /*************************************************************************************************/
 /*!
@@ -78,6 +90,7 @@ void AppTerminalInit(void)
   /* Register commands. */
   TerminalRegisterCommand(&appTerminalButtonPress);
   TerminalRegisterCommand(&appTerminalPinCode);
+  TerminalRegisterCommand(&appTerminalCmd);
 }
 
 /*************************************************************************************************/
@@ -201,4 +214,35 @@ static uint8_t appTerminalPinCodeHandler(uint32_t argc, char **argv)
   }
 
   return TERMINAL_ERROR_OK;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Handler for a user terminal command.
+ *  The command format is "cmd <param_list>".
+  *  <params> is the parameter list.
+ *  For example: cmd set_addr 00 11 22 33 44 55
+ * 
+ *  In the application c file:
+ *  #include "util/terminal.h"
+ *  uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
+ *  {
+ *    // TODO: parse the user cmd here.
+ *  }
+ * 
+ *  \param  argc      The number of arguments passed to the command.
+ *  \param  argv      The array of arguments; the 0th argument is the command.
+ *
+ *  \return Error code.
+ */
+/*************************************************************************************************/
+__attribute__((weak)) uint8_t appTerminalCmdHandler(uint32_t argc, char **argv)
+{
+    if (argc < 2) {
+        return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
+    } else {
+        TerminalTxPrint("cmd argc:%d\n", argc);
+    }
+
+    return TERMINAL_ERROR_OK;
 }
