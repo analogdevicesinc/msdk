@@ -56,6 +56,14 @@ jobs:
           submodules: false
           fetch-depth: 0
           path: ${{ env.MSDK_DIR }}
+          
+      - name: Test
+        run: |
+          pwd
+          cd ..
+          pwd
+          cd ..
+          pwd
       
       - name: Checkout msdk internal repository
         uses: actions/checkout@v3
@@ -63,7 +71,7 @@ jobs:
           repository: Analog-Devices-MSDK/msdk-internal
           fetch-depth: 0
           #token: ${{ secrets.GITHUB_TOKEN }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          #ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           path: ${{ env.MSDK-INTERNAL_DIR }}
           
       # We grab the chip name, but the SVD Scripts references the equivalent die name
