@@ -54,7 +54,8 @@ Expect And Timeout
     [Arguments]    ${data}    ${timeout}    ${port}    
     [Timeout]    ${timeout}
     ${EMPTY}=    Set Variable    ""
-    WHILE    True    limit=10000
+    Log To Console    \n
+    WHILE    True    limit=200000
         ${source}=    Read Until   NONE    NONE    NONE    ${port}
         Log To Console    ${source}
        # END
@@ -62,7 +63,6 @@ Expect And Timeout
         IF    ${contains}
             Pass Execution    ""
         END
-        
 
     END
     Fail    "Test Failed"

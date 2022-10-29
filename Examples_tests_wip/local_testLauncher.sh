@@ -31,8 +31,11 @@ export failedTestList=" "
 # export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
 # export ROBOT=/home/btm-ci/.local/bin/robot
 # Local
-export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
-export OPENOCD=/home/eddie/workspace/openocd/src/openocd
+#export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
+#export OPENOCD=/home/eddie/workspace/openocd/src/openocd
+#home
+export OPENOCD_TCL_PATH=/home/eddie/MaximSDK/Tools/OpenOCD/scripts
+export OPENOCD=/home/eddie/MaximSDK/Tools/OpenOCD/openocd
 export ROBOT=/home/eddie/.local/bin/robot
 function script_clean_up() {
     # check if some runoff opeocd instance is running
@@ -162,19 +165,19 @@ for dir in ./*/; do
         case $PROJECT_NAME in
 
         "BLE_datc")
-         #   run_notConntectedTest
+            run_notConntectedTest
             ;;
 
         "BLE_dats")
-        #    run_notConntectedTest
+            run_notConntectedTest
             ;;
 
         "BLE_mcs")
-        #    run_notConntectedTest
+            run_notConntectedTest
             ;;
 
         "BLE_fit")
-       #    run_notConntectedTest
+           run_notConntectedTest
             ;;
 
         "BLE_fcc")
@@ -189,7 +192,7 @@ for dir in ./*/; do
             ;;
 
         "BLE_otac")
-        #    run_notConntectedTest
+            run_notConntectedTest
             ;;
 
         "BLE_otas")

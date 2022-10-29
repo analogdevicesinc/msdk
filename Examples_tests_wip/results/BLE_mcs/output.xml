@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.10.6 on linux)" generated="20221028 19:09:11.228" rpa="false" schemaversion="3">
+<suite id="s1" name="BLE mcs" source="/home/eddie/projects/msdk/Examples_tests/tests/BLE_mcs.robot">
+<kw name="Open Serial Port" library="Serial" type="SETUP">
+<arg>${SERIAL_PORT_1}</arg>
+<arg>NONE</arg>
+<kw name="Add Port" library="SerialLibrary">
+<arg>${SERIAL_PORT_1}</arg>
+<arg>baudrate=115200</arg>
+<arg>bytesize=8</arg>
+<arg>parity=N</arg>
+<arg>stopbits=1</arg>
+<arg>timeout=999</arg>
+<doc>Adds new port with specified locator.</doc>
+<status status="PASS" starttime="20221028 19:09:11.249" endtime="20221028 19:09:11.260"/>
+</kw>
+<if>
+<branch type="IF" condition="&quot;${SERIAL_PORT_2}&quot; != &quot;NONE&quot;">
+<kw name="Add Port" library="SerialLibrary">
+<arg>${SERIAL_PORT_2}</arg>
+<arg>baudrate=115200</arg>
+<arg>bytesize=8</arg>
+<arg>parity=N</arg>
+<arg>stopbits=1</arg>
+<arg>timeout=999</arg>
+<doc>Adds new port with specified locator.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:11.260" endtime="20221028 19:09:11.260"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:11.260" endtime="20221028 19:09:11.260"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:11.260" endtime="20221028 19:09:11.260"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:11.249" endtime="20221028 19:09:11.260"/>
+</kw>
+<test id="s1-t1" name="Button Press Tests" line="13">
+<kw name="Sleep" library="BuiltIn">
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<msg timestamp="20221028 19:09:16.261" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" starttime="20221028 19:09:11.261" endtime="20221028 19:09:16.261"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>btn 1 s\n</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Write Data" library="SerialLibrary">
+<arg>${data}</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Writes data into the port.</doc>
+<status status="PASS" starttime="20221028 19:09:16.262" endtime="20221028 19:09:16.263"/>
+</kw>
+<status status="PASS" starttime="20221028 19:09:16.262" endtime="20221028 19:09:16.263"/>
+</kw>
+<kw name="Expect And Timeout" library="Serial">
+<arg>mcsAppBtnCback; 2</arg>
+<arg>5</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<kw name="Set Variable" library="BuiltIn">
+<var>${EMPTY}</var>
+<arg>""</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20221028 19:09:16.264" level="INFO">${EMPTY} = ""</msg>
+<status status="PASS" starttime="20221028 19:09:16.263" endtime="20221028 19:09:16.264"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>\n</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.264" endtime="20221028 19:09:16.264"/>
+</kw>
+<while condition="True" limit="200000">
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.265" level="INFO">${source} = terminal: init
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.264" endtime="20221028 19:09:16.265"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.265" endtime="20221028 19:09:16.265"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.267" level="FAIL">'terminal: init
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.265" endtime="20221028 19:09:16.267"/>
+</kw>
+<msg timestamp="20221028 19:09:16.267" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.265" endtime="20221028 19:09:16.267"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.267" endtime="20221028 19:09:16.267"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.267" endtime="20221028 19:09:16.267"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.267" endtime="20221028 19:09:16.267"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.264" endtime="20221028 19:09:16.267"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.268" level="INFO">${source} = McsAppHandlerInit
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.268" endtime="20221028 19:09:16.268"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.268" endtime="20221028 19:09:16.269"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.269" level="FAIL">'McsAppHandlerInit
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.269" endtime="20221028 19:09:16.269"/>
+</kw>
+<msg timestamp="20221028 19:09:16.270" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.269" endtime="20221028 19:09:16.270"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.270" endtime="20221028 19:09:16.270"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.270" endtime="20221028 19:09:16.270"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.270" endtime="20221028 19:09:16.270"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.268" endtime="20221028 19:09:16.270"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.271" level="INFO">${source} = McsApp got evt 119
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.270" endtime="20221028 19:09:16.271"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.271" endtime="20221028 19:09:16.271"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.272" level="FAIL">'McsApp got evt 119
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.271" endtime="20221028 19:09:16.272"/>
+</kw>
+<msg timestamp="20221028 19:09:16.272" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.271" endtime="20221028 19:09:16.272"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.272" endtime="20221028 19:09:16.272"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.272" endtime="20221028 19:09:16.272"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.272" endtime="20221028 19:09:16.272"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.270" endtime="20221028 19:09:16.272"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.273" level="INFO">${source} = McsApp got evt 32
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.273" endtime="20221028 19:09:16.273"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.273" endtime="20221028 19:09:16.273"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.274" level="FAIL">'McsApp got evt 32
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.274" endtime="20221028 19:09:16.274"/>
+</kw>
+<msg timestamp="20221028 19:09:16.274" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.274" endtime="20221028 19:09:16.274"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.275" endtime="20221028 19:09:16.275"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.275" endtime="20221028 19:09:16.275"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.275" endtime="20221028 19:09:16.275"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.272" endtime="20221028 19:09:16.275"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.276" level="INFO">${source} = &gt;&gt;&gt; Reset complete &lt;&lt;&lt;
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.275" endtime="20221028 19:09:16.276"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.276" endtime="20221028 19:09:16.276"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.277" level="FAIL">'&gt;&gt;&gt; Reset complete &lt;&lt;&lt;
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.276" endtime="20221028 19:09:16.277"/>
+</kw>
+<msg timestamp="20221028 19:09:16.277" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.276" endtime="20221028 19:09:16.277"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.277" endtime="20221028 19:09:16.277"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.277" endtime="20221028 19:09:16.277"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.277" endtime="20221028 19:09:16.277"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.275" endtime="20221028 19:09:16.277"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.278" level="INFO">${source} = dmAdvActConfig: state: 0
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.278" endtime="20221028 19:09:16.278"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.278" endtime="20221028 19:09:16.279"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.279" level="FAIL">'dmAdvActConfig: state: 0
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.279" endtime="20221028 19:09:16.279"/>
+</kw>
+<msg timestamp="20221028 19:09:16.279" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.279" endtime="20221028 19:09:16.279"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.280" endtime="20221028 19:09:16.280"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.280" endtime="20221028 19:09:16.280"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.280" endtime="20221028 19:09:16.280"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.278" endtime="20221028 19:09:16.280"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.281" level="INFO">${source} = dmAdvActSetData: state: 0
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.280" endtime="20221028 19:09:16.281"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.281" endtime="20221028 19:09:16.281"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.282" level="FAIL">'dmAdvActSetData: state: 0
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.281" endtime="20221028 19:09:16.282"/>
+</kw>
+<msg timestamp="20221028 19:09:16.282" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.281" endtime="20221028 19:09:16.282"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.282" endtime="20221028 19:09:16.282"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.282" endtime="20221028 19:09:16.282"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.282" endtime="20221028 19:09:16.282"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.280" endtime="20221028 19:09:16.282"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.283" level="INFO">${source} = dmAdvActSetData: state: 0
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.283" endtime="20221028 19:09:16.283"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.283" endtime="20221028 19:09:16.284"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.284" level="FAIL">'dmAdvActSetData: state: 0
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.284" endtime="20221028 19:09:16.284"/>
+</kw>
+<msg timestamp="20221028 19:09:16.284" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.284" endtime="20221028 19:09:16.284"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.285" endtime="20221028 19:09:16.285"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.285" endtime="20221028 19:09:16.285"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.285" endtime="20221028 19:09:16.285"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.282" endtime="20221028 19:09:16.285"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.286" level="INFO">${source} = dmAdvActStart: state: 0
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.285" endtime="20221028 19:09:16.286"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.286" endtime="20221028 19:09:16.286"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.287" level="FAIL">'dmAdvActStart: state: 0
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.286" endtime="20221028 19:09:16.287"/>
+</kw>
+<msg timestamp="20221028 19:09:16.287" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.286" endtime="20221028 19:09:16.287"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.287" endtime="20221028 19:09:16.287"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.287" endtime="20221028 19:09:16.287"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.287" endtime="20221028 19:09:16.287"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.285" endtime="20221028 19:09:16.287"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.288" level="INFO">${source} = HCI_LE_ADV_ENABLE_CMD_CMPL_CBACK_EVT: state: 3
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.287" endtime="20221028 19:09:16.288"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.288" endtime="20221028 19:09:16.289"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.290" level="FAIL">'HCI_LE_ADV_ENABLE_CMD_CMPL_CBACK_EVT: state: 3
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.289" endtime="20221028 19:09:16.290"/>
+</kw>
+<msg timestamp="20221028 19:09:16.290" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.289" endtime="20221028 19:09:16.290"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.290" endtime="20221028 19:09:16.290"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.290" endtime="20221028 19:09:16.290"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.290" endtime="20221028 19:09:16.290"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.287" endtime="20221028 19:09:16.290"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.291" level="INFO">${source} = dmDevPassEvtToDevPriv: event: 12, param: 33, advHandle: 0
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.290" endtime="20221028 19:09:16.291"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.291" endtime="20221028 19:09:16.292"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.292" level="FAIL">'dmDevPassEvtToDevPriv: event: 12, param: 33, advHandle: 0
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.292" endtime="20221028 19:09:16.292"/>
+</kw>
+<msg timestamp="20221028 19:09:16.292" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.292" endtime="20221028 19:09:16.293"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.293" endtime="20221028 19:09:16.293"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.293" endtime="20221028 19:09:16.293"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.293" endtime="20221028 19:09:16.293"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.290" endtime="20221028 19:09:16.293"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.294" level="INFO">${source} = McsApp got evt 33
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.293" endtime="20221028 19:09:16.294"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.294" endtime="20221028 19:09:16.294"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.295" level="FAIL">'McsApp got evt 33
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.294" endtime="20221028 19:09:16.295"/>
+</kw>
+<msg timestamp="20221028 19:09:16.295" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.294" endtime="20221028 19:09:16.295"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.295" endtime="20221028 19:09:16.295"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.295" endtime="20221028 19:09:16.295"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.295" endtime="20221028 19:09:16.295"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.293" endtime="20221028 19:09:16.295"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.296" level="INFO">${source} = &gt;&gt;&gt; Advertising started &lt;&lt;&lt;
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.295" endtime="20221028 19:09:16.296"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.296" endtime="20221028 19:09:16.296"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.297" level="FAIL">'&gt;&gt;&gt; Advertising started &lt;&lt;&lt;
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.297" endtime="20221028 19:09:16.297"/>
+</kw>
+<msg timestamp="20221028 19:09:16.297" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.297" endtime="20221028 19:09:16.297"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.298" endtime="20221028 19:09:16.298"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.298" endtime="20221028 19:09:16.298"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.297" endtime="20221028 19:09:16.298"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.295" endtime="20221028 19:09:16.298"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.298" level="INFO">${source} = McsApp got evt 21
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.298" endtime="20221028 19:09:16.298"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.298" endtime="20221028 19:09:16.299"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.300" level="FAIL">'McsApp got evt 21
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.299" endtime="20221028 19:09:16.300"/>
+</kw>
+<msg timestamp="20221028 19:09:16.300" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.299" endtime="20221028 19:09:16.300"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.300" endtime="20221028 19:09:16.300"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.300" endtime="20221028 19:09:16.300"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.300" endtime="20221028 19:09:16.300"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.298" endtime="20221028 19:09:16.300"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.301" level="INFO">${source} = Database hash updated
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.300" endtime="20221028 19:09:16.301"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.301" endtime="20221028 19:09:16.301"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.302" level="FAIL">'Database hash updated
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.301" endtime="20221028 19:09:16.302"/>
+</kw>
+<msg timestamp="20221028 19:09:16.302" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.301" endtime="20221028 19:09:16.302"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.303" endtime="20221028 19:09:16.303"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.302" endtime="20221028 19:09:16.303"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.302" endtime="20221028 19:09:16.303"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.300" endtime="20221028 19:09:16.303"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.303" level="INFO">${source} = btn 1 s
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.303" endtime="20221028 19:09:16.303"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.303" endtime="20221028 19:09:16.304"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.304" level="FAIL">'btn 1 s
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.304" endtime="20221028 19:09:16.305"/>
+</kw>
+<msg timestamp="20221028 19:09:16.305" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.304" endtime="20221028 19:09:16.305"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.305" endtime="20221028 19:09:16.305"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.305" endtime="20221028 19:09:16.305"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.305" endtime="20221028 19:09:16.305"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.303" endtime="20221028 19:09:16.305"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.306" level="INFO">${source} = Short Button 1 Press
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.305" endtime="20221028 19:09:16.306"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.306" endtime="20221028 19:09:16.306"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<msg timestamp="20221028 19:09:16.307" level="FAIL">'Short Button 1 Press
+' does not contain 'mcsAppBtnCback; 2'</msg>
+<status status="FAIL" starttime="20221028 19:09:16.306" endtime="20221028 19:09:16.307"/>
+</kw>
+<msg timestamp="20221028 19:09:16.307" level="INFO">${contains} = False</msg>
+<status status="PASS" starttime="20221028 19:09:16.306" endtime="20221028 19:09:16.307"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.307" endtime="20221028 19:09:16.307"/>
+</kw>
+<status status="NOT RUN" starttime="20221028 19:09:16.307" endtime="20221028 19:09:16.307"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.307" endtime="20221028 19:09:16.307"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.305" endtime="20221028 19:09:16.307"/>
+</iter>
+<iter>
+<kw name="Read Until" library="SerialLibrary">
+<var>${source}</var>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>NONE</arg>
+<arg>${port}</arg>
+<doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
+<msg timestamp="20221028 19:09:16.308" level="INFO">${source} = mcsAppBtnCback; 2
+</msg>
+<status status="PASS" starttime="20221028 19:09:16.308" endtime="20221028 19:09:16.308"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${source}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20221028 19:09:16.308" endtime="20221028 19:09:16.308"/>
+</kw>
+<kw name="Run Keyword And Return Status" library="BuiltIn">
+<var>${contains}</var>
+<arg>Should Contain</arg>
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Runs the given keyword with given arguments and returns the status as a Boolean value.</doc>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${source}</arg>
+<arg>${data}</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20221028 19:09:16.309" endtime="20221028 19:09:16.309"/>
+</kw>
+<msg timestamp="20221028 19:09:16.309" level="INFO">${contains} = True</msg>
+<status status="PASS" starttime="20221028 19:09:16.309" endtime="20221028 19:09:16.309"/>
+</kw>
+<if>
+<branch type="IF" condition="${contains}">
+<kw name="Pass Execution" library="BuiltIn">
+<arg>""</arg>
+<doc>Skips rest of the current test, setup, or teardown with PASS status.</doc>
+<msg timestamp="20221028 19:09:16.309" level="INFO">Execution passed with message:
+""</msg>
+<status status="PASS" starttime="20221028 19:09:16.309" endtime="20221028 19:09:16.310"/>
+</kw>
+<status status="PASS" starttime="20221028 19:09:16.309" endtime="20221028 19:09:16.310"/>
+</branch>
+<status status="PASS" starttime="20221028 19:09:16.309" endtime="20221028 19:09:16.310"/>
+</if>
+<status status="PASS" starttime="20221028 19:09:16.307" endtime="20221028 19:09:16.310"/>
+</iter>
+<status status="PASS" starttime="20221028 19:09:16.264" endtime="20221028 19:09:16.310"/>
+</while>
+<kw name="Fail" library="BuiltIn">
+<arg>"Test Failed"</arg>
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<status status="NOT RUN" starttime="20221028 19:09:16.310" endtime="20221028 19:09:16.310"/>
+</kw>
+<timeout value="5 seconds"/>
+<status status="PASS" starttime="20221028 19:09:16.263" endtime="20221028 19:09:16.310"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>btn 1 m\n</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<status status="NOT RUN" starttime="20221028 19:09:16.310" endtime="20221028 19:09:16.310"/>
+</kw>
+<kw name="Expect And Timeout" library="Serial">
+<arg>mcsAppBtnCback; 3</arg>
+<arg>5</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<status status="NOT RUN" starttime="20221028 19:09:16.311" endtime="20221028 19:09:16.311"/>
+</kw>
+<kw name="Send" library="Serial">
+<arg>btn 1 l\n</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<status status="NOT RUN" starttime="20221028 19:09:16.311" endtime="20221028 19:09:16.311"/>
+</kw>
+<kw name="Expect And Timeout" library="Serial">
+<arg>mcsAppBtnCback; 4</arg>
+<arg>5</arg>
+<arg>${SERIAL_PORT_1}</arg>
+<status status="NOT RUN" starttime="20221028 19:09:16.311" endtime="20221028 19:09:16.311"/>
+</kw>
+<timeout value="30 seconds"/>
+<status status="PASS" starttime="20221028 19:09:11.260" endtime="20221028 19:09:16.311">""</status>
+</test>
+<kw name="Close Serial Port" library="Serial" type="TEARDOWN">
+<kw name="Delete All Ports" library="SerialLibrary">
+<doc>Deletes all ports maintained in the library instance.</doc>
+<status status="PASS" starttime="20221028 19:09:16.312" endtime="20221028 19:09:16.314"/>
+</kw>
+<status status="PASS" starttime="20221028 19:09:16.311" endtime="20221028 19:09:16.314"/>
+</kw>
+<status status="PASS" starttime="20221028 19:09:11.228" endtime="20221028 19:09:16.314"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="BLE mcs">BLE mcs</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

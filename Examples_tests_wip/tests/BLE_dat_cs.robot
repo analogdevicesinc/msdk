@@ -20,8 +20,7 @@ Secured Connection Test
     Serial.send   pin 1 1234\n    ${SERIAL_PORT_2}
     sleep    2
     Serial.send    pin 1 1234\n    ${SERIAL_PORT_1}
-    sleep     5
-    Serial.Expect And Timeout Simple   >>> Pairing completed successfully <<<    25    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout    >>> Pairing completed successfully <<<    25    ${SERIAL_PORT_1}
 
 Write Characteristic Test
     [Timeout]     30s

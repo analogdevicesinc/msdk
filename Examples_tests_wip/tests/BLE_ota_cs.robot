@@ -28,7 +28,7 @@ File Discovery Test
     Serial.Clear Port Input Buffer    ${SERIAL_PORT_1}
     Sleep    1
     Serial.send    btn 2 s\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    >>> File discovery com2lete <<<    5    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout    >>> File discovery complete <<<    5    ${SERIAL_PORT_1}
     Serial.Clear Port Input Buffer    ${SERIAL_PORT_1}
 
 
