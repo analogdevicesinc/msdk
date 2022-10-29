@@ -89,12 +89,11 @@
 
 typedef enum {
     BAYER_FUNCTION_PASSTHROUGH = 0,
-    BAYER_FUNCTION_BILINEAR,
-    BAYER_FUNCTION_MALVARCUTLER
+    BAYER_FUNCTION_BILINEAR
 } bayer_function_t;
 
-// Set the debayering function here
-bayer_function_t g_bayer_function = BAYER_FUNCTION_MALVARCUTLER;
+// Set the default debayering function here
+bayer_function_t g_bayer_function = BAYER_FUNCTION_BILINEAR;
 
 //------------------------
 
@@ -129,28 +128,26 @@ void process_img(void)
         case (BAYER_FUNCTION_BILINEAR):
             bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)bayer_data);
             break;
-        case (BAYER_FUNCTION_MALVARCUTLER):
-            bayer_malvarcutler_demosaicing(raw, w, h, (uint16_t *)bayer_data);
-            break;
         }
-        MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, bayer_data, h, w);
-    }
 
-#ifndef ENABLE_TFT
-    /*
-    * Stream image data to PC.
-    * Notice the data characteristics
-    * are modified here since the raw
-    * data has been converted to RGB565.
-    */
-    utils_stream_img_to_pc_init(bayer_data, imgLen * 2, w, h, (uint8_t *)"RGB565");
+#ifdef ENABLE_TFT
+        MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, bayer_data, w, h);
+#else
+        /*
+        * Stream image data to PC.
+        * Notice the data characteristics
+        * are modified here since the raw
+        * data has been converted to RGB565.
+        */
+        utils_stream_img_to_pc_init(bayer_data, imgLen * 2, w, h, (uint8_t *)"RGB565");
 
-    // Get image line by line
-    for (int i = 0; i < h; i++) {
-        // Send one line to PC
-        utils_stream_image_row_to_pc(bayer_data + (i * w * 2), w * 2);
-    }
+        // Get image line by line
+        for (int i = 0; i < h; i++) {
+            // Send one line to PC
+            utils_stream_image_row_to_pc(bayer_data + (i * w * 2), w * 2);
+        }
 #endif
+    }
 }
 
 void UART_Handler(void)
@@ -208,12 +205,9 @@ int main(void)
 
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
-    defined(CAMERA_OV5642)
     // hmirror and vflip must be disabled for demosaicing functions to work properly
     camera_set_hmirror(0);
     camera_set_vflip(0);
-#endif
 
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
@@ -226,14 +220,6 @@ int main(void)
 
     ret =
         camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
-
-#ifdef ENABLE_TFT
-    // Set the screen rotation
-    //MXC_TFT_SetRotation(SCREEN_NORMAL);
-    MXC_TFT_SetRotation(SCREEN_ROTATE);
-    // Change entry mode settings
-    MXC_TFT_WriteReg(0x0011, 0x6858);
-#endif
 
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
