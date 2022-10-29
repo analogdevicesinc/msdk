@@ -69,7 +69,7 @@ extern "C" {
 #define LED_ON 0 /// Active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
-#define EXT_FLASH_BAUD 1000000
+#define EXT_FLASH_BAUD 4000000
 #endif
 
 #define EvKit_V1 /// Used in examples to control program flow

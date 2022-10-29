@@ -275,18 +275,23 @@ class BLE_hci:
      # Parses a connection stats event and prints the results.
     ################################################################################
     def parseConnStatsEvt(self, evt):
-        # Offset into the event where the stats start, each stat is 32 bits, or 
-        # 8 hex nibbles
-        i = 14
-        rxDataOk  = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
-        i += 8
-        rxDataCRC = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
-        i += 8
-        rxDataTO  = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
-        i += 8
-        txData    = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
-        i += 8
-        errTrans  = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
+        try:
+            # Offset into the event where the stats start, each stat is 32 bits, or
+            # 8 hex nibbles
+            i = 14
+            rxDataOk  = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
+            i += 8
+            rxDataCRC = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
+            i += 8
+            rxDataTO  = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
+            i += 8
+            txData    = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
+            i += 8
+            errTrans  = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
+        except ValueError as err:
+            print(err)
+            return None
+
 
         print(self.serialPort)
         print("rxDataOk   : "+str(rxDataOk))
@@ -299,6 +304,30 @@ class BLE_hci:
         if((rxDataCRC+rxDataTO+rxDataOk) != 0):
             per = round(float((rxDataCRC+rxDataTO)/(rxDataCRC+rxDataTO+rxDataOk))*100,2)
             print("PER        : "+str(per)+" %")
+
+        return per
+
+    ## Get connection stats.
+     #
+     # Send the command to get the connection stats, parse the return value, return the PER.
+    ################################################################################
+    def connStatsFunc(self, args):
+
+        per = None
+        retries = 5
+        while((per == None) and (retries > 0)):
+            # Send the command to get the connection stats, save the event
+            statEvt = self.send_command("01FDFF00")
+
+            if(retries != 5):
+                # Delay to clear pending events
+                self.wait_events(1)
+                
+
+            # Parse the connection stats event
+            per = self.parseConnStatsEvt(statEvt)
+
+            retries = retries - 1
 
         return per
 
@@ -644,20 +673,6 @@ class BLE_hci:
 
         else:
             self.wait_events(waitSeconds)
-
-        return per
-
-    ## Get connection stats.
-     #
-     # Send the command to get the connection stats, parse the return value, return the PER.
-    ################################################################################
-    def connStatsFunc(self, args):
-
-        # Send the command to get the connection stats, save the event
-        statEvt = self.send_command("01FDFF00")
-
-        # Parse the connection stats event
-        per = self.parseConnStatsEvt(statEvt)
 
         return per
 

@@ -1,10 +1,11 @@
 /**
  * @file    trimsir_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the TRIMSIR Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,11 +35,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _TRIMSIR_REGS_H_
-#define _TRIMSIR_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_TRIMSIR_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_TRIMSIR_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     trimsir
  * @defgroup    trimsir_registers TRIMSIR_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the TRIMSIR Peripheral Module.
- * @details Trim System Initilazation Registers
+ * @details     Trim System Initilazation Registers
  */
 
 /**
@@ -99,13 +99,13 @@ typedef struct {
  * @brief      TRIMSIR Peripheral Register Offsets from the TRIMSIR Base Peripheral Address.
  * @{
  */
- #define MXC_R_TRIMSIR_RSV0                 ((uint32_t)0x00000000UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_TRIMSIR_BB_SIR2              ((uint32_t)0x00000008UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_TRIMSIR_BB_SIR3              ((uint32_t)0x0000000CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x000C</tt> */ 
+#define MXC_R_TRIMSIR_RSV0                 ((uint32_t)0x00000000UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0000</tt> */
+#define MXC_R_TRIMSIR_BB_SIR2              ((uint32_t)0x00000008UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0008</tt> */
+#define MXC_R_TRIMSIR_BB_SIR3              ((uint32_t)0x0000000CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x000C</tt> */
 /**@} end of group trimsir_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _TRIMSIR_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32572_INCLUDE_TRIMSIR_REGS_H_

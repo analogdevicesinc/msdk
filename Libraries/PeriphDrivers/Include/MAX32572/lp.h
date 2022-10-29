@@ -3,8 +3,8 @@
  * @brief   Low Power(LP) function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_LP_H_
@@ -71,7 +71,6 @@ typedef enum {
     MXC_LP_IPO = MXC_F_GCR_PM_IPO_PD,
     MXC_LP_IBRO = MXC_F_GCR_PM_IBRO_PD,
     MXC_LP_XRFO = MXC_F_GCR_PM_ERFO_PD,
-    MXC_LP_NFC = MXC_F_GCR_PM_NFC_PD
 } mxc_lp_cfg_ds_pd_t;
 
 /**
@@ -284,6 +283,11 @@ void MXC_LP_SysRam3LightSleepEnable(void);
 void MXC_LP_ICacheXIPLightSleepEnable(void);
 
 /**
+ * @brief Enable Icache 0 in light sleep
+ */
+void MXC_LP_ICache0LightSleepEnable(void);
+
+/**
  * @brief Enable Crypto in light sleep
  */
 void MXC_LP_CryptoLightSleepEnable(void);
@@ -296,7 +300,12 @@ void MXC_LP_USBFIFOLightSleepEnable(void);
 /**
  * @brief Enable ROM 0 in light sleep
  */
-void MXC_LP_ROMLightSleepEnable(void);
+void MXC_LP_ROM0LightSleepEnable(void);
+
+/**
+ * @brief Enable ROM 1 in light sleep
+ */
+void MXC_LP_ROM1LightSleepEnable(void);
 
 /**
  * @brief Disable System Ram 0 in light sleep
@@ -341,7 +350,12 @@ void MXC_LP_USBFIFOLightSleepDisable(void);
 /**
  * @brief Disable ROM 0 in light sleep
  */
-void MXC_LP_ROMLightSleepDisable(void);
+void MXC_LP_ROM0LightSleepDisable(void);
+
+/**
+ * @brief Disable ROM 1 in light sleep
+ */
+void MXC_LP_ROM1LightSleepDisable(void);
 
 /**
  * @brief Shutdown System Ram 0
