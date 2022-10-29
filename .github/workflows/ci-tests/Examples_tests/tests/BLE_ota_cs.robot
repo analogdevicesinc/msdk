@@ -30,13 +30,6 @@ File Discovery Test
     Serial.Expect And Timeout    >>> File discovery complete <<<    5    ${SERIAL_PORT_1}
     Serial.Clear Port Input Buffer    ${SERIAL_PORT_1}
 
-Phyt Switch Test
-    [Timeout]    30s
-    Serial.Clear Port Input Buffer    ${SERIAL_PORT_2}
-    Sleep    1
-    Serial.Send    btn 2 s\n    ${SERIAL_PORT_2}
-    Serial.Expect And Timeout    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_2}
-    Serial.Clear Port Input Buffer    ${SERIAL_PORT_2}
 
 File Transfer Test
     [Timeout]    30s
