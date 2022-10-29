@@ -75,10 +75,7 @@ typedef struct {
     uint8_t *pixel_format; // Pixel format string
 } cnn_img_data_t;
 
-typedef enum {
-    BAYER_FUNCTION_PASSTHROUGH = 0,
-    BAYER_FUNCTION_BILINEAR
-} bayer_function_t;
+typedef enum { BAYER_FUNCTION_PASSTHROUGH = 0, BAYER_FUNCTION_BILINEAR } bayer_function_t;
 
 // This contains global application settings
 typedef struct {

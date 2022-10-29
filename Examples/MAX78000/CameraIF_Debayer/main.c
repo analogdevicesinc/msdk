@@ -87,10 +87,7 @@
 #define X_START 0
 #define Y_START 0
 
-typedef enum {
-    BAYER_FUNCTION_PASSTHROUGH = 0,
-    BAYER_FUNCTION_BILINEAR
-} bayer_function_t;
+typedef enum { BAYER_FUNCTION_PASSTHROUGH = 0, BAYER_FUNCTION_BILINEAR } bayer_function_t;
 
 // Set the default debayering function here
 bayer_function_t g_bayer_function = BAYER_FUNCTION_BILINEAR;
