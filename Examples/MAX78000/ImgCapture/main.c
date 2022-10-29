@@ -77,8 +77,7 @@ typedef struct {
 
 typedef enum {
     BAYER_FUNCTION_PASSTHROUGH = 0,
-    BAYER_FUNCTION_BILINEAR,
-    BAYER_FUNCTION_MALVARCUTLER
+    BAYER_FUNCTION_BILINEAR
 } bayer_function_t;
 
 // This contains global application settings
@@ -475,9 +474,6 @@ void service_console()
                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
                     bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h,
                                                (uint16_t *)bayer_data);
-                } else if (g_app_settings.bayer_function == BAYER_FUNCTION_MALVARCUTLER) {
-                    bayer_malvarcutler_demosaicing(img_data.raw, img_data.w, img_data.h,
-                                                   (uint16_t *)bayer_data);
                 }
 
                 img_data.raw = bayer_data;
@@ -533,9 +529,6 @@ void service_console()
                 printf("Set %s\n", buffer);
             } else if (!strcmp("bilinear", buffer)) {
                 g_app_settings.bayer_function = BAYER_FUNCTION_BILINEAR;
-                printf("Set %s\n", buffer);
-            } else if (!strcmp("malvarcutler", buffer)) {
-                g_app_settings.bayer_function = BAYER_FUNCTION_MALVARCUTLER;
                 printf("Set %s\n", buffer);
             } else {
                 printf("Unknown debayering function '%s'\n", buffer);
@@ -638,9 +631,7 @@ int main(void)
 
 #if defined(CAMERA_BAYER)
     g_app_settings.pixel_format = PIXFORMAT_BAYER;
-    g_app_settings.imgres_w = 160;
-    g_app_settings.imgres_h = 120;
-    g_app_settings.bayer_function = BAYER_FUNCTION_MALVARCUTLER;
+    g_app_settings.bayer_function = BAYER_FUNCTION_BILINEAR;
 #endif
 
     /* Enable cache */

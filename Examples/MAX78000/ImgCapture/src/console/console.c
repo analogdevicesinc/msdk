@@ -66,7 +66,7 @@ char *help_table[] = {
     "<register> <value> : Write a value to a camera register.",
     "<register> : Prints the value in a camera register.",
 #ifdef CAMERA_BAYER
-    "<function> : Set the debayering function ('passthrough','bilinear', or 'malvarcutler')",
+    "<function> : Set the debayering function ('passthrough','bilinear')",
 #endif
 #ifdef SD
     ": Mount the SD card, enabling the commands below.  This will format the SD card if the MCU "
