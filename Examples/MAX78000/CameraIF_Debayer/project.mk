@@ -7,6 +7,7 @@
 
 # **********************************************************
 
-# Set the camera driver to the HM0360 color drivers
+# Set the camera driver to the HM0360 color drivers.
+# These are the only drivers supported by this example.
 CAMERA=HM0360_COLOR
 
