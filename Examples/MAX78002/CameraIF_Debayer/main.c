@@ -80,7 +80,7 @@
 // Select the active context
 // 0 = Context A (320x240)
 // 1 = Context B (160x120)
-#define CONTEXT 1
+#define CONTEXT 0
 
 #if CONTEXT == 0
 #define IMAGE_XRES 320
