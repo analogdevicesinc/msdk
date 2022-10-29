@@ -39,10 +39,10 @@ Send
     Write Data    ${data}    NONE    NONE    ${port}
 
 
-Expect And Timeout   
+Expect And Timeout Simple
     [Arguments]    ${data}    ${timeout}    ${port}
     [Timeout]    ${timeout}
-    ${read} =     Read Until    ${data}    NONE    NONE    ${port}
+    ${read} =     Read Until   ${data}    NONE    NONE    ${port} 
     Log Serial Traffic    ${read}
     
 Expect And Timeout No Verbose  
@@ -50,7 +50,21 @@ Expect And Timeout No Verbose
     [Timeout]    ${timeout}
     ${read} =     Read Until    ${data}    NONE    NONE    ${port}
    
-   
+Expect And Timeout
+    [Arguments]    ${data}    ${timeout}    ${port}    
+    [Timeout]    ${timeout}
+    ${EMPTY}=    Set Variable    ""
+    Log To Console    \n
+    WHILE    True    limit=200000
+        ${source}=    Read Until   NONE    NONE    NONE    ${port}
+        Log To Console    ${source}
+        ${contains}=    Run Keyword And Return Status    Should Contain    ${source}    ${data}
+        IF    ${contains}
+            Pass Execution    ------------------------------------------------------------------------------
+        END
+    END
+    Fail    "Test Failed"
+
 Log Serial Traffic
     [Arguments]    ${data}
     Log To Console    \n
@@ -63,4 +77,6 @@ Flush Serial Port
 
 Clear Port Input Buffer
     [Arguments]    ${port}
-    Reset Input Buffer    ${port}
+    ${source}=    Read All Data   NONE    ${port}
+    
+    
