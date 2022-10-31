@@ -73,7 +73,7 @@
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 } };
+static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 }, {512, 4} };
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -162,20 +162,6 @@ void wutTrimCb(int err)
 
 /*************************************************************************************************/
 /*!
-*  \fn     setAdvTxPower
-*
-*  \brief  Set the default advertising TX power.
-*
-*  \return None.
-*/
-/*************************************************************************************************/
-void setAdvTxPower(void)
-{
-    LlSetAdvTxPower(DEFAULT_TX_POWER);
-}
-
-/*************************************************************************************************/
-/*!
 *  \fn     main
 *
 *  \brief  Entry point for demo software.
@@ -240,7 +226,7 @@ int main(void)
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     LlSetBdAddr((uint8_t *)&bdAddr);
-#endif
+
 
     /* Start the 32 MHz crystal and the BLE DBB counter to trim the 32 kHz crystal */
     PalBbEnable();
@@ -255,6 +241,7 @@ int main(void)
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */
     PalBbDisable();
+#endif
 
     StackInitFit();
     FitStart();

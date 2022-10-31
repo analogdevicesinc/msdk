@@ -298,13 +298,13 @@ int MXC_SEMA_RevA_ReadBoxAsync(mxc_sema_reva_regs_t *sema_regs, mxc_sema_complet
 
     /* Pend the local interrupt to process the request */
 #if TARGET_NUM == 32570 || TARGET_NUM == 32650 || TARGET_NUM == 32665
-#ifndef __riscv
+#ifdef __riscv
     sema_regs->irq1 |= MXC_F_SEMA_REVA_IRQ1_RV32_IRQ;
 #else
     sema_regs->irq0 |= MXC_F_SEMA_REVA_IRQ0_CM4_IRQ;
 #endif
 #else
-#ifndef __riscv
+#ifdef __riscv
     sema_regs->irq1 |= MXC_F_SEMA_IRQ1_RV32_IRQ;
 #else
     sema_regs->irq0 |= MXC_F_SEMA_IRQ0_CM4_IRQ;
@@ -422,13 +422,13 @@ int MXC_SEMA_RevA_WriteBoxAsync(mxc_sema_reva_regs_t *sema_regs, mxc_sema_comple
 
     /* Pend the local interrupt to process the request */
 #if TARGET_NUM == 32570 || TARGET_NUM == 32650 || TARGET_NUM == 32665
-#ifndef __riscv
+#ifdef __riscv
     sema_regs->irq1 |= MXC_F_SEMA_REVA_IRQ1_RV32_IRQ;
 #else
     sema_regs->irq0 |= MXC_F_SEMA_REVA_IRQ0_CM4_IRQ;
 #endif
 #else
-#ifndef __riscv
+#ifdef __riscv
     sema_regs->irq1 |= MXC_F_SEMA_IRQ1_RV32_IRQ;
 #else
     sema_regs->irq0 |= MXC_F_SEMA_IRQ0_CM4_IRQ;
