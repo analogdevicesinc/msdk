@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 5.0.1 (Python 3.8.10 on linux)" generated="20220928 14:50:59.089" rpa="false" schemaversion="3">
-<suite id="s1" name="BLE datc" source="/home/btm-ci/Workspace/BLE-examples-test/Examples_tests/tests/BLE_datc.robot">
+<robot generator="Robot 5.0.1 (Python 3.10.6 on linux)" generated="20221031 12:00:01.884" rpa="false" schemaversion="3">
+<suite id="s1" name="BLE datc" source="/home/eddie/workspace/msdk/.github/workflows/ci-tests/Examples_tests/tests/BLE_datc.robot">
 <kw name="Open Serial Port" library="Serial" type="SETUP">
 <arg>${SERIAL_PORT_1}</arg>
 <arg>NONE</arg>
@@ -12,7 +12,7 @@
 <arg>stopbits=1</arg>
 <arg>timeout=999</arg>
 <doc>Adds new port with specified locator.</doc>
-<status status="PASS" starttime="20220928 14:50:59.162" endtime="20220928 14:50:59.165"/>
+<status status="PASS" starttime="20221031 12:00:01.926" endtime="20221031 12:00:01.928"/>
 </kw>
 <if>
 <branch type="IF" condition="&quot;${SERIAL_PORT_2}&quot; != &quot;NONE&quot;">
@@ -24,20 +24,20 @@
 <arg>stopbits=1</arg>
 <arg>timeout=999</arg>
 <doc>Adds new port with specified locator.</doc>
-<status status="NOT RUN" starttime="20220928 14:50:59.165" endtime="20220928 14:50:59.165"/>
+<status status="NOT RUN" starttime="20221031 12:00:01.928" endtime="20221031 12:00:01.928"/>
 </kw>
-<status status="NOT RUN" starttime="20220928 14:50:59.165" endtime="20220928 14:50:59.165"/>
+<status status="NOT RUN" starttime="20221031 12:00:01.928" endtime="20221031 12:00:01.928"/>
 </branch>
-<status status="PASS" starttime="20220928 14:50:59.165" endtime="20220928 14:50:59.166"/>
+<status status="PASS" starttime="20221031 12:00:01.928" endtime="20221031 12:00:01.929"/>
 </if>
-<status status="PASS" starttime="20220928 14:50:59.161" endtime="20220928 14:50:59.166"/>
+<status status="PASS" starttime="20221031 12:00:01.926" endtime="20221031 12:00:01.929"/>
 </kw>
 <test id="s1-t1" name="Stop Scanning Test" line="13">
 <kw name="Sleep" library="BuiltIn">
 <arg>5s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<msg timestamp="20220928 14:51:04.167" level="INFO">Slept 5 seconds</msg>
-<status status="PASS" starttime="20220928 14:50:59.167" endtime="20220928 14:51:04.168"/>
+<msg timestamp="20221031 12:00:06.931" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" starttime="20221031 12:00:01.930" endtime="20221031 12:00:06.931"/>
 </kw>
 <kw name="Send" library="Serial">
 <arg>btn 1 s\n</arg>
@@ -48,9 +48,9 @@
 <arg>NONE</arg>
 <arg>${port}</arg>
 <doc>Writes data into the port.</doc>
-<status status="PASS" starttime="20220928 14:51:04.169" endtime="20220928 14:51:04.170"/>
+<status status="PASS" starttime="20221031 12:00:06.932" endtime="20221031 12:00:06.932"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.168" endtime="20220928 14:51:04.170"/>
+<status status="PASS" starttime="20221031 12:00:06.931" endtime="20221031 12:00:06.932"/>
 </kw>
 <kw name="Expect And Timeout" library="Serial">
 <arg>&gt;&gt;&gt; Scanning stopped &lt;&lt;&lt;</arg>
@@ -63,41 +63,42 @@
 <arg>NONE</arg>
 <arg>${port}</arg>
 <doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
-<msg timestamp="20220928 14:51:04.198" level="INFO">${read} = terminal: init
-32kHz trimmed to 0x14
+<msg timestamp="20221031 12:00:06.960" level="INFO">${read} = 
+terminal: init
+32kHz trimmed to 0x15
 DatcHandlerInit
 Datc got evt 32
 &gt;&gt;&gt; Reset complete &lt;&lt;&lt;
 Datc got evt 21
 Database hash updated
 Datc got evt 153
-dmDevPassEvtToDevPriv: event: 12, param: 36, ...</msg>
-<status status="PASS" starttime="20220928 14:51:04.171" endtime="20220928 14:51:04.198"/>
+dmDevPassEvtToDevPriv: event: 12, param: 36...</msg>
+<status status="PASS" starttime="20221031 12:00:06.933" endtime="20221031 12:00:06.960"/>
 </kw>
 <kw name="Log Serial Traffic" library="Serial">
 <arg>${read}</arg>
 <kw name="Log To Console" library="BuiltIn">
 <arg>\n</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.199" endtime="20220928 14:51:04.200"/>
+<status status="PASS" starttime="20221031 12:00:06.961" endtime="20221031 12:00:06.961"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>${data}</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.200" endtime="20220928 14:51:04.200"/>
+<status status="PASS" starttime="20221031 12:00:06.961" endtime="20221031 12:00:06.962"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>\n</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.200" endtime="20220928 14:51:04.201"/>
+<status status="PASS" starttime="20221031 12:00:06.962" endtime="20221031 12:00:06.962"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.199" endtime="20220928 14:51:04.201"/>
+<status status="PASS" starttime="20221031 12:00:06.960" endtime="20221031 12:00:06.962"/>
 </kw>
 <timeout value="10 seconds"/>
-<status status="PASS" starttime="20220928 14:51:04.170" endtime="20220928 14:51:04.201"/>
+<status status="PASS" starttime="20221031 12:00:06.932" endtime="20221031 12:00:06.962"/>
 </kw>
 <timeout value="30 seconds"/>
-<status status="PASS" starttime="20220928 14:50:59.166" endtime="20220928 14:51:04.202"/>
+<status status="PASS" starttime="20221031 12:00:01.929" endtime="20221031 12:00:06.963"/>
 </test>
 <test id="s1-t2" name="Button Press Test" line="20">
 <kw name="Send" library="Serial">
@@ -109,9 +110,9 @@ dmDevPassEvtToDevPriv: event: 12, param: 36, ...</msg>
 <arg>NONE</arg>
 <arg>${port}</arg>
 <doc>Writes data into the port.</doc>
-<status status="PASS" starttime="20220928 14:51:04.204" endtime="20220928 14:51:04.204"/>
+<status status="PASS" starttime="20221031 12:00:06.964" endtime="20221031 12:00:06.965"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.203" endtime="20220928 14:51:04.204"/>
+<status status="PASS" starttime="20221031 12:00:06.964" endtime="20221031 12:00:06.965"/>
 </kw>
 <kw name="Expect And Timeout" library="Serial">
 <arg>Medium Button 1 Press</arg>
@@ -124,35 +125,35 @@ dmDevPassEvtToDevPriv: event: 12, param: 36, ...</msg>
 <arg>NONE</arg>
 <arg>${port}</arg>
 <doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
-<msg timestamp="20220928 14:51:04.226" level="INFO">${read} = 
+<msg timestamp="20221031 12:00:06.987" level="INFO">${read} = 
 btn 1 m
 Medium Button 1 Press</msg>
-<status status="PASS" starttime="20220928 14:51:04.206" endtime="20220928 14:51:04.226"/>
+<status status="PASS" starttime="20221031 12:00:06.966" endtime="20221031 12:00:06.987"/>
 </kw>
 <kw name="Log Serial Traffic" library="Serial">
 <arg>${read}</arg>
 <kw name="Log To Console" library="BuiltIn">
 <arg>\n</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.227" endtime="20220928 14:51:04.228"/>
+<status status="PASS" starttime="20221031 12:00:06.988" endtime="20221031 12:00:06.988"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>${data}</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.228" endtime="20220928 14:51:04.228"/>
+<status status="PASS" starttime="20221031 12:00:06.988" endtime="20221031 12:00:06.988"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>\n</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.229" endtime="20220928 14:51:04.229"/>
+<status status="PASS" starttime="20221031 12:00:06.989" endtime="20221031 12:00:06.989"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.227" endtime="20220928 14:51:04.229"/>
+<status status="PASS" starttime="20221031 12:00:06.987" endtime="20221031 12:00:06.989"/>
 </kw>
 <timeout value="5 seconds"/>
-<status status="PASS" starttime="20220928 14:51:04.205" endtime="20220928 14:51:04.230"/>
+<status status="PASS" starttime="20221031 12:00:06.965" endtime="20221031 12:00:06.989"/>
 </kw>
 <timeout value="30 seconds"/>
-<status status="PASS" starttime="20220928 14:51:04.202" endtime="20220928 14:51:04.230"/>
+<status status="PASS" starttime="20221031 12:00:06.963" endtime="20221031 12:00:06.989"/>
 </test>
 <test id="s1-t3" name="No button Action Test" line="25">
 <kw name="Send" library="Serial">
@@ -164,9 +165,9 @@ Medium Button 1 Press</msg>
 <arg>NONE</arg>
 <arg>${port}</arg>
 <doc>Writes data into the port.</doc>
-<status status="PASS" starttime="20220928 14:51:04.232" endtime="20220928 14:51:04.233"/>
+<status status="PASS" starttime="20221031 12:00:06.991" endtime="20221031 12:00:06.991"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.231" endtime="20220928 14:51:04.233"/>
+<status status="PASS" starttime="20221031 12:00:06.990" endtime="20221031 12:00:06.991"/>
 </kw>
 <kw name="Expect And Timeout" library="Serial">
 <arg>No action assigned</arg>
@@ -179,37 +180,37 @@ Medium Button 1 Press</msg>
 <arg>NONE</arg>
 <arg>${port}</arg>
 <doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
-<msg timestamp="20220928 14:51:04.243" level="INFO">${read} = 
+<msg timestamp="20221031 12:00:07.003" level="INFO">${read} = 
 ConnID for Button Press: 2
 &gt; btn 2 s
 Short Button 2 Press
  - No action assigned</msg>
-<status status="PASS" starttime="20220928 14:51:04.234" endtime="20220928 14:51:04.243"/>
+<status status="PASS" starttime="20221031 12:00:06.992" endtime="20221031 12:00:07.003"/>
 </kw>
 <kw name="Log Serial Traffic" library="Serial">
 <arg>${read}</arg>
 <kw name="Log To Console" library="BuiltIn">
 <arg>\n</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.244" endtime="20220928 14:51:04.244"/>
+<status status="PASS" starttime="20221031 12:00:07.004" endtime="20221031 12:00:07.005"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>${data}</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.244" endtime="20220928 14:51:04.245"/>
+<status status="PASS" starttime="20221031 12:00:07.005" endtime="20221031 12:00:07.005"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>\n</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.245" endtime="20220928 14:51:04.245"/>
+<status status="PASS" starttime="20221031 12:00:07.005" endtime="20221031 12:00:07.005"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.243" endtime="20220928 14:51:04.246"/>
+<status status="PASS" starttime="20221031 12:00:07.003" endtime="20221031 12:00:07.006"/>
 </kw>
 <timeout value="5 seconds"/>
-<status status="PASS" starttime="20220928 14:51:04.233" endtime="20220928 14:51:04.246"/>
+<status status="PASS" starttime="20221031 12:00:06.992" endtime="20221031 12:00:07.006"/>
 </kw>
 <timeout value="30 seconds"/>
-<status status="PASS" starttime="20220928 14:51:04.230" endtime="20220928 14:51:04.246"/>
+<status status="PASS" starttime="20221031 12:00:06.990" endtime="20221031 12:00:07.006"/>
 </test>
 <test id="s1-t4" name="Clearing Bond Info Test" line="30">
 <kw name="Send" library="Serial">
@@ -221,9 +222,9 @@ Short Button 2 Press
 <arg>NONE</arg>
 <arg>${port}</arg>
 <doc>Writes data into the port.</doc>
-<status status="PASS" starttime="20220928 14:51:04.248" endtime="20220928 14:51:04.248"/>
+<status status="PASS" starttime="20221031 12:00:07.008" endtime="20221031 12:00:07.008"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.247" endtime="20220928 14:51:04.249"/>
+<status status="PASS" starttime="20221031 12:00:07.007" endtime="20221031 12:00:07.008"/>
 </kw>
 <kw name="Expect And Timeout" library="Serial">
 <arg>Clear bonding info</arg>
@@ -236,45 +237,45 @@ Short Button 2 Press
 <arg>NONE</arg>
 <arg>${port}</arg>
 <doc>Read until a termination sequence is found, size exceeded or timeout.</doc>
-<msg timestamp="20220928 14:51:04.271" level="INFO">${read} = 
+<msg timestamp="20221031 12:00:07.030" level="INFO">${read} = 
 &gt; btn 1 l
 Long Button 1 Press
 Clear bonding info</msg>
-<status status="PASS" starttime="20220928 14:51:04.250" endtime="20220928 14:51:04.271"/>
+<status status="PASS" starttime="20221031 12:00:07.009" endtime="20221031 12:00:07.030"/>
 </kw>
 <kw name="Log Serial Traffic" library="Serial">
 <arg>${read}</arg>
 <kw name="Log To Console" library="BuiltIn">
 <arg>\n</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.271" endtime="20220928 14:51:04.272"/>
+<status status="PASS" starttime="20221031 12:00:07.031" endtime="20221031 12:00:07.031"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>${data}</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.272" endtime="20220928 14:51:04.272"/>
+<status status="PASS" starttime="20221031 12:00:07.031" endtime="20221031 12:00:07.032"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>\n</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20220928 14:51:04.273" endtime="20220928 14:51:04.273"/>
+<status status="PASS" starttime="20221031 12:00:07.032" endtime="20221031 12:00:07.032"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.271" endtime="20220928 14:51:04.273"/>
+<status status="PASS" starttime="20221031 12:00:07.030" endtime="20221031 12:00:07.032"/>
 </kw>
 <timeout value="10 seconds"/>
-<status status="PASS" starttime="20220928 14:51:04.249" endtime="20220928 14:51:04.274"/>
+<status status="PASS" starttime="20221031 12:00:07.008" endtime="20221031 12:00:07.032"/>
 </kw>
 <timeout value="30 seconds"/>
-<status status="PASS" starttime="20220928 14:51:04.246" endtime="20220928 14:51:04.274"/>
+<status status="PASS" starttime="20221031 12:00:07.006" endtime="20221031 12:00:07.033"/>
 </test>
 <kw name="Close Serial Port" library="Serial" type="TEARDOWN">
 <kw name="Delete All Ports" library="SerialLibrary">
 <doc>Deletes all ports maintained in the library instance.</doc>
-<status status="PASS" starttime="20220928 14:51:04.275" endtime="20220928 14:51:04.283"/>
+<status status="PASS" starttime="20221031 12:00:07.034" endtime="20221031 12:00:07.038"/>
 </kw>
-<status status="PASS" starttime="20220928 14:51:04.275" endtime="20220928 14:51:04.283"/>
+<status status="PASS" starttime="20221031 12:00:07.033" endtime="20221031 12:00:07.038"/>
 </kw>
-<status status="PASS" starttime="20220928 14:50:59.090" endtime="20220928 14:51:04.283"/>
+<status status="PASS" starttime="20221031 12:00:01.885" endtime="20221031 12:00:07.038"/>
 </suite>
 <statistics>
 <total>
