@@ -15,14 +15,14 @@ Stop Scanning Test
     # inital sleep to allow device time to boot up after programming
     Sleep    5s
     Serial.Send    btn 1 s\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout     >>> Scanning stopped <<<    5s    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout     >>> Scanning stopped <<<    5    ${SERIAL_PORT_1}
 
 Connection ID Test
     [Timeout]    30s
     Serial.Send    btn 1 m\n    ${SERIAL_PORT_1}
-    Serial.Expect and timeout    ConnID for Button Press:    5s    ${SERIAL_PORT_1}
+    Serial.Expect and timeout    ConnID for Button Press:    5    ${SERIAL_PORT_1}
 
 Clear Resolving List Test
     [Timeout]    30s
     Serial.Send    btn 1 l\n    ${SERIAL_PORT_1}
-    serial.Expect And Timeout    Clear resolving list status 0x00    5s    ${SERIAL_PORT_1}
+    serial.Expect And Timeout    Clear resolving list status 0x00    5    ${SERIAL_PORT_1}
