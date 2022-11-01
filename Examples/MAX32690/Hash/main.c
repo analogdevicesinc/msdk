@@ -92,7 +92,7 @@ void ascii_to_byte(const char *src, char *dst, int len)
 
 int Test_Hash(int asynchronous)
 {
-	int ret;
+    int ret;
     printf(asynchronous ? "Test Hash Async\n" : "Test Hash Sync\n");
 
     unsigned char sha256_msg[] =

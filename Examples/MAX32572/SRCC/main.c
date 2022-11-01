@@ -135,8 +135,8 @@ void test_function(void)
     unsigned int seed = 0;
 
     // Configure the SPIXR
-    if(E_NO_ERROR != setup()) {
-    	fail += 1;
+    if (E_NO_ERROR != setup()) {
+        fail += 1;
     }
 
     // Initialize & write pseudo-random data to be written to the RAM

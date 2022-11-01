@@ -127,8 +127,8 @@ int main(void)
     // Configure the SPIXR
     printf("\nSetting up the SPIXR\n");
 
-    if(E_NO_ERROR != setup()) {
-    	fail += 1;
+    if (E_NO_ERROR != setup()) {
+        fail += 1;
     }
 
     // Initialize & write pseudo-random data to be written to the RAM

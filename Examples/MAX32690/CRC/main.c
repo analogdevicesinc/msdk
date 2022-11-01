@@ -79,7 +79,7 @@ int Test_Result(int result)
 
 void Test_CRC(int asynchronous)
 {
-	int ret;
+    int ret;
     uint32_t array[101];
     int i;
 
@@ -126,7 +126,7 @@ void Test_CRC(int asynchronous)
 // *****************************************************************************
 int main(void)
 {
-	int fail = 0;
+    int fail = 0;
     printf("\n************ CRC Example ***********\n");
 
     fail += Test_CRC(0);

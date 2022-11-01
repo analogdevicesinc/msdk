@@ -70,7 +70,7 @@
 #define I2C_SLAVE_ADDR (0x51)
 #define I2C_BYTES 255
 
-typedef enum { FAILED = -1, PASSED = 0} test_t;
+typedef enum { FAILED = -1, PASSED = 0 } test_t;
 
 /***** Globals *****/
 static uint8_t Stxdata[I2C_BYTES];

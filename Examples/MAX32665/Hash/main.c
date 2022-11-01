@@ -54,8 +54,7 @@ int Test_Result(int result)
     if (result) {
         printf(" * Failed *\n\n");
         return -1;
-    }
-    else {
+    } else {
         printf("   Passed  \n\n");
         return 0;
     }
@@ -77,7 +76,7 @@ void ascii_to_byte(const char *src, char *dst, int len)
 
 int Test_Hash(void)
 {
-	int ret;
+    int ret;
     printf("Test Hash\n");
 
     unsigned char sha256_msg[] =

@@ -80,7 +80,7 @@ int Test_Result(int result)
 
 int Test_CRC(int asynchronous)
 {
-	int ret;
+    int ret;
     uint32_t array[101];
     int i;
 

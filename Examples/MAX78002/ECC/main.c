@@ -184,7 +184,6 @@ int main(void)
            test_fail ? "FAIL!" : "Ok");
     printf("Example Complete\n");
 
-
     if (test_fail == 0) {
         printf("\nExample Succeeded\n");
         return 0;
