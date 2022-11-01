@@ -9,7 +9,7 @@ Suite Teardown     Serial.Close Serial Port
 *** Variables ***
 ${SERIAL_PORT_1}    /dev/ttyUSB0
 ${SERIAL_PORT_2}  /dev/ttyUSB1
-${VERBOSE}    1
+
 
 *** test cases ***
 

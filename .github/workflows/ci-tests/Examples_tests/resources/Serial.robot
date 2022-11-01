@@ -4,7 +4,7 @@ Library    SerialLibrary      encoding=ascii
 Library    String
 
 *** Variables ***
-${is_verbose}   ${VERBOSE}
+# none for now
 
 *** Keywords ***
 Open Serial Port
@@ -55,7 +55,7 @@ Expect And Timeout
     [Timeout]    ${timeout}
     ${EMPTY}=    Set Variable    ""
     Log To Console    \n
-    WHILE    True    limit=300000
+    WHILE    True    limit=500000
         ${source}=    Read Until   NONE    NONE    NONE    ${port}
         Log To Console    ${source}
         ${contains}=    Run Keyword And Return Status    Should Contain    ${source}    ${data}

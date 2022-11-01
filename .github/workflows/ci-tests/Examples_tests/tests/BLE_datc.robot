@@ -7,7 +7,7 @@ Suite Teardown     Serial.Close Serial Port
 
 *** Variables ***
 ${SERIAL_PORT_1}    /dev/ttyUSB0
-${VERBOSE}     None
+
 
 *** test cases ***
 Stop Scanning Test

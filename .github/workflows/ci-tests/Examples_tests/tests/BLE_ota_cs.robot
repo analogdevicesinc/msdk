@@ -9,8 +9,6 @@ Suite Teardown     Serial.Close Serial Port
 ${SERIAL_PORT_1}  /dev/ttyUSB0
 ${SERIAL_PORT_2}  /dev/ttyUSB1
 
-${VERBOSE}     None
-
 *** test cases ***
 Original Firmware Test
     [Timeout]    30s

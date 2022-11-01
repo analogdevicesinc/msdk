@@ -7,7 +7,7 @@ Suite Teardown     Serial.Close Serial Port
 
 *** Variables ***
 ${SERIAL_PORT_1}    None
-${VERBOSE}     None
+
 
 *** test cases ***
 Button Press Tests

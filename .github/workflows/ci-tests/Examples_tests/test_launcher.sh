@@ -19,14 +19,11 @@ DUT_NAME_LOWER=NONE
 DUT_ID=0
 DUT_SERIAL_PORT=0
 
-
-export TEST_BOARD=EvKit_V1
-export EXAMPLE_TEST_PATH=$(pwd)
+EXAMPLE_TEST_PATH=$(pwd)
 cd ../../../../
-export MSDK_DIR=$(pwd)
-export VERBOSE_TEST=1
-export failedTestList=" "
-export numOfFailedTests=0
+MSDK_DIR=$(pwd)
+failedTestList=" "
+numOfFailedTests=0
 
 #****************************************** Change this when testing locally **************************
 
@@ -111,7 +108,7 @@ function run_notConntectedTest() {
     # do not let a single failed test stop the testing of the rest
     set +e
     #runs desired test
-    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/$PROJECT_NAME -v VERBOSE:$VERBOSE_TEST -v SERIAL_PORT_1:$DUT_SERIAL_PORT $PROJECT_NAME.robot
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/$PROJECT_NAME -v SERIAL_PORT_1:$DUT_SERIAL_PORT $PROJECT_NAME.robot
     let "testResult=$?"
     if [ "$testResult" -ne "0" ]; then
         # update failed test count
@@ -238,15 +235,15 @@ for i in ${!dut_list[@]}; do
                 ;;
 
             "BLE_dats")
-              #  run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_mcs")
-             #   run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_fit")
-              #  run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_fcc")
@@ -257,11 +254,11 @@ for i in ${!dut_list[@]}; do
                 ;;
 
             "BLE_FreeRTOS")
-              #  run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_otac")
-              #  run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_otas")
@@ -308,7 +305,7 @@ for i in ${!dut_list[@]}; do
     cd $EXAMPLE_TEST_PATH/tests
     # runs desired test
     set +e
-    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v VERBOSE:$VERBOSE_TEST -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot
     let "testResult=$?"
     if [ "$testResult" -ne "0" ]; then
         # update failed test count
@@ -354,7 +351,7 @@ for i in ${!dut_list[@]}; do
     set +e
     # runs desired test
     cd $EXAMPLE_TEST_PATH/tests
-    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v VERBOSE:$VERBOSE_TEST -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot
     let "testResult=$?"
     if [ "$testResult" -ne "0" ]; then
         # update failed test count
