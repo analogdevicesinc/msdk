@@ -35,6 +35,7 @@ Write Secure Characteristic Test
 
 Phy Switching Test 
     [Timeout]     30s
+    sleep    3
     Serial.send    btn 2 s\n    ${SERIAL_PORT_1}
     Serial.Expect And Timeout    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_1}    
 

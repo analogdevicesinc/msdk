@@ -77,7 +77,8 @@ function flash_with_openocd() {
 }
 # Function accepts parameters:device , CMSIS_DAP_ID_x
 function erase_with_openocd() {
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 0; reset exit" &
+    printf "> Erasing $1 : $2"
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 0;" -c " exit" &
     openocd_dapLink_pid=$!
     # wait for openocd to finish
     wait $openocd_dapLink_pid
@@ -85,7 +86,7 @@ function erase_with_openocd() {
     # erase second bank of larger chips
     if [[ $1 == "max32665" ]]; then
     printf "Erasing second bank of device: $1 with ID:$2"
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 1; reset exit" &
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 1;" -c " exit" &
     openocd_dapLink_pid=$!
     # wait for openocd to finish
     wait $openocd_dapLink_pid
@@ -97,7 +98,7 @@ function run_notConntectedTest() {
     project_marker
     cd $PROJECT_NAME
     set +x
-    echo "> Flashing $PROJECT_NAME"
+    echo "> Flashing $DUT_NAME_UPPER $PROJECT_NAME"
     # make -j8 projects are build in validation build step
     cd build/
     flash_with_openocd $DUT_NAME_LOWER $DUT_ID
@@ -118,13 +119,14 @@ function run_notConntectedTest() {
         failedTestList+="| $PROJECT_NAME ($DUT_NAME_UPPER) "
     fi
     set -e
+  
     #get back to target directory
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
 }
 
 function project_marker() {
     echo "=============================================================================="
-    printf "\r\n$DUT_NAME_UPPER $PROJECT_NAME Flashing Procedure \r\n\r\n"
+    printf "> Start of testing $DUT_NAME_LOWER ($DUT_NAME_UPPER) \r\n> ID:$DUT_ID \r\n> Port:$DUT_SERIAL_PORT \r\n"
 }
 
 #***************************************** Start of test script *************************************
@@ -132,9 +134,12 @@ function project_marker() {
 #remove old robtoframework logs
 cd $EXAMPLE_TEST_PATH/results/
 rm -rf *
-#erase the helper devices so that they are not running an app that might connect
-#to current app under test
+# erase main device
+erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+
 for device  in ${!dut_list[@]}; do
+    #erase the helper devices so that they are not running an app that might connect
+    #to current app under test
     erase_with_openocd ${dut_list[device]} ${dut_list_ID[device]}
     # change advertising name for projects under test to avoid 
     # connections with office devices
@@ -176,17 +181,16 @@ for i in ${!dut_list[@]}; do
     DUT_NAME_UPPER=$(echo ${dut_list[i]} | tr '[:lower:]' '[:upper:]')
     DUT_SERIAL_PORT=/dev/$(ls -la /dev/serial/by-id | grep -n ${dut_list_serial[i]} | rev | cut -b 1-7 | rev)
     DUT_ID=${dut_list_ID[i]}
-    printf "> Now testing $DUT_NAME_LOWER ($DUT_NAME_UPPER) \r\n> ID:$DUT_ID \r\n> Port:$DUT_SERIAL_PORT \r\n"
-
+  
 
     # enter current device under test directory
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
 
     #no filter would support ALL projects not just ble
     project_filter='BLE_'
-    # tests projects
+ 
+    # Run non connected tests
     for dir in ./*/; do
-        #(cd "$dir")
         if [[ "$dir" == *"$project_filter"* ]]; then
 
             export PROJECT_NAME=$(echo "$dir" | tr -d /.)
@@ -194,6 +198,7 @@ for i in ${!dut_list[@]}; do
 
             "BLE_datc")
                 run_notConntectedTest
+                
                 ;;
 
             "BLE_dats")
@@ -244,7 +249,40 @@ for i in ${!dut_list[@]}; do
 
         let projIdx++
 
-    done
+    done # end non connected tests
+
+    # start conencted tests
+
+    # Flash main device with BLE_datc
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
+    printf "> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
+    flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+
+    # flash DUT with BLE_dats
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
+    echo "> Flashing BLE_dats $DUT_NAME_UPP"
+    flash_with_openocd $DUT_NAME_LOWER $DUT_ID
+
+    # Run robot test
+    # give them time to connect
+    sleep 5 # give them time to connect
+    # directory for resuilts logs
+    cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
+    mkdir BLE_dat_cs
+    cd $EXAMPLE_TEST_PATH/tests
+    # runs desired test
+    set +e
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v VERBOSE:$VERBOSE_TEST -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot
+    let "testResult=$?"
+    if [ "$testResult" -ne "0" ]; then
+        # update failed test count
+        let "numOfFailedTests+=$testResult"
+        failedTestList+="| BLE_dat_cs "
+    fi
+    set -e
+
+    # make sure device under test is not left with a running app 
+    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
 
 done
 

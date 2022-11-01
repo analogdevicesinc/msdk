@@ -55,7 +55,7 @@ Expect And Timeout
     [Timeout]    ${timeout}
     ${EMPTY}=    Set Variable    ""
     Log To Console    \n
-    WHILE    True    limit=200000
+    WHILE    True    limit=300000
         ${source}=    Read Until   NONE    NONE    NONE    ${port}
         Log To Console    ${source}
         ${contains}=    Run Keyword And Return Status    Should Contain    ${source}    ${data}
