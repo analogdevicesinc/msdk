@@ -98,8 +98,7 @@ void example1(void)
     if (retval != E_NO_ERROR) {
         printf("Failed MXC_DMA_Init().\n");
         fail += 1;
-    }
-    else {
+    } else {
         flag = 0;
         MXC_DMA_MemCpy(dstdata, srcdata, MAX_SIZE, memCpyComplete);
 

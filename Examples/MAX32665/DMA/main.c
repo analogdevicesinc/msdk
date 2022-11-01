@@ -100,19 +100,18 @@ void example1(void)
     if (retval != E_NO_ERROR) {
         printf("Failed MXC_DMA_Init().\n");
         fail += 1;
-    }
-    else {
-    	flag = 0;
-		MXC_DMA_MemCpy(MXC_DMA0, dstdata, srcdata, MAX_SIZE, memCpyComplete);
-		while (flag == 0) {}
+    } else {
+        flag = 0;
+        MXC_DMA_MemCpy(MXC_DMA0, dstdata, srcdata, MAX_SIZE, memCpyComplete);
+        while (flag == 0) {}
 
-		//Validate
-		if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
-			printf("Data mismatch.\n");
-			fail += 1;
-		} else {
-			printf("Data verified.\n");
-		}
+        //Validate
+        if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
+            printf("Data mismatch.\n");
+            fail += 1;
+        } else {
+            printf("Data verified.\n");
+        }
     }
 
     free(srcdata);

@@ -240,7 +240,7 @@ int multi_block_check(unsigned int width)
 /******************************************************************************/
 int main(void)
 {
-	int fail = 0;
+    int fail = 0;
     mxc_sdhc_cfg_t cfg;
     int result;
 
