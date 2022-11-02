@@ -280,6 +280,11 @@ typedef enum {
 #define MXC_DVS ((mxc_dvs_regs_t *)MXC_BASE_DVS)
 
 /******************************************************************************/
+/*                                                                         DVS*/
+#define MXC_BASE_AESKEY ((uint32_t)0x40005000UL)
+#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
+
+/******************************************************************************/
 /*                                         Trim System Initalization Register */
 #define MXC_BASE_TRIMSIR ((uint32_t)0x40005400UL)
 #define MXC_TRIMSIR ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR)
