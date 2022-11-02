@@ -69,7 +69,7 @@ function flash_with_openocd() {
 }
 # This function accepts a CMSIS device ID as a parameter
 function erase_with_openocd() {
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$TARGET_2_CFG -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $1" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; flash erase_address 0x10004000 0x40000; reset exit" &
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$TARGET_2_CFG -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $1" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;max32xxx mass_erase 0; reset exit" &
     openocd_dapLink_pid=$!
     # wait for openocd to finish
     wait $openocd_dapLink_pid

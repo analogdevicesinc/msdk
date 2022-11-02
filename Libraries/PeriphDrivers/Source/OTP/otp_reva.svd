@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>OTP</name>
+    <description>One-Time Programmable (OTP) Memory Controller.</description>
+    <groupName>OTP</groupName>
+    <baseAddress>0x40041000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>CTRL</name>
+        <description>OTP Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Address of the OTP 32 bit value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+          <field>
+            <name>READ</name>
+            <description>Read Operation. Setting this bit starts a read operation from the OTP.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>no_op</name>
+                <description>No operation.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Initiate program operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>WRITE</name>
+            <description>Program Operation. Setting this bit starts a write operation from the OTP location specified in the ADDR field.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CLKDIV</name>
+        <description>OTP Clock Divide Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>PCLKDIV</name>
+            <description>Clock Divider. The input clock, PCLK, is divided for generating OTP timing signals.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>DIV2</name>
+                <description>Divide by 2</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV4</name>
+                <description>Divide by 4</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV8</name>
+                <description>Divide by 8</description>
+                <value>7</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV16</name>
+                <description>Divide by 16</description>
+                <value>15</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>DIV32</name>
+                <description>Divide by 32</description>
+                <value>31</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SPWE</name>
+            <description>Smart PWE. If programmed value is 1, don't assert PWE.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PD</name>
+            <description>Power Down OTP. OTP controller will generate power up and down signals for control pins.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HCLKDIV</name>
+            <description>Clock Divider. The input clock, HCLK, is divided for generating OTP pwr on and down timing signals.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RDATA</name>
+        <description>GPIO Clear Function Enable Register. Writing a 1 to one or more bits in this register clears the bits in the same positions in GPIO_EN to 0, without affecting other bits in that register.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>OTP Read Data.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>STATUS</name>
+        <description>OTP Status Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>BUSY</name>
+            <description>OTP Busy Flag. This bit indicates whether the OTP controller is working a read or write operation.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FAIL</name>
+            <description>OTP Failed Flag. This bit indicates whether OTP programming has failed. OTP programming fails if the controller accesses a 32 bit location that has not been previously programmed.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UNLOCK1</name>
+            <description>Unlock1 Flag. This bit indicates that 1st password was entered, and the user block is enabled for OTP programming.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UNLOCK3</name>
+            <description>Unlock3 Flag. This bit indicates that 3 words unlock process is complete.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PWR_RDY</name>
+            <description>OTP Power On Status.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WDATA</name>
+        <description>OTP Write Data Register.</description>
+        <addressOffset>0x30</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Write Data.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ACTRL0</name>
+        <description>Access Control for user block.</description>
+        <addressOffset>0x3C</addressOffset>
+        <fields>
+          <field>
+            <name>ADATA</name>
+            <description>User Block Access Control.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ACTRL1</name>
+        <description>Access Control for sys and user block.</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <field>
+            <name>ADATA</name>
+            <description>System Info Block Access Data.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!--OTP: One-Time Programmable Memory -->
+</device>

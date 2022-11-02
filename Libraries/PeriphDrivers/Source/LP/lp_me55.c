@@ -41,8 +41,10 @@ void MXC_LP_EnterSleepMode(void)
 {
     MXC_LP_ClearWakeStatus();
 
+#ifndef __riscv
     // Clear SLEEPDEEP bit
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
+#endif
 
     // Go into Sleep mode and wait for an interrupt to wake the processor
     __WFI();
@@ -55,7 +57,10 @@ void MXC_LP_EnterDeepSleepMode(void)
     // Set SLEEPDEEP bit
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_DEEPSLEEP;
+
+#ifndef __riscv
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+#endif
 
     // Go into Deepsleep mode and wait for an interrupt to wake the processor
     __WFI();
@@ -234,8 +239,8 @@ void MXC_LP_DisableUSBWakeup(void)
 
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
 {
-    if (!(mask & (MXC_F_GCR_PM_NFC_PD | MXC_F_GCR_PM_IBRO_PD | MXC_F_GCR_PM_IPO_PD |
-                  MXC_F_GCR_PM_ISO_PD | MXC_F_GCR_PM_ERFO_PD))) {
+    if (!(mask & (MXC_F_GCR_PM_IBRO_PD | MXC_F_GCR_PM_IPO_PD | MXC_F_GCR_PM_ISO_PD |
+                  MXC_F_GCR_PM_ERFO_PD))) {
         return E_BAD_PARAM;
     }
 
@@ -298,9 +303,14 @@ void MXC_LP_USBFIFOLightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_USBLS_EN;
 }
 
-void MXC_LP_ROMLightSleepEnable(void)
+void MXC_LP_ROM0LightSleepEnable(void)
 {
-    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROMLS_EN;
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROM0LS_EN;
+}
+
+void MXC_LP_ROM1LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROM1LS_EN;
 }
 
 void MXC_LP_SysRam0LightSleepDisable(void)
@@ -343,9 +353,14 @@ void MXC_LP_USBFIFOLightSleepDisable(void)
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_USBLS_EN;
 }
 
-void MXC_LP_ROMLightSleepDisable(void)
+void MXC_LP_ROM0LightSleepDisable(void)
 {
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROMLS_EN;
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROM0LS_EN;
+}
+
+void MXC_LP_ROM1LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROM1LS_EN;
 }
 
 void MXC_LP_SysRam0Shutdown(void)
