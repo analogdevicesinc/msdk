@@ -23135,25 +23135,6 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <description> DMA Request Enable </description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable DMA for this IN endpoint.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable DMA for this IN endpoint.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>FRCDATATOG</name>
        <description> Force In Data - Toggle</description>
        <bitOffset>3</bitOffset>
@@ -23168,25 +23149,6 @@
         <enumeratedValue>
          <name>dontcare</name>
          <description>Toggle data-toggle regardless of ACK. </description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <description> DMA Request Mode Enable </description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>0</name>
-         <description>Enable DMA Request Mode 0.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1</name>
-         <description>Enable DMA Request Mode 1.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -23307,20 +23269,8 @@
        <access>read-write</access>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
        <name>DISNYET</name>
        <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
@@ -23613,16 +23563,10 @@
     </register>
     <register>
      <name>RAMINFO</name>
-     <description>RAM width and DMA hardware information.</description>
+     <description>RAM width information.</description>
      <addressOffset>0x79</addressOffset>
      <size>8</size>
      <fields>
-      <field>
-       <name>DMACHANS</name>
-       <bitOffset>4</bitOffset>
-       <bitWidth>4</bitWidth>
-       <access>read-only</access>
-      </field>
       <field>
        <name>RAMBITS</name>
        <bitOffset>0</bitOffset>
@@ -23645,26 +23589,6 @@
       </field>
       <field>
        <name>RSTS</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EARLYDMA</name>
-     <description>DMA timing control register.</description>
-     <addressOffset>0x7B</addressOffset>
-     <size>8</size>
-     <fields>
-      <field>
-       <name>EDMAIN</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>EDMAOUT</name>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
@@ -23944,12 +23868,6 @@
        <name>VRST_VDDB_N_A</name>
        <description>VRST_VDDB_N_A</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>DMA_INT</name>
-       <description>DMA_INT</description>
-       <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
