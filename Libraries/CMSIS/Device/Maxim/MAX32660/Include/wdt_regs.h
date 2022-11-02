@@ -179,38 +179,18 @@ typedef struct {
 
 #define MXC_F_WDT_CTRL_WDT_EN_POS                      8 /**< CTRL_WDT_EN Position */
 #define MXC_F_WDT_CTRL_WDT_EN                          ((uint32_t)(0x1UL << MXC_F_WDT_CTRL_WDT_EN_POS)) /**< CTRL_WDT_EN Mask */
-#define MXC_V_WDT_CTRL_WDT_EN_DIS                      ((uint32_t)0x0UL) /**< CTRL_WDT_EN_DIS Value */
-#define MXC_S_WDT_CTRL_WDT_EN_DIS                      (MXC_V_WDT_CTRL_WDT_EN_DIS << MXC_F_WDT_CTRL_WDT_EN_POS) /**< CTRL_WDT_EN_DIS Setting */
-#define MXC_V_WDT_CTRL_WDT_EN_EN                       ((uint32_t)0x1UL) /**< CTRL_WDT_EN_EN Value */
-#define MXC_S_WDT_CTRL_WDT_EN_EN                       (MXC_V_WDT_CTRL_WDT_EN_EN << MXC_F_WDT_CTRL_WDT_EN_POS) /**< CTRL_WDT_EN_EN Setting */
 
 #define MXC_F_WDT_CTRL_INT_FLAG_POS                    9 /**< CTRL_INT_FLAG Position */
 #define MXC_F_WDT_CTRL_INT_FLAG                        ((uint32_t)(0x1UL << MXC_F_WDT_CTRL_INT_FLAG_POS)) /**< CTRL_INT_FLAG Mask */
-#define MXC_V_WDT_CTRL_INT_FLAG_INACTIVE               ((uint32_t)0x0UL) /**< CTRL_INT_FLAG_INACTIVE Value */
-#define MXC_S_WDT_CTRL_INT_FLAG_INACTIVE               (MXC_V_WDT_CTRL_INT_FLAG_INACTIVE << MXC_F_WDT_CTRL_INT_FLAG_POS) /**< CTRL_INT_FLAG_INACTIVE Setting */
-#define MXC_V_WDT_CTRL_INT_FLAG_PENDING                ((uint32_t)0x1UL) /**< CTRL_INT_FLAG_PENDING Value */
-#define MXC_S_WDT_CTRL_INT_FLAG_PENDING                (MXC_V_WDT_CTRL_INT_FLAG_PENDING << MXC_F_WDT_CTRL_INT_FLAG_POS) /**< CTRL_INT_FLAG_PENDING Setting */
 
 #define MXC_F_WDT_CTRL_INT_EN_POS                      10 /**< CTRL_INT_EN Position */
 #define MXC_F_WDT_CTRL_INT_EN                          ((uint32_t)(0x1UL << MXC_F_WDT_CTRL_INT_EN_POS)) /**< CTRL_INT_EN Mask */
-#define MXC_V_WDT_CTRL_INT_EN_DIS                      ((uint32_t)0x0UL) /**< CTRL_INT_EN_DIS Value */
-#define MXC_S_WDT_CTRL_INT_EN_DIS                      (MXC_V_WDT_CTRL_INT_EN_DIS << MXC_F_WDT_CTRL_INT_EN_POS) /**< CTRL_INT_EN_DIS Setting */
-#define MXC_V_WDT_CTRL_INT_EN_EN                       ((uint32_t)0x1UL) /**< CTRL_INT_EN_EN Value */
-#define MXC_S_WDT_CTRL_INT_EN_EN                       (MXC_V_WDT_CTRL_INT_EN_EN << MXC_F_WDT_CTRL_INT_EN_POS) /**< CTRL_INT_EN_EN Setting */
 
 #define MXC_F_WDT_CTRL_RST_EN_POS                      11 /**< CTRL_RST_EN Position */
 #define MXC_F_WDT_CTRL_RST_EN                          ((uint32_t)(0x1UL << MXC_F_WDT_CTRL_RST_EN_POS)) /**< CTRL_RST_EN Mask */
-#define MXC_V_WDT_CTRL_RST_EN_DIS                      ((uint32_t)0x0UL) /**< CTRL_RST_EN_DIS Value */
-#define MXC_S_WDT_CTRL_RST_EN_DIS                      (MXC_V_WDT_CTRL_RST_EN_DIS << MXC_F_WDT_CTRL_RST_EN_POS) /**< CTRL_RST_EN_DIS Setting */
-#define MXC_V_WDT_CTRL_RST_EN_EN                       ((uint32_t)0x1UL) /**< CTRL_RST_EN_EN Value */
-#define MXC_S_WDT_CTRL_RST_EN_EN                       (MXC_V_WDT_CTRL_RST_EN_EN << MXC_F_WDT_CTRL_RST_EN_POS) /**< CTRL_RST_EN_EN Setting */
 
 #define MXC_F_WDT_CTRL_RST_FLAG_POS                    31 /**< CTRL_RST_FLAG Position */
 #define MXC_F_WDT_CTRL_RST_FLAG                        ((uint32_t)(0x1UL << MXC_F_WDT_CTRL_RST_FLAG_POS)) /**< CTRL_RST_FLAG Mask */
-#define MXC_V_WDT_CTRL_RST_FLAG_NOEVENT                ((uint32_t)0x0UL) /**< CTRL_RST_FLAG_NOEVENT Value */
-#define MXC_S_WDT_CTRL_RST_FLAG_NOEVENT                (MXC_V_WDT_CTRL_RST_FLAG_NOEVENT << MXC_F_WDT_CTRL_RST_FLAG_POS) /**< CTRL_RST_FLAG_NOEVENT Setting */
-#define MXC_V_WDT_CTRL_RST_FLAG_OCCURRED               ((uint32_t)0x1UL) /**< CTRL_RST_FLAG_OCCURRED Value */
-#define MXC_S_WDT_CTRL_RST_FLAG_OCCURRED               (MXC_V_WDT_CTRL_RST_FLAG_OCCURRED << MXC_F_WDT_CTRL_RST_FLAG_POS) /**< CTRL_RST_FLAG_OCCURRED Setting */
 
 /**@} end of group WDT_CTRL_Register */
 

@@ -125,17 +125,9 @@ typedef struct {
  */
 #define MXC_F_UART_CTRL0_ENABLE_POS                    0 /**< CTRL0_ENABLE Position */
 #define MXC_F_UART_CTRL0_ENABLE                        ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_ENABLE_POS)) /**< CTRL0_ENABLE Mask */
-#define MXC_V_UART_CTRL0_ENABLE_DIS                    ((uint32_t)0x0UL) /**< CTRL0_ENABLE_DIS Value */
-#define MXC_S_UART_CTRL0_ENABLE_DIS                    (MXC_V_UART_CTRL0_ENABLE_DIS << MXC_F_UART_CTRL0_ENABLE_POS) /**< CTRL0_ENABLE_DIS Setting */
-#define MXC_V_UART_CTRL0_ENABLE_EN                     ((uint32_t)0x1UL) /**< CTRL0_ENABLE_EN Value */
-#define MXC_S_UART_CTRL0_ENABLE_EN                     (MXC_V_UART_CTRL0_ENABLE_EN << MXC_F_UART_CTRL0_ENABLE_POS) /**< CTRL0_ENABLE_EN Setting */
 
 #define MXC_F_UART_CTRL0_PARITY_EN_POS                 1 /**< CTRL0_PARITY_EN Position */
 #define MXC_F_UART_CTRL0_PARITY_EN                     ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_PARITY_EN_POS)) /**< CTRL0_PARITY_EN Mask */
-#define MXC_V_UART_CTRL0_PARITY_EN_DIS                 ((uint32_t)0x0UL) /**< CTRL0_PARITY_EN_DIS Value */
-#define MXC_S_UART_CTRL0_PARITY_EN_DIS                 (MXC_V_UART_CTRL0_PARITY_EN_DIS << MXC_F_UART_CTRL0_PARITY_EN_POS) /**< CTRL0_PARITY_EN_DIS Setting */
-#define MXC_V_UART_CTRL0_PARITY_EN_EN                  ((uint32_t)0x1UL) /**< CTRL0_PARITY_EN_EN Value */
-#define MXC_S_UART_CTRL0_PARITY_EN_EN                  (MXC_V_UART_CTRL0_PARITY_EN_EN << MXC_F_UART_CTRL0_PARITY_EN_POS) /**< CTRL0_PARITY_EN_EN Setting */
 
 #define MXC_F_UART_CTRL0_PARITY_MODE_POS               2 /**< CTRL0_PARITY_MODE Position */
 #define MXC_F_UART_CTRL0_PARITY_MODE                   ((uint32_t)(0x3UL << MXC_F_UART_CTRL0_PARITY_MODE_POS)) /**< CTRL0_PARITY_MODE Mask */
@@ -150,10 +142,6 @@ typedef struct {
 
 #define MXC_F_UART_CTRL0_PARITY_LVL_POS                4 /**< CTRL0_PARITY_LVL Position */
 #define MXC_F_UART_CTRL0_PARITY_LVL                    ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_PARITY_LVL_POS)) /**< CTRL0_PARITY_LVL Mask */
-#define MXC_V_UART_CTRL0_PARITY_LVL_1                  ((uint32_t)0x0UL) /**< CTRL0_PARITY_LVL_1 Value */
-#define MXC_S_UART_CTRL0_PARITY_LVL_1                  (MXC_V_UART_CTRL0_PARITY_LVL_1 << MXC_F_UART_CTRL0_PARITY_LVL_POS) /**< CTRL0_PARITY_LVL_1 Setting */
-#define MXC_V_UART_CTRL0_PARITY_LVL_0                  ((uint32_t)0x1UL) /**< CTRL0_PARITY_LVL_0 Value */
-#define MXC_S_UART_CTRL0_PARITY_LVL_0                  (MXC_V_UART_CTRL0_PARITY_LVL_0 << MXC_F_UART_CTRL0_PARITY_LVL_POS) /**< CTRL0_PARITY_LVL_0 Setting */
 
 #define MXC_F_UART_CTRL0_TXFLUSH_POS                   5 /**< CTRL0_TXFLUSH Position */
 #define MXC_F_UART_CTRL0_TXFLUSH                       ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_TXFLUSH_POS)) /**< CTRL0_TXFLUSH Mask */
@@ -163,10 +151,6 @@ typedef struct {
 
 #define MXC_F_UART_CTRL0_BITACC_POS                    7 /**< CTRL0_BITACC Position */
 #define MXC_F_UART_CTRL0_BITACC                        ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_BITACC_POS)) /**< CTRL0_BITACC Mask */
-#define MXC_V_UART_CTRL0_BITACC_FRAME                  ((uint32_t)0x0UL) /**< CTRL0_BITACC_FRAME Value */
-#define MXC_S_UART_CTRL0_BITACC_FRAME                  (MXC_V_UART_CTRL0_BITACC_FRAME << MXC_F_UART_CTRL0_BITACC_POS) /**< CTRL0_BITACC_FRAME Setting */
-#define MXC_V_UART_CTRL0_BITACC_BIT                    ((uint32_t)0x1UL) /**< CTRL0_BITACC_BIT Value */
-#define MXC_S_UART_CTRL0_BITACC_BIT                    (MXC_V_UART_CTRL0_BITACC_BIT << MXC_F_UART_CTRL0_BITACC_POS) /**< CTRL0_BITACC_BIT Setting */
 
 #define MXC_F_UART_CTRL0_SIZE_POS                      8 /**< CTRL0_SIZE Position */
 #define MXC_F_UART_CTRL0_SIZE                          ((uint32_t)(0x3UL << MXC_F_UART_CTRL0_SIZE_POS)) /**< CTRL0_SIZE Mask */
@@ -181,45 +165,21 @@ typedef struct {
 
 #define MXC_F_UART_CTRL0_STOP_POS                      10 /**< CTRL0_STOP Position */
 #define MXC_F_UART_CTRL0_STOP                          ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_STOP_POS)) /**< CTRL0_STOP Mask */
-#define MXC_V_UART_CTRL0_STOP_1                        ((uint32_t)0x0UL) /**< CTRL0_STOP_1 Value */
-#define MXC_S_UART_CTRL0_STOP_1                        (MXC_V_UART_CTRL0_STOP_1 << MXC_F_UART_CTRL0_STOP_POS) /**< CTRL0_STOP_1 Setting */
-#define MXC_V_UART_CTRL0_STOP_1_5                      ((uint32_t)0x1UL) /**< CTRL0_STOP_1_5 Value */
-#define MXC_S_UART_CTRL0_STOP_1_5                      (MXC_V_UART_CTRL0_STOP_1_5 << MXC_F_UART_CTRL0_STOP_POS) /**< CTRL0_STOP_1_5 Setting */
 
 #define MXC_F_UART_CTRL0_FLOW_POS                      11 /**< CTRL0_FLOW Position */
 #define MXC_F_UART_CTRL0_FLOW                          ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_FLOW_POS)) /**< CTRL0_FLOW Mask */
-#define MXC_V_UART_CTRL0_FLOW_EN                       ((uint32_t)0x1UL) /**< CTRL0_FLOW_EN Value */
-#define MXC_S_UART_CTRL0_FLOW_EN                       (MXC_V_UART_CTRL0_FLOW_EN << MXC_F_UART_CTRL0_FLOW_POS) /**< CTRL0_FLOW_EN Setting */
-#define MXC_V_UART_CTRL0_FLOW_DIS                      ((uint32_t)0x0UL) /**< CTRL0_FLOW_DIS Value */
-#define MXC_S_UART_CTRL0_FLOW_DIS                      (MXC_V_UART_CTRL0_FLOW_DIS << MXC_F_UART_CTRL0_FLOW_POS) /**< CTRL0_FLOW_DIS Setting */
 
 #define MXC_F_UART_CTRL0_FLOWPOL_POS                   12 /**< CTRL0_FLOWPOL Position */
 #define MXC_F_UART_CTRL0_FLOWPOL                       ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_FLOWPOL_POS)) /**< CTRL0_FLOWPOL Mask */
-#define MXC_V_UART_CTRL0_FLOWPOL_0                     ((uint32_t)0x0UL) /**< CTRL0_FLOWPOL_0 Value */
-#define MXC_S_UART_CTRL0_FLOWPOL_0                     (MXC_V_UART_CTRL0_FLOWPOL_0 << MXC_F_UART_CTRL0_FLOWPOL_POS) /**< CTRL0_FLOWPOL_0 Setting */
-#define MXC_V_UART_CTRL0_FLOWPOL_1                     ((uint32_t)0x1UL) /**< CTRL0_FLOWPOL_1 Value */
-#define MXC_S_UART_CTRL0_FLOWPOL_1                     (MXC_V_UART_CTRL0_FLOWPOL_1 << MXC_F_UART_CTRL0_FLOWPOL_POS) /**< CTRL0_FLOWPOL_1 Setting */
 
 #define MXC_F_UART_CTRL0_NULLMOD_POS                   13 /**< CTRL0_NULLMOD Position */
 #define MXC_F_UART_CTRL0_NULLMOD                       ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_NULLMOD_POS)) /**< CTRL0_NULLMOD Mask */
-#define MXC_V_UART_CTRL0_NULLMOD_DIS                   ((uint32_t)0x0UL) /**< CTRL0_NULLMOD_DIS Value */
-#define MXC_S_UART_CTRL0_NULLMOD_DIS                   (MXC_V_UART_CTRL0_NULLMOD_DIS << MXC_F_UART_CTRL0_NULLMOD_POS) /**< CTRL0_NULLMOD_DIS Setting */
-#define MXC_V_UART_CTRL0_NULLMOD_EN                    ((uint32_t)0x1UL) /**< CTRL0_NULLMOD_EN Value */
-#define MXC_S_UART_CTRL0_NULLMOD_EN                    (MXC_V_UART_CTRL0_NULLMOD_EN << MXC_F_UART_CTRL0_NULLMOD_POS) /**< CTRL0_NULLMOD_EN Setting */
 
 #define MXC_F_UART_CTRL0_BREAK_POS                     14 /**< CTRL0_BREAK Position */
 #define MXC_F_UART_CTRL0_BREAK                         ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_BREAK_POS)) /**< CTRL0_BREAK Mask */
-#define MXC_V_UART_CTRL0_BREAK_DIS                     ((uint32_t)0x0UL) /**< CTRL0_BREAK_DIS Value */
-#define MXC_S_UART_CTRL0_BREAK_DIS                     (MXC_V_UART_CTRL0_BREAK_DIS << MXC_F_UART_CTRL0_BREAK_POS) /**< CTRL0_BREAK_DIS Setting */
-#define MXC_V_UART_CTRL0_BREAK_EN                      ((uint32_t)0x1UL) /**< CTRL0_BREAK_EN Value */
-#define MXC_S_UART_CTRL0_BREAK_EN                      (MXC_V_UART_CTRL0_BREAK_EN << MXC_F_UART_CTRL0_BREAK_POS) /**< CTRL0_BREAK_EN Setting */
 
 #define MXC_F_UART_CTRL0_CLK_SEL_POS                   15 /**< CTRL0_CLK_SEL Position */
 #define MXC_F_UART_CTRL0_CLK_SEL                       ((uint32_t)(0x1UL << MXC_F_UART_CTRL0_CLK_SEL_POS)) /**< CTRL0_CLK_SEL Mask */
-#define MXC_V_UART_CTRL0_CLK_SEL_SYSTEM                ((uint32_t)0x0UL) /**< CTRL0_CLK_SEL_SYSTEM Value */
-#define MXC_S_UART_CTRL0_CLK_SEL_SYSTEM                (MXC_V_UART_CTRL0_CLK_SEL_SYSTEM << MXC_F_UART_CTRL0_CLK_SEL_POS) /**< CTRL0_CLK_SEL_SYSTEM Setting */
-#define MXC_V_UART_CTRL0_CLK_SEL_ALTERNATE             ((uint32_t)0x1UL) /**< CTRL0_CLK_SEL_ALTERNATE Value */
-#define MXC_S_UART_CTRL0_CLK_SEL_ALTERNATE             (MXC_V_UART_CTRL0_CLK_SEL_ALTERNATE << MXC_F_UART_CTRL0_CLK_SEL_POS) /**< CTRL0_CLK_SEL_ALTERNATE Setting */
 
 #define MXC_F_UART_CTRL0_TO_CNT_POS                    16 /**< CTRL0_TO_CNT Position */
 #define MXC_F_UART_CTRL0_TO_CNT                        ((uint32_t)(0xFFUL << MXC_F_UART_CTRL0_TO_CNT_POS)) /**< CTRL0_TO_CNT Mask */
@@ -414,17 +374,9 @@ typedef struct {
  */
 #define MXC_F_UART_DMA_TXDMA_EN_POS                    0 /**< DMA_TXDMA_EN Position */
 #define MXC_F_UART_DMA_TXDMA_EN                        ((uint32_t)(0x1UL << MXC_F_UART_DMA_TXDMA_EN_POS)) /**< DMA_TXDMA_EN Mask */
-#define MXC_V_UART_DMA_TXDMA_EN_DIS                    ((uint32_t)0x0UL) /**< DMA_TXDMA_EN_DIS Value */
-#define MXC_S_UART_DMA_TXDMA_EN_DIS                    (MXC_V_UART_DMA_TXDMA_EN_DIS << MXC_F_UART_DMA_TXDMA_EN_POS) /**< DMA_TXDMA_EN_DIS Setting */
-#define MXC_V_UART_DMA_TXDMA_EN_EN                     ((uint32_t)0x1UL) /**< DMA_TXDMA_EN_EN Value */
-#define MXC_S_UART_DMA_TXDMA_EN_EN                     (MXC_V_UART_DMA_TXDMA_EN_EN << MXC_F_UART_DMA_TXDMA_EN_POS) /**< DMA_TXDMA_EN_EN Setting */
 
 #define MXC_F_UART_DMA_RXDMA_EN_POS                    1 /**< DMA_RXDMA_EN Position */
 #define MXC_F_UART_DMA_RXDMA_EN                        ((uint32_t)(0x1UL << MXC_F_UART_DMA_RXDMA_EN_POS)) /**< DMA_RXDMA_EN Mask */
-#define MXC_V_UART_DMA_RXDMA_EN_DIS                    ((uint32_t)0x0UL) /**< DMA_RXDMA_EN_DIS Value */
-#define MXC_S_UART_DMA_RXDMA_EN_DIS                    (MXC_V_UART_DMA_RXDMA_EN_DIS << MXC_F_UART_DMA_RXDMA_EN_POS) /**< DMA_RXDMA_EN_DIS Setting */
-#define MXC_V_UART_DMA_RXDMA_EN_EN                     ((uint32_t)0x1UL) /**< DMA_RXDMA_EN_EN Value */
-#define MXC_S_UART_DMA_RXDMA_EN_EN                     (MXC_V_UART_DMA_RXDMA_EN_EN << MXC_F_UART_DMA_RXDMA_EN_POS) /**< DMA_RXDMA_EN_EN Setting */
 
 #define MXC_F_UART_DMA_TXDMA_LVL_POS                   8 /**< DMA_TXDMA_LVL Position */
 #define MXC_F_UART_DMA_TXDMA_LVL                       ((uint32_t)(0x3FUL << MXC_F_UART_DMA_TXDMA_LVL_POS)) /**< DMA_TXDMA_LVL Mask */

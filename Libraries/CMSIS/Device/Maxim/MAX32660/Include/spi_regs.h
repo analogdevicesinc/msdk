@@ -138,36 +138,18 @@ typedef struct {
  */
 #define MXC_F_SPI_CTRL0_SPI_EN_POS                     0 /**< CTRL0_SPI_EN Position */
 #define MXC_F_SPI_CTRL0_SPI_EN                         ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_SPI_EN_POS)) /**< CTRL0_SPI_EN Mask */
-#define MXC_V_SPI_CTRL0_SPI_EN_DIS                     ((uint32_t)0x0UL) /**< CTRL0_SPI_EN_DIS Value */
-#define MXC_S_SPI_CTRL0_SPI_EN_DIS                     (MXC_V_SPI_CTRL0_SPI_EN_DIS << MXC_F_SPI_CTRL0_SPI_EN_POS) /**< CTRL0_SPI_EN_DIS Setting */
-#define MXC_V_SPI_CTRL0_SPI_EN_EN                      ((uint32_t)0x1UL) /**< CTRL0_SPI_EN_EN Value */
-#define MXC_S_SPI_CTRL0_SPI_EN_EN                      (MXC_V_SPI_CTRL0_SPI_EN_EN << MXC_F_SPI_CTRL0_SPI_EN_POS) /**< CTRL0_SPI_EN_EN Setting */
 
 #define MXC_F_SPI_CTRL0_MM_EN_POS                      1 /**< CTRL0_MM_EN Position */
 #define MXC_F_SPI_CTRL0_MM_EN                          ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_MM_EN_POS)) /**< CTRL0_MM_EN Mask */
-#define MXC_V_SPI_CTRL0_MM_EN_DIS                      ((uint32_t)0x0UL) /**< CTRL0_MM_EN_DIS Value */
-#define MXC_S_SPI_CTRL0_MM_EN_DIS                      (MXC_V_SPI_CTRL0_MM_EN_DIS << MXC_F_SPI_CTRL0_MM_EN_POS) /**< CTRL0_MM_EN_DIS Setting */
-#define MXC_V_SPI_CTRL0_MM_EN_EN                       ((uint32_t)0x1UL) /**< CTRL0_MM_EN_EN Value */
-#define MXC_S_SPI_CTRL0_MM_EN_EN                       (MXC_V_SPI_CTRL0_MM_EN_EN << MXC_F_SPI_CTRL0_MM_EN_POS) /**< CTRL0_MM_EN_EN Setting */
 
 #define MXC_F_SPI_CTRL0_SS_IO_POS                      4 /**< CTRL0_SS_IO Position */
 #define MXC_F_SPI_CTRL0_SS_IO                          ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_SS_IO_POS)) /**< CTRL0_SS_IO Mask */
-#define MXC_V_SPI_CTRL0_SS_IO_OUTPUT                   ((uint32_t)0x0UL) /**< CTRL0_SS_IO_OUTPUT Value */
-#define MXC_S_SPI_CTRL0_SS_IO_OUTPUT                   (MXC_V_SPI_CTRL0_SS_IO_OUTPUT << MXC_F_SPI_CTRL0_SS_IO_POS) /**< CTRL0_SS_IO_OUTPUT Setting */
-#define MXC_V_SPI_CTRL0_SS_IO_INPUT                    ((uint32_t)0x1UL) /**< CTRL0_SS_IO_INPUT Value */
-#define MXC_S_SPI_CTRL0_SS_IO_INPUT                    (MXC_V_SPI_CTRL0_SS_IO_INPUT << MXC_F_SPI_CTRL0_SS_IO_POS) /**< CTRL0_SS_IO_INPUT Setting */
 
 #define MXC_F_SPI_CTRL0_START_POS                      5 /**< CTRL0_START Position */
 #define MXC_F_SPI_CTRL0_START                          ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_START_POS)) /**< CTRL0_START Mask */
-#define MXC_V_SPI_CTRL0_START_START                    ((uint32_t)0x1UL) /**< CTRL0_START_START Value */
-#define MXC_S_SPI_CTRL0_START_START                    (MXC_V_SPI_CTRL0_START_START << MXC_F_SPI_CTRL0_START_POS) /**< CTRL0_START_START Setting */
 
 #define MXC_F_SPI_CTRL0_SS_CTRL_POS                    8 /**< CTRL0_SS_CTRL Position */
 #define MXC_F_SPI_CTRL0_SS_CTRL                        ((uint32_t)(0x1UL << MXC_F_SPI_CTRL0_SS_CTRL_POS)) /**< CTRL0_SS_CTRL Mask */
-#define MXC_V_SPI_CTRL0_SS_CTRL_DEASSERT               ((uint32_t)0x0UL) /**< CTRL0_SS_CTRL_DEASSERT Value */
-#define MXC_S_SPI_CTRL0_SS_CTRL_DEASSERT               (MXC_V_SPI_CTRL0_SS_CTRL_DEASSERT << MXC_F_SPI_CTRL0_SS_CTRL_POS) /**< CTRL0_SS_CTRL_DEASSERT Setting */
-#define MXC_V_SPI_CTRL0_SS_CTRL_ASSERT                 ((uint32_t)0x1UL) /**< CTRL0_SS_CTRL_ASSERT Value */
-#define MXC_S_SPI_CTRL0_SS_CTRL_ASSERT                 (MXC_V_SPI_CTRL0_SS_CTRL_ASSERT << MXC_F_SPI_CTRL0_SS_CTRL_POS) /**< CTRL0_SS_CTRL_ASSERT Setting */
 
 #define MXC_F_SPI_CTRL0_SS_SEL_POS                     16 /**< CTRL0_SS_SEL Position */
 #define MXC_F_SPI_CTRL0_SS_SEL                         ((uint32_t)(0xFUL << MXC_F_SPI_CTRL0_SS_SEL_POS)) /**< CTRL0_SS_SEL Mask */
@@ -204,17 +186,9 @@ typedef struct {
  */
 #define MXC_F_SPI_CTRL2_CLK_PHA_POS                    0 /**< CTRL2_CLK_PHA Position */
 #define MXC_F_SPI_CTRL2_CLK_PHA                        ((uint32_t)(0x1UL << MXC_F_SPI_CTRL2_CLK_PHA_POS)) /**< CTRL2_CLK_PHA Mask */
-#define MXC_V_SPI_CTRL2_CLK_PHA_RISING_EDGE            ((uint32_t)0x0UL) /**< CTRL2_CLK_PHA_RISING_EDGE Value */
-#define MXC_S_SPI_CTRL2_CLK_PHA_RISING_EDGE            (MXC_V_SPI_CTRL2_CLK_PHA_RISING_EDGE << MXC_F_SPI_CTRL2_CLK_PHA_POS) /**< CTRL2_CLK_PHA_RISING_EDGE Setting */
-#define MXC_V_SPI_CTRL2_CLK_PHA_FALLING_EDGE           ((uint32_t)0x1UL) /**< CTRL2_CLK_PHA_FALLING_EDGE Value */
-#define MXC_S_SPI_CTRL2_CLK_PHA_FALLING_EDGE           (MXC_V_SPI_CTRL2_CLK_PHA_FALLING_EDGE << MXC_F_SPI_CTRL2_CLK_PHA_POS) /**< CTRL2_CLK_PHA_FALLING_EDGE Setting */
 
 #define MXC_F_SPI_CTRL2_CLK_POL_POS                    1 /**< CTRL2_CLK_POL Position */
 #define MXC_F_SPI_CTRL2_CLK_POL                        ((uint32_t)(0x1UL << MXC_F_SPI_CTRL2_CLK_POL_POS)) /**< CTRL2_CLK_POL Mask */
-#define MXC_V_SPI_CTRL2_CLK_POL_NORMAL                 ((uint32_t)0x0UL) /**< CTRL2_CLK_POL_NORMAL Value */
-#define MXC_S_SPI_CTRL2_CLK_POL_NORMAL                 (MXC_V_SPI_CTRL2_CLK_POL_NORMAL << MXC_F_SPI_CTRL2_CLK_POL_POS) /**< CTRL2_CLK_POL_NORMAL Setting */
-#define MXC_V_SPI_CTRL2_CLK_POL_INVERTED               ((uint32_t)0x1UL) /**< CTRL2_CLK_POL_INVERTED Value */
-#define MXC_S_SPI_CTRL2_CLK_POL_INVERTED               (MXC_V_SPI_CTRL2_CLK_POL_INVERTED << MXC_F_SPI_CTRL2_CLK_POL_POS) /**< CTRL2_CLK_POL_INVERTED Setting */
 
 #define MXC_F_SPI_CTRL2_NUM_BITS_POS                   8 /**< CTRL2_NUM_BITS Position */
 #define MXC_F_SPI_CTRL2_NUM_BITS                       ((uint32_t)(0xFUL << MXC_F_SPI_CTRL2_NUM_BITS_POS)) /**< CTRL2_NUM_BITS Mask */
@@ -232,17 +206,9 @@ typedef struct {
 
 #define MXC_F_SPI_CTRL2_THREE_WIRE_POS                 15 /**< CTRL2_THREE_WIRE Position */
 #define MXC_F_SPI_CTRL2_THREE_WIRE                     ((uint32_t)(0x1UL << MXC_F_SPI_CTRL2_THREE_WIRE_POS)) /**< CTRL2_THREE_WIRE Mask */
-#define MXC_V_SPI_CTRL2_THREE_WIRE_DIS                 ((uint32_t)0x0UL) /**< CTRL2_THREE_WIRE_DIS Value */
-#define MXC_S_SPI_CTRL2_THREE_WIRE_DIS                 (MXC_V_SPI_CTRL2_THREE_WIRE_DIS << MXC_F_SPI_CTRL2_THREE_WIRE_POS) /**< CTRL2_THREE_WIRE_DIS Setting */
-#define MXC_V_SPI_CTRL2_THREE_WIRE_EN                  ((uint32_t)0x1UL) /**< CTRL2_THREE_WIRE_EN Value */
-#define MXC_S_SPI_CTRL2_THREE_WIRE_EN                  (MXC_V_SPI_CTRL2_THREE_WIRE_EN << MXC_F_SPI_CTRL2_THREE_WIRE_POS) /**< CTRL2_THREE_WIRE_EN Setting */
 
 #define MXC_F_SPI_CTRL2_SS_POL_POS                     16 /**< CTRL2_SS_POL Position */
 #define MXC_F_SPI_CTRL2_SS_POL                         ((uint32_t)(0x1UL << MXC_F_SPI_CTRL2_SS_POL_POS)) /**< CTRL2_SS_POL Mask */
-#define MXC_V_SPI_CTRL2_SS_POL_SS0_LOW                 ((uint32_t)0x0UL) /**< CTRL2_SS_POL_SS0_LOW Value */
-#define MXC_S_SPI_CTRL2_SS_POL_SS0_LOW                 (MXC_V_SPI_CTRL2_SS_POL_SS0_LOW << MXC_F_SPI_CTRL2_SS_POL_POS) /**< CTRL2_SS_POL_SS0_LOW Setting */
-#define MXC_V_SPI_CTRL2_SS_POL_SS0_HIGH                ((uint32_t)0x1UL) /**< CTRL2_SS_POL_SS0_HIGH Value */
-#define MXC_S_SPI_CTRL2_SS_POL_SS0_HIGH                (MXC_V_SPI_CTRL2_SS_POL_SS0_HIGH << MXC_F_SPI_CTRL2_SS_POL_POS) /**< CTRL2_SS_POL_SS0_HIGH Setting */
 
 /**@} end of group SPI_CTRL2_Register */
 
@@ -301,50 +267,30 @@ typedef struct {
 
 #define MXC_F_SPI_DMA_TX_FIFO_EN_POS                   6 /**< DMA_TX_FIFO_EN Position */
 #define MXC_F_SPI_DMA_TX_FIFO_EN                       ((uint32_t)(0x1UL << MXC_F_SPI_DMA_TX_FIFO_EN_POS)) /**< DMA_TX_FIFO_EN Mask */
-#define MXC_V_SPI_DMA_TX_FIFO_EN_DIS                   ((uint32_t)0x0UL) /**< DMA_TX_FIFO_EN_DIS Value */
-#define MXC_S_SPI_DMA_TX_FIFO_EN_DIS                   (MXC_V_SPI_DMA_TX_FIFO_EN_DIS << MXC_F_SPI_DMA_TX_FIFO_EN_POS) /**< DMA_TX_FIFO_EN_DIS Setting */
-#define MXC_V_SPI_DMA_TX_FIFO_EN_EN                    ((uint32_t)0x1UL) /**< DMA_TX_FIFO_EN_EN Value */
-#define MXC_S_SPI_DMA_TX_FIFO_EN_EN                    (MXC_V_SPI_DMA_TX_FIFO_EN_EN << MXC_F_SPI_DMA_TX_FIFO_EN_POS) /**< DMA_TX_FIFO_EN_EN Setting */
 
 #define MXC_F_SPI_DMA_TX_FIFO_CLEAR_POS                7 /**< DMA_TX_FIFO_CLEAR Position */
 #define MXC_F_SPI_DMA_TX_FIFO_CLEAR                    ((uint32_t)(0x1UL << MXC_F_SPI_DMA_TX_FIFO_CLEAR_POS)) /**< DMA_TX_FIFO_CLEAR Mask */
-#define MXC_V_SPI_DMA_TX_FIFO_CLEAR_CLEAR              ((uint32_t)0x1UL) /**< DMA_TX_FIFO_CLEAR_CLEAR Value */
-#define MXC_S_SPI_DMA_TX_FIFO_CLEAR_CLEAR              (MXC_V_SPI_DMA_TX_FIFO_CLEAR_CLEAR << MXC_F_SPI_DMA_TX_FIFO_CLEAR_POS) /**< DMA_TX_FIFO_CLEAR_CLEAR Setting */
 
 #define MXC_F_SPI_DMA_TX_FIFO_CNT_POS                  8 /**< DMA_TX_FIFO_CNT Position */
 #define MXC_F_SPI_DMA_TX_FIFO_CNT                      ((uint32_t)(0x3FUL << MXC_F_SPI_DMA_TX_FIFO_CNT_POS)) /**< DMA_TX_FIFO_CNT Mask */
 
 #define MXC_F_SPI_DMA_TX_DMA_EN_POS                    15 /**< DMA_TX_DMA_EN Position */
 #define MXC_F_SPI_DMA_TX_DMA_EN                        ((uint32_t)(0x1UL << MXC_F_SPI_DMA_TX_DMA_EN_POS)) /**< DMA_TX_DMA_EN Mask */
-#define MXC_V_SPI_DMA_TX_DMA_EN_DIS                    ((uint32_t)0x0UL) /**< DMA_TX_DMA_EN_DIS Value */
-#define MXC_S_SPI_DMA_TX_DMA_EN_DIS                    (MXC_V_SPI_DMA_TX_DMA_EN_DIS << MXC_F_SPI_DMA_TX_DMA_EN_POS) /**< DMA_TX_DMA_EN_DIS Setting */
-#define MXC_V_SPI_DMA_TX_DMA_EN_EN                     ((uint32_t)0x1UL) /**< DMA_TX_DMA_EN_EN Value */
-#define MXC_S_SPI_DMA_TX_DMA_EN_EN                     (MXC_V_SPI_DMA_TX_DMA_EN_EN << MXC_F_SPI_DMA_TX_DMA_EN_POS) /**< DMA_TX_DMA_EN_EN Setting */
 
 #define MXC_F_SPI_DMA_RX_FIFO_LEVEL_POS                16 /**< DMA_RX_FIFO_LEVEL Position */
 #define MXC_F_SPI_DMA_RX_FIFO_LEVEL                    ((uint32_t)(0x1FUL << MXC_F_SPI_DMA_RX_FIFO_LEVEL_POS)) /**< DMA_RX_FIFO_LEVEL Mask */
 
 #define MXC_F_SPI_DMA_RX_FIFO_EN_POS                   22 /**< DMA_RX_FIFO_EN Position */
 #define MXC_F_SPI_DMA_RX_FIFO_EN                       ((uint32_t)(0x1UL << MXC_F_SPI_DMA_RX_FIFO_EN_POS)) /**< DMA_RX_FIFO_EN Mask */
-#define MXC_V_SPI_DMA_RX_FIFO_EN_DIS                   ((uint32_t)0x0UL) /**< DMA_RX_FIFO_EN_DIS Value */
-#define MXC_S_SPI_DMA_RX_FIFO_EN_DIS                   (MXC_V_SPI_DMA_RX_FIFO_EN_DIS << MXC_F_SPI_DMA_RX_FIFO_EN_POS) /**< DMA_RX_FIFO_EN_DIS Setting */
-#define MXC_V_SPI_DMA_RX_FIFO_EN_EN                    ((uint32_t)0x1UL) /**< DMA_RX_FIFO_EN_EN Value */
-#define MXC_S_SPI_DMA_RX_FIFO_EN_EN                    (MXC_V_SPI_DMA_RX_FIFO_EN_EN << MXC_F_SPI_DMA_RX_FIFO_EN_POS) /**< DMA_RX_FIFO_EN_EN Setting */
 
 #define MXC_F_SPI_DMA_RX_FIFO_CLEAR_POS                23 /**< DMA_RX_FIFO_CLEAR Position */
 #define MXC_F_SPI_DMA_RX_FIFO_CLEAR                    ((uint32_t)(0x1UL << MXC_F_SPI_DMA_RX_FIFO_CLEAR_POS)) /**< DMA_RX_FIFO_CLEAR Mask */
-#define MXC_V_SPI_DMA_RX_FIFO_CLEAR_CLEAR              ((uint32_t)0x1UL) /**< DMA_RX_FIFO_CLEAR_CLEAR Value */
-#define MXC_S_SPI_DMA_RX_FIFO_CLEAR_CLEAR              (MXC_V_SPI_DMA_RX_FIFO_CLEAR_CLEAR << MXC_F_SPI_DMA_RX_FIFO_CLEAR_POS) /**< DMA_RX_FIFO_CLEAR_CLEAR Setting */
 
 #define MXC_F_SPI_DMA_RX_FIFO_CNT_POS                  24 /**< DMA_RX_FIFO_CNT Position */
 #define MXC_F_SPI_DMA_RX_FIFO_CNT                      ((uint32_t)(0x3FUL << MXC_F_SPI_DMA_RX_FIFO_CNT_POS)) /**< DMA_RX_FIFO_CNT Mask */
 
 #define MXC_F_SPI_DMA_RX_DMA_EN_POS                    31 /**< DMA_RX_DMA_EN Position */
 #define MXC_F_SPI_DMA_RX_DMA_EN                        ((uint32_t)(0x1UL << MXC_F_SPI_DMA_RX_DMA_EN_POS)) /**< DMA_RX_DMA_EN Mask */
-#define MXC_V_SPI_DMA_RX_DMA_EN_DIS                    ((uint32_t)0x0UL) /**< DMA_RX_DMA_EN_DIS Value */
-#define MXC_S_SPI_DMA_RX_DMA_EN_DIS                    (MXC_V_SPI_DMA_RX_DMA_EN_DIS << MXC_F_SPI_DMA_RX_DMA_EN_POS) /**< DMA_RX_DMA_EN_DIS Setting */
-#define MXC_V_SPI_DMA_RX_DMA_EN_EN                     ((uint32_t)0x1UL) /**< DMA_RX_DMA_EN_EN Value */
-#define MXC_S_SPI_DMA_RX_DMA_EN_EN                     (MXC_V_SPI_DMA_RX_DMA_EN_EN << MXC_F_SPI_DMA_RX_DMA_EN_POS) /**< DMA_RX_DMA_EN_EN Setting */
 
 /**@} end of group SPI_DMA_Register */
 
@@ -357,63 +303,39 @@ typedef struct {
  */
 #define MXC_F_SPI_INT_FL_TX_LEVEL_POS                  0 /**< INT_FL_TX_LEVEL Position */
 #define MXC_F_SPI_INT_FL_TX_LEVEL                      ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_TX_LEVEL_POS)) /**< INT_FL_TX_LEVEL Mask */
-#define MXC_V_SPI_INT_FL_TX_LEVEL_CLEAR                ((uint32_t)0x1UL) /**< INT_FL_TX_LEVEL_CLEAR Value */
-#define MXC_S_SPI_INT_FL_TX_LEVEL_CLEAR                (MXC_V_SPI_INT_FL_TX_LEVEL_CLEAR << MXC_F_SPI_INT_FL_TX_LEVEL_POS) /**< INT_FL_TX_LEVEL_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_TX_EMPTY_POS                  1 /**< INT_FL_TX_EMPTY Position */
 #define MXC_F_SPI_INT_FL_TX_EMPTY                      ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_TX_EMPTY_POS)) /**< INT_FL_TX_EMPTY Mask */
-#define MXC_V_SPI_INT_FL_TX_EMPTY_CLEAR                ((uint32_t)0x1UL) /**< INT_FL_TX_EMPTY_CLEAR Value */
-#define MXC_S_SPI_INT_FL_TX_EMPTY_CLEAR                (MXC_V_SPI_INT_FL_TX_EMPTY_CLEAR << MXC_F_SPI_INT_FL_TX_EMPTY_POS) /**< INT_FL_TX_EMPTY_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_RX_LEVEL_POS                  2 /**< INT_FL_RX_LEVEL Position */
 #define MXC_F_SPI_INT_FL_RX_LEVEL                      ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_RX_LEVEL_POS)) /**< INT_FL_RX_LEVEL Mask */
-#define MXC_V_SPI_INT_FL_RX_LEVEL_CLEAR                ((uint32_t)0x1UL) /**< INT_FL_RX_LEVEL_CLEAR Value */
-#define MXC_S_SPI_INT_FL_RX_LEVEL_CLEAR                (MXC_V_SPI_INT_FL_RX_LEVEL_CLEAR << MXC_F_SPI_INT_FL_RX_LEVEL_POS) /**< INT_FL_RX_LEVEL_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_RX_FULL_POS                   3 /**< INT_FL_RX_FULL Position */
 #define MXC_F_SPI_INT_FL_RX_FULL                       ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_RX_FULL_POS)) /**< INT_FL_RX_FULL Mask */
-#define MXC_V_SPI_INT_FL_RX_FULL_CLEAR                 ((uint32_t)0x1UL) /**< INT_FL_RX_FULL_CLEAR Value */
-#define MXC_S_SPI_INT_FL_RX_FULL_CLEAR                 (MXC_V_SPI_INT_FL_RX_FULL_CLEAR << MXC_F_SPI_INT_FL_RX_FULL_POS) /**< INT_FL_RX_FULL_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_SSA_POS                       4 /**< INT_FL_SSA Position */
 #define MXC_F_SPI_INT_FL_SSA                           ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_SSA_POS)) /**< INT_FL_SSA Mask */
-#define MXC_V_SPI_INT_FL_SSA_CLEAR                     ((uint32_t)0x1UL) /**< INT_FL_SSA_CLEAR Value */
-#define MXC_S_SPI_INT_FL_SSA_CLEAR                     (MXC_V_SPI_INT_FL_SSA_CLEAR << MXC_F_SPI_INT_FL_SSA_POS) /**< INT_FL_SSA_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_SSD_POS                       5 /**< INT_FL_SSD Position */
 #define MXC_F_SPI_INT_FL_SSD                           ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_SSD_POS)) /**< INT_FL_SSD Mask */
-#define MXC_V_SPI_INT_FL_SSD_CLEAR                     ((uint32_t)0x1UL) /**< INT_FL_SSD_CLEAR Value */
-#define MXC_S_SPI_INT_FL_SSD_CLEAR                     (MXC_V_SPI_INT_FL_SSD_CLEAR << MXC_F_SPI_INT_FL_SSD_POS) /**< INT_FL_SSD_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_ABORT_POS                     9 /**< INT_FL_ABORT Position */
 #define MXC_F_SPI_INT_FL_ABORT                         ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_ABORT_POS)) /**< INT_FL_ABORT Mask */
-#define MXC_V_SPI_INT_FL_ABORT_CLEAR                   ((uint32_t)0x1UL) /**< INT_FL_ABORT_CLEAR Value */
-#define MXC_S_SPI_INT_FL_ABORT_CLEAR                   (MXC_V_SPI_INT_FL_ABORT_CLEAR << MXC_F_SPI_INT_FL_ABORT_POS) /**< INT_FL_ABORT_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_M_DONE_POS                    11 /**< INT_FL_M_DONE Position */
 #define MXC_F_SPI_INT_FL_M_DONE                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_M_DONE_POS)) /**< INT_FL_M_DONE Mask */
-#define MXC_V_SPI_INT_FL_M_DONE_CLEAR                  ((uint32_t)0x1UL) /**< INT_FL_M_DONE_CLEAR Value */
-#define MXC_S_SPI_INT_FL_M_DONE_CLEAR                  (MXC_V_SPI_INT_FL_M_DONE_CLEAR << MXC_F_SPI_INT_FL_M_DONE_POS) /**< INT_FL_M_DONE_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_TX_OVR_POS                    12 /**< INT_FL_TX_OVR Position */
 #define MXC_F_SPI_INT_FL_TX_OVR                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_TX_OVR_POS)) /**< INT_FL_TX_OVR Mask */
-#define MXC_V_SPI_INT_FL_TX_OVR_CLEAR                  ((uint32_t)0x1UL) /**< INT_FL_TX_OVR_CLEAR Value */
-#define MXC_S_SPI_INT_FL_TX_OVR_CLEAR                  (MXC_V_SPI_INT_FL_TX_OVR_CLEAR << MXC_F_SPI_INT_FL_TX_OVR_POS) /**< INT_FL_TX_OVR_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_TX_UND_POS                    13 /**< INT_FL_TX_UND Position */
 #define MXC_F_SPI_INT_FL_TX_UND                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_TX_UND_POS)) /**< INT_FL_TX_UND Mask */
-#define MXC_V_SPI_INT_FL_TX_UND_CLEAR                  ((uint32_t)0x1UL) /**< INT_FL_TX_UND_CLEAR Value */
-#define MXC_S_SPI_INT_FL_TX_UND_CLEAR                  (MXC_V_SPI_INT_FL_TX_UND_CLEAR << MXC_F_SPI_INT_FL_TX_UND_POS) /**< INT_FL_TX_UND_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_RX_OVR_POS                    14 /**< INT_FL_RX_OVR Position */
 #define MXC_F_SPI_INT_FL_RX_OVR                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_RX_OVR_POS)) /**< INT_FL_RX_OVR Mask */
-#define MXC_V_SPI_INT_FL_RX_OVR_CLEAR                  ((uint32_t)0x1UL) /**< INT_FL_RX_OVR_CLEAR Value */
-#define MXC_S_SPI_INT_FL_RX_OVR_CLEAR                  (MXC_V_SPI_INT_FL_RX_OVR_CLEAR << MXC_F_SPI_INT_FL_RX_OVR_POS) /**< INT_FL_RX_OVR_CLEAR Setting */
 
 #define MXC_F_SPI_INT_FL_RX_UND_POS                    15 /**< INT_FL_RX_UND Position */
 #define MXC_F_SPI_INT_FL_RX_UND                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_FL_RX_UND_POS)) /**< INT_FL_RX_UND Mask */
-#define MXC_V_SPI_INT_FL_RX_UND_CLEAR                  ((uint32_t)0x1UL) /**< INT_FL_RX_UND_CLEAR Value */
-#define MXC_S_SPI_INT_FL_RX_UND_CLEAR                  (MXC_V_SPI_INT_FL_RX_UND_CLEAR << MXC_F_SPI_INT_FL_RX_UND_POS) /**< INT_FL_RX_UND_CLEAR Setting */
 
 /**@} end of group SPI_INT_FL_Register */
 
@@ -425,94 +347,42 @@ typedef struct {
  */
 #define MXC_F_SPI_INT_EN_TX_LEVEL_POS                  0 /**< INT_EN_TX_LEVEL Position */
 #define MXC_F_SPI_INT_EN_TX_LEVEL                      ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_TX_LEVEL_POS)) /**< INT_EN_TX_LEVEL Mask */
-#define MXC_V_SPI_INT_EN_TX_LEVEL_DIS                  ((uint32_t)0x0UL) /**< INT_EN_TX_LEVEL_DIS Value */
-#define MXC_S_SPI_INT_EN_TX_LEVEL_DIS                  (MXC_V_SPI_INT_EN_TX_LEVEL_DIS << MXC_F_SPI_INT_EN_TX_LEVEL_POS) /**< INT_EN_TX_LEVEL_DIS Setting */
-#define MXC_V_SPI_INT_EN_TX_LEVEL_EN                   ((uint32_t)0x1UL) /**< INT_EN_TX_LEVEL_EN Value */
-#define MXC_S_SPI_INT_EN_TX_LEVEL_EN                   (MXC_V_SPI_INT_EN_TX_LEVEL_EN << MXC_F_SPI_INT_EN_TX_LEVEL_POS) /**< INT_EN_TX_LEVEL_EN Setting */
 
 #define MXC_F_SPI_INT_EN_TX_EMPTY_POS                  1 /**< INT_EN_TX_EMPTY Position */
 #define MXC_F_SPI_INT_EN_TX_EMPTY                      ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_TX_EMPTY_POS)) /**< INT_EN_TX_EMPTY Mask */
-#define MXC_V_SPI_INT_EN_TX_EMPTY_DIS                  ((uint32_t)0x0UL) /**< INT_EN_TX_EMPTY_DIS Value */
-#define MXC_S_SPI_INT_EN_TX_EMPTY_DIS                  (MXC_V_SPI_INT_EN_TX_EMPTY_DIS << MXC_F_SPI_INT_EN_TX_EMPTY_POS) /**< INT_EN_TX_EMPTY_DIS Setting */
-#define MXC_V_SPI_INT_EN_TX_EMPTY_EN                   ((uint32_t)0x1UL) /**< INT_EN_TX_EMPTY_EN Value */
-#define MXC_S_SPI_INT_EN_TX_EMPTY_EN                   (MXC_V_SPI_INT_EN_TX_EMPTY_EN << MXC_F_SPI_INT_EN_TX_EMPTY_POS) /**< INT_EN_TX_EMPTY_EN Setting */
 
 #define MXC_F_SPI_INT_EN_RX_LEVEL_POS                  2 /**< INT_EN_RX_LEVEL Position */
 #define MXC_F_SPI_INT_EN_RX_LEVEL                      ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_RX_LEVEL_POS)) /**< INT_EN_RX_LEVEL Mask */
-#define MXC_V_SPI_INT_EN_RX_LEVEL_DIS                  ((uint32_t)0x0UL) /**< INT_EN_RX_LEVEL_DIS Value */
-#define MXC_S_SPI_INT_EN_RX_LEVEL_DIS                  (MXC_V_SPI_INT_EN_RX_LEVEL_DIS << MXC_F_SPI_INT_EN_RX_LEVEL_POS) /**< INT_EN_RX_LEVEL_DIS Setting */
-#define MXC_V_SPI_INT_EN_RX_LEVEL_EN                   ((uint32_t)0x1UL) /**< INT_EN_RX_LEVEL_EN Value */
-#define MXC_S_SPI_INT_EN_RX_LEVEL_EN                   (MXC_V_SPI_INT_EN_RX_LEVEL_EN << MXC_F_SPI_INT_EN_RX_LEVEL_POS) /**< INT_EN_RX_LEVEL_EN Setting */
 
 #define MXC_F_SPI_INT_EN_RX_FULL_POS                   3 /**< INT_EN_RX_FULL Position */
 #define MXC_F_SPI_INT_EN_RX_FULL                       ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_RX_FULL_POS)) /**< INT_EN_RX_FULL Mask */
-#define MXC_V_SPI_INT_EN_RX_FULL_DIS                   ((uint32_t)0x0UL) /**< INT_EN_RX_FULL_DIS Value */
-#define MXC_S_SPI_INT_EN_RX_FULL_DIS                   (MXC_V_SPI_INT_EN_RX_FULL_DIS << MXC_F_SPI_INT_EN_RX_FULL_POS) /**< INT_EN_RX_FULL_DIS Setting */
-#define MXC_V_SPI_INT_EN_RX_FULL_EN                    ((uint32_t)0x1UL) /**< INT_EN_RX_FULL_EN Value */
-#define MXC_S_SPI_INT_EN_RX_FULL_EN                    (MXC_V_SPI_INT_EN_RX_FULL_EN << MXC_F_SPI_INT_EN_RX_FULL_POS) /**< INT_EN_RX_FULL_EN Setting */
 
 #define MXC_F_SPI_INT_EN_SSA_POS                       4 /**< INT_EN_SSA Position */
 #define MXC_F_SPI_INT_EN_SSA                           ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_SSA_POS)) /**< INT_EN_SSA Mask */
-#define MXC_V_SPI_INT_EN_SSA_DIS                       ((uint32_t)0x0UL) /**< INT_EN_SSA_DIS Value */
-#define MXC_S_SPI_INT_EN_SSA_DIS                       (MXC_V_SPI_INT_EN_SSA_DIS << MXC_F_SPI_INT_EN_SSA_POS) /**< INT_EN_SSA_DIS Setting */
-#define MXC_V_SPI_INT_EN_SSA_EN                        ((uint32_t)0x1UL) /**< INT_EN_SSA_EN Value */
-#define MXC_S_SPI_INT_EN_SSA_EN                        (MXC_V_SPI_INT_EN_SSA_EN << MXC_F_SPI_INT_EN_SSA_POS) /**< INT_EN_SSA_EN Setting */
 
 #define MXC_F_SPI_INT_EN_SSD_POS                       5 /**< INT_EN_SSD Position */
 #define MXC_F_SPI_INT_EN_SSD                           ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_SSD_POS)) /**< INT_EN_SSD Mask */
-#define MXC_V_SPI_INT_EN_SSD_DIS                       ((uint32_t)0x0UL) /**< INT_EN_SSD_DIS Value */
-#define MXC_S_SPI_INT_EN_SSD_DIS                       (MXC_V_SPI_INT_EN_SSD_DIS << MXC_F_SPI_INT_EN_SSD_POS) /**< INT_EN_SSD_DIS Setting */
-#define MXC_V_SPI_INT_EN_SSD_EN                        ((uint32_t)0x1UL) /**< INT_EN_SSD_EN Value */
-#define MXC_S_SPI_INT_EN_SSD_EN                        (MXC_V_SPI_INT_EN_SSD_EN << MXC_F_SPI_INT_EN_SSD_POS) /**< INT_EN_SSD_EN Setting */
 
 #define MXC_F_SPI_INT_EN_FAULT_POS                     8 /**< INT_EN_FAULT Position */
 #define MXC_F_SPI_INT_EN_FAULT                         ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_FAULT_POS)) /**< INT_EN_FAULT Mask */
-#define MXC_V_SPI_INT_EN_FAULT_DIS                     ((uint32_t)0x0UL) /**< INT_EN_FAULT_DIS Value */
-#define MXC_S_SPI_INT_EN_FAULT_DIS                     (MXC_V_SPI_INT_EN_FAULT_DIS << MXC_F_SPI_INT_EN_FAULT_POS) /**< INT_EN_FAULT_DIS Setting */
-#define MXC_V_SPI_INT_EN_FAULT_EN                      ((uint32_t)0x1UL) /**< INT_EN_FAULT_EN Value */
-#define MXC_S_SPI_INT_EN_FAULT_EN                      (MXC_V_SPI_INT_EN_FAULT_EN << MXC_F_SPI_INT_EN_FAULT_POS) /**< INT_EN_FAULT_EN Setting */
 
 #define MXC_F_SPI_INT_EN_ABORT_POS                     9 /**< INT_EN_ABORT Position */
 #define MXC_F_SPI_INT_EN_ABORT                         ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_ABORT_POS)) /**< INT_EN_ABORT Mask */
-#define MXC_V_SPI_INT_EN_ABORT_DIS                     ((uint32_t)0x0UL) /**< INT_EN_ABORT_DIS Value */
-#define MXC_S_SPI_INT_EN_ABORT_DIS                     (MXC_V_SPI_INT_EN_ABORT_DIS << MXC_F_SPI_INT_EN_ABORT_POS) /**< INT_EN_ABORT_DIS Setting */
-#define MXC_V_SPI_INT_EN_ABORT_EN                      ((uint32_t)0x1UL) /**< INT_EN_ABORT_EN Value */
-#define MXC_S_SPI_INT_EN_ABORT_EN                      (MXC_V_SPI_INT_EN_ABORT_EN << MXC_F_SPI_INT_EN_ABORT_POS) /**< INT_EN_ABORT_EN Setting */
 
 #define MXC_F_SPI_INT_EN_M_DONE_POS                    11 /**< INT_EN_M_DONE Position */
 #define MXC_F_SPI_INT_EN_M_DONE                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_M_DONE_POS)) /**< INT_EN_M_DONE Mask */
-#define MXC_V_SPI_INT_EN_M_DONE_DIS                    ((uint32_t)0x0UL) /**< INT_EN_M_DONE_DIS Value */
-#define MXC_S_SPI_INT_EN_M_DONE_DIS                    (MXC_V_SPI_INT_EN_M_DONE_DIS << MXC_F_SPI_INT_EN_M_DONE_POS) /**< INT_EN_M_DONE_DIS Setting */
-#define MXC_V_SPI_INT_EN_M_DONE_EN                     ((uint32_t)0x1UL) /**< INT_EN_M_DONE_EN Value */
-#define MXC_S_SPI_INT_EN_M_DONE_EN                     (MXC_V_SPI_INT_EN_M_DONE_EN << MXC_F_SPI_INT_EN_M_DONE_POS) /**< INT_EN_M_DONE_EN Setting */
 
 #define MXC_F_SPI_INT_EN_TX_OVR_POS                    12 /**< INT_EN_TX_OVR Position */
 #define MXC_F_SPI_INT_EN_TX_OVR                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_TX_OVR_POS)) /**< INT_EN_TX_OVR Mask */
-#define MXC_V_SPI_INT_EN_TX_OVR_DIS                    ((uint32_t)0x0UL) /**< INT_EN_TX_OVR_DIS Value */
-#define MXC_S_SPI_INT_EN_TX_OVR_DIS                    (MXC_V_SPI_INT_EN_TX_OVR_DIS << MXC_F_SPI_INT_EN_TX_OVR_POS) /**< INT_EN_TX_OVR_DIS Setting */
-#define MXC_V_SPI_INT_EN_TX_OVR_EN                     ((uint32_t)0x1UL) /**< INT_EN_TX_OVR_EN Value */
-#define MXC_S_SPI_INT_EN_TX_OVR_EN                     (MXC_V_SPI_INT_EN_TX_OVR_EN << MXC_F_SPI_INT_EN_TX_OVR_POS) /**< INT_EN_TX_OVR_EN Setting */
 
 #define MXC_F_SPI_INT_EN_TX_UND_POS                    13 /**< INT_EN_TX_UND Position */
 #define MXC_F_SPI_INT_EN_TX_UND                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_TX_UND_POS)) /**< INT_EN_TX_UND Mask */
-#define MXC_V_SPI_INT_EN_TX_UND_DIS                    ((uint32_t)0x0UL) /**< INT_EN_TX_UND_DIS Value */
-#define MXC_S_SPI_INT_EN_TX_UND_DIS                    (MXC_V_SPI_INT_EN_TX_UND_DIS << MXC_F_SPI_INT_EN_TX_UND_POS) /**< INT_EN_TX_UND_DIS Setting */
-#define MXC_V_SPI_INT_EN_TX_UND_EN                     ((uint32_t)0x1UL) /**< INT_EN_TX_UND_EN Value */
-#define MXC_S_SPI_INT_EN_TX_UND_EN                     (MXC_V_SPI_INT_EN_TX_UND_EN << MXC_F_SPI_INT_EN_TX_UND_POS) /**< INT_EN_TX_UND_EN Setting */
 
 #define MXC_F_SPI_INT_EN_RX_OVR_POS                    14 /**< INT_EN_RX_OVR Position */
 #define MXC_F_SPI_INT_EN_RX_OVR                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_RX_OVR_POS)) /**< INT_EN_RX_OVR Mask */
-#define MXC_V_SPI_INT_EN_RX_OVR_DIS                    ((uint32_t)0x0UL) /**< INT_EN_RX_OVR_DIS Value */
-#define MXC_S_SPI_INT_EN_RX_OVR_DIS                    (MXC_V_SPI_INT_EN_RX_OVR_DIS << MXC_F_SPI_INT_EN_RX_OVR_POS) /**< INT_EN_RX_OVR_DIS Setting */
-#define MXC_V_SPI_INT_EN_RX_OVR_EN                     ((uint32_t)0x1UL) /**< INT_EN_RX_OVR_EN Value */
-#define MXC_S_SPI_INT_EN_RX_OVR_EN                     (MXC_V_SPI_INT_EN_RX_OVR_EN << MXC_F_SPI_INT_EN_RX_OVR_POS) /**< INT_EN_RX_OVR_EN Setting */
 
 #define MXC_F_SPI_INT_EN_RX_UND_POS                    15 /**< INT_EN_RX_UND Position */
 #define MXC_F_SPI_INT_EN_RX_UND                        ((uint32_t)(0x1UL << MXC_F_SPI_INT_EN_RX_UND_POS)) /**< INT_EN_RX_UND Mask */
-#define MXC_V_SPI_INT_EN_RX_UND_DIS                    ((uint32_t)0x0UL) /**< INT_EN_RX_UND_DIS Value */
-#define MXC_S_SPI_INT_EN_RX_UND_DIS                    (MXC_V_SPI_INT_EN_RX_UND_DIS << MXC_F_SPI_INT_EN_RX_UND_POS) /**< INT_EN_RX_UND_DIS Setting */
-#define MXC_V_SPI_INT_EN_RX_UND_EN                     ((uint32_t)0x1UL) /**< INT_EN_RX_UND_EN Value */
-#define MXC_S_SPI_INT_EN_RX_UND_EN                     (MXC_V_SPI_INT_EN_RX_UND_EN << MXC_F_SPI_INT_EN_RX_UND_POS) /**< INT_EN_RX_UND_EN Setting */
 
 /**@} end of group SPI_INT_EN_Register */
 
@@ -524,23 +394,15 @@ typedef struct {
  */
 #define MXC_F_SPI_WAKE_FL_TX_LEVEL_POS                 0 /**< WAKE_FL_TX_LEVEL Position */
 #define MXC_F_SPI_WAKE_FL_TX_LEVEL                     ((uint32_t)(0x1UL << MXC_F_SPI_WAKE_FL_TX_LEVEL_POS)) /**< WAKE_FL_TX_LEVEL Mask */
-#define MXC_V_SPI_WAKE_FL_TX_LEVEL_CLEAR               ((uint32_t)0x1UL) /**< WAKE_FL_TX_LEVEL_CLEAR Value */
-#define MXC_S_SPI_WAKE_FL_TX_LEVEL_CLEAR               (MXC_V_SPI_WAKE_FL_TX_LEVEL_CLEAR << MXC_F_SPI_WAKE_FL_TX_LEVEL_POS) /**< WAKE_FL_TX_LEVEL_CLEAR Setting */
 
 #define MXC_F_SPI_WAKE_FL_TX_EMPTY_POS                 1 /**< WAKE_FL_TX_EMPTY Position */
 #define MXC_F_SPI_WAKE_FL_TX_EMPTY                     ((uint32_t)(0x1UL << MXC_F_SPI_WAKE_FL_TX_EMPTY_POS)) /**< WAKE_FL_TX_EMPTY Mask */
-#define MXC_V_SPI_WAKE_FL_TX_EMPTY_CLEAR               ((uint32_t)0x1UL) /**< WAKE_FL_TX_EMPTY_CLEAR Value */
-#define MXC_S_SPI_WAKE_FL_TX_EMPTY_CLEAR               (MXC_V_SPI_WAKE_FL_TX_EMPTY_CLEAR << MXC_F_SPI_WAKE_FL_TX_EMPTY_POS) /**< WAKE_FL_TX_EMPTY_CLEAR Setting */
 
 #define MXC_F_SPI_WAKE_FL_RX_LEVEL_POS                 2 /**< WAKE_FL_RX_LEVEL Position */
 #define MXC_F_SPI_WAKE_FL_RX_LEVEL                     ((uint32_t)(0x1UL << MXC_F_SPI_WAKE_FL_RX_LEVEL_POS)) /**< WAKE_FL_RX_LEVEL Mask */
-#define MXC_V_SPI_WAKE_FL_RX_LEVEL_CLEAR               ((uint32_t)0x1UL) /**< WAKE_FL_RX_LEVEL_CLEAR Value */
-#define MXC_S_SPI_WAKE_FL_RX_LEVEL_CLEAR               (MXC_V_SPI_WAKE_FL_RX_LEVEL_CLEAR << MXC_F_SPI_WAKE_FL_RX_LEVEL_POS) /**< WAKE_FL_RX_LEVEL_CLEAR Setting */
 
 #define MXC_F_SPI_WAKE_FL_RX_FULL_POS                  3 /**< WAKE_FL_RX_FULL Position */
 #define MXC_F_SPI_WAKE_FL_RX_FULL                      ((uint32_t)(0x1UL << MXC_F_SPI_WAKE_FL_RX_FULL_POS)) /**< WAKE_FL_RX_FULL Mask */
-#define MXC_V_SPI_WAKE_FL_RX_FULL_CLEAR                ((uint32_t)0x1UL) /**< WAKE_FL_RX_FULL_CLEAR Value */
-#define MXC_S_SPI_WAKE_FL_RX_FULL_CLEAR                (MXC_V_SPI_WAKE_FL_RX_FULL_CLEAR << MXC_F_SPI_WAKE_FL_RX_FULL_POS) /**< WAKE_FL_RX_FULL_CLEAR Setting */
 
 /**@} end of group SPI_WAKE_FL_Register */
 
@@ -552,31 +414,15 @@ typedef struct {
  */
 #define MXC_F_SPI_WAKE_EN_TX_LEVEL_POS                 0 /**< WAKE_EN_TX_LEVEL Position */
 #define MXC_F_SPI_WAKE_EN_TX_LEVEL                     ((uint32_t)(0x1UL << MXC_F_SPI_WAKE_EN_TX_LEVEL_POS)) /**< WAKE_EN_TX_LEVEL Mask */
-#define MXC_V_SPI_WAKE_EN_TX_LEVEL_DIS                 ((uint32_t)0x0UL) /**< WAKE_EN_TX_LEVEL_DIS Value */
-#define MXC_S_SPI_WAKE_EN_TX_LEVEL_DIS                 (MXC_V_SPI_WAKE_EN_TX_LEVEL_DIS << MXC_F_SPI_WAKE_EN_TX_LEVEL_POS) /**< WAKE_EN_TX_LEVEL_DIS Setting */
-#define MXC_V_SPI_WAKE_EN_TX_LEVEL_EN                  ((uint32_t)0x1UL) /**< WAKE_EN_TX_LEVEL_EN Value */
-#define MXC_S_SPI_WAKE_EN_TX_LEVEL_EN                  (MXC_V_SPI_WAKE_EN_TX_LEVEL_EN << MXC_F_SPI_WAKE_EN_TX_LEVEL_POS) /**< WAKE_EN_TX_LEVEL_EN Setting */
 
 #define MXC_F_SPI_WAKE_EN_TX_EMPTY_POS                 1 /**< WAKE_EN_TX_EMPTY Position */
 #define MXC_F_SPI_WAKE_EN_TX_EMPTY                     ((uint32_t)(0x1UL << MXC_F_SPI_WAKE_EN_TX_EMPTY_POS)) /**< WAKE_EN_TX_EMPTY Mask */
-#define MXC_V_SPI_WAKE_EN_TX_EMPTY_DIS                 ((uint32_t)0x0UL) /**< WAKE_EN_TX_EMPTY_DIS Value */
-#define MXC_S_SPI_WAKE_EN_TX_EMPTY_DIS                 (MXC_V_SPI_WAKE_EN_TX_EMPTY_DIS << MXC_F_SPI_WAKE_EN_TX_EMPTY_POS) /**< WAKE_EN_TX_EMPTY_DIS Setting */
-#define MXC_V_SPI_WAKE_EN_TX_EMPTY_EN                  ((uint32_t)0x1UL) /**< WAKE_EN_TX_EMPTY_EN Value */
-#define MXC_S_SPI_WAKE_EN_TX_EMPTY_EN                  (MXC_V_SPI_WAKE_EN_TX_EMPTY_EN << MXC_F_SPI_WAKE_EN_TX_EMPTY_POS) /**< WAKE_EN_TX_EMPTY_EN Setting */
 
 #define MXC_F_SPI_WAKE_EN_RX_LEVEL_POS                 2 /**< WAKE_EN_RX_LEVEL Position */
 #define MXC_F_SPI_WAKE_EN_RX_LEVEL                     ((uint32_t)(0x1UL << MXC_F_SPI_WAKE_EN_RX_LEVEL_POS)) /**< WAKE_EN_RX_LEVEL Mask */
-#define MXC_V_SPI_WAKE_EN_RX_LEVEL_DIS                 ((uint32_t)0x0UL) /**< WAKE_EN_RX_LEVEL_DIS Value */
-#define MXC_S_SPI_WAKE_EN_RX_LEVEL_DIS                 (MXC_V_SPI_WAKE_EN_RX_LEVEL_DIS << MXC_F_SPI_WAKE_EN_RX_LEVEL_POS) /**< WAKE_EN_RX_LEVEL_DIS Setting */
-#define MXC_V_SPI_WAKE_EN_RX_LEVEL_EN                  ((uint32_t)0x1UL) /**< WAKE_EN_RX_LEVEL_EN Value */
-#define MXC_S_SPI_WAKE_EN_RX_LEVEL_EN                  (MXC_V_SPI_WAKE_EN_RX_LEVEL_EN << MXC_F_SPI_WAKE_EN_RX_LEVEL_POS) /**< WAKE_EN_RX_LEVEL_EN Setting */
 
 #define MXC_F_SPI_WAKE_EN_RX_FULL_POS                  3 /**< WAKE_EN_RX_FULL Position */
 #define MXC_F_SPI_WAKE_EN_RX_FULL                      ((uint32_t)(0x1UL << MXC_F_SPI_WAKE_EN_RX_FULL_POS)) /**< WAKE_EN_RX_FULL Mask */
-#define MXC_V_SPI_WAKE_EN_RX_FULL_DIS                  ((uint32_t)0x0UL) /**< WAKE_EN_RX_FULL_DIS Value */
-#define MXC_S_SPI_WAKE_EN_RX_FULL_DIS                  (MXC_V_SPI_WAKE_EN_RX_FULL_DIS << MXC_F_SPI_WAKE_EN_RX_FULL_POS) /**< WAKE_EN_RX_FULL_DIS Setting */
-#define MXC_V_SPI_WAKE_EN_RX_FULL_EN                   ((uint32_t)0x1UL) /**< WAKE_EN_RX_FULL_EN Value */
-#define MXC_S_SPI_WAKE_EN_RX_FULL_EN                   (MXC_V_SPI_WAKE_EN_RX_FULL_EN << MXC_F_SPI_WAKE_EN_RX_FULL_POS) /**< WAKE_EN_RX_FULL_EN Setting */
 
 /**@} end of group SPI_WAKE_EN_Register */
 
@@ -588,10 +434,6 @@ typedef struct {
  */
 #define MXC_F_SPI_STAT_BUSY_POS                        0 /**< STAT_BUSY Position */
 #define MXC_F_SPI_STAT_BUSY                            ((uint32_t)(0x1UL << MXC_F_SPI_STAT_BUSY_POS)) /**< STAT_BUSY Mask */
-#define MXC_V_SPI_STAT_BUSY_NOT                        ((uint32_t)0x0UL) /**< STAT_BUSY_NOT Value */
-#define MXC_S_SPI_STAT_BUSY_NOT                        (MXC_V_SPI_STAT_BUSY_NOT << MXC_F_SPI_STAT_BUSY_POS) /**< STAT_BUSY_NOT Setting */
-#define MXC_V_SPI_STAT_BUSY_ACTIVE                     ((uint32_t)0x1UL) /**< STAT_BUSY_ACTIVE Value */
-#define MXC_S_SPI_STAT_BUSY_ACTIVE                     (MXC_V_SPI_STAT_BUSY_ACTIVE << MXC_F_SPI_STAT_BUSY_POS) /**< STAT_BUSY_ACTIVE Setting */
 
 /**@} end of group SPI_STAT_Register */
 

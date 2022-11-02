@@ -142,10 +142,6 @@ typedef struct {
  */
 #define MXC_F_FLC_CTRL_WRITE_POS                       0 /**< CTRL_WRITE Position */
 #define MXC_F_FLC_CTRL_WRITE                           ((uint32_t)(0x1UL << MXC_F_FLC_CTRL_WRITE_POS)) /**< CTRL_WRITE Mask */
-#define MXC_V_FLC_CTRL_WRITE_COMPLETE                  ((uint32_t)0x0UL) /**< CTRL_WRITE_COMPLETE Value */
-#define MXC_S_FLC_CTRL_WRITE_COMPLETE                  (MXC_V_FLC_CTRL_WRITE_COMPLETE << MXC_F_FLC_CTRL_WRITE_POS) /**< CTRL_WRITE_COMPLETE Setting */
-#define MXC_V_FLC_CTRL_WRITE_START                     ((uint32_t)0x1UL) /**< CTRL_WRITE_START Value */
-#define MXC_S_FLC_CTRL_WRITE_START                     (MXC_V_FLC_CTRL_WRITE_START << MXC_F_FLC_CTRL_WRITE_POS) /**< CTRL_WRITE_START Setting */
 
 #define MXC_F_FLC_CTRL_MASS_ERASE_POS                  1 /**< CTRL_MASS_ERASE Position */
 #define MXC_F_FLC_CTRL_MASS_ERASE                      ((uint32_t)(0x1UL << MXC_F_FLC_CTRL_MASS_ERASE_POS)) /**< CTRL_MASS_ERASE Mask */
@@ -155,10 +151,6 @@ typedef struct {
 
 #define MXC_F_FLC_CTRL_WIDTH_POS                       4 /**< CTRL_WIDTH Position */
 #define MXC_F_FLC_CTRL_WIDTH                           ((uint32_t)(0x1UL << MXC_F_FLC_CTRL_WIDTH_POS)) /**< CTRL_WIDTH Mask */
-#define MXC_V_FLC_CTRL_WIDTH_SIZE128                   ((uint32_t)0x0UL) /**< CTRL_WIDTH_SIZE128 Value */
-#define MXC_S_FLC_CTRL_WIDTH_SIZE128                   (MXC_V_FLC_CTRL_WIDTH_SIZE128 << MXC_F_FLC_CTRL_WIDTH_POS) /**< CTRL_WIDTH_SIZE128 Setting */
-#define MXC_V_FLC_CTRL_WIDTH_SIZE32                    ((uint32_t)0x1UL) /**< CTRL_WIDTH_SIZE32 Value */
-#define MXC_S_FLC_CTRL_WIDTH_SIZE32                    (MXC_V_FLC_CTRL_WIDTH_SIZE32 << MXC_F_FLC_CTRL_WIDTH_POS) /**< CTRL_WIDTH_SIZE32 Setting */
 
 #define MXC_F_FLC_CTRL_ERASE_CODE_POS                  8 /**< CTRL_ERASE_CODE Position */
 #define MXC_F_FLC_CTRL_ERASE_CODE                      ((uint32_t)(0xFFUL << MXC_F_FLC_CTRL_ERASE_CODE_POS)) /**< CTRL_ERASE_CODE Mask */
@@ -171,10 +163,6 @@ typedef struct {
 
 #define MXC_F_FLC_CTRL_BUSY_POS                        24 /**< CTRL_BUSY Position */
 #define MXC_F_FLC_CTRL_BUSY                            ((uint32_t)(0x1UL << MXC_F_FLC_CTRL_BUSY_POS)) /**< CTRL_BUSY Mask */
-#define MXC_V_FLC_CTRL_BUSY_IDLE                       ((uint32_t)0x0UL) /**< CTRL_BUSY_IDLE Value */
-#define MXC_S_FLC_CTRL_BUSY_IDLE                       (MXC_V_FLC_CTRL_BUSY_IDLE << MXC_F_FLC_CTRL_BUSY_POS) /**< CTRL_BUSY_IDLE Setting */
-#define MXC_V_FLC_CTRL_BUSY_BUSY                       ((uint32_t)0x1UL) /**< CTRL_BUSY_BUSY Value */
-#define MXC_S_FLC_CTRL_BUSY_BUSY                       (MXC_V_FLC_CTRL_BUSY_BUSY << MXC_F_FLC_CTRL_BUSY_POS) /**< CTRL_BUSY_BUSY Setting */
 
 #define MXC_F_FLC_CTRL_LVE_POS                         25 /**< CTRL_LVE Position */
 #define MXC_F_FLC_CTRL_LVE                             ((uint32_t)(0x1UL << MXC_F_FLC_CTRL_LVE_POS)) /**< CTRL_LVE Mask */
@@ -196,24 +184,12 @@ typedef struct {
  */
 #define MXC_F_FLC_INTR_DONE_POS                        0 /**< INTR_DONE Position */
 #define MXC_F_FLC_INTR_DONE                            ((uint32_t)(0x1UL << MXC_F_FLC_INTR_DONE_POS)) /**< INTR_DONE Mask */
-#define MXC_V_FLC_INTR_DONE_INACTIVE                   ((uint32_t)0x0UL) /**< INTR_DONE_INACTIVE Value */
-#define MXC_S_FLC_INTR_DONE_INACTIVE                   (MXC_V_FLC_INTR_DONE_INACTIVE << MXC_F_FLC_INTR_DONE_POS) /**< INTR_DONE_INACTIVE Setting */
-#define MXC_V_FLC_INTR_DONE_PENDING                    ((uint32_t)0x1UL) /**< INTR_DONE_PENDING Value */
-#define MXC_S_FLC_INTR_DONE_PENDING                    (MXC_V_FLC_INTR_DONE_PENDING << MXC_F_FLC_INTR_DONE_POS) /**< INTR_DONE_PENDING Setting */
 
 #define MXC_F_FLC_INTR_ACCESS_FAIL_POS                 1 /**< INTR_ACCESS_FAIL Position */
 #define MXC_F_FLC_INTR_ACCESS_FAIL                     ((uint32_t)(0x1UL << MXC_F_FLC_INTR_ACCESS_FAIL_POS)) /**< INTR_ACCESS_FAIL Mask */
-#define MXC_V_FLC_INTR_ACCESS_FAIL_NOERROR             ((uint32_t)0x0UL) /**< INTR_ACCESS_FAIL_NOERROR Value */
-#define MXC_S_FLC_INTR_ACCESS_FAIL_NOERROR             (MXC_V_FLC_INTR_ACCESS_FAIL_NOERROR << MXC_F_FLC_INTR_ACCESS_FAIL_POS) /**< INTR_ACCESS_FAIL_NOERROR Setting */
-#define MXC_V_FLC_INTR_ACCESS_FAIL_ERROR               ((uint32_t)0x1UL) /**< INTR_ACCESS_FAIL_ERROR Value */
-#define MXC_S_FLC_INTR_ACCESS_FAIL_ERROR               (MXC_V_FLC_INTR_ACCESS_FAIL_ERROR << MXC_F_FLC_INTR_ACCESS_FAIL_POS) /**< INTR_ACCESS_FAIL_ERROR Setting */
 
 #define MXC_F_FLC_INTR_DONE_IE_POS                     8 /**< INTR_DONE_IE Position */
 #define MXC_F_FLC_INTR_DONE_IE                         ((uint32_t)(0x1UL << MXC_F_FLC_INTR_DONE_IE_POS)) /**< INTR_DONE_IE Mask */
-#define MXC_V_FLC_INTR_DONE_IE_DISABLE                 ((uint32_t)0x0UL) /**< INTR_DONE_IE_DISABLE Value */
-#define MXC_S_FLC_INTR_DONE_IE_DISABLE                 (MXC_V_FLC_INTR_DONE_IE_DISABLE << MXC_F_FLC_INTR_DONE_IE_POS) /**< INTR_DONE_IE_DISABLE Setting */
-#define MXC_V_FLC_INTR_DONE_IE_ENABLE                  ((uint32_t)0x1UL) /**< INTR_DONE_IE_ENABLE Value */
-#define MXC_S_FLC_INTR_DONE_IE_ENABLE                  (MXC_V_FLC_INTR_DONE_IE_ENABLE << MXC_F_FLC_INTR_DONE_IE_POS) /**< INTR_DONE_IE_ENABLE Setting */
 
 #define MXC_F_FLC_INTR_ACCESS_FAIL_IE_POS              9 /**< INTR_ACCESS_FAIL_IE Position */
 #define MXC_F_FLC_INTR_ACCESS_FAIL_IE                  ((uint32_t)(0x1UL << MXC_F_FLC_INTR_ACCESS_FAIL_IE_POS)) /**< INTR_ACCESS_FAIL_IE Mask */

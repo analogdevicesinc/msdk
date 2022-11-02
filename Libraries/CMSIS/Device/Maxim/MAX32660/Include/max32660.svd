@@ -1185,511 +1185,91 @@
        <name>DMA</name>
        <description>DMA Reset.</description>
        <bitOffset>0</bitOffset>
-       <enumeratedValues>
-        <name>dma_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>dma_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>WDT0</name>
        <description>Watchdog Timer Reset.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>wdt_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>wdt_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>GPIO0</name>
        <description>GPIO0 Reset. Setting this bit to 1 resets GPIO0 pins to their default states.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>gpio0_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>gpio0_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>TIMER0</name>
        <description>Timer0 Reset. Setting this bit to 1 resets Timer 0 blocks.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>timer0_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>timer0_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>TIMER1</name>
        <description>Timer1 Reset. Setting this bit to 1 resets Timer 1 blocks.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>timer1_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>timer1_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>TIMER2</name>
        <description>Timer2 Reset. Setting this bit to 1 resets Timer 2 blocks.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>timer2_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>timer2_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>UART0</name>
        <description>UART0 Reset. Setting this bit to 1 resets all UART 0 blocks.</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>uart0_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>uart0_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>UART1</name>
        <description>UART1 Reset. Setting this bit to 1 resets all UART 1 blocks.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>uart1_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>uart1_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>SPI0</name>
        <description>SPI0 Reset. Setting this bit to 1 resets all SPI 0 blocks.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>spi0_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>spi0_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>SPI1</name>
        <description>SPI1 Reset. Setting this bit to 1 resets all SPI 1 blocks.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>spi1_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>xpi1_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>I2C0</name>
        <description>I2C0 Reset.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>i2c0_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>i2c0_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>RTC</name>
        <description>Real Time Clock Reset.</description>
        <bitOffset>17</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>rtc_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>rtc_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>SOFT</name>
        <description>Soft Reset.Write 1 to perform a Soft Reset. A soft reset performs a Peripheral Reset and also resets the GPIO peripheral but does not reset the CPU or Watchdog Timer.</description>
        <bitOffset>29</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>srst_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>srst_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>PERIPH</name>
        <description>Peripheral Reset. Setting this bit to 1 resets all peripherals. The CPU core, the watchdog timer, and all GPIO pins are unaffected by this reset.</description>
        <bitOffset>30</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>prst_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>prst_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>SYSTEM</name>
        <description>System Reset. Setting this bit to 1 resets the CPU core and all peripherals, including the watchdog timer.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <name>system_write</name>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>Reserved. Do not use.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>reset</name>
-         <description>Starts reset operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <name>system_read</name>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Reset_Done</name>
-         <description>Reset Complete</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Busy</name>
-         <description>Reset Busy</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -1807,23 +1387,11 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field>
+      <field derivedFrom="X32K_EN">
        <name>HIRC_EN</name>
        <description>60MHz High Frequency Internal Reference Clock Enable.</description>
        <bitOffset>18</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Is Disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Is Enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>X32K_RDY</name>
@@ -1834,51 +1402,27 @@
        <enumeratedValues>
         <enumeratedValue>
          <name>not</name>
-         <description>Not Ready</description>
+         <description>Is not Ready.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>Ready</name>
-         <description>X32K Ready</description>
+         <name>ready</name>
+         <description>Is Ready.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field>
+      <field derivedFrom="X32K_RDY">
        <name>HIRC_RDY</name>
        <description>60MHz HIRC Ready.</description>
        <bitOffset>26</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>not</name>
-         <description>Not Ready</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ready</name>
-         <description>HIRC Ready</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
-      <field>
+      <field derivedFrom="X32K_RDY">
        <name>LIRC8K_RDY</name>
        <description>8kHz Low Frequency Reference Clock Ready.</description>
        <bitOffset>29</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>not</name>
-         <description>Not Ready</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ready</name>
-         <description>Clock Ready</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
      </fields>
     </register>

@@ -109,17 +109,9 @@ typedef struct {
  */
 #define MXC_F_SIR_STATUS_CFG_VALID_POS                 0 /**< STATUS_CFG_VALID Position */
 #define MXC_F_SIR_STATUS_CFG_VALID                     ((uint32_t)(0x1UL << MXC_F_SIR_STATUS_CFG_VALID_POS)) /**< STATUS_CFG_VALID Mask */
-#define MXC_V_SIR_STATUS_CFG_VALID_INVALID             ((uint32_t)0x0UL) /**< STATUS_CFG_VALID_INVALID Value */
-#define MXC_S_SIR_STATUS_CFG_VALID_INVALID             (MXC_V_SIR_STATUS_CFG_VALID_INVALID << MXC_F_SIR_STATUS_CFG_VALID_POS) /**< STATUS_CFG_VALID_INVALID Setting */
-#define MXC_V_SIR_STATUS_CFG_VALID_VALID               ((uint32_t)0x1UL) /**< STATUS_CFG_VALID_VALID Value */
-#define MXC_S_SIR_STATUS_CFG_VALID_VALID               (MXC_V_SIR_STATUS_CFG_VALID_VALID << MXC_F_SIR_STATUS_CFG_VALID_POS) /**< STATUS_CFG_VALID_VALID Setting */
 
 #define MXC_F_SIR_STATUS_CFG_ERR_POS                   1 /**< STATUS_CFG_ERR Position */
 #define MXC_F_SIR_STATUS_CFG_ERR                       ((uint32_t)(0x1UL << MXC_F_SIR_STATUS_CFG_ERR_POS)) /**< STATUS_CFG_ERR Mask */
-#define MXC_V_SIR_STATUS_CFG_ERR_VALID                 ((uint32_t)0x0UL) /**< STATUS_CFG_ERR_VALID Value */
-#define MXC_S_SIR_STATUS_CFG_ERR_VALID                 (MXC_V_SIR_STATUS_CFG_ERR_VALID << MXC_F_SIR_STATUS_CFG_ERR_POS) /**< STATUS_CFG_ERR_VALID Setting */
-#define MXC_V_SIR_STATUS_CFG_ERR_INVALID               ((uint32_t)0x1UL) /**< STATUS_CFG_ERR_INVALID Value */
-#define MXC_S_SIR_STATUS_CFG_ERR_INVALID               (MXC_V_SIR_STATUS_CFG_ERR_INVALID << MXC_F_SIR_STATUS_CFG_ERR_POS) /**< STATUS_CFG_ERR_INVALID Setting */
 
 /**@} end of group SIR_STATUS_Register */
 
