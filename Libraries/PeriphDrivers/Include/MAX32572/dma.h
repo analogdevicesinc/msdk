@@ -3,8 +3,8 @@
  * @brief   Direct Memory Access (DMA) driver function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_DMA_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_DMA_H_
@@ -81,6 +81,7 @@ typedef enum {
     MXC_DMA_REQUEST_I2C0RX = MXC_S_DMA_CTRL_REQUEST_I2C0RX, ///< I2C0 Receive DMA Request Selection
     MXC_DMA_REQUEST_I2C1RX = MXC_S_DMA_CTRL_REQUEST_I2C1RX, ///< I2C1 Receive DMA Request Selection
     MXC_DMA_REQUEST_ADC = MXC_S_DMA_CTRL_REQUEST_ADC, ///< ADC DMA Request Selection
+    MXC_DMA_REQUEST_MSRADC = MXC_S_DMA_CTRL_REQUEST_MSRADC, ///< MSR ADC DMA Request Selection
     MXC_DMA_REQUEST_UART2RX =
         MXC_S_DMA_CTRL_REQUEST_UART2RX, ///< UART2 Receive DMA Request Selection
     MXC_DMA_REQUEST_SPI2RX = MXC_S_DMA_CTRL_REQUEST_SPI2RX, ///< SPI2 Receive DMA Request Selection

@@ -86,14 +86,6 @@ void GPIO1_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
 }
-void GPIO2_IRQHandler(void)
-{
-    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
-}
-void GPIO3_IRQHandler(void)
-{
-    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO3));
-}
 
 //******************************************************************************
 void PB_IntEnable(unsigned int pb)
