@@ -6,8 +6,6 @@
 # Each library below may also have its own set of configuration
 # variables that can be overridden.
 
-$(info ---INFO enter Libraries/libs.mk, RISCV_CORE=$(RISCV_CORE), RISCV_LOAD=$(RISCV_LOAD), RISCV_APP=$(RISCV_APP), BLE_HOST=$(BLE_HOST), BLE_CONTROLLER=$(BLE_CONTROLLER), INIT_ENCRYPTED=$(INIT_ENCRYPTED), PROJECT=$(PROJECT), HOST_PROJECT=$(HOST_PROJECT))
-
 # If LIBS_DIR is not specified, this Makefile will locate itself.
 LIBS_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -224,5 +222,3 @@ endif
 include $(EMV_DIR)/emv.mk
 endif
 # ************************
-
-$(info ---INFO exit  Libraries/libs.mk)
