@@ -231,7 +231,6 @@ int main(void)
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     LlSetBdAddr((uint8_t *)&bdAddr);
 
-
     /* Start the 32 MHz crystal and the BLE DBB counter to trim the 32 kHz crystal */
     PalBbEnable();
 
