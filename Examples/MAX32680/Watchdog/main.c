@@ -82,13 +82,13 @@ void WDT0_IRQHandler(void)
 }
 
 // *****************************************************************************
-void blinkled(int led, int num_of_blink)
+void blinkled(int led, int num_of_blink, unsigned int ms_delay)
 {
     for (int i = 0; i < num_of_blink; i++) {
         LED_On(led);
-        MXC_Delay(MXC_DELAY_MSEC(100));
+        MXC_Delay(MXC_DELAY_MSEC(ms_delay));
         LED_Off(led);
-        MXC_Delay(MXC_DELAY_MSEC(100));
+        MXC_Delay(MXC_DELAY_MSEC(ms_delay));
     }
 }
 
@@ -121,7 +121,7 @@ int main(void)
     printf("Push button 1 = reset program\n\n");
 
     //blink LED1 three times at startup
-    blinkled(1, 3);
+    blinkled(1, 3, 100);
 
     //Setup watchdog
     MXC_WDT_Disable(MXC_WDT0);
@@ -149,10 +149,7 @@ int main(void)
 
             MXC_WDT_Enable(MXC_WDT0);
 
-            while (1) {
-                {
-                }
-            }
+            while (1) {}
         }
 
         if (PB_Get(SW1) == TRUE) {
@@ -170,7 +167,7 @@ int main(void)
         }
 
         //blink LED0
-        blinkled(0, 1);
+        blinkled(0, 1, 500);
 
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
