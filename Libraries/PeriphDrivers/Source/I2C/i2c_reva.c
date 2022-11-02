@@ -805,10 +805,11 @@ int MXC_I2C_RevA_MasterTransaction(mxc_i2c_reva_req_t *req)
         i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_RESTART;
     } else {
         i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_STOP;
+
+        while (!(i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_STOP)) {}
+        // Wait for Transaction to finish
     }
 
-    while (!(i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_STOP)) {}
-    // Wait for Transaction to finish
     while (!(i2c->intfl0 & MXC_F_I2C_REVA_INTFL0_DONE)) {}
     // Wait for Transaction to finish
 

@@ -109,7 +109,7 @@
         </fields>
       </register>
       <register>
-        <name>AUTOCAL0</name>
+        <name>FCTRL1</name>
         <description>Register 1.</description>
         <addressOffset>0x04</addressOffset>
         <access>read-write</access>
@@ -207,30 +207,84 @@
         </fields>
       </register>
       <register>
-        <name>AUTOCAL1</name>
+        <name>FCTRL2</name>
         <description>Register 2.</description>
         <addressOffset>0x08</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>XO_EN_DGL</name>
-            <description>TBD</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
+            <name>MSR_R1</name>
+            <description>MSR R1</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>MSR_R2</name>
+            <description>MSR R2</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>2</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>AUTOCAL2</name>
+        <name>FCTRL3</name>
         <description>Register 3.</description>
         <addressOffset>0x0C</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
             <name>DONECNT</name>
-            <description>Automatic Calibration Run Time.</description>
+            <description>Auto-calibration Done Counter Setting.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>URVBOOTADDR</name>
+        <description>Register 4.</description>
+        <addressOffset>0x10</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>BOOTADDR</name>
+            <description>RISCV Boot Address.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>URVCTRL</name>
+        <description>Register 5.</description>
+        <addressOffset>0x14</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>SLEEP_REQ</name>
+            <description>Sleep Request to RISCV.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SLEEP_ACK</name>
+            <description>Acknowledgement of Sleep Request for RISCV.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GP</name>
+        <description>General Purpose Register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>GP</name>
+            <description>General Purpose.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
           </field>
         </fields>
       </register>
