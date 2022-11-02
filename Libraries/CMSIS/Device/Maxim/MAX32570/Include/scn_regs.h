@@ -156,9 +156,6 @@ typedef struct {
 #define MXC_F_SCN_CR_TXTHD_POS                         12 /**< CR_TXTHD Position */
 #define MXC_F_SCN_CR_TXTHD                             ((uint32_t)(0xFUL << MXC_F_SCN_CR_TXTHD_POS)) /**< CR_TXTHD Mask */
 
-#define MXC_F_SCN_CR_DUAL_MODE_POS                     23 /**< CR_DUAL_MODE Position */
-#define MXC_F_SCN_CR_DUAL_MODE                         ((uint32_t)(0x1UL << MXC_F_SCN_CR_DUAL_MODE_POS)) /**< CR_DUAL_MODE Mask */
-
 /**@} end of group SCN_CR_Register */
 
 /**
@@ -222,9 +219,6 @@ typedef struct {
 
 #define MXC_F_SCN_PN_CLKSEL_POS                        5 /**< PN_CLKSEL Position */
 #define MXC_F_SCN_PN_CLKSEL                            ((uint32_t)(0x1UL << MXC_F_SCN_PN_CLKSEL_POS)) /**< PN_CLKSEL Mask */
-
-#define MXC_F_SCN_PN_IO_C48_EN_POS                     16 /**< PN_IO_C48_EN Position */
-#define MXC_F_SCN_PN_IO_C48_EN                         ((uint32_t)(0x1UL << MXC_F_SCN_PN_IO_C48_EN_POS)) /**< PN_IO_C48_EN Mask */
 
 /**@} end of group SCN_PN_Register */
 

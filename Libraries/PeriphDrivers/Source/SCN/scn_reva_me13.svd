@@ -75,12 +75,6 @@
             <bitOffset>12</bitOffset>
             <bitWidth>4</bitWidth>
           </field>
-          <field>
-            <name>DUAL_MODE</name>
-            <description>Dual Internal AFE and Bypass Mode.</description>
-            <bitOffset>23</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
         </fields>
       </register>
       <register>
@@ -189,12 +183,6 @@
             <name>CLKSEL</name>
             <description>Smart Card Clock Select.</description>
             <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>IO_C48_EN</name>
-            <description>Pin Enable.</description>
-            <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
