@@ -3,15 +3,15 @@
 # main ME17 device used to test the rest
 MAIN_DEVICE_NAME_UPPER=MAX32655
 MAIN_DEVICE_NAME_LOWER=max32655
-MAIN_DEVICE_ID=04090000bdf10c0400000000000000000000000097969906
-MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDEM' | rev | cut -b 1-7 | rev)"
+MAIN_DEVICE_ID=04091702d4f18ac600000000000000000000000097969906
+MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -b 1-7 | rev)"
 
 # List of devices under test
-dut_list=(max32655 max32665 )
+dut_list=(max32655 max32665)
 # List of serial IDs for DUT, must correlate with list above
-dut_list_ID=(0409000098d9439b00000000000000000000000097969906 0409170246dfc09500000000000000000000000097969906 )
+dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409170246dfc09500000000000000000000000097969906)
 # List of serail devices associated with each DUT msut correlate with device list above
-dut_list_serial=(D309ZDFO D30A1X9X )
+dut_list_serial=(D3073ICQ D30A1X9X)
 
 # Will hold values of the current device undertest from the lists above
 DUT_NAME_UPPER=NONE
@@ -82,11 +82,11 @@ function erase_with_openocd() {
 
     # erase second bank of larger chips
     if [[ $1 == "max32665" ]]; then
-    printf "Erasing second bank of device: $1 with ID:$2"
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 1;" -c " exit" &
-    openocd_dapLink_pid=$!
-    # wait for openocd to finish
-    wait $openocd_dapLink_pid
+        printf "Erasing second bank of device: $1 with ID:$2"
+        $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 1;" -c " exit" &
+        openocd_dapLink_pid=$!
+        # wait for openocd to finish
+        wait $openocd_dapLink_pid
     fi
 
 }
@@ -116,12 +116,12 @@ function run_notConntectedTest() {
         failedTestList+="| $PROJECT_NAME ($DUT_NAME_UPPER) "
     fi
     set -e
-  
+
     # get back to target directory
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
 }
 
-function flash_bootloader(){
+function flash_bootloader() {
     #------ -----------Build & Flash Bootloader onto Device 2  : ME17
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
     make -j8
@@ -134,8 +134,8 @@ function flash_bootloader(){
     openocd_dapLink_pid=$!
     # wait for openocd to finish
     while kill -0 $openocd_dapLink_pid; do
-    sleep 1
-    # we can add a timeout here if we want
+        sleep 1
+        # we can add a timeout here if we want
     done
     set -e
     # Attempt to verify the image, prevent exit on error
@@ -143,17 +143,17 @@ function flash_bootloader(){
 
     # Check the return value to see if we received an error
     if [ "$?" -ne "0" ]; then
-    # Reprogram the device if the verify failed
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$DUT_NAME_LOWER.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $DUT_ID" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt" -c "program $DUT_NAME_LOWER.elf verify reset exit" >/dev/null &
-    openocd_dapLink_pid=$!
+        # Reprogram the device if the verify failed
+        $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$DUT_NAME_LOWER.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $DUT_ID" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt" -c "program $DUT_NAME_LOWER.elf verify reset exit" >/dev/null &
+        openocd_dapLink_pid=$!
     fi
 }
 
-function erase_all_devices(){
+function erase_all_devices() {
     # erase main device
     erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     # erase DUTs
-    for device  in ${!dut_list[@]}; do
+    for device in ${!dut_list[@]}; do
         erase_with_openocd ${dut_list[device]} ${dut_list_ID[device]}
     done
 }
@@ -171,10 +171,10 @@ rm -rf *
 
 erase_all_devices
 
-for device  in ${!dut_list[@]}; do
+for device in ${!dut_list[@]}; do
     # translate device name to uppercase
-    DUT_NAME_UPPER=$(echo ${dut_list[i]} | tr '[:lower:]' '[:upper:]')
-    # change advertising name for projects under test to avoid 
+    DUT_NAME_UPPER=$(echo ${dut_list[device]} | tr '[:lower:]' '[:upper:]')
+    # change advertising name for projects under test to avoid
     # connections with office devices
     printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
     # cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
@@ -205,15 +205,15 @@ for dir in ${SUBDIRS}; do
     # make -C ${dir} -j8
 done
 
-# itterate through devices and conduct standlaones test followed by connected tests
+# itterate through devices and conduct standalone test followed by connected tests
 for i in ${!dut_list[@]}; do
-    
+
     # setup  all DUT varaibles
     DUT_NAME_LOWER=${dut_list[i]}
     DUT_NAME_UPPER=$(echo ${dut_list[i]} | tr '[:lower:]' '[:upper:]')
     DUT_SERIAL_PORT=/dev/$(ls -la /dev/serial/by-id | grep -n ${dut_list_serial[i]} | rev | cut -b 1-7 | rev)
     DUT_ID=${dut_list_ID[i]}
-  
+
     # directory for test resutls
     mkdir $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER
     # enter current device under test directory
@@ -221,7 +221,7 @@ for i in ${!dut_list[@]}; do
 
     #no filter would support ALL projects not just ble
     project_filter='BLE_'
- 
+
     #----------------------------- Run non connected tests
     for dir in ./*/; do
         if [[ "$dir" == *"$project_filter"* ]]; then
@@ -231,7 +231,7 @@ for i in ${!dut_list[@]}; do
 
             "BLE_datc")
                 run_notConntectedTest
-                
+
                 ;;
 
             "BLE_dats")
@@ -271,7 +271,7 @@ for i in ${!dut_list[@]}; do
                 # cd $PROJECT_NAME
                 # make -j8
                 # let "numOfFailedTests+=$?"
-               
+
                 ;;
 
             *) ;;
@@ -298,7 +298,7 @@ for i in ${!dut_list[@]}; do
 
     # Run robot test
     # give them time to connect
-    sleep 5 
+    sleep 5
     # directory for resuilts logs
     cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
     mkdir BLE_dat_cs
@@ -314,7 +314,7 @@ for i in ${!dut_list[@]}; do
     fi
     set -e
 
-    # make sure device under test is not left with a running app 
+    # make sure device under test is not left with a running app
     erase_with_openocd $DUT_NAME_LOWER $DUT_ID
 
     #--------------------------start Otac/Otas conencted tests
@@ -375,4 +375,3 @@ fi
 echo "=============================================================================="
 echo "=============================================================================="
 exit $numOfFailedTests
-
