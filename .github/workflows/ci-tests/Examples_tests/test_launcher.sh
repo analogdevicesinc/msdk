@@ -230,20 +230,20 @@ for i in ${!dut_list[@]}; do
             case $PROJECT_NAME in
 
             "BLE_datc")
-                run_notConntectedTest
+                # run_notConntectedTest
 
                 ;;
 
             "BLE_dats")
-                run_notConntectedTest
+                # run_notConntectedTest
                 ;;
 
             "BLE_mcs")
-                run_notConntectedTest
+                #  run_notConntectedTest
                 ;;
 
             "BLE_fit")
-                run_notConntectedTest
+                # run_notConntectedTest
                 ;;
 
             "BLE_fcc")
@@ -254,11 +254,11 @@ for i in ${!dut_list[@]}; do
                 ;;
 
             "BLE_FreeRTOS")
-                run_notConntectedTest
+                # run_notConntectedTest
                 ;;
 
             "BLE_otac")
-                run_notConntectedTest
+                #  run_notConntectedTest
                 ;;
 
             "BLE_otas")
