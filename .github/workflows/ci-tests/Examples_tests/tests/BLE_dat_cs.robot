@@ -33,6 +33,12 @@ Write Secure Characteristic Test
     Serial.Expect And Timeout    Notification from secure data service    5    ${SERIAL_PORT_1}    
 
 
+Speed Test  
+    [Timeout]     120s
+    Serial.send    btn 2 x\n    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout     bits transferred in    120    ${SERIAL_PORT_1}
+
+    
 Phy Switching Test 
     [Timeout]     30s
     sleep    3
@@ -40,10 +46,6 @@ Phy Switching Test
     Serial.Expect And Timeout    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_1}    
 
 
-Speed Test  
-    [Timeout]     120s
-    Serial.send    btn 2 x\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout     bits transferred in    120    ${SERIAL_PORT_1}
 
 
 
