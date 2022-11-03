@@ -4,7 +4,7 @@
 MAIN_DEVICE_NAME_UPPER=MAX32655
 MAIN_DEVICE_NAME_LOWER=max32655
 MAIN_DEVICE_ID=04091702d4f18ac600000000000000000000000097969906
-MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -b 1-7 | rev)"
+MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -d "/" -f1 | rev)"
 
 # List of devices under test
 dut_list=(max32655 max32665)
@@ -74,7 +74,7 @@ function flash_with_openocd() {
 }
 # Function accepts parameters:device , CMSIS_DAP_ID_x
 function erase_with_openocd() {
-    printf "> Erasing $1 : $2"
+    printf "> Erasing $1 : $2 \r\n"
     $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 0;" -c " exit" &
     openocd_dapLink_pid=$!
     # wait for openocd to finish
@@ -82,7 +82,7 @@ function erase_with_openocd() {
 
     # erase second bank of larger chips
     if [[ $1 == "max32665" ]]; then
-        printf "Erasing second bank of device: $1 with ID:$2"
+        printf "> Erasing second bank of device: $1 with ID:$2 \r\n"
         $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 1;" -c " exit" &
         openocd_dapLink_pid=$!
         # wait for openocd to finish
@@ -211,7 +211,7 @@ for i in ${!dut_list[@]}; do
     # setup  all DUT varaibles
     DUT_NAME_LOWER=${dut_list[i]}
     DUT_NAME_UPPER=$(echo ${dut_list[i]} | tr '[:lower:]' '[:upper:]')
-    DUT_SERIAL_PORT=/dev/$(ls -la /dev/serial/by-id | grep -n ${dut_list_serial[i]} | rev | cut -b 1-7 | rev)
+    DUT_SERIAL_PORT=/dev/$(ls -la /dev/serial/by-id | grep -n ${dut_list_serial[i]} | rev | cut -d "/" -f1 | rev)
     DUT_ID=${dut_list_ID[i]}
 
     # directory for test resutls
