@@ -109,7 +109,7 @@ For the HM0360 (color):
     MCU: Captured 64x64 RGB565 image to buffer location 0x20001b98 (8192 bytes)
     MCU: *IMG* RGB565 8192 64 64
     Collecting 8192 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 88480 us)
     ```
 
@@ -127,7 +127,7 @@ For the HM0360 (color):
     MCU: Captured 128x128 RGB565 image to buffer location 0x20001b98 (32768 bytes)
     MCU: *IMG* RGB565 32768 128 128
     Collecting 32768 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 353104 us)
     ```
 
@@ -147,7 +147,7 @@ For the HM0360 (color):
     MCU: Transmitting image data over UART...
     MCU: *IMG* RGB565 153600 320 240
     Collecting 153600 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 1653952 us)
     ```
 
@@ -202,7 +202,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
     MCU: Captured 320x240 BAYER image to buffer location 0x20001b98 (76800 bytes)
     MCU: *IMG* BAYER 76800 320 240
     Collecting 76800 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 827340 us)
     ```
 
@@ -238,7 +238,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
     MCU: Captured 160x120 BAYER image to buffer location 0x20001b98 (19200 bytes)
     MCU: *IMG* BAYER 19200 160 120
     Collecting 19200 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 206999 us)
     ```
 
@@ -299,13 +299,47 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     MCU: Debayering complete. (Took 66333 us)
     MCU: *IMG* RGB565 153600 320 240
     Collecting 153600 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 1664200 us)
     ```
 
     ![HM0360_Bilinear_320_240](res/HM0360_Bilinear_320_240.png)
 
-8. The raw debayer pattern can also be viewed using the `set-debayer` command.  This is useful for testing and development of additional debayering algorithms.
+8. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
+
+    The active context is selected via register `0x3024`.
+
+    * `0x3024 = 0` shows Context A is active (320x240).
+    * `0x3024 = 1` show Context B is active (160x120).
+
+    ```shell
+    $ get-reg 0x3024
+
+    MCU: Camera reg 0x3024=0x0
+    ```
+
+    To change to Context B (160x120):
+
+    ```shell
+    $ set-reg 0x3024 1
+
+    MCU: Writing 0x1 to camera reg 0x3024
+    $ imgres 160 120
+
+    MCU: Set image resolution to width 160, height 120
+    $ capture
+
+    MCU: Configuring camera
+    MCU: Capturing image
+    MCU: Done! (Took 73982 us)
+    MCU: Captured 160x120 BAYER image to buffer location 0x20001b98 (19200 bytes)
+    MCU: *IMG* BAYER 19200 160 120
+    Collecting 19200 bytes...
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    MCU: Done! (serial transmission took 206999 us)
+    ```
+
+9. The raw debayer pattern can also be viewed using the `set-debayer` command.  This is useful for testing and development of additional debayering algorithms.
 
     ```shell
     $ set-debayer passthrough 
@@ -320,7 +354,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     MCU: Debayering complete. (Took 9656 us)
     MCU: *IMG* RGB565 153600 320 240
     Collecting 153600 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78002\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 1664091 us)
     ```
 
