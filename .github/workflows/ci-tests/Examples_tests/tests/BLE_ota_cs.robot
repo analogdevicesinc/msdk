@@ -19,21 +19,25 @@ Original Firmware Test
 
 File Discovery Test
     [Timeout]    30s
+    sleep    2
     Serial.send    btn 2 s\n    ${SERIAL_PORT_1}
     Serial.Expect And Timeout    >>> File discovery complete <<<    5    ${SERIAL_PORT_1}
 
 File Transfer Test
     [Timeout]    30s
+    sleep    2
     Serial.Send    btn 2 m\n    ${SERIAL_PORT_1}
     Serial.Expect And Timeout    >>> File transfer complete    20    ${SERIAL_PORT_1}
 
 File Verification Test
     [Timeout]    30S
+    sleep    2
     Serial.Send    btn 2 l\n    ${SERIAL_PORT_1}
     Serial.Expect And Timeout    >>> Verify complete status: 0 <<<    2    ${SERIAL_PORT_1}
    
 Peer Device Reset Test
     [Timeout]    30s
+    sleep    2
     Serial.Send    btn 2 x\n    ${SERIAL_PORT_1}
     Serial.Expect And Timeout    >>> Scanning started <<<    5    ${SERIAL_PORT_1}
 
@@ -43,7 +47,10 @@ Firmware Reconnect Succesful Test
     
 Firmware Update Verification Test
     [Timeout]    30s
+    sleep   2
     Serial.send    btn 2 m\n    ${SERIAL_PORT_2}
+    Serial.Expect And Timeout    FW_VERSION: 2   5    ${SERIAL_PORT_2}
+
     
 
 
