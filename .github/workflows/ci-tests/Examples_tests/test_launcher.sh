@@ -28,14 +28,14 @@ numOfFailedTests=0
 #****************************************** Change this when testing locally **************************
 
 # WALL-E
-# export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
-# export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
-# export ROBOT=/home/btm-ci/.local/bin/robot
+export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
+export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
+export ROBOT=/home/btm-ci/.local/bin/robot
 
 # Local
-export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
-export OPENOCD=/home/eddie/workspace/openocd/src/openocd
-export ROBOT=/home/eddie/.local/bin/robot
+# export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
+# export OPENOCD=/home/eddie/workspace/openocd/src/openocd
+# export ROBOT=/home/eddie/.local/bin/robot
 
 #***************************************** Helper functions *****************************************
 #****************************************************************************************************
@@ -177,20 +177,20 @@ for device in ${!dut_list[@]}; do
     # change advertising name for projects under test to avoid
     # connections with office devices
     printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
-    # cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
-    # perl -i -pe "s/\'D\'/\'C\'/g" dats_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+    perl -i -pe "s/\'D\'/\'C\'/g" dats_main.c
 
-    # cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
-    # perl -i -pe "s/\'D\'/\'C\'/g" datc_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+    perl -i -pe "s/\'D\'/\'C\'/g" datc_main.c
 
-    # cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
-    # perl -i -pe "s/\'S\'/\'P\'/g" datc_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+    perl -i -pe "s/\'S\'/\'P\'/g" datc_main.c
 
-    # cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-    # perl -i -pe "s/\'S\'/\'P\'/g" dats_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+    perl -i -pe "s/\'S\'/\'P\'/g" dats_main.c
 
-    # cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
-    # perl -i -pe "s/\'S\'/\'P\'/g" dats_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+    perl -i -pe "s/\'S\'/\'P\'/g" dats_main.c
 done
 
 # build BLE examples
@@ -200,9 +200,9 @@ for dir in ${SUBDIRS}; do
     echo "---------------------------------------"
     echo " Validation build for ${dir}"
     echo "---------------------------------------"
-    # make -C ${dir} clean
-    # make -C ${dir} libclean
-    # make -C ${dir} -j8
+    make -C ${dir} clean
+    make -C ${dir} libclean
+    make -C ${dir} -j8
 done
 
 # itterate through devices and conduct standalone test followed by connected tests
