@@ -365,10 +365,25 @@ The LED
 - stays *red* if there is an error in the SD card interface
 
 A utility (`bin2wav.py`) is provided in the `/Utility` folder to convert these files into wave (.wav) format to listen to.
+To convert individual files:
 
 ```bash
 $ python bin2wav.py -i <sound snippet file>
 ```
+
+To convert all the files in current directory and all subdirectories:
+
+```bash
+$ python bin2wav.py -a
+```
+
+To convert all the files in a directory and all its subdirectories:
+
+```bash
+$ python bin2wav.py -a -d <folder name>
+```
+
+When option `-a` is used, each file is converted to wave file once and subsequent execution of the command skips all the files that have previously converted to wave files.
 
 ***Note 1: When `SEND_MIC_OUT_SDCARD` is selected, the Wake Up Timer (WUT) is disabled.***
 
