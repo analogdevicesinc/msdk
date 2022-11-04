@@ -30,8 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_
-#define EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_
+#ifndef EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_
+#define EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_
 
 // Configuration options
 // ------------------------
@@ -50,4 +50,4 @@
 #define IMAGE_YRES 64
 #endif
 
-#endif // EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_
+#endif // EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_

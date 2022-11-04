@@ -36,8 +36,8 @@
         of memory.
 *****************************************************************************/
 
-#ifndef EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_CNN_MEMUTILS_H_
-#define EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_CNN_MEMUTILS_H_
+#ifndef EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CNN_MEMUTILS_H_
+#define EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CNN_MEMUTILS_H_
 #include <stdint.h>
 #include "mxc.h"
 #include "gcfr_regs.h"
@@ -182,4 +182,4 @@ static inline uint32_t *read_bytes_from_cnn_sram(uint8_t *out_bytes, int len, ui
     return addr;
 }
 
-#endif // EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_CNN_MEMUTILS_H_
+#endif // EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CNN_MEMUTILS_H_
