@@ -5,11 +5,7 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
-
-
 # **********************************************************
-
-# Add your config here!
 
 # Set the camera drivers.  Select a line to match the
 # connected camera.  These are some common values.  
@@ -17,6 +13,9 @@
 # see the documentation.
 CAMERA=OV7692
 #CAMERA=OV5640
-#CAMERA=HM0360_MONO
+# CAMERA=HM0360_MONO
 #CAMERA=HM01B0
 
+# Select TFT display drivers to match the connected display
+TFT=ADAFRUIT
+# TFT=NEWHAVEN

@@ -60,6 +60,12 @@
 #include "camera.h"
 #include "utils.h"
 #include "dma.h"
+#ifdef TFT_ADAFRUIT
+#include "adafruit_3315_tft.h"
+#endif
+#ifdef TFT_NEWHAVEN
+#include "tft_st7789v.h"
+#endif
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
@@ -69,13 +75,11 @@
 #if defined(CAMERA_HM01B0)
 #define IMAGE_XRES 324 / 2
 #define IMAGE_YRES 244 / 2
-#define CAMERA_MONO
 #endif
 
-#if defined(CAMERA_HM0360)
+#if defined(CAMERA_HM0360_MONO)
 #define IMAGE_XRES 320
 #define IMAGE_YRES 240
-#define CAMERA_MONO
 #endif
 
 #if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
@@ -109,7 +113,7 @@ void process_img(void)
     // Send the image to TFT
     MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
 #else
-    MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, h, w);
+    MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, w, h);
 #endif // #ifndef CAMERA_MONO
 #endif // ##ifndef ENABLE_TFT
 }
@@ -156,9 +160,15 @@ int main(void)
 
     printf("Camera ID detected: %04x\n", id);
 
-#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360) || defined(CAMERA_OV5642)
-    camera_set_hmirror(0);
+#if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_OV5642)
     camera_set_vflip(0);
+#ifdef TFT_NEWHAVEN
+    // Newhaven display needs a horizontal flip to match orientation
+    camera_set_hmirror(1);
+#else
+    camera_set_hmirror(0);
+#endif
+
 #endif
 
 #if defined(CAMERA_OV7692)
@@ -169,7 +179,7 @@ int main(void)
     printf("Init TFT\n");
     /* Initialize TFT display */
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-    MXC_TFT_SetBackGroundColor(4);
+    MXC_TFT_SetBackGroundColor(0);
 #endif
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
