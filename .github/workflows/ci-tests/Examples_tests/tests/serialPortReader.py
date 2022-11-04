@@ -23,10 +23,16 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
         if send == None:
             send ="\r\n"
         write_to_console("\r\nWriting to port: " + port  + "\r\n")
+        time.sleep(0.1)
         # start test, send command
         ser.write(bytes(send, encoding='utf-8'))
-        # just to add some separation
-        write_to_console("\r\n\r\n")
+        x=ser.readline().decode("utf-8")
+        x=str(x)
+        if x != send:
+            write_to_console("\r\nWrite failed trying again\r\n")
+            ser.write(bytes("\n", encoding='utf-8'))
+            time.sleep(0.1)
+            ser.write(bytes(send, encoding='utf-8'))
         while (time.time()-timeStart) < timeout:
             x=ser.readline().decode("utf-8")
             x=str(x)
