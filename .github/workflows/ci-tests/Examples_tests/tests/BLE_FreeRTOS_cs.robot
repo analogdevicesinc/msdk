@@ -15,7 +15,7 @@ Write Characteristic Test
     # inital sleep to allow device time to boot up after programming
     sleep    5
     Serial.send    btn 2 l\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout   hello back    2s    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout   hello back    2    ${SERIAL_PORT_1}
 
 
 # Phy Switching Test 

@@ -61,7 +61,7 @@ extern "C" {
 #define LED_ON 0 /// Active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
-#define EXT_FLASH_BAUD 3000000
+#define EXT_FLASH_BAUD 4000000
 #endif
 
 /**
