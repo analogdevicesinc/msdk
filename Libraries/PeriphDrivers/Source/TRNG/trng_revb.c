@@ -153,10 +153,11 @@ void MXC_TRNG_RevB_RandomAsync(mxc_trng_revb_regs_t *trng, uint8_t *data, uint32
 
 void MXC_TRNG_RevB_GenerateKey(mxc_trng_revb_regs_t *trng)
 {
-    /*Generate AES Key */
+	// Generate AES Key
     trng->ctrl |= MXC_F_TRNG_REVB_CTRL_AESKG_USR;
 
-    while (trng->ctrl & MXC_F_TRNG_REVB_CTRL_AESKG_USR) {}
+    // Wait for key transfer to complete
+    while (trng->status & MXC_F_TRNG_REVB_STATUS_AESKGD) {};
 }
 
 int MXC_TRNG_RevB_HealthTest(mxc_trng_revb_regs_t *trng)
