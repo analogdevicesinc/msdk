@@ -48,7 +48,7 @@
 #include "flc.h"
 #include "icc.h"
 #include "gcr_regs.h"
-#include "ecc_regs.h"
+#include "trimsir_regs.h"
 /***** Definitions *****/
 #define TESTSIZE 8192 //2 pages worth so we can do erase functions
 
@@ -155,12 +155,12 @@ void FLC1_IRQHandler(void)
 //******************************************************************************
 void flash_init(void)
 {
-    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM0_1;
-    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM2;
-    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM3;
-    MXC_ECC->en &= ~MXC_F_ECC_EN_ICC0;
-    MXC_ECC->en &= ~MXC_F_ECC_EN_FL0;
-    MXC_ECC->en &= ~MXC_F_ECC_EN_FL1;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_RAM0_1ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_RAM2ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_RAM3ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_ICC0ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_FL1ECCEN;
 
     // Set flash clock divider to generate a 1MHz clock from the APB clock
     // APB clock is 54MHz on the real silicon

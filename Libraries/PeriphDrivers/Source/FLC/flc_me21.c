@@ -47,7 +47,7 @@
 #include "flc.h"
 #include "flc_reva.h"
 #include "flc_common.h"
-#include "ecc_regs.h" // For ECCEN registers.
+#include "trimsir_regs.h" // For BB_SIR2 (ECC) register.
 #include "mcr_regs.h" // For ECCEN registers.
 
 //******************************************************************************
@@ -231,11 +231,11 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
 
     // Ensure ECC is disabled for the respective flash bank
     if (address < MXC_FLASH0_MEM_BASE + MXC_FLASH_MEM_SIZE) {
-        if (MXC_ECC->en & MXC_F_ECC_EN_FL0) {
+        if (MXC_TRIMSIR->bb_sir2 & MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN) {
             return E_BAD_STATE;
         }
     } else if (address < MXC_FLASH1_MEM_BASE + MXC_FLASH_MEM_SIZE) {
-        if (MXC_ECC->en & MXC_F_ECC_EN_FL1) {
+        if (MXC_TRIMSIR->bb_sir2 & MXC_F_TRIMSIR_BB_SIR2_FL1ECCEN) {
             return E_BAD_STATE;
         }
     }

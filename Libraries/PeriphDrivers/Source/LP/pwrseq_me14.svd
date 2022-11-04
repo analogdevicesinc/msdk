@@ -44,7 +44,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>BKGRND</name>
+            <name>BCKGRND</name>
             <description>Background Mode ENable. This bit allows low-power background mode operations, while the CPU is in DeepSleep.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
@@ -331,6 +331,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>SDMAWKST</name>
+            <description>SDMA Wakeup Status Flag.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>AINCOMP0WKST</name>
             <description>Analog Input Comparator 0 Wakeup Status Flag.</description>
             <bitOffset>4</bitOffset>
@@ -407,6 +413,12 @@
             <name>USBVBUSWKEN</name>
             <description>USB VBUS Detect Wakeup Enable. This bit allows wakeup from the USB power supply on or off status.</description>
             <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SDMAWKEN</name>
+            <description>SDMA Wakeup Enable.</description>
+            <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
