@@ -344,8 +344,7 @@ int main(void)
         printf("*** !!!SD ERROR (mounting) !!! ***\n");
         LED_Off(LED_GREEN);
         LED_On(LED_RED); // Permanent Red Led
-        while (1)
-            ;
+        while (1) {}
     }
 #endif
 
@@ -723,8 +722,7 @@ int main(void)
                     printf("*** !!!SD ERROR!!! ***\n");
                     LED_Off(LED_GREEN);
                     LED_On(LED_RED); // Permanent Red Led
-                    while (1)
-                        ;
+                    while (1) {}
                 }
                 fileCount++;
                 LED_Off(LED_RED);

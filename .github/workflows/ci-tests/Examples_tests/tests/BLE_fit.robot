@@ -15,7 +15,7 @@ Button Press Tests
     # inital sleep to allow device time to boot up after programming
     Sleep     5s
     Serial.Send    btn 1 s\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    Short Button 1 Press    5s    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout    Short Button 1 Press    5    ${SERIAL_PORT_1}
 
     Serial.Send    btn 1 m\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    Medium Button 1 Press    5s    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout    Medium Button 1 Press    5    ${SERIAL_PORT_1}

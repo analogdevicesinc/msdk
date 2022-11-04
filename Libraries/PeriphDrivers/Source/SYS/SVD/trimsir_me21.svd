@@ -3,7 +3,7 @@
   <peripheral>
     <name>TRIMSIR</name>
     <description>Trim System Initilazation Registers</description>
-    <baseAddress>0x40005400</baseAddress>
+    <baseAddress>0x40105400</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
       <size>0x400</size>
@@ -58,21 +58,21 @@
             <bitWidth>1</bitWidth>
           </field>
           <!-- FIELD 5 ICC 0 ECC Enable -->
-          <field derivedFrom="RAM0ECCEN">
+          <field derivedFrom="RAM0_1ECCEN">
             <name>ICC0ECCEN</name>
             <description>ICC 0 ECC Enable</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <!-- FIELD 6 FL 0 ECC Enable -->
-          <field derivedFrom="RAM0ECCEN">
+          <field derivedFrom="RAM0_1ECCEN">
             <name>FL0ECCEN</name>
             <description>Flash 0 ECC Enable</description>
             <bitOffset>12</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <!-- FIELD 7 FL 1 ECC Enable -->
-          <field derivedFrom="RAM0ECCEN">
+          <field derivedFrom="RAM0_1ECCEN">
             <name>FL1ECCEN</name>
             <description>Flash 1 ECC Enable</description>
             <bitOffset>13</bitOffset>

@@ -342,6 +342,20 @@
           </field>
         </fields>
       </register>
+      <register>
+        <name>DECCNT</name>
+        <description>ADC Decimation Count.</description>
+        <addressOffset>0x0020</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>DELAY</name>
+            <description>Delay.</description>
+            <bitRange>[31:0]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
   <!-- ADC: Analog to Digital Converter           -->

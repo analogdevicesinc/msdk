@@ -169,6 +169,12 @@ int MXC_TPU_Cipher_Config(mxc_tpu_modesel_t mode, mxc_tpu_ciphersel_t cipher)
                                       (mxc_tpu_reva_ciphersel_t)cipher);
 }
 
+int MXC_TPU_Cipher_KeySelect(mxc_tpu_keysrc_t key_src)
+{
+    return MXC_TPU_RevA_Cipher_KeySelect((mxc_tpu_reva_regs_t *)MXC_TPU,
+                                         (mxc_tpu_reva_keysrc_t)key_src);
+}
+
 int MXC_TPU_Cipher_DoOperation(const char *src, const char *iv, const char *key,
                                mxc_tpu_ciphersel_t cipher, mxc_tpu_modesel_t mode,
                                unsigned int data_size, char *outptr)
