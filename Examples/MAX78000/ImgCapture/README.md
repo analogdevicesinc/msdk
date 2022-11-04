@@ -110,7 +110,7 @@ The `CAMERA` variable in [project.mk](project.mk) is used to select the correct 
     MCU: Captured 64x64 RGB565 image to buffer location 0x20001b98 (8192 bytes)
     MCU: *IMG* RGB565 8192 64 64
     Collecting 8192 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 88480 us)
     ```
 
@@ -128,7 +128,7 @@ The `CAMERA` variable in [project.mk](project.mk) is used to select the correct 
     MCU: Captured 128x128 RGB565 image to buffer location 0x20001b98 (32768 bytes)
     MCU: *IMG* RGB565 32768 128 128
     Collecting 32768 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 353104 us)
     ```
 
@@ -148,7 +148,7 @@ The `CAMERA` variable in [project.mk](project.mk) is used to select the correct 
     MCU: Transmitting image data over UART...
     MCU: *IMG* RGB565 153600 320 240
     Collecting 153600 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 1653952 us)
     ```
 
@@ -203,7 +203,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
     MCU: Captured 320x240 BAYER image to buffer location 0x20001b98 (76800 bytes)
     MCU: *IMG* BAYER 76800 320 240
     Collecting 76800 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 827340 us)
     ```
 
@@ -239,7 +239,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
     MCU: Captured 160x120 BAYER image to buffer location 0x20001b98 (19200 bytes)
     MCU: *IMG* BAYER 19200 160 120
     Collecting 19200 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 206999 us)
     ```
 
@@ -298,7 +298,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     MCU: Debayering complete. (Took 32186 us)
     MCU: *IMG* RGB565 38400 160 120
     Collecting 38400 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 413863 us)
     ```
 
@@ -319,7 +319,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     MCU: Debayering complete. (Took 11196 us)
     MCU: *IMG* RGB565 38400 160 120
     Collecting 38400 bytes...
-    Saved image to 'C:\Users\JCarter3\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
+    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
     MCU: Done! (serial transmission took 413747 us)
     ```
 
