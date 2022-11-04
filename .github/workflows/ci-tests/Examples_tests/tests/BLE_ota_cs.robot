@@ -1,7 +1,7 @@
 *** settings ***
 
 Library    String
-Library    ../resources/serialPortReader.py
+Library    serialPortReader.py
 
 *** Variables ***
 ${SERIAL_PORT_1}  /dev/ttyUSB0
