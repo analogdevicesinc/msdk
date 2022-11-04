@@ -84,11 +84,6 @@
                 <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>pwm</name>
-                <description>PWM Mode.</description>
-                <value>3</value>
-              </enumeratedValue>
-              <enumeratedValue>
                 <name>capture</name>
                 <description>Capture Mode.</description>
                 <value>4</value>

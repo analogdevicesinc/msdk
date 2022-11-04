@@ -163,8 +163,6 @@ typedef struct {
 #define MXC_S_WUT_CTRL_TMODE_CONTINUOUS                (MXC_V_WUT_CTRL_TMODE_CONTINUOUS << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_CONTINUOUS Setting */
 #define MXC_V_WUT_CTRL_TMODE_COUNTER                   ((uint32_t)0x2UL) /**< CTRL_TMODE_COUNTER Value */
 #define MXC_S_WUT_CTRL_TMODE_COUNTER                   (MXC_V_WUT_CTRL_TMODE_COUNTER << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_COUNTER Setting */
-#define MXC_V_WUT_CTRL_TMODE_PWM                       ((uint32_t)0x3UL) /**< CTRL_TMODE_PWM Value */
-#define MXC_S_WUT_CTRL_TMODE_PWM                       (MXC_V_WUT_CTRL_TMODE_PWM << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_PWM Setting */
 #define MXC_V_WUT_CTRL_TMODE_CAPTURE                   ((uint32_t)0x4UL) /**< CTRL_TMODE_CAPTURE Value */
 #define MXC_S_WUT_CTRL_TMODE_CAPTURE                   (MXC_V_WUT_CTRL_TMODE_CAPTURE << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_CAPTURE Setting */
 #define MXC_V_WUT_CTRL_TMODE_COMPARE                   ((uint32_t)0x5UL) /**< CTRL_TMODE_COMPARE Value */
