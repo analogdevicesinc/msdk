@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral derivedFrom="DMA">
+    <name>DMA1</name>
+    <description>DMA Controller Fully programmable, chaining capable DMA channels.</description>
+    <baseAddress>0x40035000</baseAddress>
+    <size>32</size>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>DMA1_CH0</name>
+      <value>72</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA1_CH1</name>
+      <value>73</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA1_CH2</name>
+      <value>74</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA1_CH3</name>
+      <value>75</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA1_CH4</name>
+      <value>76</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA1_CH5</name>
+      <value>77</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA1_CH6</name>
+      <value>78</value>
+    </interrupt>
+    <interrupt>
+      <name>DMA1_CH7</name>
+      <value>79</value>
+    </interrupt>
+  </peripheral>
+  <!-- DMA: Direct Memory Access Controller Fully Programable -->
+</device>

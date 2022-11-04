@@ -39,7 +39,7 @@
             <name>SSEC</name>
             <description>RTC Sub-second Counter.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>11</bitWidth>
+            <bitWidth>12</bitWidth>
           </field>
         </fields>
       </register>
