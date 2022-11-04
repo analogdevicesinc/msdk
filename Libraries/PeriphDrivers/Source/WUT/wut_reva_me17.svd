@@ -78,6 +78,36 @@
                 <description>Continuous Mode.</description>
                 <value>1</value>
               </enumeratedValue>
+              <enumeratedValue>
+                <name>counter</name>
+                <description>Counter Mode.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pwm</name>
+                <description>PWM Mode.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>capture</name>
+                <description>Capture Mode.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>compare</name>
+                <description>Compare Mode.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>gated</name>
+                <description>Gated Mode.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>captureCompare</name>
+                <description>Capture/Compare Mode.</description>
+                <value>7</value>
+              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
@@ -169,6 +199,64 @@
             <description>MSB of prescaler value.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>NOLCMP</name>
+        <description>Timer Non-Overlapping Compare Register.</description>
+        <addressOffset>0x14</addressOffset>
+        <fields>
+          <field>
+            <name>NOLLCMP</name>
+            <description>Non-overlapping Low Compare.  The 8-bit timer count value of non-overlapping time between falling edge of PWM output 0A and next rising edge of PWM output 0A'.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>NOLHCMP</name>
+            <description>Non-overlapping High Compare.  The 8-bit timer count value of non-overlapping time between falling edge of PWM output 0A' and next rising edge of PWM output 0A.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PRESET</name>
+        <description>Preset register.</description>
+        <addressOffset>0x18</addressOffset>
+        <fields>
+          <field>
+            <name>PRESET</name>
+            <description>Preset Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RELOAD</name>
+        <description>Reload register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <fields>
+          <field>
+            <name>RELOAD</name>
+            <description>Rerload Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SNAPSHOT</name>
+        <description>Snapshot register.</description>
+        <addressOffset>0x20</addressOffset>
+        <fields>
+          <field>
+            <name>SNAPSHOT</name>
+            <description>Snapshot Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
           </field>
         </fields>
       </register>
