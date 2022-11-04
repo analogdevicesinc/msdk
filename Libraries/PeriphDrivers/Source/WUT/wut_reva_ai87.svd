@@ -45,20 +45,6 @@
         </fields>
       </register>
       <register>
-        <name>PWM</name>
-        <description>Wakeup Timer PWM Register</description>
-        <addressOffset>0x0008</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>PWM</name>
-            <description>Timer PWM Value.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>INTFL</name>
         <description>Wakeup Timer Interrupt Register</description>
         <addressOffset>0x000C</addressOffset>
@@ -268,30 +254,6 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field>
-            <name>PWMSYNC</name>
-            <description>PWM SYNC mode.</description>
-            <bitOffset>9</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>NOLHPOL</name>
-            <description>PWM output high polarity.</description>
-            <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>NOLLPOL</name>
-            <description>PWM output high polarity.</description>
-            <bitOffset>11</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>PWMCKBD</name>
-            <description>PWM output disable.</description>
-            <bitOffset>12</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
         </fields>
       </register>
       <register>
@@ -317,17 +279,41 @@
       <register>
         <name>PRESET</name>
         <description>Preset register.</description>
-        <addressOffset>0x18</addressOffset>
+        <addressOffset>0x0018</addressOffset>
+        <fields>
+          <field>
+            <name>PRESET</name>
+            <description>Preset Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
       <register>
         <name>RELOAD</name>
         <description>Reload register.</description>
-        <addressOffset>0x1C</addressOffset>
+        <addressOffset>0x001C</addressOffset>
+        <fields>
+          <field>
+            <name>RELOAD</name>
+            <description>Reload Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
       <register>
         <name>SNAPSHOT</name>
         <description>Snapshot register.</description>
-        <addressOffset>0x20</addressOffset>
+        <addressOffset>0x0020</addressOffset>
+        <fields>
+          <field>
+            <name>SNAPSHOT</name>
+            <description>Snapshot Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
     </registers>
   </peripheral>

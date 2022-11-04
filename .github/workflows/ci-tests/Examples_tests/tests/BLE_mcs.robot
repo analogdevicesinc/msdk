@@ -15,10 +15,10 @@ Button Press Tests
     # inital sleep to allow device time to boot up after programming
     Sleep     5s
     Serial.Send    btn 1 s\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    mcsAppBtnCback; 2    5s    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout    mcsAppBtnCback; 2    5    ${SERIAL_PORT_1}
 
     Serial.Send    btn 1 m\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    mcsAppBtnCback; 3    5s    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout    mcsAppBtnCback; 3    5    ${SERIAL_PORT_1}
     
     Serial.Send    btn 1 l\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    mcsAppBtnCback; 4    5s    ${SERIAL_PORT_1}
+    Serial.Expect And Timeout    mcsAppBtnCback; 4    5    ${SERIAL_PORT_1}
