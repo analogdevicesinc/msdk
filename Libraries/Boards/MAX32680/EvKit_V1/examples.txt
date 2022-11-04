@@ -6,12 +6,14 @@ BLE_dats
 CRC
 DMA
 Flash
+Flash_CLI
 FreeRTOSDemo
 GPIO
 HART_UART
 Hello_World
 Hello_World-riscv
 I2C
+I2C_SCAN
 I2S
 ICC
 LP

@@ -45,7 +45,6 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "i2s_regs.h"
 #include "board.h"
 #include "icc.h"
 #include "i2s.h"
