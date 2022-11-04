@@ -36,12 +36,13 @@
  * @brief   Parallel camera example for the HM0360-AWA Bayer camera sensors as defined in the makefile.
  *
  * @details This example uses the UART to stream out the image captured from the camera.
- *          Alternatively, it can display the captured image on TFT is it is enabled in the make file.
+ *          Alternatively, it can display the captured image on TFT if it is enabled with  the 
+ *          TFT_ENABLE compiler definition.
  *          The image is prepended with a header that is interpreted by the grab_image.py
  *          python script.  The data from this example through the UART is in a binary format.
  *          Instructions: 1) Load and execute this example. The example will initialize the camera
  *                        and start the repeating binary output of camera frame data.
- *                        2) Run 'sudo grab_image.py /dev/ttyUSB0 115200'
+ *                        2) Run 'sudo grab_image.py /dev/ttyUSB0 921600'
  *                           Substitute the /dev/ttyUSB0 string for the serial port on your system.
  *                           The python program will read in the binary data from this example and
  *                           output a png image.
