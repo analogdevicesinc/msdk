@@ -1,7 +1,7 @@
 *** settings ***
 Library    String
 Library    serialPortReader.py
-Suite Setup        Flush Junk   ${SERIAL_PORT_1}
+
 
 
 *** Variables ***
