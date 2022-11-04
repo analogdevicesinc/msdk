@@ -392,7 +392,7 @@ memory.
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
         <name>MEMTIM[%s]</name>
-        <description>Hyperbus emory Timing Register.</description>
+        <description>Hyperbus Memory Timing Register.</description>
         <addressOffset>0x0030</addressOffset>
         <fields>
           <field>

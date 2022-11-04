@@ -227,7 +227,7 @@ typedef struct {
 /**
  * @ingroup  hpb_registers
  * @defgroup HPB_MEMTIM HPB_MEMTIM
- * @brief    Hyperbus emory Timing Register.
+ * @brief    Hyperbus Memory Timing Register.
  * @{
  */
 #define MXC_F_HPB_MEMTIM_LAT_POS                       0 /**< MEMTIM_LAT Position */
