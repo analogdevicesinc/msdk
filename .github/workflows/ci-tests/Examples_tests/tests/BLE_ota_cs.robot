@@ -1,9 +1,8 @@
 *** settings ***
-Library    SerialLibrary      encoding=ascii
+
 Library    String
-Resource     ../resources/Serial.robot
-Suite Setup        Serial.Open Serial Port    ${SERIAL_PORT_1}    ${SERIAL_PORT_2}    
-Suite Teardown     Serial.Close Serial Port
+Library    serialPortReader.py
+Suite Setup        Flush Junk   ${SERIAL_PORT_1}
 
 *** Variables ***
 ${SERIAL_PORT_1}  /dev/ttyUSB0
@@ -13,43 +12,36 @@ ${SERIAL_PORT_2}  /dev/ttyUSB1
 Original Firmware Test
     [Timeout]    30s
     Sleep     5s
-    # inital sleep to allow device time to boot up after programming
-    Serial.send    btn 2 m\n    ${SERIAL_PORT_2}
-    Serial.Expect And Timeout    FW_VERSION: 1   5    ${SERIAL_PORT_2}
+    Expect And Timeout    btn 2 m\n    FW_VERSION: 1   5    ${SERIAL_PORT_2}
 
 File Discovery Test
     [Timeout]    30s
     sleep    2
-    Serial.send    btn 2 s\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    >>> File discovery complete <<<    5    ${SERIAL_PORT_1}
+    Expect And Timeout    btn 2 s\n    >>> File discovery complete <<<    5    ${SERIAL_PORT_1}
 
 File Transfer Test
     [Timeout]    30s
     sleep    2
-    Serial.Send    btn 2 m\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    >>> File transfer complete    20    ${SERIAL_PORT_1}
+    Expect And Timeout    btn 2 m\n    >>> File transfer complete    20    ${SERIAL_PORT_1}
 
 File Verification Test
     [Timeout]    30S
     sleep    2
-    Serial.Send    btn 2 l\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    >>> Verify complete status: 0 <<<    2    ${SERIAL_PORT_1}
+    Expect And Timeout    btn 2 l\n    >>> Verify complete status: 0 <<<    2    ${SERIAL_PORT_1}
    
 Peer Device Reset Test
     [Timeout]    30s
     sleep    2
-    Serial.Send    btn 2 x\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    >>> Scanning started <<<    5    ${SERIAL_PORT_1}
+    Expect And Timeout   btn 2 x\n    >>> Scanning started <<<    5    ${SERIAL_PORT_1}
 
 Firmware Reconnect Succesful Test
     [Timeout]    60s
-    Serial.Expect And Timeout    AppDiscComplete connId:1 status:0x08    30    ${SERIAL_PORT_1}
+    Expect And Timeout    None    AppDiscComplete connId:1 status:0x08    30    ${SERIAL_PORT_1}
     
 Firmware Update Verification Test
     [Timeout]    30s
     sleep   2
-    Serial.send    btn 2 m\n    ${SERIAL_PORT_2}
-    Serial.Expect And Timeout    FW_VERSION: 2   5    ${SERIAL_PORT_2}
+    Expect And Timeout    btn 2 m\n    FW_VERSION: 2   5    ${SERIAL_PORT_2}
 
     
 
