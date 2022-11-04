@@ -115,7 +115,7 @@ typedef struct {
 /**
  * @ingroup  hpb_registers
  * @defgroup HPB_STAT HPB_STAT
- * @brief    HPB Status Register.
+ * @brief    Hyperbus Status Register.
  * @{
  */
 #define MXC_F_HPB_STAT_RDTXN_POS                       0 /**< STAT_RDTXN Position */
@@ -147,7 +147,7 @@ typedef struct {
 /**
  * @ingroup  hpb_registers
  * @defgroup HPB_INTEN HPB_INTEN
- * @brief    HPB INTEN Register.
+ * @brief    Hyperbus Interrupt Enable Register.
  * @{
  */
 #define MXC_F_HPB_INTEN_MEM_POS                        0 /**< INTEN_MEM Position */
@@ -161,7 +161,7 @@ typedef struct {
 /**
  * @ingroup  hpb_registers
  * @defgroup HPB_INTFL HPB_INTFL
- * @brief    HPB INTFL Register.
+ * @brief    Hyperbus Interrupt Flag Register.
  * @{
  */
 #define MXC_F_HPB_INTFL_MEM_POS                        0 /**< INTFL_MEM Position */
@@ -175,9 +175,7 @@ typedef struct {
 /**
  * @ingroup  hpb_registers
  * @defgroup HPB_MEMBADDR HPB_MEMBADDR
- * @brief    Memory Base Address register. This is the base address of the addressable memory
- *           region in this microcontrollers RAM. Because the addressable memory is mapped in
- *           16M boundaries, the lower 24 bits are fixed to 0.
+ * @brief    Hyperbus Memory Base Address Register.
  * @{
  */
 #define MXC_F_HPB_MEMBADDR_ADDR_POS                    0 /**< MEMBADDR_ADDR Position */
@@ -188,7 +186,7 @@ typedef struct {
 /**
  * @ingroup  hpb_registers
  * @defgroup HPB_MEMCTRL HPB_MEMCTRL
- * @brief    Memory Control Register.
+ * @brief    Hyperbus Memory Control Register.
  * @{
  */
 #define MXC_F_HPB_MEMCTRL_WRAPSIZE_POS                 0 /**< MEMCTRL_WRAPSIZE Position */
@@ -229,7 +227,7 @@ typedef struct {
 /**
  * @ingroup  hpb_registers
  * @defgroup HPB_MEMTIM HPB_MEMTIM
- * @brief    Memory timing register.
+ * @brief    Hyperbus emory Timing Register.
  * @{
  */
 #define MXC_F_HPB_MEMTIM_LAT_POS                       0 /**< MEMTIM_LAT Position */

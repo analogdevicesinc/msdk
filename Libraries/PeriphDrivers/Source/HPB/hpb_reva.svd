@@ -12,7 +12,7 @@
     <registers>
       <register>
         <name>STAT</name>
-        <description>HPB Status Register.</description>
+        <description>Hyperbus Status Register.</description>
         <addressOffset>0x0000</addressOffset>
         <fields>
           <field>
@@ -151,7 +151,7 @@
       </register>
       <register>
         <name>INTEN</name>
-        <description>HPB INTEN Register.</description>
+        <description>Hyperbus Interrupt Enable Register.</description>
         <addressOffset>0x0004</addressOffset>
         <fields>
           <field>
@@ -194,7 +194,7 @@
       </register>
       <register>
         <name>INTFL</name>
-        <description>HPB INTFL Register.</description>
+        <description>Hyperbus Interrupt Flag Register.</description>
         <addressOffset>0x0008</addressOffset>
         <fields>
           <field>
@@ -239,7 +239,7 @@
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
         <name>MEMBADDR[%s]</name>
-        <description>Memory Base Address register. This is the base address of the addressable memory region in this microcontrollers RAM. Because the addressable memory is mapped in 16M boundaries, the lower 24 bits are fixed to 0.</description>
+        <description>Hyperbus Memory Base Address Register.</description>
         <addressOffset>0x0010</addressOffset>
         <fields>
           <field>
@@ -254,7 +254,7 @@
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
         <name>MEMCTRL[%s]</name>
-        <description>Memory Control Register.</description>
+        <description>Hyperbus Memory Control Register.</description>
         <addressOffset>0x0020</addressOffset>
         <fields>
           <field>
@@ -392,7 +392,7 @@ memory.
         <dim>2</dim>
         <dimIncrement>4</dimIncrement>
         <name>MEMTIM[%s]</name>
-        <description>Memory timing register.</description>
+        <description>Hyperbus emory Timing Register.</description>
         <addressOffset>0x0030</addressOffset>
         <fields>
           <field>
