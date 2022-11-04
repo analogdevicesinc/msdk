@@ -78,7 +78,6 @@ static uint32_t crc_xor = 0;
 static int MXC_CTB_ECC_Compare(mxc_ctb_ecc_req_t *req);
 static void MXC_CTB_Hash_SendBlock(mxc_ctb_hash_req_t *req);
 static int MXC_CTB_Cipher_EncDecAsc(mxc_ctb_cipher_req_t *req);
-static int MXC_CTB_IsConfigured(mxc_ctb_reva_regs_t *ctb_regs);
 
 /* ************************************************************************* */
 /* Global Control/Configuration functions                                    */
@@ -156,23 +155,6 @@ int MXC_CTB_RevA_Ready(mxc_ctb_reva_regs_t *ctb_regs)
     return !!(ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RDY);
 }
 
-// Helper function for MXC_CTB_RevA_Done.
-// Some features should not be enabled if it is not configured.
-static int MXC_CTB_IsConfigured(mxc_ctb_reva_regs_t *ctb_regs)
-{
-    uint32_t configured = 0;
-
-    if (ctb_regs->cipher_ctrl) {
-        configured |= MXC_CTB_REVA_FEATURE_CIPHER;
-    }
-
-    if (ctb_regs->hash_ctrl) {
-        configured |= MXC_CTB_REVA_FEATURE_HASH;
-    }
-
-    return configured;
-}
-
 void MXC_CTB_RevA_DoneClear(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features)
 {
     uint32_t mask = 0;
@@ -198,21 +180,22 @@ void MXC_CTB_RevA_DoneClear(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features)
 uint32_t MXC_CTB_RevA_Done(mxc_ctb_reva_regs_t *ctb_regs)
 {
     uint32_t features = 0;
-    uint32_t configured = MXC_CTB_IsConfigured(ctb_regs);
 
     if (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_DMA_DONE) {
         features |= MXC_CTB_REVA_FEATURE_DMA;
     }
 
     if (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_HSH_DONE) {
-        features |= MXC_CTB_REVA_FEATURE_HASH;
+        if (ctb_regs->hash_ctrl) { // set flag if only configured
+            features |= MXC_CTB_REVA_FEATURE_HASH;
+        }
     }
 
     if (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_CPH_DONE) {
-        features |= MXC_CTB_REVA_FEATURE_CIPHER;
+        if (ctb_regs->cipher_ctrl) { // set flag if only configured
+            features |= MXC_CTB_REVA_FEATURE_CIPHER;
+        }
     }
-
-    features &= configured;
 
     return features;
 }
@@ -477,7 +460,9 @@ void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t *trng, uint8_t *data, ui
 
     while (MXC_GetLock((void *)&MXC_CTB_Callbacks[RNG_ID], 1) != E_NO_ERROR) {}
 
+#ifndef __riscv
     NVIC_DisableIRQ(TRNG_IRQn);
+#endif
 
     TRNG_data = data;
     TRNG_count = 0;
@@ -486,7 +471,10 @@ void MXC_CTB_RevA_TRNG_RandomAsync(mxc_trng_reva_regs_t *trng, uint8_t *data, ui
 
     // Enable interrupts
     trng->ctrl |= MXC_F_TRNG_REVA_CTRL_RND_IE;
+
+#ifndef __riscv
     NVIC_EnableIRQ(TRNG_IRQn);
+#endif
 }
 
 /* ************************************************************************* */

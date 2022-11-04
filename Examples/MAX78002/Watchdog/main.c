@@ -65,7 +65,7 @@ volatile int interrupt_count = 0;
 
 // refers to array, do not change constants
 #define SW1 0
-#define LED LED1
+
 /***** Functions *****/
 
 // *****************************************************************************
@@ -125,6 +125,16 @@ void SW2_Callback()
     PB_RegisterCallback(1, NULL);
 }
 
+void blinkled(int led, int num_of_blink, unsigned int ms_delay)
+{
+    for (int i = 0; i < num_of_blink; i++) {
+        LED_On(led);
+        MXC_Delay(MXC_DELAY_MSEC(ms_delay));
+        LED_Off(led);
+        MXC_Delay(MXC_DELAY_MSEC(ms_delay));
+    }
+}
+
 // *****************************************************************************
 int main(void)
 {
@@ -153,20 +163,8 @@ int main(void)
     printf("     timeout period.\n\n");
     printf("SW3: Push SW3 to reset the watchdog timer in the \"too-early\" period.\n");
 
-    //Blink LED
-    // MXC_GPIO_OutClr(led_pin[0].port,led_pin[0].mask);
-    LED_Off(0);
-
-    //Blink LED three times at startup
-    int numBlinks = 3;
-
-    while (numBlinks) {
-        LED_On(0);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        LED_Off(0);
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        numBlinks--;
-    }
+    //Blink LED0 three times at startup
+    blinkled(0, 3, 100);
 
     //Setup and start watchdog
     MXC_WDT_Setup();
@@ -198,10 +196,8 @@ int main(void)
         }
 
         //blink LED0
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        LED_On(0);
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        LED_Off(0);
+        blinkled(0, 1, 500);
+
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }

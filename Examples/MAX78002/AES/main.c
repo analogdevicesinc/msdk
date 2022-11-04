@@ -45,7 +45,6 @@
 #include "board.h"
 #include "dma.h"
 #include "aes.h"
-#include "aes_regs.h"
 
 /***** Definitions *****/
 #define MXC_AES_DATA_LENGTH 8 //4 words
@@ -144,15 +143,11 @@ int main(void)
     AES_encrypt(0, MXC_AES_256BITS);
     fail += AES_decrypt(0, MXC_AES_256BITS);
 
-    printf("\n");
-
     if (fail == 0) {
         printf("\nExample Succeeded\n");
     } else {
         printf("Example Failed\n");
     }
 
-    while (1) {}
-
-    return 0;
+    return fail;
 }

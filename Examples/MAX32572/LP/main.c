@@ -179,14 +179,11 @@ int main(void)
 #endif // USE_CONSOLE
     setTrigger(1);
 
-    MXC_LP_ROMLightSleepEnable();
+    MXC_LP_ROM0LightSleepEnable();
     MXC_LP_USBFIFOLightSleepEnable();
     MXC_LP_CryptoLightSleepEnable();
-    MXC_LP_SRCCLightSleepEnable();
     MXC_LP_ICacheXIPLightSleepEnable();
     MXC_LP_ICache0LightSleepEnable();
-    MXC_LP_SysRam5LightSleepEnable();
-    MXC_LP_SysRam4LightSleepEnable();
     MXC_LP_SysRam3LightSleepEnable();
     MXC_LP_SysRam2LightSleepEnable();
 
@@ -201,11 +198,7 @@ int main(void)
     MXC_LP_ROMShutdown();
     MXC_LP_USBFIFOShutdown();
     // MXC_LP_CryptoShutdown();
-    MXC_LP_SRCCShutdown();
     MXC_LP_ICacheXIPShutdown();
-    MXC_LP_ICache0Shutdown();
-    MXC_LP_SysRam5Shutdown();
-    MXC_LP_SysRam4Shutdown();
     MXC_LP_SysRam3Shutdown();
     MXC_LP_SysRam2Shutdown();
 

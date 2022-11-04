@@ -6,7 +6,7 @@
     <baseAddress>0x40002000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
-      <size>0x400</size>
+      <size>0x1000</size>
       <usage>registers</usage>
     </addressBlock>
     <registers>
@@ -388,8 +388,8 @@
         </fields>
       </register>
       <register>
-        <name>SPIXM</name>
-        <description>SPIXM RPU Register.</description>
+        <name>SPIXFM</name>
+        <description>SPIXFM RPU Register.</description>
         <addressOffset>0x0260</addressOffset>
         <fields>
           <field>
