@@ -1,6 +1,7 @@
 /**
  * @file    aes_key_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
@@ -77,7 +78,7 @@ extern "C" {
  * @ingroup     aes_key
  * @defgroup    aes_key_registers AES_KEY_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
- * @details AES Key Registers.
+ * @details     AES Key Registers.
  */
 
 /**
@@ -101,10 +102,10 @@ typedef struct {
  * @brief      AES_KEY Peripheral Register Offsets from the AES_KEY Base Peripheral Address.
  * @{
  */
- #define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000020UL) /**< Offset from AES_KEY Base Address: <tt> 0x0020</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000100UL) /**< Offset from AES_KEY Base Address: <tt> 0x0100</tt> */ 
- #define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x00000180UL) /**< Offset from AES_KEY Base Address: <tt> 0x0180</tt> */ 
+#define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */
+#define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000020UL) /**< Offset from AES_KEY Base Address: <tt> 0x0020</tt> */
+#define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000100UL) /**< Offset from AES_KEY Base Address: <tt> 0x0100</tt> */
+#define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x00000180UL) /**< Offset from AES_KEY Base Address: <tt> 0x0180</tt> */
 /**@} end of group aes_key_registers */
 
 #ifdef __cplusplus
