@@ -161,18 +161,6 @@ typedef struct {
 #define MXC_S_WUT_CTRL_TMODE_ONESHOT                   (MXC_V_WUT_CTRL_TMODE_ONESHOT << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_ONESHOT Setting */
 #define MXC_V_WUT_CTRL_TMODE_CONTINUOUS                ((uint32_t)0x1UL) /**< CTRL_TMODE_CONTINUOUS Value */
 #define MXC_S_WUT_CTRL_TMODE_CONTINUOUS                (MXC_V_WUT_CTRL_TMODE_CONTINUOUS << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_CONTINUOUS Setting */
-#define MXC_V_WUT_CTRL_TMODE_COUNTER                   ((uint32_t)0x2UL) /**< CTRL_TMODE_COUNTER Value */
-#define MXC_S_WUT_CTRL_TMODE_COUNTER                   (MXC_V_WUT_CTRL_TMODE_COUNTER << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_COUNTER Setting */
-#define MXC_V_WUT_CTRL_TMODE_PWM                       ((uint32_t)0x3UL) /**< CTRL_TMODE_PWM Value */
-#define MXC_S_WUT_CTRL_TMODE_PWM                       (MXC_V_WUT_CTRL_TMODE_PWM << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_PWM Setting */
-#define MXC_V_WUT_CTRL_TMODE_CAPTURE                   ((uint32_t)0x4UL) /**< CTRL_TMODE_CAPTURE Value */
-#define MXC_S_WUT_CTRL_TMODE_CAPTURE                   (MXC_V_WUT_CTRL_TMODE_CAPTURE << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_CAPTURE Setting */
-#define MXC_V_WUT_CTRL_TMODE_COMPARE                   ((uint32_t)0x5UL) /**< CTRL_TMODE_COMPARE Value */
-#define MXC_S_WUT_CTRL_TMODE_COMPARE                   (MXC_V_WUT_CTRL_TMODE_COMPARE << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_COMPARE Setting */
-#define MXC_V_WUT_CTRL_TMODE_GATED                     ((uint32_t)0x6UL) /**< CTRL_TMODE_GATED Value */
-#define MXC_S_WUT_CTRL_TMODE_GATED                     (MXC_V_WUT_CTRL_TMODE_GATED << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_GATED Setting */
-#define MXC_V_WUT_CTRL_TMODE_CAPTURECOMPARE            ((uint32_t)0x7UL) /**< CTRL_TMODE_CAPTURECOMPARE Value */
-#define MXC_S_WUT_CTRL_TMODE_CAPTURECOMPARE            (MXC_V_WUT_CTRL_TMODE_CAPTURECOMPARE << MXC_F_WUT_CTRL_TMODE_POS) /**< CTRL_TMODE_CAPTURECOMPARE Setting */
 
 #define MXC_F_WUT_CTRL_PRES_POS                        3 /**< CTRL_PRES Position */
 #define MXC_F_WUT_CTRL_PRES                            ((uint32_t)(0x7UL << MXC_F_WUT_CTRL_PRES_POS)) /**< CTRL_PRES Mask */
