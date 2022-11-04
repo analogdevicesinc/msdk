@@ -1,10 +1,11 @@
 /**
  * @file    gcfr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GCFR Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,11 +35,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _GCFR_REGS_H_
-#define _GCFR_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_GCFR_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_GCFR_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +78,7 @@ extern "C" {
  * @ingroup     gcfr
  * @defgroup    gcfr_registers GCFR_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the GCFR Peripheral Module.
- * @details Global Control Function Register.
+ * @details     Global Control Function Register.
  */
 
 /**
@@ -96,13 +96,13 @@ typedef struct {
 /**
  * @ingroup    gcfr_registers
  * @defgroup   GCFR_Register_Offsets Register Offsets
- * @brief      GCFR Peripheral Register Offsets from the GCFR Base Peripheral Address. 
+ * @brief      GCFR Peripheral Register Offsets from the GCFR Base Peripheral Address.
  * @{
  */
- #define MXC_R_GCFR_REG0                    ((uint32_t)0x00000000UL) /**< Offset from GCFR Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_GCFR_REG1                    ((uint32_t)0x00000004UL) /**< Offset from GCFR Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_GCFR_REG2                    ((uint32_t)0x00000008UL) /**< Offset from GCFR Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_GCFR_REG3                    ((uint32_t)0x0000000CUL) /**< Offset from GCFR Base Address: <tt> 0x000C</tt> */ 
+#define MXC_R_GCFR_REG0                    ((uint32_t)0x00000000UL) /**< Offset from GCFR Base Address: <tt> 0x0000</tt> */
+#define MXC_R_GCFR_REG1                    ((uint32_t)0x00000004UL) /**< Offset from GCFR Base Address: <tt> 0x0004</tt> */
+#define MXC_R_GCFR_REG2                    ((uint32_t)0x00000008UL) /**< Offset from GCFR Base Address: <tt> 0x0008</tt> */
+#define MXC_R_GCFR_REG3                    ((uint32_t)0x0000000CUL) /**< Offset from GCFR Base Address: <tt> 0x000C</tt> */
 /**@} end of group gcfr_registers */
 
 /**
@@ -111,17 +111,17 @@ typedef struct {
  * @brief    Register 0.
  * @{
  */
- #define MXC_F_GCFR_REG0_CNNX16_0_PWR_EN_POS            0 /**< REG0_CNNX16_0_PWR_EN Position */
- #define MXC_F_GCFR_REG0_CNNX16_0_PWR_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_CNNX16_0_PWR_EN_POS)) /**< REG0_CNNX16_0_PWR_EN Mask */
+#define MXC_F_GCFR_REG0_CNNX16_0_PWR_EN_POS            0 /**< REG0_CNNX16_0_PWR_EN Position */
+#define MXC_F_GCFR_REG0_CNNX16_0_PWR_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_CNNX16_0_PWR_EN_POS)) /**< REG0_CNNX16_0_PWR_EN Mask */
 
- #define MXC_F_GCFR_REG0_CNNX16_1_PWR_EN_POS            1 /**< REG0_CNNX16_1_PWR_EN Position */
- #define MXC_F_GCFR_REG0_CNNX16_1_PWR_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_CNNX16_1_PWR_EN_POS)) /**< REG0_CNNX16_1_PWR_EN Mask */
+#define MXC_F_GCFR_REG0_CNNX16_1_PWR_EN_POS            1 /**< REG0_CNNX16_1_PWR_EN Position */
+#define MXC_F_GCFR_REG0_CNNX16_1_PWR_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_CNNX16_1_PWR_EN_POS)) /**< REG0_CNNX16_1_PWR_EN Mask */
 
- #define MXC_F_GCFR_REG0_CNNX16_2_PWR_EN_POS            2 /**< REG0_CNNX16_2_PWR_EN Position */
- #define MXC_F_GCFR_REG0_CNNX16_2_PWR_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_CNNX16_2_PWR_EN_POS)) /**< REG0_CNNX16_2_PWR_EN Mask */
+#define MXC_F_GCFR_REG0_CNNX16_2_PWR_EN_POS            2 /**< REG0_CNNX16_2_PWR_EN Position */
+#define MXC_F_GCFR_REG0_CNNX16_2_PWR_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_CNNX16_2_PWR_EN_POS)) /**< REG0_CNNX16_2_PWR_EN Mask */
 
- #define MXC_F_GCFR_REG0_CNNX16_3_PWR_EN_POS            3 /**< REG0_CNNX16_3_PWR_EN Position */
- #define MXC_F_GCFR_REG0_CNNX16_3_PWR_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_CNNX16_3_PWR_EN_POS)) /**< REG0_CNNX16_3_PWR_EN Mask */
+#define MXC_F_GCFR_REG0_CNNX16_3_PWR_EN_POS            3 /**< REG0_CNNX16_3_PWR_EN Position */
+#define MXC_F_GCFR_REG0_CNNX16_3_PWR_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG0_CNNX16_3_PWR_EN_POS)) /**< REG0_CNNX16_3_PWR_EN Mask */
 
 /**@} end of group GCFR_REG0_Register */
 
@@ -131,17 +131,17 @@ typedef struct {
  * @brief    Register 1.
  * @{
  */
- #define MXC_F_GCFR_REG1_CNNX16_0_RAM_EN_POS            0 /**< REG1_CNNX16_0_RAM_EN Position */
- #define MXC_F_GCFR_REG1_CNNX16_0_RAM_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG1_CNNX16_0_RAM_EN_POS)) /**< REG1_CNNX16_0_RAM_EN Mask */
+#define MXC_F_GCFR_REG1_CNNX16_0_RAM_EN_POS            0 /**< REG1_CNNX16_0_RAM_EN Position */
+#define MXC_F_GCFR_REG1_CNNX16_0_RAM_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG1_CNNX16_0_RAM_EN_POS)) /**< REG1_CNNX16_0_RAM_EN Mask */
 
- #define MXC_F_GCFR_REG1_CNNX16_1_RAM_EN_POS            1 /**< REG1_CNNX16_1_RAM_EN Position */
- #define MXC_F_GCFR_REG1_CNNX16_1_RAM_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG1_CNNX16_1_RAM_EN_POS)) /**< REG1_CNNX16_1_RAM_EN Mask */
+#define MXC_F_GCFR_REG1_CNNX16_1_RAM_EN_POS            1 /**< REG1_CNNX16_1_RAM_EN Position */
+#define MXC_F_GCFR_REG1_CNNX16_1_RAM_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG1_CNNX16_1_RAM_EN_POS)) /**< REG1_CNNX16_1_RAM_EN Mask */
 
- #define MXC_F_GCFR_REG1_CNNX16_2_RAM_EN_POS            2 /**< REG1_CNNX16_2_RAM_EN Position */
- #define MXC_F_GCFR_REG1_CNNX16_2_RAM_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG1_CNNX16_2_RAM_EN_POS)) /**< REG1_CNNX16_2_RAM_EN Mask */
+#define MXC_F_GCFR_REG1_CNNX16_2_RAM_EN_POS            2 /**< REG1_CNNX16_2_RAM_EN Position */
+#define MXC_F_GCFR_REG1_CNNX16_2_RAM_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG1_CNNX16_2_RAM_EN_POS)) /**< REG1_CNNX16_2_RAM_EN Mask */
 
- #define MXC_F_GCFR_REG1_CNNX16_3_RAM_EN_POS            3 /**< REG1_CNNX16_3_RAM_EN Position */
- #define MXC_F_GCFR_REG1_CNNX16_3_RAM_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG1_CNNX16_3_RAM_EN_POS)) /**< REG1_CNNX16_3_RAM_EN Mask */
+#define MXC_F_GCFR_REG1_CNNX16_3_RAM_EN_POS            3 /**< REG1_CNNX16_3_RAM_EN Position */
+#define MXC_F_GCFR_REG1_CNNX16_3_RAM_EN                ((uint32_t)(0x1UL << MXC_F_GCFR_REG1_CNNX16_3_RAM_EN_POS)) /**< REG1_CNNX16_3_RAM_EN Mask */
 
 /**@} end of group GCFR_REG1_Register */
 
@@ -151,41 +151,41 @@ typedef struct {
  * @brief    Register 2.
  * @{
  */
- #define MXC_F_GCFR_REG2_CNNX16_0_ISO_POS               0 /**< REG2_CNNX16_0_ISO Position */
- #define MXC_F_GCFR_REG2_CNNX16_0_ISO                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_0_ISO_POS)) /**< REG2_CNNX16_0_ISO Mask */
+#define MXC_F_GCFR_REG2_CNNX16_0_ISO_POS               0 /**< REG2_CNNX16_0_ISO Position */
+#define MXC_F_GCFR_REG2_CNNX16_0_ISO                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_0_ISO_POS)) /**< REG2_CNNX16_0_ISO Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_1_ISO_POS               1 /**< REG2_CNNX16_1_ISO Position */
- #define MXC_F_GCFR_REG2_CNNX16_1_ISO                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_1_ISO_POS)) /**< REG2_CNNX16_1_ISO Mask */
+#define MXC_F_GCFR_REG2_CNNX16_1_ISO_POS               1 /**< REG2_CNNX16_1_ISO Position */
+#define MXC_F_GCFR_REG2_CNNX16_1_ISO                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_1_ISO_POS)) /**< REG2_CNNX16_1_ISO Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_2_ISO_POS               2 /**< REG2_CNNX16_2_ISO Position */
- #define MXC_F_GCFR_REG2_CNNX16_2_ISO                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_2_ISO_POS)) /**< REG2_CNNX16_2_ISO Mask */
+#define MXC_F_GCFR_REG2_CNNX16_2_ISO_POS               2 /**< REG2_CNNX16_2_ISO Position */
+#define MXC_F_GCFR_REG2_CNNX16_2_ISO                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_2_ISO_POS)) /**< REG2_CNNX16_2_ISO Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_3_ISO_POS               3 /**< REG2_CNNX16_3_ISO Position */
- #define MXC_F_GCFR_REG2_CNNX16_3_ISO                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_3_ISO_POS)) /**< REG2_CNNX16_3_ISO Mask */
+#define MXC_F_GCFR_REG2_CNNX16_3_ISO_POS               3 /**< REG2_CNNX16_3_ISO Position */
+#define MXC_F_GCFR_REG2_CNNX16_3_ISO                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_3_ISO_POS)) /**< REG2_CNNX16_3_ISO Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_0_DATA_RET_EN_POS       16 /**< REG2_CNNX16_0_DATA_RET_EN Position */
- #define MXC_F_GCFR_REG2_CNNX16_0_DATA_RET_EN           ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_0_DATA_RET_EN_POS)) /**< REG2_CNNX16_0_DATA_RET_EN Mask */
+#define MXC_F_GCFR_REG2_CNNX16_0_DATA_RET_EN_POS       16 /**< REG2_CNNX16_0_DATA_RET_EN Position */
+#define MXC_F_GCFR_REG2_CNNX16_0_DATA_RET_EN           ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_0_DATA_RET_EN_POS)) /**< REG2_CNNX16_0_DATA_RET_EN Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_1_DATA_RET_EN_POS       17 /**< REG2_CNNX16_1_DATA_RET_EN Position */
- #define MXC_F_GCFR_REG2_CNNX16_1_DATA_RET_EN           ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_1_DATA_RET_EN_POS)) /**< REG2_CNNX16_1_DATA_RET_EN Mask */
+#define MXC_F_GCFR_REG2_CNNX16_1_DATA_RET_EN_POS       17 /**< REG2_CNNX16_1_DATA_RET_EN Position */
+#define MXC_F_GCFR_REG2_CNNX16_1_DATA_RET_EN           ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_1_DATA_RET_EN_POS)) /**< REG2_CNNX16_1_DATA_RET_EN Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_2_DATA_RET_EN_POS       18 /**< REG2_CNNX16_2_DATA_RET_EN Position */
- #define MXC_F_GCFR_REG2_CNNX16_2_DATA_RET_EN           ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_2_DATA_RET_EN_POS)) /**< REG2_CNNX16_2_DATA_RET_EN Mask */
+#define MXC_F_GCFR_REG2_CNNX16_2_DATA_RET_EN_POS       18 /**< REG2_CNNX16_2_DATA_RET_EN Position */
+#define MXC_F_GCFR_REG2_CNNX16_2_DATA_RET_EN           ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_2_DATA_RET_EN_POS)) /**< REG2_CNNX16_2_DATA_RET_EN Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_3_DATA_RET_EN_POS       19 /**< REG2_CNNX16_3_DATA_RET_EN Position */
- #define MXC_F_GCFR_REG2_CNNX16_3_DATA_RET_EN           ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_3_DATA_RET_EN_POS)) /**< REG2_CNNX16_3_DATA_RET_EN Mask */
+#define MXC_F_GCFR_REG2_CNNX16_3_DATA_RET_EN_POS       19 /**< REG2_CNNX16_3_DATA_RET_EN Position */
+#define MXC_F_GCFR_REG2_CNNX16_3_DATA_RET_EN           ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_3_DATA_RET_EN_POS)) /**< REG2_CNNX16_3_DATA_RET_EN Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_0_RAM_DATA_RET_EN_POS   20 /**< REG2_CNNX16_0_RAM_DATA_RET_EN Position */
- #define MXC_F_GCFR_REG2_CNNX16_0_RAM_DATA_RET_EN       ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_0_RAM_DATA_RET_EN_POS)) /**< REG2_CNNX16_0_RAM_DATA_RET_EN Mask */
+#define MXC_F_GCFR_REG2_CNNX16_0_RAM_DATA_RET_EN_POS   20 /**< REG2_CNNX16_0_RAM_DATA_RET_EN Position */
+#define MXC_F_GCFR_REG2_CNNX16_0_RAM_DATA_RET_EN       ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_0_RAM_DATA_RET_EN_POS)) /**< REG2_CNNX16_0_RAM_DATA_RET_EN Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_1_RAM_DATA_RET_EN_POS   21 /**< REG2_CNNX16_1_RAM_DATA_RET_EN Position */
- #define MXC_F_GCFR_REG2_CNNX16_1_RAM_DATA_RET_EN       ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_1_RAM_DATA_RET_EN_POS)) /**< REG2_CNNX16_1_RAM_DATA_RET_EN Mask */
+#define MXC_F_GCFR_REG2_CNNX16_1_RAM_DATA_RET_EN_POS   21 /**< REG2_CNNX16_1_RAM_DATA_RET_EN Position */
+#define MXC_F_GCFR_REG2_CNNX16_1_RAM_DATA_RET_EN       ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_1_RAM_DATA_RET_EN_POS)) /**< REG2_CNNX16_1_RAM_DATA_RET_EN Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_2_RAM_DATA_RET_EN_POS   22 /**< REG2_CNNX16_2_RAM_DATA_RET_EN Position */
- #define MXC_F_GCFR_REG2_CNNX16_2_RAM_DATA_RET_EN       ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_2_RAM_DATA_RET_EN_POS)) /**< REG2_CNNX16_2_RAM_DATA_RET_EN Mask */
+#define MXC_F_GCFR_REG2_CNNX16_2_RAM_DATA_RET_EN_POS   22 /**< REG2_CNNX16_2_RAM_DATA_RET_EN Position */
+#define MXC_F_GCFR_REG2_CNNX16_2_RAM_DATA_RET_EN       ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_2_RAM_DATA_RET_EN_POS)) /**< REG2_CNNX16_2_RAM_DATA_RET_EN Mask */
 
- #define MXC_F_GCFR_REG2_CNNX16_3_RAM_DATA_RET_EN_POS   23 /**< REG2_CNNX16_3_RAM_DATA_RET_EN Position */
- #define MXC_F_GCFR_REG2_CNNX16_3_RAM_DATA_RET_EN       ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_3_RAM_DATA_RET_EN_POS)) /**< REG2_CNNX16_3_RAM_DATA_RET_EN Mask */
+#define MXC_F_GCFR_REG2_CNNX16_3_RAM_DATA_RET_EN_POS   23 /**< REG2_CNNX16_3_RAM_DATA_RET_EN Position */
+#define MXC_F_GCFR_REG2_CNNX16_3_RAM_DATA_RET_EN       ((uint32_t)(0x1UL << MXC_F_GCFR_REG2_CNNX16_3_RAM_DATA_RET_EN_POS)) /**< REG2_CNNX16_3_RAM_DATA_RET_EN Mask */
 
 /**@} end of group GCFR_REG2_Register */
 
@@ -195,17 +195,17 @@ typedef struct {
  * @brief    Register 3.
  * @{
  */
- #define MXC_F_GCFR_REG3_CNNX16_0_RST_POS               0 /**< REG3_CNNX16_0_RST Position */
- #define MXC_F_GCFR_REG3_CNNX16_0_RST                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG3_CNNX16_0_RST_POS)) /**< REG3_CNNX16_0_RST Mask */
+#define MXC_F_GCFR_REG3_CNNX16_0_RST_POS               0 /**< REG3_CNNX16_0_RST Position */
+#define MXC_F_GCFR_REG3_CNNX16_0_RST                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG3_CNNX16_0_RST_POS)) /**< REG3_CNNX16_0_RST Mask */
 
- #define MXC_F_GCFR_REG3_CNNX16_1_RST_POS               1 /**< REG3_CNNX16_1_RST Position */
- #define MXC_F_GCFR_REG3_CNNX16_1_RST                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG3_CNNX16_1_RST_POS)) /**< REG3_CNNX16_1_RST Mask */
+#define MXC_F_GCFR_REG3_CNNX16_1_RST_POS               1 /**< REG3_CNNX16_1_RST Position */
+#define MXC_F_GCFR_REG3_CNNX16_1_RST                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG3_CNNX16_1_RST_POS)) /**< REG3_CNNX16_1_RST Mask */
 
- #define MXC_F_GCFR_REG3_CNNX16_2_RST_POS               2 /**< REG3_CNNX16_2_RST Position */
- #define MXC_F_GCFR_REG3_CNNX16_2_RST                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG3_CNNX16_2_RST_POS)) /**< REG3_CNNX16_2_RST Mask */
+#define MXC_F_GCFR_REG3_CNNX16_2_RST_POS               2 /**< REG3_CNNX16_2_RST Position */
+#define MXC_F_GCFR_REG3_CNNX16_2_RST                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG3_CNNX16_2_RST_POS)) /**< REG3_CNNX16_2_RST Mask */
 
- #define MXC_F_GCFR_REG3_CNNX16_3_RST_POS               3 /**< REG3_CNNX16_3_RST Position */
- #define MXC_F_GCFR_REG3_CNNX16_3_RST                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG3_CNNX16_3_RST_POS)) /**< REG3_CNNX16_3_RST Mask */
+#define MXC_F_GCFR_REG3_CNNX16_3_RST_POS               3 /**< REG3_CNNX16_3_RST Position */
+#define MXC_F_GCFR_REG3_CNNX16_3_RST                   ((uint32_t)(0x1UL << MXC_F_GCFR_REG3_CNNX16_3_RST_POS)) /**< REG3_CNNX16_3_RST Mask */
 
 /**@} end of group GCFR_REG3_Register */
 
@@ -213,4 +213,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _GCFR_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_GCFR_REGS_H_
