@@ -49,20 +49,6 @@
 
 /************************    PUBLIC FUNCTIONS  *******************************/
 
-uint32_t utils_get_time_ms(void)
-{
-    int sec;
-    double subsec;
-    uint32_t ms;
-
-    subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
-
-    ms = (sec * 1000) + (int)(subsec * 1000);
-
-    return ms;
-}
-
 void utils_hexDump(const char *title, uint8_t *buf, uint32_t len)
 {
     uint32_t i;
