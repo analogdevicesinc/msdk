@@ -97,12 +97,6 @@ uint32_t MXC_WUT_GetCompare(void)
     return MXC_WUT_RevA_GetCompare((mxc_wut_reva_regs_t *)MXC_WUT);
 }
 
-///* ************************************************************************** */
-uint32_t MXC_WUT_GetCapture(void)
-{
-    return MXC_WUT_RevA_GetCapture((mxc_wut_reva_regs_t *)MXC_WUT);
-}
-
 /* ************************************************************************* */
 uint32_t MXC_WUT_GetCount(void)
 {
@@ -202,10 +196,6 @@ static int MXC_WUT_StarTrim(void)
 
     /* Make sure the WUT is running in compare mode */
     if (!(MXC_WUT->ctrl & MXC_F_WUT_REVA_CTRL_TEN)) {
-        return E_UNINITIALIZED;
-    }
-
-    if ((MXC_WUT->ctrl & MXC_F_WUT_CTRL_TMODE) != MXC_S_WUT_CTRL_TMODE_COMPARE) {
         return E_UNINITIALIZED;
     }
 
