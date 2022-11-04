@@ -153,12 +153,6 @@ void MXC_WUT_Config(const mxc_wut_cfg_t *cfg);
 uint32_t MXC_WUT_GetCompare(void);
 
 /**
- * @brief   Get the timer capture count.
- * @return  Returns the most recent capture count.
- */
-uint32_t MXC_WUT_GetCapture(void);
-
-/**
  * @brief   Get the timer count.
  * @return  Returns the current count.
  */
