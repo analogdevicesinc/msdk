@@ -78,36 +78,6 @@
                 <description>Continuous Mode.</description>
                 <value>1</value>
               </enumeratedValue>
-              <enumeratedValue>
-                <name>counter</name>
-                <description>Counter Mode.</description>
-                <value>2</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>pwm</name>
-                <description>PWM Mode.</description>
-                <value>3</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>capture</name>
-                <description>Capture Mode.</description>
-                <value>4</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>compare</name>
-                <description>Compare Mode.</description>
-                <value>5</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>gated</name>
-                <description>Gated Mode.</description>
-                <value>6</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>captureCompare</name>
-                <description>Capture/Compare Mode.</description>
-                <value>7</value>
-              </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
