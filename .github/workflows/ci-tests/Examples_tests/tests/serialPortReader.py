@@ -25,14 +25,7 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
         write_to_console("\r\nWriting to port: " + port  + "\r\n")
         time.sleep(0.1)
         # start test, send command
-        ser.write(bytes(send, encoding='utf-8'))
-        x=ser.readline().decode("utf-8")
-        x=str(x)
-        if x != send:
-            write_to_console("\r\nWrite failed trying again\r\n")
-            ser.write(bytes("\n", encoding='utf-8'))
-            time.sleep(0.1)
-            ser.write(bytes(send, encoding='utf-8'))
+        ser.write(bytes("hi", encoding='utf-8'))
         while (time.time()-timeStart) < timeout:
             x=ser.readline().decode("utf-8")
             x=str(x)
@@ -42,7 +35,21 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
                     write_to_console("\r\n")
                     ser.close()
                     BuiltIn().pass_execution("Woohoo!\r\n")
-        write_to_console("\r\nTest Timeout")
+        write_to_console("\r\nTest Timeout trying one more time")
+        ser.write(bytes("\n", encoding='utf-8'))
+        time.sleep(0.1)
+        ser.write(bytes(send, encoding='utf-8'))
+        timeStart = time.time()
+        while (time.time()-timeStart) < timeout:
+            x=ser.readline().decode("utf-8")
+            x=str(x)
+            if x != "":
+                write_to_console(x)
+                if expect in x:
+                    write_to_console("\r\n")
+                    ser.close()
+                    BuiltIn().pass_execution("Woohoo!\r\n")
+
         ser.close()
         BuiltIn().fail("Darn!\r\n")
 
