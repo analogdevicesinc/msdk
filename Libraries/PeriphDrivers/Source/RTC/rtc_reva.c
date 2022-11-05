@@ -354,7 +354,7 @@ int MXC_RTC_RevA_GetTime(mxc_rtc_reva_regs_t *rtc, uint32_t *sec, uint32_t *subs
 int MXC_RTC_RevA_TrimCrystal(mxc_rtc_reva_regs_t *rtc, mxc_tmr_regs_t *tmr)
 {
     int err, ppm = 0;
-    uint32_t sec, ssec, ctrl;
+    uint32_t sec = 0, ssec = 0, ctrl = 0;
     uint32_t sec_sample[MXC_RTC_REVA_TRIM_PERIODS + 1] = { 0 };
     uint32_t ssec_sample[MXC_RTC_REVA_TRIM_PERIODS + 1] = { 0 };
     bool rtc_en = true;
