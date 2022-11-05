@@ -1,5 +1,4 @@
 *** settings ***
-
 Library    String
 Library    ../resources/serialPortReader.py
 
