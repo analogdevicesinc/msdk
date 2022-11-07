@@ -10,7 +10,7 @@ ${SERIAL_PORT_2}  /dev/ttyUSB1
 Original Firmware Test
     [Timeout]    30s
     Sleep     5s
-    Expect And Timeout    btn 2 m\n    FW_VERSION: 1   5    ${SERIAL_PORT_2}
+    Expect And Timeout    btn 2 m\n    FW_VERSION: 1     5     ${SERIAL_PORT_2}
 
 File Discovery Test
     [Timeout]    30s
@@ -39,7 +39,7 @@ Firmware Reconnect Succesful Test
 Firmware Update Verification Test
     [Timeout]    30s
     sleep   2
-    Expect And Timeout    btn 2 m\n    FW_VERSION: 2   5    ${SERIAL_PORT_2}
+    Expect And Timeout    btn 2 m\n    FW_VERSION: 2     5     ${SERIAL_PORT_2}
 
     
 
