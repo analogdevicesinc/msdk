@@ -14,7 +14,7 @@
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     
-    "target":"MAX78000",
+    "target":"MAX78002",
     "board":"EvKit_V1",
 
     "project_name":"${workspaceFolderBasename}",
@@ -23,7 +23,7 @@
     "symbol_file":"${config:program_file}",
 
     "M4_OCD_interface_file":"cmsis-dap.cfg",
-    "M4_OCD_target_file":"max78000.cfg",
+    "M4_OCD_target_file":"max78002.cfg",
     "RV_OCD_interface_file":"ftdi/olimex-arm-usb-ocd-h.cfg",
     "RV_OCD_target_file":"${config:target}_riscv.cfg",
 
@@ -83,10 +83,8 @@
     "C_Cpp.default.defines": [
         "${config:board}",
         "CAMERA_OV7692",
-        // "CAMERA_HM360_MONO",
-        // "CAMERA_MONO",
-        // "CAMERA_HM0360_BAYER",
-        // "CAMERA_BAYER"
+        //"CAMERA_HM0360_COLOR",
+        "CONSOLE"
     ]
 }
 

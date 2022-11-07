@@ -45,10 +45,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include "mxc.h"
+#include "mxc_device.h"
+#include "mxc_delay.h"
+#include "uart.h"
 #include "led.h"
 #include "board.h"
 
 #include "camera.h"
+#include "cameraif.h"
+#include "dma.h"
 #include "example_config.h"
 #include "cnn_memutils.h"
 
@@ -473,6 +478,8 @@ void service_console()
                                                (uint16_t *)bayer_data);
                 }
 
+                // Point img_data to the new debayered RGB565 array, which is double
+                // the size of the original
                 img_data.raw = bayer_data;
                 img_data.imglen *= 2;
                 img_data.pixel_format = (uint8_t *)"RGB565";
@@ -487,6 +494,7 @@ void service_console()
             transmit_capture_uart(img_data);
 
 #ifdef CAMERA_BAYER
+            memset(bayer_data, 0, img_data.imglen);
             free(bayer_data);
 #endif
         } else if (cmd == CMD_STREAM) {
@@ -669,6 +677,10 @@ int main(void)
     defined(CAMERA_OV5642)
     camera_set_hmirror(0);
     camera_set_vflip(0);
+#endif
+
+#ifdef CAMERA_HM0360_COLOR
+    camera_write_reg(0x3024, 0); // Select context A (320x240)
 #endif
 
     // *********************************END CLEANME*************************************
