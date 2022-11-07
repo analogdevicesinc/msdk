@@ -34,7 +34,7 @@ Peer Device Reset Test
 
 Firmware Reconnect Succesful Test
     [Timeout]    120s
-    sleep     10
+    sleep     15
     Expect And Timeout    btn 2 s\n    >>> File discovery complete <<<    15    ${SERIAL_PORT_1}
     
 Firmware Update Verification Test

@@ -11,50 +11,57 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
         ser.port = port
         ser.timeout=1
         ser.open()
-        time.sleep(0.1)
-        #flush junk
-        ser.write(bytes("\n", encoding='utf-8'))
-        ser.reset_input_buffer()
-        ser.reset_output_buffer()
-        time.sleep(0.1)
-        ser.read_all()
-        
-        time.sleep(0.1)
-        if send == None:
-            send ="\r\n"
-        write_to_console("\r\nWriting to port: " + port  + "\r\n")
-        time.sleep(0.1)
-        # start test, send command
-        ser.write(bytes(send, encoding='utf-8'))
-        # read lines
-        while (time.time()-timeStart) < timeout:
-            x=ser.readline().decode("utf-8")
-            x=str(x)
-            if x != "":
-                write_to_console(x)
-                if expect in x:
-                    write_to_console("\r\n")
-                    ser.close()
-                    BuiltIn().pass_execution("Woohoo!\r\n")
-        # test timedout , try one more time
-        write_to_console("\r\nTest Timeout trying one more time")
-        ser.write(bytes("\n", encoding='utf-8'))
-        time.sleep(0.1)
-        ser.write(bytes(send, encoding='utf-8'))
-        # new start time, same timeout
-        timeStart = time.time()
-        while (time.time()-timeStart) < timeout:
-            x=ser.readline().decode("utf-8")
-            x=str(x)
-            if x != "":
-                write_to_console(x)
-                if expect in x:
-                    write_to_console("\r\n")
-                    ser.close()
-                    BuiltIn().pass_execution("Woohoo!\r\n")
+  
+        write_to_console("\n> Trying to open port: " + port  + "\n")
+        while ser.is_open != True:
+            time.sleep(1)
+        if ser.is_open == True:
+            write_to_console("> Port oepened successfully: " + port  + "\n")
+            #flush junk
+            ser.write(bytes("\n", encoding='utf-8'))
+            ser.reset_input_buffer()
+            ser.reset_output_buffer()
+            time.sleep(0.1)
+            ser.read_all()
+            
+            time.sleep(0.1)
+            if send == None:
+                send ="\r\n"
+            write_to_console("> Writing to port: " + port  + "\n")
+            time.sleep(0.1)
+            # start test, send command
+            ser.write(bytes(send, encoding='utf-8'))
+            # read lines
+            while (time.time()-timeStart) < timeout:
+                x=ser.readline().decode("utf-8")
+                x=str(x)
+                if x != "":
+                    write_to_console(x)
+                    if expect in x:
+                        write_to_console("\r\n")
+                        ser.close()
+                        BuiltIn().pass_execution("Woohoo!\r\n")
+            # test timedout , try one more time
+            write_to_console("\r\nTest Timeout trying one more time")
+            ser.write(bytes("\n", encoding='utf-8'))
+            time.sleep(0.1)
+            ser.write(bytes(send, encoding='utf-8'))
+            # new start time, same timeout
+            timeStart = time.time()
+            while (time.time()-timeStart) < timeout:
+                x=ser.readline().decode("utf-8")
+                x=str(x)
+                if x != "":
+                    write_to_console(x)
+                    if expect in x:
+                        write_to_console("\r\n")
+                        ser.close()
+                        BuiltIn().pass_execution("Woohoo!\r\n")
 
-        ser.close()
-        BuiltIn().fail("Darn!\r\n")
+            ser.close()
+            BuiltIn().fail("Darn!\r\n")
+        else:
+            write_to_console("Failed to reopen port\r\n")
 
 
 def flush_junk( port=None):
