@@ -78,9 +78,20 @@
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
-// Only 160x120 is currently supported.
+// Select the active context
+// 0 = Context A (320x240)
+// 1 = Context B (160x120)
+#define CONTEXT 0
+
+#if CONTEXT == 0
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
+#endif
+
+#if CONTEXT == 1
 #define IMAGE_XRES 160
 #define IMAGE_YRES 120
+#endif
 
 //UART baudrate used for sending data to PC, use max 921600 for serial stream
 #define CON_BAUD 115200 * 8
@@ -90,24 +101,12 @@
 
 typedef enum { BAYER_FUNCTION_PASSTHROUGH = 0, BAYER_FUNCTION_BILINEAR } bayer_function_t;
 
-// Set the default debayering function here
+// Set the default debayering function
 bayer_function_t g_bayer_function = BAYER_FUNCTION_BILINEAR;
 
 //------------------------
 
-#ifdef ENABLE_TFT
-
-#ifdef BOARD_EVKIT_V1
-#include "tft_ssd2119.h"
-#endif
-
-#ifdef BOARD_FTHR_REVA
-#include "tft_ili9341.h"
-#endif
-
-#endif
-
-static uint8_t *bayer_data;
+static uint8_t *debayered;
 
 void process_img(void)
 {
@@ -118,34 +117,34 @@ void process_img(void)
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
 
-    if (bayer_data) {
+    if (debayered) {
         switch (g_bayer_function) {
         case (BAYER_FUNCTION_PASSTHROUGH):
-            bayer_passthrough(raw, w, h, (uint16_t *)bayer_data);
+            bayer_passthrough(raw, w, h, (uint16_t *)debayered);
             break;
         case (BAYER_FUNCTION_BILINEAR):
-            bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)bayer_data);
+            bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)debayered);
             break;
         }
+    }
 
 #ifdef ENABLE_TFT
-        MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, bayer_data, w, h);
+    MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, debayered, w, h);
 #else
-        /*
-        * Stream image data to PC.
-        * Notice the data characteristics
-        * are modified here since the raw
-        * data has been converted to RGB565.
-        */
-        utils_stream_img_to_pc_init(bayer_data, imgLen * 2, w, h, (uint8_t *)"RGB565");
+    /*
+    * Stream image data to PC.
+    * Notice the data characteristics
+    * are modified here since the raw
+    * data has been converted to RGB565.
+    */
+    utils_stream_img_to_pc_init(debayered, imgLen * 2, w, h, (uint8_t *)"RGB565");
 
-        // Get image line by line
-        for (int i = 0; i < h; i++) {
-            // Send one line to PC
-            utils_stream_image_row_to_pc(bayer_data + (i * w * 2), w * 2);
-        }
-#endif
+    // Get image line by line
+    for (int i = 0; i < h; i++) {
+        // Send one line to PC
+        utils_stream_image_row_to_pc(debayered + (i * w * 2), w * 2);
     }
+#endif
 }
 
 void UART_Handler(void)
@@ -207,15 +206,18 @@ int main(void)
     camera_set_hmirror(0);
     camera_set_vflip(0);
 
+#if CONTEXT == 0
+    camera_write_reg(0x3024, 0); // Select context A (320x240)
+#endif
+
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
     /* Initialize TFT display */
-#ifdef BOARD_EVKIT_V1
-    MXC_TFT_Init();
-#endif
+    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
     MXC_TFT_SetBackGroundColor(4);
 #endif
 
+    // Use setup function with PIXFORMAT_BAYER to capture raw bayer data.
     ret =
         camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA, dma_channel);
 
@@ -224,7 +226,8 @@ int main(void)
         return -1;
     }
 
-    bayer_data = (uint8_t *)malloc(2 * IMAGE_XRES * IMAGE_YRES);
+    // Allocate memory for debayered image (RGB565, 2 bytes per pixel).
+    debayered = (uint8_t *)malloc(2 * IMAGE_XRES * IMAGE_YRES);
 
     MXC_Delay(SEC(1));
 

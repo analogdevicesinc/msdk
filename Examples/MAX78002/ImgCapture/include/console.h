@@ -30,31 +30,70 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_
-#define EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_
+/**
+* @file console.h
+* @brief Serial console header file
+*****************************************************************************/
 
-// Configuration options
-// ------------------------
+#ifndef EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CONSOLE_H_
+#define EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CONSOLE_H_
+#include "uart.h"
+#include "board.h"
+#include "example_config.h"
 
-#define CAMERA_FREQ 10000000
-// ^ Set the camera frequency
+#define SERIAL_BUFFER_SIZE 256
+#define CON_BAUD 921600 // UART baudrate used for sending data to PC
 
-#if defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || defined(CAMERA_PAG7920) || \
-    defined(CAMERA_OV5642)
-// These camera modules default to a higher resolution.  The HM0360 modules _only_ support a few
-// resolutions 320x240, 160x120, etc.
-
-#ifdef CAMERA_HM0360_MONO
-#define IMAGE_XRES 320
-#define IMAGE_YRES 240
-#else
-#define IMAGE_XRES 160
-#define IMAGE_YRES 120
+#ifdef SD
+#include "sd.h"
 #endif
 
-#else
-#define IMAGE_XRES 64
-#define IMAGE_YRES 64
+typedef enum {
+    CMD_UNKNOWN = -1,
+    CMD_HELP = 0,
+    CMD_RESET,
+    CMD_CAPTURE,
+    CMD_IMGRES,
+    CMD_STREAM,
+    CMD_SETREG,
+    CMD_GETREG,
+#ifdef CAMERA_BAYER
+    CMD_SETDEBAYER,
+#endif
+#ifdef SD
+    CMD_SD_MOUNT,
+    CMD_SD_UNMOUNT,
+    CMD_SD_CWD,
+    CMD_SD_CD,
+    CMD_SD_LS,
+    CMD_SD_MKDIR,
+    CMD_SD_RM,
+    CMD_SD_TOUCH,
+    CMD_SD_WRITE,
+    CMD_SD_CAT,
+    CMD_SD_SNAP
+#endif
+} cmd_t;
+
+extern char *cmd_table[];
+extern char *help_table[];
+
+static mxc_uart_regs_t *Con_Uart = MXC_UART_GET_UART(CONSOLE_UART);
+extern char g_serial_buffer[SERIAL_BUFFER_SIZE];
+extern int g_buffer_index;
+extern int g_num_commands;
+
+int console_init();
+int send_msg(const char *msg);
+int recv_msg(char *buffer);
+int recv_cmd(cmd_t *out_cmd);
+void clear_serial_buffer(void);
+void print_help(void);
+
+#ifdef SD
+// Supporting function for use with f_forward (http://elm-chan.org/fsw/ff/doc/forward.html)
+// Streams fatFS bytes to the UART TX FIFO
+UINT out_stream(const BYTE *p, UINT btf);
 #endif
 
-#endif // EXAMPLES_MAX78000_IMGCAPTURE_INCLUDE_EXAMPLE_CONFIG_H_
+#endif // EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CONSOLE_H_
