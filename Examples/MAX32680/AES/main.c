@@ -46,7 +46,6 @@
 #include "board.h"
 #include "dma.h"
 #include "aes.h"
-#include "aes_regs.h"
 
 /***** Definitions *****/
 #define MXC_AES_DATA_LENGTH 8 //4 words

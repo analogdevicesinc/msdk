@@ -7,5 +7,5 @@
 # description of the default behavior and the full list of
 # available options.
 
-
-
+LINKERFILE=$(TARGET_LC)_ram.ld
+$(info This example executes out of RAM using a special linkerfile: $(LINKERFILE))
