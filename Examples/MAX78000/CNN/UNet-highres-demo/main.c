@@ -723,7 +723,7 @@ int main(void)
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
-    cnn_enable((0 << MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS), MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
     cnn_boost_enable(MXC_GPIO2, MXC_GPIO_PIN_5); // Turn on the boost circuit
     cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
