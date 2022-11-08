@@ -664,7 +664,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                        CNN */
-// Note: Added in as a legacy definition. @Deprecated, do not use.  
+// Note: Added in as a legacy definition for backward compatibility.
 #include "gcr_regs.h"                            
 #define MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK (0 << MXC_F_GCR_PCLKDIV_CNNCLKSEL_POS)
 
