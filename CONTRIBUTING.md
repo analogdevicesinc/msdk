@@ -10,7 +10,7 @@ For beginners, [learngitbranching.js.org](https://learngitbranching.js.org/) is 
 
 The MSDK follows the [GitHub contribution guidelines](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).  
 
-External contributions from outside the [Analog Devices organization](https://github.com/Analog-Devices-MSDK) should be made via a Pull Request opened from a [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo).  **It should be noted that all of the MSDK's submodule's should be individually forked to your personal Github account as well**.
+External contributions from outside the [Analog Devices organization](https://github.com/Analog-Devices-MSDK) should be made via a Pull Request opened from a [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo).  **It should be noted that all of the MSDK's submodules should be individually forked to your personal Github account as well**.
 
 Internal contributions should also originate from a fork where possible.
 
