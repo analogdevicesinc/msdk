@@ -33,8 +33,8 @@ Peer Device Reset Test
     Expect And Timeout   btn 2 x\n    >>> Scanning started <<<    5    ${SERIAL_PORT_1}
 
 Firmware Update Verification Test
-    [Timeout]    30s 
-    Expect And Timeout    None    FW_VERSION: 2     5     ${SERIAL_PORT_2}
+    [Timeout]    30s     
+    Expect And Timeout    None    FW_VERSION: 2     15     ${SERIAL_PORT_2}
 
 
 Firmware Reconnect Succesful Test

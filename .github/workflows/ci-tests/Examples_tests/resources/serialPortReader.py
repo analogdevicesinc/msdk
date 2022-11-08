@@ -41,9 +41,11 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
                         BuiltIn().pass_execution("Woohoo!\r\n")
             # test timedout , try one more time
             write_to_console("\r\nTest Timeout trying one more time")
-            ser.write(bytes("\n", encoding='utf-8'))
-            time.sleep(0.1)
-            ser.write(bytes(send, encoding='utf-8'))
+            if send != None:
+                write_to_console("> Writing to port: " + port  + "\n")
+                ser.write(bytes("\n", encoding='utf-8'))
+                time.sleep(0.1)
+                ser.write(bytes(send, encoding='utf-8'))
             # new start time, same timeout
             timeStart = time.time()
             while (time.time()-timeStart) < timeout:
