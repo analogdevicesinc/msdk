@@ -32,16 +32,16 @@ Peer Device Reset Test
     sleep    2
     Expect And Timeout   btn 2 x\n    >>> Scanning started <<<    5    ${SERIAL_PORT_1}
 
+Firmware Update Verification Test
+    [Timeout]    30s 
+    Expect And Timeout    None    FW_VERSION: 2     5     ${SERIAL_PORT_2}
+
+
 Firmware Reconnect Succesful Test
     [Timeout]    120s
     sleep     15
     Expect And Timeout    btn 2 s\n    >>> File discovery complete <<<    15    ${SERIAL_PORT_1}
     
-Firmware Update Verification Test
-    [Timeout]    30s
-    sleep   2
-    flush_junk    ${SERIAL_PORT_2} 
-    Expect And Timeout    btn 2 m\n    FW_VERSION: 2     5     ${SERIAL_PORT_2}
 
     
 
