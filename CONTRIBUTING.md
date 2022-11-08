@@ -10,9 +10,11 @@ For beginners, [learngitbranching.js.org](https://learngitbranching.js.org/) is 
 
 The MSDK follows the [GitHub contribution guidelines](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).  
 
-External contributions from outside the [Analog Devices organization](https://github.com/Analog-Devices-MSDK) should be made via a Pull Request opened from a fork.  Internal contributions should also preferrably use a fork where possible.
+External contributions from outside the [Analog Devices organization](https://github.com/Analog-Devices-MSDK) should be made via a Pull Request opened from a [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo).  **It should be noted that all of the MSDK's submodule's should be individually forked to your personal Github account as well**.
 
-If a direct branch on the mainline MSDK repo is made, the following branch naming conventions should be used when possible:
+Internal contributions should also originate from a fork where possible.
+
+If a direct branch on the mainline MSDK repo is made, use the following branch naming conventions:
 
 * Bugfix/ticket: `fix/branchname`
     * For Jira tickets, it's recommended to use `fix/ticketnumber` so that the branch gets automatically tracked.  Ex: `fix/MSDK-670`
