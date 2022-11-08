@@ -209,18 +209,25 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
         switch (clk_src) {
         case MXC_SYS_CLOCK_IPO:
             clk_freq = IPO_FREQ;
+            break;
         case MXC_SYS_CLOCK_ERFO:
             clk_freq = ERFO_FREQ;
+            break;
         case MXC_SYS_CLOCK_IBRO:
             clk_freq = IBRO_FREQ;
+            break;
         case MXC_SYS_CLOCK_ISO:
             clk_freq = ISO_FREQ;
+            break;
         case MXC_SYS_CLOCK_INRO:
             clk_freq = INRO_FREQ;
+            break;
         case MXC_SYS_CLOCK_ERTCO:
             clk_freq = ERTCO_FREQ;
+            break;
         case MXC_SYS_CLOCK_EXTCLK:
             clk_freq = EXTCLK_FREQ;
+            break;
         default:
             return E_BAD_PARAM;
         }

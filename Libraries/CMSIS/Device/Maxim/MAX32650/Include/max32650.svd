@@ -612,6 +612,51 @@
   </peripheral>
 <!--ADC 10-bit Analog to Digital Converter-->
   <peripheral>
+   <name>AES_KEY</name>
+   <description>AES Key Registers.</description>
+   <baseAddress>0x40005000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <dim>4</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>AES_KEY0[%s]</name>
+     <description>AES Key 0.</description>
+     <addressOffset>0x00</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <dim>4</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>AES_KEY1[%s]</name>
+     <description>AES Key 1.</description>
+     <addressOffset>0x20</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <dim>4</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>AES_KEY2[%s]</name>
+     <description>AES Key 2.</description>
+     <addressOffset>0x100</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <dim>4</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>AES_KEY3[%s]</name>
+     <description>AES Key 3.</description>
+     <addressOffset>0x180</addressOffset>
+     <size>32</size>
+    </register>
+   </registers>
+  </peripheral>
+<!--AES_KEY AES Key Registers.-->
+  <peripheral>
    <name>CLCD</name>
    <description>Color LCD Controller</description>
    <baseAddress>0x40031000</baseAddress>
@@ -16603,43 +16648,6 @@
   </peripheral>
 <!--SPIXF SPIXF Master-->
   <peripheral>
-   <name>AES_KEY</name>
-   <description>AES Key Registers.</description>
-   <baseAddress>0x40005000</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x400</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <registers>
-    <register>
-     <name>AES_KEY0</name>
-     <description>AES Key 0.</description>
-     <addressOffset>0x000</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY1</name>
-     <description>AES Key 1.</description>
-     <addressOffset>0x080</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY2</name>
-     <description>AES Key 2.</description>
-     <addressOffset>0x100</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY3</name>
-     <description>AES Key 3.</description>
-     <addressOffset>0x180</addressOffset>
-     <size>32</size>
-    </register>
-   </registers>
-  </peripheral>
-<!--AES_KEY AES Key Registers.-->
-  <peripheral>
    <name>BBFC</name>
    <description>Battery Backed Function Control Register.</description>
    <baseAddress>0x40058000</baseAddress>
@@ -23135,25 +23143,6 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <description> DMA Request Enable </description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable DMA for this IN endpoint.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable DMA for this IN endpoint.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>FRCDATATOG</name>
        <description> Force In Data - Toggle</description>
        <bitOffset>3</bitOffset>
@@ -23168,25 +23157,6 @@
         <enumeratedValue>
          <name>dontcare</name>
          <description>Toggle data-toggle regardless of ACK. </description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <description> DMA Request Mode Enable </description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>0</name>
-         <description>Enable DMA Request Mode 0.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1</name>
-         <description>Enable DMA Request Mode 1.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -23307,20 +23277,8 @@
        <access>read-write</access>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
        <name>DISNYET</name>
        <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
@@ -23613,16 +23571,10 @@
     </register>
     <register>
      <name>RAMINFO</name>
-     <description>RAM width and DMA hardware information.</description>
+     <description>RAM width information.</description>
      <addressOffset>0x79</addressOffset>
      <size>8</size>
      <fields>
-      <field>
-       <name>DMACHANS</name>
-       <bitOffset>4</bitOffset>
-       <bitWidth>4</bitWidth>
-       <access>read-only</access>
-      </field>
       <field>
        <name>RAMBITS</name>
        <bitOffset>0</bitOffset>
@@ -23645,26 +23597,6 @@
       </field>
       <field>
        <name>RSTS</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EARLYDMA</name>
-     <description>DMA timing control register.</description>
-     <addressOffset>0x7B</addressOffset>
-     <size>8</size>
-     <fields>
-      <field>
-       <name>EDMAIN</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>EDMAOUT</name>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
@@ -23840,28 +23772,28 @@
      <addressOffset>0x470</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_HS_COURSE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_HS_COURSE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_HS_COARSE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_HS_COARSE_TUNE_NUM</description>
      <addressOffset>0x474</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_HS_FINE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_HS_FINE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_HS_FINE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_HS_FINE_TUNE_NUM</description>
      <addressOffset>0x478</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_FS_COURSE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_FS_COURSE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_FS_COARSE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_FS_COARSE_TUNE_NUM</description>
      <addressOffset>0x47C</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_FS_FINE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_FS_FINE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_FS_FINE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_FS_FINE_TUNE_NUM</description>
      <addressOffset>0x480</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_LOCK_RANGE_MAX</name>
-     <description>M31_PHY_XCFGI_LOCK_RANGE_MAX</description>
+     <name>M31_PHY_XCFG_LOCK_RANGE_MAX</name>
+     <description>M31_PHY_XCFG_LOCK_RANGE_MAX</description>
      <addressOffset>0x484</addressOffset>
     </register>
     <register>
@@ -23870,13 +23802,13 @@
      <addressOffset>0x488</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_OB_RSEL</name>
-     <description>M31_PHY_XCFGI_OB_RSEL</description>
+     <name>M31_PHY_XCFG_OB_RSEL</name>
+     <description>M31_PHY_XCFG_OB_RSEL</description>
      <addressOffset>0x48C</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_OC_RSEL</name>
-     <description>M31_PHY_XCFGI_OC_RSEL</description>
+     <name>M31_PHY_XCFG_OC_RSEL</name>
+     <description>M31_PHY_XCFG_OC_RSEL</description>
      <addressOffset>0x490</addressOffset>
     </register>
     <register>
@@ -23944,12 +23876,6 @@
        <name>VRST_VDDB_N_A</name>
        <description>VRST_VDDB_N_A</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>DMA_INT</name>
-       <description>DMA_INT</description>
-       <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>

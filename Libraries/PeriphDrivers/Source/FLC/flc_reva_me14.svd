@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <name>FLC0</name>
+    <name>FLC</name>
     <description>Flash Memory Control.</description>
     <prependToName>FLSH_</prependToName>
     <baseAddress>0x40029000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
-      <size>0x1000</size>
+      <size>0x400</size>
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
@@ -229,8 +229,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <dimIndex>0,1,2,3</dimIndex>
-        <name>DATA</name>
+        <name>DATA[%s]</name>
         <description>Flash Write Data.</description>
         <addressOffset>0x30</addressOffset>
         <fields>
@@ -258,15 +257,5 @@
       </register>
     </registers>
   </peripheral>
-  <peripheral derivedFrom="FLC0">
-      <name>FLC1</name>
-      <description>Flash Memory Control 1.</description>
-      <baseAddress>0x40029400</baseAddress>
-      <interrupt>
-        <name>FLC1</name>
-        <description>FLC1 IRQ</description>
-        <value>87</value>
-      </interrupt>
-  </peripheral>    
   <!-- FC: Flash Memory Control					-->
 </device>

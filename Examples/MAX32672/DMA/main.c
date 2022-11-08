@@ -46,7 +46,7 @@
 #include "nvic_table.h"
 #include "dma.h"
 #include "dma_regs.h"
-#include "ecc_regs.h"
+#include "trimsir_regs.h"
 
 /***** Definitions *****/
 
@@ -219,9 +219,9 @@ void example2(void)
 
 void disableECCforRAM(void)
 {
-    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM0_1;
-    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM2;
-    MXC_ECC->en &= ~MXC_F_ECC_EN_RAM3;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_RAM0_1ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_RAM2ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_RAM3ECCEN;
 }
 
 // *****************************************************************************

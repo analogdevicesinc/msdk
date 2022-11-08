@@ -82,18 +82,6 @@
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field>
-            <name>RSV16</name>
-            <description></description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RSV17</name>
-            <description></description>
-            <bitOffset>17</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
         </fields>
       </register>
       <register>
@@ -178,12 +166,6 @@
             <name>AESKGD_MEU_S</name>
             <description>Automatically AES transfer on going</description>
             <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>RSV16</name>
-            <description></description>
-            <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

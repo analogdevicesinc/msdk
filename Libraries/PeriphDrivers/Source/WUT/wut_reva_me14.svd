@@ -45,7 +45,7 @@
         </fields>
       </register>
       <register>
-        <name>INTR</name>
+        <name>INTFL</name>
         <description>Wakeup Timer Interrupt Register</description>
         <addressOffset>0x000C</addressOffset>
         <access>read-write</access>
@@ -71,12 +71,44 @@
             <bitWidth>3</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>oneshot</name>
+                <name>oneShot</name>
+                <description>One Shot Mode.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>continuous</name>
+                <description>Continuous Mode.</description>
                 <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>counter</name>
+                <description>Counter Mode.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pwm</name>
+                <description>PWM Mode.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>capture</name>
+                <description>Capture Mode.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>compare</name>
+                <description>Compare Mode.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>gated</name>
+                <description>Gated Mode.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>captureCompare</name>
+                <description>Capture/Compare Mode.</description>
+                <value>7</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
@@ -139,6 +171,12 @@
                 <value>5</value>
               </enumeratedValue>
             </enumeratedValues>
+          </field>
+          <field>
+            <name>TPOL</name>
+            <description>Timer Polarity.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>TEN</name>
@@ -215,6 +253,65 @@
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>NOLCMP</name>
+        <description>Non Overlaping Compare Register</description>
+        <addressOffset>0x0014</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>NOLLCMP</name>
+            <description>Non Overlaping Low Compare.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>NOLHCMP</name>
+            <description>Non Overlaping High Compare.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PRESET</name>
+        <description>Preset register.</description>
+        <addressOffset>0x0018</addressOffset>
+        <fields>
+          <field>
+            <name>PRESET</name>
+            <description>Preset Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RELOAD</name>
+        <description>Reload register.</description>
+        <addressOffset>0x001C</addressOffset>
+        <fields>
+          <field>
+            <name>RELOAD</name>
+            <description>Reload Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SNAPSHOT</name>
+        <description>Snapshot register.</description>
+        <addressOffset>0x0020</addressOffset>
+        <fields>
+          <field>
+            <name>SNAPSHOT</name>
+            <description>Snapshot Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
           </field>
         </fields>
       </register>

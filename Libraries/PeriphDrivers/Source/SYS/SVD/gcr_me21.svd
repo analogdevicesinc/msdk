@@ -1393,19 +1393,19 @@
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="RAM0">
+          <field derivedFrom="RAM0_1">
             <name>ICC0</name>
             <description>ECC Icache Error interrupt enable.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="RAM0">
+          <field derivedFrom="RAM0_1">
             <name>FLASH0</name>
             <description>ECC Flash0 Error interrupt enable.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="RAM0">
+          <field derivedFrom="RAM0_1">
             <name>FLASH1</name>
             <description>ECC Flash1 Error interrupt enable.</description>
             <bitOffset>5</bitOffset>

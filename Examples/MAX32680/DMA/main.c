@@ -45,7 +45,6 @@
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "dma.h"
-#include "dma_regs.h"
 
 /***** Definitions *****/
 
