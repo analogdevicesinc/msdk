@@ -63,7 +63,7 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
         else:
             write_to_console("Failed to reopen port\r\n")
 
-def read_all(port = None):
+def read_all(port = None, expect=None):
     timeStart = time.time()
     with serial.Serial() as ser:
         ser.baudrate = 115200
@@ -72,7 +72,7 @@ def read_all(port = None):
         ser.open()
         write_to_console("\n> Trying to open port: " + port  + "\n")
         while ser.is_open != True:
-            time.sleep(1)
+            time.sleep(0.01)
         if ser.is_open == True:
             write_to_console("> Port oepened successfully: " + port  + "\n")
             while (time.time()-timeStart) < timeout:
@@ -84,6 +84,7 @@ def read_all(port = None):
                         write_to_console("\r\n")
                         ser.close()
                         BuiltIn().pass_execution("Woohoo!\r\n")
+            BuiltIn().fail("Darn!\r\n")
 
 def flush_junk( port=None):
 
