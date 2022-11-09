@@ -63,7 +63,7 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
         else:
             write_to_console("Failed to reopen port\r\n")
 
-def read_all(port = None, expect=None):
+def read_all(expect=None,timeout=10,port = None):
     timeStart = time.time()
     with serial.Serial() as ser:
         ser.baudrate = 115200

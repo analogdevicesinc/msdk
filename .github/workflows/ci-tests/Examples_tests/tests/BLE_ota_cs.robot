@@ -34,7 +34,7 @@ Peer Device Reset Test
 
 Firmware Update Verification Test
     [Timeout]    30s     
-    Read All    None    FW_VERSION: 2     15     ${SERIAL_PORT_2}
+    Read All    FW_VERSION: 2     15     ${SERIAL_PORT_2}
 
 
 Firmware Reconnect Succesful Test
