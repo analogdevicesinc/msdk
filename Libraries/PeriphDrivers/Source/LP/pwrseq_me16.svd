@@ -322,8 +322,14 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ERTCO_PD</name>
-            <description>ERTCO Powerdown.</description>
+            <name>TM_LPMODE</name>
+            <description>TBD</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TM_PWRSEQ</name>
+            <description>TBD</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
