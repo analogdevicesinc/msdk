@@ -318,6 +318,7 @@ for i in ${!dut_list[@]}; do
 
     # make sure device under test is not left with a running app
     erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+    erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
     #--------------------------start Otac/Otas conencted tests
 
@@ -371,6 +372,12 @@ for i in ${!dut_list[@]}; do
         failedTestList+="| BLE_ota_cs ($DUT_NAME_UPPER) "
     fi
     set -e
+
+    # make sure to erase main device and current DUT to it does not store bonding info
+    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+    erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+
+
 
 done
 
