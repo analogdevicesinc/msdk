@@ -91,7 +91,8 @@ __weak void SystemCoreClockUpdate(void)
  */
 __weak int PreInit(void)
 {
-    /* Do nothing */
+    /* Workaround: Write to SCON register on power up to fix trim issue for SRAM */
+    MXC_GCR->scon = (MXC_GCR->scon & ~(MXC_F_GCR_SCON_OVR)) | (MXC_S_GCR_SCON_OVR_1V1);
     return 0;
 }
 

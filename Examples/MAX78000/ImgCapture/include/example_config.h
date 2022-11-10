@@ -43,8 +43,15 @@
     defined(CAMERA_OV5642)
 // These camera modules default to a higher resolution.  The HM0360 modules _only_ support a few
 // resolutions 320x240, 160x120, etc.
+
+#ifdef CAMERA_HM0360_MONO
 #define IMAGE_XRES 320
 #define IMAGE_YRES 240
+#else
+#define IMAGE_XRES 160
+#define IMAGE_YRES 120
+#endif
+
 #else
 #define IMAGE_XRES 64
 #define IMAGE_YRES 64
