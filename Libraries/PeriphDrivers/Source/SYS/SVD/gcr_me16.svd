@@ -1,0 +1,1226 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>GCR</name>
+    <description>Global Control Registers.</description>
+    <baseAddress>0x40000000</baseAddress>
+    <addressBlock>
+      <offset>0</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>SYSCTRL</name>
+        <description>System Control.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetMask>0xFFFFFFFE</resetMask>
+        <fields>
+          <field>
+            <name>SBUSARB</name>
+            <description>System bus abritration scheme. These bits are used to select between Fixed-burst abritration and Round-Robin scheme. The Round-Robin scheme is selected by default. These bits are reset by the system reset.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>fix</name>
+                <description>Fixed Burst abritration.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>round</name>
+                <description>Round-robin scheme.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FPU_DIS</name>
+            <description>Cortex M4 Floating Point Disable This bit is used to disable the floating-point unit of the Cortex-M4</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ICC0_FLUSH</name>
+            <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M4. </description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Code Cache Operation</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>flush</name>
+                <description>Code Caches and CPU instruction buffer are flushed </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ROMDONE</name>
+            <description>ROM_DONE status. Used to disable SWD interface during system initialization procedure</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CCHK</name>
+            <description>Compute ROM Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SWD_DIS</name>
+            <description> Serial Wire Debug Disable. This bit is used to disable the serial wire debug interface This bit is only writeable if (FMV lock word is not programmed) or if (ICE lock word is not programmed and the ROM_DONE bit is not set)
+				</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CHKRES</name>
+            <description>ROM Checksum Result. This bit is only valid when CHKRD=1.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>pass</name>
+                <description>ROM Checksum Correct.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>fail</name>
+                <description>ROM Checksum Fail.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RST0</name>
+        <description>Reset.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>DMA</name>
+            <description>DMA Reset.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>reset</name>
+              <usage>read-write</usage>
+              <enumeratedValue>
+                <name>reset_done</name>
+                <description>Reset complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Starts Reset or indicates reset in progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="DMA">
+            <name>WDT0</name>
+            <description>Watchdog Timer Reset.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>GPIO0</name>
+            <description>GPIO0 Reset. Setting this bit to 1 resets GPIO0 pins to their default states.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>GPIO1</name>
+            <description>GPIO1 Reset. Setting this bit to 1 resets GPIO1 pins to their default states.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>TMR0</name>
+            <description>Timer0 Reset. Setting this bit to 1 resets Timer 0 blocks.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>TMR1</name>
+            <description>Timer1 Reset. Setting this bit to 1 resets Timer 1 blocks.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>TMR2</name>
+            <description>Timer2 Reset. Setting this bit to 1 resets Timer 2 blocks.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>TMR3</name>
+            <description>Timer3 Reset. Setting this bit to 1 resets Timer 3 blocks.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>UART0</name>
+            <description>UART0 Reset. Setting this bit to 1 resets all UART 0 blocks.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>UART1</name>
+            <description>UART1 Reset. Setting this bit to 1 resets all UART 1 blocks.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>SPI0</name>
+            <description>SPI0 Reset. Setting this bit to 1 resets all SPI 0 blocks.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>SPI1</name>
+            <description>SPI1 Reset. Setting this bit to 1 resets all SPI 1 blocks.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>SPI2</name>
+            <description>SPI2 Reset. Setting this bit to 1 resets all SPI 2 blocks.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>I2C0</name>
+            <description>I2C0 Reset.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>RTC</name>
+            <description>Real Time Clock Reset.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>TRNG</name>
+            <description>TRNG Reset.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>UART2</name>
+            <description>UART2 Reset. Setting this bit to 1 resets all UART 2 blocks.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>SOFT</name>
+            <description>Soft Reset. Setting this bit to 1 resets everything except the CPU and the watchdog timer.</description>
+            <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>PERIPH</name>
+            <description>Peripheral Reset. Setting this bit to 1 resets all peripherals. The CPU core, the watchdog timer, and all GPIO pins are unaffected by this reset.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
+            <name>SYS</name>
+            <description>System Reset. Setting this bit to 1 resets the CPU core and all peripherals, including the watchdog timer.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CLKCTRL</name>
+        <description>Clock Control.</description>
+        <addressOffset>0x08</addressOffset>
+        <resetValue>0x00000008</resetValue>
+        <fields>
+          <field>
+            <name>SYSCLK_DIV</name>
+            <description>Prescaler Select. This 3 bit field sets the system operating frequency by controlling the prescaler that divides the output of the PLL0.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>div1</name>
+                <description>Divide by 1.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div2</name>
+                <description>Divide by 2.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div4</name>
+                <description>Divide by 4.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div8</name>
+                <description>Divide by 8.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div16</name>
+                <description>Divide by 16.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div32</name>
+                <description>Divide by 32.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div64</name>
+                <description>Divide by 64.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div128</name>
+                <description>Divide by 128.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SYSCLK_SEL</name>
+            <description>Clock Source Select. This 3 bit field selects the source for the system clock.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>ERFO</name>
+                <description>32MHz Crystal is used for the system clock.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>INRO</name>
+                <description>80kHz LIRC is used for the system clock.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IPO</name>
+                <description>The internal 96 MHz oscillator is used for the system clock.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>IBRO</name>
+                <description>The internal 8 MHz oscillator is used for the system clock.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ERTCO</name>
+                <description> 32kHz is used for the system clock.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>EXTCLK</name>
+                <description> External clock on gpio0 11.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>SYSCLK_RDY</name>
+            <description>Clock Ready. This read only bit reflects whether the currently selected system clock source is running.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Switchover to the new clock source (as selected by CLKSEL) has not yet occurred.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>System clock running from CLKSEL clock source.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>IPO_DIV</name>
+            <description>Divides the HIRC96M clock before the system clock prescaler, will affect HIRC96M Autocalibration.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>div1</name>
+                <description>divide clock by 1</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div2</name>
+                <description>divide clock by 2</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div4</name>
+                <description>divide clock by 4</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div8</name>
+                <description>divide clock by 8</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ERFO_EN</name>
+            <description>32MHz Crystal Oscillator Enable.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Is Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Is Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ERTCO_EN</name>
+            <description>32kHz Crystal Oscillator Enable.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Is Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Is Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="ERTCO_EN">
+            <name>IPO_EN</name>
+            <description>96MHz High Frequency Internal Reference Clock Enable.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="ERTCO_EN">
+            <name>IBRO_EN</name>
+            <description>8MHz High Frequency Internal Reference Clock Enable.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBRO_VS</name>
+            <description>8MHz High Frequency Internal Reference Clock Voltage Select. This register bit is used to select the power supply to the HIRC8M.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>Vcor</name>
+                <description>VCore Supply</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1V</name>
+                <description>Dedicated 1v regulated supply.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ERFO_RDY</name>
+            <description>32MHz Crystal Oscillator Ready</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not</name>
+                <description>Is not Ready.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>Is Ready.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ERTCO_RDY</name>
+            <description>32kHz Crystal Oscillator Ready</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>not</name>
+                <description>Is not Ready.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>ready</name>
+                <description>Is Ready.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="ERTCO_RDY">
+            <name>IPO_RDY</name>
+            <description>96MHz HIRC Ready.</description>
+            <bitOffset>27</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="ERTCO_RDY">
+            <name>IBRO_RDY</name>
+            <description>8MHz HIRC Ready.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="ERTCO_RDY">
+            <name>INRO_RDY</name>
+            <description>8kHz Low Frequency Reference Clock Ready.</description>
+            <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="ERTCO_RDY">
+            <name>EXTCLK_RDY</name>
+            <description>External Clock (GPIO0[11] AF2) </description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PM</name>
+        <description>Power Management.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>MODE</name>
+            <description>Operating Mode. This two bit field selects the current operating mode for the device. Note that code execution only occurs during ACTIVE mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Active Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>backup</name>
+                <description>Backup Mode.</description>
+                <value>4</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>GPIO_WE</name>
+            <description>GPIO Wake Up Enable. This bit enables all GPIO pins as potential wakeup sources. Any GPIO configured for wakeup is capable of causing an exit from IDLE or STANDBY modes when this bit is set.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Wake Up Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Wake Up Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="GPIO_WE">
+            <name>RTC_WE</name>
+            <description>RTC Alarm Wake Up Enable. This bit enables RTC alarm as wakeup source. If enabled, the desired RTC alarm must be configured via the RTC control registers.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO_WE">
+            <name>LPTMR0_WE</name>
+            <description>TIMER4 Wake Up Enable. This bit enables TIMER4 as wakeup source. </description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO_WE">
+            <name>LPTMR1_WE</name>
+            <description>TIMER5 Wake Up Enable. This bit enables TIMER5 as wakeup source. </description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO_WE">
+            <name>LPUART0_WE</name>
+            <description>LPUART3 Wake Up Enable. This bit enables LPUART3 as wakeup source. </description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERFO_PD</name>
+            <description>32MHz power down. This bit selects 32MHz Crystal power state in DEEPSLEEP mode.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>Mode is Active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>deepsleep</name>
+                <description>Powered down in DEEPSLEEP.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="ERFO_PD">
+            <name>IPO_PD</name>
+            <description>96MHz power down. This bit selects 96MHz HIRC power state in DEEPSLEEP mode. </description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="ERFO_PD">
+            <name>IBRO_PD</name>
+            <description>8MHz power down. This bit selects 8MHz HIRC power state in DEEPSLEEP mode. </description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERFO_BP</name>
+            <description>32MHz Oscillator Bypass</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PCLKDIV</name>
+        <description>Peripheral Clock Divider.</description>
+        <addressOffset>0x18</addressOffset>
+        <resetValue>0x00000001</resetValue>
+        <fields>
+          <field>
+            <name>AON_CLKDIV</name>
+            <description>Always-ON (AON) domain Clock Divider. These bits define the AON domain clock divider</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>div4</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div8</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div16</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div32</name>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DIV_CLK_OUT_CTRL</name>
+            <description>DIV_CLK_OUT Control</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>DIV_CLK_OUT_EN</name>
+            <description>DIV_CLK_OUT Enable</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PCLKDIS0</name>
+        <description>Peripheral Clock Disable.</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>GPIO0</name>
+            <description>GPIO0 Disable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enable it.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable it.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>GPIO1</name>
+            <description>GPIO1 Disable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>DMA</name>
+            <description>DMA Disable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>SPI0</name>
+            <description>SPI 0 Disable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>SPI1</name>
+            <description>SPI 1 Disable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>SPI2</name>
+            <description>SPI 2 Disable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>UART0</name>
+            <description>UART 0 Disable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>UART1</name>
+            <description>UART 1 Disable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>I2C0</name>
+            <description>I2C 0 Disable.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>TMR0</name>
+            <description>Timer 0 Disable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>TMR1</name>
+            <description>Timer 1 Disable.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>TMR2</name>
+            <description>Timer 2 Disable.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>TMR3</name>
+            <description>Timer 3 Disable.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="GPIO0">
+            <name>I2C1</name>
+            <description>I2C 1 Disable.</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MEMCTRL</name>
+        <description>Memory Clock Control Register.</description>
+        <addressOffset>0x28</addressOffset>
+        <fields>
+          <field>
+            <name>FWS</name>
+            <description>Flash Wait State. These bits define the number of wait-state cycles per Flash data read access. Minimum wait state is 2.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+          <field>
+            <name>RAMWS_EN</name>
+            <description>System RAM Wait State enable</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM0LS_EN</name>
+            <description>System RAM 0 Light Sleep Mode.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>active</name>
+                <description>RAM is active.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>light_sleep</name>
+                <description>RAM is in Light Sleep mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>RAM1LS_EN</name>
+            <description>System RAM 1 Light Sleep Mode.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>RAM2LS_EN</name>
+            <description>System RAM 2 Light Sleep Mode.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>RAM3LS_EN</name>
+            <description>System RAM 3 Light Sleep Mode.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>ICC0LS_EN</name>
+            <description>ICache RAM Light Sleep Mode.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>ROMLS_EN</name>
+            <description>ROM Light Sleep Mode.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MEMZ</name>
+        <description>Memory Zeroize Control.</description>
+        <addressOffset>0x2C</addressOffset>
+        <fields>
+          <field>
+            <name>RAM</name>
+            <description>System RAM Block.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>nop</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="RAM">
+            <name>RAMCB</name>
+            <description>System RAM check bit zeroization.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM">
+            <name>ICC0</name>
+            <description>Instruction Cache.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSST</name>
+        <description>System Status Register.</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <field>
+            <name>ICELOCK</name>
+            <description>ARM ICE Lock Status.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>unlocked</name>
+                <description>ICE is unlocked.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>locked</name>
+                <description>ICE is locked.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RST1</name>
+        <description>Reset 1.</description>
+        <addressOffset>0x44</addressOffset>
+        <fields>
+          <field>
+            <name>I2C1</name>
+            <description>I2C1 Reset.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <name>reset_read</name>
+              <usage>read</usage>
+              <enumeratedValue>
+                <name>reset_done</name>
+                <description>Reset complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>busy</name>
+                <description>Starts reset or indicates reset in progress.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>WDT1</name>
+            <description>WDT1 Reset.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>CRC</name>
+            <description>CRC Reset.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>AES</name>
+            <description>AES Reset.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>AC</name>
+            <description>AC Reset.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>I2C2</name>
+            <description>I2C2 Reset.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>I2S</name>
+            <description>I2S Reset.</description>
+            <bitOffset>23</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PCLKDIS1</name>
+        <description>Peripheral Clock Disable.</description>
+        <addressOffset>0x48</addressOffset>
+        <fields>
+          <field>
+            <name>UART2</name>
+            <description>UART2 Disable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="UART2">
+            <name>TRNG</name>
+            <description>TRNG Disable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>WWDT0</name>
+            <description>WDT0  Disable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>WWDT1</name>
+            <description>WDT1  Disable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>ICC0</name>
+            <description>ICACHE Disable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>CRC</name>
+            <description>CRC Disable.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>AES</name>
+            <description>AES Disable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>I2C2</name>
+            <description>I2C2 Disable.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>I2S</name>
+            <description>I2S Clock Disable.</description>
+            <bitOffset>23</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>EVENTEN</name>
+        <description>Event Enable Register.</description>
+        <addressOffset>0x4C</addressOffset>
+        <fields>
+          <field>
+            <name>DMA</name>
+            <description>Enable DMA event. When this bit is set, a DMA event will cause an RXEV event to wake the CPU from WFE sleep mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RX</name>
+            <description>Enable RXEV pin event. When this bit is set, a logic high of GPIO0[20] will cause an RXEV event to wake the CPU from WFE sleep mode. </description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX</name>
+            <description>Enable TXEV pin event. When this bit is set, TXEV event from the CPU is output to GPIO[21].</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>REVISION</name>
+        <description>Revision Register.</description>
+        <addressOffset>0x50</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>REVISION</name>
+            <description>Manufacturer Chip Revision. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SYSIE</name>
+        <description>System Status Interrupt Enable Register.</description>
+        <addressOffset>0x54</addressOffset>
+        <fields>
+          <field>
+            <name>ICEUNLOCK</name>
+            <description>ARM ICE Unlock Interrupt Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ECCERR</name>
+        <description>ECC Error Register</description>
+        <addressOffset>0x64</addressOffset>
+        <fields>
+          <field>
+            <name>RAM</name>
+            <description>ECC System RAM0 Error Flag. Write 1 to clear.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ICC0</name>
+            <description>ECC Icache Error Flag. Write 1 to clear.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FLASH</name>
+            <description>ECC Flash Error Flag. Write 1 to clear.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ECCCED</name>
+        <description>ECC Not Double Error Detect Register</description>
+        <addressOffset>0x68</addressOffset>
+        <fields>
+          <field>
+            <name>RAM</name>
+            <description>ECC System RAM0 Error Flag. Write 1 to clear.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ICC0</name>
+            <description>ECC Icache Not Double Error Detect. Write 1 to clear.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FLASH</name>
+            <description>ECC Flash0 Not Double Error Detect. Write 1 to clear.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ECCIE</name>
+        <description>ECC IRQ Enable Register</description>
+        <addressOffset>0x6C</addressOffset>
+        <fields>
+          <field>
+            <name>RAM</name>
+            <description>ECC System RAM0 Error Interrup Enable</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ICC0</name>
+            <description>ECC Icache0 Error Interrup Enable</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FLASH</name>
+            <description>ECC Flash0 NError Interrup Enable</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ECCADDR</name>
+        <description>ECC Error Address Register</description>
+        <addressOffset>0x70</addressOffset>
+        <fields>
+          <field>
+            <name>DATARAMADDR</name>
+            <description>ECC Error Address/TAG RAM Error Address.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+          <field>
+            <name>DATARAMBANK</name>
+            <description>ECC Error Address/DATA RAM Error Bank.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DATARAMERR</name>
+            <description>ECC Error Address/DATA RAM Error Address.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TAGRAMADDR</name>
+            <description>ECC Error Address/TAG RAM Error Address.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+          <field>
+            <name>TAGRAMBANK</name>
+            <description>ECC Error Address/TAG RAM Error Bank.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TAGRAMERR</name>
+            <description>ECC Error Address/TAG RAM Error.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>
