@@ -65,9 +65,21 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
-const mxc_gpio_cfg_t tft_mosi = (mxc_gpio_cfg_t) { .port = MXC_GPIO2, .mask = MXC_GPIO_PIN_24, .func = MXC_GPIO_FUNC_OUT, .pad = MXC_GPIO_PAD_NONE, .vssel = MXC_GPIO_VSSEL_VDDIOH };
-const mxc_gpio_cfg_t tft_clk = (mxc_gpio_cfg_t) { .port = MXC_GPIO2, .mask = MXC_GPIO_PIN_25, .func = MXC_GPIO_FUNC_OUT, .pad = MXC_GPIO_PAD_NONE, .vssel = MXC_GPIO_VSSEL_VDDIOH };
-const mxc_gpio_cfg_t tft_cs = (mxc_gpio_cfg_t) { .port = MXC_GPIO2, .mask = MXC_GPIO_PIN_11, .func = MXC_GPIO_FUNC_OUT, .pad = MXC_GPIO_PAD_NONE, .vssel = MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t tft_mosi = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
+                                                  .mask = MXC_GPIO_PIN_24,
+                                                  .func = MXC_GPIO_FUNC_OUT,
+                                                  .pad = MXC_GPIO_PAD_NONE,
+                                                  .vssel = MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t tft_clk = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
+                                                 .mask = MXC_GPIO_PIN_25,
+                                                 .func = MXC_GPIO_FUNC_OUT,
+                                                 .pad = MXC_GPIO_PAD_NONE,
+                                                 .vssel = MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t tft_cs = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
+                                                .mask = MXC_GPIO_PIN_11,
+                                                .func = MXC_GPIO_FUNC_OUT,
+                                                .pad = MXC_GPIO_PAD_NONE,
+                                                .vssel = MXC_GPIO_VSSEL_VDDIOH };
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)
@@ -138,7 +150,7 @@ int Console_PrepForSleep(void)
 }
 
 /******************************************************************************/
-void TFT_SPI_Init(void) 
+void TFT_SPI_Init(void)
 {
     // Configure GPIOs
     MXC_GPIO_Config(&tft_mosi);
@@ -168,14 +180,14 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
         for (int j = 0; j < 9; j++) { // 9 Bits per character
             tft_clk.port->out_clr = tft_clk.mask; //Clk low
 
-            if(j == 0) {                //Send D/CX bit before MSB
-                if(data) {
+            if (j == 0) { //Send D/CX bit before MSB
+                if (data) {
                     tft_mosi.port->out_set = tft_mosi.mask;
                 } else {
                     tft_mosi.port->out_clr = tft_mosi.mask;
                 }
             } else {
-                if(tx_byte & 0x80) {    //Shift out data MSB first
+                if (tx_byte & 0x80) { //Shift out data MSB first
                     tft_mosi.port->out_set = tft_mosi.mask;
                 } else {
                     tft_mosi.port->out_clr = tft_mosi.mask;
@@ -183,11 +195,11 @@ void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
                 tx_byte = tx_byte << 1;
             }
 
-            for(int k = 0; k < 2; k++);
+            for (int k = 0; k < 2; k++) {}
 
             tft_clk.port->out_set = tft_clk.mask; // Clk high
 
-            for(int k = 0; k < 2; k++);
+            for (int k = 0; k < 2; k++) {}
         }
     }
 
