@@ -60,6 +60,13 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
+// TFT Data/Command pin
+const mxc_gpio_cfg_t tft_dc_pin = { TFT_DC_PORT, TFT_DC_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
+                                MXC_GPIO_VSSEL_VDDIOH };
+// TFT Slave Select pin
+const mxc_gpio_cfg_t tft_ss_pin = { TFT_SS_PORT, TFT_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
+                                MXC_GPIO_VSSEL_VDDIOH };
+
 /***** File Scope Variables *****/
 // const uart_cfg_t uart_cfg = {
 //     UART_PARITY_DISABLE,
@@ -86,6 +93,94 @@ void mxc_assert(const char *expr, const char *file, int line)
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
     while (1) {}
+}
+
+void spi_init(void)
+{
+    int master = 1;
+    int quadMode = 0;
+    int numSlaves = 0;
+    int ssPol = 0;
+    int tft_hz = TFT_SPI_FREQ;
+    mxc_spi_pins_t tft_pins = {
+        .clock = true,
+        .ss0 = false,
+        .ss1 = false,
+        .ss2 = false,
+        .miso = true,
+        .mosi = true,
+        .sdio2 = false,
+        .sdio3 = false,
+    };
+
+    MXC_SPI_Init(TFT_SPI, master, quadMode, numSlaves, ssPol, tft_hz, tft_pins);
+
+    // Set SPI pins to VDDIOH (3.3V) to be compatible with TFT display
+    MXC_GPIO_SetVSSEL(TFT_SPI_PORT, MXC_GPIO_VSSEL_VDDIOH, TFT_SPI_PINS);
+    MXC_SPI_SetDataSize(TFT_SPI, 8);
+    MXC_SPI_SetWidth(TFT_SPI, SPI_WIDTH_STANDARD);
+
+    // Initialize SPI GPIOs
+    MXC_GPIO_Config(&tft_dc_pin); // Data/Command select
+    MXC_GPIO_Config(&tft_ss_pin); // Slave Select
+    MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
+}
+
+void spi_transmit(uint8_t data, bool cmd)
+{
+    MXC_GPIO_OutClr(TFT_SS_PORT, TFT_SS_PIN);
+
+    if (cmd)
+        MXC_GPIO_OutClr(TFT_DC_PORT, TFT_DC_PIN);
+    else
+        MXC_GPIO_OutSet(TFT_DC_PORT, TFT_DC_PIN);
+
+    TFT_SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN;
+
+    TFT_SPI->ctrl1 = 1 << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
+
+    *TFT_SPI->fifo8 = data;
+
+    TFT_SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    // MAX78002 Evaluation Kit is designed for firmware control of device select.
+    // Wait here until done as caller will negate select on return, possibly before FIFO is empty.
+    while (!(TFT_SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
+
+    TFT_SPI->intfl = TFT_SPI->intfl;
+
+    MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
+}
+
+void spi_transmit_data_buf(void *src, int count)
+{
+    uint8_t *buf = (uint8_t *)src;
+
+    MXC_GPIO_OutClr(TFT_SS_PORT, TFT_SS_PIN);
+
+    MXC_GPIO_OutSet(TFT_DC_PORT, TFT_DC_PIN);
+
+    TFT_SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN;
+
+    TFT_SPI->ctrl1 = count << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
+
+    while (count--) {
+        while ((TFT_SPI->dma & MXC_F_SPI_DMA_TX_LVL) ==
+               (MXC_SPI_FIFO_DEPTH << MXC_F_SPI_DMA_TX_LVL_POS)) {}
+
+        *TFT_SPI->fifo8 = *buf++;
+
+        if (!(TFT_SPI->ctrl0 & MXC_F_SPI_CTRL0_START))
+            TFT_SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+    }
+
+    // MAX78002 Evaluation Kit is designed for firmware control of device select.
+    // Wait here until done as caller will negate select on return, possibly before FIFO is empty.
+    while (!(TFT_SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
+
+    TFT_SPI->intfl = TFT_SPI->intfl;
+
+    MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
 }
 
 /******************************************************************************/

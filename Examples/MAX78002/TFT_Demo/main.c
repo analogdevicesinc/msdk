@@ -176,6 +176,7 @@ int32_t rescale(int32_t x, int32_t min, int32_t max, int32_t a, int32_t b)
 
 int main(void)
 {
+    MXC_Delay(MXC_DELAY_SEC(2));
 #ifdef TFT_ADAFRUIT
     uint16_t x, y;
     int32_t xx, yy;
@@ -187,7 +188,7 @@ int main(void)
 
     printf("TFT Demo Example\n");
     /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI0, -1, NULL, NULL);
+    MXC_TFT_Init(NULL, NULL);
     TFT_test();
 
 #ifdef TFT_ADAFRUIT
