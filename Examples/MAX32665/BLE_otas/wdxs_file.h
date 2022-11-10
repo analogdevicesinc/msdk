@@ -17,12 +17,17 @@
  */
 /*************************************************************************************************/
 
-#ifndef EXAMPLES_MAX32665_BLE_OTAS_WDXS_FILE_H_
-#define EXAMPLES_MAX32665_BLE_OTAS_WDXS_FILE_H_
+#ifndef EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_
+#define EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+typedef struct {
+    uint32_t fileLen;
+    uint32_t fileCRC;
+} fileHeader_t;
 
 /*! \addtogroup WIRELESS_DATA_EXCHANGE_PROFILE
  *  \{ */
@@ -62,10 +67,26 @@ uint32_t WdxsFileGetBaseAddr(void);
 /*************************************************************************************************/
 uint32_t WdxsFileGetVerifiedLength(void);
 
+/*************************************************************************************************/
+/*!
+ *  \brief  Get the firmware version of the WDXS file.
+ *
+ *  \return Firmware version of the WDXS file.
+ */
+/*************************************************************************************************/
+uint8_t WdxsFileGetFirmwareVersion(void);
+/*************************************************************************************************/
+/*!
+ *  \brief  set the length of the expected file
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void initHeader(fileHeader_t *header);
 /*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // EXAMPLES_MAX32665_BLE_OTAS_WDXS_FILE_H_
+#endif // EXAMPLES_MAX32655_BLE_OTAS_WDXS_FILE_H_
