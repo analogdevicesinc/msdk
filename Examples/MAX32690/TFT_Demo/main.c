@@ -66,53 +66,53 @@ void TFT_test(void)
     char buff2[] = "Inc.";
 
     while (1) {
-    	// Display ADI Logo
-    	MXC_TFT_ShowImage(2, 3, (int)&logo_rgb565[0]);
-		MXC_Delay(5000000);
+        // Display ADI Logo
+        MXC_TFT_ShowImage(2, 3, (int)&logo_rgb565[0]);
+        MXC_Delay(5000000);
 
-		// Demonstrate Geometric Functions
-		MXC_TFT_SetBackGroundColor(ROYAL_BLUE);	// Clear screen
+        // Demonstrate Geometric Functions
+        MXC_TFT_SetBackGroundColor(ROYAL_BLUE); // Clear screen
 
-		MXC_TFT_Line(10, 10, 100, 100, WHITE);
-		MXC_Delay(1000000);
+        MXC_TFT_Line(10, 10, 100, 100, WHITE);
+        MXC_Delay(1000000);
 
-		MXC_TFT_Rectangle(10, 10, 100, 100, WHITE);
-		MXC_Delay(1000000);
+        MXC_TFT_Rectangle(10, 10, 100, 100, WHITE);
+        MXC_Delay(1000000);
 
-		MXC_TFT_Circle(100, 100, 30, WHITE);
-		MXC_Delay(1000000);
+        MXC_TFT_Circle(100, 100, 30, WHITE);
+        MXC_Delay(1000000);
 
-		MXC_TFT_FillCircle(36, 74, 26, WHITE);
-		MXC_TFT_FillCircle(74, 36, 26, WHITE);
-		MXC_Delay(1000000);
+        MXC_TFT_FillCircle(36, 74, 26, WHITE);
+        MXC_TFT_FillCircle(74, 36, 26, WHITE);
+        MXC_Delay(1000000);
 
-		// Demonstrate Text Functions
-		MXC_TFT_SetBackGroundColor(ROYAL_BLUE); // Clear screen
-		MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
-		MXC_TFT_ClearScreen();
+        // Demonstrate Text Functions
+        MXC_TFT_SetBackGroundColor(ROYAL_BLUE); // Clear screen
+        MXC_TFT_SetForeGroundColor(WHITE); // set chars to white
+        MXC_TFT_ClearScreen();
 
-		TFT_Print(buff, sizeof(buff), 3, 10, (int)&Arial12x12[0]);	// Use Arial 12x12 font
-		TFT_Print(buff1, sizeof(buff1), 3, 22, (int)&Arial12x12[0]);
-		TFT_Print(buff2, sizeof(buff2), 3, 34, (int)&Arial12x12[0]);
-		MXC_Delay(1000000);
-		MXC_TFT_ClearScreen();
+        TFT_Print(buff, sizeof(buff), 3, 10, (int)&Arial12x12[0]); // Use Arial 12x12 font
+        TFT_Print(buff1, sizeof(buff1), 3, 22, (int)&Arial12x12[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 34, (int)&Arial12x12[0]);
+        MXC_Delay(1000000);
+        MXC_TFT_ClearScreen();
 
-		TFT_Print(buff, sizeof(buff), 3, 30, (int)&Arial24x23[0]);	// Use Arial 24x23 font
-		TFT_Print(buff1, sizeof(buff1), 3, 54, (int)&Arial24x23[0]);
-		TFT_Print(buff2, sizeof(buff2), 3, 78, (int)&Arial24x23[0]);
-		MXC_Delay(1000000);
-		MXC_TFT_ClearScreen();
+        TFT_Print(buff, sizeof(buff), 3, 30, (int)&Arial24x23[0]); // Use Arial 24x23 font
+        TFT_Print(buff1, sizeof(buff1), 3, 54, (int)&Arial24x23[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 78, (int)&Arial24x23[0]);
+        MXC_Delay(1000000);
+        MXC_TFT_ClearScreen();
 
-		TFT_Print(buff, sizeof(buff), 3, 40, (int)&Arial28x28[0]);	// Use Arial 28x28 font
-		TFT_Print(buff1, sizeof(buff1), 3, 68, (int)&Arial28x28[0]);
-		TFT_Print(buff2, sizeof(buff2), 3, 96, (int)&Arial28x28[0]);
-		MXC_Delay(1000000);
-		MXC_TFT_ClearScreen();
+        TFT_Print(buff, sizeof(buff), 3, 40, (int)&Arial28x28[0]); // Use Arial 28x28 font
+        TFT_Print(buff1, sizeof(buff1), 3, 68, (int)&Arial28x28[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 96, (int)&Arial28x28[0]);
+        MXC_Delay(1000000);
+        MXC_TFT_ClearScreen();
 
-		TFT_Print(buff, sizeof(buff), 3, 80, (int)&SansSerif16x16[0]);	// Use Sans Serif 16x16 font
-		TFT_Print(buff1, sizeof(buff1), 3, 96, (int)&SansSerif16x16[0]);
-		TFT_Print(buff2, sizeof(buff2), 3, 112, (int)&SansSerif16x16[0]);
-		MXC_Delay(1000000);
+        TFT_Print(buff, sizeof(buff), 3, 80, (int)&SansSerif16x16[0]); // Use Sans Serif 16x16 font
+        TFT_Print(buff1, sizeof(buff1), 3, 96, (int)&SansSerif16x16[0]);
+        TFT_Print(buff2, sizeof(buff2), 3, 112, (int)&SansSerif16x16[0]);
+        MXC_Delay(1000000);
     }
 }
 
@@ -126,7 +126,7 @@ int main(void)
     SystemCoreClockUpdate();
 
     /* Initialize TFT display */
-	MXC_TFT_Init();
+    MXC_TFT_Init();
     TFT_test();
 
     return 0;
