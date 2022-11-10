@@ -14,7 +14,7 @@ dut_list=(max32655 max32665)
 dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906)
 # List of serail devices associated with each DUT msut correlate with device list above
 #dut_list_serial=(D3073ICQ)
-dut_list_serial=(D3073ICQ D30A1X9Z)
+dut_list_serial=(D3073ICQ D30A1X9X)
 # Will hold values of the current device undertest from the lists above
 DUT_NAME_UPPER=NONE
 DUT_NAME_LOWER=NONE
