@@ -7,14 +7,14 @@ MAIN_DEVICE_ID=04091702d4f18ac600000000000000000000000097969906
 MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -d "/" -f1 | rev)"
 
 # List of devices under test
-dut_list=(max32665)
-#dut_list=(max32655 max32665)
+#dut_list=(max32665)
+dut_list=(max32655 max32665)
 # List of serial IDs for DUT, must correlate with list above
-dut_list_ID=(0409000098d9439b00000000000000000000000097969906)
-#dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906)
+#dut_list_ID=(0409000098d9439b00000000000000000000000097969906)
+dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906)
 # List of serail devices associated with each DUT msut correlate with device list above
-dut_list_serial=(D30A1X9X)
-#dut_list_serial=(D3073ICQ D30A1X9X)
+#dut_list_serial=(D30A1X9X)
+dut_list_serial=(D3073ICQ D30A1X9X)
 # Will hold values of the current device undertest from the lists above
 DUT_NAME_UPPER=NONE
 DUT_NAME_LOWER=NONE
