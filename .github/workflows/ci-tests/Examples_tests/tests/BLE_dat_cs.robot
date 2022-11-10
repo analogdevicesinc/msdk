@@ -1,6 +1,10 @@
 *** settings ***
+Library    SerialLibrary      encoding=ascii
 Library    String
-Library    ../resources/serialPortReader.py
+Resource     ../resources/Serial.robot
+Suite Setup        Serial.Open Serial Port    ${SERIAL_PORT_1}    ${SERIAL_PORT_2}    
+Suite Teardown     Serial.Close Serial Port
+
 
 *** Variables ***
 ${SERIAL_PORT_1}    /dev/ttyUSB0
@@ -41,7 +45,6 @@ Phy Switching Test
     [Timeout]     30s
     sleep    3
     Expect And Timeout    btn 2 s\n    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_1}    
-
 
 
 

@@ -3,8 +3,6 @@
 Library    SerialLibrary      encoding=ascii
 Library    String
 
-*** Variables ***
-${is_verbose}   ${VERBOSE}
 
 *** Keywords ***
 Open Serial Port
@@ -51,13 +49,14 @@ Expect And Timeout No Verbose
     ${read} =     Read Until    ${data}    NONE    NONE    ${port}
    
 Expect And Timeout
-    [Arguments]    ${data}    ${timeout}    ${port}    
+    [Arguments]    ${send}    ${data}    ${timeout}    ${port}    
     [Timeout]    ${timeout}
     ${EMPTY}=    Set Variable    ""
     Log To Console    \n
-    WHILE    True    limit=200000
+    Write Data    ${send}    NONE    NONE    ${port}
+    WHILE    True    limit=1000000
         ${source}=    Read Until   NONE    NONE    NONE    ${port}
-        Log To Console    ${source}
+        Log To Console    ${source}    STDOUT    True
         ${contains}=    Run Keyword And Return Status    Should Contain    ${source}    ${data}
         IF    ${contains}
             Pass Execution    ------------------------------------------------------------------------------

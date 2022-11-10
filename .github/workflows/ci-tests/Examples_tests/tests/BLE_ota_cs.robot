@@ -1,6 +1,9 @@
 *** settings ***
+Library    SerialLibrary      encoding=ascii
 Library    String
-Library    ../resources/serialPortReader.py
+Resource     ../resources/Serial.robot
+Suite Setup        Serial.Open Serial Port    ${SERIAL_PORT_1}    ${SERIAL_PORT_2}    
+Suite Teardown     Serial.Close Serial Port
 
 *** Variables ***
 ${SERIAL_PORT_1}  /dev/ttyUSB0
@@ -10,7 +13,7 @@ ${SERIAL_PORT_2}  /dev/ttyUSB1
 Original Firmware Test
     [Timeout]    30s
     Sleep     5s
-    Expect And Timeout    btn 2 m\n    FW_VERSION: 1   5    ${SERIAL_PORT_2}
+    Expect And Timeout    btn 2 m\n    FW_VERSION: 1     5     ${SERIAL_PORT_2}
 
 File Discovery Test
     [Timeout]    30s
@@ -32,15 +35,16 @@ Peer Device Reset Test
     sleep    2
     Expect And Timeout   btn 2 x\n    >>> Scanning started <<<    5    ${SERIAL_PORT_1}
 
+Firmware Update Verification Test
+    [Timeout]    60s     
+    Expect And Timeout Simple    FW_VERSION: 2     15     ${SERIAL_PORT_2}
+
+
 Firmware Reconnect Succesful Test
     [Timeout]    120s
-    Expect And Timeout    None    AppDiscComplete connId:1 status:0x08    30    ${SERIAL_PORT_1}
-    
-Firmware Update Verification Test
-    [Timeout]    30s
-    sleep   2
-    Expect And Timeout    btn 2 m\n    FW_VERSION: 2   5    ${SERIAL_PORT_2}
-
+    sleep     15
+    Expect And Timeout    btn 2 s\n    >>> File discovery complete <<<    15    ${SERIAL_PORT_1}
     
 
+    
 
