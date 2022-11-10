@@ -34,6 +34,7 @@ RTC_Backup
 RV_ARM_Loader
 SCPA_OTP_Dump
 SPI
+TFT_Demo
 TMR
 TRNG
 UART

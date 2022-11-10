@@ -152,7 +152,11 @@ int Console_PrepForSleep(void)
 /******************************************************************************/
 void TFT_SPI_Init(void)
 {
-    // Configure GPIOs
+    // The TFT SPI on the MAX32690 EV Kit is bit-banged so there's no need to initialize
+    // a SPI instance. Instead, we only need to configure the GPIO pins which are used to
+    // connect to the SPI bus.
+
+    // Configure GPIO pins
     MXC_GPIO_Config(&tft_mosi);
     MXC_GPIO_Config(&tft_clk);
     MXC_GPIO_Config(&tft_cs);
@@ -165,6 +169,9 @@ void TFT_SPI_Init(void)
 /******************************************************************************/
 void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
 {
+    // The TFT SPI on the MAX32690 EV Kit is not connected to a SPI instance so it
+    // must be bit-banged.
+
     uint8_t tx_byte;
 
     if (datain == NULL) {
