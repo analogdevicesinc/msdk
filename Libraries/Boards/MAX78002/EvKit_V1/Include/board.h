@@ -94,9 +94,9 @@ extern "C" {
  */
 #define LED2 1
 
-void spi_init(void);
-void spi_transmit(uint8_t data, bool cmd);
-void spi_transmit_data_buf(void *src, int count);
+void TFT_SPI_Init(void);
+void TFT_SPI_Write(uint8_t data, bool cmd);
+void TFT_SPI_Transmit(void *src, int count);
 
 /**
  * \brief   Initialize the BSP and board interfaces.

@@ -95,14 +95,15 @@ void mxc_assert(const char *expr, const char *file, int line)
     while (1) {}
 }
 
-void spi_init(void)
+void TFT_SPI_Init(void)
 {
+    // Initialize SPI0
     int master = 1;
     int quadMode = 0;
     int numSlaves = 0;
     int ssPol = 0;
     int tft_hz = TFT_SPI_FREQ;
-    mxc_spi_pins_t tft_pins = {
+    mxc_spi_pins_t tft_pins = { // CLK, MISO, MOSI enabled, software controlled SS
         .clock = true,
         .ss0 = false,
         .ss1 = false,
@@ -126,7 +127,7 @@ void spi_init(void)
     MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
 }
 
-void spi_transmit(uint8_t data, bool cmd)
+void TFT_SPI_Write(uint8_t data, bool cmd)
 {
     MXC_GPIO_OutClr(TFT_SS_PORT, TFT_SS_PIN);
 
@@ -152,7 +153,7 @@ void spi_transmit(uint8_t data, bool cmd)
     MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
 }
 
-void spi_transmit_data_buf(void *src, int count)
+void TFT_SPI_Transmit(void *src, int count)
 {
     uint8_t *buf = (uint8_t *)src;
 
