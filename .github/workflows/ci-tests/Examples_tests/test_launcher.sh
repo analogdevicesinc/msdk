@@ -288,33 +288,33 @@ for i in ${!dut_list[@]}; do
 
     #--------------------------start Datc/Dats conencted tests
 
-    # # Flash MAIN_DEVICE with BLE_datc
-    # cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
-    # printf "> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
-    # flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+    # Flash MAIN_DEVICE with BLE_datc
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
+    printf "> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
+    flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
-    # # flash DUT with BLE_dats
-    # cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
-    # echo "> Flashing BLE_dats on DUT $DUT_NAME_UPP"
-    # flash_with_openocd $DUT_NAME_LOWER $DUT_ID
+    # flash DUT with BLE_dats
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
+    echo "> Flashing BLE_dats on DUT $DUT_NAME_UPP"
+    flash_with_openocd $DUT_NAME_LOWER $DUT_ID
 
-    # # Run robot test
-    # # give them time to connect
-    # sleep 5
-    # # directory for resuilts logs
-    # cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
-    # mkdir BLE_dat_cs
-    # cd $EXAMPLE_TEST_PATH/tests
-    # # runs desired test
-    # set +e
-    # $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot
-    # let "testResult=$?"
-    # if [ "$testResult" -ne "0" ]; then
-    #     # update failed test count
-    #     let "numOfFailedTests+=$testResult"
-    #     failedTestList+="| BLE_dat_cs ($DUT_NAME_UPPER) "
-    # fi
-    # set -e
+    # Run robot test
+    # give them time to connect
+    sleep 5
+    # directory for resuilts logs
+    cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
+    mkdir BLE_dat_cs
+    cd $EXAMPLE_TEST_PATH/tests
+    # runs desired test
+    set +e
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot
+    let "testResult=$?"
+    if [ "$testResult" -ne "0" ]; then
+        # update failed test count
+        let "numOfFailedTests+=$testResult"
+        failedTestList+="| BLE_dat_cs ($DUT_NAME_UPPER) "
+    fi
+    set -e
 
     # make sure to erase main device and current DUT to it does not store bonding info
     erase_with_openocd $DUT_NAME_LOWER $DUT_ID
