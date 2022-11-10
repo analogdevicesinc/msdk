@@ -216,10 +216,6 @@ for i in ${!dut_list[@]}; do
     DUT_SERIAL_PORT=/dev/$(ls -la /dev/serial/by-id | grep -n ${dut_list_serial[i]} | rev | cut -d "/" -f1 | rev)
     DUT_ID=${dut_list_ID[i]}
 
-    # make sure to erase main device and current DUT to it does not store bonding info
-    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
-    erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-
     # directory for test resutls
     mkdir $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER
     # enter current device under test directory
@@ -369,21 +365,21 @@ for i in ${!dut_list[@]}; do
     # give time to connect
     sleep 15
 
-    # set +e
-    # # runs desired test
-    # cd $EXAMPLE_TEST_PATH/tests
-    # $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot
-    # let "testResult=$?"
-    # if [ "$testResult" -ne "0" ]; then
-    #     # update failed test count
-    #     let "numOfFailedTests+=$testResult"
-    #     failedTestList+="| BLE_ota_cs ($DUT_NAME_UPPER) "
-    # fi
-    # set -e
+    set +e
+    # runs desired test
+    cd $EXAMPLE_TEST_PATH/tests
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot
+    let "testResult=$?"
+    if [ "$testResult" -ne "0" ]; then
+        # update failed test count
+        let "numOfFailedTests+=$testResult"
+        failedTestList+="| BLE_ota_cs ($DUT_NAME_UPPER) "
+    fi
+    set -e
 
-    # # make sure to erase main device and current DUT to it does not store bonding info
-    # erase_with_openocd $DUT_NAME_LOWER $DUT_ID
-    # erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+    # make sure to erase main device and current DUT to it does not store bonding info
+    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+    erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
 done
 
