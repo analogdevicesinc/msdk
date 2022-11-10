@@ -67,7 +67,9 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}"
+        "${config:board}",
+        "TFT_ADAFRUIT",
+        // "TFT_NEWHAVEN"
     ]
 }
 

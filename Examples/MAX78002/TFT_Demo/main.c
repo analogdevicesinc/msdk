@@ -187,14 +187,14 @@ int main(void)
     SystemCoreClockUpdate();
 
     printf("TFT Demo Example\n");
-    /* Initialize TFT display */
-    MXC_TFT_Init(NULL, NULL);
-    TFT_test();
-
 #ifdef TFT_ADAFRUIT
     /* Initialize touch screen */
     if (MXC_TS_Init(MXC_SPI0, -1, NULL, NULL))
         printf("Touch screen initialization failed\n");
+#else
+    /* Initialize TFT display */
+    MXC_TFT_Init(NULL, NULL);
+    TFT_test();
 #endif
 
     /* Initialize RTC */

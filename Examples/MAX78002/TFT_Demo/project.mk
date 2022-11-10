@@ -8,7 +8,7 @@
 # **********************************************************
 
 # Select TFT drivers to match the connected display 
-TFT = ADAFRUIT
+TFT=ADAFRUIT
 # TFT=NEWHAVEN
 
 # Add TFT resources folder to build
