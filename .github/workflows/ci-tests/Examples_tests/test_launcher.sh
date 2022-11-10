@@ -345,12 +345,16 @@ for i in ${!dut_list[@]}; do
     # modify project.mk's recursive 'MAKE' call that builds the FW update bin
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
     # changes FW_UPDATE_DIR=../BLE_otas  -->   FW_UPDATE_DIR=../../MAX32665/BLE_otas where (MAX32665 = $DUT_NAME_UPPER or any other MCU)
+    printf "> Changing update FW_UPDATE_DIR"
     sed -i 's/FW_UPDATE_DIR=..\/BLE_otas/FW_UPDATE_DIR=..\/..\/'"$DUT_NAME_UPPER"'\/BLE_otas/g' project.mk
-
+    echo Result was $?
     #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
+    printf "> Appending new target to recursive make call"
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
+    echo Result was $?
+    printf "> Appending new target to recursive make call"
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
-
+    echo Result was $?
     # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
     make clean
     make -j8
