@@ -16,6 +16,7 @@ Original Firmware Test
     [Timeout]    30s
     Sleep     5s
     Expect And Timeout    btn 2 m\n    FW_VERSION: 1     5     ${SERIAL_PORT_2}
+    sleep        390
 
 File Discovery Test
     [Timeout]    30s
