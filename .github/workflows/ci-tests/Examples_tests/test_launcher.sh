@@ -339,8 +339,18 @@ for i in ${!dut_list[@]}; do
     perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file.c
     make -j8
 
-    # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
+    # since  MAIN_DEVICE and DUT are not the same chip we need to make sure the
+    # FW update binary is built for the DUT's mcu and not the  MAION_DEVICE mcu
+    # modify project.mk's recursive 'MAKE' call that builds the FW update bin
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    # changes FW_UPDATE_DIR=../BLE_otas  -->   FW_UPDATE_DIR=../../MAX32665/BLE_otas where (MAX32665 = $DUT_NAME_UPPER or any other MCU)
+    sed -i 's/FW_UPDATE_DIR=..\/BLE_otas/FW_UPDATE_DIR=..\/..\/'"$DUT_NAME_UPPER"'\/BLE_otas/g' project.mk
+
+    #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
+    sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
+    sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
+
+    # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
     make clean
     make -j8
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
@@ -361,6 +371,10 @@ for i in ${!dut_list[@]}; do
         failedTestList+="| BLE_ota_cs ($DUT_NAME_UPPER) "
     fi
     set -e
+
+    # make sure to erase main device and current DUT to it does not store bonding info
+    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+    erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
 done
 
