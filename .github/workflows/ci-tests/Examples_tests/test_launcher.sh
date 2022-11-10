@@ -232,20 +232,20 @@ for i in ${!dut_list[@]}; do
             case $PROJECT_NAME in
 
             "BLE_datc")
-                run_notConntectedTest
+              #  run_notConntectedTest
 
                 ;;
 
             "BLE_dats")
-                run_notConntectedTest
+               # run_notConntectedTest
                 ;;
 
             "BLE_mcs")
-                run_notConntectedTest
+              #  run_notConntectedTest
                 ;;
 
             "BLE_fit")
-                run_notConntectedTest
+              #  run_notConntectedTest
                 ;;
 
             "BLE_fcc")
@@ -256,11 +256,11 @@ for i in ${!dut_list[@]}; do
                 ;;
 
             "BLE_FreeRTOS")
-                run_notConntectedTest
+              #  run_notConntectedTest
                 ;;
 
             "BLE_otac")
-                run_notConntectedTest
+               # run_notConntectedTest
                 ;;
 
             "BLE_otas")
@@ -316,8 +316,9 @@ for i in ${!dut_list[@]}; do
     fi
     set -e
 
-    # make sure device under test is not left with a running app
+    # make sure to erase main device and current DUT to it does not store bonding info
     erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+    erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
     #--------------------------start Otac/Otas conencted tests
 
