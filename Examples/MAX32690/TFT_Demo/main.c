@@ -118,6 +118,8 @@ void TFT_test(void)
 
 int main(void)
 {
+	MXC_Delay(MXC_DELAY_SEC(2));
+
     /* Enable cache */
     MXC_ICC_Enable(MXC_ICC0);
 
