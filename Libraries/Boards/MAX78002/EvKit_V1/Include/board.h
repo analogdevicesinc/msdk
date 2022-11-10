@@ -76,13 +76,6 @@ extern "C" {
 #define TFT_SPI_PINS \
     MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 /**< GPIO pins for SPI peripheral. */
 
-#define TFT_SPI MXC_SPI0        // SPI port to use for TFT display
-#define TFT_SPI_FREQ 20000000 /**< SPI clock frequency in Hertz. */
-#define TFT_DC_PORT MXC_GPIO2 /**< GPIO port for Data/Command signal. */
-#define TFT_DC_PIN MXC_GPIO_PIN_2 /**< GPIO pin for Data/Command signal. */
-#define TFT_SS_PORT MXC_GPIO0 /**< GPIO port for select signal. */
-#define TFT_SS_PIN MXC_GPIO_PIN_3 /**< GPIO pin for select signal. */
-
 /**
  *  A reference to LED1 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
@@ -94,9 +87,18 @@ extern "C" {
  */
 #define LED2 1
 
+#ifdef TFT_NEWHAVEN
+#define TFT_SPI MXC_SPI0        // SPI port to use for TFT display
+#define TFT_SPI_FREQ 20000000 /**< SPI clock frequency in Hertz. */
+#define TFT_DC_PORT MXC_GPIO2 /**< GPIO port for Data/Command signal. */
+#define TFT_DC_PIN MXC_GPIO_PIN_2 /**< GPIO pin for Data/Command signal. */
+#define TFT_SS_PORT MXC_GPIO0 /**< GPIO port for select signal. */
+#define TFT_SS_PIN MXC_GPIO_PIN_3 /**< GPIO pin for select signal. */
+
 void TFT_SPI_Init(void);
 void TFT_SPI_Write(uint8_t data, bool cmd);
 void TFT_SPI_Transmit(void *src, int count);
+#endif
 
 /**
  * \brief   Initialize the BSP and board interfaces.

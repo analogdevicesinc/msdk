@@ -95,6 +95,7 @@ void mxc_assert(const char *expr, const char *file, int line)
     while (1) {}
 }
 
+#ifdef TFT_NEWHAVEN
 void TFT_SPI_Init(void)
 {
     // Initialize SPI0
@@ -183,6 +184,7 @@ void TFT_SPI_Transmit(void *src, int count)
 
     MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
 }
+#endif // TFT_NEWHAVEN
 
 /******************************************************************************/
 int Board_Init(void)
