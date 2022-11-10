@@ -355,10 +355,18 @@ for i in ${!dut_list[@]}; do
     # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
     make clean
     make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8
+
+
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
     printf "> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
     flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     printf "Flashing done"
+
+    #revert files back
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    sed -i 's/TARGET='"$DUT_NAME_UPPER"'//' project.mk
+    sed -i 's/TARGET_UC='"$DUT_NAME_UPPER"'//' project.mk
+    sed -i 's/TARGET_LC='"$DUT_NAME_LOWER"'//' project.mk
     # give time to connect
     sleep 15
 
