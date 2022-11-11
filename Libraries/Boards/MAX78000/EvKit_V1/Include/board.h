@@ -63,7 +63,7 @@ extern "C" {
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON 0 /// Active state of LEDs
 
-#define TFT_SPI MXC_SPI0        // SPI port to use for TFT display
+#define TFT_SPI MXC_SPI0 // SPI port to use for TFT display
 #define TFT_SPI_PORT MXC_GPIO0 /**< GPIO port for SPI peripheral pins. */
 #define TFT_SPI_PINS                                   \
     MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | \

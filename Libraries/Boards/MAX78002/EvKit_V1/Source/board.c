@@ -62,10 +62,10 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 // TFT Data/Command pin
 const mxc_gpio_cfg_t tft_dc_pin = { TFT_DC_PORT, TFT_DC_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                MXC_GPIO_VSSEL_VDDIOH };
+                                    MXC_GPIO_VSSEL_VDDIOH };
 // TFT Slave Select pin
 const mxc_gpio_cfg_t tft_ss_pin = { TFT_SS_PORT, TFT_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                MXC_GPIO_VSSEL_VDDIOH };
+                                    MXC_GPIO_VSSEL_VDDIOH };
 
 /***** File Scope Variables *****/
 // const uart_cfg_t uart_cfg = {
@@ -104,15 +104,10 @@ void TFT_SPI_Init(void)
     int numSlaves = 0;
     int ssPol = 0;
     int tft_hz = TFT_SPI_FREQ;
-    mxc_spi_pins_t tft_pins = { // CLK, MISO, MOSI enabled, software controlled SS
-        .clock = true,
-        .ss0 = false,
-        .ss1 = false,
-        .ss2 = false,
-        .miso = true,
-        .mosi = true,
-        .sdio2 = false,
-        .sdio3 = false,
+    mxc_spi_pins_t tft_pins = {
+        // CLK, MISO, MOSI enabled, software controlled SS
+        .clock = true, .ss0 = false, .ss1 = false,   .ss2 = false,
+        .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
     };
 
     MXC_SPI_Init(TFT_SPI, master, quadMode, numSlaves, ssPol, tft_hz, tft_pins);

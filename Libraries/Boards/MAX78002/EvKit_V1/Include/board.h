@@ -88,7 +88,7 @@ extern "C" {
 #define LED2 1
 
 #ifdef TFT_NEWHAVEN
-#define TFT_SPI MXC_SPI0        // SPI port to use for TFT display
+#define TFT_SPI MXC_SPI0 // SPI port to use for TFT display
 #define TFT_SPI_FREQ 20000000 /**< SPI clock frequency in Hertz. */
 #define TFT_DC_PORT MXC_GPIO2 /**< GPIO port for Data/Command signal. */
 #define TFT_DC_PIN MXC_GPIO_PIN_2 /**< GPIO pin for Data/Command signal. */
