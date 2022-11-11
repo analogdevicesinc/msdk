@@ -22,3 +22,9 @@ VPATH += ./src/public_key
 VPATH += ./src/mac
 
 IPATH += ./src/include
+
+# Set variant part number
+TARGET_SEC="MAX32651"
+
+# MAX32651 is secure micro so that enable SBT
+SBT = 1
