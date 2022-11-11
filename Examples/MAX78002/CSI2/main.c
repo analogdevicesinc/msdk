@@ -59,6 +59,7 @@
 #include "utils.h"
 #include "gcr_regs.h"
 #include "mcr_regs.h"
+#include "console.h"
 
 /***** Definitions *****/
 
@@ -156,7 +157,21 @@ void process_img(void)
     // Get the details of the image from the camera driver.
     MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
 
-    utils_send_img_to_pc(raw, imgLen, w, h, mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT));
+    MXC_TMR_SW_Start(MXC_TMR0);
+    clear_serial_buffer();
+    snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
+                "*IMG* %s %i %i %i", // Format img info into a string
+                mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
+    send_msg(g_serial_buffer);
+
+    clear_serial_buffer();
+    MXC_UART_Write(Con_Uart, raw, (int*)&imgLen);
+
+    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (serial transmission took %i us)\n", elapsed);
+
+    // utils_send_img_to_pc(raw, imgLen, w, h, mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT));
+
 }
 
 volatile int buttonPressed = 0;
@@ -174,6 +189,15 @@ int main(void)
     mxc_csi2_ctrl_cfg_t ctrl_cfg;
     mxc_csi2_vfifo_cfg_t vfifo_cfg;
 
+    // Enable cache
+    MXC_ICC_Enable(MXC_ICC0);
+
+    // Switch to 100 MHz clock
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    SystemCoreClockUpdate();
+
+    console_init();
+
     printf("\n\n**** MIPI CSI-2 Example ****\n");
     printf("This example streams the image data through the COM port\n");
     printf("and a script running on the host pc converts the data into\n");
@@ -183,20 +207,6 @@ int main(void)
     printf("\nGo into the pc_utility folder and run the script:\n");
     printf("python grab_image.py [COM#] [baudrate]\n");
     printf("\nPress PB1 (SW4) to trigger a frame capture.\n");
-
-    // Enable cache
-    MXC_ICC_Enable(MXC_ICC0);
-
-    // Switch to 100 MHz clock
-    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-    SystemCoreClockUpdate();
-
-    mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
-
-    if ((error = MXC_UART_Init(ConsoleUart, 115200 * 8, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
-        LED_On(1);
-        while (1) {}
-    }
 
     // Initialize camera
     mipi_camera_init();
