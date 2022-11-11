@@ -5321,7 +5321,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
    <registers>
     <register>
      <name>STAT</name>
-     <description>HPB Status Register.</description>
+     <description>Hyperbus Status Register.</description>
      <addressOffset>0x0000</addressOffset>
      <fields>
       <field>
@@ -5460,7 +5460,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
     </register>
     <register>
      <name>INTEN</name>
-     <description>HPB INTEN Register.</description>
+     <description>Hyperbus Interrupt Enable Register.</description>
      <addressOffset>0x0004</addressOffset>
      <fields>
       <field>
@@ -5503,7 +5503,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
     </register>
     <register>
      <name>INTFL</name>
-     <description>HPB INTFL Register.</description>
+     <description>Hyperbus Interrupt Flag Register.</description>
      <addressOffset>0x0008</addressOffset>
      <fields>
       <field>
@@ -5548,7 +5548,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <dim>2</dim>
      <dimIncrement>4</dimIncrement>
      <name>MEMBADDR[%s]</name>
-     <description>Memory Base Address register. This is the base address of the addressable memory region in this microcontroller’s RAM. Because the addressable memory is mapped in 16M boundaries, the lower 24 bits are fixed to 0.</description>
+     <description>Hyperbus Memory Base Address Register.</description>
      <addressOffset>0x0010</addressOffset>
      <fields>
       <field>
@@ -5563,7 +5563,7 @@ least 1 entry in RX FIFO during this time, this bit is clear by write 1</descrip
      <dim>2</dim>
      <dimIncrement>4</dimIncrement>
      <name>MEMCTRL[%s]</name>
-     <description>Memory Control Register.</description>
+     <description>Hyperbus Memory Control Register.</description>
      <addressOffset>0x0020</addressOffset>
      <fields>
       <field>
@@ -5701,7 +5701,7 @@ memory.
      <dim>2</dim>
      <dimIncrement>4</dimIncrement>
      <name>MEMTIM[%s]</name>
-     <description>Memory timing register.</description>
+     <description>Hyperbus Memory Timing Register.</description>
      <addressOffset>0x0030</addressOffset>
      <fields>
       <field>
@@ -11586,7 +11586,7 @@ memory.
    <baseAddress>0x4002A000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x400</size>
+    <size>0x800</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
@@ -14384,7 +14384,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <dimIncrement>2</dimIncrement>
      <name>FIFO16[%s]</name>
      <description>Register for reading and writing the FIFO.</description>
-     <alternateRegister>DATA32</alternateRegister>
+     <alternateRegister>FIFO32</alternateRegister>
      <addressOffset>0x00</addressOffset>
      <size>16</size>
      <access>read-write</access>
@@ -14402,7 +14402,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <dimIncrement>1</dimIncrement>
      <name>FIFO8[%s]</name>
      <description>Register for reading and writing the FIFO.</description>
-     <alternateRegister>DATA32</alternateRegister>
+     <alternateRegister>FIFO32</alternateRegister>
      <addressOffset>0x00</addressOffset>
      <size>8</size>
      <access>read-write</access>
@@ -20427,25 +20427,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        </enumeratedValues>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <description> DMA Request Enable </description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable DMA for this IN endpoint.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable DMA for this IN endpoint.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>FRCDATATOG</name>
        <description> Force In Data - Toggle</description>
        <bitOffset>3</bitOffset>
@@ -20460,25 +20441,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
         <enumeratedValue>
          <name>dontcare</name>
          <description>Toggle data-toggle regardless of ACK. </description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <description> DMA Request Mode Enable </description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>0</name>
-         <description>Enable DMA Request Mode 0.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1</name>
-         <description>Enable DMA Request Mode 1.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -20599,20 +20561,8 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <access>read-write</access>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
        <name>DISNYET</name>
        <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
@@ -20905,16 +20855,10 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
     </register>
     <register>
      <name>RAMINFO</name>
-     <description>RAM width and DMA hardware information.</description>
+     <description>RAM width information.</description>
      <addressOffset>0x79</addressOffset>
      <size>8</size>
      <fields>
-      <field>
-       <name>DMACHANS</name>
-       <bitOffset>4</bitOffset>
-       <bitWidth>4</bitWidth>
-       <access>read-only</access>
-      </field>
       <field>
        <name>RAMBITS</name>
        <bitOffset>0</bitOffset>
@@ -20937,26 +20881,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
       </field>
       <field>
        <name>RSTS</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EARLYDMA</name>
-     <description>DMA timing control register.</description>
-     <addressOffset>0x7B</addressOffset>
-     <size>8</size>
-     <fields>
-      <field>
-       <name>EDMAIN</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>EDMAOUT</name>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
@@ -21132,28 +21056,28 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <addressOffset>0x470</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_HS_COURSE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_HS_COURSE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_HS_COARSE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_HS_COARSE_TUNE_NUM</description>
      <addressOffset>0x474</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_HS_FINE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_HS_FINE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_HS_FINE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_HS_FINE_TUNE_NUM</description>
      <addressOffset>0x478</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_FS_COURSE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_FS_COURSE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_FS_COARSE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_FS_COARSE_TUNE_NUM</description>
      <addressOffset>0x47C</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_FS_FINE_TUNE_NUM</name>
-     <description>M31_PHY_XCFGI_FS_FINE_TUNE_NUM</description>
+     <name>M31_PHY_XCFG_FS_FINE_TUNE_NUM</name>
+     <description>M31_PHY_XCFG_FS_FINE_TUNE_NUM</description>
      <addressOffset>0x480</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_LOCK_RANGE_MAX</name>
-     <description>M31_PHY_XCFGI_LOCK_RANGE_MAX</description>
+     <name>M31_PHY_XCFG_LOCK_RANGE_MAX</name>
+     <description>M31_PHY_XCFG_LOCK_RANGE_MAX</description>
      <addressOffset>0x484</addressOffset>
     </register>
     <register>
@@ -21162,13 +21086,13 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <addressOffset>0x488</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_OB_RSEL</name>
-     <description>M31_PHY_XCFGI_OB_RSEL</description>
+     <name>M31_PHY_XCFG_OB_RSEL</name>
+     <description>M31_PHY_XCFG_OB_RSEL</description>
      <addressOffset>0x48C</addressOffset>
     </register>
     <register>
-     <name>M31_PHY_XCFGI_OC_RSEL</name>
-     <description>M31_PHY_XCFGI_OC_RSEL</description>
+     <name>M31_PHY_XCFG_OC_RSEL</name>
+     <description>M31_PHY_XCFG_OC_RSEL</description>
      <addressOffset>0x490</addressOffset>
     </register>
     <register>
@@ -21236,12 +21160,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <name>VRST_VDDB_N_A</name>
        <description>VRST_VDDB_N_A</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>DMA_INT</name>
-       <description>DMA_INT</description>
-       <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -21894,20 +21812,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      </fields>
     </register>
     <register>
-     <name>PWM</name>
-     <description>Wakeup Timer PWM Register</description>
-     <addressOffset>0x0008</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>PWM</name>
-       <description>Timer PWM Value.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>INTFL</name>
      <description>Wakeup Timer Interrupt Register</description>
      <addressOffset>0x000C</addressOffset>
@@ -22037,7 +21941,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
       </field>
       <field>
        <name>TPOL</name>
-       <description>Timer pOLARITY.</description>
+       <description>Timer Polarity.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -22117,30 +22021,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field>
-       <name>PWMSYNC</name>
-       <description>PWM SYNC mode.</description>
-       <bitOffset>9</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>NOLHPOL</name>
-       <description>PWM output high polarity.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>NOLLPOL</name>
-       <description>PWM output high polarity.</description>
-       <bitOffset>11</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PWMCKBD</name>
-       <description>PWM output disable.</description>
-       <bitOffset>12</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
      </fields>
     </register>
     <register>
@@ -22167,19 +22047,54 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <name>PRESET</name>
      <description>Preset register.</description>
      <addressOffset>0x18</addressOffset>
+     <fields>
+      <field>
+       <name>PRESET</name>
+       <description>Preset Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>RELOAD</name>
      <description>Reload register.</description>
      <addressOffset>0x1C</addressOffset>
+     <fields>
+      <field>
+       <name>RELOAD</name>
+       <description>Reload Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>SNAPSHOT</name>
      <description>Snapshot register.</description>
      <addressOffset>0x20</addressOffset>
+     <fields>
+      <field>
+       <name>SNAPSHOT</name>
+       <description>Snapshot Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
    </registers>
   </peripheral>
 <!--WUT Wake Up Timer-->
+  <peripheral derivedFrom="WUT">
+   <name>WUT1</name>
+   <description>Wake Up Timer 1</description>
+   <baseAddress>0x40006600</baseAddress>
+   <interrupt>
+    <name>WUT1</name>
+    <description>WUT1 IRQ</description>
+    <value>109</value>
+   </interrupt>
+  </peripheral>
+<!--WUT1 Wake Up Timer 1-->
  </peripherals>
 </device>

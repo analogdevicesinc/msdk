@@ -305,10 +305,11 @@ typedef enum {
 #define MXC_GPIO_GET_IRQ(i) ((i) == 0 ? GPIO0_IRQn : 0)
 
 /******************************************************************************/
+/*                                                                      Timer */
 #define SEC(s) (((uint32_t)s) * 1000000UL)
 #define MSEC(ms) (ms * 1000UL)
 #define USEC(us) (us)
-/*                                                                      Timer */
+
 #define MXC_CFG_TMR_INSTANCES (4)
 
 #define MXC_BASE_TMR0 ((uint32_t)0x40010000UL)

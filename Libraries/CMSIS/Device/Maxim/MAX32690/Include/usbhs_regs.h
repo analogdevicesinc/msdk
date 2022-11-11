@@ -5,37 +5,37 @@
  */
 
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_USBHS_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_USBHS_REGS_H_
@@ -133,8 +133,7 @@ typedef struct {
     __IO uint8_t  epinfo;               /**< <tt>\b 0x78:</tt> USBHS EPINFO Register */
     __IO uint8_t  raminfo;              /**< <tt>\b 0x79:</tt> USBHS RAMINFO Register */
     __IO uint8_t  softreset;            /**< <tt>\b 0x7A:</tt> USBHS SOFTRESET Register */
-    __IO uint8_t  earlydma;             /**< <tt>\b 0x7B:</tt> USBHS EARLYDMA Register */
-    __R  uint32_t rsv_0x7c;
+    __R  uint8_t  rsv_0x7b_0x7f[5];
     __IO uint16_t ctuch;                /**< <tt>\b 0x80:</tt> USBHS CTUCH Register */
     __IO uint16_t cthsrtn;              /**< <tt>\b 0x82:</tt> USBHS CTHSRTN Register */
     __R  uint32_t rsv_0x84_0x3ff[223];
@@ -167,14 +166,14 @@ typedef struct {
     __IO uint32_t m31_phy_xcfgi_95_64;  /**< <tt>\b 0x468:</tt> USBHS M31_PHY_XCFGI_95_64 Register */
     __IO uint32_t m31_phy_xcfgi_127_96; /**< <tt>\b 0x46C:</tt> USBHS M31_PHY_XCFGI_127_96 Register */
     __IO uint32_t m31_phy_xcfgi_137_128; /**< <tt>\b 0x470:</tt> USBHS M31_PHY_XCFGI_137_128 Register */
-    __IO uint32_t m31_phy_xcfgi_hs_course_tune_num; /**< <tt>\b 0x474:</tt> USBHS M31_PHY_XCFGI_HS_COURSE_TUNE_NUM Register */
-    __IO uint32_t m31_phy_xcfgi_hs_fine_tune_num; /**< <tt>\b 0x478:</tt> USBHS M31_PHY_XCFGI_HS_FINE_TUNE_NUM Register */
-    __IO uint32_t m31_phy_xcfgi_fs_course_tune_num; /**< <tt>\b 0x47C:</tt> USBHS M31_PHY_XCFGI_FS_COURSE_TUNE_NUM Register */
-    __IO uint32_t m31_phy_xcfgi_fs_fine_tune_num; /**< <tt>\b 0x480:</tt> USBHS M31_PHY_XCFGI_FS_FINE_TUNE_NUM Register */
-    __IO uint32_t m31_phy_xcfgi_lock_range_max; /**< <tt>\b 0x484:</tt> USBHS M31_PHY_XCFGI_LOCK_RANGE_MAX Register */
+    __IO uint32_t m31_phy_xcfg_hs_coarse_tune_num; /**< <tt>\b 0x474:</tt> USBHS M31_PHY_XCFG_HS_COARSE_TUNE_NUM Register */
+    __IO uint32_t m31_phy_xcfg_hs_fine_tune_num; /**< <tt>\b 0x478:</tt> USBHS M31_PHY_XCFG_HS_FINE_TUNE_NUM Register */
+    __IO uint32_t m31_phy_xcfg_fs_coarse_tune_num; /**< <tt>\b 0x47C:</tt> USBHS M31_PHY_XCFG_FS_COARSE_TUNE_NUM Register */
+    __IO uint32_t m31_phy_xcfg_fs_fine_tune_num; /**< <tt>\b 0x480:</tt> USBHS M31_PHY_XCFG_FS_FINE_TUNE_NUM Register */
+    __IO uint32_t m31_phy_xcfg_lock_range_max; /**< <tt>\b 0x484:</tt> USBHS M31_PHY_XCFG_LOCK_RANGE_MAX Register */
     __IO uint32_t m31_phy_xcfgi_lock_range_min; /**< <tt>\b 0x488:</tt> USBHS M31_PHY_XCFGI_LOCK_RANGE_MIN Register */
-    __IO uint32_t m31_phy_xcfgi_ob_rsel; /**< <tt>\b 0x48C:</tt> USBHS M31_PHY_XCFGI_OB_RSEL Register */
-    __IO uint32_t m31_phy_xcfgi_oc_rsel; /**< <tt>\b 0x490:</tt> USBHS M31_PHY_XCFGI_OC_RSEL Register */
+    __IO uint32_t m31_phy_xcfg_ob_rsel; /**< <tt>\b 0x48C:</tt> USBHS M31_PHY_XCFG_OB_RSEL Register */
+    __IO uint32_t m31_phy_xcfg_oc_rsel; /**< <tt>\b 0x490:</tt> USBHS M31_PHY_XCFG_OC_RSEL Register */
     __IO uint32_t m31_phy_xcfgo;        /**< <tt>\b 0x494:</tt> USBHS M31_PHY_XCFGO Register */
     __IO uint32_t mxm_int;              /**< <tt>\b 0x498:</tt> USBHS MXM_INT Register */
     __IO uint32_t mxm_int_en;           /**< <tt>\b 0x49C:</tt> USBHS MXM_INT_EN Register */
@@ -229,7 +228,6 @@ typedef struct {
 #define MXC_R_USBHS_EPINFO                 ((uint32_t)0x00000078UL) /**< Offset from USBHS Base Address: <tt> 0x0078</tt> */
 #define MXC_R_USBHS_RAMINFO                ((uint32_t)0x00000079UL) /**< Offset from USBHS Base Address: <tt> 0x0079</tt> */
 #define MXC_R_USBHS_SOFTRESET              ((uint32_t)0x0000007AUL) /**< Offset from USBHS Base Address: <tt> 0x007A</tt> */
-#define MXC_R_USBHS_EARLYDMA               ((uint32_t)0x0000007BUL) /**< Offset from USBHS Base Address: <tt> 0x007B</tt> */
 #define MXC_R_USBHS_CTUCH                  ((uint32_t)0x00000080UL) /**< Offset from USBHS Base Address: <tt> 0x0080</tt> */
 #define MXC_R_USBHS_CTHSRTN                ((uint32_t)0x00000082UL) /**< Offset from USBHS Base Address: <tt> 0x0082</tt> */
 #define MXC_R_USBHS_MXM_USB_REG_00         ((uint32_t)0x00000400UL) /**< Offset from USBHS Base Address: <tt> 0x0400</tt> */
@@ -260,14 +258,14 @@ typedef struct {
 #define MXC_R_USBHS_M31_PHY_XCFGI_95_64    ((uint32_t)0x00000468UL) /**< Offset from USBHS Base Address: <tt> 0x0468</tt> */
 #define MXC_R_USBHS_M31_PHY_XCFGI_127_96   ((uint32_t)0x0000046CUL) /**< Offset from USBHS Base Address: <tt> 0x046C</tt> */
 #define MXC_R_USBHS_M31_PHY_XCFGI_137_128  ((uint32_t)0x00000470UL) /**< Offset from USBHS Base Address: <tt> 0x0470</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_HS_COURSE_TUNE_NUM ((uint32_t)0x00000474UL) /**< Offset from USBHS Base Address: <tt> 0x0474</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_HS_FINE_TUNE_NUM ((uint32_t)0x00000478UL) /**< Offset from USBHS Base Address: <tt> 0x0478</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_FS_COURSE_TUNE_NUM ((uint32_t)0x0000047CUL) /**< Offset from USBHS Base Address: <tt> 0x047C</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_FS_FINE_TUNE_NUM ((uint32_t)0x00000480UL) /**< Offset from USBHS Base Address: <tt> 0x0480</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_LOCK_RANGE_MAX ((uint32_t)0x00000484UL) /**< Offset from USBHS Base Address: <tt> 0x0484</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_HS_COARSE_TUNE_NUM ((uint32_t)0x00000474UL) /**< Offset from USBHS Base Address: <tt> 0x0474</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_HS_FINE_TUNE_NUM ((uint32_t)0x00000478UL) /**< Offset from USBHS Base Address: <tt> 0x0478</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_FS_COARSE_TUNE_NUM ((uint32_t)0x0000047CUL) /**< Offset from USBHS Base Address: <tt> 0x047C</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_FS_FINE_TUNE_NUM ((uint32_t)0x00000480UL) /**< Offset from USBHS Base Address: <tt> 0x0480</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_LOCK_RANGE_MAX ((uint32_t)0x00000484UL) /**< Offset from USBHS Base Address: <tt> 0x0484</tt> */
 #define MXC_R_USBHS_M31_PHY_XCFGI_LOCK_RANGE_MIN ((uint32_t)0x00000488UL) /**< Offset from USBHS Base Address: <tt> 0x0488</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_OB_RSEL  ((uint32_t)0x0000048CUL) /**< Offset from USBHS Base Address: <tt> 0x048C</tt> */
-#define MXC_R_USBHS_M31_PHY_XCFGI_OC_RSEL  ((uint32_t)0x00000490UL) /**< Offset from USBHS Base Address: <tt> 0x0490</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_OB_RSEL   ((uint32_t)0x0000048CUL) /**< Offset from USBHS Base Address: <tt> 0x048C</tt> */
+#define MXC_R_USBHS_M31_PHY_XCFG_OC_RSEL   ((uint32_t)0x00000490UL) /**< Offset from USBHS Base Address: <tt> 0x0490</tt> */
 #define MXC_R_USBHS_M31_PHY_XCFGO          ((uint32_t)0x00000494UL) /**< Offset from USBHS Base Address: <tt> 0x0494</tt> */
 #define MXC_R_USBHS_MXM_INT                ((uint32_t)0x00000498UL) /**< Offset from USBHS Base Address: <tt> 0x0498</tt> */
 #define MXC_R_USBHS_MXM_INT_EN             ((uint32_t)0x0000049CUL) /**< Offset from USBHS Base Address: <tt> 0x049C</tt> */
@@ -720,14 +718,8 @@ typedef struct {
 #define MXC_F_USBHS_INCSRU_MODE_POS                    5 /**< INCSRU_MODE Position */
 #define MXC_F_USBHS_INCSRU_MODE                        ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_MODE_POS)) /**< INCSRU_MODE Mask */
 
-#define MXC_F_USBHS_INCSRU_DMAREQEN_POS                4 /**< INCSRU_DMAREQEN Position */
-#define MXC_F_USBHS_INCSRU_DMAREQEN                    ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_DMAREQEN_POS)) /**< INCSRU_DMAREQEN Mask */
-
 #define MXC_F_USBHS_INCSRU_FRCDATATOG_POS              3 /**< INCSRU_FRCDATATOG Position */
 #define MXC_F_USBHS_INCSRU_FRCDATATOG                  ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_FRCDATATOG_POS)) /**< INCSRU_FRCDATATOG Mask */
-
-#define MXC_F_USBHS_INCSRU_DMAREQMODE_POS              2 /**< INCSRU_DMAREQMODE Position */
-#define MXC_F_USBHS_INCSRU_DMAREQMODE                  ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_DMAREQMODE_POS)) /**< INCSRU_DMAREQMODE Mask */
 
 #define MXC_F_USBHS_INCSRU_DPKTBUFDIS_POS              1 /**< INCSRU_DPKTBUFDIS Position */
 #define MXC_F_USBHS_INCSRU_DPKTBUFDIS                  ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_DPKTBUFDIS_POS)) /**< INCSRU_DPKTBUFDIS Mask */
@@ -792,14 +784,8 @@ typedef struct {
 #define MXC_F_USBHS_OUTCSRU_ISO_POS                    6 /**< OUTCSRU_ISO Position */
 #define MXC_F_USBHS_OUTCSRU_ISO                        ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_ISO_POS)) /**< OUTCSRU_ISO Mask */
 
-#define MXC_F_USBHS_OUTCSRU_DMAREQEN_POS               5 /**< OUTCSRU_DMAREQEN Position */
-#define MXC_F_USBHS_OUTCSRU_DMAREQEN                   ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_DMAREQEN_POS)) /**< OUTCSRU_DMAREQEN Mask */
-
 #define MXC_F_USBHS_OUTCSRU_DISNYET_POS                4 /**< OUTCSRU_DISNYET Position */
 #define MXC_F_USBHS_OUTCSRU_DISNYET                    ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_DISNYET_POS)) /**< OUTCSRU_DISNYET Mask */
-
-#define MXC_F_USBHS_OUTCSRU_DMAREQMODE_POS             3 /**< OUTCSRU_DMAREQMODE Position */
-#define MXC_F_USBHS_OUTCSRU_DMAREQMODE                 ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_DMAREQMODE_POS)) /**< OUTCSRU_DMAREQMODE Mask */
 
 #define MXC_F_USBHS_OUTCSRU_DPKTBUFDIS_POS             1 /**< OUTCSRU_DPKTBUFDIS Position */
 #define MXC_F_USBHS_OUTCSRU_DPKTBUFDIS                 ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_DPKTBUFDIS_POS)) /**< OUTCSRU_DPKTBUFDIS Mask */
@@ -1035,12 +1021,9 @@ typedef struct {
 /**
  * @ingroup  usbhs_registers
  * @defgroup USBHS_RAMINFO USBHS_RAMINFO
- * @brief    RAM width and DMA hardware information.
+ * @brief    RAM width information.
  * @{
  */
-#define MXC_F_USBHS_RAMINFO_DMACHANS_POS               4 /**< RAMINFO_DMACHANS Position */
-#define MXC_F_USBHS_RAMINFO_DMACHANS                   ((uint8_t)(0xFUL << MXC_F_USBHS_RAMINFO_DMACHANS_POS)) /**< RAMINFO_DMACHANS Mask */
-
 #define MXC_F_USBHS_RAMINFO_RAMBITS_POS                0 /**< RAMINFO_RAMBITS Position */
 #define MXC_F_USBHS_RAMINFO_RAMBITS                    ((uint8_t)(0xFUL << MXC_F_USBHS_RAMINFO_RAMBITS_POS)) /**< RAMINFO_RAMBITS Mask */
 
@@ -1059,20 +1042,6 @@ typedef struct {
 #define MXC_F_USBHS_SOFTRESET_RSTS                     ((uint8_t)(0x1UL << MXC_F_USBHS_SOFTRESET_RSTS_POS)) /**< SOFTRESET_RSTS Mask */
 
 /**@} end of group USBHS_SOFTRESET_Register */
-
-/**
- * @ingroup  usbhs_registers
- * @defgroup USBHS_EARLYDMA USBHS_EARLYDMA
- * @brief    DMA timing control register.
- * @{
- */
-#define MXC_F_USBHS_EARLYDMA_EDMAIN_POS                1 /**< EARLYDMA_EDMAIN Position */
-#define MXC_F_USBHS_EARLYDMA_EDMAIN                    ((uint8_t)(0x1UL << MXC_F_USBHS_EARLYDMA_EDMAIN_POS)) /**< EARLYDMA_EDMAIN Mask */
-
-#define MXC_F_USBHS_EARLYDMA_EDMAOUT_POS               0 /**< EARLYDMA_EDMAOUT Position */
-#define MXC_F_USBHS_EARLYDMA_EDMAOUT                   ((uint8_t)(0x1UL << MXC_F_USBHS_EARLYDMA_EDMAOUT_POS)) /**< EARLYDMA_EDMAOUT Mask */
-
-/**@} end of group USBHS_EARLYDMA_Register */
 
 /**
  * @ingroup  usbhs_registers
@@ -1143,9 +1112,6 @@ typedef struct {
  */
 #define MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A_POS       0 /**< MXM_REG_A4_VRST_VDDB_N_A Position */
 #define MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A           ((uint32_t)(0x1UL << MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A_POS)) /**< MXM_REG_A4_VRST_VDDB_N_A Mask */
-
-#define MXC_F_USBHS_MXM_REG_A4_DMA_INT_POS             1 /**< MXM_REG_A4_DMA_INT Position */
-#define MXC_F_USBHS_MXM_REG_A4_DMA_INT                 ((uint32_t)(0x1UL << MXC_F_USBHS_MXM_REG_A4_DMA_INT_POS)) /**< MXM_REG_A4_DMA_INT Mask */
 
 /**@} end of group USBHS_MXM_REG_A4_Register */
 
