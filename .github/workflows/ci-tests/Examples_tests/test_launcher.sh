@@ -232,20 +232,20 @@ for i in ${!dut_list[@]}; do
             case $PROJECT_NAME in
 
             "BLE_datc")
-              #  run_notConntectedTest
+                run_notConntectedTest
 
                 ;;
 
             "BLE_dats")
-               # run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_mcs")
-              #  run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_fit")
-              #  run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_fcc")
@@ -256,11 +256,11 @@ for i in ${!dut_list[@]}; do
                 ;;
 
             "BLE_FreeRTOS")
-              #  run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_otac")
-               # run_notConntectedTest
+                run_notConntectedTest
                 ;;
 
             "BLE_otas")
@@ -341,17 +341,13 @@ for i in ${!dut_list[@]}; do
     make -j8
 
     # since  MAIN_DEVICE and DUT are not the same chip we need to make sure the
-    # FW update binary is built for the DUT's mcu and not the  MAION_DEVICE mcu
+    # FW update binary is built for the DUT's mcu and not the  MAIN_DEVICE mcu
     # modify project.mk's recursive 'MAKE' call that builds the FW update bin
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
 
     #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
-    printf "> Appending new target to recursive make call"
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
-    echo Result was $?
-    printf "> Appending new target to recursive make call"
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
-    echo Result was $?
     # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
     make clean
     make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8
@@ -362,7 +358,7 @@ for i in ${!dut_list[@]}; do
     flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     printf "Flashing done"
 
-    #revert files back
+    #revert files back, took me days to find this bug
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
     sed -i 's/TARGET='"$DUT_NAME_UPPER"'//' project.mk
     sed -i 's/TARGET_UC='"$DUT_NAME_UPPER"'//' project.mk

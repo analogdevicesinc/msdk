@@ -43,8 +43,8 @@ Firmware Update Verification Test
 
 
 Firmware Reconnect Succesful Test
-    [Timeout]    45s
-    sleep     15
+    [Timeout]    60s
+    sleep     10
     Expect And Timeout    btn 2 s\n    >>> File discovery complete <<<    15    ${SERIAL_PORT_1}
     
 
