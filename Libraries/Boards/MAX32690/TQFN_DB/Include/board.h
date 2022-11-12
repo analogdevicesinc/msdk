@@ -59,7 +59,6 @@ extern "C" {
 
 #define TQFN_DB /// Used in examples to control program flow
 
-
 #ifndef HCI_UART
 #define HCI_UART 3
 #endif
