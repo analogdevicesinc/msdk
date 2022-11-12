@@ -117,4 +117,4 @@ void SvcSecDataCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCb
 };
 #endif
 
-#endif // EXAMPLES_MAX32655_BLE_DATS_SERVICES_SVC_SDS_H_
+#endif // EXAMPLES_MAX32690_BLE_DATS_SERVICES_SVC_SDS_H_
