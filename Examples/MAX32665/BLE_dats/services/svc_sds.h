@@ -40,8 +40,8 @@
  */
 /*************************************************************************************************/
 
-#ifndef EXAMPLES_MAX32655_BLE_DATS_SERVICES_SVC_SDS_H_
-#define EXAMPLES_MAX32655_BLE_DATS_SERVICES_SVC_SDS_H_
+#ifndef EXAMPLES_MAX32665_BLE_DATS_SERVICES_SVC_SDS_H_
+#define EXAMPLES_MAX32665_BLE_DATS_SERVICES_SVC_SDS_H_
 
 #ifdef __cplusplus
 extern "C" {
