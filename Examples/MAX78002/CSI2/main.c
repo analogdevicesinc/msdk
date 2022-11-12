@@ -121,10 +121,8 @@
 volatile int DMA_FLAG=1;
 
 // RAW Line Buffers
-uint32_t RAW_ADDR0[IMAGE_WIDTH] __attribute__((aligned(4)))
-__attribute__((section(".csi2_buff_section")));
-uint32_t RAW_ADDR1[IMAGE_WIDTH] __attribute__((aligned(4)))
-__attribute__((section(".csi2_buff_section")));
+__attribute__((section(".csi2_buff_raw0"), aligned(4))) uint32_t RAW_ADDR0[IMAGE_WIDTH];
+__attribute__((section(".csi2_buff_raw1"), aligned(4))) uint32_t RAW_ADDR1[IMAGE_WIDTH];
 
 // Buffer for processed image
 uint8_t IMAGE[IMAGE_SIZE];
