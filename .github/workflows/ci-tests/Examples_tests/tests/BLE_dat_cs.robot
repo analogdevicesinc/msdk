@@ -1,9 +1,6 @@
 *** settings ***
-Library    SerialLibrary      encoding=ascii
 Library    String
-Resource     ../resources/Serial.robot
-Suite Setup        Serial.Open Serial Port    ${SERIAL_PORT_1}    ${SERIAL_PORT_2}    
-Suite Teardown     Serial.Close Serial Port
+Library    ../resources/serialPortReader.py
 
 
 *** Variables ***
