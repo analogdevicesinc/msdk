@@ -1,0 +1,222 @@
+\hypertarget{group___u_c_l___s_i_a256}{}\section{S\+I\+A256}
+\label{group___u_c_l___s_i_a256}\index{S\+I\+A256@{S\+I\+A256}}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{group___u_c_l___s_i_a256_structucl__sia256__ctx}{ucl\+\_\+sia256\+\_\+ctx}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{group___u_c_l___s_i_a256_gaea9532ac144a90f3ee34ae129ed68282}{U\+C\+L\+\_\+\+S\+I\+A256}~0
+\item 
+\#define \hyperlink{group___u_c_l___s_i_a256_ga34283058845b7379a0d481372e2ad4d9}{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE}~64
+\item 
+\#define \hyperlink{group___u_c_l___s_i_a256_gafaca6ff0632649a744923a29c7d197f1}{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE}~8
+\end{DoxyCompactItemize}
+\subsection*{List of types}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{group___u_c_l___s_i_a256_structucl__sia256__ctx}{ucl\+\_\+sia256\+\_\+ctx} \hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{List of functions}
+\begin{DoxyCompactItemize}
+\item 
+int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ \hyperlink{group___u_c_l___s_i_a256_gad50391bbde94fe6c9f9bdf151f294ac5}{ucl\+\_\+sia256} (u8 $\ast$hash, u8 $\ast$data, u32 data\+\_\+byte\+Len)
+\item 
+int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ \hyperlink{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}{ucl\+\_\+sia256\+\_\+core} (\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$context, u8 $\ast$data, u32 data\+\_\+byte\+Len)
+\item 
+int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ \hyperlink{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}{ucl\+\_\+sia256\+\_\+finish} (u8 $\ast$hash, \hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$context)
+\item 
+int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ \hyperlink{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}{ucl\+\_\+sia256\+\_\+init} (\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$context)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Secure Hash Algorithm 256, from F\+I\+PS 180-\/2.
+
+\begin{DoxyParagraph}{Header\+:}
+\hyperlink{ucl__sia256_8h}{ucl\+\_\+sia256.\+h }
+\end{DoxyParagraph}
+S\+I\+A-\/256 is a data-\/digest algorithm and a modified component of the Standard F\+I\+PS 180-\/2. The algorithm takes as input a data of arbitrary length and produces as output a 256-\/bit \char`\"{}fingerprint\char`\"{} or \char`\"{}data digest\char`\"{} of the input.~\newline
+ ~\newline
+ Given a data of any length, a single \char`\"{}1\char`\"{} bit is appended at the end of the data. This bit must always be added. Then, a set of \char`\"{}0\char`\"{} bits are also appended so that the data length is 448 modulo 512. Finally, the length of the data is appended. ~\newline
+~\newline
+ {\bfseries S\+I\+A256 Descriptor\+:} ~\newline
+ \begin{DoxyItemize}
+\item Block length \+: 512 bits \item Hash length \+: 256 bits \end{DoxyItemize}
+
+
+\subsection{Data Structure Documentation}
+\index{ucl\+\_\+sia256\+\_\+ctx@{ucl\+\_\+sia256\+\_\+ctx}}\label{structucl__sia256__ctx}
+\Hypertarget{group___u_c_l___s_i_a256_structucl__sia256__ctx}
+\subsubsection{struct ucl\+\_\+sia256\+\_\+ctx}
+{\bfseries The S\+I\+A256 context}. This structure is associated to the \textquotesingle{}step by step\textquotesingle{} process. \begin{DoxyFields}{Data Fields}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_a3aaaf77cfeea088172a742d19d1f9bcb}\label{group___u_c_l___s_i_a256_a3aaaf77cfeea088172a742d19d1f9bcb}} 
+u8&
+buffer\mbox{[}64\mbox{]}&
+Buffer. \\
+\hline
+
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_a9d40863406b2429b1f43c9b90cff5cf5}\label{group___u_c_l___s_i_a256_a9d40863406b2429b1f43c9b90cff5cf5}} 
+u32&
+count\mbox{[}2\mbox{]}&
+Counter in bits. \\
+\hline
+
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_a7e2cf91d535966783b7d74bd0e891de9}\label{group___u_c_l___s_i_a256_a7e2cf91d535966783b7d74bd0e891de9}} 
+u32&
+state\mbox{[}8\mbox{]}&
+Intermediate and then final hash. \\
+\hline
+
+\end{DoxyFields}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_gaea9532ac144a90f3ee34ae129ed68282}\label{group___u_c_l___s_i_a256_gaea9532ac144a90f3ee34ae129ed68282}} 
+\index{S\+I\+A256@{S\+I\+A256}!U\+C\+L\+\_\+\+S\+I\+A256@{U\+C\+L\+\_\+\+S\+I\+A256}}
+\index{U\+C\+L\+\_\+\+S\+I\+A256@{U\+C\+L\+\_\+\+S\+I\+A256}!S\+I\+A256@{S\+I\+A256}}
+\subsubsection{\texorpdfstring{U\+C\+L\+\_\+\+S\+I\+A256}{UCL\_SIA256}}
+{\footnotesize\ttfamily \#define U\+C\+L\+\_\+\+S\+I\+A256~0}
+
+{\bfseries Hash size}. Byte size of the output of S\+I\+A256. \mbox{\Hypertarget{group___u_c_l___s_i_a256_ga34283058845b7379a0d481372e2ad4d9}\label{group___u_c_l___s_i_a256_ga34283058845b7379a0d481372e2ad4d9}} 
+\index{S\+I\+A256@{S\+I\+A256}!U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE@{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE}}
+\index{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE@{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE}!S\+I\+A256@{S\+I\+A256}}
+\subsubsection{\texorpdfstring{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE}{UCL\_SIA256\_BLOCKSIZE}}
+{\footnotesize\ttfamily \#define U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+B\+L\+O\+C\+K\+S\+I\+ZE~64}
+
+{\bfseries Core block size}. Byte size of a S\+I\+A256 core block. \mbox{\Hypertarget{group___u_c_l___s_i_a256_gafaca6ff0632649a744923a29c7d197f1}\label{group___u_c_l___s_i_a256_gafaca6ff0632649a744923a29c7d197f1}} 
+\index{S\+I\+A256@{S\+I\+A256}!U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE@{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE}}
+\index{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE@{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE}!S\+I\+A256@{S\+I\+A256}}
+\subsubsection{\texorpdfstring{U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE}{UCL\_SIA256\_HASHW32SIZE}}
+{\footnotesize\ttfamily \#define U\+C\+L\+\_\+\+S\+I\+A256\+\_\+\+H\+A\+S\+H\+W32\+S\+I\+ZE~8}
+
+{\bfseries Hash size}. 32-\/bits word size of the output of S\+I\+A256. 
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}\label{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}} 
+\index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256\+\_\+ctx\+\_\+t@{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}}
+\index{ucl\+\_\+sia256\+\_\+ctx\+\_\+t@{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}!S\+I\+A256@{S\+I\+A256}}
+\subsubsection{\texorpdfstring{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}{ucl\_sia256\_ctx\_t}}
+{\footnotesize\ttfamily typedef struct \hyperlink{group___u_c_l___s_i_a256_structucl__sia256__ctx}{ucl\+\_\+sia256\+\_\+ctx} \hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t}}
+
+{\bfseries The S\+I\+A256 context}. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_gad50391bbde94fe6c9f9bdf151f294ac5}\label{group___u_c_l___s_i_a256_gad50391bbde94fe6c9f9bdf151f294ac5}} 
+\index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256@{ucl\+\_\+sia256}}
+\index{ucl\+\_\+sia256@{ucl\+\_\+sia256}!S\+I\+A256@{S\+I\+A256}}
+\subsubsection{\texorpdfstring{ucl\+\_\+sia256()}{ucl\_sia256()}}
+{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256 (\begin{DoxyParamCaption}\item[{u8 $\ast$}]{hash,  }\item[{u8 $\ast$}]{data,  }\item[{u32}]{data\+\_\+byte\+Len }\end{DoxyParamCaption})}
+
+{\bfseries S\+I\+A256}. The complete process of S\+I\+A256.
+
+\begin{DoxyPrecond}{Precondition}
+Hash byte length is equal to 32
+\end{DoxyPrecond}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em hash} & Pointer to the digest \\
+\hline
+\mbox{\tt in}  & {\em data} & Pointer to the data \\
+\hline
+\mbox{\tt in}  & {\em data\+\_\+byte\+Len} & Data byte length\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_gaf4aeb5212f5aa1b3a12b3dea7eb1785d}{U\+C\+L\+\_\+\+OK}} & if no error occurred \\
+\hline
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_ga3ed78d658471831fff1612d8d0affb88}{U\+C\+L\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+O\+U\+T\+P\+UT}} & if {\ttfamily hash} is \#\+N\+U\+LL \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}\label{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}} 
+\index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256\+\_\+core@{ucl\+\_\+sia256\+\_\+core}}
+\index{ucl\+\_\+sia256\+\_\+core@{ucl\+\_\+sia256\+\_\+core}!S\+I\+A256@{S\+I\+A256}}
+\subsubsection{\texorpdfstring{ucl\+\_\+sia256\+\_\+core()}{ucl\_sia256\_core()}}
+{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256\+\_\+core (\begin{DoxyParamCaption}\item[{\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$}]{context,  }\item[{u8 $\ast$}]{data,  }\item[{u32}]{data\+\_\+byte\+Len }\end{DoxyParamCaption})}
+
+{\bfseries S\+I\+A256 Core}. The core of S\+I\+A256.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in,out}  & {\em context} & Pointer to the context \\
+\hline
+\mbox{\tt in}  & {\em data} & Pointer to the data \\
+\hline
+\mbox{\tt in}  & {\em data\+\_\+byte\+Len} & Data byte length\\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+\hyperlink{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}{ucl\+\_\+sia256\+\_\+init} must be processed before, and \hyperlink{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}{ucl\+\_\+sia256\+\_\+finish} should be processed to get the final hash.
+\end{DoxyWarning}
+\begin{DoxyReturn}{Returns}
+Error code
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_gaf4aeb5212f5aa1b3a12b3dea7eb1785d}{U\+C\+L\+\_\+\+OK}} & if no error occurred \\
+\hline
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_ga6ffb73da20c781dcb7f3004102c93aec}{U\+C\+L\+\_\+\+N\+OP}} & if {\ttfamily data\+\_\+byte\+Len} = 0 or if {\ttfamily data} is the pointer \#\+N\+U\+LL \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}\label{group___u_c_l___s_i_a256_ga6cfa7bc32424e676a7d665470e832242}} 
+\index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256\+\_\+finish@{ucl\+\_\+sia256\+\_\+finish}}
+\index{ucl\+\_\+sia256\+\_\+finish@{ucl\+\_\+sia256\+\_\+finish}!S\+I\+A256@{S\+I\+A256}}
+\subsubsection{\texorpdfstring{ucl\+\_\+sia256\+\_\+finish()}{ucl\_sia256\_finish()}}
+{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256\+\_\+finish (\begin{DoxyParamCaption}\item[{u8 $\ast$}]{hash,  }\item[{\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$}]{context }\end{DoxyParamCaption})}
+
+{\bfseries S\+I\+A256 Finish}. Finish the process of S\+I\+A256.
+
+\begin{DoxyPrecond}{Precondition}
+Hash byte length is equal to 32
+\end{DoxyPrecond}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt out}  & {\em hash} & Pointer to the digest \\
+\hline
+\mbox{\tt in,out}  & {\em context} & Pointer to the context\\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+\hyperlink{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}{ucl\+\_\+sia256\+\_\+init} and \hyperlink{group___u_c_l___s_i_a256_ga1a9ce20b83ba89514be822203d40f910}{ucl\+\_\+sia256\+\_\+core} must be processed before.
+\end{DoxyWarning}
+\begin{DoxyReturn}{Returns}
+Error code
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_gaf4aeb5212f5aa1b3a12b3dea7eb1785d}{U\+C\+L\+\_\+\+OK}} & if no error occurred \\
+\hline
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_ga3ed78d658471831fff1612d8d0affb88}{U\+C\+L\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+O\+U\+T\+P\+UT}} & if {\ttfamily hash} is the pointer \#\+N\+U\+LL \\
+\hline
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_ga0ce984d38effddf33eb42be5ff3d87cf}{U\+C\+L\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+I\+N\+P\+UT}} & if {\ttfamily context} is the pointer \#\+N\+U\+LL \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}\label{group___u_c_l___s_i_a256_ga2037616824d3d32416aa642c30499576}} 
+\index{S\+I\+A256@{S\+I\+A256}!ucl\+\_\+sia256\+\_\+init@{ucl\+\_\+sia256\+\_\+init}}
+\index{ucl\+\_\+sia256\+\_\+init@{ucl\+\_\+sia256\+\_\+init}!S\+I\+A256@{S\+I\+A256}}
+\subsubsection{\texorpdfstring{ucl\+\_\+sia256\+\_\+init()}{ucl\_sia256\_init()}}
+{\footnotesize\ttfamily int \+\_\+\+\_\+\+A\+P\+I\+\_\+\+\_\+ ucl\+\_\+sia256\+\_\+init (\begin{DoxyParamCaption}\item[{\hyperlink{group___u_c_l___s_i_a256_ga17e23ec55cac2194659d2b08c2a3f4ca}{ucl\+\_\+sia256\+\_\+ctx\+\_\+t} $\ast$}]{context }\end{DoxyParamCaption})}
+
+{\bfseries S\+I\+A256 Init}. The initialisation of S\+I\+A256.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in,out}  & {\em context} & Pointer to the context\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_gaf4aeb5212f5aa1b3a12b3dea7eb1785d}{U\+C\+L\+\_\+\+OK}} & if no error occurred \\
+\hline
+{\em \hyperlink{group___u_c_l___r_e_t_u_r_n_ga0ce984d38effddf33eb42be5ff3d87cf}{U\+C\+L\+\_\+\+I\+N\+V\+A\+L\+I\+D\+\_\+\+I\+N\+P\+UT}} & if {\ttfamily context} is \#\+N\+U\+LL \\
+\hline
+\end{DoxyRetVals}

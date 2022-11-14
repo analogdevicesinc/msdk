@@ -1,0 +1,232 @@
+\hypertarget{flash_8c}{}\doxysection{flash.\+c File Reference}
+\label{flash_8c}\index{flash.c@{flash.c}}
+
+
+Flash read/write/erase functions implementation.  
+
+
+{\ttfamily \#include \char`\"{}flash.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}icc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}flc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}flc\+\_\+regs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}gcr\+\_\+regs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mxc\+\_\+errors.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mxc\+\_\+delay.\+h\char`\"{}}\newline
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{flash_8c_a3362b9872a30a5258299d4a926cedc82}{flash\+\_\+read}} (const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block, \mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}} off, void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)
+\begin{DoxyCompactList}\small\item\em Reads flash memory. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{flash_8c_aca9d2e0fdfb51ded0d659a80cc5db785}{flash\+\_\+write}} (const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block, \mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}} off, const void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)
+\begin{DoxyCompactList}\small\item\em Writes flash memory. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{flash_8c_a18b584f8f19786d5787c741780dba085}{flash\+\_\+erase}} (const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block)
+\begin{DoxyCompactList}\small\item\em Erases flash memory block. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{flash_8c_aa8915cf4fff5c988c45ef66079a03b5d}{flash\+\_\+sync}} (const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c)
+\begin{DoxyCompactList}\small\item\em Performs pending flash operations. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{flash_8c_afac44a1302468374ecd3f7c2099ed55f}{flash\+\_\+verify}} (uint32\+\_\+t address, uint32\+\_\+t length, uint8\+\_\+t $\ast$data)
+\begin{DoxyCompactList}\small\item\em Verifies data in flash. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{flash_8c_a3af1e3e52bc37a85ce7a57ba9dc23243}{check\+\_\+mem}} (uint32\+\_\+t startaddr, uint32\+\_\+t length, uint32\+\_\+t data)
+\begin{DoxyCompactList}\small\item\em Compares data in flash with value specified. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{flash_8c_a8a493ea68b623705ebedb54e28d3604a}{check\+\_\+erased}} (uint32\+\_\+t startaddr, uint32\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Checks whether flash memory is erased. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{flash_8c_ab8fb8c25f1cca17f9d547c11d5fecb70}{flash\+\_\+write4}} (uint32\+\_\+t startaddr, uint32\+\_\+t length, uint32\+\_\+t $\ast$data, bool verify)
+\begin{DoxyCompactList}\small\item\em Writes 32bit data words to flash. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Flash read/write/erase functions implementation. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{flash_8c_a8a493ea68b623705ebedb54e28d3604a}\label{flash_8c_a8a493ea68b623705ebedb54e28d3604a}} 
+\index{flash.c@{flash.c}!check\_erased@{check\_erased}}
+\index{check\_erased@{check\_erased}!flash.c@{flash.c}}
+\doxysubsubsection{\texorpdfstring{check\_erased()}{check\_erased()}}
+{\footnotesize\ttfamily int check\+\_\+erased (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{startaddr,  }\item[{uint32\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+Checks whether flash memory is erased. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em startaddr} & Flash memory address \\
+\hline
+{\em length} & Memory block size \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{flash_8c_a3af1e3e52bc37a85ce7a57ba9dc23243}\label{flash_8c_a3af1e3e52bc37a85ce7a57ba9dc23243}} 
+\index{flash.c@{flash.c}!check\_mem@{check\_mem}}
+\index{check\_mem@{check\_mem}!flash.c@{flash.c}}
+\doxysubsubsection{\texorpdfstring{check\_mem()}{check\_mem()}}
+{\footnotesize\ttfamily int check\+\_\+mem (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{startaddr,  }\item[{uint32\+\_\+t}]{length,  }\item[{uint32\+\_\+t}]{data }\end{DoxyParamCaption})}
+
+
+
+Compares data in flash with value specified. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em startaddr} & Flash memory address \\
+\hline
+{\em length} & Data size \\
+\hline
+{\em data} & The value to compare to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{flash_8c_a18b584f8f19786d5787c741780dba085}\label{flash_8c_a18b584f8f19786d5787c741780dba085}} 
+\index{flash.c@{flash.c}!flash\_erase@{flash\_erase}}
+\index{flash\_erase@{flash\_erase}!flash.c@{flash.c}}
+\doxysubsubsection{\texorpdfstring{flash\_erase()}{flash\_erase()}}
+{\footnotesize\ttfamily int flash\+\_\+erase (\begin{DoxyParamCaption}\item[{const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$}]{c,  }\item[{\mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}}}]{block }\end{DoxyParamCaption})}
+
+
+
+Erases flash memory block. 
+
+\begin{DoxyNote}{Note}
+Little\+FS callback method 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Little\+FS config \\
+\hline
+{\em block} & Flash memory block number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{flash_8c_a3362b9872a30a5258299d4a926cedc82}\label{flash_8c_a3362b9872a30a5258299d4a926cedc82}} 
+\index{flash.c@{flash.c}!flash\_read@{flash\_read}}
+\index{flash\_read@{flash\_read}!flash.c@{flash.c}}
+\doxysubsubsection{\texorpdfstring{flash\_read()}{flash\_read()}}
+{\footnotesize\ttfamily int flash\+\_\+read (\begin{DoxyParamCaption}\item[{const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$}]{c,  }\item[{\mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}}}]{block,  }\item[{\mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}}}]{off,  }\item[{void $\ast$}]{buffer,  }\item[{\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}}}]{size }\end{DoxyParamCaption})}
+
+
+
+Reads flash memory. 
+
+\begin{DoxyNote}{Note}
+Little\+FS callback method 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Little\+FS config \\
+\hline
+{\em block} & Flash memory block number \\
+\hline
+{\em off} & Data offset in the block \\
+\hline
+{\em buffer} & Data buffer \\
+\hline
+{\em size} & Data size \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{flash_8c_aa8915cf4fff5c988c45ef66079a03b5d}\label{flash_8c_aa8915cf4fff5c988c45ef66079a03b5d}} 
+\index{flash.c@{flash.c}!flash\_sync@{flash\_sync}}
+\index{flash\_sync@{flash\_sync}!flash.c@{flash.c}}
+\doxysubsubsection{\texorpdfstring{flash\_sync()}{flash\_sync()}}
+{\footnotesize\ttfamily int flash\+\_\+sync (\begin{DoxyParamCaption}\item[{const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$}]{c }\end{DoxyParamCaption})}
+
+
+
+Performs pending flash operations. 
+
+\begin{DoxyNote}{Note}
+Little\+FS callback method. Not supported by Maxim S\+DK 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Little\+FS config \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{flash_8c_afac44a1302468374ecd3f7c2099ed55f}\label{flash_8c_afac44a1302468374ecd3f7c2099ed55f}} 
+\index{flash.c@{flash.c}!flash\_verify@{flash\_verify}}
+\index{flash\_verify@{flash\_verify}!flash.c@{flash.c}}
+\doxysubsubsection{\texorpdfstring{flash\_verify()}{flash\_verify()}}
+{\footnotesize\ttfamily int flash\+\_\+verify (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{address,  }\item[{uint32\+\_\+t}]{length,  }\item[{uint8\+\_\+t $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Verifies data in flash. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em address} & Flash memory address \\
+\hline
+{\em length} & Data size \\
+\hline
+{\em data} & Data buffer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{flash_8c_aca9d2e0fdfb51ded0d659a80cc5db785}\label{flash_8c_aca9d2e0fdfb51ded0d659a80cc5db785}} 
+\index{flash.c@{flash.c}!flash\_write@{flash\_write}}
+\index{flash\_write@{flash\_write}!flash.c@{flash.c}}
+\doxysubsubsection{\texorpdfstring{flash\_write()}{flash\_write()}}
+{\footnotesize\ttfamily int flash\+\_\+write (\begin{DoxyParamCaption}\item[{const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$}]{c,  }\item[{\mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}}}]{block,  }\item[{\mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}}}]{off,  }\item[{const void $\ast$}]{buffer,  }\item[{\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}}}]{size }\end{DoxyParamCaption})}
+
+
+
+Writes flash memory. 
+
+\begin{DoxyNote}{Note}
+Little\+FS callback method 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Little\+FS config \\
+\hline
+{\em block} & Flash memory block number \\
+\hline
+{\em off} & Data offset in the block \\
+\hline
+{\em buffer} & Data buffer \\
+\hline
+{\em size} & Data size \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{flash_8c_ab8fb8c25f1cca17f9d547c11d5fecb70}\label{flash_8c_ab8fb8c25f1cca17f9d547c11d5fecb70}} 
+\index{flash.c@{flash.c}!flash\_write4@{flash\_write4}}
+\index{flash\_write4@{flash\_write4}!flash.c@{flash.c}}
+\doxysubsubsection{\texorpdfstring{flash\_write4()}{flash\_write4()}}
+{\footnotesize\ttfamily int flash\+\_\+write4 (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{startaddr,  }\item[{uint32\+\_\+t}]{length,  }\item[{uint32\+\_\+t $\ast$}]{data,  }\item[{bool}]{verify }\end{DoxyParamCaption})}
+
+
+
+Writes 32bit data words to flash. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em startaddr} & Flash memory address \\
+\hline
+{\em length} & Data size \\
+\hline
+{\em data} & Data buffer \\
+\hline
+{\em verify} & Whether to verify written data \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error code 
+\end{DoxyReturn}

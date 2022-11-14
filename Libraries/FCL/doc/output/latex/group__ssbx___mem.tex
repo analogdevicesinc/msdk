@@ -1,0 +1,105 @@
+\hypertarget{group__ssbx___mem}{}\section{Memory Manager}
+\label{group__ssbx___mem}\index{Memory Manager@{Memory Manager}}
+\subsection*{List of functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{group__ssbx___mem_ga96810d67a710b2b5c6bdf36e8be9264d}{ssbx\+\_\+memsec\+\_\+alloc} (\hyperlink{struct_m_e_m_s_e_c___h_a_n_d_l_e}{M\+E\+M\+S\+E\+C\+\_\+\+H\+A\+N\+D\+LE} $\ast$h, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Allocates memory in the N\+V\+S\+R\+AM. \end{DoxyCompactList}\item 
+int \hyperlink{group__ssbx___mem_ga7bdb13c9e820522a2dd962852e39d17d}{ssbx\+\_\+memsec\+\_\+free} (\hyperlink{struct_m_e_m_s_e_c___h_a_n_d_l_e}{M\+E\+M\+S\+E\+C\+\_\+\+H\+A\+N\+D\+LE} $\ast$h)
+\begin{DoxyCompactList}\small\item\em Releases allocated secure memory (N\+V\+S\+R\+AM) \end{DoxyCompactList}\item 
+int \hyperlink{group__ssbx___mem_gae2a833e9b4c47b6c2eed6cbfb53e272a}{ssbx\+\_\+memsec\+\_\+read} (\hyperlink{struct_m_e_m_s_e_c___h_a_n_d_l_e}{M\+E\+M\+S\+E\+C\+\_\+\+H\+A\+N\+D\+LE} $\ast$h, unsigned int offset, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Reads from secure memory (N\+V\+S\+R\+AM) \end{DoxyCompactList}\item 
+int \hyperlink{group__ssbx___mem_gae04ea24bdad83f4943013677e489a87b}{ssbx\+\_\+memsec\+\_\+write} (\hyperlink{struct_m_e_m_s_e_c___h_a_n_d_l_e}{M\+E\+M\+S\+E\+C\+\_\+\+H\+A\+N\+D\+LE} $\ast$h, unsigned int offset, unsigned int size)
+\begin{DoxyCompactList}\small\item\em Writes to secure memory (N\+V\+S\+R\+AM) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This of module is in charge of securely handling the memory allocation/deallocation in N\+V\+S\+R\+AM. 
+
+\subsection{Function Documentation}
+\hypertarget{group__ssbx___mem_ga96810d67a710b2b5c6bdf36e8be9264d}{}\label{group__ssbx___mem_ga96810d67a710b2b5c6bdf36e8be9264d} 
+\index{Memory Manager@{Memory Manager}!ssbx\+\_\+memsec\+\_\+alloc@{ssbx\+\_\+memsec\+\_\+alloc}}
+\index{ssbx\+\_\+memsec\+\_\+alloc@{ssbx\+\_\+memsec\+\_\+alloc}!Memory Manager@{Memory Manager}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+memsec\+\_\+alloc()}{ssbx\_memsec\_alloc()}}
+{\footnotesize\ttfamily int ssbx\+\_\+memsec\+\_\+alloc (\begin{DoxyParamCaption}\item[{\hyperlink{struct_m_e_m_s_e_c___h_a_n_d_l_e}{M\+E\+M\+S\+E\+C\+\_\+\+H\+A\+N\+D\+LE} $\ast$}]{h,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Allocates memory in the N\+V\+S\+R\+AM. 
+
+The battery backed N\+V\+S\+R\+AM holds automatically encrypted/decrypted data. This memory is wiped in case of tamper attack on the system.
+
+This allocator guarantees that data allocated by one box are visible only to this box.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em h} & pointer to the pointer to the memory handle \\
+\hline
+\mbox{\tt in}  & {\em size} & size to allocate\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__ssbx___mem_ga7bdb13c9e820522a2dd962852e39d17d}{}\label{group__ssbx___mem_ga7bdb13c9e820522a2dd962852e39d17d} 
+\index{Memory Manager@{Memory Manager}!ssbx\+\_\+memsec\+\_\+free@{ssbx\+\_\+memsec\+\_\+free}}
+\index{ssbx\+\_\+memsec\+\_\+free@{ssbx\+\_\+memsec\+\_\+free}!Memory Manager@{Memory Manager}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+memsec\+\_\+free()}{ssbx\_memsec\_free()}}
+{\footnotesize\ttfamily int ssbx\+\_\+memsec\+\_\+free (\begin{DoxyParamCaption}\item[{\hyperlink{struct_m_e_m_s_e_c___h_a_n_d_l_e}{M\+E\+M\+S\+E\+C\+\_\+\+H\+A\+N\+D\+LE} $\ast$}]{h }\end{DoxyParamCaption})}
+
+
+
+Releases allocated secure memory (N\+V\+S\+R\+AM) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & pointer to the memory handle\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__ssbx___mem_gae2a833e9b4c47b6c2eed6cbfb53e272a}{}\label{group__ssbx___mem_gae2a833e9b4c47b6c2eed6cbfb53e272a} 
+\index{Memory Manager@{Memory Manager}!ssbx\+\_\+memsec\+\_\+read@{ssbx\+\_\+memsec\+\_\+read}}
+\index{ssbx\+\_\+memsec\+\_\+read@{ssbx\+\_\+memsec\+\_\+read}!Memory Manager@{Memory Manager}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+memsec\+\_\+read()}{ssbx\_memsec\_read()}}
+{\footnotesize\ttfamily int ssbx\+\_\+memsec\+\_\+read (\begin{DoxyParamCaption}\item[{\hyperlink{struct_m_e_m_s_e_c___h_a_n_d_l_e}{M\+E\+M\+S\+E\+C\+\_\+\+H\+A\+N\+D\+LE} $\ast$}]{h,  }\item[{unsigned int}]{offset,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Reads from secure memory (N\+V\+S\+R\+AM) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em h} & pointer to the memory handle \\
+\hline
+\mbox{\tt in}  & {\em offset} & The offset \\
+\hline
+\mbox{\tt in}  & {\em size} & size to be read\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__ssbx___mem_gae04ea24bdad83f4943013677e489a87b}{}\label{group__ssbx___mem_gae04ea24bdad83f4943013677e489a87b} 
+\index{Memory Manager@{Memory Manager}!ssbx\+\_\+memsec\+\_\+write@{ssbx\+\_\+memsec\+\_\+write}}
+\index{ssbx\+\_\+memsec\+\_\+write@{ssbx\+\_\+memsec\+\_\+write}!Memory Manager@{Memory Manager}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+memsec\+\_\+write()}{ssbx\_memsec\_write()}}
+{\footnotesize\ttfamily int ssbx\+\_\+memsec\+\_\+write (\begin{DoxyParamCaption}\item[{\hyperlink{struct_m_e_m_s_e_c___h_a_n_d_l_e}{M\+E\+M\+S\+E\+C\+\_\+\+H\+A\+N\+D\+LE} $\ast$}]{h,  }\item[{unsigned int}]{offset,  }\item[{unsigned int}]{size }\end{DoxyParamCaption})}
+
+
+
+Writes to secure memory (N\+V\+S\+R\+AM) 
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em h} & pointer to the memory handle \\
+\hline
+\mbox{\tt in}  & {\em offset} & The offset \\
+\hline
+\mbox{\tt in}  & {\em size} & The size\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}

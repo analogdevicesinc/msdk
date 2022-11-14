@@ -1,0 +1,20 @@
+\hypertarget{group__os}{}\section{Operating system, drivers, C library, other libraries...}
+\label{group__os}\index{Operating system, drivers, C library, other libraries...@{Operating system, drivers, C library, other libraries...}}
+The following software items are not running in a separate box\+:
+
+
+\begin{DoxyItemize}
+\item operating system
+\item libraries
+\item device drivers
+\end{DoxyItemize}
+
+They are rather seen as common code that can be executed within the context of multiple boxes. Success or failure of the functions called depend on the context, i.\+e. the current A\+C\+Ls, as enforced by u\+Visor.
+
+This group of software items is considered as firmware.
+
+P\+R\+I\+V\+I\+L\+E\+GE L\+E\+V\+EL\+: Core Firmware 
+\begin{DoxyImageNoCaption}
+  \mbox{\includegraphics[width=\textwidth,height=\textheight/2,keepaspectratio=true]{pci_cortex.png}}
+\end{DoxyImageNoCaption}
+  

@@ -1,0 +1,107 @@
+\hypertarget{group__ssbx___i_o}{}\section{I/O A\+PI}
+\label{group__ssbx___i_o}\index{I/\+O A\+PI@{I/\+O A\+PI}}
+\subsection*{List of functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{group__ssbx___i_o_ga52d5005d7bb36355592b9ef2309281e2}{ssbx\+\_\+display\+\_\+display\+\_\+image} (int image\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Displays a pre-\/defined image on the display. \end{DoxyCompactList}\item 
+int \hyperlink{group__ssbx___i_o_ga701c4c43823bad80a39745de2b5ad3af}{ssbx\+\_\+display\+\_\+prompt} (unsigned char $\ast$kbd\+\_\+str, int $\ast$max\+\_\+length, int timeout, int message\+\_\+id, char mask, int font\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Displays a pre-\/defined prompt on the display and waits for user entry. \end{DoxyCompactList}\item 
+int \hyperlink{group__ssbx___i_o_ga40574f625e50f59357a9c363305bf76e}{ssbx\+\_\+display\+\_\+write\+\_\+message} (int message\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Displays a pre-\/defined text message on the display. \end{DoxyCompactList}\item 
+int \hyperlink{group__ssbx___i_o_gaefc88ab3af9c2f984281ac32723d0633}{ssbx\+\_\+touch\+\_\+get\+\_\+entry} (char $\ast$dest, int $\ast$len)
+\begin{DoxyCompactList}\small\item\em Gets input from the virtual keypad on the touchscreen. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This module offers some input-\/output services that allow interaction with users (keypad, touchscreen, display) 
+
+\subsection{Function Documentation}
+\hypertarget{group__ssbx___i_o_ga52d5005d7bb36355592b9ef2309281e2}{}\label{group__ssbx___i_o_ga52d5005d7bb36355592b9ef2309281e2} 
+\index{I/\+O A\+PI@{I/\+O A\+PI}!ssbx\+\_\+display\+\_\+display\+\_\+image@{ssbx\+\_\+display\+\_\+display\+\_\+image}}
+\index{ssbx\+\_\+display\+\_\+display\+\_\+image@{ssbx\+\_\+display\+\_\+display\+\_\+image}!I/\+O A\+PI@{I/\+O A\+PI}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+display\+\_\+display\+\_\+image()}{ssbx\_display\_display\_image()}}
+{\footnotesize\ttfamily int ssbx\+\_\+display\+\_\+display\+\_\+image (\begin{DoxyParamCaption}\item[{int}]{image\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Displays a pre-\/defined image on the display. 
+
+Depending on the current state (see ssbx\+\_\+set\+\_\+state), the image will be displayed or an error will be returned.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em image\+\_\+id} & The image identifier\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__ssbx___i_o_ga701c4c43823bad80a39745de2b5ad3af}{}\label{group__ssbx___i_o_ga701c4c43823bad80a39745de2b5ad3af} 
+\index{I/\+O A\+PI@{I/\+O A\+PI}!ssbx\+\_\+display\+\_\+prompt@{ssbx\+\_\+display\+\_\+prompt}}
+\index{ssbx\+\_\+display\+\_\+prompt@{ssbx\+\_\+display\+\_\+prompt}!I/\+O A\+PI@{I/\+O A\+PI}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+display\+\_\+prompt()}{ssbx\_display\_prompt()}}
+{\footnotesize\ttfamily int ssbx\+\_\+display\+\_\+prompt (\begin{DoxyParamCaption}\item[{unsigned char $\ast$}]{kbd\+\_\+str,  }\item[{int $\ast$}]{max\+\_\+length,  }\item[{int}]{timeout,  }\item[{int}]{message\+\_\+id,  }\item[{char}]{mask,  }\item[{int}]{font\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Displays a pre-\/defined prompt on the display and waits for user entry. 
+
+Depending on the current state (see ssbx\+\_\+set\+\_\+state), the prompt will be displayed or an error will be returned.
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em kbd\+\_\+str} & The keyboard string \\
+\hline
+\mbox{\tt in}  & {\em timeout} & The timeout \\
+\hline
+\mbox{\tt in}  & {\em message\+\_\+id} & The message identifier \\
+\hline
+\mbox{\tt in}  & {\em mask} & The mask character to display in place of user input\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__ssbx___i_o_ga40574f625e50f59357a9c363305bf76e}{}\label{group__ssbx___i_o_ga40574f625e50f59357a9c363305bf76e} 
+\index{I/\+O A\+PI@{I/\+O A\+PI}!ssbx\+\_\+display\+\_\+write\+\_\+message@{ssbx\+\_\+display\+\_\+write\+\_\+message}}
+\index{ssbx\+\_\+display\+\_\+write\+\_\+message@{ssbx\+\_\+display\+\_\+write\+\_\+message}!I/\+O A\+PI@{I/\+O A\+PI}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+display\+\_\+write\+\_\+message()}{ssbx\_display\_write\_message()}}
+{\footnotesize\ttfamily int ssbx\+\_\+display\+\_\+write\+\_\+message (\begin{DoxyParamCaption}\item[{int}]{message\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Displays a pre-\/defined text message on the display. 
+
+Depending on the current state (see ssbx\+\_\+set\+\_\+state), the text message will be displayed or an error will be returned.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em message\+\_\+id} & The message identifier\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__ssbx___i_o_gaefc88ab3af9c2f984281ac32723d0633}{}\label{group__ssbx___i_o_gaefc88ab3af9c2f984281ac32723d0633} 
+\index{I/\+O A\+PI@{I/\+O A\+PI}!ssbx\+\_\+touch\+\_\+get\+\_\+entry@{ssbx\+\_\+touch\+\_\+get\+\_\+entry}}
+\index{ssbx\+\_\+touch\+\_\+get\+\_\+entry@{ssbx\+\_\+touch\+\_\+get\+\_\+entry}!I/\+O A\+PI@{I/\+O A\+PI}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+touch\+\_\+get\+\_\+entry()}{ssbx\_touch\_get\_entry()}}
+{\footnotesize\ttfamily int ssbx\+\_\+touch\+\_\+get\+\_\+entry (\begin{DoxyParamCaption}\item[{char $\ast$}]{dest,  }\item[{int $\ast$}]{len }\end{DoxyParamCaption})}
+
+
+
+Gets input from the virtual keypad on the touchscreen. 
+
+This operation is allowed only if the P\+CI Secure Services box is not processing a P\+IN.
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em dest} & The destination \\
+\hline
+\mbox{\tt in,out}  & {\em len} & The key length\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}

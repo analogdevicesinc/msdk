@@ -1,0 +1,50 @@
+\hypertarget{group__ssbx}{}\section{Secure Sandbox services (Generic Security functions)}
+\label{group__ssbx}\index{Secure Sandbox services (\+Generic Security functions)@{Secure Sandbox services (\+Generic Security functions)}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{group__ssbx___crypto}{Cryptography}
+\item 
+\hyperlink{group__ssbx___main}{Global management functions}
+\item 
+\hyperlink{group__ssbx___i_o}{I/\+O A\+PI}
+\item 
+\hyperlink{group__ssbx___key_management}{Key Manager}
+\item 
+\hyperlink{group__ssbx___mem}{Memory Manager}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The functions available here provide access to sensitive devices and services
+\begin{DoxyItemize}
+\item User I/O (touchscreen, keypad, display)
+\item Cryptography services
+\item Key manager
+\item Data storage through memory manager
+\item Global security management (including firmware update, system startup, response to attacks, integrity checks)
+\item Register event handlers to different events, and read associated log
+\begin{DoxyItemize}
+\item non maskable interrupts due to security issues
+\item uvisor related exceptions (access faults, rpc errors)
+\end{DoxyItemize}
+\item Periodic/one-\/shot alarm service
+\end{DoxyItemize}
+
+This box is the only box privileged to access some devices. Therefore it proposes various services to interact with those peripherals.
+
+Associated services are accessed through R\+PC.
+
+This box runs in an independent thread that\+:
+\begin{DoxyItemize}
+\item listens to R\+PC
+\item responds to R\+PC calls and checks the privileges of the caller
+\end{DoxyItemize}
+
+P\+R\+I\+V\+I\+L\+E\+GE L\+E\+V\+EL\+: Box Firmware
+
+
+\begin{DoxyImageNoCaption}
+  \mbox{\includegraphics[width=\textwidth,height=\textheight/2,keepaspectratio=true]{pci_cortex.png}}
+\end{DoxyImageNoCaption}
+  

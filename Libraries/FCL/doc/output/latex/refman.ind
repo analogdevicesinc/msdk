@@ -1,0 +1,185 @@
+\begin{theindex}
+
+  \item {Application box(es)}, \hyperpage{27}
+
+  \indexspace
+
+  \item {check\+\_\+acl}
+    \subitem {u\+Visor A\+PI}, \hyperpage{51}
+  \item {Cryptography}, \hyperpage{32}
+
+  \indexspace
+
+  \item {E\+M\+V-\/\+Level 1 Smart Card}, \hyperpage{41}
+    \subitem {pci\+\_\+smartcard\+\_\+config}, \hyperpage{41}
+    \subitem {pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}, 
+		\hyperpage{41}
+    \subitem {pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}, 
+		\hyperpage{42}
+    \subitem {pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}, 
+		\hyperpage{42}
+
+  \indexspace
+
+  \item {Global management functions}, \hyperpage{33}
+    \subitem {ssbx\+\_\+rtc\+\_\+set\+\_\+alarm}, \hyperpage{33}
+    \subitem {ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm}, \hyperpage{33}
+    \subitem {ssbx\+\_\+start}, \hyperpage{34}
+
+  \indexspace
+
+  \item {I/\+O A\+PI}, \hyperpage{35}
+    \subitem {ssbx\+\_\+display\+\_\+display\+\_\+image}, 
+		\hyperpage{35}
+    \subitem {ssbx\+\_\+display\+\_\+prompt}, \hyperpage{35}
+    \subitem {ssbx\+\_\+display\+\_\+write\+\_\+message}, 
+		\hyperpage{36}
+    \subitem {ssbx\+\_\+touch\+\_\+get\+\_\+entry}, \hyperpage{36}
+
+  \indexspace
+
+  \item {Key Manager}, \hyperpage{37}
+
+  \indexspace
+
+  \item {Magnetic Stripe}, \hyperpage{46}
+  \item {Memory Manager}, \hyperpage{38}
+    \subitem {ssbx\+\_\+memsec\+\_\+alloc}, \hyperpage{38}
+    \subitem {ssbx\+\_\+memsec\+\_\+free}, \hyperpage{38}
+    \subitem {ssbx\+\_\+memsec\+\_\+read}, \hyperpage{39}
+    \subitem {ssbx\+\_\+memsec\+\_\+write}, \hyperpage{39}
+
+  \indexspace
+
+  \item {Operating system, drivers, C library, other libraries...}, 
+		\hyperpage{28}
+
+  \indexspace
+
+  \item {P\+C\+I Security Services, Security functions dedicated to P\+C\+I P\+T\+S P\+O\+I security}, 
+		\hyperpage{40}
+  \item {P\+I\+N handling}, \hyperpage{43}
+    \subitem {pci\+\_\+authenticate\+\_\+issuer\+\_\+and\+\_\+icc\+\_\+public\+\_\+key}, 
+		\hyperpage{43}
+    \subitem {pci\+\_\+get\+\_\+online\+\_\+pin}, \hyperpage{44}
+    \subitem {pci\+\_\+pin\+\_\+entry}, \hyperpage{44}
+    \subitem {pci\+\_\+verify\+\_\+offline\+\_\+pin}, \hyperpage{45}
+  \item {pci\+\_\+authenticate\+\_\+issuer\+\_\+and\+\_\+icc\+\_\+public\+\_\+key}
+    \subitem {P\+I\+N handling}, \hyperpage{43}
+  \item {pci\+\_\+get\+\_\+online\+\_\+pin}
+    \subitem {P\+I\+N handling}, \hyperpage{44}
+  \item {pci\+\_\+pin\+\_\+entry}
+    \subitem {P\+I\+N handling}, \hyperpage{44}
+  \item {pci\+\_\+smartcard\+\_\+config}
+    \subitem {E\+M\+V-\/\+Level 1 Smart Card}, \hyperpage{41}
+  \item {pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}
+    \subitem {E\+M\+V-\/\+Level 1 Smart Card}, \hyperpage{41}
+  \item {pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}
+    \subitem {E\+M\+V-\/\+Level 1 Smart Card}, \hyperpage{42}
+  \item {pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}
+    \subitem {E\+M\+V-\/\+Level 1 Smart Card}, \hyperpage{42}
+  \item {pci\+\_\+verify\+\_\+offline\+\_\+pin}
+    \subitem {P\+I\+N handling}, \hyperpage{45}
+
+  \indexspace
+
+  \item {rpc\+\_\+fncall\+\_\+waitfor}
+    \subitem {u\+Visor A\+PI}, \hyperpage{52}
+
+  \indexspace
+
+  \item {Secure Sandbox services (\+Generic Security functions)}, 
+		\hyperpage{30}
+  \item {Security Monitor}, \hyperpage{29}
+  \item {ssbx\+\_\+display\+\_\+display\+\_\+image}
+    \subitem {I/\+O A\+PI}, \hyperpage{35}
+  \item {ssbx\+\_\+display\+\_\+prompt}
+    \subitem {I/\+O A\+PI}, \hyperpage{35}
+  \item {ssbx\+\_\+display\+\_\+write\+\_\+message}
+    \subitem {I/\+O A\+PI}, \hyperpage{36}
+  \item {ssbx\+\_\+memsec\+\_\+alloc}
+    \subitem {Memory Manager}, \hyperpage{38}
+  \item {ssbx\+\_\+memsec\+\_\+free}
+    \subitem {Memory Manager}, \hyperpage{38}
+  \item {ssbx\+\_\+memsec\+\_\+read}
+    \subitem {Memory Manager}, \hyperpage{39}
+  \item {ssbx\+\_\+memsec\+\_\+write}
+    \subitem {Memory Manager}, \hyperpage{39}
+  \item {ssbx\+\_\+rtc\+\_\+set\+\_\+alarm}
+    \subitem {Global management functions}, \hyperpage{33}
+  \item {ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm}
+    \subitem {Global management functions}, \hyperpage{33}
+  \item {ssbx\+\_\+start}
+    \subitem {Global management functions}, \hyperpage{34}
+  \item {ssbx\+\_\+touch\+\_\+get\+\_\+entry}
+    \subitem {I/\+O A\+PI}, \hyperpage{36}
+
+  \indexspace
+
+  \item {U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}
+    \subitem {u\+Visor A\+PI}, \hyperpage{49}
+  \item {U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}
+    \subitem {u\+Visor A\+PI}, \hyperpage{49}
+  \item {U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}
+    \subitem {u\+Visor A\+PI}, \hyperpage{50}
+  \item {U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}
+    \subitem {u\+Visor A\+PI}, \hyperpage{50}
+  \item {u\+Visor A\+PI}, \hyperpage{47}
+    \subitem {check\+\_\+acl}, \hyperpage{51}
+    \subitem {rpc\+\_\+fncall\+\_\+waitfor}, \hyperpage{52}
+    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}, 
+		\hyperpage{49}
+    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}, 
+		\hyperpage{49}
+    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}, 
+		\hyperpage{50}
+    \subitem {U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}, 
+		\hyperpage{50}
+    \subitem {uvisor\+\_\+box\+\_\+id\+\_\+self}, \hyperpage{52}
+    \subitem {uvisor\+\_\+box\+\_\+namespace}, \hyperpage{52}
+    \subitem {uvisor\+\_\+box\+\_\+signingkey}, \hyperpage{53}
+    \subitem {Uvisor\+Box\+Acl}, \hyperpage{51}
+    \subitem {v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ}, \hyperpage{53}
+    \subitem {v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ}, \hyperpage{54}
+    \subitem {v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ}, \hyperpage{54}
+    \subitem {v\+I\+R\+Q\+\_\+\+Get\+Level}, \hyperpage{54}
+    \subitem {v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ}, \hyperpage{54}
+    \subitem {v\+I\+R\+Q\+\_\+\+Get\+Priority}, \hyperpage{55}
+    \subitem {v\+I\+R\+Q\+\_\+\+Get\+Vector}, \hyperpage{55}
+    \subitem {v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ}, \hyperpage{55}
+    \subitem {v\+I\+R\+Q\+\_\+\+Set\+Priority}, \hyperpage{56}
+    \subitem {v\+I\+R\+Q\+\_\+\+Set\+Vector}, \hyperpage{56}
+  \item {uvisor\+\_\+box\+\_\+id\+\_\+self}
+    \subitem {u\+Visor A\+PI}, \hyperpage{52}
+  \item {uvisor\+\_\+box\+\_\+namespace}
+    \subitem {u\+Visor A\+PI}, \hyperpage{52}
+  \item {uvisor\+\_\+box\+\_\+signingkey}
+    \subitem {u\+Visor A\+PI}, \hyperpage{53}
+  \item {Uvisor\+Box\+Acl}
+    \subitem {u\+Visor A\+PI}, \hyperpage{51}
+  \item {Uvisor\+Box\+Acl\+Item}, \hyperpage{48}
+
+  \indexspace
+
+  \item {v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ}
+    \subitem {u\+Visor A\+PI}, \hyperpage{53}
+  \item {v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ}
+    \subitem {u\+Visor A\+PI}, \hyperpage{54}
+  \item {v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ}
+    \subitem {u\+Visor A\+PI}, \hyperpage{54}
+  \item {v\+I\+R\+Q\+\_\+\+Get\+Level}
+    \subitem {u\+Visor A\+PI}, \hyperpage{54}
+  \item {v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ}
+    \subitem {u\+Visor A\+PI}, \hyperpage{54}
+  \item {v\+I\+R\+Q\+\_\+\+Get\+Priority}
+    \subitem {u\+Visor A\+PI}, \hyperpage{55}
+  \item {v\+I\+R\+Q\+\_\+\+Get\+Vector}
+    \subitem {u\+Visor A\+PI}, \hyperpage{55}
+  \item {v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ}
+    \subitem {u\+Visor A\+PI}, \hyperpage{55}
+  \item {v\+I\+R\+Q\+\_\+\+Set\+Priority}
+    \subitem {u\+Visor A\+PI}, \hyperpage{56}
+  \item {v\+I\+R\+Q\+\_\+\+Set\+Vector}
+    \subitem {u\+Visor A\+PI}, \hyperpage{56}
+
+\end{theindex}

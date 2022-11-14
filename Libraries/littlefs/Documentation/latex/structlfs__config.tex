@@ -1,0 +1,169 @@
+\hypertarget{structlfs__config}{}\doxysection{lfs\+\_\+config Struct Reference}
+\label{structlfs__config}\index{lfs\_config@{lfs\_config}}
+
+
+{\ttfamily \#include $<$lfs.\+h$>$}
+
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \mbox{\hyperlink{structlfs__config_a0bb0963f381373ab069faadf7fee09b0}{context}}
+\item 
+int($\ast$ \mbox{\hyperlink{structlfs__config_aba49c64d8494adc9dca00f2072f403f3}{read}} )(const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block, \mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}} off, void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)
+\item 
+int($\ast$ \mbox{\hyperlink{structlfs__config_a6df9c7458b71625fc49e2b159a0e7fe0}{prog}} )(const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block, \mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}} off, const void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)
+\item 
+int($\ast$ \mbox{\hyperlink{structlfs__config_ae26d6c31cc28aa8bb3d6af86a4b67a2b}{erase}} )(const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block)
+\item 
+int($\ast$ \mbox{\hyperlink{structlfs__config_a48b2d5266c52d6cd3fcfbff3da4388b3}{sync}} )(const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c)
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_ace0b079140090710b558e3bc5febfc78}{read\+\_\+size}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_aae1956189539d586e3dcd68af5460199}{prog\+\_\+size}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_adca7f9be5eb5771c88d31556bfbe1922}{block\+\_\+size}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_a71fab1bab430e963b9cc202485cfe236}{block\+\_\+count}}
+\item 
+int32\+\_\+t \mbox{\hyperlink{structlfs__config_afe0aed6a5c8f2353c5ab6b45bc4b28c6}{block\+\_\+cycles}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_ab4fe03018abaabc4d089754919a4a4a6}{cache\+\_\+size}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_a010570f77b49932004eb24fc3d8feb6f}{lookahead\+\_\+size}}
+\item 
+void $\ast$ \mbox{\hyperlink{structlfs__config_a76a6fcf8b9770349e5a59cff7cb98ebb}{read\+\_\+buffer}}
+\item 
+void $\ast$ \mbox{\hyperlink{structlfs__config_a8f4cc43d08071d32b52c5106dac3cb56}{prog\+\_\+buffer}}
+\item 
+void $\ast$ \mbox{\hyperlink{structlfs__config_afee66de317d0f778157eae576744847c}{lookahead\+\_\+buffer}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_af1030de545060dc685806d88dff2aedc}{name\+\_\+max}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_aa81a85016f23b697a01e8976d4268756}{file\+\_\+max}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_a7066a4cd3c8fc8fad07a0fdadfe8754d}{attr\+\_\+max}}
+\item 
+\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} \mbox{\hyperlink{structlfs__config_acee64f494548f3e836328c49fc3dad76}{metadata\+\_\+max}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structlfs__config_a7066a4cd3c8fc8fad07a0fdadfe8754d}\label{structlfs__config_a7066a4cd3c8fc8fad07a0fdadfe8754d}} 
+\index{lfs\_config@{lfs\_config}!attr\_max@{attr\_max}}
+\index{attr\_max@{attr\_max}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{attr\_max}{attr\_max}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::attr\+\_\+max}
+
+\mbox{\Hypertarget{structlfs__config_a71fab1bab430e963b9cc202485cfe236}\label{structlfs__config_a71fab1bab430e963b9cc202485cfe236}} 
+\index{lfs\_config@{lfs\_config}!block\_count@{block\_count}}
+\index{block\_count@{block\_count}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{block\_count}{block\_count}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::block\+\_\+count}
+
+\mbox{\Hypertarget{structlfs__config_afe0aed6a5c8f2353c5ab6b45bc4b28c6}\label{structlfs__config_afe0aed6a5c8f2353c5ab6b45bc4b28c6}} 
+\index{lfs\_config@{lfs\_config}!block\_cycles@{block\_cycles}}
+\index{block\_cycles@{block\_cycles}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{block\_cycles}{block\_cycles}}
+{\footnotesize\ttfamily int32\+\_\+t lfs\+\_\+config\+::block\+\_\+cycles}
+
+\mbox{\Hypertarget{structlfs__config_adca7f9be5eb5771c88d31556bfbe1922}\label{structlfs__config_adca7f9be5eb5771c88d31556bfbe1922}} 
+\index{lfs\_config@{lfs\_config}!block\_size@{block\_size}}
+\index{block\_size@{block\_size}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{block\_size}{block\_size}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::block\+\_\+size}
+
+\mbox{\Hypertarget{structlfs__config_ab4fe03018abaabc4d089754919a4a4a6}\label{structlfs__config_ab4fe03018abaabc4d089754919a4a4a6}} 
+\index{lfs\_config@{lfs\_config}!cache\_size@{cache\_size}}
+\index{cache\_size@{cache\_size}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{cache\_size}{cache\_size}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::cache\+\_\+size}
+
+\mbox{\Hypertarget{structlfs__config_a0bb0963f381373ab069faadf7fee09b0}\label{structlfs__config_a0bb0963f381373ab069faadf7fee09b0}} 
+\index{lfs\_config@{lfs\_config}!context@{context}}
+\index{context@{context}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{context}{context}}
+{\footnotesize\ttfamily void$\ast$ lfs\+\_\+config\+::context}
+
+\mbox{\Hypertarget{structlfs__config_ae26d6c31cc28aa8bb3d6af86a4b67a2b}\label{structlfs__config_ae26d6c31cc28aa8bb3d6af86a4b67a2b}} 
+\index{lfs\_config@{lfs\_config}!erase@{erase}}
+\index{erase@{erase}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{erase}{erase}}
+{\footnotesize\ttfamily int($\ast$ lfs\+\_\+config\+::erase) (const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block)}
+
+\mbox{\Hypertarget{structlfs__config_aa81a85016f23b697a01e8976d4268756}\label{structlfs__config_aa81a85016f23b697a01e8976d4268756}} 
+\index{lfs\_config@{lfs\_config}!file\_max@{file\_max}}
+\index{file\_max@{file\_max}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{file\_max}{file\_max}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::file\+\_\+max}
+
+\mbox{\Hypertarget{structlfs__config_afee66de317d0f778157eae576744847c}\label{structlfs__config_afee66de317d0f778157eae576744847c}} 
+\index{lfs\_config@{lfs\_config}!lookahead\_buffer@{lookahead\_buffer}}
+\index{lookahead\_buffer@{lookahead\_buffer}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{lookahead\_buffer}{lookahead\_buffer}}
+{\footnotesize\ttfamily void$\ast$ lfs\+\_\+config\+::lookahead\+\_\+buffer}
+
+\mbox{\Hypertarget{structlfs__config_a010570f77b49932004eb24fc3d8feb6f}\label{structlfs__config_a010570f77b49932004eb24fc3d8feb6f}} 
+\index{lfs\_config@{lfs\_config}!lookahead\_size@{lookahead\_size}}
+\index{lookahead\_size@{lookahead\_size}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{lookahead\_size}{lookahead\_size}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::lookahead\+\_\+size}
+
+\mbox{\Hypertarget{structlfs__config_acee64f494548f3e836328c49fc3dad76}\label{structlfs__config_acee64f494548f3e836328c49fc3dad76}} 
+\index{lfs\_config@{lfs\_config}!metadata\_max@{metadata\_max}}
+\index{metadata\_max@{metadata\_max}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{metadata\_max}{metadata\_max}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::metadata\+\_\+max}
+
+\mbox{\Hypertarget{structlfs__config_af1030de545060dc685806d88dff2aedc}\label{structlfs__config_af1030de545060dc685806d88dff2aedc}} 
+\index{lfs\_config@{lfs\_config}!name\_max@{name\_max}}
+\index{name\_max@{name\_max}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{name\_max}{name\_max}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::name\+\_\+max}
+
+\mbox{\Hypertarget{structlfs__config_a6df9c7458b71625fc49e2b159a0e7fe0}\label{structlfs__config_a6df9c7458b71625fc49e2b159a0e7fe0}} 
+\index{lfs\_config@{lfs\_config}!prog@{prog}}
+\index{prog@{prog}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{prog}{prog}}
+{\footnotesize\ttfamily int($\ast$ lfs\+\_\+config\+::prog) (const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block, \mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}} off, const void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)}
+
+\mbox{\Hypertarget{structlfs__config_a8f4cc43d08071d32b52c5106dac3cb56}\label{structlfs__config_a8f4cc43d08071d32b52c5106dac3cb56}} 
+\index{lfs\_config@{lfs\_config}!prog\_buffer@{prog\_buffer}}
+\index{prog\_buffer@{prog\_buffer}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{prog\_buffer}{prog\_buffer}}
+{\footnotesize\ttfamily void$\ast$ lfs\+\_\+config\+::prog\+\_\+buffer}
+
+\mbox{\Hypertarget{structlfs__config_aae1956189539d586e3dcd68af5460199}\label{structlfs__config_aae1956189539d586e3dcd68af5460199}} 
+\index{lfs\_config@{lfs\_config}!prog\_size@{prog\_size}}
+\index{prog\_size@{prog\_size}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{prog\_size}{prog\_size}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::prog\+\_\+size}
+
+\mbox{\Hypertarget{structlfs__config_aba49c64d8494adc9dca00f2072f403f3}\label{structlfs__config_aba49c64d8494adc9dca00f2072f403f3}} 
+\index{lfs\_config@{lfs\_config}!read@{read}}
+\index{read@{read}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{read}{read}}
+{\footnotesize\ttfamily int($\ast$ lfs\+\_\+config\+::read) (const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block, \mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}} off, void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)}
+
+\mbox{\Hypertarget{structlfs__config_a76a6fcf8b9770349e5a59cff7cb98ebb}\label{structlfs__config_a76a6fcf8b9770349e5a59cff7cb98ebb}} 
+\index{lfs\_config@{lfs\_config}!read\_buffer@{read\_buffer}}
+\index{read\_buffer@{read\_buffer}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{read\_buffer}{read\_buffer}}
+{\footnotesize\ttfamily void$\ast$ lfs\+\_\+config\+::read\+\_\+buffer}
+
+\mbox{\Hypertarget{structlfs__config_ace0b079140090710b558e3bc5febfc78}\label{structlfs__config_ace0b079140090710b558e3bc5febfc78}} 
+\index{lfs\_config@{lfs\_config}!read\_size@{read\_size}}
+\index{read\_size@{read\_size}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{read\_size}{read\_size}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} lfs\+\_\+config\+::read\+\_\+size}
+
+\mbox{\Hypertarget{structlfs__config_a48b2d5266c52d6cd3fcfbff3da4388b3}\label{structlfs__config_a48b2d5266c52d6cd3fcfbff3da4388b3}} 
+\index{lfs\_config@{lfs\_config}!sync@{sync}}
+\index{sync@{sync}!lfs\_config@{lfs\_config}}
+\doxysubsubsection{\texorpdfstring{sync}{sync}}
+{\footnotesize\ttfamily int($\ast$ lfs\+\_\+config\+::sync) (const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$c)}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+littlefs/\mbox{\hyperlink{lfs_8h}{lfs.\+h}}\end{DoxyCompactItemize}

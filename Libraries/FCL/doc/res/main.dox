@@ -1,0 +1,83 @@
+/**
+@mainpage
+
+Note: to modify this page, edit doc/res/main.dox
+
+@author     Maxim Integrated
+@date       2018
+
+__Reference__
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+*
+ * @section s2 Copyright Notice
+ * ~~~~~~~~~~~~~~~{.c}
+ * /*****************************************************************************
+ * * Copyright (C) 2015-2018 Maxim Integrated Products, Inc., All rights Reserved.
+ * * This software is protected by copyright laws of the United States and
+ * * of foreign countries. This material may also be protected by patent laws
+ * * and technology transfer regulations of the United States and of foreign
+ * * countries. This software is furnished under a license agreement and/or a
+ * * nondisclosure agreement and may only be used or reproduced in accordance
+ * * with the terms of those agreements. Dissemination of this information to
+ * * any party or parties not specified in the license agreement and/or
+ * * nondisclosure agreement is expressly prohibited.
+ * *
+ * * The above copyright notice and this permission notice shall be included
+ * * in all copies or substantial portions of the Software.
+ * *
+ * * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * * OTHER DEALINGS IN THE SOFTWARE.
+ * *
+ * * Except as contained in this notice, the name of Maxim Integrated
+ * * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * * Products, Inc. Branding Policy.
+ * *
+ * * The mere transfer of this software does not imply any licenses
+ * * of trade secrets, proprietary technology, copyrights, patents,
+ * * trademarks, maskwork rights, or any other form of intellectual
+ * * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * * ownership rights.
+ * ******************************************************************************/
+
+ * ~~~~~~~~~~~~~~~
+ * @section trademarks Trademarks
+ * - ARM is a registered trademark and registered service mark and Cortex is a registered trademark of ARM Limited.
+ * - All trademarks not mentioned here that appear on this web site are the property of their respective owners.
+
+
+@section Introduction Introduction
+
+The Free Cryptographic Library (FCL) is a cryptographic library with source code. This source code can be used for demo or test purposes on PCs, on or with embedded platforms. Implemented algorithms are currently: ECDSA signature and verification for P192, P256, P384, P521, BP256, BP384, BP512, SHA256, SHA384, SHA512 and SIA256. AES encryption, decryption in ECB, CBC modes and CBC-MAC, for 128-bit, 192-bit and 256-bit keys. SHA3 is also available.
+
+For more robust or specific cryptographic needs, see the Universal Cryptographic Library (UCL).
+
+@warning The FCL contains confidential documentation and code. It can be delivered as source code, even externally to Maxim. However, delivery to customers requires an NDA.
+
+ - This software is only here for test and demo purposes.
+ - This implementation is not secure and does not protect the ECC private/AES secret keys.
+ - The random number generator is not robust and will generate the same numbers at each startup (PRNG).
+
+
+@section Req Pre-requisites
+Install Cygwin or MSYS2 with the adequate gcc compiler.
+
+@section Build How to build the FCL
+on a x86-cygwin PC or MSYS2, just run build_fcl_x86
+
+@section Links Useful links
+SVN repository: https://svn.maxim-ic.com/svn/SWIP_reuse/library/fcl/
+Confluence SWIP page: https://confluence.maxim-ic.com/pages/viewpage.action?pageId=41058397
+
+@section ReleaseNotes Release notes
+ - 1.0.1: p192 initializers size corrected; hash functions number updated
+ - 1.1.0: sha-3 (sha-224,sha-256,sha-384, sha-512) has been added
+ - 1.2.0: secp384r1, secp521r1, bp256r1, bp384r1, bp512r1 curves added; sha384 and sha512 added
+ - 1.2.1: AES (128,192, 256) in ECB, CBC modes and AES-CBC-MAC added
+*/

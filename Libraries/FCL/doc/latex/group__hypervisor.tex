@@ -1,0 +1,43 @@
+\hypertarget{group__hypervisor}{}\section{u\+Visor A\+PI}
+\label{group__hypervisor}\index{u\+Visor A\+PI@{u\+Visor A\+PI}}
+The payment application is to be developed by the payment terminal vendor. It dialogs with the 2 secure boxes through remote procedure calls (R\+PC). The A\+PI is described below in this document. Shortly this A\+PI allows to display trusted messages on the display, perform E\+M\+V-\/level 1 compliant A\+P\+DU exchanges with the smart card, perform P\+IN processing, capture Mag Stripe… basically everything required to perform an E\+MV Level-\/2 compliant payment.
+
+Here you can find detailed documentation for\+:
+
+
+\begin{DoxyEnumerate}
+\item \href{#configuration-macros}{\tt Configuration macros}, to configure a secure box and protect data and peripherals.
+\item \href{#box-identity}{\tt Box Identity}, to retrieve a box-\/specific ID or the namespace of the current or calling box.
+\begin{DoxyItemize}
+\item A box identity identifies a security domain uniquely and globally.
+\item The box identity A\+PI can be used to determine the source box of an inbound secure gateway call. This can be useful for implementing complex authorization logic between mutually distrustful security domains.
+\item u\+Visor provides the ability to retrieve the box ID of the current box ({\ttfamily uvisor\+\_\+box\+\_\+id\+\_\+self}), or of the box that called the current box through an R\+PC gateway via the {\ttfamily box\+\_\+id\+\_\+caller} parameter of {\ttfamily rpc\+\_\+fncall\+\_\+waitfor}.
+\item The box ID number is not constant and can change between reboots. But, the box ID number can be used as a token to retrieve a constant string identifier, known as the box namespace.
+\item A box namespace is a static, box-\/specific string, that can help identify which box has which ID at run-\/time. In the future, the box namespace will be guaranteed to be globally unique.
+\item A full example using this A\+PI is available at \href{https://github.com/ARMmbed/mbed-os-example-uvisor-number-store}{\tt mbed-\/os-\/example-\/uvisor-\/number-\/store}.
+\end{DoxyItemize}
+\item \href{#low-level-apis}{\tt Low level A\+P\+Is}, to access u\+Visor functions that are not available to unprivileged code (interrupts, restricted system registers).
+\item \href{#type-definitions}{\tt Type definitions}.
+\item \href{#error-codes}{\tt Error codes}.
+\end{DoxyEnumerate}
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Error reason }&\textbf{ Error code  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Error reason }&\textbf{ Error code  }\\\cline{1-2}
+\endhead
+{\ttfamily P\+E\+R\+M\+I\+S\+S\+I\+O\+N\+\_\+\+D\+E\+N\+I\+ED} &1 \\\cline{1-2}
+{\ttfamily S\+A\+N\+I\+T\+Y\+\_\+\+C\+H\+E\+C\+K\+\_\+\+F\+A\+I\+L\+ED} &2 \\\cline{1-2}
+{\ttfamily N\+O\+T\+\_\+\+I\+M\+P\+L\+E\+M\+E\+N\+T\+ED} &3 \\\cline{1-2}
+{\ttfamily N\+O\+T\+\_\+\+A\+L\+L\+O\+W\+ED} &4 \\\cline{1-2}
+{\ttfamily F\+A\+U\+L\+T\+\_\+\+M\+E\+M\+M\+A\+N\+A\+GE} &5 \\\cline{1-2}
+{\ttfamily F\+A\+U\+L\+T\+\_\+\+B\+US} &6 \\\cline{1-2}
+{\ttfamily F\+A\+U\+L\+T\+\_\+\+U\+S\+A\+GE} &7 \\\cline{1-2}
+{\ttfamily F\+A\+U\+L\+T\+\_\+\+H\+A\+RD} &8 \\\cline{1-2}
+{\ttfamily F\+A\+U\+L\+T\+\_\+\+D\+E\+B\+UG} &9 \\\cline{1-2}
+\end{longtabu}

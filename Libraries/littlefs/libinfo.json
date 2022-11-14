@@ -1,0 +1,13 @@
+{
+	"name":"littleFS",
+	"ipaths":[
+		".",
+		"bd"
+	],
+	"vpaths":[
+		".",
+		"bd"
+	],
+	"makefile":"littlefs.mk",
+	"whitelist":"False"
+}
