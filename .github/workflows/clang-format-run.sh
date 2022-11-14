@@ -8,7 +8,7 @@ git submodule deinit --force --all
 set -e
 
 # Find the C files
-CFILES=$(find . -iname "*.c")
+CFILES=$(find . -iname "*.c" -not -regex ".*/Libraries/\(\(FCL\)|\(FreeRTOS\)|\(lwIP\)|\(littleFS\)|\(LC3\)|\(FreeRTOS-Plus\)\)/.*")
 
 for c_file in ${CFILES}
 do
@@ -25,7 +25,7 @@ done
 
 
 # Reformat all of the header files
-HFILES=$(find . -iname "*.h" -not -name "*regs*")
+HFILES=$(find . -iname "*.h" -not -name "*regs*" -a -not -regex ".*/Libraries/\(\(FCL\)|\(FreeRTOS\)|\(lwIP\)|\(littleFS\)|\(LC3\)|\(FreeRTOS-Plus\)\)/.*")
 for h_file in ${HFILES}
 do
   clang-format-${CLANG_VERSION} --verbose -style=file -i ${h_file}

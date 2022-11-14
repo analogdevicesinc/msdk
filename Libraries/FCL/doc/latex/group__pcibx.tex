@@ -1,0 +1,31 @@
+\hypertarget{group__pcibx}{}\section{P\+CI Security Services, Security functions dedicated to P\+CI P\+TS P\+OI security}
+\label{group__pcibx}\index{P\+C\+I Security Services, Security functions dedicated to P\+C\+I P\+T\+S P\+O\+I security@{P\+C\+I Security Services, Security functions dedicated to P\+C\+I P\+T\+S P\+O\+I security}}
+\subsection*{Modules}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{group__pcibx__sc}{E\+M\+V-\/\+Level 1 Smart Card}
+\item 
+\hyperlink{group__pcibx___m_s_r}{Magnetic Stripe}
+\item 
+\hyperlink{group__pcibx___p_i_n}{P\+I\+N handling}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Security functions dedicated to P\+CI P\+TS P\+OI security are provided in this module, in particular for the P\+IN and Magnetic Stripe data handling, the Smart Card communication.
+
+This box is the only box privileged to access some devices. Therefore it proposes various services to interact with those peripherals.
+
+Associated services are accessed through R\+PC.
+
+This box runs in an independent thread that\+:
+\begin{DoxyItemize}
+\item listens to R\+PC
+\item responds to R\+PC calls and checks the privileges of the caller
+\end{DoxyItemize}
+
+
+\begin{DoxyImageNoCaption}
+  \mbox{\includegraphics[width=\textwidth,height=\textheight/2,keepaspectratio=true]{pci_cortex.png}}
+\end{DoxyImageNoCaption}
+  

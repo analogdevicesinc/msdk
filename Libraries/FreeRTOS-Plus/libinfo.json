@@ -1,0 +1,10 @@
+{
+	"name":"FreeRTOS-Plus",
+	"ipaths":[
+		"Source/FreeRTOS-Plus-CLI"
+	],
+	"vpaths":[
+		"Source/FreeRTOS-Plus-CLI"
+	],
+	"whitelist":"False"
+}

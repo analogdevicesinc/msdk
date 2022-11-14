@@ -1,0 +1,93 @@
+\indexentry{Application box(es)@{Application box(es)}|hyperpage}{27}
+\indexentry{Operating system, drivers, C library, other libraries...@{Operating system, drivers, C library, other libraries...}|hyperpage}{28}
+\indexentry{Security Monitor@{Security Monitor}|hyperpage}{29}
+\indexentry{Secure Sandbox services (\+Generic Security functions)@{Secure Sandbox services (\+Generic Security functions)}|hyperpage}{30}
+\indexentry{Cryptography@{Cryptography}|hyperpage}{32}
+\indexentry{Global management functions@{Global management functions}|hyperpage}{33}
+\indexentry{Global management functions@{Global management functions}!ssbx\+\_\+rtc\+\_\+set\+\_\+alarm@{ssbx\+\_\+rtc\+\_\+set\+\_\+alarm}|hyperpage}{33}
+\indexentry{ssbx\+\_\+rtc\+\_\+set\+\_\+alarm@{ssbx\+\_\+rtc\+\_\+set\+\_\+alarm}!Global management functions@{Global management functions}|hyperpage}{33}
+\indexentry{Global management functions@{Global management functions}!ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm@{ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm}|hyperpage}{33}
+\indexentry{ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm@{ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm}!Global management functions@{Global management functions}|hyperpage}{33}
+\indexentry{Global management functions@{Global management functions}!ssbx\+\_\+start@{ssbx\+\_\+start}|hyperpage}{34}
+\indexentry{ssbx\+\_\+start@{ssbx\+\_\+start}!Global management functions@{Global management functions}|hyperpage}{34}
+\indexentry{I/\+O A\+PI@{I/\+O A\+PI}|hyperpage}{35}
+\indexentry{I/\+O A\+PI@{I/\+O A\+PI}!ssbx\+\_\+display\+\_\+display\+\_\+image@{ssbx\+\_\+display\+\_\+display\+\_\+image}|hyperpage}{35}
+\indexentry{ssbx\+\_\+display\+\_\+display\+\_\+image@{ssbx\+\_\+display\+\_\+display\+\_\+image}!I/\+O A\+PI@{I/\+O A\+PI}|hyperpage}{35}
+\indexentry{I/\+O A\+PI@{I/\+O A\+PI}!ssbx\+\_\+display\+\_\+prompt@{ssbx\+\_\+display\+\_\+prompt}|hyperpage}{35}
+\indexentry{ssbx\+\_\+display\+\_\+prompt@{ssbx\+\_\+display\+\_\+prompt}!I/\+O A\+PI@{I/\+O A\+PI}|hyperpage}{35}
+\indexentry{I/\+O A\+PI@{I/\+O A\+PI}!ssbx\+\_\+display\+\_\+write\+\_\+message@{ssbx\+\_\+display\+\_\+write\+\_\+message}|hyperpage}{36}
+\indexentry{ssbx\+\_\+display\+\_\+write\+\_\+message@{ssbx\+\_\+display\+\_\+write\+\_\+message}!I/\+O A\+PI@{I/\+O A\+PI}|hyperpage}{36}
+\indexentry{I/\+O A\+PI@{I/\+O A\+PI}!ssbx\+\_\+touch\+\_\+get\+\_\+entry@{ssbx\+\_\+touch\+\_\+get\+\_\+entry}|hyperpage}{36}
+\indexentry{ssbx\+\_\+touch\+\_\+get\+\_\+entry@{ssbx\+\_\+touch\+\_\+get\+\_\+entry}!I/\+O A\+PI@{I/\+O A\+PI}|hyperpage}{36}
+\indexentry{Key Manager@{Key Manager}|hyperpage}{37}
+\indexentry{Memory Manager@{Memory Manager}|hyperpage}{38}
+\indexentry{Memory Manager@{Memory Manager}!ssbx\+\_\+memsec\+\_\+alloc@{ssbx\+\_\+memsec\+\_\+alloc}|hyperpage}{38}
+\indexentry{ssbx\+\_\+memsec\+\_\+alloc@{ssbx\+\_\+memsec\+\_\+alloc}!Memory Manager@{Memory Manager}|hyperpage}{38}
+\indexentry{Memory Manager@{Memory Manager}!ssbx\+\_\+memsec\+\_\+free@{ssbx\+\_\+memsec\+\_\+free}|hyperpage}{38}
+\indexentry{ssbx\+\_\+memsec\+\_\+free@{ssbx\+\_\+memsec\+\_\+free}!Memory Manager@{Memory Manager}|hyperpage}{38}
+\indexentry{Memory Manager@{Memory Manager}!ssbx\+\_\+memsec\+\_\+read@{ssbx\+\_\+memsec\+\_\+read}|hyperpage}{39}
+\indexentry{ssbx\+\_\+memsec\+\_\+read@{ssbx\+\_\+memsec\+\_\+read}!Memory Manager@{Memory Manager}|hyperpage}{39}
+\indexentry{Memory Manager@{Memory Manager}!ssbx\+\_\+memsec\+\_\+write@{ssbx\+\_\+memsec\+\_\+write}|hyperpage}{39}
+\indexentry{ssbx\+\_\+memsec\+\_\+write@{ssbx\+\_\+memsec\+\_\+write}!Memory Manager@{Memory Manager}|hyperpage}{39}
+\indexentry{P\+C\+I Security Services, Security functions dedicated to P\+C\+I P\+T\+S P\+O\+I security@{P\+C\+I Security Services, Security functions dedicated to P\+C\+I P\+T\+S P\+O\+I security}|hyperpage}{40}
+\indexentry{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}|hyperpage}{41}
+\indexentry{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+config@{pci\+\_\+smartcard\+\_\+config}|hyperpage}{41}
+\indexentry{pci\+\_\+smartcard\+\_\+config@{pci\+\_\+smartcard\+\_\+config}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}|hyperpage}{41}
+\indexentry{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU@{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}|hyperpage}{41}
+\indexentry{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU@{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}|hyperpage}{41}
+\indexentry{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}|hyperpage}{42}
+\indexentry{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}|hyperpage}{42}
+\indexentry{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}|hyperpage}{42}
+\indexentry{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}|hyperpage}{42}
+\indexentry{P\+I\+N handling@{P\+I\+N handling}|hyperpage}{43}
+\indexentry{P\+I\+N handling@{P\+I\+N handling}!pci\+\_\+authenticate\+\_\+issuer\+\_\+and\+\_\+icc\+\_\+public\+\_\+key@{pci\+\_\+authenticate\+\_\+issuer\+\_\+and\+\_\+icc\+\_\+public\+\_\+key}|hyperpage}{43}
+\indexentry{pci\+\_\+authenticate\+\_\+issuer\+\_\+and\+\_\+icc\+\_\+public\+\_\+key@{pci\+\_\+authenticate\+\_\+issuer\+\_\+and\+\_\+icc\+\_\+public\+\_\+key}!P\+I\+N handling@{P\+I\+N handling}|hyperpage}{43}
+\indexentry{P\+I\+N handling@{P\+I\+N handling}!pci\+\_\+get\+\_\+online\+\_\+pin@{pci\+\_\+get\+\_\+online\+\_\+pin}|hyperpage}{44}
+\indexentry{pci\+\_\+get\+\_\+online\+\_\+pin@{pci\+\_\+get\+\_\+online\+\_\+pin}!P\+I\+N handling@{P\+I\+N handling}|hyperpage}{44}
+\indexentry{P\+I\+N handling@{P\+I\+N handling}!pci\+\_\+pin\+\_\+entry@{pci\+\_\+pin\+\_\+entry}|hyperpage}{44}
+\indexentry{pci\+\_\+pin\+\_\+entry@{pci\+\_\+pin\+\_\+entry}!P\+I\+N handling@{P\+I\+N handling}|hyperpage}{44}
+\indexentry{P\+I\+N handling@{P\+I\+N handling}!pci\+\_\+verify\+\_\+offline\+\_\+pin@{pci\+\_\+verify\+\_\+offline\+\_\+pin}|hyperpage}{45}
+\indexentry{pci\+\_\+verify\+\_\+offline\+\_\+pin@{pci\+\_\+verify\+\_\+offline\+\_\+pin}!P\+I\+N handling@{P\+I\+N handling}|hyperpage}{45}
+\indexentry{Magnetic Stripe@{Magnetic Stripe}|hyperpage}{46}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{47}
+\indexentry{Uvisor\+Box\+Acl\+Item@{Uvisor\+Box\+Acl\+Item}|hyperpage}{48}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG@{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}|hyperpage}{49}
+\indexentry{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG@{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+C\+O\+N\+F\+IG}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{49}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE@{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}|hyperpage}{49}
+\indexentry{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE@{U\+V\+I\+S\+O\+R\+\_\+\+B\+O\+X\+\_\+\+N\+A\+M\+E\+S\+P\+A\+CE}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{49}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE@{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}|hyperpage}{50}
+\indexentry{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE@{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+DE}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{50}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL@{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}|hyperpage}{50}
+\indexentry{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL@{U\+V\+I\+S\+O\+R\+\_\+\+S\+E\+T\+\_\+\+M\+O\+D\+E\+\_\+\+A\+CL}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{50}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!Uvisor\+Box\+Acl@{Uvisor\+Box\+Acl}|hyperpage}{51}
+\indexentry{Uvisor\+Box\+Acl@{Uvisor\+Box\+Acl}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{51}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!check\+\_\+acl@{check\+\_\+acl}|hyperpage}{51}
+\indexentry{check\+\_\+acl@{check\+\_\+acl}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{51}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!rpc\+\_\+fncall\+\_\+waitfor@{rpc\+\_\+fncall\+\_\+waitfor}|hyperpage}{52}
+\indexentry{rpc\+\_\+fncall\+\_\+waitfor@{rpc\+\_\+fncall\+\_\+waitfor}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{52}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!uvisor\+\_\+box\+\_\+id\+\_\+self@{uvisor\+\_\+box\+\_\+id\+\_\+self}|hyperpage}{52}
+\indexentry{uvisor\+\_\+box\+\_\+id\+\_\+self@{uvisor\+\_\+box\+\_\+id\+\_\+self}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{52}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!uvisor\+\_\+box\+\_\+namespace@{uvisor\+\_\+box\+\_\+namespace}|hyperpage}{52}
+\indexentry{uvisor\+\_\+box\+\_\+namespace@{uvisor\+\_\+box\+\_\+namespace}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{52}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!uvisor\+\_\+box\+\_\+signingkey@{uvisor\+\_\+box\+\_\+signingkey}|hyperpage}{53}
+\indexentry{uvisor\+\_\+box\+\_\+signingkey@{uvisor\+\_\+box\+\_\+signingkey}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{53}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ}|hyperpage}{53}
+\indexentry{v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Clear\+Pending\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{53}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ}|hyperpage}{54}
+\indexentry{v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Disable\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{54}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ}|hyperpage}{54}
+\indexentry{v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Enable\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{54}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Get\+Level@{v\+I\+R\+Q\+\_\+\+Get\+Level}|hyperpage}{54}
+\indexentry{v\+I\+R\+Q\+\_\+\+Get\+Level@{v\+I\+R\+Q\+\_\+\+Get\+Level}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{54}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ}|hyperpage}{54}
+\indexentry{v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Get\+Pending\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{54}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Get\+Priority@{v\+I\+R\+Q\+\_\+\+Get\+Priority}|hyperpage}{55}
+\indexentry{v\+I\+R\+Q\+\_\+\+Get\+Priority@{v\+I\+R\+Q\+\_\+\+Get\+Priority}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{55}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Get\+Vector@{v\+I\+R\+Q\+\_\+\+Get\+Vector}|hyperpage}{55}
+\indexentry{v\+I\+R\+Q\+\_\+\+Get\+Vector@{v\+I\+R\+Q\+\_\+\+Get\+Vector}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{55}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ}|hyperpage}{55}
+\indexentry{v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ@{v\+I\+R\+Q\+\_\+\+Set\+Pending\+I\+RQ}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{55}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Set\+Priority@{v\+I\+R\+Q\+\_\+\+Set\+Priority}|hyperpage}{56}
+\indexentry{v\+I\+R\+Q\+\_\+\+Set\+Priority@{v\+I\+R\+Q\+\_\+\+Set\+Priority}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{56}
+\indexentry{u\+Visor A\+PI@{u\+Visor A\+PI}!v\+I\+R\+Q\+\_\+\+Set\+Vector@{v\+I\+R\+Q\+\_\+\+Set\+Vector}|hyperpage}{56}
+\indexentry{v\+I\+R\+Q\+\_\+\+Set\+Vector@{v\+I\+R\+Q\+\_\+\+Set\+Vector}!u\+Visor A\+PI@{u\+Visor A\+PI}|hyperpage}{56}

@@ -1,0 +1,205 @@
+\hypertarget{lfs__util_8h}{}\doxysection{littlefs/lfs\+\_\+util.h File Reference}
+\label{lfs__util_8h}\index{littlefs/lfs\_util.h@{littlefs/lfs\_util.h}}
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$inttypes.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{lfs__util_8h_a2a0213f24914266c569ee529ee7b83a3}{L\+F\+S\+\_\+\+T\+R\+A\+CE}}(...)
+\item 
+\#define \mbox{\hyperlink{lfs__util_8h_a098d0a587252fa8b82fe8495c2fc3d59}{L\+F\+S\+\_\+\+D\+E\+B\+U\+G\+\_\+}}(fmt, ...)~    printf(\char`\"{}\%s\+:\%d\+:debug\+: \char`\"{} fmt \char`\"{}\%s\textbackslash{}n\char`\"{}, \+\_\+\+\_\+\+F\+I\+L\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+)
+\item 
+\#define \mbox{\hyperlink{lfs__util_8h_a4051a9697d7cc1b427bacee357adb58f}{L\+F\+S\+\_\+\+D\+E\+B\+UG}}(...)~\mbox{\hyperlink{lfs__util_8h_a098d0a587252fa8b82fe8495c2fc3d59}{L\+F\+S\+\_\+\+D\+E\+B\+U\+G\+\_\+}}(\+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+, \char`\"{}\char`\"{})
+\item 
+\#define \mbox{\hyperlink{lfs__util_8h_a4e25746978215409ac694fb74776cbb5}{L\+F\+S\+\_\+\+W\+A\+R\+N\+\_\+}}(fmt, ...)~    printf(\char`\"{}\%s\+:\%d\+:warn\+: \char`\"{} fmt \char`\"{}\%s\textbackslash{}n\char`\"{}, \+\_\+\+\_\+\+F\+I\+L\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+)
+\item 
+\#define \mbox{\hyperlink{lfs__util_8h_ad4cbf00d1a7933828678148432525f1e}{L\+F\+S\+\_\+\+W\+A\+RN}}(...)~\mbox{\hyperlink{lfs__util_8h_a4e25746978215409ac694fb74776cbb5}{L\+F\+S\+\_\+\+W\+A\+R\+N\+\_\+}}(\+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+, \char`\"{}\char`\"{})
+\item 
+\#define \mbox{\hyperlink{lfs__util_8h_a46ede71a04c8bc34f567b5025aa7cfaa}{L\+F\+S\+\_\+\+E\+R\+R\+O\+R\+\_\+}}(fmt, ...)~    printf(\char`\"{}\%s\+:\%d\+:error\+: \char`\"{} fmt \char`\"{}\%s\textbackslash{}n\char`\"{}, \+\_\+\+\_\+\+F\+I\+L\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+)
+\item 
+\#define \mbox{\hyperlink{lfs__util_8h_a1d381d28d1cd17a5f212639ee77762d4}{L\+F\+S\+\_\+\+E\+R\+R\+OR}}(...)~\mbox{\hyperlink{lfs__util_8h_a46ede71a04c8bc34f567b5025aa7cfaa}{L\+F\+S\+\_\+\+E\+R\+R\+O\+R\+\_\+}}(\+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+, \char`\"{}\char`\"{})
+\item 
+\#define \mbox{\hyperlink{lfs__util_8h_ad38eb1401ee71bbaf124c4ce5aa96335}{L\+F\+S\+\_\+\+A\+S\+S\+E\+RT}}(test)~assert(test)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_af09bf0adf5ca35ebff23a450f50d530c}{lfs\+\_\+max}} (uint32\+\_\+t a, uint32\+\_\+t b)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_aa6d372bce9fdc63166afaab1bad985c2}{lfs\+\_\+min}} (uint32\+\_\+t a, uint32\+\_\+t b)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_af0da1aadbc819f831467865c28ca731b}{lfs\+\_\+aligndown}} (uint32\+\_\+t a, uint32\+\_\+t alignment)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_aa9342ee427aa4c49ebb77ffded31bb1b}{lfs\+\_\+alignup}} (uint32\+\_\+t a, uint32\+\_\+t alignment)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_a76451ed8c0010d3e5f91381d6788f727}{lfs\+\_\+npw2}} (uint32\+\_\+t a)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_a6aca234f5581c98fc423e4184532185e}{lfs\+\_\+ctz}} (uint32\+\_\+t a)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_a5356f93586b7de6dc4f36025d34e62c8}{lfs\+\_\+popc}} (uint32\+\_\+t a)
+\item 
+static int \mbox{\hyperlink{lfs__util_8h_a5115d8b55dd05a40b3a6f4443b220dbe}{lfs\+\_\+scmp}} (uint32\+\_\+t a, uint32\+\_\+t b)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_ac41c19e11c05ec073d0c42f248bb74c3}{lfs\+\_\+fromle32}} (uint32\+\_\+t a)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_a8cca2e46fa575f898da4076db7dd035f}{lfs\+\_\+tole32}} (uint32\+\_\+t a)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_a8783a7a270d00708c7845a03f02d09dc}{lfs\+\_\+frombe32}} (uint32\+\_\+t a)
+\item 
+static uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_abb1a0daed21d81a5d7b9ca09141ba93c}{lfs\+\_\+tobe32}} (uint32\+\_\+t a)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{lfs__util_8h_a75a8a0a8a6150060ef992b915df2168f}{lfs\+\_\+crc}} (uint32\+\_\+t crc, const void $\ast$buffer, size\+\_\+t size)
+\item 
+static void $\ast$ \mbox{\hyperlink{lfs__util_8h_a0daba32104352608f2e1b58148e40bab}{lfs\+\_\+malloc}} (size\+\_\+t size)
+\item 
+static void \mbox{\hyperlink{lfs__util_8h_a9faff801530cd687a960a08af1acaaf1}{lfs\+\_\+free}} (void $\ast$p)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{lfs__util_8h_ad38eb1401ee71bbaf124c4ce5aa96335}\label{lfs__util_8h_ad38eb1401ee71bbaf124c4ce5aa96335}} 
+\index{lfs\_util.h@{lfs\_util.h}!LFS\_ASSERT@{LFS\_ASSERT}}
+\index{LFS\_ASSERT@{LFS\_ASSERT}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{LFS\_ASSERT}{LFS\_ASSERT}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+A\+S\+S\+E\+RT(\begin{DoxyParamCaption}\item[{}]{test }\end{DoxyParamCaption})~assert(test)}
+
+\mbox{\Hypertarget{lfs__util_8h_a4051a9697d7cc1b427bacee357adb58f}\label{lfs__util_8h_a4051a9697d7cc1b427bacee357adb58f}} 
+\index{lfs\_util.h@{lfs\_util.h}!LFS\_DEBUG@{LFS\_DEBUG}}
+\index{LFS\_DEBUG@{LFS\_DEBUG}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{LFS\_DEBUG}{LFS\_DEBUG}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+D\+E\+B\+UG(\begin{DoxyParamCaption}\item[{}]{... }\end{DoxyParamCaption})~\mbox{\hyperlink{lfs__util_8h_a098d0a587252fa8b82fe8495c2fc3d59}{L\+F\+S\+\_\+\+D\+E\+B\+U\+G\+\_\+}}(\+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+, \char`\"{}\char`\"{})}
+
+\mbox{\Hypertarget{lfs__util_8h_a098d0a587252fa8b82fe8495c2fc3d59}\label{lfs__util_8h_a098d0a587252fa8b82fe8495c2fc3d59}} 
+\index{lfs\_util.h@{lfs\_util.h}!LFS\_DEBUG\_@{LFS\_DEBUG\_}}
+\index{LFS\_DEBUG\_@{LFS\_DEBUG\_}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{LFS\_DEBUG\_}{LFS\_DEBUG\_}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+D\+E\+B\+U\+G\+\_\+(\begin{DoxyParamCaption}\item[{}]{fmt,  }\item[{}]{... }\end{DoxyParamCaption})~    printf(\char`\"{}\%s\+:\%d\+:debug\+: \char`\"{} fmt \char`\"{}\%s\textbackslash{}n\char`\"{}, \+\_\+\+\_\+\+F\+I\+L\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+)}
+
+\mbox{\Hypertarget{lfs__util_8h_a1d381d28d1cd17a5f212639ee77762d4}\label{lfs__util_8h_a1d381d28d1cd17a5f212639ee77762d4}} 
+\index{lfs\_util.h@{lfs\_util.h}!LFS\_ERROR@{LFS\_ERROR}}
+\index{LFS\_ERROR@{LFS\_ERROR}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{LFS\_ERROR}{LFS\_ERROR}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+E\+R\+R\+OR(\begin{DoxyParamCaption}\item[{}]{... }\end{DoxyParamCaption})~\mbox{\hyperlink{lfs__util_8h_a46ede71a04c8bc34f567b5025aa7cfaa}{L\+F\+S\+\_\+\+E\+R\+R\+O\+R\+\_\+}}(\+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+, \char`\"{}\char`\"{})}
+
+\mbox{\Hypertarget{lfs__util_8h_a46ede71a04c8bc34f567b5025aa7cfaa}\label{lfs__util_8h_a46ede71a04c8bc34f567b5025aa7cfaa}} 
+\index{lfs\_util.h@{lfs\_util.h}!LFS\_ERROR\_@{LFS\_ERROR\_}}
+\index{LFS\_ERROR\_@{LFS\_ERROR\_}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{LFS\_ERROR\_}{LFS\_ERROR\_}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+E\+R\+R\+O\+R\+\_\+(\begin{DoxyParamCaption}\item[{}]{fmt,  }\item[{}]{... }\end{DoxyParamCaption})~    printf(\char`\"{}\%s\+:\%d\+:error\+: \char`\"{} fmt \char`\"{}\%s\textbackslash{}n\char`\"{}, \+\_\+\+\_\+\+F\+I\+L\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+)}
+
+\mbox{\Hypertarget{lfs__util_8h_a2a0213f24914266c569ee529ee7b83a3}\label{lfs__util_8h_a2a0213f24914266c569ee529ee7b83a3}} 
+\index{lfs\_util.h@{lfs\_util.h}!LFS\_TRACE@{LFS\_TRACE}}
+\index{LFS\_TRACE@{LFS\_TRACE}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{LFS\_TRACE}{LFS\_TRACE}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+T\+R\+A\+CE(\begin{DoxyParamCaption}\item[{}]{... }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{lfs__util_8h_ad4cbf00d1a7933828678148432525f1e}\label{lfs__util_8h_ad4cbf00d1a7933828678148432525f1e}} 
+\index{lfs\_util.h@{lfs\_util.h}!LFS\_WARN@{LFS\_WARN}}
+\index{LFS\_WARN@{LFS\_WARN}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{LFS\_WARN}{LFS\_WARN}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+W\+A\+RN(\begin{DoxyParamCaption}\item[{}]{... }\end{DoxyParamCaption})~\mbox{\hyperlink{lfs__util_8h_a4e25746978215409ac694fb74776cbb5}{L\+F\+S\+\_\+\+W\+A\+R\+N\+\_\+}}(\+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+, \char`\"{}\char`\"{})}
+
+\mbox{\Hypertarget{lfs__util_8h_a4e25746978215409ac694fb74776cbb5}\label{lfs__util_8h_a4e25746978215409ac694fb74776cbb5}} 
+\index{lfs\_util.h@{lfs\_util.h}!LFS\_WARN\_@{LFS\_WARN\_}}
+\index{LFS\_WARN\_@{LFS\_WARN\_}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{LFS\_WARN\_}{LFS\_WARN\_}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+W\+A\+R\+N\+\_\+(\begin{DoxyParamCaption}\item[{}]{fmt,  }\item[{}]{... }\end{DoxyParamCaption})~    printf(\char`\"{}\%s\+:\%d\+:warn\+: \char`\"{} fmt \char`\"{}\%s\textbackslash{}n\char`\"{}, \+\_\+\+\_\+\+F\+I\+L\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+L\+I\+N\+E\+\_\+\+\_\+, \+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+)}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{lfs__util_8h_af0da1aadbc819f831467865c28ca731b}\label{lfs__util_8h_af0da1aadbc819f831467865c28ca731b}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_aligndown@{lfs\_aligndown}}
+\index{lfs\_aligndown@{lfs\_aligndown}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_aligndown()}{lfs\_aligndown()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+aligndown (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a,  }\item[{uint32\+\_\+t}]{alignment }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_aa9342ee427aa4c49ebb77ffded31bb1b}\label{lfs__util_8h_aa9342ee427aa4c49ebb77ffded31bb1b}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_alignup@{lfs\_alignup}}
+\index{lfs\_alignup@{lfs\_alignup}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_alignup()}{lfs\_alignup()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+alignup (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a,  }\item[{uint32\+\_\+t}]{alignment }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_a75a8a0a8a6150060ef992b915df2168f}\label{lfs__util_8h_a75a8a0a8a6150060ef992b915df2168f}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_crc@{lfs\_crc}}
+\index{lfs\_crc@{lfs\_crc}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_crc()}{lfs\_crc()}}
+{\footnotesize\ttfamily uint32\+\_\+t lfs\+\_\+crc (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{crc,  }\item[{const void $\ast$}]{buffer,  }\item[{size\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{lfs__util_8h_a6aca234f5581c98fc423e4184532185e}\label{lfs__util_8h_a6aca234f5581c98fc423e4184532185e}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_ctz@{lfs\_ctz}}
+\index{lfs\_ctz@{lfs\_ctz}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_ctz()}{lfs\_ctz()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+ctz (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_a9faff801530cd687a960a08af1acaaf1}\label{lfs__util_8h_a9faff801530cd687a960a08af1acaaf1}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_free@{lfs\_free}}
+\index{lfs\_free@{lfs\_free}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_free()}{lfs\_free()}}
+{\footnotesize\ttfamily static void lfs\+\_\+free (\begin{DoxyParamCaption}\item[{void $\ast$}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_a8783a7a270d00708c7845a03f02d09dc}\label{lfs__util_8h_a8783a7a270d00708c7845a03f02d09dc}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_frombe32@{lfs\_frombe32}}
+\index{lfs\_frombe32@{lfs\_frombe32}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_frombe32()}{lfs\_frombe32()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+frombe32 (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_ac41c19e11c05ec073d0c42f248bb74c3}\label{lfs__util_8h_ac41c19e11c05ec073d0c42f248bb74c3}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_fromle32@{lfs\_fromle32}}
+\index{lfs\_fromle32@{lfs\_fromle32}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_fromle32()}{lfs\_fromle32()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+fromle32 (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_a0daba32104352608f2e1b58148e40bab}\label{lfs__util_8h_a0daba32104352608f2e1b58148e40bab}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_malloc@{lfs\_malloc}}
+\index{lfs\_malloc@{lfs\_malloc}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_malloc()}{lfs\_malloc()}}
+{\footnotesize\ttfamily static void$\ast$ lfs\+\_\+malloc (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_af09bf0adf5ca35ebff23a450f50d530c}\label{lfs__util_8h_af09bf0adf5ca35ebff23a450f50d530c}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_max@{lfs\_max}}
+\index{lfs\_max@{lfs\_max}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_max()}{lfs\_max()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+max (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a,  }\item[{uint32\+\_\+t}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_aa6d372bce9fdc63166afaab1bad985c2}\label{lfs__util_8h_aa6d372bce9fdc63166afaab1bad985c2}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_min@{lfs\_min}}
+\index{lfs\_min@{lfs\_min}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_min()}{lfs\_min()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+min (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a,  }\item[{uint32\+\_\+t}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_a76451ed8c0010d3e5f91381d6788f727}\label{lfs__util_8h_a76451ed8c0010d3e5f91381d6788f727}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_npw2@{lfs\_npw2}}
+\index{lfs\_npw2@{lfs\_npw2}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_npw2()}{lfs\_npw2()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+npw2 (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_a5356f93586b7de6dc4f36025d34e62c8}\label{lfs__util_8h_a5356f93586b7de6dc4f36025d34e62c8}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_popc@{lfs\_popc}}
+\index{lfs\_popc@{lfs\_popc}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_popc()}{lfs\_popc()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+popc (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_a5115d8b55dd05a40b3a6f4443b220dbe}\label{lfs__util_8h_a5115d8b55dd05a40b3a6f4443b220dbe}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_scmp@{lfs\_scmp}}
+\index{lfs\_scmp@{lfs\_scmp}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_scmp()}{lfs\_scmp()}}
+{\footnotesize\ttfamily static int lfs\+\_\+scmp (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a,  }\item[{uint32\+\_\+t}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_abb1a0daed21d81a5d7b9ca09141ba93c}\label{lfs__util_8h_abb1a0daed21d81a5d7b9ca09141ba93c}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_tobe32@{lfs\_tobe32}}
+\index{lfs\_tobe32@{lfs\_tobe32}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_tobe32()}{lfs\_tobe32()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+tobe32 (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs__util_8h_a8cca2e46fa575f898da4076db7dd035f}\label{lfs__util_8h_a8cca2e46fa575f898da4076db7dd035f}} 
+\index{lfs\_util.h@{lfs\_util.h}!lfs\_tole32@{lfs\_tole32}}
+\index{lfs\_tole32@{lfs\_tole32}!lfs\_util.h@{lfs\_util.h}}
+\doxysubsubsection{\texorpdfstring{lfs\_tole32()}{lfs\_tole32()}}
+{\footnotesize\ttfamily static uint32\+\_\+t lfs\+\_\+tole32 (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+

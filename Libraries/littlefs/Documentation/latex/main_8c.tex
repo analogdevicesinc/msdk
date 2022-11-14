@@ -1,0 +1,230 @@
+\hypertarget{main_8c}{}\doxysection{main.\+c File Reference}
+\label{main_8c}\index{main.c@{main.c}}
+
+
+Flash Control Mass Erase \& Write 32-\/bit enabled mode Example.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}mxc\+\_\+assert.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mxc\+\_\+device.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}flc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}flash.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}littlefs/lfs.\+h\char`\"{}}\newline
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_8c_a04d626708323eb8ca9ebbfe0cccad1d7}{A\+P\+P\+\_\+\+P\+A\+G\+E\+\_\+\+C\+NT}}~8
+\begin{DoxyCompactList}\small\item\em Flash memory blocks reserved for the app code. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_a75e88da8c3f38ce7c2d7d18342757551}{A\+P\+P\+\_\+\+S\+I\+ZE}}~(M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+S\+I\+ZE$\ast$\mbox{\hyperlink{main_8c_a04d626708323eb8ca9ebbfe0cccad1d7}{A\+P\+P\+\_\+\+P\+A\+G\+E\+\_\+\+C\+NT}})
+\begin{DoxyCompactList}\small\item\em The app code flash memory area size. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_ac02f4a0e47c4e71ab1bf7642288586f7}{T\+E\+S\+T\+S\+I\+ZE}}~(M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+S\+I\+ZE)
+\begin{DoxyCompactList}\small\item\em 8 pages of 32 bit samples \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_a97a6fed6e5bc9dd71833ada688daf806}{T\+O\+T\+A\+L\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+ES}}~(M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+M\+E\+M\+\_\+\+S\+I\+ZE / M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+S\+I\+ZE)
+\begin{DoxyCompactList}\small\item\em Flash memory blocks reserved for internal storage. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_a6b616cff7b0fdf68831c07d2ee695c44}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+T\+A\+R\+T\+\_\+\+P\+A\+GE}}~8
+\begin{DoxyCompactList}\small\item\em Internal storage first flash memory block. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_a097cbde4cb902d2e24dad85137abb6e7}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+P\+A\+G\+E\+\_\+\+C\+NT}}~8
+\begin{DoxyCompactList}\small\item\em Flash memory blocks reserved for the internal storage. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_abdf1d04a4613ed9a877214ae330644a3}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+T\+A\+R\+T\+\_\+\+A\+D\+DR}}~M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+A\+D\+DR(\mbox{\hyperlink{main_8c_a6b616cff7b0fdf68831c07d2ee695c44}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+T\+A\+R\+T\+\_\+\+P\+A\+GE}})
+\begin{DoxyCompactList}\small\item\em Internal storage start address. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_a890aee95eb073a5cf178a74b6f124daa}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+I\+ZE}}~\mbox{\hyperlink{main_8c_a097cbde4cb902d2e24dad85137abb6e7}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+P\+A\+G\+E\+\_\+\+C\+NT}} $\ast$ M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+S\+I\+ZE
+\begin{DoxyCompactList}\small\item\em Internal storage size. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{main_8c_ae77554b0a5c37d6b5ba600037c0a0098}{F\+U\+L\+L\+\_\+\+W\+R\+I\+T\+E\+\_\+\+T\+E\+ST}}~0
+\item 
+\#define \mbox{\hyperlink{main_8c_a9b9d53eca397a7734e6fbcd699986fc2}{F\+U\+L\+L\+\_\+\+R\+E\+A\+D\+\_\+\+T\+E\+ST}}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
+\begin{DoxyCompactList}\small\item\em Application entry point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{main_8c_a3d8d7d5508c0d39095dac1d371232ef4}{testdata}} \mbox{[}\mbox{\hyperlink{main_8c_ac02f4a0e47c4e71ab1bf7642288586f7}{T\+E\+S\+T\+S\+I\+ZE}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Test data buffer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} \mbox{\hyperlink{main_8c_a11e58d59232e490f0bb0781c309abdb2}{lfs}}
+\begin{DoxyCompactList}\small\item\em File system instance. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{main_8c_a221373989ecdfc0ef28615271aa6c746}{start\+\_\+block}} = \mbox{\hyperlink{main_8c_a6b616cff7b0fdf68831c07d2ee695c44}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+T\+A\+R\+T\+\_\+\+P\+A\+GE}}
+\begin{DoxyCompactList}\small\item\em Internal memory start block to be passed to flash functions by littlefs. \end{DoxyCompactList}\item 
+const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} \mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Flash Control Mass Erase \& Write 32-\/bit enabled mode Example. 
+
+This example shows how to mass erase the flash using the library and also how to Write and Verify 4 Words to the flash. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_8c_a04d626708323eb8ca9ebbfe0cccad1d7}\label{main_8c_a04d626708323eb8ca9ebbfe0cccad1d7}} 
+\index{main.c@{main.c}!APP\_PAGE\_CNT@{APP\_PAGE\_CNT}}
+\index{APP\_PAGE\_CNT@{APP\_PAGE\_CNT}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{APP\_PAGE\_CNT}{APP\_PAGE\_CNT}}
+{\footnotesize\ttfamily \#define A\+P\+P\+\_\+\+P\+A\+G\+E\+\_\+\+C\+NT~8}
+
+
+
+Flash memory blocks reserved for the app code. 
+
+\mbox{\Hypertarget{main_8c_a75e88da8c3f38ce7c2d7d18342757551}\label{main_8c_a75e88da8c3f38ce7c2d7d18342757551}} 
+\index{main.c@{main.c}!APP\_SIZE@{APP\_SIZE}}
+\index{APP\_SIZE@{APP\_SIZE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{APP\_SIZE}{APP\_SIZE}}
+{\footnotesize\ttfamily \#define A\+P\+P\+\_\+\+S\+I\+ZE~(M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+S\+I\+ZE$\ast$\mbox{\hyperlink{main_8c_a04d626708323eb8ca9ebbfe0cccad1d7}{A\+P\+P\+\_\+\+P\+A\+G\+E\+\_\+\+C\+NT}})}
+
+
+
+The app code flash memory area size. 
+
+\mbox{\Hypertarget{main_8c_a097cbde4cb902d2e24dad85137abb6e7}\label{main_8c_a097cbde4cb902d2e24dad85137abb6e7}} 
+\index{main.c@{main.c}!FLASH\_STORAGE\_PAGE\_CNT@{FLASH\_STORAGE\_PAGE\_CNT}}
+\index{FLASH\_STORAGE\_PAGE\_CNT@{FLASH\_STORAGE\_PAGE\_CNT}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{FLASH\_STORAGE\_PAGE\_CNT}{FLASH\_STORAGE\_PAGE\_CNT}}
+{\footnotesize\ttfamily \#define F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+P\+A\+G\+E\+\_\+\+C\+NT~8}
+
+
+
+Flash memory blocks reserved for the internal storage. 
+
+\mbox{\Hypertarget{main_8c_a890aee95eb073a5cf178a74b6f124daa}\label{main_8c_a890aee95eb073a5cf178a74b6f124daa}} 
+\index{main.c@{main.c}!FLASH\_STORAGE\_SIZE@{FLASH\_STORAGE\_SIZE}}
+\index{FLASH\_STORAGE\_SIZE@{FLASH\_STORAGE\_SIZE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{FLASH\_STORAGE\_SIZE}{FLASH\_STORAGE\_SIZE}}
+{\footnotesize\ttfamily \#define F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+I\+ZE~\mbox{\hyperlink{main_8c_a097cbde4cb902d2e24dad85137abb6e7}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+P\+A\+G\+E\+\_\+\+C\+NT}} $\ast$ M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+S\+I\+ZE}
+
+
+
+Internal storage size. 
+
+\mbox{\Hypertarget{main_8c_abdf1d04a4613ed9a877214ae330644a3}\label{main_8c_abdf1d04a4613ed9a877214ae330644a3}} 
+\index{main.c@{main.c}!FLASH\_STORAGE\_START\_ADDR@{FLASH\_STORAGE\_START\_ADDR}}
+\index{FLASH\_STORAGE\_START\_ADDR@{FLASH\_STORAGE\_START\_ADDR}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{FLASH\_STORAGE\_START\_ADDR}{FLASH\_STORAGE\_START\_ADDR}}
+{\footnotesize\ttfamily \#define F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+T\+A\+R\+T\+\_\+\+A\+D\+DR~M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+A\+D\+DR(\mbox{\hyperlink{main_8c_a6b616cff7b0fdf68831c07d2ee695c44}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+T\+A\+R\+T\+\_\+\+P\+A\+GE}})}
+
+
+
+Internal storage start address. 
+
+\mbox{\Hypertarget{main_8c_a6b616cff7b0fdf68831c07d2ee695c44}\label{main_8c_a6b616cff7b0fdf68831c07d2ee695c44}} 
+\index{main.c@{main.c}!FLASH\_STORAGE\_START\_PAGE@{FLASH\_STORAGE\_START\_PAGE}}
+\index{FLASH\_STORAGE\_START\_PAGE@{FLASH\_STORAGE\_START\_PAGE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{FLASH\_STORAGE\_START\_PAGE}{FLASH\_STORAGE\_START\_PAGE}}
+{\footnotesize\ttfamily \#define F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+T\+A\+R\+T\+\_\+\+P\+A\+GE~8}
+
+
+
+Internal storage first flash memory block. 
+
+\mbox{\Hypertarget{main_8c_a9b9d53eca397a7734e6fbcd699986fc2}\label{main_8c_a9b9d53eca397a7734e6fbcd699986fc2}} 
+\index{main.c@{main.c}!FULL\_READ\_TEST@{FULL\_READ\_TEST}}
+\index{FULL\_READ\_TEST@{FULL\_READ\_TEST}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{FULL\_READ\_TEST}{FULL\_READ\_TEST}}
+{\footnotesize\ttfamily \#define F\+U\+L\+L\+\_\+\+R\+E\+A\+D\+\_\+\+T\+E\+ST~0}
+
+\mbox{\Hypertarget{main_8c_ae77554b0a5c37d6b5ba600037c0a0098}\label{main_8c_ae77554b0a5c37d6b5ba600037c0a0098}} 
+\index{main.c@{main.c}!FULL\_WRITE\_TEST@{FULL\_WRITE\_TEST}}
+\index{FULL\_WRITE\_TEST@{FULL\_WRITE\_TEST}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{FULL\_WRITE\_TEST}{FULL\_WRITE\_TEST}}
+{\footnotesize\ttfamily \#define F\+U\+L\+L\+\_\+\+W\+R\+I\+T\+E\+\_\+\+T\+E\+ST~0}
+
+\mbox{\Hypertarget{main_8c_ac02f4a0e47c4e71ab1bf7642288586f7}\label{main_8c_ac02f4a0e47c4e71ab1bf7642288586f7}} 
+\index{main.c@{main.c}!TESTSIZE@{TESTSIZE}}
+\index{TESTSIZE@{TESTSIZE}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{TESTSIZE}{TESTSIZE}}
+{\footnotesize\ttfamily \#define T\+E\+S\+T\+S\+I\+ZE~(M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+S\+I\+ZE)}
+
+
+
+8 pages of 32 bit samples 
+
+\mbox{\Hypertarget{main_8c_a97a6fed6e5bc9dd71833ada688daf806}\label{main_8c_a97a6fed6e5bc9dd71833ada688daf806}} 
+\index{main.c@{main.c}!TOTAL\_FLASH\_PAGES@{TOTAL\_FLASH\_PAGES}}
+\index{TOTAL\_FLASH\_PAGES@{TOTAL\_FLASH\_PAGES}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{TOTAL\_FLASH\_PAGES}{TOTAL\_FLASH\_PAGES}}
+{\footnotesize\ttfamily \#define T\+O\+T\+A\+L\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+ES~(M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+M\+E\+M\+\_\+\+S\+I\+ZE / M\+X\+C\+\_\+\+F\+L\+A\+S\+H\+\_\+\+P\+A\+G\+E\+\_\+\+S\+I\+ZE)}
+
+
+
+Flash memory blocks reserved for internal storage. 
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{main_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+\index{main.c@{main.c}!main@{main}}
+\index{main@{main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Application entry point. 
+
+\begin{DoxyReturn}{Returns}
+Exit code 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8c_a348e36dd85059f1482103a006e8fa686}\label{main_8c_a348e36dd85059f1482103a006e8fa686}} 
+\index{main.c@{main.c}!cfg@{cfg}}
+\index{cfg@{cfg}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{cfg}{cfg}}
+{\footnotesize\ttfamily const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} cfg}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{        .context = \&\mbox{\hyperlink{main_8c_a221373989ecdfc0ef28615271aa6c746}{start\_block}},}
+\DoxyCodeLine{        }
+\DoxyCodeLine{        .read = \mbox{\hyperlink{flash_8c_a3362b9872a30a5258299d4a926cedc82}{flash\_read}},}
+\DoxyCodeLine{        .prog = \mbox{\hyperlink{flash_8c_aca9d2e0fdfb51ded0d659a80cc5db785}{flash\_write}},}
+\DoxyCodeLine{        .erase = \mbox{\hyperlink{flash_8c_a18b584f8f19786d5787c741780dba085}{flash\_erase}},}
+\DoxyCodeLine{        .sync = \mbox{\hyperlink{flash_8c_aa8915cf4fff5c988c45ef66079a03b5d}{flash\_sync}},}
+\DoxyCodeLine{}
+\DoxyCodeLine{        }
+\DoxyCodeLine{        .read\_size = 1,}
+\DoxyCodeLine{        .prog\_size = 4,}
+\DoxyCodeLine{        .block\_size = MXC\_FLASH\_PAGE\_SIZE,}
+\DoxyCodeLine{        .block\_count = \mbox{\hyperlink{main_8c_a097cbde4cb902d2e24dad85137abb6e7}{FLASH\_STORAGE\_PAGE\_CNT}},}
+\DoxyCodeLine{        .cache\_size = 16,}
+\DoxyCodeLine{        .lookahead\_size = 16,}
+\DoxyCodeLine{        .block\_cycles = 500,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8c_a11e58d59232e490f0bb0781c309abdb2}\label{main_8c_a11e58d59232e490f0bb0781c309abdb2}} 
+\index{main.c@{main.c}!lfs@{lfs}}
+\index{lfs@{lfs}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{lfs}{lfs}}
+{\footnotesize\ttfamily \mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} \mbox{\hyperlink{structlfs}{lfs}}}
+
+
+
+File system instance. 
+
+\mbox{\Hypertarget{main_8c_a221373989ecdfc0ef28615271aa6c746}\label{main_8c_a221373989ecdfc0ef28615271aa6c746}} 
+\index{main.c@{main.c}!start\_block@{start\_block}}
+\index{start\_block@{start\_block}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{start\_block}{start\_block}}
+{\footnotesize\ttfamily uint32\+\_\+t start\+\_\+block = \mbox{\hyperlink{main_8c_a6b616cff7b0fdf68831c07d2ee695c44}{F\+L\+A\+S\+H\+\_\+\+S\+T\+O\+R\+A\+G\+E\+\_\+\+S\+T\+A\+R\+T\+\_\+\+P\+A\+GE}}}
+
+
+
+Internal memory start block to be passed to flash functions by littlefs. 
+
+\mbox{\Hypertarget{main_8c_a3d8d7d5508c0d39095dac1d371232ef4}\label{main_8c_a3d8d7d5508c0d39095dac1d371232ef4}} 
+\index{main.c@{main.c}!testdata@{testdata}}
+\index{testdata@{testdata}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{testdata}{testdata}}
+{\footnotesize\ttfamily uint32\+\_\+t testdata\mbox{[}\mbox{\hyperlink{main_8c_ac02f4a0e47c4e71ab1bf7642288586f7}{T\+E\+S\+T\+S\+I\+ZE}}\mbox{]}}
+
+
+
+Test data buffer. 
+

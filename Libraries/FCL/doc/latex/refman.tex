@@ -1,0 +1,315 @@
+\documentclass[twoside]{book}
+
+\newcommand\docyear{2017 }
+\newcommand\docrev{Revision F }
+\newcommand\docref{SPEC98T17 }
+\newcommand\docdate{07/16/2017 }
+\newcommand\docstatus{CONFIDENTIAL }
+\newcommand\docwarning{MAXIM INTEGRATED CONFIDENTIAL/DISTRIBUTE ONLY UNDER NDA }
+
+% Packages required by doxygen
+\usepackage{fixltx2e}
+\usepackage{calc}
+\usepackage{doxygen}
+\usepackage[export]{adjustbox} % also loads graphicx
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{makeidx}
+\usepackage{multicol}
+\usepackage{multirow}
+\PassOptionsToPackage{warn}{textcomp}
+\usepackage{textcomp}
+\usepackage[nointegrals]{wasysym}
+\usepackage[table]{xcolor}
+
+% Font selection
+%\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+%\usepackage[scaled=.90]{times}
+%\usepackage{courier}
+\usepackage{amssymb}
+\usepackage{sectsty}
+%\renewcommand{\familydefault}{\sfdefault}
+\allsectionsfont{%
+  \fontseries{bc}\selectfont%
+  \color{darkgray}%
+}
+\renewcommand{\DoxyLabelFont}{%
+  \fontseries{bc}\selectfont%
+  \color{darkgray}%
+}
+\newcommand{\+}{\discretionary{\mbox{\scriptsize$\hookleftarrow$}}{}{}}
+
+% Page & text layout
+\usepackage{geometry}
+\geometry{%
+  a4paper,%
+  top=2.5cm,%
+  bottom=2.5cm,%
+  left=2.5cm,%
+  right=2.5cm%
+}
+\tolerance=750
+\hfuzz=15pt
+\hbadness=750
+\setlength{\emergencystretch}{15pt}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{3ex plus 2ex minus 2ex}
+\makeatletter
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}{0ex}{-1.0ex}{1.0ex}{%
+    \normalfont\normalsize\bfseries\SS@parafont%
+  }%
+}
+\renewcommand{\subparagraph}{%
+  \@startsection{subparagraph}{5}{0ex}{-1.0ex}{1.0ex}{%
+    \normalfont\normalsize\bfseries\SS@subparafont%
+  }%
+}
+\makeatother
+
+% Headers & footers
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{
+\fancyhf{}
+\fancyhead[L]{\raisebox{-0.5\height}{\includegraphics[scale=0.5]{../../res/maxim-logo-202.png}}}
+\fancyhead[R]{\textbf{\textit{F\+CL}}}
+\fancyfoot[L]{\textit{\docrev}}
+\fancyfoot[R]{\fancyplain{}{\docstatus | Maxim Integrated Products Inc. | \thepage}}
+}
+
+\pagestyle{plain}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{2pt}
+\renewcommand{\chaptermark}[1]{%
+  \markboth{#1}{}%
+}
+\renewcommand{\sectionmark}[1]{%
+  \markright{\thesection\ #1}%
+}
+
+\setlength{\headheight}{37pt}
+\setlength{\headsep}{1.3cm}
+\setlength{\topmargin}{-1.9cm}
+\setlength{\footskip}{1cm}
+\setlength{\textheight}{24.7cm}
+
+% Indices & bibliography
+\usepackage{natbib}
+\usepackage[titles]{tocloft}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{5}
+\makeindex
+
+% Hyperlinks (required, but should be loaded last)
+\usepackage{ifpdf}
+\ifpdf
+  \usepackage[pdftex,pagebackref=true]{hyperref}
+\else
+  \usepackage[ps2pdf,pagebackref=true]{hyperref}
+\fi
+\hypersetup{%
+  colorlinks=true,%
+  linkcolor=blue,%
+  citecolor=blue,%
+  unicode%
+}
+
+% Custom commands
+\newcommand{\clearemptydoublepage}{%
+  \newpage{\pagestyle{empty}\cleardoublepage}%
+}
+
+\usepackage{caption}
+\captionsetup{labelsep=space,justification=centering,font={bf},singlelinecheck=off,skip=4pt,position=top}
+
+%CUSTOMIZATION
+%
+
+\let\cleardoublepage\clearpage
+\let\oldchapter\chapter
+\let\oldsection\section
+\let\oldsubsection\subsection
+\let\oldsubsubsection\subsubsection
+
+\newcommand\mysection\oldsubsection
+\newcommand\mysubsection\oldsubsubsection
+\newcommand\mysubsubsection\paragraph
+\newcommand\mysectionh\oldchapter
+\newcommand\mysubsectionh\oldsection
+\newcommand\mysubsubsectionh\oldsubsection
+
+\newcommand\shiftleveldown{%
+\makeatletter%
+\renewcommand{\section}{\mysection}%
+\renewcommand{\subsection}{\mysubsection}%
+\renewcommand{\subsubsection}{\mysubsubsection}%
+\makeatother%
+}
+
+\newcommand\restorelevel{%
+\makeatletter%
+\renewcommand{\section}{\oldsection}%
+\renewcommand{\subsection}{\oldsubsection}%
+\renewcommand{\subsubsection}{\oldsubsubsection}%
+\makeatother%
+}
+
+
+\newcommand\shiftlevelup{%
+\makeatletter%
+\renewcommand{\section}{\mysectionh}%
+\renewcommand{\subsection}{\mysubsectionh}%
+\renewcommand{\subsubsection}{\mysubsubsectionh}%
+\makeatother%
+}
+
+\usepackage{titlesec}
+
+ \titleformat{\chapter}
+   {\Large\bfseries} % format
+   {\thechapter. }                % label
+   {0pt}             % sep
+   {}           % before-code
+
+%===== C O N T E N T S =====
+
+
+\begin{document}
+
+% Titlepage & ToC
+\hypersetup{pageanchor=false,
+             bookmarksnumbered=true,
+             pdfencoding=unicode
+            }
+%\pagenumbering{alph}
+\begin{titlepage}
+\vspace*{7cm}
+\begin{flushleft}
+\begin{figure}[H]
+\includegraphics[scale=1]{../../res/maxim-logo-header.png}
+\end{figure}
+\textbf{\Large{\bf{F\+CL}\\}}
+\textbf{\\\docref\\}
+\textbf{\docrev\\}
+\textbf{\docdate\\}
+\end{flushleft}
+
+\vspace*{7cm}
+\begin{flushright}
+Maxim Integrated, Inc.\\
+160 Rio Robles\\
+San Jose, CA 95134\\
+\end{flushright}
+
+\end{titlepage}
+
+\section*{Disclaimer}
+
+\subsection*{LIFE SUPPORT POLICY}
+MAXIM’S PRODUCTS ARE NOT AUTHORIZED FOR USE AS CRITICAL COMPONENTS IN LIFE SUPPORT DEVICES OR SYSTEMS WITHOUT THE EXPRESS PRIOR WRITTEN APPROVAL OF THE PRESIDENT AND GENERAL COUNSEL OF MAXIM INTEGRATED PRODUCTS, INC. 
+
+\subsection*{As used herein}
+Life support devices or systems are devices which (a) are intended for surgical implant into the body, or (b) support or sustain life and whose failure to perform when properly used in accordance with instructions for use provided in the labeling can be reasonably expected to result in a significant injury to the user. A critical component is any component in a life support device or system whose failure to perform can be reasonably expected to cause the failure of the life support device or system or to affect its safety or effectiveness.
+
+\subsection*{Document Disclaimer}
+©\docyear by Maxim Integrated, Inc. All rights reserved. Information in this publication concerning the devices, applications, or technology described is intended to suggest possible uses and may be superseded. MAXIM INTEGRATED, INC. DOES NOT ASSUME LIABILITY FOR OR PROVIDE A REPRESENTATION OF ACCURACY OF THE INFORMATION, DEVICES, OR TECHNOLOGY DESCRIBED IN THIS DOCUMENT. MAXIM ALSO DOES NOT ASSUME LIABILITY FOR INTELLECTUAL PROPERTY INFRINGEMENT RELATED IN ANY MANNER TO USE OF INFORMATION, DEVICES, OR TECHNOLOGY DESCRIBED HEREIN OR OTHERWISE. The information contained within this document has been verified according to the general principles of electrical and mechanical engineering or registered trademarks of Maxim Integrated, Inc. All other product or service names are the property of their respective owners. 
+
+ARM® and Thumb® are registered trademarks of ARM Limited in the European Union and other countries. All other product or service names are the property of their respective owners.
+
+
+\clearemptydoublepage
+\pagenumbering{roman}
+\tableofcontents
+\clearemptydoublepage
+\pagenumbering{arabic}
+\hypersetup{pageanchor=true}
+
+%--- Begin generated contents ---
+
+\chapter{Document details}
+
+\input{_r_e_l_e_a_s_e__n_o_t_e_s}
+
+\shiftlevelup
+\label{index}\hypertarget{index}{}\input{index}
+\restorelevel
+
+\chapter{Design Description}
+
+\input{modules}
+
+\include{group__appbx}
+
+\include{group__os}
+
+\include{group__smbx}
+
+\include{group__ssbx}
+\shiftleveldown
+\include{group__ssbx___crypto}
+\include{group__ssbx___main}
+\include{group__ssbx___i_o}
+\include{group__ssbx___key_management}
+\include{group__ssbx___mem}
+\restorelevel
+
+\include{group__pcibx}
+\shiftleveldown
+\include{group__pcibx__sc}
+\include{group__pcibx___p_i_n}
+\include{group__pcibx___m_s_r}
+\restorelevel
+
+
+\include{group__hypervisor}
+
+\chapter{Security Guidelines}
+\label{_p_c_i_g_u_i_d_a_n_c_e}
+\hypertarget{_p_c_i_g_u_i_d_a_n_c_e}{}
+\input{_p_c_i_g_u_i_d_a_n_c_e}
+
+\chapter{References}
+\label{_r_e_f_e_r_e_n_c_e_s}
+\hypertarget{_r_e_f_e_r_e_n_c_e_s}{}
+\input{_r_e_f_e_r_e_n_c_e_s}
+
+
+\printindex
+\end{document}
+
+\chapter{Main Page}
+\label{index}\hypertarget{index}{}\input{index}
+\chapter{Module Index}
+\input{modules}
+\chapter{File Index}
+\input{files}
+\chapter{Module Documentation}
+\input{group___u_c_l___a_e_s}
+\include{group___u_c_l___c_b_c___a_e_s}
+\include{group___u_c_l___c_b_c___m_a_c___a_e_s}
+\include{group___u_c_l___e_c_b___a_e_s}
+\include{group___u_c_l___d_e_f_i_n_e_s}
+\include{group___u_c_l___d_e_f_i_n_i_t_i_o_n_s}
+\include{group___u_c_l___r_e_t_u_r_n}
+\include{group___u_c_l___e_c_d_s_a}
+\include{group___u_c_l___s_h_a256}
+\include{group___u_c_l___s_h_a3}
+\include{group___u_c_l___s_h_a384}
+\include{group___u_c_l___s_h_a512}
+\include{group___u_c_l___s_i_a256}
+\chapter{File Documentation}
+\input{ecdsa__generic__api_8h}
+\input{ucl__aes_8h}
+\input{ucl__aes__cbc_8h}
+\input{ucl__aes__cbc__mac_8h}
+\input{ucl__aes__ecb_8h}
+\input{ucl__retdefs_8h}
+\input{ucl__sha256_8h}
+\input{ucl__sha3_8h}
+\input{ucl__sha384_8h}
+\input{ucl__sha512_8h}
+\input{ucl__sia256_8h}
+\printindex
+\end{document}

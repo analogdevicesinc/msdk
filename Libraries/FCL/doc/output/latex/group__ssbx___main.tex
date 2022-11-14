@@ -1,0 +1,68 @@
+\hypertarget{group__ssbx___main}{}\section{Global management functions}
+\label{group__ssbx___main}\index{Global management functions@{Global management functions}}
+\subsection*{List of functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{group__ssbx___main_ga242681afc2ef11a1ecff51d1fecefd2b}{ssbx\+\_\+rtc\+\_\+set\+\_\+alarm} (uint32\+\_\+t period\+\_\+seconds, uint32\+\_\+t type, uint32\+\_\+t code, void($\ast$callback)(uint32\+\_\+t))
+\begin{DoxyCompactList}\small\item\em Sets an R\+TC based alarm. \end{DoxyCompactList}\item 
+int \hyperlink{group__ssbx___main_gacbaeac49c40f20084b80c4d6b942a331}{ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm} (uint32\+\_\+t alarm\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Disables an alarm. \end{DoxyCompactList}\item 
+int \hyperlink{group__ssbx___main_gabade948f2d1354f81824d6dc2ea93d83}{ssbx\+\_\+start} (void)
+\begin{DoxyCompactList}\small\item\em Starts the system, with various integrity checks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Additional management services come from the u\+Visor A\+PI\+: \href{https://github.com/ARMmbed/uvisor/blob/master/docs/api/API.md}{\tt https\+://github.\+com/\+A\+R\+Mmbed/uvisor/blob/master/docs/api/\+A\+P\+I.\+md} 
+
+\subsection{Function Documentation}
+\hypertarget{group__ssbx___main_ga242681afc2ef11a1ecff51d1fecefd2b}{}\label{group__ssbx___main_ga242681afc2ef11a1ecff51d1fecefd2b} 
+\index{Global management functions@{Global management functions}!ssbx\+\_\+rtc\+\_\+set\+\_\+alarm@{ssbx\+\_\+rtc\+\_\+set\+\_\+alarm}}
+\index{ssbx\+\_\+rtc\+\_\+set\+\_\+alarm@{ssbx\+\_\+rtc\+\_\+set\+\_\+alarm}!Global management functions@{Global management functions}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+rtc\+\_\+set\+\_\+alarm()}{ssbx\_rtc\_set\_alarm()}}
+{\footnotesize\ttfamily int ssbx\+\_\+rtc\+\_\+set\+\_\+alarm (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{period\+\_\+seconds,  }\item[{uint32\+\_\+t}]{type,  }\item[{uint32\+\_\+t}]{code,  }\item[{void($\ast$)(uint32\+\_\+t)}]{callback }\end{DoxyParamCaption})}
+
+
+
+Sets an R\+TC based alarm. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em period\+\_\+seconds} & the number of seconds before the alarm \\
+\hline
+\mbox{\tt in}  & {\em type} & 1 for periodic alarm or 0 for one shot alarm\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ID of the alarm 
+\end{DoxyReturn}
+\hypertarget{group__ssbx___main_gacbaeac49c40f20084b80c4d6b942a331}{}\label{group__ssbx___main_gacbaeac49c40f20084b80c4d6b942a331} 
+\index{Global management functions@{Global management functions}!ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm@{ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm}}
+\index{ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm@{ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm}!Global management functions@{Global management functions}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm()}{ssbx\_rtc\_unset\_alarm()}}
+{\footnotesize\ttfamily int ssbx\+\_\+rtc\+\_\+unset\+\_\+alarm (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{alarm\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+Disables an alarm. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em alarm\+\_\+id} & The alarm identifier\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+-\/1 if error (caller is not the owner of the alarm), 0 if OK 
+\end{DoxyReturn}
+\hypertarget{group__ssbx___main_gabade948f2d1354f81824d6dc2ea93d83}{}\label{group__ssbx___main_gabade948f2d1354f81824d6dc2ea93d83} 
+\index{Global management functions@{Global management functions}!ssbx\+\_\+start@{ssbx\+\_\+start}}
+\index{ssbx\+\_\+start@{ssbx\+\_\+start}!Global management functions@{Global management functions}}
+\subsubsection{\texorpdfstring{ssbx\+\_\+start()}{ssbx\_start()}}
+{\footnotesize\ttfamily int ssbx\+\_\+start (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Starts the system, with various integrity checks. 
+
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}

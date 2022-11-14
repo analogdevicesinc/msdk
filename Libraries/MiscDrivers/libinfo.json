@@ -1,0 +1,29 @@
+{
+	"name":"MiscDrivers",
+	"ipaths":[
+		"Camera",
+		"Display",
+		"ExtMemory",
+		"LED",
+		"PMIC",
+		"PushButton",
+		"Touchscreen"
+	],
+	"vpaths":[
+		"Camera",
+		"Display",
+		"LED",
+		"PMIC",
+		"PushButton",
+		"Touchscreen",
+		"./"],
+	"whitelist":"True",
+	"targets":[
+		{
+			"name":"MAX78000"
+		},
+		{
+			"name":"MAX78002"
+		}
+	]
+}

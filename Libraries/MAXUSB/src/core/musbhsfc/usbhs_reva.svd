@@ -1,0 +1,1687 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>USBHS</name>
+    <description>USB 2.0 High-speed Controller.</description>
+    <baseAddress>0x400B1000</baseAddress>
+    <addressBlock>
+      <offset>0</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>USB</name>
+      <value>2</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>FADDR</name>
+        <description>Function address register.</description>
+        <addressOffset>0x00</addressOffset>
+        <size>8</size>
+        <resetMask>0x00</resetMask>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Function address for this controller.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>7</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>UPDATE</name>
+            <description>Set when ADDR is written, cleared when new address takes effect.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>POWER</name>
+        <description>Power management register.</description>
+        <addressOffset>0x01</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>EN_SUSPENDM</name>
+            <description>Enable SUSPENDM signal.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SUSPEND</name>
+            <description>Suspend mode detected.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RESUME</name>
+            <description>Generate resume signaling.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RESET</name>
+            <description>Bus reset detected.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>HS_MODE</name>
+            <description>High-speed mode detected.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>HS_ENABLE</name>
+            <description>High-speed mode enable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SOFTCONN</name>
+            <description>Softconn.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>ISO_UPDATE</name>
+            <description>Wait for SOF during Isochronous xfers.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTRIN</name>
+        <description>Interrupt register for EP0 and IN EP1-15.</description>
+        <addressOffset>0x02</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>EP15_IN_INT</name>
+            <description>Endpoint 15 interrupt.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP14_IN_INT</name>
+            <description>Endpoint 14 interrupt.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP13_IN_INT</name>
+            <description>Endpoint 13 interrupt.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP12_IN_INT</name>
+            <description>Endpoint 12 interrupt.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP11_IN_INT</name>
+            <description>Endpoint 11 interrupt.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP10_IN_INT</name>
+            <description>Endpoint 10 interrupt.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP9_IN_INT</name>
+            <description>Endpoint 9 interrupt.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP8_IN_INT</name>
+            <description>Endpoint 8 interrupt.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP7_IN_INT</name>
+            <description>Endpoint 7 interrupt.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP6_IN_INT</name>
+            <description>Endpoint 6 interrupt.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP5_IN_INT</name>
+            <description>Endpoint 5 interrupt.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP4_IN_INT</name>
+            <description>Endpoint 4 interrupt.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP3_IN_INT</name>
+            <description>Endpoint 3 interrupt.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP2_IN_INT</name>
+            <description>Endpoint 2 interrupt.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP1_IN_INT</name>
+            <description>Endpoint 1 interrupt.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP0_IN_INT</name>
+            <description>Endpoint 0 interrupt.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTROUT</name>
+        <description>Interrupt register for OUT EP 1-15.</description>
+        <addressOffset>0x04</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>EP15_OUT_INT</name>
+            <description>Endpoint 15 interrupt.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP14_OUT_INT</name>
+            <description>Endpoint 14 interrupt.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP13_OUT_INT</name>
+            <description>Endpoint 13 interrupt.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP12_OUT_INT</name>
+            <description>Endpoint 12 interrupt.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP11_OUT_INT</name>
+            <description>Endpoint 11 interrupt.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP10_OUT_INT</name>
+            <description>Endpoint 10 interrupt.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP9_OUT_INT</name>
+            <description>Endpoint 9 interrupt.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP8_OUT_INT</name>
+            <description>Endpoint 8 interrupt.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP7_OUT_INT</name>
+            <description>Endpoint 7 interrupt.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP6_OUT_INT</name>
+            <description>Endpoint 6 interrupt.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP5_OUT_INT</name>
+            <description>Endpoint 5 interrupt.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP4_OUT_INT</name>
+            <description>Endpoint 4 interrupt.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP3_OUT_INT</name>
+            <description>Endpoint 3 interrupt.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP2_OUT_INT</name>
+            <description>Endpoint 2 interrupt.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>EP1_OUT_INT</name>
+            <description>Endpoint 1 interrupt.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTRINEN</name>
+        <description>Interrupt enable for EP 0 and IN EP 1-15.</description>
+        <addressOffset>0x06</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>EP15_IN_INT_EN</name>
+            <description>Endpoint 15 interrupt enable.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP14_IN_INT_EN</name>
+            <description>Endpoint 14 interrupt enable.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP13_IN_INT_EN</name>
+            <description>Endpoint 13 interrupt enable.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP12_IN_INT_EN</name>
+            <description>Endpoint 12 interrupt enable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP11_IN_INT_EN</name>
+            <description>Endpoint 11 interrupt enable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP10_IN_INT_EN</name>
+            <description>Endpoint 10 interrupt enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP9_IN_INT_EN</name>
+            <description>Endpoint 9 interrupt enable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP8_IN_INT_EN</name>
+            <description>Endpoint 8 interrupt enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP7_IN_INT_EN</name>
+            <description>Endpoint 7 interrupt enable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP6_IN_INT_EN</name>
+            <description>Endpoint 6 interrupt enable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP5_IN_INT_EN</name>
+            <description>Endpoint 5 interrupt enable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP4_IN_INT_EN</name>
+            <description>Endpoint 4 interrupt enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP3_IN_INT_EN</name>
+            <description>Endpoint 3 interrupt enable.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP2_IN_INT_EN</name>
+            <description>Endpoint 2 interrupt enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP1_IN_INT_EN</name>
+            <description>Endpoint 1 interrupt enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP0_INT_EN</name>
+            <description>Endpoint 0 interrupt enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTROUTEN</name>
+        <description>Interrupt enable for OUT EP 1-15.</description>
+        <addressOffset>0x08</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>EP15_OUT_INT_EN</name>
+            <description>Endpoint 15 interrupt.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP14_OUT_INT_EN</name>
+            <description>Endpoint 14 interrupt.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP13_OUT_INT_EN</name>
+            <description>Endpoint 13 interrupt.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP12_OUT_INT_EN</name>
+            <description>Endpoint 12 interrupt.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP11_OUT_INT_EN</name>
+            <description>Endpoint 11 interrupt.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP10_OUT_INT_EN</name>
+            <description>Endpoint 10 interrupt.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP9_OUT_INT_EN</name>
+            <description>Endpoint 9 interrupt.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP8_OUT_INT_EN</name>
+            <description>Endpoint 8 interrupt.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP7_OUT_INT_EN</name>
+            <description>Endpoint 7 interrupt.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP6_OUT_INT_EN</name>
+            <description>Endpoint 6 interrupt.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP5_OUT_INT_EN</name>
+            <description>Endpoint 5 interrupt.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP4_OUT_INT_EN</name>
+            <description>Endpoint 4 interrupt.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP3_OUT_INT_EN</name>
+            <description>Endpoint 3 interrupt.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP2_OUT_INT_EN</name>
+            <description>Endpoint 2 interrupt.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>EP1_OUT_INT_EN</name>
+            <description>Endpoint 1 interrupt.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTRUSB</name>
+        <description>Interrupt register for common USB interrupts.</description>
+        <addressOffset>0x0A</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>SOF_INT</name>
+            <description>Start of Frame.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RESET_INT</name>
+            <description>Bus reset detected.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>RESUME_INT</name>
+            <description>Resume detected.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>SUSPEND_INT</name>
+            <description>Suspend detected.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTRUSBEN</name>
+        <description>Interrupt enable for common USB interrupts.</description>
+        <addressOffset>0x0B</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>SOF_INT_EN</name>
+            <description>Start of Frame.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RESET_INT_EN</name>
+            <description>Bus reset detected.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RESUME_INT_EN</name>
+            <description>Resume detected.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SUSPEND_INT_EN</name>
+            <description>Suspend detected.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FRAME</name>
+        <description>Frame number.</description>
+        <addressOffset>0x0C</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>FRAMENUM</name>
+            <description>Read the last received frame number, that is the 11-bit frame number received in the SOF packet.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>11</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INDEX</name>
+        <description>Index for banked registers.</description>
+        <addressOffset>0x0E</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>INDEX</name>
+            <description>Index Register Access Selector. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TESTMODE</name>
+        <description>USB 2.0 test mode enable register.</description>
+        <addressOffset>0x0F</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>FORCE_FS</name>
+            <description>Force USB to Full-speed after reset.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FORCE_HS</name>
+            <description>Force USB to High-speed after reset.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TEST_PKT</name>
+            <description>Transmit fixed test packet.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TEST_K</name>
+            <description>Force USB to continuous K state.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TEST_J</name>
+            <description>Force USB to continuous J state.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>TEST_SE0_NAK</name>
+            <description>Respond to any valid IN token with NAK.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INMAXP</name>
+        <description>Maximum packet size for INx endpoint (x == INDEX).</description>
+        <addressOffset>0x10</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>MAXPACKETSIZE</name>
+            <description>Maximum Packet Size in a Single Transaction. That is the maximum packet size in bytes, that is transmitted for each microframe. The maximum value is 1024, subject to the limitations of the endpoint type set in USB 2.0 Specification, Chapter 9</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>11</bitWidth>
+          </field>
+          <field>
+            <name>NUMPACKMINUS1</name>
+            <description>Number of Split Packets - 1. Defines the maximum number of packets minus 1 that a USB payload can be split into. THis must be an exact multiple of maxpacketsize. Only applicable for HS High-Bandwidth isochronous endpoints and Bulk endpoints. Ignored in all other cases. </description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CSR0</name>
+        <description>Control status register for EP 0 (when INDEX == 0).</description>
+        <addressOffset>0x12</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>SERV_SETUP_END</name>
+            <description>Clear EP0 Setup End Bit. Write a 1 to clear the setupend bit. Automatically cleared after being set </description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SERV_OUTPKTRDY</name>
+            <description>Clear EP0 Out Packet Ready Bit. Write a 1 to clear the outpktrdy bit. Automatically cleared after being set.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SEND_STALL</name>
+            <description>Send EP0 STALL Handshake. Write a 1 to this bit to terminate the current control transaction by sneding a STALL handshake. Automatically cleared after being set. </description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SETUP_END</name>
+            <description>Read Setup End Status. Automatically set when a contorl transaction ends before the dataend bit has been set by fimrware. An interrupt is generated when this bit is set. Write 1 to servicedsetupend to clear.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>DATA_END</name>
+            <description>Control Transaction Data End. Write a 1 to this bit after firmware completes any of the following three transactions: 1. set inpktrdy = 1 for the last data packet. 2. Set inpktrdy =1 for a zero-length data packet. 3. Clear outpktrdy = 0 after unloading the last data packet. </description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SENT_STALL</name>
+            <description> Read EP0 STALL Handshake Sent Status Automatically set when a STALL handshake is transmitted. Write a 0 to clear. </description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>INPKTRDY</name>
+            <description>EP0 IN Packet Ready 1: Write a 1 after writing a data packet to the IN FIFO. Automatically cleared when the data packet is transmitted. An interrupt is generated when this bit is cleared. </description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>OUTPKTRDY</name>
+            <description>EP0 OUT Packet Ready Status Automatically set when a data packet is received in the OUT FIFO. An interrupt is generated when this bit is set. Write a 1 to the servicedoutpktrdy bit (above) to clear after the packet is unloaded from the OUT FIFO. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INCSRL</name>
+        <description>Control status lower register for INx endpoint (x == INDEX).</description>
+        <alternateRegister>CSR0</alternateRegister>
+        <addressOffset>0x12</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>INCOMPTX</name>
+            <description>Read Incomplete Split Transfer Error Status High-bandwidth isochronous transfers: Automatically set when a payload is split into multiple packets but insufficient IN tokens were received to send all packets. The current packets is flushed from the IN FIFO. Write 0 to clear.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CLRDATATOG</name>
+            <description>Write 1 to clear IN endpoint data-toggle to 0.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SENTSTALL</name>
+            <description>Read STALL Handshake Sent Status Automatically set when a STALL handshake is transmitted, at which time the IN FIFO is flushed, and inpktrdy is cleared. Write 0 to clear.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SENDSTALL</name>
+            <description>Send STALL Handshake.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>terminate</name>
+                <description>Terminate STALL handhsake</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>respond</name>
+                <description>Respond to an IN token with a STALL handshake</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FLUSHFIFO</name>
+            <description>Flush Next Packet from IN FIFO. Write 1 to clear</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>UNDERRUN</name>
+            <description>Read IN FIFO Underrun Error Status Isochronous Mode: Automatically set if the IN FIFO is empty. Write 0 to clear</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FIFONOTEMPTY</name>
+            <description>Read FIFO Not Empty Status. Automatically set when there is at least one packet in the IN FIFO. Write a 0 to clear. </description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>INPKTRDY</name>
+            <description>IN Packet Ready. Write a 1 to clear </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INCSRU</name>
+        <description>Control status upper register for INx endpoint (x == INDEX).</description>
+        <addressOffset>0x13</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>AUTOSET</name>
+            <description>Auto Set inpktrdy. </description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>set</name>
+                <description>USBHS_INCSRL_inpktrdy must be set by firmware.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>auto</name>
+                <description>USBHS_INCSRL_inpktrdy is automatically set. </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ISO</name>
+            <description>Isochronous Transfer Enable</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>interrupt</name>
+                <description>Enable IN Bulk and IN interrupt transfers.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>isochronous</name>
+                <description>Enable IN Isochronous transfers. </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MODE</name>
+            <description> Endpoint Direction Mode.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>out</name>
+                <description>Endpoint direction is OUT.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>in</name>
+                <description>Endpoint direction is IN. </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FRCDATATOG</name>
+            <description> Force In Data - Toggle</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>received</name>
+                <description>Toggle data-toglge only when an ACK is received.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dontcare</name>
+                <description>Toggle data-toggle regardless of ACK. </description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DPKTBUFDIS</name>
+            <description> Double Packet Buffering Disable </description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable Double packet buffering.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable Double Packet Buffering.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OUTMAXP</name>
+        <description>Maximum packet size for OUTx endpoint (x == INDEX).</description>
+        <addressOffset>0x14</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>NUMPACKMINUS1</name>
+            <description>Number of Split Packets -1. Defines the maximum number of packets - 1 that a usb payload is combined into. The value must be exact multiple of maxpacketsize. </description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>5</bitWidth>
+          </field>
+          <field>
+            <name>MAXPACKETSIZE</name>
+            <description>Maximum Packet in a Single Transaction. This is the maximum packet size, in bytes, that is transmitted for each microframe. The maximum value is 1024, subject to the limitations for the endpoint type set in USB2.0 spesification, chapter 9.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>11</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OUTCSRL</name>
+        <description>Control status lower register for OUTx endpoint (x == INDEX).</description>
+        <addressOffset>0x16</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>CLRDATATOG</name>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SENTSTALL</name>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SENDSTALL</name>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FLUSHFIFO</name>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DATAERROR</name>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>OVERRUN</name>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FIFOFULL</name>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>OUTPKTRDY</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OUTCSRU</name>
+        <description>Control status upper register for OUTx endpoint (x == INDEX).</description>
+        <addressOffset>0x17</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>AUTOCLEAR</name>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>ISO</name>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DISNYET</name>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>DPKTBUFDIS</name>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>INCOMPRX</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>COUNT0</name>
+        <description>Number of received bytes in EP 0 FIFO (INDEX == 0).</description>
+        <addressOffset>0x18</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>COUNT0</name>
+            <description>Read Number of Data Bytes in the Endpoint 0 FIFO. Returns the number of data bytes in the endpoint 0 FIFO. This value changes as contents of the FIFO change. The value is only valued when USBHS_OUTSCRL_outpktrdy = 1 </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>7</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OUTCOUNT</name>
+        <description>Number of received bytes in OUT EPx FIFO (x == INDEX).</description>
+        <alternateRegister>COUNT0</alternateRegister>
+        <addressOffset>0x18</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>OUTCOUNT</name>
+            <description>Read Number of Data Bytes in OUT FIFO. Returns the number of data bytes in the packet that are read next in the OUT FIFO. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>13</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO0</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x20</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO0</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO1</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO1</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO2</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x28</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO2</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO3</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x2c</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO3</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO4</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x30</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO4</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO5</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x34</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO5</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO6</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x38</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO6</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO7</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x3c</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO7</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO8</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO8</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO9</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x44</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO9</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO10</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x48</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO10</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO11</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x4c</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO11</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO12</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x50</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO12</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO13</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x54</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO13</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO14</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x58</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO14</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>FIFO15</name>
+        <description>Read for OUT data FIFO, write for IN data FIFO.</description>
+        <addressOffset>0x5c</addressOffset>
+        <fields>
+          <field>
+            <name>USBHS_FIFO15</name>
+            <description>USBHS Endpoint FIFO Read/Write Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>HWVERS</name>
+        <description>HWVERS</description>
+        <addressOffset>0x6c</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>USBHS_HWVERS</name>
+            <description>USBHS Register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>EPINFO</name>
+        <description>Endpoint hardware information.</description>
+        <addressOffset>0x78</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>OUTENDPOINTS</name>
+            <bitOffset>4</bitOffset>
+            <bitWidth>4</bitWidth>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>INTENDPOINTS</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RAMINFO</name>
+        <description>RAM width information.</description>
+        <addressOffset>0x79</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>RAMBITS</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SOFTRESET</name>
+        <description>Software reset register.</description>
+        <addressOffset>0x7A</addressOffset>
+        <size>8</size>
+        <fields>
+          <field>
+            <name>RSTXS</name>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>RSTS</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTUCH</name>
+        <description>Chirp timeout timer setting.</description>
+        <addressOffset>0x80</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>C_T_UCH</name>
+            <description>HS Chirp Timeout Clock Cycles. This configures the chirp timeout used by this device to negotiate a HS connection with a FS Host. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTHSRTN</name>
+        <description>Sets delay between HS resume to UTM normal operating mode.</description>
+        <addressOffset>0x82</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>C_T_HSTRN</name>
+            <description>High Speed Resume Delay Clock Cycles. This configures the delay from when the RESUME state on the bus ends, the when the USBHS resumes normal operation.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MXM_USB_REG_00</name>
+        <description>MXM_USB_REG_00</description>
+        <addressOffset>0x400</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_UTMI_RESET</name>
+        <description>M31_PHY_UTMI_RESET</description>
+        <addressOffset>0x404</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_UTMI_VCONTROL</name>
+        <description>M31_PHY_UTMI_VCONTROL</description>
+        <addressOffset>0x408</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_CLK_EN</name>
+        <description>M31_PHY_CLK_EN</description>
+        <addressOffset>0x40C</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_PONRST</name>
+        <description>M31_PHY_PONRST</description>
+        <addressOffset>0x410</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_NONCRY_RSTB</name>
+        <description>M31_PHY_NONCRY_RSTB</description>
+        <addressOffset>0x414</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_NONCRY_EN</name>
+        <description>M31_PHY_NONCRY_EN</description>
+        <addressOffset>0x418</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_U2_COMPLIANCE_EN</name>
+        <description>M31_PHY_U2_COMPLIANCE_EN</description>
+        <addressOffset>0x420</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_U2_COMPLIANCE_DAC_ADJ</name>
+        <description>M31_PHY_U2_COMPLIANCE_DAC_ADJ</description>
+        <addressOffset>0x424</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_U2_COMPLIANCE_DAC_ADJ_EN</name>
+        <description>M31_PHY_U2_COMPLIANCE_DAC_ADJ_EN</description>
+        <addressOffset>0x428</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_CLK_RDY</name>
+        <description>M31_PHY_CLK_RDY</description>
+        <addressOffset>0x42C</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_PLL_EN</name>
+        <description>M31_PHY_PLL_EN</description>
+        <addressOffset>0x430</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_BIST_OK</name>
+        <description>M31_PHY_BIST_OK</description>
+        <addressOffset>0x434</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_DATA_OE</name>
+        <description>M31_PHY_DATA_OE</description>
+        <addressOffset>0x438</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_OSCOUTEN</name>
+        <description>M31_PHY_OSCOUTEN</description>
+        <addressOffset>0x43C</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_LPM_ALIVE</name>
+        <description>M31_PHY_LPM_ALIVE</description>
+        <addressOffset>0x440</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_HS_BIST_MODE</name>
+        <description>M31_PHY_HS_BIST_MODE</description>
+        <addressOffset>0x444</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_CORECLKIN</name>
+        <description>M31_PHY_CORECLKIN</description>
+        <addressOffset>0x448</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XTLSEL</name>
+        <description>M31_PHY_XTLSEL</description>
+        <addressOffset>0x44C</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_LS_EN</name>
+        <description>M31_PHY_LS_EN</description>
+        <addressOffset>0x450</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_DEBUG_SEL</name>
+        <description>M31_PHY_DEBUG_SEL</description>
+        <addressOffset>0x454</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_DEBUG_OUT</name>
+        <description>M31_PHY_DEBUG_OUT</description>
+        <addressOffset>0x458</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_OUTCLKSEL</name>
+        <description>M31_PHY_OUTCLKSEL</description>
+        <addressOffset>0x45C</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFGI_31_0</name>
+        <description>M31_PHY_XCFGI_31_0</description>
+        <addressOffset>0x460</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFGI_63_32</name>
+        <description>M31_PHY_XCFGI_63_32</description>
+        <addressOffset>0x464</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFGI_95_64</name>
+        <description>M31_PHY_XCFGI_95_64</description>
+        <addressOffset>0x468</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFGI_127_96</name>
+        <description>M31_PHY_XCFGI_127_96</description>
+        <addressOffset>0x46C</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFGI_137_128</name>
+        <description>M31_PHY_XCFGI_137_128</description>
+        <addressOffset>0x470</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFG_HS_COARSE_TUNE_NUM</name>
+        <description>M31_PHY_XCFG_HS_COARSE_TUNE_NUM</description>
+        <addressOffset>0x474</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFG_HS_FINE_TUNE_NUM</name>
+        <description>M31_PHY_XCFG_HS_FINE_TUNE_NUM</description>
+        <addressOffset>0x478</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFG_FS_COARSE_TUNE_NUM</name>
+        <description>M31_PHY_XCFG_FS_COARSE_TUNE_NUM</description>
+        <addressOffset>0x47C</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFG_FS_FINE_TUNE_NUM</name>
+        <description>M31_PHY_XCFG_FS_FINE_TUNE_NUM</description>
+        <addressOffset>0x480</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFG_LOCK_RANGE_MAX</name>
+        <description>M31_PHY_XCFG_LOCK_RANGE_MAX</description>
+        <addressOffset>0x484</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFGI_LOCK_RANGE_MIN</name>
+        <description>M31_PHY_XCFGI_LOCK_RANGE_MIN</description>
+        <addressOffset>0x488</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFG_OB_RSEL</name>
+        <description>M31_PHY_XCFG_OB_RSEL</description>
+        <addressOffset>0x48C</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFG_OC_RSEL</name>
+        <description>M31_PHY_XCFG_OC_RSEL</description>
+        <addressOffset>0x490</addressOffset>
+      </register>
+      <register>
+        <name>M31_PHY_XCFGO</name>
+        <description>M31_PHY_XCFGO</description>
+        <addressOffset>0x494</addressOffset>
+      </register>
+      <register>
+        <name>MXM_INT</name>
+        <description>USB Added Maxim Interrupt Flag Register.</description>
+        <addressOffset>0x498</addressOffset>
+        <fields>
+          <field>
+            <name>VBUS</name>
+            <description>VBUS</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOVBUS</name>
+            <description>NOVBUS</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MXM_INT_EN</name>
+        <description>USB Added Maxim Interrupt Enable Register.</description>
+        <addressOffset>0x49C</addressOffset>
+        <fields>
+          <field>
+            <name>VBUS</name>
+            <description>VBUS</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>NOVBUS</name>
+            <description>NOVBUS</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MXM_SUSPEND</name>
+        <description>USB Added Maxim Suspend Register.</description>
+        <addressOffset>0x4A0</addressOffset>
+        <fields>
+          <field>
+            <name>SEL</name>
+            <description>Suspend register</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>MXM_REG_A4</name>
+        <description>USB Added Maxim Power Status Register</description>
+        <addressOffset>0x4A4</addressOffset>
+        <fields>
+          <field>
+            <name>VRST_VDDB_N_A</name>
+            <description>VRST_VDDB_N_A</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- USBHS: USB 2.0 High-speed Controller			-->
+</device>

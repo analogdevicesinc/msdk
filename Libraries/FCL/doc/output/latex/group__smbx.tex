@@ -1,0 +1,25 @@
+\hypertarget{group__smbx}{}\section{Security Monitor}
+\label{group__smbx}\index{Security Monitor@{Security Monitor}}
+This box is in charge of logging and handling security related events\+:
+\begin{DoxyItemize}
+\item non maskable interrupts due to security issues
+\item uvisor related exceptions (access faults)
+\end{DoxyItemize}
+
+It allows other boxes to\+:
+\begin{DoxyItemize}
+\item register event handlers to different events
+\item read the log
+\end{DoxyItemize}
+
+This box runs in an independent thread that\+:
+\begin{DoxyItemize}
+\item listens to R\+PC
+\item responds to R\+PC calls and checks the privileges of the caller
+\end{DoxyItemize}
+
+
+\begin{DoxyImageNoCaption}
+  \mbox{\includegraphics[width=\textwidth,height=\textheight/2,keepaspectratio=true]{pci_cortex.png}}
+\end{DoxyImageNoCaption}
+  

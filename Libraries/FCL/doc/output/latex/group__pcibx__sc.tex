@@ -1,0 +1,99 @@
+\hypertarget{group__pcibx__sc}{}\section{E\+M\+V-\/\+Level 1 Smart Card}
+\label{group__pcibx__sc}\index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
+\subsection*{List of functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{group__pcibx__sc_gac227636b4a270677ea489d54bfa9262e}{pci\+\_\+smartcard\+\_\+config} (S\+C\+A\+R\+D\+\_\+\+C\+O\+NF sconf)
+\begin{DoxyCompactList}\small\item\em Configures the Smart Card communication. \end{DoxyCompactList}\item 
+int \hyperlink{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0}{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU} (unsigned char A\+P\+D\+U\+\_\+\+Res\mbox{[}$\,$\mbox{]}, unsigned int $\ast$A\+P\+D\+U\+\_\+\+Res\+\_\+len, unsigned int timeout, unsigned char A\+P\+D\+U\+\_\+\+Req\mbox{[}$\,$\mbox{]}, unsigned int $\ast$A\+P\+D\+U\+\_\+\+Req\+\_\+len)
+\begin{DoxyCompactList}\small\item\em Performs an A\+P\+DU exchange with the smart card. This function conforms to the E\+M\+V-\/\+Level 1 specification. \end{DoxyCompactList}\item 
+int \hyperlink{group__pcibx__sc_gad022b65b3032486431f926be08dc58ba}{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion} (unsigned int timeout)
+\begin{DoxyCompactList}\small\item\em Wait for the smart card being inserted. \end{DoxyCompactList}\item 
+int \hyperlink{group__pcibx__sc_gab0d9d214315edba6757eb7a56508e7fb}{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal} (unsigned int timeout)
+\begin{DoxyCompactList}\small\item\em Wait for the smart card being removed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This of module is in charge of handling communication with Smart Cards while conforming to the E\+MV Level-\/1 specification. 
+
+\subsection{Function Documentation}
+\hypertarget{group__pcibx__sc_gac227636b4a270677ea489d54bfa9262e}{}\label{group__pcibx__sc_gac227636b4a270677ea489d54bfa9262e} 
+\index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+config@{pci\+\_\+smartcard\+\_\+config}}
+\index{pci\+\_\+smartcard\+\_\+config@{pci\+\_\+smartcard\+\_\+config}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
+\subsubsection{\texorpdfstring{pci\+\_\+smartcard\+\_\+config()}{pci\_smartcard\_config()}}
+{\footnotesize\ttfamily int pci\+\_\+smartcard\+\_\+config (\begin{DoxyParamCaption}\item[{S\+C\+A\+R\+D\+\_\+\+C\+O\+NF}]{sconf }\end{DoxyParamCaption})}
+
+
+
+Configures the Smart Card communication. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em sconf} & The smart card configuration\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0}{}\label{group__pcibx__sc_gaa97512bc1e0389c8528b90e2d2d05ad0} 
+\index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU@{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}}
+\index{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU@{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
+\subsubsection{\texorpdfstring{pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+D\+U()}{pci\_smartcard\_transact\_APDU()}}
+{\footnotesize\ttfamily int pci\+\_\+smartcard\+\_\+transact\+\_\+\+A\+P\+DU (\begin{DoxyParamCaption}\item[{unsigned char}]{A\+P\+D\+U\+\_\+\+Res\mbox{[}$\,$\mbox{]},  }\item[{unsigned int $\ast$}]{A\+P\+D\+U\+\_\+\+Res\+\_\+len,  }\item[{unsigned int}]{timeout,  }\item[{unsigned char}]{A\+P\+D\+U\+\_\+\+Req\mbox{[}$\,$\mbox{]},  }\item[{unsigned int $\ast$}]{A\+P\+D\+U\+\_\+\+Req\+\_\+len }\end{DoxyParamCaption})}
+
+
+
+Performs an A\+P\+DU exchange with the smart card. This function conforms to the E\+M\+V-\/\+Level 1 specification. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em A\+P\+D\+U\+\_\+\+Res} & The apdu resource \\
+\hline
+ & {\em A\+P\+D\+U\+\_\+\+Res\+\_\+len} & The apdu resource length \\
+\hline
+\mbox{\tt in}  & {\em timeout} & The timeout \\
+\hline
+ & {\em A\+P\+D\+U\+\_\+\+Req} & The apdu request \\
+\hline
+\mbox{\tt in}  & {\em A\+P\+D\+U\+\_\+\+Req\+\_\+len} & The apdu request length\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__pcibx__sc_gad022b65b3032486431f926be08dc58ba}{}\label{group__pcibx__sc_gad022b65b3032486431f926be08dc58ba} 
+\index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}}
+\index{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
+\subsubsection{\texorpdfstring{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion()}{pci\_smartcard\_wait\_card\_insertion()}}
+{\footnotesize\ttfamily int pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+insertion (\begin{DoxyParamCaption}\item[{unsigned int}]{timeout }\end{DoxyParamCaption})}
+
+
+
+Wait for the smart card being inserted. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em timeout} & The timeout\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
+\hypertarget{group__pcibx__sc_gab0d9d214315edba6757eb7a56508e7fb}{}\label{group__pcibx__sc_gab0d9d214315edba6757eb7a56508e7fb} 
+\index{E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}!pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}}
+\index{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal@{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal}!E\+M\+V-\/\+Level 1 Smart Card@{E\+M\+V-\/\+Level 1 Smart Card}}
+\subsubsection{\texorpdfstring{pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal()}{pci\_smartcard\_wait\_card\_removal()}}
+{\footnotesize\ttfamily int pci\+\_\+smartcard\+\_\+wait\+\_\+card\+\_\+removal (\begin{DoxyParamCaption}\item[{unsigned int}]{timeout }\end{DoxyParamCaption})}
+
+
+
+Wait for the smart card being removed. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em timeout} & The timeout\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+See error codes 
+\end{DoxyReturn}
