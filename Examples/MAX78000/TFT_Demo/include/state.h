@@ -34,6 +34,10 @@
 #ifndef EXAMPLES_MAX78000_TFT_DEMO_INCLUDE_STATE_H_
 #define EXAMPLES_MAX78000_TFT_DEMO_INCLUDE_STATE_H_
 
+/*****************************     Includes    *********************************/
+#include "example_config.h"
+
+/*****************************     Typedef     *********************************/
 typedef int (*Init_func)(void);
 typedef int (*Keypad_process)(int key);
 typedef void (*Time_Tick)(void);
