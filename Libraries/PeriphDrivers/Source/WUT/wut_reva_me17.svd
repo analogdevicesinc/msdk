@@ -20,17 +20,28 @@
         <description>Count.  This register stores the current timer count.</description>
         <addressOffset>0x00</addressOffset>
         <resetValue>0x00000001</resetValue>
+        <fields>
+          <field>
+            <name>COUNT</name>
+            <description>Timer Count Value. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
       <register>
         <name>CMP</name>
         <description>Compare.  This register stores the compare value, which is used to set the maximum count value to initiate a reload of the timer to 0x0001.</description>
         <addressOffset>0x04</addressOffset>
         <resetValue>0x0000FFFF</resetValue>
-      </register>
-      <register>
-        <name>PWM</name>
-        <description>PWM.  This register stores the value that is compared to the current timer count.</description>
-        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>COMPARE</name>
+            <description>Timer Compare Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
       <register>
         <name>INTR</name>
@@ -71,11 +82,6 @@
                 <name>counter</name>
                 <description>Counter Mode.</description>
                 <value>2</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>pwm</name>
-                <description>PWM Mode.</description>
-                <value>3</value>
               </enumeratedValue>
               <enumeratedValue>
                 <name>capture</name>
@@ -189,78 +195,6 @@
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field>
-            <name>PWMSYNC</name>
-            <description>Timer PWM Synchronization Mode Enable.</description>
-            <bitOffset>9</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disable.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enable.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>NOLHPOL</name>
-            <description>Timer PWM output 0A polarity bit.</description>
-            <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disable.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enable.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>NOLLPOL</name>
-            <description>Timer PWM output 0A' polarity bit.</description>
-            <bitOffset>11</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disable.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enable.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>PWMCKBD</name>
-            <description>Timer PWM output 0A Mode Disable.</description>
-            <bitOffset>12</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disable.</description>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enable.</description>
-                <value>0</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
         </fields>
       </register>
       <register>
@@ -286,16 +220,40 @@
         <name>PRESET</name>
         <description>Preset register.</description>
         <addressOffset>0x18</addressOffset>
+        <fields>
+          <field>
+            <name>PRESET</name>
+            <description>Preset Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
       <register>
         <name>RELOAD</name>
         <description>Reload register.</description>
         <addressOffset>0x1C</addressOffset>
+        <fields>
+          <field>
+            <name>RELOAD</name>
+            <description>Rerload Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
       <register>
         <name>SNAPSHOT</name>
         <description>Snapshot register.</description>
         <addressOffset>0x20</addressOffset>
+        <fields>
+          <field>
+            <name>SNAPSHOT</name>
+            <description>Snapshot Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
       </register>
     </registers>
   </peripheral>

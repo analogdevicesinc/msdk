@@ -40,7 +40,7 @@
 #include <stdio.h>
 #include "mxc_device.h"
 #include "mxc_sys.h"
-#include "bbfc_regs.h"
+#include "gcfr_regs.h"
 #include "fcr_regs.h"
 #include "icc.h"
 #include "dma.h"
