@@ -8,7 +8,7 @@ git submodule deinit --force --all
 set -e
 
 # Find the C files
-CFILES=$(find . -iname "*.c")
+CFILES=$(find . -iname "*.c" -not -regex ".*/Libraries/((FCL)|(FreeRTOS)|(lwIP)|(littleFS)|(LC3)|(FreeRTOS-Plus))/.*")
 
 for c_file in ${CFILES}
 do
