@@ -34,6 +34,8 @@
 #ifndef EXAMPLES_MAX78000_TFT_DEMO_EXAMPLE_CONFIG_H_
 #define EXAMPLES_MAX78000_TFT_DEMO_EXAMPLE_CONFIG_H_
 
+#include "board.h"
+
 #ifdef BOARD_EVKIT_V1
 #include "tft_ssd2119.h"
 #include "bitmap.h"
