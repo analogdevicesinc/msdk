@@ -87,7 +87,11 @@
         "ARM_MATH_CM4",
         "__FPU_PRESENT",
         "SEMIHOSTING",
-        "${config:board}"
+        "${config:board}",
+        "CAMERA_OV7692",
+        // "CAMERA_HM0360_MONO",
+        "TFT_ADAFRUIT",
+        // "TFT_NEWHAVEN"
     ]
 }
 

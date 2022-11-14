@@ -714,11 +714,12 @@ int main(void)
 #endif
     MXC_TFT_ClearScreen();
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 30, font, sprintf(buff, "ANALOG DEVICES             "));
-    TFT_Print(buff, 15, 50, font, sprintf(buff, "U-Net Hi-Resolution Demo      "));
-    TFT_Print(buff, 120, 90, font, sprintf(buff, "Ver. 1.0.0                   "));
-    TFT_Print(buff, 55, 130, font, sprintf(buff, "Building(Red), Sky(Blue)          "));
-    TFT_Print(buff, 5, 170, font, sprintf(buff, "Foliage(Green), Unknown(Black)  "));
+    TFT_Print(buff, 55, 30, font, snprintf(buff, sizeof(buff), "ANALOG DEVICES             "));
+    TFT_Print(buff, 15, 50, font, snprintf(buff, sizeof(buff), "U-Net Hi-Resolution Demo      "));
+    TFT_Print(buff, 120, 90, font, snprintf(buff, sizeof(buff), "Ver. 1.0.0                   "));
+    TFT_Print(buff, 55, 130, font,
+              snprintf(buff, sizeof(buff), "Building(Red), Sky(Blue)          "));
+    TFT_Print(buff, 5, 170, font, snprintf(buff, sizeof(buff), "Foliage(Green), Unknown(Black)  "));
     MXC_Delay(SEC(3));
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock

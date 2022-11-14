@@ -456,9 +456,9 @@ int main(void)
     MXC_TFT_SetBackGroundColor(4);
     //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
     memset(buff, ' ', TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 50, font_1, sprintf(buff, "ANALOG DEVICES"));
-    TFT_Print(buff, 30, 90, font_2, sprintf(buff, "Rock-Paper-Scissors Game"));
-    TFT_Print(buff, 30, 130, font_1, sprintf(buff, "PRESS PB1(SW1) TO START!"));
+    TFT_Print(buff, 55, 50, font_1, snprintf(buff, sizeof(buff), "ANALOG DEVICES"));
+    TFT_Print(buff, 30, 90, font_2, snprintf(buff, sizeof(buff), "Rock-Paper-Scissors Game"));
+    TFT_Print(buff, 30, 130, font_1, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 #endif
 
     int frame = 0;
@@ -469,7 +469,7 @@ int main(void)
 #ifdef TFT_ENABLE
         MXC_TFT_ClearScreen();
         //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
-        TFT_Print(buff, 55, 110, font_2, sprintf(buff, "CAPTURING IMAGE...."));
+        TFT_Print(buff, 55, 110, font_2, snprintf(buff, sizeof(buff), "CAPTURING IMAGE...."));
 #endif
 
 #ifdef USE_SAMPLEDATA
@@ -493,8 +493,8 @@ int main(void)
         MXC_TFT_ClearScreen();
         //MXC_TFT_ShowImage(1, 1, image_bitmap_2);
         printf("Show camera frame on LCD.\n");
-        TFT_Print(buff, 10, 30, font_2, sprintf(buff, "User Move"));
-        TFT_Print(buff, 152, 30, font_2, sprintf(buff, "Computer Move"));
+        TFT_Print(buff, 10, 30, font_2, snprintf(buff, sizeof(buff), "User Move"));
+        TFT_Print(buff, 152, 30, font_2, snprintf(buff, sizeof(buff), "Computer Move"));
 #endif
 
         convert_img_unsigned_to_signed(input_0_camera, input_1_camera, input_2_camera);
@@ -526,22 +526,22 @@ int main(void)
 
         if (result[0] > 60) {
             user_choice = 1;
-            TFT_Print(buff, 30, 55, font_2, sprintf(buff, "Paper"));
+            TFT_Print(buff, 30, 55, font_2, snprintf(buff, sizeof(buff), "Paper"));
             printf("User choose: %s \r\n", classes[0]);
 
         } else if (result[1] > 60) {
             user_choice = 2;
-            TFT_Print(buff, 30, 55, font_2, sprintf(buff, "Rock"));
+            TFT_Print(buff, 30, 55, font_2, snprintf(buff, sizeof(buff), "Rock"));
             printf("User choose: %s \r\n", classes[1]);
 
         } else if (result[2] > 60) {
             user_choice = 3;
-            TFT_Print(buff, 30, 55, font_2, sprintf(buff, "Scissors"));
+            TFT_Print(buff, 30, 55, font_2, snprintf(buff, sizeof(buff), "Scissors"));
             printf("User choose: %s \r\n", classes[2]);
 
         } else {
             user_choice = 0;
-            TFT_Print(buff, 30, 55, font_2, sprintf(buff, "Unknown"));
+            TFT_Print(buff, 30, 55, font_2, snprintf(buff, sizeof(buff), "Unknown"));
         }
 
         comp_choice = gen_random_no(3);
@@ -556,19 +556,19 @@ int main(void)
         memcpy32(input_2_camera, 0, 1024);
 
         if (comp_choice == 1) {
-            TFT_Print(buff, 205, 55, font_2, sprintf(buff, "Paper"));
+            TFT_Print(buff, 205, 55, font_2, snprintf(buff, sizeof(buff), "Paper"));
             memcpy32(input_0_camera, INPUT_PAPER_0, 1024);
             memcpy32(input_1_camera, INPUT_PAPER_1, 1024);
             memcpy32(input_2_camera, INPUT_PAPER_2, 1024);
         }
         if (comp_choice == 2) {
-            TFT_Print(buff, 205, 55, font_2, sprintf(buff, "Rock"));
+            TFT_Print(buff, 205, 55, font_2, snprintf(buff, sizeof(buff), "Rock"));
             memcpy32(input_0_camera, INPUT_ROCK_0, 1024);
             memcpy32(input_1_camera, INPUT_ROCK_1, 1024);
             memcpy32(input_2_camera, INPUT_ROCK_2, 1024);
         }
         if (comp_choice == 3) {
-            TFT_Print(buff, 205, 55, font_2, sprintf(buff, "Scissors"));
+            TFT_Print(buff, 205, 55, font_2, snprintf(buff, sizeof(buff), "Scissors"));
             memcpy32(input_0_camera, INPUT_SCISSOR_0, 1024);
             memcpy32(input_1_camera, INPUT_SCISSOR_1, 1024);
             memcpy32(input_2_camera, INPUT_SCISSOR_2, 1024);
@@ -580,36 +580,37 @@ int main(void)
 
         if (user_choice) {
             int winner = check_winner(comp_choice, user_choice);
-            TFT_Print(buff, 10, 155, font_2, sprintf(buff, "Winner: "));
+            TFT_Print(buff, 10, 155, font_2, snprintf(buff, sizeof(buff), "Winner: "));
 
             switch (winner) {
             case 0:
-                TFT_Print(buff, 95, 155, font_2, sprintf(buff, "Try Again "));
+                TFT_Print(buff, 95, 155, font_2, snprintf(buff, sizeof(buff), "Try Again "));
                 printf("\r\nInvalid user selection\r\n\n");
                 break;
             case 1:
-                TFT_Print(buff, 95, 155, font_2, sprintf(buff, "USER"));
+                TFT_Print(buff, 95, 155, font_2, snprintf(buff, sizeof(buff), "USER"));
                 printf("\r\nUSER WINS!!!\r\n\n");
                 break;
             case 2:
-                TFT_Print(buff, 95, 155, font_2, sprintf(buff, "COMPUTER"));
+                TFT_Print(buff, 95, 155, font_2, snprintf(buff, sizeof(buff), "COMPUTER"));
                 printf("\r\nCOMPUTER WINS!!!\r\n\n");
                 break;
             case 3:
-                TFT_Print(buff, 95, 155, font_2, sprintf(buff, "TIE"));
+                TFT_Print(buff, 95, 155, font_2, snprintf(buff, sizeof(buff), "TIE"));
                 printf("\r\nIt's a TIE!!!\r\n\n");
                 break;
             default:
                 break;
             }
         } else {
-            TFT_Print(buff, 10, 155, font_2, sprintf(buff, "Invalid User Selection."));
-            TFT_Print(buff, 10, 175, font_2, sprintf(buff, "Try again."));
+            TFT_Print(buff, 10, 155, font_2,
+                      snprintf(buff, sizeof(buff), "Invalid User Selection."));
+            TFT_Print(buff, 10, 175, font_2, snprintf(buff, sizeof(buff), "Try again."));
         }
 
         comp_choice = 0;
         user_choice = 0;
-        TFT_Print(buff, 5, 210, font_2, sprintf(buff, "PRESS PB1(SW1) TO CAPTURE"));
+        TFT_Print(buff, 5, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CAPTURE"));
     }
 
     return 0;
