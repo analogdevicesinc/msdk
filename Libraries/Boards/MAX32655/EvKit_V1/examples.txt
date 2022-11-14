@@ -15,9 +15,8 @@ BLE_periph
 Bootloader
 CRC
 DMA
-Dual_core_sync
-    Dual_core_sync_arm
-    Dual_core_sync_riscv
+Dual_core_sync/Dual_core_sync_arm
+Dual_core_sync/Dual_core_sync_riscv
 Flash
 Flash_CLI
 FreeRTOSDemo
