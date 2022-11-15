@@ -82,9 +82,9 @@
       <cluster>
         <dim>4</dim>
         <dimIncrement>0x20</dimIncrement>
-        <name>CH[%s]</name>
+        <name>CHANNELS[%s]</name>
         <description>DMA Channel registers.</description>
-        <headerStructName>dma_ch</headerStructName>
+        <headerStructName>dma_channels</headerStructName>
         <addressOffset>0x100</addressOffset>
         <access>read-write</access>
         <register>
