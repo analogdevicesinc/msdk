@@ -1,17 +1,20 @@
 /**
  * @file    trng_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,11 +37,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _TRNG_REGS_H_
-#define _TRNG_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_TRNG_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_TRNG_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -78,7 +80,7 @@ extern "C" {
  * @ingroup     trng
  * @defgroup    trng_registers TRNG_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the TRNG Peripheral Module.
- * @details Random Number Generator.
+ * @details     Random Number Generator.
  */
 
 /**
@@ -98,9 +100,9 @@ typedef struct {
  * @brief      TRNG Peripheral Register Offsets from the TRNG Base Peripheral Address.
  * @{
  */
- #define MXC_R_TRNG_CN                      ((uint32_t)0x00000000UL) /**< Offset from TRNG Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_TRNG_ST                      ((uint32_t)0x00000004UL) /**< Offset from TRNG Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_TRNG_DATA                    ((uint32_t)0x00000008UL) /**< Offset from TRNG Base Address: <tt> 0x0008</tt> */ 
+#define MXC_R_TRNG_CN                      ((uint32_t)0x00000000UL) /**< Offset from TRNG Base Address: <tt> 0x0000</tt> */
+#define MXC_R_TRNG_ST                      ((uint32_t)0x00000004UL) /**< Offset from TRNG Base Address: <tt> 0x0004</tt> */
+#define MXC_R_TRNG_DATA                    ((uint32_t)0x00000008UL) /**< Offset from TRNG Base Address: <tt> 0x0008</tt> */
 /**@} end of group trng_registers */
 
 /**
@@ -109,39 +111,41 @@ typedef struct {
  * @brief    TRNG Control Register.
  * @{
  */
- #define MXC_F_TRNG_CN_RND_IRQ_EN_POS                   1 /**< CN_RND_IRQ_EN Position */
- #define MXC_F_TRNG_CN_RND_IRQ_EN                       ((uint32_t)(0x1UL << MXC_F_TRNG_CN_RND_IRQ_EN_POS)) /**< CN_RND_IRQ_EN Mask */
+#define MXC_F_TRNG_CN_RND_IRQ_EN_POS                   1 /**< CN_RND_IRQ_EN Position */
+#define MXC_F_TRNG_CN_RND_IRQ_EN                       ((uint32_t)(0x1UL << MXC_F_TRNG_CN_RND_IRQ_EN_POS)) /**< CN_RND_IRQ_EN Mask */
 
- #define MXC_F_TRNG_CN_AESKG_POS                        3 /**< CN_AESKG Position */
- #define MXC_F_TRNG_CN_AESKG                            ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_POS)) /**< CN_AESKG Mask */
+#define MXC_F_TRNG_CN_AESKG_POS                        3 /**< CN_AESKG Position */
+#define MXC_F_TRNG_CN_AESKG                            ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_POS)) /**< CN_AESKG Mask */
 
- #define MXC_F_TRNG_CN_AESKG_MEMPROTE_POS               4 /**< CN_AESKG_MEMPROTE Position */
- #define MXC_F_TRNG_CN_AESKG_MEMPROTE                   ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_MEMPROTE_POS)) /**< CN_AESKG_MEMPROTE Mask */
+#define MXC_F_TRNG_CN_AESKG_MEMPROTE_POS               4 /**< CN_AESKG_MEMPROTE Position */
+#define MXC_F_TRNG_CN_AESKG_MEMPROTE                   ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_MEMPROTE_POS)) /**< CN_AESKG_MEMPROTE Mask */
 
 /**@} end of group TRNG_CN_Register */
 
 /**
  * @ingroup  trng_registers
  * @defgroup TRNG_ST TRNG_ST
- * @brief    TRNG Status Register.
+ * @brief    Data. The content of this register is valid only when RNG_IS = 1. When TRNG is
+ *           disabled, read returns 0x0000 0000.
  * @{
  */
- #define MXC_F_TRNG_ST_RND_RDY_POS                      0 /**< ST_RND_RDY Position */
- #define MXC_F_TRNG_ST_RND_RDY                          ((uint32_t)(0x1UL << MXC_F_TRNG_ST_RND_RDY_POS)) /**< ST_RND_RDY Mask */
+#define MXC_F_TRNG_ST_RND_RDY_POS                      0 /**< ST_RND_RDY Position */
+#define MXC_F_TRNG_ST_RND_RDY                          ((uint32_t)(0x1UL << MXC_F_TRNG_ST_RND_RDY_POS)) /**< ST_RND_RDY Mask */
 
- #define MXC_F_TRNG_ST_AESKGD_MEU_S_POS                 4 /**< ST_AESKGD_MEU_S Position */
- #define MXC_F_TRNG_ST_AESKGD_MEU_S                     ((uint32_t)(0x1UL << MXC_F_TRNG_ST_AESKGD_MEU_S_POS)) /**< ST_AESKGD_MEU_S Mask */
+#define MXC_F_TRNG_ST_AESKGD_MEU_S_POS                 4 /**< ST_AESKGD_MEU_S Position */
+#define MXC_F_TRNG_ST_AESKGD_MEU_S                     ((uint32_t)(0x1UL << MXC_F_TRNG_ST_AESKGD_MEU_S_POS)) /**< ST_AESKGD_MEU_S Mask */
 
 /**@} end of group TRNG_ST_Register */
 
 /**
  * @ingroup  trng_registers
  * @defgroup TRNG_DATA TRNG_DATA
- * @brief    TRNG Data Register.
+ * @brief    Data. The content of this register is valid only when RNG_IS = 1. When TRNG is
+ *           disabled, read returns 0x0000 0000.
  * @{
  */
- #define MXC_F_TRNG_DATA_DATA_POS                       0 /**< DATA_DATA Position */
- #define MXC_F_TRNG_DATA_DATA                           ((uint32_t)(0xFFFFFFFFUL << MXC_F_TRNG_DATA_DATA_POS)) /**< DATA_DATA Mask */
+#define MXC_F_TRNG_DATA_DATA_POS                       0 /**< DATA_DATA Position */
+#define MXC_F_TRNG_DATA_DATA                           ((uint32_t)(0xFFFFFFFFUL << MXC_F_TRNG_DATA_DATA_POS)) /**< DATA_DATA Mask */
 
 /**@} end of group TRNG_DATA_Register */
 
@@ -149,4 +153,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _TRNG_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_TRNG_REGS_H_

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <name>SC0</name>
+    <name>SCN</name>
     <description>Smart Card Interface.</description>
-    <groupName>SC</groupName>
+    <groupName>SCN</groupName>
     <baseAddress>0x4002C000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
@@ -74,12 +74,6 @@
             <description>Transmit FIFO Depth.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>4</bitWidth>
-          </field>
-          <field>
-            <name>DUAL_MODE</name>
-            <description>Dual Internal AFE and Bypass Mode.</description>
-            <bitOffset>23</bitOffset>
-            <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
@@ -189,12 +183,6 @@
             <name>CLKSEL</name>
             <description>Smart Card Clock Select.</description>
             <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>IO_C48_EN</name>
-            <description>Pin Enable.</description>
-            <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

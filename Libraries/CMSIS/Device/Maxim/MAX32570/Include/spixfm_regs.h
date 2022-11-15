@@ -1,17 +1,20 @@
 /**
  * @file    spixfm_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SPIXFM Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,11 +37,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _SPIXFM_REGS_H_
-#define _SPIXFM_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_SPIXFM_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_SPIXFM_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +48,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +80,7 @@ extern "C" {
  * @ingroup     spixfm
  * @defgroup    spixfm_registers SPIXFM_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the SPIXFM Peripheral Module.
- * @details SPIXF Master
+ * @details     SPIXF Master
  */
 
 /**
@@ -95,23 +97,25 @@ typedef struct {
     __IO uint32_t io_ctrl;              /**< <tt>\b 0x1C:</tt> SPIXFM IO_CTRL Register */
     __IO uint32_t sec_ctrl;             /**< <tt>\b 0x20:</tt> SPIXFM SEC_CTRL Register */
     __IO uint32_t bus_idle;             /**< <tt>\b 0x24:</tt> SPIXFM BUS_IDLE Register */
+    __IO uint32_t authoffset;           /**< <tt>\b 0x28:</tt> SPIXFM AUTHOFFSET Register */
 } mxc_spixfm_regs_t;
 
 /* Register offsets for module SPIXFM */
 /**
  * @ingroup    spixfm_registers
  * @defgroup   SPIXFM_Register_Offsets Register Offsets
- * @brief      SPIXFM Peripheral Register Offsets from the SPIXFM Base Peripheral Address. 
+ * @brief      SPIXFM Peripheral Register Offsets from the SPIXFM Base Peripheral Address.
  * @{
  */
- #define MXC_R_SPIXFM_CFG                   ((uint32_t)0x00000000UL) /**< Offset from SPIXFM Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_SPIXFM_FETCH_CTRL            ((uint32_t)0x00000004UL) /**< Offset from SPIXFM Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_SPIXFM_MODE_CTRL             ((uint32_t)0x00000008UL) /**< Offset from SPIXFM Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_SPIXFM_MODE_DATA             ((uint32_t)0x0000000CUL) /**< Offset from SPIXFM Base Address: <tt> 0x000C</tt> */ 
- #define MXC_R_SPIXFM_FB_CTRL               ((uint32_t)0x00000010UL) /**< Offset from SPIXFM Base Address: <tt> 0x0010</tt> */ 
- #define MXC_R_SPIXFM_IO_CTRL               ((uint32_t)0x0000001CUL) /**< Offset from SPIXFM Base Address: <tt> 0x001C</tt> */ 
- #define MXC_R_SPIXFM_SEC_CTRL              ((uint32_t)0x00000020UL) /**< Offset from SPIXFM Base Address: <tt> 0x0020</tt> */ 
- #define MXC_R_SPIXFM_BUS_IDLE              ((uint32_t)0x00000024UL) /**< Offset from SPIXFM Base Address: <tt> 0x0024</tt> */ 
+#define MXC_R_SPIXFM_CFG                   ((uint32_t)0x00000000UL) /**< Offset from SPIXFM Base Address: <tt> 0x0000</tt> */
+#define MXC_R_SPIXFM_FETCH_CTRL            ((uint32_t)0x00000004UL) /**< Offset from SPIXFM Base Address: <tt> 0x0004</tt> */
+#define MXC_R_SPIXFM_MODE_CTRL             ((uint32_t)0x00000008UL) /**< Offset from SPIXFM Base Address: <tt> 0x0008</tt> */
+#define MXC_R_SPIXFM_MODE_DATA             ((uint32_t)0x0000000CUL) /**< Offset from SPIXFM Base Address: <tt> 0x000C</tt> */
+#define MXC_R_SPIXFM_FB_CTRL               ((uint32_t)0x00000010UL) /**< Offset from SPIXFM Base Address: <tt> 0x0010</tt> */
+#define MXC_R_SPIXFM_IO_CTRL               ((uint32_t)0x0000001CUL) /**< Offset from SPIXFM Base Address: <tt> 0x001C</tt> */
+#define MXC_R_SPIXFM_SEC_CTRL              ((uint32_t)0x00000020UL) /**< Offset from SPIXFM Base Address: <tt> 0x0020</tt> */
+#define MXC_R_SPIXFM_BUS_IDLE              ((uint32_t)0x00000024UL) /**< Offset from SPIXFM Base Address: <tt> 0x0024</tt> */
+#define MXC_R_SPIXFM_AUTHOFFSET            ((uint32_t)0x00000028UL) /**< Offset from SPIXFM Base Address: <tt> 0x0028</tt> */
 /**@} end of group spixfm_registers */
 
 /**
@@ -120,46 +124,46 @@ typedef struct {
  * @brief    SPIX Configuration Register.
  * @{
  */
- #define MXC_F_SPIXFM_CFG_MODE_POS                      0 /**< CFG_MODE Position */
- #define MXC_F_SPIXFM_CFG_MODE                          ((uint32_t)(0x3UL << MXC_F_SPIXFM_CFG_MODE_POS)) /**< CFG_MODE Mask */
- #define MXC_V_SPIXFM_CFG_MODE_SCLK_HI_SAMPLE_RISING    ((uint32_t)0x0UL) /**< CFG_MODE_SCLK_HI_SAMPLE_RISING Value */
- #define MXC_S_SPIXFM_CFG_MODE_SCLK_HI_SAMPLE_RISING    (MXC_V_SPIXFM_CFG_MODE_SCLK_HI_SAMPLE_RISING << MXC_F_SPIXFM_CFG_MODE_POS) /**< CFG_MODE_SCLK_HI_SAMPLE_RISING Setting */
- #define MXC_V_SPIXFM_CFG_MODE_SCLK_LO_SAMPLE_FAILLING  ((uint32_t)0x3UL) /**< CFG_MODE_SCLK_LO_SAMPLE_FAILLING Value */
- #define MXC_S_SPIXFM_CFG_MODE_SCLK_LO_SAMPLE_FAILLING  (MXC_V_SPIXFM_CFG_MODE_SCLK_LO_SAMPLE_FAILLING << MXC_F_SPIXFM_CFG_MODE_POS) /**< CFG_MODE_SCLK_LO_SAMPLE_FAILLING Setting */
+#define MXC_F_SPIXFM_CFG_MODE_POS                      0 /**< CFG_MODE Position */
+#define MXC_F_SPIXFM_CFG_MODE                          ((uint32_t)(0x3UL << MXC_F_SPIXFM_CFG_MODE_POS)) /**< CFG_MODE Mask */
+#define MXC_V_SPIXFM_CFG_MODE_SCLK_HI_SAMPLE_RISING    ((uint32_t)0x0UL) /**< CFG_MODE_SCLK_HI_SAMPLE_RISING Value */
+#define MXC_S_SPIXFM_CFG_MODE_SCLK_HI_SAMPLE_RISING    (MXC_V_SPIXFM_CFG_MODE_SCLK_HI_SAMPLE_RISING << MXC_F_SPIXFM_CFG_MODE_POS) /**< CFG_MODE_SCLK_HI_SAMPLE_RISING Setting */
+#define MXC_V_SPIXFM_CFG_MODE_SCLK_LO_SAMPLE_FAILLING  ((uint32_t)0x3UL) /**< CFG_MODE_SCLK_LO_SAMPLE_FAILLING Value */
+#define MXC_S_SPIXFM_CFG_MODE_SCLK_LO_SAMPLE_FAILLING  (MXC_V_SPIXFM_CFG_MODE_SCLK_LO_SAMPLE_FAILLING << MXC_F_SPIXFM_CFG_MODE_POS) /**< CFG_MODE_SCLK_LO_SAMPLE_FAILLING Setting */
 
- #define MXC_F_SPIXFM_CFG_SSPOL_POS                     2 /**< CFG_SSPOL Position */
- #define MXC_F_SPIXFM_CFG_SSPOL                         ((uint32_t)(0x1UL << MXC_F_SPIXFM_CFG_SSPOL_POS)) /**< CFG_SSPOL Mask */
+#define MXC_F_SPIXFM_CFG_SSPOL_POS                     2 /**< CFG_SSPOL Position */
+#define MXC_F_SPIXFM_CFG_SSPOL                         ((uint32_t)(0x1UL << MXC_F_SPIXFM_CFG_SSPOL_POS)) /**< CFG_SSPOL Mask */
 
- #define MXC_F_SPIXFM_CFG_SSEL_POS                      4 /**< CFG_SSEL Position */
- #define MXC_F_SPIXFM_CFG_SSEL                          ((uint32_t)(0x7UL << MXC_F_SPIXFM_CFG_SSEL_POS)) /**< CFG_SSEL Mask */
+#define MXC_F_SPIXFM_CFG_SSEL_POS                      4 /**< CFG_SSEL Position */
+#define MXC_F_SPIXFM_CFG_SSEL                          ((uint32_t)(0x7UL << MXC_F_SPIXFM_CFG_SSEL_POS)) /**< CFG_SSEL Mask */
 
- #define MXC_F_SPIXFM_CFG_LO_CLK_POS                    8 /**< CFG_LO_CLK Position */
- #define MXC_F_SPIXFM_CFG_LO_CLK                        ((uint32_t)(0xFUL << MXC_F_SPIXFM_CFG_LO_CLK_POS)) /**< CFG_LO_CLK Mask */
+#define MXC_F_SPIXFM_CFG_LO_CLK_POS                    8 /**< CFG_LO_CLK Position */
+#define MXC_F_SPIXFM_CFG_LO_CLK                        ((uint32_t)(0xFUL << MXC_F_SPIXFM_CFG_LO_CLK_POS)) /**< CFG_LO_CLK Mask */
 
- #define MXC_F_SPIXFM_CFG_HI_CLK_POS                    12 /**< CFG_HI_CLK Position */
- #define MXC_F_SPIXFM_CFG_HI_CLK                        ((uint32_t)(0xFUL << MXC_F_SPIXFM_CFG_HI_CLK_POS)) /**< CFG_HI_CLK Mask */
+#define MXC_F_SPIXFM_CFG_HI_CLK_POS                    12 /**< CFG_HI_CLK Position */
+#define MXC_F_SPIXFM_CFG_HI_CLK                        ((uint32_t)(0xFUL << MXC_F_SPIXFM_CFG_HI_CLK_POS)) /**< CFG_HI_CLK Mask */
 
- #define MXC_F_SPIXFM_CFG_SSACT_POS                     16 /**< CFG_SSACT Position */
- #define MXC_F_SPIXFM_CFG_SSACT                         ((uint32_t)(0x3UL << MXC_F_SPIXFM_CFG_SSACT_POS)) /**< CFG_SSACT Mask */
- #define MXC_V_SPIXFM_CFG_SSACT_OFF                     ((uint32_t)0x0UL) /**< CFG_SSACT_OFF Value */
- #define MXC_S_SPIXFM_CFG_SSACT_OFF                     (MXC_V_SPIXFM_CFG_SSACT_OFF << MXC_F_SPIXFM_CFG_SSACT_POS) /**< CFG_SSACT_OFF Setting */
- #define MXC_V_SPIXFM_CFG_SSACT_FOR_2_MOD_CLK           ((uint32_t)0x1UL) /**< CFG_SSACT_FOR_2_MOD_CLK Value */
- #define MXC_S_SPIXFM_CFG_SSACT_FOR_2_MOD_CLK           (MXC_V_SPIXFM_CFG_SSACT_FOR_2_MOD_CLK << MXC_F_SPIXFM_CFG_SSACT_POS) /**< CFG_SSACT_FOR_2_MOD_CLK Setting */
- #define MXC_V_SPIXFM_CFG_SSACT_FOR_4_MOD_CLK           ((uint32_t)0x2UL) /**< CFG_SSACT_FOR_4_MOD_CLK Value */
- #define MXC_S_SPIXFM_CFG_SSACT_FOR_4_MOD_CLK           (MXC_V_SPIXFM_CFG_SSACT_FOR_4_MOD_CLK << MXC_F_SPIXFM_CFG_SSACT_POS) /**< CFG_SSACT_FOR_4_MOD_CLK Setting */
- #define MXC_V_SPIXFM_CFG_SSACT_FOR_8_MOD_CLK           ((uint32_t)0x3UL) /**< CFG_SSACT_FOR_8_MOD_CLK Value */
- #define MXC_S_SPIXFM_CFG_SSACT_FOR_8_MOD_CLK           (MXC_V_SPIXFM_CFG_SSACT_FOR_8_MOD_CLK << MXC_F_SPIXFM_CFG_SSACT_POS) /**< CFG_SSACT_FOR_8_MOD_CLK Setting */
+#define MXC_F_SPIXFM_CFG_SSACT_POS                     16 /**< CFG_SSACT Position */
+#define MXC_F_SPIXFM_CFG_SSACT                         ((uint32_t)(0x3UL << MXC_F_SPIXFM_CFG_SSACT_POS)) /**< CFG_SSACT Mask */
+#define MXC_V_SPIXFM_CFG_SSACT_OFF                     ((uint32_t)0x0UL) /**< CFG_SSACT_OFF Value */
+#define MXC_S_SPIXFM_CFG_SSACT_OFF                     (MXC_V_SPIXFM_CFG_SSACT_OFF << MXC_F_SPIXFM_CFG_SSACT_POS) /**< CFG_SSACT_OFF Setting */
+#define MXC_V_SPIXFM_CFG_SSACT_FOR_2_MOD_CLK           ((uint32_t)0x1UL) /**< CFG_SSACT_FOR_2_MOD_CLK Value */
+#define MXC_S_SPIXFM_CFG_SSACT_FOR_2_MOD_CLK           (MXC_V_SPIXFM_CFG_SSACT_FOR_2_MOD_CLK << MXC_F_SPIXFM_CFG_SSACT_POS) /**< CFG_SSACT_FOR_2_MOD_CLK Setting */
+#define MXC_V_SPIXFM_CFG_SSACT_FOR_4_MOD_CLK           ((uint32_t)0x2UL) /**< CFG_SSACT_FOR_4_MOD_CLK Value */
+#define MXC_S_SPIXFM_CFG_SSACT_FOR_4_MOD_CLK           (MXC_V_SPIXFM_CFG_SSACT_FOR_4_MOD_CLK << MXC_F_SPIXFM_CFG_SSACT_POS) /**< CFG_SSACT_FOR_4_MOD_CLK Setting */
+#define MXC_V_SPIXFM_CFG_SSACT_FOR_8_MOD_CLK           ((uint32_t)0x3UL) /**< CFG_SSACT_FOR_8_MOD_CLK Value */
+#define MXC_S_SPIXFM_CFG_SSACT_FOR_8_MOD_CLK           (MXC_V_SPIXFM_CFG_SSACT_FOR_8_MOD_CLK << MXC_F_SPIXFM_CFG_SSACT_POS) /**< CFG_SSACT_FOR_8_MOD_CLK Setting */
 
- #define MXC_F_SPIXFM_CFG_SSIACT_POS                    18 /**< CFG_SSIACT Position */
- #define MXC_F_SPIXFM_CFG_SSIACT                        ((uint32_t)(0x3UL << MXC_F_SPIXFM_CFG_SSIACT_POS)) /**< CFG_SSIACT Mask */
- #define MXC_V_SPIXFM_CFG_SSIACT_FOR_1_MOD_CLK          ((uint32_t)0x0UL) /**< CFG_SSIACT_FOR_1_MOD_CLK Value */
- #define MXC_S_SPIXFM_CFG_SSIACT_FOR_1_MOD_CLK          (MXC_V_SPIXFM_CFG_SSIACT_FOR_1_MOD_CLK << MXC_F_SPIXFM_CFG_SSIACT_POS) /**< CFG_SSIACT_FOR_1_MOD_CLK Setting */
- #define MXC_V_SPIXFM_CFG_SSIACT_FOR_3_MOD_CLK          ((uint32_t)0x1UL) /**< CFG_SSIACT_FOR_3_MOD_CLK Value */
- #define MXC_S_SPIXFM_CFG_SSIACT_FOR_3_MOD_CLK          (MXC_V_SPIXFM_CFG_SSIACT_FOR_3_MOD_CLK << MXC_F_SPIXFM_CFG_SSIACT_POS) /**< CFG_SSIACT_FOR_3_MOD_CLK Setting */
- #define MXC_V_SPIXFM_CFG_SSIACT_FOR_5_MOD_CLK          ((uint32_t)0x2UL) /**< CFG_SSIACT_FOR_5_MOD_CLK Value */
- #define MXC_S_SPIXFM_CFG_SSIACT_FOR_5_MOD_CLK          (MXC_V_SPIXFM_CFG_SSIACT_FOR_5_MOD_CLK << MXC_F_SPIXFM_CFG_SSIACT_POS) /**< CFG_SSIACT_FOR_5_MOD_CLK Setting */
- #define MXC_V_SPIXFM_CFG_SSIACT_FOR_9_MOD_CLK          ((uint32_t)0x3UL) /**< CFG_SSIACT_FOR_9_MOD_CLK Value */
- #define MXC_S_SPIXFM_CFG_SSIACT_FOR_9_MOD_CLK          (MXC_V_SPIXFM_CFG_SSIACT_FOR_9_MOD_CLK << MXC_F_SPIXFM_CFG_SSIACT_POS) /**< CFG_SSIACT_FOR_9_MOD_CLK Setting */
+#define MXC_F_SPIXFM_CFG_SSIACT_POS                    18 /**< CFG_SSIACT Position */
+#define MXC_F_SPIXFM_CFG_SSIACT                        ((uint32_t)(0x3UL << MXC_F_SPIXFM_CFG_SSIACT_POS)) /**< CFG_SSIACT Mask */
+#define MXC_V_SPIXFM_CFG_SSIACT_FOR_1_MOD_CLK          ((uint32_t)0x0UL) /**< CFG_SSIACT_FOR_1_MOD_CLK Value */
+#define MXC_S_SPIXFM_CFG_SSIACT_FOR_1_MOD_CLK          (MXC_V_SPIXFM_CFG_SSIACT_FOR_1_MOD_CLK << MXC_F_SPIXFM_CFG_SSIACT_POS) /**< CFG_SSIACT_FOR_1_MOD_CLK Setting */
+#define MXC_V_SPIXFM_CFG_SSIACT_FOR_3_MOD_CLK          ((uint32_t)0x1UL) /**< CFG_SSIACT_FOR_3_MOD_CLK Value */
+#define MXC_S_SPIXFM_CFG_SSIACT_FOR_3_MOD_CLK          (MXC_V_SPIXFM_CFG_SSIACT_FOR_3_MOD_CLK << MXC_F_SPIXFM_CFG_SSIACT_POS) /**< CFG_SSIACT_FOR_3_MOD_CLK Setting */
+#define MXC_V_SPIXFM_CFG_SSIACT_FOR_5_MOD_CLK          ((uint32_t)0x2UL) /**< CFG_SSIACT_FOR_5_MOD_CLK Value */
+#define MXC_S_SPIXFM_CFG_SSIACT_FOR_5_MOD_CLK          (MXC_V_SPIXFM_CFG_SSIACT_FOR_5_MOD_CLK << MXC_F_SPIXFM_CFG_SSIACT_POS) /**< CFG_SSIACT_FOR_5_MOD_CLK Setting */
+#define MXC_V_SPIXFM_CFG_SSIACT_FOR_9_MOD_CLK          ((uint32_t)0x3UL) /**< CFG_SSIACT_FOR_9_MOD_CLK Value */
+#define MXC_S_SPIXFM_CFG_SSIACT_FOR_9_MOD_CLK          (MXC_V_SPIXFM_CFG_SSIACT_FOR_9_MOD_CLK << MXC_F_SPIXFM_CFG_SSIACT_POS) /**< CFG_SSIACT_FOR_9_MOD_CLK Setting */
 
 /**@} end of group SPIXFM_CFG_Register */
 
@@ -169,44 +173,44 @@ typedef struct {
  * @brief    SPIX Fetch Control Register.
  * @{
  */
- #define MXC_F_SPIXFM_FETCH_CTRL_CMDVAL_POS             0 /**< FETCH_CTRL_CMDVAL Position */
- #define MXC_F_SPIXFM_FETCH_CTRL_CMDVAL                 ((uint32_t)(0xFFUL << MXC_F_SPIXFM_FETCH_CTRL_CMDVAL_POS)) /**< FETCH_CTRL_CMDVAL Mask */
+#define MXC_F_SPIXFM_FETCH_CTRL_CMDVAL_POS             0 /**< FETCH_CTRL_CMDVAL Position */
+#define MXC_F_SPIXFM_FETCH_CTRL_CMDVAL                 ((uint32_t)(0xFFUL << MXC_F_SPIXFM_FETCH_CTRL_CMDVAL_POS)) /**< FETCH_CTRL_CMDVAL Mask */
 
- #define MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS          8 /**< FETCH_CTRL_CMD_WIDTH Position */
- #define MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH              ((uint32_t)(0x3UL << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS)) /**< FETCH_CTRL_CMD_WIDTH Mask */
- #define MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_SINGLE       ((uint32_t)0x0UL) /**< FETCH_CTRL_CMD_WIDTH_SINGLE Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_CMD_WIDTH_SINGLE       (MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_SINGLE << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS) /**< FETCH_CTRL_CMD_WIDTH_SINGLE Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_DUAL_IO      ((uint32_t)0x1UL) /**< FETCH_CTRL_CMD_WIDTH_DUAL_IO Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_CMD_WIDTH_DUAL_IO      (MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_DUAL_IO << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS) /**< FETCH_CTRL_CMD_WIDTH_DUAL_IO Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_QUAD_IO      ((uint32_t)0x2UL) /**< FETCH_CTRL_CMD_WIDTH_QUAD_IO Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_CMD_WIDTH_QUAD_IO      (MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_QUAD_IO << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS) /**< FETCH_CTRL_CMD_WIDTH_QUAD_IO Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_INVALID      ((uint32_t)0x3UL) /**< FETCH_CTRL_CMD_WIDTH_INVALID Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_CMD_WIDTH_INVALID      (MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_INVALID << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS) /**< FETCH_CTRL_CMD_WIDTH_INVALID Setting */
+#define MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS          8 /**< FETCH_CTRL_CMD_WIDTH Position */
+#define MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH              ((uint32_t)(0x3UL << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS)) /**< FETCH_CTRL_CMD_WIDTH Mask */
+#define MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_SINGLE       ((uint32_t)0x0UL) /**< FETCH_CTRL_CMD_WIDTH_SINGLE Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_CMD_WIDTH_SINGLE       (MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_SINGLE << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS) /**< FETCH_CTRL_CMD_WIDTH_SINGLE Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_DUAL_IO      ((uint32_t)0x1UL) /**< FETCH_CTRL_CMD_WIDTH_DUAL_IO Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_CMD_WIDTH_DUAL_IO      (MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_DUAL_IO << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS) /**< FETCH_CTRL_CMD_WIDTH_DUAL_IO Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_QUAD_IO      ((uint32_t)0x2UL) /**< FETCH_CTRL_CMD_WIDTH_QUAD_IO Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_CMD_WIDTH_QUAD_IO      (MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_QUAD_IO << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS) /**< FETCH_CTRL_CMD_WIDTH_QUAD_IO Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_INVALID      ((uint32_t)0x3UL) /**< FETCH_CTRL_CMD_WIDTH_INVALID Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_CMD_WIDTH_INVALID      (MXC_V_SPIXFM_FETCH_CTRL_CMD_WIDTH_INVALID << MXC_F_SPIXFM_FETCH_CTRL_CMD_WIDTH_POS) /**< FETCH_CTRL_CMD_WIDTH_INVALID Setting */
 
- #define MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS         10 /**< FETCH_CTRL_ADDR_WIDTH Position */
- #define MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH             ((uint32_t)(0x3UL << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS)) /**< FETCH_CTRL_ADDR_WIDTH Mask */
- #define MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_SINGLE      ((uint32_t)0x0UL) /**< FETCH_CTRL_ADDR_WIDTH_SINGLE Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_ADDR_WIDTH_SINGLE      (MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_SINGLE << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS) /**< FETCH_CTRL_ADDR_WIDTH_SINGLE Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_DUAL_IO     ((uint32_t)0x1UL) /**< FETCH_CTRL_ADDR_WIDTH_DUAL_IO Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_ADDR_WIDTH_DUAL_IO     (MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_DUAL_IO << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS) /**< FETCH_CTRL_ADDR_WIDTH_DUAL_IO Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_QUAD_IO     ((uint32_t)0x2UL) /**< FETCH_CTRL_ADDR_WIDTH_QUAD_IO Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_ADDR_WIDTH_QUAD_IO     (MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_QUAD_IO << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS) /**< FETCH_CTRL_ADDR_WIDTH_QUAD_IO Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_INVALID     ((uint32_t)0x3UL) /**< FETCH_CTRL_ADDR_WIDTH_INVALID Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_ADDR_WIDTH_INVALID     (MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_INVALID << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS) /**< FETCH_CTRL_ADDR_WIDTH_INVALID Setting */
+#define MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS         10 /**< FETCH_CTRL_ADDR_WIDTH Position */
+#define MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH             ((uint32_t)(0x3UL << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS)) /**< FETCH_CTRL_ADDR_WIDTH Mask */
+#define MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_SINGLE      ((uint32_t)0x0UL) /**< FETCH_CTRL_ADDR_WIDTH_SINGLE Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_ADDR_WIDTH_SINGLE      (MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_SINGLE << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS) /**< FETCH_CTRL_ADDR_WIDTH_SINGLE Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_DUAL_IO     ((uint32_t)0x1UL) /**< FETCH_CTRL_ADDR_WIDTH_DUAL_IO Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_ADDR_WIDTH_DUAL_IO     (MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_DUAL_IO << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS) /**< FETCH_CTRL_ADDR_WIDTH_DUAL_IO Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_QUAD_IO     ((uint32_t)0x2UL) /**< FETCH_CTRL_ADDR_WIDTH_QUAD_IO Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_ADDR_WIDTH_QUAD_IO     (MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_QUAD_IO << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS) /**< FETCH_CTRL_ADDR_WIDTH_QUAD_IO Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_INVALID     ((uint32_t)0x3UL) /**< FETCH_CTRL_ADDR_WIDTH_INVALID Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_ADDR_WIDTH_INVALID     (MXC_V_SPIXFM_FETCH_CTRL_ADDR_WIDTH_INVALID << MXC_F_SPIXFM_FETCH_CTRL_ADDR_WIDTH_POS) /**< FETCH_CTRL_ADDR_WIDTH_INVALID Setting */
 
- #define MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS         12 /**< FETCH_CTRL_DATA_WIDTH Position */
- #define MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH             ((uint32_t)(0x3UL << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS)) /**< FETCH_CTRL_DATA_WIDTH Mask */
- #define MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_SINGLE      ((uint32_t)0x0UL) /**< FETCH_CTRL_DATA_WIDTH_SINGLE Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_DATA_WIDTH_SINGLE      (MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_SINGLE << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS) /**< FETCH_CTRL_DATA_WIDTH_SINGLE Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_DUAL_IO     ((uint32_t)0x1UL) /**< FETCH_CTRL_DATA_WIDTH_DUAL_IO Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_DATA_WIDTH_DUAL_IO     (MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_DUAL_IO << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS) /**< FETCH_CTRL_DATA_WIDTH_DUAL_IO Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_QUAD_IO     ((uint32_t)0x2UL) /**< FETCH_CTRL_DATA_WIDTH_QUAD_IO Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_DATA_WIDTH_QUAD_IO     (MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_QUAD_IO << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS) /**< FETCH_CTRL_DATA_WIDTH_QUAD_IO Setting */
- #define MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_INVALID     ((uint32_t)0x3UL) /**< FETCH_CTRL_DATA_WIDTH_INVALID Value */
- #define MXC_S_SPIXFM_FETCH_CTRL_DATA_WIDTH_INVALID     (MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_INVALID << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS) /**< FETCH_CTRL_DATA_WIDTH_INVALID Setting */
+#define MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS         12 /**< FETCH_CTRL_DATA_WIDTH Position */
+#define MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH             ((uint32_t)(0x3UL << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS)) /**< FETCH_CTRL_DATA_WIDTH Mask */
+#define MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_SINGLE      ((uint32_t)0x0UL) /**< FETCH_CTRL_DATA_WIDTH_SINGLE Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_DATA_WIDTH_SINGLE      (MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_SINGLE << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS) /**< FETCH_CTRL_DATA_WIDTH_SINGLE Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_DUAL_IO     ((uint32_t)0x1UL) /**< FETCH_CTRL_DATA_WIDTH_DUAL_IO Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_DATA_WIDTH_DUAL_IO     (MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_DUAL_IO << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS) /**< FETCH_CTRL_DATA_WIDTH_DUAL_IO Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_QUAD_IO     ((uint32_t)0x2UL) /**< FETCH_CTRL_DATA_WIDTH_QUAD_IO Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_DATA_WIDTH_QUAD_IO     (MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_QUAD_IO << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS) /**< FETCH_CTRL_DATA_WIDTH_QUAD_IO Setting */
+#define MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_INVALID     ((uint32_t)0x3UL) /**< FETCH_CTRL_DATA_WIDTH_INVALID Value */
+#define MXC_S_SPIXFM_FETCH_CTRL_DATA_WIDTH_INVALID     (MXC_V_SPIXFM_FETCH_CTRL_DATA_WIDTH_INVALID << MXC_F_SPIXFM_FETCH_CTRL_DATA_WIDTH_POS) /**< FETCH_CTRL_DATA_WIDTH_INVALID Setting */
 
- #define MXC_F_SPIXFM_FETCH_CTRL_FOUR_BYTE_ADDR_POS     16 /**< FETCH_CTRL_FOUR_BYTE_ADDR Position */
- #define MXC_F_SPIXFM_FETCH_CTRL_FOUR_BYTE_ADDR         ((uint32_t)(0x1UL << MXC_F_SPIXFM_FETCH_CTRL_FOUR_BYTE_ADDR_POS)) /**< FETCH_CTRL_FOUR_BYTE_ADDR Mask */
+#define MXC_F_SPIXFM_FETCH_CTRL_FOUR_BYTE_ADDR_POS     16 /**< FETCH_CTRL_FOUR_BYTE_ADDR Position */
+#define MXC_F_SPIXFM_FETCH_CTRL_FOUR_BYTE_ADDR         ((uint32_t)(0x1UL << MXC_F_SPIXFM_FETCH_CTRL_FOUR_BYTE_ADDR_POS)) /**< FETCH_CTRL_FOUR_BYTE_ADDR Mask */
 
 /**@} end of group SPIXFM_FETCH_CTRL_Register */
 
@@ -216,14 +220,14 @@ typedef struct {
  * @brief    SPIX Mode Control Register.
  * @{
  */
- #define MXC_F_SPIXFM_MODE_CTRL_MDCLK_POS               0 /**< MODE_CTRL_MDCLK Position */
- #define MXC_F_SPIXFM_MODE_CTRL_MDCLK                   ((uint32_t)(0xFUL << MXC_F_SPIXFM_MODE_CTRL_MDCLK_POS)) /**< MODE_CTRL_MDCLK Mask */
+#define MXC_F_SPIXFM_MODE_CTRL_MDCLK_POS               0 /**< MODE_CTRL_MDCLK Position */
+#define MXC_F_SPIXFM_MODE_CTRL_MDCLK                   ((uint32_t)(0xFUL << MXC_F_SPIXFM_MODE_CTRL_MDCLK_POS)) /**< MODE_CTRL_MDCLK Mask */
 
- #define MXC_F_SPIXFM_MODE_CTRL_NO_CMD_POS              8 /**< MODE_CTRL_NO_CMD Position */
- #define MXC_F_SPIXFM_MODE_CTRL_NO_CMD                  ((uint32_t)(0x1UL << MXC_F_SPIXFM_MODE_CTRL_NO_CMD_POS)) /**< MODE_CTRL_NO_CMD Mask */
+#define MXC_F_SPIXFM_MODE_CTRL_NO_CMD_POS              8 /**< MODE_CTRL_NO_CMD Position */
+#define MXC_F_SPIXFM_MODE_CTRL_NO_CMD                  ((uint32_t)(0x1UL << MXC_F_SPIXFM_MODE_CTRL_NO_CMD_POS)) /**< MODE_CTRL_NO_CMD Mask */
 
- #define MXC_F_SPIXFM_MODE_CTRL_MODE_SEND_POS           9 /**< MODE_CTRL_MODE_SEND Position */
- #define MXC_F_SPIXFM_MODE_CTRL_MODE_SEND               ((uint32_t)(0x1UL << MXC_F_SPIXFM_MODE_CTRL_MODE_SEND_POS)) /**< MODE_CTRL_MODE_SEND Mask */
+#define MXC_F_SPIXFM_MODE_CTRL_MODE_SEND_POS           9 /**< MODE_CTRL_MODE_SEND Position */
+#define MXC_F_SPIXFM_MODE_CTRL_MODE_SEND               ((uint32_t)(0x1UL << MXC_F_SPIXFM_MODE_CTRL_MODE_SEND_POS)) /**< MODE_CTRL_MODE_SEND Mask */
 
 /**@} end of group SPIXFM_MODE_CTRL_Register */
 
@@ -233,11 +237,11 @@ typedef struct {
  * @brief    SPIX Mode Data Register.
  * @{
  */
- #define MXC_F_SPIXFM_MODE_DATA_DATA_POS                0 /**< MODE_DATA_DATA Position */
- #define MXC_F_SPIXFM_MODE_DATA_DATA                    ((uint32_t)(0xFFFFUL << MXC_F_SPIXFM_MODE_DATA_DATA_POS)) /**< MODE_DATA_DATA Mask */
+#define MXC_F_SPIXFM_MODE_DATA_DATA_POS                0 /**< MODE_DATA_DATA Position */
+#define MXC_F_SPIXFM_MODE_DATA_DATA                    ((uint32_t)(0xFFFFUL << MXC_F_SPIXFM_MODE_DATA_DATA_POS)) /**< MODE_DATA_DATA Mask */
 
- #define MXC_F_SPIXFM_MODE_DATA_OUT_EN_POS              16 /**< MODE_DATA_OUT_EN Position */
- #define MXC_F_SPIXFM_MODE_DATA_OUT_EN                  ((uint32_t)(0xFFFFUL << MXC_F_SPIXFM_MODE_DATA_OUT_EN_POS)) /**< MODE_DATA_OUT_EN Mask */
+#define MXC_F_SPIXFM_MODE_DATA_OUT_EN_POS              16 /**< MODE_DATA_OUT_EN Position */
+#define MXC_F_SPIXFM_MODE_DATA_OUT_EN                  ((uint32_t)(0xFFFFUL << MXC_F_SPIXFM_MODE_DATA_OUT_EN_POS)) /**< MODE_DATA_OUT_EN Mask */
 
 /**@} end of group SPIXFM_MODE_DATA_Register */
 
@@ -247,11 +251,11 @@ typedef struct {
  * @brief    SPIX Feedback Control Register.
  * @{
  */
- #define MXC_F_SPIXFM_FB_CTRL_FB_EN_POS                 0 /**< FB_CTRL_FB_EN Position */
- #define MXC_F_SPIXFM_FB_CTRL_FB_EN                     ((uint32_t)(0x1UL << MXC_F_SPIXFM_FB_CTRL_FB_EN_POS)) /**< FB_CTRL_FB_EN Mask */
+#define MXC_F_SPIXFM_FB_CTRL_FB_EN_POS                 0 /**< FB_CTRL_FB_EN Position */
+#define MXC_F_SPIXFM_FB_CTRL_FB_EN                     ((uint32_t)(0x1UL << MXC_F_SPIXFM_FB_CTRL_FB_EN_POS)) /**< FB_CTRL_FB_EN Mask */
 
- #define MXC_F_SPIXFM_FB_CTRL_INVERT_EN_POS             1 /**< FB_CTRL_INVERT_EN Position */
- #define MXC_F_SPIXFM_FB_CTRL_INVERT_EN                 ((uint32_t)(0x1UL << MXC_F_SPIXFM_FB_CTRL_INVERT_EN_POS)) /**< FB_CTRL_INVERT_EN Mask */
+#define MXC_F_SPIXFM_FB_CTRL_INVERT_EN_POS             1 /**< FB_CTRL_INVERT_EN Position */
+#define MXC_F_SPIXFM_FB_CTRL_INVERT_EN                 ((uint32_t)(0x1UL << MXC_F_SPIXFM_FB_CTRL_INVERT_EN_POS)) /**< FB_CTRL_INVERT_EN Mask */
 
 /**@} end of group SPIXFM_FB_CTRL_Register */
 
@@ -261,23 +265,23 @@ typedef struct {
  * @brief    SPIX IO Control Register.
  * @{
  */
- #define MXC_F_SPIXFM_IO_CTRL_SCLK_DS_POS               0 /**< IO_CTRL_SCLK_DS Position */
- #define MXC_F_SPIXFM_IO_CTRL_SCLK_DS                   ((uint32_t)(0x1UL << MXC_F_SPIXFM_IO_CTRL_SCLK_DS_POS)) /**< IO_CTRL_SCLK_DS Mask */
+#define MXC_F_SPIXFM_IO_CTRL_SCLK_DS_POS               0 /**< IO_CTRL_SCLK_DS Position */
+#define MXC_F_SPIXFM_IO_CTRL_SCLK_DS                   ((uint32_t)(0x1UL << MXC_F_SPIXFM_IO_CTRL_SCLK_DS_POS)) /**< IO_CTRL_SCLK_DS Mask */
 
- #define MXC_F_SPIXFM_IO_CTRL_SS_DS_POS                 1 /**< IO_CTRL_SS_DS Position */
- #define MXC_F_SPIXFM_IO_CTRL_SS_DS                     ((uint32_t)(0x1UL << MXC_F_SPIXFM_IO_CTRL_SS_DS_POS)) /**< IO_CTRL_SS_DS Mask */
+#define MXC_F_SPIXFM_IO_CTRL_SS_DS_POS                 1 /**< IO_CTRL_SS_DS Position */
+#define MXC_F_SPIXFM_IO_CTRL_SS_DS                     ((uint32_t)(0x1UL << MXC_F_SPIXFM_IO_CTRL_SS_DS_POS)) /**< IO_CTRL_SS_DS Mask */
 
- #define MXC_F_SPIXFM_IO_CTRL_SDIO_DS_POS               2 /**< IO_CTRL_SDIO_DS Position */
- #define MXC_F_SPIXFM_IO_CTRL_SDIO_DS                   ((uint32_t)(0x1UL << MXC_F_SPIXFM_IO_CTRL_SDIO_DS_POS)) /**< IO_CTRL_SDIO_DS Mask */
+#define MXC_F_SPIXFM_IO_CTRL_SDIO_DS_POS               2 /**< IO_CTRL_SDIO_DS Position */
+#define MXC_F_SPIXFM_IO_CTRL_SDIO_DS                   ((uint32_t)(0x1UL << MXC_F_SPIXFM_IO_CTRL_SDIO_DS_POS)) /**< IO_CTRL_SDIO_DS Mask */
 
- #define MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS            3 /**< IO_CTRL_PU_PD_CTRL Position */
- #define MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL                ((uint32_t)(0x3UL << MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS)) /**< IO_CTRL_PU_PD_CTRL Mask */
- #define MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE      ((uint32_t)0x0UL) /**< IO_CTRL_PU_PD_CTRL_TRI_STATE Value */
- #define MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE      (MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE << MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS) /**< IO_CTRL_PU_PD_CTRL_TRI_STATE Setting */
- #define MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP        ((uint32_t)0x1UL) /**< IO_CTRL_PU_PD_CTRL_PULL_UP Value */
- #define MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP        (MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP << MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS) /**< IO_CTRL_PU_PD_CTRL_PULL_UP Setting */
- #define MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN      ((uint32_t)0x2UL) /**< IO_CTRL_PU_PD_CTRL_PULL_DOWN Value */
- #define MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN      (MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN << MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS) /**< IO_CTRL_PU_PD_CTRL_PULL_DOWN Setting */
+#define MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS            3 /**< IO_CTRL_PU_PD_CTRL Position */
+#define MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL                ((uint32_t)(0x3UL << MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS)) /**< IO_CTRL_PU_PD_CTRL Mask */
+#define MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE      ((uint32_t)0x0UL) /**< IO_CTRL_PU_PD_CTRL_TRI_STATE Value */
+#define MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE      (MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE << MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS) /**< IO_CTRL_PU_PD_CTRL_TRI_STATE Setting */
+#define MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP        ((uint32_t)0x1UL) /**< IO_CTRL_PU_PD_CTRL_PULL_UP Value */
+#define MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP        (MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP << MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS) /**< IO_CTRL_PU_PD_CTRL_PULL_UP Setting */
+#define MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN      ((uint32_t)0x2UL) /**< IO_CTRL_PU_PD_CTRL_PULL_DOWN Value */
+#define MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN      (MXC_V_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN << MXC_F_SPIXFM_IO_CTRL_PU_PD_CTRL_POS) /**< IO_CTRL_PU_PD_CTRL_PULL_DOWN Setting */
 
 /**@} end of group SPIXFM_IO_CTRL_Register */
 
@@ -287,11 +291,11 @@ typedef struct {
  * @brief    SPIX Memory Security Control Register.
  * @{
  */
- #define MXC_F_SPIXFM_SEC_CTRL_DEC_EN_POS               0 /**< SEC_CTRL_DEC_EN Position */
- #define MXC_F_SPIXFM_SEC_CTRL_DEC_EN                   ((uint32_t)(0x1UL << MXC_F_SPIXFM_SEC_CTRL_DEC_EN_POS)) /**< SEC_CTRL_DEC_EN Mask */
+#define MXC_F_SPIXFM_SEC_CTRL_DEC_EN_POS               0 /**< SEC_CTRL_DEC_EN Position */
+#define MXC_F_SPIXFM_SEC_CTRL_DEC_EN                   ((uint32_t)(0x1UL << MXC_F_SPIXFM_SEC_CTRL_DEC_EN_POS)) /**< SEC_CTRL_DEC_EN Mask */
 
- #define MXC_F_SPIXFM_SEC_CTRL_AUTH_DISABLE_POS         1 /**< SEC_CTRL_AUTH_DISABLE Position */
- #define MXC_F_SPIXFM_SEC_CTRL_AUTH_DISABLE             ((uint32_t)(0x1UL << MXC_F_SPIXFM_SEC_CTRL_AUTH_DISABLE_POS)) /**< SEC_CTRL_AUTH_DISABLE Mask */
+#define MXC_F_SPIXFM_SEC_CTRL_AUTH_DISABLE_POS         1 /**< SEC_CTRL_AUTH_DISABLE Position */
+#define MXC_F_SPIXFM_SEC_CTRL_AUTH_DISABLE             ((uint32_t)(0x1UL << MXC_F_SPIXFM_SEC_CTRL_AUTH_DISABLE_POS)) /**< SEC_CTRL_AUTH_DISABLE Mask */
 
 /**@} end of group SPIXFM_SEC_CTRL_Register */
 
@@ -301,8 +305,8 @@ typedef struct {
  * @brief    Bus Idle
  * @{
  */
- #define MXC_F_SPIXFM_BUS_IDLE_BUSIDLE_POS              0 /**< BUS_IDLE_BUSIDLE Position */
- #define MXC_F_SPIXFM_BUS_IDLE_BUSIDLE                  ((uint32_t)(0xFFFFUL << MXC_F_SPIXFM_BUS_IDLE_BUSIDLE_POS)) /**< BUS_IDLE_BUSIDLE Mask */
+#define MXC_F_SPIXFM_BUS_IDLE_BUSIDLE_POS              0 /**< BUS_IDLE_BUSIDLE Position */
+#define MXC_F_SPIXFM_BUS_IDLE_BUSIDLE                  ((uint32_t)(0xFFFFUL << MXC_F_SPIXFM_BUS_IDLE_BUSIDLE_POS)) /**< BUS_IDLE_BUSIDLE Mask */
 
 /**@} end of group SPIXFM_BUS_IDLE_Register */
 
@@ -310,4 +314,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _SPIXFM_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_SPIXFM_REGS_H_

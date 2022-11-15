@@ -3,7 +3,7 @@
   <peripheral>
     <name>SC0</name>
     <description>Smart Card Interface.</description>
-    <groupName>SC</groupName>
+    <groupName>SCN</groupName>
     <baseAddress>0x4002C000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>

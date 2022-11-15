@@ -1,17 +1,20 @@
 /**
  * @file    trimsir_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the TRIMSIR Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,11 +37,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _TRIMSIR_REGS_H_
-#define _TRIMSIR_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_TRIMSIR_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_TRIMSIR_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +48,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +80,7 @@ extern "C" {
  * @ingroup     trimsir
  * @defgroup    trimsir_registers TRIMSIR_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the TRIMSIR Peripheral Module.
- * @details Trim System Initilazation Registers
+ * @details     Trim System Initilazation Registers
  */
 
 /**
@@ -96,16 +98,16 @@ typedef struct {
 /**
  * @ingroup    trimsir_registers
  * @defgroup   TRIMSIR_Register_Offsets Register Offsets
- * @brief      TRIMSIR Peripheral Register Offsets from the TRIMSIR Base Peripheral Address. 
+ * @brief      TRIMSIR Peripheral Register Offsets from the TRIMSIR Base Peripheral Address.
  * @{
  */
- #define MXC_R_TRIMSIR_RSV0                 ((uint32_t)0x00000000UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_TRIMSIR_BB_SIR2              ((uint32_t)0x00000008UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_TRIMSIR_BB_SIR3              ((uint32_t)0x0000000CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x000C</tt> */ 
+#define MXC_R_TRIMSIR_RSV0                 ((uint32_t)0x00000000UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0000</tt> */
+#define MXC_R_TRIMSIR_BB_SIR2              ((uint32_t)0x00000008UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0008</tt> */
+#define MXC_R_TRIMSIR_BB_SIR3              ((uint32_t)0x0000000CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x000C</tt> */
 /**@} end of group trimsir_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _TRIMSIR_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_TRIMSIR_REGS_H_
