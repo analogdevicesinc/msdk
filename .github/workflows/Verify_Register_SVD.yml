@@ -190,7 +190,7 @@ jobs:
             chip_name=$3
             workspace_path=$4
 
-            echo "Periph: $periph  -----  Chip name: $chip_name  ----- Die name: ${CHIP_TO_DIE_NAMES[$chip_name]}"
+            echo "Periph: $periph  -----  Chip name: $chip_name"
             
             # chip_name is used to access an associative array (CHIP_TO_DIE_NAMES). Empty key throws an error.
             if [[ -z $chip_name ]]; then
