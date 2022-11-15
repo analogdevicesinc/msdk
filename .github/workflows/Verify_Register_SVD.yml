@@ -343,7 +343,7 @@ jobs:
             
             # Keep track of all diff files.
             DIFF_PR_REG_TO_SVD_REG_LIST[./${{ env.MSDK_DIR }}/$changed_reg_file]=./${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/${CHIP_TO_DIE_NAMES[$CHIP_NAME]}/chip_test/${changed_reg_file##*/}
-            echo -e "[\e[1;33mCHANGED\e[0m]: $changed_reg_file"
+            echo -e "[\e[1;33mAFFECTED\e[0m]: $changed_reg_file"
           done
            
           # Exit out of msdk directory.
