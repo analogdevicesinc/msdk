@@ -385,10 +385,12 @@ jobs:
                     # Isolate peripheral of changed register file to find corresponding peripheral SVD file
                     periph=${changed_reg_file##*/}
                     periph=${periph%_regs.h}
+                    echo "Line: $line  Periph: $periph"
+                    echo "Reg: $changed_reg_file"
+                    echo "Updated List: $updated_part_list"
                     
                     # Check if peripheral SVD file matches with changed register file using the peripheral name
                     if [[ "$line" == *"$periph"* ]]; then
-                      echo "Line: $line  Periph: $periph"
                       svd_path=${line##*./}
                       svd_path=${svd_path%%;*}
 
