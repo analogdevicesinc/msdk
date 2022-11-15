@@ -118,7 +118,7 @@ typedef struct {
  *           when this register rolls over from 0xFF to 0x00.
  * @{
  */
-#define MXC_F_RTC_SSEC_RTSS_POS                        8 /**< SSEC_RTSS Position */
+#define MXC_F_RTC_SSEC_RTSS_POS                        0 /**< SSEC_RTSS Position */
 #define MXC_F_RTC_SSEC_RTSS                            ((uint32_t)(0xFFUL << MXC_F_RTC_SSEC_RTSS_POS)) /**< SSEC_RTSS Mask */
 
 /**@} end of group RTC_SSEC_Register */
