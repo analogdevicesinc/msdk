@@ -183,11 +183,14 @@ jobs:
           # Return:
           #   $? - List of register files that are linked and aren't synced to the SVD file.
           function find_linked_register_files() {
+            echo "1: $1  -----  2: $2  -----  3: $3  ----- 4: $4"
             svd_file=$1
             # Make lowercase
             periph=${2,,}
             chip_name=$3
             workspace_path=$4
+
+            echo "Periph: $periph  -----  Chip name: $chip_name  ----- Die name: ${CHIP_TO_DIE_NAMES[$chip_name]}"
             
             # chip_name is used to access an associative array (CHIP_TO_DIE_NAMES). Empty key throws an error.
             if [[ -z $chip_name ]]; then
@@ -448,7 +451,7 @@ jobs:
               periph=${periph%_regs.h}
               chip_name=${affected_pr_reg_file#*/Maxim/}
               chip_name=${chip_name%%/*}
-              echo "Periph: $periph  -----  Chip name: $chip_name  -----  Affected: $affected_pr_reg_file"
+              echo "Periph: $periph  -----  Chip name: $chip_name  -----  Affected: $affected_pr_reg_file  -----  SVD: ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]}"
               find_linked_register_files ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} $periph $chip_name .
               linked_reg_files_to_current_svd_file=$(find_linked_register_files ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} $periph $chip_name .)
 
