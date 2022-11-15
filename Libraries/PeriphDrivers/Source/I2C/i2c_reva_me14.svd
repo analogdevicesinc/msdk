@@ -102,7 +102,7 @@
           <field>
             <name>RX_MODE_ACK</name>
             <description>Data Acknowledge. This bit defines the acknowledge bit returned by the I2C receiver while IRXM = 1 HW forces ACK to 0 when IRXM = 0.</description>
-            <bitRange>[5:5]</bitRange>
+            <bitRange>[4:4]</bitRange>
             <access>read-write</access>
             <enumeratedValues>
               <enumeratedValue>
