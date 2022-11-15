@@ -4,7 +4,7 @@
  * @note    This file is @generated.
  */
 
- /******************************************************************************
+/******************************************************************************
  * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -128,7 +128,7 @@ typedef struct {
  * @brief      GPIO Peripheral Register Offsets from the GPIO Base Peripheral Address.
  * @{
  */
-#define MXC_R_GPIO_EN                      ((uint32_t)0x00000000UL) /**< Offset from GPIO Base Address: <tt> 0x0000</tt> */
+#define MXC_R_GPIO_EN0                     ((uint32_t)0x00000000UL) /**< Offset from GPIO Base Address: <tt> 0x0000</tt> */
 #define MXC_R_GPIO_EN0_SET                 ((uint32_t)0x00000004UL) /**< Offset from GPIO Base Address: <tt> 0x0004</tt> */
 #define MXC_R_GPIO_EN0_CLR                 ((uint32_t)0x00000008UL) /**< Offset from GPIO Base Address: <tt> 0x0008</tt> */
 #define MXC_R_GPIO_OUT_EN                  ((uint32_t)0x0000000CUL) /**< Offset from GPIO Base Address: <tt> 0x000C</tt> */
@@ -167,12 +167,12 @@ typedef struct {
  *           GPIO pin on the associated port.
  * @{
  */
-#define MXC_F_GPIO_EN_GPIO_EN_POS                      0 /**< EN_GPIO_EN Position */
-#define MXC_F_GPIO_EN_GPIO_EN                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN_GPIO_EN_POS)) /**< EN_GPIO_EN Mask */
-#define MXC_V_GPIO_EN_GPIO_EN_ALTERNATE                ((uint32_t)0x0UL) /**< EN_GPIO_EN_ALTERNATE Value */
-#define MXC_S_GPIO_EN_GPIO_EN_ALTERNATE                (MXC_V_GPIO_EN_GPIO_EN_ALTERNATE << MXC_F_GPIO_EN_GPIO_EN_POS) /**< EN_GPIO_EN_ALTERNATE Setting */
-#define MXC_V_GPIO_EN_GPIO_EN_GPIO                     ((uint32_t)0x1UL) /**< EN_GPIO_EN_GPIO Value */
-#define MXC_S_GPIO_EN_GPIO_EN_GPIO                     (MXC_V_GPIO_EN_GPIO_EN_GPIO << MXC_F_GPIO_EN_GPIO_EN_POS) /**< EN_GPIO_EN_GPIO Setting */
+#define MXC_F_GPIO_EN_GPIO_EN0_POS                     0 /**< EN_GPIO_EN0 Position */
+#define MXC_F_GPIO_EN_GPIO_EN0                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN_GPIO_EN0_POS)) /**< EN_GPIO_EN0 Mask */
+#define MXC_V_GPIO_EN_GPIO_EN0_ALTERNATE               ((uint32_t)0x0UL) /**< EN_GPIO_EN0_ALTERNATE Value */
+#define MXC_S_GPIO_EN_GPIO_EN0_ALTERNATE               (MXC_V_GPIO_EN_GPIO_EN0_ALTERNATE << MXC_F_GPIO_EN_GPIO_EN0_POS) /**< EN_GPIO_EN0_ALTERNATE Setting */
+#define MXC_V_GPIO_EN_GPIO_EN0_GPIO                    ((uint32_t)0x1UL) /**< EN_GPIO_EN0_GPIO Value */
+#define MXC_S_GPIO_EN_GPIO_EN0_GPIO                    (MXC_V_GPIO_EN_GPIO_EN0_GPIO << MXC_F_GPIO_EN_GPIO_EN0_POS) /**< EN_GPIO_EN0_GPIO Setting */
 
 /**@} end of group GPIO_EN_Register */
 
