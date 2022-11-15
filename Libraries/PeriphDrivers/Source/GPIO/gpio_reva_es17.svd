@@ -17,7 +17,7 @@
     </interrupt>
     <registers>
       <register>
-        <name>EN</name>
+        <name>EN0</name>
         <description>GPIO Function Enable Register. Each bit controls the GPIO_EN setting for one GPIO pin on the associated port.</description>
         <addressOffset>0x00</addressOffset>
         <fields>
