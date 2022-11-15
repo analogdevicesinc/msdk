@@ -1,17 +1,20 @@
 /**
  * @file    aes_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AES Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,11 +37,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _AES_REGS_H_
-#define _AES_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AES_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AES_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +48,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +80,7 @@ extern "C" {
  * @ingroup     aes
  * @defgroup    aes_registers AES_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the AES Peripheral Module.
- * @details AES Keys.
+ * @details     AES Keys.
  */
 
 /**
@@ -97,16 +99,16 @@ typedef struct {
 /**
  * @ingroup    aes_registers
  * @defgroup   AES_Register_Offsets Register Offsets
- * @brief      AES Peripheral Register Offsets from the AES Base Peripheral Address. 
+ * @brief      AES Peripheral Register Offsets from the AES Base Peripheral Address.
  * @{
  */
- #define MXC_R_AES_AES_SRAM_KEY             ((uint32_t)0x00000000UL) /**< Offset from AES Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_AES_AES_CODE_KEY             ((uint32_t)0x00000080UL) /**< Offset from AES Base Address: <tt> 0x0080</tt> */ 
- #define MXC_R_AES_AES_DATA_KEY             ((uint32_t)0x00000100UL) /**< Offset from AES Base Address: <tt> 0x0100</tt> */ 
+#define MXC_R_AES_AES_SRAM_KEY             ((uint32_t)0x00000000UL) /**< Offset from AES Base Address: <tt> 0x0000</tt> */
+#define MXC_R_AES_AES_CODE_KEY             ((uint32_t)0x00000080UL) /**< Offset from AES Base Address: <tt> 0x0080</tt> */
+#define MXC_R_AES_AES_DATA_KEY             ((uint32_t)0x00000100UL) /**< Offset from AES Base Address: <tt> 0x0100</tt> */
 /**@} end of group aes_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _AES_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AES_REGS_H_
