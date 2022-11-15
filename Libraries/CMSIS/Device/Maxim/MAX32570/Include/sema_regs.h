@@ -126,7 +126,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SEMA_STATUS_STATUS_POS                   0 /**< STATUS_STATUS Position */
-#define MXC_F_SEMA_STATUS_STATUS                       ((uint32_t)(0xFFFFUL << MXC_F_SEMA_STATUS_STATUS_POS)) /**< STATUS_STATUS Mask */
+#define MXC_F_SEMA_STATUS_STATUS                       ((uint32_t)(0xFFUL << MXC_F_SEMA_STATUS_STATUS_POS)) /**< STATUS_STATUS Mask */
 
 /**@} end of group SEMA_STATUS_Register */
 
