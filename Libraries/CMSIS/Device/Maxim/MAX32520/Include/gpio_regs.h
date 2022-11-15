@@ -4,38 +4,38 @@
  * @note    This file is @generated.
  */
 
-/******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ /******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_GPIO_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_GPIO_REGS_H_
@@ -86,7 +86,7 @@ extern "C" {
  * Structure type to access the GPIO Registers.
  */
 typedef struct {
-    __IO uint32_t en0;                  /**< <tt>\b 0x00:</tt> GPIO EN0 Register */
+    __IO uint32_t en;                   /**< <tt>\b 0x00:</tt> GPIO EN Register */
     __IO uint32_t en0_set;              /**< <tt>\b 0x04:</tt> GPIO EN0_SET Register */
     __IO uint32_t en0_clr;              /**< <tt>\b 0x08:</tt> GPIO EN0_CLR Register */
     __IO uint32_t out_en;               /**< <tt>\b 0x0C:</tt> GPIO OUT_EN Register */
@@ -128,7 +128,7 @@ typedef struct {
  * @brief      GPIO Peripheral Register Offsets from the GPIO Base Peripheral Address.
  * @{
  */
-#define MXC_R_GPIO_EN0                     ((uint32_t)0x00000000UL) /**< Offset from GPIO Base Address: <tt> 0x0000</tt> */
+#define MXC_R_GPIO_EN                      ((uint32_t)0x00000000UL) /**< Offset from GPIO Base Address: <tt> 0x0000</tt> */
 #define MXC_R_GPIO_EN0_SET                 ((uint32_t)0x00000004UL) /**< Offset from GPIO Base Address: <tt> 0x0004</tt> */
 #define MXC_R_GPIO_EN0_CLR                 ((uint32_t)0x00000008UL) /**< Offset from GPIO Base Address: <tt> 0x0008</tt> */
 #define MXC_R_GPIO_OUT_EN                  ((uint32_t)0x0000000CUL) /**< Offset from GPIO Base Address: <tt> 0x000C</tt> */
@@ -162,19 +162,19 @@ typedef struct {
 
 /**
  * @ingroup  gpio_registers
- * @defgroup GPIO_EN0 GPIO_EN0
+ * @defgroup GPIO_EN GPIO_EN
  * @brief    GPIO Function Enable Register. Each bit controls the GPIO_EN setting for one
  *           GPIO pin on the associated port.
  * @{
  */
-#define MXC_F_GPIO_EN0_GPIO_EN0_POS                    0 /**< EN0_GPIO_EN0 Position */
-#define MXC_F_GPIO_EN0_GPIO_EN0                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN0_GPIO_EN0_POS)) /**< EN0_GPIO_EN0 Mask */
-#define MXC_V_GPIO_EN0_GPIO_EN0_ALTERNATE              ((uint32_t)0x0UL) /**< EN0_GPIO_EN0_ALTERNATE Value */
-#define MXC_S_GPIO_EN0_GPIO_EN0_ALTERNATE              (MXC_V_GPIO_EN0_GPIO_EN0_ALTERNATE << MXC_F_GPIO_EN0_GPIO_EN0_POS) /**< EN0_GPIO_EN0_ALTERNATE Setting */
-#define MXC_V_GPIO_EN0_GPIO_EN0_GPIO                   ((uint32_t)0x1UL) /**< EN0_GPIO_EN0_GPIO Value */
-#define MXC_S_GPIO_EN0_GPIO_EN0_GPIO                   (MXC_V_GPIO_EN0_GPIO_EN0_GPIO << MXC_F_GPIO_EN0_GPIO_EN0_POS) /**< EN0_GPIO_EN0_GPIO Setting */
+#define MXC_F_GPIO_EN_GPIO_EN_POS                      0 /**< EN_GPIO_EN Position */
+#define MXC_F_GPIO_EN_GPIO_EN                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN_GPIO_EN_POS)) /**< EN_GPIO_EN Mask */
+#define MXC_V_GPIO_EN_GPIO_EN_ALTERNATE                ((uint32_t)0x0UL) /**< EN_GPIO_EN_ALTERNATE Value */
+#define MXC_S_GPIO_EN_GPIO_EN_ALTERNATE                (MXC_V_GPIO_EN_GPIO_EN_ALTERNATE << MXC_F_GPIO_EN_GPIO_EN_POS) /**< EN_GPIO_EN_ALTERNATE Setting */
+#define MXC_V_GPIO_EN_GPIO_EN_GPIO                     ((uint32_t)0x1UL) /**< EN_GPIO_EN_GPIO Value */
+#define MXC_S_GPIO_EN_GPIO_EN_GPIO                     (MXC_V_GPIO_EN_GPIO_EN_GPIO << MXC_F_GPIO_EN_GPIO_EN_POS) /**< EN_GPIO_EN_GPIO Setting */
 
-/**@} end of group GPIO_EN0_Register */
+/**@} end of group GPIO_EN_Register */
 
 /**
  * @ingroup  gpio_registers
