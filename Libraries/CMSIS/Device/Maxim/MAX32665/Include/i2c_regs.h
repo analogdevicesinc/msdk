@@ -154,7 +154,7 @@ typedef struct {
 #define MXC_F_I2C_CTRL_RX_MODE_POS                     3 /**< CTRL_RX_MODE Position */
 #define MXC_F_I2C_CTRL_RX_MODE                         ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_RX_MODE_POS)) /**< CTRL_RX_MODE Mask */
 
-#define MXC_F_I2C_CTRL_RX_MODE_ACK_POS                 5 /**< CTRL_RX_MODE_ACK Position */
+#define MXC_F_I2C_CTRL_RX_MODE_ACK_POS                 4 /**< CTRL_RX_MODE_ACK Position */
 #define MXC_F_I2C_CTRL_RX_MODE_ACK                     ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_RX_MODE_ACK_POS)) /**< CTRL_RX_MODE_ACK Mask */
 
 #define MXC_F_I2C_CTRL_SCL_OUT_POS                     6 /**< CTRL_SCL_OUT Position */
