@@ -101,6 +101,20 @@
           </field>
         </fields>
       </register>
+      <register>
+        <name>INVALIDATE</name>
+        <description>Invalidate All Registers.</description>
+        <addressOffset>0x0700</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>INVALID</name>
+            <description>Invalidate.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
   <!-- ICC: Instruction Cache Controller Registers-->

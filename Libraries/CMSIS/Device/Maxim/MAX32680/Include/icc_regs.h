@@ -102,6 +102,7 @@ typedef struct {
 #define MXC_R_ICC_INFO                     ((uint32_t)0x00000000UL) /**< Offset from ICC Base Address: <tt> 0x0000</tt> */
 #define MXC_R_ICC_SZ                       ((uint32_t)0x00000004UL) /**< Offset from ICC Base Address: <tt> 0x0004</tt> */
 #define MXC_R_ICC_CTRL                     ((uint32_t)0x00000100UL) /**< Offset from ICC Base Address: <tt> 0x0100</tt> */
+#define MXC_R_ICC_INVALIDATE               ((uint32_t)0x00000700UL) /**< Offset from ICC Base Address: <tt> 0x0700</tt> */
 /**@} end of group icc_registers */
 
 /**
@@ -148,6 +149,17 @@ typedef struct {
 #define MXC_F_ICC_CTRL_RDY                             ((uint32_t)(0x1UL << MXC_F_ICC_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
 
 /**@} end of group ICC_CTRL_Register */
+
+/**
+ * @ingroup  icc_registers
+ * @defgroup ICC_INVALIDATE ICC_INVALIDATE
+ * @brief    Invalidate All Registers.
+ * @{
+ */
+#define MXC_F_ICC_INVALIDATE_INVALID_POS               0 /**< INVALIDATE_INVALID Position */
+#define MXC_F_ICC_INVALIDATE_INVALID                   ((uint32_t)(0xFFFFFFFFUL << MXC_F_ICC_INVALIDATE_INVALID_POS)) /**< INVALIDATE_INVALID Mask */
+
+/**@} end of group ICC_INVALIDATE_Register */
 
 #ifdef __cplusplus
 }
