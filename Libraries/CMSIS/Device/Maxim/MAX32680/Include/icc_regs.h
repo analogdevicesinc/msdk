@@ -90,8 +90,6 @@ typedef struct {
     __I  uint32_t sz;                   /**< <tt>\b 0x0004:</tt> ICC SZ Register */
     __R  uint32_t rsv_0x8_0xff[62];
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0100:</tt> ICC CTRL Register */
-    __R  uint32_t rsv_0x104_0x6ff[383];
-    __IO uint32_t invalidate;           /**< <tt>\b 0x0700:</tt> ICC INVALIDATE Register */
 } mxc_icc_regs_t;
 
 /* Register offsets for module ICC */
