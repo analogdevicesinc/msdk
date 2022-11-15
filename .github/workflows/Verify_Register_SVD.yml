@@ -60,7 +60,7 @@ jobs:
       - name: Checkout msdk internal repository
         uses: actions/checkout@v3
         with:
-          repository: ADI-MSDK-Workflow-Test/msdk-internal
+          repository: Analog-Devices-MSDK/msdk-internal
           fetch-depth: 0
           token: ${{ secrets.PAT }}
           #ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
