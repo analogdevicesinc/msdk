@@ -206,6 +206,8 @@ jobs:
                 SVD_DEVICES+=($file)
               fi
             done
+
+            echo "List of Devices for SVD: ${SVD_DEVICES[@]}"
             
             for part in ${SVD_DEVICES[@]}
             do
@@ -223,9 +225,12 @@ jobs:
                     make=$(./makeRegs.sh ubuntu)
                   fi
 
+                  echo "Diff for: $part"
+
                   # Currently in msdk-internal/SVD/Device/{PART}/
                   # If the "current peripheral SVD file" (Check function notes) was updated, then check all the other peripheral SVD files to the current peripheral SVD file
                   check_linked_reg_diffs=$(diff -u ../../../../${{ env.MSDK_DIR }}/Libraries/CMSIS/Device/Maxim/${DIE_TO_CHIP_NAMES[$part]}/Include/${periph}_regs.h ./chip_test/${periph}_regs.h)
+                  diff -u ../../../../${{ env.MSDK_DIR }}/Libraries/CMSIS/Device/Maxim/${DIE_TO_CHIP_NAMES[$part]}/Include/${periph}_regs.h ./chip_test/${periph}_regs.h                  
                   
                   # For conditions when you want to find all linked register files to current peripheral SVD file
                   if [[ ${CHIP_TO_DIE_NAMES[$chip_name]+_} ]]; then
