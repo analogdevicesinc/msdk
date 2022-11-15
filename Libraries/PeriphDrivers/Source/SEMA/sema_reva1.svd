@@ -38,7 +38,7 @@
           <field>
             <name>STATUS</name>
             <bitOffset>0</bitOffset>
-            <bitWidth>16</bitWidth>
+            <bitWidth>8</bitWidth>
           </field>
         </fields>
       </register>
