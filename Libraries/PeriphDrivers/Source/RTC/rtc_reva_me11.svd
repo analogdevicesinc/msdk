@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
     <name>RTC</name>
@@ -30,7 +30,7 @@
           <field>
             <name>RTSS</name>
             <description>RTC Sub-second Counter.</description>
-            <bitOffset>8</bitOffset>
+            <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
           </field>
         </fields>
