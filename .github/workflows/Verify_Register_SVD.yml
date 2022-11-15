@@ -183,14 +183,11 @@ jobs:
           # Return:
           #   $? - List of register files that are linked and aren't synced to the SVD file.
           function find_linked_register_files() {
-            echo "1: $1  -----  2: $2  -----  3: $3  ----- 4: $4"
             svd_file=$1
             # Make lowercase
             periph=${2,,}
             chip_name=$3
             workspace_path=$4
-
-            echo "Periph: $periph  -----  Chip name: $chip_name"
             
             # chip_name is used to access an associative array (CHIP_TO_DIE_NAMES). Empty key throws an error.
             if [[ -z $chip_name ]]; then
@@ -233,7 +230,6 @@ jobs:
                   check_orig_reg_diffs=""
                   # If a register file was changed but not the generic peripheral SVD file.
                   if [[ "$chip_name" != "no_chip_name" ]]; then
-                    echo "Periph: $periph  -----  Chip name: $chip_name  ----- Die name: ${CHIP_TO_DIE_NAMES[$chip_name]}"
                     check_orig_reg_diffs=$(diff -u ../../../../${{ env.MSDK_DIR }}/Libraries/CMSIS/Device/Maxim/${chip_name}/Include/${periph}_regs.h ../${CHIP_TO_DIE_NAMES[$chip_name]}/chip_test/${periph}_regs.h)
                   fi
 
@@ -317,8 +313,6 @@ jobs:
           
           CHANGED_OR_AFFECTED_REGISTER_FILES=$(echo $CHANGED_OR_AFFECTED_REGISTER_FILES | tr " " "\n" | sort | tr "\n" " ")
           
-          echo "CHANGED: $CHANGED_OR_AFFECTED_REGISTER_FILES"
-
           for changed_reg_file in $CHANGED_OR_AFFECTED_REGISTER_FILES
           do        
             # Removing (prefix) path to [CHIP_NAME]/Include/*_regs.h
@@ -328,10 +322,7 @@ jobs:
             
             # Each element (part) of associative array is a list of changed files
             # Add space delimiter if not empty
-            echo "$CHIP_NAME    ::    ${CHIP_TO_DIE_NAMES[$CHIP_NAME]}"
-            echo "${CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]}"
-
-            if [[ -n ${CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]} ]]; then
+            if [[ ${#CHANGED_REG_FILES_PER_PART[@]} ]]; then
               CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=" "
             fi
             CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=$changed_reg_file
@@ -456,8 +447,6 @@ jobs:
               periph=${periph%_regs.h}
               chip_name=${affected_pr_reg_file#*/Maxim/}
               chip_name=${chip_name%%/*}
-              echo "Periph: $periph  -----  Chip name: $chip_name  -----  Affected: $affected_pr_reg_file  -----  SVD: ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]}"
-              find_linked_register_files ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} $periph $chip_name .
               linked_reg_files_to_current_svd_file=$(find_linked_register_files ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} $periph $chip_name .)
 
               # Check return for any differences and if there are any linked register files to update
