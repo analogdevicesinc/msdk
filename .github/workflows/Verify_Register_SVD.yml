@@ -183,6 +183,8 @@ jobs:
           # Return:
           #   $? - List of register files that are linked and aren't synced to the SVD file.
           function find_linked_register_files() {
+
+            echo "Inputs: 1:$1  2:$2  3:$3  4:$4"
             svd_file=$1
             # Make lowercase
             periph=${2,,}
