@@ -230,6 +230,7 @@ jobs:
                   check_orig_reg_diffs=""
                   # If a register file was changed but not the generic peripheral SVD file.
                   if [[ "$chip_name" != "no_chip_name" ]]; then
+                    echo "Periph: $periph  -----  Chip name: $chip_name  ----- Die name: ${CHIP_TO_DIE_NAMES[$chip_name]}"
                     check_orig_reg_diffs=$(diff -u ../../../../${{ env.MSDK_DIR }}/Libraries/CMSIS/Device/Maxim/${chip_name}/Include/${periph}_regs.h ../${CHIP_TO_DIE_NAMES[$chip_name]}/chip_test/${periph}_regs.h)
                   fi
 
@@ -447,6 +448,8 @@ jobs:
               periph=${periph%_regs.h}
               chip_name=${affected_pr_reg_file#*/Maxim/}
               chip_name=${chip_name%%/*}
+
+              find_linked_register_files ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} $periph $chip_name .
               linked_reg_files_to_current_svd_file=$(find_linked_register_files ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} $periph $chip_name .)
 
               # Check return for any differences and if there are any linked register files to update
