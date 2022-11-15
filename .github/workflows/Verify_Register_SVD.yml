@@ -310,9 +310,9 @@ jobs:
               done
             fi
           fi
-          echo "Affected: $CHANGED_OR_AFFECTED_REGISTER_FILES"
-          
+
           CHANGED_OR_AFFECTED_REGISTER_FILES=$(echo $CHANGED_OR_AFFECTED_REGISTER_FILES | tr " " "\n" | sort | tr "\n" " ")
+          CHANGED_OR_AFFECTED_REGISTER_FILES=$(echo $CHANGED_OR_AFFECTED_REGISTER_FILES | tr -s ' ')
           
           for changed_reg_file in $CHANGED_OR_AFFECTED_REGISTER_FILES
           do        
