@@ -388,6 +388,7 @@ jobs:
                     
                     # Check if peripheral SVD file matches with changed register file using the peripheral name
                     if [[ "$line" == *"$periph"* ]]; then
+                      echo "Line: $line  Periph: $periph"
                       svd_path=${line##*./}
                       svd_path=${svd_path%%;*}
 
