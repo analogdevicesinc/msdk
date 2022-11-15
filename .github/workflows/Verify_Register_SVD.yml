@@ -259,7 +259,7 @@ jobs:
           cd ${{ env.MSDK_DIR }}
           CHANGED_REGISTER_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h')
           CHANGED_PERIPH_SVD_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
-          
+          echo $CHANGED_REGISTER_FILES
           # This includes all register files linked to any changed peripheral SVD files even if said register files were not changed in the PR.
           CHANGED_OR_AFFECTED_REGISTER_FILES=""
           if [[ -n $CHANGED_PERIPH_SVD_FILES ]]; then
