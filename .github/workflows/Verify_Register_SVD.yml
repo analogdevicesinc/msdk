@@ -327,7 +327,7 @@ jobs:
               CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=" "
             fi
             CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=$changed_reg_file
-            echo "ES17: ${CHANGED_REG_FILES_PER_PART[ES17]}"
+
             # Keep track of affected parts, don't add duplicates.
             if [[ ! "${AFFECTED_CHIP_SET[*]}" =~ "$CHIP_NAME" ]]; then
               AFFECTED_CHIP_SET+=("$CHIP_NAME")
@@ -391,6 +391,7 @@ jobs:
                       svd_path=${line##*./}
                       svd_path=${svd_path%%;*}
 
+                      echo "Reg: $changed_reg_file to SVD: $svd_path"
                       REGISTER_SVD_FILE_LIST[$changed_reg_file]=$svd_path
                       
                       # Remove found register file from list to minimize run time by remaking list
