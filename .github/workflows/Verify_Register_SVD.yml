@@ -326,6 +326,9 @@ jobs:
             
             # Each element (part) of associative array is a list of changed files
             # Add space delimiter if not empty
+            echo "$CHIP_NAME    ::    ${CHIP_TO_DIE_NAMES[$CHIP_NAME]}"
+            echo "${CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]}"
+
             if [[ -n ${CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]} ]]; then
               CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=" "
             fi
