@@ -229,39 +229,12 @@ endif
 LIB_UCL ?= 0
 ifeq ($(LIB_UCL), 1)
 
-TARGET_SEC ?= $(TARGET_UC)
-TARGET_SEC_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET_SEC))))
-
-PROJ_CFLAGS += -DWORD32 -DM_SDK
-
-ifeq ($(TARGET_SEC), MAX32520)
-PROJ_CFLAGS += -D__arm_m3__ -D__me13
-else ifeq ($(TARGET_SEC), MAX32570)
-PROJ_CFLAGS += -DLARGE_MEMORY -D__me13
-else ifeq ($(TARGET_SEC), MAX32672)
-PROJ_CFLAGS += -DLARGE_MEMORY
-else ifeq ($(TARGET_SEC), MAX32690)
-PROJ_CFLAGS += -DLARGE_MEMORY
-else ifeq ($(TARGET_SEC), MAX32650)
-PROJ_CFLAGS += -DLARGE_MEMORY -D__arm_m4__
-else ifeq ($(TARGET_SEC), MAX32651)
-PROJ_CFLAGS += -DLARGE_MEMORY -D__arm_m4__ -D__max32652
-else ifeq ($(TARGET_SEC), MAX32665)
-PROJ_CFLAGS += -DLARGE_MEMORY
-else ifeq ($(TARGET_SEC), MAX32666)
-PROJ_CFLAGS += -DLARGE_MEMORY
-endif
-
-PROJ_CFLAGS += -D__$(TARGET_SEC_LC)
-
 UCL_DIR ?= $(LIBS_DIR)/UCL
 ifeq ("$(wildcard $(UCL_DIR))","")
 $(error UCL not found (Only available via NDA). Please install the UCL package to $(UCL_DIR))
 endif
 
-IPATH += $(UCL_DIR)/$(TARGET_UC)/include
-PROJ_LDFLAGS += -L$(UCL_DIR)/$(TARGET_UC)
-PROJ_LIBS += ucl_$(UCL_VERSION)_$(TARGET_SEC_LC)
+include $(UCL_DIR)/ucl.mk
 
 endif
 # ************************
