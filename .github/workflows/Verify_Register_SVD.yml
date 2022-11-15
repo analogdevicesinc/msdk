@@ -10,7 +10,11 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+
+permissions:
+  contents: read
+  repository-projects: read
+
 env:
   MSDK_DIR: msdk
   MSDK-INTERNAL_DIR: msdk-internal
