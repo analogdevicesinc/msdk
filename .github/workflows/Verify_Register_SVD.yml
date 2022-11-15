@@ -448,7 +448,7 @@ jobs:
               periph=${periph%_regs.h}
               chip_name=${affected_pr_reg_file#*/Maxim/}
               chip_name=${chip_name%%/*}
-
+              echo "Periph: $periph  -----  Chip name: $chip_name  -----  Affected: $affected_pr_reg_file"
               find_linked_register_files ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} $periph $chip_name .
               linked_reg_files_to_current_svd_file=$(find_linked_register_files ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} $periph $chip_name .)
 
