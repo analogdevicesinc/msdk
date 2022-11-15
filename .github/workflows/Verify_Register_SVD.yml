@@ -4,7 +4,7 @@ name: Verify Register and SVD Files
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "workflows/verify_register_svd" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
