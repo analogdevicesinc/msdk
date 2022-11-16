@@ -15,7 +15,7 @@
     },
     
     "target":"MAX32655",
-    "board":"FTHR_Apps_P1",
+    "board":"EvKit_V1",
 
     "project_name":"${workspaceFolderBasename}",
 
