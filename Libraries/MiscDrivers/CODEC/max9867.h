@@ -32,8 +32,8 @@
 * ownership rights.
 *******************************************************************************/
 
-#ifndef __MAX9867_H__
-#define __MAX9867_H__
+#ifndef LIBRARIES_MISCDRIVERS_CODEC_MAX9867_H_
+#define LIBRARIES_MISCDRIVERS_CODEC_MAX9867_H_
 
 #include "i2c.h"
 
@@ -369,4 +369,4 @@ int max9867_init(mxc_i2c_regs_t *i2c_inst, int mclk, int controller);
 }
 #endif
 
-#endif
+#endif // LIBRARIES_MISCDRIVERS_CODEC_MAX9867_H_
