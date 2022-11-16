@@ -64,19 +64,19 @@
 
 /***** Definitions *****/
 
-#define IMAGE_WIDTH  320
+#define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
 
 // Check CSI-2 Standard and your color format for these values.
-#define BITS_PER_PIXEL_ODD  24 // e.g. RGB888
+#define BITS_PER_PIXEL_ODD 24 // e.g. RGB888
 #define BITS_PER_PIXEL_EVEN 24 // e.g. RGB888
 
 // CSI-2 Peripheral Configuration
-#define NUM_DATA_LANES  2
-#define FLUSH_COUNT     3
+#define NUM_DATA_LANES 2
+#define FLUSH_COUNT 3
 #define VIRTUAL_CHANNEL 0x00
-#define RX_THRESHOLD    0x30
-#define WAIT_CYCLE      0x2000
+#define RX_THRESHOLD 0x30
+#define WAIT_CYCLE 0x2000
 #define FLOW_CTRL                                                                  \
     (MXC_F_CSI2_VFIFO_CFG1_WAIT_FIRST_FS | MXC_F_CSI2_VFIFO_CFG1_ACCU_FRAME_CTRL | \
      MXC_F_CSI2_VFIFO_CFG1_ACCU_LINE_CNT | MXC_F_CSI2_VFIFO_CFG1_ACCU_PIXEL_CNT)
@@ -84,8 +84,8 @@
 // Select corresponding pixel format and output sequence for camera settings.
 //    Check OV5640 (or selected camera's) Datasheet for more information.
 #define PIXEL_FORMAT MIPI_PIXFORMAT_RAW
-#define OUT_SEQ      0x0 // BGBG GRGR
-#define MUX_CTRL     1   // ISP RGB
+#define OUT_SEQ 0x0 // BGBG GRGR
+#define MUX_CTRL 1 // ISP RGB
 
 // Streaming pixel format may not match pixel format the camera originally processed.
 //    For example, the camera can processes RAW then converts to RGB888.
@@ -93,9 +93,8 @@
 //#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
 
 // Select RGB Type and RAW Format for the CSI2 Peripheral.
-#define RGB_TYPE   MXC_CSI2_TYPE_RGB888
-#define RAW_FORMAT     MXC_CSI2_FORMAT_RGRG_GBGB
-
+#define RGB_TYPE MXC_CSI2_TYPE_RGB888
+#define RAW_FORMAT MXC_CSI2_FORMAT_RGRG_GBGB
 
 // Select corresponding Payload data. Only one type can be selected across payload 0 and 1.
 #define PAYLOAD0_DATA_TYPE MXC_CSI2_PL0_RAW10
@@ -118,7 +117,7 @@
 
 /***** Globals *****/
 
-volatile int DMA_FLAG=1;
+volatile int DMA_FLAG = 1;
 
 // RAW Line Buffers
 __attribute__((section(".csi2_buff_raw0"), aligned(4))) uint32_t RAW_ADDR0[IMAGE_WIDTH];
@@ -143,7 +142,7 @@ void CSI2_Handler(void)
 
 void process_img(void)
 {
-    uint8_t* raw;
+    uint8_t *raw;
     uint32_t imgLen;
     uint32_t w, h;
 
@@ -162,12 +161,12 @@ void process_img(void)
     MXC_TMR_SW_Start(MXC_TMR0);
     clear_serial_buffer();
     snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-                "*IMG* %s %i %i %i", // Format img info into a string
-                mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
+             "*IMG* %s %i %i %i", // Format img info into a string
+             mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
     send_msg(g_serial_buffer);
 
     clear_serial_buffer();
-    MXC_UART_Write(Con_Uart, raw, (int*)&imgLen);
+    MXC_UART_Write(Con_Uart, raw, (int *)&imgLen);
 
     int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
@@ -236,7 +235,7 @@ int main(void)
 
     // Confirm correct camera is connected
     mipi_camera_get_product_id(&id);
-	printf("Camera ID = %x\n", id);
+    printf("Camera ID = %x\n", id);
     if (id != CAMERA_ID) {
         printf("Incorrect camera.\n");
         LED_On(1);
@@ -248,10 +247,10 @@ int main(void)
 
     // Configure RX Controller and PPI (D-PHY)
     ctrl_cfg.invert_ppi_clk = MXC_CSI2_PPI_NO_INVERT;
-    ctrl_cfg.num_lanes      = NUM_DATA_LANES;
-    ctrl_cfg.payload0       = PAYLOAD0_DATA_TYPE;
-    ctrl_cfg.payload1       = PAYLOAD1_DATA_TYPE;
-    ctrl_cfg.flush_cnt      = FLUSH_COUNT;
+    ctrl_cfg.num_lanes = NUM_DATA_LANES;
+    ctrl_cfg.payload0 = PAYLOAD0_DATA_TYPE;
+    ctrl_cfg.payload1 = PAYLOAD1_DATA_TYPE;
+    ctrl_cfg.flush_cnt = FLUSH_COUNT;
 
     ctrl_cfg.lane_src.d0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L0;
     ctrl_cfg.lane_src.d1_swap_sel = MXC_CSI2_PAD_CDRX_PN_L1;
@@ -260,32 +259,32 @@ int main(void)
     ctrl_cfg.lane_src.c0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L4;
 
     // Image Data
-    req.img_addr            = IMAGE;
-    req.pixels_per_line     = IMAGE_WIDTH;
-    req.lines_per_frame     = IMAGE_HEIGHT;
-    req.bits_per_pixel_odd  = BITS_PER_PIXEL_ODD;
+    req.img_addr = IMAGE;
+    req.pixels_per_line = IMAGE_WIDTH;
+    req.lines_per_frame = IMAGE_HEIGHT;
+    req.bits_per_pixel_odd = BITS_PER_PIXEL_ODD;
     req.bits_per_pixel_even = BITS_PER_PIXEL_EVEN;
-    req.frame_num           = 1;
+    req.frame_num = 1;
 
     // Convert RAW to RGB
     req.process_raw_to_rgb = true;
-    req.rgb_type           = RGB_TYPE;
-    req.raw_format         = RAW_FORMAT;
-    req.autoflush          = MXC_CSI2_AUTOFLUSH_ENABLE;
-    req.raw_buf0_addr      = (uint32_t)RAW_ADDR0;
-    req.raw_buf1_addr      = (uint32_t)RAW_ADDR1;
+    req.rgb_type = RGB_TYPE;
+    req.raw_format = RAW_FORMAT;
+    req.autoflush = MXC_CSI2_AUTOFLUSH_ENABLE;
+    req.raw_buf0_addr = (uint32_t)RAW_ADDR0;
+    req.raw_buf1_addr = (uint32_t)RAW_ADDR1;
 
     // Configure VFIFO
     vfifo_cfg.virtual_channel = VIRTUAL_CHANNEL;
-    vfifo_cfg.rx_thd          = RX_THRESHOLD;
-    vfifo_cfg.wait_cyc        = WAIT_CYCLE;
-    vfifo_cfg.flow_ctrl       = FLOW_CTRL;
-    vfifo_cfg.err_det_en      = MXC_CSI2_ERR_DETECT_DISABLE;
-    vfifo_cfg.fifo_rd_mode    = MXC_CSI2_READ_ONE_BY_ONE;
+    vfifo_cfg.rx_thd = RX_THRESHOLD;
+    vfifo_cfg.wait_cyc = WAIT_CYCLE;
+    vfifo_cfg.flow_ctrl = FLOW_CTRL;
+    vfifo_cfg.err_det_en = MXC_CSI2_ERR_DETECT_DISABLE;
+    vfifo_cfg.fifo_rd_mode = MXC_CSI2_READ_ONE_BY_ONE;
     vfifo_cfg.dma_whole_frame = MXC_CSI2_DMA_WHOLE_FRAME;
-    vfifo_cfg.dma_mode        = MXC_CSI2_DMA_FIFO_ABV_THD;
-    vfifo_cfg.bandwidth_mode  = MXC_CSI2_NORMAL_BW;
-    vfifo_cfg.wait_en         = MXC_CSI2_AHBWAIT_DISABLE;
+    vfifo_cfg.dma_mode = MXC_CSI2_DMA_FIFO_ABV_THD;
+    vfifo_cfg.bandwidth_mode = MXC_CSI2_NORMAL_BW;
+    vfifo_cfg.wait_en = MXC_CSI2_AHBWAIT_DISABLE;
 
     error = MXC_CSI2_Init(&req, &ctrl_cfg, &vfifo_cfg);
     if (error != E_NO_ERROR) {

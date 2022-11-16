@@ -46,14 +46,10 @@ int g_buffer_index = 0;
 int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'console_init' as part of initialization
-char *cmd_table[] = { "help", "reset",   "capture"
-};
+char *cmd_table[] = { "help", "reset", "capture" };
 
-char *help_table[] = {
-    ": Print this help string",
-    ": Issue a soft reset to the host MCU.",
-    ": Perform a standard blocking capture of a single image"
-};
+char *help_table[] = { ": Print this help string", ": Issue a soft reset to the host MCU.",
+                       ": Perform a standard blocking capture of a single image" };
 
 int starts_with(char *a, char *b)
 {
