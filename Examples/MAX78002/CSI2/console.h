@@ -47,14 +47,7 @@ typedef enum {
     CMD_UNKNOWN = -1,
     CMD_HELP = 0,
     CMD_RESET,
-    CMD_CAPTURE,
-    CMD_IMGRES,
-    CMD_STREAM,
-    CMD_SETREG,
-    CMD_GETREG,
-#ifdef CAMERA_BAYER
-    CMD_SETDEBAYER,
-#endif
+    CMD_CAPTURE
 } cmd_t;
 
 extern char *cmd_table[];

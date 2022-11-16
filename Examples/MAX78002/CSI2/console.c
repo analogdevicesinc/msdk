@@ -46,43 +46,13 @@ int g_buffer_index = 0;
 int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'console_init' as part of initialization
-char *cmd_table[] = { "help",        "reset",   "capture", "imgres", "stream", "set-reg", "get-reg",
-#ifdef CAMERA_BAYER
-                      "set-debayer",
-#endif
-#ifdef SD
-                      "mount",       "unmount", "cwd",     "cd",     "ls",     "mkdir",   "rm",
-                      "touch",       "write",   "cat",     "snap"
-#endif
+char *cmd_table[] = { "help", "reset",   "capture"
 };
 
 char *help_table[] = {
     ": Print this help string",
     ": Issue a soft reset to the host MCU.",
-    ": Perform a standard blocking capture of a single image",
-    "<width> <height> : Set the image resolution of the camera to <width> x <height>",
-    ": Performs a line-by-line streaming DMA capture of a single image, capable of higher "
-    "resolutions",
-    "<register> <value> : Write a value to a camera register.",
-    "<register> : Prints the value in a camera register.",
-#ifdef CAMERA_BAYER
-    "<function> : Set the debayering function ('passthrough','bilinear')",
-#endif
-#ifdef SD
-    ": Mount the SD card, enabling the commands below.  This will format the SD card if the MCU "
-    "detects it's blank.",
-    ": Unmount the SD card.",
-    ": Print the current working directory (cwd).",
-    "<dir> : Change the current working directory to <dir>.",
-    ": List the contents of the current working directory.",
-    "<dir> : Create a directory",
-    "<item> : Remove a file or (empty) directory.",
-    "<filename> : Create an empty file.",
-    "<filename> <string> : Write a string to a file.",
-    "<filename> : Print the contents of a file.",
-    "<filename> : Snap an image (using 'stream') and save it to the SD card. <filename> is "
-    "optional.  If none is specified, images will be saved to /raw."
-#endif
+    ": Perform a standard blocking capture of a single image"
 };
 
 int starts_with(char *a, char *b)
@@ -140,6 +110,7 @@ int console_init(void)
 
     printf("Established communications with host!\n");
     print_help();
+    clear_serial_buffer();
 
     return ret;
 }

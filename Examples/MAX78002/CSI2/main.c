@@ -175,6 +175,28 @@ void process_img(void)
     // utils_send_img_to_pc(raw, imgLen, w, h, mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT));
 }
 
+void service_console()
+{
+    // Check for any incoming serial commands
+    cmd_t cmd = CMD_UNKNOWN;
+    if (recv_cmd(&cmd)) {
+        // Process the received command...
+
+        if (cmd == CMD_UNKNOWN) {
+            printf("Uknown command '%s'\n", g_serial_buffer);
+        } else if (cmd == CMD_HELP) {
+            print_help();
+        } else if (cmd == CMD_RESET) {
+            // Issue a soft reset
+            MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
+        } else if (cmd == CMD_CAPTURE) {
+            process_img();
+        }
+    }
+
+    clear_serial_buffer();
+}
+
 volatile int buttonPressed = 0;
 void buttonHandler()
 {
@@ -260,7 +282,7 @@ int main(void)
     vfifo_cfg.flow_ctrl       = FLOW_CTRL;
     vfifo_cfg.err_det_en      = MXC_CSI2_ERR_DETECT_DISABLE;
     vfifo_cfg.fifo_rd_mode    = MXC_CSI2_READ_ONE_BY_ONE;
-    vfifo_cfg.dma_whole_frame = MXC_CSI2_DMA_LINE_BY_LINE;
+    vfifo_cfg.dma_whole_frame = MXC_CSI2_DMA_WHOLE_FRAME;
     vfifo_cfg.dma_mode        = MXC_CSI2_DMA_FIFO_ABV_THD;
     vfifo_cfg.bandwidth_mode  = MXC_CSI2_NORMAL_BW;
     vfifo_cfg.wait_en         = MXC_CSI2_AHBWAIT_DISABLE;
@@ -281,10 +303,14 @@ int main(void)
     while (1) {
         LED_On(0);
 
+        MXC_Delay(MXC_DELAY_MSEC(1));
+        // ^ Slow down main processing loop to work around some timing issues
+        // with the console at extreme speeds.  1000 checks/sec is plenty
+        service_console();
+
         if (buttonPressed) {
             process_img();
             LED_Off(0);
-            //MXC_Delay(SEC(3));
 
             buttonPressed = 0;
         }
