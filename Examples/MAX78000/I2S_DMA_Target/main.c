@@ -64,160 +64,161 @@ uint32_t *rxBufPtr = i2s_rx_buffer;
 
 void blink_halt(const char *msg)
 {
-  if (msg && *msg)
-    puts(msg);
+    if (msg && *msg)
+        puts(msg);
 
-  for (;;) {
-    LED_On(LED1);
-    LED_Off(LED2);
-    MXC_Delay(MXC_DELAY_MSEC(500));
-    LED_On(LED2);
-    LED_Off(LED1);
-    MXC_Delay(MXC_DELAY_MSEC(500));
-  }
+    for (;;) {
+        LED_On(LED1);
+        LED_Off(LED2);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+        LED_On(LED2);
+        LED_Off(LED1);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+    }
 }
 
 void dma_handler(void)
 {
-  dma_flag = 1;
-  MXC_DMA_Handler();
+    dma_flag = 1;
+    MXC_DMA_Handler();
 }
 
 void dma_init(void)
 {
-  MXC_NVIC_SetVector(DMA0_IRQn, dma_handler);
-  MXC_NVIC_SetVector(DMA1_IRQn, dma_handler);
-  NVIC_EnableIRQ(DMA0_IRQn);
-  NVIC_EnableIRQ(DMA1_IRQn);
+    MXC_NVIC_SetVector(DMA0_IRQn, dma_handler);
+    MXC_NVIC_SetVector(DMA1_IRQn, dma_handler);
+    NVIC_EnableIRQ(DMA0_IRQn);
+    NVIC_EnableIRQ(DMA1_IRQn);
 }
 
 void dma_callback(int channel, int result)
 {
-  static uint32_t *tx_buf = i2s_rx_buffer + I2S_DMA_BUFFER_SIZE;
+    static uint32_t *tx_buf = i2s_rx_buffer + I2S_DMA_BUFFER_SIZE;
 
-  if (channel == dma_ch_tx) {
-    MXC_DMA_ReleaseChannel(dma_ch_tx);
-    dma_ch_tx = MXC_I2S_TXDMAConfig(tx_buf, I2S_DMA_BUFFER_SIZE * sizeof(i2s_rx_buffer[0]));
+    if (channel == dma_ch_tx) {
+        MXC_DMA_ReleaseChannel(dma_ch_tx);
+        dma_ch_tx = MXC_I2S_TXDMAConfig(tx_buf, I2S_DMA_BUFFER_SIZE * sizeof(i2s_rx_buffer[0]));
 
-  } else if (channel == dma_ch_rx) {
-    tx_buf = rxBufPtr;
+    } else if (channel == dma_ch_rx) {
+        tx_buf = rxBufPtr;
 
-    if (rxBufPtr == i2s_rx_buffer) {
-      rxBufPtr = i2s_rx_buffer + I2S_DMA_BUFFER_SIZE;
-    } else {
-      rxBufPtr = i2s_rx_buffer;
+        if (rxBufPtr == i2s_rx_buffer) {
+            rxBufPtr = i2s_rx_buffer + I2S_DMA_BUFFER_SIZE;
+        } else {
+            rxBufPtr = i2s_rx_buffer;
+        }
+        MXC_DMA_ReleaseChannel(dma_ch_rx);
+        dma_ch_rx = MXC_I2S_RXDMAConfig(rxBufPtr, I2S_DMA_BUFFER_SIZE * sizeof(i2s_rx_buffer[0]));
     }
-    MXC_DMA_ReleaseChannel(dma_ch_rx);
-    dma_ch_rx = MXC_I2S_RXDMAConfig(rxBufPtr, I2S_DMA_BUFFER_SIZE * sizeof(i2s_rx_buffer[0]));
-  }
 }
 
 void dma_work_loop(void)
 {
-  int trig = 0;
+    int trig = 0;
 
-  dma_init();
-  MXC_I2S_RegisterDMACallback(dma_callback);
-  dma_ch_tx = MXC_I2S_TXDMAConfig(i2s_rx_buffer + I2S_DMA_BUFFER_SIZE, I2S_DMA_BUFFER_SIZE * sizeof(i2s_rx_buffer[0]));
-  dma_ch_rx = MXC_I2S_RXDMAConfig(i2s_rx_buffer, I2S_DMA_BUFFER_SIZE * sizeof(i2s_rx_buffer[0]));
+    dma_init();
+    MXC_I2S_RegisterDMACallback(dma_callback);
+    dma_ch_tx = MXC_I2S_TXDMAConfig(i2s_rx_buffer + I2S_DMA_BUFFER_SIZE,
+                                    I2S_DMA_BUFFER_SIZE * sizeof(i2s_rx_buffer[0]));
+    dma_ch_rx = MXC_I2S_RXDMAConfig(i2s_rx_buffer, I2S_DMA_BUFFER_SIZE * sizeof(i2s_rx_buffer[0]));
 
-  for (;;) {
-    if (dma_flag) {
-      dma_flag = 0;
-      /*
+    for (;;) {
+        if (dma_flag) {
+            dma_flag = 0;
+            /*
         dma activity triggered work
       */
-      if (++trig == SAMPLE_RATE/I2S_DMA_BUFFER_SIZE) {
-        trig = 0;
-        LED_Toggle(LED2);
-      }
-    }
-    /*
+            if (++trig == SAMPLE_RATE / I2S_DMA_BUFFER_SIZE) {
+                trig = 0;
+                LED_Toggle(LED2);
+            }
+        }
+        /*
       non-dma activity triggered work
     */
-  }
+    }
 }
 
 void i2c_init(void)
 {
-  if (MXC_I2C_Init(CODEC_I2C, 1, 0))
-    blink_halt("Error initializing I2C controller");
+    if (MXC_I2C_Init(CODEC_I2C, 1, 0))
+        blink_halt("Error initializing I2C controller");
 
-  MXC_I2C_SetFrequency(CODEC_I2C, CODEC_I2C_FREQ);
+    MXC_I2C_SetFrequency(CODEC_I2C, CODEC_I2C_FREQ);
 }
 
 void codec_init(void)
 {
-  if (max9867_init(CODEC_I2C, CODEC_MCLOCK, 1))
-    blink_halt("Error initializing MAX9867 CODEC");
+    if (max9867_init(CODEC_I2C, CODEC_MCLOCK, 1))
+        blink_halt("Error initializing MAX9867 CODEC");
 
-  if (max9867_enable_playback(1))
-    blink_halt("Error enabling playback path");
+    if (max9867_enable_playback(1))
+        blink_halt("Error enabling playback path");
 
-  if (max9867_playback_volume(-6, -6))
-    blink_halt("Error setting playback volume");
+    if (max9867_playback_volume(-6, -6))
+        blink_halt("Error setting playback volume");
 
-  if (max9867_enable_record(1))
-    blink_halt("Error enabling record path");
+    if (max9867_enable_record(1))
+        blink_halt("Error enabling record path");
 
-  if (max9867_adc_level(-12, -12))
-    blink_halt("Error setting ADC level");
+    if (max9867_adc_level(-12, -12))
+        blink_halt("Error setting ADC level");
 
-  if (max9867_linein_gain(-6, -6))
-    blink_halt("Error setting Line-In gain");
+    if (max9867_linein_gain(-6, -6))
+        blink_halt("Error setting Line-In gain");
 }
 
 void i2s_init(void)
 {
-  mxc_i2s_req_t req;
+    mxc_i2s_req_t req;
 
-  #define I2S_CRUFT_PTR (void *)UINT32_MAX
-  #define I2S_CRUFT_LEN UINT32_MAX
+#define I2S_CRUFT_PTR (void *)UINT32_MAX
+#define I2S_CRUFT_LEN UINT32_MAX
 
-  req.wordSize    = MXC_I2S_DATASIZE_HALFWORD;
-  req.sampleSize  = MXC_I2S_SAMPLESIZE_SIXTEEN;
-  req.justify     = MXC_I2S_MSB_JUSTIFY;
-  req.wsPolarity  = MXC_I2S_POL_NORMAL;
-  req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
-  req.stereoMode  = MXC_I2S_STEREO;
+    req.wordSize = MXC_I2S_DATASIZE_HALFWORD;
+    req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
+    req.justify = MXC_I2S_MSB_JUSTIFY;
+    req.wsPolarity = MXC_I2S_POL_NORMAL;
+    req.channelMode = MXC_I2S_INTERNAL_SCK_WS_0;
+    req.stereoMode = MXC_I2S_STEREO;
 
-  req.bitOrder    = MXC_I2S_MSB_FIRST;
-  req.clkdiv      = CLK_DIV;
+    req.bitOrder = MXC_I2S_MSB_FIRST;
+    req.clkdiv = CLK_DIV;
 
-  req.rawData     = NULL;
-  req.txData      = I2S_CRUFT_PTR;
-  req.rxData      = I2S_CRUFT_PTR;
-  req.length      = I2S_CRUFT_LEN;
+    req.rawData = NULL;
+    req.txData = I2S_CRUFT_PTR;
+    req.rxData = I2S_CRUFT_PTR;
+    req.length = I2S_CRUFT_LEN;
 
-  if (MXC_I2S_Init(&req))
-    blink_halt("Error initializing I2S");
+    if (MXC_I2S_Init(&req))
+        blink_halt("Error initializing I2S");
 
-  MXC_I2S_SetFrequency(MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS, 0);
+    MXC_I2S_SetFrequency(MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS, 0);
 }
 
 int main(void)
 {
 #if defined(BOARD_FTHR_REVA)
-  /* Wait for PMIC 1.8V to become available, about 180ms after power up. */
-  MXC_Delay(MXC_DELAY_MSEC(200));
+    /* Wait for PMIC 1.8V to become available, about 180ms after power up. */
+    MXC_Delay(MXC_DELAY_MSEC(200));
 #endif
 
-  /* Switch to 100 MHz clock */
-  MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-  SystemCoreClockUpdate();
+    /* Switch to 100 MHz clock */
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    SystemCoreClockUpdate();
 
-  printf("***** MAX9867 CODEC DMA Loopback Example *****\n");
+    printf("***** MAX9867 CODEC DMA Loopback Example *****\n");
 
-  printf("Waiting...\n");
+    printf("Waiting...\n");
 
-  /* DO NOT DELETE THIS LINE: */
-  MXC_Delay(MXC_DELAY_SEC(2)); /* Let debugger interrupt if needed */
+    /* DO NOT DELETE THIS LINE: */
+    MXC_Delay(MXC_DELAY_SEC(2)); /* Let debugger interrupt if needed */
 
-  printf("Running...\n");
+    printf("Running...\n");
 
-  i2c_init();
-  codec_init();
-  i2s_init();
+    i2c_init();
+    codec_init();
+    i2s_init();
 
-  dma_work_loop();
+    dma_work_loop();
 }
