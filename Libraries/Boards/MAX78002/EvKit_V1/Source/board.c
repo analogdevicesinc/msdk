@@ -68,10 +68,10 @@ const mxc_gpio_cfg_t tft_ss_pin = { TFT_SS_PORT, TFT_SS_PIN, MXC_GPIO_FUNC_OUT, 
                                     MXC_GPIO_VSSEL_VDDIOH };
 // TS IRQ pin
 mxc_gpio_cfg_t ts_irq_pin = { TS_IRQ_PORT, TS_IRQ_PIN, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                                    MXC_GPIO_VSSEL_VDDIOH };
+                              MXC_GPIO_VSSEL_VDDIOH };
 // TS SS pin
 const mxc_gpio_cfg_t ts_ss_pin = { TS_SS_PORT, TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                    MXC_GPIO_VSSEL_VDDIOH };
+                                   MXC_GPIO_VSSEL_VDDIOH };
 
 /***** File Scope Variables *****/
 // const uart_cfg_t uart_cfg = {
@@ -218,7 +218,8 @@ void TS_SPI_Init(void)
     MXC_SPI_Init(TS_SPI, master, quadMode, numSlaves, ssPol, TS_SPI_FREQ, ts_pins);
 
     // Set SPI pins to VDDIOH (3.3V) to be compatible with TFT display
-    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7);
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
+                      MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7);
     MXC_SPI_SetDataSize(TS_SPI, 8);
     MXC_SPI_SetWidth(TS_SPI, SPI_WIDTH_STANDARD);
 
@@ -311,7 +312,7 @@ int Board_Init(void)
 #ifdef TFT_NEWHAVEN
     // Set falling edge triggered interrupt for TouchScreen
     // MXC_TS_PreInit is not used because we need to take more direct
-    // control of SPI routines and initialization 
+    // control of SPI routines and initialization
     ts_irq_pin.port->intmode |= ts_irq_pin.mask;
     ts_irq_pin.port->intpol &= ~(ts_irq_pin.mask);
     MXC_TS_AssignInterruptPin(ts_irq_pin);
