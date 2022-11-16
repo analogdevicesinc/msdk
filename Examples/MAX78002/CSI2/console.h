@@ -35,8 +35,8 @@
 * @brief Serial console header file
 *****************************************************************************/
 
-#ifndef EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CONSOLE_H_
-#define EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CONSOLE_H_
+#ifndef EXAMPLES_MAX78002_CSI2_CONSOLE_H_
+#define EXAMPLES_MAX78002_CSI2_CONSOLE_H_
 #include "uart.h"
 #include "board.h"
 
@@ -60,4 +60,4 @@ int recv_cmd(cmd_t *out_cmd);
 void clear_serial_buffer(void);
 void print_help(void);
 
-#endif // EXAMPLES_MAX78002_IMGCAPTURE_INCLUDE_CONSOLE_H_
+#endif // EXAMPLES_MAX78002_CSI2_CONSOLE_H_

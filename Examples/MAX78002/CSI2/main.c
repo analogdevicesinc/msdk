@@ -148,8 +148,7 @@ void process_img(void)
 
     MXC_CSI2_CaptureFrameDMA(NUM_DATA_LANES);
 
-    while (DMA_FLAG)
-        ;
+    while (DMA_FLAG) {}
 
     MXC_CSI2_Stop();
 
@@ -237,8 +236,7 @@ int main(void)
     if (id != CAMERA_ID) {
         printf("Incorrect camera.\n");
         LED_On(1);
-        while (1)
-            ;
+        while (1) {}
     }
 
     mipi_camera_setup(IMAGE_WIDTH, IMAGE_HEIGHT, PIXEL_FORMAT, OUT_SEQ, MUX_CTRL);
@@ -287,8 +285,7 @@ int main(void)
     error = MXC_CSI2_Init(&req, &ctrl_cfg, &vfifo_cfg);
     if (error != E_NO_ERROR) {
         printf("Error Initializating.\n\n");
-        while (1)
-            ;
+        while (1) {}
     }
 
     csi2_dma_channel = MXC_CSI2_DMA_GetChannel();
