@@ -304,11 +304,12 @@ int max9867_power_enable(int shutdown, int enable)
 {
   int err;
 
-  if (shutdown)
-    if ((err = reg_write(MAX9867_17_PWR_SYS, 0x00)) != E_NO_ERROR)
-      return err;
-
-  return reg_write(MAX9867_17_PWR_SYS, 0x80 | enable);
+  if (shutdown) {
+    err = reg_write(MAX9867_17_PWR_SYS, 0x00);
+    return err;
+  } else {
+    return reg_write(MAX9867_17_PWR_SYS, 0x80 | enable);
+  }
 }
 
 int max9867_enable_playback(int stereo)
