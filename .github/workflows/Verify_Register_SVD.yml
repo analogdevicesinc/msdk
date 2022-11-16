@@ -86,6 +86,61 @@ jobs:
           echo "None of the committed files were updated register files. No need to check differences."
           exit 0
           
+      # Check for any deleted peripheral SVD file
+      - name: Verifying any deleted Peripheral SVD files.
+        if: env.DIFF_FILES_FLAG == 'true'
+        run: |
+          # Enter msdk repo.
+          cd ${{ env.MSDK_DIR }}
+          PERIPH_SVD_FILE_LIST=$(git diff --ignore-submodules --name-only remotes/origin/master './Libraries/PeriphDrivers/Source/*/*.svd')
+          
+          # Save time if there weren't any peripheral SVD file changes.
+          if [[ -n $PERIPH_SVD_FILE_LIST ]]; then
+            # Keep track of all deleted SVD files.
+            DELETED_PERIPH_SVD_FILE_LIST=""
+
+            for svd_file in $PERIPH_SVD_FILE_LIST
+            do
+              # Make sure deleted peripheral SVD file is a necessary for the register generation.
+              is_necessary_svd_files=$(find ../${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/*/$CHIP_PERIPH -exec grep -s "$svd_file" {} \;)
+              if [[ -n $is_necessary_svd_files ]]; then
+                # Check for deletion
+                if [[ ! -f "$svd_file" ]]; then
+                  # Add space delimiter for variable string list
+                  if [[ -n $DELETED_SVD_FILE_LIST ]]; then
+                    DELETED_PERIPH_SVD_FILE_LIST+=" "
+                  fi
+
+                  DELETED_PERIPH_SVD_FILE_LIST+=$svd_file
+                fi
+              fi
+            done       
+
+            # Check fails if any important peripheral SVD file was deleted
+            if [[ -n $DELETED_PERIPH_SVD_FILE_LIST ]]; then
+              echo -e "\n\e[0;33m==================================================================\n"
+              echo -e "\e[0;33mImportant Peripheral SVD Files were deleted."
+              echo -e "\n\e[0;33m==================================================================\n"
+
+              for deleted_svd_file in $DELETED_PERIPH_SVD_FILE_LIST
+              do
+                echo -e "[\e[1;31mERROR\e[0m]: $deleted_svd_file was deleted"
+              done
+              
+              # Just for log output formatting
+              echo -e "\n"
+              
+              exit 1
+            fi
+          fi
+          
+          echo -e "\n\e[0;33m==================================================================\n"
+          echo -e "\e[0;33mNo Important Peripheral SVD Files were deleted."
+          echo -e "\n\e[0;33m==================================================================\n"
+          
+          # Exit msdk repo for next step.
+          cd ..
+
       # SVD Scripts require software that's not preinstalled with GitHub workflow servers.
       # Only install packages if there are register files to verify. Saves time if there are no
       # register changes.
