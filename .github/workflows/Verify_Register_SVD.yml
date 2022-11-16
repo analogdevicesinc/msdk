@@ -210,7 +210,7 @@ jobs:
               if [[ ${DIE_TO_CHIP_NAMES[$part]+_} && -d $part && $part != ${CHIP_TO_DIE_NAMES[$chip_name]} ]]; then
                 cd $part
 
-                check_if_svd_file_exists=$(grep "$svd_file" $CHIP_PERIPH)
+                check_if_svd_file_exists=$(grep -s "$svd_file" $CHIP_PERIPH)
 
                 if [[ -n $check_if_svd_file_exists ]]; then                    
                   # Need to generate register files for part if it wasn't already generated.
@@ -380,7 +380,7 @@ jobs:
                   periph=${periph%_regs.h}
                   
                   # Check if peripheral SVD file matches with changed register file using the peripheral name
-                  match_line=$(grep "$periph" $CHIP_PERIPH)
+                  match_line=$(grep -s "$periph" $CHIP_PERIPH)
                   if [[ -n $match_line ]]; then
                     svd_path=${match_line##*./}
                     svd_path=${svd_path%%;*}
@@ -485,7 +485,7 @@ jobs:
               echo -e "[\e[0;37mVERIFYING\e[0m] Changed: \e[1;33m${affected_pr_reg_file#./*/}."
               
               CHECK_FAIL=1
-              check_for_at_deprecated=$(grep "@deprecated" $affected_pr_reg_file)
+              check_for_at_deprecated=$(grep -s "@deprecated" $affected_pr_reg_file)
               if [[ -n $check_for_at_deprecated ]]; then
                 # Exception for deprecated register files.
                 echo -e "[\e[0;31mERROR\e[0m] DO NOT UPDATE. This file is deprecated. Please contact ADI developers for more support.\n\n"
