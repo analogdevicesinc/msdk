@@ -8,3 +8,10 @@
 # **********************************************************
 
 # Add your config here!
+
+# Load and start the RISCV core
+RISCV_LOAD=1
+
+# Directory for RISCV code
+RISCV_APP=../Dual_core_sync_riscv
+
