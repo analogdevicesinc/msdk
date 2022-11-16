@@ -1,11 +1,5 @@
-import time
-import os
-import sys
-import string
-import sys
-import zlib
 import struct
-from PIL import Image, ImageTk
+from PIL import Image
 
 def swap32(i):
     return struct.unpack("<I", struct.pack(">I", i))[0]
@@ -197,7 +191,9 @@ def convert(bytesequence, outputfile, xres, yres, pixelformat):
 		imagepixels = rgb888_to_rgb(bytesequence)
 	elif (pixelformat == "GRAYSCALE"): #Black and white yuv422
 		imagepixels = blackAndWhite_to_rgb(bytesequence)
-
+	elif (pixelformat == "BAYER"): #Black and white raw
+		imagepixels = blackAndWhite_to_rgb(bytesequence)
+        
 	offset = 0
 	for i in range(yres):
 		line = []
@@ -208,7 +204,7 @@ def convert(bytesequence, outputfile, xres, yres, pixelformat):
 
 	print("Output image to file xres {}, yres {}".format(xres,yres), flush=True)
 
-	g_pil_image = generate_img("image-out.png", (0, 0, 0), (xres, yres))
+	g_pil_image = generate_img(outputfile, (0, 0, 0), (xres, yres))
 	x = 0
 	y = 0
 	for i in range(int(len(imagepixels) / 3)):
@@ -222,4 +218,6 @@ def convert(bytesequence, outputfile, xres, yres, pixelformat):
 			y = y + 1
 			if y > (yres - 1):
 				break
-	g_pil_image.save("image-out.png")
+	g_pil_image.save(outputfile)
+
+

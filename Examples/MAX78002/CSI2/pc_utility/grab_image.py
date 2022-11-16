@@ -1,11 +1,9 @@
-import serial
 import time
 from datetime import datetime
-import os
 import sys
-import string
 import comManager
 import imgConverter
+import cv2
 
 if len(sys.argv) == 3:
 	comport  = sys.argv[1]
@@ -13,9 +11,9 @@ if len(sys.argv) == 3:
 else:
 	comport  = sys.argv[1]
 	# Setup the default baudrate.
-	baudRate = 115200
+	baudRate = 921600  # 115200
 
-READ_TIMEOUT = 60
+READ_TIMEOUT = 15
 
 def ByteToHex( ch ):
 	try:
@@ -81,3 +79,8 @@ while True:
 			#image_file = open("Image.txt", "w")
 			#image_file.write(hex_string)
 			#image_file.close()
+
+			image = cv2.imread("image.png")
+			cv2.imshow(" ", image)
+			cv2.waitKey(1)
+			#exit(0)
