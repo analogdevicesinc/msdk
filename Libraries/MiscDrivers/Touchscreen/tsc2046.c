@@ -142,8 +142,8 @@ static void tsHandler(void)
         if (pressed_key == 0) { // wait until prev key process
             for (i = 0; i < TS_MAX_BUTTONS; i++) {
                 if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
-                    if (is_inBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0,
-                                 ts_buttons[i].x1, ts_buttons[i].y1)) {
+                    if (is_inBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0, ts_buttons[i].x1,
+                                 ts_buttons[i].y1)) {
                         // pressed key
                         pressed_key = ts_buttons[i].key_code;
                         break;
@@ -158,7 +158,8 @@ static void tsHandler(void)
     MXC_TS_Start();
 }
 
-int MXC_TS_AssignInterruptPin(mxc_gpio_cfg_t pin) {
+int MXC_TS_AssignInterruptPin(mxc_gpio_cfg_t pin)
+{
     if (pin.port) {
         int_gpio = pin;
         return E_NO_ERROR;
@@ -233,16 +234,19 @@ void MXC_TS_Stop(void)
     TS_SPI_Transmit(TSC_STOP, NULL);
 }
 
-void MXC_TS_GetXY(unsigned int *x, unsigned int *y) {
+void MXC_TS_GetXY(unsigned int *x, unsigned int *y)
+{
     *x = g_x;
     *y = g_y;
 }
 
-int MXC_TS_GetTSEvent() {
+int MXC_TS_GetTSEvent()
+{
     return ts_event;
 }
 
-void MXC_TS_ClearTSEvent() {
+void MXC_TS_ClearTSEvent()
+{
     ts_event = false;
 }
 

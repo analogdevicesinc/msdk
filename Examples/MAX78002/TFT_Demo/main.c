@@ -158,7 +158,7 @@ int main(void)
     MXC_TFT_Init(NULL, NULL);
     MXC_TFT_SetRotation(ROTATE_270);
     TFT_test();
-    
+
     /* Initialize TouchScreen*/
     unsigned int touch_x, touch_y;
     MXC_TS_Init();

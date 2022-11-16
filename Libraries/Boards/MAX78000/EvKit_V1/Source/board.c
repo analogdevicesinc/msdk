@@ -105,7 +105,8 @@ void TS_SPI_Init(void)
     MXC_SPI_Init(TS_SPI, master, quadMode, numSlaves, ssPol, TS_SPI_FREQ, ts_pins);
 
     // Set SPI pins to VDDIOH (3.3V) to be compatible with TFT display
-    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10);
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
+                      MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10);
     MXC_SPI_SetDataSize(TS_SPI, 8);
     MXC_SPI_SetWidth(TS_SPI, SPI_WIDTH_STANDARD);
 }
