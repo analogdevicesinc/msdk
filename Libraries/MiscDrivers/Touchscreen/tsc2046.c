@@ -69,6 +69,11 @@ static unsigned int t_spi_freq;
 static mxc_gpio_cfg_t int_gpio;
 static mxc_gpio_cfg_t busy_gpio;
 static mxc_gpio_cfg_t t_spi_gpio;
+unsigned int g_x, g_y = 0;
+// Global touchscreen event flag that can be polled by applications if needed.
+// The application should clear it to 0 if used.
+// It is set to 1 eve
+int ts_event = false;
 
 /********************************* Static Functions **************************/
 static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
@@ -80,59 +85,22 @@ static int is_inBox(int x, int y, int x0, int y0, int x1, int y1)
     return 0;
 }
 
-static void spi_transmit_tsc2046(mxc_ts_touch_cmd_t datain, uint16_t *dataout)
-{
-    int i;
-    uint8_t rx[2] = { 0, 0 };
-    mxc_spi_req_t request;
-
-    request.spi = t_spi;
-    request.ssIdx = t_ssel;
-    request.ssDeassert = 0;
-    request.txData = (uint8_t *)(&datain);
-    request.rxData = NULL;
-    request.txLen = 1;
-    request.rxLen = 0;
-
-    MXC_SPI_SetFrequency(t_spi, t_spi_freq);
-    MXC_SPI_SetDataSize(t_spi, 8);
-
-    MXC_SPI_MasterTransaction(&request);
-
-    // Wait to clear TS busy signal
-    for (i = 0; i < 100; i++) {
-        __asm volatile("nop\n");
-    }
-
-    request.ssDeassert = 1;
-    request.txData = NULL;
-    request.rxData = (uint8_t *)(rx);
-    request.txLen = 0;
-    request.rxLen = 2;
-
-    MXC_SPI_MasterTransaction(&request);
-
-    if (dataout != NULL) {
-        *dataout = (rx[1] | (rx[0] << 8)) >> 4;
-    }
-}
-
 static int tsGetXY(uint16_t *x, uint16_t *y)
 {
     uint16_t tsX, tsY, tsZ1;
     int ret;
 
-    spi_transmit_tsc2046(TSC_DIFFZ1, &tsZ1);
+    TS_SPI_Transmit(TSC_DIFFZ1, &tsZ1);
 
     if (tsZ1 & 0x7F0) {
-        spi_transmit_tsc2046(TSC_DIFFX, &tsX);
+        TS_SPI_Transmit(TSC_DIFFX, &tsX);
         *x = tsX * 320 / 0x7FF;
-        spi_transmit_tsc2046(TSC_DIFFY, &tsY);
+        TS_SPI_Transmit(TSC_DIFFY, &tsY);
         *y = tsY * 240 / 0x7FF;
 
         // Wait Release
         do {
-            spi_transmit_tsc2046(TSC_DIFFZ1, &tsZ1);
+            TS_SPI_Transmit(TSC_DIFFZ1, &tsZ1);
         } while (tsZ1 & 0x7F0);
 
 #if (FLIP_SCREEN == 1)
@@ -165,16 +133,16 @@ static int tsGetXY(uint16_t *x, uint16_t *y)
 
 static void tsHandler(void)
 {
-    uint16_t touch_x, touch_y;
     int i;
 
     MXC_TS_Stop();
 
-    if (tsGetXY(&touch_x, &touch_y)) {
+    if (tsGetXY((uint16_t *)&g_x, (uint16_t *)&g_y)) {
+        ts_event = true;
         if (pressed_key == 0) { // wait until prev key process
             for (i = 0; i < TS_MAX_BUTTONS; i++) {
                 if (ts_buttons[i].key_code != TS_INVALID_KEY_CODE) {
-                    if (is_inBox(touch_x, touch_y, ts_buttons[i].x0, ts_buttons[i].y0,
+                    if (is_inBox(g_x, g_y, ts_buttons[i].x0, ts_buttons[i].y0,
                                  ts_buttons[i].x1, ts_buttons[i].y1)) {
                         // pressed key
                         pressed_key = ts_buttons[i].key_code;
@@ -190,38 +158,13 @@ static void tsHandler(void)
     MXC_TS_Start();
 }
 
-static void ts_spi_Init(void)
-{
-    int master = 1;
-    int quadMode = 0;
-    int numSlaves = 2;
-    int ssPol = 0;
-
-#if defined(OLD_SPI_API) // Defined in spi.h file if the driver if first version
-    MXC_SPI_Init(t_spi, master, quadMode, numSlaves, ssPol, t_spi_freq);
-    // Todo:
-    // Missing SS selection.
-    // There is not API in driver,
-    // Default SS is used for MAX32570 so it works.
-#else
-    mxc_spi_pins_t ts_pins;
-
-    ts_pins.clock = true;
-    ts_pins.ss0 = (t_ssel == 0); ///< Slave select pin 0
-    ts_pins.ss1 = (t_ssel == 1); ///< Slave select pin 1
-    ts_pins.ss2 = (t_ssel == 2); ///< Slave select pin 2
-    ts_pins.miso = true; ///< miso pin
-    ts_pins.mosi = true; ///< mosi pin
-    ts_pins.sdio2 = false; ///< SDIO2 pin
-    ts_pins.sdio3 = false; ///< SDIO3 pin
-
-    MXC_SPI_Init(t_spi, master, quadMode, numSlaves, ssPol, t_spi_freq, ts_pins);
-#endif
-
-    // Set VSSEL
-    MXC_GPIO_SetVSSEL(t_spi_gpio.port, t_spi_gpio.vssel, t_spi_gpio.mask);
-    MXC_SPI_SetDataSize(t_spi, 8);
-    MXC_SPI_SetWidth(t_spi, SPI_WIDTH_STANDARD);
+int MXC_TS_AssignInterruptPin(mxc_gpio_cfg_t pin) {
+    if (pin.port) {
+        int_gpio = pin;
+        return E_NO_ERROR;
+    } else {
+        return E_BAD_PARAM;
+    }
 }
 
 /********************************* Public Functions **************************/
@@ -260,11 +203,10 @@ int MXC_TS_Init(void)
     }
     // Touchscreen interrupt pin
     MXC_GPIO_Config(&int_gpio);
-    //
     MXC_GPIO_RegisterCallback(&int_gpio, (mxc_gpio_callback_fn)tsHandler, NULL);
 
     // Configure SPI Pins
-    ts_spi_Init();
+    TS_SPI_Init();
 
     MXC_TS_RemoveAllButton();
 
@@ -281,14 +223,27 @@ int MXC_TS_Init(void)
 
 void MXC_TS_Start(void)
 {
-    spi_transmit_tsc2046(TSC_START, NULL);
+    TS_SPI_Transmit(TSC_START, NULL);
     MXC_GPIO_EnableInt(int_gpio.port, int_gpio.mask);
 }
 
 void MXC_TS_Stop(void)
 {
     MXC_GPIO_DisableInt(int_gpio.port, int_gpio.mask);
-    spi_transmit_tsc2046(TSC_STOP, NULL);
+    TS_SPI_Transmit(TSC_STOP, NULL);
+}
+
+void MXC_TS_GetXY(unsigned int *x, unsigned int *y) {
+    *x = g_x;
+    *y = g_y;
+}
+
+int MXC_TS_GetTSEvent() {
+    return ts_event;
+}
+
+void MXC_TS_ClearTSEvent() {
+    ts_event = false;
 }
 
 int MXC_TS_AddButton(int x0, int y0, int x1, int y1, int on_press_expected_code)
