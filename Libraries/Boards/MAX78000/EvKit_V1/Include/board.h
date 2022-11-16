@@ -63,6 +63,7 @@ extern "C" {
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON 0 /// Active state of LEDs
 
+#ifndef __riscv // RISC-V does not have access to SPI0
 #define TFT_SPI MXC_SPI0 // SPI port to use for TFT display
 #define TFT_SPI_PORT MXC_GPIO0 /**< GPIO port for SPI peripheral pins. */
 #define TFT_SPI_PINS                                   \
@@ -74,6 +75,7 @@ extern "C" {
 
 #define TS_SPI MXC_SPI0
 #define TS_SPI_FREQ 1000000
+#endif // __riscv
 
 /**
  *  A reference to LED1 of the board.

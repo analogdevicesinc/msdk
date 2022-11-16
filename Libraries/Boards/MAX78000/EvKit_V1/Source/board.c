@@ -88,6 +88,7 @@ void mxc_assert(const char *expr, const char *file, int line)
     while (1) {}
 }
 
+#ifndef __riscv
 void TS_SPI_Init(void)
 {
     int master = 1;
@@ -145,6 +146,7 @@ void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
         *dataout = (rx[1] | (rx[0] << 8)) >> 4;
     }
 }
+#endif // __riscv
 
 /******************************************************************************/
 int Board_Init(void)
