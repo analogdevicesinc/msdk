@@ -380,6 +380,7 @@ jobs:
                   periph=${periph%_regs.h}
                   
                   # Check if peripheral SVD file matches with changed register file using the peripheral name
+                  grep -s "$periph" $CHIP_PERIPH
                   match_line=$(grep -s "$periph" $CHIP_PERIPH)
                   if [[ -n $match_line ]]; then
                     svd_path=${match_line##*./}
