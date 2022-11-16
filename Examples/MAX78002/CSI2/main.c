@@ -223,12 +223,10 @@ int main(void)
     printf("\n\n**** MIPI CSI-2 Example ****\n");
     printf("This example streams the image data through the COM port\n");
     printf("and a script running on the host pc converts the data into\n");
-    printf("a .png image. Note: You can not run the script and have\n");
-    printf("a serial terminal open running on the same COM port at the\n");
-    printf("the same time.\n");
+    printf("a .png image.\n");
     printf("\nGo into the pc_utility folder and run the script:\n");
-    printf("python grab_image.py [COM#] [baudrate]\n");
-    printf("\nPress PB1 (SW4) to trigger a frame capture.\n");
+    printf("python console.py [COM#]\n");
+    printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n");
 
     // Initialize camera
     mipi_camera_init();
