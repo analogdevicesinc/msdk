@@ -305,7 +305,7 @@ void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
     request.rxData = NULL;
     request.txLen = 1;
     request.rxLen = 0;
-    request.ssIdx = 2;
+    request.ssIdx = 1;
 
     MXC_SPI_SetFrequency(TS_SPI, TS_SPI_FREQ);
     MXC_SPI_SetDataSize(TS_SPI, 8);
