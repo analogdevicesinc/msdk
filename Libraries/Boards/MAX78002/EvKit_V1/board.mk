@@ -53,6 +53,8 @@ endif
 ifeq "$(TFT)" "NEWHAVEN"
 PROJ_CFLAGS+=-DTFT_NEWHAVEN
 SRCS += tft_st7789v.c
+# NewHaven TFT board has an integrated tsc2046 touchscreen driver
+SRCS += tsc2046.c
 endif
 SRCS += camera.c
 SRCS += mipi_camera.c
