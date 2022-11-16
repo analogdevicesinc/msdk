@@ -930,10 +930,10 @@
   <peripheral>
    <name>AES</name>
    <description>AES Keys.</description>
-   <baseAddress>0x40007400</baseAddress>
+   <baseAddress>0x40207400</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x800</size>
+    <size>0x400</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
