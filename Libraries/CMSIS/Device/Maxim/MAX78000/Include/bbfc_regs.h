@@ -47,8 +47,6 @@
 // Warning only pops up when a project builds with this file included.
 #warning "MXC_BBFC (bbfc_regs.h) name is deprecated. Please use MXC_GCFR (gcfr_regs.h)."
 
-// I made a change
-
 #include "gcfr_regs.h"
 #define MXC_BBFC MXC_GCFR
 
