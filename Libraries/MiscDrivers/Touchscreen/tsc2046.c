@@ -45,6 +45,9 @@
 #ifndef FLIP_SCREEN
 #define FLIP_SCREEN 0
 #endif
+#ifndef SWAP_XY
+#define SWAP_XY 0
+#endif
 #ifndef ROTATE_SCREEN
 #define ROTATE_SCREEN 0
 #endif
@@ -93,9 +96,15 @@ static int tsGetXY(uint16_t *x, uint16_t *y)
     TS_SPI_Transmit(TSC_DIFFZ1, &tsZ1);
 
     if (tsZ1 & 0x7F0) {
-        TS_SPI_Transmit(TSC_DIFFX, &tsX);
-        *x = tsX * 320 / 0x7FF;
+#if (SWAP_XY == 1)
+        TS_SPI_Transmit(TSC_DIFFY, &tsX);
+        TS_SPI_Transmit(TSC_DIFFX, &tsY);
+#else
         TS_SPI_Transmit(TSC_DIFFY, &tsY);
+        TS_SPI_Transmit(TSC_DIFFX, &tsX);
+#endif
+
+        *x = tsX * 320 / 0x7FF;
         *y = tsY * 240 / 0x7FF;
 
         // Wait Release
