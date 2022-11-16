@@ -158,19 +158,14 @@ int main(void)
     MXC_TFT_Init(NULL, NULL);
     MXC_TFT_SetRotation(ROTATE_270);
     TFT_test();
-#endif
-
+    
     /* Initialize TouchScreen*/
     unsigned int touch_x, touch_y;
     MXC_TS_Init();
     MXC_TS_Start();
+#endif
 
     for (;;) {
-        if (MXC_TS_GetTSEvent()) {
-            MXC_TS_ClearTSEvent();
-            MXC_TS_GetXY(&touch_x, &touch_y);
-            print_xy(touch_x, touch_y);
-        }
 #ifdef TFT_ADAFRUIT
         if (ts_event) {
             MXC_TS_GetTouch(&x, &y);
@@ -179,6 +174,12 @@ int main(void)
             xx = rescale(x, TS_X_MIN, TS_X_MAX, 0, DISPLAY_HEIGHT);
             yy = rescale(y, TS_Y_MIN, TS_Y_MAX, 0, DISPLAY_WIDTH);
             printf("%d,%d\n", xx, yy);
+        }
+#else
+        if (MXC_TS_GetTSEvent()) {
+            MXC_TS_ClearTSEvent();
+            MXC_TS_GetXY(&touch_x, &touch_y);
+            print_xy(touch_x, touch_y);
         }
 #endif
     }
