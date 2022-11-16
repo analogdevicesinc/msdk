@@ -118,15 +118,10 @@ void TFT_test(void)
 
 void print_xy(unsigned int x, unsigned int y)
 {
-    char buf[9];
-    static int last_x = 0;
-    static int last_y = 0;
+    char buf[16];
 
-    TFT_Print("        ", last_x, last_y, font_5, 8);
-    TFT_Print(buf, x, y, font_5, snprintf(buf, sizeof(buf), "(%u,%u)", x, y));
-
-    last_x = x;
-    last_y = y;
+    MXC_TFT_ClearScreen();
+    TFT_Print(buf, x, y, font_1, snprintf(buf, sizeof(buf), "(%u,%u)", x, y));
 }
 
 int32_t rescale(int32_t x, int32_t min, int32_t max, int32_t a, int32_t b)
@@ -163,6 +158,7 @@ int main(void)
     unsigned int touch_x, touch_y;
     MXC_TS_Init();
     MXC_TS_Start();
+    TFT_Print("Touch the screen!", 0, 120, font_5, 17);
 #endif
 
     for (;;) {
