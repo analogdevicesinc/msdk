@@ -81,10 +81,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}",
-        "CAMERA_OV7692",
-        //"CAMERA_HM0360_COLOR",
-        "CONSOLE"
+        "${config:board}"
     ]
 }
 
