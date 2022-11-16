@@ -34,8 +34,8 @@
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64 kB ROM */
     FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00280000 /* 2.5 MB Flash */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00060000 /* 384 kB SRAM */
-    /*CSI2 (rwx) : ORIGIN = 0x2001F000, LENGTH = 0x00001000 4096 B CSI2 Buffer */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00040000 /* 384 kB SRAM */
+    CSI2 (rwx) : ORIGIN = 0x20040000, LENGTH = 0x00010000 /* 16 kB CSI2 Buffer */
 }
 
 SECTIONS {
@@ -93,13 +93,15 @@ SECTIONS {
         *(.sram_code_section)
         _esran_code = .;
     } > SRAM
-/*
+
     .csi2_buff :
     {
-        . = ALIGN(16);
-        KEEP(*(.csi2_buff_section))
+        . = ALIGN(4);
+        *(.csi2_buff_raw0*)
+        . = ALIGN(4);
+        *(.csi2_buff_raw1*)
     } > CSI2
-*/
+
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
@@ -113,7 +115,7 @@ SECTIONS {
     .data :
     {
         _data = ALIGN(., 4);
-        _csi = . + 0x20000;
+        /*_csi = . + 0x20000;*/
         *(.data*)           /*read-write initialized data: initialized global variable*/
 
 
@@ -140,8 +142,10 @@ SECTIONS {
 
         _edata = ALIGN(., 4);
 
+        /*
         . = _csi;
         *(.csi2_buff_section)
+        */
 
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);

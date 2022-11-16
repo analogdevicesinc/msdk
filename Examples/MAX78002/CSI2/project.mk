@@ -5,8 +5,6 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
-
-
 # **********************************************************
 
 # Add your config here!
@@ -19,6 +17,8 @@
 CAMERA=OV5640
 #CAMERA=HM0360_MONO
 #CAMERA=HM01B0
+
+MXC_OPTIMIZE_CFLAGS=-O2
 
 LINKERFILE=max78002_csi2.ld
 

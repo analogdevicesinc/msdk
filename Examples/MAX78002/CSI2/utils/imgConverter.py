@@ -1,11 +1,40 @@
-import time
-import os
-import sys
-import string
-import sys
-import zlib
+"""
+/*******************************************************************************
+* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
+"""
+
 import struct
-from PIL import Image, ImageTk
+from PIL import Image
 
 def swap32(i):
     return struct.unpack("<I", struct.pack(">I", i))[0]
@@ -197,7 +226,9 @@ def convert(bytesequence, outputfile, xres, yres, pixelformat):
 		imagepixels = rgb888_to_rgb(bytesequence)
 	elif (pixelformat == "GRAYSCALE"): #Black and white yuv422
 		imagepixels = blackAndWhite_to_rgb(bytesequence)
-
+	elif (pixelformat == "BAYER"): #Black and white raw
+		imagepixels = blackAndWhite_to_rgb(bytesequence)
+        
 	offset = 0
 	for i in range(yres):
 		line = []
@@ -206,9 +237,9 @@ def convert(bytesequence, outputfile, xres, yres, pixelformat):
 			line.append(imagepixels[j + offset])
 		image.append(line)
 
-	print("Output image to file xres {}, yres {}".format(xres,yres), flush=True)
+	# print("Output image to file xres {}, yres {}".format(xres,yres), flush=True)
 
-	g_pil_image = generate_img("image-out.png", (0, 0, 0), (xres, yres))
+	g_pil_image = generate_img(outputfile, (0, 0, 0), (xres, yres))
 	x = 0
 	y = 0
 	for i in range(int(len(imagepixels) / 3)):
@@ -222,4 +253,6 @@ def convert(bytesequence, outputfile, xres, yres, pixelformat):
 			y = y + 1
 			if y > (yres - 1):
 				break
-	g_pil_image.save("image-out.png")
+	g_pil_image.save(outputfile)
+
+
