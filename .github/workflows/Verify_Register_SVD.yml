@@ -11,10 +11,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-permissions:
-  contents: read
-  repository-projects: read
-
 env:
   MSDK_DIR: msdk
   MSDK-INTERNAL_DIR: msdk-internal
@@ -312,8 +308,7 @@ jobs:
           fi
 
           CHANGED_OR_AFFECTED_REGISTER_FILES=$(echo $CHANGED_OR_AFFECTED_REGISTER_FILES | tr " " "\n" | sort | tr "\n" " ")
-          CHANGED_OR_AFFECTED_REGISTER_FILES=$(echo $CHANGED_OR_AFFECTED_REGISTER_FILES | tr -s ' ')
-          
+
           for changed_reg_file in $CHANGED_OR_AFFECTED_REGISTER_FILES
           do        
             # Removing (prefix) path to [CHIP_NAME]/Include/*_regs.h
