@@ -72,6 +72,9 @@ extern "C" {
 #define TFT_DC_PORT MXC_GPIO0 /**< GPIO port for Data/Command signal. */
 #define TFT_DC_PIN MXC_GPIO_PIN_8 /**< GPIO pin for Data/Command signal. */
 
+#define TS_SPI MXC_SPI0
+#define TS_SPI_FREQ 1000000
+
 /**
  *  A reference to LED1 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.

@@ -88,6 +88,64 @@ void mxc_assert(const char *expr, const char *file, int line)
     while (1) {}
 }
 
+void TS_SPI_Init(void)
+{
+    int master = 1;
+    int quadMode = 0;
+    int numSlaves = 0;
+    int ssPol = 0;
+
+    mxc_spi_pins_t ts_pins = {
+        // CLK, MISO, MOSI enabled, SS IDx = 2
+        .clock = true, .ss0 = false, .ss1 = false,   .ss2 = true,
+        .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
+    };
+
+    MXC_SPI_Init(TS_SPI, master, quadMode, numSlaves, ssPol, TS_SPI_FREQ, ts_pins);
+
+    // Set SPI pins to VDDIOH (3.3V) to be compatible with TFT display
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10);
+    MXC_SPI_SetDataSize(TS_SPI, 8);
+    MXC_SPI_SetWidth(TS_SPI, SPI_WIDTH_STANDARD);
+}
+
+void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
+{
+    int i;
+    uint8_t rx[2] = { 0, 0 };
+    mxc_spi_req_t request;
+
+    request.spi = TS_SPI;
+    request.ssDeassert = 0;
+    request.txData = (uint8_t *)(&datain);
+    request.rxData = NULL;
+    request.txLen = 1;
+    request.rxLen = 0;
+    request.ssIdx = 2;
+
+    MXC_SPI_SetFrequency(TS_SPI, TS_SPI_FREQ);
+    MXC_SPI_SetDataSize(TS_SPI, 8);
+
+    MXC_SPI_MasterTransaction(&request);
+
+    // Wait to clear TS busy signal
+    for (i = 0; i < 100; i++) {
+        __asm volatile("nop\n");
+    }
+
+    request.ssDeassert = 1;
+    request.txData = NULL;
+    request.rxData = (uint8_t *)(rx);
+    request.txLen = 0;
+    request.rxLen = 2;
+
+    MXC_SPI_MasterTransaction(&request);
+
+    if (dataout != NULL) {
+        *dataout = (rx[1] | (rx[0] << 8)) >> 4;
+    }
+}
+
 /******************************************************************************/
 int Board_Init(void)
 {
@@ -136,7 +194,9 @@ int Board_Init(void)
     /* Initialize TFT display */
     MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, NULL);
 
-    /* Enable Touchscreen */
+    // SPI config is included here for compabibility with MXC_TS_PreInit.  The
+    // actual SPI initialization is done by TS_SPI_Init above.
+    // PreInit still needs to be used to properly assign the interrupt/busy pins.
     mxc_ts_spi_config ts_spi_config = {
         .regs = MXC_SPI0,
         .gpio = { MXC_GPIO0, MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_10,
