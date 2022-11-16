@@ -54,6 +54,11 @@ ifeq "$(TFT)" "NEWHAVEN"
 PROJ_CFLAGS+=-DTFT_NEWHAVEN
 SRCS += tft_st7789v.c
 # NewHaven TFT board has an integrated tsc2046 touchscreen driver
+# The TFT display is typically oriented with a 270 degree rotation,
+# so we need to flip the screen and swap the X,Y coordinates for
+# the touchscreen drivers to match it.
+PROJ_CFLAGS += -DFLIP_SCREEN
+PROJ_CFLAGS += -DSWAP_XY
 SRCS += tsc2046.c
 endif
 SRCS += camera.c
