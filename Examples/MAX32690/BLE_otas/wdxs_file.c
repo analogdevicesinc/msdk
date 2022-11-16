@@ -50,6 +50,8 @@ static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size);
 static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size);
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param);
 
+static fileHeader_t fileHeader = { .fileCRC = 0, .fileLen = 0 };
+#define HEADER_LEN (sizeof(fileHeader_t))
 extern uint32_t _flash_update;
 extern uint32_t _eflash_update;
 
@@ -92,18 +94,25 @@ static uint8_t wdxsFileInitMedia(void)
 static uint8_t wdxsFileErase(uint8_t *address, uint32_t size)
 {
     int err;
+    uint32_t pages = 0;
     volatile uint32_t address32 = (uint32_t)address;
-
-    while (size) {
-        /* WsfCsEnter(); */
-        err = MXC_FLC_PageErase((uint32_t)address32);
-        /* WsfCsExit(); */
-        if (err != E_NO_ERROR) {
-            return WSF_EFS_FAILURE;
+    if (fileHeader.fileLen != 0) {
+        /* calculate pages needed to erase */
+        pages = (fileHeader.fileLen / MXC_FLASH1_PAGE_SIZE) + 1;
+        APP_TRACE_INFO1(">>> Erasing %d pages in internal flash <<<", pages);
+        while (pages) {
+            err = MXC_FLC_PageErase((uint32_t)address32);
+            if (err != E_NO_ERROR) {
+                APP_TRACE_INFO0("There was an err");
+                return WSF_EFS_FAILURE;
+            }
+            pages--;
+            address32 += MXC_FLASH1_PAGE_SIZE;
         }
-
-        address32 += MXC_FLASH1_PAGE_SIZE;
-        size -= MXC_FLASH1_PAGE_SIZE;
+        return WSF_EFS_SUCCESS;
+    } else {
+        APP_TRACE_INFO0(">>> File size is unknown <<<");
+        return WSF_EFS_FAILURE;
     }
 
     return WSF_EFS_SUCCESS;
@@ -139,10 +148,11 @@ static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
 /*************************************************************************************************/
 static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
 {
-    int err;
-    /* WsfCsEnter(); */
-    err = MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t *)pBuf);
-    /* WsfCsExit(); */
+    int err = 0;
+    err += MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t *)pBuf);
+    /* verify data was written*/
+    err += memcmp(pAddress, pBuf, size);
+
     if (err == E_NO_ERROR) {
         lastWriteAddr = pAddress;
         lastWriteLen = size;
@@ -193,7 +203,7 @@ void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 }
 
 /*************************************************************************************************/
-/*!
+/*! 
  *  \brief  Media Specific Command handler.
  *
  *  \param  cmd    Identifier of the media specific command.
@@ -213,21 +223,31 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
     default: {
         /* Validate the image with CRC32 */
         uint32_t crcResult = 0;
-        uint32_t crcFile;
+        int err = 0;
 
-        verifyLen = (uint32_t)lastWriteAddr - WDXS_FileMedia.startAddress;
+        verifyLen = ((uint32_t)lastWriteAddr + lastWriteLen) - WDXS_FileMedia.startAddress;
 
         APP_TRACE_INFO2("CRC start addr: 0x%08X Len: 0x%08X", WDXS_FileMedia.startAddress,
                         verifyLen);
 
         crc32((const void *)WDXS_FileMedia.startAddress, verifyLen, &crcResult);
 
-        memcpy(&crcFile, (const char *)(WDXS_FileMedia.startAddress + verifyLen), 4);
-
         /* Check the calculated CRC32 against what was received, 32 bits is 4 bytes */
-        if (crcFile != crcResult) {
+        if (fileHeader.fileCRC != crcResult) {
             APP_TRACE_INFO0("Update file verification failure");
-            APP_TRACE_INFO2("File CRC: 0x%08X Calculated CRC: 0x%08X", crcFile, crcResult);
+            APP_TRACE_INFO2("Header CRC: 0x%08X Calculated CRC: 0x%08X", fileHeader.fileCRC,
+                            crcResult);
+            return WDX_FTC_ST_VERIFICATION;
+        }
+
+        /* if crc are ok write it to end of file*/
+        err += MXC_FLC_Write((WDXS_FileMedia.startAddress + verifyLen), sizeof(crcResult),
+                             (uint32_t)&crcResult);
+        uint32_t *temp = (uint32_t *)(WDXS_FileMedia.startAddress + verifyLen);
+        /* verify data was written*/
+        err += memcmp(temp, &crcResult, sizeof(crcResult));
+        if (err) {
+            APP_TRACE_INFO0("Error appending CRC to flash");
             return WDX_FTC_ST_VERIFICATION;
         }
 
@@ -304,4 +324,22 @@ uint32_t WdxsFileGetBaseAddr(void)
 uint32_t WdxsFileGetVerifiedLength(void)
 {
     return verifyLen;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Get the firmware version of the WDXS file.
+ *
+ *  \return Firmware version of WDXS file.
+ */
+/*************************************************************************************************/
+uint8_t WdxsFileGetFirmwareVersion(void)
+{
+    return FW_VERSION;
+}
+
+void initHeader(fileHeader_t *header)
+{
+    fileHeader.fileLen = header->fileLen;
+    fileHeader.fileCRC = header->fileCRC;
 }

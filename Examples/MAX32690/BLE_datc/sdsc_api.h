@@ -31,80 +31,51 @@
  *
  ******************************************************************************/
 
-/**
- * @file    board.h
- * @brief   Board support package API.
+/*************************************************************************************************/
+/*! Secure Data Service Client
+*   Implements the necessary handles list to perform service 
+*   and characteristic discovery of custom secured service .
+*
  */
+/*************************************************************************************************/
 
-#include <stdio.h>
-#include "spixf.h"
+#ifndef EXAMPLES_MAX32690_BLE_DATC_SDSC_API_H_
+#define EXAMPLES_MAX32690_BLE_DATC_SDSC_API_H_
 
-#ifndef LIBRARIES_BOARDS_MAX32690_TQFN_DB_INCLUDE_BOARD_H_
-#define LIBRARIES_BOARDS_MAX32690_TQFN_DB_INCLUDE_BOARD_H_
+#include "att_api.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifndef CONSOLE_UART
-#define CONSOLE_UART 2 /// UART instance to use for console
-#endif
+/*! \brief Secured service  enumeration of handle indexes of characteristics to be discovered */
+enum {
+    SEC_DAT_HDL_IDX, /*!< \brief Secured data */
+    SEC_DAT_CCC_HDL_IDX, /*!< \brief Secured data client characteristic configuration descriptor */
+    SEC_HDL_LIST_LEN /*!< \brief Handle list length */
+};
 
-#ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
-#endif
+/**************************************************************************************************
+  Function Declarations
+**************************************************************************************************/
 
-#ifndef HCI_UART
-#define HCI_UART 3
-#endif
-
-#ifndef TERMINAL_UART
-#define TERMINAL_UART CONSOLE_UART
-#endif
-
-#ifndef USER_UART
-#define USER_UART 1
-#endif
-
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
-
-#define TQFN_DB /// Used in examples to control program flow
-
-/**
- *  A reference to LED1 (RED LED in the RGB LED) of the board.
- *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
+/*************************************************************************************************/
+/*!
+ *  \brief  Perform service and characteristic discovery for Secured service .
+ *          Parameter pHdlList must point to an array of length \ref SEC_HDL_LIST_LEN.
+ *          If discovery is successful the handles of discovered characteristics and
+ *          descriptors will be set in pHdlList.
+ *
+ *  \param  connId    Connection identifier.
+ *  \param  pHdlList  Characteristic handle list.
+ *
+ *  \return None.
  */
-#define LED1 0
-#define LED_GREEN LED1
-
-/**
- * \brief   Initialize the BSP and board interfaces.
- * \returns #E_NO_ERROR if everything is successful
- */
-int Board_Init(void);
-
-/**
- * \brief   Initialize or reinitialize the console. This may be necessary if the
- *          system clock rate is changed.
- * \returns #E_NO_ERROR if everything is successful
- */
-int Console_Init(void);
-
-/**
- * \brief   Shutdown the console.
- * \returns #E_NO_ERROR if everything is successful
- */
-int Console_Shutdown(void);
-
-/**
- * \brief   Attempt to prepare the console for sleep.
- * \returns #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
- */
-int Console_PrepForSleep(void);
+/*************************************************************************************************/
+void SecDatSvcDiscover(dmConnId_t connId, uint16_t *pHdlList);
 
 #ifdef __cplusplus
-}
+};
 #endif
 
-#endif // LIBRARIES_BOARDS_MAX32690_TQFN_DB_INCLUDE_BOARD_H_
+#endif // EXAMPLES_MAX32690_BLE_DATC_SDSC_API_H_
