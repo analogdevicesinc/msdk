@@ -141,7 +141,7 @@ void dma_work_loop(void)
 
 void i2c_init(void)
 {
-    if (MXC_I2C_Init(CODEC_I2C, 1, 0))
+    if (MXC_I2C_Init(CODEC_I2C, 1, 0) != E_NO_ERROR)
         blink_halt("Error initializing I2C controller");
 
     MXC_I2C_SetFrequency(CODEC_I2C, CODEC_I2C_FREQ);
@@ -149,22 +149,22 @@ void i2c_init(void)
 
 void codec_init(void)
 {
-    if (max9867_init(CODEC_I2C, CODEC_MCLOCK, 1))
+    if (max9867_init(CODEC_I2C, CODEC_MCLOCK, 1) != E_NO_ERROR)
         blink_halt("Error initializing MAX9867 CODEC");
 
-    if (max9867_enable_playback(1))
+    if (max9867_enable_playback(1) != E_NO_ERROR)
         blink_halt("Error enabling playback path");
 
-    if (max9867_playback_volume(-6, -6))
+    if (max9867_playback_volume(-6, -6) != E_NO_ERROR)
         blink_halt("Error setting playback volume");
 
-    if (max9867_enable_record(1))
+    if (max9867_enable_record(1) != E_NO_ERROR)
         blink_halt("Error enabling record path");
 
-    if (max9867_adc_level(-12, -12))
+    if (max9867_adc_level(-12, -12) != E_NO_ERROR)
         blink_halt("Error setting ADC level");
 
-    if (max9867_linein_gain(-6, -6))
+    if (max9867_linein_gain(-6, -6) != E_NO_ERROR)
         blink_halt("Error setting Line-In gain");
 }
 
@@ -190,7 +190,7 @@ void i2s_init(void)
     req.rxData = I2S_CRUFT_PTR;
     req.length = I2S_CRUFT_LEN;
 
-    if (MXC_I2S_Init(&req))
+    if (MXC_I2S_Init(&req) != E_NO_ERROR)
         blink_halt("Error initializing I2S");
 
     MXC_I2S_SetFrequency(MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS, 0);

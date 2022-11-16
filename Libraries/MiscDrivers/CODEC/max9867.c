@@ -99,7 +99,7 @@ static int reg_update(uint8_t reg, uint8_t mask, uint8_t val)
   int err;
   uint8_t tmp;
 
-  if ((err = reg_read(reg, &tmp)))
+  if ((err = reg_read(reg, &tmp)) != E_NO_ERROR)
     return err;
 
   tmp &= ~mask;
@@ -166,7 +166,7 @@ int max9867_linein_mute(int left, int right)
 {
   int err;
 
-  if ((err = reg_update(MAX9867_0E_LVL_LINE_IN_LEFT, 0x40, !!left << 6)))
+  if ((err = reg_update(MAX9867_0E_LVL_LINE_IN_LEFT, 0x40, !!left << 6)) != E_NO_ERROR)
     return err;
 
   return reg_update(MAX9867_0F_LVL_LINE_IN_RIGHT, 0x40, !!right << 6);
@@ -180,7 +180,7 @@ int max9867_linein_gain(int left, int right)
   ligl = (24 - left) / 2;
   ligr = (24 - right) / 2;
 
-  if ((err = reg_update(MAX9867_0E_LVL_LINE_IN_LEFT, 0x0F, ligl)))
+  if ((err = reg_update(MAX9867_0E_LVL_LINE_IN_LEFT, 0x0F, ligl)) != E_NO_ERROR)
     return err;
 
   return reg_update(MAX9867_0F_LVL_LINE_IN_RIGHT, 0x0F, ligr);
@@ -195,7 +195,7 @@ int max9867_playback_mute(int left, int right)
 {
   int err;
 
-  if ((err = reg_update(MAX9867_10_VOL_LEFT, 0x40, !!left << 6)))
+  if ((err = reg_update(MAX9867_10_VOL_LEFT, 0x40, !!left << 6)) != E_NO_ERROR)
     return err;
 
   return reg_update(MAX9867_11_VOL_RIGHT, 0x40, !!right << 6);
@@ -230,7 +230,7 @@ int max9867_playback_volume(float left, float right)
   voll = map_vol(left);
   volr = map_vol(right);
 
-  if ((err = reg_update(MAX9867_10_VOL_LEFT, 0x3F, voll)))
+  if ((err = reg_update(MAX9867_10_VOL_LEFT, 0x3F, voll)) != E_NO_ERROR)
     return err;
 
   return reg_update(MAX9867_11_VOL_RIGHT, 0x3F, volr);
@@ -240,7 +240,7 @@ int max9867_microphone_preamp(mic_pa_gain_t left, mic_pa_gain_t right)
 {
   int err;
 
-  if ((err = reg_update(MAX9867_12_MIC_GAIN_LEFT, 0x60, left << 5)))
+  if ((err = reg_update(MAX9867_12_MIC_GAIN_LEFT, 0x60, left << 5)) != E_NO_ERROR)
     return err;
 
   return reg_update(MAX9867_13_MIC_GAIN_RIGHT, 0x60, right << 5);
@@ -254,7 +254,7 @@ int max9867_microphone_gain(int left, int right)
   pgaml = 20 - left;
   pgamr = 20 - right;
 
-  if ((err = reg_update(MAX9867_12_MIC_GAIN_LEFT, 0x1F, pgaml)))
+  if ((err = reg_update(MAX9867_12_MIC_GAIN_LEFT, 0x1F, pgaml)) != E_NO_ERROR)
     return err;
 
   return reg_update(MAX9867_13_MIC_GAIN_RIGHT, 0x1F, pgamr);
@@ -305,7 +305,7 @@ int max9867_power_enable(int shutdown, int enable)
   int err;
 
   if (shutdown)
-    if ((err = reg_write(MAX9867_17_PWR_SYS, 0x00)))
+    if ((err = reg_write(MAX9867_17_PWR_SYS, 0x00)) != E_NO_ERROR)
       return err;
 
   return reg_write(MAX9867_17_PWR_SYS, 0x80 | enable);
@@ -319,14 +319,14 @@ int max9867_enable_playback(int stereo)
   if (!i2c_req.i2c)
     return E_NULL_PTR;
 
-  if ((err = max9867_headphone_mode(HPMODE_STEREO_SE_CLICKLESS)))
+  if ((err = max9867_headphone_mode(HPMODE_STEREO_SE_CLICKLESS)) != E_NO_ERROR)
     return err;
 
-  if ((err = max9867_playback_volume(0, 0)))
+  if ((err = max9867_playback_volume(0, 0)) != E_NO_ERROR)
     return err;
 
   /* Assert SHDN as first step in toggling SHDN when changing enabled circuitry */
-  if ((err = reg_update(MAX9867_17_PWR_SYS, 0x80, 0x00)))
+  if ((err = reg_update(MAX9867_17_PWR_SYS, 0x80, 0x00)) != E_NO_ERROR)
     return err;
 
   en = EN_LEFT_DAC;
@@ -344,21 +344,21 @@ int max9867_enable_record(int stereo)
   if (!i2c_req.i2c)
     return E_NULL_PTR;
 
-  if ((err = max9867_adc_input(ADC_IN_LINE_IN, stereo ? ADC_IN_LINE_IN : ADC_IN_NONE)))
+  if ((err = max9867_adc_input(ADC_IN_LINE_IN, stereo ? ADC_IN_LINE_IN : ADC_IN_NONE)) != E_NO_ERROR)
     return err;
 
-  if ((err = max9867_adc_level(0, 0)))
+  if ((err = max9867_adc_level(0, 0)) != E_NO_ERROR)
     return err;
 
   /* disconnect line inputs from headphone amplifiers */
-  if ((err = max9867_linein_mute(1, 1)))
+  if ((err = max9867_linein_mute(1, 1)) != E_NO_ERROR)
     return err;
 
-  if ((err = max9867_linein_gain(0, 0)))
+  if ((err = max9867_linein_gain(0, 0)) != E_NO_ERROR)
     return err;
 
   /* Assert SHDN as first step in toggling SHDN when changing enabled circuitry */
-  if ((err = reg_update(MAX9867_17_PWR_SYS, 0x80, 0x00)))
+  if ((err = reg_update(MAX9867_17_PWR_SYS, 0x80, 0x00)) != E_NO_ERROR)
     return err;
 
   en = EN_LEFT_ADC | EN_LEFT_LINEIN;
@@ -384,19 +384,19 @@ int max9867_init(mxc_i2c_regs_t *i2c_inst, int mclk, int controller)
   i2c_req.callback = (void *)0;
 
   /* Probe for MAX9867 */
-  if ((err = reg_read(MAX9867_FF_REV_ID, &rev_id)))
+  if ((err = reg_read(MAX9867_FF_REV_ID, &rev_id)) != E_NO_ERROR)
     return err;
 
   if (rev_id != MAX9867_REVID)
     return E_NOT_SUPPORTED;
 
   /* Shutdown for configuration */
-  if ((err = max9867_power_enable(1, 0)))
+  if ((err = max9867_power_enable(1, 0)) != E_NO_ERROR)
     return err;
 
   /* Clear all regs to POR state */
   for (int i = MAX9867_04_INT_EN; i < MAX9867_17_PWR_SYS; i++)
-    if ((err = reg_write(i, 0x00)))
+    if ((err = reg_write(i, 0x00)) != E_NO_ERROR)
       return err;
 
   /* Select MCLK prescaler */
@@ -410,21 +410,21 @@ int max9867_init(mxc_i2c_regs_t *i2c_inst, int mclk, int controller)
     psclk = 0x3;
 
   /* Set prescaler, FREQ field is 0 for Normal clock mode */
-  if ((err = reg_write(MAX9867_05_SYS_CLK, psclk << 4)))
+  if ((err = reg_write(MAX9867_05_SYS_CLK, psclk << 4)) != E_NO_ERROR)
     return err;
 
   /* Use PLL in target mode or appropriate NI in controller mode.
      NI=0x3000 when MCLK=12.288MHz and LRCLK=24KHz
      See MAX9867 datasheet for NI selection */
-  if ((err = reg_write(MAX9867_06_CLK_HIGH, controller ? 0x30 : 0x80)))
+  if ((err = reg_write(MAX9867_06_CLK_HIGH, controller ? 0x30 : 0x80)) != E_NO_ERROR)
     return err;
 
   if (controller)
-    if ((err = reg_write(MAX9867_09_DAI_CLOCK, 0x02)))
+    if ((err = reg_write(MAX9867_09_DAI_CLOCK, 0x02)) != E_NO_ERROR)
       return err;
 
   /* I2S format, data is delayed 1 bit clock, HI-Z mode disabled */
-  if ((err = reg_write(MAX9867_08_DAI_FORMAT, controller ? 0x98 : 0x18)))
+  if ((err = reg_write(MAX9867_08_DAI_FORMAT, controller ? 0x98 : 0x18)) != E_NO_ERROR)
     return err;
 
   return E_NO_ERROR;
