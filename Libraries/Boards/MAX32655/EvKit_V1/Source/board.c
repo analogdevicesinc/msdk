@@ -278,10 +278,11 @@ static int ext_flash_clock(unsigned int len, unsigned int deassert)
     return res;
 }
 
-void TS_SPI_Init(void) {
+void TS_SPI_Init(void)
+{
     mxc_spi_pins_t ts_pins = {
         // CLK, MISO, MOSI enabled, SS IDx = 1
-        .clock = true, .ss0 = false, .ss1 = true,   .ss2 = false,
+        .clock = true, .ss0 = false, .ss1 = true,    .ss2 = false,
         .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
     };
 
