@@ -48,6 +48,7 @@
 #endif
 #ifdef TFT_NEWHAVEN
 #include "tft_st7789v.h"
+#include "tsc2046.h"
 #endif
 
 #ifdef __cplusplus
@@ -87,18 +88,25 @@ extern "C" {
  */
 #define LED2 1
 
-#ifdef TFT_NEWHAVEN
 #define TFT_SPI MXC_SPI0 // SPI port to use for TFT display
+#ifdef TFT_NEWHAVEN
 #define TFT_SPI_FREQ 20000000 /**< SPI clock frequency in Hertz. */
+#endif
 #define TFT_DC_PORT MXC_GPIO2 /**< GPIO port for Data/Command signal. */
 #define TFT_DC_PIN MXC_GPIO_PIN_2 /**< GPIO pin for Data/Command signal. */
 #define TFT_SS_PORT MXC_GPIO0 /**< GPIO port for select signal. */
 #define TFT_SS_PIN MXC_GPIO_PIN_3 /**< GPIO pin for select signal. */
 
+#define TS_SPI MXC_SPI0
+#define TS_SPI_FREQ 1000000
+#define TS_IRQ_PORT MXC_GPIO0
+#define TS_IRQ_PIN MXC_GPIO_PIN_19
+#define TS_SS_PORT MXC_GPIO1
+#define TS_SS_PIN MXC_GPIO_PIN_1
+
 void TFT_SPI_Init(void);
 void TFT_SPI_Write(uint8_t data, bool cmd);
 void TFT_SPI_Transmit(void *src, int count);
-#endif
 
 /**
  * \brief   Initialize the BSP and board interfaces.
