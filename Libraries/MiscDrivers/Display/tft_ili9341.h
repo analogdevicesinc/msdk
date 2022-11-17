@@ -46,8 +46,7 @@
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH 320
 #define DISPLAY_HEIGHT 240
-//#define TFT_SPI_FREQ  10000000 // Hz
-#define TFT_SPI_FREQ 25000000 // Hz
+#define TFT_SPI_FREQ  10000000 // Hz
 #define TFT_SPI0_PINS MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_11
 /************************************************************************************/
 typedef struct {
