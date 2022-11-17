@@ -178,7 +178,6 @@ void MXC_LP_ClearWakeStatus(void)
 {
     /* Write 1 to clear */
     MXC_PWRSEQ->lpwkfl0 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lpwkfl1 = 0xFFFFFFFF;
     MXC_PWRSEQ->lppwkfl = 0xFFFFFFFF;
 }
 
@@ -201,7 +200,7 @@ void MXC_LP_DisableGPIOWakeup(const mxc_gpio_cfg_t *wu_pins)
         break;
     }
 
-    if (MXC_PWRSEQ->lpwken1 == 0 && MXC_PWRSEQ->lpwken0 == 0) {
+    if (MXC_PWRSEQ->lpwken0 == 0) {
         MXC_GCR->pm &= ~MXC_F_GCR_PM_GPIO_WE;
     }
 }
