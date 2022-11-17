@@ -29,6 +29,7 @@ SPI
 SPIMSS
 SPIXF
 SPIXR
+SPI_MasterSlave
 SysTick
 TMR
 TRNG
