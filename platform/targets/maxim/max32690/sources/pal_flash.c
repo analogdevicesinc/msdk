@@ -164,10 +164,6 @@ uint32_t PalNvmGetSectorSize(void)
 /*************************************************************************************************/
 void PalFlashRead(void *pBuf, uint32_t size, uint32_t srcAddr)
 {
-  /* TODO: Workaround for odd Bluetooth behavior */
-  memset(pBuf, 0xFF, size);
-  return;
-
   if(PalNvmGetState() != PAL_FLASH_STATE_READY) {
     /* Fill the buffer with erased flash data */
     memset(pBuf, 0xFF, size);
