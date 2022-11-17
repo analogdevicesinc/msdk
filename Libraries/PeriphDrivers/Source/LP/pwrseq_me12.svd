@@ -279,32 +279,6 @@ domain.</description>
         </fields>
       </register>
       <register>
-        <name>LPWKFL1</name>
-        <description>Low Power I/O Wakeup Status Flag Register 1. This register indicates the low power wakeup status for GPIO1.</description>
-        <addressOffset>0x0C</addressOffset>
-        <fields>
-          <field>
-            <name>WAKEFL</name>
-            <description>Wakeup IRQ flags (write ones to clear). One or more of these bits will be set when the corresponding dedicated GPIO pin (s) transition (s) from low to high or high to low. If GPIO wakeup source is selected, using PM.GPIOWKEN register, and the corresponding bit is also selected in LPWKEN register, an interrupt will be gnerated to wake up the CPU from a low power mode.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>10</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>LPWKEN1</name>
-        <description>Low Power I/O Wakeup Enable Register 1. This register enables low power wakeup functionality for GPIO1.</description>
-        <addressOffset>0x10</addressOffset>
-        <fields>
-          <field>
-            <name>WAKEEN</name>
-            <description>Enable wakeup. These bits allow wakeup from the corresponding GPIO pin (s) on transition (s) from low to high or high to low when PM.GPIOWKEN is set. Wakeup status is indicated in PPWKST register.</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>10</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>LPPWKFL</name>
         <description>Low Power Peripheral Wakeup Status Flag Register.</description>
         <addressOffset>0x30</addressOffset>
