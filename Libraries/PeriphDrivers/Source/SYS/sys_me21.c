@@ -52,6 +52,7 @@
 #include "gcr_regs.h"
 #include "fcr_regs.h"
 #include "mcr_regs.h"
+#include "pwrseq_regs.h"
 
 /**
  * @ingroup mxc_sys
