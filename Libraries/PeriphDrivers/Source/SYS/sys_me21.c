@@ -153,6 +153,7 @@ void MXC_SYS_RTCClockEnable()
 {
     MXC_PWRSEQ->lpcn &= ~(MXC_F_PWRSEQ_LPCN_TM_PWRSEQ);
     MXC_GCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
+    MXC_MCR->clkctrl &= ~(MXC_F_MCR_CLKCTRL_ERTCO_PD);
 }
 
 /* ************************************************************************** */
@@ -162,6 +163,7 @@ int MXC_SYS_RTCClockDisable(void)
     if ((MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) != MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO) {
         MXC_GCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_EN;
         MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_TM_PWRSEQ;
+        MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_PD;
         return E_NO_ERROR;
     } else {
         return E_BAD_STATE;
