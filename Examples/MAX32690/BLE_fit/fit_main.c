@@ -483,21 +483,16 @@ static void fitBtnCback(uint8_t btn)
         switch (btn) {
         case APP_UI_BTN_1_SHORT:
             /* start or restart advertising */
-            APP_TRACE_INFO0("----btn1 s\n");
             AppAdvStart(APP_MODE_AUTO_INIT);
             break;
 
         case APP_UI_BTN_1_MED:
-            APP_TRACE_INFO0("----btn1 m\n");
-
             /* enter discoverable and bondable mode */
             AppSetBondable(TRUE);
             AppAdvStart(APP_MODE_DISCOVERABLE);
             break;
 
         case APP_UI_BTN_1_LONG:
-            APP_TRACE_INFO0("----btn1 L\n");
-
             /* clear all bonding info */
             AppSlaveClearAllBondingInfo();
 
