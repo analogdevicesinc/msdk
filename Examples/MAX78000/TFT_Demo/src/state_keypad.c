@@ -39,7 +39,7 @@
 #include "bitmap.h"
 #include "keypad.h"
 #include "state.h"
-#include "tft_ssd2119.h"
+#include "example_config.h"
 
 /*********************************      DEFINES      *************************/
 #define BUTTON_SIZE_X 42 + 4 // 6 for free space

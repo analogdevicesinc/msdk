@@ -33,6 +33,7 @@ I2C_ADXL343
 I2C_SCAN
 I2S
 I2S_DMA
+I2S_DMA_Target
 ICC
 LP
 Pulse_Train

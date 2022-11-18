@@ -1,17 +1,20 @@
 /**
  * @file    pwrseq_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the PWRSEQ Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,11 +37,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _PWRSEQ_REGS_H_
-#define _PWRSEQ_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_PWRSEQ_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_PWRSEQ_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -46,11 +48,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -78,7 +80,7 @@ extern "C" {
  * @ingroup     pwrseq
  * @defgroup    pwrseq_registers PWRSEQ_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the PWRSEQ Peripheral Module.
- * @details Power Sequencer / Low Power Control Register.
+ * @details     Power Sequencer / Low Power Control Register.
  */
 
 /**
@@ -109,24 +111,24 @@ typedef struct {
 /**
  * @ingroup    pwrseq_registers
  * @defgroup   PWRSEQ_Register_Offsets Register Offsets
- * @brief      PWRSEQ Peripheral Register Offsets from the PWRSEQ Base Peripheral Address. 
+ * @brief      PWRSEQ Peripheral Register Offsets from the PWRSEQ Base Peripheral Address.
  * @{
  */
- #define MXC_R_PWRSEQ_LPCN                  ((uint32_t)0x00000000UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0000</tt> */ 
- #define MXC_R_PWRSEQ_LPWKST0               ((uint32_t)0x00000004UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0004</tt> */ 
- #define MXC_R_PWRSEQ_LPWKEN0               ((uint32_t)0x00000008UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0008</tt> */ 
- #define MXC_R_PWRSEQ_LPWKST1               ((uint32_t)0x0000000CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x000C</tt> */ 
- #define MXC_R_PWRSEQ_LPWKEN1               ((uint32_t)0x00000010UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0010</tt> */ 
- #define MXC_R_PWRSEQ_LPWKST2               ((uint32_t)0x00000014UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0014</tt> */ 
- #define MXC_R_PWRSEQ_LPWKEN2               ((uint32_t)0x00000018UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0018</tt> */ 
- #define MXC_R_PWRSEQ_LPWKST3               ((uint32_t)0x0000001CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x001C</tt> */ 
- #define MXC_R_PWRSEQ_LPWKEN3               ((uint32_t)0x00000020UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0020</tt> */ 
- #define MXC_R_PWRSEQ_LPPWKST               ((uint32_t)0x00000030UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0030</tt> */ 
- #define MXC_R_PWRSEQ_LPPWKEN               ((uint32_t)0x00000034UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0034</tt> */ 
- #define MXC_R_PWRSEQ_LPMEMSD               ((uint32_t)0x00000040UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0040</tt> */ 
- #define MXC_R_PWRSEQ_LPVDDPD               ((uint32_t)0x00000044UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0044</tt> */ 
- #define MXC_R_PWRSEQ_GP0                   ((uint32_t)0x00000048UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0048</tt> */ 
- #define MXC_R_PWRSEQ_GP1                   ((uint32_t)0x0000004CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x004C</tt> */ 
+#define MXC_R_PWRSEQ_LPCN                  ((uint32_t)0x00000000UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0000</tt> */
+#define MXC_R_PWRSEQ_LPWKST0               ((uint32_t)0x00000004UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0004</tt> */
+#define MXC_R_PWRSEQ_LPWKEN0               ((uint32_t)0x00000008UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0008</tt> */
+#define MXC_R_PWRSEQ_LPWKST1               ((uint32_t)0x0000000CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x000C</tt> */
+#define MXC_R_PWRSEQ_LPWKEN1               ((uint32_t)0x00000010UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0010</tt> */
+#define MXC_R_PWRSEQ_LPWKST2               ((uint32_t)0x00000014UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0014</tt> */
+#define MXC_R_PWRSEQ_LPWKEN2               ((uint32_t)0x00000018UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0018</tt> */
+#define MXC_R_PWRSEQ_LPWKST3               ((uint32_t)0x0000001CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x001C</tt> */
+#define MXC_R_PWRSEQ_LPWKEN3               ((uint32_t)0x00000020UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0020</tt> */
+#define MXC_R_PWRSEQ_LPPWKST               ((uint32_t)0x00000030UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0030</tt> */
+#define MXC_R_PWRSEQ_LPPWKEN               ((uint32_t)0x00000034UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0034</tt> */
+#define MXC_R_PWRSEQ_LPMEMSD               ((uint32_t)0x00000040UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0040</tt> */
+#define MXC_R_PWRSEQ_LPVDDPD               ((uint32_t)0x00000044UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0044</tt> */
+#define MXC_R_PWRSEQ_GP0                   ((uint32_t)0x00000048UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0048</tt> */
+#define MXC_R_PWRSEQ_GP1                   ((uint32_t)0x0000004CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x004C</tt> */
 /**@} end of group pwrseq_registers */
 
 /**
@@ -135,50 +137,50 @@ typedef struct {
  * @brief    Low Power Control Register.
  * @{
  */
- #define MXC_F_PWRSEQ_LPCN_RAMRET_EN_POS                0 /**< LPCN_RAMRET_EN Position */
- #define MXC_F_PWRSEQ_LPCN_RAMRET_EN                    ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPCN_RAMRET_EN_POS)) /**< LPCN_RAMRET_EN Mask */
+#define MXC_F_PWRSEQ_LPCN_RAMRET_EN_POS                0 /**< LPCN_RAMRET_EN Position */
+#define MXC_F_PWRSEQ_LPCN_RAMRET_EN                    ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPCN_RAMRET_EN_POS)) /**< LPCN_RAMRET_EN Mask */
 
- #define MXC_F_PWRSEQ_LPCN_OVR_POS                      4 /**< LPCN_OVR Position */
- #define MXC_F_PWRSEQ_LPCN_OVR                          ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPCN_OVR_POS)) /**< LPCN_OVR Mask */
- #define MXC_V_PWRSEQ_LPCN_OVR_0_9V                     ((uint32_t)0x0UL) /**< LPCN_OVR_0_9V Value */
- #define MXC_S_PWRSEQ_LPCN_OVR_0_9V                     (MXC_V_PWRSEQ_LPCN_OVR_0_9V << MXC_F_PWRSEQ_LPCN_OVR_POS) /**< LPCN_OVR_0_9V Setting */
- #define MXC_V_PWRSEQ_LPCN_OVR_1_0V                     ((uint32_t)0x1UL) /**< LPCN_OVR_1_0V Value */
- #define MXC_S_PWRSEQ_LPCN_OVR_1_0V                     (MXC_V_PWRSEQ_LPCN_OVR_1_0V << MXC_F_PWRSEQ_LPCN_OVR_POS) /**< LPCN_OVR_1_0V Setting */
- #define MXC_V_PWRSEQ_LPCN_OVR_1_1V                     ((uint32_t)0x2UL) /**< LPCN_OVR_1_1V Value */
- #define MXC_S_PWRSEQ_LPCN_OVR_1_1V                     (MXC_V_PWRSEQ_LPCN_OVR_1_1V << MXC_F_PWRSEQ_LPCN_OVR_POS) /**< LPCN_OVR_1_1V Setting */
+#define MXC_F_PWRSEQ_LPCN_OVR_POS                      4 /**< LPCN_OVR Position */
+#define MXC_F_PWRSEQ_LPCN_OVR                          ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPCN_OVR_POS)) /**< LPCN_OVR Mask */
+#define MXC_V_PWRSEQ_LPCN_OVR_0_9V                     ((uint32_t)0x0UL) /**< LPCN_OVR_0_9V Value */
+#define MXC_S_PWRSEQ_LPCN_OVR_0_9V                     (MXC_V_PWRSEQ_LPCN_OVR_0_9V << MXC_F_PWRSEQ_LPCN_OVR_POS) /**< LPCN_OVR_0_9V Setting */
+#define MXC_V_PWRSEQ_LPCN_OVR_1_0V                     ((uint32_t)0x1UL) /**< LPCN_OVR_1_0V Value */
+#define MXC_S_PWRSEQ_LPCN_OVR_1_0V                     (MXC_V_PWRSEQ_LPCN_OVR_1_0V << MXC_F_PWRSEQ_LPCN_OVR_POS) /**< LPCN_OVR_1_0V Setting */
+#define MXC_V_PWRSEQ_LPCN_OVR_1_1V                     ((uint32_t)0x2UL) /**< LPCN_OVR_1_1V Value */
+#define MXC_S_PWRSEQ_LPCN_OVR_1_1V                     (MXC_V_PWRSEQ_LPCN_OVR_1_1V << MXC_F_PWRSEQ_LPCN_OVR_POS) /**< LPCN_OVR_1_1V Setting */
 
- #define MXC_F_PWRSEQ_LPCN_RETREG_EN_POS                8 /**< LPCN_RETREG_EN Position */
- #define MXC_F_PWRSEQ_LPCN_RETREG_EN                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_RETREG_EN_POS)) /**< LPCN_RETREG_EN Mask */
+#define MXC_F_PWRSEQ_LPCN_RETREG_EN_POS                8 /**< LPCN_RETREG_EN Position */
+#define MXC_F_PWRSEQ_LPCN_RETREG_EN                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_RETREG_EN_POS)) /**< LPCN_RETREG_EN Mask */
 
- #define MXC_F_PWRSEQ_LPCN_FASTWK_EN_POS                10 /**< LPCN_FASTWK_EN Position */
- #define MXC_F_PWRSEQ_LPCN_FASTWK_EN                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_FASTWK_EN_POS)) /**< LPCN_FASTWK_EN Mask */
+#define MXC_F_PWRSEQ_LPCN_FASTWK_EN_POS                10 /**< LPCN_FASTWK_EN Position */
+#define MXC_F_PWRSEQ_LPCN_FASTWK_EN                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_FASTWK_EN_POS)) /**< LPCN_FASTWK_EN Mask */
 
- #define MXC_F_PWRSEQ_LPCN_BG_DIS_POS                   11 /**< LPCN_BG_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_BG_DIS                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_BG_DIS_POS)) /**< LPCN_BG_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_BG_DIS_POS                   11 /**< LPCN_BG_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_BG_DIS                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_BG_DIS_POS)) /**< LPCN_BG_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS_POS             12 /**< LPCN_VCOREPOR_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS_POS)) /**< LPCN_VCOREPOR_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS_POS             12 /**< LPCN_VCOREPOR_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS_POS)) /**< LPCN_VCOREPOR_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_LDO_DIS_POS                  16 /**< LPCN_LDO_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_LDO_DIS                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_LDO_DIS_POS)) /**< LPCN_LDO_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_LDO_DIS_POS                  16 /**< LPCN_LDO_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_LDO_DIS                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_LDO_DIS_POS)) /**< LPCN_LDO_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_VCOREMON_DIS_POS             20 /**< LPCN_VCOREMON_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_VCOREMON_DIS                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VCOREMON_DIS_POS)) /**< LPCN_VCOREMON_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_VCOREMON_DIS_POS             20 /**< LPCN_VCOREMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_VCOREMON_DIS                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VCOREMON_DIS_POS)) /**< LPCN_VCOREMON_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_VRTCMON_DIS_POS              21 /**< LPCN_VRTCMON_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_VRTCMON_DIS                  ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VRTCMON_DIS_POS)) /**< LPCN_VRTCMON_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_VRTCMON_DIS_POS              21 /**< LPCN_VRTCMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_VRTCMON_DIS                  ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VRTCMON_DIS_POS)) /**< LPCN_VRTCMON_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_VDDAMON_DIS_POS              22 /**< LPCN_VDDAMON_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_VDDAMON_DIS                  ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VDDAMON_DIS_POS)) /**< LPCN_VDDAMON_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_VDDAMON_DIS_POS              22 /**< LPCN_VDDAMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_VDDAMON_DIS                  ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VDDAMON_DIS_POS)) /**< LPCN_VDDAMON_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_VDDIOMON_DIS_POS             23 /**< LPCN_VDDIOMON_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_VDDIOMON_DIS                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VDDIOMON_DIS_POS)) /**< LPCN_VDDIOMON_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_VDDIOMON_DIS_POS             23 /**< LPCN_VDDIOMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_VDDIOMON_DIS                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VDDIOMON_DIS_POS)) /**< LPCN_VDDIOMON_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_VDDIOHMON_DIS_POS            24 /**< LPCN_VDDIOHMON_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_VDDIOHMON_DIS                ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VDDIOHMON_DIS_POS)) /**< LPCN_VDDIOHMON_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_VDDIOHMON_DIS_POS            24 /**< LPCN_VDDIOHMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_VDDIOHMON_DIS                ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_VDDIOHMON_DIS_POS)) /**< LPCN_VDDIOHMON_DIS Mask */
 
- #define MXC_F_PWRSEQ_LPCN_PORVDDBMON_DIS_POS           27 /**< LPCN_PORVDDBMON_DIS Position */
- #define MXC_F_PWRSEQ_LPCN_PORVDDBMON_DIS               ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_PORVDDBMON_DIS_POS)) /**< LPCN_PORVDDBMON_DIS Mask */
+#define MXC_F_PWRSEQ_LPCN_PORVDDBMON_DIS_POS           27 /**< LPCN_PORVDDBMON_DIS Position */
+#define MXC_F_PWRSEQ_LPCN_PORVDDBMON_DIS               ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_PORVDDBMON_DIS_POS)) /**< LPCN_PORVDDBMON_DIS Mask */
 
 /**@} end of group PWRSEQ_LPCN_Register */
 
@@ -189,8 +191,8 @@ typedef struct {
  *           wakeup status for GPIO0.
  * @{
  */
- #define MXC_F_PWRSEQ_LPWKST0_ST_POS                    0 /**< LPWKST0_ST Position */
- #define MXC_F_PWRSEQ_LPWKST0_ST                        ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPWKST0_ST_POS)) /**< LPWKST0_ST Mask */
+#define MXC_F_PWRSEQ_LPWKST0_ST_POS                    0 /**< LPWKST0_ST Position */
+#define MXC_F_PWRSEQ_LPWKST0_ST                        ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPWKST0_ST_POS)) /**< LPWKST0_ST Mask */
 
 /**@} end of group PWRSEQ_LPWKST0_Register */
 
@@ -201,8 +203,8 @@ typedef struct {
  *           functionality for GPIO0.
  * @{
  */
- #define MXC_F_PWRSEQ_LPWKEN0_EN_POS                    0 /**< LPWKEN0_EN Position */
- #define MXC_F_PWRSEQ_LPWKEN0_EN                        ((uint32_t)(0x7FFFFFFFUL << MXC_F_PWRSEQ_LPWKEN0_EN_POS)) /**< LPWKEN0_EN Mask */
+#define MXC_F_PWRSEQ_LPWKEN0_EN_POS                    0 /**< LPWKEN0_EN Position */
+#define MXC_F_PWRSEQ_LPWKEN0_EN                        ((uint32_t)(0x7FFFFFFFUL << MXC_F_PWRSEQ_LPWKEN0_EN_POS)) /**< LPWKEN0_EN Mask */
 
 /**@} end of group PWRSEQ_LPWKEN0_Register */
 
@@ -212,23 +214,23 @@ typedef struct {
  * @brief    Low Power Peripheral Wakeup Status Register.
  * @{
  */
- #define MXC_F_PWRSEQ_LPPWKST_USBLS_POS                 0 /**< LPPWKST_USBLS Position */
- #define MXC_F_PWRSEQ_LPPWKST_USBLS                     ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPPWKST_USBLS_POS)) /**< LPPWKST_USBLS Mask */
+#define MXC_F_PWRSEQ_LPPWKST_USBLS_POS                 0 /**< LPPWKST_USBLS Position */
+#define MXC_F_PWRSEQ_LPPWKST_USBLS                     ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPPWKST_USBLS_POS)) /**< LPPWKST_USBLS Mask */
 
- #define MXC_F_PWRSEQ_LPPWKST_USBVBUS_POS               2 /**< LPPWKST_USBVBUS Position */
- #define MXC_F_PWRSEQ_LPPWKST_USBVBUS                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_USBVBUS_POS)) /**< LPPWKST_USBVBUS Mask */
+#define MXC_F_PWRSEQ_LPPWKST_USBVBUS_POS               2 /**< LPPWKST_USBVBUS Position */
+#define MXC_F_PWRSEQ_LPPWKST_USBVBUS                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_USBVBUS_POS)) /**< LPPWKST_USBVBUS Mask */
 
- #define MXC_F_PWRSEQ_LPPWKST_HA0_POS                   3 /**< LPPWKST_HA0 Position */
- #define MXC_F_PWRSEQ_LPPWKST_HA0                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_HA0_POS)) /**< LPPWKST_HA0 Mask */
+#define MXC_F_PWRSEQ_LPPWKST_HA0_POS                   3 /**< LPPWKST_HA0 Position */
+#define MXC_F_PWRSEQ_LPPWKST_HA0                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_HA0_POS)) /**< LPPWKST_HA0 Mask */
 
- #define MXC_F_PWRSEQ_LPPWKST_BBMOD_POS                 16 /**< LPPWKST_BBMOD Position */
- #define MXC_F_PWRSEQ_LPPWKST_BBMOD                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_BBMOD_POS)) /**< LPPWKST_BBMOD Mask */
+#define MXC_F_PWRSEQ_LPPWKST_BBMOD_POS                 16 /**< LPPWKST_BBMOD Position */
+#define MXC_F_PWRSEQ_LPPWKST_BBMOD                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_BBMOD_POS)) /**< LPPWKST_BBMOD Mask */
 
- #define MXC_F_PWRSEQ_LPPWKST_RST_POS                   17 /**< LPPWKST_RST Position */
- #define MXC_F_PWRSEQ_LPPWKST_RST                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_RST_POS)) /**< LPPWKST_RST Mask */
+#define MXC_F_PWRSEQ_LPPWKST_RST_POS                   17 /**< LPPWKST_RST Position */
+#define MXC_F_PWRSEQ_LPPWKST_RST                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_RST_POS)) /**< LPPWKST_RST Mask */
 
- #define MXC_F_PWRSEQ_LPPWKST_SDMA1_POS                 18 /**< LPPWKST_SDMA1 Position */
- #define MXC_F_PWRSEQ_LPPWKST_SDMA1                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_SDMA1_POS)) /**< LPPWKST_SDMA1 Mask */
+#define MXC_F_PWRSEQ_LPPWKST_SDMA1_POS                 18 /**< LPPWKST_SDMA1 Position */
+#define MXC_F_PWRSEQ_LPPWKST_SDMA1                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKST_SDMA1_POS)) /**< LPPWKST_SDMA1 Mask */
 
 /**@} end of group PWRSEQ_LPPWKST_Register */
 
@@ -238,17 +240,17 @@ typedef struct {
  * @brief    Low Power Peripheral Wakeup Enable Register.
  * @{
  */
- #define MXC_F_PWRSEQ_LPPWKEN_USBLS_POS                 0 /**< LPPWKEN_USBLS Position */
- #define MXC_F_PWRSEQ_LPPWKEN_USBLS                     ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPPWKEN_USBLS_POS)) /**< LPPWKEN_USBLS Mask */
+#define MXC_F_PWRSEQ_LPPWKEN_USBLS_POS                 0 /**< LPPWKEN_USBLS Position */
+#define MXC_F_PWRSEQ_LPPWKEN_USBLS                     ((uint32_t)(0x3UL << MXC_F_PWRSEQ_LPPWKEN_USBLS_POS)) /**< LPPWKEN_USBLS Mask */
 
- #define MXC_F_PWRSEQ_LPPWKEN_USBVBUS_POS               2 /**< LPPWKEN_USBVBUS Position */
- #define MXC_F_PWRSEQ_LPPWKEN_USBVBUS                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKEN_USBVBUS_POS)) /**< LPPWKEN_USBVBUS Mask */
+#define MXC_F_PWRSEQ_LPPWKEN_USBVBUS_POS               2 /**< LPPWKEN_USBVBUS Position */
+#define MXC_F_PWRSEQ_LPPWKEN_USBVBUS                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKEN_USBVBUS_POS)) /**< LPPWKEN_USBVBUS Mask */
 
- #define MXC_F_PWRSEQ_LPPWKEN_SDMA0_POS                 3 /**< LPPWKEN_SDMA0 Position */
- #define MXC_F_PWRSEQ_LPPWKEN_SDMA0                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKEN_SDMA0_POS)) /**< LPPWKEN_SDMA0 Mask */
+#define MXC_F_PWRSEQ_LPPWKEN_SDMA0_POS                 3 /**< LPPWKEN_SDMA0 Position */
+#define MXC_F_PWRSEQ_LPPWKEN_SDMA0                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKEN_SDMA0_POS)) /**< LPPWKEN_SDMA0 Mask */
 
- #define MXC_F_PWRSEQ_LPPWKEN_SDMA1_POS                 18 /**< LPPWKEN_SDMA1 Position */
- #define MXC_F_PWRSEQ_LPPWKEN_SDMA1                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKEN_SDMA1_POS)) /**< LPPWKEN_SDMA1 Mask */
+#define MXC_F_PWRSEQ_LPPWKEN_SDMA1_POS                 18 /**< LPPWKEN_SDMA1 Position */
+#define MXC_F_PWRSEQ_LPPWKEN_SDMA1                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPPWKEN_SDMA1_POS)) /**< LPPWKEN_SDMA1 Mask */
 
 /**@} end of group PWRSEQ_LPPWKEN_Register */
 
@@ -258,38 +260,38 @@ typedef struct {
  * @brief    Low Power Memory Shutdown Control.
  * @{
  */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM0_POS                  0 /**< LPMEMSD_RAM0 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM0                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM0_POS)) /**< LPMEMSD_RAM0 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM0_POS                  0 /**< LPMEMSD_RAM0 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM0                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM0_POS)) /**< LPMEMSD_RAM0 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM1_POS                  1 /**< LPMEMSD_RAM1 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM1                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM1_POS)) /**< LPMEMSD_RAM1 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM1_POS                  1 /**< LPMEMSD_RAM1 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM1                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM1_POS)) /**< LPMEMSD_RAM1 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM2_POS                  2 /**< LPMEMSD_RAM2 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM2                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM2_POS)) /**< LPMEMSD_RAM2 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM2_POS                  2 /**< LPMEMSD_RAM2 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM2                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM2_POS)) /**< LPMEMSD_RAM2 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM3_POS                  3 /**< LPMEMSD_RAM3 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM3                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM3_POS)) /**< LPMEMSD_RAM3 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM3_POS                  3 /**< LPMEMSD_RAM3 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM3                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM3_POS)) /**< LPMEMSD_RAM3 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM4_POS                  4 /**< LPMEMSD_RAM4 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM4                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM4_POS)) /**< LPMEMSD_RAM4 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM4_POS                  4 /**< LPMEMSD_RAM4 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM4                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM4_POS)) /**< LPMEMSD_RAM4 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_RAM5_POS                  5 /**< LPMEMSD_RAM5 Position */
- #define MXC_F_PWRSEQ_LPMEMSD_RAM5                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM5_POS)) /**< LPMEMSD_RAM5 Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM5_POS                  5 /**< LPMEMSD_RAM5 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM5                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM5_POS)) /**< LPMEMSD_RAM5 Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_ICACHE_POS                7 /**< LPMEMSD_ICACHE Position */
- #define MXC_F_PWRSEQ_LPMEMSD_ICACHE                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICACHE_POS)) /**< LPMEMSD_ICACHE Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_ICACHE_POS                7 /**< LPMEMSD_ICACHE Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ICACHE                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICACHE_POS)) /**< LPMEMSD_ICACHE Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP_POS             8 /**< LPMEMSD_ICACHEXIP Position */
- #define MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP_POS)) /**< LPMEMSD_ICACHEXIP Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP_POS             8 /**< LPMEMSD_ICACHEXIP Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP                 ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP_POS)) /**< LPMEMSD_ICACHEXIP Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_SRCC_POS                  9 /**< LPMEMSD_SRCC Position */
- #define MXC_F_PWRSEQ_LPMEMSD_SRCC                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_SRCC_POS)) /**< LPMEMSD_SRCC Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_SRCC_POS                  9 /**< LPMEMSD_SRCC Position */
+#define MXC_F_PWRSEQ_LPMEMSD_SRCC                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_SRCC_POS)) /**< LPMEMSD_SRCC Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS               11 /**< LPMEMSD_USBFIFO Position */
- #define MXC_F_PWRSEQ_LPMEMSD_USBFIFO                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS)) /**< LPMEMSD_USBFIFO Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS               11 /**< LPMEMSD_USBFIFO Position */
+#define MXC_F_PWRSEQ_LPMEMSD_USBFIFO                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS)) /**< LPMEMSD_USBFIFO Mask */
 
- #define MXC_F_PWRSEQ_LPMEMSD_ROM_POS                   12 /**< LPMEMSD_ROM Position */
- #define MXC_F_PWRSEQ_LPMEMSD_ROM                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM_POS)) /**< LPMEMSD_ROM Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM_POS                   12 /**< LPMEMSD_ROM Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM_POS)) /**< LPMEMSD_ROM Mask */
 
 /**@} end of group PWRSEQ_LPMEMSD_Register */
 
@@ -297,4 +299,4 @@ typedef struct {
 }
 #endif
 
-#endif /* _PWRSEQ_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_PWRSEQ_REGS_H_

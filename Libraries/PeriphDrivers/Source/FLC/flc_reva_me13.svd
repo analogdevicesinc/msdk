@@ -7,7 +7,7 @@
     <baseAddress>0x40029000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
-      <size>0x1000</size>
+      <size>0x400</size>
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
@@ -143,7 +143,7 @@
       <register>
         <name>INTR</name>
         <description>Flash Interrupt Register.</description>
-        <addressOffset>0x024</addressOffset>
+        <addressOffset>0x24</addressOffset>
         <fields>
           <field>
             <name>DONE</name>
@@ -209,7 +209,7 @@
       <register>
         <name>ECC_DATA</name>
         <description>ECC Data Register.</description>
-        <addressOffset>0x028</addressOffset>
+        <addressOffset>0x28</addressOffset>
         <fields>
           <field>
             <name>ECC_EVEN</name>
@@ -228,7 +228,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>DATA</name>
+        <name>DATA[%s]</name>
         <description>Flash Write Data.</description>
         <addressOffset>0x30</addressOffset>
         <fields>

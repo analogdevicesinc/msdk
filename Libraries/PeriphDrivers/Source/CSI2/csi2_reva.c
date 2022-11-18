@@ -259,7 +259,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
     line_byte_num = odd_line_byte_num;
 
     // Use whole frame vs line by line
-    if (vfifo->dma_whole_frame) {
+    if (vfifo->dma_whole_frame == MXC_CSI2_DMA_WHOLE_FRAME) {
         dma_byte_cnt = frame_byte_num;
     } else {
         // Smaller

@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>SCN</name>
+    <description>Smart Card Interface.</description>
+    <groupName>SCN</groupName>
+    <baseAddress>0x4002C000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>SC0</name>
+      <description>SC0 IRQ</description>
+      <value>11</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CR</name>
+        <description>Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>CONV</name>
+            <description>Convention Select Bit.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CREP</name>
+            <description>Character Repeat Enable Bit.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WTEN</name>
+            <description>Wait Time Counter Enable Bit.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>UART</name>
+            <description>Smart Card Mode Bit.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CCEN</name>
+            <description>Clock Counter Enable Bit.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXFLUSH</name>
+            <description>Receive FIFO Flush.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXFLUSH</name>
+            <description>Transmit FIFO Flush.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXTHD</name>
+            <description>Receive FIFO Depth.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>TXTHD</name>
+            <description>Transmit FIFO Depth.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SR</name>
+        <description>Status Register.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>PAR</name>
+            <description>Parity Error Detector Flag.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WTOV</name>
+            <description>Waiting Time Counter Overflow.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CCOV</name>
+            <description>Clock Counter Overflow Flag.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXCF</name>
+            <description>Transmit Complete Flag.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXEMPTY</name>
+            <description>Receive FIFO Empty Flag.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXFULL</name>
+            <description>Receive FIFO Full Flag.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXEMPTY</name>
+            <description>Transmit FIFO Empty Flag.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXFULL</name>
+            <description>Transmit FIFO Full Flag.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXELT</name>
+            <description>Number of Bytes in the Receive FIFO.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>TXELT</name>
+            <description>Number of Bytes in the Transmit FIFO.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PN</name>
+        <description>Pin Register,</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>CRDRST</name>
+            <description>Smart Card Reset Pin Control.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CRDCLK</name>
+            <description>Smart Card Clock Piin Control.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CRDIO</name>
+            <description>Smart Card IO Pin Control.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CRDC4</name>
+            <description>Smart Card SCn_C4 Pin Control.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CRDC8</name>
+            <description>Smart Card SCn_C8 Pin Control.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CLKSEL</name>
+            <description>Smart Card Clock Select.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ETUR</name>
+        <description>ETU Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>ETU</name>
+            <description>Elemental Time Unit Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>15</bitWidth>
+          </field>
+          <field>
+            <name>COMP</name>
+            <description>Compensation Mode Enable Bit.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HALF</name>
+            <description>Half ETU Count Selection Bit.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GTR</name>
+        <description>Guard Time Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>GT</name>
+            <description>Guard Time.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WT0R</name>
+        <description>Waiting Time 0 Register.</description>
+        <addressOffset>0x14</addressOffset>
+        <fields>
+          <field>
+            <name>WT</name>
+            <description>Wait Time.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WT1R</name>
+        <description>Waiting Time 1 Register.</description>
+        <addressOffset>0x18</addressOffset>
+        <fields>
+          <field>
+            <name>WT</name>
+            <description>Wait Time.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IER</name>
+        <description>Interrupt Enable Register.</description>
+        <addressOffset>0x1C</addressOffset>
+        <fields>
+          <field>
+            <name>PARIE</name>
+            <description>Parity Error Interrupt Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WTIE</name>
+            <description>Waiting Time Overflow Interrupt Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CTIE</name>
+            <description>Clock Counter Overflow Interrupt Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TCIE</name>
+            <description>Character Transmission Completion Interrupt Enable.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXEIE</name>
+            <description>Receive FIFO Empty Interrupt Enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXTIE</name>
+            <description>Receive FIFO Threshold Reached Interrupt Enable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXFIE</name>
+            <description>Receive FIFO Full Interrupt Enable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXEIE</name>
+            <description>Transmit FIFO Empty Interrupt Enable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXTIE</name>
+            <description>Transmit FIFO Threshold Reached Interrupt Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ISR</name>
+        <description>Interrupt Status Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <fields>
+          <field>
+            <name>PARIS</name>
+            <description>Parity Error Interrupt Status Flag.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>WTIS</name>
+            <description>Waiting Time Overflow Interrupt Status Flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>CTIS</name>
+            <description>Clock Counter Overflow Interrupt Status Flag.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TCIS</name>
+            <description>Character Transmission Completion Interrupt Status Flag.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXEIS</name>
+            <description>Receive FIFO Empty Interrupt Status Flag.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXTIS</name>
+            <description>Receive FIFO Threshold Reached Interrupt Status Flag.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RXFIS</name>
+            <description>Receive FIFO Full Interrupt Status Flag.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXEIS</name>
+            <description>Transmit FIFO Empty Interrupt Status Flag.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TXTIS</name>
+            <description>Transmit FIFO Threshold Reached Interrupt Status Flag.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TXR</name>
+        <description>Transmit Register.</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Transmit Data.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RXR</name>
+        <description>Receive Register.</description>
+        <addressOffset>0x28</addressOffset>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Receive Data.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>PARER</name>
+            <description>Parity Error Detect Bit.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CCR</name>
+        <description>Clock Counter Register,</description>
+        <addressOffset>0x2C</addressOffset>
+        <fields>
+          <field>
+            <name>CCYC</name>
+            <description>Number of Clock Cycles to Count.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>24</bitWidth>
+          </field>
+          <field>
+            <name>MAN</name>
+            <description>Manual Mode.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!--SC: Smart Card Interface-->
+</device>

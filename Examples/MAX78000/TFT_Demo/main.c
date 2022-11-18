@@ -98,7 +98,7 @@ void TFT_Feather_test(void)
     MXC_Delay(1000000);
     MXC_TFT_Circle(100, 100, 50, PURPLE);
     MXC_Delay(1000000);
-    MXC_TFT_FillCircle(150, 50, 40, PURPLE);
+    MXC_TFT_FillCircle(100, 100, 50, PURPLE);
     MXC_Delay(1000000);
 
     MXC_TFT_SetBackGroundColor(BLACK);

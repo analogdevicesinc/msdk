@@ -277,6 +277,59 @@ static int ext_flash_clock(unsigned int len, unsigned int deassert)
     free(write);
     return res;
 }
+
+void TS_SPI_Init(void)
+{
+    mxc_spi_pins_t ts_pins = {
+        // CLK, MISO, MOSI enabled, SS IDx = 1
+        .clock = true, .ss0 = false, .ss1 = true,    .ss2 = false,
+        .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
+    };
+
+    MXC_SPI_Init(TS_SPI, true, false, 1, 0, TS_SPI_FREQ, ts_pins);
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
+                      MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26);
+    MXC_SPI_SetDataSize(TS_SPI, 8);
+    MXC_SPI_SetWidth(TS_SPI, SPI_WIDTH_STANDARD);
+}
+
+void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
+{
+    int i;
+    uint8_t rx[2] = { 0, 0 };
+    mxc_spi_req_t request;
+
+    request.spi = TS_SPI;
+    request.ssDeassert = 0;
+    request.txData = (uint8_t *)(&datain);
+    request.rxData = NULL;
+    request.txLen = 1;
+    request.rxLen = 0;
+    request.ssIdx = 1;
+
+    MXC_SPI_SetFrequency(TS_SPI, TS_SPI_FREQ);
+    MXC_SPI_SetDataSize(TS_SPI, 8);
+
+    MXC_SPI_MasterTransaction(&request);
+
+    // Wait to clear TS busy signal
+    for (i = 0; i < 100; i++) {
+        __asm volatile("nop\n");
+    }
+
+    request.ssDeassert = 1;
+    request.txData = NULL;
+    request.rxData = (uint8_t *)(rx);
+    request.txLen = 0;
+    request.rxLen = 2;
+
+    MXC_SPI_MasterTransaction(&request);
+
+    if (dataout != NULL) {
+        *dataout = (rx[1] | (rx[0] << 8)) >> 4;
+    }
+}
+
 #endif /* __riscv */
 
 /******************************************************************************/

@@ -7,7 +7,8 @@
 		"LED",
 		"PMIC",
 		"PushButton",
-		"Touchscreen"
+		"Touchscreen",
+        "CODEC"
 	],
 	"vpaths":[
 		"Camera",
@@ -16,6 +17,7 @@
 		"PMIC",
 		"PushButton",
 		"Touchscreen",
+        "CODEC",
 		"./"],
 	"whitelist":"True",
 	"targets":[

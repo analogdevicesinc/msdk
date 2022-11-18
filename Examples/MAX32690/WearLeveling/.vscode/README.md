@@ -446,7 +446,7 @@ However, there is a precedence hierarchy that should be taken into consideration
 
 The precedence hierarchy for the value of a configuration variable is:
 
-* **command-line > project.mk > environment variable > default value**
+* **IDE/command-line > project.mk > environment variable > default value**
 
 ...meaning if a value is set on the command-line _and_ project.mk, the command-line value will take precedence.  However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
 

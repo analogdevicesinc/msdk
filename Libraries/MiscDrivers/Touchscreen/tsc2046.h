@@ -71,6 +71,28 @@ typedef struct {
 
 /************************************************************************************/
 
+// SPI Transport layer functions
+
+/**
+ * @brief       Initialize the SPI instance connected to the TouchScreen driver.
+ *              Board files must implement this.
+ */
+extern void TS_SPI_Init(void);
+
+/**
+ * @brief       Send a byte of data to the TouchScreen driver over SPI.
+ *              Board files must implement this.
+ * 
+ * @param       datain      Input value to write
+ * @param[out]  dataout     Output pointer.  This function will decode and save
+ *                          the SPI response to this pointer.
+ */
+extern void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout);
+
+/************************************************************************************/
+
+int MXC_TS_AssignInterruptPin(mxc_gpio_cfg_t pin);
+
 /**
  * @brief      Used to register hw related configuration, need to be called before MXC_TS_Init()
  *
@@ -101,6 +123,25 @@ void MXC_TS_Start(void);
  *
  */
 void MXC_TS_Stop(void);
+
+/**
+ * @brief      Get the x,y coordinates of the last touchscreen press
+ *
+ * @param[out] x    (Output) Where to save the x coordinate
+ * @param[out] y    (Output) Where to save the y coordinate
+ */
+void MXC_TS_GetXY(unsigned int *x, unsigned int *y);
+
+/**
+ * @brief       Returns true if there is a touchscreen event pending,
+ *              otherwise returns false.
+ */
+int MXC_TS_GetTSEvent();
+
+/**
+ * @brief      Clears the pending touchscreen event flag.
+ */
+void MXC_TS_ClearTSEvent();
 
 /**
  * @brief      Register a button

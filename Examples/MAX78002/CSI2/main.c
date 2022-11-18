@@ -49,6 +49,7 @@
 #include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "csi2.h"
+#include "csi2_regs.h"
 #include "dma.h"
 #include "icc.h"
 #include "pb.h"
@@ -59,6 +60,7 @@
 #include "utils.h"
 #include "gcr_regs.h"
 #include "mcr_regs.h"
+#include "console.h"
 
 /***** Definitions *****/
 
@@ -88,10 +90,11 @@
 // Streaming pixel format may not match pixel format the camera originally processed.
 //    For example, the camera can processes RAW then converts to RGB888.
 #define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB888
+//#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
 
 // Select RGB Type and RAW Format for the CSI2 Peripheral.
 #define RGB_TYPE MXC_CSI2_TYPE_RGB888
-#define RAW_FORMAT MXC_CSI2_FORMAT_BGBG_GRGR
+#define RAW_FORMAT MXC_CSI2_FORMAT_RGRG_GBGB
 
 // Select corresponding Payload data. Only one type can be selected across payload 0 and 1.
 #define PAYLOAD0_DATA_TYPE MXC_CSI2_PL0_RAW10
@@ -114,13 +117,11 @@
 
 /***** Globals *****/
 
-volatile int DMA_FLAG;
+volatile int DMA_FLAG = 1;
 
 // RAW Line Buffers
-uint32_t RAW_ADDR0[IMAGE_WIDTH] __attribute__((aligned(4)))
-__attribute__((section(".csi2_buff_section")));
-uint32_t RAW_ADDR1[IMAGE_WIDTH] __attribute__((aligned(4)))
-__attribute__((section(".csi2_buff_section")));
+__attribute__((section(".csi2_buff_raw0"), aligned(4))) uint32_t RAW_ADDR0[IMAGE_WIDTH];
+__attribute__((section(".csi2_buff_raw1"), aligned(4))) uint32_t RAW_ADDR1[IMAGE_WIDTH];
 
 // Buffer for processed image
 uint8_t IMAGE[IMAGE_SIZE];
@@ -156,7 +157,42 @@ void process_img(void)
     // Get the details of the image from the camera driver.
     MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
 
-    utils_send_img_to_pc(raw, imgLen, w, h, mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT));
+    MXC_TMR_SW_Start(MXC_TMR0);
+    clear_serial_buffer();
+    snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
+             "*IMG* %s %i %i %i", // Format img info into a string
+             mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
+    send_msg(g_serial_buffer);
+
+    clear_serial_buffer();
+    MXC_UART_Write(Con_Uart, raw, (int *)&imgLen);
+
+    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (serial transmission took %i us)\n", elapsed);
+
+    // utils_send_img_to_pc(raw, imgLen, w, h, mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT));
+}
+
+void service_console()
+{
+    // Check for any incoming serial commands
+    cmd_t cmd = CMD_UNKNOWN;
+    if (recv_cmd(&cmd)) {
+        // Process the received command...
+
+        if (cmd == CMD_UNKNOWN) {
+            printf("Uknown command '%s'\n", g_serial_buffer);
+        } else if (cmd == CMD_HELP) {
+            print_help();
+        } else if (cmd == CMD_RESET) {
+            // Issue a soft reset
+            MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
+        } else if (cmd == CMD_CAPTURE) {
+            process_img();
+        }
+    }
+
+    clear_serial_buffer();
 }
 
 volatile int buttonPressed = 0;
@@ -174,15 +210,7 @@ int main(void)
     mxc_csi2_ctrl_cfg_t ctrl_cfg;
     mxc_csi2_vfifo_cfg_t vfifo_cfg;
 
-    printf("\n\n**** MIPI CSI-2 Example ****\n");
-    printf("This example streams the image data through the COM port\n");
-    printf("and a script running on the host pc converts the data into\n");
-    printf("a .png image. Note: You can not run the script and have\n");
-    printf("a serial terminal open running on the same COM port at the\n");
-    printf("the same time.\n");
-    printf("\nGo into the pc_utility folder and run the script:\n");
-    printf("python grab_image.py [COM#] [baudrate]\n");
-    printf("\nPress PB1 (SW4) to trigger a frame capture.\n");
+    console_init();
 
     // Enable cache
     MXC_ICC_Enable(MXC_ICC0);
@@ -191,18 +219,20 @@ int main(void)
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
 
-    mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
-
-    if ((error = MXC_UART_Init(ConsoleUart, 115200 * 8, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
-        LED_On(1);
-        while (1) {}
-    }
+    printf("\n\n**** MIPI CSI-2 Example ****\n");
+    printf("This example streams the image data through the COM port\n");
+    printf("and a script running on the host pc converts the data into\n");
+    printf("a .png image.\n");
+    printf("\nGo into the pc_utility folder and run the script:\n");
+    printf("python console.py [COM#]\n");
+    printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n");
 
     // Initialize camera
     mipi_camera_init();
 
     // Confirm correct camera is connected
     mipi_camera_get_product_id(&id);
+    printf("Camera ID = %x\n", id);
     if (id != CAMERA_ID) {
         printf("Incorrect camera.\n");
         LED_On(1);
@@ -247,7 +277,7 @@ int main(void)
     vfifo_cfg.flow_ctrl = FLOW_CTRL;
     vfifo_cfg.err_det_en = MXC_CSI2_ERR_DETECT_DISABLE;
     vfifo_cfg.fifo_rd_mode = MXC_CSI2_READ_ONE_BY_ONE;
-    vfifo_cfg.dma_whole_frame = MXC_CSI2_DMA_LINE_BY_LINE;
+    vfifo_cfg.dma_whole_frame = MXC_CSI2_DMA_WHOLE_FRAME;
     vfifo_cfg.dma_mode = MXC_CSI2_DMA_FIFO_ABV_THD;
     vfifo_cfg.bandwidth_mode = MXC_CSI2_NORMAL_BW;
     vfifo_cfg.wait_en = MXC_CSI2_AHBWAIT_DISABLE;
@@ -267,12 +297,14 @@ int main(void)
     while (1) {
         LED_On(0);
 
+        MXC_Delay(MXC_DELAY_MSEC(1));
+        // ^ Slow down main processing loop to work around some timing issues
+        // with the console at extreme speeds.  1000 checks/sec is plenty
+        service_console();
+
         if (buttonPressed) {
-            LED_Off(0);
-
             process_img();
-
-            MXC_Delay(SEC(3));
+            LED_Off(0);
 
             buttonPressed = 0;
         }

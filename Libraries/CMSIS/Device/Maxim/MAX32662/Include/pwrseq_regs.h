@@ -89,9 +89,7 @@ typedef struct {
     __IO uint32_t lpctrl;               /**< <tt>\b 0x00:</tt> PWRSEQ LPCTRL Register */
     __IO uint32_t lpwkfl0;              /**< <tt>\b 0x04:</tt> PWRSEQ LPWKFL0 Register */
     __IO uint32_t lpwken0;              /**< <tt>\b 0x08:</tt> PWRSEQ LPWKEN0 Register */
-    __IO uint32_t lpwkfl1;              /**< <tt>\b 0x0C:</tt> PWRSEQ LPWKFL1 Register */
-    __IO uint32_t lpwken1;              /**< <tt>\b 0x10:</tt> PWRSEQ LPWKEN1 Register */
-    __R  uint32_t rsv_0x14_0x2f[7];
+    __R  uint32_t rsv_0xc_0x2f[9];
     __IO uint32_t lppwkfl;              /**< <tt>\b 0x30:</tt> PWRSEQ LPPWKFL Register */
     __IO uint32_t lppwken;              /**< <tt>\b 0x34:</tt> PWRSEQ LPPWKEN Register */
     __R  uint32_t rsv_0x38_0x3f[2];
@@ -108,8 +106,6 @@ typedef struct {
 #define MXC_R_PWRSEQ_LPCTRL                ((uint32_t)0x00000000UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0000</tt> */
 #define MXC_R_PWRSEQ_LPWKFL0               ((uint32_t)0x00000004UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0004</tt> */
 #define MXC_R_PWRSEQ_LPWKEN0               ((uint32_t)0x00000008UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0008</tt> */
-#define MXC_R_PWRSEQ_LPWKFL1               ((uint32_t)0x0000000CUL) /**< Offset from PWRSEQ Base Address: <tt> 0x000C</tt> */
-#define MXC_R_PWRSEQ_LPWKEN1               ((uint32_t)0x00000010UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0010</tt> */
 #define MXC_R_PWRSEQ_LPPWKFL               ((uint32_t)0x00000030UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0030</tt> */
 #define MXC_R_PWRSEQ_LPPWKEN               ((uint32_t)0x00000034UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0034</tt> */
 #define MXC_R_PWRSEQ_LPMEMSD               ((uint32_t)0x00000040UL) /**< Offset from PWRSEQ Base Address: <tt> 0x0040</tt> */
@@ -212,30 +208,6 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPWKEN0_WAKEEN                    ((uint32_t)(0x7FFFFFFFUL << MXC_F_PWRSEQ_LPWKEN0_WAKEEN_POS)) /**< LPWKEN0_WAKEEN Mask */
 
 /**@} end of group PWRSEQ_LPWKEN0_Register */
-
-/**
- * @ingroup  pwrseq_registers
- * @defgroup PWRSEQ_LPWKFL1 PWRSEQ_LPWKFL1
- * @brief    Low Power I/O Wakeup Status Flag Register 1. This register indicates the low
- *           power wakeup status for GPIO1.
- * @{
- */
-#define MXC_F_PWRSEQ_LPWKFL1_WAKEFL_POS                0 /**< LPWKFL1_WAKEFL Position */
-#define MXC_F_PWRSEQ_LPWKFL1_WAKEFL                    ((uint32_t)(0x3FFUL << MXC_F_PWRSEQ_LPWKFL1_WAKEFL_POS)) /**< LPWKFL1_WAKEFL Mask */
-
-/**@} end of group PWRSEQ_LPWKFL1_Register */
-
-/**
- * @ingroup  pwrseq_registers
- * @defgroup PWRSEQ_LPWKEN1 PWRSEQ_LPWKEN1
- * @brief    Low Power I/O Wakeup Enable Register 1. This register enables low power wakeup
- *           functionality for GPIO1.
- * @{
- */
-#define MXC_F_PWRSEQ_LPWKEN1_WAKEEN_POS                0 /**< LPWKEN1_WAKEEN Position */
-#define MXC_F_PWRSEQ_LPWKEN1_WAKEEN                    ((uint32_t)(0x3FFUL << MXC_F_PWRSEQ_LPWKEN1_WAKEEN_POS)) /**< LPWKEN1_WAKEEN Mask */
-
-/**@} end of group PWRSEQ_LPWKEN1_Register */
 
 /**
  * @ingroup  pwrseq_registers

@@ -115,4 +115,4 @@ riscv-none-embed-gcc-ar rcs -o ../../libphy_riscv.a obj/pal_bb.o obj/pal_bb_ble.
 riscv-none-embed-strip --strip-unneeded ../../libphy_riscv.a
 +++ Copying: ../../libphy_riscv.a to msdk
 cp ../../libphy_riscv.a ../../../../../Libraries/BlePhy/MAX32655/libphy_riscv.a
-revision: 0beaf45
+revision: 52e307e
