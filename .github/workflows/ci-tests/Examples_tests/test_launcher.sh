@@ -8,13 +8,13 @@ MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | 
 
 # List of devices under test
 #dut_list=(max32665)
-dut_list=(max32655 max32665)
+dut_list=(max32655 max32665 max32690)
 # List of serial IDs for DUT, must correlate with list above
 #dut_list_ID=(0409000098d9439b00000000000000000000000097969906)
-dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906)
+dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906 0409170246dfc09500000000000000000000000097969906)
 # List of serail devices associated with each DUT msut correlate with device list above
 #dut_list_serial=(D30A1X9X)
-dut_list_serial=(D3073ICQ D30A1X9X)
+dut_list_serial=(D3073ICQ D30A1X9X D30ALJPW)
 # Will hold values of the current device undertest from the lists above
 DUT_NAME_UPPER=NONE
 DUT_NAME_LOWER=NONE
@@ -256,7 +256,9 @@ for i in ${!dut_list[@]}; do
                 ;;
 
             "BLE_FreeRTOS")
-                run_notConntectedTest
+                if [["$DUT_NAME_UPPER" != "MAX32690"]]; then
+                    run_notConntectedTest
+                fi
                 ;;
 
             "BLE_otac")
