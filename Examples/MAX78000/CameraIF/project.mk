@@ -5,10 +5,6 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
-#BOARD=FTHR_RevA
-# ^ For example, you can uncomment this line to make the 
-# project build for the "FTHR_RevA" board.
-
 # **********************************************************
 
 # Add your config here!
@@ -22,6 +18,6 @@ CAMERA=OV7692
 #CAMERA=HM0360_MONO
 #CAMERA=HM01B0
 
-#MAKECMDGOALS=release
-
-#BOARD=FTHR_RevA
+# Set optimization level to -O2, which is required for the CameraIF DMA
+# timing to work properly.
+MXC_OPTIMIZE_CFLAGS=-O2
