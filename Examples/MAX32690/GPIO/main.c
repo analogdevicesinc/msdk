@@ -84,7 +84,7 @@ int main(void)
     printf("1. This example reads P2.11 and outputs the same state onto P0.24.\n");
     printf("2. An falling edge interrupt is set up on P2.11. P2.12 toggles when\n");
     printf("   that interrupt occurs.\n\n");
-    printf("Connect P4.0->P2.12 to use SW2 to trigger a falling edge interrupt\n");
+    printf("Connect P4.0->P2.11 to use SW2 to trigger a falling edge interrupt\n");
     printf("on each press.\n");
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
@@ -96,7 +96,7 @@ int main(void)
     MXC_GPIO_Config(&gpio_interrupt_status);
 
     /*
-     *   Set up interrupt on P0.18.
+     *   Set up interrupt input pin.
      *   Switch on EV kit is open when non-pressed, and grounded when pressed.  Use an internal pull-up so pin
      *     reads high when button is not pressed.
      */
