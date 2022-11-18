@@ -62,6 +62,7 @@
 #include "rtc.h"
 #include "uart.h"
 #include "nvic_table.h"
+#include "ecc_regs.h"
 
 #define DELAY_IN_SEC 2
 #define USE_CONSOLE 1
@@ -183,9 +184,18 @@ void configure_gpio(void)
 
 int main(void)
 {
+    MXC_ECC->en = 0; // Disable ECC on Flash, ICC, and SRAM
+
 #if USE_CONSOLE
     printf("****Low Power Mode Example****\n\n");
 #endif // USE_CONSOLE
+
+#if USE_BUTTON
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+#endif // USE_BUTTON
+#if USE_ALARM
+    MXC_LP_EnableRTCAlarmWakeup();
+#endif // USE_ALARM
 
 #if USE_ALARM
 #if USE_CONSOLE
@@ -198,7 +208,7 @@ int main(void)
 
 #if USE_BUTTON
 #if USE_CONSOLE
-    printf("This code cycles through the MAX32670 power modes, using a push button (SW2) to exit "
+    printf("This code cycles through the MAX32670 power modes, using a push button (SW3) to exit "
            "from each mode and enter the next.\n\n");
 #endif // USE_CONSOLE
     PB_RegisterCallback(0, buttonHandler);
@@ -215,34 +225,11 @@ int main(void)
     setTrigger(1);
 
     MXC_LP_ROMLightSleepEnable();
-
-    // MXC_LP_SysRam3LightSleepDisable();
-    MXC_LP_SysRam2LightSleepEnable();
-    MXC_LP_SysRam1LightSleepDisable();
-    MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
-
 #if USE_CONSOLE
-    printf("All unused RAMs placed in LIGHT SLEEP mode.\n");
+    printf("ROM placed in LIGHT SLEEP mode.\n");
 #endif // USE_CONSOLE
+
     setTrigger(1);
-
-    // MXC_LP_SysRam3Shutdown();
-    MXC_LP_SysRam2Shutdown();
-
-    MXC_LP_SysRam1PowerUp();
-    MXC_LP_SysRam0PowerUp(); // Global variables are in RAM0 and RAM1
-
-#if USE_CONSOLE
-    printf("All unused RAMs shutdown.\n");
-#endif // USE_CONSOLE
-    setTrigger(1);
-
-#if USE_BUTTON
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
-#endif // USE_BUTTON
-#if USE_ALARM
-    MXC_LP_EnableRTCAlarmWakeup();
-#endif // USE_ALARM
 
     while (1) {
 #if DO_SLEEP
