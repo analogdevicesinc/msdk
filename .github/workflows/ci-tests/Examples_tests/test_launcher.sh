@@ -83,7 +83,7 @@ function erase_with_openocd() {
     wait $openocd_dapLink_pid
 
     # erase second bank of larger chips
-    if [[ $1 == "max32665" ]]; then
+    if [[ $1 != "max32655" ]]; then
         printf "> Erasing second bank of device: $1 with ID:$2 \r\n"
         $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 1;" -c " exit" &
         openocd_dapLink_pid=$!
@@ -256,7 +256,7 @@ for i in ${!dut_list[@]}; do
                 ;;
 
             "BLE_FreeRTOS")
-                if [["$DUT_NAME_UPPER" != "MAX32690"]]; then
+                if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
                     run_notConntectedTest
                 fi
                 ;;
