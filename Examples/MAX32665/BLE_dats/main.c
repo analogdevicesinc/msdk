@@ -232,15 +232,13 @@ int main(void)
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 
-    LlInitRtCfg_t llCfg = {
-        .pBbRtCfg = &mainBbRtCfg,
-        .wlSizeCfg = 4,
-        .rlSizeCfg = 4,
-        .plSizeCfg = 4,
-        .pLlRtCfg = &mainLlRtCfg,
-        .pFreeMem = WsfHeapGetFreeStartAddress(),
-        .freeMemAvail = WsfHeapCountAvailable(),
-    };
+    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
+                            .wlSizeCfg = 4,
+                            .rlSizeCfg = 4,
+                            .plSizeCfg = 4,
+                            .pLlRtCfg = &mainLlRtCfg,
+                            .pFreeMem = WsfHeapGetFreeStartAddress(),
+                            .freeMemAvail = WsfHeapCountAvailable() };
 
     memUsed = LlInit(&llCfg);
     WsfHeapAlloc(memUsed);
