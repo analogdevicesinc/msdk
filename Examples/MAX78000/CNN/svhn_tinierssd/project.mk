@@ -5,15 +5,11 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
-#BOARD=FTHR_RevA
-# ^ For example, you can uncomment this line to make the 
-# project build for the "FTHR_RevA" board.
+#MXC_OPTIMIZE_CFLAGS = -Og
+# ^ For example, you can uncomment this line to 
+# optimize the project for debugging
 
 # **********************************************************
 
 # Add your config here!
-
-# Set a higher optimization level to maximize the performance
-# of CNN-related functions
-MXC_OPTIMIZE_CFLAGS = -O2
 
