@@ -158,8 +158,8 @@ void MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_RTCClockEnable()
 {
-    MXC_PWRSEQ->lpcn &= ~(MXC_F_PWRSEQ_LPCN_ERTCO_PD);
-    MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN;
+    MXC_PWRSEQ->lpcn &= ~(MXC_F_PWRSEQ_LPCN_ERTCO_PD); // For Rev B parts
+    MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERTCO_EN; // For Rev A parts
 }
 
 /* ************************************************************************** */
