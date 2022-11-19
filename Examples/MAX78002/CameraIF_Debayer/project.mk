@@ -13,3 +13,7 @@ CAMERA=HM0360_COLOR
 
 # Enable optimization level 2 (faster code but this should be turned off for debugging)
 MXC_OPTIMIZE_CFLAGS = -O2
+
+# Select TFT display drivers to match the connected display
+# TFT=ADAFRUIT
+TFT=NEWHAVEN
