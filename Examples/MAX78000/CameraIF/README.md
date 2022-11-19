@@ -7,9 +7,9 @@ This example demonstrates the Parallel Camera Interface (PCIF) drivers and camer
 * OV5642
 * HM01B0
 
-To change the camera the project builds for, set the `CAMERA` build [configuration variable](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#how-to-set-a-configuration-variable) in [project.mk](project.mk)
+To change the camera the project builds for, set the `CAMERA` build [configuration variable](.vscode/README.md#build-configuration) in [project.mk](project.mk)
 
-The project comes pre-configured for the [MAX78000EVKIT](https://github.com/MaximIntegratedAI/MaximAI_Documentation/tree/master/MAX78000_Evaluation_Kit) by default.  It also supports the MAX78000FTHR board (OV7692 only), and can be reconfigured using the `BOARD` [configuration variable](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#how-to-set-a-configuration-variable).  Depending on your development environment, set `BOARD=FTHR_RevA` in the following place:
+The project comes pre-configured for the [MAX78000EVKIT](https://github.com/MaximIntegratedAI/MaximAI_Documentation/tree/master/MAX78000_Evaluation_Kit) by default.  It also supports the MAX78000FTHR board (OV7692 only), and can be reconfigured using the `BOARD` [configuration variable](.vscode/README.md#build-configuration).  Depending on your development environment, set `BOARD=FTHR_RevA` in the following place:
 
 * Command-line development: project.mk
 * Visual Studio Code: [.vscode/settings.json](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#project-configuration)
