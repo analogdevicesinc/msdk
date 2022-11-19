@@ -11,10 +11,9 @@
 
 # **********************************************************
 
-# A higher optimization level is used for this example, but it
-# may make debugging unreliable.  Comment out the line below
-# to use the default optimization level, which is optimized
-# for a good debugging experience.
+# Set a higher optimization level.  The increased performance
+# is required for the CameraIF DMA code to work within the
+# timing requirements of the Parallel Camera Interface.
 MXC_OPTIMIZE_CFLAGS = -O2
 
 # Place build files specific to EvKit_V1 here.

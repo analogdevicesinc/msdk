@@ -19,3 +19,8 @@ CAMERA=OV7692
 # Select TFT display drivers to match the connected display
 TFT=ADAFRUIT
 # TFT=NEWHAVEN
+
+# Set a higher optimization level.  The increased performance
+# is required for the CameraIF DMA code to work within the
+# timing requirements of the Parallel Camera Interface.
+MXC_OPTIMIZE_CFLAGS = -O2

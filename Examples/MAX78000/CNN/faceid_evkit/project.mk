@@ -16,6 +16,11 @@
 $(info Note: This project is designed and tested for the OV7692 only.)
 override CAMERA=OV7692
 
+# Set a higher optimization level.  The increased performance
+# is required for the CameraIF DMA code to work within the
+# timing requirements of the Parallel Camera Interface.
+MXC_OPTIMIZE_CFLAGS = -O2
+
 # Place build files specific to EvKit_V1 here.
 ifeq "$(BOARD)" "EvKit_V1"
 PROJ_CFLAGS+=-DTFT_ENABLE

@@ -13,5 +13,7 @@
 
 # Add your config here!
 
-
+# Set a higher optimization level to maximize the performance
+# of CNN-related functions
+MXC_OPTIMIZE_CFLAGS = -O2
 
