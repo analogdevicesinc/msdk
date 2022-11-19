@@ -15,7 +15,9 @@
 # These are the only drivers supported by this example.
 CAMERA=HM0360_COLOR
 
-# Set a higher optimization level.  The increased performance
-# is required for the CameraIF DMA code to work within the
-# timing requirements of the Parallel Camera Interface.
+# Enable optimization level 2 (faster code but this should be turned off for debugging)
 MXC_OPTIMIZE_CFLAGS = -O2
+
+# Select TFT display drivers to match the connected display
+# TFT=ADAFRUIT
+TFT=NEWHAVEN
