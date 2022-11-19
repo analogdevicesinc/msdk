@@ -48,6 +48,7 @@
 #include "flc.h"
 #include "icc.h"
 #include "gcr_regs.h"
+#include "ecc_regs.h"
 
 /***** Definitions *****/
 #define TESTSIZE 8192 //2 pages worth so we can do erase functions
@@ -299,6 +300,8 @@ int main(void)
     int error_status, i;
     uint32_t start, end;
     uint32_t buffer[0x1000];
+
+    MXC_ECC->en = 0; // Disable ECC on Flash, ICC, and SRAM
 
     /* Note: This example must execute out of RAM, due to MXC_FLC_MassErase() call, below */
     printf("\n\n***** Flash Control Example *****\n");
