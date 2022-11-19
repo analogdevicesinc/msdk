@@ -64,7 +64,7 @@
 // Configuration options
 // ------------------------
 #define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
-#define STREAM_ENABLE
+// #define STREAM_ENABLE
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
@@ -113,17 +113,14 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
-#if defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || defined(CAMERA_PAG7920)
+#if defined(CAMERA_HM0360_MONO) || defined(CAMERA_PAG7920)
 
-#ifdef STREAM_ENABLE
 #define IMAGE_XRES 320
 #define IMAGE_YRES 240
 
-#else
-#define IMAGE_XRES 320
-#define IMAGE_YRES 240
+#undef STREAM_ENABLE
+// ^ TFT cannot keep up with line-by-line capture time of HM0360 drivers.
 
-#endif
 #endif
 
 #if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
