@@ -5,6 +5,10 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
+#MXC_OPTIMIZE_CFLAGS = -Og
+# ^ For example, you can uncomment this line to 
+# optimize the project for debugging
+
 # **********************************************************
 
 # Project options:
@@ -22,7 +26,9 @@ CAMERA=OV7692
 # CAMERA=HM0360_COLOR
 # CAMERA=HM01B0
 
-# Set higher optimization level (faster code but shouldn't be used while debugging)
+# Set a higher optimization level.  The increased performance
+# is required for the CameraIF DMA code to work within the
+# timing requirements of the Parallel Camera Interface.
 MXC_OPTIMIZE_CFLAGS=-O2
 
 ifeq ($(CONSOLE),1)
