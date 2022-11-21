@@ -545,7 +545,13 @@ jobs:
               echo -e "[\e[0;37mVERIFYING\e[0m] Changed: \e[1;33m${affected_pr_reg_file#./*/}."
               
               CHECK_FAIL=1
-              check_for_at_deprecated=$(find $affected_pr_reg_file -exec grep -s "@deprecated" {} \;)
+
+              # Prevent find error for missing files
+              check_for_at_deprecated=""
+              if [[ -f $affected_pr_reg_file ]]; then
+                check_for_at_deprecated=$(find $affected_pr_reg_file -exec grep -s "@deprecated" {} \;)
+              fi
+
               if [[ -n $check_for_at_deprecated ]]; then
                 # Exception for deprecated register files.
                 echo -e "[\e[0;31mERROR\e[0m] DO NOT UPDATE. This file is deprecated. Please contact ADI developers for more support.\n\n"
@@ -554,8 +560,9 @@ jobs:
                 if [[ -n ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} ]]; then
                   echo -e "[\e[0;31mERROR\e[0m] Could not find ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} for ${affected_pr_reg_file#./*/}. Please add the correct SVD file. Contact the developers if you are adding a new register file.\n\n"
                 else
+                  # This goes for deleted deprecated files.
                   # If no SVD file was added to REGISTER_SVD_FILE_LIST, then it's likely a deprecated file.
-                  echo -e "[\e[0;31mERROR\e[0m] Could not find SVD File for ${affected_pr_reg_file#./*/}. Please make sure the register file is supported. Contact the developers for any assistance.\n\n"
+                  echo -e "[\e[0;31mERROR\e[0m] Could not find corresponding peripheral SVD file for ${affected_pr_reg_file#./*/}. Please make sure this register file is supported. Contact the developers for any assistance.\n\n"
                 fi
               fi
             fi
