@@ -551,7 +551,12 @@ jobs:
                 echo -e "[\e[0;31mERROR\e[0m] DO NOT UPDATE. This file is deprecated. Please contact ADI developers for more support.\n\n"
               else
                 # Exception for entirely new register files.
-                echo -e "[\e[0;31mERROR\e[0m] Could not find ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} for ${affected_pr_reg_file#./*/}. Please add the correct SVD file. PLease contact the developers if you are adding a new register file.\n\n"
+                if [[ -n ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} ]]; then
+                  echo -e "[\e[0;31mERROR\e[0m] Could not find ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} for ${affected_pr_reg_file#./*/}. Please add the correct SVD file. Contact the developers if you are adding a new register file.\n\n"
+                else
+                  # If no SVD file was added to REGISTER_SVD_FILE_LIST, then it's likely a deprecated file.
+                  echo -e "[\e[0;31mERROR\e[0m] Could not find SVD File for ${affected_pr_reg_file#./*/}. Please make sure the register file is supported. Contact the developers for any assistance.\n\n"
+                fi
               fi
             fi
           done
