@@ -9,7 +9,7 @@ Before build example please set correct silicon (A1, A2...) version you have in 
 PROJ_CFLAGS+=-DMAX32690_A1
 
 1. Build the example with scpa configuration ("make scpa")      <br />
-2. The SCP package will be generated under scp_packets folder   <br />
+2. The SCP package will be generated under build/scp_packets folder   <br />
 3. Send SCP Packages to device with scp_sender or SBT GUI tool  <br />
    Please check: https://pdfserv.maximintegrated.com/en/an/ug7637-secure-boot-tools.pdf  <br />
 
@@ -19,8 +19,11 @@ PROJ_CFLAGS+=-DMAX32690_A1
 -   Open a console (Powershell or bash) then send scp packages to device.
 
 ## Expected Output
+
+The "send_scp.exe" file is located in "<MAXIM_PATH>/Tools/SBT/bin".
+
     `
-    send_scp -c <YOUR_PARTNUMBER> -i UART -s <COMPORT>  scp_packets\packet.list"
+    send_scp -c <YOUR_PARTNUMBER> -i UART -s <COMPORT> "<path\to\scp_packets\packet.list>"
     `
 [====================================================                    ]  73%
 
