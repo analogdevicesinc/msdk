@@ -83,7 +83,7 @@
           <field>
             <name>CH0_IEN</name>
             <description>Channel 0 Interrupt Enable.</description>
-            <bitOffset>0</bitOffset>
+            <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
