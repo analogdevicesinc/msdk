@@ -24,7 +24,7 @@
           <field>
             <name>ADM_TM_EN</name>
             <description>Description not included</description>
-            <bitOffset>0</bitOffset>
+            <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
