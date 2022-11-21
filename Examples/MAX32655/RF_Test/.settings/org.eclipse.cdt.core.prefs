@@ -7,7 +7,7 @@ environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/GCC_PRE
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/GCC_PREFIX/value=arm-none-eabi-
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/delimiter=;
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/operation=append
-environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/value=BLE_fcc
+environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/PROJECT/value=RF_Test
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/delimiter=;
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/operation=append
 environment/project/cdt.managedbuild.toolchain.gnu.cross.base.1028364529/TARGET/value=MAX32655
