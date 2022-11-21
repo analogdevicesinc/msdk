@@ -131,7 +131,7 @@ typedef struct {
  * @brief    DMA Control Register.
  * @{
  */
-#define MXC_F_DMA_CN_CH0_IEN_POS                       0 /**< CN_CH0_IEN Position */
+#define MXC_F_DMA_CN_CH0_IEN_POS                       1 /**< CN_CH0_IEN Position */
 #define MXC_F_DMA_CN_CH0_IEN                           ((uint32_t)(0x1UL << MXC_F_DMA_CN_CH0_IEN_POS)) /**< CN_CH0_IEN Mask */
 
 #define MXC_F_DMA_CN_CH2_IEN_POS                       2 /**< CN_CH2_IEN Position */
