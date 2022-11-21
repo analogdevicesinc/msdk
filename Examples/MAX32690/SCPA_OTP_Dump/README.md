@@ -23,7 +23,7 @@ PROJ_CFLAGS+=-DMAX32690_A1
 The "send_scp.exe" file is located in "<MAXIM_PATH>/Tools/SBT/bin".
 
     `
-    send_scp -c <YOUR_PARTNUMBER> -i UART -s <COMPORT> "<path\to\scp_packets\packet.list"
+    send_scp -c <YOUR_PARTNUMBER> -i UART -s <COMPORT> "<path\to\scp_packets\packet.list>"
     `
 [====================================================                    ]  73%
 
