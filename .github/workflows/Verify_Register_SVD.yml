@@ -345,6 +345,11 @@ jobs:
                 done
               fi
               
+
+              echo $periph
+              echo $changed_svd_file
+              pwd
+
               if [[ -n $reg_files_linked_to_changed_svd_files ]]; then
                 reg_files_linked_to_changed_svd_files+=" "
               fi
