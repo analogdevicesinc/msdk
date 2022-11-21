@@ -108,7 +108,7 @@ extern "C" {
  * @brief    HART Control
  * @{
  */
-#define MXC_F_AFE_HART_CTRL_ADM_TM_EN_POS              1 /**< CTRL_ADM_TM_EN Position */
+#define MXC_F_AFE_HART_CTRL_ADM_TM_EN_POS              0 /**< CTRL_ADM_TM_EN Position */
 #define MXC_F_AFE_HART_CTRL_ADM_TM_EN                  ((uint32_t)(0x1UL << MXC_F_AFE_HART_CTRL_ADM_TM_EN_POS)) /**< CTRL_ADM_TM_EN Mask */
 
 /**@} end of group AFE_HART_CTRL_Register */
