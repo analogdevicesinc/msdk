@@ -26,7 +26,7 @@
             <name>COUNT</name>
             <description>Timer Count Value. </description>
             <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
+            <bitWidth>16</bitWidth>
           </field>
         </fields>
       </register>
