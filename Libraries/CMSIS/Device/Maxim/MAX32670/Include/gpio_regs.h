@@ -177,7 +177,7 @@ typedef struct {
  *           GPIO pin on the associated port.
  * @{
  */
-#define MXC_F_GPIO_EN0_GPIO_EN_POS                     0 /**< EN0_GPIO_EN Position */
+#define MXC_F_GPIO_EN0_GPIO_EN_POS                     1 /**< EN0_GPIO_EN Position */
 #define MXC_F_GPIO_EN0_GPIO_EN                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_GPIO_EN0_GPIO_EN_POS)) /**< EN0_GPIO_EN Mask */
 #define MXC_V_GPIO_EN0_GPIO_EN_ALTERNATE               ((uint32_t)0x0UL) /**< EN0_GPIO_EN_ALTERNATE Value */
 #define MXC_S_GPIO_EN0_GPIO_EN_ALTERNATE               (MXC_V_GPIO_EN0_GPIO_EN_ALTERNATE << MXC_F_GPIO_EN0_GPIO_EN_POS) /**< EN0_GPIO_EN_ALTERNATE Setting */
