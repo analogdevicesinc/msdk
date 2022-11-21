@@ -121,7 +121,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_WUT_CNT_COUNT_POS                        0 /**< CNT_COUNT Position */
-#define MXC_F_WUT_CNT_COUNT                            ((uint32_t)(0xFFFFFFFFUL << MXC_F_WUT_CNT_COUNT_POS)) /**< CNT_COUNT Mask */
+#define MXC_F_WUT_CNT_COUNT                            ((uint32_t)(0xFFFFUL << MXC_F_WUT_CNT_COUNT_POS)) /**< CNT_COUNT Mask */
 
 /**@} end of group WUT_CNT_Register */
 
