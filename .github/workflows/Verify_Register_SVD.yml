@@ -265,7 +265,7 @@ jobs:
               if [[ ${DIE_TO_CHIP_NAMES[$part]+_} && -d $part && $part != ${CHIP_TO_DIE_NAMES[$chip_name]} ]]; then
                 cd $part
 
-                check_if_svd_file_exists=$(find $CHIP_PERIPH -exec grep -s "$svd_file" {} ;/)
+                check_if_svd_file_exists=$(find $CHIP_PERIPH -exec grep -s "$svd_file" {} \;)
 
                 if [[ -n $check_if_svd_file_exists ]]; then                    
                   # Need to generate register files for part if it wasn't already generated.
