@@ -135,6 +135,32 @@ static const smpCfg_t datsSmpCfg = {
     2 /*! Repeated attempts multiplier exponent */
 };
 
+/* iOS connection parameter update requirements
+
+ The connection parameter request may be rejected if it does not meet the following guidelines:
+ * Peripheral Latency of up to 30 connection intervals.
+ * Supervision Timeout from 2 seconds to 6 seconds.
+ * Interval Min of at least 15 ms.
+ * Interval Min is a multiple of 15 ms.
+ * One of the following:
+   * Interval Max at least 15 ms greater than Interval Min.
+   * Interval Max and Interval Min both set to 15 ms.
+   * Interval Max * (Peripheral Latency + 1) of 2 seconds or less.
+   * Supervision Timeout greater than Interval Max * (Peripheral Latency + 1) * 3.
+*/
+
+/*! configurable parameters for connection parameter update */
+static const appUpdateCfg_t datsUpdateCfg = {
+    0,
+    /*! ^ Connection idle period in ms before attempting
+    connection parameter update. set to zero to disable */
+    (15 * 8 / 1.25), /*! Minimum connection interval in 1.25ms units */
+    (15 * 12 / 1.25), /*! Maximum connection interval in 1.25ms units */
+    0, /*! Connection latency */
+    600, /*! Supervision timeout in 10ms units */
+    5 /*! Number of update attempts before giving up */
+};
+
 /*! ATT configurable parameters (increase MTU) */
 static const attCfg_t datsAttCfg = {
     15, /* ATT server service discovery connection idle timeout in seconds */
@@ -649,6 +675,7 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
     pAppSlaveCfg = (appSlaveCfg_t *)&datsSlaveCfg;
     pAppAdvCfg = (appAdvCfg_t *)&datsAdvCfg;
     pAppSecCfg = (appSecCfg_t *)&datsSecCfg;
+    pAppUpdateCfg = (appUpdateCfg_t *)&datsUpdateCfg;
     pSmpCfg = (smpCfg_t *)&datsSmpCfg;
     pAttCfg = (attCfg_t *)&datsAttCfg;
 
