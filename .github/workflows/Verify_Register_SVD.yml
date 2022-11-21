@@ -433,8 +433,10 @@ jobs:
               # Read chip_periph.txt
               if [[ -n $updated_part_list ]]; then
                 # Check whether one of the changed register files matches with SVD path
+                echo "List: ${CHANGED_REG_FILES_PER_PART[$die_name]}"
                 for changed_reg_file in ${CHANGED_REG_FILES_PER_PART[$die_name]}
                 do
+                  echo "SVD-Register Hit: $changed_reg_file"
                   # Isolate peripheral of changed register file to find corresponding peripheral SVD file
                   periph=${changed_reg_file##*/}
                   periph=${periph%_regs.h}
