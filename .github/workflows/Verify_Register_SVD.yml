@@ -92,7 +92,7 @@ jobs:
         run: |
           # Enter msdk repo.
           cd ${{ env.MSDK_DIR }}
-          PERIPH_SVD_FILE_LIST=$(git diff --ignore-submodules --name-only remotes/origin/master './Libraries/PeriphDrivers/Source/*/*.svd')
+          PERIPH_SVD_FILE_LIST=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
           
           # Save time if there weren't any peripheral SVD file changes.
           if [[ -n $PERIPH_SVD_FILE_LIST ]]; then
