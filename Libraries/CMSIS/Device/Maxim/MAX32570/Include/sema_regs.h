@@ -115,7 +115,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SEMA_SEMAPHORES_SEMA_POS                 0 /**< SEMAPHORES_SEMA Position */
-#define MXC_F_SEMA_SEMAPHORES_SEMA                     ((uint32_t)(0x3UL << MXC_F_SEMA_SEMAPHORES_SEMA_POS)) /**< SEMAPHORES_SEMA Mask */
+#define MXC_F_SEMA_SEMAPHORES_SEMA                     ((uint32_t)(0x1UL << MXC_F_SEMA_SEMAPHORES_SEMA_POS)) /**< SEMAPHORES_SEMA Mask */
 
 /**@} end of group SEMA_SEMAPHORES_Register */
 
