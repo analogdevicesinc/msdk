@@ -327,6 +327,7 @@ jobs:
             do
               # Isolate to file name.
               periph=${changed_svd_file##*/}
+              periph=${changed_svd_files%*.svd}
               
               # Check if "Peripheral Rev#" SVD File or "SYS/SVD" (e.g. gcr_me14.svd) SVD File.
               if [[ "$periph" =~ "_rev" ]]; then
