@@ -25,11 +25,13 @@ int main()
 {
     int r, ret = 0;
 
-    printf("Checking LTPF Neon... "); fflush(stdout);
+    printf("Checking LTPF Neon... ");
+    fflush(stdout);
     printf("%s\n", (r = check_ltpf()) == 0 ? "OK" : "Failed");
     ret = ret || r;
 
-    printf("Checking MDCT Neon... "); fflush(stdout);
+    printf("Checking MDCT Neon... ");
+    fflush(stdout);
     printf("%s\n", (r = check_mdct()) == 0 ? "OK" : "Failed");
     ret = ret || r;
 

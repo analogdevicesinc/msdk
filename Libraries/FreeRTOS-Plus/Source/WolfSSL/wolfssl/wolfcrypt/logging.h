@@ -21,45 +21,36 @@
 
 /* submitted by eof */
 
-
 #ifndef WOLFSSL_LOGGING_H
 #define WOLFSSL_LOGGING_H
 
 #include <wolfssl/wolfcrypt/types.h>
 
 #ifdef __cplusplus
-    extern "C" {
+extern "C" {
 #endif
 
+enum CYA_Log_Levels { ERROR_LOG = 0, INFO_LOG, ENTER_LOG, LEAVE_LOG, OTHER_LOG };
 
-enum  CYA_Log_Levels {
-    ERROR_LOG = 0,
-    INFO_LOG,
-    ENTER_LOG,
-    LEAVE_LOG,
-    OTHER_LOG
-};
-
-typedef void (*wolfSSL_Logging_cb)(const int logLevel,
-                                  const char *const logMessage);
+typedef void (*wolfSSL_Logging_cb)(const int logLevel, const char *const logMessage);
 
 WOLFSSL_API int wolfSSL_SetLoggingCb(wolfSSL_Logging_cb log_function);
 
 #ifdef DEBUG_WOLFSSL
 
-    void WOLFSSL_ENTER(const char* msg);
-    void WOLFSSL_LEAVE(const char* msg, int ret);
+void WOLFSSL_ENTER(const char *msg);
+void WOLFSSL_LEAVE(const char *msg, int ret);
 
-    void WOLFSSL_ERROR(int);
-    void WOLFSSL_MSG(const char* msg);
+void WOLFSSL_ERROR(int);
+void WOLFSSL_MSG(const char *msg);
 
 #else /* DEBUG_WOLFSSL   */
 
-    #define WOLFSSL_ENTER(m)
-    #define WOLFSSL_LEAVE(m, r)
+#define WOLFSSL_ENTER(m)
+#define WOLFSSL_LEAVE(m, r)
 
-    #define WOLFSSL_ERROR(e)
-    #define WOLFSSL_MSG(m)
+#define WOLFSSL_ERROR(e)
+#define WOLFSSL_MSG(m)
 
 #endif /* DEBUG_WOLFSSL  */
 
@@ -67,4 +58,3 @@ WOLFSSL_API int wolfSSL_SetLoggingCb(wolfSSL_Logging_cb log_function);
 }
 #endif
 #endif /* WOLFSSL_LOGGING_H */
-

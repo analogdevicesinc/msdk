@@ -70,7 +70,7 @@
 #ifndef SIMPLE_TCP_ECHO_SERVER_H
 #define SIMPLE_TCP_ECHO_SERVER_H
 
-void vStartSimpleTCPServerTasks( uint16_t usStackSize, BaseType_t uxPriority );
-BaseType_t xAreTCPEchoServersStillRunning( void );
+void vStartSimpleTCPServerTasks(uint16_t usStackSize, BaseType_t uxPriority);
+BaseType_t xAreTCPEchoServersStillRunning(void);
 
 #endif /* SIMPLE_TCP_ECHO_SERVER_H */

@@ -22,7 +22,7 @@
 /* This file needs to be linked last in order to work correctly */
 
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+#include <config.h>
 #endif
 
 /* in case user set HAVE_FIPS there */
@@ -37,11 +37,7 @@ int wolfCrypt_FIPS_last(void)
     return 0;
 }
 
-
 /* read only end address */
-const unsigned int wolfCrypt_FIPS_ro_end[] =
-{ 0x1a2b3c4d, 0xffffffff };
-
+const unsigned int wolfCrypt_FIPS_ro_end[] = { 0x1a2b3c4d, 0xffffffff };
 
 #endif /* HAVE_FIPS */
-

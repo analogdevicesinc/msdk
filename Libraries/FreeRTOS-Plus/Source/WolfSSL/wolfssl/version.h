@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 #pragma once
 
 #ifdef __cplusplus
@@ -32,4 +31,3 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-

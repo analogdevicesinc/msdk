@@ -28,11 +28,9 @@
 #include <redfs.h>
 #include <redtestutils.h>
 
-
-#define ISHEXDIGITU(c)  (((c) >= 'A') && ((c) <= 'F'))
-#define ISHEXDIGITL(c)  (((c) >= 'a') && ((c) <= 'f'))
-#define ISHEXDIGIT(c)   (ISHEXDIGITL(c) || ISHEXDIGITU(c))
-
+#define ISHEXDIGITU(c) (((c) >= 'A') && ((c) <= 'F'))
+#define ISHEXDIGITL(c) (((c) >= 'a') && ((c) <= 'f'))
+#define ISHEXDIGIT(c) (ISHEXDIGITL(c) || ISHEXDIGITU(c))
 
 /** @brief Converts an ASCII number into an int32_t.
 
@@ -45,30 +43,23 @@
 
     @return The integer represented in the string.
 */
-int32_t RedAtoI(
-    const char *pszNum)
+int32_t RedAtoI(const char *pszNum)
 {
-    int32_t     lValue = 0;
-    int32_t     lNegative = 1;
-    uint32_t    ulIdx = 0U;
+    int32_t lValue = 0;
+    int32_t lNegative = 1;
+    uint32_t ulIdx = 0U;
 
-    if(pszNum[ulIdx] == '+')
-    {
+    if (pszNum[ulIdx] == '+') {
         ulIdx++;
-    }
-    else if(pszNum[ulIdx] == '-')
-    {
+    } else if (pszNum[ulIdx] == '-') {
         ulIdx++;
         lNegative = -1;
-    }
-    else
-    {
+    } else {
         /*  No sign, implicitly positive.
         */
     }
 
-    while(ISDIGIT(pszNum[ulIdx]))
-    {
+    while (ISDIGIT(pszNum[ulIdx])) {
         lValue *= 10;
         lValue += pszNum[ulIdx] - '0';
         ulIdx++;
@@ -78,7 +69,6 @@ int32_t RedAtoI(
 
     return lValue;
 }
-
 
 /** @brief Convert a hexadecimal ASCII number into a uint32_t value.
 
@@ -102,29 +92,22 @@ int32_t RedAtoI(
     @return A pointer to the byte following the converted number or NULL to
             indicate failure.
 */
-const char *RedHtoUL(
-    const char *pszNum,
-    uint32_t   *pulNum)
+const char *RedHtoUL(const char *pszNum, uint32_t *pulNum)
 {
-    uint64_t    ullValue;
+    uint64_t ullValue;
     const char *pszReturn;
 
     pszReturn = RedHtoULL(pszNum, &ullValue);
-    if(pszReturn != NULL)
-    {
-        if(ullValue < UINT32_MAX)
-        {
+    if (pszReturn != NULL) {
+        if (ullValue < UINT32_MAX) {
             *pulNum = (uint32_t)ullValue;
-        }
-        else
-        {
+        } else {
             pszReturn = NULL;
         }
     }
 
     return pszReturn;
 }
-
 
 /** @brief Convert a hexadecimal ASCII number into a D_UINT64 value.
 
@@ -148,35 +131,25 @@ const char *RedHtoUL(
     @return A pointer to the byte following the converted number, or NULL to
             indicate failure.
 */
-const char *RedHtoULL(
-    const char *pszNum,
-    uint64_t   *pullNum)
+const char *RedHtoULL(const char *pszNum, uint64_t *pullNum)
 {
-    uint64_t    ullValue = 0U;
+    uint64_t ullValue = 0U;
     const char *pszReturn = NULL;
-    uint32_t    ulIdx = 0U;
+    uint32_t ulIdx = 0U;
 
     REDASSERT(pszNum != NULL);
     REDASSERT(pullNum != NULL);
 
-    while(pszNum[ulIdx] != '\0')
-    {
+    while (pszNum[ulIdx] != '\0') {
         char cDigit = pszNum[ulIdx];
 
-        if(ISDIGIT(cDigit))
-        {
+        if (ISDIGIT(cDigit)) {
             cDigit -= '0';
-        }
-        else if(ISHEXDIGITU(cDigit))
-        {
+        } else if (ISHEXDIGITU(cDigit)) {
             cDigit -= ('A' - 10);
-        }
-        else if(ISHEXDIGITL(cDigit))
-        {
+        } else if (ISHEXDIGITL(cDigit)) {
             cDigit -= ('a' - 10);
-        }
-        else
-        {
+        } else {
             break;
         }
 
@@ -192,14 +165,12 @@ const char *RedHtoULL(
     /*  Modify the number returned only if we found one or more valid hex
         digits.
     */
-    if(pszReturn != NULL)
-    {
+    if (pszReturn != NULL) {
         *pullNum = ullValue;
     }
 
     return pszReturn;
 }
-
 
 /** @brief Convert the ASCII number to a uint32_t  value.
 
@@ -221,71 +192,53 @@ const char *RedHtoULL(
     @return A pointer to the byte following the converted number, or NULL to
             indicate failure.
 */
-const char *RedNtoUL(
-    const char *pszNum,
-    uint32_t   *pulNum)
+const char *RedNtoUL(const char *pszNum, uint32_t *pulNum)
 {
-    bool        fNegative = false;
-    uint32_t    ulIdx = 0U;
+    bool fNegative = false;
+    uint32_t ulIdx = 0U;
     const char *pszReturn;
 
     REDASSERT(pszNum != NULL);
     REDASSERT(pulNum != NULL);
 
-    if(pszNum[ulIdx] == '-')
-    {
+    if (pszNum[ulIdx] == '-') {
         fNegative = true;
         ulIdx++;
     }
 
     /*  Hex numbers must be prefixed with '0x'.
     */
-    if((pszNum[ulIdx] == '0') && ((pszNum[ulIdx + 1U] == 'x') || (pszNum[ulIdx + 1U] == 'X')))
-    {
+    if ((pszNum[ulIdx] == '0') && ((pszNum[ulIdx + 1U] == 'x') || (pszNum[ulIdx + 1U] == 'X'))) {
         ulIdx += 2U;
 
-        if(ISDIGIT(pszNum[ulIdx]) || ISHEXDIGIT(pszNum[ulIdx]))
-        {
+        if (ISDIGIT(pszNum[ulIdx]) || ISHEXDIGIT(pszNum[ulIdx])) {
             pszReturn = RedHtoUL(&pszNum[ulIdx], pulNum);
-        }
-        else
-        {
+        } else {
             pszReturn = NULL;
         }
-    }
-    else if(ISDIGIT(pszNum[ulIdx]))
-    {
+    } else if (ISDIGIT(pszNum[ulIdx])) {
         uint32_t ulTemp;
 
         ulTemp = RedAtoI(&pszNum[ulIdx]);
 
-        while(ISDIGIT(pszNum[ulIdx]))
-        {
+        while (ISDIGIT(pszNum[ulIdx])) {
             ulIdx++;
         }
 
-        if(fNegative)
-        {
+        if (fNegative) {
             /*  Fail if the number is out of range.
             */
-            if(ulTemp > INT32_MAX)
-            {
+            if (ulTemp > INT32_MAX) {
                 pszReturn = NULL;
-            }
-            else
-            {
+            } else {
                 *pulNum = -((int32_t)ulTemp);
                 pszReturn = &pszNum[ulIdx];
             }
-        }
-        else
-        {
+        } else {
             *pulNum = ulTemp;
             pszReturn = &pszNum[ulIdx];
         }
-    }
-    else
-    {
+    } else {
         /*  Return an error if there is not at least one hex or decimal digit.
         */
         pszReturn = NULL;
@@ -293,7 +246,6 @@ const char *RedNtoUL(
 
     return pszReturn;
 }
-
 
 /** @brief Convert the ASCII number pointed to by pachNum to a uint64_t value.
 
@@ -312,71 +264,53 @@ const char *RedNtoUL(
     @return A pointer to the byte following the converted number, or NULL to
             indicate failure.
 */
-const char *RedNtoULL(
-    const char *pszNum,
-    uint64_t   *pullNum)
+const char *RedNtoULL(const char *pszNum, uint64_t *pullNum)
 {
-    bool        fNegative = false;
-    uint32_t    ulIdx = 0U;
+    bool fNegative = false;
+    uint32_t ulIdx = 0U;
     const char *pszReturn;
 
     REDASSERT(pszNum != NULL);
     REDASSERT(pullNum != NULL);
 
-    if(pszNum[ulIdx] == '-')
-    {
+    if (pszNum[ulIdx] == '-') {
         fNegative = true;
         ulIdx++;
     }
 
     /*  Hex numbers must be prefixed with '0x'.
     */
-    if((pszNum[ulIdx] == '0') && ((pszNum[ulIdx + 1U] == 'x') || (pszNum[ulIdx + 1U] == 'X')))
-    {
+    if ((pszNum[ulIdx] == '0') && ((pszNum[ulIdx + 1U] == 'x') || (pszNum[ulIdx + 1U] == 'X'))) {
         ulIdx += 2U;
 
-        if(ISDIGIT(pszNum[ulIdx]) || ISHEXDIGIT(pszNum[ulIdx]))
-        {
+        if (ISDIGIT(pszNum[ulIdx]) || ISHEXDIGIT(pszNum[ulIdx])) {
             pszReturn = RedHtoULL(&pszNum[ulIdx], pullNum);
-        }
-        else
-        {
+        } else {
             pszReturn = NULL;
         }
-    }
-    else if(ISDIGIT(pszNum[ulIdx]))
-    {
+    } else if (ISDIGIT(pszNum[ulIdx])) {
         uint64_t ullTemp = 0U;
 
-        while(ISDIGIT(pszNum[ulIdx]))
-        {
+        while (ISDIGIT(pszNum[ulIdx])) {
             ullTemp *= 10U;
             ullTemp += pszNum[ulIdx] - '0';
             ulIdx++;
         }
 
-        if(fNegative)
-        {
+        if (fNegative) {
             /*  Fail if the number is out of range.
             */
-            if(ullTemp > INT64_MAX)
-            {
+            if (ullTemp > INT64_MAX) {
                 pszReturn = NULL;
-            }
-            else
-            {
+            } else {
                 *pullNum = (uint64_t)(-((int64_t)ullTemp));
                 pszReturn = &pszNum[ulIdx];
             }
-        }
-        else
-        {
+        } else {
             *pullNum = ullTemp;
             pszReturn = &pszNum[ulIdx];
         }
-    }
-    else
-    {
+    } else {
         /*  Return an error if there is not at least one hex or decimal digit.
         */
         pszReturn = NULL;
@@ -384,7 +318,6 @@ const char *RedNtoULL(
 
     return pszReturn;
 }
-
 
 /** @brief Convert an ASCII hex or decimal number, which may may have a "B",
            "KB", or "MB" suffix (case insensitive), to a binary value.
@@ -401,14 +334,12 @@ const char *RedNtoULL(
     @return A pointer to the byte following the string, or NULL to indicate an
             error.  In the event of an error, *pulResult will not be modified.
 */
-const char *RedSizeToUL(
-    const char *pszNum,
-    uint32_t   *pulResult)
+const char *RedSizeToUL(const char *pszNum, uint32_t *pulResult)
 {
-    uint32_t    ulResult;
+    uint32_t ulResult;
     const char *pszSuffix;
     const char *pszReturn;
-    uint32_t    ulIdx = 0U;
+    uint32_t ulIdx = 0U;
 
     REDASSERT(pszNum != NULL);
     REDASSERT(pulResult != NULL);
@@ -416,63 +347,46 @@ const char *RedSizeToUL(
     /*  Do the basic hex/decimal conversion
     */
     pszSuffix = RedNtoUL(pszNum, &ulResult);
-    if(pszSuffix != NULL)
-    {
-        if((pszSuffix[ulIdx] == 'B') || (pszSuffix[ulIdx] == 'b'))
-        {
+    if (pszSuffix != NULL) {
+        if ((pszSuffix[ulIdx] == 'B') || (pszSuffix[ulIdx] == 'b')) {
             ulIdx++;
             pszReturn = &pszSuffix[ulIdx];
-        }
-        else if(    ((pszSuffix[ulIdx] == 'M') || (pszSuffix[ulIdx] == 'm'))
-                 && ((pszSuffix[ulIdx + 1U] == 'B') || (pszSuffix[ulIdx + 1U] == 'b')))
-        {
+        } else if (((pszSuffix[ulIdx] == 'M') || (pszSuffix[ulIdx] == 'm')) &&
+                   ((pszSuffix[ulIdx + 1U] == 'B') || (pszSuffix[ulIdx + 1U] == 'b'))) {
             ulIdx += 2U;
 
-            if(ulResult > (UINT32_MAX / (1024U * 1024U)))
-            {
+            if (ulResult > (UINT32_MAX / (1024U * 1024U))) {
                 pszReturn = NULL;
-            }
-            else
-            {
+            } else {
                 ulResult *= 1024U * 1024U;
                 pszReturn = &pszSuffix[ulIdx];
             }
-        }
-        else
-        {
+        } else {
             /*  The number is either postfixed with "KB" or something
                 else (we don't care), but we must increment the pointer
                 if it is something recognize.
             */
-            if(    ((pszSuffix[ulIdx] == 'K') || (pszSuffix[ulIdx] == 'k'))
-                && ((pszSuffix[ulIdx + 1U] == 'B') || (pszSuffix[ulIdx + 1U] == 'b')))
-            {
+            if (((pszSuffix[ulIdx] == 'K') || (pszSuffix[ulIdx] == 'k')) &&
+                ((pszSuffix[ulIdx + 1U] == 'B') || (pszSuffix[ulIdx + 1U] == 'b'))) {
                 ulIdx += 2U;
             }
 
             /*  "B" or "MB" were not specified, so it must be "KB"
             */
-            if(ulResult > (UINT32_MAX / 1024U))
-            {
+            if (ulResult > (UINT32_MAX / 1024U)) {
                 pszReturn = NULL;
-            }
-            else
-            {
+            } else {
                 ulResult *= 1024UL;
                 pszReturn = &pszSuffix[ulIdx];
             }
         }
 
-        if(pszReturn != NULL)
-        {
+        if (pszReturn != NULL) {
             *pulResult = ulResult;
         }
-    }
-    else
-    {
+    } else {
         pszReturn = NULL;
     }
 
     return pszReturn;
 }
-

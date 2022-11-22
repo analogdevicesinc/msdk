@@ -42,7 +42,6 @@
 #include <limits.h>
 #include <stdarg.h>
 
-
 /** @brief Maximum number of bytes of output supported by RedPrintf().
 
     Typically only Datalight code uses these functions, and that could should be
@@ -51,9 +50,7 @@
 */
 #define OUTPUT_BUFFER_SIZE 256U
 
-
-typedef enum
-{
+typedef enum {
     PRFMT_UNKNOWN = 0,
     PRFMT_CHAR,
     PRFMT_ANSISTRING,
@@ -73,17 +70,15 @@ typedef enum
     PRFMT_DOUBLEPERCENT
 } PRINTTYPE;
 
-typedef struct
-{
-    PRINTTYPE       type;               /* The PRFMT_* type found */
-    uint32_t        ulSpecifierIdx;     /* Returns a pointer to the % sign */
-    uint32_t        ulFillLen;
-    char            cFillChar;
-    bool            fLeftJustified;
-    bool            fHasIllegalType;    /* TRUE if an illegal sequence was skipped over */
-    bool            fHasVarWidth;
+typedef struct {
+    PRINTTYPE type; /* The PRFMT_* type found */
+    uint32_t ulSpecifierIdx; /* Returns a pointer to the % sign */
+    uint32_t ulFillLen;
+    char cFillChar;
+    bool fLeftJustified;
+    bool fHasIllegalType; /* TRUE if an illegal sequence was skipped over */
+    bool fHasVarWidth;
 } PRINTFORMAT;
-
 
 /*  Our output handlers are written for standard fixed width data types.  Map
     the standard ANSI C data types onto our handlers.  Currently this code has
@@ -95,67 +90,70 @@ typedef struct
     4) long longs must be 64 bits
 */
 #if (USHRT_MAX == 0xFFFFU)
-  #define MAPSHORT          PRFMT_SIGNED16BIT
-  #define MAPUSHORT         PRFMT_UNSIGNED16BIT
-  #define MAPHEXUSHORT      PRFMT_HEX16BIT
+#define MAPSHORT PRFMT_SIGNED16BIT
+#define MAPUSHORT PRFMT_UNSIGNED16BIT
+#define MAPHEXUSHORT PRFMT_HEX16BIT
 #elif (USHRT_MAX == 0xFFFFFFFFU)
-  #define MAPSHORT          PRFMT_SIGNED32BIT
-  #define MAPUSHORT         PRFMT_UNSIGNED32BIT
-  #define MAPHEXUSHORT      PRFMT_HEX32BIT
+#define MAPSHORT PRFMT_SIGNED32BIT
+#define MAPUSHORT PRFMT_UNSIGNED32BIT
+#define MAPHEXUSHORT PRFMT_HEX32BIT
 #else
-  #error "The 'short' data type does not have a 16 or 32-bit width"
+#error "The 'short' data type does not have a 16 or 32-bit width"
 #endif
 
 #if (UINT_MAX == 0xFFFFU)
-  #define MAPINT            PRFMT_SIGNED16BIT
-  #define MAPUINT           PRFMT_UNSIGNED16BIT
-  #define MAPHEXUINT        PRFMT_HEX16BIT
+#define MAPINT PRFMT_SIGNED16BIT
+#define MAPUINT PRFMT_UNSIGNED16BIT
+#define MAPHEXUINT PRFMT_HEX16BIT
 #elif (UINT_MAX == 0xFFFFFFFFU)
-  #define MAPINT            PRFMT_SIGNED32BIT
-  #define MAPUINT           PRFMT_UNSIGNED32BIT
-  #define MAPHEXUINT        PRFMT_HEX32BIT
+#define MAPINT PRFMT_SIGNED32BIT
+#define MAPUINT PRFMT_UNSIGNED32BIT
+#define MAPHEXUINT PRFMT_HEX32BIT
 #else
-  #error "The 'int' data type does not have a 16 or 32-bit width"
+#error "The 'int' data type does not have a 16 or 32-bit width"
 #endif
 
 #if (ULONG_MAX == 0xFFFFFFFFU)
-  #define MAPLONG           PRFMT_SIGNED32BIT
-  #define MAPULONG          PRFMT_UNSIGNED32BIT
-  #define MAPHEXULONG       PRFMT_HEX32BIT
+#define MAPLONG PRFMT_SIGNED32BIT
+#define MAPULONG PRFMT_UNSIGNED32BIT
+#define MAPHEXULONG PRFMT_HEX32BIT
 #elif (ULONG_MAX <= UINT64_SUFFIX(0xFFFFFFFFFFFFFFFF))
-  /*  We've run into unusual environments where "longs" are 40-bits wide.
+/*  We've run into unusual environments where "longs" are 40-bits wide.
       In this event, map them to 64-bit types so no data is lost.
   */
-  #define MAPLONG         PRFMT_SIGNED64BIT
-  #define MAPULONG        PRFMT_UNSIGNED64BIT
-  #define MAPHEXULONG     PRFMT_HEX64BIT
+#define MAPLONG PRFMT_SIGNED64BIT
+#define MAPULONG PRFMT_UNSIGNED64BIT
+#define MAPHEXULONG PRFMT_HEX64BIT
 #else
-  #error "The 'long' data type is not between 32 and 64 bits wide"
+#error "The 'long' data type is not between 32 and 64 bits wide"
 #endif
 
 #if defined(ULLONG_MAX) && (ULLONG_MAX != UINT64_SUFFIX(0xFFFFFFFFFFFFFFFF))
-  #error "The 'long long' data type is not 64 bits wide"
+#error "The 'long long' data type is not 64 bits wide"
 #else
-  #define MAPLONGLONG       PRFMT_SIGNED64BIT
-  #define MAPULONGLONG      PRFMT_UNSIGNED64BIT
-  #define MAPHEXULONGLONG   PRFMT_HEX64BIT
+#define MAPLONGLONG PRFMT_SIGNED64BIT
+#define MAPULONGLONG PRFMT_UNSIGNED64BIT
+#define MAPHEXULONGLONG PRFMT_HEX64BIT
 #endif
 
-
-static uint32_t ProcessFormatSegment(char *pcBuffer, uint32_t ulBufferLen, const char *pszFormat, PRINTFORMAT *pFormat, uint32_t *pulSpecifierLen);
+static uint32_t ProcessFormatSegment(char *pcBuffer, uint32_t ulBufferLen, const char *pszFormat,
+                                     PRINTFORMAT *pFormat, uint32_t *pulSpecifierLen);
 static uint32_t ParseFormatSpecifier(char const *pszFormat, PRINTFORMAT *pFormatType);
 static PRINTTYPE ParseFormatType(const char *pszFormat, uint32_t *pulTypeLen);
-static uint32_t LtoA(char *pcBuffer, uint32_t ulBufferLen, int32_t lNum, uint32_t ulFillLen, char cFill);
-static uint32_t LLtoA(char *pcBuffer, uint32_t ulBufferLen, int64_t llNum, uint32_t ulFillLen, char cFill);
-static uint32_t ULtoA(char *pcBuffer, uint32_t ulBufferLen, uint32_t ulNum, bool fHex, uint32_t ulFillLen, char cFill);
-static uint32_t ULLtoA(char *pcBuffer, uint32_t ulBufferLen, uint64_t ullNum, bool fHex, uint32_t ulFillLen, char cFill);
-static uint32_t FinishToA(const char *pcDigits, uint32_t ulDigits, char *pcOutBuffer, uint32_t ulBufferLen, uint32_t ulFillLen, char cFill);
-
+static uint32_t LtoA(char *pcBuffer, uint32_t ulBufferLen, int32_t lNum, uint32_t ulFillLen,
+                     char cFill);
+static uint32_t LLtoA(char *pcBuffer, uint32_t ulBufferLen, int64_t llNum, uint32_t ulFillLen,
+                      char cFill);
+static uint32_t ULtoA(char *pcBuffer, uint32_t ulBufferLen, uint32_t ulNum, bool fHex,
+                      uint32_t ulFillLen, char cFill);
+static uint32_t ULLtoA(char *pcBuffer, uint32_t ulBufferLen, uint64_t ullNum, bool fHex,
+                       uint32_t ulFillLen, char cFill);
+static uint32_t FinishToA(const char *pcDigits, uint32_t ulDigits, char *pcOutBuffer,
+                          uint32_t ulBufferLen, uint32_t ulFillLen, char cFill);
 
 /*  Digits for the *LtoA() routines.
 */
 static const char gacDigits[] = "0123456789ABCDEF";
-
 
 #if REDCONF_OUTPUT == 1
 /** @brief Print formatted data with a variable length argument list.
@@ -168,11 +166,9 @@ static const char gacDigits[] = "0123456789ABCDEF";
     @param pszFormat    A pointer to the null-terminated format string.
     @param ...          The variable length argument list.
 */
-void RedPrintf(
-    const char *pszFormat,
-    ...)
+void RedPrintf(const char *pszFormat, ...)
 {
-    va_list     arglist;
+    va_list arglist;
 
     va_start(arglist, pszFormat);
 
@@ -180,7 +176,6 @@ void RedPrintf(
 
     va_end(arglist);
 }
-
 
 /** @brief Print formatted data using a pointer to a variable length argument
            list.
@@ -196,14 +191,11 @@ void RedPrintf(
     @param pszFormat    A pointer to the null-terminated format string.
     @param arglist      The variable length argument list.
 */
-void RedVPrintf(
-    const char *pszFormat,
-    va_list     arglist)
+void RedVPrintf(const char *pszFormat, va_list arglist)
 {
-    char        achBuffer[OUTPUT_BUFFER_SIZE];
+    char achBuffer[OUTPUT_BUFFER_SIZE];
 
-    if(RedVSNPrintf(achBuffer, sizeof(achBuffer), pszFormat, arglist) == -1)
-    {
+    if (RedVSNPrintf(achBuffer, sizeof(achBuffer), pszFormat, arglist) == -1) {
         /*  Ensture the buffer is null terminated.
         */
         achBuffer[sizeof(achBuffer) - 1U] = '\0';
@@ -211,8 +203,7 @@ void RedVPrintf(
         /*  If the original string was \n terminated and the new one is not, due to
             truncation, stuff a \n into the new one.
         */
-        if(pszFormat[RedStrLen(pszFormat) - 1U] == '\n')
-        {
+        if (pszFormat[RedStrLen(pszFormat) - 1U] == '\n') {
             achBuffer[sizeof(achBuffer) - 2U] = '\n';
         }
     }
@@ -220,7 +211,6 @@ void RedVPrintf(
     RedOsOutputString(achBuffer);
 }
 #endif /* #if REDCONF_OUTPUT == 1 */
-
 
 /** @brief Format arguments into a string using a subset of the ANSI C
            vsprintf() functionality.
@@ -239,14 +229,10 @@ void RedVPrintf(
     @return The length output, or -1 if the buffer filled up.  If -1 is
             returned, the output buffer may not be null-terminated.
 */
-int32_t RedSNPrintf(
-    char       *pcBuffer,
-    uint32_t    ulBufferLen,
-    const char *pszFormat,
-    ...)
+int32_t RedSNPrintf(char *pcBuffer, uint32_t ulBufferLen, const char *pszFormat, ...)
 {
-    int32_t     iLen;
-    va_list     arglist;
+    int32_t iLen;
+    va_list arglist;
 
     va_start(arglist, pszFormat);
 
@@ -256,7 +242,6 @@ int32_t RedSNPrintf(
 
     return iLen;
 }
-
 
 /** @brief Format arguments into a string using a subset of the ANSI C
            vsprintf() functionality.
@@ -320,29 +305,24 @@ int32_t RedSNPrintf(
     @return  The length output, or -1 if the buffer filled up.  If -1 is
              returned, the output buffer may not be null-terminated.
 */
-int32_t RedVSNPrintf(
-    char       *pcBuffer,
-    uint32_t    ulBufferLen,
-    const char *pszFormat,
-    va_list     arglist)
+int32_t RedVSNPrintf(char *pcBuffer, uint32_t ulBufferLen, const char *pszFormat, va_list arglist)
 {
-    uint32_t    ulBufIdx = 0U;
-    uint32_t    ulFmtIdx = 0U;
-    int32_t     iLen;
+    uint32_t ulBufIdx = 0U;
+    uint32_t ulFmtIdx = 0U;
+    int32_t iLen;
 
-    while((pszFormat[ulFmtIdx] != '\0') && (ulBufIdx < ulBufferLen))
-    {
+    while ((pszFormat[ulFmtIdx] != '\0') && (ulBufIdx < ulBufferLen)) {
         PRINTFORMAT fmt;
-        uint32_t    ulSpecifierLen;
-        uint32_t    ulWidth;
+        uint32_t ulSpecifierLen;
+        uint32_t ulWidth;
 
         /*  Process the next segment of the format string, outputting
             any non-format specifiers, as output buffer space allows,
             and return information about the next format specifier.
         */
-        ulWidth = ProcessFormatSegment(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, &pszFormat[ulFmtIdx], &fmt, &ulSpecifierLen);
-        if(ulWidth)
-        {
+        ulWidth = ProcessFormatSegment(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx,
+                                       &pszFormat[ulFmtIdx], &fmt, &ulSpecifierLen);
+        if (ulWidth) {
             REDASSERT(ulWidth <= (ulBufferLen - ulBufIdx));
 
             ulBufIdx += ulWidth;
@@ -351,8 +331,7 @@ int32_t RedVSNPrintf(
         /*  If no specifier was found, or if the output buffer is
             full, we're done -- get out.
         */
-        if((ulSpecifierLen == 0U) || (ulBufIdx == ulBufferLen))
-        {
+        if ((ulSpecifierLen == 0U) || (ulBufIdx == ulBufferLen)) {
             break;
         }
 
@@ -364,31 +343,25 @@ int32_t RedVSNPrintf(
         */
         ulFmtIdx = ulFmtIdx + fmt.ulSpecifierIdx + ulSpecifierLen;
 
-        if(fmt.fHasVarWidth)
-        {
+        if (fmt.fHasVarWidth) {
             int iFillLen = va_arg(arglist, int);
 
-            if(iFillLen >= 0)
-            {
+            if (iFillLen >= 0) {
                 fmt.ulFillLen = (uint32_t)iFillLen;
-            }
-            else
-            {
+            } else {
                 /*  Bogus fill length.  Ignore.
                 */
                 fmt.ulFillLen = 0U;
             }
         }
 
-        switch(fmt.type)
-        {
-            case PRFMT_DOUBLEPERCENT:
-            {
-                /*  Nothing to do.  A single percent has already been output,
+        switch (fmt.type) {
+        case PRFMT_DOUBLEPERCENT: {
+            /*  Nothing to do.  A single percent has already been output,
                     and we just finished skipping past the second percent.
                 */
-                break;
-            }
+            break;
+        }
 
             /*----------------->  Small int handling  <------------------
              *
@@ -398,216 +371,198 @@ int32_t RedVSNPrintf(
              *  put the value into the desired data type.
              *---------------------------------------------------------*/
 
-            case PRFMT_CHAR:
-            {
-                pcBuffer[ulBufIdx] = (char)va_arg(arglist, int);
-                ulBufIdx++;
-                break;
-            }
-            case PRFMT_SIGNED8BIT:
-            {
-                int8_t num = (int8_t)va_arg(arglist, int);
+        case PRFMT_CHAR: {
+            pcBuffer[ulBufIdx] = (char)va_arg(arglist, int);
+            ulBufIdx++;
+            break;
+        }
+        case PRFMT_SIGNED8BIT: {
+            int8_t num = (int8_t)va_arg(arglist, int);
 
-                ulBufIdx += LtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, num, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_UNSIGNED8BIT:
-            {
-                uint8_t bNum = (uint8_t)va_arg(arglist, unsigned);
+            ulBufIdx += LtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, num, fmt.ulFillLen,
+                             fmt.cFillChar);
+            break;
+        }
+        case PRFMT_UNSIGNED8BIT: {
+            uint8_t bNum = (uint8_t)va_arg(arglist, unsigned);
 
-                ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, bNum, false, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_HEX8BIT:
-            {
-                uint8_t bNum = (uint8_t)va_arg(arglist, unsigned);
+            ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, bNum, false,
+                              fmt.ulFillLen, fmt.cFillChar);
+            break;
+        }
+        case PRFMT_HEX8BIT: {
+            uint8_t bNum = (uint8_t)va_arg(arglist, unsigned);
 
-                ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, bNum, true, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_SIGNED16BIT:
-            {
-                int16_t num = (int16_t)va_arg(arglist, int);
+            ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, bNum, true,
+                              fmt.ulFillLen, fmt.cFillChar);
+            break;
+        }
+        case PRFMT_SIGNED16BIT: {
+            int16_t num = (int16_t)va_arg(arglist, int);
 
-                ulBufIdx += LtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, num, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_UNSIGNED16BIT:
-            {
-                uint16_t uNum = (uint16_t)va_arg(arglist, unsigned);
+            ulBufIdx += LtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, num, fmt.ulFillLen,
+                             fmt.cFillChar);
+            break;
+        }
+        case PRFMT_UNSIGNED16BIT: {
+            uint16_t uNum = (uint16_t)va_arg(arglist, unsigned);
 
-                ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, uNum, false, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_HEX16BIT:
-            {
-                uint16_t uNum = (uint16_t)va_arg(arglist, unsigned);
+            ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, uNum, false,
+                              fmt.ulFillLen, fmt.cFillChar);
+            break;
+        }
+        case PRFMT_HEX16BIT: {
+            uint16_t uNum = (uint16_t)va_arg(arglist, unsigned);
 
-                ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, uNum, true, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_SIGNED32BIT:
-            {
-                int32_t lNum = va_arg(arglist, int32_t);
+            ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, uNum, true,
+                              fmt.ulFillLen, fmt.cFillChar);
+            break;
+        }
+        case PRFMT_SIGNED32BIT: {
+            int32_t lNum = va_arg(arglist, int32_t);
 
-                ulBufIdx += LtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, lNum, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_UNSIGNED32BIT:
-            {
-                uint32_t ulNum = va_arg(arglist, uint32_t);
+            ulBufIdx += LtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, lNum, fmt.ulFillLen,
+                             fmt.cFillChar);
+            break;
+        }
+        case PRFMT_UNSIGNED32BIT: {
+            uint32_t ulNum = va_arg(arglist, uint32_t);
 
-                ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ulNum, false, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_HEX32BIT:
-            {
-                uint32_t ulNum = va_arg(arglist, uint32_t);
+            ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ulNum, false,
+                              fmt.ulFillLen, fmt.cFillChar);
+            break;
+        }
+        case PRFMT_HEX32BIT: {
+            uint32_t ulNum = va_arg(arglist, uint32_t);
 
-                ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ulNum, true, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_SIGNED64BIT:
-            {
-                int64_t llNum = va_arg(arglist, int64_t);
+            ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ulNum, true,
+                              fmt.ulFillLen, fmt.cFillChar);
+            break;
+        }
+        case PRFMT_SIGNED64BIT: {
+            int64_t llNum = va_arg(arglist, int64_t);
 
-                ulBufIdx += LLtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, llNum, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_UNSIGNED64BIT:
-            {
-                uint64_t ullNum = va_arg(arglist, uint64_t);
+            ulBufIdx += LLtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, llNum, fmt.ulFillLen,
+                              fmt.cFillChar);
+            break;
+        }
+        case PRFMT_UNSIGNED64BIT: {
+            uint64_t ullNum = va_arg(arglist, uint64_t);
 
-                ulBufIdx += ULLtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ullNum, false, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_HEX64BIT:
-            {
-                uint64_t ullNum = va_arg(arglist, uint64_t);
+            ulBufIdx += ULLtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ullNum, false,
+                               fmt.ulFillLen, fmt.cFillChar);
+            break;
+        }
+        case PRFMT_HEX64BIT: {
+            uint64_t ullNum = va_arg(arglist, uint64_t);
 
-                ulBufIdx += ULLtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ullNum, true, fmt.ulFillLen, fmt.cFillChar);
-                break;
-            }
-            case PRFMT_POINTER:
-            {
-                const void *ptr = va_arg(arglist, const void *);
+            ulBufIdx += ULLtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ullNum, true,
+                               fmt.ulFillLen, fmt.cFillChar);
+            break;
+        }
+        case PRFMT_POINTER: {
+            const void *ptr = va_arg(arglist, const void *);
 
-                /*  Assert our assumption.
+            /*  Assert our assumption.
                 */
-                REDASSERT(sizeof(void *) <= 8U);
+            REDASSERT(sizeof(void *) <= 8U);
 
-                /*  Format as either a 64-bit or a 32-bit value.
+            /*  Format as either a 64-bit or a 32-bit value.
                 */
-                if(sizeof(void *) > 4U)
-                {
-                    /*  Attempt to quiet warnings.
+            if (sizeof(void *) > 4U) {
+                /*  Attempt to quiet warnings.
                     */
-                    uintptr_t   ptrval = (uintptr_t)ptr;
-                    uint64_t    ullPtrVal = (uint64_t)ptrval;
+                uintptr_t ptrval = (uintptr_t)ptr;
+                uint64_t ullPtrVal = (uint64_t)ptrval;
 
-                    ulBufIdx += ULLtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ullPtrVal, true, fmt.ulFillLen, fmt.cFillChar);
-                }
-                else
-                {
-                    /*  Attempt to quiet warnings.
+                ulBufIdx += ULLtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ullPtrVal, true,
+                                   fmt.ulFillLen, fmt.cFillChar);
+            } else {
+                /*  Attempt to quiet warnings.
                     */
-                    uintptr_t   ptrval = (uintptr_t)ptr;
-                    uint32_t    ulPtrVal = (uint32_t)ptrval;
+                uintptr_t ptrval = (uintptr_t)ptr;
+                uint32_t ulPtrVal = (uint32_t)ptrval;
 
-                    ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ulPtrVal, true, fmt.ulFillLen, fmt.cFillChar);
-                }
-
-                break;
+                ulBufIdx += ULtoA(&pcBuffer[ulBufIdx], ulBufferLen - ulBufIdx, ulPtrVal, true,
+                                  fmt.ulFillLen, fmt.cFillChar);
             }
-            case PRFMT_ANSISTRING:
-            {
-                const char *pszArg = va_arg(arglist, const char *);
-                uint32_t    ulArgIdx = 0U;
 
-                if(pszArg == NULL)
-                {
-                    pszArg = "null";
-                }
+            break;
+        }
+        case PRFMT_ANSISTRING: {
+            const char *pszArg = va_arg(arglist, const char *);
+            uint32_t ulArgIdx = 0U;
 
-                if(fmt.ulFillLen > 0U)
-                {
-                    if(!fmt.fLeftJustified)
-                    {
-                        uint32_t ulLen = RedStrLen(pszArg);
+            if (pszArg == NULL) {
+                pszArg = "null";
+            }
 
-                        /*  So long as we are not left justifying, fill as many
+            if (fmt.ulFillLen > 0U) {
+                if (!fmt.fLeftJustified) {
+                    uint32_t ulLen = RedStrLen(pszArg);
+
+                    /*  So long as we are not left justifying, fill as many
                             characters as is necessary to make the string right
                             justified.
                         */
-                        while(((ulBufferLen - ulBufIdx) > 0U) && (fmt.ulFillLen > ulLen))
-                        {
-                            pcBuffer[ulBufIdx] = fmt.cFillChar;
-                            ulBufIdx++;
-                            fmt.ulFillLen--;
-                        }
-                    }
-
-                    /*  Move as many characters as we have space for into the
-                        output buffer.
-                    */
-                    while(((ulBufferLen - ulBufIdx) > 0U) && (pszArg[ulArgIdx] != '\0'))
-                    {
-                        pcBuffer[ulBufIdx] = pszArg[ulArgIdx];
-                        ulBufIdx++;
-                        ulArgIdx++;
-                        if(fmt.ulFillLen > 0U)
-                        {
-                            fmt.ulFillLen--;
-                        }
-                    }
-
-                    /*  If there is any space left to fill, do it (the string
-                        must have been left justified).
-                    */
-                    while(((ulBufferLen - ulBufIdx) > 0U) && (fmt.ulFillLen > 0U))
-                    {
-                        /*  This is NOT a typo -- when using left justified
-                            strings, spaces are the only allowed fill character.
-                            See the errata.
-                        */
-                        pcBuffer[ulBufIdx] = ' ';
+                    while (((ulBufferLen - ulBufIdx) > 0U) && (fmt.ulFillLen > ulLen)) {
+                        pcBuffer[ulBufIdx] = fmt.cFillChar;
                         ulBufIdx++;
                         fmt.ulFillLen--;
                     }
                 }
-                else
-                {
-                    /*  No fill characters, just move up to as many
+
+                /*  Move as many characters as we have space for into the
+                        output buffer.
+                    */
+                while (((ulBufferLen - ulBufIdx) > 0U) && (pszArg[ulArgIdx] != '\0')) {
+                    pcBuffer[ulBufIdx] = pszArg[ulArgIdx];
+                    ulBufIdx++;
+                    ulArgIdx++;
+                    if (fmt.ulFillLen > 0U) {
+                        fmt.ulFillLen--;
+                    }
+                }
+
+                /*  If there is any space left to fill, do it (the string
+                        must have been left justified).
+                    */
+                while (((ulBufferLen - ulBufIdx) > 0U) && (fmt.ulFillLen > 0U)) {
+                    /*  This is NOT a typo -- when using left justified
+                            strings, spaces are the only allowed fill character.
+                            See the errata.
+                        */
+                    pcBuffer[ulBufIdx] = ' ';
+                    ulBufIdx++;
+                    fmt.ulFillLen--;
+                }
+            } else {
+                /*  No fill characters, just move up to as many
                         characters as we have space for in the output
                         buffer.
                     */
-                    while(((ulBufferLen - ulBufIdx) > 0U) && (pszArg[ulArgIdx] != '\0'))
-                    {
-                        pcBuffer[ulBufIdx] = pszArg[ulArgIdx];
-                        ulBufIdx++;
-                        ulArgIdx++;
-                    }
+                while (((ulBufferLen - ulBufIdx) > 0U) && (pszArg[ulArgIdx] != '\0')) {
+                    pcBuffer[ulBufIdx] = pszArg[ulArgIdx];
+                    ulBufIdx++;
+                    ulArgIdx++;
                 }
-                break;
             }
-            default:
-            {
-                REDERROR();
-                break;
-            }
+            break;
+        }
+        default: {
+            REDERROR();
+            break;
+        }
         }
     }
 
     /*  If there is space, tack on a null and return the output length
         processed, not including the null.
     */
-    if(ulBufIdx < ulBufferLen)
-    {
+    if (ulBufIdx < ulBufferLen) {
         pcBuffer[ulBufIdx] = '\0';
         iLen = (int32_t)ulBufIdx;
-    }
-    else
-    {
+    } else {
         /*  Not enough space, just return -1, with no null termination
         */
         iLen = -1;
@@ -615,7 +570,6 @@ int32_t RedVSNPrintf(
 
     return iLen;
 }
-
 
 /** @brief  Process the next segment of the format string, outputting any
             non-format specifiers, as output buffer space allows, and return
@@ -641,35 +595,27 @@ int32_t RedVSNPrintf(
           no format specifier string was found, and the entire pszFmt
           string was copied to pBuffer (or as much as will fit).
 */
-static uint32_t ProcessFormatSegment(
-    char           *pcBuffer,
-    uint32_t        ulBufferLen,
-    const char     *pszFormat,
-    PRINTFORMAT    *pFormat,
-    uint32_t       *pulSpecifierLen)
+static uint32_t ProcessFormatSegment(char *pcBuffer, uint32_t ulBufferLen, const char *pszFormat,
+                                     PRINTFORMAT *pFormat, uint32_t *pulSpecifierLen)
 {
-    uint32_t        ulWidth = 0U;
+    uint32_t ulWidth = 0U;
 
     /*  Find the next format specifier string, and information about it.
     */
     *pulSpecifierLen = ParseFormatSpecifier(pszFormat, pFormat);
 
-    if(*pulSpecifierLen == 0U)
-    {
+    if (*pulSpecifierLen == 0U) {
         /*  If no specifier was found at all, then simply output the full length
             of the string, or as much as will fit.
          */
         ulWidth = REDMIN(ulBufferLen, RedStrLen(pszFormat));
 
         RedMemCpy(pcBuffer, pszFormat, ulWidth);
-    }
-    else
-    {
+    } else {
         /*  If we encountered a double percent, skip past one of them so it is
             copied into the output buffer.
         */
-        if(pFormat->type == PRFMT_DOUBLEPERCENT)
-        {
+        if (pFormat->type == PRFMT_DOUBLEPERCENT) {
             pFormat->ulSpecifierIdx++;
 
             /*  A double percent specifier always has a length of two.  Since
@@ -684,8 +630,7 @@ static uint32_t ProcessFormatSegment(
         /*  So long as the specifier is not the very first thing in the format
             string...
         */
-        if(pFormat->ulSpecifierIdx != 0U)
-        {
+        if (pFormat->ulSpecifierIdx != 0U) {
             /*  A specifier was found, but there is other data preceding it.
                 Copy as much as allowed to the output buffer.
             */
@@ -698,14 +643,12 @@ static uint32_t ProcessFormatSegment(
     /*  If there is room in the output buffer, null-terminate whatever is there.
         But note that the returned length never includes the null.
     */
-    if(ulWidth < ulBufferLen)
-    {
+    if (ulWidth < ulBufferLen) {
         pcBuffer[ulWidth] = 0U;
     }
 
     return ulWidth;
 }
-
 
 /** @brief Parse the specified format string for a valid RedVSNPrintf() format
            sequence, and return information about it.
@@ -718,26 +661,20 @@ static uint32_t ProcessFormatSegment(
             pFormat->ulSpecifierIdx.  Returns zero if a valid specifier was
             not found.
 */
-static uint32_t ParseFormatSpecifier(
-    char const     *pszFormat,
-    PRINTFORMAT    *pFormatType)
+static uint32_t ParseFormatSpecifier(char const *pszFormat, PRINTFORMAT *pFormatType)
 {
-    bool            fContainsIllegalSequence = false;
-    uint32_t        ulLen = 0U;
-    uint32_t        ulIdx = 0U;
+    bool fContainsIllegalSequence = false;
+    uint32_t ulLen = 0U;
+    uint32_t ulIdx = 0U;
 
-    while(pszFormat[ulIdx] != '\0')
-    {
-        uint32_t    ulTypeLen;
+    while (pszFormat[ulIdx] != '\0') {
+        uint32_t ulTypeLen;
 
         /*  general output
         */
-        if(pszFormat[ulIdx] != '%')
-        {
+        if (pszFormat[ulIdx] != '%') {
             ulIdx++;
-        }
-        else
-        {
+        } else {
             RedMemSet(pFormatType, 0U, sizeof(*pFormatType));
 
             /*  Record the location of the start of the format sequence
@@ -745,44 +682,33 @@ static uint32_t ParseFormatSpecifier(
             pFormatType->ulSpecifierIdx = ulIdx;
             ulIdx++;
 
-            if(pszFormat[ulIdx] == '-')
-            {
+            if (pszFormat[ulIdx] == '-') {
                 pFormatType->fLeftJustified = true;
                 ulIdx++;
             }
 
-            if((pszFormat[ulIdx] == '0') || (pszFormat[ulIdx] == '_'))
-            {
+            if ((pszFormat[ulIdx] == '0') || (pszFormat[ulIdx] == '_')) {
                 pFormatType->cFillChar = pszFormat[ulIdx];
                 ulIdx++;
-            }
-            else
-            {
+            } else {
                 pFormatType->cFillChar = ' ';
             }
 
-            if(pszFormat[ulIdx] == '*')
-            {
+            if (pszFormat[ulIdx] == '*') {
                 pFormatType->fHasVarWidth = true;
                 ulIdx++;
-            }
-            else if(ISDIGIT(pszFormat[ulIdx]))
-            {
+            } else if (ISDIGIT(pszFormat[ulIdx])) {
                 pFormatType->ulFillLen = (uint32_t)RedAtoI(&pszFormat[ulIdx]);
-                while(ISDIGIT(pszFormat[ulIdx]))
-                {
+                while (ISDIGIT(pszFormat[ulIdx])) {
                     ulIdx++;
                 }
-            }
-            else
-            {
+            } else {
                 /*  No fill length.
                 */
             }
 
             pFormatType->type = ParseFormatType(&pszFormat[ulIdx], &ulTypeLen);
-            if(pFormatType->type != PRFMT_UNKNOWN)
-            {
+            if (pFormatType->type != PRFMT_UNKNOWN) {
                 /*  Even though we are returning successfully, keep track of
                     whether an illegal sequence was encountered and skipped.
                 */
@@ -804,7 +730,6 @@ static uint32_t ParseFormatSpecifier(
     return ulLen;
 }
 
-
 /** @brief Parse a RedPrintf() format type string to determine the proper data
            type.
 
@@ -817,110 +742,97 @@ static uint32_t ParseFormatSpecifier(
     @return Rhe PRFMT_* type value, or PRFMT_UNKNOWN if the type is not
             recognized.
 */
-static PRINTTYPE ParseFormatType(
-    const char     *pszFormat,
-    uint32_t       *pulTypeLen)
+static PRINTTYPE ParseFormatType(const char *pszFormat, uint32_t *pulTypeLen)
 {
-    PRINTTYPE       fmtType = PRFMT_UNKNOWN;
-    uint32_t        ulIdx = 0U;
+    PRINTTYPE fmtType = PRFMT_UNKNOWN;
+    uint32_t ulIdx = 0U;
 
-    switch(pszFormat[ulIdx])
-    {
-        case '%':
-            fmtType = PRFMT_DOUBLEPERCENT;
-            break;
-        case 'c':
-            fmtType = PRFMT_CHAR;
-            break;
-        case 's':
-            fmtType = PRFMT_ANSISTRING;
-            break;
-        case 'p':
-            fmtType = PRFMT_POINTER;
-            break;
+    switch (pszFormat[ulIdx]) {
+    case '%':
+        fmtType = PRFMT_DOUBLEPERCENT;
+        break;
+    case 'c':
+        fmtType = PRFMT_CHAR;
+        break;
+    case 's':
+        fmtType = PRFMT_ANSISTRING;
+        break;
+    case 'p':
+        fmtType = PRFMT_POINTER;
+        break;
+    case 'd':
+        fmtType = MAPINT;
+        break;
+    case 'u':
+        fmtType = MAPUINT;
+        break;
+    case 'x':
+        fmtType = MAPHEXUINT;
+        break;
+    case 'h': {
+        ulIdx++;
+        switch (pszFormat[ulIdx]) {
         case 'd':
-            fmtType = MAPINT;
+            fmtType = MAPSHORT;
             break;
         case 'u':
-            fmtType = MAPUINT;
+            fmtType = MAPUSHORT;
             break;
         case 'x':
-            fmtType = MAPHEXUINT;
+            fmtType = MAPHEXUSHORT;
             break;
-        case 'h':
-        {
-            ulIdx++;
-            switch(pszFormat[ulIdx])
-            {
-                case 'd':
-                    fmtType = MAPSHORT;
-                    break;
-                case 'u':
-                    fmtType = MAPUSHORT;
-                    break;
-                case 'x':
-                    fmtType = MAPHEXUSHORT;
-                    break;
-                default:
-                    break;
-            }
+        default:
             break;
         }
-        case 'l':
-        {
+        break;
+    }
+    case 'l': {
+        ulIdx++;
+        switch (pszFormat[ulIdx]) {
+        case 'd':
+            fmtType = MAPLONG;
+            break;
+        case 'u':
+            fmtType = MAPULONG;
+            break;
+        case 'x':
+            fmtType = MAPHEXULONG;
+            break;
+        case 'l': {
             ulIdx++;
-            switch(pszFormat[ulIdx])
-            {
-                case 'd':
-                    fmtType = MAPLONG;
-                    break;
-                case 'u':
-                    fmtType = MAPULONG;
-                    break;
-                case 'x':
-                    fmtType = MAPHEXULONG;
-                    break;
-                case 'l':
-                {
-                    ulIdx++;
-                    switch(pszFormat[ulIdx])
-                    {
-                        case 'd':
-                            fmtType = MAPLONGLONG;
-                            break;
-                        case 'u':
-                            fmtType = MAPULONGLONG;
-                            break;
-                        case 'x':
-                        case 'X':
-                            fmtType = MAPHEXULONGLONG;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                }
-                default:
-                    break;
+            switch (pszFormat[ulIdx]) {
+            case 'd':
+                fmtType = MAPLONGLONG;
+                break;
+            case 'u':
+                fmtType = MAPULONGLONG;
+                break;
+            case 'x':
+            case 'X':
+                fmtType = MAPHEXULONGLONG;
+                break;
+            default:
+                break;
             }
             break;
         }
         default:
             break;
+        }
+        break;
+    }
+    default:
+        break;
     }
 
-    if(fmtType != PRFMT_UNKNOWN)
-    {
+    if (fmtType != PRFMT_UNKNOWN) {
         *pulTypeLen = ulIdx + 1U;
-    }
-    else
-    {
+    } else {
         *pulTypeLen = 0U;
     }
 
     return fmtType;
 }
-
 
 /** @brief Format a signed 32-bit integer as a base 10 ASCII string.
 
@@ -939,48 +851,35 @@ static PRINTTYPE ParseFormatType(
 
     @return The length of the string.
 */
-static uint32_t LtoA(
-    char       *pcBuffer,
-    uint32_t    ulBufferLen,
-    int32_t     lNum,
-    uint32_t    ulFillLen,
-    char        cFill)
+static uint32_t LtoA(char *pcBuffer, uint32_t ulBufferLen, int32_t lNum, uint32_t ulFillLen,
+                     char cFill)
 {
-    uint32_t    ulLen;
+    uint32_t ulLen;
 
-    if(pcBuffer == NULL)
-    {
+    if (pcBuffer == NULL) {
         REDERROR();
         ulLen = 0U;
-    }
-    else
-    {
-        char                ach[12U]; /* big enough for a int32_t in base 10 */
-        uint32_t            ulDigits = 0U;
-        uint32_t            ulNum;
-        bool                fSign;
+    } else {
+        char ach[12U]; /* big enough for a int32_t in base 10 */
+        uint32_t ulDigits = 0U;
+        uint32_t ulNum;
+        bool fSign;
 
-        if(lNum < 0)
-        {
+        if (lNum < 0) {
             fSign = true;
             ulNum = (uint32_t)-lNum;
-        }
-        else
-        {
+        } else {
             fSign = false;
             ulNum = (uint32_t)lNum;
         }
 
-        do
-        {
+        do {
             ach[ulDigits] = gacDigits[ulNum % 10U];
             ulNum = ulNum / 10U;
             ulDigits++;
-        }
-        while(ulNum);
+        } while (ulNum);
 
-        if(fSign)
-        {
+        if (fSign) {
             ach[ulDigits] = '-';
             ulDigits++;
         }
@@ -990,7 +889,6 @@ static uint32_t LtoA(
 
     return ulLen;
 }
-
 
 /** @brief Format a signed 64-bit integer as a base 10 ASCII string.
 
@@ -1009,34 +907,24 @@ static uint32_t LtoA(
 
     @return The length of the string.
 */
-static uint32_t LLtoA(
-    char       *pcBuffer,
-    uint32_t    ulBufferLen,
-    int64_t     llNum,
-    uint32_t    ulFillLen,
-    char        cFill)
+static uint32_t LLtoA(char *pcBuffer, uint32_t ulBufferLen, int64_t llNum, uint32_t ulFillLen,
+                      char cFill)
 {
-    uint32_t    ulLen;
+    uint32_t ulLen;
 
-    if(pcBuffer == NULL)
-    {
+    if (pcBuffer == NULL) {
         REDERROR();
         ulLen = 0U;
-    }
-    else
-    {
-        char                ach[12U]; /* big enough for a int32_t in base 10 */
-        uint32_t            ulDigits = 0U;
-        uint64_t            ullNum;
-        bool                fSign;
+    } else {
+        char ach[12U]; /* big enough for a int32_t in base 10 */
+        uint32_t ulDigits = 0U;
+        uint64_t ullNum;
+        bool fSign;
 
-        if(llNum < 0)
-        {
+        if (llNum < 0) {
             fSign = true;
             ullNum = (uint64_t)-llNum;
-        }
-        else
-        {
+        } else {
             fSign = false;
             ullNum = (uint64_t)llNum;
         }
@@ -1044,8 +932,7 @@ static uint32_t LLtoA(
         /*  Not allowed to assume that 64-bit division is OK, so use a
             software division routine.
         */
-        do
-        {
+        do {
             uint64_t ullQuotient;
             uint32_t ulRemainder;
 
@@ -1057,11 +944,9 @@ static uint32_t LLtoA(
             ach[ulDigits] = gacDigits[ulRemainder];
             ullNum = ullQuotient;
             ulDigits++;
-        }
-        while(ullNum > 0U);
+        } while (ullNum > 0U);
 
-        if(fSign)
-        {
+        if (fSign) {
             ach[ulDigits] = '-';
             ulDigits++;
         }
@@ -1071,7 +956,6 @@ static uint32_t LLtoA(
 
     return ulLen;
 }
-
 
 /** @brief Format an unsigned 32-bit integer as an ASCII string as decimal or
            hex.
@@ -1088,42 +972,31 @@ static uint32_t LLtoA(
 
     @return The length of the string.
 */
-static uint32_t ULtoA(
-    char       *pcBuffer,
-    uint32_t    ulBufferLen,
-    uint32_t    ulNum,
-    bool        fHex,
-    uint32_t    ulFillLen,
-    char        cFill)
+static uint32_t ULtoA(char *pcBuffer, uint32_t ulBufferLen, uint32_t ulNum, bool fHex,
+                      uint32_t ulFillLen, char cFill)
 {
-    uint32_t    ulLen;
+    uint32_t ulLen;
 
-    if(pcBuffer == NULL)
-    {
+    if (pcBuffer == NULL) {
         REDERROR();
         ulLen = 0U;
-    }
-    else
-    {
-        char        ach[11U];   /* Big enough for a uint32_t in radix 10 */
-        uint32_t    ulDigits = 0U;
-        uint32_t    ulNumericVal = ulNum;
-        uint32_t    ulRadix = fHex ? 16U : 10U;
+    } else {
+        char ach[11U]; /* Big enough for a uint32_t in radix 10 */
+        uint32_t ulDigits = 0U;
+        uint32_t ulNumericVal = ulNum;
+        uint32_t ulRadix = fHex ? 16U : 10U;
 
-        do
-        {
+        do {
             ach[ulDigits] = gacDigits[ulNumericVal % ulRadix];
             ulNumericVal = ulNumericVal / ulRadix;
             ulDigits++;
-        }
-        while(ulNumericVal > 0U);
+        } while (ulNumericVal > 0U);
 
         ulLen = FinishToA(ach, ulDigits, pcBuffer, ulBufferLen, ulFillLen, cFill);
     }
 
     return ulLen;
 }
-
 
 /** @brief Format an unsigned 64-bit integer as an ASCII string as decimal or
            hex.
@@ -1140,47 +1013,32 @@ static uint32_t ULtoA(
 
     @return The length of the string.
 */
-static uint32_t ULLtoA(
-    char       *pcBuffer,
-    uint32_t    ulBufferLen,
-    uint64_t    ullNum,
-    bool        fHex,
-    uint32_t    ulFillLen,
-    char        cFill)
+static uint32_t ULLtoA(char *pcBuffer, uint32_t ulBufferLen, uint64_t ullNum, bool fHex,
+                       uint32_t ulFillLen, char cFill)
 {
-    uint32_t    ulLen;
+    uint32_t ulLen;
 
-    if(pcBuffer == NULL)
-    {
+    if (pcBuffer == NULL) {
         REDERROR();
         ulLen = 0U;
-    }
-    else
-    {
+    } else {
+        char ach[21U]; /* Big enough for a uint64_t in radix 10 */
+        uint32_t ulDigits = 0U;
+        uint64_t ullNumericVal = ullNum;
 
-        char        ach[21U];   /* Big enough for a uint64_t in radix 10 */
-        uint32_t    ulDigits = 0U;
-        uint64_t    ullNumericVal = ullNum;
-
-        if(fHex)
-        {
+        if (fHex) {
             /*  We can figure out the digits using bit operations.
             */
-            do
-            {
+            do {
                 ach[ulDigits] = gacDigits[ullNumericVal & 15U];
                 ullNumericVal >>= 4U;
                 ulDigits++;
-            }
-            while(ullNumericVal > 0U);
-        }
-        else
-        {
+            } while (ullNumericVal > 0U);
+        } else {
             /*  Not allowed to assume that 64-bit division is OK, so use a
                 software division routine.
             */
-            do
-            {
+            do {
                 uint64_t ullQuotient;
                 uint32_t ulRemainder;
 
@@ -1192,8 +1050,7 @@ static uint32_t ULLtoA(
                 ach[ulDigits] = gacDigits[ulRemainder];
                 ullNumericVal = ullQuotient;
                 ulDigits++;
-            }
-            while(ullNumericVal > 0U);
+            } while (ullNumericVal > 0U);
         }
 
         ulLen = FinishToA(ach, ulDigits, pcBuffer, ulBufferLen, ulFillLen, cFill);
@@ -1201,7 +1058,6 @@ static uint32_t ULLtoA(
 
     return ulLen;
 }
-
 
 /** @brief Finish converting a number into an ASCII string representing that
            number.
@@ -1221,25 +1077,18 @@ static uint32_t ULLtoA(
 
     @return The length of @p pcOutBuffer.
 */
-static uint32_t FinishToA(
-    const char *pcDigits,
-    uint32_t    ulDigits,
-    char       *pcOutBuffer,
-    uint32_t    ulBufferLen,
-    uint32_t    ulFillLen,
-    char        cFill)
+static uint32_t FinishToA(const char *pcDigits, uint32_t ulDigits, char *pcOutBuffer,
+                          uint32_t ulBufferLen, uint32_t ulFillLen, char cFill)
 {
-    uint32_t    ulIdx = 0U;
-    uint32_t    ulDigitIdx = ulDigits;
+    uint32_t ulIdx = 0U;
+    uint32_t ulDigitIdx = ulDigits;
 
     /*  user may have asked for a fill char
     */
-    if(ulFillLen > ulDigits)
-    {
+    if (ulFillLen > ulDigits) {
         uint32_t ulFillRem = ulFillLen - ulDigits;
 
-        while((ulFillRem > 0U) && (ulIdx < ulBufferLen))
-        {
+        while ((ulFillRem > 0U) && (ulIdx < ulBufferLen)) {
             pcOutBuffer[ulIdx] = cFill;
             ulIdx++;
             ulFillRem--;
@@ -1248,18 +1097,15 @@ static uint32_t FinishToA(
 
     /*  reverse the string
     */
-    while((ulDigitIdx > 0) && (ulIdx < ulBufferLen))
-    {
+    while ((ulDigitIdx > 0) && (ulIdx < ulBufferLen)) {
         ulDigitIdx--;
         pcOutBuffer[ulIdx] = pcDigits[ulDigitIdx];
         ulIdx++;
     }
 
-    if(ulIdx < ulBufferLen)
-    {
+    if (ulIdx < ulBufferLen) {
         pcOutBuffer[ulIdx] = '\0';
     }
 
     return ulIdx;
 }
-

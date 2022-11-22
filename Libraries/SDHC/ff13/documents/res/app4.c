@@ -6,18 +6,15 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "ff.h"         /* Declarations of sector size */
-#include "diskio.h"     /* Declarations of disk functions */
+#include "ff.h" /* Declarations of sector size */
+#include "diskio.h" /* Declarations of disk functions */
 
-
-static
-DWORD pn (		/* Pseudo random number generator */
-    DWORD pns	/* 0:Initialize, !0:Read */
+static DWORD pn(/* Pseudo random number generator */
+                DWORD pns /* 0:Initialize, !0:Read */
 )
 {
     static DWORD lfsr;
     UINT n;
-
 
     if (pns) {
         lfsr = pns;
@@ -32,21 +29,19 @@ DWORD pn (		/* Pseudo random number generator */
     return lfsr;
 }
 
-
-int test_diskio (
-    BYTE pdrv,      /* Physical drive number to be checked (all data on the drive will be lost) */
-    UINT ncyc,      /* Number of test cycles */
-    DWORD* buff,    /* Pointer to the working buffer */
-    UINT sz_buff    /* Size of the working buffer in unit of byte */
+int test_diskio(
+    BYTE pdrv, /* Physical drive number to be checked (all data on the drive will be lost) */
+    UINT ncyc, /* Number of test cycles */
+    DWORD *buff, /* Pointer to the working buffer */
+    UINT sz_buff /* Size of the working buffer in unit of byte */
 )
 {
     UINT n, cc, ns;
     DWORD sz_drv, lba, lba2, sz_eblk, pns = 1;
     WORD sz_sect;
-    BYTE *pbuff = (BYTE*)buff;
+    BYTE *pbuff = (BYTE *)buff;
     DSTATUS ds;
     DRESULT dr;
-
 
     printf("test_diskio(%u, %u, 0x%08X, 0x%08X)\n", pdrv, ncyc, (UINT)buff, sz_buff);
 
@@ -143,7 +138,7 @@ int test_diskio (
             printf(" - failed.\n");
             return 8;
         }
-        for (n = 0, pn(pns); n < sz_sect && pbuff[n] == (BYTE)pn(0); n++) ;
+        for (n = 0, pn(pns); n < sz_sect && pbuff[n] == (BYTE)pn(0); n++) {}
         if (n == sz_sect) {
             printf(" Data matched.\n");
         } else {
@@ -153,8 +148,10 @@ int test_diskio (
         pns++;
 
         printf("**** Multiple sector write test ****\n");
-        lba = 1; ns = sz_buff / sz_sect;
-        if (ns > 4) ns = 4;
+        lba = 1;
+        ns = sz_buff / sz_sect;
+        if (ns > 4)
+            ns = 4;
         for (n = 0, pn(pns); n < (UINT)(sz_sect * ns); n++) pbuff[n] = (BYTE)pn(0);
         printf(" disk_write(%u, 0x%X, %lu, %u)", pdrv, (UINT)pbuff, lba, ns);
         dr = disk_write(pdrv, pbuff, lba, ns);
@@ -181,7 +178,7 @@ int test_diskio (
             printf(" - failed.\n");
             return 13;
         }
-        for (n = 0, pn(pns); n < (UINT)(sz_sect * ns) && pbuff[n] == (BYTE)pn(0); n++) ;
+        for (n = 0, pn(pns); n < (UINT)(sz_sect * ns) && pbuff[n] == (BYTE)pn(0); n++) {}
         if (n == (UINT)(sz_sect * ns)) {
             printf(" Data matched.\n");
         } else {
@@ -192,9 +189,9 @@ int test_diskio (
 
         printf("**** Single sector write test (misaligned address) ****\n");
         lba = 5;
-        for (n = 0, pn(pns); n < sz_sect; n++) pbuff[n+3] = (BYTE)pn(0);
-        printf(" disk_write(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff+3), lba);
-        dr = disk_write(pdrv, pbuff+3, lba, 1);
+        for (n = 0, pn(pns); n < sz_sect; n++) pbuff[n + 3] = (BYTE)pn(0);
+        printf(" disk_write(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff + 3), lba);
+        dr = disk_write(pdrv, pbuff + 3, lba, 1);
         if (dr == RES_OK) {
             printf(" - ok.\n");
         } else {
@@ -209,16 +206,16 @@ int test_diskio (
             printf(" - failed.\n");
             return 16;
         }
-        memset(pbuff+5, 0, sz_sect);
-        printf(" disk_read(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff+5), lba);
-        dr = disk_read(pdrv, pbuff+5, lba, 1);
+        memset(pbuff + 5, 0, sz_sect);
+        printf(" disk_read(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff + 5), lba);
+        dr = disk_read(pdrv, pbuff + 5, lba, 1);
         if (dr == RES_OK) {
             printf(" - ok.\n");
         } else {
             printf(" - failed.\n");
             return 17;
         }
-        for (n = 0, pn(pns); n < sz_sect && pbuff[n+5] == (BYTE)pn(0); n++) ;
+        for (n = 0, pn(pns); n < sz_sect && pbuff[n + 5] == (BYTE)pn(0); n++) {}
         if (n == sz_sect) {
             printf(" Data matched.\n");
         } else {
@@ -229,7 +226,8 @@ int test_diskio (
 
         printf("**** 4GB barrier test ****\n");
         if (sz_drv >= 128 + 0x80000000 / (sz_sect / 2)) {
-            lba = 6; lba2 = lba + 0x80000000 / (sz_sect / 2);
+            lba = 6;
+            lba2 = lba + 0x80000000 / (sz_sect / 2);
             for (n = 0, pn(pns); n < (UINT)(sz_sect * 2); n++) pbuff[n] = (BYTE)pn(0);
             printf(" disk_write(%u, 0x%X, %lu, 1)", pdrv, (UINT)pbuff, lba);
             dr = disk_write(pdrv, pbuff, lba, 1);
@@ -239,8 +237,8 @@ int test_diskio (
                 printf(" - failed.\n");
                 return 19;
             }
-            printf(" disk_write(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff+sz_sect), lba2);
-            dr = disk_write(pdrv, pbuff+sz_sect, lba2, 1);
+            printf(" disk_write(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff + sz_sect), lba2);
+            dr = disk_write(pdrv, pbuff + sz_sect, lba2, 1);
             if (dr == RES_OK) {
                 printf(" - ok.\n");
             } else {
@@ -250,7 +248,7 @@ int test_diskio (
             printf(" disk_ioctl(%u, CTRL_SYNC, NULL)", pdrv);
             dr = disk_ioctl(pdrv, CTRL_SYNC, 0);
             if (dr == RES_OK) {
-            printf(" - ok.\n");
+                printf(" - ok.\n");
             } else {
                 printf(" - failed.\n");
                 return 21;
@@ -264,15 +262,15 @@ int test_diskio (
                 printf(" - failed.\n");
                 return 22;
             }
-            printf(" disk_read(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff+sz_sect), lba2);
-            dr = disk_read(pdrv, pbuff+sz_sect, lba2, 1);
+            printf(" disk_read(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff + sz_sect), lba2);
+            dr = disk_read(pdrv, pbuff + sz_sect, lba2, 1);
             if (dr == RES_OK) {
                 printf(" - ok.\n");
             } else {
                 printf(" - failed.\n");
                 return 23;
             }
-            for (n = 0, pn(pns); pbuff[n] == (BYTE)pn(0) && n < (UINT)(sz_sect * 2); n++) ;
+            for (n = 0, pn(pns); pbuff[n] == (BYTE)pn(0) && n < (UINT)(sz_sect * 2); n++) {}
             if (n == (UINT)(sz_sect * 2)) {
                 printf(" Data matched.\n");
             } else {
@@ -290,22 +288,21 @@ int test_diskio (
     return 0;
 }
 
-
-
-int main (int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     int rc;
-    DWORD buff[FF_MAX_SS];  /* Working buffer (4 sector in size) */
+    DWORD buff[FF_MAX_SS]; /* Working buffer (4 sector in size) */
 
     /* Check function/compatibility of the physical drive #0 */
     rc = test_diskio(0, 3, buff, sizeof buff);
 
     if (rc) {
-        printf("Sorry the function/compatibility test failed. (rc=%d)\nFatFs will not work with this disk driver.\n", rc);
+        printf(
+            "Sorry the function/compatibility test failed. (rc=%d)\nFatFs will not work with this disk driver.\n",
+            rc);
     } else {
         printf("Congratulations! The disk driver works well.\n");
     }
 
     return rc;
 }
-

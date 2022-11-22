@@ -19,10 +19,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 #ifndef WOLFSSL_CRL_H
 #define WOLFSSL_CRL_H
-
 
 #ifdef HAVE_CRL
 
@@ -30,21 +28,20 @@
 #include <wolfssl/wolfcrypt/asn.h>
 
 #ifdef __cplusplus
-    extern "C" {
+extern "C" {
 #endif
 
 typedef struct WOLFSSL_CRL WOLFSSL_CRL;
 
-WOLFSSL_LOCAL int  InitCRL(WOLFSSL_CRL*, WOLFSSL_CERT_MANAGER*);
-WOLFSSL_LOCAL void FreeCRL(WOLFSSL_CRL*, int dynamic);
+WOLFSSL_LOCAL int InitCRL(WOLFSSL_CRL *, WOLFSSL_CERT_MANAGER *);
+WOLFSSL_LOCAL void FreeCRL(WOLFSSL_CRL *, int dynamic);
 
-WOLFSSL_LOCAL int  LoadCRL(WOLFSSL_CRL* crl, const char* path, int type, int mon);
-WOLFSSL_LOCAL int  BufferLoadCRL(WOLFSSL_CRL*, const byte*, long, int);
-WOLFSSL_LOCAL int  CheckCertCRL(WOLFSSL_CRL*, DecodedCert*);
-
+WOLFSSL_LOCAL int LoadCRL(WOLFSSL_CRL *crl, const char *path, int type, int mon);
+WOLFSSL_LOCAL int BufferLoadCRL(WOLFSSL_CRL *, const byte *, long, int);
+WOLFSSL_LOCAL int CheckCertCRL(WOLFSSL_CRL *, DecodedCert *);
 
 #ifdef __cplusplus
-    }  /* extern "C" */
+} /* extern "C" */
 #endif
 
 #endif /* HAVE_CRL */

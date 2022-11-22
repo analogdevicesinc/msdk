@@ -29,16 +29,15 @@
  * that are implemented in C.
  */
 
-
 #ifdef XT_BOARD
-#include    <xtensa/xtbsp.h>
+#include <xtensa/xtbsp.h>
 #endif
 
-#include    "xtensa_rtos.h"
+#include "xtensa_rtos.h"
 
 #ifdef XT_RTOS_TIMER_INT
 
-unsigned _xt_tick_divisor = 0;  /* cached number of cycles per tick */
+unsigned _xt_tick_divisor = 0; /* cached number of cycles per tick */
 
 /*
 Compute and initialize at run-time the tick divisor (the number of 
@@ -53,14 +52,13 @@ void _xt_tick_divisor_init(void)
 
 #else
 
-    #ifdef XT_BOARD
+#ifdef XT_BOARD
     _xt_tick_divisor = xtbsp_clock_freq_hz() / XT_TICK_PER_SEC;
-    #else
-    #error "No way to obtain processor clock frequency"
-    #endif  /* XT_BOARD */
+#else
+#error "No way to obtain processor clock frequency"
+#endif /* XT_BOARD */
 
 #endif /* XT_CLOCK_FREQ */
 }
 
 #endif /* XT_RTOS_TIMER_INT */
-

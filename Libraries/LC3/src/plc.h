@@ -28,7 +28,6 @@
 
 #include "common.h"
 
-
 /**
  * Reset PLC state
  * plc             PLC State to reset
@@ -50,8 +49,7 @@ void lc3_plc_suspend(lc3_plc_state_t *plc);
  *
  * `x` and `y` can be the same buffer
  */
-void lc3_plc_synthesize(enum lc3_dt dt, enum lc3_srate sr,
-    lc3_plc_state_t *plc, const float *x, float *y);
-
+void lc3_plc_synthesize(enum lc3_dt dt, enum lc3_srate sr, lc3_plc_state_t *plc, const float *x,
+                        float *y);
 
 #endif /* __LC3_PLC_H */

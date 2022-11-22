@@ -35,53 +35,38 @@ extern "C" {
 #include "IPTraceMacroDefaults.h"
 
 /* Used in the DHCP callback if ipconfigUSE_DHCP_HOOK is set to 1. */
-typedef enum eDHCP_PHASE
-{
-	eDHCPPhasePreDiscover,	/* Driver is about to send a DHCP discovery. */
-	eDHCPPhasePreRequest,	/* Driver is about to request DHCP an IP address. */
-#if( ipconfigDHCP_SEND_DISCOVER_AFTER_AUTO_IP != 0 )
-	eDHCPPhasePreLLA,		/* Driver is about to try get an LLA address */
+typedef enum eDHCP_PHASE {
+    eDHCPPhasePreDiscover, /* Driver is about to send a DHCP discovery. */
+    eDHCPPhasePreRequest, /* Driver is about to request DHCP an IP address. */
+#if (ipconfigDHCP_SEND_DISCOVER_AFTER_AUTO_IP != 0)
+    eDHCPPhasePreLLA, /* Driver is about to try get an LLA address */
 #endif /* ipconfigDHCP_SEND_DISCOVER_AFTER_AUTO_IP */
 } eDHCPCallbackPhase_t;
 
 /* Used in the DHCP callback if ipconfigUSE_DHCP_HOOK is set to 1. */
-typedef enum eDHCP_ANSWERS
-{
-	eDHCPContinue,			/* Continue the DHCP process */
-	eDHCPUseDefaults,		/* Stop DHCP and use the static defaults. */
-	eDHCPStopNoChanges,		/* Stop DHCP and continue with current settings. */
+typedef enum eDHCP_ANSWERS {
+    eDHCPContinue, /* Continue the DHCP process */
+    eDHCPUseDefaults, /* Stop DHCP and use the static defaults. */
+    eDHCPStopNoChanges, /* Stop DHCP and continue with current settings. */
 } eDHCPCallbackAnswer_t;
 
 /*
  * NOT A PUBLIC API FUNCTION.
  */
-void vDHCPProcess( BaseType_t xReset );
+void vDHCPProcess(BaseType_t xReset);
 
 /* Internal call: returns true if socket is the current DHCP socket */
-BaseType_t xIsDHCPSocket( Socket_t xSocket );
+BaseType_t xIsDHCPSocket(Socket_t xSocket);
 
 /* Prototype of the hook (or callback) function that must be provided by the
 application if ipconfigUSE_DHCP_HOOK is set to 1.  See the following URL for
 usage information:
 http://www.FreeRTOS.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/TCP_IP_Configuration.html#ipconfigUSE_DHCP_HOOK
 */
-eDHCPCallbackAnswer_t xApplicationDHCPHook( eDHCPCallbackPhase_t eDHCPPhase, uint32_t ulIPAddress );
+eDHCPCallbackAnswer_t xApplicationDHCPHook(eDHCPCallbackPhase_t eDHCPPhase, uint32_t ulIPAddress);
 
 #ifdef __cplusplus
-}	/* extern "C" */
+} /* extern "C" */
 #endif
 
 #endif /* FREERTOS_DHCP_H */
-
-
-
-
-
-
-
-
-
-
-
-
-

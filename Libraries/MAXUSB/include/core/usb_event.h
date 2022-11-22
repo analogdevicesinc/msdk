@@ -31,7 +31,7 @@
  *
  *
  ******************************************************************************/
- 
+
 /*
  * Low-layer API calls
  *
@@ -54,8 +54,8 @@
 
 /***** Definitions *****/
 typedef struct {
-  int (*func)(maxusb_event_t, void *);
-  void *cbdata;
+    int (*func)(maxusb_event_t, void *);
+    void *cbdata;
 } MXC_USB_event_callback_t;
 
 /** 
@@ -65,7 +65,8 @@ typedef struct {
  * @param cbdata  parameter to call callback function with
  * @return This function returns zero (0) for success, non-zero for failure
  */
-int MXC_USB_EventEnable(maxusb_event_t event, int (*callback)(maxusb_event_t, void *), void *cbdata);
+int MXC_USB_EventEnable(maxusb_event_t event, int (*callback)(maxusb_event_t, void *),
+                        void *cbdata);
 
 /** 
  * @brief Enable the specified event
