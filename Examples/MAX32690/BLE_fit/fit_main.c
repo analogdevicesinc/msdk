@@ -108,7 +108,7 @@ static const appSecCfg_t fitSecCfg = {
     0, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    FALSE /*! TRUE to initiate security upon connection */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /*! configurable parameters for connection parameter update */

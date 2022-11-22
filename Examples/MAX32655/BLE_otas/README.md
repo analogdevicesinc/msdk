@@ -128,7 +128,7 @@ attsCccMainCback connId=1 handle=588
 hciCoreTxAclStart len=5
 ```
 
-Upon reception of `btn 2 s` command
+Upon reception of File Discovery `btn 2 s` command
 ```
 WDXS: FTC Write: len=12                                                         
 WDXS: FTC Write: op=1 handle=0                                                  
@@ -150,7 +150,7 @@ WDXS: AttHook handle=581 event=18
 WDXS: Task Handler Evt=1  
 ```
 
-Upon reception of `btn 2 m` command
+Upon reception of Initiate Transfer `btn 2 m` command
 ```
 WDXS: FTC Write: len=16
 WDXS: FTC Write: op=3 handle=1
@@ -184,7 +184,7 @@ Ext Flash: Wrote 224 bytes @ 0x000007E8
 ...
 ```
 
-Upon reception of `btn 2 l` command 
+Upon reception of Verify transfer `btn 2 l` command 
 ```
 WDXS: FTC Write: len=3
 WDXS: FTC Write: op=7 handle=1
@@ -201,7 +201,7 @@ WDXS: AttHook handle=581 event=18
 WDXS: Task Handler Evt=1
 ```
 
-Upon reception of `btn 2 x` command 
+Upon reception of Request Reset `btn 2 x` command 
 ```
 hciCoreTxAclStart len=5
 dmConnSmExecute event=25 state=3

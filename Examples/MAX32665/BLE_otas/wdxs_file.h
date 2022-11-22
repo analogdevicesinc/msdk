@@ -83,6 +83,7 @@ uint8_t WdxsFileGetFirmwareVersion(void);
  */
 /*************************************************************************************************/
 void initHeader(fileHeader_t *header);
+
 /*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
