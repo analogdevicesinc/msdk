@@ -11,8 +11,7 @@ ${SERIAL_PORT_2}  /dev/ttyUSB1
 Initial Connection Test Server
     [Timeout]     60s
     # inital sleep to allow device time to boot up after programming
-    sleep    5
-    Expect And Timeout    None    >>> Prompt user to enter passkey <<<    30    ${SERIAL_PORT_1}
+    Expect And Timeout    None    >>> Prompt user to enter passkey <<<    40    ${SERIAL_PORT_1}
 
 Secured Connection Test Server
     [Timeout]     60s
