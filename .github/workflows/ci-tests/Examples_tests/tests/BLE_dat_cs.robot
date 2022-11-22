@@ -8,11 +8,16 @@ ${SERIAL_PORT_1}    /dev/ttyUSB0
 ${SERIAL_PORT_2}  /dev/ttyUSB1
 
 *** test cases ***
+Initial Connection Test Server
+    [Timeout]     60s
+    # inital sleep to allow device time to boot up after programming
+    sleep    5
+    Expect And Timeout    None    >>> Prompt user to enter passkey <<<    30    ${SERIAL_PORT_1}
 
 Secured Connection Test Server
     [Timeout]     60s
     # inital sleep to allow device time to boot up after programming
-    sleep    5
+    sleep    2
     Expect And Timeout    pin 1 1234\n    > smpSmExecute event=4 state=12    5    ${SERIAL_PORT_2}
 
 Secured Connection Test Client
@@ -41,9 +46,4 @@ Speed Test
 Phy Switching Test 
     [Timeout]     30s
     sleep    3
-    Expect And Timeout    btn 2 s\n    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_1}    
-
-
-
-
-
+    Expect And Timeout    btn 2 s\n    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_1}
