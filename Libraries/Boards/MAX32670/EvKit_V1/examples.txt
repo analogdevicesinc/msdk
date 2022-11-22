@@ -12,6 +12,7 @@ LP
 RTC
 SPI
 SPI_Usecase
+SPI_MasterSlave
 TMR
 TRNG
 UART

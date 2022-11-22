@@ -20,6 +20,7 @@ RTC
 RTC_Backup
 SCPA_OTP_Dump
 SPI
+SPI_MasterSlave
 TMR
 TRNG
 UART
