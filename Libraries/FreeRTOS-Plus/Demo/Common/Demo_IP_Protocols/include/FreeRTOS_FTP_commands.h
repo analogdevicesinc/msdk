@@ -23,9 +23,9 @@
  * http://www.FreeRTOS.org
  */
 
-#ifndef	__FTPCMD_H__
+#ifndef __FTPCMD_H__
 
-#define	__FTPCMD_H__
+#define __FTPCMD_H__
 
 #define REPL_110 "110 Restart marker reply.\r\n"
 #define REPL_120 "120 Try again in 2 minutes.\r\n"
@@ -77,57 +77,57 @@
 #define REPL_553_READ_ONLY "553 Read-only file-system.\r\n"
 
 enum EFTPCommand {
-	ECMD_USER,
-	ECMD_PASS,
-	ECMD_ACCT,
-	ECMD_CWD,
-	ECMD_CDUP,
-	ECMD_SMNT,
-	ECMD_QUIT,
-	ECMD_REIN,
-	ECMD_PORT,
-	ECMD_PASV,
-	ECMD_TYPE,
-	ECMD_STRU,
-	ECMD_MODE,
-	ECMD_RETR,
-	ECMD_STOR,
-	ECMD_STOU,
-	ECMD_APPE,
-	ECMD_ALLO,
-	ECMD_REST,
-	ECMD_RNFR,
-	ECMD_RNTO,
-	ECMD_ABOR,
-	ECMD_SIZE,
-	ECMD_MDTM,
-	ECMD_DELE,
-	ECMD_RMD,
-	ECMD_MKD,
-	ECMD_PWD,
-	ECMD_LIST,
-	ECMD_NLST,
-	ECMD_SITE,
-	ECMD_SYST,
-	ECMD_FEAT,
-	ECMD_STAT,
-	ECMD_HELP,
-	ECMD_NOOP,
-	ECMD_EMPTY,
-	ECMD_CLOSE,
-	ECMD_UNKNOWN,
+    ECMD_USER,
+    ECMD_PASS,
+    ECMD_ACCT,
+    ECMD_CWD,
+    ECMD_CDUP,
+    ECMD_SMNT,
+    ECMD_QUIT,
+    ECMD_REIN,
+    ECMD_PORT,
+    ECMD_PASV,
+    ECMD_TYPE,
+    ECMD_STRU,
+    ECMD_MODE,
+    ECMD_RETR,
+    ECMD_STOR,
+    ECMD_STOU,
+    ECMD_APPE,
+    ECMD_ALLO,
+    ECMD_REST,
+    ECMD_RNFR,
+    ECMD_RNTO,
+    ECMD_ABOR,
+    ECMD_SIZE,
+    ECMD_MDTM,
+    ECMD_DELE,
+    ECMD_RMD,
+    ECMD_MKD,
+    ECMD_PWD,
+    ECMD_LIST,
+    ECMD_NLST,
+    ECMD_SITE,
+    ECMD_SYST,
+    ECMD_FEAT,
+    ECMD_STAT,
+    ECMD_HELP,
+    ECMD_NOOP,
+    ECMD_EMPTY,
+    ECMD_CLOSE,
+    ECMD_UNKNOWN,
 };
 
 typedef struct xFTP_COMMAND {
-	BaseType_t xCommandLength;
-	const char pcCommandName[7];
-	const unsigned char ucCommandType;
-	const unsigned char checkLogin;
-	const unsigned char checkNullArg;
+    BaseType_t xCommandLength;
+    const char pcCommandName[7];
+    const unsigned char ucCommandType;
+    const unsigned char checkLogin;
+    const unsigned char checkNullArg;
 } FTPCommand_t;
 
-#define	FTP_CMD_COUNT	(ECMD_UNKNOWN+1)
+#define FTP_CMD_COUNT (ECMD_UNKNOWN + 1)
 
-extern const FTPCommand_t xFTPCommands[ FTP_CMD_COUNT ];
+extern const FTPCommand_t xFTPCommands[FTP_CMD_COUNT];
 
-#endif	// __FTPCMD_H__
+#endif // __FTPCMD_H__

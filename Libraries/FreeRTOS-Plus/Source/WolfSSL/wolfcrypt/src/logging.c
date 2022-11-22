@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+#include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
@@ -30,16 +30,14 @@
 #include <wolfssl/wolfcrypt/logging.h>
 #include <wolfssl/wolfcrypt/error-crypt.h>
 
-
 #ifdef __cplusplus
-    extern "C" {
+extern "C" {
 #endif
-    WOLFSSL_API int  wolfSSL_Debugging_ON(void);
-    WOLFSSL_API void wolfSSL_Debugging_OFF(void);
+WOLFSSL_API int wolfSSL_Debugging_ON(void);
+WOLFSSL_API void wolfSSL_Debugging_OFF(void);
 #ifdef __cplusplus
-    } 
+}
 #endif
-
 
 #ifdef DEBUG_WOLFSSL
 
@@ -48,7 +46,6 @@ static wolfSSL_Logging_cb log_function = 0;
 static int loggingEnabled = 0;
 
 #endif /* DEBUG_WOLFSSL */
-
 
 int wolfSSL_SetLoggingCb(wolfSSL_Logging_cb f)
 {
@@ -67,7 +64,6 @@ int wolfSSL_SetLoggingCb(wolfSSL_Logging_cb f)
 #endif
 }
 
-
 int wolfSSL_Debugging_ON(void)
 {
 #ifdef DEBUG_WOLFSSL
@@ -78,7 +74,6 @@ int wolfSSL_Debugging_ON(void)
 #endif
 }
 
-
 void wolfSSL_Debugging_OFF(void)
 {
 #ifdef DEBUG_WOLFSSL
@@ -86,17 +81,16 @@ void wolfSSL_Debugging_OFF(void)
 #endif
 }
 
-
 #ifdef DEBUG_WOLFSSL
 
 #ifdef FREESCALE_MQX
-    #include <fio.h>
+#include <fio.h>
 #else
-    #include <stdio.h>   /* for default printf stuff */
+#include <stdio.h> /* for default printf stuff */
 #endif
 
 #ifdef THREADX
-    int dc_log_printf(char*, ...);
+int dc_log_printf(char *, ...);
 #endif
 
 static void wolfssl_log(const int logLevel, const char *const logMessage)
@@ -108,13 +102,13 @@ static void wolfssl_log(const int logLevel, const char *const logMessage)
 #ifdef THREADX
             dc_log_printf("%s\n", logMessage);
 #elif defined(MICRIUM)
-        #if (NET_SECURE_MGR_CFG_EN == DEF_ENABLED)
+#if (NET_SECURE_MGR_CFG_EN == DEF_ENABLED)
             NetSecure_TraceOut((CPU_CHAR *)logMessage);
-        #endif
+#endif
 #elif defined(WOLFSSL_MDK_ARM)
-            fflush(stdout) ;
+            fflush(stdout);
             printf("%s\n", logMessage);
-            fflush(stdout) ;
+            fflush(stdout);
 #else
             fprintf(stderr, "%s\n", logMessage);
 #endif
@@ -122,41 +116,37 @@ static void wolfssl_log(const int logLevel, const char *const logMessage)
     }
 }
 
-
-void WOLFSSL_MSG(const char* msg)
+void WOLFSSL_MSG(const char *msg)
 {
     if (loggingEnabled)
-        wolfssl_log(INFO_LOG , msg);
+        wolfssl_log(INFO_LOG, msg);
 }
 
-
-void WOLFSSL_ENTER(const char* msg)
+void WOLFSSL_ENTER(const char *msg)
 {
     if (loggingEnabled) {
         char buffer[80];
         sprintf(buffer, "wolfSSL Entering %s", msg);
-        wolfssl_log(ENTER_LOG , buffer);
+        wolfssl_log(ENTER_LOG, buffer);
     }
 }
 
-
-void WOLFSSL_LEAVE(const char* msg, int ret)
+void WOLFSSL_LEAVE(const char *msg, int ret)
 {
     if (loggingEnabled) {
         char buffer[80];
         sprintf(buffer, "wolfSSL Leaving %s, return %d", msg, ret);
-        wolfssl_log(LEAVE_LOG , buffer);
+        wolfssl_log(LEAVE_LOG, buffer);
     }
 }
-
 
 void WOLFSSL_ERROR(int error)
 {
     if (loggingEnabled) {
         char buffer[80];
         sprintf(buffer, "wolfSSL error occured, error = %d", error);
-        wolfssl_log(ERROR_LOG , buffer);
+        wolfssl_log(ERROR_LOG, buffer);
     }
 }
 
-#endif  /* DEBUG_WOLFSSL */
+#endif /* DEBUG_WOLFSSL */

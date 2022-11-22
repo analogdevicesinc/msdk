@@ -36,15 +36,14 @@
 #define _MAXQUSB_H_
 #include <stdint.h>
 
-#if (__TARGET_PROCESSOR==MAXQ1010) || (__TARGET_PROCESSOR==MAXQ1050)
-#define MXC_USB_NUM_EP      	(6)
+#if (__TARGET_PROCESSOR == MAXQ1010) || (__TARGET_PROCESSOR == MAXQ1050)
+#define MXC_USB_NUM_EP (6)
 #else
-#define MXC_USB_NUM_EP      	(4)
+#define MXC_USB_NUM_EP (4)
 #endif
 
-#define MXC_USB_INSTANCES   	(1)
-#define MXC_USB_MAX_PACKET  	(64)
-#define MXC_USB_MAXQ_EP_SIZE	(64)
+#define MXC_USB_INSTANCES (1)
+#define MXC_USB_MAX_PACKET (64)
+#define MXC_USB_MAXQ_EP_SIZE (64)
 
 #endif /* _MAXQUSB_H_ */
-

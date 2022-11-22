@@ -34,7 +34,6 @@
 #include <arm_acle.h>
 #endif
 
-
 /**
  * Hot Function attribute
  * Selectively disable sanitizer
@@ -42,16 +41,13 @@
 
 #ifdef __clang__
 
-#define LC3_HOT \
-    __attribute__((no_sanitize("bounds"))) \
-    __attribute__((no_sanitize("integer")))
+#define LC3_HOT __attribute__((no_sanitize("bounds"))) __attribute__((no_sanitize("integer")))
 
 #else /* __clang__ */
 
 #define LC3_HOT
 
 #endif /* __clang__ */
-
 
 /**
  * Macros
@@ -61,37 +57,32 @@
  * ABS      Return absolute value
  */
 
-#define LC3_MIN(a, b)  ( (a) < (b) ?  (a) : (b) )
-#define LC3_MAX(a, b)  ( (a) > (b) ?  (a) : (b) )
+#define LC3_MIN(a, b) ((a) < (b) ? (a) : (b))
+#define LC3_MAX(a, b) ((a) > (b) ? (a) : (b))
 
-#define LC3_CLIP(v, min, max)  LC3_MIN(LC3_MAX(v, min), max)
-#define LC3_SAT16(v)  LC3_CLIP(v, -(1 << 15), (1 << 15) - 1)
-#define LC3_SAT24(v)  LC3_CLIP(v, -(1 << 23), (1 << 23) - 1)
+#define LC3_CLIP(v, min, max) LC3_MIN(LC3_MAX(v, min), max)
+#define LC3_SAT16(v) LC3_CLIP(v, -(1 << 15), (1 << 15) - 1)
+#define LC3_SAT24(v) LC3_CLIP(v, -(1 << 23), (1 << 23) - 1)
 
-#define LC3_ABS(v)  ( (v) < 0 ? -(v) : (v) )
-
+#define LC3_ABS(v) ((v) < 0 ? -(v) : (v))
 
 #ifdef __ARM_FEATURE_SAT
 
-#undef  LC3_SAT16
+#undef LC3_SAT16
 #define LC3_SAT16(v) __ssat(v, 16)
 
-#undef  LC3_SAT24
+#undef LC3_SAT24
 #define LC3_SAT24(v) __ssat(v, 24)
 
 #endif /* __ARM_FEATURE_SAT */
-
 
 /**
  * Convert `dt` in us and `sr` in KHz
  */
 
-#define LC3_DT_US(dt) \
-    ( (3 + (dt)) * 2500 )
+#define LC3_DT_US(dt) ((3 + (dt)) * 2500)
 
-#define LC3_SRATE_KHZ(sr) \
-    ( (1 + (sr) + ((sr) == LC3_SRATE_48K)) * 8 )
-
+#define LC3_SRATE_KHZ(sr) ((1 + (sr) + ((sr) == LC3_SRATE_48K)) * 8)
 
 /**
  * Return number of samples, delayed samples and
@@ -100,25 +91,17 @@
  * - For decoding, keep 18 ms of history, aligned on frames, and a frame
  */
 
-#define LC3_NS(dt, sr) \
-    ( 20 * (3 + (dt)) * (1 + (sr) + ((sr) == LC3_SRATE_48K)) )
+#define LC3_NS(dt, sr) (20 * (3 + (dt)) * (1 + (sr) + ((sr) == LC3_SRATE_48K)))
 
-#define LC3_ND(dt, sr) \
-    ( (dt) == LC3_DT_7M5 ? 23 * LC3_NS(dt, sr) / 30 \
-                         :  5 * LC3_NS(dt, sr) /  8 )
+#define LC3_ND(dt, sr) ((dt) == LC3_DT_7M5 ? 23 * LC3_NS(dt, sr) / 30 : 5 * LC3_NS(dt, sr) / 8)
 
-#define LC3_NE(dt, sr) \
-    ( 20 * (3 + (dt)) * (1 + (sr)) )
+#define LC3_NE(dt, sr) (20 * (3 + (dt)) * (1 + (sr)))
 
-#define LC3_MAX_NE \
-    LC3_NE(LC3_DT_10M, LC3_SRATE_48K)
+#define LC3_MAX_NE LC3_NE(LC3_DT_10M, LC3_SRATE_48K)
 
-#define LC3_NT(sr_hz) \
-    ( (5 * LC3_SRATE_KHZ(sr)) / 4 )
+#define LC3_NT(sr_hz) ((5 * LC3_SRATE_KHZ(sr)) / 4)
 
-#define LC3_NH(dt, sr) \
-    ( ((3 - dt) + 1) * LC3_NS(dt, sr) )
-
+#define LC3_NH(dt, sr) (((3 - dt) + 1) * LC3_NS(dt, sr))
 
 /**
  * Bandwidth, mapped to Nyquist frequency of samplerates
@@ -134,15 +117,12 @@ enum lc3_bandwidth {
     LC3_NUM_BANDWIDTH,
 };
 
-
 /**
  * Complex floating point number
  */
 
-struct lc3_complex
-{
+struct lc3_complex {
     float re, im;
 };
-
 
 #endif /* __LC3_COMMON_H */

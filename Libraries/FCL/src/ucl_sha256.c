@@ -52,8 +52,7 @@
 
 static u32 _wsb_b2w(u8 *src)
 {
-  return ((u32)src[3] | ((u32)src[2] << 8) |
-	  ((u32)src[1] << 16) | ((u32)src[0] << 24));
+    return ((u32)src[3] | ((u32)src[2] << 8) | ((u32)src[1] << 16) | ((u32)src[0] << 24));
 }
 
 static void _wsb_w2b(u8 *dst, u32 src)
@@ -71,20 +70,17 @@ void swapcpy_b2w(u32 *dst, const u8 *src, u32 wordlen)
 {
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
-        dst[i] = _wsb_b2w((u8 *) src);
+    for (i = 0; i < (int)wordlen; i++) {
+        dst[i] = _wsb_b2w((u8 *)src);
         src += 4;
     }
 }
-
 
 void swapcpy_w2b(u8 *dst, const u32 *src, u32 wordlen)
 {
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         _wsb_w2b(dst, src[i]);
         dst += 4;
     }
@@ -95,8 +91,7 @@ void swapcpy_b2b(u8 *dst, u8 *src, u32 wordlen)
     u8 tmp;
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         tmp = src[0];
         dst[0] = src[3];
         dst[3] = tmp;
@@ -122,7 +117,7 @@ int ucl_sha256_init(ucl_sha256_ctx_t *ctx)
     ctx->state[5] = 0x9b05688c;
     ctx->state[6] = 0x1f83d9ab;
     ctx->state[7] = 0x5be0cd19;
-    
+
     ctx->count[0] = 0;
     ctx->count[1] = 0;
 
@@ -135,7 +130,7 @@ int ucl_sha256_core(ucl_sha256_ctx_t *ctx, u8 *data, u32 dataLen)
     if (ctx == NULL)
         return UCL_INVALID_INPUT;
 
-    if ((data == NULL)  || (dataLen == 0))
+    if ((data == NULL) || (dataLen == 0))
         return UCL_NOP;
     /** Compute number of bytes mod 64 */
     indexh = (u32)((ctx->count[1] >> 3) & 0x3F);
@@ -150,26 +145,23 @@ int ucl_sha256_core(ucl_sha256_ctx_t *ctx, u8 *data, u32 dataLen)
 
     /** Process 512-bits block as many times as possible. */
 
-    if (dataLen >= partLen)
-    {
+    if (dataLen >= partLen) {
         memcpy(&ctx->buffer[indexh], data, partLen);
 
         swapcpy_b2b(ctx->buffer, ctx->buffer, 16);
 
-        sha256_stone(ctx->state, (u32 *) ctx->buffer);
+        sha256_stone(ctx->state, (u32 *)ctx->buffer);
 
-        for (i = partLen; i + 63 < dataLen; i += 64)
-        {
+        for (i = partLen; i + 63 < dataLen; i += 64) {
             swapcpy_b2b(ctx->buffer, &data[i], 16);
 
-            sha256_stone(ctx->state, (u32 *) ctx->buffer);
+            sha256_stone(ctx->state, (u32 *)ctx->buffer);
         }
 
         indexh = 0;
     }
 
-    else
-    {
+    else {
         i = 0;
     }
 
@@ -178,7 +170,6 @@ int ucl_sha256_core(ucl_sha256_ctx_t *ctx, u8 *data, u32 dataLen)
 
     return UCL_OK;
 }
-
 
 int ucl_sha256_finish(u8 *hash, ucl_sha256_ctx_t *ctx)
 {
@@ -189,7 +180,7 @@ int ucl_sha256_finish(u8 *hash, ucl_sha256_ctx_t *ctx)
     padding[0] = 0x80;
 
     memset(padding + 1, 0, 63);
-    
+
     if (hash == NULL)
         return UCL_INVALID_OUTPUT;
 
@@ -228,4 +219,4 @@ int ucl_sha256(u8 *hash, u8 *message, u32 byteLength)
     ucl_sha256_finish(hash, &ctx);
     return UCL_OK;
 }
-#endif//HASH_SHA256
+#endif //HASH_SHA256

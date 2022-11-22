@@ -19,14 +19,11 @@
 #include <stdint.h>
 #include "wave.h"
 
-
 /**
  * Id formatting
  */
 
-#define __WAVE_ID(s) \
-    (uint32_t)( s[0] | (s[1] << 8) | (s[2] << 16) | (s[3] << 24) )
-
+#define __WAVE_ID(s) (uint32_t)(s[0] | (s[1] << 8) | (s[2] << 16) | (s[3] << 24))
 
 /**
  * File format statement
@@ -35,15 +32,14 @@
  * | type_id     WAVE_FILE_FMT_ID
  */
 
-#define WAVE_FILE_TYPE_ID  __WAVE_ID("RIFF")
-#define WAVE_FILE_FMT_ID   __WAVE_ID("WAVE")
+#define WAVE_FILE_TYPE_ID __WAVE_ID("RIFF")
+#define WAVE_FILE_FMT_ID __WAVE_ID("WAVE")
 
 struct wave_file {
     uint32_t type_id;
     uint32_t size;
     uint32_t fmt_id;
 };
-
 
 /**
  * Audio format statement
@@ -57,8 +53,8 @@ struct wave_file {
  * | bitdepth    Number of bits per sample
  */
 
-#define WAVE_FORMAT_ID   __WAVE_ID("fmt ")
-#define WAVE_FORMAT_PCM  1
+#define WAVE_FORMAT_ID __WAVE_ID("fmt ")
+#define WAVE_FORMAT_PCM 1
 
 struct wave_format {
     uint32_t id;
@@ -71,46 +67,40 @@ struct wave_format {
     uint16_t bitdepth;
 };
 
-
 /**
  * Audio data statement
  * | id          WAV_DATA_ID
  * | size        Size of the data following
  */
 
-#define WAVE_DATA_ID  __WAVE_ID("data")
+#define WAVE_DATA_ID __WAVE_ID("data")
 
 struct wave_data {
     uint32_t id;
     uint32_t size;
 };
 
-
 /**
  * Read WAVE file header
  */
-int wave_read_header(FILE *fp, int *bitdepth, int *samplesize,
-    int *samplerate, int *nchannels, int *nframes)
+int wave_read_header(FILE *fp, int *bitdepth, int *samplesize, int *samplerate, int *nchannels,
+                     int *nframes)
 {
     struct wave_file file;
     struct wave_format format;
     struct wave_data data;
 
-    if (fread(&file, sizeof(file), 1, fp) != 1
-            || file.type_id != WAVE_FILE_TYPE_ID
-            || file.fmt_id  != WAVE_FILE_FMT_ID)
+    if (fread(&file, sizeof(file), 1, fp) != 1 || file.type_id != WAVE_FILE_TYPE_ID ||
+        file.fmt_id != WAVE_FILE_FMT_ID)
         return -1;
 
-    if (fread(&format, sizeof(format), 1, fp) != 1
-            || format.id       != WAVE_FORMAT_ID
-            || format.fmt      != WAVE_FORMAT_PCM
-            || format.byterate != format.samplerate * format.framesize)
+    if (fread(&format, sizeof(format), 1, fp) != 1 || format.id != WAVE_FORMAT_ID ||
+        format.fmt != WAVE_FORMAT_PCM || format.byterate != format.samplerate * format.framesize)
         return -1;
 
     fseek(fp, sizeof(format) - (8 + format.size), SEEK_CUR);
 
-    if (fread(&data, sizeof(data), 1, fp) != 1
-            || data.id != WAVE_DATA_ID)
+    if (fread(&data, sizeof(data), 1, fp) != 1 || data.id != WAVE_DATA_ID)
         return -1;
 
     *bitdepth = format.bitdepth;
@@ -125,8 +115,7 @@ int wave_read_header(FILE *fp, int *bitdepth, int *samplesize,
 /**
  * Read PCM samples from wave file
  */
-int wave_read_pcm(FILE *fp, int samplesize,
-    int nch, int count, void *buffer)
+int wave_read_pcm(FILE *fp, int samplesize, int nch, int count, void *buffer)
 {
     return fread(buffer, nch * samplesize, count, fp);
 }
@@ -134,8 +123,8 @@ int wave_read_pcm(FILE *fp, int samplesize,
 /**
  * Write WAVE file header
  */
-void wave_write_header(FILE *fp, int bitdepth, int samplesize,
-    int samplerate, int nchannels, int nframes)
+void wave_write_header(FILE *fp, int bitdepth, int samplesize, int samplerate, int nchannels,
+                       int nframes)
 {
     struct {
         struct wave_file file;
@@ -146,13 +135,12 @@ void wave_write_header(FILE *fp, int bitdepth, int samplesize,
     long data_size = nchannels * nframes * samplesize;
     long file_size = sizeof(header) + data_size;
 
-    header.file = (struct wave_file){
-        WAVE_FILE_TYPE_ID, file_size - 8,
-        .fmt_id = WAVE_FILE_FMT_ID
-    };
+    header.file =
+        (struct wave_file){ WAVE_FILE_TYPE_ID, file_size - 8, .fmt_id = WAVE_FILE_FMT_ID };
 
     header.format = (struct wave_format){
-        WAVE_FORMAT_ID, sizeof(header.format) - 8,
+        WAVE_FORMAT_ID,
+        sizeof(header.format) - 8,
         .fmt = WAVE_FORMAT_PCM,
         .channels = nchannels,
         .samplerate = samplerate,
@@ -161,9 +149,7 @@ void wave_write_header(FILE *fp, int bitdepth, int samplesize,
         .bitdepth = bitdepth,
     };
 
-    header.data = (struct wave_data){
-        WAVE_DATA_ID, data_size
-    };
+    header.data = (struct wave_data){ WAVE_DATA_ID, data_size };
 
     fwrite(&header, sizeof(header), 1, fp);
 }
@@ -171,8 +157,7 @@ void wave_write_header(FILE *fp, int bitdepth, int samplesize,
 /**
  * Write PCM samples to wave file
  */
-void wave_write_pcm(FILE *fp, int samplesize,
-    const void *_pcm, int nch, int off, int count)
+void wave_write_pcm(FILE *fp, int samplesize, const void *_pcm, int nch, int off, int count)
 {
     const int8_t *pcm = _pcm;
     fwrite(pcm + nch * off * samplesize, nch * samplesize, count, fp);

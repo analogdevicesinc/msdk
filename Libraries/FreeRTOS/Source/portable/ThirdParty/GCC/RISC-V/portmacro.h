@@ -70,7 +70,6 @@
     1 tab == 4 spaces!
 */
 
-
 #ifndef PORTMACRO_H
 #define PORTMACRO_H
 
@@ -89,81 +88,81 @@ extern "C" {
  */
 
 /* Type definitions. */
-#define portCHAR		char
-#define portFLOAT		float
-#define portDOUBLE		double
-#define portLONG		long
-#define portSHORT		short
-#define portBASE_TYPE	long
+#define portCHAR char
+#define portFLOAT float
+#define portDOUBLE double
+#define portLONG long
+#define portSHORT short
+#define portBASE_TYPE long
 
 #ifdef __riscv64
-	#define portSTACK_TYPE	uint64_t
-	#define portPOINTER_SIZE_TYPE	uint64_t
+#define portSTACK_TYPE uint64_t
+#define portPOINTER_SIZE_TYPE uint64_t
 #else
-	#define portSTACK_TYPE	uint32_t
-	#define portPOINTER_SIZE_TYPE	uint32_t
+#define portSTACK_TYPE uint32_t
+#define portPOINTER_SIZE_TYPE uint32_t
 #endif
 
 typedef portSTACK_TYPE StackType_t;
 typedef long BaseType_t;
 typedef unsigned long UBaseType_t;
 
-#if( configUSE_16_BIT_TICKS == 1 )
-	typedef uint16_t TickType_t;
-	#define portMAX_DELAY ( TickType_t ) 0xffff
+#if (configUSE_16_BIT_TICKS == 1)
+typedef uint16_t TickType_t;
+#define portMAX_DELAY (TickType_t)0xffff
 #else
-	typedef uint32_t TickType_t;
-	#define portMAX_DELAY ( TickType_t ) 0xffffffffUL
+typedef uint32_t TickType_t;
+#define portMAX_DELAY (TickType_t)0xffffffffUL
 #endif
 /*-----------------------------------------------------------*/
 
 /* Architecture specifics. */
-#define portSTACK_GROWTH			( -1 )
-#define portTICK_PERIOD_MS			( ( TickType_t ) (1000 / configTICK_RATE_HZ) )
+#define portSTACK_GROWTH (-1)
+#define portTICK_PERIOD_MS ((TickType_t)(1000 / configTICK_RATE_HZ))
 #ifdef __riscv64
-	#define portBYTE_ALIGNMENT	8
+#define portBYTE_ALIGNMENT 8
 #else
-	#define portBYTE_ALIGNMENT	4
+#define portBYTE_ALIGNMENT 4
 #endif
-#define portCRITICAL_NESTING_IN_TCB					1
+#define portCRITICAL_NESTING_IN_TCB 1
 /*-----------------------------------------------------------*/
-
 
 /* Scheduler utilities. */
-extern void vPortYield( void );
-#define portYIELD()					vPortYield()
+extern void vPortYield(void);
+#define portYIELD() vPortYield()
 /*-----------------------------------------------------------*/
 
-
 /* Critical section management. */
-extern int vPortSetInterruptMask( void );
-extern void vPortClearInterruptMask( int );
+extern int vPortSetInterruptMask(void);
+extern void vPortClearInterruptMask(int);
 
-extern void vPortEnterCritical( void );
-extern void vPortExitCritical( void );
+extern void vPortEnterCritical(void);
+extern void vPortExitCritical(void);
 
-#define portDISABLE_INTERRUPTS()				__asm volatile 	( "csrc mstatus,8" )
-#define portENABLE_INTERRUPTS()					__asm volatile 	( "csrs mstatus,8" )
+#define portDISABLE_INTERRUPTS() __asm volatile("csrc mstatus,8")
+#define portENABLE_INTERRUPTS() __asm volatile("csrs mstatus,8")
 
-#define portENTER_CRITICAL()		vPortEnterCritical()
-#define portEXIT_CRITICAL()			vPortExitCritical()
+#define portENTER_CRITICAL() vPortEnterCritical()
+#define portEXIT_CRITICAL() vPortExitCritical()
 
-#define portSET_INTERRUPT_MASK_FROM_ISR()       vPortSetInterruptMask()
+#define portSET_INTERRUPT_MASK_FROM_ISR() vPortSetInterruptMask()
 
-#define portCLEAR_INTERRUPT_MASK_FROM_ISR( uxSavedStatusValue )       vPortClearInterruptMask( uxSavedStatusValue )
+#define portCLEAR_INTERRUPT_MASK_FROM_ISR(uxSavedStatusValue) \
+    vPortClearInterruptMask(uxSavedStatusValue)
 
-#define portEND_SWITCHING_ISR( xSwitchRequired ) if( xSwitchRequired ) vPortYield()
+#define portEND_SWITCHING_ISR(xSwitchRequired) \
+    if (xSwitchRequired)                       \
+    vPortYield()
 /*-----------------------------------------------------------*/
 
 /* Task function macros as described on the FreeRTOS.org WEB site. */
-#define portTASK_FUNCTION_PROTO( vFunction, pvParameters ) void vFunction( void *pvParameters )
-#define portTASK_FUNCTION( vFunction, pvParameters ) void vFunction( void *pvParameters )
+#define portTASK_FUNCTION_PROTO(vFunction, pvParameters) void vFunction(void *pvParameters)
+#define portTASK_FUNCTION(vFunction, pvParameters) void vFunction(void *pvParameters)
 
-#define portNOP() __asm volatile 	( " nop " )
+#define portNOP() __asm volatile(" nop ")
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* PORTMACRO_H */
-

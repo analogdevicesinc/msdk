@@ -14,10 +14,8 @@
 #include "bd/lfs_filebd.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-
 
 // Block device specific tracing
 #ifdef LFS_TESTBD_YES_TRACE
@@ -42,7 +40,7 @@ enum lfs_testbd_badblock_behavior {
 
 // Type for measuring wear
 typedef uint32_t lfs_testbd_wear_t;
-typedef int32_t  lfs_testbd_swear_t;
+typedef int32_t lfs_testbd_swear_t;
 
 // testbd config, this is required for testing
 struct lfs_testbd_config {
@@ -89,7 +87,6 @@ typedef struct lfs_testbd {
     const struct lfs_testbd_config *cfg;
 } lfs_testbd_t;
 
-
 /// Block device API ///
 
 // Create a test block device using the geometry in lfs_config
@@ -98,20 +95,20 @@ typedef struct lfs_testbd {
 // testbd will use rambd which can be much faster.
 int lfs_testbd_create(const struct lfs_config *cfg, const char *path);
 int lfs_testbd_createcfg(const struct lfs_config *cfg, const char *path,
-        const struct lfs_testbd_config *bdcfg);
+                         const struct lfs_testbd_config *bdcfg);
 
 // Clean up memory associated with block device
 int lfs_testbd_destroy(const struct lfs_config *cfg);
 
 // Read a block
-int lfs_testbd_read(const struct lfs_config *cfg, lfs_block_t block,
-        lfs_off_t off, void *buffer, lfs_size_t size);
+int lfs_testbd_read(const struct lfs_config *cfg, lfs_block_t block, lfs_off_t off, void *buffer,
+                    lfs_size_t size);
 
 // Program a block
 //
 // The block must have previously been erased.
-int lfs_testbd_prog(const struct lfs_config *cfg, lfs_block_t block,
-        lfs_off_t off, const void *buffer, lfs_size_t size);
+int lfs_testbd_prog(const struct lfs_config *cfg, lfs_block_t block, lfs_off_t off,
+                    const void *buffer, lfs_size_t size);
 
 // Erase a block
 //
@@ -122,17 +119,13 @@ int lfs_testbd_erase(const struct lfs_config *cfg, lfs_block_t block);
 // Sync the block device
 int lfs_testbd_sync(const struct lfs_config *cfg);
 
-
 /// Additional extended API for driving test features ///
 
 // Get simulated wear on a given block
-lfs_testbd_swear_t lfs_testbd_getwear(const struct lfs_config *cfg,
-        lfs_block_t block);
+lfs_testbd_swear_t lfs_testbd_getwear(const struct lfs_config *cfg, lfs_block_t block);
 
 // Manually set simulated wear on a given block
-int lfs_testbd_setwear(const struct lfs_config *cfg,
-        lfs_block_t block, lfs_testbd_wear_t wear);
-
+int lfs_testbd_setwear(const struct lfs_config *cfg, lfs_block_t block, lfs_testbd_wear_t wear);
 
 #ifdef __cplusplus
 } /* extern "C" */

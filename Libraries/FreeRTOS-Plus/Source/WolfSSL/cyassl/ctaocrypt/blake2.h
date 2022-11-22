@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 #ifdef HAVE_BLAKE2
 
 #ifndef CTAOCRYPT_BLAKE2_H
@@ -29,16 +28,15 @@
 
 /* for blake2 reverse compatibility */
 #ifndef HAVE_FIPS
-    #define InitBlake2b   wc_InitBlake2b
-    #define Blake2bUpdate wc_Blake2bUpdate
-    #define Blake2bFinal  wc_Blake2bFinal
+#define InitBlake2b wc_InitBlake2b
+#define Blake2bUpdate wc_Blake2bUpdate
+#define Blake2bFinal wc_Blake2bFinal
 #else
-    /* name for when fips hmac calls blake */
-    #define wc_InitBlake2b   InitBlake2b
-    #define wc_Blake2bUpdate Blake2bUpdate
-    #define wc_Blake2bFinal  Blake2bFinal
+/* name for when fips hmac calls blake */
+#define wc_InitBlake2b InitBlake2b
+#define wc_Blake2bUpdate Blake2bUpdate
+#define wc_Blake2bFinal Blake2bFinal
 #endif /* HAVE_FIPS */
 
-#endif  /* CTAOCRYPT_BLAKE2_H */
-#endif  /* HAVE_BLAKE2 */
-
+#endif /* CTAOCRYPT_BLAKE2_H */
+#endif /* HAVE_BLAKE2 */

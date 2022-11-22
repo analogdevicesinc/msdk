@@ -19,7 +19,6 @@
 #include <stdint.h>
 #include "lc3bin.h"
 
-
 /**
  * LC3 binary header
  */
@@ -38,17 +37,14 @@ struct lc3bin_header {
     uint16_t nsamples_high;
 };
 
-
 /**
  * Read LC3 binary header
  */
-int lc3bin_read_header(FILE *fp,
-    int *frame_us, int *srate_hz, int *nchannels, int *nsamples)
+int lc3bin_read_header(FILE *fp, int *frame_us, int *srate_hz, int *nchannels, int *nsamples)
 {
     struct lc3bin_header hdr;
 
-    if (fread(&hdr, sizeof(hdr), 1, fp) != 1
-            || hdr.file_id != LC3_FILE_ID)
+    if (fread(&hdr, sizeof(hdr), 1, fp) != 1 || hdr.file_id != LC3_FILE_ID)
         return -1;
 
     *nchannels = hdr.channels;
@@ -68,10 +64,8 @@ int lc3bin_read_data(FILE *fp, int nchannels, void *buffer)
 {
     uint16_t nbytes;
 
-    if (fread(&nbytes, sizeof(nbytes), 1, fp) < 1
-            || nbytes > nchannels * LC3_MAX_FRAME_BYTES
-            || nbytes % nchannels
-            || fread(buffer, nbytes, 1, fp) < 1)
+    if (fread(&nbytes, sizeof(nbytes), 1, fp) < 1 || nbytes > nchannels * LC3_MAX_FRAME_BYTES ||
+        nbytes % nchannels || fread(buffer, nbytes, 1, fp) < 1)
         return -1;
 
     return nbytes / nchannels;
@@ -80,8 +74,8 @@ int lc3bin_read_data(FILE *fp, int nchannels, void *buffer)
 /**
  * Write LC3 binary header
  */
-void lc3bin_write_header(FILE *fp,
-    int frame_us, int srate_hz, int bitrate, int nchannels, int nsamples)
+void lc3bin_write_header(FILE *fp, int frame_us, int srate_hz, int bitrate, int nchannels,
+                         int nsamples)
 {
     struct lc3bin_header hdr = {
         .file_id = LC3_FILE_ID,
@@ -100,8 +94,7 @@ void lc3bin_write_header(FILE *fp,
 /**
  * Write LC3 block of data
  */
-void lc3bin_write_data(FILE *fp,
-    const void *data, int nchannels, int frame_bytes)
+void lc3bin_write_data(FILE *fp, const void *data, int nchannels, int frame_bytes)
 {
     uint16_t nbytes = nchannels * frame_bytes;
     fwrite(&nbytes, sizeof(nbytes), 1, fp);

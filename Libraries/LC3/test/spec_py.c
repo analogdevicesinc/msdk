@@ -33,8 +33,7 @@ static PyObject *estimate_gain_py(PyObject *m, PyObject *args)
     int g_off;
     bool reset_off;
 
-    if (!PyArg_ParseTuple(args, "IIOifi", &dt, &sr,
-                &x_obj, &nbits_budget, &nbits_off, &g_off))
+    if (!PyArg_ParseTuple(args, "IIOifi", &dt, &sr, &x_obj, &nbits_budget, &nbits_off, &g_off))
         return NULL;
 
     CTYPES_CHECK("dt", (unsigned)dt < LC3_NUM_DT);
@@ -44,8 +43,7 @@ static PyObject *estimate_gain_py(PyObject *m, PyObject *args)
 
     CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_FLOAT, ne, &x));
 
-    int g_int = estimate_gain(dt, sr,
-        x, nbits_budget, nbits_off, g_off, &reset_off);
+    int g_int = estimate_gain(dt, sr, x, nbits_budget, nbits_off, g_off, &reset_off);
 
     return Py_BuildValue("ii", g_int, reset_off);
 }
@@ -90,8 +88,7 @@ static PyObject *quantize_py(PyObject *m, PyObject *args)
 
     quantize(dt, sr, g_int, x, __xq, &nq);
 
-    for (int i = 0; i < nq; i++)
-        xq[i] = __xq[i] & 1 ? -(__xq[i] >> 1) : (__xq[i] >> 1);
+    for (int i = 0; i < nq; i++) xq[i] = __xq[i] & 1 ? -(__xq[i] >> 1) : (__xq[i] >> 1);
 
     return Py_BuildValue("ONi", x_obj, xq_obj, nq);
 }
@@ -104,8 +101,7 @@ static PyObject *compute_nbits_py(PyObject *m, PyObject *args)
     int nq, nbits_budget;
     bool lsb_mode;
 
-    if (!PyArg_ParseTuple(args, "IIIOii", &dt, &sr,
-                &nbytes, &xq_obj, &nq, &nbits_budget))
+    if (!PyArg_ParseTuple(args, "IIIOii", &dt, &sr, &nbytes, &xq_obj, &nq, &nbits_budget))
         return NULL;
 
     CTYPES_CHECK("dt", (unsigned)dt < LC3_NUM_DT);
@@ -116,11 +112,9 @@ static PyObject *compute_nbits_py(PyObject *m, PyObject *args)
     CTYPES_CHECK("xq", xq_obj = to_1d_ptr(xq_obj, NPY_INT16, ne, &xq));
 
     uint16_t __xq[ne];
-    for (int i = 0; i < ne; i++)
-        __xq[i] = xq[i] < 0 ? (-xq[i] << 1) + 1 : (xq[i] << 1);
+    for (int i = 0; i < ne; i++) __xq[i] = xq[i] < 0 ? (-xq[i] << 1) + 1 : (xq[i] << 1);
 
-    int nbits = compute_nbits(
-        dt, sr, nbytes, __xq, &nq, nbits_budget, &lsb_mode);
+    int nbits = compute_nbits(dt, sr, nbytes, __xq, &nq, nbits_budget, &lsb_mode);
 
     return Py_BuildValue("iii", nbits, nq, lsb_mode);
 }
@@ -136,8 +130,7 @@ static PyObject *analyze_py(PyObject *m, PyObject *args)
     float *x;
     int16_t *xq;
 
-    if (!PyArg_ParseTuple(args, "IIIpOOO", &dt, &sr, &nbytes,
-                &pitch, &tns_obj, &spec_obj, &x_obj))
+    if (!PyArg_ParseTuple(args, "IIIpOOO", &dt, &sr, &nbytes, &pitch, &tns_obj, &spec_obj, &x_obj))
         return NULL;
 
     CTYPES_CHECK("dt", (unsigned)dt < LC3_NUM_DT);
@@ -154,8 +147,7 @@ static PyObject *analyze_py(PyObject *m, PyObject *args)
 
     lc3_spec_analyze(dt, sr, nbytes, pitch, &tns, &spec, x, __xq, &side);
 
-    for (int i = 0; i < ne; i++)
-        xq[i] = __xq[i] & 1 ? -(__xq[i] >> 1) : (__xq[i] >> 1);
+    for (int i = 0; i < ne; i++) xq[i] = __xq[i] & 1 ? -(__xq[i] >> 1) : (__xq[i] >> 1);
 
     from_spec_analysis(spec_obj, &spec);
     return Py_BuildValue("ONN", x_obj, xq_obj, new_spec_side(&side));
@@ -178,11 +170,10 @@ static PyObject *estimate_noise_py(PyObject *m, PyObject *args)
     int ne = LC3_NE(dt, bw);
 
     CTYPES_CHECK("xq", xq_obj = to_1d_ptr(xq_obj, NPY_INT16, ne, &xq));
-    CTYPES_CHECK("x" , x_obj = to_1d_ptr(x_obj, NPY_FLOAT, ne, &x ));
+    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_FLOAT, ne, &x));
 
     uint16_t __xq[nq];
-    for (int i = 0; i < nq; i++)
-        __xq[i] = xq[i] < 0 ? (-xq[i] << 1) + 1 : (xq[i] << 1);
+    for (int i = 0; i < nq; i++) __xq[i] = xq[i] < 0 ? (-xq[i] << 1) + 1 : (xq[i] << 1);
 
     int noise_factor = estimate_noise(dt, bw, __xq, nq, x);
 
@@ -190,11 +181,11 @@ static PyObject *estimate_noise_py(PyObject *m, PyObject *args)
 }
 
 static PyMethodDef methods[] = {
-    { "spec_estimate_gain" , estimate_gain_py , METH_VARARGS },
-    { "spec_adjust_gain"   , adjust_gain_py   , METH_VARARGS },
-    { "spec_quantize"      , quantize_py      , METH_VARARGS },
-    { "spec_compute_nbits" , compute_nbits_py , METH_VARARGS },
-    { "spec_analyze"       , analyze_py       , METH_VARARGS },
+    { "spec_estimate_gain", estimate_gain_py, METH_VARARGS },
+    { "spec_adjust_gain", adjust_gain_py, METH_VARARGS },
+    { "spec_quantize", quantize_py, METH_VARARGS },
+    { "spec_compute_nbits", compute_nbits_py, METH_VARARGS },
+    { "spec_analyze", analyze_py, METH_VARARGS },
     { "spec_estimate_noise", estimate_noise_py, METH_VARARGS },
     { NULL },
 };

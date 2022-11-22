@@ -28,23 +28,21 @@
 #ifndef REDVER_H
 #define REDVER_H
 
-
 /** @brief Consecutive number assigned to each automated build.
 
     <!-- This macro is updated automatically: do not edit! -->
 */
 #define RED_BUILD_NUMBER "700"
 
-#define RED_KIT_GPL         0U  /* Open source GPL kit. */
-#define RED_KIT_COMMERCIAL  1U  /* Commercially-licensed kit. */
-#define RED_KIT_SANDBOX     2U  /* Not a kit: developer sandbox. */
+#define RED_KIT_GPL 0U /* Open source GPL kit. */
+#define RED_KIT_COMMERCIAL 1U /* Commercially-licensed kit. */
+#define RED_KIT_SANDBOX 2U /* Not a kit: developer sandbox. */
 
 /** @brief Indicates the Reliance Edge kit.
 
     <!-- This macro is updated automatically: do not edit! -->
 */
 #define RED_KIT RED_KIT_GPL
-
 
 /** @brief Version number to display in output.
 */
@@ -63,38 +61,34 @@
 */
 #define RED_DISK_LAYOUT_VERSION 1U
 
-
 /** @brief Base name of the file system product.
 */
 #define RED_PRODUCT_BASE_NAME "Reliance Edge"
 
-
 /*  Specifies whether the product is in alpha stage, beta stage, or neither.
 */
 #if 0
-  #if 0
-    #define ALPHABETA   " (Alpha)"
-  #else
-    #define ALPHABETA   " (Beta)"
-  #endif
+#if 0
+#define ALPHABETA " (Alpha)"
 #else
-  #define ALPHABETA     ""
+#define ALPHABETA " (Beta)"
+#endif
+#else
+#define ALPHABETA ""
 #endif
 
 /** @brief Full product name and version.
 */
-#define RED_PRODUCT_NAME "Datalight " RED_PRODUCT_BASE_NAME " " RED_VERSION " Build " RED_BUILD_NUMBER ALPHABETA
-
+#define RED_PRODUCT_NAME \
+    "Datalight " RED_PRODUCT_BASE_NAME " " RED_VERSION " Build " RED_BUILD_NUMBER ALPHABETA
 
 /** @brief Product copyright.
 */
 #define RED_PRODUCT_LEGAL "Copyright (c) 2014-2017 Datalight, Inc.  All Rights Reserved Worldwide."
 
-
 /** @brief Product patents.
 */
 #define RED_PRODUCT_PATENT "Patents:  US#7284101."
-
 
 /** @brief Product edition.
 */
@@ -106,6 +100,4 @@
 #define RED_PRODUCT_EDITION "Developer Sandbox -- Compiled " __DATE__ " at " __TIME__
 #endif
 
-
 #endif
-

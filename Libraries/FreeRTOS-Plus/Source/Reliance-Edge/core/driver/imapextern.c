@@ -36,12 +36,10 @@
 
 #include <redcore.h>
 
-
 #if REDCONF_READ_ONLY == 0
 static REDSTATUS ImapNodeBranch(uint32_t ulImapNode, IMAPNODE **ppImap);
 static bool ImapNodeIsBranched(uint32_t ulImapNode);
 #endif
-
 
 /** @brief Get the allocation bit of a block from the imap as it exists in
            either metaroot.
@@ -58,47 +56,36 @@ static bool ImapNodeIsBranched(uint32_t ulImapNode);
                         or @p pfAllocated is `NULL`.
     @retval -RED_EIO    A disk I/O error occurred.
 */
-REDSTATUS RedImapEBlockGet(
-    uint8_t     bMR,
-    uint32_t    ulBlock,
-    bool       *pfAllocated)
+REDSTATUS RedImapEBlockGet(uint8_t bMR, uint32_t ulBlock, bool *pfAllocated)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(    gpRedCoreVol->fImapInline
-        || (bMR > 1U)
-        || (ulBlock < gpRedCoreVol->ulInodeTableStartBN)
-        || (ulBlock >= gpRedVolume->ulBlockCount)
-        || (pfAllocated == NULL))
-    {
+    if (gpRedCoreVol->fImapInline || (bMR > 1U) || (ulBlock < gpRedCoreVol->ulInodeTableStartBN) ||
+        (ulBlock >= gpRedVolume->ulBlockCount) || (pfAllocated == NULL)) {
         REDERROR();
         ret = -RED_EINVAL;
-    }
-    else
-    {
-        uint32_t    ulOffset = ulBlock - gpRedCoreVol->ulInodeTableStartBN;
-        uint32_t    ulImapNode = ulOffset / IMAPNODE_ENTRIES;
-        uint8_t     bMRToRead = bMR;
-        IMAPNODE   *pImap;
+    } else {
+        uint32_t ulOffset = ulBlock - gpRedCoreVol->ulInodeTableStartBN;
+        uint32_t ulImapNode = ulOffset / IMAPNODE_ENTRIES;
+        uint8_t bMRToRead = bMR;
+        IMAPNODE *pImap;
 
-      #if REDCONF_READ_ONLY == 0
+#if REDCONF_READ_ONLY == 0
         /*  If the imap node is not branched, then both copies of the imap are
             identical.  If the old metaroot copy is requested, use the current
             copy instead, since it is more likely to be buffered.
         */
-        if(bMR == (1U - gpRedCoreVol->bCurMR))
-        {
-            if(!ImapNodeIsBranched(ulImapNode))
-            {
+        if (bMR == (1U - gpRedCoreVol->bCurMR)) {
+            if (!ImapNodeIsBranched(ulImapNode)) {
                 bMRToRead = 1U - bMR;
             }
         }
-      #endif
+#endif
 
-        ret = RedBufferGet(RedImapNodeBlock(bMRToRead, ulImapNode), BFLAG_META_IMAP, CAST_VOID_PTR_PTR(&pImap));
+        ret = RedBufferGet(RedImapNodeBlock(bMRToRead, ulImapNode), BFLAG_META_IMAP,
+                           CAST_VOID_PTR_PTR(&pImap));
 
-        if(ret == 0)
-        {
+        if (ret == 0) {
             *pfAllocated = RedBitGet(pImap->abEntries, ulOffset % IMAPNODE_ENTRIES);
 
             RedBufferPut(pImap);
@@ -107,7 +94,6 @@ REDSTATUS RedImapEBlockGet(
 
     return ret;
 }
-
 
 #if REDCONF_READ_ONLY == 0
 /** @brief Set the allocation bit of a block in the working-state imap.
@@ -121,33 +107,25 @@ REDSTATUS RedImapEBlockGet(
     @retval -RED_EINVAL @p ulBlock is out of range.
     @retval -RED_EIO    A disk I/O error occurred.
 */
-REDSTATUS RedImapEBlockSet(
-    uint32_t    ulBlock,
-    bool        fAllocated)
+REDSTATUS RedImapEBlockSet(uint32_t ulBlock, bool fAllocated)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(    gpRedCoreVol->fImapInline
-        || (ulBlock < gpRedCoreVol->ulInodeTableStartBN)
-        || (ulBlock >= gpRedVolume->ulBlockCount))
-    {
+    if (gpRedCoreVol->fImapInline || (ulBlock < gpRedCoreVol->ulInodeTableStartBN) ||
+        (ulBlock >= gpRedVolume->ulBlockCount)) {
         REDERROR();
         ret = -RED_EINVAL;
-    }
-    else
-    {
-        uint32_t    ulOffset = ulBlock - gpRedCoreVol->ulInodeTableStartBN;
-        uint32_t    ulImapNode = ulOffset / IMAPNODE_ENTRIES;
-        IMAPNODE   *pImap;
+    } else {
+        uint32_t ulOffset = ulBlock - gpRedCoreVol->ulInodeTableStartBN;
+        uint32_t ulImapNode = ulOffset / IMAPNODE_ENTRIES;
+        IMAPNODE *pImap;
 
         ret = ImapNodeBranch(ulImapNode, &pImap);
 
-        if(ret == 0)
-        {
+        if (ret == 0) {
             uint32_t ulImapEntry = ulOffset % IMAPNODE_ENTRIES;
 
-            if(RedBitGet(pImap->abEntries, ulImapEntry) == fAllocated)
-            {
+            if (RedBitGet(pImap->abEntries, ulImapEntry) == fAllocated) {
                 /*  The driver shouldn't ever set a bit in the imap to its
                     current value.  That shouldn't ever be needed, and it
                     indicates that the driver is doing unnecessary I/O, or
@@ -155,13 +133,9 @@ REDSTATUS RedImapEBlockSet(
                 */
                 CRITICAL_ERROR();
                 ret = -RED_EFUBAR;
-            }
-            else if(fAllocated)
-            {
+            } else if (fAllocated) {
                 RedBitSet(pImap->abEntries, ulImapEntry);
-            }
-            else
-            {
+            } else {
                 RedBitClear(pImap->abEntries, ulImapEntry);
             }
 
@@ -171,7 +145,6 @@ REDSTATUS RedImapEBlockSet(
 
     return ret;
 }
-
 
 /** @brief Branch an imap node and get a buffer for it.
 
@@ -191,54 +164,43 @@ REDSTATUS RedImapEBlockSet(
     @retval -RED_EINVAL @p ulImapNode is out of range; or @p ppImap is `NULL`.
     @retval -RED_EIO    A disk I/O error occurred.
 */
-static REDSTATUS ImapNodeBranch(
-    uint32_t    ulImapNode,
-    IMAPNODE  **ppImap)
+static REDSTATUS ImapNodeBranch(uint32_t ulImapNode, IMAPNODE **ppImap)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if((ulImapNode >= gpRedCoreVol->ulImapNodeCount) || (ppImap == NULL))
-    {
+    if ((ulImapNode >= gpRedCoreVol->ulImapNodeCount) || (ppImap == NULL)) {
         REDERROR();
         ret = -RED_EINVAL;
-    }
-    else if(ImapNodeIsBranched(ulImapNode))
-    {
+    } else if (ImapNodeIsBranched(ulImapNode)) {
         /*  Imap node is already branched, so just get it buffered dirty.
         */
-        ret = RedBufferGet(RedImapNodeBlock(gpRedCoreVol->bCurMR, ulImapNode), BFLAG_META_IMAP | BFLAG_DIRTY, CAST_VOID_PTR_PTR(ppImap));
-    }
-    else
-    {
-        uint32_t    ulBlockCurrent;
-        uint32_t    ulBlockOld;
+        ret = RedBufferGet(RedImapNodeBlock(gpRedCoreVol->bCurMR, ulImapNode),
+                           BFLAG_META_IMAP | BFLAG_DIRTY, CAST_VOID_PTR_PTR(ppImap));
+    } else {
+        uint32_t ulBlockCurrent;
+        uint32_t ulBlockOld;
 
         /*  The metaroot currently points to the committed state imap node.
             Toggle the metaroot to point at the alternate, writeable location.
         */
-        if(RedBitGet(gpRedMR->abEntries, ulImapNode))
-        {
+        if (RedBitGet(gpRedMR->abEntries, ulImapNode)) {
             RedBitClear(gpRedMR->abEntries, ulImapNode);
-        }
-        else
-        {
+        } else {
             RedBitSet(gpRedMR->abEntries, ulImapNode);
         }
 
         ulBlockCurrent = RedImapNodeBlock(gpRedCoreVol->bCurMR, ulImapNode);
-        ulBlockOld     = RedImapNodeBlock(1U - gpRedCoreVol->bCurMR, ulImapNode);
+        ulBlockOld = RedImapNodeBlock(1U - gpRedCoreVol->bCurMR, ulImapNode);
 
         ret = RedBufferDiscardRange(ulBlockCurrent, 1U);
 
         /*  Buffer the committed copy then reassign the block number to the
             writeable location.  This also dirties the buffer.
         */
-        if(ret == 0)
-        {
+        if (ret == 0) {
             ret = RedBufferGet(ulBlockOld, BFLAG_META_IMAP, CAST_VOID_PTR_PTR(ppImap));
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 RedBufferBranch(*ppImap, ulBlockCurrent);
             }
         }
@@ -246,7 +208,6 @@ static REDSTATUS ImapNodeBranch(
 
     return ret;
 }
-
 
 /** @brief Determine whether an imap node is branched.
 
@@ -256,11 +217,10 @@ static REDSTATUS ImapNodeBranch(
 
     @return Whether the imap node is branched.
 */
-static bool ImapNodeIsBranched(
-    uint32_t    ulImapNode)
+static bool ImapNodeIsBranched(uint32_t ulImapNode)
 {
-    bool        fNodeBitSetInMetaroot0 = RedBitGet(gpRedCoreVol->aMR[0U].abEntries, ulImapNode);
-    bool        fNodeBitSetInMetaroot1 = RedBitGet(gpRedCoreVol->aMR[1U].abEntries, ulImapNode);
+    bool fNodeBitSetInMetaroot0 = RedBitGet(gpRedCoreVol->aMR[0U].abEntries, ulImapNode);
+    bool fNodeBitSetInMetaroot1 = RedBitGet(gpRedCoreVol->aMR[1U].abEntries, ulImapNode);
 
     /*  If the imap node is not branched, both metaroots will point to the same
         copy of the node.
@@ -268,7 +228,6 @@ static bool ImapNodeIsBranched(
     return fNodeBitSetInMetaroot0 != fNodeBitSetInMetaroot1;
 }
 #endif /* REDCONF_READ_ONLY == 0 */
-
 
 /** @brief Calculate the block number of the imap node location indicated by the
            given metaroot.
@@ -283,28 +242,21 @@ static bool ImapNodeIsBranched(
 
     @return Block number of the imap node, as indicated by the given metaroot.
 */
-uint32_t RedImapNodeBlock(
-    uint8_t     bMR,
-    uint32_t    ulImapNode)
+uint32_t RedImapNodeBlock(uint8_t bMR, uint32_t ulImapNode)
 {
-    uint32_t    ulBlock;
+    uint32_t ulBlock;
 
     REDASSERT(ulImapNode < gpRedCoreVol->ulImapNodeCount);
 
     ulBlock = gpRedCoreVol->ulImapStartBN + (ulImapNode * 2U);
 
-    if(bMR > 1U)
-    {
+    if (bMR > 1U) {
         REDERROR();
-    }
-    else if(RedBitGet(gpRedCoreVol->aMR[bMR].abEntries, ulImapNode))
-    {
+    } else if (RedBitGet(gpRedCoreVol->aMR[bMR].abEntries, ulImapNode)) {
         /*  Bit is set, so point ulBlock at the second copy of the node.
         */
         ulBlock++;
-    }
-    else
-    {
+    } else {
         /*  ulBlock already points at the first copy of the node.
         */
     }
@@ -313,4 +265,3 @@ uint32_t RedImapNodeBlock(
 }
 
 #endif /* REDCONF_IMAP_EXTERNAL == 1 */
-

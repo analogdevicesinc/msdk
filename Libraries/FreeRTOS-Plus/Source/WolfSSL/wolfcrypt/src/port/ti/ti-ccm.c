@@ -20,13 +20,12 @@
  */
 
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+#include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
 
-#if defined(WOLFSSL_TI_CRYPT) ||  defined(WOLFSSL_TI_HASH)
-
+#if defined(WOLFSSL_TI_CRYPT) || defined(WOLFSSL_TI_HASH)
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -37,45 +36,54 @@
 
 #ifndef SINGLE_THREADED
 #include <wolfssl/wolfcrypt/wc_port.h>
-    static wolfSSL_Mutex TI_CCM_Mutex ;
+static wolfSSL_Mutex TI_CCM_Mutex;
 #endif
 
-#define TIMEOUT  500000
-#define WAIT(stat) { volatile int i ; for(i=0; i<TIMEOUT; i++)if(stat)break ; if(i==TIMEOUT)return(false) ; }
+#define TIMEOUT 500000
+#define WAIT(stat)                    \
+    {                                 \
+        volatile int i;               \
+        for (i = 0; i < TIMEOUT; i++) \
+            if (stat)                 \
+                break;                \
+        if (i == TIMEOUT)             \
+            return (false);           \
+    }
 
-static bool ccm_init = false ;
+static bool ccm_init = false;
 bool wolfSSL_TI_CCMInit(void)
 {
-    if(ccm_init)return true ;
-    ccm_init = true ;
+    if (ccm_init)
+        return true;
+    ccm_init = true;
 
-    SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ |
-                                       SYSCTL_OSC_MAIN |
-                                       SYSCTL_USE_PLL |
-                                       SYSCTL_CFG_VCO_480), 120000000);
-   
-    if(!ROM_SysCtlPeripheralPresent(SYSCTL_PERIPH_CCM0))
-        return false ;
-        
-         ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_CCM0);
-    WAIT(ROM_SysCtlPeripheralReady(SYSCTL_PERIPH_CCM0)) ;
-         ROM_SysCtlPeripheralReset(SYSCTL_PERIPH_CCM0);
-    WAIT(ROM_SysCtlPeripheralReady(SYSCTL_PERIPH_CCM0)) ;
-    
+    SysCtlClockFreqSet((SYSCTL_XTAL_25MHZ | SYSCTL_OSC_MAIN | SYSCTL_USE_PLL | SYSCTL_CFG_VCO_480),
+                       120000000);
+
+    if (!ROM_SysCtlPeripheralPresent(SYSCTL_PERIPH_CCM0))
+        return false;
+
+    ROM_SysCtlPeripheralEnable(SYSCTL_PERIPH_CCM0);
+    WAIT(ROM_SysCtlPeripheralReady(SYSCTL_PERIPH_CCM0));
+    ROM_SysCtlPeripheralReset(SYSCTL_PERIPH_CCM0);
+    WAIT(ROM_SysCtlPeripheralReady(SYSCTL_PERIPH_CCM0));
+
 #ifndef SINGLE_THREADED
-    InitMutex(&TI_CCM_Mutex) ;
+    InitMutex(&TI_CCM_Mutex);
 #endif
 
-    return true ;
+    return true;
 }
 
 #ifndef SINGLE_THREADED
-void wolfSSL_TI_lockCCM() {
-    LockMutex(&TI_CCM_Mutex) ;
+void wolfSSL_TI_lockCCM()
+{
+    LockMutex(&TI_CCM_Mutex);
 }
 
-void wolfSSL_TI_unlockCCM() {
-    UnLockMutex(&TI_CCM_Mutex) ;
+void wolfSSL_TI_unlockCCM()
+{
+    UnLockMutex(&TI_CCM_Mutex);
 }
 #endif
 

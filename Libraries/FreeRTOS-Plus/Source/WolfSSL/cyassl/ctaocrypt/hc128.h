@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 #ifndef NO_HC128
 
 #ifndef CTAO_CRYPT_HC128_H
@@ -29,11 +28,10 @@
 
 /* for hc128 reverse compatibility */
 #ifdef HAVE_HC128
-    #define Hc128_Process wc_Hc128_Process
-    #define Hc128_SetKey  wc_Hc128_SetKey
+#define Hc128_Process wc_Hc128_Process
+#define Hc128_SetKey wc_Hc128_SetKey
 #endif
 
 #endif /* CTAO_CRYPT_HC128_H */
 
 #endif /* HAVE_HC128 */
-

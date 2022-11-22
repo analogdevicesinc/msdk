@@ -27,7 +27,6 @@
 */
 #include <redfs.h>
 
-
 /** @brief Initialize the real time clock.
 
     The behavior of calling this function when the RTC is already initialized
@@ -42,7 +41,6 @@ REDSTATUS RedOsClockInit(void)
     return 0;
 }
 
-
 /** @brief Uninitialize the real time clock.
 
     The behavior of calling this function when the RTC is not initialized is
@@ -56,7 +54,6 @@ REDSTATUS RedOsClockUninit(void)
 {
     return 0;
 }
-
 
 /** @brief Get the date/time.
 
@@ -76,4 +73,3 @@ uint32_t RedOsClockGetTime(void)
     */
     return 0;
 }
-

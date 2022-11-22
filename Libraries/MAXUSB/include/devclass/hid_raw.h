@@ -30,7 +30,7 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
+
 #ifndef _HID_RAW_H_
 #define _HID_RAW_H_
 
@@ -43,10 +43,10 @@
 
 /// Configuration structure
 typedef struct {
-  uint8_t in_ep;            // endpoint to be used for IN packets
-  uint8_t in_maxpacket;     // max packet size for IN endpoint
-  uint8_t out_ep;           // endpoint to be used for OUT packets
-  uint8_t out_maxpacket;    // max packet size for OUT endpoint
+    uint8_t in_ep; // endpoint to be used for IN packets
+    uint8_t in_maxpacket; // max packet size for IN endpoint
+    uint8_t out_ep; // endpoint to be used for OUT packets
+    uint8_t out_maxpacket; // max packet size for OUT endpoint
 } hid_cfg_t;
 
 /** 
@@ -57,7 +57,8 @@ typedef struct {
  *  \param    report_descriptor   pointer to the descriptor to be used in response to getdescriptor requests
  *  \return   Zero (0) for success, non-zero for failure
  */
-int hidraw_init(const MXC_USB_interface_descriptor_t *if_desc, const hid_descriptor_t *hid_descriptor, const uint8_t *report_descriptor);
+int hidraw_init(const MXC_USB_interface_descriptor_t *if_desc,
+                const hid_descriptor_t *hid_descriptor, const uint8_t *report_descriptor);
 
 /** 
  *  \brief    Set the specified configuration
