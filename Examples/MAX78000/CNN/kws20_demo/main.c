@@ -61,13 +61,17 @@
 #include "cnn.h"
 #ifdef BOARD_FTHR_REVA
 #include "tft_ili9341.h"
+#ifdef ENABLE_CODEC_MIC
+#include "i2c.h"
+#include "max9867.h"
+#endif
 #endif
 #ifdef BOARD_EVKIT_V1
 #include "tft_ssd2119.h"
 #include "bitmap.h"
 #endif
 
-#define VERSION "3.1.0 (10/17/22)" // SD card write
+#define VERSION "3.2.0 (11/22/22)" // trained with background noise and more unknown keywords
 /* **** Definitions **** */
 #define CLOCK_SOURCE 0 // 0: IPO,  1: ISO, 2: IBRO
 #define SLEEP_MODE 0 // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
@@ -123,7 +127,7 @@
 #define SILENCE_COUNTER_THRESHOLD \
     20 // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of a word
 #define PREAMBLE_SIZE 30 * CHUNK // how many samples before beginning of a keyword to include
-#define INFERENCE_THRESHOLD 49 // min probability (0-100) to accept an inference
+#define INFERENCE_THRESHOLD 91 // min probability (0-100) to accept an inference
 #else
 #define SAMPLE_SCALE_FACTOR \
     1 // multiplies 16-bit samples by this scale factor before converting to 8-bit
@@ -133,6 +137,11 @@
     20 // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of a word
 #define PREAMBLE_SIZE 30 * CHUNK // how many samples before beginning of a keyword to include
 #define INFERENCE_THRESHOLD 49 // min probability (0-100) to accept an inference
+#endif
+
+#if defined(ENABLE_CODEC_MIC)
+#define PMIC_AUDIO_I2C MXC_I2C1
+#define CODEC_MCLOCK   12288000
 #endif
 
 /* DEBUG Print */
@@ -307,8 +316,13 @@ int main(void)
     SystemCoreClockUpdate();
 
 #ifdef ENABLE_MIC_PROCESSING
-#if defined(BOARD_FTHR_REVA)
-    /* Enable microphone power on Feather board */
+#if defined(ENABLE_CODEC_MIC)
+    int err;
+    if ((err = max9867_init(PMIC_AUDIO_I2C, CODEC_MCLOCK)) != E_NO_ERROR) {
+      PR_DEBUG("\nError in max9867_init: %d\n", err);
+    }
+#elif defined(BOARD_FTHR_REVA)
+    /* Enable microphone power on Feather board only if codec is not enabled */
     Microphone_Power(POWER_ON);
 #endif
 #endif
@@ -674,13 +688,13 @@ int main(void)
                 ret = check_inference(ml_softmax, ml_data, &out_class, &probability);
 
                 PR_DEBUG("----------------------------------------- \n");
-
-                if (!ret) {
-                    PR_DEBUG("LOW CONFIDENCE!: ");
+                /* Treat low confidence detections as unknown*/
+                if (!ret || out_class == 20) {
+                    PR_DEBUG("Detected word: %s", "Unknown");
                 }
-
-                PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class], probability);
-
+                else{
+                    PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class], probability);
+                }
                 PR_DEBUG("\n----------------------------------------- \n");
 
                 Max = 0;
@@ -691,32 +705,29 @@ int main(void)
                 /**
                  *
                  *  - Blink Green led if a keyword is detected
-                 *  - Blink Red led if an unkown keyword is detected
-                 *  - Blink Yellow if detection is low confidence
+                 *  - Blink Yellow if detection is low confidence or unknown
                  *  - Solid Red if there is error with SD card interface
                  *
                  **/
                 LED_Off(LED_GREEN);
-                if (!ret) {
-                    // Low Confidence
+                if (!ret || out_class == 20) {
+                    // Low Confidence or unknown
                     LED_On(LED_GREEN);
                     LED_On(LED_RED);
                 }
-                if (out_class == 20) // Unknown class
-                    LED_On(LED_RED);
 
                 int i = 0;
                 for (i = 0; i < SAMPLE_SIZE; i++) {
                     // printf("%d\n",serialMicBuff[(serialMicBufIndex+i)%SAMPLE_SIZE]);
                     snippet[i] = serialMicBuff[(serialMicBufIndex + i) % SAMPLE_SIZE];
                 }
-                if (ret) {
-                    // High confidence
+                if (ret && out_class != 20) {
+                    // Word detected with high confidence
                     snprintf(fileName, sizeof(fileName), "%04d_%s", fileCount, keywords[out_class]);
                 } else {
-                    // Low confidence: add "L" at the end of file name
+                    // Unknown or Low confidence: add "L" at the end of file name
                     snprintf(fileName, sizeof(fileName), "%04d_%s_L", fileCount,
-                             keywords[out_class]);
+                             "Unknown");
                 }
                 if (writeSoundSnippet((char *)fileName, snippetLength, &snippet[0]) != E_NO_ERROR) {
                     printf("*** !!!SD ERROR!!! ***\n");
@@ -728,7 +739,6 @@ int main(void)
                 LED_Off(LED_RED);
                 LED_On(LED_GREEN);
 #endif
-                PR_INFO("\n\n*** READY ***\n");
             }
         }
 
@@ -836,17 +846,21 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
 
 #else
             MXC_TFT_ClearScreen();
-            memset(buff, 32, TFT_BUFF_SIZE);
-            TFT_Print(buff, 20, 30, font_2,
-                      snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
+			memset(buff, 32, TFT_BUFF_SIZE);
+			if (max_index == 20 || *out_prob <= INFERENCE_THRESHOLD)
+	            TFT_Print(buff, 20, 30, font_2,
+                      snprintf(buff, sizeof(buff), "Unknown"));			
+			else
+				TFT_Print(buff, 20, 30, font_2,
+						snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
                                (double)100.0 * max / 32768.0));
             TFT_Print(buff, 1, 50, font_1,
                       snprintf(buff, sizeof(buff), "__________________________ "));
-            TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
+            //TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
         } else {
-            TFT_Print(buff, 20, 80 + 20 * top, font_1,
-                      snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
-                               (double)100.0 * max / 32768.0));
+            //TFT_Print(buff, 20, 80 + 20 * top, font_1,
+            //          snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
+            //                   (double)100.0 * max / 32768.0));
         }
 
         /* reset for next top */
@@ -1092,8 +1106,13 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
     while ((rx_size--) && (chunkCount < CHUNK)) {
         /* Read microphone sample from I2S FIFO */
         sample = (int32_t)MXC_I2S->fifoch0;
+		
         /* The actual value is 18 MSB of 32-bit word */
+#ifdef ENABLE_CODEC_MIC
+        temp = sample >> 19; // adjusted for codec
+#else
         temp = sample >> 14;
+#endif
 
         /* Remove DC from microphone signal */
         sample = HPF((int16_t)temp); // filter needs about 1K sample to converge

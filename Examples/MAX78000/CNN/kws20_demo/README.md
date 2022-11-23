@@ -327,15 +327,27 @@ KWS20 demo works in two modes:  Using microphone (real-time), or offline process
 
 ### Microphone Mode
 
-In this mode, EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  In the main loop, I2S buffer is checked and sampled are stored into  **pChunkBuff** buffer.  
+In this mode, EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  In the main loop, I2S buffer is checked and samples are stored in  **pChunkBuff** buffer.  
+
+### CODEC Mode
+
+In this mode, the left channel (tip of the J5 3.5mm audio jack) of the line-in of MAX9867 audio CODEC (is used as the audio input source.
+
+ To enable using CODE as the audio input source, make sure the `PROJ_CFLAGS" line is uncommented. This mode can only be enabled for the  Feather board.
+
+```make
+# If enabled, it captures audio from line input of MAX9867 audio codec instead of on-board mic.
+# Note that SEND_MIC_OUT_SDCARD should be disabled in this mode
+PROJ_CFLAGS+=-DENABLE_CODEC_MIC
+```
 
 ### Offline Mode
 
 if **ENABLE_MIC_PROCESSING** is not defined, a header file containing the 16-bit samples (e.g. **kws_five.h**) should be included in the project to be used as the input . To create a header file from a wav file, use included utilities to record a wav file and convert it to header file. 
 
 ```bash
-# record 3sec of 16-bit 16KHz sampled wav file 
-$ python VoiceRecorder.py -d 3 -o voicefile.wav
+# record 1sec of 16-bit 16KHz sampled wav file 
+$ python VoiceRecorder.py -d 1 -o voicefile.wav
 # convert to header
 $ python RealtimeAudio.py -i voicefile.wav -o voicefile.h
 ```
@@ -360,8 +372,7 @@ The LED
 
 - stays *green* when it is listening
 - blinks *green* if a keyword is detected
-- blinks *red* if an unknown keyword is detected
-- blinks *yellow* if detection confidence is low
+- blinks *yellow* if detection confidence is low or unknow keyword
 - stays *red* if there is an error in the SD card interface
 
 A utility (`bin2wav.py`) is provided in the `/Utility` folder to convert these files into wave (.wav) format to listen to.

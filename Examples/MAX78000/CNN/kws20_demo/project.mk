@@ -27,9 +27,14 @@ endif
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
 #PROJ_CFLAGS+=-DENABLE_TFT
+
 # If enabled, it saves out the Mic samples used for inference to SDCARD
-PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
 # Note that if both SDCARD and TFT are enabled, the TFT will be disabled to avoid SPI driver conflict.
+#PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
+
+# If enabled, it captures audio from line input of MAX9867 audio codec instead of on-board mic.
+# Note that SEND_MIC_OUT_SDCARD should be disabled in this mode
+#PROJ_CFLAGS+=-DENABLE_CODEC_MIC
 LIB_SDHC = 1
 IPATH += TFT/fthr
 VPATH += TFT/fthr
