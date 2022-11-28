@@ -33,21 +33,21 @@
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/${TARGET}/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/${TARGET}/${BOARD}/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-apps/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-model/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-profile/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-profiles/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/controller/include/ble&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/controller/include/common&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/platform/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/wsf/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/wsf/include/util&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/RISC-V&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/stack/cfg&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-apps/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-model/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-mesh-profile/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-profiles/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/controller/include/ble&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/controller/include/common&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/platform/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/wsf/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Cordio/wsf/include/util&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/RISC-V&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="gnu.c.compiler.option.preprocessor.def.symbols.1784350960" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.154347489" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>

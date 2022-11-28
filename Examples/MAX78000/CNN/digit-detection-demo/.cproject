@@ -39,6 +39,7 @@
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/PMIC&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/PushButton&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/CODEC&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" id="gnu.c.compiler.option.preprocessor.def.symbols.1784350960" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.154347489" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
