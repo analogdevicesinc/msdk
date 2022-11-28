@@ -35,8 +35,13 @@
  ******************************************************************************/
 
 MEMORY {
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 384K /* 256kB "FLASH" */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 160K /* 760kB SRAM */
+    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 384K /* 384kB "FLASH" */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 128K /* 160kB SRAM with ECC*/
+    /*^ If ECC is enabled, the stack size must be reduced.  Otherwise, a
+        HardFault will occur on startup as the stack is expanded into the
+        ECC's reserved SRAM space.
+    */
+    /* SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 160K /* 160kB SRAM, no ECC */
 }
 
 SECTIONS {

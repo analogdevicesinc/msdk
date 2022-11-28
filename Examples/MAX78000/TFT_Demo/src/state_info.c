@@ -40,7 +40,7 @@
 #include "keypad.h"
 #include "state.h"
 #include "utils.h"
-#include "tft_ssd2119.h"
+#include "example_config.h"
 
 //
 #define urw_gothic_16_white_bg_grey 0

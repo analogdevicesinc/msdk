@@ -213,7 +213,19 @@ int main(void)
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
     /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+#ifdef TFT_ADAFRUIT
+    /* Initialize touch screen */
+    if (MXC_TS_Init(MXC_SPI0, -1, NULL, NULL) != E_NO_ERROR) {
+        printf("Touch screen initialization failed\n");
+        return E_ABORT;
+    }
+#else
+    /* Initialize TFT display */
+    if (MXC_TFT_Init(NULL, NULL) != E_NO_ERROR) {
+        printf("Touch screen initialization failed\n");
+        return E_ABORT;
+    }
+#endif
     MXC_TFT_SetBackGroundColor(4);
 #endif
 
