@@ -37,6 +37,7 @@
 */
 #include <redfs.h>
 
+
 #ifndef RedStrLenUnchecked
 static uint32_t RedStrLenUnchecked(const char *pszStr);
 #endif
@@ -50,6 +51,7 @@ static int32_t RedStrNCmpUnchecked(const char *pszStr1, const char *pszStr2, uin
 static void RedStrNCpyUnchecked(char *pszDst, const char *pszSrc, uint32_t ulLen);
 #endif
 
+
 /** @brief Determine the length (in bytes) of a null terminated string.
 
     The length does not include the null terminator byte.
@@ -58,14 +60,18 @@ static void RedStrNCpyUnchecked(char *pszDst, const char *pszSrc, uint32_t ulLen
 
     @return The length of the @p pszStr string.
 */
-uint32_t RedStrLen(const char *pszStr)
+uint32_t RedStrLen(
+    const char *pszStr)
 {
-    uint32_t ulLen;
+    uint32_t    ulLen;
 
-    if (pszStr == NULL) {
+    if(pszStr == NULL)
+    {
         REDERROR();
         ulLen = 0U;
-    } else {
+    }
+    else
+    {
         /*  Cast the result to uint32_t, since RedStrLenUnchecked() might be
             strlen(), which returns size_t, which is possibly a 64-bit value.
         */
@@ -75,6 +81,7 @@ uint32_t RedStrLen(const char *pszStr)
     return ulLen;
 }
 
+
 #ifndef RedStrLenUnchecked
 /** @brief Determine the length (in bytes) of a null terminated string.
 
@@ -82,17 +89,20 @@ uint32_t RedStrLen(const char *pszStr)
 
     @return The length of the @p pszStr string.
 */
-static uint32_t RedStrLenUnchecked(const char *pszStr)
+static uint32_t RedStrLenUnchecked(
+    const char *pszStr)
 {
-    uint32_t ulLen = 0U;
+    uint32_t    ulLen = 0U;
 
-    while (pszStr[ulLen] != '\0') {
+    while(pszStr[ulLen] != '\0')
+    {
         ulLen++;
     }
 
     return ulLen;
 }
 #endif
+
 
 /** @brief Compare two null terminated strings.
 
@@ -107,19 +117,25 @@ static uint32_t RedStrLenUnchecked(const char *pszStr)
     @retval -1  @p pszStr2 is greater than @p pszStr1, as determined by the
                 values of the first differing bytes.
 */
-int32_t RedStrCmp(const char *pszStr1, const char *pszStr2)
+int32_t RedStrCmp(
+    const char *pszStr1,
+    const char *pszStr2)
 {
-    int32_t lResult;
+    int32_t     lResult;
 
-    if ((pszStr1 == NULL) || (pszStr2 == NULL)) {
+    if((pszStr1 == NULL) || (pszStr2 == NULL))
+    {
         REDERROR();
         lResult = 0;
-    } else {
+    }
+    else
+    {
         lResult = RedStrCmpUnchecked(pszStr1, pszStr2);
     }
 
     return lResult;
 }
+
 
 #ifndef RedStrCmpUnchecked
 /** @brief Compare two null terminated strings.
@@ -129,12 +145,15 @@ int32_t RedStrCmp(const char *pszStr1, const char *pszStr2)
 
     @return Zero if the two strings are the same, otherwise nonzero.
 */
-static int32_t RedStrCmpUnchecked(const char *pszStr1, const char *pszStr2)
+static int32_t RedStrCmpUnchecked(
+    const char *pszStr1,
+    const char *pszStr2)
 {
-    int32_t lResult;
-    uint32_t ulIdx = 0U;
+    int32_t     lResult;
+    uint32_t    ulIdx = 0U;
 
-    while ((pszStr1[ulIdx] == pszStr2[ulIdx]) && (pszStr1[ulIdx] != '\0')) {
+    while((pszStr1[ulIdx] == pszStr2[ulIdx]) && (pszStr1[ulIdx] != '\0'))
+    {
         ulIdx++;
     }
 
@@ -144,17 +163,23 @@ static int32_t RedStrCmpUnchecked(const char *pszStr1, const char *pszStr2)
         compared."  Use uint8_t instead of unsigned char to avoid MISRA C
         deviations.
     */
-    if ((uint8_t)pszStr1[ulIdx] > (uint8_t)pszStr2[ulIdx]) {
+    if((uint8_t)pszStr1[ulIdx] > (uint8_t)pszStr2[ulIdx])
+    {
         lResult = 1;
-    } else if ((uint8_t)pszStr1[ulIdx] < (uint8_t)pszStr2[ulIdx]) {
+    }
+    else if((uint8_t)pszStr1[ulIdx] < (uint8_t)pszStr2[ulIdx])
+    {
         lResult = -1;
-    } else {
+    }
+    else
+    {
         lResult = 0;
     }
 
     return lResult;
 }
 #endif
+
 
 /** @brief Compare the first @p ulLen characters of two null terminated strings.
 
@@ -172,19 +197,26 @@ static int32_t RedStrCmpUnchecked(const char *pszStr1, const char *pszStr2)
     @retval -1  @p pszStr2 is greater than @p pszStr1, as determined by the
                 values of the first differing bytes.
 */
-int32_t RedStrNCmp(const char *pszStr1, const char *pszStr2, uint32_t ulLen)
+int32_t RedStrNCmp(
+    const char *pszStr1,
+    const char *pszStr2,
+    uint32_t    ulLen)
 {
-    int32_t lResult;
+    int32_t     lResult;
 
-    if ((pszStr1 == NULL) || (pszStr2 == NULL)) {
+    if((pszStr1 == NULL) || (pszStr2 == NULL))
+    {
         REDERROR();
         lResult = 0;
-    } else {
+    }
+    else
+    {
         lResult = RedStrNCmpUnchecked(pszStr1, pszStr2, ulLen);
     }
 
     return lResult;
 }
+
 
 #ifndef RedStrNCmpUnchecked
 /** @brief Compare the first @p ulLen characters of two null terminated strings.
@@ -197,27 +229,36 @@ int32_t RedStrNCmp(const char *pszStr1, const char *pszStr2, uint32_t ulLen)
 
     @return Zero if the two strings are the same, otherwise nonzero.
 */
-static int32_t RedStrNCmpUnchecked(const char *pszStr1, const char *pszStr2, uint32_t ulLen)
+static int32_t RedStrNCmpUnchecked(
+    const char *pszStr1,
+    const char *pszStr2,
+    uint32_t    ulLen)
 {
-    int32_t lResult = 0;
-    uint32_t ulIdx;
+    int32_t     lResult = 0;
+    uint32_t    ulIdx;
 
-    for (ulIdx = 0U; ulIdx < ulLen; ulIdx++) {
-        if (pszStr1[ulIdx] != pszStr2[ulIdx]) {
+    for(ulIdx = 0U; ulIdx < ulLen; ulIdx++)
+    {
+        if(pszStr1[ulIdx] != pszStr2[ulIdx])
+        {
             /*  "The sign of a non-zero return value is determined by the sign
                 of the difference between the values of the first pair of bytes
                 (both interpreted as type unsigned char) that differ in the
                 strings being compared."  Use uint8_t instead of unsigned char
                 to avoid MISRA C deviations.
             */
-            if ((uint8_t)pszStr1[ulIdx] > (uint8_t)pszStr2[ulIdx]) {
+            if((uint8_t)pszStr1[ulIdx] > (uint8_t)pszStr2[ulIdx])
+            {
                 lResult = 1;
-            } else {
+            }
+            else
+            {
                 lResult = -1;
             }
         }
 
-        if ((lResult != 0) || (pszStr1[ulIdx] == '\0')) {
+        if((lResult != 0) || (pszStr1[ulIdx] == '\0'))
+        {
             break;
         }
     }
@@ -225,6 +266,7 @@ static int32_t RedStrNCmpUnchecked(const char *pszStr1, const char *pszStr2, uin
     return lResult;
 }
 #endif
+
 
 /** @brief Copy a string.
 
@@ -240,14 +282,21 @@ static int32_t RedStrNCmpUnchecked(const char *pszStr1, const char *pszStr2, uin
     @param pszSrc   The null-terminated string to copy.
     @param ulLen    The maximum number of characters to copy.
 */
-void RedStrNCpy(char *pszDst, const char *pszSrc, uint32_t ulLen)
+void RedStrNCpy(
+    char       *pszDst,
+    const char *pszSrc,
+    uint32_t    ulLen)
 {
-    if ((pszDst == NULL) || (pszSrc == NULL)) {
+    if((pszDst == NULL) || (pszSrc == NULL))
+    {
         REDERROR();
-    } else {
+    }
+    else
+    {
         RedStrNCpyUnchecked(pszDst, pszSrc, ulLen);
     }
 }
+
 
 #ifndef RedStrNCpyUnchecked
 /** @brief Copy a string.
@@ -257,18 +306,24 @@ void RedStrNCpy(char *pszDst, const char *pszSrc, uint32_t ulLen)
     @param pszSrc   The null-terminated string to copy.
     @param ulLen    The maximum number of characters to copy.
 */
-static void RedStrNCpyUnchecked(char *pszDst, const char *pszSrc, uint32_t ulLen)
+static void RedStrNCpyUnchecked(
+    char       *pszDst,
+    const char *pszSrc,
+    uint32_t    ulLen)
 {
-    uint32_t ulIdx = 0U;
+    uint32_t    ulIdx = 0U;
 
-    while ((ulIdx < ulLen) && (pszSrc[ulIdx] != '\0')) {
+    while((ulIdx < ulLen) && (pszSrc[ulIdx] != '\0'))
+    {
         pszDst[ulIdx] = pszSrc[ulIdx];
         ulIdx++;
     }
 
-    while (ulIdx < ulLen) {
+    while(ulIdx < ulLen)
+    {
         pszDst[ulIdx] = '\0';
         ulIdx++;
     }
 }
 #endif
+

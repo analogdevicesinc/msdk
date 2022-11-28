@@ -44,69 +44,79 @@
  * will be used when TCP data is received while earlier data is still missing.
  * If 'pucData' equals NULL, the function is called to advance 'uxHead' only.
  */
-size_t uxStreamBufferAdd(StreamBuffer_t *pxBuffer, size_t uxOffset, const uint8_t *pucData,
-                         size_t uxCount)
+size_t uxStreamBufferAdd( StreamBuffer_t *pxBuffer, size_t uxOffset, const uint8_t *pucData, size_t uxCount )
 {
-    size_t uxSpace, uxNextHead, uxFirst;
+size_t uxSpace, uxNextHead, uxFirst;
 
-    uxSpace = uxStreamBufferGetSpace(pxBuffer);
+	uxSpace = uxStreamBufferGetSpace( pxBuffer );
 
-    /* If uxOffset > 0, items can be placed in front of uxHead */
-    if (uxSpace > uxOffset) {
-        uxSpace -= uxOffset;
-    } else {
-        uxSpace = 0u;
-    }
+	/* If uxOffset > 0, items can be placed in front of uxHead */
+	if( uxSpace > uxOffset )
+	{
+		uxSpace -= uxOffset;
+	}
+	else
+	{
+		uxSpace = 0u;
+	}
 
-    /* The number of bytes that can be written is the minimum of the number of
+	/* The number of bytes that can be written is the minimum of the number of
 	bytes requested and the number available. */
-    uxCount = FreeRTOS_min_uint32(uxSpace, uxCount);
+	uxCount = FreeRTOS_min_uint32( uxSpace, uxCount );
 
-    if (uxCount != 0u) {
-        uxNextHead = pxBuffer->uxHead;
+	if( uxCount != 0u )
+	{
+		uxNextHead = pxBuffer->uxHead;
 
-        if (uxOffset != 0u) {
-            /* ( uxOffset > 0 ) means: write in front if the uxHead marker */
-            uxNextHead += uxOffset;
-            if (uxNextHead >= pxBuffer->LENGTH) {
-                uxNextHead -= pxBuffer->LENGTH;
-            }
-        }
+		if( uxOffset != 0u )
+		{
+			/* ( uxOffset > 0 ) means: write in front if the uxHead marker */
+			uxNextHead += uxOffset;
+			if( uxNextHead >= pxBuffer->LENGTH )
+			{
+				uxNextHead -= pxBuffer->LENGTH;
+			}
+		}
 
-        if (pucData != NULL) {
-            /* Calculate the number of bytes that can be added in the first
+		if( pucData != NULL )
+		{
+			/* Calculate the number of bytes that can be added in the first
 			write - which may be less than the total number of bytes that need
 			to be added if the buffer will wrap back to the beginning. */
-            uxFirst = FreeRTOS_min_uint32(pxBuffer->LENGTH - uxNextHead, uxCount);
+			uxFirst = FreeRTOS_min_uint32( pxBuffer->LENGTH - uxNextHead, uxCount );
 
-            /* Write as many bytes as can be written in the first write. */
-            memcpy((void *)(pxBuffer->ucArray + uxNextHead), pucData, uxFirst);
+			/* Write as many bytes as can be written in the first write. */
+			memcpy( ( void* ) ( pxBuffer->ucArray + uxNextHead ), pucData, uxFirst );
 
-            /* If the number of bytes written was less than the number that
+			/* If the number of bytes written was less than the number that
 			could be written in the first write... */
-            if (uxCount > uxFirst) {
-                /* ...then write the remaining bytes to the start of the
+			if( uxCount > uxFirst )
+			{
+				/* ...then write the remaining bytes to the start of the
 				buffer. */
-                memcpy((void *)pxBuffer->ucArray, pucData + uxFirst, uxCount - uxFirst);
-            }
-        }
+				memcpy( ( void * )pxBuffer->ucArray, pucData + uxFirst, uxCount - uxFirst );
+			}
+		}
 
-        if (uxOffset == 0u) {
-            /* ( uxOffset == 0 ) means: write at uxHead position */
-            uxNextHead += uxCount;
-            if (uxNextHead >= pxBuffer->LENGTH) {
-                uxNextHead -= pxBuffer->LENGTH;
-            }
-            pxBuffer->uxHead = uxNextHead;
-        }
+		if( uxOffset == 0u )
+		{
+			/* ( uxOffset == 0 ) means: write at uxHead position */
+			uxNextHead += uxCount;
+			if( uxNextHead >= pxBuffer->LENGTH )
+			{
+				uxNextHead -= pxBuffer->LENGTH;
+			}
+			pxBuffer->uxHead = uxNextHead;
+		}
 
-        if (xStreamBufferLessThenEqual(pxBuffer, pxBuffer->uxFront, uxNextHead) != pdFALSE) {
-            /* Advance the front pointer */
-            pxBuffer->uxFront = uxNextHead;
-        }
-    }
+		if( xStreamBufferLessThenEqual( pxBuffer, pxBuffer->uxFront, uxNextHead ) != pdFALSE )
+		{
+			/* Advance the front pointer */
+			pxBuffer->uxFront = uxNextHead;
+		}
+	}
 
-    return uxCount;
+	return uxCount;
 }
 /*-----------------------------------------------------------*/
 
@@ -117,63 +127,73 @@ size_t uxStreamBufferAdd(StreamBuffer_t *pxBuffer, size_t uxOffset, const uint8_
  * if 'xPeek' is pdTRUE, or if 'uxOffset' is non-zero, the 'lTail' pointer will
  * not be advanced.
  */
-size_t uxStreamBufferGet(StreamBuffer_t *pxBuffer, size_t uxOffset, uint8_t *pucData,
-                         size_t uxMaxCount, BaseType_t xPeek)
+size_t uxStreamBufferGet( StreamBuffer_t *pxBuffer, size_t uxOffset, uint8_t *pucData, size_t uxMaxCount, BaseType_t xPeek )
 {
-    size_t uxSize, uxCount, uxFirst, uxNextTail;
+size_t uxSize, uxCount, uxFirst, uxNextTail;
 
-    /* How much data is available? */
-    uxSize = uxStreamBufferGetSize(pxBuffer);
+	/* How much data is available? */
+	uxSize = uxStreamBufferGetSize( pxBuffer );
 
-    if (uxSize > uxOffset) {
-        uxSize -= uxOffset;
-    } else {
-        uxSize = 0u;
-    }
+	if( uxSize > uxOffset )
+	{
+		uxSize -= uxOffset;
+	}
+	else
+	{
+		uxSize = 0u;
+	}
 
-    /* Use the minimum of the wanted bytes and the available bytes. */
-    uxCount = FreeRTOS_min_uint32(uxSize, uxMaxCount);
+	/* Use the minimum of the wanted bytes and the available bytes. */
+	uxCount = FreeRTOS_min_uint32( uxSize, uxMaxCount );
 
-    if (uxCount > 0u) {
-        uxNextTail = pxBuffer->uxTail;
+	if( uxCount > 0u )
+	{
+		uxNextTail = pxBuffer->uxTail;
 
-        if (uxOffset != 0u) {
-            uxNextTail += uxOffset;
-            if (uxNextTail >= pxBuffer->LENGTH) {
-                uxNextTail -= pxBuffer->LENGTH;
-            }
-        }
+		if( uxOffset != 0u )
+		{
+			uxNextTail += uxOffset;
+			if( uxNextTail >= pxBuffer->LENGTH )
+			{
+				uxNextTail -= pxBuffer->LENGTH;
+			}
+		}
 
-        if (pucData != NULL) {
-            /* Calculate the number of bytes that can be read - which may be
+		if( pucData != NULL )
+		{
+			/* Calculate the number of bytes that can be read - which may be
 			less than the number wanted if the data wraps around to the start of
 			the buffer. */
-            uxFirst = FreeRTOS_min_uint32(pxBuffer->LENGTH - uxNextTail, uxCount);
+			uxFirst = FreeRTOS_min_uint32( pxBuffer->LENGTH - uxNextTail, uxCount );
 
-            /* Obtain the number of bytes it is possible to obtain in the first
+			/* Obtain the number of bytes it is possible to obtain in the first
 			read. */
-            memcpy(pucData, pxBuffer->ucArray + uxNextTail, uxFirst);
+			memcpy( pucData, pxBuffer->ucArray + uxNextTail, uxFirst );
 
-            /* If the total number of wanted bytes is greater than the number
+			/* If the total number of wanted bytes is greater than the number
 			that could be read in the first read... */
-            if (uxCount > uxFirst) {
-                /*...then read the remaining bytes from the start of the buffer. */
-                memcpy(pucData + uxFirst, pxBuffer->ucArray, uxCount - uxFirst);
-            }
-        }
+			if( uxCount > uxFirst )
+			{
+				/*...then read the remaining bytes from the start of the buffer. */
+				memcpy( pucData + uxFirst, pxBuffer->ucArray, uxCount - uxFirst );
+			}
+		}
 
-        if ((xPeek == pdFALSE) && (uxOffset == 0UL)) {
-            /* Move the tail pointer to effecively remove the data read from
+		if( ( xPeek == pdFALSE ) && ( uxOffset == 0UL ) )
+		{
+			/* Move the tail pointer to effecively remove the data read from
 			the buffer. */
-            uxNextTail += uxCount;
+			uxNextTail += uxCount;
 
-            if (uxNextTail >= pxBuffer->LENGTH) {
-                uxNextTail -= pxBuffer->LENGTH;
-            }
+			if( uxNextTail >= pxBuffer->LENGTH )
+			{
+				uxNextTail -= pxBuffer->LENGTH;
+			}
 
-            pxBuffer->uxTail = uxNextTail;
-        }
-    }
+			pxBuffer->uxTail = uxNextTail;
+		}
+	}
 
-    return uxCount;
+	return uxCount;
 }
+

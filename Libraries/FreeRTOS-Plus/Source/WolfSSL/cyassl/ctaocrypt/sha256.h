@@ -19,7 +19,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 /* code submitted by raphael.huck@efixo.com */
+
 
 #ifndef NO_SHA256
 
@@ -27,10 +29,11 @@
 #define CTAO_CRYPT_SHA256_H
 
 #include <wolfssl/wolfcrypt/sha256.h>
-#define InitSha256 wc_InitSha256
+#define InitSha256   wc_InitSha256
 #define Sha256Update wc_Sha256Update
-#define Sha256Final wc_Sha256Final
-#define Sha256Hash wc_Sha256Hash
+#define Sha256Final  wc_Sha256Final
+#define Sha256Hash   wc_Sha256Hash
 
 #endif /* CTAO_CRYPT_SHA256_H */
 #endif /* NO_SHA256 */
+

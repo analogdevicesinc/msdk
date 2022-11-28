@@ -75,7 +75,12 @@ typedef enum {
     MXC_SDHC_LIB_DIS_STATE = 8,
 } mxc_sdhc_state;
 
-typedef enum { CARD_NONE = 0, CARD_SDHC, CARD_MMC } mxc_sdhc_lib_card_type;
+typedef enum {
+    CARD_NONE = 0,
+    CARD_SDHC,
+    CARD_MMC
+} mxc_sdhc_lib_card_type;
+
 
 mxc_sdhc_lib_card_type MXC_SDHC_Lib_Get_Card_Type(void);
 
@@ -86,13 +91,13 @@ int MXC_SDHC_Lib_SetRCA(void);
 int MXC_SDHC_Lib_GetCSD(mxc_sdhc_csd_regs_t *csd);
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t *csd);
+unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd);
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetSectors(mxc_sdhc_csd_regs_t *csd);
+unsigned int MXC_SDHC_Lib_GetSectors(mxc_sdhc_csd_regs_t* csd);
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_GetBlockSize(mxc_sdhc_csd_regs_t *csd);
+int MXC_SDHC_Lib_GetBlockSize(mxc_sdhc_csd_regs_t* csd);
 
 /* ************************************************************************** */
 int MXC_SDHC_Lib_GetCurrentState(mxc_sdhc_state *state);
@@ -113,20 +118,17 @@ void MXC_SDHC_Lib_Async_Handler(void);
 int MXC_SDHC_Lib_Prepare_Trans(mxc_sdhc_data_width width);
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt,
-                       mxc_sdhc_data_width width);
+int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt, mxc_sdhc_data_width width);
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt,
-                      mxc_sdhc_data_width width);
+int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt, mxc_sdhc_data_width width);
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int cnt,
-                            mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback);
+int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int cnt, mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback);
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int cnt,
-                           mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback);
+int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int cnt, mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback);
+
 
 /**@} end of group sdhc */
 

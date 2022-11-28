@@ -28,83 +28,87 @@
 #ifndef REDERRNO_H
 #define REDERRNO_H
 
+
 /** @brief Return type for Reliance Edge error values.
 */
 typedef int32_t REDSTATUS;
+
 
 /*  The errno numbers are the same as Linux.
 */
 
 /** Operation not permitted. */
-#define RED_EPERM 1
+#define RED_EPERM            1
 
 /** No such file or directory. */
-#define RED_ENOENT 2
+#define RED_ENOENT           2
 
 /** I/O error. */
-#define RED_EIO 5
+#define RED_EIO              5
 
 /** Bad file number. */
-#define RED_EBADF 9
+#define RED_EBADF            9
 
 /** Out of memory */
-#define RED_ENOMEM 12
+#define RED_ENOMEM          12
 
 /** Device or resource busy. */
-#define RED_EBUSY 16
+#define RED_EBUSY           16
 
 /** File exists. */
-#define RED_EEXIST 17
+#define RED_EEXIST          17
 
 /** Cross-device link. */
-#define RED_EXDEV 18
+#define RED_EXDEV           18
 
 /** Not a directory. */
-#define RED_ENOTDIR 20
+#define RED_ENOTDIR         20
 
 /** Is a directory. */
-#define RED_EISDIR 21
+#define RED_EISDIR          21
 
 /** Invalid argument. */
-#define RED_EINVAL 22
+#define RED_EINVAL          22
 
 /** File table overflow. */
-#define RED_ENFILE 23
+#define RED_ENFILE          23
 
 /** Too many open files. */
-#define RED_EMFILE 24
+#define RED_EMFILE          24
 
 /** File too large. */
-#define RED_EFBIG 27
+#define RED_EFBIG           27
 
 /** No space left on device. */
-#define RED_ENOSPC 28
+#define RED_ENOSPC          28
 
 /** Read-only file system. */
-#define RED_EROFS 30
+#define RED_EROFS           30
 
 /** Too many links. */
-#define RED_EMLINK 31
+#define RED_EMLINK          31
 
 /** Math result not representable. */
-#define RED_ERANGE 34
+#define RED_ERANGE          34
 
 /** File name too long. */
-#define RED_ENAMETOOLONG 36
+#define RED_ENAMETOOLONG    36
 
 /** Function not implemented. */
-#define RED_ENOSYS 38
+#define RED_ENOSYS          38
 
 /** Directory not empty. */
-#define RED_ENOTEMPTY 39
+#define RED_ENOTEMPTY       39
 
 /** No data available. */
-#define RED_ENODATA 61
+#define RED_ENODATA         61
 
 /** Too many users. */
-#define RED_EUSERS 87
+#define RED_EUSERS          87
 
 /** Nothing will be okay ever again. */
-#define RED_EFUBAR RED_EINVAL
+#define RED_EFUBAR          RED_EINVAL
+
 
 #endif
+

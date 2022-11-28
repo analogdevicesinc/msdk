@@ -42,29 +42,29 @@
  */
 
 #ifdef MAXUSB_HS_CAPABLE
-#define ACM_MAX_PACKET MXC_USBHS_MAX_PACKET
+#define ACM_MAX_PACKET	  MXC_USBHS_MAX_PACKET
 #else
-#define ACM_MAX_PACKET 64
+#define ACM_MAX_PACKET	  64
 #endif
 
-#define ACM_PARITY_NONE 0
-#define ACM_PARITY_ODD 1
-#define ACM_PARITY_EVEN 2
-#define ACM_PARITY_MARK 3
-#define ACM_PARITY_SPACE 4
+#define ACM_PARITY_NONE   0
+#define ACM_PARITY_ODD    1
+#define ACM_PARITY_EVEN   2
+#define ACM_PARITY_MARK   3
+#define ACM_PARITY_SPACE  4
 
-#define ACM_STOP_1 0
-#define ACM_STOP_15 1
-#define ACM_STOP_2 2
+#define ACM_STOP_1        0
+#define ACM_STOP_15       1
+#define ACM_STOP_2        2
 
 /// Configuration structure
 typedef struct {
-    uint8_t out_ep; // endpoint to be used for OUT packets
-    uint16_t out_maxpacket; // max packet size for OUT endpoint
-    uint8_t in_ep; // endpoint to be used for IN packets
-    uint16_t in_maxpacket; // max packet size for IN endpoint
-    uint8_t notify_ep; // endpoint to be used for notifications
-    uint16_t notify_maxpacket; // max packet size for notifications
+  uint8_t out_ep;            // endpoint to be used for OUT packets
+  uint16_t out_maxpacket;    // max packet size for OUT endpoint
+  uint8_t in_ep;             // endpoint to be used for IN packets
+  uint16_t in_maxpacket;     // max packet size for IN endpoint
+  uint8_t notify_ep;         // endpoint to be used for notifications
+  uint16_t notify_maxpacket; // max packet size for notifications
 } acm_cfg_t;
 
 /// Line coding
@@ -73,19 +73,19 @@ typedef struct __attribute__((packed)) {
 #else
 typedef __packed struct {
 #endif
-    uint32_t speed; /// baud rate in bps
-    uint8_t stopbits;
-    uint8_t parity;
-    uint8_t databits;
+  uint32_t speed;   /// baud rate in bps
+  uint8_t stopbits;
+  uint8_t parity;
+  uint8_t databits;
 } acm_line_t;
 
 /// CDC-ACM callback events
 typedef enum {
-    ACM_CB_CONNECTED, /// upon host connection
-    ACM_CB_DISCONNECTED, /// upon host disconnection
-    ACM_CB_SET_LINE_CODING, /// when new line coding parameters are received
-    ACM_CB_READ_READY, /// when new data is available from the host
-    ACM_NUM_CALLBACKS /// number of callback events for internal use
+  ACM_CB_CONNECTED,       /// upon host connection
+  ACM_CB_DISCONNECTED,    /// upon host disconnection
+  ACM_CB_SET_LINE_CODING, /// when new line coding parameters are received
+  ACM_CB_READ_READY,      /// when new data is available from the host
+  ACM_NUM_CALLBACKS       /// number of callback events for internal use
 } acm_callback_t;
 
 /**

@@ -27,6 +27,7 @@
 #ifndef REDFS_H
 #define REDFS_H
 
+
 #include <redconf.h>
 #include "redver.h"
 #include "redconfigchk.h"
@@ -40,4 +41,6 @@
 #include "redmisc.h"
 #include "redexclude.h"
 
+
 #endif
+

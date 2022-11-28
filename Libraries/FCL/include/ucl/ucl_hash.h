@@ -52,4 +52,4 @@
 #define MAX_HASH_FUNCTIONS 5
 
 extern int hash_size[MAX_HASH_FUNCTIONS];
-#endif //UCL_HASH
+#endif//UCL_HASH

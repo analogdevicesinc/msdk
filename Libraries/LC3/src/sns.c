@@ -19,6 +19,7 @@
 #include "sns.h"
 #include "tables.h"
 
+
 /* ----------------------------------------------------------------------------
  *  DCT-16
  * -------------------------------------------------------------------------- */
@@ -33,85 +34,85 @@
  */
 static const float dct16_m[16][16] = {
 
-    { 2.50000000e-01, 3.51850934e-01, 3.46759961e-01, 3.38329500e-01, 3.26640741e-01,
-      3.11806253e-01, 2.93968901e-01, 2.73300467e-01, 2.50000000e-01, 2.24291897e-01,
-      1.96423740e-01, 1.66663915e-01, 1.35299025e-01, 1.02631132e-01, 6.89748448e-02,
-      3.46542923e-02 },
+    {  2.50000000e-01,  3.51850934e-01,  3.46759961e-01,  3.38329500e-01,
+       3.26640741e-01,  3.11806253e-01,  2.93968901e-01,  2.73300467e-01,
+       2.50000000e-01,  2.24291897e-01,  1.96423740e-01,  1.66663915e-01,
+       1.35299025e-01,  1.02631132e-01,  6.89748448e-02,  3.46542923e-02 },
 
-    { 2.50000000e-01, 3.38329500e-01, 2.93968901e-01, 2.24291897e-01, 1.35299025e-01,
-      3.46542923e-02, -6.89748448e-02, -1.66663915e-01, -2.50000000e-01, -3.11806253e-01,
-      -3.46759961e-01, -3.51850934e-01, -3.26640741e-01, -2.73300467e-01, -1.96423740e-01,
-      -1.02631132e-01 },
+    {  2.50000000e-01,  3.38329500e-01,  2.93968901e-01,  2.24291897e-01,
+       1.35299025e-01,  3.46542923e-02, -6.89748448e-02, -1.66663915e-01,
+      -2.50000000e-01, -3.11806253e-01, -3.46759961e-01, -3.51850934e-01,
+      -3.26640741e-01, -2.73300467e-01, -1.96423740e-01, -1.02631132e-01 },
 
-    { 2.50000000e-01, 3.11806253e-01, 1.96423740e-01, 3.46542923e-02, -1.35299025e-01,
-      -2.73300467e-01, -3.46759961e-01, -3.38329500e-01, -2.50000000e-01, -1.02631132e-01,
-      6.89748448e-02, 2.24291897e-01, 3.26640741e-01, 3.51850934e-01, 2.93968901e-01,
-      1.66663915e-01 },
+     { 2.50000000e-01,  3.11806253e-01,  1.96423740e-01,  3.46542923e-02,
+      -1.35299025e-01, -2.73300467e-01, -3.46759961e-01, -3.38329500e-01,
+      -2.50000000e-01, -1.02631132e-01,  6.89748448e-02,  2.24291897e-01,
+       3.26640741e-01,  3.51850934e-01,  2.93968901e-01,  1.66663915e-01 },
 
-    { 2.50000000e-01, 2.73300467e-01, 6.89748448e-02, -1.66663915e-01, -3.26640741e-01,
-      -3.38329500e-01, -1.96423740e-01, 3.46542923e-02, 2.50000000e-01, 3.51850934e-01,
-      2.93968901e-01, 1.02631132e-01, -1.35299025e-01, -3.11806253e-01, -3.46759961e-01,
-      -2.24291897e-01 },
+     { 2.50000000e-01,  2.73300467e-01,  6.89748448e-02, -1.66663915e-01,
+      -3.26640741e-01, -3.38329500e-01, -1.96423740e-01,  3.46542923e-02,
+       2.50000000e-01,  3.51850934e-01,  2.93968901e-01,  1.02631132e-01,
+      -1.35299025e-01, -3.11806253e-01, -3.46759961e-01, -2.24291897e-01 },
 
-    { 2.50000000e-01, 2.24291897e-01, -6.89748448e-02, -3.11806253e-01, -3.26640741e-01,
-      -1.02631132e-01, 1.96423740e-01, 3.51850934e-01, 2.50000000e-01, -3.46542923e-02,
-      -2.93968901e-01, -3.38329500e-01, -1.35299025e-01, 1.66663915e-01, 3.46759961e-01,
-      2.73300467e-01 },
+    {  2.50000000e-01,  2.24291897e-01, -6.89748448e-02, -3.11806253e-01,
+      -3.26640741e-01, -1.02631132e-01,  1.96423740e-01,  3.51850934e-01,
+       2.50000000e-01, -3.46542923e-02, -2.93968901e-01, -3.38329500e-01,
+      -1.35299025e-01,  1.66663915e-01,  3.46759961e-01,  2.73300467e-01 },
 
-    { 2.50000000e-01, 1.66663915e-01, -1.96423740e-01, -3.51850934e-01, -1.35299025e-01,
-      2.24291897e-01, 3.46759961e-01, 1.02631132e-01, -2.50000000e-01, -3.38329500e-01,
-      -6.89748448e-02, 2.73300467e-01, 3.26640741e-01, 3.46542923e-02, -2.93968901e-01,
-      -3.11806253e-01 },
+    {  2.50000000e-01,  1.66663915e-01, -1.96423740e-01, -3.51850934e-01,
+      -1.35299025e-01,  2.24291897e-01,  3.46759961e-01,  1.02631132e-01,
+      -2.50000000e-01, -3.38329500e-01, -6.89748448e-02,  2.73300467e-01,
+       3.26640741e-01,  3.46542923e-02, -2.93968901e-01, -3.11806253e-01 },
 
-    { 2.50000000e-01, 1.02631132e-01, -2.93968901e-01, -2.73300467e-01, 1.35299025e-01,
-      3.51850934e-01, 6.89748448e-02, -3.11806253e-01, -2.50000000e-01, 1.66663915e-01,
-      3.46759961e-01, 3.46542923e-02, -3.26640741e-01, -2.24291897e-01, 1.96423740e-01,
-      3.38329500e-01 },
+    {  2.50000000e-01,  1.02631132e-01, -2.93968901e-01, -2.73300467e-01,
+       1.35299025e-01,  3.51850934e-01,  6.89748448e-02, -3.11806253e-01,
+      -2.50000000e-01,  1.66663915e-01,  3.46759961e-01,  3.46542923e-02,
+      -3.26640741e-01, -2.24291897e-01,  1.96423740e-01,  3.38329500e-01 },
 
-    { 2.50000000e-01, 3.46542923e-02, -3.46759961e-01, -1.02631132e-01, 3.26640741e-01,
-      1.66663915e-01, -2.93968901e-01, -2.24291897e-01, 2.50000000e-01, 2.73300467e-01,
-      -1.96423740e-01, -3.11806253e-01, 1.35299025e-01, 3.38329500e-01, -6.89748448e-02,
-      -3.51850934e-01 },
+    {  2.50000000e-01,  3.46542923e-02, -3.46759961e-01, -1.02631132e-01,
+       3.26640741e-01,  1.66663915e-01, -2.93968901e-01, -2.24291897e-01,
+       2.50000000e-01,  2.73300467e-01, -1.96423740e-01, -3.11806253e-01,
+       1.35299025e-01,  3.38329500e-01, -6.89748448e-02, -3.51850934e-01 },
 
-    { 2.50000000e-01, -3.46542923e-02, -3.46759961e-01, 1.02631132e-01, 3.26640741e-01,
-      -1.66663915e-01, -2.93968901e-01, 2.24291897e-01, 2.50000000e-01, -2.73300467e-01,
-      -1.96423740e-01, 3.11806253e-01, 1.35299025e-01, -3.38329500e-01, -6.89748448e-02,
-      3.51850934e-01 },
+    {  2.50000000e-01, -3.46542923e-02, -3.46759961e-01,  1.02631132e-01,
+       3.26640741e-01, -1.66663915e-01, -2.93968901e-01,  2.24291897e-01,
+       2.50000000e-01, -2.73300467e-01, -1.96423740e-01,  3.11806253e-01,
+       1.35299025e-01, -3.38329500e-01, -6.89748448e-02,  3.51850934e-01 },
 
-    { 2.50000000e-01, -1.02631132e-01, -2.93968901e-01, 2.73300467e-01, 1.35299025e-01,
-      -3.51850934e-01, 6.89748448e-02, 3.11806253e-01, -2.50000000e-01, -1.66663915e-01,
-      3.46759961e-01, -3.46542923e-02, -3.26640741e-01, 2.24291897e-01, 1.96423740e-01,
-      -3.38329500e-01 },
+    {  2.50000000e-01, -1.02631132e-01, -2.93968901e-01,  2.73300467e-01,
+       1.35299025e-01, -3.51850934e-01,  6.89748448e-02,  3.11806253e-01,
+      -2.50000000e-01, -1.66663915e-01,  3.46759961e-01, -3.46542923e-02,
+      -3.26640741e-01,  2.24291897e-01,  1.96423740e-01, -3.38329500e-01 },
 
-    { 2.50000000e-01, -1.66663915e-01, -1.96423740e-01, 3.51850934e-01, -1.35299025e-01,
-      -2.24291897e-01, 3.46759961e-01, -1.02631132e-01, -2.50000000e-01, 3.38329500e-01,
-      -6.89748448e-02, -2.73300467e-01, 3.26640741e-01, -3.46542923e-02, -2.93968901e-01,
-      3.11806253e-01 },
+    {  2.50000000e-01, -1.66663915e-01, -1.96423740e-01,  3.51850934e-01,
+      -1.35299025e-01, -2.24291897e-01,  3.46759961e-01, -1.02631132e-01,
+      -2.50000000e-01,  3.38329500e-01, -6.89748448e-02, -2.73300467e-01,
+       3.26640741e-01, -3.46542923e-02, -2.93968901e-01,  3.11806253e-01 },
 
-    { 2.50000000e-01, -2.24291897e-01, -6.89748448e-02, 3.11806253e-01, -3.26640741e-01,
-      1.02631132e-01, 1.96423740e-01, -3.51850934e-01, 2.50000000e-01, 3.46542923e-02,
-      -2.93968901e-01, 3.38329500e-01, -1.35299025e-01, -1.66663915e-01, 3.46759961e-01,
-      -2.73300467e-01 },
+    {  2.50000000e-01, -2.24291897e-01, -6.89748448e-02,  3.11806253e-01,
+      -3.26640741e-01,  1.02631132e-01,  1.96423740e-01, -3.51850934e-01,
+       2.50000000e-01,  3.46542923e-02, -2.93968901e-01,  3.38329500e-01,
+      -1.35299025e-01, -1.66663915e-01,  3.46759961e-01, -2.73300467e-01 },
 
-    { 2.50000000e-01, -2.73300467e-01, 6.89748448e-02, 1.66663915e-01, -3.26640741e-01,
-      3.38329500e-01, -1.96423740e-01, -3.46542923e-02, 2.50000000e-01, -3.51850934e-01,
-      2.93968901e-01, -1.02631132e-01, -1.35299025e-01, 3.11806253e-01, -3.46759961e-01,
-      2.24291897e-01 },
+    {  2.50000000e-01, -2.73300467e-01,  6.89748448e-02,  1.66663915e-01,
+      -3.26640741e-01,  3.38329500e-01, -1.96423740e-01, -3.46542923e-02,
+       2.50000000e-01, -3.51850934e-01,  2.93968901e-01, -1.02631132e-01,
+      -1.35299025e-01,  3.11806253e-01, -3.46759961e-01,  2.24291897e-01 },
 
-    { 2.50000000e-01, -3.11806253e-01, 1.96423740e-01, -3.46542923e-02, -1.35299025e-01,
-      2.73300467e-01, -3.46759961e-01, 3.38329500e-01, -2.50000000e-01, 1.02631132e-01,
-      6.89748448e-02, -2.24291897e-01, 3.26640741e-01, -3.51850934e-01, 2.93968901e-01,
-      -1.66663915e-01 },
+    {  2.50000000e-01, -3.11806253e-01,  1.96423740e-01, -3.46542923e-02,
+      -1.35299025e-01,  2.73300467e-01, -3.46759961e-01,  3.38329500e-01,
+      -2.50000000e-01,  1.02631132e-01,  6.89748448e-02, -2.24291897e-01,
+       3.26640741e-01, -3.51850934e-01,  2.93968901e-01, -1.66663915e-01 },
 
-    { 2.50000000e-01, -3.38329500e-01, 2.93968901e-01, -2.24291897e-01, 1.35299025e-01,
-      -3.46542923e-02, -6.89748448e-02, 1.66663915e-01, -2.50000000e-01, 3.11806253e-01,
-      -3.46759961e-01, 3.51850934e-01, -3.26640741e-01, 2.73300467e-01, -1.96423740e-01,
-      1.02631132e-01 },
+    {  2.50000000e-01, -3.38329500e-01,  2.93968901e-01, -2.24291897e-01,
+       1.35299025e-01, -3.46542923e-02, -6.89748448e-02,  1.66663915e-01,
+      -2.50000000e-01,  3.11806253e-01, -3.46759961e-01,  3.51850934e-01,
+      -3.26640741e-01,  2.73300467e-01, -1.96423740e-01,  1.02631132e-01 },
 
-    { 2.50000000e-01, -3.51850934e-01, 3.46759961e-01, -3.38329500e-01, 3.26640741e-01,
-      -3.11806253e-01, 2.93968901e-01, -2.73300467e-01, 2.50000000e-01, -2.24291897e-01,
-      1.96423740e-01, -1.66663915e-01, 1.35299025e-01, -1.02631132e-01, 6.89748448e-02,
-      -3.46542923e-02 },
+    {  2.50000000e-01, -3.51850934e-01,  3.46759961e-01, -3.38329500e-01,
+       3.26640741e-01, -3.11806253e-01,  2.93968901e-01, -2.73300467e-01,
+       2.50000000e-01, -2.24291897e-01,  1.96423740e-01, -1.66663915e-01,
+       1.35299025e-01, -1.02631132e-01,  6.89748448e-02, -3.46542923e-02 },
 
 };
 
@@ -122,7 +123,8 @@ static const float dct16_m[16][16] = {
 LC3_HOT static void dct16_forward(const float *x, float *y)
 {
     for (int i = 0, j; i < 16; i++)
-        for (y[i] = 0, j = 0; j < 16; j++) y[i] += x[j] * dct16_m[j][i];
+        for (y[i] = 0, j = 0; j < 16; j++)
+            y[i] += x[j] * dct16_m[j][i];
 }
 
 /**
@@ -132,8 +134,10 @@ LC3_HOT static void dct16_forward(const float *x, float *y)
 LC3_HOT static void dct16_inverse(const float *x, float *y)
 {
     for (int i = 0, j; i < 16; i++)
-        for (y[i] = 0, j = 0; j < 16; j++) y[i] += x[j] * dct16_m[i][j];
+        for (y[i] = 0, j = 0; j < 16; j++)
+            y[i] += x[j] * dct16_m[i][j];
 }
+
 
 /* ----------------------------------------------------------------------------
  *  Scale factors
@@ -146,8 +150,9 @@ LC3_HOT static void dct16_inverse(const float *x, float *y)
  * att             1: Attack detected  0: Otherwise
  * scf             Output 16 scale factors
  */
-LC3_HOT static void compute_scale_factors(enum lc3_dt dt, enum lc3_srate sr, const float *eb,
-                                          bool att, float *scf)
+LC3_HOT static void compute_scale_factors(
+    enum lc3_dt dt, enum lc3_srate sr,
+    const float *eb, bool att, float *scf)
 {
     /* Pre-emphasis gain table :
      * Ge[b] = 10 ^ (b * g_tilt) / 630 , b = [0..63] */
@@ -252,9 +257,10 @@ LC3_HOT static void compute_scale_factors(enum lc3_dt dt, enum lc3_srate sr, con
     int nb = LC3_MIN(lc3_band_lim[dt][sr][LC3_NUM_BANDS], LC3_NUM_BANDS);
     int n2 = LC3_NUM_BANDS - nb;
 
-    for (int i2 = 0; i2 < n2; i2++) e[2 * i2 + 0] = e[2 * i2 + 1] = eb[i2];
+    for (int i2 = 0; i2 < n2; i2++)
+        e[2*i2 + 0] = e[2*i2 + 1] = eb[i2];
 
-    memcpy(e + 2 * n2, eb + n2, (nb - n2) * sizeof(float));
+    memcpy(e + 2*n2, eb + n2, (nb - n2) * sizeof(float));
 
     /* --- Smoothing, pre-emphasis and logarithm --- */
 
@@ -263,41 +269,48 @@ LC3_HOT static void compute_scale_factors(enum lc3_dt dt, enum lc3_srate sr, con
     float e0 = e[0], e1 = e[0], e2;
     float e_sum = 0;
 
-    for (int i = 0; i < LC3_NUM_BANDS - 1;) {
-        e[i] = (e0 * 0.25f + e1 * 0.5f + (e2 = e[i + 1]) * 0.25f) * ge[i];
+    for (int i = 0; i < LC3_NUM_BANDS-1; ) {
+        e[i] = (e0 * 0.25f + e1 * 0.5f + (e2 = e[i+1]) * 0.25f) * ge[i];
         e_sum += e[i++];
 
-        e[i] = (e1 * 0.25f + e2 * 0.5f + (e0 = e[i + 1]) * 0.25f) * ge[i];
+        e[i] = (e1 * 0.25f + e2 * 0.5f + (e0 = e[i+1]) * 0.25f) * ge[i];
         e_sum += e[i++];
 
-        e[i] = (e2 * 0.25f + e0 * 0.5f + (e1 = e[i + 1]) * 0.25f) * ge[i];
+        e[i] = (e2 * 0.25f + e0 * 0.5f + (e1 = e[i+1]) * 0.25f) * ge[i];
         e_sum += e[i++];
     }
 
-    e[LC3_NUM_BANDS - 1] = (e0 * 0.25f + e1 * 0.75f) * ge[LC3_NUM_BANDS - 1];
-    e_sum += e[LC3_NUM_BANDS - 1];
+    e[LC3_NUM_BANDS-1] = (e0 * 0.25f + e1 * 0.75f) * ge[LC3_NUM_BANDS-1];
+    e_sum += e[LC3_NUM_BANDS-1];
 
     float noise_floor = fmaxf(e_sum * (1e-4f / 64), 0x1p-32f);
 
-    for (int i = 0; i < LC3_NUM_BANDS; i++) e[i] = fast_log2f(fmaxf(e[i], noise_floor)) * 0.5f;
+    for (int i = 0; i < LC3_NUM_BANDS; i++)
+        e[i] = fast_log2f(fmaxf(e[i], noise_floor)) * 0.5f;
 
     /* --- Grouping & scaling --- */
 
     float scf_sum;
 
-    scf[0] = (e[0] + e[4]) * 1.f / 12 + (e[0] + e[3]) * 2.f / 12 + (e[1] + e[2]) * 3.f / 12;
+    scf[0] = (e[0] + e[4]) * 1.f/12 +
+             (e[0] + e[3]) * 2.f/12 +
+             (e[1] + e[2]) * 3.f/12  ;
     scf_sum = scf[0];
 
     for (int i = 1; i < 15; i++) {
-        scf[i] = (e[4 * i - 1] + e[4 * i + 4]) * 1.f / 12 + (e[4 * i] + e[4 * i + 3]) * 2.f / 12 +
-                 (e[4 * i + 1] + e[4 * i + 2]) * 3.f / 12;
+        scf[i] = (e[4*i-1] + e[4*i+4]) * 1.f/12 +
+                 (e[4*i  ] + e[4*i+3]) * 2.f/12 +
+                 (e[4*i+1] + e[4*i+2]) * 3.f/12  ;
         scf_sum += scf[i];
     }
 
-    scf[15] = (e[59] + e[63]) * 1.f / 12 + (e[60] + e[63]) * 2.f / 12 + (e[61] + e[62]) * 3.f / 12;
+    scf[15] = (e[59] + e[63]) * 1.f/12 +
+              (e[60] + e[63]) * 2.f/12 +
+              (e[61] + e[62]) * 3.f/12  ;
     scf_sum += scf[15];
 
-    for (int i = 0; i < 16; i++) scf[i] = 0.85f * (scf[i] - scf_sum * 1.f / 16);
+    for (int i = 0; i < 16; i++)
+        scf[i] = 0.85f * (scf[i] - scf_sum * 1.f/16);
 
     /* --- Attack handling --- */
 
@@ -307,22 +320,23 @@ LC3_HOT static void compute_scale_factors(enum lc3_dt dt, enum lc3_srate sr, con
     float s0, s1 = scf[0], s2 = scf[1], s3 = scf[2], s4 = scf[3];
     float sn = s1 + s2;
 
-    scf[0] = (sn += s3) * 1.f / 3;
-    scf[1] = (sn += s4) * 1.f / 4;
+    scf[0] = (sn += s3) * 1.f/3;
+    scf[1] = (sn += s4) * 1.f/4;
     scf_sum = scf[0] + scf[1];
 
     for (int i = 2; i < 14; i++, sn -= s0) {
-        s0 = s1, s1 = s2, s2 = s3, s3 = s4, s4 = scf[i + 2];
-        scf[i] = (sn += s4) * 1.f / 5;
+        s0 = s1, s1 = s2, s2 = s3, s3 = s4, s4 = scf[i+2];
+        scf[i] = (sn += s4) * 1.f/5;
         scf_sum += scf[i];
     }
 
-    scf[14] = (sn)*1.f / 4;
-    scf[15] = (sn -= s1) * 1.f / 3;
+    scf[14] = (sn      ) * 1.f/4;
+    scf[15] = (sn -= s1) * 1.f/3;
     scf_sum += scf[14] + scf[15];
 
     for (int i = 0; i < 16; i++)
-        scf[i] = (dt == LC3_DT_7M5 ? 0.3f : 0.5f) * (scf[i] - scf_sum * 1.f / 16);
+        scf[i] = (dt == LC3_DT_7M5 ? 0.3f : 0.5f) *
+                 (scf[i] - scf_sum * 1.f/16);
 }
 
 /**
@@ -330,7 +344,8 @@ LC3_HOT static void compute_scale_factors(enum lc3_dt dt, enum lc3_srate sr, con
  * scf             Input 16 scale factors
  * lf/hfcb_idx     Output the low and high frequency codebooks index
  */
-LC3_HOT static void resolve_codebooks(const float *scf, int *lfcb_idx, int *hfcb_idx)
+LC3_HOT static void resolve_codebooks(
+    const float *scf, int *lfcb_idx, int *hfcb_idx)
 {
     float dlfcb_max = 0, dhfcb_max = 0;
     *lfcb_idx = *hfcb_idx = 0;
@@ -341,8 +356,8 @@ LC3_HOT static void resolve_codebooks(const float *scf, int *lfcb_idx, int *hfcb
         float dlfcb = 0, dhfcb = 0;
 
         for (int i = 0; i < 8; i++) {
-            dlfcb += (scf[i] - lfcb[i]) * (scf[i] - lfcb[i]);
-            dhfcb += (scf[8 + i] - hfcb[i]) * (scf[8 + i] - hfcb[i]);
+            dlfcb += (scf[  i] - lfcb[i]) * (scf[  i] - lfcb[i]);
+            dhfcb += (scf[8+i] - hfcb[i]) * (scf[8+i] - hfcb[i]);
         }
 
         if (icb == 0 || dlfcb < dlfcb_max)
@@ -361,11 +376,13 @@ LC3_HOT static void resolve_codebooks(const float *scf, int *lfcb_idx, int *hfcb
 LC3_HOT static void normalize(const int *c, float *cn)
 {
     int c2_sum = 0;
-    for (int i = 0; i < 16; i++) c2_sum += c[i] * c[i];
+    for (int i = 0; i < 16; i++)
+        c2_sum += c[i] * c[i];
 
     float c_norm = 1.f / sqrtf(c2_sum);
 
-    for (int i = 0; i < 16; i++) cn[i] = c[i] * c_norm;
+    for (int i = 0; i < 16; i++)
+        cn[i] = c[i] * c_norm;
 }
 
 /**
@@ -374,24 +391,24 @@ LC3_HOT static void normalize(const int *c, float *cn)
  * start, end      Current number of pulses, limit to reach
  * corr, energy    Correlation (x,y) and y energy, updated at output
  */
-LC3_HOT static void add_pulse(const float *x, int *y, int n, int start, int end, float *corr,
-                              float *energy)
+LC3_HOT static void add_pulse(const float *x, int *y, int n,
+    int start, int end, float *corr, float *energy)
 {
     for (int k = start; k < end; k++) {
         float best_c2 = (*corr + x[0]) * (*corr + x[0]);
-        float best_e = *energy + 2 * y[0] + 1;
+        float best_e = *energy + 2*y[0] + 1;
         int nbest = 0;
 
         for (int i = 1; i < n; i++) {
             float c2 = (*corr + x[i]) * (*corr + x[i]);
-            float e = *energy + 2 * y[i] + 1;
+            float e  = *energy + 2*y[i] + 1;
 
             if (c2 * best_e > e * best_c2)
                 best_c2 = c2, best_e = e, nbest = i;
         }
 
         *corr += x[nbest];
-        *energy += 2 * y[nbest] + 1;
+        *energy += 2*y[nbest] + 1;
         y[nbest]++;
     }
 }
@@ -403,8 +420,8 @@ LC3_HOT static void add_pulse(const float *x, int *y, int n, int start, int end,
  * c, cn           Output 4 pulse configurations candidates, normalized
  * shape/gain_idx  Output selected shape/gain indexes
  */
-LC3_HOT static void quantize(const float *scf, int lfcb_idx, int hfcb_idx, int (*c)[16],
-                             float (*cn)[16], int *shape_idx, int *gain_idx)
+LC3_HOT static void quantize(const float *scf, int lfcb_idx, int hfcb_idx,
+    int (*c)[16], float (*cn)[16], int *shape_idx, int *gain_idx)
 {
     /* --- Residual --- */
 
@@ -413,8 +430,8 @@ LC3_HOT static void quantize(const float *scf, int lfcb_idx, int hfcb_idx, int (
     float r[16], x[16];
 
     for (int i = 0; i < 8; i++) {
-        r[i] = scf[i] - lfcb[i];
-        r[8 + i] = scf[8 + i] - hfcb[i];
+        r[  i] = scf[  i] - lfcb[i];
+        r[8+i] = scf[8+i] - hfcb[i];
     }
 
     dct16_forward(r, x);
@@ -438,8 +455,8 @@ LC3_HOT static void quantize(const float *scf, int lfcb_idx, int hfcb_idx, int (
     for (int i = 0; i < 16; i++) {
         c[3][i] = floorf(xm[i] * proj_factor);
         npulses += c[3][i];
-        corr += c[3][i] * xm[i];
-        energy += c[3][i] * c[3][i];
+        corr    += c[3][i] * xm[i];
+        energy  += c[3][i] * c[3][i];
     }
 
     add_pulse(xm, c[3], 16, npulses, 6, &corr, &energy);
@@ -463,8 +480,8 @@ LC3_HOT static void quantize(const float *scf, int lfcb_idx, int hfcb_idx, int (
     for (int i = 10; i < 16; i++) {
         c[1][i] = 0;
         npulses -= c[2][i];
-        corr -= c[2][i] * xm[i];
-        energy -= c[2][i] * c[2][i];
+        corr    -= c[2][i] * xm[i];
+        energy  -= c[2][i] * c[2][i];
     }
 
     add_pulse(xm, c[1], 10, npulses, 10, &corr, &energy);
@@ -480,9 +497,11 @@ LC3_HOT static void quantize(const float *scf, int lfcb_idx, int hfcb_idx, int (
     /* --- Add sign and unit energy normalize --- */
 
     for (int j = 0; j < 16; j++)
-        for (int i = 0; i < 4; i++) c[i][j] = x[j] < 0 ? -c[i][j] : c[i][j];
+        for (int i = 0; i < 4; i++)
+            c[i][j] = x[j] < 0 ? -c[i][j] : c[i][j];
 
-    for (int i = 0; i < 4; i++) normalize(c[i], cn[i]);
+    for (int i = 0; i < 4; i++)
+        normalize(c[i], cn[i]);
 
     /* --- Determe shape & gain index ---
      * Search the Mean Square Error, within (shape, gain) combinations */
@@ -499,10 +518,12 @@ LC3_HOT static void quantize(const float *scf, int lfcb_idx, int hfcb_idx, int (
             float g = cgains->v[ig];
 
             float mse = 0;
-            for (int i = 0; i < 16; i++) mse += (x[i] - g * cn[ic][i]) * (x[i] - g * cn[ic][i]);
+            for (int i = 0; i < 16; i++)
+                mse += (x[i] - g * cn[ic][i]) * (x[i] - g * cn[ic][i]);
 
             if (mse < cmse_min) {
-                cgain_idx = ig, cmse_min = mse;
+                cgain_idx = ig,
+                cmse_min = mse;
             }
         }
 
@@ -520,8 +541,8 @@ LC3_HOT static void quantize(const float *scf, int lfcb_idx, int hfcb_idx, int (
  * shape/gain      Selected shape/gain indexes
  * scf             Return unquantized scale factors
  */
-LC3_HOT static void unquantize(int lfcb_idx, int hfcb_idx, const float *c, int shape, int gain,
-                               float *scf)
+LC3_HOT static void unquantize(int lfcb_idx, int hfcb_idx,
+    const float *c, int shape, int gain, float *scf)
 {
     const float *lfcb = lc3_sns_lfcb[lfcb_idx];
     const float *hfcb = lc3_sns_hfcb[hfcb_idx];
@@ -529,9 +550,11 @@ LC3_HOT static void unquantize(int lfcb_idx, int hfcb_idx, const float *c, int s
 
     dct16_inverse(c, scf);
 
-    for (int i = 0; i < 8; i++) scf[i] = lfcb[i] + g * scf[i];
+    for (int i = 0; i < 8; i++)
+        scf[i] = lfcb[i] + g * scf[i];
 
-    for (int i = 8; i < 16; i++) scf[i] = hfcb[i - 8] + g * scf[i];
+    for (int i = 8; i < 16; i++)
+        scf[i] = hfcb[i-8] + g * scf[i];
 }
 
 /**
@@ -545,7 +568,7 @@ static void enum_mvpq(const int *c, int n, int *idx, bool *ls)
 
     /* --- Scan for 1st significant coeff --- */
 
-    for (i = 0, c += n; (ci = *(--c)) == 0; i++) {}
+    for (i = 0, c += n; (ci = *(--c)) == 0 ; i++);
 
     *idx = 0;
     *ls = ci < 0;
@@ -553,6 +576,7 @@ static void enum_mvpq(const int *c, int n, int *idx, bool *ls)
     /* --- Scan remaining coefficients --- */
 
     for (i++, j = LC3_ABS(ci); i < n; i++, j += LC3_ABS(ci)) {
+
         if ((ci = *(--c)) != 0) {
             *idx = (*idx << 1) | *ls;
             *ls = ci < 0;
@@ -574,10 +598,11 @@ static void deenum_mvpq(int idx, bool ls, int npulses, int *c, int n)
 
     /* --- Scan for coefficients --- */
 
-    for (i = n - 1; i >= 0 && idx; i--) {
+    for (i = n-1; i >= 0 && idx; i--) {
+
         int ci = 0;
 
-        for (ci = 0; idx < lc3_sns_mpvq_offsets[i][npulses - ci]; ci++) {}
+        for (ci = 0; idx < lc3_sns_mpvq_offsets[i][npulses - ci]; ci++);
         idx -= lc3_sns_mpvq_offsets[i][npulses - ci];
 
         *(c++) = ls ? -ci : ci;
@@ -595,7 +620,8 @@ static void deenum_mvpq(int idx, bool ls, int npulses, int *c, int n)
     if (i-- >= 0)
         *(c++) = ls ? -ci : ci;
 
-    while (i-- >= 0) *(c++) = 0;
+    while (i-- >= 0)
+        *(c++) = 0;
 }
 
 /**
@@ -605,7 +631,8 @@ static void deenum_mvpq(int idx, bool ls, int npulses, int *c, int n)
  * idx_a, ls_a     Return enumeration set A
  * idx_b, ls_b     Return enumeration set B (shape = 0)
  */
-static void enumerate(int shape, const int *c, int *idx_a, bool *ls_a, int *idx_b, bool *ls_b)
+static void enumerate(int shape, const int *c,
+    int *idx_a, bool *ls_a, int *idx_b, bool *ls_b)
 {
     enum_mvpq(c, shape < 2 ? 10 : 16, idx_a, ls_a);
 
@@ -620,9 +647,10 @@ static void enumerate(int shape, const int *c, int *idx_a, bool *ls_a, int *idx_
  * idx_b, ls_b     enumeration set B (shape = 0)
  * c               Return pulse configuration
  */
-static void deenumerate(int shape, int idx_a, bool ls_a, int idx_b, bool ls_b, int *c)
+static void deenumerate(int shape,
+    int idx_a, bool ls_a, int idx_b, bool ls_b, int *c)
 {
-    int npulses_a = (const int[]){ 10, 10, 8, 6 }[shape];
+    int npulses_a = (const int []){ 10, 10, 8, 6 }[shape];
 
     deenum_mvpq(idx_a, ls_a, npulses_a, c, shape < 2 ? 10 : 16);
 
@@ -631,6 +659,7 @@ static void deenumerate(int shape, int idx_a, bool ls_a, int idx_b, bool ls_b, i
     else if (shape == 1)
         memset(c + 10, 0, 6 * sizeof(*c));
 }
+
 
 /* ----------------------------------------------------------------------------
  *  Filtering
@@ -646,8 +675,8 @@ static void deenumerate(int shape, int idx_a, bool ls_a, int idx_b, bool ls_b, i
  *
  * `x` and `y` can be the same buffer
  */
-LC3_HOT static void spectral_shaping(enum lc3_dt dt, enum lc3_srate sr, const float *scf_q,
-                                     bool inv, const float *x, float *y)
+LC3_HOT static void spectral_shaping(enum lc3_dt dt, enum lc3_srate sr,
+    const float *scf_q, bool inv, const float *x, float *y)
 {
     /* --- Interpolate scale factors --- */
 
@@ -656,11 +685,11 @@ LC3_HOT static void spectral_shaping(enum lc3_dt dt, enum lc3_srate sr, const fl
 
     scf[0] = scf[1] = s1;
     for (int i = 0; i < 15; i++) {
-        s0 = s1, s1 = inv ? -scf_q[i + 1] : scf_q[i + 1];
-        scf[4 * i + 2] = s0 + 0.125f * (s1 - s0);
-        scf[4 * i + 3] = s0 + 0.375f * (s1 - s0);
-        scf[4 * i + 4] = s0 + 0.625f * (s1 - s0);
-        scf[4 * i + 5] = s0 + 0.875f * (s1 - s0);
+        s0 = s1, s1 = inv ? -scf_q[i+1] : scf_q[i+1];
+        scf[4*i+2] = s0 + 0.125f * (s1 - s0);
+        scf[4*i+3] = s0 + 0.375f * (s1 - s0);
+        scf[4*i+4] = s0 + 0.625f * (s1 - s0);
+        scf[4*i+5] = s0 + 0.875f * (s1 - s0);
     }
     scf[62] = s1 + 0.125f * (s1 - s0);
     scf[63] = s1 + 0.375f * (s1 - s0);
@@ -668,10 +697,11 @@ LC3_HOT static void spectral_shaping(enum lc3_dt dt, enum lc3_srate sr, const fl
     int nb = LC3_MIN(lc3_band_lim[dt][sr][LC3_NUM_BANDS], LC3_NUM_BANDS);
     int n2 = LC3_NUM_BANDS - nb;
 
-    for (int i2 = 0; i2 < n2; i2++) scf[i2] = 0.5f * (scf[2 * i2] + scf[2 * i2 + 1]);
+    for (int i2 = 0; i2 < n2; i2++)
+        scf[i2] = 0.5f * (scf[2*i2] + scf[2*i2+1]);
 
     if (n2 > 0)
-        memmove(scf + n2, scf + 2 * n2, (nb - n2) * sizeof(float));
+        memmove(scf + n2, scf + 2*n2, (nb - n2) * sizeof(float));
 
     /* --- Spectral shaping --- */
 
@@ -680,9 +710,11 @@ LC3_HOT static void spectral_shaping(enum lc3_dt dt, enum lc3_srate sr, const fl
     for (int i = 0, ib = 0; ib < nb; ib++) {
         float g_sns = fast_exp2f(-scf[ib]);
 
-        for (; i < lim[ib + 1]; i++) y[i] = x[i] * g_sns;
+        for ( ; i < lim[ib+1]; i++)
+            y[i] = x[i] * g_sns;
     }
 }
+
 
 /* ----------------------------------------------------------------------------
  *  Interface
@@ -691,8 +723,9 @@ LC3_HOT static void spectral_shaping(enum lc3_dt dt, enum lc3_srate sr, const fl
 /**
  * SNS analysis
  */
-void lc3_sns_analyze(enum lc3_dt dt, enum lc3_srate sr, const float *eb, bool att,
-                     struct lc3_sns_data *data, const float *x, float *y)
+void lc3_sns_analyze(enum lc3_dt dt, enum lc3_srate sr,
+    const float *eb, bool att, struct lc3_sns_data *data,
+    const float *x, float *y)
 {
     /* Processing steps :
      * - Determine 16 scale factors from bands energy estimation
@@ -708,11 +741,14 @@ void lc3_sns_analyze(enum lc3_dt dt, enum lc3_srate sr, const float *eb, bool at
 
     resolve_codebooks(scf, &data->lfcb, &data->hfcb);
 
-    quantize(scf, data->lfcb, data->hfcb, c, cn, &data->shape, &data->gain);
+    quantize(scf, data->lfcb, data->hfcb,
+        c, cn, &data->shape, &data->gain);
 
-    unquantize(data->lfcb, data->hfcb, cn[data->shape], data->shape, data->gain, scf);
+    unquantize(data->lfcb, data->hfcb,
+        cn[data->shape], data->shape, data->gain, scf);
 
-    enumerate(data->shape, c[data->shape], &data->idx_a, &data->ls_a, &data->idx_b, &data->ls_b);
+    enumerate(data->shape, c[data->shape],
+        &data->idx_a, &data->ls_a, &data->idx_b, &data->ls_b);
 
     spectral_shaping(dt, sr, scf, false, x, y);
 }
@@ -720,13 +756,14 @@ void lc3_sns_analyze(enum lc3_dt dt, enum lc3_srate sr, const float *eb, bool at
 /**
  * SNS synthesis
  */
-void lc3_sns_synthesize(enum lc3_dt dt, enum lc3_srate sr, const lc3_sns_data_t *data,
-                        const float *x, float *y)
+void lc3_sns_synthesize(enum lc3_dt dt, enum lc3_srate sr,
+    const lc3_sns_data_t *data, const float *x, float *y)
 {
     float scf[16], cn[16];
     int c[16];
 
-    deenumerate(data->shape, data->idx_a, data->ls_a, data->idx_b, data->ls_b, c);
+    deenumerate(data->shape,
+        data->idx_a, data->ls_a, data->idx_b, data->ls_b, c);
 
     normalize(c, cn);
 
@@ -764,7 +801,8 @@ void lc3_sns_put_data(lc3_bits_t *bits, const struct lc3_sns_data *data)
         const int size_a = 2390004;
         int submode = data->shape & 1;
 
-        int mux_high = submode == 0 ? 2 * (data->idx_b + 1) + data->ls_b : data->gain & 1;
+        int mux_high = submode == 0 ?
+            2 * (data->idx_b + 1) + data->ls_b : data->gain & 1;
         int mux_code = mux_high * size_a + data->idx_a;
 
         lc3_put_bits(bits, data->gain >> submode, 1);
@@ -775,7 +813,8 @@ void lc3_sns_put_data(lc3_bits_t *bits, const struct lc3_sns_data *data)
         const int size_a = 15158272;
         int submode = data->shape & 1;
 
-        int mux_code = submode == 0 ? data->idx_a : size_a + 2 * data->idx_a + (data->gain & 1);
+        int mux_code = submode == 0 ?
+            data->idx_a : size_a + 2 * data->idx_a + (data->gain & 1);
 
         lc3_put_bits(bits, data->gain >> submode, 2);
         lc3_put_bits(bits, data->ls_a, 1);
@@ -790,7 +829,10 @@ int lc3_sns_get_data(lc3_bits_t *bits, struct lc3_sns_data *data)
 {
     /* --- Codebooks --- */
 
-    *data = (struct lc3_sns_data){ .lfcb = lc3_get_bits(bits, 5), .hfcb = lc3_get_bits(bits, 5) };
+    *data = (struct lc3_sns_data){
+        .lfcb = lc3_get_bits(bits, 5),
+        .hfcb = lc3_get_bits(bits, 5)
+    };
 
     /* --- Shape, gain and vectors --- */
 
@@ -813,7 +855,7 @@ int lc3_sns_get_data(lc3_bits_t *bits, struct lc3_sns_data *data)
 
         if (data->shape == 0) {
             data->idx_b = (mux_code - 2) / 2;
-            data->ls_b = (mux_code - 2) % 2;
+            data->ls_b  = (mux_code - 2) % 2;
         } else {
             data->gain = (data->gain << 1) + (mux_code % 2);
         }

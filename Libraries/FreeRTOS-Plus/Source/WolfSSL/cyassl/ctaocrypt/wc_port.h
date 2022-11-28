@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifndef CTAO_CRYPT_PORT_H
 #define CTAO_CRYPT_PORT_H
 
@@ -27,3 +28,4 @@
 #define CyaSSL_Mutex wolfSSL_Mutex
 
 #endif /* CTAO_CRYPT_PORT_H */
+

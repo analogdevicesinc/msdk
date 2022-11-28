@@ -29,19 +29,21 @@
 #include <cyassl/ctaocrypt/dsa.h>
 #include <cyassl/ctaocrypt/sha.h>
 #include <cyassl/ctaocrypt/md5.h>
-#include <cyassl/ctaocrypt/asn_public.h> /* public interface */
+#include <cyassl/ctaocrypt/asn_public.h>   /* public interface */
 #ifdef HAVE_ECC
-#include <cyassl/ctaocrypt/ecc.h>
+    #include <cyassl/ctaocrypt/ecc.h>
 #endif
+
 
 #include <wolfssl/wolfcrypt/asn.h>
 
 #ifndef WOLFSSL_PEMCERT_TODER_DEFINED
 #ifndef NO_FILESYSTEM
-#define CyaSSL_PemCertToDer wolfSSL_PemCertToDer
+    #define CyaSSL_PemCertToDer wolfSSL_PemCertToDer
 #endif
 #endif
 
 #endif /* CTAO_CRYPT_ASN_H */
 
 #endif /* !NO_ASN */
+

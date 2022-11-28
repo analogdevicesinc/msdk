@@ -31,7 +31,7 @@
  *
  *
  ******************************************************************************/
-
+ 
 #ifndef _ENUMERATE_H_
 #define _ENUMERATE_H_
 
@@ -44,24 +44,24 @@
 
 /// User can register callbacks for various control endpoint requests
 typedef enum {
-    ENUM_CLASS_REQ,
-    ENUM_VENDOR_REQ,
-    ENUM_SETCONFIG,
-    ENUM_SETINTERFACE,
-    ENUM_GETINTERFACE,
-    ENUM_SETFEATURE,
-    ENUM_CLRFEATURE,
-    ENUM_NUM_CALLBACKS
+  ENUM_CLASS_REQ,
+  ENUM_VENDOR_REQ,
+  ENUM_SETCONFIG,
+  ENUM_SETINTERFACE,
+  ENUM_GETINTERFACE,
+  ENUM_SETFEATURE,
+  ENUM_CLRFEATURE,
+  ENUM_NUM_CALLBACKS
 } enum_callback_t;
 
 /// User also can register device, config, and string descriptors
 typedef enum {
-    ENUM_DESC_DEVICE = 0, /// index qualifier ignored
-    ENUM_DESC_CONFIG = 1, /// index qualifier ignored
-    ENUM_DESC_OTHER = 2, /// other speed qualifier
-    ENUM_DESC_QUAL = 3, /// device qualifier
-    ENUM_DESC_STRING = 4, /// index is used to futher qualify string descriptor
-    ENUM_NUM_DESCRIPTORS
+  ENUM_DESC_DEVICE    = 0,  /// index qualifier ignored
+  ENUM_DESC_CONFIG    = 1,  /// index qualifier ignored
+  ENUM_DESC_OTHER     = 2,  /// other speed qualifier
+  ENUM_DESC_QUAL      = 3,  /// device qualifier
+  ENUM_DESC_STRING    = 4,  /// index is used to futher qualify string descriptor
+  ENUM_NUM_DESCRIPTORS
 } enum_descriptor_t;
 
 /**
@@ -89,8 +89,7 @@ int enum_register_descriptor(enum_descriptor_t type, const uint8_t *desc, uint8_
  *  \param    cbdata   data to be passed to the callback function
  *  \return   Zero (0) for success, non-zero for failure
  */
-int enum_register_callback(enum_callback_t type, int (*func)(MXC_USB_SetupPkt *sup, void *cbdata),
-                           void *cbdata);
+int enum_register_callback(enum_callback_t type, int (*func)(MXC_USB_SetupPkt *sup, void *cbdata), void *cbdata);
 
 /**
  *  \brief    Query an enumeration event callback
@@ -100,8 +99,7 @@ int enum_register_callback(enum_callback_t type, int (*func)(MXC_USB_SetupPkt *s
  *  \param    cbdata   data to be passed to the callback function
  *  \return   Zero (0) for success, non-zero for failure
  */
-int enum_query_callback(enum_callback_t type, int (**func)(MXC_USB_SetupPkt *indata, void *cbdata),
-                        void **cbdata);
+int enum_query_callback(enum_callback_t type, int (**func)(MXC_USB_SetupPkt *indata, void *cbdata), void **cbdata);
 
 /**
  *  \brief    Register a handler for device class descriptors
@@ -111,8 +109,7 @@ int enum_query_callback(enum_callback_t type, int (**func)(MXC_USB_SetupPkt *ind
  *  \param    func    function to be called
  *  \return   Zero (0) for success, non-zero for failure
  */
-int enum_register_getdescriptor(void (*func)(MXC_USB_SetupPkt *sup, const uint8_t **desc,
-                                             uint16_t *desclen));
+int enum_register_getdescriptor(void (*func)(MXC_USB_SetupPkt *sup, const uint8_t **desc, uint16_t *desclen));
 
 /**
  *  \brief    Query the callback for device class descriptors
@@ -120,8 +117,7 @@ int enum_register_getdescriptor(void (*func)(MXC_USB_SetupPkt *sup, const uint8_
  *  \param    func    function to be called
  *  \return   Zero (0) for success, non-zero for failure
  */
-int enum_query_getdescriptor(void (**func)(MXC_USB_SetupPkt *sup, const uint8_t **desc,
-                                           uint16_t *desclen));
+int enum_query_getdescriptor(void (**func)(MXC_USB_SetupPkt *sup, const uint8_t **desc, uint16_t *desclen));
 
 /**
  *  \brief    Gets the current configuration value.

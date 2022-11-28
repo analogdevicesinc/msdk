@@ -29,6 +29,7 @@
 #include "common.h"
 #include "bits.h"
 
+
 /**
  * Bitstream data
  */
@@ -39,6 +40,7 @@ typedef struct lc3_tns_data {
     int rc_order[2];
     int rc[2][8];
 } lc3_tns_data_t;
+
 
 /* ----------------------------------------------------------------------------
  *  Encoding
@@ -52,8 +54,8 @@ typedef struct lc3_tns_data {
  * data            Return bitstream data
  * x               Spectral coefficients, filtered as output
  */
-void lc3_tns_analyze(enum lc3_dt dt, enum lc3_bandwidth bw, bool nn_flag, int nbytes,
-                     lc3_tns_data_t *data, float *x);
+void lc3_tns_analyze(enum lc3_dt dt, enum lc3_bandwidth bw,
+    bool nn_flag, int nbytes, lc3_tns_data_t *data, float *x);
 
 /**
  * Return number of bits coding the data
@@ -69,6 +71,7 @@ int lc3_tns_get_nbits(const lc3_tns_data_t *data);
  */
 void lc3_tns_put_data(lc3_bits_t *bits, const lc3_tns_data_t *data);
 
+
 /* ----------------------------------------------------------------------------
  *  Decoding
  * -------------------------------------------------------------------------- */
@@ -80,8 +83,8 @@ void lc3_tns_put_data(lc3_bits_t *bits, const lc3_tns_data_t *data);
  * nbytes          Size in bytes of the frame
  * data            Bitstream data
  */
-void lc3_tns_get_data(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_bandwidth bw, int nbytes,
-                      lc3_tns_data_t *data);
+void lc3_tns_get_data(lc3_bits_t *bits,
+    enum lc3_dt dt, enum lc3_bandwidth bw, int nbytes, lc3_tns_data_t *data);
 
 /**
  * TNS synthesis
@@ -89,7 +92,8 @@ void lc3_tns_get_data(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_bandwidth bw, i
  * data            Bitstream data
  * x               Spectral coefficients, filtered as output
  */
-void lc3_tns_synthesize(enum lc3_dt dt, enum lc3_bandwidth bw, const lc3_tns_data_t *data,
-                        float *x);
+void lc3_tns_synthesize(enum lc3_dt dt, enum lc3_bandwidth bw,
+    const lc3_tns_data_t *data, float *x);
+
 
 #endif /* __LC3_TNS_H */

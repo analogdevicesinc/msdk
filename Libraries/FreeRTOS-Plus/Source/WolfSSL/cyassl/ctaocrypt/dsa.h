@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifndef NO_DSA
 
 #ifndef CTAO_CRYPT_DSA_H
@@ -28,3 +29,4 @@
 
 #endif /* CTAO_CRYPT_DSA_H */
 #endif /* NO_DSA */
+

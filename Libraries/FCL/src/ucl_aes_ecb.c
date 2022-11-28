@@ -43,15 +43,18 @@ int ucl_aes_ecb(u8 *dst, u8 *src, u32 len, u8 *key, u32 keylen, int mode)
 {
     ucl_aes_ctx_t ctx;
     int ret;
-    if ((src == NULL) || (key == NULL))
+    if ((src == NULL) ||
+        (key == NULL))
         return UCL_INVALID_INPUT;
     if ((dst == NULL))
         return UCL_INVALID_OUTPUT;
     if ((len % UCL_AES_BLOCKSIZE) != 0)
         return UCL_INVALID_ARG;
-    if ((mode != UCL_CIPHER_DECRYPT) && (mode != UCL_CIPHER_ENCRYPT))
+    if ((mode != UCL_CIPHER_DECRYPT) &&
+        (mode != UCL_CIPHER_ENCRYPT))
         return UCL_INVALID_MODE;
-    if ((keylen != UCL_AES_KEYLEN_128) && (keylen != UCL_AES_KEYLEN_192) &&
+    if ((keylen != UCL_AES_KEYLEN_128) &&
+        (keylen != UCL_AES_KEYLEN_192) &&
         (keylen != UCL_AES_KEYLEN_256))
         return UCL_INVALID_ARG;
     ucl_aes_ecb_init(&ctx, key, keylen, mode);
@@ -62,28 +65,31 @@ int ucl_aes_ecb(u8 *dst, u8 *src, u32 len, u8 *key, u32 keylen, int mode)
 
 int ucl_aes_ecb_init(ucl_aes_ctx_t *ctx, u8 *key, u32 keylen, int mode)
 {
-    int i;
-    if (ctx == NULL)
-        return UCL_INVALID_OUTPUT;
-    if (key == NULL)
-        return UCL_INVALID_INPUT;
-    if ((keylen != UCL_AES_KEYLEN_128) && (keylen != UCL_AES_KEYLEN_192) &&
-        (keylen != UCL_AES_KEYLEN_256))
-        return UCL_INVALID_ARG;
-    ctx->mode = mode;
-    for (i = 0; i < (int)keylen; i++) ctx->origin_key[i] = key[i];
-    ctx->origin_keylen = (int)keylen;
-    if (mode == UCL_CIPHER_ENCRYPT)
-        aes_set_ekey(&ctx->key, key, keylen);
-    else if (mode == UCL_CIPHER_DECRYPT)
-        aes_set_dkey(&ctx->key, key, keylen);
-    else
-        return UCL_INVALID_MODE;
-    return UCL_OK;
+  int i;
+  if (ctx == NULL)
+    return UCL_INVALID_OUTPUT;
+  if (key == NULL)
+    return UCL_INVALID_INPUT;
+  if ((keylen != UCL_AES_KEYLEN_128) &&
+      (keylen != UCL_AES_KEYLEN_192) &&
+      (keylen != UCL_AES_KEYLEN_256))
+    return UCL_INVALID_ARG;
+  ctx->mode = mode;
+  for(i=0;i<(int)keylen;i++)
+    ctx->origin_key[i]=key[i];
+  ctx->origin_keylen=(int)keylen;
+  if (mode == UCL_CIPHER_ENCRYPT)
+    aes_set_ekey(&ctx->key, key, keylen);
+  else if (mode == UCL_CIPHER_DECRYPT)
+    aes_set_dkey(&ctx->key, key, keylen);
+  else
+    return UCL_INVALID_MODE;
+  return UCL_OK;
 }
 
 int ucl_aes_ecb_core(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len)
 {
+
     u8 *data_end;
     int ret;
     if ((ctx == NULL) || (dst == NULL))
@@ -93,19 +99,25 @@ int ucl_aes_ecb_core(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len)
     if ((len % UCL_AES_BLOCKSIZE) != 0)
         return UCL_INVALID_ARG;
     data_end = len + src;
-    if (ctx->mode == UCL_CIPHER_ENCRYPT) {
-        while (src != data_end) {
-            aes_encrypt(dst, src, &ctx->key);
-            src += UCL_AES_BLOCKSIZE;
-            dst += UCL_AES_BLOCKSIZE;
-        }
-    } else if (ctx->mode == UCL_CIPHER_DECRYPT) {
-        while (src != data_end) {
-            aes_decrypt(dst, src, &ctx->key);
-            src += UCL_AES_BLOCKSIZE;
-            dst += UCL_AES_BLOCKSIZE;
-        }
-    }
+    if (ctx->mode == UCL_CIPHER_ENCRYPT)
+      {
+        while (src != data_end)
+	  {
+	    aes_encrypt(dst, src, &ctx->key);
+	    src += UCL_AES_BLOCKSIZE;
+	    dst += UCL_AES_BLOCKSIZE;
+	  }
+      }
+    else
+      if (ctx->mode == UCL_CIPHER_DECRYPT)
+	{
+	  while (src != data_end)
+	    {
+	      aes_decrypt(dst, src, &ctx->key);
+	      src += UCL_AES_BLOCKSIZE;
+	      dst += UCL_AES_BLOCKSIZE;
+	    }
+	}
     return UCL_OK;
 }
 

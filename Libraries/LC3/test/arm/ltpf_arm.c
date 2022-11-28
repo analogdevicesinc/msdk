@@ -28,21 +28,18 @@
 #include <ltpf.c>
 
 void lc3_put_bits_generic(lc3_bits_t *a, unsigned b, int c)
-{
-    (void)a, (void)b, (void)c;
-}
+{ (void)a, (void)b, (void)c; }
 
 unsigned lc3_get_bits_generic(struct lc3_bits *a, int b)
-{
-    return (void)a, (void)b, 0;
-}
+{ return (void)a, (void)b, 0; }
 
 /* -------------------------------------------------------------------------- */
 
 static int check_resampler()
 {
-    int16_t __x[60 + 480], *x = __x + 60;
-    for (int i = -60; i < 480; i++) x[i] = rand() & 0xffff;
+    int16_t __x[60+480], *x = __x + 60;
+    for (int i = -60; i < 480; i++)
+        x[i] = rand() & 0xffff;
 
     struct lc3_ltpf_hp50_state hp50 = { 0 }, hp50_arm = { 0 };
     int16_t y[128], y_arm[128];
@@ -85,18 +82,18 @@ static int check_correlate()
         b[i] = rand() & 0xffff;
     }
 
-    correlate(a, b + 200, 128, y, 100);
-    arm_correlate(a, b + 200, 128, y_arm, 100);
+    correlate(a, b+200, 128, y, 100);
+    arm_correlate(a, b+200, 128, y_arm, 100);
     if (memcmp(y, y_arm, 100 * sizeof(*y)) != 0)
         return -1;
 
-    correlate(a, b + 199, 128, y, 99);
-    arm_correlate(a, b + 199, 128, y_arm, 99);
+    correlate(a, b+199, 128, y, 99);
+    arm_correlate(a, b+199, 128, y_arm, 99);
     if (memcmp(y, y_arm, 99 * sizeof(*y)) != 0)
         return -1;
 
-    correlate(a, b + 199, 128, y, 100);
-    arm_correlate(a, b + 199, 128, y_arm, 100);
+    correlate(a, b+199, 128, y, 100);
+    arm_correlate(a, b+199, 128, y_arm, 100);
     if (memcmp(y, y_arm, 100 * sizeof(*y)) != 0)
         return -1;
 

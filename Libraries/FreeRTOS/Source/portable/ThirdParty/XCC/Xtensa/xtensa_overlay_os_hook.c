@@ -36,6 +36,7 @@
  */
 static SemaphoreHandle_t xt_overlay_mutex;
 
+
 /* This function should be overridden to provide OS specific init such
  * as the creation of a mutex lock that can be used for overlay locking.
  * Typically this mutex would be set up with priority inheritance. See
@@ -49,6 +50,7 @@ void xt_overlay_init_os(void)
     xt_overlay_mutex = xSemaphoreCreateMutex();
 }
 
+
 /* This function locks access to shared overlay resources, typically
  * by acquiring a mutex.
  */
@@ -56,6 +58,7 @@ void xt_overlay_lock(void)
 {
     xSemaphoreTake(xt_overlay_mutex, 0);
 }
+
 
 /* This function releases access to shared overlay resources, typically
  * by unlocking a mutex.

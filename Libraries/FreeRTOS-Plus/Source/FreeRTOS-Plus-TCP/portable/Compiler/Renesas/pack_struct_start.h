@@ -30,8 +30,24 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  *****************************************************************************/
 
+
 #ifdef _SH
-#ifdef __RENESAS__
-#pragma pack 1
+	#ifdef __RENESAS__
+		#pragma pack 1
+	#endif
 #endif
-#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

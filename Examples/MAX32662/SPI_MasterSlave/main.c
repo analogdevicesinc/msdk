@@ -82,12 +82,12 @@ int main(void)
     mxc_spi_req_t master_req;
     mxc_spi_pins_t spi_pins;
 
-    spi_pins.map_a = true; //Initialize pin structure
-    spi_pins.clock = true;
-    spi_pins.ss0 = true;
-    spi_pins.miso = true;
-    spi_pins.mosi = true;
-    spi_pins.vssel = false;
+    spi_pins.map_a = true;	//Initialize pin structure
+	spi_pins.clock = true;
+	spi_pins.ss0 = true;
+	spi_pins.miso = true;
+	spi_pins.mosi = true;
+	spi_pins.vssel = false;
 
     printf("\n************************ SPI Master-Slave Example ************************\n");
     printf("This example sends data between two SPI peripherals in the MAX32662.\n");
@@ -109,8 +109,7 @@ int main(void)
     memset(slave_rx, 0x0, DATA_LEN * sizeof(uint8_t));
 
     /***** Configure master *****/
-    if (MXC_SPI_Init(SPI_MASTER, 1, 0, 1, (1 << SPI_MASTER_SSIDX), SPI_SPEED, spi_pins) !=
-        E_NO_ERROR) {
+    if (MXC_SPI_Init(SPI_MASTER, 1, 0, 1, (1 << SPI_MASTER_SSIDX), SPI_SPEED, spi_pins) != E_NO_ERROR) {
         printf("\nSPI MASTER INITIALIZATION ERROR\n");
         while (1) {}
     }
@@ -119,8 +118,7 @@ int main(void)
     MXC_SPI_SetWidth(SPI_MASTER, SPI_WIDTH_STANDARD);
 
     /***** Configure slave *****/
-    if (MXC_SPI_Init(SPI_SLAVE, 0, 0, 1, (1 << SPI_SLAVE_SSIDX), SPI_SPEED, spi_pins) !=
-        E_NO_ERROR) {
+    if (MXC_SPI_Init(SPI_SLAVE, 0, 0, 1, (1 << SPI_SLAVE_SSIDX), SPI_SPEED, spi_pins) != E_NO_ERROR) {
         printf("\nSPI SLAVE INITIALIZATION ERROR\n");
         while (1) {}
     }
