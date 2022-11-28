@@ -19,7 +19,7 @@
           <field>
             <name>SBUSARB</name>
             <description>System bus abritration scheme. These bits are used to select between Fixed-burst abritration and Round-Robin scheme. The Round-Robin scheme is selected by default. These bits are reset by the system reset.</description>
-            <bitOffset>1</bitOffset>
+            <bitOffset>0</bitOffset>
             <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
