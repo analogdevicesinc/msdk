@@ -333,7 +333,7 @@ In this mode, EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  
 
 In this mode, the left channel (tip of the J5 3.5mm audio jack) of the line-in of MAX9867 audio CODEC (is used as the audio input source.
 
- To enable using CODEC as the audio input source, make sure the `PROJ_CFLAGS" line is uncommented. This mode can only be enabled for the  Feather board.
+ To enable using CODEC as the audio input source, make sure the `PROJ_CFLAGS` line is uncommented. This mode can only be enabled for the  Feather board.
 
 ```make
 # If enabled, it captures audio from line input of MAX9867 audio codec instead of the on-board mic.
