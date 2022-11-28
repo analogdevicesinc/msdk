@@ -200,7 +200,9 @@ On MacOS, some additional missing packages must be manually installed via [Homeb
 
 **For M1 platforms**:
 
-You must use a Rosetta terminal to install Homebrew:
+The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386).  As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. This ensures OpenOCD gets the packages with the architecture it needs.  From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
+
+The i386 version of Homebrew can be installed in parallel with the arm64 version, and typically installs into a separate filesystem.
 
 1. Open a terminal and update Rosetta.
 
@@ -222,10 +224,20 @@ You must use a Rosetta terminal to install Homebrew:
 
 4. From your Rosetta terminal follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
 
-5. Run the command...
+5. Verify the correct version of Homebrew is running from your Rosetta terminal using the `which brew` command.  This should return a path beginning with `/usr/local`.
+
+    **Note:** On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precendence over the newly installed x86_64 version.  If `which brew` contains `/opt/homebrew` instead, you may need to edit your terminal profile's startup script.  Alternatively, you can run the correct Homebrew binary directly. `/usr/local/homebrew/bin/brew ...`
+
+6. Run the command...
 
     ```shell
     brew install libusb-compat libftdi hidapi libusb
+    ```
+
+    (or, if you need to use the absolute path)
+
+    ```shell
+    /usr/local/homebrew/bin/brew install libusb-compat libftdi hidapi libusb
     ```
 
 ## Setup
