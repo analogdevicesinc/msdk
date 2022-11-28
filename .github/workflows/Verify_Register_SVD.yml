@@ -339,7 +339,7 @@ jobs:
                   lowercase_die_name=${die_name,,}
                   
                   if [[  "$periph" =~ "_${lowercase_die_name}" ]]; then
-                    periph=${periph%_${lowercase_die_name}.svd}
+                    periph=${periph%_${lowercase_die_name}*}
                     break
                   fi
                 done
