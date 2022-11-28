@@ -110,7 +110,8 @@ int main(void)
     memset(slave_rx, 0x0, DATA_LEN * sizeof(uint8_t));
 
     /***** Configure master *****/
-    if (MXC_SPI_Init(SPI_MASTER, 1, 0, 1, (1 << SPI_MASTER_SSIDX), SPI_SPEED, spi_pins) != E_NO_ERROR) {
+    if (MXC_SPI_Init(SPI_MASTER, 1, 0, 1, (1 << SPI_MASTER_SSIDX), SPI_SPEED, spi_pins) !=
+        E_NO_ERROR) {
         printf("\nSPI MASTER INITIALIZATION ERROR\n");
         while (1) {}
     }
@@ -119,7 +120,8 @@ int main(void)
     MXC_SPI_SetWidth(SPI_MASTER, SPI_WIDTH_STANDARD);
 
     /***** Configure slave *****/
-    if (MXC_SPI_Init(SPI_SLAVE, 0, 0, 1, (1 << SPI_SLAVE_SSIDX), SPI_SPEED, spi_pins) != E_NO_ERROR) {
+    if (MXC_SPI_Init(SPI_SLAVE, 0, 0, 1, (1 << SPI_SLAVE_SSIDX), SPI_SPEED, spi_pins) !=
+        E_NO_ERROR) {
         printf("\nSPI SLAVE INITIALIZATION ERROR\n");
         while (1) {}
     }
