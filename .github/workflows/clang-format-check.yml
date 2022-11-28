@@ -64,8 +64,9 @@ jobs:
             clang-format-${CLANG_VERSION} --verbose --style=file -n -Werror ${change_file}
             if [ $? != 0 ];
             then
+              echo ""
               echo "===================================================="
-              echo "\033[0;31mFAIL: \033[1;35m${change_file}\033[0m"
+              echo "FAIL: ${change_file}"
               echo "----------------------------------------------------"
               echo "Expected:"
               clang-format-${CLANG_VERSION} --style=file ${change_file} > ${change_file}.clang
