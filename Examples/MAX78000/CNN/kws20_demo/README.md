@@ -1,4 +1,4 @@
-# MAX78000 Keyword Spotting Demo v.3.1
+# MAX78000 Keyword Spotting Demo v.3.2
 
 
 
@@ -18,7 +18,9 @@ The following 20 keyword subset from the complete dataset is used for this demo:
 
  ['**up', 'down', 'left', 'right', 'stop', 'go', 'yes', 'no', 'on', 'off', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'zero**']
 
-Rest of keywords and unrecognized words fall into "**Unknown**" category.
+The rest of the keywords and unrecognized words fall into the "**Unknown**" category. 
+
+To improve the unknown detection, the model in version 3.2 is trained with an additional 100hrs speech data from LibriSpeech (https://www.openslr.org/resources/12/train-clean-100.tar.gz), segmented to 1-sec audio data and labeled as unknown.
 
 
 
@@ -26,7 +28,7 @@ Rest of keywords and unrecognized words fall into "**Unknown**" category.
 
 ### Building firmware
 
-Navigate directory where KWS20 demo software is located and build the project:
+Navigate the directory where the KWS20 demo software is located and build the project:
 
 ```bash
 $ cd /Examples/MAX78000/CNN/kws20_demo
@@ -137,9 +139,9 @@ If using Linux, perform this step:
 
 ### MAX78000 Feather operations
 
-The KWS20 demo starts automatically after power-up or pressing reset button (SW4).
+The KWS20 demo starts automatically after power-up or pressing the reset button (SW4).
 The TFT display is optional and not supplied with the MAX78000 Feather board.
-User should use PC terminal program to observe KWS20 demo result as described in "Using Debug Terminal" section.
+Users should use PC terminal program to observe KWS20 demo result as described in the "Using Debug Terminal" section.
 
 The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
 
