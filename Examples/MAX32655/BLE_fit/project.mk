@@ -12,3 +12,9 @@ LIB_CORDIO = 1
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
+
+USE_DUAL_CORE = 0
+ifeq "$(USE_DUAL_CORE)" "1"
+BLE_HOST = 1
+BLE_CONTROLLER = 0
+endif

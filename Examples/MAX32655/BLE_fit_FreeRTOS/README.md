@@ -26,3 +26,6 @@ IDLE           	R	0	117	3
 Tmr Svc        	B	2	90	4  
 CordioM        	S	3	3982	1  
 ```
+
+# Use ARM core and RISC-V core for splitted HCI
+In the project.mk, changing USE_DUAL_CORE to 1 will enable using both ARM core and RISC-V core for the splitted HCI.
