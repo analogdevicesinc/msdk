@@ -318,7 +318,7 @@ int main(void)
 #ifdef ENABLE_MIC_PROCESSING
 #if defined(ENABLE_CODEC_MIC)
     int err;
-    if ((err = max9867_init(PMIC_AUDIO_I2C, CODEC_MCLOCK)) != E_NO_ERROR) {
+    if ((err = max9867_init(PMIC_AUDIO_I2C, CODEC_MCLOCK, 1)) != E_NO_ERROR) {
       PR_DEBUG("\nError in max9867_init: %d\n", err);
     }
 #elif defined(BOARD_FTHR_REVA)
