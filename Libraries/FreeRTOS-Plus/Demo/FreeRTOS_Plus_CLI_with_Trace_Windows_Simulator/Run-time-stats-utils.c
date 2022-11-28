@@ -46,55 +46,50 @@ static long long llInitialRunTimeCounterValue = 0LL, llTicksPerHundedthMilliseco
 
 /*-----------------------------------------------------------*/
 
-void vConfigureTimerForRunTimeStats( void )
+void vConfigureTimerForRunTimeStats(void)
 {
-LARGE_INTEGER liPerformanceCounterFrequency, liInitialRunTimeValue;
+    LARGE_INTEGER liPerformanceCounterFrequency, liInitialRunTimeValue;
 
-	/* Initialise the variables used to create the run time stats time base.
+    /* Initialise the variables used to create the run time stats time base.
 	Run time stats record how much time each task spends in the Running
 	state. */
 
-	if( QueryPerformanceFrequency( &liPerformanceCounterFrequency ) == 0 )
-	{
-		llTicksPerHundedthMillisecond = 1;
-	}
-	else
-	{
-		/* How many times does the performance counter increment in 1/100th
+    if (QueryPerformanceFrequency(&liPerformanceCounterFrequency) == 0) {
+        llTicksPerHundedthMillisecond = 1;
+    } else {
+        /* How many times does the performance counter increment in 1/100th
 		millisecond. */
-		llTicksPerHundedthMillisecond = liPerformanceCounterFrequency.QuadPart / 100000LL;
+        llTicksPerHundedthMillisecond = liPerformanceCounterFrequency.QuadPart / 100000LL;
 
-		/* What is the performance counter value now, this will be subtracted
+        /* What is the performance counter value now, this will be subtracted
 		from readings taken at run time. */
-		QueryPerformanceCounter( &liInitialRunTimeValue );
-		llInitialRunTimeCounterValue = liInitialRunTimeValue.QuadPart;
-	}
+        QueryPerformanceCounter(&liInitialRunTimeValue);
+        llInitialRunTimeCounterValue = liInitialRunTimeValue.QuadPart;
+    }
 }
 /*-----------------------------------------------------------*/
 
-unsigned long ulGetRunTimeCounterValue( void )
+unsigned long ulGetRunTimeCounterValue(void)
 {
-LARGE_INTEGER liCurrentCount;
-unsigned long ulReturn;
+    LARGE_INTEGER liCurrentCount;
+    unsigned long ulReturn;
 
-	/* What is the performance counter value now? */
-	QueryPerformanceCounter( &liCurrentCount );
+    /* What is the performance counter value now? */
+    QueryPerformanceCounter(&liCurrentCount);
 
-	/* Subtract the performance counter value reading taken when the
+    /* Subtract the performance counter value reading taken when the
 	application started to get a count from that reference point, then
 	scale to (simulated) 1/100ths of a millisecond. */
-	if( llTicksPerHundedthMillisecond == 0 )
-	{
-		/* The trace macros can call this function before the kernel has been
+    if (llTicksPerHundedthMillisecond == 0) {
+        /* The trace macros can call this function before the kernel has been
 		started, in which case llTicksPerHundedthMillisecond will not have been
 		initialised. */
-		ulReturn = 0;
-	}
-	else
-	{
-		ulReturn = ( unsigned long ) ( ( liCurrentCount.QuadPart - llInitialRunTimeCounterValue ) / llTicksPerHundedthMillisecond );
-	}
+        ulReturn = 0;
+    } else {
+        ulReturn = (unsigned long)((liCurrentCount.QuadPart - llInitialRunTimeCounterValue) /
+                                   llTicksPerHundedthMillisecond);
+    }
 
-	return ulReturn;
+    return ulReturn;
 }
 /*-----------------------------------------------------------*/

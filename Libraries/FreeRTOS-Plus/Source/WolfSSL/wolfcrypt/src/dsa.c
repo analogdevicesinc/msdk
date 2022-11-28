@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+#include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
@@ -32,41 +32,37 @@
 #include <wolfssl/wolfcrypt/random.h>
 #include <wolfssl/wolfcrypt/error-crypt.h>
 
-
 enum {
-    DSA_HALF_SIZE = 20,   /* r and s size  */
-    DSA_SIG_SIZE  = 40    /* signature size */
+    DSA_HALF_SIZE = 20, /* r and s size  */
+    DSA_SIG_SIZE = 40 /* signature size */
 };
-
 
 #ifndef WOLFSSL_HAVE_MIN
 #define WOLFSSL_HAVE_MIN
 
-    static INLINE word32 min(word32 a, word32 b)
-    {
-        return a > b ? b : a;
-    }
+static INLINE word32 min(word32 a, word32 b)
+{
+    return a > b ? b : a;
+}
 
 #endif /* WOLFSSL_HAVE_MIN */
 
-
-void wc_InitDsaKey(DsaKey* key)
+void wc_InitDsaKey(DsaKey *key)
 {
-    key->type = -1;  /* haven't decided yet */
+    key->type = -1; /* haven't decided yet */
 
 /* TomsFastMath doesn't use memory allocation */
 #ifndef USE_FAST_MATH
-    key->p.dp = 0;   /* public  alloc parts */
-    key->q.dp = 0;    
-    key->g.dp = 0;    
-    key->y.dp = 0;    
+    key->p.dp = 0; /* public  alloc parts */
+    key->q.dp = 0;
+    key->g.dp = 0;
+    key->y.dp = 0;
 
-    key->x.dp = 0;   /* private alloc parts */
+    key->x.dp = 0; /* private alloc parts */
 #endif
 }
 
-
-void wc_FreeDsaKey(DsaKey* key)
+void wc_FreeDsaKey(DsaKey *key)
 {
     (void)key;
 /* TomsFastMath doesn't use memory allocation */
@@ -80,12 +76,11 @@ void wc_FreeDsaKey(DsaKey* key)
 #endif
 }
 
-
-int wc_DsaSign(const byte* digest, byte* out, DsaKey* key, RNG* rng)
+int wc_DsaSign(const byte *digest, byte *out, DsaKey *key, RNG *rng)
 {
     mp_int k, kInv, r, s, H;
-    int    ret, sz;
-    byte   buffer[DSA_HALF_SIZE];
+    int ret, sz;
+    byte buffer[DSA_HALF_SIZE];
 
     sz = min(sizeof(buffer), mp_unsigned_bin_size(&key->q));
 
@@ -117,7 +112,7 @@ int wc_DsaSign(const byte* digest, byte* out, DsaKey* key, RNG* rng)
         ret = MP_MOD_E;
 
     /* generate H from sha digest */
-    if (ret == 0 && mp_read_unsigned_bin(&H, digest,SHA_DIGEST_SIZE) != MP_OKAY)
+    if (ret == 0 && mp_read_unsigned_bin(&H, digest, SHA_DIGEST_SIZE) != MP_OKAY)
         ret = MP_READ_E;
 
     /* generate s, s = (kInv * (H + x*r)) % q */
@@ -131,7 +126,7 @@ int wc_DsaSign(const byte* digest, byte* out, DsaKey* key, RNG* rng)
         ret = MP_MULMOD_E;
 
     /* write out */
-    if (ret == 0)  {
+    if (ret == 0) {
         int rSz = mp_unsigned_bin_size(&r);
         int sSz = mp_unsigned_bin_size(&s);
 
@@ -146,7 +141,7 @@ int wc_DsaSign(const byte* digest, byte* out, DsaKey* key, RNG* rng)
             if (sSz == DSA_HALF_SIZE - 1) {
                 out[rSz] = 0;
                 out++;
-            }    
+            }
             ret = mp_to_unsigned_bin(&s, out + rSz);
         }
     }
@@ -160,11 +155,10 @@ int wc_DsaSign(const byte* digest, byte* out, DsaKey* key, RNG* rng)
     return ret;
 }
 
-
-int wc_DsaVerify(const byte* digest, const byte* sig, DsaKey* key, int* answer)
+int wc_DsaVerify(const byte *digest, const byte *sig, DsaKey *key, int *answer)
 {
     mp_int w, u1, u2, v, r, s;
-    int    ret = 0;
+    int ret = 0;
 
     if (mp_init_multi(&w, &u1, &u2, &v, &r, &s) != MP_OKAY)
         return MP_INIT_E;
@@ -176,14 +170,14 @@ int wc_DsaVerify(const byte* digest, const byte* sig, DsaKey* key, int* answer)
 
     /* sanity checks */
     if (ret == 0) {
-        if (mp_iszero(&r) == MP_YES || mp_iszero(&s) == MP_YES ||
-                mp_cmp(&r, &key->q) != MP_LT || mp_cmp(&s, &key->q) != MP_LT) {
+        if (mp_iszero(&r) == MP_YES || mp_iszero(&s) == MP_YES || mp_cmp(&r, &key->q) != MP_LT ||
+            mp_cmp(&s, &key->q) != MP_LT) {
             ret = MP_ZERO_E;
         }
     }
 
     /* put H into u1 from sha digest */
-    if (ret == 0 && mp_read_unsigned_bin(&u1,digest,SHA_DIGEST_SIZE) != MP_OKAY)
+    if (ret == 0 && mp_read_unsigned_bin(&u1, digest, SHA_DIGEST_SIZE) != MP_OKAY)
         ret = MP_READ_E;
 
     /* w = s invmod q */
@@ -227,6 +221,4 @@ int wc_DsaVerify(const byte* digest, const byte* sig, DsaKey* key, int* answer)
     return ret;
 }
 
-
 #endif /* NO_DSA */
-

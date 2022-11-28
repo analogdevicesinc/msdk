@@ -50,9 +50,8 @@
 extern "C" {
 #endif
 
-
-int32_t itm_write(void* ptrData, uint32_t size, int32_t* ptrBytesWritten);
-int32_t read_from_host(void* ptrData, uint32_t size, int32_t* ptrBytesRead);
+int32_t itm_write(void *ptrData, uint32_t size, int32_t *ptrBytesWritten);
+int32_t read_from_host(void *ptrData, uint32_t size, int32_t *ptrBytesRead);
 
 /*******************************************************************************
  * TRC_CFG_ITM_PORT
@@ -79,10 +78,12 @@ int32_t read_from_host(void* ptrData, uint32_t size, int32_t* ptrBytesRead);
 
 /* Important for the ITM port - no RAM buffer, direct writes. In most other ports this can be skipped (default is 1) */
 #define TRC_STREAM_PORT_USE_INTERNAL_BUFFER 0
-  
-#define TRC_STREAM_PORT_WRITE_DATA(_ptrData, _size, _ptrBytesWritten) itm_write(_ptrData, _size, _ptrBytesWritten)
 
-#define TRC_STREAM_PORT_READ_DATA(_ptrData, _size, _ptrBytesRead) read_from_host(_ptrData, _size, _ptrBytesRead)
+#define TRC_STREAM_PORT_WRITE_DATA(_ptrData, _size, _ptrBytesWritten) \
+    itm_write(_ptrData, _size, _ptrBytesWritten)
+
+#define TRC_STREAM_PORT_READ_DATA(_ptrData, _size, _ptrBytesRead) \
+    read_from_host(_ptrData, _size, _ptrBytesRead)
 
 #ifdef __cplusplus
 }

@@ -17,6 +17,5 @@
 #define ECDSA
 #endif
 
-
 int ucl_testing(void);
-#endif//UCL_TESTING_CONFIG_H
+#endif //UCL_TESTING_CONFIG_H

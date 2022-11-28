@@ -29,13 +29,11 @@
 #include <redcoreapi.h>
 #include <redcore.h>
 
-
 /*  Minimum number of blocks needed for metadata on any volume: the master
     block (1), the two metaroots (2), and one doubly-allocated inode (2),
     resulting in 1 + 2 + 2 = 5.
 */
 #define MINIMUM_METADATA_BLOCKS (5U)
-
 
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1)
 static REDSTATUS CoreCreate(uint32_t ulPInode, const char *pszName, bool fDir, uint32_t *pulInode);
@@ -43,30 +41,31 @@ static REDSTATUS CoreCreate(uint32_t ulPInode, const char *pszName, bool fDir, u
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_LINK == 1)
 static REDSTATUS CoreLink(uint32_t ulPInode, const char *pszName, uint32_t ulInode);
 #endif
-#if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && ((REDCONF_API_POSIX_UNLINK == 1) || (REDCONF_API_POSIX_RMDIR == 1))
+#if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && \
+    ((REDCONF_API_POSIX_UNLINK == 1) || (REDCONF_API_POSIX_RMDIR == 1))
 static REDSTATUS CoreUnlink(uint32_t ulPInode, const char *pszName);
 #endif
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_RENAME == 1)
-static REDSTATUS CoreRename(uint32_t ulSrcPInode, const char *pszSrcName, uint32_t ulDstPInode, const char *pszDstName);
+static REDSTATUS CoreRename(uint32_t ulSrcPInode, const char *pszSrcName, uint32_t ulDstPInode,
+                            const char *pszDstName);
 #endif
 #if REDCONF_READ_ONLY == 0
-static REDSTATUS CoreFileWrite(uint32_t ulInode, uint64_t ullStart, uint32_t *pulLen, const void *pBuffer);
+static REDSTATUS CoreFileWrite(uint32_t ulInode, uint64_t ullStart, uint32_t *pulLen,
+                               const void *pBuffer);
 #endif
 #if TRUNCATE_SUPPORTED
 static REDSTATUS CoreFileTruncate(uint32_t ulInode, uint64_t ullSize);
 #endif
 
-
 VOLUME gaRedVolume[REDCONF_VOLUME_COUNT];
 static COREVOLUME gaCoreVol[REDCONF_VOLUME_COUNT];
 
-const VOLCONF  * CONST_IF_ONE_VOLUME gpRedVolConf = &gaRedVolConf[0U];
-VOLUME         * CONST_IF_ONE_VOLUME gpRedVolume = &gaRedVolume[0U];
-COREVOLUME     * CONST_IF_ONE_VOLUME gpRedCoreVol = &gaCoreVol[0U];
-METAROOT       *gpRedMR = &gaCoreVol[0U].aMR[0U];
+const VOLCONF *CONST_IF_ONE_VOLUME gpRedVolConf = &gaRedVolConf[0U];
+VOLUME *CONST_IF_ONE_VOLUME gpRedVolume = &gaRedVolume[0U];
+COREVOLUME *CONST_IF_ONE_VOLUME gpRedCoreVol = &gaCoreVol[0U];
+METAROOT *gpRedMR = &gaCoreVol[0U].aMR[0U];
 
 CONST_IF_ONE_VOLUME uint8_t gbRedVolNum = 0;
-
 
 /** @brief Initialize the Reliance Edge file system driver.
 
@@ -83,72 +82,62 @@ CONST_IF_ONE_VOLUME uint8_t gbRedVolNum = 0;
 */
 REDSTATUS RedCoreInit(void)
 {
-    REDSTATUS       ret = 0;
-    uint8_t         bVolNum;
-  #if REDCONF_OUTPUT == 1
-    static uint8_t  bSignedOn = 0U; /* Whether the sign on has been printed. */
+    REDSTATUS ret = 0;
+    uint8_t bVolNum;
+#if REDCONF_OUTPUT == 1
+    static uint8_t bSignedOn = 0U; /* Whether the sign on has been printed. */
 
-    if(bSignedOn == 0U)
-    {
+    if (bSignedOn == 0U) {
         RedSignOn();
         bSignedOn = 1U;
     }
-  #else
+#else
     /*  Call RedSignOn() even when output is disabled, to force the copyright
         text to be referenced and pulled into the program data.
     */
     RedSignOn();
-  #endif
+#endif
 
     RedMemSet(gaRedVolume, 0U, sizeof(gaRedVolume));
     RedMemSet(gaCoreVol, 0U, sizeof(gaCoreVol));
 
     RedBufferInit();
 
-    for(bVolNum = 0U; bVolNum < REDCONF_VOLUME_COUNT; bVolNum++)
-    {
-        VOLUME         *pVol = &gaRedVolume[bVolNum];
-        COREVOLUME     *pCoreVol = &gaCoreVol[bVolNum];
-        const VOLCONF  *pVolConf = &gaRedVolConf[bVolNum];
+    for (bVolNum = 0U; bVolNum < REDCONF_VOLUME_COUNT; bVolNum++) {
+        VOLUME *pVol = &gaRedVolume[bVolNum];
+        COREVOLUME *pCoreVol = &gaCoreVol[bVolNum];
+        const VOLCONF *pVolConf = &gaRedVolConf[bVolNum];
 
-        if(    (pVolConf->ulSectorSize < SECTOR_SIZE_MIN)
-            || ((REDCONF_BLOCK_SIZE % pVolConf->ulSectorSize) != 0U)
-            || (pVolConf->ulInodeCount == 0U))
-        {
+        if ((pVolConf->ulSectorSize < SECTOR_SIZE_MIN) ||
+            ((REDCONF_BLOCK_SIZE % pVolConf->ulSectorSize) != 0U) ||
+            (pVolConf->ulInodeCount == 0U)) {
             ret = -RED_EINVAL;
         }
-      #if REDCONF_API_POSIX == 1
-        else if(pVolConf->pszPathPrefix == NULL)
-        {
+#if REDCONF_API_POSIX == 1
+        else if (pVolConf->pszPathPrefix == NULL) {
             ret = -RED_EINVAL;
-        }
-        else
-        {
-          #if REDCONF_VOLUME_COUNT > 1U
+        } else {
+#if REDCONF_VOLUME_COUNT > 1U
             uint8_t bCmpVol;
 
             /*  Ensure there are no duplicate path prefixes.  Check against all
                 previous volumes, which are already verified.
             */
-            for(bCmpVol = 0U; bCmpVol < bVolNum; bCmpVol++)
-            {
+            for (bCmpVol = 0U; bCmpVol < bVolNum; bCmpVol++) {
                 const char *pszCmpPathPrefix = gaRedVolConf[bCmpVol].pszPathPrefix;
 
-                if(RedStrCmp(pVolConf->pszPathPrefix, pszCmpPathPrefix) == 0)
-                {
+                if (RedStrCmp(pVolConf->pszPathPrefix, pszCmpPathPrefix) == 0) {
                     ret = -RED_EINVAL;
                     break;
                 }
             }
-          #endif
+#endif
         }
-      #endif
+#endif
 
-        if(ret == 0)
-        {
+        if (ret == 0) {
             pVol->bBlockSectorShift = 0U;
-            while((pVolConf->ulSectorSize << pVol->bBlockSectorShift) < REDCONF_BLOCK_SIZE)
-            {
+            while ((pVolConf->ulSectorSize << pVol->bBlockSectorShift) < REDCONF_BLOCK_SIZE) {
                 pVol->bBlockSectorShift++;
             }
 
@@ -160,15 +149,12 @@ REDSTATUS RedCoreInit(void)
 
             pVol->ulBlockCount = (uint32_t)(pVolConf->ullSectorCount >> pVol->bBlockSectorShift);
 
-            if(pVol->ulBlockCount < MINIMUM_METADATA_BLOCKS)
-            {
+            if (pVol->ulBlockCount < MINIMUM_METADATA_BLOCKS) {
                 ret = -RED_EINVAL;
-            }
-            else
-            {
-              #if REDCONF_READ_ONLY == 0
+            } else {
+#if REDCONF_READ_ONLY == 0
                 pVol->ulTransMask = REDCONF_TRANSACT_DEFAULT;
-              #endif
+#endif
 
                 pVol->ullMaxInodeSize = INODE_SIZE_MAX;
 
@@ -190,17 +176,14 @@ REDSTATUS RedCoreInit(void)
                 */
                 pCoreVol->fImapInline = (pVol->ulBlockCount - 3U) <= METAROOT_ENTRIES;
 
-                if(pCoreVol->fImapInline)
-                {
-                  #if REDCONF_IMAP_INLINE == 1
+                if (pCoreVol->fImapInline) {
+#if REDCONF_IMAP_INLINE == 1
                     pCoreVol->ulInodeTableStartBN = 3U;
-                  #else
+#else
                     ret = -RED_EINVAL;
-                  #endif
-                }
-                else
-                {
-                  #if REDCONF_IMAP_EXTERNAL == 1
+#endif
+                } else {
+#if REDCONF_IMAP_EXTERNAL == 1
                     pCoreVol->ulImapStartBN = 3U;
 
                     /*  The imap does not include bits for itself, so add two to
@@ -210,78 +193,71 @@ REDSTATUS RedCoreInit(void)
                         covered.
                     */
                     pCoreVol->ulImapNodeCount =
-                        ((pVol->ulBlockCount - 3U) + ((IMAPNODE_ENTRIES + 2U) - 1U)) / (IMAPNODE_ENTRIES + 2U);
+                        ((pVol->ulBlockCount - 3U) + ((IMAPNODE_ENTRIES + 2U) - 1U)) /
+                        (IMAPNODE_ENTRIES + 2U);
 
-                    pCoreVol->ulInodeTableStartBN = pCoreVol->ulImapStartBN + (pCoreVol->ulImapNodeCount * 2U);
-                  #else
+                    pCoreVol->ulInodeTableStartBN =
+                        pCoreVol->ulImapStartBN + (pCoreVol->ulImapNodeCount * 2U);
+#else
                     ret = -RED_EINVAL;
-                  #endif
+#endif
                 }
             }
         }
 
-        if(ret == 0)
-        {
-            pCoreVol->ulFirstAllocableBN = pCoreVol->ulInodeTableStartBN + (pVolConf->ulInodeCount * 2U);
+        if (ret == 0) {
+            pCoreVol->ulFirstAllocableBN =
+                pCoreVol->ulInodeTableStartBN + (pVolConf->ulInodeCount * 2U);
 
-            if(pCoreVol->ulFirstAllocableBN > pVol->ulBlockCount)
-            {
+            if (pCoreVol->ulFirstAllocableBN > pVol->ulBlockCount) {
                 /*  We can get here if there is not enough space for the number
                     of configured inodes.
                 */
                 ret = -RED_EINVAL;
-            }
-            else
-            {
+            } else {
                 pVol->ulBlocksAllocable = pVol->ulBlockCount - pCoreVol->ulFirstAllocableBN;
             }
         }
 
-        if(ret != 0)
-        {
+        if (ret != 0) {
             break;
         }
     }
 
     /*  Make sure the configured endianness is correct.
     */
-    if(ret == 0)
-    {
-        uint16_t    uValue = 0xFF00U;
-        uint8_t     abBytes[2U];
+    if (ret == 0) {
+        uint16_t uValue = 0xFF00U;
+        uint8_t abBytes[2U];
 
         RedMemCpy(abBytes, &uValue, sizeof(abBytes));
 
-      #if REDCONF_ENDIAN_BIG == 1
-        if(abBytes[0U] != 0xFFU)
-      #else
-        if(abBytes[0U] != 0x00U)
-      #endif
+#if REDCONF_ENDIAN_BIG == 1
+        if (abBytes[0U] != 0xFFU)
+#else
+        if (abBytes[0U] != 0x00U)
+#endif
         {
             ret = -RED_EINVAL;
         }
     }
 
-    if(ret == 0)
-    {
+    if (ret == 0) {
         ret = RedOsClockInit();
 
-      #if REDCONF_TASK_COUNT > 1U
-        if(ret == 0)
-        {
+#if REDCONF_TASK_COUNT > 1U
+        if (ret == 0) {
             ret = RedOsMutexInit();
 
-            if(ret != 0)
-            {
+            if (ret != 0) {
                 (void)RedOsClockUninit();
             }
         }
-      #endif
+#endif
     }
 
     return ret;
 }
-
 
 /** @brief Uninitialize the Reliance Edge file system driver.
 
@@ -301,18 +277,17 @@ REDSTATUS RedCoreUninit(void)
 {
     REDSTATUS ret;
 
-  #if REDCONF_TASK_COUNT > 1U
+#if REDCONF_TASK_COUNT > 1U
     ret = RedOsMutexUninit();
 
-    if(ret == 0)
-  #endif
+    if (ret == 0)
+#endif
     {
         ret = RedOsClockUninit();
     }
 
     return ret;
 }
-
 
 /** @brief Set the current volume.
 
@@ -326,31 +301,26 @@ REDSTATUS RedCoreUninit(void)
     @retval 0           Operation was successful.
     @retval -RED_EINVAL @p bVolNum is an invalid volume number.
 */
-REDSTATUS RedCoreVolSetCurrent(
-    uint8_t     bVolNum)
+REDSTATUS RedCoreVolSetCurrent(uint8_t bVolNum)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(bVolNum >= REDCONF_VOLUME_COUNT)
-    {
+    if (bVolNum >= REDCONF_VOLUME_COUNT) {
         ret = -RED_EINVAL;
-    }
-    else
-    {
-      #if REDCONF_VOLUME_COUNT > 1U
+    } else {
+#if REDCONF_VOLUME_COUNT > 1U
         gbRedVolNum = bVolNum;
         gpRedVolConf = &gaRedVolConf[bVolNum];
         gpRedVolume = &gaRedVolume[bVolNum];
         gpRedCoreVol = &gaCoreVol[bVolNum];
         gpRedMR = &gpRedCoreVol->aMR[gpRedCoreVol->bCurMR];
-      #endif
+#endif
 
         ret = 0;
     }
 
     return ret;
 }
-
 
 #if FORMAT_SUPPORTED
 /** @brief Format a file system volume.
@@ -372,7 +342,6 @@ REDSTATUS RedCoreVolFormat(void)
 }
 #endif /* FORMAT_SUPPORTED */
 
-
 /** @brief Mount a file system volume.
 
     Prepares the file system volume to be accessed.  Mount will fail if the
@@ -390,7 +359,6 @@ REDSTATUS RedCoreVolMount(void)
 {
     return RedVolMount();
 }
-
 
 /** @brief Unmount a file system volume.
 
@@ -414,31 +382,26 @@ REDSTATUS RedCoreVolUnmount(void)
 {
     REDSTATUS ret = 0;
 
-  #if REDCONF_READ_ONLY == 0
-    if(!gpRedVolume->fReadOnly && ((gpRedVolume->ulTransMask & RED_TRANSACT_UMOUNT) != 0U))
-    {
+#if REDCONF_READ_ONLY == 0
+    if (!gpRedVolume->fReadOnly && ((gpRedVolume->ulTransMask & RED_TRANSACT_UMOUNT) != 0U)) {
         ret = RedVolTransact();
     }
-  #endif
+#endif
 
-    if(ret == 0)
-    {
+    if (ret == 0) {
         ret = RedBufferDiscardRange(0U, gpRedVolume->ulBlockCount);
     }
 
-    if(ret == 0)
-    {
+    if (ret == 0) {
         ret = RedOsBDevClose(gbRedVolNum);
     }
 
-    if(ret == 0)
-    {
+    if (ret == 0) {
         gpRedVolume->fMounted = false;
     }
 
     return ret;
 }
-
 
 #if REDCONF_READ_ONLY == 0
 /** @brief Commit a transaction point.
@@ -462,23 +425,17 @@ REDSTATUS RedCoreVolTransact(void)
 {
     REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted)
-    {
+    if (!gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         ret = RedVolTransact();
     }
 
     return ret;
 }
 #endif /* REDCONF_READ_ONLY == 0 */
-
 
 #if REDCONF_API_POSIX == 1
 /** @brief Query file system status information.
@@ -489,36 +446,34 @@ REDSTATUS RedCoreVolTransact(void)
 
     @retval -RED_EINVAL Volume is not mounted; or @p pStatFS is `NULL`.
 */
-REDSTATUS RedCoreVolStat(
-    REDSTATFS  *pStatFS)
+REDSTATUS RedCoreVolStat(REDSTATFS *pStatFS)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if((pStatFS == NULL) || (!gpRedVolume->fMounted))
-    {
+    if ((pStatFS == NULL) || (!gpRedVolume->fMounted)) {
         ret = -RED_EINVAL;
-    }
-    else
-    {
+    } else {
         RedMemSet(pStatFS, 0U, sizeof(*pStatFS));
 
         pStatFS->f_bsize = REDCONF_BLOCK_SIZE;
         pStatFS->f_frsize = REDCONF_BLOCK_SIZE;
         pStatFS->f_blocks = gpRedVolume->ulBlockCount;
-      #if RESERVED_BLOCKS > 0U
-        pStatFS->f_bfree = (gpRedMR->ulFreeBlocks > RESERVED_BLOCKS) ? (gpRedMR->ulFreeBlocks - RESERVED_BLOCKS) : 0U;
-      #else
+#if RESERVED_BLOCKS > 0U
+        pStatFS->f_bfree = (gpRedMR->ulFreeBlocks > RESERVED_BLOCKS) ?
+                               (gpRedMR->ulFreeBlocks - RESERVED_BLOCKS) :
+                               0U;
+#else
         pStatFS->f_bfree = gpRedMR->ulFreeBlocks;
-      #endif
+#endif
         pStatFS->f_bavail = pStatFS->f_bfree;
         pStatFS->f_files = gpRedVolConf->ulInodeCount;
         pStatFS->f_ffree = gpRedMR->ulFreeInodes;
         pStatFS->f_favail = gpRedMR->ulFreeInodes;
 
         pStatFS->f_flag = RED_ST_NOSUID;
-      #if REDCONF_READ_ONLY == 0
-        if(gpRedVolume->fReadOnly)
-      #endif
+#if REDCONF_READ_ONLY == 0
+        if (gpRedVolume->fReadOnly)
+#endif
         {
             pStatFS->f_flag |= RED_ST_RDONLY;
         }
@@ -533,7 +488,6 @@ REDSTATUS RedCoreVolStat(
     return ret;
 }
 #endif /* REDCONF_API_POSIX == 1 */
-
 
 #if (REDCONF_READ_ONLY == 0) && ((REDCONF_API_POSIX == 1) || (REDCONF_API_FSE_TRANSMASKSET == 1))
 /** @brief Update the transaction mask.
@@ -576,21 +530,15 @@ REDSTATUS RedCoreVolStat(
                         invalid bits.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-REDSTATUS RedCoreTransMaskSet(
-    uint32_t  ulEventMask)
+REDSTATUS RedCoreTransMaskSet(uint32_t ulEventMask)
 {
     REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted || ((ulEventMask & RED_TRANSACT_MASK) != ulEventMask))
-    {
+    if (!gpRedVolume->fMounted || ((ulEventMask & RED_TRANSACT_MASK) != ulEventMask)) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         gpRedVolume->ulTransMask = ulEventMask;
         ret = 0;
     }
@@ -598,7 +546,6 @@ REDSTATUS RedCoreTransMaskSet(
     return ret;
 }
 #endif
-
 
 #if (REDCONF_API_POSIX == 1) || (REDCONF_API_FSE_TRANSMASKGET == 1)
 /** @brief Read the transaction mask.
@@ -614,29 +561,24 @@ REDSTATUS RedCoreTransMaskSet(
     @retval 0           Operation was successful.
     @retval -RED_EINVAL The volume is not mounted; or @p pulEventMask is `NULL`.
 */
-REDSTATUS RedCoreTransMaskGet(
-    uint32_t *pulEventMask)
+REDSTATUS RedCoreTransMaskGet(uint32_t *pulEventMask)
 {
     REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted || (pulEventMask == NULL))
-    {
+    if (!gpRedVolume->fMounted || (pulEventMask == NULL)) {
         ret = -RED_EINVAL;
-    }
-    else
-    {
-      #if REDCONF_READ_ONLY == 1
+    } else {
+#if REDCONF_READ_ONLY == 1
         *pulEventMask = 0U;
-      #else
+#else
         *pulEventMask = gpRedVolume->ulTransMask;
-      #endif
+#endif
         ret = 0;
     }
 
     return ret;
 }
 #endif
-
 
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1)
 /** @brief Create a file or directory.
@@ -663,50 +605,32 @@ REDSTATUS RedCoreTransMaskGet(
     @retval -RED_ENAMETOOLONG   @p pszName is too long.
     @retval -RED_EEXIST         @p pszName already exists in @p ulPInode.
 */
-REDSTATUS RedCoreCreate(
-    uint32_t    ulPInode,
-    const char *pszName,
-    bool        fDir,
-    uint32_t   *pulInode)
+REDSTATUS RedCoreCreate(uint32_t ulPInode, const char *pszName, bool fDir, uint32_t *pulInode)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted)
-    {
+    if (!gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         ret = CoreCreate(ulPInode, pszName, fDir, pulInode);
 
-        if(    (ret == -RED_ENOSPC)
-            && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U)
-            && (gpRedCoreVol->ulAlmostFreeBlocks > 0U))
-        {
+        if ((ret == -RED_ENOSPC) && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U) &&
+            (gpRedCoreVol->ulAlmostFreeBlocks > 0U)) {
             ret = RedVolTransact();
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 ret = CoreCreate(ulPInode, pszName, fDir, pulInode);
             }
         }
 
-        if(ret == 0)
-        {
-            if(fDir && ((gpRedVolume->ulTransMask & RED_TRANSACT_MKDIR) != 0U))
-            {
+        if (ret == 0) {
+            if (fDir && ((gpRedVolume->ulTransMask & RED_TRANSACT_MKDIR) != 0U)) {
                 ret = RedVolTransact();
-            }
-            else if(!fDir && ((gpRedVolume->ulTransMask & RED_TRANSACT_CREAT) != 0U))
-            {
+            } else if (!fDir && ((gpRedVolume->ulTransMask & RED_TRANSACT_CREAT) != 0U)) {
                 ret = RedVolTransact();
-            }
-            else
-            {
+            } else {
                 /*  No automatic transaction for this operation.
                 */
             }
@@ -715,7 +639,6 @@ REDSTATUS RedCoreCreate(
 
     return ret;
 }
-
 
 /** @brief Create a file or directory.
 
@@ -739,51 +662,36 @@ REDSTATUS RedCoreCreate(
     @retval -RED_ENAMETOOLONG   @p pszName is too long.
     @retval -RED_EEXIST         @p pszName already exists in @p ulPInode.
 */
-static REDSTATUS CoreCreate(
-    uint32_t    ulPInode,
-    const char *pszName,
-    bool        fDir,
-    uint32_t   *pulInode)
+static REDSTATUS CoreCreate(uint32_t ulPInode, const char *pszName, bool fDir, uint32_t *pulInode)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(pulInode == NULL)
-    {
+    if (pulInode == NULL) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         CINODE pino;
 
         pino.ulInode = ulPInode;
         ret = RedInodeMount(&pino, FTYPE_DIR, false);
 
-        if(ret == 0)
-        {
+        if (ret == 0) {
             CINODE ino;
 
             ino.ulInode = INODE_INVALID;
             ret = RedInodeCreate(&ino, ulPInode, fDir ? RED_S_IFDIR : RED_S_IFREG);
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 ret = RedInodeBranch(&pino);
 
-                if(ret == 0)
-                {
+                if (ret == 0) {
                     ret = RedDirEntryCreate(&pino, pszName, ino.ulInode);
                 }
 
-                if(ret == 0)
-                {
+                if (ret == 0) {
                     *pulInode = ino.ulInode;
-                }
-                else
-                {
+                } else {
                     REDSTATUS ret2;
 
                     ret2 = RedInodeFree(&ino);
@@ -800,7 +708,6 @@ static REDSTATUS CoreCreate(
     return ret;
 }
 #endif /* (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) */
-
 
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_LINK == 1)
 /** @brief Create a hard link.
@@ -838,46 +745,33 @@ static REDSTATUS CoreCreate(
     @retval -RED_EROFS          The requested link requires writing in a
                                 directory on a read-only file system.
 */
-REDSTATUS RedCoreLink(
-    uint32_t    ulPInode,
-    const char *pszName,
-    uint32_t    ulInode)
+REDSTATUS RedCoreLink(uint32_t ulPInode, const char *pszName, uint32_t ulInode)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted)
-    {
+    if (!gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         ret = CoreLink(ulPInode, pszName, ulInode);
 
-        if(    (ret == -RED_ENOSPC)
-            && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U)
-            && (gpRedCoreVol->ulAlmostFreeBlocks > 0U))
-        {
+        if ((ret == -RED_ENOSPC) && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U) &&
+            (gpRedCoreVol->ulAlmostFreeBlocks > 0U)) {
             ret = RedVolTransact();
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 ret = CoreLink(ulPInode, pszName, ulInode);
             }
         }
 
-        if((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_LINK) != 0U))
-        {
+        if ((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_LINK) != 0U)) {
             ret = RedVolTransact();
         }
     }
 
     return ret;
 }
-
 
 /** @brief Create a hard link.
 
@@ -903,26 +797,19 @@ REDSTATUS RedCoreLink(
     @retval -RED_EROFS          The requested link requires writing in a
                                 directory on a read-only file system.
 */
-static REDSTATUS CoreLink(
-    uint32_t    ulPInode,
-    const char *pszName,
-    uint32_t    ulInode)
+static REDSTATUS CoreLink(uint32_t ulPInode, const char *pszName, uint32_t ulInode)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(gpRedVolume->fReadOnly)
-    {
+    if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         CINODE pino;
 
         pino.ulInode = ulPInode;
         ret = RedInodeMount(&pino, FTYPE_DIR, false);
 
-        if(ret == 0)
-        {
+        if (ret == 0) {
             CINODE ino;
 
             ino.ulInode = ulInode;
@@ -932,34 +819,26 @@ static REDSTATUS CoreLink(
                 directory.  Switch the errno returned if EISDIR was the return
                 value.
             */
-            if(ret == -RED_EISDIR)
-            {
+            if (ret == -RED_EISDIR) {
                 ret = -RED_EPERM;
             }
 
-            if(ret == 0)
-            {
-                if(ino.pInodeBuf->uNLink == UINT16_MAX)
-                {
+            if (ret == 0) {
+                if (ino.pInodeBuf->uNLink == UINT16_MAX) {
                     ret = -RED_EMLINK;
-                }
-                else
-                {
+                } else {
                     ret = RedInodeBranch(&pino);
                 }
 
-                if(ret == 0)
-                {
+                if (ret == 0) {
                     ret = RedInodeBranch(&ino);
                 }
 
-                if(ret == 0)
-                {
+                if (ret == 0) {
                     ret = RedDirEntryCreate(&pino, pszName, ino.ulInode);
                 }
 
-                if(ret == 0)
-                {
+                if (ret == 0) {
                     ino.pInodeBuf->uNLink++;
                 }
 
@@ -974,8 +853,8 @@ static REDSTATUS CoreLink(
 }
 #endif /* (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_LINK == 1) */
 
-
-#if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && ((REDCONF_API_POSIX_UNLINK == 1) || (REDCONF_API_POSIX_RMDIR == 1))
+#if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && \
+    ((REDCONF_API_POSIX_UNLINK == 1) || (REDCONF_API_POSIX_RMDIR == 1))
 /** @brief Delete a file or directory.
 
     The given name is deleted and the link count of the corresponding inode is
@@ -1015,45 +894,33 @@ static REDSTATUS CoreLink(
     @retval -RED_ENOTEMPTY      The inode refered to by @p pszName is a
                                 directory which is not empty.
 */
-REDSTATUS RedCoreUnlink(
-    uint32_t    ulPInode,
-    const char *pszName)
+REDSTATUS RedCoreUnlink(uint32_t ulPInode, const char *pszName)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted)
-    {
+    if (!gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         ret = CoreUnlink(ulPInode, pszName);
 
-        if(    (ret == -RED_ENOSPC)
-            && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U)
-            && (gpRedCoreVol->ulAlmostFreeBlocks > 0U))
-        {
+        if ((ret == -RED_ENOSPC) && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U) &&
+            (gpRedCoreVol->ulAlmostFreeBlocks > 0U)) {
             ret = RedVolTransact();
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 ret = CoreUnlink(ulPInode, pszName);
             }
         }
 
-        if((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_UNLINK) != 0U))
-        {
+        if ((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_UNLINK) != 0U)) {
             ret = RedVolTransact();
         }
     }
 
     return ret;
 }
-
 
 /** @brief Delete a file or directory.
 
@@ -1076,62 +943,49 @@ REDSTATUS RedCoreUnlink(
     @retval -RED_ENOTEMPTY      The inode refered to by @p pszName is a
                                 directory which is not empty.
 */
-static REDSTATUS CoreUnlink(
-    uint32_t    ulPInode,
-    const char *pszName)
+static REDSTATUS CoreUnlink(uint32_t ulPInode, const char *pszName)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(gpRedVolume->fReadOnly)
-    {
+    if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         CINODE pino;
 
         pino.ulInode = ulPInode;
         ret = RedInodeMount(&pino, FTYPE_DIR, false);
 
-        if(ret == 0)
-        {
+        if (ret == 0) {
             uint32_t ulDeleteIdx;
             uint32_t ulInode;
 
             ret = RedDirEntryLookup(&pino, pszName, &ulDeleteIdx, &ulInode);
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 ret = RedInodeBranch(&pino);
             }
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 CINODE ino;
 
                 ino.ulInode = ulInode;
                 ret = RedInodeMount(&ino, FTYPE_EITHER, false);
 
-                if(ret == 0)
-                {
-                    if(ino.fDirectory && (ino.pInodeBuf->ullSize > 0U))
-                    {
+                if (ret == 0) {
+                    if (ino.fDirectory && (ino.pInodeBuf->ullSize > 0U)) {
                         ret = -RED_ENOTEMPTY;
-                    }
-                    else
-                    {
-                      #if RESERVED_BLOCKS > 0U
+                    } else {
+#if RESERVED_BLOCKS > 0U
                         gpRedCoreVol->fUseReservedBlocks = true;
-                      #endif
+#endif
 
                         ret = RedDirEntryDelete(&pino, ulDeleteIdx);
 
-                      #if RESERVED_BLOCKS > 0U
+#if RESERVED_BLOCKS > 0U
                         gpRedCoreVol->fUseReservedBlocks = false;
-                      #endif
+#endif
 
-                        if(ret == 0)
-                        {
+                        if (ret == 0) {
                             /*  If the inode is deleted, buffers are needed to
                                 read all of the indirects and free the data
                                 blocks.  Before doing that, to reduce the
@@ -1158,7 +1012,6 @@ static REDSTATUS CoreUnlink(
 }
 #endif /* (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && ((REDCONF_API_POSIX_UNLINK == 1) || (REDCONF_API_POSIX_RMDIR == 1)) */
 
-
 #if REDCONF_API_POSIX == 1
 /** @brief Look up the inode number of a file or directory.
 
@@ -1178,26 +1031,19 @@ static REDSTATUS CoreUnlink(
     @retval -RED_ENOENT     @p pszName does not name an existing file or directory.
     @retval -RED_ENOTDIR    @p ulPInode is not a directory.
 */
-REDSTATUS RedCoreLookup(
-    uint32_t    ulPInode,
-    const char *pszName,
-    uint32_t   *pulInode)
+REDSTATUS RedCoreLookup(uint32_t ulPInode, const char *pszName, uint32_t *pulInode)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if((pulInode == NULL) || !gpRedVolume->fMounted)
-    {
+    if ((pulInode == NULL) || !gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else
-    {
+    } else {
         CINODE ino;
 
         ino.ulInode = ulPInode;
         ret = RedInodeMount(&ino, FTYPE_DIR, false);
 
-        if(ret == 0)
-        {
+        if (ret == 0) {
             ret = RedDirEntryLookup(&ino, pszName, NULL, pulInode);
 
             RedInodePut(&ino, 0U);
@@ -1207,7 +1053,6 @@ REDSTATUS RedCoreLookup(
     return ret;
 }
 #endif /* REDCONF_API_POSIX == 1 */
-
 
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_RENAME == 1)
 /** @brief Rename a file or directory.
@@ -1265,47 +1110,34 @@ REDSTATUS RedCoreLookup(
     @retval -RED_EROFS          The directory to be removed resides on a
                                 read-only file system.
 */
-REDSTATUS RedCoreRename(
-    uint32_t    ulSrcPInode,
-    const char *pszSrcName,
-    uint32_t    ulDstPInode,
-    const char *pszDstName)
+REDSTATUS RedCoreRename(uint32_t ulSrcPInode, const char *pszSrcName, uint32_t ulDstPInode,
+                        const char *pszDstName)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted)
-    {
+    if (!gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         ret = CoreRename(ulSrcPInode, pszSrcName, ulDstPInode, pszDstName);
 
-        if(    (ret == -RED_ENOSPC)
-            && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U)
-            && (gpRedCoreVol->ulAlmostFreeBlocks > 0U))
-        {
+        if ((ret == -RED_ENOSPC) && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U) &&
+            (gpRedCoreVol->ulAlmostFreeBlocks > 0U)) {
             ret = RedVolTransact();
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 ret = CoreRename(ulSrcPInode, pszSrcName, ulDstPInode, pszDstName);
             }
         }
 
-        if((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_RENAME) != 0U))
-        {
+        if ((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_RENAME) != 0U)) {
             ret = RedVolTransact();
         }
     }
 
     return ret;
 }
-
 
 /** @brief Rename a file or directory.
 
@@ -1342,55 +1174,45 @@ REDSTATUS RedCoreRename(
     @retval -RED_EROFS          The directory to be removed resides on a
                                 read-only file system.
 */
-static REDSTATUS CoreRename(
-    uint32_t    ulSrcPInode,
-    const char *pszSrcName,
-    uint32_t    ulDstPInode,
-    const char *pszDstName)
+static REDSTATUS CoreRename(uint32_t ulSrcPInode, const char *pszSrcName, uint32_t ulDstPInode,
+                            const char *pszDstName)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(gpRedVolume->fReadOnly)
-    {
+    if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
-        bool    fUpdateTimestamps = false;
-        CINODE  SrcPInode;
+    } else {
+        bool fUpdateTimestamps = false;
+        CINODE SrcPInode;
 
         SrcPInode.ulInode = ulSrcPInode;
         ret = RedInodeMount(&SrcPInode, FTYPE_DIR, true);
 
-        if(ret == 0)
-        {
-            CINODE  DstPInode;
+        if (ret == 0) {
+            CINODE DstPInode;
             CINODE *pDstPInode;
 
-            if(ulSrcPInode == ulDstPInode)
-            {
+            if (ulSrcPInode == ulDstPInode) {
                 pDstPInode = &SrcPInode;
-            }
-            else
-            {
+            } else {
                 pDstPInode = &DstPInode;
                 DstPInode.ulInode = ulDstPInode;
                 ret = RedInodeMount(pDstPInode, FTYPE_DIR, true);
             }
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 /*  Initialize these to zero so we can unconditionally put them,
                     even if RedDirEntryRename() fails before mounting them.
                 */
-                CINODE SrcInode = {0U};
-                CINODE DstInode = {0U};
+                CINODE SrcInode = { 0U };
+                CINODE DstInode = { 0U };
 
-                ret = RedDirEntryRename(&SrcPInode, pszSrcName, &SrcInode, pDstPInode, pszDstName, &DstInode);
+                ret = RedDirEntryRename(&SrcPInode, pszSrcName, &SrcInode, pDstPInode, pszDstName,
+                                        &DstInode);
 
-              #if REDCONF_RENAME_ATOMIC == 1
-                if((ret == 0) && (DstInode.ulInode != INODE_INVALID) && (DstInode.ulInode != SrcInode.ulInode))
-                {
+#if REDCONF_RENAME_ATOMIC == 1
+                if ((ret == 0) && (DstInode.ulInode != INODE_INVALID) &&
+                    (DstInode.ulInode != SrcInode.ulInode)) {
                     /*  If the inode is deleted, buffers are needed to read all
                         of the indirects and free the data blocks.  Before doing
                         that, to reduce the minimum number of buffers needed to
@@ -1404,34 +1226,36 @@ static REDSTATUS CoreRename(
                     CRITICAL_ASSERT(ret == 0);
                 }
 
-                if((ret == 0) && (DstInode.ulInode != SrcInode.ulInode))
-              #else
-                if(ret == 0)
-              #endif
+                if ((ret == 0) && (DstInode.ulInode != SrcInode.ulInode))
+#else
+                if (ret == 0)
+#endif
                 {
                     fUpdateTimestamps = true;
                 }
 
-              #if REDCONF_RENAME_ATOMIC == 1
+#if REDCONF_RENAME_ATOMIC == 1
                 RedInodePut(&DstInode, 0U);
-              #endif
+#endif
 
                 /*  POSIX says updating ctime for the source inode is optional,
                     but searching around it looks like this is common for Linux
                     and other Unix file systems.
                 */
                 RedInodePut(&SrcInode, fUpdateTimestamps ? IPUT_UPDATE_CTIME : 0U);
-                RedInodePut(pDstPInode, fUpdateTimestamps ? (uint8_t)(IPUT_UPDATE_MTIME | IPUT_UPDATE_CTIME) : 0U);
+                RedInodePut(pDstPInode, fUpdateTimestamps ?
+                                            (uint8_t)(IPUT_UPDATE_MTIME | IPUT_UPDATE_CTIME) :
+                                            0U);
             }
         }
 
-        RedInodePut(&SrcPInode, fUpdateTimestamps ? (uint8_t)(IPUT_UPDATE_MTIME | IPUT_UPDATE_CTIME) : 0U);
+        RedInodePut(&SrcPInode,
+                    fUpdateTimestamps ? (uint8_t)(IPUT_UPDATE_MTIME | IPUT_UPDATE_CTIME) : 0U);
     }
 
     return ret;
 }
 #endif /* (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_RENAME == 1) */
-
 
 #if REDCONF_API_POSIX == 1
 /** @brief Get the status of a file or directory.
@@ -1449,43 +1273,37 @@ static REDSTATUS CoreRename(
     @retval -RED_EINVAL The volume is not mounted; @p pStat is `NULL`.
     @retval -RED_EIO    A disk I/O error occurred.
 */
-REDSTATUS RedCoreStat(
-    uint32_t    ulInode,
-    REDSTAT    *pStat)
+REDSTATUS RedCoreStat(uint32_t ulInode, REDSTAT *pStat)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted || (pStat == NULL))
-    {
+    if (!gpRedVolume->fMounted || (pStat == NULL)) {
         ret = -RED_EINVAL;
-    }
-    else
-    {
+    } else {
         CINODE ino;
 
         ino.ulInode = ulInode;
         ret = RedInodeMount(&ino, FTYPE_EITHER, false);
-        if(ret == 0)
-        {
+        if (ret == 0) {
             RedMemSet(pStat, 0U, sizeof(*pStat));
 
             pStat->st_dev = gbRedVolNum;
             pStat->st_ino = ulInode;
             pStat->st_mode = ino.pInodeBuf->uMode;
-          #if REDCONF_API_POSIX_LINK == 1
+#if REDCONF_API_POSIX_LINK == 1
             pStat->st_nlink = ino.pInodeBuf->uNLink;
-          #else
+#else
             pStat->st_nlink = 1U;
-          #endif
+#endif
             pStat->st_size = ino.pInodeBuf->ullSize;
-          #if REDCONF_INODE_TIMESTAMPS == 1
+#if REDCONF_INODE_TIMESTAMPS == 1
             pStat->st_atime = ino.pInodeBuf->ulATime;
             pStat->st_mtime = ino.pInodeBuf->ulMTime;
             pStat->st_ctime = ino.pInodeBuf->ulCTime;
-          #endif
-          #if REDCONF_INODE_BLOCKS == 1
+#endif
+#if REDCONF_INODE_BLOCKS == 1
             pStat->st_blocks = ino.pInodeBuf->ulBlocks;
-          #endif
+#endif
 
             RedInodePut(&ino, 0U);
         }
@@ -1494,7 +1312,6 @@ REDSTATUS RedCoreStat(
     return ret;
 }
 #endif /* REDCONF_API_POSIX == 1 */
-
 
 #if REDCONF_API_FSE == 1
 /** @brief Get the size of a file.
@@ -1510,24 +1327,18 @@ REDSTATUS RedCoreStat(
     @retval -RED_EIO    A disk I/O error occurred.
     @retval -RED_EISDIR @p ulInode is a directory inode.
 */
-REDSTATUS RedCoreFileSizeGet(
-    uint32_t    ulInode,
-    uint64_t   *pullSize)
+REDSTATUS RedCoreFileSizeGet(uint32_t ulInode, uint64_t *pullSize)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted || (pullSize == NULL))
-    {
+    if (!gpRedVolume->fMounted || (pullSize == NULL)) {
         ret = -RED_EINVAL;
-    }
-    else
-    {
+    } else {
         CINODE ino;
 
         ino.ulInode = ulInode;
         ret = RedInodeMount(&ino, FTYPE_FILE, false);
-        if(ret == 0)
-        {
+        if (ret == 0) {
             *pullSize = ino.pInodeBuf->ullSize;
 
             RedInodePut(&ino, 0U);
@@ -1537,7 +1348,6 @@ REDSTATUS RedCoreFileSizeGet(
     return ret;
 }
 #endif /* REDCONF_API_FSE == 1 */
-
 
 /** @brief Read from a file.
 
@@ -1566,44 +1376,35 @@ REDSTATUS RedCoreFileSizeGet(
     @retval -RED_EIO    A disk I/O error occurred.
     @retval -RED_EISDIR The inode is a directory inode.
 */
-REDSTATUS RedCoreFileRead(
-    uint32_t    ulInode,
-    uint64_t    ullStart,
-    uint32_t   *pulLen,
-    void       *pBuffer)
+REDSTATUS RedCoreFileRead(uint32_t ulInode, uint64_t ullStart, uint32_t *pulLen, void *pBuffer)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted || (pulLen == NULL))
-    {
+    if (!gpRedVolume->fMounted || (pulLen == NULL)) {
         ret = -RED_EINVAL;
-    }
-    else
-    {
-      #if (REDCONF_ATIME == 1) && (REDCONF_READ_ONLY == 0)
-        bool    fUpdateAtime = (*pulLen > 0U) && !gpRedVolume->fReadOnly;
-      #else
-        bool    fUpdateAtime = false;
-      #endif
-        CINODE  ino;
+    } else {
+#if (REDCONF_ATIME == 1) && (REDCONF_READ_ONLY == 0)
+        bool fUpdateAtime = (*pulLen > 0U) && !gpRedVolume->fReadOnly;
+#else
+        bool fUpdateAtime = false;
+#endif
+        CINODE ino;
 
         ino.ulInode = ulInode;
         ret = RedInodeMount(&ino, FTYPE_FILE, fUpdateAtime);
-        if(ret == 0)
-        {
+        if (ret == 0) {
             ret = RedInodeDataRead(&ino, ullStart, pulLen, pBuffer);
 
-          #if (REDCONF_ATIME == 1) && (REDCONF_READ_ONLY == 0)
+#if (REDCONF_ATIME == 1) && (REDCONF_READ_ONLY == 0)
             RedInodePut(&ino, ((ret == 0) && fUpdateAtime) ? IPUT_UPDATE_ATIME : 0U);
-          #else
+#else
             RedInodePut(&ino, 0U);
-          #endif
+#endif
         }
     }
 
     return ret;
 }
-
 
 #if REDCONF_READ_ONLY == 0
 /** @brief Write to a file.
@@ -1642,47 +1443,34 @@ REDSTATUS RedCoreFileRead(
                         free space.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-REDSTATUS RedCoreFileWrite(
-    uint32_t    ulInode,
-    uint64_t    ullStart,
-    uint32_t   *pulLen,
-    const void *pBuffer)
+REDSTATUS RedCoreFileWrite(uint32_t ulInode, uint64_t ullStart, uint32_t *pulLen,
+                           const void *pBuffer)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted)
-    {
+    if (!gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         ret = CoreFileWrite(ulInode, ullStart, pulLen, pBuffer);
 
-        if(    (ret == -RED_ENOSPC)
-            && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U)
-            && (gpRedCoreVol->ulAlmostFreeBlocks > 0U))
-        {
+        if ((ret == -RED_ENOSPC) && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U) &&
+            (gpRedCoreVol->ulAlmostFreeBlocks > 0U)) {
             ret = RedVolTransact();
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 ret = CoreFileWrite(ulInode, ullStart, pulLen, pBuffer);
             }
         }
 
-        if((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_WRITE) != 0U))
-        {
+        if ((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_WRITE) != 0U)) {
             ret = RedVolTransact();
         }
     }
 
     return ret;
 }
-
 
 /** @brief Write to a file.
 
@@ -1706,26 +1494,19 @@ REDSTATUS RedCoreFileWrite(
                         free space.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-static REDSTATUS CoreFileWrite(
-    uint32_t    ulInode,
-    uint64_t    ullStart,
-    uint32_t   *pulLen,
-    const void *pBuffer)
+static REDSTATUS CoreFileWrite(uint32_t ulInode, uint64_t ullStart, uint32_t *pulLen,
+                               const void *pBuffer)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(gpRedVolume->fReadOnly)
-    {
+    if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         CINODE ino;
 
         ino.ulInode = ulInode;
         ret = RedInodeMount(&ino, FTYPE_FILE, true);
-        if(ret == 0)
-        {
+        if (ret == 0) {
             ret = RedInodeDataWrite(&ino, ullStart, pulLen, pBuffer);
 
             RedInodePut(&ino, (ret == 0) ? (uint8_t)(IPUT_UPDATE_MTIME | IPUT_UPDATE_CTIME) : 0U);
@@ -1735,7 +1516,6 @@ static REDSTATUS CoreFileWrite(
     return ret;
 }
 #endif /* REDCONF_READ_ONLY == 0 */
-
 
 #if TRUNCATE_SUPPORTED
 /** @brief Set the file size.
@@ -1760,45 +1540,33 @@ static REDSTATUS CoreFileWrite(
     @retval -RED_ENOSPC Insufficient free space to perform the truncate.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-REDSTATUS RedCoreFileTruncate(
-    uint32_t    ulInode,
-    uint64_t    ullSize)
+REDSTATUS RedCoreFileTruncate(uint32_t ulInode, uint64_t ullSize)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted)
-    {
+    if (!gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else if(gpRedVolume->fReadOnly)
-    {
+    } else if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
+    } else {
         ret = CoreFileTruncate(ulInode, ullSize);
 
-        if(    (ret == -RED_ENOSPC)
-            && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U)
-            && (gpRedCoreVol->ulAlmostFreeBlocks > 0U))
-        {
+        if ((ret == -RED_ENOSPC) && ((gpRedVolume->ulTransMask & RED_TRANSACT_VOLFULL) != 0U) &&
+            (gpRedCoreVol->ulAlmostFreeBlocks > 0U)) {
             ret = RedVolTransact();
 
-            if(ret == 0)
-            {
+            if (ret == 0) {
                 ret = CoreFileTruncate(ulInode, ullSize);
             }
         }
 
-        if((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_TRUNCATE) != 0U))
-        {
+        if ((ret == 0) && ((gpRedVolume->ulTransMask & RED_TRANSACT_TRUNCATE) != 0U)) {
             ret = RedVolTransact();
         }
     }
 
     return ret;
 }
-
 
 /** @brief Set the file size.
 
@@ -1815,33 +1583,27 @@ REDSTATUS RedCoreFileTruncate(
     @retval -RED_ENOSPC Insufficient free space to perform the truncate.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-static REDSTATUS CoreFileTruncate(
-    uint32_t    ulInode,
-    uint64_t    ullSize)
+static REDSTATUS CoreFileTruncate(uint32_t ulInode, uint64_t ullSize)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(gpRedVolume->fReadOnly)
-    {
+    if (gpRedVolume->fReadOnly) {
         ret = -RED_EROFS;
-    }
-    else
-    {
-        CINODE      ino;
+    } else {
+        CINODE ino;
 
         ino.ulInode = ulInode;
         ret = RedInodeMount(&ino, FTYPE_FILE, true);
-        if(ret == 0)
-        {
-          #if RESERVED_BLOCKS > 0U
+        if (ret == 0) {
+#if RESERVED_BLOCKS > 0U
             gpRedCoreVol->fUseReservedBlocks = (ullSize < ino.pInodeBuf->ullSize);
-          #endif
+#endif
 
             ret = RedInodeDataTruncate(&ino, ullSize);
 
-          #if RESERVED_BLOCKS > 0U
+#if RESERVED_BLOCKS > 0U
             gpRedCoreVol->fUseReservedBlocks = false;
-          #endif
+#endif
 
             RedInodePut(&ino, (ret == 0) ? (uint8_t)(IPUT_UPDATE_MTIME | IPUT_UPDATE_CTIME) : 0U);
         }
@@ -1850,7 +1612,6 @@ static REDSTATUS CoreFileTruncate(
     return ret;
 }
 #endif /* TRUNCATE_SUPPORTED */
-
 
 #if (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_READDIR == 1)
 /** @brief Read from a directory.
@@ -1879,43 +1640,33 @@ static REDSTATUS CoreFileTruncate(
     @retval -RED_ENOENT     There are no more entries in the directory.
     @retval -RED_ENOTDIR    @p ulInode refers to a file.
 */
-REDSTATUS RedCoreDirRead(
-    uint32_t    ulInode,
-    uint32_t   *pulPos,
-    char       *pszName,
-    uint32_t   *pulInode)
+REDSTATUS RedCoreDirRead(uint32_t ulInode, uint32_t *pulPos, char *pszName, uint32_t *pulInode)
 {
-    REDSTATUS   ret;
+    REDSTATUS ret;
 
-    if(!gpRedVolume->fMounted)
-    {
+    if (!gpRedVolume->fMounted) {
         ret = -RED_EINVAL;
-    }
-    else
-    {
+    } else {
         CINODE ino;
 
         ino.ulInode = ulInode;
         ret = RedInodeMount(&ino, FTYPE_DIR, false);
 
-        if(ret == 0)
-        {
+        if (ret == 0) {
             ret = RedDirEntryRead(&ino, pulPos, pszName, pulInode);
 
-          #if (REDCONF_ATIME == 1) && (REDCONF_READ_ONLY == 0)
-            if((ret == 0) && !gpRedVolume->fReadOnly)
-            {
+#if (REDCONF_ATIME == 1) && (REDCONF_READ_ONLY == 0)
+            if ((ret == 0) && !gpRedVolume->fReadOnly) {
                 ret = RedInodeBranch(&ino);
             }
 
             RedInodePut(&ino, ((ret == 0) && !gpRedVolume->fReadOnly) ? IPUT_UPDATE_ATIME : 0U);
-          #else
+#else
             RedInodePut(&ino, 0U);
-          #endif
+#endif
         }
     }
 
     return ret;
 }
 #endif /* (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_READDIR == 1) */
-

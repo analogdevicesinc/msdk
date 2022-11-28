@@ -19,14 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 #ifndef CTAO_CRYPT_ERROR_H
 #define CTAO_CRYPT_ERROR_H
 
 /* for name change and fips compatibility @wc_fips */
 #include <wolfssl/wolfcrypt/error-crypt.h>
-#define CTaoCryptErrorString    wc_ErrorString
+#define CTaoCryptErrorString wc_ErrorString
 #define CTaoCryptGetErrorString wc_GetErrorString
 
 #endif /* CTAO_CRYPT_ERROR_H */
-

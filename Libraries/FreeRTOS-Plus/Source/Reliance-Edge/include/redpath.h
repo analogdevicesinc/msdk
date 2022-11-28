@@ -28,11 +28,8 @@
 #ifndef REDPATH_H
 #define REDPATH_H
 
-
 REDSTATUS RedPathSplit(const char *pszPath, uint8_t *pbVolNum, const char **ppszLocalPath);
 REDSTATUS RedPathLookup(const char *pszLocalPath, uint32_t *pulInode);
 REDSTATUS RedPathToName(const char *pszLocalPath, uint32_t *pulPInode, const char **ppszName);
 
-
 #endif
-

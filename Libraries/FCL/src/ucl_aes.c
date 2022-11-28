@@ -38,21 +38,18 @@
 #include <ucl/ucl_aes.h>
 int ucl_aes(u8 *dst, u8 *src, u8 *key, u32 keylen, int mode)
 {
-  int resu;
-  AES_KEY aeskey;
+    int resu;
+    AES_KEY aeskey;
 
-  if (mode == UCL_CIPHER_ENCRYPT)
-    {
-      aes_set_ekey(&aeskey, key, keylen);
-      return(aes_encrypt(dst, src, &aeskey));
+    if (mode == UCL_CIPHER_ENCRYPT) {
+        aes_set_ekey(&aeskey, key, keylen);
+        return (aes_encrypt(dst, src, &aeskey));
     }
 
-  else if (mode == UCL_CIPHER_DECRYPT)
-    {
-      aes_set_dkey(&aeskey, key, keylen);
-      return(aes_decrypt(dst, src, &aeskey)); 
-    }
-  else
-    return(UCL_INVALID_ARG);
-  return UCL_OK;
+    else if (mode == UCL_CIPHER_DECRYPT) {
+        aes_set_dkey(&aeskey, key, keylen);
+        return (aes_decrypt(dst, src, &aeskey));
+    } else
+        return (UCL_INVALID_ARG);
+    return UCL_OK;
 }

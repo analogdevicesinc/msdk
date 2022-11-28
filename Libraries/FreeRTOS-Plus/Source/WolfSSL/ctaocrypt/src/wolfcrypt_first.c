@@ -22,7 +22,7 @@
 /* This file needs to be linked first in order to work correctly */
 
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+#include <config.h>
 #endif
 
 /* in case user set HAVE_FIPS there */
@@ -31,9 +31,7 @@
 #ifdef HAVE_FIPS
 
 /* read only start address */
-const unsigned int wolfCrypt_FIPS_ro_start[] =
-{ 0x1a2b3c4d, 0x00000001 };
-
+const unsigned int wolfCrypt_FIPS_ro_start[] = { 0x1a2b3c4d, 0x00000001 };
 
 /* first function of text/code segment */
 int wolfCrypt_FIPS_first(void);
@@ -42,6 +40,4 @@ int wolfCrypt_FIPS_first(void)
     return 0;
 }
 
-
 #endif /* HAVE_FIPS */
-

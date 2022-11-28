@@ -54,36 +54,36 @@
 #ifdef ECDSA
 void test_ecdsa(void)
 {
-  PRINTF("ECDSA testing----------\n");
-  if(UCL_OK==test_ecdsa_curves())
-    PRINTF("OK\n");
-  else
-    PRINTF("NOK\n");
-  PRINTF("\n");
+    PRINTF("ECDSA testing----------\n");
+    if (UCL_OK == test_ecdsa_curves())
+        PRINTF("OK\n");
+    else
+        PRINTF("NOK\n");
+    PRINTF("\n");
 }
-#endif//ECDSA
+#endif //ECDSA
 
 int ucl_testing(void)
 {
-  int result=UCL_OK;
+    int result = UCL_OK;
 
-  PRINTF("FCL testing\n");
-  ucl_init();
-  test_sha(); 
-  //  test_aes();
+    PRINTF("FCL testing\n");
+    ucl_init();
+    test_sha();
+    //  test_aes();
 #ifdef ECDSA
-  test_ecdsa();
+    test_ecdsa();
 #endif
- return result;
+    return result;
 }
 
 int main(void)
 {
-  int result=UCL_OK;
-  PRINTF("FCL validation tool %d %d %d\n",MAJVER,MINVER,ZVER);
-  ucl_testing();
+    int result = UCL_OK;
+    PRINTF("FCL validation tool %d %d %d\n", MAJVER, MINVER, ZVER);
+    ucl_testing();
 
-  PRINTF("this is the end...\n");
+    PRINTF("this is the end...\n");
 
-  return result;
+    return result;
 }

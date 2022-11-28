@@ -30,32 +30,30 @@
 #include <wolfssl/wolfcrypt/random.h>
 
 #ifdef __cplusplus
-    extern "C" {
+extern "C" {
 #endif
 
 enum {
-    ECC_PUBLICKEY  = 1,
+    ECC_PUBLICKEY = 1,
     ECC_PRIVATEKEY = 2,
-    ECC_MAXNAME    = 16,     /* MAX CURVE NAME LENGTH */
-    SIG_HEADER_SZ  =  6,     /* ECC signature header size */
-    ECC_BUFSIZE    = 256,    /* for exported keys temp buffer */
-    ECC_MINSIZE    = 20,     /* MIN Private Key size */
-    ECC_MAXSIZE    = 66      /* MAX Private Key size */
+    ECC_MAXNAME = 16, /* MAX CURVE NAME LENGTH */
+    SIG_HEADER_SZ = 6, /* ECC signature header size */
+    ECC_BUFSIZE = 256, /* for exported keys temp buffer */
+    ECC_MINSIZE = 20, /* MIN Private Key size */
+    ECC_MAXSIZE = 66 /* MAX Private Key size */
 };
-
 
 /* ECC set type defined a NIST GF(p) curve */
 typedef struct {
-    int size;       /* The size of the curve in octets */
-    const char* name;     /* name of this curve */
-    const char* prime;    /* prime that defines the field, curve is in (hex) */
-    const char* Af;       /* fields A param (hex) */
-    const char* Bf;       /* fields B param (hex) */
-    const char* order;    /* order of the curve (hex) */
-    const char* Gx;       /* x coordinate of the base point on curve (hex) */
-    const char* Gy;       /* y coordinate of the base point on curve (hex) */
+    int size; /* The size of the curve in octets */
+    const char *name; /* name of this curve */
+    const char *prime; /* prime that defines the field, curve is in (hex) */
+    const char *Af; /* fields A param (hex) */
+    const char *Bf; /* fields B param (hex) */
+    const char *order; /* order of the curve (hex) */
+    const char *Gx; /* x coordinate of the base point on curve (hex) */
+    const char *Gy; /* y coordinate of the base point on curve (hex) */
 } ecc_set_type;
-
 
 #ifdef ALT_ECC_SIZE
 
@@ -83,13 +81,13 @@ typedef struct {
  */
 
 #ifndef FP_MAX_BITS_ECC
-    #define FP_MAX_BITS_ECC           512
+#define FP_MAX_BITS_ECC 512
 #endif
-#define FP_MAX_SIZE_ECC           (FP_MAX_BITS_ECC+(8*DIGIT_BIT))
+#define FP_MAX_SIZE_ECC (FP_MAX_BITS_ECC + (8 * DIGIT_BIT))
 #if FP_MAX_BITS_ECC % CHAR_BIT
-   #error FP_MAX_BITS_ECC must be a multiple of CHAR_BIT
+#error FP_MAX_BITS_ECC must be a multiple of CHAR_BIT
 #endif
-#define FP_SIZE_ECC    (FP_MAX_SIZE_ECC/DIGIT_BIT)
+#define FP_SIZE_ECC (FP_MAX_SIZE_ECC / DIGIT_BIT)
 
 /* This needs to match the size of the fp_int struct, except the
  * fp_digit array will be shorter. */
@@ -103,142 +101,132 @@ typedef struct alt_fp_int {
    (x/z^2, y/z^3, 1) when interpreted as affine */
 typedef struct {
 #ifndef ALT_ECC_SIZE
-    mp_int x[1];        /* The x coordinate */
-    mp_int y[1];        /* The y coordinate */
-    mp_int z[1];        /* The z coordinate */
+    mp_int x[1]; /* The x coordinate */
+    mp_int y[1]; /* The y coordinate */
+    mp_int z[1]; /* The z coordinate */
 #else
-    mp_int* x;        /* The x coordinate */
-    mp_int* y;        /* The y coordinate */
-    mp_int* z;        /* The z coordinate */
+    mp_int *x; /* The x coordinate */
+    mp_int *y; /* The y coordinate */
+    mp_int *z; /* The z coordinate */
     alt_fp_int xyz[3];
 #endif
 } ecc_point;
 
-
 /* An ECC Key */
 typedef struct {
-    int type;           /* Public or Private */
-    int idx;            /* Index into the ecc_sets[] for the parameters of
+    int type; /* Public or Private */
+    int idx; /* Index into the ecc_sets[] for the parameters of
                            this curve if -1, this key is using user supplied
                            curve in dp */
-    const ecc_set_type* dp;     /* domain parameters, either points to NIST
+    const ecc_set_type *dp; /* domain parameters, either points to NIST
                                    curves (idx >= 0) or user supplied */
-    ecc_point pubkey;   /* public key */
-    mp_int    k;        /* private key */
+    ecc_point pubkey; /* public key */
+    mp_int k; /* private key */
 } ecc_key;
-
 
 /* ECC predefined curve sets  */
 extern const ecc_set_type ecc_sets[];
 
-
 WOLFSSL_API
-int wc_ecc_make_key(RNG* rng, int keysize, ecc_key* key);
+int wc_ecc_make_key(RNG *rng, int keysize, ecc_key *key);
 WOLFSSL_API
-int wc_ecc_check_key(ecc_key* key);
+int wc_ecc_check_key(ecc_key *key);
 WOLFSSL_API
-int wc_ecc_shared_secret(ecc_key* private_key, ecc_key* public_key, byte* out,
-                      word32* outlen);
+int wc_ecc_shared_secret(ecc_key *private_key, ecc_key *public_key, byte *out, word32 *outlen);
 WOLFSSL_API
-int wc_ecc_sign_hash(const byte* in, word32 inlen, byte* out, word32 *outlen, 
-                  RNG* rng, ecc_key* key);
+int wc_ecc_sign_hash(const byte *in, word32 inlen, byte *out, word32 *outlen, RNG *rng,
+                     ecc_key *key);
 WOLFSSL_API
-int wc_ecc_verify_hash(const byte* sig, word32 siglen, const byte* hash,
-                    word32 hashlen, int* stat, ecc_key* key);
+int wc_ecc_verify_hash(const byte *sig, word32 siglen, const byte *hash, word32 hashlen, int *stat,
+                       ecc_key *key);
 WOLFSSL_API
-int wc_ecc_init(ecc_key* key);
+int wc_ecc_init(ecc_key *key);
 WOLFSSL_API
-void wc_ecc_free(ecc_key* key);
+void wc_ecc_free(ecc_key *key);
 WOLFSSL_API
 void wc_ecc_fp_free(void);
 
-
 /* ASN key helpers */
 WOLFSSL_API
-int wc_ecc_export_x963(ecc_key*, byte* out, word32* outLen);
+int wc_ecc_export_x963(ecc_key *, byte *out, word32 *outLen);
 WOLFSSL_API
-int wc_ecc_export_x963_ex(ecc_key*, byte* out, word32* outLen, int compressed);
-    /* extended functionality with compressed option */
+int wc_ecc_export_x963_ex(ecc_key *, byte *out, word32 *outLen, int compressed);
+/* extended functionality with compressed option */
 WOLFSSL_API
-int wc_ecc_import_x963(const byte* in, word32 inLen, ecc_key* key);
+int wc_ecc_import_x963(const byte *in, word32 inLen, ecc_key *key);
 WOLFSSL_API
-int wc_ecc_import_private_key(const byte* priv, word32 privSz, const byte* pub,
-                           word32 pubSz, ecc_key* key);
+int wc_ecc_import_private_key(const byte *priv, word32 privSz, const byte *pub, word32 pubSz,
+                              ecc_key *key);
 WOLFSSL_API
-int wc_ecc_rs_to_sig(const char* r, const char* s, byte* out, word32* outlen);
+int wc_ecc_rs_to_sig(const char *r, const char *s, byte *out, word32 *outlen);
 WOLFSSL_API
-int wc_ecc_import_raw(ecc_key* key, const char* qx, const char* qy,
-                   const char* d, const char* curveName);
+int wc_ecc_import_raw(ecc_key *key, const char *qx, const char *qy, const char *d,
+                      const char *curveName);
 
 WOLFSSL_API
-int wc_ecc_export_private_only(ecc_key* key, byte* out, word32* outLen);
+int wc_ecc_export_private_only(ecc_key *key, byte *out, word32 *outLen);
 
 /* size helper */
 WOLFSSL_API
-int wc_ecc_size(ecc_key* key);
+int wc_ecc_size(ecc_key *key);
 WOLFSSL_API
-int wc_ecc_sig_size(ecc_key* key);
-
+int wc_ecc_sig_size(ecc_key *key);
 
 #ifdef HAVE_ECC_ENCRYPT
 /* ecc encrypt */
 
 enum ecEncAlgo {
-    ecAES_128_CBC = 1,  /* default */
+    ecAES_128_CBC = 1, /* default */
     ecAES_256_CBC = 2
 };
 
 enum ecKdfAlgo {
-    ecHKDF_SHA256 = 1,  /* default */
-    ecHKDF_SHA1   = 2
+    ecHKDF_SHA256 = 1, /* default */
+    ecHKDF_SHA1 = 2
 };
 
 enum ecMacAlgo {
-    ecHMAC_SHA256 = 1,  /* default */
-    ecHMAC_SHA1   = 2
+    ecHMAC_SHA256 = 1, /* default */
+    ecHMAC_SHA1 = 2
 };
 
 enum {
-    KEY_SIZE_128     = 16,
-    KEY_SIZE_256     = 32,
-    IV_SIZE_64       =  8,
+    KEY_SIZE_128 = 16,
+    KEY_SIZE_256 = 32,
+    IV_SIZE_64 = 8,
     EXCHANGE_SALT_SZ = 16,
     EXCHANGE_INFO_SZ = 23
 };
 
-enum ecFlags {
-    REQ_RESP_CLIENT = 1,
-    REQ_RESP_SERVER = 2
-};
-
+enum ecFlags { REQ_RESP_CLIENT = 1, REQ_RESP_SERVER = 2 };
 
 typedef struct ecEncCtx ecEncCtx;
 
 WOLFSSL_API
-ecEncCtx* wc_ecc_ctx_new(int flags, RNG* rng);
+ecEncCtx *wc_ecc_ctx_new(int flags, RNG *rng);
 WOLFSSL_API
-void wc_ecc_ctx_free(ecEncCtx*);
+void wc_ecc_ctx_free(ecEncCtx *);
 WOLFSSL_API
-int wc_ecc_ctx_reset(ecEncCtx*, RNG*);   /* reset for use again w/o alloc/free */
+int wc_ecc_ctx_reset(ecEncCtx *, RNG *); /* reset for use again w/o alloc/free */
 
 WOLFSSL_API
-const byte* wc_ecc_ctx_get_own_salt(ecEncCtx*);
+const byte *wc_ecc_ctx_get_own_salt(ecEncCtx *);
 WOLFSSL_API
-int wc_ecc_ctx_set_peer_salt(ecEncCtx*, const byte* salt);
+int wc_ecc_ctx_set_peer_salt(ecEncCtx *, const byte *salt);
 WOLFSSL_API
-int wc_ecc_ctx_set_info(ecEncCtx*, const byte* info, int sz);
+int wc_ecc_ctx_set_info(ecEncCtx *, const byte *info, int sz);
 
 WOLFSSL_API
-int wc_ecc_encrypt(ecc_key* privKey, ecc_key* pubKey, const byte* msg,
-                word32 msgSz, byte* out, word32* outSz, ecEncCtx* ctx);
+int wc_ecc_encrypt(ecc_key *privKey, ecc_key *pubKey, const byte *msg, word32 msgSz, byte *out,
+                   word32 *outSz, ecEncCtx *ctx);
 WOLFSSL_API
-int wc_ecc_decrypt(ecc_key* privKey, ecc_key* pubKey, const byte* msg,
-                word32 msgSz, byte* out, word32* outSz, ecEncCtx* ctx);
+int wc_ecc_decrypt(ecc_key *privKey, ecc_key *pubKey, const byte *msg, word32 msgSz, byte *out,
+                   word32 *outSz, ecEncCtx *ctx);
 
 #endif /* HAVE_ECC_ENCRYPT */
 
 #ifdef __cplusplus
-    }    /* extern "C" */
+} /* extern "C" */
 #endif
 
 #endif /* HAVE_ECC */

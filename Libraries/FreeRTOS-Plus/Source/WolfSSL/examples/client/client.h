@@ -21,5 +21,4 @@
 
 #pragma once
 
-THREAD_RETURN WOLFSSL_THREAD client_test(void* args);
-
+THREAD_RETURN WOLFSSL_THREAD client_test(void *args);

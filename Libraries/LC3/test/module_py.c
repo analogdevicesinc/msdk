@@ -39,15 +39,24 @@ PyMODINIT_FUNC PyInit_lc3(void)
 {
     PyObject *m = PyModule_Create(&module_def);
 
-    if (m) m = lc3_mdct_py_init(m);
-    if (m) m = lc3_energy_py_init(m);
-    if (m) m = lc3_attdet_py_init(m);
-    if (m) m = lc3_bwdet_py_init(m);
-    if (m) m = lc3_ltpf_py_init(m);
-    if (m) m = lc3_sns_py_init(m);
-    if (m) m = lc3_tns_py_init(m);
-    if (m) m = lc3_spec_py_init(m);
-    if (m) m = lc3_interface_py_init(m);
+    if (m)
+        m = lc3_mdct_py_init(m);
+    if (m)
+        m = lc3_energy_py_init(m);
+    if (m)
+        m = lc3_attdet_py_init(m);
+    if (m)
+        m = lc3_bwdet_py_init(m);
+    if (m)
+        m = lc3_ltpf_py_init(m);
+    if (m)
+        m = lc3_sns_py_init(m);
+    if (m)
+        m = lc3_tns_py_init(m);
+    if (m)
+        m = lc3_spec_py_init(m);
+    if (m)
+        m = lc3_interface_py_init(m);
 
     return m;
 }

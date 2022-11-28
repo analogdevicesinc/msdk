@@ -51,11 +51,9 @@
 #include "lwip/ip6_addr.h"
 #include "lwip/netif.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 err_t ethip6_output(struct netif *netif, struct pbuf *q, const ip6_addr_t *ip6addr);
 

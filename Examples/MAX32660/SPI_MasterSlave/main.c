@@ -74,7 +74,7 @@ uint8_t slave_tx[DATA_LEN];
 /***** Functions *****/
 void unblk_spi(void)
 {
-	/*
+    /*
 	 * To initialize SPI0, it's CS must be de-asserted. However,
 	 * SPIMSS does not take control of the state of the CS pin
 	 * until the MXC_SPIMSS_MasterTrans function and by default
@@ -83,14 +83,14 @@ void unblk_spi(void)
 	 * the CS line here. This does not need to be done for normal
 	 * SPI applications.
 	 */
-	mxc_gpio_cfg_t spimss_cs;
-	spimss_cs.port = MXC_GPIO0;
-	spimss_cs.mask = MXC_GPIO_PIN_13;
-	spimss_cs.func = MXC_GPIO_FUNC_OUT;
-	spimss_cs.pad = MXC_GPIO_PAD_NONE;
+    mxc_gpio_cfg_t spimss_cs;
+    spimss_cs.port = MXC_GPIO0;
+    spimss_cs.mask = MXC_GPIO_PIN_13;
+    spimss_cs.func = MXC_GPIO_FUNC_OUT;
+    spimss_cs.pad = MXC_GPIO_PAD_NONE;
 
-	MXC_GPIO_Config(&spimss_cs);
-	MXC_GPIO_OutSet(spimss_cs.port, spimss_cs.mask);
+    MXC_GPIO_Config(&spimss_cs);
+    MXC_GPIO_OutSet(spimss_cs.port, spimss_cs.mask);
 }
 
 void SPI_Slave_IRQHandler(void)
@@ -111,7 +111,7 @@ int main(void)
     printf("LED will illuminate.\n\n");
 
     printf("Press SW2 to begin transaction.\n\n");
-    while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)));
+    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
     Console_Shutdown(); // Console UART shares pins with SPIMSS so de-initialize it here.
     while (!PB_Get(0)) {}
 
@@ -124,17 +124,17 @@ int main(void)
     memset(slave_rx, 0x0, DATA_LEN * sizeof(uint8_t));
 
     /***** Configure slave (SPI0) *****/
-	if (MXC_SPI_Init(SPI_SLAVE, 0, 0, 1, 0, SPI_SPEED) != E_NO_ERROR) {
-		printf("\nSPI SLAVE INITIALIZATION ERROR\n");
-		while (1) {}
-	}
+    if (MXC_SPI_Init(SPI_SLAVE, 0, 0, 1, 0, SPI_SPEED) != E_NO_ERROR) {
+        printf("\nSPI SLAVE INITIALIZATION ERROR\n");
+        while (1) {}
+    }
 
-	unblk_spi();
-	MXC_SPI_SetDataSize(SPI_SLAVE, DATA_SIZE);
-	MXC_SPI_SetWidth(SPI_SLAVE, SPI_WIDTH_STANDARD);
+    unblk_spi();
+    MXC_SPI_SetDataSize(SPI_SLAVE, DATA_SIZE);
+    MXC_SPI_SetWidth(SPI_SLAVE, SPI_WIDTH_STANDARD);
 
-	MXC_NVIC_SetVector(SPI_SLAVE_IRQ, SPI_Slave_IRQHandler);
-	NVIC_EnableIRQ(SPI_SLAVE_IRQ);
+    MXC_NVIC_SetVector(SPI_SLAVE_IRQ, SPI_Slave_IRQHandler);
+    NVIC_EnableIRQ(SPI_SLAVE_IRQ);
 
     /***** Configure master (SPIMSS) *****/
     if (MXC_SPIMSS_Init(SPI_MASTER, 0, SPI_SPEED, MAP_A) != E_NO_ERROR) {

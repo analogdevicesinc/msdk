@@ -75,7 +75,7 @@ extern "C" {
  *
  * @ingroup UCL_ECB_AES
  */
-int ucl_aes_ecb(u8 *dst, u8 *src, u32 len, u8 *key, u32 keylen,int mode);
+int ucl_aes_ecb(u8 *dst, u8 *src, u32 len, u8 *key, u32 keylen, int mode);
 
 /** <b>AES-ECB Init</b>.
  * Initialise AES ECB Context.
@@ -160,8 +160,7 @@ int ucl_aes_ecb_finish(ucl_aes_ctx_t *ctx);
  *          #UCL_AES_BLOCKSIZE
  *
  * @ingroup UCL_ECB_AES */
-  int ucl_aes_ecb_core_context(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len);
-
+int ucl_aes_ecb_core_context(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len);
 
 #ifdef __cplusplus
 }

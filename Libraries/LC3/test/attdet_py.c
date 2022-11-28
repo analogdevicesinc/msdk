@@ -29,8 +29,7 @@ static PyObject *attdet_run_py(PyObject *m, PyObject *args)
     struct lc3_attdet_analysis attdet = { 0 };
     int16_t *x;
 
-    if (!PyArg_ParseTuple(args, "IIIOO",
-                &dt, &sr, &nbytes, &attdet_obj, &x_obj))
+    if (!PyArg_ParseTuple(args, "IIIOO", &dt, &sr, &nbytes, &attdet_obj, &x_obj))
         return NULL;
 
     CTYPES_CHECK("dt", (unsigned)dt < LC3_NUM_DT);
@@ -39,9 +38,9 @@ static PyObject *attdet_run_py(PyObject *m, PyObject *args)
 
     int ns = LC3_NS(dt, sr);
 
-    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_INT16, ns+6, &x));
+    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_INT16, ns + 6, &x));
 
-    int att = lc3_attdet_run(dt, sr, nbytes, &attdet, x+6);
+    int att = lc3_attdet_run(dt, sr, nbytes, &attdet, x + 6);
 
     from_attdet_analysis(attdet_obj, &attdet);
     return Py_BuildValue("i", att);
