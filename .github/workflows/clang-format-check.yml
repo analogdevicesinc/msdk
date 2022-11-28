@@ -65,7 +65,7 @@ jobs:
             if [ $? != 0 ];
             then
               echo "===================================================="
-              echo "\e[0;31mFAIL: \e[1;35m${change_file}\e[0m"
+              echo "\033[0;31mFAIL: \033[1;35m${change_file}\033[0m"
               echo "----------------------------------------------------"
               echo "Expected:"
               clang-format-${CLANG_VERSION} --style=file ${change_file} > ${change_file}.clang
