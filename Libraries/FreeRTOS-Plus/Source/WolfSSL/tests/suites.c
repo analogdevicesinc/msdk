@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+    #include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
@@ -31,30 +31,33 @@
 #include <wolfssl/ssl.h>
 #include <tests/unit.h>
 
+
 #define MAX_ARGS 40
 #define MAX_COMMAND_SZ 240
-#define MAX_SUITE_SZ 80
+#define MAX_SUITE_SZ 80 
 #define NOT_BUILT_IN -123
 #ifdef NO_OLD_TLS
-#define VERSION_TOO_OLD -124
+    #define VERSION_TOO_OLD -124
 #endif
 
 #include "examples/client/client.h"
 #include "examples/server/server.h"
 
-static WOLFSSL_CTX *cipherSuiteCtx = NULL;
+
+static WOLFSSL_CTX* cipherSuiteCtx = NULL;
 static char nonblockFlag[] = "-N";
 static char noVerifyFlag[] = "-d";
 static char portFlag[] = "-p";
 static char flagSep[] = " ";
 static char svrPort[] = "0";
 
+
 #ifdef NO_OLD_TLS
 /* if the protocol version is less than tls 1.2 return 1, else 0 */
-static int IsOldTlsVersion(const char *line)
+static int IsOldTlsVersion(const char* line)
 {
-    const char *find = "-v ";
-    char *begin = strstr(line, find);
+    const char* find = "-v ";
+    char* begin = strstr(line, find);
 
     if (begin) {
         int version = -1;
@@ -68,18 +71,19 @@ static int IsOldTlsVersion(const char *line)
     }
 
     return 0;
-}
+} 
 #endif /* NO_OLD_TLS */
 
-/* if the cipher suite on line is valid store in suite and return 1, else 0 */
-static int IsValidCipherSuite(const char *line, char *suite)
-{
-    int found = 0;
-    int valid = 0;
 
-    const char *find = "-l ";
-    const char *begin = strstr(line, find);
-    const char *end;
+/* if the cipher suite on line is valid store in suite and return 1, else 0 */
+static int IsValidCipherSuite(const char* line, char* suite)
+{
+    int  found = 0;
+    int  valid = 0;
+
+    const char* find = "-l ";
+    const char* begin = strstr(line, find);
+    const char* end;
 
     suite[0] = '\0';
 
@@ -96,7 +100,8 @@ static int IsValidCipherSuite(const char *line, char *suite)
             }
             memcpy(suite, begin, len);
             suite[len] = '\0';
-        } else
+        }
+        else
             strncpy(suite, begin, MAX_SUITE_SZ);
 
         suite[MAX_SUITE_SZ] = '\0';
@@ -111,34 +116,36 @@ static int IsValidCipherSuite(const char *line, char *suite)
     return valid;
 }
 
-static int execute_test_case(int svr_argc, char **svr_argv, int cli_argc, char **cli_argv,
-                             int addNoVerify, int addNonBlocking)
+
+static int execute_test_case(int svr_argc, char** svr_argv,
+                              int cli_argc, char** cli_argv,
+                              int addNoVerify, int addNonBlocking)
 {
 #ifdef WOLFSSL_TIRTOS
-    func_args cliArgs = { 0 };
-    func_args svrArgs = { 0 };
+    func_args cliArgs = {0};
+    func_args svrArgs = {0};
     cliArgs.argc = cli_argc;
     cliArgs.argv = cli_argv;
     svrArgs.argc = svr_argc;
     svrArgs.argv = svr_argv;
 #else
-    func_args cliArgs = { cli_argc, cli_argv, 0, NULL, NULL };
-    func_args svrArgs = { svr_argc, svr_argv, 0, NULL, NULL };
+    func_args cliArgs = {cli_argc, cli_argv, 0, NULL, NULL};
+    func_args svrArgs = {svr_argc, svr_argv, 0, NULL, NULL};
 #endif
 
-    tcp_ready ready;
+    tcp_ready   ready;
     THREAD_TYPE serverThread;
-    char commandLine[MAX_COMMAND_SZ];
-    char cipherSuite[MAX_SUITE_SZ + 1];
-    int i;
-    size_t added = 0;
-    static int tests = 1;
+    char        commandLine[MAX_COMMAND_SZ];
+    char        cipherSuite[MAX_SUITE_SZ+1];
+    int         i;
+    size_t      added = 0;
+    static      int tests = 1;
 
     commandLine[0] = '\0';
     for (i = 0; i < svr_argc; i++) {
         added += strlen(svr_argv[i]) + 2;
         if (added >= MAX_COMMAND_SZ) {
-            printf("server command line too long\n");
+            printf("server command line too long\n"); 
             break;
         }
         strcat(commandLine, svr_argv[i]);
@@ -146,24 +153,24 @@ static int execute_test_case(int svr_argc, char **svr_argv, int cli_argc, char *
     }
 
     if (IsValidCipherSuite(commandLine, cipherSuite) == 0) {
-#ifdef DEBUG_SUITE_TESTS
-        printf("cipher suite %s not supported in build\n", cipherSuite);
-#endif
+        #ifdef DEBUG_SUITE_TESTS
+            printf("cipher suite %s not supported in build\n", cipherSuite);
+        #endif
         return NOT_BUILT_IN;
     }
 
 #ifdef NO_OLD_TLS
     if (IsOldTlsVersion(commandLine) == 1) {
-#ifdef DEBUG_SUITE_TESTS
-        printf("protocol version on line %s is too old\n", commandLine);
-#endif
+        #ifdef DEBUG_SUITE_TESTS
+            printf("protocol version on line %s is too old\n", commandLine);
+        #endif
         return VERSION_TOO_OLD;
     }
 #endif
 
     if (addNoVerify) {
-        printf("repeating test with client cert request off\n");
-        added += 4; /* -d plus space plus terminator */
+        printf("repeating test with client cert request off\n"); 
+        added += 4;   /* -d plus space plus terminator */
         if (added >= MAX_COMMAND_SZ || svr_argc >= MAX_ARGS)
             printf("server command line too long\n");
         else {
@@ -174,8 +181,8 @@ static int execute_test_case(int svr_argc, char **svr_argv, int cli_argc, char *
         }
     }
     if (addNonBlocking) {
-        printf("repeating test with non blocking on\n");
-        added += 4; /* -N plus terminator */
+        printf("repeating test with non blocking on\n"); 
+        added += 4;   /* -N plus terminator */
         if (added >= MAX_COMMAND_SZ || svr_argc >= MAX_ARGS)
             printf("server command line too long\n");
         else {
@@ -185,16 +192,17 @@ static int execute_test_case(int svr_argc, char **svr_argv, int cli_argc, char *
             strcat(commandLine, flagSep);
         }
     }
-#if !defined(USE_WINDOWS_API) && !defined(WOLFSSL_TIRTOS)
-    /* add port 0 */
-    if (svr_argc + 2 > MAX_ARGS)
-        printf("cannot add the magic port number flag to server\n");
-    else {
-        svr_argv[svr_argc++] = portFlag;
-        svr_argv[svr_argc++] = svrPort;
-        svrArgs.argc = svr_argc;
-    }
-#endif
+    #if !defined(USE_WINDOWS_API) && !defined(WOLFSSL_TIRTOS)
+        /* add port 0 */
+        if (svr_argc + 2 > MAX_ARGS)
+            printf("cannot add the magic port number flag to server\n");
+        else
+        {
+            svr_argv[svr_argc++] = portFlag;
+            svr_argv[svr_argc++] = svrPort;
+            svrArgs.argc = svr_argc;
+        }
+    #endif
     printf("trying server command line[%d]: %s\n", tests, commandLine);
 
     commandLine[0] = '\0';
@@ -202,17 +210,17 @@ static int execute_test_case(int svr_argc, char **svr_argv, int cli_argc, char *
     for (i = 0; i < cli_argc; i++) {
         added += strlen(cli_argv[i]) + 2;
         if (added >= MAX_COMMAND_SZ) {
-            printf("client command line too long\n");
+            printf("client command line too long\n"); 
             break;
         }
         strcat(commandLine, cli_argv[i]);
         strcat(commandLine, flagSep);
     }
     if (addNonBlocking) {
-        added += 4; /* -N plus space plus terminator  */
+        added += 4;   /* -N plus space plus terminator  */
         if (added >= MAX_COMMAND_SZ)
             printf("client command line too long\n");
-        else {
+        else  {
             cli_argv[cli_argc++] = nonblockFlag;
             strcat(commandLine, nonblockFlag);
             strcat(commandLine, flagSep);
@@ -231,30 +239,31 @@ static int execute_test_case(int svr_argc, char **svr_argv, int cli_argc, char *
     svrArgs.signal = &ready;
     start_thread(server_test, &svrArgs, &serverThread);
     wait_tcp_ready(&svrArgs);
-#if !defined(USE_WINDOWS_API) && !defined(WOLFSSL_TIRTOS)
-    if (ready.port != 0) {
-        if (cli_argc + 2 > MAX_ARGS)
-            printf("cannot add the magic port number flag to client\n");
-        else {
-            char portNumber[8];
-            snprintf(portNumber, sizeof(portNumber), "%d", ready.port);
-            cli_argv[cli_argc++] = portFlag;
-            cli_argv[cli_argc++] = portNumber;
-            cliArgs.argc = cli_argc;
+    #if !defined(USE_WINDOWS_API) && !defined(WOLFSSL_TIRTOS)
+        if (ready.port != 0)
+        {
+            if (cli_argc + 2 > MAX_ARGS)
+                printf("cannot add the magic port number flag to client\n");
+            else {
+                char portNumber[8];
+                snprintf(portNumber, sizeof(portNumber), "%d", ready.port);
+                cli_argv[cli_argc++] = portFlag;
+                cli_argv[cli_argc++] = portNumber;
+                cliArgs.argc = cli_argc;
+            }
         }
-    }
-#endif
+    #endif
     /* start client */
     client_test(&cliArgs);
 
-    /* verify results */
+    /* verify results */ 
     if (cliArgs.return_code != 0) {
         printf("client_test failed\n");
         exit(EXIT_FAILURE);
     }
 
     join_thread(serverThread);
-    if (svrArgs.return_code != 0) {
+    if (svrArgs.return_code != 0) { 
         printf("server_test failed\n");
         exit(EXIT_FAILURE);
     }
@@ -263,33 +272,35 @@ static int execute_test_case(int svr_argc, char **svr_argv, int cli_argc, char *
     fdCloseSession(Task_self());
 #endif
     FreeTcpReady(&ready);
-
+    
     return 0;
 }
 
-static void test_harness(void *vargs)
+static void test_harness(void* vargs)
 {
-    func_args *args = (func_args *)vargs;
-    char *script;
-    long sz, len;
-    int cliMode = 0; /* server or client command flag, server first */
-    int ret;
-    FILE *file;
-    char *svrArgs[MAX_ARGS];
-    int svrArgsSz;
-    char *cliArgs[MAX_ARGS];
-    int cliArgsSz;
-    char *cursor;
-    char *comment;
-    const char *fname = "tests/test.conf";
+    func_args* args = (func_args*)vargs;
+    char* script;
+    long  sz, len;
+    int   cliMode = 0;   /* server or client command flag, server first */
+    int   ret;
+    FILE* file;
+    char* svrArgs[MAX_ARGS];
+    int   svrArgsSz;
+    char* cliArgs[MAX_ARGS];
+    int   cliArgsSz;
+    char* cursor;
+    char* comment;
+    const char* fname = "tests/test.conf";
 
     if (args->argc == 1) {
         printf("notice: using default file %s\n", fname);
-    } else if (args->argc != 2) {
+    }
+    else if(args->argc != 2) {
         printf("usage: harness [FILE]\n");
         args->return_code = 1;
         return;
-    } else {
+    }
+    else {
         fname = args->argv[1];
     }
 
@@ -309,7 +320,7 @@ static void test_harness(void *vargs)
         return;
     }
 
-    script = (char *)malloc(sz + 1);
+    script = (char*)malloc(sz+1);
     if (script == 0) {
         fprintf(stderr, "unable to allocte script buffer\n");
         fclose(file);
@@ -325,7 +336,7 @@ static void test_harness(void *vargs)
         args->return_code = 1;
         return;
     }
-
+    
     fclose(file);
     script[sz] = 0;
 
@@ -339,42 +350,42 @@ static void test_harness(void *vargs)
         int do_it = 0;
 
         switch (*cursor) {
-        case '\n':
-            /* A blank line triggers test case execution or switches
+            case '\n':
+                /* A blank line triggers test case execution or switches
                    to client mode if we don't have the client command yet */
-            if (cliMode == 0)
-                cliMode = 1; /* switch to client mode processing */
-            else
-                do_it = 1; /* Do It, we have server and client */
-            cursor++;
-            break;
-        case '#':
-            /* Ignore lines that start with a #. */
-            comment = strsep(&cursor, "\n");
+                if (cliMode == 0)
+                    cliMode = 1;  /* switch to client mode processing */
+                else
+                    do_it = 1;    /* Do It, we have server and client */
+                cursor++;
+                break;
+            case '#':
+                /* Ignore lines that start with a #. */
+                comment = strsep(&cursor, "\n");
 #ifdef DEBUG_SUITE_TESTS
-            printf("%s\n", comment);
+                printf("%s\n", comment);
 #else
-            (void)comment;
+                (void)comment;
 #endif
-            break;
-        case '-':
-            /* Parameters start with a -. They end in either a newline
+                break;
+            case '-':
+                /* Parameters start with a -. They end in either a newline
                  * or a space. Capture until either, save in Args list. */
-            if (cliMode)
-                cliArgs[cliArgsSz++] = strsep(&cursor, " \n");
-            else
-                svrArgs[svrArgsSz++] = strsep(&cursor, " \n");
-            break;
-        default:
-            /* Anything from cursor until end of line that isn't the above
+                if (cliMode)
+                    cliArgs[cliArgsSz++] = strsep(&cursor, " \n");
+                else
+                    svrArgs[svrArgsSz++] = strsep(&cursor, " \n");
+                break;
+            default:
+                /* Anything from cursor until end of line that isn't the above
                  * is data for a paramter. Just up until the next newline in
                  * the Args list. */
-            if (cliMode)
-                cliArgs[cliArgsSz++] = strsep(&cursor, "\n");
-            else
-                svrArgs[svrArgsSz++] = strsep(&cursor, "\n");
-            if (*cursor == 0) /* eof */
-                do_it = 1;
+                if (cliMode)
+                    cliArgs[cliArgsSz++] = strsep(&cursor, "\n");
+                else
+                    svrArgs[svrArgsSz++] = strsep(&cursor, "\n");
+                if (*cursor == 0)  /* eof */
+                    do_it = 1; 
         }
 
         if (svrArgsSz == MAX_ARGS || cliArgsSz == MAX_ARGS) {
@@ -383,7 +394,7 @@ static void test_harness(void *vargs)
         }
 
         if (do_it) {
-            ret = execute_test_case(svrArgsSz, svrArgs, cliArgsSz, cliArgs, 0, 0);
+            ret = execute_test_case(svrArgsSz, svrArgs, cliArgsSz, cliArgs,0,0);
             /* don't repeat if not supported in build */
             if (ret == 0) {
                 execute_test_case(svrArgsSz, svrArgs, cliArgsSz, cliArgs, 0, 1);
@@ -392,7 +403,7 @@ static void test_harness(void *vargs)
             }
             svrArgsSz = 1;
             cliArgsSz = 1;
-            cliMode = 0;
+            cliMode   = 0;
         }
     }
 
@@ -400,11 +411,12 @@ static void test_harness(void *vargs)
     args->return_code = 0;
 }
 
+
 int SuiteTest(void)
 {
     func_args args;
     char argv0[2][80];
-    char *myArgv[2];
+    char* myArgv[2];
 
     printf(" Begin Cipher Suite Tests\n");
 
@@ -419,7 +431,7 @@ int SuiteTest(void)
     cipherSuiteCtx = wolfSSL_CTX_new(wolfTLSv1_2_client_method());
     if (cipherSuiteCtx == NULL) {
         printf("can't get cipher suite ctx\n");
-        exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);  
     }
 
     /* default case */
@@ -428,20 +440,20 @@ int SuiteTest(void)
     test_harness(&args);
     if (args.return_code != 0) {
         printf("error from script %d\n", args.return_code);
-        exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);  
     }
 
     /* any extra cases will need another argument */
     args.argc = 2;
 
-#ifdef WOLFSSL_DTLS
+#ifdef WOLFSSL_DTLS 
     /* add dtls extra suites */
     strcpy(argv0[1], "tests/test-dtls.conf");
     printf("starting dtls extra cipher suite tests\n");
     test_harness(&args);
     if (args.return_code != 0) {
         printf("error from script %d\n", args.return_code);
-        exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);  
     }
 #endif
 
@@ -452,3 +464,5 @@ int SuiteTest(void)
 
     return args.return_code;
 }
+
+

@@ -33,11 +33,13 @@
 
 #include "xtensa_context.h"
 
+
 /* Typedef for C-callable interrupt handler function */
 typedef void (*xt_handler)(void *);
 
 /* Typedef for C-callable exception handler function */
 typedef void (*xt_exc_handler)(XtExcFrame *);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -57,6 +59,7 @@ typedef void (*xt_exc_handler)(XtExcFrame *);
 */
 extern xt_exc_handler xt_set_exception_handler(int n, xt_exc_handler f);
 
+
 /*
 -------------------------------------------------------------------------------
   Call this function to set a handler for the specified interrupt.
@@ -66,7 +69,8 @@ extern xt_exc_handler xt_set_exception_handler(int n, xt_exc_handler f);
     arg      - Argument to be passed to handler.
 -------------------------------------------------------------------------------
 */
-extern xt_handler xt_set_interrupt_handler(int n, xt_handler f, void *arg);
+extern xt_handler xt_set_interrupt_handler(int n, xt_handler f, void * arg);
+
 
 /*
 -------------------------------------------------------------------------------
@@ -79,6 +83,7 @@ extern xt_handler xt_set_interrupt_handler(int n, xt_handler f, void *arg);
 */
 extern unsigned int xt_ints_on(unsigned int mask);
 
+
 /*
 -------------------------------------------------------------------------------
   Call this function to disable the specified interrupts.
@@ -90,6 +95,7 @@ extern unsigned int xt_ints_on(unsigned int mask);
 */
 extern unsigned int xt_ints_off(unsigned int mask);
 
+
 /*
 -------------------------------------------------------------------------------
   Call this function to set the specified (s/w) interrupt.
@@ -99,6 +105,7 @@ static inline void xt_set_intset(unsigned int arg)
 {
     xthal_set_intset(arg);
 }
+
 
 /*
 -------------------------------------------------------------------------------
@@ -111,4 +118,6 @@ static inline void xt_set_intclear(unsigned int arg)
     xthal_set_intclear(arg);
 }
 
+
 #endif /* __XTENSA_API_H__ */
+

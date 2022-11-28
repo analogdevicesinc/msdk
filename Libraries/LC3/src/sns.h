@@ -29,6 +29,7 @@
 #include "common.h"
 #include "bits.h"
 
+
 /**
  * Bitstream data
  */
@@ -39,6 +40,7 @@ typedef struct lc3_sns_data {
     int idx_a, idx_b;
     bool ls_a, ls_b;
 } lc3_sns_data_t;
+
 
 /* ----------------------------------------------------------------------------
  *  Encoding
@@ -55,8 +57,9 @@ typedef struct lc3_sns_data {
  *
  * `x` and `y` can be the same buffer
  */
-void lc3_sns_analyze(enum lc3_dt dt, enum lc3_srate sr, const float *eb, bool att,
-                     lc3_sns_data_t *data, const float *x, float *y);
+void lc3_sns_analyze(enum lc3_dt dt, enum lc3_srate sr,
+    const float *eb, bool att, lc3_sns_data_t *data,
+    const float *x, float *y);
 
 /**
  * Return number of bits coding the bitstream data
@@ -70,6 +73,7 @@ int lc3_sns_get_nbits(void);
  * data            Bitstream data
  */
 void lc3_sns_put_data(lc3_bits_t *bits, const lc3_sns_data_t *data);
+
 
 /* ----------------------------------------------------------------------------
  *  Decoding
@@ -92,7 +96,8 @@ int lc3_sns_get_data(lc3_bits_t *bits, lc3_sns_data_t *data);
  *
  * `x` and `y` can be the same buffer
  */
-void lc3_sns_synthesize(enum lc3_dt dt, enum lc3_srate sr, const lc3_sns_data_t *data,
-                        const float *x, float *y);
+void lc3_sns_synthesize(enum lc3_dt dt, enum lc3_srate sr,
+    const lc3_sns_data_t *data, const float *x, float *y);
+
 
 #endif /* __LC3_SNS_H */

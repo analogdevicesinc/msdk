@@ -58,7 +58,7 @@ typedef struct {
 #ifdef __IAR_SYSTEMS_ICC__
 #pragma data_alignment = 512
 #else
-__attribute__((aligned(512)))
+__attribute__ ((aligned (512)))
 #endif
 ep_buffer_descriptor_t ep_buffer_descriptor;
 
@@ -103,8 +103,7 @@ int MXC_USB_Shutdown(void)
 int MXC_USB_Connect(void)
 {
     /* enable interrupts */
-    MXC_USB->dev_inten |= (MXC_F_USB_DEV_INTEN_SETUP | MXC_F_USB_DEV_INTEN_EP_IN |
-                           MXC_F_USB_DEV_INTEN_EP_OUT | MXC_F_USB_DEV_INTEN_DMA_ERR);
+    MXC_USB->dev_inten |= (MXC_F_USB_DEV_INTEN_SETUP | MXC_F_USB_DEV_INTEN_EP_IN | MXC_F_USB_DEV_INTEN_EP_OUT | MXC_F_USB_DEV_INTEN_DMA_ERR);
 
     /* allow interrupts on ep0 */
     MXC_USB->ep[0] |= MXC_F_USB_EP_INT_EN;
@@ -133,7 +132,7 @@ int MXC_USB_ConfigEp(unsigned int ep, maxusb_ep_type_t type, unsigned int size)
         return -1;
     }
 
-    ep_ctrl = (type << MXC_F_USB_EP_DIR_POS); /* input 'type' matches USB spec for direction */
+    ep_ctrl = (type << MXC_F_USB_EP_DIR_POS);    /* input 'type' matches USB spec for direction */
     ep_ctrl |= MXC_F_USB_EP_DT;
 
     if (type == MAXUSB_EP_TYPE_DISABLED) {
@@ -150,8 +149,7 @@ int MXC_USB_ConfigEp(unsigned int ep, maxusb_ep_type_t type, unsigned int size)
 
 int MXC_USB_IsConfigured(unsigned int ep)
 {
-    return (((MXC_USB->ep[ep] & MXC_F_USB_EP_DIR) >> MXC_F_USB_EP_DIR_POS) !=
-            MXC_V_USB_EP_DIR_DISABLE);
+    return (((MXC_USB->ep[ep] & MXC_F_USB_EP_DIR) >> MXC_F_USB_EP_DIR_POS) != MXC_V_USB_EP_DIR_DISABLE);
 }
 
 int MXC_USB_Stall(unsigned int ep)
@@ -185,21 +183,21 @@ int MXC_USB_Unstall(unsigned int ep)
 
     /* The host may try to unstall us, even if we are not stalled */
     if (MXC_USB->ep[ep] & MXC_F_USB_EP_STALL) {
-        MXC_USB->ep[ep] |= MXC_F_USB_EP_DT;
+	MXC_USB->ep[ep] |= MXC_F_USB_EP_DT;
 
-        /* clear pending requests */
-        req = usb_request[ep];
-        usb_request[ep] = NULL;
-
-        MXC_USB->ep[ep] &= ~MXC_F_USB_EP_STALL;
-
-        /* complete pending request with error */
-        if (req) {
-            req->error_code = -1;
-            if (req->callback) {
-                req->callback(req->cbdata);
-            }
-        }
+	/* clear pending requests */
+	req = usb_request[ep];
+	usb_request[ep] = NULL;
+	
+	MXC_USB->ep[ep] &= ~MXC_F_USB_EP_STALL;
+	
+	/* complete pending request with error */
+	if (req) {
+	    req->error_code = -1;
+	    if (req->callback) {
+		req->callback(req->cbdata);
+	    }
+	}
     }
 
     return 0;
@@ -254,6 +252,7 @@ static void event_in_data(uint32_t irqs)
 
     /* Loop for each data endpoint */
     for (epnum = 0; epnum < MXC_USB_NUM_EP; epnum++) {
+
         buffer_bit = (1 << epnum);
         if ((irqs & buffer_bit) == 0) { /* Not set, next Endpoint */
             continue;
@@ -270,7 +269,7 @@ static void event_in_data(uint32_t irqs)
         if (epnum == 0) {
             buf_desc = &ep_buffer_descriptor.ep0.in_buffer;
         } else {
-            buf_desc = &ep_buffer_descriptor.ep[epnum - 1];
+            buf_desc = &ep_buffer_descriptor.ep[epnum-1];
         }
 
         if (buf_desc->buf0_desc == 0) {
@@ -284,7 +283,7 @@ static void event_in_data(uint32_t irqs)
             continue;
         }
 
-        if (data_left) { /* more data to send */
+        if (data_left) {   /* more data to send */
             if (data_left >= ep_size[epnum]) {
                 buf_desc->buf0_desc = ep_size[epnum];
             } else {
@@ -298,13 +297,15 @@ static void event_in_data(uint32_t irqs)
 
             /* start the DMA to send it */
             MXC_USB->in_owner = buffer_bit;
-        } else {
+        }
+        else {
             /* all done sending data, either send ZLP or done here */
-            if ((req->reqlen & (ep_size[epnum] - 1)) == 0) {
+            if ((req->reqlen & (ep_size[epnum]-1)) == 0) {
                 /* send ZLP per spec, last packet was full sized and nothing left to send */
                 buf_desc->buf0_desc = 0;
                 MXC_USB->in_owner = buffer_bit;
-            } else {
+            }
+            else {
                 /* free request */
                 usb_request[epnum] = NULL;
 
@@ -326,6 +327,7 @@ static void event_out_data(uint32_t irqs)
 
     /* Loop for each data endpoint */
     for (epnum = 0; epnum < MXC_USB_NUM_EP; epnum++) {
+
         buffer_bit = (1 << epnum);
         if ((irqs & buffer_bit) == 0) {
             continue;
@@ -339,7 +341,7 @@ static void event_out_data(uint32_t irqs)
         if (epnum == 0) {
             buf_desc = &ep_buffer_descriptor.ep0.out_buffer;
         } else {
-            buf_desc = &ep_buffer_descriptor.ep[epnum - 1];
+            buf_desc = &ep_buffer_descriptor.ep[epnum-1];
         }
 
         req = usb_request[epnum];
@@ -369,7 +371,8 @@ static void event_out_data(uint32_t irqs)
             if (req->callback) {
                 req->callback(req->cbdata);
             }
-        } else {
+        }
+        else {
             /* not done yet, push pointers, update descriptor */
             buf_desc->buf0_address += ep_size[epnum];
 
@@ -395,15 +398,15 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
     MXC_USB->dev_intfl = irq_flags;
 
     /* copy all the flags over to the "other" struct */
-    evt->dpact = ((irq_flags & MXC_F_USB_DEV_INTFL_DPACT) >> MXC_F_USB_DEV_INTFL_DPACT_POS);
-    evt->rwudn = ((irq_flags & MXC_F_USB_DEV_INTFL_RWU_DN) >> MXC_F_USB_DEV_INTFL_RWU_DN_POS);
-    evt->bact = ((irq_flags & MXC_F_USB_DEV_INTFL_BACT) >> MXC_F_USB_DEV_INTFL_BACT_POS);
-    evt->brst = ((irq_flags & MXC_F_USB_DEV_INTFL_BRST) >> MXC_F_USB_DEV_INTFL_BRST_POS);
-    evt->susp = ((irq_flags & MXC_F_USB_DEV_INTFL_SUSP) >> MXC_F_USB_DEV_INTFL_SUSP_POS);
+    evt->dpact  = ((irq_flags & MXC_F_USB_DEV_INTFL_DPACT) >> MXC_F_USB_DEV_INTFL_DPACT_POS);
+    evt->rwudn  = ((irq_flags & MXC_F_USB_DEV_INTFL_RWU_DN) >> MXC_F_USB_DEV_INTFL_RWU_DN_POS);
+    evt->bact   = ((irq_flags & MXC_F_USB_DEV_INTFL_BACT) >> MXC_F_USB_DEV_INTFL_BACT_POS);
+    evt->brst   = ((irq_flags & MXC_F_USB_DEV_INTFL_BRST) >> MXC_F_USB_DEV_INTFL_BRST_POS);
+    evt->susp   = ((irq_flags & MXC_F_USB_DEV_INTFL_SUSP) >> MXC_F_USB_DEV_INTFL_SUSP_POS);
     evt->novbus = ((irq_flags & MXC_F_USB_DEV_INTFL_NO_VBUS) >> MXC_F_USB_DEV_INTFL_NO_VBUS_POS);
-    evt->vbus = ((irq_flags & MXC_F_USB_DEV_INTFL_VBUS) >> MXC_F_USB_DEV_INTFL_VBUS_POS);
+    evt->vbus   = ((irq_flags & MXC_F_USB_DEV_INTFL_VBUS) >> MXC_F_USB_DEV_INTFL_VBUS_POS);
     evt->brstdn = ((irq_flags & MXC_F_USB_DEV_INTFL_BRST_DN) >> MXC_F_USB_DEV_INTFL_BRST_DN_POS);
-    evt->sudav = ((irq_flags & MXC_F_USB_DEV_INTFL_SETUP) >> MXC_F_USB_DEV_INTFL_SETUP_POS);
+    evt->sudav  = ((irq_flags & MXC_F_USB_DEV_INTFL_SETUP) >> MXC_F_USB_DEV_INTFL_SETUP_POS);
 
     /* do cleanup in cases of bus reset */
     if (irq_flags & MXC_F_USB_DEV_INTFL_BRST) {
@@ -441,7 +444,7 @@ int MXC_USB_IrqEnable(maxusb_event_t event)
     }
 
     /* Note: the enum value is the same as the bit number */
-    event_bit = 1 << event;
+    event_bit =  1 << event;
     MXC_USB->dev_inten |= event_bit;
 
     return 0;
@@ -456,7 +459,7 @@ int MXC_USB_IrqDisable(maxusb_event_t event)
     }
 
     /* Note: the enum value is the same as the bit number */
-    event_bit = 1 << event;
+    event_bit =  1 << event;
     MXC_USB->dev_inten &= ~event_bit;
 
     return 0;
@@ -471,7 +474,7 @@ int MXC_USB_IrqClear(maxusb_event_t event)
     }
 
     /* Note: the enum value is the same as the bit number */
-    event_bit = 1 << event;
+    event_bit =  1 << event;
     MXC_USB->dev_intfl = event_bit;
 
     return 0;
@@ -479,7 +482,7 @@ int MXC_USB_IrqClear(maxusb_event_t event)
 
 int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
 {
-    memcpy(sud, (void *)&MXC_USB->setup0, 8); /* setup packet is fixed at 8 bytes */
+    memcpy(sud, (void*)&MXC_USB->setup0, 8); /* setup packet is fixed at 8 bytes */
     return 0;
 }
 
@@ -497,11 +500,11 @@ MXC_USB_Req_t *MXC_USB_GetRequest(unsigned int ep)
 int MXC_USB_RemoveRequest(MXC_USB_Req_t *req)
 {
     if (req->ep >= MXC_USB_NUM_EP) {
-        return -1;
+	return -1;
     }
 
     if (usb_request[req->ep] != req) {
-        return -1;
+	return -1;
     }
 
     /* Reset data toggle and ownership bits */
@@ -509,20 +512,21 @@ int MXC_USB_RemoveRequest(MXC_USB_Req_t *req)
 
     /* free request */
     usb_request[req->ep] = NULL;
-
+    
     /* complete pending request with error */
     req->error_code = -1;
     if (req->callback) {
-        req->callback(req->cbdata);
+	req->callback(req->cbdata);
     }
 
     return 0;
 }
 
+
 int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
 {
-    unsigned int ep = req->ep;
-    uint8_t *data = req->data;
+    unsigned int ep  = req->ep;
+    uint8_t *data    = req->data;
     unsigned int len = req->reqlen;
     ep_buffer_t *buf_desc;
     uint32_t buffer_bit = (1 << ep);
@@ -537,8 +541,7 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
     }
 
     /* EP must be enabled (configured) */
-    if (((MXC_USB->ep[ep] & MXC_F_USB_EP_DIR) >> MXC_F_USB_EP_DIR_POS) ==
-        MXC_V_USB_EP_DIR_DISABLE) {
+    if (((MXC_USB->ep[ep] & MXC_F_USB_EP_DIR) >> MXC_F_USB_EP_DIR_POS) == MXC_V_USB_EP_DIR_DISABLE) {
         return -1;
     }
 
@@ -556,13 +559,14 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
     if (ep == 0) {
         buf_desc = &ep_buffer_descriptor.ep0.in_buffer;
     } else {
-        buf_desc = &ep_buffer_descriptor.ep[ep - 1];
+        buf_desc = &ep_buffer_descriptor.ep[ep-1];
     }
 
     if (len > ep_size[ep]) {
         buf_desc->buf0_desc = ep_size[ep];
         usb_request[ep]->actlen = ep_size[ep];
-    } else {
+    }
+    else {
         buf_desc->buf0_desc = len;
         usb_request[ep]->actlen = len;
     }
@@ -578,7 +582,7 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
 
 int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
 {
-    unsigned int ep = req->ep;
+    unsigned int ep  = req->ep;
     ep_buffer_t *buf_desc;
     uint32_t buffer_bit = (1 << ep);
 
@@ -599,14 +603,14 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
     if (ep == 0) {
         buf_desc = &ep_buffer_descriptor.ep0.out_buffer;
     } else {
-        buf_desc = &ep_buffer_descriptor.ep[ep - 1];
+        buf_desc = &ep_buffer_descriptor.ep[ep-1];
     }
 
     /* if pending request; error */
     if (usb_request[ep] || (MXC_USB->out_owner & buffer_bit)) {
         return -1;
     }
-
+    
     /* assign the req object */
     usb_request[ep] = req;
 

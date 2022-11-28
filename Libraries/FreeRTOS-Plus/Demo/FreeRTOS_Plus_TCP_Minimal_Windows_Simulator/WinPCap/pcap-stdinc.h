@@ -58,7 +58,7 @@
 #include "IP6_misc.h"
 #endif
 
-#define caddr_t char *
+#define caddr_t char*
 
 #if _MSC_VER < 1500
 #define snprintf _snprintf
@@ -66,28 +66,28 @@
 #define strdup _strdup
 #endif
 
-#define inline __inline
+#define inline __inline 
 
 #ifdef __MINGW32__
 #include <stdint.h>
 #else /*__MINGW32__*/
 /* MSVC compiler */
 #ifndef _UINTPTR_T_DEFINED
-#ifdef _WIN64
-typedef unsigned __int64 uintptr_t;
+#ifdef  _WIN64
+typedef unsigned __int64    uintptr_t;
 #else
-typedef _W64 unsigned int uintptr_t;
+typedef _W64 unsigned int   uintptr_t;
 #endif
 #define _UINTPTR_T_DEFINED
 #endif
 
 #ifndef _INTPTR_T_DEFINED
-#ifdef _WIN64
-typedef __int64 intptr_t;
+#ifdef  _WIN64
+typedef __int64    intptr_t;
 #else
-typedef _W64 int intptr_t;
+typedef _W64 int   intptr_t;
 #endif
 #define _INTPTR_T_DEFINED
-#endif
+#endif 
 
 #endif /*__MINGW32__*/

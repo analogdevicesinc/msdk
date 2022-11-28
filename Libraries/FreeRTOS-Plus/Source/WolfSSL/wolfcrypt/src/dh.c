@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+    #include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
@@ -31,24 +31,26 @@
 #include <wolfssl/wolfcrypt/error-crypt.h>
 
 #ifndef USER_MATH_LIB
-#include <math.h>
-#define XPOW(x, y) pow((x), (y))
-#define XLOG(x) log((x))
+    #include <math.h>
+    #define XPOW(x,y) pow((x),(y))
+    #define XLOG(x)   log((x))
 #else
-/* user's own math lib */
+    /* user's own math lib */
 #endif
+
 
 #ifndef WOLFSSL_HAVE_MIN
 #define WOLFSSL_HAVE_MIN
 
-static INLINE word32 min(word32 a, word32 b)
-{
-    return a > b ? b : a;
-}
+    static INLINE word32 min(word32 a, word32 b)
+    {
+        return a > b ? b : a;
+    }
 
 #endif /* WOLFSSL_HAVE_MIN */
 
-void wc_InitDhKey(DhKey *key)
+
+void wc_InitDhKey(DhKey* key)
 {
     (void)key;
 /* TomsFastMath doesn't use memory allocation */
@@ -58,7 +60,8 @@ void wc_InitDhKey(DhKey *key)
 #endif
 }
 
-void wc_FreeDhKey(DhKey *key)
+
+void wc_FreeDhKey(DhKey* key)
 {
     (void)key;
 /* TomsFastMath doesn't use memory allocation */
@@ -68,20 +71,24 @@ void wc_FreeDhKey(DhKey *key)
 #endif
 }
 
+
 static word32 DiscreteLogWorkFactor(word32 n)
 {
     /* assuming discrete log takes about the same time as factoring */
-    if (n < 5)
+    if (n<5)
         return 0;
     else
-        return (word32)(2.4 * XPOW((double)n, 1.0 / 3.0) * XPOW(XLOG((double)n), 2.0 / 3.0) - 5);
+        return (word32)(2.4 * XPOW((double)n, 1.0/3.0) *
+                XPOW(XLOG((double)n), 2.0/3.0) - 5);
 }
 
-static int GeneratePrivate(DhKey *key, RNG *rng, byte *priv, word32 *privSz)
+
+static int GeneratePrivate(DhKey* key, RNG* rng, byte* priv, word32* privSz)
 {
     int ret;
     word32 sz = mp_unsigned_bin_size(&key->p);
-    sz = min(sz, 2 * DiscreteLogWorkFactor(sz * WOLFSSL_BIT_SIZE) / WOLFSSL_BIT_SIZE + 1);
+    sz = min(sz, 2 * DiscreteLogWorkFactor(sz * WOLFSSL_BIT_SIZE) /
+                                           WOLFSSL_BIT_SIZE + 1);
 
     ret = wc_RNG_GenerateBlock(rng, priv, sz);
     if (ret != 0)
@@ -94,11 +101,13 @@ static int GeneratePrivate(DhKey *key, RNG *rng, byte *priv, word32 *privSz)
     return 0;
 }
 
-static int GeneratePublic(DhKey *key, const byte *priv, word32 privSz, byte *pub, word32 *pubSz)
+
+static int GeneratePublic(DhKey* key, const byte* priv, word32 privSz,
+                          byte* pub, word32* pubSz)
 {
     int ret = 0;
 
-    mp_int x;
+    mp_int x; 
     mp_int y;
 
     if (mp_init_multi(&x, &y, 0, 0, 0, 0) != MP_OKAY)
@@ -122,19 +131,21 @@ static int GeneratePublic(DhKey *key, const byte *priv, word32 privSz, byte *pub
     return ret;
 }
 
-int wc_DhGenerateKeyPair(DhKey *key, RNG *rng, byte *priv, word32 *privSz, byte *pub, word32 *pubSz)
+
+int wc_DhGenerateKeyPair(DhKey* key, RNG* rng, byte* priv, word32* privSz,
+                      byte* pub, word32* pubSz)
 {
     int ret = GeneratePrivate(key, rng, priv, privSz);
 
     return (ret != 0) ? ret : GeneratePublic(key, priv, *privSz, pub, pubSz);
 }
 
-int wc_DhAgree(DhKey *key, byte *agree, word32 *agreeSz, const byte *priv, word32 privSz,
-               const byte *otherPub, word32 pubSz)
+int wc_DhAgree(DhKey* key, byte* agree, word32* agreeSz, const byte* priv,
+            word32 privSz, const byte* otherPub, word32 pubSz)
 {
     int ret = 0;
 
-    mp_int x;
+    mp_int x; 
     mp_int y;
     mp_int z;
 
@@ -163,21 +174,21 @@ int wc_DhAgree(DhKey *key, byte *agree, word32 *agreeSz, const byte *priv, word3
     return ret;
 }
 
+
 /* not in asn anymore since no actual asn types used */
-int wc_DhSetKey(DhKey *key, const byte *p, word32 pSz, const byte *g, word32 gSz)
+int wc_DhSetKey(DhKey* key, const byte* p, word32 pSz, const byte* g,
+                word32 gSz)
 {
     if (key == NULL || p == NULL || g == NULL || pSz == 0 || gSz == 0)
         return BAD_FUNC_ARG;
 
     /* may have leading 0 */
     if (p[0] == 0) {
-        pSz--;
-        p++;
+        pSz--; p++;
     }
 
     if (g[0] == 0) {
-        gSz--;
-        g++;
+        gSz--; g++;
     }
 
     if (mp_init(&key->p) != MP_OKAY)
@@ -200,4 +211,6 @@ int wc_DhSetKey(DhKey *key, const byte *p, word32 pSz, const byte *g, word32 gSz
     return 0;
 }
 
+
 #endif /* NO_DH */
+

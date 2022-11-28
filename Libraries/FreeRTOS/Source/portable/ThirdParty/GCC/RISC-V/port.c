@@ -82,13 +82,13 @@
 #include "riscv_hal.h"
 
 #ifdef __riscv64
-#define STORE sd
-#define LOAD ld
-#define REGBYTES 8
+# define STORE    sd
+# define LOAD     ld
+# define REGBYTES 8
 #else
-#define STORE sw
-#define LOAD lw
-#define REGBYTES 4
+# define STORE    sw
+# define LOAD     lw
+# define REGBYTES 4
 #endif
 /* A variable is used to keep track of the critical section nesting.  This
 variable has to be stored as part of the task context and must be initialized to
@@ -99,13 +99,15 @@ static UBaseType_t uxCriticalNesting = 0xaaaaaaaa;
 
 /* Contains context when starting scheduler, save all 31 registers */
 #ifdef __gracefulExit
-BaseType_t xStartContext[31] = { 0 };
+BaseType_t xStartContext[31] = {0};
 #endif
 
-typedef struct {
-    uint32_t val_low;
-    uint32_t val_high;
-} riscv_machine_timer_t;
+
+typedef struct
+{
+	uint32_t val_low;
+	uint32_t val_high;
+}riscv_machine_timer_t;
 
 static volatile riscv_machine_timer_t *mtime = (riscv_machine_timer_t *)0x4400BFF8;
 
@@ -114,31 +116,32 @@ static volatile riscv_machine_timer_t *mtimecmp = (riscv_machine_timer_t *)0x440
 /*
  * Setup the timer to generate the tick interrupts.
  */
-void vPortSetupTimer(void);
+void vPortSetupTimer( void );
 
 /*
  * Set the next interval for the timer
  */
-static void prvSetNextTimerInterrupt(void);
+static void prvSetNextTimerInterrupt( void );
 
 /*
  * Used to catch tasks that attempt to return from their implementing function.
  */
-static void prvTaskExitError(void);
+static void prvTaskExitError( void );
 
-void vPortEnterCritical(void)
+void vPortEnterCritical( void )
 {
-    portDISABLE_INTERRUPTS();
-    uxCriticalNesting++;
+	portDISABLE_INTERRUPTS();
+	uxCriticalNesting++;
 }
 /*-----------------------------------------------------------*/
 
-void vPortExitCritical(void)
+void vPortExitCritical( void )
 {
-    uxCriticalNesting--;
-    if (uxCriticalNesting == 0) {
-        portENABLE_INTERRUPTS();
-    }
+	uxCriticalNesting--;
+	if( uxCriticalNesting == 0 )
+	{
+		portENABLE_INTERRUPTS();
+	}
 }
 /*-----------------------------------------------------------*/
 
@@ -146,233 +149,237 @@ void vPortExitCritical(void)
  * Reads previous timer compare register, and adds tickrate */
 static void prvSetNextTimerInterrupt(void)
 {
-    uint64_t time;
+	uint64_t time;
 
-    time = mtime->val_low;
-    time |= ((uint64_t)mtime->val_high << 32);
+	time = mtime->val_low;
+	time |= ((uint64_t)mtime->val_high << 32);
 
-    time += (configCPU_CLOCK_HZ / configTICK_RATE_HZ);
+	time += (configCPU_CLOCK_HZ / configTICK_RATE_HZ);
 
-    mtimecmp->val_low = (uint32_t)(time & 0xFFFFFFFF);
-    mtimecmp->val_high = (uint32_t)((time >> 32) & 0xFFFFFFFF);
+	mtimecmp->val_low = (uint32_t)(time & 0xFFFFFFFF);
+	mtimecmp->val_high = (uint32_t)((time >> 32) & 0xFFFFFFFF);
 
-    /* Enable timer interrupt */
-    __asm volatile("csrs mie,%0" ::"r"(0x80));
+	/* Enable timer interrupt */
+	__asm volatile("csrs mie,%0"::"r"(0x80));
 }
 /*-----------------------------------------------------------*/
 
 /* Sets and enable the timer interrupt */
 void vPortSetupTimer(void)
 {
-    uint64_t time;
+	uint64_t time;
 
-    time = mtime->val_low;
-    time |= ((uint64_t)mtime->val_high << 32);
+	time = mtime->val_low;
+	time |= ((uint64_t)mtime->val_high << 32);
 
-    time += (configCPU_CLOCK_HZ / configTICK_RATE_HZ);
+	time += (configCPU_CLOCK_HZ / configTICK_RATE_HZ);
 
-    mtimecmp->val_low = (uint32_t)(time & 0xFFFFFFFF);
-    mtimecmp->val_high = (uint32_t)((time >> 32) & 0xFFFFFFFF);
+	mtimecmp->val_low = (uint32_t)(time & 0xFFFFFFFF);
+	mtimecmp->val_high = (uint32_t)((time >> 32) & 0xFFFFFFFF);
 
-    /* Enable timer interrupt */
-    __asm volatile("csrs mie,%0" ::"r"(0x80));
+
+	/* Enable timer interrupt */
+	__asm volatile("csrs mie,%0"::"r"(0x80));
 }
 /*-----------------------------------------------------------*/
 
-void prvTaskExitError(void)
+void prvTaskExitError( void )
 {
-    /* A function that implements a task must not exit or attempt to return to
+	/* A function that implements a task must not exit or attempt to return to
 	its caller as there is nothing to return to.  If a task wants to exit it
 	should instead call vTaskDelete( NULL ).
 
 	Artificially force an assert() to be triggered if configASSERT() is
 	defined, then stop here so application writers can catch the error. */
-    configASSERT(uxCriticalNesting == ~0UL);
-    portDISABLE_INTERRUPTS();
-    for (;;) {}
+	configASSERT( uxCriticalNesting == ~0UL );
+	portDISABLE_INTERRUPTS();
+	for( ;; );
 }
 /*-----------------------------------------------------------*/
 
 /* Clear current interrupt mask and set given mask */
 void vPortClearInterruptMask(int mask)
 {
-    __asm volatile("csrw mie, %0" ::"r"(mask));
+	__asm volatile("csrw mie, %0"::"r"(mask));
 }
 /*-----------------------------------------------------------*/
 
 /* Set interrupt mask and return current interrupt enable register */
 int vPortSetInterruptMask(void)
 {
-    int ret;
-    __asm volatile("csrr %0,mie" : "=r"(ret));
-    __asm volatile("csrc mie,%0" ::"i"(7));
-    return ret;
+	int ret;
+	__asm volatile("csrr %0,mie":"=r"(ret));
+	__asm volatile("csrc mie,%0"::"i"(7));
+	return ret;
 }
 
 /*
  * See header file for description.
  */
-StackType_t *pxPortInitialiseStack(StackType_t *pxTopOfStack, TaskFunction_t pxCode,
-                                   void *pvParameters)
+StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters )
 {
-    /* Simulate the stack frame as it would be created by a context switch
+	/* Simulate the stack frame as it would be created by a context switch
 	interrupt. */
-    register int *tp asm("x3");
-    pxTopOfStack--;
-    *pxTopOfStack = (portSTACK_TYPE)pxCode; /* Start address */
-    pxTopOfStack -= 22;
-    *pxTopOfStack = (portSTACK_TYPE)pvParameters; /* Register a0 */
-    pxTopOfStack -= 6;
-    *pxTopOfStack = (portSTACK_TYPE)tp; /* Register thread pointer */
-    pxTopOfStack -= 3;
-    *pxTopOfStack = (portSTACK_TYPE)prvTaskExitError; /* Register ra */
-
-    return pxTopOfStack;
+	register int *tp asm("x3");
+	pxTopOfStack--;
+	*pxTopOfStack = (portSTACK_TYPE)pxCode;			/* Start address */
+	pxTopOfStack -= 22;
+	*pxTopOfStack = (portSTACK_TYPE)pvParameters;	/* Register a0 */
+	pxTopOfStack -= 6;
+	*pxTopOfStack = (portSTACK_TYPE)tp; /* Register thread pointer */
+	pxTopOfStack -= 3;
+	*pxTopOfStack = (portSTACK_TYPE)prvTaskExitError; /* Register ra */
+	
+	return pxTopOfStack;
 }
 /*-----------------------------------------------------------*/
 
-void vPortSysTickHandler(void)
+void vPortSysTickHandler( void )
 {
-    /*Save Context*/
-    {
-        __asm volatile("lw	t0, pxCurrentTCB");
-        __asm volatile("sw	a2, 0x0(t0)");
-    }
+	/*Save Context*/
+	{
+		__asm volatile("lw	t0, pxCurrentTCB");
+		__asm volatile("sw	a2, 0x0(t0)");
+	}
 
-    /* Increment the RTOS tick. */
-    prvSetNextTimerInterrupt();
+	/* Increment the RTOS tick. */
+	prvSetNextTimerInterrupt();
 
-    /*Switch task */
-    if (xTaskIncrementTick() != pdFALSE) {
-        vTaskSwitchContext();
-    }
+	/*Switch task */
+	if( xTaskIncrementTick() != pdFALSE )
+	{
+		vTaskSwitchContext();
+	}
 
-    /*Restore Context*/
-    {
-        __asm volatile("lw	sp, pxCurrentTCB");
-        __asm volatile("lw	sp, 0x0(sp)");
+	/*Restore Context*/
+	{
+		__asm volatile("lw	sp, pxCurrentTCB");
+		__asm volatile("lw	sp, 0x0(sp)");
 
-        __asm volatile("lw	t0, 31 * 4(sp)");
-        __asm volatile("csrw	mepc, t0");
+		__asm volatile("lw	t0, 31 * 4(sp)");
+		__asm volatile("csrw	mepc, t0");
 
-        __asm volatile("lw	x1, 0x0(sp)");
-        __asm volatile("lw   x4, 3 * 4(sp)");
-        __asm volatile("lw   x5, 4 * 4(sp)");
-        __asm volatile("lw   x6, 5 * 4(sp)");
-        __asm volatile("lw   x7, 6 * 4(sp)");
-        __asm volatile("lw   x8, 7 * 4(sp)");
-        __asm volatile("lw   x9, 8 * 4(sp)");
-        __asm volatile("lw   x10, 9 * 4(sp)");
-        __asm volatile("lw   x11, 10 * 4(sp)");
-        __asm volatile("lw   x12, 11 * 4(sp)");
-        __asm volatile("lw   x13, 12 * 4(sp)");
-        __asm volatile("lw   x14, 13 * 4(sp)");
-        __asm volatile("lw   x15, 14 * 4(sp)");
-        __asm volatile("lw   x16, 15 * 4(sp)");
-        __asm volatile("lw   x17, 16 * 4(sp)");
-        __asm volatile("lw   x18, 17 * 4(sp)");
-        __asm volatile("lw   x19, 18 * 4(sp)");
-        __asm volatile("lw   x20, 19 * 4(sp)");
-        __asm volatile("lw   x21, 20 * 4(sp)");
-        __asm volatile("lw   x22, 21 * 4(sp)");
-        __asm volatile("lw   x23, 22 * 4(sp)");
-        __asm volatile("lw   x24, 23 * 4(sp)");
-        __asm volatile("lw   x25, 24 * 4(sp)");
-        __asm volatile("lw   x26, 25 * 4(sp)");
-        __asm volatile("lw   x27, 26 * 4(sp)");
-        __asm volatile("lw   x28, 27 * 4(sp)");
-        __asm volatile("lw   x29, 28 * 4(sp)");
-        __asm volatile("lw   x30, 29 * 4(sp)");
-        __asm volatile("lw   x31, 30 * 4(sp)");
+		__asm volatile("lw	x1, 0x0(sp)");
+		__asm volatile("lw   x4, 3 * 4(sp)");
+		__asm volatile("lw   x5, 4 * 4(sp)");
+		__asm volatile("lw   x6, 5 * 4(sp)");
+		__asm volatile("lw   x7, 6 * 4(sp)");
+		__asm volatile("lw   x8, 7 * 4(sp)");
+		__asm volatile("lw   x9, 8 * 4(sp)");
+		__asm volatile("lw   x10, 9 * 4(sp)");
+		__asm volatile("lw   x11, 10 * 4(sp)");
+		__asm volatile("lw   x12, 11 * 4(sp)");
+		__asm volatile("lw   x13, 12 * 4(sp)");
+		__asm volatile("lw   x14, 13 * 4(sp)");
+		__asm volatile("lw   x15, 14 * 4(sp)");
+		__asm volatile("lw   x16, 15 * 4(sp)");
+		__asm volatile("lw   x17, 16 * 4(sp)");
+		__asm volatile("lw   x18, 17 * 4(sp)");
+		__asm volatile("lw   x19, 18 * 4(sp)");
+		__asm volatile("lw   x20, 19 * 4(sp)");
+		__asm volatile("lw   x21, 20 * 4(sp)");
+		__asm volatile("lw   x22, 21 * 4(sp)");
+		__asm volatile("lw   x23, 22 * 4(sp)");
+		__asm volatile("lw   x24, 23 * 4(sp)");
+		__asm volatile("lw   x25, 24 * 4(sp)");
+		__asm volatile("lw   x26, 25 * 4(sp)");
+		__asm volatile("lw   x27, 26 * 4(sp)");
+		__asm volatile("lw   x28, 27 * 4(sp)");
+		__asm volatile("lw   x29, 28 * 4(sp)");
+		__asm volatile("lw   x30, 29 * 4(sp)");
+		__asm volatile("lw   x31, 30 * 4(sp)");
 
-        __asm volatile("addi	sp, sp, 4 * 32");
+		__asm volatile("addi	sp, sp, 4 * 32");
 
-        __asm volatile("mret");
-    }
+		__asm volatile("mret");
+	}
 }
 uint32_t g_startscheduler = 0;
-BaseType_t xPortStartScheduler(void)
+BaseType_t xPortStartScheduler( void )
 {
-    vPortSetupTimer();
-    uxCriticalNesting = 0;
-    g_startscheduler = 1;
-    __enable_irq();
+	vPortSetupTimer();
+	uxCriticalNesting = 0;
+	g_startscheduler = 1;
+	__enable_irq();
 
-    raise_soft_interrupt();
+	raise_soft_interrupt();
 
-    /*Should not get here*/
-    return pdFALSE;
+	/*Should not get here*/
+	return pdFALSE;
 }
 
 void Software_IRQHandler(void)
 {
-    if (1 == g_startscheduler) {
-        g_startscheduler =
-            2; //skip the save n switch context first time when scheduler is starting.
-    } else {
-        /*Save Context*/
-        {
-            __asm volatile("lw	t0, pxCurrentTCB");
-            __asm volatile("sw	a2, 0x0(t0)");
-        }
+	if(1 == g_startscheduler)
+	{
+		g_startscheduler = 2; //skip the save n switch context first time when scheduler is starting.
+	}
+	else
+	{
+		/*Save Context*/
+		{
+			__asm volatile("lw	t0, pxCurrentTCB");
+			__asm volatile("sw	a2, 0x0(t0)");
+		}
 
-        vTaskSwitchContext();
-    }
+		vTaskSwitchContext();
+	}
 
-    /*Restore Context*/
-    {
-        __asm volatile("lw	sp, pxCurrentTCB");
-        __asm volatile("lw	sp, 0x0(sp)");
+	/*Restore Context*/
+	{
+		__asm volatile("lw	sp, pxCurrentTCB");
+		__asm volatile("lw	sp, 0x0(sp)");
 
-        __asm volatile("lw	t0, 31 * 4(sp)");
-        __asm volatile("csrw	mepc, t0");
+		__asm volatile("lw	t0, 31 * 4(sp)");
+		__asm volatile("csrw	mepc, t0");
 
-        __asm volatile("lw	x1, 0x0(sp)");
-        __asm volatile("lw   x4, 3 * 4(sp)");
-        __asm volatile("lw   x5, 4 * 4(sp)");
-        __asm volatile("lw   x6, 5 * 4(sp)");
-        __asm volatile("lw   x7, 6 * 4(sp)");
-        __asm volatile("lw   x8, 7 * 4(sp)");
-        __asm volatile("lw   x9, 8 * 4(sp)");
-        __asm volatile("lw   x10, 9 * 4(sp)");
-        __asm volatile("lw   x11, 10 * 4(sp)");
-        __asm volatile("lw   x12, 11 * 4(sp)");
-        __asm volatile("lw   x13, 12 * 4(sp)");
-        __asm volatile("lw   x14, 13 * 4(sp)");
-        __asm volatile("lw   x15, 14 * 4(sp)");
-        __asm volatile("lw   x16, 15 * 4(sp)");
-        __asm volatile("lw   x17, 16 * 4(sp)");
-        __asm volatile("lw   x18, 17 * 4(sp)");
-        __asm volatile("lw   x19, 18 * 4(sp)");
-        __asm volatile("lw   x20, 19 * 4(sp)");
-        __asm volatile("lw   x21, 20 * 4(sp)");
-        __asm volatile("lw   x22, 21 * 4(sp)");
-        __asm volatile("lw   x23, 22 * 4(sp)");
-        __asm volatile("lw   x24, 23 * 4(sp)");
-        __asm volatile("lw   x25, 24 * 4(sp)");
-        __asm volatile("lw   x26, 25 * 4(sp)");
-        __asm volatile("lw   x27, 26 * 4(sp)");
-        __asm volatile("lw   x28, 27 * 4(sp)");
-        __asm volatile("lw   x29, 28 * 4(sp)");
-        __asm volatile("lw   x30, 29 * 4(sp)");
-        __asm volatile("lw   x31, 30 * 4(sp)");
+		__asm volatile("lw	x1, 0x0(sp)");
+		__asm volatile("lw   x4, 3 * 4(sp)");
+		__asm volatile("lw   x5, 4 * 4(sp)");
+		__asm volatile("lw   x6, 5 * 4(sp)");
+		__asm volatile("lw   x7, 6 * 4(sp)");
+		__asm volatile("lw   x8, 7 * 4(sp)");
+		__asm volatile("lw   x9, 8 * 4(sp)");
+		__asm volatile("lw   x10, 9 * 4(sp)");
+		__asm volatile("lw   x11, 10 * 4(sp)");
+		__asm volatile("lw   x12, 11 * 4(sp)");
+		__asm volatile("lw   x13, 12 * 4(sp)");
+		__asm volatile("lw   x14, 13 * 4(sp)");
+		__asm volatile("lw   x15, 14 * 4(sp)");
+		__asm volatile("lw   x16, 15 * 4(sp)");
+		__asm volatile("lw   x17, 16 * 4(sp)");
+		__asm volatile("lw   x18, 17 * 4(sp)");
+		__asm volatile("lw   x19, 18 * 4(sp)");
+		__asm volatile("lw   x20, 19 * 4(sp)");
+		__asm volatile("lw   x21, 20 * 4(sp)");
+		__asm volatile("lw   x22, 21 * 4(sp)");
+		__asm volatile("lw   x23, 22 * 4(sp)");
+		__asm volatile("lw   x24, 23 * 4(sp)");
+		__asm volatile("lw   x25, 24 * 4(sp)");
+		__asm volatile("lw   x26, 25 * 4(sp)");
+		__asm volatile("lw   x27, 26 * 4(sp)");
+		__asm volatile("lw   x28, 27 * 4(sp)");
+		__asm volatile("lw   x29, 28 * 4(sp)");
+		__asm volatile("lw   x30, 29 * 4(sp)");
+		__asm volatile("lw   x31, 30 * 4(sp)");
 
-        __asm volatile("addi	sp, sp, 4 * 32");
+		__asm volatile("addi	sp, sp, 4 * 32");
 
-        //PRCI->MSIP[0] = 0x00;
+		//PRCI->MSIP[0] = 0x00;
 
-        __asm volatile("addi sp, sp, -1*4");
-        __asm volatile("sw t0, 0(sp)");
-        __asm volatile("li t0, 0x44000000"); // address of PRCI->MSIP[0]
-        __asm volatile("sw zero,0(t0)");
-        __asm volatile("lw t0, 0(sp)");
-        __asm volatile("addi sp, sp, 1*4");
+		__asm volatile("addi sp, sp, -1*4");
+		__asm volatile("sw t0, 0(sp)");
+		__asm volatile("li t0, 0x44000000");	// address of PRCI->MSIP[0]
+		__asm volatile("sw zero,0(t0)");
+		__asm volatile("lw t0, 0(sp)");
+		__asm volatile("addi sp, sp, 1*4");
 
-        __asm volatile("mret");
-    }
+		__asm volatile("mret");
+	}
 }
 
-void vPortYield(void)
+void vPortYield( void )
 {
-    raise_soft_interrupt();
+	raise_soft_interrupt();
 }
+

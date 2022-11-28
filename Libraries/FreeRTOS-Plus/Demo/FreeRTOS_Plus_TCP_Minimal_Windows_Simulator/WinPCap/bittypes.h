@@ -37,7 +37,7 @@ typedef signed char _int8_t;
 #elif SIZEOF_INT == 1
 typedef unsigned int u_int8_t;
 typedef signed int int8_t;
-#else /* XXX */
+#else  /* XXX */
 #error "there's no appropriate type for u_int8_t"
 #endif
 #define HAVE_U_INT8_T 1
@@ -45,7 +45,7 @@ typedef signed int int8_t;
 
 #endif /* HAVE_U_INT8_T */
 
-#ifndef HAVE_U_INT16_T
+#ifndef HAVE_U_INT16_T 
 
 #if SIZEOF_SHORT == 2
 typedef unsigned short u_int16_t;
@@ -56,7 +56,7 @@ typedef signed int int16_t;
 #elif SIZEOF_CHAR == 2
 typedef unsigned char u_int16_t;
 typedef signed char int16_t;
-#else /* XXX */
+#else  /* XXX */
 #error "there's no appropriate type for u_int16_t"
 #endif
 #define HAVE_U_INT16_T 1
@@ -75,7 +75,7 @@ typedef signed long int32_t;
 #elif SIZEOF_SHORT == 4
 typedef unsigned short u_int32_t;
 typedef signed short int32_t;
-#else /* XXX */
+#else  /* XXX */
 #error "there's no appropriate type for u_int32_t"
 #endif
 #define HAVE_U_INT32_T 1
@@ -96,7 +96,7 @@ typedef unsigned int u_int64_t;
 typedef unsigned long u_int64_t;
 #elif SIZEOF_SHORT == 8
 typedef unsigned short u_int64_t;
-#else /* XXX */
+#else  /* XXX */
 #error "there's no appropriate type for u_int64_t"
 #endif
 
@@ -104,33 +104,33 @@ typedef unsigned short u_int64_t;
 
 #ifndef PRId64
 #ifdef _MSC_EXTENSIONS
-#define PRId64 "I64d"
+#define PRId64	"I64d"
 #else /* _MSC_EXTENSIONS */
-#define PRId64 "lld"
+#define PRId64	"lld"
 #endif /* _MSC_EXTENSIONS */
 #endif /* PRId64 */
 
 #ifndef PRIo64
 #ifdef _MSC_EXTENSIONS
-#define PRIo64 "I64o"
+#define PRIo64	"I64o"
 #else /* _MSC_EXTENSIONS */
-#define PRIo64 "llo"
+#define PRIo64	"llo"
 #endif /* _MSC_EXTENSIONS */
 #endif /* PRIo64 */
 
 #ifndef PRIx64
 #ifdef _MSC_EXTENSIONS
-#define PRIx64 "I64x"
+#define PRIx64	"I64x"
 #else /* _MSC_EXTENSIONS */
-#define PRIx64 "llx"
+#define PRIx64	"llx"
 #endif /* _MSC_EXTENSIONS */
 #endif /* PRIx64 */
 
 #ifndef PRIu64
 #ifdef _MSC_EXTENSIONS
-#define PRIu64 "I64u"
+#define PRIu64	"I64u"
 #else /* _MSC_EXTENSIONS */
-#define PRIu64 "llu"
+#define PRIu64	"llu"
 #endif /* _MSC_EXTENSIONS */
 #endif /* PRIu64 */
 

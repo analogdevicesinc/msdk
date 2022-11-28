@@ -40,15 +40,20 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 #include <yfuns.h>
 #include <avr32/io.h>
 #include "usart.h"
 
+
 _STD_BEGIN
+
 
 #pragma module_name = "?__read"
 
+
 extern volatile avr32_usart_t *volatile stdio_usart_base;
+
 
 /*! \brief Reads a number of bytes, at most \a size, into the memory area
  *         pointed to by \a buffer.
@@ -62,24 +67,27 @@ extern volatile avr32_usart_t *volatile stdio_usart_base;
  */
 size_t __read(int handle, uint8_t *buffer, size_t size)
 {
-    int nChars = 0;
+  int nChars = 0;
 
-    // This implementation only reads from stdin.
-    // For all other file handles, it returns failure.
-    if (handle != _LLIO_STDIN) {
-        return _LLIO_ERROR;
-    }
+  // This implementation only reads from stdin.
+  // For all other file handles, it returns failure.
+  if (handle != _LLIO_STDIN)
+  {
+    return _LLIO_ERROR;
+  }
 
-    for (; size > 0; --size) {
-        int c = usart_getchar(stdio_usart_base);
-        if (c < 0)
-            break;
+  for (; size > 0; --size)
+  {
+    int c = usart_getchar(stdio_usart_base);
+    if (c < 0)
+      break;
 
-        *buffer++ = c;
-        ++nChars;
-    }
+    *buffer++ = c;
+    ++nChars;
+  }
 
-    return nChars;
+  return nChars;
 }
+
 
 _STD_END

@@ -18,6 +18,7 @@
 
 #include "plc.h"
 
+
 /**
  * Reset Packet Loss Concealment state
  */
@@ -39,14 +40,15 @@ void lc3_plc_suspend(struct lc3_plc_state *plc)
 /**
  * Synthesis of a PLC frame
  */
-void lc3_plc_synthesize(enum lc3_dt dt, enum lc3_srate sr, struct lc3_plc_state *plc,
-                        const float *x, float *y)
+void lc3_plc_synthesize(enum lc3_dt dt, enum lc3_srate sr,
+    struct lc3_plc_state *plc, const float *x, float *y)
 {
     uint16_t seed = plc->seed;
     float alpha = plc->alpha;
     int ne = LC3_NE(dt, sr);
 
-    alpha *= (plc->count < 4 ? 1.0f : plc->count < 8 ? 0.9f : 0.85f);
+    alpha *= (plc->count < 4 ? 1.0f :
+              plc->count < 8 ? 0.9f : 0.85f);
 
     for (int i = 0; i < ne; i++) {
         seed = (16831 + seed * 12821) & 0xffff;

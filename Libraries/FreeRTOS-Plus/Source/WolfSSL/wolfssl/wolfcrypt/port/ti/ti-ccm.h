@@ -20,19 +20,19 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+    #include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
 
-#if defined(WOLFSSL_TI_CRYPT) || defined(WOLFSSL_TI_HASH)
+#if defined(WOLFSSL_TI_CRYPT) ||  defined(WOLFSSL_TI_HASH)
 
-bool wolfSSL_TI_CCMInit(void);
+bool wolfSSL_TI_CCMInit(void) ;
 
 #ifndef SINGLE_THREADED
-void wolfSSL_TI_lockCCM();
-void wolfSSL_TI_unlockCCM();
-#else
+void wolfSSL_TI_lockCCM() ;
+void wolfSSL_TI_unlockCCM() ;
+#else 
 #define wolfSSL_TI_lockCCM()
 #define wolfSSL_TI_unlockCCM()
 #endif

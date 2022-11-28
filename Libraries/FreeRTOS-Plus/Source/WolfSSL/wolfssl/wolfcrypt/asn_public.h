@@ -19,24 +19,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifndef WOLF_CRYPT_ASN_PUBLIC_H
 #define WOLF_CRYPT_ASN_PUBLIC_H
 
 #include <wolfssl/wolfcrypt/types.h>
 #ifdef HAVE_ECC
-#include <wolfssl/wolfcrypt/ecc.h>
+    #include <wolfssl/wolfcrypt/ecc.h>
 #endif
 #if defined(WOLFSSL_CERT_GEN) && !defined(NO_RSA)
-#include <wolfssl/wolfcrypt/rsa.h>
+    #include <wolfssl/wolfcrypt/rsa.h>
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
 
 /* Certificate file Type */
 enum CertType {
-    CERT_TYPE = 0,
+    CERT_TYPE       = 0,
     PRIVATEKEY_TYPE,
     DH_PARAM_TYPE,
     CRL_TYPE,
@@ -45,37 +46,39 @@ enum CertType {
     CERTREQ_TYPE
 };
 
+
 /* Signature type, by OID sum */
 enum Ctc_SigType {
-    CTC_SHAwDSA = 517,
-    CTC_MD2wRSA = 646,
-    CTC_MD5wRSA = 648,
-    CTC_SHAwRSA = 649,
-    CTC_SHAwECDSA = 520,
-    CTC_SHA256wRSA = 655,
+    CTC_SHAwDSA      = 517,
+    CTC_MD2wRSA      = 646,
+    CTC_MD5wRSA      = 648,
+    CTC_SHAwRSA      = 649,
+    CTC_SHAwECDSA    = 520,
+    CTC_SHA256wRSA   = 655,
     CTC_SHA256wECDSA = 524,
-    CTC_SHA384wRSA = 656,
+    CTC_SHA384wRSA   = 656,
     CTC_SHA384wECDSA = 525,
-    CTC_SHA512wRSA = 657,
+    CTC_SHA512wRSA   = 657,
     CTC_SHA512wECDSA = 526
 };
 
 enum Ctc_Encoding {
-    CTC_UTF8 = 0x0c, /* utf8      */
-    CTC_PRINTABLE = 0x13 /* printable */
+    CTC_UTF8       = 0x0c, /* utf8      */
+    CTC_PRINTABLE  = 0x13  /* printable */
 };
+
 
 #ifdef WOLFSSL_CERT_GEN
 
 #ifndef HAVE_ECC
-typedef struct ecc_key ecc_key;
+    typedef struct ecc_key ecc_key;
 #endif
 
 enum Ctc_Misc {
-    CTC_NAME_SIZE = 64,
-    CTC_DATE_SIZE = 32,
-    CTC_MAX_ALT_SIZE = 16384, /* may be huge */
-    CTC_SERIAL_SIZE = 8
+    CTC_NAME_SIZE    =    64,
+    CTC_DATE_SIZE    =    32,
+    CTC_MAX_ALT_SIZE = 16384,   /* may be huge */
+    CTC_SERIAL_SIZE  =     8
 };
 
 typedef struct CertName {
@@ -93,37 +96,41 @@ typedef struct CertName {
     char unitEnc;
     char commonName[CTC_NAME_SIZE];
     char commonNameEnc;
-    char email[CTC_NAME_SIZE]; /* !!!! email has to be last !!!! */
+    char email[CTC_NAME_SIZE];  /* !!!! email has to be last !!!! */
 } CertName;
+
 
 /* for user to fill for certificate generation */
 typedef struct Cert {
-    int version; /* x509 version  */
-    byte serial[CTC_SERIAL_SIZE]; /* serial number */
-    int sigType; /* signature algo type */
-    CertName issuer; /* issuer info */
-    int daysValid; /* validity days */
-    int selfSigned; /* self signed flag */
-    CertName subject; /* subject info */
-    int isCA; /* is this going to be a CA */
+    int      version;                   /* x509 version  */
+    byte     serial[CTC_SERIAL_SIZE];   /* serial number */
+    int      sigType;                   /* signature algo type */
+    CertName issuer;                    /* issuer info */
+    int      daysValid;                 /* validity days */
+    int      selfSigned;                /* self signed flag */
+    CertName subject;                   /* subject info */
+    int      isCA;                      /* is this going to be a CA */
     /* internal use only */
-    int bodySz; /* pre sign total size */
-    int keyType; /* public key type of subject */
+    int      bodySz;                    /* pre sign total size */
+    int      keyType;                   /* public key type of subject */
 #ifdef WOLFSSL_ALT_NAMES
-    byte altNames[CTC_MAX_ALT_SIZE]; /* altNames copy */
-    int altNamesSz; /* altNames size in bytes */
-    byte beforeDate[CTC_DATE_SIZE]; /* before date copy */
-    int beforeDateSz; /* size of copy */
-    byte afterDate[CTC_DATE_SIZE]; /* after date copy */
-    int afterDateSz; /* size of copy */
+    byte     altNames[CTC_MAX_ALT_SIZE]; /* altNames copy */
+    int      altNamesSz;                 /* altNames size in bytes */
+    byte     beforeDate[CTC_DATE_SIZE];  /* before date copy */
+    int      beforeDateSz;               /* size of copy */
+    byte     afterDate[CTC_DATE_SIZE];   /* after date copy */
+    int      afterDateSz;                /* size of copy */
 #endif
 #ifdef WOLFSSL_CERT_REQ
-    char challengePw[CTC_NAME_SIZE];
+    char     challengePw[CTC_NAME_SIZE];
 #endif
 } Cert;
 #endif /* WOLFSSL_CERT_GEN */
 
+
 #ifdef WOLFSSL_CERT_GEN
+
+
 
 /* Initialize and Set Certficate defaults:
    version    = 3 (0x2)
@@ -136,47 +143,55 @@ typedef struct Cert {
    isCA       = 0 (false)
    keyType    = RSA_KEY (default)
 */
-WOLFSSL_API void wc_InitCert(Cert *);
-WOLFSSL_API int wc_MakeCert(Cert *, byte *derBuffer, word32 derSz, RsaKey *, ecc_key *, RNG *);
+WOLFSSL_API void wc_InitCert(Cert*);
+WOLFSSL_API int  wc_MakeCert(Cert*, byte* derBuffer, word32 derSz, RsaKey*,
+                         ecc_key*, RNG*);
 #ifdef WOLFSSL_CERT_REQ
-WOLFSSL_API int wc_MakeCertReq(Cert *, byte *derBuffer, word32 derSz, RsaKey *, ecc_key *);
+    WOLFSSL_API int  wc_MakeCertReq(Cert*, byte* derBuffer, word32 derSz, RsaKey*,
+                                ecc_key*);
 #endif
-WOLFSSL_API int wc_SignCert(int requestSz, int sigType, byte *derBuffer, word32 derSz, RsaKey *,
-                            ecc_key *, RNG *);
-WOLFSSL_API int wc_MakeSelfCert(Cert *, byte *derBuffer, word32 derSz, RsaKey *, RNG *);
-WOLFSSL_API int wc_SetIssuer(Cert *, const char *);
-WOLFSSL_API int wc_SetSubject(Cert *, const char *);
+WOLFSSL_API int  wc_SignCert(int requestSz, int sigType, byte* derBuffer,
+                         word32 derSz, RsaKey*, ecc_key*, RNG*);
+WOLFSSL_API int  wc_MakeSelfCert(Cert*, byte* derBuffer, word32 derSz, RsaKey*,
+                             RNG*);
+WOLFSSL_API int  wc_SetIssuer(Cert*, const char*);
+WOLFSSL_API int  wc_SetSubject(Cert*, const char*);
 #ifdef WOLFSSL_ALT_NAMES
-WOLFSSL_API int wc_SetAltNames(Cert *, const char *);
+    WOLFSSL_API int  wc_SetAltNames(Cert*, const char*);
 #endif
-WOLFSSL_API int wc_SetIssuerBuffer(Cert *, const byte *, int);
-WOLFSSL_API int wc_SetSubjectBuffer(Cert *, const byte *, int);
-WOLFSSL_API int wc_SetAltNamesBuffer(Cert *, const byte *, int);
-WOLFSSL_API int wc_SetDatesBuffer(Cert *, const byte *, int);
+WOLFSSL_API int  wc_SetIssuerBuffer(Cert*, const byte*, int);
+WOLFSSL_API int  wc_SetSubjectBuffer(Cert*, const byte*, int);
+WOLFSSL_API int  wc_SetAltNamesBuffer(Cert*, const byte*, int);
+WOLFSSL_API int  wc_SetDatesBuffer(Cert*, const byte*, int);
 
-#ifdef HAVE_NTRU
-WOLFSSL_API int wc_MakeNtruCert(Cert *, byte *derBuffer, word32 derSz, const byte *ntruKey,
-                                word16 keySz, RNG *);
-#endif
+    #ifdef HAVE_NTRU
+        WOLFSSL_API int  wc_MakeNtruCert(Cert*, byte* derBuffer, word32 derSz,
+                                     const byte* ntruKey, word16 keySz, RNG*);
+    #endif
 
 #endif /* WOLFSSL_CERT_GEN */
 
+
 #if defined(WOLFSSL_KEY_GEN) || defined(WOLFSSL_CERT_GEN)
-WOLFSSL_API int wc_DerToPem(const byte *der, word32 derSz, byte *output, word32 outputSz, int type);
+    WOLFSSL_API int wc_DerToPem(const byte* der, word32 derSz, byte* output,
+                            word32 outputSz, int type);
 #endif
 
 #ifdef HAVE_ECC
-/* private key helpers */
-WOLFSSL_API int wc_EccPrivateKeyDecode(const byte *input, word32 *inOutIdx, ecc_key *, word32);
-WOLFSSL_API int wc_EccKeyToDer(ecc_key *, byte *output, word32 inLen);
+    /* private key helpers */
+    WOLFSSL_API int wc_EccPrivateKeyDecode(const byte* input,word32* inOutIdx,
+                                         ecc_key*,word32);
+    WOLFSSL_API int wc_EccKeyToDer(ecc_key*, byte* output, word32 inLen);
 #endif
 
 /* DER encode signature */
-WOLFSSL_API word32 wc_EncodeSignature(byte *out, const byte *digest, word32 digSz, int hashOID);
+WOLFSSL_API word32 wc_EncodeSignature(byte* out, const byte* digest, word32 digSz,
+                                  int hashOID);
 WOLFSSL_API int wc_GetCTC_HashOID(int type);
 
 #ifdef __cplusplus
-} /* extern "C" */
+    } /* extern "C" */
 #endif
 
 #endif /* WOLF_CRYPT_ASN_PUBLIC_H */
+

@@ -29,13 +29,15 @@
 #include "common.h"
 #include "bits.h"
 
+
 /**
  * Bandwidth detector (cf. 3.3.5)
  * dt, sr          Duration and samplerate of the frame
  * e               Energy estimation per bands
  * return          Return detected bandwitdth
  */
-enum lc3_bandwidth lc3_bwdet_run(enum lc3_dt dt, enum lc3_srate sr, const float *e);
+enum lc3_bandwidth lc3_bwdet_run(
+    enum lc3_dt dt, enum lc3_srate sr, const float *e);
 
 /**
  * Return number of bits coding the bandwidth value
@@ -50,7 +52,8 @@ int lc3_bwdet_get_nbits(enum lc3_srate sr);
  * sr              Samplerate of the frame
  * bw              Bandwidth detected
  */
-void lc3_bwdet_put_bw(lc3_bits_t *bits, enum lc3_srate sr, enum lc3_bandwidth bw);
+void lc3_bwdet_put_bw(lc3_bits_t *bits,
+    enum lc3_srate sr, enum lc3_bandwidth bw);
 
 /**
  * Get bandwidth indication
@@ -59,6 +62,8 @@ void lc3_bwdet_put_bw(lc3_bits_t *bits, enum lc3_srate sr, enum lc3_bandwidth bw
  * bw              Return bandwidth indication
  * return          0: Ok  -1: Invalid bandwidth indication
  */
-int lc3_bwdet_get_bw(lc3_bits_t *bits, enum lc3_srate sr, enum lc3_bandwidth *bw);
+int lc3_bwdet_get_bw(lc3_bits_t *bits,
+    enum lc3_srate sr, enum lc3_bandwidth *bw);
+
 
 #endif /* __LC3_BWDET_H */

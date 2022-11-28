@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifdef HAVE_LIBZ
 
 #ifndef CTAO_CRYPT_COMPRESS_H
@@ -27,9 +28,10 @@
 #include <wolfssl/wolfcrypt/compress.h>
 
 /* reverse compatibility */
-#define Compress wc_Compress
+#define Compress   wc_Compress
 #define DeCompress wc_DeCompress
 
 #endif /* CTAO_CRYPT_COMPRESS_H */
 
 #endif /* HAVE_LIBZ */
+

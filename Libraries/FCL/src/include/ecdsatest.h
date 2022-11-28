@@ -3,3 +3,4 @@
 #include <ucl/ucl_hash.h>
 
 int test_ecdsa_curves(void);
+

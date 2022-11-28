@@ -47,19 +47,20 @@
 
 /// Structure used for FIFO management
 typedef struct {
-    unsigned int length; ///< FIFO size (number of elements)
-    void *data; ///< pointer to the FIFO buffer
-    unsigned int rindex; ///< current FIFO read index
-    unsigned int windex; ///< current FIFO write index
+  unsigned int length;  ///< FIFO size (number of elements)
+  void * data;          ///< pointer to the FIFO buffer
+  unsigned int rindex;  ///< current FIFO read index
+  unsigned int windex;  ///< current FIFO write index
 } fifo_t;
 
 /// Function alias
 /// \sa fifo_put8
-#define fifo_put fifo_put8
+#define fifo_put   fifo_put8
 
 /// Function alias
 /// \sa fifo_get8
-#define fifo_get fifo_get8
+#define fifo_get   fifo_get8
+
 
 /***** Function Prototypes *****/
 
@@ -70,7 +71,7 @@ typedef struct {
 *   \param    length   number of elements that the memory buffer can contain
 *   \returns  0 if successful, -1 upon failure
 */
-void fifo_init(fifo_t *fifo, void *mem, unsigned int length);
+void fifo_init(fifo_t * fifo, void * mem, unsigned int length);
 
 /**
 *   \brief    Adds and 8-bit element to the FIFO
@@ -78,7 +79,7 @@ void fifo_init(fifo_t *fifo, void *mem, unsigned int length);
 *   \param    element  element to add to the FIFO
 *   \returns  0 if successful, -1 upon failure
 */
-int fifo_put8(fifo_t *fifo, uint8_t element);
+int fifo_put8(fifo_t * fifo, uint8_t element);
 
 /**
 *   \brief    Gets the next 8-bit element to the FIFO
@@ -86,7 +87,7 @@ int fifo_put8(fifo_t *fifo, uint8_t element);
 *   \param    element  pointer to where to store the element from the FIFO
 *   \returns  0 if successful, -1 upon failure
 */
-int fifo_get8(fifo_t *fifo, uint8_t *element);
+int fifo_get8(fifo_t * fifo, uint8_t * element);
 
 /**
 *   \brief    Adds the next 16-bit element to the FIFO
@@ -94,7 +95,7 @@ int fifo_get8(fifo_t *fifo, uint8_t *element);
 *   \param    element  element to add to the FIFO
 *   \returns  0 if successful, -1 upon failure
 */
-int fifo_put16(fifo_t *fifo, uint16_t element);
+int fifo_put16(fifo_t * fifo, uint16_t element);
 
 /**
 *   \brief    Gets the next 16-bit element to the FIFO
@@ -102,40 +103,40 @@ int fifo_put16(fifo_t *fifo, uint16_t element);
 *   \param    element  pointer to where to store the element from the FIFO
 *   \returns  0 if successful, -1 upon failure
 */
-int fifo_get16(fifo_t *fifo, uint16_t *element);
+int fifo_get16(fifo_t * fifo, uint16_t * element);
 
 /**
 *   \brief    Immediately resets the FIFO to the empty state
 *   \param    fifo   FIFO on which to perform the operation
 */
-void fifo_clear(fifo_t *fifo);
+void fifo_clear(fifo_t * fifo);
 
 /**
 *   \brief    Determines if the FIFO is empty
 *   \param    fifo   FIFO on which to perform the operation
 *   \returns  #TRUE if FIFO is empty, #FALSE otherwise
 */
-int fifo_empty(fifo_t *fifo);
+int fifo_empty(fifo_t * fifo);
 
 /**
 *   \brief    FIFO status function
 *   \param    fifo   FIFO on which to perform the operation
 *   \returns  #TRUE if FIFO is full, #FALSE otherwise
 */
-int fifo_full(fifo_t *fifo);
+int fifo_full(fifo_t * fifo);
 
 /**
 *   \brief    FIFO status function
 *   \param    fifo   FIFO on which to perform the operation
 *   \returns  the number of elements currently in the FIFO
 */
-unsigned int fifo_level(fifo_t *fifo);
+unsigned int fifo_level(fifo_t * fifo);
 
 /**
 *   \brief    FIFO status function
 *   \param    fifo   FIFO on which to perform the operation
 *   \returns  the remaining elements that can be added to the FIFO
 */
-unsigned int fifo_remaining(fifo_t *fifo);
+unsigned int fifo_remaining(fifo_t * fifo);
 
 #endif /* _FIFO_H_ */

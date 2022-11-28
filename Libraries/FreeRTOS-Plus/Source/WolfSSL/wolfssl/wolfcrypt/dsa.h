@@ -38,29 +38,38 @@
 #define DsaPrivateKeyDecode wc_DsaPrivateKeyDecode
 
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
 
-enum { DSA_PUBLIC = 0, DSA_PRIVATE = 1 };
+
+enum {
+    DSA_PUBLIC   = 0,
+    DSA_PRIVATE  = 1
+};
 
 /* DSA */
 typedef struct DsaKey {
     mp_int p, q, g, y, x;
-    int type; /* public or private */
+    int type;                               /* public or private */
 } DsaKey;
 
-WOLFSSL_API void wc_InitDsaKey(DsaKey *key);
-WOLFSSL_API void wc_FreeDsaKey(DsaKey *key);
 
-WOLFSSL_API int wc_DsaSign(const byte *digest, byte *out, DsaKey *key, RNG *rng);
-WOLFSSL_API int wc_DsaVerify(const byte *digest, const byte *sig, DsaKey *key, int *answer);
+WOLFSSL_API void wc_InitDsaKey(DsaKey* key);
+WOLFSSL_API void wc_FreeDsaKey(DsaKey* key);
 
-WOLFSSL_API int wc_DsaPublicKeyDecode(const byte *input, word32 *inOutIdx, DsaKey *, word32);
-WOLFSSL_API int wc_DsaPrivateKeyDecode(const byte *input, word32 *inOutIdx, DsaKey *, word32);
+WOLFSSL_API int wc_DsaSign(const byte* digest, byte* out, DsaKey* key, RNG* rng);
+WOLFSSL_API int wc_DsaVerify(const byte* digest, const byte* sig, DsaKey* key,
+                         int* answer);
+
+WOLFSSL_API int wc_DsaPublicKeyDecode(const byte* input, word32* inOutIdx, DsaKey*,
+                                  word32);
+WOLFSSL_API int wc_DsaPrivateKeyDecode(const byte* input, word32* inOutIdx, DsaKey*,
+                                   word32);
 
 #ifdef __cplusplus
-} /* extern "C" */
+    } /* extern "C" */
 #endif
 
 #endif /* NO_DSA */
 #endif /* WOLF_CRYPT_DSA_H */
+

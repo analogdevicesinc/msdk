@@ -32,9 +32,11 @@
 #ifndef REDPOSIXCOMPAT_H
 #define REDPOSIXCOMPAT_H
 
+
 #ifndef assert
 #define assert(x) REDASSERT(x)
 #endif
+
 
 #undef O_RDONLY
 #undef O_WRONLY
@@ -101,7 +103,7 @@
 #undef rewinddir
 #undef closedir
 #define open(path, oflag) red_open(path, oflag)
-#define creat(path, mode) open(path, O_WRONLY | O_CREAT | O_TRUNC)
+#define creat(path, mode) open(path, O_WRONLY|O_CREAT|O_TRUNC)
 #define unlink(path) red_unlink(path)
 #define mkdir(path) red_mkdir(path)
 #define rmdir(path) red_rmdir(path)
@@ -144,4 +146,7 @@
 #define strcmp(s1, s2) RedStrCmp(s1, s2)
 #define strncpy(d, s, l) RedStrNCpy(d, s, (uint32_t)(l))
 
+
 #endif
+
+

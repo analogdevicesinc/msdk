@@ -63,10 +63,9 @@ struct altcp_tls_config;
 /** @ingroup altcp_tls
  * Create an ALTCP_TLS server configuration handle
  */
-struct altcp_tls_config *
-altcp_tls_create_config_server_privkey_cert(const u8_t *privkey, size_t privkey_len,
-                                            const u8_t *privkey_pass, size_t privkey_pass_len,
-                                            const u8_t *cert, size_t cert_len);
+struct altcp_tls_config *altcp_tls_create_config_server_privkey_cert(const u8_t *privkey, size_t privkey_len,
+                            const u8_t *privkey_pass, size_t privkey_pass_len,
+                            const u8_t *cert, size_t cert_len);
 
 /** @ingroup altcp_tls
  * Create an ALTCP_TLS client configuration handle
@@ -76,10 +75,9 @@ struct altcp_tls_config *altcp_tls_create_config_client(const u8_t *cert, size_t
 /** @ingroup altcp_tls
  * Create an ALTCP_TLS client configuration handle with two-way server/client authentication
  */
-struct altcp_tls_config *
-altcp_tls_create_config_client_2wayauth(const u8_t *ca, size_t ca_len, const u8_t *privkey,
-                                        size_t privkey_len, const u8_t *privkey_pass,
-                                        size_t privkey_pass_len, const u8_t *cert, size_t cert_len);
+struct altcp_tls_config *altcp_tls_create_config_client_2wayauth(const u8_t *ca, size_t ca_len, const u8_t *privkey, size_t privkey_len,
+                            const u8_t *privkey_pass, size_t privkey_pass_len,
+                            const u8_t *cert, size_t cert_len);
 
 /** @ingroup altcp_tls
  * Free an ALTCP_TLS configuration handle

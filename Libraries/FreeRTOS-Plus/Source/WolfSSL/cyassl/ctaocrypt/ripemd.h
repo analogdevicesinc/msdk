@@ -19,6 +19,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
+
 #ifndef CTAO_CRYPT_RIPEMD_H
 #define CTAO_CRYPT_RIPEME_H
 
@@ -26,9 +28,10 @@
 
 /* for ripemd reverse compatibility */
 #ifdef WOLFSSL_RIPEMD
-#define InitRipeMd wc_InitRipeMd
-#define RipeMdUpdate wc_RipeMdUpdate
-#define RipeMdFinal wc_RipeMdFinal
+    #define InitRipeMd   wc_InitRipeMd
+    #define RipeMdUpdate wc_RipeMdUpdate
+    #define RipeMdFinal  wc_RipeMdFinal
 #endif
 
 #endif /* CTAO_CRYPT_RIPEMD_H */
+

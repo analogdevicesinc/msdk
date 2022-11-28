@@ -65,19 +65,20 @@ __API__ int hash_size[MAX_HASH_FUNCTIONS];
 int __API__ ucl_init(void)
 {
 #ifdef HASH_SHA256
-    hash_size[UCL_SHA256] = UCL_SHA256_HASHSIZE;
+    hash_size[UCL_SHA256]=UCL_SHA256_HASHSIZE;
 #endif
 #ifdef HASH_SHA512
-    hash_size[UCL_SHA512] = UCL_SHA256_HASHSIZE;
+    hash_size[UCL_SHA512]=UCL_SHA256_HASHSIZE;
 #endif
 #ifdef HASH_SHA384
-    hash_size[UCL_SHA384] = UCL_SHA256_HASHSIZE;
+    hash_size[UCL_SHA384]=UCL_SHA256_HASHSIZE;
 #endif
 #ifdef HASH_SHA3
-    hash_size[UCL_SHA3] = UCL_SHA3_512_HASHSIZE;
+    hash_size[UCL_SHA3]=UCL_SHA3_512_HASHSIZE;
 #endif
 #ifdef HASH_SIA256
-    hash_size[UCL_SIA256] = UCL_SIA256_HASHSIZE;
+    hash_size[UCL_SIA256]=UCL_SIA256_HASHSIZE;
 #endif
-    return (UCL_OK);
+    return(UCL_OK);
 }
+
