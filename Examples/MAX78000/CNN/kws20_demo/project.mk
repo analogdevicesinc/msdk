@@ -32,7 +32,7 @@ ifeq "$(BOARD)" "FTHR_RevA"
 # Note that if both SDCARD and TFT are enabled, the TFT will be disabled to avoid SPI driver conflict.
 #PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
 
-# If enabled, it captures audio from line input of MAX9867 audio codec instead of on-board mic.
+# If enabled, it captures audio from line input of MAX9867 audio codec instead of the on-board mic.
 # Note that SEND_MIC_OUT_SDCARD should be disabled in this mode
 #PROJ_CFLAGS+=-DENABLE_CODEC_MIC
 LIB_SDHC = 1

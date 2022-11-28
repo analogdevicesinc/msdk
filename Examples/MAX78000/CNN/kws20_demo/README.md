@@ -333,10 +333,10 @@ In this mode, EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  
 
 In this mode, the left channel (tip of the J5 3.5mm audio jack) of the line-in of MAX9867 audio CODEC (is used as the audio input source.
 
- To enable using CODE as the audio input source, make sure the `PROJ_CFLAGS" line is uncommented. This mode can only be enabled for the  Feather board.
+ To enable using CODEC as the audio input source, make sure the `PROJ_CFLAGS" line is uncommented. This mode can only be enabled for the  Feather board.
 
 ```make
-# If enabled, it captures audio from line input of MAX9867 audio codec instead of on-board mic.
+# If enabled, it captures audio from line input of MAX9867 audio codec instead of the on-board mic.
 # Note that SEND_MIC_OUT_SDCARD should be disabled in this mode
 PROJ_CFLAGS+=-DENABLE_CODEC_MIC
 ```
@@ -372,7 +372,7 @@ The LED
 
 - stays *green* when it is listening
 - blinks *green* if a keyword is detected
-- blinks *yellow* if detection confidence is low or unknow keyword
+- blinks *yellow* if detection confidence is low or unknown keyword
 - stays *red* if there is an error in the SD card interface
 
 A utility (`bin2wav.py`) is provided in the `/Utility` folder to convert these files into wave (.wav) format to listen to.
@@ -382,7 +382,7 @@ To convert individual files:
 $ python bin2wav.py -i <sound snippet file>
 ```
 
-To convert all the files in current directory and all subdirectories:
+To convert all the files in the current directory and all subdirectories:
 
 ```bash
 $ python bin2wav.py -a
@@ -394,7 +394,7 @@ To convert all the files in a directory and all its subdirectories:
 $ python bin2wav.py -a -d <folder name>
 ```
 
-When option `-a` is used, each file is converted to wave file once and subsequent execution of the command skips all the files that have previously converted to wave files.
+When option `-a` is used, each file is converted to wav file once and subsequent execution of the command skips all the files that have previously been converted to wave files.
 
 ***Note 1: When `SEND_MIC_OUT_SDCARD` is selected, the Wake Up Timer (WUT) is disabled.***
 
@@ -402,13 +402,13 @@ When option `-a` is used, each file is converted to wave file once and subsequen
 
 ### KWS20 Demo Firmware Structure
 
-Following figure shows the processing in KWS20 Demo firmware:
+The following figure shows the processing in KWS20 Demo firmware:
 
 ![](Resources/KWS_Demo_flowchart.png)
 
-Collected samples from mic/file are 18/16 bit signed and are converted to 8 bit signed to feed into CNN. If Microphone mode, a high pass filter is used to filter out the DC level in captured samples. Scaled samples are stored in **pPreambleCircBuffer** circular buffer in chunks of 128 samples (bytes). 
+Collected samples from mic/file are 18/16 bit signed and are converted to 8-bit signed to feed into CNN. If Microphone mode, a high pass filter is used to filter out the DC level in captured samples. Scaled samples are stored in **pPreambleCircBuffer** circular buffer in chunks of 128 samples (bytes). 
 
-Following parameters in the firmware can be tuned:
+The following parameters in the firmware can be tuned:
 
 ```c
 #define SAMPLE_SCALE_FACTOR    		4		// multiplies 16-bit samples by this scale factor before converting to 8-bit
@@ -419,17 +419,16 @@ Following parameters in the firmware can be tuned:
 #define INFERENCE_THRESHOLD   		49 		// min probability (0-100) to accept an inference
 ```
 
-When the average absolute values of samples during last 128 number of samples goes above a threshold, the beginning of a word is marked. 
+When the average absolute values of samples during the last 128 samples go above a threshold, the beginning of a word is marked. 
 
-The end of a word is signaled when the **SILENCE_COUNTER_THRESHOLD** back to back chunks of samples with average absolute threshold lower than **THRESHOLD_LOW** is observed. 
+The end of a word is signaled when the **SILENCE_COUNTER_THRESHOLD** back-to-back chunks of samples with an average absolute threshold lower than **THRESHOLD_LOW** is observed. 
 
 The CNN requires 1sec worth of samples (128*128) to start processing. This window starts at **PREAMBLE_SIZE** samples prior to the beginning of the word, and ends after 16384 samples. If the end of a word is determined earlier, the pAI85Buffer sample buffer is padded with zeros.
 
-The CNN related API functions are in **cnn.c**. They are used to load weights and data, start CNN, wait for CNN to complete processing and unload the result. 
+The CNN-related API functions are in **cnn.c**. They are used to load weights and data, start CNN, wait for CNN to complete processing, and unload the result. 
 
 If a new network is developed and synthesized, the new weight file and related API functions are needed to be ported from automatically generated kws20 example project. Furthermore, if the input layer or organization of 128x128 sample sets in the trained network is changed, **AddTranspose()** function should be changed to reflect the new sample data arrangement in CNN memory.
 
 ### References
 
 https://github.com/MaximIntegratedAI/MaximAI_Documentation
-
