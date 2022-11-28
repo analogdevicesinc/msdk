@@ -141,7 +141,7 @@
 
 #if defined(ENABLE_CODEC_MIC)
 #define PMIC_AUDIO_I2C MXC_I2C1
-#define CODEC_MCLOCK   12288000
+#define CODEC_MCLOCK 12288000
 #endif
 
 /* DEBUG Print */
@@ -319,7 +319,7 @@ int main(void)
 #if defined(ENABLE_CODEC_MIC)
     int err;
     if ((err = max9867_init(PMIC_AUDIO_I2C, CODEC_MCLOCK)) != E_NO_ERROR) {
-      PR_DEBUG("\nError in max9867_init: %d\n", err);
+        PR_DEBUG("\nError in max9867_init: %d\n", err);
     }
 #elif defined(BOARD_FTHR_REVA)
     /* Enable microphone power on Feather board only if codec is not enabled */
@@ -691,8 +691,7 @@ int main(void)
                 /* Treat low confidence detections as unknown*/
                 if (!ret || out_class == 20) {
                     PR_DEBUG("Detected word: %s", "Unknown");
-                }
-                else{
+                } else {
                     PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class], probability);
                 }
                 PR_DEBUG("\n----------------------------------------- \n");
@@ -726,8 +725,7 @@ int main(void)
                     snprintf(fileName, sizeof(fileName), "%04d_%s", fileCount, keywords[out_class]);
                 } else {
                     // Unknown or Low confidence: add "L" at the end of file name
-                    snprintf(fileName, sizeof(fileName), "%04d_%s_L", fileCount,
-                             "Unknown");
+                    snprintf(fileName, sizeof(fileName), "%04d_%s_L", fileCount, "Unknown");
                 }
                 if (writeSoundSnippet((char *)fileName, snippetLength, &snippet[0]) != E_NO_ERROR) {
                     printf("*** !!!SD ERROR!!! ***\n");
@@ -846,14 +844,13 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
 
 #else
             MXC_TFT_ClearScreen();
-			memset(buff, 32, TFT_BUFF_SIZE);
-			if (max_index == 20 || *out_prob <= INFERENCE_THRESHOLD)
-	            TFT_Print(buff, 20, 30, font_2,
-                      snprintf(buff, sizeof(buff), "Unknown"));			
-			else
-				TFT_Print(buff, 20, 30, font_2,
-						snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
-                               (double)100.0 * max / 32768.0));
+            memset(buff, 32, TFT_BUFF_SIZE);
+            if (max_index == 20 || *out_prob <= INFERENCE_THRESHOLD)
+                TFT_Print(buff, 20, 30, font_2, snprintf(buff, sizeof(buff), "Unknown"));
+            else
+                TFT_Print(buff, 20, 30, font_2,
+                          snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
+                                   (double)100.0 * max / 32768.0));
             TFT_Print(buff, 1, 50, font_1,
                       snprintf(buff, sizeof(buff), "__________________________ "));
             //TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
@@ -1106,7 +1103,7 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
     while ((rx_size--) && (chunkCount < CHUNK)) {
         /* Read microphone sample from I2S FIFO */
         sample = (int32_t)MXC_I2S->fifoch0;
-		
+
         /* The actual value is 18 MSB of 32-bit word */
 #ifdef ENABLE_CODEC_MIC
         temp = sample >> 19; // adjusted for codec
