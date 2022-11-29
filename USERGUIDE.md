@@ -298,15 +298,17 @@ To open a project:
 
    ![Figure 16](res/Fig16.jpg)
 
-6. Set the **Board Support Package** to match your evaluation platform. 
+6. Set the **Board Support Package** to match your evaluation platform.
 
-   In VS Code, this is done by editing the **`.vscode/settings.json`** file and setting the **`"board"`**  [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option.
+   In VS Code, this is done by editing the **`.vscode/settings.json`** file and setting the **`"board"`**  [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option.  
+
+   See [Board Support Packages](#board-support-packages) for more details.
 
    ![Figure 17](res/Fig17.jpg)
 
 7. Save your changes to `settings.json` with **`CTRL+S`**.
 
-8. Reload the VS Code window.  A reload is necessary after changing any options in `settings.json` to force it to re-index its intellisense engine. 
+8. Reload the VS Code window.  A reload is necessary after changing any options in `settings.json` to force it to re-index its Intellisense engine.
 
    VS Code can be conveniently re-loaded with the **Reload Window** developer command accessed with **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS).
 
@@ -384,7 +386,9 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
     ![Figure 25](res/Fig25.jpg)
 
-8. The Eclipse projects files are configured for the **EVKIT**-type ***BSP*** by default. This can be changed by opening the project properties and navigating to **C/C++ Build -> Environment**.  Set the **`BOARD`** _Build Configuration Variable_ to match the target evaluation platform.
+8. The Eclipse projects files are configured for the **EVKIT**-type ***BSP*** by default. This can be changed by opening (right click) the **project properties** and navigating to **C/C++ Build -> Environment**.  Set the **`BOARD`** _Build Configuration Variable_ to match the target evaluation platform.  
+
+    See [Board Support Packages](#board-support-packages) for more details.
 
     ![Figure 26](res/Fig26.jpg)
 
@@ -733,7 +737,7 @@ make
 
 #### Default Build Behavior
 
-By default, the build system will auto-search the root project directory source code (**`*.c`**) and header files (**`*.h`**).  The optional **include** and **src** directories are also searched if they exist.
+By default, when `make` is run the build system will **auto-search** the **root** project directory for *source code* (**`*.c`**) and *header files* (**`*.h`**) to compile into a program binary.  The *optional* **include** and **src** directories are also searched if they exist.
 
 ```shell
 Root Project Directory
@@ -747,13 +751,15 @@ Root Project Directory
   └─ *.c
 ```
 
-Additionally, a project's core **Makefile** will come pre-configured for a specific _Target Microcontroller_ and its primary _BSP_.  
+Additionally, a project's build system will come pre-configured for a specific _Target Microcontroller_ and its primary _BSP_.
 
-For more advanced build configuration, configuration variables should be used.
+The default configuration is suitable for most use-cases, but a system of _Build Configuration Variables_ are available if additional configuration is needed for a project.
 
-#### How to Set a Configuration Variable
+#### Build Configuration Variables
 
-A **Build Configuration Variable** is a [Makefile variable](https://www.gnu.org/software/make/manual/make.html#Using-Variables), and therefore follows the same rules.  However, they have been streamlined to be made much easier to use, so most of the official GNU Make documentation is only needed for advanced use-cases.
+A **Build Configuration Variable** is a [Makefile variable](https://www.gnu.org/software/make/manual/make.html#Using-Variables), and therefore follows the same rules.  However, they have been streamlined to be made much easier to use, so most of the [official GNU Make documentation](https://www.gnu.org/software/make/manual/make.html) is only needed for extremely advanced use-cases.
+
+##### How to Set a Build Configuration Variable
 
 To set a **standard** configuration variable, **use the `=` syntax**...
 
@@ -761,16 +767,18 @@ To set a **standard** configuration variable, **use the `=` syntax**...
 VARIABLE=VALUE
 ```
 
-The **`=`** operater is used for _most_ configuration variables with a few exceptions (that are clearly documented) when a variable should contain a **_list_ of values**.  In such cases, **use `+=` the syntax** to _add_ values to the list.
+The **`=`** operater is used for _most_ configuration variables with a few exceptions (documented in the [reference table](#build-configuration-variables-reference-table)) when a variable should contain a **_list_ of values**.  In such cases, **use `+=` the syntax** to _add_ values to the list.
 
 ```Makefile
 VARIABLE+=VALUE1
 VARIABLE+=VALUE2
 ```
 
-In most cases, you should do this from inside of the **project.mk** file.  
+##### Where to Set a Build Configuration Variable
 
-For example,  to enable hardware floating-point acceleration for a project, use the **`MFLOAT_ABI`** configuration variable to set its value to **`hard`**.  The contents of **project.mk** might then look as follows:
+For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-configuration-variables-reference-table)). 
+
+For example, to enable hardware floating-point acceleration for a project, the **`MFLOAT_ABI`** configuration variable can be used with a value of **`hard`**.  The contents of **project.mk** might then look as follows:
 
 (_Inside project.mk_)
 
@@ -801,11 +809,11 @@ Additionally, **environment variables** can be used.  For example (on linux)...
 export MFLOAT_ABI=hard
 ```
 
-... will set the hardware floating point acceleration as the default for all projects.
+... will set the hardware floating point acceleration as the default for all projects with an environment variable.
 
-However, there is a precedence hierarchy that should be taken into consideration.
+However, there is a *precedence hierarchy* that should be taken into consideration.
 
-#### Precedence Hierarchy
+##### Precedence Hierarchy
 
 The precedence hierarchy for the value of a configuration variable is:
 
@@ -813,15 +821,13 @@ The precedence hierarchy for the value of a configuration variable is:
 
 ...meaning if a value is set in an IDE _and_ project.mk, the IDE's value will take precedence.  However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
 
-**The precedence hierarchy is especially important to consider for the `TARGET` and `BOARD` configuration variables.**   
+##### Build Configuration Variables Reference Table
 
-#### Configuration Variables Table
-
-| Category | Variable | Description | Details |
+| Category | Configuration Variable | Description | Details |
 |--- | --- | --- | --- |
 |**Target**||||
 |  | `TARGET` | Set the *Target Microcontroller* |**If you are using an IDE, set this variable in the IDE's settings instead of project.mk**|
-|  | `BOARD` | Set the *Board Support Package (BSP)* | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  Every microcontroller has a number of BSPs available for it that can be found in the `Libraries/Boards/TARGET` folder of the MaximSDK.  When you change this option, it's usually a good idea to fully clean your project, then re-build. |
+|  | `BOARD` | Set the *Board Support Package (BSP)* | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  See [Board Support Packages](#board-support-packages) for more details.  When you change this option, it's usually a good idea to fully clean your project, then re-build. |
 |**SDK**||||
 |  | `MAXIM_PATH` | (Optional) Specify the location of the MSDK | This optional variable can be used to change where the Makefile looks for the MSDK installation.  By default, the build system will attempt to locate the MSDK with a relative path.  If a project is moved _outside_ of the SDK this variable must be set to the absolute path of the MSDK installation. |
 |  | `CAMERA` | (Optional) Set the Camera drivers to use | This option is only useful for the MAX78000 and MAX78002, and sets the camera drivers to use for the project.  Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`.  Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder.  Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
@@ -830,7 +836,7 @@ The precedence hierarchy for the value of a configuration variable is:
 |  | `IPATH` | Where to search for header (.h) files | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **header** files.  _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`.  Individual header files are _not_ ever manually added into the build.  Instead, you only need to specify the _location_ of your header files. |
 |  | `AUTOSEARCH` | Automatically search for source (.c) files | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default).  Set to `0` to disable, or `1` to enable.  If auto-search is disabled, source files must be manually added to `SRCS`. |
 |  | `SRCS` | List of source (.c) files to add to the build | **Use the `+=` operator with this variable**.  All of the files in this list will be added to the build.  If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build.  If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`.  Otherwise, a full path relative to the Makefile must be used. |
-|  | `PROJECT` | Set the output filename | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk. |
+|  | `PROJECT` | Set the output filename | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk.** |
 |**Compiler**||||
 |  | `MXC_OPTIMIZE_CFLAGS` | Set the optimization level | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`.|
 |  | `PROJ_CFLAGS` | Add a compiler flag to the build | Compiler flags can be added with this option, including compiler definitions.  For each value, the same syntax should be used as if the compiler flag was passed in via the command-line.  These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options.|
@@ -858,11 +864,88 @@ The precedence hierarchy for the value of a configuration variable is:
 
 ### Project Configuration
 
-Additionally, note the **Project Configuration System** offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **flashing** program binaries, and **debugging** them.  Additionally, the Project Configuration System sits _on top_ of the build system's *CLI*, allowing it to manage fundamental aspects of the build such as:
+Additionally, note the **Project Configuration System** offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **flashing** program binaries, and **debugging** them.  Additionally, the Project Configuration System sits _on top_ of the build system's *CLI*, allowing it to manage fundamental aspects of development such as:
 
 * Setting the _Target Microcontroller_  (`TARGET` _Build Configuration Variable_)
 * Setting the _Board Support Package_ (`BOARD` _Build Configuration Variable_)
-* Setting the _output filename_ (`PROJECT` _Build Configuration Variable_) 
 * Configuring the _Environment_ and _System Path_ for use with the MSDK toolchain
+* Searching the MSDK for relevant source code and function definitions to use for editor look-ups
+
+#### Board Support Packages
+
+The role of a Board Support Package (BSP) is to provide a hardware abstraction layer for board-level initialization code such as initializing and assigning UART instances, pushbuttons, LEDs, external peripheral devices, TFT displays, and other board-specific hardware.  The MSDK's available Board Support Packages (BSPs) can be found in the [`Libraries/Boards`](Libraries/Boards) folder.
+
+![Figure 34](res/Fig34.jpg)
+
+The name of the BSP is the name of the folder.  For example, the MAX78000 supports the `Aud01_RevA`, `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178` BSPS.  However, it is not always clear how these BSP names match the part numbers for different evaluation kits.  The table below can be used to match an external part number with an MSDK BSP.
+
+| External Part Number                                         | Target                    | BSP            |
+| ------------------------------------------------------------ | ------------------------- | -------------- |
+| [MAX32520-KIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520-KIT.html) | `MAX32520`                | `EvKit_V1`     |
+| [MAX32520FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520FTHR.html) | `MAX32520`                | `MAX32520FTHR` |
+| [MAX32650-EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650-EVKIT.html) | `MAX32650`                | `EvKit_V1`     |
+| [MAX32650FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650FTHR.html) | `MAX32650`                | `FTHR_APPS_A`  |
+| [MAX32655EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655EVKIT.html) | `MAX32655`                | `EvKit_V1`     |
+| [MAX32655FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655FTHR.html) | `MAX32655`                | `FTHR_Apps_P1` |
+| [MAX32660-EVSYS](https://www.maximintegrated.com/en/products/microcontrollers/MAX32660-EVSYS.html) | `MAX32660`                | `EvKit_V1`     |
+| MAX32662EVKIT                                                | `MAX32662`                | `EvKit_V1`     |
+| [MAX32666EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32666EVKIT.html) | `MAX32665`                | `EvKit_V1`     |
+| [MAX32666FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32666FTHR.html) | `MAX32665`                | `FTHR`         |
+| MAX32666FTHR2                                                | `MAX32665`                | `FTHR2`        |
+| [MAX32670EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32670EVKIT.html) | `MAX32670`                | `EvKit_V1`     |
+| [MAX32672EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672EVKIT.html) | `MAX32672`                | `EvKit_V1`     |
+| [MAX32672FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672FTHR.html) | `MAX32672`                | `FTHR`         |
+| [MAX32675EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32675EVKIT.html) | `MAX32675`                | `EvKit_V1`     |
+| MAX32675FTHR                                                 | `MAX32675`                | `FTHR_Apps_B`  |
+| [MAX32680EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32680EVKIT.html) | `MAX32680`                | `EvKit_V1`     |
+| MAX32690EVKIT                                                | `MAX32690`                | `EvKit_V1`     |
+| [MAX78000EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000EVKIT.html) | `MAX78000`                | `EvKit_V1`     |
+| [MAX78000FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000FTHR.html) | `MAX78000`                | `FTHR_RevA`    |
+| [MAXREFDES178](https://www.maximintegrated.com/en/design/reference-design-center/system-board/7375.html) | `MAX78000` and `MAX32665` | `MAXREFDES178` |
+| [MAX78002EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002EVKIT.html) | `MAX78002`                | `EvKit_V1`     |
+
+##### How to Set the BSP
+
+To set the BSP for a project:
+
+* In **VS Code**:  
+
+  * Set the **`"board"`** [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option in **`.vscode/settings.json`**
+
+    ![Figure 17](res/Fig17.jpg)
+
+  * Reload the VS Code window to re-index its Intellisense engine.
+
+    VS Code can be conveniently re-loaded with the **Reload Window** developer command accessed with **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS).
+
+    ![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
+
+* In **Eclipse**:  
+
+  * Set the **`BOARD`** *Build Configuration Variable* in the environment with **project properties** (right click) in **C/C++ Build -> Environment**
+
+    ![Figure 26](res/Fig26.jpg)
+
+* **Command-Line** Development:  
+
+  * Set the **`BOARD`** *Build Configuration Variable* in **project.mk**
+
+    ```makefile
+    # (inside project.mk)
+    # This file can be used to set build configuration
+    # variables.  These variables are defined in a file called 
+    # "Makefile" that is located next to this one.
+    
+    # For instructions on how to use this system, see
+    # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+    
+    # **********************************************************
+    
+    # Add your config here!
+    
+    BOARD=FTHR_RevA # Set the BSP
+    ```
+
+  * Alternatively, set **`BOARD`** on the command-line when building (ie. `make BOARD=FTHR_RevA ...`)
 
 TODO:  Advanced configuration, Dual-core RISC-V debugging, Camera projects, BLE debugging, etc.
