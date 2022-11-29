@@ -21,27 +21,16 @@ This document describes the MSDK's installation, setup, and usage.
 ### Supported Parts
 
 - [MAX32520](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520.html): ChipDNA Secure Microcontroller with Secure Boot for IoT Applications
-
 - [MAX32570](https://www.maximintegrated.com/en/products/microcontrollers/MAX32570.html) **(Available by NDA only**): Low-Power Arm Cortex-M4 Microcontroller with Contactless Radio for Secure Applications
-
 - [MAX32650](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650.html): Ultra-Low-Power Arm Cortex-M4 with FPU-Based Microcontroller (MCU) with 3MB Flash and 1MB SRAM
-
 - [MAX32655](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655.html): Low-Power, Arm Cortex-M4 Processor with FPU-Based Microcontroller and Bluetooth 5.2
-
 - [MAX32660](https://www.maximintegrated.com/en/products/microcontrollers/MAX32660.html): Tiny, Ultra-Low-Power Arm Cortex-M4 Processor with FPU-Based Microcontroller (MCU) with 256KB Flash and 96KB SRAM
-
 - [MAX32665](https://www.maximintegrated.com/en/products/microcontrollers/MAX32665.html): Low-Power ARM Cortex-M4 with FPU-Based Microcontroller with Bluetooth 5 for Wearables
-
 - [MAX32670](https://www.maximintegrated.com/en/products/microcontrollers/MAX32670.html): High-Reliability, Ultra-Low-Power Microcontroller Powered by Arm Cortex-M4 Processor with FPU for Industrial and IoT
-
 - [MAX32672](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672.html): High-Reliability, Tiny, Ultra-Low-Power Arm Cortex-M4F Microcontroller with 12-Bit 1MSPS ADC
-
 - [MAX32675](https://www.maximintegrated.com/en/products/microcontrollers/MAX32675.html): Ultra-Low-Power Arm Cortex-M4F with Precision Analog Front-End for Industrial and Medical Sensors
-
 - [MAX32680](https://www.maximintegrated.com/en/products/microcontrollers/MAX32680.html): Ultra-Low-Power Arm Cortex-M4F with Precision Analog Front-End and Bluetooth LE 5.2
-
 - [MAX78000](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000.html): Artificial Intelligence Microcontroller with Ultra-Low-Power Convolutional Neural Network Accelerator
-
 - [MAX78002](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002.html): Artificial Intelligence Microcontroller with Low-Power Convolutional Neural Network Accelerator
 
 ### Supported Development Environments
@@ -726,6 +715,8 @@ To set the BSP for a project:
 
 ### Visual Studio Code
 
+Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) Github repository.  This section augments the VSCode-Maxim [README](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) with more detailed usage info and insight.
+
 #### Opening Example Projects
 
 Visual Studio Code is built around a "working directory" paradigm.  The editor is always rooted in a working directory, and the main mechanism for changing that directory is **File -> Open Folder...**
@@ -1273,7 +1264,7 @@ The precedence hierarchy for the value of a configuration variable is:
 
 ### Overview
 
-A microcontroller is made up of a Central Processing Unit (CPU) that is surrounded by additional _peripheral_ hardware blocks such as timers, memory controllers, UART controllers, ADCs, RTCs, audio interfaces, and many more.  The **Peripheral Driver API** is an important component of the MSDK that allows the CPU to utilize the microcontroller's hardware blocks over a higher-level ***Application Programming Interface (API)***.
+A microcontroller is made up of a Central Processing Unit (CPU) that is surrounded by additional _peripheral_ hardware blocks such as timers, memory controllers, UART controllers, ADCs, RTCs, audio interfaces, and many more.  The **Peripheral Driver API** is an important core library in the MSDK that allows the CPU to utilize the microcontroller's hardware blocks over a higher-level ***Application Programming Interface (API)***.
 
 ### Documentation
 
@@ -1305,27 +1296,90 @@ As a result, the table below is a useful reference for determining which driver 
 
 #### Die Types to Part Number
 
-| Part Number | Die Type |
-| ----------- | -------- |
-| MAX32520    | ES17     |
-| MAX32570    | ME13     |
-| MAX32650    | ME10     |
-| MAX32655    | ME17     |
-| MAX32660    | ME11     |
-| MAX32665    | ME14     |
-| MAX32670    | ME15     |
-| MAX32672    | ME21     |
-| MAX32675    | ME16     |
-| MAX32680    | ME20     |
-| MAX32690    | ME18     |
-| MAX78000    | AI85     |
-| MAX78002    | AI87     |
+| Part Number       | Die Type |
+| ----------------- | -------- |
+| MAX32520          | ES17     |
+| MAX32570          | ME13     |
+| MAX32650          | ME10     |
+| MAX32655          | ME17     |
+| MAX32660          | ME11     |
+| MAX32665-MAX32668 | ME14     |
+| MAX32670          | ME15     |
+| MAX32672          | ME21     |
+| MAX32675          | ME16     |
+| MAX32680          | ME20     |
+| MAX32690          | ME18     |
+| MAX78000          | AI85     |
+| MAX78002          | AI87     |
+
+## Libraries
+
+The MSDK contains a large number of **libraries**, both third-party and in-house.  These libraries are an extension to the "core" SDK resources and contain drivers for miscellaneous _**external**_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices.  The MSDK also contains libraries for more advanced _**internal**_ hardware peripherals that provide an _additional_ higher-level abstraction layer above the [Peripheral Driver API](#peripheral-driver-api) such as USB, the SDHC interface, and the Cordio BLE stack.
+
+These libraries may also offer their _own_ Build Configuration Variables in addition to those already available in the [Build System](#build-system).  These additional build options are enabled alongside the library itself via a convenient *toggle switch* (See the **"Libraries"** section of the _[Build Configuration Variables](#build-configuration-variables-reference-table)_).
+
+Source code is located in the [Libraries](Libraries) folder of the SDK and managed with the [`Libraries/libs.mk`](Libraries/libs.mk) file, which comes pre-included in each example project.
+
+### CMSIS-DSP
+
+The CMSIS-DSP library provides a suite of common **Digital Signal Processing *(DSP)*** functions that take advantage of hardware accelerated *Floating Point Unit (FPU)* available on microcontrollers with Arm Cortex-M cores.  This library is distributed in the MSDK as a pre-compiled static library file and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](Examples) folder for each microcontroller.
+
+Please refer to the [CMSIS-DSP official documentation](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) for more detailed documentation on the library functions and usage.
+
+#### Supported Parts
+
+* All microcontrollers with a Cortex M4 core are supported.
+
+---
+
+### Cordio Bluetooth Low Energy
+
+The Cordio Bluetooth Low Energy (BLE) library provides a full BLE stack for microcontrollers with an integrated BLE controller.
+
+#### Supported Parts
+
+* MAX32655
+* MAX32665
+* MAX32680
+* MAX32690: TODO web link
+
+---
+
+### MAXUSB
+
+The MAXUSB library provides a higher-level interface for utilizing the built-in USB controller hardware available on some microcontrollers.  This allows the microcontroller to enumerate as a USB device without the need for an external USB controller IC.
+
+#### Supported Parts
+
+* MAX32570
+* MAX32650
+* MAX32655 & MAX32656
+* MAX32665-MAX32668
+* MAX32690
+* MAX78002
+
+---
+
+### Miscellaneous Drivers
+
+The [`Libraries/MiscDrivers`](Libraries/MiscDrivers) folder of the MSDK contains drivers for miscellaneous external components such as TFT displays, cameras, audio codecs, PMICs, pushbuttons, etc.  These resources are usually closely tied with the [Board Support Packages](#board-support-packages).
+
+TODO
+
+---
+
+### SDHC
+
+The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level interface built on top of the SDHC [Peripheral Driver API](#peripheral-driver-api) that includes a **[FatFS File System](http://elm-chan.org/fsw/ff/00index_e.html)** implementation for managing files on SD cards.
+
+#### Supported Parts
+
+* MAX32650
+* MAX32570
+* MAX32665-MAX32668
+* MAX78002
 
 
 
 
-
-
-
-### 
 
