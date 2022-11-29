@@ -1,43 +1,58 @@
 #!/bin/bash
 
-# main ME17 device used to test the rest
-MAIN_DEVICE_NAME_UPPER=MAX32655
-MAIN_DEVICE_NAME_LOWER=max32655
-MAIN_DEVICE_ID=04091702d4f18ac600000000000000000000000097969906
-MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -d "/" -f1 | rev)"
-
-# List of devices under test
-#dut_list=(max32665)
-dut_list=(max32655 max32665 max32690)
-# List of serial IDs for DUT, must correlate with list above
-#dut_list_ID=(0409000098d9439b00000000000000000000000097969906)
-dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906 0409170246dfc09500000000000000000000000097969906)
-# List of serail devices associated with each DUT msut correlate with device list above
-#dut_list_serial=(D30A1X9X)
-dut_list_serial=(D3073ICQ D30A1X9X D30ALJPW)
-# Will hold values of the current device undertest from the lists above
-DUT_NAME_UPPER=NONE
-DUT_NAME_LOWER=NONE
-DUT_ID=0
-DUT_SERIAL_PORT=0
-
 EXAMPLE_TEST_PATH=$(pwd)
 cd ../../../../
 MSDK_DIR=$(pwd)
 failedTestList=" "
 numOfFailedTests=0
 
-#****************************************** Change this when testing locally **************************
+if [ $(hostname) == "wall-e" ]; then
+    # main ME17 device used to test the rest
+    MAIN_DEVICE_NAME_UPPER=MAX32655
+    MAIN_DEVICE_NAME_LOWER=max32655
+    MAIN_DEVICE_ID=04091702d4f18ac600000000000000000000000097969906
+    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -d "/" -f1 | rev)"
 
-# WALL-E
-export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
-export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
-export ROBOT=/home/btm-ci/.local/bin/robot
+    # List of devices under test
+    dut_list=(max32655 max32665 max32690)
+    # List of serial IDs for DUT, must correlate with list above
+    dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906 0409170246dfc09500000000000000000000000097969906)
+    # List of serail devices associated with each DUT msut correlate with device list above
+    #dut_list_serial=(D30A1X9X)
+    dut_list_serial=(D3073ICQ D30A1X9X D30ALJPW)
+    # WALL-E  paths
+    export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
+    export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
+    export ROBOT=/home/btm-ci/.local/bin/robot
 
-# Local
-# export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
-# export OPENOCD=/home/eddie/workspace/openocd/src/openocd
-# export ROBOT=/home/eddie/.local/bin/robot
+# Local- eddie desktop
+else
+    # main ME17 device used to test the rest
+    MAIN_DEVICE_NAME_UPPER=MAX32655
+    MAIN_DEVICE_NAME_LOWER=max32655
+    MAIN_DEVICE_ID=04091702d4f18ac600000000000000000000000097969906
+    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -d "/" -f1 | rev)"
+
+    # List of devices under test
+    #dut_list=(max32665)
+    dut_list=(max32655 max32665 max32690)
+    # List of serial IDs for DUT, must correlate with list above
+    #dut_list_ID=(0409000098d9439b00000000000000000000000097969906)
+    dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906 0409170246dfc09500000000000000000000000097969906)
+    # List of serail devices associated with each DUT msut correlate with device list above
+    #dut_list_serial=(D30A1X9X)
+    dut_list_serial=(D3073ICQ D30A1X9X D30ALJPW)
+    # local paths
+    export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
+    export OPENOCD=/home/eddie/workspace/openocd/src/openocd
+    export ROBOT=/home/eddie/.local/bin/robot
+fi
+
+# Will hold values of the current device undertest as we iterate through the device list above
+DUT_NAME_UPPER=NONE
+DUT_NAME_LOWER=NONE
+DUT_ID=0
+DUT_SERIAL_PORT=0
 
 #***************************************** Helper functions *****************************************
 #****************************************************************************************************
@@ -50,6 +65,7 @@ function script_clean_up() {
 
     set -e
 }
+
 trap script_clean_up EXIT SIGINT
 
 # Function accepts parameters: device, CMSIS_DAP_ID_x
@@ -290,7 +306,6 @@ for i in ${!dut_list[@]}; do
 
     #--------------------------start Datc/Dats conencted tests
 
-
     # flash DUT with BLE_dats
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
     echo "> Flashing BLE_dats on DUT $DUT_NAME_UPP"
@@ -302,7 +317,7 @@ for i in ${!dut_list[@]}; do
     flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     # Run robot test
     # give them time to connect
-    
+
     # directory for resuilts logs
     cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
     mkdir BLE_dat_cs
@@ -353,7 +368,6 @@ for i in ${!dut_list[@]}; do
     # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
     make clean
     make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8
-
 
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
     printf "> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
