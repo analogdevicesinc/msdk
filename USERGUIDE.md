@@ -687,9 +687,17 @@ The role of a Board Support Package (BSP) is to provide a hardware abstraction l
 
 ![Figure 34](res/Fig34.jpg)
 
-The name of the BSP is the name of the folder.  For example, the MAX78000 supports the `Aud01_RevA`, `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178` BSPS.  However, it is not always clear how these BSP names match the part numbers for different evaluation kits.  The table below can be used to match an external part number with an MSDK BSP.
+The name of the BSP is the name of the folder.  For example, the MAX78000 supports the `Aud01_RevA`, `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178` BSPs.  However, it is not always clear how these BSP names match the part numbers for different evaluation kits.  The table below can be used to match an external part number with an MSDK BSP.
 
-| External Part Number                                         | BSP            |
+To set the BSP for a project:
+
+* In **VS Code**:  [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code)
+
+* In **Eclipse**:  [How to Set the BSP (Eclipse)](#how-to-set-the-bsp-eclipse)
+
+* **Command-Line** Development:  [How to Set the BSP (Command-Line)](#how-to-set-the-bsp-command-line)
+
+| External Part Number                                         | `BOARD`        |
 | ------------------------------------------------------------ | -------------- |
 | [MAX32520-KIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520-KIT.html) | `EvKit_V1`     |
 | [MAX32520FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520FTHR.html) | `MAX32520FTHR` |
@@ -713,34 +721,6 @@ The name of the BSP is the name of the folder.  For example, the MAX78000 suppor
 | [MAX78000FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000FTHR.html) | `FTHR_RevA`    |
 | [MAXREFDES178](https://www.maximintegrated.com/en/design/reference-design-center/system-board/7375.html) | `MAXREFDES178` |
 | [MAX78002EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002EVKIT.html) | `EvKit_V1`     |
-
-To set the BSP for a project:
-
-* In **VS Code**:  [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code)
-
-* In **Eclipse**:  [How to Set the BSP (Eclipse)](#how-to-set-the-bsp-eclipse)
-
-* **Command-Line** Development:
-
-  * Set the **`BOARD`** *Build Configuration Variable* in **project.mk**
-
-    ```makefile
-    # (inside project.mk)
-    # This file can be used to set build configuration
-    # variables.  These variables are defined in a file called 
-    # "Makefile" that is located next to this one.
-    
-    # For instructions on how to use this system, see
-    # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
-    
-    # **********************************************************
-    
-    # Add your config here!
-    
-    BOARD=FTHR_RevA # Set the BSP
-    ```
-
-  * Alternatively, set **`BOARD`** on the command-line when building (ie. `make BOARD=FTHR_RevA ...`)
 
 ### Visual Studio Code
 
