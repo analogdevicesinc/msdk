@@ -121,7 +121,7 @@ The MSDK installer is available for supported Operating Systems via the links be
     
     ![Figure 6](res/Fig6.jpg)
 
-![Figure 7](res/Fig7.jpg)
+    ![Figure 7](res/Fig7.jpg)
 
 8.  Click Finish to complete the installation.
     
