@@ -196,6 +196,8 @@ Updates are typically released on a quarterly basis.  Development copies of the 
 
 ![Figure 11](res/Fig11.jpg)
 
+TODO:  Offline release installer section, revert back to older versions
+
 ## Getting Started
 
 The MSDK is designed for both evaluation and end-application development.  The typical **evaluation** cycle usually involves setting up the development environment, running demos, and exercising the peripheral driver API on an _evaluation platform_.  The typical **development** cycle typically involves building a prototype application on an _evaluation platform_ first, then porting the application to a custom board.  This section describes how to get started with the MSDK focusing on the _evaluation_ cycle.
@@ -959,6 +961,8 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
 #### Creating a New Project
 
+TODO: Use this as primary
+
 1. Launch Eclipse
 
 2. Ensure that the Eclipse is set to the **C/C++ perspective** in the top right corner. Otherwise, the new project wizard will not show up.
@@ -1240,12 +1244,14 @@ The precedence hierarchy for the value of a configuration variable is:
 |                             | `PROJECT`              | Set the output filename                                    | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk.** |
 | **Compiler**                |                        |                                                            |                                                              |
 |                             | `MXC_OPTIMIZE_CFLAGS`  | Set the optimization level                                 | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`. |
-|                             | `PROJ_CFLAGS`          | Add a compiler flag to the build                           | Compiler flags can be added with this option, including compiler definitions.  For each value, the same syntax should be used as if the compiler flag was passed in via the command-line.  These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options. |
+|                             | `PROJ_CFLAGS`          | Add a compiler flag to the build                           | **Use the `+=` operator with this variable**.  Compiler flags can be added with this option, including compiler definitions.  For each value, the same syntax should be used as if the compiler flag was passed in via the command-line.  These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options. |
+|                             | `PROJ_AFLAGS`          | Add an assembler flag to the build                         | **Use the `+=` operator with this variable**.  Assembler flags can be added with this option. |
 |                             | `MFLOAT_ABI`           | Set the floating point acceleration level                  | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, `softfp` (default).  To enable full hardware acceleration instructions use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`.  If there is any conflict, you'll get a linker error.  For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html). |
 | **Linker**                  |                        |                                                            |                                                              |
-|                             | `LINKERFILE`           | Set the linkerfile to use                                  | You can use a different linkerfile with this option.  The file should exists in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MaximSDK, or it should be placed inside the root directory of the project. |
+|                             | `LINKERFILE`           | Set the linkerfile to use                                  | Set the linkerfile with this option.  The file should exists in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MSDK, or it should be placed inside the root directory of the project. |
+|                             | `PROJ_LDFLAGS`         | Add a linker flag to the build                             | **Use the `+=` operator with this variable**.  Flags can be passed to the linker with this option.  See [GCC Options for Linking](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#Link-Options) |
 | **Libraries**               |                        |                                                            |                                                              |
-|                             | `LIB_BOARD`            | Include the BSP library (enabled by default)               | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable.  This library contains important startup code specific to a microcontroller's evaluation platform, such as serial port initialization, power sequencing, external peripheral initalization, etc.  Set to `0` to disable, or `1` to enable. |
+|                             | `LIB_BOARD`            | Include the BSP library (enabled by default)               | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable.  Set to `0` to disable, or `1` to enable. |
 |                             | `LIB_PERIPHDRIVERS`    | Include the peripheral driver library (enabled by default) | The peripheral driver library can be toggled with this option.  If disabled, you'll lose access to the higher-level driver functions but still have access to the register-level files.  Set to `0` to disable, or `1` to enable. |
 |                             | `LIB_CMSIS_DSP`        | Include the CMSIS-DSP library                              | The [CMSIS-DSP library](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) can be enabled with this option.  Set to `0` to disable, or `1` to enable. |
 |                             | `LIB_CORDIO`           | Include the Cordio library                                 | The Cordio BLE library can be included with this option.  This is only applicable towards microcontrollers with an integrated BLE controller. |
@@ -1262,3 +1268,64 @@ The precedence hierarchy for the value of a configuration variable is:
 |                             | `TARGET_SEC`           | Secure part number to use                                  | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected, and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk` |
 |                             | `SCP_PACKETS`          | Where to build the scp_packets folder                      | Defaults to `build/scp_packets`                              |
 |                             | `TEST_KEY`             | Which test key to sign applications with                   | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the Maxim test key that can be used for development. |
+
+## Peripheral Driver API
+
+### Overview
+
+A microcontroller is made up of a Central Processing Unit (CPU) that is surrounded by additional _peripheral_ hardware blocks such as timers, memory controllers, UART controllers, ADCs, RTCs, audio interfaces, and many more.  The **Peripheral Driver API** is an important component of the MSDK that allows the CPU to utilize the microcontroller's hardware blocks over a higher-level ***Application Programming Interface (API)***.
+
+### Documentation
+
+A detailed API reference can be found in the [**Documentation**](Documentation) folder of the MSDK installation for each of the [supported parts](#supported-parts).  The top level **`Documentation/index.html`** file can be opened locally with a web browser.
+
+The documentation is organized into _modules_ matching each of the available hardware peripherals, and the MSDK will contain at *minimum* one [example](Examples) per module demonstrating its usage.
+
+![Figure 38](res/Fig38.jpg)
+
+This documentation is auto-generated with DoxyGen from the API's source code.
+
+### Organization
+
+The Peripheral Driver API's source code is organized as follows:
+
+* **Header files *(.h)*** can be found in the [`Libraries/PeriphDrivers/Include`](Libraries/PeriphDrivers/Include) folder.
+  * These files contain function _declarations_ for the API, describing the function prototypes and their associated documentation.
+* **Source files *(.c)*** can be found in the [`Libraries/PeriphDrivers/Source`](Libraries/PeriphDrivers/Source) folder.
+  * These file contain the function _definitions_ for the API - the _implementations_ of the functions declared by the header files.
+
+The _**implementation**_ files are further organized based on _**die type**_ and **_hardware revision_**.  This is worthy to note when browsing or debugging through the drivers.  
+
+* The **_die type_** files follow the **`_MEXX`** or **`_AIXX`** naming convention
+  * These file's responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs _before_ ultimately calling the revision-specific files.
+* The **_hardware** revision_ files follow the **`_revX`** naming convention.  
+  * These files contain the _pure_ driver implementation for a peripheral block, and typically interact with the hardware almost entirely at the register level.
+
+As a result, the table below is a useful reference for determining which driver files match the external part number for a specific microcontroller when inspecting the API's source code.
+
+#### Die Types to Part Number
+
+| Part Number | Die Type |
+| ----------- | -------- |
+| MAX32520    | ES17     |
+| MAX32570    | ME13     |
+| MAX32650    | ME10     |
+| MAX32655    | ME17     |
+| MAX32660    | ME11     |
+| MAX32665    | ME14     |
+| MAX32670    | ME15     |
+| MAX32672    | ME21     |
+| MAX32675    | ME16     |
+| MAX32680    | ME20     |
+| MAX32690    | ME18     |
+| MAX78000    | AI85     |
+| MAX78002    | AI87     |
+
+
+
+
+
+
+
+### 
+
