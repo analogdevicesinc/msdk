@@ -879,30 +879,30 @@ The role of a Board Support Package (BSP) is to provide a hardware abstraction l
 
 The name of the BSP is the name of the folder.  For example, the MAX78000 supports the `Aud01_RevA`, `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178` BSPS.  However, it is not always clear how these BSP names match the part numbers for different evaluation kits.  The table below can be used to match an external part number with an MSDK BSP.
 
-| External Part Number                                         | Target                    | BSP            |
-| ------------------------------------------------------------ | ------------------------- | -------------- |
-| [MAX32520-KIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520-KIT.html) | `MAX32520`                | `EvKit_V1`     |
-| [MAX32520FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520FTHR.html) | `MAX32520`                | `MAX32520FTHR` |
-| [MAX32650-EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650-EVKIT.html) | `MAX32650`                | `EvKit_V1`     |
-| [MAX32650FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650FTHR.html) | `MAX32650`                | `FTHR_APPS_A`  |
-| [MAX32655EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655EVKIT.html) | `MAX32655`                | `EvKit_V1`     |
-| [MAX32655FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655FTHR.html) | `MAX32655`                | `FTHR_Apps_P1` |
-| [MAX32660-EVSYS](https://www.maximintegrated.com/en/products/microcontrollers/MAX32660-EVSYS.html) | `MAX32660`                | `EvKit_V1`     |
-| MAX32662EVKIT                                                | `MAX32662`                | `EvKit_V1`     |
-| [MAX32666EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32666EVKIT.html) | `MAX32665`                | `EvKit_V1`     |
-| [MAX32666FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32666FTHR.html) | `MAX32665`                | `FTHR`         |
-| MAX32666FTHR2                                                | `MAX32665`                | `FTHR2`        |
-| [MAX32670EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32670EVKIT.html) | `MAX32670`                | `EvKit_V1`     |
-| [MAX32672EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672EVKIT.html) | `MAX32672`                | `EvKit_V1`     |
-| [MAX32672FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672FTHR.html) | `MAX32672`                | `FTHR`         |
-| [MAX32675EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32675EVKIT.html) | `MAX32675`                | `EvKit_V1`     |
-| MAX32675FTHR                                                 | `MAX32675`                | `FTHR_Apps_B`  |
-| [MAX32680EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32680EVKIT.html) | `MAX32680`                | `EvKit_V1`     |
-| MAX32690EVKIT                                                | `MAX32690`                | `EvKit_V1`     |
-| [MAX78000EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000EVKIT.html) | `MAX78000`                | `EvKit_V1`     |
-| [MAX78000FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000FTHR.html) | `MAX78000`                | `FTHR_RevA`    |
-| [MAXREFDES178](https://www.maximintegrated.com/en/design/reference-design-center/system-board/7375.html) | `MAX78000` and `MAX32665` | `MAXREFDES178` |
-| [MAX78002EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002EVKIT.html) | `MAX78002`                | `EvKit_V1`     |
+| External Part Number                                         | BSP            |
+| ------------------------------------------------------------ | -------------- |
+| [MAX32520-KIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520-KIT.html) | `EvKit_V1`     |
+| [MAX32520FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520FTHR.html) | `MAX32520FTHR` |
+| [MAX32650-EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650-EVKIT.html) | `EvKit_V1`     |
+| [MAX32650FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650FTHR.html) | `FTHR_APPS_A`  |
+| [MAX32655EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655EVKIT.html) | `EvKit_V1`     |
+| [MAX32655FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655FTHR.html) | `FTHR_Apps_P1` |
+| [MAX32660-EVSYS](https://www.maximintegrated.com/en/products/microcontrollers/MAX32660-EVSYS.html) | `EvKit_V1`     |
+| MAX32662EVKIT                                                | `EvKit_V1`     |
+| [MAX32666EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32666EVKIT.html) | `EvKit_V1`     |
+| [MAX32666FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32666FTHR.html) | `FTHR`         |
+| MAX32666FTHR2                                                | `FTHR2`        |
+| [MAX32670EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32670EVKIT.html) | `EvKit_V1`     |
+| [MAX32672EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672EVKIT.html) | `EvKit_V1`     |
+| [MAX32672FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672FTHR.html) | `FTHR`         |
+| [MAX32675EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32675EVKIT.html) | `EvKit_V1`     |
+| MAX32675FTHR                                                 | `FTHR_Apps_B`  |
+| [MAX32680EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32680EVKIT.html) | `EvKit_V1`     |
+| MAX32690EVKIT                                                | `EvKit_V1`     |
+| [MAX78000EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000EVKIT.html) | `EvKit_V1`     |
+| [MAX78000FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000FTHR.html) | `FTHR_RevA`    |
+| [MAXREFDES178](https://www.maximintegrated.com/en/design/reference-design-center/system-board/7375.html) | `MAXREFDES178` |
+| [MAX78002EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002EVKIT.html) | `EvKit_V1`     |
 
 ##### How to Set the BSP
 
