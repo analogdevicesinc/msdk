@@ -67,7 +67,7 @@ jobs:
           
       # Use these next steps to verify if register files were updated.
       # Easier to read in Actions' console window if separated by steps.
-      - name: Checking if register files were updated.
+      - name: Checking if register files or peripheral SVD files were updated.
         run: |
           cd ${{ env.MSDK_DIR }}
           CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h' './Libraries/PeriphDrivers/Source/*/*.svd')
@@ -370,6 +370,8 @@ jobs:
 
           CHANGED_OR_AFFECTED_REGISTER_FILES=$(echo $CHANGED_OR_AFFECTED_REGISTER_FILES | tr " " "\n" | sort | tr "\n" " ")
 
+          # Check for new parts that haven't been added to the dictionary.
+          UNKNOWN_PARTS_DET_FLAG=0
           for changed_reg_file in $CHANGED_OR_AFFECTED_REGISTER_FILES
           do        
             # Removing (prefix) path to [CHIP_NAME]/Include/*_regs.h
@@ -377,12 +379,23 @@ jobs:
             # Remove (suffix) following path /Include/*_regs.h to get the [CHIP_NAME]
             CHIP_NAME=${CHIP_NAME%%/*}
             
-            # Each element (part) of associative array is a list of changed files
-            # Add space delimiter if not empty
-            if [[ -n ${CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]} ]]; then
-              CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=" "
+            # Verify the part with the register/svd file changes is a valid part.
+            if [[ -v CHIP_TO_DIE_NAMES[$CHIP_NAME] ]]; then
+              # Each element (part) of associative array is a list of changed files
+              # Add space delimiter if not empty
+              if [[ -n ${CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]} ]]; then
+                CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=" "
+              fi
+              CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=$changed_reg_file
+            else
+              echo -e "[\e[1;31mERROR\e[0m]: $changed_reg_file"
+
+              # Increment flag to keep track number of unknown register files
+              UNKNOWN_PARTS_DET_FLAG=$(expr $UNKNOWN_PARTS_DET_FLAG + 1)
+
+              # Forgo following operations if unknown part was added to the MSDK.
+              continue
             fi
-            CHANGED_REG_FILES_PER_PART[${CHIP_TO_DIE_NAMES[$CHIP_NAME]}]+=$changed_reg_file
 
             # Keep track of affected parts, don't add duplicates.
             if [[ ! "${AFFECTED_CHIP_SET[*]}" =~ "$CHIP_NAME" ]]; then
@@ -395,13 +408,21 @@ jobs:
                 AFFECTED_DIE_LIST+=" "
               fi
               AFFECTED_DIE_LIST+="${CHIP_TO_DIE_NAMES[$CHIP_NAME]}"
-              
             fi
             
             # Keep track of all diff files.
             DIFF_PR_REG_TO_SVD_REG_LIST[./${{ env.MSDK_DIR }}/$changed_reg_file]=./${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/${CHIP_TO_DIE_NAMES[$CHIP_NAME]}/chip_test/${changed_reg_file##*/}
             echo -e "[\e[1;33mAFFECTED\e[0m]: $changed_reg_file"
           done
+
+          # Halt workflow if an unknown part was detected
+          if [[ $UNKNOWN_PARTS_DET_FLAG != 0 ]]; 
+            echo -e "\n[\e[1;31mERROR\e[0m]: Unknown part(s) detected. \e[1;31m$UNKNOWN_PARTS_DET_FLAG \e[0mfiles linked to unknown part(s)."
+            echo -e "[\e[1;31mERROR\e[0m]: Please verify the part relating to the affected register file(s) is valid and defined in the workflow dictionary."
+            echo -e "[\e[1;31mERROR\e[0m]: Contact ADI developers for more assistance."            
+            
+            exit 1
+          fi
            
           # Exit out of msdk directory.
           cd ../${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
@@ -481,7 +502,7 @@ jobs:
           
           #---------------------------
           echo -e "\n\e[0;33m==================================================================\n"
-          echo -e "\e[0;33mComparing Each Updated Register File to Generated Register File."
+          echo -e "\e[0;33mComparing each Updated Register File to Generated Register File."
           echo -e "\n\e[0;33m==================================================================\n"
 
           # NOTE: This section is heavy on conditional statements to handle all possible log outputs.
