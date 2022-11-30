@@ -416,7 +416,7 @@ jobs:
           done
 
           # Halt workflow if an unknown part was detected
-          if [[ $UNKNOWN_PARTS_DET_FLAG != 0 ]]; 
+          if [[ $UNKNOWN_PARTS_DET_FLAG != 0 ]]; then
             echo -e "\n[\e[1;31mERROR\e[0m]: Unknown part(s) detected. \e[1;31m$UNKNOWN_PARTS_DET_FLAG \e[0mfiles linked to unknown part(s)."
             echo -e "[\e[1;31mERROR\e[0m]: Please verify the part relating to the affected register file(s) is valid and defined in the workflow dictionary."
             echo -e "[\e[1;31mERROR\e[0m]: Contact ADI developers for more assistance."            
