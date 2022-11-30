@@ -76,12 +76,12 @@
     </interrupt>
     <registers>
       <register>
-        <name>CN</name>
-        <description>DMA Control Register.</description>
+        <name>INTEN</name>
+        <description>DMA Interrupt Enable Register.</description>
         <addressOffset>0x000</addressOffset>
         <fields>
           <field>
-            <name>CH0_IEN</name>
+            <name>CH0</name>
             <description>Channel 0 Interrupt Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -98,53 +98,107 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IEN">
-            <name>CH2_IEN</name>
+          <field derivedFrom="CH0">
+            <name>CH1</name>
+            <description>Channel 1 Interrupt Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH2</name>
             <description>Channel 2 Interrupt Enable.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IEN">
-            <name>CH3_IEN</name>
+          <field derivedFrom="CH0">
+            <name>CH3</name>
             <description>Channel 3 Interrupt Enable.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IEN">
-            <name>CH4_IEN</name>
+          <field derivedFrom="CH0">
+            <name>CH4</name>
             <description>Channel 4 Interrupt Enable.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IEN">
-            <name>CH5_IEN</name>
+          <field derivedFrom="CH0">
+            <name>CH5</name>
             <description>Channel 5 Interrupt Enable.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IEN">
-            <name>CH6_IEN</name>
+          <field derivedFrom="CH0">
+            <name>CH6</name>
             <description>Channel 6 Interrupt Enable.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IEN">
-            <name>CH7_IEN</name>
+          <field derivedFrom="CH0">
+            <name>CH7</name>
             <description>Channel 7 Interrupt Enable.</description>
             <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH8</name>
+            <description>Channel 8 Interrupt Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH9</name>
+            <description>Channel 9 Interrupt Enable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH10</name>
+            <description>Channel 10 Interrupt Enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH11</name>
+            <description>Channel 11 Interrupt Enable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH12</name>
+            <description>Channel 12 Interrupt Enable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH13</name>
+            <description>Channel 13 Interrupt Enable.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH14</name>
+            <description>Channel 14 Interrupt Enable.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH15</name>
+            <description>Channel 15 Interrupt Enable.</description>
+            <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>INTR</name>
-        <description>DMA Interrupt Register.</description>
+        <name>INTFL</name>
+        <description>DMA Interrupt Flag Register.</description>
         <addressOffset>0x004</addressOffset>
         <access>read-only</access>
         <fields>
           <field>
-            <name>CH0_IPEND</name>
-            <description>Channel Interrupt.   To clear an interrupt, all active interrupt bits of the DMA_ST must be cleared. The interrupt bits are set only if their corresponding interrupt enable bits are set in DMA_CN.</description>
+            <name>CH0</name>
+            <description>Channel Interrupt. To clear an interrupt, all active interrupt bits of the DMA_ST must be cleared. The interrupt bits are set only if their corresponding interrupt enable bits are set in DMA_CN.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -160,45 +214,85 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="CH0_IPEND">
-            <name>CH1_IPEND</name>
+          <field derivedFrom="CH0">
+            <name>CH1</name>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IPEND">
-            <name>CH2_IPEND</name>
+          <field derivedFrom="CH0">
+            <name>CH2</name>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IPEND">
-            <name>CH3_IPEND</name>
+          <field derivedFrom="CH0">
+            <name>CH3</name>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IPEND">
-            <name>CH4_IPEND</name>
+          <field derivedFrom="CH0">
+            <name>CH4</name>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IPEND">
-            <name>CH5_IPEND</name>
+          <field derivedFrom="CH0">
+            <name>CH5</name>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IPEND">
-            <name>CH6_IPEND</name>
+          <field derivedFrom="CH0">
+            <name>CH6</name>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="CH0_IPEND">
-            <name>CH7_IPEND</name>
+          <field derivedFrom="CH0">
+            <name>CH7</name>
             <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH8</name>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH9</name>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH10</name>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH11</name>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH12</name>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH13</name>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH14</name>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="CH0">
+            <name>CH15</name>
+            <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
       <cluster>
-        <dim>8</dim>
+        <dim>16</dim>
         <dimIncrement>0x20</dimIncrement>
         <name>CH[%s]</name>
         <description>DMA Channel registers.</description>
@@ -206,12 +300,12 @@
         <addressOffset>0x100</addressOffset>
         <access>read-write</access>
         <register>
-          <name>CFG</name>
-          <description>DMA Channel Configuration Register.</description>
+          <name>CTRL</name>
+          <description>DMA Channel Control Register.</description>
           <addressOffset>0x000</addressOffset>
           <fields>
             <field>
-              <name>CHEN</name>
+              <name>EN</name>
               <description>Channel Enable.  This bit is automatically cleared when DMA_ST.CH_ST changes from 1 to 0.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
@@ -275,7 +369,7 @@
               </enumeratedValues>
             </field>
             <field>
-              <name>REQSEL</name>
+              <name>REQUEST</name>
               <description>Request Select. Select DMA request line for this channel. If memory-to-memory is selected, the channel operates as if the request is always active.</description>
               <bitOffset>4</bitOffset>
               <bitWidth>6</bitWidth>
@@ -306,6 +400,11 @@
                   <value>0x05</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>SC0RX</name>
+                  <description>SC0 RX</description>
+                  <value>0x06</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>I2C0RX</name>
                   <description>I2C0 RX</description>
                   <value>0x07</value>
@@ -324,6 +423,11 @@
                   <name>I2C2RX</name>
                   <description>I2C2 RX</description>
                   <value>0x0A</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>MSRADC</name>
+                  <description>MSR 9 bit ADC.</description>
+                  <value>0x0B</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>UART2RX</name>
@@ -411,6 +515,11 @@
                   <value>0x25</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>SC0TX</name>
+                  <description>SC0 TX</description>
+                  <value>0x26</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>I2C0TX</name>
                   <description>I2C0 TX</description>
                   <value>0x27</value>
@@ -493,7 +602,7 @@
               </enumeratedValues>
             </field>
             <field>
-              <name>REQWAIT</name>
+              <name>TO_WAIT</name>
               <description>Request Wait Enable.  When enabled, delay timer start until DMA request transitions from active to inactive.</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
@@ -511,7 +620,7 @@
               </enumeratedValues>
             </field>
             <field>
-              <name>TOSEL</name>
+              <name>TO_PER</name>
               <description>Timeout Period Select.</description>
               <bitOffset>11</bitOffset>
               <bitWidth>3</bitWidth>
@@ -559,7 +668,7 @@
               </enumeratedValues>
             </field>
             <field>
-              <name>PSSEL</name>
+              <name>TO_CLKDIV</name>
               <description>Pre-Scale Select. Selects the Pre-Scale divider for timer clock input.</description>
               <bitOffset>14</bitOffset>
               <bitWidth>2</bitWidth>
@@ -669,13 +778,13 @@
               </enumeratedValues>
             </field>
             <field>
-              <name>BRST</name>
+              <name>BURST_SIZE</name>
               <description>Burst Size. The number of bytes to be transferred into and out of the DMA FIFO in a single burst.  Burst size equals 1 + value stored in this field.</description>
               <bitOffset>24</bitOffset>
               <bitWidth>5</bitWidth>
             </field>
             <field>
-              <name>CHDIEN</name>
+              <name>DIS_IE</name>
               <description>Channel Disable Interrupt Enable. When enabled, the IPEND will be set to 1 whenever CH_ST changes from 1 to 0.</description>
               <bitOffset>30</bitOffset>
               <bitWidth>1</bitWidth>
@@ -693,7 +802,7 @@
               </enumeratedValues>
             </field>
             <field>
-              <name>CTZIEN</name>
+              <name>CTZ_IE</name>
               <description>Count-to-zero Interrupts Enable. When enabled, the IPEND will be set to 1 whenever a count-to-zero event occurs.</description>
               <bitOffset>31</bitOffset>
               <bitWidth>1</bitWidth>
@@ -713,12 +822,12 @@
           </fields>
         </register>
         <register>
-          <name>ST</name>
+          <name>STATUS</name>
           <description>DMA Channel Status Register.</description>
           <addressOffset>0x004</addressOffset>
           <fields>
             <field>
-              <name>CH_ST</name>
+              <name>STATUS</name>
               <description>Channel Status. This bit is used to indicate to the programmer when it is safe to change the configuration, address, and count registers for the channel. Whenever this bit is cleared by hardware,  the DMA_CFG.CHEN bit is also cleared (if not cleared already).</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
@@ -756,14 +865,14 @@
               </enumeratedValues>
             </field>
             <field>
-              <name>CTZ_ST</name>
+              <name>CTZ_IF</name>
               <description>Count-to-Zero (CTZ) Event Interrupt Flag</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
               <modifiedWriteValues>oneToClear</modifiedWriteValues>
             </field>
             <field>
-              <name>RLD_ST</name>
+              <name>RLD_IF</name>
               <description>Reload Event Interrupt Flag.</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
@@ -777,7 +886,7 @@
               <modifiedWriteValues>oneToClear</modifiedWriteValues>
             </field>
             <field>
-              <name>TO_ST</name>
+              <name>TO_IF</name>
               <description>Time-Out Event Interrupt Flag.</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
@@ -791,7 +900,7 @@
           <addressOffset>0x008</addressOffset>
           <fields>
             <field>
-              <name>SRC</name>
+              <name>ADDR</name>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
             </field>
@@ -803,7 +912,7 @@
           <addressOffset>0x00C</addressOffset>
           <fields>
             <field>
-              <name>DST</name>
+              <name>ADDR</name>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
             </field>
@@ -823,12 +932,12 @@
           </fields>
         </register>
         <register>
-          <name>SRC_RLD</name>
+          <name>SRCRLD</name>
           <description>Source Address Reload Value. The value of this register is loaded into DMA0_SRC upon a count-to-zero condition.</description>
           <addressOffset>0x014</addressOffset>
           <fields>
             <field>
-              <name>SRC_RLD</name>
+              <name>ADDR</name>
               <description>Source Address Reload Value.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>31</bitWidth>
@@ -836,12 +945,12 @@
           </fields>
         </register>
         <register>
-          <name>DST_RLD</name>
+          <name>DSTRLD</name>
           <description>Destination Address Reload Value. The value of this register is loaded into DMA0_DST upon a count-to-zero condition.</description>
           <addressOffset>0x018</addressOffset>
           <fields>
             <field>
-              <name>DST_RLD</name>
+              <name>ADDR</name>
               <description>Destination Address Reload Value.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>31</bitWidth>
@@ -849,18 +958,18 @@
           </fields>
         </register>
         <register>
-          <name>CNT_RLD</name>
+          <name>CNTRLD</name>
           <description>DMA Channel Count Reload Register.</description>
           <addressOffset>0x01C</addressOffset>
           <fields>
             <field>
-              <name>CNT_RLD</name>
+              <name>CNT</name>
               <description>Count Reload Value. The value of this register is loaded into DMA0_CNT upon a count-to-zero condition.</description>
               <bitOffset>0</bitOffset>
               <bitWidth>24</bitWidth>
             </field>
             <field>
-              <name>RLDEN</name>
+              <name>EN</name>
               <description>Reload Enable. This bit should be set after the address reload registers have been programmed. This bit is automatically cleared to 0 when reload occurs.</description>
               <bitOffset>31</bitOffset>
               <bitWidth>1</bitWidth>

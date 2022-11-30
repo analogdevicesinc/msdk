@@ -53,6 +53,24 @@
             </enumeratedValues>
           </field>
           <field>
+            <name>FLASH1_PAGE_FLIP</name>
+            <description>Flips the Flash bottom and top halves. (Depending on the total flash size, each half is either 256K or 512K). Initiating a flash page flip will cause a flush of both the data buffer on the DCODE bus and the internal instruction buffer.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Physical layout matches logical layout.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>swapped</name>
+                <description>Bottom half mapped to logical top half and vice versa.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
             <name>FLASH0_PAGE_FLIP</name>
             <description>Flips the Flash bottom and top halves. (Depending on the total flash size, each half is either 256K or 512K). Initiating a flash page flip will cause a flush of both the data buffer on the DCODE bus and the internal instruction buffer.</description>
             <bitOffset>4</bitOffset>
@@ -95,7 +113,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SRCC_FLUSH</name>
+            <name>EMCC_FLUSH</name>
             <description>Data Cache Flush. The system cache (s) will be flushed when this bit is set. </description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
@@ -113,7 +131,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SRCC_DIS</name>
+            <name>EMCC_DIS</name>
             <description>Data Cache Disable. The system cache (s) will be completely disabled when this bit is set.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
@@ -300,8 +318,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="DMA">
-            <name>CLCD</name>
-            <description>CLCD Reset. Setting this bit to 1 resets the CLCD block.</description>
+            <name>TFT</name>
+            <description>TFT Reset. Setting this bit to 1 resets the TFT block.</description>
             <bitOffset>22</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -349,6 +367,34 @@
         <addressOffset>0x08</addressOffset>
         <resetValue>0x00000008</resetValue>
         <fields>
+          <field>
+            <name>PCLK_DIV</name>
+            <description>PCLK Divider.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>div1</name>
+                <description>Divide by 1.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div2</name>
+                <description>Divide by 2.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div4</name>
+                <description>Divide by 4.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div8</name>
+                <description>Divide by 8.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
           <field>
             <name>SYSCLK_DIV</name>
             <description>Prescaler Select. This 3 bit field sets the system operating frequency by controlling the prescaler that divides the output of the PLL0.</description>
@@ -455,7 +501,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CCD</name>
+            <name>CRYPTOCLK_DIV</name>
             <description>Cryptographic clock divider</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
@@ -540,44 +586,31 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field>
+          <field derivedFrom="ERFO_RDY">
             <name>ERTCO_RDY</name>
             <description>32kHz Crystal Oscillator Ready</description>
             <bitOffset>25</bitOffset>
             <bitWidth>1</bitWidth>
-            <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>not</name>
-                <description>Is not Ready.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ready</name>
-                <description>Is Ready.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
-          <field derivedFrom="ERTCO_RDY">
+          <field derivedFrom="ERFO_RDY">
             <name>ISO_RDY</name>
             <description>60MHz ISO Ready.</description>
             <bitOffset>26</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="ERTCO_RDY">
+          <field derivedFrom="ERFO_RDY">
             <name>IPO_RDY</name>
             <description>Internal Primary Oscillator Ready.</description>
             <bitOffset>27</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="ERTCO_RDY">
+          <field derivedFrom="ERFO_RDY">
             <name>IBRO_RDY</name>
             <description>Internal Baud Rate Oscillator Ready.</description>
             <bitOffset>28</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="ERTCO_RDY">
+          <field derivedFrom="ERFO_RDY">
             <name>INRO_RDY</name>
             <description>Internal Nano Ring Oscillator Low Frequency Reference Clock Ready.</description>
             <bitOffset>29</bitOffset>
@@ -637,14 +670,14 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="GPIO_WE">
-            <name>HA0_WE</name>
-            <description>Hardware Accelerator 0 Wake Up Enable. This bit enables USB activity as wakeup source.</description>
+            <name>SDMA0_WE</name>
+            <description>SDMA0 Wake Up Enable. This bit enables SDMA0 acrtivity as wakeup source.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="GPIO_WE">
-            <name>HA1_WE</name>
-            <description>Hardware Accelerator 1 Wake Up Enable. This bit enables USB activity as wakeup source.</description>
+            <name>SDMA1_WE</name>
+            <description>SDMA1 Wake Up Enable. This bit enables SDMA1 acrtivity as wakeup source.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -739,7 +772,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>XTALBP</name>
+            <name>ERFO_BP</name>
             <description>XTAL Bypass </description>
             <bitOffset>20</bitOffset>
             <bitWidth>1</bitWidth>
@@ -765,8 +798,8 @@
         <resetValue>0x00000001</resetValue>
         <fields>
           <field>
-            <name>PCF</name>
-            <description>These bits determine the clock frequency for the UART, I2C and Key Pad peripherals. These peripherals have an adaptive clock generator that dynamically adjusts the peripheral frequency based on the main system bus frequency. These bits are dynamically updated when the PLL0 is selected as the system clock source and are set by hardware. These bits determine the clock frequency for the UART, I2C and Key Pad peripherals. These peripherals have an adaptive clock generator that dynamically adjusts the peripheral frequency based on the main system bus frequency. These bits are dynamically updated when the PLL0 is selected as the system clock source and are set by hardware.</description>
+            <name>SKBDFRQ</name>
+            <description>GCR Frequency Indicator for Secure Keyboard.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>3</bitWidth>
             <enumeratedValues>
@@ -797,8 +830,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>PCFWEN</name>
-            <description>PCF Write Enable. This bit allows the PCF Register bits to be updated by Software.</description>
+            <name>SKBDFRQ_WEN</name>
+            <description>SKBDFRQ Write Enable. This bit allows the SKBDFREQ Register bits to be updated by Software.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -837,8 +870,8 @@
             <bitWidth>4</bitWidth>
           </field>
           <field>
-            <name>AON_CLKDIV</name>
-            <description>Always-ON (AON) domain CLock Divider. These bits define the AON domain clock divider.</description>
+            <name>AONCLKDIV</name>
+            <description>Always-ON (AON) domain Clock Divider. These bits define the AON domain clock divider.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>2</bitWidth>
             <enumeratedValues>
@@ -908,8 +941,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="GPIO0">
-            <name>CLCD</name>
-            <description>CLCD Disable.</description>
+            <name>TFT</name>
+            <description>TFT Disable.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -998,7 +1031,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="GPIO0">
-            <name>KBD</name>
+            <name>SKBD</name>
             <description>Secure Keyboard Disable.</description>
             <bitOffset>22</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1052,7 +1085,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="GPIO0">
-            <name>SPIM</name>
+            <name>SPIXIPM</name>
             <description>SPI XiP Master Controller Disable.</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1071,7 +1104,7 @@
             <bitWidth>3</bitWidth>
           </field>
           <field>
-            <name>RAMWS_EN</name>
+            <name>SRAM_WS</name>
             <description>SRAM Wait State Enable</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1125,7 +1158,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0LS_EN">
-            <name>ICC0LS_EN</name>
+            <name>ICCLS_EN</name>
             <description>ICache RAM Light Sleep Mode.</description>
             <bitOffset>24</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1158,6 +1191,12 @@
             <name>ROMLS_EN</name>
             <description>ROM Light Sleep Mode.</description>
             <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>MAALS_EN</name>
+            <description>MAA Light Sleep Mode.</description>
+            <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -1222,7 +1261,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0">
-            <name>ICC0</name>
+            <name>ICC</name>
             <description>Instruction Cache.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1234,13 +1273,13 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0">
-            <name>SCACHEDATA</name>
+            <name>SRCCDATA</name>
             <description>System Cache Data Ram Zeroization.</description>
             <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0">
-            <name>SCACHETAG</name>
+            <name>SRCCTAG</name>
             <description>System Cache Tag Zeroization.</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1364,15 +1403,9 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>XSPIM</name>
-            <description>GSPI XiP Master Controller Reset.</description>
+            <name>SPIXIPM</name>
+            <description>SPI XiP Master Controller Reset.</description>
             <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="I2C1">
-            <name>GPIO3</name>
-            <description>GPIO3 Reset.</description>
-            <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
@@ -1406,9 +1439,15 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>SPIXMEM</name>
-            <description>SPIXMEM Reset.</description>
+            <name>SPIXIPD</name>
+            <description>SPIXIP Data Reset.</description>
             <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>SEMA</name>
+            <description>Semaphore Reset.</description>
+            <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
@@ -1436,14 +1475,14 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>KBD</name>
-            <description>KBD Reset.</description>
+            <name>SKBD</name>
+            <description>SKBD Reset.</description>
             <bitOffset>21</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>ADC9</name>
-            <description>ADC9 Reset.</description>
+            <name>MSRADC</name>
+            <description>MSRADC Reset.</description>
             <bitOffset>22</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -1487,6 +1526,18 @@
             <name>HTMR1</name>
             <description>HTIMER1 Reset.</description>
             <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>DVS</name>
+            <description>DVS Reset.</description>
+            <bitOffset>30</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
+            <name>SIMO</name>
+            <description>SIMO Reset.</description>
+            <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
@@ -1533,39 +1584,27 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>GPIO3</name>
-            <description>GPIO3 Disable</description>
-            <bitOffset>6</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
             <name>SCACHE</name>
             <description>System Cache Clock Disable.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>HA0</name>
-            <description>Hardware Accelerator 0 Clock Disable.</description>
+            <name>SDMA0</name>
+            <description>SDMA0 Clock Disable.</description>
             <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>SEMA</name>
+            <description>Semaphore Clock Disable.</description>
+            <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
             <name>SDHC</name>
             <description>SDHC/SDIO Clock Disable.</description>
             <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
-            <name>ICC0</name>
-            <description>ICache Clock Disable. </description>
-            <bitOffset>11</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
-            <name>ICCXIP</name>
-            <description>ICache XIP Clock Disable.</description>
-            <bitOffset>12</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
@@ -1581,7 +1620,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>SPIXIP</name>
+            <name>SPIXIPD</name>
             <description>SPI-XIP Data Clock Disable</description>
             <bitOffset>20</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1611,8 +1650,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>ADC9</name>
-            <description>ADC9 Clock Disable</description>
+            <name>MSRADC</name>
+            <description>MSRADC Clock Disable</description>
             <bitOffset>25</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -1641,8 +1680,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>HA1</name>
-            <description>Hardware Accelerator 1 Clock Disable</description>
+            <name>SDMA1</name>
+            <description>SDMA1 Clock Disable.</description>
             <bitOffset>30</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -1950,45 +1989,45 @@
         <addressOffset>0x70</addressOffset>
         <fields>
           <field>
-            <name>DATARAMADDR</name>
-            <description>ECC Error Address/DATA RAM Error Address</description>
+            <name>DADDR</name>
+            <description>Address of Error in Data RAM.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>14</bitWidth>
           </field>
           <field>
-            <name>DATARAMBANK</name>
-            <description>ECC Error Address/DATA RAM Error Bank</description>
+            <name>DB</name>
+            <description>Data Bank,</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>DATARAMERR</name>
-            <description>DATA RAM ERROR</description>
+            <name>DE</name>
+            <description>Data Error Flag.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TAGRAMADDR</name>
-            <description>ECC Error Address/TAG RAM Error Address</description>
+            <name>TADDR</name>
+            <description>Address of Error in Tag RAM.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>14</bitWidth>
           </field>
           <field>
-            <name>TAGRAMBANK</name>
-            <description>ECC Error Address/TAG RAM Error Bank</description>
+            <name>TB</name>
+            <description>Tag Bank.</description>
             <bitOffset>30</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>TAGRAMERR</name>
-            <description>TAG RAM ERROR</description>
+            <name>TE</name>
+            <description>Tag Error Flag.</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>NFC_LDOCR</name>
+        <name>NFCLDOCTRL</name>
         <description>NFC LDO Control Register</description>
         <addressOffset>0x74</addressOffset>
         <fields>
@@ -2037,7 +2076,7 @@
         </fields>
       </register>
       <register>
-        <name>NFCLDO_DLY</name>
+        <name>NFCLDODLY</name>
         <description>NFC LDO Delay Register</description>
         <addressOffset>0x78</addressOffset>
         <fields>
