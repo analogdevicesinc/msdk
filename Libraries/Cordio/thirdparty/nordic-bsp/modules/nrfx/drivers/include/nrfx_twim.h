@@ -57,17 +57,18 @@ extern "C" {
  */
 
 /** @brief Structure for the TWI master driver instance. */
-typedef struct {
-    NRF_TWIM_Type *p_twim; ///< Pointer to a structure with TWIM registers.
-    uint8_t drv_inst_idx; ///< Index of the driver instance. For internal use only.
+typedef struct
+{
+    NRF_TWIM_Type * p_twim;       ///< Pointer to a structure with TWIM registers.
+    uint8_t         drv_inst_idx; ///< Index of the driver instance. For internal use only.
 } nrfx_twim_t;
 
 /** @brief Macro for creating a TWI master driver instance. */
-#define NRFX_TWIM_INSTANCE(id)                                   \
-    {                                                            \
-        .p_twim = NRFX_CONCAT_2(NRF_TWIM, id),                   \
-        .drv_inst_idx = NRFX_CONCAT_3(NRFX_TWIM, id, _INST_IDX), \
-    }
+#define NRFX_TWIM_INSTANCE(id)                               \
+{                                                            \
+    .p_twim       = NRFX_CONCAT_2(NRF_TWIM, id),             \
+    .drv_inst_idx = NRFX_CONCAT_3(NRFX_TWIM, id, _INST_IDX), \
+}
 
 #ifndef __NRFX_DOXYGEN__
 enum {
@@ -88,99 +89,123 @@ enum {
 #endif
 
 /** @brief Structure for the TWI master driver instance configuration. */
-typedef struct {
-    uint32_t scl; ///< SCL pin number.
-    uint32_t sda; ///< SDA pin number.
-    nrf_twim_frequency_t frequency; ///< TWIM frequency.
-    uint8_t interrupt_priority; ///< Interrupt priority.
-    bool hold_bus_uninit; ///< Hold pull up state on GPIO pins after uninit.
+typedef struct
+{
+    uint32_t             scl;                ///< SCL pin number.
+    uint32_t             sda;                ///< SDA pin number.
+    nrf_twim_frequency_t frequency;          ///< TWIM frequency.
+    uint8_t              interrupt_priority; ///< Interrupt priority.
+    bool                 hold_bus_uninit;    ///< Hold pull up state on GPIO pins after uninit.
 } nrfx_twim_config_t;
 
 /** @brief TWI master driver instance default configuration. */
-#define NRFX_TWIM_DEFAULT_CONFIG                                               \
-    {                                                                          \
-        .scl = 31, .sda = 31,                                                  \
-        .frequency = (nrf_twim_frequency_t)NRFX_TWIM_DEFAULT_CONFIG_FREQUENCY, \
-        .interrupt_priority = NRFX_TWIM_DEFAULT_CONFIG_IRQ_PRIORITY,           \
-        .hold_bus_uninit = NRFX_TWIM_DEFAULT_CONFIG_HOLD_BUS_UNINIT,           \
-    }
+#define NRFX_TWIM_DEFAULT_CONFIG                                                    \
+{                                                                                   \
+    .scl                = 31,                                                       \
+    .sda                = 31,                                                       \
+    .frequency          = (nrf_twim_frequency_t)NRFX_TWIM_DEFAULT_CONFIG_FREQUENCY, \
+    .interrupt_priority = NRFX_TWIM_DEFAULT_CONFIG_IRQ_PRIORITY,                    \
+    .hold_bus_uninit    = NRFX_TWIM_DEFAULT_CONFIG_HOLD_BUS_UNINIT,                 \
+}
 
 /** @brief Flag indicating that TX buffer address will be incremented after the transfer. */
-#define NRFX_TWIM_FLAG_TX_POSTINC (1UL << 0)
+#define NRFX_TWIM_FLAG_TX_POSTINC          (1UL << 0)
 /** @brief Flag indicating that RX buffer address will be incremented after the transfer. */
-#define NRFX_TWIM_FLAG_RX_POSTINC (1UL << 1)
+#define NRFX_TWIM_FLAG_RX_POSTINC          (1UL << 1)
 /** @brief Flag indicating that the interrupt after each transfer will be suppressed, and the event handler will not be called. */
 #define NRFX_TWIM_FLAG_NO_XFER_EVT_HANDLER (1UL << 2)
 /** @brief Flag indicating that the transfer will be set up, but not started. */
-#define NRFX_TWIM_FLAG_HOLD_XFER (1UL << 3)
+#define NRFX_TWIM_FLAG_HOLD_XFER           (1UL << 3)
 /** @brief Flag indicating that the transfer will be executed multiple times. */
-#define NRFX_TWIM_FLAG_REPEATED_XFER (1UL << 4)
+#define NRFX_TWIM_FLAG_REPEATED_XFER       (1UL << 4)
 /** @brief Flag indicating that the TX transfer will not end with a stop condition. */
-#define NRFX_TWIM_FLAG_TX_NO_STOP (1UL << 5)
+#define NRFX_TWIM_FLAG_TX_NO_STOP          (1UL << 5)
 
 /** @brief TWI master driver event types. */
-typedef enum {
-    NRFX_TWIM_EVT_DONE, ///< Transfer completed event.
+typedef enum
+{
+    NRFX_TWIM_EVT_DONE,         ///< Transfer completed event.
     NRFX_TWIM_EVT_ADDRESS_NACK, ///< Error event: NACK received after sending the address.
-    NRFX_TWIM_EVT_DATA_NACK, ///< Error event: NACK received after sending a data byte.
-    NRFX_TWIM_EVT_OVERRUN, ///< Error event: The unread data is replaced by new data.
-    NRFX_TWIM_EVT_BUS_ERROR ///< Error event: An unexpected transition occurred on the bus.
+    NRFX_TWIM_EVT_DATA_NACK,    ///< Error event: NACK received after sending a data byte.
+    NRFX_TWIM_EVT_OVERRUN,      ///< Error event: The unread data is replaced by new data.
+    NRFX_TWIM_EVT_BUS_ERROR     ///< Error event: An unexpected transition occurred on the bus.
 } nrfx_twim_evt_type_t;
 
 /** @brief TWI master driver transfer types. */
-typedef enum {
-    NRFX_TWIM_XFER_TX, ///< TX transfer.
-    NRFX_TWIM_XFER_RX, ///< RX transfer.
+typedef enum
+{
+    NRFX_TWIM_XFER_TX,   ///< TX transfer.
+    NRFX_TWIM_XFER_RX,   ///< RX transfer.
     NRFX_TWIM_XFER_TXRX, ///< TX transfer followed by RX transfer with repeated start.
-    NRFX_TWIM_XFER_TXTX ///< TX transfer followed by TX transfer with repeated start.
+    NRFX_TWIM_XFER_TXTX  ///< TX transfer followed by TX transfer with repeated start.
 } nrfx_twim_xfer_type_t;
 
 /** @brief Structure for a TWI transfer descriptor. */
-typedef struct {
-    nrfx_twim_xfer_type_t type; ///< Type of transfer.
-    uint8_t address; ///< Slave address.
-    size_t primary_length; ///< Number of bytes transferred.
-    size_t secondary_length; ///< Number of bytes transferred.
-    uint8_t *p_primary_buf; ///< Pointer to transferred data.
-    uint8_t *p_secondary_buf; ///< Pointer to transferred data.
+typedef struct
+{
+    nrfx_twim_xfer_type_t type;             ///< Type of transfer.
+    uint8_t               address;          ///< Slave address.
+    size_t                primary_length;   ///< Number of bytes transferred.
+    size_t                secondary_length; ///< Number of bytes transferred.
+    uint8_t *             p_primary_buf;    ///< Pointer to transferred data.
+    uint8_t *             p_secondary_buf;  ///< Pointer to transferred data.
 } nrfx_twim_xfer_desc_t;
 
+
 /** @brief Macro for setting the TX transfer descriptor. */
-#define NRFX_TWIM_XFER_DESC_TX(addr, p_data, length)                               \
-    {                                                                              \
-        .type = NRFX_TWIM_XFER_TX, .address = (addr), .primary_length = (length),  \
-        .secondary_length = 0, .p_primary_buf = (p_data), .p_secondary_buf = NULL, \
-    }
+#define NRFX_TWIM_XFER_DESC_TX(addr, p_data, length) \
+{                                                    \
+    .type             = NRFX_TWIM_XFER_TX,           \
+    .address          = (addr),                      \
+    .primary_length   = (length),                    \
+    .secondary_length = 0,                           \
+    .p_primary_buf    = (p_data),                    \
+    .p_secondary_buf  = NULL,                        \
+}
 
 /** @brief Macro for setting the RX transfer descriptor. */
-#define NRFX_TWIM_XFER_DESC_RX(addr, p_data, length)                               \
-    {                                                                              \
-        .type = NRFX_TWIM_XFER_RX, .address = (addr), .primary_length = (length),  \
-        .secondary_length = 0, .p_primary_buf = (p_data), .p_secondary_buf = NULL, \
-    }
+#define NRFX_TWIM_XFER_DESC_RX(addr, p_data, length) \
+{                                                    \
+    .type             = NRFX_TWIM_XFER_RX,           \
+    .address          = (addr),                      \
+    .primary_length   = (length),                    \
+    .secondary_length = 0,                           \
+    .p_primary_buf    = (p_data),                    \
+    .p_secondary_buf  = NULL,                        \
+}
 
 /** @brief Macro for setting the TX-RX transfer descriptor. */
-#define NRFX_TWIM_XFER_DESC_TXRX(addr, p_tx, tx_len, p_rx, rx_len)                        \
-    {                                                                                     \
-        .type = NRFX_TWIM_XFER_TXRX, .address = (addr), .primary_length = (tx_len),       \
-        .secondary_length = (rx_len), .p_primary_buf = (p_tx), .p_secondary_buf = (p_rx), \
-    }
+#define NRFX_TWIM_XFER_DESC_TXRX(addr, p_tx, tx_len, p_rx, rx_len) \
+{                                                                  \
+    .type             = NRFX_TWIM_XFER_TXRX,                       \
+    .address          = (addr),                                    \
+    .primary_length   = (tx_len),                                  \
+    .secondary_length = (rx_len),                                  \
+    .p_primary_buf    = (p_tx),                                    \
+    .p_secondary_buf  = (p_rx),                                    \
+}
 
 /** @brief Macro for setting the TX-TX transfer descriptor. */
-#define NRFX_TWIM_XFER_DESC_TXTX(addr, p_tx, tx_len, p_tx2, tx_len2)                        \
-    {                                                                                       \
-        .type = NRFX_TWIM_XFER_TXTX, .address = (addr), .primary_length = (tx_len),         \
-        .secondary_length = (tx_len2), .p_primary_buf = (p_tx), .p_secondary_buf = (p_tx2), \
-    }
+#define NRFX_TWIM_XFER_DESC_TXTX(addr, p_tx, tx_len, p_tx2, tx_len2) \
+{                                                                    \
+    .type             = NRFX_TWIM_XFER_TXTX,                         \
+    .address          = (addr),                                      \
+    .primary_length   = (tx_len),                                    \
+    .secondary_length = (tx_len2),                                   \
+    .p_primary_buf    = (p_tx),                                      \
+    .p_secondary_buf  = (p_tx2),                                     \
+}
 
 /** @brief Structure for a TWI event. */
-typedef struct {
-    nrfx_twim_evt_type_t type; ///< Event type.
+typedef struct
+{
+    nrfx_twim_evt_type_t  type;      ///< Event type.
     nrfx_twim_xfer_desc_t xfer_desc; ///< Transfer details.
 } nrfx_twim_evt_t;
 
 /** @brief TWI event handler prototype. */
-typedef void (*nrfx_twim_evt_handler_t)(nrfx_twim_evt_t const *p_event, void *p_context);
+typedef void (* nrfx_twim_evt_handler_t)(nrfx_twim_evt_t const * p_event,
+                                         void *                  p_context);
 
 /**
  * @brief Function for initializing the TWI driver instance.
@@ -197,29 +222,31 @@ typedef void (*nrfx_twim_evt_handler_t)(nrfx_twim_evt_t const *p_event, void *p_
  *                                  possible only if @ref nrfx_prs module
  *                                  is enabled.
  */
-nrfx_err_t nrfx_twim_init(nrfx_twim_t const *p_instance, nrfx_twim_config_t const *p_config,
-                          nrfx_twim_evt_handler_t event_handler, void *p_context);
+nrfx_err_t nrfx_twim_init(nrfx_twim_t const *        p_instance,
+                          nrfx_twim_config_t const * p_config,
+                          nrfx_twim_evt_handler_t    event_handler,
+                          void *                     p_context);
 
 /**
  * @brief Function for uninitializing the TWI instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_twim_uninit(nrfx_twim_t const *p_instance);
+void nrfx_twim_uninit(nrfx_twim_t const * p_instance);
 
 /**
  * @brief Function for enabling the TWI instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_twim_enable(nrfx_twim_t const *p_instance);
+void nrfx_twim_enable(nrfx_twim_t const * p_instance);
 
 /**
  * @brief Function for disabling the TWI instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_twim_disable(nrfx_twim_t const *p_instance);
+void nrfx_twim_disable(nrfx_twim_t const * p_instance);
 
 /**
  * @brief Function for sending data to a TWI slave.
@@ -251,8 +278,11 @@ void nrfx_twim_disable(nrfx_twim_t const *p_instance);
  * @retval NRFX_ERROR_DRV_TWI_ERR_ANACK NACK is received after sending the address in polling mode.
  * @retval NRFX_ERROR_DRV_TWI_ERR_DNACK NACK is received after sending a data byte in polling mode.
  */
-nrfx_err_t nrfx_twim_tx(nrfx_twim_t const *p_instance, uint8_t address, uint8_t const *p_data,
-                        size_t length, bool no_stop);
+nrfx_err_t nrfx_twim_tx(nrfx_twim_t const * p_instance,
+                        uint8_t             address,
+                        uint8_t const *     p_data,
+                        size_t              length,
+                        bool                no_stop);
 
 /**
  * @brief Function for reading data from a TWI slave.
@@ -277,8 +307,10 @@ nrfx_err_t nrfx_twim_tx(nrfx_twim_t const *p_instance, uint8_t address, uint8_t 
  * @retval NRFX_ERROR_DRV_TWI_ERR_ANACK   NACK is received after sending the address in polling mode.
  * @retval NRFX_ERROR_DRV_TWI_ERR_DNACK   NACK is received after sending a data byte in polling mode.
  */
-nrfx_err_t nrfx_twim_rx(nrfx_twim_t const *p_instance, uint8_t address, uint8_t *p_data,
-                        size_t length);
+nrfx_err_t nrfx_twim_rx(nrfx_twim_t const * p_instance,
+                        uint8_t             address,
+                        uint8_t *           p_data,
+                        size_t              length);
 
 /**
  * @brief Function for performing a TWI transfer.
@@ -331,8 +363,9 @@ nrfx_err_t nrfx_twim_rx(nrfx_twim_t const *p_instance, uint8_t address, uint8_t 
  * @retval NRFX_ERROR_DRV_TWI_ERR_ANACK   NACK is received after sending the address.
  * @retval NRFX_ERROR_DRV_TWI_ERR_DNACK   NACK is received after sending a data byte.
  */
-nrfx_err_t nrfx_twim_xfer(nrfx_twim_t const *p_instance, nrfx_twim_xfer_desc_t const *p_xfer_desc,
-                          uint32_t flags);
+nrfx_err_t nrfx_twim_xfer(nrfx_twim_t           const * p_instance,
+                          nrfx_twim_xfer_desc_t const * p_xfer_desc,
+                          uint32_t                      flags);
 
 /**
  * @brief Function for checking the TWI driver state.
@@ -342,7 +375,8 @@ nrfx_err_t nrfx_twim_xfer(nrfx_twim_t const *p_instance, nrfx_twim_xfer_desc_t c
  * @retval true  The TWI driver is currently busy performing a transfer.
  * @retval false The TWI driver is ready for a new transfer.
  */
-bool nrfx_twim_is_busy(nrfx_twim_t const *p_instance);
+bool nrfx_twim_is_busy(nrfx_twim_t const * p_instance);
+
 
 /**
  * @brief Function for returning the address of a TWIM start task.
@@ -355,7 +389,7 @@ bool nrfx_twim_is_busy(nrfx_twim_t const *p_instance);
  *
  * @return Start task address (TX or RX) depending on the value of xfer_type.
  */
-uint32_t nrfx_twim_start_task_get(nrfx_twim_t const *p_instance, nrfx_twim_xfer_type_t xfer_type);
+uint32_t nrfx_twim_start_task_get(nrfx_twim_t const * p_instance, nrfx_twim_xfer_type_t xfer_type);
 
 /**
  * @brief Function for returning the address of a STOPPED TWIM event.
@@ -367,7 +401,7 @@ uint32_t nrfx_twim_start_task_get(nrfx_twim_t const *p_instance, nrfx_twim_xfer_
  *
  * @return STOPPED event address.
  */
-uint32_t nrfx_twim_stopped_event_get(nrfx_twim_t const *p_instance);
+uint32_t nrfx_twim_stopped_event_get(nrfx_twim_t const * p_instance);
 
 /**
  * @brief Function for recovering the bus.
@@ -399,6 +433,7 @@ void nrfx_twim_0_irq_handler(void);
 void nrfx_twim_1_irq_handler(void);
 void nrfx_twim_2_irq_handler(void);
 void nrfx_twim_3_irq_handler(void);
+
 
 #ifdef __cplusplus
 }

@@ -38,12 +38,13 @@
 **************************************************************************************************/
 
 /* Control block */
-static struct {
-    wsfTimer_t measTimer; /* periodic measurement timer */
-    appTm_t tm; /* temperature measurement */
-    htpsCfg_t cfg; /* configurable parameters */
-    uint8_t tmFlags; /* temperature measurement flags */
-    uint8_t itFlags; /* intermediate temperature flags */
+static struct
+{
+  wsfTimer_t    measTimer;            /* periodic measurement timer */
+  appTm_t       tm;                   /* temperature measurement */
+  htpsCfg_t     cfg;                  /* configurable parameters */
+  uint8_t       tmFlags;              /* temperature measurement flags */
+  uint8_t       itFlags;              /* intermediate temperature flags */
 } htpsCb;
 
 /*************************************************************************************************/
@@ -58,32 +59,34 @@ static struct {
 /*************************************************************************************************/
 static uint8_t htpsBuildTm(uint8_t *pBuf, appTm_t *pTm)
 {
-    uint8_t *p = pBuf;
-    uint8_t flags = pTm->flags;
+  uint8_t   *p = pBuf;
+  uint8_t   flags = pTm->flags;
 
-    /* flags */
-    UINT8_TO_BSTREAM(p, flags);
+  /* flags */
+  UINT8_TO_BSTREAM(p, flags);
 
-    /* measurement */
-    UINT32_TO_BSTREAM(p, pTm->temperature);
+  /* measurement */
+  UINT32_TO_BSTREAM(p, pTm->temperature);
 
-    /* time stamp */
-    if (flags & CH_TM_FLAG_TIMESTAMP) {
-        UINT16_TO_BSTREAM(p, pTm->timestamp.year);
-        UINT8_TO_BSTREAM(p, pTm->timestamp.month);
-        UINT8_TO_BSTREAM(p, pTm->timestamp.day);
-        UINT8_TO_BSTREAM(p, pTm->timestamp.hour);
-        UINT8_TO_BSTREAM(p, pTm->timestamp.min);
-        UINT8_TO_BSTREAM(p, pTm->timestamp.sec);
-    }
+  /* time stamp */
+  if (flags & CH_TM_FLAG_TIMESTAMP)
+  {
+    UINT16_TO_BSTREAM(p, pTm->timestamp.year);
+    UINT8_TO_BSTREAM(p, pTm->timestamp.month);
+    UINT8_TO_BSTREAM(p, pTm->timestamp.day);
+    UINT8_TO_BSTREAM(p, pTm->timestamp.hour);
+    UINT8_TO_BSTREAM(p, pTm->timestamp.min);
+    UINT8_TO_BSTREAM(p, pTm->timestamp.sec);
+  }
 
-    /* temperature type */
-    if (flags & CH_TM_FLAG_TEMP_TYPE) {
-        UINT8_TO_BSTREAM(p, pTm->tempType);
-    }
+  /* temperature type */
+  if (flags & CH_TM_FLAG_TEMP_TYPE)
+  {
+    UINT8_TO_BSTREAM(p, pTm->tempType);
+  }
 
-    /* return length */
-    return (uint8_t)(p - pBuf);
+  /* return length */
+  return (uint8_t) (p - pBuf);
 }
 
 /*************************************************************************************************/
@@ -98,8 +101,8 @@ static uint8_t htpsBuildTm(uint8_t *pBuf, appTm_t *pTm)
 /*************************************************************************************************/
 void HtpsInit(wsfHandlerId_t handlerId, htpsCfg_t *pCfg)
 {
-    htpsCb.measTimer.handlerId = handlerId;
-    htpsCb.cfg = *pCfg;
+  htpsCb.measTimer.handlerId = handlerId;
+  htpsCb.cfg = *pCfg;
 }
 
 /*************************************************************************************************/
@@ -117,13 +120,13 @@ void HtpsInit(wsfHandlerId_t handlerId, htpsCfg_t *pCfg)
 /*************************************************************************************************/
 void HtpsMeasStart(dmConnId_t connId, uint8_t timerEvt, uint8_t itCccIdx)
 {
-    /* initialize control block */
-    htpsCb.measTimer.msg.param = connId;
-    htpsCb.measTimer.msg.event = timerEvt;
-    htpsCb.measTimer.msg.status = itCccIdx;
+  /* initialize control block */
+  htpsCb.measTimer.msg.param = connId;
+  htpsCb.measTimer.msg.event = timerEvt;
+  htpsCb.measTimer.msg.status = itCccIdx;
 
-    /* start timer */
-    WsfTimerStartMs(&htpsCb.measTimer, htpsCb.cfg.period);
+  /* start timer */
+  WsfTimerStartMs(&htpsCb.measTimer, htpsCb.cfg.period);
 }
 
 /*************************************************************************************************/
@@ -135,8 +138,8 @@ void HtpsMeasStart(dmConnId_t connId, uint8_t timerEvt, uint8_t itCccIdx)
 /*************************************************************************************************/
 void HtpsMeasStop(void)
 {
-    /* stop timer */
-    WsfTimerStop(&htpsCb.measTimer);
+  /* stop timer */
+  WsfTimerStop(&htpsCb.measTimer);
 }
 
 /*************************************************************************************************/
@@ -152,26 +155,27 @@ void HtpsMeasStop(void)
 /*************************************************************************************************/
 void HtpsMeasComplete(dmConnId_t connId, uint8_t tmCccIdx)
 {
-    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
-    uint8_t len;
+  uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+  uint8_t len;
 
-    /* stop periodic measurement */
-    HtpsMeasStop();
+  /* stop periodic measurement */
+  HtpsMeasStop();
 
-    /* if indications enabled  */
-    if (AttsCccEnabled(connId, tmCccIdx)) {
-        /* read temperature measurement sensor data */
-        AppHwTmRead(FALSE, &htpsCb.tm);
+  /* if indications enabled  */
+  if (AttsCccEnabled(connId, tmCccIdx))
+  {
+    /* read temperature measurement sensor data */
+    AppHwTmRead(FALSE, &htpsCb.tm);
 
-        /* set flags */
-        htpsCb.tm.flags = htpsCb.tmFlags;
+    /* set flags */
+    htpsCb.tm.flags = htpsCb.tmFlags;
 
-        /* build temperature measurement characteristic */
-        len = htpsBuildTm(buf, &htpsCb.tm);
+    /* build temperature measurement characteristic */
+    len = htpsBuildTm(buf, &htpsCb.tm);
 
-        /* send temperature measurement indication */
-        AttsHandleValueInd(connId, HTS_TM_HDL, len, buf);
-    }
+    /* send temperature measurement indication */
+    AttsHandleValueInd(connId, HTS_TM_HDL, len, buf);
+  }
 }
 
 /*************************************************************************************************/
@@ -186,26 +190,27 @@ void HtpsMeasComplete(dmConnId_t connId, uint8_t tmCccIdx)
 /*************************************************************************************************/
 void HtpsProcMsg(wsfMsgHdr_t *pMsg)
 {
-    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
-    uint8_t len;
+  uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+  uint8_t len;
 
-    /* if notifications enabled (note ccc idx is stored in hdr.status) */
-    if (AttsCccEnabled((dmConnId_t)pMsg->param, pMsg->status)) {
-        /* read temperature measurement sensor data */
-        AppHwTmRead(TRUE, &htpsCb.tm);
+  /* if notifications enabled (note ccc idx is stored in hdr.status) */
+  if (AttsCccEnabled((dmConnId_t) pMsg->param, pMsg->status))
+  {
+    /* read temperature measurement sensor data */
+    AppHwTmRead(TRUE, &htpsCb.tm);
 
-        /* set flags */
-        htpsCb.tm.flags = htpsCb.itFlags;
+    /* set flags */
+    htpsCb.tm.flags = htpsCb.itFlags;
 
-        /* build temperature measurement characteristic */
-        len = htpsBuildTm(buf, &htpsCb.tm);
+    /* build temperature measurement characteristic */
+    len = htpsBuildTm(buf, &htpsCb.tm);
 
-        /* send intermediate temperature notification */
-        AttsHandleValueNtf((dmConnId_t)pMsg->param, HTS_IT_HDL, len, buf);
+    /* send intermediate temperature notification */
+    AttsHandleValueNtf((dmConnId_t) pMsg->param, HTS_IT_HDL, len, buf);
 
-        /* restart timer */
-        WsfTimerStartMs(&htpsCb.measTimer, htpsCb.cfg.period);
-    }
+    /* restart timer */
+    WsfTimerStartMs(&htpsCb.measTimer, htpsCb.cfg.period);
+  }
 }
 
 /*************************************************************************************************/
@@ -219,7 +224,7 @@ void HtpsProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void HtpsSetTmFlags(uint8_t flags)
 {
-    htpsCb.tmFlags = flags;
+  htpsCb.tmFlags = flags;
 }
 
 /*************************************************************************************************/
@@ -233,5 +238,5 @@ void HtpsSetTmFlags(uint8_t flags)
 /*************************************************************************************************/
 void HtpsSetItFlags(uint8_t flags)
 {
-    htpsCb.itFlags = flags;
+  htpsCb.itFlags = flags;
 }

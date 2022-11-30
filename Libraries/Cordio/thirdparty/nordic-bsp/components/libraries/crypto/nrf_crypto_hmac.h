@@ -63,12 +63,14 @@
 extern "C" {
 #endif
 
+
 /**
  * @brief Information structures used to select the specific algorithm (SHA-256)
  *
  * @details The information structure is used in a generic way but is populated by the backend,
  * and contains backend specific data. */
 extern const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha256_info;
+
 
 /**
  * @brief Information structures used to select the specific algorithm (SHA-512)
@@ -77,6 +79,7 @@ extern const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha256_info;
  * and contains backend specific data.
  */
 extern const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha512_info;
+
 
 /**
  * @brief Context type for HMAC.
@@ -113,9 +116,11 @@ typedef nrf_crypto_backend_hmac_context_t nrf_crypto_hmac_context_t;
  *                                          the cryptographic routine at a later time.
  *                                          CC310 only.
  */
-ret_code_t nrf_crypto_hmac_init(nrf_crypto_hmac_context_t *const p_context,
-                                nrf_crypto_hmac_info_t const *p_info, uint8_t const *p_key,
-                                size_t key_size);
+ret_code_t nrf_crypto_hmac_init(nrf_crypto_hmac_context_t   * const p_context,
+                                nrf_crypto_hmac_info_t      const * p_info,
+                                uint8_t                     const * p_key,
+                                size_t                              key_size);
+
 
 /**
  * @brief Feed data to HMAC algorithm.
@@ -139,8 +144,10 @@ ret_code_t nrf_crypto_hmac_init(nrf_crypto_hmac_context_t *const p_context,
  *                                                      the cryptographic routine at a later time.
  *                                                      CC310 only.
  */
-ret_code_t nrf_crypto_hmac_update(nrf_crypto_hmac_context_t *const p_context, uint8_t const *p_data,
-                                  size_t data_size);
+ret_code_t nrf_crypto_hmac_update(nrf_crypto_hmac_context_t * const p_context,
+                                  uint8_t                   const * p_data,
+                                  size_t                            data_size);
+
 
 /**
  * @brief Calculate HMAC
@@ -163,8 +170,10 @@ ret_code_t nrf_crypto_hmac_update(nrf_crypto_hmac_context_t *const p_context, ui
  *                                                      the cryptographic routine at a later time.
  *                                                      CC310 only.
  */
-ret_code_t nrf_crypto_hmac_finalize(nrf_crypto_hmac_context_t *const p_context, uint8_t *p_digest,
-                                    size_t *const p_digest_size);
+ret_code_t nrf_crypto_hmac_finalize(nrf_crypto_hmac_context_t   * const p_context,
+                                    uint8_t                           * p_digest,
+                                    size_t                      * const p_digest_size);
+
 
 /**
  * @brief Integrated HMAC wrapper function
@@ -198,10 +207,15 @@ ret_code_t nrf_crypto_hmac_finalize(nrf_crypto_hmac_context_t *const p_context, 
  *                                          nrf_crypto backend was busy. Please rerun the
  *                                          cryptographic routine at a later time. CC310 only.
  */
-ret_code_t nrf_crypto_hmac_calculate(nrf_crypto_hmac_context_t *const p_context,
-                                     nrf_crypto_hmac_info_t const *p_info, uint8_t *p_digest,
-                                     size_t *const p_digest_size, uint8_t const *p_key,
-                                     size_t key_size, uint8_t const *p_data, size_t data_size);
+ret_code_t nrf_crypto_hmac_calculate(nrf_crypto_hmac_context_t  * const p_context,
+                                     nrf_crypto_hmac_info_t     const * p_info,
+                                     uint8_t                          * p_digest,
+                                     size_t                     * const p_digest_size,
+                                     uint8_t                    const * p_key,
+                                     size_t                             key_size,
+                                     uint8_t                    const * p_data,
+                                     size_t                             data_size);
+
 
 #ifdef __cplusplus
 }

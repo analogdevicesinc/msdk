@@ -45,18 +45,19 @@
 /*************************************************************************************************/
 void DmSmpEncryptReq(dmConnId_t connId, uint8_t secLevel, uint8_t *pKey)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    if ((pCcb = dmConnCcbById(connId)) != NULL) {
-        /* store security level */
-        pCcb->tmpSecLevel = secLevel;
+  if ((pCcb = dmConnCcbById(connId)) != NULL)
+  {
+    /* store security level */
+    pCcb->tmpSecLevel = secLevel;
 
-        /* not using LTK */
-        pCcb->usingLtk = FALSE;
+    /* not using LTK */
+    pCcb->usingLtk = FALSE;
 
-        /* start encryption; note EDIV and RAND are zero */
-        HciLeStartEncryptionCmd(pCcb->handle, (uint8_t *)calc128Zeros, 0, pKey);
-    }
+    /* start encryption; note EDIV and RAND are zero */
+    HciLeStartEncryptionCmd(pCcb->handle, (uint8_t *) calc128Zeros, 0, pKey);
+  }
 }
 
 /*************************************************************************************************/
@@ -74,21 +75,22 @@ void DmSmpEncryptReq(dmConnId_t connId, uint8_t secLevel, uint8_t *pKey)
 /*************************************************************************************************/
 void DmSecPairReq(dmConnId_t connId, uint8_t oob, uint8_t auth, uint8_t iKeyDist, uint8_t rKeyDist)
 {
-    smpDmPair_t *pMsg;
+  smpDmPair_t  *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(smpDmPair_t))) != NULL) {
-        pMsg->hdr.event = SMP_MSG_API_PAIR_REQ;
-        pMsg->hdr.param = connId;
-        pMsg->oob = oob;
-        pMsg->auth = auth;
+  if ((pMsg = WsfMsgAlloc(sizeof(smpDmPair_t))) != NULL)
+  {
+    pMsg->hdr.event = SMP_MSG_API_PAIR_REQ;
+    pMsg->hdr.param = connId;
+    pMsg->oob = oob;
+    pMsg->auth = auth;
 
-        /* clear any erroneous key dist bits set by app */
-        pMsg->iKeyDist = iKeyDist & SMP_KEY_DIST_MASK;
-        pMsg->rKeyDist = rKeyDist & SMP_KEY_DIST_MASK;
+    /* clear any erroneous key dist bits set by app */
+    pMsg->iKeyDist = iKeyDist & SMP_KEY_DIST_MASK;
+    pMsg->rKeyDist = rKeyDist & SMP_KEY_DIST_MASK;
 
-        /* note we're sending this to SMP */
-        SmpDmMsgSend((smpDmMsg_t *)pMsg);
-    }
+    /* note we're sending this to SMP */
+    SmpDmMsgSend((smpDmMsg_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -104,14 +106,16 @@ void DmSecPairReq(dmConnId_t connId, uint8_t oob, uint8_t auth, uint8_t iKeyDist
 /*************************************************************************************************/
 void DmSecEncryptReq(dmConnId_t connId, uint8_t secLevel, dmSecLtk_t *pLtk)
 {
-    dmSecApiEncryptReq_t *pMsg;
+  dmSecApiEncryptReq_t  *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmSecApiEncryptReq_t))) != NULL) {
-        pMsg->hdr.event = DM_SEC_MSG_API_ENCRYPT_REQ;
-        pMsg->hdr.param = connId;
-        memcpy(&pMsg->ltk, pLtk, sizeof(dmSecLtk_t));
-        pMsg->secLevel = secLevel;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmSecApiEncryptReq_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_SEC_MSG_API_ENCRYPT_REQ;
+    pMsg->hdr.param = connId;
+    memcpy(&pMsg->ltk, pLtk, sizeof(dmSecLtk_t));
+    pMsg->secLevel = secLevel;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
+

@@ -37,12 +37,13 @@ extern "C" {
 **************************************************************************************************/
 
 /* ATTS event handler messages */
-enum {
-    ATTS_MSG_IDLE_TIMEOUT = ATTS_MSG_START,
-    ATTS_MSG_API_VALUE_IND_NTF,
-    ATTS_MSG_IND_TIMEOUT,
-    ATTS_MSG_SIGN_CMAC_CMPL,
-    ATTS_MSG_DBH_CMAC_CMPL
+enum
+{
+  ATTS_MSG_IDLE_TIMEOUT = ATTS_MSG_START,
+  ATTS_MSG_API_VALUE_IND_NTF,
+  ATTS_MSG_IND_TIMEOUT,
+  ATTS_MSG_SIGN_CMAC_CMPL,
+  ATTS_MSG_DBH_CMAC_CMPL
 };
 
 /*!
@@ -53,32 +54,34 @@ enum {
  */
 
 /* API parameters */
-typedef struct {
-    uint16_t len;
-    uint16_t handle;
+typedef struct
+{
+  uint16_t          len;
+  uint16_t          handle;
 } attsPktParam_t;
 
 /* verify attsPktParam_t will work in data buffer format described above */
 WSF_CT_ASSERT(sizeof(attsPktParam_t) <= L2C_PAYLOAD_START);
 
 /* API message structure */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    attsPktParam_t *pPkt;
-    uint8_t slot;
+typedef struct
+{
+  wsfMsgHdr_t       hdr;
+  attsPktParam_t    *pPkt;
+  uint8_t           slot;
 } attsApiMsg_t;
 
 /* ATTS connection control block */
-typedef struct {
-    wsfTimer_t outIndTimer; /* Outstanding indication timer */
-    attCcb_t *pMainCcb; /* Pointer to ATT main CCB */
-    wsfTimer_t idleTimer; /* service discovery idle timer */
-    dmConnId_t connId; /* DM connection ID */
-    uint8_t slot; /* ATT/EATT slot ID */
-    uint16_t outIndHandle; /* Waiting for confirm from peer for this indication handle */
-    uint16_t pendIndHandle; /* Callback to application pending for this indication handle */
-    uint16_t pendNtfHandle
-        [ATT_NUM_SIMUL_NTF]; /* Callback to application pending for this notification handle */
+typedef struct
+{
+  wsfTimer_t        outIndTimer;       /* Outstanding indication timer */
+  attCcb_t          *pMainCcb;         /* Pointer to ATT main CCB */
+  wsfTimer_t        idleTimer;         /* service discovery idle timer */
+  dmConnId_t        connId;            /* DM connection ID */
+  uint8_t           slot;              /* ATT/EATT slot ID */
+  uint16_t          outIndHandle;      /* Waiting for confirm from peer for this indication handle */
+  uint16_t          pendIndHandle;     /* Callback to application pending for this indication handle */
+  uint16_t          pendNtfHandle[ATT_NUM_SIMUL_NTF]; /* Callback to application pending for this notification handle */
 } attsCcb_t;
 
 /* Client characteristic configuration descriptor callback type
@@ -90,28 +93,29 @@ typedef struct {
  *
  *  \return ATT_SUCCESS if successful otherwise error.
  */
-typedef uint8_t (*attsCccFcn_t)(dmConnId_t connId, uint8_t method, uint16_t handle,
-                                uint8_t *pValue);
+typedef uint8_t (*attsCccFcn_t)(dmConnId_t connId, uint8_t method, uint16_t handle, uint8_t *pValue);
 
 /* Main control block of the ATTS subsystem */
-typedef struct {
-    attsCcb_t ccb[DM_CONN_MAX][ATT_BEARER_MAX]; /* Connection slot control block */
-    wsfQueue_t prepWriteQueue[DM_CONN_MAX]; /* Connection prepare write queue */
-    wsfQueue_t groupQueue; /* Queue of attribute groups */
-    attFcnIf_t const *pInd; /* Indication callback interface */
-    attMsgHandler_t signMsgCback; /* Signed data callback interface */
-    attsAuthorCback_t authorCback; /* Authorization callback */
-    attsCccFcn_t cccCback; /* CCC callback */
+typedef struct
+{
+  attsCcb_t         ccb[DM_CONN_MAX][ATT_BEARER_MAX];         /* Connection slot control block */
+  wsfQueue_t        prepWriteQueue[DM_CONN_MAX];              /* Connection prepare write queue */
+  wsfQueue_t        groupQueue;                               /* Queue of attribute groups */
+  attFcnIf_t const  *pInd;                                    /* Indication callback interface */
+  attMsgHandler_t   signMsgCback;                             /* Signed data callback interface */
+  attsAuthorCback_t authorCback;                              /* Authorization callback */
+  attsCccFcn_t      cccCback;                                 /* CCC callback */
 } attsCb_t;
 
 /* PDU processing function type */
 typedef void (*attsProcFcn_t)(attsCcb_t *pCcb, uint16_t len, uint8_t *pPacket);
 
 /* CSF Control block */
-typedef struct {
-    attsCsfRec_t attsCsfTable[DM_CONN_MAX]; /* connected clients' supported features record table. */
-    attsCsfWriteCback_t writeCback; /* Write callback. */
-    uint8_t isHashUpdating; /* Database hash update status. */
+typedef struct
+{
+  attsCsfRec_t        attsCsfTable[DM_CONN_MAX];              /* connected clients' supported features record table. */
+  attsCsfWriteCback_t writeCback;                             /* Write callback. */
+  uint8_t             isHashUpdating;                         /* Database hash update status. */
 } attsCsfCb_t;
 
 /**************************************************************************************************
@@ -119,7 +123,7 @@ typedef struct {
 **************************************************************************************************/
 
 /* PDU processing function lookup table, indexed by method */
-extern attsProcFcn_t attsProcFcnTbl[ATT_METHOD_SIGNED_WRITE_CMD + 1];
+extern attsProcFcn_t attsProcFcnTbl[ATT_METHOD_SIGNED_WRITE_CMD+1];
 
 /* Control block */
 extern attsCb_t attsCb;

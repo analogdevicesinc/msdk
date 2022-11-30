@@ -42,11 +42,10 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Get encryption ID from BIG context. */
-#define LCTR_BIG_CTRL_ENC_ID(pBigCtx) \
-    (LL_MAX_CONN + LL_MAX_CIG + LL_MAX_BIG + (pBigCtx - &pLctrBigTbl[0]))
+#define LCTR_BIG_CTRL_ENC_ID(pBigCtx)   (LL_MAX_CONN + LL_MAX_CIG + LL_MAX_BIG + (pBigCtx - &pLctrBigTbl[0]))
 
 /*! \brief  ISO Data PDU start offset in a buffer. */
-#define LCTR_ISO_SDU_START_OFFSET (HCI_ISO_HDR_LEN + HCI_ISO_DL_MAX_LEN - LL_ISO_DATA_HDR_LEN)
+#define LCTR_ISO_SDU_START_OFFSET       (HCI_ISO_HDR_LEN + HCI_ISO_DL_MAX_LEN - LL_ISO_DATA_HDR_LEN)
 
 /**************************************************************************************************
   Data Types
@@ -55,158 +54,174 @@ extern "C" {
 struct lctrBigCtx_tag;
 
 /*! \brief      Broadcast Isochronous Stream (BIS) context. */
-typedef struct {
-    bool_t enabled; /*!< Enable flag. */
-    uint8_t bisNum; /*!< BIS positional sequence number. */
-    uint16_t handle; /*!< BIS handle. */
-    struct lctrBigCtx_tag *pBigCtx; /*!< BIG context. */
+typedef struct
+{
+  bool_t        enabled;        /*!< Enable flag. */
+  uint8_t       bisNum;         /*!< BIS positional sequence number. */
+  uint16_t      handle;         /*!< BIS handle. */
+  struct lctrBigCtx_tag *pBigCtx;   /*!< BIG context. */
 
-    union {
-        struct {
-            /* Data */
-            wsfQueue_t txDataQ; /*!< Transmit ISO queue. */
-            uint8_t numTxSduComp; /*!< Number of Tx completed SDUs. */
-            lctrIsoalTxCtx_t isoalTxCtx; /*!< ISOAL transmit context. */
-        } slv; /*!< BIS slave specific data. */
+  union
+  {
+    struct
+    {
+      /* Data */
+      wsfQueue_t txDataQ;           /*!< Transmit ISO queue. */
+      uint8_t    numTxSduComp;      /*!< Number of Tx completed SDUs. */
+      lctrIsoalTxCtx_t isoalTxCtx;  /*!< ISOAL transmit context. */
+    } slv;                          /*!< BIS slave specific data. */
 
-        struct {
-            /* Data */
-            wsfQueue_t rxDataQ; /*!< Receive ISO Data PDU pending queue. */
-            wsfQueue_t rxIsoSduQ; /*!< Receive ISO SDU PDU pending queue. */
-            lctrIsoalRxCtx_t isoalRxCtx; /*!< ISOAL Receive context. */
+    struct
+    {
+      /* Data */
+      wsfQueue_t rxDataQ;           /*!< Receive ISO Data PDU pending queue. */
+      wsfQueue_t rxIsoSduQ;         /*!< Receive ISO SDU PDU pending queue. */
+      lctrIsoalRxCtx_t isoalRxCtx;  /*!< ISOAL Receive context. */
 
-            /* ISO test */
-            LlIsoTestCtrs_t stats; /*!< Rx statistics. */
-        } mst; /*!< BIS master specific data. */
-    } roleData; /*!< Role specific data. */
+      /* ISO test */
+      LlIsoTestCtrs_t stats;        /*!< Rx statistics. */
+    } mst;                          /*!< BIS master specific data. */
+  } roleData;                       /*!< Role specific data. */
 
-    /* ISO test */
-    struct {
-        bool_t enabled; /*!< TRUE ISO test enabled, FALSE otherwise. */
-        bool_t term; /*!< Flag for ISO test termination. */
-        bool_t pendInit; /*!< Receive pending init. */
-        union {
-            struct {
-                uint32_t payloadCtr; /*!< Payload counter for framed transmissions. */
-            } framed; /*!< Framed context. */
-            struct {
-                uint8_t payloadOffset; /*!< Payload offset for unframed transmissions. */
-            } unframed; /*!< Unframed context. */
-        } util; /*!< Role-based utility variables. */
-        LlIsoPldType_t pldType : 8; /*!< Test payload type. */
-    } test; /*!< ISO Test data. */
+  /* ISO test */
+  struct
+  {
+    bool_t      enabled;        /*!< TRUE ISO test enabled, FALSE otherwise. */
+    bool_t      term;           /*!< Flag for ISO test termination. */
+    bool_t      pendInit;       /*!< Receive pending init. */
+    union
+    {
+      struct
+      {
+        uint32_t    payloadCtr;     /*!< Payload counter for framed transmissions. */
+      } framed;                     /*!< Framed context. */
+      struct
+      {
+        uint8_t     payloadOffset;  /*!< Payload offset for unframed transmissions. */
+      } unframed;                   /*!< Unframed context. */
+    } util;                         /*!< Role-based utility variables. */
+    LlIsoPldType_t pldType:8;       /*!< Test payload type. */
+  } test;                           /*!< ISO Test data. */
 
-    /* BB */
-    lmgrChanParam_t chSelInfo; /*!< Channel selection state. */
-    PalBbBleChan_t chan; /*!< Channelization parameters. */
+  /* BB */
+  lmgrChanParam_t chSelInfo;    /*!< Channel selection state. */
+  PalBbBleChan_t chan;          /*!< Channelization parameters. */
 
-    /* Data */
-    LlIsoDataPath_t path : 8; /*!< Input audio data path. */
-    LlIsoLlid_t lastLlid : 8; /*!< Last LLID. */
+  /* Data */
+  LlIsoDataPath_t path:8;       /*!< Input audio data path. */
+  LlIsoLlid_t   lastLlid:8;     /*!< Last LLID. */
 } lctrBisCtx_t;
 
 /*! \brief      Broadcast Isochronous Group (BIG) context. */
-typedef struct lctrBigCtx_tag {
-    bool_t enabled; /*!< Context enabled. */
-    uint8_t state; /*!< Current state. */
-    uint8_t handle; /*!< BIG handle. */
-    LlRole_t role : 8; /*!< Role. */
+typedef struct lctrBigCtx_tag
+{
+  bool_t        enabled;        /*!< Context enabled. */
+  uint8_t       state;          /*!< Current state. */
+  uint8_t       handle;         /*!< BIG handle. */
+  LlRole_t      role:8;         /*!< Role. */
 
-    /* Data */
-    uint16_t maxPdu; /*!< Maximum size of BIS Data PDU. */
-    uint16_t maxSdu; /*!< Maximum size of ISO SDU. */
+  /* Data */
+  uint16_t      maxPdu;         /*!< Maximum size of BIS Data PDU. */
+  uint16_t      maxSdu;         /*!< Maximum size of ISO SDU. */
 
-    /* Host */
-    uint32_t sduInterUsec; /*!< SDU interval in microseconds. */
-    uint32_t bisSpaceUsec; /*!< BIS space in microseconds. */
-    uint32_t isoInterUsec; /*!< Isochronous PDU interval in microseconds. */
-    uint8_t bn; /*!< Burst number. */
-    uint8_t nse; /*!< Maximum number of subevent in each interval on BIS. */
-    uint8_t pto; /*!< Pre-transmission offset. */
-    uint8_t irc; /*!< Immediate repetition count. */
-    LlFraming_t framing : 8; /*!< BIS Data PDU format. */
-    LlPacking_t packing : 8; /*!< Packing sequence scheme. */
+  /* Host */
+  uint32_t      sduInterUsec;   /*!< SDU interval in microseconds. */
+  uint32_t      bisSpaceUsec;   /*!< BIS space in microseconds. */
+  uint32_t      isoInterUsec;   /*!< Isochronous PDU interval in microseconds. */
+  uint8_t       bn;             /*!< Burst number. */
+  uint8_t       nse;            /*!< Maximum number of subevent in each interval on BIS. */
+  uint8_t       pto;            /*!< Pre-transmission offset. */
+  uint8_t       irc;            /*!< Immediate repetition count. */
+  LlFraming_t   framing:8;      /*!< BIS Data PDU format. */
+  LlPacking_t   packing:8;      /*!< Packing sequence scheme. */
 
-    /* ISO Event */
-    uint64_t eventCounter; /*!< Event counter. */
-    uint32_t syncDelayUsec; /*!< Synchronization delay in microseconds. */
-    uint32_t transLatUsec; /*!< The maximum transmission latency, in microseconds. */
-    uint32_t subInterUsec; /*!< Subevent interval in microseconds. */
+  /* ISO Event */
+  uint64_t      eventCounter;   /*!< Event counter. */
+  uint32_t      syncDelayUsec;  /*!< Synchronization delay in microseconds. */
+  uint32_t      transLatUsec;   /*!< The maximum transmission latency, in microseconds. */
+  uint32_t      subInterUsec;   /*!< Subevent interval in microseconds. */
 
-    /* BIS */
-    uint8_t numBis; /*!< Number of BISs. */
-    lctrBisCtx_t *pBisCtx[LL_MAX_BIS]; /*!< BIS contexts. */
+  /* BIS */
+  uint8_t       numBis;               /*!< Number of BISs. */
+  lctrBisCtx_t  *pBisCtx[LL_MAX_BIS]; /*!< BIS contexts. */
 
-    union {
-        struct {
-            lctrAdvSet_t *pAdvSet; /*!< Advertising Set parent. */
-            wsfQueue_t txCtrlQ; /*!< Transmit BIG control queue. */
-            bool_t notifyHostEst; /*!< Notify host event sent flag. */
-        } slv; /*!< BIG slave specific data. */
+  union
+  {
+    struct
+    {
+      lctrAdvSet_t *pAdvSet;    /*!< Advertising Set parent. */
+      wsfQueue_t txCtrlQ;       /*!< Transmit BIG control queue. */
+      bool_t    notifyHostEst;  /*!< Notify host event sent flag. */
+    } slv;                      /*!< BIG slave specific data. */
 
-        struct {
-            /* BIG Create Sync */
-            lctrPerScanCtx_t *pPerScanCtx; /*!< Periodic Scan parent. */
-            bool_t syncLostReason; /*!< BIG synchronization lost. */
-            uint8_t mse; /*!< Maximum number of subevents. */
-            uint8_t numBisIdx; /*!< Total number of BISes in the BIG. */
-            uint8_t bisIdx[LL_MAX_BIS]; /*!< List of indices of BISes. */
+    struct
+    {
+      /* BIG Create Sync */
+      lctrPerScanCtx_t *pPerScanCtx;  /*!< Periodic Scan parent. */
+      bool_t    syncLostReason;       /*!< BIG synchronization lost. */
+      uint8_t   mse;                  /*!< Maximum number of subevents. */
+      uint8_t   numBisIdx;            /*!< Total number of BISes in the BIG. */
+      uint8_t   bisIdx[LL_MAX_BIS];   /*!< List of indices of BISes. */
 
-            /* Sync timeout */
-            uint32_t bigSyncTimeoutMs; /*!< Synchronization timeout in microseconds. */
-            wsfTimer_t bigSyncTmr; /*!< Synchronization timeout timer. */
+      /* Sync timeout */
+      uint32_t   bigSyncTimeoutMs;    /*!< Synchronization timeout in microseconds. */
+      wsfTimer_t bigSyncTmr;          /*!< Synchronization timeout timer. */
 
-            /* Event state */
-            uint16_t totalAcc; /*!< Total clock accuracy. */
-            uint16_t extraWwUsec; /*!< Extra window widening time in microseconds. */
-            uint32_t rxSyncTime; /*!< Last received BIG anchor point. */
-            uint32_t anchorPoint; /*!< BIG anchor point. */
+      /* Event state */
+      uint16_t  totalAcc;       /*!< Total clock accuracy. */
+      uint16_t  extraWwUsec;    /*!< Extra window widening time in microseconds. */
+      uint32_t  rxSyncTime;     /*!< Last received BIG anchor point. */
+      uint32_t  anchorPoint;    /*!< BIG anchor point. */
 
-            /* Encryption */
-            uint8_t bcstCode[LL_BC_LEN]; /*!< Broadcast Code. */
-        } mst; /*!< BIG master specific data. */
-    } roleData; /*!< Role-specific data. */
+      /* Encryption */
+      uint8_t bcstCode[LL_BC_LEN];  /*!< Broadcast Code. */
+    } mst;                      /*!< BIG master specific data. */
+  } roleData;                   /*!< Role-specific data. */
 
-    /* Control */
-    struct {
-        uint8_t actMsk; /*!< Active control procedure bitmask. */
-        uint8_t pendMsk; /*!< Pending control procedure bitmask. */
-        uint8_t cssn; /*!< Control Subevent Sequence Number */
-        struct {
-            uint16_t inst; /*!< Instant. */
-            uint64_t chanMap; /*!< Channel map. */
-        } chanMapUpd; /*!< Channel Map Update data. */
-        struct {
-            uint16_t inst; /*!< Instant. */
-            uint8_t reason; /*!< Termination reason. */
-        } term; /*!< Terminate data. */
-    } bcp; /*!< BIG Control Procedure data. */
+  /* Control */
+  struct
+  {
+    uint8_t     actMsk;         /*!< Active control procedure bitmask. */
+    uint8_t     pendMsk;        /*!< Pending control procedure bitmask. */
+    uint8_t     cssn;           /*!< Control Subevent Sequence Number */
+    struct
+    {
+      uint16_t  inst;           /*!< Instant. */
+      uint64_t  chanMap;        /*!< Channel map. */
+    } chanMapUpd;               /*!< Channel Map Update data. */
+    struct
+    {
+      uint16_t  inst;           /*!< Instant. */
+      uint8_t   reason;         /*!< Termination reason. */
+    } term;                     /*!< Terminate data. */
+  } bcp;                        /*!< BIG Control Procedure data. */
 
-    /* BB */
-    PalBbPhy_t phy : 8; /*!< PHY used for the BIG. */
-    BbOpDesc_t bod; /*!< BIG BOD. */
-    BbBleData_t bleData; /*!< BLE BB operation data. */
-    uint32_t seedAccAddr; /*!< Seed access address. */
-    uint16_t baseCrcInit; /*!< Base CRC Init. */
-    lmgrChanParam_t ctrChSelInfo; /*!< Control channel selection state. */
-    PalBbBleChan_t ctrChan; /*!< BIG Control channelization parameters. */
+  /* BB */
+  PalBbPhy_t    phy:8;          /*!< PHY used for the BIG. */
+  BbOpDesc_t    bod;            /*!< BIG BOD. */
+  BbBleData_t   bleData;        /*!< BLE BB operation data. */
+  uint32_t      seedAccAddr;    /*!< Seed access address. */
+  uint16_t      baseCrcInit;    /*!< Base CRC Init. */
+  lmgrChanParam_t ctrChSelInfo; /*!< Control channel selection state. */
+  PalBbBleChan_t ctrChan;       /*!< BIG Control channelization parameters. */
 
-    /* Encryption */
-    /* Note: located at end of structure for non-encryption optimization */
-    bool_t encrypt; /*!< Encryption enable for BIS. */
-    uint8_t giv[LL_GIV_LEN]; /*!< GIV. */
-    uint8_t gskd[LL_GSKD_LEN]; /*!< GSKD. */
+  /* Encryption */
+  /* Note: located at end of structure for non-encryption optimization */
+  bool_t        encrypt;                /*!< Encryption enable for BIS. */
+  uint8_t       giv[LL_GIV_LEN];        /*!< GIV. */
+  uint8_t       gskd[LL_GSKD_LEN];      /*!< GSKD. */
 
-    /* Reception status. */
-    bool_t lastPduMissed; /*!< Rx failure on last PDU. */
+  /* Reception status. */
+  bool_t        lastPduMissed;          /*!< Rx failure on last PDU. */
 } lctrBigCtx_t;
 
 /*! \brief  ISR subevent context. */
-typedef struct {
-    uint8_t bisEvtIdx; /*!< BIS event index within an event. */
-    uint8_t burstIdx; /*!< Burst index within a subevent. */
-    uint8_t repIdx; /*!< Repeat index within a subevent. */
-    uint8_t ptIdx; /*!< Pre-transmission index within a subevent. */
+typedef struct
+{
+  uint8_t bisEvtIdx;            /*!< BIS event index within an event. */
+  uint8_t burstIdx;             /*!< Burst index within a subevent. */
+  uint8_t repIdx;               /*!< Repeat index within a subevent. */
+  uint8_t ptIdx;                /*!< Pre-transmission index within a subevent. */
 } lctrSeCtx_t;
 
 /**************************************************************************************************
@@ -235,8 +250,7 @@ void lctrFreeBisCtx(lctrBisCtx_t *pBisCtx);
 lctrBisCtx_t *lctrFindBisByHandle(uint16_t bisHandle);
 uint8_t lctrGetNumAvailBisCtx(void);
 uint32_t lctrComputeBisAccessAddr(uint32_t seedAccAddr, uint8_t bisNum);
-void lctrSetupBisContext(lctrBisCtx_t *pBisCtx, uint32_t seedAccAddr, uint16_t baseCrcInit,
-                         uint64_t chMap, LlPhy_t phy);
+void lctrSetupBisContext(lctrBisCtx_t *pBisCtx, uint32_t seedAccAddr, uint16_t baseCrcInit, uint64_t chMap, LlPhy_t phy);
 void lctrSelectBigChannels(lctrBigCtx_t *pBigCtx);
 void lctrRemapBigChannels(lctrBigCtx_t *pBigCtx, uint64_t chanMap);
 
@@ -268,10 +282,8 @@ void lctrBisDefaults(void);
 void lctrNotifyIsoTxComplete(lctrBigCtx_t *pBigCtx);
 void lctrBisCalcGroupSessionKey(const uint8_t *pGSKD, const uint8_t *pBC, uint8_t *pGSK);
 uint8_t lctrBisSetDataPath(lctrBisCtx_t *pBisCtx, LlIsoDataPathDir_t dpDir, LlIsoDataPath_t dpId);
-bool_t lctrSlvBisCalcNextIdxSequential(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCtx,
-                                       uint8_t numSePkts);
-bool_t lctrSlvBisCalcNextIdxInterleaved(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCtx,
-                                        uint8_t numSePkts);
+bool_t lctrSlvBisCalcNextIdxSequential(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCtx, uint8_t numSePkts);
+bool_t lctrSlvBisCalcNextIdxInterleaved(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCtx, uint8_t numSePkts);
 
 #ifdef __cplusplus
 };

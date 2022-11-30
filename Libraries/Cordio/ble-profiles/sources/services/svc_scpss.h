@@ -40,19 +40,20 @@ extern "C" {
  *
  */
 /**@{*/
-#define SCPSS_START_HDL 0x0300 /*!< \brief Start handle. */
-#define SCPSS_END_HDL (SCPSS_MAX_HDL - 1) /*!< \brief End handle. */
+#define SCPSS_START_HDL               0x0300              /*!< \brief Start handle. */
+#define SCPSS_END_HDL                 (SCPSS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Scan Parameter Service Handles */
-enum {
-    SCPSS_SVC_HDL = SCPSS_START_HDL, /*!< \brief Scan Parameter Server Service declaration */
-    SCPSS_SIW_CH_HDL, /*!< \brief Scan Interval Window characteristic */
-    SCPSS_SIW_HDL, /*!< \brief Scan Interval Window */
-    SCPSS_MAX_HDL /*!< \brief Maximum handle. */
+enum
+{
+  SCPSS_SVC_HDL = SCPSS_START_HDL,    /*!< \brief Scan Parameter Server Service declaration */
+  SCPSS_SIW_CH_HDL,                   /*!< \brief Scan Interval Window characteristic */
+  SCPSS_SIW_HDL,                      /*!< \brief Scan Interval Window */
+  SCPSS_MAX_HDL                       /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -89,7 +90,7 @@ void SvcScpssRemoveGroup(void);
 /*************************************************************************************************/
 void SvcScpssCbackRegister(attsWriteCback_t writeCback);
 
-/*! \} */ /* SCAN_PARAMETER_SERVICE */
+/*! \} */    /* SCAN_PARAMETER_SERVICE */
 
 #ifdef __cplusplus
 };

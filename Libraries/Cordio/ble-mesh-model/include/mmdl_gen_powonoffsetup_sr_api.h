@@ -31,7 +31,8 @@
 #define MMDL_GEN_POWER_ONOFFSETUP_SR_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************

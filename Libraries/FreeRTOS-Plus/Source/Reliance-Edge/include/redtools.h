@@ -25,63 +25,73 @@
 #ifndef REDTOOLS_H
 #define REDTOOLS_H
 
+
 #ifdef _WIN32
-#include <Windows.h>
-#define HOST_PATH_MAX MAX_PATH
+  #include <Windows.h>
+  #define HOST_PATH_MAX MAX_PATH
 #else
-#include <linux/limits.h>
-#define HOST_PATH_MAX PATH_MAX
+  #include <linux/limits.h>
+  #define HOST_PATH_MAX PATH_MAX
 #endif
+
 
 #if REDCONF_IMAGE_BUILDER == 1
 
 #define MACRO_NAME_MAX_LEN 32
 
-typedef struct {
-    uint8_t bVolNumber;
+typedef struct
+{
+    uint8_t     bVolNumber;
     const char *pszInputDir;
     const char *pszOutputFile;
-#if REDCONF_API_POSIX == 1
+  #if REDCONF_API_POSIX == 1
     const char *pszVolName;
-#else
+  #else
     const char *pszMapFile;
     const char *pszDefineFile;
-    bool fNowarn;
-#endif
+    bool        fNowarn;
+  #endif
 } IMGBLDPARAM;
 
-void ImgbldParseParams(int argc, char *argv[], IMGBLDPARAM *pParam);
+
+void ImgbldParseParams(int argc, char *argv [], IMGBLDPARAM *pParam);
 int ImgbldStart(IMGBLDPARAM *pParam);
 
-typedef struct {
-#if REDCONF_API_POSIX == 1
-    char asOutFilePath[HOST_PATH_MAX];
-#else
+
+typedef struct
+{
+  #if REDCONF_API_POSIX == 1
+    char     asOutFilePath[HOST_PATH_MAX];
+  #else
     uint32_t ulOutFileIndex;
-#endif
-    char asInFilePath[HOST_PATH_MAX];
+  #endif
+    char     asInFilePath[HOST_PATH_MAX];
 } FILEMAPPING;
+
 
 extern void *gpCopyBuffer;
 extern uint32_t gulCopyBufferSize;
+
 
 /*  Implemented in ibposix.c
 */
 #if REDCONF_API_POSIX == 1
 REDSTATUS IbPosixCopyDir(const char *pszVolName, const char *pszInDir);
 int IbPosixCreateDir(const char *pszVolName, const char *pszFullPath, const char *pszBasePath);
-int IbConvertPath(const char *pszVolName, const char *pszFullPath, const char *pszBasePath,
-                  char *szOutPath);
+int IbConvertPath(const char *pszVolName, const char *pszFullPath, const char *pszBasePath, char *szOutPath);
 #endif
+
 
 /*  Implemented in ibfse.c
 */
 #if REDCONF_API_FSE == 1
 typedef struct sFILELISTENTRY FILELISTENTRY;
-struct sFILELISTENTRY {
-    FILEMAPPING fileMapping;
-    FILELISTENTRY *pNext;
+struct sFILELISTENTRY
+{
+    FILEMAPPING     fileMapping;
+    FILELISTENTRY  *pNext;
 };
+
 
 void FreeFileList(FILELISTENTRY **ppsFileList);
 
@@ -89,6 +99,7 @@ int IbFseGetFileList(const char *pszPath, const char *pszIndirPath, FILELISTENTR
 int IbFseOutputDefines(FILELISTENTRY *pFileList, const IMGBLDPARAM *pOptions);
 int IbFseCopyFiles(int volNum, const FILELISTENTRY *pFileList);
 #endif
+
 
 /*  Implemented in os-specific space (ibwin.c and iblinux.c)
 */
@@ -103,17 +114,18 @@ int IbSetRelativePath(char *pszPath, const char *pszParentPath);
 #endif
 bool IsRegularFile(const char *pszPath);
 
+
 /*  Implemented in ibcommon.c
 */
 int IbCopyFile(int volNum, const FILEMAPPING *pFileMapping);
 int IbCheckFileExists(const char *pszPath, bool *pfExists);
 
+
 /*  Implemented separately in ibfse.c and ibposix.c
 */
 int IbApiInit(void);
 int IbApiUninit(void);
-int IbWriteFile(int volNum, const FILEMAPPING *pFileMapping, uint64_t ullOffset, void *pData,
-                uint32_t ulDataLen);
+int IbWriteFile(int volNum, const FILEMAPPING *pFileMapping, uint64_t ullOffset, void *pData, uint32_t ulDataLen);
 
 #endif /* IMAGE_BUILDER */
 
@@ -121,40 +133,43 @@ int IbWriteFile(int volNum, const FILEMAPPING *pFileMapping, uint64_t ullOffset,
 */
 
 #ifdef _WIN32
-#define HOST_PSEP '\\'
-#if !__STDC__
-#define snprintf _snprintf
-#define stat _stat
-#define S_IFDIR _S_IFDIR
-#define rmdir _rmdir
-#endif
+  #define HOST_PSEP '\\'
+  #if !__STDC__
+    #define snprintf _snprintf
+    #define stat _stat
+    #define S_IFDIR _S_IFDIR
+    #define rmdir _rmdir
+  #endif
 #else
-#define HOST_PSEP '/'
+  #define HOST_PSEP '/'
 #endif
 
-typedef struct {
-    uint8_t bVolNumber;
+typedef struct
+{
+    uint8_t     bVolNumber;
     const char *pszOutputDir;
     const char *pszBDevSpec;
-#if REDCONF_API_POSIX == 1
+  #if REDCONF_API_POSIX == 1
     const char *pszVolName;
-#endif
-    bool fNoWarn;
+  #endif
+    bool        fNoWarn;
 } IMGCOPYPARAM;
 
-typedef struct {
-#if REDCONF_API_POSIX == 1
-    const char *pszVolume; /* Volume path prefix. */
-    uint32_t ulVolPrefixLen; /* strlen(COPIER::pszVolume) */
-#else
-    uint8_t bVolNum; /* Volume number. */
-#endif
-    const char *pszOutputDir; /* Output directory path. */
-    bool fNoWarn; /* If true, no warning to overwrite. */
-    uint8_t *pbCopyBuffer; /* Buffer for copying file data. */
+typedef struct
+{
+  #if REDCONF_API_POSIX == 1
+    const char *pszVolume;      /* Volume path prefix. */
+    uint32_t    ulVolPrefixLen; /* strlen(COPIER::pszVolume) */
+  #else
+    uint8_t     bVolNum;        /* Volume number. */
+  #endif
+    const char *pszOutputDir;   /* Output directory path. */
+    bool        fNoWarn;        /* If true, no warning to overwrite. */
+    uint8_t    *pbCopyBuffer;   /* Buffer for copying file data. */
 } COPIER;
 
-void ImgcopyParseParams(int argc, char *argv[], IMGCOPYPARAM *pParam);
+
+void ImgcopyParseParams(int argc, char *argv [], IMGCOPYPARAM *pParam);
 int ImgcopyStart(IMGCOPYPARAM *pParam);
 
 /*  Implemented separately in imgcopywin.c and imgcopylinux.c.  These functions
@@ -163,4 +178,6 @@ int ImgcopyStart(IMGCOPYPARAM *pParam);
 void ImgcopyMkdir(const char *pszDir);
 void ImgcopyRecursiveRmdir(const char *pszDir);
 
+
 #endif /* REDTOOLS_H */
+

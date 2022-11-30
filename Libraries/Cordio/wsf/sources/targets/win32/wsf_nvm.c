@@ -35,7 +35,7 @@
 **************************************************************************************************/
 
 /* Device instance string max length. */
-#define WSF_NVM_INSTANCE_LEN 16
+#define WSF_NVM_INSTANCE_LEN              16
 
 /**************************************************************************************************
   Global Variables
@@ -52,7 +52,9 @@ static bool_t wsfNvmEnabled = FALSE;
  *  \brief  Initialize the WSF NVM.
  */
 /*************************************************************************************************/
-void WsfNvmInit(void) {}
+void WsfNvmInit(void)
+{
+}
 
 /*************************************************************************************************/
 /*!
@@ -66,21 +68,23 @@ void WsfNvmInit(void) {}
 /*************************************************************************************************/
 void WsfNvmSetInstanceStr(char *str)
 {
-    struct stat st = { 0 };
-    char path[32];
+  struct stat st = {0};
+  char path[32];
 
-    strncpy(wsfNvmInstance, str, WSF_NVM_INSTANCE_LEN);
+  strncpy(wsfNvmInstance, str, WSF_NVM_INSTANCE_LEN);
 
-    /* Ensure directory exists. */
-    if (stat("nvm", &st) == -1) {
-        _mkdir("nvm");
-    }
+  /* Ensure directory exists. */
+  if (stat("nvm", &st) == -1)
+  {
+    _mkdir("nvm");
+  }
 
-    sprintf(path, "nvm\\%s", wsfNvmInstance);
+  sprintf(path, "nvm\\%s", wsfNvmInstance);
 
-    if (stat(path, &st) == -1) {
-        _mkdir(path);
-    }
+  if (stat(path, &st) == -1)
+  {
+    _mkdir(path);
+  }
 }
 
 /*************************************************************************************************/
@@ -92,7 +96,7 @@ void WsfNvmSetInstanceStr(char *str)
 /*************************************************************************************************/
 void WsfNvmEnableSimulation(bool_t enabled)
 {
-    wsfNvmEnabled = enabled;
+  wsfNvmEnabled = enabled;
 }
 
 /*************************************************************************************************/
@@ -109,20 +113,22 @@ void WsfNvmEnableSimulation(bool_t enabled)
 /*************************************************************************************************/
 bool_t WsfNvmReadData(uint64_t id, uint8_t *pData, uint16_t len, WsfNvmCompEvent_t compCback)
 {
-    if (wsfNvmEnabled) {
-        FILE *pFile;
-        char filename[32];
+  if (wsfNvmEnabled)
+  {
+    FILE *pFile;
+    char filename[32];
 
-        sprintf(filename, "nvm\\%s\\nvm_%d.dat", wsfNvmInstance, (uint32_t)id);
-        pFile = fopen(filename, "rb");
+    sprintf(filename, "nvm\\%s\\nvm_%d.dat", wsfNvmInstance, (uint32_t) id);
+    pFile = fopen(filename, "rb");
 
-        if (pFile) {
-            len = (uint16_t)fread(pData, 1, len, pFile);
-            fclose(pFile);
-        }
+    if (pFile)
+    {
+      len = (uint16_t) fread(pData, 1, len, pFile);
+      fclose(pFile);
     }
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -139,20 +145,22 @@ bool_t WsfNvmReadData(uint64_t id, uint8_t *pData, uint16_t len, WsfNvmCompEvent
 /*************************************************************************************************/
 bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len, WsfNvmCompEvent_t compCback)
 {
-    if (wsfNvmEnabled) {
-        FILE *pFile;
-        char filename[32];
+  if (wsfNvmEnabled)
+  {
+    FILE *pFile;
+    char filename[32];
 
-        sprintf(filename, "nvm\\%s\\nvm_%d.dat", wsfNvmInstance, (uint32_t)id);
-        pFile = fopen(filename, "wb");
+    sprintf(filename, "nvm\\%s\\nvm_%d.dat", wsfNvmInstance, (uint32_t) id);
+    pFile = fopen(filename, "wb");
 
-        if (pFile) {
-            len = (uint16_t)fwrite(pData, 1, len, pFile);
-            fclose(pFile);
-        }
+    if (pFile)
+    {
+      len = (uint16_t) fwrite(pData, 1, len, pFile);
+      fclose(pFile);
     }
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -167,13 +175,14 @@ bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len, WsfNvmCo
 /*************************************************************************************************/
 bool_t WsfNvmEraseData(uint64_t id, WsfNvmCompEvent_t compCback)
 {
-    if (wsfNvmEnabled) {
-        char filename[32];
-        sprintf(filename, "nvm\\%s\\nvm_%d.dat", wsfNvmInstance, (uint32_t)id);
-        remove("fileName");
-    }
+  if (wsfNvmEnabled)
+  {
+    char filename[32];
+    sprintf(filename, "nvm\\%s\\nvm_%d.dat", wsfNvmInstance, (uint32_t) id);
+    remove("fileName");
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -185,4 +194,6 @@ bool_t WsfNvmEraseData(uint64_t id, WsfNvmCompEvent_t compCback)
  *  \note   Security Risk Warning. NVM storage could be shared by multiple Apps.
  */
 /*************************************************************************************************/
-void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback) {}
+void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback)
+{
+}

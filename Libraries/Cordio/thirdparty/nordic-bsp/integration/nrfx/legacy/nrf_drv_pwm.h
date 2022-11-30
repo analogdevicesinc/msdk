@@ -56,75 +56,75 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_pwm_t nrf_drv_pwm_t;
+typedef nrfx_pwm_t          nrf_drv_pwm_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_pwm_config_t nrf_drv_pwm_config_t;
+typedef nrfx_pwm_config_t   nrf_drv_pwm_config_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_INSTANCE NRFX_PWM_INSTANCE
+#define NRF_DRV_PWM_INSTANCE                    NRFX_PWM_INSTANCE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_PIN_NOT_USED NRFX_PWM_PIN_NOT_USED
+#define NRF_DRV_PWM_PIN_NOT_USED                NRFX_PWM_PIN_NOT_USED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_PIN_INVERTED NRFX_PWM_PIN_INVERTED
+#define NRF_DRV_PWM_PIN_INVERTED                NRFX_PWM_PIN_INVERTED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_DEFAULT_CONFIG NRFX_PWM_DEFAULT_CONFIG
+#define NRF_DRV_PWM_DEFAULT_CONFIG              NRFX_PWM_DEFAULT_CONFIG
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_FLAG_STOP NRFX_PWM_FLAG_STOP
+#define NRF_DRV_PWM_FLAG_STOP                   NRFX_PWM_FLAG_STOP
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_FLAG_LOOP NRFX_PWM_FLAG_LOOP
+#define NRF_DRV_PWM_FLAG_LOOP                   NRFX_PWM_FLAG_LOOP
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_FLAG_SIGNAL_END_SEQ0 NRFX_PWM_FLAG_SIGNAL_END_SEQ0
+#define NRF_DRV_PWM_FLAG_SIGNAL_END_SEQ0        NRFX_PWM_FLAG_SIGNAL_END_SEQ0
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_FLAG_SIGNAL_END_SEQ1 NRFX_PWM_FLAG_SIGNAL_END_SEQ1
+#define NRF_DRV_PWM_FLAG_SIGNAL_END_SEQ1        NRFX_PWM_FLAG_SIGNAL_END_SEQ1
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_FLAG_NO_EVT_FINISHED NRFX_PWM_FLAG_NO_EVT_FINISHED
+#define NRF_DRV_PWM_FLAG_NO_EVT_FINISHED        NRFX_PWM_FLAG_NO_EVT_FINISHED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_FLAG_START_VIA_TASK NRFX_PWM_FLAG_START_VIA_TASK
+#define NRF_DRV_PWM_FLAG_START_VIA_TASK         NRFX_PWM_FLAG_START_VIA_TASK
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_flag_t nrfx_pwm_flag_t
+#define nrf_drv_pwm_flag_t                      nrfx_pwm_flag_t
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_EVT_FINISHED NRFX_PWM_EVT_FINISHED
+#define NRF_DRV_PWM_EVT_FINISHED                NRFX_PWM_EVT_FINISHED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_EVT_END_SEQ0 NRFX_PWM_EVT_END_SEQ0
+#define NRF_DRV_PWM_EVT_END_SEQ0                NRFX_PWM_EVT_END_SEQ0
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_EVT_END_SEQ1 NRFX_PWM_EVT_END_SEQ1
+#define NRF_DRV_PWM_EVT_END_SEQ1                NRFX_PWM_EVT_END_SEQ1
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PWM_EVT_STOPPED NRFX_PWM_EVT_STOPPED
+#define NRF_DRV_PWM_EVT_STOPPED                 NRFX_PWM_EVT_STOPPED
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_evt_type_t nrfx_pwm_evt_type_t
+#define nrf_drv_pwm_evt_type_t                  nrfx_pwm_evt_type_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_handler_t nrfx_pwm_handler_t
+#define nrf_drv_pwm_handler_t                   nrfx_pwm_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_init nrfx_pwm_init
+#define nrf_drv_pwm_init                        nrfx_pwm_init
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_uninit nrfx_pwm_uninit
+#define nrf_drv_pwm_uninit                      nrfx_pwm_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_simple_playback nrfx_pwm_simple_playback
+#define nrf_drv_pwm_simple_playback             nrfx_pwm_simple_playback
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_complex_playback nrfx_pwm_complex_playback
+#define nrf_drv_pwm_complex_playback            nrfx_pwm_complex_playback
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_step nrfx_pwm_step
+#define nrf_drv_pwm_step                        nrfx_pwm_step
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_stop nrfx_pwm_stop
+#define nrf_drv_pwm_stop                        nrfx_pwm_stop
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_is_stopped nrfx_pwm_is_stopped
+#define nrf_drv_pwm_is_stopped                  nrfx_pwm_is_stopped
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_sequence_update nrfx_pwm_sequence_update
+#define nrf_drv_pwm_sequence_update             nrfx_pwm_sequence_update
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_sequence_values_update nrfx_pwm_sequence_values_update
+#define nrf_drv_pwm_sequence_values_update      nrfx_pwm_sequence_values_update
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_sequence_length_update nrfx_pwm_sequence_length_update
+#define nrf_drv_pwm_sequence_length_update      nrfx_pwm_sequence_length_update
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_sequence_repeats_update nrfx_pwm_sequence_repeats_update
+#define nrf_drv_pwm_sequence_repeats_update     nrfx_pwm_sequence_repeats_update
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_sequence_end_delay_update nrfx_pwm_sequence_end_delay_update
+#define nrf_drv_pwm_sequence_end_delay_update   nrfx_pwm_sequence_end_delay_update
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_task_address_get nrfx_pwm_task_address_get
+#define nrf_drv_pwm_task_address_get            nrfx_pwm_task_address_get
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pwm_event_address_get nrfx_pwm_event_address_get
+#define nrf_drv_pwm_event_address_get           nrfx_pwm_event_address_get
 
 /** @} */
 

@@ -46,14 +46,16 @@
 #include "nrf_crypto_types.h"
 #include "oberon_backend_hmac.h"
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA256)
 
 #define HMAC_SHA256_BLOCK_SIZE 64
 
-static ret_code_t oberon_backend_hmac_init_sha256(void *const p_context, uint8_t const *p_key,
-                                                  size_t key_size)
+static ret_code_t oberon_backend_hmac_init_sha256(void      * const p_context,
+                                                  uint8_t   const * p_key,
+                                                  size_t            key_size)
 {
-    nrf_crypto_backend_oberon_hmac_sha256_context_t *p_ctx =
+    nrf_crypto_backend_oberon_hmac_sha256_context_t * p_ctx =
         (nrf_crypto_backend_oberon_hmac_sha256_context_t *)p_context;
 
     ocrypto_hmac_sha256_init(&p_ctx->oberon_ctx, p_key, key_size);
@@ -61,10 +63,12 @@ static ret_code_t oberon_backend_hmac_init_sha256(void *const p_context, uint8_t
     return NRF_SUCCESS;
 }
 
-static ret_code_t oberon_backend_hmac_update_sha256(void *const p_context, uint8_t const *p_data,
-                                                    size_t size)
+
+static ret_code_t oberon_backend_hmac_update_sha256(void    * const p_context,
+                                                    uint8_t const * p_data,
+                                                    size_t          size)
 {
-    nrf_crypto_backend_oberon_hmac_sha256_context_t *p_ctx =
+    nrf_crypto_backend_oberon_hmac_sha256_context_t * p_ctx =
         (nrf_crypto_backend_oberon_hmac_sha256_context_t *)p_context;
 
     ocrypto_hmac_sha256_update(&p_ctx->oberon_ctx, p_data, size);
@@ -72,10 +76,12 @@ static ret_code_t oberon_backend_hmac_update_sha256(void *const p_context, uint8
     return NRF_SUCCESS;
 }
 
-static ret_code_t oberon_backend_hmac_finalize_sha256(void *const p_context, uint8_t *p_digest,
-                                                      size_t *const p_size)
+
+static ret_code_t oberon_backend_hmac_finalize_sha256(void      * const p_context,
+                                                      uint8_t         * p_digest,
+                                                      size_t    * const p_size)
 {
-    nrf_crypto_backend_oberon_hmac_sha256_context_t *const p_ctx =
+    nrf_crypto_backend_oberon_hmac_sha256_context_t * const p_ctx =
         (nrf_crypto_backend_oberon_hmac_sha256_context_t *)p_context;
 
     ocrypto_hmac_sha256_final(&p_ctx->oberon_ctx, p_digest);
@@ -86,26 +92,31 @@ static ret_code_t oberon_backend_hmac_finalize_sha256(void *const p_context, uin
     return NRF_SUCCESS;
 }
 
+
 // Information structure for HMAC SHA256 using Oberon backend.
-const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha256_info = {
-    .init_fn = oberon_backend_hmac_init_sha256,
-    .update_fn = oberon_backend_hmac_update_sha256,
-    .finalize_fn = oberon_backend_hmac_finalize_sha256,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA256,
-    .context_size = sizeof(nrf_crypto_backend_oberon_hmac_sha256_context_t),
-    .type = NRF_CRYPTO_HMAC_SHA256_TYPE
+const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha256_info =
+{
+    .init_fn        = oberon_backend_hmac_init_sha256,
+    .update_fn      = oberon_backend_hmac_update_sha256,
+    .finalize_fn    = oberon_backend_hmac_finalize_sha256,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA256,
+    .context_size   = sizeof(nrf_crypto_backend_oberon_hmac_sha256_context_t),
+    .type           = NRF_CRYPTO_HMAC_SHA256_TYPE
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA256)
+
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA512)
 
 #define HMAC_SHA512_BLOCK_SIZE 128
 
-static ret_code_t oberon_backend_hmac_init_sha512(void *const p_context, uint8_t const *p_key,
-                                                  size_t key_size)
+static ret_code_t oberon_backend_hmac_init_sha512(void      * const p_context,
+                                                  uint8_t   const * p_key,
+                                                  size_t            key_size)
 {
-    nrf_crypto_backend_oberon_hmac_sha512_context_t *p_ctx =
+    nrf_crypto_backend_oberon_hmac_sha512_context_t * p_ctx =
         (nrf_crypto_backend_oberon_hmac_sha512_context_t *)p_context;
 
     ocrypto_hmac_sha512_init(&p_ctx->oberon_ctx, p_key, key_size);
@@ -113,10 +124,12 @@ static ret_code_t oberon_backend_hmac_init_sha512(void *const p_context, uint8_t
     return NRF_SUCCESS;
 }
 
-static ret_code_t oberon_backend_hmac_update_sha512(void *const p_context, uint8_t const *p_data,
-                                                    size_t size)
+
+static ret_code_t oberon_backend_hmac_update_sha512(void    * const p_context,
+                                                    uint8_t const * p_data,
+                                                    size_t          size)
 {
-    nrf_crypto_backend_oberon_hmac_sha512_context_t *p_ctx =
+    nrf_crypto_backend_oberon_hmac_sha512_context_t * p_ctx =
         (nrf_crypto_backend_oberon_hmac_sha512_context_t *)p_context;
 
     ocrypto_hmac_sha512_update(&p_ctx->oberon_ctx, p_data, size);
@@ -124,10 +137,12 @@ static ret_code_t oberon_backend_hmac_update_sha512(void *const p_context, uint8
     return NRF_SUCCESS;
 }
 
-static ret_code_t oberon_backend_hmac_finalize_sha512(void *const p_context, uint8_t *p_digest,
-                                                      size_t *const p_size)
+
+static ret_code_t oberon_backend_hmac_finalize_sha512(void      * const p_context,
+                                                      uint8_t         * p_digest,
+                                                      size_t    * const p_size)
 {
-    nrf_crypto_backend_oberon_hmac_sha512_context_t *const p_ctx =
+    nrf_crypto_backend_oberon_hmac_sha512_context_t * const p_ctx =
         (nrf_crypto_backend_oberon_hmac_sha512_context_t *)p_context;
 
     ocrypto_hmac_sha512_final(&p_ctx->oberon_ctx, p_digest);
@@ -138,14 +153,16 @@ static ret_code_t oberon_backend_hmac_finalize_sha512(void *const p_context, uin
     return NRF_SUCCESS;
 }
 
+
 // Information structure for HMAC SHA512 using Oberon backend.
-const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha512_info = {
-    .init_fn = oberon_backend_hmac_init_sha512,
-    .update_fn = oberon_backend_hmac_update_sha512,
-    .finalize_fn = oberon_backend_hmac_finalize_sha512,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA512,
-    .context_size = sizeof(nrf_crypto_backend_oberon_hmac_sha512_context_t),
-    .type = NRF_CRYPTO_HMAC_SHA512_TYPE
+const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha512_info =
+{
+    .init_fn        = oberon_backend_hmac_init_sha512,
+    .update_fn      = oberon_backend_hmac_update_sha512,
+    .finalize_fn    = oberon_backend_hmac_finalize_sha512,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA512,
+    .context_size   = sizeof(nrf_crypto_backend_oberon_hmac_sha512_context_t),
+    .type           = NRF_CRYPTO_HMAC_SHA512_TYPE
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA512)

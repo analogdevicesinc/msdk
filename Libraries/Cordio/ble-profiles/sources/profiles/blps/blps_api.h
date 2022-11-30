@@ -39,8 +39,9 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Configurable parameters */
-typedef struct {
-    wsfTimerTicks_t period; /*!< \brief Measurement timer expiration period in ms */
+typedef struct
+{
+  wsfTimerTicks_t     period;     /*!< \brief Measurement timer expiration period in ms */
 } blpsCfg_t;
 
 /*************************************************************************************************/
@@ -126,7 +127,7 @@ void BlpsSetBpmFlags(uint8_t flags);
 /*************************************************************************************************/
 void BlpsSetIcpFlags(uint8_t flags);
 
-/*! \} */ /* BLOOD_PRESSURE_PROFILE */
+/*! \} */    /* BLOOD_PRESSURE_PROFILE */
 
 #ifdef __cplusplus
 };

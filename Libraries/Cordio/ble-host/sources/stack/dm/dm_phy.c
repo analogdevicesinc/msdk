@@ -37,8 +37,12 @@
 **************************************************************************************************/
 
 /* Component function interface */
-static const dmFcnIf_t dmPhyFcnIf = { dmEmptyReset, dmPhyHciHandler,
-                                      (dmMsgHandler_t)dmEmptyHandler };
+static const dmFcnIf_t dmPhyFcnIf =
+{
+  dmEmptyReset,
+  dmPhyHciHandler,
+  (dmMsgHandler_t)dmEmptyHandler
+};
 
 /**************************************************************************************************
 Local Functions
@@ -58,28 +62,31 @@ static void dmPhyActPhyUpdate(dmConnCcb_t *pCcb, hciEvt_t *pEvent);
 /*************************************************************************************************/
 void dmPhyHciHandler(hciEvt_t *pEvent)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    if (pEvent->hdr.event == HCI_LE_SET_DEF_PHY_CMD_CMPL_CBACK_EVT) {
-        dmPhyActDefPhySet(pEvent);
+  if (pEvent->hdr.event == HCI_LE_SET_DEF_PHY_CMD_CMPL_CBACK_EVT)
+  {
+    dmPhyActDefPhySet(pEvent);
+  }
+  /* look up ccb from conn handle */
+  else if ((pCcb = dmConnCcbByHandle(pEvent->hdr.param)) != NULL)
+  {
+    /* handle incoming event */
+    switch (pEvent->hdr.event)
+    {
+      case HCI_LE_READ_PHY_CMD_CMPL_CBACK_EVT:
+        dmPhyActPhyRead(pCcb, pEvent);
+        break;
+
+      case HCI_LE_PHY_UPDATE_CMPL_CBACK_EVT:
+        dmPhyActPhyUpdate(pCcb, pEvent);
+        break;
+
+      default:
+        /* should never get here */
+        break;
     }
-    /* look up ccb from conn handle */
-    else if ((pCcb = dmConnCcbByHandle(pEvent->hdr.param)) != NULL) {
-        /* handle incoming event */
-        switch (pEvent->hdr.event) {
-        case HCI_LE_READ_PHY_CMD_CMPL_CBACK_EVT:
-            dmPhyActPhyRead(pCcb, pEvent);
-            break;
-
-        case HCI_LE_PHY_UPDATE_CMPL_CBACK_EVT:
-            dmPhyActPhyUpdate(pCcb, pEvent);
-            break;
-
-        default:
-            /* should never get here */
-            break;
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -94,17 +101,17 @@ void dmPhyHciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmPhyActPhyRead(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciLeReadPhyCmdCmplEvt_t evt;
+  hciLeReadPhyCmdCmplEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_PHY_READ_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.status = evt.hdr.status = (uint8_t)pEvent->leReadPhyCmdCmpl.status;
-    evt.handle = pCcb->handle;
-    evt.txPhy = pEvent->leReadPhyCmdCmpl.txPhy;
-    evt.rxPhy = pEvent->leReadPhyCmdCmpl.rxPhy;
+  /* call callback */
+  evt.hdr.event = DM_PHY_READ_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.status = evt.hdr.status = (uint8_t)pEvent->leReadPhyCmdCmpl.status;
+  evt.handle = pCcb->handle;
+  evt.txPhy = pEvent->leReadPhyCmdCmpl.txPhy;
+  evt.rxPhy = pEvent->leReadPhyCmdCmpl.rxPhy;
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -118,13 +125,13 @@ static void dmPhyActPhyRead(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmPhyActDefPhySet(hciEvt_t *pEvent)
 {
-    hciLeSetDefPhyCmdCmplEvt_t evt;
+  hciLeSetDefPhyCmdCmplEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_PHY_SET_DEF_IND;
-    evt.hdr.param = 0;
-    evt.status = evt.hdr.status = (uint8_t)pEvent->leSetDefPhyCmdCmpl.status;
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  /* call callback */
+  evt.hdr.event = DM_PHY_SET_DEF_IND;
+  evt.hdr.param = 0;
+  evt.status = evt.hdr.status = (uint8_t)pEvent->leSetDefPhyCmdCmpl.status;
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -139,17 +146,17 @@ static void dmPhyActDefPhySet(hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmPhyActPhyUpdate(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciLePhyUpdateEvt_t evt;
+  hciLePhyUpdateEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_PHY_UPDATE_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.status = evt.hdr.status = (uint8_t)pEvent->lePhyUpdate.status;
-    evt.handle = pCcb->handle;
-    evt.txPhy = pEvent->lePhyUpdate.txPhy;
-    evt.rxPhy = pEvent->lePhyUpdate.rxPhy;
+  /* call callback */
+  evt.hdr.event = DM_PHY_UPDATE_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.status = evt.hdr.status = (uint8_t)pEvent->lePhyUpdate.status;
+  evt.handle = pCcb->handle;
+  evt.txPhy = pEvent->lePhyUpdate.txPhy;
+  evt.rxPhy = pEvent->lePhyUpdate.rxPhy;
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -163,17 +170,18 @@ static void dmPhyActPhyUpdate(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 void DmReadPhy(dmConnId_t connId)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    WsfTaskLock();
-    /* look up ccb from conn id */
-    pCcb = dmConnCcbById(connId);
-    WsfTaskUnlock();
+  WsfTaskLock();
+  /* look up ccb from conn id */
+  pCcb = dmConnCcbById(connId);
+  WsfTaskUnlock();
 
-    /* if ccb found */
-    if (pCcb != NULL) {
-        HciLeReadPhyCmd(pCcb->handle);
-    }
+  /* if ccb found */
+  if (pCcb != NULL)
+  {
+    HciLeReadPhyCmd(pCcb->handle);
+  }
 }
 
 /*************************************************************************************************/
@@ -190,7 +198,7 @@ void DmReadPhy(dmConnId_t connId)
 /*************************************************************************************************/
 void DmSetDefaultPhy(uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys)
 {
-    HciLeSetDefaultPhyCmd(allPhys, txPhys, rxPhys);
+  HciLeSetDefaultPhyCmd(allPhys, txPhys, rxPhys);
 }
 
 /*************************************************************************************************/
@@ -206,20 +214,20 @@ void DmSetDefaultPhy(uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys)
 *  \return None.
 */
 /*************************************************************************************************/
-void DmSetPhy(dmConnId_t connId, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys,
-              uint16_t phyOptions)
+void DmSetPhy(dmConnId_t connId, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys, uint16_t phyOptions)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    WsfTaskLock();
-    /* look up ccb from conn id */
-    pCcb = dmConnCcbById(connId);
-    WsfTaskUnlock();
+  WsfTaskLock();
+  /* look up ccb from conn id */
+  pCcb = dmConnCcbById(connId);
+  WsfTaskUnlock();
 
-    /* if ccb found */
-    if (pCcb != NULL) {
-        HciLeSetPhyCmd(pCcb->handle, allPhys, txPhys, rxPhys, phyOptions);
-    }
+  /* if ccb found */
+  if (pCcb != NULL)
+  {
+    HciLeSetPhyCmd(pCcb->handle, allPhys, txPhys, rxPhys, phyOptions);
+  }
 }
 
 /*************************************************************************************************/
@@ -231,11 +239,11 @@ void DmSetPhy(dmConnId_t connId, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys
 /*************************************************************************************************/
 void DmPhyInit(void)
 {
-    WsfTaskLock();
+  WsfTaskLock();
 
-    dmFcnIfTbl[DM_ID_PHY] = (dmFcnIf_t *)&dmPhyFcnIf;
+  dmFcnIfTbl[DM_ID_PHY] = (dmFcnIf_t *) &dmPhyFcnIf;
 
-    HciSetLeSupFeat((HCI_LE_SUP_FEAT_LE_2M_PHY | HCI_LE_SUP_FEAT_LE_CODED_PHY), TRUE);
+  HciSetLeSupFeat((HCI_LE_SUP_FEAT_LE_2M_PHY | HCI_LE_SUP_FEAT_LE_CODED_PHY), TRUE);
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }

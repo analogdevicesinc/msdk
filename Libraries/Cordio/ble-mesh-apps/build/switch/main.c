@@ -55,21 +55,24 @@
 **************************************************************************************************/
 
 /*! \brief UART TX buffer size */
-#define PLATFORM_UART_TERMINAL_BUFFER_SIZE 4096U
+#define PLATFORM_UART_TERMINAL_BUFFER_SIZE      4096U
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration */
-static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 16 },
-                                           { 72, 16 },
-                                           { 192, 16 },
-                                           { 256, 16 },
-                                           { 512, 16 } };
+static wsfBufPoolDesc_t mainPoolDesc[] =
+{
+  { 16,              16 },
+  { 72,              16 },
+  { 192,             16 },
+  { 256,             16 },
+  { 512,             16 }
+};
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-static LlRtCfg_t mainLlRtCfg;
+  static LlRtCfg_t mainLlRtCfg;
 #endif
 
 /**************************************************************************************************
@@ -92,29 +95,29 @@ extern void StackInitSwitch(void);
 static void mainWsfInit(void)
 {
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-    /* +12 for message headroom, + 2 event header, +255 maximum parameter length. */
-    const uint16_t maxRptBufSize = 12 + 2 + 255;
+  /* +12 for message headroom, + 2 event header, +255 maximum parameter length. */
+  const uint16_t maxRptBufSize = 12 + 2 + 255;
 
-    /* +12 for message headroom, +4 for header. */
-    const uint16_t aclBufSize = 12 + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
+  /* +12 for message headroom, +4 for header. */
+  const uint16_t aclBufSize = 12 + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
-    /* Adjust buffer allocation based on platform configuration. */
-    mainPoolDesc[2].len = maxRptBufSize;
-    mainPoolDesc[2].num = mainLlRtCfg.maxAdvReports;
-    mainPoolDesc[3].len = aclBufSize;
-    mainPoolDesc[3].num = mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs;
+  /* Adjust buffer allocation based on platform configuration. */
+  mainPoolDesc[2].len = maxRptBufSize;
+  mainPoolDesc[2].num = mainLlRtCfg.maxAdvReports;
+  mainPoolDesc[3].len = aclBufSize;
+  mainPoolDesc[3].num = mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs;
 #endif
 
-    const uint8_t numPools = sizeof(mainPoolDesc) / sizeof(mainPoolDesc[0]);
+  const uint8_t numPools = sizeof(mainPoolDesc) / sizeof(mainPoolDesc[0]);
 
-    uint16_t memUsed;
-    memUsed = WsfBufInit(numPools, mainPoolDesc);
-    WsfHeapAlloc(memUsed);
-    WsfOsInit();
-    WsfTimerInit();
+  uint16_t memUsed;
+  memUsed = WsfBufInit(numPools, mainPoolDesc);
+  WsfHeapAlloc(memUsed);
+  WsfOsInit();
+  WsfTimerInit();
 #if (WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
-    WsfTraceRegisterHandler(WsfBufIoWrite);
-    WsfTraceEnable(TRUE);
+  WsfTraceRegisterHandler(WsfBufIoWrite);
+  WsfTraceEnable(TRUE);
 #endif
 }
 
@@ -129,69 +132,72 @@ static void mainWsfInit(void)
 /*************************************************************************************************/
 int main(void)
 {
-    uint32_t memUsed;
+  uint32_t memUsed;
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-    /* Configurations must be persistent. */
-    static BbRtCfg_t mainBbRtCfg;
+  /* Configurations must be persistent. */
+  static BbRtCfg_t mainBbRtCfg;
 
-    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
-    LlGetDefaultRunTimeCfg(&mainLlRtCfg);
+  PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+  LlGetDefaultRunTimeCfg(&mainLlRtCfg);
 #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    /* Set 5.0 requirements. */
-    mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_5_0;
+  /* Set 5.0 requirements. */
+  mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_5_0;
 #endif
-    PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
+  PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
 #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
+  PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
 #endif
 #endif
 
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    WsfHeapAlloc(memUsed);
-    WsfNvmInit();
+  memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+  WsfHeapAlloc(memUsed);
+  WsfNvmInit();
 
-    mainWsfInit();
+  mainWsfInit();
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
-                            .wlSizeCfg = 4,
-                            .rlSizeCfg = 4,
-                            .plSizeCfg = 4,
-                            .pLlRtCfg = &mainLlRtCfg,
-                            .pFreeMem = WsfHeapGetFreeStartAddress(),
-                            .freeMemAvail = WsfHeapCountAvailable() };
+  LlInitRtCfg_t llCfg =
+  {
+    .pBbRtCfg     = &mainBbRtCfg,
+    .wlSizeCfg    = 4,
+    .rlSizeCfg    = 4,
+    .plSizeCfg    = 4,
+    .pLlRtCfg     = &mainLlRtCfg,
+    .pFreeMem     = WsfHeapGetFreeStartAddress(),
+    .freeMemAvail = WsfHeapCountAvailable()
+  };
 
-    memUsed = LlInit(&llCfg);
-    WsfHeapAlloc(memUsed);
+  memUsed = LlInit(&llCfg);
+  WsfHeapAlloc(memUsed);
 
-    LlSetAdvTxPower(0);
+  LlSetAdvTxPower(0);
 
-    bdAddr_t bdAddr;
-    PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
-    LlSetBdAddr((uint8_t *)&bdAddr);
-    LlMathSetSeed((uint32_t *)&bdAddr);
+  bdAddr_t bdAddr;
+  PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
+  LlSetBdAddr((uint8_t *)&bdAddr);
+  LlMathSetSeed((uint32_t *)&bdAddr);
 #endif
 
-    /* Configure Mesh App Task before intialization. */
-    StackInitCfgSwitch();
+  /* Configure Mesh App Task before intialization. */
+  StackInitCfgSwitch();
 
-    /* Initialize the Mesh App Task (handler id installation). */
-    StackInitSwitch();
+  /* Initialize the Mesh App Task (handler id installation). */
+  StackInitSwitch();
 
-    /* Initialize Mesh Stack. */
-    memUsed = MeshInit(WsfHeapGetFreeStartAddress(), WsfHeapCountAvailable());
-    WsfHeapAlloc(memUsed);
+  /* Initialize Mesh Stack. */
+  memUsed = MeshInit(WsfHeapGetFreeStartAddress(), WsfHeapCountAvailable());
+  WsfHeapAlloc(memUsed);
 
-    /* Initialize Mesh LPN. */
-    memUsed = MeshLpnMemInit(WsfHeapGetFreeStartAddress(), WsfHeapCountAvailable());
-    WsfHeapAlloc(memUsed);
+  /* Initialize Mesh LPN. */
+  memUsed = MeshLpnMemInit(WsfHeapGetFreeStartAddress(), WsfHeapCountAvailable());
+  WsfHeapAlloc(memUsed);
 
-    /* Start application. */
-    SwitchStart();
+  /* Start application. */
+  SwitchStart();
 
-    WsfOsEnterMainLoop();
+  WsfOsEnterMainLoop();
 
-    /* Does not return. */
-    return 0;
+  /* Does not return. */
+  return 0;
 }

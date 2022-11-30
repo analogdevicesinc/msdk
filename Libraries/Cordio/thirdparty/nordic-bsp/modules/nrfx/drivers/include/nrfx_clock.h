@@ -57,11 +57,12 @@ extern "C" {
  */
 
 /** @brief Clock events. */
-typedef enum {
+typedef enum
+{
     NRFX_CLOCK_EVT_HFCLK_STARTED, ///< HFCLK has been started.
     NRFX_CLOCK_EVT_LFCLK_STARTED, ///< LFCLK has been started.
-    NRFX_CLOCK_EVT_CTTO, ///< Calibration timeout.
-    NRFX_CLOCK_EVT_CAL_DONE ///< Calibration has been done.
+    NRFX_CLOCK_EVT_CTTO,          ///< Calibration timeout.
+    NRFX_CLOCK_EVT_CAL_DONE       ///< Calibration has been done.
 } nrfx_clock_evt_type_t;
 
 /**
@@ -82,7 +83,7 @@ typedef void (*nrfx_clock_event_handler_t)(nrfx_clock_evt_type_t event);
  * @retval NRFX_SUCCESS                   The procedure is successful.
  * @retval NRFX_ERROR_ALREADY_INITIALIZED The driver is already initialized.
  */
-nrfx_err_t nrfx_clock_init(nrfx_clock_event_handler_t event_handler);
+nrfx_err_t nrfx_clock_init(nrfx_clock_event_handler_t  event_handler);
 
 /** @brief Function for enabling interrupts in the clock module. */
 void nrfx_clock_enable(void);
@@ -169,6 +170,7 @@ __STATIC_INLINE uint32_t nrfx_clock_ppi_task_addr(nrf_clock_task_t task);
  */
 __STATIC_INLINE uint32_t nrfx_clock_ppi_event_addr(nrf_clock_event_t event);
 
+
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 __STATIC_INLINE uint32_t nrfx_clock_ppi_task_addr(nrf_clock_task_t task)
 {
@@ -193,7 +195,9 @@ __STATIC_INLINE bool nrfx_clock_lfclk_is_running(void)
 
 /** @} */
 
+
 void nrfx_clock_irq_handler(void);
+
 
 #ifdef __cplusplus
 }

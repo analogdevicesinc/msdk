@@ -26,7 +26,8 @@
 #define LIGHT_CONFIG_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,38 +36,38 @@ extern "C" {
 
 /*! Mesh Advertising Interface ID */
 #ifndef LIGHT_ADV_IF_ID
-#define LIGHT_ADV_IF_ID 0
+#define LIGHT_ADV_IF_ID                             0
 #endif
 
 /*! Light number of elements. */
-#define LIGHT_ELEMENT_COUNT 4
+#define LIGHT_ELEMENT_COUNT                         4
 
 /*! Main element */
-#define ELEM_MAIN 0
+#define ELEM_MAIN                                   0
 
 /*! HSL element */
-#define ELEM_HSL 1
+#define ELEM_HSL                                    1
 
 /*! HUE element */
-#define ELEM_HUE 2
+#define ELEM_HUE                                    2
 
 /*! SAT element */
-#define ELEM_SAT 3
+#define ELEM_SAT                                    3
 
 /*! Mesh Models NVM dataset count */
-#define MESH_MODELS_NVM_DATASET_COUNT 4
+#define MESH_MODELS_NVM_DATASET_COUNT               4
 
 /*! Mesh Generic Power OnOff Model Internal NVM dataset IDs */
-#define MMDL_NVM_GEN_ONPOWERUP_STATE_DATASET_ID 0xD000
+#define MMDL_NVM_GEN_ONPOWERUP_STATE_DATASET_ID     0xD000
 
 /*! Mesh Generic OnOff Model Internal NVM dataset IDs */
-#define MMDL_NVM_GEN_ONOFF_STATE_DATASET_ID 0xD001
+#define MMDL_NVM_GEN_ONOFF_STATE_DATASET_ID         0xD001
 
 /*! Mesh Lighting Models Internal NVM dataset IDs */
-#define MMDL_NVM_LIGHT_LIGHTNESS_STATE_DATASET_ID 0xD002
+#define MMDL_NVM_LIGHT_LIGHTNESS_STATE_DATASET_ID    0xD002
 
 /*! Mesh Lighting HSL Models Internal NVM dataset IDs */
-#define MMDL_NVM_LIGHT_HSL_STATE_DATASET_ID 0xD003
+#define MMDL_NVM_LIGHT_HSL_STATE_DATASET_ID         0xD003
 
 /**************************************************************************************************
   Global Variables

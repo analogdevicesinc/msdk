@@ -45,20 +45,21 @@ extern "C" {
  */
 /**@{*/
 /*! \brief Proprietary Service */
-#define WP_START_HDL 0x200 /*!< \brief Start handle. */
-#define WP_END_HDL (WP_MAX_HDL - 1) /*!< \brief End handle. */
+#define WP_START_HDL               0x200            /*!< \brief Start handle. */
+#define WP_END_HDL                 (WP_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Proprietary Service Handles */
-enum {
-    WP_SVC_HDL = WP_START_HDL, /*!< \brief Proprietary service declaration */
-    WP_DAT_CH_HDL, /*!< \brief Proprietary data characteristic */
-    WP_DAT_HDL, /*!< \brief Proprietary data */
-    WP_DAT_CH_CCC_HDL, /*!< \brief Proprietary data client characteristic configuration */
-    WP_MAX_HDL /*!< \brief Maximum handle. */
+enum
+{
+  WP_SVC_HDL = WP_START_HDL,       /*!< \brief Proprietary service declaration */
+  WP_DAT_CH_HDL,                   /*!< \brief Proprietary data characteristic */
+  WP_DAT_HDL,                      /*!< \brief Proprietary data */
+  WP_DAT_CH_CCC_HDL,               /*!< \brief Proprietary data client characteristic configuration */
+  WP_MAX_HDL                       /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -96,7 +97,7 @@ void SvcWpRemoveGroup(void);
 /*************************************************************************************************/
 void SvcWpCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
 
-/*! \} */ /* WP_SERVICE */
+/*! \} */    /* WP_SERVICE */
 
 #ifdef __cplusplus
 };

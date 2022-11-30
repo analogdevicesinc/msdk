@@ -45,18 +45,19 @@ dmScanCb_t dmScanCb;
 /*************************************************************************************************/
 void dmScanInit(void)
 {
-    uint8_t i;
+  uint8_t i;
 
-    /* initialize control block */
-    for (i = 0; i < DM_NUM_PHYS; i++) {
-        dmScanCb.scanInterval[i] = DM_GAP_SCAN_FAST_INT_MIN;
-        dmScanCb.scanWindow[i] = DM_GAP_SCAN_FAST_WINDOW;
-    }
+  /* initialize control block */
+  for (i = 0; i < DM_NUM_PHYS; i++)
+  {
+    dmScanCb.scanInterval[i] = DM_GAP_SCAN_FAST_INT_MIN;
+    dmScanCb.scanWindow[i] = DM_GAP_SCAN_FAST_WINDOW;
+  }
 
-    dmCb.scanFiltPolicy = HCI_FILT_NONE;
-    dmScanCb.scanTimer.handlerId = dmCb.handlerId;
-    dmScanCb.scanState = DM_SCAN_STATE_IDLE;
-    dmCb.scanAddrType = DM_ADDR_PUBLIC;
+  dmCb.scanFiltPolicy = HCI_FILT_NONE;
+  dmScanCb.scanTimer.handlerId = dmCb.handlerId;
+  dmScanCb.scanState = DM_SCAN_STATE_IDLE;
+  dmCb.scanAddrType = DM_ADDR_PUBLIC;
 }
 
 /*************************************************************************************************/
@@ -79,28 +80,31 @@ void dmScanInit(void)
 void DmScanStart(uint8_t scanPhys, uint8_t mode, const uint8_t *pScanType, bool_t filterDup,
                  uint16_t duration, uint16_t period)
 {
-    uint8_t i; /* scanPhy bit position */
-    uint8_t idx; /* param array index */
-    dmScanApiStart_t *pMsg;
+  uint8_t i;              /* scanPhy bit position */
+  uint8_t idx;            /* param array index */
+  dmScanApiStart_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmScanApiStart_t))) != NULL) {
-        pMsg->hdr.event = DM_SCAN_MSG_API_START;
-        pMsg->scanPhys = scanPhys;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmScanApiStart_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_SCAN_MSG_API_START;
+    pMsg->scanPhys = scanPhys;
 
-        for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++) {
-            if (scanPhys & (1 << i)) {
-                /* scan type for this PHY */
-                pMsg->scanType[idx] = pScanType[idx];
-                idx++;
-            }
-        }
-
-        pMsg->mode = mode;
-        pMsg->duration = duration;
-        pMsg->period = period;
-        pMsg->filterDup = filterDup;
-        WsfMsgSend(dmCb.handlerId, pMsg);
+    for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++)
+    {
+      if (scanPhys & (1 << i))
+      {
+        /* scan type for this PHY */
+        pMsg->scanType[idx] = pScanType[idx];
+        idx++;
+      }
     }
+
+    pMsg->mode = mode;
+    pMsg->duration = duration;
+    pMsg->period = period;
+    pMsg->filterDup = filterDup;
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -112,12 +116,13 @@ void DmScanStart(uint8_t scanPhys, uint8_t mode, const uint8_t *pScanType, bool_
 /*************************************************************************************************/
 void DmScanStop(void)
 {
-    wsfMsgHdr_t *pMsg;
+  wsfMsgHdr_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL) {
-        pMsg->event = DM_SCAN_MSG_API_STOP;
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+  if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL)
+  {
+    pMsg->event = DM_SCAN_MSG_API_STOP;
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -133,15 +138,15 @@ void DmScanStop(void)
 /*************************************************************************************************/
 static void dmScanSetInterval(uint8_t scanPhy, uint16_t scanInterval, uint16_t scanWindow)
 {
-    uint8_t phyIdx;
+  uint8_t phyIdx;
 
-    WSF_ASSERT((scanPhy == HCI_INIT_PHY_LE_1M_BIT) || (scanPhy == HCI_INIT_PHY_LE_CODED_BIT));
+  WSF_ASSERT((scanPhy == HCI_INIT_PHY_LE_1M_BIT) || (scanPhy == HCI_INIT_PHY_LE_CODED_BIT));
 
-    WsfTaskLock();
-    phyIdx = DmScanPhyToIdx(scanPhy);
-    dmScanCb.scanInterval[phyIdx] = scanInterval;
-    dmScanCb.scanWindow[phyIdx] = scanWindow;
-    WsfTaskUnlock();
+  WsfTaskLock();
+  phyIdx = DmScanPhyToIdx(scanPhy);
+  dmScanCb.scanInterval[phyIdx] = scanInterval;
+  dmScanCb.scanWindow[phyIdx] = scanWindow;
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -157,15 +162,17 @@ static void dmScanSetInterval(uint8_t scanPhy, uint16_t scanInterval, uint16_t s
 /*************************************************************************************************/
 void DmScanSetInterval(uint8_t scanPhys, uint16_t *pScanInterval, uint16_t *pScanWindow)
 {
-    uint8_t i; /* scanPhy bit position */
-    uint8_t idx; /* param array index */
+  uint8_t i;   /* scanPhy bit position */
+  uint8_t idx; /* param array index */
 
-    for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++) {
-        if (scanPhys & (1 << i)) {
-            dmScanSetInterval((1 << i), pScanInterval[idx], pScanWindow[idx]);
-            idx++;
-        }
+  for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++)
+  {
+    if (scanPhys & (1 << i))
+    {
+      dmScanSetInterval((1 << i), pScanInterval[idx], pScanWindow[idx]);
+      idx++;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -180,7 +187,7 @@ void DmScanSetInterval(uint8_t scanPhys, uint16_t *pScanInterval, uint16_t *pSca
 /*************************************************************************************************/
 void DmScanSetAddrType(uint8_t addrType)
 {
-    WsfTaskLock();
-    dmCb.scanAddrType = addrType;
-    WsfTaskUnlock();
+  WsfTaskLock();
+  dmCb.scanAddrType = addrType;
+  WsfTaskUnlock();
 }

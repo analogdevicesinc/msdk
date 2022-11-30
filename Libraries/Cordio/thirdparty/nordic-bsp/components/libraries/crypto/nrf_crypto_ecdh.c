@@ -45,11 +45,15 @@
 #include "app_util.h"
 #include "sdk_macros.h"
 
+
 #if NRF_CRYPTO_ECC_ENABLED
+
 
 #if NRF_CRYPTO_ECC_IMPLEMENTED_CURVES_COUNT > 1
 
-static const nrf_crypto_backend_ecdh_compute_fn_t compute_impl[] = {
+
+static const nrf_crypto_backend_ecdh_compute_fn_t compute_impl[] =
+{
 #if NRF_CRYPTO_ECC_SECP160R1_ENABLED
     nrf_crypto_backend_secp160r1_ecdh_compute,
 #endif
@@ -97,7 +101,9 @@ static const nrf_crypto_backend_ecdh_compute_fn_t compute_impl[] = {
 #endif
 };
 
-static const uint16_t compute_impl_context_size[] = {
+
+static const uint16_t compute_impl_context_size[] =
+{
 #if NRF_CRYPTO_ECC_SECP160R1_ENABLED
     NRF_CRYPTO_BACKEND_SECP160R1_ECDH_CONTEXT_SIZE,
 #endif
@@ -149,53 +155,54 @@ static const uint16_t compute_impl_context_size[] = {
 
 #else
 
+
 #if NRF_CRYPTO_ECC_SECP160R1_ENABLED
-#define compute_impl nrf_crypto_backend_secp160r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp160r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP160R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP160R2_ENABLED
-#define compute_impl nrf_crypto_backend_secp160r2_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp160r2_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP160R2_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP192R1_ENABLED
-#define compute_impl nrf_crypto_backend_secp192r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp192r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP192R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP224R1_ENABLED
-#define compute_impl nrf_crypto_backend_secp224r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp224r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP224R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP256R1_ENABLED
-#define compute_impl nrf_crypto_backend_secp256r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp256r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP256R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP384R1_ENABLED
-#define compute_impl nrf_crypto_backend_secp384r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp384r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP384R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP521R1_ENABLED
-#define compute_impl nrf_crypto_backend_secp521r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp521r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP521R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP160K1_ENABLED
-#define compute_impl nrf_crypto_backend_secp160k1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp160k1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP160K1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP192K1_ENABLED
-#define compute_impl nrf_crypto_backend_secp192k1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp192k1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP192K1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP224K1_ENABLED
-#define compute_impl nrf_crypto_backend_secp224k1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp224k1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP224K1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP256K1_ENABLED
-#define compute_impl nrf_crypto_backend_secp256k1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_secp256k1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_SECP256K1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_BP256R1_ENABLED
-#define compute_impl nrf_crypto_backend_bp256r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_bp256r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_BP256R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_BP384R1_ENABLED
-#define compute_impl nrf_crypto_backend_bp384r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_bp384r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_BP384R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_BP512R1_ENABLED
-#define compute_impl nrf_crypto_backend_bp512r1_ecdh_compute
+#define compute_impl              nrf_crypto_backend_bp512r1_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_BP512R1_ECDH_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_CURVE25519_ENABLED
-#define compute_impl nrf_crypto_backend_curve25519_ecdh_compute
+#define compute_impl              nrf_crypto_backend_curve25519_ecdh_compute
 #define compute_impl_context_size NRF_CRYPTO_BACKEND_CURVE25519_ECDH_CONTEXT_SIZE
 #else
-#define compute_impl NULL
+#define compute_impl              NULL
 #define compute_impl_context_size 0
 #endif
 
@@ -203,35 +210,42 @@ static const uint16_t compute_impl_context_size[] = {
 
 #endif
 
-ret_code_t nrf_crypto_ecdh_compute(nrf_crypto_ecdh_context_t *p_context,
-                                   nrf_crypto_ecc_private_key_t const *p_private_key,
-                                   nrf_crypto_ecc_public_key_t const *p_public_key,
-                                   uint8_t *p_shared_secret, size_t *p_shared_secret_size)
+
+ret_code_t nrf_crypto_ecdh_compute(
+    nrf_crypto_ecdh_context_t          * p_context,
+    nrf_crypto_ecc_private_key_t const * p_private_key,
+    nrf_crypto_ecc_public_key_t  const * p_public_key,
+    uint8_t                            * p_shared_secret,
+    size_t                             * p_shared_secret_size)
 {
-    ret_code_t result;
-    void *p_allocated_context = NULL;
-    nrf_crypto_backend_ecdh_compute_fn_t backend_implementation;
-    size_t context_size;
-    nrf_crypto_ecc_curve_info_t const *p_info;
+    ret_code_t                             result;
+    void                                 * p_allocated_context    = NULL;
+    nrf_crypto_backend_ecdh_compute_fn_t   backend_implementation;
+    size_t                                 context_size;
+    nrf_crypto_ecc_curve_info_t    const * p_info;
 
     // Get pointer to header for each key
-    nrf_crypto_internal_ecc_key_header_t const *p_private_key_header =
+    nrf_crypto_internal_ecc_key_header_t const * p_private_key_header =
         (nrf_crypto_internal_ecc_key_header_t const *)p_private_key;
-    nrf_crypto_internal_ecc_key_header_t const *p_public_key_header =
+    nrf_crypto_internal_ecc_key_header_t const * p_public_key_header =
         (nrf_crypto_internal_ecc_key_header_t const *)p_public_key;
 
     // Check and prepare parameters
     result = nrf_crypto_internal_ecc_key_input_check(
-        p_private_key_header, NRF_CRYPTO_INTERNAL_ECC_PRIVATE_KEY_INIT_VALUE);
+        p_private_key_header,
+        NRF_CRYPTO_INTERNAL_ECC_PRIVATE_KEY_INIT_VALUE);
     VERIFY_SUCCESS(result);
-    result = nrf_crypto_internal_ecc_key_input_check(p_public_key_header,
-                                                     NRF_CRYPTO_INTERNAL_ECC_PUBLIC_KEY_INIT_VALUE);
+    result = nrf_crypto_internal_ecc_key_input_check(
+        p_public_key_header,
+        NRF_CRYPTO_INTERNAL_ECC_PUBLIC_KEY_INIT_VALUE);
     VERIFY_SUCCESS(result);
     VERIFY_TRUE(p_private_key_header->p_info == p_public_key_header->p_info,
                 NRF_ERROR_CRYPTO_ECDH_CURVE_MISMATCH);
     p_info = p_private_key_header->p_info;
-    result = nrf_crypto_internal_ecc_raw_output_prepare(p_shared_secret, p_shared_secret_size,
-                                                        p_info->raw_private_key_size);
+    result = nrf_crypto_internal_ecc_raw_output_prepare(
+               p_shared_secret,
+               p_shared_secret_size,
+               p_info->raw_private_key_size);
     VERIFY_SUCCESS(result);
 
     // Get backend specific information
@@ -240,7 +254,8 @@ ret_code_t nrf_crypto_ecdh_compute(nrf_crypto_ecdh_context_t *p_context,
     VERIFY_TRUE(backend_implementation != NULL, NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE);
 
     // Allocate context if not provided
-    if (p_context == NULL && context_size > 0) {
+    if (p_context == NULL && context_size > 0)
+    {
         p_allocated_context = NRF_CRYPTO_ALLOC(context_size);
         VERIFY_TRUE(p_allocated_context != NULL, NRF_ERROR_CRYPTO_ALLOC_FAILED);
         p_context = p_allocated_context;
@@ -250,11 +265,13 @@ ret_code_t nrf_crypto_ecdh_compute(nrf_crypto_ecdh_context_t *p_context,
     result = backend_implementation(p_context, p_private_key, p_public_key, p_shared_secret);
 
     // Deallocate context if allocated
-    if (p_allocated_context != NULL) {
+    if (p_allocated_context != NULL)
+    {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 
     return result;
 }
+
 
 #endif // NRF_CRYPTO_ECC_ENABLED

@@ -46,11 +46,12 @@
 **************************************************************************************************/
 
 /*! enumeration of client characteristic configuration descriptors */
-enum {
-    MEDS_HTP_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
-    MEDS_HTP_HTS_TM_CCC_IDX, /*! Health thermometer service, temperature measurement characteristic */
-    MEDS_HTP_HTS_IT_CCC_IDX, /*! Health thermometer service, intermediate temperature characteristic */
-    MEDS_HTP_NUM_CCC_IDX
+enum
+{
+  MEDS_HTP_GATT_SC_CCC_IDX,                /*! GATT service, service changed characteristic */
+  MEDS_HTP_HTS_TM_CCC_IDX,                 /*! Health thermometer service, temperature measurement characteristic */
+  MEDS_HTP_HTS_IT_CCC_IDX,                 /*! Health thermometer service, intermediate temperature characteristic */
+  MEDS_HTP_NUM_CCC_IDX
 };
 
 /**************************************************************************************************
@@ -58,8 +59,9 @@ enum {
 **************************************************************************************************/
 
 /*! health thermometer measurement configuration */
-static const htpsCfg_t medsHtpsCfg = {
-    2000 /*! Measurement timer expiration period in ms */
+static const htpsCfg_t medsHtpsCfg =
+{
+  2000      /*! Measurement timer expiration period in ms */
 };
 
 /**************************************************************************************************
@@ -67,20 +69,23 @@ static const htpsCfg_t medsHtpsCfg = {
 **************************************************************************************************/
 
 /*! Service UUID list */
-static const uint8_t medsSvcUuidList[] = { UINT16_TO_BYTES(ATT_UUID_HEALTH_THERM_SERVICE),
-                                           UINT16_TO_BYTES(ATT_UUID_DEVICE_INFO_SERVICE) };
+static const uint8_t medsSvcUuidList[] =
+{
+  UINT16_TO_BYTES(ATT_UUID_HEALTH_THERM_SERVICE),
+  UINT16_TO_BYTES(ATT_UUID_DEVICE_INFO_SERVICE)
+};
 
 /**************************************************************************************************
   Client Characteristic Configuration Descriptors
 **************************************************************************************************/
 
 /*! client characteristic configuration descriptors settings, indexed by above enumeration */
-static const attsCccSet_t medsHtpCccSet[MEDS_HTP_NUM_CCC_IDX] = {
-    /* cccd handle          value range               security level */
-    { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE,
-      DM_SEC_LEVEL_ENC }, /* MEDS_HTP_GATT_SC_CCC_IDX */
-    { HTS_TM_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE }, /* MEDS_HTP_HTS_TM_CCC_IDX */
-    { HTS_IT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_ENC } /* MEDS_HTP_HTS_IT_CCC_IDX */
+static const attsCccSet_t medsHtpCccSet[MEDS_HTP_NUM_CCC_IDX] =
+{
+  /* cccd handle          value range               security level */
+  {GATT_SC_CH_CCC_HDL,    ATT_CLIENT_CFG_INDICATE,  DM_SEC_LEVEL_ENC},    /* MEDS_HTP_GATT_SC_CCC_IDX */
+  {HTS_TM_CH_CCC_HDL,     ATT_CLIENT_CFG_INDICATE,  DM_SEC_LEVEL_NONE},    /* MEDS_HTP_HTS_TM_CCC_IDX */
+  {HTS_IT_CH_CCC_HDL,     ATT_CLIENT_CFG_NOTIFY,    DM_SEC_LEVEL_ENC}     /* MEDS_HTP_HTS_IT_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -96,16 +101,23 @@ static void medsHtpBtn(dmConnId_t connId, uint8_t btn);
 **************************************************************************************************/
 
 /*! profile interface pointer */
-medsIf_t medsHtpIf = { NULL, medsHtpStart, medsHtpProcMsg, medsHtpBtn };
+medsIf_t medsHtpIf =
+{
+  NULL,
+  medsHtpStart,
+  medsHtpProcMsg,
+  medsHtpBtn
+};
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! application control block */
-static struct {
-    bool_t measuring;
-    bool_t storedMeasurement;
+static struct
+{
+  bool_t            measuring;
+  bool_t            storedMeasurement;
 } medsHtpCb;
 
 /*************************************************************************************************/
@@ -119,9 +131,9 @@ static struct {
 /*************************************************************************************************/
 static void medsHtpSetUnits(uint8_t units)
 {
-    HtpsSetTmFlags(units | CH_TM_FLAG_TIMESTAMP);
-    HtpsSetItFlags(units);
-    AppHwTmSetUnits(units);
+  HtpsSetTmFlags(units | CH_TM_FLAG_TIMESTAMP);
+  HtpsSetItFlags(units);
+  AppHwTmSetUnits(units);
 }
 
 /*************************************************************************************************/
@@ -135,9 +147,9 @@ static void medsHtpSetUnits(uint8_t units)
 /*************************************************************************************************/
 static void medsHtpClose(wsfMsgHdr_t *pMsg)
 {
-    /* stop health thermometer measurement */
-    HtpsMeasStop();
-    medsHtpCb.measuring = FALSE;
+  /* stop health thermometer measurement */
+  HtpsMeasStop();
+  medsHtpCb.measuring = FALSE;
 }
 
 /*************************************************************************************************/
@@ -149,22 +161,22 @@ static void medsHtpClose(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void medsHtpStart(void)
 {
-    /* set up CCCD table and callback */
-    AttsCccRegister(MEDS_HTP_NUM_CCC_IDX, (attsCccSet_t *)medsHtpCccSet, medsCccCback);
+  /* set up CCCD table and callback */
+  AttsCccRegister(MEDS_HTP_NUM_CCC_IDX, (attsCccSet_t *) medsHtpCccSet, medsCccCback);
 
-    /* add health thermometer service */
-    SvcHtsAddGroup();
+  /* add health thermometer service */
+  SvcHtsAddGroup();
 
-    /* Set Service Changed CCCD index. */
-    GattSetSvcChangedIdx(MEDS_HTP_GATT_SC_CCC_IDX);
+  /* Set Service Changed CCCD index. */
+  GattSetSvcChangedIdx(MEDS_HTP_GATT_SC_CCC_IDX);
 
-    /* initialize health thermometer profile sensor */
-    HtpsInit(medsCb.handlerId, (htpsCfg_t *)&medsHtpsCfg);
-    medsHtpSetUnits(CH_TM_FLAG_UNITS_C);
+  /* initialize health thermometer profile sensor */
+  HtpsInit(medsCb.handlerId, (htpsCfg_t *) &medsHtpsCfg);
+  medsHtpSetUnits(CH_TM_FLAG_UNITS_C);
 
-    /* set advertising data */
-    AppAdvSetAdValue(APP_ADV_DATA_DISCOVERABLE, DM_ADV_TYPE_16_UUID, sizeof(medsSvcUuidList),
-                     (uint8_t *)medsSvcUuidList);
+  /* set advertising data */
+  AppAdvSetAdValue(APP_ADV_DATA_DISCOVERABLE, DM_ADV_TYPE_16_UUID, sizeof(medsSvcUuidList),
+                   (uint8_t *) medsSvcUuidList);
 }
 
 /*************************************************************************************************/
@@ -178,9 +190,9 @@ static void medsHtpStart(void)
 /*************************************************************************************************/
 static void medsHtpSendStoredMeasurement(dmConnId_t connId)
 {
-    medsHtpCb.storedMeasurement = FALSE;
+  medsHtpCb.storedMeasurement = FALSE;
 
-    HtpsMeasComplete((dmConnId_t)connId, MEDS_HTP_HTS_TM_CCC_IDX);
+  HtpsMeasComplete((dmConnId_t)connId, MEDS_HTP_HTS_TM_CCC_IDX);
 }
 
 /*************************************************************************************************/
@@ -194,26 +206,27 @@ static void medsHtpSendStoredMeasurement(dmConnId_t connId)
 /*************************************************************************************************/
 static void medsHtpProcMsg(wsfMsgHdr_t *pMsg)
 {
-    switch (pMsg->event) {
+  switch(pMsg->event)
+  {
     case MEDS_TIMER_IND:
-        HtpsProcMsg(pMsg);
-        break;
+      HtpsProcMsg(pMsg);
+      break;
 
     case ATTS_CCC_STATE_IND:
-        /* Check if stored measurement exists and indications on temperature measurement enabled */
-        if (medsHtpCb.storedMeasurement &&
-            AttsCccEnabled((dmConnId_t)pMsg->param, MEDS_HTP_HTS_TM_CCC_IDX)) {
-            medsHtpSendStoredMeasurement((dmConnId_t)pMsg->param);
-        }
-        break;
+      /* Check if stored measurement exists and indications on temperature measurement enabled */
+      if (medsHtpCb.storedMeasurement && AttsCccEnabled((dmConnId_t)pMsg->param, MEDS_HTP_HTS_TM_CCC_IDX))
+      {
+        medsHtpSendStoredMeasurement((dmConnId_t)pMsg->param);
+      }
+      break;
 
     case DM_CONN_CLOSE_IND:
-        medsHtpClose(pMsg);
-        break;
+      medsHtpClose(pMsg);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -228,47 +241,53 @@ static void medsHtpProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void medsHtpBtn(dmConnId_t connId, uint8_t btn)
 {
-    static bool_t advNonconn = FALSE;
+  static bool_t advNonconn = FALSE;
 
-    switch (btn) {
+  switch (btn)
+  {
     case APP_UI_BTN_1_SHORT:
-        /* if connected */
-        if (connId != DM_CONN_ID_NONE) {
-            /* start or complete measurement */
-            if (!medsHtpCb.measuring) {
-                HtpsMeasStart(connId, MEDS_TIMER_IND, MEDS_HTP_HTS_IT_CCC_IDX);
-                medsHtpCb.measuring = TRUE;
-            } else {
-                HtpsMeasComplete(connId, MEDS_HTP_HTS_TM_CCC_IDX);
-                medsHtpCb.measuring = FALSE;
-            }
+      /* if connected */
+      if (connId != DM_CONN_ID_NONE)
+      {
+        /* start or complete measurement */
+        if (!medsHtpCb.measuring)
+        {
+          HtpsMeasStart(connId, MEDS_TIMER_IND, MEDS_HTP_HTS_IT_CCC_IDX);
+          medsHtpCb.measuring = TRUE;
         }
-        break;
+        else
+        {
+          HtpsMeasComplete(connId, MEDS_HTP_HTS_TM_CCC_IDX);
+          medsHtpCb.measuring = FALSE;
+        }
+      }
+      break;
 
     case APP_UI_BTN_2_SHORT:
-        /* set units */
-        medsHtpSetUnits(CH_TM_FLAG_UNITS_F);
-        break;
+      /* set units */
+      medsHtpSetUnits(CH_TM_FLAG_UNITS_F);
+      break;
 
     case APP_UI_BTN_2_MED:
-        /* set units */
-        medsHtpSetUnits(CH_TM_FLAG_UNITS_C);
-        break;
+      /* set units */
+      medsHtpSetUnits(CH_TM_FLAG_UNITS_C);
+      break;
 
     case APP_UI_BTN_2_LONG:
-        /* set new advertising type */
-        advNonconn = !advNonconn;
-        AppSetAdvType(advNonconn ? DM_ADV_NONCONN_UNDIRECT : DM_ADV_CONN_UNDIRECT);
-        break;
+      /* set new advertising type */
+      advNonconn = !advNonconn;
+      AppSetAdvType(advNonconn ? DM_ADV_NONCONN_UNDIRECT : DM_ADV_CONN_UNDIRECT);
+      break;
 
     case APP_UI_BTN_2_EX_LONG:
-        if (connId == DM_CONN_ID_NONE) {
-            /* Store a temperature measurement to be sent when connected */
-            medsHtpCb.storedMeasurement = TRUE;
-        }
-        break;
+      if (connId == DM_CONN_ID_NONE)
+      {
+        /* Store a temperature measurement to be sent when connected */
+        medsHtpCb.storedMeasurement = TRUE;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }

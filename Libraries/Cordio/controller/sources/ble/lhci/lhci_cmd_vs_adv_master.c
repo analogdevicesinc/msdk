@@ -44,57 +44,62 @@
 /*************************************************************************************************/
 bool_t lhciMstScanVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-    uint8_t status = HCI_SUCCESS;
-    uint8_t evtParamLen = 1; /* default is status field only */
+  uint8_t status = HCI_SUCCESS;
+  uint8_t evtParamLen = 1;      /* default is status field only */
 
-    /* Decode and consume command packet. */
-    switch (pHdr->opCode) {
-        /* --- extended device commands --- */
+  /* Decode and consume command packet. */
+  switch (pHdr->opCode)
+  {
+    /* --- extended device commands --- */
 
-    case LHCI_OPCODE_VS_SET_SCAN_CH_MAP: {
-        status = LlSetSetScanChanMap(pBuf[0]);
-        break;
+    case LHCI_OPCODE_VS_SET_SCAN_CH_MAP:
+    {
+      status = LlSetSetScanChanMap(pBuf[0]);
+      break;
     }
 
     case LHCI_OPCODE_VS_GET_SCAN_STATS:
-        evtParamLen += sizeof(BbBleScanPktStats_t);
-        break;
+      evtParamLen += sizeof(BbBleScanPktStats_t);
+      break;
 
-        /* --- default --- */
+    /* --- default --- */
 
     default:
-        return FALSE; /* exit dispatcher routine */
+      return FALSE;       /* exit dispatcher routine */
+  }
+
+  uint8_t *pEvtBuf;
+
+  /* Encode and send command complete event packet. */
+  if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL)
+  {
+    pBuf  = pEvtBuf;
+    pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
+
+    switch (pHdr->opCode)
+    {
+      /* --- extended device commands --- */
+
+      case LHCI_OPCODE_VS_SET_SCAN_CH_MAP:
+        /* no action */
+        break;
+
+      case LHCI_OPCODE_VS_GET_SCAN_STATS:
+      {
+        BbBleScanPktStats_t stats = {0};
+        BbBleGetScanStats(&stats);
+        memcpy(pBuf, (uint8_t *)&stats, sizeof(stats));
+        break;
+      }
+
+      /* --- default --- */
+
+      default:
+        break;
     }
 
-    uint8_t *pEvtBuf;
+    lhciSendCmdCmplEvt(pEvtBuf);
+  }
 
-    /* Encode and send command complete event packet. */
-    if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL) {
-        pBuf = pEvtBuf;
-        pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
-
-        switch (pHdr->opCode) {
-            /* --- extended device commands --- */
-
-        case LHCI_OPCODE_VS_SET_SCAN_CH_MAP:
-            /* no action */
-            break;
-
-        case LHCI_OPCODE_VS_GET_SCAN_STATS: {
-            BbBleScanPktStats_t stats = { 0 };
-            BbBleGetScanStats(&stats);
-            memcpy(pBuf, (uint8_t *)&stats, sizeof(stats));
-            break;
-        }
-
-            /* --- default --- */
-
-        default:
-            break;
-        }
-
-        lhciSendCmdCmplEvt(pEvtBuf);
-    }
-
-    return TRUE;
+  return TRUE;
 }

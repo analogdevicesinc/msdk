@@ -42,16 +42,16 @@
 /*************************************************************************************************/
 void HciLeSetAdvSetRandAddrCmd(uint8_t advHandle, const uint8_t *pAddr)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_ADV_SET_RAND_ADDR,
-                            HCI_LEN_LE_SET_ADV_SET_RAND_ADDR)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advHandle);
-        BDA_TO_BSTREAM(p, pAddr);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_ADV_SET_RAND_ADDR, HCI_LEN_LE_SET_ADV_SET_RAND_ADDR)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advHandle);
+    BDA_TO_BSTREAM(p, pAddr);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -66,29 +66,29 @@ void HciLeSetAdvSetRandAddrCmd(uint8_t advHandle, const uint8_t *pAddr)
 /*************************************************************************************************/
 void HciLeSetExtAdvParamCmd(uint8_t advHandle, hciExtAdvParam_t *pExtAdvParam)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_ADV_PARAM, HCI_LEN_LE_SET_EXT_ADV_PARAM)) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advHandle);
-        UINT16_TO_BSTREAM(p, pExtAdvParam->advEventProp);
-        UINT24_TO_BSTREAM(p, pExtAdvParam->priAdvInterMin);
-        UINT24_TO_BSTREAM(p, pExtAdvParam->priAdvInterMax);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->priAdvChanMap);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->ownAddrType);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->peerAddrType);
-        BDA_TO_BSTREAM(p, pExtAdvParam->pPeerAddr);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->advFiltPolicy);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->advTxPwr);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->priAdvPhy);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->secAdvMaxSkip);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->secAdvPhy);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->advSID);
-        UINT8_TO_BSTREAM(p, pExtAdvParam->scanReqNotifEna);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_ADV_PARAM, HCI_LEN_LE_SET_EXT_ADV_PARAM)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advHandle);
+    UINT16_TO_BSTREAM(p, pExtAdvParam->advEventProp);
+    UINT24_TO_BSTREAM(p, pExtAdvParam->priAdvInterMin);
+    UINT24_TO_BSTREAM(p, pExtAdvParam->priAdvInterMax);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->priAdvChanMap);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->ownAddrType);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->peerAddrType);
+    BDA_TO_BSTREAM(p, pExtAdvParam->pPeerAddr);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->advFiltPolicy);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->advTxPwr);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->priAdvPhy);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->secAdvMaxSkip);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->secAdvPhy);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->advSID);
+    UINT8_TO_BSTREAM(p, pExtAdvParam->scanReqNotifEna);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -107,23 +107,24 @@ void HciLeSetExtAdvParamCmd(uint8_t advHandle, hciExtAdvParam_t *pExtAdvParam)
 void HciLeSetExtAdvDataCmd(uint8_t advHandle, uint8_t op, uint8_t fragPref, uint8_t len,
                            const uint8_t *pData)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if (len > HCI_EXT_ADV_DATA_LEN) {
-        len = HCI_EXT_ADV_DATA_LEN;
-    }
+  if (len > HCI_EXT_ADV_DATA_LEN)
+  {
+    len = HCI_EXT_ADV_DATA_LEN;
+  }
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_ADV_DATA, HCI_LEN_LE_SET_EXT_ADV_DATA(len))) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advHandle);
-        UINT8_TO_BSTREAM(p, op);
-        UINT8_TO_BSTREAM(p, fragPref);
-        UINT8_TO_BSTREAM(p, len);
-        memcpy(p, pData, len);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_ADV_DATA, HCI_LEN_LE_SET_EXT_ADV_DATA(len))) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advHandle);
+    UINT8_TO_BSTREAM(p, op);
+    UINT8_TO_BSTREAM(p, fragPref);
+    UINT8_TO_BSTREAM(p, len);
+    memcpy(p, pData, len);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -142,23 +143,25 @@ void HciLeSetExtAdvDataCmd(uint8_t advHandle, uint8_t op, uint8_t fragPref, uint
 void HciLeSetExtScanRespDataCmd(uint8_t advHandle, uint8_t op, uint8_t fragPref, uint8_t len,
                                 const uint8_t *pData)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if (len > HCI_EXT_ADV_DATA_LEN) {
-        len = HCI_EXT_ADV_DATA_LEN;
-    }
+  if (len > HCI_EXT_ADV_DATA_LEN)
+  {
+    len = HCI_EXT_ADV_DATA_LEN;
+  }
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_SCAN_RESP_DATA,
-                            HCI_LEN_LE_SET_EXT_SCAN_RESP_DATA(len))) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advHandle);
-        UINT8_TO_BSTREAM(p, op);
-        UINT8_TO_BSTREAM(p, fragPref);
-        UINT8_TO_BSTREAM(p, len);
-        memcpy(p, pData, len);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_SCAN_RESP_DATA,
+                          HCI_LEN_LE_SET_EXT_SCAN_RESP_DATA(len))) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advHandle);
+    UINT8_TO_BSTREAM(p, op);
+    UINT8_TO_BSTREAM(p, fragPref);
+    UINT8_TO_BSTREAM(p, len);
+    memcpy(p, pData, len);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -174,24 +177,25 @@ void HciLeSetExtScanRespDataCmd(uint8_t advHandle, uint8_t op, uint8_t fragPref,
 /*************************************************************************************************/
 void HciLeSetExtAdvEnableCmd(uint8_t enable, uint8_t numSets, hciExtAdvEnableParam_t *pEnableParam)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
-    uint8_t i;
+  uint8_t *pBuf;
+  uint8_t *p;
+  uint8_t i;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_ADV_ENABLE,
-                            HCI_LEN_LE_EXT_ADV_ENABLE(numSets))) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, enable);
-        UINT8_TO_BSTREAM(p, numSets);
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_ADV_ENABLE, HCI_LEN_LE_EXT_ADV_ENABLE(numSets))) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, enable);
+    UINT8_TO_BSTREAM(p, numSets);
 
-        for (i = 0; i < numSets; i++) {
-            UINT8_TO_BSTREAM(p, pEnableParam[i].advHandle);
-            UINT16_TO_BSTREAM(p, pEnableParam[i].duration);
-            UINT8_TO_BSTREAM(p, pEnableParam[i].maxEaEvents);
-        }
-
-        hciCmdSend(pBuf);
+    for (i = 0; i < numSets; i++)
+    {
+      UINT8_TO_BSTREAM(p, pEnableParam[i].advHandle);
+      UINT16_TO_BSTREAM(p, pEnableParam[i].duration);
+      UINT8_TO_BSTREAM(p, pEnableParam[i].maxEaEvents);
     }
+
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -203,12 +207,12 @@ void HciLeSetExtAdvEnableCmd(uint8_t enable, uint8_t numSets, hciExtAdvEnablePar
 /*************************************************************************************************/
 void HciLeReadMaxAdvDataLen(void)
 {
-    uint8_t *pBuf;
+  uint8_t *pBuf;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_MAX_ADV_DATA_LEN,
-                            HCI_LEN_LE_READ_MAX_ADV_DATA_LEN)) != NULL) {
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_MAX_ADV_DATA_LEN, HCI_LEN_LE_READ_MAX_ADV_DATA_LEN)) != NULL)
+  {
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -220,12 +224,12 @@ void HciLeReadMaxAdvDataLen(void)
 /*************************************************************************************************/
 void HciLeReadNumSupAdvSets(void)
 {
-    uint8_t *pBuf;
+  uint8_t *pBuf;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_NUM_SUP_ADV_SETS,
-                            HCI_LEN_LE_READ_NUM_OF_SUP_ADV_SETS)) != NULL) {
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_NUM_SUP_ADV_SETS, HCI_LEN_LE_READ_NUM_OF_SUP_ADV_SETS)) != NULL)
+  {
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -239,14 +243,15 @@ void HciLeReadNumSupAdvSets(void)
 /*************************************************************************************************/
 void HciLeRemoveAdvSet(uint8_t advHandle)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_ADV_SET, HCI_LEN_LE_REMOVE_ADV_SET)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advHandle);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_ADV_SET, HCI_LEN_LE_REMOVE_ADV_SET)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advHandle);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -258,11 +263,12 @@ void HciLeRemoveAdvSet(uint8_t advHandle)
 /*************************************************************************************************/
 void HciLeClearAdvSets(void)
 {
-    uint8_t *pBuf;
+  uint8_t *pBuf;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CLEAR_ADV_SETS, HCI_LEN_LE_CLEAR_ADV_SETS)) != NULL) {
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CLEAR_ADV_SETS, HCI_LEN_LE_CLEAR_ADV_SETS)) != NULL)
+  {
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -280,18 +286,18 @@ void HciLeClearAdvSets(void)
 void HciLeSetPerAdvParamCmd(uint8_t advHandle, uint16_t advIntervalMin, uint16_t advIntervalMax,
                             uint16_t advProps)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PER_ADV_PARAM, HCI_LEN_LE_SET_PER_ADV_PARAM)) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advHandle);
-        UINT16_TO_BSTREAM(p, advIntervalMin);
-        UINT16_TO_BSTREAM(p, advIntervalMax);
-        UINT16_TO_BSTREAM(p, advProps);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PER_ADV_PARAM, HCI_LEN_LE_SET_PER_ADV_PARAM)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advHandle);
+    UINT16_TO_BSTREAM(p, advIntervalMin);
+    UINT16_TO_BSTREAM(p, advIntervalMax);
+    UINT16_TO_BSTREAM(p, advProps);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -308,22 +314,23 @@ void HciLeSetPerAdvParamCmd(uint8_t advHandle, uint16_t advIntervalMin, uint16_t
 /*************************************************************************************************/
 void HciLeSetPerAdvDataCmd(uint8_t advHandle, uint8_t op, uint8_t len, const uint8_t *pData)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if (len > HCI_PER_ADV_DATA_LEN) {
-        len = HCI_PER_ADV_DATA_LEN;
-    }
+  if (len > HCI_PER_ADV_DATA_LEN)
+  {
+    len = HCI_PER_ADV_DATA_LEN;
+  }
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PER_ADV_DATA, HCI_LEN_LE_SET_PER_ADV_DATA(len))) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advHandle);
-        UINT8_TO_BSTREAM(p, op);
-        UINT8_TO_BSTREAM(p, len);
-        memcpy(p, pData, len);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PER_ADV_DATA, HCI_LEN_LE_SET_PER_ADV_DATA(len))) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advHandle);
+    UINT8_TO_BSTREAM(p, op);
+    UINT8_TO_BSTREAM(p, len);
+    memcpy(p, pData, len);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -338,16 +345,16 @@ void HciLeSetPerAdvDataCmd(uint8_t advHandle, uint8_t op, uint8_t len, const uin
 /*************************************************************************************************/
 void HciLeSetPerAdvEnableCmd(uint8_t enable, uint8_t advHandle)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PER_ADV_ENABLE, HCI_LEN_LE_SET_PER_ADV_ENABLE)) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, enable);
-        UINT8_TO_BSTREAM(p, advHandle);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PER_ADV_ENABLE, HCI_LEN_LE_SET_PER_ADV_ENABLE)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, enable);
+    UINT8_TO_BSTREAM(p, advHandle);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -365,33 +372,36 @@ void HciLeSetPerAdvEnableCmd(uint8_t enable, uint8_t advHandle)
 void HciLeSetExtScanParamCmd(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_t scanPhys,
                              hciExtScanParam_t *pScanParam)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
-    uint8_t i;
-    uint8_t numPhys;
+  uint8_t *pBuf;
+  uint8_t *p;
+  uint8_t i;
+  uint8_t numPhys;
 
-    /* find out number of scanning PHYs */
-    for (i = 0, numPhys = 0; (i < 8) && (numPhys <= HCI_MAX_NUM_PHYS); i++) {
-        if (scanPhys & (1 << i)) {
-            numPhys++;
-        }
+  /* find out number of scanning PHYs */
+  for (i = 0, numPhys = 0; (i < 8) && (numPhys <= HCI_MAX_NUM_PHYS); i++)
+  {
+    if (scanPhys & (1 << i))
+    {
+      numPhys++;
+    }
+  }
+
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_SCAN_PARAM, HCI_LEN_LE_SET_EXT_SCAN_PARAM(numPhys))) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, ownAddrType);
+    UINT8_TO_BSTREAM(p, scanFiltPolicy);
+    UINT8_TO_BSTREAM(p, scanPhys);
+
+    for (i = 0; i < numPhys; i++)
+    {
+      UINT8_TO_BSTREAM(p, pScanParam[i].scanType);
+      UINT16_TO_BSTREAM(p, pScanParam[i].scanInterval);
+      UINT16_TO_BSTREAM(p, pScanParam[i].scanWindow)
     }
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_SCAN_PARAM,
-                            HCI_LEN_LE_SET_EXT_SCAN_PARAM(numPhys))) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, ownAddrType);
-        UINT8_TO_BSTREAM(p, scanFiltPolicy);
-        UINT8_TO_BSTREAM(p, scanPhys);
-
-        for (i = 0; i < numPhys; i++) {
-            UINT8_TO_BSTREAM(p, pScanParam[i].scanType);
-            UINT16_TO_BSTREAM(p, pScanParam[i].scanInterval);
-            UINT16_TO_BSTREAM(p, pScanParam[i].scanWindow)
-        }
-
-        hciCmdSend(pBuf);
-    }
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -408,18 +418,18 @@ void HciLeSetExtScanParamCmd(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_
 /*************************************************************************************************/
 void HciLeExtScanEnableCmd(uint8_t enable, uint8_t filterDup, uint16_t duration, uint16_t period)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_SCAN_ENABLE, HCI_LEN_LE_SET_EXT_SCAN_ENABLE)) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, enable);
-        UINT8_TO_BSTREAM(p, filterDup);
-        UINT16_TO_BSTREAM(p, duration);
-        UINT16_TO_BSTREAM(p, period);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_EXT_SCAN_ENABLE, HCI_LEN_LE_SET_EXT_SCAN_ENABLE)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, enable);
+    UINT8_TO_BSTREAM(p, filterDup);
+    UINT16_TO_BSTREAM(p, duration);
+    UINT16_TO_BSTREAM(p, period);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -436,40 +446,43 @@ void HciLeExtScanEnableCmd(uint8_t enable, uint8_t filterDup, uint16_t duration,
 void HciLeExtCreateConnCmd(hciExtInitParam_t *pInitParam, hciExtInitScanParam_t *pScanParam,
                            hciConnSpec_t *pConnSpec)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
-    uint8_t i;
-    uint8_t numPhys;
+  uint8_t *pBuf;
+  uint8_t *p;
+  uint8_t i;
+  uint8_t numPhys;
 
-    /* find out number of initiating PHYs */
-    for (i = 0, numPhys = 0; (i < 8) && (numPhys <= HCI_MAX_NUM_PHYS); i++) {
-        if (pInitParam->initPhys & (1 << i)) {
-            numPhys++;
-        }
+  /* find out number of initiating PHYs */
+  for (i = 0, numPhys = 0; (i < 8) && (numPhys <= HCI_MAX_NUM_PHYS); i++)
+  {
+    if (pInitParam->initPhys & (1 << i))
+    {
+      numPhys++;
+    }
+  }
+
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_EXT_CREATE_CONN, HCI_LEN_LE_EXT_CREATE_CONN(numPhys))) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, pInitParam->filterPolicy);
+    UINT8_TO_BSTREAM(p, pInitParam->ownAddrType);
+    UINT8_TO_BSTREAM(p, pInitParam->peerAddrType);
+    BDA_TO_BSTREAM(p, pInitParam->pPeerAddr);
+    UINT8_TO_BSTREAM(p, pInitParam->initPhys);
+
+    for (i = 0; i < numPhys; i++)
+    {
+      UINT16_TO_BSTREAM(p, pScanParam[i].scanInterval);
+      UINT16_TO_BSTREAM(p, pScanParam[i].scanWindow);
+      UINT16_TO_BSTREAM(p, pConnSpec[i].connIntervalMin);
+      UINT16_TO_BSTREAM(p, pConnSpec[i].connIntervalMax);
+      UINT16_TO_BSTREAM(p, pConnSpec[i].connLatency);
+      UINT16_TO_BSTREAM(p, pConnSpec[i].supTimeout);
+      UINT16_TO_BSTREAM(p, pConnSpec[i].minCeLen);
+      UINT16_TO_BSTREAM(p, pConnSpec[i].maxCeLen);
     }
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_EXT_CREATE_CONN, HCI_LEN_LE_EXT_CREATE_CONN(numPhys))) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, pInitParam->filterPolicy);
-        UINT8_TO_BSTREAM(p, pInitParam->ownAddrType);
-        UINT8_TO_BSTREAM(p, pInitParam->peerAddrType);
-        BDA_TO_BSTREAM(p, pInitParam->pPeerAddr);
-        UINT8_TO_BSTREAM(p, pInitParam->initPhys);
-
-        for (i = 0; i < numPhys; i++) {
-            UINT16_TO_BSTREAM(p, pScanParam[i].scanInterval);
-            UINT16_TO_BSTREAM(p, pScanParam[i].scanWindow);
-            UINT16_TO_BSTREAM(p, pConnSpec[i].connIntervalMin);
-            UINT16_TO_BSTREAM(p, pConnSpec[i].connIntervalMax);
-            UINT16_TO_BSTREAM(p, pConnSpec[i].connLatency);
-            UINT16_TO_BSTREAM(p, pConnSpec[i].supTimeout);
-            UINT16_TO_BSTREAM(p, pConnSpec[i].minCeLen);
-            UINT16_TO_BSTREAM(p, pConnSpec[i].maxCeLen);
-        }
-
-        hciCmdSend(pBuf);
-    }
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -489,24 +502,23 @@ void HciLeExtCreateConnCmd(hciExtInitParam_t *pInitParam, hciExtInitScanParam_t 
  */
 /*************************************************************************************************/
 void HciLePerAdvCreateSyncCmd(uint8_t options, uint8_t advSid, uint8_t advAddrType,
-                              uint8_t *pAdvAddr, uint16_t skip, uint16_t syncTimeout,
-                              uint8_t unused)
+                              uint8_t *pAdvAddr, uint16_t skip, uint16_t syncTimeout, uint8_t unused)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_CREATE_SYNC, HCI_LEN_LE_PER_ADV_CREATE_SYNC)) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, options);
-        UINT8_TO_BSTREAM(p, advSid);
-        UINT8_TO_BSTREAM(p, advAddrType);
-        BDA_TO_BSTREAM(p, pAdvAddr);
-        UINT16_TO_BSTREAM(p, skip);
-        UINT16_TO_BSTREAM(p, syncTimeout);
-        UINT8_TO_BSTREAM(p, unused);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_CREATE_SYNC, HCI_LEN_LE_PER_ADV_CREATE_SYNC)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, options);
+    UINT8_TO_BSTREAM(p, advSid);
+    UINT8_TO_BSTREAM(p, advAddrType);
+    BDA_TO_BSTREAM(p, pAdvAddr);
+    UINT16_TO_BSTREAM(p, skip);
+    UINT16_TO_BSTREAM(p, syncTimeout);
+    UINT8_TO_BSTREAM(p, unused);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -518,12 +530,12 @@ void HciLePerAdvCreateSyncCmd(uint8_t options, uint8_t advSid, uint8_t advAddrTy
 /*************************************************************************************************/
 void HciLePerAdvCreateSyncCancelCmd(void)
 {
-    uint8_t *pBuf;
+  uint8_t *pBuf;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_CREATE_SYNC_CANCEL,
-                            HCI_LEN_LE_PER_ADV_CREATE_SYNC_CANCEL)) != NULL) {
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_CREATE_SYNC_CANCEL, HCI_LEN_LE_PER_ADV_CREATE_SYNC_CANCEL)) != NULL)
+  {
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -537,15 +549,15 @@ void HciLePerAdvCreateSyncCancelCmd(void)
 /*************************************************************************************************/
 void HciLePerAdvTerminateSyncCmd(uint16_t syncHandle)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_TERMINATE_SYNC,
-                            HCI_LEN_LE_PER_ADV_TERMINATE_SYNC)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT16_TO_BSTREAM(p, syncHandle);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_TERMINATE_SYNC, HCI_LEN_LE_PER_ADV_TERMINATE_SYNC)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT16_TO_BSTREAM(p, syncHandle);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -561,17 +573,17 @@ void HciLePerAdvTerminateSyncCmd(uint16_t syncHandle)
 /*************************************************************************************************/
 void HciLeAddDeviceToPerAdvListCmd(uint8_t advAddrType, uint8_t *pAdvAddr, uint8_t advSid)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ADD_DEV_PER_ADV_LIST, HCI_LEN_LE_ADD_DEV_PER_ADV_LIST)) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advAddrType);
-        BDA_TO_BSTREAM(p, pAdvAddr);
-        UINT8_TO_BSTREAM(p, advSid);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ADD_DEV_PER_ADV_LIST, HCI_LEN_LE_ADD_DEV_PER_ADV_LIST)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advAddrType);
+    BDA_TO_BSTREAM(p, pAdvAddr);
+    UINT8_TO_BSTREAM(p, advSid);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -587,17 +599,17 @@ void HciLeAddDeviceToPerAdvListCmd(uint8_t advAddrType, uint8_t *pAdvAddr, uint8
 /*************************************************************************************************/
 void HciLeRemoveDeviceFromPerAdvListCmd(uint8_t advAddrType, uint8_t *pAdvAddr, uint8_t advSid)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_DEV_PER_ADV_LIST,
-                            HCI_LEN_LE_REMOVE_DEV_PER_ADV_LIST)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, advAddrType);
-        BDA_TO_BSTREAM(p, pAdvAddr);
-        UINT8_TO_BSTREAM(p, advSid);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_DEV_PER_ADV_LIST, HCI_LEN_LE_REMOVE_DEV_PER_ADV_LIST)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, advAddrType);
+    BDA_TO_BSTREAM(p, pAdvAddr);
+    UINT8_TO_BSTREAM(p, advSid);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -609,12 +621,12 @@ void HciLeRemoveDeviceFromPerAdvListCmd(uint8_t advAddrType, uint8_t *pAdvAddr, 
 /*************************************************************************************************/
 void HciLeClearPerAdvListCmd(void)
 {
-    uint8_t *pBuf;
+  uint8_t *pBuf;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CLEAR_PER_ADV_LIST, HCI_LEN_LE_CLEAR_PER_ADV_LIST)) !=
-        NULL) {
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CLEAR_PER_ADV_LIST, HCI_LEN_LE_CLEAR_PER_ADV_LIST)) != NULL)
+  {
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -626,12 +638,12 @@ void HciLeClearPerAdvListCmd(void)
 /*************************************************************************************************/
 void HciLeReadPerAdvListSizeCmd(void)
 {
-    uint8_t *pBuf;
+  uint8_t *pBuf;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_PER_ADV_LIST_SIZE,
-                            HCI_LEN_LE_READ_PER_ADV_LIST_SIZE)) != NULL) {
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_PER_ADV_LIST_SIZE, HCI_LEN_LE_READ_PER_ADV_LIST_SIZE)) != NULL)
+  {
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -643,11 +655,12 @@ void HciLeReadPerAdvListSizeCmd(void)
 /*************************************************************************************************/
 void HciLeReadTxPower(void)
 {
-    uint8_t *pBuf;
+  uint8_t *pBuf;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_TX_POWER, HCI_LEN_LE_READ_TX_POWER)) != NULL) {
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_TX_POWER, HCI_LEN_LE_READ_TX_POWER)) != NULL)
+  {
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -659,12 +672,12 @@ void HciLeReadTxPower(void)
 /*************************************************************************************************/
 void HciLeReadRfPathComp(void)
 {
-    uint8_t *pBuf;
+  uint8_t *pBuf;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_RF_PATH_COMP, HCI_LEN_LE_READ_RF_PATH_COMP)) !=
-        NULL) {
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_RF_PATH_COMP, HCI_LEN_LE_READ_RF_PATH_COMP)) != NULL)
+  {
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -679,14 +692,14 @@ void HciLeReadRfPathComp(void)
 /*************************************************************************************************/
 void HciLeWriteRfPathComp(int16_t txPathComp, int16_t rxPathComp)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_WRITE_RF_PATH_COMP, HCI_LEN_LE_WRITE_RF_PATH_COMP)) !=
-        NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT16_TO_BSTREAM(p, txPathComp);
-        UINT16_TO_BSTREAM(p, rxPathComp);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_WRITE_RF_PATH_COMP, HCI_LEN_LE_WRITE_RF_PATH_COMP)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT16_TO_BSTREAM(p, txPathComp);
+    UINT16_TO_BSTREAM(p, rxPathComp);
+    hciCmdSend(pBuf);
+  }
 }

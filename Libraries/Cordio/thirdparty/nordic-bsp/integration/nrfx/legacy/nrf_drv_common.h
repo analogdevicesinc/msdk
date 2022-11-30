@@ -48,13 +48,13 @@ extern "C" {
 #endif
 
 #define INTERRUPT_PRIORITY_VALIDATION(pri) STATIC_ASSERT(INTERRUPT_PRIORITY_IS_VALID((pri)))
-#define INTERRUPT_PRIORITY_ASSERT(pri) ASSERT(INTERRUPT_PRIORITY_IS_VALID((pri)))
+#define INTERRUPT_PRIORITY_ASSERT(pri)     ASSERT(INTERRUPT_PRIORITY_IS_VALID((pri)))
 
-#define nrf_drv_irq_handler_t nrfx_irq_handler_t
-#define nrf_drv_bitpos_to_event nrfx_bitpos_to_event
-#define nrf_drv_event_to_bitpos nrfx_event_to_bitpos
-#define nrf_drv_get_IRQn nrfx_get_irq_number
-#define nrf_drv_is_in_RAM nrfx_is_in_ram
+#define nrf_drv_irq_handler_t       nrfx_irq_handler_t
+#define nrf_drv_bitpos_to_event     nrfx_bitpos_to_event
+#define nrf_drv_event_to_bitpos     nrfx_event_to_bitpos
+#define nrf_drv_get_IRQn            nrfx_get_irq_number
+#define nrf_drv_is_in_RAM           nrfx_is_in_ram
 
 #ifdef __cplusplus
 }

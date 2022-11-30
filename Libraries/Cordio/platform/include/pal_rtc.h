@@ -40,11 +40,11 @@ extern "C" {
 
 /*! \brief  Max value of RTC. */
 #ifndef PAL_MAX_RTC_COUNTER_VAL
-#define PAL_MAX_RTC_COUNTER_VAL (0x00FFFFFF)
+#define PAL_MAX_RTC_COUNTER_VAL     (0x00FFFFFF)
 #endif
 
 /*! \brief  Clock frequency of the RTC timer used. */
-#define PAL_RTC_TICKS_PER_SEC (32768) /* RTC ticks per second (with prescaler) */
+#define PAL_RTC_TICKS_PER_SEC       (32768) /* RTC ticks per second (with prescaler) */
 
 /*! \brief  Platform RTC callback. */
 typedef void (*palRtcIrqCback_t)(void);
@@ -54,10 +54,11 @@ typedef void (*palRtcIrqCback_t)(void);
 **************************************************************************************************/
 
 /*! \brief      Operational states. */
-typedef enum {
-    PAL_RTC_STATE_UNINIT = 0, /*!< Uninitialized state. */
-    PAL_RTC_STATE_ERROR = 0, /*!< Error state. */
-    PAL_RTC_STATE_READY = 1 /*!< Ready state. */
+typedef enum
+{
+  PAL_RTC_STATE_UNINIT = 0,     /*!< Uninitialized state. */
+  PAL_RTC_STATE_ERROR  = 0,     /*!< Error state. */
+  PAL_RTC_STATE_READY  = 1      /*!< Ready state. */
 } PalRtcState_t;
 
 /**************************************************************************************************
@@ -74,7 +75,7 @@ uint32_t PalRtcCounterGet(void);
 void PalRtcCompareSet(uint8_t channelId, uint32_t value);
 PalRtcState_t PalRtcGetState(void);
 
-/*! \} */ /* PAL_RTC */
+/*! \} */    /* PAL_RTC */
 
 #ifdef __cplusplus
 };

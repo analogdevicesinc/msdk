@@ -31,7 +31,8 @@
 #define MMDL_SCENE_CL_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mmdl_defs.h"
@@ -40,42 +41,46 @@ extern "C" {
   Data Types
 **************************************************************************************************/
 /*! \brief Model Scene Client Recall parameters structure */
-typedef struct mmdlSceneRecallParam_tag {
-    uint16_t sceneNum; /*!< Scene Number. Value 0 is prohibited */
-    uint8_t tid; /*!< Transaction Identifier */
-    uint8_t transitionTime; /*!< Transition time */
-    uint8_t delay; /*!< Delay in steps of 5 ms  */
+typedef struct mmdlSceneRecallParam_tag
+{
+  uint16_t             sceneNum;        /*!< Scene Number. Value 0 is prohibited */
+  uint8_t              tid;             /*!< Transaction Identifier */
+  uint8_t              transitionTime;  /*!< Transition time */
+  uint8_t              delay;           /*!< Delay in steps of 5 ms  */
 } mmdlSceneRecallParam_t;
 
 /*! \brief Scene Client Model Status event structure */
-typedef struct mmdlSceneClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    mmdlSceneStatus_t status; /*!< Status code */
-    uint16_t currentScene; /*!< Current scene */
-    uint16_t targetScene; /*!< Target scene */
-    uint8_t remainingTime; /*!< Remaining time until the transition completes */
+typedef struct mmdlSceneClStatusEvent_tag
+{
+  wsfMsgHdr_t          hdr;             /*!< WSF message header */
+  meshElementId_t      elementId;       /*!< Element ID */
+  meshAddress_t        serverAddr;      /*!< Server Address */
+  mmdlSceneStatus_t    status;          /*!< Status code */
+  uint16_t             currentScene;    /*!< Current scene */
+  uint16_t             targetScene;     /*!< Target scene */
+  uint8_t              remainingTime;   /*!< Remaining time until the transition completes */
 } mmdlSceneClStatusEvent_t;
 
 /*! \brief Scene Client Model Register Status event structure */
-typedef struct mmdlSceneClRegStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    mmdlSceneStatus_t status; /*!< Status code */
-    uint16_t currentScene; /*!< Current scene */
-    uint8_t scenesCount; /*!< Scenes Count */
-    uint16_t scenes[1]; /*!< Scenes Array */
+typedef struct mmdlSceneClRegStatusEvent_tag
+{
+  wsfMsgHdr_t          hdr;             /*!< WSF message header */
+  meshElementId_t      elementId;       /*!< Element ID */
+  meshAddress_t        serverAddr;      /*!< Server Address */
+  mmdlSceneStatus_t    status;          /*!< Status code */
+  uint16_t             currentScene;    /*!< Current scene */
+  uint8_t              scenesCount;     /*!< Scenes Count */
+  uint16_t             scenes[1];       /*!< Scenes Array */
 } mmdlSceneClRegStatusEvent_t;
 
 /*! \brief Scene Client Model event callback parameters structure */
-typedef union mmdlSceneClEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlSceneClStatusEvent_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlSceneClEvent_tag
+{
+  wsfMsgHdr_t                 hdr;            /*!< WSF message header */
+  mmdlSceneClStatusEvent_t    statusEvent;    /*!< State updated event. Used for
                                                *   ::MMDL_SCENE_CL_STATUS_EVENT.
                                                */
-    mmdlSceneClRegStatusEvent_t regStatusEvent; /*!< Scene register updated event. Used for
+  mmdlSceneClRegStatusEvent_t regStatusEvent; /*!< Scene register updated event. Used for
                                                *   ::MMDL_SCENE_CL_REG_STATUS_EVENT.
                                                */
 } mmdlSceneClEvent_t;
@@ -88,7 +93,7 @@ typedef union mmdlSceneClEvent_tag {
 extern wsfHandlerId_t mmdlSceneClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t mmdlSceneClRcvdOpcodes[];
+extern const meshMsgOpcode_t  mmdlSceneClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations
@@ -224,7 +229,7 @@ void MmdlSceneClRecallNoAck(meshElementId_t elementId, meshAddress_t serverAddr,
  */
 /*************************************************************************************************/
 void MmdlSceneClDelete(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                       uint16_t appKeyIndex, mmdlSceneNumber_t sceneNumber);
+                      uint16_t appKeyIndex, mmdlSceneNumber_t sceneNumber);
 
 /*************************************************************************************************/
 /*!
@@ -240,7 +245,7 @@ void MmdlSceneClDelete(meshElementId_t elementId, meshAddress_t serverAddr, uint
  */
 /*************************************************************************************************/
 void MmdlSceneClDeleteNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                            uint16_t appKeyIndex, mmdlSceneNumber_t sceneNumber);
+                           uint16_t appKeyIndex, mmdlSceneNumber_t sceneNumber);
 
 /*************************************************************************************************/
 /*!

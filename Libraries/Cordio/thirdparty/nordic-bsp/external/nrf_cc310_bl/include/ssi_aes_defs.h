@@ -32,6 +32,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 /*!
 @file
 @brief This file contains definitions that are used for the ARM CryptoCell 3xx version of the CryptoCell AES APIs.
@@ -46,29 +47,32 @@
 
 #include "ssi_pal_types.h"
 
+
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /************************ Defines ******************************/
 
 /*! The size of the user's context prototype (see ::SaSiAesUserContext_t) in words. */
-#define SASI_AES_USER_CTX_SIZE_IN_WORDS (4 + 4 + 7 + 4)
+#define SASI_AES_USER_CTX_SIZE_IN_WORDS (4+4+7+4)
 
 /*! The AES block size in words. */
 #define SASI_AES_BLOCK_SIZE_IN_WORDS 4
 /*! The AES block size in bytes. */
-#define SASI_AES_BLOCK_SIZE_IN_BYTES (SASI_AES_BLOCK_SIZE_IN_WORDS * sizeof(uint32_t))
+#define SASI_AES_BLOCK_SIZE_IN_BYTES  (SASI_AES_BLOCK_SIZE_IN_WORDS * sizeof(uint32_t))
 
 /*! The size of the IV buffer in words. */
-#define SASI_AES_IV_SIZE_IN_WORDS SASI_AES_BLOCK_SIZE_IN_WORDS
+#define SASI_AES_IV_SIZE_IN_WORDS   SASI_AES_BLOCK_SIZE_IN_WORDS
 /*! The size of the IV buffer in bytes. */
-#define SASI_AES_IV_SIZE_IN_BYTES (SASI_AES_IV_SIZE_IN_WORDS * sizeof(uint32_t))
+#define SASI_AES_IV_SIZE_IN_BYTES  (SASI_AES_IV_SIZE_IN_WORDS * sizeof(uint32_t))
 
 /*! The maximum size of the AES KEY in words. */
 #define SASI_AES_KEY_MAX_SIZE_IN_WORDS 4
 /*! The maximum size of the AES KEY in bytes. */
 #define SASI_AES_KEY_MAX_SIZE_IN_BYTES (SASI_AES_KEY_MAX_SIZE_IN_WORDS * sizeof(uint32_t))
+
 
 #ifdef __cplusplus
 }

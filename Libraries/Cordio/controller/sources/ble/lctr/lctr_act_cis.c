@@ -46,23 +46,23 @@
  *  \param      reason      Termination reason.
  */
 /*************************************************************************************************/
-static void lctrSendCisTermIndPdu(lctrConnCtx_t *pCtx, uint8_t opcode, lctrCisCtx_t *pCisCtx,
-                                  uint8_t reason)
+static void lctrSendCisTermIndPdu(lctrConnCtx_t *pCtx, uint8_t opcode, lctrCisCtx_t *pCisCtx, uint8_t reason)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_CIS_TERM_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_CIS_TERM_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
-        UINT8_TO_BSTREAM(pBuf, opcode);
-        UINT8_TO_BSTREAM(pBuf, pCisCtx->cigId);
-        UINT8_TO_BSTREAM(pBuf, pCisCtx->cisId);
-        UINT8_TO_BSTREAM(pBuf, reason);
+    /*** Assemble control PDU. ***/
+    UINT8_TO_BSTREAM (pBuf, opcode);
+    UINT8_TO_BSTREAM (pBuf, pCisCtx->cigId);
+    UINT8_TO_BSTREAM (pBuf, pCisCtx->cisId);
+    UINT8_TO_BSTREAM (pBuf, reason);
 
-        /*** Queue for transmit. ***/
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    /*** Queue for transmit. ***/
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -76,7 +76,7 @@ static void lctrSendCisTermIndPdu(lctrConnCtx_t *pCtx, uint8_t opcode, lctrCisCt
 /*************************************************************************************************/
 static void lctrSendCisTermInd(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx, uint8_t reason)
 {
-    lctrSendCisTermIndPdu(pCtx, LL_PDU_CIS_TERM_IND, pCisCtx, reason);
+  lctrSendCisTermIndPdu(pCtx, LL_PDU_CIS_TERM_IND, pCisCtx, reason);
 }
 
 /**************************************************************************************************
@@ -92,18 +92,23 @@ static void lctrSendCisTermInd(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx, uint8
 /*************************************************************************************************/
 void lctrNotifyHostCisTerm(lctrCisCtx_t *pCisCtx)
 {
-    LlDisconnectInd_t evt = {
-        .hdr = { .param = pCisCtx->cisHandle, .event = LL_DISCONNECT_IND, .status = LL_SUCCESS },
+  LlDisconnectInd_t evt =
+  {
+      .hdr =
+      {
+          .param        = pCisCtx->cisHandle,
+          .event        = LL_DISCONNECT_IND,
+          .status       = LL_SUCCESS
+      },
 
-        .status = LL_SUCCESS,
-        .handle = pCisCtx->cisHandle,
-        .reason = pCisCtx->reason
-    };
+      .status         = LL_SUCCESS,
+      .handle         = pCisCtx->cisHandle,
+      .reason         = pCisCtx->reason
+  };
 
-    LL_TRACE_INFO2("### LlEvent ###  LL_DISCONNECT_IND, handle=%u, status=LL_SUCCESS, reason=%u",
-                   pCisCtx->cisHandle, pCisCtx->reason);
+  LL_TRACE_INFO2("### LlEvent ###  LL_DISCONNECT_IND, handle=%u, status=LL_SUCCESS, reason=%u", pCisCtx->cisHandle, pCisCtx->reason);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -117,31 +122,34 @@ void lctrNotifyHostCisTerm(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrNotifyHostCisEst(lctrCisCtx_t *pCisCtx, uint8_t status, uint32_t cigSyncDelayUsec)
 {
-    LlCisEstInd_t evt = {
-        .hdr = { .param = pCisCtx->cisHandle, .event = LL_CIS_EST_IND, .status = status }
-    };
+  LlCisEstInd_t evt =
+  {
+    .hdr =
+    {
+      .param         = pCisCtx->cisHandle,
+      .event         = LL_CIS_EST_IND,
+      .status        = status
+    }
+  };
 
-    evt.cisHandle = pCisCtx->cisHandle;
-    evt.status = status;
-    evt.cigSyncDelayUsec = cigSyncDelayUsec;
-    evt.cisSyncDelayUsec = pCisCtx->cisSyncDelayUsec;
-    evt.transLatUsecMToS =
-        pCisCtx->transLatUsec; /* For now it is 0, update it when ISOAL is supported. */
-    evt.transLatUsecSToM =
-        pCisCtx->transLatUsec; /* For now it is 0, update it when ISOAL is supported. */
-    evt.phyMToS = pCisCtx->phyMToS;
-    evt.phySToM = pCisCtx->phySToM;
-    evt.nse = pCisCtx->nse;
-    evt.bnMToS = pCisCtx->bnMToS;
-    evt.bnSToM = pCisCtx->bnSToM;
-    evt.ftMToS = pCisCtx->ftMToS;
-    evt.ftSToM = pCisCtx->ftSToM;
-    evt.isoInterval = pCisCtx->isoInterval;
+  evt.cisHandle = pCisCtx->cisHandle;
+  evt.status  = status;
+  evt.cigSyncDelayUsec = cigSyncDelayUsec;
+  evt.cisSyncDelayUsec = pCisCtx->cisSyncDelayUsec;
+  evt.transLatUsecMToS = pCisCtx->transLatUsec; /* For now it is 0, update it when ISOAL is supported. */
+  evt.transLatUsecSToM = pCisCtx->transLatUsec; /* For now it is 0, update it when ISOAL is supported. */
+  evt.phyMToS = pCisCtx->phyMToS;
+  evt.phySToM = pCisCtx->phySToM;
+  evt.nse = pCisCtx->nse;
+  evt.bnMToS = pCisCtx->bnMToS;
+  evt.bnSToM = pCisCtx->bnSToM;
+  evt.ftMToS = pCisCtx->ftMToS;
+  evt.ftSToM = pCisCtx->ftSToM;
+  evt.isoInterval = pCisCtx->isoInterval;
 
-    LL_TRACE_INFO2("### LlEvent ###  LL_CIS_EST_IND, cisHandle=%u, status=%u", pCisCtx->cisHandle,
-                   status);
+  LL_TRACE_INFO2("### LlEvent ###  LL_CIS_EST_IND, cisHandle=%u, status=%u", pCisCtx->cisHandle, status);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -154,15 +162,16 @@ void lctrNotifyHostCisEst(lctrCisCtx_t *pCisCtx, uint8_t status, uint32_t cigSyn
 /*************************************************************************************************/
 void lctrSendCisMsg(lctrCisCtx_t *pCisCtx, uint8_t event)
 {
-    lctrMsgHdr_t *pMsg;
+  lctrMsgHdr_t *pMsg;
 
-    if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
-        pMsg->handle = pCisCtx->cisHandle;
-        pMsg->dispId = LCTR_DISP_CIS;
-        pMsg->event = event;
+  if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
+  {
+    pMsg->handle = pCisCtx->cisHandle;
+    pMsg->dispId = LCTR_DISP_CIS;
+    pMsg->event = event;
 
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-    }
+    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -175,15 +184,16 @@ void lctrSendCisMsg(lctrCisCtx_t *pCisCtx, uint8_t event)
 /*************************************************************************************************/
 void lctrSendCisLlcpMsg(lctrCisCtx_t *pCisCtx, uint8_t event)
 {
-    lctrMsgHdr_t *pMsg;
+  lctrMsgHdr_t *pMsg;
 
-    if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
-        pMsg->handle = pCisCtx->aclHandle;
-        pMsg->dispId = LCTR_DISP_CONN;
-        pMsg->event = event;
+  if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
+  {
+    pMsg->handle = pCisCtx->aclHandle;
+    pMsg->dispId = LCTR_DISP_CONN;
+    pMsg->event = event;
 
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-    }
+    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -195,7 +205,7 @@ void lctrSendCisLlcpMsg(lctrCisCtx_t *pCisCtx, uint8_t event)
 /*************************************************************************************************/
 void lctrCisStoreTerminateReason(lctrCisCtx_t *pCisCtx)
 {
-    pCisCtx->reason = lctrDataPdu.pld.cisTerm.reason;
+  pCisCtx->reason = lctrDataPdu.pld.cisTerm.reason;
 }
 
 /*************************************************************************************************/
@@ -207,7 +217,7 @@ void lctrCisStoreTerminateReason(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisStoreDisconnectReason(lctrCisCtx_t *pCisCtx)
 {
-    pCisCtx->reason = pLctrCisMsg->disc.reason;
+  pCisCtx->reason = pLctrCisMsg->disc.reason;
 }
 
 /*************************************************************************************************/
@@ -219,7 +229,7 @@ void lctrCisStoreDisconnectReason(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisStoreConnFailEstablishTerminateReason(lctrCisCtx_t *pCisCtx)
 {
-    pCisCtx->reason = LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH;
+  pCisCtx->reason = LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH;
 }
 
 /*************************************************************************************************/
@@ -231,7 +241,7 @@ void lctrCisStoreConnFailEstablishTerminateReason(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisStoreConnTimeoutTerminateReason(lctrCisCtx_t *pCisCtx)
 {
-    pCisCtx->reason = LL_ERROR_CODE_CONN_TIMEOUT;
+  pCisCtx->reason = LL_ERROR_CODE_CONN_TIMEOUT;
 }
 
 /*************************************************************************************************/
@@ -243,7 +253,7 @@ void lctrCisStoreConnTimeoutTerminateReason(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisStoreLlcpTimeoutTerminateReason(lctrCisCtx_t *pCisCtx)
 {
-    pCisCtx->reason = LL_ERROR_CODE_LMP_LL_RESP_TIMEOUT;
+  pCisCtx->reason = LL_ERROR_CODE_LMP_LL_RESP_TIMEOUT;
 }
 
 /*************************************************************************************************/
@@ -255,7 +265,7 @@ void lctrCisStoreLlcpTimeoutTerminateReason(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisStoreLocalLowResourceTerminateReason(lctrCisCtx_t *pCisCtx)
 {
-    pCisCtx->reason = LL_ERROR_CODE_CONN_REJ_LIMITED_RESOURCES;
+  pCisCtx->reason = LL_ERROR_CODE_CONN_REJ_LIMITED_RESOURCES;
 }
 
 /*************************************************************************************************/
@@ -267,7 +277,7 @@ void lctrCisStoreLocalLowResourceTerminateReason(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisStoreLlcpPeerRejTerminateReason(lctrCisCtx_t *pCisCtx)
 {
-    pCisCtx->reason = lctrDataPdu.pld.rejInd.reason;
+  pCisCtx->reason = lctrDataPdu.pld.rejInd.reason;
 }
 
 /*************************************************************************************************/
@@ -279,7 +289,7 @@ void lctrCisStoreLlcpPeerRejTerminateReason(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisStoreMicFailedTerminateReason(lctrCisCtx_t *pCisCtx)
 {
-    pCisCtx->reason = LL_ERROR_CODE_CONN_TERM_MIC_FAILURE;
+  pCisCtx->reason = LL_ERROR_CODE_CONN_TERM_MIC_FAILURE;
 }
 
 /**************************************************************************************************
@@ -295,37 +305,43 @@ void lctrCisStoreMicFailedTerminateReason(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisActCisEst(lctrCisCtx_t *pCisCtx)
 {
-    lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
-    lctrConnCtx_t *pConnCtx = LCTR_GET_CONN_CTX(pCisCtx->aclHandle);
+  lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
+  lctrConnCtx_t *pConnCtx = LCTR_GET_CONN_CTX(pCisCtx->aclHandle);
 
-    BbBleData_t *pBle = &pConnCtx->bleData;
-    pCigCtx->numCisEsted++;
+  BbBleData_t *pBle = &pConnCtx->bleData;
+  pCigCtx->numCisEsted++;
 
-    LL_TRACE_INFO1("lctrCisActCisEst, pCigCtx->numCisEsted=%u", pCigCtx->numCisEsted);
+  LL_TRACE_INFO1("lctrCisActCisEst, pCigCtx->numCisEsted=%u", pCigCtx->numCisEsted);
 
-    /* Initialize txPower. */
-    uint8_t txPhy = (pCisCtx->role == LL_ROLE_MASTER) ? pCisCtx->phyMToS : pCisCtx->phySToM;
-    uint8_t option = pBle->chan.initTxPhyOptions;
-    int8_t txPwr = LCTR_GET_TXPOWER(pConnCtx, txPhy, option);
-    LL_TRACE_INFO1("lctrCisActCisEst phy = %d", txPhy);
+  /* Initialize txPower. */
+  uint8_t txPhy = (pCisCtx->role == LL_ROLE_MASTER) ? pCisCtx->phyMToS : pCisCtx->phySToM;
+  uint8_t option = pBle->chan.initTxPhyOptions;
+  int8_t txPwr = LCTR_GET_TXPOWER(pConnCtx, txPhy, option);
+  LL_TRACE_INFO1("lctrCisActCisEst phy = %d", txPhy);
 
-    if ((txPwr == LL_PWR_CTRL_TXPOWER_UNMANAGED) && (pConnCtx->peerReqRecvd)) {
-        LL_TRACE_INFO0("    txPower previously unmanaged. Initalized txPower.");
+  if ((txPwr == LL_PWR_CTRL_TXPOWER_UNMANAGED) && (pConnCtx->peerReqRecvd))
+  {
+    LL_TRACE_INFO0("    txPower previously unmanaged. Initalized txPower.");
 
-        LCTR_SET_TXPOWER(pConnCtx, txPhy, pLctrRtCfg->defTxPwrLvl);
+    LCTR_SET_TXPOWER(pConnCtx, txPhy, pLctrRtCfg->defTxPwrLvl);
 
-        if (txPhy == LL_PHY_LE_CODED) {
-            LCTR_SET_TXPOWER(pConnCtx, LL_PC_PHY_CODED_S2, pLctrRtCfg->defTxPwrLvl);
-        }
-
-        /* pCisCtx->bleData.chan.txPower = LCTR_GET_TXPOWER(pConnCtx, txPhy, option); //Handled in the init */
-        if (pConnCtx->usedFeatSet & LL_FEAT_POWER_CHANGE_IND) {
-            pCisCtx->powerIndReq = TRUE;
-        }
-    } else {
-        LL_TRACE_INFO1("    txPower = %d", txPwr);
-        pCisCtx->bleData.chan.txPower = txPwr;
+    if (txPhy == LL_PHY_LE_CODED)
+    {
+      LCTR_SET_TXPOWER(pConnCtx, LL_PC_PHY_CODED_S2, pLctrRtCfg->defTxPwrLvl);
     }
+
+    /* pCisCtx->bleData.chan.txPower = LCTR_GET_TXPOWER(pConnCtx, txPhy, option); //Handled in the init */
+    if (pConnCtx->usedFeatSet & LL_FEAT_POWER_CHANGE_IND)
+    {
+      pCisCtx->powerIndReq = TRUE;
+    }
+  }
+  else
+  {
+    LL_TRACE_INFO1("    txPower = %d", txPwr);
+    pCisCtx->bleData.chan.txPower = txPwr;
+  }
+
 }
 
 /*************************************************************************************************/
@@ -337,17 +353,18 @@ void lctrCisActCisEst(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisActCisEstFail(lctrCisCtx_t *pCisCtx)
 {
-    /* LLCP timeout for the LL_CIS_REQ indicates peer doesn't support CIS feature. */
-    if (pCisCtx->isCisReqPend && pCisCtx->reason == LL_ERROR_CODE_LMP_LL_RESP_TIMEOUT) {
-        pCisCtx->isCisReqPend = FALSE;
-        lctrNotifyHostCisEst(pCisCtx, LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE,
-                             0 /* cigSyncDelayUsec */);
-        return;
-    }
+  /* LLCP timeout for the LL_CIS_REQ indicates peer doesn't support CIS feature. */
+  if (pCisCtx->isCisReqPend &&
+      pCisCtx->reason == LL_ERROR_CODE_LMP_LL_RESP_TIMEOUT)
+  {
+    pCisCtx->isCisReqPend = FALSE;
+    lctrNotifyHostCisEst(pCisCtx, LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE, 0 /* cigSyncDelayUsec */);
+    return;
+  }
 
-    lctrNotifyHostCisEst(pCisCtx, pCisCtx->reason, 0 /* cigSyncDelayUsec */);
+  lctrNotifyHostCisEst(pCisCtx, pCisCtx->reason, 0 /* cigSyncDelayUsec */);
 
-    lctrCleanupCtx(pCisCtx);
+  lctrCleanupCtx(pCisCtx);
 }
 
 /*************************************************************************************************/
@@ -359,18 +376,19 @@ void lctrCisActCisEstFail(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisActDisc(lctrCisCtx_t *pCisCtx)
 {
-    lctrCisDisc_t *pMsg;
+  lctrCisDisc_t *pMsg;
 
-    if ((pMsg = (lctrCisDisc_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
-        pMsg->hdr.handle = pCisCtx->aclHandle;
-        pMsg->hdr.dispId = LCTR_DISP_CONN;
-        pMsg->hdr.event = LCTR_CONN_MSG_API_DISCONNECT;
+  if ((pMsg = (lctrCisDisc_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
+  {
+    pMsg->hdr.handle = pCisCtx->aclHandle;
+    pMsg->hdr.dispId = LCTR_DISP_CONN;
+    pMsg->hdr.event = LCTR_CONN_MSG_API_DISCONNECT;
 
-        pMsg->cisHandle = pCisCtx->cisHandle;
-        pMsg->reason = pCisCtx->reason;
+    pMsg->cisHandle =  pCisCtx->cisHandle;
+    pMsg->reason = pCisCtx->reason;
 
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-    }
+    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -382,36 +400,39 @@ void lctrCisActDisc(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisActClosed(lctrCisCtx_t *pCisCtx)
 {
-    /* Stop output data path. */
-    switch (pCisCtx->dataPathOutCtx.id) {
-    case LL_ISO_DATA_PATH_VS:
-        WSF_ASSERT(lctrCodecHdlr.stop);
-        lctrCodecHdlr.stop(pCisCtx->cisHandle);
-        break;
-    case LL_ISO_DATA_PATH_DISABLED:
-    case LL_ISO_DATA_PATH_HCI:
-    default:
-        /* No action required. */
-        break;
-    }
+  /* Stop output data path. */
+  switch (pCisCtx->dataPathOutCtx.id)
+  {
+  case LL_ISO_DATA_PATH_VS:
+    WSF_ASSERT(lctrCodecHdlr.stop);
+    lctrCodecHdlr.stop(pCisCtx->cisHandle);
+    break;
+  case LL_ISO_DATA_PATH_DISABLED:
+  case LL_ISO_DATA_PATH_HCI:
+  default:
+    /* No action required. */
+    break;
+  }
 
-    LL_TRACE_INFO1("lctrCisActClosed, pCisCtx->cisHandle=%u", pCisCtx->cisHandle);
+  LL_TRACE_INFO1("lctrCisActClosed, pCisCtx->cisHandle=%u", pCisCtx->cisHandle);
 
-    lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
-    lctrConnCtx_t *pConnCtx = LCTR_GET_CONN_CTX(pCisCtx->aclHandle);
+  lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
+  lctrConnCtx_t *pConnCtx = LCTR_GET_CONN_CTX(pCisCtx->aclHandle);
 
-    WSF_ASSERT(pCigCtx);
-    WSF_ASSERT(pConnCtx);
+  WSF_ASSERT(pCigCtx);
+  WSF_ASSERT(pConnCtx);
 
-    WsfTimerStop(&pCisCtx->tmrSupTimeout);
+  WsfTimerStop(&pCisCtx->tmrSupTimeout);
 
-    pCisCtx->isClosing = TRUE; /* Close the context in the CIG BOD end callback. */
+  pCisCtx->isClosing = TRUE;    /* Close the context in the CIG BOD end callback. */
 
-    /* Fast supervision timeout case. */
-    if (pCisCtx->isClosing == TRUE && pCisCtx->reason == LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH) {
-        pCisCtx->isClosing = FALSE;
-        lctrCleanupCtx(pCisCtx);
-    }
+  /* Fast supervision timeout case. */
+  if (pCisCtx->isClosing == TRUE &&
+      pCisCtx->reason == LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH)
+  {
+    pCisCtx->isClosing = FALSE;
+    lctrCleanupCtx(pCisCtx);
+  }
 }
 
 /*************************************************************************************************/
@@ -423,18 +444,18 @@ void lctrCisActClosed(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisActFail(lctrCisCtx_t *pCisCtx)
 {
-    lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
-    WSF_ASSERT(pCigCtx);
+  lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
+  WSF_ASSERT(pCigCtx);
 
-    LL_TRACE_INFO2("lctrCisActFail, pCisCtx->cisHandle=%u pCisCtx->state=%u", pCisCtx->cisHandle,
-                   pCisCtx->state);
+  LL_TRACE_INFO2("lctrCisActFail, pCisCtx->cisHandle=%u pCisCtx->state=%u", pCisCtx->cisHandle, pCisCtx->state);
 
-    /* Supervision timeout case */
-    if (pCisCtx->state == LCTR_CIS_STATE_EST) {
-        pCisCtx->isClosing = TRUE; /* Close the context in the CIG BOD end callback. */
-        SchRemove(&pCigCtx->cigBod);
-        lctrNotifyHostCisTerm(pCisCtx);
-    }
+  /* Supervision timeout case */
+  if (pCisCtx->state == LCTR_CIS_STATE_EST)
+  {
+    pCisCtx->isClosing = TRUE;    /* Close the context in the CIG BOD end callback. */
+    SchRemove(&pCigCtx->cigBod);
+    lctrNotifyHostCisTerm(pCisCtx);
+  }
 }
 
 /**************************************************************************************************
@@ -451,11 +472,11 @@ void lctrCisActFail(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisLlcpActHostDisc(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 {
-    lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
-    WSF_ASSERT(pCigCtx);
+  lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
+  WSF_ASSERT(pCigCtx);
 
-    lctrSendCisTermInd(pCtx, pCisCtx, pCisCtx->reason);
-    lctrCisStartLlcpTimer(pCtx, pCisCtx);
+  lctrSendCisTermInd(pCtx, pCisCtx, pCisCtx->reason);
+  lctrCisStartLlcpTimer(pCtx, pCisCtx);
 }
 
 /*************************************************************************************************/
@@ -468,12 +489,12 @@ void lctrCisLlcpActHostDisc(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisLlcpActPeerDisc(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 {
-    lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
-    WSF_ASSERT(pCigCtx);
+  lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
+  WSF_ASSERT(pCigCtx);
 
-    lctrCisStoreTerminateReason(pCisCtx);
+  lctrCisStoreTerminateReason(pCisCtx);
 
-    pCtx->termAckReqd = TRUE;
+  pCtx->termAckReqd = TRUE;
 }
 
 /*************************************************************************************************/
@@ -486,7 +507,7 @@ void lctrCisLlcpActPeerDisc(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisLlcpActCisTerm(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 {
-    lctrSendCisMsg(pCisCtx, LCTR_CIS_MSG_CIS_CLOSED);
+  lctrSendCisMsg(pCisCtx, LCTR_CIS_MSG_CIS_CLOSED);
 }
 
 /*************************************************************************************************/
@@ -499,8 +520,8 @@ void lctrCisLlcpActCisTerm(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisLlcpActIntHostDisc(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 {
-    lctrSendCisTermInd(pCtx, pCisCtx, pCisCtx->reason);
-    lctrCisStartLlcpTimer(pCtx, pCisCtx);
+  lctrSendCisTermInd(pCtx, pCisCtx, pCisCtx->reason);
+  lctrCisStartLlcpTimer(pCtx, pCisCtx);
 }
 
 /*************************************************************************************************/
@@ -513,5 +534,5 @@ void lctrCisLlcpActIntHostDisc(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisLlcpActIntPeerDisc(lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 {
-    pCtx->termAckReqd = TRUE;
+  pCtx->termAckReqd = TRUE;
 }

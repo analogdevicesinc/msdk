@@ -39,22 +39,10 @@
 #ifdef DEBUG
 
 /*! \brief      Parameter check. */
-#define PAL_BTN_PARAM_CHECK(expr)                 \
-    {                                             \
-        if (!(expr)) {                            \
-            palBtnCb.state = PAL_BTN_STATE_ERROR; \
-            return;                               \
-        }                                         \
-    }
+#define PAL_BTN_PARAM_CHECK(expr)           { if (!(expr)) { palBtnCb.state = PAL_BTN_STATE_ERROR; return; } }
 
 /*! \brief      Parameter check, with return value. */
-#define PAL_BTN_PARAM_CHECK_RET(expr, rv)         \
-    {                                             \
-        if (!(expr)) {                            \
-            palBtnCb.state = PAL_BTN_STATE_ERROR; \
-            return (rv);                          \
-        }                                         \
-    }
+#define PAL_BTN_PARAM_CHECK_RET(expr, rv)   { if (!(expr)) { palBtnCb.state = PAL_BTN_STATE_ERROR; return (rv); } }
 
 #else
 
@@ -66,27 +54,24 @@
 
 #endif
 
-static const uint8_t palBtnPinMap[] = {
+static const uint8_t palBtnPinMap[] =
+{
 #if defined(BOARD_PCA10056) | defined(BOARD_PCA10040)
-    BUTTON_1,
-    BUTTON_2,
-    BUTTON_3,
-    BUTTON_4
+  BUTTON_1,
+  BUTTON_2,
+  BUTTON_3,
+  BUTTON_4
 #endif
 #if defined(BOARD_NRF6832)
-    25,
-    8,
-    15,
-    9,
-    10,
-    16
+  25, 8, 15, 9, 10, 16
 #endif
 };
 
 /*! \brief      Device control block. */
-struct {
-    PalBtnActionCback_t actionCback; /*!< Action call back function. */
-    PalBtnState_t state; /*!< Button driver state. */
+struct
+{
+  PalBtnActionCback_t actionCback;          /*!< Action call back function. */
+  PalBtnState_t state;                      /*!< Button driver state. */
 } palBtnCb;
 
 /**************************************************************************************************
@@ -102,44 +87,49 @@ struct {
 /*************************************************************************************************/
 static void palBtnEventHandler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
-    PalBtnPos_t state;
+  PalBtnPos_t state;
 
 #if defined(BOARD_NRF6832)
-    if (nrf_gpio_pin_read(pin) == 1)
+  if (nrf_gpio_pin_read(pin) == 1)
 #else
-    if (nrf_gpio_pin_read(pin) == BUTTONS_ACTIVE_STATE)
+  if (nrf_gpio_pin_read(pin) == BUTTONS_ACTIVE_STATE)
 #endif
-    {
-        state = PAL_BTN_POS_DOWN;
-    } else {
-        state = PAL_BTN_POS_UP;
-    }
+  {
+    state = PAL_BTN_POS_DOWN;
+  }
+  else
+  {
+    state = PAL_BTN_POS_UP;
+  }
 
 #if defined(BOARD_NRF6832)
-    switch (pin) {
-    case 16:
-        palBtnCb.actionCback(PAL_BTN_AUDIO_PLAY, state);
-        return;
-    case 9:
-        palBtnCb.actionCback(PAL_BTN_AUDIO_VOL_UP, state);
-        return;
-    case 10:
-        palBtnCb.actionCback(PAL_BTN_AUDIO_VOL_DN, state);
-        return;
-    case 25:
-        palBtnCb.actionCback(PAL_BTN_AUDIO_RWD, state);
-        return;
-    case 15:
-        palBtnCb.actionCback(PAL_BTN_AUDIO_FWD, state);
-        return;
-    }
+  switch (pin)
+  {
+  case 16:
+    palBtnCb.actionCback(PAL_BTN_AUDIO_PLAY, state);
+    return;
+  case 9:
+    palBtnCb.actionCback(PAL_BTN_AUDIO_VOL_UP, state);
+    return;
+  case 10:
+    palBtnCb.actionCback(PAL_BTN_AUDIO_VOL_DN, state);
+    return;
+  case 25:
+    palBtnCb.actionCback(PAL_BTN_AUDIO_RWD, state);
+    return;
+  case 15:
+    palBtnCb.actionCback(PAL_BTN_AUDIO_FWD, state);
+    return;
+  }
 #endif
 
-    for (size_t i = 0; i < sizeof(palBtnPinMap); i++) {
-        if (pin == palBtnPinMap[i]) {
-            palBtnCb.actionCback(i, state);
-        }
+  for (size_t i = 0; i < sizeof(palBtnPinMap); i++)
+  {
+    if (pin == palBtnPinMap[i])
+    {
+      palBtnCb.actionCback(i, state);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -152,30 +142,32 @@ static void palBtnEventHandler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t acti
 static int palBtnGetPinMap(uint8_t btnId)
 {
 #if defined(BOARD_NRF6832)
-    switch (btnId) {
-    /* Predefined */
-    case PAL_BTN_AUDIO_PLAY:
-        return 15;
-    case PAL_BTN_AUDIO_VOL_UP:
-        return 9;
-    case PAL_BTN_AUDIO_VOL_DN:
-        return 10;
-    case PAL_BTN_AUDIO_MUTE:
-        return 16; /* Sound Clear */
+  switch (btnId)
+  {
+  /* Predefined */
+  case PAL_BTN_AUDIO_PLAY:
+    return 15;
+  case PAL_BTN_AUDIO_VOL_UP:
+    return 9;
+  case PAL_BTN_AUDIO_VOL_DN:
+    return 10;
+  case PAL_BTN_AUDIO_MUTE:
+    return 16;      /* Sound Clear */
 
-    /* App defined */
-    case 0:
-        return 25;
-    case 1:
-        return 8;
-    }
+  /* App defined */
+  case 0:
+    return 25;
+  case 1:
+    return 8;
+  }
 #endif
 
-    if (btnId < sizeof(palBtnPinMap)) {
-        return palBtnPinMap[btnId];
-    }
+  if (btnId < sizeof(palBtnPinMap))
+  {
+    return palBtnPinMap[btnId];
+  }
 
-    return -1;
+  return -1;
 }
 
 /*************************************************************************************************/
@@ -189,37 +181,39 @@ static int palBtnGetPinMap(uint8_t btnId)
 /*************************************************************************************************/
 void PalBtnInit(PalBtnActionCback_t actCback)
 {
-    nrfx_err_t err;
+  nrfx_err_t err;
 
-#ifndef DEBUG
+  #ifndef DEBUG
     (void)err;
-#endif
+  #endif
 
-    if (!nrfx_gpiote_is_init()) {
-        err = nrfx_gpiote_init();
-        PAL_BTN_PARAM_CHECK(err == NRFX_SUCCESS);
-    }
+  if (!nrfx_gpiote_is_init())
+  {
+    err = nrfx_gpiote_init();
+    PAL_BTN_PARAM_CHECK(err == NRFX_SUCCESS);
+  }
 
-    palBtnCb.actionCback = actCback;
+  palBtnCb.actionCback = actCback;
 
-    nrfx_gpiote_in_config_t cfg = NRFX_GPIOTE_CONFIG_IN_SENSE_TOGGLE(false);
+  nrfx_gpiote_in_config_t cfg = NRFX_GPIOTE_CONFIG_IN_SENSE_TOGGLE(false);
 
-#if defined(BOARD_NRF6832)
+  #if defined(BOARD_NRF6832)
     cfg.pull = NRF_GPIO_PIN_PULLDOWN;
-#else /* Default */
+  #else  /* Default */
     cfg.pull = BUTTON_PULL;
-#endif
+  #endif
 
-    for (size_t i = 0; i < sizeof(palBtnPinMap); i++) {
-        uint32_t pin = palBtnPinMap[i];
+  for (size_t i = 0; i < sizeof(palBtnPinMap); i++)
+  {
+    uint32_t pin = palBtnPinMap[i];
 
-        err = nrfx_gpiote_in_init(pin, &cfg, palBtnEventHandler);
-        PAL_BTN_PARAM_CHECK(err == NRFX_SUCCESS);
+    err = nrfx_gpiote_in_init(pin, &cfg, palBtnEventHandler);
+    PAL_BTN_PARAM_CHECK(err == NRFX_SUCCESS);
 
-        nrfx_gpiote_in_event_enable(pin, true);
-    }
+    nrfx_gpiote_in_event_enable(pin, true);
+  }
 
-    palBtnCb.state = PAL_BTN_STATE_READY;
+  palBtnCb.state = PAL_BTN_STATE_READY;
 }
 
 /*************************************************************************************************/
@@ -231,10 +225,11 @@ void PalBtnInit(PalBtnActionCback_t actCback)
 /*************************************************************************************************/
 void PalBtnDeInit(void)
 {
-    nrfx_gpiote_uninit();
+  nrfx_gpiote_uninit();
 
-    palBtnCb.state = PAL_BTN_STATE_UNINIT;
+  palBtnCb.state = PAL_BTN_STATE_UNINIT;
 }
+
 
 /*************************************************************************************************/
 /*!
@@ -247,7 +242,7 @@ void PalBtnDeInit(void)
 /*************************************************************************************************/
 PalBtnState_t PalBtnGetState(void)
 {
-    return palBtnCb.state;
+  return palBtnCb.state;
 }
 
 /*************************************************************************************************/
@@ -263,14 +258,17 @@ PalBtnState_t PalBtnGetState(void)
 /*************************************************************************************************/
 PalBtnPos_t PalBtnGetPosition(uint8_t btnId)
 {
-    PAL_BTN_PARAM_CHECK_RET(palBtnCb.state == PAL_BTN_STATE_READY, PAL_BTN_POS_INVALID);
+  PAL_BTN_PARAM_CHECK_RET(palBtnCb.state == PAL_BTN_STATE_READY, PAL_BTN_POS_INVALID);
 
-    int pin = palBtnGetPinMap(btnId);
-    PAL_BTN_PARAM_CHECK_RET(pin < 0, PAL_BTN_POS_INVALID);
+  int pin = palBtnGetPinMap(btnId);
+  PAL_BTN_PARAM_CHECK_RET(pin < 0, PAL_BTN_POS_INVALID);
 
-    if (nrf_gpio_pin_read(pin)) {
-        return PAL_BTN_POS_UP;
-    } else {
-        return PAL_BTN_POS_DOWN;
-    }
+  if (nrf_gpio_pin_read(pin))
+  {
+    return PAL_BTN_POS_UP;
+  }
+  else
+  {
+    return PAL_BTN_POS_DOWN;
+  }
 }

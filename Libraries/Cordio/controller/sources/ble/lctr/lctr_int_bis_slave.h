@@ -37,24 +37,23 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Get reservation manager handle from BIG context. */
-#define LCTR_BIG_TO_RM_HANDLE(pBigCtx) \
-    (LL_MAX_CONN + LL_MAX_ADV_SETS + LL_MAX_CIG + (pBigCtx - &pLctrBigTbl[0]))
+#define LCTR_BIG_TO_RM_HANDLE(pBigCtx)   (LL_MAX_CONN + LL_MAX_ADV_SETS + LL_MAX_CIG + (pBigCtx - &pLctrBigTbl[0]))
 
 /*! \brief      Get BIG context from reservation manager handle. */
-#define LCTR_RM_HANDLE_TO_BIG(rmHandle) \
-    (&pLctrBigTbl[(rmHandle)-LL_MAX_CONN - LL_MAX_ADV_SETS - LL_MAX_CIG])
+#define LCTR_RM_HANDLE_TO_BIG(rmHandle)  (&pLctrBigTbl[(rmHandle) - LL_MAX_CONN - LL_MAX_ADV_SETS - LL_MAX_CIG])
 
 /**************************************************************************************************
   Constants
 **************************************************************************************************/
 
 /*! \brief      Slave BIS broadcasting states. */
-enum {
-    LCTR_SLV_BIG_STATE_DISABLED, /*!< BIS slave broadcasting disabled state. */
-    LCTR_SLV_BIG_STATE_ENABLED, /*!< BIS slave broadcasting enabled state. */
-    LCTR_SLV_BIG_STATE_SHUTDOWN, /*!< BIS slave broadcasting shutdown in progress. */
-    LCTR_SLV_BIG_STATE_RESET, /*!< BIS slave broadcasting reset in progress. */
-    LCTR_SLV_BIG_STATE_TOTAL /*!< Total number of extended advertising states. */
+enum
+{
+  LCTR_SLV_BIG_STATE_DISABLED,          /*!< BIS slave broadcasting disabled state. */
+  LCTR_SLV_BIG_STATE_ENABLED,           /*!< BIS slave broadcasting enabled state. */
+  LCTR_SLV_BIG_STATE_SHUTDOWN,          /*!< BIS slave broadcasting shutdown in progress. */
+  LCTR_SLV_BIG_STATE_RESET,             /*!< BIS slave broadcasting reset in progress. */
+  LCTR_SLV_BIG_STATE_TOTAL              /*!< Total number of extended advertising states. */
 };
 
 /**************************************************************************************************

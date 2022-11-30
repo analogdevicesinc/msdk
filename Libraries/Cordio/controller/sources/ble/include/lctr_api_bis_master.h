@@ -43,40 +43,43 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      BIG task messages for \a LCTR_DISP_BIG_SYNC dispatcher. */
-typedef enum {
-    /* Broadcast events */
-    LCTR_MST_BIG_MSG_RESET = LCTR_MSG_RESET,
-    /* Host/API events */
-    LCTR_MST_BIG_API_CREATE_SYNC, /*!< BIG Create Sync API event. */
-    LCTR_MST_BIG_API_TERMINATE_SYNC, /*!< BIG Terminate Sync API event. */
-    /* Receive remote events */
-    LCTR_MST_BIG_ACAD_BIG_INFO, /*!< BIG Info received. */
-    LCTR_MST_BIG_PDU_TERM, /*!< Remote terminate received. */
-    /* Internal events */
-    LCTR_MST_BIG_INT_SYNC_TIMEOUT, /*!< BIG Sync timeout expired. */
-    LCTR_MST_BIG_INT_MIC_FAILED, /*!< BIS PDU received with MIC failure. */
-    LCTR_MST_BIG_INT_TERMINATED_SYNC, /*!< BIG Sync termination complete. */
+typedef enum
+{
+  /* Broadcast events */
+  LCTR_MST_BIG_MSG_RESET            = LCTR_MSG_RESET,
+  /* Host/API events */
+  LCTR_MST_BIG_API_CREATE_SYNC,     /*!< BIG Create Sync API event. */
+  LCTR_MST_BIG_API_TERMINATE_SYNC,  /*!< BIG Terminate Sync API event. */
+  /* Receive remote events */
+  LCTR_MST_BIG_ACAD_BIG_INFO,       /*!< BIG Info received. */
+  LCTR_MST_BIG_PDU_TERM,            /*!< Remote terminate received. */
+  /* Internal events */
+  LCTR_MST_BIG_INT_SYNC_TIMEOUT,    /*!< BIG Sync timeout expired. */
+  LCTR_MST_BIG_INT_MIC_FAILED,      /*!< BIS PDU received with MIC failure. */
+  LCTR_MST_BIG_INT_TERMINATED_SYNC, /*!< BIG Sync termination complete. */
 
-    LCTR_MST_BIG_MSG_TOTAL /*!< Total number of BIG events. */
+  LCTR_MST_BIG_MSG_TOTAL            /*!< Total number of BIG events. */
 } LctrMstBigMsg_t;
 
 /*! \brief      Minimum BIS Handle number. */
-#define LL_MIN_BIS 0x01
+#define LL_MIN_BIS    0x01
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief      ACAD BIG Info message. */
-typedef struct {
-    lctrMsgHdr_t hdr; /*!< Message header. */
-    LctrAcadBigInfo_t data; /*!< BIG Info data. */
+typedef struct
+{
+  lctrMsgHdr_t      hdr;            /*!< Message header. */
+  LctrAcadBigInfo_t data;           /*!< BIG Info data. */
 } LctrBigInfoMsg_t;
 
 /*! \brief      BIG messages. */
-typedef union {
-    lctrMsgHdr_t hdr; /*!< Common message header. */
-    LctrBigInfoMsg_t bigInfo; /*!< BIG Info message. */
+typedef union
+{
+  lctrMsgHdr_t      hdr;            /*!< Common message header. */
+  LctrBigInfoMsg_t  bigInfo;        /*!< BIG Info message. */
 } lctrMstBigMsg_t;
 
 /**************************************************************************************************
@@ -94,6 +97,6 @@ void LctrMstBigTerminateSync(uint8_t bisHandle);
 };
 #endif
 
-/*! \} */ /* LL_LCTR_API_BIS */
+/*! \} */    /* LL_LCTR_API_BIS */
 
 #endif /* LCTR_API_BIS_H */

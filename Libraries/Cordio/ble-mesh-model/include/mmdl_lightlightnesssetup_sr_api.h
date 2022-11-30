@@ -31,7 +31,8 @@
 #define MMDL_LIGHT_LIGHTNESSSETUP_SR_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -107,7 +108,7 @@ void MmdlLightLightnessDefaultSetupSrSetState(meshElementId_t elementId,
  */
 /*************************************************************************************************/
 void MmdlLightLightnessRangeSetupSrSetState(meshElementId_t elementId,
-                                            const mmdlLightLightnessRangeState_t *pTargetState);
+                                      const mmdlLightLightnessRangeState_t *pTargetState);
 
 /*************************************************************************************************/
 /*!

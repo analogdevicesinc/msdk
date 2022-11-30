@@ -32,11 +32,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 #ifndef _SSI_PAL_ABORT_H
 #define _SSI_PAL_ABORT_H
 
+
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*----------------------------
@@ -67,8 +70,11 @@ void SaSi_PalAbort(const char *msg);
 @}
  */
 
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
+

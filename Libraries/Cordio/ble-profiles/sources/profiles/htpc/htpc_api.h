@@ -38,13 +38,14 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Health Thermometer service enumeration of handle indexes of characteristics to be discovered */
-enum {
-    HTPC_HTS_TM_HDL_IDX, /*!< \brief Temperature measurement */
-    HTPC_HTS_TM_CCC_HDL_IDX, /*!< \brief Temperature measurement CCC descriptor */
-    HTPC_HTS_IT_HDL_IDX, /*!< \brief Intermediate temperature */
-    HTPC_HTS_IT_CCC_HDL_IDX, /*!< \brief Intermediate temperature CCC descriptor */
-    HTPC_HTS_TT_HDL_IDX, /*!< \brief Temperature type */
-    HTPC_HTS_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  HTPC_HTS_TM_HDL_IDX,            /*!< \brief Temperature measurement */
+  HTPC_HTS_TM_CCC_HDL_IDX,        /*!< \brief Temperature measurement CCC descriptor */
+  HTPC_HTS_IT_HDL_IDX,            /*!< \brief Intermediate temperature */
+  HTPC_HTS_IT_CCC_HDL_IDX,        /*!< \brief Intermediate temperature CCC descriptor */
+  HTPC_HTS_TT_HDL_IDX,            /*!< \brief Temperature type */
+  HTPC_HTS_HDL_LIST_LEN           /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -81,7 +82,7 @@ void HtpcHtsDiscover(dmConnId_t connId, uint16_t *pHdlList);
 /*************************************************************************************************/
 uint8_t HtpcHtsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */ /* HEALTH_THERMOMETER_PROFILE */
+/*! \} */    /* HEALTH_THERMOMETER_PROFILE */
 
 #ifdef __cplusplus
 };

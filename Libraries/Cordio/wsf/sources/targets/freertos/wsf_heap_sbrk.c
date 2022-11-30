@@ -35,7 +35,7 @@
   Global Variables
 **************************************************************************************************/
 extern caddr_t _sbrk(int incr);
-static void *freeStartAddr = 0;
+static void* freeStartAddr = 0;
 extern unsigned int __HeapBase;
 extern unsigned int __HeapLimit;
 
@@ -48,10 +48,10 @@ extern unsigned int __HeapLimit;
 /*************************************************************************************************/
 void WsfHeapAlloc(uint32_t size)
 {
-    /* Round up to nearest multiple of 4 for word alignment */
-    size = (size + 3) & ~3;
+  /* Round up to nearest multiple of 4 for word alignment */
+  size = (size + 3) & ~3;
 
-    freeStartAddr = _sbrk(size);
+  freeStartAddr = _sbrk(size);
 }
 
 /*************************************************************************************************/
@@ -63,8 +63,8 @@ void WsfHeapAlloc(uint32_t size)
 /*************************************************************************************************/
 void *WsfHeapGetFreeStartAddress(void)
 {
-    freeStartAddr = _sbrk(0);
-    return freeStartAddr;
+  freeStartAddr = _sbrk(0);
+  return freeStartAddr;
 }
 
 /*************************************************************************************************/
@@ -76,8 +76,8 @@ void *WsfHeapGetFreeStartAddress(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountAvailable(void)
 {
-    freeStartAddr = _sbrk(0);
-    return ((uint32_t)&__HeapLimit - (uint32_t)freeStartAddr);
+  freeStartAddr = _sbrk(0);
+  return ((uint32_t)&__HeapLimit - (uint32_t)freeStartAddr);
 }
 
 /*************************************************************************************************/
@@ -89,6 +89,6 @@ uint32_t WsfHeapCountAvailable(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountUsed(void)
 {
-    freeStartAddr = _sbrk(0);
-    return ((uint32_t)freeStartAddr - (uint32_t)&__HeapBase);
+  freeStartAddr = _sbrk(0);
+  return((uint32_t)freeStartAddr - (uint32_t)&__HeapBase);
 }

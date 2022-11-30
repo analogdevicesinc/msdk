@@ -49,12 +49,10 @@
 *************************************************************************************************/
 
 /*! \brief      Check if periodic adv is enabled (ae functionality). */
-LctrIsPerAdvEnabledFn_t
-    LctrPerAdvEnabled; /*!< Lctr Per Adv Enabled check function (defined if AE supported). */
+LctrIsPerAdvEnabledFn_t LctrPerAdvEnabled; /*!< Lctr Per Adv Enabled check function (defined if AE supported). */
 
 /*! \brief      Update the channel map for CIS. */
-LctrUpdateCisChanMapFn_t
-    LctrUpdateCisChanMapFn; /*!< Lctr Per Adv Enabled check function (defined if AE supported). */
+LctrUpdateCisChanMapFn_t LctrUpdateCisChanMapFn; /*!< Lctr Per Adv Enabled check function (defined if AE supported). */
 
 /*! \brief      Check is Ext Scan is enabled (ae functionality). */
 LctrExtCheckFn_t LctrMstExtScanEnabled;
@@ -73,12 +71,12 @@ LctrExtCheckFn_t LctrMstExtInitEnabled;
 /*************************************************************************************************/
 void LlSetBdAddr(const uint8_t *pAddr)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlSetBdAddr");
+  LL_TRACE_INFO0("### LlApi ###  LlSetBdAddr");
 
-    LL_TRACE_INFO3("Static BDA[5:3]=%02x:%02x:%02x", pAddr[5], pAddr[4], pAddr[3]);
-    LL_TRACE_INFO3("       BDA[2:0]=%02x:%02x:%02x", pAddr[2], pAddr[1], pAddr[0]);
+  LL_TRACE_INFO3("Static BDA[5:3]=%02x:%02x:%02x", pAddr[5], pAddr[4], pAddr[3]);
+  LL_TRACE_INFO3("       BDA[2:0]=%02x:%02x:%02x", pAddr[2], pAddr[1], pAddr[0]);
 
-    BSTREAM_TO_BDA64(lmgrPersistCb.bdAddr, pAddr);
+  BSTREAM_TO_BDA64(lmgrPersistCb.bdAddr, pAddr);
 }
 
 /*************************************************************************************************/
@@ -92,11 +90,11 @@ void LlSetBdAddr(const uint8_t *pAddr)
 /*************************************************************************************************/
 void LlGetBdAddr(uint8_t *pAddr)
 {
-    WSF_ASSERT(pAddr);
+  WSF_ASSERT(pAddr);
 
-    LL_TRACE_INFO0("### LlApi ###  LlGetBdAddr");
+  LL_TRACE_INFO0("### LlApi ###  LlGetBdAddr");
 
-    BDA64_TO_BSTREAM(pAddr, lmgrPersistCb.bdAddr);
+  BDA64_TO_BSTREAM(pAddr, lmgrPersistCb.bdAddr);
 }
 
 /*************************************************************************************************/
@@ -112,75 +110,88 @@ void LlGetBdAddr(uint8_t *pAddr)
 /*************************************************************************************************/
 uint8_t LlSetRandAddr(const uint8_t *pAddr)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlSetRandAddr");
+  LL_TRACE_INFO0("### LlApi ###  LlSetRandAddr");
 
-    LL_TRACE_INFO3("Private BDA[5:3]=%02x:%02x:%02x", pAddr[5], pAddr[4], pAddr[3]);
-    LL_TRACE_INFO3("        BDA[2:0]=%02x:%02x:%02x", pAddr[2], pAddr[1], pAddr[0]);
+  LL_TRACE_INFO3("Private BDA[5:3]=%02x:%02x:%02x", pAddr[5], pAddr[4], pAddr[3]);
+  LL_TRACE_INFO3("        BDA[2:0]=%02x:%02x:%02x", pAddr[2], pAddr[1], pAddr[0]);
 
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    WSF_ASSERT(pAddr);
+  WSF_ASSERT(pAddr);
 
-    /* Legacy Advertising */
-    if ((lmgrCb.advEnabled && ((lmgrSlvAdvCb.advParam.ownAddrType & 0x01)))) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
+  /* Legacy Advertising */
+  if ((lmgrCb.advEnabled &&
+    ((lmgrSlvAdvCb.advParam.ownAddrType & 0x01))))
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
+
+  /* Scanning. */
+  if (lmgrCb.numScanEnabled)
+  {
+    /* Legacy Scanning. */
+    if (LctrMstScanIsEnabled())
+    {
+      return LL_ERROR_CODE_CMD_DISALLOWED;
     }
 
-    /* Scanning. */
-    if (lmgrCb.numScanEnabled) {
-        /* Legacy Scanning. */
-        if (LctrMstScanIsEnabled()) {
-            return LL_ERROR_CODE_CMD_DISALLOWED;
+    /* Extended Scanning. */
+    if (LctrMstExtScanEnabled)
+    {
+      for (int scanPhy = 0; scanPhy < LCTR_SCAN_PHY_TOTAL; scanPhy++)
+      {
+        if (LctrMstExtScanEnabled(scanPhy))
+        {
+          return LL_ERROR_CODE_CMD_DISALLOWED;
         }
+      }
+    }
+  }
 
-        /* Extended Scanning. */
-        if (LctrMstExtScanEnabled) {
-            for (int scanPhy = 0; scanPhy < LCTR_SCAN_PHY_TOTAL; scanPhy++) {
-                if (LctrMstExtScanEnabled(scanPhy)) {
-                    return LL_ERROR_CODE_CMD_DISALLOWED;
-                }
-            }
-        }
+  /* Initiating */
+  if (lmgrCb.numInitEnabled)
+  {
+    /* Legacy init. */
+    if (LctrMstInitIsEnabled())
+    {
+      return LL_ERROR_CODE_CMD_DISALLOWED;
     }
 
-    /* Initiating */
-    if (lmgrCb.numInitEnabled) {
-        /* Legacy init. */
-        if (LctrMstInitIsEnabled()) {
-            return LL_ERROR_CODE_CMD_DISALLOWED;
+    /* Extended Initiating */
+    if (LctrMstExtInitEnabled)
+    {
+      for (int scanPhy = 0; scanPhy < LCTR_SCAN_PHY_TOTAL; scanPhy++)
+      {
+        if (LctrMstExtInitEnabled(scanPhy))
+        {
+          return LL_ERROR_CODE_CMD_DISALLOWED;
         }
-
-        /* Extended Initiating */
-        if (LctrMstExtInitEnabled) {
-            for (int scanPhy = 0; scanPhy < LCTR_SCAN_PHY_TOTAL; scanPhy++) {
-                if (LctrMstExtInitEnabled(scanPhy)) {
-                    return LL_ERROR_CODE_CMD_DISALLOWED;
-                }
-            }
-        }
+      }
     }
+  }
 
-    uint64_t bdAddr;
-    BSTREAM_TO_BDA64(bdAddr, pAddr);
+  uint64_t bdAddr;
+  BSTREAM_TO_BDA64(bdAddr, pAddr);
 
-    /* Check BD Random Address type. */
-    switch (bdAddr & LL_RAND_ADDR_TYPE_MASK) {
+  /* Check BD Random Address type. */
+  switch (bdAddr & LL_RAND_ADDR_TYPE_MASK)
+  {
     case LL_RAND_ADDR_TYPE_STATIC:
     case LL_RAND_ADDR_TYPE_RPA:
     case LL_RAND_ADDR_TYPE_NRPA:
-        /* Valid types. */
-        break;
+      /* Valid types. */
+      break;
     default:
-        LL_TRACE_WARN0("Invalid random address type");
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+      LL_TRACE_WARN0("Invalid random address type");
+      return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    WSF_CS_ENTER(cs);
-    lmgrCb.bdAddrRnd = bdAddr;
-    lmgrCb.bdAddrRndValid = TRUE;
-    lmgrCb.bdAddrRndModAdv = lmgrCb.bdAddrRndModScan = TRUE;
-    WSF_CS_EXIT(cs);
-    return LL_SUCCESS;
+  WSF_CS_ENTER(cs);
+  lmgrCb.bdAddrRnd = bdAddr;
+  lmgrCb.bdAddrRndValid = TRUE;
+  lmgrCb.bdAddrRndModAdv = lmgrCb.bdAddrRndModScan = TRUE;
+  WSF_CS_EXIT(cs);
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -196,16 +207,17 @@ uint8_t LlSetRandAddr(const uint8_t *pAddr)
 /*************************************************************************************************/
 uint8_t LlGetRandAddr(uint8_t *pAddr)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlGetRandAddr");
+  LL_TRACE_INFO0("### LlApi ###  LlGetRandAddr");
 
-    WSF_ASSERT(pAddr);
+  WSF_ASSERT(pAddr);
 
-    if (!lmgrCb.bdAddrRndValid) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if (!lmgrCb.bdAddrRndValid)
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    BDA64_TO_BSTREAM(pAddr, lmgrCb.bdAddrRnd);
-    return LL_SUCCESS;
+  BDA64_TO_BSTREAM(pAddr, lmgrCb.bdAddrRnd);
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -219,11 +231,11 @@ uint8_t LlGetRandAddr(uint8_t *pAddr)
 /*************************************************************************************************/
 void LlGetVersion(uint16_t *pCompId, uint8_t *pBtVer, uint16_t *pImplRev)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlGetVersion");
+  LL_TRACE_INFO0("### LlApi ###  LlGetVersion");
 
-    *pCompId = pLctrRtCfg->compId;
-    *pBtVer = pLctrRtCfg->btVer;
-    *pImplRev = pLctrRtCfg->implRev;
+  *pCompId  = pLctrRtCfg->compId;
+  *pBtVer   = pLctrRtCfg->btVer;
+  *pImplRev = pLctrRtCfg->implRev;
 }
 
 /*************************************************************************************************/
@@ -237,11 +249,11 @@ void LlGetVersion(uint16_t *pCompId, uint8_t *pBtVer, uint16_t *pImplRev)
 /*************************************************************************************************/
 void LlGetSupStates(uint8_t *pStates)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlGetSupStates");
+  LL_TRACE_INFO0("### LlApi ###  LlGetSupStates");
 
-    WSF_ASSERT(pStates);
+  WSF_ASSERT(pStates);
 
-    UINT64_TO_BSTREAM(pStates, lmgrPersistCb.supStates);
+  UINT64_TO_BSTREAM(pStates, lmgrPersistCb.supStates);
 }
 
 /*************************************************************************************************/
@@ -255,11 +267,11 @@ void LlGetSupStates(uint8_t *pStates)
 /*************************************************************************************************/
 void LlGetFeatures(uint8_t *pFeatures)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlGetFeatures");
+  LL_TRACE_INFO0("### LlApi ###  LlGetFeatures");
 
-    WSF_ASSERT(pFeatures);
+  WSF_ASSERT(pFeatures);
 
-    UINT64_TO_BSTREAM(pFeatures, lmgrCb.features);
+  UINT64_TO_BSTREAM(pFeatures, lmgrCb.features);
 }
 
 /*************************************************************************************************/
@@ -278,21 +290,23 @@ void LlGetFeatures(uint8_t *pFeatures)
 /*************************************************************************************************/
 uint8_t LlSetFeatures(const uint8_t *pFeatures)
 {
-    uint64_t newMask;
+  uint64_t newMask;
 
-    WSF_ASSERT(pFeatures);
+  WSF_ASSERT(pFeatures);
 
-    LL_TRACE_INFO0("### LlApi ###  LlSetFeatures");
+  LL_TRACE_INFO0("### LlApi ###  LlSetFeatures");
 
-    BSTREAM_TO_UINT64(newMask, pFeatures);
+  BSTREAM_TO_UINT64(newMask, pFeatures);
 
-    if ((LL_API_PARAM_CHECK == 1) && ((~LL_FEAT_ALL_MASK & newMask) != 0)) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((~LL_FEAT_ALL_MASK & newMask) != 0))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    lmgrCb.features = newMask;
+  lmgrCb.features = newMask;
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -309,33 +323,49 @@ uint8_t LlSetFeatures(const uint8_t *pFeatures)
 /*************************************************************************************************/
 uint8_t LlSetOpFlags(uint32_t flags, bool_t enable)
 {
-    const uint32_t allFlags =
-        LL_OP_MODE_FLAG_ENA_VER_LLCP_STARTUP | LL_OP_MODE_FLAG_SLV_REQ_IMMED_ACK |
-        LL_OP_MODE_FLAG_BYPASS_CE_GUARD | LL_OP_MODE_FLAG_MST_RETX_AFTER_RX_NACK |
-        LL_OP_MODE_FLAG_MST_IGNORE_CP_RSP | LL_OP_MODE_FLAG_MST_UNCOND_CP_RSP |
-        LL_OP_MODE_FLAG_REQ_SYM_PHY | LL_OP_MODE_FLAG_ENA_LEN_LLCP_STARTUP |
-        LL_OP_MODE_FLAG_ENA_FEAT_LLCP_STARTUP | LL_OP_MODE_FLAG_SLV_DELAY_LLCP_STARTUP |
-        LL_OP_MODE_FLAG_ENA_MST_CIS_NULL_PDU | LL_OP_MODE_FLAG_ENA_ADV_DLY |
-        LL_OP_MODE_FLAG_ENA_SCAN_BACKOFF | LL_OP_MODE_FLAG_ENA_WW |
-        LL_OP_MODE_FLAG_ENA_SLV_LATENCY | LL_OP_MODE_FLAG_ENA_SLV_LATENCY_WAKEUP |
-        LL_OP_MODE_FLAG_ENA_SLV_AUX_SCAN_RSP_ADI | LL_OP_MODE_FLAG_ENA_SLV_AUX_IND_ADVA |
-        LL_OP_MODE_FLAG_ENA_ADV_CHAN_RAND | LL_OP_MODE_DISABLE_POWER_MONITOR |
-        LL_OP_MODE_FLAG_ENA_LLCP_TIMER | LL_OP_MODE_FLAG_IGNORE_CRC_ERR_TS |
-        LL_OP_MODE_FLAG_SLV_CRC_CLOSE;
+  const uint32_t allFlags =
+    LL_OP_MODE_FLAG_ENA_VER_LLCP_STARTUP |
+    LL_OP_MODE_FLAG_SLV_REQ_IMMED_ACK |
+    LL_OP_MODE_FLAG_BYPASS_CE_GUARD |
+    LL_OP_MODE_FLAG_MST_RETX_AFTER_RX_NACK |
+    LL_OP_MODE_FLAG_MST_IGNORE_CP_RSP |
+    LL_OP_MODE_FLAG_MST_UNCOND_CP_RSP |
+    LL_OP_MODE_FLAG_REQ_SYM_PHY |
+    LL_OP_MODE_FLAG_ENA_LEN_LLCP_STARTUP |
+    LL_OP_MODE_FLAG_ENA_FEAT_LLCP_STARTUP |
+    LL_OP_MODE_FLAG_SLV_DELAY_LLCP_STARTUP |
+    LL_OP_MODE_FLAG_ENA_MST_CIS_NULL_PDU |
+    LL_OP_MODE_FLAG_ENA_ADV_DLY |
+    LL_OP_MODE_FLAG_ENA_SCAN_BACKOFF |
+    LL_OP_MODE_FLAG_ENA_WW |
+    LL_OP_MODE_FLAG_ENA_SLV_LATENCY |
+    LL_OP_MODE_FLAG_ENA_SLV_LATENCY_WAKEUP |
+    LL_OP_MODE_FLAG_ENA_SLV_AUX_SCAN_RSP_ADI |
+    LL_OP_MODE_FLAG_ENA_SLV_AUX_IND_ADVA |
+    LL_OP_MODE_FLAG_ENA_ADV_CHAN_RAND |
+    LL_OP_MODE_DISABLE_POWER_MONITOR |
+    LL_OP_MODE_FLAG_ENA_LLCP_TIMER |
+    LL_OP_MODE_FLAG_IGNORE_CRC_ERR_TS |
+    LL_OP_MODE_FLAG_SLV_CRC_CLOSE;
 
-    LL_TRACE_INFO2("### LlApi ###  LlSetOpFlags flag=%x enable=%d", flags, enable);
+  LL_TRACE_INFO2("### LlApi ###  LlSetOpFlags flag=%x enable=%d", flags, enable);
 
-    if ((LL_API_PARAM_CHECK == 1) && ((~allFlags & flags) != 0)) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((~allFlags & flags) != 0))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    if (enable) {
-        lmgrCb.opModeFlags |= flags;
-    } else {
-        lmgrCb.opModeFlags &= ~flags;
-    }
+  if (enable)
+  {
+    lmgrCb.opModeFlags |= flags;
+  }
+  else
+  {
+    lmgrCb.opModeFlags &= ~flags;
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -349,9 +379,9 @@ uint8_t LlSetOpFlags(uint32_t flags, bool_t enable)
 /*************************************************************************************************/
 uint8_t LlGetWhitelistSize(void)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlGetWhitelistSize");
+  LL_TRACE_INFO0("### LlApi ###  LlGetWhitelistSize");
 
-    return BbBleWhiteListGetSize();
+  return BbBleWhiteListGetSize();
 }
 
 /*************************************************************************************************/
@@ -368,15 +398,16 @@ uint8_t LlGetWhitelistSize(void)
 /*************************************************************************************************/
 uint8_t LlClearWhitelist(void)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlClearWhitelist");
+  LL_TRACE_INFO0("### LlApi ###  LlClearWhitelist");
 
-    if (lmgrCb.numWlFilterEnabled) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if (lmgrCb.numWlFilterEnabled)
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    BbBleWhiteListClear();
+  BbBleWhiteListClear();
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -396,29 +427,37 @@ uint8_t LlClearWhitelist(void)
 /*************************************************************************************************/
 uint8_t LlAddDeviceToWhitelist(uint8_t addrType, bdAddr_t pAddr)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlAddDeviceToWhitelist");
+  LL_TRACE_INFO0("### LlApi ###  LlAddDeviceToWhitelist");
 
-    if (LL_API_PARAM_CHECK == 1) {
-        if (((pLctrRtCfg->btVer <= LL_VER_BT_CORE_SPEC_4_2) && (addrType > LL_ADDR_RANDOM)) ||
-            ((pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_0) && (addrType > LL_ADDR_RANDOM) &&
-             (addrType != LL_ADDR_ANONYMOUS))) {
-            return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-        }
+  if (LL_API_PARAM_CHECK == 1)
+  {
+    if (((pLctrRtCfg->btVer <= LL_VER_BT_CORE_SPEC_4_2) &&
+        (addrType > LL_ADDR_RANDOM)) ||
+      ((pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_0) &&
+        (addrType > LL_ADDR_RANDOM) && (addrType != LL_ADDR_ANONYMOUS)))
+    {
+      return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
     }
-    if (lmgrCb.numWlFilterEnabled) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  }
+  if (lmgrCb.numWlFilterEnabled)
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if (addrType == LL_ADDR_ANONYMOUS) {
-        BbBleWhiteListAddAnonymous();
-    } else {
-        uint64_t addr = BstreamToBda64(pAddr);
-        if (!BbBleWhiteListAdd(addrType, addr)) {
-            return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-        }
+  if (addrType == LL_ADDR_ANONYMOUS)
+  {
+    BbBleWhiteListAddAnonymous();
+  }
+  else
+  {
+    uint64_t addr = BstreamToBda64(pAddr);
+    if (!BbBleWhiteListAdd(addrType, addr))
+    {
+      return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
     }
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -438,29 +477,37 @@ uint8_t LlAddDeviceToWhitelist(uint8_t addrType, bdAddr_t pAddr)
 /*************************************************************************************************/
 uint8_t LlRemoveDeviceFromWhitelist(uint8_t addrType, bdAddr_t pAddr)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlRemoveDeviceFromWhitelist");
+  LL_TRACE_INFO0("### LlApi ###  LlRemoveDeviceFromWhitelist");
 
-    if (LL_API_PARAM_CHECK == 1) {
-        if (((pLctrRtCfg->btVer <= LL_VER_BT_CORE_SPEC_4_2) && (addrType > LL_ADDR_RANDOM)) ||
-            ((pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_0) && (addrType > LL_ADDR_RANDOM) &&
-             (addrType != LL_ADDR_ANONYMOUS))) {
-            return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-        }
+  if (LL_API_PARAM_CHECK == 1)
+  {
+    if (((pLctrRtCfg->btVer <= LL_VER_BT_CORE_SPEC_4_2) &&
+          (addrType > LL_ADDR_RANDOM)) ||
+        ((pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_0) &&
+          (addrType > LL_ADDR_RANDOM) && (addrType != LL_ADDR_ANONYMOUS)))
+    {
+      return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
     }
-    if (lmgrCb.numWlFilterEnabled) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  }
+  if (lmgrCb.numWlFilterEnabled)
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if (addrType == LL_ADDR_ANONYMOUS) {
-        BbBleWhiteListRemoveAnonymous();
-    } else {
-        uint64_t addr = BstreamToBda64(pAddr);
-        if (!BbBleWhiteListRemove(addrType, addr)) {
-            return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-        }
+  if (addrType == LL_ADDR_ANONYMOUS)
+  {
+    BbBleWhiteListRemoveAnonymous();
+  }
+  else
+  {
+    uint64_t addr = BstreamToBda64(pAddr);
+    if (!BbBleWhiteListRemove(addrType, addr))
+    {
+      return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
     }
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -478,19 +525,21 @@ uint8_t LlRemoveDeviceFromWhitelist(uint8_t addrType, bdAddr_t pAddr)
 /*************************************************************************************************/
 uint8_t LlSetHostFeatures(uint8_t bitNum, bool_t bitVal)
 {
-    LL_TRACE_INFO2("### LlApi ###  LlSetHostFeatures, Bit=%d Value=%d", bitNum, bitVal);
+  LL_TRACE_INFO2("### LlApi ###  LlSetHostFeatures, Bit=%d Value=%d", bitNum, bitVal);
 
-    if ((LL_HOST_CONTROLLED_FEAT & (UINT64_C(1) << bitNum)) == 0) {
-        return LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE;
-    }
+  if ((LL_HOST_CONTROLLED_FEAT & (UINT64_C(1) << bitNum)) == 0)
+  {
+    return LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE;
+  }
 
-    if (lmgrCb.numConnEnabled) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if (lmgrCb.numConnEnabled)
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    lmgrCb.features = (lmgrCb.features & ~(UINT64_C(1) << bitNum)) | (((uint64_t)bitVal) << bitNum);
+  lmgrCb.features = (lmgrCb.features & ~(UINT64_C(1) << bitNum)) | (((uint64_t) bitVal) << bitNum);
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -506,14 +555,14 @@ uint8_t LlSetHostFeatures(uint8_t bitNum, bool_t bitVal)
 /*************************************************************************************************/
 uint8_t LlGetRandNum(uint8_t *pRandNum)
 {
-    WSF_ASSERT(pRandNum);
+  WSF_ASSERT(pRandNum);
 
-    LL_TRACE_INFO0("### LlApi ###  LlGetRandNum");
+  LL_TRACE_INFO0("### LlApi ###  LlGetRandNum");
 
-    /* Return 8 bytes of random data. */
-    PalCryptoGenerateRandomNumber(pRandNum, sizeof(uint64_t) / sizeof(uint8_t));
+  /* Return 8 bytes of random data. */
+  PalCryptoGenerateRandomNumber(pRandNum, sizeof(uint64_t) / sizeof(uint8_t));
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -528,9 +577,9 @@ uint8_t LlGetRandNum(uint8_t *pRandNum)
 /*************************************************************************************************/
 void LlReadSupTxPower(int8_t *pMinTxPwr, int8_t *pMaxTxPwr)
 {
-    WSF_ASSERT(pMinTxPwr && pMaxTxPwr);
+  WSF_ASSERT(pMinTxPwr && pMaxTxPwr);
 
-    PalRadioGetSupTxPower(pMinTxPwr, pMaxTxPwr);
+  PalRadioGetSupTxPower(pMinTxPwr, pMaxTxPwr);
 }
 
 /*************************************************************************************************/
@@ -545,10 +594,10 @@ void LlReadSupTxPower(int8_t *pMinTxPwr, int8_t *pMaxTxPwr)
 /*************************************************************************************************/
 void LlReadRfPathComp(int16_t *pTxPathComp, int16_t *pRxPathComp)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlReadRfPathComp");
+  LL_TRACE_INFO0("### LlApi ###  LlReadRfPathComp");
 
-    WSF_ASSERT(pTxPathComp && pRxPathComp);
-    PalRadioReadRfPathComp(pTxPathComp, pRxPathComp);
+  WSF_ASSERT(pTxPathComp && pRxPathComp);
+  PalRadioReadRfPathComp(pTxPathComp, pRxPathComp);
 }
 
 /*************************************************************************************************/
@@ -566,13 +615,14 @@ void LlReadRfPathComp(int16_t *pTxPathComp, int16_t *pRxPathComp)
 /*************************************************************************************************/
 uint8_t LlWriteRfPathComp(int16_t txPathComp, int16_t rxPathComp)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlWriteRfPathComp");
+  LL_TRACE_INFO0("### LlApi ###  LlWriteRfPathComp");
 
-    if (!PalRadioWriteRfPathComp(txPathComp, rxPathComp)) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if (!PalRadioWriteRfPathComp(txPathComp, rxPathComp))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -588,16 +638,18 @@ uint8_t LlWriteRfPathComp(int16_t txPathComp, int16_t rxPathComp)
 /*************************************************************************************************/
 uint8_t LlSetChannelClass(const uint8_t *pChanMap)
 {
-    uint64_t chanMap;
+  uint64_t chanMap;
 
-    LL_TRACE_INFO0("### LlApi ###  LlSetChannelClass");
+  LL_TRACE_INFO0("### LlApi ###  LlSetChannelClass");
 
-    BSTREAM_TO_UINT40(chanMap, pChanMap);
+  BSTREAM_TO_UINT40(chanMap, pChanMap);
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((LlMathGetNumBitsSet(chanMap) < 2) || ((chanMap & ~LL_CHAN_DATA_ALL) != 0))) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((LlMathGetNumBitsSet(chanMap) < 2) ||
+       ((chanMap & ~LL_CHAN_DATA_ALL) != 0)))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    return LctrSetChannelClass(chanMap);
+  return LctrSetChannelClass(chanMap);
 }

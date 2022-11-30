@@ -42,8 +42,9 @@
 **************************************************************************************************/
 
 /*! Generic On Off Client control block type definition */
-typedef struct mmdlGenOnOffClCb_tag {
-    mmdlEventCback_t recvCback; /*!< Model Generic OnOff received callback */
+typedef struct mmdlGenOnOffClCb_tag
+{
+  mmdlEventCback_t recvCback;    /*!< Model Generic OnOff received callback */
 } mmdlGenOnOffClCb_t;
 
 /**************************************************************************************************
@@ -54,8 +55,9 @@ typedef struct mmdlGenOnOffClCb_tag {
 wsfHandlerId_t mmdlGenOnOffClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlGenOnOffClRcvdOpcodes[] = {
-    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_ONOFF_STATUS_OPCODE) } }
+const meshMsgOpcode_t mmdlGenOnOffClRcvdOpcodes[] =
+{
+  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_ONOFF_STATUS_OPCODE)} }
 };
 
 /**************************************************************************************************
@@ -63,7 +65,7 @@ const meshMsgOpcode_t mmdlGenOnOffClRcvdOpcodes[] = {
 **************************************************************************************************/
 
 /*! On Off Client control block */
-static mmdlGenOnOffClCb_t onOffClCb;
+static mmdlGenOnOffClCb_t  onOffClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -87,39 +89,42 @@ static void mmdlGenOnOffSendSet(meshElementId_t elementId, meshAddress_t serverA
                                 const mmdlGenOnOffSetParam_t *pSetParam, uint16_t appKeyIndex,
                                 bool_t ackRequired)
 {
-    meshMsgInfo_t msgInfo =
-        MESH_MSG_INFO(MMDL_GEN_ONOFF_CL_MDL_ID, MMDL_GEN_ONOFF_SET_NO_ACK_OPCODE);
-    uint8_t *pParams;
-    uint8_t msgParams[MMDL_GEN_ONOFF_SET_MAX_LEN];
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_ONOFF_CL_MDL_ID, MMDL_GEN_ONOFF_SET_NO_ACK_OPCODE);
+  uint8_t *pParams;
+  uint8_t msgParams[MMDL_GEN_ONOFF_SET_MAX_LEN];
 
-    if (pSetParam != NULL) {
-        if (pSetParam->state < MMDL_GEN_ONOFF_STATE_PROHIBITED) {
-            pParams = msgParams;
+  if (pSetParam != NULL)
+  {
+    if (pSetParam->state < MMDL_GEN_ONOFF_STATE_PROHIBITED)
+    {
+      pParams = msgParams;
 
-            UINT8_TO_BSTREAM(pParams, pSetParam->state);
-            UINT8_TO_BSTREAM(pParams, pSetParam->tid);
+      UINT8_TO_BSTREAM(pParams, pSetParam->state);
+      UINT8_TO_BSTREAM(pParams, pSetParam->tid);
 
-            /* Do not include transition time and delay in the message if it is not used */
-            if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-                UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
-                UINT8_TO_BSTREAM(pParams, pSetParam->delay);
-            }
+      /* Do not include transition time and delay in the message if it is not used */
+      if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+      {
+        UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
+        UINT8_TO_BSTREAM(pParams, pSetParam->delay);
+      }
 
-            /* Change to acknowledged set */
-            if (ackRequired) {
-                UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_GEN_ONOFF_SET_OPCODE);
-            }
+      /* Change to acknowledged set */
+      if (ackRequired)
+      {
+        UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_GEN_ONOFF_SET_OPCODE);
+      }
 
-            /* Fill in the message information */
-            msgInfo.elementId = elementId;
-            msgInfo.dstAddr = serverAddr;
-            msgInfo.ttl = ttl;
-            msgInfo.appKeyIndex = appKeyIndex;
+      /* Fill in the message information */
+      msgInfo.elementId = elementId;
+      msgInfo.dstAddr = serverAddr;
+      msgInfo.ttl = ttl;
+      msgInfo.appKeyIndex = appKeyIndex;
 
-            /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-            MeshSendMessage(&msgInfo, msgParams, (uint16_t)(pParams - msgParams), 0, 0);
-        }
+      /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+      MeshSendMessage(&msgInfo, msgParams, (uint16_t)(pParams - msgParams), 0, 0);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -134,38 +139,42 @@ static void mmdlGenOnOffSendSet(meshElementId_t elementId, meshAddress_t serverA
  */
 /*************************************************************************************************/
 static void mmdlGenOnOffPublishSet(meshElementId_t elementId,
-                                   const mmdlGenOnOffSetParam_t *pSetParam, bool_t ackRequired)
+                            const mmdlGenOnOffSetParam_t *pSetParam, bool_t ackRequired)
 {
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_GEN_ONOFF_CL_MDL_ID, MMDL_GEN_ONOFF_SET_NO_ACK_OPCODE);
-    uint8_t *pParams;
-    uint8_t msgParams[MMDL_GEN_ONOFF_SET_MAX_LEN];
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_ONOFF_CL_MDL_ID,
+                                             MMDL_GEN_ONOFF_SET_NO_ACK_OPCODE);
+  uint8_t *pParams;
+  uint8_t msgParams[MMDL_GEN_ONOFF_SET_MAX_LEN];
 
-    if (pSetParam != NULL) {
-        if (pSetParam->state < MMDL_GEN_ONOFF_STATE_PROHIBITED) {
-            pParams = msgParams;
+  if (pSetParam != NULL)
+  {
+    if (pSetParam->state < MMDL_GEN_ONOFF_STATE_PROHIBITED)
+    {
+      pParams = msgParams;
 
-            UINT8_TO_BSTREAM(pParams, pSetParam->state);
-            UINT8_TO_BSTREAM(pParams, pSetParam->tid);
+      UINT8_TO_BSTREAM(pParams, pSetParam->state);
+      UINT8_TO_BSTREAM(pParams, pSetParam->tid);
 
-            /* Do not include transition time and delay in the message if it is not used */
-            if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-                UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
-                UINT8_TO_BSTREAM(pParams, pSetParam->delay);
-            }
+      /* Do not include transition time and delay in the message if it is not used */
+      if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+      {
+        UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
+        UINT8_TO_BSTREAM(pParams, pSetParam->delay);
+      }
 
-            /* Change to acknowledged set */
-            if (ackRequired) {
-                UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_GEN_ONOFF_SET_OPCODE);
-            }
+      /* Change to acknowledged set */
+      if (ackRequired)
+      {
+        UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_GEN_ONOFF_SET_OPCODE);
+      }
 
-            /* Fill in the msg info parameters */
-            pubMsgInfo.elementId = elementId;
+      /* Fill in the msg info parameters */
+      pubMsgInfo.elementId = elementId;
 
-            /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-            MeshPublishMessage(&pubMsgInfo, msgParams, (uint16_t)(pParams - msgParams));
-        }
+      /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+      MeshPublishMessage(&pubMsgInfo, msgParams, (uint16_t)(pParams - msgParams));
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -179,50 +188,57 @@ static void mmdlGenOnOffPublishSet(meshElementId_t elementId,
 /*************************************************************************************************/
 static void mmdlGenOnOffClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlGenOnOffClStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlGenOnOffClStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_GEN_ONOFF_STATUS_MAX_LEN && pMsg->messageParamsLen != 1) {
-        return;
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_GEN_ONOFF_STATUS_MAX_LEN &&
+      pMsg->messageParamsLen != 1)
+  {
+    return;
+  }
+
+  /* Set event type and status */
+  event.hdr.event = MMDL_GEN_ONOFF_CL_EVENT;
+  event.hdr.param = MMDL_GEN_ONOFF_CL_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
+
+  pParams = pMsg->pMessageParams;
+
+  /* Extract status event parameters */
+  BSTREAM_TO_UINT8(event.state, pParams);
+
+  if (event.state >= MMDL_GEN_ONOFF_STATE_PROHIBITED)
+  {
+    return;
+  }
+
+  /* Check if optional parameters are present */
+  if (pMsg->messageParamsLen == MMDL_GEN_ONOFF_STATUS_MAX_LEN)
+  {
+    /* Extract target state and check value */
+    BSTREAM_TO_UINT8(event.targetState, pParams);
+
+    if (event.targetState >= MMDL_GEN_ONOFF_STATE_PROHIBITED)
+    {
+      return;
     }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_GEN_ONOFF_CL_EVENT;
-    event.hdr.param = MMDL_GEN_ONOFF_CL_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+    /* Extract target state */
+    BSTREAM_TO_UINT8(event.remainingTime, pParams);
+  }
+  else
+  {
+    event.targetState = event.state;
+    event.remainingTime = 0;
+  }
 
-    pParams = pMsg->pMessageParams;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Extract status event parameters */
-    BSTREAM_TO_UINT8(event.state, pParams);
-
-    if (event.state >= MMDL_GEN_ONOFF_STATE_PROHIBITED) {
-        return;
-    }
-
-    /* Check if optional parameters are present */
-    if (pMsg->messageParamsLen == MMDL_GEN_ONOFF_STATUS_MAX_LEN) {
-        /* Extract target state and check value */
-        BSTREAM_TO_UINT8(event.targetState, pParams);
-
-        if (event.targetState >= MMDL_GEN_ONOFF_STATE_PROHIBITED) {
-            return;
-        }
-
-        /* Extract target state */
-        BSTREAM_TO_UINT8(event.remainingTime, pParams);
-    } else {
-        event.targetState = event.state;
-        event.remainingTime = 0;
-    }
-
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
-
-    /* Send event to the upper layer */
-    onOffClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  onOffClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /**************************************************************************************************
@@ -240,11 +256,11 @@ static void mmdlGenOnOffClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenOnOffClHandlerInit(wsfHandlerId_t handlerId)
 {
-    /* Set handler ID */
-    mmdlGenOnOffClHandlerId = handlerId;
+  /* Set handler ID */
+  mmdlGenOnOffClHandlerId = handlerId;
 
-    /* Initialize control block */
-    onOffClCb.recvCback = MmdlEmptyCback;
+  /* Initialize control block */
+  onOffClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -259,28 +275,31 @@ void MmdlGenOnOffClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlGenOnOffClHandler(wsfMsgHdr_t *pMsg)
 {
-    meshModelMsgRecvEvt_t *pModelMsg;
+  meshModelMsgRecvEvt_t *pModelMsg;
 
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-            /* Validate opcode size and value */
-            if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_ONOFF_OPCODES_SIZE &&
-                !memcmp(&mmdlGenOnOffClRcvdOpcodes[0], pModelMsg->opCode.opcodeBytes,
-                        MMDL_GEN_ONOFF_OPCODES_SIZE)) {
-                /* Process Status message */
-                mmdlGenOnOffClHandleStatus(pModelMsg);
-            }
-            break;
-
-        default:
-            MMDL_TRACE_WARN0("GEN ON OFF CL: Invalid event message received!");
-            break;
+        /* Validate opcode size and value */
+        if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_ONOFF_OPCODES_SIZE &&
+            !memcmp(&mmdlGenOnOffClRcvdOpcodes[0], pModelMsg->opCode.opcodeBytes,
+                    MMDL_GEN_ONOFF_OPCODES_SIZE))
+        {
+          /* Process Status message */
+          mmdlGenOnOffClHandleStatus(pModelMsg);
         }
+        break;
+
+      default:
+        MMDL_TRACE_WARN0("GEN ON OFF CL: Invalid event message received!");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -298,26 +317,28 @@ void MmdlGenOnOffClHandler(wsfMsgHdr_t *pMsg)
 void MmdlGenOnOffClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        uint16_t appKeyIndex)
 {
-    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_ONOFF_CL_MDL_ID, MMDL_GEN_ONOFF_GET_OPCODE);
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_GEN_ONOFF_CL_MDL_ID, MMDL_GEN_ONOFF_GET_OPCODE);
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_ONOFF_CL_MDL_ID, MMDL_GEN_ONOFF_GET_OPCODE);
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_ONOFF_CL_MDL_ID, MMDL_GEN_ONOFF_GET_OPCODE);
 
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        /* Fill in the msg info parameters */
-        msgInfo.elementId = elementId;
-        msgInfo.dstAddr = serverAddr;
-        msgInfo.ttl = ttl;
-        msgInfo.appKeyIndex = appKeyIndex;
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-        /* Send message to the Mesh Core instantly */
-        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-    } else {
-        /* Fill in the msg info parameters */
-        pubMsgInfo.elementId = elementId;
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+  }
+  else
+  {
+    /* Fill in the msg info parameters */
+    pubMsgInfo.elementId = elementId;
 
-        /* Send message to the Mesh Core */
-        MeshPublishMessage(&pubMsgInfo, NULL, 0);
-    }
+    /* Send message to the Mesh Core */
+    MeshPublishMessage(&pubMsgInfo, NULL, 0);
+  }
 }
 
 /*************************************************************************************************/
@@ -336,11 +357,14 @@ void MmdlGenOnOffClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlGenOnOffClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        const mmdlGenOnOffSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
-        mmdlGenOnOffPublishSet(elementId, pSetParam, TRUE);
-    } else {
-        mmdlGenOnOffSendSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
-    }
+  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlGenOnOffPublishSet(elementId, pSetParam, TRUE);
+  }
+  else
+  {
+    mmdlGenOnOffSendSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
+  }
 }
 
 /*************************************************************************************************/
@@ -359,11 +383,14 @@ void MmdlGenOnOffClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlGenOnOffClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             const mmdlGenOnOffSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
-        mmdlGenOnOffPublishSet(elementId, pSetParam, FALSE);
-    } else {
-        mmdlGenOnOffSendSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
-    }
+  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlGenOnOffPublishSet(elementId, pSetParam, FALSE);
+  }
+  else
+  {
+    mmdlGenOnOffSendSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
+  }
 }
 
 /*************************************************************************************************/
@@ -377,8 +404,9 @@ void MmdlGenOnOffClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr,
 /*************************************************************************************************/
 void MmdlGenOnOffClRegister(mmdlEventCback_t recvCback)
 {
-    /* Store valid callback */
-    if (recvCback != NULL) {
-        onOffClCb.recvCback = recvCback;
-    }
+  /* Store valid callback */
+  if (recvCback != NULL)
+  {
+    onOffClCb.recvCback = recvCback;
+  }
 }

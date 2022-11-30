@@ -38,8 +38,8 @@
 /*************************************************************************************************/
 void LlIsoRegister(llIsoCback_t sendIsoCompCback, llIsoCback_t recvIsoPendCback)
 {
-    lmgrPersistCb.sendIsoCompCback = sendIsoCompCback;
-    lmgrPersistCb.recvIsoPendCback = recvIsoPendCback;
+  lmgrPersistCb.sendIsoCompCback = sendIsoCompCback;
+  lmgrPersistCb.recvIsoPendCback = recvIsoPendCback;
 }
 
 /*************************************************************************************************/
@@ -59,12 +59,12 @@ void LlIsoRegister(llIsoCback_t sendIsoCompCback, llIsoCback_t recvIsoPendCback)
 /*************************************************************************************************/
 uint16_t LlInitIsoMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-    WSF_ASSERT(pLctrRtCfg);
-    WSF_ASSERT(pFreeMem);
+  WSF_ASSERT(pLctrRtCfg);
+  WSF_ASSERT(pFreeMem);
 
-    uint16_t bytesUsed = 0;
+  uint16_t bytesUsed = 0;
 
-    bytesUsed = LctrInitIsoMem(pFreeMem, freeMemSize);
+  bytesUsed = LctrInitIsoMem(pFreeMem, freeMemSize);
 
-    return bytesUsed;
+  return bytesUsed;
 }

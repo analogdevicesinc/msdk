@@ -40,24 +40,26 @@
 /*************************************************************************************************/
 static void lctrModifyEncMode(lctrConnCtx_t *pCtx)
 {
-    if (pCtx->pendEncMode) {
-        /*** Apply new encryption mode. ***/
+  if (pCtx->pendEncMode)
+  {
+    /*** Apply new encryption mode. ***/
 
-        LL_TRACE_INFO3("    >>> Modifying encryption mode, handle=%u, enaAuth=%u, nonceMode=%u <<<",
-                       LCTR_GET_CONN_HANDLE(pCtx), pCtx->newEncMode.enaAuth,
-                       pCtx->newEncMode.nonceMode);
+    LL_TRACE_INFO3("    >>> Modifying encryption mode, handle=%u, enaAuth=%u, nonceMode=%u <<<", LCTR_GET_CONN_HANDLE(pCtx), pCtx->newEncMode.enaAuth, pCtx->newEncMode.nonceMode);
 
-        pCtx->bleData.chan.enc.enaAuth = pCtx->newEncMode.enaAuth;
-        pCtx->bleData.chan.enc.nonceMode = pCtx->newEncMode.nonceMode;
+    pCtx->bleData.chan.enc.enaAuth = pCtx->newEncMode.enaAuth;
+    pCtx->bleData.chan.enc.nonceMode = pCtx->newEncMode.nonceMode;
 
-        if (pCtx->newEncMode.nonceMode == LL_NONCE_MODE_EVT_CNTR) {
-            pCtx->bleData.chan.enc.pEventCounter = &pCtx->eventCounter;
-        } else {
-            pCtx->bleData.chan.enc.pEventCounter = NULL;
-        }
+    if (pCtx->newEncMode.nonceMode == LL_NONCE_MODE_EVT_CNTR)
+    {
+      pCtx->bleData.chan.enc.pEventCounter = &pCtx->eventCounter;
     }
+    else
+    {
+      pCtx->bleData.chan.enc.pEventCounter = NULL;
+    }
+  }
 
-    pCtx->pendEncMode = FALSE;
+  pCtx->pendEncMode = FALSE;
 }
 
 /*************************************************************************************************/
@@ -69,10 +71,10 @@ static void lctrModifyEncMode(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrEnableTxDataEnc(lctrConnCtx_t *pCtx)
 {
-    lctrModifyEncMode(pCtx);
+  lctrModifyEncMode(pCtx);
 
-    pCtx->bleData.chan.enc.enaEncrypt = TRUE;
-    LL_TRACE_INFO1("    >>> Tx/Encryption Enabled, handle=%u <<<", LCTR_GET_CONN_HANDLE(pCtx));
+  pCtx->bleData.chan.enc.enaEncrypt = TRUE;
+  LL_TRACE_INFO1("    >>> Tx/Encryption Enabled, handle=%u <<<", LCTR_GET_CONN_HANDLE(pCtx));
 }
 
 /*************************************************************************************************/
@@ -84,8 +86,8 @@ void lctrEnableTxDataEnc(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrDisableTxDataEnc(lctrConnCtx_t *pCtx)
 {
-    pCtx->bleData.chan.enc.enaEncrypt = FALSE;
-    LL_TRACE_INFO1("    >>> Tx/Encryption Disabled, handle=%u <<<", LCTR_GET_CONN_HANDLE(pCtx));
+  pCtx->bleData.chan.enc.enaEncrypt = FALSE;
+  LL_TRACE_INFO1("    >>> Tx/Encryption Disabled, handle=%u <<<", LCTR_GET_CONN_HANDLE(pCtx));
 }
 
 /*************************************************************************************************/
@@ -97,10 +99,10 @@ void lctrDisableTxDataEnc(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrEnableRxDataEnc(lctrConnCtx_t *pCtx)
 {
-    lctrModifyEncMode(pCtx);
+  lctrModifyEncMode(pCtx);
 
-    pCtx->bleData.chan.enc.enaDecrypt = TRUE;
-    LL_TRACE_INFO1("    >>> Rx/Decryption Enabled, handle=%u <<<", LCTR_GET_CONN_HANDLE(pCtx));
+  pCtx->bleData.chan.enc.enaDecrypt = TRUE;
+  LL_TRACE_INFO1("    >>> Rx/Decryption Enabled, handle=%u <<<", LCTR_GET_CONN_HANDLE(pCtx));
 }
 
 /*************************************************************************************************/
@@ -112,8 +114,8 @@ void lctrEnableRxDataEnc(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrDisableRxDataEnc(lctrConnCtx_t *pCtx)
 {
-    pCtx->bleData.chan.enc.enaDecrypt = FALSE;
-    LL_TRACE_INFO1("    >>> Rx/Decryption Disabled, handle=%u <<<", LCTR_GET_CONN_HANDLE(pCtx));
+  pCtx->bleData.chan.enc.enaDecrypt = FALSE;
+  LL_TRACE_INFO1("    >>> Rx/Decryption Disabled, handle=%u <<<", LCTR_GET_CONN_HANDLE(pCtx));
 }
 
 /*************************************************************************************************/
@@ -125,18 +127,18 @@ void lctrDisableRxDataEnc(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrGenerateSlvVectors(lctrConnCtx_t *pCtx)
 {
-    memcpy(pCtx->rand, lctrDataPdu.pld.encReq.rand, sizeof(pCtx->rand));
-    pCtx->ediv = lctrDataPdu.pld.encReq.ediv;
+  memcpy(pCtx->rand, lctrDataPdu.pld.encReq.rand, sizeof(pCtx->rand));
+  pCtx->ediv = lctrDataPdu.pld.encReq.ediv;
 
-    /* Store master part. */
-    memcpy(pCtx->skd, lctrDataPdu.pld.encReq.skd_m + LCTR_SKD_M_OFFS, LL_SKD_LEN / 2);
-    memcpy(pCtx->iv, lctrDataPdu.pld.encReq.iv_m + LCTR_IV_M_OFFS, LL_IV_LEN / 2);
+  /* Store master part. */
+  memcpy(pCtx->skd, lctrDataPdu.pld.encReq.skd_m + LCTR_SKD_M_OFFS, LL_SKD_LEN / 2);
+  memcpy(pCtx->iv, lctrDataPdu.pld.encReq.iv_m + LCTR_IV_M_OFFS,  LL_IV_LEN / 2);
 
-    /* Generate slave part of IV. */
-    PalCryptoGenerateRandomNumber(pCtx->iv + LCTR_IV_S_OFFS, LL_IV_LEN / 2);
+  /* Generate slave part of IV. */
+  PalCryptoGenerateRandomNumber(pCtx->iv + LCTR_IV_S_OFFS, LL_IV_LEN / 2);
 
-    /* Generate slave part of SKD. */
-    PalCryptoGenerateRandomNumber(pCtx->skd + LCTR_SKD_S_OFFS, LL_SKD_LEN / 2);
+  /* Generate slave part of SKD. */
+  PalCryptoGenerateRandomNumber(pCtx->skd + LCTR_SKD_S_OFFS, LL_SKD_LEN / 2);
 }
 
 /*************************************************************************************************/
@@ -148,7 +150,7 @@ void lctrGenerateSlvVectors(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrStoreLtkReply(lctrConnCtx_t *pCtx)
 {
-    memcpy(pCtx->ltk, pLctrConnMsg->ltkReply.key, sizeof(pCtx->ltk));
+  memcpy(pCtx->ltk, pLctrConnMsg->ltkReply.key, sizeof(pCtx->ltk));
 }
 
 /*************************************************************************************************/
@@ -160,7 +162,7 @@ void lctrStoreLtkReply(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrStoreLtkNegRepTerminateReason(lctrConnCtx_t *pCtx)
 {
-    pCtx->termReason = LL_ERROR_CODE_PIN_KEY_MISSING;
+  pCtx->termReason = LL_ERROR_CODE_PIN_KEY_MISSING;
 }
 
 /*************************************************************************************************/
@@ -172,18 +174,18 @@ void lctrStoreLtkNegRepTerminateReason(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrCalcSessionKey(lctrConnCtx_t *pCtx)
 {
-    PalCryptoEnc_t *const pEnc = &pCtx->bleData.chan.enc;
+  PalCryptoEnc_t * const pEnc = &pCtx->bleData.chan.enc;
 
-    /* Use AES to transform LTK to session key using session key diversifier as seed. */
-    PalCryptoAesEcb(pCtx->ltk, pEnc->sk, pCtx->skd);
+  /* Use AES to transform LTK to session key using session key diversifier as seed. */
+  PalCryptoAesEcb(pCtx->ltk, pEnc->sk, pCtx->skd);
 
-    WSF_ASSERT(lctrInitCipherBlkHdlr);
-    memcpy(pEnc->iv, pCtx->iv, sizeof(pEnc->iv));
-    pEnc->dir = (pCtx->role == LL_ROLE_MASTER) ? 1 : 0; /* master = 1; slave = 0 */
-    pEnc->type = PAL_BB_TYPE_ACL;
-    pCtx->txPktCounter = 0;
-    pCtx->rxPktCounter = 0;
-    lctrInitCipherBlkHdlr(pEnc, LCTR_GET_CONN_HANDLE(pCtx), pEnc->dir);
+  WSF_ASSERT(lctrInitCipherBlkHdlr);
+  memcpy(pEnc->iv, pCtx->iv, sizeof(pEnc->iv));
+  pEnc->dir = (pCtx->role == LL_ROLE_MASTER) ? 1 : 0;     /* master = 1; slave = 0 */
+  pEnc->type = PAL_BB_TYPE_ACL;
+  pCtx->txPktCounter = 0;
+  pCtx->rxPktCounter = 0;
+  lctrInitCipherBlkHdlr(pEnc, LCTR_GET_CONN_HANDLE(pCtx), pEnc->dir);
 }
 
 /*************************************************************************************************/
@@ -195,10 +197,8 @@ void lctrCalcSessionKey(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrInvalidEncPduSeq(lctrConnCtx_t *pCtx)
 {
-    LL_TRACE_WARN3(
-        "Out of sequence LLCP packet received, dropping connection, handle=%u, encState=%u, opcode=%u",
-        LCTR_GET_CONN_HANDLE(pCtx), pCtx->encState, lctrDataPdu.opcode);
-    lctrSendConnMsg(pCtx, LCTR_CONN_TERM_MIC_FAILED);
+  LL_TRACE_WARN3("Out of sequence LLCP packet received, dropping connection, handle=%u, encState=%u, opcode=%u", LCTR_GET_CONN_HANDLE(pCtx), pCtx->encState, lctrDataPdu.opcode);
+  lctrSendConnMsg(pCtx, LCTR_CONN_TERM_MIC_FAILED);
 }
 
 /*************************************************************************************************/
@@ -210,24 +210,25 @@ void lctrInvalidEncPduSeq(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrSendEncRsp(lctrConnCtx_t *pCtx)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_ENC_RSP_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_ENC_RSP_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
+    /*** Assemble control PDU. ***/
 
-        UINT8_TO_BSTREAM(pBuf, LL_PDU_ENC_RSP);
+    UINT8_TO_BSTREAM(pBuf, LL_PDU_ENC_RSP);
 
-        memcpy(pBuf, pCtx->skd + LCTR_SKD_S_OFFS, LL_SKD_LEN / 2);
-        pBuf += LL_SKD_LEN / 2;
+    memcpy(pBuf, pCtx->skd + LCTR_SKD_S_OFFS, LL_SKD_LEN / 2);
+    pBuf += LL_SKD_LEN/2;
 
-        memcpy(pBuf, pCtx->iv + LCTR_IV_S_OFFS, LL_IV_LEN / 2);
+    memcpy(pBuf, pCtx->iv + LCTR_IV_S_OFFS, LL_IV_LEN / 2);
 
-        /*** Queue for transmit. ***/
+    /*** Queue for transmit. ***/
 
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -239,19 +240,20 @@ void lctrSendEncRsp(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrSendStartEncReq(lctrConnCtx_t *pCtx)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_START_ENC_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_START_ENC_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
+    /*** Assemble control PDU. ***/
 
-        UINT8_TO_BSTREAM(pBuf, LL_PDU_START_ENC_REQ);
+    UINT8_TO_BSTREAM(pBuf, LL_PDU_START_ENC_REQ);
 
-        /*** Queue for transmit. ***/
+    /*** Queue for transmit. ***/
 
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -263,19 +265,20 @@ void lctrSendStartEncReq(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrSendStartEncRsp(lctrConnCtx_t *pCtx)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_START_ENC_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_START_ENC_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
+    /*** Assemble control PDU. ***/
 
-        UINT8_TO_BSTREAM(pBuf, LL_PDU_START_ENC_RSP);
+    UINT8_TO_BSTREAM(pBuf, LL_PDU_START_ENC_RSP);
 
-        /*** Queue for transmit. ***/
+    /*** Queue for transmit. ***/
 
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -287,19 +290,20 @@ void lctrSendStartEncRsp(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrSendPauseEncReq(lctrConnCtx_t *pCtx)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_PAUSE_ENC_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_PAUSE_ENC_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
+    /*** Assemble control PDU. ***/
 
-        UINT8_TO_BSTREAM(pBuf, LL_PDU_PAUSE_ENC_REQ);
+    UINT8_TO_BSTREAM(pBuf, LL_PDU_PAUSE_ENC_REQ);
 
-        /*** Queue for transmit. ***/
+    /*** Queue for transmit. ***/
 
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -311,19 +315,20 @@ void lctrSendPauseEncReq(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrSendPauseEncRsp(lctrConnCtx_t *pCtx)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_PAUSE_ENC_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_PAUSE_ENC_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
+    /*** Assemble control PDU. ***/
 
-        UINT8_TO_BSTREAM(pBuf, LL_PDU_PAUSE_ENC_RSP);
+    UINT8_TO_BSTREAM(pBuf, LL_PDU_PAUSE_ENC_RSP);
 
-        /*** Queue for transmit. ***/
+    /*** Queue for transmit. ***/
 
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -335,19 +340,20 @@ void lctrSendPauseEncRsp(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrSendPingReq(lctrConnCtx_t *pCtx)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_PING_PDU_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_PING_PDU_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
+    /*** Assemble control PDU. ***/
 
-        UINT8_TO_BSTREAM(pBuf, LL_PDU_PING_REQ);
+    UINT8_TO_BSTREAM(pBuf, LL_PDU_PING_REQ);
 
-        /*** Queue for transmit. ***/
+    /*** Queue for transmit. ***/
 
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -359,19 +365,20 @@ void lctrSendPingReq(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrSendPingRsp(lctrConnCtx_t *pCtx)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_PING_PDU_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_PING_PDU_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
+    /*** Assemble control PDU. ***/
 
-        UINT8_TO_BSTREAM(pBuf, LL_PDU_PING_RSP);
+    UINT8_TO_BSTREAM(pBuf, LL_PDU_PING_RSP);
 
-        /*** Queue for transmit. ***/
+    /*** Queue for transmit. ***/
 
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -383,18 +390,26 @@ void lctrSendPingRsp(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrEncNotifyHostLtkReqInd(lctrConnCtx_t *pCtx)
 {
-    const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
+  const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
 
-    LlLtkReqInd_t evt = { .hdr = { .param = handle, .event = LL_LTK_REQ_IND, .status = LL_SUCCESS },
+  LlLtkReqInd_t evt =
+  {
+    .hdr =
+    {
+      .param        = handle,
+      .event        = LL_LTK_REQ_IND,
+      .status       = LL_SUCCESS
+    },
 
-                          .handle = handle,
-                          .encDiversifier = pCtx->ediv };
+    .handle         = handle,
+    .encDiversifier = pCtx->ediv
+  };
 
-    memcpy(evt.randNum, pCtx->rand, sizeof(evt.randNum));
+  memcpy(evt.randNum, pCtx->rand, sizeof(evt.randNum));
 
-    LL_TRACE_INFO1("### LlEvent ###  LL_LTK_REQ_IND, handle=%u, status=LL_SUCCESS", handle);
+  LL_TRACE_INFO1("### LlEvent ###  LL_LTK_REQ_IND, handle=%u, status=LL_SUCCESS", handle);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -407,21 +422,26 @@ void lctrEncNotifyHostLtkReqInd(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrNotifyEncChangeInd(lctrConnCtx_t *pCtx, uint8_t status)
 {
-    const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
-    PalCryptoEnc_t *const pEnc = &pCtx->bleData.chan.enc;
+  const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
+  PalCryptoEnc_t * const pEnc = &pCtx->bleData.chan.enc;
 
-    LlEncChangeInd_t evt = {
-        .hdr = { .param = handle, .event = LL_ENC_CHANGE_IND, .status = status },
+  LlEncChangeInd_t evt =
+  {
+    .hdr =
+    {
+      .param        = handle,
+      .event        = LL_ENC_CHANGE_IND,
+      .status       = status
+    },
 
-        .status = status,
-        .handle = handle,
-        .enabled = pEnc->enaDecrypt
-    };
+    .status         = status,
+    .handle         = handle,
+    .enabled        = pEnc->enaDecrypt
+  };
 
-    LL_TRACE_INFO3("### LlEvent ###  LL_ENC_CHANGE_IND, handle=%u, status=%u, enabled=%u", handle,
-                   status, evt.enabled);
+  LL_TRACE_INFO3("### LlEvent ###  LL_ENC_CHANGE_IND, handle=%u, status=%u, enabled=%u", handle, status, evt.enabled);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -433,18 +453,24 @@ void lctrNotifyEncChangeInd(lctrConnCtx_t *pCtx, uint8_t status)
 /*************************************************************************************************/
 void lctrNotifyEncKeyRefreshInd(lctrConnCtx_t *pCtx)
 {
-    const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
+  const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
 
-    LlEncKeyRefreshInd_t evt = {
-        .hdr = { .param = handle, .event = LL_ENC_KEY_REFRESH_IND, .status = LL_SUCCESS },
+  LlEncKeyRefreshInd_t evt =
+  {
+    .hdr =
+    {
+      .param        = handle,
+      .event        = LL_ENC_KEY_REFRESH_IND,
+      .status       = LL_SUCCESS
+    },
 
-        .status = LL_SUCCESS,
-        .handle = handle,
-    };
+    .status         = LL_SUCCESS,
+    .handle         = handle,
+  };
 
-    LL_TRACE_INFO1("### LlEvent ###  LL_ENC_KEY_REFRESH_IND, handle=%u, status=LL_SUCCESS", handle);
+  LL_TRACE_INFO1("### LlEvent ###  LL_ENC_KEY_REFRESH_IND, handle=%u, status=LL_SUCCESS", handle);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -456,18 +482,23 @@ void lctrNotifyEncKeyRefreshInd(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrNotifyAuthPayloadTimeout(lctrConnCtx_t *pCtx)
 {
-    const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
+  const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
 
-    LlAuthPayloadTimeoutInd_t evt = {
-        .hdr = { .param = handle, .event = LL_AUTH_PAYLOAD_TIMEOUT_IND, .status = LL_SUCCESS },
+  LlAuthPayloadTimeoutInd_t evt =
+  {
+    .hdr =
+    {
+      .param        = handle,
+      .event        = LL_AUTH_PAYLOAD_TIMEOUT_IND,
+      .status       = LL_SUCCESS
+    },
 
-        .handle = handle,
-    };
+    .handle         = handle,
+  };
 
-    LL_TRACE_INFO1("### LlEvent ###  LL_AUTH_PAYLOAD_TIMEOUT_IND, handle=%u, status=LL_SUCCESS",
-                   handle);
+  LL_TRACE_INFO1("### LlEvent ###  LL_AUTH_PAYLOAD_TIMEOUT_IND, handle=%u, status=LL_SUCCESS", handle);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -479,5 +510,5 @@ void lctrNotifyAuthPayloadTimeout(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrRestartAuthPayloadTimer(lctrConnCtx_t *pCtx)
 {
-    WsfTimerStartMs(&pCtx->tmrAuthTimeout, pCtx->authTimeoutMs);
+  WsfTimerStartMs(&pCtx->tmrAuthTimeout, pCtx->authTimeoutMs);
 }

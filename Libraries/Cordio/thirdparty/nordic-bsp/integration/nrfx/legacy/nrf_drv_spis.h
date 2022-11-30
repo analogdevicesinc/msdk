@@ -56,52 +56,52 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_spis_t nrf_drv_spis_t;
+typedef nrfx_spis_t         nrf_drv_spis_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_spis_config_t nrf_drv_spis_config_t;
+typedef nrfx_spis_config_t  nrf_drv_spis_config_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_spis_evt_t nrf_drv_spis_event_t;
+typedef nrfx_spis_evt_t     nrf_drv_spis_event_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_SPIS_INSTANCE NRFX_SPIS_INSTANCE
+#define NRF_DRV_SPIS_INSTANCE               NRFX_SPIS_INSTANCE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_SPIS_DEFAULT_CONFIG NRFX_SPIS_DEFAULT_CONFIG
+#define NRF_DRV_SPIS_DEFAULT_CONFIG         NRFX_SPIS_DEFAULT_CONFIG
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_SPIS_DEFAULT_CSN_PULLUP NRFX_SPIS_DEFAULT_CSN_PULLUP
+#define NRF_DRV_SPIS_DEFAULT_CSN_PULLUP     NRFX_SPIS_DEFAULT_CSN_PULLUP
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_SPIS_DEFAULT_MISO_DRIVE NRFX_SPIS_DEFAULT_MISO_DRIVE
+#define NRF_DRV_SPIS_DEFAULT_MISO_DRIVE     NRFX_SPIS_DEFAULT_MISO_DRIVE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_SPIS_PIN_NOT_USED NRFX_SPIS_PIN_NOT_USED
+#define NRF_DRV_SPIS_PIN_NOT_USED           NRFX_SPIS_PIN_NOT_USED
 
 /** @brief Macro for providing API backward compatibility. */
-#define NRF_DRV_SPIS_BIT_ORDER_LSB_FIRST NRF_SPIS_BIT_ORDER_LSB_FIRST
+#define NRF_DRV_SPIS_BIT_ORDER_LSB_FIRST    NRF_SPIS_BIT_ORDER_LSB_FIRST
 /** @brief Macro for providing API backward compatibility. */
-#define NRF_DRV_SPIS_BIT_ORDER_MSB_FIRST NRF_SPIS_BIT_ORDER_MSB_FIRST
+#define NRF_DRV_SPIS_BIT_ORDER_MSB_FIRST    NRF_SPIS_BIT_ORDER_MSB_FIRST
 /** @brief Macro for providing API backward compatibility. */
-#define nrf_drv_spis_endian_t nrf_spis_bit_order_t
+#define nrf_drv_spis_endian_t               nrf_spis_bit_order_t
 /** @brief Macro for providing API backward compatibility. */
-#define NRF_DRV_SPIS_MODE_0 NRF_SPIS_MODE_0
+#define NRF_DRV_SPIS_MODE_0                 NRF_SPIS_MODE_0
 /** @brief Macro for providing API backward compatibility. */
-#define NRF_DRV_SPIS_MODE_1 NRF_SPIS_MODE_1
+#define NRF_DRV_SPIS_MODE_1                 NRF_SPIS_MODE_1
 /** @brief Macro for providing API backward compatibility. */
-#define NRF_DRV_SPIS_MODE_2 NRF_SPIS_MODE_2
+#define NRF_DRV_SPIS_MODE_2                 NRF_SPIS_MODE_2
 /** @brief Macro for providing API backward compatibility. */
-#define NRF_DRV_SPIS_MODE_3 NRF_SPIS_MODE_3
+#define NRF_DRV_SPIS_MODE_3                 NRF_SPIS_MODE_3
 /** @brief Macro for providing API backward compatibility. */
-#define nrf_drv_spis_mode_t nrf_spis_mode_t
+#define nrf_drv_spis_mode_t                 nrf_spis_mode_t
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_SPIS_BUFFERS_SET_DONE NRFX_SPIS_BUFFERS_SET_DONE
+#define NRF_DRV_SPIS_BUFFERS_SET_DONE       NRFX_SPIS_BUFFERS_SET_DONE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_SPIS_XFER_DONE NRFX_SPIS_XFER_DONE
+#define NRF_DRV_SPIS_XFER_DONE              NRFX_SPIS_XFER_DONE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_SPIS_EVT_TYPE_MAX NRFX_SPIS_EVT_TYPE_MAX
+#define NRF_DRV_SPIS_EVT_TYPE_MAX           NRFX_SPIS_EVT_TYPE_MAX
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_spis_event_type_t nrfx_spis_evt_type_t
+#define nrf_drv_spis_event_type_t           nrfx_spis_evt_type_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_spis_uninit nrfx_spis_uninit
+#define nrf_drv_spis_uninit                 nrfx_spis_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_spis_buffers_set nrfx_spis_buffers_set
+#define nrf_drv_spis_buffers_set            nrfx_spis_buffers_set
 
 /** @brief SPI slave event callback function type.
  *
@@ -131,9 +131,9 @@ typedef void (*nrf_drv_spis_event_handler_t)(nrf_drv_spis_event_t event);
  *                                 on CSN pin cannot be initialized. Possible
  *                                 only when using nRF52 Anomaly 109 workaround.
  */
-ret_code_t nrf_drv_spis_init(nrf_drv_spis_t const *const p_instance,
-                             nrf_drv_spis_config_t const *p_config,
-                             nrf_drv_spis_event_handler_t event_handler);
+ret_code_t nrf_drv_spis_init(nrf_drv_spis_t const * const  p_instance,
+                             nrf_drv_spis_config_t const * p_config,
+                             nrf_drv_spis_event_handler_t  event_handler);
 
 /** @} */
 

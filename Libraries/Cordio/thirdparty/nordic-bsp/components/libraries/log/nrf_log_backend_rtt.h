@@ -38,7 +38,7 @@
  *
  */
 
-/**@file
+ /**@file
  *
  * @defgroup nrf_log_backend_rtt Log RTT backend
  * @{
@@ -58,7 +58,7 @@ extern "C" {
 extern const nrf_log_backend_api_t nrf_log_backend_rtt_api;
 
 typedef struct {
-    nrf_log_backend_t backend;
+    nrf_log_backend_t               backend;
 } nrf_log_backend_rtt_t;
 
 /**
@@ -66,7 +66,8 @@ typedef struct {
  *
  * @param _name Name of the instance.
  */
-#define NRF_LOG_BACKEND_RTT_DEF(_name) NRF_LOG_BACKEND_DEF(_name, nrf_log_backend_rtt_api, NULL)
+#define NRF_LOG_BACKEND_RTT_DEF(_name)  \
+    NRF_LOG_BACKEND_DEF(_name, nrf_log_backend_rtt_api, NULL)
 
 void nrf_log_backend_rtt_init(void);
 

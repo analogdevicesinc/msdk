@@ -27,7 +27,8 @@
 #define MESH_SECURITY_DERIV_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,54 +36,58 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Security Network Key derivation request */
-typedef struct meshSecNetKeyDerivReq_tag {
-    meshSecKeyMaterialDerivCback_t cback; /*!< User callback */
-    void *pParam; /*!< Generic parameter provided in request */
-    uint16_t netKeyListIdx; /*!< Pointer to processed ::meshSecNetKeyInfo_t or
+typedef struct meshSecNetKeyDerivReq_tag
+{
+  meshSecKeyMaterialDerivCback_t cback;         /*!< User callback */
+  void                           *pParam;       /*!< Generic parameter provided in request */
+  uint16_t                       netKeyListIdx; /*!< Pointer to processed ::meshSecNetKeyInfo_t or
                                                  *   NULL if request is not in progress
                                                  */
-    bool_t isUpdate; /*!< TRUE if request type is update */
-    uint16_t friendUpdtIdx; /*!< Current index of the updated friendship
+  bool_t                         isUpdate;      /*!< TRUE if request type is update */
+  uint16_t                       friendUpdtIdx; /*!< Current index of the updated friendship
                                                  *   material array
                                                  */
 } meshSecNetKeyDerivReq_t;
 
 /*! Security application key derivation request */
-typedef struct meshSecAppKeyDerivReq_tag {
-    meshSecKeyMaterialDerivCback_t cback; /*!< User callback */
-    void *pParam; /*!< Generic parameter provided in request */
-    uint16_t appKeyListIdx; /*!< Pointer to processed ::meshSecAppKeyInfo_t or
+typedef struct meshSecAppKeyDerivReq_tag
+{
+  meshSecKeyMaterialDerivCback_t cback;         /*!< User callback */
+  void                           *pParam;       /*!< Generic parameter provided in request */
+  uint16_t                       appKeyListIdx; /*!< Pointer to processed ::meshSecAppKeyInfo_t or
                                                  *   NULL if request is not in progress
                                                  */
-    bool_t isUpdate; /*!< TRUE if request type is update */
+  bool_t                         isUpdate;      /*!< TRUE if request type is update */
 } meshSecAppKeyDerivReq_t;
 
 /*! Security Network Key derivation request with friendship credentials */
-typedef struct meshSecFriendDerivReq_tag {
-    meshSecFriendCredDerivCback_t cback; /*!< User callback */
-    void *pParam; /*!< Generic parameter provided in request */
-    uint16_t friendListIdx; /*!< Pointer to processed ::meshSecFriendMat_t or
+typedef struct meshSecFriendDerivReq_tag
+{
+  meshSecFriendCredDerivCback_t  cback;         /*!< User callback */
+  void                           *pParam;       /*!< Generic parameter provided in request */
+  uint16_t                       friendListIdx; /*!< Pointer to processed ::meshSecFriendMat_t or
                                                  *   NULL if request is not in progress
                                                  */
-    uint8_t *pK2PBuff; /*!< Pointer to K2 P buffer */
-    uint16_t netKeyListIdx; /*!< Pointer to associated Network Key
+  uint8_t                        *pK2PBuff;     /*!< Pointer to K2 P buffer */
+  uint16_t                       netKeyListIdx; /*!< Pointer to associated Network Key
                                                  *   derivation information
                                                  */
-    uint16_t netKeyIndex; /*!< Store user request NetKey Index in case the key
+  uint16_t                       netKeyIndex;   /*!< Store user request NetKey Index in case the key
                                                  *   gets removed
                                                  */
-    bool_t doUpdate; /*!< TRUE if updated material should be generated */
+  bool_t                         doUpdate;      /*!< TRUE if updated material should be generated */
 } meshSecFriendDerivReq_t;
 
 /*! Request sources for key derivation procedures. */
-typedef struct meshSecKeyDerivRequests_tag {
-    meshSecAppKeyDerivReq_t appKeyDerivReq; /*! Identification data for an Application Key based
+typedef struct meshSecKeyDerivRequests_tag
+{
+  meshSecAppKeyDerivReq_t appKeyDerivReq;     /*! Identification data for an Application Key based
                                                *  derivation procedure
                                                */
-    meshSecNetKeyDerivReq_t netKeyDerivReq; /*! Identification data for a Network Key
+  meshSecNetKeyDerivReq_t netKeyDerivReq;     /*! Identification data for a Network Key
                                                *  based derivation procedure
                                                */
-    meshSecFriendDerivReq_t friendMatDerivReq; /*! Identification data for a Network Key based
+  meshSecFriendDerivReq_t friendMatDerivReq;  /*! Identification data for a Network Key based
                                                *  derivation procedure with friendship
                                                *  credentials
                                                */

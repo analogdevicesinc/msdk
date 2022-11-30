@@ -37,13 +37,14 @@
 *************************************************************************************************/
 
 /*! \brief The maximum length of a power measurement */
-#define CSCPS_PM_MAX_LEN 11
+#define CSCPS_PM_MAX_LEN          11
 
 /*! \brief Cycle Speed and Cadence Measurement Flag Indicies */
-enum {
-    CSCPS_WRDP_FLAG_INDEX, /*! \brief Wheel Revolution Data Present */
-    CSCPS_CRDP_FLAG_INDEX, /*! \brief Crank Revolution Data Present */
-    CSCPS_NUM_FLAGS
+enum
+{
+  CSCPS_WRDP_FLAG_INDEX,          /*! \brief Wheel Revolution Data Present */
+  CSCPS_CRDP_FLAG_INDEX,          /*! \brief Crank Revolution Data Present */
+  CSCPS_NUM_FLAGS
 };
 
 /**************************************************************************************************
@@ -51,12 +52,13 @@ Data Types
 **************************************************************************************************/
 
 /*! \brief Cycle Speed Measurement Data */
-typedef struct {
-    uint8_t flags; /*! \brief Speed Measurement Flags */
-    uint32_t wheelRevs; /*! \brief Cumulative Wheel Revolutions */
-    uint16_t lastWheelEventTime; /*! \brief Last Wheel Event Time */
-    uint16_t crankRevs; /*! \brief Cumulative Crank Revolutions */
-    uint16_t lastCrankEventTime; /*! \brief Last Crank Event Time */
+typedef struct
+{
+  uint8_t   flags;                  /*! \brief Speed Measurement Flags */
+  uint32_t  wheelRevs;              /*! \brief Cumulative Wheel Revolutions */
+  uint16_t  lastWheelEventTime;     /*! \brief Last Wheel Event Time */
+  uint16_t  crankRevs;              /*! \brief Cumulative Crank Revolutions */
+  uint16_t  lastCrankEventTime;     /*! \brief Last Crank Event Time */
 } cscpSmData_t;
 
 /**************************************************************************************************
@@ -78,30 +80,31 @@ cscpSmData_t cscpsSmData;
 /*************************************************************************************************/
 void CscpsSetParameter(uint8_t type, uint32_t value)
 {
-    switch (type) {
+  switch (type)
+  {
     case CSCP_SM_PARAM_WHEEL_REVOLUTIONS:
-        cscpsSmData.flags |= (1 << CSCPS_WRDP_FLAG_INDEX);
-        cscpsSmData.wheelRevs = value;
-        break;
+      cscpsSmData.flags |= (1 << CSCPS_WRDP_FLAG_INDEX);
+      cscpsSmData.wheelRevs = value;
+      break;
 
     case CSCP_SM_PARAM_LAST_WHEEL_EVT_TIME:
-        cscpsSmData.flags |= (1 << CSCPS_WRDP_FLAG_INDEX);
-        cscpsSmData.lastWheelEventTime = (uint16_t)value;
-        break;
+      cscpsSmData.flags |= (1 << CSCPS_WRDP_FLAG_INDEX);
+      cscpsSmData.lastWheelEventTime = (uint16_t) value;
+      break;
 
     case CSCP_SM_PARAM_CRANK_REVOLUTIONS:
-        cscpsSmData.flags |= (1 << CSCPS_CRDP_FLAG_INDEX);
-        cscpsSmData.crankRevs = (uint16_t)value;
-        break;
+      cscpsSmData.flags |= (1 << CSCPS_CRDP_FLAG_INDEX);
+      cscpsSmData.crankRevs = (uint16_t) value;
+      break;
 
     case CSCP_SM_PARAM_LAST_CRANK_TIME:
-        cscpsSmData.flags |= (1 << CSCPS_CRDP_FLAG_INDEX);
-        cscpsSmData.lastCrankEventTime = (uint16_t)value;
-        break;
+      cscpsSmData.flags |= (1 << CSCPS_CRDP_FLAG_INDEX);
+      cscpsSmData.lastCrankEventTime = (uint16_t) value;
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -115,7 +118,7 @@ void CscpsSetParameter(uint8_t type, uint32_t value)
 /*************************************************************************************************/
 void CscpsSetSensorLocation(uint8_t location)
 {
-    AttsSetAttr(CSCS_SL_HDL, sizeof(uint8_t), &location);
+  AttsSetAttr(CSCS_SL_HDL, sizeof(uint8_t), &location);
 }
 
 /*************************************************************************************************/
@@ -129,8 +132,8 @@ void CscpsSetSensorLocation(uint8_t location)
 /*************************************************************************************************/
 void CscpsSetFeatures(uint16_t features)
 {
-    uint8_t tempData[2] = { UINT16_TO_BYTES(features) };
-    AttsSetAttr(CSCS_CSF_HDL, sizeof(tempData), tempData);
+  uint8_t tempData[2] = {UINT16_TO_BYTES(features)};
+  AttsSetAttr(CSCS_CSF_HDL, sizeof(tempData), tempData);
 }
 
 /*************************************************************************************************/
@@ -144,36 +147,39 @@ void CscpsSetFeatures(uint16_t features)
 /*************************************************************************************************/
 void CscpsSendSpeedMeasurement(dmConnId_t connId)
 {
-    int8_t i;
-    uint16_t len;
-    uint8_t msg[CSCPS_PM_MAX_LEN];
-    uint8_t *p = msg;
+  int8_t i;
+  uint16_t len;
+  uint8_t msg[CSCPS_PM_MAX_LEN];
+  uint8_t *p = msg;
 
-    /* Add manditory parameters */
-    UINT8_TO_BSTREAM(p, cscpsSmData.flags);
+  /* Add manditory parameters */
+  UINT8_TO_BSTREAM(p, cscpsSmData.flags);
 
-    /* Add optional parameters */
-    for (i = 0; i < CSCPS_NUM_FLAGS; i++) {
-        if (cscpsSmData.flags & (1 << i)) {
-            switch (i) {
-            case CSCPS_WRDP_FLAG_INDEX:
-                UINT32_TO_BSTREAM(p, cscpsSmData.wheelRevs);
-                UINT16_TO_BSTREAM(p, cscpsSmData.lastWheelEventTime);
-                break;
-            case CSCPS_CRDP_FLAG_INDEX:
-                UINT16_TO_BSTREAM(p, cscpsSmData.crankRevs);
-                UINT16_TO_BSTREAM(p, cscpsSmData.lastCrankEventTime);
-                break;
-            }
-        }
+  /* Add optional parameters */
+  for (i = 0; i < CSCPS_NUM_FLAGS; i++)
+  {
+    if (cscpsSmData.flags & (1 << i))
+    {
+      switch (i)
+      {
+      case CSCPS_WRDP_FLAG_INDEX:
+        UINT32_TO_BSTREAM(p, cscpsSmData.wheelRevs);
+        UINT16_TO_BSTREAM(p, cscpsSmData.lastWheelEventTime);
+        break;
+      case CSCPS_CRDP_FLAG_INDEX:
+        UINT16_TO_BSTREAM(p, cscpsSmData.crankRevs);
+        UINT16_TO_BSTREAM(p, cscpsSmData.lastCrankEventTime);
+        break;
+      }
     }
+  }
 
-    /* Calculate message length */
-    len = (uint16_t)(p - msg);
+  /* Calculate message length */
+  len = (uint16_t) (p - msg);
 
-    /* Transmit notification */
-    AttsHandleValueNtf(connId, CSCS_CSM_HDL, len, msg);
+  /* Transmit notification */
+  AttsHandleValueNtf(connId, CSCS_CSM_HDL, len, msg);
 
-    /* Clear the measurement data */
-    memset(&cscpsSmData, 0, sizeof(cscpsSmData));
+  /* Clear the measurement data */
+  memset(&cscpsSmData, 0, sizeof(cscpsSmData));
 }

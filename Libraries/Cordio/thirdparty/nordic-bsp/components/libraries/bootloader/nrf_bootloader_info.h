@@ -63,23 +63,24 @@ extern "C" {
  */
 #ifndef BOOTLOADER_START_ADDR
 #if (__LINT__ == 1)
-#define BOOTLOADER_START_ADDR (0x3AC00)
+    #define BOOTLOADER_START_ADDR (0x3AC00)
 #elif defined(CODE_START)
-#define BOOTLOADER_START_ADDR (CODE_START)
+    #define BOOTLOADER_START_ADDR (CODE_START)
 #else
-#error Not a valid compiler/linker for BOOTLOADER_START_ADDR.
+    #error Not a valid compiler/linker for BOOTLOADER_START_ADDR.
 #endif
 #endif
+
 
 /** @brief Macro for getting the size of the bootloader image.
  */
 #ifndef BOOTLOADER_SIZE
 #if (__LINT__ == 1)
-#define BOOTLOADER_SIZE (0x6000)
-#elif defined(NRF51)
-#define BOOTLOADER_SIZE (BOOTLOADER_SETTINGS_ADDRESS - BOOTLOADER_START_ADDR)
-#elif defined(NRF52_SERIES)
-#define BOOTLOADER_SIZE (NRF_MBR_PARAMS_PAGE_ADDRESS - BOOTLOADER_START_ADDR)
+    #define BOOTLOADER_SIZE        (0x6000)
+#elif defined ( NRF51 )
+    #define BOOTLOADER_SIZE (BOOTLOADER_SETTINGS_ADDRESS - BOOTLOADER_START_ADDR)
+#elif defined( NRF52_SERIES )
+    #define BOOTLOADER_SIZE (NRF_MBR_PARAMS_PAGE_ADDRESS - BOOTLOADER_START_ADDR)
 #endif
 #endif
 
@@ -88,18 +89,15 @@ extern "C" {
 
 /** @brief Macro for converting an offset inside the SoftDevice information struct to an absolute address.
  */
-#define SD_INFO_ABS_OFFSET_GET(baseaddr, offset) \
-    ((baseaddr) + (SOFTDEVICE_INFO_STRUCT_OFFSET) + (offset))
+#define SD_INFO_ABS_OFFSET_GET(baseaddr, offset) ((baseaddr) + (SOFTDEVICE_INFO_STRUCT_OFFSET) + (offset))
 
 /** @brief Macros for reading a byte or a word at a particular offset inside a SoftDevice information struct.
  *         Use MBR_SIZE as baseaddr when the SoftDevice is installed just above the MBR (the usual case).
  */
-#define SD_OFFSET_GET_UINT32(baseaddr, offset) \
-    (*((uint32_t *)SD_INFO_ABS_OFFSET_GET(baseaddr, offset)))
-#define SD_OFFSET_GET_UINT16(baseaddr, offset) \
-    (*((uint16_t *)SD_INFO_ABS_OFFSET_GET(baseaddr, offset)))
-#define SD_OFFSET_GET_UINT8(baseaddr, offset) \
-    (*((uint8_t *)SD_INFO_ABS_OFFSET_GET(baseaddr, offset)))
+#define SD_OFFSET_GET_UINT32(baseaddr, offset) (*((uint32_t *) SD_INFO_ABS_OFFSET_GET(baseaddr, offset)))
+#define SD_OFFSET_GET_UINT16(baseaddr, offset) (*((uint16_t *) SD_INFO_ABS_OFFSET_GET(baseaddr, offset)))
+#define SD_OFFSET_GET_UINT8(baseaddr, offset)  (*((uint8_t *)  SD_INFO_ABS_OFFSET_GET(baseaddr, offset)))
+
 
 #if defined(BLE_STACK_SUPPORT_REQD) || defined(ANT_STACK_SUPPORT_REQD)
 #include "nrf_sdm.h"
@@ -109,12 +107,12 @@ extern "C" {
  */
 #define SOFTDEVICE_INFO_STRUCT_OFFSET (0x2000)
 
-#define SD_INFO_STRUCT_SIZE(baseaddr) SD_OFFSET_GET_UINT8(baseaddr, 0x00)
+#define SD_INFO_STRUCT_SIZE(baseaddr) SD_OFFSET_GET_UINT8(baseaddr,  0x00)
 
 /** @brief Macro for reading the size of a SoftDevice at a given base address.
  */
 #ifndef SD_SIZE_GET
-#define SD_SIZE_GET(baseaddr) SD_OFFSET_GET_UINT32(baseaddr, 0x08)
+#define SD_SIZE_GET(baseaddr)         SD_OFFSET_GET_UINT32(baseaddr, 0x08)
 #endif
 
 /** @brief Macro for reading the version of a SoftDevice at a given base address.
@@ -123,18 +121,20 @@ extern "C" {
  *             major_version * 1000000 + minor_version * 1000 + bugfix_version
  */
 #ifndef SD_VERSION_GET
-#define SD_VERSION_GET(baseaddr) \
-    ((SD_INFO_STRUCT_SIZE(baseaddr) > (0x14)) ? SD_OFFSET_GET_UINT32(baseaddr, 0x14) : 0)
+#define SD_VERSION_GET(baseaddr)    ((SD_INFO_STRUCT_SIZE(baseaddr) > (0x14)) \
+                                    ? SD_OFFSET_GET_UINT32(baseaddr, 0x14)    \
+                                    : 0)
 #endif
 
 /** @brief Defines a macro for retrieving the actual SoftDevice ID from a given base address. Use
  *         @ref MBR_SIZE as the argument when the SoftDevice is installed just above the MBR (the
  *         usual case). */
 #ifndef SD_ID_GET
-#define SD_ID_GET(baseaddr) \
-    ((SD_INFO_STRUCT_SIZE(baseaddr) > 0x10) ? SD_OFFSET_GET_UINT32(baseaddr, 0x10) : 0)
+#define SD_ID_GET(baseaddr) ((SD_INFO_STRUCT_SIZE(baseaddr) > 0x10) \
+        ? SD_OFFSET_GET_UINT32(baseaddr, 0x10) : 0)
 #endif
 #endif
+
 
 /** @brief Macro for reading the magic number of a SoftDevice at a given base address.
  */
@@ -162,28 +162,21 @@ extern "C" {
 
 /** @brief Read the major version of the SoftDevice from the raw version number. See \ref SD_VERSION_GET.
  */
-#define SD_MAJOR_VERSION_EXTRACT(raw_version) ((raw_version) / SD_MAJOR_VERSION_MULTIPLIER)
+#define SD_MAJOR_VERSION_EXTRACT(raw_version) ((raw_version)/SD_MAJOR_VERSION_MULTIPLIER)
 
-#define BOOTLOADER_DFU_GPREGRET_MASK \
-    (0xF8) /**< Mask for GPGPREGRET bits used for the magic pattern written to GPREGRET register to signal between main app and DFU. */
-#define BOOTLOADER_DFU_GPREGRET \
-    (0xB0) /**< Magic pattern written to GPREGRET register to signal between main app and DFU. The 3 lower bits are assumed to be used for signalling purposes.*/
-#define BOOTLOADER_DFU_START_BIT_MASK \
-    (0x01) /**< Bit mask to signal from main application to enter DFU mode using a buttonless service. */
 
-#define BOOTLOADER_DFU_GPREGRET2_MASK \
-    (0xF8) /**< Mask for GPGPREGRET2 bits used for the magic pattern written to GPREGRET2 register to signal between main app and DFU. */
-#define BOOTLOADER_DFU_GPREGRET2 \
-    (0xA8) /**< Magic pattern written to GPREGRET2 register to signal between main app and DFU. The 3 lower bits are assumed to be used for signalling purposes.*/
-#define BOOTLOADER_DFU_SKIP_CRC_BIT_MASK \
-    (0x01) /**< Bit mask to signal from main application that CRC-check is not needed for image verification. */
+#define BOOTLOADER_DFU_GPREGRET_MASK            (0xF8)      /**< Mask for GPGPREGRET bits used for the magic pattern written to GPREGRET register to signal between main app and DFU. */
+#define BOOTLOADER_DFU_GPREGRET                 (0xB0)      /**< Magic pattern written to GPREGRET register to signal between main app and DFU. The 3 lower bits are assumed to be used for signalling purposes.*/
+#define BOOTLOADER_DFU_START_BIT_MASK           (0x01)      /**< Bit mask to signal from main application to enter DFU mode using a buttonless service. */
 
-#define BOOTLOADER_DFU_START   \
-    (BOOTLOADER_DFU_GPREGRET | \
-     BOOTLOADER_DFU_START_BIT_MASK) /**< Magic number to signal that bootloader should enter DFU mode because of signal from Buttonless DFU in main app.*/
-#define BOOTLOADER_DFU_SKIP_CRC \
-    (BOOTLOADER_DFU_GPREGRET2 | \
-     BOOTLOADER_DFU_SKIP_CRC_BIT_MASK) /**< Magic number to signal that CRC can be skipped due to low power modes.*/
+#define BOOTLOADER_DFU_GPREGRET2_MASK           (0xF8)      /**< Mask for GPGPREGRET2 bits used for the magic pattern written to GPREGRET2 register to signal between main app and DFU. */
+#define BOOTLOADER_DFU_GPREGRET2                (0xA8)      /**< Magic pattern written to GPREGRET2 register to signal between main app and DFU. The 3 lower bits are assumed to be used for signalling purposes.*/
+#define BOOTLOADER_DFU_SKIP_CRC_BIT_MASK        (0x01)      /**< Bit mask to signal from main application that CRC-check is not needed for image verification. */
+
+
+#define BOOTLOADER_DFU_START    (BOOTLOADER_DFU_GPREGRET | BOOTLOADER_DFU_START_BIT_MASK)      /**< Magic number to signal that bootloader should enter DFU mode because of signal from Buttonless DFU in main app.*/
+#define BOOTLOADER_DFU_SKIP_CRC (BOOTLOADER_DFU_GPREGRET2 | BOOTLOADER_DFU_SKIP_CRC_BIT_MASK)  /**< Magic number to signal that CRC can be skipped due to low power modes.*/
+
 
 /** @brief Macro based on @c NRF_DFU_DEBUG_VERSION that can be checked for true/false instead of defined/not defined.
  */

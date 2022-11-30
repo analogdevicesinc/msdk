@@ -40,10 +40,11 @@
 
 #if SEC_CMAC_CFG == SEC_CMAC_CFG_HCI
 
-enum {
-    SEC_CMAC_STATE_SUBKEY,
-    SEC_CMAC_STATE_BLOCK,
-    SEC_CMAC_STATE_COMPLETE,
+enum
+{
+  SEC_CMAC_STATE_SUBKEY,
+  SEC_CMAC_STATE_BLOCK,
+  SEC_CMAC_STATE_COMPLETE,
 };
 
 /**************************************************************************************************
@@ -63,37 +64,42 @@ extern secCb_t secCb;
 /*************************************************************************************************/
 static void secCmacProcessBlock(secQueueBuf_t *pBuf)
 {
-    secCmacSecCb_t *pCmac = (secCmacSecCb_t *)pBuf->pCb;
-    uint8_t text[SEC_BLOCK_LEN];
-    uint8_t *pMn = pCmac->pPlainText + pCmac->position;
-    int16_t remaining = (int16_t)pCmac->len - pCmac->position;
+  secCmacSecCb_t *pCmac = (secCmacSecCb_t*) pBuf->pCb;
+  uint8_t text[SEC_BLOCK_LEN];
+  uint8_t *pMn = pCmac->pPlainText + pCmac->position;
+  int16_t remaining = (int16_t) pCmac->len - pCmac->position;
 
-    /* Check for Last Block */
-    if (remaining <= SEC_BLOCK_LEN) {
-        memcpy(text, pMn, remaining);
+  /* Check for Last Block */
+  if (remaining <= SEC_BLOCK_LEN)
+  {
+    memcpy(text, pMn, remaining);
 
-        /* Pad the message if necessary */
-        if (remaining != SEC_BLOCK_LEN) {
-            memset(text + remaining, 0, SEC_BLOCK_LEN - remaining);
-            text[remaining] = 0x80;
-        }
-
-        /* XOr the subkey */
-        Calc128Xor(text, pCmac->subkey);
-        pCmac->state = SEC_CMAC_STATE_COMPLETE;
-    } else {
-        /* Copy the block to the buffer */
-        Calc128Cpy(text, pMn);
+    /* Pad the message if necessary */
+    if (remaining != SEC_BLOCK_LEN)
+    {
+      memset(text + remaining, 0, SEC_BLOCK_LEN - remaining);
+      text[remaining] = 0x80;
     }
 
-    if (pCmac->position != 0) {
-        /* Except for first block, XOr the previous AES calculation */
-        Calc128Xor(text, pBuf->ciphertext);
-    }
+    /* XOr the subkey */
+    Calc128Xor(text, pCmac->subkey);
+    pCmac->state = SEC_CMAC_STATE_COMPLETE;
+  }
+  else
+  {
+    /* Copy the block to the buffer */
+    Calc128Cpy(text, pMn);
+  }
 
-    pCmac->position += SEC_BLOCK_LEN;
+  if (pCmac->position != 0)
+  {
+    /* Except for first block, XOr the previous AES calculation */
+    Calc128Xor(text, pBuf->ciphertext);
+  }
 
-    SecLeEncryptCmd(pCmac->key, text, pBuf, pCmac->handlerId);
+  pCmac->position += SEC_BLOCK_LEN;
+
+  SecLeEncryptCmd(pCmac->key, text, pBuf, pCmac->handlerId);
 }
 
 /*************************************************************************************************/
@@ -107,13 +113,13 @@ static void secCmacProcessBlock(secQueueBuf_t *pBuf)
 /*************************************************************************************************/
 static void secCmacGenSubkey1(secQueueBuf_t *pBuf)
 {
-    secCmacSecCb_t *pCmac = (secCmacSecCb_t *)pBuf->pCb;
-    uint8_t buf[SEC_BLOCK_LEN];
+  secCmacSecCb_t *pCmac = (secCmacSecCb_t*) pBuf->pCb;
+  uint8_t buf[SEC_BLOCK_LEN];
 
-    /* Perform aes on the key with a constant zero */
-    memset(buf, 0, SEC_BLOCK_LEN);
+  /* Perform aes on the key with a constant zero */
+  memset(buf, 0, SEC_BLOCK_LEN);
 
-    SecLeEncryptCmd(pCmac->key, buf, pBuf, pCmac->handlerId);
+  SecLeEncryptCmd(pCmac->key, buf, pBuf, pCmac->handlerId);
 }
 
 /*************************************************************************************************/
@@ -128,22 +134,26 @@ static void secCmacGenSubkey1(secQueueBuf_t *pBuf)
 /*************************************************************************************************/
 static uint8_t secCmacKeyShift(uint8_t *pBuf, uint8_t shift)
 {
-    uint8_t overflow, i;
-    uint8_t finalOverflow = pBuf[0] >> (8 - shift);
+  uint8_t overflow, i;
+  uint8_t finalOverflow = pBuf[0] >> (8 - shift);
 
-    for (i = 0; i < SEC_CMAC_KEY_LEN; i++) {
-        /* store shifted bits for next byte */
-        if (i < SEC_CMAC_KEY_LEN - 1) {
-            overflow = pBuf[i + 1] >> (8 - shift);
-        } else {
-            overflow = 0;
-        }
-
-        /* shift byte and OR in shifted bits from previous byte */
-        pBuf[i] = (pBuf[i] << shift) | overflow;
+  for (i = 0; i < SEC_CMAC_KEY_LEN; i++)
+  {
+    /* store shifted bits for next byte */
+    if (i < SEC_CMAC_KEY_LEN-1)
+    {
+      overflow = pBuf[i+1] >> (8 - shift);
+    }
+    else
+    {
+      overflow = 0;
     }
 
-    return finalOverflow;
+    /* shift byte and OR in shifted bits from previous byte */
+    pBuf[i] = (pBuf[i] << shift) | overflow;
+  }
+
+  return finalOverflow;
 }
 
 /*************************************************************************************************/
@@ -157,32 +167,35 @@ static uint8_t secCmacKeyShift(uint8_t *pBuf, uint8_t shift)
 /*************************************************************************************************/
 static void secCmacGenSubkey2(secQueueBuf_t *pBuf)
 {
-    secCmacSecCb_t *pCmac = (secCmacSecCb_t *)pBuf->pCb;
-    uint8_t overflow;
+  secCmacSecCb_t *pCmac = (secCmacSecCb_t*) pBuf->pCb;
+  uint8_t overflow;
 
-    /* Copy the result of the AES oepration */
-    Calc128Cpy(pCmac->subkey, pBuf->ciphertext);
+  /* Copy the result of the AES oepration */
+  Calc128Cpy(pCmac->subkey, pBuf->ciphertext);
 
-    /* Calculate the K1 subkey */
+  /* Calculate the K1 subkey */
+  overflow = secCmacKeyShift(pCmac->subkey, 1);
+
+  if (overflow)
+  {
+    pCmac->subkey[SEC_BLOCK_LEN-1] ^= SEC_CMAC_RB;
+  }
+
+  if (pCmac->len % SEC_BLOCK_LEN != 0)
+  {
+    /* If the message len is not a multiple of SEC_BLOCK_LEN */
+    /* Continue with generation of the K2 subkey based on the K1 key */
     overflow = secCmacKeyShift(pCmac->subkey, 1);
 
-    if (overflow) {
-        pCmac->subkey[SEC_BLOCK_LEN - 1] ^= SEC_CMAC_RB;
+    if (overflow)
+    {
+      pCmac->subkey[SEC_BLOCK_LEN-1] ^= SEC_CMAC_RB;
     }
+  }
 
-    if (pCmac->len % SEC_BLOCK_LEN != 0) {
-        /* If the message len is not a multiple of SEC_BLOCK_LEN */
-        /* Continue with generation of the K2 subkey based on the K1 key */
-        overflow = secCmacKeyShift(pCmac->subkey, 1);
-
-        if (overflow) {
-            pCmac->subkey[SEC_BLOCK_LEN - 1] ^= SEC_CMAC_RB;
-        }
-    }
-
-    /* Begin CMAC calculation */
-    pCmac->state = SEC_CMAC_STATE_BLOCK;
-    secCmacProcessBlock(pBuf);
+  /* Begin CMAC calculation */
+  pCmac->state = SEC_CMAC_STATE_BLOCK;
+  secCmacProcessBlock(pBuf);
 }
 
 /*************************************************************************************************/
@@ -196,14 +209,14 @@ static void secCmacGenSubkey2(secQueueBuf_t *pBuf)
 /*************************************************************************************************/
 static void secCmacComplete(secQueueBuf_t *pBuf)
 {
-    /* CMAC is complete, copy and send result to handler */
-    secCmacMsg_t *pMsg = (secCmacMsg_t *)&pBuf->msg;
-    secCmacSecCb_t *pCmac = (secCmacSecCb_t *)pBuf->pCb;
+  /* CMAC is complete, copy and send result to handler */
+  secCmacMsg_t *pMsg = (secCmacMsg_t *) &pBuf->msg;
+  secCmacSecCb_t *pCmac = (secCmacSecCb_t *) pBuf->pCb;
 
-    pMsg->pCiphertext = pBuf->ciphertext;
-    pMsg->pPlainText = pCmac->pPlainText;
+  pMsg->pCiphertext = pBuf->ciphertext;
+  pMsg->pPlainText = pCmac->pPlainText;
 
-    WsfMsgSend(pCmac->handlerId, pMsg);
+  WsfMsgSend(pCmac->handlerId, pMsg);
 }
 
 /*************************************************************************************************/
@@ -219,25 +232,27 @@ static void secCmacComplete(secQueueBuf_t *pBuf)
 /*************************************************************************************************/
 void SecCmacHciCback(secQueueBuf_t *pBuf, hciEvt_t *pEvent, wsfHandlerId_t handlerId)
 {
-    secCmacSecCb_t *pCmac = (secCmacSecCb_t *)pBuf->pCb;
+  secCmacSecCb_t *pCmac = (secCmacSecCb_t *) pBuf->pCb;
 
-    if (pCmac) {
-        Calc128Cpy(pBuf->ciphertext, pEvent->leEncryptCmdCmpl.data);
+  if (pCmac)
+  {
+    Calc128Cpy(pBuf->ciphertext, pEvent->leEncryptCmdCmpl.data);
 
-        switch (pCmac->state) {
-        case SEC_CMAC_STATE_SUBKEY:
-            secCmacGenSubkey2(pBuf);
-            break;
+    switch (pCmac->state)
+    {
+    case SEC_CMAC_STATE_SUBKEY:
+      secCmacGenSubkey2(pBuf);
+      break;
 
-        case SEC_CMAC_STATE_BLOCK:
-            secCmacProcessBlock(pBuf);
-            break;
+    case SEC_CMAC_STATE_BLOCK:
+      secCmacProcessBlock(pBuf);
+      break;
 
-        case SEC_CMAC_STATE_COMPLETE:
-            secCmacComplete(pBuf);
-            break;
-        }
+    case SEC_CMAC_STATE_COMPLETE:
+      secCmacComplete(pBuf);
+      break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -257,37 +272,38 @@ void SecCmacHciCback(secQueueBuf_t *pBuf, hciEvt_t *pEvent, wsfHandlerId_t handl
 bool_t SecCmac(const uint8_t *pKey, uint8_t *pPlainText, uint16_t textLen, wsfHandlerId_t handlerId,
                uint16_t param, uint8_t event)
 {
-    secQueueBuf_t *pBuf;
-    uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secCmacSecCb_t);
+  secQueueBuf_t *pBuf;
+  uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secCmacSecCb_t);
 
-    if ((pBuf = WsfMsgAlloc(bufSize)) != NULL) {
-        secCmacSecCb_t *pCmacCb = (secCmacSecCb_t *)(pBuf + 1);
+  if ((pBuf = WsfMsgAlloc(bufSize)) != NULL)
+  {
+    secCmacSecCb_t *pCmacCb = (secCmacSecCb_t *) (pBuf + 1);
 
-        /* Setup queue buffer */
-        pBuf->pCb = pCmacCb;
-        pBuf->type = SEC_TYPE_CMAC;
+    /* Setup queue buffer */
+    pBuf->pCb = pCmacCb;
+    pBuf->type = SEC_TYPE_CMAC;
 
-        pBuf->msg.hdr.status = secCb.token++;
-        pBuf->msg.hdr.param = param;
-        pBuf->msg.hdr.event = event;
+    pBuf->msg.hdr.status = secCb.token++;
+    pBuf->msg.hdr.param = param;
+    pBuf->msg.hdr.event = event;
 
-        pCmacCb->pPlainText = pPlainText;
+    pCmacCb->pPlainText = pPlainText;
 
-        pCmacCb->len = textLen;
-        pCmacCb->position = 0;
-        pCmacCb->handlerId = handlerId;
-        pCmacCb->state = SEC_CMAC_STATE_SUBKEY;
+    pCmacCb->len = textLen;
+    pCmacCb->position = 0;
+    pCmacCb->handlerId = handlerId;
+    pCmacCb->state = SEC_CMAC_STATE_SUBKEY;
 
-        /* Copy key */
-        Calc128Cpy(pCmacCb->key, (uint8_t *)pKey);
+    /* Copy key */
+    Calc128Cpy(pCmacCb->key, (uint8_t *) pKey);
 
-        /* Start the CMAC process by calculating the subkey */
-        secCmacGenSubkey1(pBuf);
+    /* Start the CMAC process by calculating the subkey */
+    secCmacGenSubkey1(pBuf);
 
-        return TRUE;
-    }
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -301,7 +317,7 @@ bool_t SecCmac(const uint8_t *pKey, uint8_t *pPlainText, uint16_t textLen, wsfHa
 /*************************************************************************************************/
 void SecCmacInit()
 {
-    secCb.hciCbackTbl[SEC_TYPE_CMAC] = SecCmacHciCback;
+  secCb.hciCbackTbl[SEC_TYPE_CMAC] = SecCmacHciCback;
 }
 
 #endif /* SEC_CMAC_CFG */

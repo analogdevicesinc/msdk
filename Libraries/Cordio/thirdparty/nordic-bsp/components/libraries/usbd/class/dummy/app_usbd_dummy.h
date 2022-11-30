@@ -53,6 +53,7 @@
 #include "app_usbd_dummy_types.h"
 #include "app_usbd_dummy_internal.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -75,13 +76,14 @@ extern "C" {
  *
  * @ref APP_USBD_CLASS_TYPEDEF
  */
-typedef struct {
-} app_usbd_dummy_t;
+typedef struct { } app_usbd_dummy_t;
 #else
 /*lint -save -e10 -e26 -e123 -e505 */
-APP_USBD_CLASS_NO_EP_TYPEDEF(app_usbd_dummy, APP_USBD_DUMMY_CONFIG(0),
-                             APP_USBD_DUMMY_INSTANCE_SPECIFIC_DEC,
-                             APP_USBD_DUMMY_DATA_SPECIFIC_DEC);
+APP_USBD_CLASS_NO_EP_TYPEDEF(app_usbd_dummy,                                             \
+                             APP_USBD_DUMMY_CONFIG(0),                                   \
+                             APP_USBD_DUMMY_INSTANCE_SPECIFIC_DEC,                       \
+                             APP_USBD_DUMMY_DATA_SPECIFIC_DEC                            \
+);
 #endif
 
 /*lint -restore*/
@@ -97,7 +99,7 @@ APP_USBD_CLASS_NO_EP_TYPEDEF(app_usbd_dummy, APP_USBD_DUMMY_CONFIG(0),
  */
 /*lint -save -emacro(26 64 123 505 651, APP_USBD_DUMMY_GLOBAL_DEF)*/
 #define APP_USBD_DUMMY_GLOBAL_DEF(instance_name, interface_number) \
-    APP_USBD_DUMMY_GLOBAL_DEF_INTERNAL(instance_name, interface_number)
+        APP_USBD_DUMMY_GLOBAL_DEF_INTERNAL(instance_name, interface_number)
 /*lint -restore*/
 
 /**
@@ -109,7 +111,7 @@ APP_USBD_CLASS_NO_EP_TYPEDEF(app_usbd_dummy, APP_USBD_DUMMY_CONFIG(0),
  * @return Base class instance.
  */
 static inline app_usbd_class_inst_t const *
-app_usbd_dummy_class_inst_get(app_usbd_dummy_t const *p_dummy)
+app_usbd_dummy_class_inst_get(app_usbd_dummy_t const * p_dummy)
 {
     return &p_dummy->base;
 }
@@ -121,7 +123,8 @@ app_usbd_dummy_class_inst_get(app_usbd_dummy_t const *p_dummy)
  *
  * @return Dummy class handle.
  */
-static inline app_usbd_dummy_t const *app_usbd_dummy_class_get(app_usbd_class_inst_t const *p_inst)
+static inline app_usbd_dummy_t const *
+app_usbd_dummy_class_get( app_usbd_class_inst_t const * p_inst)
 {
     return (app_usbd_dummy_t const *)p_inst;
 }

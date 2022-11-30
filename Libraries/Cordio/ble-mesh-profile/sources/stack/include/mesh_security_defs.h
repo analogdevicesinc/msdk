@@ -27,7 +27,8 @@
 #define MESH_SECURITY_DEFS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,51 +36,52 @@ extern "C" {
 **************************************************************************************************/
 
 /*! ASZMIC shift value for Application or Device Nonce */
-#define MESH_SEC_ASZMIC_SHIFT 7
+#define MESH_SEC_ASZMIC_SHIFT                   7
 
 /*! Mesh Network Security Privacy Random Size */
-#define MESH_SEC_PRIV_RAND_SIZE 7
+#define MESH_SEC_PRIV_RAND_SIZE                 7
 
 /*! Mesh Security nonce type field position */
-#define MESH_SEC_NONCE_TYPE_POS 0
+#define MESH_SEC_NONCE_TYPE_POS                 0
 
 /*! Mesh Security nonce ASZMIC and PAD or CTL-TTL or PAD field position */
-#define MESH_SEC_NONCE_ASZ_CTL_PAD_POS 1
+#define MESH_SEC_NONCE_ASZ_CTL_PAD_POS          1
 
 /*! Mesh Security nonce sequence number field start position */
-#define MESH_SEC_NONCE_SEQ_POS 2
+#define MESH_SEC_NONCE_SEQ_POS                  2
 
 /*! Mesh Security nonce type field position */
-#define MESH_SEC_NONCE_SRC_POS 5
+#define MESH_SEC_NONCE_SRC_POS                  5
 
 /*! Mesh Security nonce destination address first byte position */
-#define MESH_SEC_NONCE_DST_PAD_POS 7
+#define MESH_SEC_NONCE_DST_PAD_POS              7
 
 /*! Size of the P buffer of K2 derivation when master credentials are used */
-#define MESH_SEC_K2_P_MASTER_SIZE 1
+#define MESH_SEC_K2_P_MASTER_SIZE               1
 
 /*! Size of the P buffer of K2 derivation when friendship credentials are used */
-#define MESH_SEC_K2_P_FRIEND_SIZE 9
+#define MESH_SEC_K2_P_FRIEND_SIZE               9
 
 /*! 32-bit (NET/TRANS)MIC size in bytes */
-#define MESH_SEC_MIC_SIZE_32 (4)
+#define MESH_SEC_MIC_SIZE_32                   (4)
 
 /*! 64-bit (NET/TRANS)MIC size in bytes */
-#define MESH_SEC_MIC_SIZE_64 (8)
+#define MESH_SEC_MIC_SIZE_64                   (8)
 
 /*! Check if the AppKeyIndex or NetKeyIndex is in valid range */
-#define MESH_SEC_KEY_INDEX_IS_VALID(keyIndex) ((keyIndex) <= MESH_APP_KEY_INDEX_MAX_VAL)
+#define MESH_SEC_KEY_INDEX_IS_VALID(keyIndex)  ((keyIndex) <= MESH_APP_KEY_INDEX_MAX_VAL)
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Nonce types used in PDU security */
-enum meshSecNonceTypes {
-    MESH_SEC_NONCE_NWK = 0x00, /*!< Nonce is used for Network security */
-    MESH_SEC_NONCE_APP = 0x01, /*!< Nonce is used for Application security */
-    MESH_SEC_NONCE_DEV = 0x02, /*!< Nonce is used for Application security using Device Key */
-    MESH_SEC_NONCE_PROXY = 0x03, /*!< Nonce is used for Proxy Configuration messages */
+enum meshSecNonceTypes
+{
+  MESH_SEC_NONCE_NWK   = 0x00,  /*!< Nonce is used for Network security */
+  MESH_SEC_NONCE_APP   = 0x01,  /*!< Nonce is used for Application security */
+  MESH_SEC_NONCE_DEV   = 0x02,  /*!< Nonce is used for Application security using Device Key */
+  MESH_SEC_NONCE_PROXY = 0x03,  /*!< Nonce is used for Proxy Configuration messages */
 };
 
 #ifdef __cplusplus

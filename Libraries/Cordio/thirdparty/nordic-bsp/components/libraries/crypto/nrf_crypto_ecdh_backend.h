@@ -58,9 +58,11 @@
 #include "micro_ecc_backend_ecdh.h"
 #include "optiga_backend_ecdh.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 #if !NRF_CRYPTO_ECC_SECP160R1_ENABLED
 // Dummy typedef for disabled context
@@ -173,6 +175,7 @@ typedef uint32_t nrf_crypto_backend_ed25519_ecdh_context_t;
 // Backend implementation is NULL to indicate feature not supported
 #define nrf_crypto_backend_ed25519_ecdh_compute NULL
 #endif
+
 
 #ifdef __cplusplus
 }

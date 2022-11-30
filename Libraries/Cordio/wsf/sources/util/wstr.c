@@ -35,18 +35,19 @@
 /*************************************************************************************************/
 void WstrnCpy(char *pBuf, const char *pData, uint8_t n)
 {
-    uint8_t i;
-    uint8_t zeroing = FALSE;
+  uint8_t i;
+  uint8_t zeroing = FALSE;
 
-    for (i = 0; i < n; i++) {
-        if (!zeroing && pData[i] == '\0')
-            zeroing = TRUE;
+  for (i=0; i<n; i++)
+  {
+    if (!zeroing && pData[i] == '\0')
+      zeroing = TRUE;
 
-        if (zeroing)
-            *pBuf++ = 0;
-        else
-            *pBuf++ = pData[i];
-    }
+    if (zeroing)
+      *pBuf++ = 0;
+    else
+      *pBuf++ = pData[i];
+  }
 }
 
 /*************************************************************************************************/
@@ -60,11 +61,12 @@ void WstrnCpy(char *pBuf, const char *pData, uint8_t n)
 /*************************************************************************************************/
 void WStrReverseCpy(uint8_t *pBuf1, const uint8_t *pBuf2, uint16_t len)
 {
-    int16_t i;
+  int16_t i;
 
-    for (i = 0; i < len; i++) {
-        pBuf1[len - 1 - i] = pBuf2[i];
-    }
+  for (i=0; i<len; i++)
+  {
+    pBuf1[len-1-i] = pBuf2[i];
+  }
 }
 
 /*************************************************************************************************/
@@ -77,13 +79,14 @@ void WStrReverseCpy(uint8_t *pBuf1, const uint8_t *pBuf2, uint16_t len)
 /*************************************************************************************************/
 void WStrReverse(uint8_t *pBuf, uint8_t len)
 {
-    uint8_t i, temp;
+  uint8_t i, temp;
 
-    for (i = 0; i < len / 2; i++) {
-        temp = pBuf[len - i - 1];
-        pBuf[len - i - 1] = pBuf[i];
-        pBuf[i] = temp;
-    }
+  for (i=0; i<len/2; i++)
+  {
+    temp = pBuf[len-i-1];
+    pBuf[len-i-1] = pBuf[i];
+    pBuf[i] = temp;
+  }
 }
 
 /*************************************************************************************************/
@@ -97,14 +100,15 @@ void WStrReverse(uint8_t *pBuf, uint8_t len)
 /*************************************************************************************************/
 void WStrFormatHex(char *pBuf, uint32_t val, uint8_t len)
 {
-    uint32_t i;
-    uint8_t lenChars = (len + 3) / 4;
+  uint32_t i;
+  uint8_t  lenChars = (len + 3) / 4;
 
-    for (i = 0; i < lenChars; i++) {
-        uint8_t n = val & 0x0F;
-        pBuf[(lenChars - 1) - i] = (n < 10) ? ('0' + n) : ('A' + (n - 10));
-        val >>= 4;
-    }
+  for (i = 0; i < lenChars; i++)
+  {
+    uint8_t n = val & 0x0F;
+    pBuf[(lenChars - 1) - i] = (n < 10) ? ('0' + n) : ('A' + (n - 10));
+    val >>= 4;
+  }
 }
 
 /*************************************************************************************************/
@@ -122,50 +126,66 @@ void WStrFormatHex(char *pBuf, uint32_t val, uint8_t len)
 /*************************************************************************************************/
 void WStrHexToArray(const char *pStr, uint8_t *pBuf, uint16_t len)
 {
-    uint16_t i;
-    uint8_t val = 0;
-    uint8_t j = 0;
-    bool_t zeroing = FALSE;
+  uint16_t i;
+  uint8_t val = 0;
+  uint8_t j = 0;
+  bool_t zeroing = FALSE;
 
-    /* Skip white spaces. */
-    while (*pStr == ' ' || *pStr == '\t' || *pStr == '\n' || *pStr == '\r') {
-        ++pStr;
+  /* Skip white spaces. */
+  while (*pStr == ' ' || *pStr == '\t' || *pStr == '\n' || *pStr == '\r')
+  {
+    ++pStr;
+  }
+
+  /* Check for hex value format (0x or 0X). */
+  if (WSTR_IS_HEX_FORMAT(pStr))
+  {
+    pStr += 2;
+  }
+
+  for (i = 0; i < len; i++)
+  {
+    if (!zeroing && *pStr == '\0')
+    {
+      zeroing = TRUE;
     }
 
-    /* Check for hex value format (0x or 0X). */
-    if (WSTR_IS_HEX_FORMAT(pStr)) {
-        pStr += 2;
+    if (zeroing)
+    {
+      *pBuf++ = 0;
     }
-
-    for (i = 0; i < len; i++) {
-        if (!zeroing && *pStr == '\0') {
-            zeroing = TRUE;
+    else
+    {
+      while (j < 2)
+      {
+        if ((*pStr >= '0') && (*pStr <= '9'))
+        {
+          val = (val << (j << 2)) | (*pStr - '0');
+        }
+        else if ((*pStr >= 'a') && (*pStr <= 'f'))
+        {
+          val = (val << (j << 2)) | (10 + (*pStr - 'a'));
+        }
+        else if ((*pStr >= 'A') && (*pStr <= 'F'))
+        {
+          val = (val << (j << 2)) | (10 + (*pStr - 'A'));
+        }
+        else
+        {
+          break;
         }
 
-        if (zeroing) {
-            *pBuf++ = 0;
-        } else {
-            while (j < 2) {
-                if ((*pStr >= '0') && (*pStr <= '9')) {
-                    val = (val << (j << 2)) | (*pStr - '0');
-                } else if ((*pStr >= 'a') && (*pStr <= 'f')) {
-                    val = (val << (j << 2)) | (10 + (*pStr - 'a'));
-                } else if ((*pStr >= 'A') && (*pStr <= 'F')) {
-                    val = (val << (j << 2)) | (10 + (*pStr - 'A'));
-                } else {
-                    break;
-                }
+        pStr++;
 
-                pStr++;
-
-                /* Check if value is computed and needs to be added to destination buffer. */
-                if (j++ == 1) {
-                    *pBuf++ = val;
-                }
-            }
-
-            j = 0;
-            val = 0;
+        /* Check if value is computed and needs to be added to destination buffer. */
+        if (j++ == 1)
+        {
+          *pBuf++ = val;
         }
+      }
+
+      j = 0;
+      val = 0;
     }
+  }
 }

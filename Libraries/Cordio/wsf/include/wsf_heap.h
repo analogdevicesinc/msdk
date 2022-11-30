@@ -67,10 +67,11 @@ void WsfHeapAlloc(uint32_t size);
 /*************************************************************************************************/
 void *WsfHeapGetFreeStartAddress(void);
 
-/*! \} */ /* WSF_HEAP_API */
+/*! \} */    /* WSF_HEAP_API */
 
 #ifdef __cplusplus
 };
 #endif
 
 #endif /* WSF_HEAP_H */
+

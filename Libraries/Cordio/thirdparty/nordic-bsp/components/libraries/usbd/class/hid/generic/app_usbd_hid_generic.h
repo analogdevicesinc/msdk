@@ -40,6 +40,8 @@
 #ifndef APP_USBD_HID_GENERIC_H__
 #define APP_USBD_HID_GENERIC_H__
 
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -65,20 +67,21 @@ extern "C" {
  * @{
  */
 
+
 #ifdef DOXYGEN
 /**
  * @brief HID generic class instance type.
  *
  * @ref APP_USBD_CLASS_TYPEDEF
  */
-typedef struct {
-} app_usbd_hid_generic_t;
+typedef struct { } app_usbd_hid_generic_t;
 #else
 /*lint -save -e10 -e26 -e123 -e505 */
-APP_USBD_CLASS_TYPEDEF(app_usbd_hid_generic,
-                       APP_USBD_HID_GENERIC_CONFIG(0, (NRF_DRV_USBD_EPIN1, NRF_DRV_USBD_EPOUT1)),
-                       APP_USBD_HID_GENERIC_INSTANCE_SPECIFIC_DEC,
-                       APP_USBD_HID_GENERIC_DATA_SPECIFIC_DEC);
+APP_USBD_CLASS_TYPEDEF(app_usbd_hid_generic,                                           \
+            APP_USBD_HID_GENERIC_CONFIG(0, (NRF_DRV_USBD_EPIN1, NRF_DRV_USBD_EPOUT1)), \
+            APP_USBD_HID_GENERIC_INSTANCE_SPECIFIC_DEC,                                \
+            APP_USBD_HID_GENERIC_DATA_SPECIFIC_DEC                                     \
+);
 /*lint -restore*/
 #endif
 
@@ -127,14 +130,26 @@ APP_USBD_CLASS_TYPEDEF(app_usbd_hid_generic,
  *
  */
 /*lint -emacro( (40), APP_USBD_HID_GENERIC_GLOBAL_DEF) */
-#define APP_USBD_HID_GENERIC_GLOBAL_DEF(instance_name, interface_number, user_ev_handler,          \
-                                        endpoint_list, subclass_descriptors, report_in_queue_size, \
-                                        report_out_maxsize, report_feature_maxsize, subclass_boot, \
-                                        protocol)                                                  \
-    APP_USBD_HID_GENERIC_GLOBAL_DEF_INTERNAL(instance_name, interface_number, user_ev_handler,     \
-                                             endpoint_list, subclass_descriptors,                  \
-                                             report_in_queue_size, report_out_maxsize,             \
-                                             report_feature_maxsize, subclass_boot, protocol)
+#define APP_USBD_HID_GENERIC_GLOBAL_DEF(instance_name,                  \
+                                        interface_number,               \
+                                        user_ev_handler,                \
+                                        endpoint_list,                  \
+                                        subclass_descriptors,           \
+                                        report_in_queue_size,           \
+                                        report_out_maxsize,             \
+                                        report_feature_maxsize,         \
+                                        subclass_boot,                  \
+                                        protocol)                       \
+    APP_USBD_HID_GENERIC_GLOBAL_DEF_INTERNAL(instance_name,             \
+                                             interface_number,          \
+                                             user_ev_handler,           \
+                                             endpoint_list,             \
+                                             subclass_descriptors,      \
+                                             report_in_queue_size,      \
+                                             report_out_maxsize,        \
+                                             report_feature_maxsize,    \
+                                             subclass_boot,             \
+                                             protocol)
 
 /**
  * @brief Helper function to get class instance from HID generic class.
@@ -144,7 +159,7 @@ APP_USBD_CLASS_TYPEDEF(app_usbd_hid_generic,
  * @return Base class instance.
  */
 static inline app_usbd_class_inst_t const *
-app_usbd_hid_generic_class_inst_get(app_usbd_hid_generic_t const *p_generic)
+app_usbd_hid_generic_class_inst_get(app_usbd_hid_generic_t const * p_generic)
 {
     return &p_generic->base;
 }
@@ -157,7 +172,7 @@ app_usbd_hid_generic_class_inst_get(app_usbd_hid_generic_t const *p_generic)
  * @return HID generic class handle.
  */
 static inline app_usbd_hid_generic_t const *
-app_usbd_hid_generic_class_get(app_usbd_class_inst_t const *p_inst)
+app_usbd_hid_generic_class_get(app_usbd_class_inst_t const * p_inst)
 {
     return (app_usbd_hid_generic_t const *)p_inst;
 }
@@ -172,7 +187,8 @@ app_usbd_hid_generic_class_get(app_usbd_class_inst_t const *p_inst)
  *
  * @return Standard error code.
  */
-ret_code_t hid_generic_idle_set(app_usbd_hid_generic_t const *p_generic, const void *p_buff,
+ret_code_t hid_generic_idle_set(app_usbd_hid_generic_t const * p_generic,
+                                const void * p_buff,
                                 size_t size);
 
 /**
@@ -185,8 +201,9 @@ ret_code_t hid_generic_idle_set(app_usbd_hid_generic_t const *p_generic, const v
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_hid_generic_in_report_set(app_usbd_hid_generic_t const *p_generic,
-                                              const void *p_buff, size_t size);
+ret_code_t app_usbd_hid_generic_in_report_set(app_usbd_hid_generic_t const * p_generic,
+                                              const void * p_buff,
+                                              size_t size);
 
 /**
  * @brief Returns last successful transfered IN report.
@@ -198,8 +215,8 @@ ret_code_t app_usbd_hid_generic_in_report_set(app_usbd_hid_generic_t const *p_ge
  *
  * @return Last transfered report ID.
  */
-const void *app_usbd_hid_generic_in_report_get(app_usbd_hid_generic_t const *p_generic,
-                                               size_t *p_size);
+const void * app_usbd_hid_generic_in_report_get(app_usbd_hid_generic_t const * p_generic,
+                                                size_t * p_size);
 
 /**
  * @brief Returns last successful transfered OUT report.
@@ -211,8 +228,8 @@ const void *app_usbd_hid_generic_in_report_get(app_usbd_hid_generic_t const *p_g
  *
  * @return Last transfered OUT report.
  */
-const void *app_usbd_hid_generic_out_report_get(app_usbd_hid_generic_t const *p_generic,
-                                                size_t *p_size);
+const void * app_usbd_hid_generic_out_report_get(app_usbd_hid_generic_t const * p_generic,
+                                                 size_t * p_size);
 
 /**
  * @brief Function handling SET_PROTOCOL command.
@@ -223,7 +240,7 @@ const void *app_usbd_hid_generic_out_report_get(app_usbd_hid_generic_t const *p_
  *
  * @return Standard error code.
  */
-ret_code_t hid_generic_on_set_protocol(app_usbd_hid_generic_t const *p_generic,
+ret_code_t hid_generic_on_set_protocol(app_usbd_hid_generic_t const * p_generic,
                                        app_usbd_hid_user_event_t ev);
 
 /**
@@ -233,7 +250,7 @@ ret_code_t hid_generic_on_set_protocol(app_usbd_hid_generic_t const *p_generic,
  *
  * @return Standard error code.
  */
-ret_code_t hid_generic_clear_buffer(app_usbd_class_inst_t const *p_inst);
+ret_code_t hid_generic_clear_buffer(app_usbd_class_inst_t const * p_inst);
 
 /**
  * @brief Sets handler for idle reports.
@@ -243,7 +260,7 @@ ret_code_t hid_generic_clear_buffer(app_usbd_class_inst_t const *p_inst);
  *
  * @return Standard error code.
  */
-ret_code_t hid_generic_idle_handler_set(app_usbd_class_inst_t const *p_inst,
+ret_code_t hid_generic_idle_handler_set(app_usbd_class_inst_t const * p_inst,
                                         app_usbd_hid_idle_handler_t handler);
 
 /**
@@ -255,8 +272,9 @@ ret_code_t hid_generic_idle_handler_set(app_usbd_class_inst_t const *p_inst,
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_hid_generic_idle_report_set(app_usbd_hid_generic_t const *p_generic,
-                                                const void *p_buff, size_t size);
+ret_code_t app_usbd_hid_generic_idle_report_set(app_usbd_hid_generic_t const * p_generic,
+                                                const void                   * p_buff,
+                                                size_t                         size);
 /** @} */
 
 #ifdef __cplusplus

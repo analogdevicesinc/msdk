@@ -37,28 +37,35 @@
 /*************************************************************************************************/
 void LmgrSendExtAdvEnableCnf(uint8_t handle, uint8_t status)
 {
-    if ((lmgrCb.advSetEnaStatus == LL_SUCCESS) && (status != LL_SUCCESS)) {
-        /* Store first error. */
-        lmgrCb.advSetEnaStatus = status;
-    }
+  if ((lmgrCb.advSetEnaStatus == LL_SUCCESS) && (status != LL_SUCCESS))
+  {
+    /* Store first error. */
+    lmgrCb.advSetEnaStatus = status;
+  }
 
-    WSF_ASSERT(lmgrCb.extAdvEnaDelayCnt > 0);
-    if (--lmgrCb.extAdvEnaDelayCnt > 0) {
-        /* Delay until all enable confirms received. */
-        return;
-    }
+  WSF_ASSERT(lmgrCb.extAdvEnaDelayCnt > 0);
+  if (--lmgrCb.extAdvEnaDelayCnt > 0)
+  {
+    /* Delay until all enable confirms received. */
+    return;
+  }
 
-    LlExtAdvEnableCnf_t evt = { .hdr = { .event = LL_EXT_ADV_ENABLE_CNF,
-                                         .param = handle,
-                                         .status = lmgrCb.advSetEnaStatus },
+  LlExtAdvEnableCnf_t evt =
+  {
+    .hdr =
+    {
+      .event  = LL_EXT_ADV_ENABLE_CNF,
+      .param  = handle,
+      .status = lmgrCb.advSetEnaStatus
+    },
 
-                                .handle = handle,
-                                .status = lmgrCb.advSetEnaStatus };
+    .handle = handle,
+    .status = lmgrCb.advSetEnaStatus
+  };
 
-    LL_TRACE_INFO2("### LlEvent ###  LL_EXT_ADV_ENABLE_CNF, handle=%u, status=%u", handle,
-                   lmgrCb.advSetEnaStatus);
+  LL_TRACE_INFO2("### LlEvent ###  LL_EXT_ADV_ENABLE_CNF, handle=%u, status=%u", handle, lmgrCb.advSetEnaStatus);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -72,18 +79,24 @@ void LmgrSendExtAdvEnableCnf(uint8_t handle, uint8_t status)
 /*************************************************************************************************/
 void LmgrSendScanReqReceivedInd(uint8_t handle, uint8_t scanAddrType, uint64_t scanAddr)
 {
-    LlScanReqRcvdInd_t evt = {
-        .hdr = { .event = LL_SCAN_REQ_RCVD_IND, .param = handle, .status = LL_SUCCESS },
+  LlScanReqRcvdInd_t evt =
+  {
+    .hdr =
+    {
+      .event  = LL_SCAN_REQ_RCVD_IND,
+      .param  = handle,
+      .status = LL_SUCCESS
+    },
 
-        .handle = handle,
-        .scanAddrType = scanAddrType
-    };
+    .handle       = handle,
+    .scanAddrType = scanAddrType
+  };
 
-    Bda64ToBstream(evt.scanAddr, scanAddr);
+  Bda64ToBstream(evt.scanAddr, scanAddr);
 
-    LL_TRACE_INFO1("### LlEvent ###  LL_SCAN_REQ_RCVD_IND, handle=%u, status=LL_SUCCESS", handle);
+  LL_TRACE_INFO1("### LlEvent ###  LL_SCAN_REQ_RCVD_IND, handle=%u, status=LL_SUCCESS", handle);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -96,14 +109,20 @@ void LmgrSendScanReqReceivedInd(uint8_t handle, uint8_t scanAddrType, uint64_t s
 /*************************************************************************************************/
 void LmgrSendPeriodicAdvEnableCnf(uint8_t handle, uint8_t status)
 {
-    LlPerAdvEnableCnf_t evt = {
-        .hdr = { .event = LL_PER_ADV_ENABLE_CNF, .param = handle, .status = status },
+  LlPerAdvEnableCnf_t evt =
+  {
+    .hdr =
+    {
+      .event  = LL_PER_ADV_ENABLE_CNF,
+      .param  = handle,
+      .status = status
+    },
 
-        .handle = handle,
-        .status = status
-    };
+    .handle = handle,
+    .status = status
+  };
 
-    LL_TRACE_INFO2("### LlEvent ###  LL_PER_ADV_ENABLE_CNF, handle=%u, status=%u", handle, status);
+  LL_TRACE_INFO2("### LlEvent ###  LL_PER_ADV_ENABLE_CNF, handle=%u, status=%u", handle, status);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }

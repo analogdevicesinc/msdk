@@ -27,7 +27,8 @@
 #define MMDL_GEN_LEVEL_SR_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -69,7 +70,8 @@ void MmdlGenLevelSrStoreScene(void *pDesc, uint8_t sceneIdx);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenLevelSrRecallScene(meshElementId_t elementId, uint8_t sceneIdx, uint32_t transitionMs);
+void MmdlGenLevelSrRecallScene(meshElementId_t elementId, uint8_t sceneIdx,
+                               uint32_t transitionMs);
 
 #ifdef __cplusplus
 }

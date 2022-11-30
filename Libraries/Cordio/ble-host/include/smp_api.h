@@ -44,46 +44,48 @@ extern "C" {
  */
 /**@{*/
 /*! \brief Event handler messages for SMP state machines */
-enum {
-    SMP_MSG_API_PAIR_REQ = 1, /*!< \brief API pairing request */
-    SMP_MSG_API_PAIR_RSP, /*!< \brief API pairing response */
-    SMP_MSG_API_CANCEL_REQ, /*!< \brief API cancel request */
-    SMP_MSG_API_AUTH_RSP, /*!< \brief API pin response */
-    SMP_MSG_API_SECURITY_REQ, /*!< \brief API security request */
-    SMP_MSG_CMD_PKT, /*!< \brief SMP command packet received */
-    SMP_MSG_CMD_PAIRING_FAILED, /*!< \brief SMP pairing failed packet received */
-    SMP_MSG_DM_ENCRYPT_CMPL, /*!< \brief Link encrypted */
-    SMP_MSG_DM_ENCRYPT_FAILED, /*!< \brief Link encryption failed */
-    SMP_MSG_DM_CONN_CLOSE, /*!< \brief Connection closed */
-    SMP_MSG_WSF_AES_CMPL, /*!< \brief AES calculation complete */
-    SMP_MSG_INT_SEND_NEXT_KEY, /*!< \brief Send next key to be distributed */
-    SMP_MSG_INT_MAX_ATTEMPTS, /*!< \brief Maximum pairing attempts reached */
-    SMP_MSG_INT_PAIRING_CMPL, /*!< \brief Pairing complete */
-    SMP_MSG_INT_RSP_TIMEOUT, /*!< \brief Pairing protocol response timeout */
-    SMP_MSG_INT_WI_TIMEOUT, /*!< \brief Pairing protocol wait interval timeout */
-    SMP_MSG_INT_LESC, /*!< \brief Pair with Secure Connections */
-    SMP_MSG_INT_LEGACY, /*!< \brief Pair with Legacy Security */
-    SMP_MSG_INT_JW_NC, /*!< \brief LESC Just-Works/Numeric Comparison pairing */
-    SMP_MSG_INT_PASSKEY, /*!< \brief LESC Passkey pairing */
-    SMP_MSG_INT_OOB, /*!< \brief LESC Out-of-Band Pairing */
-    SMP_MSG_API_USER_CONFIRM, /*!< \brief User confirms valid numeric comparison */
-    SMP_MSG_API_USER_KEYPRESS, /*!< \brief User keypress in passkey pairing */
-    SMP_MSG_API_KEYPRESS_CMPL, /*!< \brief User keypress complete in passkey pairing */
-    SMP_MSG_WSF_ECC_CMPL, /*!< \brief WSF ECC operation complete */
-    SMP_MSG_INT_PK_NEXT, /*!< \brief Continue to next passkey bit */
-    SMP_MSG_INT_PK_CMPL, /*!< \brief Passkey operation complete */
-    SMP_MSG_WSF_CMAC_CMPL, /*!< \brief WSF CMAC operation complete */
-    SMP_MSG_DH_CHECK_FAILURE, /*!< \brief DHKey check failure */
-    SMP_MSG_EARLY_CNF, /*!< \brief An early Confirm from the initiator in passkey pairing */
-    SMP_MSG_INT_CLEANUP, /*!< \brief Cleanup control information and return to IDLE state */
-    SMP_NUM_MSGS /*!< \brief Number of SMP message types. */
+enum
+{
+  SMP_MSG_API_PAIR_REQ = 1,               /*!< \brief API pairing request */
+  SMP_MSG_API_PAIR_RSP,                   /*!< \brief API pairing response */
+  SMP_MSG_API_CANCEL_REQ,                 /*!< \brief API cancel request */
+  SMP_MSG_API_AUTH_RSP,                   /*!< \brief API pin response */
+  SMP_MSG_API_SECURITY_REQ,               /*!< \brief API security request */
+  SMP_MSG_CMD_PKT,                        /*!< \brief SMP command packet received */
+  SMP_MSG_CMD_PAIRING_FAILED,             /*!< \brief SMP pairing failed packet received */
+  SMP_MSG_DM_ENCRYPT_CMPL,                /*!< \brief Link encrypted */
+  SMP_MSG_DM_ENCRYPT_FAILED,              /*!< \brief Link encryption failed */
+  SMP_MSG_DM_CONN_CLOSE,                  /*!< \brief Connection closed */
+  SMP_MSG_WSF_AES_CMPL,                   /*!< \brief AES calculation complete */
+  SMP_MSG_INT_SEND_NEXT_KEY,              /*!< \brief Send next key to be distributed */
+  SMP_MSG_INT_MAX_ATTEMPTS,               /*!< \brief Maximum pairing attempts reached */
+  SMP_MSG_INT_PAIRING_CMPL,               /*!< \brief Pairing complete */
+  SMP_MSG_INT_RSP_TIMEOUT,                /*!< \brief Pairing protocol response timeout */
+  SMP_MSG_INT_WI_TIMEOUT,                 /*!< \brief Pairing protocol wait interval timeout */
+  SMP_MSG_INT_LESC,                       /*!< \brief Pair with Secure Connections */
+  SMP_MSG_INT_LEGACY,                     /*!< \brief Pair with Legacy Security */
+  SMP_MSG_INT_JW_NC,                      /*!< \brief LESC Just-Works/Numeric Comparison pairing */
+  SMP_MSG_INT_PASSKEY,                    /*!< \brief LESC Passkey pairing */
+  SMP_MSG_INT_OOB,                        /*!< \brief LESC Out-of-Band Pairing */
+  SMP_MSG_API_USER_CONFIRM,               /*!< \brief User confirms valid numeric comparison */
+  SMP_MSG_API_USER_KEYPRESS,              /*!< \brief User keypress in passkey pairing */
+  SMP_MSG_API_KEYPRESS_CMPL,              /*!< \brief User keypress complete in passkey pairing */
+  SMP_MSG_WSF_ECC_CMPL,                   /*!< \brief WSF ECC operation complete */
+  SMP_MSG_INT_PK_NEXT,                    /*!< \brief Continue to next passkey bit */
+  SMP_MSG_INT_PK_CMPL,                    /*!< \brief Passkey operation complete */
+  SMP_MSG_WSF_CMAC_CMPL,                  /*!< \brief WSF CMAC operation complete */
+  SMP_MSG_DH_CHECK_FAILURE,               /*!< \brief DHKey check failure */
+  SMP_MSG_EARLY_CNF,                      /*!< \brief An early Confirm from the initiator in passkey pairing */
+  SMP_MSG_INT_CLEANUP,                    /*!< \brief Cleanup control information and return to IDLE state */
+  SMP_NUM_MSGS                            /*!< \brief Number of SMP message types. */
 };
 /**@}*/
 
 /**@{*/
 /*! \brief Additional SMP messages */
-enum {
-    SMP_DB_SERVICE_IND = SMP_NUM_MSGS /*!< \brief SMP DB Service timer indication */
+enum
+{
+  SMP_DB_SERVICE_IND = SMP_NUM_MSGS       /*!< \brief SMP DB Service timer indication */
 };
 /**@}*/
 
@@ -92,56 +94,62 @@ enum {
 **************************************************************************************************/
 
 /*! \brief Configurable parameters */
-typedef struct {
-    uint32_t attemptTimeout; /*!< \brief 'Repeated attempts' timeout in msec */
-    uint8_t ioCap; /*!< \brief I/O Capability */
-    uint8_t minKeyLen; /*!< \brief Minimum encryption key length */
-    uint8_t maxKeyLen; /*!< \brief Maximum encryption key length */
-    uint8_t maxAttempts; /*!< \brief Attempts to trigger 'repeated attempts' timeout */
-    uint8_t auth; /*!< \brief Device authentication requirements */
-    uint32_t maxAttemptTimeout; /*!< \brief Maximum 'Repeated attempts' timeout in msec */
-    uint32_t attemptDecTimeout; /*!< \brief Time msec before attemptExp decreases */
-    uint16_t attemptExp; /*!< \brief Exponent to raise attemptTimeout on maxAttempts */
+typedef struct
+{
+  uint32_t            attemptTimeout;     /*!< \brief 'Repeated attempts' timeout in msec */
+  uint8_t             ioCap;              /*!< \brief I/O Capability */
+  uint8_t             minKeyLen;          /*!< \brief Minimum encryption key length */
+  uint8_t             maxKeyLen;          /*!< \brief Maximum encryption key length */
+  uint8_t             maxAttempts;        /*!< \brief Attempts to trigger 'repeated attempts' timeout */
+  uint8_t             auth;               /*!< \brief Device authentication requirements */
+  uint32_t            maxAttemptTimeout;  /*!< \brief Maximum 'Repeated attempts' timeout in msec */
+  uint32_t            attemptDecTimeout;  /*!< \brief Time msec before attemptExp decreases */
+  uint16_t            attemptExp;         /*!< \brief Exponent to raise attemptTimeout on maxAttempts */
 } smpCfg_t;
 
 /*! \brief Data type for SMP_MSG_API_PAIR_REQ and SMP_MSG_API_PAIR_RSP */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< \brief Message header */
-    uint8_t oob; /*!< \brief Out-of-band data present flag */
-    uint8_t auth; /*!< \brief authentication flags */
-    uint8_t iKeyDist; /*!< \brief Initiator key distribution flags */
-    uint8_t rKeyDist; /*!< \brief Responder key distribution flags */
+typedef struct
+{
+  wsfMsgHdr_t         hdr;        /*!< \brief Message header */
+  uint8_t             oob;        /*!< \brief Out-of-band data present flag */
+  uint8_t             auth;       /*!< \brief authentication flags */
+  uint8_t             iKeyDist;   /*!< \brief Initiator key distribution flags */
+  uint8_t             rKeyDist;   /*!< \brief Responder key distribution flags */
 } smpDmPair_t;
 
 /*! \brief Data type for SMP_MSG_API_AUTH_RSP */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< \brief Message header */
-    uint8_t authData[SMP_OOB_LEN]; /*!< \brief Authentication data to display */
-    uint8_t authDataLen; /*!< \brief Length of authentication data */
+typedef struct
+{
+  wsfMsgHdr_t         hdr;                    /*!< \brief Message header */
+  uint8_t             authData[SMP_OOB_LEN];  /*!< \brief Authentication data to display */
+  uint8_t             authDataLen;            /*!< \brief Length of authentication data */
 } smpDmAuthRsp_t;
 
 /*! \brief Data type for SMP_MSG_API_USER_KEYPRESS */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< \brief Message header */
-    uint8_t keypress; /*!< \brief Keypress */
+typedef struct
+{
+  wsfMsgHdr_t         hdr;        /*!< \brief Message header */
+  uint8_t             keypress;   /*!< \brief Keypress */
 } smpDmKeypress_t;
 
 /*! \brief Data type for SMP_MSG_API_SECURITY_REQ */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< \brief Message header */
-    uint8_t auth; /*!< \brief Authentication flags */
+typedef struct
+{
+  wsfMsgHdr_t         hdr;   /*!< \brief Message header */
+  uint8_t             auth;  /*!< \brief Authentication flags */
 } smpDmSecurityReq_t;
 
 /*! \brief Union SMP DM message data types */
-typedef union {
-    wsfMsgHdr_t hdr; /*!< \brief Message header */
-    smpDmPair_t pair; /*!< \brief Pairing request/response message */
-    smpDmAuthRsp_t authRsp; /*!< \brief Authentication message */
-    smpDmSecurityReq_t securityReq; /*!< \brief Security Request message */
-    smpDmKeypress_t keypress; /*!< \brief Keypress message */
+typedef union
+{
+  wsfMsgHdr_t         hdr;           /*!< \brief Message header */
+  smpDmPair_t         pair;          /*!< \brief Pairing request/response message */
+  smpDmAuthRsp_t      authRsp;       /*!< \brief Authentication message */
+  smpDmSecurityReq_t  securityReq;   /*!< \brief Security Request message */
+  smpDmKeypress_t     keypress;      /*!< \brief Keypress message */
 } smpDmMsg_t;
 
-/*! \} */ /* STACK_SMP_API */
+/*! \} */    /* STACK_SMP_API */
 
 /**************************************************************************************************
   Global Variables;
@@ -159,7 +167,7 @@ typedef union {
 extern smpCfg_t *pSmpCfg;
 /**@}*/
 
-/*! \} */ /* STACK_INIT */
+/*! \} */    /* STACK_INIT */
 
 /**************************************************************************************************
   Function Declarations
@@ -305,7 +313,7 @@ void SmpScEnableZeroDhKey(bool_t enable);
 
 /**@}*/
 
-/*! \} */ /* STACK_SMP_API */
+/*! \} */    /* STACK_SMP_API */
 
 #ifdef __cplusplus
 };

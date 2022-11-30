@@ -38,9 +38,10 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      HCI header */
-typedef struct {
-    uint16_t opCode; /*!< OpCode command field. */
-    uint8_t len; /*!< Parameter length. */
+typedef struct
+{
+  uint16_t      opCode;                 /*!< OpCode command field. */
+  uint8_t       len;                    /*!< Parameter length. */
 } LhciHdr_t;
 
 /*! \brief      Command handler call signature. */

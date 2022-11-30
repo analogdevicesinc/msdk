@@ -44,30 +44,36 @@
 #include "nrf_assert.h"
 #include "nrf_fprintf_format.h"
 
-void nrf_fprintf_buffer_flush(nrf_fprintf_ctx_t *const p_ctx)
+void nrf_fprintf_buffer_flush(nrf_fprintf_ctx_t * const p_ctx)
 {
     ASSERT(p_ctx != NULL);
 
-    if (p_ctx->io_buffer_cnt == 0) {
+    if (p_ctx->io_buffer_cnt == 0)
+    {
         return;
     }
 
-    p_ctx->fwrite(p_ctx->p_user_ctx, p_ctx->p_io_buffer, p_ctx->io_buffer_cnt);
+    p_ctx->fwrite(p_ctx->p_user_ctx,
+                  p_ctx->p_io_buffer,
+                  p_ctx->io_buffer_cnt);
     p_ctx->io_buffer_cnt = 0;
 }
 
-void nrf_fprintf(nrf_fprintf_ctx_t *const p_ctx, char const *p_fmt, ...)
+void nrf_fprintf(nrf_fprintf_ctx_t * const p_ctx,
+                 char const *              p_fmt,
+                                           ...)
 {
     ASSERT(p_ctx != NULL);
     ASSERT(p_ctx->fwrite != NULL);
     ASSERT(p_ctx->p_io_buffer != NULL);
     ASSERT(p_ctx->io_buffer_size > 0);
 
-    if (p_fmt == NULL) {
+    if (p_fmt == NULL)
+    {
         return;
     }
 
-    va_list args = { 0 };
+    va_list args = {0};
     va_start(args, p_fmt);
 
     nrf_fprintf_fmt(p_ctx, p_fmt, &args);
@@ -76,3 +82,4 @@ void nrf_fprintf(nrf_fprintf_ctx_t *const p_ctx, char const *p_fmt, ...)
 }
 
 #endif // NRF_MODULE_ENABLED(NRF_FPRINTF)
+

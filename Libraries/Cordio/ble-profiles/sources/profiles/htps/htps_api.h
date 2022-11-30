@@ -39,8 +39,9 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Configurable parameters */
-typedef struct {
-    wsfTimerTicks_t period; /*!< \brief Measurement timer expiration period in ms */
+typedef struct
+{
+  wsfTimerTicks_t     period;     /*!< \brief Measurement timer expiration period in ms */
 } htpsCfg_t;
 
 /*************************************************************************************************/
@@ -126,7 +127,7 @@ void HtpsSetTmFlags(uint8_t flags);
 /*************************************************************************************************/
 void HtpsSetItFlags(uint8_t flags);
 
-/*! \} */ /* HEALTH_THERMOMETER_PROFILE */
+/*! \} */    /* HEALTH_THERMOMETER_PROFILE */
 
 #ifdef __cplusplus
 };

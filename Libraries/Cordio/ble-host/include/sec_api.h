@@ -38,92 +38,102 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief CMAC algorithm key length. */
-#define SEC_CMAC_KEY_LEN 16
+#define SEC_CMAC_KEY_LEN              16
 
 /*! \brief CMAC algorithm key length. */
-#define SEC_AES_BLK_LEN 16
+#define SEC_AES_BLK_LEN               16
 
 /*! \brief CMAC algorithm result length. */
-#define SEC_CMAC_HASH_LEN 16
+#define SEC_CMAC_HASH_LEN             16
 
 /*! \brief ECC algorithm key length. */
-#define SEC_ECC_KEY_LEN 32
+#define SEC_ECC_KEY_LEN               32
 
 /** \name CCM-Mode algorithm lengths
  *
  */
 /**@{*/
-#define SEC_CCM_KEY_LEN 16
-#define SEC_CCM_MAX_ADDITIONAL_LEN ((1 << 16) - (1 << 8))
-#define SEC_CCM_L 2
-#define SEC_CCM_NONCE_LEN (15 - SEC_CCM_L)
+#define SEC_CCM_KEY_LEN               16
+#define SEC_CCM_MAX_ADDITIONAL_LEN    ((1<<16) - (1<<8))
+#define SEC_CCM_L                     2
+#define SEC_CCM_NONCE_LEN             (15-SEC_CCM_L)
 /**@}*/
 
 /*! \brief Invalid AES Token. */
-#define SEC_TOKEN_INVALID 0xFF
+#define SEC_TOKEN_INVALID             0xFF
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief AES Security callback parameters structure. */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Header. */
-    uint8_t *pCiphertext; /*!< Pointer to 16 bytes of ciphertext data. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;                 /*!< Header. */
+  uint8_t       *pCiphertext;        /*!< Pointer to 16 bytes of ciphertext data. */
 } secAes_t;
 
 /*! \brief CMAC Security callback parameters structure. */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Header. */
-    uint8_t *pCiphertext; /*!< Pointer to 16 bytes of ciphertext data. */
-    uint8_t *pPlainText; /*!< Pointer to pPlaintext parameter passed to SecCmac. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;                 /*!< Header. */
+  uint8_t       *pCiphertext;        /*!< Pointer to 16 bytes of ciphertext data. */
+  uint8_t       *pPlainText;         /*!< Pointer to pPlaintext parameter passed to SecCmac. */
 } secCmacMsg_t;
 
 /*! \brief CCM-Mode encrypt callback parameters structure. */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Header. */
-    uint8_t *pCiphertext; /*!< Pointer to ciphertext data. */
-    uint16_t textLen; /*!< Length of pCiphertext in bytes. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;                 /*!< Header. */
+  uint8_t       *pCiphertext;        /*!< Pointer to ciphertext data. */
+  uint16_t      textLen;             /*!< Length of pCiphertext in bytes. */
 } secCcmEncMsg_t;
 
 /*! \brief CCM-Mode decrypt and authenticate callback parameters structure. */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Header. */
-    uint8_t *pText; /*!< Pointer to decrypted text within result buffer. */
-    uint8_t *pResult; /*!< Pointer to result buffer (passed into SecCcmDec). */
-    uint16_t textLen; /*!< Length of pText in bytes. */
-    bool_t success; /*!< TRUE if message is authenticated. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;                 /*!< Header. */
+  uint8_t       *pText;              /*!< Pointer to decrypted text within result buffer. */
+  uint8_t       *pResult;            /*!< Pointer to result buffer (passed into SecCcmDec). */
+  uint16_t      textLen;             /*!< Length of pText in bytes. */
+  bool_t        success;             /*!< TRUE if message is authenticated. */
 } secCcmDecMsg_t;
 
 /*! \brief Generic security callback parameters structure. */
-typedef union {
-    wsfMsgHdr_t hdr; /*!< Header. */
-    secAes_t aes; /*!< AES complete message. */
-    secCmacMsg_t cmac; /*!< CMAC complete message. */
-    secCcmEncMsg_t ccmEnc; /*!< CCM-Mode Encrypt complete message. */
-    secCcmDecMsg_t ccmDec; /*!< CCM-Mode Decrypt complete message. */
+typedef union
+{
+  wsfMsgHdr_t    hdr;              /*!< Header. */
+  secAes_t       aes;              /*!< AES complete message. */
+  secCmacMsg_t   cmac;             /*!< CMAC complete message. */
+  secCcmEncMsg_t ccmEnc;           /*!< CCM-Mode Encrypt complete message. */
+  secCcmDecMsg_t ccmDec;           /*!< CCM-Mode Decrypt complete message. */
 } secMsg_t;
 
 /*! \brief ECC Security public/private key pair. */
-typedef struct {
-    uint8_t pubKey_x[SEC_ECC_KEY_LEN]; /*!< x component of ECC public key. */
-    uint8_t pubKey_y[SEC_ECC_KEY_LEN]; /*!< y component of ECC public key. */
-    uint8_t privKey[SEC_ECC_KEY_LEN]; /*!< ECC private key. */
+typedef struct
+{
+  uint8_t pubKey_x[SEC_ECC_KEY_LEN]; /*!< x component of ECC public key. */
+  uint8_t pubKey_y[SEC_ECC_KEY_LEN]; /*!< y component of ECC public key. */
+  uint8_t privKey[SEC_ECC_KEY_LEN];  /*!< ECC private key. */
 } secEccKey_t;
 
 /*! \brief ECC security DH Key shared secret. */
-typedef struct {
-    uint8_t secret[SEC_ECC_KEY_LEN]; /*!< DH Key Shared secret. */
+typedef struct
+{
+  uint8_t secret[SEC_ECC_KEY_LEN];   /*!< DH Key Shared secret. */
 } secEccSharedSec_t;
 
+
 /*! \brief ECC Security callback parameters structure. */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Header. */
-    union {
-        secEccSharedSec_t sharedSecret; /*!< Shared secret. */
-        secEccKey_t key; /*!< ECC public/private key pair. */
-        bool_t keyValid; /*!< TRUE if ECC public/private key pair is valid. */
-    } data; /*!< ECC message data union. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;                 /*!< Header. */
+  union
+  {
+    secEccSharedSec_t sharedSecret;  /*!< Shared secret. */
+    secEccKey_t key;                 /*!< ECC public/private key pair. */
+    bool_t keyValid;                 /*!< TRUE if ECC public/private key pair is valid. */
+  } data;                            /*!< ECC message data union. */
 } secEccMsg_t;
 
 /*! \brief Block encryption function. */
@@ -229,8 +239,8 @@ void SecEccInit(void);
  *  \return Token value.
  */
 /*************************************************************************************************/
-uint8_t SecAes(uint8_t *pKey, uint8_t *pPlaintext, wsfHandlerId_t handlerId, uint16_t param,
-               uint8_t event);
+uint8_t SecAes(uint8_t *pKey, uint8_t *pPlaintext, wsfHandlerId_t handlerId,
+               uint16_t param, uint8_t event);
 
 /*************************************************************************************************/
 /*!
@@ -248,8 +258,8 @@ uint8_t SecAes(uint8_t *pKey, uint8_t *pPlaintext, wsfHandlerId_t handlerId, uin
  *  \return Token value.
  */
 /*************************************************************************************************/
-uint8_t SecAesRev(uint8_t *pKey, uint8_t *pPlaintext, wsfHandlerId_t handlerId, uint16_t param,
-                  uint8_t event);
+uint8_t SecAesRev(uint8_t *pKey, uint8_t *pPlaintext, wsfHandlerId_t handlerId,
+                  uint16_t param, uint8_t event);
 
 /*************************************************************************************************/
 /*!
@@ -347,8 +357,7 @@ bool_t SecEccGenKey(wsfHandlerId_t handlerId, uint16_t param, uint8_t event);
  *  \return TRUE if successful, else FALSE.
  */
 /*************************************************************************************************/
-bool_t SecEccGenSharedSecret(secEccKey_t *pKey, wsfHandlerId_t handlerId, uint16_t param,
-                             uint8_t event);
+bool_t SecEccGenSharedSecret(secEccKey_t *pKey, wsfHandlerId_t handlerId, uint16_t param, uint8_t event);
 
 /**@}*/
 
@@ -372,7 +381,7 @@ void SecRand(uint8_t *pRand, uint8_t randLen);
 
 /**@}*/
 
-/*! \} */ /* STACK_SECURITY_API */
+/*! \} */    /* STACK_SECURITY_API */
 
 #ifdef __cplusplus
 };

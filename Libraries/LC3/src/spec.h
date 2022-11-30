@@ -33,6 +33,7 @@
 #include "tns.h"
 #include "sns.h"
 
+
 /**
  * Spectral quantization side data
  */
@@ -40,6 +41,7 @@ typedef struct lc3_spec_side {
     int g_idx, nq;
     bool lsb_mode;
 } lc3_spec_side_t;
+
 
 /* ----------------------------------------------------------------------------
  *  Encoding
@@ -57,9 +59,9 @@ typedef struct lc3_spec_side {
  *   b0       0:positive or zero  1:negative
  *   b15..b1  Absolute value
  */
-void lc3_spec_analyze(enum lc3_dt dt, enum lc3_srate sr, int nbytes, bool pitch,
-                      const lc3_tns_data_t *tns, lc3_spec_analysis_t *spec, float *x, uint16_t *xq,
-                      lc3_spec_side_t *side);
+void lc3_spec_analyze(enum lc3_dt dt, enum lc3_srate sr,
+    int nbytes, bool pitch, const lc3_tns_data_t *tns,
+    lc3_spec_analysis_t *spec, float *x, uint16_t *xq, lc3_spec_side_t *side);
 
 /**
  * Put spectral quantization side data
@@ -67,8 +69,8 @@ void lc3_spec_analyze(enum lc3_dt dt, enum lc3_srate sr, int nbytes, bool pitch,
  * dt, sr          Duration and samplerate of the frame
  * side            Spectral quantization side data
  */
-void lc3_spec_put_side(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_srate sr,
-                       const lc3_spec_side_t *side);
+void lc3_spec_put_side(lc3_bits_t *bits,
+    enum lc3_dt dt, enum lc3_srate sr, const lc3_spec_side_t *side);
 
 /**
  * Encode spectral coefficients
@@ -82,8 +84,10 @@ void lc3_spec_put_side(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_srate sr,
  *   b0       0:positive or zero  1:negative
  *   b15..b1  Absolute value
  */
-void lc3_spec_encode(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_srate sr, enum lc3_bandwidth bw,
-                     int nbytes, const uint16_t *xq, const lc3_spec_side_t *side, const float *x);
+void lc3_spec_encode(lc3_bits_t *bits,
+    enum lc3_dt dt, enum lc3_srate sr, enum lc3_bandwidth bw, int nbytes,
+    const uint16_t *xq, const lc3_spec_side_t *side, const float *x);
+
 
 /* ----------------------------------------------------------------------------
  *  Decoding
@@ -96,7 +100,8 @@ void lc3_spec_encode(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_srate sr, enum l
  * side            Return quantization side data
  * return          0: Ok  -1: Invalid bandwidth indication
  */
-int lc3_spec_get_side(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_srate sr, lc3_spec_side_t *side);
+int lc3_spec_get_side(lc3_bits_t *bits,
+    enum lc3_dt dt, enum lc3_srate sr, lc3_spec_side_t *side);
 
 /**
  * Decode spectral coefficients
@@ -107,7 +112,8 @@ int lc3_spec_get_side(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_srate sr, lc3_s
  * x               Spectral coefficients
  * return          0: Ok  -1: Invalid bitstream data
  */
-int lc3_spec_decode(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_srate sr, enum lc3_bandwidth bw,
-                    int nbytes, const lc3_spec_side_t *side, float *x);
+int lc3_spec_decode(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_srate sr,
+    enum lc3_bandwidth bw, int nbytes, const lc3_spec_side_t *side, float *x);
+
 
 #endif /* __LC3_SPEC_H */

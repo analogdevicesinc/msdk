@@ -32,10 +32,12 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 #ifndef _SSI_PAL_LOG_H_
 #define _SSI_PAL_LOG_H_
 
 #include "ssi_pal_types.h"
+
 
 /*!
 @file
@@ -48,19 +50,19 @@
 
 /* PAL log levels (to be used in SASI_PAL_logLevel) */
 /*! PAL log level - disabled. */
-#define SASI_PAL_LOG_LEVEL_NULL -1 /*!< \internal Disable logging */
+#define SASI_PAL_LOG_LEVEL_NULL      -1 /*!< \internal Disable logging */
 /*! PAL log level - error. */
-#define SASI_PAL_LOG_LEVEL_ERR 0
+#define SASI_PAL_LOG_LEVEL_ERR       0
 /*! PAL log level - warning. */
-#define SASI_PAL_LOG_LEVEL_WARN 1
+#define SASI_PAL_LOG_LEVEL_WARN      1
 /*! PAL log level - info. */
-#define SASI_PAL_LOG_LEVEL_INFO 2
+#define SASI_PAL_LOG_LEVEL_INFO      2
 /*! PAL log level - debug. */
-#define SASI_PAL_LOG_LEVEL_DEBUG 3
+#define SASI_PAL_LOG_LEVEL_DEBUG     3
 /*! PAL log level - trace. */
-#define SASI_PAL_LOG_LEVEL_TRACE 4
+#define SASI_PAL_LOG_LEVEL_TRACE     4
 /*! PAL log level - data. */
-#define SASI_PAL_LOG_LEVEL_DATA 5
+#define SASI_PAL_LOG_LEVEL_DATA      5
 
 #ifndef SASI_PAL_LOG_CUR_COMPONENT
 /* Setting default component mask in case caller did not define */
@@ -77,7 +79,7 @@
 #ifndef SASI_PAL_MAX_LOG_LEVEL /* Can be overriden by external definition of this constant */
 #ifdef DEBUG
 /*! Default debug log level (when debug is set to on).*/
-#define SASI_PAL_MAX_LOG_LEVEL SASI_PAL_LOG_LEVEL_ERR /*SASI_PAL_LOG_LEVEL_DEBUG*/
+#define SASI_PAL_MAX_LOG_LEVEL  SASI_PAL_LOG_LEVEL_ERR /*SASI_PAL_LOG_LEVEL_DEBUG*/
 #else /* Disable logging */
 /*! Default debug log level (when debug is set to off).*/
 #define SASI_PAL_MAX_LOG_LEVEL SASI_PAL_LOG_LEVEL_NULL
@@ -90,21 +92,13 @@
 
 #ifdef ARM_DSM //not support ARM DSM log feature
 /*! Log init function. */
-#define SaSi_PalLogInit() \
-    do {                  \
-    } while (0)
+#define SaSi_PalLogInit() do {} while (0)
 /*! Log set level function - sets the level of logging in case of debug. */
-#define SaSi_PalLogLevelSet(setLevel) \
-    do {                              \
-    } while (0)
+#define SaSi_PalLogLevelSet(setLevel) do {} while (0)
 /*! Log set mask function - sets the component masking in case of debug. */
-#define SaSi_PalLogMaskSet(setMask) \
-    do {                            \
-    } while (0)
+#define SaSi_PalLogMaskSet(setMask) do {} while (0)
 /*! Log log funtion based on various platform */
-#define SaSi_PalLogPlatsampan(level, msg) \
-    do {                                  \
-    } while (0)
+#define SaSi_PalLogPlatsampan(level, msg)  do {} while (0)
 
 #else
 #if _SASI_PAL_MAX_LOG_LEVEL > SASI_PAL_LOG_LEVEL_NULL
@@ -123,119 +117,98 @@ extern int SaSi_PAL_logLevel;
 extern uint32_t SaSi_PAL_logMask;
 #else /* No log */
 /*! Log init function. */
-#define SaSi_PalLogInit() \
-    do {                  \
-    } while (0)
+#define SaSi_PalLogInit() do {} while (0)
 /*! Log set level function - sets the level of logging in case of debug. */
-#define SaSi_PalLogLevelSet(setLevel) \
-    do {                              \
-    } while (0)
+#define SaSi_PalLogLevelSet(setLevel) do {} while (0)
 /*! Log set mask function - sets the component masking in case of debug. */
-#define SaSi_PalLogMaskSet(setMask) \
-    do {                            \
-    } while (0)
+#define SaSi_PalLogMaskSet(setMask) do {} while (0)
 /*! Log log funtion based on various platform */
-#define SaSi_PalLogPlat(level, msg) \
-    do {                            \
-    } while (0)
+#define SaSi_PalLogPlat(level, msg)  do {} while (0)
 
 #endif
 #endif
 
 /*! Filter logging based on logMask and dispatch to platform specific logging mechanism */
-#define _SASI_PAL_LOG(level, msg)                      \
+#define _SASI_PAL_LOG(level, msg)  \
     if (SaSi_PAL_logMask & SASI_PAL_LOG_CUR_COMPONENT) \
-    SaSi_PalLogPlat(SASI_PAL_LOG_LEVEL_##level, msg)
+        SaSi_PalLogPlat(SASI_PAL_LOG_LEVEL_ ## level, msg )
 
 #if (_SASI_PAL_MAX_LOG_LEVEL >= SASI_PAL_LOG_LEVEL_ERR)
 
 /*! Log messages according to log level.*/
-#define SASI_PAL_LOG_ERR(msg) _SASI_PAL_LOG(ERR, msg)
+#define SASI_PAL_LOG_ERR(msg) \
+    _SASI_PAL_LOG(ERR, msg)
 #else
 /*! Log messages according to log level.*/
-#define SASI_PAL_LOG_ERR(...) \
-    do {                      \
-    } while (0)
+#define SASI_PAL_LOG_ERR( ... ) do {} while (0)
 #endif
 
 #if (_SASI_PAL_MAX_LOG_LEVEL >= SASI_PAL_LOG_LEVEL_WARN)
 /*! Log messages according to log level.*/
-#define SASI_PAL_LOG_WARN(msg)                        \
+#define SASI_PAL_LOG_WARN(msg) \
     if (SaSi_PAL_logLevel >= SASI_PAL_LOG_LEVEL_WARN) \
-    _SASI_PAL_LOG(WARN, msg)
+        _SASI_PAL_LOG(WARN, msg)
 #else
 /*! Log messages according to log level.*/
-#define SASI_PAL_LOG_WARN(...) \
-    do {                       \
-    } while (0)
+#define SASI_PAL_LOG_WARN( ... ) do {} while (0)
 #endif
 
 #if (_SASI_PAL_MAX_LOG_LEVEL >= SASI_PAL_LOG_LEVEL_INFO)
 /*! Log messages according to log level.*/
-#define SASI_PAL_LOG_INFO(msg)                        \
+#define SASI_PAL_LOG_INFO(msg) \
     if (SaSi_PAL_logLevel >= SASI_PAL_LOG_LEVEL_INFO) \
-    _SASI_PAL_LOG(INFO, msg)
+        _SASI_PAL_LOG(INFO, msg)
 #else
 /*! Log messages according to log level.*/
-#define SASI_PAL_LOG_INFO(...) \
-    do {                       \
-    } while (0)
+#define SASI_PAL_LOG_INFO( ... ) do {} while (0)
 #endif
 
 #if (_SASI_PAL_MAX_LOG_LEVEL >= SASI_PAL_LOG_LEVEL_DEBUG)
 /*! Log messages according to log level.*/
-#define SASI_PAL_LOG_DEBUG(msg)                        \
+#define SASI_PAL_LOG_DEBUG(msg) \
     if (SaSi_PAL_logLevel >= SASI_PAL_LOG_LEVEL_DEBUG) \
-    _SASI_PAL_LOG(DEBUG, msg)
+        _SASI_PAL_LOG(DEBUG, msg)
 
 /*! Log message buffer.*/
-#define SASI_PAL_LOG_DUMP_BUF(msg, buf, size) \
-    do {                                      \
-        int i;                                \
-        uint8_t *pData = (uint8_t *)buf;      \
-                                              \
-        PRINTF("%s (%d):\n", msg, size);      \
-        for (i = 0; i < size; i++) {          \
-            PRINTF("0x%02X ", pData[i]);      \
-            if ((i & 0xF) == 0xF) {           \
-                PRINTF("\n");                 \
-            }                                 \
-        }                                     \
-        PRINTF("\n");                         \
+#define SASI_PAL_LOG_DUMP_BUF(msg, buf, size)       \
+    do {                        \
+    int i;                      \
+    uint8_t *pData = (uint8_t*)buf;         \
+                            \
+    PRINTF("%s (%d):\n", msg, size);        \
+    for (i = 0; i < size; i++) {            \
+        PRINTF("0x%02X ", pData[i]);        \
+        if ((i & 0xF) == 0xF) {         \
+            PRINTF("\n");           \
+        }                   \
+    }                       \
+    PRINTF("\n");                   \
     } while (0)
 #else
 /*! Log debug messages.*/
-#define SASI_PAL_LOG_DEBUG(...) \
-    do {                        \
-    } while (0)
+#define SASI_PAL_LOG_DEBUG( ... ) do {} while (0)
 /*! Log debug buffer.*/
-#define SASI_PAL_LOG_DUMP_BUF(msg, buf, size) \
-    do {                                      \
-    } while (0)
+#define SASI_PAL_LOG_DUMP_BUF(msg, buf, size)   do {} while (0)
 #endif
 
 #if (_SASI_PAL_MAX_LOG_LEVEL >= SASI_PAL_LOG_LEVEL_TRACE)
 /*! Log debug trace.*/
-#define SASI_PAL_LOG_TRACE(msg)                        \
+#define SASI_PAL_LOG_TRACE(msg) \
     if (SaSi_PAL_logLevel >= SASI_PAL_LOG_LEVEL_TRACE) \
-    _SASI_PAL_LOG(TRACE, format, msg)
+        _SASI_PAL_LOG(TRACE, format, msg)
 #else
 /*! Log debug trace.*/
-#define SASI_PAL_LOG_TRACE(...) \
-    do {                        \
-    } while (0)
+#define SASI_PAL_LOG_TRACE(...) do {} while (0)
 #endif
 
 #if (_SASI_PAL_MAX_LOG_LEVEL >= SASI_PAL_LOG_LEVEL_TRACE)
 /*! Log debug data.*/
-#define SASI_PAL_LOG_DATA(msg)                         \
+#define SASI_PAL_LOG_DATA(msg) \
     if (SaSi_PAL_logLevel >= SASI_PAL_LOG_LEVEL_TRACE) \
-    _SASI_PAL_LOG(DATA, format, msg)
+        _SASI_PAL_LOG(DATA, format, msg)
 #else
 /*! Log debug data.*/
-#define SASI_PAL_LOG_DATA(...) \
-    do {                       \
-    } while (0)
+#define SASI_PAL_LOG_DATA( ...) do {} while (0)
 #endif
 /**
 @}

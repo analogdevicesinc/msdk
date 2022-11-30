@@ -46,7 +46,7 @@
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_AEAD)
 
-static ret_code_t context_verify(nrf_crypto_aead_internal_context_t const *p_context)
+static ret_code_t context_verify(nrf_crypto_aead_internal_context_t const * p_context)
 {
     VERIFY_TRUE((p_context != NULL), NRF_ERROR_CRYPTO_CONTEXT_NULL);
 
@@ -56,12 +56,14 @@ static ret_code_t context_verify(nrf_crypto_aead_internal_context_t const *p_con
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_aead_init(nrf_crypto_aead_context_t *const p_context,
-                                nrf_crypto_aead_info_t const *const p_info, uint8_t *p_key)
+
+ret_code_t nrf_crypto_aead_init(nrf_crypto_aead_context_t * const    p_context,
+                                nrf_crypto_aead_info_t const * const p_info,
+                                uint8_t *                            p_key)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aead_internal_context_t *p_int_context =
+    nrf_crypto_aead_internal_context_t * p_int_context =
         (nrf_crypto_aead_internal_context_t *)p_context;
 
     VERIFY_TRUE((p_info != NULL), NRF_ERROR_CRYPTO_INPUT_NULL);
@@ -73,22 +75,23 @@ ret_code_t nrf_crypto_aead_init(nrf_crypto_aead_context_t *const p_context,
                 ret_val);
 
     p_int_context->init_value = NRF_CRYPTO_AEAD_INIT_MAGIC_VALUE;
-    p_int_context->p_info = p_info;
+    p_int_context->p_info     = p_info;
 
     ret_val = p_info->init_fn(p_context, p_key);
 
-    if (ret_val != NRF_SUCCESS) {
+    if (ret_val != NRF_SUCCESS)
+    {
         p_int_context->init_value = 0;
     }
 
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aead_uninit(void *const p_context)
+ret_code_t nrf_crypto_aead_uninit(void * const p_context)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aead_internal_context_t *p_int_context =
+    nrf_crypto_aead_internal_context_t * p_int_context =
         (nrf_crypto_aead_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
@@ -101,36 +104,56 @@ ret_code_t nrf_crypto_aead_uninit(void *const p_context)
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aead_crypt(nrf_crypto_aead_context_t *const p_context,
-                                 nrf_crypto_operation_t operation, uint8_t *p_nonce,
-                                 uint8_t nonce_size, uint8_t *p_adata, size_t adata_size,
-                                 uint8_t *p_data_in, size_t data_in_size, uint8_t *p_data_out,
-                                 uint8_t *p_mac, uint8_t mac_size)
+ret_code_t nrf_crypto_aead_crypt(nrf_crypto_aead_context_t * const p_context,
+                                 nrf_crypto_operation_t            operation,
+                                 uint8_t *                         p_nonce,
+                                 uint8_t                           nonce_size,
+                                 uint8_t *                         p_adata,
+                                 size_t                            adata_size,
+                                 uint8_t *                         p_data_in,
+                                 size_t                            data_in_size,
+                                 uint8_t *                         p_data_out,
+                                 uint8_t *                         p_mac,
+                                 uint8_t                           mac_size)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aead_internal_context_t *p_int_context =
+    nrf_crypto_aead_internal_context_t * p_int_context =
         (nrf_crypto_aead_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
     VERIFY_SUCCESS(ret_val);
 
-    VERIFY_FALSE(((p_nonce == NULL) && (nonce_size != 0)), NRF_ERROR_CRYPTO_INPUT_NULL);
+    VERIFY_FALSE(((p_nonce == NULL) && (nonce_size != 0)),
+                 NRF_ERROR_CRYPTO_INPUT_NULL);
 
     /* If mac_size == 0 MAC is updated and not stored under p_mac */
-    VERIFY_FALSE(((p_mac == NULL) && (mac_size != 0)), NRF_ERROR_CRYPTO_INPUT_NULL);
+    VERIFY_FALSE(((p_mac == NULL) && (mac_size != 0)),
+                 NRF_ERROR_CRYPTO_INPUT_NULL);
 
-    VERIFY_FALSE(((p_adata == NULL) && (adata_size != 0)), NRF_ERROR_CRYPTO_INPUT_NULL);
+    VERIFY_FALSE(((p_adata == NULL) && (adata_size != 0)),
+                 NRF_ERROR_CRYPTO_INPUT_NULL);
 
-    VERIFY_FALSE(((p_data_in == NULL) && (data_in_size != 0)), NRF_ERROR_CRYPTO_INPUT_NULL);
+    VERIFY_FALSE(((p_data_in == NULL) && (data_in_size != 0)),
+                 NRF_ERROR_CRYPTO_INPUT_NULL);
 
-    VERIFY_FALSE(((p_data_out == NULL) && (data_in_size != 0)), NRF_ERROR_CRYPTO_OUTPUT_NULL);
+    VERIFY_FALSE(((p_data_out == NULL) && (data_in_size != 0)),
+                 NRF_ERROR_CRYPTO_OUTPUT_NULL);
 
-    ret_val = p_int_context->p_info->crypt_fn(p_context, operation, p_nonce, nonce_size, p_adata,
-                                              adata_size, p_data_in, data_in_size, p_data_out,
-                                              p_mac, mac_size);
+    ret_val = p_int_context->p_info->crypt_fn(p_context,
+                                              operation,
+                                              p_nonce,
+                                              nonce_size,
+                                              p_adata,
+                                              adata_size,
+                                              p_data_in,
+                                              data_in_size,
+                                              p_data_out,
+                                              p_mac,
+                                              mac_size);
     return ret_val;
 }
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_AEAD)
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO)
+

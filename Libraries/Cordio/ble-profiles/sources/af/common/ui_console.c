@@ -48,13 +48,19 @@ static void uiConsoleProcessKey(uint8_t input);
 **************************************************************************************************/
 
 /* Console Control Block */
-struct {
-    int8_t alphaNumOffset;
+struct
+{
+  int8_t            alphaNumOffset;
 } uiConsoleCb;
 
 /* Console display action functions */
-UiActionTbl_t uiConsoleActionTbl = { uiConsoleDispSplash, uiConsoleDispMenu, uiConsoleDispDialog,
-                                     uiConsoleProcessKey };
+UiActionTbl_t uiConsoleActionTbl =
+{
+  uiConsoleDispSplash,
+  uiConsoleDispMenu,
+  uiConsoleDispDialog,
+  uiConsoleProcessKey
+};
 
 /*************************************************************************************************/
 /*!
@@ -67,55 +73,67 @@ UiActionTbl_t uiConsoleActionTbl = { uiConsoleDispSplash, uiConsoleDispMenu, uiC
 /*************************************************************************************************/
 static void uiConsoleProcessKey(uint8_t key)
 {
-    UiDialog_t *pDialog;
+  UiDialog_t *pDialog;
 
-    switch (UiCb.activeScreenType) {
-    case UI_SCREEN_SPLASH:
-        if ((key >= '0' && key <= '9') || (key == '\r')) {
-            /* Jump to main menu on any key */
-            UiLoadMenu(UiCb.pMainMenu);
-        }
-        break;
-
-    case UI_SCREEN_MENU:
-        if (key >= '0' && key <= '9') {
-            UiSelection(key - '0');
-        }
-        break;
-
-    case UI_SCREEN_DIALOG:
-        pDialog = (UiDialog_t *)UiCb.pActiveScreen;
-
-        if (pDialog->type == UI_DLG_TYPE_INPUT_SELECT) {
-            if (key > '0' && key <= '9') {
-                /* User pressed a number from 1 - 9 for selection */
-                UiSelection(key - '0');
-            } else if (key == '\r') {
-                /* User pressed enter on pause screen */
-                UiSelection(0);
-            }
-        } else {
-            if (uiConsoleCb.alphaNumOffset < pDialog->entryMaxLen) {
-                /* TODO:  Add backspace key? */
-
-                /* User in process of entering alpha numeric input */
-                pDialog->pEntry[uiConsoleCb.alphaNumOffset++] = key;
-            } else {
-                pDialog->pEntry[uiConsoleCb.alphaNumOffset] = '\0';
-                uiConsoleCb.alphaNumOffset = 0;
-
-                /* Notify callback of selection */
-                UiSelection(0);
-
-                /* Exit to parent */
-                UiLoadMenu(pDialog->base.pParentMenu);
-            }
-        }
-        break;
-
-    default:
-        break;
+  switch(UiCb.activeScreenType)
+  {
+  case UI_SCREEN_SPLASH:
+    if ((key >= '0' && key <= '9') || (key == '\r'))
+    {
+      /* Jump to main menu on any key */
+      UiLoadMenu(UiCb.pMainMenu);
     }
+    break;
+
+  case UI_SCREEN_MENU:
+    if (key >= '0' && key <= '9')
+    {
+      UiSelection(key - '0');
+    }
+    break;
+
+  case UI_SCREEN_DIALOG:
+    pDialog = (UiDialog_t*) UiCb.pActiveScreen;
+
+    if (pDialog->type == UI_DLG_TYPE_INPUT_SELECT)
+    {
+      if (key > '0' && key <= '9')
+      {
+        /* User pressed a number from 1 - 9 for selection */
+        UiSelection(key - '0');
+      }
+      else if (key == '\r')
+      {
+        /* User pressed enter on pause screen */
+        UiSelection(0);
+      }
+    }
+    else
+    {
+      if (uiConsoleCb.alphaNumOffset < pDialog->entryMaxLen)
+      {
+        /* TODO:  Add backspace key? */
+
+        /* User in process of entering alpha numeric input */
+        pDialog->pEntry[uiConsoleCb.alphaNumOffset++] = key;
+      }
+      else
+      {
+        pDialog->pEntry[uiConsoleCb.alphaNumOffset] = '\0';
+        uiConsoleCb.alphaNumOffset = 0;
+
+        /* Notify callback of selection */
+        UiSelection(0);
+
+        /* Exit to parent */
+        UiLoadMenu(pDialog->base.pParentMenu);
+      }
+    }
+    break;
+
+  default:
+    break;
+  }
 }
 
 /*************************************************************************************************/
@@ -129,16 +147,16 @@ static void uiConsoleProcessKey(uint8_t key)
 /*************************************************************************************************/
 static void uiConsoleDispSplash(const UiSplashScreen_t *pSplash)
 {
-    /* Print the splash widget identifier */
-    UiConsolePrintLn("{Splash}");
+  /* Print the splash widget identifier */
+  UiConsolePrintLn("{Splash}");
 
-    /* Print splash screen */
-    UiConsolePrint(pSplash->pAppName);
-    UiConsolePrint(", ");
-    UiConsolePrintLn(pSplash->pAppVer);
-    UiConsolePrintLn(pSplash->pCopyright);
+  /* Print splash screen */
+  UiConsolePrint(pSplash->pAppName);
+  UiConsolePrint(", ");
+  UiConsolePrintLn(pSplash->pAppVer);
+  UiConsolePrintLn(pSplash->pCopyright);
 
-    UiConsoleFlush();
+  UiConsoleFlush();
 }
 
 /*************************************************************************************************/
@@ -152,30 +170,31 @@ static void uiConsoleDispSplash(const UiSplashScreen_t *pSplash)
 /*************************************************************************************************/
 static void uiConsoleDispMenu(const UiMenu_t *pMenu)
 {
-    int8_t i;
-    char ch[2];
+  int8_t i;
+  char ch[2];
 
-    /* Print the menu widget identifier */
-    UiConsolePrint("\r\n");
-    UiConsolePrintLn("{Menu}");
+  /* Print the menu widget identifier */
+  UiConsolePrint("\r\n");
+  UiConsolePrintLn("{Menu}");
 
-    /* Print the title to the Console */
-    UiConsolePrintLn(pMenu->pTitle);
+  /* Print the title to the Console */
+  UiConsolePrintLn(pMenu->pTitle);
 
-    /* Print the menu items */
-    for (i = 0; i < pMenu->numItems; i++) {
-        UiConsolePrint("  ");
-        ch[0] = '1' + i;
-        ch[1] = '\0';
-        UiConsolePrint(ch);
-        UiConsolePrint(". ");
-        UiConsolePrintLn(pMenu->pItems[i]);
-    }
+  /* Print the menu items */
+  for (i = 0; i < pMenu->numItems; i++)
+  {
+    UiConsolePrint("  ");
+    ch[0] = '1' + i;
+    ch[1] = '\0';
+    UiConsolePrint(ch);
+    UiConsolePrint(". ");
+    UiConsolePrintLn(pMenu->pItems[i]);
+  }
 
-    UiConsolePrint("\r\n");
-    UiConsolePrint("Choice? ");
+  UiConsolePrint("\r\n");
+  UiConsolePrint("Choice? ");
 
-    UiConsoleFlush();
+  UiConsoleFlush();
 }
 
 /*************************************************************************************************/
@@ -189,40 +208,47 @@ static void uiConsoleDispMenu(const UiMenu_t *pMenu)
 /*************************************************************************************************/
 static void uiConsoleDispDialog(const UiDialog_t *pDialog)
 {
-    int8_t i;
-    char ch[2];
+  int8_t i;
+  char ch[2];
 
-    /* Print the dialog widget identifier */
-    UiConsolePrint("\r\n");
-    UiConsolePrintLn("{Dialog}");
+  /* Print the dialog widget identifier */
+  UiConsolePrint("\r\n");
+  UiConsolePrintLn("{Dialog}");
 
-    /* Print the title to the Console */
-    UiConsolePrintLn(pDialog->pTitle);
+  /* Print the title to the Console */
+  UiConsolePrintLn(pDialog->pTitle);
 
-    /* Print the message to the Console */
-    UiConsolePrintLn(pDialog->pMsg);
+  /* Print the message to the Console */
+  UiConsolePrintLn(pDialog->pMsg);
 
-    if (pDialog->type == UI_DLG_TYPE_INPUT_SELECT) {
-        if (pDialog->numSelectItems == 0) {
-            UiConsolePrintLn("ENTER to continue");
-        } else {
-            /* Print the dialog items */
-            for (i = 0; i < pDialog->numSelectItems; i++) {
-                UiConsolePrint("  ");
-                ch[0] = '1' + i;
-                ch[1] = '\0';
-                UiConsolePrint(ch);
-                UiConsolePrint(". ");
-                UiConsolePrintLn(pDialog->pSelectItems[i]);
-            }
-        }
-    } else {
-        /* Print prompt */
-        UiConsolePrint("> ");
-        UiConsolePrint(pDialog->pEntry);
+  if (pDialog->type == UI_DLG_TYPE_INPUT_SELECT)
+  {
+    if (pDialog->numSelectItems == 0)
+    {
+      UiConsolePrintLn("ENTER to continue");
     }
+    else
+    {
+      /* Print the dialog items */
+      for (i = 0; i < pDialog->numSelectItems; i++)
+      {
+        UiConsolePrint("  ");
+        ch[0] = '1' + i;
+        ch[1] = '\0';
+        UiConsolePrint(ch);
+        UiConsolePrint(". ");
+        UiConsolePrintLn(pDialog->pSelectItems[i]);
+      }
+    }
+  }
+  else
+  {
+    /* Print prompt */
+    UiConsolePrint("> ");
+    UiConsolePrint(pDialog->pEntry);
+  }
 
-    UiConsoleFlush();
+  UiConsoleFlush();
 }
 
 /*************************************************************************************************/
@@ -234,6 +260,6 @@ static void uiConsoleDispDialog(const UiDialog_t *pDialog)
 /*************************************************************************************************/
 void UiConsoleInit(void)
 {
-    uiConsoleCb.alphaNumOffset = 0;
-    UiRegisterDisplay(uiConsoleActionTbl, UI_DISPLAY_CONSOLE);
+  uiConsoleCb.alphaNumOffset = 0;
+  UiRegisterDisplay(uiConsoleActionTbl, UI_DISPLAY_CONSOLE);
 }

@@ -27,7 +27,8 @@
 #define MESH_NETWORK_MGMT_MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -54,6 +55,7 @@ static void meshNwkMgmTransJustSet(uint16_t netKeyIndex, meshKeyRefreshStates_t 
 
 static void meshNwkMgmtTransRevokeOld(uint16_t netKeyIndex, meshKeyRefreshStates_t oldState,
                                       meshKeyRefreshStates_t newState);
+
 
 #ifdef __cplusplus
 }

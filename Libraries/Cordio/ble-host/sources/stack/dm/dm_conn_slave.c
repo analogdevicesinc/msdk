@@ -35,7 +35,11 @@
 **************************************************************************************************/
 
 /* Action set for this module */
-const dmConnAct_t dmConnUpdActSetSlave[] = { dmConnUpdActUpdateSlave, dmConnUpdActL2cUpdateCnf };
+const dmConnAct_t dmConnUpdActSetSlave[] =
+{
+  dmConnUpdActUpdateSlave,
+  dmConnUpdActL2cUpdateCnf
+};
 
 /*************************************************************************************************/
 /*!
@@ -49,14 +53,14 @@ const dmConnAct_t dmConnUpdActSetSlave[] = { dmConnUpdActUpdateSlave, dmConnUpdA
 /*************************************************************************************************/
 static void dmConnUpdateCback(dmConnCcb_t *pCcb, uint8_t status)
 {
-    hciLeConnUpdateCmplEvt_t evt;
+  hciLeConnUpdateCmplEvt_t  evt;
 
-    /* call callback */
-    evt.hdr.event = DM_CONN_UPDATE_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.status = evt.hdr.status = status;
-    evt.handle = pCcb->handle;
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  /* call callback */
+  evt.hdr.event = DM_CONN_UPDATE_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.status = evt.hdr.status = status;
+  evt.handle = pCcb->handle;
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -71,22 +75,25 @@ static void dmConnUpdateCback(dmConnCcb_t *pCcb, uint8_t status)
 /*************************************************************************************************/
 void dmConnUpdActUpdateSlave(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    if ((pCcb->features & HCI_LE_SUP_FEAT_CONN_PARAM_REQ_PROC) &&
-        (HciGetLeSupFeat() & HCI_LE_SUP_FEAT_CONN_PARAM_REQ_PROC)) {
-        HciLeConnUpdateCmd(pCcb->handle, &pMsg->apiUpdate.connSpec);
-    }
-    /* else if L2CAP connection update not already in progress */
-    else if (!pCcb->updating) {
-        pCcb->updating = TRUE;
+  if ((pCcb->features & HCI_LE_SUP_FEAT_CONN_PARAM_REQ_PROC) &&
+      (HciGetLeSupFeat() & HCI_LE_SUP_FEAT_CONN_PARAM_REQ_PROC))
+  {
+    HciLeConnUpdateCmd(pCcb->handle, &pMsg->apiUpdate.connSpec);
+  }
+  /* else if L2CAP connection update not already in progress */
+  else if (!pCcb->updating)
+  {
+    pCcb->updating = TRUE;
 
-        /* send request via L2CAP */
-        L2cDmConnUpdateReq(pCcb->handle, &pMsg->apiUpdate.connSpec);
-    }
-    /* else L2CAP connection update pending */
-    else {
-        /* call callback */
-        dmConnUpdateCback(pCcb, (uint8_t)HCI_ERR_CMD_DISALLOWED);
-    }
+    /* send request via L2CAP */
+    L2cDmConnUpdateReq(pCcb->handle, &pMsg->apiUpdate.connSpec);
+  }
+  /* else L2CAP connection update pending */
+  else
+  {
+    /* call callback */
+    dmConnUpdateCback(pCcb, (uint8_t) HCI_ERR_CMD_DISALLOWED);
+  }
 }
 
 /*************************************************************************************************/
@@ -101,16 +108,18 @@ void dmConnUpdActUpdateSlave(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnUpdActL2cUpdateCnf(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    /* if connection update in progress */
-    if (pCcb->updating) {
-        pCcb->updating = FALSE;
+  /* if connection update in progress */
+  if (pCcb->updating)
+  {
+    pCcb->updating = FALSE;
 
-        /* if reason indicates failure */
-        if (pMsg->l2cUpdateCnf.result != L2C_CONN_PARAM_ACCEPTED) {
-            /* call callback */
-            dmConnUpdateCback(pCcb, (uint8_t)pMsg->l2cUpdateCnf.result);
-        }
+    /* if reason indicates failure */
+    if (pMsg->l2cUpdateCnf.result != L2C_CONN_PARAM_ACCEPTED)
+    {
+      /* call callback */
+      dmConnUpdateCback(pCcb, (uint8_t) pMsg->l2cUpdateCnf.result);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -126,15 +135,16 @@ void dmConnUpdActL2cUpdateCnf(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void DmL2cConnUpdateCnf(uint16_t handle, uint16_t result)
 {
-    dmConnL2cUpdateCnf_t updateCnf;
-    dmConnCcb_t *pCcb;
+  dmConnL2cUpdateCnf_t  updateCnf;
+  dmConnCcb_t           *pCcb;
 
-    if ((pCcb = dmConnCcbByHandle(handle)) != NULL) {
-        updateCnf.hdr.event = DM_CONN_MSG_L2C_UPDATE_CNF;
-        updateCnf.result = result;
+  if ((pCcb = dmConnCcbByHandle(handle)) != NULL)
+  {
+    updateCnf.hdr.event = DM_CONN_MSG_L2C_UPDATE_CNF;
+    updateCnf.result = result;
 
-        dmConnUpdExecute(pCcb, (dmConnMsg_t *)&updateCnf);
-    }
+    dmConnUpdExecute(pCcb, (dmConnMsg_t *) &updateCnf);
+  }
 }
 
 /*************************************************************************************************/
@@ -150,14 +160,14 @@ void DmL2cConnUpdateCnf(uint16_t handle, uint16_t result)
 /*************************************************************************************************/
 void DmL2cCmdRejInd(uint16_t handle, uint16_t result)
 {
-    dmL2cCmdRejEvt_t evt;
+  dmL2cCmdRejEvt_t  evt;
 
-    /* call callback */
-    evt.hdr.event = DM_L2C_CMD_REJ_IND;
-    evt.hdr.status = HCI_SUCCESS;
-    evt.reason = result;
-    evt.handle = handle;
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  /* call callback */
+  evt.hdr.event = DM_L2C_CMD_REJ_IND;
+  evt.hdr.status = HCI_SUCCESS;
+  evt.reason = result;
+  evt.handle = handle;
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -178,6 +188,6 @@ void DmL2cCmdRejInd(uint16_t handle, uint16_t result)
 dmConnId_t DmConnAccept(uint8_t clientId, uint8_t advHandle, uint8_t advType, uint16_t duration,
                         uint8_t maxEaEvents, uint8_t addrType, uint8_t *pAddr)
 {
-    return dmConnOpenAccept(clientId, 0, advHandle, advType, duration, maxEaEvents, addrType, pAddr,
-                            DM_ROLE_SLAVE);
+  return dmConnOpenAccept(clientId, 0, advHandle, advType, duration, maxEaEvents, addrType, pAddr,
+                          DM_ROLE_SLAVE);
 }

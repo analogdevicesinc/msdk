@@ -62,11 +62,12 @@ static nrfx_drv_state_t m_temp_state;
 /** @brief Pointer to handler to be called from interrupt routine. */
 static nrfx_temp_data_handler_t m_data_handler;
 
-nrfx_err_t nrfx_temp_init(nrfx_temp_config_t const *p_config, nrfx_temp_data_handler_t handler)
+nrfx_err_t nrfx_temp_init(nrfx_temp_config_t const * p_config, nrfx_temp_data_handler_t handler)
 {
     NRFX_ASSERT(p_config);
 
-    if (m_temp_state != NRFX_DRV_STATE_UNINITIALIZED) {
+    if (m_temp_state != NRFX_DRV_STATE_UNINITIALIZED)
+    {
         return NRFX_ERROR_ALREADY_INITIALIZED;
     }
 
@@ -76,7 +77,8 @@ nrfx_err_t nrfx_temp_init(nrfx_temp_config_t const *p_config, nrfx_temp_data_han
 
     m_data_handler = handler;
 
-    if (m_data_handler) {
+    if (m_data_handler)
+    {
         nrf_temp_int_enable(NRF_TEMP, NRF_TEMP_INT_DATARDY_MASK);
         NRFX_IRQ_PRIORITY_SET(TEMP_IRQn, p_config->interrupt_priority);
         NRFX_IRQ_ENABLE(TEMP_IRQn);
@@ -91,7 +93,8 @@ void nrfx_temp_uninit(void)
     NRFX_ASSERT(m_temp_state == NRFX_DRV_STATE_INITIALIZED);
     nrf_temp_task_trigger(NRF_TEMP, NRF_TEMP_TASK_STOP);
 
-    if (m_data_handler) {
+    if (m_data_handler)
+    {
         nrf_temp_int_disable(NRF_TEMP, NRF_TEMP_INT_DATARDY_MASK);
         NRFX_IRQ_DISABLE(TEMP_IRQn);
     }
@@ -116,13 +119,19 @@ nrfx_err_t nrfx_temp_measure(void)
     nrf_temp_event_clear(NRF_TEMP, NRF_TEMP_EVENT_DATARDY);
     nrf_temp_task_trigger(NRF_TEMP, NRF_TEMP_TASK_START);
 
-    if (!m_data_handler) {
+    if (!m_data_handler)
+    {
         bool ev_result;
-        NRFX_WAIT_FOR(nrf_temp_event_check(NRF_TEMP, NRF_TEMP_EVENT_DATARDY), NRFX_TEMP_ATTEMPTS,
-                      NRFX_TEMP_TIME_US, ev_result);
-        if (!ev_result) {
+        NRFX_WAIT_FOR(nrf_temp_event_check(NRF_TEMP, NRF_TEMP_EVENT_DATARDY),
+                      NRFX_TEMP_ATTEMPTS,
+                      NRFX_TEMP_TIME_US,
+                      ev_result);
+        if (!ev_result)
+        {
             result = NRFX_ERROR_INTERNAL;
-        } else {
+        }
+        else
+        {
             nrf_temp_event_clear(NRF_TEMP, NRF_TEMP_EVENT_DATARDY);
         }
         nrf_temp_task_trigger(NRF_TEMP, NRF_TEMP_TASK_STOP);

@@ -44,15 +44,16 @@
 #include "nrf_crypto_init.h"
 #include "nrf_section.h"
 
+
 // Create a named section for crypto backend data
 NRF_SECTION_DEF(crypto_data, const nrf_crypto_backend_info_t);
 
-#define NRF_CRYPTO_BACKEND_SECTION_ITEM_GET(i) \
-    NRF_SECTION_ITEM_GET(crypto_data, nrf_crypto_backend_info_t, (i))
-#define NRF_CRYPTO_BACKEND_SECTION_ITEM_COUNT \
-    NRF_SECTION_ITEM_COUNT(crypto_data, nrf_crypto_backend_info_t)
 
-typedef enum {
+#define NRF_CRYPTO_BACKEND_SECTION_ITEM_GET(i)      NRF_SECTION_ITEM_GET(crypto_data, nrf_crypto_backend_info_t, (i))
+#define NRF_CRYPTO_BACKEND_SECTION_ITEM_COUNT       NRF_SECTION_ITEM_COUNT(crypto_data, nrf_crypto_backend_info_t)
+
+typedef enum
+{
     UNINITIALIZED,
     INITIALIZING,
     INITIALIZED,
@@ -60,18 +61,21 @@ typedef enum {
 
 static volatile nrf_crypto_state_t m_state = UNINITIALIZED;
 
+
 ret_code_t nrf_crypto_init(void)
 {
-    ret_code_t ret_val;
-    size_t const num_backends = NRF_CRYPTO_BACKEND_SECTION_ITEM_COUNT;
+    ret_code_t      ret_val;
+    size_t const    num_backends = NRF_CRYPTO_BACKEND_SECTION_ITEM_COUNT;
 
     m_state = INITIALIZING;
 
     // Iterate through each backends to call the init function
-    for (size_t i = 0; i < num_backends; i++) {
-        nrf_crypto_backend_info_t const *p_backend = NRF_CRYPTO_BACKEND_SECTION_ITEM_GET(i);
+    for (size_t i = 0; i < num_backends; i++)
+    {
+        nrf_crypto_backend_info_t const * p_backend = NRF_CRYPTO_BACKEND_SECTION_ITEM_GET(i);
         ret_val = p_backend->init_fn();
-        if (ret_val != NRF_SUCCESS) {
+        if (ret_val != NRF_SUCCESS)
+        {
             return ret_val;
         }
     }
@@ -81,16 +85,19 @@ ret_code_t nrf_crypto_init(void)
     return NRF_SUCCESS;
 }
 
+
 ret_code_t nrf_crypto_uninit(void)
 {
-    ret_code_t ret_val;
-    size_t const num_backends = NRF_CRYPTO_BACKEND_SECTION_ITEM_COUNT;
+    ret_code_t      ret_val;
+    size_t const    num_backends = NRF_CRYPTO_BACKEND_SECTION_ITEM_COUNT;
 
     // Iterate through each backends to call the uninit function
-    for (size_t i = 0; i < num_backends; i++) {
-        nrf_crypto_backend_info_t const *p_backend = NRF_CRYPTO_BACKEND_SECTION_ITEM_GET(i);
+    for (size_t i = 0; i < num_backends; i++)
+    {
+        nrf_crypto_backend_info_t const * p_backend = NRF_CRYPTO_BACKEND_SECTION_ITEM_GET(i);
         ret_val = p_backend->uninit_fn();
-        if (ret_val != NRF_SUCCESS) {
+        if (ret_val != NRF_SUCCESS)
+        {
             return ret_val;
         }
     }
@@ -100,10 +107,12 @@ ret_code_t nrf_crypto_uninit(void)
     return NRF_SUCCESS;
 }
 
+
 bool nrf_crypto_is_initialized(void)
 {
     return (m_state == INITIALIZED);
 }
+
 
 bool nrf_crypto_is_initializing(void)
 {

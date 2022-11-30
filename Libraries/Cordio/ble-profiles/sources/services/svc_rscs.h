@@ -42,19 +42,14 @@ Constants
  * Running Speed and Cadence Feature Bits of the Feature Characteristic
  */
 /**@{*/
-#define RSCS_ISLMS_FEATURE_BIT \
-    (1 << 0) /*!< \brief Instantaneous Stride Length Measurement Supported Feature Mask Bit */
-#define RSCS_TDMS_FEATURE_BIT \
-    (1 << 1) /*!< \brief Total Distance Measurement Supported Feature Mask Bit */
-#define RSCS_WRSS_FEATURE_BIT \
-    (1 << 2) /*!< \brief Walking or Running Status Supported Feature Mask Bit */
-#define RSCS_CPS_FEATURE_BIT \
-    (1 << 3) /*!< \brief Calibration Procedure Supported Feature Mask Bit */
-#define RSCS_MSLS_FEATURE_BIT \
-    (1 << 4) /*!< \brief Multiple Sensor Locations Supporte Feature Mask Bit */
+#define RSCS_ISLMS_FEATURE_BIT           (1<<0)  /*!< \brief Instantaneous Stride Length Measurement Supported Feature Mask Bit */
+#define RSCS_TDMS_FEATURE_BIT            (1<<1)  /*!< \brief Total Distance Measurement Supported Feature Mask Bit */
+#define RSCS_WRSS_FEATURE_BIT            (1<<2)  /*!< \brief Walking or Running Status Supported Feature Mask Bit */
+#define RSCS_CPS_FEATURE_BIT             (1<<3)  /*!< \brief Calibration Procedure Supported Feature Mask Bit */
+#define RSCS_MSLS_FEATURE_BIT            (1<<4)  /*!< \brief Multiple Sensor Locations Supporte Feature Mask Bit */
 
 /*! \brief TODO: Set to all supported features */
-#define RSCS_ALL_FEATURES (0x7) /*!< \brief All Supported Feature Mask */
+#define RSCS_ALL_FEATURES                (0x7)   /*!< \brief All Supported Feature Mask */
 /**@}*/
 
 /**************************************************************************************************
@@ -65,24 +60,25 @@ Constants
  *
  */
 /**@{*/
-#define RSCS_START_HDL 0x04A0 /*!< \brief Start handle. */
-#define RSCS_END_HDL (RSCS_MAX_HDL - 1) /*!< \brief End handle. */
+#define RSCS_START_HDL               0x04A0             /*!< \brief Start handle. */
+#define RSCS_END_HDL                 (RSCS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Running Speed Service Handles */
-enum {
-    RSCS_SVC_HDL = RSCS_START_HDL, /*!< \brief Running Speed Server Service declaration */
-    RSCS_RSF_CH_HDL, /*!< \brief Running Speed Feature characteristic */
-    RSCS_RSF_HDL, /*!< \brief Running Speed Feature */
-    RSCS_RSM_CH_HDL, /*!< \brief Running Speed Measurement characteristic */
-    RSCS_RSM_HDL, /*!< \brief Running Speed Measurement */
-    RSCS_RSM_CH_CCC_HDL, /*!< \brief Running Speed Measurement Client Characteristic Configuration Descriptor */
-    RSCS_SL_CH_HDL, /*!< \brief Running Speed Sensor Location characteristic */
-    RSCS_SL_HDL, /*!< \brief Running Speed Sensor Location */
-    RSCS_MAX_HDL /*!< \brief Maximum handle. */
+enum
+{
+  RSCS_SVC_HDL = RSCS_START_HDL,       /*!< \brief Running Speed Server Service declaration */
+  RSCS_RSF_CH_HDL,                     /*!< \brief Running Speed Feature characteristic */
+  RSCS_RSF_HDL,                        /*!< \brief Running Speed Feature */
+  RSCS_RSM_CH_HDL,                     /*!< \brief Running Speed Measurement characteristic */
+  RSCS_RSM_HDL,                        /*!< \brief Running Speed Measurement */
+  RSCS_RSM_CH_CCC_HDL,                 /*!< \brief Running Speed Measurement Client Characteristic Configuration Descriptor */
+  RSCS_SL_CH_HDL,                      /*!< \brief Running Speed Sensor Location characteristic */
+  RSCS_SL_HDL,                         /*!< \brief Running Speed Sensor Location */
+  RSCS_MAX_HDL                         /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -120,7 +116,7 @@ void SvcRscsRemoveGroup(void);
 /*************************************************************************************************/
 void SvcRscsCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
 
-/*! \} */ /* RUNNING_SPEED_AND_CADENCE_SERVICE */
+/*! \} */    /* RUNNING_SPEED_AND_CADENCE_SERVICE */
 
 #ifdef __cplusplus
 };

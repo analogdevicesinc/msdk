@@ -37,13 +37,13 @@
 /**
  * @brief PSP value when no task's context is loaded.
  */
-#define securecontextNO_STACK 0x0
+#define securecontextNO_STACK	0x0
 
 /**
  * @brief Opaque handle.
  */
 struct SecureContext;
-typedef struct SecureContext *SecureContextHandle_t;
+typedef struct SecureContext*	SecureContextHandle_t;
 /*-----------------------------------------------------------*/
 
 /**
@@ -55,7 +55,7 @@ typedef struct SecureContext *SecureContextHandle_t;
  * @note This function must be called in the handler mode. It is no-op if called
  * in the thread mode.
  */
-void SecureContext_Init(void);
+void SecureContext_Init( void );
 
 /**
  * @brief Allocates a context on the secure side.
@@ -69,11 +69,10 @@ void SecureContext_Init(void);
  * @return Opaque context handle if context is successfully allocated, NULL
  * otherwise.
  */
-#if (configENABLE_MPU == 1)
-SecureContextHandle_t SecureContext_AllocateContext(uint32_t ulSecureStackSize,
-                                                    uint32_t ulIsTaskPrivileged);
+#if( configENABLE_MPU == 1 )
+	SecureContextHandle_t SecureContext_AllocateContext( uint32_t ulSecureStackSize, uint32_t ulIsTaskPrivileged );
 #else /* configENABLE_MPU */
-SecureContextHandle_t SecureContext_AllocateContext(uint32_t ulSecureStackSize);
+	SecureContextHandle_t SecureContext_AllocateContext( uint32_t ulSecureStackSize );
 #endif /* configENABLE_MPU */
 
 /**
@@ -85,7 +84,7 @@ SecureContextHandle_t SecureContext_AllocateContext(uint32_t ulSecureStackSize);
  * @param[in] xSecureContextHandle Context handle corresponding to the
  * context to be freed.
  */
-void SecureContext_FreeContext(SecureContextHandle_t xSecureContextHandle);
+void SecureContext_FreeContext( SecureContextHandle_t xSecureContextHandle );
 
 /**
  * @brief Loads the given context.
@@ -96,7 +95,7 @@ void SecureContext_FreeContext(SecureContextHandle_t xSecureContextHandle);
  * @param[in] xSecureContextHandle Context handle corresponding to the context
  * to be loaded.
  */
-void SecureContext_LoadContext(SecureContextHandle_t xSecureContextHandle);
+void SecureContext_LoadContext( SecureContextHandle_t xSecureContextHandle );
 
 /**
  * @brief Saves the given context.
@@ -107,6 +106,6 @@ void SecureContext_LoadContext(SecureContextHandle_t xSecureContextHandle);
  * @param[in] xSecureContextHandle Context handle corresponding to the context
  * to be saved.
  */
-void SecureContext_SaveContext(SecureContextHandle_t xSecureContextHandle);
+void SecureContext_SaveContext( SecureContextHandle_t xSecureContextHandle );
 
 #endif /* __SECURE_CONTEXT_H__ */

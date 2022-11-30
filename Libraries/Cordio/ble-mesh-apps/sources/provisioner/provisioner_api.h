@@ -26,24 +26,27 @@
 #define PROVISIONER_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*! Provisioning device types. */
-enum provisionerPrvDeviceTypes {
-    PROVISIONER_PRV_MASTER_SWITCH, /*!< Master Switch. */
-    PROVISIONER_PRV_ROOM_SWITCH, /*!< Room Switch. */
-    PROVISIONER_PRV_LIGHT, /*!< Light. */
-    PROVISIONER_PRV_NONE, /*!< Not provisioning. */
+enum provisionerPrvDeviceTypes
+{
+  PROVISIONER_PRV_MASTER_SWITCH, /*!< Master Switch. */
+  PROVISIONER_PRV_ROOM_SWITCH,   /*!< Room Switch. */
+  PROVISIONER_PRV_LIGHT,         /*!< Light. */
+  PROVISIONER_PRV_NONE,          /*!< Not provisioning. */
 };
 
 /*! \brief Provising States. */
-enum provisionerPrvStates {
-    PROVISIONER_ST_PRV_START, /*!< Start provisioning. */
-    PROVISIONER_ST_PRV_ADV_INPRG, /*!< Provisioning over PB-ADV in progress. */
-    PROVISIONER_ST_PRV_GATT_INPRG, /*!< Provisioning over PB-GATT in progress. */
-    PROVISIONER_ST_CC_ADV_INPRG, /*!< Configuration Client configuration over Mesh Bearer in progress. */
-    PROVISIONER_ST_CC_GATT_INPRG, /*!< Configuration Client configuration over Proxy Bearer in progress. */
+enum provisionerPrvStates
+{
+  PROVISIONER_ST_PRV_START,      /*!< Start provisioning. */
+  PROVISIONER_ST_PRV_ADV_INPRG,  /*!< Provisioning over PB-ADV in progress. */
+  PROVISIONER_ST_PRV_GATT_INPRG, /*!< Provisioning over PB-GATT in progress. */
+  PROVISIONER_ST_CC_ADV_INPRG,   /*!< Configuration Client configuration over Mesh Bearer in progress. */
+  PROVISIONER_ST_CC_GATT_INPRG,  /*!< Configuration Client configuration over Proxy Bearer in progress. */
 };
 
 /* \brief Device type to provision. See ::provisionerPrvDeviceTypes. */

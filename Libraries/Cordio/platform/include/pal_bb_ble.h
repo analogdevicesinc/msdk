@@ -37,7 +37,7 @@ extern "C" {
 **************************************************************************************************/
 
 #ifndef LL_ENABLE_TESTER
-#define LL_ENABLE_TESTER 0 /*!< Enable LL tester extensions. */
+#define LL_ENABLE_TESTER        0       /*!< Enable LL tester extensions. */
 #endif
 
 /**************************************************************************************************
@@ -45,47 +45,50 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Nonce modes. */
-enum {
-    PAL_BB_NONCE_MODE_PKT_CNTR, /*!< Packet counter mode (default). */
-    PAL_BB_NONCE_MODE_EXT16_CNTR, /*!< 16-bit counter mode, PalCryptoEnc_t::pEventCounter must be non-NULL. */
-    PAL_BB_NONCE_MODE_EXT64_CNTR /*!< 64-bit counter mode, PalCryptoEnc_t::pTxPktCounter/pRxPktCounter must be non-NULL. */
+enum
+{
+  PAL_BB_NONCE_MODE_PKT_CNTR,           /*!< Packet counter mode (default). */
+  PAL_BB_NONCE_MODE_EXT16_CNTR,         /*!< 16-bit counter mode, PalCryptoEnc_t::pEventCounter must be non-NULL. */
+  PAL_BB_NONCE_MODE_EXT64_CNTR          /*!< 64-bit counter mode, PalCryptoEnc_t::pTxPktCounter/pRxPktCounter must be non-NULL. */
 };
 
 /*! \brief      Connection type. */
-enum {
-    PAL_BB_TYPE_ACL, /*!< ACL. */
-    PAL_BB_TYPE_CIS, /*!< CIS. */
-    PAL_BB_TYPE_BIS /*!< BIS. */
+enum
+{
+  PAL_BB_TYPE_ACL,                      /*!< ACL. */
+  PAL_BB_TYPE_CIS,                      /*!< CIS. */
+  PAL_BB_TYPE_BIS                       /*!< BIS. */
 };
 
 /*! \addtogroup PAL_BB_BLE_CHAN
  *  \{ */
 
 /*! \brief      BLE channelization parameters. */
-typedef struct {
-    uint8_t opType; /*!< Operation type. */
-    uint8_t chanIdx; /*!< Channel index. */
-    int8_t txPower; /*!< Active transmit power, unit is dBm. */
-    uint32_t accAddr; /*!< Access address. */
-    uint32_t crcInit; /*!< CRC initialization value. */
-    uint8_t txPhy; /*!< Transmitter PHY. */
-    uint8_t rxPhy; /*!< Receiver PHY. */
-    uint8_t initTxPhyOptions; /*!< Initial Tx PHY options. */
-    uint8_t tifsTxPhyOptions; /*!< TIFS Tx PHY options. */
-    bool_t peerTxStableModIdx; /*!< Peer uses stable modulation index on transmitter. */
-    bool_t peerRxStableModIdx; /*!< Peer uses stable modulation index on receiver. */
-    PalCryptoEnc_t enc; /*!< Encryption parameters (NULL if disabled). */
+typedef struct
+{
+  uint8_t       opType;                 /*!< Operation type. */
+  uint8_t       chanIdx;                /*!< Channel index. */
+  int8_t        txPower;                /*!< Active transmit power, unit is dBm. */
+  uint32_t      accAddr;                /*!< Access address. */
+  uint32_t      crcInit;                /*!< CRC initialization value. */
+  uint8_t       txPhy;                  /*!< Transmitter PHY. */
+  uint8_t       rxPhy;                  /*!< Receiver PHY. */
+  uint8_t       initTxPhyOptions;       /*!< Initial Tx PHY options. */
+  uint8_t       tifsTxPhyOptions;       /*!< TIFS Tx PHY options. */
+  bool_t        peerTxStableModIdx;     /*!< Peer uses stable modulation index on transmitter. */
+  bool_t        peerRxStableModIdx;     /*!< Peer uses stable modulation index on receiver. */
+  PalCryptoEnc_t enc;                   /*!< Encryption parameters (NULL if disabled). */
 
 #if (LL_ENABLE_TESTER)
-    uint32_t accAddrRx; /*!< Access address override for receptions. */
-    uint32_t accAddrTx; /*!< Access address override for transmissions. */
-    uint32_t crcInitRx; /*!< CRC initialization override for receptions. */
-    uint32_t crcInitTx; /*!< CRC initialization override for transmissions. */
-    int8_t txPwrOffset; /*!< override offset for txPower. */
+  uint32_t      accAddrRx;              /*!< Access address override for receptions. */
+  uint32_t      accAddrTx;              /*!< Access address override for transmissions. */
+  uint32_t      crcInitRx;              /*!< CRC initialization override for receptions. */
+  uint32_t      crcInitTx;              /*!< CRC initialization override for transmissions. */
+  int8_t        txPwrOffset;            /*!< override offset for txPower. */
 #endif
 } PalBbBleChan_t;
 
-/*! \} */ /* PAL_BB_BLE_CHAN */
+/*! \} */    /* PAL_BB_BLE_CHAN */
 
 /*! \addtogroup PAL_BB_BLE_DATA
  *  \{
@@ -96,39 +99,42 @@ typedef struct {
 typedef void (*PalBbBleTxIsr_t)(uint8_t status);
 
 /*! \brief      Receive complete ISR callback signature. */
-typedef void (*PalBbBleRxIsr_t)(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp,
-                                uint8_t rxPhyOptions);
+typedef void (*PalBbBleRxIsr_t)(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp, uint8_t rxPhyOptions);
 
 /*! \brief      IFS modes. */
-typedef enum {
-    PAL_BB_IFS_MODE_CLR, /*!< Clear IFS (last packet). */
-    PAL_BB_IFS_MODE_TOGGLE_TIFS, /*!< Toggle operation with TIFS timing. */
-    PAL_BB_IFS_MODE_SAME_ABS /*!< Same operation with absolute timing. */
+typedef enum
+{
+  PAL_BB_IFS_MODE_CLR,              /*!< Clear IFS (last packet). */
+  PAL_BB_IFS_MODE_TOGGLE_TIFS,      /*!< Toggle operation with TIFS timing. */
+  PAL_BB_IFS_MODE_SAME_ABS          /*!< Same operation with absolute timing. */
 } PalBbIfsMode_t;
 
 /*! \brief      BLE data transfer parameters. */
-typedef struct {
-    PalBbBleTxIsr_t txCback; /*!< Transmit completion callback. */
-    PalBbBleRxIsr_t rxCback; /*!< Receive completion callback. */
+typedef struct
+{
+  PalBbBleTxIsr_t   txCback;        /*!< Transmit completion callback. */
+  PalBbBleRxIsr_t   rxCback;        /*!< Receive completion callback. */
 
-    uint32_t dueUsec; /*!< Due time of the first packet in microseconds. */
-    uint32_t rxTimeoutUsec; /*!< Receive timeout in microseconds. */
+  uint32_t          dueUsec;        /*!< Due time of the first packet in microseconds. */
+  uint32_t          rxTimeoutUsec;  /*!< Receive timeout in microseconds. */
 } PalBbBleDataParam_t;
 
 /*! \brief    Operation parameters. */
-typedef struct {
-    PalBbIfsMode_t ifsMode : 8; /*!< IFS mode for next operation. */
-    uint32_t ifsTime; /*!< Absolute time of next PDU. */
-    PalBbBleChan_t *pIfsChan; /*!< Channel of next PDU, NULL for no change. */
+typedef struct
+{
+  PalBbIfsMode_t    ifsMode:8;      /*!< IFS mode for next operation. */
+  uint32_t          ifsTime;        /*!< Absolute time of next PDU. */
+  PalBbBleChan_t    *pIfsChan;      /*!< Channel of next PDU, NULL for no change. */
 } PalBbBleOpParam_t;
 
 /*! \brief    Transmit buffer descriptor. */
-typedef struct {
-    uint16_t len; /*!< Length of buffer. */
-    uint8_t *pBuf; /*!< Pointer to buffer. */
+typedef struct
+{
+  uint16_t          len;            /*!< Length of buffer. */
+  uint8_t           *pBuf;          /*!< Pointer to buffer. */
 } PalBbBleTxBufDesc_t;
 
-/*! \} */ /* PAL_BB_BLE_DATA */
+/*! \} */    /* PAL_BB_BLE_DATA */
 
 /**************************************************************************************************
   Function Declarations
@@ -169,7 +175,7 @@ void PalBbBleEnable(void);
 /*************************************************************************************************/
 void PalBbBleDisable(void);
 
-/*! \} */ /* PAL_BB_BLE_INIT */
+/*! \} */    /* PAL_BB_BLE_INIT */
 
 /*! \addtogroup PAL_BB_BLE_CHAN
  *  \{
@@ -196,7 +202,7 @@ void PalBbBleDisable(void);
 /*************************************************************************************************/
 void PalBbBleSetChannelParam(PalBbBleChan_t *pChan);
 
-/*! \} */ /* PAL_BB_BLE_CHAN */
+/*! \} */    /* PAL_BB_BLE_CHAN */
 
 /*! \addtogroup PAL_BB_BLE_DATA
  *  \{
@@ -296,7 +302,7 @@ void PalBbBleCancelTifs(void);
 /*************************************************************************************************/
 void PalBbBleCancelData(void);
 
-/*! \} */ /* PAL_BB_BLE_DATA */
+/*! \} */    /* PAL_BB_BLE_DATA */
 
 /*! \addtogroup PAL_BB_BLE_TEST
  *  \{
@@ -357,7 +363,7 @@ void PalBbBleInlineEncryptSetPacketCount(uint64_t count);
 /*************************************************************************************************/
 void PalBbBleLowPower(void);
 
-/*! \} */ /* PAL_BB_BLE_TEST */
+/*! \} */    /* PAL_BB_BLE_TEST */
 
 #ifdef __cplusplus
 };

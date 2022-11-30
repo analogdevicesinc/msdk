@@ -32,11 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-#ifndef _SSI_UTIL_ERROR_H
-#define _SSI_UTIL_ERROR_H
+
+#ifndef  _SSI_UTIL_ERROR_H
+#define  _SSI_UTIL_ERROR_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*!
@@ -53,38 +55,38 @@ extern "C" {
 /***********************/
 
 /*! Success definition. */
-#define SASI_UTIL_OK 0x00UL
+#define SASI_UTIL_OK        0x00UL
 /*! Error base number definition. */
 #define SASI_UTIL_MODULE_ERROR_BASE 0x80000000
 
 /*! Illegal key type. */
-#define SASI_UTIL_INVALID_KEY_TYPE (SASI_UTIL_MODULE_ERROR_BASE + 0x00UL)
+#define SASI_UTIL_INVALID_KEY_TYPE                  (SASI_UTIL_MODULE_ERROR_BASE + 0x00UL)
 /*! Illegal data in pointer. */
-#define SASI_UTIL_DATA_IN_POINTER_INVALID_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x01UL)
+#define SASI_UTIL_DATA_IN_POINTER_INVALID_ERROR     (SASI_UTIL_MODULE_ERROR_BASE + 0x01UL)
 /*! Illegal data in size. */
-#define SASI_UTIL_DATA_IN_SIZE_INVALID_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x02UL)
+#define SASI_UTIL_DATA_IN_SIZE_INVALID_ERROR        (SASI_UTIL_MODULE_ERROR_BASE + 0x02UL)
 /*! Illegal data out pointer. */
-#define SASI_UTIL_DATA_OUT_POINTER_INVALID_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x03UL)
+#define SASI_UTIL_DATA_OUT_POINTER_INVALID_ERROR    (SASI_UTIL_MODULE_ERROR_BASE + 0x03UL)
 /*! Illegal data out size. */
-#define SASI_UTIL_DATA_OUT_SIZE_INVALID_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x04UL)
+#define SASI_UTIL_DATA_OUT_SIZE_INVALID_ERROR       (SASI_UTIL_MODULE_ERROR_BASE + 0x04UL)
 /*! Fatal error. */
-#define SASI_UTIL_FATAL_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x05UL)
+#define SASI_UTIL_FATAL_ERROR               (SASI_UTIL_MODULE_ERROR_BASE + 0x05UL)
 /*! Illegal parameters. */
-#define SASI_UTIL_ILLEGAL_PARAMS_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x06UL)
+#define SASI_UTIL_ILLEGAL_PARAMS_ERROR          (SASI_UTIL_MODULE_ERROR_BASE + 0x06UL)
 /*! Invalid address given. */
-#define SASI_UTIL_BAD_ADDR_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x07UL)
+#define SASI_UTIL_BAD_ADDR_ERROR            (SASI_UTIL_MODULE_ERROR_BASE + 0x07UL)
 /*! Illegal domain for endorsement key. */
-#define SASI_UTIL_EK_DOMAIN_INVALID_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x08UL)
+#define SASI_UTIL_EK_DOMAIN_INVALID_ERROR       (SASI_UTIL_MODULE_ERROR_BASE + 0x08UL)
 /*! Kdr is not valid. */
-#define SASI_UTIL_KDR_INVALID_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x09UL)
+#define SASI_UTIL_KDR_INVALID_ERROR                 (SASI_UTIL_MODULE_ERROR_BASE + 0x09UL)
 /*! LCS is not valid. */
-#define SASI_UTIL_LCS_INVALID_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x0AUL)
+#define SASI_UTIL_LCS_INVALID_ERROR                 (SASI_UTIL_MODULE_ERROR_BASE + 0x0AUL)
 /*! session key is not valid. */
-#define SASI_UTIL_SESSION_KEY_ERROR (SASI_UTIL_MODULE_ERROR_BASE + 0x0BUL)
+#define SASI_UTIL_SESSION_KEY_ERROR                 (SASI_UTIL_MODULE_ERROR_BASE + 0x0BUL)
 /*! Illegal user key size. */
-#define SASI_UTIL_INVALID_USER_KEY_SIZE (SASI_UTIL_MODULE_ERROR_BASE + 0x0DUL)
+#define SASI_UTIL_INVALID_USER_KEY_SIZE         (SASI_UTIL_MODULE_ERROR_BASE + 0x0DUL)
 /*! Illegal LCS for the required operation. */
-#define SASI_UTIL_ILLEGAL_LCS_FOR_OPERATION_ERR (SASI_UTIL_MODULE_ERROR_BASE + 0x0EUL)
+#define SASI_UTIL_ILLEGAL_LCS_FOR_OPERATION_ERR     (SASI_UTIL_MODULE_ERROR_BASE + 0x0EUL)
 
 #ifdef __cplusplus
 }

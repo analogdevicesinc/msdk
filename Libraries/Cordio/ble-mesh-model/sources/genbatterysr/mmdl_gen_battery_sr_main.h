@@ -27,7 +27,8 @@
 #define MMDL_GEN_BATTERY_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************

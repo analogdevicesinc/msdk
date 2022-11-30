@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+    #include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
@@ -30,11 +30,13 @@
 #include <wolfssl/wolfcrypt/arc4.h>
 
 #ifdef HAVE_CAVIUM
-static void wc_Arc4CaviumSetKey(Arc4 *arc4, const byte *key, word32 length);
-static void wc_Arc4CaviumProcess(Arc4 *arc4, byte *out, const byte *in, word32 length);
+    static void wc_Arc4CaviumSetKey(Arc4* arc4, const byte* key, word32 length);
+    static void wc_Arc4CaviumProcess(Arc4* arc4, byte* out, const byte* in,
+                                  word32 length);
 #endif
 
-void wc_Arc4SetKey(Arc4 *arc4, const byte *key, word32 length)
+
+void wc_Arc4SetKey(Arc4* arc4, const byte* key, word32 length)
 {
     word32 i;
     word32 keyIndex = 0, stateIndex = 0;
@@ -47,7 +49,8 @@ void wc_Arc4SetKey(Arc4 *arc4, const byte *key, word32 length)
     arc4->x = 1;
     arc4->y = 0;
 
-    for (i = 0; i < ARC4_STATE_SIZE; i++) arc4->state[i] = (byte)i;
+    for (i = 0; i < ARC4_STATE_SIZE; i++)
+        arc4->state[i] = (byte)i;
 
     for (i = 0; i < ARC4_STATE_SIZE; i++) {
         word32 a = arc4->state[i];
@@ -61,20 +64,22 @@ void wc_Arc4SetKey(Arc4 *arc4, const byte *key, word32 length)
     }
 }
 
-static INLINE byte MakeByte(word32 *x, word32 *y, byte *s)
+
+static INLINE byte MakeByte(word32* x, word32* y, byte* s)
 {
     word32 a = s[*x], b;
-    *y = (*y + a) & 0xff;
+    *y = (*y+a) & 0xff;
 
     b = s[*y];
     s[*x] = (byte)b;
     s[*y] = (byte)a;
-    *x = (*x + 1) & 0xff;
+    *x = (*x+1) & 0xff;
 
-    return s[(a + b) & 0xff];
+    return s[(a+b) & 0xff];
 }
 
-void wc_Arc4Process(Arc4 *arc4, byte *out, const byte *in, word32 length)
+
+void wc_Arc4Process(Arc4* arc4, byte* out, const byte* in, word32 length)
 {
     word32 x;
     word32 y;
@@ -87,11 +92,13 @@ void wc_Arc4Process(Arc4 *arc4, byte *out, const byte *in, word32 length)
     x = arc4->x;
     y = arc4->y;
 
-    while (length--) *out++ = *in++ ^ MakeByte(&x, &y, arc4->state);
+    while(length--)
+        *out++ = *in++ ^ MakeByte(&x, &y, arc4->state);
 
     arc4->x = (byte)x;
     arc4->y = (byte)y;
 }
+
 
 #ifdef HAVE_CAVIUM
 
@@ -99,7 +106,7 @@ void wc_Arc4Process(Arc4 *arc4, byte *out, const byte *in, word32 length)
 #include "cavium_common.h"
 
 /* Initiliaze Arc4 for use with Nitrox device */
-int wc_Arc4InitCavium(Arc4 *arc4, int devId)
+int wc_Arc4InitCavium(Arc4* arc4, int devId)
 {
     if (arc4 == NULL)
         return -1;
@@ -113,8 +120,9 @@ int wc_Arc4InitCavium(Arc4 *arc4, int devId)
     return 0;
 }
 
+
 /* Free Arc4 from use with Nitrox device */
-void wc_Arc4FreeCavium(Arc4 *arc4)
+void wc_Arc4FreeCavium(Arc4* arc4)
 {
     if (arc4 == NULL)
         return;
@@ -126,25 +134,29 @@ void wc_Arc4FreeCavium(Arc4 *arc4)
     arc4->magic = 0;
 }
 
-static void wc_Arc4CaviumSetKey(Arc4 *arc4, const byte *key, word32 length)
+
+static void wc_Arc4CaviumSetKey(Arc4* arc4, const byte* key, word32 length)
 {
     word32 requestId;
 
-    if (CspInitializeRc4(CAVIUM_BLOCKING, arc4->contextHandle, length, (byte *)key, &requestId,
-                         arc4->devId) != 0) {
+    if (CspInitializeRc4(CAVIUM_BLOCKING, arc4->contextHandle, length,
+                         (byte*)key, &requestId, arc4->devId) != 0) {
         WOLFSSL_MSG("Bad Cavium Arc4 Init");
     }
 }
 
-static void wc_Arc4CaviumProcess(Arc4 *arc4, byte *out, const byte *in, word32 length)
+
+static void wc_Arc4CaviumProcess(Arc4* arc4, byte* out, const byte* in,
+                              word32 length)
 {
     wolfssl_word offset = 0;
     word32 requestId;
 
     while (length > WOLFSSL_MAX_16BIT) {
         word16 slen = (word16)WOLFSSL_MAX_16BIT;
-        if (CspEncryptRc4(CAVIUM_BLOCKING, arc4->contextHandle, CAVIUM_UPDATE, slen,
-                          (byte *)in + offset, out + offset, &requestId, arc4->devId) != 0) {
+        if (CspEncryptRc4(CAVIUM_BLOCKING, arc4->contextHandle,CAVIUM_UPDATE,
+                          slen, (byte*)in + offset, out + offset, &requestId,
+                          arc4->devId) != 0) {
             WOLFSSL_MSG("Bad Cavium Arc4 Encrypt");
         }
         length -= WOLFSSL_MAX_16BIT;
@@ -152,8 +164,9 @@ static void wc_Arc4CaviumProcess(Arc4 *arc4, byte *out, const byte *in, word32 l
     }
     if (length) {
         word16 slen = (word16)length;
-        if (CspEncryptRc4(CAVIUM_BLOCKING, arc4->contextHandle, CAVIUM_UPDATE, slen,
-                          (byte *)in + offset, out + offset, &requestId, arc4->devId) != 0) {
+        if (CspEncryptRc4(CAVIUM_BLOCKING, arc4->contextHandle,CAVIUM_UPDATE,
+                          slen, (byte*)in + offset, out + offset, &requestId,
+                          arc4->devId) != 0) {
             WOLFSSL_MSG("Bad Cavium Arc4 Encrypt");
         }
     }
@@ -162,3 +175,4 @@ static void wc_Arc4CaviumProcess(Arc4 *arc4, byte *out, const byte *in, word32 l
 #endif /* HAVE_CAVIUM */
 
 #endif /* NO_RC4 */
+

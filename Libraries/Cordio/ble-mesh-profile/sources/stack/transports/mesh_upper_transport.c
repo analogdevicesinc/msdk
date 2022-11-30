@@ -52,7 +52,7 @@
 
 #include "mesh_upper_transport.h"
 
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
 #include "mesh_test_api.h"
 #endif
 
@@ -63,31 +63,33 @@
 /*! Transport control block for the Upper Transport Access PDU, containing all the information
  *  necessaru for delivery to Lower Transport
  */
-typedef struct meshUtrAccPduTxTcb_tag {
-    meshLtrAccPduInfo_t ltrAccPduInfo; /*!< Lower Transport access PDU information. Should always
+typedef struct meshUtrAccPduTxTcb_tag
+{
+  meshLtrAccPduInfo_t ltrAccPduInfo; /*!< Lower Transport access PDU information. Should always
                                       *   be the first member of this struct so that LTR can
                                       *   easily free the whole structure
                                       */
-    uint8_t *pLabelUuid; /*!< Label UUID address in case destination is virtual */
-    uint16_t appKeyIndex; /*!< Application Key Index used to encrypt the Upper Transport
+  uint8_t             *pLabelUuid;   /*!< Label UUID address in case destination is virtual */
+  uint16_t            appKeyIndex;   /*!< Application Key Index used to encrypt the Upper Transport
                                       *   PDU
                                       */
 } meshUtrAccPduTxTcb_t;
 
 /*! Upper Transport control block type definition */
-typedef struct meshUtrCb_tag {
-    meshUtrAccRecvCback_t accRecvCback; /*!< UTR Access PDU received callback */
-    meshUtrFriendshipCtlRecvCback_t friendshipCtlRecvCback; /*!< UTR LPN Control PDU received
+typedef struct meshUtrCb_tag
+{
+  meshUtrAccRecvCback_t           accRecvCback;            /*!< UTR Access PDU received callback */
+  meshUtrFriendshipCtlRecvCback_t friendshipCtlRecvCback;  /*!< UTR LPN Control PDU received
                                                             *   callback
                                                             */
-    meshUtrEventNotifyCback_t eventCback; /*!< UTR Event Notify callback */
-    wsfQueue_t utrAccTxQueue; /*!< UTR Access PDU Queue for
+  meshUtrEventNotifyCback_t       eventCback;              /*!< UTR Event Notify callback */
+  wsfQueue_t                      utrAccTxQueue;           /*!< UTR Access PDU Queue for
                                                             *   transmitting
                                                             */
-    wsfQueue_t utrAccRxQueue; /*!< UTR Access PDU Queue for receiving
+  wsfQueue_t                      utrAccRxQueue;           /*!< UTR Access PDU Queue for receiving
                                                             */
-    bool_t utrEncryptInProgress; /*!< UTR encryption in progress flag */
-    bool_t utrDecryptInProgress; /*!< UTR decryption in progress flag */
+  bool_t                          utrEncryptInProgress;    /*!< UTR encryption in progress flag */
+  bool_t                          utrDecryptInProgress;    /*!< UTR decryption in progress flag */
 } meshUtrCb_t;
 
 /**************************************************************************************************
@@ -113,9 +115,9 @@ static meshUtrCb_t utrCb;
 /*************************************************************************************************/
 static void meshUtrEmptyAccRecvCback(const meshUtrAccPduRxInfo_t *pAccPduInfo)
 {
-    (void)pAccPduInfo;
-    MESH_TRACE_WARN0("MESH UTR: Access PDU Receive callback not set!");
-    return;
+  (void)pAccPduInfo;
+  MESH_TRACE_WARN0("MESH UTR: Access PDU Receive callback not set!");
+  return;
 }
 
 /*************************************************************************************************/
@@ -130,8 +132,8 @@ static void meshUtrEmptyAccRecvCback(const meshUtrAccPduRxInfo_t *pAccPduInfo)
 /*************************************************************************************************/
 static void meshUtrEmptyFriendshipCtlRecvCback(const meshLtrCtlPduInfo_t *pCtlPduInfo)
 {
-    (void)pCtlPduInfo;
-    return;
+  (void)pCtlPduInfo;
+  return;
 }
 
 /*************************************************************************************************/
@@ -146,10 +148,10 @@ static void meshUtrEmptyFriendshipCtlRecvCback(const meshLtrCtlPduInfo_t *pCtlPd
 /*************************************************************************************************/
 static void meshUtrEmptyEventNotifyCback(meshUtrEvent_t event, void *pEventParam)
 {
-    (void)event;
-    (void)pEventParam;
-    MESH_TRACE_WARN0("MESH UTR: Notification callback not set!");
-    return;
+  (void)event;
+  (void)pEventParam;
+  MESH_TRACE_WARN0("MESH UTR: Notification callback not set!");
+  return;
 }
 
 /*************************************************************************************************/
@@ -165,33 +167,37 @@ static void meshUtrEmptyEventNotifyCback(meshUtrEvent_t event, void *pEventParam
 static meshUtrRetVal_t meshUtrDecryptRequest(meshLtrAccPduInfo_t *pAccPduInfo,
                                              meshSecUtrDecryptCback_t secCback)
 {
-    meshSecUtrDecryptParams_t utrDecryptParams;
-    uint8_t transMicSize;
+  meshSecUtrDecryptParams_t utrDecryptParams;
+  uint8_t transMicSize;
 
-    /* Get TransMic size. */
-    transMicSize = MESH_SZMIC_TO_TRANSMIC(pAccPduInfo->szMic);
+  /* Get TransMic size. */
+  transMicSize = MESH_SZMIC_TO_TRANSMIC(pAccPduInfo->szMic);
 
-    utrDecryptParams.pEncAppPayload = pAccPduInfo->pUtrAccPdu;
-    utrDecryptParams.pAppPayload = pAccPduInfo->pUtrAccPdu;
+  utrDecryptParams.pEncAppPayload = pAccPduInfo->pUtrAccPdu;
+  utrDecryptParams.pAppPayload    = pAccPduInfo->pUtrAccPdu;
 
-    utrDecryptParams.pTransMic =
-        (uint8_t *)(pAccPduInfo->pUtrAccPdu + pAccPduInfo->pduLen - transMicSize);
+  utrDecryptParams.pTransMic = (uint8_t*)(pAccPduInfo->pUtrAccPdu +
+                                          pAccPduInfo->pduLen -
+                                          transMicSize);
 
-    utrDecryptParams.seqNo = pAccPduInfo->seqNo;
-    utrDecryptParams.recvIvIndex = pAccPduInfo->ivIndex;
-    utrDecryptParams.srcAddr = pAccPduInfo->src;
-    utrDecryptParams.dstAddr = pAccPduInfo->dst;
-    utrDecryptParams.netKeyIndex = pAccPduInfo->netKeyIndex;
-    utrDecryptParams.appPayloadSize = pAccPduInfo->pduLen - transMicSize;
-    utrDecryptParams.transMicSize = transMicSize;
+  utrDecryptParams.seqNo          = pAccPduInfo->seqNo;
+  utrDecryptParams.recvIvIndex    = pAccPduInfo->ivIndex;
+  utrDecryptParams.srcAddr        = pAccPduInfo->src;
+  utrDecryptParams.dstAddr        = pAccPduInfo->dst;
+  utrDecryptParams.netKeyIndex    = pAccPduInfo->netKeyIndex;
+  utrDecryptParams.appPayloadSize = pAccPduInfo->pduLen - transMicSize;
+  utrDecryptParams.transMicSize   = transMicSize;
 
-    if (pAccPduInfo->akf == 0x00) {
-        utrDecryptParams.aid = MESH_SEC_DEVICE_KEY_AID;
-    } else {
-        utrDecryptParams.aid = pAccPduInfo->aid;
-    }
+  if (pAccPduInfo->akf == 0x00)
+  {
+    utrDecryptParams.aid          = MESH_SEC_DEVICE_KEY_AID;
+  }
+  else
+  {
+    utrDecryptParams.aid          = pAccPduInfo->aid;
+  }
 
-    return (meshUtrRetVal_t)MeshSecUtrDecrypt(&utrDecryptParams, secCback, pAccPduInfo);
+  return (meshUtrRetVal_t)MeshSecUtrDecrypt(&utrDecryptParams, secCback, pAccPduInfo);
 }
 
 /*************************************************************************************************/
@@ -213,90 +219,102 @@ static void meshUtrDecryptCback(bool_t isDecryptSuccess, uint8_t *pAppPayload, u
                                 uint16_t appPayloadSize, uint16_t appKeyIndex, uint16_t netKeyIndex,
                                 void *pParam)
 {
-    meshLtrAccPduInfo_t *pLtrAccPduInfo = NULL;
-    meshUtrAccPduRxInfo_t utrAccPduInfo;
+  meshLtrAccPduInfo_t *pLtrAccPduInfo = NULL;
+  meshUtrAccPduRxInfo_t utrAccPduInfo;
 
-    if (pParam == NULL) {
-        /* Critical error. Memory will remain allocated. */
-        WSF_ASSERT(pParam != NULL);
+  if (pParam == NULL)
+  {
+    /* Critical error. Memory will remain allocated. */
+    WSF_ASSERT(pParam != NULL);
 
-        return;
+    return;
+  }
+
+  if (!isDecryptSuccess)
+  {
+    /* Free the allocated queue element passed as pParam. */
+    WsfBufFree(pParam);
+  }
+  else
+  {
+    utrAccPduInfo.src = ((meshLtrAccPduInfo_t *)pParam)->src;
+    utrAccPduInfo.dst = ((meshLtrAccPduInfo_t *)pParam)->dst;
+    utrAccPduInfo.pDstLabelUuid = pLabelUuid;
+    utrAccPduInfo.appKeyIndex = appKeyIndex;
+    utrAccPduInfo.netKeyIndex = netKeyIndex;
+    utrAccPduInfo.ttl = ((meshLtrAccPduInfo_t *)pParam)->ttl;
+
+    if (((meshLtrAccPduInfo_t *)pParam)->akf == 0)
+    {
+      utrAccPduInfo.devKeyUse = 1;
+    }
+    else
+    {
+      utrAccPduInfo.devKeyUse = 0;
     }
 
-    if (!isDecryptSuccess) {
-        /* Free the allocated queue element passed as pParam. */
-        WsfBufFree(pParam);
-    } else {
-        utrAccPduInfo.src = ((meshLtrAccPduInfo_t *)pParam)->src;
-        utrAccPduInfo.dst = ((meshLtrAccPduInfo_t *)pParam)->dst;
-        utrAccPduInfo.pDstLabelUuid = pLabelUuid;
-        utrAccPduInfo.appKeyIndex = appKeyIndex;
-        utrAccPduInfo.netKeyIndex = netKeyIndex;
-        utrAccPduInfo.ttl = ((meshLtrAccPduInfo_t *)pParam)->ttl;
+    utrAccPduInfo.pAccPdu = pAppPayload;
+    utrAccPduInfo.pduLen = appPayloadSize;
 
-        if (((meshLtrAccPduInfo_t *)pParam)->akf == 0) {
-            utrAccPduInfo.devKeyUse = 1;
-        } else {
-            utrAccPduInfo.devKeyUse = 0;
-        }
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
+    meshTestUtrAccPduRcvdInd_t utrAccPduRcvdInd;
 
-        utrAccPduInfo.pAccPdu = pAppPayload;
-        utrAccPduInfo.pduLen = appPayloadSize;
+  if (meshTestCb.listenMask & MESH_TEST_UTR_LISTEN)
+  {
+    utrAccPduRcvdInd.hdr.event = MESH_TEST_EVENT;
+    utrAccPduRcvdInd.hdr.param = MESH_TEST_UTR_ACC_PDU_RCVD_IND;
+    utrAccPduRcvdInd.hdr.status = MESH_SUCCESS;
 
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
-        meshTestUtrAccPduRcvdInd_t utrAccPduRcvdInd;
+    utrAccPduRcvdInd.src            = utrAccPduInfo.src;
+    utrAccPduRcvdInd.dst            = utrAccPduInfo.dst;
+    utrAccPduRcvdInd.pDstLabelUuid  = utrAccPduInfo.pDstLabelUuid;
+    utrAccPduRcvdInd.appKeyIndex    = utrAccPduInfo.appKeyIndex;
+    utrAccPduRcvdInd.netKeyIndex    = utrAccPduInfo.netKeyIndex;
+    utrAccPduRcvdInd.ttl            = utrAccPduInfo.ttl;
+    utrAccPduRcvdInd.devKeyUse      = utrAccPduInfo.devKeyUse;
+    utrAccPduRcvdInd.pAccPdu        = utrAccPduInfo.pAccPdu;
+    utrAccPduRcvdInd.pduLen         = utrAccPduInfo.pduLen;
 
-        if (meshTestCb.listenMask & MESH_TEST_UTR_LISTEN) {
-            utrAccPduRcvdInd.hdr.event = MESH_TEST_EVENT;
-            utrAccPduRcvdInd.hdr.param = MESH_TEST_UTR_ACC_PDU_RCVD_IND;
-            utrAccPduRcvdInd.hdr.status = MESH_SUCCESS;
-
-            utrAccPduRcvdInd.src = utrAccPduInfo.src;
-            utrAccPduRcvdInd.dst = utrAccPduInfo.dst;
-            utrAccPduRcvdInd.pDstLabelUuid = utrAccPduInfo.pDstLabelUuid;
-            utrAccPduRcvdInd.appKeyIndex = utrAccPduInfo.appKeyIndex;
-            utrAccPduRcvdInd.netKeyIndex = utrAccPduInfo.netKeyIndex;
-            utrAccPduRcvdInd.ttl = utrAccPduInfo.ttl;
-            utrAccPduRcvdInd.devKeyUse = utrAccPduInfo.devKeyUse;
-            utrAccPduRcvdInd.pAccPdu = utrAccPduInfo.pAccPdu;
-            utrAccPduRcvdInd.pduLen = utrAccPduInfo.pduLen;
-
-            meshTestCb.testCback((meshTestEvt_t *)&utrAccPduRcvdInd);
-        }
+    meshTestCb.testCback((meshTestEvt_t *)&utrAccPduRcvdInd);
+  }
 #endif
 
-        /* Notify the upper layer that a packet has been received. */
-        utrCb.accRecvCback(&utrAccPduInfo);
+    /* Notify the upper layer that a packet has been received. */
+    utrCb.accRecvCback(&utrAccPduInfo);
 
-        /* Free the allocated queue element passed as pParam. */
-        WsfBufFree(pParam);
+    /* Free the allocated queue element passed as pParam. */
+    WsfBufFree(pParam);
+  }
+
+  /* Clear decrypt in progress flag. */
+  utrCb.utrDecryptInProgress = FALSE;
+
+  /* Run maintenance on the RX queue. */
+  pLtrAccPduInfo = (meshLtrAccPduInfo_t *)WsfQueueDeq(&(utrCb.utrAccRxQueue));
+
+  while (pLtrAccPduInfo != NULL)
+  {
+    /* Set decrypt in progress flag. */
+    utrCb.utrDecryptInProgress = TRUE;
+
+    /* Request decryption. */
+    if (meshUtrDecryptRequest(pLtrAccPduInfo, meshUtrDecryptCback) != MESH_SUCCESS)
+    {
+      /* Free queue element if decryption request fails. */
+      WsfBufFree(pLtrAccPduInfo);
+
+      /* Clear decrypt in progress flag. */
+      utrCb.utrDecryptInProgress = FALSE;
+    }
+    else
+    {
+      /* Break loop because request will be processed. */
+      break;
     }
 
-    /* Clear decrypt in progress flag. */
-    utrCb.utrDecryptInProgress = FALSE;
-
-    /* Run maintenance on the RX queue. */
+    /* Get next PDU. */
     pLtrAccPduInfo = (meshLtrAccPduInfo_t *)WsfQueueDeq(&(utrCb.utrAccRxQueue));
-
-    while (pLtrAccPduInfo != NULL) {
-        /* Set decrypt in progress flag. */
-        utrCb.utrDecryptInProgress = TRUE;
-
-        /* Request decryption. */
-        if (meshUtrDecryptRequest(pLtrAccPduInfo, meshUtrDecryptCback) != MESH_SUCCESS) {
-            /* Free queue element if decryption request fails. */
-            WsfBufFree(pLtrAccPduInfo);
-
-            /* Clear decrypt in progress flag. */
-            utrCb.utrDecryptInProgress = FALSE;
-        } else {
-            /* Break loop because request will be processed. */
-            break;
-        }
-
-        /* Get next PDU. */
-        pLtrAccPduInfo = (meshLtrAccPduInfo_t *)WsfQueueDeq(&(utrCb.utrAccRxQueue));
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -311,39 +329,45 @@ static void meshUtrDecryptCback(bool_t isDecryptSuccess, uint8_t *pAppPayload, u
 /*************************************************************************************************/
 static void meshUtrRecvAccPdu(meshLtrAccPduInfo_t *pAccPduInfo)
 {
-    /* Invalid pointers. Critical Error. */
-    if (pAccPduInfo == NULL) {
-        WSF_ASSERT(pAccPduInfo != NULL);
+  /* Invalid pointers. Critical Error. */
+  if (pAccPduInfo == NULL)
+  {
+    WSF_ASSERT(pAccPduInfo != NULL);
 
-        return;
+    return;
+  }
+
+  if (pAccPduInfo->pUtrAccPdu == NULL)
+  {
+    WSF_ASSERT(pAccPduInfo->pUtrAccPdu != NULL);
+
+    return;
+  }
+
+  /* Update the Replay List with the greatest SeqNo in the assembled packet. */
+  MeshRpUpdateList(pAccPduInfo->src, pAccPduInfo->gtSeqNo, pAccPduInfo->ivIndex);
+
+  /* Check if decryption is in progress. */
+  if (utrCb.utrDecryptInProgress)
+  {
+    /* Enqueue the PDU in the RX queue. */
+    WsfQueueEnq(&(utrCb.utrAccRxQueue), (void *)pAccPduInfo);
+  }
+  else
+  {
+    /* Mark decrypt in progress. */
+    utrCb.utrDecryptInProgress = TRUE;
+
+    /* Request decryption of the PDU. */
+    if (meshUtrDecryptRequest(pAccPduInfo, meshUtrDecryptCback) != MESH_SUCCESS)
+    {
+      /* Free queue element allocated in LTR. */
+      WsfBufFree(pAccPduInfo);
+
+      /* If request failed, clear decrypt in progress flag. */
+      utrCb.utrDecryptInProgress = FALSE;
     }
-
-    if (pAccPduInfo->pUtrAccPdu == NULL) {
-        WSF_ASSERT(pAccPduInfo->pUtrAccPdu != NULL);
-
-        return;
-    }
-
-    /* Update the Replay List with the greatest SeqNo in the assembled packet. */
-    MeshRpUpdateList(pAccPduInfo->src, pAccPduInfo->gtSeqNo, pAccPduInfo->ivIndex);
-
-    /* Check if decryption is in progress. */
-    if (utrCb.utrDecryptInProgress) {
-        /* Enqueue the PDU in the RX queue. */
-        WsfQueueEnq(&(utrCb.utrAccRxQueue), (void *)pAccPduInfo);
-    } else {
-        /* Mark decrypt in progress. */
-        utrCb.utrDecryptInProgress = TRUE;
-
-        /* Request decryption of the PDU. */
-        if (meshUtrDecryptRequest(pAccPduInfo, meshUtrDecryptCback) != MESH_SUCCESS) {
-            /* Free queue element allocated in LTR. */
-            WsfBufFree(pAccPduInfo);
-
-            /* If request failed, clear decrypt in progress flag. */
-            utrCb.utrDecryptInProgress = FALSE;
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -358,34 +382,36 @@ static void meshUtrRecvAccPdu(meshLtrAccPduInfo_t *pAccPduInfo)
 /*************************************************************************************************/
 static void meshUtrRecvCtlPdu(meshLtrCtlPduInfo_t *pCtlPduInfo)
 {
-    /* Invalid pointers. Critical Error. */
-    /* coverity[var_compare_op] */
-    WSF_ASSERT((pCtlPduInfo != NULL) && (pCtlPduInfo->pUtrCtlPdu != NULL));
+  /* Invalid pointers. Critical Error. */
+  /* coverity[var_compare_op] */
+  WSF_ASSERT((pCtlPduInfo != NULL) && (pCtlPduInfo->pUtrCtlPdu != NULL));
 
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
     meshTestUtrCtlPduRcvdInd_t utrCtlPduRcvdInd;
 
-    if (meshTestCb.listenMask & MESH_TEST_UTR_LISTEN) {
-        utrCtlPduRcvdInd.hdr.event = MESH_TEST_EVENT;
-        utrCtlPduRcvdInd.hdr.param = MESH_TEST_UTR_CTL_PDU_RCVD_IND;
-        utrCtlPduRcvdInd.hdr.status = MESH_SUCCESS;
-
-        /* coverity[var_deref_op] */
-        utrCtlPduRcvdInd.src = pCtlPduInfo->src;
-        utrCtlPduRcvdInd.dst = pCtlPduInfo->dst;
-        utrCtlPduRcvdInd.netKeyIndex = pCtlPduInfo->netKeyIndex;
-        utrCtlPduRcvdInd.ttl = pCtlPduInfo->ttl;
-        utrCtlPduRcvdInd.seqNo = pCtlPduInfo->seqNo;
-        utrCtlPduRcvdInd.opcode = pCtlPduInfo->opcode;
-        utrCtlPduRcvdInd.pUtrCtlPdu = pCtlPduInfo->pUtrCtlPdu;
-        utrCtlPduRcvdInd.pduLen = pCtlPduInfo->pduLen;
-
-        meshTestCb.testCback((meshTestEvt_t *)&utrCtlPduRcvdInd);
-    }
-#endif
+  if (meshTestCb.listenMask & MESH_TEST_UTR_LISTEN)
+  {
+    utrCtlPduRcvdInd.hdr.event = MESH_TEST_EVENT;
+    utrCtlPduRcvdInd.hdr.param = MESH_TEST_UTR_CTL_PDU_RCVD_IND;
+    utrCtlPduRcvdInd.hdr.status = MESH_SUCCESS;
 
     /* coverity[var_deref_op] */
-    switch (pCtlPduInfo->opcode) {
+    utrCtlPduRcvdInd.src         = pCtlPduInfo->src;
+    utrCtlPduRcvdInd.dst         = pCtlPduInfo->dst;
+    utrCtlPduRcvdInd.netKeyIndex = pCtlPduInfo->netKeyIndex;
+    utrCtlPduRcvdInd.ttl         = pCtlPduInfo->ttl;
+    utrCtlPduRcvdInd.seqNo       = pCtlPduInfo->seqNo;
+    utrCtlPduRcvdInd.opcode      = pCtlPduInfo->opcode;
+    utrCtlPduRcvdInd.pUtrCtlPdu  = pCtlPduInfo->pUtrCtlPdu;
+    utrCtlPduRcvdInd.pduLen      = pCtlPduInfo->pduLen;
+
+    meshTestCb.testCback((meshTestEvt_t *)&utrCtlPduRcvdInd);
+  }
+#endif
+
+  /* coverity[var_deref_op] */
+  switch (pCtlPduInfo->opcode)
+  {
     /* Friendship Opcodes. */
     case MESH_UTR_CTL_FRIEND_POLL_OPCODE:
     case MESH_UTR_CTL_FRIEND_REQUEST_OPCODE:
@@ -396,22 +422,22 @@ static void meshUtrRecvCtlPdu(meshLtrCtlPduInfo_t *pCtlPduInfo)
     case MESH_UTR_CTL_FRIEND_UPDATE_OPCODE:
     case MESH_UTR_CTL_FRIEND_OFFER_OPCODE:
     case MESH_UTR_CTL_FRIEND_SUBSCR_LIST_CNF_OPCODE:
-        utrCb.friendshipCtlRecvCback(pCtlPduInfo);
-        break;
+      utrCb.friendshipCtlRecvCback(pCtlPduInfo);
+      break;
 
     /* Heartbeat Opcodes. */
     case MESH_UTR_CTL_HB_OPCODE:
-        /* coverity[var_deref_model] */
-        MeshHbProcessHb(pCtlPduInfo);
-        break;
+      /* coverity[var_deref_model] */
+      MeshHbProcessHb(pCtlPduInfo);
+      break;
 
     default:
-        /* Invalid OpCode - silently discard. */
-        break;
-    }
+      /* Invalid OpCode - silently discard. */
+      break;
+  }
 
-    /* Free queue element from LTR. */
-    WsfBufFree((uint8_t *)pCtlPduInfo);
+  /* Free queue element from LTR. */
+  WsfBufFree((uint8_t *)pCtlPduInfo);
 }
 
 /*************************************************************************************************/
@@ -426,8 +452,8 @@ static void meshUtrRecvCtlPdu(meshLtrCtlPduInfo_t *pCtlPduInfo)
 /*************************************************************************************************/
 static void meshUtrEvtHandler(meshLtrEvent_t event, meshSeqNumber_t seqNo)
 {
-    (void)event;
-    (void)seqNo;
+  (void)event;
+  (void)seqNo;
 }
 
 /*************************************************************************************************/
@@ -443,25 +469,25 @@ static void meshUtrEvtHandler(meshLtrEvent_t event, meshSeqNumber_t seqNo)
 static meshUtrRetVal_t meshUtrEncryptRequest(meshUtrAccPduTxTcb_t *pUtrAccTxInfo,
                                              meshSecUtrEncryptCback_t secCback)
 {
-    meshSecUtrEncryptParams_t utrEncryptParams;
+  meshSecUtrEncryptParams_t utrEncryptParams;
 
-    /* Get address of the Lower Transport Access PDU. */
-    meshLtrAccPduInfo_t *pLtrAccPduInfo = &(pUtrAccTxInfo->ltrAccPduInfo);
+  /* Get address of the Lower Transport Access PDU. */
+  meshLtrAccPduInfo_t *pLtrAccPduInfo = &(pUtrAccTxInfo->ltrAccPduInfo);
 
-    /* Set the values for security request. */
-    utrEncryptParams.pAppPayload = pLtrAccPduInfo->pUtrAccPdu;
-    utrEncryptParams.pEncAppPayload = pLtrAccPduInfo->pUtrAccPdu;
-    utrEncryptParams.pTransMic = pLtrAccPduInfo->pUtrAccPdu + pLtrAccPduInfo->pduLen;
-    utrEncryptParams.srcAddr = pLtrAccPduInfo->src;
-    utrEncryptParams.dstAddr = pLtrAccPduInfo->dst;
-    utrEncryptParams.pLabelUuid = (uint8_t *)pUtrAccTxInfo->pLabelUuid;
-    utrEncryptParams.appPayloadSize = pLtrAccPduInfo->pduLen;
-    utrEncryptParams.seqNo = pLtrAccPduInfo->seqNo;
-    utrEncryptParams.transMicSize = MESH_UTR_TRANSMIC_32BIT_SIZE;
-    utrEncryptParams.netKeyIndex = pLtrAccPduInfo->netKeyIndex;
-    utrEncryptParams.appKeyIndex = pUtrAccTxInfo->appKeyIndex;
+  /* Set the values for security request. */
+  utrEncryptParams.pAppPayload    = pLtrAccPduInfo->pUtrAccPdu;
+  utrEncryptParams.pEncAppPayload = pLtrAccPduInfo->pUtrAccPdu;
+  utrEncryptParams.pTransMic      = pLtrAccPduInfo->pUtrAccPdu + pLtrAccPduInfo->pduLen;
+  utrEncryptParams.srcAddr        = pLtrAccPduInfo->src;
+  utrEncryptParams.dstAddr        = pLtrAccPduInfo->dst;
+  utrEncryptParams.pLabelUuid     = (uint8_t *)pUtrAccTxInfo->pLabelUuid;
+  utrEncryptParams.appPayloadSize = pLtrAccPduInfo->pduLen;
+  utrEncryptParams.seqNo          = pLtrAccPduInfo->seqNo;
+  utrEncryptParams.transMicSize   = MESH_UTR_TRANSMIC_32BIT_SIZE;
+  utrEncryptParams.netKeyIndex    = pLtrAccPduInfo->netKeyIndex;
+  utrEncryptParams.appKeyIndex    = pUtrAccTxInfo->appKeyIndex;
 
-    return (meshUtrRetVal_t)MeshSecUtrEncrypt(&utrEncryptParams, secCback, (void *)pUtrAccTxInfo);
+  return (meshUtrRetVal_t) MeshSecUtrEncrypt(&utrEncryptParams, secCback, (void*)pUtrAccTxInfo);
 }
 
 /*************************************************************************************************/
@@ -485,75 +511,84 @@ static void meshUtrEncryptCback(bool_t isEncryptSuccess, uint8_t *pEncAppPayload
                                 uint16_t appPayloadSize, uint8_t *pTransMic, uint8_t transMicSize,
                                 uint8_t aid, void *pParam)
 {
-    meshUtrAccPduTxTcb_t *pUtrAccTxInfo;
-    meshUtrRetVal_t retVal = MESH_SUCCESS;
+  meshUtrAccPduTxTcb_t *pUtrAccTxInfo;
+  meshUtrRetVal_t retVal = MESH_SUCCESS;
 
-    if (pParam == NULL) {
-        /* Critical error. Memory will remain allocated. */
-        WSF_ASSERT(pParam != NULL);
+  if (pParam == NULL)
+  {
+    /* Critical error. Memory will remain allocated. */
+    WSF_ASSERT(pParam != NULL);
 
-        return;
+    return;
+  }
+
+  /* Recover TX request. */
+  pUtrAccTxInfo = (meshUtrAccPduTxTcb_t *)pParam;
+
+  if (!isEncryptSuccess)
+  {
+    /* Free the queue element passed as pParam. */
+    WsfBufFree(pParam);
+
+    /* Notify upper layer */
+    utrCb.eventCback(MESH_UTR_ENC_FAILED, NULL);
+  }
+  else
+  {
+    /* TransMIC is already placed after the PDU, just add the size. */
+    pUtrAccTxInfo->ltrAccPduInfo.pduLen += transMicSize;
+
+    /* Set AKF and AID. */
+    pUtrAccTxInfo->ltrAccPduInfo.akf = ((aid == MESH_SEC_DEVICE_KEY_AID) ? FALSE : TRUE);
+    pUtrAccTxInfo->ltrAccPduInfo.aid = ((aid == MESH_SEC_DEVICE_KEY_AID) ? 0 : aid);
+
+    /* Send to Lower Transport. */
+    retVal = MeshLtrSendUtrAccPdu(&(pUtrAccTxInfo->ltrAccPduInfo));
+
+    if (retVal != MESH_SUCCESS)
+    {
+      /* Notify upper layer. */
+      utrCb.eventCback(MESH_UTR_SEND_FAILED, NULL);
+    }
+  }
+
+  /* Clear encrypt in progress flag. */
+  utrCb.utrEncryptInProgress = FALSE;
+
+  /* Run maintenance on encrypt queue. */
+  pUtrAccTxInfo = WsfQueueDeq(&(utrCb.utrAccTxQueue));
+
+  while(pUtrAccTxInfo != NULL)
+  {
+    /* Set encrypt in progress flag. */
+    utrCb.utrEncryptInProgress = TRUE;
+
+    /* Trigger encrypt request. */
+    if (meshUtrEncryptRequest(pUtrAccTxInfo, meshUtrEncryptCback) != MESH_SUCCESS)
+    {
+      /* Free the allocated queue element. */
+      WsfBufFree(pUtrAccTxInfo);
+
+      /* Clear encrypt in progress flag. */
+      utrCb.utrEncryptInProgress = FALSE;
+
+      /* Notify upper layer. */
+      utrCb.eventCback(MESH_UTR_ENC_FAILED, NULL);
+    }
+    else
+    {
+      /* Break loop. */
+      break;
     }
 
-    /* Recover TX request. */
-    pUtrAccTxInfo = (meshUtrAccPduTxTcb_t *)pParam;
-
-    if (!isEncryptSuccess) {
-        /* Free the queue element passed as pParam. */
-        WsfBufFree(pParam);
-
-        /* Notify upper layer */
-        utrCb.eventCback(MESH_UTR_ENC_FAILED, NULL);
-    } else {
-        /* TransMIC is already placed after the PDU, just add the size. */
-        pUtrAccTxInfo->ltrAccPduInfo.pduLen += transMicSize;
-
-        /* Set AKF and AID. */
-        pUtrAccTxInfo->ltrAccPduInfo.akf = ((aid == MESH_SEC_DEVICE_KEY_AID) ? FALSE : TRUE);
-        pUtrAccTxInfo->ltrAccPduInfo.aid = ((aid == MESH_SEC_DEVICE_KEY_AID) ? 0 : aid);
-
-        /* Send to Lower Transport. */
-        retVal = MeshLtrSendUtrAccPdu(&(pUtrAccTxInfo->ltrAccPduInfo));
-
-        if (retVal != MESH_SUCCESS) {
-            /* Notify upper layer. */
-            utrCb.eventCback(MESH_UTR_SEND_FAILED, NULL);
-        }
-    }
-
-    /* Clear encrypt in progress flag. */
-    utrCb.utrEncryptInProgress = FALSE;
-
-    /* Run maintenance on encrypt queue. */
+    /* Dequeue next request. */
     pUtrAccTxInfo = WsfQueueDeq(&(utrCb.utrAccTxQueue));
+  }
 
-    while (pUtrAccTxInfo != NULL) {
-        /* Set encrypt in progress flag. */
-        utrCb.utrEncryptInProgress = TRUE;
-
-        /* Trigger encrypt request. */
-        if (meshUtrEncryptRequest(pUtrAccTxInfo, meshUtrEncryptCback) != MESH_SUCCESS) {
-            /* Free the allocated queue element. */
-            WsfBufFree(pUtrAccTxInfo);
-
-            /* Clear encrypt in progress flag. */
-            utrCb.utrEncryptInProgress = FALSE;
-
-            /* Notify upper layer. */
-            utrCb.eventCback(MESH_UTR_ENC_FAILED, NULL);
-        } else {
-            /* Break loop. */
-            break;
-        }
-
-        /* Dequeue next request. */
-        pUtrAccTxInfo = WsfQueueDeq(&(utrCb.utrAccTxQueue));
-    }
-
-    /* Remove compiler warning. */
-    (void)pEncAppPayload;
-    (void)pTransMic;
-    (void)appPayloadSize;
+  /* Remove compiler warning. */
+  (void)pEncAppPayload;
+  (void)pTransMic;
+  (void)appPayloadSize;
 }
 
 /*************************************************************************************************/
@@ -568,96 +603,112 @@ static void meshUtrEncryptCback(bool_t isEncryptSuccess, uint8_t *pEncAppPayload
 /*************************************************************************************************/
 static meshUtrRetVal_t meshUtrSendAccPduInternal(const meshUtrAccPduTxInfo_t *pAccPduInfo)
 {
-    meshLtrAccPduInfo_t *pLtrAccPduInfo;
-    meshUtrAccPduTxTcb_t *pUtrAccTxInfo = NULL;
-    meshUtrRetVal_t retVal = MESH_SUCCESS;
-    uint16_t txInfoLen;
+  meshLtrAccPduInfo_t    *pLtrAccPduInfo;
+  meshUtrAccPduTxTcb_t   *pUtrAccTxInfo = NULL;
+  meshUtrRetVal_t        retVal         = MESH_SUCCESS;
+  uint16_t txInfoLen;
 
-    /* Calculate number of bytes to be allocated for UTR TX information. */
-    txInfoLen = sizeof(meshUtrAccPduTxTcb_t) + pAccPduInfo->accPduOpcodeLen +
-                pAccPduInfo->accPduParamLen + MESH_UTR_TRANSMIC_32BIT_SIZE;
+  /* Calculate number of bytes to be allocated for UTR TX information. */
+  txInfoLen = sizeof(meshUtrAccPduTxTcb_t) +
+              pAccPduInfo->accPduOpcodeLen + pAccPduInfo->accPduParamLen +
+              MESH_UTR_TRANSMIC_32BIT_SIZE;
 
-    /* Reserve memory for Label UUID. */
-    if (pAccPduInfo->pDstLabelUuid != NULL) {
-        txInfoLen += MESH_LABEL_UUID_SIZE;
+  /* Reserve memory for Label UUID. */
+  if (pAccPduInfo->pDstLabelUuid != NULL)
+  {
+    txInfoLen += MESH_LABEL_UUID_SIZE;
+  }
+
+  /* Allocate memory to store the LTR PDU info, PDU, TransMIC and security information. */
+  pUtrAccTxInfo = WsfBufAlloc(txInfoLen);
+
+  if (pUtrAccTxInfo != NULL)
+  {
+    pLtrAccPduInfo = &(pUtrAccTxInfo->ltrAccPduInfo);
+
+    pLtrAccPduInfo->src = pAccPduInfo->src;
+    pLtrAccPduInfo->dst = pAccPduInfo->dst;
+
+    retVal = MeshSeqGetNumber(pAccPduInfo->src, &(pLtrAccPduInfo->seqNo), TRUE);
+
+    if (retVal == MESH_SUCCESS)
+    {
+      pLtrAccPduInfo->netKeyIndex = pAccPduInfo->netKeyIndex;
+      pLtrAccPduInfo->friendLpnAddr = pAccPduInfo->friendLpnAddr;
+      pLtrAccPduInfo->ackRequired = pAccPduInfo->ackRequired;
+      pLtrAccPduInfo->szMic = MESH_TRANSMIC_TO_SZMIC(MESH_UTR_TRANSMIC_32BIT_SIZE);
+
+      /* Point to the start of the UTR PDU. */
+      pLtrAccPduInfo->pUtrAccPdu = (uint8_t *)pUtrAccTxInfo + sizeof(meshUtrAccPduTxTcb_t);
+
+      pLtrAccPduInfo->pduLen = pAccPduInfo->accPduOpcodeLen + pAccPduInfo->accPduParamLen;
+
+      /* Copy the UTR PDU. */
+      memcpy(pLtrAccPduInfo->pUtrAccPdu, pAccPduInfo->pAccPduOpcode, pAccPduInfo->accPduOpcodeLen);
+
+      memcpy(pLtrAccPduInfo->pUtrAccPdu + pAccPduInfo->accPduOpcodeLen, pAccPduInfo->pAccPduParam,
+             pAccPduInfo->accPduParamLen);
+
+      /* Copy Label UUID if needed. */
+      if (pAccPduInfo->pDstLabelUuid != NULL)
+      {
+        pUtrAccTxInfo->pLabelUuid = pLtrAccPduInfo->pUtrAccPdu + pLtrAccPduInfo->pduLen;
+
+        memcpy(pUtrAccTxInfo->pLabelUuid, pAccPduInfo->pDstLabelUuid, MESH_LABEL_UUID_SIZE);
+      }
+      else
+      {
+        pUtrAccTxInfo->pLabelUuid = NULL;
+      }
+
+      /* Check if the TTL is set to default. */
+      if (pAccPduInfo->ttl == MESH_USE_DEFAULT_TTL)
+      {
+        pLtrAccPduInfo->ttl = MeshLocalCfgGetDefaultTtl();
+      }
+      else
+      {
+        pLtrAccPduInfo->ttl = pAccPduInfo->ttl;
+      }
+
+      /* Set AppKey index in the request. */
+      pUtrAccTxInfo->appKeyIndex = pAccPduInfo->appKeyIndex;
+
+      /* Verify if another encryption is in progress. */
+      if (utrCb.utrEncryptInProgress)
+      {
+        /* Enqueue for later. */
+        WsfQueueEnq(&(utrCb.utrAccTxQueue), (void *)pUtrAccTxInfo);
+      }
+      else
+      {
+        /* Mark encryption in progress. */
+        utrCb.utrEncryptInProgress = TRUE;
+
+        /* Request encryption. */
+        retVal = meshUtrEncryptRequest(pUtrAccTxInfo, meshUtrEncryptCback);
+
+        /* Check if request is processed. */
+        if (retVal != MESH_SUCCESS)
+        {
+          /* Reset encryption in progress. */
+          utrCb.utrEncryptInProgress = FALSE;
+        }
+      }
     }
 
-    /* Allocate memory to store the LTR PDU info, PDU, TransMIC and security information. */
-    pUtrAccTxInfo = WsfBufAlloc(txInfoLen);
-
-    if (pUtrAccTxInfo != NULL) {
-        pLtrAccPduInfo = &(pUtrAccTxInfo->ltrAccPduInfo);
-
-        pLtrAccPduInfo->src = pAccPduInfo->src;
-        pLtrAccPduInfo->dst = pAccPduInfo->dst;
-
-        retVal = MeshSeqGetNumber(pAccPduInfo->src, &(pLtrAccPduInfo->seqNo), TRUE);
-
-        if (retVal == MESH_SUCCESS) {
-            pLtrAccPduInfo->netKeyIndex = pAccPduInfo->netKeyIndex;
-            pLtrAccPduInfo->friendLpnAddr = pAccPduInfo->friendLpnAddr;
-            pLtrAccPduInfo->ackRequired = pAccPduInfo->ackRequired;
-            pLtrAccPduInfo->szMic = MESH_TRANSMIC_TO_SZMIC(MESH_UTR_TRANSMIC_32BIT_SIZE);
-
-            /* Point to the start of the UTR PDU. */
-            pLtrAccPduInfo->pUtrAccPdu = (uint8_t *)pUtrAccTxInfo + sizeof(meshUtrAccPduTxTcb_t);
-
-            pLtrAccPduInfo->pduLen = pAccPduInfo->accPduOpcodeLen + pAccPduInfo->accPduParamLen;
-
-            /* Copy the UTR PDU. */
-            memcpy(pLtrAccPduInfo->pUtrAccPdu, pAccPduInfo->pAccPduOpcode,
-                   pAccPduInfo->accPduOpcodeLen);
-
-            memcpy(pLtrAccPduInfo->pUtrAccPdu + pAccPduInfo->accPduOpcodeLen,
-                   pAccPduInfo->pAccPduParam, pAccPduInfo->accPduParamLen);
-
-            /* Copy Label UUID if needed. */
-            if (pAccPduInfo->pDstLabelUuid != NULL) {
-                pUtrAccTxInfo->pLabelUuid = pLtrAccPduInfo->pUtrAccPdu + pLtrAccPduInfo->pduLen;
-
-                memcpy(pUtrAccTxInfo->pLabelUuid, pAccPduInfo->pDstLabelUuid, MESH_LABEL_UUID_SIZE);
-            } else {
-                pUtrAccTxInfo->pLabelUuid = NULL;
-            }
-
-            /* Check if the TTL is set to default. */
-            if (pAccPduInfo->ttl == MESH_USE_DEFAULT_TTL) {
-                pLtrAccPduInfo->ttl = MeshLocalCfgGetDefaultTtl();
-            } else {
-                pLtrAccPduInfo->ttl = pAccPduInfo->ttl;
-            }
-
-            /* Set AppKey index in the request. */
-            pUtrAccTxInfo->appKeyIndex = pAccPduInfo->appKeyIndex;
-
-            /* Verify if another encryption is in progress. */
-            if (utrCb.utrEncryptInProgress) {
-                /* Enqueue for later. */
-                WsfQueueEnq(&(utrCb.utrAccTxQueue), (void *)pUtrAccTxInfo);
-            } else {
-                /* Mark encryption in progress. */
-                utrCb.utrEncryptInProgress = TRUE;
-
-                /* Request encryption. */
-                retVal = meshUtrEncryptRequest(pUtrAccTxInfo, meshUtrEncryptCback);
-
-                /* Check if request is processed. */
-                if (retVal != MESH_SUCCESS) {
-                    /* Reset encryption in progress. */
-                    utrCb.utrEncryptInProgress = FALSE;
-                }
-            }
-        }
-
-        if (retVal != MESH_SUCCESS) {
-            /* If one of the functions failed, free the allocated queue element. */
-            WsfBufFree(pLtrAccPduInfo);
-        }
-    } else {
-        retVal = MESH_UTR_OUT_OF_MEMORY;
+    if (retVal != MESH_SUCCESS)
+    {
+      /* If one of the functions failed, free the allocated queue element. */
+      WsfBufFree(pLtrAccPduInfo);
     }
+  }
+  else
+  {
+    retVal = MESH_UTR_OUT_OF_MEMORY;
+  }
 
-    return retVal;
+  return retVal;
 }
 
 /*************************************************************************************************/
@@ -672,58 +723,69 @@ static meshUtrRetVal_t meshUtrSendAccPduInternal(const meshUtrAccPduTxInfo_t *pA
 /*************************************************************************************************/
 static meshUtrRetVal_t meshUtrSendCtlPduInternal(const meshUtrCtlPduInfo_t *pCtlPduInfo)
 {
-    meshLtrCtlPduInfo_t *pLtrCtlPduInfo = NULL;
-    meshUtrRetVal_t retVal = MESH_SUCCESS;
+  meshLtrCtlPduInfo_t *pLtrCtlPduInfo = NULL;
+  meshUtrRetVal_t retVal = MESH_SUCCESS;
 
-    /* Allocate a buffer to store the LTR PDU info and PDU. */
-    pLtrCtlPduInfo = WsfBufAlloc(sizeof(meshLtrCtlPduInfo_t) + pCtlPduInfo->pduLen);
+  /* Allocate a buffer to store the LTR PDU info and PDU. */
+  pLtrCtlPduInfo = WsfBufAlloc(sizeof(meshLtrCtlPduInfo_t) + pCtlPduInfo->pduLen);
 
-    if (pLtrCtlPduInfo != NULL) {
-        pLtrCtlPduInfo->src = pCtlPduInfo->src;
-        pLtrCtlPduInfo->dst = pCtlPduInfo->dst;
-        pLtrCtlPduInfo->netKeyIndex = pCtlPduInfo->netKeyIndex;
-        pLtrCtlPduInfo->friendLpnAddr = pCtlPduInfo->friendLpnAddr;
-        pLtrCtlPduInfo->ifPassthr = pCtlPduInfo->ifPassthr;
-        pLtrCtlPduInfo->opcode = pCtlPduInfo->opcode;
-        pLtrCtlPduInfo->ackRequired = pCtlPduInfo->ackRequired;
-        pLtrCtlPduInfo->prioritySend = pCtlPduInfo->prioritySend;
+  if (pLtrCtlPduInfo != NULL)
+  {
+    pLtrCtlPduInfo->src = pCtlPduInfo->src;
+    pLtrCtlPduInfo->dst = pCtlPduInfo->dst;
+    pLtrCtlPduInfo->netKeyIndex = pCtlPduInfo->netKeyIndex;
+    pLtrCtlPduInfo->friendLpnAddr = pCtlPduInfo->friendLpnAddr;
+    pLtrCtlPduInfo->ifPassthr = pCtlPduInfo->ifPassthr;
+    pLtrCtlPduInfo->opcode = pCtlPduInfo->opcode;
+    pLtrCtlPduInfo->ackRequired = pCtlPduInfo->ackRequired;
+    pLtrCtlPduInfo->prioritySend = pCtlPduInfo->prioritySend;
 
-        /* Copy the UTR PDU. */
-        memcpy((uint8_t *)pLtrCtlPduInfo + sizeof(meshLtrCtlPduInfo_t), pCtlPduInfo->pCtlPdu,
-               pCtlPduInfo->pduLen);
+    /* Copy the UTR PDU. */
+    memcpy((uint8_t *)pLtrCtlPduInfo + sizeof(meshLtrCtlPduInfo_t),
+           pCtlPduInfo->pCtlPdu,
+           pCtlPduInfo->pduLen);
 
-        /* Point to the start of the UTR PDU. */
-        pLtrCtlPduInfo->pUtrCtlPdu = (uint8_t *)pLtrCtlPduInfo + sizeof(meshLtrCtlPduInfo_t);
+    /* Point to the start of the UTR PDU. */
+    pLtrCtlPduInfo->pUtrCtlPdu = (uint8_t *)pLtrCtlPduInfo + sizeof(meshLtrCtlPduInfo_t);
 
-        pLtrCtlPduInfo->pduLen = pCtlPduInfo->pduLen;
+    pLtrCtlPduInfo->pduLen = pCtlPduInfo->pduLen;
 
-        /* Get the sequence number.*/
-        retVal = MeshSeqGetNumber(pCtlPduInfo->src, &(pLtrCtlPduInfo->seqNo), FALSE);
+    /* Get the sequence number.*/
+    retVal = MeshSeqGetNumber(pCtlPduInfo->src, &(pLtrCtlPduInfo->seqNo), FALSE);
 
-        if (retVal == MESH_SUCCESS) {
-            /* Check if the TTL is set to default. */
-            if (pCtlPduInfo->ttl == MESH_USE_DEFAULT_TTL) {
-                pLtrCtlPduInfo->ttl = MeshLocalCfgGetDefaultTtl();
-            } else {
-                pLtrCtlPduInfo->ttl = pCtlPduInfo->ttl;
-            }
+    if (retVal == MESH_SUCCESS)
+    {
+      /* Check if the TTL is set to default. */
+      if (pCtlPduInfo->ttl == MESH_USE_DEFAULT_TTL)
+      {
+        pLtrCtlPduInfo->ttl = MeshLocalCfgGetDefaultTtl();
+      }
+      else
+      {
+        pLtrCtlPduInfo->ttl = pCtlPduInfo->ttl;
+      }
 
-            /* Send PDU to the Lower Transport Layer. */
-            retVal = MeshLtrSendUtrCtlPdu(pLtrCtlPduInfo);
+      /* Send PDU to the Lower Transport Layer. */
+      retVal = MeshLtrSendUtrCtlPdu(pLtrCtlPduInfo);
 
-            if (retVal == MESH_SUCCESS) {
-                /* Increment SEQ Number. */
-                MeshSeqIncNumber(pCtlPduInfo->src);
-            }
-        } else {
-            /* Free if errors encountered prior to passing the PDU info to LTR. */
-            WsfBufFree(pLtrCtlPduInfo);
-        }
-    } else {
-        retVal = MESH_UTR_OUT_OF_MEMORY;
+      if (retVal == MESH_SUCCESS)
+      {
+        /* Increment SEQ Number. */
+        MeshSeqIncNumber(pCtlPduInfo->src);
+      }
     }
+    else
+    {
+      /* Free if errors encountered prior to passing the PDU info to LTR. */
+      WsfBufFree(pLtrCtlPduInfo);
+    }
+  }
+  else
+  {
+    retVal = MESH_UTR_OUT_OF_MEMORY;
+  }
 
-    return retVal;
+  return retVal;
 }
 
 /**************************************************************************************************
@@ -739,26 +801,26 @@ static meshUtrRetVal_t meshUtrSendCtlPduInternal(const meshUtrCtlPduInfo_t *pCtl
 /*************************************************************************************************/
 void MeshUtrInit(void)
 {
-    MESH_TRACE_INFO0("MESH UTR: init");
+  MESH_TRACE_INFO0("MESH UTR: init");
 
-    /* Store empty callbacks into local structure. */
-    utrCb.accRecvCback = meshUtrEmptyAccRecvCback;
-    utrCb.friendshipCtlRecvCback = meshUtrEmptyFriendshipCtlRecvCback;
-    utrCb.eventCback = meshUtrEmptyEventNotifyCback;
+  /* Store empty callbacks into local structure. */
+  utrCb.accRecvCback = meshUtrEmptyAccRecvCback;
+  utrCb.friendshipCtlRecvCback = meshUtrEmptyFriendshipCtlRecvCback;
+  utrCb.eventCback = meshUtrEmptyEventNotifyCback;
 
-    /* Initialize the Lower Transport Layer and register the callback for receive and notify. */
-    MeshLtrRegister(meshUtrRecvAccPdu, meshUtrRecvCtlPdu, meshUtrEvtHandler);
+  /* Initialize the Lower Transport Layer and register the callback for receive and notify. */
+  MeshLtrRegister(meshUtrRecvAccPdu, meshUtrRecvCtlPdu, meshUtrEvtHandler);
 
-    /* Initialize the Heartbeat module. */
-    MeshHbInit();
+  /* Initialize the Heartbeat module. */
+  MeshHbInit();
 
-    /* Reset TX and RX queues. */
-    WSF_QUEUE_INIT(&(utrCb.utrAccTxQueue));
-    WSF_QUEUE_INIT(&(utrCb.utrAccRxQueue));
+  /* Reset TX and RX queues. */
+  WSF_QUEUE_INIT(&(utrCb.utrAccTxQueue));
+  WSF_QUEUE_INIT(&(utrCb.utrAccRxQueue));
 
-    /* Reset crypto in progress flags. */
-    utrCb.utrEncryptInProgress = FALSE;
-    utrCb.utrDecryptInProgress = FALSE;
+  /* Reset crypto in progress flags. */
+  utrCb.utrEncryptInProgress = FALSE;
+  utrCb.utrDecryptInProgress = FALSE;
 }
 
 /*************************************************************************************************/
@@ -773,11 +835,11 @@ void MeshUtrInit(void)
 /*************************************************************************************************/
 void MeshUtrRegister(meshUtrAccRecvCback_t accRecvCback, meshUtrEventNotifyCback_t eventCback)
 {
-    WSF_ASSERT((accRecvCback != NULL) && (eventCback != NULL));
+  WSF_ASSERT((accRecvCback != NULL) && (eventCback != NULL));
 
-    /* Store callbacks into local structure. */
-    utrCb.accRecvCback = accRecvCback;
-    utrCb.eventCback = eventCback;
+  /* Store callbacks into local structure. */
+  utrCb.accRecvCback = accRecvCback;
+  utrCb.eventCback = eventCback;
 }
 
 /*************************************************************************************************/
@@ -791,10 +853,10 @@ void MeshUtrRegister(meshUtrAccRecvCback_t accRecvCback, meshUtrEventNotifyCback
 /*************************************************************************************************/
 void MeshUtrRegisterFriendship(meshUtrFriendshipCtlRecvCback_t ctlRecvCback)
 {
-    WSF_ASSERT(ctlRecvCback != NULL);
+  WSF_ASSERT(ctlRecvCback != NULL);
 
-    /* Store callback into local structure. */
-    utrCb.friendshipCtlRecvCback = ctlRecvCback;
+  /* Store callback into local structure. */
+  utrCb.friendshipCtlRecvCback = ctlRecvCback;
 }
 
 /*************************************************************************************************/
@@ -809,64 +871,75 @@ void MeshUtrRegisterFriendship(meshUtrFriendshipCtlRecvCback_t ctlRecvCback)
 /*************************************************************************************************/
 meshUtrRetVal_t MeshUtrSendAccPdu(const meshUtrAccPduTxInfo_t *pAccPduInfo)
 {
-    uint16_t pduLen;
+  uint16_t pduLen;
 
-    /* Check for invalid parameters. */
-    if (pAccPduInfo == NULL) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check for invalid parameters. */
+  if (pAccPduInfo == NULL)
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    if ((pAccPduInfo->pAccPduOpcode == NULL) ||
-        ((pAccPduInfo->pAccPduParam == NULL) && (pAccPduInfo->accPduParamLen != 0))) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  if ((pAccPduInfo->pAccPduOpcode == NULL) ||
+      ((pAccPduInfo->pAccPduParam == NULL) && (pAccPduInfo->accPduParamLen != 0)))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Validate source address. Only unicast address is allowed. */
-    if (!MESH_IS_ADDR_UNICAST(pAccPduInfo->src)) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Validate source address. Only unicast address is allowed. */
+  if (!MESH_IS_ADDR_UNICAST(pAccPduInfo->src))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Validate destination. */
-    if (MESH_IS_ADDR_UNASSIGNED(pAccPduInfo->dst) || (MESH_IS_ADDR_RFU(pAccPduInfo->dst)) ||
-        (MESH_IS_ADDR_VIRTUAL(pAccPduInfo->dst) && (pAccPduInfo->pDstLabelUuid == NULL))) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Validate destination. */
+  if (MESH_IS_ADDR_UNASSIGNED(pAccPduInfo->dst) || (MESH_IS_ADDR_RFU(pAccPduInfo->dst)) ||
+      (MESH_IS_ADDR_VIRTUAL(pAccPduInfo->dst) && (pAccPduInfo->pDstLabelUuid == NULL)))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    if ((pAccPduInfo->ackRequired) && !MESH_IS_ADDR_UNICAST(pAccPduInfo->dst)) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  if ((pAccPduInfo->ackRequired) && !MESH_IS_ADDR_UNICAST(pAccPduInfo->dst))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Check if the appKeyIndex is in valid range. */
-    if ((!pAccPduInfo->devKeyUse) &&
-        (MESH_SEC_KEY_INDEX_IS_VALID(pAccPduInfo->appKeyIndex) == FALSE)) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check if the appKeyIndex is in valid range. */
+  if ((!pAccPduInfo->devKeyUse) &&
+      (MESH_SEC_KEY_INDEX_IS_VALID(pAccPduInfo->appKeyIndex) == FALSE))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    if ((pAccPduInfo->devKeyUse) && (pAccPduInfo->appKeyIndex != MESH_APPKEY_INDEX_LOCAL_DEV_KEY) &&
-        (pAccPduInfo->appKeyIndex != MESH_APPKEY_INDEX_REMOTE_DEV_KEY)) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  if((pAccPduInfo->devKeyUse) &&
+     (pAccPduInfo->appKeyIndex != MESH_APPKEY_INDEX_LOCAL_DEV_KEY) &&
+     (pAccPduInfo->appKeyIndex != MESH_APPKEY_INDEX_REMOTE_DEV_KEY))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Check if the netKeyIndex is in valid range. */
-    if (MESH_SEC_KEY_INDEX_IS_VALID(pAccPduInfo->netKeyIndex) == FALSE) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check if the netKeyIndex is in valid range. */
+  if (MESH_SEC_KEY_INDEX_IS_VALID(pAccPduInfo->netKeyIndex) == FALSE)
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Check if TTL is in valid range. */
-    if ((MESH_TTL_IS_VALID(pAccPduInfo->ttl) == FALSE) ||
-        (pAccPduInfo->ttl == MESH_TX_TTL_FILTER_VALUE)) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check if TTL is in valid range. */
+  if ((MESH_TTL_IS_VALID(pAccPduInfo->ttl) == FALSE) ||
+       (pAccPduInfo->ttl == MESH_TX_TTL_FILTER_VALUE))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Calculate total length. */
-    pduLen = pAccPduInfo->accPduOpcodeLen + pAccPduInfo->accPduParamLen;
+  /* Calculate total length. */
+  pduLen = pAccPduInfo->accPduOpcodeLen + pAccPduInfo->accPduParamLen;
 
-    /* Check if valid PDU size is passed. */
-    if ((pduLen > MESH_UTR_MAX_ACC_PDU_LEN) || (pduLen == 0)) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check if valid PDU size is passed. */
+  if ((pduLen > MESH_UTR_MAX_ACC_PDU_LEN) || (pduLen == 0))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    return meshUtrSendAccPduInternal(pAccPduInfo);
+  return meshUtrSendAccPduInternal(pAccPduInfo);
 }
 
 /*************************************************************************************************/
@@ -881,52 +954,65 @@ meshUtrRetVal_t MeshUtrSendAccPdu(const meshUtrAccPduTxInfo_t *pAccPduInfo)
 /*************************************************************************************************/
 meshUtrRetVal_t MeshUtrSendCtlPdu(const meshUtrCtlPduInfo_t *pCtlPduInfo)
 {
-    /* Check for invalid parameters. */
-    if (pCtlPduInfo == NULL) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check for invalid parameters. */
+  if (pCtlPduInfo == NULL)
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    if (pCtlPduInfo->pCtlPdu == NULL) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  if (pCtlPduInfo->pCtlPdu == NULL)
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Validate source address. Only unicast address is allowed. */
-    if (!MESH_IS_ADDR_UNICAST(pCtlPduInfo->src)) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Validate source address. Only unicast address is allowed. */
+  if (!MESH_IS_ADDR_UNICAST(pCtlPduInfo->src))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    if (pCtlPduInfo->ackRequired == FALSE) {
-        /* Validate destination address. Only unicast and group addresses are allowed. */
-        if (!MESH_IS_ADDR_UNICAST(pCtlPduInfo->dst) && !MESH_IS_ADDR_GROUP(pCtlPduInfo->dst)) {
-            return MESH_UTR_INVALID_PARAMS;
-        }
-    } else {
-        /* Validate destination address. Only unicast address is allowed for reliable send. */
-        if (!MESH_IS_ADDR_UNICAST(pCtlPduInfo->dst)) {
-            return MESH_UTR_INVALID_PARAMS;
-        }
+  if (pCtlPduInfo->ackRequired == FALSE)
+  {
+    /* Validate destination address. Only unicast and group addresses are allowed. */
+    if (!MESH_IS_ADDR_UNICAST(pCtlPduInfo->dst) &&
+        !MESH_IS_ADDR_GROUP(pCtlPduInfo->dst))
+    {
+      return MESH_UTR_INVALID_PARAMS;
     }
-
-    /* Check if the netKeyIndex is in valid range. */
-    if (MESH_SEC_KEY_INDEX_IS_VALID(pCtlPduInfo->netKeyIndex) == FALSE) {
-        return MESH_UTR_INVALID_PARAMS;
+  }
+  else
+  {
+    /* Validate destination address. Only unicast address is allowed for reliable send. */
+    if (!MESH_IS_ADDR_UNICAST(pCtlPduInfo->dst))
+    {
+      return MESH_UTR_INVALID_PARAMS;
     }
+  }
 
-    /* Check if the Opcode is in the valid range. */
-    if (MESH_UTR_CTL_OPCODE_IN_RANGE(pCtlPduInfo->opcode) == FALSE) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check if the netKeyIndex is in valid range. */
+  if (MESH_SEC_KEY_INDEX_IS_VALID(pCtlPduInfo->netKeyIndex) == FALSE)
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Check if TTL is in valid range. */
-    if ((MESH_TTL_IS_VALID(pCtlPduInfo->ttl) == FALSE) ||
-        (pCtlPduInfo->ttl == MESH_TX_TTL_FILTER_VALUE)) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check if the Opcode is in the valid range. */
+  if (MESH_UTR_CTL_OPCODE_IN_RANGE(pCtlPduInfo->opcode) == FALSE)
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    /* Check if the maximum PDU size is not exceeded. */
-    if (pCtlPduInfo->pduLen > MESH_UTR_MAX_CTL_PDU_LEN) {
-        return MESH_UTR_INVALID_PARAMS;
-    }
+  /* Check if TTL is in valid range. */
+  if ((MESH_TTL_IS_VALID(pCtlPduInfo->ttl) == FALSE) ||
+       (pCtlPduInfo->ttl == MESH_TX_TTL_FILTER_VALUE))
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
 
-    return meshUtrSendCtlPduInternal(pCtlPduInfo);
+  /* Check if the maximum PDU size is not exceeded. */
+  if (pCtlPduInfo->pduLen > MESH_UTR_MAX_CTL_PDU_LEN)
+  {
+    return MESH_UTR_INVALID_PARAMS;
+  }
+
+  return meshUtrSendCtlPduInternal(pCtlPduInfo);
 }

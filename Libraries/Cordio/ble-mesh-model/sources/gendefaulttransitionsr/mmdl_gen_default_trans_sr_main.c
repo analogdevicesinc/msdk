@@ -49,22 +49,23 @@
 **************************************************************************************************/
 
 /*! Present state index in stored states */
-#define PRESENT_STATE_IDX 0
+#define PRESENT_STATE_IDX                   0
 
 /*! Target state index in stored states */
-#define TARGET_STATE_IDX 1
+#define TARGET_STATE_IDX                    1
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Generic Default Transition Server control block type definition */
-typedef struct mmdlGenDefaultTransSrCb_tag {
-    mmdlEventCback_t recvCback; /*!< Model Generic Default Transaction received callback */
+typedef struct mmdlGenDefaultTransSrCb_tag
+{
+  mmdlEventCback_t          recvCback;  /*!< Model Generic Default Transaction received callback */
 } mmdlGenDefaultTransSrCb_t;
 
 /*! Generic Default Transition Server message handler type definition */
-typedef void (*mmdlGenDefaultTransSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlGenDefaultTransSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
@@ -74,10 +75,11 @@ typedef void (*mmdlGenDefaultTransSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pM
 wsfHandlerId_t mmdlGenDefaultTransSrHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlGenDefaultTransSrRcvdOpcodes[MMDL_GEN_DEFAULT_TRANS_SR_NUM_RCVD_OPCODES] = {
-    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_DEFAULT_TRANS_GET_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_DEFAULT_TRANS_SET_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE) } },
+const meshMsgOpcode_t mmdlGenDefaultTransSrRcvdOpcodes[MMDL_GEN_DEFAULT_TRANS_SR_NUM_RCVD_OPCODES] =
+{
+  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_DEFAULT_TRANS_GET_OPCODE)} },
+  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_DEFAULT_TRANS_SET_OPCODE)} },
+  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE)} },
 };
 
 /**************************************************************************************************
@@ -85,15 +87,15 @@ const meshMsgOpcode_t mmdlGenDefaultTransSrRcvdOpcodes[MMDL_GEN_DEFAULT_TRANS_SR
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlGenDefaultTransSrHandleMsg_t
-    mmdlGenDefaultTransSrHandleMsg[MMDL_GEN_DEFAULT_TRANS_SR_NUM_RCVD_OPCODES] = {
-        mmdlGenDefaultTransSrHandleGet,
-        mmdlGenDefaultTransSrHandleSet,
-        mmdlGenDefaultTransSrHandleSetNoAck,
-    };
+const mmdlGenDefaultTransSrHandleMsg_t mmdlGenDefaultTransSrHandleMsg[MMDL_GEN_DEFAULT_TRANS_SR_NUM_RCVD_OPCODES] =
+{
+  mmdlGenDefaultTransSrHandleGet,
+  mmdlGenDefaultTransSrHandleSet,
+  mmdlGenDefaultTransSrHandleSetNoAck,
+};
 
 /*! Generic Default Transition Server Control Block */
-static mmdlGenDefaultTransSrCb_t defaultTransSrCb;
+static mmdlGenDefaultTransSrCb_t  defaultTransSrCb;
 
 /**************************************************************************************************
   Local Functions
@@ -110,27 +112,27 @@ static mmdlGenDefaultTransSrCb_t defaultTransSrCb;
  *  \return     None.
  */
 /*************************************************************************************************/
-static void mmdlGenDefaultTransSrGetDesc(meshElementId_t elementId,
-                                         mmdlGenDefaultTransSrDesc_t **ppOutDesc)
+static void mmdlGenDefaultTransSrGetDesc(meshElementId_t elementId, mmdlGenDefaultTransSrDesc_t **ppOutDesc)
 {
-    uint8_t modelIdx;
+  uint8_t modelIdx;
 
-    *ppOutDesc = NULL;
+  *ppOutDesc = NULL;
 
-    /* Verify that the elementId is in the element array */
-    if (elementId < pMeshConfig->elementArrayLen) {
-        /* Look for the model instance */
-        for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels;
-             modelIdx++) {
-            if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
-                MMDL_GEN_DEFAULT_TRANS_SR_MDL_ID) {
-                /* Matching model ID on elementId */
-                *ppOutDesc =
-                    pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
-                break;
-            }
-        }
+  /* Verify that the elementId is in the element array */
+  if (elementId < pMeshConfig->elementArrayLen)
+  {
+    /* Look for the model instance */
+    for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx++)
+    {
+      if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
+          MMDL_GEN_DEFAULT_TRANS_SR_MDL_ID)
+      {
+        /* Matching model ID on elementId */
+        *ppOutDesc = pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
+        break;
+      }
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -146,50 +148,55 @@ static void mmdlGenDefaultTransSrGetDesc(meshElementId_t elementId,
  *  \return    None.
  */
 /*************************************************************************************************/
-static void mmdlGenDefaultTransSrSetState(meshElementId_t elementId,
-                                          mmdlGenDefaultTransState_t targetState,
+static void mmdlGenDefaultTransSrSetState(meshElementId_t elementId, mmdlGenDefaultTransState_t targetState,
                                           uint8_t transitionTime, uint8_t delay5Ms,
                                           mmdlStateUpdateSrc_t stateUpdateSrc)
 {
-    mmdlGenDefaultTransSrEvent_t event;
-    mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
+  mmdlGenDefaultTransSrEvent_t event;
+  mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
 
-    MMDL_TRACE_INFO1("DEFAULT TRANS SR: Set State on elemId %d", elementId);
+  MMDL_TRACE_INFO1("DEFAULT TRANS SR: Set State on elemId %d", elementId);
 
-    /* Get model instance descriptor */
-    mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
+  /* Get model instance descriptor */
+  mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
 
-    if (pDesc == NULL) {
-        event.hdr.status = MMDL_INVALID_ELEMENT;
-    } else {
-        /* Validate the new default transition time */
-        if (TRANSITION_TIME_STEPS(targetState) != MMDL_GEN_TR_UNKNOWN) {
-            event.hdr.status = MMDL_SUCCESS;
+  if (pDesc == NULL)
+  {
+    event.hdr.status = MMDL_INVALID_ELEMENT;
+  }
+  else
+  {
+    /* Validate the new default transition time */
+    if (TRANSITION_TIME_STEPS(targetState) != MMDL_GEN_TR_UNKNOWN)
+    {
+      event.hdr.status = MMDL_SUCCESS;
 
-            /* Set the new default transition time */
-            pDesc->pStoredStates[PRESENT_STATE_IDX] = targetState;
-        } else {
-            event.hdr.status = MMDL_INVALID_PARAM;
-        }
+      /* Set the new default transition time */
+      pDesc->pStoredStates[PRESENT_STATE_IDX] = targetState;
     }
+    else
+    {
+      event.hdr.status = MMDL_INVALID_PARAM;
+    }
+  }
 
-    /* Set event type */
-    event.hdr.event = MMDL_GEN_DEFAULT_TRANS_SR_EVENT;
-    event.hdr.param = MMDL_GEN_DEFAULT_TRANS_SR_STATE_UPDATE_EVENT;
+  /* Set event type */
+  event.hdr.event = MMDL_GEN_DEFAULT_TRANS_SR_EVENT;
+  event.hdr.param = MMDL_GEN_DEFAULT_TRANS_SR_STATE_UPDATE_EVENT;
 
-    /* Set event parameters */
-    event.statusEvent.elemId = elementId;
-    event.statusEvent.state = targetState;
-    event.statusEvent.stateUpdateSource = stateUpdateSrc;
+  /* Set event parameters */
+  event.statusEvent.elemId = elementId;
+  event.statusEvent.state = targetState;
+  event.statusEvent.stateUpdateSource = stateUpdateSrc;
 
-    /* Publish state change */
-    MmdlGenDefaultTransSrPublish(elementId);
+  /* Publish state change */
+  MmdlGenDefaultTransSrPublish(elementId);
 
-    /* Send event to the upper layer */
-    defaultTransSrCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  defaultTransSrCb.recvCback((wsfMsgHdr_t *)&event);
 
-    (void)transitionTime;
-    (void)delay5Ms;
+  (void)transitionTime;
+  (void)delay5Ms;
 }
 
 /*************************************************************************************************/
@@ -207,29 +214,29 @@ static void mmdlGenDefaultTransSrSetState(meshElementId_t elementId,
 static void mmdlGenDefaultTransSrSendStatus(meshElementId_t elementId, meshAddress_t dstAddr,
                                             uint16_t appKeyIndex, bool_t recvOnUnicast)
 {
-    meshMsgInfo_t msgInfo =
-        MESH_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_SR_MDL_ID, MMDL_GEN_DEFAULT_TRANS_STATUS_OPCODE);
-    uint8_t paramMsg[MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH];
-    mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_SR_MDL_ID, MMDL_GEN_DEFAULT_TRANS_STATUS_OPCODE);
+  uint8_t paramMsg[MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH];
+  mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
 
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = dstAddr;
-    msgInfo.ttl = MESH_USE_DEFAULT_TTL;
-    msgInfo.appKeyIndex = appKeyIndex;
+  /* Fill in the msg info parameters */
+  msgInfo.elementId = elementId;
+  msgInfo.dstAddr = dstAddr;
+  msgInfo.ttl = MESH_USE_DEFAULT_TTL;
+  msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Get the model instance descriptor */
-    mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        /* Copy the message parameters from the descriptor */
-        paramMsg[0] = pDesc->pStoredStates[PRESENT_STATE_IDX];
+  if (pDesc != NULL)
+  {
+    /* Copy the message parameters from the descriptor */
+    paramMsg[0] = pDesc->pStoredStates[PRESENT_STATE_IDX];
 
-        /* Send message to the Mesh Core instantly */
-        MeshSendMessage(&msgInfo, paramMsg, MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH,
-                        MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
-                        MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(recvOnUnicast));
-    }
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, paramMsg, MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH,
+                    MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
+                    MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(recvOnUnicast));
+  }
 }
 
 /*************************************************************************************************/
@@ -243,12 +250,12 @@ static void mmdlGenDefaultTransSrSendStatus(meshElementId_t elementId, meshAddre
 /*************************************************************************************************/
 void mmdlGenDefaultTransSrHandleGet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    /* Validate message length */
-    if (pMsg->messageParamsLen == 0) {
-        /* Send Status message as a response to the Get message */
-        mmdlGenDefaultTransSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                                        pMsg->recvOnUnicast);
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen == 0)
+  {
+    /* Send Status message as a response to the Get message */
+    mmdlGenDefaultTransSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast);
+  }
 }
 
 /*************************************************************************************************/
@@ -263,26 +270,27 @@ void mmdlGenDefaultTransSrHandleGet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static bool_t mmdlGenDefaultTransSrProcessSet(const meshModelMsgRecvEvt_t *pMsg, bool_t ackRequired)
 {
-    WSF_ASSERT(pMsg != NULL);
-    WSF_ASSERT(pMsg->pMessageParams != NULL);
+  WSF_ASSERT(pMsg != NULL);
+  WSF_ASSERT(pMsg->pMessageParams != NULL);
 
-    (void)ackRequired;
+  (void)ackRequired;
 
-    /* Validate message length. It can take only min and max values. */
-    if (pMsg->messageParamsLen != MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH) {
-        return FALSE;
-    }
+  /* Validate message length. It can take only min and max values. */
+  if (pMsg->messageParamsLen != MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH)
+  {
+    return FALSE;
+  }
 
-    /* Validate the new default transition time */
-    if (TRANSITION_TIME_STEPS(pMsg->pMessageParams[0]) == MMDL_GEN_TR_UNKNOWN) {
-        return FALSE;
-    }
+  /* Validate the new default transition time */
+  if (TRANSITION_TIME_STEPS(pMsg->pMessageParams[0]) == MMDL_GEN_TR_UNKNOWN)
+  {
+    return FALSE;
+  }
 
-    /* Change state */
-    mmdlGenDefaultTransSrSetState(pMsg->elementId, pMsg->pMessageParams[0], 0, 0,
-                                  MMDL_STATE_UPDATED_BY_CL);
+  /* Change state */
+  mmdlGenDefaultTransSrSetState(pMsg->elementId, pMsg->pMessageParams[0], 0, 0, MMDL_STATE_UPDATED_BY_CL);
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -296,12 +304,12 @@ static bool_t mmdlGenDefaultTransSrProcessSet(const meshModelMsgRecvEvt_t *pMsg,
 /*************************************************************************************************/
 void mmdlGenDefaultTransSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    /* Change state */
-    if (mmdlGenDefaultTransSrProcessSet(pMsg, TRUE)) {
-        /* Send Status message as a response to the Set message */
-        mmdlGenDefaultTransSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                                        pMsg->recvOnUnicast);
-    }
+  /* Change state */
+  if (mmdlGenDefaultTransSrProcessSet(pMsg, TRUE))
+  {
+    /* Send Status message as a response to the Set message */
+    mmdlGenDefaultTransSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast);
+  }
 }
 
 /*************************************************************************************************/
@@ -315,8 +323,8 @@ void mmdlGenDefaultTransSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlGenDefaultTransSrHandleSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-    /* Change state */
-    (void)mmdlGenDefaultTransSrProcessSet(pMsg, FALSE);
+  /* Change state */
+  (void)mmdlGenDefaultTransSrProcessSet(pMsg, FALSE);
 }
 
 /*************************************************************************************************/
@@ -330,19 +338,20 @@ void mmdlGenDefaultTransSrHandleSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static uint32_t transitionTimeToMs(uint8_t transitionTime)
 {
-    switch (TRANSITION_TIME_RESOLUTION(transitionTime)) {
+  switch (TRANSITION_TIME_RESOLUTION(transitionTime))
+  {
     case MMDL_GEN_TR_RES100MS:
-        return TRANSITION_TIME_STEPS(transitionTime) * MMDL_GEN_TR_TIME_RES0_MS;
+      return TRANSITION_TIME_STEPS(transitionTime) * MMDL_GEN_TR_TIME_RES0_MS;
     case MMDL_GEN_TR_RES1SEC:
-        return TRANSITION_TIME_STEPS(transitionTime) * MMDL_GEN_TR_TIME_RES1_MS;
+      return TRANSITION_TIME_STEPS(transitionTime) * MMDL_GEN_TR_TIME_RES1_MS;
     case MMDL_GEN_TR_RES10SEC:
-        return TRANSITION_TIME_STEPS(transitionTime) * MMDL_GEN_TR_TIME_RES2_MS;
+      return TRANSITION_TIME_STEPS(transitionTime) * MMDL_GEN_TR_TIME_RES2_MS;
     case MMDL_GEN_TR_RES10MIN:
-        return TRANSITION_TIME_STEPS(transitionTime) * MMDL_GEN_TR_TIME_RES3_MS;
+      return TRANSITION_TIME_STEPS(transitionTime) * MMDL_GEN_TR_TIME_RES3_MS;
     default:
-        break;
-    }
-    return 0;
+      break;
+  }
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -356,28 +365,37 @@ static uint32_t transitionTimeToMs(uint8_t transitionTime)
 /*************************************************************************************************/
 static uint8_t remainingTimeToTransitionTime(uint32_t remainingTimeMs)
 {
-    uint8_t transitionTime;
+  uint8_t transitionTime;
 
-    WSF_ASSERT(remainingTimeMs < MMDL_GEN_TR_MAX_TIME_RES3_MS);
+  WSF_ASSERT(remainingTimeMs < MMDL_GEN_TR_MAX_TIME_RES3_MS);
 
-    /* Establish step resolution */
-    if (remainingTimeMs > MMDL_GEN_TR_MAX_TIME_RES3_MS) {
-        /* Remaining time cannot be represented. Set as unknown */
-        transitionTime = MMDL_GEN_TR_UNKNOWN;
-    } else if (remainingTimeMs > MMDL_GEN_TR_MAX_TIME_RES2_MS) {
-        transitionTime = (uint8_t)(remainingTimeMs / MMDL_GEN_TR_TIME_RES3_MS);
-        SET_TRANSITION_TIME_RESOLUTION(transitionTime, MMDL_GEN_TR_RES10MIN);
-    } else if (remainingTimeMs > MMDL_GEN_TR_MAX_TIME_RES1_MS) {
-        transitionTime = (uint8_t)(remainingTimeMs / MMDL_GEN_TR_TIME_RES2_MS);
-        SET_TRANSITION_TIME_RESOLUTION(transitionTime, MMDL_GEN_TR_RES10SEC);
-    } else if (remainingTimeMs > MMDL_GEN_TR_MAX_TIME_RES0_MS) {
-        transitionTime = (uint8_t)(remainingTimeMs / MMDL_GEN_TR_TIME_RES1_MS);
-        SET_TRANSITION_TIME_RESOLUTION(transitionTime, MMDL_GEN_TR_RES1SEC);
-    } else {
-        transitionTime = (uint8_t)(remainingTimeMs / MMDL_GEN_TR_TIME_RES0_MS);
-        SET_TRANSITION_TIME_RESOLUTION(transitionTime, MMDL_GEN_TR_RES100MS);
-    }
-    return transitionTime;
+  /* Establish step resolution */
+  if (remainingTimeMs > MMDL_GEN_TR_MAX_TIME_RES3_MS)
+  {
+    /* Remaining time cannot be represented. Set as unknown */
+    transitionTime = MMDL_GEN_TR_UNKNOWN;
+  }
+  else if (remainingTimeMs > MMDL_GEN_TR_MAX_TIME_RES2_MS)
+  {
+    transitionTime = (uint8_t)(remainingTimeMs / MMDL_GEN_TR_TIME_RES3_MS);
+    SET_TRANSITION_TIME_RESOLUTION(transitionTime, MMDL_GEN_TR_RES10MIN);
+  }
+  else if (remainingTimeMs > MMDL_GEN_TR_MAX_TIME_RES1_MS)
+  {
+    transitionTime = (uint8_t)(remainingTimeMs / MMDL_GEN_TR_TIME_RES2_MS);
+    SET_TRANSITION_TIME_RESOLUTION(transitionTime, MMDL_GEN_TR_RES10SEC);
+  }
+  else if (remainingTimeMs > MMDL_GEN_TR_MAX_TIME_RES0_MS)
+  {
+    transitionTime = (uint8_t)(remainingTimeMs / MMDL_GEN_TR_TIME_RES1_MS);
+    SET_TRANSITION_TIME_RESOLUTION(transitionTime, MMDL_GEN_TR_RES1SEC);
+  }
+  else
+  {
+    transitionTime = (uint8_t)(remainingTimeMs / MMDL_GEN_TR_TIME_RES0_MS);
+    SET_TRANSITION_TIME_RESOLUTION(transitionTime, MMDL_GEN_TR_RES100MS);
+  }
+  return transitionTime;
 }
 
 /**************************************************************************************************
@@ -393,10 +411,10 @@ static uint8_t remainingTimeToTransitionTime(uint32_t remainingTimeMs)
 /*************************************************************************************************/
 void MmdlGenDefaultTransSrInit(void)
 {
-    MMDL_TRACE_INFO0("DEFAULT TRANS SR: init");
+  MMDL_TRACE_INFO0("DEFAULT TRANS SR: init");
 
-    /* Set event callbacks */
-    defaultTransSrCb.recvCback = MmdlEmptyCback;
+  /* Set event callbacks */
+  defaultTransSrCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -410,8 +428,8 @@ void MmdlGenDefaultTransSrInit(void)
 /*************************************************************************************************/
 void MmdlGenDefaultTransSrHandlerInit(wsfHandlerId_t handlerId)
 {
-    /* Set handler ID */
-    mmdlGenDefaultTransSrHandlerId = handlerId;
+  /* Set handler ID */
+  mmdlGenDefaultTransSrHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -426,47 +444,50 @@ void MmdlGenDefaultTransSrHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlGenDefaultTransSrHandler(wsfMsgHdr_t *pMsg)
 {
-    meshModelEvt_t *pModelMsg;
-    uint8_t opcodeIdx;
+  meshModelEvt_t *pModelMsg;
+  uint8_t opcodeIdx;
 
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            pModelMsg = (meshModelEvt_t *)pMsg;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        pModelMsg = (meshModelEvt_t *)pMsg;
 
-            /* Validate opcode size and value */
-            if (MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode) ==
-                MMDL_GEN_DEFAULT_TRANS_OPCODES_SIZE) {
-                /* Match the received opcode */
-                for (opcodeIdx = 0; opcodeIdx < MMDL_GEN_DEFAULT_TRANS_SR_NUM_RCVD_OPCODES;
-                     opcodeIdx++) {
-                    if (!memcmp(&mmdlGenDefaultTransSrRcvdOpcodes[opcodeIdx],
-                                pModelMsg->msgRecvEvt.opCode.opcodeBytes,
-                                MMDL_GEN_DEFAULT_TRANS_OPCODES_SIZE)) {
-                        /* Process message */
-                        (void)mmdlGenDefaultTransSrHandleMsg[opcodeIdx](
-                            (meshModelMsgRecvEvt_t *)pModelMsg);
-                    }
-                }
+        /* Validate opcode size and value */
+        if (MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode) == MMDL_GEN_DEFAULT_TRANS_OPCODES_SIZE)
+        {
+          /* Match the received opcode */
+          for (opcodeIdx = 0; opcodeIdx < MMDL_GEN_DEFAULT_TRANS_SR_NUM_RCVD_OPCODES; opcodeIdx++)
+          {
+            if (!memcmp(&mmdlGenDefaultTransSrRcvdOpcodes[opcodeIdx],
+                        pModelMsg->msgRecvEvt.opCode.opcodeBytes,
+                        MMDL_GEN_DEFAULT_TRANS_OPCODES_SIZE))
+            {
+              /* Process message */
+              (void)mmdlGenDefaultTransSrHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
             }
-            break;
-
-        case MESH_MODEL_EVT_PERIODIC_PUB:
-            pModelMsg = (meshModelEvt_t *)pMsg;
-
-            /* Check if periodic publishing was not disabled. */
-            if (pModelMsg->periodicPubEvt.nextPubTimeMs != 0) {
-                /* Publishing is requested part of the periodic publishing */
-                MmdlGenDefaultTransSrPublish(pModelMsg->periodicPubEvt.elementId);
-            }
-            break;
-
-        default:
-            MMDL_TRACE_WARN0("GEN DEFAULT TRANS SR: Invalid event message received!");
-            break;
+          }
         }
+        break;
+
+      case MESH_MODEL_EVT_PERIODIC_PUB:
+        pModelMsg = (meshModelEvt_t *)pMsg;
+
+        /* Check if periodic publishing was not disabled. */
+        if (pModelMsg->periodicPubEvt.nextPubTimeMs != 0)
+        {
+          /* Publishing is requested part of the periodic publishing */
+          MmdlGenDefaultTransSrPublish(pModelMsg->periodicPubEvt.elementId);
+        }
+        break;
+
+      default:
+        MMDL_TRACE_WARN0("GEN DEFAULT TRANS SR: Invalid event message received!");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -480,24 +501,25 @@ void MmdlGenDefaultTransSrHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenDefaultTransSrPublish(meshElementId_t elementId)
 {
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_SR_MDL_ID, MMDL_GEN_DEFAULT_TRANS_STATUS_OPCODE);
-    uint8_t paramMsg[MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH];
-    mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_SR_MDL_ID,
+                                             MMDL_GEN_DEFAULT_TRANS_STATUS_OPCODE);
+  uint8_t paramMsg[MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH];
+  mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
 
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+  /* Fill in the msg info parameters */
+  pubMsgInfo.elementId = elementId;
 
-    /* Get the model instance descriptor */
-    mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        /* Copy the message parameters from the descriptor */
-        paramMsg[0] = pDesc->pStoredStates[PRESENT_STATE_IDX];
+  if (pDesc != NULL)
+  {
+    /* Copy the message parameters from the descriptor */
+    paramMsg[0] = pDesc->pStoredStates[PRESENT_STATE_IDX];
 
-        /* Send message to the Mesh Core */
-        MeshPublishMessage(&pubMsgInfo, paramMsg, MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH);
-    }
+    /* Send message to the Mesh Core */
+    MeshPublishMessage(&pubMsgInfo, paramMsg, MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH);
+  }
 }
 
 /*************************************************************************************************/
@@ -510,8 +532,7 @@ void MmdlGenDefaultTransSrPublish(meshElementId_t elementId)
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenDefaultTransSrSetState(meshElementId_t elementId,
-                                   mmdlGenDefaultTransState_t targetState)
+void MmdlGenDefaultTransSrSetState(meshElementId_t elementId, mmdlGenDefaultTransState_t targetState)
 {
     /* Change state locally. No transition time or delay required. */
     mmdlGenDefaultTransSrSetState(elementId, targetState, 0, 0, MMDL_STATE_UPDATED_BY_APP);
@@ -528,35 +549,38 @@ void MmdlGenDefaultTransSrSetState(meshElementId_t elementId,
 /*************************************************************************************************/
 void MmdlGenDefaultTransSrGetState(meshElementId_t elementId)
 {
-    mmdlGenDefaultTransSrEvent_t event;
-    mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
+  mmdlGenDefaultTransSrEvent_t event;
+  mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
 
-    /* Get model instance descriptor */
-    mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
+  /* Get model instance descriptor */
+  mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
 
-    /* Set event type */
-    event.hdr.event = MMDL_GEN_DEFAULT_TRANS_SR_EVENT;
-    event.hdr.param = MMDL_GEN_DEFAULT_TRANS_SR_CURRENT_STATE_EVENT;
+  /* Set event type */
+  event.hdr.event = MMDL_GEN_DEFAULT_TRANS_SR_EVENT;
+  event.hdr.param = MMDL_GEN_DEFAULT_TRANS_SR_CURRENT_STATE_EVENT;
+
+  /* Set event parameters */
+  event.currentStateEvent.elemId = elementId;
+
+  if (pDesc == NULL)
+  {
+    /* No descriptor found on element */
+    event.hdr.status = MMDL_INVALID_ELEMENT;
+
+    /* Zero out parameters */
+    event.currentStateEvent.state = 0;
+  }
+  else
+  {
+    /* Descriptor found on element */
+    event.hdr.status = MMDL_SUCCESS;
 
     /* Set event parameters */
-    event.currentStateEvent.elemId = elementId;
+    event.currentStateEvent.state = pDesc->pStoredStates[PRESENT_STATE_IDX];
+  }
 
-    if (pDesc == NULL) {
-        /* No descriptor found on element */
-        event.hdr.status = MMDL_INVALID_ELEMENT;
-
-        /* Zero out parameters */
-        event.currentStateEvent.state = 0;
-    } else {
-        /* Descriptor found on element */
-        event.hdr.status = MMDL_SUCCESS;
-
-        /* Set event parameters */
-        event.currentStateEvent.state = pDesc->pStoredStates[PRESENT_STATE_IDX];
-    }
-
-    /* Send event to the upper layer */
-    defaultTransSrCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  defaultTransSrCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -570,10 +594,11 @@ void MmdlGenDefaultTransSrGetState(meshElementId_t elementId)
 /*************************************************************************************************/
 void MmdlGenDefaultTransSrRegister(mmdlEventCback_t recvCback)
 {
-    /* Store valid callback*/
-    if (recvCback != NULL) {
-        defaultTransSrCb.recvCback = recvCback;
-    }
+  /* Store valid callback*/
+  if (recvCback != NULL)
+  {
+    defaultTransSrCb.recvCback = recvCback;
+  }
 }
 
 /*************************************************************************************************/
@@ -587,16 +612,19 @@ void MmdlGenDefaultTransSrRegister(mmdlEventCback_t recvCback)
 /*************************************************************************************************/
 uint32_t MmdlGenDefaultTransGetTime(meshElementId_t elementId)
 {
-    mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
+  mmdlGenDefaultTransSrDesc_t *pDesc = NULL;
 
-    /* Get model instance descriptor */
-    mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
+  /* Get model instance descriptor */
+  mmdlGenDefaultTransSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        return transitionTimeToMs(pDesc->pStoredStates[PRESENT_STATE_IDX]);
-    } else {
-        return 0;
-    }
+  if (pDesc != NULL)
+  {
+    return transitionTimeToMs(pDesc->pStoredStates[PRESENT_STATE_IDX]);
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 /*************************************************************************************************/
@@ -610,7 +638,7 @@ uint32_t MmdlGenDefaultTransGetTime(meshElementId_t elementId)
 /*************************************************************************************************/
 uint32_t MmdlGenDefaultTransTimeToMs(uint8_t transitionTime)
 {
-    return transitionTimeToMs(transitionTime);
+  return transitionTimeToMs(transitionTime);
 }
 
 /*************************************************************************************************/
@@ -624,5 +652,5 @@ uint32_t MmdlGenDefaultTransTimeToMs(uint8_t transitionTime)
 /*************************************************************************************************/
 uint8_t MmdlGenDefaultTimeMsToTransTime(uint32_t remainingTimeMs)
 {
-    return remainingTimeToTransitionTime(remainingTimeMs);
+  return remainingTimeToTransitionTime(remainingTimeMs);
 }

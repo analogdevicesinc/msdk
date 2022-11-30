@@ -52,12 +52,12 @@
 /*************************************************************************************************/
 uint8_t meshCfgMsgPackSingleKeyIndex(uint8_t *pBuf, uint16_t keyIndex)
 {
-    /* Store the LSBs of the key index in octet 0. */
-    *pBuf = keyIndex & 0xFF;
-    /* Store the MSBs of the key index in octet 1, lower nibble. */
-    *(pBuf + 1) = (keyIndex >> 8) & 0x0F;
+  /* Store the LSBs of the key index in octet 0. */
+  *pBuf     = keyIndex & 0xFF;
+  /* Store the MSBs of the key index in octet 1, lower nibble. */
+  *(pBuf+1) = (keyIndex >> 8) & 0x0F;
 
-    return CFG_MDL_MSG_1KEY_PACKED_NUM_BYTES;
+  return CFG_MDL_MSG_1KEY_PACKED_NUM_BYTES;
 }
 
 /*************************************************************************************************/
@@ -73,17 +73,17 @@ uint8_t meshCfgMsgPackSingleKeyIndex(uint8_t *pBuf, uint16_t keyIndex)
 /*************************************************************************************************/
 uint8_t meshCfgMsgPackTwoKeyIndex(uint8_t *pBuf, uint16_t keyIndex1, uint16_t keyIndex2)
 {
-    /* Store the LSBs of the first key index in octet 0. */
-    *pBuf = keyIndex1 & 0xFF;
-    /* Store the MSBs of the first key index in octet 1, lower nibble. */
-    *(pBuf + 1) = (keyIndex1 >> 8) & 0x0F;
+  /* Store the LSBs of the first key index in octet 0. */
+  *pBuf = keyIndex1 & 0xFF;
+  /* Store the MSBs of the first key index in octet 1, lower nibble. */
+  *(pBuf + 1) = (keyIndex1 >> 8) & 0x0F;
 
-    /* Store the LSBs of the second key index in octet 1, higher nibble. */
-    *(pBuf + 1) |= (keyIndex2 << 4) & 0xF0;
-    /* Store the MSBs of the second key index in octet 2. */
-    *(pBuf + 2) = (keyIndex2 >> 4) & 0xFF;
+  /* Store the LSBs of the second key index in octet 1, higher nibble. */
+  *(pBuf + 1) |= (keyIndex2 << 4) & 0xF0;
+  /* Store the MSBs of the second key index in octet 2. */
+  *(pBuf + 2) = (keyIndex2 >> 4) & 0xFF;
 
-    return CFG_MDL_MSG_2KEY_PACKED_NUM_BYTES;
+  return CFG_MDL_MSG_2KEY_PACKED_NUM_BYTES;
 }
 
 /*************************************************************************************************/
@@ -98,12 +98,12 @@ uint8_t meshCfgMsgPackTwoKeyIndex(uint8_t *pBuf, uint16_t keyIndex1, uint16_t ke
 /*************************************************************************************************/
 uint8_t meshCfgMsgUnpackSingleKeyIndex(uint8_t *pBuf, uint16_t *pKeyIndex)
 {
-    /* Get the LSBs of the key index from octet 0. */
-    *pKeyIndex = (*pBuf) & 0xFF;
-    /* Get the MSBs of the key index from the lower nibble of octet 1. */
-    (*pKeyIndex) |= (((uint16_t)(*(pBuf + 1) & 0x0F)) << 8);
+  /* Get the LSBs of the key index from octet 0. */
+  *pKeyIndex = (*pBuf) & 0xFF;
+  /* Get the MSBs of the key index from the lower nibble of octet 1. */
+  (*pKeyIndex) |=  (((uint16_t)(*(pBuf+1) & 0x0F)) << 8);
 
-    return CFG_MDL_MSG_1KEY_PACKED_NUM_BYTES;
+  return CFG_MDL_MSG_1KEY_PACKED_NUM_BYTES;
 }
 
 /*************************************************************************************************/
@@ -119,17 +119,17 @@ uint8_t meshCfgMsgUnpackSingleKeyIndex(uint8_t *pBuf, uint16_t *pKeyIndex)
 /*************************************************************************************************/
 uint8_t meshCfgMsgUnpackTwoKeyIndex(uint8_t *pBuf, uint16_t *pKeyIndex1, uint16_t *pKeyIndex2)
 {
-    /* Get the LSBs of the first key index from octet 0. */
-    *pKeyIndex1 = (*pBuf) & 0xFF;
-    /* Get the MSBs of the first key index from the lower nibble of octet 1. */
-    (*pKeyIndex1) |= (((uint16_t)(*(pBuf + 1) & 0x0F)) << 8);
+  /* Get the LSBs of the first key index from octet 0. */
+  *pKeyIndex1 = (*pBuf) & 0xFF;
+  /* Get the MSBs of the first key index from the lower nibble of octet 1. */
+  (*pKeyIndex1) |= (((uint16_t)(*(pBuf + 1) & 0x0F)) << 8);
 
-    /* Get the LSBs of the second key index from the higher nibble of octet 1. */
-    *pKeyIndex2 = (*(pBuf + 1) & 0xF0) >> 4;
-    /* Get the MSBs of the second key index from octet 2. */
-    *pKeyIndex2 |= (((uint16_t)(*(pBuf + 2) & 0xFF)) << 4);
+  /* Get the LSBs of the second key index from the higher nibble of octet 1. */
+  *pKeyIndex2 = (*(pBuf + 1) & 0xF0) >> 4;
+  /* Get the MSBs of the second key index from octet 2. */
+  *pKeyIndex2 |= (((uint16_t)(*(pBuf + 2) & 0xFF)) << 4);
 
-    return CFG_MDL_MSG_2KEY_PACKED_NUM_BYTES;
+  return CFG_MDL_MSG_2KEY_PACKED_NUM_BYTES;
 }
 
 /*************************************************************************************************/
@@ -145,13 +145,13 @@ uint8_t meshCfgMsgUnpackTwoKeyIndex(uint8_t *pBuf, uint16_t *pKeyIndex1, uint16_
 /*************************************************************************************************/
 void meshCfgMsgUnpackCompData(uint8_t *pBuf, uint16_t dataLength, meshCompData_t *pCompData)
 {
-    /* Get composition data page number. */
-    pCompData->pageNumber = pBuf[0];
+  /* Get composition data page number. */
+  pCompData->pageNumber = pBuf[0];
 
-    pCompData->pageSize = dataLength;
+  pCompData->pageSize = dataLength;
 
-    /* Get composition data for the page number. */
-    pCompData->pPage = &pBuf[1];
+  /* Get composition data for the page number. */
+  pCompData->pPage = &pBuf[1];
 }
 
 /*************************************************************************************************/
@@ -163,34 +163,36 @@ void meshCfgMsgUnpackCompData(uint8_t *pBuf, uint16_t dataLength, meshCompData_t
 /*************************************************************************************************/
 uint16_t meshCfgMsgGetPackedCompDataPg0Size(void)
 {
-    meshElementId_t id = 0;
-    uint16_t msgParamLen = CFG_MDL_MSG_COMP_DATA_PG0_EMPTY_NUM_BYTES;
-    uint16_t nextLen;
-    uint8_t numCoreSig = 0;
-    uint8_t numCoreVendor = 0;
+  meshElementId_t id = 0;
+  uint16_t msgParamLen = CFG_MDL_MSG_COMP_DATA_PG0_EMPTY_NUM_BYTES;
+  uint16_t nextLen;
+  uint8_t numCoreSig = 0;
+  uint8_t numCoreVendor = 0;
 
-    /* Get number of core models for primary element. */
-    MeshAccGetNumCoreModels(0, &numCoreSig, &numCoreVendor);
+  /* Get number of core models for primary element. */
+  MeshAccGetNumCoreModels(0, &numCoreSig, &numCoreVendor);
 
-    /* Calculate number of bytes occupied by core models. */
-    nextLen = (numCoreSig * sizeof(meshSigModelId_t));
+  /* Calculate number of bytes occupied by core models. */
+  nextLen = (numCoreSig * sizeof(meshSigModelId_t)) ;
 
-    /* Iterate through elements. */
-    for (id = 0; id < pMeshConfig->elementArrayLen; id++) {
-        /* Calculate next length when an element is added to page 0. */
-        nextLen += CFG_MDL_MSG_COMP_DATA_PG0_ELEM_HDR_NUM_BYTES +
-                   (pMeshConfig->pElementArray[id].numSigModels * sizeof(meshSigModelId_t)) +
-                   (pMeshConfig->pElementArray[id].numVendorModels * sizeof(meshVendorModelId_t));
+   /* Iterate through elements. */
+  for (id = 0; id < pMeshConfig->elementArrayLen; id++)
+  {
+    /* Calculate next length when an element is added to page 0. */
+    nextLen += CFG_MDL_MSG_COMP_DATA_PG0_ELEM_HDR_NUM_BYTES +
+               (pMeshConfig->pElementArray[id].numSigModels * sizeof(meshSigModelId_t)) +
+               (pMeshConfig->pElementArray[id].numVendorModels * sizeof(meshVendorModelId_t));
 
-        /* Check if exceeds maximum number of bytes. */
-        if (msgParamLen + nextLen > CFG_MDL_MSG_COMP_DATA_PG0_MAX_NUM_BYTES) {
-            break;
-        }
-        msgParamLen += nextLen;
-        nextLen = 0;
+    /* Check if exceeds maximum number of bytes. */
+    if (msgParamLen + nextLen > CFG_MDL_MSG_COMP_DATA_PG0_MAX_NUM_BYTES)
+    {
+      break;
     }
+    msgParamLen += nextLen;
+    nextLen = 0;
+  }
 
-    return msgParamLen;
+  return msgParamLen;
 }
 
 /*************************************************************************************************/
@@ -205,110 +207,116 @@ uint16_t meshCfgMsgGetPackedCompDataPg0Size(void)
 /*************************************************************************************************/
 void meshCfgMsgPackCompData(uint8_t *pBuf, uint8_t pageNumber)
 {
-    uint8_t *ptr;
-    meshElementId_t id = 0;
-    uint8_t mdlIdx;
-    uint16_t msgParamLen = 0;
-    uint16_t nextLen;
-    meshProdInfo_t prodInfo;
-    uint8_t numCoreSig = 0;
-    uint8_t numCoreVendor = 0;
+  uint8_t *ptr;
+  meshElementId_t id = 0;
+  uint8_t mdlIdx;
+  uint16_t msgParamLen = 0;
+  uint16_t nextLen;
+  meshProdInfo_t prodInfo;
+  uint8_t numCoreSig = 0;
+  uint8_t numCoreVendor = 0;
 
-    msgParamLen = CFG_MDL_MSG_COMP_DATA_PG0_EMPTY_NUM_BYTES;
+  msgParamLen = CFG_MDL_MSG_COMP_DATA_PG0_EMPTY_NUM_BYTES;
 
-    /* Get number of core models. */
-    MeshAccGetNumCoreModels(0, &numCoreSig, &numCoreVendor);
+  /* Get number of core models. */
+  MeshAccGetNumCoreModels(0, &numCoreSig, &numCoreVendor);
 
-    /* Sanity check: there are no core vendor models */
-    WSF_ASSERT(numCoreVendor == 0);
-    /* Sanity check:  there is at least one core SIG model */
-    WSF_ASSERT(numCoreSig != 0);
+  /* Sanity check: there are no core vendor models */
+  WSF_ASSERT(numCoreVendor == 0);
+  /* Sanity check:  there is at least one core SIG model */
+  WSF_ASSERT(numCoreSig != 0);
 
-    /* Implementation does not define any internal vendor models. */
-    numCoreVendor = 0;
+  /* Implementation does not define any internal vendor models. */
+  numCoreVendor = 0;
 
-    /* Add number of bytes occupied by the core models. */
-    nextLen = (numCoreSig * sizeof(meshSigModelId_t));
+  /* Add number of bytes occupied by the core models. */
+  nextLen = (numCoreSig * sizeof(meshSigModelId_t));
 
-    /* Set composition data page number. */
-    pBuf[0] = pageNumber;
+  /* Set composition data page number. */
+  pBuf[0] = pageNumber;
 
-    /* For Page 0, start packing. */
-    if (pageNumber != 0) {
+  /* For Page 0, start packing. */
+  if (pageNumber != 0)
+  {
+    return;
+  }
+  /* Start building page 0. */
+  ptr = &pBuf[1];
+
+  /* Read product information. */
+  MeshLocalCfgGetProductInformation(&prodInfo);
+
+  /* Pack company id. */
+  UINT16_TO_BSTREAM(ptr, prodInfo.companyId);
+
+  /* Pack product id. */
+  UINT16_TO_BSTREAM(ptr, prodInfo.productId);
+
+  /* Pack version id. */
+  UINT16_TO_BSTREAM(ptr, prodInfo.versionId);
+
+  /* Pack CRPL. */
+  UINT16_TO_BSTREAM(ptr, pMeshConfig->pMemoryConfig->rpListSize);
+
+  /* Pack features. */
+  UINT16_TO_BSTREAM(ptr, MeshLocalCfgGetSupportedFeatures());
+
+  /* Iterate through elements. */
+  for (id = 0; id < pMeshConfig->elementArrayLen; id++)
+  {
+    nextLen += CFG_MDL_MSG_COMP_DATA_PG0_ELEM_HDR_NUM_BYTES +
+               (pMeshConfig->pElementArray[id].numSigModels * sizeof(meshSigModelId_t)) +
+               (pMeshConfig->pElementArray[id].numVendorModels * sizeof(meshVendorModelId_t));
+
+    if (msgParamLen + nextLen > CFG_MDL_MSG_COMP_DATA_PG0_MAX_NUM_BYTES)
+    {
+      return;
+    }
+
+    msgParamLen += nextLen;
+    nextLen = 0;
+
+    /* Pack element "header". */
+    UINT16_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].locationDescriptor);
+    UINT8_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].numSigModels + numCoreSig);
+    UINT8_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].numVendorModels + numCoreVendor);
+    /* Pack core SIG models on element 0. */
+    if (numCoreSig)
+    {
+      meshSigModelId_t *pCoreSigMdlIds;
+
+      /* Allocate space to store all core models */
+      if ((pCoreSigMdlIds = (meshSigModelId_t *) WsfBufAlloc(numCoreSig * sizeof(meshSigModelId_t))) == NULL)
+      {
         return;
+      }
+
+      /* Populate Core models structure. */
+      MeshAccGetCoreSigModelsIds(id, pCoreSigMdlIds, numCoreSig);
+
+      /* Pack core SIG models. */
+      for (mdlIdx = 0; mdlIdx < numCoreSig; mdlIdx++)
+      {
+        UINT16_TO_BSTREAM(ptr, pCoreSigMdlIds[mdlIdx]);
+      }
+      /* Implementation only has core models on element 0. */
+      numCoreSig = 0;
+
+      /* Free core models structure. */
+      WsfBufFree(pCoreSigMdlIds);
     }
-    /* Start building page 0. */
-    ptr = &pBuf[1];
-
-    /* Read product information. */
-    MeshLocalCfgGetProductInformation(&prodInfo);
-
-    /* Pack company id. */
-    UINT16_TO_BSTREAM(ptr, prodInfo.companyId);
-
-    /* Pack product id. */
-    UINT16_TO_BSTREAM(ptr, prodInfo.productId);
-
-    /* Pack version id. */
-    UINT16_TO_BSTREAM(ptr, prodInfo.versionId);
-
-    /* Pack CRPL. */
-    UINT16_TO_BSTREAM(ptr, pMeshConfig->pMemoryConfig->rpListSize);
-
-    /* Pack features. */
-    UINT16_TO_BSTREAM(ptr, MeshLocalCfgGetSupportedFeatures());
-
-    /* Iterate through elements. */
-    for (id = 0; id < pMeshConfig->elementArrayLen; id++) {
-        nextLen += CFG_MDL_MSG_COMP_DATA_PG0_ELEM_HDR_NUM_BYTES +
-                   (pMeshConfig->pElementArray[id].numSigModels * sizeof(meshSigModelId_t)) +
-                   (pMeshConfig->pElementArray[id].numVendorModels * sizeof(meshVendorModelId_t));
-
-        if (msgParamLen + nextLen > CFG_MDL_MSG_COMP_DATA_PG0_MAX_NUM_BYTES) {
-            return;
-        }
-
-        msgParamLen += nextLen;
-        nextLen = 0;
-
-        /* Pack element "header". */
-        UINT16_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].locationDescriptor);
-        UINT8_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].numSigModels + numCoreSig);
-        UINT8_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].numVendorModels + numCoreVendor);
-        /* Pack core SIG models on element 0. */
-        if (numCoreSig) {
-            meshSigModelId_t *pCoreSigMdlIds;
-
-            /* Allocate space to store all core models */
-            if ((pCoreSigMdlIds = (meshSigModelId_t *)WsfBufAlloc(
-                     numCoreSig * sizeof(meshSigModelId_t))) == NULL) {
-                return;
-            }
-
-            /* Populate Core models structure. */
-            MeshAccGetCoreSigModelsIds(id, pCoreSigMdlIds, numCoreSig);
-
-            /* Pack core SIG models. */
-            for (mdlIdx = 0; mdlIdx < numCoreSig; mdlIdx++) {
-                UINT16_TO_BSTREAM(ptr, pCoreSigMdlIds[mdlIdx]);
-            }
-            /* Implementation only has core models on element 0. */
-            numCoreSig = 0;
-
-            /* Free core models structure. */
-            WsfBufFree(pCoreSigMdlIds);
-        }
-        /* Pack SIG models. */
-        for (mdlIdx = 0; mdlIdx < pMeshConfig->pElementArray[id].numSigModels; mdlIdx++) {
-            UINT16_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].pSigModelArray[mdlIdx].modelId);
-        }
-
-        /* Pack Vendor models. */
-        for (mdlIdx = 0; mdlIdx < pMeshConfig->pElementArray[id].numVendorModels; mdlIdx++) {
-            VEND_MDL_TO_BSTREAM(ptr,
-                                pMeshConfig->pElementArray[id].pVendorModelArray[mdlIdx].modelId);
-        }
+    /* Pack SIG models. */
+    for (mdlIdx = 0; mdlIdx < pMeshConfig->pElementArray[id].numSigModels; mdlIdx++)
+    {
+      UINT16_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].pSigModelArray[mdlIdx].modelId);
     }
+
+    /* Pack Vendor models. */
+    for (mdlIdx = 0; mdlIdx < pMeshConfig->pElementArray[id].numVendorModels; mdlIdx++)
+    {
+      VEND_MDL_TO_BSTREAM(ptr, pMeshConfig->pElementArray[id].pVendorModelArray[mdlIdx].modelId);
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -325,19 +333,18 @@ void meshCfgMsgPackCompData(uint8_t *pBuf, uint8_t pageNumber)
 void meshCfgMsgPackRelay(uint8_t *pBuf, meshRelayStates_t *pRelayState,
                          meshRelayRetransState_t *pRetranState)
 {
-    /* Set relay state. */
-    pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RELAY_OFFSET] = *pRelayState;
+  /* Set relay state. */
+  pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RELAY_OFFSET] = *pRelayState;
 
-    /* Set relay retransmit count. */
-    MESH_UTILS_BF_SET(pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_OFFSET], pRetranState->retransCount,
-                      CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SHIFT,
-                      CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SIZE);
+  /* Set relay retransmit count. */
+  MESH_UTILS_BF_SET(pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_OFFSET], pRetranState->retransCount,
+                    CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SHIFT,
+                    CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SIZE);
 
-    /* Set relay retransmit interval steps. */
-    MESH_UTILS_BF_SET(pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_OFFSET],
-                      pRetranState->retransIntervalSteps10Ms,
-                      CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SHIFT,
-                      CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SIZE);
+  /* Set relay retransmit interval steps. */
+  MESH_UTILS_BF_SET(pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_OFFSET], pRetranState->retransIntervalSteps10Ms,
+                    CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SHIFT,
+                    CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SIZE);
 }
 
 /*************************************************************************************************/
@@ -354,20 +361,19 @@ void meshCfgMsgPackRelay(uint8_t *pBuf, meshRelayStates_t *pRelayState,
 void meshCfgMsgUnpackRelay(uint8_t *pBuf, meshRelayStates_t *pRelayState,
                            meshRelayRetransState_t *pRetranState)
 {
-    /* Get relay state. */
-    *pRelayState = pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RELAY_OFFSET];
+  /* Get relay state. */
+  *pRelayState = pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RELAY_OFFSET];
 
-    /* Get relay retransmit count. */
-    pRetranState->retransCount =
-        MESH_UTILS_BF_GET(pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_OFFSET],
-                          CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SHIFT,
-                          CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SIZE);
+  /* Get relay retransmit count. */
+  pRetranState->retransCount = MESH_UTILS_BF_GET(pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_OFFSET],
+                                                 CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SHIFT,
+                                                 CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SIZE);
 
-    /* Get relay retransmit interval steps. */
-    pRetranState->retransIntervalSteps10Ms =
-        MESH_UTILS_BF_GET(pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_OFFSET],
-                          CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SHIFT,
-                          CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SIZE);
+  /* Get relay retransmit interval steps. */
+  pRetranState->retransIntervalSteps10Ms =
+    MESH_UTILS_BF_GET(pBuf[CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_OFFSET],
+                      CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SHIFT,
+                      CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SIZE);
 }
 
 /*************************************************************************************************/
@@ -383,20 +389,24 @@ void meshCfgMsgUnpackRelay(uint8_t *pBuf, meshRelayStates_t *pRelayState,
  *  \return     None.
  */
 /*************************************************************************************************/
-void meshCfgMsgPackModelPubGet(uint8_t *pBuf, meshAddress_t elemAddr, meshSigModelId_t sigId,
-                               meshVendorModelId_t vendorId, bool_t isSig)
+void meshCfgMsgPackModelPubGet(uint8_t *pBuf, meshAddress_t elemAddr,
+                               meshSigModelId_t sigId, meshVendorModelId_t vendorId,
+                               bool_t isSig)
 {
-    uint8_t *pOffset = pBuf;
+  uint8_t *pOffset = pBuf;
 
-    /* Set element address. */
-    UINT16_TO_BSTREAM(pOffset, elemAddr);
+  /* Set element address. */
+  UINT16_TO_BSTREAM(pOffset, elemAddr);
 
-    /* Set model identifier. */
-    if (isSig) {
-        UINT16_TO_BSTREAM(pOffset, sigId);
-    } else {
-        VEND_MDL_TO_BSTREAM(pOffset, vendorId);
-    }
+  /* Set model identifier. */
+  if (isSig)
+  {
+    UINT16_TO_BSTREAM(pOffset, sigId);
+  }
+  else
+  {
+    VEND_MDL_TO_BSTREAM(pOffset, vendorId);
+  }
 }
 
 /*************************************************************************************************/
@@ -412,20 +422,24 @@ void meshCfgMsgPackModelPubGet(uint8_t *pBuf, meshAddress_t elemAddr, meshSigMod
  *  \return     None.
  */
 /*************************************************************************************************/
-void meshCfgMsgUnpackModelPubGet(uint8_t *pBuf, meshAddress_t *pElemAddr, meshSigModelId_t *pSigId,
-                                 meshVendorModelId_t *pVendorId, bool_t isSig)
+void meshCfgMsgUnpackModelPubGet(uint8_t *pBuf, meshAddress_t *pElemAddr,
+                                 meshSigModelId_t *pSigId, meshVendorModelId_t *pVendorId,
+                                 bool_t isSig)
 {
-    uint8_t *pOffset = pBuf;
+  uint8_t *pOffset = pBuf;
 
-    /* Get element address. */
-    BSTREAM_TO_UINT16(*pElemAddr, pOffset);
+  /* Get element address. */
+  BSTREAM_TO_UINT16(*pElemAddr, pOffset);
 
-    /* Get model identifier. */
-    if (isSig) {
-        BSTREAM_TO_UINT16(*pSigId, pOffset);
-    } else {
-        BSTREAM_TO_VEND_MDL(*pVendorId, pOffset);
-    }
+  /* Get model identifier. */
+  if (isSig)
+  {
+    BSTREAM_TO_UINT16(*pSigId, pOffset);
+  }
+  else
+  {
+    BSTREAM_TO_VEND_MDL(*pVendorId, pOffset);
+  }
 }
 
 /*************************************************************************************************/
@@ -442,57 +456,60 @@ void meshCfgMsgUnpackModelPubGet(uint8_t *pBuf, meshAddress_t *pElemAddr, meshSi
  */
 /*************************************************************************************************/
 void meshCfgMsgPackModelPubParam(uint8_t *pBuf, meshModelPublicationParams_t *pParams,
-                                 meshSigModelId_t sigId, meshVendorModelId_t vendorId, bool_t isSig)
+                                 meshSigModelId_t sigId, meshVendorModelId_t vendorId,
+                                 bool_t isSig)
 {
-    uint8_t *pOffset = pBuf;
-    uint8_t tempByte = 0;
+  uint8_t *pOffset = pBuf;
+  uint8_t tempByte = 0;
 
-    /* Pack AppKey Index. */
-    meshCfgMsgPackSingleKeyIndex(pOffset, pParams->publishAppKeyIndex);
+  /* Pack AppKey Index. */
+  meshCfgMsgPackSingleKeyIndex(pOffset, pParams->publishAppKeyIndex);
 
-    pOffset++;
+  pOffset++;
 
-    /* Clear RFU bits. */
-    MESH_UTILS_BITMASK_CLR(*pOffset, CFG_MDL_MSG_MODEL_PUB_RFU_MASK);
+  /* Clear RFU bits. */
+  MESH_UTILS_BITMASK_CLR(*pOffset, CFG_MDL_MSG_MODEL_PUB_RFU_MASK);
 
-    /* Set Credential Flag. */
-    MESH_UTILS_BF_SET(*pOffset, pParams->publishFriendshipCred,
-                      CFG_MDL_MSG_MODEL_PUB_FRIEND_CRED_SHIFT,
-                      CFG_MDL_MSG_MODEL_PUB_FRIEND_CRED_SIZE);
+  /* Set Credential Flag. */
+  MESH_UTILS_BF_SET(*pOffset, pParams->publishFriendshipCred,
+                    CFG_MDL_MSG_MODEL_PUB_FRIEND_CRED_SHIFT, CFG_MDL_MSG_MODEL_PUB_FRIEND_CRED_SIZE);
 
-    pOffset++;
+  pOffset++;
 
-    /* Set Publish TTL. */
-    UINT8_TO_BSTREAM(pOffset, pParams->publishTtl);
+  /* Set Publish TTL. */
+  UINT8_TO_BSTREAM(pOffset, pParams->publishTtl);
 
-    /* Pack Publish Period. */
-    MESH_UTILS_BF_SET(tempByte, pParams->publishPeriodNumSteps,
-                      CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SHIFT,
-                      CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SIZE);
-    MESH_UTILS_BF_SET(tempByte, pParams->publishPeriodStepRes,
-                      CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SHIFT,
-                      CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SIZE);
+  /* Pack Publish Period. */
+  MESH_UTILS_BF_SET(tempByte, pParams->publishPeriodNumSteps,
+                    CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SHIFT,
+                    CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SIZE);
+  MESH_UTILS_BF_SET(tempByte, pParams->publishPeriodStepRes,
+                    CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SHIFT,
+                    CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SIZE);
 
-    /* Set Publish Period. */
-    UINT8_TO_BSTREAM(pOffset, tempByte);
+  /* Set Publish Period. */
+  UINT8_TO_BSTREAM(pOffset, tempByte);
 
-    /* Pack Publish Retransmit states. */
-    MESH_UTILS_BF_SET(tempByte, pParams->publishRetransCount,
-                      CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SHIFT,
-                      CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SIZE);
-    MESH_UTILS_BF_SET(tempByte, pParams->publishRetransSteps50Ms,
-                      CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SHIFT,
-                      CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SIZE);
+  /* Pack Publish Retransmit states. */
+  MESH_UTILS_BF_SET(tempByte, pParams->publishRetransCount,
+                    CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SHIFT,
+                    CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SIZE);
+  MESH_UTILS_BF_SET(tempByte, pParams->publishRetransSteps50Ms,
+                    CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SHIFT,
+                    CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SIZE);
 
-    /* Set Publish Retransmit states. */
-    UINT8_TO_BSTREAM(pOffset, tempByte);
+  /* Set Publish Retransmit states. */
+  UINT8_TO_BSTREAM(pOffset, tempByte);
 
-    /* Set model identifier. */
-    if (isSig) {
-        UINT16_TO_BSTREAM(pOffset, sigId);
-    } else {
-        VEND_MDL_TO_BSTREAM(pOffset, vendorId);
-    }
+  /* Set model identifier. */
+  if (isSig)
+  {
+    UINT16_TO_BSTREAM(pOffset, sigId);
+  }
+  else
+  {
+    VEND_MDL_TO_BSTREAM(pOffset, vendorId);
+  }
 }
 
 /*************************************************************************************************/
@@ -512,49 +529,53 @@ void meshCfgMsgUnpackModelPubParam(uint8_t *pBuf, meshModelPublicationParams_t *
                                    meshSigModelId_t *pSigId, meshVendorModelId_t *pVendorId,
                                    bool_t isSig)
 {
-    uint8_t *pOffset = pBuf;
-    uint8_t tempByte = 0;
+  uint8_t *pOffset = pBuf;
+  uint8_t tempByte = 0;
 
-    /* Get AppKeyIndex. */
-    meshCfgMsgUnpackSingleKeyIndex(pOffset++, &(pParams->publishAppKeyIndex));
+  /* Get AppKeyIndex. */
+  meshCfgMsgUnpackSingleKeyIndex(pOffset++, &(pParams->publishAppKeyIndex));
 
-    /* Get second byte of the AppKey Index containing RFU and publish credentials flag */
-    BSTREAM_TO_UINT8(tempByte, pOffset);
+  /* Get second byte of the AppKey Index containing RFU and publish credentials flag */
+  BSTREAM_TO_UINT8(tempByte, pOffset);
 
-    /* Get Credential Flag. */
-    pParams->publishFriendshipCred = MESH_UTILS_BF_GET(
-        tempByte, CFG_MDL_MSG_MODEL_PUB_FRIEND_CRED_SHIFT, CFG_MDL_MSG_MODEL_PUB_FRIEND_CRED_SIZE);
+  /* Get Credential Flag. */
+  pParams->publishFriendshipCred = MESH_UTILS_BF_GET(tempByte, CFG_MDL_MSG_MODEL_PUB_FRIEND_CRED_SHIFT,
+                                                     CFG_MDL_MSG_MODEL_PUB_FRIEND_CRED_SIZE);
 
-    /* Get Publish TTL. */
-    BSTREAM_TO_UINT8(pParams->publishTtl, pOffset);
+  /* Get Publish TTL. */
+  BSTREAM_TO_UINT8(pParams->publishTtl, pOffset);
 
-    /* Get Publish Period. */
-    BSTREAM_TO_UINT8(tempByte, pOffset);
+  /* Get Publish Period. */
+  BSTREAM_TO_UINT8(tempByte, pOffset);
 
-    /* Extract number of steps and step resolution. */
-    pParams->publishPeriodNumSteps = MESH_UTILS_BF_GET(tempByte,
-                                                       CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SHIFT,
-                                                       CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SIZE);
-    pParams->publishPeriodStepRes = MESH_UTILS_BF_GET(tempByte,
-                                                      CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SHIFT,
-                                                      CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SIZE);
+  /* Extract number of steps and step resolution. */
+  pParams->publishPeriodNumSteps = MESH_UTILS_BF_GET(tempByte,
+                                                     CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SHIFT,
+                                                     CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SIZE);
+  pParams->publishPeriodStepRes = MESH_UTILS_BF_GET(tempByte,
+                                                    CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SHIFT,
+                                                    CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SIZE);
 
-    /* Get Publish Retransmit count and intervals steps. */
-    BSTREAM_TO_UINT8(tempByte, pOffset);
+  /* Get Publish Retransmit count and intervals steps. */
+  BSTREAM_TO_UINT8(tempByte, pOffset);
 
-    /* Extract count and interval steps. */
-    pParams->publishRetransCount = MESH_UTILS_BF_GET(
-        tempByte, CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SHIFT, CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SIZE);
-    pParams->publishRetransSteps50Ms = MESH_UTILS_BF_GET(tempByte,
-                                                         CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SHIFT,
-                                                         CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SIZE);
+  /* Extract count and interval steps. */
+  pParams->publishRetransCount = MESH_UTILS_BF_GET(tempByte,
+                                                   CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SHIFT,
+                                                   CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SIZE);
+  pParams->publishRetransSteps50Ms = MESH_UTILS_BF_GET(tempByte,
+                                                       CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SHIFT,
+                                                       CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SIZE);
 
-    /* Get model identifier. */
-    if (isSig) {
-        BSTREAM_TO_UINT16(*pSigId, pOffset);
-    } else {
-        BSTREAM_TO_VEND_MDL(*pVendorId, pOffset);
-    }
+  /* Get model identifier. */
+  if (isSig)
+  {
+    BSTREAM_TO_UINT16(*pSigId, pOffset);
+  }
+  else
+  {
+    BSTREAM_TO_VEND_MDL(*pVendorId, pOffset);
+  }
 }
 
 /*************************************************************************************************/
@@ -571,23 +592,26 @@ void meshCfgMsgUnpackModelPubParam(uint8_t *pBuf, meshModelPublicationParams_t *
  *  \return     None.
  */
 /*************************************************************************************************/
-void meshCfgMsgPackModelAppBind(uint8_t *pBuf, meshAddress_t elemAddr, uint16_t appKeyIndex,
-                                meshSigModelId_t sigModelId, meshVendorModelId_t vendorModelId,
-                                bool_t isSig)
+void meshCfgMsgPackModelAppBind(uint8_t *pBuf, meshAddress_t elemAddr,
+                                uint16_t appKeyIndex, meshSigModelId_t sigModelId,
+                                meshVendorModelId_t vendorModelId, bool_t isSig)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Pack element address. */
-    UINT16_TO_BSTREAM(ptr, elemAddr);
-    /* Pack AppKey Index. */
-    ptr += meshCfgMsgPackSingleKeyIndex(ptr, appKeyIndex);
+  /* Pack element address. */
+  UINT16_TO_BSTREAM(ptr, elemAddr);
+  /* Pack AppKey Index. */
+  ptr += meshCfgMsgPackSingleKeyIndex(ptr, appKeyIndex);
 
-    /* Pack model identifier. */
-    if (isSig) {
-        UINT16_TO_BSTREAM(ptr, sigModelId);
-    } else {
-        VEND_MDL_TO_BSTREAM(ptr, vendorModelId);
-    }
+  /* Pack model identifier. */
+  if (isSig)
+  {
+    UINT16_TO_BSTREAM(ptr, sigModelId);
+  }
+  else
+  {
+    VEND_MDL_TO_BSTREAM(ptr, vendorModelId);
+  }
 }
 
 /*************************************************************************************************/
@@ -604,24 +628,27 @@ void meshCfgMsgPackModelAppBind(uint8_t *pBuf, meshAddress_t elemAddr, uint16_t 
  *  \return     None.
  */
 /*************************************************************************************************/
-void meshCfgMsgUnpackModelAppBind(uint8_t *pBuf, meshAddress_t *pElemAddr, uint16_t *pAppKeyIndex,
-                                  meshSigModelId_t *pSigModelId,
+void meshCfgMsgUnpackModelAppBind(uint8_t *pBuf, meshAddress_t *pElemAddr,
+                                  uint16_t *pAppKeyIndex, meshSigModelId_t *pSigModelId,
                                   meshVendorModelId_t *pVendorModelId, bool_t isSig)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Unpack element address. */
-    BSTREAM_TO_UINT16(*pElemAddr, ptr);
+  /* Unpack element address. */
+  BSTREAM_TO_UINT16(*pElemAddr, ptr);
 
-    /* Unpack AppKeyIndex. */
-    ptr += meshCfgMsgUnpackSingleKeyIndex(ptr, pAppKeyIndex);
+  /* Unpack AppKeyIndex. */
+  ptr += meshCfgMsgUnpackSingleKeyIndex(ptr, pAppKeyIndex);
 
-    /* Unpack model identifier. */
-    if (isSig) {
-        BSTREAM_TO_UINT16(*pSigModelId, ptr);
-    } else {
-        BSTREAM_TO_VEND_MDL(*pVendorModelId, ptr);
-    }
+  /* Unpack model identifier. */
+  if (isSig)
+  {
+    BSTREAM_TO_UINT16(*pSigModelId, ptr);
+  }
+  else
+  {
+    BSTREAM_TO_VEND_MDL(*pVendorModelId, ptr);
+  }
 }
 
 /*************************************************************************************************/
@@ -636,16 +663,16 @@ void meshCfgMsgUnpackModelAppBind(uint8_t *pBuf, meshAddress_t *pElemAddr, uint1
 /*************************************************************************************************/
 void meshCfgMsgPackHbPub(uint8_t *pBuf, meshHbPub_t *pHbPub)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Pack Heartbeat Publication data. */
-    UINT16_TO_BSTREAM(ptr, pHbPub->dstAddr);
-    UINT8_TO_BSTREAM(ptr, pHbPub->countLog);
-    UINT8_TO_BSTREAM(ptr, pHbPub->periodLog);
-    UINT8_TO_BSTREAM(ptr, pHbPub->ttl);
-    UINT16_TO_BSTREAM(ptr, pHbPub->features);
-    /* NetKeyIndex field shall be encoded as defined in Section 4.3.1.1. */
-    meshCfgMsgPackSingleKeyIndex(ptr, pHbPub->netKeyIndex);
+  /* Pack Heartbeat Publication data. */
+  UINT16_TO_BSTREAM(ptr, pHbPub->dstAddr);
+  UINT8_TO_BSTREAM(ptr, pHbPub->countLog);
+  UINT8_TO_BSTREAM(ptr, pHbPub->periodLog);
+  UINT8_TO_BSTREAM(ptr, pHbPub->ttl);
+  UINT16_TO_BSTREAM(ptr, pHbPub->features);
+  /* NetKeyIndex field shall be encoded as defined in Section 4.3.1.1. */
+  meshCfgMsgPackSingleKeyIndex(ptr, pHbPub->netKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -660,15 +687,15 @@ void meshCfgMsgPackHbPub(uint8_t *pBuf, meshHbPub_t *pHbPub)
 /*************************************************************************************************/
 void meshCfgMsgUnpackHbPub(uint8_t *pBuf, meshHbPub_t *pHbPub)
 {
-    uint8_t *ptr = pBuf;
-    /* Get Heartbeat Publication data. */
-    BSTREAM_TO_UINT16(pHbPub->dstAddr, ptr);
-    BSTREAM_TO_UINT8(pHbPub->countLog, ptr);
-    BSTREAM_TO_UINT8(pHbPub->periodLog, ptr);
-    BSTREAM_TO_UINT8(pHbPub->ttl, ptr);
-    BSTREAM_TO_UINT16(pHbPub->features, ptr);
-    /* NetKeyIndex field shall be encoded as defined in Section 4.3.1.1. */
-    meshCfgMsgUnpackSingleKeyIndex(ptr, &(pHbPub->netKeyIndex));
+  uint8_t *ptr = pBuf;
+  /* Get Heartbeat Publication data. */
+  BSTREAM_TO_UINT16(pHbPub->dstAddr, ptr);
+  BSTREAM_TO_UINT8(pHbPub->countLog, ptr);
+  BSTREAM_TO_UINT8(pHbPub->periodLog, ptr);
+  BSTREAM_TO_UINT8(pHbPub->ttl, ptr);
+  BSTREAM_TO_UINT16(pHbPub->features, ptr);
+  /* NetKeyIndex field shall be encoded as defined in Section 4.3.1.1. */
+  meshCfgMsgUnpackSingleKeyIndex(ptr, &(pHbPub->netKeyIndex));
 }
 
 /*************************************************************************************************/
@@ -683,12 +710,12 @@ void meshCfgMsgUnpackHbPub(uint8_t *pBuf, meshHbPub_t *pHbPub)
 /*************************************************************************************************/
 void meshCfgMsgPackHbSubSet(uint8_t *pBuf, meshHbSub_t *pHbSub)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Set Heartbeat Subscription data. */
-    UINT16_TO_BSTREAM(ptr, pHbSub->srcAddr);
-    UINT16_TO_BSTREAM(ptr, pHbSub->dstAddr);
-    UINT8_TO_BSTREAM(ptr, pHbSub->periodLog);
+  /* Set Heartbeat Subscription data. */
+  UINT16_TO_BSTREAM(ptr, pHbSub->srcAddr);
+  UINT16_TO_BSTREAM(ptr, pHbSub->dstAddr);
+  UINT8_TO_BSTREAM(ptr, pHbSub->periodLog);
 }
 
 /*************************************************************************************************/
@@ -703,12 +730,12 @@ void meshCfgMsgPackHbSubSet(uint8_t *pBuf, meshHbSub_t *pHbSub)
 /*************************************************************************************************/
 void meshCfgMsgUnpackHbSubSet(uint8_t *pBuf, meshHbSub_t *pHbSub)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Set Heartbeat Subscription Set data. */
-    BSTREAM_TO_UINT16(pHbSub->srcAddr, ptr);
-    BSTREAM_TO_UINT16(pHbSub->dstAddr, ptr);
-    BSTREAM_TO_UINT8(pHbSub->periodLog, ptr);
+  /* Set Heartbeat Subscription Set data. */
+  BSTREAM_TO_UINT16(pHbSub->srcAddr, ptr);
+  BSTREAM_TO_UINT16(pHbSub->dstAddr, ptr);
+  BSTREAM_TO_UINT8(pHbSub->periodLog, ptr);
 }
 
 /*************************************************************************************************/
@@ -723,15 +750,15 @@ void meshCfgMsgUnpackHbSubSet(uint8_t *pBuf, meshHbSub_t *pHbSub)
 /*************************************************************************************************/
 void meshCfgMsgPackHbSubState(uint8_t *pBuf, meshHbSub_t *pHbSub)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Set Heartbeat Subscription data. */
-    UINT16_TO_BSTREAM(ptr, pHbSub->srcAddr);
-    UINT16_TO_BSTREAM(ptr, pHbSub->dstAddr);
-    UINT8_TO_BSTREAM(ptr, pHbSub->periodLog);
-    UINT8_TO_BSTREAM(ptr, pHbSub->countLog);
-    UINT8_TO_BSTREAM(ptr, pHbSub->minHops);
-    UINT8_TO_BSTREAM(ptr, pHbSub->maxHops);
+  /* Set Heartbeat Subscription data. */
+  UINT16_TO_BSTREAM(ptr, pHbSub->srcAddr);
+  UINT16_TO_BSTREAM(ptr, pHbSub->dstAddr);
+  UINT8_TO_BSTREAM(ptr, pHbSub->periodLog);
+  UINT8_TO_BSTREAM(ptr, pHbSub->countLog);
+  UINT8_TO_BSTREAM(ptr, pHbSub->minHops);
+  UINT8_TO_BSTREAM(ptr, pHbSub->maxHops);
 }
 
 /*************************************************************************************************/
@@ -746,15 +773,15 @@ void meshCfgMsgPackHbSubState(uint8_t *pBuf, meshHbSub_t *pHbSub)
 /*************************************************************************************************/
 void meshCfgMsgUnpackHbSubState(uint8_t *pBuf, meshHbSub_t *pHbSub)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Set Heartbeat Subscription data. */
-    BSTREAM_TO_UINT16(pHbSub->srcAddr, ptr);
-    BSTREAM_TO_UINT16(pHbSub->dstAddr, ptr);
-    BSTREAM_TO_UINT8(pHbSub->periodLog, ptr);
-    BSTREAM_TO_UINT8(pHbSub->countLog, ptr);
-    BSTREAM_TO_UINT8(pHbSub->minHops, ptr);
-    BSTREAM_TO_UINT8(pHbSub->maxHops, ptr);
+  /* Set Heartbeat Subscription data. */
+  BSTREAM_TO_UINT16(pHbSub->srcAddr, ptr);
+  BSTREAM_TO_UINT16(pHbSub->dstAddr, ptr);
+  BSTREAM_TO_UINT8(pHbSub->periodLog, ptr);
+  BSTREAM_TO_UINT8(pHbSub->countLog, ptr);
+  BSTREAM_TO_UINT8(pHbSub->minHops, ptr);
+  BSTREAM_TO_UINT8(pHbSub->maxHops, ptr);
 }
 
 /*************************************************************************************************/
@@ -770,13 +797,13 @@ void meshCfgMsgUnpackHbSubState(uint8_t *pBuf, meshHbSub_t *pHbSub)
 /*************************************************************************************************/
 void meshCfgMsgPackLpnPollTimeout(uint8_t *pBuf, meshAddress_t addr, uint32_t time)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Pack address. */
-    UINT16_TO_BSTREAM(ptr, addr);
+  /* Pack address. */
+  UINT16_TO_BSTREAM(ptr, addr);
 
-    /* Pack timer. */
-    UINT24_TO_BSTREAM(ptr, time);
+  /* Pack timer. */
+  UINT24_TO_BSTREAM(ptr, time);
 }
 
 /*************************************************************************************************/
@@ -792,13 +819,13 @@ void meshCfgMsgPackLpnPollTimeout(uint8_t *pBuf, meshAddress_t addr, uint32_t ti
 /*************************************************************************************************/
 void meshCfgMsgUnpackLpnPollTimeout(uint8_t *pBuf, meshAddress_t *pAddr, uint32_t *pTime)
 {
-    uint8_t *ptr = pBuf;
+  uint8_t *ptr = pBuf;
 
-    /* Pack address. */
-    BSTREAM_TO_UINT16(*pAddr, ptr);
+  /* Pack address. */
+  BSTREAM_TO_UINT16(*pAddr, ptr);
 
-    /* Pack timer. */
-    BSTREAM_TO_UINT24(*pTime, ptr);
+  /* Pack timer. */
+  BSTREAM_TO_UINT24(*pTime, ptr);
 }
 
 /*************************************************************************************************/
@@ -813,14 +840,16 @@ void meshCfgMsgUnpackLpnPollTimeout(uint8_t *pBuf, meshAddress_t *pAddr, uint32_
 /*************************************************************************************************/
 void meshCfgMsgPackNwkTrans(uint8_t *pBuf, meshNwkTransState_t *pState)
 {
-    /* Set network transmit count. */
-    MESH_UTILS_BF_SET(pBuf[0], pState->transCount, CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SHIFT,
-                      CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SIZE);
 
-    /* Set network transmit interval steps. */
-    MESH_UTILS_BF_SET(pBuf[0], pState->transIntervalSteps10Ms,
-                      CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SHIFT,
-                      CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SIZE);
+  /* Set network transmit count. */
+  MESH_UTILS_BF_SET(pBuf[0], pState->transCount,
+                    CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SHIFT,
+                    CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SIZE);
+
+  /* Set network transmit interval steps. */
+  MESH_UTILS_BF_SET(pBuf[0], pState->transIntervalSteps10Ms,
+                    CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SHIFT,
+                    CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SIZE);
 }
 
 /*************************************************************************************************/
@@ -835,11 +864,13 @@ void meshCfgMsgPackNwkTrans(uint8_t *pBuf, meshNwkTransState_t *pState)
 /*************************************************************************************************/
 void meshCfgMsgUnpackNwkTrans(uint8_t *pBuf, meshNwkTransState_t *pState)
 {
-    /* Get network transmit count. */
-    pState->transCount = MESH_UTILS_BF_GET(pBuf[0], CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SHIFT,
-                                           CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SIZE);
+  /* Get network transmit count. */
+  pState->transCount = MESH_UTILS_BF_GET(pBuf[0],
+                                         CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SHIFT,
+                                         CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SIZE);
 
-    /* Get network transmit interval steps. */
-    pState->transIntervalSteps10Ms = MESH_UTILS_BF_GET(
-        pBuf[0], CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SHIFT, CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SIZE);
+  /* Get network transmit interval steps. */
+  pState->transIntervalSteps10Ms =  MESH_UTILS_BF_GET(pBuf[0],
+                                                      CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SHIFT,
+                                                      CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SIZE);
 }

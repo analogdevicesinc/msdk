@@ -45,10 +45,10 @@ extern "C" {
  * EATT role can be initiator or acceptor.
  */
 /**@{*/
-#define EATT_ROLE_INITIATOR L2C_COC_ROLE_INITIATOR
-#define EATT_ROLE_ACCEPTOR L2C_COC_ROLE_ACCEPTOR
+#define EATT_ROLE_INITIATOR       L2C_COC_ROLE_INITIATOR
+#define EATT_ROLE_ACCEPTOR        L2C_COC_ROLE_ACCEPTOR
 /**@}*/
-/*! \} */ /* STACK_ATT_API */
+/*! \} */    /* STACK_ATT_API */
 
 /**************************************************************************************************
   Data Types
@@ -62,13 +62,14 @@ extern "C" {
  */
 /**@{*/
 /*! \brief EATT multiple notify tuple structure */
-typedef struct {
-    uint16_t handle; /*!< Attribute handle */
-    uint16_t len; /*!< Length of pValue in bytes. */
-    uint8_t *pValue; /*!< Attribute value */
+typedef struct
+{
+  uint16_t handle;                /*!< Attribute handle */
+  uint16_t len;                   /*!< Length of pValue in bytes. */
+  uint8_t *pValue;                /*!< Attribute value */
 } eattTuple_t;
 /**@}*/
-/*! \} */ /* STACK_ATT_API */
+/*! \} */    /* STACK_ATT_API */
 
 /*! \addtogroup STACK_ATTS_API
  *  \{ */
@@ -88,8 +89,7 @@ typedef struct {
  *  \return None.
  */
 /*************************************************************************************************/
-void EattsMultiValueNtf(dmConnId_t connId, uint8_t priority, uint16_t numTuples,
-                        eattTuple_t *pTupleList);
+void EattsMultiValueNtf(dmConnId_t connId, uint8_t priority, uint16_t numTuples, eattTuple_t *pTupleList);
 
 /*************************************************************************************************/
 /*!
@@ -167,10 +167,10 @@ void EattsHandleValueNtfZeroCpy(dmConnId_t connId, uint8_t priority, uint16_t ha
  *
  *  \return None
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 void EattsInit();
 /**@}*/
-/*! \} */ /* STACK_ATTS_API */
+/*! \} */    /* STACK_ATTS_API */
 
 /*! \addtogroup STACK_ATTC_API
  *  \{ */
@@ -210,9 +210,8 @@ void EattcFindInfoReq(dmConnId_t connId, uint8_t priority, uint16_t startHandle,
  *  \return None.
  */
 /*************************************************************************************************/
-void EattcFindByTypeValueReq(dmConnId_t connId, uint8_t priority, uint16_t startHandle,
-                             uint16_t endHandle, uint16_t uuid16, uint16_t valueLen,
-                             uint8_t *pValue, bool_t continuing);
+void EattcFindByTypeValueReq(dmConnId_t connId, uint8_t priority, uint16_t startHandle, uint16_t endHandle,
+                             uint16_t uuid16, uint16_t valueLen, uint8_t *pValue, bool_t continuing);
 
 /*************************************************************************************************/
 /*!
@@ -229,8 +228,8 @@ void EattcFindByTypeValueReq(dmConnId_t connId, uint8_t priority, uint16_t start
  *  \return None.
  */
 /*************************************************************************************************/
-void EattcReadByTypeReq(dmConnId_t connId, uint8_t priority, uint16_t startHandle,
-                        uint16_t endHandle, uint8_t uuidLen, uint8_t *pUuid, bool_t continuing);
+void EattcReadByTypeReq(dmConnId_t connId, uint8_t priority, uint16_t startHandle, uint16_t endHandle,
+                        uint8_t uuidLen, uint8_t *pUuid, bool_t continuing);
 
 /*************************************************************************************************/
 /*!
@@ -258,8 +257,7 @@ void EattcReadReq(dmConnId_t connId, uint8_t priority, uint16_t handle);
  *  \return None.
  */
 /*************************************************************************************************/
-void EattcReadLongReq(dmConnId_t connId, uint8_t priority, uint16_t handle, uint16_t offset,
-                      bool_t continuing);
+void EattcReadLongReq(dmConnId_t connId, uint8_t priority, uint16_t handle, uint16_t offset, bool_t continuing);
 
 /*************************************************************************************************/
 /*!
@@ -273,8 +271,7 @@ void EattcReadLongReq(dmConnId_t connId, uint8_t priority, uint16_t handle, uint
  *  \return None.
  */
 /*************************************************************************************************/
-void EattcReadMultipleReq(dmConnId_t connId, uint8_t priority, uint8_t numHandles,
-                          uint16_t *pHandles);
+void EattcReadMultipleReq(dmConnId_t connId, uint8_t priority, uint8_t numHandles, uint16_t *pHandles);
 
 /*************************************************************************************************/
 /*!
@@ -291,9 +288,8 @@ void EattcReadMultipleReq(dmConnId_t connId, uint8_t priority, uint8_t numHandle
  *  \return None.
  */
 /*************************************************************************************************/
-void EattcReadByGroupTypeReq(dmConnId_t connId, uint8_t priority, uint16_t startHandle,
-                             uint16_t endHandle, uint8_t uuidLen, uint8_t *pUuid,
-                             bool_t continuing);
+void EattcReadByGroupTypeReq(dmConnId_t connId, uint8_t priority, uint16_t startHandle, uint16_t endHandle,
+                            uint8_t uuidLen, uint8_t *pUuid, bool_t continuing);
 
 /*************************************************************************************************/
 /*!
@@ -395,8 +391,7 @@ void EattcExecuteWriteReq(dmConnId_t connId, uint8_t priority, bool_t writeAll);
  *  \return None.
  */
 /*************************************************************************************************/
-void EattcReadMultVarLenReq(dmConnId_t connId, uint8_t priority, uint8_t numHandles,
-                            uint16_t *pHandles);
+void EattcReadMultVarLenReq(dmConnId_t connId, uint8_t priority, uint8_t numHandles, uint16_t *pHandles);
 
 /*************************************************************************************************/
 /*!
@@ -404,10 +399,10 @@ void EattcReadMultVarLenReq(dmConnId_t connId, uint8_t priority, uint8_t numHand
  *
  *  \return None
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 void EattcInit();
 /**@}*/
-/*! \} */ /* STACK_ATTC_API */
+/*! \} */    /* STACK_ATTC_API */
 
 /*! \addtogroup STACK_ATT_API
  *  \{ */
@@ -447,10 +442,10 @@ uint8_t EattGetNumChannelsInUse(dmConnId_t connId);
  *
  *  \return None
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 void EattInit(uint8_t roleBits);
 /**@}*/
-/*! \} */ /* STACK_ATT_API */
+/*! \} */    /* STACK_ATT_API */
 
 #ifdef __cplusplus
 };

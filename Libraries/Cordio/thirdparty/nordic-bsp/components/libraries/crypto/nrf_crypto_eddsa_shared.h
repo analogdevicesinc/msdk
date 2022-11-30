@@ -46,9 +46,11 @@
 #include "nordic_common.h"
 #include "nrf_crypto_ecc.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 /** @internal @brief Sign a message using Edwards-curve Digital Signature Algorithm (EdDSA).
  *
@@ -68,10 +70,13 @@ extern "C" {
  *
  *  @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_backend_ed25519_sign(void *p_context,
-                                           nrf_crypto_ecc_private_key_t const *p_private_key,
-                                           uint8_t const *p_message, size_t message_size,
-                                           uint8_t *p_signature);
+ret_code_t nrf_crypto_backend_ed25519_sign(
+    void                                  * p_context,
+    nrf_crypto_ecc_private_key_t    const * p_private_key,
+    uint8_t                         const * p_message,
+    size_t                                  message_size,
+    uint8_t                               * p_signature);
+
 
 /** @internal @brief Verify a message using Edwards-curve Digital Signature Algorithm (EdDSA).
  *
@@ -91,10 +96,13 @@ ret_code_t nrf_crypto_backend_ed25519_sign(void *p_context,
  *
  *  @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_backend_ed25519_verify(void *p_context,
-                                             nrf_crypto_ecc_public_key_t const *p_public_key,
-                                             uint8_t const *p_message, size_t message_size,
-                                             uint8_t const *p_signature);
+ret_code_t nrf_crypto_backend_ed25519_verify(
+    void                              * p_context,
+    nrf_crypto_ecc_public_key_t const * p_public_key,
+    uint8_t                     const * p_message,
+    size_t                              message_size,
+    uint8_t                     const * p_signature);
+
 
 #ifdef __cplusplus
 }

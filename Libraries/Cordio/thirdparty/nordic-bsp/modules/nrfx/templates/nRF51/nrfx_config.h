@@ -289,6 +289,7 @@
 
 // <q> NRFX_LPCOMP_CONFIG_HYST  - Hysteresis
 
+
 #ifndef NRFX_LPCOMP_CONFIG_HYST
 #define NRFX_LPCOMP_CONFIG_HYST 0
 #endif
@@ -383,6 +384,7 @@
 
 // <q> NRFX_POWER_CONFIG_DEFAULT_DCDCEN  - The default configuration of main DCDC regulator
 
+
 // <i> This settings means only that components for DCDC regulator are installed and it can be enabled.
 
 #ifndef NRFX_POWER_CONFIG_DEFAULT_DCDCEN
@@ -390,6 +392,7 @@
 #endif
 
 // <q> NRFX_POWER_CONFIG_DEFAULT_DCDCENHV  - The default configuration of High Voltage DCDC regulator
+
 
 // <i> This settings means only that components for DCDC regulator are installed and it can be enabled.
 
@@ -464,11 +467,13 @@
 #endif
 // <q> NRFX_PRS_BOX_0_ENABLED  - Enables box 0 in the module.
 
+
 #ifndef NRFX_PRS_BOX_0_ENABLED
 #define NRFX_PRS_BOX_0_ENABLED 1
 #endif
 
 // <q> NRFX_PRS_BOX_1_ENABLED  - Enables box 1 in the module.
+
 
 #ifndef NRFX_PRS_BOX_1_ENABLED
 #define NRFX_PRS_BOX_1_ENABLED 1
@@ -564,17 +569,20 @@
 
 // <o> NRFX_QDEC_CONFIG_PIO_A - A pin  <0-31>
 
+
 #ifndef NRFX_QDEC_CONFIG_PIO_A
 #define NRFX_QDEC_CONFIG_PIO_A 31
 #endif
 
 // <o> NRFX_QDEC_CONFIG_PIO_B - B pin  <0-31>
 
+
 #ifndef NRFX_QDEC_CONFIG_PIO_B
 #define NRFX_QDEC_CONFIG_PIO_B 31
 #endif
 
 // <o> NRFX_QDEC_CONFIG_PIO_LED - LED pin  <0-31>
+
 
 #ifndef NRFX_QDEC_CONFIG_PIO_LED
 #define NRFX_QDEC_CONFIG_PIO_LED 31
@@ -596,11 +604,13 @@
 
 // <q> NRFX_QDEC_CONFIG_DBFEN  - Debouncing enable
 
+
 #ifndef NRFX_QDEC_CONFIG_DBFEN
 #define NRFX_QDEC_CONFIG_DBFEN 0
 #endif
 
 // <q> NRFX_QDEC_CONFIG_SAMPLE_INTEN  - Sample ready interrupt enable
+
 
 #ifndef NRFX_QDEC_CONFIG_SAMPLE_INTEN
 #define NRFX_QDEC_CONFIG_SAMPLE_INTEN 0
@@ -677,6 +687,7 @@
 #endif
 // <q> NRFX_RNG_CONFIG_ERROR_CORRECTION  - Error correction
 
+
 #ifndef NRFX_RNG_CONFIG_ERROR_CORRECTION
 #define NRFX_RNG_CONFIG_ERROR_CORRECTION 1
 #endif
@@ -752,11 +763,13 @@
 #endif
 // <q> NRFX_RTC0_ENABLED  - Enable RTC0 instance
 
+
 #ifndef NRFX_RTC0_ENABLED
 #define NRFX_RTC0_ENABLED 1
 #endif
 
 // <q> NRFX_RTC1_ENABLED  - Enable RTC1 instance
+
 
 #ifndef NRFX_RTC1_ENABLED
 #define NRFX_RTC1_ENABLED 1
@@ -769,11 +782,13 @@
 
 // <o> NRFX_RTC_DEFAULT_CONFIG_FREQUENCY - Frequency  <16-32768>
 
+
 #ifndef NRFX_RTC_DEFAULT_CONFIG_FREQUENCY
 #define NRFX_RTC_DEFAULT_CONFIG_FREQUENCY 32768
 #endif
 
 // <q> NRFX_RTC_DEFAULT_CONFIG_RELIABLE  - Ensures safe compare event triggering
+
 
 #ifndef NRFX_RTC_DEFAULT_CONFIG_RELIABLE
 #define NRFX_RTC_DEFAULT_CONFIG_RELIABLE 0
@@ -850,6 +865,7 @@
 #endif
 // <q> NRFX_SPIS1_ENABLED  - Enable SPIS1 instance
 
+
 #ifndef NRFX_SPIS1_ENABLED
 #define NRFX_SPIS1_ENABLED 1
 #endif
@@ -867,11 +883,13 @@
 
 // <o> NRFX_SPIS_DEFAULT_DEF - SPIS default DEF character  <0-255>
 
+
 #ifndef NRFX_SPIS_DEFAULT_DEF
 #define NRFX_SPIS_DEFAULT_DEF 255
 #endif
 
 // <o> NRFX_SPIS_DEFAULT_ORC - SPIS default ORC character  <0-255>
+
 
 #ifndef NRFX_SPIS_DEFAULT_ORC
 #define NRFX_SPIS_DEFAULT_ORC 255
@@ -937,11 +955,13 @@
 #endif
 // <q> NRFX_SPI0_ENABLED  - Enable SPI0 instance
 
+
 #ifndef NRFX_SPI0_ENABLED
 #define NRFX_SPI0_ENABLED 1
 #endif
 
 // <q> NRFX_SPI1_ENABLED  - Enable SPI1 instance
+
 
 #ifndef NRFX_SPI1_ENABLED
 #define NRFX_SPI1_ENABLED 1
@@ -1028,11 +1048,13 @@
 #endif
 // <q> NRFX_SWI0_DISABLED  - Exclude SWI0 from being utilized by the driver
 
+
 #ifndef NRFX_SWI0_DISABLED
 #define NRFX_SWI0_DISABLED 0
 #endif
 
 // <q> NRFX_SWI1_DISABLED  - Exclude SWI1 from being utilized by the driver
+
 
 #ifndef NRFX_SWI1_DISABLED
 #define NRFX_SWI1_DISABLED 0
@@ -1040,11 +1062,13 @@
 
 // <q> NRFX_SWI2_DISABLED  - Exclude SWI2 from being utilized by the driver
 
+
 #ifndef NRFX_SWI2_DISABLED
 #define NRFX_SWI2_DISABLED 0
 #endif
 
 // <q> NRFX_SWI3_DISABLED  - Exclude SWI3 from being utilized by the driver
+
 
 #ifndef NRFX_SWI3_DISABLED
 #define NRFX_SWI3_DISABLED 0
@@ -1052,11 +1076,13 @@
 
 // <q> NRFX_SWI4_DISABLED  - Exclude SWI4 from being utilized by the driver
 
+
 #ifndef NRFX_SWI4_DISABLED
 #define NRFX_SWI4_DISABLED 0
 #endif
 
 // <q> NRFX_SWI5_DISABLED  - Exclude SWI5 from being utilized by the driver
+
 
 #ifndef NRFX_SWI5_DISABLED
 #define NRFX_SWI5_DISABLED 0
@@ -1141,17 +1167,20 @@
 #endif
 // <q> NRFX_TIMER0_ENABLED  - Enable TIMER0 instance
 
+
 #ifndef NRFX_TIMER0_ENABLED
 #define NRFX_TIMER0_ENABLED 1
 #endif
 
 // <q> NRFX_TIMER1_ENABLED  - Enable TIMER1 instance
 
+
 #ifndef NRFX_TIMER1_ENABLED
 #define NRFX_TIMER1_ENABLED 1
 #endif
 
 // <q> NRFX_TIMER2_ENABLED  - Enable TIMER2 instance
+
 
 #ifndef NRFX_TIMER2_ENABLED
 #define NRFX_TIMER2_ENABLED 1
@@ -1265,11 +1294,13 @@
 #endif
 // <q> NRFX_TWI0_ENABLED  - Enable TWI0 instance
 
+
 #ifndef NRFX_TWI0_ENABLED
 #define NRFX_TWI0_ENABLED 1
 #endif
 
 // <q> NRFX_TWI1_ENABLED  - Enable TWI1 instance
+
 
 #ifndef NRFX_TWI1_ENABLED
 #define NRFX_TWI1_ENABLED 1
@@ -1286,6 +1317,7 @@
 #endif
 
 // <q> NRFX_TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT  - Enables bus holding after uninit
+
 
 #ifndef NRFX_TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT
 #define NRFX_TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT 0
@@ -1489,6 +1521,7 @@
 #endif
 
 // <o> NRFX_WDT_CONFIG_RELOAD_VALUE - Reload value  <15-4294967295>
+
 
 #ifndef NRFX_WDT_CONFIG_RELOAD_VALUE
 #define NRFX_WDT_CONFIG_RELOAD_VALUE 2000

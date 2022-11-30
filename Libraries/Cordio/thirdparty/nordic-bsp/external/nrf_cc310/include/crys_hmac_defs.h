@@ -32,11 +32,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 #ifndef CRYS_HMAC_DEFS_H
 #define CRYS_HMAC_DEFS_H
 
+
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*!
@@ -50,6 +53,7 @@ extern "C" {
 /************************ Defines ******************************/
 /*! The size of user's context prototype (see ::CRYS_HMACUserContext_t) in words. */
 #define CRYS_HMAC_USER_CTX_SIZE_IN_WORDS 94
+
 
 #ifdef __cplusplus
 }

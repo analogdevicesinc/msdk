@@ -52,7 +52,7 @@
 #include "optiga/ifx_i2c/ifx_i2c.h"
 /*lint -restore*/
 
-optiga_comms_t optiga_comms = { (void *)&ifx_i2c_context_0, NULL, NULL };
+optiga_comms_t optiga_comms = {(void*)&ifx_i2c_context_0, NULL, NULL};
 
 // need to forward declare these, because they are not exported through the PAL API
 void pal_gpio_init(void);
@@ -64,14 +64,15 @@ void pal_os_event_init(void);
 
 static int32_t optiga_init(void)
 {
-    int32_t status = (int32_t)OPTIGA_LIB_ERROR;
+    int32_t status = (int32_t) OPTIGA_LIB_ERROR;
 
     // Initialize PAL
     pal_gpio_init();
     pal_os_event_init();
 
     status = optiga_util_open_application(&optiga_comms);
-    if (OPTIGA_LIB_SUCCESS != status) {
+    if (OPTIGA_LIB_SUCCESS != status)
+    {
         NRF_LOG_INFO("Failure: CmdLib_OpenApplication(): 0x%04X", status);
         return status;
     }
@@ -85,7 +86,8 @@ static int32_t optiga_init(void)
  */
 static ret_code_t optiga_backend_init(void)
 {
-    if (optiga_init() != OPTIGA_LIB_SUCCESS) {
+    if(optiga_init() != OPTIGA_LIB_SUCCESS)
+    {
         return NRF_ERROR_INTERNAL;
     }
 
@@ -101,10 +103,12 @@ static ret_code_t optiga_backend_init(void)
 
 #else
 
-#warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+    #warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif // NRF_CRYPTO_RNG_AUTO_INIT_ENABLED
+
 }
+
 
 /** @internal @brief Function to uninitialize OPTIGA backend - currently no implementation is required.
  */
@@ -114,9 +118,11 @@ static ret_code_t optiga_backend_uninit(void)
     return NRF_SUCCESS;
 }
 
-CRYPTO_BACKEND_REGISTER(nrf_crypto_backend_info_t const optiga_backend) = {
-    .init_fn = optiga_backend_init,
-    .uninit_fn = optiga_backend_uninit,
+
+CRYPTO_BACKEND_REGISTER(nrf_crypto_backend_info_t const optiga_backend) =
+{
+    .init_fn    = optiga_backend_init,
+    .uninit_fn  = optiga_backend_uninit,
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OPTIGA)

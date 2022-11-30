@@ -36,7 +36,7 @@
 /*************************************************************************************************/
 void BdaCpy(uint8_t *pDst, const uint8_t *pSrc)
 {
-    memcpy(pDst, pSrc, BDA_ADDR_LEN);
+  memcpy(pDst, pSrc, BDA_ADDR_LEN);
 }
 
 /*************************************************************************************************/
@@ -51,7 +51,7 @@ void BdaCpy(uint8_t *pDst, const uint8_t *pSrc)
 /*************************************************************************************************/
 bool_t BdaCmp(const uint8_t *pAddr1, const uint8_t *pAddr2)
 {
-    return (memcmp(pAddr1, pAddr2, BDA_ADDR_LEN) == 0);
+  return (memcmp(pAddr1, pAddr2, BDA_ADDR_LEN) == 0);
 }
 
 /*************************************************************************************************/
@@ -65,9 +65,9 @@ bool_t BdaCmp(const uint8_t *pAddr1, const uint8_t *pAddr2)
 /*************************************************************************************************/
 uint8_t *BdaClr(uint8_t *pDst)
 {
-    memset(pDst, 0, BDA_ADDR_LEN);
+  memset(pDst, 0, BDA_ADDR_LEN);
 
-    return (pDst + BDA_ADDR_LEN);
+  return (pDst + BDA_ADDR_LEN);
 }
 
 /*************************************************************************************************/
@@ -81,9 +81,9 @@ uint8_t *BdaClr(uint8_t *pDst)
 /*************************************************************************************************/
 bool_t BdaIsZeros(const uint8_t *pAddr)
 {
-    uint8_t addrZeros[BDA_ADDR_LEN] = { 0 };
+  uint8_t addrZeros[BDA_ADDR_LEN] = { 0 };
 
-    return (memcmp(pAddr, addrZeros, BDA_ADDR_LEN) == 0);
+  return (memcmp(pAddr, addrZeros, BDA_ADDR_LEN) == 0);
 }
 
 /*************************************************************************************************/
@@ -97,20 +97,21 @@ bool_t BdaIsZeros(const uint8_t *pAddr)
 /*************************************************************************************************/
 char *Bda2Str(const uint8_t *pAddr)
 {
-    static const char hex[] = "0123456789ABCDEF";
-    static char str[BDA_ADDR_STR_LEN + 1];
-    char *pStr = str;
+  static const char hex[] = "0123456789ABCDEF";
+  static char       str[BDA_ADDR_STR_LEN + 1];
+  char              *pStr = str;
 
-    /* address is little endian so copy in reverse */
-    pAddr += BDA_ADDR_LEN;
+  /* address is little endian so copy in reverse */
+  pAddr += BDA_ADDR_LEN;
 
-    while (pStr < &str[BDA_ADDR_STR_LEN]) {
-        *pStr++ = hex[*--pAddr >> 4];
-        *pStr++ = hex[*pAddr & 0x0F];
-    }
+  while (pStr < &str[BDA_ADDR_STR_LEN])
+  {
+    *pStr++ = hex[*--pAddr >> 4];
+    *pStr++ = hex[*pAddr & 0x0F];
+  }
 
-    /* null terminate string */
-    *pStr = 0;
+  /* null terminate string */
+  *pStr = 0;
 
-    return str;
+  return str;
 }

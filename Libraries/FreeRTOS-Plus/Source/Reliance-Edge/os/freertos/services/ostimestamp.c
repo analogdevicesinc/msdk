@@ -33,11 +33,13 @@
 
 #include <redfs.h>
 
+
 /*  configTICK_RATE_HZ is almost always 100, 250, 500, or 1000.  If
     1000000U % configTICK_RATE_HZ != 0, then RedOsTimePassed() will be a
     little inaccurate.
 */
-#define MICROSECS_PER_TICK (1000000U / configTICK_RATE_HZ)
+#define MICROSECS_PER_TICK  (1000000U / configTICK_RATE_HZ)
+
 
 /** @brief Initialize the timestamp service.
 
@@ -54,6 +56,7 @@ REDSTATUS RedOsTimestampInit(void)
     return 0;
 }
 
+
 /** @brief Uninitialize the timestamp service.
 
     The behavior of invoking this function when timestamps are not initialized
@@ -68,6 +71,7 @@ REDSTATUS RedOsTimestampUninit(void)
     return 0;
 }
 
+
 /** @brief Retrieve a timestamp.
 
     The behavior of invoking this function when timestamps are not initialized
@@ -81,6 +85,7 @@ REDTIMESTAMP RedOsTimestamp(void)
     return xTaskGetTickCount();
 }
 
+
 /** @brief Determine how much time has passed since a timestamp was retrieved.
 
     The behavior of invoking this function when timestamps are not initialized
@@ -90,13 +95,15 @@ REDTIMESTAMP RedOsTimestamp(void)
 
     @return The number of microseconds which have passed since @p tsSince.
 */
-uint64_t RedOsTimePassed(REDTIMESTAMP tsSince)
+uint64_t RedOsTimePassed(
+    REDTIMESTAMP    tsSince)
 {
     /*  This works even if the tick count has wrapped around, provided it has
         only wrapped around once.
     */
-    uint32_t ulTicksPassed = (uint32_t)xTaskGetTickCount() - tsSince;
-    uint64_t ullMicrosecs = (uint64_t)ulTicksPassed * MICROSECS_PER_TICK;
+    uint32_t        ulTicksPassed = (uint32_t)xTaskGetTickCount() - tsSince;
+    uint64_t        ullMicrosecs = (uint64_t)ulTicksPassed * MICROSECS_PER_TICK;
 
     return ullMicrosecs;
 }
+

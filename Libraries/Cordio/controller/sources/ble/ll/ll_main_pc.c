@@ -45,30 +45,35 @@
  *  \return Status error code.
  */
 /*************************************************************************************************/
-uint8_t LlSetPathLossReportingParams(uint16_t handle, uint8_t highThresh, uint8_t highHyst,
-                                     uint8_t lowThresh, uint8_t lowHyst, uint16_t minTime)
+uint8_t LlSetPathLossReportingParams(uint16_t handle, uint8_t highThresh, uint8_t highHyst, uint8_t lowThresh, uint8_t lowHyst, uint16_t minTime)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlSetPathLossReportingParams");
+  LL_TRACE_INFO0("### LlApi ###  LlSetPathLossReportingParams");
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
-        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+       ((handle >= pLctrRtCfg->maxConn) ||
+       !LctrIsConnHandleEnabled(handle)))
+  {
+    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+  }
 
-    if (highThresh == LL_PC_PATH_LOSS_UNUSED_HIGH_THRESHOLD) {
-        highHyst = 0;
-    }
+  if (highThresh == LL_PC_PATH_LOSS_UNUSED_HIGH_THRESHOLD)
+  {
+    highHyst = 0;
+  }
 
-    if ((((uint16_t)highThresh + (uint16_t)highHyst) > 0x00FF) || (lowThresh < lowHyst)) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((((uint16_t) highThresh + (uint16_t) highHyst) > 0x00FF) ||
+      (lowThresh < lowHyst))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    if ((lowThresh > highThresh) || ((lowThresh + lowHyst) > (highThresh - highHyst))) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((lowThresh > highThresh) ||
+      ((lowThresh + lowHyst) > (highThresh - highHyst)))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    return lctrSetPathLossReportingParams(handle, highThresh, highHyst, lowThresh, lowHyst,
-                                          minTime);
+  return lctrSetPathLossReportingParams(handle, highThresh, highHyst, lowThresh, lowHyst, minTime);
 }
 
 /*************************************************************************************************/
@@ -83,12 +88,14 @@ uint8_t LlSetPathLossReportingParams(uint16_t handle, uint8_t highThresh, uint8_
 /*************************************************************************************************/
 uint8_t LlSetPathLossReportingEnable(uint16_t handle, uint8_t enable)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlSetPathLossReportingEnable");
+  LL_TRACE_INFO0("### LlApi ###  LlSetPathLossReportingEnable");
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
-        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+  if ((LL_API_PARAM_CHECK == 1) &&
+    ((handle >= pLctrRtCfg->maxConn) ||
+    !LctrIsConnHandleEnabled(handle)))
+    {
+     return LL_ERROR_CODE_UNKNOWN_CONN_ID;
     }
 
-    return lctrSetPathLossReportingEnable(handle, enable);
+  return lctrSetPathLossReportingEnable(handle, enable);
 }

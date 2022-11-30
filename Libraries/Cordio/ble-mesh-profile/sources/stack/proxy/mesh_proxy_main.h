@@ -27,7 +27,8 @@
 #define MESH_PROXY_MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,40 +36,42 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Filter Type offset inside a Set Filter Type Proxy Configuration message */
-#define MESH_PROXY_FILTER_TYPE_OFFSET 1
+#define MESH_PROXY_FILTER_TYPE_OFFSET       1
 
 /*! Addresses offset inside an Add/Remove Address Proxy Configuration message */
-#define MESH_PROXY_ADDRESS_OFFSET 1
+#define MESH_PROXY_ADDRESS_OFFSET           1
 
 /*! List Size offset inside a Set Filter Type Proxy Configuration message */
-#define MESH_PROXY_LIST_SIZE_OFFSET (1 + 1)
+#define MESH_PROXY_LIST_SIZE_OFFSET         (1 + 1)
 
 /*! Length of a Set Filter Type Proxy Configuration message */
-#define MESH_PROXY_SET_FILTER_TYPE_LEN (1 + 1)
+#define MESH_PROXY_SET_FILTER_TYPE_LEN      (1 + 1)
 
 /*! Length of a Filter Status Proxy Configuration message */
-#define MESH_PROXY_FILTER_STATUS_TYPE_LEN (MESH_PROXY_LIST_SIZE_OFFSET + 2)
+#define MESH_PROXY_FILTER_STATUS_TYPE_LEN   (MESH_PROXY_LIST_SIZE_OFFSET + 2)
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Proxy Configuration message opcodes */
-enum meshProxyOpcodes {
-    MESH_PROXY_OPCODE_SET_FILTER_TYPE,
-    MESH_PROXY_OPCODE_ADD_ADDRESS,
-    MESH_PROXY_OPCODE_REMOVE_ADDRESS,
-    MESH_PROXY_OPCODE_FILTER_STATUS
+enum meshProxyOpcodes
+{
+  MESH_PROXY_OPCODE_SET_FILTER_TYPE,
+  MESH_PROXY_OPCODE_ADD_ADDRESS,
+  MESH_PROXY_OPCODE_REMOVE_ADDRESS,
+  MESH_PROXY_OPCODE_FILTER_STATUS
 };
 
 /*! Proxy Config PDU and meta information */
-typedef struct meshProxyPduMeta_tag {
-    struct meshProxyPduMeta_t *pNext; /*!< Pointer to next element for queueing. */
-    uint32_t ivIndex; /*!< IV index. */
-    uint16_t netKeyIndex; /*!< Network Key (sub-net) Index used for security */
-    meshBrInterfaceId_t rcvdBrIfId; /*!< Interface on which the PDU is received */
-    uint8_t pduLen; /*!< Length of the network PDU */
-    uint8_t pdu[1]; /*!< First byte of the network PDU. Used to wrap on
+typedef struct meshProxyPduMeta_tag
+{
+  struct meshProxyPduMeta_t *pNext;          /*!< Pointer to next element for queueing. */
+  uint32_t                  ivIndex;         /*!< IV index. */
+  uint16_t                  netKeyIndex;     /*!< Network Key (sub-net) Index used for security */
+  meshBrInterfaceId_t       rcvdBrIfId;      /*!< Interface on which the PDU is received */
+  uint8_t                   pduLen;          /*!< Length of the network PDU */
+  uint8_t                   pdu[1];          /*!< First byte of the network PDU. Used to wrap on
                                               *   on large buffer. Must always be the last member
                                               *   of the structure
                                               */

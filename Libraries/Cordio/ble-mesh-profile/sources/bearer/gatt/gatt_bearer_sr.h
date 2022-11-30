@@ -42,17 +42,18 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Invalid GATT Bearer interface ID */
-#define GATT_BEARER_INVALID_IF_ID 0xFF
+#define GATT_BEARER_INVALID_IF_ID              0xFF
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Configurable parameters for GATT Bearer */
-typedef struct {
-    uint16_t intervalMin; /*!< Minimum advertising interval in 0.625 ms units */
-    uint16_t intervalMax; /*!< Maximum advertising interval in 0.625 ms units */
-    uint8_t advType; /*!< The advertising type */
+typedef struct
+{
+  uint16_t intervalMin;   /*!< Minimum advertising interval in 0.625 ms units */
+  uint16_t intervalMax;   /*!< Maximum advertising interval in 0.625 ms units */
+  uint8_t  advType;       /*!< The advertising type */
 } gattBearerSrCfg_t;
 
 /**************************************************************************************************
@@ -124,7 +125,7 @@ bool_t GattBearerSrStop(void);
 /*************************************************************************************************/
 void GattBearerSrProcDmMsg(dmEvt_t *pMsg);
 
-/*! \} */ /* MESH_BEARER_ADV */
+/*! \} */    /* MESH_BEARER_ADV */
 
 #ifdef __cplusplus
 };

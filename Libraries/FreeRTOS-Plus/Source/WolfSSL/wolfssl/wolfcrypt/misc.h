@@ -19,14 +19,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifndef WOLF_CRYPT_MISC_H
 #define WOLF_CRYPT_MISC_H
 
+
 #include <wolfssl/wolfcrypt/types.h>
 
+
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
+
 
 #ifdef NO_INLINE
 WOLFSSL_LOCAL
@@ -37,18 +41,18 @@ word32 rotrFixed(word32, word32);
 WOLFSSL_LOCAL
 word32 ByteReverseWord32(word32);
 WOLFSSL_LOCAL
-void ByteReverseWords(word32 *, const word32 *, word32);
+void   ByteReverseWords(word32*, const word32*, word32);
 
 WOLFSSL_LOCAL
-void XorWords(wolfssl_word *, const wolfssl_word *, word32);
+void XorWords(wolfssl_word*, const wolfssl_word*, word32);
 WOLFSSL_LOCAL
-void xorbuf(void *, const void *, word32);
+void xorbuf(void*, const void*, word32);
 
 WOLFSSL_LOCAL
-void ForceZero(const void *, word32);
+void ForceZero(const void*, word32);
 
 WOLFSSL_LOCAL
-int ConstantCompare(const byte *, const byte *, int);
+int ConstantCompare(const byte*, const byte*, int);
 
 #ifdef WORD64_AVAILABLE
 WOLFSSL_LOCAL
@@ -59,13 +63,16 @@ word64 rotrFixed64(word64, word64);
 WOLFSSL_LOCAL
 word64 ByteReverseWord64(word64);
 WOLFSSL_LOCAL
-void ByteReverseWords64(word64 *, const word64 *, word32);
+void   ByteReverseWords64(word64*, const word64*, word32);
 #endif /* WORD64_AVAILABLE */
 
 #endif /* NO_INLINE */
 
+
 #ifdef __cplusplus
-} /* extern "C" */
+    }   /* extern "C" */
 #endif
 
+
 #endif /* WOLF_CRYPT_MISC_H */
+

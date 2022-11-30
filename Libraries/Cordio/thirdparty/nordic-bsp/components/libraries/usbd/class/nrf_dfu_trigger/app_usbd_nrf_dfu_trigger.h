@@ -53,6 +53,7 @@
 #include "app_usbd_nrf_dfu_trigger_types.h"
 #include "app_usbd_nrf_dfu_trigger_internal.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -73,16 +74,18 @@ extern "C" {
  *
  * @ref APP_USBD_CLASS_TYPEDEF
  */
-typedef struct {
-} app_usbd_nrf_dfu_trigger_t;
+typedef struct { } app_usbd_nrf_dfu_trigger_t;
 #else
 /*lint -save -e10 -e26 -e123 -e505 */
-APP_USBD_CLASS_NO_EP_TYPEDEF(app_usbd_nrf_dfu_trigger, APP_USBD_NRF_DFU_TRIGGER_CONFIG(0),
-                             APP_USBD_NRF_DFU_TRIGGER_INSTANCE_SPECIFIC_DEC,
-                             APP_USBD_NRF_DFU_TRIGGER_DATA_SPECIFIC_DEC);
+APP_USBD_CLASS_NO_EP_TYPEDEF(app_usbd_nrf_dfu_trigger,                                             \
+                             APP_USBD_NRF_DFU_TRIGGER_CONFIG(0),                                   \
+                             APP_USBD_NRF_DFU_TRIGGER_INSTANCE_SPECIFIC_DEC,                       \
+                             APP_USBD_NRF_DFU_TRIGGER_DATA_SPECIFIC_DEC                            \
+);
 #endif
 
 /*lint -restore*/
+
 
 /*lint -save -e407 */
 
@@ -113,10 +116,18 @@ typedef enum app_usbd_nrf_dfu_trigger_user_event_e {
  *
  */
 /*lint -save -emacro(26 64 123 505 651, APP_USBD_NRF_DFU_TRIGGER_GLOBAL_DEF)*/
-#define APP_USBD_NRF_DFU_TRIGGER_GLOBAL_DEF(instance_name, interface_number, p_nordic_dfu, \
-                                            sem_ver_str, user_ev_handler)                  \
-    APP_USBD_NRF_DFU_TRIGGER_GLOBAL_DEF_INTERNAL(instance_name, interface_number, 0, 0,    \
-                                                 p_nordic_dfu, sem_ver_str, user_ev_handler)
+#define APP_USBD_NRF_DFU_TRIGGER_GLOBAL_DEF(instance_name,                                         \
+                                            interface_number,                                      \
+                                            p_nordic_dfu,                                          \
+                                            sem_ver_str,                                           \
+                                            user_ev_handler)                                       \
+        APP_USBD_NRF_DFU_TRIGGER_GLOBAL_DEF_INTERNAL(instance_name,                                \
+                                                     interface_number,                             \
+                                                     0,                                            \
+                                                     0,                                            \
+                                                     p_nordic_dfu,                                 \
+                                                     sem_ver_str,                                  \
+                                                     user_ev_handler)
 /*lint -restore*/
 
 /**
@@ -128,7 +139,7 @@ typedef enum app_usbd_nrf_dfu_trigger_user_event_e {
  * @return Base class instance
  */
 static inline app_usbd_class_inst_t const *
-app_usbd_nrf_dfu_trigger_class_inst_get(app_usbd_nrf_dfu_trigger_t const *p_dfu)
+app_usbd_nrf_dfu_trigger_class_inst_get(app_usbd_nrf_dfu_trigger_t const * p_dfu)
 {
     return &p_dfu->base;
 }
@@ -141,7 +152,7 @@ app_usbd_nrf_dfu_trigger_class_inst_get(app_usbd_nrf_dfu_trigger_t const *p_dfu)
  * @return DFU class handle.
  */
 static inline app_usbd_nrf_dfu_trigger_t const *
-app_usbd_nrf_dfu_trigger_class_get(app_usbd_class_inst_t const *p_inst)
+app_usbd_nrf_dfu_trigger_class_get( app_usbd_class_inst_t const * p_inst)
 {
     return (app_usbd_nrf_dfu_trigger_t const *)p_inst;
 }

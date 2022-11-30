@@ -40,11 +40,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Size of RAM Media used by the application */
-#define WDXS_APP_RAM_MEDIA_SIZE 256
+#define WDXS_APP_RAM_MEDIA_SIZE         256
 
 /*! \brief Device Model Name */
 #ifndef WDXS_DEVICE_MODEL
-#define WDXS_DEVICE_MODEL "WDXS App"
+#define WDXS_DEVICE_MODEL               "WDXS App"
 #endif
 
 /*************************************************************************************************/
@@ -154,7 +154,7 @@ void WdxsResetSystem(void);
 /*************************************************************************************************/
 void WdxsPhyInit(void);
 
-/*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
+/*! \} */    /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
 }

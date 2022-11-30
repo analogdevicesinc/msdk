@@ -27,7 +27,8 @@
 #define MMDL_LIGHT_HSL_SR_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -133,7 +134,8 @@ void MmdlLightHslSrStoreScene(void *pDesc, uint8_t sceneIdx);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightHslSrRecallScene(meshElementId_t elementId, uint8_t sceneIdx, uint32_t transitionMs);
+void MmdlLightHslSrRecallScene(meshElementId_t elementId, uint8_t sceneIdx,
+                               uint32_t transitionMs);
 
 /*************************************************************************************************/
 /*!

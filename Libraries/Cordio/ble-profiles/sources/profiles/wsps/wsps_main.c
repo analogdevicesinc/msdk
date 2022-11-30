@@ -38,9 +38,10 @@
 **************************************************************************************************/
 
 /* Control block */
-static struct {
-    appWsm_t wsm; /* weight scale measurement */
-    uint8_t wsmFlags; /* flags */
+static struct
+{
+  appWsm_t      wsm;                  /* weight scale measurement */
+  uint8_t       wsmFlags;             /* flags */
 } wspsCb;
 
 /*************************************************************************************************/
@@ -55,27 +56,28 @@ static struct {
 /*************************************************************************************************/
 static uint8_t wspsBuildWsm(uint8_t *pBuf, appWsm_t *pWsm)
 {
-    uint8_t *p = pBuf;
-    uint8_t flags = pWsm->flags;
+  uint8_t   *p = pBuf;
+  uint8_t   flags = pWsm->flags;
 
-    /* flags */
-    UINT8_TO_BSTREAM(p, flags);
+  /* flags */
+  UINT8_TO_BSTREAM(p, flags);
 
-    /* measurement */
-    UINT16_TO_BSTREAM(p, pWsm->weight);
+  /* measurement */
+  UINT16_TO_BSTREAM(p, pWsm->weight);
 
-    /* time stamp */
-    if (flags & CH_WSM_FLAG_TIMESTAMP) {
-        UINT16_TO_BSTREAM(p, pWsm->timestamp.year);
-        UINT8_TO_BSTREAM(p, pWsm->timestamp.month);
-        UINT8_TO_BSTREAM(p, pWsm->timestamp.day);
-        UINT8_TO_BSTREAM(p, pWsm->timestamp.hour);
-        UINT8_TO_BSTREAM(p, pWsm->timestamp.min);
-        UINT8_TO_BSTREAM(p, pWsm->timestamp.sec);
-    }
+  /* time stamp */
+  if (flags & CH_WSM_FLAG_TIMESTAMP)
+  {
+    UINT16_TO_BSTREAM(p, pWsm->timestamp.year);
+    UINT8_TO_BSTREAM(p, pWsm->timestamp.month);
+    UINT8_TO_BSTREAM(p, pWsm->timestamp.day);
+    UINT8_TO_BSTREAM(p, pWsm->timestamp.hour);
+    UINT8_TO_BSTREAM(p, pWsm->timestamp.min);
+    UINT8_TO_BSTREAM(p, pWsm->timestamp.sec);
+  }
 
-    /* return length */
-    return (uint8_t)(p - pBuf);
+  /* return length */
+  return (uint8_t) (p - pBuf);
 }
 
 /*************************************************************************************************/
@@ -91,23 +93,24 @@ static uint8_t wspsBuildWsm(uint8_t *pBuf, appWsm_t *pWsm)
 /*************************************************************************************************/
 void WspsMeasComplete(dmConnId_t connId, uint8_t wsmCccIdx)
 {
-    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
-    uint8_t len;
+  uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+  uint8_t len;
 
-    /* if indications enabled  */
-    if (AttsCccEnabled(connId, wsmCccIdx)) {
-        /* read weight scale measurement sensor data */
-        AppHwWsmRead(&wspsCb.wsm);
+  /* if indications enabled  */
+  if (AttsCccEnabled(connId, wsmCccIdx))
+  {
+    /* read weight scale measurement sensor data */
+    AppHwWsmRead(&wspsCb.wsm);
 
-        /* set flags */
-        wspsCb.wsm.flags = wspsCb.wsmFlags;
+    /* set flags */
+    wspsCb.wsm.flags = wspsCb.wsmFlags;
 
-        /* build weight scale measurement characteristic */
-        len = wspsBuildWsm(buf, &wspsCb.wsm);
+    /* build weight scale measurement characteristic */
+    len = wspsBuildWsm(buf, &wspsCb.wsm);
 
-        /* send weight scale measurement indication */
-        AttsHandleValueInd(connId, WSS_WM_HDL, len, buf);
-    }
+    /* send weight scale measurement indication */
+    AttsHandleValueInd(connId, WSS_WM_HDL, len, buf);
+  }
 }
 
 /*************************************************************************************************/
@@ -121,5 +124,5 @@ void WspsMeasComplete(dmConnId_t connId, uint8_t wsmCccIdx)
 /*************************************************************************************************/
 void WspsSetWsmFlags(uint8_t flags)
 {
-    wspsCb.wsmFlags = flags;
+  wspsCb.wsmFlags = flags;
 }

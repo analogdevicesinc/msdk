@@ -29,10 +29,10 @@
   Global Variables
 **************************************************************************************************/
 
-static uint32_t wsfRngW = 88675123; /*!< W seed for random number generation. */
-static uint32_t wsfRngX = 123456789; /*!< X seed for random number generation. */
-static uint32_t wsfRngY = 362436069; /*!< Y seed for random number generation. */
-static uint32_t wsfRngZ = 521288629; /*!< Z seed for random number generation. */
+static uint32_t wsfRngW = 88675123;     /*!< W seed for random number generation. */
+static uint32_t wsfRngX = 123456789;    /*!< X seed for random number generation. */
+static uint32_t wsfRngY = 362436069;    /*!< Y seed for random number generation. */
+static uint32_t wsfRngZ = 521288629;    /*!< Z seed for random number generation. */
 
 /*************************************************************************************************/
 /*!
@@ -43,10 +43,10 @@ static uint32_t wsfRngZ = 521288629; /*!< Z seed for random number generation. *
 /*************************************************************************************************/
 void LlMathSetSeed(const uint32_t *pSeed)
 {
-    wsfRngW ^= *pSeed;
-    wsfRngX ^= *pSeed;
-    wsfRngY ^= *pSeed;
-    wsfRngZ ^= *pSeed;
+  wsfRngW ^= *pSeed;
+  wsfRngX ^= *pSeed;
+  wsfRngY ^= *pSeed;
+  wsfRngZ ^= *pSeed;
 }
 
 /*************************************************************************************************/
@@ -65,14 +65,14 @@ void LlMathSetSeed(const uint32_t *pSeed)
 /*************************************************************************************************/
 uint32_t LlMathRandNum(void)
 {
-    uint32_t t;
+  uint32_t t;
 
-    t = wsfRngX ^ (wsfRngX << 11);
-    wsfRngX = wsfRngY;
-    wsfRngY = wsfRngZ;
-    wsfRngZ = wsfRngW;
-    wsfRngW = wsfRngW ^ (wsfRngW >> 19) ^ (t ^ (t >> 8));
-    return wsfRngW;
+  t = wsfRngX ^ (wsfRngX << 11);
+  wsfRngX = wsfRngY;
+  wsfRngY = wsfRngZ;
+  wsfRngZ = wsfRngW;
+  wsfRngW = wsfRngW ^ (wsfRngW >> 19) ^ (t ^ (t >> 8));
+  return wsfRngW;
 }
 
 /*************************************************************************************************/
@@ -86,9 +86,9 @@ uint32_t LlMathRandNum(void)
 /*************************************************************************************************/
 uint8_t LlMathGetNumBitsSet(uint64_t num)
 {
-    num = num - ((num >> 1) & 0x5555555555555555);
-    num = (num & 0x3333333333333333) + ((num >> 2) & 0x3333333333333333);
-    return (((num + (num >> 4)) & 0xF0F0F0F0F0F0F0F) * 0x101010101010101) >> 56;
+  num = num - ((num >> 1) & 0x5555555555555555);
+  num = (num & 0x3333333333333333) + ((num >> 2) & 0x3333333333333333);
+  return (((num + (num >> 4)) & 0xF0F0F0F0F0F0F0F) * 0x101010101010101) >> 56;
 }
 
 /*************************************************************************************************/
@@ -103,38 +103,41 @@ uint8_t LlMathGetNumBitsSet(uint64_t num)
 /*************************************************************************************************/
 uint32_t LlMathDivideUint32(uint32_t nu32, uint32_t de32)
 {
-#if (defined(__ARM_ARCH_EXT_IDIV__) && (__ARM_ARCH_EXT_IDIV__))
+  #if (defined(__ARM_ARCH_EXT_IDIV__) && (__ARM_ARCH_EXT_IDIV__))
+  {
+    /* Use divide instruction. */
+    return nu32 / de32;
+  }
+  #else
+  {
+    /* Use algorithmic divide. */
+
+    uint32_t temp = 1;
+    uint32_t result = 0;
+    uint64_t nu = nu32;
+    uint64_t de = de32;
+
+    while (de <= nu)
     {
-        /* Use divide instruction. */
-        return nu32 / de32;
+      de <<= 1;
+      temp <<= 1;
     }
-#else
+
+    while (temp > 1)
     {
-        /* Use algorithmic divide. */
+      de >>= 1;
+      temp >>= 1;
 
-        uint32_t temp = 1;
-        uint32_t result = 0;
-        uint64_t nu = nu32;
-        uint64_t de = de32;
-
-        while (de <= nu) {
-            de <<= 1;
-            temp <<= 1;
-        }
-
-        while (temp > 1) {
-            de >>= 1;
-            temp >>= 1;
-
-            if (nu >= de) {
-                nu -= de;
-                result += temp;
-            }
-        }
-
-        return result;
+      if (nu >= de)
+      {
+        nu -= de;
+        result += temp;
+      }
     }
-#endif
+
+    return result;
+  }
+  #endif
 }
 
 /*************************************************************************************************/
@@ -149,5 +152,5 @@ uint32_t LlMathDivideUint32(uint32_t nu32, uint32_t de32)
 /*************************************************************************************************/
 uint32_t LlMathDivideUint32RoundUp(uint32_t nu32, uint32_t de32)
 {
-    return LlMathDivideUint32((nu32 + (de32 - 1)), de32);
+  return LlMathDivideUint32((nu32 + (de32 - 1)), de32);
 }

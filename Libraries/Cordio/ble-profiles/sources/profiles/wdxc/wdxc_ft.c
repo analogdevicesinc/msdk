@@ -53,18 +53,18 @@ extern wdxcCb_t wdxcCb;
 /*************************************************************************************************/
 void WdxcFtcSendAbort(dmConnId_t connId, uint16_t fileHdl)
 {
-    uint8_t buf[WDX_FTC_ABORT_LEN];
-    uint8_t *p = buf;
-    uint16_t handle;
+  uint8_t   buf[WDX_FTC_ABORT_LEN];
+  uint8_t   *p = buf;
+  uint16_t  handle;
 
-    WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
+  WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
 
-    handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
+  handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
 
-    UINT8_TO_BSTREAM(p, WDX_FTC_OP_ABORT);
-    UINT16_TO_BSTREAM(p, fileHdl);
+  UINT8_TO_BSTREAM(p, WDX_FTC_OP_ABORT);
+  UINT16_TO_BSTREAM(p, fileHdl);
 
-    AttcWriteReq(connId, handle, WDX_FTC_ABORT_LEN, buf);
+  AttcWriteReq(connId, handle, WDX_FTC_ABORT_LEN, buf);
 }
 
 /*************************************************************************************************/
@@ -79,18 +79,18 @@ void WdxcFtcSendAbort(dmConnId_t connId, uint16_t fileHdl)
 /*************************************************************************************************/
 void WdxcFtcSendEraseFile(dmConnId_t connId, uint16_t fileHdl)
 {
-    uint8_t buf[WDX_FTC_ERASE_LEN];
-    uint8_t *p = buf;
-    uint16_t handle;
+  uint8_t   buf[WDX_FTC_ERASE_LEN];
+  uint8_t   *p = buf;
+  uint16_t  handle;
 
-    WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
+  WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
 
-    handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
+  handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
 
-    UINT8_TO_BSTREAM(p, WDX_FTC_OP_ERASE_REQ);
-    UINT16_TO_BSTREAM(p, fileHdl);
+  UINT8_TO_BSTREAM(p, WDX_FTC_OP_ERASE_REQ);
+  UINT16_TO_BSTREAM(p, fileHdl);
 
-    AttcWriteReq(connId, handle, WDX_FTC_ERASE_LEN, buf);
+  AttcWriteReq(connId, handle, WDX_FTC_ERASE_LEN, buf);
 }
 
 /*************************************************************************************************/
@@ -105,18 +105,18 @@ void WdxcFtcSendEraseFile(dmConnId_t connId, uint16_t fileHdl)
 /*************************************************************************************************/
 void WdxcFtcSendVerifyFile(dmConnId_t connId, uint16_t fileHdl)
 {
-    uint8_t buf[WDX_FTC_VERIFY_LEN];
-    uint8_t *p = buf;
-    uint16_t handle;
+  uint8_t   buf[WDX_FTC_VERIFY_LEN];
+  uint8_t   *p = buf;
+  uint16_t  handle;
 
-    WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
+  WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
 
-    handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
+  handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
 
-    UINT8_TO_BSTREAM(p, WDX_FTC_OP_VERIFY_REQ);
-    UINT16_TO_BSTREAM(p, fileHdl);
+  UINT8_TO_BSTREAM(p, WDX_FTC_OP_VERIFY_REQ);
+  UINT16_TO_BSTREAM(p, fileHdl);
 
-    AttcWriteReq(connId, handle, WDX_FTC_VERIFY_LEN, buf);
+  AttcWriteReq(connId, handle, WDX_FTC_VERIFY_LEN, buf);
 }
 
 /*************************************************************************************************/
@@ -133,26 +133,26 @@ void WdxcFtcSendVerifyFile(dmConnId_t connId, uint16_t fileHdl)
  *  \return None.
  */
 /*************************************************************************************************/
-void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len,
-                       uint32_t fileSize, uint8_t type)
+void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
+                       uint32_t len, uint32_t fileSize, uint8_t type)
 {
-    uint8_t buf[WDX_FTC_PUT_LEN];
-    uint8_t *p = buf;
-    uint16_t handle;
+  uint8_t   buf[WDX_FTC_PUT_LEN];
+  uint8_t   *p = buf;
+  uint16_t  handle;
 
-    WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
+  WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
 
-    handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
+  handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
 
-    UINT8_TO_BSTREAM(p, WDX_FTC_OP_PUT_REQ);
-    UINT16_TO_BSTREAM(p, fileHdl);
+  UINT8_TO_BSTREAM(p, WDX_FTC_OP_PUT_REQ);
+  UINT16_TO_BSTREAM(p, fileHdl);
 
-    UINT32_TO_BSTREAM(p, offset);
-    UINT32_TO_BSTREAM(p, len);
-    UINT32_TO_BSTREAM(p, fileSize);
-    UINT8_TO_BSTREAM(p, type);
+  UINT32_TO_BSTREAM(p, offset);
+  UINT32_TO_BSTREAM(p, len);
+  UINT32_TO_BSTREAM(p, fileSize);
+  UINT8_TO_BSTREAM(p, type);
 
-    AttcWriteReq(connId, handle, WDX_FTC_PUT_LEN, buf);
+  AttcWriteReq(connId, handle, WDX_FTC_PUT_LEN, buf);
 }
 
 /*************************************************************************************************/
@@ -168,25 +168,24 @@ void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uin
  *  \return None.
  */
 /*************************************************************************************************/
-void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len,
-                       uint8_t type)
+void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len, uint8_t type)
 {
-    uint8_t buf[WDX_FTC_GET_LEN];
-    uint8_t *p = buf;
-    uint16_t handle;
+  uint8_t   buf[WDX_FTC_GET_LEN];
+  uint8_t   *p = buf;
+  uint16_t  handle;
 
-    WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
+  WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
 
-    handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
+  handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTC_HDL_IDX];
 
-    UINT8_TO_BSTREAM(p, WDX_FTC_OP_GET_REQ);
-    UINT16_TO_BSTREAM(p, fileHdl);
+  UINT8_TO_BSTREAM(p, WDX_FTC_OP_GET_REQ);
+  UINT16_TO_BSTREAM(p, fileHdl);
 
-    UINT32_TO_BSTREAM(p, offset);
-    UINT32_TO_BSTREAM(p, len);
-    UINT8_TO_BSTREAM(p, type);
+  UINT32_TO_BSTREAM(p, offset);
+  UINT32_TO_BSTREAM(p, len);
+  UINT8_TO_BSTREAM(p, type);
 
-    AttcWriteReq(connId, handle, WDX_FTC_GET_LEN, buf);
+  AttcWriteReq(connId, handle, WDX_FTC_GET_LEN, buf);
 }
 
 /*************************************************************************************************/
@@ -202,11 +201,11 @@ void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uin
 /*************************************************************************************************/
 void WdxcFtdSendBlock(dmConnId_t connId, uint32_t len, uint8_t *pData)
 {
-    uint16_t handle;
+  uint16_t handle;
 
-    WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
+  WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
 
-    handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTD_HDL_IDX];
+  handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_FTD_HDL_IDX];
 
-    AttcWriteCmd(connId, handle, (uint16_t)len, pData);
+  AttcWriteCmd(connId, handle, (uint16_t) len, pData);
 }

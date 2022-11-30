@@ -46,7 +46,7 @@ extern "C" {
 /*************************************************************************************************/
 uint32_t CalcCrc32(uint32_t crcInit, uint32_t len, const uint8_t *pBuf);
 
-/*! \} */ /* WSF_UTIL_API */
+/*! \} */    /* WSF_UTIL_API */
 
 #ifdef __cplusplus
 };

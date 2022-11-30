@@ -42,27 +42,30 @@ extern "C" {
 typedef void (*PalUartCompCback_t)(void);
 
 /*! \brief      Peripheral configuration. */
-typedef struct {
-    PalUartCompCback_t rdCback; /*!< Read data completion callback. */
-    PalUartCompCback_t wrCback; /*!< Write data completion callback. */
-    uint32_t baud; /*!< Baud rate. */
-    bool_t hwFlow; /*!< Use HW Flow control */
+typedef struct
+{
+  PalUartCompCback_t rdCback;   /*!< Read data completion callback. */
+  PalUartCompCback_t wrCback;   /*!< Write data completion callback. */
+  uint32_t baud;                /*!< Baud rate. */
+  bool_t hwFlow;                /*!< Use HW Flow control */
 } PalUartConfig_t;
 
 /*! \brief      Operational states. */
-typedef enum {
-    PAL_UART_STATE_UNINIT = 0, /*!< Uninitialized state. */
-    PAL_UART_STATE_ERROR = 0, /*!< Error state. */
-    PAL_UART_STATE_READY = 1, /*!< Ready state. */
-    PAL_UART_STATE_BUSY = 2, /*!< Busy state. */
+typedef enum
+{
+  PAL_UART_STATE_UNINIT = 0,    /*!< Uninitialized state. */
+  PAL_UART_STATE_ERROR  = 0,    /*!< Error state. */
+  PAL_UART_STATE_READY  = 1,    /*!< Ready state. */
+  PAL_UART_STATE_BUSY   = 2,    /*!< Busy state. */
 } PalUartState_t;
 
 /*! \brief      Reserved UART ID. */
-typedef enum {
-    PAL_UART_ID_USER = 0, /*!< UART 0. */
-    PAL_UART_ID_CHCI = 1, /*!< UART CHCI. */
-    PAL_UART_ID_TERMINAL = 2, /*!< UART TERMINAL. */
-    PAL_UART_ID_MAX /*!< Number of UART instances. */
+typedef enum
+{
+  PAL_UART_ID_USER      = 0,    /*!< UART 0. */
+  PAL_UART_ID_CHCI      = 1,    /*!< UART CHCI. */
+  PAL_UART_ID_TERMINAL  = 2,    /*!< UART TERMINAL. */
+  PAL_UART_ID_MAX               /*!< Number of UART instances. */
 } PalUartId_t;
 
 /**************************************************************************************************
@@ -80,7 +83,7 @@ PalUartState_t PalUartGetState(PalUartId_t id);
 void PalUartReadData(PalUartId_t id, uint8_t *pData, uint16_t len);
 void PalUartWriteData(PalUartId_t id, const uint8_t *pData, uint16_t len);
 
-/*! \} */ /* PAL_UART */
+/*! \} */    /* PAL_UART */
 
 #ifdef __cplusplus
 };

@@ -43,16 +43,16 @@
 /*************************************************************************************************/
 uint16_t LlInitBisMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-    WSF_ASSERT(pLctrRtCfg);
-    WSF_ASSERT(pFreeMem);
+  WSF_ASSERT(pLctrRtCfg);
+  WSF_ASSERT(pFreeMem);
 
-    uint16_t bytesUsed = 0;
+  uint16_t bytesUsed = 0;
 
 #if (LL_MAX_BIG > 0)
-    bytesUsed = LctrInitBisMem(pFreeMem, freeMemSize);
+  bytesUsed = LctrInitBisMem(pFreeMem, freeMemSize);
 #endif
 
-    return bytesUsed;
+  return bytesUsed;
 }
 
 /*************************************************************************************************/
@@ -64,8 +64,8 @@ uint16_t LlInitBisMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 /*************************************************************************************************/
 void LlBisSlaveInit(void)
 {
-    WSF_ASSERT(pLctrRtCfg); /* Runtime configuration must be available. */
+  WSF_ASSERT(pLctrRtCfg);     /* Runtime configuration must be available. */
 
-    LmgrIsoInit();
-    LctrSlvBisInit();
+  LmgrIsoInit();
+  LctrSlvBisInit();
 }

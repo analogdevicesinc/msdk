@@ -91,53 +91,56 @@
 **************************************************************************************************/
 
 #if WSF_OS_DIAG == TRUE
-#define WSF_OS_SET_ACTIVE_HANDLER_ID(id) WsfActiveHandler = id;
+#define WSF_OS_SET_ACTIVE_HANDLER_ID(id)          WsfActiveHandler = id;
 #else
 #define WSF_OS_SET_ACTIVE_HANDLER_ID(id)
 #endif /* WSF_OS_DIAG */
 
 /*! Maximum number of event handlers per task */
-#define WSF_MAX_HANDLERS 16
+#define WSF_MAX_HANDLERS      16
 
 /*! \brief OS serivice function number */
-#define WSF_OS_MAX_SERVICE_FUNCTIONS 3
+#define WSF_OS_MAX_SERVICE_FUNCTIONS                  3
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Thread state. */
-typedef enum {
-    WSF_TASK_STATE_FREE, /*!< Default task state */
-    WSF_TASK_STATE_INIT, /*!< Task initialized */
-    WSF_TASK_STATE_STARTED, /*!< Task started */
-    WSF_TASK_STATE_TERMINATED /*!< Task termination in progress */
+typedef enum
+{
+  WSF_TASK_STATE_FREE,        /*!< Default task state */
+  WSF_TASK_STATE_INIT,        /*!< Task initialized */
+  WSF_TASK_STATE_STARTED,     /*!< Task started */
+  WSF_TASK_STATE_TERMINATED   /*!< Task termination in progress */
 } wsfTaskState_t;
 
 /*! Task structure */
-typedef struct {
-    wsfTaskState_t state; /*!< Current state */
-    wsfTaskEvent_t taskEventMask; /*!< Task events */
-    wsfEventHandler_t handler[WSF_MAX_HANDLERS]; /*!< Handlers callbacks */
-    wsfHandlerId_t numHandler; /*!< Number of registered handlers */
-    wsfEventMask_t handlerEventMask[WSF_MAX_HANDLERS]; /*!< Handler event mask */
-    wsfQueue_t msgQueue; /*!< Message queue */
+typedef struct
+{
+  wsfTaskState_t    state;                              /*!< Current state */
+  wsfTaskEvent_t    taskEventMask;                      /*!< Task events */
+  wsfEventHandler_t handler[WSF_MAX_HANDLERS];          /*!< Handlers callbacks */
+  wsfHandlerId_t    numHandler;                         /*!< Number of registered handlers */
+  wsfEventMask_t    handlerEventMask[WSF_MAX_HANDLERS]; /*!< Handler event mask */
+  wsfQueue_t        msgQueue;                           /*!< Message queue */
 } wsfOsTask_t;
 
 /*! OS structure */
-typedef struct {
-    wsfOsTask_t task; /*!< Task resource */
-    CRITICAL_SECTION systemLock; /*!< System resource lock */
+typedef struct
+{
+  wsfOsTask_t      task;            /*!< Task resource */
+  CRITICAL_SECTION systemLock;      /*!< System resource lock */
 
-    wsfTaskState_t timerTaskState; /*!< Timer task state */
-    uint8_t msPerTick; /*!< Number of milliseconds per timer tick */
-    wsfQueue_t timerQueue; /*!< Timer queue */
-    WORD lastMs; /*!< Last time time */
-    HANDLE hSysTimer; /*!< System periodic timer */
-    HANDLE hSysTimerQueue; /*!< Windows timer queue for system periodic timer */
-    HANDLE workPendingEvent; /*!< Work pending event */
-    WsfOsIdleCheckFunc_t sleepCheckFuncs[WSF_OS_MAX_SERVICE_FUNCTIONS];
-    uint8_t numFunc;
+  wsfTaskState_t  timerTaskState;   /*!< Timer task state */
+  uint8_t         msPerTick;        /*!< Number of milliseconds per timer tick */
+  wsfQueue_t      timerQueue;       /*!< Timer queue */
+  WORD            lastMs;           /*!< Last time time */
+  HANDLE          hSysTimer;        /*!< System periodic timer */
+  HANDLE          hSysTimerQueue;   /*!< Windows timer queue for system periodic timer */
+  HANDLE          workPendingEvent; /*!< Work pending event */
+  WsfOsIdleCheckFunc_t        sleepCheckFuncs[WSF_OS_MAX_SERVICE_FUNCTIONS];
+  uint8_t         numFunc;
 } wsfOs_t;
 
 /**************************************************************************************************
@@ -166,7 +169,7 @@ static wsfTestInit_t wsfAppInit = wsfDummyInit;
 /*************************************************************************************************/
 void WsfTaskLock(void)
 {
-    EnterCriticalSection(&wsfOs.systemLock);
+  EnterCriticalSection(&wsfOs.systemLock);
 }
 
 /*************************************************************************************************/
@@ -176,7 +179,7 @@ void WsfTaskLock(void)
 /*************************************************************************************************/
 void WsfTaskUnlock(void)
 {
-    LeaveCriticalSection(&wsfOs.systemLock);
+  LeaveCriticalSection(&wsfOs.systemLock);
 }
 
 /*************************************************************************************************/
@@ -189,15 +192,15 @@ void WsfTaskUnlock(void)
 /*************************************************************************************************/
 void WsfSetEvent(wsfHandlerId_t handlerId, wsfEventMask_t event)
 {
-    WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
+  WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
 
-    WSF_TRACE_INFO2("WsfSetEvent handlerId:%u event:%u", handlerId, event);
+  WSF_TRACE_INFO2("WsfSetEvent handlerId:%u event:%u", handlerId, event);
 
-    EnterCriticalSection(&wsfOs.systemLock);
-    wsfOs.task.handlerEventMask[handlerId] |= event;
-    LeaveCriticalSection(&wsfOs.systemLock);
+  EnterCriticalSection(&wsfOs.systemLock);
+  wsfOs.task.handlerEventMask[handlerId] |= event;
+  LeaveCriticalSection(&wsfOs.systemLock);
 
-    WsfTaskSetReady(handlerId, WSF_HANDLER_EVENT);
+  WsfTaskSetReady(handlerId, WSF_HANDLER_EVENT);
 }
 
 /*************************************************************************************************/
@@ -210,13 +213,13 @@ void WsfSetEvent(wsfHandlerId_t handlerId, wsfEventMask_t event)
 /*************************************************************************************************/
 void WsfTaskSetReady(wsfHandlerId_t handlerId, wsfTaskEvent_t event)
 {
-    WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
+  WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
 
-    EnterCriticalSection(&wsfOs.systemLock);
-    wsfOs.task.taskEventMask |= event;
-    LeaveCriticalSection(&wsfOs.systemLock);
+  EnterCriticalSection(&wsfOs.systemLock);
+  wsfOs.task.taskEventMask |= event;
+  LeaveCriticalSection(&wsfOs.systemLock);
 
-    SetEvent(wsfOs.workPendingEvent);
+  SetEvent(wsfOs.workPendingEvent);
 }
 
 /*************************************************************************************************/
@@ -230,9 +233,9 @@ void WsfTaskSetReady(wsfHandlerId_t handlerId, wsfTaskEvent_t event)
 /*************************************************************************************************/
 wsfQueue_t *WsfTaskMsgQueue(wsfHandlerId_t handlerId)
 {
-    WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
+  WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
 
-    return &(wsfOs.task.msgQueue);
+  return &(wsfOs.task.msgQueue);
 }
 
 /*************************************************************************************************/
@@ -247,13 +250,13 @@ wsfQueue_t *WsfTaskMsgQueue(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 wsfHandlerId_t WsfOsSetNextHandler(wsfEventHandler_t handler)
 {
-    wsfHandlerId_t handlerId = wsfOs.task.numHandler++;
+  wsfHandlerId_t handlerId = wsfOs.task.numHandler++;
 
-    WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
+  WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
 
-    wsfOs.task.handler[handlerId] = handler;
+  wsfOs.task.handler[handlerId] = handler;
 
-    return handlerId;
+  return handlerId;
 }
 
 /*************************************************************************************************/
@@ -267,79 +270,88 @@ wsfHandlerId_t WsfOsSetNextHandler(wsfEventHandler_t handler)
 /*************************************************************************************************/
 static unsigned int __stdcall wsfOsDispatcherTask(void *pParam)
 {
-    wsfOsTask_t *pTask = pParam;
-    void *pMsg;
-    wsfTimer_t *pTimer;
-    DWORD status;
-    wsfEventMask_t eventMask;
-    wsfTaskEvent_t taskEventMask;
-    wsfHandlerId_t handlerId;
-    uint8_t i;
+  wsfOsTask_t       *pTask = pParam;
+  void              *pMsg;
+  wsfTimer_t        *pTimer;
+  DWORD             status;
+  wsfEventMask_t    eventMask;
+  wsfTaskEvent_t    taskEventMask;
+  wsfHandlerId_t    handlerId;
+  uint8_t           i;
 
-    WSF_TRACE_INFO0("wsfOsDispatcherTask enter");
+  WSF_TRACE_INFO0("wsfOsDispatcherTask enter");
 
-    /* initialization */
-    wsfOs.workPendingEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-    pTask->state = WSF_TASK_STATE_STARTED;
+  /* initialization */
+  wsfOs.workPendingEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+  pTask->state = WSF_TASK_STATE_STARTED;
 
-    /* task main loop */
-    for (;;) {
-        status = WaitForSingleObject(wsfOs.workPendingEvent, INFINITE);
+  /* task main loop */
+  for(;;)
+  {
+    status = WaitForSingleObject(wsfOs.workPendingEvent, INFINITE);
 
-        WSF_ASSERT(status == WAIT_OBJECT_0);
+    WSF_ASSERT(status == WAIT_OBJECT_0);
 
-        if (pTask->state == WSF_TASK_STATE_TERMINATED) {
-            break;
-        }
-
-        /* get and then clear task event mask (after updating timers) */
-        EnterCriticalSection(&wsfOs.systemLock);
-        taskEventMask = pTask->taskEventMask;
-        pTask->taskEventMask = 0;
-        LeaveCriticalSection(&wsfOs.systemLock);
-
-        if (taskEventMask & WSF_MSG_QUEUE_EVENT) {
-            /* handle msg queue */
-            while ((pMsg = WsfMsgDeq(&pTask->msgQueue, &handlerId)) != NULL) {
-                WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
-                WSF_OS_SET_ACTIVE_HANDLER_ID(handlerId);
-                (*pTask->handler[handlerId])(0, pMsg);
-                WsfMsgFree(pMsg);
-            }
-        }
-
-        if (taskEventMask & WSF_TIMER_EVENT) {
-            /* service timers */
-            while ((pTimer = WsfTimerServiceExpired(0)) != NULL) {
-                WSF_ASSERT(pTimer->handlerId < WSF_MAX_HANDLERS);
-                WSF_OS_SET_ACTIVE_HANDLER_ID(pTimer->handlerId);
-                (*pTask->handler[pTimer->handlerId])(0, &pTimer->msg);
-            }
-        }
-
-        if (taskEventMask & WSF_HANDLER_EVENT) {
-            /* service handlers */
-            for (i = 0; i < WSF_MAX_HANDLERS; i++) {
-                if (pTask->handlerEventMask[i] != 0 && pTask->handler[i] != NULL) {
-                    EnterCriticalSection(&wsfOs.systemLock);
-                    eventMask = pTask->handlerEventMask[i];
-                    pTask->handlerEventMask[i] = 0;
-                    WSF_OS_SET_ACTIVE_HANDLER_ID(i);
-                    LeaveCriticalSection(&wsfOs.systemLock);
-
-                    (*pTask->handler[i])(eventMask, NULL);
-                }
-            }
-        }
+    if (pTask->state == WSF_TASK_STATE_TERMINATED)
+    {
+      break;
     }
 
-    /* shutdown */
-    CloseHandle(&wsfOs.workPendingEvent);
-    pTask->state = WSF_TASK_STATE_FREE;
+    /* get and then clear task event mask (after updating timers) */
+    EnterCriticalSection(&wsfOs.systemLock);
+    taskEventMask = pTask->taskEventMask;
+    pTask->taskEventMask = 0;
+    LeaveCriticalSection(&wsfOs.systemLock);
 
-    WSF_TRACE_INFO0("wsfOsDispatcherTask exit");
+    if (taskEventMask & WSF_MSG_QUEUE_EVENT)
+    {
+      /* handle msg queue */
+      while ((pMsg = WsfMsgDeq(&pTask->msgQueue, &handlerId)) != NULL)
+      {
+        WSF_ASSERT(handlerId < WSF_MAX_HANDLERS);
+        WSF_OS_SET_ACTIVE_HANDLER_ID(handlerId);
+        (*pTask->handler[handlerId])(0, pMsg);
+        WsfMsgFree(pMsg);
+      }
+    }
 
-    return 0;
+    if (taskEventMask & WSF_TIMER_EVENT)
+    {
+      /* service timers */
+      while ((pTimer = WsfTimerServiceExpired(0)) != NULL)
+      {
+        WSF_ASSERT(pTimer->handlerId < WSF_MAX_HANDLERS);
+        WSF_OS_SET_ACTIVE_HANDLER_ID(pTimer->handlerId);
+        (*pTask->handler[pTimer->handlerId])(0, &pTimer->msg);
+      }
+    }
+
+    if (taskEventMask & WSF_HANDLER_EVENT)
+    {
+      /* service handlers */
+      for (i = 0; i < WSF_MAX_HANDLERS; i++)
+      {
+        if (pTask->handlerEventMask[i] != 0 && pTask->handler[i] != NULL)
+        {
+          EnterCriticalSection(&wsfOs.systemLock);
+          eventMask = pTask->handlerEventMask[i];
+          pTask->handlerEventMask[i] = 0;
+          WSF_OS_SET_ACTIVE_HANDLER_ID(i);
+          LeaveCriticalSection(&wsfOs.systemLock);
+
+          (*pTask->handler[i])(eventMask, NULL);
+        }
+      }
+    }
+  }
+
+  /* shutdown */
+  CloseHandle(&wsfOs.workPendingEvent);
+  pTask->state = WSF_TASK_STATE_FREE;
+
+  WSF_TRACE_INFO0("wsfOsDispatcherTask exit");
+
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -353,54 +365,56 @@ static unsigned int __stdcall wsfOsDispatcherTask(void *pParam)
 /*************************************************************************************************/
 static unsigned int __stdcall wsfTimerThread(void *pParam)
 {
-    HANDLE hTimer;
-    LARGE_INTEGER dueTime;
-    WORD remMs = 0;
+  HANDLE          hTimer;
+  LARGE_INTEGER   dueTime;
+  WORD            remMs = 0;
 
-    hTimer = CreateWaitableTimer(NULL, FALSE, NULL);
-    WSF_ASSERT(hTimer != NULL);
+  hTimer = CreateWaitableTimer(NULL, FALSE, NULL);
+  WSF_ASSERT(hTimer != NULL);
 
-    /* convert to 100 NS, where negative means relative time */
-    dueTime.QuadPart = (LONGLONG)(-wsfOs.msPerTick * 10000);
-    SetWaitableTimer(hTimer, &dueTime, (LONG)wsfOs.msPerTick, NULL, NULL, 0);
+  /* convert to 100 NS, where negative means relative time */
+  dueTime.QuadPart = (LONGLONG)(-wsfOs.msPerTick * 10000);
+  SetWaitableTimer(hTimer, &dueTime, (LONG)wsfOs.msPerTick, NULL, NULL, 0);
 
-    wsfOs.timerTaskState = WSF_TASK_STATE_STARTED;
+  wsfOs.timerTaskState = WSF_TASK_STATE_STARTED;
 
-    for (;;) {
-        DWORD status;
-        SYSTEMTIME curTime;
-        WORD deltaMs;
-        wsfTimerTicks_t ticks;
+  for (;;)
+  {
+    DWORD           status;
+    SYSTEMTIME      curTime;
+    WORD            deltaMs;
+    wsfTimerTicks_t ticks;
 
-        status = WaitForSingleObject(hTimer, INFINITE);
-        WSF_ASSERT(status == WAIT_OBJECT_0);
+    status = WaitForSingleObject(hTimer, INFINITE);
+    WSF_ASSERT(status == WAIT_OBJECT_0);
 
-        if (wsfOs.timerTaskState == WSF_TASK_STATE_TERMINATED) {
-            break;
-        }
-
-        /* get current time */
-        GetSystemTime(&curTime);
-
-        /* calculate elapsed ms with wraparound */
-        deltaMs = (curTime.wMilliseconds >= wsfOs.lastMs) ?
-                      (curTime.wMilliseconds - wsfOs.lastMs) :
-                      (1000 + curTime.wMilliseconds - wsfOs.lastMs);
-        wsfOs.lastMs = curTime.wMilliseconds;
-
-        /* calculate elapsed ticks and any remainder */
-        ticks = (wsfTimerTicks_t)((deltaMs + remMs) / wsfOs.msPerTick);
-        remMs = (deltaMs + remMs) % wsfOs.msPerTick;
-
-        /* update timers */
-        WsfTimerUpdate(ticks);
+    if (wsfOs.timerTaskState == WSF_TASK_STATE_TERMINATED)
+    {
+      break;
     }
 
-    CloseHandle(hTimer);
+    /* get current time */
+    GetSystemTime(&curTime);
 
-    wsfOs.timerTaskState = WSF_TASK_STATE_FREE;
+    /* calculate elapsed ms with wraparound */
+    deltaMs = (curTime.wMilliseconds >= wsfOs.lastMs) ?
+      (curTime.wMilliseconds - wsfOs.lastMs) :
+      (1000 + curTime.wMilliseconds - wsfOs.lastMs);
+    wsfOs.lastMs = curTime.wMilliseconds;
 
-    return 0;
+    /* calculate elapsed ticks and any remainder */
+    ticks = (wsfTimerTicks_t) ((deltaMs + remMs) / wsfOs.msPerTick);
+    remMs = (deltaMs + remMs) % wsfOs.msPerTick;
+
+    /* update timers */
+    WsfTimerUpdate(ticks);
+  }
+
+  CloseHandle(hTimer);
+
+  wsfOs.timerTaskState = WSF_TASK_STATE_FREE;
+
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -410,50 +424,50 @@ static unsigned int __stdcall wsfTimerThread(void *pParam)
 /*************************************************************************************************/
 void wsfOsGenericStackInit()
 {
-    SecInit();
-    SecAesInit();
-    SecCmacInit();
-    SecEccInit();
+  SecInit();
+  SecAesInit();
+  SecCmacInit();
+  SecEccInit();
 
-    /* init stack */
-    HciHandlerInit(WsfOsSetNextHandler(HciHandler));
+  /* init stack */
+  HciHandlerInit(WsfOsSetNextHandler(HciHandler));
 
-    DmAdvInit();
-    DmDevPrivInit();
-    DmScanInit();
-    DmConnInit();
-    DmConnSlaveInit();
-    DmConnMasterInit();
-    DmSecInit();
-    DmSecLescInit();
-    DmPrivInit();
-    DmPhyInit();
-    DmHandlerInit(WsfOsSetNextHandler(DmHandler));
+  DmAdvInit();
+  DmDevPrivInit();
+  DmScanInit();
+  DmConnInit();
+  DmConnSlaveInit();
+  DmConnMasterInit();
+  DmSecInit();
+  DmSecLescInit();
+  DmPrivInit();
+  DmPhyInit();
+  DmHandlerInit(WsfOsSetNextHandler(DmHandler));
 
-    L2cSlaveHandlerInit(WsfOsSetNextHandler(L2cSlaveHandler));
-    L2cInit();
-    L2cSlaveInit();
-    L2cMasterInit();
+  L2cSlaveHandlerInit(WsfOsSetNextHandler(L2cSlaveHandler));
+  L2cInit();
+  L2cSlaveInit();
+  L2cMasterInit();
 
-    L2cCocHandlerInit(WsfOsSetNextHandler(L2cCocHandler));
-    L2cCocInit();
+  L2cCocHandlerInit(WsfOsSetNextHandler(L2cCocHandler));
+  L2cCocInit();
 
-    AttHandlerInit(WsfOsSetNextHandler(AttHandler));
-    AttsInit();
-    AttsIndInit();
-    AttcInit();
-    AttcSignInit();
-    AttsSignInit();
+  AttHandlerInit(WsfOsSetNextHandler(AttHandler));
+  AttsInit();
+  AttsIndInit();
+  AttcInit();
+  AttcSignInit();
+  AttsSignInit();
 
-    SmpHandlerInit(WsfOsSetNextHandler(SmpHandler));
-    SmpiScInit();
-    SmprScInit();
-    HciSetMaxRxAclLen(251);
+  SmpHandlerInit(WsfOsSetNextHandler(SmpHandler));
+  SmpiScInit();
+  SmprScInit();
+  HciSetMaxRxAclLen(251);
 
-    AppHandlerInit(WsfOsSetNextHandler(AppHandler));
-    WdxsHandlerInit(WsfOsSetNextHandler(WdxsHandler));
+  AppHandlerInit(WsfOsSetNextHandler(AppHandler));
+  WdxsHandlerInit(WsfOsSetNextHandler(WdxsHandler));
 
-    WSF_TRACE_INFO0("wsfOsGenericStackInit");
+  WSF_TRACE_INFO0("wsfOsGenericStackInit");
 }
 
 /*************************************************************************************************/
@@ -463,59 +477,59 @@ void wsfOsGenericStackInit()
 /*************************************************************************************************/
 void wsfOsGenericExtStackInit()
 {
-    SecInit();
-    SecAesInit();
-    SecCmacInit();
-    SecEccInit();
+  SecInit();
+  SecAesInit();
+  SecCmacInit();
+  SecEccInit();
 
-    /* init stack */
-    HciHandlerInit(WsfOsSetNextHandler(HciHandler));
+  /* init stack */
+  HciHandlerInit(WsfOsSetNextHandler(HciHandler));
 
-    DmExtAdvInit();
-    DmDevPrivInit();
-    DmExtScanInit();
-    DmConnInit();
-    DmExtConnSlaveInit();
-    DmExtConnMasterInit();
-    DmSecInit();
-    DmSecLescInit();
-    DmPrivInit();
-    DmPhyInit();
-    DmConnCteInit();
-    DmPastInit();
-    DmCisInit();
-    DmCisMasterInit();
-    DmCisSlaveInit();
-    DmBisMasterInit();
-    DmBisSlaveInit();
-    DmIsoInit();
-    DmHandlerInit(WsfOsSetNextHandler(DmHandler));
+  DmExtAdvInit();
+  DmDevPrivInit();
+  DmExtScanInit();
+  DmConnInit();
+  DmExtConnSlaveInit();
+  DmExtConnMasterInit();
+  DmSecInit();
+  DmSecLescInit();
+  DmPrivInit();
+  DmPhyInit();
+  DmConnCteInit();
+  DmPastInit();
+  DmCisInit();
+  DmCisMasterInit();
+  DmCisSlaveInit();
+  DmBisMasterInit();
+  DmBisSlaveInit();
+  DmIsoInit();
+  DmHandlerInit(WsfOsSetNextHandler(DmHandler));
 
-    L2cSlaveHandlerInit(WsfOsSetNextHandler(L2cSlaveHandler));
-    L2cInit();
-    L2cSlaveInit();
-    L2cMasterInit();
+  L2cSlaveHandlerInit(WsfOsSetNextHandler(L2cSlaveHandler));
+  L2cInit();
+  L2cSlaveInit();
+  L2cMasterInit();
 
-    L2cCocHandlerInit(WsfOsSetNextHandler(L2cCocHandler));
-    L2cCocInit();
+  L2cCocHandlerInit(WsfOsSetNextHandler(L2cCocHandler));
+  L2cCocInit();
 
-    AttHandlerInit(WsfOsSetNextHandler(AttHandler));
-    AttsInit();
-    AttsIndInit();
-    AttcInit();
-    AttcSignInit();
-    AttsSignInit();
-    AttsCsfInit();
+  AttHandlerInit(WsfOsSetNextHandler(AttHandler));
+  AttsInit();
+  AttsIndInit();
+  AttcInit();
+  AttcSignInit();
+  AttsSignInit();
+  AttsCsfInit();
 
-    SmpHandlerInit(WsfOsSetNextHandler(SmpHandler));
-    SmpiScInit();
-    SmprScInit();
-    HciSetMaxRxAclLen(251);
+  SmpHandlerInit(WsfOsSetNextHandler(SmpHandler));
+  SmpiScInit();
+  SmprScInit();
+  HciSetMaxRxAclLen(251);
 
-    AppHandlerInit(WsfOsSetNextHandler(AppHandler));
-    WdxsHandlerInit(WsfOsSetNextHandler(WdxsHandler));
+  AppHandlerInit(WsfOsSetNextHandler(AppHandler));
+  WdxsHandlerInit(WsfOsSetNextHandler(WdxsHandler));
 
-    WSF_TRACE_INFO0("wsfOsGenericStackInit");
+  WSF_TRACE_INFO0("wsfOsGenericStackInit");
 }
 
 /*************************************************************************************************/
@@ -529,140 +543,141 @@ void wsfOsGenericExtStackInit()
 /*************************************************************************************************/
 void wsfOsGenericMeshStackInit(wsfTestHandler_t mmdlHandler)
 {
-    wsfHandlerId_t handlerId;
+  wsfHandlerId_t handlerId;
 
-    SecInit();
-    SecAesInit();
-    SecAesRevInit();
-    SecCmacInit();
-    SecEccInit();
-    SecCcmInit();
+  SecInit();
+  SecAesInit();
+  SecAesRevInit();
+  SecCmacInit();
+  SecEccInit();
+  SecCcmInit();
 
-    /* Initialize stack handlers. */
-    handlerId = WsfOsSetNextHandler(HciHandler);
-    HciHandlerInit(handlerId);
+  /* Initialize stack handlers. */
+  handlerId = WsfOsSetNextHandler(HciHandler);
+  HciHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(DmHandler);
-    DmDevVsInit(0);
+  handlerId = WsfOsSetNextHandler(DmHandler);
+  DmDevVsInit(0);
 
 #if (LL_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    DmExtScanInit();
-    DmExtAdvInit();
+  DmExtScanInit();
+  DmExtAdvInit();
 #else
-    DmScanInit();
-    DmAdvInit();
+  DmScanInit();
+  DmAdvInit();
 #endif
 
-    DmConnInit();
+  DmConnInit();
 #if (LL_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    DmExtConnMasterInit();
-    DmExtConnSlaveInit();
+  DmExtConnMasterInit();
+  DmExtConnSlaveInit();
 #else
-    DmConnMasterInit();
-    DmConnSlaveInit();
+  DmConnMasterInit();
+  DmConnSlaveInit();
 #endif
 
-    DmSecInit();
-    DmSecLescInit();
-    DmPrivInit();
-    DmHandlerInit(handlerId);
+  DmSecInit();
+  DmSecLescInit();
+  DmPrivInit();
+  DmHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
-    L2cSlaveHandlerInit(handlerId);
-    L2cInit();
-    L2cMasterInit();
-    L2cSlaveInit();
+  handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
+  L2cSlaveHandlerInit(handlerId);
+  L2cInit();
+  L2cMasterInit();
+  L2cSlaveInit();
 
-    handlerId = WsfOsSetNextHandler(AttHandler);
-    AttHandlerInit(handlerId);
-    AttsInit();
-    AttsIndInit();
-    AttcInit();
+  handlerId = WsfOsSetNextHandler(AttHandler);
+  AttHandlerInit(handlerId);
+  AttsInit();
+  AttsIndInit();
+  AttcInit();
 
-    handlerId = WsfOsSetNextHandler(SmpHandler);
-    SmpHandlerInit(handlerId);
-    SmpiInit();
-    SmprInit();
-    SmpiScInit();
-    SmprScInit();
-    HciSetMaxRxAclLen(100);
+  handlerId = WsfOsSetNextHandler(SmpHandler);
+  SmpHandlerInit(handlerId);
+  SmpiInit();
+  SmprInit();
+  SmpiScInit();
+  SmprScInit();
+  HciSetMaxRxAclLen(100);
 
-    /* Initialize Mesh handlers */
-    handlerId = WsfOsSetNextHandler(MeshHandler);
-    MeshHandlerInit(handlerId);
+  /* Initialize Mesh handlers */
+  handlerId = WsfOsSetNextHandler(MeshHandler);
+  MeshHandlerInit(handlerId);
 
-    /* Initialize Mesh Security handler. */
-    handlerId = WsfOsSetNextHandler(MeshSecurityHandler);
-    MeshSecurityHandlerInit(handlerId);
+  /* Initialize Mesh Security handler. */
+  handlerId = WsfOsSetNextHandler(MeshSecurityHandler);
+  MeshSecurityHandlerInit(handlerId);
 
-    /* Initialize Mesh Provisioning Server handler. */
-    handlerId = WsfOsSetNextHandler(MeshPrvSrHandler);
-    MeshPrvSrHandlerInit(handlerId);
+  /* Initialize Mesh Provisioning Server handler. */
+  handlerId = WsfOsSetNextHandler(MeshPrvSrHandler);
+  MeshPrvSrHandlerInit(handlerId);
 
-    /* Initialize Mesh Provisioning Client handler. */
-    handlerId = WsfOsSetNextHandler(MeshPrvClHandler);
-    MeshPrvClHandlerInit(handlerId);
+  /* Initialize Mesh Provisioning Client handler. */
+  handlerId = WsfOsSetNextHandler(MeshPrvClHandler);
+  MeshPrvClHandlerInit(handlerId);
 
-    /* Initialize model handler handler. */
-    handlerId = WsfOsSetNextHandler(mmdlHandler);
+  /* Initialize model handler handler. */
+  handlerId = WsfOsSetNextHandler(mmdlHandler);
 
-    /* Initialize Health Client and Server model handler. */
-    MeshHtSrHandlerInit(handlerId);
-    MeshHtClHandlerInit(handlerId);
+  /* Initialize Health Client and Server model handler. */
+  MeshHtSrHandlerInit(handlerId);
+  MeshHtClHandlerInit(handlerId);
 
-    /* Initialize Generic On Off Client and Server model handler. */
-    MmdlGenOnOffClHandlerInit(handlerId);
-    MmdlGenOnOffSrHandlerInit(handlerId);
+  /* Initialize Generic On Off Client and Server model handler. */
+  MmdlGenOnOffClHandlerInit(handlerId);
+  MmdlGenOnOffSrHandlerInit(handlerId);
 
-    /* Initialize Generic Power On Off Client and Server model handler. */
-    MmdlGenPowOnOffClHandlerInit(handlerId);
-    MmdlGenPowOnOffSrHandlerInit(handlerId);
-    MmdlGenPowOnOffSetupSrHandlerInit(handlerId);
+  /* Initialize Generic Power On Off Client and Server model handler. */
+  MmdlGenPowOnOffClHandlerInit(handlerId);
+  MmdlGenPowOnOffSrHandlerInit(handlerId);
+  MmdlGenPowOnOffSetupSrHandlerInit(handlerId);
 
-    /* Initialize Generic Level Client and Server model handler. */
-    MmdlGenLevelClHandlerInit(handlerId);
-    MmdlGenLevelSrHandlerInit(handlerId);
+  /* Initialize Generic Level Client and Server model handler. */
+  MmdlGenLevelClHandlerInit(handlerId);
+  MmdlGenLevelSrHandlerInit(handlerId);
 
-    /* Initialize Generic Default Transition Client and Server model handler. */
-    MmdlGenDefaultTransClHandlerInit(handlerId);
-    MmdlGenDefaultTransSrHandlerInit(handlerId);
+  /* Initialize Generic Default Transition Client and Server model handler. */
+  MmdlGenDefaultTransClHandlerInit(handlerId);
+  MmdlGenDefaultTransSrHandlerInit(handlerId);
 
-    /* Initialize Generic Battery Client and Server model handler. */
-    MmdlGenBatteryClHandlerInit(handlerId);
-    MmdlGenBatterySrHandlerInit(handlerId);
+  /* Initialize Generic Battery Client and Server model handler. */
+  MmdlGenBatteryClHandlerInit(handlerId);
+  MmdlGenBatterySrHandlerInit(handlerId);
 
-    /* Initialize Generic Power Level Client and Server model handler. */
-    MmdlGenPowerLevelClHandlerInit(handlerId);
-    MmdlGenPowerLevelSrHandlerInit(handlerId);
-    MmdlGenPowerLevelSetupSrHandlerInit(handlerId);
+  /* Initialize Generic Power Level Client and Server model handler. */
+  MmdlGenPowerLevelClHandlerInit(handlerId);
+  MmdlGenPowerLevelSrHandlerInit(handlerId);
+  MmdlGenPowerLevelSetupSrHandlerInit(handlerId);
 
-    /* Initialize Time Client and Server model handler. */
-    MmdlTimeClHandlerInit(handlerId);
-    MmdlTimeSrHandlerInit(handlerId);
-    MmdlTimeSetupSrHandlerInit(handlerId);
+  /* Initialize Time Client and Server model handler. */
+  MmdlTimeClHandlerInit(handlerId);
+  MmdlTimeSrHandlerInit(handlerId);
+  MmdlTimeSetupSrHandlerInit(handlerId);
 
-    /* Initialize Scene Client and Server model handler. */
-    MmdlSceneClHandlerInit(handlerId);
-    MmdlSceneSrHandlerInit(handlerId);
+  /* Initialize Scene Client and Server model handler. */
+  MmdlSceneClHandlerInit(handlerId);
+  MmdlSceneSrHandlerInit(handlerId);
 
-    /* Initialize Light Lightness Client and Server model handler. */
-    MmdlLightLightnessClHandlerInit(handlerId);
-    MmdlLightLightnessSrHandlerInit(handlerId);
-    MmdlLightLightnessSetupSrHandlerInit(handlerId);
+  /* Initialize Light Lightness Client and Server model handler. */
+  MmdlLightLightnessClHandlerInit(handlerId);
+  MmdlLightLightnessSrHandlerInit(handlerId);
+  MmdlLightLightnessSetupSrHandlerInit(handlerId);
 
-    /* Initialize Light HSL Client and Server model handler. */
-    MmdlLightHslClHandlerInit(handlerId);
-    MmdlLightHslSrHandlerInit(handlerId);
-    MmdlLightHslHueSrHandlerInit(handlerId);
-    MmdlLightHslSatSrHandlerInit(handlerId);
+  /* Initialize Light HSL Client and Server model handler. */
+  MmdlLightHslClHandlerInit(handlerId);
+  MmdlLightHslSrHandlerInit(handlerId);
+  MmdlLightHslHueSrHandlerInit(handlerId);
+  MmdlLightHslSatSrHandlerInit(handlerId);
 
-    /* Initialize Scheduler Client and Server model handler. */
-    MmdlSchedulerClHandlerInit(handlerId);
-    MmdlSchedulerSrHandlerInit(handlerId);
+  /* Initialize Scheduler Client and Server model handler. */
+  MmdlSchedulerClHandlerInit(handlerId);
+  MmdlSchedulerSrHandlerInit(handlerId);
 
-    /* Initialize Vendor Model Client model handler. */
-    MmdlVendorTestClHandlerInit(handlerId);
+  /* Initialize Vendor Model Client model handler. */
+  MmdlVendorTestClHandlerInit(handlerId);
 }
+
 
 /*************************************************************************************************/
 /*!
@@ -673,37 +688,38 @@ void wsfOsGenericMeshStackInit(wsfTestHandler_t mmdlHandler)
  *  \param  msPerTick Milliseconds per timer tick.
  */
 /*************************************************************************************************/
-void wsfOsInit(uint8_t msPerTick, uint16_t bufMemLen, uint8_t *pBufMem, uint8_t numPools,
-               wsfBufPoolDesc_t *pDesc)
+void wsfOsInit(uint8_t msPerTick, uint16_t bufMemLen, uint8_t *pBufMem,
+               uint8_t numPools, wsfBufPoolDesc_t *pDesc)
 {
-    SYSTEMTIME startTime;
+  SYSTEMTIME  startTime;
 
-    /* init OS resources */
-    memset(&wsfOs, 0, sizeof(wsfOs));
-    InitializeCriticalSection(&wsfOs.systemLock);
+  /* init OS resources */
+  memset(&wsfOs, 0, sizeof(wsfOs));
+  InitializeCriticalSection(&wsfOs.systemLock);
 
-    /* init WSF services */
-    WsfTimerInit();
-    WsfBufInit(numPools, pDesc);
+  /* init WSF services */
+  WsfTimerInit();
+  WsfBufInit(numPools, pDesc);
 
-    /* create tasks. */
-    CreateThread(0, 0, wsfOsDispatcherTask, &wsfOs.task, 0, NULL);
+  /* create tasks. */
+  CreateThread(0, 0, wsfOsDispatcherTask, &wsfOs.task, 0, NULL);
 
-    /* block until thread starts */
-    while (wsfOs.task.state != WSF_TASK_STATE_STARTED) {
-        /* yeild this task */
-        Sleep(1);
-    }
+  /* block until thread starts */
+  while (wsfOs.task.state != WSF_TASK_STATE_STARTED)
+  {
+    /* yeild this task */
+    Sleep(1);
+  }
 
-    /* init timer thread */
-    GetSystemTime(&startTime);
-    wsfOs.lastMs = startTime.wMilliseconds;
-    wsfOs.msPerTick = msPerTick;
+  /* init timer thread */
+  GetSystemTime(&startTime);
+  wsfOs.lastMs = startTime.wMilliseconds;
+  wsfOs.msPerTick = msPerTick;
 
-    /* create timer task */
-    CreateThread(0, 0, wsfTimerThread, NULL, 0, NULL);
+  /* create timer task */
+  CreateThread(0, 0, wsfTimerThread, NULL, 0, NULL);
 
-    WSF_TRACE_INFO1("wsfOsInit msPerTick:%u", msPerTick);
+  WSF_TRACE_INFO1("wsfOsInit msPerTick:%u", msPerTick);
 }
 
 /*************************************************************************************************/
@@ -713,29 +729,31 @@ void wsfOsInit(uint8_t msPerTick, uint16_t bufMemLen, uint8_t *pBufMem, uint8_t 
 /*************************************************************************************************/
 void wsfOsShutdown(void)
 {
-    /* shutdown timer thread */
-    wsfOs.timerTaskState = WSF_TASK_STATE_TERMINATED;
+  /* shutdown timer thread */
+  wsfOs.timerTaskState = WSF_TASK_STATE_TERMINATED;
 
-    /* block until task terminates */
-    while (wsfOs.timerTaskState != WSF_TASK_STATE_FREE) {
-        /* yeild this task */
-        Sleep(1);
-    }
+  /* block until task terminates */
+  while (wsfOs.timerTaskState != WSF_TASK_STATE_FREE)
+  {
+    /* yeild this task */
+    Sleep(1);
+  }
 
-    /* signal task termination */
-    wsfOs.task.state = WSF_TASK_STATE_TERMINATED;
-    SetEvent(wsfOs.workPendingEvent);
+  /* signal task termination */
+  wsfOs.task.state = WSF_TASK_STATE_TERMINATED;
+  SetEvent(wsfOs.workPendingEvent);
 
-    /* block until thread terminate */
-    while (wsfOs.task.state != WSF_TASK_STATE_FREE) {
-        /* yeild this task */
-        Sleep(1);
-    }
+  /* block until thread terminate */
+  while (wsfOs.task.state != WSF_TASK_STATE_FREE)
+  {
+    /* yeild this task */
+    Sleep(1);
+  }
 
-    /* free synchronization objects */
-    DeleteCriticalSection(&wsfOs.systemLock);
+  /* free synchronization objects */
+  DeleteCriticalSection(&wsfOs.systemLock);
 
-    WSF_TRACE_INFO0("wsfOsShutdown");
+  WSF_TRACE_INFO0("wsfOsShutdown");
 }
 
 /*************************************************************************************************/
@@ -750,7 +768,7 @@ void wsfOsShutdown(void)
 /*************************************************************************************************/
 void wsfOsSetAppHandler(wsfTestHandler_t handler, wsfTestInit_t handlerInit)
 {
-    handlerInit(WsfOsSetNextHandler(handler));
+  handlerInit(WsfOsSetNextHandler(handler));
 }
 
 /*************************************************************************************************/
@@ -762,8 +780,8 @@ void wsfOsSetAppHandler(wsfTestHandler_t handler, wsfTestInit_t handlerInit)
 /*************************************************************************************************/
 bool_t wsfOsReadyToSleep(void)
 {
-    /* Not used */
-    return FALSE;
+  /* Not used */
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -775,7 +793,7 @@ bool_t wsfOsReadyToSleep(void)
 /*************************************************************************************************/
 void wsfOsDispatcher(void)
 {
-    /* Not used */
+  /* Not used */
 }
 
 /*************************************************************************************************/
@@ -787,7 +805,7 @@ void wsfOsDispatcher(void)
 /*************************************************************************************************/
 void WsfOsInit(void)
 {
-    memset(&wsfOs.task, 0, sizeof(wsfOs.task));
+  memset(&wsfOs.task, 0, sizeof(wsfOs.task));
 }
 
 /*************************************************************************************************/
@@ -799,7 +817,7 @@ void WsfOsInit(void)
 /*************************************************************************************************/
 void WsfOsRegisterSleepCheckFunc(WsfOsIdleCheckFunc_t func)
 {
-    wsfOs.sleepCheckFuncs[wsfOs.numFunc++] = func;
+  wsfOs.sleepCheckFuncs[wsfOs.numFunc++] = func;
 }
 
 /*************************************************************************************************/
@@ -809,20 +827,24 @@ void WsfOsRegisterSleepCheckFunc(WsfOsIdleCheckFunc_t func)
 /*************************************************************************************************/
 void WsfOsEnterMainLoop(void)
 {
-    while (TRUE) {
-        WsfTimerSleepUpdate();
-        wsfOsDispatcher();
+  while(TRUE)
+  {
+    WsfTimerSleepUpdate();
+    wsfOsDispatcher();
 
-        bool_t pendingFlag = FALSE;
+    bool_t pendingFlag = FALSE;
 
-        for (uint8_t i = 0; i < wsfOs.numFunc; i++) {
-            if (wsfOs.sleepCheckFuncs[i]) {
-                pendingFlag |= wsfOs.sleepCheckFuncs[i]();
-            }
-        }
-
-        if (!pendingFlag) {
-            WsfTimerSleep();
-        }
+    for (uint8_t i = 0; i < wsfOs.numFunc; i++)
+    {
+      if (wsfOs.sleepCheckFuncs[i])
+      {
+        pendingFlag |= wsfOs.sleepCheckFuncs[i]();
+      }
     }
+
+    if (!pendingFlag)
+    {
+      WsfTimerSleep();
+    }
+  }
 }

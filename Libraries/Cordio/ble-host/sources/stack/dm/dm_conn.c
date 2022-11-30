@@ -39,43 +39,72 @@
 **************************************************************************************************/
 
 /* Translate HCI event to state machine message */
-#define DM_CONN_HCI_EVT_2_MSG(evt) (DM_CONN_MSG_HCI_DISCONNECT_CMPL - 3 + (evt))
+#define DM_CONN_HCI_EVT_2_MSG(evt)  (DM_CONN_MSG_HCI_DISCONNECT_CMPL - 3 + (evt))
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /* Conn spec defaults */
-static const hciConnSpec_t dmConnSpecDefaults = {
-    DM_GAP_INITIAL_CONN_INT_MIN, DM_GAP_INITIAL_CONN_INT_MAX, DM_GAP_CONN_EST_LATENCY,
-    DM_DEFAULT_EST_SUP_TIMEOUT,  DM_GAP_CONN_EST_MIN_CE_LEN,  DM_GAP_CONN_EST_MAX_CE_LEN
+static const hciConnSpec_t dmConnSpecDefaults =
+{
+  DM_GAP_INITIAL_CONN_INT_MIN,
+  DM_GAP_INITIAL_CONN_INT_MAX,
+  DM_GAP_CONN_EST_LATENCY,
+  DM_DEFAULT_EST_SUP_TIMEOUT,
+  DM_GAP_CONN_EST_MIN_CE_LEN,
+  DM_GAP_CONN_EST_MAX_CE_LEN
 };
 
 /* Action set for this module */
-static const dmConnAct_t dmConnActSetMain[] = { dmConnSmActNone,       dmConnSmActClose,
-                                                dmConnSmActConnOpened, dmConnSmActConnFailed,
-                                                dmConnSmActConnClosed, dmConnSmActHciUpdated };
+static const dmConnAct_t dmConnActSetMain[] =
+{
+  dmConnSmActNone,
+  dmConnSmActClose,
+  dmConnSmActConnOpened,
+  dmConnSmActConnFailed,
+  dmConnSmActConnClosed,
+  dmConnSmActHciUpdated
+};
 
 /* Action set for Connection Update module */
-static const dmConnAct_t dmConnUpdActSetMain[] = { dmConnUpdActNone };
+static const dmConnAct_t dmConnUpdActSetMain[] =
+{
+  dmConnUpdActNone
+};
 
 /* Component function interface */
-static const dmFcnIf_t dmConnFcnIf = { dmConnReset, dmConnHciHandler, dmConnMsgHandler };
+static const dmFcnIf_t dmConnFcnIf =
+{
+  dmConnReset,
+  dmConnHciHandler,
+  dmConnMsgHandler
+};
 
 /* Component 2 function interface */
-static const dmFcnIf_t dmConn2FcnIf = { dmEmptyReset, dmConn2HciHandler, dmConn2MsgHandler };
+static const dmFcnIf_t dmConn2FcnIf =
+{
+  dmEmptyReset,
+  dmConn2HciHandler,
+  dmConn2MsgHandler
+};
 
 /* Connection update function interface */
-static const dmFcnIf_t dmConnUpdFcnIf = { dmEmptyReset, (dmHciHandler_t)dmEmptyHandler,
-                                          dmConnUpdMsgHandler };
+static const dmFcnIf_t dmConnUpdFcnIf =
+{
+  dmEmptyReset,
+  (dmHciHandler_t) dmEmptyHandler,
+  dmConnUpdMsgHandler
+};
 
 /*! Connection update action table */
-static const uint8_t dmConnUpdActTbl[DM_CONN_UPD_NUM_MSGS] = {
-    /* Event                      Action */
-    /* API_UPDATE_MASTER */ DM_CONN_UPD_ACT_UPDATE_MASTER,
-    /* API_UPDATE_SLAVE */ DM_CONN_UPD_ACT_UPDATE_SLAVE,
-    /* L2C_UPDATE_IND */ DM_CONN_UPD_ACT_L2C_UPDATE_IND,
-    /* L2C_UPDATE_CNF */ DM_CONN_UPD_ACT_L2C_UPDATE_CNF
+static const uint8_t dmConnUpdActTbl[DM_CONN_UPD_NUM_MSGS] =
+{
+  /* Event                      Action */
+  /* API_UPDATE_MASTER */       DM_CONN_UPD_ACT_UPDATE_MASTER,
+  /* API_UPDATE_SLAVE */        DM_CONN_UPD_ACT_UPDATE_SLAVE,
+  /* L2C_UPDATE_IND */          DM_CONN_UPD_ACT_L2C_UPDATE_IND,
+  /* L2C_UPDATE_CNF */          DM_CONN_UPD_ACT_L2C_UPDATE_CNF
 };
 
 /**************************************************************************************************
@@ -109,21 +138,23 @@ static void dmConn2ActReqPeerSca(dmConnCcb_t *pCcb, hciEvt_t *pEvent);
 /*************************************************************************************************/
 static dmConnCcb_t *dmConnCmplStates(void)
 {
-    dmConnCcb_t *pCcb = dmConnCb.ccb;
-    uint8_t i;
+  dmConnCcb_t   *pCcb = dmConnCb.ccb;
+  uint8_t       i;
 
-    /* if there's a ccb in accepting state */
-    for (i = DM_CONN_MAX; i > 0; i--, pCcb++) {
-        /* look for connection in accepting state or disconnecting state, cancelled connection */
-        if (pCcb->inUse && ((pCcb->state == DM_CONN_SM_ST_ACCEPTING) ||
-                            ((pCcb->state == DM_CONN_SM_ST_DISCONNECTING) &&
-                             (pCcb->handle == DM_CONN_HCI_HANDLE_NONE)))) {
-            DM_TRACE_INFO1("dmConnCmplStates %d", pCcb->connId);
-            return pCcb;
-        }
+  /* if there's a ccb in accepting state */
+  for (i = DM_CONN_MAX; i > 0; i--, pCcb++)
+  {
+    /* look for connection in accepting state or disconnecting state, cancelled connection */
+    if (pCcb->inUse &&
+        ((pCcb->state == DM_CONN_SM_ST_ACCEPTING) ||
+         ((pCcb->state == DM_CONN_SM_ST_DISCONNECTING) && (pCcb->handle == DM_CONN_HCI_HANDLE_NONE))))
+    {
+      DM_TRACE_INFO1("dmConnCmplStates %d", pCcb->connId);
+      return pCcb;
     }
+  }
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -137,29 +168,31 @@ static dmConnCcb_t *dmConnCmplStates(void)
 /*************************************************************************************************/
 dmConnCcb_t *dmConnCcbAlloc(uint8_t *pAddr)
 {
-    dmConnCcb_t *pCcb = dmConnCb.ccb;
-    uint8_t i;
+  dmConnCcb_t   *pCcb = dmConnCb.ccb;
+  uint8_t       i;
 
-    for (i = 0; i < DM_CONN_MAX; i++, pCcb++) {
-        if (pCcb->inUse == FALSE) {
-            memset(pCcb, 0, sizeof(dmConnCcb_t));
+  for (i = 0; i < DM_CONN_MAX; i++, pCcb++)
+  {
+    if (pCcb->inUse == FALSE)
+    {
+      memset(pCcb, 0, sizeof(dmConnCcb_t));
 
-            BdaCpy(pCcb->peerAddr, pAddr);
-            pCcb->handle = DM_CONN_HCI_HANDLE_NONE;
-            pCcb->connId = i + 1;
-            pCcb->updating = FALSE;
-            pCcb->inUse = TRUE;
-            pCcb->featuresPresent = FALSE;
+      BdaCpy(pCcb->peerAddr, pAddr);
+      pCcb->handle = DM_CONN_HCI_HANDLE_NONE;
+      pCcb->connId = i + 1;
+      pCcb->updating = FALSE;
+      pCcb->inUse = TRUE;
+      pCcb->featuresPresent = FALSE;
 
-            DM_TRACE_ALLOC1("dmConnCcbAlloc %d", pCcb->connId);
+      DM_TRACE_ALLOC1("dmConnCcbAlloc %d", pCcb->connId);
 
-            return pCcb;
-        }
+      return pCcb;
     }
+  }
 
-    DM_TRACE_ERR0("dmConnCcbAlloc failed");
+  DM_TRACE_ERR0("dmConnCcbAlloc failed");
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -173,9 +206,9 @@ dmConnCcb_t *dmConnCcbAlloc(uint8_t *pAddr)
 /*************************************************************************************************/
 void dmConnCcbDealloc(dmConnCcb_t *pCcb)
 {
-    DM_TRACE_FREE1("dmConnCcbDealloc %d", pCcb->connId);
+  DM_TRACE_FREE1("dmConnCcbDealloc %d", pCcb->connId);
 
-    pCcb->inUse = FALSE;
+  pCcb->inUse = FALSE;
 }
 
 /*************************************************************************************************/
@@ -189,18 +222,20 @@ void dmConnCcbDealloc(dmConnCcb_t *pCcb)
 /*************************************************************************************************/
 dmConnCcb_t *dmConnCcbByHandle(uint16_t handle)
 {
-    dmConnCcb_t *pCcb = dmConnCb.ccb;
-    uint8_t i;
+  dmConnCcb_t   *pCcb = dmConnCb.ccb;
+  uint8_t       i;
 
-    for (i = DM_CONN_MAX; i > 0; i--, pCcb++) {
-        if (pCcb->inUse && (pCcb->handle == handle)) {
-            return pCcb;
-        }
+  for (i = DM_CONN_MAX; i > 0; i--, pCcb++)
+  {
+    if (pCcb->inUse && (pCcb->handle == handle))
+    {
+      return pCcb;
     }
+  }
 
-    DM_TRACE_WARN1("dmConnCcbByHandle not found 0x%04x", handle);
+  DM_TRACE_WARN1("dmConnCcbByHandle not found 0x%04x", handle);
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -214,18 +249,20 @@ dmConnCcb_t *dmConnCcbByHandle(uint16_t handle)
 /*************************************************************************************************/
 dmConnCcb_t *dmConnCcbByBdAddr(uint8_t *pAddr)
 {
-    dmConnCcb_t *pCcb = dmConnCb.ccb;
-    uint8_t i;
+  dmConnCcb_t   *pCcb = dmConnCb.ccb;
+  uint8_t       i;
 
-    for (i = DM_CONN_MAX; i > 0; i--, pCcb++) {
-        if (pCcb->inUse && BdaCmp(pCcb->peerAddr, pAddr)) {
-            return pCcb;
-        }
+  for (i = DM_CONN_MAX; i > 0; i--, pCcb++)
+  {
+    if (pCcb->inUse && BdaCmp(pCcb->peerAddr, pAddr))
+    {
+      return pCcb;
     }
+  }
 
-    DM_TRACE_INFO0("dmConnIdByBdAddr not found");
+  DM_TRACE_INFO0("dmConnIdByBdAddr not found");
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -239,14 +276,15 @@ dmConnCcb_t *dmConnCcbByBdAddr(uint8_t *pAddr)
 /*************************************************************************************************/
 dmConnCcb_t *dmConnCcbById(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    connId--;
-    if (dmConnCb.ccb[connId].inUse) {
-        return &dmConnCb.ccb[connId];
-    }
+  connId--;
+  if (dmConnCb.ccb[connId].inUse)
+  {
+    return &dmConnCb.ccb[connId];
+  }
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -258,16 +296,18 @@ dmConnCcb_t *dmConnCcbById(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t dmConnNum(void)
 {
-    dmConnCcb_t *pCcb = dmConnCb.ccb;
-    uint8_t i, j;
+  dmConnCcb_t   *pCcb = dmConnCb.ccb;
+  uint8_t       i, j;
 
-    for (i = DM_CONN_MAX, j = 0; i > 0; i--, pCcb++) {
-        if (pCcb->inUse) {
-            j++;
-        }
+  for (i = DM_CONN_MAX, j = 0; i > 0; i--, pCcb++)
+  {
+    if (pCcb->inUse)
+    {
+      j++;
     }
+  }
 
-    return j;
+  return j;
 }
 
 /*************************************************************************************************/
@@ -282,13 +322,15 @@ uint8_t dmConnNum(void)
 /*************************************************************************************************/
 void dmConnExecCback(dmConnMsg_t *pMsg)
 {
-    uint8_t i;
+  uint8_t i;
 
-    for (i = 0; i < DM_CLIENT_ID_MAX; i++) {
-        if (dmConnCb.connCback[i] != NULL) {
-            (*dmConnCb.connCback[i])((dmEvt_t *)pMsg);
-        }
+  for (i = 0; i < DM_CLIENT_ID_MAX; i++)
+  {
+    if (dmConnCb.connCback[i] != NULL)
+    {
+      (*dmConnCb.connCback[i])((dmEvt_t *) pMsg);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -309,52 +351,57 @@ void dmConnExecCback(dmConnMsg_t *pMsg)
  */
 /*************************************************************************************************/
 dmConnId_t dmConnOpenAccept(uint8_t clientId, uint8_t initPhys, uint8_t advHandle, uint8_t advType,
-                            uint16_t duration, uint8_t maxEaEvents, uint8_t addrType,
-                            uint8_t *pAddr, uint8_t role)
+                            uint16_t duration, uint8_t maxEaEvents, uint8_t addrType, uint8_t *pAddr,
+                            uint8_t role)
 {
-    dmConnCcb_t *pCcb = NULL;
-    dmConnApiOpen_t *pMsg;
+  dmConnCcb_t           *pCcb = NULL;
+  dmConnApiOpen_t       *pMsg;
 
-    /* make sure ccb not already allocated */
-    WsfTaskLock();
-    if ((pCcb = dmConnCcbByBdAddr(pAddr)) == NULL) {
-        /* allocate ccb */
-        pCcb = dmConnCcbAlloc(pAddr);
+  /* make sure ccb not already allocated */
+  WsfTaskLock();
+  if ((pCcb = dmConnCcbByBdAddr(pAddr)) == NULL)
+  {
+    /* allocate ccb */
+    pCcb = dmConnCcbAlloc(pAddr);
+  }
+  WsfTaskUnlock();
+
+  if (pCcb != NULL)
+  {
+    // Allocate sizeof(dmConnMsg_t) because message may be reused in state machine with different callbacks
+    if ((pMsg = WsfMsgAlloc(sizeof(dmConnMsg_t))) != NULL)
+    {
+      pMsg->hdr.param = pCcb->connId;
+      pMsg->hdr.event = (role == DM_ROLE_MASTER) ?
+                        DM_CONN_MSG_API_OPEN : DM_CONN_MSG_API_ACCEPT;
+      pMsg->initPhys = initPhys;
+      pMsg->advHandle = advHandle;
+      pMsg->advType = advType;
+      pMsg->duration = duration;
+      pMsg->maxEaEvents = maxEaEvents;
+      BdaCpy(pMsg->peerAddr, pAddr);
+      pMsg->addrType = addrType;
+      pMsg->clientId = clientId;
+      WsfMsgSend(dmCb.handlerId, pMsg);
+
+      /* set role */
+      WsfTaskLock();
+      pCcb->role = role;
+      WsfTaskUnlock();
+
+      /* return connection id */
+      return pCcb->connId;
     }
-    WsfTaskUnlock();
-
-    if (pCcb != NULL) {
-        // Allocate sizeof(dmConnMsg_t) because message may be reused in state machine with different callbacks
-        if ((pMsg = WsfMsgAlloc(sizeof(dmConnMsg_t))) != NULL) {
-            pMsg->hdr.param = pCcb->connId;
-            pMsg->hdr.event = (role == DM_ROLE_MASTER) ? DM_CONN_MSG_API_OPEN :
-                                                         DM_CONN_MSG_API_ACCEPT;
-            pMsg->initPhys = initPhys;
-            pMsg->advHandle = advHandle;
-            pMsg->advType = advType;
-            pMsg->duration = duration;
-            pMsg->maxEaEvents = maxEaEvents;
-            BdaCpy(pMsg->peerAddr, pAddr);
-            pMsg->addrType = addrType;
-            pMsg->clientId = clientId;
-            WsfMsgSend(dmCb.handlerId, pMsg);
-
-            /* set role */
-            WsfTaskLock();
-            pCcb->role = role;
-            WsfTaskUnlock();
-
-            /* return connection id */
-            return pCcb->connId;
-        } else {
-            WsfTaskLock();
-            dmConnCcbDealloc(pCcb);
-            WsfTaskUnlock();
-        }
+    else
+    {
+      WsfTaskLock();
+      dmConnCcbDealloc(pCcb);
+      WsfTaskUnlock();
     }
+  }
 
-    /* open failed */
-    return DM_CONN_ID_NONE;
+  /* open failed */
+  return DM_CONN_ID_NONE;
 }
 
 /*************************************************************************************************/
@@ -369,7 +416,7 @@ dmConnId_t dmConnOpenAccept(uint8_t clientId, uint8_t initPhys, uint8_t advHandl
 /*************************************************************************************************/
 void dmConnSmActNone(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    return;
+  return;
 }
 
 /*************************************************************************************************/
@@ -384,7 +431,7 @@ void dmConnSmActNone(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnSmActClose(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    HciDisconnectCmd(pCcb->handle, pMsg->apiClose.reason);
+  HciDisconnectCmd(pCcb->handle, pMsg->apiClose.reason);
 }
 
 /*************************************************************************************************/
@@ -399,50 +446,58 @@ void dmConnSmActClose(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnSmActConnOpened(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    /* store peer address, handle, and role */
-    BdaCpy(pCcb->peerAddr, pMsg->hciLeConnCmpl.peerAddr);
-    pCcb->handle = pMsg->hciLeConnCmpl.handle;
-    pCcb->peerAddrType = DmHostAddrType(pMsg->hciLeConnCmpl.addrType);
-    pCcb->role = pMsg->hciLeConnCmpl.role;
+  /* store peer address, handle, and role */
+  BdaCpy(pCcb->peerAddr, pMsg->hciLeConnCmpl.peerAddr);
+  pCcb->handle = pMsg->hciLeConnCmpl.handle;
+  pCcb->peerAddrType = DmHostAddrType(pMsg->hciLeConnCmpl.addrType);
+  pCcb->role = pMsg->hciLeConnCmpl.role;
 
-    /* set local address type of connection */
-    if (pCcb->role == DM_ROLE_MASTER) {
-        pCcb->localAddrType = dmCb.connAddrType;
-    } else {
-        pCcb->localAddrType = dmCb.advAddrType;
+  /* set local address type of connection */
+  if (pCcb->role == DM_ROLE_MASTER)
+  {
+    pCcb->localAddrType = dmCb.connAddrType;
+  }
+  else
+  {
+    pCcb->localAddrType = dmCb.advAddrType;
+  }
+
+  /* set local address of connection */
+  if (pCcb->localAddrType == DM_ADDR_PUBLIC)
+  {
+    BdaCpy(pCcb->localAddr, HciGetBdAddr());
+  }
+  else
+  {
+    BdaCpy(pCcb->localAddr, dmCb.localAddr);
+  }
+
+  /* store enhanced fields */
+  BdaCpy(pCcb->localRpa, pMsg->hciLeConnCmpl.localRpa);
+  BdaCpy(pCcb->peerRpa, pMsg->hciLeConnCmpl.peerRpa);
+
+  /* initialize idle state */
+  pCcb->idleMask = 0;
+
+  /* if central */
+  if (pCcb->role == DM_ROLE_MASTER)
+  {
+    /* pass connection initiation completed to dev priv */
+    dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_STOP, 0 , 0);
+
+    /* if first connection opened */
+    if (dmConnNum() == 1)
+    {
+      /* pass conn open event to dev priv */
+      dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_RPA_START, DM_CONN_OPEN_IND, 0, 0);
     }
+  }
 
-    /* set local address of connection */
-    if (pCcb->localAddrType == DM_ADDR_PUBLIC) {
-        BdaCpy(pCcb->localAddr, HciGetBdAddr());
-    } else {
-        BdaCpy(pCcb->localAddr, dmCb.localAddr);
-    }
+  /* pass conn open event to Connection CTE */
+  dmDevPassEvtToConnCte(DM_CONN_OPEN_IND, pCcb->connId);
 
-    /* store enhanced fields */
-    BdaCpy(pCcb->localRpa, pMsg->hciLeConnCmpl.localRpa);
-    BdaCpy(pCcb->peerRpa, pMsg->hciLeConnCmpl.peerRpa);
-
-    /* initialize idle state */
-    pCcb->idleMask = 0;
-
-    /* if central */
-    if (pCcb->role == DM_ROLE_MASTER) {
-        /* pass connection initiation completed to dev priv */
-        dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_STOP, 0, 0);
-
-        /* if first connection opened */
-        if (dmConnNum() == 1) {
-            /* pass conn open event to dev priv */
-            dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_RPA_START, DM_CONN_OPEN_IND, 0, 0);
-        }
-    }
-
-    /* pass conn open event to Connection CTE */
-    dmDevPassEvtToConnCte(DM_CONN_OPEN_IND, pCcb->connId);
-
-    pMsg->hdr.event = DM_CONN_OPEN_IND;
-    dmConnExecCback(pMsg);
+  pMsg->hdr.event = DM_CONN_OPEN_IND;
+  dmConnExecCback(pMsg);
 }
 
 /*************************************************************************************************/
@@ -457,24 +512,26 @@ void dmConnSmActConnOpened(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnSmActConnFailed(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    /* deallocate ccb */
-    dmConnCcbDealloc(pCcb);
+  /* deallocate ccb */
+  dmConnCcbDealloc(pCcb);
 
-    /* if central */
-    if (pCcb->role == DM_ROLE_MASTER) {
-        /* pass connection initiation completed to dev priv */
-        dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_STOP, 0, 0);
+  /* if central */
+  if (pCcb->role == DM_ROLE_MASTER)
+  {
+    /* pass connection initiation completed to dev priv */
+    dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_STOP, 0, 0);
 
-        /* if last connection closed */
-        if (dmConnNum() == 0) {
-            /* pass conn close event to dev priv */
-            dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_RPA_STOP, DM_CONN_CLOSE_IND, 0, 0);
-        }
+    /* if last connection closed */
+    if (dmConnNum() == 0)
+    {
+      /* pass conn close event to dev priv */
+      dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_RPA_STOP, DM_CONN_CLOSE_IND, 0 , 0);
     }
+  }
 
-    pMsg->hdr.event = DM_CONN_CLOSE_IND;
-    pMsg->hciLeConnCmpl.handle = pMsg->hciLeConnCmpl.role = 0;
-    dmConnExecCback(pMsg);
+  pMsg->hdr.event = DM_CONN_CLOSE_IND;
+  pMsg->hciLeConnCmpl.handle = pMsg->hciLeConnCmpl.role = 0;
+  dmConnExecCback(pMsg);
 }
 
 /*************************************************************************************************/
@@ -489,20 +546,21 @@ void dmConnSmActConnFailed(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnSmActConnClosed(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    /* pass conn close event to Connection CTE */
-    dmDevPassEvtToConnCte(DM_CONN_CLOSE_IND, pCcb->connId);
+  /* pass conn close event to Connection CTE */
+  dmDevPassEvtToConnCte(DM_CONN_CLOSE_IND, pCcb->connId);
 
-    /* deallocate ccb */
-    dmConnCcbDealloc(pCcb);
+  /* deallocate ccb */
+  dmConnCcbDealloc(pCcb);
 
-    /* if central and last connection closed */
-    if ((pCcb->role == DM_ROLE_MASTER) && (dmConnNum() == 0)) {
-        /* pass conn close event to dev priv */
-        dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_RPA_STOP, DM_CONN_CLOSE_IND, 0, 0);
-    }
+  /* if central and last connection closed */
+  if ((pCcb->role == DM_ROLE_MASTER) && (dmConnNum() == 0))
+  {
+    /* pass conn close event to dev priv */
+    dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_RPA_STOP, DM_CONN_CLOSE_IND, 0, 0);
+  }
 
-    pMsg->hdr.event = DM_CONN_CLOSE_IND;
-    dmConnExecCback(pMsg);
+  pMsg->hdr.event = DM_CONN_CLOSE_IND;
+  dmConnExecCback(pMsg);
 }
 
 /*************************************************************************************************/
@@ -517,9 +575,9 @@ void dmConnSmActConnClosed(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnSmActHciUpdated(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    /* call callback */
-    pMsg->hdr.event = DM_CONN_UPDATE_IND;
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)pMsg);
+  /* call callback */
+  pMsg->hdr.event = DM_CONN_UPDATE_IND;
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) pMsg);
 }
 
 /*************************************************************************************************/
@@ -534,7 +592,7 @@ void dmConnSmActHciUpdated(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnUpdActNone(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    return;
+  return;
 }
 
 /*************************************************************************************************/
@@ -549,25 +607,28 @@ void dmConnUpdActNone(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnUpdExecute(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    dmConnAct_t *actSet;
-    uint8_t action;
+  dmConnAct_t *actSet;
+  uint8_t     action;
 
-    DM_TRACE_INFO2("dmConnUpdExecute event=%d state=%d", pMsg->hdr.event, pCcb->state);
+  DM_TRACE_INFO2("dmConnUpdExecute event=%d state=%d", pMsg->hdr.event, pCcb->state);
 
-    /* get action */
-    action = dmConnUpdActTbl[DM_MSG_MASK(pMsg->hdr.event)];
+  /* get action */
+  action = dmConnUpdActTbl[DM_MSG_MASK(pMsg->hdr.event)];
 
-    /* look up action set */
-    actSet = dmConnUpdActSet[DM_CONN_ACT_SET_ID(action)];
+  /* look up action set */
+  actSet = dmConnUpdActSet[DM_CONN_ACT_SET_ID(action)];
 
-    /* if action set present */
-    if (actSet != NULL) {
-        /* execute action function in action set */
-        (*actSet[DM_CONN_ACT_ID(action)])(pCcb, pMsg);
-    } else {
-        /* no action */
-        dmConnUpdActNone(pCcb, (dmConnMsg_t *)pMsg);
-    }
+  /* if action set present */
+  if (actSet != NULL)
+  {
+    /* execute action function in action set */
+    (*actSet[DM_CONN_ACT_ID(action)])(pCcb, pMsg);
+  }
+  else
+  {
+    /* no action */
+    dmConnUpdActNone(pCcb, (dmConnMsg_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -579,34 +640,37 @@ void dmConnUpdExecute(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnReset(void)
 {
-    dmConnCcb_t *pCcb = dmConnCb.ccb;
-    hciDisconnectCmplEvt_t disconnectCmpl;
-    uint8_t i;
+  dmConnCcb_t             *pCcb = dmConnCb.ccb;
+  hciDisconnectCmplEvt_t  disconnectCmpl;
+  uint8_t                 i;
 
-    /* generate HCI disconnect complete event */
-    disconnectCmpl.hdr.event = HCI_DISCONNECT_CMPL_CBACK_EVT;
-    disconnectCmpl.hdr.status = disconnectCmpl.status = HCI_SUCCESS;
-    disconnectCmpl.reason = HCI_ERR_LOCAL_TERMINATED;
+  /* generate HCI disconnect complete event */
+  disconnectCmpl.hdr.event = HCI_DISCONNECT_CMPL_CBACK_EVT;
+  disconnectCmpl.hdr.status = disconnectCmpl.status = HCI_SUCCESS;
+  disconnectCmpl.reason = HCI_ERR_LOCAL_TERMINATED;
 
-    for (i = DM_CONN_MAX; i > 0; i--, pCcb++) {
-        if (pCcb->inUse) {
-            /* set connection id */
-            disconnectCmpl.hdr.param = disconnectCmpl.handle = pCcb->handle;
+  for (i = DM_CONN_MAX; i > 0; i--, pCcb++)
+  {
+    if (pCcb->inUse)
+    {
+      /* set connection id */
+      disconnectCmpl.hdr.param = disconnectCmpl.handle = pCcb->handle;
 
-            /* handle the event */
-            dmConnHciHandler((hciEvt_t *)&disconnectCmpl);
-        }
+      /* handle the event */
+      dmConnHciHandler((hciEvt_t *) &disconnectCmpl);
     }
+  }
 
-    /* initialize control block */
-    for (i = 0; i < DM_NUM_PHYS; i++) {
-        dmConnCb.scanInterval[i] = DM_GAP_SCAN_FAST_INT_MIN;
-        dmConnCb.scanWindow[i] = DM_GAP_SCAN_FAST_WINDOW;
-        dmConnCb.connSpec[i] = dmConnSpecDefaults;
-    }
+  /* initialize control block */
+  for (i = 0; i < DM_NUM_PHYS; i++)
+  {
+    dmConnCb.scanInterval[i] = DM_GAP_SCAN_FAST_INT_MIN;
+    dmConnCb.scanWindow[i] = DM_GAP_SCAN_FAST_WINDOW;
+    dmConnCb.connSpec[i] = dmConnSpecDefaults;
+  }
 
-    dmCb.initFiltPolicy = HCI_FILT_NONE;
-    dmCb.connAddrType = DM_ADDR_PUBLIC;
+  dmCb.initFiltPolicy = HCI_FILT_NONE;
+  dmCb.connAddrType = DM_ADDR_PUBLIC;
 }
 
 /*************************************************************************************************/
@@ -620,13 +684,14 @@ void dmConnReset(void)
 /*************************************************************************************************/
 void dmConnMsgHandler(wsfMsgHdr_t *pMsg)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    /* look up ccb from conn id */
-    if ((pCcb = dmConnCcbById((dmConnId_t)pMsg->param)) != NULL) {
-        /* execute state machine */
-        dmConnSmExecute(pCcb, (dmConnMsg_t *)pMsg);
-    }
+  /* look up ccb from conn id */
+  if ((pCcb = dmConnCcbById((dmConnId_t) pMsg->param)) != NULL)
+  {
+    /* execute state machine */
+    dmConnSmExecute(pCcb, (dmConnMsg_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -640,44 +705,53 @@ void dmConnMsgHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void dmConnHciHandler(hciEvt_t *pEvent)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    /* handle special cases for connection complete event */
-    if ((pEvent->hdr.event == HCI_LE_CONN_CMPL_CBACK_EVT) ||
-        (pEvent->hdr.event == HCI_LE_ENHANCED_CONN_CMPL_CBACK_EVT)) {
-        /* first check if ccb exists for this bd addr */
-        if ((pCcb = dmConnCcbByBdAddr(pEvent->leConnCmpl.peerAddr)) == NULL) {
-            /* check for special case states */
-            if ((pCcb = dmConnCmplStates()) == NULL) {
-                /* else default case for slave, allocate new ccb */
-                if ((pEvent->hdr.status == HCI_SUCCESS) &&
-                    (pEvent->leConnCmpl.role == HCI_ROLE_SLAVE)) {
-                    pCcb = dmConnCcbAlloc(pEvent->leConnCmpl.peerAddr);
-                }
-            }
+  /* handle special cases for connection complete event */
+  if ((pEvent->hdr.event == HCI_LE_CONN_CMPL_CBACK_EVT) ||
+      (pEvent->hdr.event == HCI_LE_ENHANCED_CONN_CMPL_CBACK_EVT))
+  {
+    /* first check if ccb exists for this bd addr */
+    if ((pCcb = dmConnCcbByBdAddr(pEvent->leConnCmpl.peerAddr)) == NULL)
+    {
+      /* check for special case states */
+      if ((pCcb = dmConnCmplStates()) == NULL)
+      {
+        /* else default case for slave, allocate new ccb */
+        if ((pEvent->hdr.status == HCI_SUCCESS) && (pEvent->leConnCmpl.role == HCI_ROLE_SLAVE))
+        {
+          pCcb = dmConnCcbAlloc(pEvent->leConnCmpl.peerAddr);
         }
-
-        /* translate HCI event to state machine event */
-        if (pEvent->hdr.status == HCI_SUCCESS) {
-            pEvent->hdr.event = DM_CONN_MSG_HCI_LE_CONN_CMPL;
-        } else {
-            pEvent->hdr.event = DM_CONN_MSG_HCI_LE_CONN_CMPL_FAIL;
-        }
-    } else {
-        pCcb = dmConnCcbByHandle(pEvent->hdr.param);
-
-        /* translate HCI event to state machine message */
-        pEvent->hdr.event = DM_CONN_HCI_EVT_2_MSG(pEvent->hdr.event);
+      }
     }
 
-    /* if ccb found */
-    if (pCcb != NULL) {
-        /* set conn id */
-        pEvent->hdr.param = pCcb->connId;
-
-        /* execute state machine */
-        dmConnSmExecute(pCcb, (dmConnMsg_t *)pEvent);
+    /* translate HCI event to state machine event */
+    if (pEvent->hdr.status == HCI_SUCCESS)
+    {
+      pEvent->hdr.event =  DM_CONN_MSG_HCI_LE_CONN_CMPL;
     }
+    else
+    {
+      pEvent->hdr.event = DM_CONN_MSG_HCI_LE_CONN_CMPL_FAIL;
+    }
+  }
+  else
+  {
+    pCcb = dmConnCcbByHandle(pEvent->hdr.param);
+
+    /* translate HCI event to state machine message */
+    pEvent->hdr.event = DM_CONN_HCI_EVT_2_MSG(pEvent->hdr.event);
+  }
+
+  /* if ccb found */
+  if (pCcb != NULL)
+  {
+    /* set conn id */
+    pEvent->hdr.param = pCcb->connId;
+
+    /* execute state machine */
+    dmConnSmExecute(pCcb, (dmConnMsg_t *) pEvent);
+  }
 }
 
 /*************************************************************************************************/
@@ -691,51 +765,56 @@ void dmConnHciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 void dmConn2MsgHandler(wsfMsgHdr_t *pMsg)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    /* look up ccb from conn id */
-    if ((pCcb = dmConnCcbById((dmConnId_t)pMsg->param)) != NULL) {
-        dmConn2Msg_t *pConn2Msg = (dmConn2Msg_t *)pMsg;
+  /* look up ccb from conn id */
+  if ((pCcb = dmConnCcbById((dmConnId_t) pMsg->param)) != NULL)
+  {
+    dmConn2Msg_t *pConn2Msg = (dmConn2Msg_t *) pMsg;
 
-        /* handle incoming message */
-        switch (pMsg->event) {
-        case DM_CONN_MSG_API_READ_RSSI:
-            HciReadRssiCmd(pCcb->handle);
-            break;
+    /* handle incoming message */
+    switch (pMsg->event)
+    {
+      case DM_CONN_MSG_API_READ_RSSI:
+        HciReadRssiCmd(pCcb->handle);
+        break;
 
-        case DM_CONN_MSG_API_REM_CONN_PARAM_REQ_REPLY: {
-            hciConnSpec_t *pConnSpec = &pConn2Msg->apiRemConnParamReqReply.connSpec;
+      case DM_CONN_MSG_API_REM_CONN_PARAM_REQ_REPLY:
+        {
+          hciConnSpec_t *pConnSpec = &pConn2Msg->apiRemConnParamReqReply.connSpec;
 
-            HciLeRemoteConnParamReqReply(pCcb->handle, pConnSpec->connIntervalMin,
-                                         pConnSpec->connIntervalMax, pConnSpec->connLatency,
-                                         pConnSpec->supTimeout, pConnSpec->minCeLen,
-                                         pConnSpec->maxCeLen);
-        } break;
-
-        case DM_CONN_MSG_API_REM_CONN_PARAM_REQ_NEG_REPLY:
-            HciLeRemoteConnParamReqNegReply(pCcb->handle,
-                                            pConn2Msg->apiRemConnParamReqNegReply.reason);
-            break;
-
-        case DM_CONN_MSG_API_SET_DATA_LEN: {
-            dmConnApiSetDataLen_t *pDataLen = &pConn2Msg->apiSetDataLen;
-
-            HciLeSetDataLen(pCcb->handle, pDataLen->txOctets, pDataLen->txTime);
-        } break;
-
-        case DM_CONN_MSG_API_WRITE_AUTH_TO:
-            HciWriteAuthPayloadTimeout(pCcb->handle, pConn2Msg->apiWriteAuthPayloadTo.timeout);
-            break;
-
-        case DM_CONN_MSG_API_REQ_PEER_SCA:
-            HciLeRequestPeerScaCmd(pCcb->handle);
-            break;
-
-        default:
-            /* should never get here */
-            break;
+          HciLeRemoteConnParamReqReply(pCcb->handle, pConnSpec->connIntervalMin,
+                                       pConnSpec->connIntervalMax, pConnSpec->connLatency,
+                                       pConnSpec->supTimeout, pConnSpec->minCeLen,
+                                       pConnSpec->maxCeLen);
         }
+        break;
+
+      case DM_CONN_MSG_API_REM_CONN_PARAM_REQ_NEG_REPLY:
+        HciLeRemoteConnParamReqNegReply(pCcb->handle, pConn2Msg->apiRemConnParamReqNegReply.reason);
+        break;
+
+      case DM_CONN_MSG_API_SET_DATA_LEN:
+        {
+          dmConnApiSetDataLen_t *pDataLen = &pConn2Msg->apiSetDataLen;
+
+          HciLeSetDataLen(pCcb->handle, pDataLen->txOctets, pDataLen->txTime);
+        }
+        break;
+
+      case DM_CONN_MSG_API_WRITE_AUTH_TO:
+        HciWriteAuthPayloadTimeout(pCcb->handle, pConn2Msg->apiWriteAuthPayloadTo.timeout);
+        break;
+
+      case DM_CONN_MSG_API_REQ_PEER_SCA:
+        HciLeRequestPeerScaCmd(pCcb->handle);
+        break;
+
+      default:
+        /* should never get here */
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -749,49 +828,51 @@ void dmConn2MsgHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void dmConn2HciHandler(hciEvt_t *pEvent)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    /* look up ccb from conn handle */
-    if ((pCcb = dmConnCcbByHandle(pEvent->hdr.param)) != NULL) {
-        /* handle incoming event */
-        switch (pEvent->hdr.event) {
-        case HCI_READ_RSSI_CMD_CMPL_CBACK_EVT:
-            dmConn2ActRssiRead(pCcb, pEvent);
-            break;
+  /* look up ccb from conn handle */
+  if ((pCcb = dmConnCcbByHandle(pEvent->hdr.param)) != NULL)
+  {
+    /* handle incoming event */
+    switch (pEvent->hdr.event)
+    {
+      case HCI_READ_RSSI_CMD_CMPL_CBACK_EVT:
+        dmConn2ActRssiRead(pCcb, pEvent);
+        break;
 
-        case HCI_LE_REM_CONN_PARAM_REQ_CBACK_EVT:
-            dmConn2ActRemoteConnParamReq(pCcb, pEvent);
-            break;
+      case HCI_LE_REM_CONN_PARAM_REQ_CBACK_EVT:
+        dmConn2ActRemoteConnParamReq(pCcb, pEvent);
+        break;
 
-        case HCI_LE_DATA_LEN_CHANGE_CBACK_EVT:
-            dmConn2ActDataLenChange(pCcb, pEvent);
-            break;
+      case HCI_LE_DATA_LEN_CHANGE_CBACK_EVT:
+        dmConn2ActDataLenChange(pCcb, pEvent);
+        break;
 
-        case HCI_WRITE_AUTH_PAYLOAD_TO_CMD_CMPL_CBACK_EVT:
-            dmConn2ActWriteAuthToCmpl(pCcb, pEvent);
-            break;
+      case HCI_WRITE_AUTH_PAYLOAD_TO_CMD_CMPL_CBACK_EVT:
+        dmConn2ActWriteAuthToCmpl(pCcb, pEvent);
+        break;
 
-        case HCI_AUTH_PAYLOAD_TO_EXPIRED_CBACK_EVT:
-            dmConn2ActAuthToExpired(pCcb, pEvent);
-            break;
+      case HCI_AUTH_PAYLOAD_TO_EXPIRED_CBACK_EVT:
+        dmConn2ActAuthToExpired(pCcb, pEvent);
+        break;
 
-        case HCI_LE_READ_REMOTE_FEAT_CMPL_CBACK_EVT:
-            dmConn2ActReadRemoteFeaturesCmpl(pCcb, pEvent);
-            break;
+      case HCI_LE_READ_REMOTE_FEAT_CMPL_CBACK_EVT:
+        dmConn2ActReadRemoteFeaturesCmpl(pCcb, pEvent);
+        break;
 
-        case HCI_READ_REMOTE_VER_INFO_CMPL_CBACK_EVT:
-            dmConn2ActReadRemoteVerInfoCmpl(pCcb, pEvent);
-            break;
+      case HCI_READ_REMOTE_VER_INFO_CMPL_CBACK_EVT:
+        dmConn2ActReadRemoteVerInfoCmpl(pCcb, pEvent);
+        break;
 
-        case HCI_LE_REQ_PEER_SCA_CBACK_EVT:
-            dmConn2ActReqPeerSca(pCcb, pEvent);
-            break;
+      case HCI_LE_REQ_PEER_SCA_CBACK_EVT:
+        dmConn2ActReqPeerSca(pCcb, pEvent);
+        break;
 
-        default:
-            /* should never get here */
-            break;
-        }
+      default:
+        /* should never get here */
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -805,16 +886,18 @@ void dmConn2HciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 void dmConnUpdMsgHandler(wsfMsgHdr_t *pMsg)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    /* look up ccb from conn id */
-    if ((pCcb = dmConnCcbById((dmConnId_t)pMsg->param)) != NULL) {
-        /* if connected */
-        if (pCcb->state == DM_CONN_SM_ST_CONNECTED) {
-            /* execute connection update action */
-            dmConnUpdExecute(pCcb, (dmConnMsg_t *)pMsg);
-        }
+  /* look up ccb from conn id */
+  if ((pCcb = dmConnCcbById((dmConnId_t) pMsg->param)) != NULL)
+  {
+    /* if connected */
+    if (pCcb->state == DM_CONN_SM_ST_CONNECTED)
+    {
+      /* execute connection update action */
+      dmConnUpdExecute(pCcb, (dmConnMsg_t *) pMsg);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -829,16 +912,16 @@ void dmConnUpdMsgHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void dmConn2ActRssiRead(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciReadRssiCmdCmplEvt_t evt;
+  hciReadRssiCmdCmplEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_CONN_READ_RSSI_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.status = evt.hdr.status = (uint8_t)pEvent->readRssiCmdCmpl.status;
-    evt.handle = pCcb->handle;
-    evt.rssi = pEvent->readRssiCmdCmpl.rssi;
+  /* call callback */
+  evt.hdr.event = DM_CONN_READ_RSSI_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.status = evt.hdr.status = (uint8_t) pEvent->readRssiCmdCmpl.status;
+  evt.handle = pCcb->handle;
+  evt.rssi = pEvent->readRssiCmdCmpl.rssi;
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -853,19 +936,19 @@ static void dmConn2ActRssiRead(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmConn2ActRemoteConnParamReq(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciLeRemConnParamReqEvt_t evt;
+  hciLeRemConnParamReqEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_REM_CONN_PARAM_REQ_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.hdr.status = HCI_SUCCESS;
-    evt.handle = pCcb->handle;
-    evt.intervalMin = pEvent->leRemConnParamReq.intervalMin;
-    evt.intervalMax = pEvent->leRemConnParamReq.intervalMax;
-    evt.latency = pEvent->leRemConnParamReq.latency;
-    evt.timeout = pEvent->leRemConnParamReq.timeout;
+  /* call callback */
+  evt.hdr.event = DM_REM_CONN_PARAM_REQ_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.hdr.status = HCI_SUCCESS;
+  evt.handle = pCcb->handle;
+  evt.intervalMin = pEvent->leRemConnParamReq.intervalMin;
+  evt.intervalMax = pEvent->leRemConnParamReq.intervalMax;
+  evt.latency = pEvent->leRemConnParamReq.latency;
+  evt.timeout = pEvent->leRemConnParamReq.timeout;
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -880,19 +963,19 @@ static void dmConn2ActRemoteConnParamReq(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmConn2ActDataLenChange(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciLeDataLenChangeEvt_t evt;
+  hciLeDataLenChangeEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_CONN_DATA_LEN_CHANGE_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.hdr.status = HCI_SUCCESS;
-    evt.handle = pCcb->handle;
-    evt.maxTxOctets = pEvent->leDataLenChange.maxTxOctets;
-    evt.maxTxTime = pEvent->leDataLenChange.maxTxTime;
-    evt.maxRxOctets = pEvent->leDataLenChange.maxRxOctets;
-    evt.maxRxTime = pEvent->leDataLenChange.maxRxTime;
+  /* call callback */
+  evt.hdr.event = DM_CONN_DATA_LEN_CHANGE_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.hdr.status = HCI_SUCCESS;
+  evt.handle = pCcb->handle;
+  evt.maxTxOctets = pEvent->leDataLenChange.maxTxOctets;
+  evt.maxTxTime = pEvent->leDataLenChange.maxTxTime;
+  evt.maxRxOctets = pEvent->leDataLenChange.maxRxOctets;
+  evt.maxRxTime = pEvent->leDataLenChange.maxRxTime;
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -907,16 +990,16 @@ static void dmConn2ActDataLenChange(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmConn2ActWriteAuthToCmpl(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciWriteAuthPayloadToCmdCmplEvt_t evt;
+  hciWriteAuthPayloadToCmdCmplEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_CONN_WRITE_AUTH_TO_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.hdr.status = HCI_SUCCESS;
-    evt.handle = pEvent->writeAuthPayloadToCmdCmpl.handle;
-    evt.status = pEvent->writeAuthPayloadToCmdCmpl.status;
+  /* call callback */
+  evt.hdr.event = DM_CONN_WRITE_AUTH_TO_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.hdr.status = HCI_SUCCESS;
+  evt.handle = pEvent->writeAuthPayloadToCmdCmpl.handle;
+  evt.status = pEvent->writeAuthPayloadToCmdCmpl.status;
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -931,15 +1014,15 @@ static void dmConn2ActWriteAuthToCmpl(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmConn2ActAuthToExpired(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciAuthPayloadToExpiredEvt_t evt;
+  hciAuthPayloadToExpiredEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_CONN_AUTH_TO_EXPIRED_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.hdr.status = HCI_SUCCESS;
-    evt.handle = pEvent->authPayloadToExpired.handle;
+  /* call callback */
+  evt.hdr.event = DM_CONN_AUTH_TO_EXPIRED_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.hdr.status = HCI_SUCCESS;
+  evt.handle = pEvent->authPayloadToExpired.handle;
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -954,22 +1037,22 @@ static void dmConn2ActAuthToExpired(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmConn2ActReadRemoteFeaturesCmpl(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciLeReadRemoteFeatCmplEvt_t evt;
+  hciLeReadRemoteFeatCmplEvt_t evt;
 
-    /* Save the features */
-    BYTES_TO_UINT32(pCcb->features, pEvent->leReadRemoteFeatCmpl.features);
-    pCcb->featuresPresent = TRUE;
+  /* Save the features */
+  BYTES_TO_UINT32(pCcb->features, pEvent->leReadRemoteFeatCmpl.features);
+  pCcb->featuresPresent = TRUE;
 
-    /* call callback */
-    evt.hdr.event = DM_REMOTE_FEATURES_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.hdr.status = HCI_SUCCESS;
+  /* call callback */
+  evt.hdr.event = DM_REMOTE_FEATURES_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.hdr.status = HCI_SUCCESS;
 
-    evt.status = pEvent->leReadRemoteFeatCmpl.status;
-    evt.handle = pEvent->leReadRemoteFeatCmpl.handle;
-    memcpy(evt.features, pEvent->leReadRemoteFeatCmpl.features, sizeof(evt.features));
+  evt.status = pEvent->leReadRemoteFeatCmpl.status;
+  evt.handle = pEvent->leReadRemoteFeatCmpl.handle;
+  memcpy(evt.features, pEvent->leReadRemoteFeatCmpl.features, sizeof(evt.features));
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -984,20 +1067,20 @@ static void dmConn2ActReadRemoteFeaturesCmpl(dmConnCcb_t *pCcb, hciEvt_t *pEvent
 /*************************************************************************************************/
 static void dmConn2ActReadRemoteVerInfoCmpl(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    hciReadRemoteVerInfoCmplEvt_t evt;
+  hciReadRemoteVerInfoCmplEvt_t evt;
 
-    /* call callback */
-    evt.hdr.event = DM_READ_REMOTE_VER_INFO_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.hdr.status = HCI_SUCCESS;
+  /* call callback */
+  evt.hdr.event = DM_READ_REMOTE_VER_INFO_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.hdr.status = HCI_SUCCESS;
 
-    evt.status = pEvent->readRemoteVerInfoCmpl.status;
-    evt.handle = pEvent->readRemoteVerInfoCmpl.handle;
-    evt.version = pEvent->readRemoteVerInfoCmpl.version;
-    evt.mfrName = pEvent->readRemoteVerInfoCmpl.mfrName;
-    evt.subversion = pEvent->readRemoteVerInfoCmpl.subversion;
+  evt.status = pEvent->readRemoteVerInfoCmpl.status;
+  evt.handle = pEvent->readRemoteVerInfoCmpl.handle;
+  evt.version = pEvent->readRemoteVerInfoCmpl.version;
+  evt.mfrName = pEvent->readRemoteVerInfoCmpl.mfrName;
+  evt.subversion = pEvent->readRemoteVerInfoCmpl.subversion;
 
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -1012,16 +1095,16 @@ static void dmConn2ActReadRemoteVerInfoCmpl(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmConn2ActReqPeerSca(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 {
-    HciLeReqPeerScaCmplEvt_t_t evt;
+  HciLeReqPeerScaCmplEvt_t_t evt;
+  
+  /* call callback */
+  evt.hdr.event = DM_REQ_PEER_SCA_IND;
+  evt.hdr.param = pCcb->connId;
+  evt.status = evt.hdr.status = (uint8_t) pEvent->leReqPeerSca.status;
+  evt.handle = pCcb->handle;
+  evt.peerSca = pEvent->leReqPeerSca.peerSca;
 
-    /* call callback */
-    evt.hdr.event = DM_REQ_PEER_SCA_IND;
-    evt.hdr.param = pCcb->connId;
-    evt.status = evt.hdr.status = (uint8_t)pEvent->leReqPeerSca.status;
-    evt.handle = pCcb->handle;
-    evt.peerSca = pEvent->leReqPeerSca.peerSca;
-
-    (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
+  (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
 }
 
 /*************************************************************************************************/
@@ -1033,16 +1116,16 @@ static void dmConn2ActReqPeerSca(dmConnCcb_t *pCcb, hciEvt_t *pEvent)
 /*************************************************************************************************/
 void DmConnInit(void)
 {
-    WsfTaskLock();
+  WsfTaskLock();
 
-    dmFcnIfTbl[DM_ID_CONN] = (dmFcnIf_t *)&dmConnFcnIf;
-    dmFcnIfTbl[DM_ID_CONN_2] = (dmFcnIf_t *)&dmConn2FcnIf;
-    dmFcnIfTbl[DM_ID_CONN_UPD] = (dmFcnIf_t *)&dmConnUpdFcnIf;
+  dmFcnIfTbl[DM_ID_CONN] = (dmFcnIf_t *) &dmConnFcnIf;
+  dmFcnIfTbl[DM_ID_CONN_2] = (dmFcnIf_t *) &dmConn2FcnIf;
+  dmFcnIfTbl[DM_ID_CONN_UPD] = (dmFcnIf_t *) &dmConnUpdFcnIf;
 
-    dmConnActSet[DM_CONN_ACT_SET_MAIN] = (dmConnAct_t *)dmConnActSetMain;
-    dmConnUpdActSet[DM_CONN_ACT_SET_MAIN] = (dmConnAct_t *)dmConnUpdActSetMain;
+  dmConnActSet[DM_CONN_ACT_SET_MAIN] = (dmConnAct_t *) dmConnActSetMain;
+  dmConnUpdActSet[DM_CONN_ACT_SET_MAIN] = (dmConnAct_t *) dmConnUpdActSetMain;
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -1057,12 +1140,12 @@ void DmConnInit(void)
 /*************************************************************************************************/
 void DmConnRegister(uint8_t clientId, dmCback_t cback)
 {
-    WSF_ASSERT(clientId < DM_CLIENT_ID_MAX);
+  WSF_ASSERT(clientId < DM_CLIENT_ID_MAX);
 
-    /* store callback */
-    WsfTaskLock();
-    dmConnCb.connCback[clientId] = cback;
-    WsfTaskUnlock();
+  /* store callback */
+  WsfTaskLock();
+  dmConnCb.connCback[clientId] = cback;
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -1078,17 +1161,18 @@ void DmConnRegister(uint8_t clientId, dmCback_t cback)
 /*************************************************************************************************/
 void DmConnClose(uint8_t clientId, dmConnId_t connId, uint8_t reason)
 {
-    dmConnApiClose_t *pMsg;
+  dmConnApiClose_t *pMsg;
 
-    // Allocate sizeof(dmConnMsg_t) because message may be reused in state machine with different callbacks
-    if ((pMsg = WsfMsgAlloc(sizeof(dmConnMsg_t))) != NULL) {
-        pMsg->hdr.event = DM_CONN_MSG_API_CLOSE;
-        pMsg->hdr.param = connId;
-        pMsg->hdr.status = pMsg->reason = reason;
-        pMsg->clientId = clientId;
+  // Allocate sizeof(dmConnMsg_t) because message may be reused in state machine with different callbacks
+  if ((pMsg = WsfMsgAlloc(sizeof(dmConnMsg_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_CONN_MSG_API_CLOSE;
+    pMsg->hdr.param = connId;
+    pMsg->hdr.status = pMsg->reason = reason;
+    pMsg->clientId = clientId;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1102,31 +1186,35 @@ void DmConnClose(uint8_t clientId, dmConnId_t connId, uint8_t reason)
 /*************************************************************************************************/
 void DmReadRemoteFeatures(dmConnId_t connId)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    /* look up ccb from conn handle */
-    if ((pCcb = dmConnCcbById(connId)) != NULL) {
-        if (pCcb->featuresPresent) {
-            hciLeReadRemoteFeatCmplEvt_t evt;
-            uint8_t *p = evt.features;
+  /* look up ccb from conn handle */
+  if ((pCcb = dmConnCcbById(connId)) != NULL)
+  {
+    if (pCcb->featuresPresent)
+    {
+      hciLeReadRemoteFeatCmplEvt_t evt;
+      uint8_t *p = evt.features;
 
-            memset(&evt, 0, sizeof(hciLeReadRemoteFeatCmplEvt_t));
+      memset(&evt, 0, sizeof(hciLeReadRemoteFeatCmplEvt_t));
 
-            /* call callback */
-            evt.hdr.event = DM_REMOTE_FEATURES_IND;
-            evt.hdr.param = pCcb->connId;
-            evt.hdr.status = HCI_SUCCESS;
+      /* call callback */
+      evt.hdr.event = DM_REMOTE_FEATURES_IND;
+      evt.hdr.param = pCcb->connId;
+      evt.hdr.status = HCI_SUCCESS;
 
-            evt.status = HCI_SUCCESS;
-            evt.handle = pCcb->handle;
-            UINT32_TO_BSTREAM(p, pCcb->features);
+      evt.status = HCI_SUCCESS;
+      evt.handle = pCcb->handle;
+      UINT32_TO_BSTREAM(p, pCcb->features);
 
-            (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *)&evt);
-        } else {
-            /* Request the remote features from the peer */
-            HciLeReadRemoteFeatCmd(pCcb->handle);
-        }
+      (*dmConnCb.connCback[DM_CLIENT_ID_APP])((dmEvt_t *) &evt);
     }
+    else
+    {
+      /* Request the remote features from the peer */
+      HciLeReadRemoteFeatCmd(pCcb->handle);
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -1140,13 +1228,14 @@ void DmReadRemoteFeatures(dmConnId_t connId)
 /*************************************************************************************************/
 void DmReadRemoteVerInfo(dmConnId_t connId)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    /* look up ccb from conn handle */
-    if ((pCcb = dmConnCcbById(connId)) != NULL) {
-        /* Request the version info from the peer */
-        HciReadRemoteVerInfoCmd(pCcb->handle);
-    }
+  /* look up ccb from conn handle */
+  if ((pCcb = dmConnCcbById(connId)) != NULL)
+  {
+    /* Request the version info from the peer */
+    HciReadRemoteVerInfoCmd(pCcb->handle);
+  }
 }
 
 /*************************************************************************************************/
@@ -1161,17 +1250,18 @@ void DmReadRemoteVerInfo(dmConnId_t connId)
 /*************************************************************************************************/
 void DmConnUpdate(dmConnId_t connId, hciConnSpec_t *pConnSpec)
 {
-    dmConnApiUpdate_t *pMsg;
+  dmConnApiUpdate_t *pMsg;
 
-    // Allocate sizeof(dmConnMsg_t) because message may be reused in state machine with different callbacks
-    if ((pMsg = WsfMsgAlloc(sizeof(dmConnMsg_t))) != NULL) {
-        pMsg->hdr.event = (DmConnRole(connId) == DM_ROLE_MASTER) ? DM_CONN_MSG_API_UPDATE_MASTER :
-                                                                   DM_CONN_MSG_API_UPDATE_SLAVE;
-        pMsg->hdr.param = connId;
-        memcpy(&pMsg->connSpec, pConnSpec, sizeof(hciConnSpec_t));
+  // Allocate sizeof(dmConnMsg_t) because message may be reused in state machine with different callbacks
+  if ((pMsg = WsfMsgAlloc(sizeof(dmConnMsg_t))) != NULL)
+  {
+    pMsg->hdr.event = (DmConnRole(connId) == DM_ROLE_MASTER) ?
+                      DM_CONN_MSG_API_UPDATE_MASTER : DM_CONN_MSG_API_UPDATE_SLAVE;
+    pMsg->hdr.param = connId;
+    memcpy(&pMsg->connSpec, pConnSpec, sizeof(hciConnSpec_t));
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1186,12 +1276,13 @@ void DmConnUpdate(dmConnId_t connId, hciConnSpec_t *pConnSpec)
 /*************************************************************************************************/
 static void dmConnSetConnSpec(uint8_t initPhy, hciConnSpec_t *pConnSpec)
 {
-    WSF_ASSERT((initPhy == HCI_INIT_PHY_LE_1M_BIT) || (initPhy == HCI_INIT_PHY_LE_2M_BIT) ||
-               (initPhy == HCI_INIT_PHY_LE_CODED_BIT));
+  WSF_ASSERT((initPhy == HCI_INIT_PHY_LE_1M_BIT) ||
+             (initPhy == HCI_INIT_PHY_LE_2M_BIT) ||
+             (initPhy == HCI_INIT_PHY_LE_CODED_BIT));
 
-    WsfTaskLock();
-    dmConnCb.connSpec[DmInitPhyToIdx(initPhy)] = *pConnSpec;
-    WsfTaskUnlock();
+  WsfTaskLock();
+  dmConnCb.connSpec[DmInitPhyToIdx(initPhy)] = *pConnSpec;
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -1207,15 +1298,15 @@ static void dmConnSetConnSpec(uint8_t initPhy, hciConnSpec_t *pConnSpec)
 /*************************************************************************************************/
 static void dmConnSetScanInterval(uint8_t initPhy, uint16_t scanInterval, uint16_t scanWindow)
 {
-    uint8_t phyIdx;
+  uint8_t phyIdx;
 
-    WSF_ASSERT((initPhy == HCI_INIT_PHY_LE_1M_BIT) || (initPhy == HCI_INIT_PHY_LE_CODED_BIT));
+  WSF_ASSERT((initPhy == HCI_INIT_PHY_LE_1M_BIT) || (initPhy == HCI_INIT_PHY_LE_CODED_BIT));
 
-    WsfTaskLock();
-    phyIdx = DmInitPhyToIdx(initPhy);
-    dmConnCb.scanInterval[phyIdx] = scanInterval;
-    dmConnCb.scanWindow[phyIdx] = scanWindow;
-    WsfTaskUnlock();
+  WsfTaskLock();
+  phyIdx = DmInitPhyToIdx(initPhy);
+  dmConnCb.scanInterval[phyIdx] = scanInterval;
+  dmConnCb.scanWindow[phyIdx] = scanWindow;
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -1230,7 +1321,7 @@ static void dmConnSetScanInterval(uint8_t initPhy, uint16_t scanInterval, uint16
 /*************************************************************************************************/
 void DmConnSetScanInterval(uint16_t scanInterval, uint16_t scanWindow)
 {
-    dmConnSetScanInterval(HCI_INIT_PHY_LE_1M_BIT, scanInterval, scanWindow);
+  dmConnSetScanInterval(HCI_INIT_PHY_LE_1M_BIT, scanInterval, scanWindow);
 }
 
 /*************************************************************************************************/
@@ -1247,15 +1338,17 @@ void DmConnSetScanInterval(uint16_t scanInterval, uint16_t scanWindow)
 /*************************************************************************************************/
 void DmExtConnSetScanInterval(uint8_t initPhys, uint16_t *pScanInterval, uint16_t *pScanWindow)
 {
-    uint8_t i; /* initPhy bit position */
-    uint8_t idx; /* param array index */
+  uint8_t i;   /* initPhy bit position */
+  uint8_t idx; /* param array index */
 
-    for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++) {
-        if (initPhys & (1 << i)) {
-            dmConnSetScanInterval((1 << i), pScanInterval[idx], pScanWindow[idx]);
-            idx++;
-        }
+  for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++)
+  {
+    if (initPhys & (1 << i))
+    {
+      dmConnSetScanInterval((1 << i), pScanInterval[idx], pScanWindow[idx]);
+      idx++;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -1269,7 +1362,7 @@ void DmExtConnSetScanInterval(uint8_t initPhys, uint16_t *pScanInterval, uint16_
 /*************************************************************************************************/
 void DmConnSetConnSpec(hciConnSpec_t *pConnSpec)
 {
-    dmConnSetConnSpec(HCI_INIT_PHY_LE_1M_BIT, pConnSpec);
+  dmConnSetConnSpec(HCI_INIT_PHY_LE_1M_BIT, pConnSpec);
 }
 
 /*************************************************************************************************/
@@ -1285,15 +1378,17 @@ void DmConnSetConnSpec(hciConnSpec_t *pConnSpec)
 /*************************************************************************************************/
 void DmExtConnSetConnSpec(uint8_t initPhys, hciConnSpec_t *pConnSpec)
 {
-    uint8_t i; /* initPhy bit position */
-    uint8_t idx; /* param array index */
+  uint8_t i;   /* initPhy bit position */
+  uint8_t idx; /* param array index */
 
-    for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++) {
-        if (initPhys & (1 << i)) {
-            dmConnSetConnSpec((1 << i), &(pConnSpec[idx]));
-            idx++;
-        }
+  for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++)
+  {
+    if (initPhys & (1 << i))
+    {
+      dmConnSetConnSpec((1 << i), &(pConnSpec[idx]));
+      idx++;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -1307,14 +1402,15 @@ void DmExtConnSetConnSpec(uint8_t initPhys, hciConnSpec_t *pConnSpec)
 /*************************************************************************************************/
 void DmConnReadRssi(dmConnId_t connId)
 {
-    dmConnApiReadRssi_t *pMsg;
+  dmConnApiReadRssi_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiReadRssi_t))) != NULL) {
-        pMsg->hdr.event = DM_CONN_MSG_API_READ_RSSI;
-        pMsg->hdr.param = connId;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiReadRssi_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_CONN_MSG_API_READ_RSSI;
+    pMsg->hdr.param = connId;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1331,15 +1427,16 @@ void DmConnReadRssi(dmConnId_t connId)
 /*************************************************************************************************/
 void DmRemoteConnParamReqReply(dmConnId_t connId, hciConnSpec_t *pConnSpec)
 {
-    dmConnApiRemConnParamReqReply_t *pMsg;
+  dmConnApiRemConnParamReqReply_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiRemConnParamReqReply_t))) != NULL) {
-        pMsg->hdr.event = DM_CONN_MSG_API_REM_CONN_PARAM_REQ_REPLY;
-        pMsg->hdr.param = connId;
-        memcpy(&pMsg->connSpec, pConnSpec, sizeof(hciConnSpec_t));
+  if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiRemConnParamReqReply_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_CONN_MSG_API_REM_CONN_PARAM_REQ_REPLY;
+    pMsg->hdr.param = connId;
+    memcpy(&pMsg->connSpec, pConnSpec, sizeof(hciConnSpec_t));
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1356,15 +1453,16 @@ void DmRemoteConnParamReqReply(dmConnId_t connId, hciConnSpec_t *pConnSpec)
 /*************************************************************************************************/
 void DmRemoteConnParamReqNegReply(dmConnId_t connId, uint8_t reason)
 {
-    dmConnApiRemConnParamReqNegReply_t *pMsg;
+  dmConnApiRemConnParamReqNegReply_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiRemConnParamReqNegReply_t))) != NULL) {
-        pMsg->hdr.event = DM_CONN_MSG_API_REM_CONN_PARAM_REQ_NEG_REPLY;
-        pMsg->hdr.param = connId;
-        pMsg->reason = reason;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiRemConnParamReqNegReply_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_CONN_MSG_API_REM_CONN_PARAM_REQ_NEG_REPLY;
+    pMsg->hdr.param = connId;
+    pMsg->reason = reason;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1380,16 +1478,17 @@ void DmRemoteConnParamReqNegReply(dmConnId_t connId, uint8_t reason)
 /*************************************************************************************************/
 void DmConnSetDataLen(dmConnId_t connId, uint16_t txOctets, uint16_t txTime)
 {
-    dmConnApiSetDataLen_t *pMsg;
+  dmConnApiSetDataLen_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiSetDataLen_t))) != NULL) {
-        pMsg->hdr.event = DM_CONN_MSG_API_SET_DATA_LEN;
-        pMsg->hdr.param = connId;
-        pMsg->txOctets = txOctets;
-        pMsg->txTime = txTime;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiSetDataLen_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_CONN_MSG_API_SET_DATA_LEN;
+    pMsg->hdr.param = connId;
+    pMsg->txOctets = txOctets;
+    pMsg->txTime = txTime;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1404,15 +1503,16 @@ void DmConnSetDataLen(dmConnId_t connId, uint16_t txOctets, uint16_t txTime)
 /*************************************************************************************************/
 void DmWriteAuthPayloadTimeout(dmConnId_t connId, uint16_t timeout)
 {
-    dmConnApiWriteAuthPayloadTo_t *pMsg;
+  dmConnApiWriteAuthPayloadTo_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiWriteAuthPayloadTo_t))) != NULL) {
-        pMsg->hdr.event = DM_CONN_MSG_API_WRITE_AUTH_TO;
-        pMsg->hdr.param = connId;
-        pMsg->timeout = timeout;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiWriteAuthPayloadTo_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_CONN_MSG_API_WRITE_AUTH_TO;
+    pMsg->hdr.param = connId;
+    pMsg->timeout = timeout;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1426,14 +1526,15 @@ void DmWriteAuthPayloadTimeout(dmConnId_t connId, uint16_t timeout)
 /*************************************************************************************************/
 void DmConnRequestPeerSca(dmConnId_t connId)
 {
-    dmConnApiReqPeerSca_t *pMsg;
+  dmConnApiReqPeerSca_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiReqPeerSca_t))) != NULL) {
-        pMsg->hdr.event = DM_CONN_MSG_API_REQ_PEER_SCA;
-        pMsg->hdr.param = connId;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmConnApiReqPeerSca_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_CONN_MSG_API_REQ_PEER_SCA;
+    pMsg->hdr.param = connId;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1447,18 +1548,20 @@ void DmConnRequestPeerSca(dmConnId_t connId)
 /*************************************************************************************************/
 dmConnId_t DmConnIdByHandle(uint16_t handle)
 {
-    dmConnCcb_t *pCcb = dmConnCb.ccb;
-    uint8_t i;
+  dmConnCcb_t   *pCcb = dmConnCb.ccb;
+  uint8_t       i;
 
-    for (i = DM_CONN_MAX; i > 0; i--, pCcb++) {
-        if (pCcb->inUse && (pCcb->handle == handle)) {
-            return pCcb->connId;
-        }
+  for (i = DM_CONN_MAX; i > 0; i--, pCcb++)
+  {
+    if (pCcb->inUse && (pCcb->handle == handle))
+    {
+      return pCcb->connId;
     }
+  }
 
-    DM_TRACE_WARN1("DmConnIdByHandle not found 0x%04x", handle);
+  DM_TRACE_WARN1("DmConnIdByHandle not found 0x%04x", handle);
 
-    return DM_CONN_ID_NONE;
+  return DM_CONN_ID_NONE;
 }
 
 /*************************************************************************************************/
@@ -1472,9 +1575,9 @@ dmConnId_t DmConnIdByHandle(uint16_t handle)
 /*************************************************************************************************/
 bool_t DmConnInUse(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].inUse;
+  return dmConnCb.ccb[connId-1].inUse;
 }
 
 /*************************************************************************************************/
@@ -1488,9 +1591,9 @@ bool_t DmConnInUse(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t DmConnPeerAddrType(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].peerAddrType;
+  return dmConnCb.ccb[connId-1].peerAddrType;
 }
 
 /*************************************************************************************************/
@@ -1504,9 +1607,9 @@ uint8_t DmConnPeerAddrType(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t *DmConnPeerAddr(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].peerAddr;
+  return dmConnCb.ccb[connId-1].peerAddr;
 }
 
 /*************************************************************************************************/
@@ -1520,9 +1623,9 @@ uint8_t *DmConnPeerAddr(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t DmConnLocalAddrType(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].localAddrType;
+  return dmConnCb.ccb[connId-1].localAddrType;
 }
 
 /*************************************************************************************************/
@@ -1536,9 +1639,9 @@ uint8_t DmConnLocalAddrType(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t *DmConnLocalAddr(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].localAddr;
+  return dmConnCb.ccb[connId-1].localAddr;
 }
 
 /*************************************************************************************************/
@@ -1552,9 +1655,9 @@ uint8_t *DmConnLocalAddr(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t *DmConnPeerRpa(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].peerRpa;
+  return dmConnCb.ccb[connId - 1].peerRpa;
 }
 
 /*************************************************************************************************/
@@ -1568,9 +1671,9 @@ uint8_t *DmConnPeerRpa(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t *DmConnLocalRpa(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].localRpa;
+  return dmConnCb.ccb[connId - 1].localRpa;
 }
 
 /*************************************************************************************************/
@@ -1584,9 +1687,9 @@ uint8_t *DmConnLocalRpa(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t DmConnSecLevel(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].secLevel;
+  return dmConnCb.ccb[connId-1].secLevel;
 }
 
 /*************************************************************************************************/
@@ -1602,21 +1705,25 @@ uint8_t DmConnSecLevel(dmConnId_t connId)
 /*************************************************************************************************/
 void DmConnSetIdle(dmConnId_t connId, uint16_t idleMask, uint8_t idle)
 {
-    WsfTaskLock();
+  WsfTaskLock();
 
-    if (DmConnInUse(connId)) {
-        if (idle == DM_CONN_IDLE) {
-            /* clear bit if idle */
-            dmConnCb.ccb[connId - 1].idleMask &= ~idleMask;
-        } else {
-            /* set bit if busy */
-            dmConnCb.ccb[connId - 1].idleMask |= idleMask;
-        }
+  if (DmConnInUse(connId))
+  {
+    if (idle == DM_CONN_IDLE)
+    {
+      /* clear bit if idle */
+      dmConnCb.ccb[connId-1].idleMask &= ~idleMask;
     }
+    else
+    {
+      /* set bit if busy */
+      dmConnCb.ccb[connId-1].idleMask |= idleMask;
+    }
+  }
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 
-    DM_TRACE_INFO2("connId=%d idleMask=0x%04x", connId, dmConnCb.ccb[connId - 1].idleMask);
+  DM_TRACE_INFO2("connId=%d idleMask=0x%04x", connId, dmConnCb.ccb[connId-1].idleMask);
 }
 
 /*************************************************************************************************/
@@ -1630,15 +1737,15 @@ void DmConnSetIdle(dmConnId_t connId, uint16_t idleMask, uint8_t idle)
 /*************************************************************************************************/
 uint16_t DmConnCheckIdle(dmConnId_t connId)
 {
-    uint16_t idleMask;
+  uint16_t idleMask;
 
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    WsfTaskLock();
-    idleMask = dmConnCb.ccb[connId - 1].idleMask;
-    WsfTaskUnlock();
+  WsfTaskLock();
+  idleMask = dmConnCb.ccb[connId-1].idleMask;
+  WsfTaskUnlock();
 
-    return idleMask;
+  return idleMask;
 }
 
 /*************************************************************************************************/
@@ -1652,7 +1759,7 @@ uint16_t DmConnCheckIdle(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t DmConnRole(dmConnId_t connId)
 {
-    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-    return dmConnCb.ccb[connId - 1].role;
+  return dmConnCb.ccb[connId-1].role;
 }

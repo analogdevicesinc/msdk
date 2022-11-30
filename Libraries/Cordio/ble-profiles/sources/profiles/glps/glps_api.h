@@ -36,7 +36,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief All supported features of the glucose profile */
-#define GLP_ALL_SUPPORTED_FEATURES 0x000F
+#define GLP_ALL_SUPPORTED_FEATURES      0x000F
 
 /*************************************************************************************************/
 /*!
@@ -87,8 +87,8 @@ void GlpsBtn(dmConnId_t connId, uint8_t btn);
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t GlpsRacpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                           uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
+uint8_t GlpsRacpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
+                           uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
 
 /*************************************************************************************************/
 /*!
@@ -114,7 +114,7 @@ void GlpsSetFeature(uint16_t feature);
 /*************************************************************************************************/
 void GlpsSetCccIdx(uint8_t glmCccIdx, uint8_t glmcCccIdx, uint8_t racpCccIdx);
 
-/*! \} */ /* GLUCOSE_PROFILE */
+/*! \} */    /* GLUCOSE_PROFILE */
 
 #ifdef __cplusplus
 };

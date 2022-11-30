@@ -45,11 +45,15 @@
 #include "app_util.h"
 #include "sdk_macros.h"
 
+
 #if NRF_CRYPTO_ECC_ENABLED
+
 
 #if NRF_CRYPTO_ECC_IMPLEMENTED_CURVES_COUNT > 1
 
-static const nrf_crypto_backend_ecdsa_sign_fn_t sign_impl[] = {
+
+static const nrf_crypto_backend_ecdsa_sign_fn_t sign_impl[] =
+{
 #if NRF_CRYPTO_ECC_SECP160R1_ENABLED
     nrf_crypto_backend_secp160r1_sign,
 #endif
@@ -97,7 +101,8 @@ static const nrf_crypto_backend_ecdsa_sign_fn_t sign_impl[] = {
 #endif
 };
 
-static const uint16_t sign_impl_context_size[] = {
+static const uint16_t sign_impl_context_size[] =
+{
 #if NRF_CRYPTO_ECC_SECP160R1_ENABLED
     NRF_CRYPTO_BACKEND_SECP160R1_SIGN_CONTEXT_SIZE,
 #endif
@@ -145,7 +150,8 @@ static const uint16_t sign_impl_context_size[] = {
 #endif
 };
 
-static const nrf_crypto_backend_ecdsa_verify_fn_t verify_impl[] = {
+static const nrf_crypto_backend_ecdsa_verify_fn_t verify_impl[] =
+{
 #if NRF_CRYPTO_ECC_SECP160R1_ENABLED
     nrf_crypto_backend_secp160r1_verify,
 #endif
@@ -193,7 +199,8 @@ static const nrf_crypto_backend_ecdsa_verify_fn_t verify_impl[] = {
 #endif
 };
 
-static const uint16_t verify_impl_context_size[] = {
+static const uint16_t verify_impl_context_size[] =
+{
 #if NRF_CRYPTO_ECC_SECP160R1_ENABLED
     NRF_CRYPTO_BACKEND_SECP160R1_VERIFY_CONTEXT_SIZE,
 #endif
@@ -246,84 +253,84 @@ static const uint16_t verify_impl_context_size[] = {
 #else
 
 #if NRF_CRYPTO_ECC_SECP160R1_ENABLED
-#define sign_impl nrf_crypto_backend_secp160r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP160R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp160r1_verify
+#define sign_impl                nrf_crypto_backend_secp160r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP160R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp160r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP160R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP160R2_ENABLED
-#define sign_impl nrf_crypto_backend_secp160r2_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP160R2_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp160r2_verify
+#define sign_impl                nrf_crypto_backend_secp160r2_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP160R2_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp160r2_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP160R2_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP192R1_ENABLED
-#define sign_impl nrf_crypto_backend_secp192r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP192R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp192r1_verify
+#define sign_impl                nrf_crypto_backend_secp192r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP192R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp192r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP192R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP224R1_ENABLED
-#define sign_impl nrf_crypto_backend_secp224r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP224R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp224r1_verify
+#define sign_impl                nrf_crypto_backend_secp224r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP224R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp224r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP224R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP256R1_ENABLED
-#define sign_impl nrf_crypto_backend_secp256r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP256R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp256r1_verify
+#define sign_impl                nrf_crypto_backend_secp256r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP256R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp256r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP256R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP384R1_ENABLED
-#define sign_impl nrf_crypto_backend_secp384r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP384R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp384r1_verify
+#define sign_impl                nrf_crypto_backend_secp384r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP384R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp384r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP384R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP521R1_ENABLED
-#define sign_impl nrf_crypto_backend_secp521r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP521R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp521r1_verify
+#define sign_impl                nrf_crypto_backend_secp521r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP521R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp521r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP521R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP160K1_ENABLED
-#define sign_impl nrf_crypto_backend_secp160k1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP160K1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp160k1_verify
+#define sign_impl                nrf_crypto_backend_secp160k1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP160K1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp160k1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP160K1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP192K1_ENABLED
-#define sign_impl nrf_crypto_backend_secp192k1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP192K1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp192k1_verify
+#define sign_impl                nrf_crypto_backend_secp192k1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP192K1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp192k1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP192K1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP224K1_ENABLED
-#define sign_impl nrf_crypto_backend_secp224k1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP224K1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp224k1_verify
+#define sign_impl                nrf_crypto_backend_secp224k1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP224K1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp224k1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP224K1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_SECP256K1_ENABLED
-#define sign_impl nrf_crypto_backend_secp256k1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_SECP256K1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_secp256k1_verify
+#define sign_impl                nrf_crypto_backend_secp256k1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_SECP256K1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_secp256k1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_SECP256K1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_BP256R1_ENABLED
-#define sign_impl nrf_crypto_backend_bp256r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_BP256R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_bp256r1_verify
+#define sign_impl                nrf_crypto_backend_bp256r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_BP256R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_bp256r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_BP256R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_BP384R1_ENABLED
-#define sign_impl nrf_crypto_backend_bp384r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_BP384R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_bp384r1_verify
+#define sign_impl                nrf_crypto_backend_bp384r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_BP384R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_bp384r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_BP384R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_BP512R1_ENABLED
-#define sign_impl nrf_crypto_backend_bp512r1_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_BP512R1_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_bp512r1_verify
+#define sign_impl                nrf_crypto_backend_bp512r1_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_BP512R1_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_bp512r1_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_BP512R1_VERIFY_CONTEXT_SIZE
 #elif NRF_CRYPTO_ECC_CURVE25519_ENABLED
-#define sign_impl nrf_crypto_backend_curve25519_sign
-#define sign_impl_context_size NRF_CRYPTO_BACKEND_CURVE25519_SIGN_CONTEXT_SIZE
-#define verify_impl nrf_crypto_backend_curve25519_verify
+#define sign_impl                nrf_crypto_backend_curve25519_sign
+#define sign_impl_context_size   NRF_CRYPTO_BACKEND_CURVE25519_SIGN_CONTEXT_SIZE
+#define verify_impl              nrf_crypto_backend_curve25519_verify
 #define verify_impl_context_size NRF_CRYPTO_BACKEND_CURVE25519_VERIFY_CONTEXT_SIZE
 #else
-#define sign_impl NULL
-#define sign_impl_context_size 0
-#define verify_impl NULL
+#define sign_impl                NULL
+#define sign_impl_context_size   0
+#define verify_impl              NULL
 #define verify_impl_context_size 0
 #endif
 
@@ -331,28 +338,34 @@ static const uint16_t verify_impl_context_size[] = {
 
 #endif
 
-ret_code_t nrf_crypto_ecdsa_sign(nrf_crypto_ecdsa_sign_context_t *p_context,
-                                 nrf_crypto_ecc_private_key_t const *p_private_key,
-                                 uint8_t const *p_hash, size_t hash_size, uint8_t *p_signature,
-                                 size_t *p_signature_size)
+
+ret_code_t nrf_crypto_ecdsa_sign(
+    nrf_crypto_ecdsa_sign_context_t       * p_context,
+    nrf_crypto_ecc_private_key_t    const * p_private_key,
+    uint8_t                         const * p_hash,
+    size_t                                  hash_size,
+    uint8_t                               * p_signature,
+    size_t                                * p_signature_size)
 {
-    ret_code_t result;
-    void *p_allocated_context = NULL;
-    nrf_crypto_backend_ecdsa_sign_fn_t backend_implementation;
-    size_t context_size;
-    nrf_crypto_ecc_curve_info_t const *p_info;
+    ret_code_t                           result;
+    void                               * p_allocated_context = NULL;
+    nrf_crypto_backend_ecdsa_sign_fn_t   backend_implementation;
+    size_t                               context_size;
+    nrf_crypto_ecc_curve_info_t  const * p_info;
 
     // Get pointer to header
-    nrf_crypto_internal_ecc_key_header_t const *p_private_key_header =
+    nrf_crypto_internal_ecc_key_header_t const * p_private_key_header =
         (nrf_crypto_internal_ecc_key_header_t const *)p_private_key;
 
     // Check and prepare parameters
     VERIFY_TRUE(p_hash != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
     result = nrf_crypto_internal_ecc_key_input_check(
-        p_private_key_header, NRF_CRYPTO_INTERNAL_ECC_PRIVATE_KEY_INIT_VALUE);
+        p_private_key_header,
+        NRF_CRYPTO_INTERNAL_ECC_PRIVATE_KEY_INIT_VALUE);
     VERIFY_SUCCESS(result);
     p_info = p_private_key_header->p_info;
-    result = nrf_crypto_internal_ecc_raw_output_prepare(p_signature, p_signature_size,
+    result = nrf_crypto_internal_ecc_raw_output_prepare(p_signature,
+                                                        p_signature_size,
                                                         2 * p_info->raw_private_key_size);
     VERIFY_SUCCESS(result);
 
@@ -362,7 +375,8 @@ ret_code_t nrf_crypto_ecdsa_sign(nrf_crypto_ecdsa_sign_context_t *p_context,
     VERIFY_TRUE(backend_implementation != NULL, NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE);
 
     // Allocate context if not provided
-    if (p_context == NULL && context_size > 0) {
+    if (p_context == NULL && context_size > 0)
+    {
         p_allocated_context = NRF_CRYPTO_ALLOC(context_size);
         VERIFY_TRUE(p_allocated_context != NULL, NRF_ERROR_CRYPTO_ALLOC_FAILED);
         p_context = p_allocated_context;
@@ -372,34 +386,41 @@ ret_code_t nrf_crypto_ecdsa_sign(nrf_crypto_ecdsa_sign_context_t *p_context,
     result = backend_implementation(p_context, p_private_key, p_hash, hash_size, p_signature);
 
     // Deallocate context if allocated
-    if (p_allocated_context != NULL) {
+    if (p_allocated_context != NULL)
+    {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 
     return result;
 }
 
-ret_code_t nrf_crypto_ecdsa_verify(nrf_crypto_ecdsa_verify_context_t *p_context,
-                                   nrf_crypto_ecc_public_key_t const *p_public_key,
-                                   uint8_t const *p_hash, size_t hash_size,
-                                   uint8_t const *p_signature, size_t signature_size)
+
+ret_code_t nrf_crypto_ecdsa_verify(
+    nrf_crypto_ecdsa_verify_context_t       * p_context,
+    nrf_crypto_ecc_public_key_t       const * p_public_key,
+    uint8_t                           const * p_hash,
+    size_t                                    hash_size,
+    uint8_t                           const * p_signature,
+    size_t                                    signature_size)
 {
-    ret_code_t result;
-    void *p_allocated_context = NULL;
-    nrf_crypto_backend_ecdsa_verify_fn_t backend_implementation;
-    size_t context_size;
-    nrf_crypto_ecc_curve_info_t const *p_info;
+    ret_code_t                                   result;
+    void                                       * p_allocated_context = NULL;
+    nrf_crypto_backend_ecdsa_verify_fn_t         backend_implementation;
+    size_t                                       context_size;
+    nrf_crypto_ecc_curve_info_t          const * p_info;
 
     // Get pointer to header
-    nrf_crypto_internal_ecc_key_header_t const *p_public_key_header =
+    nrf_crypto_internal_ecc_key_header_t const * p_public_key_header =
         (nrf_crypto_internal_ecc_key_header_t const *)p_public_key;
 
     // Check and prepare parameters
-    result = nrf_crypto_internal_ecc_key_input_check(p_public_key_header,
-                                                     NRF_CRYPTO_INTERNAL_ECC_PUBLIC_KEY_INIT_VALUE);
+    result = nrf_crypto_internal_ecc_key_input_check(
+        p_public_key_header,
+        NRF_CRYPTO_INTERNAL_ECC_PUBLIC_KEY_INIT_VALUE);
     VERIFY_SUCCESS(result);
     p_info = p_public_key_header->p_info;
-    result = nrf_crypto_internal_ecc_raw_input_check(p_signature, signature_size,
+    result = nrf_crypto_internal_ecc_raw_input_check(p_signature,
+                                                     signature_size,
                                                      2 * p_info->raw_private_key_size);
     VERIFY_SUCCESS(result);
     VERIFY_TRUE(p_hash != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
@@ -410,7 +431,8 @@ ret_code_t nrf_crypto_ecdsa_verify(nrf_crypto_ecdsa_verify_context_t *p_context,
     VERIFY_TRUE(backend_implementation != NULL, NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE);
 
     // Allocate context if not provided
-    if (p_context == NULL && context_size > 0) {
+    if (p_context == NULL && context_size > 0)
+    {
         p_allocated_context = NRF_CRYPTO_ALLOC(context_size);
         VERIFY_TRUE(p_allocated_context != NULL, NRF_ERROR_CRYPTO_ALLOC_FAILED);
         p_context = p_allocated_context;
@@ -420,11 +442,13 @@ ret_code_t nrf_crypto_ecdsa_verify(nrf_crypto_ecdsa_verify_context_t *p_context,
     result = backend_implementation(p_context, p_public_key, p_hash, hash_size, p_signature);
 
     // Deallocate context if allocated
-    if (p_allocated_context != NULL) {
+    if (p_allocated_context != NULL)
+    {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 
     return result;
 }
+
 
 #endif // NRF_CRYPTO_ECC_ENABLED

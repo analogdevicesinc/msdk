@@ -44,13 +44,14 @@ static appBrCb_t appBrCb;
 /*************************************************************************************************/
 static void brSchedule(uint8_t slot)
 {
-    WSF_ASSERT(appBrCb.schTable[slot].pStartFunc != NULL);
+  WSF_ASSERT(appBrCb.schTable[slot].pStartFunc != NULL);
 
-    if (appBrCb.schTable[slot].enabled) {
-        appBrCb.runningSlot = slot;
-        appBrCb.schTable[slot].pStartFunc();
-        WsfTimerStartMs(&appBrCb.schedulerTimer, appBrCb.schTable[slot].minSlotTimeInMs);
-    }
+  if (appBrCb.schTable[slot].enabled)
+  {
+    appBrCb.runningSlot = slot;
+    appBrCb.schTable[slot].pStartFunc();
+    WsfTimerStartMs(&appBrCb.schedulerTimer,  appBrCb.schTable[slot].minSlotTimeInMs);
+  }
 }
 
 /*************************************************************************************************/
@@ -62,56 +63,65 @@ static void brSchedule(uint8_t slot)
 /*************************************************************************************************/
 static void brRunScheduler(void)
 {
-    uint8_t nextSlot;
+  uint8_t nextSlot;
 
-    if (appBrCb.runningSlot == BR_NUM_SLOTS) {
-        return;
-    }
+  if (appBrCb.runningSlot == BR_NUM_SLOTS)
+  {
+    return;
+  }
 
+  /* Move to the next slot. */
+  nextSlot = (appBrCb.runningSlot + 1) % BR_NUM_SLOTS;
+
+  /* Find next valid slot. */
+  while (!appBrCb.schTable[nextSlot].enabled && (nextSlot != appBrCb.runningSlot))
+  {
     /* Move to the next slot. */
-    nextSlot = (appBrCb.runningSlot + 1) % BR_NUM_SLOTS;
+    nextSlot = (nextSlot + 1) % BR_NUM_SLOTS;
+  }
 
-    /* Find next valid slot. */
-    while (!appBrCb.schTable[nextSlot].enabled && (nextSlot != appBrCb.runningSlot)) {
-        /* Move to the next slot. */
-        nextSlot = (nextSlot + 1) % BR_NUM_SLOTS;
-    }
+  WSF_ASSERT(appBrCb.schTable[appBrCb.runningSlot].pStopFunc != NULL);
+  WSF_ASSERT(appBrCb.schTable[nextSlot].pStartFunc != NULL);
 
-    WSF_ASSERT(appBrCb.schTable[appBrCb.runningSlot].pStopFunc != NULL);
-    WSF_ASSERT(appBrCb.schTable[nextSlot].pStartFunc != NULL);
-
-    /* Stop running slot if another needs to be scheduled or the slot was GATT server
+  /* Stop running slot if another needs to be scheduled or the slot was GATT server
    * For GATT server we need to change ADV data. */
-    if ((nextSlot != appBrCb.runningSlot) ||
-        ((appBrCb.runningSlot == BR_GATT_SLOT) && appBrCb.schTable[appBrCb.runningSlot].enabled)) {
-        /* Stop current slot. */
-        if (appBrCb.schTable[appBrCb.runningSlot].pStopFunc()) {
-            /* Stop scheduler until bearer is stopped. */
-            appBrCb.runningSlot = BR_NUM_SLOTS;
+  if ((nextSlot != appBrCb.runningSlot) ||
+      ((appBrCb.runningSlot == BR_GATT_SLOT) && appBrCb.schTable[appBrCb.runningSlot].enabled))
+  {
+    /* Stop current slot. */
+    if (appBrCb.schTable[appBrCb.runningSlot].pStopFunc())
+    {
+      /* Stop scheduler until bearer is stopped. */
+      appBrCb.runningSlot = BR_NUM_SLOTS;
 
-            /* Mark next pending next slot. */
-            appBrCb.pendingSlot = nextSlot;
+      /* Mark next pending next slot. */
+      appBrCb.pendingSlot = nextSlot;
 
-            /* Wait on bearer. */
-            return;
-        } else {
-            /* No need to wait on bearer. Start next slot. */
-            appBrCb.runningSlot = nextSlot;
-            appBrCb.schTable[appBrCb.runningSlot].pStartFunc();
-        }
-    } else {
-        /* No other slots found. If this slot is still available, continue. If the
+      /* Wait on bearer. */
+      return;
+    }
+    else
+    {
+      /* No need to wait on bearer. Start next slot. */
+      appBrCb.runningSlot = nextSlot;
+      appBrCb.schTable[appBrCb.runningSlot].pStartFunc();
+    }
+  }
+  else
+  {
+    /* No other slots found. If this slot is still available, continue. If the
      * current slot has been disabled, then stop scheduler.
      */
-        if ((!appBrCb.schTable[nextSlot].enabled)) {
-            appBrCb.runningSlot = BR_NUM_SLOTS;
-            appBrCb.schTable[nextSlot].pStopFunc();
-            return;
-        }
+    if ((!appBrCb.schTable[nextSlot].enabled))
+    {
+      appBrCb.runningSlot = BR_NUM_SLOTS;
+      appBrCb.schTable[nextSlot].pStopFunc();
+      return;
     }
+  }
 
-    /* Start timer. */
-    WsfTimerStartMs(&appBrCb.schedulerTimer, appBrCb.schTable[appBrCb.runningSlot].minSlotTimeInMs);
+  /* Start timer. */
+  WsfTimerStartMs(&appBrCb.schedulerTimer,  appBrCb.schTable[appBrCb.runningSlot].minSlotTimeInMs);
 }
 
 /*************************************************************************************************/
@@ -125,7 +135,7 @@ static void brRunScheduler(void)
 /*************************************************************************************************/
 static void appBearerEmptyCback(uint8_t slot)
 {
-    (void)slot;
+  (void)slot;
 }
 
 /**************************************************************************************************
@@ -143,15 +153,15 @@ static void appBearerEmptyCback(uint8_t slot)
 /*************************************************************************************************/
 void AppBearerInit(wsfHandlerId_t handlerId)
 {
-    memset(appBrCb.schTable, 0, sizeof(brSchedulerEntry_t) * BR_NUM_SLOTS);
-    appBrCb.runningSlot = BR_NUM_SLOTS;
-    appBrCb.pendingSlot = BR_NUM_SLOTS;
-    appBrCb.pAppCback = appBearerEmptyCback;
+  memset(appBrCb.schTable, 0, sizeof(brSchedulerEntry_t) * BR_NUM_SLOTS);
+  appBrCb.runningSlot = BR_NUM_SLOTS;
+  appBrCb.pendingSlot = BR_NUM_SLOTS;
+  appBrCb.pAppCback = appBearerEmptyCback;
 
-    /* Set timer parameters. */
-    appBrCb.schedulerTimer.isStarted = FALSE;
-    appBrCb.schedulerTimer.handlerId = handlerId;
-    appBrCb.schedulerTimer.msg.event = APP_BR_TIMEOUT_EVT;
+  /* Set timer parameters. */
+  appBrCb.schedulerTimer.isStarted = FALSE;
+  appBrCb.schedulerTimer.handlerId = handlerId;
+  appBrCb.schedulerTimer.msg.event = APP_BR_TIMEOUT_EVT;
 }
 
 /*************************************************************************************************/
@@ -165,7 +175,7 @@ void AppBearerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void AppBearerRegister(appBearerCback_t cback)
 {
-    appBrCb.pAppCback = cback;
+  appBrCb.pAppCback = cback;
 }
 
 /*************************************************************************************************/
@@ -184,16 +194,17 @@ void AppBearerRegister(appBearerCback_t cback)
 void AppBearerScheduleSlot(uint8_t bearerSlot, brStartFunc_t pStart, brStopFunc_t pStop,
                            brDmEvtCback_t dmCback, uint32_t minSlotTimeInMs)
 {
-    if (appBrCb.runningSlot == bearerSlot) {
-        /* Slot is running. Cannot schedule. */
-        return;
-    }
+  if (appBrCb.runningSlot == bearerSlot)
+  {
+    /* Slot is running. Cannot schedule. */
+    return;
+  }
 
-    appBrCb.schTable[bearerSlot].pStartFunc = pStart;
-    appBrCb.schTable[bearerSlot].pStopFunc = pStop;
-    appBrCb.schTable[bearerSlot].dmCback = dmCback;
-    appBrCb.schTable[bearerSlot].minSlotTimeInMs = minSlotTimeInMs;
-    appBrCb.schTable[bearerSlot].enabled = FALSE;
+  appBrCb.schTable[bearerSlot].pStartFunc = pStart;
+  appBrCb.schTable[bearerSlot].pStopFunc = pStop;
+  appBrCb.schTable[bearerSlot].dmCback = dmCback;
+  appBrCb.schTable[bearerSlot].minSlotTimeInMs = minSlotTimeInMs;
+  appBrCb.schTable[bearerSlot].enabled = FALSE;
 }
 
 /*************************************************************************************************/
@@ -207,18 +218,20 @@ void AppBearerScheduleSlot(uint8_t bearerSlot, brStartFunc_t pStart, brStopFunc_
 /*************************************************************************************************/
 void AppBearerEnableSlot(uint8_t bearerSlot)
 {
-    if (appBrCb.schTable[bearerSlot].enabled) {
-        /* Slot is already enabled. */
-        return;
-    }
+  if (appBrCb.schTable[bearerSlot].enabled)
+  {
+    /* Slot is already enabled. */
+    return;
+  }
 
-    /* Enable Slot */
-    appBrCb.schTable[bearerSlot].enabled = TRUE;
+  /* Enable Slot */
+  appBrCb.schTable[bearerSlot].enabled = TRUE;
 
-    if (appBrCb.runningSlot == BR_NUM_SLOTS) {
-        /* No slots scheduled. Run this slot. */
-        brSchedule(bearerSlot);
-    }
+  if (appBrCb.runningSlot == BR_NUM_SLOTS)
+  {
+    /* No slots scheduled. Run this slot. */
+    brSchedule(bearerSlot);
+  }
 }
 
 /*************************************************************************************************/
@@ -232,21 +245,23 @@ void AppBearerEnableSlot(uint8_t bearerSlot)
 /*************************************************************************************************/
 void AppBearerDisableSlot(uint8_t bearerSlot)
 {
-    if (!appBrCb.schTable[bearerSlot].enabled) {
-        /* Slot is already disabled. */
-        return;
-    }
+  if (!appBrCb.schTable[bearerSlot].enabled)
+  {
+    /* Slot is already disabled. */
+    return;
+  }
 
-    /* Disable slot. */
-    appBrCb.schTable[bearerSlot].enabled = FALSE;
+  /* Disable slot. */
+  appBrCb.schTable[bearerSlot].enabled = FALSE;
 
-    /* If the running bearer is cancelled, stop it immediately, stop the timer and run the
+  /* If the running bearer is cancelled, stop it immediately, stop the timer and run the
    * scheduler again.
    */
-    if (appBrCb.runningSlot == bearerSlot) {
-        WsfTimerStop(&appBrCb.schedulerTimer);
-        brRunScheduler();
-    }
+  if (appBrCb.runningSlot == bearerSlot)
+  {
+    WsfTimerStop(&appBrCb.schedulerTimer);
+    brRunScheduler();
+  }
 }
 
 /*************************************************************************************************/
@@ -258,11 +273,11 @@ void AppBearerDisableSlot(uint8_t bearerSlot)
 /*************************************************************************************************/
 void AppBearerSchedulerTimeout(void)
 {
-    /* Send timeout event to application. */
-    appBrCb.pAppCback(appBrCb.runningSlot);
+  /* Send timeout event to application. */
+  appBrCb.pAppCback(appBrCb.runningSlot);
 
-    /* On timeout, re-run scheduler. */
-    brRunScheduler();
+  /* On timeout, re-run scheduler. */
+  brRunScheduler();
 }
 
 /*************************************************************************************************/
@@ -277,82 +292,91 @@ void AppBearerSchedulerTimeout(void)
 /*************************************************************************************************/
 void AppBearerProcDmMsg(dmEvt_t *pMsg)
 {
-    /* Update advertising or scanning state. */
-    switch (pMsg->hdr.event) {
+  /* Update advertising or scanning state. */
+  switch (pMsg->hdr.event)
+  {
     case DM_ADV_START_IND:
     case DM_ADV_SET_START_IND:
-        if (pMsg->hdr.status == HCI_SUCCESS) {
-            appBrCb.advState = ADV_STARTED;
-        } else {
-            appBrCb.advState = ADV_STOPPED;
-        }
-        break;
+      if (pMsg->hdr.status == HCI_SUCCESS)
+      {
+        appBrCb.advState = ADV_STARTED;
+      }
+      else
+      {
+        appBrCb.advState = ADV_STOPPED;
+      }
+      break;
 
     case DM_ADV_STOP_IND:
     case DM_ADV_SET_STOP_IND:
-        WSF_ASSERT((pMsg->hdr.status == HCI_SUCCESS) ||
-                   (pMsg->hdr.status == HCI_ERR_LIMIT_REACHED) ||
-                   (pMsg->hdr.status == HCI_ERR_ADV_TIMEOUT));
+      WSF_ASSERT((pMsg->hdr.status == HCI_SUCCESS) ||
+                 (pMsg->hdr.status == HCI_ERR_LIMIT_REACHED) ||
+                 (pMsg->hdr.status == HCI_ERR_ADV_TIMEOUT));
 
-        appBrCb.advState = ADV_STOPPED;
+      appBrCb.advState = ADV_STOPPED;
 
-        /* Check if a slot is pending the end of the previous one.*/
-        if (appBrCb.pendingSlot != BR_NUM_SLOTS) {
-            brSchedule(appBrCb.pendingSlot);
-            appBrCb.pendingSlot = BR_NUM_SLOTS;
-        }
-        break;
+      /* Check if a slot is pending the end of the previous one.*/
+      if(appBrCb.pendingSlot != BR_NUM_SLOTS)
+      {
+        brSchedule(appBrCb.pendingSlot);
+        appBrCb.pendingSlot = BR_NUM_SLOTS;
+      }
+      break;
 
     case DM_SCAN_START_IND:
     case DM_EXT_SCAN_START_IND:
-        WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
-        appBrCb.scanState = SCAN_STARTED;
-        break;
+      WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
+      appBrCb.scanState = SCAN_STARTED;
+      break;
 
     case DM_SCAN_STOP_IND:
     case DM_EXT_SCAN_STOP_IND:
-        WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
-        appBrCb.scanState = SCAN_STOPPED;
+      WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
+      appBrCb.scanState = SCAN_STOPPED;
 
-        /* Check if a slot is pending the end of the previous one.*/
-        if (appBrCb.pendingSlot != BR_NUM_SLOTS) {
-            brSchedule(appBrCb.pendingSlot);
-            appBrCb.pendingSlot = BR_NUM_SLOTS;
-        }
-        break;
+      /* Check if a slot is pending the end of the previous one.*/
+      if(appBrCb.pendingSlot != BR_NUM_SLOTS)
+      {
+        brSchedule(appBrCb.pendingSlot);
+        appBrCb.pendingSlot = BR_NUM_SLOTS;
+      }
+      break;
 
     case DM_CONN_OPEN_IND:
-        if (pMsg->hdr.status == HCI_SUCCESS) {
-            /* Advertising stops when connection is established.*/
-            appBrCb.advState = ADV_STOPPED;
-        }
-        break;
+      if (pMsg->hdr.status == HCI_SUCCESS)
+      {
+        /* Advertising stops when connection is established.*/
+        appBrCb.advState = ADV_STOPPED;
+      }
+      break;
 
     case DM_CONN_CLOSE_IND:
-        WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
+      WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
 
-        if (appBrCb.runningSlot != BR_GATT_SLOT) {
-            /* Signal GATT that the connection is terminated. */
-            appBrCb.schTable[BR_GATT_SLOT].dmCback(pMsg);
-        }
-        break;
+      if (appBrCb.runningSlot != BR_GATT_SLOT)
+      {
+        /* Signal GATT that the connection is terminated. */
+        appBrCb.schTable[BR_GATT_SLOT].dmCback(pMsg);
+      }
+      break;
 
     case DM_RESET_CMPL_IND:
         appBrCb.advState = ADV_STOPPED;
         appBrCb.scanState = SCAN_STOPPED;
-        break;
+      break;
 
     case DM_SCAN_REPORT_IND:
-        break;
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    /* Call the bearer's DM event handler. */
-    if (appBrCb.runningSlot < BR_NUM_SLOTS) {
-        appBrCb.schTable[appBrCb.runningSlot].dmCback(pMsg);
-    }
+  /* Call the bearer's DM event handler. */
+  if (appBrCb.runningSlot < BR_NUM_SLOTS)
+  {
+    appBrCb.schTable[appBrCb.runningSlot].dmCback(pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -364,7 +388,7 @@ void AppBearerProcDmMsg(dmEvt_t *pMsg)
 /*************************************************************************************************/
 uint8_t AppBearerGetScanState(void)
 {
-    return appBrCb.scanState;
+  return appBrCb.scanState;
 }
 
 /*************************************************************************************************/
@@ -378,7 +402,7 @@ uint8_t AppBearerGetScanState(void)
 /*************************************************************************************************/
 void AppBearerSetScanState(uint8_t scanState)
 {
-    appBrCb.scanState = scanState;
+  appBrCb.scanState = scanState;
 }
 
 /*************************************************************************************************/
@@ -390,7 +414,7 @@ void AppBearerSetScanState(uint8_t scanState)
 /*************************************************************************************************/
 uint8_t AppBearerGetAdvState(void)
 {
-    return appBrCb.advState;
+  return appBrCb.advState;
 }
 
 /*************************************************************************************************/
@@ -404,5 +428,5 @@ uint8_t AppBearerGetAdvState(void)
 /*************************************************************************************************/
 void AppBearerSetAdvState(uint8_t advState)
 {
-    appBrCb.advState = advState;
+  appBrCb.advState = advState;
 }

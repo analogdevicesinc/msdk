@@ -19,9 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 /* check for old macro */
 #if !defined(CYASSL_MD2) && defined(WOLFSSL_MD2)
-#define CYASSL_MD2
+    #define CYASSL_MD2
 #endif
 
 #ifdef CYASSL_MD2
@@ -31,10 +32,11 @@
 
 #include <wolfssl/wolfcrypt/md2.h>
 
-#define InitMd2 wc_InitMd2
+#define InitMd2   wc_InitMd2
 #define Md2Update wc_Md2Update
-#define Md2Final wc_Md2Final
-#define Md2Hash wc_Md2Hash
+#define Md2Final  wc_Md2Final
+#define Md2Hash   wc_Md2Hash
 
 #endif /* CTAO_CRYPT_MD2_H */
 #endif /* CYASSL_MD2 */
+

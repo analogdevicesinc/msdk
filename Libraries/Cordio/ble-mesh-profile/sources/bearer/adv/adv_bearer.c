@@ -40,18 +40,19 @@
 **************************************************************************************************/
 
 /*! Offset of the AD data inside the advertising packet*/
-#define AD_DATA_PDU_OFFSET 2
+#define AD_DATA_PDU_OFFSET  2
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Mesh Advertising Bearer control block */
-typedef struct {
-    advBearerCfg_t *pConfig; /*!< Configuration of the Advertising Bearer */
-    meshAdvIfId_t ifId; /*!< Advertising Interface ID */
-    uint8_t advBuff[HCI_ADV_DATA_LEN]; /*!< Buffer for Advertising state machine */
-    uint8_t advBuffLen; /*!< Length of the Advertising buffer */
+typedef struct
+{
+  advBearerCfg_t* pConfig;                    /*!< Configuration of the Advertising Bearer */
+  meshAdvIfId_t   ifId;                       /*!< Advertising Interface ID */
+  uint8_t         advBuff[HCI_ADV_DATA_LEN];  /*!< Buffer for Advertising state machine */
+  uint8_t         advBuffLen;                 /*!< Length of the Advertising buffer */
 } advBearerCb_t;
 
 /**************************************************************************************************
@@ -74,22 +75,24 @@ static advBearerCb_t advBearerCb;
 /*************************************************************************************************/
 static void advBearerStartScanning(void)
 {
-    uint8_t scanState;
+  uint8_t scanState;
 
-    /* Get the scan state. */
-    scanState = AppBearerGetScanState();
+  /* Get the scan state. */
+  scanState = AppBearerGetScanState();
 
-    /* Check if bearer interface ID and scanning state are valid. */
-    if ((advBearerCb.ifId != ADV_BEARER_INVALID_IF_ID) && (scanState == SCAN_STOPPED)) {
-        /* Set scan interval. */
-        DmScanSetInterval(HCI_SCAN_PHY_LE_1M_BIT, &advBearerCb.pConfig->scanInterval,
-                          &advBearerCb.pConfig->scanWindow);
-        /* Start scan. */
-        DmScanStart(HCI_SCAN_PHY_LE_1M_BIT, advBearerCb.pConfig->discMode,
-                    &advBearerCb.pConfig->scanType, FALSE, 0, 0);
-        /* Set state to scan start request. */
-        AppBearerSetScanState(SCAN_START_REQ);
-    }
+  /* Check if bearer interface ID and scanning state are valid. */
+  if ((advBearerCb.ifId != ADV_BEARER_INVALID_IF_ID) &&
+      (scanState == SCAN_STOPPED))
+  {
+    /* Set scan interval. */
+    DmScanSetInterval(HCI_SCAN_PHY_LE_1M_BIT, &advBearerCb.pConfig->scanInterval,
+                      &advBearerCb.pConfig->scanWindow);
+    /* Start scan. */
+    DmScanStart(HCI_SCAN_PHY_LE_1M_BIT, advBearerCb.pConfig->discMode,
+                &advBearerCb.pConfig->scanType, FALSE, 0, 0);
+    /* Set state to scan start request. */
+    AppBearerSetScanState(SCAN_START_REQ);
+  }
 }
 
 /*************************************************************************************************/
@@ -101,18 +104,19 @@ static void advBearerStartScanning(void)
 /*************************************************************************************************/
 static void advBearerStopScanning(void)
 {
-    uint8_t scanState;
+  uint8_t scanState;
 
-    /* Get the scan state. */
-    scanState = AppBearerGetScanState();
+  /* Get the scan state. */
+  scanState = AppBearerGetScanState();
 
-    /* Check if Scanning is started. */
-    if ((scanState == SCAN_STARTED) || (scanState == SCAN_START_REQ)) {
-        /* Stop scan. */
-        DmScanStop();
-        /* Set state to scan stop request. */
-        AppBearerSetScanState(SCAN_STOP_REQ);
-    }
+  /* Check if Scanning is started. */
+  if ((scanState == SCAN_STARTED) || (scanState == SCAN_START_REQ))
+  {
+    /* Stop scan. */
+    DmScanStop();
+    /* Set state to scan stop request. */
+    AppBearerSetScanState(SCAN_STOP_REQ);
+  }
 }
 
 /*************************************************************************************************/
@@ -124,23 +128,23 @@ static void advBearerStopScanning(void)
 /*************************************************************************************************/
 static void advBearerStartAdvertising(void)
 {
-    uint8_t advHandle;
-    uint8_t maxEaEvents;
+  uint8_t advHandle;
+  uint8_t maxEaEvents;
 
-    advHandle = DM_ADV_HANDLE_DEFAULT;
-    maxEaEvents = 1;
+  advHandle = DM_ADV_HANDLE_DEFAULT;
+  maxEaEvents = 1;
 
-    /* Set advertising data. */
-    DmAdvSetData(DM_ADV_HANDLE_DEFAULT, HCI_ADV_DATA_OP_COMP_FRAG, DM_DATA_LOC_ADV,
-                 advBearerCb.advBuffLen, advBearerCb.advBuff);
+  /* Set advertising data. */
+  DmAdvSetData(DM_ADV_HANDLE_DEFAULT, HCI_ADV_DATA_OP_COMP_FRAG, DM_DATA_LOC_ADV,
+               advBearerCb.advBuffLen, advBearerCb.advBuff);
 
-    /* Start advertising. */
-    DmAdvStart(1, &advHandle, &advBearerCb.pConfig->advDuration, &maxEaEvents);
+  /* Start advertising. */
+  DmAdvStart(1, &advHandle, &advBearerCb.pConfig->advDuration, &maxEaEvents);
 
-    AppBearerSetAdvState(ADV_START_REQ);
+  AppBearerSetAdvState(ADV_START_REQ);
 
-    /* Clear advBuffLen to signal that the data has been set. */
-    advBearerCb.advBuffLen = 0;
+  /* Clear advBuffLen to signal that the data has been set. */
+  advBearerCb.advBuffLen = 0;
 }
 
 /**************************************************************************************************
@@ -158,10 +162,10 @@ static void advBearerStartAdvertising(void)
 /*************************************************************************************************/
 void AdvBearerInit(advBearerCfg_t *pAdvBearerCfg)
 {
-    /* Initialize control block. */
-    advBearerCb.advBuffLen = 0;
-    advBearerCb.ifId = ADV_BEARER_INVALID_IF_ID;
-    advBearerCb.pConfig = pAdvBearerCfg;
+  /* Initialize control block. */
+  advBearerCb.advBuffLen = 0;
+  advBearerCb.ifId = ADV_BEARER_INVALID_IF_ID;
+  advBearerCb.pConfig = pAdvBearerCfg;
 }
 
 /*************************************************************************************************/
@@ -173,10 +177,10 @@ void AdvBearerInit(advBearerCfg_t *pAdvBearerCfg)
 /*************************************************************************************************/
 void AdvBearerRegisterIf(meshAdvIfId_t advIfId)
 {
-    WSF_ASSERT(advBearerCb.ifId == ADV_BEARER_INVALID_IF_ID);
+  WSF_ASSERT(advBearerCb.ifId == ADV_BEARER_INVALID_IF_ID);
 
-    /* Set bearer advertising interface ID. */
-    advBearerCb.ifId = advIfId;
+  /* Set bearer advertising interface ID. */
+  advBearerCb.ifId = advIfId;
 }
 
 /*************************************************************************************************/
@@ -188,8 +192,8 @@ void AdvBearerRegisterIf(meshAdvIfId_t advIfId)
 /*************************************************************************************************/
 void AdvBearerDeregisterIf(void)
 {
-    /* Set bearer advertising interface ID. */
-    advBearerCb.ifId = ADV_BEARER_INVALID_IF_ID;
+  /* Set bearer advertising interface ID. */
+  advBearerCb.ifId = ADV_BEARER_INVALID_IF_ID;
 }
 
 /*************************************************************************************************/
@@ -201,20 +205,20 @@ void AdvBearerDeregisterIf(void)
 /*************************************************************************************************/
 void AdvBearerStart(void)
 {
-    bdAddr_t peerAddr;
+  bdAddr_t peerAddr;
 
-    /* Set advertising address. */
-    memset(peerAddr, 0, BDA_ADDR_LEN);
+  /* Set advertising address. */
+  memset(peerAddr, 0, BDA_ADDR_LEN);
 
-    /* Configure advertising interval. */
-    DmAdvSetInterval(DM_ADV_HANDLE_DEFAULT, advBearerCb.pConfig->intervalMin,
-                     advBearerCb.pConfig->intervalMax);
+  /* Configure advertising interval. */
+  DmAdvSetInterval(DM_ADV_HANDLE_DEFAULT, advBearerCb.pConfig->intervalMin,
+                   advBearerCb.pConfig->intervalMax);
 
-    /* Configure advertising parameters. */
-    DmAdvConfig(DM_ADV_HANDLE_DEFAULT, DM_ADV_NONCONN_UNDIRECT, HCI_ADDR_TYPE_PUBLIC, peerAddr);
+  /* Configure advertising parameters. */
+  DmAdvConfig(DM_ADV_HANDLE_DEFAULT, DM_ADV_NONCONN_UNDIRECT, HCI_ADDR_TYPE_PUBLIC, peerAddr);
 
-    /* Start scanning. */
-    advBearerStartScanning();
+  /* Start scanning. */
+  advBearerStartScanning();
 }
 
 /*************************************************************************************************/
@@ -226,32 +230,36 @@ void AdvBearerStart(void)
 /*************************************************************************************************/
 bool_t AdvBearerStop(void)
 {
-    uint8_t advHandle;
-    uint8_t advState;
-    uint8_t scanState;
+  uint8_t advHandle;
+  uint8_t advState;
+  uint8_t scanState;
 
-    /* Get scanning state. */
-    scanState = AppBearerGetScanState();
+  /* Get scanning state. */
+  scanState = AppBearerGetScanState();
 
-    /* Get advertising state. */
-    advState = AppBearerGetAdvState();
+  /* Get advertising state. */
+  advState = AppBearerGetAdvState();
 
-    /* Check if Advertising is started. */
-    if ((advState == ADV_STARTED) || (advState == ADV_START_REQ)) {
-        /* Stop advertising. */
-        DmAdvStop(1, &advHandle);
+  /* Check if Advertising is started. */
+  if ((advState == ADV_STARTED) || (advState == ADV_START_REQ))
+  {
+    /* Stop advertising. */
+    DmAdvStop(1, &advHandle);
 
-        AppBearerSetAdvState(ADV_STOP_REQ);
-    } else {
-        if ((scanState == SCAN_STARTED) || (scanState == SCAN_START_REQ)) {
-            /* Stop scan. */
-            DmScanStop();
-            /* Set state to scan stop request. */
-            AppBearerSetScanState(SCAN_STOP_REQ);
-        }
-    }
+    AppBearerSetAdvState(ADV_STOP_REQ);
+  }
+  else
+  {
+    if ((scanState == SCAN_STARTED) || (scanState == SCAN_START_REQ))
+      {
+        /* Stop scan. */
+        DmScanStop();
+        /* Set state to scan stop request. */
+        AppBearerSetScanState(SCAN_STOP_REQ);
+      }
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -263,34 +271,38 @@ bool_t AdvBearerStop(void)
 /*************************************************************************************************/
 void AdvBearerSendPacket(meshAdvPduSendEvt_t *pEvt)
 {
-    uint8_t advState;
-    uint8_t scanState;
+  uint8_t advState;
+  uint8_t scanState;
 
-    /* Get scanning state. */
-    scanState = AppBearerGetScanState();
+  /* Get scanning state. */
+  scanState = AppBearerGetScanState();
 
-    /* Get advertising state. */
-    advState = AppBearerGetAdvState();
+  /* Get advertising state. */
+  advState = AppBearerGetAdvState();
 
-    /* Advertising must be stopped. Legacy advertising data length cannot exceed 31 bytes. */
-    if ((advState == ADV_STOPPED) && ((pEvt->advPduLen + AD_DATA_PDU_OFFSET) <= HCI_ADV_DATA_LEN)) {
-        /* Store packet in ADV bearer buffer. */
-        advBearerCb.advBuff[0] = pEvt->advPduLen + sizeof(pEvt->adType);
-        advBearerCb.advBuff[1] = pEvt->adType;
-        memcpy((advBearerCb.advBuff + AD_DATA_PDU_OFFSET), pEvt->pAdvPdu, pEvt->advPduLen);
+  /* Advertising must be stopped. Legacy advertising data length cannot exceed 31 bytes. */
+  if ((advState == ADV_STOPPED) && ((pEvt->advPduLen + AD_DATA_PDU_OFFSET) <= HCI_ADV_DATA_LEN))
+  {
+    /* Store packet in ADV bearer buffer. */
+    advBearerCb.advBuff[0] = pEvt->advPduLen + sizeof(pEvt->adType);
+    advBearerCb.advBuff[1] = pEvt->adType;
+    memcpy((advBearerCb.advBuff + AD_DATA_PDU_OFFSET), pEvt->pAdvPdu, pEvt->advPduLen);
 
-        /* Update buffer length. */
-        advBearerCb.advBuffLen = pEvt->advPduLen + AD_DATA_PDU_OFFSET;
+    /* Update buffer length. */
+    advBearerCb.advBuffLen = pEvt->advPduLen + AD_DATA_PDU_OFFSET;
 
-        /* Check if scanning is enabled. */
-        if (scanState != SCAN_STOPPED) {
-            /* Stop scanning. */
-            advBearerStopScanning();
-        } else {
-            /* Start advertising */
-            advBearerStartAdvertising();
-        }
+    /* Check if scanning is enabled. */
+    if (scanState != SCAN_STOPPED)
+    {
+      /* Stop scanning. */
+      advBearerStopScanning();
     }
+    else
+    {
+      /* Start advertising */
+      advBearerStartAdvertising();
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -305,88 +317,92 @@ void AdvBearerSendPacket(meshAdvPduSendEvt_t *pEvt)
 /*************************************************************************************************/
 void AdvBearerProcDmMsg(dmEvt_t *pMsg)
 {
-    uint8_t *pData;
-    uint8_t advState;
+  uint8_t *pData;
+  uint8_t advState;
 
-    /* Get advertising state. */
-    advState = AppBearerGetAdvState();
+  /* Get advertising state. */
+  advState = AppBearerGetAdvState();
 
-    switch (pMsg->hdr.event) {
+  switch (pMsg->hdr.event)
+  {
     case DM_ADV_START_IND:
     case DM_ADV_SET_START_IND:
-        if (pMsg->hdr.status != HCI_SUCCESS) {
-            /* Advertising start failed. Revert to scanning. */
-            advBearerStartScanning();
-        }
-        break;
+      if (pMsg->hdr.status != HCI_SUCCESS)
+      {
+        /* Advertising start failed. Revert to scanning. */
+        advBearerStartScanning();
+      }
+      break;
 
     case DM_ADV_STOP_IND:
     case DM_ADV_SET_STOP_IND:
-        WSF_ASSERT((pMsg->hdr.status == HCI_SUCCESS) ||
-                   (pMsg->hdr.status == HCI_ERR_LIMIT_REACHED) ||
-                   (pMsg->hdr.status == HCI_ERR_ADV_TIMEOUT));
+      WSF_ASSERT((pMsg->hdr.status == HCI_SUCCESS) ||
+                 (pMsg->hdr.status == HCI_ERR_LIMIT_REACHED) ||
+                 (pMsg->hdr.status == HCI_ERR_ADV_TIMEOUT));
 
-        /* Start scanning. */
-        advBearerStartScanning();
-        break;
+      /* Start scanning. */
+      advBearerStartScanning();
+      break;
 
     case DM_SCAN_START_IND:
     case DM_EXT_SCAN_START_IND:
-        WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
+      WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
 
-        /* Signal interface ready. */
-        MeshSignalAdvIfRdy(advBearerCb.ifId);
-        break;
+      /* Signal interface ready. */
+      MeshSignalAdvIfRdy(advBearerCb.ifId);
+      break;
     case DM_SCAN_STOP_IND:
     case DM_EXT_SCAN_STOP_IND:
-        WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
+      WSF_ASSERT(pMsg->hdr.status == HCI_SUCCESS);
 
-        if ((advBearerCb.advBuffLen != 0) && (advState == ADV_STOPPED)) {
-            /* Start advertising */
-            advBearerStartAdvertising();
-        } else {
-            /* Restart scanning. */
-            advBearerStartScanning();
-        }
-        break;
+      if ((advBearerCb.advBuffLen != 0) && (advState == ADV_STOPPED))
+      {
+        /* Start advertising */
+        advBearerStartAdvertising();
+      }
+      else
+      {
+        /* Restart scanning. */
+        advBearerStartScanning();
+      }
+      break;
 
     case DM_SCAN_REPORT_IND:
-        /* Find vendor-specific advertising data. */
-        if ((((pData = DmFindAdType(MESH_AD_TYPE_PACKET, pMsg->scanReport.len,
-                                    pMsg->scanReport.pData)) != NULL) ||
-             ((pData = DmFindAdType(MESH_AD_TYPE_BEACON, pMsg->scanReport.len,
-                                    pMsg->scanReport.pData)) != NULL) ||
-             ((pData = DmFindAdType(MESH_AD_TYPE_PB, pMsg->scanReport.len,
-                                    pMsg->scanReport.pData)) != NULL)) &&
-            (pMsg->scanReport.eventType == 0x03)) {
-            if (advBearerCb.ifId != ADV_BEARER_INVALID_IF_ID) {
-                MeshProcessAdvPdu(advBearerCb.ifId, pData, pData[0] + 1);
-            }
+      /* Find vendor-specific advertising data. */
+      if ((((pData = DmFindAdType(MESH_AD_TYPE_PACKET, pMsg->scanReport.len, pMsg->scanReport.pData)) != NULL) ||
+           ((pData = DmFindAdType(MESH_AD_TYPE_BEACON, pMsg->scanReport.len, pMsg->scanReport.pData)) != NULL) ||
+           ((pData = DmFindAdType(MESH_AD_TYPE_PB, pMsg->scanReport.len, pMsg->scanReport.pData)) != NULL)) &&
+          (pMsg->scanReport.eventType == 0x03))
+      {
+        if (advBearerCb.ifId != ADV_BEARER_INVALID_IF_ID)
+        {
+          MeshProcessAdvPdu(advBearerCb.ifId, pData, pData[0] + 1);
         }
-        break;
+      }
+      break;
 
     case DM_EXT_SCAN_REPORT_IND:
-        /* Find vendor-specific advertising data. */
-        if ((((pData = DmFindAdType(MESH_AD_TYPE_PACKET, pMsg->extScanReport.len,
-                                    pMsg->extScanReport.pData)) != NULL) ||
-             ((pData = DmFindAdType(MESH_AD_TYPE_BEACON, pMsg->extScanReport.len,
-                                    pMsg->extScanReport.pData)) != NULL) ||
-             ((pData = DmFindAdType(MESH_AD_TYPE_PB, pMsg->extScanReport.len,
-                                    pMsg->extScanReport.pData)) != NULL)) &&
-            (pMsg->extScanReport.eventType == 0x10)) {
-            if (advBearerCb.ifId != ADV_BEARER_INVALID_IF_ID) {
-                MeshProcessAdvPdu(advBearerCb.ifId, pData, pData[0] + 1);
-            }
+      /* Find vendor-specific advertising data. */
+      if ((((pData = DmFindAdType(MESH_AD_TYPE_PACKET, pMsg->extScanReport.len, pMsg->extScanReport.pData)) != NULL) ||
+           ((pData = DmFindAdType(MESH_AD_TYPE_BEACON, pMsg->extScanReport.len, pMsg->extScanReport.pData)) != NULL) ||
+           ((pData = DmFindAdType(MESH_AD_TYPE_PB, pMsg->extScanReport.len, pMsg->extScanReport.pData)) != NULL)) &&
+          (pMsg->extScanReport.eventType == 0x10))
+      {
+        if (advBearerCb.ifId != ADV_BEARER_INVALID_IF_ID)
+        {
+          MeshProcessAdvPdu(advBearerCb.ifId, pData, pData[0] + 1);
         }
-        break;
+      }
+      break;
 
     case DM_RESET_CMPL_IND:
-        if (advBearerCb.ifId != ADV_BEARER_INVALID_IF_ID) {
-            advBearerCb.advBuffLen = 0;
-        }
-        break;
+      if (advBearerCb.ifId != ADV_BEARER_INVALID_IF_ID)
+      {
+        advBearerCb.advBuffLen = 0;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }

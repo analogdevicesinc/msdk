@@ -59,28 +59,31 @@ extern "C" {
 #define NRFX_PDM_MAX_BUFFER_SIZE 32767
 
 /** @brief PDM error type. */
-typedef enum {
-    NRFX_PDM_NO_ERROR = 0, ///< No error.
+typedef enum
+{
+    NRFX_PDM_NO_ERROR = 0,      ///< No error.
     NRFX_PDM_ERROR_OVERFLOW = 1 ///< Overflow error.
 } nrfx_pdm_error_t;
 
 /** @brief PDM event structure. */
-typedef struct {
-    bool buffer_requested; ///< Buffer request flag.
-    int16_t *buffer_released; ///< Pointer to the released buffer. Can be NULL.
-    nrfx_pdm_error_t error; ///< Error type.
+typedef struct
+{
+    bool             buffer_requested; ///< Buffer request flag.
+    int16_t *        buffer_released;  ///< Pointer to the released buffer. Can be NULL.
+    nrfx_pdm_error_t error;            ///< Error type.
 } nrfx_pdm_evt_t;
 
 /** @brief PDM interface driver configuration structure. */
-typedef struct {
-    nrf_pdm_mode_t mode; ///< Interface operation mode.
-    nrf_pdm_edge_t edge; ///< Sampling mode.
-    uint8_t pin_clk; ///< CLK pin.
-    uint8_t pin_din; ///< DIN pin.
-    nrf_pdm_freq_t clock_freq; ///< Clock frequency.
-    nrf_pdm_gain_t gain_l; ///< Left channel gain.
-    nrf_pdm_gain_t gain_r; ///< Right channel gain.
-    uint8_t interrupt_priority; ///< Interrupt priority.
+typedef struct
+{
+    nrf_pdm_mode_t mode;               ///< Interface operation mode.
+    nrf_pdm_edge_t edge;               ///< Sampling mode.
+    uint8_t        pin_clk;            ///< CLK pin.
+    uint8_t        pin_din;            ///< DIN pin.
+    nrf_pdm_freq_t clock_freq;         ///< Clock frequency.
+    nrf_pdm_gain_t gain_l;             ///< Left channel gain.
+    nrf_pdm_gain_t gain_r;             ///< Right channel gain.
+    uint8_t        interrupt_priority; ///< Interrupt priority.
 } nrfx_pdm_config_t;
 
 /**
@@ -90,13 +93,17 @@ typedef struct {
  * @param _pin_clk  CLK output pin.
  * @param _pin_din  DIN input pin.
  */
-#define NRFX_PDM_DEFAULT_CONFIG(_pin_clk, _pin_din)                                               \
-    {                                                                                             \
-        .mode = (nrf_pdm_mode_t)NRFX_PDM_CONFIG_MODE,                                             \
-        .edge = (nrf_pdm_edge_t)NRFX_PDM_CONFIG_EDGE, .pin_clk = _pin_clk, .pin_din = _pin_din,   \
-        .clock_freq = (nrf_pdm_freq_t)NRFX_PDM_CONFIG_CLOCK_FREQ, .gain_l = NRF_PDM_GAIN_DEFAULT, \
-        .gain_r = NRF_PDM_GAIN_DEFAULT, .interrupt_priority = NRFX_PDM_CONFIG_IRQ_PRIORITY        \
-    }
+#define NRFX_PDM_DEFAULT_CONFIG(_pin_clk, _pin_din)                   \
+{                                                                     \
+    .mode               = (nrf_pdm_mode_t)NRFX_PDM_CONFIG_MODE,       \
+    .edge               = (nrf_pdm_edge_t)NRFX_PDM_CONFIG_EDGE,       \
+    .pin_clk            = _pin_clk,                                   \
+    .pin_din            = _pin_din,                                   \
+    .clock_freq         = (nrf_pdm_freq_t)NRFX_PDM_CONFIG_CLOCK_FREQ, \
+    .gain_l             = NRF_PDM_GAIN_DEFAULT,                       \
+    .gain_r             = NRF_PDM_GAIN_DEFAULT,                       \
+    .interrupt_priority = NRFX_PDM_CONFIG_IRQ_PRIORITY                \
+}
 
 /**
  * @brief Handler for the PDM interface ready events.
@@ -106,7 +113,8 @@ typedef struct {
  *
  * @param[in] p_evt Pointer to the PDM event structure.
  */
-typedef void (*nrfx_pdm_event_handler_t)(nrfx_pdm_evt_t const *const p_evt);
+typedef void (*nrfx_pdm_event_handler_t)(nrfx_pdm_evt_t const * const p_evt);
+
 
 /**
  * @brief Function for initializing the PDM interface.
@@ -118,7 +126,8 @@ typedef void (*nrfx_pdm_event_handler_t)(nrfx_pdm_evt_t const *const p_evt);
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
  * @retval NRFX_ERROR_INVALID_PARAM Invalid configuration was specified.
  */
-nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const *p_config, nrfx_pdm_event_handler_t event_handler);
+nrfx_err_t nrfx_pdm_init(nrfx_pdm_config_t const * p_config,
+                         nrfx_pdm_event_handler_t  event_handler);
 
 /**
  * @brief Function for uninitializing the PDM interface.
@@ -183,11 +192,13 @@ nrfx_err_t nrfx_pdm_stop(void);
  * @retval NRFX_ERROR_INVALID_STATE The driver was not initialized.
  * @retval NRFX_ERROR_INVALID_PARAM Invalid parameters were provided.
  */
-nrfx_err_t nrfx_pdm_buffer_set(int16_t *buffer, uint16_t buffer_length);
+nrfx_err_t nrfx_pdm_buffer_set(int16_t * buffer, uint16_t buffer_length);
 
 /** @} */
 
+
 void nrfx_pdm_irq_handler(void);
+
 
 #ifdef __cplusplus
 }

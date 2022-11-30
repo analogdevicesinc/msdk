@@ -75,7 +75,7 @@ extern "C" {
  *
  * @ingroup UCL_CBC_MAC_AES
  */
-int ucl_aes_cbc_mac(u8 *tmac, u8 tmac_byteLen, u8 *src, u32 len, u8 *key, u32 keylen);
+  int ucl_aes_cbc_mac(u8 *tmac, u8 tmac_byteLen, u8 *src, u32 len, u8 *key, u32 keylen);
 
 /** <b>AES-CBC_MAC Init</b>.
  * Initialise AES CBC_MAC Context.
@@ -133,7 +133,7 @@ int ucl_aes_cbc_mac_core(ucl_aes_ctx_t *ctx, u8 *src, u32 len);
  *
  * @ingroup UCL_CBC_MAC_AES 
  */
-int ucl_aes_cbc_mac_finish(u8 *tmac, u32 tmac_byteLen, ucl_aes_ctx_t *ctx);
+  int ucl_aes_cbc_mac_finish(u8 *tmac, u32 tmac_byteLen, ucl_aes_ctx_t *ctx);
 
 #ifdef __cplusplus
 }

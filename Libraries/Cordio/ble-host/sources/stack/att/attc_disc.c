@@ -34,25 +34,25 @@
   Macros
 **************************************************************************************************/
 
-#define ATT_DISC_HDL_IDX_NONE 0xFF
+#define ATT_DISC_HDL_IDX_NONE           0xFF
 
-#define ATT_SET_UUID_MASK ATTC_SET_UUID_128
+#define ATT_SET_UUID_MASK               ATTC_SET_UUID_128
 
 /* Characteristic declaration lengths */
-#define ATT_CHAR_DECL_LEN_UUID16 5
-#define ATT_CHAR_DECL_LEN_UUID128 19
+#define ATT_CHAR_DECL_LEN_UUID16        5
+#define ATT_CHAR_DECL_LEN_UUID128       19
 
 /* Read by type response lengths for characteristic discovery */
-#define ATT_READ_RSP_LEN_UUID16 (ATT_CHAR_DECL_LEN_UUID16 + 2)
-#define ATT_READ_RSP_LEN_UUID128 (ATT_CHAR_DECL_LEN_UUID128 + 2)
+#define ATT_READ_RSP_LEN_UUID16         (ATT_CHAR_DECL_LEN_UUID16 + 2)
+#define ATT_READ_RSP_LEN_UUID128        (ATT_CHAR_DECL_LEN_UUID128 + 2)
 
 /* Read by type response lengths for service include discovery */
-#define ATT_READ_RSP_INC_LEN_UUID16 (ATT_16_UUID_LEN + 6)
-#define ATT_READ_RSP_INC_LEN_UUID128 (ATT_128_UUID_LEN + 6)
+#define ATT_READ_RSP_INC_LEN_UUID16     (ATT_16_UUID_LEN + 6)
+#define ATT_READ_RSP_INC_LEN_UUID128    (ATT_128_UUID_LEN + 6)
 
 /* Find info response lengths */
-#define ATT_FIND_RSP_LEN_UUID16 (ATT_16_UUID_LEN + 2)
-#define ATT_FIND_RSP_LEN_UUID128 (ATT_128_UUID_LEN + 2)
+#define ATT_FIND_RSP_LEN_UUID16         (ATT_16_UUID_LEN + 2)
+#define ATT_FIND_RSP_LEN_UUID128        (ATT_128_UUID_LEN + 2)
 
 /*************************************************************************************************/
 /*!
@@ -67,22 +67,24 @@
 /*************************************************************************************************/
 static bool_t attcUuidCmp(attcDiscChar_t *pChar, uint8_t *pUuid, uint8_t settings)
 {
-    /* if both uuids are the same length */
-    if ((pChar->settings & ATT_SET_UUID_MASK) == settings) {
-        /* simply compare the data */
-        return (memcmp(pChar->pUuid, pUuid, (settings == 0) ? ATT_16_UUID_LEN : ATT_128_UUID_LEN) ==
-                0);
-    }
-    /* if discovered UUID is 128 bit and our UUID is 16 bit */
-    else if ((settings == ATTC_SET_UUID_128) && ((pChar->settings & ATTC_SET_UUID_128) == 0)) {
-        /* convert our UUID to 128 bit and compare */
-        return attUuidCmp16to128(pChar->pUuid, pUuid);
-    }
-    /* else discovered UUID is 16 bit and our UUID is 128 bit */
-    else {
-        /* no match */
-        return FALSE;
-    }
+  /* if both uuids are the same length */
+  if ((pChar->settings & ATT_SET_UUID_MASK) == settings)
+  {
+    /* simply compare the data */
+    return (memcmp(pChar->pUuid, pUuid, (settings == 0) ? ATT_16_UUID_LEN : ATT_128_UUID_LEN) == 0);
+  }
+  /* if discovered UUID is 128 bit and our UUID is 16 bit */
+  else if ((settings == ATTC_SET_UUID_128) && ((pChar->settings & ATTC_SET_UUID_128) == 0))
+  {
+    /* convert our UUID to 128 bit and compare */
+    return attUuidCmp16to128(pChar->pUuid, pUuid);
+  }
+  /* else discovered UUID is 16 bit and our UUID is 128 bit */
+  else
+  {
+    /* no match */
+    return FALSE;
+  }
 }
 
 /*************************************************************************************************/
@@ -97,21 +99,24 @@ static bool_t attcUuidCmp(attcDiscChar_t *pChar, uint8_t *pUuid, uint8_t setting
 /*************************************************************************************************/
 static uint8_t attcDiscVerify(attcDiscCb_t *pCb)
 {
-    attcDiscChar_t **pChar;
-    uint8_t i;
+  attcDiscChar_t  **pChar;
+  uint8_t         i;
 
-    /* for each characteristic */
-    for (i = 0, pChar = pCb->pCharList; i < pCb->charListLen; i++, pChar++) {
-        /* if characteristic required */
-        if (((*pChar)->settings & ATTC_SET_REQUIRED) != 0) {
-            /* verify handle was discovered */
-            if (pCb->pHdlList[i] == ATT_HANDLE_NONE) {
-                return ATT_ERR_REQ_NOT_FOUND;
-            }
-        }
+  /* for each characteristic */
+  for (i = 0, pChar = pCb->pCharList; i < pCb->charListLen; i++, pChar++)
+  {
+    /* if characteristic required */
+    if (((*pChar)->settings & ATTC_SET_REQUIRED) != 0)
+    {
+      /* verify handle was discovered */
+      if (pCb->pHdlList[i] == ATT_HANDLE_NONE)
+      {
+        return ATT_ERR_REQ_NOT_FOUND;
+      }
     }
+  }
 
-    return ATT_SUCCESS;
+  return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -129,57 +134,68 @@ static uint8_t attcDiscVerify(attcDiscCb_t *pCb)
 /*************************************************************************************************/
 static uint8_t attcDiscDescriptors(dmConnId_t connId, attcDiscCb_t *pCb)
 {
-    attcDiscChar_t **pChar;
-    uint16_t startHdl = ATT_HANDLE_NONE;
-    uint16_t endHdl = ATT_HANDLE_NONE;
+  attcDiscChar_t  **pChar;
+  uint16_t        startHdl = ATT_HANDLE_NONE;
+  uint16_t        endHdl = ATT_HANDLE_NONE;
 
-    /* find next descriptor in list */
-    pChar = pCb->pCharList + pCb->charListIdx;
-    while (pCb->charListIdx < pCb->charListLen) {
-        /* if this is a descriptor */
-        if (((*pChar)->settings & ATTC_SET_DESCRIPTOR) != 0) {
-            /* start handle is one greater than characteristic value handle,
+  /* find next descriptor in list */
+  pChar = pCb->pCharList + pCb->charListIdx;
+  while (pCb->charListIdx < pCb->charListLen)
+  {
+    /* if this is a descriptor */
+    if (((*pChar)->settings & ATTC_SET_DESCRIPTOR) != 0)
+    {
+      /* start handle is one greater than characteristic value handle,
        * which is stored in the previous entry in the list;
        * end handle is stored at current entry in the list
        */
-            startHdl = pCb->pHdlList[pCb->charListIdx - 1] + 1;
-            endHdl = pCb->pHdlList[pCb->charListIdx];
+      startHdl = pCb->pHdlList[pCb->charListIdx - 1] + 1;
+      endHdl = pCb->pHdlList[pCb->charListIdx];
 
-            /* clear temp end handle */
-            pCb->pHdlList[pCb->charListIdx] = ATT_HANDLE_NONE;
+      /* clear temp end handle */
+      pCb->pHdlList[pCb->charListIdx] = ATT_HANDLE_NONE;
 
-            /* if there are descriptors */
-            if (startHdl <= endHdl) {
-                break;
-            } else {
-                /* we are looking for descriptors for this characteristic but
+      /* if there are descriptors */
+      if (startHdl <= endHdl)
+      {
+        break;
+      }
+      else
+      {
+        /* we are looking for descriptors for this characteristic but
          * there aren't any;
          * skip over any other descriptors that follow in our list
          */
-                while (++pCb->charListIdx < pCb->charListLen) {
-                    pChar++;
-                    if ((*pChar)->settings & ATTC_SET_DESCRIPTOR) {
-                        continue;
-                    }
-                }
-            }
-        } else {
-            /* go to next in list */
-            pChar++;
-            pCb->charListIdx++;
+        while (++pCb->charListIdx < pCb->charListLen)
+        {
+          pChar++;
+          if ((*pChar)->settings & ATTC_SET_DESCRIPTOR)
+          {
+            continue;
+          }
         }
+      }
     }
+    else
+    {
+      /* go to next in list */
+      pChar++;
+      pCb->charListIdx++;
+    }
+  }
 
-    /* if no more descriptors to be discovered */
-    if (pCb->charListIdx == pCb->charListLen) {
-        /* we're done; verify required characteristics and descriptors were discovered */
-        return attcDiscVerify(pCb);
-    }
-    /* else initiate characteristic descriptor discovery */
-    else {
-        AttcFindInfoReq(connId, startHdl, endHdl, TRUE);
-        return ATT_CONTINUING;
-    }
+  /* if no more descriptors to be discovered */
+  if (pCb->charListIdx == pCb->charListLen)
+  {
+    /* we're done; verify required characteristics and descriptors were discovered */
+    return attcDiscVerify(pCb);
+  }
+  /* else initiate characteristic descriptor discovery */
+  else
+  {
+    AttcFindInfoReq(connId, startHdl, endHdl, TRUE);
+    return ATT_CONTINUING;
+  }
 }
 
 /*************************************************************************************************/
@@ -197,30 +213,33 @@ static uint8_t attcDiscDescriptors(dmConnId_t connId, attcDiscCb_t *pCb)
 /*************************************************************************************************/
 static void attcDiscProcDescPair(attcDiscCb_t *pCb, uint8_t settings, uint8_t *pPair)
 {
-    attcDiscChar_t **pDesc;
-    uint16_t hdl;
-    uint8_t i;
+  attcDiscChar_t  **pDesc;
+  uint16_t        hdl;
+  uint8_t         i;
 
-    /* parse handle */
-    BSTREAM_TO_UINT16(hdl, pPair);
+  /* parse handle */
+  BSTREAM_TO_UINT16(hdl, pPair);
 
-    /* now pPair points to UUID; find descriptor with matching UUID */
-    pDesc = &pCb->pCharList[pCb->charListIdx];
-    for (i = pCb->charListIdx;
-         (i < pCb->charListLen) && (((*pDesc)->settings & ATTC_SET_DESCRIPTOR) != 0);
-         i++, pDesc++) {
-        /* if characteristic not already found */
-        if (pCb->pHdlList[i] == 0) {
-            /* if UUIDs match */
-            if (attcUuidCmp(*pDesc, pPair, settings)) {
-                /* match found; store handle */
-                pCb->pHdlList[i] = hdl;
+  /* now pPair points to UUID; find descriptor with matching UUID */
+  pDesc = &pCb->pCharList[pCb->charListIdx];
+  for (i = pCb->charListIdx;
+       (i < pCb->charListLen) && (((*pDesc)->settings & ATTC_SET_DESCRIPTOR) != 0);
+       i++, pDesc++)
+  {
+    /* if characteristic not already found */
+    if (pCb->pHdlList[i] == 0)
+    {
+      /* if UUIDs match */
+      if (attcUuidCmp(*pDesc, pPair, settings))
+      {
+        /* match found; store handle */
+        pCb->pHdlList[i] = hdl;
 
-                ATT_TRACE_INFO1("descriptor found handle:0x%x", hdl);
-                break;
-            }
-        }
+        ATT_TRACE_INFO1("descriptor found handle:0x%x", hdl);
+        break;
+      }
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -237,61 +256,73 @@ static void attcDiscProcDescPair(attcDiscCb_t *pCb, uint8_t settings, uint8_t *p
 /*************************************************************************************************/
 static uint8_t attcDiscProcDesc(attcDiscCb_t *pCb, attEvt_t *pMsg)
 {
-    attcDiscChar_t **pChar;
-    uint8_t *p;
-    uint8_t *pEnd;
-    uint8_t format;
-    uint8_t pairLen;
-    uint8_t settings;
+  attcDiscChar_t  **pChar;
+  uint8_t         *p;
+  uint8_t         *pEnd;
+  uint8_t         format;
+  uint8_t         pairLen;
+  uint8_t         settings;
 
-    /* if find info successful */
-    if (pMsg->hdr.status == ATT_SUCCESS) {
-        p = pMsg->pValue;
-        pEnd = pMsg->pValue + pMsg->valueLen;
+  /* if find info successful */
+  if (pMsg->hdr.status == ATT_SUCCESS)
+  {
+    p = pMsg->pValue;
+    pEnd = pMsg->pValue + pMsg->valueLen;
 
-        /* determine UUID format */
-        BSTREAM_TO_UINT8(format, p);
-        if (format == ATT_FIND_HANDLE_16_UUID) {
-            settings = 0;
-            pairLen = ATT_FIND_RSP_LEN_UUID16;
-        } else if (format == ATT_FIND_HANDLE_128_UUID) {
-            settings = ATTC_SET_UUID_128;
-            pairLen = ATT_FIND_RSP_LEN_UUID128;
-        } else {
-            return ATT_ERR_INVALID_RSP;
-        }
-
-        /* for each handle/UUID pair */
-        while (p < pEnd) {
-            /* process descriptor handle/UUID pair */
-            attcDiscProcDescPair(pCb, settings, p);
-
-            /* go to next */
-            p += pairLen;
-        }
+    /* determine UUID format */
+    BSTREAM_TO_UINT8(format, p);
+    if (format == ATT_FIND_HANDLE_16_UUID)
+    {
+      settings = 0;
+      pairLen = ATT_FIND_RSP_LEN_UUID16;
+    }
+    else if (format == ATT_FIND_HANDLE_128_UUID)
+    {
+      settings = ATTC_SET_UUID_128;
+      pairLen = ATT_FIND_RSP_LEN_UUID128;
+    }
+    else
+    {
+      return ATT_ERR_INVALID_RSP;
     }
 
-    /* if descriptor discovery complete for this characteristic */
-    if ((pMsg->hdr.status != ATT_SUCCESS) || (pMsg->continuing == FALSE)) {
-        /* go to next entry in list */
-        pChar = &pCb->pCharList[pCb->charListIdx];
-        do {
-            /* check if at end of list */
-            pCb->charListIdx++;
-            if (pCb->charListIdx == pCb->charListLen) {
-                break;
-            }
+    /* for each handle/UUID pair */
+    while (p < pEnd)
+    {
+      /* process descriptor handle/UUID pair */
+      attcDiscProcDescPair(pCb, settings, p);
 
-            /* skip over descriptors that follow current characteristic */
-            pChar++;
-        } while ((*pChar)->settings & ATTC_SET_DESCRIPTOR);
-
-        /* proceed with descriptor discovery for the next characteristic */
-        return attcDiscDescriptors((dmConnId_t)pMsg->hdr.param, pCb);
-    } else {
-        /* still more to do */
-        return ATT_CONTINUING;
+      /* go to next */
+      p += pairLen;
     }
+  }
+
+  /* if descriptor discovery complete for this characteristic */
+  if ((pMsg->hdr.status != ATT_SUCCESS) || (pMsg->continuing == FALSE))
+  {
+    /* go to next entry in list */
+    pChar = &pCb->pCharList[pCb->charListIdx];
+    do
+    {
+      /* check if at end of list */
+      pCb->charListIdx++;
+      if (pCb->charListIdx == pCb->charListLen)
+      {
+        break;
+      }
+
+      /* skip over descriptors that follow current characteristic */
+      pChar++;
+    } while ((*pChar)->settings & ATTC_SET_DESCRIPTOR);
+
+    /* proceed with descriptor discovery for the next characteristic */
+    return attcDiscDescriptors((dmConnId_t) pMsg->hdr.param, pCb);
+  }
+  else
+  {
+    /* still more to do */
+    return ATT_CONTINUING;
+  }
 }
 
 /*************************************************************************************************/
@@ -307,55 +338,63 @@ static uint8_t attcDiscProcDesc(attcDiscCb_t *pCb, attEvt_t *pMsg)
 /*************************************************************************************************/
 static void attcDiscProcCharDecl(attcDiscCb_t *pCb, uint8_t settings, uint8_t *pDecl)
 {
-    attcDiscChar_t **pChar;
-    uint16_t hdl;
-    uint16_t declHdl;
-    uint8_t i;
+  attcDiscChar_t  **pChar;
+  uint16_t        hdl;
+  uint16_t        declHdl;
+  uint8_t         i;
 
-    /* parse it */
-    BSTREAM_TO_UINT16(declHdl, pDecl);
-    pDecl++; /* skip properties field */
-    BSTREAM_TO_UINT16(hdl, pDecl);
+  /* parse it */
+  BSTREAM_TO_UINT16(declHdl, pDecl);
+  pDecl++;    /* skip properties field */
+  BSTREAM_TO_UINT16(hdl, pDecl);
 
-    /* if looking for end handle of previous characteristic */
-    if (pCb->endHdlIdx != ATT_DISC_HDL_IDX_NONE) {
-        /* end handle of previous characteristic is one less than
+  /* if looking for end handle of previous characteristic */
+  if (pCb->endHdlIdx != ATT_DISC_HDL_IDX_NONE)
+  {
+    /* end handle of previous characteristic is one less than
      * the handle of the current characteristic declaration
      */
-        pCb->pHdlList[pCb->endHdlIdx] = declHdl - 1;
-        pCb->endHdlIdx = ATT_DISC_HDL_IDX_NONE;
-    }
+    pCb->pHdlList[pCb->endHdlIdx] = declHdl - 1;
+    pCb->endHdlIdx = ATT_DISC_HDL_IDX_NONE;
+  }
 
-    /* check handle */
-    if (hdl > declHdl && hdl <= pCb->svcEndHdl) {
-        /* now pDecl points to UUID; search for UUID in characteristic list */
-        for (i = 0, pChar = pCb->pCharList; i < pCb->charListLen; i++, pChar++) {
-            /* if characteristic not already found */
-            if (pCb->pHdlList[i] == 0) {
-                /* if UUIDs match */
-                if (attcUuidCmp(*pChar, pDecl, settings)) {
-                    /* match found; store handle */
-                    pCb->pHdlList[i] = hdl;
+  /* check handle */
+  if (hdl > declHdl && hdl <= pCb->svcEndHdl)
+  {
+    /* now pDecl points to UUID; search for UUID in characteristic list */
+    for (i = 0, pChar = pCb->pCharList; i < pCb->charListLen; i++, pChar++)
+    {
+      /* if characteristic not already found */
+      if (pCb->pHdlList[i] == 0)
+      {
+        /* if UUIDs match */
+        if (attcUuidCmp(*pChar, pDecl, settings))
+        {
+          /* match found; store handle */
+          pCb->pHdlList[i] = hdl;
 
-                    /* if not at end of list and next in list is a descriptor */
-                    if (i < (pCb->charListLen - 1) &&
-                        ((*(pChar + 1))->settings & ATTC_SET_DESCRIPTOR) == ATTC_SET_DESCRIPTOR) {
-                        /* characteristic has descriptors, we need to find end handle
+          /* if not at end of list and next in list is a descriptor */
+          if (i < (pCb->charListLen - 1) &&
+              ((*(pChar + 1))->settings & ATTC_SET_DESCRIPTOR) == ATTC_SET_DESCRIPTOR)
+          {
+            /* characteristic has descriptors, we need to find end handle
              * store end handle temporarily in handle list location
              * for the first descriptor
              */
-                        pCb->endHdlIdx = i + 1;
-                    }
+            pCb->endHdlIdx = i + 1;
+          }
 
-                    ATT_TRACE_INFO1("characteristic found handle:0x%x", hdl);
-                    break;
-                }
-            }
+          ATT_TRACE_INFO1("characteristic found handle:0x%x", hdl);
+          break;
         }
-    } else {
-        /* invalid handle; skip this declaration */
-        ATT_TRACE_WARN1("invalid handle:0x%x", hdl);
+      }
     }
+  }
+  else
+  {
+    /* invalid handle; skip this declaration */
+    ATT_TRACE_WARN1("invalid handle:0x%x", hdl);
+  }
 }
 
 /*************************************************************************************************/
@@ -372,53 +411,64 @@ static void attcDiscProcCharDecl(attcDiscCb_t *pCb, uint8_t settings, uint8_t *p
 /*************************************************************************************************/
 static uint8_t attcDiscProcChar(attcDiscCb_t *pCb, attEvt_t *pMsg)
 {
-    uint8_t *p;
-    uint8_t *pEnd;
-    uint8_t pairLen;
-    uint8_t settings;
+  uint8_t     *p;
+  uint8_t     *pEnd;
+  uint8_t     pairLen;
+  uint8_t     settings;
 
-    /* if read by type successful */
-    if (pMsg->hdr.status == ATT_SUCCESS) {
-        p = pMsg->pValue;
-        pEnd = pMsg->pValue + pMsg->valueLen;
+  /* if read by type successful */
+  if (pMsg->hdr.status == ATT_SUCCESS)
+  {
+    p = pMsg->pValue;
+    pEnd = pMsg->pValue + pMsg->valueLen;
 
-        /* verify attribute-handle pair length and determine UUID length */
-        BSTREAM_TO_UINT8(pairLen, p);
-        if (pairLen == ATT_READ_RSP_LEN_UUID16) {
-            settings = 0;
-        } else if (pairLen == ATT_READ_RSP_LEN_UUID128) {
-            settings = ATTC_SET_UUID_128;
-        } else {
-            return ATT_ERR_INVALID_RSP;
-        }
-
-        /* Note that ATT already verifies response length and handle values */
-
-        /* for each characteristic declaration */
-        while (p < pEnd) {
-            /* process characteristic declaration */
-            attcDiscProcCharDecl(pCb, settings, p);
-
-            /* go to next */
-            p += pairLen;
-        }
+    /* verify attribute-handle pair length and determine UUID length */
+    BSTREAM_TO_UINT8(pairLen, p);
+    if (pairLen == ATT_READ_RSP_LEN_UUID16)
+    {
+      settings = 0;
+    }
+    else if (pairLen == ATT_READ_RSP_LEN_UUID128)
+    {
+      settings = ATTC_SET_UUID_128;
+    }
+    else
+    {
+      return ATT_ERR_INVALID_RSP;
     }
 
-    /* if characteristic discovery complete */
-    if ((pMsg->hdr.status != ATT_SUCCESS) || (pMsg->continuing == FALSE)) {
-        /* check if characteristic end handle needs to be set */
-        if (pCb->endHdlIdx != ATT_DISC_HDL_IDX_NONE) {
-            /* end handle of characteristic declaration is end handle of service */
-            pCb->pHdlList[pCb->endHdlIdx] = pCb->svcEndHdl;
-        }
+    /* Note that ATT already verifies response length and handle values */
 
-        /* proceed with descriptor discovery */
-        pCb->charListIdx = 0;
-        return attcDiscDescriptors((dmConnId_t)pMsg->hdr.param, pCb);
-    } else {
-        /* still more to do */
-        return ATT_CONTINUING;
+    /* for each characteristic declaration */
+    while (p < pEnd)
+    {
+      /* process characteristic declaration */
+      attcDiscProcCharDecl(pCb, settings, p);
+
+      /* go to next */
+      p += pairLen;
     }
+  }
+
+  /* if characteristic discovery complete */
+  if ((pMsg->hdr.status != ATT_SUCCESS) || (pMsg->continuing == FALSE))
+  {
+    /* check if characteristic end handle needs to be set */
+    if (pCb->endHdlIdx != ATT_DISC_HDL_IDX_NONE)
+    {
+      /* end handle of characteristic declaration is end handle of service */
+      pCb->pHdlList[pCb->endHdlIdx] = pCb->svcEndHdl;
+    }
+
+    /* proceed with descriptor discovery */
+    pCb->charListIdx = 0;
+    return attcDiscDescriptors((dmConnId_t) pMsg->hdr.param, pCb);
+  }
+  else
+  {
+    /* still more to do */
+    return ATT_CONTINUING;
+  }
 }
 
 /*************************************************************************************************/
@@ -434,35 +484,38 @@ static uint8_t attcDiscProcChar(attcDiscCb_t *pCb, attEvt_t *pMsg)
 /*************************************************************************************************/
 static uint8_t attcDiscConfigNext(dmConnId_t connId, attcDiscCb_t *pCb)
 {
-    attcDiscCfg_t *pCfg;
+  attcDiscCfg_t *pCfg;
 
-    pCfg = pCb->pCfgList + pCb->charListIdx;
+  pCfg = pCb->pCfgList + pCb->charListIdx;
 
-    /* iterate over list */
-    while (pCb->charListIdx < pCb->cfgListLen) {
-        /* if handle was discovered */
-        if (pCb->pHdlList[pCfg->hdlIdx] != ATT_HANDLE_NONE) {
-            /* if value present do write req */
-            if (pCfg->valueLen != 0) {
-                AttcWriteReq(connId, pCb->pHdlList[pCfg->hdlIdx], pCfg->valueLen,
-                             (uint8_t *)pCfg->pValue);
-            }
-            /* else do read */
-            else {
-                AttcReadReq(connId, pCb->pHdlList[pCfg->hdlIdx]);
-            }
+  /* iterate over list */
+  while (pCb->charListIdx < pCb->cfgListLen)
+  {
+    /* if handle was discovered */
+    if (pCb->pHdlList[pCfg->hdlIdx] != ATT_HANDLE_NONE)
+    {
+      /* if value present do write req */
+      if (pCfg->valueLen != 0)
+      {
+        AttcWriteReq(connId, pCb->pHdlList[pCfg->hdlIdx], pCfg->valueLen, (uint8_t *) pCfg->pValue);
+      }
+      /* else do read */
+      else
+      {
+        AttcReadReq(connId, pCb->pHdlList[pCfg->hdlIdx]);
+      }
 
-            /* done for now */
-            return ATT_CONTINUING;
-        }
-
-        /* next in list */
-        pCb->charListIdx++;
-        pCfg++;
+      /* done for now */
+      return ATT_CONTINUING;
     }
 
-    /* nothing left to configure; we're done */
-    return ATT_SUCCESS;
+    /* next in list */
+    pCb->charListIdx++;
+    pCfg++;
+  }
+
+  /* nothing left to configure; we're done */
+  return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -478,34 +531,40 @@ static uint8_t attcDiscConfigNext(dmConnId_t connId, attcDiscCb_t *pCb)
 /*************************************************************************************************/
 static void attcDiscProcIncSvc(attcDiscCb_t *pCb, uint8_t settings, uint8_t *pDecl)
 {
-    attcDiscChar_t **pChar;
-    uint16_t handle;
-    uint8_t i;
+  attcDiscChar_t  **pChar;
+  uint16_t        handle;
+  uint8_t         i;
 
-    /* parse it */
-    BSTREAM_TO_UINT16(handle, pDecl);
-    pDecl += 4; /* skip start/end handle */
+  /* parse it */
+  BSTREAM_TO_UINT16(handle, pDecl);
+  pDecl += 4;    /* skip start/end handle */
 
-    /* check handle */
-    if ((handle >= pCb->svcStartHdl) && handle <= (pCb->svcEndHdl)) {
-        /* now pDecl points to UUID; search for UUID in characteristic list */
-        for (i = 0, pChar = pCb->pCharList; i < pCb->charListLen; i++, pChar++) {
-            /* if characteristic not already found */
-            if (pCb->pHdlList[i] == 0) {
-                /* if UUIDs match */
-                if (attcUuidCmp(*pChar, pDecl, settings)) {
-                    /* match found; store handle */
-                    pCb->pHdlList[i] = handle;
+  /* check handle */
+  if ((handle >= pCb->svcStartHdl) && handle <= (pCb->svcEndHdl))
+  {
+    /* now pDecl points to UUID; search for UUID in characteristic list */
+    for (i = 0, pChar = pCb->pCharList; i < pCb->charListLen; i++, pChar++)
+    {
+      /* if characteristic not already found */
+      if (pCb->pHdlList[i] == 0)
+      {
+        /* if UUIDs match */
+        if (attcUuidCmp(*pChar, pDecl, settings))
+        {
+          /* match found; store handle */
+          pCb->pHdlList[i] = handle;
 
-                    ATT_TRACE_INFO1("service include found handle:0x%x", handle);
-                    return;
-                }
-            }
+          ATT_TRACE_INFO1("service include found handle:0x%x", handle);
+          return;
         }
-    } else {
-        /* invalid handle; skip this declaration */
-        ATT_TRACE_WARN1("invalid handle:0x%x", handle);
+      }
     }
+  }
+  else
+  {
+    /* invalid handle; skip this declaration */
+    ATT_TRACE_WARN1("invalid handle:0x%x", handle);
+  }
 }
 
 /*************************************************************************************************/
@@ -523,8 +582,8 @@ static void attcDiscProcIncSvc(attcDiscCb_t *pCb, uint8_t settings, uint8_t *pDe
 /*************************************************************************************************/
 void AttcDiscService(dmConnId_t connId, attcDiscCb_t *pCb, uint8_t uuidLen, uint8_t *pUuid)
 {
-    AttcFindByTypeValueReq(connId, ATT_HANDLE_START, ATT_HANDLE_MAX, ATT_UUID_PRIMARY_SERVICE,
-                           uuidLen, pUuid, FALSE);
+  AttcFindByTypeValueReq(connId, ATT_HANDLE_START, ATT_HANDLE_MAX, ATT_UUID_PRIMARY_SERVICE,
+                         uuidLen, pUuid, FALSE);
 }
 
 /*************************************************************************************************/
@@ -541,30 +600,33 @@ void AttcDiscService(dmConnId_t connId, attcDiscCb_t *pCb, uint8_t uuidLen, uint
 /*************************************************************************************************/
 uint8_t AttcDiscServiceCmpl(attcDiscCb_t *pCb, attEvt_t *pMsg)
 {
-    uint8_t *p;
+  uint8_t *p;
 
-    /* verify callback event */
-    if (pMsg->hdr.event != ATTC_FIND_BY_TYPE_VALUE_RSP) {
-        ATT_TRACE_WARN1("unexpected callback event %d", pMsg->hdr.event);
-        return ATT_ERR_UNDEFINED;
-    }
-    /* verify status */
-    else if (pMsg->hdr.status != ATT_SUCCESS) {
-        return pMsg->hdr.status;
-    }
-    /* verify result was found */
-    else if (pMsg->valueLen == 0) {
-        return ATT_ERR_NOT_FOUND;
-    }
+  /* verify callback event */
+  if (pMsg->hdr.event != ATTC_FIND_BY_TYPE_VALUE_RSP)
+  {
+    ATT_TRACE_WARN1("unexpected callback event %d", pMsg->hdr.event);
+    return ATT_ERR_UNDEFINED;
+  }
+  /* verify status */
+  else if (pMsg->hdr.status != ATT_SUCCESS)
+  {
+    return pMsg->hdr.status;
+  }
+  /* verify result was found */
+  else if (pMsg->valueLen == 0)
+  {
+    return ATT_ERR_NOT_FOUND;
+  }
 
-    /* get handles of first returned service only; ATT has already performed error checking */
-    p = pMsg->pValue;
-    BSTREAM_TO_UINT16(pCb->svcStartHdl, p);
-    BSTREAM_TO_UINT16(pCb->svcEndHdl, p);
+  /* get handles of first returned service only; ATT has already performed error checking */
+  p = pMsg->pValue;
+  BSTREAM_TO_UINT16(pCb->svcStartHdl, p);
+  BSTREAM_TO_UINT16(pCb->svcEndHdl, p);
 
-    ATT_TRACE_INFO2("found service startHdl=0x%x endHdl=0x%x", pCb->svcStartHdl, pCb->svcEndHdl);
+  ATT_TRACE_INFO2("found service startHdl=0x%x endHdl=0x%x", pCb->svcStartHdl, pCb->svcEndHdl);
 
-    return ATT_SUCCESS;
+  return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -581,12 +643,12 @@ uint8_t AttcDiscServiceCmpl(attcDiscCb_t *pCb, attEvt_t *pMsg)
 /*************************************************************************************************/
 void AttcDiscCharStart(dmConnId_t connId, attcDiscCb_t *pCb)
 {
-    /* initialize control block */
-    pCb->charListIdx = 0;
-    pCb->endHdlIdx = ATT_DISC_HDL_IDX_NONE;
+  /* initialize control block */
+  pCb->charListIdx = 0;
+  pCb->endHdlIdx = ATT_DISC_HDL_IDX_NONE;
 
-    AttcReadByTypeReq(connId, pCb->svcStartHdl, pCb->svcEndHdl, ATT_16_UUID_LEN,
-                      (uint8_t *)attChUuid, TRUE);
+  AttcReadByTypeReq(connId, pCb->svcStartHdl, pCb->svcEndHdl, ATT_16_UUID_LEN,
+                    (uint8_t *) attChUuid, TRUE);
 }
 
 /*************************************************************************************************/
@@ -605,29 +667,34 @@ void AttcDiscCharStart(dmConnId_t connId, attcDiscCb_t *pCb)
 /*************************************************************************************************/
 uint8_t AttcDiscCharCmpl(attcDiscCb_t *pCb, attEvt_t *pMsg)
 {
-    uint8_t status;
+  uint8_t status;
 
-    /* verify callback event */
-    if (pMsg->hdr.event != ATTC_READ_BY_TYPE_RSP && pMsg->hdr.event != ATTC_FIND_INFO_RSP) {
-        ATT_TRACE_WARN1("unexpected callback event %d", pMsg->hdr.event);
-        return ATT_ERR_UNDEFINED;
-    }
+  /* verify callback event */
+  if (pMsg->hdr.event != ATTC_READ_BY_TYPE_RSP &&
+      pMsg->hdr.event != ATTC_FIND_INFO_RSP)
+  {
+    ATT_TRACE_WARN1("unexpected callback event %d", pMsg->hdr.event);
+    return ATT_ERR_UNDEFINED;
+  }
 
-    /* if read by type (characteristic discovery) */
-    if (pMsg->hdr.event == ATTC_READ_BY_TYPE_RSP) {
-        status = attcDiscProcChar(pCb, pMsg);
-    }
-    /* else if find info (descriptor discovery) */
-    else {
-        status = attcDiscProcDesc(pCb, pMsg);
-    }
+  /* if read by type (characteristic discovery) */
+  if (pMsg->hdr.event == ATTC_READ_BY_TYPE_RSP)
+  {
+    status = attcDiscProcChar(pCb, pMsg);
+  }
+  /* else if find info (descriptor discovery) */
+  else
+  {
+    status = attcDiscProcDesc(pCb, pMsg);
+  }
 
-    /* if characteristic discovery failed clear any handles */
-    if ((status != ATT_SUCCESS) && (status != ATT_CONTINUING)) {
-        memset(pCb->pHdlList, 0, (pCb->charListLen * sizeof(uint16_t)));
-    }
+  /* if characteristic discovery failed clear any handles */
+  if ((status != ATT_SUCCESS) && (status != ATT_CONTINUING))
+  {
+    memset(pCb->pHdlList, 0, (pCb->charListLen * sizeof(uint16_t)));
+  }
 
-    return status;
+  return status;
 }
 
 /*************************************************************************************************/
@@ -644,12 +711,12 @@ uint8_t AttcDiscCharCmpl(attcDiscCb_t *pCb, attEvt_t *pMsg)
 /*************************************************************************************************/
 void AttcDiscIncSvcStart(dmConnId_t connId, attcDiscCb_t *pCb)
 {
-    /* initialize control block */
-    pCb->charListIdx = 0;
-    pCb->endHdlIdx = ATT_DISC_HDL_IDX_NONE;
+  /* initialize control block */
+  pCb->charListIdx = 0;
+  pCb->endHdlIdx = ATT_DISC_HDL_IDX_NONE;
 
-    AttcReadByTypeReq(connId, pCb->svcStartHdl, pCb->svcEndHdl, ATT_16_UUID_LEN,
-                      (uint8_t *)attIncUuid, TRUE);
+  AttcReadByTypeReq(connId, pCb->svcStartHdl, pCb->svcEndHdl, ATT_16_UUID_LEN,
+                    (uint8_t *) attIncUuid, TRUE);
 }
 
 /*************************************************************************************************/
@@ -668,55 +735,65 @@ void AttcDiscIncSvcStart(dmConnId_t connId, attcDiscCb_t *pCb)
 /*************************************************************************************************/
 uint8_t AttcDiscIncSvcCmpl(attcDiscCb_t *pCb, attEvt_t *pMsg)
 {
-    uint8_t *p;
-    uint8_t *pEnd;
-    uint8_t pairLen;
-    uint8_t settings;
+  uint8_t *p;
+  uint8_t *pEnd;
+  uint8_t pairLen;
+  uint8_t settings;
 
-    /* verify callback event */
-    if (pMsg->hdr.event != ATTC_READ_BY_TYPE_RSP) {
-        ATT_TRACE_WARN1("unexpected callback event %d", pMsg->hdr.event);
-        return ATT_ERR_UNDEFINED;
+  /* verify callback event */
+  if (pMsg->hdr.event != ATTC_READ_BY_TYPE_RSP)
+  {
+    ATT_TRACE_WARN1("unexpected callback event %d", pMsg->hdr.event);
+    return ATT_ERR_UNDEFINED;
+  }
+
+  /* if read by type successful */
+  if (pMsg->hdr.status == ATT_SUCCESS)
+  {
+    p = pMsg->pValue;
+    pEnd = pMsg->pValue + pMsg->valueLen;
+
+    /* verify attribute-handle pair length and determine UUID length */
+    BSTREAM_TO_UINT8(pairLen, p);
+    if (pairLen == ATT_READ_RSP_INC_LEN_UUID16)
+    {
+      settings = 0;
+    }
+    else if (pairLen == ATT_READ_RSP_INC_LEN_UUID128)
+    {
+      settings = ATTC_SET_UUID_128;
+    }
+    else
+    {
+      return ATT_ERR_INVALID_RSP;
     }
 
-    /* if read by type successful */
-    if (pMsg->hdr.status == ATT_SUCCESS) {
-        p = pMsg->pValue;
-        pEnd = pMsg->pValue + pMsg->valueLen;
+    /* for each characteristic declaration */
+    while (p < pEnd)
+    {
+      /* process service include */
+      attcDiscProcIncSvc(pCb, settings, p);
 
-        /* verify attribute-handle pair length and determine UUID length */
-        BSTREAM_TO_UINT8(pairLen, p);
-        if (pairLen == ATT_READ_RSP_INC_LEN_UUID16) {
-            settings = 0;
-        } else if (pairLen == ATT_READ_RSP_INC_LEN_UUID128) {
-            settings = ATTC_SET_UUID_128;
-        } else {
-            return ATT_ERR_INVALID_RSP;
-        }
+      /* go to next */
+      p += pairLen;
+    }
+  }
 
-        /* for each characteristic declaration */
-        while (p < pEnd) {
-            /* process service include */
-            attcDiscProcIncSvc(pCb, settings, p);
-
-            /* go to next */
-            p += pairLen;
-        }
+  /* if include discovery complete */
+  if ((pMsg->hdr.status != ATT_SUCCESS) || (pMsg->continuing == FALSE))
+  {
+    /* check if characteristic end handle needs to be set */
+    if (pCb->endHdlIdx != ATT_DISC_HDL_IDX_NONE)
+    {
+      /* end handle of characteristic declaration is end handle of service */
+      pCb->pHdlList[pCb->endHdlIdx] = pCb->svcEndHdl;
     }
 
-    /* if include discovery complete */
-    if ((pMsg->hdr.status != ATT_SUCCESS) || (pMsg->continuing == FALSE)) {
-        /* check if characteristic end handle needs to be set */
-        if (pCb->endHdlIdx != ATT_DISC_HDL_IDX_NONE) {
-            /* end handle of characteristic declaration is end handle of service */
-            pCb->pHdlList[pCb->endHdlIdx] = pCb->svcEndHdl;
-        }
+    return ATT_SUCCESS;
+  }
 
-        return ATT_SUCCESS;
-    }
-
-    /* still more to do */
-    return ATT_CONTINUING;
+  /* still more to do */
+  return ATT_CONTINUING;
 }
 
 /*************************************************************************************************/
@@ -734,10 +811,10 @@ uint8_t AttcDiscIncSvcCmpl(attcDiscCb_t *pCb, attEvt_t *pMsg)
 /*************************************************************************************************/
 uint8_t AttcDiscConfigStart(dmConnId_t connId, attcDiscCb_t *pCb)
 {
-    /* use char list index to iterate over config list */
-    pCb->charListIdx = 0;
+  /* use char list index to iterate over config list */
+  pCb->charListIdx = 0;
 
-    return attcDiscConfigNext(connId, pCb);
+  return attcDiscConfigNext(connId, pCb);
 }
 
 /*************************************************************************************************/
@@ -755,10 +832,10 @@ uint8_t AttcDiscConfigStart(dmConnId_t connId, attcDiscCb_t *pCb)
 /*************************************************************************************************/
 uint8_t AttcDiscConfigCmpl(dmConnId_t connId, attcDiscCb_t *pCb)
 {
-    /* go to next in list */
-    pCb->charListIdx++;
+  /* go to next in list */
+  pCb->charListIdx++;
 
-    return attcDiscConfigNext(connId, pCb);
+  return attcDiscConfigNext(connId, pCb);
 }
 
 /*************************************************************************************************/
@@ -776,5 +853,5 @@ uint8_t AttcDiscConfigCmpl(dmConnId_t connId, attcDiscCb_t *pCb)
 /*************************************************************************************************/
 uint8_t AttcDiscConfigResume(dmConnId_t connId, attcDiscCb_t *pCb)
 {
-    return attcDiscConfigNext(connId, pCb);
+  return attcDiscConfigNext(connId, pCb);
 }

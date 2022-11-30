@@ -42,8 +42,9 @@
 **************************************************************************************************/
 
 /*! Generic Level control block type definition */
-typedef struct mmdlGenLevelClCb_tag {
-    mmdlEventCback_t recvCback; /*!< Model Generic Level received callback */
+typedef struct mmdlGenLevelClCb_tag
+{
+  mmdlEventCback_t recvCback;    /*!< Model Generic Level received callback */
 } mmdlGenLevelClCb_t;
 
 /**************************************************************************************************
@@ -54,8 +55,9 @@ typedef struct mmdlGenLevelClCb_tag {
 wsfHandlerId_t mmdlGenLevelClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlGenLevelClRcvdOpcodes[] = {
-    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_LEVEL_STATUS_OPCODE) } }
+const meshMsgOpcode_t mmdlGenLevelClRcvdOpcodes[] =
+{
+  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_LEVEL_STATUS_OPCODE)} }
 };
 
 /**************************************************************************************************
@@ -63,7 +65,7 @@ const meshMsgOpcode_t mmdlGenLevelClRcvdOpcodes[] = {
 **************************************************************************************************/
 
 /*! Level Client control block */
-static mmdlGenLevelClCb_t levelClCb;
+static mmdlGenLevelClCb_t  levelClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -84,35 +86,38 @@ static mmdlGenLevelClCb_t levelClCb;
  */
 /*************************************************************************************************/
 static void mmdlGenLevelSendSet(uint16_t opcode, meshElementId_t elementId,
-                                meshAddress_t serverAddr, uint8_t ttl,
-                                const mmdlGenLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
+                               meshAddress_t serverAddr, uint8_t ttl,
+                               const mmdlGenLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, 0);
-    uint8_t *pParams;
-    uint8_t paramMsg[MMDL_GEN_LEVEL_SET_MAX_LEN];
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, 0);
+  uint8_t *pParams;
+  uint8_t paramMsg[MMDL_GEN_LEVEL_SET_MAX_LEN];
 
-    if (pSetParam != NULL) {
-        /* Fill in the message information */
-        msgInfo.elementId = elementId;
-        msgInfo.dstAddr = serverAddr;
-        msgInfo.ttl = ttl;
-        msgInfo.appKeyIndex = appKeyIndex;
-        UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, opcode);
+  if (pSetParam != NULL)
+  {
 
-        /* Build param message. */
-        pParams = paramMsg;
-        UINT16_TO_BSTREAM(pParams, pSetParam->state);
-        UINT8_TO_BSTREAM(pParams, pSetParam->tid);
+    /* Fill in the message information */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
+    UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, opcode);
 
-        /* Do not include transition time and delay in the message if it is not used */
-        if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-            UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
-            UINT8_TO_BSTREAM(pParams, pSetParam->delay);
-        }
+    /* Build param message. */
+    pParams = paramMsg;
+    UINT16_TO_BSTREAM(pParams, pSetParam->state);
+    UINT8_TO_BSTREAM(pParams,pSetParam->tid);
 
-        /* Send message to the Mesh Core */
-        MeshSendMessage(&msgInfo, paramMsg, (uint8_t)(pParams - paramMsg), 0, 0);
+    /* Do not include transition time and delay in the message if it is not used */
+    if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+    {
+      UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
+      UINT8_TO_BSTREAM(pParams, pSetParam->delay);
     }
+
+    /* Send message to the Mesh Core */
+    MeshSendMessage(&msgInfo, paramMsg, (uint8_t)(pParams - paramMsg), 0, 0);
+  }
 }
 
 /*************************************************************************************************/
@@ -133,33 +138,34 @@ static void mmdlGenLevelSendDeltaSet(uint16_t opcode, meshElementId_t elementId,
                                      meshAddress_t serverAddr, uint8_t ttl,
                                      const mmdlGenDeltaSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    meshMsgInfo_t msgInfo =
-        MESH_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, MMDL_GEN_LEVEL_SET_NO_ACK_OPCODE);
-    uint8_t paramMsg[MMDL_GEN_LEVEL_DELTA_SET_MAX_LEN];
-    uint8_t *pParams;
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, MMDL_GEN_LEVEL_SET_NO_ACK_OPCODE);
+  uint8_t paramMsg[MMDL_GEN_LEVEL_DELTA_SET_MAX_LEN];
+  uint8_t *pParams;
 
-    if (pSetParam != NULL) {
-        /* Fill in the message information */
-        msgInfo.elementId = elementId;
-        msgInfo.dstAddr = serverAddr;
-        msgInfo.ttl = ttl;
-        msgInfo.appKeyIndex = appKeyIndex;
-        UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, opcode);
+  if (pSetParam != NULL)
+  {
+    /* Fill in the message information */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
+    UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, opcode);
 
-        /* Build param message. */
-        pParams = paramMsg;
-        UINT32_TO_BSTREAM(pParams, pSetParam->delta);
-        UINT8_TO_BSTREAM(pParams, pSetParam->tid);
+    /* Build param message. */
+    pParams = paramMsg;
+    UINT32_TO_BSTREAM(pParams, pSetParam->delta);
+    UINT8_TO_BSTREAM(pParams, pSetParam->tid);
 
-        /* Do not include transition time and delay in the message if it is not used */
-        if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-            UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
-            UINT8_TO_BSTREAM(pParams, pSetParam->delay);
-        }
-
-        /* Send message to the Mesh Core */
-        MeshSendMessage(&msgInfo, paramMsg, (uint8_t)(pParams - paramMsg), 0, 0);
+    /* Do not include transition time and delay in the message if it is not used */
+    if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+    {
+      UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
+      UINT8_TO_BSTREAM(pParams, pSetParam->delay);
     }
+
+    /* Send message to the Mesh Core */
+    MeshSendMessage(&msgInfo, paramMsg, (uint8_t)(pParams - paramMsg), 0, 0);
+  }
 }
 
 /*************************************************************************************************/
@@ -176,28 +182,29 @@ static void mmdlGenLevelSendDeltaSet(uint16_t opcode, meshElementId_t elementId,
 static void mmdlGenLevelPublishSet(uint16_t opcode, meshElementId_t elementId,
                                    const mmdlGenLevelSetParam_t *pSetParam)
 {
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, MMDL_GEN_LEVEL_SET_NO_ACK_OPCODE);
-    uint8_t *pParams;
-    uint8_t paramMsg[MMDL_GEN_LEVEL_SET_MAX_LEN];
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID,
+                                             MMDL_GEN_LEVEL_SET_NO_ACK_OPCODE);
+  uint8_t *pParams;
+  uint8_t paramMsg[MMDL_GEN_LEVEL_SET_MAX_LEN];
 
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
-    UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, opcode);
+  /* Fill in the msg info parameters */
+  pubMsgInfo.elementId = elementId;
+  UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, opcode);
 
-    /* Build param message. */
-    pParams = paramMsg;
-    UINT16_TO_BSTREAM(pParams, pSetParam->state);
-    UINT8_TO_BSTREAM(pParams, pSetParam->tid);
+  /* Build param message. */
+  pParams = paramMsg;
+  UINT16_TO_BSTREAM(pParams, pSetParam->state);
+  UINT8_TO_BSTREAM(pParams, pSetParam->tid);
 
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-        UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
-        UINT8_TO_BSTREAM(pParams, pSetParam->delay);
-    }
+  /* Do not include transition time and delay in the message if it is not used */
+  if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+  {
+    UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
+    UINT8_TO_BSTREAM(pParams, pSetParam->delay);
+  }
 
-    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-    MeshPublishMessage(&pubMsgInfo, paramMsg, (uint8_t)(pParams - paramMsg));
+  /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+  MeshPublishMessage(&pubMsgInfo, paramMsg, (uint8_t)(pParams - paramMsg));
 }
 
 /*************************************************************************************************/
@@ -214,28 +221,29 @@ static void mmdlGenLevelPublishSet(uint16_t opcode, meshElementId_t elementId,
 static void mmdlGenLevelPublishDeltaSet(uint16_t opcode, meshElementId_t elementId,
                                         const mmdlGenDeltaSetParam_t *pSetParam)
 {
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, MMDL_GEN_LEVEL_DELTA_SET_NO_ACK_OPCODE);
-    uint8_t paramMsg[MMDL_GEN_LEVEL_DELTA_SET_MAX_LEN];
-    uint8_t *pParams;
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID,
+                                             MMDL_GEN_LEVEL_DELTA_SET_NO_ACK_OPCODE);
+  uint8_t paramMsg[MMDL_GEN_LEVEL_DELTA_SET_MAX_LEN];
+  uint8_t *pParams;
 
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
-    UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, opcode);
+  /* Fill in the msg info parameters */
+  pubMsgInfo.elementId = elementId;
+  UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, opcode);
 
-    /* Build param message. */
-    pParams = paramMsg;
-    UINT32_TO_BE_BSTREAM(pParams, pSetParam->delta);
-    UINT8_TO_BSTREAM(pParams, pSetParam->tid);
+  /* Build param message. */
+  pParams = paramMsg;
+  UINT32_TO_BE_BSTREAM(pParams, pSetParam->delta);
+  UINT8_TO_BSTREAM(pParams, pSetParam->tid);
 
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-        UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
-        UINT8_TO_BSTREAM(pParams, pSetParam->delay);
-    }
+  /* Do not include transition time and delay in the message if it is not used */
+  if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+  {
+    UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
+    UINT8_TO_BSTREAM(pParams, pSetParam->delay);
+  }
 
-    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-    MeshPublishMessage(&pubMsgInfo, paramMsg, (uint8_t)(pParams - paramMsg));
+  /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+  MeshPublishMessage(&pubMsgInfo, paramMsg, (uint8_t)(pParams - paramMsg));
 }
 
 /*************************************************************************************************/
@@ -249,43 +257,47 @@ static void mmdlGenLevelPublishDeltaSet(uint16_t opcode, meshElementId_t element
 /*************************************************************************************************/
 static void mmdlGenLevelClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlGenLevelClStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlGenLevelClStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_GEN_LEVEL_STATUS_MAX_LEN &&
-        pMsg->messageParamsLen != MMDL_GEN_LEVEL_STATUS_MIN_LEN) {
-        return;
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_GEN_LEVEL_STATUS_MAX_LEN &&
+      pMsg->messageParamsLen != MMDL_GEN_LEVEL_STATUS_MIN_LEN)
+  {
+    return;
+  }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_GEN_LEVEL_CL_EVENT;
-    event.hdr.param = MMDL_GEN_LEVEL_CL_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_GEN_LEVEL_CL_EVENT;
+  event.hdr.param = MMDL_GEN_LEVEL_CL_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
 
-    pParams = pMsg->pMessageParams;
+  pParams = pMsg->pMessageParams;
 
-    /* Extract status event parameters */
-    BSTREAM_TO_UINT16(event.state, pParams);
+  /* Extract status event parameters */
+  BSTREAM_TO_UINT16(event.state, pParams);
 
-    /* Check if optional parameters are present */
-    if (pMsg->messageParamsLen == MMDL_GEN_LEVEL_STATUS_MAX_LEN) {
-        /* Extract target state and check value */
-        BSTREAM_TO_UINT16(event.targetState, pParams);
+  /* Check if optional parameters are present */
+  if (pMsg->messageParamsLen == MMDL_GEN_LEVEL_STATUS_MAX_LEN)
+  {
+    /* Extract target state and check value */
+    BSTREAM_TO_UINT16(event.targetState, pParams);
 
-        /* Extract target state */
-        BSTREAM_TO_UINT8(event.remainingTime, pParams);
-    } else {
-        event.targetState = 0;
-        event.remainingTime = 0;
-    }
+    /* Extract target state */
+    BSTREAM_TO_UINT8(event.remainingTime, pParams);
+  }
+  else
+  {
+    event.targetState = 0;
+    event.remainingTime = 0;
+  }
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Send event to the upper layer */
-    levelClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  levelClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /**************************************************************************************************
@@ -303,11 +315,11 @@ static void mmdlGenLevelClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenLevelClHandlerInit(wsfHandlerId_t handlerId)
 {
-    /* Set handler ID */
-    mmdlGenLevelClHandlerId = handlerId;
+  /* Set handler ID */
+  mmdlGenLevelClHandlerId = handlerId;
 
-    /* Initialize control block */
-    levelClCb.recvCback = MmdlEmptyCback;
+  /* Initialize control block */
+  levelClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -321,28 +333,31 @@ void MmdlGenLevelClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlGenLevelClHandler(wsfMsgHdr_t *pMsg)
 {
-    meshModelMsgRecvEvt_t *pModelMsg;
+  meshModelMsgRecvEvt_t *pModelMsg;
 
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-            /* Validate opcode size and value */
-            if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_LEVEL_OPCODES_SIZE &&
-                !memcmp(&mmdlGenLevelClRcvdOpcodes[0], pModelMsg->opCode.opcodeBytes,
-                        MMDL_GEN_LEVEL_OPCODES_SIZE)) {
-                /* Process Status message */
-                mmdlGenLevelClHandleStatus(pModelMsg);
-            }
-            break;
-
-        default:
-            MMDL_TRACE_WARN0("GEN LEVEL CL: Invalid event message received!");
-            break;
+        /* Validate opcode size and value */
+        if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_LEVEL_OPCODES_SIZE &&
+            !memcmp(&mmdlGenLevelClRcvdOpcodes[0], pModelMsg->opCode.opcodeBytes,
+                    MMDL_GEN_LEVEL_OPCODES_SIZE))
+        {
+          /* Process Status message */
+          mmdlGenLevelClHandleStatus(pModelMsg);
         }
+        break;
+
+      default:
+        MMDL_TRACE_WARN0("GEN LEVEL CL: Invalid event message received!");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -360,26 +375,28 @@ void MmdlGenLevelClHandler(wsfMsgHdr_t *pMsg)
 void MmdlGenLevelClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        uint16_t appKeyIndex)
 {
-    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, MMDL_GEN_LEVEL_GET_OPCODE);
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, MMDL_GEN_LEVEL_GET_OPCODE);
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, MMDL_GEN_LEVEL_GET_OPCODE);
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_LEVEL_CL_MDL_ID, MMDL_GEN_LEVEL_GET_OPCODE);
 
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        /* Fill in the msg info parameters */
-        msgInfo.elementId = elementId;
-        msgInfo.dstAddr = serverAddr;
-        msgInfo.ttl = ttl;
-        msgInfo.appKeyIndex = appKeyIndex;
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-        /* Send message to the Mesh Core instantly */
-        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-    } else {
-        /* Fill in the msg info parameters */
-        pubMsgInfo.elementId = elementId;
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+  }
+  else
+  {
+    /* Fill in the msg info parameters */
+    pubMsgInfo.elementId = elementId;
 
-        /* Send message to the Mesh Core */
-        MeshPublishMessage(&pubMsgInfo, NULL, 0);
-    }
+    /* Send message to the Mesh Core */
+    MeshPublishMessage(&pubMsgInfo, NULL, 0);
+  }
 }
 
 /*************************************************************************************************/
@@ -398,12 +415,15 @@ void MmdlGenLevelClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlGenLevelClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        const mmdlGenLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
-        mmdlGenLevelPublishSet(MMDL_GEN_LEVEL_SET_OPCODE, elementId, pSetParam);
-    } else {
-        mmdlGenLevelSendSet(MMDL_GEN_LEVEL_SET_OPCODE, elementId, serverAddr, ttl, pSetParam,
-                            appKeyIndex);
-    }
+  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlGenLevelPublishSet(MMDL_GEN_LEVEL_SET_OPCODE, elementId, pSetParam);
+  }
+  else
+  {
+    mmdlGenLevelSendSet(MMDL_GEN_LEVEL_SET_OPCODE, elementId, serverAddr, ttl, pSetParam,
+                        appKeyIndex);
+  }
 }
 
 /*************************************************************************************************/
@@ -422,12 +442,15 @@ void MmdlGenLevelClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlGenLevelClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             const mmdlGenLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
-        mmdlGenLevelPublishSet(MMDL_GEN_LEVEL_SET_NO_ACK_OPCODE, elementId, pSetParam);
-    } else {
-        mmdlGenLevelSendSet(MMDL_GEN_LEVEL_SET_NO_ACK_OPCODE, elementId, serverAddr, ttl, pSetParam,
-                            appKeyIndex);
-    }
+  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlGenLevelPublishSet(MMDL_GEN_LEVEL_SET_NO_ACK_OPCODE, elementId, pSetParam);
+  }
+  else
+  {
+    mmdlGenLevelSendSet(MMDL_GEN_LEVEL_SET_NO_ACK_OPCODE, elementId, serverAddr, ttl, pSetParam,
+                        appKeyIndex);
+  }
 }
 
 /*************************************************************************************************/
@@ -446,12 +469,15 @@ void MmdlGenLevelClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr,
 void MmdlGenDeltaClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        const mmdlGenDeltaSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
-        mmdlGenLevelPublishDeltaSet(MMDL_GEN_LEVEL_DELTA_SET_OPCODE, elementId, pSetParam);
-    } else {
-        mmdlGenLevelSendDeltaSet(MMDL_GEN_LEVEL_DELTA_SET_OPCODE, elementId, serverAddr, ttl,
-                                 pSetParam, appKeyIndex);
-    }
+  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlGenLevelPublishDeltaSet(MMDL_GEN_LEVEL_DELTA_SET_OPCODE, elementId, pSetParam);
+  }
+  else
+  {
+    mmdlGenLevelSendDeltaSet(MMDL_GEN_LEVEL_DELTA_SET_OPCODE, elementId, serverAddr, ttl, pSetParam,
+                             appKeyIndex);
+  }
 }
 
 /*************************************************************************************************/
@@ -470,12 +496,15 @@ void MmdlGenDeltaClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlGenDeltaClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             const mmdlGenDeltaSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
-        mmdlGenLevelPublishDeltaSet(MMDL_GEN_LEVEL_DELTA_SET_NO_ACK_OPCODE, elementId, pSetParam);
-    } else {
-        mmdlGenLevelSendDeltaSet(MMDL_GEN_LEVEL_DELTA_SET_NO_ACK_OPCODE, elementId, serverAddr, ttl,
-                                 pSetParam, appKeyIndex);
-    }
+  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlGenLevelPublishDeltaSet(MMDL_GEN_LEVEL_DELTA_SET_NO_ACK_OPCODE, elementId, pSetParam);
+  }
+  else
+  {
+    mmdlGenLevelSendDeltaSet(MMDL_GEN_LEVEL_DELTA_SET_NO_ACK_OPCODE, elementId, serverAddr, ttl,
+                             pSetParam, appKeyIndex);
+  }
 }
 
 /*************************************************************************************************/
@@ -494,12 +523,15 @@ void MmdlGenDeltaClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr,
 void MmdlGenMoveClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                       const mmdlGenLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
-        mmdlGenLevelPublishSet(MMDL_GEN_LEVEL_MOVE_SET_OPCODE, elementId, pSetParam);
-    } else {
-        mmdlGenLevelSendSet(MMDL_GEN_LEVEL_MOVE_SET_OPCODE, elementId, serverAddr, ttl, pSetParam,
-                            appKeyIndex);
-    }
+  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlGenLevelPublishSet(MMDL_GEN_LEVEL_MOVE_SET_OPCODE, elementId, pSetParam);
+  }
+  else
+  {
+    mmdlGenLevelSendSet(MMDL_GEN_LEVEL_MOVE_SET_OPCODE, elementId, serverAddr, ttl, pSetParam,
+                        appKeyIndex);
+  }
 }
 
 /*************************************************************************************************/
@@ -518,12 +550,15 @@ void MmdlGenMoveClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8
 void MmdlGenMoveClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                            const mmdlGenLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
-        mmdlGenLevelPublishSet(MMDL_GEN_LEVEL_MOVE_SET_NO_ACK_OPCODE, elementId, pSetParam);
-    } else {
-        mmdlGenLevelSendSet(MMDL_GEN_LEVEL_MOVE_SET_NO_ACK_OPCODE, elementId, serverAddr, ttl,
-                            pSetParam, appKeyIndex);
-    }
+  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlGenLevelPublishSet(MMDL_GEN_LEVEL_MOVE_SET_NO_ACK_OPCODE, elementId, pSetParam);
+  }
+  else
+  {
+    mmdlGenLevelSendSet(MMDL_GEN_LEVEL_MOVE_SET_NO_ACK_OPCODE, elementId, serverAddr, ttl, pSetParam,
+                        appKeyIndex);
+  }
 }
 
 /*************************************************************************************************/
@@ -537,8 +572,9 @@ void MmdlGenMoveClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, 
 /*************************************************************************************************/
 void MmdlGenLevelClRegister(mmdlEventCback_t recvCback)
 {
-    /* Store valid callback*/
-    if (recvCback != NULL) {
-        levelClCb.recvCback = recvCback;
-    }
+  /* Store valid callback*/
+  if (recvCback != NULL)
+  {
+    levelClCb.recvCback = recvCback;
+  }
 }

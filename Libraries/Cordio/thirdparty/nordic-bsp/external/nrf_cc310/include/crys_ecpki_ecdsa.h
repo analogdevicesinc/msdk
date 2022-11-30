@@ -32,6 +32,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
+
 #ifndef CRYS_ECPKI_ECDSA_H
 #define CRYS_ECPKI_ECDSA_H
 
@@ -49,8 +51,11 @@
 #include "crys_rnd.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
+
+
 
 /**************************************************************************
  *                CRYS_ECDSA_Sign - integrated function
@@ -70,27 +75,27 @@ For a digest, ::CRYS_ECPKI_HASH_OpMode_t should indicate the hash function that 
 @return A non-zero value on failure as defined crys_ecpki_error.h, crys_hash_error.h or crys_rnd_error.h.
 **/
 CIMPORT_C CRYSError_t CRYS_ECDSA_Sign(
-    void *rndState_ptr, /*!< [in/out] Pointer to the RND state structure. */
-    SaSiRndGenerateVectWorkFunc_t
-        rndGenerateVectFunc, /*!< [in] Pointer to the random vector generation function. */
-    CRYS_ECDSA_SignUserContext_t
-        *pSignUserContext, /*!< [in/out] Pointer to the user buffer for signing the database. */
-    CRYS_ECPKI_UserPrivKey_t *pSignerPrivKey, /*!< [in]  A pointer to a user private key structure. */
-    CRYS_ECPKI_HASH_OpMode_t hashMode, /*!< [in]  One of the supported SHA-x HASH modes, as defined in
+                     void           *rndState_ptr,        /*!< [in/out] Pointer to the RND state structure. */
+                     SaSiRndGenerateVectWorkFunc_t   rndGenerateVectFunc, /*!< [in] Pointer to the random vector generation function. */
+                     CRYS_ECDSA_SignUserContext_t   *pSignUserContext,   /*!< [in/out] Pointer to the user buffer for signing the database. */
+                     CRYS_ECPKI_UserPrivKey_t       *pSignerPrivKey,     /*!< [in]  A pointer to a user private key structure. */
+                     CRYS_ECPKI_HASH_OpMode_t        hashMode,           /*!< [in]  One of the supported SHA-x HASH modes, as defined in
                                                     ::CRYS_ECPKI_HASH_OpMode_t.
                                                     \note MD5 is not supported. */
-    uint8_t *pMessageDataIn, /*!< [in] Pointer to the input data to be signed.
+                     uint8_t                         *pMessageDataIn,    /*!< [in] Pointer to the input data to be signed.
                                                    The size of the scatter/gather list representing the data buffer
                                                    is limited to 128 entries, and the size of each entry is limited
                                                    to 64KB (fragments larger than 64KB are broken into
                                                    fragments <= 64KB). */
-    uint32_t messageSizeInBytes, /*!< [in]  Size of message data in bytes. */
-    uint8_t *pSignatureOut, /*!< [in]  Pointer to a buffer for output of signature. */
-    uint32_t *pSignatureOutSize /*!< [in/out] Pointer to the signature size. Used to pass the size of
+                     uint32_t                        messageSizeInBytes, /*!< [in]  Size of message data in bytes. */
+                     uint8_t                        *pSignatureOut,      /*!< [in]  Pointer to a buffer for output of signature. */
+                     uint32_t                       *pSignatureOutSize   /*!< [in/out] Pointer to the signature size. Used to pass the size of
                                                        the SignatureOut buffer (in), which must be >= 2
                                                        * OrderSizeInBytes. When the API returns,
                                                        it is replaced with the size of the actual signature (out). */
-);
+                     );
+
+
 
 /**************************************************************************
  *                CRYS_ECDSA_Verify integrated function
@@ -106,23 +111,24 @@ For a digest, ::CRYS_ECPKI_HASH_OpMode_t should indicate the hash function that 
 @return CRYS_OK on success.
 @return A non-zero value on failure as defined crys_ecpki_error.h or crys_hash_error.h.
 */
-CIMPORT_C CRYSError_t CRYS_ECDSA_Verify(
-    CRYS_ECDSA_VerifyUserContext_t
-        *pVerifyUserContext, /*!< [in] Pointer to the user buffer for signing the database. */
-    CRYS_ECPKI_UserPublKey_t *pUserPublKey, /*!< [in] Pointer to a user public key structure. */
-    CRYS_ECPKI_HASH_OpMode_t hashMode, /*!< [in] One of the supported SHA-x HASH modes, as defined in
+CIMPORT_C CRYSError_t CRYS_ECDSA_Verify (
+                    CRYS_ECDSA_VerifyUserContext_t *pVerifyUserContext, /*!< [in] Pointer to the user buffer for signing the database. */
+                    CRYS_ECPKI_UserPublKey_t       *pUserPublKey,       /*!< [in] Pointer to a user public key structure. */
+                    CRYS_ECPKI_HASH_OpMode_t        hashMode,           /*!< [in] One of the supported SHA-x HASH modes, as defined in
                                                       ::CRYS_ECPKI_HASH_OpMode_t.
                                                       \note MD5 is not supported. */
-    uint8_t *pSignatureIn, /*!< [in] Pointer to the signature to be verified. */
-    uint32_t SignatureSizeBytes, /*!< [in] Size of the signature (in bytes).  */
-    uint8_t *pMessageDataIn, /*!< [in] Pointer to the input data that was signed (same as given to
+                    uint8_t                        *pSignatureIn,       /*!< [in] Pointer to the signature to be verified. */
+                    uint32_t                        SignatureSizeBytes, /*!< [in] Size of the signature (in bytes).  */
+                    uint8_t                        *pMessageDataIn,     /*!< [in] Pointer to the input data that was signed (same as given to
                                                       the signing function). The size of the scatter/gather list representing
                                                       the data buffer is limited to 128 entries, and the size of each entry is
                                                       limited to 64KB (fragments larger than 64KB are broken into fragments <= 64KB). */
-    uint32_t messageSizeInBytes /*!< [in] Size of the input data (in bytes). */
-);
+                    uint32_t                        messageSizeInBytes  /*!< [in] Size of the input data (in bytes). */
+                    );
+
 
 /**********************************************************************************************************/
+
 
 #ifdef __cplusplus
 }

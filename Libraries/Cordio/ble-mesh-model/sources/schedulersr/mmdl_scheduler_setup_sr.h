@@ -27,7 +27,8 @@
 #define MMDL_SCHEDULER_SETUP_SR_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************

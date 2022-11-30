@@ -31,7 +31,7 @@
  *
  *
  ******************************************************************************/
-
+ 
 #ifndef _USBIO_HWOPT_H_
 #define _USBIO_HWOPT_H_
 
@@ -40,10 +40,10 @@
 
 /* Configuration options for MUSBHSFC */
 typedef struct {
-    unsigned int enable_hs; /* 0 = full-speed only, otherwise high-speed if negotiated */
-    void (*delay_us)(unsigned int usec); /* User-supplied function to delay usec micro-seconds */
-    int (*init_callback)(void); /* User-supplied function for initializing the USB block */
-    int (*shutdown_callback)(void); /* User-supplied function for shutting down the USB block */
+  unsigned int enable_hs; /* 0 = full-speed only, otherwise high-speed if negotiated */
+  void (*delay_us)(unsigned int usec); /* User-supplied function to delay usec micro-seconds */
+  int (*init_callback)(void); /* User-supplied function for initializing the USB block */
+  int (*shutdown_callback)(void); /* User-supplied function for shutting down the USB block */
 } maxusb_cfg_options_t;
 
 #if !defined(MAXUSB_ENTER_CRITICAL) && !defined(MAXUSB_EXIT_CRITICAL)

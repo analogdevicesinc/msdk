@@ -33,79 +33,86 @@
 #include "wsf_timer.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 /*! \brief Light CTL Temperature Server Model State structure */
-typedef struct mmdlLightCtlTempSrState_tag {
-    uint16_t temperature; /*!< Temperature state */
-    uint16_t deltaUV; /*!< Delta UV state */
+typedef struct mmdlLightCtlTempSrState_tag
+{
+  uint16_t                     temperature;      /*!< Temperature state */
+  uint16_t                     deltaUV;          /*!< Delta UV state */
 } mmdlLightCtlTempSrState_t;
 
 /*! \brief Light CTL Temperature Server Model State Update event structure */
-typedef struct mmdlLightCtlTempSrStateUpdate_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elemId; /*!< Element identifier */
-    uint16_t temperature; /*!< Updated state */
-    uint16_t deltaUV; /*!< Updated state */
+typedef struct mmdlLightCtlTempSrStateUpdate_tag
+{
+  wsfMsgHdr_t                  hdr;              /*!< WSF message header */
+  meshElementId_t              elemId;           /*!< Element identifier */
+  uint16_t                     temperature;      /*!< Updated state */
+  uint16_t                     deltaUV;          /*!< Updated state */
 } mmdlLightCtlTempSrStateUpdate_t;
 
 /*! \brief Light CTL Temperature Server Model event callback parameters structure */
-typedef union mmdlLightCtlTempSrEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlLightCtlTempSrStateUpdate_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlLightCtlTempSrEvent_tag
+{
+  wsfMsgHdr_t                      hdr;          /*!< WSF message header */
+  mmdlLightCtlTempSrStateUpdate_t  statusEvent;  /*!< State updated event. Used for
                                                   *   ::MMDL_LIGHT_CTL_TEMP_SR_STATE_UPDATE_EVENT.
                                                   */
 } mmdlLightCtlTempSrEvent_t;
 
 /*! \brief Light CTL Temperature stored state definition */
-typedef struct mmdlLightCtlTempStoredState_tag {
-    mmdlLightCtlTempSrState_t present; /*!< Present state */
-    mmdlLightCtlTempSrState_t target; /*!< Target state */
-} mmdlLightCtlTempStoredState_t;
+typedef struct mmdlLightCtlTempStoredState_tag
+{
+  mmdlLightCtlTempSrState_t present;        /*!< Present state */
+  mmdlLightCtlTempSrState_t target;         /*!< Target state */
+}mmdlLightCtlTempStoredState_t;
 
 /*! \brief Light CTL Temperature transition step structure */
-typedef struct mmdlLightCtlTempSrTransStep_tag {
-    int16_t temperature; /*!< Temperature step value */
-    int16_t deltaUV; /*!< Delta UV step value */
+typedef struct mmdlLightCtlTempSrTransStep_tag
+{
+  int16_t                     temperature;      /*!< Temperature step value */
+  int16_t                     deltaUV;          /*!< Delta UV step value */
 } mmdlLightCtlTempSrTransStep_t;
 
 /*! \brief Model Light CTL Temperature Server descriptor definition */
-typedef struct mmdlLightCtlTempSrDesc_tag {
-    mmdlLightCtlTempStoredState_t *pStoredState; /*!< Pointer to the structure that stores the Light
+typedef struct mmdlLightCtlTempSrDesc_tag
+{
+  mmdlLightCtlTempStoredState_t  *pStoredState;    /*!< Pointer to the structure that stores the Light
                                                     *   CTL state and scenes
                                                     */
-    wsfTimer_t transitionTimer; /*!< WSF Timer for delay and state transition */
-    wsfTimer_t msgRcvdTimer; /*!< Timer to manage received logically group messages */
-    uint32_t remainingTimeMs; /*!< Time remaining until the current state is
+  wsfTimer_t                     transitionTimer;  /*!< WSF Timer for delay and state transition */
+  wsfTimer_t                     msgRcvdTimer;     /*!< Timer to manage received logically group messages */
+  uint32_t                       remainingTimeMs;  /*!< Time remaining until the current state is
                                                     *   replaced with the target state. If set to 0,
                                                     *   the target state is ignored. Unit is 1 ms.
                                                     */
-    mmdlLightCtlTempSrTransStep_t transitionStep; /*!< Transition state update step */
-    uint16_t steps; /*!< The number of transition steps */
-    uint8_t delay5Ms; /*!< Delay until the transition to the new state
+  mmdlLightCtlTempSrTransStep_t  transitionStep;   /*!< Transition state update step */
+  uint16_t                       steps;            /*!< The number of transition steps */
+  uint8_t                        delay5Ms;         /*!< Delay until the transition to the new state
                                                     *   begins. Unit is 5 ms.
                                                     */
-    uint8_t transactionId; /*!< Transaction Identifier used to logically group a
+  uint8_t                        transactionId;    /*!< Transaction Identifier used to logically group a
                                                     *   series of messages.
                                                     */
-    meshAddress_t srcAddr; /*!< Source address of the logically grouped series of
+  meshAddress_t                  srcAddr;          /*!< Source address of the logically grouped series of
                                                     *   messages.
                                                     */
-    bool_t ackPending; /*!< TRUE if an ACK is pending for the last received
+  bool_t                         ackPending;       /*!< TRUE if an ACK is pending for the last received
                                                     *   message.
                                                     */
-    bool_t ackForUnicast; /*!< TRUE if the delayed message was received as a
+  bool_t                         ackForUnicast;    /*!< TRUE if the delayed message was received as a
                                                     *   unicast, FALSE otherwise.
                                                     */
-    uint16_t ackAppKeyIndex; /*!< AppKeyIndex used for the last received message. */
-    meshElementId_t mainElementId; /*!< Element Id of the Main element that uses
+  uint16_t                       ackAppKeyIndex;   /*!< AppKeyIndex used for the last received message. */
+  meshElementId_t                mainElementId;    /*!< Element Id of the Main element that uses
                                                     *   this Temperature instance.
                                                     */
-    mmdlStateUpdateSrc_t updateSource; /*!< State update source. Cached for transitions.
+  mmdlStateUpdateSrc_t           updateSource;     /*!< State update source. Cached for transitions.
                                                     */
 } mmdlLightCtlTempSrDesc_t;
 

@@ -37,122 +37,140 @@ extern "C" {
 **************************************************************************************************/
 
 /* DM scan event handler messages */
-enum {
-    DM_SCAN_MSG_API_START = DM_MSG_START(DM_ID_SCAN),
-    DM_SCAN_MSG_API_STOP,
-    DM_SCAN_MSG_TIMEOUT
+enum
+{
+  DM_SCAN_MSG_API_START = DM_MSG_START(DM_ID_SCAN),
+  DM_SCAN_MSG_API_STOP,
+  DM_SCAN_MSG_TIMEOUT
 };
 
 /* DM scan states */
-enum { DM_SCAN_STATE_IDLE, DM_SCAN_STATE_STARTING, DM_SCAN_STATE_SCANNING, DM_SCAN_STATE_STOPPING };
+enum
+{
+  DM_SCAN_STATE_IDLE,
+  DM_SCAN_STATE_STARTING,
+  DM_SCAN_STATE_SCANNING,
+  DM_SCAN_STATE_STOPPING
+};
 
 /*! Uninitialized HCI sync handle */
-#define DM_SYNC_HCI_HANDLE_NONE 0xFFFF
+#define DM_SYNC_HCI_HANDLE_NONE     0xFFFF
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /* Data structure for DM_SCAN_MSG_API_START */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t scanPhys;
-    uint8_t scanType[DM_NUM_PHYS];
-    uint8_t mode;
-    uint16_t duration;
-    uint16_t period;
-    bool_t filterDup;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 scanPhys;
+  uint8_t                 scanType[DM_NUM_PHYS];
+  uint8_t                 mode;
+  uint16_t                duration;
+  uint16_t                period;
+  bool_t                  filterDup;
 } dmScanApiStart_t;
 
 /* Data structure for DM_SYNC_MSG_API_START */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t advSid;
-    uint8_t advAddrType;
-    bdAddr_t advAddr;
-    uint16_t skip;
-    uint16_t syncTimeout;
-    uint8_t unused;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 advSid;
+  uint8_t                 advAddrType;
+  bdAddr_t                advAddr;
+  uint16_t                skip;
+  uint16_t                syncTimeout;
+  uint8_t                 unused;
 } dmSyncApiStart_t;
 
 /* Data structure for DM_SYNC_MSG_API_ADD_DEV_TO_PER_ADV_LIST */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t advAddrType;
-    bdAddr_t advAddr;
-    uint8_t advSid;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 advAddrType;
+  bdAddr_t                advAddr;
+  uint8_t                 advSid;
 } dmSyncApiAddDevToPerAdvList_t;
 
 /* Data structure for DM_SYNC_MSG_API_REM_DEV_FROM_PER_ADV_LIST */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t advAddrType;
-    bdAddr_t advAddr;
-    uint8_t advSid;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 advAddrType;
+  bdAddr_t                advAddr;
+  uint8_t                 advSid;
 } dmSyncApiRemDevFromPerAdvList_t;
 
 /* Union of all scan messages */
-typedef union {
-    wsfMsgHdr_t hdr;
-    dmScanApiStart_t apiStart;
+typedef union
+{
+  wsfMsgHdr_t             hdr;
+  dmScanApiStart_t        apiStart;
 } dmScanMsg_t;
 
 /* Union of all DM Sync state machine messages */
-typedef union {
-    wsfMsgHdr_t hdr;
-    dmSyncApiStart_t apiSyncStart;
-    hciLePerAdvSyncEstEvt_t perAdvSyncEst;
-    hciLePerAdvSyncLostEvt_t perAdvSyncLost;
-    HciLePerAdvSyncTrsfRcvdEvt_t perAdvSyncTrsfEst;
+typedef union
+{
+  wsfMsgHdr_t                  hdr;
+  dmSyncApiStart_t             apiSyncStart;
+  hciLePerAdvSyncEstEvt_t      perAdvSyncEst;
+  hciLePerAdvSyncLostEvt_t     perAdvSyncLost;
+  HciLePerAdvSyncTrsfRcvdEvt_t perAdvSyncTrsfEst;
 } dmSyncMsg_t;
 
 /* Action function */
 typedef void (*dmScanAct_t)(dmScanMsg_t *pMsg);
 
 /* Control block for scan module */
-typedef struct {
-    wsfTimer_t scanTimer;
-    uint16_t scanInterval[DM_NUM_PHYS];
-    uint16_t scanWindow[DM_NUM_PHYS];
-    uint8_t scanState;
-    uint16_t scanDuration;
-    bool_t filterNextScanRsp;
-    uint8_t discFilter;
+typedef struct
+{
+  wsfTimer_t              scanTimer;
+  uint16_t                scanInterval[DM_NUM_PHYS];
+  uint16_t                scanWindow[DM_NUM_PHYS];
+  uint8_t                 scanState;
+  uint16_t                scanDuration;
+  bool_t                  filterNextScanRsp;
+  uint8_t                 discFilter;
 } dmScanCb_t;
 
 /* Control block for periodic advertising sync module */
-typedef struct {
-    uint8_t advSid; /*!< advertising SID */
-    bdAddr_t advAddr; /*!< advertiser address */
-    uint8_t advAddrType; /*!< advertiser address type */
-    uint16_t handle; /*!< sync handle */
-    dmSyncId_t syncId; /*!< sync id */
-    bool_t encrypt; /*!< Unencrypted or Encrypted */
-    uint8_t state; /*!< sync state */
-    uint8_t inUse; /*!< TRUE if entry in use */
+typedef struct
+{
+  uint8_t                 advSid;      /*!< advertising SID */
+  bdAddr_t                advAddr;     /*!< advertiser address */
+  uint8_t                 advAddrType; /*!< advertiser address type */
+  uint16_t                handle;      /*!< sync handle */
+  dmSyncId_t              syncId;      /*!< sync id */
+  bool_t                  encrypt;     /*!< Unencrypted or Encrypted */
+  uint8_t                 state;       /*!< sync state */
+  uint8_t                 inUse;       /*!< TRUE if entry in use */
 } dmSyncCb_t;
 
 /* Data structure for DM_PAST_MSG_API_SYNC_TRSF and DM_PAST_MSG_API_INFO_TRSF */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Header */
-    uint16_t serviceData; /*!< Value provided by the Host */
-    dmConnId_t connId; /*!< Connection id */
+typedef struct
+{
+  wsfMsgHdr_t             hdr;         /*!< Header */
+  uint16_t                serviceData; /*!< Value provided by the Host */
+  dmConnId_t              connId;      /*!< Connection id */
 } dmPastApiTrsf_t;
 
 /* Data structure for DM_PAST_MSG_API_CONFIG and DM_PAST_MSG_API_DEFAULT_CONFIG */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Header */
-    uint8_t mode; /*!< Mode */
-    uint16_t skip; /*!< Skip */
-    uint16_t syncTimeout; /*!< Sync timeout */
-    uint8_t cteType; /*!< CTE type */
+typedef struct
+{
+  wsfMsgHdr_t             hdr;         /*!< Header */
+  uint8_t                 mode;        /*!< Mode */
+  uint16_t                skip;        /*!< Skip */
+  uint16_t                syncTimeout; /*!< Sync timeout */
+  uint8_t                 cteType;     /*!< CTE type */
 } dmPastApiCfg_t;
 
 /* Union of all DM PAST API messages */
-typedef union {
-    wsfMsgHdr_t hdr;
-    dmPastApiTrsf_t apiPastTrsf;
-    dmPastApiCfg_t apiPastCfg;
+typedef union
+{
+  wsfMsgHdr_t             hdr;
+  dmPastApiTrsf_t         apiPastTrsf;
+  dmPastApiCfg_t          apiPastCfg;
 } dmPastMsg_t;
 
 /*! Action function */

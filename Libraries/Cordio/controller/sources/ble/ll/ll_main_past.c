@@ -44,26 +44,30 @@
 /*************************************************************************************************/
 uint8_t LlSetPeriodicAdvRcvEnable(uint16_t syncHandle, uint8_t enable)
 {
-    LL_TRACE_INFO2("### LlApi ###  LlSetPeriodicAdvRcvEnable: syncHandle=%u, enable=%u", syncHandle,
-                   enable);
+  LL_TRACE_INFO2("### LlApi ###  LlSetPeriodicAdvRcvEnable: syncHandle=%u, enable=%u", syncHandle, enable);
 
-    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
-        LL_TRACE_WARN0(
-            "Legacy Advertising/Scanning operation enabled; extended commands not available");
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      !LmgrIsExtCommandAllowed())
+  {
+    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) && syncHandle > LL_SYNC_MAX_HANDLE) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      syncHandle > LL_SYNC_MAX_HANDLE)
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) && !lctrMstPerIsSyncHandleValid(syncHandle)) {
-        return LL_ERROR_CODE_UNKNOWN_ADV_ID;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      !lctrMstPerIsSyncHandleValid(syncHandle))
+  {
+    return LL_ERROR_CODE_UNKNOWN_ADV_ID;
+  }
 
-    LctrMstPerSetRcvEnable(syncHandle, (bool_t)enable);
+  LctrMstPerSetRcvEnable (syncHandle, (bool_t)enable);
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -81,16 +85,16 @@ uint8_t LlSetPeriodicAdvRcvEnable(uint16_t syncHandle, uint8_t enable)
 /*************************************************************************************************/
 uint8_t LlPeriodicAdvSyncTransfer(uint16_t connHandle, uint16_t serviceData, uint16_t syncHandle)
 {
-    LL_TRACE_INFO2("### LlApi ###  LlPeriodicAdvSyncTransfer: connHandle=%u, syncHandle=%u",
-                   connHandle, syncHandle);
+  LL_TRACE_INFO2("### LlApi ###  LlPeriodicAdvSyncTransfer: connHandle=%u, syncHandle=%u", connHandle, syncHandle);
 
-    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
-        LL_TRACE_WARN0(
-            "Legacy Advertising/Scanning operation enabled; extended commands not available");
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      !LmgrIsExtCommandAllowed())
+  {
+    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    return LctrPeriodicAdvSyncTransfer(connHandle, serviceData, syncHandle);
+  return LctrPeriodicAdvSyncTransfer (connHandle, serviceData, syncHandle);
 }
 
 /*************************************************************************************************/
@@ -108,16 +112,16 @@ uint8_t LlPeriodicAdvSyncTransfer(uint16_t connHandle, uint16_t serviceData, uin
 /*************************************************************************************************/
 uint8_t LlPeriodicAdvSetInfoTransfer(uint16_t connHandle, uint16_t serviceData, uint8_t advHandle)
 {
-    LL_TRACE_INFO2("### LlApi ###  LlPeriodicAdvSetInfoTransfer: connHandle=%u, advHandle=%u",
-                   connHandle, advHandle);
+  LL_TRACE_INFO2("### LlApi ###  LlPeriodicAdvSetInfoTransfer: connHandle=%u, advHandle=%u", connHandle, advHandle);
 
-    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
-        LL_TRACE_WARN0(
-            "Legacy Advertising/Scanning operation enabled; extended commands not available");
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      !LmgrIsExtCommandAllowed())
+  {
+    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    return LctrPeriodicAdvSetInfoTransfer(connHandle, serviceData, advHandle);
+  return LctrPeriodicAdvSetInfoTransfer(connHandle, serviceData, advHandle);
 }
 
 /*************************************************************************************************/
@@ -135,26 +139,27 @@ uint8_t LlPeriodicAdvSetInfoTransfer(uint16_t connHandle, uint16_t serviceData, 
  *  Set periodic advertising sync transfer parameters.
  */
 /*************************************************************************************************/
-uint8_t LlSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uint16_t skip,
-                                        uint16_t syncTimeout, uint8_t cteType)
+uint8_t LlSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uint16_t skip, uint16_t syncTimeout, uint8_t cteType)
 {
-    LL_TRACE_INFO3(
-        "### LlApi ###  LlSetPeriodicAdvSyncTransParams: connHandle=%u, mode=%u, skip=%u",
-        connHandle, mode, skip);
+  LL_TRACE_INFO3("### LlApi ###  LlSetPeriodicAdvSyncTransParams: connHandle=%u, mode=%u, skip=%u", connHandle, mode, skip);
 
-    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
-        LL_TRACE_WARN0(
-            "Legacy Advertising/Scanning operation enabled; extended commands not available");
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      !LmgrIsExtCommandAllowed())
+  {
+    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((mode > LL_SYNC_TRSF_MAX_MODE) || (skip > LL_SYNC_MAX_SKIP) ||
-         (syncTimeout > LL_SYNC_MAX_TIMEOUT) || (syncTimeout < LL_SYNC_MIN_TIMEOUT))) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((mode > LL_SYNC_TRSF_MAX_MODE) ||
+      (skip > LL_SYNC_MAX_SKIP) ||
+      (syncTimeout > LL_SYNC_MAX_TIMEOUT) ||
+      (syncTimeout < LL_SYNC_MIN_TIMEOUT)))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    return LctrSetPeriodicAdvSyncTransParams(connHandle, mode, skip, syncTimeout, cteType);
+  return LctrSetPeriodicAdvSyncTransParams(connHandle, mode, skip, syncTimeout, cteType);
 }
 
 /*************************************************************************************************/
@@ -171,28 +176,29 @@ uint8_t LlSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uint1
  *  Set default periodic advertising sync transfer parameters.
  */
 /*************************************************************************************************/
-uint8_t LlSetDefaultPeriodicAdvSyncTransParams(uint8_t mode, uint16_t skip, uint16_t syncTimeout,
-                                               uint8_t cteType)
+uint8_t LlSetDefaultPeriodicAdvSyncTransParams(uint8_t mode, uint16_t skip, uint16_t syncTimeout, uint8_t cteType)
 {
-    LL_TRACE_INFO3(
-        "### LlApi ###  LlSetDefaultPeriodicAdvSyncTransParams: mode=%u, skip=%u, syncTimeout=%u",
-        mode, skip, syncTimeout);
+  LL_TRACE_INFO3("### LlApi ###  LlSetDefaultPeriodicAdvSyncTransParams: mode=%u, skip=%u, syncTimeout=%u", mode, skip, syncTimeout);
 
-    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
-        LL_TRACE_WARN0(
-            "Legacy Advertising/Scanning operation enabled; extended commands not available");
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      !LmgrIsExtCommandAllowed())
+  {
+    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((mode > LL_SYNC_TRSF_MAX_MODE) || (skip > LL_SYNC_MAX_SKIP) ||
-         (syncTimeout > LL_SYNC_MAX_TIMEOUT) || (syncTimeout < LL_SYNC_MIN_TIMEOUT))) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((mode > LL_SYNC_TRSF_MAX_MODE) ||
+      (skip > LL_SYNC_MAX_SKIP) ||
+      (syncTimeout > LL_SYNC_MAX_TIMEOUT) ||
+      (syncTimeout < LL_SYNC_MIN_TIMEOUT)))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    lmgrConnCb.syncMode = mode;
-    lmgrConnCb.syncSkip = skip;
-    lmgrConnCb.syncTimeout = syncTimeout;
+  lmgrConnCb.syncMode = mode;
+  lmgrConnCb.syncSkip = skip;
+  lmgrConnCb.syncTimeout = syncTimeout;
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }

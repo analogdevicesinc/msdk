@@ -64,6 +64,7 @@
 extern "C" {
 #endif
 
+
 #ifndef NRF_CRYPTO_HMAC_SHA256_ENABLED
 // /** @internal @brief Fallback context type for HMAC SHA256 in case no backend is selected. */
 typedef nrf_crypto_hmac_internal_context_t nrf_crypto_backend_hmac_sha256_context_t;
@@ -74,13 +75,14 @@ typedef nrf_crypto_hmac_internal_context_t nrf_crypto_backend_hmac_sha256_contex
 typedef nrf_crypto_hmac_internal_context_t nrf_crypto_backend_hmac_sha512_context_t;
 #endif // #ifndef NRF_CRYPTO_HMAC_SHA512_ENABLED
 
+
 /** @internal @brief Union holding a HMAC context. */
-typedef union {
-    nrf_crypto_backend_hmac_sha256_context_t
-        hmac_sha256_context; /**< @brief Holds context for HMAC SHA-256. */
-    nrf_crypto_backend_hmac_sha512_context_t
-        hmac_sha512_context; /**< @brief Holds context for HMAC SHA-512. */
+typedef union
+{
+    nrf_crypto_backend_hmac_sha256_context_t hmac_sha256_context;   /**< @brief Holds context for HMAC SHA-256. */
+    nrf_crypto_backend_hmac_sha512_context_t hmac_sha512_context;   /**< @brief Holds context for HMAC SHA-512. */
 } nrf_crypto_backend_hmac_context_t;
+
 
 #ifdef __cplusplus
 }

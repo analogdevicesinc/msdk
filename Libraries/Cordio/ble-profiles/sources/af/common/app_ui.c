@@ -45,118 +45,120 @@ static appUiCback_t appUiCbackTbl;
 /*************************************************************************************************/
 void AppUiAction(uint8_t event)
 {
-    switch (event) {
+  switch (event)
+  {
     case APP_UI_NONE:
-        /* no action */
-        break;
+      /* no action */
+      break;
 
     case APP_UI_RESET_CMPL:
-        APP_TRACE_INFO0(">>> Reset complete <<<");
-        break;
+      APP_TRACE_INFO0(">>> Reset complete <<<");
+      break;
 
     case APP_UI_ADV_START:
-        APP_TRACE_INFO0(">>> Advertising started <<<");
-        break;
+      APP_TRACE_INFO0(">>> Advertising started <<<");
+      break;
 
     case APP_UI_ADV_STOP:
-        APP_TRACE_INFO0(">>> Advertising stopped <<<");
-        break;
+      APP_TRACE_INFO0(">>> Advertising stopped <<<");
+      break;
 
     case APP_UI_SCAN_START:
-        APP_TRACE_INFO0(">>> Scanning started <<<");
-        break;
+      APP_TRACE_INFO0(">>> Scanning started <<<");
+      break;
 
     case APP_UI_SCAN_STOP:
-        APP_TRACE_INFO0(">>> Scanning stopped <<<");
-        break;
+      APP_TRACE_INFO0(">>> Scanning stopped <<<");
+      break;
 
     case APP_UI_SCAN_REPORT:
-        APP_TRACE_INFO0(">>> Scan data received from peer <<<");
-        break;
+      APP_TRACE_INFO0(">>> Scan data received from peer <<<");
+      break;
 
     case APP_UI_CONN_OPEN:
-        APP_TRACE_INFO0(">>> Connection opened <<<");
-        break;
+      APP_TRACE_INFO0(">>> Connection opened <<<");
+      break;
 
     case APP_UI_CONN_CLOSE:
-        APP_TRACE_INFO0(">>> Connection closed <<<");
-        break;
+      APP_TRACE_INFO0(">>> Connection closed <<<");
+      break;
 
     case APP_UI_SEC_PAIR_CMPL:
-        APP_TRACE_INFO0(">>> Pairing completed successfully <<<");
-        break;
+      APP_TRACE_INFO0(">>> Pairing completed successfully <<<");
+      break;
 
     case APP_UI_SEC_PAIR_FAIL:
-        APP_TRACE_INFO0(">>> Pairing failed <<<");
-        break;
+      APP_TRACE_INFO0(">>> Pairing failed <<<");
+      break;
 
     case APP_UI_SEC_ENCRYPT:
-        APP_TRACE_INFO0(">>> Connection encrypted <<<");
-        break;
+      APP_TRACE_INFO0(">>> Connection encrypted <<<");
+      break;
 
     case APP_UI_SEC_ENCRYPT_FAIL:
-        APP_TRACE_INFO0(">>> Encryption failed <<<");
-        break;
+      APP_TRACE_INFO0(">>> Encryption failed <<<");
+      break;
 
     case APP_UI_PASSKEY_PROMPT:
-        APP_TRACE_INFO0(">>> Prompt user to enter passkey <<<");
-        break;
+      APP_TRACE_INFO0(">>> Prompt user to enter passkey <<<");
+      break;
 
     case APP_UI_ALERT_CANCEL:
-        APP_TRACE_INFO0(">>> Cancel a low or high alert <<<");
-        break;
+      APP_TRACE_INFO0(">>> Cancel a low or high alert <<<");
+      break;
 
     case APP_UI_ALERT_LOW:
-        APP_TRACE_INFO0(">>> Low alert <<<");
-        break;
+      APP_TRACE_INFO0(">>> Low alert <<<");
+      break;
 
     case APP_UI_ALERT_HIGH:
-        APP_TRACE_INFO0(">>> High alert <<<");
-        break;
+      APP_TRACE_INFO0(">>> High alert <<<");
+      break;
 
     case APP_UI_ADV_SET_START_IND:
-        APP_TRACE_INFO0(">>> Advertising sets started <<<");
-        break;
+      APP_TRACE_INFO0(">>> Advertising sets started <<<");
+      break;
 
     case APP_UI_ADV_SET_STOP_IND:
-        APP_TRACE_INFO0(">>> Advertising sets stopped <<<");
-        break;
+      APP_TRACE_INFO0(">>> Advertising sets stopped <<<");
+      break;
 
     case APP_UI_SCAN_REQ_RCVD_IND:
-        APP_TRACE_INFO0(">>> Scan request received <<<");
-        break;
+      APP_TRACE_INFO0(">>> Scan request received <<<");
+      break;
 
     case APP_UI_EXT_SCAN_START_IND:
-        APP_TRACE_INFO0(">>> Extended scanning started <<<");
-        break;
+      APP_TRACE_INFO0(">>> Extended scanning started <<<");
+      break;
 
     case APP_UI_EXT_SCAN_STOP_IND:
-        APP_TRACE_INFO0(">>> Extended scanning stopped <<<");
-        break;
+      APP_TRACE_INFO0(">>> Extended scanning stopped <<<");
+      break;
 
     case APP_UI_PER_ADV_SET_START_IND:
-        APP_TRACE_INFO0(">>> Periodic advertising set started <<<");
-        break;
+      APP_TRACE_INFO0(">>> Periodic advertising set started <<<");
+      break;
 
     case APP_UI_PER_ADV_SET_STOP_IND:
-        APP_TRACE_INFO0(">>> Periodic advertising set stopped <<<");
-        break;
+      APP_TRACE_INFO0(">>> Periodic advertising set stopped <<<");
+      break;
 
     case APP_UI_PER_ADV_SYNC_EST_IND:
-        APP_TRACE_INFO0(">>> Periodic advertising sync established <<<");
-        break;
+      APP_TRACE_INFO0(">>> Periodic advertising sync established <<<");
+      break;
 
     case APP_UI_PER_ADV_SYNC_LOST_IND:
-        APP_TRACE_INFO0(">>> Periodic advertising sync lost <<<");
-        break;
+      APP_TRACE_INFO0(">>> Periodic advertising sync lost <<<");
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    if (appUiCbackTbl.actionCback) {
-        (*appUiCbackTbl.actionCback)(event, 0);
-    }
+  if (appUiCbackTbl.actionCback)
+  {
+    (*appUiCbackTbl.actionCback)(event, 0);
+  }
 }
 
 /*************************************************************************************************/
@@ -170,11 +172,12 @@ void AppUiAction(uint8_t event)
 /*************************************************************************************************/
 void AppUiDisplayPasskey(uint32_t passkey)
 {
-    APP_TRACE_INFO1(">>> Passkey: %d <<<", passkey);
+  APP_TRACE_INFO1(">>> Passkey: %d <<<", passkey);
 
-    if (appUiCbackTbl.actionCback) {
-        (*appUiCbackTbl.actionCback)(APP_UI_DISPLAY_PASSKEY, passkey);
-    }
+  if (appUiCbackTbl.actionCback)
+  {
+    (*appUiCbackTbl.actionCback)(APP_UI_DISPLAY_PASSKEY, passkey);
+  }
 }
 
 /*************************************************************************************************/
@@ -188,11 +191,12 @@ void AppUiDisplayPasskey(uint32_t passkey)
 /*************************************************************************************************/
 void AppUiDisplayConfirmValue(uint32_t confirm)
 {
-    APP_TRACE_INFO1(">>> Confirm Value: %d <<<", confirm);
+  APP_TRACE_INFO1(">>> Confirm Value: %d <<<", confirm);
 
-    if (appUiCbackTbl.actionCback) {
-        (*appUiCbackTbl.actionCback)(APP_UI_DISPLAY_CONFIRM, confirm);
-    }
+  if (appUiCbackTbl.actionCback)
+  {
+    (*appUiCbackTbl.actionCback)(APP_UI_DISPLAY_CONFIRM, confirm);
+  }
 }
 
 /*************************************************************************************************/
@@ -206,11 +210,12 @@ void AppUiDisplayConfirmValue(uint32_t confirm)
 /*************************************************************************************************/
 void AppUiDisplayRssi(int8_t rssi)
 {
-    APP_TRACE_INFO1(">>> RSSI: %d dBm <<<", rssi);
+  APP_TRACE_INFO1(">>> RSSI: %d dBm <<<", rssi);
 
-    if (appUiCbackTbl.actionCback) {
-        (*appUiCbackTbl.actionCback)(APP_UI_DISPLAY_RSSI, rssi);
-    }
+  if (appUiCbackTbl.actionCback)
+  {
+    (*appUiCbackTbl.actionCback)(APP_UI_DISPLAY_RSSI, rssi);
+  }
 }
 
 /*************************************************************************************************/
@@ -222,7 +227,10 @@ void AppUiDisplayRssi(int8_t rssi)
  *  \return None.
  */
 /*************************************************************************************************/
-void appUiTimerExpired(wsfMsgHdr_t *pMsg) {}
+void appUiTimerExpired(wsfMsgHdr_t *pMsg)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -234,9 +242,10 @@ void appUiTimerExpired(wsfMsgHdr_t *pMsg) {}
 /*************************************************************************************************/
 void appUiBtnPoll(void)
 {
-    if (appUiCbackTbl.btnPollCback) {
-        (*appUiCbackTbl.btnPollCback)();
-    }
+  if (appUiCbackTbl.btnPollCback)
+  {
+    (*appUiCbackTbl.btnPollCback)();
+  }
 }
 
 /*************************************************************************************************/
@@ -247,7 +256,10 @@ void appUiBtnPoll(void)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppUiBtnPressed(void) {}
+void AppUiBtnPressed(void)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -260,7 +272,7 @@ void AppUiBtnPressed(void) {}
 /*************************************************************************************************/
 void AppUiBtnRegister(appUiBtnCback_t btnCback)
 {
-    appUiCbackTbl.btnCback = btnCback;
+  appUiCbackTbl.btnCback = btnCback;
 }
 
 /*************************************************************************************************/
@@ -274,7 +286,7 @@ void AppUiBtnRegister(appUiBtnCback_t btnCback)
 /*************************************************************************************************/
 void AppUiActionRegister(appUiActionCback_t actionCback)
 {
-    appUiCbackTbl.actionCback = actionCback;
+  appUiCbackTbl.actionCback = actionCback;
 }
 
 /*************************************************************************************************/
@@ -288,7 +300,7 @@ void AppUiActionRegister(appUiActionCback_t actionCback)
 /*************************************************************************************************/
 void AppUiBtnPollRegister(appUiBtnPollCback_t btnPollCback)
 {
-    appUiCbackTbl.btnPollCback = btnPollCback;
+  appUiCbackTbl.btnPollCback = btnPollCback;
 }
 
 /*************************************************************************************************/
@@ -300,7 +312,10 @@ void AppUiBtnPollRegister(appUiBtnPollCback_t btnPollCback)
  *  \return None.
  */
 /*************************************************************************************************/
-void AppUiSoundPlay(const appUiSound_t *pSound) {}
+void AppUiSoundPlay(const appUiSound_t *pSound)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -309,7 +324,10 @@ void AppUiSoundPlay(const appUiSound_t *pSound) {}
  *  \return None.
  */
 /*************************************************************************************************/
-void AppUiSoundStop(void) {}
+void AppUiSoundStop(void)
+{
+
+}
 
 /*************************************************************************************************/
 /*
@@ -318,7 +336,10 @@ void AppUiSoundStop(void) {}
  *  \brief  Start LED blinking.
  */
 /*************************************************************************************************/
-void AppUiLedStart(const appUiLed_t *pLed) {}
+void AppUiLedStart(const appUiLed_t *pLed)
+{
+
+}
 
 /*************************************************************************************************/
 /*
@@ -327,7 +348,10 @@ void AppUiLedStart(const appUiLed_t *pLed) {}
  *  \brief  Stop LED blinking.
  */
 /*************************************************************************************************/
-void AppUiLedStop(void) {}
+void AppUiLedStop(void)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -338,7 +362,9 @@ void AppUiLedStop(void) {}
 /*************************************************************************************************/
 void AppUiBtnTest(uint8_t btn)
 {
-    if (appUiCbackTbl.btnCback) {
-        (*appUiCbackTbl.btnCback)(btn);
-    }
+  if (appUiCbackTbl.btnCback)
+  {
+    (*appUiCbackTbl.btnCback)(btn);
+  }
 }
+

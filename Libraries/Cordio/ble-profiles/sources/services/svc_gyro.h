@@ -40,36 +40,37 @@ extern "C" {
  *
  */
 /**@{*/
-#define GYRO_HANDLE_START 0x50 /*!< \brief Start handle. */
-#define GYRO_HANDLE_END (GYRO_HANDLE_END_PLUS_ONE - 1) /*!< \brief End handle. */
+#define GYRO_HANDLE_START  0x50                          /*!< \brief Start handle. */
+#define GYRO_HANDLE_END   (GYRO_HANDLE_END_PLUS_ONE - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Gyroscope service handles. */
-enum {
-    GYRO_HANDLE_SVC = GYRO_HANDLE_START, /*!< \brief Service declaration. */
+enum
+{
+  GYRO_HANDLE_SVC = GYRO_HANDLE_START,    /*!< \brief Service declaration. */
 
-    GYRO_HANDLE_DATA_CHR, /*!< \brief Data characteristic declaration. */
-    GYRO_HANDLE_DATA, /*!< \brief Data characteristic value. */
-    GYRO_HANDLE_DATA_CLIENT_CHR_CONFIG, /*!< \brief Data characteristic CCCD. */
-    GYRO_HANDLE_DATA_CHR_USR_DESCR, /*!< \brief Data characteristic user description. */
+  GYRO_HANDLE_DATA_CHR,                   /*!< \brief Data characteristic declaration. */
+  GYRO_HANDLE_DATA,                       /*!< \brief Data characteristic value. */
+  GYRO_HANDLE_DATA_CLIENT_CHR_CONFIG,     /*!< \brief Data characteristic CCCD. */
+  GYRO_HANDLE_DATA_CHR_USR_DESCR,         /*!< \brief Data characteristic user description. */
 
-    GYRO_HANDLE_TEMPDATA_CHR, /*!< \brief Temporary data characteristic declaration. */
-    GYRO_HANDLE_TEMPDATA, /*!< \brief Temporary data characteristic value. */
-    GYRO_HANDLE_TEMPDATA_CLIENT_CHR_CONFIG, /*!< \brief Temporary data characteristic CCCD. */
-    GYRO_HANDLE_TEMPDATA_CHR_USR_DESCR, /*!< \brief Temporary data characteristic user description. */
+  GYRO_HANDLE_TEMPDATA_CHR,               /*!< \brief Temporary data characteristic declaration. */
+  GYRO_HANDLE_TEMPDATA,                   /*!< \brief Temporary data characteristic value. */
+  GYRO_HANDLE_TEMPDATA_CLIENT_CHR_CONFIG, /*!< \brief Temporary data characteristic CCCD. */
+  GYRO_HANDLE_TEMPDATA_CHR_USR_DESCR,     /*!< \brief Temporary data characteristic user description. */
 
-    GYRO_HANDLE_CONFIG_CHR, /*!< \brief Configuration characteristic delcaration. */
-    GYRO_HANDLE_CONFIG, /*!< \brief Configuration characteristic value. */
-    GYRO_HANDLE_CONFIG_CHR_USR_DESCR, /*!< \brief Configuration characteristic user description. */
+  GYRO_HANDLE_CONFIG_CHR,                 /*!< \brief Configuration characteristic delcaration. */
+  GYRO_HANDLE_CONFIG,                     /*!< \brief Configuration characteristic value. */
+  GYRO_HANDLE_CONFIG_CHR_USR_DESCR,       /*!< \brief Configuration characteristic user description. */
 
-    GYRO_HANDLE_PERIOD_CHR, /*!< \brief Period characteristic declaration. */
-    GYRO_HANDLE_PERIOD, /*!< \brief Period characteristic value. */
-    GYRO_HANDLE_PERIOD_CHR_USR_DESCR, /*!< \brief Period characteristic user description. */
+  GYRO_HANDLE_PERIOD_CHR,                 /*!< \brief Period characteristic declaration. */
+  GYRO_HANDLE_PERIOD,                     /*!< \brief Period characteristic value. */
+  GYRO_HANDLE_PERIOD_CHR_USR_DESCR,       /*!< \brief Period characteristic user description. */
 
-    GYRO_HANDLE_END_PLUS_ONE /*!< \brief Maximum handle. */
+  GYRO_HANDLE_END_PLUS_ONE                /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -81,24 +82,24 @@ enum {
  *
  */
 /**@{*/
-#define GYRO_ATT_CONFIG_DISABLE 0x00u /*!< \brief Disable */
-#define GYRO_ATT_CONFIG_ENABLE 0x01u /*!< \brief Enable */
+#define GYRO_ATT_CONFIG_DISABLE  0x00u /*!< \brief Disable */
+#define GYRO_ATT_CONFIG_ENABLE   0x01u /*!< \brief Enable */
 /**@}*/
 
 /** \name Values for Period Attributes.
  *
  */
 /**@{*/
-#define GYRO_ATT_PERIOD_MAX 250u /*!< \brief Maximum period */
-#define GYRO_ATT_PERIOD_DEFAULT 100u /*!< \brief Default period */
-#define GYRO_ATT_PERIOD_MIN 10u /*!< \brief Minimum period */
+#define GYRO_ATT_PERIOD_MAX      250u /*!< \brief Maximum period */
+#define GYRO_ATT_PERIOD_DEFAULT  100u /*!< \brief Default period */
+#define GYRO_ATT_PERIOD_MIN       10u /*!< \brief Minimum period */
 /**@}*/
 
 /*! \brief Sizes of attributes. */
-#define GYRO_SIZE_CONFIG_ATT 1u /*!< \brief Configuration attribute size */
-#define GYRO_SIZE_PERIOD_ATT 1u /*!< \brief Period attribute size */
-#define GYRO_SIZE_DATA_ATT 6u /*!< \brief Data attribute size */
-#define GYRO_SIZE_TEMPDATA_ATT 2u /*!< \brief Temp data attribute size */
+#define GYRO_SIZE_CONFIG_ATT       1u /*!< \brief Configuration attribute size */
+#define GYRO_SIZE_PERIOD_ATT       1u /*!< \brief Period attribute size */
+#define GYRO_SIZE_DATA_ATT         6u /*!< \brief Data attribute size */
+#define GYRO_SIZE_TEMPDATA_ATT     2u /*!< \brief Temp data attribute size */
 /**@}*/
 
 /**************************************************************************************************
@@ -134,7 +135,7 @@ void SvcGyroRemoveGroup(void);
 /*************************************************************************************************/
 void SvcGyroCbackRegister(attsWriteCback_t writeCback);
 
-/*! \} */ /* GYROSCOPE_SENSOR_SERVICE */
+/*! \} */    /* GYROSCOPE_SENSOR_SERVICE */
 
 #ifdef __cplusplus
 }

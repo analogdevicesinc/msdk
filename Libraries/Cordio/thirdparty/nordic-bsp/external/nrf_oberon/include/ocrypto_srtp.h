@@ -60,17 +60,17 @@ extern "C" {
 /**
  * SRTP Authentication Key Size.
  */
-#define ocrypto_srtp_AuthKeySize (20)
+#define ocrypto_srtp_AuthKeySize  (20)
 
 /**
  * SRTP Salt Size.
  */
-#define ocrypto_srtp_SaltSize (14)
+#define ocrypto_srtp_SaltSize     (14)
 
 /**
  * SRTP Maximum Key Size.
  */
-#define ocrypto_srtp_MaxKeySize (ocrypto_aes256_KEY_BYTES)
+#define ocrypto_srtp_MaxKeySize   (ocrypto_aes256_KEY_BYTES)
 
 /**
  * SRTP Context.
@@ -115,10 +115,14 @@ typedef struct {
  * @param      tagSize              Size of the authentication tag.
  * @param      ssrc                 Synchronization source.
  */
-void ocrypto_srtp_setupContext(ocrypto_srtp_context *srtpContext,
-                               ocrypto_srtp_context *srtcpContext, const uint8_t *key,
-                               uint32_t keySize, const uint8_t *salt, uint32_t tagSize,
-                               uint32_t ssrc);
+void ocrypto_srtp_setupContext(
+    ocrypto_srtp_context *srtpContext,
+    ocrypto_srtp_context *srtcpContext,
+    const uint8_t *key,
+    uint32_t keySize,
+    const uint8_t *salt,
+    uint32_t tagSize,
+    uint32_t ssrc);
 
 /**
  * Encrypt SRTP packet.
@@ -133,9 +137,13 @@ void ocrypto_srtp_setupContext(ocrypto_srtp_context *srtpContext,
  * @param         numDataBytes         Number of data bytes.
  * @param         index                Packet index.
  */
-void ocrypto_srtp_encrypt(const ocrypto_srtp_context *srtpContext, uint8_t *packet,
-                          const uint8_t *dataBytes, size_t numHeaderBytes, size_t numDataBytes,
-                          uint32_t index);
+void ocrypto_srtp_encrypt(
+    const ocrypto_srtp_context *srtpContext,
+    uint8_t *packet,
+    const uint8_t *dataBytes,
+    size_t numHeaderBytes,
+    size_t numDataBytes,
+    uint32_t index);
 
 /**
  * Decrypt SRTP packet.
@@ -146,8 +154,12 @@ void ocrypto_srtp_encrypt(const ocrypto_srtp_context *srtpContext, uint8_t *pack
  * @param      numPacketBytes       Number of packet bytes.
  * @param      index                Packet index.
  */
-void ocrypto_srtp_decrypt(const ocrypto_srtp_context *srtpContext, uint8_t *data,
-                          const uint8_t *packetBytes, size_t numPacketBytes, uint32_t index);
+void ocrypto_srtp_decrypt(
+    const ocrypto_srtp_context *srtpContext,
+    uint8_t *data,
+    const uint8_t *packetBytes,
+    size_t numPacketBytes,
+    uint32_t index);
 
 /**
  * Generate SRTP authentication tag from bytes and index.
@@ -158,8 +170,12 @@ void ocrypto_srtp_decrypt(const ocrypto_srtp_context *srtpContext, uint8_t *data
  * @param      numBytes             Number of bytes in buffer.
  * @param      index                Index.
  */
-void ocrypto_srtp_authenticate(const ocrypto_srtp_context *context, uint8_t *tag,
-                               const uint8_t *bytes, size_t numBytes, uint32_t index);
+void ocrypto_srtp_authenticate(
+    const ocrypto_srtp_context *context,
+    uint8_t *tag,
+    const uint8_t *bytes,
+    size_t numBytes,
+    uint32_t index);
 
 /**
  * Check SRTP authentication tag against bytes and index.
@@ -173,8 +189,12 @@ void ocrypto_srtp_authenticate(const ocrypto_srtp_context *context, uint8_t *tag
  * @retval 1 If the tag is valid.
  * @retval 0 Otherwise. 
  */
-int ocrypto_srtp_verifyAuthentication(ocrypto_srtp_context *context, const uint8_t *tag,
-                                      const uint8_t *bytes, size_t numBytes, uint32_t index);
+int ocrypto_srtp_verifyAuthentication(
+    ocrypto_srtp_context *context,
+    const uint8_t *tag,
+    const uint8_t *bytes,
+    size_t numBytes,
+    uint32_t index);
 
 #ifdef __cplusplus
 }

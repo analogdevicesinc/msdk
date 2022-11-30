@@ -18,7 +18,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 
 #include <string.h>
 #include "wsf_types.h"
@@ -44,20 +44,21 @@
  *
  *  \return     None.
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 void HciLeCreateBigCmd(HciCreateBig_t *pCreateBig)
 {
-    uint8_t status;
+  uint8_t status;
 
-    if ((status = LlCreateBig((LlCreateBig_t *)pCreateBig)) != HCI_SUCCESS) {
-        HciLeCreateBigCmplEvt_t evt;
+  if ((status = LlCreateBig((LlCreateBig_t *) pCreateBig)) != HCI_SUCCESS)
+  {
+    HciLeCreateBigCmplEvt_t evt;
 
-        evt.hdr.param = evt.bigHandle = pCreateBig->bigHandle;
-        evt.hdr.status = evt.status = status;
-        evt.hdr.event = HCI_LE_CREATE_BIG_CMPL_CBACK_EVT;
+    evt.hdr.param = evt.bigHandle = pCreateBig->bigHandle;
+    evt.hdr.status = evt.status = status;
+    evt.hdr.event = HCI_LE_CREATE_BIG_CMPL_CBACK_EVT;
 
-        hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
-    }
+    hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
+  }
 }
 
 /*************************************************************************************************/
@@ -69,22 +70,23 @@ void HciLeCreateBigCmd(HciCreateBig_t *pCreateBig)
  *
  *  \return     None.
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 void HciTerminateBigCmd(uint8_t bigHandle, uint8_t reason)
 {
-    uint8_t status;
+  uint8_t status;
 
-    if ((status = LlTerminateBig(bigHandle, reason)) != HCI_SUCCESS) {
-        HciLeTerminateBigCmplEvt_t evt;
+  if ((status = LlTerminateBig(bigHandle, reason)) != HCI_SUCCESS)
+  {
+    HciLeTerminateBigCmplEvt_t evt;
 
-        evt.hdr.param = evt.bigHandle = bigHandle;
-        evt.hdr.status = status;
-        evt.hdr.event = HCI_LE_TERM_BIG_CMPL_CBACK_EVT;
+    evt.hdr.param = evt.bigHandle = bigHandle;
+    evt.hdr.status = status;
+    evt.hdr.event = HCI_LE_TERM_BIG_CMPL_CBACK_EVT;
 
-        evt.reason = reason;
+    evt.reason = reason;
 
-        hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
-    }
+    hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
+  }
 }
 
 /*************************************************************************************************/
@@ -95,20 +97,21 @@ void HciTerminateBigCmd(uint8_t bigHandle, uint8_t reason)
  *
  *  \return     Status error code.
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 void HciLeBigCreateSyncCmd(HciBigCreateSync_t *pCreateSync)
 {
-    uint8_t status;
+  uint8_t status;
 
-    if ((status = LlBigCreateSync((LlBigCreateSync_t *)pCreateSync)) != HCI_SUCCESS) {
-        HciLeBigSyncEstEvt_t evt;
+  if ((status = LlBigCreateSync((LlBigCreateSync_t *) pCreateSync)) != HCI_SUCCESS)
+  {
+    HciLeBigSyncEstEvt_t evt;
 
-        evt.hdr.param = evt.bigHandle = pCreateSync->bigHandle;
-        evt.hdr.status = evt.status = status;
-        evt.hdr.event = HCI_LE_BIG_SYNC_EST_CBACK_EVT;
+    evt.hdr.param = evt.bigHandle = pCreateSync->bigHandle;
+    evt.hdr.status = evt.status = status;
+    evt.hdr.event = HCI_LE_BIG_SYNC_EST_CBACK_EVT;
 
-        hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
-    }
+    hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
+  }
 }
 
 /*************************************************************************************************/
@@ -122,5 +125,5 @@ void HciLeBigCreateSyncCmd(HciBigCreateSync_t *pCreateSync)
 /*************************************************************************************************/
 void HciLeBigTerminateSync(uint8_t bigHandle)
 {
-    LlBigTerminateSync(bigHandle);
+  LlBigTerminateSync(bigHandle);
 }

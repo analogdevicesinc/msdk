@@ -34,7 +34,8 @@
 #define MESH_UTILS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -42,46 +43,50 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Sets the bit on position "pos" */
-#define MESH_UTILS_BIT_SET(var, pos) ((var) |= (1 << (pos)))
+#define MESH_UTILS_BIT_SET(var, pos)         ((var) |= (1 << (pos)))
 /*! Clears the bit on position 'pos" */
-#define MESH_UTILS_BIT_CLR(var, pos) ((var) &= ~(1 << (pos)))
+#define MESH_UTILS_BIT_CLR(var, pos)         ((var) &= ~(1 << (pos)))
 /*! Flips the bit on position "pos" */
-#define MESH_UTILS_BIT_FLP(var, pos) ((var) ^= (1 << (pos)))
+#define MESH_UTILS_BIT_FLP(var, pos)         ((var) ^= (1 << (pos)))
 /*! Checks the bit value on position "pos" */
-#define MESH_UTILS_BIT_CHK(var, pos) ((var) & (1 << (pos)))
+#define MESH_UTILS_BIT_CHK(var, pos)         ((var) & (1 << (pos)))
 
 /*! Sets the bitmask "mask" */
-#define MESH_UTILS_BITMASK_SET(var, mask) ((var) |= (mask))
+#define MESH_UTILS_BITMASK_SET(var, mask)    ((var) |= (mask))
 /*! Clears the bitmask "mask" */
-#define MESH_UTILS_BITMASK_CLR(var, mask) ((var) &= (~(mask)))
+#define MESH_UTILS_BITMASK_CLR(var, mask)    ((var) &= (~(mask)))
 /*! Flips the bitmask "mask"*/
-#define MESH_UTILS_BITMASK_FLP(var, mask) ((var) ^= (mask))
+#define MESH_UTILS_BITMASK_FLP(var, mask)    ((var) ^= (mask))
 /*! Checks the bitmask "mask" */
-#define MESH_UTILS_BITMASK_CHK(var, mask) (((var) & (mask)) == (mask))
+#define MESH_UTILS_BITMASK_CHK(var, mask)    (((var) & (mask)) == (mask))
 /*! Checks that only the bits in bitmask are set */
-#define MESH_UTILS_BITMASK_XCL(var, mask) (((var) & ~(mask)) == 0)
+#define MESH_UTILS_BITMASK_XCL(var, mask)    (((var) & ~(mask)) == 0)
 /*! Creates a bitmask of given length */
-#define MESH_UTILS_BTMASK_MAKE(len) ((1 << (len)) - 1)
+#define MESH_UTILS_BTMASK_MAKE(len)          ((1 << (len)) - 1)
 
 /*! Creates a bitfield mask of given length at given start bit */
-#define MESH_UTILS_BFMASK_MAKE(start, len) (MESH_UTILS_BTMASK_MAKE(len) << (start))
+#define MESH_UTILS_BFMASK_MAKE(start, len)         (MESH_UTILS_BTMASK_MAKE(len) << (start))
 /*! Prepares a bitmask for insertion or combining */
-#define MESH_UTILS_BFMASK_PREP(val, start, len) (((val)&MESH_UTILS_BTMASK_MAKE(len)) << (start))
+#define MESH_UTILS_BFMASK_PREP(val, start, len)    (((val) & MESH_UTILS_BTMASK_MAKE(len)) \
+                                                   << (start))
 /*! Extracts a bitfiled of length "len" starting at bit "start" from a value "val" */
-#define MESH_UTILS_BF_GET(val, start, len) (((val) >> (start)) & MESH_UTILS_BTMASK_MAKE(len))
+#define MESH_UTILS_BF_GET(val, start, len)         (((val) >> (start)) & \
+                                                   MESH_UTILS_BTMASK_MAKE(len))
 /*! Inserts a bitfield value "val2" into "val1" value */
-#define MESH_UTILS_BF_SET(val1, val2, start, len)              \
-    ((val1) = ((val1) & ~MESH_UTILS_BFMASK_MAKE(start, len)) | \
-              MESH_UTILS_BFMASK_PREP(val2, start, len))
+#define MESH_UTILS_BF_SET(val1, val2, start, len)  ((val1) = ((val1) & \
+                                                   ~ MESH_UTILS_BFMASK_MAKE(start, len)) | \
+                                                   MESH_UTILS_BFMASK_PREP(val2, start, len))
 
 /*! Aligns a value to the architecture instruction set size */
-#define MESH_UTILS_ALIGN(value) (((value) + (sizeof(void *) - 1)) & ~(sizeof(void *) - 1))
+#define MESH_UTILS_ALIGN(value)                    (((value) + (sizeof(void *) - 1)) &\
+                                                   ~(sizeof(void *) - 1))
 
 /*! Validates if a value is aligned to the architecture instruction set size */
-#define MESH_UTILS_IS_ALIGNED(value) (((uint32_t)(value) & (sizeof(void *) - 1)) == 0)
+#define MESH_UTILS_IS_ALIGNED(value)               (((uint32_t)(value) &\
+                                                    (sizeof(void *) - 1)) == 0)
 
 /*! Transforms a Log Field value into a 4-octet value */
-#define MESH_UTILS_GET_4OCTET_VALUE(value) ((uint32_t)(1) << ((value)-1))
+#define MESH_UTILS_GET_4OCTET_VALUE(value)         ((uint32_t)(1) << ((value) - 1))
 
 /**************************************************************************************************
   Function Declarations

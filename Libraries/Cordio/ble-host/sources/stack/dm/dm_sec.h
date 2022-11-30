@@ -37,40 +37,52 @@ extern "C" {
 **************************************************************************************************/
 
 /* DM sec event handler messages */
-enum { DM_SEC_MSG_API_ENCRYPT_REQ = DM_MSG_START(DM_ID_SEC), DM_SEC_MSG_API_LTK_RSP };
+enum
+{
+  DM_SEC_MSG_API_ENCRYPT_REQ = DM_MSG_START(DM_ID_SEC),
+  DM_SEC_MSG_API_LTK_RSP
+};
 
 /* DM lesc sec event handler messages */
-enum { DM_SEC_MSG_CALC_OOB_CNF = DM_MSG_START(DM_ID_LESC), DM_SEC_MSG_ECC_KEY_CNF };
+enum
+{
+  DM_SEC_MSG_CALC_OOB_CNF = DM_MSG_START(DM_ID_LESC),
+  DM_SEC_MSG_ECC_KEY_CNF
+};
 
 /**************************************************************************************************
   Data types
 **************************************************************************************************/
 
 /* Data type for DM_SEC_MSG_API_ENCRYPT_REQ */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    dmSecLtk_t ltk;
-    uint8_t secLevel;
+typedef struct
+{
+  wsfMsgHdr_t           hdr;
+  dmSecLtk_t            ltk;
+  uint8_t               secLevel;
 } dmSecApiEncryptReq_t;
 
 /* Data type for DM_SEC_MSG_API_LTK_RSP */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t key[SMP_KEY_LEN];
-    bool_t keyFound;
-    uint8_t secLevel;
+typedef struct
+{
+  wsfMsgHdr_t           hdr;
+  uint8_t               key[SMP_KEY_LEN];
+  bool_t                keyFound;
+  uint8_t               secLevel;
 } dmSecApiLtkRsp_t;
 
-typedef union {
-    wsfMsgHdr_t hdr;
-    dmSecApiEncryptReq_t encryptReq;
-    dmSecApiLtkRsp_t ltkRsp;
+typedef union
+{
+  wsfMsgHdr_t           hdr;
+  dmSecApiEncryptReq_t  encryptReq;
+  dmSecApiLtkRsp_t      ltkRsp;
 } dmSecMsg_t;
 
 /* Security control block type */
-typedef struct {
-    uint8_t *pIrk;
-    uint8_t *pCsrk;
+typedef struct
+{
+  uint8_t               *pIrk;
+  uint8_t               *pCsrk;
 } dmSecCb_t;
 
 /**************************************************************************************************

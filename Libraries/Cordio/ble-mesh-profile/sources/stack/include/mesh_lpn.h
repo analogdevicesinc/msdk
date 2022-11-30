@@ -27,7 +27,8 @@
 #define MESH_LPN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,28 +36,29 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Event handler messages for LPN state machines */
-enum meshLpnWsfMsgEvents {
-    MESH_LPN_MSG_ESTABLISH = MESH_FRIENDSHIP_MSG_START, /*!< Friendship Establish */
-    MESH_LPN_MSG_TERMINATE, /*!< Friendship Terminate */
+enum meshLpnWsfMsgEvents
+{
+  MESH_LPN_MSG_ESTABLISH = MESH_FRIENDSHIP_MSG_START,   /*!< Friendship Establish */
+  MESH_LPN_MSG_TERMINATE,                               /*!< Friendship Terminate */
 
-    MESH_LPN_MSG_SEND_FRIEND_REQ, /*!< Send Friend Request PDU */
-    MESH_LPN_MSG_SEND_FRIEND_POLL, /*!< Send Friend Poll PDU */
-    MESH_LPN_MSG_SEND_FRIEND_CLEAR, /*!< Send Friend Clear PDU */
-    MESH_LPN_MSG_SEND_FRIEND_SUBSCR_ADD_RM, /*!< Send Friend Subscription List
+  MESH_LPN_MSG_SEND_FRIEND_REQ,                         /*!< Send Friend Request PDU */
+  MESH_LPN_MSG_SEND_FRIEND_POLL,                        /*!< Send Friend Poll PDU */
+  MESH_LPN_MSG_SEND_FRIEND_CLEAR,                       /*!< Send Friend Clear PDU */
+  MESH_LPN_MSG_SEND_FRIEND_SUBSCR_ADD_RM,               /*!< Send Friend Subscription List
                                                          *   Add/Remove PDU
                                                          */
-    MESH_LPN_MSG_RESEND_FRIEND_SUBSCR_ADD_RM, /*!< Re-send Friend Subscription
+  MESH_LPN_MSG_RESEND_FRIEND_SUBSCR_ADD_RM,             /*!< Re-send Friend Subscription
                                                          *   Add/Remove PDU
                                                          */
-    MESH_LPN_MSG_FRIEND_OFFER, /*!< Friend Offer selected */
-    MESH_LPN_MSG_FRIEND_UPDATE, /*!< Received Friend Update PDU */
-    MESH_LPN_MSG_FRIEND_MESSAGE, /*!< Received Friend message PDU */
-    MESH_LPN_MSG_FRIEND_SUBSCR_CNF, /*!< Received Friend Subscription List
+  MESH_LPN_MSG_FRIEND_OFFER,                            /*!< Friend Offer selected */
+  MESH_LPN_MSG_FRIEND_UPDATE,                           /*!< Received Friend Update PDU */
+  MESH_LPN_MSG_FRIEND_MESSAGE,                          /*!< Received Friend message PDU */
+  MESH_LPN_MSG_FRIEND_SUBSCR_CNF,                       /*!< Received Friend Subscription List
                                                          *   Confirm PDU
                                                          */
-    MESH_LPN_MSG_RECV_DELAY_TIMEOUT, /*!< LPN Receive Delay timer timeout */
-    MESH_LPN_MSG_RECV_WIN_TIMEOUT, /*!< LPN Receive Window timer timeout */
-    MESH_LPN_MSG_POLL_TIMEOUT /*!< LPN timer poll timeout */
+  MESH_LPN_MSG_RECV_DELAY_TIMEOUT,                      /*!< LPN Receive Delay timer timeout */
+  MESH_LPN_MSG_RECV_WIN_TIMEOUT,                        /*!< LPN Receive Window timer timeout */
+  MESH_LPN_MSG_POLL_TIMEOUT                             /*!< LPN timer poll timeout */
 };
 
 #ifdef __cplusplus

@@ -40,22 +40,23 @@
 /*************************************************************************************************/
 static void lhciPackCreateBigCnfEvt(uint8_t *pBuf, const LlCreateBigCnf_t *pEvt)
 {
-    UINT8_TO_BSTREAM(pBuf, HCI_LE_CREATE_BIG_CMPL_EVT);
-    UINT8_TO_BSTREAM(pBuf, pEvt->status);
-    UINT8_TO_BSTREAM(pBuf, pEvt->bigHandle);
-    UINT24_TO_BSTREAM(pBuf, pEvt->syncDelayUsec);
-    UINT24_TO_BSTREAM(pBuf, pEvt->transLatUsec);
-    UINT8_TO_BSTREAM(pBuf, pEvt->phy);
-    UINT8_TO_BSTREAM(pBuf, pEvt->nse);
-    UINT8_TO_BSTREAM(pBuf, pEvt->bn);
-    UINT8_TO_BSTREAM(pBuf, pEvt->pto);
-    UINT8_TO_BSTREAM(pBuf, pEvt->irc);
-    UINT16_TO_BSTREAM(pBuf, pEvt->maxPdu);
-    UINT16_TO_BSTREAM(pBuf, pEvt->isoInterval);
-    UINT8_TO_BSTREAM(pBuf, pEvt->numBis);
-    for (unsigned int i = 0; i < pEvt->numBis; i++) {
-        UINT16_TO_BSTREAM(pBuf, pEvt->bisHandle[i]);
-    }
+  UINT8_TO_BSTREAM (pBuf, HCI_LE_CREATE_BIG_CMPL_EVT);
+  UINT8_TO_BSTREAM (pBuf, pEvt->status);
+  UINT8_TO_BSTREAM (pBuf, pEvt->bigHandle);
+  UINT24_TO_BSTREAM(pBuf, pEvt->syncDelayUsec);
+  UINT24_TO_BSTREAM(pBuf, pEvt->transLatUsec);
+  UINT8_TO_BSTREAM (pBuf, pEvt->phy);
+  UINT8_TO_BSTREAM (pBuf, pEvt->nse);
+  UINT8_TO_BSTREAM (pBuf, pEvt->bn);
+  UINT8_TO_BSTREAM (pBuf, pEvt->pto);
+  UINT8_TO_BSTREAM (pBuf, pEvt->irc);
+  UINT16_TO_BSTREAM(pBuf, pEvt->maxPdu);
+  UINT16_TO_BSTREAM(pBuf, pEvt->isoInterval);
+  UINT8_TO_BSTREAM (pBuf, pEvt->numBis);
+  for (unsigned int i = 0; i < pEvt->numBis; i++)
+  {
+    UINT16_TO_BSTREAM(pBuf, pEvt->bisHandle[i]);
+  }
 }
 
 /*************************************************************************************************/
@@ -68,9 +69,9 @@ static void lhciPackCreateBigCnfEvt(uint8_t *pBuf, const LlCreateBigCnf_t *pEvt)
 /*************************************************************************************************/
 static void lhciPackTerminateBigCnfEvt(uint8_t *pBuf, const LlTerminateBigInd_t *pEvt)
 {
-    UINT8_TO_BSTREAM(pBuf, HCI_LE_TERMINATE_BIG_CMPL_EVT);
-    UINT8_TO_BSTREAM(pBuf, pEvt->bigHandle);
-    UINT8_TO_BSTREAM(pBuf, pEvt->reason);
+  UINT8_TO_BSTREAM(pBuf, HCI_LE_TERMINATE_BIG_CMPL_EVT);
+  UINT8_TO_BSTREAM(pBuf, pEvt->bigHandle);
+  UINT8_TO_BSTREAM(pBuf, pEvt->reason);
 }
 
 /**************************************************************************************************
@@ -88,38 +89,41 @@ static void lhciPackTerminateBigCnfEvt(uint8_t *pBuf, const LlTerminateBigInd_t 
 /*************************************************************************************************/
 bool_t lhciSlvBigEncodeEvtPkt(LlEvt_t *pEvt)
 {
-    uint8_t *pEvtBuf = NULL;
+  uint8_t *pEvtBuf = NULL;
 
-    switch (pEvt->hdr.event) {
+  switch (pEvt->hdr.event)
+  {
     case LL_CREATE_BIG_CNF:
-        if ((lhciCb.leEvtMsk &
-             ((uint64_t)(HCI_EVT_MASK_LE_CREATE_BIG_CMPL_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
-            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CREATE_BIG_CMPL(
-                                                             pEvt->createBigCnf.numBis))) != NULL) {
-                lhciPackCreateBigCnfEvt(pEvtBuf, &pEvt->createBigCnf);
-            }
+      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_CREATE_BIG_CMPL_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
+      {
+        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CREATE_BIG_CMPL(pEvt->createBigCnf.numBis))) != NULL)
+        {
+          lhciPackCreateBigCnfEvt(pEvtBuf, &pEvt->createBigCnf);
         }
-        break;
+      }
+      break;
 
     case LL_TERM_BIG_IND:
-        if ((lhciCb.leEvtMsk &
-             ((uint64_t)(HCI_EVT_MASK_LE_TERMINATE_BIG_CMPL_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
-            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_TERMINATE_BIG_CMPL)) != NULL) {
-                lhciPackTerminateBigCnfEvt(pEvtBuf, &pEvt->termBigInd);
-            }
+      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_TERMINATE_BIG_CMPL_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
+      {
+        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_TERMINATE_BIG_CMPL)) != NULL)
+        {
+          lhciPackTerminateBigCnfEvt(pEvtBuf, &pEvt->termBigInd);
         }
-        break;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    if (pEvtBuf) {
-        lhciSendEvt(pEvtBuf);
-        return TRUE;
-    }
+  if (pEvtBuf)
+  {
+    lhciSendEvt(pEvtBuf);
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }

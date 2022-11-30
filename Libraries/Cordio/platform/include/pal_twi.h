@@ -39,7 +39,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Invalid device ID. */
-#define PAL_TWI_INVALID_ID 0xFF
+#define PAL_TWI_INVALID_ID      0xFF
 
 /**************************************************************************************************
   Data Types
@@ -52,20 +52,22 @@ typedef void (*PalTwiOpReadyCback_t)(uint8_t id);
 typedef void (*PalTwiCompCback_t)(uint8_t id, bool_t success);
 
 /*! \brief      TWI device configuration. */
-typedef struct {
-    uint8_t devAddr; /*!< Device address. */
-    PalTwiOpReadyCback_t opReadyCback; /*!< Operation ready callback. */
-    PalTwiCompCback_t rdCback; /*!< Read data completion callback. */
-    PalTwiCompCback_t wrCback; /*!< Write data completion callback. */
+typedef struct
+{
+  uint8_t devAddr;                      /*!< Device address. */
+  PalTwiOpReadyCback_t opReadyCback;    /*!< Operation ready callback. */
+  PalTwiCompCback_t rdCback;            /*!< Read data completion callback. */
+  PalTwiCompCback_t wrCback;            /*!< Write data completion callback. */
 } PalTwiDevConfig_t;
 
 /*! \brief      Operational states. */
-typedef enum {
-    PAL_TWI_STATE_UNINIT = 0, /*!< Uninitialized state. */
-    PAL_TWI_STATE_ERROR = 0, /*!< Error state. */
-    PAL_TWI_STATE_READY, /*!< Ready state. */
-    PAL_TWI_STATE_BUSY_DATA_PEND, /*!< Busy state (operation in progress), Data pending substate. */
-    PAL_TWI_STATE_BUSY_DATA_XFER /*!< Busy state (operation in progress), Data transfer substate. */
+typedef enum
+{
+  PAL_TWI_STATE_UNINIT = 0,             /*!< Uninitialized state. */
+  PAL_TWI_STATE_ERROR  = 0,             /*!< Error state. */
+  PAL_TWI_STATE_READY,                  /*!< Ready state. */
+  PAL_TWI_STATE_BUSY_DATA_PEND,         /*!< Busy state (operation in progress), Data pending substate. */
+  PAL_TWI_STATE_BUSY_DATA_XFER          /*!< Busy state (operation in progress), Data transfer substate. */
 } PalTwiState_t;
 
 /**************************************************************************************************
@@ -86,7 +88,7 @@ void PalTwiStopOperation(uint8_t id);
 void PalTwiReadData(uint8_t id, uint8_t *pData, uint8_t len);
 void PalTwiWriteData(uint8_t id, const uint8_t *pData, uint8_t len);
 
-/*! \} */ /* PAL_TWI */
+/*! \} */    /* PAL_TWI */
 
 #ifdef __cplusplus
 };

@@ -39,76 +39,69 @@ typedef void (*lctrSlvBigActFn_t)(lctrBigCtx_t *pBigCtx);
 **************************************************************************************************/
 
 /*! \brief      BIS slave state machine action table. */
-static const lctrSlvBigActFn_t
-    lctrSlvBigActionTbl[LCTR_SLV_BIG_STATE_TOTAL][LCTR_SLV_BIG_MSG_TOTAL] = {
-        {
-            /* LCTR_SLV_BIG_STATE_DISABLED */
-            NULL, /* LCTR_SLV_BIG_MSG_RESET */
-            lctrSlvBigActStart, /* LCTR_SLV_BIG_MSG_CREATE_BIG */
-            NULL, /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
-            NULL, /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
-            NULL /* LCTR_SLV_BIG_MSG_TERMINATED */
-        },
-        {
-            /* LCTR_SLV_BIG_STATE_ENABLED */
-            lctrSlvBigActShutdown, /* LCTR_SLV_BIG_MSG_RESET */
-            NULL, /* LCTR_SLV_BIG_MSG_CREATE_BIG */
-            lctrSlvBigActSendChMapUpd, /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
-            lctrSlvBigActSendTerm, /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
-            NULL /* LCTR_SLV_BIG_MSG_TERMINATED */
-        },
-        {
-            /* LCTR_SLV_BIG_STATE_SHUTDOWN */
-            NULL, /* LCTR_SLV_BIG_MSG_RESET */
-            NULL, /* LCTR_SLV_BIG_MSG_CREATE_BIG */
-            NULL, /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
-            lctrSlvBigActSendTerm, /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
-            lctrSlvBigActCleanup /* LCTR_SLV_BIG_MSG_TERMINATED */
-        },
-        {
-            /* LCTR_EXT_ADV_STATE_RESET */
-            NULL, /* LCTR_SLV_BIG_MSG_RESET */
-            NULL, /* LCTR_SLV_BIG_MSG_CREATE_BIG */
-            NULL, /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
-            NULL, /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
-            lctrSlvBigActCleanup /* LCTR_SLV_BIG_MSG_TERMINATED */
-        }
-    };
+static const lctrSlvBigActFn_t lctrSlvBigActionTbl[LCTR_SLV_BIG_STATE_TOTAL][LCTR_SLV_BIG_MSG_TOTAL] =
+{
+  { /* LCTR_SLV_BIG_STATE_DISABLED */
+    NULL,                           /* LCTR_SLV_BIG_MSG_RESET */
+    lctrSlvBigActStart,             /* LCTR_SLV_BIG_MSG_CREATE_BIG */
+    NULL,                           /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
+    NULL,                           /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
+    NULL                            /* LCTR_SLV_BIG_MSG_TERMINATED */
+  },
+  { /* LCTR_SLV_BIG_STATE_ENABLED */
+    lctrSlvBigActShutdown,          /* LCTR_SLV_BIG_MSG_RESET */
+    NULL,                           /* LCTR_SLV_BIG_MSG_CREATE_BIG */
+    lctrSlvBigActSendChMapUpd,      /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
+    lctrSlvBigActSendTerm,          /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
+    NULL                            /* LCTR_SLV_BIG_MSG_TERMINATED */
+  },
+  { /* LCTR_SLV_BIG_STATE_SHUTDOWN */
+    NULL,                           /* LCTR_SLV_BIG_MSG_RESET */
+    NULL,                           /* LCTR_SLV_BIG_MSG_CREATE_BIG */
+    NULL,                           /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
+    lctrSlvBigActSendTerm,          /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
+    lctrSlvBigActCleanup            /* LCTR_SLV_BIG_MSG_TERMINATED */
+  },
+  { /* LCTR_EXT_ADV_STATE_RESET */
+    NULL,                           /* LCTR_SLV_BIG_MSG_RESET */
+    NULL,                           /* LCTR_SLV_BIG_MSG_CREATE_BIG */
+    NULL,                           /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
+    NULL,                           /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
+    lctrSlvBigActCleanup            /* LCTR_SLV_BIG_MSG_TERMINATED */
+  }
+};
 
 /*! \brief      BIS slave state machine next state table. */
-static const uint8_t lctrSlvBigNextStateTbl[LCTR_SLV_BIG_STATE_TOTAL][LCTR_SLV_BIG_MSG_TOTAL] = {
-    {
-        /* LCTR_SLV_BIG_STATE_DISABLED */
-        LCTR_SLV_BIG_STATE_DISABLED, /* LCTR_SLV_BIG_MSG_RESET */
-        LCTR_SLV_BIG_STATE_ENABLED, /* LCTR_SLV_BIG_MSG_CREATE_BIG */
-        LCTR_SLV_BIG_STATE_DISABLED, /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
-        LCTR_SLV_BIG_STATE_DISABLED, /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
-        LCTR_SLV_BIG_STATE_DISABLED /* LCTR_SLV_BIG_MSG_TERMINATED */
-    },
-    {
-        /* LCTR_SLV_BIG_STATE_ENABLED */
-        LCTR_SLV_BIG_STATE_RESET, /* LCTR_SLV_BIG_MSG_RESET */
-        LCTR_SLV_BIG_STATE_ENABLED, /* LCTR_SLV_BIG_MSG_CREATE_BIG */
-        LCTR_SLV_BIG_STATE_ENABLED, /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
-        LCTR_SLV_BIG_STATE_SHUTDOWN, /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
-        LCTR_SLV_BIG_STATE_DISABLED, /* LCTR_SLV_BIG_MSG_TERMINATED */
-    },
-    {
-        /* LCTR_SLV_BIG_STATE_SHUTDOWN */
-        LCTR_SLV_BIG_STATE_RESET, /* LCTR_SLV_BIG_MSG_RESET */
-        LCTR_SLV_BIG_STATE_SHUTDOWN, /* LCTR_SLV_BIG_MSG_CREATE_BIG */
-        LCTR_SLV_BIG_STATE_SHUTDOWN, /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
-        LCTR_SLV_BIG_STATE_SHUTDOWN, /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
-        LCTR_SLV_BIG_STATE_DISABLED /* LCTR_SLV_BIG_MSG_TERMINATED */
-    },
-    {
-        /* LCTR_SLV_BIG_STATE_RESET */
-        LCTR_SLV_BIG_STATE_RESET, /* LCTR_SLV_BIG_MSG_RESET */
-        LCTR_SLV_BIG_STATE_RESET, /* LCTR_SLV_BIG_MSG_CREATE_BIG */
-        LCTR_SLV_BIG_STATE_RESET, /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
-        LCTR_SLV_BIG_STATE_RESET, /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
-        LCTR_SLV_BIG_STATE_DISABLED /* LCTR_SLV_BIG_MSG_TERMINATED */
-    }
+static const uint8_t lctrSlvBigNextStateTbl[LCTR_SLV_BIG_STATE_TOTAL][LCTR_SLV_BIG_MSG_TOTAL] =
+{
+  { /* LCTR_SLV_BIG_STATE_DISABLED */
+    LCTR_SLV_BIG_STATE_DISABLED,    /* LCTR_SLV_BIG_MSG_RESET */
+    LCTR_SLV_BIG_STATE_ENABLED,     /* LCTR_SLV_BIG_MSG_CREATE_BIG */
+    LCTR_SLV_BIG_STATE_DISABLED,    /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
+    LCTR_SLV_BIG_STATE_DISABLED,    /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
+    LCTR_SLV_BIG_STATE_DISABLED     /* LCTR_SLV_BIG_MSG_TERMINATED */
+  },
+  { /* LCTR_SLV_BIG_STATE_ENABLED */
+    LCTR_SLV_BIG_STATE_RESET,       /* LCTR_SLV_BIG_MSG_RESET */
+    LCTR_SLV_BIG_STATE_ENABLED,     /* LCTR_SLV_BIG_MSG_CREATE_BIG */
+    LCTR_SLV_BIG_STATE_ENABLED,     /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
+    LCTR_SLV_BIG_STATE_SHUTDOWN,    /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
+    LCTR_SLV_BIG_STATE_DISABLED,    /* LCTR_SLV_BIG_MSG_TERMINATED */
+  },
+  { /* LCTR_SLV_BIG_STATE_SHUTDOWN */
+    LCTR_SLV_BIG_STATE_RESET,       /* LCTR_SLV_BIG_MSG_RESET */
+    LCTR_SLV_BIG_STATE_SHUTDOWN,    /* LCTR_SLV_BIG_MSG_CREATE_BIG */
+    LCTR_SLV_BIG_STATE_SHUTDOWN,    /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
+    LCTR_SLV_BIG_STATE_SHUTDOWN,    /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
+    LCTR_SLV_BIG_STATE_DISABLED     /* LCTR_SLV_BIG_MSG_TERMINATED */
+  },
+  { /* LCTR_SLV_BIG_STATE_RESET */
+    LCTR_SLV_BIG_STATE_RESET,       /* LCTR_SLV_BIG_MSG_RESET */
+    LCTR_SLV_BIG_STATE_RESET,       /* LCTR_SLV_BIG_MSG_CREATE_BIG */
+    LCTR_SLV_BIG_STATE_RESET,       /* LCTR_SLV_BIG_MSG_CH_MAP_UPD */
+    LCTR_SLV_BIG_STATE_RESET,       /* LCTR_SLV_BIG_MSG_TERMINATE_BIG */
+    LCTR_SLV_BIG_STATE_DISABLED     /* LCTR_SLV_BIG_MSG_TERMINATED */
+  }
 };
 
 /**************************************************************************************************
@@ -125,12 +118,12 @@ static const uint8_t lctrSlvBigNextStateTbl[LCTR_SLV_BIG_STATE_TOTAL][LCTR_SLV_B
 /*************************************************************************************************/
 void lctrSlvBigExecuteSm(lctrBigCtx_t *pBigCtx, uint8_t event)
 {
-    LL_TRACE_INFO3("lctrSlvBigExecuteSm: bigHandle=%u, state=%u, event=%u", pBigCtx->handle,
-                   pBigCtx->state, event);
+  LL_TRACE_INFO3("lctrSlvBigExecuteSm: bigHandle=%u, state=%u, event=%u", pBigCtx->handle, pBigCtx->state, event);
 
-    if (lctrSlvBigActionTbl[pBigCtx->state][event]) {
-        lctrSlvBigActionTbl[pBigCtx->state][event](pBigCtx);
-    }
+  if (lctrSlvBigActionTbl[pBigCtx->state][event])
+  {
+    lctrSlvBigActionTbl[pBigCtx->state][event](pBigCtx);
+  }
 
-    pBigCtx->state = lctrSlvBigNextStateTbl[pBigCtx->state][event];
+  pBigCtx->state = lctrSlvBigNextStateTbl[pBigCtx->state][event];
 }

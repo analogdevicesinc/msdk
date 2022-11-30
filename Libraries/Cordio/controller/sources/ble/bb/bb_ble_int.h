@@ -43,28 +43,30 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Maximum length of an advertising packet. */
-#define BB_ADVB_MAX_LEN WSF_MAX(BB_FIXED_ADVB_PKT_LEN, LL_ADVB_MAX_LEN)
+#define BB_ADVB_MAX_LEN         WSF_MAX(BB_FIXED_ADVB_PKT_LEN, LL_ADVB_MAX_LEN)
 
 /*! \brief      Mark the start of an ISR. */
-#define BB_ISR_START() bbIsrStartTime = PalBbGetCurrentTime()
+#define BB_ISR_START()          bbIsrStartTime = PalBbGetCurrentTime()
 
 /*! \brief      Mark the ISR duration, recording the high watermark. */
-#define BB_ISR_MARK(x) x = WSF_MAX(x, PalBbGetCurrentTime() - bbIsrStartTime)
+#define BB_ISR_MARK(x)          x = WSF_MAX(x, PalBbGetCurrentTime() - bbIsrStartTime)
 
 /*! \brief    Event states for advertising operations. */
-enum {
-    BB_EVT_STATE_TX_ADV_IND, /*!< Advertising indication. */
-    BB_EVT_STATE_RX_SCAN_OR_CONN_INIT, /*!< Scan or connection init packet. */
-    BB_EVT_STATE_TX_SCAN_OR_CONN_RSP, /*!< Scan or connection response. */
-    BB_EVT_STATE_TX_CHAIN_IND /*!< Chain indication. */
+enum
+{
+  BB_EVT_STATE_TX_ADV_IND,           /*!< Advertising indication. */
+  BB_EVT_STATE_RX_SCAN_OR_CONN_INIT, /*!< Scan or connection init packet. */
+  BB_EVT_STATE_TX_SCAN_OR_CONN_RSP,  /*!< Scan or connection response. */
+  BB_EVT_STATE_TX_CHAIN_IND          /*!< Chain indication. */
 };
 
 /*! \brief    Event states for scanning operations. */
-enum {
-    BB_EVT_STATE_RX_ADV_IND, /*!< Advertising indication. */
-    BB_EVT_STATE_TX_SCAN_OR_CONN_INIT, /*!< Scan or connection init packet. */
-    BB_EVT_STATE_RX_SCAN_OR_CONN_RSP, /*!< Scan or connection response. */
-    BB_EVT_STATE_RX_CHAIN_IND /*!< Chain indication. */
+enum
+{
+  BB_EVT_STATE_RX_ADV_IND,           /*!< Advertising indication. */
+  BB_EVT_STATE_TX_SCAN_OR_CONN_INIT, /*!< Scan or connection init packet. */
+  BB_EVT_STATE_RX_SCAN_OR_CONN_RSP,  /*!< Scan or connection response. */
+  BB_EVT_STATE_RX_CHAIN_IND          /*!< Chain indication. */
 };
 
 /**************************************************************************************************
@@ -75,25 +77,27 @@ enum {
 typedef void (*bbBleExecOpFn_t)(BbOpDesc_t *pBod, BbBleData_t *pBle);
 
 /*! \brief      BB control block. */
-typedef struct {
-    struct {
-        bbBleExecOpFn_t execOpCback; /*!< Execute operation handler. */
-        bbBleExecOpFn_t cancelOpCback; /*!< Cancel operation handler. */
-    } opCbacks[BB_BLE_OP_NUM]; /*!< Operation handlers. */
+typedef struct
+{
+  struct
+  {
+    bbBleExecOpFn_t execOpCback;        /*!< Execute operation handler. */
+    bbBleExecOpFn_t cancelOpCback;      /*!< Cancel operation handler. */
+  } opCbacks[BB_BLE_OP_NUM];            /*!< Operation handlers. */
 
-    uint8_t evtState; /*!< Action state of the currently operating BOD. */
-    uint8_t advChIdx; /*!< Current advertising channel index. */
-    uint8_t numChUsed; /*!< Total number of channels visited. */
-    uint32_t lastScanStartUsec; /*!< Last scan start time in microseconds. */
+  uint8_t evtState;                     /*!< Action state of the currently operating BOD. */
+  uint8_t advChIdx;                     /*!< Current advertising channel index. */
+  uint8_t numChUsed;                    /*!< Total number of channels visited. */
+  uint32_t lastScanStartUsec;           /*!< Last scan start time in microseconds. */
 
-    PalBbBleDataParam_t bbParam; /*!< Baseband data parameters. */
+  PalBbBleDataParam_t bbParam;          /*!< Baseband data parameters. */
 
-    uint16_t rxDataLen; /*!< Receive data buffer length. */
-    uint8_t *pRxDataBuf; /*!< Current Rx data buffer. */
+  uint16_t rxDataLen;                   /*!< Receive data buffer length. */
+  uint8_t *pRxDataBuf;                  /*!< Current Rx data buffer. */
 
-    /* TODO combine with above? */
-    uint16_t rxCisDataLen; /*!< Receive CIS data buffer length. */
-    uint8_t *pRxCisDataBuf; /*!< Current Rx CIS data buffer. */
+  /* TODO combine with above? */
+  uint16_t rxCisDataLen;                /*!< Receive CIS data buffer length. */
+  uint8_t *pRxCisDataBuf;               /*!< Current Rx CIS data buffer. */
 } bbBleCtrlBlk_t;
 
 /**************************************************************************************************
@@ -130,9 +134,9 @@ void bbBleRegisterOp(uint8_t opType, bbBleExecOpFn_t execOpCback, bbBleExecOpFn_
 /*************************************************************************************************/
 static inline void bbBleClrIfs(void)
 {
-    /* PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_CLR, .ifsTime = 0, .pIfsChan = NULL }; */
-    PalBbBleOpParam_t opParams = { 0 };
-    PalBbBleSetOpParams(&opParams);
+  /* PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_CLR, .ifsTime = 0, .pIfsChan = NULL }; */
+  PalBbBleOpParam_t opParams = { 0 };
+  PalBbBleSetOpParams(&opParams);
 }
 
 /*************************************************************************************************/
@@ -144,10 +148,8 @@ static inline void bbBleClrIfs(void)
 /*************************************************************************************************/
 static inline void bbBleSetTifs(void)
 {
-    PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS,
-                                   .ifsTime = 0,
-                                   .pIfsChan = NULL };
-    PalBbBleSetOpParams(&opParams);
+  PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_TOGGLE_TIFS, .ifsTime = 0, .pIfsChan = NULL };
+  PalBbBleSetOpParams(&opParams);
 }
 
 /*************************************************************************************************/
@@ -162,10 +164,8 @@ static inline void bbBleSetTifs(void)
 /*************************************************************************************************/
 static inline void bbBleSetAbsIfs(uint32_t ifsTime, PalBbBleChan_t *pIfsChan)
 {
-    PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_SAME_ABS,
-                                   .ifsTime = ifsTime,
-                                   .pIfsChan = pIfsChan };
-    PalBbBleSetOpParams(&opParams);
+  PalBbBleOpParam_t opParams = { .ifsMode = PAL_BB_IFS_MODE_SAME_ABS, .ifsTime = ifsTime, .pIfsChan = pIfsChan };
+  PalBbBleSetOpParams(&opParams);
 }
 
 #endif /* BB_BLE_INT_H */

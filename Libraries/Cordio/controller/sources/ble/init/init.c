@@ -40,59 +40,59 @@
 /*************************************************************************************************/
 void LlInitBbInit(void)
 {
-    BbInit();
+  BbInit();
 
-    BbBleInit();
+  BbBleInit();
 
-#ifdef INIT_CENTRAL
+  #ifdef INIT_CENTRAL
     BbBleScanMasterInit();
     BbBleConnMasterInit();
-#else
-#ifdef INIT_OBSERVER
-    BbBleScanMasterInit();
-#endif
-#endif
+  #else
+    #ifdef INIT_OBSERVER
+      BbBleScanMasterInit();
+    #endif
+  #endif
 
-#ifdef INIT_PERIPHERAL
+  #ifdef INIT_PERIPHERAL
     BbBleAdvSlaveInit();
     BbBleConnSlaveInit();
-#else
-#ifdef INIT_BROADCASTER
-    BbBleAdvSlaveInit();
-#endif
-#endif
+  #else
+    #ifdef INIT_BROADCASTER
+      BbBleAdvSlaveInit();
+    #endif
+  #endif
 
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-#ifdef INIT_OBSERVER
-    BbBleAuxScanMasterInit();
-    BbBlePerScanMasterInit();
-#endif
+  #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
+    #ifdef INIT_OBSERVER
+      BbBleAuxScanMasterInit();
+      BbBlePerScanMasterInit();
+    #endif
 
-#ifdef INIT_BROADCASTER
-    BbBleAuxAdvSlaveInit();
-    PalRadioInitPathComp();
-#endif
-#endif
+    #ifdef INIT_BROADCASTER
+      BbBleAuxAdvSlaveInit();
+      PalRadioInitPathComp();
+    #endif
+  #endif
 
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
-#ifdef INIT_CENTRAL
-    BbBleCisMasterInit();
-#endif
-#ifdef INIT_PERIPHERAL
-    BbBleCisSlaveInit();
-#endif
-#ifdef INIT_OBSERVER
+  #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
+    #ifdef INIT_CENTRAL
+      BbBleCisMasterInit();
+    #endif
+    #ifdef INIT_PERIPHERAL
+      BbBleCisSlaveInit();
+    #endif
+    #ifdef INIT_OBSERVER
     BbBleBisMasterInit();
-#endif
-#ifdef INIT_BROADCASTER
+    #endif
+    #ifdef INIT_BROADCASTER
     BbBleBisSlaveInit();
-#endif
-#endif
+    #endif
+  #endif
 
-    BbBleTestInit();
+  BbBleTestInit();
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-    BbBleInitSniffer(BB_SNIFFER_OUTPUT_NULL_METHOD, FALSE);
+  BbBleInitSniffer(BB_SNIFFER_OUTPUT_NULL_METHOD, FALSE);
 #endif
 }
 
@@ -103,8 +103,8 @@ void LlInitBbInit(void)
 /*************************************************************************************************/
 void LlInitSchInit(void)
 {
-    wsfHandlerId_t handlerId = WsfOsSetNextHandler(SchHandler);
-    SchHandlerInit(handlerId);
+  wsfHandlerId_t handlerId = WsfOsSetNextHandler(SchHandler);
+  SchHandlerInit(handlerId);
 }
 
 /*************************************************************************************************/
@@ -114,85 +114,85 @@ void LlInitSchInit(void)
 /*************************************************************************************************/
 void LlInitLlInit(void)
 {
-#ifdef INIT_CENTRAL
+  #ifdef INIT_CENTRAL
     LlScanMasterInit();
     LlInitMasterInit();
-#ifdef INIT_ENCRYPTED
-    LlEncConnMasterInit();
-#else
-    LlConnMasterInit();
-#endif
-#else
-#ifdef INIT_OBSERVER
-    LlScanMasterInit();
-#endif
-#endif
+    #ifdef INIT_ENCRYPTED
+      LlEncConnMasterInit();
+    #else
+      LlConnMasterInit();
+    #endif
+  #else
+    #ifdef INIT_OBSERVER
+      LlScanMasterInit();
+    #endif
+  #endif
 
-#ifdef INIT_PERIPHERAL
+  #ifdef INIT_PERIPHERAL
     LlAdvSlaveInit();
-#ifdef INIT_ENCRYPTED
-    LlEncConnSlaveInit();
-#else
-    LlConnSlaveInit();
-#endif
-#else
-#ifdef INIT_BROADCASTER
-    LlAdvSlaveInit();
-#endif
-#endif
+    #ifdef INIT_ENCRYPTED
+      LlEncConnSlaveInit();
+    #else
+      LlConnSlaveInit();
+    #endif
+  #else
+    #ifdef INIT_BROADCASTER
+      LlAdvSlaveInit();
+    #endif
+  #endif
 
-#ifdef INIT_ENCRYPTED
+  #ifdef INIT_ENCRYPTED
     LlPrivInit();
     LlScInit();
-#endif
+  #endif
 
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-#ifdef INIT_CENTRAL
-    LlExtScanMasterInit();
-    LlExtInitMasterInit();
-    LlPhyMasterInit();
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
-    LlCisMasterInit();
-    LlBisMasterInit();
-    LlPowerControlInit();
-#endif
-#else
-#ifdef INIT_OBSERVER
-    LlExtScanMasterInit();
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
-    LlBisMasterInit();
-#endif
-#endif
-#endif
+  #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
+    #ifdef INIT_CENTRAL
+      LlExtScanMasterInit();
+      LlExtInitMasterInit();
+      LlPhyMasterInit();
+      #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
+        LlCisMasterInit();
+        LlBisMasterInit();
+        LlPowerControlInit();
+      #endif
+    #else
+      #ifdef INIT_OBSERVER
+        LlExtScanMasterInit();
+        #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
+          LlBisMasterInit();
+        #endif
+      #endif
+    #endif
 
-#ifdef INIT_PERIPHERAL
-    LlExtAdvSlaveInit();
-    LlPhySlaveInit();
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
-    LlCisSlaveInit();
-    LlBisSlaveInit();
-    LlPowerControlInit();
-#endif
-#else
-#ifdef INIT_BROADCASTER
-    LlExtAdvSlaveInit();
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
-    LlBisSlaveInit();
-#endif
-#endif
-#endif
+    #ifdef INIT_PERIPHERAL
+      LlExtAdvSlaveInit();
+      LlPhySlaveInit();
+      #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
+        LlCisSlaveInit();
+        LlBisSlaveInit();
+        LlPowerControlInit();
+      #endif
+    #else
+      #ifdef INIT_BROADCASTER
+        LlExtAdvSlaveInit();
+        #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
+          LlBisSlaveInit();
+        #endif
+      #endif
+    #endif
 
-#if defined(INIT_PERIPHERAL) || defined(INIT_CENTRAL)
-    LlChannelSelection2Init();
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_1)
-    LlPastInit();
-#endif
-#endif
-#endif
+    #if defined(INIT_PERIPHERAL) || defined(INIT_CENTRAL)
+      LlChannelSelection2Init();
+      #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_1)
+        LlPastInit();
+      #endif
+    #endif
+  #endif
 
-    /* Initialize handler after feature bits are set. */
-    wsfHandlerId_t handlerId = WsfOsSetNextHandler(LlHandler);
-    LlHandlerInit(handlerId);
+  /* Initialize handler after feature bits are set. */
+  wsfHandlerId_t handlerId = WsfOsSetNextHandler(LlHandler);
+  LlHandlerInit(handlerId);
 }
 
 /*************************************************************************************************/
@@ -209,37 +209,36 @@ void LlInitLlInit(void)
  *  \return Amount of free memory consumed.
  */
 /*************************************************************************************************/
-uint32_t LlInitSetBbRtCfg(const BbRtCfg_t *pBbRtCfg, const uint8_t wlSizeCfg,
-                          const uint8_t rlSizeCfg, const uint8_t plSizeCfg, uint8_t *pFreeMem,
-                          uint32_t freeMemAvail)
+uint32_t LlInitSetBbRtCfg(const BbRtCfg_t *pBbRtCfg, const uint8_t wlSizeCfg, const uint8_t rlSizeCfg,
+                          const uint8_t plSizeCfg, uint8_t *pFreeMem, uint32_t freeMemAvail)
 {
-    uint32_t memUsed;
-    uint32_t totalMemUsed = 0;
+  uint32_t memUsed;
+  uint32_t totalMemUsed = 0;
 
-    BbInitRunTimeCfg(pBbRtCfg);
+  BbInitRunTimeCfg(pBbRtCfg);
 
-    memUsed = BbBleInitWhiteList(wlSizeCfg, pFreeMem, freeMemAvail);
-    pFreeMem += memUsed;
-    freeMemAvail -= memUsed;
-    totalMemUsed += memUsed;
+  memUsed = BbBleInitWhiteList(wlSizeCfg, pFreeMem, freeMemAvail);
+  pFreeMem += memUsed;
+  freeMemAvail -= memUsed;
+  totalMemUsed += memUsed;
 
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
+  #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
     memUsed = BbBleInitPeriodicList(plSizeCfg, pFreeMem, freeMemAvail);
     pFreeMem += memUsed;
     freeMemAvail -= memUsed;
     totalMemUsed += memUsed;
-#endif
+  #endif
 
-#ifdef INIT_ENCRYPTED
+  #ifdef INIT_ENCRYPTED
     memUsed = BbBleInitResolvingList(rlSizeCfg, pFreeMem, freeMemAvail);
     /* pFreeMem += memUsed; */
     /* freeMemAvail -= memUsed; */
     totalMemUsed += memUsed;
-#else
+  #else
     BbBleInitResolvingList(0, NULL, 0);
-#endif
+  #endif
 
-    return totalMemUsed;
+  return totalMemUsed;
 }
 
 /*************************************************************************************************/
@@ -255,22 +254,22 @@ uint32_t LlInitSetBbRtCfg(const BbRtCfg_t *pBbRtCfg, const uint8_t wlSizeCfg,
 /*************************************************************************************************/
 uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t freeMemAvail)
 {
-    uint32_t totalMemUsed = 0;
+  uint32_t totalMemUsed = 0;
 
-#if defined(INIT_PERIPHERAL) || defined(INIT_CENTRAL) || (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    uint32_t memUsed;
-#endif
+  #if defined (INIT_PERIPHERAL) || defined (INIT_CENTRAL) || (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
+  uint32_t memUsed;
+  #endif
 
-    LlInitRunTimeCfg(pLlRtCfg);
+  LlInitRunTimeCfg(pLlRtCfg);
 
-#if defined(INIT_PERIPHERAL) || defined(INIT_CENTRAL)
+  #if defined (INIT_PERIPHERAL) || defined (INIT_CENTRAL)
     memUsed = LlInitConnMem(pFreeMem, freeMemAvail);
     pFreeMem += memUsed;
     freeMemAvail -= memUsed;
     totalMemUsed += memUsed;
-#endif
+  #endif
 
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
+  #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
     memUsed = LlInitExtScanMem(pFreeMem, freeMemAvail);
     pFreeMem += memUsed;
     freeMemAvail -= memUsed;
@@ -280,9 +279,9 @@ uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t
     pFreeMem += memUsed;
     freeMemAvail -= memUsed;
     totalMemUsed += memUsed;
-#endif
+  #endif
 
-#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
+  #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
     memUsed = LlInitCisMem(pFreeMem, freeMemAvail);
     pFreeMem += memUsed;
     freeMemAvail -= memUsed;
@@ -297,9 +296,9 @@ uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t
     /* pFreeMem += memUsed; */
     /* freeMemAvail -= memUsed; */
     totalMemUsed += memUsed;
-#endif
+  #endif
 
-    return totalMemUsed;
+  return totalMemUsed;
 }
 
 /*************************************************************************************************/
@@ -313,23 +312,23 @@ uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t
 /*************************************************************************************************/
 uint32_t LlInit(LlInitRtCfg_t *pCfg)
 {
-    uint32_t memUsed;
-    uint32_t totalMemUsed = 0;
+  uint32_t memUsed;
+  uint32_t totalMemUsed = 0;
 
-    memUsed = LlInitSetBbRtCfg(pCfg->pBbRtCfg, pCfg->wlSizeCfg, pCfg->rlSizeCfg, pCfg->plSizeCfg,
-                               pCfg->pFreeMem, pCfg->freeMemAvail);
-    pCfg->pFreeMem += memUsed;
-    pCfg->freeMemAvail -= memUsed;
-    totalMemUsed += memUsed;
+  memUsed = LlInitSetBbRtCfg(pCfg->pBbRtCfg, pCfg->wlSizeCfg, pCfg->rlSizeCfg, pCfg->plSizeCfg,
+                             pCfg->pFreeMem, pCfg->freeMemAvail);
+  pCfg->pFreeMem += memUsed;
+  pCfg->freeMemAvail -= memUsed;
+  totalMemUsed += memUsed;
 
-    memUsed = LlInitSetLlRtCfg(pCfg->pLlRtCfg, pCfg->pFreeMem, pCfg->freeMemAvail);
-    pCfg->pFreeMem += memUsed;
-    pCfg->freeMemAvail -= memUsed;
-    totalMemUsed += memUsed;
+  memUsed = LlInitSetLlRtCfg(pCfg->pLlRtCfg, pCfg->pFreeMem, pCfg->freeMemAvail);
+  pCfg->pFreeMem += memUsed;
+  pCfg->freeMemAvail -= memUsed;
+  totalMemUsed += memUsed;
 
-    LlInitBbInit();
-    LlInitSchInit();
-    LlInitLlInit();
+  LlInitBbInit();
+  LlInitSchInit();
+  LlInitLlInit();
 
-    return totalMemUsed;
+  return totalMemUsed;
 }

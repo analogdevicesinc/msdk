@@ -63,18 +63,21 @@ static uint8_t lightTerminalLightHandler(uint32_t argc, char **argv);
   Global Variables
 **************************************************************************************************/
 
-char *const pLightLogo[] = { "\f\r\n",
-                             "\n\n\r\n",
-                             "#     #                        #\r\n",
-                             "##   ## ######  ####  #    #   #       #  ####  #    # #####\r\n",
-                             "# # # # #      #      #    #   #       # #    # #    #   #\r\n",
-                             "#  #  # #####   ####  ######   #       # #      ######   #\r\n",
-                             "#     # #           # #    #   #       # #  ### #    #   #\r\n",
-                             "#     # #      #    # #    #   #       # #    # #    #   #\r\n",
-                             "#     # ######  ####  #    #   ####### #  ####  #    #   #\r\n",
-                             "\r\n -Press enter for prompt\n\r",
-                             "\r\n -Type help to display the list of available commands\n\r",
-                             NULL };
+char * const pLightLogo[]=
+{
+  "\f\r\n",
+  "\n\n\r\n",
+  "#     #                        #\r\n",
+  "##   ## ######  ####  #    #   #       #  ####  #    # #####\r\n",
+  "# # # # #      #      #    #   #       # #    # #    #   #\r\n",
+  "#  #  # #####   ####  ######   #       # #      ######   #\r\n",
+  "#     # #           # #    #   #       # #  ### #    #   #\r\n",
+  "#     # #      #    # #    #   #       # #    # #    #   #\r\n",
+  "#     # ######  ####  #    #   ####### #  ####  #    #   #\r\n",
+  "\r\n -Press enter for prompt\n\r",
+  "\r\n -Type help to display the list of available commands\n\r",
+  NULL
+};
 
 /**************************************************************************************************
   Local Variables
@@ -84,11 +87,12 @@ char *const pLightLogo[] = { "\f\r\n",
 static wsfHandlerId_t lightTerminalHandlerId;
 
 /*! Test Terminal commands table */
-static terminalCommand_t lightTerminalTbl[] = {
-    /*! GATT Proxy Node Identity user interaction command */
-    { NULL, "gattsr", "gattsr", lightTerminalGattSrHandler },
-    /*! Light command */
-    { NULL, "light", "light <on|off>", lightTerminalLightHandler },
+static terminalCommand_t lightTerminalTbl[] =
+{
+  /*! GATT Proxy Node Identity user interaction command */
+  { NULL, "gattsr", "gattsr", lightTerminalGattSrHandler },
+  /*! Light command */
+  { NULL, "light", "light <on|off>", lightTerminalLightHandler },
 };
 
 /**************************************************************************************************
@@ -97,77 +101,91 @@ static terminalCommand_t lightTerminalTbl[] = {
 
 static uint8_t lightTerminalGattSrHandler(uint32_t argc, char **argv)
 {
-    wsfMsgHdr_t *pMsg;
+  wsfMsgHdr_t *pMsg;
 
-    (void)argc;
-    (void)argv;
+  (void)argc;
+  (void)argv;
 
-    if (!MeshIsProvisioned()) {
-        TerminalTxPrint("gattsr_cnf invalid_state device_unprovisioned" TERMINAL_STRING_NEW_LINE);
-        return TERMINAL_ERROR_EXEC;
-    }
+  if (!MeshIsProvisioned())
+  {
+    TerminalTxPrint("gattsr_cnf invalid_state device_unprovisioned" TERMINAL_STRING_NEW_LINE);
+    return TERMINAL_ERROR_EXEC;
+  }
 
-    if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL) {
-        pMsg->event = APP_MESH_NODE_IDENTITY_USER_INTERACTION_EVT;
+  if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL)
+  {
+    pMsg->event = APP_MESH_NODE_IDENTITY_USER_INTERACTION_EVT;
 
-        /* Send Message. */
-        WsfMsgSend(lightTerminalHandlerId, pMsg);
-    }
+    /* Send Message. */
+    WsfMsgSend(lightTerminalHandlerId, pMsg);
+  }
 
-    TerminalTxStr("gattsr_cnf success" TERMINAL_STRING_NEW_LINE);
+  TerminalTxStr("gattsr_cnf success" TERMINAL_STRING_NEW_LINE);
 
-    return TERMINAL_ERROR_OK;
+  return TERMINAL_ERROR_OK;
 }
 
 static uint8_t lightTerminalLightHandler(uint32_t argc, char **argv)
 {
-    char *pChar;
-    uint8_t led = 0;
-    uint8_t cmd = 0xFF;
+  char    *pChar;
+  uint8_t led = 0;
+  uint8_t cmd = 0xFF;
 
-    if (argc < 2) {
-        TerminalTxStr("light_cnf too_few_arguments" TERMINAL_STRING_NEW_LINE);
+  if (argc < 2)
+  {
+    TerminalTxStr("light_cnf too_few_arguments" TERMINAL_STRING_NEW_LINE);
 
-        return TERMINAL_ERROR_EXEC;
-    } else {
-        if (strstr(argv[1], "on") != NULL) {
-            pChar = strchr(argv[1], '=');
+    return TERMINAL_ERROR_EXEC;
+  }
+  else
+  {
+    if (strstr(argv[1], "on") != NULL)
+    {
+      pChar = strchr(argv[1], '=');
 
-            if (pChar != NULL) {
-                led = (uint8_t)strtol(pChar + 1, NULL, 0);
-            }
+      if (pChar != NULL)
+      {
+        led = (uint8_t)strtol(pChar + 1, NULL, 0);
+      }
 
-            /* Value not found or invalid. Set default value. */
-            if ((led == 0) || (led > 2)) {
-                led = 1;
-            }
+      /* Value not found or invalid. Set default value. */
+      if ((led == 0) || (led > 2))
+      {
+        led = 1;
+      }
 
-            cmd = 1;
-        } else if (strstr(argv[1], "off") != NULL) {
-            pChar = strchr(argv[1], '=');
-
-            if (pChar != NULL) {
-                led = (uint8_t)strtol(pChar + 1, NULL, 0);
-            }
-
-            /* Value not found or invalid. Set default value. */
-            if ((led == 0) || (led > 2)) {
-                led = 1;
-            }
-
-            cmd = 0;
-        } else {
-            TerminalTxPrint("light_cnf invalid_argument %s" TERMINAL_STRING_NEW_LINE, argv[1]);
-
-            return TERMINAL_ERROR_EXEC;
-        }
+      cmd = 1;
     }
+    else if (strstr(argv[1], "off") != NULL)
+    {
+      pChar = strchr(argv[1], '=');
 
-    MmdlGenOnOffSrSetState(led - 1, cmd ? MMDL_GEN_ONOFF_STATE_ON : MMDL_GEN_ONOFF_STATE_OFF);
+      if (pChar != NULL)
+      {
+        led = (uint8_t)strtol(pChar + 1, NULL, 0);
+      }
 
-    TerminalTxStr("light_cnf success" TERMINAL_STRING_NEW_LINE);
+      /* Value not found or invalid. Set default value. */
+      if ((led == 0) || (led > 2))
+      {
+        led = 1;
+      }
 
-    return TERMINAL_ERROR_OK;
+      cmd = 0;
+    }
+    else
+    {
+      TerminalTxPrint("light_cnf invalid_argument %s" TERMINAL_STRING_NEW_LINE, argv[1]);
+
+      return TERMINAL_ERROR_EXEC;
+    }
+  }
+
+  MmdlGenOnOffSrSetState(led - 1, cmd ? MMDL_GEN_ONOFF_STATE_ON : MMDL_GEN_ONOFF_STATE_OFF);
+
+  TerminalTxStr("light_cnf success" TERMINAL_STRING_NEW_LINE);
+
+  return TERMINAL_ERROR_OK;
 }
 
 /**************************************************************************************************
@@ -185,11 +203,12 @@ static uint8_t lightTerminalLightHandler(uint32_t argc, char **argv)
 /*************************************************************************************************/
 void lightTerminalInit(wsfHandlerId_t handlerId)
 {
-    uint8_t i;
+  uint8_t i;
 
-    for (i = 0; i < sizeof(lightTerminalTbl) / sizeof(terminalCommand_t); i++) {
-        TerminalRegisterCommand((terminalCommand_t *)&lightTerminalTbl[i]);
-    }
+  for (i = 0; i < sizeof(lightTerminalTbl)/sizeof(terminalCommand_t); i++)
+  {
+    TerminalRegisterCommand((terminalCommand_t *)&lightTerminalTbl[i]);
+  }
 
-    lightTerminalHandlerId = handlerId;
+  lightTerminalHandlerId = handlerId;
 }

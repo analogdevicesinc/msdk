@@ -34,6 +34,6 @@
 /*************************************************************************************************/
 void LhciScanMasterInit(void)
 {
-    lhciCmdTbl[LHCI_MSG_SCAN] = lhciMstScanDecodeCmdPkt;
-    lhciEvtTbl[LHCI_MSG_SCAN] = lhciMstScanEncodeEvtPkt;
+  lhciCmdTbl[LHCI_MSG_SCAN] = lhciMstScanDecodeCmdPkt;
+  lhciEvtTbl[LHCI_MSG_SCAN] = lhciMstScanEncodeEvtPkt;
 }

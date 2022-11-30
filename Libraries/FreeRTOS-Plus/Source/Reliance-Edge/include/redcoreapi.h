@@ -27,7 +27,9 @@
 #ifndef REDCOREAPI_H
 #define REDCOREAPI_H
 
+
 #include <redstat.h>
+
 
 REDSTATUS RedCoreInit(void);
 REDSTATUS RedCoreUninit(void);
@@ -62,16 +64,14 @@ REDSTATUS RedCoreCreate(uint32_t ulPInode, const char *pszName, bool fDir, uint3
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_LINK == 1)
 REDSTATUS RedCoreLink(uint32_t ulPInode, const char *pszName, uint32_t ulInode);
 #endif
-#if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && \
-    ((REDCONF_API_POSIX_UNLINK == 1) || (REDCONF_API_POSIX_RMDIR == 1))
+#if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && ((REDCONF_API_POSIX_UNLINK == 1) || (REDCONF_API_POSIX_RMDIR == 1))
 REDSTATUS RedCoreUnlink(uint32_t ulPInode, const char *pszName);
 #endif
 #if REDCONF_API_POSIX == 1
 REDSTATUS RedCoreLookup(uint32_t ulPInode, const char *pszName, uint32_t *pulInode);
 #endif
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_RENAME == 1)
-REDSTATUS RedCoreRename(uint32_t ulSrcPInode, const char *pszSrcName, uint32_t ulDstPInode,
-                        const char *pszDstName);
+REDSTATUS RedCoreRename(uint32_t ulSrcPInode, const char *pszSrcName, uint32_t ulDstPInode, const char *pszDstName);
 #endif
 #if REDCONF_API_POSIX == 1
 REDSTATUS RedCoreStat(uint32_t ulInode, REDSTAT *pStat);
@@ -82,8 +82,7 @@ REDSTATUS RedCoreFileSizeGet(uint32_t ulInode, uint64_t *pullSize);
 
 REDSTATUS RedCoreFileRead(uint32_t ulInode, uint64_t ullStart, uint32_t *pulLen, void *pBuffer);
 #if REDCONF_READ_ONLY == 0
-REDSTATUS RedCoreFileWrite(uint32_t ulInode, uint64_t ullStart, uint32_t *pulLen,
-                           const void *pBuffer);
+REDSTATUS RedCoreFileWrite(uint32_t ulInode, uint64_t ullStart, uint32_t *pulLen, const void *pBuffer);
 #endif
 #if TRUNCATE_SUPPORTED
 REDSTATUS RedCoreFileTruncate(uint32_t ulInode, uint64_t ullSize);
@@ -93,4 +92,6 @@ REDSTATUS RedCoreFileTruncate(uint32_t ulInode, uint64_t ullSize);
 REDSTATUS RedCoreDirRead(uint32_t ulInode, uint32_t *pulPos, char *pszName, uint32_t *pulInode);
 #endif
 
+
 #endif
+

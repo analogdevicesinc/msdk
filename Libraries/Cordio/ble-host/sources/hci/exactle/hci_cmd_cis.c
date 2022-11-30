@@ -47,20 +47,20 @@
 /*************************************************************************************************/
 void HciLeSetCigParamsCmd(HciCisCigParams_t *pCigParam)
 {
-    hciLeSetCigParamsCmdCmplEvt_t evt;
-    uint16_t cisHandle[LL_MAX_CIS] = { 0 };
+  hciLeSetCigParamsCmdCmplEvt_t evt;
+  uint16_t cisHandle[LL_MAX_CIS] = {0};
+  
+  evt.hdr.param = pCigParam->cigId;
+  evt.hdr.status = LlSetCigParams((LlCisCigParams_t *) pCigParam, cisHandle);
+  evt.hdr.event = HCI_LE_SET_CIG_PARAMS_CMD_CMPL_CBACK_EVT;
 
-    evt.hdr.param = pCigParam->cigId;
-    evt.hdr.status = LlSetCigParams((LlCisCigParams_t *)pCigParam, cisHandle);
-    evt.hdr.event = HCI_LE_SET_CIG_PARAMS_CMD_CMPL_CBACK_EVT;
+  evt.status = evt.hdr.status;
+  evt.cigId = pCigParam->cigId;
+  evt.numCis = pCigParam->numCis;
 
-    evt.status = evt.hdr.status;
-    evt.cigId = pCigParam->cigId;
-    evt.numCis = pCigParam->numCis;
+  memcpy(evt.cisHandle, cisHandle, pCigParam->numCis * sizeof(uint16_t));
 
-    memcpy(evt.cisHandle, cisHandle, pCigParam->numCis * sizeof(uint16_t));
-
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -75,12 +75,12 @@ void HciLeSetCigParamsCmd(HciCisCigParams_t *pCigParam)
 /*************************************************************************************************/
 void HciLeCreateCisCmd(uint8_t numCis, HciCisCreateCisParams_t *pCreateCisParam)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlCreateCis(numCis, (LlCisCreateCisParams_t *)pCreateCisParam);
-    (void)status;
+  status = LlCreateCis(numCis, (LlCisCreateCisParams_t *) pCreateCisParam);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -94,16 +94,16 @@ void HciLeCreateCisCmd(uint8_t numCis, HciCisCreateCisParams_t *pCreateCisParam)
 /*************************************************************************************************/
 void HciLeRemoveCigCmd(uint8_t cigId)
 {
-    hciLeRemoveCigCmdCmplEvt_t evt;
+  hciLeRemoveCigCmdCmplEvt_t evt;
 
-    evt.hdr.param = cigId;
-    evt.hdr.status = LlRemoveCig(cigId);
-    evt.hdr.event = HCI_LE_REMOVE_CIG_CMD_CMPL_CBACK_EVT;
+  evt.hdr.param = cigId;
+  evt.hdr.status = LlRemoveCig(cigId);
+  evt.hdr.event = HCI_LE_REMOVE_CIG_CMD_CMPL_CBACK_EVT;
 
-    evt.status = evt.hdr.status;
-    evt.cigId = cigId;
+  evt.status = evt.hdr.status;
+  evt.cigId = cigId;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -117,12 +117,12 @@ void HciLeRemoveCigCmd(uint8_t cigId)
 /*************************************************************************************************/
 void HciLeAcceptCisReqCmd(uint16_t handle)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlAcceptCisReq(handle);
-    (void)status;
+  status = LlAcceptCisReq(handle);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -137,10 +137,10 @@ void HciLeAcceptCisReqCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeRejectCisReqCmd(uint16_t handle, uint8_t reason)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlRejectCisReq(handle, reason);
-    (void)status;
+  status = LlRejectCisReq(handle, reason);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }

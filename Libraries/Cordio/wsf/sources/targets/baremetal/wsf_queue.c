@@ -33,15 +33,16 @@
 **************************************************************************************************/
 
 /* Get next queue element */
-#define WSF_QUEUE_NEXT(p) (((wsfQueueElem_t *)(p))->pNext)
+#define WSF_QUEUE_NEXT(p)               (((wsfQueueElem_t *)(p))->pNext)
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /* Queue element */
-typedef struct wsfQueueElem_tag {
-    struct wsfQueueElem_tag *pNext; /* pointer to next element */
+typedef struct wsfQueueElem_tag
+{
+  struct wsfQueueElem_tag *pNext;      /* pointer to next element */
 } wsfQueueElem_t;
 
 /*************************************************************************************************/
@@ -54,30 +55,32 @@ typedef struct wsfQueueElem_tag {
 /*************************************************************************************************/
 void WsfQueueEnq(wsfQueue_t *pQueue, void *pElem)
 {
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    WSF_ASSERT(pQueue != NULL);
-    WSF_ASSERT(pElem != NULL);
+  WSF_ASSERT(pQueue != NULL);
+  WSF_ASSERT(pElem != NULL);
 
-    /* initialize next pointer */
-    WSF_QUEUE_NEXT(pElem) = NULL;
+  /* initialize next pointer */
+  WSF_QUEUE_NEXT(pElem) = NULL;
 
-    /* enter critical section */
-    WSF_CS_ENTER(cs);
+  /* enter critical section */
+  WSF_CS_ENTER(cs);
 
-    /* if queue empty */
-    if (pQueue->pHead == NULL) {
-        pQueue->pHead = pElem;
-        pQueue->pTail = pElem;
-    }
-    /* else enqueue element to the tail of queue */
-    else {
-        WSF_QUEUE_NEXT(pQueue->pTail) = pElem;
-        pQueue->pTail = pElem;
-    }
+  /* if queue empty */
+  if (pQueue->pHead == NULL)
+  {
+    pQueue->pHead = pElem;
+    pQueue->pTail = pElem;
+  }
+  /* else enqueue element to the tail of queue */
+  else
+  {
+    WSF_QUEUE_NEXT(pQueue->pTail) = pElem;
+    pQueue->pTail = pElem;
+  }
 
-    /* exit critical section */
-    WSF_CS_EXIT(cs);
+  /* exit critical section */
+  WSF_CS_EXIT(cs);
 }
 
 /*************************************************************************************************/
@@ -91,32 +94,34 @@ void WsfQueueEnq(wsfQueue_t *pQueue, void *pElem)
 /*************************************************************************************************/
 void *WsfQueueDeq(wsfQueue_t *pQueue)
 {
-    wsfQueueElem_t *pElem;
+  wsfQueueElem_t  *pElem;
 
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    WSF_ASSERT(pQueue != NULL);
+  WSF_ASSERT(pQueue != NULL);
 
-    /* enter critical section */
-    WSF_CS_ENTER(cs);
+  /* enter critical section */
+  WSF_CS_ENTER(cs);
 
-    pElem = pQueue->pHead;
+  pElem = pQueue->pHead;
 
-    /* if queue is not empty */
-    if (pElem != NULL) {
-        /* set head to next element in queue */
-        pQueue->pHead = WSF_QUEUE_NEXT(pElem);
+  /* if queue is not empty */
+  if (pElem != NULL)
+  {
+    /* set head to next element in queue */
+    pQueue->pHead = WSF_QUEUE_NEXT(pElem);
 
-        /* check for empty queue */
-        if (pQueue->pHead == NULL) {
-            pQueue->pTail = NULL;
-        }
+    /* check for empty queue */
+    if (pQueue->pHead == NULL)
+    {
+      pQueue->pTail = NULL;
     }
+  }
 
-    /* exit critical section */
-    WSF_CS_EXIT(cs);
+  /* exit critical section */
+  WSF_CS_EXIT(cs);
 
-    return pElem;
+  return pElem;
 }
 
 /*************************************************************************************************/
@@ -129,27 +134,28 @@ void *WsfQueueDeq(wsfQueue_t *pQueue)
 /*************************************************************************************************/
 void WsfQueuePush(wsfQueue_t *pQueue, void *pElem)
 {
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    WSF_ASSERT(pQueue != NULL);
-    WSF_ASSERT(pElem != NULL);
+  WSF_ASSERT(pQueue != NULL);
+  WSF_ASSERT(pElem != NULL);
 
-    /* enter critical section */
-    WSF_CS_ENTER(cs);
+  /* enter critical section */
+  WSF_CS_ENTER(cs);
 
-    /* else push element to head of queue */
-    WSF_QUEUE_NEXT(pElem) = pQueue->pHead;
+  /* else push element to head of queue */
+  WSF_QUEUE_NEXT(pElem) = pQueue->pHead;
 
-    /* if queue was empty set tail */
-    if (pQueue->pHead == NULL) {
-        pQueue->pTail = pElem;
-    }
+  /* if queue was empty set tail */
+  if (pQueue->pHead == NULL)
+  {
+    pQueue->pTail = pElem;
+  }
 
-    /* set head */
-    pQueue->pHead = pElem;
+  /* set head */
+  pQueue->pHead = pElem;
 
-    /* exit critical section */
-    WSF_CS_EXIT(cs);
+  /* exit critical section */
+  WSF_CS_EXIT(cs);
 }
 
 /*************************************************************************************************/
@@ -166,31 +172,35 @@ void WsfQueuePush(wsfQueue_t *pQueue, void *pElem)
 /*************************************************************************************************/
 void WsfQueueInsert(wsfQueue_t *pQueue, void *pElem, void *pPrev)
 {
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    WSF_ASSERT(pQueue != NULL);
-    WSF_ASSERT(pElem != NULL);
+  WSF_ASSERT(pQueue != NULL);
+  WSF_ASSERT(pElem != NULL);
 
-    /* enter critical section */
-    WSF_CS_ENTER(cs);
+  /* enter critical section */
+  WSF_CS_ENTER(cs);
 
-    /* if queue empty or inserting at tail */
-    if (pQueue->pHead == NULL || pPrev == pQueue->pTail) {
-        /* queue as normal */
-        WsfQueueEnq(pQueue, pElem);
-    }
-    /* else if inserting at head */
-    else if (pPrev == NULL) {
-        /* push to head */
-        WsfQueuePush(pQueue, pElem);
-    } else {
-        /* insert in middle of queue */
-        WSF_QUEUE_NEXT(pElem) = WSF_QUEUE_NEXT(pPrev);
-        WSF_QUEUE_NEXT(pPrev) = pElem;
-    }
+  /* if queue empty or inserting at tail */
+  if (pQueue->pHead == NULL || pPrev == pQueue->pTail)
+  {
+    /* queue as normal */
+    WsfQueueEnq(pQueue, pElem);
+  }
+  /* else if inserting at head */
+  else if (pPrev == NULL)
+  {
+    /* push to head */
+    WsfQueuePush(pQueue, pElem);
+  }
+  else
+  {
+    /* insert in middle of queue */
+    WSF_QUEUE_NEXT(pElem) = WSF_QUEUE_NEXT(pPrev);
+    WSF_QUEUE_NEXT(pPrev) = pElem;
+  }
 
-    /* exit critical section */
-    WSF_CS_EXIT(cs);
+  /* exit critical section */
+  WSF_CS_EXIT(cs);
 }
 
 /*************************************************************************************************/
@@ -207,32 +217,36 @@ void WsfQueueInsert(wsfQueue_t *pQueue, void *pElem, void *pPrev)
 /*************************************************************************************************/
 void WsfQueueRemove(wsfQueue_t *pQueue, void *pElem, void *pPrev)
 {
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    WSF_ASSERT(pQueue != NULL);
-    WSF_ASSERT(pQueue->pHead != NULL);
-    WSF_ASSERT(pElem != NULL);
+  WSF_ASSERT(pQueue != NULL);
+  WSF_ASSERT(pQueue->pHead != NULL);
+  WSF_ASSERT(pElem != NULL);
 
-    /* enter critical section */
-    WSF_CS_ENTER(cs);
+  /* enter critical section */
+  WSF_CS_ENTER(cs);
 
-    /* if first element */
-    if (pElem == pQueue->pHead) {
-        /* remove from head of queue */
-        pQueue->pHead = WSF_QUEUE_NEXT(pElem);
-    } else if (pPrev) {
-        /* remove from middle of queue, pPrev will never be null */
-        WSF_QUEUE_NEXT(pPrev) = WSF_QUEUE_NEXT(pElem);
-    }
+  /* if first element */
+  if (pElem == pQueue->pHead)
+  {
+    /* remove from head of queue */
+    pQueue->pHead = WSF_QUEUE_NEXT(pElem);
+  }
+  else if (pPrev)
+  {
+    /* remove from middle of queue, pPrev will never be null */
+    WSF_QUEUE_NEXT(pPrev) = WSF_QUEUE_NEXT(pElem);
+  }
 
-    /* if last element */
-    if (pElem == pQueue->pTail) {
-        /* update tail */
-        pQueue->pTail = pPrev;
-    }
+  /* if last element */
+  if (pElem == pQueue->pTail)
+  {
+    /* update tail */
+    pQueue->pTail = pPrev;
+  }
 
-    /* exit critical section */
-    WSF_CS_EXIT(cs);
+  /* exit critical section */
+  WSF_CS_EXIT(cs);
 }
 
 /*************************************************************************************************/
@@ -246,28 +260,29 @@ void WsfQueueRemove(wsfQueue_t *pQueue, void *pElem, void *pPrev)
 /*************************************************************************************************/
 uint16_t WsfQueueCount(wsfQueue_t *pQueue)
 {
-    wsfQueueElem_t *pElem;
-    uint16_t count = 0;
+  wsfQueueElem_t  *pElem;
+  uint16_t        count = 0;
 
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    WSF_ASSERT(pQueue != NULL);
+  WSF_ASSERT(pQueue != NULL);
 
-    /* enter critical section */
-    WSF_CS_ENTER(cs);
+  /* enter critical section */
+  WSF_CS_ENTER(cs);
 
-    pElem = pQueue->pHead;
+  pElem = pQueue->pHead;
 
-    /* iterate over queue */
-    while (pElem != NULL) {
-        count++;
-        pElem = pElem->pNext;
-    }
+  /* iterate over queue */
+  while (pElem != NULL)
+  {
+    count++;
+    pElem = pElem->pNext;
+  }
 
-    /* exit critical section */
-    WSF_CS_EXIT(cs);
+  /* exit critical section */
+  WSF_CS_EXIT(cs);
 
-    return count;
+  return count;
 }
 
 /*************************************************************************************************/
@@ -281,21 +296,21 @@ uint16_t WsfQueueCount(wsfQueue_t *pQueue)
 /*************************************************************************************************/
 bool_t WsfQueueEmpty(wsfQueue_t *pQueue)
 {
-    bool_t empty;
+  bool_t      empty;
 
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    WSF_ASSERT(pQueue != NULL);
+  WSF_ASSERT(pQueue != NULL);
 
-    /* enter critical section */
-    WSF_CS_ENTER(cs);
+  /* enter critical section */
+  WSF_CS_ENTER(cs);
 
-    empty = (pQueue->pHead == NULL);
+  empty = (pQueue->pHead == NULL);
 
-    /* exit critical section */
-    WSF_CS_EXIT(cs);
+  /* exit critical section */
+  WSF_CS_EXIT(cs);
 
-    return empty;
+  return empty;
 }
 
 /*************************************************************************************************/
@@ -309,5 +324,5 @@ bool_t WsfQueueEmpty(wsfQueue_t *pQueue)
 /*************************************************************************************************/
 bool_t WsfIsQueueDepthOne(wsfQueue_t *pQueue)
 {
-    return pQueue->pHead == pQueue->pTail;
+  return pQueue->pHead == pQueue->pTail;
 }

@@ -58,16 +58,20 @@
 extern "C" {
 #endif
 
+
 #define NRF_CRYPTO_RNG_CONTEXT_INIT_MAGIC_VALUE (0x4d616961)
+
 
 /**
  * @internal @brief Common header for each RNG backend context.
  *
  * @details This is an internal type that should not be used directly.
  */
-typedef struct {
-    uint32_t init_value; //!< Contains NRF_CRYPTO_RNG_CONTEXT_INIT_MAGIC_VALUE if initialized.
+typedef struct
+{
+    uint32_t    init_value; //!< Contains NRF_CRYPTO_RNG_CONTEXT_INIT_MAGIC_VALUE if initialized.
 } nrf_crypto_rng_internal_context_t;
+
 
 /**
  * @internal @brief Function for initializing the RNG backend.
@@ -79,7 +83,9 @@ typedef struct {
  * @param[in,out]   p_temp_buffer   Temporary buffer needed during initialization of the backend.
  * @param[in]       use_mutex       Use mutex to prevent simultanious usage of backend resources.
  */
-ret_code_t nrf_crypto_rng_backend_init(void *const p_context, void *const p_temp_buffer);
+ret_code_t nrf_crypto_rng_backend_init(void * const p_context,
+                                       void * const p_temp_buffer);
+
 
 /**
  * @internal @brief Function for uninitializing the RNG backend.
@@ -90,7 +96,8 @@ ret_code_t nrf_crypto_rng_backend_init(void *const p_context, void *const p_temp
  * @param[in,out]   p_context   Pointer to context structure.
  * @param[in]       use_mutex   Use mutex to prevent simultanious usage of backend resources.
  */
-ret_code_t nrf_crypto_rng_backend_uninit(void *const p_context);
+ret_code_t nrf_crypto_rng_backend_uninit(void   * const p_context);
+
 
 /**
  * @internal @brief Function for retrieving a random vector from the RNG backend.
@@ -103,8 +110,11 @@ ret_code_t nrf_crypto_rng_backend_uninit(void *const p_context);
  * @param[in]       size        Length (in bytes) to generate random data for.
  * @param[in]       use_mutex   Use mutex to prevent simultanious usage of backend resources.
  */
-ret_code_t nrf_crypto_rng_backend_vector_generate(void *const p_context, uint8_t *const p_target,
-                                                  size_t size, bool use_mutex);
+ret_code_t nrf_crypto_rng_backend_vector_generate(void      * const p_context,
+                                                  uint8_t   * const p_target,
+                                                  size_t            size,
+                                                  bool              use_mutex);
+
 
 /**
  * @internal @brief This function is used for reseeding the RNG with additional entropy.
@@ -117,8 +127,11 @@ ret_code_t nrf_crypto_rng_backend_vector_generate(void *const p_context, uint8_t
  * @param[in]       p_input_data    Input data used to increase the entropy.
  * @param[in]       size            Length of input data.
  */
-ret_code_t nrf_crypto_rng_backend_reseed(void *const p_context, void *p_temp_buffer,
-                                         uint8_t *p_input_data, size_t size);
+ret_code_t nrf_crypto_rng_backend_reseed(void   * const p_context,
+                                         void         * p_temp_buffer,
+                                         uint8_t      * p_input_data,
+                                         size_t         size);
+
 
 #ifdef __cplusplus
 }

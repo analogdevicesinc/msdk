@@ -55,6 +55,7 @@
 #include "app_usbd_msc_scsi.h"
 #include "app_usbd_msc_internal.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -80,16 +81,18 @@ extern "C" {
  *
  * @ref APP_USBD_CLASS_TYPEDEF
  */
-typedef struct {
-} app_usbd_msc_t;
+typedef struct { } app_usbd_msc_t;
 #else
 /*lint -save -e10 -e26 -e123 -e505 */
-APP_USBD_CLASS_TYPEDEF(app_usbd_msc,
-                       APP_USBD_MSC_CONFIG(0, (NRF_DRV_USBD_EPIN1, NRF_DRV_USBD_EPOUT1)),
-                       APP_USBD_MSC_INSTANCE_SPECIFIC_DEC, APP_USBD_MSC_DATA_SPECIFIC_DEC);
+APP_USBD_CLASS_TYPEDEF(app_usbd_msc,                                                   \
+            APP_USBD_MSC_CONFIG(0, (NRF_DRV_USBD_EPIN1, NRF_DRV_USBD_EPOUT1)),         \
+            APP_USBD_MSC_INSTANCE_SPECIFIC_DEC,                                        \
+            APP_USBD_MSC_DATA_SPECIFIC_DEC                                             \
+);
 #endif
 
 /*lint -restore*/
+
 
 /*lint -save -e407 */
 
@@ -102,7 +105,7 @@ APP_USBD_CLASS_TYPEDEF(app_usbd_msc,
  *                          app_usbd_msc_user_event_t     event);
  */
 typedef enum app_usbd_msc_user_event_e {
-    APP_USBD_MSC_USER_EVT_NONE, /**< Dummy event to satisfy compilers. */
+    APP_USBD_MSC_USER_EVT_NONE,        /**< Dummy event to satisfy compilers. */
 } app_usbd_msc_user_event_t;
 
 /*lint -restore*/
@@ -113,8 +116,10 @@ typedef enum app_usbd_msc_user_event_e {
  * @param in_number     Input endpoint number.
  * @param out_number    Output endpoint number.
  * */
-#define APP_USBD_MSC_ENDPOINT_LIST(in_number, out_number) \
-    (CONCAT_2(NRF_DRV_USBD_EPIN, in_number), CONCAT_2(NRF_DRV_USBD_EPOUT, out_number))
+#define APP_USBD_MSC_ENDPOINT_LIST(in_number, out_number) (    \
+        CONCAT_2(NRF_DRV_USBD_EPIN, in_number),                \
+        CONCAT_2(NRF_DRV_USBD_EPOUT, out_number)               \
+)
 
 /**
  * @brief Global definition of app_usbd_msc_t class.
@@ -130,10 +135,19 @@ typedef enum app_usbd_msc_user_event_e {
  * @note This macro is just simplified version of @ref APP_USBD_MSC_GLOBAL_DEF_INTERNAL
  *
  */
-#define APP_USBD_MSC_GLOBAL_DEF(instance_name, interface_number, user_ev_handler, endpoint_list, \
-                                blockdev_list, workbuffer_size)                                  \
-    APP_USBD_MSC_GLOBAL_DEF_INTERNAL(instance_name, interface_number, user_ev_handler,           \
-                                     endpoint_list, blockdev_list, workbuffer_size)
+#define APP_USBD_MSC_GLOBAL_DEF(instance_name,              \
+                                interface_number,           \
+                                user_ev_handler,            \
+                                endpoint_list,              \
+                                blockdev_list,              \
+                                workbuffer_size)            \
+        APP_USBD_MSC_GLOBAL_DEF_INTERNAL(instance_name,     \
+                                         interface_number,  \
+                                         user_ev_handler,   \
+                                         endpoint_list,     \
+                                         blockdev_list,     \
+                                         workbuffer_size)
+
 
 /**
  * @@brief Helper function to get class instance from MSC.
@@ -142,7 +156,8 @@ typedef enum app_usbd_msc_user_event_e {
  *
  * @return Base class instance.
  */
-static inline app_usbd_class_inst_t const *app_usbd_msc_class_inst_get(app_usbd_msc_t const *p_msc)
+static inline app_usbd_class_inst_t const *
+app_usbd_msc_class_inst_get(app_usbd_msc_t const * p_msc)
 {
     return &p_msc->base;
 }
@@ -154,7 +169,7 @@ static inline app_usbd_class_inst_t const *app_usbd_msc_class_inst_get(app_usbd_
  *
  * @return MSC class handle.
  */
-static inline app_usbd_msc_t const *app_usbd_msc_class_get(app_usbd_class_inst_t const *p_inst)
+static inline app_usbd_msc_t const * app_usbd_msc_class_get(app_usbd_class_inst_t const * p_inst)
 {
     return (app_usbd_msc_t const *)p_inst;
 }
@@ -167,7 +182,7 @@ static inline app_usbd_msc_t const *app_usbd_msc_class_get(app_usbd_class_inst_t
  * @retval true  All block devices flushed data.
  * @retval false At least one block device has not flushed data.
  */
-bool app_usbd_msc_sync(app_usbd_msc_t const *p_msc);
+bool app_usbd_msc_sync(app_usbd_msc_t const * p_msc);
 
 /** @} */
 

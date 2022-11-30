@@ -41,24 +41,25 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Slave role device parameter definition. */
-typedef struct {
-    uint8_t availTxBuf; /*!< Available number of transmit buffers. */
-    uint8_t availRxBuf; /*!< Available number of receive buffers. */
+typedef struct
+{
+  uint8_t       availTxBuf;             /*!< Available number of transmit buffers. */
+  uint8_t       availRxBuf;             /*!< Available number of receive buffers. */
 
-    uint16_t maxTxLen; /*!< Default maximum number of Data PDU bytes. */
-    uint16_t maxTxTime; /*!< Default maximum microseconds for a Data PDU. */
+  uint16_t      maxTxLen;               /*!< Default maximum number of Data PDU bytes. */
+  uint16_t      maxTxTime;              /*!< Default maximum microseconds for a Data PDU. */
 
-    wsfQueue_t rxDataQ; /*!< Receive Data PDU (LE-U or LE-C) queue. */
+  wsfQueue_t    rxDataQ;                /*!< Receive Data PDU (LE-U or LE-C) queue. */
 
-    uint32_t dataPendMsk; /*!< Bitmask of connection handles with new pending data. */
+  uint32_t      dataPendMsk;            /*!< Bitmask of connection handles with new pending data. */
 
-    uint8_t allPhys; /*!< Default all PHYs. */
-    uint8_t txPhys; /*!< Default transmitter PHYs. */
-    uint8_t rxPhys; /*!< Default receiver PHYs. */
+  uint8_t       allPhys;                /*!< Default all PHYs. */
+  uint8_t       txPhys;                 /*!< Default transmitter PHYs. */
+  uint8_t       rxPhys;                 /*!< Default receiver PHYs. */
 
-    uint8_t syncMode; /*!< Default sync transfer mode. */
-    uint16_t syncSkip; /*!< Default sync skip for periodic adv sync transfer. */
-    uint16_t syncTimeout; /*!< Default sync timeout for periodic adv sync transfer. */
+  uint8_t       syncMode;               /*!< Default sync transfer mode. */
+  uint16_t      syncSkip;               /*!< Default sync skip for periodic adv sync transfer. */
+  uint16_t      syncTimeout;            /*!< Default sync timeout for periodic adv sync transfer. */
 
 } lmgrConnCtrlBlk_t;
 
@@ -75,7 +76,7 @@ extern lmgrConnCtrlBlk_t lmgrConnCb;
 /* Initialization */
 void LmgrConnInit(void);
 
-/*! \} */ /* LL_LMGR_API_CONN */
+/*! \} */    /* LL_LMGR_API_CONN */
 
 #ifdef __cplusplus
 };

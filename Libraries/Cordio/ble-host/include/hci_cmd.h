@@ -86,6 +86,8 @@ void hciCmdTimeout(wsfMsgHdr_t *pMsg);
 /*************************************************************************************************/
 void hciCmdRecvCmpl(uint8_t numCmdPkts);
 
+
+
 #ifdef __cplusplus
 };
 #endif

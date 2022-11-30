@@ -34,7 +34,8 @@
 #define MESH_SECURITY_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -42,15 +43,15 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh AppKey Index used by the Security module when key type is local Device Key */
-#define MESH_APPKEY_INDEX_LOCAL_DEV_KEY 0xFFFF
+#define MESH_APPKEY_INDEX_LOCAL_DEV_KEY            0xFFFF
 
 /*! Mesh AppKey Index used by the Security module when key type is remote Device Key */
-#define MESH_APPKEY_INDEX_REMOTE_DEV_KEY 0xFFFE
+#define MESH_APPKEY_INDEX_REMOTE_DEV_KEY           0xFFFE
 
 /*! Mesh security invalid AID provided in the UTR encryption complete callback if Device Key is
  *  used
  */
-#define MESH_SEC_DEVICE_KEY_AID 0xFF
+#define MESH_SEC_DEVICE_KEY_AID                    0xFF
 
 /**************************************************************************************************
   Data Types
@@ -62,9 +63,10 @@ extern "C" {
 typedef uint16_t meshSecRetVal_t;
 
 /*! Enumeration of key types used by the key material derivation API */
-enum meshSecKeyTypeValues {
-    MESH_SEC_KEY_TYPE_NWK = 0x00, /*!< Key type is Network Key */
-    MESH_SEC_KEY_TYPE_APP = 0x01, /*!< Key type is Application Key */
+enum meshSecKeyTypeValues
+{
+  MESH_SEC_KEY_TYPE_NWK = 0x00, /*!< Key type is Network Key */
+  MESH_SEC_KEY_TYPE_APP = 0x01, /*!< Key type is Application Key */
 };
 
 /*! Mesh Key type used by the key material derivation API. See ::meshSecKeyTypeValues */
@@ -100,16 +102,17 @@ typedef void (*meshSecKeyMaterialDerivCback_t)(meshSecKeyType_t keyType, uint16_
 typedef void (*meshSecAllKeyMaterialRestoreCback_t)(bool_t isSuccess);
 
 /*! Mesh Security friendship credentials information */
-typedef struct meshSecFriendshipCred_tag {
-    meshAddress_t friendAddres; /*!< Address of the friend node */
-    meshAddress_t lpnAddress; /*!< Address of the low power node */
-    uint16_t friendCounter; /*!< The value from the FriendCounter field of
+typedef struct meshSecFriendshipCred_tag
+{
+  meshAddress_t friendAddres;   /*!< Address of the friend node */
+  meshAddress_t lpnAddress;     /*!< Address of the low power node */
+  uint16_t      friendCounter;  /*!< The value from the FriendCounter field of
                                  *   the Friend Offer message
                                  */
-    uint16_t lpnCounter; /*!< The value from the LPNCounter field of the
+  uint16_t      lpnCounter;     /*!< The value from the LPNCounter field of the
                                  *   Friend Request message
                                  */
-    uint16_t netKeyIndex; /*!<  Global network key index */
+  uint16_t      netKeyIndex;    /*!<  Global network key index */
 } meshSecFriendshipCred_t;
 
 /*************************************************************************************************/
@@ -135,18 +138,19 @@ typedef void (*meshSecFriendCredDerivCback_t)(meshAddress_t friendAddress, meshA
  *  - Pointer to 16 byte Label UUID must be not NULL if destination address type is virtual
  *  - transMicSize must be either 4 or 8 and it is the transport MIC size in bytes
  */
-typedef struct meshSecUtrEncryptParams_tag {
-    uint8_t *pAppPayload; /*!< Pointer to application payload buffer */
-    uint8_t *pEncAppPayload; /*!< Pointer to encrypted application payload buffer */
-    uint8_t *pTransMic; /*!< Pointer to transport mic buffer */
-    uint8_t *pLabelUuid; /*!< Pointer to label UUID for virtual destination addresses */
-    uint16_t appPayloadSize; /*!< Size of the application payload */
-    uint16_t appKeyIndex; /*!< Global index of the Application Key to be used */
-    uint16_t netKeyIndex; /*!< Global index of the Network Key bound to the Application Key*/
-    uint32_t seqNo; /*!< 24 bit sequence number allocated for the PDU */
-    meshAddress_t srcAddr; /*!< Source address of the element originating the message */
-    meshAddress_t dstAddr; /*!< Destination address */
-    uint8_t transMicSize; /*!< Size of the transport MIC */
+typedef struct meshSecUtrEncryptParams_tag
+{
+  uint8_t       *pAppPayload;    /*!< Pointer to application payload buffer */
+  uint8_t       *pEncAppPayload; /*!< Pointer to encrypted application payload buffer */
+  uint8_t       *pTransMic;      /*!< Pointer to transport mic buffer */
+  uint8_t       *pLabelUuid;     /*!< Pointer to label UUID for virtual destination addresses */
+  uint16_t      appPayloadSize;  /*!< Size of the application payload */
+  uint16_t      appKeyIndex;     /*!< Global index of the Application Key to be used */
+  uint16_t      netKeyIndex;     /*!< Global index of the Network Key bound to the Application Key*/
+  uint32_t      seqNo;           /*!< 24 bit sequence number allocated for the PDU */
+  meshAddress_t srcAddr;         /*!< Source address of the element originating the message */
+  meshAddress_t dstAddr;         /*!< Destination address */
+  uint8_t       transMicSize;    /*!< Size of the transport MIC */
 } meshSecUtrEncryptParams_t;
 
 /*************************************************************************************************/
@@ -175,20 +179,21 @@ typedef void (*meshSecUtrEncryptCback_t)(bool_t isEncryptSuccess, uint8_t *pEncA
  *    available until the decryption callback is invoked
  *  - transMicSize must be either 4 or 8 and it is the provided transport MIC size in bytes
  */
-typedef struct meshSecUtrDecryptParams_tag {
-    uint8_t *pEncAppPayload; /*!< Pointer to encrypted application payload buffer */
-    uint8_t *pAppPayload; /*!< Pointer to decrypted application payload buffer */
-    uint8_t *pTransMic; /*!< Pointer to transport mic buffer that needs to be verified */
-    uint32_t seqNo; /*!< 24 bit sequence number allocated for the PDU */
-    uint32_t recvIvIndex; /*!< IV index used when Network authenticated the PDU */
-    meshAddress_t srcAddr; /*!< Source address of the element originating the message */
-    meshAddress_t dstAddr; /*!< Destination address */
-    uint16_t netKeyIndex; /*!< Global network key index of the key used to decrypt
+typedef struct meshSecUtrDecryptParams_tag
+{
+  uint8_t       *pEncAppPayload; /*!< Pointer to encrypted application payload buffer */
+  uint8_t       *pAppPayload;    /*!< Pointer to decrypted application payload buffer */
+  uint8_t       *pTransMic;      /*!< Pointer to transport mic buffer that needs to be verified */
+  uint32_t      seqNo;           /*!< 24 bit sequence number allocated for the PDU */
+  uint32_t      recvIvIndex;     /*!< IV index used when Network authenticated the PDU */
+  meshAddress_t srcAddr;         /*!< Source address of the element originating the message */
+  meshAddress_t dstAddr;         /*!< Destination address */
+  uint16_t      netKeyIndex;     /*!< Global network key index of the key used to decrypt
                                   *   the Network PDU
                                   */
-    uint16_t appPayloadSize; /*!< Size of the application payload */
-    uint8_t transMicSize; /*!< Size of the transport MIC*/
-    uint8_t aid; /*!< 5 bit Application Key identifier */
+  uint16_t      appPayloadSize;  /*!< Size of the application payload */
+  uint8_t       transMicSize;    /*!< Size of the transport MIC*/
+  uint8_t       aid;             /*!< 5 bit Application Key identifier */
 } meshSecUtrDecryptParams_t;
 
 /*************************************************************************************************/
@@ -209,9 +214,9 @@ typedef struct meshSecUtrDecryptParams_tag {
  *             virtual.
  */
 /*************************************************************************************************/
-typedef void (*meshSecUtrDecryptCback_t)(bool_t isDecryptSuccess, uint8_t *pAppPayload,
-                                         uint8_t *pLabelUuid, uint16_t appPayloadSize,
-                                         uint16_t appKeyIndex, uint16_t netKeyIndex, void *pParam);
+typedef void(*meshSecUtrDecryptCback_t)(bool_t isDecryptSuccess, uint8_t *pAppPayload,
+                                        uint8_t *pLabelUuid, uint16_t appPayloadSize,
+                                        uint16_t appKeyIndex, uint16_t netKeyIndex, void *pParam);
 
 /*! Mesh Security Network PDU encryption and obfuscation parameters
  *  Description:
@@ -221,27 +226,28 @@ typedef void (*meshSecUtrDecryptCback_t)(bool_t isDecryptSuccess, uint8_t *pAppP
  *  - pObfEncNwkPduNoMic must reference memory that does not change until the procedure is complete
  *  - pNwkPduNetMic must reference memory that does not change until the procedure is complete
  */
-typedef struct meshSecNwkEncObfParams_tag {
-    uint32_t ivIndex; /*!< IV Index */
-    uint16_t netKeyIndex; /*!< Global network key identifier */
-    meshAddress_t friendOrLpnAddress; /*!< Unassigned address if master credentials
+typedef struct meshSecNwkEncObfParams_tag
+{
+  uint32_t        ivIndex;             /*!< IV Index */
+  uint16_t        netKeyIndex;         /*!< Global network key identifier */
+  meshAddress_t   friendOrLpnAddress;  /*!< Unassigned address if master credentials
                                         *   are used, or the friend or low power
                                         *   node address
                                         */
-    uint8_t *pNwkPduNoMic; /*!< Pointer to buffer containing a
+  uint8_t         *pNwkPduNoMic;       /*!< Pointer to buffer containing a
                                         *   network PDU excluding NetMIC
                                         */
-    uint8_t *pObfEncNwkPduNoMic; /*!< Pointer to buffer representing
+  uint8_t         *pObfEncNwkPduNoMic; /*!< Pointer to buffer representing
                                         *   an obfuscated and encrypted network
                                         *   PDU excluding NetMIC
                                         */
-    uint8_t *pNwkPduNetMic; /*!< Pointer to buffer where the calculated
+  uint8_t         *pNwkPduNetMic;      /*!< Pointer to buffer where the calculated
                                         *   NetMic is stored
                                         */
-    uint8_t nwkPduNoMicSize; /*!< Size of the network PDU excluding
+  uint8_t         nwkPduNoMicSize;     /*!< Size of the network PDU excluding
                                         *   Net MIC in bytes
                                         */
-    uint8_t netMicSize; /*!< Size of the Net MIC in bytes
+  uint8_t         netMicSize;          /*!< Size of the Net MIC in bytes
                                         *   (can be only 4 or 8 bytes)
                                         */
 } meshSecNwkEncObfParams_t;
@@ -264,21 +270,22 @@ typedef struct meshSecNwkEncObfParams_tag {
 /*************************************************************************************************/
 typedef void (*meshSecNwkEncObfCback_t)(bool_t isSuccess, bool_t isProxyConfig,
                                         uint8_t *pObfEncNwkPduNoMic, uint8_t nwkPduNoMicSize,
-                                        uint8_t *pNwkPduNetMic, uint8_t netMicSize, void *pParam);
+                                        uint8_t *pNwkPduNetMic, uint8_t  netMicSize, void *pParam);
 
 /*! Mesh Security Network PDU deobfuscation and decryption parameters
  *  Description:
  */
-typedef struct meshSecNwkDeobfDecParams_tag {
-    uint8_t *pObfEncAuthNwkPdu; /*!< Pointer to buffer representing a received
+typedef struct meshSecNwkDeobfDecParams_tag
+{
+  uint8_t   *pObfEncAuthNwkPdu; /*!< Pointer to buffer representing a received
                                  *   obfuscated, encrypted and authenticated
                                  *   network PDU
                                  */
-    uint8_t *pNwkPduNoMic; /*!< Pointer to buffer where the decrypted and
+  uint8_t   *pNwkPduNoMic;      /*!< Pointer to buffer where the decrypted and
                                  *   deobfuscated network PDU excluding NetMic
                                  *   is stored
                                  */
-    uint8_t nwkPduSize; /*!< Size of the received encrypted,
+  uint8_t   nwkPduSize;         /*!< Size of the received encrypted,
                                  *   obfuscated and authenticated network pdu
                                  */
 } meshSecNwkDeobfDecParams_t;
@@ -336,9 +343,8 @@ typedef void (*meshSecBeaconComputeAuthCback_t)(bool_t isSuccess, uint8_t *pSecN
  *  \return    None.
  */
 /*************************************************************************************************/
-typedef void (*meshSecBeaconAuthCback_t)(bool_t isSuccess, bool_t newKeyUsed,
-                                         uint8_t *pSecNwkBeacon, uint16_t netKeyIndex,
-                                         void *pParam);
+typedef void (*meshSecBeaconAuthCback_t)(bool_t isSuccess, bool_t newKeyUsed, uint8_t *pSecNwkBeacon,
+                                         uint16_t netKeyIndex, void *pParam);
 
 /*************************************************************************************************/
 /*!
@@ -481,7 +487,8 @@ meshSecRetVal_t MeshSecRemoveKeyMaterial(meshSecKeyType_t keyType, uint16_t keyI
  */
 /*************************************************************************************************/
 meshSecRetVal_t MeshSecAddFriendCred(const meshSecFriendshipCred_t *pFriendshipCred,
-                                     meshSecFriendCredDerivCback_t friendCredAdded, void *pParam);
+                                     meshSecFriendCredDerivCback_t friendCredAdded,
+                                     void *pParam);
 
 /*************************************************************************************************/
 /*!

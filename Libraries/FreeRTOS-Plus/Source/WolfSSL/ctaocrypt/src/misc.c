@@ -20,8 +20,8 @@
  */
 
 #ifdef NO_INLINE
-#include <wolfssl/wolfcrypt/misc.h>
+    #include <wolfssl/wolfcrypt/misc.h>
 #else
-/* for inline includes */
-#include <wolfcrypt/src/misc.c>
+    /* for inline includes */
+    #include <wolfcrypt/src/misc.c>
 #endif

@@ -42,19 +42,19 @@
  *  \return Packet length.
  */
 /*************************************************************************************************/
-static uint8_t lhciPackNumCompPktsEvt(uint8_t *pBuf, uint8_t numHandles, uint16_t *pHandle,
-                                      uint16_t *pNumPkts)
+static uint8_t lhciPackNumCompPktsEvt(uint8_t *pBuf, uint8_t numHandles, uint16_t *pHandle, uint16_t *pNumPkts)
 {
-    const uint8_t len = HCI_LEN_NUM_CMPL_PKTS(numHandles);
+  const uint8_t len = HCI_LEN_NUM_CMPL_PKTS(numHandles);
 
-    UINT8_TO_BSTREAM(pBuf, numHandles);
+  UINT8_TO_BSTREAM (pBuf, numHandles);
 
-    for (unsigned int i = 0; i < numHandles; i++) {
-        UINT16_TO_BSTREAM(pBuf, pHandle[i]);
-        UINT16_TO_BSTREAM(pBuf, pNumPkts[i]);
-    }
+  for (unsigned int i = 0; i < numHandles; i++)
+  {
+    UINT16_TO_BSTREAM(pBuf, pHandle[i]);
+    UINT16_TO_BSTREAM(pBuf, pNumPkts[i]);
+  }
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -66,8 +66,8 @@ static uint8_t lhciPackNumCompPktsEvt(uint8_t *pBuf, uint8_t numHandles, uint16_
 /*************************************************************************************************/
 static void lhciFreeRcvdIsoData(uint8_t *pIsoData)
 {
-    WsfMsgFree(pIsoData);
-    LlRecvIsoDataComplete(1);
+  WsfMsgFree(pIsoData);
+  LlRecvIsoDataComplete(1);
 }
 
 /*************************************************************************************************/
@@ -81,14 +81,14 @@ static void lhciFreeRcvdIsoData(uint8_t *pIsoData)
 /*************************************************************************************************/
 void lhciIsoSendComplete(uint8_t numHandles, uint16_t *pHandle, uint16_t *pNumPkts)
 {
-    uint8_t *pEvtBuf;
+  uint8_t *pEvtBuf;
 
-    if ((pEvtBuf = lhciAllocEvt(HCI_NUM_CMPL_PKTS_EVT, HCI_LEN_NUM_CMPL_PKTS(numHandles))) !=
-        NULL) {
-        lhciPackNumCompPktsEvt(pEvtBuf, numHandles, pHandle, pNumPkts);
+  if ((pEvtBuf = lhciAllocEvt(HCI_NUM_CMPL_PKTS_EVT, HCI_LEN_NUM_CMPL_PKTS(numHandles))) != NULL)
+  {
+    lhciPackNumCompPktsEvt(pEvtBuf, numHandles, pHandle, pNumPkts);
 
-        lhciSendEvt(pEvtBuf);
-    }
+    lhciSendEvt(pEvtBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -102,18 +102,19 @@ void lhciIsoSendComplete(uint8_t numHandles, uint16_t *pHandle, uint16_t *pNumPk
 /*************************************************************************************************/
 static bool_t lhciSinkIso(uint8_t *pBuf)
 {
-    if (lhciIsoCb.recvIsoSink) {
-        uint8_t len;
+  if (lhciIsoCb.recvIsoSink)
+  {
+    uint8_t len;
 
-        len = pBuf[2];
-        lhciIsoCb.recvIsoPktCnt++;
-        lhciIsoCb.recvIsoOctetCnt += len;
+    len = pBuf[2];
+    lhciIsoCb.recvIsoPktCnt++;
+    lhciIsoCb.recvIsoOctetCnt += len;
 
-        WsfMsgFree(pBuf);
-        LlRecvIsoDataComplete(1);
-        return TRUE;
-    }
-    return FALSE;
+    WsfMsgFree(pBuf);
+    LlRecvIsoDataComplete(1);
+    return TRUE;
+  }
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -125,15 +126,17 @@ static bool_t lhciSinkIso(uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t *lhciRecvIso(void)
 {
-    uint8_t *pIsoData;
+  uint8_t *pIsoData;
 
-    if ((pIsoData = LlRecvIsoData()) != NULL) {
-        if (!lhciSinkIso(pIsoData)) {
-            return pIsoData;
-        }
+  if ((pIsoData = LlRecvIsoData()) != NULL)
+  {
+    if (!lhciSinkIso(pIsoData))
+    {
+      return pIsoData;
     }
+  }
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -147,21 +150,26 @@ uint8_t *lhciRecvIso(void)
 /*************************************************************************************************/
 void lhciIsoRecvPending(uint8_t numHandles, uint16_t *pHandle, uint16_t *pNumPkts)
 {
-    uint8_t *pIsoData;
+  uint8_t *pIsoData;
 
-    if (lhciIsoCb.isoRxTest == TRUE) {
-        if ((pIsoData = LlRecvIsoData()) != NULL) {
-            lhciFreeRcvdIsoData(pIsoData);
-            return;
-        }
-    } else {
-        if (lhciIsoCb.recvIsoSink && ((pIsoData = LlRecvIsoData()) != NULL)) {
-            lhciSinkIso(pIsoData);
-            return;
-        }
+  if (lhciIsoCb.isoRxTest == TRUE)
+  {
+    if ((pIsoData = LlRecvIsoData()) != NULL)
+    {
+      lhciFreeRcvdIsoData(pIsoData);
+      return;
     }
+  }
+  else
+  {
+    if (lhciIsoCb.recvIsoSink && ((pIsoData = LlRecvIsoData()) != NULL))
+    {
+      lhciSinkIso(pIsoData);
+      return;
+    }
+  }
 
-    ChciTrNeedsService(CHCI_TR_PROT_BLE);
+  ChciTrNeedsService(CHCI_TR_PROT_BLE);
 }
 
 /*************************************************************************************************/
@@ -175,17 +183,21 @@ void lhciIsoRecvPending(uint8_t numHandles, uint16_t *pHandle, uint16_t *pNumPkt
 /*************************************************************************************************/
 bool_t lhciIsoEncodeEvtPkt(LlEvt_t *pEvt)
 {
-    uint8_t *pEvtBuf = NULL;
+  uint8_t *pEvtBuf = NULL;
 
-    switch (pEvt->hdr.event) {
+  switch (pEvt->hdr.event)
+  {
+
     default:
-        break;
-    }
+      break;
+  }
 
-    if (pEvtBuf) {
-        lhciSendEvt(pEvtBuf);
-        return TRUE;
-    }
+  if (pEvtBuf)
+  {
+    lhciSendEvt(pEvtBuf);
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
+

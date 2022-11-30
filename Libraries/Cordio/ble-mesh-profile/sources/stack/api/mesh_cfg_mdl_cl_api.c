@@ -62,23 +62,24 @@
 **************************************************************************************************/
 
 /*! Verifies if conditions are met for a local request */
-#define MESH_CFG_MDL_CL_IS_REQ_LOCAL(addr, pDevKey) \
-    (((addr) == MESH_CFG_MDL_CL_LOCAL_NODE_SR) && ((pDevKey) == NULL))
+#define MESH_CFG_MDL_CL_IS_REQ_LOCAL(addr,pDevKey) (((addr) == MESH_CFG_MDL_CL_LOCAL_NODE_SR)\
+                                                    && ((pDevKey) == NULL))
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! Definition of Core model to be registered in the Access Layer */
-static meshAccCoreMdl_t cfgMdlClAccMdl = {
-    .msgRecvCback = meshCfgMdlClAccMsgRcvCback, /*! Message received callback */
-    .pOpcodeArray = meshCfgMdlSrOpcodes, /*! Opcodes registered for Rx */
-    .opcodeArrayLen = MESH_CFG_MDL_SR_MAX_OP, /*! Number of opcodes */
-    .elemId = 0, /*! Only primary element allowed for
+static meshAccCoreMdl_t cfgMdlClAccMdl =
+{
+  .msgRecvCback   = meshCfgMdlClAccMsgRcvCback,        /*! Message received callback */
+  .pOpcodeArray   = meshCfgMdlSrOpcodes,               /*! Opcodes registered for Rx */
+  .opcodeArrayLen = MESH_CFG_MDL_SR_MAX_OP,            /*! Number of opcodes */
+  .elemId         = 0,                                 /*! Only primary element allowed for
                                                         *  Configuration Client
                                                         */
-    .mdlId.isSigModel = TRUE, /*! SIG model */
-    .mdlId.modelId.sigModelId = MESH_CFG_MDL_CL_MODEL_ID /*! Configuration Client Model ID. */
+  .mdlId.isSigModel         = TRUE,                    /*! SIG model */
+  .mdlId.modelId.sigModelId = MESH_CFG_MDL_CL_MODEL_ID /*! Configuration Client Model ID. */
 };
 
 /**************************************************************************************************
@@ -86,10 +87,13 @@ static meshAccCoreMdl_t cfgMdlClAccMdl = {
 **************************************************************************************************/
 
 /*! Mesh Configuration Client control block */
-meshCfgMdlClCb_t meshCfgMdlClCb = { .cback = meshCfgMdlClEmptyCback,
-                                    .opTimeoutSec = MESH_CFG_MDL_CL_OP_TIMEOUT_DEFAULT_SEC,
-                                    .cfgMdlSrDbNumEntries = 0,
-                                    .rspTmrUidGen = 0 };
+meshCfgMdlClCb_t meshCfgMdlClCb =
+{
+  .cback                = meshCfgMdlClEmptyCback,
+  .opTimeoutSec         = MESH_CFG_MDL_CL_OP_TIMEOUT_DEFAULT_SEC,
+  .cfgMdlSrDbNumEntries = 0,
+  .rspTmrUidGen         = 0
+};
 
 /**************************************************************************************************
   Local Functions
@@ -114,21 +118,23 @@ meshCfgMdlClCb_t meshCfgMdlClCb = { .cback = meshCfgMdlClEmptyCback,
 static bool_t meshCfgMdlClCheckSrParamsAndNotify(meshAddress_t addr, const uint8_t *pDevKey,
                                                  uint16_t netKeyIndex, meshCfgMdlClEvt_t *pEvt)
 {
-    /*! Validates that Configuration Server address, device key and Network Key Index are in valid
+  /*! Validates that Configuration Server address, device key and Network Key Index are in valid
    *  ranges for each API
    */
 
-    if (!MESH_CFG_MDL_CL_IS_REQ_LOCAL((addr), (pDevKey))) {
-        if (!MESH_IS_ADDR_UNICAST((addr)) || ((pDevKey) == NULL) ||
-            ((netKeyIndex) > MESH_NET_KEY_INDEX_MAX_VAL)) {
-            /* Invoke user callback. */
-            meshCfgMdlClCb.cback(pEvt);
+  if (!MESH_CFG_MDL_CL_IS_REQ_LOCAL((addr), (pDevKey)))
+  {
+    if (!MESH_IS_ADDR_UNICAST((addr)) || ((pDevKey) == NULL) ||
+        ((netKeyIndex) > MESH_NET_KEY_INDEX_MAX_VAL))
+    {
+      /* Invoke user callback. */
+      meshCfgMdlClCb.cback(pEvt);
 
-            return FALSE;
-        }
+      return FALSE;
     }
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -144,38 +150,41 @@ static bool_t meshCfgMdlClCheckSrParamsAndNotify(meshAddress_t addr, const uint8
 /*************************************************************************************************/
 static bool_t meshCfgMdlClSecDeviceKeyReader(meshAddress_t addr, uint8_t *pOutDevKey)
 {
-    uint16_t dbIdx;
+  uint16_t dbIdx;
 
-    /* Validate parameters. */
-    if (!MESH_IS_ADDR_UNICAST(addr) || pOutDevKey == NULL) {
-        return FALSE;
-    }
-
-    /* Initialize critical section. */
-    WSF_CS_INIT(cs);
-
-    /* Enter critical section. */
-    WSF_CS_ENTER(cs);
-
-    for (dbIdx = 0; dbIdx < meshCfgMdlClCb.cfgMdlSrDbNumEntries; dbIdx++) {
-        /* Check if address matches an used entry. */
-        if ((addr == meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrAddr) &&
-            (meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount != 0)) {
-            /* Copy Device Key. */
-            memcpy(pOutDevKey, meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrDevKey, MESH_KEY_SIZE_128);
-
-            /* Exit critical section. */
-            WSF_CS_EXIT(cs);
-
-            return TRUE;
-        }
-    }
-
-    /* Exit critical section. */
-    WSF_CS_EXIT(cs);
-
-    /* No matching address found. */
+  /* Validate parameters. */
+  if (!MESH_IS_ADDR_UNICAST(addr) || pOutDevKey == NULL)
+  {
     return FALSE;
+  }
+
+  /* Initialize critical section. */
+  WSF_CS_INIT(cs);
+
+  /* Enter critical section. */
+  WSF_CS_ENTER(cs);
+
+  for (dbIdx = 0; dbIdx < meshCfgMdlClCb.cfgMdlSrDbNumEntries; dbIdx++)
+  {
+    /* Check if address matches an used entry. */
+    if((addr == meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrAddr) &&
+       (meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount != 0))
+    {
+      /* Copy Device Key. */
+      memcpy(pOutDevKey, meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrDevKey, MESH_KEY_SIZE_128);
+
+      /* Exit critical section. */
+      WSF_CS_EXIT(cs);
+
+      return TRUE;
+    }
+  }
+
+  /* Exit critical section. */
+  WSF_CS_EXIT(cs);
+
+  /* No matching address found. */
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -190,58 +199,62 @@ static bool_t meshCfgMdlClSecDeviceKeyReader(meshAddress_t addr, uint8_t *pOutDe
 /*************************************************************************************************/
 bool_t meshCfgMdlClAddToSrDbSafe(meshAddress_t cfgMdlSrAddr, const uint8_t *pDevKey)
 {
-    uint16_t dbIdx;
-    uint16_t emptyIdx = meshCfgMdlClCb.cfgMdlSrDbNumEntries;
+  uint16_t dbIdx;
+  uint16_t emptyIdx = meshCfgMdlClCb.cfgMdlSrDbNumEntries;
 
-    /* Initialize critical section. */
-    WSF_CS_INIT(cs);
+  /* Initialize critical section. */
+  WSF_CS_INIT(cs);
 
-    /* Enter critical section. */
-    WSF_CS_ENTER(cs);
+  /* Enter critical section. */
+  WSF_CS_ENTER(cs);
 
-    /* Iterate through database. */
-    for (dbIdx = 0; dbIdx < meshCfgMdlClCb.cfgMdlSrDbNumEntries; dbIdx++) {
-        /* Check if remote server exists. */
-        if (meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrAddr == cfgMdlSrAddr) {
-            /* Device Key must be the same. */
-            WSF_ASSERT(memcmp(pDevKey, meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrDevKey,
-                              MESH_KEY_SIZE_128) == 0x00);
+  /* Iterate through database. */
+  for (dbIdx = 0; dbIdx < meshCfgMdlClCb.cfgMdlSrDbNumEntries; dbIdx++)
+  {
+    /* Check if remote server exists. */
+    if (meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrAddr == cfgMdlSrAddr)
+    {
+      /* Device Key must be the same. */
+      WSF_ASSERT(memcmp(pDevKey, meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrDevKey,
+                                 MESH_KEY_SIZE_128) == 0x00);
 
-            /* Increment reference count because there is another request pending for this server. */
-            meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount++;
+      /* Increment reference count because there is another request pending for this server. */
+      meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount++;
 
-            /* Exit critical section. */
-            WSF_CS_EXIT(cs);
+      /* Exit critical section. */
+      WSF_CS_EXIT(cs);
 
-            return TRUE;
-        }
-
-        /* Check if there is an empty entry. */
-        if ((meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrAddr == MESH_ADDR_TYPE_UNASSIGNED) &&
-            (emptyIdx == meshCfgMdlClCb.cfgMdlSrDbNumEntries)) {
-            emptyIdx = dbIdx;
-        }
+      return TRUE;
     }
 
-    /* If server was not in the database and there is an empty entry, store address and key. */
-    if (emptyIdx != meshCfgMdlClCb.cfgMdlSrDbNumEntries) {
-        meshCfgMdlClCb.pCfgMdlSrDb[emptyIdx].cfgMdlSrAddr = cfgMdlSrAddr;
-        memcpy(meshCfgMdlClCb.pCfgMdlSrDb[emptyIdx].cfgMdlSrDevKey, pDevKey, MESH_KEY_SIZE_128);
-
-        /* Set reference count to 1 since there is one request pending. */
-        meshCfgMdlClCb.pCfgMdlSrDb[emptyIdx].refCount = 1;
-
-        /* Exit critical section. */
-        WSF_CS_EXIT(cs);
-
-        return TRUE;
+    /* Check if there is an empty entry. */
+    if ((meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrAddr == MESH_ADDR_TYPE_UNASSIGNED) &&
+        (emptyIdx == meshCfgMdlClCb.cfgMdlSrDbNumEntries))
+    {
+      emptyIdx = dbIdx;
     }
+  }
+
+  /* If server was not in the database and there is an empty entry, store address and key. */
+  if (emptyIdx != meshCfgMdlClCb.cfgMdlSrDbNumEntries)
+  {
+    meshCfgMdlClCb.pCfgMdlSrDb[emptyIdx].cfgMdlSrAddr = cfgMdlSrAddr;
+    memcpy(meshCfgMdlClCb.pCfgMdlSrDb[emptyIdx].cfgMdlSrDevKey, pDevKey, MESH_KEY_SIZE_128);
+
+    /* Set reference count to 1 since there is one request pending. */
+    meshCfgMdlClCb.pCfgMdlSrDb[emptyIdx].refCount = 1;
 
     /* Exit critical section. */
     WSF_CS_EXIT(cs);
 
-    /* Server cannot be added. */
-    return FALSE;
+    return TRUE;
+  }
+
+  /* Exit critical section. */
+  WSF_CS_EXIT(cs);
+
+  /* Server cannot be added. */
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -255,38 +268,40 @@ bool_t meshCfgMdlClAddToSrDbSafe(meshAddress_t cfgMdlSrAddr, const uint8_t *pDev
 /*************************************************************************************************/
 void meshCfgMdlClRemFromSrDbSafe(meshAddress_t cfgMdlSrAddr)
 {
-    uint16_t dbIdx;
+  uint16_t dbIdx;
 
-    /* Initialize critical section. */
-    WSF_CS_INIT(cs);
+  /* Initialize critical section. */
+  WSF_CS_INIT(cs);
 
-    /* Enter critical section. */
-    WSF_CS_ENTER(cs);
+  /* Enter critical section. */
+  WSF_CS_ENTER(cs);
 
-    for (dbIdx = 0; dbIdx < meshCfgMdlClCb.cfgMdlSrDbNumEntries; dbIdx++) {
-        if (meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrAddr == cfgMdlSrAddr) {
-            WSF_ASSERT(meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount > 0);
+  for (dbIdx = 0; dbIdx < meshCfgMdlClCb.cfgMdlSrDbNumEntries; dbIdx++)
+  {
+    if (meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].cfgMdlSrAddr == cfgMdlSrAddr)
+    {
+      WSF_ASSERT(meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount > 0);
 
-            /* Decrement reference count. */
-            meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount--;
+      /* Decrement reference count. */
+      meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount--;
 
-            if (meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount == 0) {
-                /* Reset internal memory on this index in the db. */
-                memset(&(meshCfgMdlClCb.pCfgMdlSrDb[dbIdx]), 0,
-                       sizeof(meshCfgMdlClRemCfgMdlSrDbEntry_t));
-            }
+      if (meshCfgMdlClCb.pCfgMdlSrDb[dbIdx].refCount == 0)
+      {
+        /* Reset internal memory on this index in the db. */
+        memset(&(meshCfgMdlClCb.pCfgMdlSrDb[dbIdx]), 0, sizeof(meshCfgMdlClRemCfgMdlSrDbEntry_t));
+      }
 
-            /* Exit critical section. */
-            WSF_CS_EXIT(cs);
+      /* Exit critical section. */
+      WSF_CS_EXIT(cs);
 
-            return;
-        }
+      return;
     }
+  }
 
-    /* Exit critical section. */
-    WSF_CS_EXIT(cs);
+  /* Exit critical section. */
+  WSF_CS_EXIT(cs);
 
-    return;
+  return;
 }
 
 /*************************************************************************************************/
@@ -311,55 +326,64 @@ static inline meshCfgMdlClOpReq_t *meshCfgMdlClAllocateRequest(meshAddress_t cfg
                                                                uint16_t cfgMdlSrNetKeyIndex,
                                                                uint16_t msgParamLen)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    meshAddress_t elem0Addr;
+  meshCfgMdlClOpReq_t *pReq;
+  meshAddress_t elem0Addr;
 
-    /* Check if request is local without explicit API request and convert. */
-    if (MESH_IS_ADDR_UNICAST(cfgMdlSrAddr)) {
-        MeshLocalCfgGetAddrFromElementId(0, &elem0Addr);
+  /* Check if request is local without explicit API request and convert. */
+  if (MESH_IS_ADDR_UNICAST(cfgMdlSrAddr))
+  {
+    MeshLocalCfgGetAddrFromElementId(0, &elem0Addr);
 
-        if (cfgMdlSrAddr == elem0Addr) {
-            cfgMdlSrAddr = MESH_ADDR_TYPE_UNASSIGNED;
-            pCfgMdlSrDevKey = NULL;
-        }
+    if (cfgMdlSrAddr == elem0Addr)
+    {
+      cfgMdlSrAddr = MESH_ADDR_TYPE_UNASSIGNED;
+      pCfgMdlSrDevKey = NULL;
     }
+  }
 
-    /* Allocate API message. */
-    if ((pReq = (meshCfgMdlClOpReq_t *)WsfMsgAlloc(sizeof(meshCfgMdlClOpReq_t) + msgParamLen)) !=
-        NULL) {
-        /* Allocate operation request parameters. */
-        if ((pReq->pReqParam = (meshCfgMdlClOpReqParams_t *)WsfBufAlloc(
-                 sizeof(meshCfgMdlClOpReqParams_t))) != NULL) {
-            pReq->hdr.event = MESH_CFG_MDL_CL_MSG_API_SEND;
+  /* Allocate API message. */
+  if ((pReq = (meshCfgMdlClOpReq_t *)WsfMsgAlloc(sizeof(meshCfgMdlClOpReq_t) + msgParamLen)) != NULL)
+  {
+    /* Allocate operation request parameters. */
+    if ((pReq->pReqParam = (meshCfgMdlClOpReqParams_t *)WsfBufAlloc(sizeof(meshCfgMdlClOpReqParams_t)))
+        != NULL)
+    {
+      pReq->hdr.event = MESH_CFG_MDL_CL_MSG_API_SEND;
 
-            /* Set pointer to message parameters and length. */
-            if (msgParamLen == 0) {
-                pReq->pMsgParam = NULL;
-            } else {
-                pReq->pMsgParam = (uint8_t *)pReq + sizeof(meshCfgMdlClOpReq_t);
-            }
-            pReq->msgParamLen = msgParamLen;
+      /* Set pointer to message parameters and length. */
+      if (msgParamLen == 0)
+      {
+        pReq->pMsgParam = NULL;
+      }
+      else
+      {
+        pReq->pMsgParam = (uint8_t *)pReq + sizeof(meshCfgMdlClOpReq_t);
+      }
+      pReq->msgParamLen = msgParamLen;
 
-            /* Try to add remote server to database. */
-            if (!MESH_CFG_MDL_CL_IS_REQ_LOCAL(cfgMdlSrAddr, pCfgMdlSrDevKey) &&
-                !meshCfgMdlClAddToSrDbSafe(cfgMdlSrAddr, pCfgMdlSrDevKey)) {
-                WsfBufFree(pReq->pReqParam);
-                WsfMsgFree(pReq);
+      /* Try to add remote server to database. */
+      if (!MESH_CFG_MDL_CL_IS_REQ_LOCAL(cfgMdlSrAddr, pCfgMdlSrDevKey) &&
+          !meshCfgMdlClAddToSrDbSafe(cfgMdlSrAddr, pCfgMdlSrDevKey))
+      {
+        WsfBufFree(pReq->pReqParam);
+        WsfMsgFree(pReq);
 
-                return NULL;
-            }
+        return NULL;
+      }
 
-            pReq->pReqParam->cfgMdlSrAddr = cfgMdlSrAddr;
-            pReq->pReqParam->cfgMdlSrNetKeyIndex = cfgMdlSrNetKeyIndex;
+      pReq->pReqParam->cfgMdlSrAddr = cfgMdlSrAddr;
+      pReq->pReqParam->cfgMdlSrNetKeyIndex = cfgMdlSrNetKeyIndex;
 
-            return pReq;
-        } else {
-            /* Free API message. */
-            WsfMsgFree(pReq);
-        }
+      return pReq;
     }
+    else
+    {
+      /* Free API message. */
+      WsfMsgFree(pReq);
+    }
+  }
 
-    return NULL;
+  return NULL;
 }
 
 /**************************************************************************************************
@@ -375,9 +399,9 @@ static inline meshCfgMdlClOpReq_t *meshCfgMdlClAllocateRequest(meshAddress_t cfg
 /*************************************************************************************************/
 uint32_t MeshCfgMdlClGetRequiredMemory(void)
 {
-    /* Calculate required memory and return it. */
-    return MESH_UTILS_ALIGN(pMeshConfig->pMemoryConfig->cfgMdlClMaxSrSupported *
-                            sizeof(meshCfgMdlClRemCfgMdlSrDbEntry_t));
+  /* Calculate required memory and return it. */
+  return MESH_UTILS_ALIGN(pMeshConfig->pMemoryConfig->cfgMdlClMaxSrSupported *
+                          sizeof(meshCfgMdlClRemCfgMdlSrDbEntry_t));
 }
 
 /*************************************************************************************************/
@@ -392,47 +416,49 @@ uint32_t MeshCfgMdlClGetRequiredMemory(void)
 /*************************************************************************************************/
 uint32_t MeshCfgMdlClInit(uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-    uint32_t reqMem = MeshCfgMdlClGetRequiredMemory();
+  uint32_t reqMem = MeshCfgMdlClGetRequiredMemory();
 
-    /* Insufficient memory. */
-    if (reqMem > freeMemSize) {
-        WSF_ASSERT(FALSE);
-        return 0;
-    }
+  /* Insufficient memory. */
+  if (reqMem > freeMemSize)
+  {
+    WSF_ASSERT(FALSE);
+    return 0;
+  }
 
-    /* Reserve configuration memory for remote Configuration Servers. */
-    meshCfgMdlClCb.pCfgMdlSrDb = (meshCfgMdlClRemCfgMdlSrDbEntry_t *)pFreeMem;
+  /* Reserve configuration memory for remote Configuration Servers. */
+  meshCfgMdlClCb.pCfgMdlSrDb = (meshCfgMdlClRemCfgMdlSrDbEntry_t *)pFreeMem;
 
-    /* Store number of entries in the remote device database. */
-    meshCfgMdlClCb.cfgMdlSrDbNumEntries = pMeshConfig->pMemoryConfig->cfgMdlClMaxSrSupported;
+  /* Store number of entries in the remote device database. */
+  meshCfgMdlClCb.cfgMdlSrDbNumEntries = pMeshConfig->pMemoryConfig->cfgMdlClMaxSrSupported;
 
-    /* Reset entries. */
-    memset(meshCfgMdlClCb.pCfgMdlSrDb, 0,
-           meshCfgMdlClCb.cfgMdlSrDbNumEntries * sizeof(meshCfgMdlClRemCfgMdlSrDbEntry_t));
+  /* Reset entries. */
+  memset(meshCfgMdlClCb.pCfgMdlSrDb, 0,
+         meshCfgMdlClCb.cfgMdlSrDbNumEntries * sizeof(meshCfgMdlClRemCfgMdlSrDbEntry_t));
 
-    /* Initialize operation queue. */
-    while (!WsfQueueEmpty(&(meshCfgMdlClCb.opQueue))) {
-        WsfBufFree(WsfQueueDeq(&(meshCfgMdlClCb.opQueue)));
-    }
-    WSF_QUEUE_INIT(&(meshCfgMdlClCb.opQueue));
+  /* Initialize operation queue. */
+  while (!WsfQueueEmpty(&(meshCfgMdlClCb.opQueue)))
+  {
+    WsfBufFree(WsfQueueDeq(&(meshCfgMdlClCb.opQueue)));
+  }
+  WSF_QUEUE_INIT(&(meshCfgMdlClCb.opQueue));
 
-    /* Register the Configuration Client in the Access Layer. */
-    MeshAccRegisterCoreModel(&cfgMdlClAccMdl);
+  /* Register the Configuration Client in the Access Layer. */
+  MeshAccRegisterCoreModel(&cfgMdlClAccMdl);
 
-    /* Register the WSF API message handler. */
-    meshCb.cfgMdlClMsgCback = meshCfgMdlClWsfMsgHandlerCback;
+  /* Register the WSF API message handler. */
+  meshCb.cfgMdlClMsgCback = meshCfgMdlClWsfMsgHandlerCback;
 
-    /* Register to default user callback. */
-    meshCfgMdlClCb.cback = meshCfgMdlClEmptyCback;
+  /* Register to default user callback. */
+  meshCfgMdlClCb.cback = meshCfgMdlClEmptyCback;
 
-    /* Set default timeout for operations. */
-    meshCfgMdlClCb.opTimeoutSec = MESH_CFG_MDL_CL_OP_TIMEOUT_DEFAULT_SEC;
+  /* Set default timeout for operations. */
+  meshCfgMdlClCb.opTimeoutSec = MESH_CFG_MDL_CL_OP_TIMEOUT_DEFAULT_SEC;
 
-    /* Register Device Key Reader in the Security Module. */
-    MeshSecRegisterRemoteDevKeyReader(meshCfgMdlClSecDeviceKeyReader);
+  /* Register Device Key Reader in the Security Module. */
+  MeshSecRegisterRemoteDevKeyReader(meshCfgMdlClSecDeviceKeyReader);
 
-    MESH_TRACE_INFO0("MESH CFG CL: init");
-    return reqMem;
+  MESH_TRACE_INFO0("MESH CFG CL: init");
+  return reqMem;
 }
 
 /*************************************************************************************************/
@@ -447,22 +473,24 @@ uint32_t MeshCfgMdlClInit(uint8_t *pFreeMem, uint32_t freeMemSize)
 /*************************************************************************************************/
 void MeshCfgMdlClRegister(meshCfgMdlClCback_t meshCfgMdlClCback, uint16_t timeoutSeconds)
 {
-    WSF_CS_INIT(cs);
+  WSF_CS_INIT(cs);
 
-    /* Check callback. */
-    if (meshCfgMdlClCback != NULL) {
-        WSF_CS_ENTER(cs);
-        /* Set callback into control block. */
-        meshCfgMdlClCb.cback = meshCfgMdlClCback;
-        WSF_CS_EXIT(cs);
-    }
+  /* Check callback. */
+  if (meshCfgMdlClCback != NULL)
+  {
+    WSF_CS_ENTER(cs);
+    /* Set callback into control block. */
+    meshCfgMdlClCb.cback = meshCfgMdlClCback;
+    WSF_CS_EXIT(cs);
+  }
 
-    /* Check timeout. */
-    if (timeoutSeconds != 0) {
-        WSF_CS_ENTER(cs);
-        meshCfgMdlClCb.opTimeoutSec = timeoutSeconds;
-        WSF_CS_EXIT(cs);
-    }
+  /* Check timeout. */
+  if (timeoutSeconds != 0)
+  {
+    WSF_CS_ENTER(cs);
+    meshCfgMdlClCb.opTimeoutSec = timeoutSeconds;
+    WSF_CS_EXIT(cs);
+  }
 }
 
 /*************************************************************************************************/
@@ -484,34 +512,39 @@ void MeshCfgMdlClRegister(meshCfgMdlClCback_t meshCfgMdlClCback, uint16_t timeou
 void MeshCfgMdlClBeaconGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                            const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    wsfMsgHdr_t evt = { .event = MESH_CFG_MDL_SR_EVENT,
-                        .param = MESH_CFG_MDL_BEACON_GET_EVENT,
-                        .status = MESH_CFG_MDL_CL_INVALID_PARAMS };
-    evt.param = cfgMdlSrAddr;
+  wsfMsgHdr_t evt =
+  {
+    .event = MESH_CFG_MDL_SR_EVENT,
+    .param = MESH_CFG_MDL_BEACON_GET_EVENT,
+    .status = MESH_CFG_MDL_CL_INVALID_PARAMS
+  };
+  evt.param = cfgMdlSrAddr;
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_BEACON_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_BEACON_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_BEACON_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_BEACON_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_BEACON_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_BEACON_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_BEACON_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_BEACON_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -534,44 +567,50 @@ void MeshCfgMdlClBeaconGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIn
 void MeshCfgMdlClBeaconSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                            const uint8_t *pCfgMdlSrDevKey, meshBeaconStates_t beaconState)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_BEACON_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_BEACON_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate Beacon state. */
-    if (!MESH_BEACON_STATE_IS_VALID(beaconState)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate Beacon state. */
+  if (!MESH_BEACON_STATE_IS_VALID(beaconState))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_BEACON_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_BEACON_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Set Beacon state. */
-        pReq->pMsgParam[0] = beaconState;
+  if (pReq != NULL)
+  {
+    /* Set Beacon state. */
+    pReq->pMsgParam[0] = beaconState;
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_BEACON_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_BEACON_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_BEACON_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_BEACON_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_BEACON_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_BEACON_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -594,36 +633,41 @@ void MeshCfgMdlClBeaconSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIn
 void MeshCfgMdlClCompDataGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                              const uint8_t *pCfgMdlSrDevKey, uint8_t pageNumber)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_COMP_PAGE_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_COMP_PAGE_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_COMP_DATA_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_COMP_DATA_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Set Composition Data page field. */
-        pReq->pMsgParam[0] = pageNumber;
+  if (pReq != NULL)
+  {
+    /* Set Composition Data page field. */
+    pReq->pMsgParam[0] = pageNumber;
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_COMP_DATA_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_COMP_DATA_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_COMP_DATA_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_COMP_DATA_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_COMP_PAGE_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_COMP_PAGE_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -645,34 +689,39 @@ void MeshCfgMdlClCompDataGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKey
 void MeshCfgMdlClDefaultTtlGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                                const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_DEFAULT_TTL_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_DEFAULT_TTL_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_DEFAULT_TTL_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_DEFAULT_TTL_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_DEFAULT_TTL_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_DEFAULT_TTL_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_DEFAULT_TTL_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_DEFAULT_TTL_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_DEFAULT_TTL_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_DEFAULT_TTL_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -695,45 +744,52 @@ void MeshCfgMdlClDefaultTtlGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetK
 void MeshCfgMdlClDefaultTtlSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                                const uint8_t *pCfgMdlSrDevKey, uint8_t ttl)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
 
-    /* Validate TTL state values. */
-    if (!MESH_TTL_IS_VALID(ttl) || (ttl == MESH_TX_TTL_FILTER_VALUE) ||
-        (ttl == MESH_USE_DEFAULT_TTL)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-        return;
-    }
+  /* Validate TTL state values. */
+  if (!MESH_TTL_IS_VALID(ttl) || (ttl == MESH_TX_TTL_FILTER_VALUE) ||
+      (ttl == MESH_USE_DEFAULT_TTL))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_DEFAULT_TTL_SET_NUM_BYTES);
+    return;
+  }
 
-    if (pReq != NULL) {
-        /* Set Default TTL field. */
-        pReq->pMsgParam[0] = ttl;
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_DEFAULT_TTL_SET_NUM_BYTES);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_DEFAULT_TTL_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_DEFAULT_TTL_STATUS;
+  if (pReq != NULL)
+  {
+    /* Set Default TTL field. */
+    pReq->pMsgParam[0] = ttl;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_DEFAULT_TTL_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_DEFAULT_TTL_STATUS;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT;
+
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -755,34 +811,39 @@ void MeshCfgMdlClDefaultTtlSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetK
 void MeshCfgMdlClGattProxyGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                               const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_GATT_PROXY_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_GATT_PROXY_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_GATT_PROXY_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_GATT_PROXY_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_GATT_PROXY_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_GATT_PROXY_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_GATT_PROXY_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_GATT_PROXY_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_GATT_PROXY_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_GATT_PROXY_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -805,45 +866,51 @@ void MeshCfgMdlClGattProxyGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKe
 void MeshCfgMdlClGattProxySet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                               const uint8_t *pCfgMdlSrDevKey, meshGattProxyStates_t gattProxyState)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_GATT_PROXY_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_GATT_PROXY_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate GATT Proxy State. */
-    if (gattProxyState >= MESH_GATT_PROXY_FEATURE_NOT_SUPPORTED) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate GATT Proxy State. */
+  if(gattProxyState >= MESH_GATT_PROXY_FEATURE_NOT_SUPPORTED)
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_GATT_PROXY_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_GATT_PROXY_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack Gatt Proxy state. */
-        pReq->pMsgParam[0] = gattProxyState;
+  if (pReq != NULL)
+  {
+    /* Pack Gatt Proxy state. */
+    pReq->pMsgParam[0] = gattProxyState;
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_GATT_PROXY_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_GATT_PROXY_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_GATT_PROXY_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_GATT_PROXY_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_GATT_PROXY_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_GATT_PROXY_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -865,34 +932,39 @@ void MeshCfgMdlClGattProxySet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKe
 void MeshCfgMdlClRelayGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                           const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_RELAY_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_RELAY_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_RELAY_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_RELAY_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_RELAY_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_RELAY_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_RELAY_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_RELAY_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_RELAY_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_RELAY_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -917,49 +989,55 @@ void MeshCfgMdlClRelaySet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyInd
                           const uint8_t *pCfgMdlSrDevKey, meshRelayStates_t relayState,
                           meshRelayRetransState_t *pRelayRetransState)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_RELAY_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_RELAY_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    if ((pRelayRetransState == NULL) || (relayState >= MESH_RELAY_FEATURE_NOT_SUPPORTED) ||
-        (pRelayRetransState->retransCount > (CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_MASK >>
-                                             CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SHIFT)) ||
-        (pRelayRetransState->retransIntervalSteps10Ms >
-         (CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_MASK >>
-          CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SHIFT))) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  if ((pRelayRetransState == NULL) ||
+      (relayState >= MESH_RELAY_FEATURE_NOT_SUPPORTED) ||
+      (pRelayRetransState->retransCount >
+      (CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_MASK >> CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_CNT_SHIFT)) ||
+      (pRelayRetransState->retransIntervalSteps10Ms >
+      (CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_MASK >> CFG_MDL_MSG_RELAY_COMP_STATE_RETRANS_INTVL_SHIFT)))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_RELAY_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_RELAY_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack Relay composite state. */
-        meshCfgMsgPackRelay(pReq->pMsgParam, &relayState, pRelayRetransState);
+  if (pReq != NULL)
+  {
+    /* Pack Relay composite state. */
+    meshCfgMsgPackRelay(pReq->pMsgParam, &relayState, pRelayRetransState);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_RELAY_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_RELAY_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_RELAY_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_RELAY_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_RELAY_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_RELAY_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -988,45 +1066,51 @@ void MeshCfgMdlClPubGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex
                         meshSigModelId_t sigModelId, meshVendorModelId_t vendorModelId,
                         bool_t isSig)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_PUB_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_PUB_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate request parameters. */
-    if (!MESH_IS_ADDR_UNICAST(elemAddr)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate request parameters. */
+  if (!MESH_IS_ADDR_UNICAST(elemAddr))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_MODEL_PUB_GET_NUM_BYTES(isSig));
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_MODEL_PUB_GET_NUM_BYTES(isSig));
 
-    if (pReq != NULL) {
-        /* Pack parameters. */
-        meshCfgMsgPackModelPubGet(pReq->pMsgParam, elemAddr, sigModelId, vendorModelId, isSig);
+  if (pReq != NULL)
+  {
+    /* Pack parameters. */
+    meshCfgMsgPackModelPubGet(pReq->pMsgParam, elemAddr, sigModelId, vendorModelId, isSig);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_MODEL_PUB_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_MODEL_PUB_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_MODEL_PUB_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_MODEL_PUB_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_PUB_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_PUB_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1056,93 +1140,103 @@ void MeshCfgMdlClPubGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex
  */
 /*************************************************************************************************/
 void MeshCfgMdlClPubSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
-                        const uint8_t *pCfgMdlSrDevKey, meshAddress_t elemAddr,
-                        meshAddress_t pubAddr, const uint8_t *pLabelUuid,
-                        meshModelPublicationParams_t *pPubParams, meshSigModelId_t sigModelId,
-                        meshVendorModelId_t vendorModelId, bool_t isSig)
+                        const uint8_t *pCfgMdlSrDevKey, meshAddress_t elemAddr, meshAddress_t pubAddr,
+                        const uint8_t *pLabelUuid, meshModelPublicationParams_t *pPubParams,
+                        meshSigModelId_t sigModelId, meshVendorModelId_t vendorModelId,
+                        bool_t isSig)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    uint8_t *pOffset;
-    bool_t isVirtual = pLabelUuid != NULL;
-    wsfMsgHdr_t evt = { .status = MESH_CFG_MDL_CL_INVALID_PARAMS };
-    /* Set event type based on label UUID. */
-    evt.event = isVirtual ? MESH_CFG_MDL_PUB_VIRT_SET_EVENT : MESH_CFG_MDL_PUB_SET_EVENT;
-    evt.param = cfgMdlSrAddr;
+  meshCfgMdlClOpReq_t *pReq;
+  uint8_t *pOffset;
+  bool_t isVirtual = pLabelUuid != NULL;
+  wsfMsgHdr_t evt =
+  {
+    .status = MESH_CFG_MDL_CL_INVALID_PARAMS
+  };
+  /* Set event type based on label UUID. */
+  evt.event = isVirtual ? MESH_CFG_MDL_PUB_VIRT_SET_EVENT : MESH_CFG_MDL_PUB_SET_EVENT;
+  evt.param = cfgMdlSrAddr;
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
+
+  /* Validate request parameters. */
+  if (!MESH_IS_ADDR_UNICAST(elemAddr) || (pPubParams == NULL) ||
+      (pPubParams->publishAppKeyIndex > MESH_APP_KEY_INDEX_MAX_VAL) ||
+      !MESH_TTL_IS_VALID(pPubParams->publishTtl))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+
+    return;
+  }
+
+  /* Validate composite states. */
+  if((pPubParams->publishPeriodNumSteps >
+      (CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_MASK >> CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SHIFT)) ||
+     (pPubParams->publishPeriodStepRes >
+      (CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_MASK >> CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SHIFT)) ||
+     (pPubParams->publishRetransCount >
+      (CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_MASK >> CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SHIFT)) ||
+     (pPubParams->publishRetransSteps50Ms >
+      (CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_MASK >> CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SHIFT)))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+
+    return;
+  }
+
+  /* Validate publication address. */
+  if ((!isVirtual) && MESH_IS_ADDR_VIRTUAL(pubAddr))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+
+    return;
+  }
+
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     isVirtual ? CFG_MDL_MSG_MODEL_PUB_VIRT_SET_NUM_BYTES(isSig) :
+                                                 CFG_MDL_MSG_MODEL_PUB_SET_NUM_BYTES(isSig));
+
+  if (pReq != NULL)
+  {
+    pOffset = pReq->pMsgParam;
+
+    /* Pack element address. */
+    UINT16_TO_BSTREAM(pOffset, elemAddr);
+
+    if (!isVirtual)
+    {
+      /* Pack Publish Address. */
+      UINT16_TO_BSTREAM(pOffset, pubAddr);
+    }
+    else
+    {
+      /* Pack Label UUID. */
+      memcpy(pOffset, pLabelUuid, MESH_LABEL_UUID_SIZE);
+      pOffset += MESH_LABEL_UUID_SIZE;
     }
 
-    /* Validate request parameters. */
-    if (!MESH_IS_ADDR_UNICAST(elemAddr) || (pPubParams == NULL) ||
-        (pPubParams->publishAppKeyIndex > MESH_APP_KEY_INDEX_MAX_VAL) ||
-        !MESH_TTL_IS_VALID(pPubParams->publishTtl)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+    /* Pack parameters. */
+    meshCfgMsgPackModelPubParam(pOffset, pPubParams, sigModelId, vendorModelId, isSig);
 
-        return;
-    }
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = isVirtual ? MESH_CFG_MDL_CL_MODEL_PUB_VIRT_SET : MESH_CFG_MDL_CL_MODEL_PUB_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_MODEL_PUB_STATUS;
 
-    /* Validate composite states. */
-    if ((pPubParams->publishPeriodNumSteps > (CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_MASK >>
-                                              CFG_MDL_MSG_MODEL_PUB_PERIOD_NUM_STEPS_SHIFT)) ||
-        (pPubParams->publishPeriodStepRes > (CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_MASK >>
-                                             CFG_MDL_MSG_MODEL_PUB_PERIOD_STEP_RES_SHIFT)) ||
-        (pPubParams->publishRetransCount >
-         (CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_MASK >> CFG_MDL_MSG_MODEL_PUB_RETRANS_CNT_SHIFT)) ||
-        (pPubParams->publishRetransSteps50Ms >
-         (CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_MASK >> CFG_MDL_MSG_MODEL_PUB_RETRANS_STEPS_SHIFT))) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = isVirtual ? MESH_CFG_MDL_PUB_VIRT_SET_EVENT :
+                                          MESH_CFG_MDL_PUB_SET_EVENT;
 
-        return;
-    }
-
-    /* Validate publication address. */
-    if ((!isVirtual) && MESH_IS_ADDR_VIRTUAL(pubAddr)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
-
-        return;
-    }
-
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       isVirtual ? CFG_MDL_MSG_MODEL_PUB_VIRT_SET_NUM_BYTES(isSig) :
-                                                   CFG_MDL_MSG_MODEL_PUB_SET_NUM_BYTES(isSig));
-
-    if (pReq != NULL) {
-        pOffset = pReq->pMsgParam;
-
-        /* Pack element address. */
-        UINT16_TO_BSTREAM(pOffset, elemAddr);
-
-        if (!isVirtual) {
-            /* Pack Publish Address. */
-            UINT16_TO_BSTREAM(pOffset, pubAddr);
-        } else {
-            /* Pack Label UUID. */
-            memcpy(pOffset, pLabelUuid, MESH_LABEL_UUID_SIZE);
-            pOffset += MESH_LABEL_UUID_SIZE;
-        }
-
-        /* Pack parameters. */
-        meshCfgMsgPackModelPubParam(pOffset, pPubParams, sigModelId, vendorModelId, isSig);
-
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = isVirtual ? MESH_CFG_MDL_CL_MODEL_PUB_VIRT_SET :
-                                               MESH_CFG_MDL_CL_MODEL_PUB_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_MODEL_PUB_STATUS;
-
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = isVirtual ? MESH_CFG_MDL_PUB_VIRT_SET_EVENT :
-                                              MESH_CFG_MDL_PUB_SET_EVENT;
-
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1183,129 +1277,152 @@ void MeshCfgMdlClSubscrListChg(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetK
                                const uint8_t *pLabelUuid, meshSigModelId_t sigModelId,
                                meshVendorModelId_t vendorModelId, bool_t isSig)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    uint8_t *pOffset;
-    bool_t isVirtual = pLabelUuid != NULL;
-    meshCfgMdlClOpId_t clOpId;
-    uint8_t apiEvt;
-    uint16_t msgParamLen;
-    wsfMsgHdr_t evt = { .status = MESH_CFG_MDL_CL_INVALID_PARAMS };
+  meshCfgMdlClOpReq_t *pReq;
+  uint8_t *pOffset;
+  bool_t isVirtual = pLabelUuid != NULL;
+  meshCfgMdlClOpId_t clOpId;
+  uint8_t apiEvt;
+  uint16_t msgParamLen;
+  wsfMsgHdr_t evt =
+  {
+    .status = MESH_CFG_MDL_CL_INVALID_PARAMS
+  };
 
-    evt.param = cfgMdlSrAddr;
+  evt.param = cfgMdlSrAddr;
 
-    /* Get operation ID, API event and message parameters length based on
+  /* Get operation ID, API event and message parameters length based on
    * label UUID, operation type and model type.
    */
-    switch (opType) {
+  switch (opType)
+  {
     case MESH_CFG_MDL_CL_SUBSCR_ADDR_ADD:
-        if (isVirtual) {
-            clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_VIRT_ADD;
-            apiEvt = MESH_CFG_MDL_SUBSCR_VIRT_ADD_EVENT;
-            msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_VIRT_ADD_NUM_BYTES(isSig);
-        } else {
-            clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_ADD;
-            apiEvt = MESH_CFG_MDL_SUBSCR_ADD_EVENT;
-            msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_ADD_NUM_BYTES(isSig);
-        }
-        break;
+      if (isVirtual)
+      {
+        clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_VIRT_ADD;
+        apiEvt = MESH_CFG_MDL_SUBSCR_VIRT_ADD_EVENT;
+        msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_VIRT_ADD_NUM_BYTES(isSig);
+      }
+      else
+      {
+        clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_ADD;
+        apiEvt = MESH_CFG_MDL_SUBSCR_ADD_EVENT;
+        msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_ADD_NUM_BYTES(isSig);
+      }
+      break;
     case MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL:
-        if (isVirtual) {
-            clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_VIRT_DEL;
-            apiEvt = MESH_CFG_MDL_SUBSCR_VIRT_DEL_EVENT;
-            msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_VIRT_DEL_NUM_BYTES(isSig);
-        } else {
-            clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_DEL;
-            apiEvt = MESH_CFG_MDL_SUBSCR_DEL_EVENT;
-            msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_DEL_NUM_BYTES(isSig);
-        }
-        break;
+      if (isVirtual)
+      {
+        clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_VIRT_DEL;
+        apiEvt = MESH_CFG_MDL_SUBSCR_VIRT_DEL_EVENT;
+        msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_VIRT_DEL_NUM_BYTES(isSig);
+      }
+      else
+      {
+        clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_DEL;
+        apiEvt = MESH_CFG_MDL_SUBSCR_DEL_EVENT;
+        msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_DEL_NUM_BYTES(isSig);
+      }
+      break;
     case MESH_CFG_MDL_CL_SUBSCR_ADDR_OVR:
-        if (isVirtual) {
-            clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_VIRT_OVR;
-            apiEvt = MESH_CFG_MDL_SUBSCR_VIRT_OVR_EVENT;
-            msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_VIRT_OVR_NUM_BYTES(isSig);
-        } else {
-            clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_OVR;
-            apiEvt = MESH_CFG_MDL_SUBSCR_OVR_EVENT;
-            msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_OVR_NUM_BYTES(isSig);
-        }
-        break;
+      if (isVirtual)
+      {
+        clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_VIRT_OVR;
+        apiEvt = MESH_CFG_MDL_SUBSCR_VIRT_OVR_EVENT;
+        msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_VIRT_OVR_NUM_BYTES(isSig);
+      }
+      else
+      {
+        clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_OVR;
+        apiEvt = MESH_CFG_MDL_SUBSCR_OVR_EVENT;
+        msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_OVR_NUM_BYTES(isSig);
+      }
+      break;
     case MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL_ALL:
-        clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_DEL_ALL;
-        apiEvt = MESH_CFG_MDL_SUBSCR_DEL_ALL_EVENT;
-        msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_DEL_ALL_NUM_BYTES(isSig);
-        break;
+      clOpId = MESH_CFG_MDL_CL_MODEL_SUBSCR_DEL_ALL;
+      apiEvt = MESH_CFG_MDL_SUBSCR_DEL_ALL_EVENT;
+      msgParamLen = CFG_MDL_MSG_MODEL_SUBSCR_DEL_ALL_NUM_BYTES(isSig);
+      break;
     default:
-        return;
-    }
-    evt.event = apiEvt;
-    evt.param = cfgMdlSrAddr;
+      return;
+  }
+  evt.event = apiEvt;
+  evt.param = cfgMdlSrAddr;
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate element address. */
-    if (!MESH_IS_ADDR_UNICAST(elemAddr)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate element address. */
+  if (!MESH_IS_ADDR_UNICAST(elemAddr))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Validate subscription address. */
-    if ((!isVirtual) && (opType != MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL_ALL) &&
-        (MESH_IS_ADDR_VIRTUAL(subscrAddr) || MESH_IS_ADDR_UNASSIGNED(subscrAddr) ||
-         subscrAddr == MESH_ADDR_GROUP_ALL))
+  /* Validate subscription address. */
+  if ((!isVirtual) && (opType != MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL_ALL) &&
+      (MESH_IS_ADDR_VIRTUAL(subscrAddr) ||
+       MESH_IS_ADDR_UNASSIGNED(subscrAddr) ||
+       subscrAddr == MESH_ADDR_GROUP_ALL))
 
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+
+    return;
+  }
+
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex, msgParamLen);
+
+  if (pReq != NULL)
+  {
+    pOffset = pReq->pMsgParam;
+
+    /* Pack element address. */
+    UINT16_TO_BSTREAM(pOffset, elemAddr);
+
+    /* Pack subscription address if the operation is not DELETE ALL. */
+    if (opType != MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL_ALL)
     {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
-
-        return;
+      if (!isVirtual)
+      {
+        /* Pack Subscription Address. */
+        UINT16_TO_BSTREAM(pOffset, subscrAddr);
+      }
+      else
+      {
+        /* Pack Label UUID. */
+        memcpy(pOffset, pLabelUuid, MESH_LABEL_UUID_SIZE);
+        pOffset += MESH_LABEL_UUID_SIZE;
+      }
     }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       msgParamLen);
-
-    if (pReq != NULL) {
-        pOffset = pReq->pMsgParam;
-
-        /* Pack element address. */
-        UINT16_TO_BSTREAM(pOffset, elemAddr);
-
-        /* Pack subscription address if the operation is not DELETE ALL. */
-        if (opType != MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL_ALL) {
-            if (!isVirtual) {
-                /* Pack Subscription Address. */
-                UINT16_TO_BSTREAM(pOffset, subscrAddr);
-            } else {
-                /* Pack Label UUID. */
-                memcpy(pOffset, pLabelUuid, MESH_LABEL_UUID_SIZE);
-                pOffset += MESH_LABEL_UUID_SIZE;
-            }
-        }
-
-        /* Pack model ID. */
-        if (isSig) {
-            UINT16_TO_BSTREAM(pOffset, sigModelId);
-        } else {
-            VEND_MDL_TO_BSTREAM(pOffset, vendorModelId);
-        }
-
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = clOpId;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_MODEL_SUBSCR_STATUS;
-
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = apiEvt;
-
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
+    /* Pack model ID. */
+    if (isSig)
+    {
+      UINT16_TO_BSTREAM(pOffset, sigModelId);
     }
+    else
+    {
+      VEND_MDL_TO_BSTREAM(pOffset, vendorModelId);
+    }
+
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = clOpId;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_MODEL_SUBSCR_STATUS;
+
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = apiEvt;
+
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1331,62 +1448,72 @@ void MeshCfgMdlClSubscrListChg(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetK
 /*************************************************************************************************/
 void MeshCfgMdlClSubscrListGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                                const uint8_t *pCfgMdlSrDevKey, meshAddress_t elemAddr,
-                               meshSigModelId_t sigModelId, meshVendorModelId_t vendorModelId,
-                               bool_t isSig)
+                               meshSigModelId_t sigModelId,
+                               meshVendorModelId_t vendorModelId, bool_t isSig)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    uint8_t *pOffset;
-    wsfMsgHdr_t evt = { .status = MESH_CFG_MDL_CL_INVALID_PARAMS };
+  meshCfgMdlClOpReq_t *pReq;
+  uint8_t *pOffset;
+  wsfMsgHdr_t evt =
+  {
+    .status = MESH_CFG_MDL_CL_INVALID_PARAMS
+  };
 
-    /* Set event type. */
-    evt.event = isSig ? MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT : MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT;
-    evt.param = cfgMdlSrAddr;
+  /* Set event type. */
+  evt.event = isSig ? MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT :
+                      MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT;
+  evt.param = cfgMdlSrAddr;
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
+
+  /* Validate element address. */
+  if (!MESH_IS_ADDR_UNICAST(elemAddr))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+
+    return;
+  }
+
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     isSig ? CFG_MDL_MSG_MODEL_SUBSCR_SIG_GET_NUM_BYTES :
+                                             CFG_MDL_MSG_MODEL_SUBSCR_VENDOR_GET_NUM_BYTES);
+
+  if (pReq != NULL)
+  {
+    pOffset = pReq->pMsgParam;
+
+    /* Pack element address. */
+    UINT16_TO_BSTREAM(pOffset, elemAddr);
+
+    /* Pack model ID. */
+    if (isSig)
+    {
+      UINT16_TO_BSTREAM(pOffset, sigModelId);
+    }
+    else
+    {
+      VEND_MDL_TO_BSTREAM(pOffset, vendorModelId);
     }
 
-    /* Validate element address. */
-    if (!MESH_IS_ADDR_UNICAST(elemAddr)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = isSig ? MESH_CFG_MDL_CL_MODEL_SUBSCR_SIG_GET :
+                                       MESH_CFG_MDL_CL_MODEL_SUBSCR_VENDOR_GET;
+    pReq->pReqParam->rspOpId = isSig ? MESH_CFG_MDL_SR_MODEL_SUBSCR_SIG_LIST :
+                                       MESH_CFG_MDL_SR_MODEL_SUBSCR_VENDOR_LIST;
 
-        return;
-    }
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = isSig ? MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT :
+                                      MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT;
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       isSig ? CFG_MDL_MSG_MODEL_SUBSCR_SIG_GET_NUM_BYTES :
-                                               CFG_MDL_MSG_MODEL_SUBSCR_VENDOR_GET_NUM_BYTES);
-
-    if (pReq != NULL) {
-        pOffset = pReq->pMsgParam;
-
-        /* Pack element address. */
-        UINT16_TO_BSTREAM(pOffset, elemAddr);
-
-        /* Pack model ID. */
-        if (isSig) {
-            UINT16_TO_BSTREAM(pOffset, sigModelId);
-        } else {
-            VEND_MDL_TO_BSTREAM(pOffset, vendorModelId);
-        }
-
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = isSig ? MESH_CFG_MDL_CL_MODEL_SUBSCR_SIG_GET :
-                                           MESH_CFG_MDL_CL_MODEL_SUBSCR_VENDOR_GET;
-        pReq->pReqParam->rspOpId = isSig ? MESH_CFG_MDL_SR_MODEL_SUBSCR_SIG_LIST :
-                                           MESH_CFG_MDL_SR_MODEL_SUBSCR_VENDOR_LIST;
-
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = isSig ? MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT :
-                                          MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT;
-
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1413,80 +1540,88 @@ void MeshCfgMdlClSubscrListGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetK
  */
 /*************************************************************************************************/
 void MeshCfgMdlClNetKeyChg(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
-                           const uint8_t *pCfgMdlSrDevKey, uint16_t netKeyIndex,
-                           meshCfgMdlClKeyOp_t keyOp, const uint8_t *pNetKey)
+                           const uint8_t *pCfgMdlSrDevKey, uint16_t netKeyIndex, meshCfgMdlClKeyOp_t keyOp,
+                           const uint8_t *pNetKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    uint8_t *pOffset;
-    wsfMsgHdr_t evt = { .status = MESH_CFG_MDL_CL_INVALID_PARAMS };
-    uint16_t msgLen;
-    uint8_t apiEvt;
-    meshCfgMdlClOpId_t clOpId;
+  meshCfgMdlClOpReq_t *pReq;
+  uint8_t *pOffset;
+  wsfMsgHdr_t evt =
+  {
+    .status = MESH_CFG_MDL_CL_INVALID_PARAMS
+  };
+  uint16_t msgLen;
+  uint8_t apiEvt;
+  meshCfgMdlClOpId_t clOpId;
 
-    /* Set event type, message length, operation id and API event. */
-    switch (keyOp) {
+  /* Set event type, message length, operation id and API event. */
+  switch (keyOp)
+  {
     case MESH_CFG_MDL_CL_KEY_ADD:
-        apiEvt = MESH_CFG_MDL_NETKEY_ADD_EVENT;
-        msgLen = CFG_MDL_MSG_NETKEY_ADD_NUM_BYTES;
-        clOpId = MESH_CFG_MDL_CL_NETKEY_ADD;
-        break;
+      apiEvt = MESH_CFG_MDL_NETKEY_ADD_EVENT;
+      msgLen = CFG_MDL_MSG_NETKEY_ADD_NUM_BYTES;
+      clOpId = MESH_CFG_MDL_CL_NETKEY_ADD;
+      break;
     case MESH_CFG_MDL_CL_KEY_UPDT:
-        apiEvt = MESH_CFG_MDL_NETKEY_UPDT_EVENT;
-        msgLen = CFG_MDL_MSG_NETKEY_UPDT_NUM_BYTES;
-        clOpId = MESH_CFG_MDL_CL_NETKEY_UPDT;
-        break;
+      apiEvt = MESH_CFG_MDL_NETKEY_UPDT_EVENT;
+      msgLen = CFG_MDL_MSG_NETKEY_UPDT_NUM_BYTES;
+      clOpId = MESH_CFG_MDL_CL_NETKEY_UPDT;
+      break;
     case MESH_CFG_MDL_CL_KEY_DEL:
-        apiEvt = MESH_CFG_MDL_NETKEY_DEL_EVENT;
-        msgLen = CFG_MDL_MSG_NETKEY_DEL_NUM_BYTES;
-        clOpId = MESH_CFG_MDL_CL_NETKEY_DEL;
-        break;
+      apiEvt = MESH_CFG_MDL_NETKEY_DEL_EVENT;
+      msgLen = CFG_MDL_MSG_NETKEY_DEL_NUM_BYTES;
+      clOpId = MESH_CFG_MDL_CL_NETKEY_DEL;
+      break;
     default:
-        MESH_TRACE_ERR0("CFG CL: Out of bounds key operation type");
-        return;
+      MESH_TRACE_ERR0("CFG CL: Out of bounds key operation type");
+      return;
+  }
+
+  evt.event = apiEvt;
+  evt.param = cfgMdlSrAddr;
+
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
+
+  /* Validate NetKey Index. */
+  if ((netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) ||
+      ((keyOp != MESH_CFG_MDL_CL_KEY_DEL) && (pNetKey == NULL)))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+
+    return;
+  }
+
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex, msgLen);
+
+  if (pReq != NULL)
+  {
+    pOffset = pReq->pMsgParam;
+
+    /* Pack key binding. */
+    pOffset += meshCfgMsgPackSingleKeyIndex(pOffset, netKeyIndex);
+
+    /* If operation is not delete, pack the key. */
+    if (keyOp != MESH_CFG_MDL_CL_KEY_DEL)
+    {
+      memcpy(pOffset, pNetKey, MESH_KEY_SIZE_128);
     }
 
-    evt.event = apiEvt;
-    evt.param = cfgMdlSrAddr;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = clOpId;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NETKEY_STATUS;
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = apiEvt;
 
-    /* Validate NetKey Index. */
-    if ((netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) ||
-        ((keyOp != MESH_CFG_MDL_CL_KEY_DEL) && (pNetKey == NULL))) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
-
-        return;
-    }
-
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex, msgLen);
-
-    if (pReq != NULL) {
-        pOffset = pReq->pMsgParam;
-
-        /* Pack key binding. */
-        pOffset += meshCfgMsgPackSingleKeyIndex(pOffset, netKeyIndex);
-
-        /* If operation is not delete, pack the key. */
-        if (keyOp != MESH_CFG_MDL_CL_KEY_DEL) {
-            memcpy(pOffset, pNetKey, MESH_KEY_SIZE_128);
-        }
-
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = clOpId;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NETKEY_STATUS;
-
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = apiEvt;
-
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1508,33 +1643,38 @@ void MeshCfgMdlClNetKeyChg(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIn
 void MeshCfgMdlClNetKeyGet(meshAddress_t cfgMdlSrAddr, const uint8_t *pCfgMdlSrDevKey,
                            uint16_t cfgMdlSrNetKeyIndex)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_NETKEY_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_NETKEY_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_NETKEY_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_NETKEY_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NETKEY_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NETKEY_LIST;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NETKEY_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NETKEY_LIST;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_NETKEY_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_NETKEY_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1564,79 +1704,86 @@ void MeshCfgMdlClAppKeyChg(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIn
                            const uint8_t *pCfgMdlSrDevKey, const meshAppNetKeyBind_t *pAppKeyBind,
                            meshCfgMdlClKeyOp_t keyOp, const uint8_t *pAppKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    uint8_t *pOffset;
-    wsfMsgHdr_t evt = { .status = MESH_CFG_MDL_CL_INVALID_PARAMS };
-    uint16_t msgLen;
-    uint8_t apiEvt;
-    meshCfgMdlClOpId_t clOpId;
+  meshCfgMdlClOpReq_t *pReq;
+  uint8_t *pOffset;
+  wsfMsgHdr_t evt =
+  {
+    .status = MESH_CFG_MDL_CL_INVALID_PARAMS
+  };
+  uint16_t msgLen;
+  uint8_t apiEvt;
+  meshCfgMdlClOpId_t clOpId;
 
-    /* Set event type, message length, operation id and API event. */
-    switch (keyOp) {
+  /* Set event type, message length, operation id and API event. */
+  switch (keyOp)
+  {
     case MESH_CFG_MDL_CL_KEY_ADD:
-        apiEvt = MESH_CFG_MDL_APPKEY_ADD_EVENT;
-        msgLen = CFG_MDL_MSG_APPKEY_ADD_NUM_BYTES;
-        clOpId = MESH_CFG_MDL_CL_APPKEY_ADD;
-        break;
+      apiEvt = MESH_CFG_MDL_APPKEY_ADD_EVENT;
+      msgLen = CFG_MDL_MSG_APPKEY_ADD_NUM_BYTES;
+      clOpId = MESH_CFG_MDL_CL_APPKEY_ADD;
+      break;
     case MESH_CFG_MDL_CL_KEY_UPDT:
-        apiEvt = MESH_CFG_MDL_APPKEY_UPDT_EVENT;
-        msgLen = CFG_MDL_MSG_APPKEY_UPDT_NUM_BYTES;
-        clOpId = MESH_CFG_MDL_CL_APPKEY_UPDT;
-        break;
+      apiEvt = MESH_CFG_MDL_APPKEY_UPDT_EVENT;
+      msgLen = CFG_MDL_MSG_APPKEY_UPDT_NUM_BYTES;
+      clOpId = MESH_CFG_MDL_CL_APPKEY_UPDT;
+      break;
     case MESH_CFG_MDL_CL_KEY_DEL:
-        apiEvt = MESH_CFG_MDL_APPKEY_DEL_EVENT;
-        msgLen = CFG_MDL_MSG_APPKEY_DEL_NUM_BYTES;
-        clOpId = MESH_CFG_MDL_CL_APPKEY_DEL;
-        break;
+      apiEvt = MESH_CFG_MDL_APPKEY_DEL_EVENT;
+      msgLen = CFG_MDL_MSG_APPKEY_DEL_NUM_BYTES;
+      clOpId = MESH_CFG_MDL_CL_APPKEY_DEL;
+      break;
     default:
-        MESH_TRACE_ERR0("CFG CL: Out of bounds key operation type");
-        return;
+      MESH_TRACE_ERR0("CFG CL: Out of bounds key operation type");
+      return;
+  }
+
+  evt.event = apiEvt;
+  evt.param = cfgMdlSrAddr;
+
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
+
+  /* Validate key bind and key. */
+  if ((pAppKeyBind == NULL) || (pAppKeyBind->appKeyIndex > MESH_APP_KEY_INDEX_MAX_VAL) ||
+      (pAppKeyBind->netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) ||
+      ((keyOp != MESH_CFG_MDL_CL_KEY_DEL) && (pAppKey == NULL)))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+
+    return;
+  }
+
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex, msgLen);
+
+  if (pReq != NULL)
+  {
+    pOffset = pReq->pMsgParam;
+
+    /* Pack key binding. */
+    pOffset += meshCfgMsgPackTwoKeyIndex(pOffset, pAppKeyBind->netKeyIndex, pAppKeyBind->appKeyIndex);
+
+    /* If operation is not delete, pack the key. */
+    if (keyOp != MESH_CFG_MDL_CL_KEY_DEL)
+    {
+      memcpy(pOffset, pAppKey, MESH_KEY_SIZE_128);
     }
 
-    evt.event = apiEvt;
-    evt.param = cfgMdlSrAddr;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = clOpId;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_APPKEY_STATUS;
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = apiEvt;
 
-    /* Validate key bind and key. */
-    if ((pAppKeyBind == NULL) || (pAppKeyBind->appKeyIndex > MESH_APP_KEY_INDEX_MAX_VAL) ||
-        (pAppKeyBind->netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) ||
-        ((keyOp != MESH_CFG_MDL_CL_KEY_DEL) && (pAppKey == NULL))) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
-
-        return;
-    }
-
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex, msgLen);
-
-    if (pReq != NULL) {
-        pOffset = pReq->pMsgParam;
-
-        /* Pack key binding. */
-        pOffset +=
-            meshCfgMsgPackTwoKeyIndex(pOffset, pAppKeyBind->netKeyIndex, pAppKeyBind->appKeyIndex);
-
-        /* If operation is not delete, pack the key. */
-        if (keyOp != MESH_CFG_MDL_CL_KEY_DEL) {
-            memcpy(pOffset, pAppKey, MESH_KEY_SIZE_128);
-        }
-
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = clOpId;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_APPKEY_STATUS;
-
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = apiEvt;
-
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1659,44 +1806,50 @@ void MeshCfgMdlClAppKeyChg(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIn
 void MeshCfgMdlClAppKeyGet(meshAddress_t cfgMdlSrAddr, const uint8_t *pCfgMdlSrDevKey,
                            uint16_t cfgMdlSrNetKeyIndex, uint16_t netKeyIndex)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_APPKEY_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_APPKEY_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate NetKeyIndex. */
-    if (netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate NetKeyIndex. */
+  if (netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL)
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_APPKEY_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_APPKEY_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack NetKeyIndex. */
-        (void)meshCfgMsgPackSingleKeyIndex(pReq->pMsgParam, netKeyIndex);
+  if (pReq != NULL)
+  {
+    /* Pack NetKeyIndex. */
+    (void)meshCfgMsgPackSingleKeyIndex(pReq->pMsgParam, netKeyIndex);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_APPKEY_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_APPKEY_LIST;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_APPKEY_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_APPKEY_LIST;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_APPKEY_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_APPKEY_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1719,44 +1872,50 @@ void MeshCfgMdlClAppKeyGet(meshAddress_t cfgMdlSrAddr, const uint8_t *pCfgMdlSrD
 void MeshCfgMdlClNodeIdentityGet(meshAddress_t cfgMdlSrAddr, const uint8_t *pCfgMdlSrDevKey,
                                  uint16_t cfgMdlSrNetKeyIndex, uint16_t netKeyIndex)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_NODE_IDENTITY_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_NODE_IDENTITY_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate NetKeyIndex. */
-    if (netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate NetKeyIndex. */
+  if (netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL)
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_NODE_IDENTITY_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_NODE_IDENTITY_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack NetKeyIndex. */
-        (void)meshCfgMsgPackSingleKeyIndex(pReq->pMsgParam, netKeyIndex);
+  if (pReq != NULL)
+  {
+    /* Pack NetKeyIndex. */
+    (void)meshCfgMsgPackSingleKeyIndex(pReq->pMsgParam, netKeyIndex);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NODE_IDENTITY_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NODE_IDENTITY_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NODE_IDENTITY_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NODE_IDENTITY_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_NODE_IDENTITY_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_NODE_IDENTITY_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1781,51 +1940,57 @@ void MeshCfgMdlClNodeIdentitySet(meshAddress_t cfgMdlSrAddr, const uint8_t *pCfg
                                  uint16_t cfgMdlSrNetKeyIndex, uint16_t netKeyIndex,
                                  meshNodeIdentityStates_t nodeIdentityState)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    uint8_t *pTemp;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  uint8_t *pTemp;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate NetKeyIndex and state. */
-    if ((netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) ||
-        (nodeIdentityState >= MESH_NODE_IDENTITY_NOT_SUPPORTED)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate NetKeyIndex and state. */
+  if ((netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) ||
+      (nodeIdentityState >= MESH_NODE_IDENTITY_NOT_SUPPORTED))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_NODE_IDENTITY_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_NODE_IDENTITY_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        pTemp = pReq->pMsgParam;
+  if (pReq != NULL)
+  {
+    pTemp = pReq->pMsgParam;
 
-        /* Pack NetKeyIndex. */
-        pTemp += meshCfgMsgPackSingleKeyIndex(pTemp, netKeyIndex);
+    /* Pack NetKeyIndex. */
+    pTemp += meshCfgMsgPackSingleKeyIndex(pTemp, netKeyIndex);
 
-        /* Pack state. */
-        UINT8_TO_BSTREAM(pTemp, nodeIdentityState);
+    /* Pack state. */
+    UINT8_TO_BSTREAM(pTemp, nodeIdentityState);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NODE_IDENTITY_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NODE_IDENTITY_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NODE_IDENTITY_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NODE_IDENTITY_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1855,47 +2020,52 @@ void MeshCfgMdlClAppBind(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyInde
                          meshAddress_t elemAddr, meshSigModelId_t sigModelId,
                          meshVendorModelId_t vendorModelId, bool_t isSig)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    wsfMsgHdr_t evt = { .status = MESH_CFG_MDL_CL_INVALID_PARAMS };
+  meshCfgMdlClOpReq_t *pReq;
+  wsfMsgHdr_t evt =
+  {
+    .status = MESH_CFG_MDL_CL_INVALID_PARAMS
+  };
 
-    evt.event = bind ? MESH_CFG_MDL_APP_BIND_EVENT : MESH_CFG_MDL_APP_UNBIND_EVENT;
-    evt.param = cfgMdlSrAddr;
+  evt.event = bind ? MESH_CFG_MDL_APP_BIND_EVENT : MESH_CFG_MDL_APP_UNBIND_EVENT;
+  evt.param = cfgMdlSrAddr;
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate state parameters. */
-    if ((appKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) || !MESH_IS_ADDR_UNICAST(elemAddr)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate state parameters. */
+  if ((appKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) || !MESH_IS_ADDR_UNICAST(elemAddr))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       bind ? CFG_MDL_MSG_MODEL_APP_BIND_NUM_BYTES(isSig) :
-                                              CFG_MDL_MSG_MODEL_APP_UNBIND_NUM_BYTES(isSig));
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     bind ? CFG_MDL_MSG_MODEL_APP_BIND_NUM_BYTES(isSig) :
+                                            CFG_MDL_MSG_MODEL_APP_UNBIND_NUM_BYTES(isSig));
 
-    if (pReq != NULL) {
-        /* Pack state. */
-        meshCfgMsgPackModelAppBind(pReq->pMsgParam, elemAddr, appKeyIndex, sigModelId,
-                                   vendorModelId, isSig);
+  if (pReq != NULL)
+  {
+    /* Pack state. */
+    meshCfgMsgPackModelAppBind(pReq->pMsgParam, elemAddr, appKeyIndex, sigModelId, vendorModelId,
+                               isSig);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = bind ? MESH_CFG_MDL_CL_MODEL_APP_BIND :
-                                          MESH_CFG_MDL_CL_MODEL_APP_UNBIND;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_MODEL_APP_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = bind ? MESH_CFG_MDL_CL_MODEL_APP_BIND : MESH_CFG_MDL_CL_MODEL_APP_UNBIND;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_MODEL_APP_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = evt.event;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = evt.event;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1923,56 +2093,65 @@ void MeshCfgMdlClAppGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex
                         meshSigModelId_t sigModelId, meshVendorModelId_t vendorModelId,
                         bool_t isSig)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    uint8_t *pOffset;
-    wsfMsgHdr_t evt = { .status = MESH_CFG_MDL_CL_INVALID_PARAMS };
+  meshCfgMdlClOpReq_t *pReq;
+  uint8_t *pOffset;
+  wsfMsgHdr_t evt =
+  {
+    .status = MESH_CFG_MDL_CL_INVALID_PARAMS
+  };
 
-    evt.event = isSig ? MESH_CFG_MDL_APP_SIG_GET_EVENT : MESH_CFG_MDL_APP_VENDOR_GET_EVENT;
-    evt.param = cfgMdlSrAddr;
+  evt.event = isSig ? MESH_CFG_MDL_APP_SIG_GET_EVENT : MESH_CFG_MDL_APP_VENDOR_GET_EVENT;
+  evt.param = cfgMdlSrAddr;
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
+
+  /* Validate state parameters. */
+  if (!MESH_IS_ADDR_UNICAST(elemAddr))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+
+    return;
+  }
+
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_MODEL_APP_GET_NUM_BYTES(isSig));
+
+  if (pReq != NULL)
+  {
+    pOffset = pReq->pMsgParam;
+
+    /* Pack element address. */
+    UINT16_TO_BSTREAM(pOffset, elemAddr);
+
+    /* Pack model identifier. */
+    if (isSig)
+    {
+      UINT16_TO_BSTREAM(pOffset, sigModelId);
+    }
+    else
+    {
+      VEND_MDL_TO_BSTREAM(pOffset, vendorModelId);
     }
 
-    /* Validate state parameters. */
-    if (!MESH_IS_ADDR_UNICAST(elemAddr)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = isSig ? MESH_CFG_MDL_CL_MODEL_APP_SIG_GET :
+                                       MESH_CFG_MDL_CL_MODEL_APP_VENDOR_GET;
+    pReq->pReqParam->rspOpId = isSig ? MESH_CFG_MDL_SR_MODEL_APP_SIG_LIST :
+                                       MESH_CFG_MDL_SR_MODEL_APP_VENDOR_LIST;
 
-        return;
-    }
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = evt.event;
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_MODEL_APP_GET_NUM_BYTES(isSig));
-
-    if (pReq != NULL) {
-        pOffset = pReq->pMsgParam;
-
-        /* Pack element address. */
-        UINT16_TO_BSTREAM(pOffset, elemAddr);
-
-        /* Pack model identifier. */
-        if (isSig) {
-            UINT16_TO_BSTREAM(pOffset, sigModelId);
-        } else {
-            VEND_MDL_TO_BSTREAM(pOffset, vendorModelId);
-        }
-
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = isSig ? MESH_CFG_MDL_CL_MODEL_APP_SIG_GET :
-                                           MESH_CFG_MDL_CL_MODEL_APP_VENDOR_GET;
-        pReq->pReqParam->rspOpId = isSig ? MESH_CFG_MDL_SR_MODEL_APP_SIG_LIST :
-                                           MESH_CFG_MDL_SR_MODEL_APP_VENDOR_LIST;
-
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = evt.event;
-
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -1994,34 +2173,39 @@ void MeshCfgMdlClAppGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex
 void MeshCfgMdlClNodeReset(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                            const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_CL_NODE_RESET,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_CL_NODE_RESET,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_NODE_RESET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_NODE_RESET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NODE_RESET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NODE_RESET_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NODE_RESET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NODE_RESET_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_NODE_RESET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_NODE_RESET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2043,34 +2227,39 @@ void MeshCfgMdlClNodeReset(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIn
 void MeshCfgMdlClFriendGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                            const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_FRIEND_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_FRIEND_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_FRIEND_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_FRIEND_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_FRIEND_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_FRIEND_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_FRIEND_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_FRIEND_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_FRIEND_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_FRIEND_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2093,44 +2282,50 @@ void MeshCfgMdlClFriendGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIn
 void MeshCfgMdlClFriendSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                            const uint8_t *pCfgMdlSrDevKey, meshFriendStates_t friendState)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_FRIEND_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_FRIEND_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate Friend state values. */
-    if (friendState >= MESH_FRIEND_FEATURE_NOT_SUPPORTED) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate Friend state values. */
+  if (friendState >= MESH_FRIEND_FEATURE_NOT_SUPPORTED)
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_FRIEND_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_FRIEND_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Set Friend field. */
-        pReq->pMsgParam[0] = friendState;
+  if (pReq != NULL)
+  {
+    /* Set Friend field. */
+    pReq->pMsgParam[0] = friendState;
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_FRIEND_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_FRIEND_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_FRIEND_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_FRIEND_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_FRIEND_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_FRIEND_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2153,43 +2348,49 @@ void MeshCfgMdlClFriendSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIn
 void MeshCfgMdlClKeyRefPhaseGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                                 const uint8_t *pCfgMdlSrDevKey, uint16_t netKeyIndex)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_KEY_REF_PHASE_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_KEY_REF_PHASE_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate NetKey Index. */
-    if (netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
-    }
+  /* Validate NetKey Index. */
+  if (netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL)
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_KEY_REF_PHASE_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_KEY_REF_PHASE_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack NetKey Index. */
-        (void)meshCfgMsgPackSingleKeyIndex(pReq->pMsgParam, netKeyIndex);
+  if (pReq != NULL)
+  {
+    /* Pack NetKey Index. */
+    (void)meshCfgMsgPackSingleKeyIndex(pReq->pMsgParam, netKeyIndex);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_KEY_REF_PHASE_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_KEY_REF_PHASE_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_KEY_REF_PHASE_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_KEY_REF_PHASE_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_KEY_REF_PHASE_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_KEY_REF_PHASE_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2214,48 +2415,54 @@ void MeshCfgMdlClKeyRefPhaseSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNet
                                 const uint8_t *pCfgMdlSrDevKey, uint16_t netKeyIndex,
                                 meshKeyRefreshTrans_t transition)
 {
-    meshCfgMdlClOpReq_t *pReq;
-    uint8_t *ptr;
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_KEY_REF_PHASE_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlClOpReq_t *pReq;
+  uint8_t *ptr;
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_KEY_REF_PHASE_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    if ((transition != MESH_KEY_REFRESH_TRANS02) && (transition != MESH_KEY_REFRESH_TRANS03)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  if ((transition != MESH_KEY_REFRESH_TRANS02) && (transition != MESH_KEY_REFRESH_TRANS03))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_KEY_REF_PHASE_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_KEY_REF_PHASE_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        ptr = pReq->pMsgParam;
+  if (pReq != NULL)
+  {
+    ptr = pReq->pMsgParam;
 
-        /* Pack Key Refresh Phase state. */
-        ptr += meshCfgMsgPackSingleKeyIndex(ptr, netKeyIndex);
-        /* Pack transition. */
-        UINT8_TO_BSTREAM(ptr, transition);
+    /* Pack Key Refresh Phase state. */
+    ptr += meshCfgMsgPackSingleKeyIndex(ptr, netKeyIndex);
+    /* Pack transition. */
+    UINT8_TO_BSTREAM(ptr, transition);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_KEY_REF_PHASE_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_KEY_REF_PHASE_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_KEY_REF_PHASE_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_KEY_REF_PHASE_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_KEY_REF_PHASE_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_KEY_REF_PHASE_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2277,34 +2484,39 @@ void MeshCfgMdlClKeyRefPhaseSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNet
 void MeshCfgMdlClHbPubGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                           const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_HB_PUB_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_HB_PUB_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_HB_PUB_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_HB_PUB_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_HB_PUB_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_HB_PUB_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_HB_PUB_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_HB_PUB_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_HB_PUB_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_HB_PUB_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2327,53 +2539,59 @@ void MeshCfgMdlClHbPubGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyInd
 void MeshCfgMdlClHbPubSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                           const uint8_t *pCfgMdlSrDevKey, meshHbPub_t *pHbPubState)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_HB_PUB_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_HB_PUB_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate Heartbeat Publication data. */
-    if (((pHbPubState->countLog >= CFG_MDL_HB_PUB_COUNT_LOG_NOT_ALLOW_START) &&
-         (pHbPubState->countLog <= CFG_MDL_HB_PUB_COUNT_LOG_NOT_ALLOW_END)) ||
-        (pHbPubState->periodLog >= CFG_MDL_HB_PUB_PERIOD_LOG_NOT_ALLOW_START) ||
-        (pHbPubState->ttl >= CFG_MDL_HB_PUB_TTL_NOT_ALLOW_START) ||
-        (MESH_IS_ADDR_VIRTUAL(pHbPubState->dstAddr)) ||
-        (pHbPubState->netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate Heartbeat Publication data. */
+  if (((pHbPubState->countLog >= CFG_MDL_HB_PUB_COUNT_LOG_NOT_ALLOW_START) &&
+      (pHbPubState->countLog <= CFG_MDL_HB_PUB_COUNT_LOG_NOT_ALLOW_END)) ||
+      (pHbPubState->periodLog >= CFG_MDL_HB_PUB_PERIOD_LOG_NOT_ALLOW_START) ||
+      (pHbPubState->ttl >= CFG_MDL_HB_PUB_TTL_NOT_ALLOW_START) ||
+      (MESH_IS_ADDR_VIRTUAL(pHbPubState->dstAddr)) ||
+      (pHbPubState->netKeyIndex > MESH_NET_KEY_INDEX_MAX_VAL))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Clear RFU bits. */
-    pHbPubState->features &= (MESH_FEAT_RFU_START - 1);
+  /* Clear RFU bits. */
+  pHbPubState->features &= (MESH_FEAT_RFU_START - 1);
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_HB_PUB_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_HB_PUB_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack Heartbeat Publication state. */
-        meshCfgMsgPackHbPub(pReq->pMsgParam, pHbPubState);
+  if (pReq != NULL)
+  {
+    /* Pack Heartbeat Publication state. */
+    meshCfgMsgPackHbPub(pReq->pMsgParam, pHbPubState);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_HB_PUB_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_HB_PUB_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_HB_PUB_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_HB_PUB_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_HB_PUB_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_HB_PUB_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2395,34 +2613,39 @@ void MeshCfgMdlClHbPubSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyInd
 void MeshCfgMdlClHbSubGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                           const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_HB_SUB_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_HB_SUB_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_HB_SUB_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_HB_SUB_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_HB_SUB_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_HB_SUB_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_HB_SUB_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_HB_SUB_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_HB_SUB_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_HB_SUB_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2445,47 +2668,54 @@ void MeshCfgMdlClHbSubGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyInd
 void MeshCfgMdlClHbSubSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                           const uint8_t *pCfgMdlSrDevKey, meshHbSub_t *pHbSubState)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_HB_SUB_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_HB_SUB_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate Heartbeat Subscription data. */
-    if ((pHbSubState->periodLog >= CFG_MDL_HB_SUB_PERIOD_LOG_NOT_ALLOW_START) ||
-        MESH_IS_ADDR_VIRTUAL(pHbSubState->dstAddr) || MESH_IS_ADDR_VIRTUAL(pHbSubState->srcAddr) ||
-        MESH_IS_ADDR_GROUP(pHbSubState->srcAddr)) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate Heartbeat Subscription data. */
+  if ((pHbSubState->periodLog >= CFG_MDL_HB_SUB_PERIOD_LOG_NOT_ALLOW_START) ||
+      MESH_IS_ADDR_VIRTUAL(pHbSubState->dstAddr) ||
+      MESH_IS_ADDR_VIRTUAL(pHbSubState->srcAddr) ||
+      MESH_IS_ADDR_GROUP(pHbSubState->srcAddr))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_HB_SUB_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_HB_SUB_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack Heartbeat Subscription set. */
-        meshCfgMsgPackHbSubSet(pReq->pMsgParam, pHbSubState);
+  if (pReq != NULL)
+  {
+    /* Pack Heartbeat Subscription set. */
+    meshCfgMsgPackHbSubSet(pReq->pMsgParam, pHbSubState);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_HB_SUB_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_HB_SUB_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_HB_SUB_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_HB_SUB_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_HB_SUB_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_HB_SUB_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2508,43 +2738,49 @@ void MeshCfgMdlClHbSubSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyInd
 void MeshCfgMdlClPollTimeoutGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                                 const uint8_t *pCfgMdlSrDevKey, meshAddress_t lpnAddr)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_LPN_POLLTIMEOUT_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_LPN_POLLTIMEOUT_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate LPN address. */
-    if (!MESH_IS_ADDR_UNICAST(lpnAddr)) {
-        /* Invoke callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
-    }
+  /* Validate LPN address. */
+  if (!MESH_IS_ADDR_UNICAST(lpnAddr))
+  {
+    /* Invoke callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_LPN_POLLTIMEOUT_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_LPN_POLLTIMEOUT_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack LPN address. */
-        UINT16_TO_BUF(pReq->pMsgParam, lpnAddr);
+  if (pReq != NULL)
+  {
+    /* Pack LPN address. */
+    UINT16_TO_BUF(pReq->pMsgParam, lpnAddr);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_LPN_PT_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_LPN_PT_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_LPN_PT_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_LPN_PT_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_LPN_POLLTIMEOUT_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_LPN_POLLTIMEOUT_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2566,34 +2802,39 @@ void MeshCfgMdlClPollTimeoutGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNet
 void MeshCfgMdlClNwkTransmitGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                                 const uint8_t *pCfgMdlSrDevKey)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_NWK_TRANS_GET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_NWK_TRANS_GET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_NWK_TRANS_GET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_NWK_TRANS_GET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NWK_TRANS_GET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NWK_TRANS_STATUS;
+  if (pReq != NULL)
+  {
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NWK_TRANS_GET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NWK_TRANS_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_NWK_TRANS_GET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_NWK_TRANS_GET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }
 
 /*************************************************************************************************/
@@ -2616,47 +2857,53 @@ void MeshCfgMdlClNwkTransmitGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNet
 void MeshCfgMdlClNwkTransmitSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                                 const uint8_t *pCfgMdlSrDevKey, meshNwkTransState_t *pNwkTransmit)
 {
-    meshCfgMdlClOpReq_t *pReq;
+  meshCfgMdlClOpReq_t *pReq;
 
-    meshCfgMdlHdr_t evt = { .hdr.event = MESH_CFG_MDL_SR_EVENT,
-                            .hdr.param = MESH_CFG_MDL_NWK_TRANS_SET_EVENT,
-                            .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
-                            .peerAddress = cfgMdlSrAddr };
+  meshCfgMdlHdr_t evt =
+  {
+    .hdr.event = MESH_CFG_MDL_SR_EVENT,
+    .hdr.param = MESH_CFG_MDL_NWK_TRANS_SET_EVENT,
+    .hdr.status = MESH_CFG_MDL_CL_INVALID_PARAMS,
+    .peerAddress = cfgMdlSrAddr
+  };
 
-    /* Run default server parameters check and call user callback for invalid. */
-    if (!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                            (meshCfgMdlClEvt_t *)&evt)) {
-        return;
-    }
+  /* Run default server parameters check and call user callback for invalid. */
+  if(!meshCfgMdlClCheckSrParamsAndNotify(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                         (meshCfgMdlClEvt_t *)&evt))
+  {
+    return;
+  }
 
-    /* Validate state consistency. */
-    if ((pNwkTransmit == NULL) ||
-        (pNwkTransmit->transCount >
-         (CFG_MDL_MSG_NWK_TRANS_STATE_CNT_MASK >> CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SHIFT)) ||
-        (pNwkTransmit->transIntervalSteps10Ms >
-         (CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_MASK >> CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SHIFT))) {
-        /* Invoke user callback. */
-        meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
+  /* Validate state consistency. */
+  if ((pNwkTransmit == NULL) ||
+      (pNwkTransmit->transCount >
+      (CFG_MDL_MSG_NWK_TRANS_STATE_CNT_MASK >> CFG_MDL_MSG_NWK_TRANS_STATE_CNT_SHIFT)) ||
+      (pNwkTransmit->transIntervalSteps10Ms >
+      (CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_MASK >> CFG_MDL_MSG_NWK_TRANS_STATE_INTVL_SHIFT)))
+  {
+    /* Invoke user callback. */
+    meshCfgMdlClCb.cback((meshCfgMdlClEvt_t *)&evt);
 
-        return;
-    }
+    return;
+  }
 
-    /* Allocate request. */
-    pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
-                                       CFG_MDL_MSG_NWK_TRANS_SET_NUM_BYTES);
+  /* Allocate request. */
+  pReq = meshCfgMdlClAllocateRequest(cfgMdlSrAddr, pCfgMdlSrDevKey, cfgMdlSrNetKeyIndex,
+                                     CFG_MDL_MSG_NWK_TRANS_SET_NUM_BYTES);
 
-    if (pReq != NULL) {
-        /* Pack Network Transmit state. */
-        meshCfgMsgPackNwkTrans(pReq->pMsgParam, pNwkTransmit);
+  if (pReq != NULL)
+  {
+    /* Pack Network Transmit state. */
+    meshCfgMsgPackNwkTrans(pReq->pMsgParam, pNwkTransmit);
 
-        /* Configure request and response operation identifiers. */
-        pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NWK_TRANS_SET;
-        pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NWK_TRANS_STATUS;
+    /* Configure request and response operation identifiers. */
+    pReq->pReqParam->reqOpId = MESH_CFG_MDL_CL_NWK_TRANS_SET;
+    pReq->pReqParam->rspOpId = MESH_CFG_MDL_SR_NWK_TRANS_STATUS;
 
-        /* Configure API event in case of timeout. */
-        pReq->pReqParam->apiEvt = MESH_CFG_MDL_NWK_TRANS_SET_EVENT;
+    /* Configure API event in case of timeout. */
+    pReq->pReqParam->apiEvt = MESH_CFG_MDL_NWK_TRANS_SET_EVENT;
 
-        /* Send WSF message. */
-        WsfMsgSend(meshCb.handlerId, (void *)pReq);
-    }
+    /* Send WSF message. */
+    WsfMsgSend(meshCb.handlerId, (void *)pReq);
+  }
 }

@@ -61,13 +61,17 @@ extern "C" {
  * @param subclass         Subclass, @ref app_usbd_msc_subclass_t
  * @param protocol         Protocol, @ref app_usbd_msc_protocol_t
  * */
-#define APP_USBD_MSC_INTERFACE_DSC(interface_number, subclass, protocol)              \
-    /*.bLength =            */ sizeof(app_usbd_descriptor_iface_t),                   \
-        /*.bDescriptorType =    */ APP_USBD_DESCRIPTOR_INTERFACE,                     \
-        /*.bInterfaceNumber =   */ interface_number, /*.bAlternateSetting =  */ 0x00, \
-        /*.bNumEndpoints =      */ 2, /*.bInterfaceClass =    */ APP_USBD_MSC_CLASS,  \
-        /*.bInterfaceSubClass = */ subclass, /*.bInterfaceProtocol = */ protocol,     \
-        /*.iInterface = 0,      */ 0x00,
+#define APP_USBD_MSC_INTERFACE_DSC(interface_number, subclass, protocol)                \
+    /*.bLength =            */ sizeof(app_usbd_descriptor_iface_t),                     \
+    /*.bDescriptorType =    */ APP_USBD_DESCRIPTOR_INTERFACE,                           \
+    /*.bInterfaceNumber =   */ interface_number,                                        \
+    /*.bAlternateSetting =  */ 0x00,                                                    \
+    /*.bNumEndpoints =      */ 2,                                                       \
+    /*.bInterfaceClass =    */ APP_USBD_MSC_CLASS,                                      \
+    /*.bInterfaceSubClass = */ subclass,                                                \
+    /*.bInterfaceProtocol = */ protocol,                                                \
+    /*.iInterface = 0,      */ 0x00,                                                    \
+
 
 /**
  * @brief Initializer of endpoint descriptors for MSC class.
@@ -76,17 +80,20 @@ extern "C" {
  * @param endpoint_out  OUT endpoint.
  * @param ep_size       Endpoint size.
  * */
-#define APP_USBD_MSC_EP_DSC(endpoint_in, endpoint_out, ep_size)                                \
-    /*.bLength =          */ sizeof(app_usbd_descriptor_ep_t),                                 \
-        /*.bDescriptorType =  */ APP_USBD_DESCRIPTOR_ENDPOINT,                                 \
-        /*.bEndpointAddress = */ endpoint_in,                                                  \
-        /*.bmAttributes =     */ APP_USBD_DESCRIPTOR_EP_ATTR_TYPE_BULK,                        \
-        /*.wMaxPacketSize =   */ APP_USBD_U16_TO_RAW_DSC(ep_size), /*.bInterval =        */ 0, \
-        /*.bLength =          */ sizeof(app_usbd_descriptor_ep_t),                             \
-        /*.bDescriptorType =  */ APP_USBD_DESCRIPTOR_ENDPOINT,                                 \
-        /*.bEndpointAddress = */ endpoint_out,                                                 \
-        /*.bmAttributes =     */ APP_USBD_DESCRIPTOR_EP_ATTR_TYPE_BULK,                        \
-        /*.wMaxPacketSize =   */ APP_USBD_U16_TO_RAW_DSC(ep_size), /*.bInterval =        */ 0,
+#define APP_USBD_MSC_EP_DSC(endpoint_in, endpoint_out, ep_size)               \
+    /*.bLength =          */ sizeof(app_usbd_descriptor_ep_t),                \
+    /*.bDescriptorType =  */ APP_USBD_DESCRIPTOR_ENDPOINT,                    \
+    /*.bEndpointAddress = */ endpoint_in,                                     \
+    /*.bmAttributes =     */ APP_USBD_DESCRIPTOR_EP_ATTR_TYPE_BULK,           \
+    /*.wMaxPacketSize =   */ APP_USBD_U16_TO_RAW_DSC(ep_size),                \
+    /*.bInterval =        */ 0,                                               \
+    /*.bLength =          */ sizeof(app_usbd_descriptor_ep_t),                \
+    /*.bDescriptorType =  */ APP_USBD_DESCRIPTOR_ENDPOINT,                    \
+    /*.bEndpointAddress = */ endpoint_out,                                    \
+    /*.bmAttributes =     */ APP_USBD_DESCRIPTOR_EP_ATTR_TYPE_BULK,           \
+    /*.wMaxPacketSize =   */ APP_USBD_U16_TO_RAW_DSC(ep_size),                \
+    /*.bInterval =        */ 0,                                               \
+
 
 /** @} */
 

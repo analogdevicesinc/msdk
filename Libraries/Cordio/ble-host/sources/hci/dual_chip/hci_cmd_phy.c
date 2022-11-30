@@ -38,14 +38,15 @@
 /*************************************************************************************************/
 void HciLeReadPhyCmd(uint16_t handle)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_PHY, HCI_LEN_LE_READ_PHY)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT16_TO_BSTREAM(p, handle);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_PHY, HCI_LEN_LE_READ_PHY)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT16_TO_BSTREAM(p, handle);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -57,16 +58,17 @@ void HciLeReadPhyCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeSetDefaultPhyCmd(uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_DEF_PHY, HCI_LEN_LE_SET_DEF_PHY)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, allPhys);
-        UINT8_TO_BSTREAM(p, txPhys);
-        UINT8_TO_BSTREAM(p, rxPhys);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_DEF_PHY, HCI_LEN_LE_SET_DEF_PHY)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, allPhys);
+    UINT8_TO_BSTREAM(p, txPhys);
+    UINT8_TO_BSTREAM(p, rxPhys);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -76,19 +78,19 @@ void HciLeSetDefaultPhyCmd(uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys)
 *  \return None.
 */
 /*************************************************************************************************/
-void HciLeSetPhyCmd(uint16_t handle, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys,
-                    uint16_t phyOptions)
+void HciLeSetPhyCmd(uint16_t handle, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys, uint16_t phyOptions)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PHY, HCI_LEN_LE_SET_PHY)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT16_TO_BSTREAM(p, handle);
-        UINT8_TO_BSTREAM(p, allPhys);
-        UINT8_TO_BSTREAM(p, txPhys);
-        UINT8_TO_BSTREAM(p, rxPhys);
-        UINT16_TO_BSTREAM(p, phyOptions);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PHY, HCI_LEN_LE_SET_PHY)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT16_TO_BSTREAM(p, handle);
+    UINT8_TO_BSTREAM(p, allPhys);
+    UINT8_TO_BSTREAM(p, txPhys);
+    UINT8_TO_BSTREAM(p, rxPhys);
+    UINT16_TO_BSTREAM(p, phyOptions);
+    hciCmdSend(pBuf);
+  }
 }

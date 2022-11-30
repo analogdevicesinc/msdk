@@ -27,7 +27,8 @@
 #define MESH_NETWORK_MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,9 +36,10 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh Network Cache level types enumeration */
-enum meshNwkCacheTypes {
-    MESH_NWK_CACHE_L1 = 0x00, /*!< Level 1 Network message cache */
-    MESH_NWK_CACHE_L2 = 0x01 /*!< Level 2 Network message cache */
+enum meshNwkCacheTypes
+{
+  MESH_NWK_CACHE_L1 = 0x00,  /*!< Level 1 Network message cache */
+  MESH_NWK_CACHE_L2 = 0x01   /*!< Level 2 Network message cache */
 };
 
 /*! Mesh Network Cache level type. See ::meshNwkCacheTypes */
@@ -49,9 +51,10 @@ typedef uint8_t meshNwkCacheType_t;
 typedef uint16_t meshNwkCacheRetVal_t;
 
 /*! Mesh Network Interfaces control block type definition */
-typedef struct meshNwkIfCb_tag {
-    meshNwkIf_t interfaces[MESH_BR_MAX_INTERFACES]; /*!< List of interfaces */
-    uint8_t maxFilterSize; /*!< Maximum size of an interface filter */
+typedef struct meshNwkIfCb_tag
+{
+  meshNwkIf_t   interfaces[MESH_BR_MAX_INTERFACES]; /*!< List of interfaces */
+  uint8_t       maxFilterSize;                      /*!< Maximum size of an interface filter */
 } meshNwkIfCb_t;
 
 /**************************************************************************************************

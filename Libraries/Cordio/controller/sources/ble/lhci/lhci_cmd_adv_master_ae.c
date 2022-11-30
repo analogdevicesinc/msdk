@@ -32,18 +32,19 @@
 **************************************************************************************************/
 
 /*! \brief   Maximum number of scanning PHYs. */
-#define LHCI_MAX_SCAN_PHY 3
+#define LHCI_MAX_SCAN_PHY   3
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief      Set advertising parameter command. */
-typedef struct {
-    uint8_t ownAddrType; /*!< Own address type. */
-    uint8_t scanFiltPolicy; /*!< Scan filter policy. */
-    uint8_t scanPhys; /*!< Scanning PHYs. */
-    LlExtScanParam_t param[LHCI_MAX_SCAN_PHY]; /*!< Extended scan parameters for each PHY. */
+typedef struct
+{
+  uint8_t ownAddrType;      /*!< Own address type. */
+  uint8_t scanFiltPolicy;   /*!< Scan filter policy. */
+  uint8_t scanPhys;         /*!< Scanning PHYs. */
+  LlExtScanParam_t param[LHCI_MAX_SCAN_PHY];    /*!< Extended scan parameters for each PHY. */
 } lhciSetExtScanParamCmd_t;
 
 /*************************************************************************************************/
@@ -56,23 +57,25 @@ typedef struct {
 /*************************************************************************************************/
 static void lhciUnpackSetExtScanParamCmd(lhciSetExtScanParamCmd_t *pCmd, const uint8_t *pBuf)
 {
-    const unsigned int maxBits = 8;
+  const unsigned int maxBits = 8;
 
-    BSTREAM_TO_UINT8(pCmd->ownAddrType, pBuf);
-    BSTREAM_TO_UINT8(pCmd->scanFiltPolicy, pBuf);
-    BSTREAM_TO_UINT8(pCmd->scanPhys, pBuf);
+  BSTREAM_TO_UINT8(pCmd->ownAddrType, pBuf);
+  BSTREAM_TO_UINT8(pCmd->scanFiltPolicy, pBuf);
+  BSTREAM_TO_UINT8(pCmd->scanPhys, pBuf);
 
-    unsigned int i; /* scanPhy bit position */
-    unsigned int j; /* param array index */
+  unsigned int i;   /* scanPhy bit position */
+  unsigned int j;   /* param array index */
 
-    for (i = 0, j = 0; (i < maxBits) && (j < LHCI_MAX_SCAN_PHY); i++) {
-        if (pCmd->scanPhys & (1 << i)) {
-            BSTREAM_TO_UINT8(pCmd->param[j].scanType, pBuf);
-            BSTREAM_TO_UINT16(pCmd->param[j].scanInterval, pBuf);
-            BSTREAM_TO_UINT16(pCmd->param[j].scanWindow, pBuf);
-            j++;
-        }
+  for (i = 0, j = 0; (i < maxBits) && (j < LHCI_MAX_SCAN_PHY); i++)
+  {
+    if (pCmd->scanPhys & (1 << i))
+    {
+      BSTREAM_TO_UINT8 (pCmd->param[j].scanType, pBuf);
+      BSTREAM_TO_UINT16(pCmd->param[j].scanInterval, pBuf);
+      BSTREAM_TO_UINT16(pCmd->param[j].scanWindow, pBuf);
+      j++;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -86,16 +89,18 @@ static void lhciUnpackSetExtScanParamCmd(lhciSetExtScanParamCmd_t *pCmd, const u
 /*************************************************************************************************/
 static void lhciMstAeSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t paramLen)
 {
-    uint8_t *pBuf;
-    uint8_t *pEvtBuf;
+  uint8_t *pBuf;
+  uint8_t *pEvtBuf;
 
-    if ((pEvtBuf = lhciAllocCmdCmplEvt(paramLen, pCmdHdr->opCode)) == NULL) {
-        return;
-    }
-    pBuf = pEvtBuf;
+  if ((pEvtBuf = lhciAllocCmdCmplEvt(paramLen, pCmdHdr->opCode)) == NULL)
+  {
+    return;
+  }
+  pBuf = pEvtBuf;
 
-    switch (pCmdHdr->opCode) {
-        /* --- command completion with status only parameter --- */
+  switch (pCmdHdr->opCode)
+  {
+    /* --- command completion with status only parameter --- */
 
     case HCI_OPCODE_LE_SET_EXT_SCAN_PARAM:
     case HCI_OPCODE_LE_SET_EXT_SCAN_ENABLE:
@@ -104,22 +109,23 @@ static void lhciMstAeSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t 
     case HCI_OPCODE_LE_ADD_DEV_PER_ADV_LIST:
     case HCI_OPCODE_LE_REMOVE_DEV_PER_ADV_LIST:
     case HCI_OPCODE_LE_CLEAR_PER_ADV_LIST:
-        lhciPackCmdCompleteEvtStatus(pBuf, status);
-        break;
-    case HCI_OPCODE_LE_READ_PER_ADV_LIST_SIZE: {
-        uint8_t listSize = 0;
-        status = LlReadPeriodicAdvListSize(&listSize);
-        pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
-        UINT8_TO_BSTREAM(pBuf, listSize);
-        break;
+      lhciPackCmdCompleteEvtStatus(pBuf, status);
+      break;
+    case HCI_OPCODE_LE_READ_PER_ADV_LIST_SIZE:
+    {
+      uint8_t listSize = 0;
+      status = LlReadPeriodicAdvListSize(&listSize);
+      pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
+      UINT8_TO_BSTREAM(pBuf, listSize);
+      break;
     }
-        /* --- default --- */
+    /* --- default --- */
 
     default:
-        break;
-    }
+      break;
+  }
 
-    lhciSendCmdCmplEvt(pEvtBuf);
+  lhciSendCmdCmplEvt(pEvtBuf);
 }
 
 /*************************************************************************************************/
@@ -135,111 +141,128 @@ static void lhciMstAeSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t 
 bool_t lhciMstExtScanDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
 #if LHCI_ENABLE_VS
-    if (lhciMstExtScanVsStdDecodeCmdPkt(pHdr, pBuf)) {
-        return TRUE;
-    }
+  if (lhciMstExtScanVsStdDecodeCmdPkt(pHdr, pBuf))
+  {
+    return TRUE;
+  }
 #endif
 
-    uint8_t status = HCI_SUCCESS;
-    uint8_t paramLen = 0;
+  uint8_t status = HCI_SUCCESS;
+  uint8_t paramLen = 0;
 
-    switch (pHdr->opCode) {
-        /* --- LE Advertising Extensions --- */
+  switch (pHdr->opCode)
+  {
+    /* --- LE Advertising Extensions --- */
 
-    case HCI_OPCODE_LE_SET_EXT_SCAN_PARAM: {
-        lhciSetExtScanParamCmd_t cmd;
-        lhciUnpackSetExtScanParamCmd(&cmd, pBuf);
-        status = LlSetExtScanParam(cmd.ownAddrType, cmd.scanFiltPolicy, cmd.scanPhys, cmd.param);
-        paramLen = LHCI_LEN_LE_SET_EXT_SCAN_PARAM;
-        break;
+    case HCI_OPCODE_LE_SET_EXT_SCAN_PARAM:
+    {
+      lhciSetExtScanParamCmd_t cmd;
+      lhciUnpackSetExtScanParamCmd(&cmd, pBuf);
+      status = LlSetExtScanParam(cmd.ownAddrType, cmd.scanFiltPolicy, cmd.scanPhys, cmd.param);
+      paramLen = LHCI_LEN_LE_SET_EXT_SCAN_PARAM;
+      break;
     }
-    case HCI_OPCODE_LE_SET_EXT_SCAN_ENABLE: {
-        uint8_t enable;
-        uint8_t filterDup;
-        uint16_t duration;
-        uint16_t period;
+    case HCI_OPCODE_LE_SET_EXT_SCAN_ENABLE:
+    {
+      uint8_t enable;
+      uint8_t filterDup;
+      uint16_t duration;
+      uint16_t period;
 
-        enable = *pBuf++;
-        filterDup = *pBuf++;
-        BSTREAM_TO_UINT16(duration, pBuf);
-        BSTREAM_TO_UINT16(period, pBuf);
+      enable = *pBuf++;
+      filterDup = *pBuf++;
+      BSTREAM_TO_UINT16(duration, pBuf);
+      BSTREAM_TO_UINT16(period, pBuf);
 
-        LlExtScanEnable(enable, filterDup, duration, period);
-        return TRUE; /* LL event handler sends command completion */
+      LlExtScanEnable(enable, filterDup, duration, period);
+      return TRUE;      /* LL event handler sends command completion */
     }
-    case HCI_OPCODE_LE_PER_ADV_CREATE_SYNC: {
-        LlPerAdvCreateSyncCmd_t cmd;
-        BSTREAM_TO_UINT8(cmd.options, pBuf);
-        BSTREAM_TO_UINT8(cmd.advSID, pBuf);
-        BSTREAM_TO_UINT8(cmd.advAddrType, pBuf);
-        cmd.pAdvAddr = pBuf;
-        pBuf += BDA_ADDR_LEN;
-        BSTREAM_TO_UINT16(cmd.skip, pBuf);
-        BSTREAM_TO_UINT16(cmd.syncTimeOut, pBuf);
-        pBuf++; /* Sync_CTE_Type (Unused) */
+    case HCI_OPCODE_LE_PER_ADV_CREATE_SYNC:
+    {
+      LlPerAdvCreateSyncCmd_t cmd;
+      BSTREAM_TO_UINT8(cmd.options, pBuf);
+      BSTREAM_TO_UINT8(cmd.advSID, pBuf);
+      BSTREAM_TO_UINT8(cmd.advAddrType, pBuf);
+      cmd.pAdvAddr = pBuf;
+      pBuf += BDA_ADDR_LEN;
+      BSTREAM_TO_UINT16(cmd.skip, pBuf);
+      BSTREAM_TO_UINT16(cmd.syncTimeOut, pBuf);
+      pBuf++; /* Sync_CTE_Type (Unused) */
 
-        if (((cmd.options >> 1) & 0x01) &&
-            ((lhciPersistCb.supCmds[40] & HCI_SUP_LE_SET_PER_ADV_RCV_ENABLE) == 0)) {
-            status = LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH;
-        } else {
-            status = LlPeriodicAdvCreateSync(&cmd);
-        }
+      if (((cmd.options >> 1) & 0x01) &&
+          ((lhciPersistCb.supCmds[40] & HCI_SUP_LE_SET_PER_ADV_RCV_ENABLE) == 0))
+      {
+        status = LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH;
+      }
+      else
+      {
+        status = LlPeriodicAdvCreateSync(&cmd);
+      }
 
-        paramLen = LHCI_LEN_CMD_STATUS_EVT;
-        break;
+      paramLen = LHCI_LEN_CMD_STATUS_EVT;
+      break;
     }
-    case HCI_OPCODE_LE_PER_ADV_CREATE_SYNC_CANCEL: {
-        status = LlPeriodicAdvCreateSyncCancel();
-        paramLen = LHCI_LEN_LE_PER_ADV_CREATE_SYNC_CANCEL;
-        break;
+    case HCI_OPCODE_LE_PER_ADV_CREATE_SYNC_CANCEL:
+    {
+      status = LlPeriodicAdvCreateSyncCancel();
+      paramLen = LHCI_LEN_LE_PER_ADV_CREATE_SYNC_CANCEL;
+      break;
     }
-    case HCI_OPCODE_LE_PER_ADV_TERMINATE_SYNC: {
-        uint16_t syncHandle;
-        BSTREAM_TO_UINT16(syncHandle, pBuf);
-        status = LlPeriodicAdvTerminateSync(syncHandle);
-        paramLen = LHCI_LEN_LE_PER_ADV_TERMINATE_SYNC;
-        break;
+    case HCI_OPCODE_LE_PER_ADV_TERMINATE_SYNC:
+    {
+      uint16_t syncHandle;
+      BSTREAM_TO_UINT16(syncHandle, pBuf);
+      status = LlPeriodicAdvTerminateSync(syncHandle);
+      paramLen = LHCI_LEN_LE_PER_ADV_TERMINATE_SYNC;
+      break;
     }
-    case HCI_OPCODE_LE_ADD_DEV_PER_ADV_LIST: {
-        LlDevicePerAdvList_t cmd;
-        BSTREAM_TO_UINT8(cmd.advAddrType, pBuf);
-        cmd.pAdvAddr = pBuf;
-        pBuf += BDA_ADDR_LEN;
-        BSTREAM_TO_UINT8(cmd.advSID, pBuf);
-        status = LlAddDeviceToPeriodicAdvList(&cmd);
-        paramLen = LHCI_LEN_LE_ADD_DEV_PER_ADV_LIST;
-        break;
+    case HCI_OPCODE_LE_ADD_DEV_PER_ADV_LIST:
+    {
+      LlDevicePerAdvList_t cmd;
+      BSTREAM_TO_UINT8(cmd.advAddrType, pBuf);
+      cmd.pAdvAddr = pBuf;
+      pBuf += BDA_ADDR_LEN;
+      BSTREAM_TO_UINT8(cmd.advSID, pBuf);
+      status = LlAddDeviceToPeriodicAdvList(&cmd);
+      paramLen = LHCI_LEN_LE_ADD_DEV_PER_ADV_LIST;
+      break;
     }
-    case HCI_OPCODE_LE_REMOVE_DEV_PER_ADV_LIST: {
-        LlDevicePerAdvList_t cmd;
-        BSTREAM_TO_UINT8(cmd.advAddrType, pBuf);
-        cmd.pAdvAddr = pBuf;
-        pBuf += BDA_ADDR_LEN;
-        BSTREAM_TO_UINT8(cmd.advSID, pBuf);
-        status = LlRemoveDeviceFromPeriodicAdvList(&cmd);
-        paramLen = LHCI_LEN_LE_REM_DEV_PER_ADV_LIST;
-        break;
+    case HCI_OPCODE_LE_REMOVE_DEV_PER_ADV_LIST:
+    {
+      LlDevicePerAdvList_t cmd;
+      BSTREAM_TO_UINT8(cmd.advAddrType, pBuf);
+      cmd.pAdvAddr = pBuf;
+      pBuf += BDA_ADDR_LEN;
+      BSTREAM_TO_UINT8(cmd.advSID, pBuf);
+      status = LlRemoveDeviceFromPeriodicAdvList(&cmd);
+      paramLen = LHCI_LEN_LE_REM_DEV_PER_ADV_LIST;
+      break;
     }
-    case HCI_OPCODE_LE_CLEAR_PER_ADV_LIST: {
-        status = LlClearPeriodicAdvList();
-        paramLen = LHCI_LEN_LE_CLEAR_PER_ADV_LIST;
-        break;
+    case HCI_OPCODE_LE_CLEAR_PER_ADV_LIST:
+    {
+      status = LlClearPeriodicAdvList();
+      paramLen = LHCI_LEN_LE_CLEAR_PER_ADV_LIST;
+      break;
     }
-    case HCI_OPCODE_LE_READ_PER_ADV_LIST_SIZE: {
-        paramLen = LHCI_LEN_LE_READ_PER_ADV_LIST_SIZE;
-        break;
+    case HCI_OPCODE_LE_READ_PER_ADV_LIST_SIZE:
+    {
+      paramLen = LHCI_LEN_LE_READ_PER_ADV_LIST_SIZE;
+      break;
     }
-        /* --- default --- */
+    /* --- default --- */
 
     default:
-        return FALSE;
-    }
+      return FALSE;
+  }
 
-    if (paramLen == LHCI_LEN_CMD_STATUS_EVT) {
-        lhciSendCmdStatusEvt(pHdr, status);
-    } else if (paramLen > 0) {
-        lhciMstAeSendCmdCmplEvt(pHdr, status, paramLen);
-    }
+  if (paramLen == LHCI_LEN_CMD_STATUS_EVT)
+  {
+    lhciSendCmdStatusEvt(pHdr, status);
+  }
+  else if (paramLen > 0)
+  {
+    lhciMstAeSendCmdCmplEvt(pHdr, status, paramLen);
+  }
 
-    return TRUE;
+  return TRUE;
 }

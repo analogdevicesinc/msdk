@@ -41,20 +41,21 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Slave role device parameter definition. */
-typedef struct {
-    uint8_t availTxBuf; /*!< Available number of transmit buffers. */
-    uint8_t availRxBuf; /*!< Available number of receive buffers. */
+typedef struct
+{
+  uint8_t       availTxBuf;             /*!< Available number of transmit buffers. */
+  uint8_t       availRxBuf;             /*!< Available number of receive buffers. */
 
-    uint16_t maxTxLen; /*!< Default maximum number of Data PDU bytes. */
-    uint16_t maxTxTime; /*!< Default maximum microseconds for a Data PDU. */
+  uint16_t      maxTxLen;               /*!< Default maximum number of Data PDU bytes. */
+  uint16_t      maxTxTime;              /*!< Default maximum microseconds for a Data PDU. */
 
-    wsfQueue_t rxDataQ; /*!< Receive Data PDU queue. */
+  wsfQueue_t    rxDataQ;                /*!< Receive Data PDU queue. */
 
-    uint32_t dataPendMsk; /*!< Bitmask of connection handles with new pending data. */
+  uint32_t      dataPendMsk;            /*!< Bitmask of connection handles with new pending data. */
 
-    uint8_t allPhys; /*!< Default all PHYs. */
-    uint8_t txPhys; /*!< Default transmitter PHYs. */
-    uint8_t rxPhys; /*!< Default receiver PHYs. */
+  uint8_t       allPhys;                /*!< Default all PHYs. */
+  uint8_t       txPhys;                 /*!< Default transmitter PHYs. */
+  uint8_t       rxPhys;                 /*!< Default receiver PHYs. */
 
 } lmgrIsoCtrlBlk_t;
 
@@ -70,7 +71,7 @@ extern lmgrIsoCtrlBlk_t lmgrIsoCb;
 /* Initialization */
 void LmgrIsoInit(void);
 
-/*! \} */ /* LMGR_API_ISO_H */
+/*! \} */    /* LMGR_API_ISO_H */
 
 #ifdef __cplusplus
 };

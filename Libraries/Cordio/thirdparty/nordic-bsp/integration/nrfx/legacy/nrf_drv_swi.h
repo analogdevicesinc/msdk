@@ -56,27 +56,27 @@ extern "C" {
  */
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_SWI_UNALLOCATED NRFX_SWI_UNALLOCATED
+#define NRF_SWI_UNALLOCATED     NRFX_SWI_UNALLOCATED
 /** @brief Macro for forwarding the new implementation. */
-#define SWI_DEFAULT_PRIORITY NRFX_SWI_DEFAULT_PRIORITY
+#define SWI_DEFAULT_PRIORITY    NRFX_SWI_DEFAULT_PRIORITY
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_swi_t nrfx_swi_t
+#define nrf_swi_t           nrfx_swi_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_swi_flags_t nrfx_swi_flags_t
+#define nrf_swi_flags_t     nrfx_swi_flags_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_swi_handler_t nrfx_swi_handler_t
+#define nrf_swi_handler_t   nrfx_swi_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_swi_alloc nrfx_swi_alloc
+#define nrf_drv_swi_alloc   nrfx_swi_alloc
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_swi_free nrfx_swi_free
+#define nrf_drv_swi_free    nrfx_swi_free
 /** @brief Macro for forwarding the new implementation. */
 #define nrf_drv_swi_trigger nrfx_swi_trigger
 
 #if NRF_MODULE_ENABLED(EGU) || defined(__SDK_DOXYGEN__)
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_swi_task_trigger_address_get nrfx_swi_task_trigger_address_get
+#define nrf_drv_swi_task_trigger_address_get    nrfx_swi_task_trigger_address_get
 /** @brief Macro for forwarding the new implementation. */
 #define nrf_drv_swi_event_triggered_address_get nrfx_swi_event_triggered_address_get
 #endif // NRF_MODULE_ENABLED(EGU) || defined(__SDK_DOXYGEN__)

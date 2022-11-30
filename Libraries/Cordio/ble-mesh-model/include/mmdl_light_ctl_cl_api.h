@@ -31,7 +31,8 @@
 #define MMDL_LIGHT_CTL_CL_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mmdl_defs.h"
@@ -41,79 +42,87 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Light CTL parameters structure */
-typedef struct mmdlLightCtlParam_tag {
-    uint16_t lightness; /*!< Lightness */
-    uint16_t temperature; /*!< Temperature */
-    uint16_t deltaUV; /*!< DeltaUV */
+typedef struct mmdlLightCtlParam_tag
+{
+  uint16_t    lightness;      /*!< Lightness */
+  uint16_t    temperature;    /*!< Temperature */
+  uint16_t    deltaUV;        /*!< DeltaUV */
 } mmdlLightCtlParam_t;
 
 /*! \brief Light CTL Set parameters structure */
-typedef struct mmdlLightCtlSetParam_tag {
-    uint16_t lightness; /*!< Lightness */
-    uint16_t temperature; /*!< Temperature */
-    uint16_t deltaUV; /*!< DeltaUV */
-    uint8_t tid; /*!< Transaction Identifier */
-    uint8_t transitionTime; /*!< Transition time */
-    uint8_t delay; /*!< Delay in steps of 5 ms  */
+typedef struct mmdlLightCtlSetParam_tag
+{
+  uint16_t    lightness;      /*!< Lightness */
+  uint16_t    temperature;    /*!< Temperature */
+  uint16_t    deltaUV;        /*!< DeltaUV */
+  uint8_t     tid;            /*!< Transaction Identifier */
+  uint8_t     transitionTime; /*!< Transition time */
+  uint8_t     delay;          /*!< Delay in steps of 5 ms  */
 } mmdlLightCtlSetParam_t;
 
 /*! \brief Light CTL Temperature Set parameters structure */
-typedef struct mmdlLightCtlTemperatureSetParam_tag {
-    uint16_t temperature; /*!< Light Temperature */
-    uint16_t deltaUV; /*!< Delta UV */
-    uint8_t tid; /*!< Transaction Identifier */
-    uint8_t transitionTime; /*!< Transition time */
-    uint8_t delay; /*!< Delay in steps of 5 ms  */
+typedef struct mmdlLightCtlTemperatureSetParam_tag
+{
+  uint16_t    temperature;    /*!< Light Temperature */
+  uint16_t    deltaUV;        /*!< Delta UV */
+  uint8_t     tid;            /*!< Transaction Identifier */
+  uint8_t     transitionTime; /*!< Transition time */
+  uint8_t     delay;          /*!< Delay in steps of 5 ms  */
 } mmdlLightCtlTemperatureSetParam_t;
 
 /*! \brief Light CTL Range Set parameters structure */
-typedef struct mmdlLightCtlRangeSetParam_tag {
-    uint16_t minTemperature; /*!< Temperature range minimum */
-    uint16_t maxTemperature; /*!< Temperature range maximum */
+typedef struct mmdlLightCtlRangeSetParam_tag
+{
+  uint16_t    minTemperature;         /*!< Temperature range minimum */
+  uint16_t    maxTemperature;         /*!< Temperature range maximum */
 } mmdlLightCtlRangeSetParam_t;
 
 /*! \brief Light CTL Client Model Status event structure */
-typedef struct mmdlLightCtlClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    uint16_t presentLightness; /*!< Lightness */
-    uint16_t presentTemperature; /*!< Light Temperature */
-    uint16_t targetLightness; /*!< Lightness */
-    uint16_t targetTemperature; /*!< Light Temperature */
-    uint8_t remainingTime; /*!< Remaining time until the transition completes */
+typedef struct mmdlLightCtlClStatusEvent_tag
+{
+  wsfMsgHdr_t       hdr;                /*!< WSF message header */
+  meshElementId_t   elementId;          /*!< Element ID */
+  meshAddress_t     serverAddr;         /*!< Server Address */
+  uint16_t          presentLightness;   /*!< Lightness */
+  uint16_t          presentTemperature; /*!< Light Temperature */
+  uint16_t          targetLightness;    /*!< Lightness */
+  uint16_t          targetTemperature;  /*!< Light Temperature */
+  uint8_t           remainingTime;      /*!< Remaining time until the transition completes */
 } mmdlLightCtlClStatusEvent_t;
 
 /*! \brief Light CTL Client Model Temperature Status event structure */
-typedef struct mmdlLightCtlClTemperatureStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    uint16_t presentTemperature; /*!< Present Temperature */
-    uint16_t presentDeltaUV; /*!< Present Delta UV */
-    uint16_t targetTemperature; /*!< Target Temperature */
-    uint16_t targetDeltaUV; /*!< Target Delta UV */
-    uint8_t remainingTime; /*!< Remaining time until the transition completes */
+typedef struct mmdlLightCtlClTemperatureStatusEvent_tag
+{
+  wsfMsgHdr_t       hdr;                /*!< WSF message header */
+  meshElementId_t   elementId;          /*!< Element ID */
+  meshAddress_t     serverAddr;         /*!< Server Address */
+  uint16_t          presentTemperature; /*!< Present Temperature */
+  uint16_t          presentDeltaUV;     /*!< Present Delta UV */
+  uint16_t          targetTemperature;  /*!< Target Temperature */
+  uint16_t          targetDeltaUV;      /*!< Target Delta UV */
+  uint8_t           remainingTime;      /*!< Remaining time until the transition completes */
 } mmdlLightCtlClTemperatureStatusEvent_t;
 
 /*! \brief Light CTL Client Model Default Status event structure */
-typedef struct mmdlLightCtlClDefStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    uint16_t lightness; /*!< Lightness */
-    uint16_t temperature; /*!< Temperature */
-    uint16_t deltaUV; /*!< DeltaUV */
+typedef struct mmdlLightCtlClDefStatusEvent_tag
+{
+  wsfMsgHdr_t       hdr;            /*!< WSF message header */
+  meshElementId_t   elementId;      /*!< Element ID */
+  meshAddress_t     serverAddr;     /*!< Server Address */
+  uint16_t          lightness;      /*!< Lightness */
+  uint16_t          temperature;    /*!< Temperature */
+  uint16_t          deltaUV;        /*!< DeltaUV */
 } mmdlLightCtlClDefStatusEvent_t;
 
 /*! \brief Light CTL Client Model Range Status event structure */
-typedef struct mmdlLightCtlClRangeStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    uint8_t opStatus; /*!< Operation status */
-    uint16_t minTemperature; /*!< Temperature range minimum */
-    uint16_t maxTemperature; /*!< Temperature range maximum */
+typedef struct mmdlLightCtlClRangeStatusEvent_tag
+{
+  wsfMsgHdr_t       hdr;              /*!< WSF message header */
+  meshElementId_t   elementId;        /*!< Element ID */
+  meshAddress_t     serverAddr;       /*!< Server Address */
+  uint8_t           opStatus;         /*!< Operation status */
+  uint16_t          minTemperature;   /*!< Temperature range minimum */
+  uint16_t          maxTemperature;   /*!< Temperature range maximum */
 } mmdlLightCtlClRangeStatusEvent_t;
 
 /**************************************************************************************************
@@ -124,7 +133,7 @@ typedef struct mmdlLightCtlClRangeStatusEvent_tag {
 extern wsfHandlerId_t mmdlLightCtlClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t mmdlLightCtlClRcvdOpcodes[];
+extern const meshMsgOpcode_t  mmdlLightCtlClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations
@@ -227,8 +236,8 @@ void MmdlLightCtlClTemperatureGet(meshElementId_t elementId, meshAddress_t serve
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightCtlClTemperatureSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                                  uint16_t appKeyIndex,
+void MmdlLightCtlClTemperatureSet(meshElementId_t elementId, meshAddress_t serverAddr,
+                                  uint8_t ttl, uint16_t appKeyIndex,
                                   const mmdlLightCtlTemperatureSetParam_t *pParam);
 
 /*************************************************************************************************/

@@ -27,7 +27,8 @@
 #define MMDL_LIGHT_HSL_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,7 +36,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Timeout for filtering duplicate messages from same source */
-#define MSG_RCVD_TIMEOUT_MS 6000
+#define MSG_RCVD_TIMEOUT_MS                 6000
 
 /**************************************************************************************************
   Function Declarations
@@ -53,13 +54,14 @@ void mmdlLightHslSrHandleRangeGet(const meshModelMsgRecvEvt_t *pMsg);
 
 void mmdlLightHslSrHandleDefaultGet(const meshModelMsgRecvEvt_t *pMsg);
 
-bool_t mmdlLightHslSrProcessRangeSet(const meshModelMsgRecvEvt_t *pMsg, uint8_t *pOutOpStatus);
+bool_t mmdlLightHslSrProcessRangeSet(const meshModelMsgRecvEvt_t *pMsg,
+                                                 uint8_t *pOutOpStatus);
 
 void mmdlLightHslSrSendRangeStatus(meshElementId_t elementId, meshAddress_t dstAddr,
-                                   uint16_t appKeyIndex, bool_t recvOnUnicast, uint8_t opStatus);
+                                  uint16_t appKeyIndex, bool_t recvOnUnicast, uint8_t opStatus);
 
 void mmdlLightHslSrSendDefaultStatus(meshElementId_t elementId, meshAddress_t dstAddr,
-                                     uint16_t appKeyIndex, bool_t recvOnUnicast);
+                                    uint16_t appKeyIndex, bool_t recvOnUnicast);
 
 #ifdef __cplusplus
 }

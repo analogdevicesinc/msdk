@@ -41,10 +41,10 @@
 **************************************************************************************************/
 
 /* Start of cached heart rate service handles; begins after DIS */
-#define MEDC_DISC_HRS_START (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
+#define MEDC_DISC_HRS_START         (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
 
 /* Total cached handle list length */
-#define MEDC_DISC_HDL_LIST_LEN (MEDC_DISC_HRS_START + HRPC_HRS_HDL_LIST_LEN)
+#define MEDC_DISC_HDL_LIST_LEN      (MEDC_DISC_HRS_START + HRPC_HRS_HDL_LIST_LEN)
 
 /*! Pointers into handle list heart rate service handles */
 static uint16_t *pMedcHrsHdlList = &medcCb.hdlList[MEDC_DISC_HRS_START];
@@ -57,22 +57,23 @@ WSF_CT_ASSERT(MEDC_DISC_HDL_LIST_LEN <= APP_DB_HDL_LIST_LEN);
 **************************************************************************************************/
 
 /* HRS Control point "Reset Energy Expended" */
-static const uint8_t medcHrsRstEnExp[] = { CH_HRCP_RESET_ENERGY_EXP };
+static const uint8_t medcHrsRstEnExp[] = {CH_HRCP_RESET_ENERGY_EXP};
 
 /* List of characteristics to configure after service discovery */
-static const attcDiscCfg_t medcCfgHrsList[] = {
-    /* Read:  HRS Body sensor location */
-    { NULL, 0, HRPC_HRS_BSL_HDL_IDX },
+static const attcDiscCfg_t medcCfgHrsList[] =
+{
+  /* Read:  HRS Body sensor location */
+  {NULL, 0, HRPC_HRS_BSL_HDL_IDX},
 
-    /* Write:  HRS Control point "Reset Energy Expended"  */
-    { medcHrsRstEnExp, sizeof(medcHrsRstEnExp), HRPC_HRS_HRCP_HDL_IDX },
+  /* Write:  HRS Control point "Reset Energy Expended"  */
+  {medcHrsRstEnExp, sizeof(medcHrsRstEnExp), HRPC_HRS_HRCP_HDL_IDX},
 
-    /* Write:  HRS Heart rate measurement CCC descriptor  */
-    { medcCccNtfVal, sizeof(medcCccNtfVal), HRPC_HRS_HRM_CCC_HDL_IDX },
+  /* Write:  HRS Heart rate measurement CCC descriptor  */
+  {medcCccNtfVal, sizeof(medcCccNtfVal), HRPC_HRS_HRM_CCC_HDL_IDX},
 };
 
 /* Characteristic configuration list length */
-#define MEDC_CFG_HRS_LIST_LEN (sizeof(medcCfgHrsList) / sizeof(attcDiscCfg_t))
+#define MEDC_CFG_HRS_LIST_LEN   (sizeof(medcCfgHrsList) / sizeof(attcDiscCfg_t))
 
 /**************************************************************************************************
   Local Functions
@@ -89,7 +90,14 @@ static void medcHrpBtn(dmConnId_t connId, uint8_t btn);
 **************************************************************************************************/
 
 /*! profile interface pointer */
-medcIf_t medcHrpIf = { medcHrpInit, medcHrpDiscover, medcHrpConfigure, medcHrpProcMsg, medcHrpBtn };
+medcIf_t medcHrpIf =
+{
+  medcHrpInit,
+  medcHrpDiscover,
+  medcHrpConfigure,
+  medcHrpProcMsg,
+  medcHrpBtn
+};
 
 /*************************************************************************************************/
 /*!
@@ -102,22 +110,26 @@ medcIf_t medcHrpIf = { medcHrpInit, medcHrpDiscover, medcHrpConfigure, medcHrpPr
 /*************************************************************************************************/
 static void medcHrsValueUpdate(attEvt_t *pMsg)
 {
-    if (pMsg->hdr.status == ATT_SUCCESS) {
-        /* determine which profile the handle belongs to; start with most likely */
+  if (pMsg->hdr.status == ATT_SUCCESS)
+  {
+    /* determine which profile the handle belongs to; start with most likely */
 
-        /* heart rate */
-        if (HrpcHrsValueUpdate(pMedcHrsHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
-        /* device information */
-        if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
-        /* GATT */
-        if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
+    /* heart rate */
+    if (HrpcHrsValueUpdate(pMedcHrsHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
     }
+    /* device information */
+    if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
+    }
+    /* GATT */
+    if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -131,16 +143,17 @@ static void medcHrsValueUpdate(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcHrpProcMsg(wsfMsgHdr_t *pMsg)
 {
-    switch (pMsg->event) {
+  switch(pMsg->event)
+  {
     case ATTC_READ_RSP:
     case ATTC_HANDLE_VALUE_NTF:
     case ATTC_HANDLE_VALUE_IND:
-        medcHrsValueUpdate((attEvt_t *)pMsg);
-        break;
+      medcHrsValueUpdate((attEvt_t *) pMsg);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -152,11 +165,11 @@ static void medcHrpProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void medcHrpInit(void)
 {
-    /* set handle list length */
-    medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
+  /* set handle list length */
+  medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
 
-    /* set autoconnect UUID */
-    medcCb.autoUuid[0] = ATT_UUID_HEART_RATE_SERVICE;
+  /* set autoconnect UUID */
+  medcCb.autoUuid[0] = ATT_UUID_HEART_RATE_SERVICE;
 }
 
 /*************************************************************************************************/
@@ -170,10 +183,10 @@ static void medcHrpInit(void)
 /*************************************************************************************************/
 static bool_t medcHrpDiscover(dmConnId_t connId)
 {
-    /* discover heart rate service */
-    HrpcHrsDiscover(connId, pMedcHrsHdlList);
+  /* discover heart rate service */
+  HrpcHrsDiscover(connId, pMedcHrsHdlList);
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -188,9 +201,10 @@ static bool_t medcHrpDiscover(dmConnId_t connId)
 /*************************************************************************************************/
 static void medcHrpConfigure(dmConnId_t connId, uint8_t status)
 {
-    /* configure heart rate service */
-    AppDiscConfigure(connId, status, MEDC_CFG_HRS_LIST_LEN, (attcDiscCfg_t *)medcCfgHrsList,
-                     HRPC_HRS_HDL_LIST_LEN, pMedcHrsHdlList);
+  /* configure heart rate service */
+  AppDiscConfigure(connId, status, MEDC_CFG_HRS_LIST_LEN,
+                   (attcDiscCfg_t *) medcCfgHrsList,
+                   HRPC_HRS_HDL_LIST_LEN, pMedcHrsHdlList);
 }
 
 /*************************************************************************************************/
@@ -205,5 +219,5 @@ static void medcHrpConfigure(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 static void medcHrpBtn(dmConnId_t connId, uint8_t btn)
 {
-    return;
+  return;
 }

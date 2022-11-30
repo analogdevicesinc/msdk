@@ -34,6 +34,6 @@
 /*************************************************************************************************/
 void LhciAdvSlaveInit(void)
 {
-    lhciCmdTbl[LHCI_MSG_ADV] = lhciSlvAdvDecodeCmdPkt;
-    lhciEvtTbl[LHCI_MSG_ADV] = lhciSlvAdvEncodeEvtPkt;
+  lhciCmdTbl[LHCI_MSG_ADV] = lhciSlvAdvDecodeCmdPkt;
+  lhciEvtTbl[LHCI_MSG_ADV] = lhciSlvAdvEncodeEvtPkt;
 }

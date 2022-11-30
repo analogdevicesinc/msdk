@@ -59,17 +59,17 @@ extern "C" {
 typedef nrfx_systick_state_t nrf_drv_systick_state_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_systick_init nrfx_systick_init
+#define nrf_drv_systick_init        nrfx_systick_init
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_systick_get nrfx_systick_get
+#define nrf_drv_systick_get         nrfx_systick_get
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_systick_test nrfx_systick_test
+#define nrf_drv_systick_test        nrfx_systick_test
 /** @brief Macro for forwarding the new implementation. */
 #define nrf_drv_systick_delay_ticks nrfx_systick_delay_ticks
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_systick_delay_us nrfx_systick_delay_us
+#define nrf_drv_systick_delay_us    nrfx_systick_delay_us
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_systick_delay_ms nrfx_systick_delay_ms
+#define nrf_drv_systick_delay_ms    nrfx_systick_delay_ms
 
 /** @} */
 

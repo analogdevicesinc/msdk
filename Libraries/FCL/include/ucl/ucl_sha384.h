@@ -72,6 +72,7 @@ extern "C" {
  * @ingroup UCL_HASH
  */
 
+
 /** <b>The SHA384 context</b>.
  * This structure is associated to the 'step by step' process.
  *
@@ -95,6 +96,7 @@ extern "C" {
 
 typedef struct ucl_sha512_ctx ucl_sha384_ctx_t;
 
+
 /** <b>Core block size</b>.
  * Byte size of a SHA384 core block.
  *
@@ -114,6 +116,7 @@ typedef struct ucl_sha512_ctx ucl_sha384_ctx_t;
  */
 #define UCL_SHA384 3
 #define UCL_SHA384_HASHW32SIZE 12
+
 
 /** <b>SHA384</b>.
  * The complete process of SHA384.
@@ -145,7 +148,7 @@ int ucl_sha384(u8 *hash, u8 *data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA384
  */
-int ucl_sha384_init(ucl_sha384_ctx_t *context);
+int  ucl_sha384_init(ucl_sha384_ctx_t *context);
 
 /** <b>SHA384 Core</b>.
  * The core of SHA384.
@@ -164,7 +167,8 @@ int ucl_sha384_init(ucl_sha384_ctx_t *context);
  *
  * @ingroup UCL_SHA384
  */
-int ucl_sha384_core(ucl_sha384_ctx_t *context, u8 *data, u32 data_byteLen);
+int  ucl_sha384_core(ucl_sha384_ctx_t *context, u8 *data,
+                    u32 data_byteLen);
 
 /** <b>SHA384 Finish</b>.
  * Finish the process of SHA384.
@@ -184,16 +188,17 @@ int ucl_sha384_core(ucl_sha384_ctx_t *context, u8 *data, u32 data_byteLen);
  *
  * @ingroup UCL_SHA384
  */
-int ucl_sha384_finish(u8 *hash, ucl_sha384_ctx_t *context);
+int  ucl_sha384_finish(u8 *hash, ucl_sha384_ctx_t *context);
+
 
 void sha384_stone(u32 hash[8], u32 stone[16]);
 
-int ucl_hmac_sha384(u8 *mac, u32 mac_byteLen, u8 *message, u32 message_byteLen, u8 *key,
-                    u32 key_byteLen);
-int ucl_hmac_sha384_init(ucl_sha384_ctx_t *context, u8 *key, u32 key_byteLen);
+int ucl_hmac_sha384(u8 *mac, u32 mac_byteLen, u8 *message, u32 message_byteLen,
+		    u8 *key, u32 key_byteLen);
+int ucl_hmac_sha384_init(ucl_sha384_ctx_t *context , u8 *key, u32 key_byteLen);
 int ucl_hmac_sha384_core(ucl_sha384_ctx_t *context, u8 *data, u32 byteLen);
-int ucl_hmac_sha384_finish(u8 *mac, u32 mac_byteLen, ucl_sha384_ctx_t *context, u8 *key,
-                           u32 key_byteLen);
+int ucl_hmac_sha384_finish(u8 *mac, u32 mac_byteLen, ucl_sha384_ctx_t *context,
+                           u8 *key, u32 key_byteLen);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */

@@ -41,19 +41,19 @@ lmgrConnCtrlBlk_t lmgrConnCb;
 /*************************************************************************************************/
 void LmgrConnInit(void)
 {
-    memset(&lmgrConnCb, 0, sizeof(lmgrConnCb));
+  memset(&lmgrConnCb, 0, sizeof(lmgrConnCb));
 
-    lmgrConnCb.availTxBuf = pLctrRtCfg->numTxBufs;
-    lmgrConnCb.availRxBuf = pLctrRtCfg->numRxBufs;
+  lmgrConnCb.availTxBuf = pLctrRtCfg->numTxBufs;
+  lmgrConnCb.availRxBuf = pLctrRtCfg->numRxBufs;
 
-    lmgrConnCb.maxTxLen = LL_MAX_DATA_LEN_MIN;
-    lmgrConnCb.maxTxTime = LL_MAX_DATA_TIME_MIN;
+  lmgrConnCb.maxTxLen = LL_MAX_DATA_LEN_MIN;
+  lmgrConnCb.maxTxTime = LL_MAX_DATA_TIME_MIN;
 
-    lmgrConnCb.allPhys = LL_ALL_PHY_TX_PREFERENCE_BIT | LL_ALL_PHY_RX_PREFERENCE_BIT;
-    lmgrConnCb.rxPhys = LL_PHYS_NONE;
-    lmgrConnCb.txPhys = LL_PHYS_NONE;
+  lmgrConnCb.allPhys = LL_ALL_PHY_TX_PREFERENCE_BIT | LL_ALL_PHY_RX_PREFERENCE_BIT;
+  lmgrConnCb.rxPhys = LL_PHYS_NONE;
+  lmgrConnCb.txPhys = LL_PHYS_NONE;
 
-    lmgrConnCb.syncMode = LL_SYNC_TRSF_MODE_OFF;
-    lmgrConnCb.syncSkip = 0;
-    lmgrConnCb.syncTimeout = LL_SYNC_MIN_TIMEOUT;
+  lmgrConnCb.syncMode = LL_SYNC_TRSF_MODE_OFF;
+  lmgrConnCb.syncSkip = 0;
+  lmgrConnCb.syncTimeout = LL_SYNC_MIN_TIMEOUT;
 }

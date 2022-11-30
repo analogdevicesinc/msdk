@@ -38,15 +38,16 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Enumeration of handle indexes of characteristics to be discovered */
-enum {
-    ANPC_ANS_SNAC_HDL_IDX, /*!< \brief Supported new alert category */
-    ANPC_ANS_NA_HDL_IDX, /*!< \brief New alert */
-    ANPC_ANS_NA_CCC_HDL_IDX, /*!< \brief New alert CCC descriptor */
-    ANPC_ANS_SUAC_HDL_IDX, /*!< \brief Supported unread alert category */
-    ANPC_ANS_UAS_HDL_IDX, /*!< \brief Unread alert status */
-    ANPC_ANS_UAS_CCC_HDL_IDX, /*!< \brief Unread alert status CCC descriptor */
-    ANPC_ANS_ANCP_HDL_IDX, /*!< \brief Alert notification control point */
-    ANPC_ANS_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  ANPC_ANS_SNAC_HDL_IDX,          /*!< \brief Supported new alert category */
+  ANPC_ANS_NA_HDL_IDX,            /*!< \brief New alert */
+  ANPC_ANS_NA_CCC_HDL_IDX,        /*!< \brief New alert CCC descriptor */
+  ANPC_ANS_SUAC_HDL_IDX,          /*!< \brief Supported unread alert category */
+  ANPC_ANS_UAS_HDL_IDX,           /*!< \brief Unread alert status */
+  ANPC_ANS_UAS_CCC_HDL_IDX,       /*!< \brief Unread alert status CCC descriptor */
+  ANPC_ANS_ANCP_HDL_IDX,          /*!< \brief Alert notification control point */
+  ANPC_ANS_HDL_LIST_LEN           /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -97,7 +98,7 @@ void AnpcAnsControl(dmConnId_t connId, uint16_t handle, uint8_t command, uint8_t
 /*************************************************************************************************/
 uint8_t AnpcAnsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */ /* ALERT_NOTIFICATION_PROFILE */
+/*! \} */    /* ALERT_NOTIFICATION_PROFILE */
 
 #ifdef __cplusplus
 };

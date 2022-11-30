@@ -44,10 +44,10 @@
 #include "UDPCommandInterpreter.h"
 
 /* Dimensions the buffer into which input characters are placed. */
-#define cmdMAX_INPUT_SIZE 60
+#define cmdMAX_INPUT_SIZE	60
 
 /* Dimensions the buffer into which string outputs can be placed. */
-#define cmdMAX_OUTPUT_SIZE 1250
+#define cmdMAX_OUTPUT_SIZE	1250
 
 /* Dimensions the buffer passed to the recvfrom() call. */
 #define cmdSOCKET_INPUT_BUFFER_SIZE 60
@@ -55,18 +55,18 @@
 /*
  * The task that runs FreeRTOS+CLI.
  */
-void vUDPCommandInterpreterTask(void *pvParameters);
+void vUDPCommandInterpreterTask( void *pvParameters );
 
 /*
  * Open and configure the UDP socket.
  */
-static xSocket_t prvOpenUDPServerSocket(uint16_t usPort);
+static xSocket_t prvOpenUDPServerSocket( uint16_t usPort );
 
 /*-----------------------------------------------------------*/
 
-void vStartUDPCommandInterpreterTask(uint16_t usStackSize, uint32_t ulPort, UBaseType_t uxPriority)
+void vStartUDPCommandInterpreterTask( uint16_t usStackSize, uint32_t ulPort, UBaseType_t uxPriority )
 {
-    xTaskCreate(vUDPCommandInterpreterTask, "CLI", usStackSize, (void *)ulPort, uxPriority, NULL);
+	xTaskCreate( vUDPCommandInterpreterTask, "CLI", usStackSize, ( void * ) ulPort, uxPriority, NULL );
 }
 /*-----------------------------------------------------------*/
 
@@ -75,119 +75,132 @@ void vStartUDPCommandInterpreterTask(uint16_t usStackSize, uint32_t ulPort, UBas
  * interpreter.  In this case a UDP port is used.  See the URL in the comments
  * within main.c for the location of the online documentation.
  */
-void vUDPCommandInterpreterTask(void *pvParameters)
+void vUDPCommandInterpreterTask( void *pvParameters )
 {
-    long lBytes, lByte;
-    signed char cInChar, cInputIndex = 0;
-    static char cInputString[cmdMAX_INPUT_SIZE], cOutputString[cmdMAX_OUTPUT_SIZE],
-        cLocalBuffer[cmdSOCKET_INPUT_BUFFER_SIZE];
-    BaseType_t xMoreDataToFollow;
-    struct freertos_sockaddr xClient;
-    socklen_t xClientAddressLength =
-        0; /* This is required as a parameter to maintain the sendto() Berkeley sockets API - but it is not actually used so can take any value. */
-    xSocket_t xSocket;
+long lBytes, lByte;
+signed char cInChar, cInputIndex = 0;
+static char cInputString[ cmdMAX_INPUT_SIZE ], cOutputString[ cmdMAX_OUTPUT_SIZE ], cLocalBuffer[ cmdSOCKET_INPUT_BUFFER_SIZE ];
+BaseType_t xMoreDataToFollow;
+struct freertos_sockaddr xClient;
+socklen_t xClientAddressLength = 0; /* This is required as a parameter to maintain the sendto() Berkeley sockets API - but it is not actually used so can take any value. */
+xSocket_t xSocket;
 
-    /* Just to prevent compiler warnings. */
-    (void)pvParameters;
+	/* Just to prevent compiler warnings. */
+	( void ) pvParameters;
 
-    /* Attempt to open the socket.  The port number is passed in the task
+	/* Attempt to open the socket.  The port number is passed in the task
 	parameter.  The strange casting is to remove compiler warnings on 32-bit
 	machines. */
-    xSocket = prvOpenUDPServerSocket((uint16_t)((uint32_t)pvParameters) & 0xffffUL);
+	xSocket = prvOpenUDPServerSocket( ( uint16_t ) ( ( uint32_t ) pvParameters ) & 0xffffUL );
 
-    if (xSocket != FREERTOS_INVALID_SOCKET) {
-        for (;;) {
-            /* Wait for incoming data on the opened socket. */
-            lBytes = FreeRTOS_recvfrom(xSocket, (void *)cLocalBuffer, sizeof(cLocalBuffer), 0,
-                                       &xClient, &xClientAddressLength);
+	if( xSocket != FREERTOS_INVALID_SOCKET )
+	{
+		for( ;; )
+		{
+			/* Wait for incoming data on the opened socket. */
+			lBytes = FreeRTOS_recvfrom( xSocket, ( void * ) cLocalBuffer, sizeof( cLocalBuffer ), 0, &xClient, &xClientAddressLength );
 
-            if (lBytes != FREERTOS_SOCKET_ERROR) {
-                /* Process each received byte in turn. */
-                lByte = 0;
-                while (lByte < lBytes) {
-                    /* The next character in the input buffer. */
-                    cInChar = cLocalBuffer[lByte];
-                    lByte++;
+			if( lBytes != FREERTOS_SOCKET_ERROR )
+			{
+				/* Process each received byte in turn. */
+				lByte = 0;
+				while( lByte < lBytes )
+				{
+					/* The next character in the input buffer. */
+					cInChar = cLocalBuffer[ lByte ];
+					lByte++;
 
-                    /* Newline characters are taken as the end of the command
+					/* Newline characters are taken as the end of the command
 					string. */
-                    if (cInChar == '\n') {
-                        /* Process the input string received prior to the
+					if( cInChar == '\n' )
+					{
+						/* Process the input string received prior to the
 						newline. */
-                        do {
-                            /* Pass the string to FreeRTOS+CLI. */
-                            xMoreDataToFollow = FreeRTOS_CLIProcessCommand(
-                                cInputString, cOutputString, cmdMAX_OUTPUT_SIZE);
+						do
+						{
+							/* Pass the string to FreeRTOS+CLI. */
+							xMoreDataToFollow = FreeRTOS_CLIProcessCommand( cInputString, cOutputString, cmdMAX_OUTPUT_SIZE );
 
-                            /* Send the output generated by the command's
+							/* Send the output generated by the command's
 							implementation. */
-                            FreeRTOS_sendto(xSocket, cOutputString, strlen(cOutputString), 0,
-                                            &xClient, xClientAddressLength);
+							FreeRTOS_sendto( xSocket, cOutputString,  strlen( cOutputString ), 0, &xClient, xClientAddressLength );
 
-                        } while (
-                            xMoreDataToFollow !=
-                            pdFALSE); /* Until the command does not generate any more output. */
+						} while( xMoreDataToFollow != pdFALSE ); /* Until the command does not generate any more output. */
 
-                        /* All the strings generated by the command processing
+						/* All the strings generated by the command processing
 						have been sent.  Clear the input string ready to receive
 						the next command. */
-                        cInputIndex = 0;
-                        memset(cInputString, 0x00, cmdMAX_INPUT_SIZE);
+						cInputIndex = 0;
+						memset( cInputString, 0x00, cmdMAX_INPUT_SIZE );
 
-                        /* Transmit a spacer, just to make the command console
+						/* Transmit a spacer, just to make the command console
 						easier to read. */
-                        FreeRTOS_sendto(xSocket, "\r\n", strlen("\r\n"), 0, &xClient,
-                                        xClientAddressLength);
-                    } else {
-                        if (cInChar == '\r') {
-                            /* Ignore the character.  Newlines are used to
+						FreeRTOS_sendto( xSocket, "\r\n",  strlen( "\r\n" ), 0, &xClient, xClientAddressLength );
+					}
+					else
+					{
+						if( cInChar == '\r' )
+						{
+							/* Ignore the character.  Newlines are used to
 							detect the end of the input string. */
-                        } else if (cInChar == '\b') {
-                            /* Backspace was pressed.  Erase the last character
+						}
+						else if( cInChar == '\b' )
+						{
+							/* Backspace was pressed.  Erase the last character
 							in the string - if any. */
-                            if (cInputIndex > 0) {
-                                cInputIndex--;
-                                cInputString[cInputIndex] = '\0';
-                            }
-                        } else {
-                            /* A character was entered.  Add it to the string
+							if( cInputIndex > 0 )
+							{
+								cInputIndex--;
+								cInputString[ cInputIndex ] = '\0';
+							}
+						}
+						else
+						{
+							/* A character was entered.  Add it to the string
 							entered so far.  When a \n is entered the complete
 							string will be passed to the command interpreter. */
-                            if (cInputIndex < cmdMAX_INPUT_SIZE) {
-                                cInputString[cInputIndex] = cInChar;
-                                cInputIndex++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    } else {
-        /* The socket could not be opened. */
-        vTaskDelete(NULL);
-    }
+							if( cInputIndex < cmdMAX_INPUT_SIZE )
+							{
+								cInputString[ cInputIndex ] = cInChar;
+								cInputIndex++;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		/* The socket could not be opened. */
+		vTaskDelete( NULL );
+	}
 }
 /*-----------------------------------------------------------*/
 
-static xSocket_t prvOpenUDPServerSocket(uint16_t usPort)
+static xSocket_t prvOpenUDPServerSocket( uint16_t usPort )
 {
-    struct freertos_sockaddr xServer;
-    xSocket_t xSocket = FREERTOS_INVALID_SOCKET;
+struct freertos_sockaddr xServer;
+xSocket_t xSocket = FREERTOS_INVALID_SOCKET;
 
-    xSocket = FreeRTOS_socket(FREERTOS_AF_INET, FREERTOS_SOCK_DGRAM, FREERTOS_IPPROTO_UDP);
-    if (xSocket != FREERTOS_INVALID_SOCKET) {
-        /* Zero out the server structure. */
-        memset((void *)&xServer, 0x00, sizeof(xServer));
+	xSocket = FreeRTOS_socket( FREERTOS_AF_INET, FREERTOS_SOCK_DGRAM, FREERTOS_IPPROTO_UDP );
+	if( xSocket != FREERTOS_INVALID_SOCKET)
+	{
+		/* Zero out the server structure. */
+		memset( ( void * ) &xServer, 0x00, sizeof( xServer ) );
 
-        /* Set family and port. */
-        xServer.sin_port = FreeRTOS_htons(usPort);
+		/* Set family and port. */
+		xServer.sin_port = FreeRTOS_htons( usPort );
 
-        /* Bind the address to the socket. */
-        if (FreeRTOS_bind(xSocket, &xServer, sizeof(xServer)) == -1) {
-            FreeRTOS_closesocket(xSocket);
-            xSocket = FREERTOS_INVALID_SOCKET;
-        }
-    }
+		/* Bind the address to the socket. */
+		if( FreeRTOS_bind( xSocket, &xServer, sizeof( xServer ) ) == -1 )
+		{
+			FreeRTOS_closesocket( xSocket );
+			xSocket = FREERTOS_INVALID_SOCKET;
+		}
+	}
 
-    return xSocket;
+	return xSocket;
 }
+
+

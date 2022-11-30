@@ -42,25 +42,26 @@ extern "C" {
  *
  */
 /**@{*/
-#define PX_START_HDL 0x50 /*!< \brief Start handle. */
-#define PX_END_HDL (PX_MAX_HDL - 1) /*!< \brief End handle. */
+#define PX_START_HDL                      0x50             /*!< \brief Start handle. */
+#define PX_END_HDL                        (PX_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Service Handles */
-enum {
-    LLS_SVC_HDL = PX_START_HDL, /*!< \brief Link loss service declaration */
-    LLS_AL_CH_HDL, /*!< \brief Alert level characteristic */
-    LLS_AL_HDL, /*!< \brief Alert level */
-    IAS_SVC_HDL, /*!< \brief Immediate alert service declaration */
-    IAS_AL_CH_HDL, /*!< \brief Alert level characteristic */
-    IAS_AL_HDL, /*!< \brief Alert level */
-    TXS_SVC_HDL, /*!< \brief TX power service declaration */
-    TXS_TX_CH_HDL, /*!< \brief TX power level characteristic */
-    TXS_TX_HDL, /*!< \brief TX power level */
-    PX_MAX_HDL /*!< \brief Maximum handle. */
+enum
+{
+  LLS_SVC_HDL = PX_START_HDL,       /*!< \brief Link loss service declaration */
+  LLS_AL_CH_HDL,                    /*!< \brief Alert level characteristic */
+  LLS_AL_HDL,                       /*!< \brief Alert level */
+  IAS_SVC_HDL,                      /*!< \brief Immediate alert service declaration */
+  IAS_AL_CH_HDL,                    /*!< \brief Alert level characteristic */
+  IAS_AL_HDL,                       /*!< \brief Alert level */
+  TXS_SVC_HDL,                      /*!< \brief TX power service declaration */
+  TXS_TX_CH_HDL,                    /*!< \brief TX power level characteristic */
+  TXS_TX_HDL,                       /*!< \brief TX power level */
+  PX_MAX_HDL                        /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -98,10 +99,11 @@ void SvcPxRemoveGroup(void);
 /*************************************************************************************************/
 void SvcPxCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
 
-/*! \} */ /* PROXIMITY_SERVICE */
+/*! \} */    /* PROXIMITY_SERVICE */
 
 #ifdef __cplusplus
 };
 #endif
 
 #endif /* SVC_PX_H */
+

@@ -37,6 +37,7 @@
 */
 #include <redfs.h>
 
+
 #ifndef RedMemCpyUnchecked
 static void RedMemCpyUnchecked(void *pDest, const void *pSrc, uint32_t ulLen);
 #endif
@@ -50,6 +51,7 @@ static void RedMemSetUnchecked(void *pDest, uint8_t bVal, uint32_t ulLen);
 static int32_t RedMemCmpUnchecked(const void *pMem1, const void *pMem2, uint32_t ulLen);
 #endif
 
+
 /** @brief Copy memory from one address to another.
 
     The source and destination memory buffers should not overlap.  If the
@@ -59,14 +61,21 @@ static int32_t RedMemCmpUnchecked(const void *pMem1, const void *pMem2, uint32_t
     @param pSrc     The source buffer.
     @param ulLen    The number of bytes to copy.
 */
-void RedMemCpy(void *pDest, const void *pSrc, uint32_t ulLen)
+void RedMemCpy(
+    void       *pDest,
+    const void *pSrc,
+    uint32_t    ulLen)
 {
-    if ((pDest == NULL) || (pSrc == NULL)) {
+    if((pDest == NULL) || (pSrc == NULL))
+    {
         REDERROR();
-    } else {
+    }
+    else
+    {
         RedMemCpyUnchecked(pDest, pSrc, ulLen);
     }
 }
+
 
 #ifndef RedMemCpyUnchecked
 /** @brief Copy memory from one address to another.
@@ -77,17 +86,22 @@ void RedMemCpy(void *pDest, const void *pSrc, uint32_t ulLen)
     @param pSrc     The source buffer.
     @param ulLen    The number of bytes to copy.
 */
-static void RedMemCpyUnchecked(void *pDest, const void *pSrc, uint32_t ulLen)
+static void RedMemCpyUnchecked(
+    void           *pDest,
+    const void     *pSrc,
+    uint32_t        ulLen)
 {
-    uint8_t *pbDest = CAST_VOID_PTR_TO_UINT8_PTR(pDest);
-    const uint8_t *pbSrc = CAST_VOID_PTR_TO_CONST_UINT8_PTR(pSrc);
-    uint32_t ulIdx;
+    uint8_t        *pbDest = CAST_VOID_PTR_TO_UINT8_PTR(pDest);
+    const uint8_t  *pbSrc = CAST_VOID_PTR_TO_CONST_UINT8_PTR(pSrc);
+    uint32_t        ulIdx;
 
-    for (ulIdx = 0U; ulIdx < ulLen; ulIdx++) {
+    for(ulIdx = 0U; ulIdx < ulLen; ulIdx++)
+    {
         pbDest[ulIdx] = pbSrc[ulIdx];
     }
 }
 #endif
+
 
 /** @brief Move memory from one address to another.
 
@@ -98,14 +112,21 @@ static void RedMemCpyUnchecked(void *pDest, const void *pSrc, uint32_t ulLen)
     @param pSrc     The source buffer.
     @param ulLen    The number of bytes to copy.
 */
-void RedMemMove(void *pDest, const void *pSrc, uint32_t ulLen)
+void RedMemMove(
+    void       *pDest,
+    const void *pSrc,
+    uint32_t    ulLen)
 {
-    if ((pDest == NULL) || (pSrc == NULL)) {
+    if((pDest == NULL) || (pSrc == NULL))
+    {
         REDERROR();
-    } else {
+    }
+    else
+    {
         RedMemMoveUnchecked(pDest, pSrc, ulLen);
     }
 }
+
 
 #ifndef RedMemMoveUnchecked
 /** @brief Move memory from one address to another.
@@ -116,13 +137,17 @@ void RedMemMove(void *pDest, const void *pSrc, uint32_t ulLen)
     @param pSrc     The source buffer.
     @param ulLen    The number of bytes to copy.
 */
-static void RedMemMoveUnchecked(void *pDest, const void *pSrc, uint32_t ulLen)
+static void RedMemMoveUnchecked(
+    void           *pDest,
+    const void     *pSrc,
+    uint32_t        ulLen)
 {
-    uint8_t *pbDest = CAST_VOID_PTR_TO_UINT8_PTR(pDest);
-    const uint8_t *pbSrc = CAST_VOID_PTR_TO_CONST_UINT8_PTR(pSrc);
-    uint32_t ulIdx;
+    uint8_t        *pbDest = CAST_VOID_PTR_TO_UINT8_PTR(pDest);
+    const uint8_t  *pbSrc = CAST_VOID_PTR_TO_CONST_UINT8_PTR(pSrc);
+    uint32_t        ulIdx;
 
-    if (MEMMOVE_MUST_COPY_FORWARD(pbDest, pbSrc)) {
+    if(MEMMOVE_MUST_COPY_FORWARD(pbDest, pbSrc))
+    {
         /*  If the destination is lower than the source with overlapping memory
             regions, we must copy from start to end in order to copy the memory
             correctly.
@@ -132,13 +157,17 @@ static void RedMemMoveUnchecked(void *pDest, const void *pSrc, uint32_t ulLen)
             with an implementation that cannot handle any kind of buffer
             overlap.
         */
-        for (ulIdx = 0U; ulIdx < ulLen; ulIdx++) {
+        for(ulIdx = 0U; ulIdx < ulLen; ulIdx++)
+        {
             pbDest[ulIdx] = pbSrc[ulIdx];
         }
-    } else {
+    }
+    else
+    {
         ulIdx = ulLen;
 
-        while (ulIdx > 0U) {
+        while(ulIdx > 0U)
+        {
             ulIdx--;
             pbDest[ulIdx] = pbSrc[ulIdx];
         }
@@ -146,20 +175,28 @@ static void RedMemMoveUnchecked(void *pDest, const void *pSrc, uint32_t ulLen)
 }
 #endif /* RedMemMoveUnchecked */
 
+
 /** @brief Initialize a buffer with the specified byte value.
 
     @param pDest    The buffer to initialize.
     @param bVal     The byte value with which to initialize @p pDest.
     @param ulLen    The number of bytes to initialize.
 */
-void RedMemSet(void *pDest, uint8_t bVal, uint32_t ulLen)
+void RedMemSet(
+    void       *pDest,
+    uint8_t     bVal,
+    uint32_t    ulLen)
 {
-    if (pDest == NULL) {
+    if(pDest == NULL)
+    {
         REDERROR();
-    } else {
+    }
+    else
+    {
         RedMemSetUnchecked(pDest, bVal, ulLen);
     }
 }
+
 
 #ifndef RedMemSetUnchecked
 /** @brief Initialize a buffer with the specified byte value.
@@ -170,16 +207,21 @@ void RedMemSet(void *pDest, uint8_t bVal, uint32_t ulLen)
     @param bVal     The byte value with which to initialize @p pDest.
     @param ulLen    The number of bytes to initialize.
 */
-static void RedMemSetUnchecked(void *pDest, uint8_t bVal, uint32_t ulLen)
+static void RedMemSetUnchecked(
+    void       *pDest,
+    uint8_t     bVal,
+    uint32_t    ulLen)
 {
-    uint8_t *pbDest = CAST_VOID_PTR_TO_UINT8_PTR(pDest);
-    uint32_t ulIdx;
+    uint8_t    *pbDest = CAST_VOID_PTR_TO_UINT8_PTR(pDest);
+    uint32_t    ulIdx;
 
-    for (ulIdx = 0U; ulIdx < ulLen; ulIdx++) {
+    for(ulIdx = 0U; ulIdx < ulLen; ulIdx++)
+    {
         pbDest[ulIdx] = bVal;
     }
 }
 #endif
+
 
 /** @brief Compare the contents of two buffers.
 
@@ -195,19 +237,26 @@ static void RedMemSetUnchecked(void *pDest, uint8_t bVal, uint32_t ulLen)
     @retval -1  @p pMem2 is greater than @p pMem1, as determined by the
                 values of the first differing bytes.
 */
-int32_t RedMemCmp(const void *pMem1, const void *pMem2, uint32_t ulLen)
+int32_t RedMemCmp(
+    const void *pMem1,
+    const void *pMem2,
+    uint32_t    ulLen)
 {
-    int32_t lResult;
+    int32_t     lResult;
 
-    if ((pMem1 == NULL) || (pMem2 == NULL)) {
+    if((pMem1 == NULL) || (pMem2 == NULL))
+    {
         REDERROR();
         lResult = 0;
-    } else {
+    }
+    else
+    {
         lResult = RedMemCmpUnchecked(pMem1, pMem2, ulLen);
     }
 
     return lResult;
 }
+
 
 #ifndef RedMemCmpUnchecked
 /** @brief Compare the contents of two buffers.
@@ -218,25 +267,35 @@ int32_t RedMemCmp(const void *pMem1, const void *pMem2, uint32_t ulLen)
 
     @return Zero if the two buffers are the same, otherwise nonzero.
 */
-static int32_t RedMemCmpUnchecked(const void *pMem1, const void *pMem2, uint32_t ulLen)
+static int32_t RedMemCmpUnchecked(
+    const void     *pMem1,
+    const void     *pMem2,
+    uint32_t        ulLen)
 {
-    const uint8_t *pbMem1 = CAST_VOID_PTR_TO_CONST_UINT8_PTR(pMem1);
-    const uint8_t *pbMem2 = CAST_VOID_PTR_TO_CONST_UINT8_PTR(pMem2);
-    uint32_t ulIdx = 0U;
-    int32_t lResult;
+    const uint8_t  *pbMem1 = CAST_VOID_PTR_TO_CONST_UINT8_PTR(pMem1);
+    const uint8_t  *pbMem2 = CAST_VOID_PTR_TO_CONST_UINT8_PTR(pMem2);
+    uint32_t        ulIdx = 0U;
+    int32_t         lResult;
 
-    while ((ulIdx < ulLen) && (pbMem1[ulIdx] == pbMem2[ulIdx])) {
+    while((ulIdx < ulLen) && (pbMem1[ulIdx] == pbMem2[ulIdx]))
+    {
         ulIdx++;
     }
 
-    if (ulIdx == ulLen) {
+    if(ulIdx == ulLen)
+    {
         lResult = 0;
-    } else if (pbMem1[ulIdx] > pbMem2[ulIdx]) {
+    }
+    else if(pbMem1[ulIdx] > pbMem2[ulIdx])
+    {
         lResult = 1;
-    } else {
+    }
+    else
+    {
         lResult = -1;
     }
 
     return lResult;
 }
 #endif
+

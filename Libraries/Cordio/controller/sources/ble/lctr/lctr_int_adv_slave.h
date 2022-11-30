@@ -40,23 +40,25 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Slave advertising states. */
-enum {
-    LCTR_ADV_STATE_DISABLED, /*!< Advertising disabled state. */
-    LCTR_ADV_STATE_ENABLED, /*!< Advertising enabled state. */
-    LCTR_ADV_STATE_SHUTDOWN, /*!< Advertising shutdown in progress. */
-    LCTR_ADV_STATE_RESET, /*!< Advertising reset in progress. */
-    LCTR_ADV_STATE_TOTAL /*!< Total number of advertising states. */
+enum
+{
+  LCTR_ADV_STATE_DISABLED,              /*!< Advertising disabled state. */
+  LCTR_ADV_STATE_ENABLED,               /*!< Advertising enabled state. */
+  LCTR_ADV_STATE_SHUTDOWN,              /*!< Advertising shutdown in progress. */
+  LCTR_ADV_STATE_RESET,                 /*!< Advertising reset in progress. */
+  LCTR_ADV_STATE_TOTAL                  /*!< Total number of advertising states. */
 };
 
 /*! \brief      Common extended advertising PDU types. */
 
-enum {
-    LCTR_PDU_ADV_EXT_IND,
-    LCTR_PDU_AUX_ADV_IND,
-    LCTR_PDU_AUX_SCAN_RSP,
-    LCTR_PDU_AUX_SYNC_IND,
-    LCTR_PDU_AUX_CHAIN_IND,
-    LCTR_PDU_AUX_CONNECT_RSP
+enum
+{
+  LCTR_PDU_ADV_EXT_IND,
+  LCTR_PDU_AUX_ADV_IND,
+  LCTR_PDU_AUX_SCAN_RSP,
+  LCTR_PDU_AUX_SYNC_IND,
+  LCTR_PDU_AUX_CHAIN_IND,
+  LCTR_PDU_AUX_CONNECT_RSP
 };
 
 /**************************************************************************************************
@@ -64,34 +66,36 @@ enum {
 **************************************************************************************************/
 
 /*! \brief      Slave advertising state context. */
-typedef struct {
-    /* Adv buffer (placed here to 32-bit align) */
-    uint8_t advBuf[LL_ADVB_MAX_LEN];
-    /*!< Advertising host data buffer. */
+typedef struct
+{
+  /* Adv buffer (placed here to 32-bit align) */
+  uint8_t           advBuf[LL_ADVB_MAX_LEN];
+                                        /*!< Advertising host data buffer. */
 
-    uint8_t state; /*!< Advertising state. */
+  uint8_t           state;              /*!< Advertising state. */
 
-    /* BB/ISR context */
-    bool_t connIndRcvd; /*!< Connection indication received flag. */
-    bool_t shutdown; /*!< Client initiated shutdown flag. */
-    uint8_t usedChSel; /*!< Used channel selection. */
-    BbOpDesc_t advBod; /*!< Advertising BOD. */
-    BbBleData_t bleData; /*!< BLE BB operation data. */
-    uint32_t reqEndTsUsec; /*!< Last received request end of packet timestamp in microseconds. */
+  /* BB/ISR context */
+  bool_t            connIndRcvd;        /*!< Connection indication received flag. */
+  bool_t            shutdown;           /*!< Client initiated shutdown flag. */
+  uint8_t           usedChSel;          /*!< Used channel selection. */
+  BbOpDesc_t        advBod;             /*!< Advertising BOD. */
+  BbBleData_t       bleData;            /*!< BLE BB operation data. */
+  uint32_t          reqEndTsUsec;       /*!< Last received request end of packet timestamp in microseconds. */
 
-    /* Scan buffer (placed here to 32-bit align) */
-    uint8_t scanRspBuf[LL_ADVB_MAX_LEN];
-    /*!< Advertising host data buffer. */
+  /* Scan buffer (placed here to 32-bit align) */
+  uint8_t           scanRspBuf[LL_ADVB_MAX_LEN];
+                                        /*!< Advertising host data buffer. */
 
-    wsfQueue_t rxScanReqQ; /*!< Received SCAN_REQ queue. */
+  wsfQueue_t        rxScanReqQ;         /*!< Received SCAN_REQ queue. */
 } lctrSlvAdvCtx_t;
 
 /*! \brief      Scan request. */
-typedef struct {
-    uint8_t scanAddrType; /*!< Scanner address type. */
-    uint64_t scanAddr; /*!< Scanner address. */
-    uint8_t scanIdAddrType; /*!< Scanner ID address type. */
-    uint64_t scanIdAddr; /*!< Scanner ID address. */
+typedef struct
+{
+  uint8_t          scanAddrType;        /*!< Scanner address type. */
+  uint64_t         scanAddr;            /*!< Scanner address. */
+  uint8_t          scanIdAddrType;      /*!< Scanner ID address type. */
+  uint64_t         scanIdAddr;          /*!< Scanner ID address. */
 } lctrSlvScanReport_t;
 
 /**************************************************************************************************
@@ -112,10 +116,11 @@ void lctrSlvAdvCleanupOp(void);
 void lctrSlvRxScanReq(void);
 
 /* Address selection */
-void lctrChooseAdvA(BbBleData_t *const pBle, lctrAdvbPduHdr_t *pPduHdr, uint8_t ownAddrType,
-                    uint8_t peerAddrType, uint64_t peerAddr, uint64_t *pAdvA);
-void lctrChoosePeerAddr(BbBleData_t *const pBle, uint8_t ownAddrType, uint8_t peerAddrType,
-                        uint64_t peerAddr, uint64_t *pPeerRpa);
+void lctrChooseAdvA(BbBleData_t * const pBle, lctrAdvbPduHdr_t *pPduHdr,
+                    uint8_t ownAddrType, uint8_t peerAddrType, uint64_t peerAddr,
+                    uint64_t *pAdvA);
+void lctrChoosePeerAddr(BbBleData_t * const pBle, uint8_t ownAddrType,
+                        uint8_t peerAddrType, uint64_t peerAddr, uint64_t *pPeerRpa);
 
 /* ISR */
 bool_t lctrSlvAdvHandler(BbOpDesc_t *pOp, const uint8_t *pReqBuf);

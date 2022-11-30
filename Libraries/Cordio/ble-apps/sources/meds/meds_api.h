@@ -35,12 +35,13 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Profile identifier used for MedsSetProfile() */
-enum {
-    MEDS_ID_BLP, /*! Blood pressure profile */
-    MEDS_ID_WSP, /*! Weight scale profile */
-    MEDS_ID_HTP, /*! Health thermometer profile */
-    MEDS_ID_PLX, /*! Pulse Oximeter profile */
-    MEDS_ID_GLP /*! Glucose profile */
+enum
+{
+  MEDS_ID_BLP,      /*! Blood pressure profile */
+  MEDS_ID_WSP,      /*! Weight scale profile */
+  MEDS_ID_HTP,      /*! Health thermometer profile */
+  MEDS_ID_PLX,      /*! Pulse Oximeter profile */
+  MEDS_ID_GLP       /*! Glucose profile */
 };
 
 /**************************************************************************************************
@@ -65,6 +66,7 @@ void MedsStart(void);
  */
 /*************************************************************************************************/
 void MedsHandlerInit(wsfHandlerId_t handlerId);
+
 
 /*************************************************************************************************/
 /*!

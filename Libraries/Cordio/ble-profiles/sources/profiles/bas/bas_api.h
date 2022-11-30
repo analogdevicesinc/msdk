@@ -38,15 +38,17 @@ extern "C" {
   Data Types
 **************************************************************************************************/
 
+
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
 
 /*! \brief Battery service configurable parameters */
-typedef struct {
-    wsfTimerTicks_t period; /*!< \brief Battery measurement timer expiration period in seconds */
-    uint16_t count; /*!< \brief Perform battery measurement after this many timer periods */
-    uint8_t threshold; /*!< \brief Send battery level notification to peer when below this level. */
+typedef struct
+{
+  wsfTimerTicks_t     period;     /*!< \brief Battery measurement timer expiration period in seconds */
+  uint16_t            count;      /*!< \brief Perform battery measurement after this many timer periods */
+  uint8_t             threshold;  /*!< \brief Send battery level notification to peer when below this level. */
 } basCfg_t;
 
 /*************************************************************************************************/
@@ -124,10 +126,10 @@ void BasSendBattLevel(dmConnId_t connId, uint8_t idx, uint8_t level);
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t BasReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                     attsAttr_t *pAttr);
+uint8_t BasReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
+                     uint16_t offset, attsAttr_t *pAttr);
 
-/*! \} */ /* BATTERY_PROFILE */
+/*! \} */    /* BATTERY_PROFILE */
 
 #ifdef __cplusplus
 };

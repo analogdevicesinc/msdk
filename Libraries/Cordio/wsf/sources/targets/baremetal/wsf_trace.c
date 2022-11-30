@@ -38,24 +38,24 @@
 **************************************************************************************************/
 
 /*! \brief      Length of newline and carriage return suffix. */
-#define WSF_TRACE_SUFFIX_LEN 2
+#define WSF_TRACE_SUFFIX_LEN           2
 
 #ifndef WSF_PRINTF_MAX_LEN
 /*! \brief      Maximum length of a trace string. */
-#define WSF_PRINTF_MAX_LEN 128
+#define WSF_PRINTF_MAX_LEN             128
 #endif
 
 #ifndef WSF_TOKEN_RING_BUF_SIZE
 /*! \brief      Size of token ring buffer (multiple of 2^N). */
-#define WSF_TOKEN_RING_BUF_SIZE 64
+#define WSF_TOKEN_RING_BUF_SIZE        64
 #endif
 
 /*! \brief      Ring buffer flow control condition detected. */
-#define WSF_TOKEN_FLAG_FLOW_CTRL (1 << 28)
+#define WSF_TOKEN_FLAG_FLOW_CTRL       (1 << 28)
 
 /*! UART TX buffer size. */
 #ifndef WSF_TRACE_BUFIO_BUFFER_SIZE
-#define WSF_TRACE_BUFIO_BUFFER_SIZE 2048U
+#define WSF_TRACE_BUFIO_BUFFER_SIZE    2048U
 #endif
 
 /**************************************************************************************************
@@ -63,22 +63,25 @@
 **************************************************************************************************/
 
 /*! \brief Trace control block. */
-struct {
-    WsfTraceHandler_t sendMsgCback; /*!< Send trace message callback. */
-    uint32_t numDropMsg; /*!< Number of dropped messages since last successful. */
-    bool_t enabled; /*!< Tracing state. */
+struct
+{
+  WsfTraceHandler_t sendMsgCback;       /*!< Send trace message callback. */
+  uint32_t numDropMsg;                  /*!< Number of dropped messages since last successful. */
+  bool_t enabled;                       /*!< Tracing state. */
 
 #if WSF_TOKEN_ENABLED == TRUE
-    union {
-        struct {
-            uint32_t token; /*!< Token. */
-            uint32_t param; /*!< Parameter. */
-        } v; /*!< Value accessor. */
-        /* Use native packing for speed. Host will resolve endian. */
-        uint8_t buf[8]; /*!< Buffer accessor. */
-    } ringBuf[WSF_TOKEN_RING_BUF_SIZE]; /*!< Token message ring buffer. */
-    uint32_t prodIdx; /*!< Ring buffer producer index. */
-    uint32_t consIdx; /*!< Ring buffer consumer index. */
+  union
+  {
+    struct
+    {
+      uint32_t token;                   /*!< Token. */
+      uint32_t param;                   /*!< Parameter. */
+    } v;                                /*!< Value accessor. */
+    /* Use native packing for speed. Host will resolve endian. */
+    uint8_t buf[8];                     /*!< Buffer accessor. */
+  } ringBuf[WSF_TOKEN_RING_BUF_SIZE];   /*!< Token message ring buffer. */
+  uint32_t prodIdx;                     /*!< Ring buffer producer index. */
+  uint32_t consIdx;                     /*!< Ring buffer consumer index. */
 #endif
 } wsfTraceCb;
 
@@ -93,27 +96,31 @@ struct {
 /*************************************************************************************************/
 void WsfToken(uint32_t tok, uint32_t param)
 {
-    static uint32_t flags = 0;
+  static uint32_t flags = 0;
 
-    if (!wsfTraceCb.enabled) {
-        return;
-    }
+  if (!wsfTraceCb.enabled)
+  {
+    return;
+  }
 
-    WSF_CS_INIT(cs);
-    WSF_CS_ENTER(cs);
+  WSF_CS_INIT(cs);
+  WSF_CS_ENTER(cs);
 
-    uint32_t prodIdx = (wsfTraceCb.prodIdx + 1) & (WSF_TOKEN_RING_BUF_SIZE - 1);
+  uint32_t prodIdx = (wsfTraceCb.prodIdx + 1) & (WSF_TOKEN_RING_BUF_SIZE - 1);
 
-    if (prodIdx != wsfTraceCb.consIdx) {
-        wsfTraceCb.ringBuf[wsfTraceCb.prodIdx].v.token = tok | flags;
-        wsfTraceCb.ringBuf[wsfTraceCb.prodIdx].v.param = param;
-        wsfTraceCb.prodIdx = prodIdx;
-        flags = 0;
-    } else {
-        flags = WSF_TOKEN_FLAG_FLOW_CTRL;
-    }
+  if (prodIdx != wsfTraceCb.consIdx)
+  {
+    wsfTraceCb.ringBuf[wsfTraceCb.prodIdx].v.token = tok | flags;
+    wsfTraceCb.ringBuf[wsfTraceCb.prodIdx].v.param = param;
+    wsfTraceCb.prodIdx = prodIdx;
+    flags = 0;
+  }
+  else
+  {
+    flags = WSF_TOKEN_FLAG_FLOW_CTRL;
+  }
 
-    WSF_CS_EXIT(cs);
+  WSF_CS_EXIT(cs);
 }
 
 /*************************************************************************************************/
@@ -127,18 +134,19 @@ void WsfToken(uint32_t tok, uint32_t param)
 /*************************************************************************************************/
 bool_t WsfTokenService(void)
 {
-    WSF_ASSERT(wsfTraceCb.sendMsgCback);
+  WSF_ASSERT(wsfTraceCb.sendMsgCback);
 
-    if (wsfTraceCb.consIdx != wsfTraceCb.prodIdx) {
-        /* Advance consumer counter only if write successful. */
-        if (wsfTraceCb.sendMsgCback((uint8_t *)&wsfTraceCb.ringBuf[wsfTraceCb.consIdx],
-                                    sizeof(wsfTraceCb.ringBuf[0]))) {
-            wsfTraceCb.consIdx = (wsfTraceCb.consIdx + 1) & (WSF_TOKEN_RING_BUF_SIZE - 1);
-        }
-        return TRUE;
+  if (wsfTraceCb.consIdx != wsfTraceCb.prodIdx)
+  {
+    /* Advance consumer counter only if write successful. */
+    if (wsfTraceCb.sendMsgCback((uint8_t *)&wsfTraceCb.ringBuf[wsfTraceCb.consIdx], sizeof(wsfTraceCb.ringBuf[0])))
+    {
+      wsfTraceCb.consIdx = (wsfTraceCb.consIdx + 1) & (WSF_TOKEN_RING_BUF_SIZE - 1);
     }
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 #endif
 
@@ -156,16 +164,16 @@ bool_t WsfTokenService(void)
 /*************************************************************************************************/
 uint8_t wsfTraceOverFlowMessage(char *pBuf, const char *pStr, ...)
 {
-    uint8_t len;
-    va_list args;
+  uint8_t len;
+  va_list args;
 
-    va_start(args, pStr);
+  va_start(args, pStr);
 
-    len = PrintVsn(pBuf, WSF_PRINTF_MAX_LEN, pStr, args);
+  len = PrintVsn(pBuf, WSF_PRINTF_MAX_LEN, pStr, args);
 
-    va_end(args);
+  va_end(args);
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -178,46 +186,51 @@ uint8_t wsfTraceOverFlowMessage(char *pBuf, const char *pStr, ...)
 /*************************************************************************************************/
 void WsfTrace(const char *pStr, ...)
 {
-    if (!wsfTraceCb.enabled) {
-        /* Discard message when disabled. */
+  if (!wsfTraceCb.enabled)
+  {
+    /* Discard message when disabled. */
+    return;
+  }
+
+  if (wsfTraceCb.sendMsgCback != NULL)
+  {
+    uint32_t len;
+    va_list  args;
+    /* Use heap memory to ease stack utilization. */
+    static char buf[WSF_PRINTF_MAX_LEN];
+
+    va_start(args, pStr);
+
+    /* Dropped message notification. */
+    if (wsfTraceCb.numDropMsg)
+    {
+      static char dropMsg[] = ">>> Trace buffer overflowed; %u message(s) lost <<<\r\n";
+
+      len = wsfTraceOverFlowMessage(buf, dropMsg, wsfTraceCb.numDropMsg);
+
+      if (wsfTraceCb.sendMsgCback((uint8_t *)buf, len) == FALSE)
+      {
+        wsfTraceCb.numDropMsg++;
+
+        /* Trace I/O flow control continues. */
         return;
+      }
+
+      wsfTraceCb.numDropMsg = 0;
     }
 
-    if (wsfTraceCb.sendMsgCback != NULL) {
-        uint32_t len;
-        va_list args;
-        /* Use heap memory to ease stack utilization. */
-        static char buf[WSF_PRINTF_MAX_LEN];
+    /* Format message. */
+    len = PrintVsn(buf, WSF_PRINTF_MAX_LEN - WSF_TRACE_SUFFIX_LEN, pStr, args);
+    buf[len++] = '\r';
+    buf[len++] = '\n';
 
-        va_start(args, pStr);
-
-        /* Dropped message notification. */
-        if (wsfTraceCb.numDropMsg) {
-            static char dropMsg[] = ">>> Trace buffer overflowed; %u message(s) lost <<<\r\n";
-
-            len = wsfTraceOverFlowMessage(buf, dropMsg, wsfTraceCb.numDropMsg);
-
-            if (wsfTraceCb.sendMsgCback((uint8_t *)buf, len) == FALSE) {
-                wsfTraceCb.numDropMsg++;
-
-                /* Trace I/O flow control continues. */
-                return;
-            }
-
-            wsfTraceCb.numDropMsg = 0;
-        }
-
-        /* Format message. */
-        len = PrintVsn(buf, WSF_PRINTF_MAX_LEN - WSF_TRACE_SUFFIX_LEN, pStr, args);
-        buf[len++] = '\r';
-        buf[len++] = '\n';
-
-        /* Deliver message. */
-        if (wsfTraceCb.sendMsgCback((uint8_t *)buf, (uint8_t)len) == FALSE) {
-            /* Trace I/O flow controlled; drop message. */
-            wsfTraceCb.numDropMsg = 1;
-        }
+    /* Deliver message. */
+    if (wsfTraceCb.sendMsgCback((uint8_t *)buf, (uint8_t)len) == FALSE)
+    {
+      /* Trace I/O flow controlled; drop message. */
+      wsfTraceCb.numDropMsg = 1;
     }
+  }
 }
 #endif
 
@@ -230,10 +243,10 @@ void WsfTrace(const char *pStr, ...)
 /*************************************************************************************************/
 void WsfTraceEnable(bool_t enable)
 {
-    WSF_ASSERT(wsfTraceCb.sendMsgCback);
-    wsfTraceCb.enabled = enable;
+  WSF_ASSERT(wsfTraceCb.sendMsgCback);
+  wsfTraceCb.enabled = enable;
 
-    /*
+/*
  * TOKEN | TRACE | Action
  *     0 |     0 | No tracing of any kind
  *     0 |     1 | Tracing through buffered UART
@@ -254,5 +267,5 @@ void WsfTraceEnable(bool_t enable)
 /*************************************************************************************************/
 void WsfTraceRegisterHandler(WsfTraceHandler_t traceCback)
 {
-    wsfTraceCb.sendMsgCback = traceCback;
+  wsfTraceCb.sendMsgCback = traceCback;
 }

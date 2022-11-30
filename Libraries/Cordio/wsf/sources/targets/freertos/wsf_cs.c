@@ -44,9 +44,10 @@ uint8_t wsfCsNesting = 0;
 /*************************************************************************************************/
 void WsfCsEnter(void)
 {
-    __asm volatile("cpsid i");
+    __asm volatile( "cpsid i" );
 
     wsfCsNesting++;
+
 }
 
 /*************************************************************************************************/
@@ -59,6 +60,6 @@ void WsfCsExit(void)
     wsfCsNesting--;
 
     if (wsfCsNesting == 0) {
-        __asm volatile("cpsie i");
+        __asm volatile( "cpsie i" );
     }
 }

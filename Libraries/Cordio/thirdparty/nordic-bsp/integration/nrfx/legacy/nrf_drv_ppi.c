@@ -40,13 +40,16 @@
 
 #include "nrf_drv_ppi.h"
 
-static nrfx_drv_state_t m_drv_state; /**< Driver state */
+static nrfx_drv_state_t m_drv_state;          /**< Driver state */
 
 ret_code_t nrf_drv_ppi_init(void)
 {
-    if (m_drv_state == NRFX_DRV_STATE_UNINITIALIZED) {
+    if (m_drv_state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
         m_drv_state = NRFX_DRV_STATE_INITIALIZED;
-    } else {
+    }
+    else
+    {
         return NRF_ERROR_MODULE_ALREADY_INITIALIZED;
     }
     return NRF_SUCCESS;
@@ -54,7 +57,8 @@ ret_code_t nrf_drv_ppi_init(void)
 
 ret_code_t nrf_drv_ppi_uninit(void)
 {
-    if (m_drv_state == NRFX_DRV_STATE_UNINITIALIZED) {
+    if (m_drv_state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
         return NRF_ERROR_INVALID_STATE;
     }
 
@@ -62,3 +66,4 @@ ret_code_t nrf_drv_ppi_uninit(void)
     nrfx_ppi_free_all();
     return NRF_SUCCESS;
 }
+

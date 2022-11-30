@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifdef HAVE_POLY1305
 
 #ifndef CTAO_CRYPT_POLY1305_H
@@ -29,8 +30,9 @@
 /* for poly1305 reverse compatibility */
 #define Poly1305SetKey wc_Poly1305SetKey
 #define Poly1305Update wc_Poly1305Update
-#define Poly1305Final wc_Poly1305Final
+#define Poly1305Final  wc_Poly1305Final
 
 #endif /* CTAO_CRYPT_POLY1305_H */
 
 #endif /* HAVE_POLY1305 */
+

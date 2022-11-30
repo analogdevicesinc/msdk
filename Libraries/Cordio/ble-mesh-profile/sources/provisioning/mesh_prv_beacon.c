@@ -51,26 +51,28 @@
 **************************************************************************************************/
 
 /*! Provisioning Beacon Control Block */
-typedef struct meshPrvBeaconCb_tag {
-    uint32_t beaconInterval; /*!< Beacon interval */
-    wsfTimer_t beaconTmr; /*!< Beacon timer */
-    uint8_t *pUriData; /*!< Pointer to URI data */
-    uint8_t pdu[MESH_PRV_MAX_BEACON_SIZE]; /*!< Beacon PDU to be sent */
-    uint8_t pduLen; /*!< Beacon PDU length */
-    uint8_t uriLen;
-    meshBrInterfaceId_t brIfId; /*!< Bearer interface used */
+typedef struct meshPrvBeaconCb_tag
+{
+  uint32_t            beaconInterval;                 /*!< Beacon interval */
+  wsfTimer_t          beaconTmr;                      /*!< Beacon timer */
+  uint8_t             *pUriData;                      /*!< Pointer to URI data */
+  uint8_t             pdu[MESH_PRV_MAX_BEACON_SIZE];  /*!< Beacon PDU to be sent */
+  uint8_t             pduLen;                         /*!< Beacon PDU length */
+  uint8_t             uriLen;
+  meshBrInterfaceId_t brIfId;                         /*!< Bearer interface used */
 } meshPrvBeaconCb_t;
 
 /*! Provisioning Beacon WSF message events */
-enum meshPrvBeaconWsfMsgEvents {
-    MESH_PRV_BEACON_MSG_TMR_EXPIRED = MESH_PRV_BEACON_MSG_START, /*!< Beacon timer expired */
+enum meshPrvBeaconWsfMsgEvents
+{
+  MESH_PRV_BEACON_MSG_TMR_EXPIRED = MESH_PRV_BEACON_MSG_START, /*!< Beacon timer expired */
 };
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
-static meshPrvBeaconCb_t prvBeaconCb;
+static meshPrvBeaconCb_t  prvBeaconCb;
 
 /**************************************************************************************************
   Local Functions
@@ -88,26 +90,28 @@ static meshPrvBeaconCb_t prvBeaconCb;
 /*************************************************************************************************/
 static void meshPrvSaltCback(const uint8_t *pCmacResult, void *pParam)
 {
-    /* Check that the beacon is still in use. Maybe it was stopped during the salt calculation. */
-    if (prvBeaconCb.pduLen != 0) {
-        /* Handle success. */
-        if (pCmacResult != NULL) {
-            /* Copy hash */
-            memcpy(&prvBeaconCb.pdu[MESH_PRV_BEACON_URI_HASH_OFFSET], pCmacResult,
-                   MESH_PRV_BEACON_URI_HASH_SIZE);
+  /* Check that the beacon is still in use. Maybe it was stopped during the salt calculation. */
+  if (prvBeaconCb.pduLen != 0)
+  {
+    /* Handle success. */
+    if (pCmacResult != NULL)
+    {
+      /* Copy hash */
+      memcpy(&prvBeaconCb.pdu[MESH_PRV_BEACON_URI_HASH_OFFSET], pCmacResult,
+             MESH_PRV_BEACON_URI_HASH_SIZE);
 
-            /* Send beacon to bearer */
-            MeshBrSendBeaconPdu(prvBeaconCb.brIfId, prvBeaconCb.pdu, prvBeaconCb.pduLen);
+      /* Send beacon to bearer */
+      MeshBrSendBeaconPdu(prvBeaconCb.brIfId, prvBeaconCb.pdu, prvBeaconCb.pduLen);
 
-            /* Start timer. */
-            WsfTimerStartMs(&(prvBeaconCb.beaconTmr), prvBeaconCb.beaconInterval);
-        }
+      /* Start timer. */
+      WsfTimerStartMs(&(prvBeaconCb.beaconTmr), prvBeaconCb.beaconInterval);
     }
+  }
 
-    /* Free buffer used for URI */
-    WsfBufFree(prvBeaconCb.pUriData);
+  /* Free buffer used for URI */
+  WsfBufFree(prvBeaconCb.pUriData);
 
-    (void)pParam;
+  (void)pParam;
 }
 
 /*************************************************************************************************/
@@ -118,11 +122,11 @@ static void meshPrvSaltCback(const uint8_t *pCmacResult, void *pParam)
 /*************************************************************************************************/
 static void meshPrvBeaconTimerCback(void)
 {
-    /* Send beacon to bearer */
-    MeshBrSendBeaconPdu(prvBeaconCb.brIfId, prvBeaconCb.pdu, prvBeaconCb.pduLen);
+  /* Send beacon to bearer */
+  MeshBrSendBeaconPdu(prvBeaconCb.brIfId, prvBeaconCb.pdu, prvBeaconCb.pduLen);
 
-    /* Restart timer. */
-    WsfTimerStartMs(&(prvBeaconCb.beaconTmr), prvBeaconCb.beaconInterval);
+  /* Restart timer. */
+  WsfTimerStartMs(&(prvBeaconCb.beaconTmr), prvBeaconCb.beaconInterval);
 }
 
 /*************************************************************************************************/
@@ -136,14 +140,15 @@ static void meshPrvBeaconTimerCback(void)
 /*************************************************************************************************/
 static void meshPrvBeaconWsfMsgHandlerCback(wsfMsgHdr_t *pMsg)
 {
-    /* Check event type to handle timer expiration. */
-    switch (pMsg->event) {
+  /* Check event type to handle timer expiration. */
+  switch(pMsg->event)
+  {
     case MESH_PRV_BEACON_MSG_TMR_EXPIRED:
-        meshPrvBeaconTimerCback();
-        break;
+      meshPrvBeaconTimerCback();
+      break;
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /**************************************************************************************************
@@ -159,12 +164,12 @@ static void meshPrvBeaconWsfMsgHandlerCback(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MeshPrvBeaconInit(void)
 {
-    /* Register WSF message callback. */
-    meshCb.prvBeaconMsgCback = meshPrvBeaconWsfMsgHandlerCback;
+  /* Register WSF message callback. */
+  meshCb.prvBeaconMsgCback = meshPrvBeaconWsfMsgHandlerCback;
 
-    /* Configure timer. */
-    prvBeaconCb.beaconTmr.msg.event = MESH_PRV_BEACON_MSG_TMR_EXPIRED;
-    prvBeaconCb.beaconTmr.handlerId = meshCb.handlerId;
+  /* Configure timer. */
+  prvBeaconCb.beaconTmr.msg.event = MESH_PRV_BEACON_MSG_TMR_EXPIRED;
+  prvBeaconCb.beaconTmr.handlerId = meshCb.handlerId;
 }
 
 /*************************************************************************************************/
@@ -182,61 +187,66 @@ void MeshPrvBeaconInit(void)
  */
 /*************************************************************************************************/
 void MeshPrvBeaconStart(meshBrInterfaceId_t brIfId, uint32_t beaconInterval, const uint8_t *pUuid,
-                        uint16_t oobInfoSrc, const uint8_t *pUriData, uint8_t uriLen)
+                        uint16_t oobInfoSrc, const uint8_t *pUriData,
+                        uint8_t uriLen)
 {
-    MESH_TRACE_INFO0("MESH PROV: Send Unprovisioned Beacon");
+  MESH_TRACE_INFO0("MESH PROV: Send Unprovisioned Beacon");
 
-    /* Should never happen since provisioning servers validates this. */
-    WSF_ASSERT(brIfId != MESH_BR_INVALID_INTERFACE_ID);
-    WSF_ASSERT(pUuid != NULL);
+  /* Should never happen since provisioning servers validates this. */
+  WSF_ASSERT(brIfId != MESH_BR_INVALID_INTERFACE_ID);
+  WSF_ASSERT(pUuid != NULL);
 
-    /* Stop timer */
-    WsfTimerStop(&(prvBeaconCb.beaconTmr));
+  /* Stop timer */
+  WsfTimerStop(&(prvBeaconCb.beaconTmr));
 
-    /* Set bearer inteface */
-    prvBeaconCb.brIfId = brIfId;
+  /* Set bearer inteface */
+  prvBeaconCb.brIfId = brIfId;
 
-    /* Set beacon period */
-    prvBeaconCb.beaconInterval = beaconInterval;
+  /* Set beacon period */
+  prvBeaconCb.beaconInterval = beaconInterval;
 
-    /* Populate Beacon PDU */
-    prvBeaconCb.pdu[0] = MESH_BEACON_TYPE_UNPROV;
-    memcpy(&prvBeaconCb.pdu[MESH_PRV_BEACON_DEVICE_UUID_OFFSET], pUuid, MESH_PRV_DEVICE_UUID_SIZE);
-    UINT16_TO_BE_BUF(&prvBeaconCb.pdu[MESH_PRV_BEACON_OOB_INFO_OFFSET], oobInfoSrc);
+  /* Populate Beacon PDU */
+  prvBeaconCb.pdu[0] = MESH_BEACON_TYPE_UNPROV;
+  memcpy(&prvBeaconCb.pdu[MESH_PRV_BEACON_DEVICE_UUID_OFFSET], pUuid, MESH_PRV_DEVICE_UUID_SIZE);
+  UINT16_TO_BE_BUF(&prvBeaconCb.pdu[MESH_PRV_BEACON_OOB_INFO_OFFSET], oobInfoSrc);
 
-    /* Get Beacon PDU length based on URI data presence */
-    if (pUriData == NULL) {
-        prvBeaconCb.pduLen = MESH_PRV_MAX_NO_URI_BEACON_SIZE;
+  /* Get Beacon PDU length based on URI data presence */
+  if (pUriData == NULL)
+  {
+    prvBeaconCb.pduLen = MESH_PRV_MAX_NO_URI_BEACON_SIZE;
 
-        /* Send beacon to bearer */
-        MeshBrSendBeaconPdu(prvBeaconCb.brIfId, prvBeaconCb.pdu, prvBeaconCb.pduLen);
+    /* Send beacon to bearer */
+    MeshBrSendBeaconPdu(prvBeaconCb.brIfId, prvBeaconCb.pdu, prvBeaconCb.pduLen);
 
-        /* Start timer. */
-        WsfTimerStartMs(&(prvBeaconCb.beaconTmr), prvBeaconCb.beaconInterval);
-    } else {
-        prvBeaconCb.pduLen = MESH_PRV_MAX_BEACON_SIZE;
+    /* Start timer. */
+    WsfTimerStartMs(&(prvBeaconCb.beaconTmr), prvBeaconCb.beaconInterval);
+  }
+  else
+  {
+    prvBeaconCb.pduLen = MESH_PRV_MAX_BEACON_SIZE;
 
-        /* Allocate buffer for URI data */
-        prvBeaconCb.pUriData = WsfBufAlloc(uriLen);
+    /* Allocate buffer for URI data */
+    prvBeaconCb.pUriData = WsfBufAlloc(uriLen);
 
-        if (prvBeaconCb.pUriData == NULL) {
-            MESH_TRACE_ERR0("MESH PROV: No memory for Unprovisioned Beacon URI Hash");
-            return;
-        }
-
-        /* Copy in data for SALT generation */
-        memcpy(prvBeaconCb.pUriData, pUriData, uriLen);
-        prvBeaconCb.uriLen = uriLen;
-
-        /* Generate SALT for URI data */
-        if (MeshSecToolGenerateSalt(prvBeaconCb.pUriData, uriLen, meshPrvSaltCback, NULL) !=
-            MESH_SUCCESS) {
-            MESH_TRACE_ERR0("MESH PROV:  Unprovisioned Beacon URI Hash failed");
-
-            /* Free buffer used for URI */
-            WsfBufFree(prvBeaconCb.pUriData);
-        }
+    if (prvBeaconCb.pUriData == NULL)
+    {
+      MESH_TRACE_ERR0("MESH PROV: No memory for Unprovisioned Beacon URI Hash");
+      return;
     }
+
+    /* Copy in data for SALT generation */
+    memcpy(prvBeaconCb.pUriData, pUriData, uriLen);
+    prvBeaconCb.uriLen = uriLen;
+
+    /* Generate SALT for URI data */
+    if (MeshSecToolGenerateSalt(prvBeaconCb.pUriData, uriLen, meshPrvSaltCback, NULL) != MESH_SUCCESS)
+    {
+      MESH_TRACE_ERR0("MESH PROV:  Unprovisioned Beacon URI Hash failed");
+
+      /* Free buffer used for URI */
+      WsfBufFree(prvBeaconCb.pUriData);
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -248,13 +258,13 @@ void MeshPrvBeaconStart(meshBrInterfaceId_t brIfId, uint32_t beaconInterval, con
 /*************************************************************************************************/
 void MeshPrvBeaconStop(void)
 {
-    MESH_TRACE_INFO0("MESH PROV: Stop sending Unprovisioned Beacon");
+  MESH_TRACE_INFO0("MESH PROV: Stop sending Unprovisioned Beacon");
 
-    /* Stop timer if it is started. */
-    WsfTimerStop(&(prvBeaconCb.beaconTmr));
+  /* Stop timer if it is started. */
+  WsfTimerStop(&(prvBeaconCb.beaconTmr));
 
-    /* Reset PDU length to 0 */
-    prvBeaconCb.pduLen = 0;
+  /* Reset PDU length to 0 */
+  prvBeaconCb.pduLen = 0;
 }
 
 /*************************************************************************************************/
@@ -266,10 +276,11 @@ void MeshPrvBeaconStop(void)
 /*************************************************************************************************/
 bool_t MeshPrvBeaconMatch(const uint8_t *pUuid)
 {
-    if (pUuid != NULL) {
-        return (memcmp(&prvBeaconCb.pdu[MESH_PRV_BEACON_DEVICE_UUID_OFFSET], pUuid,
-                       MESH_PRV_DEVICE_UUID_SIZE) == 0x00);
-    }
+  if (pUuid != NULL)
+  {
+    return (memcmp(&prvBeaconCb.pdu[MESH_PRV_BEACON_DEVICE_UUID_OFFSET], pUuid,
+                   MESH_PRV_DEVICE_UUID_SIZE) == 0x00);
+  }
 
-    return FALSE;
+  return FALSE;
 }

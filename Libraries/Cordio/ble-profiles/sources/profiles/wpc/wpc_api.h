@@ -38,10 +38,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Arm Ltd. proprietary service P1 enumeration of handle indexes of characteristics to be discovered */
-enum {
-    WPC_P1_DAT_HDL_IDX, /*!< \brief Proprietary data */
-    WPC_P1_NA_CCC_HDL_IDX, /*!< \brief Proprietary data client characteristic configuration descriptor */
-    WPC_P1_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  WPC_P1_DAT_HDL_IDX,           /*!< \brief Proprietary data */
+  WPC_P1_NA_CCC_HDL_IDX,        /*!< \brief Proprietary data client characteristic configuration descriptor */
+  WPC_P1_HDL_LIST_LEN           /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -63,7 +64,7 @@ enum {
 /*************************************************************************************************/
 void WpcP1Discover(dmConnId_t connId, uint16_t *pHdlList);
 
-/*! \} */ /* PACKETCRAFT_PROPRIETARY_PROFILE */
+/*! \} */    /* PACKETCRAFT_PROPRIETARY_PROFILE */
 
 #ifdef __cplusplus
 };

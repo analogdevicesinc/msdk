@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifndef NO_HMAC
 
 #ifndef CTAO_CRYPT_HMAC_H
@@ -27,16 +28,17 @@
 #include <wolfssl/wolfcrypt/hmac.h>
 #define HmacSetKey wc_HmacSetKey
 #define HmacUpdate wc_HmacUpdate
-#define HmacFinal wc_HmacFinal
+#define HmacFinal  wc_HmacFinal
 #ifdef HAVE_CAVIUM
-#define HmacInitCavium wc_HmacInitCavium
-#define HmacFreeCavium wc_HmacFreeCavium
+    #define HmacInitCavium wc_HmacInitCavium
+    #define HmacFreeCavium wc_HmacFreeCavium
 #endif
 #define CyaSSL_GetHmacMaxSize wolfSSL_GetHmacMaxSize
 #ifdef HAVE_HKDF
-#define HKDF wc_HKDF
+    #define HKDF wc_HKDF
 #endif /* HAVE_HKDF */
 
 #endif /* CTAO_CRYPT_HMAC_H */
 
 #endif /* NO_HMAC */
+

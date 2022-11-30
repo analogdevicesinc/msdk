@@ -50,24 +50,29 @@
 #include "nrf_crypto_ecdh_shared.h"
 #include "crys_ecpki_dh.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
 /** @internal @brief Common structure holding context for ECDH.
  */
-typedef union {
-    CRYS_ECDH_TempData_t
-        temp_data; /**< @internal @brief Temporary buffer for CC310 internal storage */
-    CRYS_ECPKI_BUILD_TempData_t
-        key_build_temp_data; /**< @internal @brief Temporary buffer for CC310 public key build */
+typedef union
+{
+    CRYS_ECDH_TempData_t        temp_data;           /**< @internal @brief Temporary buffer for CC310 internal storage */
+    CRYS_ECPKI_BUILD_TempData_t key_build_temp_data; /**< @internal @brief Temporary buffer for CC310 public key build */
 } nrf_crypto_backend_cc310_ecdh_compute_context_t;
+
 
 /** @internal See @ref nrf_crypto_backend_ecdh_compute_fn_t.
  */
-ret_code_t nrf_crypto_backend_cc310_ecdh_compute(void *p_context, void const *p_private_key,
-                                                 void const *p_public_key,
-                                                 uint8_t *p_shared_secret);
+ret_code_t nrf_crypto_backend_cc310_ecdh_compute(
+    void       * p_context,
+    void const * p_private_key,
+    void const * p_public_key,
+    uint8_t    * p_shared_secret);
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160R1)
 // Aliases for one common CC310 implementation
@@ -77,6 +82,7 @@ ret_code_t nrf_crypto_backend_cc310_ecdh_compute(void *p_context, void const *p_
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp160r1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160R2)
 // Aliases for one common CC310 implementation
 #define nrf_crypto_backend_secp160r2_ecdh_compute nrf_crypto_backend_cc310_ecdh_compute
@@ -84,6 +90,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp1
     sizeof(nrf_crypto_backend_cc310_ecdh_compute_context_t)
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp160r2_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160R2)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP192R1)
 // Aliases for one common CC310 implementation
@@ -93,6 +100,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp1
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp192r1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP192R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP224R1)
 // Aliases for one common CC310 implementation
 #define nrf_crypto_backend_secp224r1_ecdh_compute nrf_crypto_backend_cc310_ecdh_compute
@@ -100,6 +108,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp1
     sizeof(nrf_crypto_backend_cc310_ecdh_compute_context_t)
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp224r1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP224R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP256R1)
 // Aliases for one common CC310 implementation
@@ -109,6 +118,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp2
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp256r1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP256R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP384R1)
 // Aliases for one common CC310 implementation
 #define nrf_crypto_backend_secp384r1_ecdh_compute nrf_crypto_backend_cc310_ecdh_compute
@@ -116,6 +126,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp2
     sizeof(nrf_crypto_backend_cc310_ecdh_compute_context_t)
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp384r1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP384R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP521R1)
 // Aliases for one common CC310 implementation
@@ -125,6 +136,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp3
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp521r1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP521R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160K1)
 // Aliases for one common CC310 implementation
 #define nrf_crypto_backend_secp160k1_ecdh_compute nrf_crypto_backend_cc310_ecdh_compute
@@ -132,6 +144,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp5
     sizeof(nrf_crypto_backend_cc310_ecdh_compute_context_t)
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp160k1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160K1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP192K1)
 // Aliases for one common CC310 implementation
@@ -141,6 +154,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp1
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp192k1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP192K1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP224K1)
 // Aliases for one common CC310 implementation
 #define nrf_crypto_backend_secp224k1_ecdh_compute nrf_crypto_backend_cc310_ecdh_compute
@@ -148,6 +162,7 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp1
     sizeof(nrf_crypto_backend_cc310_ecdh_compute_context_t)
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp224k1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP224K1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP256K1)
 // Aliases for one common CC310 implementation
@@ -157,12 +172,14 @@ typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp2
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_secp256k1_ecdh_context_t;
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP256K1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_CURVE25519)
 
-ret_code_t nrf_crypto_backend_cc310_curve25519_ecdh_compute(void *p_context,
-                                                            void const *p_private_key,
-                                                            void const *p_public_key,
-                                                            uint8_t *p_shared_secret);
+ret_code_t nrf_crypto_backend_cc310_curve25519_ecdh_compute(
+    void       * p_context,
+    void const * p_private_key,
+    void const * p_public_key,
+    uint8_t    * p_shared_secret);
 
 // Aliases for one common CC310 implementation
 #define nrf_crypto_backend_curve25519_ecdh_compute nrf_crypto_backend_cc310_curve25519_ecdh_compute
@@ -171,6 +188,7 @@ ret_code_t nrf_crypto_backend_cc310_curve25519_ecdh_compute(void *p_context,
 typedef nrf_crypto_backend_cc310_ecdh_compute_context_t nrf_crypto_backend_curve25519_ecdh_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_CURVE25519)
+
 
 #ifdef __cplusplus
 }

@@ -37,10 +37,10 @@ static PyObject *resample_py(PyObject *m, PyObject *args)
     CTYPES_CHECK(NULL, hp50_obj = to_ltpf_hp50_state(hp50_obj, &hp50));
 
     int ns = LC3_NS(dt, sr), nt = LC3_NT(dt);
-    int ny = sizeof((struct lc3_ltpf_analysis){}.x_12k8) / sizeof(int16_t);
-    int n = dt == LC3_DT_7M5 ? 96 : 128;
+    int ny = sizeof((struct lc3_ltpf_analysis){ }.x_12k8) / sizeof(int16_t);
+    int n  = dt == LC3_DT_7M5 ? 96 : 128;
 
-    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_INT16, ns + nt, &x));
+    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_INT16, ns+nt, &x));
     CTYPES_CHECK("y", y_obj = to_1d_ptr(y_obj, NPY_INT16, ny, &y));
 
     resample_12k8[sr](&hp50, x + nt, y + (ny - n), n);
@@ -66,9 +66,10 @@ static PyObject *analyse_py(PyObject *m, PyObject *args)
 
     int ns = LC3_NS(dt, sr), nt = LC3_NT(sr);
 
-    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_INT16, ns + nt, &x));
+    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_INT16, ns+nt, &x));
 
-    int pitch_present = lc3_ltpf_analyse(dt, sr, &ltpf, x + nt, &data);
+    int pitch_present =
+        lc3_ltpf_analyse(dt, sr, &ltpf, x + nt, &data);
 
     from_ltpf_analysis(ltpf_obj, &ltpf);
     return Py_BuildValue("iN", pitch_present, new_ltpf_data(&data));
@@ -84,7 +85,8 @@ static PyObject *synthesize_py(PyObject *m, PyObject *args)
     int nbytes;
     float *x;
 
-    if (!PyArg_ParseTuple(args, "IIiOOO", &dt, &sr, &nbytes, &ltpf_obj, &data_obj, &x_obj))
+    if (!PyArg_ParseTuple(args, "IIiOOO",
+                &dt, &sr, &nbytes, &ltpf_obj, &data_obj, &x_obj))
         return NULL;
 
     CTYPES_CHECK("dt", dt < LC3_NUM_DT);
@@ -95,11 +97,12 @@ static PyObject *synthesize_py(PyObject *m, PyObject *args)
     if ((pitch_present = (data_obj != Py_None)))
         CTYPES_CHECK(NULL, data_obj = to_ltpf_data(data_obj, &data));
 
-    int ns = LC3_NS(dt, sr), nd = 18 * LC3_SRATE_KHZ(sr);
+    int ns = LC3_NS(dt,sr), nd = 18 * LC3_SRATE_KHZ(sr);
 
-    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_FLOAT, nd + ns, &x));
+    CTYPES_CHECK("x", x_obj = to_1d_ptr(x_obj, NPY_FLOAT, nd+ns, &x));
 
-    lc3_ltpf_synthesize(dt, sr, nbytes, &ltpf, pitch_present ? &data : NULL, x, x + nd);
+    lc3_ltpf_synthesize(dt, sr, nbytes,
+        &ltpf, pitch_present ? &data : NULL, x, x + nd);
 
     from_ltpf_synthesis(ltpf_obj, &ltpf);
     return Py_BuildValue("O", x_obj);
@@ -118,10 +121,10 @@ static PyObject *get_nbits_py(PyObject *m, PyObject *args)
 }
 
 static PyMethodDef methods[] = {
-    { "ltpf_resample", resample_py, METH_VARARGS },
-    { "ltpf_analyse", analyse_py, METH_VARARGS },
+    { "ltpf_resample"  , resample_py  , METH_VARARGS },
+    { "ltpf_analyse"   , analyse_py   , METH_VARARGS },
     { "ltpf_synthesize", synthesize_py, METH_VARARGS },
-    { "ltpf_get_nbits", get_nbits_py, METH_VARARGS },
+    { "ltpf_get_nbits" , get_nbits_py , METH_VARARGS },
     { NULL },
 };
 
