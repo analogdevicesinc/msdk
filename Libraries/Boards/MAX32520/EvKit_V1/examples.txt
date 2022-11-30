@@ -31,6 +31,7 @@ SFE
 SFE_Host
 SMON
 SPI
+SPI_MasterSlave
 TMR
 TRNG
 Watchdog
