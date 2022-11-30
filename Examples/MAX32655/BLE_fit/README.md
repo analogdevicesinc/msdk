@@ -160,6 +160,6 @@ __extra long__ press is greater than 1000 ms
 5. Button 2 long: Toggle HRM RR Interval feature flag
 
 
-## Use ARM core and RISC-V core for splitted HCI
-In the project.mk, changing USE_DUAL_CORE to 1 will enable using both ARM core and RISC-V core for the splitted HCI.
+## Use ARM core and RISC-V core for split HCI
+In the project.mk, changing USE_DUAL_CORE to 1 will enable using both ARM core and RISC-V core for the split HCI.
 
