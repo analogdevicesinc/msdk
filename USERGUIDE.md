@@ -60,7 +60,6 @@ This document describes the MSDK's installation, setup, and usage.
 - Administrator rights
 - (On MacOS) - [Homebrew](https://brew.sh/)
 
-
 ### Download
 
 The MSDK installer is available for supported Operating Systems via the links below.
@@ -70,7 +69,7 @@ The MSDK installer is available for supported Operating Systems via the links be
 - [Linux (Ubuntu)](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
 
   - This file must be made executable before it can be run (`chmod +x MaximMicrosSDK_linux.run`). Alternatively, set `Allow executing as program” in the Ubuntu GUI.  
-    
+
     ![Figure 1](res/Fig1.jpg)
 
 - [MacOS](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018610A)
@@ -79,7 +78,7 @@ The MSDK installer is available for supported Operating Systems via the links be
 
 ### Setup
 
-1.  [Download](#Download) the installer executable to an accessible location and launch it.
+1.  [Download](#download) the installer executable to an accessible location and launch it.
 
 2.  Click **Next** to proceed from the Welcome screen.
 
@@ -235,7 +234,9 @@ The MSDK offers support for multiple development environments to support the use
 
 ### Getting Started with Visual Studio Code
 
-The MSDK includes Visual Studio Code (“VS Code”) support via the [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) project.  This content is also available in video form targeting the MAX78000 in ["Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"](https://www.maximintegrated.com/en/products/microcontrollers/artificial-intelligence.html/tab4/vd_1_2eaktism#.YyDxHaE8U_Y.mailto).
+The MSDK includes Visual Studio Code (“VS Code”) support via the [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) project.
+
+This section walks through setup, opening, and running an example project with VS Code.  This material is also available in video form targeting the MAX78000 in ["Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"](https://www.maximintegrated.com/en/products/microcontrollers/artificial-intelligence.html/tab4/vd_1_2eaktism#.YyDxHaE8U_Y.mailto).  For full documentation, see the [Visual Studio Code](#visual-studio-code) section of this User Guide.  
 
 #### Setup (VS Code)
 
@@ -349,31 +350,31 @@ Continue | Step Over | Step Into | Step Out | Restart | Stop
 
 ### Getting Started with Eclipse
 
-#### Setup (Eclipse)
+The only setup required to use Eclipse is to ensure that the “Eclipse” component has been selected during the [MSDK installation](#installation). If the MSDK is already installed the Eclipse can be retrieved using the [Maintenance Tool](#maintenance).  
 
-The only setup required to use Eclipse is to ensure that the “Eclipse” component has been selected during the [MSDK installation](#installation). If the MSDK is already installed the Eclipse can be retrieved using the [Maintenance Tool](#maintenance).
-
-#### Running Eclipse
-
-Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to the `Tools/Eclipse/cdt/eclipse(.bat/.sh)` file.  This file can be used directly to launch Eclipse as well.  It calls`setenv(.bat/.sh)` script in the root directory of the MSDK to properly configure Eclipse's system environment for use with the toolchain.
-
-![Figure 22](res/Fig22.jpg)
+This section is an Eclipse "quick-start" that walks through creating, building, and running a project.  For full documentation, see the [Eclipse](#eclipse) section of this User Guide.
 
 #### Creating a New Project
 
-1. [Launch](#running-eclipse) Eclipse.
+1. Launch Eclipse with the **Eclipse MaximSDK** shortcut.  Alternatively, run the `Tools/Eclipse/cdt/eclipse(.bat/.sh)` file directly.
 
-2. Ensure that the Eclipse is set to the **C/C++ perspective** in the top right corner. Otherwise, the new project wizard will not show up.
+   ![Figure 22](res/Fig22.jpg)
 
-3. Navigate to **File -> New -> Maxim Microcontrollers**.
+2. Select the workspace.  This is a local folder that Eclipse will copy its projects into.
+
+   ![Figure 39](res/Fig39.jpg)
+
+3. Ensure that the Eclipse is set to the **C/C++ perspective** in the top right corner. Otherwise, the new project wizard will not show up.
+
+4. Navigate to **File -> New -> Maxim Microcontrollers**.
 
    ![Figure 31](res/Fig31.jpg)
 
-4. Enter the project name and hit **Next**.
+5. Enter the project name and hit **Next**.
 
    ![Figure 32](res/Fig32.jpg)
 
-5. Follow the new project wizard.
+6. Follow the new project wizard.
 
    * Chip type selects the _Target Microcontroller_
    * Board type selects the [_Board Support Package (BSP)_](#board-support-packages)
@@ -382,7 +383,7 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
    ![ ](res/Fig33.jpg)
 
-6. Select **Finish** to create the new project.
+7. Select **Finish** to create the new project.
 
 #### Building and Running Examples
 
@@ -414,17 +415,21 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
 This section demonstrates how to build MSDK example projects for on the command line. It also demonstrates how to flash and debug over the command-line.  The [MAX78002EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002EVKIT.html) will be used as an example.
 
+For more detailed documentation, see the [Command-Line Development](#command-line-development) section of this User Guide.
+
 #### Setup (Command-Line)
 
 ##### Windows
 
-On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the [`Tools/MSYS2/msys.bat`](Tools/MSYS2/msys.bat) can be launched directly, which is what the shortcut points to.
+On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the [`Tools/MSYS2/msys.bat`](Tools/MSYS2/msys.bat) file can be launched directly.
 
 ![Figure 22](res/Fig22.jpg)
 
 ##### Linux/MacOS
 
-On Linux and MacOS, copy the following contents into your shell's startup script and change **`MAXIM_PATH`** to the installation location of the MSDK.  This will make the toolchain accessible from the command-line.
+On Linux and MacOS, copy the following contents into your shell's terminal profile (`~/.profile`) and change **`MAXIM_PATH`** to the installation location of the MSDK.  This will make the toolchain accessible from the command-line by adding it to your *system's path*.
+
+Note: on ***MacOS*** *also* copy the contents into `~/.zprofile`.
 
 ```bash
 # MaximSDK location
@@ -555,7 +560,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 10. `cd` into the location of the copied example project.  The next steps will use the “Hello World” project as an example.
 
-11. Run the following command to launch a **GDB *client***.
+9. Run the following command to launch a **GDB *client***.
 
     ```shell
     arm-none-eabi-gdb --se=build/max78002.elf
@@ -719,6 +724,38 @@ To set the BSP for a project:
 ### Visual Studio Code
 
 Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) Github repository.  This section augments the VSCode-Maxim [README](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) with more detailed usage info and insight.
+
+#### Setup (VS Code)
+
+The setup below only needs to be done once per MSDK [installation](#installation).
+
+1. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).
+
+2. Launch Visual Studio Code.
+
+3. Install the Microsoft [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
+
+4. Use **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS) to open the developer prompt.
+
+5. Type "open settings json" and select the **"Preferences: Open Settings (JSON)"** option (_not_ "Preferences: Open _Default_ Settings (JSON)").  This will open your **user** settings.json file in VS Code's editor.
+
+   ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
+
+6. Add the entries below into your user settings.json file.
+
+   ```json
+   {
+       // There may be other settings up here...
+       
+       "MAXIM_PATH":"C:/MaximSDK", // Set this to the installed location of the MaximSDK.  Only use forward slashes '/' when setting this path!
+       "update.mode": "manual",
+       "extensions.autoUpdate": false,
+       
+       // There may be other settings down here...
+   }
+   ```
+
+7. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
 #### Opening Example Projects
 
@@ -891,6 +928,10 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
 ![Figure 22](res/Fig22.jpg)
 
+When Eclipse is launched, it will prompt for a ***workspace*** location.  This is a local folder that Eclipse will copy its projects into.
+
+![Figure 39](res/Fig39.jpg)
+
 #### Creating a New Project
 
 1. [Launch](#running-eclipse) Eclipse.
@@ -982,6 +1023,60 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
 ### Command-Line Development
 
+##### Windows
+
+On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the [`Tools/MSYS2/msys.bat`](Tools/MSYS2/msys.bat) file can be launched directly.
+
+![Figure 22](res/Fig22.jpg)
+
+##### Linux/MacOS
+
+On Linux and MacOS, copy the following contents into your shell's terminal profile (`~/.profile`) and change **`MAXIM_PATH`** to the installation location of the MSDK.  This will make the toolchain accessible from the command-line by adding it to your *system's path*.
+
+Note: on ***MacOS*** *also* copy the contents into `~/.zprofile`.
+
+```bash
+# MaximSDK location
+MAXIM_PATH=$HOME/MaximSDK  # Change me!
+export MAXIM_PATH
+
+# Arm GCC
+ARMGCC_DIR=$MAXIM_PATH/Tools/GNUTools/10.3
+echo $PATH | grep -q -s "$ARMGCC_DIR/bin"
+if [ $? -eq 1 ] ; then
+    PATH=$PATH:"$ARMGCC_DIR/bin"
+    export PATH
+    export ARMGCC_DIR
+fi
+
+# RISC-V GCC
+RISCVGCC_DIR=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
+echo $PATH | grep -q -s "$RISCVGCC_DIR/bin"
+if [ $? -eq 1 ] ; then
+    PATH=$PATH:"$RISCVGCC_DIR/bin"
+    export PATH
+    export RISCVGCC_DIR
+fi
+
+# OpenOCD
+OPENOCD_DIR=$MAXIM_PATH/Tools/OpenOCD
+echo $PATH | grep -q -s "$OPENOCD_DIR"
+if [ $? -eq 1 ] ; then
+    PATH=$PATH:$OPENOCD_DIR
+    export PATH
+    export OPENOCD_DIR
+fi
+```
+
+##### Verification
+
+The following commands can be used to verify that the toolchain is accessible.  They should display version numbers successfully.
+
+* `arm-none-eabi-gcc -v`
+* `arm-none-eabi-gdb -v`
+* `make -v`
+* `openocd -v`
+
 #### How to Set the BSP (Command-Line)
 
 * Set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ in **project.mk**
@@ -1005,111 +1100,262 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
 #### Building on the Command-Line
 
+1. `cd` into the project folder.
+
+2. Run `make` 
+
+   * **Parallel Build** (fastest build, but console message formatting may be mangled):
+
+     ```shell
+     make -r -j
+     ```
+
+   * **Serial Build**
+
+     ```shell
+     make -r
+     ```
+
+3. Take note of the output filename and location, which by default is the lowercase name of the _Target microcontroller_ and created in the `build` folder.
+
+#### Cleaning on the Command-Line
+
+1. `cd` into the project folder.
+2. Run `make clean`
+   * **Project clean**: `make clean` deletes the project `build` folder and all of its contents.
+   * **Library clean**: `make distclean` can be used to clean out _all_ build products, including the project `build` folder and all [peripheral driver](#peripheral-driver-api) libraries.
+
 #### Flashing on the Command-Line
 
-* **Flash and exit:**
+1. [Build](#building-on-the-command-line) the project.  
 
-  ```shell
-  openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify exit"
-  ```
+2. Connect a debug adapter between the host PC and the evaluation platform.  For more detailed instructions on this hardware setup refer to the evaluation platforms Datasheet and Quick-Start Guide.
 
-  Use this command if you just want to flash the program _but **not debug**_. OpenOCD will exit on completion.
+3. Flash the program using `openocd`.
 
-  Expected output:
+   * **Flash and exit:**  Use this command if you just want to flash the program _but **not debug**_.  OpenOCD will **flash** the program and **exit** on completion.
 
-  ```shell
-  Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
-  Licensed under GNU GPL v2
-  For bug reports, read
-      http://openocd.org/doc/doxygen/bugs.html
-  DEPRECATED! use 'adapter driver' not 'interface'
-  Info : CMSIS-DAP: SWD supported
-  Info : CMSIS-DAP: Atomic commands supported
-  Info : CMSIS-DAP: Test domain timer supported
-  Info : CMSIS-DAP: FW Version = 0256
-  Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
-  Info : CMSIS-DAP: Interface Initialised (SWD)
-  Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
-  Info : CMSIS-DAP: Interface ready
-  Info : clock speed 2000 kHz
-  Info : SWD DPIDR 0x2ba01477
-  Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
-  Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
-  Info : starting gdb server for max32xxx.cpu on 3333
-  Info : Listening on port 3333 for gdb connections
-  Info : SWD DPIDR 0x2ba01477
-  target halted due to debug-request, current mode: Thread
-  xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
-  ** Programming Started **
-  ** Programming Finished **
-  ** Verify Started **
-  ** Verified OK **
-  shutdown command invoked
-  ```
+     ```shell
+     openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify exit"
+     ```
 
-* **Flash and hold:**
+     * `-f target/max78002.cfg` sets the OpenOCD config file for the _Target microcontroller_.  Supported options can be found in the [Tools/OpenOCD/scripts/target](Tools/OpenOCD/scripts/target) folder.  **Change this to match the target microcontroller**.
+     * `-c "program build/max78002.elf verify exit"` flashes the program binary.  Change **`build/max78002.elf`** to match the correct filename.
 
-  ```shell
-  openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify; init; reset halt"
-  ```
+     Expected output:
 
-  Use this if you want to also **debug** the program. OpenOCD will flash the program, reset the MAX78002, halt program execution, and wait for a GDB debugger client connection.
+     ```shell
+     Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
+     Licensed under GNU GPL v2
+     For bug reports, read
+         http://openocd.org/doc/doxygen/bugs.html
+     DEPRECATED! use 'adapter driver' not 'interface'
+     Info : CMSIS-DAP: SWD supported
+     Info : CMSIS-DAP: Atomic commands supported
+     Info : CMSIS-DAP: Test domain timer supported
+     Info : CMSIS-DAP: FW Version = 0256
+     Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
+     Info : CMSIS-DAP: Interface Initialised (SWD)
+     Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+     Info : CMSIS-DAP: Interface ready
+     Info : clock speed 2000 kHz
+     Info : SWD DPIDR 0x2ba01477
+     Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
+     Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
+     Info : starting gdb server for max32xxx.cpu on 3333
+     Info : Listening on port 3333 for gdb connections
+     Info : SWD DPIDR 0x2ba01477
+     target halted due to debug-request, current mode: Thread
+     xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
+     ** Programming Started **
+     ** Programming Finished **
+     ** Verify Started **
+     ** Verified OK **
+     shutdown command invoked
+     ```
 
-  Expected output:
 
-  ```shell
-  Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
-  Licensed under GNU GPL v2
-  For bug reports, read
-      http://openocd.org/doc/doxygen/bugs.html
-  DEPRECATED! use 'adapter driver' not 'interface'
-  Info : CMSIS-DAP: SWD supported
-  Info : CMSIS-DAP: Atomic commands supported
-  Info : CMSIS-DAP: Test domain timer supported
-  Info : CMSIS-DAP: FW Version = 0256
-  Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
-  Info : CMSIS-DAP: Interface Initialised (SWD)
-  Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
-  Info : CMSIS-DAP: Interface ready
-  Info : clock speed 2000 kHz
-  Info : SWD DPIDR 0x2ba01477
-  Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
-  Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
-  Info : starting gdb server for max32xxx.cpu on 3333
-  Info : Listening on port 3333 for gdb connections
-  Info : SWD DPIDR 0x2ba01477
-  target halted due to debug-request, current mode: Thread
-  xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
-  ** Programming Started **
-  ** Programming Finished **
-  ** Verify Started **
-  ** Verified OK **
-  Info : Listening on port 6666 for tcl connections
-  Info : Listening on port 4444 for telnet connections <-- Note: OpenOCD is now waiting for a GDB client
-  ```
+   * **Flash and hold:**  Use this if you want to also **debug** the program. OpenOCD will **flash** the program, **reset** the MAX78002, **halt** program execution, and **wait** for a GDB debugger client connection.
 
-#### Debugging Examples
+     ```shell
+     openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify; init; reset halt"
+     ```
+
+     * `-f target/max78002.cfg` sets the OpenOCD config file for the _Target microcontroller_.  Supported options can be found in the [Tools/OpenOCD/scripts/target](Tools/OpenOCD/scripts/target) folder.  **Change this to match the target microcontroller**.
+     * `-c "program build/max78002.elf verify exit"` flashes the program binary.  Change **`build/max78002.elf`** to match the correct filename.
+     
+     Expected output:
+     
+     ```shell
+     Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
+     Licensed under GNU GPL v2
+     For bug reports, read
+         http://openocd.org/doc/doxygen/bugs.html
+     DEPRECATED! use 'adapter driver' not 'interface'
+     Info : CMSIS-DAP: SWD supported
+     Info : CMSIS-DAP: Atomic commands supported
+     Info : CMSIS-DAP: Test domain timer supported
+     Info : CMSIS-DAP: FW Version = 0256
+     Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
+     Info : CMSIS-DAP: Interface Initialised (SWD)
+     Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+     Info : CMSIS-DAP: Interface ready
+     Info : clock speed 2000 kHz
+     Info : SWD DPIDR 0x2ba01477
+     Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
+     Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
+     Info : starting gdb server for max32xxx.cpu on 3333
+     Info : Listening on port 3333 for gdb connections
+     Info : SWD DPIDR 0x2ba01477
+     target halted due to debug-request, current mode: Thread
+     xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
+     ** Programming Started **
+     ** Programming Finished **
+     ** Verify Started **
+     ** Verified OK **
+     Info : Listening on port 6666 for tcl connections
+     Info : Listening on port 4444 for telnet connections
+     # Note: OpenOCD is now waiting for a GDB client connection
+     ```
+
+
+#### Debugging on the Command-Line
+
+1. [Flash](#flashing-on-the-command-line) the program using the **Flash and Hold** command.
+
+2. Launch an ***new* separate terminal**. On Windows, use the MinGW shortcut or `MaximSDK/Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
+
+3. `cd` into the location of the copied example project.
+
+4. Run the following command to launch a **GDB *client***.
+
+   ```shell
+   arm-none-eabi-gdb --se=build/max78002.elf
+   ```
+
+   * `--se` sets the symbol and executable file to the compiled program file. **Change this to match the build output filename.**
+
+   Expected output:
+
+   ```shell
+   GNU gdb (GNU Arm Embedded Toolchain 10.3-2021.10) 10.2.90.20210621-git
+   Copyright (C) 2021 Free Software Foundation, Inc.
+   License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+   This is free software: you are free to change and redistribute it.
+   There is NO WARRANTY, to the extent permitted by law.
+   Type "show copying" and "show warranty" for details.
+   This GDB was configured as "--host=i686-w64-mingw32 --target=arm-none-eabi".
+   Type "show configuration" for configuration details.
+   For bug reporting instructions, please see:
+   <https://www.gnu.org/software/gdb/bugs/>.
+   Find the GDB manual and other documentation resources online at:
+     <http://www.gnu.org/software/gdb/documentation/>.
+   
+   For help, type "help".
+   Type "apropos word" to search for commands related to "word"...
+   Reading symbols from build/max78002.elf...
+   (gdb)
+   ```
+
+5. Connect the GDB Client to the OpenOCD server with the following command.
+
+   ```shell
+   target extended-remote localhost:3333
+   ```
+
+   Expected output:
+
+   ```shell
+   Remote debugging using localhost:3333
+   0x0000fff4 in ?? () # Note: ?? may be present at this stage, which is OK.
+   ```
+
+6. Reset the target microcontroller.
+
+   ```shell
+   monitor reset halt
+   ```
+
+   Expected output:
+
+   ```shell
+   SWD DPIDR 0x2ba01477
+   target halted due to debug-request, current mode: Thread
+   xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
+   ```
+
+7. Set a breakpoint on main.
+
+   ```shell
+   b main
+   ```
+
+   Expected output:
+
+   ```shell
+   Breakpoint 1 at 0x10000224: file main.c, line 62.
+   Note: automatically using hardware breakpoints for read-only addresses.
+   ```
+
+8. Continue the debugger.
+
+   ```shell
+   continue
+   ```
+
+   Expected output (for the Hello World example):
+
+   ```shell
+   Continuing.
+   
+   Breakpoint 1, main () at main.c:62
+   62     printf("Hello World!\n");
+   ```
+
+9. (Optional) Continue exercising the debugger. 
+
+   Run **`help`** for GDB help, or see [Common GDB Commands](#Common GDB Commands) a reference of common commands.
+
+10. Quit GDB.
+
+    ```shell
+    quit
+    ```
+
+    Expected output:
+
+    ```shell
+    A debugging session is active.
+    
+      Inferior 1 [Remote target] will be detached.
+    
+    Quit anyway? (y or n) [answered Y; input not from terminal]
+    Detaching from program: C:\Users\Jake.Carter\codespace\Hello_World\build\max78002.elf, Remote target
+    [Inferior 1 (Remote target) detached]
+    ```
+
+11. Quit OpenOCD. In the terminal window running the OpenOCD *server*, press **`CTRL + C`** to issue the shutdown command.
 
 #### Common GDB Commands
 
-| **Command**                    | **Short Command** | **Description**                                              |
-| ------------------------------ | ----------------- | ------------------------------------------------------------ |
-| monitor halt                   |                   | Halt the microcontroller.                                    |
-| monitor reset halt             |                   | Reset the microcontroller and immediately halt.              |
-| monitor max32xxx mass\_erase 0 |                   | Mass erase the flash.                                        |
-| file \<filename\>              |                   | Set the program file to debug                                |
-| load                           |                   | Flash the current program file                               |
-| continue                       | c                 | Continue execution.                                          |
-| break \<arg\>                  | b \<arg\>         | Set a breakpoint. Argument can be function\_name, file:line\_number, or \*address. |
-| print \<variable\>             | p                 | Print the value of a variable. Variable must be in current scope. |
-| backtrace                      | bt                | Print contents of the stack frame.                           |
-| step                           | s                 | Execute the next instruction.                                |
-| next                           | n                 | Execute the next line of code.                               |
-| finish                         | f                 | Continue to the end of the current function.                 |
-| info reg                       |                   | Print the values of the ARM registers.                       |
-| help                           |                   | Print descriptions for available commands                    |
-| help \<cmd\>                   |                   | Print description for given command.                         |
-| quit                           | q                 | Quit the GDB client                                          |
+| **Command**                     | **Short Command** | **Description**                                              |
+| ------------------------------- | ----------------- | ------------------------------------------------------------ |
+| `monitor halt`                  |                   | Halt the microcontroller.                                    |
+| `monitor reset halt`            |                   | Reset the microcontroller and immediately halt.              |
+| `monitor max32xxx mass_erase 0` |                   | Mass erase the flash.                                        |
+| `file <filename>`               |                   | Set the program file to `<filename>`                         |
+| `load`                          |                   | Flash the current program file                               |
+| `continue`                      | `c`               | Continue execution.                                          |
+| `break <arg>`                   | `b <arg>`         | Set a breakpoint. `<arg>` can be a function name, file:line\_number, or address. |
+| `print <variable>`              | `p`               | Print the value of a variable. Variable must be in current scope. |
+| `backtrace`                     | `bt`              | Print contents of the stack frame.                           |
+| `step`                          | `s`               | Execute the next instruction.                                |
+| `next`                          | `n`               | Execute the next line of code.                               |
+| `finish`                        | `f`               | Continue to the end of the current function.                 |
+| `info reg`                      |                   | Print the values of the ARM registers.                       |
+| `help`                          |                   | Print descriptions for available commands                    |
+| `help <cmd>`                    |                   | Print description for given command.                         |
+| `quit`                          | `q`               | Quit the GDB client                                          |
 
 ## Build System
 
@@ -1342,7 +1588,7 @@ The Cordio Bluetooth Low Energy (BLE) library provides a full BLE stack for micr
 * MAX32655
 * MAX32665
 * MAX32680
-* MAX32690: TODO web link
+* MAX32690
 
 ---
 
@@ -1365,13 +1611,11 @@ The MAXUSB library provides a higher-level interface for utilizing the built-in 
 
 The [`Libraries/MiscDrivers`](Libraries/MiscDrivers) folder of the MSDK contains drivers for miscellaneous external components such as TFT displays, cameras, audio codecs, PMICs, pushbuttons, etc.  These resources are usually closely tied with the [Board Support Packages](#board-support-packages).
 
-TODO
-
 ---
 
 ### SDHC
 
-The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level interface built on top of the SDHC [Peripheral Driver API](#peripheral-driver-api) that includes a **[FatFS File System](http://elm-chan.org/fsw/ff/00index_e.html)** implementation for managing files on SD cards.
+The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level interface built on top of the SDHC [Peripheral Driver API](#peripheral-driver-api) that includes a [FatFS File System](http://elm-chan.org/fsw/ff/00index_e.html) implementation for managing files on SD cards.
 
 #### Supported Parts
 
