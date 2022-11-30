@@ -11,7 +11,7 @@
     </addressBlock>
     <registers>
       <register>
-        <name>LPCN</name>
+        <name>LPCTRL</name>
         <description>Low Power Control Register.</description>
         <addressOffset>0x00</addressOffset>
         <fields>
@@ -213,7 +213,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>PORVDDBMON_DIS</name>
+            <name>VDDBMON_DIS</name>
             <description>VDDB Power-On Reset Monitor Disable. This bit controls the Power-On Reset monitor on VDDB supply in all operating mods.</description>
             <bitOffset>27</bitOffset>
             <bitWidth>1</bitWidth>
