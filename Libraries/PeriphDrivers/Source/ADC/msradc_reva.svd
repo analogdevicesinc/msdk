@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>MSRADC</name>
+    <description>Magnetic Strip Reader - 9 bit ADC</description>
+    <!-- <groupName>ADC</groupName> -->
+    <baseAddress>0x4002B000</baseAddress>
+    <size>32</size>
+    <access>read-write</access>
+    <addressBlock>
+      <offset>0</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>ADC9</name>
+      <description>ADC IRQ</description>
+      <value>20</value>
+    </interrupt>
+    <registers>
+      <!-- CTRL: ADC Control -->
+      <register>
+        <name>CTRL</name>
+        <description>ADC Control</description>
+        <addressOffset>0x0000</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>CLKDIV</name>
+            <description>ADC Clock Divider.</description>
+            <bitRange>[7:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>ACHSEL</name>
+            <description>A Channel ADC Input Pin Selection.</description>
+            <bitRange>[10:8]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>invalid</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH1_IN</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH2_IN</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH3_IN</name>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field derivedFrom="ACHSEL">
+            <name>BCHSEL</name>
+            <description>B Channel ADC Input Pin Selection.</description>
+            <bitRange>[13:11]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field derivedFrom="ACHSEL">
+            <name>CCHSEL</name>
+            <description>C Channel ADC Input Pin Selection.</description>
+            <bitRange>[16:14]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field derivedFrom="ACHSEL">
+            <name>DCHSEL</name>
+            <description>D Channel ADC Input Pin Selection.</description>
+            <bitRange>[19:17]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field derivedFrom="ACHSEL">
+            <name>ECHSEL</name>
+            <description>E Channel ADC Input Pin Selection.</description>
+            <bitRange>[22:20]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field derivedFrom="ACHSEL">
+            <name>FCHSEL</name>
+            <description>F Channel ADC Input Pin Selection.</description>
+            <bitRange>[25:23]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field derivedFrom="ACHSEL">
+            <name>GCHSEL</name>
+            <description>G Channel ADC Input Pin Selection.</description>
+            <bitRange>[28:26]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field derivedFrom="ACHSEL">
+            <name>HCHSEL</name>
+            <description>H Channel ADC Input Pin Selection.</description>
+            <bitRange>[31:29]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <!--CMD: ADC Command-->
+      <register>
+        <name>CMD</name>
+        <description>MSRADC Command</description>
+        <addressOffset>0x0004</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>RST</name>
+            <description>ADC Reset.</description>
+            <bitRange>[0:0]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>SNGLSMPL</name>
+            <description>Single Sample Mode.</description>
+            <bitRange>[1:1]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>CONTSMPL</name>
+            <description>Continuous Sample Mode Enable.</description>
+            <bitRange>[2:2]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>ROTLIMIT</name>
+            <description>Rotation Limit.</description>
+            <bitRange>[6:4]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>1_channel</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>2_channels</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>3_channels</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4_channels</name>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>5_channels</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>6_channels</name>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>7_channels</name>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8_channels</name>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CLKSEL</name>
+            <description>Clock Select.</description>
+            <bitRange>[10:8]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>3_samples</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>5_samples</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4_samples</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>8_samples</name>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>16_samples</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>32_samples</name>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>64_samples</name>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>128_samples</name>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <!--FIFO: MSRADC FIFO-->
+      <register>
+        <name>FIFO</name>
+        <description>ADC FIFO</description>
+        <addressOffset>0x0008</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>SAMPLE</name>
+            <description>ADC Converted Sample Data Output</description>
+            <bitRange>[8:0]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>INPUT</name>
+            <description>ADC Sample Pin</description>
+            <bitRange>[11:9]</bitRange>
+            <access>read-only</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>invalid</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH1_IN</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH2_IN</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>CH3_IN</name>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>INCOMPLETE</name>
+            <description>ADC Incomplete.</description>
+            <bitRange>[12:12]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <!-- INTFL: ADC Interrupt Enable Register -->
+      <register>
+        <name>INTEN</name>
+        <description>ADC Interrupt Enable Register</description>
+        <addressOffset>0x000C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>SET_FIFOLVL</name>
+            <description>Set FIFO Interrupt Level.</description>
+            <bitRange>[2:0]</bitRange>
+            <access>read-write</access>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>at_least_1</name>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_2</name>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_3</name>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_4</name>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_5</name>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_6</name>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_7</name>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>at_least_8</name>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>DMAREQ_EN</name>
+            <description>DMA Request Enable.</description>
+            <bitRange>[3:3]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FIFO_OV</name>
+            <description>FIFO Overflow Interrupt Enable.</description>
+            <bitRange>[6:6]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FIFO_UN</name>
+            <description>FIFO Underflow Interrupt Enable.</description>
+            <bitRange>[7:7]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>FIFO_LVL</name>
+            <description>FIFO Level Interrupt Enable.</description>
+            <bitRange>[8:8]</bitRange>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>GLOBAL</name>
+            <description>ADC Global Interrupt Enable.</description>
+            <bitRange>[9:9]</bitRange>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <!--INTFL: MSRADC Interrupt Flag Register-->
+      <register>
+        <name>INTFL</name>
+        <description>ADC Interrupt Flag Register.</description>
+        <access>read-write</access>
+        <addressOffset>0x0010</addressOffset>
+        <fields>
+          <field>
+            <name>FIFOCNT</name>
+            <description>FIFO Count.</description>
+            <bitRange>[3:0]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>FIFO_FULL_ST</name>
+            <description>FIFO Full Status.</description>
+            <bitRange>[4:4]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>FIFO_EM_ST</name>
+            <description>FIFO Empty Status.</description>
+            <bitRange>[5:5]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>FIFO_OV</name>
+            <description>FIFO Overflow Status.</description>
+            <bitRange>[6:6]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>FIFO_UN</name>
+            <description>FIFO Underflow Status.</description>
+            <bitRange>[7:7]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>FIFO_LVL</name>
+            <description>FIFO Level Status.</description>
+            <bitRange>[8:8]</bitRange>
+            <access>read-only</access>
+          </field>
+          <field>
+            <name>GLOBAL</name>
+            <description>ADC Global Interrupt Flag.</description>
+            <bitRange>[9:9]</bitRange>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- ADC: Analog to Digital Converter           -->
+</device>

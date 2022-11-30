@@ -7675,7 +7675,7 @@
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN0</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7726,7 +7726,7 @@
      <addressOffset>0x0C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_OUT_EN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7777,7 +7777,7 @@
      <addressOffset>0x18</addressOffset>
      <fields>
       <field>
-       <name>GPIO_OUT</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7803,7 +7803,7 @@
      <access>write-only</access>
      <fields>
       <field>
-       <name>GPIO_OUT_SET</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7829,7 +7829,7 @@
      <access>write-only</access>
      <fields>
       <field>
-       <name>GPIO_OUT_CLR</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7843,7 +7843,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>GPIO_IN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7856,7 +7856,7 @@
      <addressOffset>0x28</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INT_MODE</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7881,7 +7881,7 @@
      <addressOffset>0x2C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INT_POL</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7911,7 +7911,7 @@
      <addressOffset>0x34</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INT_EN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7936,7 +7936,7 @@
      <addressOffset>0x38</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INT_EN_SET</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7961,7 +7961,7 @@
      <addressOffset>0x3C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INT_EN_CLR</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -7987,7 +7987,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>GPIO_INT_STAT</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8025,7 +8025,7 @@
      <addressOffset>0x4C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_WAKE_EN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8076,7 +8076,7 @@
      <addressOffset>0x5C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INT_DUAL_EDGE</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8101,7 +8101,7 @@
      <addressOffset>0x60</addressOffset>
      <fields>
       <field>
-       <name>GPIO_PAD_CFG1</name>
+       <name>ALL</name>
        <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8131,7 +8131,7 @@
      <addressOffset>0x64</addressOffset>
      <fields>
       <field>
-       <name>GPIO_PAD_CFG2</name>
+       <name>ALL</name>
        <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8161,7 +8161,7 @@
      <addressOffset>0x68</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN1</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8212,7 +8212,7 @@
      <addressOffset>0x74</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN2</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8263,7 +8263,7 @@
      <addressOffset>0xA8</addressOffset>
      <fields>
       <field>
-       <name>GPIO_HYSEN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8276,7 +8276,7 @@
      <addressOffset>0xAC</addressOffset>
      <fields>
       <field>
-       <name>GPIO_SRSEL</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8297,11 +8297,11 @@
     </register>
     <register>
      <name>DS0</name>
-     <description>GPIO Drive Strength  Register. Each bit in this register selects the drive strength for the associated GPIO pin in this port. Refer to the Datasheet for sink/source current of GPIO pins in each mode.</description>
+     <description>GPIO Drive Strength 0 Register. Each bit in this register selects the drive strength for the associated GPIO pin in this port. Refer to the Datasheet for sink/source current of GPIO pins in each mode.</description>
      <addressOffset>0xB0</addressOffset>
      <fields>
       <field>
-       <name>GPIO_DS</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8326,7 +8326,7 @@
      <addressOffset>0xB4</addressOffset>
      <fields>
       <field>
-       <name>GPIO_DS1</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -8334,7 +8334,7 @@
      </fields>
     </register>
     <register>
-     <name>PS</name>
+     <name>PSSEL</name>
      <description>GPIO Pull Select Mode.</description>
      <addressOffset>0xB8</addressOffset>
      <fields>
@@ -15600,6 +15600,37 @@
      <name>mail1</name>
      <description>Semaphore Mailbox 1 register.</description>
      <addressOffset>0x4C</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>data</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>irq2</name>
+     <description>Semaphore IRQ2 register.</description>
+     <addressOffset>0x50</addressOffset>
+     <size>32</size>
+     <fields>
+      <field>
+       <name>en</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>rv32_irq</name>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>mail2</name>
+     <description>Semaphore Mailbox 2 register.</description>
+     <addressOffset>0x54</addressOffset>
      <size>32</size>
      <fields>
       <field>
