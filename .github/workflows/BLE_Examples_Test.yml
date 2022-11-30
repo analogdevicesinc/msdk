@@ -52,6 +52,7 @@ jobs:
           WATCH_FILES="\
           Examples/MAX32655/BLE \
           Libraries/libs.mk \
+          Libraries/Cordio \
           Libraries/CMSIS/Device/Maxim/MAX32655 \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
           Libraries/PeriphDrivers/periphdriver.mk \
