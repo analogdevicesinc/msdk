@@ -1,0 +1,86 @@
+name: BLE Examples Test
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: [ self-hosted, btm-ci ]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Clean
+        continue-on-error: true
+        run: |
+          # Remove local modifications
+          set +e
+
+          # Attempt to clean the repo
+          git scorch
+          retval=$?
+
+          # Remove everything if this fails
+          if [[ $retval -ne 0 ]]
+          then
+            rm -rf *
+          fi
+
+          set -e
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          fetch-depth: 0
+          repository: Analog-Devices-MSDK/msdk
+          ref: main
+
+      - name: Deinit Libraries/Cordio
+        run: |
+          # Remove local modifications
+          git scorch
+
+          # Update the submodules, this will use ssh
+          git submodule init
+          git submodule sync
+          git submodule update --init --recursive
+
+          git submodule deinit -f Libraries/Cordio
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          path: Libraries/Cordio
+
+      - name: Test BLE examples
+        run: |
+          # Lock hardware resources
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
+          cp -r .github/workflows/ci-tests/Examples_tests .
+          chmod +x Examples_tests/local_testLauncher.sh
+          cd Examples_tests/
+          ./local_testLauncher.sh
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+            name: failure-report
+            path: Examples_tests/results/
+
+      # Unlock even when cancelled or failed
+      - name: unlock
+        if: always()
+        run: |
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
+          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
