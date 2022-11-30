@@ -340,9 +340,7 @@ Once a project is opened 4 available [build tasks](https://github.com/Analog-Dev
 
 ![Debugger Control Bar Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_bar.JPG)
 
-```
 Continue | Step Over | Step Into | Step Out | Restart | Stop
-```
 
 7. Exercise the debugger, and press stop to disconnect when finished.
 
@@ -427,42 +425,31 @@ On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal. 
 
 ##### Linux/MacOS
 
-On Linux and MacOS, copy the following contents into your shell's terminal profile (`~/.profile`) and change **`MAXIM_PATH`** to the installation location of the MSDK.  This will make the toolchain accessible from the command-line by adding it to your *system's path*.
+1. On Linux and MacOS, copy the following contents into your shell's terminal profile/startup script.  Depending on your system and shell this could be `~/.profile`, `~/.zprofile`, `~/.bashrc`, `~/.zshrc`, etc.
 
-Note: on ***MacOS*** *also* copy the contents into `~/.zprofile`.
+   ```bash
+   # Set MAXIM_PATH to point to the MSDK
+   export MAXIM_PATH=#changeme!
+   
+   # Add Arm Embedded GCC to path (v10.3)
+   export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
+   export PATH=$ARM_GCC_ROOT/bin:$PATH
+   
+   # Add xPack RISC-V GCC to path (v10.2)
+   export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
+   export PATH=$XPACK_GCC_ROOT/bin:$PATH
+   
+   # Add OpenOCD to path
+   export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
+   export PATH=$OPENOCD_ROOT:$PATH
+   ```
 
-```bash
-# MaximSDK location
-MAXIM_PATH=$HOME/MaximSDK  # Change me!
-export MAXIM_PATH
+2. Change `export MAXIM_PATH=#changeme!` to the installation location of the MSDK.  This will make the toolchain accessible from the command-line by adding it to your *system's path*.
 
-# Arm GCC
-ARMGCC_DIR=$MAXIM_PATH/Tools/GNUTools/10.3
-echo $PATH | grep -q -s "$ARMGCC_DIR/bin"
-if [ $? -eq 1 ] ; then
-    PATH=$PATH:"$ARMGCC_DIR/bin"
-    export PATH
-    export ARMGCC_DIR
-fi
-
-# RISC-V GCC
-RISCVGCC_DIR=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
-echo $PATH | grep -q -s "$RISCVGCC_DIR/bin"
-if [ $? -eq 1 ] ; then
-    PATH=$PATH:"$RISCVGCC_DIR/bin"
-    export PATH
-    export RISCVGCC_DIR
-fi
-
-# OpenOCD
-OPENOCD_DIR=$MAXIM_PATH/Tools/OpenOCD
-echo $PATH | grep -q -s "$OPENOCD_DIR"
-if [ $? -eq 1 ] ; then
-    PATH=$PATH:$OPENOCD_DIR
-    export PATH
-    export OPENOCD_DIR
-fi
-```
+   ```bash
+   # Set MAXIM_PATH environment variable
+   export MAXIM_PATH=$HOME/MaximSDK
+   ```
 
 ##### Verification
 
@@ -741,7 +728,7 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
    ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
 
-6. Add the entries below into your user settings.json file.
+6. Add the entries below into your ***user settings.json*** file.
 
    ```json
    {
@@ -1023,6 +1010,8 @@ When Eclipse is launched, it will prompt for a ***workspace*** location.  This i
 
 ### Command-Line Development
 
+#### Setup (Command-Line)
+
 ##### Windows
 
 On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the [`Tools/MSYS2/msys.bat`](Tools/MSYS2/msys.bat) file can be launched directly.
@@ -1031,42 +1020,31 @@ On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal. 
 
 ##### Linux/MacOS
 
-On Linux and MacOS, copy the following contents into your shell's terminal profile (`~/.profile`) and change **`MAXIM_PATH`** to the installation location of the MSDK.  This will make the toolchain accessible from the command-line by adding it to your *system's path*.
+1. On Linux and MacOS, copy the following contents into your shell's terminal profile/startup script.  Depending on your system and shell this could be `~/.profile`, `~/.zprofile`, `~/.bashrc`, `~/.zshrc`, etc.
 
-Note: on ***MacOS*** *also* copy the contents into `~/.zprofile`.
+   ```bash
+   # Set MAXIM_PATH to point to the MSDK
+   export MAXIM_PATH=#changeme!
+   
+   # Add Arm Embedded GCC to path (v10.3)
+   export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
+   export PATH=$ARM_GCC_ROOT/bin:$PATH
+   
+   # Add xPack RISC-V GCC to path (v10.2)
+   export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
+   export PATH=$XPACK_GCC_ROOT/bin:$PATH
+   
+   # Add OpenOCD to path
+   export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
+   export PATH=$OPENOCD_ROOT:$PATH
+   ```
 
-```bash
-# MaximSDK location
-MAXIM_PATH=$HOME/MaximSDK  # Change me!
-export MAXIM_PATH
+2. Change **`export MAXIM_PATH=#changeme!`** to the installation location of the MSDK.  This will make the toolchain accessible from the command-line by adding it to your *system's path*.
 
-# Arm GCC
-ARMGCC_DIR=$MAXIM_PATH/Tools/GNUTools/10.3
-echo $PATH | grep -q -s "$ARMGCC_DIR/bin"
-if [ $? -eq 1 ] ; then
-    PATH=$PATH:"$ARMGCC_DIR/bin"
-    export PATH
-    export ARMGCC_DIR
-fi
-
-# RISC-V GCC
-RISCVGCC_DIR=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
-echo $PATH | grep -q -s "$RISCVGCC_DIR/bin"
-if [ $? -eq 1 ] ; then
-    PATH=$PATH:"$RISCVGCC_DIR/bin"
-    export PATH
-    export RISCVGCC_DIR
-fi
-
-# OpenOCD
-OPENOCD_DIR=$MAXIM_PATH/Tools/OpenOCD
-echo $PATH | grep -q -s "$OPENOCD_DIR"
-if [ $? -eq 1 ] ; then
-    PATH=$PATH:$OPENOCD_DIR
-    export PATH
-    export OPENOCD_DIR
-fi
-```
+   ```bash
+   # Set MAXIM_PATH environment variable
+   export MAXIM_PATH=$HOME/MaximSDK
+   ```
 
 ##### Verification
 
@@ -1096,7 +1074,7 @@ The following commands can be used to verify that the toolchain is accessible.  
   BOARD=FTHR_RevA # Set the BSP
   ```
 
-* Alternatively, set **`BOARD`** on the command-line when building (ie. `make BOARD=FTHR_RevA ...`)
+* Alternatively, set **`BOARD`** on the command-line when building (ie. `make -r -j BOARD=FTHR_RevA`)
 
 #### Building on the Command-Line
 
