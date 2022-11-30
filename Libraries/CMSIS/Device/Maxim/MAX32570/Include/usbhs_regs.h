@@ -135,8 +135,7 @@ typedef struct {
     __IO uint8_t  epinfo;               /**< <tt>\b 0x78:</tt> USBHS EPINFO Register */
     __IO uint8_t  raminfo;              /**< <tt>\b 0x79:</tt> USBHS RAMINFO Register */
     __IO uint8_t  softreset;            /**< <tt>\b 0x7A:</tt> USBHS SOFTRESET Register */
-    __IO uint8_t  earlydma;             /**< <tt>\b 0x7B:</tt> USBHS EARLYDMA Register */
-    __R  uint32_t rsv_0x7c;
+    __R  uint8_t  rsv_0x7b_0x7f[5];
     __IO uint16_t ctuch;                /**< <tt>\b 0x80:</tt> USBHS CTUCH Register */
     __IO uint16_t cthsrtn;              /**< <tt>\b 0x82:</tt> USBHS CTHSRTN Register */
     __R  uint32_t rsv_0x84_0x3ff[223];
@@ -231,7 +230,6 @@ typedef struct {
 #define MXC_R_USBHS_EPINFO                 ((uint32_t)0x00000078UL) /**< Offset from USBHS Base Address: <tt> 0x0078</tt> */
 #define MXC_R_USBHS_RAMINFO                ((uint32_t)0x00000079UL) /**< Offset from USBHS Base Address: <tt> 0x0079</tt> */
 #define MXC_R_USBHS_SOFTRESET              ((uint32_t)0x0000007AUL) /**< Offset from USBHS Base Address: <tt> 0x007A</tt> */
-#define MXC_R_USBHS_EARLYDMA               ((uint32_t)0x0000007BUL) /**< Offset from USBHS Base Address: <tt> 0x007B</tt> */
 #define MXC_R_USBHS_CTUCH                  ((uint32_t)0x00000080UL) /**< Offset from USBHS Base Address: <tt> 0x0080</tt> */
 #define MXC_R_USBHS_CTHSRTN                ((uint32_t)0x00000082UL) /**< Offset from USBHS Base Address: <tt> 0x0082</tt> */
 #define MXC_R_USBHS_MXM_USB_REG_00         ((uint32_t)0x00000400UL) /**< Offset from USBHS Base Address: <tt> 0x0400</tt> */
@@ -722,14 +720,8 @@ typedef struct {
 #define MXC_F_USBHS_INCSRU_MODE_POS                    5 /**< INCSRU_MODE Position */
 #define MXC_F_USBHS_INCSRU_MODE                        ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_MODE_POS)) /**< INCSRU_MODE Mask */
 
-#define MXC_F_USBHS_INCSRU_DMAREQEN_POS                4 /**< INCSRU_DMAREQEN Position */
-#define MXC_F_USBHS_INCSRU_DMAREQEN                    ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_DMAREQEN_POS)) /**< INCSRU_DMAREQEN Mask */
-
 #define MXC_F_USBHS_INCSRU_FRCDATATOG_POS              3 /**< INCSRU_FRCDATATOG Position */
 #define MXC_F_USBHS_INCSRU_FRCDATATOG                  ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_FRCDATATOG_POS)) /**< INCSRU_FRCDATATOG Mask */
-
-#define MXC_F_USBHS_INCSRU_DMAREQMODE_POS              2 /**< INCSRU_DMAREQMODE Position */
-#define MXC_F_USBHS_INCSRU_DMAREQMODE                  ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_DMAREQMODE_POS)) /**< INCSRU_DMAREQMODE Mask */
 
 #define MXC_F_USBHS_INCSRU_DPKTBUFDIS_POS              1 /**< INCSRU_DPKTBUFDIS Position */
 #define MXC_F_USBHS_INCSRU_DPKTBUFDIS                  ((uint8_t)(0x1UL << MXC_F_USBHS_INCSRU_DPKTBUFDIS_POS)) /**< INCSRU_DPKTBUFDIS Mask */
@@ -794,14 +786,8 @@ typedef struct {
 #define MXC_F_USBHS_OUTCSRU_ISO_POS                    6 /**< OUTCSRU_ISO Position */
 #define MXC_F_USBHS_OUTCSRU_ISO                        ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_ISO_POS)) /**< OUTCSRU_ISO Mask */
 
-#define MXC_F_USBHS_OUTCSRU_DMAREQEN_POS               5 /**< OUTCSRU_DMAREQEN Position */
-#define MXC_F_USBHS_OUTCSRU_DMAREQEN                   ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_DMAREQEN_POS)) /**< OUTCSRU_DMAREQEN Mask */
-
 #define MXC_F_USBHS_OUTCSRU_DISNYET_POS                4 /**< OUTCSRU_DISNYET Position */
 #define MXC_F_USBHS_OUTCSRU_DISNYET                    ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_DISNYET_POS)) /**< OUTCSRU_DISNYET Mask */
-
-#define MXC_F_USBHS_OUTCSRU_DMAREQMODE_POS             3 /**< OUTCSRU_DMAREQMODE Position */
-#define MXC_F_USBHS_OUTCSRU_DMAREQMODE                 ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_DMAREQMODE_POS)) /**< OUTCSRU_DMAREQMODE Mask */
 
 #define MXC_F_USBHS_OUTCSRU_DPKTBUFDIS_POS             1 /**< OUTCSRU_DPKTBUFDIS Position */
 #define MXC_F_USBHS_OUTCSRU_DPKTBUFDIS                 ((uint8_t)(0x1UL << MXC_F_USBHS_OUTCSRU_DPKTBUFDIS_POS)) /**< OUTCSRU_DPKTBUFDIS Mask */
@@ -1037,12 +1023,9 @@ typedef struct {
 /**
  * @ingroup  usbhs_registers
  * @defgroup USBHS_RAMINFO USBHS_RAMINFO
- * @brief    RAM width and DMA hardware information.
+ * @brief    RAM width information.
  * @{
  */
-#define MXC_F_USBHS_RAMINFO_DMACHANS_POS               4 /**< RAMINFO_DMACHANS Position */
-#define MXC_F_USBHS_RAMINFO_DMACHANS                   ((uint8_t)(0xFUL << MXC_F_USBHS_RAMINFO_DMACHANS_POS)) /**< RAMINFO_DMACHANS Mask */
-
 #define MXC_F_USBHS_RAMINFO_RAMBITS_POS                0 /**< RAMINFO_RAMBITS Position */
 #define MXC_F_USBHS_RAMINFO_RAMBITS                    ((uint8_t)(0xFUL << MXC_F_USBHS_RAMINFO_RAMBITS_POS)) /**< RAMINFO_RAMBITS Mask */
 
@@ -1061,20 +1044,6 @@ typedef struct {
 #define MXC_F_USBHS_SOFTRESET_RSTS                     ((uint8_t)(0x1UL << MXC_F_USBHS_SOFTRESET_RSTS_POS)) /**< SOFTRESET_RSTS Mask */
 
 /**@} end of group USBHS_SOFTRESET_Register */
-
-/**
- * @ingroup  usbhs_registers
- * @defgroup USBHS_EARLYDMA USBHS_EARLYDMA
- * @brief    DMA timing control register.
- * @{
- */
-#define MXC_F_USBHS_EARLYDMA_EDMAIN_POS                1 /**< EARLYDMA_EDMAIN Position */
-#define MXC_F_USBHS_EARLYDMA_EDMAIN                    ((uint8_t)(0x1UL << MXC_F_USBHS_EARLYDMA_EDMAIN_POS)) /**< EARLYDMA_EDMAIN Mask */
-
-#define MXC_F_USBHS_EARLYDMA_EDMAOUT_POS               0 /**< EARLYDMA_EDMAOUT Position */
-#define MXC_F_USBHS_EARLYDMA_EDMAOUT                   ((uint8_t)(0x1UL << MXC_F_USBHS_EARLYDMA_EDMAOUT_POS)) /**< EARLYDMA_EDMAOUT Mask */
-
-/**@} end of group USBHS_EARLYDMA_Register */
 
 /**
  * @ingroup  usbhs_registers
@@ -1145,9 +1114,6 @@ typedef struct {
  */
 #define MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A_POS       0 /**< MXM_REG_A4_VRST_VDDB_N_A Position */
 #define MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A           ((uint32_t)(0x1UL << MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A_POS)) /**< MXM_REG_A4_VRST_VDDB_N_A Mask */
-
-#define MXC_F_USBHS_MXM_REG_A4_DMA_INT_POS             1 /**< MXM_REG_A4_DMA_INT Position */
-#define MXC_F_USBHS_MXM_REG_A4_DMA_INT                 ((uint32_t)(0x1UL << MXC_F_USBHS_MXM_REG_A4_DMA_INT_POS)) /**< MXM_REG_A4_DMA_INT Mask */
 
 /**@} end of group USBHS_MXM_REG_A4_Register */
 

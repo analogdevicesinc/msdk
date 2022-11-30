@@ -88,7 +88,7 @@ extern "C" {
  * Structure type to access the CLCD Registers.
  */
 typedef struct {
-    __IO uint32_t clk;                  /**< <tt>\b 0x000:</tt> CLCD CLK Register */
+    __IO uint32_t clkctrl;              /**< <tt>\b 0x000:</tt> CLCD CLKCTRL Register */
     __IO uint32_t vtim_0;               /**< <tt>\b 0x004:</tt> CLCD VTIM_0 Register */
     __IO uint32_t vtim_1;               /**< <tt>\b 0x008:</tt> CLCD VTIM_1 Register */
     __IO uint32_t htim;                 /**< <tt>\b 0x00C:</tt> CLCD HTIM Register */
@@ -96,8 +96,8 @@ typedef struct {
     __R  uint32_t rsv_0x14;
     __IO uint32_t fr;                   /**< <tt>\b 0x18:</tt> CLCD FR Register */
     __R  uint32_t rsv_0x1c;
-    __IO uint32_t int_en;               /**< <tt>\b 0x020:</tt> CLCD INT_EN Register */
-    __IO uint32_t stat;                 /**< <tt>\b 0x024:</tt> CLCD STAT Register */
+    __IO uint32_t inten;                /**< <tt>\b 0x020:</tt> CLCD INTEN Register */
+    __IO uint32_t intfl;                /**< <tt>\b 0x024:</tt> CLCD INTFL Register */
     __R  uint32_t rsv_0x28_0x3ff[246];
     __IO uint32_t palette[256];         /**< <tt>\b 0x400:</tt> CLCD PALETTE Register */
 } mxc_clcd_regs_t;
@@ -109,45 +109,45 @@ typedef struct {
  * @brief      CLCD Peripheral Register Offsets from the CLCD Base Peripheral Address.
  * @{
  */
-#define MXC_R_CLCD_CLK                     ((uint32_t)0x00000000UL) /**< Offset from CLCD Base Address: <tt> 0x0000</tt> */
+#define MXC_R_CLCD_CLKCTRL                 ((uint32_t)0x00000000UL) /**< Offset from CLCD Base Address: <tt> 0x0000</tt> */
 #define MXC_R_CLCD_VTIM_0                  ((uint32_t)0x00000004UL) /**< Offset from CLCD Base Address: <tt> 0x0004</tt> */
 #define MXC_R_CLCD_VTIM_1                  ((uint32_t)0x00000008UL) /**< Offset from CLCD Base Address: <tt> 0x0008</tt> */
 #define MXC_R_CLCD_HTIM                    ((uint32_t)0x0000000CUL) /**< Offset from CLCD Base Address: <tt> 0x000C</tt> */
 #define MXC_R_CLCD_CTRL                    ((uint32_t)0x00000010UL) /**< Offset from CLCD Base Address: <tt> 0x0010</tt> */
 #define MXC_R_CLCD_FR                      ((uint32_t)0x00000018UL) /**< Offset from CLCD Base Address: <tt> 0x0018</tt> */
-#define MXC_R_CLCD_INT_EN                  ((uint32_t)0x00000020UL) /**< Offset from CLCD Base Address: <tt> 0x0020</tt> */
-#define MXC_R_CLCD_STAT                    ((uint32_t)0x00000024UL) /**< Offset from CLCD Base Address: <tt> 0x0024</tt> */
+#define MXC_R_CLCD_INTEN                   ((uint32_t)0x00000020UL) /**< Offset from CLCD Base Address: <tt> 0x0020</tt> */
+#define MXC_R_CLCD_INTFL                   ((uint32_t)0x00000024UL) /**< Offset from CLCD Base Address: <tt> 0x0024</tt> */
 #define MXC_R_CLCD_PALETTE                 ((uint32_t)0x00000400UL) /**< Offset from CLCD Base Address: <tt> 0x0400</tt> */
 /**@} end of group clcd_registers */
 
 /**
  * @ingroup  clcd_registers
- * @defgroup CLCD_CLK CLCD_CLK
+ * @defgroup CLCD_CLKCTRL CLCD_CLKCTRL
  * @brief    LCD Clock Control Register
  * @{
  */
-#define MXC_F_CLCD_CLK_CLKDIV_POS                      0 /**< CLK_CLKDIV Position */
-#define MXC_F_CLCD_CLK_CLKDIV                          ((uint32_t)(0xFFUL << MXC_F_CLCD_CLK_CLKDIV_POS)) /**< CLK_CLKDIV Mask */
+#define MXC_F_CLCD_CLKCTRL_CLKDIV_POS                  0 /**< CLKCTRL_CLKDIV Position */
+#define MXC_F_CLCD_CLKCTRL_CLKDIV                      ((uint32_t)(0xFFUL << MXC_F_CLCD_CLKCTRL_CLKDIV_POS)) /**< CLKCTRL_CLKDIV Mask */
 
-#define MXC_F_CLCD_CLK_ACB_POS                         8 /**< CLK_ACB Position */
-#define MXC_F_CLCD_CLK_ACB                             ((uint32_t)(0xFFUL << MXC_F_CLCD_CLK_ACB_POS)) /**< CLK_ACB Mask */
+#define MXC_F_CLCD_CLKCTRL_ACB_POS                     8 /**< CLKCTRL_ACB Position */
+#define MXC_F_CLCD_CLKCTRL_ACB                         ((uint32_t)(0xFFUL << MXC_F_CLCD_CLKCTRL_ACB_POS)) /**< CLKCTRL_ACB Mask */
 
-#define MXC_F_CLCD_CLK_DPOL_POS                        16 /**< CLK_DPOL Position */
-#define MXC_F_CLCD_CLK_DPOL                            ((uint32_t)(0x1UL << MXC_F_CLCD_CLK_DPOL_POS)) /**< CLK_DPOL Mask */
+#define MXC_F_CLCD_CLKCTRL_DPOL_POS                    16 /**< CLKCTRL_DPOL Position */
+#define MXC_F_CLCD_CLKCTRL_DPOL                        ((uint32_t)(0x1UL << MXC_F_CLCD_CLKCTRL_DPOL_POS)) /**< CLKCTRL_DPOL Mask */
 
-#define MXC_F_CLCD_CLK_VPOL_POS                        17 /**< CLK_VPOL Position */
-#define MXC_F_CLCD_CLK_VPOL                            ((uint32_t)(0x1UL << MXC_F_CLCD_CLK_VPOL_POS)) /**< CLK_VPOL Mask */
+#define MXC_F_CLCD_CLKCTRL_VPOL_POS                    17 /**< CLKCTRL_VPOL Position */
+#define MXC_F_CLCD_CLKCTRL_VPOL                        ((uint32_t)(0x1UL << MXC_F_CLCD_CLKCTRL_VPOL_POS)) /**< CLKCTRL_VPOL Mask */
 
-#define MXC_F_CLCD_CLK_HPOL_POS                        18 /**< CLK_HPOL Position */
-#define MXC_F_CLCD_CLK_HPOL                            ((uint32_t)(0x1UL << MXC_F_CLCD_CLK_HPOL_POS)) /**< CLK_HPOL Mask */
+#define MXC_F_CLCD_CLKCTRL_HPOL_POS                    18 /**< CLKCTRL_HPOL Position */
+#define MXC_F_CLCD_CLKCTRL_HPOL                        ((uint32_t)(0x1UL << MXC_F_CLCD_CLKCTRL_HPOL_POS)) /**< CLKCTRL_HPOL Mask */
 
-#define MXC_F_CLCD_CLK_EDGE_POS                        19 /**< CLK_EDGE Position */
-#define MXC_F_CLCD_CLK_EDGE                            ((uint32_t)(0x1UL << MXC_F_CLCD_CLK_EDGE_POS)) /**< CLK_EDGE Mask */
+#define MXC_F_CLCD_CLKCTRL_EDGE_POS                    19 /**< CLKCTRL_EDGE Position */
+#define MXC_F_CLCD_CLKCTRL_EDGE                        ((uint32_t)(0x1UL << MXC_F_CLCD_CLKCTRL_EDGE_POS)) /**< CLKCTRL_EDGE Mask */
 
-#define MXC_F_CLCD_CLK_PASCLK_POS                      20 /**< CLK_PASCLK Position */
-#define MXC_F_CLCD_CLK_PASCLK                          ((uint32_t)(0x1UL << MXC_F_CLCD_CLK_PASCLK_POS)) /**< CLK_PASCLK Mask */
+#define MXC_F_CLCD_CLKCTRL_PASCLK_POS                  20 /**< CLKCTRL_PASCLK Position */
+#define MXC_F_CLCD_CLKCTRL_PASCLK                      ((uint32_t)(0x1UL << MXC_F_CLCD_CLKCTRL_PASCLK_POS)) /**< CLKCTRL_PASCLK Mask */
 
-/**@} end of group CLCD_CLK_Register */
+/**@} end of group CLCD_CLKCTRL_Register */
 
 /**
  * @ingroup  clcd_registers
@@ -203,8 +203,8 @@ typedef struct {
  * @brief    LCD Control Register
  * @{
  */
-#define MXC_F_CLCD_CTRL_LCDEN_POS                      0 /**< CTRL_LCDEN Position */
-#define MXC_F_CLCD_CTRL_LCDEN                          ((uint32_t)(0x1UL << MXC_F_CLCD_CTRL_LCDEN_POS)) /**< CTRL_LCDEN Mask */
+#define MXC_F_CLCD_CTRL_EN_POS                         0 /**< CTRL_EN Position */
+#define MXC_F_CLCD_CTRL_EN                             ((uint32_t)(0x1UL << MXC_F_CLCD_CTRL_EN_POS)) /**< CTRL_EN Mask */
 
 #define MXC_F_CLCD_CTRL_VISEL_POS                      1 /**< CTRL_VISEL Position */
 #define MXC_F_CLCD_CTRL_VISEL                          ((uint32_t)(0x3UL << MXC_F_CLCD_CTRL_VISEL_POS)) /**< CTRL_VISEL Mask */
@@ -273,46 +273,46 @@ typedef struct {
 
 /**
  * @ingroup  clcd_registers
- * @defgroup CLCD_INT_EN CLCD_INT_EN
+ * @defgroup CLCD_INTEN CLCD_INTEN
  * @brief    LCD Interrupt Enable Register.
  * @{
  */
-#define MXC_F_CLCD_INT_EN_UFLO_POS                     0 /**< INT_EN_UFLO Position */
-#define MXC_F_CLCD_INT_EN_UFLO                         ((uint32_t)(0x1UL << MXC_F_CLCD_INT_EN_UFLO_POS)) /**< INT_EN_UFLO Mask */
+#define MXC_F_CLCD_INTEN_UFLO_POS                      0 /**< INTEN_UFLO Position */
+#define MXC_F_CLCD_INTEN_UFLO                          ((uint32_t)(0x1UL << MXC_F_CLCD_INTEN_UFLO_POS)) /**< INTEN_UFLO Mask */
 
-#define MXC_F_CLCD_INT_EN_ADRRDY_POS                   1 /**< INT_EN_ADRRDY Position */
-#define MXC_F_CLCD_INT_EN_ADRRDY                       ((uint32_t)(0x1UL << MXC_F_CLCD_INT_EN_ADRRDY_POS)) /**< INT_EN_ADRRDY Mask */
+#define MXC_F_CLCD_INTEN_ADRRDY_POS                    1 /**< INTEN_ADRRDY Position */
+#define MXC_F_CLCD_INTEN_ADRRDY                        ((uint32_t)(0x1UL << MXC_F_CLCD_INTEN_ADRRDY_POS)) /**< INTEN_ADRRDY Mask */
 
-#define MXC_F_CLCD_INT_EN_VCI_POS                      2 /**< INT_EN_VCI Position */
-#define MXC_F_CLCD_INT_EN_VCI                          ((uint32_t)(0x1UL << MXC_F_CLCD_INT_EN_VCI_POS)) /**< INT_EN_VCI Mask */
+#define MXC_F_CLCD_INTEN_VCI_POS                       2 /**< INTEN_VCI Position */
+#define MXC_F_CLCD_INTEN_VCI                           ((uint32_t)(0x1UL << MXC_F_CLCD_INTEN_VCI_POS)) /**< INTEN_VCI Mask */
 
-#define MXC_F_CLCD_INT_EN_BERR_POS                     3 /**< INT_EN_BERR Position */
-#define MXC_F_CLCD_INT_EN_BERR                         ((uint32_t)(0x1UL << MXC_F_CLCD_INT_EN_BERR_POS)) /**< INT_EN_BERR Mask */
+#define MXC_F_CLCD_INTEN_BERR_POS                      3 /**< INTEN_BERR Position */
+#define MXC_F_CLCD_INTEN_BERR                          ((uint32_t)(0x1UL << MXC_F_CLCD_INTEN_BERR_POS)) /**< INTEN_BERR Mask */
 
-/**@} end of group CLCD_INT_EN_Register */
+/**@} end of group CLCD_INTEN_Register */
 
 /**
  * @ingroup  clcd_registers
- * @defgroup CLCD_STAT CLCD_STAT
- * @brief    LCD Status Register.
+ * @defgroup CLCD_INTFL CLCD_INTFL
+ * @brief    LCD Interrupt Status Register.
  * @{
  */
-#define MXC_F_CLCD_STAT_UFLO_POS                       0 /**< STAT_UFLO Position */
-#define MXC_F_CLCD_STAT_UFLO                           ((uint32_t)(0x1UL << MXC_F_CLCD_STAT_UFLO_POS)) /**< STAT_UFLO Mask */
+#define MXC_F_CLCD_INTFL_UFLO_POS                      0 /**< INTFL_UFLO Position */
+#define MXC_F_CLCD_INTFL_UFLO                          ((uint32_t)(0x1UL << MXC_F_CLCD_INTFL_UFLO_POS)) /**< INTFL_UFLO Mask */
 
-#define MXC_F_CLCD_STAT_ADRRDY_POS                     1 /**< STAT_ADRRDY Position */
-#define MXC_F_CLCD_STAT_ADRRDY                         ((uint32_t)(0x1UL << MXC_F_CLCD_STAT_ADRRDY_POS)) /**< STAT_ADRRDY Mask */
+#define MXC_F_CLCD_INTFL_ADRRDY_POS                    1 /**< INTFL_ADRRDY Position */
+#define MXC_F_CLCD_INTFL_ADRRDY                        ((uint32_t)(0x1UL << MXC_F_CLCD_INTFL_ADRRDY_POS)) /**< INTFL_ADRRDY Mask */
 
-#define MXC_F_CLCD_STAT_VCI_POS                        2 /**< STAT_VCI Position */
-#define MXC_F_CLCD_STAT_VCI                            ((uint32_t)(0x1UL << MXC_F_CLCD_STAT_VCI_POS)) /**< STAT_VCI Mask */
+#define MXC_F_CLCD_INTFL_VCI_POS                       2 /**< INTFL_VCI Position */
+#define MXC_F_CLCD_INTFL_VCI                           ((uint32_t)(0x1UL << MXC_F_CLCD_INTFL_VCI_POS)) /**< INTFL_VCI Mask */
 
-#define MXC_F_CLCD_STAT_BERR_POS                       3 /**< STAT_BERR Position */
-#define MXC_F_CLCD_STAT_BERR                           ((uint32_t)(0x1UL << MXC_F_CLCD_STAT_BERR_POS)) /**< STAT_BERR Mask */
+#define MXC_F_CLCD_INTFL_BERR_POS                      3 /**< INTFL_BERR Position */
+#define MXC_F_CLCD_INTFL_BERR                          ((uint32_t)(0x1UL << MXC_F_CLCD_INTFL_BERR_POS)) /**< INTFL_BERR Mask */
 
-#define MXC_F_CLCD_STAT_LCDIDLE_POS                    8 /**< STAT_LCDIDLE Position */
-#define MXC_F_CLCD_STAT_LCDIDLE                        ((uint32_t)(0x1UL << MXC_F_CLCD_STAT_LCDIDLE_POS)) /**< STAT_LCDIDLE Mask */
+#define MXC_F_CLCD_INTFL_LCDIDLE_POS                   8 /**< INTFL_LCDIDLE Position */
+#define MXC_F_CLCD_INTFL_LCDIDLE                       ((uint32_t)(0x1UL << MXC_F_CLCD_INTFL_LCDIDLE_POS)) /**< INTFL_LCDIDLE Mask */
 
-/**@} end of group CLCD_STAT_Register */
+/**@} end of group CLCD_INTFL_Register */
 
 /**
  * @ingroup  clcd_registers
