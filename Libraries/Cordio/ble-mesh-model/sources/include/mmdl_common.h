@@ -27,18 +27,17 @@
 #define MMDL_COMMON_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*! Transform an opcode on 1 byte to a 3-byte array */
-#define UINT8_OPCODE_TO_BYTES(oc)   (oc), 0x00, 0x00
+#define UINT8_OPCODE_TO_BYTES(oc) (oc), 0x00, 0x00
 
 /*! Transform an opcode on 2 bytes to a 3-byte array */
-#define UINT16_OPCODE_TO_BYTES(oc)   UINT16_TO_BE_BYTES(oc), 0x00
+#define UINT16_OPCODE_TO_BYTES(oc) UINT16_TO_BE_BYTES(oc), 0x00
 
 /*! Transform an opcode on 3 bytes to a 3-byte array */
-#define UINT24_OPCODE_TO_BYTES(oc)   UINT24_TO_BE_BYTES(oc)
+#define UINT24_OPCODE_TO_BYTES(oc) UINT24_TO_BE_BYTES(oc)
 
 /**************************************************************************************************
   Function Declarations

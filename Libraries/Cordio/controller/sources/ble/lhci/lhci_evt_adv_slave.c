@@ -38,35 +38,32 @@
 /*************************************************************************************************/
 bool_t lhciSlvAdvEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
+    uint8_t *pEvtBuf = NULL;
 
 #if LHCI_ENABLE_VS
-  if (lhciSlvVsStdEncodeEvtPkt(pEvt))
-  {
-    return TRUE;
-  }
+    if (lhciSlvVsStdEncodeEvtPkt(pEvt)) {
+        return TRUE;
+    }
 #endif
 
-  switch (pEvt->hdr.event)
-  {
+    switch (pEvt->hdr.event) {
     case LL_ADV_ENABLE_CNF:
-      if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + LHCI_LEN_LE_SET_ADV_ENABLE_EVT)) != NULL)
-      {
-        uint8_t *pBuf = pEvtBuf;
-        pBuf += lhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_SET_ADV_ENABLE);
-        lhciPackCmdCompleteEvtStatus(pBuf, pEvt->hdr.status);
-      }
-      break;
+        if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT,
+                                    HCI_LEN_CMD_CMPL + LHCI_LEN_LE_SET_ADV_ENABLE_EVT)) != NULL) {
+            uint8_t *pBuf = pEvtBuf;
+            pBuf += lhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_SET_ADV_ENABLE);
+            lhciPackCmdCompleteEvtStatus(pBuf, pEvt->hdr.status);
+        }
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  if (pEvtBuf)
-  {
-    lhciSendEvt(pEvtBuf);
-    return TRUE;
-  }
+    if (pEvtBuf) {
+        lhciSendEvt(pEvtBuf);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }

@@ -54,50 +54,48 @@ static uint16_t llHandlerWatermarkUsec = 0;
 /*************************************************************************************************/
 void LlGetDefaultRunTimeCfg(LlRtCfg_t *pCfg)
 {
-  /* Set minimum values and expect client to override. */
-  const LlRtCfg_t defCfg =
-  {
-    /* Device */
-    .compId             = HCI_ID_ANALOG,
-    .implRev            = LL_VER_NUM >> 16,
-    .btVer              = LL_VER_BT_CORE_SPEC_4_2,
-    /* Advertiser */
-    .maxAdvSets         = 0,   /* Disable extended advertising. */
-    .maxAdvReports      = 4,
-    .maxExtAdvDataLen   = LL_EXT_ADVBU_MAX_LEN,
-    .defExtAdvDataFrag  = 64,
-    .auxDelayUsec       = 0,
-    .auxPtrOffsetUsec   = 2,
-    /* Scanner */
-    .maxScanReqRcvdEvt  = 4,
-    .maxExtScanDataLen  = LL_EXT_ADVBU_MAX_LEN,
-    /* Connection */
-    .maxConn            = 0,   /* Disable connections. */
-    .numTxBufs          = 4,
-    .numRxBufs          = 4,
-    .maxAclLen          = 27,
-    .defTxPwrLvl        = 0,
-    .ceJitterUsec       = 0,
-    /* ISO */
-    .numIsoTxBuf        = 0,
-    .numIsoRxBuf        = 0,
-    .maxIsoSduLen       = 0,
-    .maxIsoPduLen       = 0,
-    .maxCig             = 0,
-    .maxCis             = 0,  /* Disable CIS. */
-    .cisSubEvtSpaceDelay= 0,
-    .maxBig             = 0,
-    .maxBis             = 0,
-    /* DTM */
-    .dtmRxSyncMs        = 10000,
-    /* PHY */
-    .phy2mSup           = FALSE,
-    .phyCodedSup        = FALSE,
-    .stableModIdxTxSup  = FALSE,
-    .stableModIdxRxSup  = FALSE
-  };
+    /* Set minimum values and expect client to override. */
+    const LlRtCfg_t defCfg = { /* Device */
+                               .compId = HCI_ID_ANALOG,
+                               .implRev = LL_VER_NUM >> 16,
+                               .btVer = LL_VER_BT_CORE_SPEC_4_2,
+                               /* Advertiser */
+                               .maxAdvSets = 0, /* Disable extended advertising. */
+                               .maxAdvReports = 4,
+                               .maxExtAdvDataLen = LL_EXT_ADVBU_MAX_LEN,
+                               .defExtAdvDataFrag = 64,
+                               .auxDelayUsec = 0,
+                               .auxPtrOffsetUsec = 2,
+                               /* Scanner */
+                               .maxScanReqRcvdEvt = 4,
+                               .maxExtScanDataLen = LL_EXT_ADVBU_MAX_LEN,
+                               /* Connection */
+                               .maxConn = 0, /* Disable connections. */
+                               .numTxBufs = 4,
+                               .numRxBufs = 4,
+                               .maxAclLen = 27,
+                               .defTxPwrLvl = 0,
+                               .ceJitterUsec = 0,
+                               /* ISO */
+                               .numIsoTxBuf = 0,
+                               .numIsoRxBuf = 0,
+                               .maxIsoSduLen = 0,
+                               .maxIsoPduLen = 0,
+                               .maxCig = 0,
+                               .maxCis = 0, /* Disable CIS. */
+                               .cisSubEvtSpaceDelay = 0,
+                               .maxBig = 0,
+                               .maxBis = 0,
+                               /* DTM */
+                               .dtmRxSyncMs = 10000,
+                               /* PHY */
+                               .phy2mSup = FALSE,
+                               .phyCodedSup = FALSE,
+                               .stableModIdxTxSup = FALSE,
+                               .stableModIdxRxSup = FALSE
+    };
 
-  *pCfg = defCfg;
+    *pCfg = defCfg;
 }
 
 /*************************************************************************************************/
@@ -113,20 +111,20 @@ void LlGetDefaultRunTimeCfg(LlRtCfg_t *pCfg)
 /*************************************************************************************************/
 void LlInitRunTimeCfg(const LlRtCfg_t *pCfg)
 {
-  WSF_ASSERT(pLctrRtCfg == NULL);
-  WSF_ASSERT(pCfg);
+    WSF_ASSERT(pLctrRtCfg == NULL);
+    WSF_ASSERT(pCfg);
 
-  WSF_ASSERT(pCfg->btVer >= LL_VER_BT_CORE_SPEC_4_0);
-  WSF_ASSERT(pCfg->maxAdvReports > 0);
-  WSF_ASSERT(pCfg->maxAdvSets <= LL_MAX_ADV_SETS);
-  WSF_ASSERT((pCfg->maxAdvSets == 0) || (pCfg->maxExtAdvDataLen >= LL_ADVBU_MAX_LEN));
-  WSF_ASSERT(pCfg->numTxBufs > 0);
-  WSF_ASSERT(pCfg->numRxBufs > 0);
-  WSF_ASSERT(pCfg->maxAclLen >= LL_MAX_DATA_LEN_MIN);
-  WSF_ASSERT(pCfg->maxConn <= LL_MAX_CONN);
-  WSF_ASSERT(pCfg->dtmRxSyncMs > 0);
+    WSF_ASSERT(pCfg->btVer >= LL_VER_BT_CORE_SPEC_4_0);
+    WSF_ASSERT(pCfg->maxAdvReports > 0);
+    WSF_ASSERT(pCfg->maxAdvSets <= LL_MAX_ADV_SETS);
+    WSF_ASSERT((pCfg->maxAdvSets == 0) || (pCfg->maxExtAdvDataLen >= LL_ADVBU_MAX_LEN));
+    WSF_ASSERT(pCfg->numTxBufs > 0);
+    WSF_ASSERT(pCfg->numRxBufs > 0);
+    WSF_ASSERT(pCfg->maxAclLen >= LL_MAX_DATA_LEN_MIN);
+    WSF_ASSERT(pCfg->maxConn <= LL_MAX_CONN);
+    WSF_ASSERT(pCfg->dtmRxSyncMs > 0);
 
-  pLctrRtCfg = pCfg;
+    pLctrRtCfg = pCfg;
 }
 
 /*************************************************************************************************/
@@ -141,41 +139,43 @@ void LlInitRunTimeCfg(const LlRtCfg_t *pCfg)
 /*************************************************************************************************/
 void LlHandlerInit(wsfHandlerId_t handlerId)
 {
-  uint32_t rngSeed[4];
+    uint32_t rngSeed[4];
 
-  WSF_ASSERT(pLctrRtCfg);     /* Runtime configuration must be available. */
+    WSF_ASSERT(pLctrRtCfg); /* Runtime configuration must be available. */
 
-  LL_TRACE_INFO0("LlHandlerInit: LL initialization completed");
+    LL_TRACE_INFO0("LlHandlerInit: LL initialization completed");
 
-  lmgrPersistCb.handlerId = handlerId;
-  LctrSetSupStates();
+    lmgrPersistCb.handlerId = handlerId;
+    LctrSetSupStates();
 
-  /* Setup default public address. */
-  lmgrPersistCb.bdAddr = ((uint64_t)(pLctrRtCfg->compId) << 24) | 0x123456;
+    /* Setup default public address. */
+    lmgrPersistCb.bdAddr = ((uint64_t)(pLctrRtCfg->compId) << 24) | 0x123456;
 
-  /* Clear state. */
-  lmgrCb.numConnEnabled = 0;
-  lmgrCb.advEnabled = FALSE;
-  lmgrCb.numExtAdvEnabled = 0;
-  lmgrCb.numScanEnabled = 0;
-  lmgrCb.numInitEnabled = 0;
-  lmgrCb.numWlFilterEnabled = 0;
-  lmgrCb.testEnabled = FALSE;
-  lmgrCb.scaMod = 0;
+    /* Clear state. */
+    lmgrCb.numConnEnabled = 0;
+    lmgrCb.advEnabled = FALSE;
+    lmgrCb.numExtAdvEnabled = 0;
+    lmgrCb.numScanEnabled = 0;
+    lmgrCb.numInitEnabled = 0;
+    lmgrCb.numWlFilterEnabled = 0;
+    lmgrCb.testEnabled = FALSE;
+    lmgrCb.scaMod = 0;
 
-  lmgrPersistCb.featuresDefault |= (pLctrRtCfg->phy2mSup) ? LL_FEAT_LE_2M_PHY : 0;
-  lmgrPersistCb.featuresDefault |= (pLctrRtCfg->phyCodedSup) ? LL_FEAT_LE_CODED_PHY : 0;
-  lmgrPersistCb.featuresDefault |= (pLctrRtCfg->stableModIdxTxSup) ? LL_FEAT_STABLE_MOD_IDX_TRANSMITTER : 0;
-  lmgrPersistCb.featuresDefault |= (pLctrRtCfg->stableModIdxRxSup) ? LL_FEAT_STABLE_MOD_IDX_RECEIVER : 0;
-  LmgrSetDefaults();
+    lmgrPersistCb.featuresDefault |= (pLctrRtCfg->phy2mSup) ? LL_FEAT_LE_2M_PHY : 0;
+    lmgrPersistCb.featuresDefault |= (pLctrRtCfg->phyCodedSup) ? LL_FEAT_LE_CODED_PHY : 0;
+    lmgrPersistCb.featuresDefault |=
+        (pLctrRtCfg->stableModIdxTxSup) ? LL_FEAT_STABLE_MOD_IDX_TRANSMITTER : 0;
+    lmgrPersistCb.featuresDefault |=
+        (pLctrRtCfg->stableModIdxRxSup) ? LL_FEAT_STABLE_MOD_IDX_RECEIVER : 0;
+    LmgrSetDefaults();
 
-  LlTestInit();
+    LlTestInit();
 
-  /* Seed the RNG */
-  PalCryptoGenerateRandomNumber((uint8_t*)rngSeed, sizeof(rngSeed));
-  LlMathSetSeed(rngSeed);
+    /* Seed the RNG */
+    PalCryptoGenerateRandomNumber((uint8_t *)rngSeed, sizeof(rngSeed));
+    LlMathSetSeed(rngSeed);
 
-  LL_TRACE_INFO1("    opModeFlags = 0x%08x", lmgrCb.opModeFlags);
+    LL_TRACE_INFO1("    opModeFlags = 0x%08x", lmgrCb.opModeFlags);
 }
 
 /*************************************************************************************************/
@@ -188,23 +188,18 @@ void LlHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void LlHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
+    if (event != 0) {
+        unsigned int eventBit = 0;
+        do {
+            if (event & (1 << eventBit)) {
+                LctrEventHandler(eventBit);
+            }
+        } while (++eventBit < LCTR_EVENT_TOTAL);
+    }
 
-  if (event != 0)
-  {
-    unsigned int eventBit = 0;
-    do
-    {
-      if (event & (1 << eventBit))
-      {
-        LctrEventHandler(eventBit);
-      }
-    } while (++eventBit < LCTR_EVENT_TOTAL);
-  }
-
-  if (pMsg != NULL)
-  {
-    LctrMsgDispatcher((lctrMsgHdr_t *)pMsg);
-  }
+    if (pMsg != NULL) {
+        LctrMsgDispatcher((lctrMsgHdr_t *)pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -217,19 +212,18 @@ void LlHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void LlReset(void)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlReset");
+    LL_TRACE_INFO0("### LlApi ###  LlReset");
 
-  lctrMsgHdr_t *pMsg;
+    lctrMsgHdr_t *pMsg;
 
-  /* Reset state machines. */
-  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->dispId = LCTR_DISP_BCST;
-    pMsg->event = LCTR_MSG_RESET;
-    pMsg->handle = 0xFF;
+    /* Reset state machines. */
+    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->dispId = LCTR_DISP_BCST;
+        pMsg->event = LCTR_MSG_RESET;
+        pMsg->handle = 0xFF;
 
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -243,7 +237,7 @@ void LlReset(void)
 /*************************************************************************************************/
 void LlEvtRegister(llEvtCback_t evtCback)
 {
-  lmgrPersistCb.evtCback = evtCback;
+    lmgrPersistCb.evtCback = evtCback;
 }
 
 /*************************************************************************************************/
@@ -258,16 +252,13 @@ void LlEvtRegister(llEvtCback_t evtCback)
 /*************************************************************************************************/
 void LlGetAdvSetContextSize(uint8_t *pMaxAdvSets, uint16_t *pAdvSetCtxSize)
 {
-  if (pLctrRtCfg)
-  {
-    *pMaxAdvSets = pLctrRtCfg->maxAdvSets;
-  }
-  else
-  {
-    *pMaxAdvSets = 0;
-  }
+    if (pLctrRtCfg) {
+        *pMaxAdvSets = pLctrRtCfg->maxAdvSets;
+    } else {
+        *pMaxAdvSets = 0;
+    }
 
-  *pAdvSetCtxSize = lmgrPersistCb.advSetCtxSize;
+    *pAdvSetCtxSize = lmgrPersistCb.advSetCtxSize;
 }
 
 /*************************************************************************************************/
@@ -282,16 +273,13 @@ void LlGetAdvSetContextSize(uint8_t *pMaxAdvSets, uint16_t *pAdvSetCtxSize)
 /*************************************************************************************************/
 void LlGetConnContextSize(uint8_t *pMaxConn, uint16_t *pConnCtxSize)
 {
-  if (pLctrRtCfg)
-  {
-    *pMaxConn = pLctrRtCfg->maxConn;
-  }
-  else
-  {
-    *pMaxConn = 0;
-  }
+    if (pLctrRtCfg) {
+        *pMaxConn = pLctrRtCfg->maxConn;
+    } else {
+        *pMaxConn = 0;
+    }
 
-  *pConnCtxSize = lmgrPersistCb.connCtxSize;
+    *pConnCtxSize = lmgrPersistCb.connCtxSize;
 }
 
 /*************************************************************************************************/
@@ -306,9 +294,9 @@ void LlGetConnContextSize(uint8_t *pMaxConn, uint16_t *pConnCtxSize)
 /*************************************************************************************************/
 void LlGetExtScanContextSize(uint8_t *pMaxExtScan, uint16_t *pExtScanCtxSize)
 {
-  *pMaxExtScan = LL_MAX_PHYS;
+    *pMaxExtScan = LL_MAX_PHYS;
 
-  *pExtScanCtxSize = lmgrPersistCb.extScanCtxSize;
+    *pExtScanCtxSize = lmgrPersistCb.extScanCtxSize;
 }
 
 /*************************************************************************************************/
@@ -323,9 +311,9 @@ void LlGetExtScanContextSize(uint8_t *pMaxExtScan, uint16_t *pExtScanCtxSize)
 /*************************************************************************************************/
 void LlGetExtInitContextSize(uint8_t *pMaxExtInit, uint16_t *pExtInitCtxSize)
 {
-  *pMaxExtInit = LL_MAX_PHYS;
+    *pMaxExtInit = LL_MAX_PHYS;
 
-  *pExtInitCtxSize = lmgrPersistCb.extInitCtxSize;
+    *pExtInitCtxSize = lmgrPersistCb.extInitCtxSize;
 }
 
 /*************************************************************************************************/
@@ -340,9 +328,9 @@ void LlGetExtInitContextSize(uint8_t *pMaxExtInit, uint16_t *pExtInitCtxSize)
 /*************************************************************************************************/
 void LlGetPerScanContextSize(uint8_t *pMaxPerScan, uint16_t *pPerScanCtxSize)
 {
-  *pMaxPerScan = LL_MAX_PER_SCAN;
+    *pMaxPerScan = LL_MAX_PER_SCAN;
 
-  *pPerScanCtxSize = lmgrPersistCb.perScanCtxSize;
+    *pPerScanCtxSize = lmgrPersistCb.perScanCtxSize;
 }
 
 /*************************************************************************************************/
@@ -357,16 +345,13 @@ void LlGetPerScanContextSize(uint8_t *pMaxPerScan, uint16_t *pPerScanCtxSize)
 /*************************************************************************************************/
 void LlGetCigContextSize(uint8_t *pMaxCig, uint16_t *pCigCtxSize)
 {
-  if (pLctrRtCfg)
-  {
-    *pMaxCig = pLctrRtCfg->maxCig;
-  }
-  else
-  {
-    *pMaxCig = 0;
-  }
+    if (pLctrRtCfg) {
+        *pMaxCig = pLctrRtCfg->maxCig;
+    } else {
+        *pMaxCig = 0;
+    }
 
-  *pCigCtxSize = lmgrPersistCb.cigCtxSize;
+    *pCigCtxSize = lmgrPersistCb.cigCtxSize;
 }
 
 /*************************************************************************************************/
@@ -381,16 +366,13 @@ void LlGetCigContextSize(uint8_t *pMaxCig, uint16_t *pCigCtxSize)
 /*************************************************************************************************/
 void LlGetCisContextSize(uint8_t *pMaxCis, uint16_t *pCisCtxSize)
 {
-  if (pLctrRtCfg)
-  {
-    *pMaxCis = pLctrRtCfg->maxCis;
-  }
-  else
-  {
-    *pMaxCis = 0;
-  }
+    if (pLctrRtCfg) {
+        *pMaxCis = pLctrRtCfg->maxCis;
+    } else {
+        *pMaxCis = 0;
+    }
 
-  *pCisCtxSize = lmgrPersistCb.cisCtxSize;
+    *pCisCtxSize = lmgrPersistCb.cisCtxSize;
 }
 
 /*************************************************************************************************/
@@ -402,5 +384,5 @@ void LlGetCisContextSize(uint8_t *pMaxCis, uint16_t *pCisCtxSize)
 /*************************************************************************************************/
 uint16_t LlStatsGetHandlerWatermarkUsec(void)
 {
-  return llHandlerWatermarkUsec;
+    return llHandlerWatermarkUsec;
 }

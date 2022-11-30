@@ -64,35 +64,28 @@
 #include "ocrypto_ed25519.h"
 #endif
 
-
 /** @internal @brief Structure holding private key common to all curves implemented by the Oberon.
  */
-typedef struct
-{
-    nrf_crypto_internal_ecc_key_header_t header;  /**< @internal @brief Common ECC key header. */
-    uint8_t key[32];                              /**< @internal @brief Raw key. */
+typedef struct {
+    nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header. */
+    uint8_t key[32]; /**< @internal @brief Raw key. */
 } nrf_crypto_backend_oberon_private_key_t;
-
 
 /** @internal @brief Structure holding public key common to all curves implemented by the Oberon.
  */
-typedef struct
-{
-    nrf_crypto_internal_ecc_key_header_t header;  /**< @internal @brief Common ECC key header. */
-    uint8_t key[64];                              /**< @internal @brief Raw key. */
+typedef struct {
+    nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header. */
+    uint8_t key[64]; /**< @internal @brief Raw key. */
 } nrf_crypto_backend_oberon_public_key_t;
-
 
 /** @internal @brief Function to hold copy function (can be simple mem copy or copy with endian swap).
  */
-typedef void (*copy_fn_t)(void * p_dest, void const * p_src, size_t size);
+typedef void (*copy_fn_t)(void *p_dest, void const *p_src, size_t size);
 
-
-ret_code_t nrf_crypto_backend_oberon_private_key_to_raw(
-    void    const * p_private_key,
-    uint8_t       * p_raw_data)
+ret_code_t nrf_crypto_backend_oberon_private_key_to_raw(void const *p_private_key,
+                                                        uint8_t *p_raw_data)
 {
-    nrf_crypto_backend_oberon_private_key_t const * p_prv =
+    nrf_crypto_backend_oberon_private_key_t const *p_prv =
         (nrf_crypto_backend_oberon_private_key_t const *)p_private_key;
 
     //lint -save -e611 (Suspicious cast)
@@ -104,12 +97,10 @@ ret_code_t nrf_crypto_backend_oberon_private_key_to_raw(
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_backend_oberon_public_key_from_raw(
-    void          * p_public_key,
-    uint8_t const * p_raw_data)
+ret_code_t nrf_crypto_backend_oberon_public_key_from_raw(void *p_public_key,
+                                                         uint8_t const *p_raw_data)
 {
-    nrf_crypto_backend_oberon_public_key_t * p_pub =
+    nrf_crypto_backend_oberon_public_key_t *p_pub =
         (nrf_crypto_backend_oberon_public_key_t *)p_public_key;
 
     //lint -save -e611 (Suspicious cast)
@@ -121,12 +112,10 @@ ret_code_t nrf_crypto_backend_oberon_public_key_from_raw(
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_backend_oberon_public_key_to_raw(
-    void const * p_public_key,
-    uint8_t    * p_raw_data)
+ret_code_t nrf_crypto_backend_oberon_public_key_to_raw(void const *p_public_key,
+                                                       uint8_t *p_raw_data)
 {
-    nrf_crypto_backend_oberon_public_key_t const * p_pub =
+    nrf_crypto_backend_oberon_public_key_t const *p_pub =
         (nrf_crypto_backend_oberon_public_key_t const *)p_public_key;
 
     //lint -save -e611 (Suspicious cast)
@@ -138,16 +127,13 @@ ret_code_t nrf_crypto_backend_oberon_public_key_to_raw(
     return NRF_SUCCESS;
 }
 
+#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1) || \
+    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519)
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1) \
-    || NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519)
-
-
-ret_code_t nrf_crypto_backend_oberon_private_key_from_raw(
-    void          * p_private_key,
-    uint8_t const * p_raw_data)
+ret_code_t nrf_crypto_backend_oberon_private_key_from_raw(void *p_private_key,
+                                                          uint8_t const *p_raw_data)
 {
-    nrf_crypto_backend_oberon_private_key_t * p_prv =
+    nrf_crypto_backend_oberon_private_key_t *p_prv =
         (nrf_crypto_backend_oberon_private_key_t *)p_private_key;
 
     //lint -save -e611 (Suspicious cast)
@@ -159,15 +145,12 @@ ret_code_t nrf_crypto_backend_oberon_private_key_from_raw(
     return NRF_SUCCESS;
 }
 
-
 #endif //NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1) || NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519)
 
+#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519) || \
+    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519) \
-    || NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
-
-
-static ret_code_t oberon_vector_generate(uint8_t * p_data, size_t size)
+static ret_code_t oberon_vector_generate(uint8_t *p_data, size_t size)
 {
 #if defined(NRF_CRYPTO_RNG_ENABLED) && (NRF_CRYPTO_RNG_ENABLED == 1)
 
@@ -179,40 +162,36 @@ static ret_code_t oberon_vector_generate(uint8_t * p_data, size_t size)
 
 #else
 
-    #warning NRF_CRYPTO_RNG_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+#warning NRF_CRYPTO_RNG_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif
 }
 
-
 #endif //NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519) || NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
-
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1)
 
-
 // Make sure that common key structure match secp256r1 key structure to safely cast types.
 STATIC_ASSERT(offsetof(nrf_crypto_backend_oberon_private_key_t, key) ==
-              offsetof(nrf_crypto_backend_secp256r1_private_key_t, key),
+                  offsetof(nrf_crypto_backend_secp256r1_private_key_t, key),
               "Common Oberon private key structure does not match secp256r1 one.");
 STATIC_ASSERT(offsetof(nrf_crypto_backend_oberon_public_key_t, key) ==
-              offsetof(nrf_crypto_backend_secp256r1_public_key_t, key),
+                  offsetof(nrf_crypto_backend_secp256r1_public_key_t, key),
               "Common Oberon public key structure does not match secp256r1 one.");
-
 
 ret_code_t nrf_crypto_backend_oberon_ecc_secp256r1_rng(uint8_t data[32])
 {
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_RNG)
 
-    static const uint8_t min_value[32] =
-    {
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+    static const uint8_t min_value[32] = {
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
     };
-    static const uint8_t max_value[32] =
-    {
-        0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-        0xBC, 0xE6, 0xFA, 0xAD, 0xA7, 0x17, 0x9E, 0x84, 0xF3, 0xB9, 0xCA, 0xC2, 0xFC, 0x63, 0x25, 0x50,
+    static const uint8_t max_value[32] = {
+        0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF,
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xBC, 0xE6, 0xFA, 0xAD, 0xA7, 0x17,
+        0x9E, 0x84, 0xF3, 0xB9, 0xCA, 0xC2, 0xFC, 0x63, 0x25, 0x50,
     };
     return nrf_crypto_rng_vector_generate_in_range(data, min_value, max_value, 32);
 
@@ -221,109 +200,92 @@ ret_code_t nrf_crypto_backend_oberon_ecc_secp256r1_rng(uint8_t data[32])
 #endif
 }
 
-
-ret_code_t nrf_crypto_backend_secp256r1_key_pair_generate(
-    void * p_context,
-    void * p_private_key,
-    void * p_public_key)
+ret_code_t nrf_crypto_backend_secp256r1_key_pair_generate(void *p_context, void *p_private_key,
+                                                          void *p_public_key)
 {
     int result;
 
-    nrf_crypto_backend_secp256r1_private_key_t * p_prv =
+    nrf_crypto_backend_secp256r1_private_key_t *p_prv =
         (nrf_crypto_backend_secp256r1_private_key_t *)p_private_key;
 
-    nrf_crypto_backend_secp256r1_public_key_t * p_pub =
+    nrf_crypto_backend_secp256r1_public_key_t *p_pub =
         (nrf_crypto_backend_secp256r1_public_key_t *)p_public_key;
 
     result = nrf_crypto_backend_oberon_ecc_secp256r1_rng(p_prv->key);
 
-    if (result != NRF_SUCCESS)
-    {
+    if (result != NRF_SUCCESS) {
         return result;
     }
 
     result = ocrypto_ecdh_p256_public_key(p_pub->key, p_prv->key);
 
-    if (result != 0)
-    {
+    if (result != 0) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_backend_secp256r1_public_key_calculate(
-    void       * p_context,
-    void const * p_private_key,
-    void       * p_public_key)
+ret_code_t nrf_crypto_backend_secp256r1_public_key_calculate(void *p_context,
+                                                             void const *p_private_key,
+                                                             void *p_public_key)
 {
     int result;
 
-    nrf_crypto_backend_secp256r1_private_key_t const * p_prv =
+    nrf_crypto_backend_secp256r1_private_key_t const *p_prv =
         (nrf_crypto_backend_secp256r1_private_key_t const *)p_private_key;
 
-    nrf_crypto_backend_secp256r1_public_key_t * p_pub =
+    nrf_crypto_backend_secp256r1_public_key_t *p_pub =
         (nrf_crypto_backend_secp256r1_public_key_t *)p_public_key;
 
     result = ocrypto_ecdh_p256_public_key(p_pub->key, p_prv->key);
 
-    if (result != 0)
-    {
+    if (result != 0) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     return NRF_SUCCESS;
 }
 
-
-const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp256r1_curve_info =
-{
-    .public_key_size      = sizeof(nrf_crypto_backend_secp256r1_public_key_t),
-    .private_key_size     = sizeof(nrf_crypto_backend_secp256r1_private_key_t),
-    .curve_type           = NRF_CRYPTO_ECC_SECP256R1_CURVE_TYPE,
+const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp256r1_curve_info = {
+    .public_key_size = sizeof(nrf_crypto_backend_secp256r1_public_key_t),
+    .private_key_size = sizeof(nrf_crypto_backend_secp256r1_private_key_t),
+    .curve_type = NRF_CRYPTO_ECC_SECP256R1_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size  = NRF_CRYPTO_ECC_SECP256R1_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size = NRF_CRYPTO_ECC_SECP256R1_RAW_PUBLIC_KEY_SIZE,
     //lint -save -e611 -e546 (Suspicious cast, Suspicious use of &)
-    .p_backend_data       = (void *)&memcpy,
+    .p_backend_data = (void *)&memcpy,
     //lint -restore
 };
 
-
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1)
-
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519)
 
-
 // Make sure that common key structure match Curve25519 key structure to safely cast types.
 STATIC_ASSERT(offsetof(nrf_crypto_backend_oberon_private_key_t, key) ==
-              offsetof(nrf_crypto_backend_curve25519_private_key_t, key),
+                  offsetof(nrf_crypto_backend_curve25519_private_key_t, key),
               "Common Oberon private key structure does not match Curve25519 one.");
 STATIC_ASSERT(offsetof(nrf_crypto_backend_oberon_public_key_t, key) ==
-              offsetof(nrf_crypto_backend_curve25519_public_key_t, key),
+                  offsetof(nrf_crypto_backend_curve25519_public_key_t, key),
               "Common Oberon public key structure does not match Curve25519 one.");
 
-
-ret_code_t nrf_crypto_backend_curve25519_key_pair_generate(
-    void * p_context,
-    void * p_private_key,
-    void * p_public_key)
+ret_code_t nrf_crypto_backend_curve25519_key_pair_generate(void *p_context, void *p_private_key,
+                                                           void *p_public_key)
 {
     ret_code_t result;
 
-    nrf_crypto_backend_curve25519_private_key_t * p_prv =
+    nrf_crypto_backend_curve25519_private_key_t *p_prv =
         (nrf_crypto_backend_curve25519_private_key_t *)p_private_key;
 
-    nrf_crypto_backend_curve25519_public_key_t * p_pub =
+    nrf_crypto_backend_curve25519_public_key_t *p_pub =
         (nrf_crypto_backend_curve25519_public_key_t *)p_public_key;
 
     result = oberon_vector_generate(p_prv->key, sizeof(p_prv->key));
 
-    if (result != NRF_SUCCESS)
-    {
+    if (result != NRF_SUCCESS) {
         return result;
     }
 
-    p_prv->key[0]  &= 0xF8; // Private key is multiply of 8 (by definition), so lower 3 bits are 0.
+    p_prv->key[0] &= 0xF8; // Private key is multiply of 8 (by definition), so lower 3 bits are 0.
     p_prv->key[31] &= 0x7F; // Highest bit has to be 0, because private key is 255-bit long.
     p_prv->key[31] |= 0x40; // Bit 254 has to be 1 (by definition)
 
@@ -332,16 +294,14 @@ ret_code_t nrf_crypto_backend_curve25519_key_pair_generate(
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_backend_curve25519_public_key_calculate(
-    void       * p_context,
-    void const * p_private_key,
-    void       * p_public_key)
+ret_code_t nrf_crypto_backend_curve25519_public_key_calculate(void *p_context,
+                                                              void const *p_private_key,
+                                                              void *p_public_key)
 {
-    nrf_crypto_backend_curve25519_private_key_t * p_prv =
+    nrf_crypto_backend_curve25519_private_key_t *p_prv =
         (nrf_crypto_backend_curve25519_private_key_t *)p_private_key;
 
-    nrf_crypto_backend_curve25519_public_key_t * p_pub =
+    nrf_crypto_backend_curve25519_public_key_t *p_pub =
         (nrf_crypto_backend_curve25519_public_key_t *)p_public_key;
 
     // Private key bit fixing is done inside Oberon library.
@@ -350,46 +310,39 @@ ret_code_t nrf_crypto_backend_curve25519_public_key_calculate(
     return NRF_SUCCESS;
 }
 
-
-const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_curve25519_curve_info =
-{
-    .public_key_size      = sizeof(nrf_crypto_backend_curve25519_public_key_t),
-    .private_key_size     = sizeof(nrf_crypto_backend_curve25519_private_key_t),
-    .curve_type           = NRF_CRYPTO_ECC_CURVE25519_CURVE_TYPE,
+const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_curve25519_curve_info = {
+    .public_key_size = sizeof(nrf_crypto_backend_curve25519_public_key_t),
+    .private_key_size = sizeof(nrf_crypto_backend_curve25519_private_key_t),
+    .curve_type = NRF_CRYPTO_ECC_CURVE25519_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_CURVE25519_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size  = NRF_CRYPTO_ECC_CURVE25519_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size = NRF_CRYPTO_ECC_CURVE25519_RAW_PUBLIC_KEY_SIZE,
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_CURVE25519_BIG_ENDIAN)
     //lint -save -e611 -e546 (Suspicious cast, Suspicious use of &)
-    .p_backend_data       = (void *)&nrf_crypto_internal_swap_endian,
-    //lint -restore
+    .p_backend_data = (void *)&nrf_crypto_internal_swap_endian,
+//lint -restore
 #else
     //lint -save -e611 -e546 (Suspicious cast, Suspicious use of &)
-    .p_backend_data       = (void *)&memcpy,
-    //lint -restore
+    .p_backend_data = (void *)&memcpy,
+//lint -restore
 #endif
 };
 
-
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519)
-
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
 
-
 // Make sure that common key structure match Ed25519 key structure to safely cast types.
 STATIC_ASSERT(offsetof(nrf_crypto_backend_oberon_private_key_t, key) ==
-              offsetof(nrf_crypto_backend_ed25519_private_key_t, private_part),
+                  offsetof(nrf_crypto_backend_ed25519_private_key_t, private_part),
               "Common Oberon private key structure does not match Ed25519 one.");
 STATIC_ASSERT(offsetof(nrf_crypto_backend_oberon_public_key_t, key) ==
-              offsetof(nrf_crypto_backend_ed25519_public_key_t, key),
+                  offsetof(nrf_crypto_backend_ed25519_public_key_t, key),
               "Common Oberon public key structure does not match Ed25519 one.");
 
-
-ret_code_t nrf_crypto_backend_ed25519_private_key_from_raw(
-    void          * p_private_key,
-    uint8_t const * p_raw_data)
+ret_code_t nrf_crypto_backend_ed25519_private_key_from_raw(void *p_private_key,
+                                                           uint8_t const *p_raw_data)
 {
-    nrf_crypto_backend_ed25519_private_key_t * p_prv =
+    nrf_crypto_backend_ed25519_private_key_t *p_prv =
         (nrf_crypto_backend_ed25519_private_key_t *)p_private_key;
 
     memcpy(p_prv->private_part, p_raw_data, sizeof(p_prv->private_part));
@@ -399,24 +352,20 @@ ret_code_t nrf_crypto_backend_ed25519_private_key_from_raw(
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_backend_ed25519_key_pair_generate(
-    void * p_context,
-    void * p_private_key,
-    void * p_public_key)
+ret_code_t nrf_crypto_backend_ed25519_key_pair_generate(void *p_context, void *p_private_key,
+                                                        void *p_public_key)
 {
     ret_code_t result;
 
-    nrf_crypto_backend_ed25519_private_key_t * p_prv =
+    nrf_crypto_backend_ed25519_private_key_t *p_prv =
         (nrf_crypto_backend_ed25519_private_key_t *)p_private_key;
 
-    nrf_crypto_backend_ed25519_public_key_t * p_pub =
+    nrf_crypto_backend_ed25519_public_key_t *p_pub =
         (nrf_crypto_backend_ed25519_public_key_t *)p_public_key;
 
     result = oberon_vector_generate(p_prv->private_part, sizeof(p_prv->private_part));
 
-    if (result != NRF_SUCCESS)
-    {
+    if (result != NRF_SUCCESS) {
         return result;
     }
 
@@ -427,16 +376,14 @@ ret_code_t nrf_crypto_backend_ed25519_key_pair_generate(
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_backend_ed25519_public_key_calculate(
-    void       * p_context,
-    void const * p_private_key,
-    void       * p_public_key)
+ret_code_t nrf_crypto_backend_ed25519_public_key_calculate(void *p_context,
+                                                           void const *p_private_key,
+                                                           void *p_public_key)
 {
-    nrf_crypto_backend_ed25519_private_key_t * p_prv =
+    nrf_crypto_backend_ed25519_private_key_t *p_prv =
         (nrf_crypto_backend_ed25519_private_key_t *)p_private_key;
 
-    nrf_crypto_backend_ed25519_public_key_t * p_pub =
+    nrf_crypto_backend_ed25519_public_key_t *p_pub =
         (nrf_crypto_backend_ed25519_public_key_t *)p_public_key;
 
     memcpy(p_pub->key, p_prv->public_part, sizeof(p_pub->key));
@@ -444,21 +391,17 @@ ret_code_t nrf_crypto_backend_ed25519_public_key_calculate(
     return NRF_SUCCESS;
 }
 
-
-const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_ed25519_curve_info =
-{
-    .public_key_size      = sizeof(nrf_crypto_backend_ed25519_public_key_t),
-    .private_key_size     = sizeof(nrf_crypto_backend_ed25519_private_key_t),
-    .curve_type           = NRF_CRYPTO_ECC_ED25519_CURVE_TYPE,
+const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_ed25519_curve_info = {
+    .public_key_size = sizeof(nrf_crypto_backend_ed25519_public_key_t),
+    .private_key_size = sizeof(nrf_crypto_backend_ed25519_private_key_t),
+    .curve_type = NRF_CRYPTO_ECC_ED25519_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_ED25519_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size  = NRF_CRYPTO_ECC_ED25519_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size = NRF_CRYPTO_ECC_ED25519_RAW_PUBLIC_KEY_SIZE,
     //lint -save -e611 -e546 (Suspicious cast, Suspicious use of &)
-    .p_backend_data       = (void *)&memcpy,
+    .p_backend_data = (void *)&memcpy,
     //lint -restore
 };
 
-
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON)

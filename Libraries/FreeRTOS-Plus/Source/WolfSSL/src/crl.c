@@ -19,10 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-  /* Name change compatibility layer no longer needs included here */
+/* Name change compatibility layer no longer needs included here */
 
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+#include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
@@ -37,12 +37,11 @@
 #include <string.h>
 
 #ifdef HAVE_CRL_MONITOR
-    static int StopMonitor(int mfd);
+static int StopMonitor(int mfd);
 #endif
 
-
 /* Initialze CRL members */
-int InitCRL(WOLFSSL_CRL* crl, WOLFSSL_CERT_MANAGER* cm)
+int InitCRL(WOLFSSL_CRL *crl, WOLFSSL_CERT_MANAGER *cm)
 {
     WOLFSSL_ENTER("InitCRL");
 
@@ -51,18 +50,17 @@ int InitCRL(WOLFSSL_CRL* crl, WOLFSSL_CERT_MANAGER* cm)
     crl->monitors[0].path = NULL;
     crl->monitors[1].path = NULL;
 #ifdef HAVE_CRL_MONITOR
-    crl->tid =  0;
-    crl->mfd = -1;   /* mfd for bsd is kqueue fd, eventfd for linux */
+    crl->tid = 0;
+    crl->mfd = -1; /* mfd for bsd is kqueue fd, eventfd for linux */
 #endif
     if (InitMutex(&crl->crlLock) != 0)
-        return BAD_MUTEX_E; 
+        return BAD_MUTEX_E;
 
     return 0;
 }
 
-
 /* Initialze CRL Entry */
-static int InitCRL_Entry(CRL_Entry* crle, DecodedCRL* dcrl)
+static int InitCRL_Entry(CRL_Entry *crle, DecodedCRL *dcrl)
 {
     WOLFSSL_ENTER("InitCRL_Entry");
 
@@ -74,34 +72,31 @@ static int InitCRL_Entry(CRL_Entry* crle, DecodedCRL* dcrl)
     crle->lastDateFormat = dcrl->lastDateFormat;
     crle->nextDateFormat = dcrl->nextDateFormat;
 
-    crle->certs = dcrl->certs;   /* take ownsership */
+    crle->certs = dcrl->certs; /* take ownsership */
     dcrl->certs = NULL;
     crle->totalCerts = dcrl->totalCerts;
 
     return 0;
 }
 
-
 /* Free all CRL Entry resources */
-static void FreeCRL_Entry(CRL_Entry* crle)
+static void FreeCRL_Entry(CRL_Entry *crle)
 {
-    RevokedCert* tmp = crle->certs; 
+    RevokedCert *tmp = crle->certs;
 
     WOLFSSL_ENTER("FreeCRL_Entry");
 
-    while(tmp) {
-        RevokedCert* next = tmp->next;
+    while (tmp) {
+        RevokedCert *next = tmp->next;
         XFREE(tmp, NULL, DYNAMIC_TYPE_REVOKED);
         tmp = next;
     }
 }
 
-
-
 /* Free all CRL resources */
-void FreeCRL(WOLFSSL_CRL* crl, int dynamic)
+void FreeCRL(WOLFSSL_CRL *crl, int dynamic)
 {
-    CRL_Entry* tmp = crl->crlList;
+    CRL_Entry *tmp = crl->crlList;
 
     WOLFSSL_ENTER("FreeCRL");
 
@@ -111,12 +106,12 @@ void FreeCRL(WOLFSSL_CRL* crl, int dynamic)
     if (crl->monitors[1].path)
         XFREE(crl->monitors[1].path, NULL, DYNAMIC_TYPE_CRL_MONITOR);
 
-    while(tmp) {
-        CRL_Entry* next = tmp->next;
+    while (tmp) {
+        CRL_Entry *next = tmp->next;
         FreeCRL_Entry(tmp);
         XFREE(tmp, NULL, DYNAMIC_TYPE_CRL_ENTRY);
         tmp = next;
-    }	
+    }
 
 #ifdef HAVE_CRL_MONITOR
     if (crl->tid != 0) {
@@ -130,17 +125,16 @@ void FreeCRL(WOLFSSL_CRL* crl, int dynamic)
     }
 #endif
     FreeMutex(&crl->crlLock);
-    if (dynamic)   /* free self */
+    if (dynamic) /* free self */
         XFREE(crl, NULL, DYNAMIC_TYPE_CRL);
 }
 
-
 /* Is the cert ok with CRL, return 0 on success */
-int CheckCertCRL(WOLFSSL_CRL* crl, DecodedCert* cert)
+int CheckCertCRL(WOLFSSL_CRL *crl, DecodedCert *cert)
 {
-    CRL_Entry* crle;
-    int        foundEntry = 0;
-    int        ret = 0;
+    CRL_Entry *crle;
+    int foundEntry = 0;
+    int ret = 0;
 
     WOLFSSL_ENTER("CheckCertCRL");
 
@@ -159,8 +153,7 @@ int CheckCertCRL(WOLFSSL_CRL* crl, DecodedCert* cert)
             if (!ValidateDate(crle->nextDate, crle->nextDateFormat, AFTER)) {
                 WOLFSSL_MSG("CRL next date is no longer valid");
                 ret = ASN_AFTER_DATE_E;
-            }
-            else
+            } else
                 foundEntry = 1;
             break;
         }
@@ -168,7 +161,7 @@ int CheckCertCRL(WOLFSSL_CRL* crl, DecodedCert* cert)
     }
 
     if (foundEntry) {
-        RevokedCert* rc = crle->certs;
+        RevokedCert *rc = crle->certs;
 
         while (rc) {
             if (XMEMCMP(rc->serialNumber, cert->serial, rc->serialSz) == 0) {
@@ -176,7 +169,7 @@ int CheckCertCRL(WOLFSSL_CRL* crl, DecodedCert* cert)
                 ret = CRL_CERT_REVOKED;
                 break;
             }
-            rc = rc->next;	
+            rc = rc->next;
         }
     }
 
@@ -190,30 +183,27 @@ int CheckCertCRL(WOLFSSL_CRL* crl, DecodedCert* cert)
 
             WOLFSSL_MSG("Issuing missing CRL callback");
             url[0] = '\0';
-            if (cert->extCrlInfoSz < (int)sizeof(url) -1 ) {
+            if (cert->extCrlInfoSz < (int)sizeof(url) - 1) {
                 XMEMCPY(url, cert->extCrlInfo, cert->extCrlInfoSz);
                 url[cert->extCrlInfoSz] = '\0';
-            }
-            else  {
+            } else {
                 WOLFSSL_MSG("CRL url too long");
             }
             crl->cm->cbMissingCRL(url);
         }
     }
 
-
-    return ret;	
+    return ret;
 }
 
-
 /* Add Decoded CRL, 0 on success */
-static int AddCRL(WOLFSSL_CRL* crl, DecodedCRL* dcrl)
+static int AddCRL(WOLFSSL_CRL *crl, DecodedCRL *dcrl)
 {
-    CRL_Entry* crle;
+    CRL_Entry *crle;
 
     WOLFSSL_ENTER("AddCRL");
 
-    crle = (CRL_Entry*)XMALLOC(sizeof(CRL_Entry), NULL, DYNAMIC_TYPE_CRL_ENTRY);
+    crle = (CRL_Entry *)XMALLOC(sizeof(CRL_Entry), NULL, DYNAMIC_TYPE_CRL_ENTRY);
     if (crle == NULL) {
         WOLFSSL_MSG("alloc CRL Entry failed");
         return -1;
@@ -238,17 +228,16 @@ static int AddCRL(WOLFSSL_CRL* crl, DecodedCRL* dcrl)
     return 0;
 }
 
-
 /* Load CRL File of type, SSL_SUCCESS on ok */
-int BufferLoadCRL(WOLFSSL_CRL* crl, const byte* buff, long sz, int type)
+int BufferLoadCRL(WOLFSSL_CRL *crl, const byte *buff, long sz, int type)
 {
-    int          ret = SSL_SUCCESS;
-    const byte*  myBuffer = buff;    /* if DER ok, otherwise switch */
-    buffer       der;
+    int ret = SSL_SUCCESS;
+    const byte *myBuffer = buff; /* if DER ok, otherwise switch */
+    buffer der;
 #ifdef WOLFSSL_SMALL_STACK
-    DecodedCRL*  dcrl;
+    DecodedCRL *dcrl;
 #else
-    DecodedCRL   dcrl[1];
+    DecodedCRL dcrl[1];
 #endif
 
     der.buffer = NULL;
@@ -259,7 +248,7 @@ int BufferLoadCRL(WOLFSSL_CRL* crl, const byte* buff, long sz, int type)
         return BAD_FUNC_ARG;
 
     if (type == SSL_FILETYPE_PEM) {
-        int eccKey = 0;   /* not used */
+        int eccKey = 0; /* not used */
         EncryptedInfo info;
         info.ctx = NULL;
 
@@ -267,15 +256,14 @@ int BufferLoadCRL(WOLFSSL_CRL* crl, const byte* buff, long sz, int type)
         if (ret == 0) {
             myBuffer = der.buffer;
             sz = der.length;
-        }
-        else {
+        } else {
             WOLFSSL_MSG("Pem to Der failed");
             return -1;
         }
     }
 
 #ifdef WOLFSSL_SMALL_STACK
-    dcrl = (DecodedCRL*)XMALLOC(sizeof(DecodedCRL), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    dcrl = (DecodedCRL *)XMALLOC(sizeof(DecodedCRL), NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (dcrl == NULL) {
         if (der.buffer)
             XFREE(der.buffer, NULL, DYNAMIC_TYPE_CRL);
@@ -288,8 +276,7 @@ int BufferLoadCRL(WOLFSSL_CRL* crl, const byte* buff, long sz, int type)
     ret = ParseCRL(dcrl, myBuffer, (word32)sz, crl->cm);
     if (ret != 0) {
         WOLFSSL_MSG("ParseCRL error");
-    }
-    else {
+    } else {
         ret = AddCRL(crl, dcrl);
         if (ret != 0) {
             WOLFSSL_MSG("AddCRL error");
@@ -308,26 +295,24 @@ int BufferLoadCRL(WOLFSSL_CRL* crl, const byte* buff, long sz, int type)
     return ret ? ret : SSL_SUCCESS; /* convert 0 to SSL_SUCCESS */
 }
 
-
 #ifdef HAVE_CRL_MONITOR
 
-
 /* read in new CRL entries and save new list */
-static int SwapLists(WOLFSSL_CRL* crl)
+static int SwapLists(WOLFSSL_CRL *crl)
 {
-    int        ret;
-    CRL_Entry* newList;
+    int ret;
+    CRL_Entry *newList;
 #ifdef WOLFSSL_SMALL_STACK
-    WOLFSSL_CRL* tmp;    
+    WOLFSSL_CRL *tmp;
 #else
     WOLFSSL_CRL tmp[1];
 #endif
-    
+
 #ifdef WOLFSSL_SMALL_STACK
-    tmp = (WOLFSSL_CRL*)XMALLOC(sizeof(WOLFSSL_CRL), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    tmp = (WOLFSSL_CRL *)XMALLOC(sizeof(WOLFSSL_CRL), NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (tmp == NULL)
         return MEMORY_E;
-#endif   
+#endif
 
     if (InitCRL(tmp, crl->cm) < 0) {
         WOLFSSL_MSG("Init tmp CRL failed");
@@ -373,7 +358,7 @@ static int SwapLists(WOLFSSL_CRL* crl)
     newList = tmp->crlList;
 
     /* swap lists */
-    tmp->crlList  = crl->crlList;
+    tmp->crlList = crl->crlList;
     crl->crlList = newList;
 
     UnLockMutex(&crl->crlLock);
@@ -387,7 +372,6 @@ static int SwapLists(WOLFSSL_CRL* crl)
     return 0;
 }
 
-
 #if (defined(__MACH__) || defined(__FreeBSD__))
 
 #include <sys/types.h>
@@ -397,18 +381,16 @@ static int SwapLists(WOLFSSL_CRL* crl)
 #include <unistd.h>
 
 #ifdef __MACH__
-    #define XEVENT_MODE O_EVTONLY
+#define XEVENT_MODE O_EVTONLY
 #elif defined(__FreeBSD__)
-    #define XEVENT_MODE EVFILT_VNODE
+#define XEVENT_MODE EVFILT_VNODE
 #endif
-
 
 /* we need a unique kqueue user filter fd for crl in case user is doing custom
  * events too */
 #ifndef CRL_CUSTOM_FD
-    #define CRL_CUSTOM_FD 123456
+#define CRL_CUSTOM_FD 123456
 #endif
-
 
 /* shutdown monitor thread, 0 on success */
 static int StopMonitor(int mfd)
@@ -425,14 +407,13 @@ static int StopMonitor(int mfd)
     return 0;
 }
 
-
 /* OS X  monitoring */
-static void* DoMonitor(void* arg)
+static void *DoMonitor(void *arg)
 {
     int fPEM, fDER;
     struct kevent change;
 
-    WOLFSSL_CRL* crl = (WOLFSSL_CRL*)arg;
+    WOLFSSL_CRL *crl = (WOLFSSL_CRL *)arg;
 
     WOLFSSL_ENTER("DoMonitor");
 
@@ -473,16 +454,16 @@ static void* DoMonitor(void* arg)
 
     if (fPEM != -1)
         EV_SET(&change, fPEM, EVFILT_VNODE, EV_ADD | EV_ENABLE | EV_ONESHOT,
-                NOTE_DELETE | NOTE_EXTEND | NOTE_WRITE | NOTE_ATTRIB, 0, 0);
+               NOTE_DELETE | NOTE_EXTEND | NOTE_WRITE | NOTE_ATTRIB, 0, 0);
 
     if (fDER != -1)
         EV_SET(&change, fDER, EVFILT_VNODE, EV_ADD | EV_ENABLE | EV_ONESHOT,
-                NOTE_DELETE | NOTE_EXTEND | NOTE_WRITE | NOTE_ATTRIB, 0, 0);
+               NOTE_DELETE | NOTE_EXTEND | NOTE_WRITE | NOTE_ATTRIB, 0, 0);
 
     for (;;) {
         struct kevent event;
-        int           numEvents = kevent(crl->mfd, &change, 1, &event, 1, NULL);
-       
+        int numEvents = kevent(crl->mfd, &change, 1, &event, 1, NULL);
+
         WOLFSSL_MSG("Got kevent");
 
         if (numEvents == -1) {
@@ -510,7 +491,6 @@ static void* DoMonitor(void* arg)
     return NULL;
 }
 
-
 #elif defined(__linux__)
 
 #include <sys/types.h>
@@ -518,14 +498,12 @@ static void* DoMonitor(void* arg)
 #include <sys/eventfd.h>
 #include <unistd.h>
 
-
 #ifndef max
-    static INLINE int max(int a, int b)
-    {
-        return a > b ? a : b;
-    }
+static INLINE int max(int a, int b)
+{
+    return a > b ? a : b;
+}
 #endif /* max */
-
 
 /* shutdown monitor thread, 0 on success */
 static int StopMonitor(int mfd)
@@ -541,22 +519,21 @@ static int StopMonitor(int mfd)
     return 0;
 }
 
-
 /* linux monitoring */
-static void* DoMonitor(void* arg)
+static void *DoMonitor(void *arg)
 {
-    int         notifyFd;
-    int         wd  = -1;
-    WOLFSSL_CRL* crl = (WOLFSSL_CRL*)arg;
+    int notifyFd;
+    int wd = -1;
+    WOLFSSL_CRL *crl = (WOLFSSL_CRL *)arg;
 #ifdef WOLFSSL_SMALL_STACK
-    char*       buff;
+    char *buff;
 #else
-    char        buff[8192];
+    char buff[8192];
 #endif
 
     WOLFSSL_ENTER("DoMonitor");
 
-    crl->mfd = eventfd(0, 0);  /* our custom shutdown event */
+    crl->mfd = eventfd(0, 0); /* our custom shutdown event */
     if (crl->mfd < 0) {
         WOLFSSL_MSG("eventfd failed");
         return NULL;
@@ -570,8 +547,7 @@ static void* DoMonitor(void* arg)
     }
 
     if (crl->monitors[0].path) {
-        wd = inotify_add_watch(notifyFd, crl->monitors[0].path, IN_CLOSE_WRITE |
-                                                                IN_DELETE);
+        wd = inotify_add_watch(notifyFd, crl->monitors[0].path, IN_CLOSE_WRITE | IN_DELETE);
         if (wd < 0) {
             WOLFSSL_MSG("PEM notify add watch failed");
             close(crl->mfd);
@@ -581,8 +557,7 @@ static void* DoMonitor(void* arg)
     }
 
     if (crl->monitors[1].path) {
-        wd = inotify_add_watch(notifyFd, crl->monitors[1].path, IN_CLOSE_WRITE |
-                                                                IN_DELETE);
+        wd = inotify_add_watch(notifyFd, crl->monitors[1].path, IN_CLOSE_WRITE | IN_DELETE);
         if (wd < 0) {
             WOLFSSL_MSG("DER notify add watch failed");
             close(crl->mfd);
@@ -592,22 +567,22 @@ static void* DoMonitor(void* arg)
     }
 
 #ifdef WOLFSSL_SMALL_STACK
-    buff = (char*)XMALLOC(8192, NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    buff = (char *)XMALLOC(8192, NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (buff == NULL)
         return NULL;
 #endif
 
     for (;;) {
         fd_set readfds;
-        int    result;
-        int    length;
+        int result;
+        int length;
 
         FD_ZERO(&readfds);
         FD_SET(notifyFd, &readfds);
         FD_SET(crl->mfd, &readfds);
 
-        result = select(max(notifyFd, crl->mfd) + 1, &readfds, NULL, NULL,NULL);
-       
+        result = select(max(notifyFd, crl->mfd) + 1, &readfds, NULL, NULL, NULL);
+
         WOLFSSL_MSG("Got notify event");
 
         if (result < 0) {
@@ -624,7 +599,7 @@ static void* DoMonitor(void* arg)
         if (length < 0) {
             WOLFSSL_MSG("notify read problem, continue");
             continue;
-        } 
+        }
 
         if (SwapLists(crl) < 0) {
             WOLFSSL_MSG("SwapLists problem, continue");
@@ -643,22 +618,20 @@ static void* DoMonitor(void* arg)
     return NULL;
 }
 
-
 #else
 
 #error "CRL monitor only currently supported on linux or mach"
 
 #endif /* MACH or linux */
 
-
 /* Start Monitoring the CRL path(s) in a thread */
-static int StartMonitorCRL(WOLFSSL_CRL* crl)
+static int StartMonitorCRL(WOLFSSL_CRL *crl)
 {
     pthread_attr_t attr;
 
     WOLFSSL_ENTER("StartMonitorCRL");
 
-    if (crl == NULL) 
+    if (crl == NULL)
         return BAD_FUNC_ARG;
 
     if (crl->tid != 0) {
@@ -676,10 +649,9 @@ static int StartMonitorCRL(WOLFSSL_CRL* crl)
     return SSL_SUCCESS;
 }
 
-
 #else /* HAVE_CRL_MONITOR */
 
-static int StartMonitorCRL(WOLFSSL_CRL* crl)
+static int StartMonitorCRL(WOLFSSL_CRL *crl)
 {
     (void)crl;
 
@@ -689,19 +661,18 @@ static int StartMonitorCRL(WOLFSSL_CRL* crl)
     return NOT_COMPILED_IN;
 }
 
-#endif  /* HAVE_CRL_MONITOR */
+#endif /* HAVE_CRL_MONITOR */
 
-
-/* Load CRL path files of type, SSL_SUCCESS on ok */ 
-int LoadCRL(WOLFSSL_CRL* crl, const char* path, int type, int monitor)
+/* Load CRL path files of type, SSL_SUCCESS on ok */
+int LoadCRL(WOLFSSL_CRL *crl, const char *path, int type, int monitor)
 {
-    struct dirent* entry;
-    DIR*           dir;
-    int            ret = SSL_SUCCESS;
+    struct dirent *entry;
+    DIR *dir;
+    int ret = SSL_SUCCESS;
 #ifdef WOLFSSL_SMALL_STACK
-    char*          name;
+    char *name;
 #else
-    char           name[MAX_FILENAME_SZ];
+    char name[MAX_FILENAME_SZ];
 #endif
 
     WOLFSSL_ENTER("LoadCRL");
@@ -715,42 +686,38 @@ int LoadCRL(WOLFSSL_CRL* crl, const char* path, int type, int monitor)
     }
 
 #ifdef WOLFSSL_SMALL_STACK
-    name = (char*)XMALLOC(MAX_FILENAME_SZ, NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    name = (char *)XMALLOC(MAX_FILENAME_SZ, NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (name == NULL)
         return MEMORY_E;
 #endif
 
-    while ( (entry = readdir(dir)) != NULL) {
+    while ((entry = readdir(dir)) != NULL) {
         struct stat s;
 
         XMEMSET(name, 0, MAX_FILENAME_SZ);
-        XSTRNCPY(name, path, MAX_FILENAME_SZ/2 - 2);
+        XSTRNCPY(name, path, MAX_FILENAME_SZ / 2 - 2);
         XSTRNCAT(name, "/", 1);
-        XSTRNCAT(name, entry->d_name, MAX_FILENAME_SZ/2);
+        XSTRNCAT(name, entry->d_name, MAX_FILENAME_SZ / 2);
 
         if (stat(name, &s) != 0) {
             WOLFSSL_MSG("stat on name failed");
             continue;
         }
         if (s.st_mode & S_IFREG) {
-
             if (type == SSL_FILETYPE_PEM) {
                 if (strstr(entry->d_name, ".pem") == NULL) {
                     WOLFSSL_MSG("not .pem file, skipping");
                     continue;
                 }
-            }
-            else {
+            } else {
                 if (strstr(entry->d_name, ".der") == NULL &&
                     strstr(entry->d_name, ".crl") == NULL) {
-
                     WOLFSSL_MSG("not .der or .crl file, skipping");
                     continue;
                 }
             }
 
-            if (ProcessFile(NULL, name, type, CRL_TYPE, NULL, 0, crl)
-                                                               != SSL_SUCCESS) {
+            if (ProcessFile(NULL, name, type, CRL_TYPE, NULL, 0, crl) != SSL_SUCCESS) {
                 WOLFSSL_MSG("CRL file load failed, continuing");
             }
         }
@@ -774,14 +741,14 @@ int LoadCRL(WOLFSSL_CRL* crl, const char* path, int type, int monitor)
             if (crl->monitors[1].path == NULL)
                 ret = MEMORY_E;
         }
-      
+
         if (monitor & WOLFSSL_CRL_START_MON) {
             WOLFSSL_MSG("start monitoring requested");
-    
+
             ret = StartMonitorCRL(crl);
-       } 
+        }
     }
-    
+
     closedir(dir);
 
     return ret;

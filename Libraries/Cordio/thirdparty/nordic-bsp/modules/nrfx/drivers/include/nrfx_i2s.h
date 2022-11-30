@@ -55,67 +55,60 @@ extern "C" {
  * @brief   Inter-IC Sound (I2S) peripheral driver.
  */
 
-
 /**
  * @brief This value can be provided instead of a pin number for the signals
  *        SDOUT, SDIN, and MCK to specify that a given signal is not used
  *        and therefore does not need to be connected to a pin.
  */
-#define NRFX_I2S_PIN_NOT_USED  0xFF
+#define NRFX_I2S_PIN_NOT_USED 0xFF
 
 /** @brief I2S driver configuration structure. */
-typedef struct
-{
-    uint8_t sck_pin;      ///< SCK pin number.
-    uint8_t lrck_pin;     ///< LRCK pin number.
-    uint8_t mck_pin;      ///< MCK pin number.
-                          /**< Optional. Use @ref NRFX_I2S_PIN_NOT_USED
+typedef struct {
+    uint8_t sck_pin; ///< SCK pin number.
+    uint8_t lrck_pin; ///< LRCK pin number.
+    uint8_t mck_pin; ///< MCK pin number.
+    /**< Optional. Use @ref NRFX_I2S_PIN_NOT_USED
                            *   if this signal is not needed. */
-    uint8_t sdout_pin;    ///< SDOUT pin number.
-                          /**< Optional. Use @ref NRFX_I2S_PIN_NOT_USED
+    uint8_t sdout_pin; ///< SDOUT pin number.
+    /**< Optional. Use @ref NRFX_I2S_PIN_NOT_USED
                            *   if this signal is not needed. */
-    uint8_t sdin_pin;     ///< SDIN pin number.
-                          /**< Optional. Use @ref NRFX_I2S_PIN_NOT_USED
+    uint8_t sdin_pin; ///< SDIN pin number.
+    /**< Optional. Use @ref NRFX_I2S_PIN_NOT_USED
                            *   if this signal is not needed. */
     uint8_t irq_priority; ///< Interrupt priority.
 
-    nrf_i2s_mode_t     mode;         ///< Mode of operation.
-    nrf_i2s_format_t   format;       ///< Frame format.
-    nrf_i2s_align_t    alignment;    ///< Alignment of sample within a frame.
-    nrf_i2s_swidth_t   sample_width; ///< Sample width.
-    nrf_i2s_channels_t channels;     ///< Enabled channels.
-    nrf_i2s_mck_t      mck_setup;    ///< Master clock setup.
-    nrf_i2s_ratio_t    ratio;        ///< MCK/LRCK ratio.
+    nrf_i2s_mode_t mode; ///< Mode of operation.
+    nrf_i2s_format_t format; ///< Frame format.
+    nrf_i2s_align_t alignment; ///< Alignment of sample within a frame.
+    nrf_i2s_swidth_t sample_width; ///< Sample width.
+    nrf_i2s_channels_t channels; ///< Enabled channels.
+    nrf_i2s_mck_t mck_setup; ///< Master clock setup.
+    nrf_i2s_ratio_t ratio; ///< MCK/LRCK ratio.
 } nrfx_i2s_config_t;
 
 /** @brief I2S driver buffers structure. */
-typedef struct
-{
-    uint32_t       * p_rx_buffer; ///< Pointer to the buffer for received data.
-    uint32_t const * p_tx_buffer; ///< Pointer to the buffer with data to be sent.
+typedef struct {
+    uint32_t *p_rx_buffer; ///< Pointer to the buffer for received data.
+    uint32_t const *p_tx_buffer; ///< Pointer to the buffer with data to be sent.
 } nrfx_i2s_buffers_t;
 
 /** @brief I2S driver default configuration. */
-#define NRFX_I2S_DEFAULT_CONFIG                                   \
-{                                                                 \
-    .sck_pin      = NRFX_I2S_CONFIG_SCK_PIN,                      \
-    .lrck_pin     = NRFX_I2S_CONFIG_LRCK_PIN,                     \
-    .mck_pin      = NRFX_I2S_CONFIG_MCK_PIN,                      \
-    .sdout_pin    = NRFX_I2S_CONFIG_SDOUT_PIN,                    \
-    .sdin_pin     = NRFX_I2S_CONFIG_SDIN_PIN,                     \
-    .irq_priority = NRFX_I2S_CONFIG_IRQ_PRIORITY,                 \
-    .mode         = (nrf_i2s_mode_t)NRFX_I2S_CONFIG_MASTER,       \
-    .format       = (nrf_i2s_format_t)NRFX_I2S_CONFIG_FORMAT,     \
-    .alignment    = (nrf_i2s_align_t)NRFX_I2S_CONFIG_ALIGN,       \
-    .sample_width = (nrf_i2s_swidth_t)NRFX_I2S_CONFIG_SWIDTH,     \
-    .channels     = (nrf_i2s_channels_t)NRFX_I2S_CONFIG_CHANNELS, \
-    .mck_setup    = (nrf_i2s_mck_t)NRFX_I2S_CONFIG_MCK_SETUP,     \
-    .ratio        = (nrf_i2s_ratio_t)NRFX_I2S_CONFIG_RATIO,       \
-}
+#define NRFX_I2S_DEFAULT_CONFIG                                                             \
+    {                                                                                       \
+        .sck_pin = NRFX_I2S_CONFIG_SCK_PIN, .lrck_pin = NRFX_I2S_CONFIG_LRCK_PIN,           \
+        .mck_pin = NRFX_I2S_CONFIG_MCK_PIN, .sdout_pin = NRFX_I2S_CONFIG_SDOUT_PIN,         \
+        .sdin_pin = NRFX_I2S_CONFIG_SDIN_PIN, .irq_priority = NRFX_I2S_CONFIG_IRQ_PRIORITY, \
+        .mode = (nrf_i2s_mode_t)NRFX_I2S_CONFIG_MASTER,                                     \
+        .format = (nrf_i2s_format_t)NRFX_I2S_CONFIG_FORMAT,                                 \
+        .alignment = (nrf_i2s_align_t)NRFX_I2S_CONFIG_ALIGN,                                \
+        .sample_width = (nrf_i2s_swidth_t)NRFX_I2S_CONFIG_SWIDTH,                           \
+        .channels = (nrf_i2s_channels_t)NRFX_I2S_CONFIG_CHANNELS,                           \
+        .mck_setup = (nrf_i2s_mck_t)NRFX_I2S_CONFIG_MCK_SETUP,                              \
+        .ratio = (nrf_i2s_ratio_t)NRFX_I2S_CONFIG_RATIO,                                    \
+    }
 
-
-#define NRFX_I2S_STATUS_NEXT_BUFFERS_NEEDED  (1UL << 0)
-    /**< The application must provide buffers that are to be used in the next
+#define NRFX_I2S_STATUS_NEXT_BUFFERS_NEEDED (1UL << 0)
+/**< The application must provide buffers that are to be used in the next
      *   part of the transfer. A call to @ref nrfx_i2s_next_buffers_set must
      *   be done before the currently used buffers are completely processed
      *   (that is, the time remaining for supplying the next buffers depends on
@@ -158,9 +151,7 @@ typedef struct
  *                    It can be 0 or a combination of the following flags:
  *                    - @ref NRFX_I2S_STATUS_NEXT_BUFFERS_NEEDED
  */
-typedef void (* nrfx_i2s_data_handler_t)(nrfx_i2s_buffers_t const * p_released,
-                                         uint32_t                   status);
-
+typedef void (*nrfx_i2s_data_handler_t)(nrfx_i2s_buffers_t const *p_released, uint32_t status);
 
 /**
  * @brief Function for initializing the I2S driver.
@@ -173,8 +164,7 @@ typedef void (* nrfx_i2s_data_handler_t)(nrfx_i2s_buffers_t const * p_released,
  * @retval NRFX_ERROR_INVALID_PARAM The requested combination of configuration
  *                                  options is not allowed by the I2S peripheral.
  */
-nrfx_err_t nrfx_i2s_init(nrfx_i2s_config_t const * p_config,
-                         nrfx_i2s_data_handler_t   handler);
+nrfx_err_t nrfx_i2s_init(nrfx_i2s_config_t const *p_config, nrfx_i2s_data_handler_t handler);
 
 /** @brief Function for uninitializing the I2S driver. */
 void nrfx_i2s_uninit(void);
@@ -214,9 +204,8 @@ void nrfx_i2s_uninit(void);
  * @retval NRFX_ERROR_INVALID_ADDR  The provided buffers are not placed
  *                                  in the Data RAM region.
  */
-nrfx_err_t nrfx_i2s_start(nrfx_i2s_buffers_t const * p_initial_buffers,
-                          uint16_t                   buffer_size,
-                          uint8_t                    flags);
+nrfx_err_t nrfx_i2s_start(nrfx_i2s_buffers_t const *p_initial_buffers, uint16_t buffer_size,
+                          uint8_t flags);
 
 /**
  * @brief Function for supplying the buffers to be used in the next part of
@@ -234,20 +223,17 @@ nrfx_err_t nrfx_i2s_start(nrfx_i2s_buffers_t const * p_initial_buffers,
  * @retval NRFX_ERROR_INVALID_STATE If the buffers were already supplied or
  *                                  the peripheral is currently being stopped.
  */
-nrfx_err_t nrfx_i2s_next_buffers_set(nrfx_i2s_buffers_t const * p_buffers);
+nrfx_err_t nrfx_i2s_next_buffers_set(nrfx_i2s_buffers_t const *p_buffers);
 
 /** @brief Function for stopping the I2S transfer. */
 void nrfx_i2s_stop(void);
 
 /** @} */
 
-
 void nrfx_i2s_irq_handler(void);
-
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif // NRFX_I2S_H__
-

@@ -35,45 +35,40 @@ extern "C" {
 **************************************************************************************************/
 
 /* DM device event handler messages */
-enum
-{
-  DM_DEV_MSG_API_RESET = DM_MSG_START(DM_ID_DEV)
-};
+enum { DM_DEV_MSG_API_RESET = DM_MSG_START(DM_ID_DEV) };
 
 /* DM device privacy event handler messages */
-enum
-{
-  DM_DEV_PRIV_MSG_API_START = DM_MSG_START(DM_ID_DEV_PRIV),
-  DM_DEV_PRIV_MSG_API_STOP,
-  DM_DEV_PRIV_MSG_TIMEOUT,
-  DM_DEV_PRIV_MSG_AES_CMPL,
-  DM_DEV_PRIV_MSG_RPA_START,
-  DM_DEV_PRIV_MSG_RPA_STOP,
-  DM_DEV_PRIV_MSG_CTRL,
+enum {
+    DM_DEV_PRIV_MSG_API_START = DM_MSG_START(DM_ID_DEV_PRIV),
+    DM_DEV_PRIV_MSG_API_STOP,
+    DM_DEV_PRIV_MSG_TIMEOUT,
+    DM_DEV_PRIV_MSG_AES_CMPL,
+    DM_DEV_PRIV_MSG_RPA_START,
+    DM_DEV_PRIV_MSG_RPA_STOP,
+    DM_DEV_PRIV_MSG_CTRL,
 };
 
 /* DM device privacy control messages */
-enum
-{
-  DM_DEV_PRIV_MSG_CONN_INIT_START,                                    /* connection initiation started */
-  DM_DEV_PRIV_MSG_CONN_INIT_STOP,                                     /* connection initiation stopped */
-  DM_DEV_PRIV_MSG_ADV_SET_ADD,                                        /* advertising set created */
-  DM_DEV_PRIV_MSG_ADV_SET_REMOVE,                                     /* advertising set removed */
-  DM_DEV_PRIV_MSG_ADV_SETS_CLEAR                                      /* advertising sets cleared */
+enum {
+    DM_DEV_PRIV_MSG_CONN_INIT_START, /* connection initiation started */
+    DM_DEV_PRIV_MSG_CONN_INIT_STOP, /* connection initiation stopped */
+    DM_DEV_PRIV_MSG_ADV_SET_ADD, /* advertising set created */
+    DM_DEV_PRIV_MSG_ADV_SET_REMOVE, /* advertising set removed */
+    DM_DEV_PRIV_MSG_ADV_SETS_CLEAR /* advertising sets cleared */
 };
 
 /*! DM connection CTE event handler messages */
-enum
-{
-  /* messages from API */
-  DM_CONN_CTE_MSG_API_RX_SAMPLE_START = DM_MSG_START(DM_ID_CONN_CTE), /*!< Start sampling received CTE, and configure CTE Rx parameters to be used */
-  DM_CONN_CTE_MSG_API_RX_SAMPLE_STOP,                                 /*!< Stop sampling received CTE */
-  DM_CONN_CTE_MSG_API_TX_CFG,                                         /*!< Configure CTE Tx parameters */
-  DM_CONN_CTE_MSG_API_REQ_START,                                      /*!< Start initiating CTE request */
-  DM_CONN_CTE_MSG_API_REQ_STOP,                                       /*!< Stop initiating CTE request */
-  DM_CONN_CTE_MSG_API_RSP_START,                                      /*!< Start responding to CTE request */
-  DM_CONN_CTE_MSG_API_RSP_STOP,                                       /*!< Stop responding to CTE request */
-  DM_CONN_CTE_MSG_STATE                                               /*!< DM connection state change event */
+enum {
+    /* messages from API */
+    DM_CONN_CTE_MSG_API_RX_SAMPLE_START = DM_MSG_START(
+        DM_ID_CONN_CTE), /*!< Start sampling received CTE, and configure CTE Rx parameters to be used */
+    DM_CONN_CTE_MSG_API_RX_SAMPLE_STOP, /*!< Stop sampling received CTE */
+    DM_CONN_CTE_MSG_API_TX_CFG, /*!< Configure CTE Tx parameters */
+    DM_CONN_CTE_MSG_API_REQ_START, /*!< Start initiating CTE request */
+    DM_CONN_CTE_MSG_API_REQ_STOP, /*!< Stop initiating CTE request */
+    DM_CONN_CTE_MSG_API_RSP_START, /*!< Start responding to CTE request */
+    DM_CONN_CTE_MSG_API_RSP_STOP, /*!< Stop responding to CTE request */
+    DM_CONN_CTE_MSG_STATE /*!< DM connection state change event */
 };
 
 /**************************************************************************************************
@@ -81,27 +76,24 @@ enum
 **************************************************************************************************/
 
 /* Data structure for DM_DEV_PRIV_MSG_API_START */
-typedef struct
-{
-  wsfMsgHdr_t                hdr;
-  uint16_t                   changeInterval;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint16_t changeInterval;
 } dmDevPrivApiStart_t;
 
 /* Data structure for DM_DEV_PRIV_MSG_CTRL */
-typedef struct
-{
-  wsfMsgHdr_t                hdr;
-  uint8_t                    advHandle;
-  bool_t                     connectable;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
+    bool_t connectable;
 } dmDevPrivCtrl_t;
 
 /* Union of all dev priv messages */
-typedef union
-{
-  wsfMsgHdr_t                hdr;
-  dmDevPrivApiStart_t        apiPrivStart;
-  dmDevPrivCtrl_t            privCtrl;
-  secAes_t                   aes;
+typedef union {
+    wsfMsgHdr_t hdr;
+    dmDevPrivApiStart_t apiPrivStart;
+    dmDevPrivCtrl_t privCtrl;
+    secAes_t aes;
 } dmDevPrivMsg_t;
 
 /* Action function */
@@ -112,10 +104,9 @@ typedef void (*dmDevPrivAct_t)(dmDevPrivMsg_t *pMsg);
 typedef void (*dmDevAdvSetRandAddrCback_t)(uint8_t advHandle, const uint8_t *pAddr);
 
 /* Main control block of the DM Dev subsystem */
-typedef struct
-{
-  /* Set advertising set random address callback */
-  dmDevAdvSetRandAddrCback_t advSetRandAddrCback;
+typedef struct {
+    /* Set advertising set random address callback */
+    dmDevAdvSetRandAddrCback_t advSetRandAddrCback;
 } dmDevCb_t;
 
 /**************************************************************************************************

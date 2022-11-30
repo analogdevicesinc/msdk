@@ -33,8 +33,7 @@
 #define MESH_LPN_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -42,33 +41,29 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Mesh LPN callback events */
-enum meshLpnEventValues
-{
-  MESH_LPN_FRIENDSHIP_ESTABLISHED_EVENT,        /*!< Friendship Established event */
-  MESH_LPN_FRIENDSHIP_TERMINATED_EVENT,         /*!< Friendship Terminated event */
-  MESH_LPN_MAX_EVENT,                           /*!< Max LPN event */
+enum meshLpnEventValues {
+    MESH_LPN_FRIENDSHIP_ESTABLISHED_EVENT, /*!< Friendship Established event */
+    MESH_LPN_FRIENDSHIP_TERMINATED_EVENT, /*!< Friendship Terminated event */
+    MESH_LPN_MAX_EVENT, /*!< Max LPN event */
 };
 
 /*! \brief LPN Friendship Established event type for ::MESH_LPN_FRIENDSHIP_ESTABLISHED_EVENT */
-typedef struct meshLpnFriendshipEstablishedEvt_tag
-{
-  wsfMsgHdr_t        hdr;          /*!< Header structure */
-  uint16_t           netKeyIndex;  /*!< Connection identifier */
+typedef struct meshLpnFriendshipEstablishedEvt_tag {
+    wsfMsgHdr_t hdr; /*!< Header structure */
+    uint16_t netKeyIndex; /*!< Connection identifier */
 } meshLpnFriendshipEstablishedEvt_t;
 
 /*! \brief LPN Friendship Established event type for ::MESH_LPN_FRIENDSHIP_TERMINATED_EVENT */
-typedef struct meshLpnFriendshipTerminatedEvt_tag
-{
-  wsfMsgHdr_t        hdr;          /*!< Header structure */
-  uint16_t           netKeyIndex;  /*!< Connection identifier */
+typedef struct meshLpnFriendshipTerminatedEvt_tag {
+    wsfMsgHdr_t hdr; /*!< Header structure */
+    uint16_t netKeyIndex; /*!< Connection identifier */
 } meshLpnFriendshipTerminatedEvt_t;
 
 /*! \brief Generic LPN event callback parameters structure */
-typedef union meshLpnEvt_tag
-{
-  wsfMsgHdr_t                        hdr;                     /*!< Generic WSF header */
-  meshLpnFriendshipEstablishedEvt_t  friendshipEstablished;   /*!< Friendship Established event */
-  meshLpnFriendshipTerminatedEvt_t   friendshipTerminated;    /*!< Friendship Terminated event */
+typedef union meshLpnEvt_tag {
+    wsfMsgHdr_t hdr; /*!< Generic WSF header */
+    meshLpnFriendshipEstablishedEvt_t friendshipEstablished; /*!< Friendship Established event */
+    meshLpnFriendshipTerminatedEvt_t friendshipTerminated; /*!< Friendship Terminated event */
 } meshLpnEvt_t;
 
 /*************************************************************************************************/

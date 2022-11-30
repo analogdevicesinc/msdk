@@ -42,48 +42,28 @@
 /* Characteristics for discovery */
 
 /*! Temperature measurement */
-static const attcDiscChar_t htpcHtsTm =
-{
-  attTmChUuid,
-  ATTC_SET_REQUIRED
-};
+static const attcDiscChar_t htpcHtsTm = { attTmChUuid, ATTC_SET_REQUIRED };
 
 /*! Temperature measurement CCC descriptor */
-static const attcDiscChar_t htpcHtsTmCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t htpcHtsTmCcc = { attCliChCfgUuid,
+                                             ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
 
 /*! Intermediate temperature */
-static const attcDiscChar_t htpcHtsIt =
-{
-  attItChUuid,
-  0
-};
+static const attcDiscChar_t htpcHtsIt = { attItChUuid, 0 };
 
 /*! Intermediate temperature CCC descriptor */
-static const attcDiscChar_t htpcHtsItCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t htpcHtsItCcc = { attCliChCfgUuid, ATTC_SET_DESCRIPTOR };
 
 /*! Temperature type */
-static const attcDiscChar_t htpcHtsTt =
-{
-  attTtChUuid,
-  0
-};
+static const attcDiscChar_t htpcHtsTt = { attTtChUuid, 0 };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *htpcHtsDiscCharList[] =
-{
-  &htpcHtsTm,                    /*! Temperature measurement */
-  &htpcHtsTmCcc,                 /*! Temperature measurement CCC descriptor */
-  &htpcHtsIt,                    /*! Intermediate temperature */
-  &htpcHtsItCcc,                 /*! Intermediate temperature CCC descriptor */
-  &htpcHtsTt                     /*! Temperature type */
+static const attcDiscChar_t *htpcHtsDiscCharList[] = {
+    &htpcHtsTm, /*! Temperature measurement */
+    &htpcHtsTmCcc, /*! Temperature measurement CCC descriptor */
+    &htpcHtsIt, /*! Intermediate temperature */
+    &htpcHtsItCcc, /*! Intermediate temperature CCC descriptor */
+    &htpcHtsTt /*! Temperature type */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
@@ -101,68 +81,69 @@ WSF_CT_ASSERT(HTPC_HTS_HDL_LIST_LEN == ((sizeof(htpcHtsDiscCharList) / sizeof(at
 /*************************************************************************************************/
 void htpcHtsParseTm(uint8_t *pValue, uint16_t len)
 {
-  uint8_t   flags = 0;
-  uint32_t  tempUint;
-  int32_t  tempM;
-  int8_t    tempE;
-  uint16_t  year;
-  uint8_t   month, day, hour, min, sec;
-  uint8_t   tempType;
-  uint16_t  minLen = CH_TM_FLAGS_LEN + CH_TM_MEAS_LEN;
+    uint8_t flags = 0;
+    uint32_t tempUint;
+    int32_t tempM;
+    int8_t tempE;
+    uint16_t year;
+    uint8_t month, day, hour, min, sec;
+    uint8_t tempType;
+    uint16_t minLen = CH_TM_FLAGS_LEN + CH_TM_MEAS_LEN;
 
-  /* Suppress unused variable compile warning */
-  (void)tempM; (void)tempE; (void)tempType;
-  (void)year; (void)month; (void)day; (void)hour; (void)min; (void)sec;
+    /* Suppress unused variable compile warning */
+    (void)tempM;
+    (void)tempE;
+    (void)tempType;
+    (void)year;
+    (void)month;
+    (void)day;
+    (void)hour;
+    (void)min;
+    (void)sec;
 
-  if (len > 0)
-  {
-    /* get flags */
-    BSTREAM_TO_UINT8(flags, pValue);
+    if (len > 0) {
+        /* get flags */
+        BSTREAM_TO_UINT8(flags, pValue);
 
-    /* determine expected minimum length based on flags */
-    if (flags & CH_TM_FLAG_TIMESTAMP)
-    {
-      minLen += CH_TM_TIMESTAMP_LEN;
+        /* determine expected minimum length based on flags */
+        if (flags & CH_TM_FLAG_TIMESTAMP) {
+            minLen += CH_TM_TIMESTAMP_LEN;
+        }
+        if (flags & CH_TM_FLAG_TEMP_TYPE) {
+            minLen += CH_TM_TEMP_TYPE_LEN;
+        }
     }
-    if (flags & CH_TM_FLAG_TEMP_TYPE)
-    {
-      minLen += CH_TM_TEMP_TYPE_LEN;
+
+    /* verify length */
+    if (len < minLen) {
+        APP_TRACE_INFO2("Temperature meas len:%d minLen:%d", len, minLen);
+        return;
     }
-  }
 
-  /* verify length */
-  if (len < minLen)
-  {
-    APP_TRACE_INFO2("Temperature meas len:%d minLen:%d", len, minLen);
-    return;
-  }
+    /* Temperature */
+    BSTREAM_TO_UINT32(tempUint, pValue);
+    UINT32_TO_FLT(tempM, tempE, tempUint);
+    APP_TRACE_INFO2("  Temperature:%de%d", tempM, tempE);
 
-  /* Temperature */
-  BSTREAM_TO_UINT32(tempUint, pValue);
-  UINT32_TO_FLT(tempM, tempE, tempUint);
-  APP_TRACE_INFO2("  Temperature:%de%d", tempM, tempE);
+    /* timestamp */
+    if (flags & CH_TM_FLAG_TIMESTAMP) {
+        BSTREAM_TO_UINT16(year, pValue);
+        BSTREAM_TO_UINT8(month, pValue);
+        BSTREAM_TO_UINT8(day, pValue);
+        BSTREAM_TO_UINT8(hour, pValue);
+        BSTREAM_TO_UINT8(min, pValue);
+        BSTREAM_TO_UINT8(sec, pValue);
+        APP_TRACE_INFO3("  Date: %d/%d/%d", month, day, year);
+        APP_TRACE_INFO3("  Time: %02d:%02d:%02d", hour, min, sec);
+    }
 
-  /* timestamp */
-  if (flags & CH_TM_FLAG_TIMESTAMP)
-  {
-    BSTREAM_TO_UINT16(year, pValue);
-    BSTREAM_TO_UINT8(month, pValue);
-    BSTREAM_TO_UINT8(day, pValue);
-    BSTREAM_TO_UINT8(hour, pValue);
-    BSTREAM_TO_UINT8(min, pValue);
-    BSTREAM_TO_UINT8(sec, pValue);
-    APP_TRACE_INFO3("  Date: %d/%d/%d", month, day, year);
-    APP_TRACE_INFO3("  Time: %02d:%02d:%02d", hour, min, sec);
-  }
+    /* temperature type */
+    if (flags & CH_TM_FLAG_TEMP_TYPE) {
+        BSTREAM_TO_UINT8(tempType, pValue);
+        APP_TRACE_INFO1("  Temp. Type:%d", tempType);
+    }
 
-  /* temperature type */
-  if (flags & CH_TM_FLAG_TEMP_TYPE)
-  {
-    BSTREAM_TO_UINT8(tempType, pValue);
-    APP_TRACE_INFO1("  Temp. Type:%d", tempType);
-  }
-
-  APP_TRACE_INFO1("  Flags:0x%02x", flags);
+    APP_TRACE_INFO1("  Flags:0x%02x", flags);
 }
 
 /*************************************************************************************************/
@@ -180,8 +161,8 @@ void htpcHtsParseTm(uint8_t *pValue, uint16_t len)
 /*************************************************************************************************/
 void HtpcHtsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attHtsSvcUuid,
-                     HTPC_HTS_HDL_LIST_LEN, (attcDiscChar_t **) htpcHtsDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attHtsSvcUuid, HTPC_HTS_HDL_LIST_LEN,
+                       (attcDiscChar_t **)htpcHtsDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -199,33 +180,28 @@ void HtpcHtsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 uint8_t HtpcHtsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 {
-  uint8_t   status = ATT_SUCCESS;
+    uint8_t status = ATT_SUCCESS;
 
-  /* temperature measurement */
-  if (pMsg->handle == pHdlList[HTPC_HTS_TM_HDL_IDX])
-  {
-    APP_TRACE_INFO0("Temperature measurement");
+    /* temperature measurement */
+    if (pMsg->handle == pHdlList[HTPC_HTS_TM_HDL_IDX]) {
+        APP_TRACE_INFO0("Temperature measurement");
 
-    /* parse value */
-    htpcHtsParseTm(pMsg->pValue, pMsg->valueLen);
-  }
-  /* intermediate cuff pressure  */
-  else if (pMsg->handle == pHdlList[HTPC_HTS_IT_HDL_IDX])
-  {
-    APP_TRACE_INFO0("Intermed. temperature");
+        /* parse value */
+        htpcHtsParseTm(pMsg->pValue, pMsg->valueLen);
+    }
+    /* intermediate cuff pressure  */
+    else if (pMsg->handle == pHdlList[HTPC_HTS_IT_HDL_IDX]) {
+        APP_TRACE_INFO0("Intermed. temperature");
 
-    /* parse value */
-    htpcHtsParseTm(pMsg->pValue, pMsg->valueLen);
-  }
-  /* temperature type */
-  else if (pMsg->handle == pHdlList[HTPC_HTS_TT_HDL_IDX])
-  {
-    APP_TRACE_INFO1("Temperature type:%d", pMsg->pValue[0]);
-  }
-  else
-  {
-    status = ATT_ERR_NOT_FOUND;
-  }
+        /* parse value */
+        htpcHtsParseTm(pMsg->pValue, pMsg->valueLen);
+    }
+    /* temperature type */
+    else if (pMsg->handle == pHdlList[HTPC_HTS_TT_HDL_IDX]) {
+        APP_TRACE_INFO1("Temperature type:%d", pMsg->pValue[0]);
+    } else {
+        status = ATT_ERR_NOT_FOUND;
+    }
 
-  return status;
+    return status;
 }

@@ -57,24 +57,22 @@ extern "C" {
 /**
  * @brief Ring buffer instance control block.
  * */
-typedef struct
-{
-    nrf_atomic_flag_t   wr_flag;   //!< Protection flag.
-    nrf_atomic_flag_t   rd_flag;   //!< Protection flag.
-    uint32_t            wr_idx;     //!< Write index (updated when putting).
-    uint32_t            tmp_wr_idx; //!< Temporary write index (updated when allocating).
-    uint32_t            rd_idx;     //!< Read index (updated when freeing).
-    uint32_t            tmp_rd_idx; //!< Temporary read index (updated when getting).
+typedef struct {
+    nrf_atomic_flag_t wr_flag; //!< Protection flag.
+    nrf_atomic_flag_t rd_flag; //!< Protection flag.
+    uint32_t wr_idx; //!< Write index (updated when putting).
+    uint32_t tmp_wr_idx; //!< Temporary write index (updated when allocating).
+    uint32_t rd_idx; //!< Read index (updated when freeing).
+    uint32_t tmp_rd_idx; //!< Temporary read index (updated when getting).
 } nrf_ringbuf_cb_t;
 
 /**
  * @brief Ring buffer instance structure.
  * */
-typedef struct
-{
-    uint8_t           * p_buffer;     //!< Pointer to the memory used by the ring buffer.
-    uint32_t            bufsize_mask; //!< Buffer size mask (buffer size must be a power of 2).
-    nrf_ringbuf_cb_t  * p_cb;         //!< Pointer to the instance control block.
+typedef struct {
+    uint8_t *p_buffer; //!< Pointer to the memory used by the ring buffer.
+    uint32_t bufsize_mask; //!< Buffer size mask (buffer size must be a power of 2).
+    nrf_ringbuf_cb_t *p_cb; //!< Pointer to the instance control block.
 } nrf_ringbuf_t;
 
 /**
@@ -83,14 +81,14 @@ typedef struct
  * @param _name Instance name.
  * @param _size Size of the ring buffer (must be a power of 2).
  * */
-#define NRF_RINGBUF_DEF(_name, _size)                                         \
-    STATIC_ASSERT(IS_POWER_OF_TWO(_size));                                    \
-    static uint8_t CONCAT_2(_name,_buf)[_size];                               \
-    static nrf_ringbuf_cb_t CONCAT_2(_name,_cb);                              \
-    static const nrf_ringbuf_t _name = {                                      \
-            .p_buffer = CONCAT_2(_name,_buf),                                 \
-            .bufsize_mask = _size - 1,                                        \
-            .p_cb         = &CONCAT_2(_name,_cb),                             \
+#define NRF_RINGBUF_DEF(_name, _size)             \
+    STATIC_ASSERT(IS_POWER_OF_TWO(_size));        \
+    static uint8_t CONCAT_2(_name, _buf)[_size];  \
+    static nrf_ringbuf_cb_t CONCAT_2(_name, _cb); \
+    static const nrf_ringbuf_t _name = {          \
+        .p_buffer = CONCAT_2(_name, _buf),        \
+        .bufsize_mask = _size - 1,                \
+        .p_cb = &CONCAT_2(_name, _cb),            \
     }
 
 /**
@@ -99,7 +97,7 @@ typedef struct
  * @param p_ringbuf             Pointer to the ring buffer instance.
  *
  * */
-void nrf_ringbuf_init(nrf_ringbuf_t const * p_ringbuf);
+void nrf_ringbuf_init(nrf_ringbuf_t const *p_ringbuf);
 
 /**
  * @brief Function for allocating memory from a ring buffer.
@@ -119,7 +117,8 @@ void nrf_ringbuf_init(nrf_ringbuf_t const * p_ringbuf);
  *         NRF_ERROR_BUSY    Ring buffer allocation process (alloc-put) is ongoing.
  *
  * */
-ret_code_t nrf_ringbuf_alloc(nrf_ringbuf_t const * p_ringbuf, uint8_t * * pp_data, size_t * p_length, bool start);
+ret_code_t nrf_ringbuf_alloc(nrf_ringbuf_t const *p_ringbuf, uint8_t **pp_data, size_t *p_length,
+                             bool start);
 
 /**
  * @brief Function for commiting data to a ring buffer.
@@ -133,7 +132,7 @@ ret_code_t nrf_ringbuf_alloc(nrf_ringbuf_t const * p_ringbuf, uint8_t * * pp_dat
 
  * @return  NRF_SUCCESS on successful put or error.
  * */
-ret_code_t nrf_ringbuf_put(nrf_ringbuf_t const * p_ringbuf, size_t length);
+ret_code_t nrf_ringbuf_put(nrf_ringbuf_t const *p_ringbuf, size_t length);
 
 /**
  * @brief Function for copying data directly into the ring buffer.
@@ -146,10 +145,8 @@ ret_code_t nrf_ringbuf_put(nrf_ringbuf_t const * p_ringbuf, size_t length);
 
  * @return  NRF_SUCCESS on successful put or error.
  * */
-ret_code_t nrf_ringbuf_cpy_put(nrf_ringbuf_t const * p_ringbuf,
-                               uint8_t const* p_data,
-                               size_t * p_length);
-
+ret_code_t nrf_ringbuf_cpy_put(nrf_ringbuf_t const *p_ringbuf, uint8_t const *p_data,
+                               size_t *p_length);
 
 /**
  * Function for getting data from the ring buffer.
@@ -168,7 +165,8 @@ ret_code_t nrf_ringbuf_cpy_put(nrf_ringbuf_t const * p_ringbuf,
  * @retval NRF_SUCCESS            Successful getting (can be smaller amount than requested).
  *         NRF_ERROR_BUSY         Ring buffer getting process (get-free) is ongoing.
  */
-ret_code_t nrf_ringbuf_get(nrf_ringbuf_t const * p_ringbuf, uint8_t * * pp_data, size_t * p_length, bool start);
+ret_code_t nrf_ringbuf_get(nrf_ringbuf_t const *p_ringbuf, uint8_t **pp_data, size_t *p_length,
+                           bool start);
 
 /**
  * @brief Function for freeing a buffer back to the ring buffer.
@@ -182,7 +180,7 @@ ret_code_t nrf_ringbuf_get(nrf_ringbuf_t const * p_ringbuf, uint8_t * * pp_data,
 
  * @return  NRF_SUCCESS on successful put or error.
  * */
-ret_code_t nrf_ringbuf_free(nrf_ringbuf_t const * p_ringbuf, size_t length);
+ret_code_t nrf_ringbuf_free(nrf_ringbuf_t const *p_ringbuf, size_t length);
 
 /**
  * @brief Function for copying data directly out of the ring buffer.
@@ -195,9 +193,7 @@ ret_code_t nrf_ringbuf_free(nrf_ringbuf_t const * p_ringbuf, size_t length);
 
  * @return  NRF_SUCCESS on successful put or error.
  * */
-ret_code_t nrf_ringbuf_cpy_get(nrf_ringbuf_t const * p_ringbuf,
-                               uint8_t * p_data,
-                               size_t * p_length);
+ret_code_t nrf_ringbuf_cpy_get(nrf_ringbuf_t const *p_ringbuf, uint8_t *p_data, size_t *p_length);
 #ifdef __cplusplus
 }
 #endif

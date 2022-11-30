@@ -40,32 +40,30 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Maximum link amount. */
-#define         SCH_TM_MAX_LINK                       (LL_MAX_CONN + LL_MAX_PER_SCAN + LL_MAX_CIG)
+#define SCH_TM_MAX_LINK (LL_MAX_CONN + LL_MAX_PER_SCAN + LL_MAX_CIG)
 
 /*! \brief      Decide if given time is in the future compared to reference time. */
-#define         SCH_TM_IS_IN_FUTURE(x, ref)           (BbGetTargetTimeDelta(x, ref) > 0)
+#define SCH_TM_IS_IN_FUTURE(x, ref) (BbGetTargetTimeDelta(x, ref) > 0)
 
 /*! \brief      Decide if given time is in the past compared to reference time. */
-#define         SCH_TM_IS_IN_PAST(x, ref)             (BbGetTargetTimeDelta(ref, x) > 0)
+#define SCH_TM_IS_IN_PAST(x, ref) (BbGetTargetTimeDelta(ref, x) > 0)
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief      Topology link descriptor. */
-typedef struct
-{
-  bool_t enabled;               /*!< TRUE if the link is enabled. */
-  bool_t movable;               /*!< TRUE if the link is movable. */
-  uint32_t interUsec;           /*!< Interval in microseconds. */
-  uint32_t durUsec;             /*!< Duration in microseconds. */
-  GetTopRefTimeCb_t refTimeCb;  /*!< Callback function to get reference time of the handle. */
+typedef struct {
+    bool_t enabled; /*!< TRUE if the link is enabled. */
+    bool_t movable; /*!< TRUE if the link is movable. */
+    uint32_t interUsec; /*!< Interval in microseconds. */
+    uint32_t durUsec; /*!< Duration in microseconds. */
+    GetTopRefTimeCb_t refTimeCb; /*!< Callback function to get reference time of the handle. */
 } schTmLink_t;
 
 /*! \brief      Topology manager control block. */
-typedef struct
-{
-  schTmLink_t tlink[SCH_TM_MAX_LINK];       /*!< Information for each topology link. */
+typedef struct {
+    schTmLink_t tlink[SCH_TM_MAX_LINK]; /*!< Information for each topology link. */
 } SchTmCb_t;
 
 /**************************************************************************************************
@@ -78,7 +76,8 @@ extern SchTmCb_t schTmCb;
   Function Declarations
 **************************************************************************************************/
 
-uint32_t SchTmGetFirstAnchor(uint32_t refTime, uint32_t defOffsUsec, uint32_t interUsec, uint32_t durUsec);
+uint32_t SchTmGetFirstAnchor(uint32_t refTime, uint32_t defOffsUsec, uint32_t interUsec,
+                             uint32_t durUsec);
 bool_t SchTmCheckConflict(uint32_t refBegin, uint32_t interUsec, uint32_t durUsec);
 
 #ifdef __cplusplus

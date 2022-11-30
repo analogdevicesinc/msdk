@@ -63,7 +63,6 @@
 extern "C" {
 #endif
 
-
 /**@internal @brief  Macro for registering a nrf_crypto backend for initialization by using
  *                   nrf_section.
  *
@@ -80,14 +79,11 @@ extern "C" {
  */
 typedef ret_code_t (*nrf_crypto_backend_init_fn_t)(void);
 
-
 /**@internal @brief Type definition of function pointer to uninitialize the nrf_crypto backend.
  *
  * This function type is used internally. Please see @nrf_crypto_uninit for documentation.
  */
 typedef ret_code_t (*nrf_crypto_backend_uninit_fn_t)(void);
-
-
 
 /**@internal @brief Type definition for structure holding the calling interface to
  *                  init, uninit, enable, or disable an nrf_crypto_backend
@@ -96,12 +92,10 @@ typedef ret_code_t (*nrf_crypto_backend_uninit_fn_t)(void);
  *          In this case, the backend will not use this structure type or only select
  *          to implement
  */
-typedef struct
-{
-    nrf_crypto_backend_init_fn_t      const init_fn;
-    nrf_crypto_backend_uninit_fn_t    const uninit_fn;
+typedef struct {
+    nrf_crypto_backend_init_fn_t const init_fn;
+    nrf_crypto_backend_uninit_fn_t const uninit_fn;
 } nrf_crypto_backend_info_t;
-
 
 /**@brief Function for initializing nrf_crypto and all registered backends.
  *
@@ -112,7 +106,6 @@ typedef struct
  */
 ret_code_t nrf_crypto_init(void);
 
-
 /**@brief Function for uninitializing nrf_crypto and all registered backends.
  *
  * @retval  NRF_SUCCESS         If unititialization was successful.
@@ -120,14 +113,12 @@ ret_code_t nrf_crypto_init(void);
  */
 ret_code_t nrf_crypto_uninit(void);
 
-
 /**@brief Function reporting if nrf_crypto has been initialized.
  *
  * @retval  True    If cryptographic library is initialized.
  * @retval  False   If cryptographic library is not initialized.
  */
 bool nrf_crypto_is_initialized(void);
-
 
 /**@brief Function reporting if nrf_crypto is initialized or is in the process of being initialized.
  *

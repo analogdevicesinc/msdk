@@ -50,13 +50,12 @@
 **************************************************************************************************/
 
 /*! Generic Power OnOff Setup Server control block type definition */
-typedef struct mmdlGenPowOnOffSetupSrCb_tag
-{
-  mmdlEventCback_t recvCback;   /*!< Model Generic Power OnOff Setup received callback */
+typedef struct mmdlGenPowOnOffSetupSrCb_tag {
+    mmdlEventCback_t recvCback; /*!< Model Generic Power OnOff Setup received callback */
 } mmdlGenPowOnOffSetupSrCb_t;
 
 /*! Generic Power OnOff Server message handler type definition */
-typedef void (*mmdlGenPowOnOffSetupSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlGenPowOnOffSetupSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
@@ -66,25 +65,24 @@ typedef void (*mmdlGenPowOnOffSetupSrHandleMsg_t )(const meshModelMsgRecvEvt_t *
 wsfHandlerId_t mmdlGenPowOnOffSetupSrHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlGenPowOnOffSetupSrRcvdOpcodes[MMDL_GEN_POWER_ONOFFSETUP_SR_NUM_RCVD_OPCODES] =
-{
-  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_ONPOWERUP_SET_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_ONPOWERUP_SET_NO_ACK_OPCODE)} }
-};
+const meshMsgOpcode_t
+    mmdlGenPowOnOffSetupSrRcvdOpcodes[MMDL_GEN_POWER_ONOFFSETUP_SR_NUM_RCVD_OPCODES] = {
+        { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_ONPOWERUP_SET_OPCODE) } },
+        { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_ONPOWERUP_SET_NO_ACK_OPCODE) } }
+    };
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlGenPowOnOffSetupSrHandleMsg_t mmdlGenPowOnOffSetupSrHandleMsg[MMDL_GEN_POWER_ONOFFSETUP_SR_NUM_RCVD_OPCODES] =
-{
-  mmdlGenPowOnOffSetupSrHandleSet,
-  mmdlGenPowOnOffSetupSrHandleSetNoAck
-};
+const mmdlGenPowOnOffSetupSrHandleMsg_t
+    mmdlGenPowOnOffSetupSrHandleMsg[MMDL_GEN_POWER_ONOFFSETUP_SR_NUM_RCVD_OPCODES] = {
+        mmdlGenPowOnOffSetupSrHandleSet, mmdlGenPowOnOffSetupSrHandleSetNoAck
+    };
 
 /*! Generic Power OnOff Server Control Block */
-static mmdlGenPowOnOffSetupSrCb_t  powOnOffSetupSrCb;
+static mmdlGenPowOnOffSetupSrCb_t powOnOffSetupSrCb;
 
 /**************************************************************************************************
   Local Functions
@@ -101,37 +99,34 @@ static mmdlGenPowOnOffSetupSrCb_t  powOnOffSetupSrCb;
 /*************************************************************************************************/
 static bool_t mmdlGenPowOnOffSetupSrSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlGenPowOnOffSrStateUpdate_t event;
+    mmdlGenPowOnOffSrStateUpdate_t event;
 
-  MMDL_TRACE_INFO1("GEN POWER ONOFF SETUP SR: Set State on elemId %d", pMsg->elementId);
+    MMDL_TRACE_INFO1("GEN POWER ONOFF SETUP SR: Set State on elemId %d", pMsg->elementId);
 
-  WSF_ASSERT(pMsg != NULL);
-  WSF_ASSERT(pMsg->pMessageParams != NULL);
+    WSF_ASSERT(pMsg != NULL);
+    WSF_ASSERT(pMsg->pMessageParams != NULL);
 
-  /* Validate message length and check prohibited values for OnPowerUp State */
-  if ((pMsg->messageParamsLen != MMDL_GEN_POWER_ONOFFSETUP_SET_LEN) ||
-      (pMsg->pMessageParams[0] >= MMDL_GEN_ONPOWERUP_STATE_PROHIBITED))
-  {
-    /* Set event parameters */
-    event.hdr.event = MMDL_GEN_POWER_ONOFF_SR_EVENT;
-    event.hdr.param = MMDL_GEN_POWER_ONOFF_SR_STATE_UPDATE_EVENT;
-    event.hdr.status = MMDL_INVALID_PARAM;
-    event.elemId = pMsg->elementId;
-    event.stateUpdateSource = MMDL_STATE_UPDATED_BY_CL;
-    event.state = pMsg->pMessageParams[0];
+    /* Validate message length and check prohibited values for OnPowerUp State */
+    if ((pMsg->messageParamsLen != MMDL_GEN_POWER_ONOFFSETUP_SET_LEN) ||
+        (pMsg->pMessageParams[0] >= MMDL_GEN_ONPOWERUP_STATE_PROHIBITED)) {
+        /* Set event parameters */
+        event.hdr.event = MMDL_GEN_POWER_ONOFF_SR_EVENT;
+        event.hdr.param = MMDL_GEN_POWER_ONOFF_SR_STATE_UPDATE_EVENT;
+        event.hdr.status = MMDL_INVALID_PARAM;
+        event.elemId = pMsg->elementId;
+        event.stateUpdateSource = MMDL_STATE_UPDATED_BY_CL;
+        event.state = pMsg->pMessageParams[0];
 
-    /* Send event to the upper layer */
-    powOnOffSetupSrCb.recvCback((wsfMsgHdr_t *)&event);
+        /* Send event to the upper layer */
+        powOnOffSetupSrCb.recvCback((wsfMsgHdr_t *)&event);
 
-    return FALSE;
-  }
-  else
-  {
-    /* Change state */
-    MmdlGenPowOnOffOnPowerUpSrSetState(pMsg->elementId, pMsg->pMessageParams[0],
-                                       MMDL_STATE_UPDATED_BY_CL);
-    return TRUE;
-  }
+        return FALSE;
+    } else {
+        /* Change state */
+        MmdlGenPowOnOffOnPowerUpSrSetState(pMsg->elementId, pMsg->pMessageParams[0],
+                                           MMDL_STATE_UPDATED_BY_CL);
+        return TRUE;
+    }
 }
 
 /*************************************************************************************************/
@@ -145,8 +140,8 @@ static bool_t mmdlGenPowOnOffSetupSrSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlGenPowOnOffSetupSrHandleSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-  /* Change state */
-  (void)mmdlGenPowOnOffSetupSrSet(pMsg);
+    /* Change state */
+    (void)mmdlGenPowOnOffSetupSrSet(pMsg);
 }
 
 /*************************************************************************************************/
@@ -160,13 +155,12 @@ void mmdlGenPowOnOffSetupSrHandleSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlGenPowOnOffSetupSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  /* Change state */
-  if (mmdlGenPowOnOffSetupSrSet(pMsg))
-  {
-    /* Send Status message as a response to the Set message */
-    MmdlGenPowOnOffSrSendStatus(MMDL_GEN_POWER_ONOFFSETUP_SR_MDL_ID, pMsg->elementId, pMsg->srcAddr,
-                                pMsg->appKeyIndex);
-  }
+    /* Change state */
+    if (mmdlGenPowOnOffSetupSrSet(pMsg)) {
+        /* Send Status message as a response to the Set message */
+        MmdlGenPowOnOffSrSendStatus(MMDL_GEN_POWER_ONOFFSETUP_SR_MDL_ID, pMsg->elementId,
+                                    pMsg->srcAddr, pMsg->appKeyIndex);
+    }
 }
 
 /**************************************************************************************************
@@ -182,10 +176,10 @@ void mmdlGenPowOnOffSetupSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSetupSrInit(void)
 {
-  MMDL_TRACE_INFO0("GEN POWER ONOFF SETUP SR: init");
+    MMDL_TRACE_INFO0("GEN POWER ONOFF SETUP SR: init");
 
-  /* Set event callbacks */
-  powOnOffSetupSrCb.recvCback = MmdlEmptyCback;
+    /* Set event callbacks */
+    powOnOffSetupSrCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -199,8 +193,8 @@ void MmdlGenPowOnOffSetupSrInit(void)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSetupSrHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Set handler ID */
-  mmdlGenPowOnOffSetupSrHandlerId = handlerId;
+    /* Set handler ID */
+    mmdlGenPowOnOffSetupSrHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -215,38 +209,34 @@ void MmdlGenPowOnOffSetupSrHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSetupSrHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelMsgRecvEvt_t *pModelMsg;
-  uint8_t opcodeIdx;
+    meshModelMsgRecvEvt_t *pModelMsg;
+    uint8_t opcodeIdx;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-        /* Validate opcode size and value */
-        if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_POWER_ONOFF_OPCODES_SIZE)
-        {
-          /* Match the received opcode */
-          for (opcodeIdx = 0; opcodeIdx < MMDL_GEN_POWER_ONOFFSETUP_SR_NUM_RCVD_OPCODES; opcodeIdx++)
-          {
-            if (!memcmp(&mmdlGenPowOnOffSetupSrRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
-                        MMDL_GEN_POWER_ONOFF_OPCODES_SIZE))
-            {
-              /* Process message */
-              (void)mmdlGenPowOnOffSetupSrHandleMsg[opcodeIdx](pModelMsg);
+            /* Validate opcode size and value */
+            if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_POWER_ONOFF_OPCODES_SIZE) {
+                /* Match the received opcode */
+                for (opcodeIdx = 0; opcodeIdx < MMDL_GEN_POWER_ONOFFSETUP_SR_NUM_RCVD_OPCODES;
+                     opcodeIdx++) {
+                    if (!memcmp(&mmdlGenPowOnOffSetupSrRcvdOpcodes[opcodeIdx],
+                                pModelMsg->opCode.opcodeBytes, MMDL_GEN_POWER_ONOFF_OPCODES_SIZE)) {
+                        /* Process message */
+                        (void)mmdlGenPowOnOffSetupSrHandleMsg[opcodeIdx](pModelMsg);
+                    }
+                }
             }
-          }
-        }
-        break;
+            break;
 
-      default:
-        MMDL_TRACE_WARN0("GEN POWER ONOFF SETUP SR: Invalid event message received!");
-        break;
+        default:
+            MMDL_TRACE_WARN0("GEN POWER ONOFF SETUP SR: Invalid event message received!");
+            break;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -260,9 +250,8 @@ void MmdlGenPowOnOffSetupSrHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSetupSrRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback */
-  if (recvCback != NULL)
-  {
-    powOnOffSetupSrCb.recvCback = recvCback;
-  }
+    /* Store valid callback */
+    if (recvCback != NULL) {
+        powOnOffSetupSrCb.recvCback = recvCback;
+    }
 }

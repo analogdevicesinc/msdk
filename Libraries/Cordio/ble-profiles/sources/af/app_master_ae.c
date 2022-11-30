@@ -37,27 +37,24 @@
 /*************************************************************************************************/
 static bool_t appMasterExtScanMode(void)
 {
-  /* if DM extended scanning */
-  if (DmScanModeExt())
-  {
-    /* if first time since last power-on or reset */
-    if (appMasterCb.scanMode == APP_SCAN_MODE_NONE)
-    {
-      /* set scanning mode to extended */
-      appMasterCb.scanMode = APP_SCAN_MODE_EXT;
+    /* if DM extended scanning */
+    if (DmScanModeExt()) {
+        /* if first time since last power-on or reset */
+        if (appMasterCb.scanMode == APP_SCAN_MODE_NONE) {
+            /* set scanning mode to extended */
+            appMasterCb.scanMode = APP_SCAN_MODE_EXT;
 
-      return TRUE;
+            return TRUE;
+        }
     }
-  }
 
-  if (appMasterCb.scanMode == APP_SCAN_MODE_EXT)
-  {
-    return TRUE;
-  }
+    if (appMasterCb.scanMode == APP_SCAN_MODE_EXT) {
+        return TRUE;
+    }
 
-  APP_TRACE_WARN0("Invalid DM scanning mode; mode configured as legacy");
+    APP_TRACE_WARN0("Invalid DM scanning mode; mode configured as legacy");
 
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -79,29 +76,26 @@ static bool_t appMasterExtScanMode(void)
 void AppExtScanStart(uint8_t scanPhys, uint8_t mode, const uint8_t *pScanType, uint16_t duration,
                      uint16_t period)
 {
-  uint8_t  i;                         /* scanPhy bit position */
-  uint8_t  idx;                       /* array index */
-  uint16_t scanInterval[DM_NUM_PHYS];
-  uint16_t scanWindow[DM_NUM_PHYS];
-  uint8_t  scanType[DM_NUM_PHYS];
+    uint8_t i; /* scanPhy bit position */
+    uint8_t idx; /* array index */
+    uint16_t scanInterval[DM_NUM_PHYS];
+    uint16_t scanWindow[DM_NUM_PHYS];
+    uint8_t scanType[DM_NUM_PHYS];
 
-  if (appMasterExtScanMode())
-  {
-    for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++)
-    {
-      if (scanPhys & (1 << i))
-      {
-        scanInterval[idx] = pAppExtMasterCfg->scanInterval[i];
-        scanWindow[idx] = pAppExtMasterCfg->scanWindow[i];
-        scanType[idx] = pScanType[i];
-        idx++;
-      }
+    if (appMasterExtScanMode()) {
+        for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++) {
+            if (scanPhys & (1 << i)) {
+                scanInterval[idx] = pAppExtMasterCfg->scanInterval[i];
+                scanWindow[idx] = pAppExtMasterCfg->scanWindow[i];
+                scanType[idx] = pScanType[i];
+                idx++;
+            }
+        }
+
+        DmScanSetInterval(scanPhys, scanInterval, scanWindow);
+
+        DmScanStart(scanPhys, mode, scanType, TRUE, duration, period);
     }
-
-    DmScanSetInterval(scanPhys, scanInterval, scanWindow);
-
-    DmScanStart(scanPhys, mode, scanType, TRUE, duration, period);
-  }
 }
 
 /*************************************************************************************************/
@@ -113,13 +107,12 @@ void AppExtScanStart(uint8_t scanPhys, uint8_t mode, const uint8_t *pScanType, u
 /*************************************************************************************************/
 void AppExtScanStop(void)
 {
-  if (appMasterExtScanMode())
-  {
-    /* stop address resolution */
-    appMasterCb.inProgress = FALSE;
+    if (appMasterExtScanMode()) {
+        /* stop address resolution */
+        appMasterCb.inProgress = FALSE;
 
-    DmScanStop();
-  }
+        DmScanStop();
+    }
 }
 
 /*************************************************************************************************/
@@ -140,13 +133,12 @@ void AppExtScanStop(void)
 dmSyncId_t AppSyncStart(uint8_t advSid, uint8_t advAddrType, const uint8_t *pAdvAddr, uint16_t skip,
                         uint16_t syncTimeout)
 {
-  if (appMasterExtScanMode())
-  {
-    return DmSyncStart(advSid, advAddrType, pAdvAddr, skip, syncTimeout);
-  }
+    if (appMasterExtScanMode()) {
+        return DmSyncStart(advSid, advAddrType, pAdvAddr, skip, syncTimeout);
+    }
 
-  /* wrong scan mode */
-  return DM_SYNC_ID_NONE;
+    /* wrong scan mode */
+    return DM_SYNC_ID_NONE;
 }
 
 /*************************************************************************************************/
@@ -160,10 +152,9 @@ dmSyncId_t AppSyncStart(uint8_t advSid, uint8_t advAddrType, const uint8_t *pAdv
 /*************************************************************************************************/
 void AppSyncStop(dmSyncId_t syncId)
 {
-  if (appMasterExtScanMode())
-  {
-    DmSyncStop(syncId);
-  }
+    if (appMasterExtScanMode()) {
+        DmSyncStop(syncId);
+    }
 }
 
 /*************************************************************************************************/
@@ -180,11 +171,10 @@ void AppSyncStop(dmSyncId_t syncId)
 /*************************************************************************************************/
 dmConnId_t AppExtConnOpen(uint8_t initPhys, uint8_t addrType, uint8_t *pAddr, appDbHdl_t dbHdl)
 {
-  if (appMasterExtScanMode())
-  {
-    return appConnOpen(initPhys, addrType, pAddr, dbHdl);
-  }
+    if (appMasterExtScanMode()) {
+        return appConnOpen(initPhys, addrType, pAddr, dbHdl);
+    }
 
-  /* wrong connect mode */
-  return DM_CONN_ID_NONE;
+    /* wrong connect mode */
+    return DM_CONN_ID_NONE;
 }

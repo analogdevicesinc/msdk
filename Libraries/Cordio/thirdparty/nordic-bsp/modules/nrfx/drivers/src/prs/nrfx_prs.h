@@ -56,47 +56,47 @@ extern "C" {
  */
 
 #if defined(NRF51)
-    // SPI0, TWI0
-    #define NRFX_PRS_BOX_0_ADDR     NRF_SPI0
-    // SPI1, SPIS1, TWI1
-    #define NRFX_PRS_BOX_1_ADDR     NRF_SPI1
+// SPI0, TWI0
+#define NRFX_PRS_BOX_0_ADDR NRF_SPI0
+// SPI1, SPIS1, TWI1
+#define NRFX_PRS_BOX_1_ADDR NRF_SPI1
 #elif defined(NRF52810_XXAA)
-    // TWIM0, TWIS0, TWI0
-    #define NRFX_PRS_BOX_0_ADDR     NRF_TWIM0
-    // SPIM0, SPIS0, SPI0
-    #define NRFX_PRS_BOX_1_ADDR     NRF_SPIM0
-    // UARTE0, UART0
-    #define NRFX_PRS_BOX_2_ADDR     NRF_UARTE0
+// TWIM0, TWIS0, TWI0
+#define NRFX_PRS_BOX_0_ADDR NRF_TWIM0
+// SPIM0, SPIS0, SPI0
+#define NRFX_PRS_BOX_1_ADDR NRF_SPIM0
+// UARTE0, UART0
+#define NRFX_PRS_BOX_2_ADDR NRF_UARTE0
 #elif defined(NRF52811_XXAA)
-    // TWIM0, TWIS0, TWI0, SPIM1, SPIS1, SPI1
-    #define NRFX_PRS_BOX_0_ADDR     NRF_TWIM0
-    // SPIM0, SPIS0, SPI0
-    #define NRFX_PRS_BOX_1_ADDR     NRF_SPIM0
-    // UART0, UARTE0
-    #define NRFX_PRS_BOX_2_ADDR     NRF_UART0
-#elif defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
-      defined(NRF52833_XXAA) || defined(NRF52840_XXAA)
-    // SPIM0, SPIS0, TWIM0, TWIS0, SPI0, TWI0
-    #define NRFX_PRS_BOX_0_ADDR     NRF_SPIM0
-    // SPIM1, SPIS1, TWIM1, TWIS1, SPI1, TWI1
-    #define NRFX_PRS_BOX_1_ADDR     NRF_SPIM1
-    // SPIM2, SPIS2, SPI2
-    #define NRFX_PRS_BOX_2_ADDR     NRF_SPIM2
-    // COMP, LPCOMP
-    #define NRFX_PRS_BOX_3_ADDR     NRF_COMP
-    // UARTE0, UART0
-    #define NRFX_PRS_BOX_4_ADDR     NRF_UARTE0
+// TWIM0, TWIS0, TWI0, SPIM1, SPIS1, SPI1
+#define NRFX_PRS_BOX_0_ADDR NRF_TWIM0
+// SPIM0, SPIS0, SPI0
+#define NRFX_PRS_BOX_1_ADDR NRF_SPIM0
+// UART0, UARTE0
+#define NRFX_PRS_BOX_2_ADDR NRF_UART0
+#elif defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || defined(NRF52833_XXAA) || \
+    defined(NRF52840_XXAA)
+// SPIM0, SPIS0, TWIM0, TWIS0, SPI0, TWI0
+#define NRFX_PRS_BOX_0_ADDR NRF_SPIM0
+// SPIM1, SPIS1, TWIM1, TWIS1, SPI1, TWI1
+#define NRFX_PRS_BOX_1_ADDR NRF_SPIM1
+// SPIM2, SPIS2, SPI2
+#define NRFX_PRS_BOX_2_ADDR NRF_SPIM2
+// COMP, LPCOMP
+#define NRFX_PRS_BOX_3_ADDR NRF_COMP
+// UARTE0, UART0
+#define NRFX_PRS_BOX_4_ADDR NRF_UARTE0
 #elif defined(NRF9160_XXAA)
-    // UARTE0, SPIM0, SPIS0, TWIM0, TWIS0
-    #define NRFX_PRS_BOX_0_ADDR     NRF_UARTE0
-    // UARTE1, SPIM1, SPIS1, TWIM1, TWIS1
-    #define NRFX_PRS_BOX_1_ADDR     NRF_UARTE1
-    // UARTE2, SPIM2, SPIS2, TWIM2, TWIS2
-    #define NRFX_PRS_BOX_2_ADDR     NRF_UARTE2
-    // UARTE3, SPIM3, SPIS3, TWIM3, TWIS3
-    #define NRFX_PRS_BOX_3_ADDR     NRF_UARTE3
+// UARTE0, SPIM0, SPIS0, TWIM0, TWIS0
+#define NRFX_PRS_BOX_0_ADDR NRF_UARTE0
+// UARTE1, SPIM1, SPIS1, TWIM1, TWIS1
+#define NRFX_PRS_BOX_1_ADDR NRF_UARTE1
+// UARTE2, SPIM2, SPIS2, TWIM2, TWIS2
+#define NRFX_PRS_BOX_2_ADDR NRF_UARTE2
+// UARTE3, SPIM3, SPIS3, TWIM3, TWIS3
+#define NRFX_PRS_BOX_3_ADDR NRF_UARTE3
 #else
-    #error "Unknown device."
+#error "Unknown device."
 #endif
 
 /**
@@ -121,8 +121,7 @@ extern "C" {
  *                         for it.
  * @retval NRFX_ERROR_BUSY If resources were already acquired.
  */
-nrfx_err_t nrfx_prs_acquire(void       const * p_base_addr,
-                            nrfx_irq_handler_t irq_handler);
+nrfx_err_t nrfx_prs_acquire(void const *p_base_addr, nrfx_irq_handler_t irq_handler);
 
 /**
  * @brief Function for releasing shared resources reserved previously by
@@ -130,7 +129,7 @@ nrfx_err_t nrfx_prs_acquire(void       const * p_base_addr,
  *
  * @param[in] p_base_addr Released peripheral base pointer.
  */
-void nrfx_prs_release(void const * p_base_addr);
+void nrfx_prs_release(void const *p_base_addr);
 
 /** @} */
 
@@ -139,7 +138,6 @@ void nrfx_prs_box_1_irq_handler(void);
 void nrfx_prs_box_2_irq_handler(void);
 void nrfx_prs_box_3_irq_handler(void);
 void nrfx_prs_box_4_irq_handler(void);
-
 
 #ifdef __cplusplus
 }

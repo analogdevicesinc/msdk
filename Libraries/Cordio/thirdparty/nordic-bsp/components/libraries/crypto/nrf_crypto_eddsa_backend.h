@@ -52,7 +52,6 @@
 #include "cc310_backend_eddsa.h"
 #include "oberon_backend_eddsa.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif

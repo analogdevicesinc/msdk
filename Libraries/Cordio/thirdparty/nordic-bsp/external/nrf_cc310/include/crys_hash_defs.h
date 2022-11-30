@@ -32,7 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 #ifndef CRYS_HASH_DEFS_H
 #define CRYS_HASH_DEFS_H
 
@@ -45,16 +44,13 @@
 */
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-
 
 /************************ Defines ******************************/
 
 /*! The size of user's context prototype (see ::CRYS_HASHUserContext_t) in words. */
 #define CRYS_HASH_USER_CTX_SIZE_IN_WORDS 60
-
 
 #ifdef __cplusplus
 }

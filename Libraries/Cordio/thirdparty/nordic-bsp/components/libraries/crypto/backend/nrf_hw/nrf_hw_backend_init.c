@@ -45,7 +45,6 @@
 #include "nrf_crypto_init.h"
 #include "nrf_crypto_rng.h"
 
-
 static ret_code_t nrf_hw_backend_init(void)
 {
 #if defined(NRF_CRYPTO_RNG_AUTO_INIT_ENABLED) && (NRF_CRYPTO_RNG_AUTO_INIT_ENABLED == 1)
@@ -60,11 +59,10 @@ static ret_code_t nrf_hw_backend_init(void)
 
 #else
 
-    #warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+#warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif // NRF_CRYPTO_RNG_AUTO_INIT_ENABLED
 }
-
 
 static ret_code_t nrf_hw_backend_uninit(void)
 {
@@ -80,16 +78,14 @@ static ret_code_t nrf_hw_backend_uninit(void)
 
 #else
 
-    #warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+#warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_RNG_AUTO_INIT)
 }
 
-
-CRYPTO_BACKEND_REGISTER(nrf_crypto_backend_info_t const nrf_hw_backend) =
-{
-    .init_fn    = nrf_hw_backend_init,
-    .uninit_fn  = nrf_hw_backend_uninit
+CRYPTO_BACKEND_REGISTER(nrf_crypto_backend_info_t const nrf_hw_backend) = {
+    .init_fn = nrf_hw_backend_init,
+    .uninit_fn = nrf_hw_backend_uninit
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_HW_RNG)

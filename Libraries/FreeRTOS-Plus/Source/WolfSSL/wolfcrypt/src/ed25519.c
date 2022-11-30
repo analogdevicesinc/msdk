@@ -19,10 +19,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
- /* Based On Daniel J Bernstein's ed25519 Public Domain ref10 work. */
+/* Based On Daniel J Bernstein's ed25519 Public Domain ref10 work. */
 
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+#include <config.h>
 #endif
 
 /* in case user set HAVE_ED25519 there */
@@ -33,20 +33,19 @@
 #include <wolfssl/wolfcrypt/ed25519.h>
 #include <wolfssl/wolfcrypt/error-crypt.h>
 #ifdef NO_INLINE
-    #include <wolfssl/wolfcrypt/misc.h>
+#include <wolfssl/wolfcrypt/misc.h>
 #else
-    #include <wolfcrypt/src/misc.c>
+#include <wolfcrypt/src/misc.c>
 #endif
-
 
 /*
     generate an ed25519 key pair.
     returns 0 on success
  */
-int wc_ed25519_make_key(RNG* rng, int keySz, ed25519_key* key)
+int wc_ed25519_make_key(RNG *rng, int keySz, ed25519_key *key)
 {
-    byte  az[64];
-    int   ret;
+    byte az[64];
+    int ret;
     ge_p3 A;
 
     if (rng == NULL || key == NULL)
@@ -70,7 +69,6 @@ int wc_ed25519_make_key(RNG* rng, int keySz, ed25519_key* key)
     return ret;
 }
 
-
 /*
     in     contains the message to sign
     inlen  is the length of the message to sign
@@ -80,23 +78,22 @@ int wc_ed25519_make_key(RNG* rng, int keySz, ed25519_key* key)
     key    is the ed25519 key to use when signing
     return 0 on success
  */
-int wc_ed25519_sign_msg(const byte* in, word32 inlen, byte* out,
-                        word32 *outlen, ed25519_key* key)
+int wc_ed25519_sign_msg(const byte *in, word32 inlen, byte *out, word32 *outlen, ed25519_key *key)
 {
-    ge_p3  R;
-    byte   nonce[SHA512_DIGEST_SIZE];
-    byte   hram[SHA512_DIGEST_SIZE];
-    byte   az[64];
+    ge_p3 R;
+    byte nonce[SHA512_DIGEST_SIZE];
+    byte hram[SHA512_DIGEST_SIZE];
+    byte az[64];
     word32 sigSz;
     Sha512 sha;
-    int    ret = 0;
+    int ret = 0;
 
     /* sanity check on arguments */
     if (in == NULL || out == NULL || outlen == NULL || key == NULL)
         return BAD_FUNC_ARG;
 
     /* check and set up out length */
-    ret   = 0;
+    ret = 0;
     sigSz = wc_ed25519_sig_size(key);
     if (*outlen < sigSz)
         return BAD_FUNC_ARG;
@@ -104,8 +101,8 @@ int wc_ed25519_sign_msg(const byte* in, word32 inlen, byte* out,
 
     /* step 1: create nonce to use where nonce is r in
        r = H(h_b, ... ,h_2b-1,M) */
-    ret |= wc_Sha512Hash(key->k,32,az);
-    az[0]  &= 248;
+    ret |= wc_Sha512Hash(key->k, 32, az);
+    az[0] &= 248;
     az[31] &= 63;
     az[31] |= 64;
     ret |= wc_InitSha512(&sha);
@@ -116,8 +113,8 @@ int wc_ed25519_sign_msg(const byte* in, word32 inlen, byte* out,
 
     /* step 2: computing R = rB where rB is the scalar multiplication of
        r and B */
-    ge_scalarmult_base(&R,nonce);
-    ge_p3_tobytes(out,&R);
+    ge_scalarmult_base(&R, nonce);
+    ge_p3_tobytes(out, &R);
 
     /* step 3: hash R + public key + message getting H(R,A,M) then
        creating S = (r + H(R,A,M)a) mod l */
@@ -132,7 +129,6 @@ int wc_ed25519_sign_msg(const byte* in, word32 inlen, byte* out,
     return ret;
 }
 
-
 /*
    sig     is array of bytes containing the signature
    siglen  is the length of sig byte array
@@ -140,22 +136,22 @@ int wc_ed25519_sign_msg(const byte* in, word32 inlen, byte* out,
    msglen  length of msg array
    stat    will be 1 on successful verify and 0 on unsuccessful
 */
-int wc_ed25519_verify_msg(byte* sig, word32 siglen, const byte* msg,
-                          word32 msglen, int* stat, ed25519_key* key)
+int wc_ed25519_verify_msg(byte *sig, word32 siglen, const byte *msg, word32 msglen, int *stat,
+                          ed25519_key *key)
 {
-    byte   rcheck[32];
-    byte   h[SHA512_DIGEST_SIZE];
-    ge_p3  A;
-    ge_p2  R;
+    byte rcheck[32];
+    byte h[SHA512_DIGEST_SIZE];
+    ge_p3 A;
+    ge_p2 R;
     word32 sigSz;
-    int    ret;
+    int ret;
     Sha512 sha;
 
     /* sanity check on arguments */
     if (sig == NULL || msg == NULL || stat == NULL || key == NULL)
         return BAD_FUNC_ARG;
 
-    ret   = 0;
+    ret = 0;
     *stat = 0;
     sigSz = wc_ed25519_size(key);
 
@@ -171,10 +167,10 @@ int wc_ed25519_verify_msg(byte* sig, word32 siglen, const byte* msg,
 
     /* find H(R,A,M) and store it as h */
     ret |= wc_InitSha512(&sha);
-    ret |= wc_Sha512Update(&sha, sig,    32);
+    ret |= wc_Sha512Update(&sha, sig, 32);
     ret |= wc_Sha512Update(&sha, key->p, 32);
-    ret |= wc_Sha512Update(&sha, msg,    msglen);
-    ret |= wc_Sha512Final(&sha,  h);
+    ret |= wc_Sha512Update(&sha, msg, msglen);
+    ret |= wc_Sha512Final(&sha, h);
     sc_reduce(h);
 
     /*
@@ -185,16 +181,15 @@ int wc_ed25519_verify_msg(byte* sig, word32 siglen, const byte* msg,
     ge_tobytes(rcheck, &R);
 
     /* comparison of R created to R in sig */
-    ret  |= ConstantCompare(rcheck, sig, 32);
+    ret |= ConstantCompare(rcheck, sig, 32);
 
-    *stat = (ret == 0)? 1: 0;
+    *stat = (ret == 0) ? 1 : 0;
 
     return ret;
 }
 
-
 /* initialize information and memory for key */
-int wc_ed25519_init(ed25519_key* key)
+int wc_ed25519_init(ed25519_key *key)
 {
     if (key == NULL)
         return BAD_FUNC_ARG;
@@ -204,9 +199,8 @@ int wc_ed25519_init(ed25519_key* key)
     return 0;
 }
 
-
 /* clear memory of key */
-void wc_ed25519_free(ed25519_key* key)
+void wc_ed25519_free(ed25519_key *key)
 {
     if (key == NULL)
         return;
@@ -214,13 +208,12 @@ void wc_ed25519_free(ed25519_key* key)
     ForceZero(key, sizeof(ed25519_key));
 }
 
-
 /*
     outLen should contain the size of out buffer when input. outLen is than set
     to the final output length.
     returns 0 on success
  */
-int wc_ed25519_export_public(ed25519_key* key, byte* out, word32* outLen)
+int wc_ed25519_export_public(ed25519_key *key, byte *out, word32 *outLen)
 {
     word32 keySz;
 
@@ -239,17 +232,16 @@ int wc_ed25519_export_public(ed25519_key* key, byte* out, word32* outLen)
     return 0;
 }
 
-
 /*
     Imports a compressed/uncompressed public key.
     in    the byte array containing the public key
     inLen the length of the byte array being passed in
     key   ed25519 key struct to put the public key in
  */
-int wc_ed25519_import_public(const byte* in, word32 inLen, ed25519_key* key)
+int wc_ed25519_import_public(const byte *in, word32 inLen, ed25519_key *key)
 {
     word32 keySz;
-    int    ret;
+    int ret;
 
     /* sanity check on arguments */
     if (in == NULL || key == NULL)
@@ -271,7 +263,7 @@ int wc_ed25519_import_public(const byte* in, word32 inLen, ed25519_key* key)
     /* importing uncompressed public key */
     if (in[0] == 0x04) {
         /* pass in (x,y) and store compressed key */
-        ret = ge_compress_key(key->p, (in+1), (in+1+keySz), keySz);
+        ret = ge_compress_key(key->p, (in + 1), (in + 1 + keySz), keySz);
         return ret;
     }
 
@@ -286,15 +278,14 @@ int wc_ed25519_import_public(const byte* in, word32 inLen, ed25519_key* key)
     return BAD_FUNC_ARG;
 }
 
-
 /*
     For importing a private key and its associated public key.
  */
-int wc_ed25519_import_private_key(const byte* priv, word32 privSz,
-                                const byte* pub, word32 pubSz, ed25519_key* key)
+int wc_ed25519_import_private_key(const byte *priv, word32 privSz, const byte *pub, word32 pubSz,
+                                  ed25519_key *key)
 {
     word32 keySz;
-    int    ret;
+    int ret;
 
     /* sanity check on arguments */
     if (priv == NULL || pub == NULL || key == NULL)
@@ -313,13 +304,12 @@ int wc_ed25519_import_private_key(const byte* priv, word32 privSz,
     return ret;
 }
 
-
 /*
     outLen should contain the size of out buffer when input. outLen is than set
     to the final output length.
     returns 0 on success
  */
-int wc_ed25519_export_private_only(ed25519_key* key, byte* out, word32* outLen)
+int wc_ed25519_export_private_only(ed25519_key *key, byte *out, word32 *outLen)
 {
     word32 keySz;
 
@@ -338,9 +328,8 @@ int wc_ed25519_export_private_only(ed25519_key* key, byte* out, word32* outLen)
     return 0;
 }
 
-
 /* is the compressed key size in bytes */
-int wc_ed25519_size(ed25519_key* key)
+int wc_ed25519_size(ed25519_key *key)
 {
     word32 keySz;
 
@@ -352,9 +341,8 @@ int wc_ed25519_size(ed25519_key* key)
     return keySz;
 }
 
-
 /* returns the size of signature in bytes */
-int wc_ed25519_sig_size(ed25519_key* key)
+int wc_ed25519_sig_size(ed25519_key *key)
 {
     word32 sigSz;
 
@@ -367,4 +355,3 @@ int wc_ed25519_sig_size(ed25519_key* key)
 }
 
 #endif /* HAVE_ED25519 */
-

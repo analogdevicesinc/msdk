@@ -45,7 +45,7 @@ extern "C" {
 #define SVC_SEC_PERMIT_WRITE ATTS_PERMIT_WRITE
 #endif
 
-/*! \} */    /* SERVICE_CONFIGURATION */
+/*! \} */ /* SERVICE_CONFIGURATION */
 
 #ifdef __cplusplus
 };

@@ -32,16 +32,11 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
-
 #ifndef _SSI_PAL_MEM_H
 #define _SSI_PAL_MEM_H
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "ssi_pal_types.h"
@@ -57,7 +52,6 @@ extern "C"
 @ingroup ssi_pal
 */
 
-
 /*----------------------------
       PUBLIC FUNCTIONS
 -----------------------------------*/
@@ -70,10 +64,9 @@ extern "C"
 * @return The return values is according to operating system return values.
 */
 
-
-int32_t SaSi_PalMemCmp( const void* aTarget, /*!< [in] The target buffer to compare. */
-                    const void* aSource, /*!< [in] The Source buffer to compare to. */
-                uint32_t  aSize      /*!< [in] Number of bytes to compare. */);
+int32_t SaSi_PalMemCmp(const void *aTarget, /*!< [in] The target buffer to compare. */
+                       const void *aSource, /*!< [in] The Source buffer to compare to. */
+                       uint32_t aSize /*!< [in] Number of bytes to compare. */);
 
 /*!
  * @brief This function purpose is to perform secured memory comparison between two given
@@ -84,18 +77,18 @@ int32_t SaSi_PalMemCmp( const void* aTarget, /*!< [in] The target buffer to comp
  * @return SASI_SUCCESS in case of success,
  * @return value on failure as defined in  ssi_pal_error.h.
  */
-SaSiError_t SaSi_PalSecMemCmp(  const uint8_t* aTarget,  /*!< [in] The target buffer to compare. */
-                        const uint8_t* aSource,  /*!< [in] The Source buffer to compare to. */
-                        uint32_t  aSize      /*!< [in] Number of bytes to compare. */);
+SaSiError_t SaSi_PalSecMemCmp(const uint8_t *aTarget, /*!< [in] The target buffer to compare. */
+                              const uint8_t *aSource, /*!< [in] The Source buffer to compare to. */
+                              uint32_t aSize /*!< [in] Number of bytes to compare. */);
 
 /*!
  * @brief This function purpose is to copy aSize bytes from source buffer to destination buffer.
  *
  * @return void.
  */
-void SaSi_PalMemCopy(   void* aDestination, /*!< [out] The destination buffer to copy bytes to. */
-                    const void* aSource,      /*!< [in] The Source buffer to copy from. */
-                uint32_t  aSize       /*!< [in] Number of bytes to copy. */ );
+void SaSi_PalMemCopy(void *aDestination, /*!< [out] The destination buffer to copy bytes to. */
+                     const void *aSource, /*!< [in] The Source buffer to copy from. */
+                     uint32_t aSize /*!< [in] Number of bytes to copy. */);
 
 /*!
  * @brief This function purpose is to copy aSize bytes from source buffer to destination buffer.
@@ -103,26 +96,26 @@ void SaSi_PalMemCopy(   void* aDestination, /*!< [out] The destination buffer to
  *
  * @return void.
  */
-void SaSi_PalMemMove(   void* aDestination, /*!< [out] The destination buffer to copy bytes to. */
-                    const void* aSource,      /*!< [in] The Source buffer to copy from. */
-                uint32_t  aSize       /*!< [in] Number of bytes to copy. */);
+void SaSi_PalMemMove(void *aDestination, /*!< [out] The destination buffer to copy bytes to. */
+                     const void *aSource, /*!< [in] The Source buffer to copy from. */
+                     uint32_t aSize /*!< [in] Number of bytes to copy. */);
 
 /*!
  * @brief This function purpose is to set aSize bytes in the given buffer with aChar.
  *
  * @return void.
  */
-void SaSi_PalMemSet(    void* aTarget, /*!< [out]  The target buffer to set. */
+void SaSi_PalMemSet(void *aTarget, /*!< [out]  The target buffer to set. */
                     const uint8_t aChar, /*!< [in] The char to set into aTarget. */
-                uint32_t  aSize      /*!< [in] Number of bytes to set. */);
+                    uint32_t aSize /*!< [in] Number of bytes to set. */);
 
 /*!
  * @brief This function purpose is to set aSize bytes in the given buffer with zeroes.
  *
  * @return void.
  */
-void SaSi_PalMemSetZero(    void* aTarget, /*!< [out]  The target buffer to set. */
-                        uint32_t  aSize      /*!< [in] Number of bytes to set. */);
+void SaSi_PalMemSetZero(void *aTarget, /*!< [out]  The target buffer to set. */
+                        uint32_t aSize /*!< [in] Number of bytes to set. */);
 
 /**** ----- Memory Allocation APIs ----- ****/
 
@@ -132,7 +125,7 @@ void SaSi_PalMemSetZero(    void* aTarget, /*!< [out]  The target buffer to set.
  *
  * @return The function will return a pointer to allocated buffer or NULL if allocation failed.
  */
-void* SaSi_PalMemMalloc(uint32_t aSize /*!< [in] Number of bytes to allocate. */);
+void *SaSi_PalMemMalloc(uint32_t aSize /*!< [in] Number of bytes to allocate. */);
 
 /*!
  * @brief This function purpose is to reallocate a memory buffer according to aNewSize.
@@ -140,8 +133,8 @@ void* SaSi_PalMemMalloc(uint32_t aSize /*!< [in] Number of bytes to allocate. */
  *
  * @return The function will return a pointer to the newly allocated buffer or NULL if allocation failed.
  */
-void* SaSi_PalMemRealloc(  void* aBuffer,   /*!< [in] Pointer to allocated buffer. */
-                           uint32_t aNewSize    /*!< [in] Number of bytes to reallocate. */);
+void *SaSi_PalMemRealloc(void *aBuffer, /*!< [in] Pointer to allocated buffer. */
+                         uint32_t aNewSize /*!< [in] Number of bytes to reallocate. */);
 
 /*!
  * @brief This function purpose is to free allocated buffer.
@@ -149,7 +142,7 @@ void* SaSi_PalMemRealloc(  void* aBuffer,   /*!< [in] Pointer to allocated buffe
  *
  * @return void.
  */
-void SaSi_PalMemFree(void* aBuffer /*!< [in] Pointer to allocated buffer.*/);
+void SaSi_PalMemFree(void *aBuffer /*!< [in] Pointer to allocated buffer.*/);
 
 #ifdef __cplusplus
 }
@@ -158,5 +151,3 @@ void SaSi_PalMemFree(void* aBuffer /*!< [in] Pointer to allocated buffer.*/);
 @}
  */
 #endif
-
-

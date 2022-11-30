@@ -42,40 +42,24 @@
 /* Characteristics for discovery */
 
 /*! Heart rate measurement */
-static const attcDiscChar_t hrpcHrsHrm =
-{
-  attHrmChUuid,
-  ATTC_SET_REQUIRED
-};
+static const attcDiscChar_t hrpcHrsHrm = { attHrmChUuid, ATTC_SET_REQUIRED };
 
 /*! Heart rate measurement CCC descriptor */
-static const attcDiscChar_t hrpcHrsHrmCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t hrpcHrsHrmCcc = { attCliChCfgUuid,
+                                              ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
 
 /*! Body sensor location */
-static const attcDiscChar_t hrpcHrsBsl =
-{
-  attBslChUuid,
-  0
-};
+static const attcDiscChar_t hrpcHrsBsl = { attBslChUuid, 0 };
 
 /*! Heart rate control point */
-static const attcDiscChar_t hrpcHrsHrcp =
-{
-  attHrcpChUuid,
-  0
-};
+static const attcDiscChar_t hrpcHrsHrcp = { attHrcpChUuid, 0 };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *hrpcHrsDiscCharList[] =
-{
-  &hrpcHrsHrm,                    /*! Heart rate measurement */
-  &hrpcHrsHrmCcc,                 /*! Heart rate measurement CCC descriptor */
-  &hrpcHrsBsl,                    /*! Body sensor location */
-  &hrpcHrsHrcp,                   /*! Heart rate control point */
+static const attcDiscChar_t *hrpcHrsDiscCharList[] = {
+    &hrpcHrsHrm, /*! Heart rate measurement */
+    &hrpcHrsHrmCcc, /*! Heart rate measurement CCC descriptor */
+    &hrpcHrsBsl, /*! Body sensor location */
+    &hrpcHrsHrcp, /*! Heart rate control point */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
@@ -93,82 +77,72 @@ WSF_CT_ASSERT(HRPC_HRS_HDL_LIST_LEN == ((sizeof(hrpcHrsDiscCharList) / sizeof(at
 /*************************************************************************************************/
 void hrcpHrsParseHrm(uint8_t *pValue, uint16_t len)
 {
-  uint8_t   flags = 0;
-  uint16_t  minLen = 1 + CH_HRM_LEN_VALUE_8BIT;
-  uint16_t  heartRate;
-  uint16_t  energyExp;
-  uint16_t  rrInterval;
+    uint8_t flags = 0;
+    uint16_t minLen = 1 + CH_HRM_LEN_VALUE_8BIT;
+    uint16_t heartRate;
+    uint16_t energyExp;
+    uint16_t rrInterval;
 
-  /* Suppress unused variable compile warning */
-  (void)heartRate; (void)energyExp; (void)rrInterval;
+    /* Suppress unused variable compile warning */
+    (void)heartRate;
+    (void)energyExp;
+    (void)rrInterval;
 
-  if (len > 0)
-  {
-    /* get flags */
-    BSTREAM_TO_UINT8(flags, pValue);
+    if (len > 0) {
+        /* get flags */
+        BSTREAM_TO_UINT8(flags, pValue);
 
-    /* determine expected minimum length based on flags */
-    if (flags & CH_HRM_FLAGS_VALUE_16BIT)
-    {
-      minLen++;
-    }
-    if (flags & CH_HRM_FLAGS_ENERGY_EXP)
-    {
-      minLen += CH_HRM_LEN_ENERGY_EXP;
-    }
-    if (flags & CH_HRM_FLAGS_RR_INTERVAL)
-    {
-      minLen += CH_HRM_LEN_RR_INTERVAL;
-    }
-  }
-
-  /* verify length */
-  if (len < minLen)
-  {
-    APP_TRACE_INFO2("Heart Rate meas len:%d minLen:%d", len, minLen);
-    return;
-  }
-
-  /* heart rate */
-  if (flags & CH_HRM_FLAGS_VALUE_16BIT)
-  {
-    BSTREAM_TO_UINT16(heartRate, pValue);
-  }
-  else
-  {
-    BSTREAM_TO_UINT8(heartRate, pValue);
-  }
-  APP_TRACE_INFO1("  Heart rate:   %d", heartRate);
-
-  /* energy expended */
-  if (flags & CH_HRM_FLAGS_ENERGY_EXP)
-  {
-    BSTREAM_TO_UINT16(energyExp, pValue);
-    APP_TRACE_INFO1("  Energy Exp:   %d", energyExp);
-  }
-
-  /* r-r interval */
-  if (flags & CH_HRM_FLAGS_RR_INTERVAL)
-  {
-    /* get length of r-r interval bytes */
-    len = len + CH_HRM_LEN_RR_INTERVAL - minLen;
-
-    /* if len is somehow missing a byte (len is odd) reduce by 1 */
-    if (len & 1)
-    {
-      len--;
+        /* determine expected minimum length based on flags */
+        if (flags & CH_HRM_FLAGS_VALUE_16BIT) {
+            minLen++;
+        }
+        if (flags & CH_HRM_FLAGS_ENERGY_EXP) {
+            minLen += CH_HRM_LEN_ENERGY_EXP;
+        }
+        if (flags & CH_HRM_FLAGS_RR_INTERVAL) {
+            minLen += CH_HRM_LEN_RR_INTERVAL;
+        }
     }
 
-    /* parse r-r intervals */
-    do
-    {
-      BSTREAM_TO_UINT16(rrInterval, pValue);
-      APP_TRACE_INFO1("  r-r Interval: %d", rrInterval);
-      len -= 2;
-    } while (len > 0);
-  }
+    /* verify length */
+    if (len < minLen) {
+        APP_TRACE_INFO2("Heart Rate meas len:%d minLen:%d", len, minLen);
+        return;
+    }
 
-  APP_TRACE_INFO1("  Flags:0x%02x", flags);
+    /* heart rate */
+    if (flags & CH_HRM_FLAGS_VALUE_16BIT) {
+        BSTREAM_TO_UINT16(heartRate, pValue);
+    } else {
+        BSTREAM_TO_UINT8(heartRate, pValue);
+    }
+    APP_TRACE_INFO1("  Heart rate:   %d", heartRate);
+
+    /* energy expended */
+    if (flags & CH_HRM_FLAGS_ENERGY_EXP) {
+        BSTREAM_TO_UINT16(energyExp, pValue);
+        APP_TRACE_INFO1("  Energy Exp:   %d", energyExp);
+    }
+
+    /* r-r interval */
+    if (flags & CH_HRM_FLAGS_RR_INTERVAL) {
+        /* get length of r-r interval bytes */
+        len = len + CH_HRM_LEN_RR_INTERVAL - minLen;
+
+        /* if len is somehow missing a byte (len is odd) reduce by 1 */
+        if (len & 1) {
+            len--;
+        }
+
+        /* parse r-r intervals */
+        do {
+            BSTREAM_TO_UINT16(rrInterval, pValue);
+            APP_TRACE_INFO1("  r-r Interval: %d", rrInterval);
+            len -= 2;
+        } while (len > 0);
+    }
+
+    APP_TRACE_INFO1("  Flags:0x%02x", flags);
 }
 
 /*************************************************************************************************/
@@ -186,8 +160,8 @@ void hrcpHrsParseHrm(uint8_t *pValue, uint16_t len)
 /*************************************************************************************************/
 void HrpcHrsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attHrsSvcUuid,
-                     HRPC_HRS_HDL_LIST_LEN, (attcDiscChar_t **) hrpcHrsDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attHrsSvcUuid, HRPC_HRS_HDL_LIST_LEN,
+                       (attcDiscChar_t **)hrpcHrsDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -203,13 +177,12 @@ void HrpcHrsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 void HrpcHrsControl(dmConnId_t connId, uint16_t handle, uint8_t command)
 {
-  uint8_t buf[1];
+    uint8_t buf[1];
 
-  if (handle != ATT_HANDLE_NONE)
-  {
-    buf[0] = command;
-    AttcWriteReq(connId, handle, sizeof(buf), buf);
-  }
+    if (handle != ATT_HANDLE_NONE) {
+        buf[0] = command;
+        AttcWriteReq(connId, handle, sizeof(buf), buf);
+    }
 }
 
 /*************************************************************************************************/
@@ -227,33 +200,28 @@ void HrpcHrsControl(dmConnId_t connId, uint16_t handle, uint8_t command)
 /*************************************************************************************************/
 uint8_t HrpcHrsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 {
-  uint8_t   *p;
-  uint8_t   sensorLoc;
-  uint8_t   status = ATT_SUCCESS;
+    uint8_t *p;
+    uint8_t sensorLoc;
+    uint8_t status = ATT_SUCCESS;
 
-  /* heart rate measurement */
-  if (pMsg->handle == pHdlList[HRPC_HRS_HRM_HDL_IDX])
-  {
-    /* parse value */
-    hrcpHrsParseHrm(pMsg->pValue, pMsg->valueLen);
-  }
-  /* body sensor location */
-  else if (pMsg->handle == pHdlList[HRPC_HRS_BSL_HDL_IDX])
-  {
-    /* parse value */
-    p = pMsg->pValue;
-    BSTREAM_TO_UINT8(sensorLoc, p);
-
-    /* ignore if out of range */
-    if (sensorLoc <= CH_BSENSOR_LOC_FOOT)
-    {
-      APP_TRACE_INFO1("Body sensor location:%d", sensorLoc);
+    /* heart rate measurement */
+    if (pMsg->handle == pHdlList[HRPC_HRS_HRM_HDL_IDX]) {
+        /* parse value */
+        hrcpHrsParseHrm(pMsg->pValue, pMsg->valueLen);
     }
-  }
-  else
-  {
-    status = ATT_ERR_NOT_FOUND;
-  }
+    /* body sensor location */
+    else if (pMsg->handle == pHdlList[HRPC_HRS_BSL_HDL_IDX]) {
+        /* parse value */
+        p = pMsg->pValue;
+        BSTREAM_TO_UINT8(sensorLoc, p);
 
-  return status;
+        /* ignore if out of range */
+        if (sensorLoc <= CH_BSENSOR_LOC_FOOT) {
+            APP_TRACE_INFO1("Body sensor location:%d", sensorLoc);
+        }
+    } else {
+        status = ATT_ERR_NOT_FOUND;
+    }
+
+    return status;
 }

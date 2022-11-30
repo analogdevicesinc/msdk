@@ -48,17 +48,17 @@
 /*************************************************************************************************/
 void HciLeEncryptCmd(uint8_t *pKey, uint8_t *pData)
 {
-  hciLeEncryptCmdCmplEvt_t evt;
-  uint8_t status;
-  (void)status;
+    hciLeEncryptCmdCmplEvt_t evt;
+    uint8_t status;
+    (void)status;
 
-  status = LlEncrypt(pKey, pData);
-  WSF_ASSERT(status == LL_SUCCESS);
-  evt.hdr.event = HCI_LE_ENCRYPT_CMD_CMPL_CBACK_EVT;
-  evt.status = evt.hdr.status = status;
-  Calc128Cpy(evt.data, pData);
+    status = LlEncrypt(pKey, pData);
+    WSF_ASSERT(status == LL_SUCCESS);
+    evt.hdr.event = HCI_LE_ENCRYPT_CMD_CMPL_CBACK_EVT;
+    evt.status = evt.hdr.status = status;
+    Calc128Cpy(evt.data, pData);
 
-  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -70,7 +70,7 @@ void HciLeEncryptCmd(uint8_t *pKey, uint8_t *pData)
 /*************************************************************************************************/
 void HciLeLtkReqNegReplCmd(uint16_t handle)
 {
-  LlLtkReqNegReply(handle);
+    LlLtkReqNegReply(handle);
 }
 
 /*************************************************************************************************/
@@ -82,7 +82,7 @@ void HciLeLtkReqNegReplCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeLtkReqReplCmd(uint16_t handle, uint8_t *pKey)
 {
-  LlLtkReqReply(handle, pKey);
+    LlLtkReqReply(handle, pKey);
 }
 
 /*************************************************************************************************/
@@ -94,6 +94,5 @@ void HciLeLtkReqReplCmd(uint16_t handle, uint8_t *pKey)
 /*************************************************************************************************/
 void HciLeStartEncryptionCmd(uint16_t handle, uint8_t *pRand, uint16_t diversifier, uint8_t *pKey)
 {
-  LlStartEncryption(handle, pRand, diversifier, pKey);
+    LlStartEncryption(handle, pRand, diversifier, pKey);
 }
-

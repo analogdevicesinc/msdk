@@ -49,13 +49,12 @@ typedef void (*WsfNvmCompEvent_t)(bool_t status);
 /*************************************************************************************************/
 static inline uint64_t WsfNvmConvertChar8to64Bit(char *charId)
 {
-  uint64_t retValue = 0;
+    uint64_t retValue = 0;
 
-  for (uint8_t i = 0; i < 8; i++)
-  {
-    retValue |= ((uint64_t)charId[7 - i]) << (8*i);
-  }
-  return retValue;
+    for (uint8_t i = 0; i < 8; i++) {
+        retValue |= ((uint64_t)charId[7 - i]) << (8 * i);
+    }
+    return retValue;
 }
 
 /*************************************************************************************************/
@@ -91,7 +90,8 @@ bool_t WsfNvmReadData(uint64_t id, uint8_t *pData, uint16_t len, WsfNvmCompEvent
  *  \return TRUE if NVM operation is successful, FALSE otherwise.
  */
 /*************************************************************************************************/
-bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len, WsfNvmCompEvent_t compCback);
+bool_t WsfNvmWriteData(uint64_t id, const uint8_t *pData, uint16_t len,
+                       WsfNvmCompEvent_t compCback);
 
 /*************************************************************************************************/
 /*!
@@ -116,7 +116,7 @@ bool_t WsfNvmEraseData(uint64_t id, WsfNvmCompEvent_t compCback);
 /*************************************************************************************************/
 void WsfNvmEraseDataAll(WsfNvmCompEvent_t compCback);
 
-/*! \} */    /* WSF_NVM_API */
+/*! \} */ /* WSF_NVM_API */
 
 #ifdef __cplusplus
 };

@@ -43,19 +43,19 @@ unsigned int param_tmo = 32;
 /* Returns -1 on UADDR.BUSY=1 timeout, 0 otherwise */
 int usbio_writereg(unsigned int reg, uint16_t data)
 {
-  unsigned int tmo = param_tmo;
-  
-  UADDR = reg;
-  UDATA = data;
+    unsigned int tmo = param_tmo;
 
-  while ((UADDR & 0x40) && --tmo);
+    UADDR = reg;
+    UDATA = data;
 
-  if (!tmo) {
-    /* Timeout waiting for busy to clear */
-    return -1;
-  }  
+    while ((UADDR & 0x40) && --tmo) {}
 
-  return 0;
+    if (!tmo) {
+        /* Timeout waiting for busy to clear */
+        return -1;
+    }
+
+    return 0;
 }
 
 /** Writes a value into the UADDR/UDATA indirect register interface
@@ -63,82 +63,80 @@ int usbio_writereg(unsigned int reg, uint16_t data)
  */
 void usbio_blind_writereg(unsigned int reg, uint16_t data)
 {
-  UADDR = reg;
-  UDATA = data;
+    UADDR = reg;
+    UDATA = data;
 }
 
 /* Reads a value from the UADDR/UDATA indirect register interface */
 /* Returns -1 on UADDR.BUSY=1 timeout, 0 otherwise */
 int usbio_readreg(unsigned int reg, uint16_t *data)
 {
-  unsigned int tmo = param_tmo;
- 
-  UADDR = 0x80 | reg;
-  while ((UADDR & 0x40) && --tmo);
-  if (!tmo) {
-    /* Timeout waiting for busy to clear */
-    return -1;
-  }
-  
-  *data = UDATA;
+    unsigned int tmo = param_tmo;
 
-  return 0;
+    UADDR = 0x80 | reg;
+    while ((UADDR & 0x40) && --tmo) {}
+    if (!tmo) {
+        /* Timeout waiting for busy to clear */
+        return -1;
+    }
+
+    *data = UDATA;
+
+    return 0;
 }
 
 /* Reads num bytes from the UADDR/UDATA indirect register interface */
 /* Returns -1 on UADDR.BUSY=1 timeout, 0 otherwise */
 int usbio_readfifo(unsigned int reg, uint8_t *data, unsigned int num)
 {
-  int ret;
-  unsigned int tmo = param_tmo;
+    int ret;
+    unsigned int tmo = param_tmo;
 
-  while ((UADDR & 0x40) && --tmo);
-  if (!tmo) {
-    /* Timeout waiting for busy to clear */
-    return -1;
-  }
-
-  UADDR = 0x80 | reg;
-  while (num--) {
-    while ((UADDR & 0x40) && --tmo);
+    while ((UADDR & 0x40) && --tmo) {}
     if (!tmo) {
-      /* Timeout waiting for busy to clear */
-      return -1;
+        /* Timeout waiting for busy to clear */
+        return -1;
     }
-    *data = UDATA;
-    data++;
-  }
-  ret = 0;
 
-  return ret;
+    UADDR = 0x80 | reg;
+    while (num--) {
+        while ((UADDR & 0x40) && --tmo) {}
+        if (!tmo) {
+            /* Timeout waiting for busy to clear */
+            return -1;
+        }
+        *data = UDATA;
+        data++;
+    }
+    ret = 0;
+
+    return ret;
 }
-
 
 /* Writes num bytes to the UADDR/UDATA indirect register interface */
 /* Returns -1 on UADDR.BUSY=1 timeout, 0 otherwise */
 int usbio_writefifo(unsigned int reg, uint8_t *data, unsigned int num)
 {
-  int ret;
-  unsigned int tmo = param_tmo;
+    int ret;
+    unsigned int tmo = param_tmo;
 
-  while ((UADDR & 0x40) && --tmo);
-  if (!tmo) {
-    /* Timeout waiting for busy to clear */
-    return -1;
-  }
-  
-  UADDR = reg;
-  while (num--) {
-    UDATA = *data;
-    data++;
-    while ((UADDR & 0x40) && --tmo);
+    while ((UADDR & 0x40) && --tmo) {}
     if (!tmo) {
-      /* Timeout waiting for busy to clear */
-      return -1;
+        /* Timeout waiting for busy to clear */
+        return -1;
     }
-  }
-  ret = 0;
 
-  return ret;
+    UADDR = reg;
+    while (num--) {
+        UDATA = *data;
+        data++;
+        while ((UADDR & 0x40) && --tmo) {}
+        if (!tmo) {
+            /* Timeout waiting for busy to clear */
+            return -1;
+        }
+    }
+    ret = 0;
+
+    return ret;
 }
-

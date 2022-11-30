@@ -39,21 +39,19 @@
 **************************************************************************************************/
 
 /*! brief   Sniffer VS output packet function placeholder. */
-static void bbSnifferOutputVendorSpec(BbBleSnifferPkt_t * pPktData);
+static void bbSnifferOutputVendorSpec(BbBleSnifferPkt_t *pPktData);
 
 /*! brief   Sniffer output table. */
-bbSnifferFn_t bbSnifferOutTbl[BB_SNIFFER_OUTPUT_TOTAL_METHODS] =
-{
-  bbSnifferOutputVendorSpec                    /* BB_SNIFFER_OUTPUT_HCI_TOKEN */
+bbSnifferFn_t bbSnifferOutTbl[BB_SNIFFER_OUTPUT_TOTAL_METHODS] = {
+    bbSnifferOutputVendorSpec /* BB_SNIFFER_OUTPUT_HCI_TOKEN */
 };
 
 /*! brief   Sniffer VS get packet function placeholder. */
-static BbBleSnifferPkt_t * bbSnifferGetPktVendorSpec();
+static BbBleSnifferPkt_t *bbSnifferGetPktVendorSpec();
 
 /*! brief   Sniffer get packet table. */
-bbSnifferGetPktFn_t bbSnifferGetPktTbl[BB_SNIFFER_OUTPUT_TOTAL_METHODS] =
-{
-  bbSnifferGetPktVendorSpec                    /* BB_SNIFFER_OUTPUT_HCI_TOKEN */
+bbSnifferGetPktFn_t bbSnifferGetPktTbl[BB_SNIFFER_OUTPUT_TOTAL_METHODS] = {
+    bbSnifferGetPktVendorSpec /* BB_SNIFFER_OUTPUT_HCI_TOKEN */
 };
 /*! brief   Sniffer context. */
 bbSnifferCtx_t bbSnifferCtx;
@@ -70,19 +68,16 @@ bbSnifferCtx_t bbSnifferCtx;
  *
  */
 /*************************************************************************************************/
-static BbBleSnifferPkt_t * bbSnifferGetPktVendorSpec()
+static BbBleSnifferPkt_t *bbSnifferGetPktVendorSpec()
 {
-  BbBleSnifferHciCtx_t * pHci = &bbSnifferCtx.outputCtx.hci;
+    BbBleSnifferHciCtx_t *pHci = &bbSnifferCtx.outputCtx.hci;
 
-  if ((pHci->bufIdx == BB_SNIFFER_MAX_NUM_BUF) ||
-      (bbSnifferCtx.enabled == FALSE))
-  {
-    return NULL;
-  }
+    if ((pHci->bufIdx == BB_SNIFFER_MAX_NUM_BUF) || (bbSnifferCtx.enabled == FALSE)) {
+        return NULL;
+    }
 
-  return &pHci->pktBuf[pHci->bufIdx];
+    return &pHci->pktBuf[pHci->bufIdx];
 }
-
 
 /**************************************************************************************************
   Output methods
@@ -96,11 +91,11 @@ static BbBleSnifferPkt_t * bbSnifferGetPktVendorSpec()
  *
  */
 /*************************************************************************************************/
-static void bbSnifferOutputVendorSpec(BbBleSnifferPkt_t * pPktData)
+static void bbSnifferOutputVendorSpec(BbBleSnifferPkt_t *pPktData)
 {
-  BbBleSnifferHciCtx_t * pHci = &bbSnifferCtx.outputCtx.hci;
+    BbBleSnifferHciCtx_t *pHci = &bbSnifferCtx.outputCtx.hci;
 
-  pHci->bufIdx++;
+    pHci->bufIdx++;
 }
 /*************************************************************************************************/
 /*!
@@ -112,38 +107,38 @@ static void bbSnifferOutputVendorSpec(BbBleSnifferPkt_t * pPktData)
  *  Pack sniffer packet and call to output method function.
  */
 /*************************************************************************************************/
-void bbBleSnifferMstScanPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t * pPktData)
+void bbBleSnifferMstScanPktHandler(BbOpDesc_t *pBod, BbBleSnifferPkt_t *pPktData)
 {
-  BbBleMstAdvEvent_t * pScan = &pBod->prot.pBle->op.mstAdv;
+    BbBleMstAdvEvent_t *pScan = &pBod->prot.pBle->op.mstAdv;
 
-  /* Pack channelization data. */
-  memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan, sizeof(pPktData->pktType.meta.chan));
+    /* Pack channelization data. */
+    memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan,
+           sizeof(pPktData->pktType.meta.chan));
 
-  /* Pack metadata. */
-  pPktData->pktType.meta.timeStamp   =  bbSnifferCtx.packetCtr++;
+    /* Pack metadata. */
+    pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
 
-  /* Pack header. */
-  switch (pPktData->pktType.meta.state)
-  {
+    /* Pack header. */
+    switch (pPktData->pktType.meta.state) {
     case BB_EVT_STATE_RX_ADV_IND:
-      /* Handled in the Rx Callback. */
-      break;
+        /* Handled in the Rx Callback. */
+        break;
 
     case BB_EVT_STATE_TX_SCAN_OR_CONN_INIT:
-      memcpy(pPktData->pktType.advPkt.hdr, pScan->pTxReqBuf, LL_ADV_HDR_LEN);
-      break;
+        memcpy(pPktData->pktType.advPkt.hdr, pScan->pTxReqBuf, LL_ADV_HDR_LEN);
+        break;
 
     case BB_EVT_STATE_RX_SCAN_OR_CONN_RSP:
-      /* Handled in the Rx Callback. */
-      break;
+        /* Handled in the Rx Callback. */
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  WSF_ASSERT(bbSnifferCtx.snifferOutCb);
+    WSF_ASSERT(bbSnifferCtx.snifferOutCb);
 
-  bbSnifferCtx.snifferOutCb(pPktData);
+    bbSnifferCtx.snifferOutCb(pPktData);
 }
 
 /*************************************************************************************************/
@@ -156,42 +151,42 @@ void bbBleSnifferMstScanPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t * pPktDa
  *  Pack sniffer packet and call to output method function.
  */
 /*************************************************************************************************/
-void bbBleSnifferMstAuxScanPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t *pPktData)
+void bbBleSnifferMstAuxScanPktHandler(BbOpDesc_t *pBod, BbBleSnifferPkt_t *pPktData)
 {
-  BbBleMstAuxAdvEvent_t * pScan = &pBod->prot.pBle->op.mstAuxAdv;
+    BbBleMstAuxAdvEvent_t *pScan = &pBod->prot.pBle->op.mstAuxAdv;
 
-  /* Pack channelization data. */
-  memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan, sizeof(pPktData->pktType.meta.chan));
+    /* Pack channelization data. */
+    memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan,
+           sizeof(pPktData->pktType.meta.chan));
 
-  /* Pack metadata. */
-  pPktData->pktType.meta.timeStamp   =  bbSnifferCtx.packetCtr++;
+    /* Pack metadata. */
+    pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
 
-  /* Pack header. */
-  switch (pPktData->pktType.meta.state)
-  {
+    /* Pack header. */
+    switch (pPktData->pktType.meta.state) {
     case BB_EVT_STATE_RX_ADV_IND:
-      /* Handled in the Rx Callback. */
-      break;
+        /* Handled in the Rx Callback. */
+        break;
 
     case BB_EVT_STATE_TX_SCAN_OR_CONN_INIT:
-      memcpy(pPktData->pktType.advPkt.hdr, pScan->pTxAuxReqBuf, LL_ADV_HDR_LEN);
-      break;
+        memcpy(pPktData->pktType.advPkt.hdr, pScan->pTxAuxReqBuf, LL_ADV_HDR_LEN);
+        break;
 
     case BB_EVT_STATE_RX_SCAN_OR_CONN_RSP:
-      /* Handled in the Rx Callback. */
-      break;
+        /* Handled in the Rx Callback. */
+        break;
 
     case BB_EVT_STATE_RX_CHAIN_IND:
-      /* Handled in the Rx callback. */
-      break;
+        /* Handled in the Rx callback. */
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  WSF_ASSERT(bbSnifferCtx.snifferOutCb);
+    WSF_ASSERT(bbSnifferCtx.snifferOutCb);
 
-  bbSnifferCtx.snifferOutCb(pPktData);
+    bbSnifferCtx.snifferOutCb(pPktData);
 }
 
 /*************************************************************************************************/
@@ -204,32 +199,32 @@ void bbBleSnifferMstAuxScanPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t *pPkt
  *  Pack sniffer packet and call to output method function.
  */
 /*************************************************************************************************/
-void bbBleSnifferMstPerScanPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t *pPktData)
+void bbBleSnifferMstPerScanPktHandler(BbOpDesc_t *pBod, BbBleSnifferPkt_t *pPktData)
 {
-  /* Pack channelization data. */
-  memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan, sizeof(pPktData->pktType.meta.chan));
+    /* Pack channelization data. */
+    memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan,
+           sizeof(pPktData->pktType.meta.chan));
 
-  /* Pack metadata. */
-  pPktData->pktType.meta.timeStamp   =  bbSnifferCtx.packetCtr++;
+    /* Pack metadata. */
+    pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
 
-  /* Pack header. */
-  switch (pPktData->pktType.meta.state)
-  {
+    /* Pack header. */
+    switch (pPktData->pktType.meta.state) {
     case BB_EVT_STATE_RX_ADV_IND:
-      /* Handled in the Rx Callback. */
-      break;
+        /* Handled in the Rx Callback. */
+        break;
 
     case BB_EVT_STATE_RX_CHAIN_IND:
-      /* Handled in the Rx callback. */
-      break;
+        /* Handled in the Rx callback. */
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  WSF_ASSERT(bbSnifferCtx.snifferOutCb);
+    WSF_ASSERT(bbSnifferCtx.snifferOutCb);
 
-  bbSnifferCtx.snifferOutCb(pPktData);
+    bbSnifferCtx.snifferOutCb(pPktData);
 }
 
 /*************************************************************************************************/
@@ -242,41 +237,41 @@ void bbBleSnifferMstPerScanPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t *pPkt
  *  Pack sniffer packet and call to output method function.
  */
 /*************************************************************************************************/
-void bbBleSnifferSlvAdvPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t * pPktData)
+void bbBleSnifferSlvAdvPktHandler(BbOpDesc_t *pBod, BbBleSnifferPkt_t *pPktData)
 {
-  BbBleSlvAdvEvent_t * pAdv = &pBod->prot.pBle->op.slvAdv;
+    BbBleSlvAdvEvent_t *pAdv = &pBod->prot.pBle->op.slvAdv;
 
-  /* Pack channelization data. */
-  memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan, sizeof(pPktData->pktType.meta.chan));
+    /* Pack channelization data. */
+    memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan,
+           sizeof(pPktData->pktType.meta.chan));
 
-  /* Pack saved channel index. */
-  pPktData->pktType.meta.chan.chanIdx = bbSnifferCtx.chanIdx;
+    /* Pack saved channel index. */
+    pPktData->pktType.meta.chan.chanIdx = bbSnifferCtx.chanIdx;
 
-  /* Pack metadata. */
-  pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
+    /* Pack metadata. */
+    pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
 
-  /* Pack header. */
-  switch (pPktData->pktType.meta.state)
-  {
+    /* Pack header. */
+    switch (pPktData->pktType.meta.state) {
     case BB_EVT_STATE_TX_ADV_IND:
-      memcpy(pPktData->pktType.advPkt.hdr, pAdv->pTxAdvBuf, LL_ADV_HDR_LEN);
-      break;
+        memcpy(pPktData->pktType.advPkt.hdr, pAdv->pTxAdvBuf, LL_ADV_HDR_LEN);
+        break;
 
     case BB_EVT_STATE_RX_SCAN_OR_CONN_INIT:
-      /* Handled in the Rx Callback. */
-      break;
+        /* Handled in the Rx Callback. */
+        break;
 
     case BB_EVT_STATE_TX_SCAN_OR_CONN_RSP:
-      memcpy(pPktData->pktType.advPkt.hdr, pAdv->pTxRspBuf, LL_ADV_HDR_LEN);
-      break;
+        memcpy(pPktData->pktType.advPkt.hdr, pAdv->pTxRspBuf, LL_ADV_HDR_LEN);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  WSF_ASSERT(bbSnifferCtx.snifferOutCb);
+    WSF_ASSERT(bbSnifferCtx.snifferOutCb);
 
-  bbSnifferCtx.snifferOutCb(pPktData);
+    bbSnifferCtx.snifferOutCb(pPktData);
 }
 
 /*************************************************************************************************/
@@ -289,42 +284,42 @@ void bbBleSnifferSlvAdvPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t * pPktDat
  *  Pack sniffer packet and call to output method function.
  */
 /*************************************************************************************************/
-void bbBleSnifferSlvAuxAdvPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t * pPktData)
+void bbBleSnifferSlvAuxAdvPktHandler(BbOpDesc_t *pBod, BbBleSnifferPkt_t *pPktData)
 {
-  BbBleSlvAuxAdvEvent_t * pAdv = &pBod->prot.pBle->op.slvAuxAdv;
+    BbBleSlvAuxAdvEvent_t *pAdv = &pBod->prot.pBle->op.slvAuxAdv;
 
-  /* Pack channelization data. */
-  memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan, sizeof(pPktData->pktType.meta.chan));
+    /* Pack channelization data. */
+    memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan,
+           sizeof(pPktData->pktType.meta.chan));
 
-  /* Pack metadata. */
-  pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
+    /* Pack metadata. */
+    pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
 
-  /* Pack header. */
-  switch (pPktData->pktType.meta.state)
-  {
+    /* Pack header. */
+    switch (pPktData->pktType.meta.state) {
     case BB_EVT_STATE_TX_ADV_IND:
-      /* Handled in the Tx Callback. */
-      break;
+        /* Handled in the Tx Callback. */
+        break;
 
     case BB_EVT_STATE_RX_SCAN_OR_CONN_INIT:
-      /* Handled in the Rx Callback. */
-      break;
+        /* Handled in the Rx Callback. */
+        break;
 
     case BB_EVT_STATE_TX_SCAN_OR_CONN_RSP:
-      memcpy(pPktData->pktType.advPkt.hdr, pAdv->txAuxRspPdu[0].pBuf, LL_ADV_HDR_LEN);
-      break;
+        memcpy(pPktData->pktType.advPkt.hdr, pAdv->txAuxRspPdu[0].pBuf, LL_ADV_HDR_LEN);
+        break;
 
     case BB_EVT_STATE_TX_CHAIN_IND:
-      /* Handled in the Tx Callback. */
-      break;
+        /* Handled in the Tx Callback. */
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  WSF_ASSERT(bbSnifferCtx.snifferOutCb);
+    WSF_ASSERT(bbSnifferCtx.snifferOutCb);
 
-  bbSnifferCtx.snifferOutCb(pPktData);
+    bbSnifferCtx.snifferOutCb(pPktData);
 }
 
 /*************************************************************************************************/
@@ -337,29 +332,28 @@ void bbBleSnifferSlvAuxAdvPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t * pPkt
  *  Pack sniffer packet and call to output method function.
  */
 /*************************************************************************************************/
-void bbBleSnifferConnPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t * pPktData)
+void bbBleSnifferConnPktHandler(BbOpDesc_t *pBod, BbBleSnifferPkt_t *pPktData)
 {
-  /* BbBleMstConnEvent_t * pConn = &pBod->prot.pBle->op.mstConn; */
+    /* BbBleMstConnEvent_t * pConn = &pBod->prot.pBle->op.mstConn; */
 
-  /* Pack channelization data. */
-  memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan, sizeof(pPktData->pktType.meta.chan));
+    /* Pack channelization data. */
+    memcpy(&pPktData->pktType.meta.chan, &pBod->prot.pBle->chan,
+           sizeof(pPktData->pktType.meta.chan));
 
-  /* Pack metadata. */
-  pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
+    /* Pack metadata. */
+    pPktData->pktType.meta.timeStamp = bbSnifferCtx.packetCtr++;
 
-  /* Pack Header. */
-  if (pPktData->pktType.meta.type == BB_SNIFF_PKT_TYPE_TX)
-  {
-    memcpy(pPktData->pktType.dataPkt.hdr, bbSnifferCtx.txBuf, LL_DATA_HDR_MAX_LEN);
-  }
-  else /* (type == BB_SNIFF_PKT_TYPE_RX) */
-  {
-    /* Header copy is done in the Rx comp callback. */
-  }
+    /* Pack Header. */
+    if (pPktData->pktType.meta.type == BB_SNIFF_PKT_TYPE_TX) {
+        memcpy(pPktData->pktType.dataPkt.hdr, bbSnifferCtx.txBuf, LL_DATA_HDR_MAX_LEN);
+    } else /* (type == BB_SNIFF_PKT_TYPE_RX) */
+    {
+        /* Header copy is done in the Rx comp callback. */
+    }
 
-  WSF_ASSERT(bbSnifferCtx.snifferOutCb);
+    WSF_ASSERT(bbSnifferCtx.snifferOutCb);
 
-  bbSnifferCtx.snifferOutCb(pPktData);
+    bbSnifferCtx.snifferOutCb(pPktData);
 }
 
 /*************************************************************************************************/
@@ -376,22 +370,19 @@ void bbBleSnifferConnPktHandler(BbOpDesc_t * pBod, BbBleSnifferPkt_t * pPktData)
 /*************************************************************************************************/
 uint8_t BbBleInitSniffer(uint8_t outMethod, bool_t enable)
 {
-  memset(&bbSnifferCtx, 0, sizeof(bbSnifferCtx));
+    memset(&bbSnifferCtx, 0, sizeof(bbSnifferCtx));
 
-  if (enable == FALSE)
-  {
+    if (enable == FALSE) {
+        return LL_SUCCESS;
+    }
+
+    if (outMethod >= BB_SNIFFER_OUTPUT_TOTAL_METHODS) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
+
+    bbSnifferCtx.snifferGetPktFn = bbSnifferGetPktTbl[outMethod];
+    bbSnifferCtx.snifferOutCb = bbSnifferOutTbl[outMethod];
+    bbSnifferCtx.enabled = enable;
+
     return LL_SUCCESS;
-  }
-
-  if (outMethod >= BB_SNIFFER_OUTPUT_TOTAL_METHODS)
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
-
-  bbSnifferCtx.snifferGetPktFn = bbSnifferGetPktTbl[outMethod];
-  bbSnifferCtx.snifferOutCb = bbSnifferOutTbl[outMethod];
-  bbSnifferCtx.enabled = enable;
-
-  return LL_SUCCESS;
 }
-

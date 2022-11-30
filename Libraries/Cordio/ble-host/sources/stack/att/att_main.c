@@ -40,37 +40,27 @@
 **************************************************************************************************/
 
 /* indexes into base UUID for 16-to-128 bit UUID conversion */
-#define ATT_BASE_UUID_POS_0      12
-#define ATT_BASE_UUID_POS_1      13
+#define ATT_BASE_UUID_POS_0 12
+#define ATT_BASE_UUID_POS_1 13
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
-static uint8_t attBaseUuid[] = {0xFB, 0x34, 0x9B, 0x5F, 0x80, 0x00, 0x00, 0x80,
-                                0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static uint8_t attBaseUuid[] = { 0xFB, 0x34, 0x9B, 0x5F, 0x80, 0x00, 0x00, 0x80,
+                                 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /* Default component function inteface */
-const attFcnIf_t attFcnDefault =
-{
-  attEmptyDataCback,
-  (l2cCtrlCback_t) attEmptyHandler,
-  (attMsgHandler_t) attEmptyHandler,
-  attEmptyConnCback
-};
+const attFcnIf_t attFcnDefault = { attEmptyDataCback, (l2cCtrlCback_t)attEmptyHandler,
+                                   (attMsgHandler_t)attEmptyHandler, attEmptyConnCback };
 
 /* Default component function inteface */
-const eattFcnIf_t eattFcnDefault =
-{
-  attEmptyL2cCocCback,
-  attEmptyL2cCocCback,
-  (attMsgHandler_t) attEmptyHandler,
-  attEmptyConnCback
-};
+const eattFcnIf_t eattFcnDefault = { attEmptyL2cCocCback, attEmptyL2cCocCback,
+                                     (attMsgHandler_t)attEmptyHandler, attEmptyConnCback };
 
 /* Control block */
 attCb_t attCb;
@@ -88,23 +78,21 @@ attCb_t attCb;
 /*************************************************************************************************/
 static void attL2cDataCback(uint16_t handle, uint16_t len, uint8_t *pPacket)
 {
-  uint8_t pduType;
+    uint8_t pduType;
 
-  /* parse PDU type */
-  pduType = *(pPacket + L2C_PAYLOAD_START);
+    /* parse PDU type */
+    pduType = *(pPacket + L2C_PAYLOAD_START);
 
-  /* if from server */
-  if ((pduType & ATT_PDU_MASK_SERVER) != 0)
-  {
-    /* call client data callback */
-    (*attCb.pClient->dataCback)(handle, len, pPacket);
-  }
-  /* else from client */
-  else
-  {
-    /* call server data callback */
-    (*attCb.pServer->dataCback)(handle, len, pPacket);
-  }
+    /* if from server */
+    if ((pduType & ATT_PDU_MASK_SERVER) != 0) {
+        /* call client data callback */
+        (*attCb.pClient->dataCback)(handle, len, pPacket);
+    }
+    /* else from client */
+    else {
+        /* call server data callback */
+        (*attCb.pServer->dataCback)(handle, len, pPacket);
+    }
 }
 
 /*************************************************************************************************/
@@ -118,35 +106,30 @@ static void attL2cDataCback(uint16_t handle, uint16_t len, uint8_t *pPacket)
 /*************************************************************************************************/
 static void attL2cCtrlCback(wsfMsgHdr_t *pMsg)
 {
-  attCcb_t      *pCcb;
+    attCcb_t *pCcb;
 
-  /* get connection control block */
-  pCcb = attCcbByConnId((dmConnId_t) pMsg->param);
+    /* get connection control block */
+    pCcb = attCcbByConnId((dmConnId_t)pMsg->param);
 
-  /* verify connection is open */
-  if (pCcb->connId != DM_CONN_ID_NONE)
-  {
-    if (pMsg->event == L2C_CTRL_FLOW_DISABLE_IND)
-    {
-      /* flow disabled */
-      pCcb->sccb[ATT_BEARER_SLOT_ID].control |= ATT_CCB_STATUS_FLOW_DISABLED;
+    /* verify connection is open */
+    if (pCcb->connId != DM_CONN_ID_NONE) {
+        if (pMsg->event == L2C_CTRL_FLOW_DISABLE_IND) {
+            /* flow disabled */
+            pCcb->sccb[ATT_BEARER_SLOT_ID].control |= ATT_CCB_STATUS_FLOW_DISABLED;
+        } else {
+            /* flow enabled */
+            pCcb->sccb[ATT_BEARER_SLOT_ID].control &= ~ATT_CCB_STATUS_FLOW_DISABLED;
+
+            /* call server control callback */
+            (*attCb.pServer->ctrlCback)(pMsg);
+
+            /* check flow again; could be changed recursively */
+            if (!(pCcb->sccb[ATT_BEARER_SLOT_ID].control & ATT_CCB_STATUS_FLOW_DISABLED)) {
+                /* call client control callback */
+                (*attCb.pClient->ctrlCback)(pMsg);
+            }
+        }
     }
-    else
-    {
-      /* flow enabled */
-      pCcb->sccb[ATT_BEARER_SLOT_ID].control &= ~ATT_CCB_STATUS_FLOW_DISABLED;
-
-      /* call server control callback */
-      (*attCb.pServer->ctrlCback)(pMsg);
-
-      /* check flow again; could be changed recursively */
-      if (!(pCcb->sccb[ATT_BEARER_SLOT_ID].control & ATT_CCB_STATUS_FLOW_DISABLED))
-      {
-        /* call client control callback */
-        (*attCb.pClient->ctrlCback)(pMsg);
-      }
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -160,60 +143,53 @@ static void attL2cCtrlCback(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void attDmConnCback(dmEvt_t *pDmEvt)
 {
-  attCcb_t  *pCcb;
-  uint8_t i;
+    attCcb_t *pCcb;
+    uint8_t i;
 
-  pCcb = attCcbByConnId((dmConnId_t) pDmEvt->hdr.param);
+    pCcb = attCcbByConnId((dmConnId_t)pDmEvt->hdr.param);
 
-  /* if new connection created */
-  if (pDmEvt->hdr.event == DM_CONN_OPEN_IND)
-  {
-    /* initialize control block before handling event */
-    pCcb->handle = pDmEvt->connOpen.handle;
-    pCcb->connId = (dmConnId_t) pDmEvt->hdr.param;
+    /* if new connection created */
+    if (pDmEvt->hdr.event == DM_CONN_OPEN_IND) {
+        /* initialize control block before handling event */
+        pCcb->handle = pDmEvt->connOpen.handle;
+        pCcb->connId = (dmConnId_t)pDmEvt->hdr.param;
 
-    for (i = 0; i < ATT_BEARER_MAX; i++)
-    {
-      pCcb->sccb[i].mtu = ATT_DEFAULT_MTU;
-      pCcb->sccb[i].control = 0;
+        for (i = 0; i < ATT_BEARER_MAX; i++) {
+            pCcb->sccb[i].mtu = ATT_DEFAULT_MTU;
+            pCcb->sccb[i].control = 0;
+        }
+
+        pCcb->pPendDbHashRsp = NULL;
     }
 
-    pCcb->pPendDbHashRsp = NULL;
-  }
+    /* if connection has been opened */
+    if (pCcb->connId != DM_CONN_ID_NONE) {
+        /* pass event to server */
+        (*attCb.pServer->connCback)(pCcb, pDmEvt);
 
-  /* if connection has been opened */
-  if (pCcb->connId != DM_CONN_ID_NONE)
-  {
-    /* pass event to server */
-    (*attCb.pServer->connCback)(pCcb, pDmEvt);
+        /* pass event to client */
+        (*attCb.pClient->connCback)(pCcb, pDmEvt);
 
-    /* pass event to client */
-    (*attCb.pClient->connCback)(pCcb, pDmEvt);
+        /* if connection closed */
+        if (pDmEvt->hdr.event == DM_CONN_CLOSE_IND) {
+            /* clear control block after handling event */
+            pCcb->connId = DM_CONN_ID_NONE;
 
-    /* if connection closed */
-    if (pDmEvt->hdr.event == DM_CONN_CLOSE_IND)
-    {
-      /* clear control block after handling event */
-      pCcb->connId = DM_CONN_ID_NONE;
-
-      if (pCcb->pPendDbHashRsp)
-      {
-        WsfBufFree(pCcb->pPendDbHashRsp);
-      }
+            if (pCcb->pPendDbHashRsp) {
+                WsfBufFree(pCcb->pPendDbHashRsp);
+            }
+        }
     }
-  }
 
-  /* pass DM event to EATT */
-  if (attCb.eattDmCback != NULL)
-  {
-    (*attCb.eattDmCback)(pDmEvt);
-  }
+    /* pass DM event to EATT */
+    if (attCb.eattDmCback != NULL) {
+        (*attCb.eattDmCback)(pDmEvt);
+    }
 
-  /* execute ATT connection callback */
-  if (attCb.connCback != NULL)
-  {
-    (*attCb.connCback)(pDmEvt);
-  }
+    /* execute ATT connection callback */
+    if (attCb.connCback != NULL) {
+        (*attCb.connCback)(pDmEvt);
+    }
 }
 
 /*************************************************************************************************/
@@ -227,7 +203,7 @@ static void attDmConnCback(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 void attEmptyHandler(wsfMsgHdr_t *pMsg)
 {
-  return;
+    return;
 }
 
 /*************************************************************************************************/
@@ -242,7 +218,7 @@ void attEmptyHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void attEmptyConnCback(attCcb_t *pCcb, dmEvt_t *pDmEvt)
 {
-  return;
+    return;
 }
 
 /*************************************************************************************************/
@@ -258,7 +234,7 @@ void attEmptyConnCback(attCcb_t *pCcb, dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 void attEmptyL2cCocCback(l2cCocEvt_t *pMsg)
 {
-  return;
+    return;
 }
 
 /*************************************************************************************************/
@@ -274,7 +250,7 @@ void attEmptyL2cCocCback(l2cCocEvt_t *pMsg)
 /*************************************************************************************************/
 void attEmptyDataCback(uint16_t handle, uint16_t len, uint8_t *pPacket)
 {
-  return;
+    return;
 }
 
 /*************************************************************************************************/
@@ -288,14 +264,13 @@ void attEmptyDataCback(uint16_t handle, uint16_t len, uint8_t *pPacket)
 /*************************************************************************************************/
 attCcb_t *attCcbByHandle(uint16_t handle)
 {
-  dmConnId_t  connId;
+    dmConnId_t connId;
 
-  if ((connId = DmConnIdByHandle(handle)) != DM_CONN_ID_NONE)
-  {
-    return &attCb.ccb[connId - 1];
-  }
+    if ((connId = DmConnIdByHandle(handle)) != DM_CONN_ID_NONE) {
+        return &attCb.ccb[connId - 1];
+    }
 
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -309,9 +284,9 @@ attCcb_t *attCcbByHandle(uint16_t handle)
 /*************************************************************************************************/
 attCcb_t *attCcbByConnId(dmConnId_t connId)
 {
-  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-  return &attCb.ccb[connId - 1];
+    return &attCb.ccb[connId - 1];
 }
 
 /*************************************************************************************************/
@@ -326,10 +301,10 @@ attCcb_t *attCcbByConnId(dmConnId_t connId)
 /*************************************************************************************************/
 bool_t attUuidCmp16to128(const uint8_t *pUuid16, const uint8_t *pUuid128)
 {
-  attBaseUuid[ATT_BASE_UUID_POS_0] = pUuid16[0];
-  attBaseUuid[ATT_BASE_UUID_POS_1] = pUuid16[1];
+    attBaseUuid[ATT_BASE_UUID_POS_0] = pUuid16[0];
+    attBaseUuid[ATT_BASE_UUID_POS_1] = pUuid16[1];
 
-  return (memcmp(attBaseUuid, pUuid128, ATT_128_UUID_LEN) == 0);
+    return (memcmp(attBaseUuid, pUuid128, ATT_128_UUID_LEN) == 0);
 }
 
 /*************************************************************************************************/
@@ -345,20 +320,19 @@ bool_t attUuidCmp16to128(const uint8_t *pUuid16, const uint8_t *pUuid128)
 /*************************************************************************************************/
 void attSetMtu(attCcb_t *pCcb, uint8_t slot, uint16_t peerMtu, uint16_t localMtu)
 {
-  uint16_t  mtu;
+    uint16_t mtu;
 
-  /* set negotiated mtu for the connection to the lesser of ours and theirs */
-  mtu = WSF_MIN(peerMtu, localMtu);
+    /* set negotiated mtu for the connection to the lesser of ours and theirs */
+    mtu = WSF_MIN(peerMtu, localMtu);
 
-  /* if current mtu is not the same as the negotiated value */
-  if (pCcb->sccb[slot].mtu != mtu)
-  {
-    /* set mtu to the new value */
-    pCcb->sccb[slot].mtu = mtu;
+    /* if current mtu is not the same as the negotiated value */
+    if (pCcb->sccb[slot].mtu != mtu) {
+        /* set mtu to the new value */
+        pCcb->sccb[slot].mtu = mtu;
 
-    /* notify app about the new value */
-    attExecCallback(pCcb->connId, ATT_MTU_UPDATE_IND, 0, ATT_SUCCESS, mtu);
-  }
+        /* notify app about the new value */
+        attExecCallback(pCcb->connId, ATT_MTU_UPDATE_IND, 0, ATT_SUCCESS, mtu);
+    }
 }
 
 /*************************************************************************************************/
@@ -374,22 +348,22 @@ void attSetMtu(attCcb_t *pCcb, uint8_t slot, uint16_t peerMtu, uint16_t localMtu
  *  \return None.
  */
 /*************************************************************************************************/
-void attExecCallback(dmConnId_t connId, uint8_t event, uint16_t handle, uint8_t status, uint16_t mtu)
+void attExecCallback(dmConnId_t connId, uint8_t event, uint16_t handle, uint8_t status,
+                     uint16_t mtu)
 {
-  if (attCb.cback)
-  {
-    attEvt_t evt;
+    if (attCb.cback) {
+        attEvt_t evt;
 
-    evt.hdr.param = connId;
-    evt.hdr.event = event;
-    evt.hdr.status = status;
-    evt.valueLen = 0;
-    evt.handle = handle;
-    evt.continuing = 0;
-    evt.mtu = mtu;
+        evt.hdr.param = connId;
+        evt.hdr.event = event;
+        evt.hdr.status = status;
+        evt.valueLen = 0;
+        evt.handle = handle;
+        evt.continuing = 0;
+        evt.mtu = mtu;
 
-    (*attCb.cback)(&evt);
-  }
+        (*attCb.cback)(&evt);
+    }
 }
 
 /*************************************************************************************************/
@@ -403,7 +377,7 @@ void attExecCallback(dmConnId_t connId, uint8_t event, uint16_t handle, uint8_t 
 /*************************************************************************************************/
 void *attMsgAlloc(uint16_t len)
 {
-  return WsfMsgDataAlloc(len, HCI_TX_DATA_TAILROOM);
+    return WsfMsgDataAlloc(len, HCI_TX_DATA_TAILROOM);
 }
 
 /*************************************************************************************************/
@@ -421,19 +395,14 @@ void *attMsgAlloc(uint16_t len)
 /*************************************************************************************************/
 void attL2cDataReq(attCcb_t *pCcb, uint8_t slot, uint16_t len, uint8_t *pPacket)
 {
-  if (slot == ATT_BEARER_SLOT_ID)
-  {
-    /* send packet to L2CAP via ATT channel */
-    L2cDataReq(L2C_CID_ATT, pCcb->handle, len, pPacket);
-  }
-  else if (attCb.eattL2cDataReq)
-  {
-    attCb.eattL2cDataReq(pCcb, slot, len, pPacket);
-  }
-  else
-  {
-    WsfMsgFree(pPacket);
-  }
+    if (slot == ATT_BEARER_SLOT_ID) {
+        /* send packet to L2CAP via ATT channel */
+        L2cDataReq(L2C_CID_ATT, pCcb->handle, len, pPacket);
+    } else if (attCb.eattL2cDataReq) {
+        attCb.eattL2cDataReq(pCcb, slot, len, pPacket);
+    } else {
+        WsfMsgFree(pPacket);
+    }
 }
 
 /*************************************************************************************************/
@@ -448,7 +417,7 @@ void attL2cDataReq(attCcb_t *pCcb, uint8_t slot, uint16_t len, uint8_t *pPacket)
 /*************************************************************************************************/
 uint16_t attMsgParam(dmConnId_t connId, uint8_t slot)
 {
-  return connId * (ATT_BEARER_MAX) + slot;
+    return connId * (ATT_BEARER_MAX) + slot;
 }
 
 /*************************************************************************************************/
@@ -463,8 +432,8 @@ uint16_t attMsgParam(dmConnId_t connId, uint8_t slot)
 /*************************************************************************************************/
 void attDecodeMsgParam(uint16_t param, dmConnId_t *pConnId, uint8_t *pSlot)
 {
-  *pSlot = (uint8_t) (param % (ATT_BEARER_MAX));
-  *pConnId = param / (ATT_BEARER_MAX);
+    *pSlot = (uint8_t)(param % (ATT_BEARER_MAX));
+    *pConnId = param / (ATT_BEARER_MAX);
 }
 
 /*************************************************************************************************/
@@ -478,21 +447,20 @@ void attDecodeMsgParam(uint16_t param, dmConnId_t *pConnId, uint8_t *pSlot)
 /*************************************************************************************************/
 void AttHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* store handler ID */
-  attCb.handlerId = handlerId;
+    /* store handler ID */
+    attCb.handlerId = handlerId;
 
-  /* initialize control block */
-  attCb.pClient = &attFcnDefault;
-  attCb.pServer = &attFcnDefault;
-  attCb.pEnServer = &eattFcnDefault;
-  attCb.pEnClient = &eattFcnDefault;
+    /* initialize control block */
+    attCb.pClient = &attFcnDefault;
+    attCb.pServer = &attFcnDefault;
+    attCb.pEnServer = &eattFcnDefault;
+    attCb.pEnClient = &eattFcnDefault;
 
-  /* Register with L2C */
-  L2cRegister(L2C_CID_ATT,  attL2cDataCback, attL2cCtrlCback);
+    /* Register with L2C */
+    L2cRegister(L2C_CID_ATT, attL2cDataCback, attL2cCtrlCback);
 
-  /* Register with DM */
-  DmConnRegister(DM_CLIENT_ID_ATT, attDmConnCback);
-
+    /* Register with DM */
+    DmConnRegister(DM_CLIENT_ID_ATT, attDmConnCback);
 }
 
 /*************************************************************************************************/
@@ -507,42 +475,29 @@ void AttHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void AttHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    if (pMsg->event >= EATT_MSG_START)
-    {
-      if (attCb.eattHandler)
-      {
-        attCb.eattHandler(pMsg);
-      }
+    /* Handle message */
+    if (pMsg != NULL) {
+        if (pMsg->event >= EATT_MSG_START) {
+            if (attCb.eattHandler) {
+                attCb.eattHandler(pMsg);
+            }
+        } else if (pMsg->event >= EATTS_MSG_START) {
+            /* pass event to server */
+            (*attCb.pEnServer->msgCback)(pMsg);
+        } else if (pMsg->event >= EATTC_MSG_START) {
+            /* pass event to server */
+            (*attCb.pEnClient->msgCback)(pMsg);
+        } else if (pMsg->event >= ATTS_MSG_START) {
+            /* pass event to server */
+            (*attCb.pServer->msgCback)(pMsg);
+        } else {
+            /* pass event to client */
+            (*attCb.pClient->msgCback)(pMsg);
+        }
     }
-    else if (pMsg->event >= EATTS_MSG_START)
-    {
-      /* pass event to server */
-      (*attCb.pEnServer->msgCback)(pMsg);
+    /* Handle events */
+    else if (event) {
     }
-    else if (pMsg->event >= EATTC_MSG_START)
-    {
-      /* pass event to server */
-      (*attCb.pEnClient->msgCback)(pMsg);
-    }
-    else if (pMsg->event >= ATTS_MSG_START)
-    {
-      /* pass event to server */
-      (*attCb.pServer->msgCback)(pMsg);
-    }
-    else
-    {
-      /* pass event to client */
-      (*attCb.pClient->msgCback)(pMsg);
-    }
-  }
-  /* Handle events */
-  else if (event)
-  {
-
-  }
 }
 
 /*************************************************************************************************/
@@ -556,14 +511,13 @@ void AttHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void AttRegister(attCback_t cback)
 {
-  attCb.cback = cback;
+    attCb.cback = cback;
 
-  /* if configured MTU size is larger than maximum RX PDU length */
-  if (pAttCfg->mtu > (HciGetMaxRxAclLen() - L2C_HDR_LEN))
-  {
-    /* notify app about MTU misconfiguration */
-    attExecCallback(0, DM_ERROR_IND, 0, DM_ERR_ATT_RX_PDU_LEN_EXCEEDED, 0);
-  }
+    /* if configured MTU size is larger than maximum RX PDU length */
+    if (pAttCfg->mtu > (HciGetMaxRxAclLen() - L2C_HDR_LEN)) {
+        /* notify app about MTU misconfiguration */
+        attExecCallback(0, DM_ERROR_IND, 0, DM_ERR_ATT_RX_PDU_LEN_EXCEEDED, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -578,7 +532,7 @@ void AttRegister(attCback_t cback)
 /*************************************************************************************************/
 void AttConnRegister(dmCback_t cback)
 {
-  attCb.connCback = cback;
+    attCb.connCback = cback;
 }
 
 /*************************************************************************************************/
@@ -592,7 +546,7 @@ void AttConnRegister(dmCback_t cback)
 /*************************************************************************************************/
 uint16_t AttGetMtu(dmConnId_t connId)
 {
-  return (attCcbByConnId(connId)->sccb[ATT_BEARER_SLOT_ID].mtu);
+    return (attCcbByConnId(connId)->sccb[ATT_BEARER_SLOT_ID].mtu);
 }
 
 /*************************************************************************************************/
@@ -608,34 +562,31 @@ uint16_t AttGetMtu(dmConnId_t connId)
 /*************************************************************************************************/
 void *AttMsgAlloc(uint16_t len, uint8_t opcode)
 {
-  uint8_t  *pMsg;
-  uint8_t  hdrLen;
+    uint8_t *pMsg;
+    uint8_t hdrLen;
 
-  WSF_ASSERT((opcode == ATT_PDU_VALUE_IND) || (opcode == ATT_PDU_VALUE_NTF));
+    WSF_ASSERT((opcode == ATT_PDU_VALUE_IND) || (opcode == ATT_PDU_VALUE_NTF));
 
-  switch (opcode)
-  {
+    switch (opcode) {
     case ATT_PDU_VALUE_IND:
     case ATT_PDU_VALUE_NTF:
-      hdrLen = ATT_VALUE_IND_NTF_BUF_LEN;
-      break;
+        hdrLen = ATT_VALUE_IND_NTF_BUF_LEN;
+        break;
 
     default:
-      hdrLen = 0;
-      break;
-  }
-
-  if (hdrLen > 0)
-  {
-    pMsg = attMsgAlloc(hdrLen + len);
-    if (pMsg != NULL)
-    {
-      /* return pointer to attribute value buffer */
-      return (pMsg + hdrLen);
+        hdrLen = 0;
+        break;
     }
-  }
 
-  return NULL;
+    if (hdrLen > 0) {
+        pMsg = attMsgAlloc(hdrLen + len);
+        if (pMsg != NULL) {
+            /* return pointer to attribute value buffer */
+            return (pMsg + hdrLen);
+        }
+    }
+
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -650,22 +601,21 @@ void *AttMsgAlloc(uint16_t len, uint8_t opcode)
 /*************************************************************************************************/
 void AttMsgFree(void *pMsg, uint8_t opcode)
 {
-  uint8_t  hdrLen;
+    uint8_t hdrLen;
 
-  WSF_ASSERT((opcode == ATT_PDU_VALUE_IND) || (opcode == ATT_PDU_VALUE_NTF) || \
-             (opcode == ATT_PDU_READ_MULT_VAR_RSP));
+    WSF_ASSERT((opcode == ATT_PDU_VALUE_IND) || (opcode == ATT_PDU_VALUE_NTF) ||
+               (opcode == ATT_PDU_READ_MULT_VAR_RSP));
 
-  switch (opcode)
-  {
+    switch (opcode) {
     case ATT_PDU_VALUE_IND:
     case ATT_PDU_VALUE_NTF:
-      hdrLen = ATT_VALUE_IND_NTF_BUF_LEN;
-      break;
+        hdrLen = ATT_VALUE_IND_NTF_BUF_LEN;
+        break;
 
     default:
-      hdrLen = 0;
-      break;
-  }
+        hdrLen = 0;
+        break;
+    }
 
-  WsfMsgFree(((uint8_t *)pMsg) - hdrLen);
+    WsfMsgFree(((uint8_t *)pMsg) - hdrLen);
 }

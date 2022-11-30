@@ -58,7 +58,7 @@ void WspsMeasComplete(dmConnId_t connId, uint8_t wsmCccIdx);
 /*************************************************************************************************/
 void WspsSetWsmFlags(uint8_t flags);
 
-/*! \} */    /* WEIGHT_SCALE_PROFILE */
+/*! \} */ /* WEIGHT_SCALE_PROFILE */
 
 #ifdef __cplusplus
 };

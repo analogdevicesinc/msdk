@@ -52,7 +52,6 @@
 extern "C" {
 #endif
 
-
 /**
  * @defgroup app_usbd_core USB Device high level library core module
  * @ingroup app_usbd
@@ -74,15 +73,14 @@ extern "C" {
  *
  * Possible USB Device states according to specification.
  */
-typedef enum
-{
-    APP_USBD_STATE_Disabled  , /**< The whole USBD library is disabled */
+typedef enum {
+    APP_USBD_STATE_Disabled, /**< The whole USBD library is disabled */
     APP_USBD_STATE_Unattached, /**< Device is currently not connected to the host */
-    APP_USBD_STATE_Powered   , /**< Device is connected to the host but has not been enumerated */
-    APP_USBD_STATE_Default   , /**< USB Reset condition detected, waiting for the address */
-    APP_USBD_STATE_Addressed , /**< Device has been addressed but has not been configured */
+    APP_USBD_STATE_Powered, /**< Device is connected to the host but has not been enumerated */
+    APP_USBD_STATE_Default, /**< USB Reset condition detected, waiting for the address */
+    APP_USBD_STATE_Addressed, /**< Device has been addressed but has not been configured */
     APP_USBD_STATE_Configured, /**< Device is addressed and configured */
-}app_usbd_state_t;
+} app_usbd_state_t;
 
 /**
  * @brief EP0 handler function pointer.
@@ -93,7 +91,7 @@ typedef enum
  * @param p_contex Context variable configured with the transmission request.
  */
 typedef ret_code_t (*app_usbd_core_setup_data_handler_t)(nrf_drv_usbd_ep_status_t status,
-                                                         void * p_context);
+                                                         void *p_context);
 
 /**
  * @brief Variable type used to register EP0 transfer handler.
@@ -102,10 +100,10 @@ typedef ret_code_t (*app_usbd_core_setup_data_handler_t)(nrf_drv_usbd_ep_status_
  * Another class can register itself to receive messages from EP0 when requesting
  * for Setup data transfer.
  */
-typedef struct
-{
-    app_usbd_core_setup_data_handler_t   handler;   //!< Event handler to be called when transmission is ready
-    void                               * p_context; //!< Context pointer to be send to every called event.
+typedef struct {
+    app_usbd_core_setup_data_handler_t
+        handler; //!< Event handler to be called when transmission is ready
+    void *p_context; //!< Context pointer to be send to every called event.
 } app_usbd_core_setup_data_handler_desc_t;
 
 /*lint -save -e10 -e26 -e93 -e123 -e505 */
@@ -114,10 +112,9 @@ typedef struct
  *
  * USBD core instance type definition.
  */
-APP_USBD_CLASS_TYPEDEF(app_usbd_core,
-        APP_USBD_CORE_CLASS_CONFIGURATION,
-        APP_USBD_CLASS_INSTANCE_SPECIFIC_DEC_NONE,
-        APP_USBD_CLASS_DATA_SPECIFIC_DEC_NONE);
+APP_USBD_CLASS_TYPEDEF(app_usbd_core, APP_USBD_CORE_CLASS_CONFIGURATION,
+                       APP_USBD_CLASS_INSTANCE_SPECIFIC_DEC_NONE,
+                       APP_USBD_CLASS_DATA_SPECIFIC_DEC_NONE);
 /*lint -restore*/
 
 /**
@@ -127,7 +124,7 @@ APP_USBD_CLASS_TYPEDEF(app_usbd_core,
  *
  * @return pointer to the core instance.
  */
-static inline app_usbd_class_inst_t const * app_usbd_core_instance_access(void)
+static inline app_usbd_class_inst_t const *app_usbd_core_instance_access(void)
 {
     extern const APP_USBD_CLASS_INSTANCE_TYPE(app_usbd_core) app_usbd_core_inst;
     return (app_usbd_class_inst_t const *)&app_usbd_core_inst;
@@ -162,9 +159,8 @@ void app_usbd_core_ep0_disable(void);
  *                limiting the size of transfered data to the size required
  *                by setup command.
  */
-ret_code_t app_usbd_core_setup_rsp(app_usbd_setup_t const * p_setup,
-                                   void const *             p_data,
-                                   size_t                   size);
+ret_code_t app_usbd_core_setup_rsp(app_usbd_setup_t const *p_setup, void const *p_data,
+                                   size_t size);
 
 /**
  * @brief Configure the handler for the nearest setup data endpoint transfer.
@@ -181,8 +177,7 @@ ret_code_t app_usbd_core_setup_rsp(app_usbd_setup_t const * p_setup,
  *                                configured endpoint.
  */
 ret_code_t app_usbd_core_setup_data_handler_set(
-    nrf_drv_usbd_ep_t ep,
-    app_usbd_core_setup_data_handler_desc_t const * const p_handler_desc);
+    nrf_drv_usbd_ep_t ep, app_usbd_core_setup_data_handler_desc_t const *const p_handler_desc);
 
 /**
  * @brief Set up a data transfer buffer.
@@ -190,15 +185,13 @@ ret_code_t app_usbd_core_setup_data_handler_set(
  * Returns special internal buffer that can be used in setup transfer.
  * @return Internal buffer pointer.
  */
-void * app_usbd_core_setup_transfer_buff_get(size_t * p_size);
-
+void *app_usbd_core_setup_transfer_buff_get(size_t *p_size);
 
 /**@brief Return internal USBD core state.
  *
  * @return Check @ref app_usbd_state_t to find possible USBD core states.
  */
 app_usbd_state_t app_usbd_core_state_get(void);
-
 
 /**
  * @brief Check current feature state.

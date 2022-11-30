@@ -36,31 +36,29 @@ extern "C" {
   Macros
 **************************************************************************************************/
 
-#define LCTR_ADV_HDR_PDU_TYPE_SHIFT 0   /*!< ADV header PDU type field shift. */
-#define LCTR_ADV_HDR_CH_SEL_SHIFT   5   /*!< ADV header channel selection field shift. */
-#define LCTR_ADV_HDR_TX_ADD_SHIFT   6   /*!< ADV header Tx Address type field shift. */
-#define LCTR_ADV_HDR_RX_ADD_SHIFT   7   /*!< ADV header Rx Address type field shift. */
-#define LCTR_ADV_HDR_LEN_SHIFT      8   /*!< ADV header length field shift. */
+#define LCTR_ADV_HDR_PDU_TYPE_SHIFT 0 /*!< ADV header PDU type field shift. */
+#define LCTR_ADV_HDR_CH_SEL_SHIFT 5 /*!< ADV header channel selection field shift. */
+#define LCTR_ADV_HDR_TX_ADD_SHIFT 6 /*!< ADV header Tx Address type field shift. */
+#define LCTR_ADV_HDR_RX_ADD_SHIFT 7 /*!< ADV header Rx Address type field shift. */
+#define LCTR_ADV_HDR_LEN_SHIFT 8 /*!< ADV header length field shift. */
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief      Advertising channel PDU header. */
-typedef struct
-{
-  uint8_t           pduType;            /*!< PDU type. */
-  uint8_t           chSel;              /*!< Channel selection. */
-  bool_t            txAddrRnd;          /*!< Tx address type is random. */
-  bool_t            rxAddrRnd;          /*!< Rx address type is random. */
-  uint8_t           len;                /*!< Payload length. */
+typedef struct {
+    uint8_t pduType; /*!< PDU type. */
+    uint8_t chSel; /*!< Channel selection. */
+    bool_t txAddrRnd; /*!< Tx address type is random. */
+    bool_t rxAddrRnd; /*!< Rx address type is random. */
+    uint8_t len; /*!< Payload length. */
 } lctrAdvbPduHdr_t;
 
 /*! \brief      Scan request PDU. */
-typedef struct
-{
-  uint64_t          scanAddr;           /*!< Scanner's address. */
-  uint64_t          advAddr;            /*!< Advertiser's address. */
+typedef struct {
+    uint64_t scanAddr; /*!< Scanner's address. */
+    uint64_t advAddr; /*!< Advertiser's address. */
 } lctrScanReq_t;
 
 /**************************************************************************************************

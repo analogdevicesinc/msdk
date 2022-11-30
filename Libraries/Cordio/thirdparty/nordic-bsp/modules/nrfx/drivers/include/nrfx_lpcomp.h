@@ -59,34 +59,33 @@ extern "C" {
  * @brief LPCOMP event handler function type.
  * @param[in] event LPCOMP event.
  */
-typedef void (* nrfx_lpcomp_event_handler_t)(nrf_lpcomp_event_t event);
+typedef void (*nrfx_lpcomp_event_handler_t)(nrf_lpcomp_event_t event);
 
 /** @brief LPCOMP configuration. */
-typedef struct
-{
-    nrf_lpcomp_config_t hal;                /**< LPCOMP HAL configuration. */
-    nrf_lpcomp_input_t  input;              /**< Input to be monitored. */
-    uint8_t             interrupt_priority; /**< LPCOMP interrupt priority. */
+typedef struct {
+    nrf_lpcomp_config_t hal; /**< LPCOMP HAL configuration. */
+    nrf_lpcomp_input_t input; /**< Input to be monitored. */
+    uint8_t interrupt_priority; /**< LPCOMP interrupt priority. */
 } nrfx_lpcomp_config_t;
 
 /** @brief LPCOMP driver default configuration, including the LPCOMP HAL configuration. */
 #ifdef NRF52_SERIES
-#define NRFX_LPCOMP_DEFAULT_CONFIG                                  \
-{                                                                   \
-    .hal    = { (nrf_lpcomp_ref_t)NRFX_LPCOMP_CONFIG_REFERENCE ,    \
-                (nrf_lpcomp_detect_t)NRFX_LPCOMP_CONFIG_DETECTION,  \
-                (nrf_lpcomp_hysteresis_t)NRFX_LPCOMP_CONFIG_HYST }, \
-    .input  = (nrf_lpcomp_input_t)NRFX_LPCOMP_CONFIG_INPUT,         \
-    .interrupt_priority = NRFX_LPCOMP_CONFIG_IRQ_PRIORITY           \
-}
-#else
 #define NRFX_LPCOMP_DEFAULT_CONFIG                                   \
-{                                                                    \
-    .hal    = { (nrf_lpcomp_ref_t)NRFX_LPCOMP_CONFIG_REFERENCE ,     \
-                (nrf_lpcomp_detect_t)NRFX_LPCOMP_CONFIG_DETECTION }, \
-    .input  = (nrf_lpcomp_input_t)NRFX_LPCOMP_CONFIG_INPUT,          \
-    .interrupt_priority = NRFX_LPCOMP_CONFIG_IRQ_PRIORITY            \
-}
+    {                                                                \
+        .hal = { (nrf_lpcomp_ref_t)NRFX_LPCOMP_CONFIG_REFERENCE,     \
+                 (nrf_lpcomp_detect_t)NRFX_LPCOMP_CONFIG_DETECTION,  \
+                 (nrf_lpcomp_hysteresis_t)NRFX_LPCOMP_CONFIG_HYST }, \
+        .input = (nrf_lpcomp_input_t)NRFX_LPCOMP_CONFIG_INPUT,       \
+        .interrupt_priority = NRFX_LPCOMP_CONFIG_IRQ_PRIORITY        \
+    }
+#else
+#define NRFX_LPCOMP_DEFAULT_CONFIG                                    \
+    {                                                                 \
+        .hal = { (nrf_lpcomp_ref_t)NRFX_LPCOMP_CONFIG_REFERENCE,      \
+                 (nrf_lpcomp_detect_t)NRFX_LPCOMP_CONFIG_DETECTION }, \
+        .input = (nrf_lpcomp_input_t)NRFX_LPCOMP_CONFIG_INPUT,        \
+        .interrupt_priority = NRFX_LPCOMP_CONFIG_IRQ_PRIORITY         \
+    }
 #endif
 
 /**
@@ -105,8 +104,8 @@ typedef struct
  *                                  This is possible only if @ref nrfx_prs module
  *                                  is enabled.
  */
-nrfx_err_t nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
-                            nrfx_lpcomp_event_handler_t  event_handler);
+nrfx_err_t nrfx_lpcomp_init(nrfx_lpcomp_config_t const *p_config,
+                            nrfx_lpcomp_event_handler_t event_handler);
 
 /**
  * @brief Function for uninitializing the LCOMP driver.
@@ -118,7 +117,7 @@ nrfx_err_t nrfx_lpcomp_init(nrfx_lpcomp_config_t const * p_config,
  * @sa nrfx_lpcomp_disable
  * @sa nrfx_lpcomp_init
  */
-void  nrfx_lpcomp_uninit(void);
+void nrfx_lpcomp_uninit(void);
 
 /**
  * @brief Function for enabling the LPCOMP peripheral and interrupts.
@@ -142,9 +141,7 @@ void nrfx_lpcomp_disable(void);
 
 /** @} */
 
-
 void nrfx_lpcomp_irq_handler(void);
-
 
 #ifdef __cplusplus
 }

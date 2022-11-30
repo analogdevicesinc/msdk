@@ -51,21 +51,18 @@
 /** @brief Define for a integer tag in DER encoding. */
 #define DER_TAG_INTEGER 0x02
 
-
 /** @brief Max size of integer in DER encoding.
  *
  * @note This limit is for this implementation only, ASN.1 DER supports more
  */
 #define DER_INTEGER_MAX_LEN 0x7F
 
-
 /** @brief Define for overhead to encode a DER of two integers
  *
  * @details TAG + LENGTH needs 2 bytes if the highest bit of the integer is set
  *          we need an extra byte
  */
-#define  DER_OVERHEAD ((2 + 1) * 2)
-
+#define DER_OVERHEAD ((2 + 1) * 2)
 
 /**
  * @brief Decodes two ASN.1 integers to the R and S components of a ECC signature.
@@ -79,12 +76,8 @@
  * @returns NRF_SUCCESS on success, otherwise NRF_ERROR_CRYPTO_INTERNAL.
  */
 
-ret_code_t asn1_to_ecdsa_rs(uint8_t const * p_asn1,
-                            size_t          asn1_len,
-                            uint8_t       * p_rs,
-                            size_t        * p_rs_len);
-
-
+ret_code_t asn1_to_ecdsa_rs(uint8_t const *p_asn1, size_t asn1_len, uint8_t *p_rs,
+                            size_t *p_rs_len);
 
 /**
  * @brief Encodes the ECDSA signature components (r, s) in ASN.1 format.
@@ -100,13 +93,7 @@ ret_code_t asn1_to_ecdsa_rs(uint8_t const * p_asn1,
  *
  * @returns     True on success, otherwise false.
  */
-bool ecdsa_rs_to_asn1(uint8_t const * p_r,
-                      size_t          r_len,
-                      uint8_t const * p_s,
-                      size_t          s_len,
-                      uint8_t       * p_asn_sig,
-                      size_t        * p_asn_sig_len);
-
+bool ecdsa_rs_to_asn1(uint8_t const *p_r, size_t r_len, uint8_t const *p_s, size_t s_len,
+                      uint8_t *p_asn_sig, size_t *p_asn_sig_len);
 
 #endif // OPTIGA_BACKEND_UTILS_H__
-

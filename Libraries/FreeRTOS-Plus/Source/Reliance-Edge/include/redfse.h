@@ -53,7 +53,6 @@ extern "C" {
 #include "redapimacs.h"
 #include "rederrno.h"
 
-
 /** @brief First valid file number.
 
     This macro can be used to statically define file numbers for given files,
@@ -68,7 +67,6 @@ extern "C" {
 */
 #define RED_FILENUM_FIRST_VALID (2U)
 
-
 REDSTATUS RedFseInit(void);
 REDSTATUS RedFseUninit(void);
 REDSTATUS RedFseMount(uint8_t bVolNum);
@@ -76,9 +74,11 @@ REDSTATUS RedFseUnmount(uint8_t bVolNum);
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_FSE_FORMAT == 1)
 REDSTATUS RedFseFormat(uint8_t bVolNum);
 #endif
-int32_t RedFseRead(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset, uint32_t ulLength, void *pBuffer);
+int32_t RedFseRead(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset, uint32_t ulLength,
+                   void *pBuffer);
 #if REDCONF_READ_ONLY == 0
-int32_t RedFseWrite(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset, uint32_t ulLength, const void *pBuffer);
+int32_t RedFseWrite(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset, uint32_t ulLength,
+                    const void *pBuffer);
 #endif
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_FSE_TRUNCATE == 1)
 REDSTATUS RedFseTruncate(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullNewFileSize);
@@ -96,10 +96,8 @@ REDSTATUS RedFseTransact(uint8_t bVolNum);
 
 #endif /* REDCONF_API_FSE == 1 */
 
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-

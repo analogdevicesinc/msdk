@@ -40,41 +40,41 @@
 /*************************************************************************************************/
 void lctrSendConnUpdateInd(lctrConnCtx_t *pCtx)
 {
-  pCtx->connUpd.txWinSize = LL_MIN_TX_WIN_SIZE;
-  pCtx->connUpd.latency = pCtx->connUpdSpec.connLatency;
-  pCtx->connUpd.timeout = pCtx->connUpdSpec.supTimeout;
+    pCtx->connUpd.txWinSize = LL_MIN_TX_WIN_SIZE;
+    pCtx->connUpd.latency = pCtx->connUpdSpec.connLatency;
+    pCtx->connUpd.timeout = pCtx->connUpdSpec.supTimeout;
 
 #if (LL_ENABLE_TESTER)
-  if (llTesterCb.connUpdIndEnabled)
-  {
-    pCtx->connUpd = llTesterCb.connUpdInd;
+    if (llTesterCb.connUpdIndEnabled) {
+        pCtx->connUpd = llTesterCb.connUpdInd;
 
-    llTesterCb.connUpdIndEnabled = FALSE;
-    pCtx->data.mst.sendConnUpdInd = TRUE;
+        llTesterCb.connUpdIndEnabled = FALSE;
+        pCtx->data.mst.sendConnUpdInd = TRUE;
 
-    return;
-  }
+        return;
+    }
 #endif
 
-  uint32_t interMinUsec = LCTR_CONN_IND_US(pCtx->connUpdSpec.connIntervalMin);
-  uint32_t interMaxUsec = LCTR_CONN_IND_US(pCtx->connUpdSpec.connIntervalMax);
-  uint32_t durUsec = pCtx->effConnDurUsec;
-  uint32_t connIntervalUsec;
+    uint32_t interMinUsec = LCTR_CONN_IND_US(pCtx->connUpdSpec.connIntervalMin);
+    uint32_t interMaxUsec = LCTR_CONN_IND_US(pCtx->connUpdSpec.connIntervalMax);
+    uint32_t durUsec = pCtx->effConnDurUsec;
+    uint32_t connIntervalUsec;
 
-  /* Accommodate peer PreferredPeriodicity. */
-  uint32_t commonPrefPerUsec = SchRmCalcCommonPeriodicityUsec(LCTR_CONN_IND_US(pCtx->connParam.prefPeriod));
+    /* Accommodate peer PreferredPeriodicity. */
+    uint32_t commonPrefPerUsec =
+        SchRmCalcCommonPeriodicityUsec(LCTR_CONN_IND_US(pCtx->connParam.prefPeriod));
 
-  if (!SchRmStartUpdate(LCTR_GET_CONN_HANDLE(pCtx), interMinUsec, interMaxUsec, commonPrefPerUsec, durUsec, &connIntervalUsec))
-  {
-    LL_TRACE_WARN1("Could not update connection, handle=%u", LCTR_GET_CONN_HANDLE(pCtx));
-    lctrSendConnMsg(pCtx, LCTR_CONN_LLCP_REJECT_CONN_UPD);
-    return;
-  }
+    if (!SchRmStartUpdate(LCTR_GET_CONN_HANDLE(pCtx), interMinUsec, interMaxUsec, commonPrefPerUsec,
+                          durUsec, &connIntervalUsec)) {
+        LL_TRACE_WARN1("Could not update connection, handle=%u", LCTR_GET_CONN_HANDLE(pCtx));
+        lctrSendConnMsg(pCtx, LCTR_CONN_LLCP_REJECT_CONN_UPD);
+        return;
+    }
 
-  pCtx->connUpd.interval = LCTR_US_TO_CONN_IND(connIntervalUsec);
+    pCtx->connUpd.interval = LCTR_US_TO_CONN_IND(connIntervalUsec);
 
-  /* Delay delivery until txWindowOffset can be computed. */
-  pCtx->data.mst.sendConnUpdInd = TRUE;
+    /* Delay delivery until txWindowOffset can be computed. */
+    pCtx->data.mst.sendConnUpdInd = TRUE;
 }
 
 /*************************************************************************************************/
@@ -86,6 +86,6 @@ void lctrSendConnUpdateInd(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrMstReloadDataPdu(lctrConnCtx_t *pCtx)
 {
-  /* Modify the next CE. Possible changes include empty CE or modification of MD. */
-  SchReload(&pCtx->connBod);
+    /* Modify the next CE. Possible changes include empty CE or modification of MD. */
+    SchReload(&pCtx->connBod);
 }

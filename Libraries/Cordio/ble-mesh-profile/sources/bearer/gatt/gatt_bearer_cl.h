@@ -42,14 +42,13 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Configurable parameters for GATT Bearer */
-typedef struct
-{
-  uint16_t    scanInterval;                    /*!< The scan interval, in 0.625 ms units */
-  uint16_t    scanWindow;                      /*!< The scan window, in 0.625 ms units.   Must be
+typedef struct {
+    uint16_t scanInterval; /*!< The scan interval, in 0.625 ms units */
+    uint16_t scanWindow; /*!< The scan window, in 0.625 ms units.   Must be
                                                    less than or equal to scan interval. */
-  uint8_t     discMode;                        /*!< The GAP discovery mode (general, limited, or none) */
-  uint8_t     scanType;                        /*!< The scan type (active or passive) */
-  uint16_t    serviceUuid;                     /*!< The searched service UUID */
+    uint8_t discMode; /*!< The GAP discovery mode (general, limited, or none) */
+    uint8_t scanType; /*!< The scan type (active or passive) */
+    uint16_t serviceUuid; /*!< The searched service UUID */
 } gattBearerClCfg_t;
 
 /**************************************************************************************************
@@ -103,7 +102,7 @@ bool_t GattBearerClStop(void);
  *  \return    None.
  */
 /*************************************************************************************************/
-void GattBearerClConnect(uint8_t addrType, uint8_t* pAddr);
+void GattBearerClConnect(uint8_t addrType, uint8_t *pAddr);
 
 /*************************************************************************************************/
 /*!
@@ -117,7 +116,7 @@ void GattBearerClConnect(uint8_t addrType, uint8_t* pAddr);
 /*************************************************************************************************/
 void GattBearerClProcDmMsg(dmEvt_t *pMsg);
 
-/*! \} */    /* MESH_BEARER_GATT */
+/*! \} */ /* MESH_BEARER_GATT */
 
 #ifdef __cplusplus
 };

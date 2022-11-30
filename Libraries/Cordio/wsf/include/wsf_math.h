@@ -38,12 +38,12 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Returns the minimum of two values. */
-#define WSF_MIN(a,b)        ((a) < (b) ? (a) : (b))
+#define WSF_MIN(a, b) ((a) < (b) ? (a) : (b))
 
 /*! \brief      Returns the maximum of two values. */
-#define WSF_MAX(a,b)        ((a) > (b) ? (a) : (b))
+#define WSF_MAX(a, b) ((a) > (b) ? (a) : (b))
 
-/*! \} */    /* WSF_MATH_API */
+/*! \} */ /* WSF_MATH_API */
 
 #ifdef __cplusplus
 };

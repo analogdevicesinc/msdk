@@ -40,11 +40,10 @@ extern "C" {
   Data Types
 **************************************************************************************************/
 /*! \brief      Master role device parameter definition. */
-typedef struct
-{
-  uint8_t           maxNumCis;          /*!< Maximum number of CIS. */
+typedef struct {
+    uint8_t maxNumCis; /*!< Maximum number of CIS. */
 
-  bool_t           createCisPend;       /*!< TRUE if create CIS command is pending. */
+    bool_t createCisPend; /*!< TRUE if create CIS command is pending. */
 
 } lmgrCisMstCtrlBlk_t;
 
@@ -63,7 +62,7 @@ void LmgrMstCisInit(void);
 /* Status */
 uint8_t LmgrMstCisGetMaxNumCis(void);
 
-/*! \} */    /* LL_LMGR_API_CIS_MST */
+/*! \} */ /* LL_LMGR_API_CIS_MST */
 
 #ifdef __cplusplus
 };

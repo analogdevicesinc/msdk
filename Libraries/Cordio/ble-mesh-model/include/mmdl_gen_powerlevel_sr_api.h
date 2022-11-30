@@ -31,8 +31,7 @@
 #define MMDL_GEN_POWER_LEVEL_SR_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -40,68 +39,62 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Number of stored states (Present + Target + Last + Default + RangeMin + RangeMax) */
-#define MMDL_GEN_POWER_LEVEL_STATE_CNT             6
+#define MMDL_GEN_POWER_LEVEL_STATE_CNT 6
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Model Power Last Server Status parameters structure */
-typedef struct mmdlGenPowerLastStatusParam_tag
-{
-  mmdlGenPowerLevelState_t          last;              /*!< Present Power Last State */
+typedef struct mmdlGenPowerLastStatusParam_tag {
+    mmdlGenPowerLevelState_t last; /*!< Present Power Last State */
 } mmdlGenPowerLastStatusParam_t;
 
 /*! \brief Model Power Default Server Status parameters structure */
-typedef struct mmdlGenPowerDefaultStatusParam_tag
-{
-  mmdlGenPowerLevelState_t          state;             /*!< Present Power Default State */
+typedef struct mmdlGenPowerDefaultStatusParam_tag {
+    mmdlGenPowerLevelState_t state; /*!< Present Power Default State */
 } mmdlGenPowerDefaultStatusParam_t;
 
 /*! \brief Model Power Range Server Status parameters structure */
-typedef struct mmdlGenPowerRangeStatusParam_tag
-{
-  uint8_t                           statusCode;        /*!< Status Code */
-  mmdlGenPowerLevelState_t          powerMin;          /*!< Minimum Power Range state */
-  mmdlGenPowerLevelState_t          powerMax;          /*!< Maximum Power Range state */
+typedef struct mmdlGenPowerRangeStatusParam_tag {
+    uint8_t statusCode; /*!< Status Code */
+    mmdlGenPowerLevelState_t powerMin; /*!< Minimum Power Range state */
+    mmdlGenPowerLevelState_t powerMax; /*!< Maximum Power Range state */
 } mmdlGenPowerRangeStatusParam_t;
 
 /*! \brief Generic Power Level Server Model State Update event structure */
-typedef struct mmdlGenPowerLevelSrStateUpdate_tag
-{
-  wsfMsgHdr_t                       hdr;               /*!< WSF message header */
-  meshElementId_t                   elemId;            /*!< Element identifier */
-  mmdlStateUpdateSrc_t              stateUpdateSource; /*!< Updated state source */
-  mmdlGenPowerLevelState_t          state;             /*!< Updated state */
-  uint32_t                          transitionMs;      /*!< Transition Time in millisecond steps */
-  uint8_t                           delay5Ms;          /*!< Message execution delay in 5 ms steps */
+typedef struct mmdlGenPowerLevelSrStateUpdate_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlStateUpdateSrc_t stateUpdateSource; /*!< Updated state source */
+    mmdlGenPowerLevelState_t state; /*!< Updated state */
+    uint32_t transitionMs; /*!< Transition Time in millisecond steps */
+    uint8_t delay5Ms; /*!< Message execution delay in 5 ms steps */
 } mmdlGenPowerLevelSrStateUpdate_t;
 
 /*! \brief Generic Power Level Server Model Current State event structure */
-typedef struct mmdlGenPowerLevelSrCurrentState_tag
-{
-  wsfMsgHdr_t                       hdr;               /*!< WSF message header */
-  meshElementId_t                   elemId;            /*!< Element identifier */
-  mmdlGenLevelState_t               state;             /*!< Updated state */
+typedef struct mmdlGenPowerLevelSrCurrentState_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlGenLevelState_t state; /*!< Updated state */
 } mmdlGenPowerLevelSrCurrentState_t;
 
 /*! \brief Generic Power Range Server Model State event structure */
-typedef struct mmdlGenPowerLevelSrRangeState_tag
-{
-  wsfMsgHdr_t                       hdr;               /*!< WSF message header */
-  meshElementId_t                   elemId;            /*!< Element identifier */
-  mmdlGenLevelState_t               minState;          /*!< Minimum state */
-  mmdlGenLevelState_t               maxState;          /*!< Maximum state */
+typedef struct mmdlGenPowerLevelSrRangeState_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlGenLevelState_t minState; /*!< Minimum state */
+    mmdlGenLevelState_t maxState; /*!< Maximum state */
 } mmdlGenPowerLevelSrRangeState_t;
 
 /*! \brief Generic Power Level Server Model event callback parameters structure */
-typedef union mmdlGenPowerLevelSrEvent_tag
-{
-  wsfMsgHdr_t                       hdr;               /*!< WSF message header */
-  mmdlGenPowerLevelSrStateUpdate_t  statusEvent;       /*!< State updated event. Used for
+typedef union mmdlGenPowerLevelSrEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    mmdlGenPowerLevelSrStateUpdate_t statusEvent; /*!< State updated event. Used for
                                                         *   ::MMDL_GEN_POWER_LEVEL_SR_STATE_UPDATE_EVENT
                                                         */
-  mmdlGenPowerLevelSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
+    mmdlGenPowerLevelSrCurrentState_t
+        currentStateEvent; /*!< Current state event. Sent after a Get request
                                                         *   from the upper layer. Used for
                                                         *   ::MMDL_GEN_POWER_LEVEL_SR_CURRENT_STATE_EVENT,
                                                         *   MMDL_GEN_POWER_LAST_SR_CURRENT_STATE_EVENT,
@@ -109,54 +102,53 @@ typedef union mmdlGenPowerLevelSrEvent_tag
                                                         *   MMDL_GEN_POWER_RANGE_SR_CURRENT_EVENT,
                                                         *   MMDL_GEN_POWER_DEFAULT_SR_STATE_UPDATE_EVENT
                                                         */
-  mmdlGenPowerLevelSrRangeState_t   rangeStatusEvent;  /*!< State updated event. Used for
+    mmdlGenPowerLevelSrRangeState_t rangeStatusEvent; /*!< State updated event. Used for
                                                         *   ::MMDL_GEN_POWER_RANGE_SR_STATE_UPDATE_EVENT,
                                                         */
 } mmdlGenPowerLevelSrEvent_t;
 
 /*! \brief Model Generic Power Level Server descriptor definition */
-typedef struct mmdlGenPowerLevelSrDesc_tag
-{
-  mmdlGenPowerLevelState_t  *pStoredStates;       /*!< Pointer to the structure that stores
+typedef struct mmdlGenPowerLevelSrDesc_tag {
+    mmdlGenPowerLevelState_t *pStoredStates; /*!< Pointer to the structure that stores
                                                    *   current states and scene data.
                                                    *   0: Current state,
                                                    *   1: Target state, 2: Last state,
                                                    *   3: Default state, 4: Min Range
                                                    *   5: Max Range, 6-: :MMDL_NUM_OF_SCENES states
                                                    */
-  mmdlNvmSaveHandler_t      fNvmSaveStates;       /*!< Pointer to function that saves
+    mmdlNvmSaveHandler_t fNvmSaveStates; /*!< Pointer to function that saves
                                                    *   Model instance states in NVM
                                                    */
-  wsfTimer_t                transitionTimer;      /*!< WSF Timer for delay and state transition */
-  wsfTimer_t                msgRcvdTimer;         /*!< Timer to manage received logically group
+    wsfTimer_t transitionTimer; /*!< WSF Timer for delay and state transition */
+    wsfTimer_t msgRcvdTimer; /*!< Timer to manage received logically group
                                                    * messages.
                                                    */
-  uint32_t                  remainingTimeMs;      /*!< Time remaining until the current state is
+    uint32_t remainingTimeMs; /*!< Time remaining until the current state is
                                                    *   replaced with the target state. If set to 0,
                                                    *   the target state is ignored. Unit is 1 ms.
                                                    */
-  int16_t                   transitionStep;       /*!< Transition state update step */
-  uint16_t                  steps;                /*!< The number of transition steps */
-  uint8_t                   delay5Ms;             /*!< Delay until the transition to the new state
+    int16_t transitionStep; /*!< Transition state update step */
+    uint16_t steps; /*!< The number of transition steps */
+    uint8_t delay5Ms; /*!< Delay until the transition to the new state
                                                    *   begins. Unit is 5 ms.
                                                    */
-  uint8_t                   transactionId;        /*!< Transaction Identifier used to logically group a
+    uint8_t transactionId; /*!< Transaction Identifier used to logically group a
                                                    *   series of messages.
                                                    */
-  meshAddress_t             srcAddr;              /*!< Source address of the logically grouped series of
+    meshAddress_t srcAddr; /*!< Source address of the logically grouped series of
                                                    *   messages.
                                                    */
-  bool_t                    ackPending;           /*!< TRUE if an ACK is pending for the last received
+    bool_t ackPending; /*!< TRUE if an ACK is pending for the last received
                                                    *   message.
                                                    */
-  bool_t                    ackForUnicast;        /*!< TRUE if the last message was received as a unicast,
+    bool_t ackForUnicast; /*!< TRUE if the last message was received as a unicast,
                                                    *   FALSE otherwise.
                                                    */
-  uint16_t                  ackAppKeyIndex;       /*!< AppKeyIndex used for the last received message.
+    uint16_t ackAppKeyIndex; /*!< AppKeyIndex used for the last received message.
                                                    */
-  mmdlGenPowerLevelState_t  initialState;         /*!< Initial state within a transaction.
+    mmdlGenPowerLevelState_t initialState; /*!< Initial state within a transaction.
                                                    */
-  mmdlStateUpdateSrc_t      updateSource;         /*!< State update source. Cached for transitions.
+    mmdlStateUpdateSrc_t updateSource; /*!< State update source. Cached for transitions.
                                                    */
 } mmdlGenPowerLevelSrDesc_t;
 

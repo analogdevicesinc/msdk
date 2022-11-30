@@ -57,7 +57,7 @@ extern "C" {
  */
 
 /** @brief Maximum RTC counter value. */
-#define DRV_RTC_MAX_CNT     RTC_COUNTER_COUNTER_Msk
+#define DRV_RTC_MAX_CNT RTC_COUNTER_COUNTER_Msk
 
 /** @brief Time requires to update registers between RTC and MCU domains. */
 #define DRV_RTC_CONFIG_APPLY_TIME_US 33
@@ -72,27 +72,24 @@ extern "C" {
 #define DRV_RTC_MIN_TICK_HANDLED 3
 
 /** @brief Macro to convert microseconds into ticks. */
-#define DRV_RTC_US_TO_TICKS(us,freq) (us >= 2^17 ? \
-    ((((us)/1000)*(freq))/1000U) : (((us)*(freq))/1000000U) )
-
+#define DRV_RTC_US_TO_TICKS(us, freq) \
+    (us >= 2 ^ 17 ? ((((us) / 1000) * (freq)) / 1000U) : (((us) * (freq)) / 1000000U))
 
 /** @brief RTC driver instance structure. */
-typedef struct
-{
-    NRF_RTC_Type  * p_reg;            /**< Pointer to instance register set. */
-    IRQn_Type       irq;              /**< Instance IRQ ID. */
-    uint8_t         instance_id;      /**< Instance index. */
-    uint8_t         cc_channel_count; /**< Number of capture/compare channels. */
+typedef struct {
+    NRF_RTC_Type *p_reg; /**< Pointer to instance register set. */
+    IRQn_Type irq; /**< Instance IRQ ID. */
+    uint8_t instance_id; /**< Instance index. */
+    uint8_t cc_channel_count; /**< Number of capture/compare channels. */
 } drv_rtc_t;
 
 /** @brief Macro for creating RTC driver instance.*/
-#define DRV_RTC_INSTANCE(id)                                       \
-{                                                                  \
-    .p_reg            = NRFX_CONCAT_2(NRF_RTC, id),                \
-    .irq              = NRFX_CONCAT_3(RTC, id, _IRQn),             \
-    .instance_id      = NRFX_CONCAT_3(DRV_RTC_RTC, id, _INST_IDX), \
-    .cc_channel_count = NRF_RTC_CC_CHANNEL_COUNT(id),              \
-}
+#define DRV_RTC_INSTANCE(id)                                                       \
+    {                                                                              \
+        .p_reg = NRFX_CONCAT_2(NRF_RTC, id), .irq = NRFX_CONCAT_3(RTC, id, _IRQn), \
+        .instance_id = NRFX_CONCAT_3(DRV_RTC_RTC, id, _INST_IDX),                  \
+        .cc_channel_count = NRF_RTC_CC_CHANNEL_COUNT(id),                          \
+    }
 
 enum {
 #if defined(APP_TIMER_V2_RTC0_ENABLED)
@@ -108,21 +105,20 @@ enum {
 };
 
 /** @brief RTC driver instance configuration structure. */
-typedef struct
-{
-    uint16_t prescaler;          /**< Prescaler. */
-    uint8_t  interrupt_priority; /**< Interrupt priority. */
+typedef struct {
+    uint16_t prescaler; /**< Prescaler. */
+    uint8_t interrupt_priority; /**< Interrupt priority. */
 } drv_rtc_config_t;
 
 /** @brief RTC instance default configuration. */
-#define DRV_RTC_DEFAULT_CONFIG                                                     \
-{                                                                                  \
-    .prescaler          = RTC_FREQ_TO_PRESCALER(DRV_RTC_DEFAULT_CONFIG_FREQUENCY), \
-    .interrupt_priority = DRV_RTC_DEFAULT_CONFIG_IRQ_PRIORITY,                     \
-}
+#define DRV_RTC_DEFAULT_CONFIG                                                \
+    {                                                                         \
+        .prescaler = RTC_FREQ_TO_PRESCALER(DRV_RTC_DEFAULT_CONFIG_FREQUENCY), \
+        .interrupt_priority = DRV_RTC_DEFAULT_CONFIG_IRQ_PRIORITY,            \
+    }
 
 /** @brief RTC driver instance handler type. */
-typedef void (*drv_rtc_handler_t)(drv_rtc_t const * const  p_instance);
+typedef void (*drv_rtc_handler_t)(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for initializing the RTC driver instance.
@@ -137,9 +133,8 @@ typedef void (*drv_rtc_handler_t)(drv_rtc_t const * const  p_instance);
  * @retval NRF_SUCCESS             If successfully initialized.
  * @retval NRF_ERROR_INVALID_STATE If the instance is already initialized.
  */
-ret_code_t drv_rtc_init(drv_rtc_t const * const  p_instance,
-                        drv_rtc_config_t const * p_config,
-                        drv_rtc_handler_t        handler);
+ret_code_t drv_rtc_init(drv_rtc_t const *const p_instance, drv_rtc_config_t const *p_config,
+                        drv_rtc_handler_t handler);
 
 /**
  * @brief Function for uninitializing the RTC driver instance.
@@ -149,21 +144,21 @@ ret_code_t drv_rtc_init(drv_rtc_t const * const  p_instance,
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void drv_rtc_uninit(drv_rtc_t const * const p_instance);
+void drv_rtc_uninit(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for starting RTC clock.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void drv_rtc_start(drv_rtc_t const * const p_instance);
+void drv_rtc_start(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for stopping RTC clock.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void drv_rtc_stop(drv_rtc_t const * const p_instance);
+void drv_rtc_stop(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for configuring compare channel.
@@ -176,10 +171,8 @@ void drv_rtc_stop(drv_rtc_t const * const p_instance);
  * @param[in] abs_value  Absolute value to be set in the compare register.
  * @param[in] irq_enable True to enable interrupt.
  */
-void drv_rtc_compare_set(drv_rtc_t const * const p_instance,
-                         uint32_t                cc,
-                         uint32_t                abs_value,
-                         bool                    irq_enable);
+void drv_rtc_compare_set(drv_rtc_t const *const p_instance, uint32_t cc, uint32_t abs_value,
+                         bool irq_enable);
 
 /**
  * @brief Function for configuring compare channel with safe window.
@@ -196,10 +189,8 @@ void drv_rtc_compare_set(drv_rtc_t const * const p_instance,
  *                           enabling compare channel intterupt.
  * @retval NRF_SUCCESS       If successfully set.
  */
-ret_code_t drv_rtc_windowed_compare_set(drv_rtc_t const * const p_instance,
-                                        uint32_t                    cc,
-                                        uint32_t                    abs_value,
-                                        uint32_t                    safe_window);
+ret_code_t drv_rtc_windowed_compare_set(drv_rtc_t const *const p_instance, uint32_t cc,
+                                        uint32_t abs_value, uint32_t safe_window);
 
 /**
  * @brief Function for enabling overflow event and interrupt.
@@ -207,14 +198,14 @@ ret_code_t drv_rtc_windowed_compare_set(drv_rtc_t const * const p_instance,
  * @param[in] p_instance Pointer to the driver instance structure.
  * @param[in] irq_enable True to enable interrupt.
  */
-void drv_rtc_overflow_enable(drv_rtc_t const * const p_instance, bool irq_enable);
+void drv_rtc_overflow_enable(drv_rtc_t const *const p_instance, bool irq_enable);
 
 /**
  * @brief Function for diabling overflow event and interrupt.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void drv_rtc_overflow_disable(drv_rtc_t const * const p_instance);
+void drv_rtc_overflow_disable(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for checking if overflow event has occured.
@@ -225,7 +216,7 @@ void drv_rtc_overflow_disable(drv_rtc_t const * const p_instance);
  *
  * @return True if interrupt pending, false otherwise.
  */
-bool drv_rtc_overflow_pending(drv_rtc_t const * const p_instance);
+bool drv_rtc_overflow_pending(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for enabling tick event and interrupt.
@@ -233,14 +224,14 @@ bool drv_rtc_overflow_pending(drv_rtc_t const * const p_instance);
  * @param[in] p_instance Pointer to the driver instance structure.
  * @param[in] irq_enable True to enable interrupt.
  */
-void drv_rtc_tick_enable(drv_rtc_t const * const p_instance, bool irq_enable);
+void drv_rtc_tick_enable(drv_rtc_t const *const p_instance, bool irq_enable);
 
 /**
  * @brief Function for disabling tick event and interrupt.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void drv_rtc_tick_disable(drv_rtc_t const * const p_instance);
+void drv_rtc_tick_disable(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for checking if tick event has occured.
@@ -249,7 +240,7 @@ void drv_rtc_tick_disable(drv_rtc_t const * const p_instance);
  *
  * @return True if interrupt pending, false otherwise.
  */
-bool drv_rtc_tick_pending(drv_rtc_t const * const p_instance);
+bool drv_rtc_tick_pending(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for enabling compare channel event and interrupt.
@@ -258,9 +249,7 @@ bool drv_rtc_tick_pending(drv_rtc_t const * const p_instance);
  * @param[in] cc         Compare channel index.
  * @param[in] irq_enable True to enable interrupt.
  */
-void drv_rtc_compare_enable(drv_rtc_t const * const p_instance,
-                            uint32_t cc,
-                            bool irq_enable);
+void drv_rtc_compare_enable(drv_rtc_t const *const p_instance, uint32_t cc, bool irq_enable);
 
 /**
  * @brief Function for disabling compare channel event and interrupt.
@@ -268,7 +257,7 @@ void drv_rtc_compare_enable(drv_rtc_t const * const p_instance,
  * @param[in] p_instance Pointer to the driver instance structure.
  * @param[in] cc         Compare channel index.
  */
-void drv_rtc_compare_disable(drv_rtc_t const * const p_instance, uint32_t cc);
+void drv_rtc_compare_disable(drv_rtc_t const *const p_instance, uint32_t cc);
 
 /**
  * @brief Function for checking if compare channel event has occured.
@@ -278,7 +267,7 @@ void drv_rtc_compare_disable(drv_rtc_t const * const p_instance, uint32_t cc);
  *
  * @return True if interrupt pending, false otherwise.
  */
-bool drv_rtc_compare_pending(drv_rtc_t const * const p_instance, uint32_t cc);
+bool drv_rtc_compare_pending(drv_rtc_t const *const p_instance, uint32_t cc);
 
 /**
  * @brief Function for getting current value of RTC counter.
@@ -287,14 +276,14 @@ bool drv_rtc_compare_pending(drv_rtc_t const * const p_instance, uint32_t cc);
  *
  * @return Counter value.
  */
-uint32_t drv_rtc_counter_get(drv_rtc_t const * const p_instance);
+uint32_t drv_rtc_counter_get(drv_rtc_t const *const p_instance);
 
 /**
  * @brief Function for triggering RTC interrupt.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void drv_rtc_irq_trigger(drv_rtc_t const * const p_instance);
+void drv_rtc_irq_trigger(drv_rtc_t const *const p_instance);
 
 /** @} */
 

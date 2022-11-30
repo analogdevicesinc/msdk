@@ -35,18 +35,10 @@
 **************************************************************************************************/
 
 /* action function table */
-static const dmDevAct_t dmDevAct[] =
-{
-  dmDevActReset
-};
+static const dmDevAct_t dmDevAct[] = { dmDevActReset };
 
 /* Component function interface */
-const dmFcnIf_t dmDevFcnIf =
-{
-  dmEmptyReset,
-  dmDevHciHandler,
-  dmDevMsgHandler
-};
+const dmFcnIf_t dmDevFcnIf = { dmEmptyReset, dmDevHciHandler, dmDevMsgHandler };
 
 /* Control block */
 dmDevCb_t dmDevCb;
@@ -62,24 +54,22 @@ dmDevCb_t dmDevCb;
 /*************************************************************************************************/
 void dmDevActReset(wsfMsgHdr_t *pMsg)
 {
-  uint8_t i;
+    uint8_t i;
 
-  /* if DM not resetting */
-  if (!dmCb.resetting)
-  {
-    /* set resetting state */
-    dmCb.resetting = TRUE;
+    /* if DM not resetting */
+    if (!dmCb.resetting) {
+        /* set resetting state */
+        dmCb.resetting = TRUE;
 
-    /* for each DM component */
-    for (i = 0; i < DM_NUM_IDS; i++)
-    {
-      /* call component's reset function */
-      (*(dmFcnIfTbl[i]->reset))();
+        /* for each DM component */
+        for (i = 0; i < DM_NUM_IDS; i++) {
+            /* call component's reset function */
+            (*(dmFcnIfTbl[i]->reset))();
+        }
+
+        /* start HCI reset sequence */
+        HciResetSequence();
     }
-
-    /* start HCI reset sequence */
-    HciResetSequence();
-  }
 }
 
 /*************************************************************************************************/
@@ -93,11 +83,11 @@ void dmDevActReset(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void dmDevHciEvtReset(hciEvt_t *pEvent)
 {
-  /* reset resetting state */
-  dmCb.resetting = FALSE;
+    /* reset resetting state */
+    dmCb.resetting = FALSE;
 
-  pEvent->hdr.event = DM_RESET_CMPL_IND;
-  (*dmCb.cback)((dmEvt_t *) pEvent);
+    pEvent->hdr.event = DM_RESET_CMPL_IND;
+    (*dmCb.cback)((dmEvt_t *)pEvent);
 }
 
 /*************************************************************************************************/
@@ -111,8 +101,8 @@ static void dmDevHciEvtReset(hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmDevHciEvtVendorSpec(hciEvt_t *pEvent)
 {
-  pEvent->hdr.event = DM_VENDOR_SPEC_IND;
-  (*dmCb.cback)((dmEvt_t *) pEvent);
+    pEvent->hdr.event = DM_VENDOR_SPEC_IND;
+    (*dmCb.cback)((dmEvt_t *)pEvent);
 }
 
 /*************************************************************************************************/
@@ -126,8 +116,8 @@ static void dmDevHciEvtVendorSpec(hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmDevHciEvtHwError(hciEvt_t *pEvent)
 {
-  pEvent->hdr.event = DM_HW_ERROR_IND;
-  (*dmCb.cback)((dmEvt_t *) pEvent);
+    pEvent->hdr.event = DM_HW_ERROR_IND;
+    (*dmCb.cback)((dmEvt_t *)pEvent);
 }
 
 /*************************************************************************************************/
@@ -141,24 +131,23 @@ static void dmDevHciEvtHwError(hciEvt_t *pEvent)
 /*************************************************************************************************/
 void dmDevHciHandler(hciEvt_t *pEvent)
 {
-  switch (pEvent->hdr.event)
-  {
+    switch (pEvent->hdr.event) {
     case HCI_RESET_SEQ_CMPL_CBACK_EVT:
-      dmDevHciEvtReset(pEvent);
-      break;
+        dmDevHciEvtReset(pEvent);
+        break;
 
     case HCI_VENDOR_SPEC_CBACK_EVT:
-      dmDevHciEvtVendorSpec(pEvent);
-      break;
+        dmDevHciEvtVendorSpec(pEvent);
+        break;
 
     case HCI_HW_ERROR_CBACK_EVT:
-      dmDevHciEvtHwError(pEvent);
-      break;
+        dmDevHciEvtHwError(pEvent);
+        break;
 
     default:
-      /* ignore event */
-      break;
-  }
+        /* ignore event */
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -172,8 +161,8 @@ void dmDevHciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 void dmDevMsgHandler(wsfMsgHdr_t *pMsg)
 {
-  /* execute action function */
-  (*dmDevAct[DM_MSG_MASK(pMsg->event)])(pMsg);
+    /* execute action function */
+    (*dmDevAct[DM_MSG_MASK(pMsg->event)])(pMsg);
 }
 
 /*************************************************************************************************/
@@ -190,18 +179,19 @@ void dmDevMsgHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void dmDevPassEvtToDevPriv(uint8_t event, uint8_t param, uint8_t advHandle, bool_t connectable)
 {
-  dmDevPrivMsg_t evt;
+    dmDevPrivMsg_t evt;
 
-  DM_TRACE_INFO3("dmDevPassEvtToDevPriv: event: %d, param: %d, advHandle: %d", event, param, advHandle);
+    DM_TRACE_INFO3("dmDevPassEvtToDevPriv: event: %d, param: %d, advHandle: %d", event, param,
+                   advHandle);
 
-  /* build event */
-  evt.hdr.event = event;
-  evt.hdr.param = param;
-  evt.privCtrl.advHandle = advHandle;
-  evt.privCtrl.connectable = connectable;
+    /* build event */
+    evt.hdr.event = event;
+    evt.hdr.param = param;
+    evt.privCtrl.advHandle = advHandle;
+    evt.privCtrl.connectable = connectable;
 
-  /* pass event to device privacy */
-  (*(dmFcnIfTbl[DM_ID_DEV_PRIV]->msgHandler))((wsfMsgHdr_t *) &evt);
+    /* pass event to device privacy */
+    (*(dmFcnIfTbl[DM_ID_DEV_PRIV]->msgHandler))((wsfMsgHdr_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -216,15 +206,15 @@ void dmDevPassEvtToDevPriv(uint8_t event, uint8_t param, uint8_t advHandle, bool
 /*************************************************************************************************/
 void dmDevPassEvtToConnCte(uint8_t state, dmConnId_t connId)
 {
-  wsfMsgHdr_t evt;
+    wsfMsgHdr_t evt;
 
-  /* build event */
-  evt.event = DM_CONN_CTE_MSG_STATE;
-  evt.status = state;
-  evt.param = connId;
+    /* build event */
+    evt.event = DM_CONN_CTE_MSG_STATE;
+    evt.status = state;
+    evt.param = connId;
 
-  /* pass event to Connection CTE */
-  (*(dmFcnIfTbl[DM_ID_CONN_CTE]->msgHandler))(&evt);
+    /* pass event to Connection CTE */
+    (*(dmFcnIfTbl[DM_ID_CONN_CTE]->msgHandler))(&evt);
 }
 
 /*************************************************************************************************/
@@ -236,14 +226,13 @@ void dmDevPassEvtToConnCte(uint8_t state, dmConnId_t connId)
 /*************************************************************************************************/
 void DmDevReset(void)
 {
-  wsfMsgHdr_t *pMsg;
+    wsfMsgHdr_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL)
-  {
-    pMsg->event = DM_DEV_MSG_API_RESET;
+    if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL) {
+        pMsg->event = DM_DEV_MSG_API_RESET;
 
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
+        WsfMsgSend(dmCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -257,8 +246,8 @@ void DmDevReset(void)
 /*************************************************************************************************/
 void DmDevSetRandAddr(uint8_t *pAddr)
 {
-  BdaCpy(dmCb.localAddr, pAddr);
-  HciLeSetRandAddrCmd(pAddr);
+    BdaCpy(dmCb.localAddr, pAddr);
+    HciLeSetRandAddrCmd(pAddr);
 }
 
 /*************************************************************************************************/
@@ -274,7 +263,7 @@ void DmDevSetRandAddr(uint8_t *pAddr)
 /*************************************************************************************************/
 void DmDevWhiteListAdd(uint8_t addrType, uint8_t *pAddr)
 {
-  HciLeAddDevWhiteListCmd(addrType, pAddr);
+    HciLeAddDevWhiteListCmd(addrType, pAddr);
 }
 
 /*************************************************************************************************/
@@ -290,7 +279,7 @@ void DmDevWhiteListAdd(uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 void DmDevWhiteListRemove(uint8_t addrType, uint8_t *pAddr)
 {
-  HciLeRemoveDevWhiteListCmd(addrType, pAddr);
+    HciLeRemoveDevWhiteListCmd(addrType, pAddr);
 }
 
 /*************************************************************************************************/
@@ -303,7 +292,7 @@ void DmDevWhiteListRemove(uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 void DmDevWhiteListClear(void)
 {
-  HciLeClearWhiteListCmd();
+    HciLeClearWhiteListCmd();
 }
 
 /*************************************************************************************************/
@@ -319,61 +308,56 @@ void DmDevWhiteListClear(void)
 /*************************************************************************************************/
 bool_t dmDevSetFilterPolicy(uint8_t advHandle, uint8_t mode, uint8_t policy)
 {
-  bool_t policySet = FALSE;
+    bool_t policySet = FALSE;
 
-  switch (mode)
-  {
+    switch (mode) {
     case DM_FILT_POLICY_MODE_ADV:
-      /* if Advertising filter policy is valid */
-      if (policy <= HCI_ADV_FILT_ALL)
-      {
-        WSF_ASSERT(advHandle < DM_NUM_ADV_SETS);
+        /* if Advertising filter policy is valid */
+        if (policy <= HCI_ADV_FILT_ALL) {
+            WSF_ASSERT(advHandle < DM_NUM_ADV_SETS);
 
-        /* update the filter policy */
-        dmCb.advFiltPolicy[advHandle] = policy;
-        policySet = TRUE;
-      }
-      break;
+            /* update the filter policy */
+            dmCb.advFiltPolicy[advHandle] = policy;
+            policySet = TRUE;
+        }
+        break;
 
     case DM_FILT_POLICY_MODE_SCAN:
-      /* if Scanning filter policy is valid */
-      if (policy <= HCI_FILT_WHITE_LIST_RES_INIT)
-      {
-        /* update the filter policy */
-        dmCb.scanFiltPolicy = policy;
-        policySet = TRUE;
-      }
-      break;
+        /* if Scanning filter policy is valid */
+        if (policy <= HCI_FILT_WHITE_LIST_RES_INIT) {
+            /* update the filter policy */
+            dmCb.scanFiltPolicy = policy;
+            policySet = TRUE;
+        }
+        break;
 
     case DM_FILT_POLICY_MODE_INIT:
-      /* if Initiator filter policy is valid */
-      if (policy <= HCI_FILT_WHITE_LIST)
-      {
-        /* update the filter policy */
-        dmCb.initFiltPolicy = policy;
-        policySet = TRUE;
-      }
-      break;
+        /* if Initiator filter policy is valid */
+        if (policy <= HCI_FILT_WHITE_LIST) {
+            /* update the filter policy */
+            dmCb.initFiltPolicy = policy;
+            policySet = TRUE;
+        }
+        break;
 
     case DM_FILT_POLICY_MODE_SYNC:
-      /* if Synchronization filter policy is valid */
-      if (policy <= HCI_FILT_PER_ADV_LIST)
-      {
-        /* clear the filter policy bit */
-        dmCb.syncOptions &= ~HCI_OPTIONS_FILT_POLICY_BIT;
+        /* if Synchronization filter policy is valid */
+        if (policy <= HCI_FILT_PER_ADV_LIST) {
+            /* clear the filter policy bit */
+            dmCb.syncOptions &= ~HCI_OPTIONS_FILT_POLICY_BIT;
 
-        /* set the filter policy bit */
-        dmCb.syncOptions |= policy;
-        policySet = TRUE;
-      }
-      break;
+            /* set the filter policy bit */
+            dmCb.syncOptions |= policy;
+            policySet = TRUE;
+        }
+        break;
 
     default:
-      /* invalid filter policy mode */
-      break;
-  }
+        /* invalid filter policy mode */
+        break;
+    }
 
-  return policySet;
+    return policySet;
 }
 
 /*************************************************************************************************/
@@ -388,7 +372,7 @@ bool_t dmDevSetFilterPolicy(uint8_t advHandle, uint8_t mode, uint8_t policy)
 /*************************************************************************************************/
 bool_t DmDevSetFilterPolicy(uint8_t mode, uint8_t policy)
 {
-  return dmDevSetFilterPolicy(DM_ADV_HANDLE_DEFAULT, mode, policy);
+    return dmDevSetFilterPolicy(DM_ADV_HANDLE_DEFAULT, mode, policy);
 }
 
 /*************************************************************************************************/
@@ -405,7 +389,7 @@ bool_t DmDevSetFilterPolicy(uint8_t mode, uint8_t policy)
 /*************************************************************************************************/
 bool_t DmDevSetExtFilterPolicy(uint8_t advHandle, uint8_t mode, uint8_t policy)
 {
-  return dmDevSetFilterPolicy(advHandle, mode, policy);
+    return dmDevSetFilterPolicy(advHandle, mode, policy);
 }
 
 /*************************************************************************************************/
@@ -419,5 +403,5 @@ bool_t DmDevSetExtFilterPolicy(uint8_t advHandle, uint8_t mode, uint8_t policy)
 /*************************************************************************************************/
 void DmDevVsInit(uint8_t param)
 {
-  HciVsInit(param);
+    HciVsInit(param);
 }

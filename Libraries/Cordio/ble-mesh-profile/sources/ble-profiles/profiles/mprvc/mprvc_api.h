@@ -39,12 +39,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh Provisioning service enumeration of handle indexes of characteristics to be discovered */
-enum
-{
-  MPRVC_MPRVS_DIN_HDL_IDX,        /*!< Data In */
-  MPRVC_MPRVS_DOUT_HDL_IDX,       /*!< Data Out  */
-  MPRVC_MPRVS_DOUT_CCC_HDL_IDX,   /*!< Data Out CCC descriptor */
-  MPRVC_MPRVS_HDL_LIST_LEN        /*!< Handle list length */
+enum {
+    MPRVC_MPRVS_DIN_HDL_IDX, /*!< Data In */
+    MPRVC_MPRVS_DOUT_HDL_IDX, /*!< Data Out  */
+    MPRVC_MPRVS_DOUT_CCC_HDL_IDX, /*!< Data Out CCC descriptor */
+    MPRVC_MPRVS_HDL_LIST_LEN /*!< Handle list length */
 };
 
 /**************************************************************************************************
@@ -103,7 +102,7 @@ void MprvcSendDataIn(meshGattProxyPduSendEvt_t *pEvt);
 /*************************************************************************************************/
 void MprvcProcMsg(wsfMsgHdr_t *pMsg);
 
-/*! \} */    /* MESH_PROVISIONING_PROFILE */
+/*! \} */ /* MESH_PROVISIONING_PROFILE */
 
 #ifdef __cplusplus
 };

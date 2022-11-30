@@ -164,12 +164,12 @@ static PyObject *get_nbits_py(PyObject *m, PyObject *args)
 
 static PyMethodDef methods[] = {
     { "tns_compute_lpc_coeffs", compute_lpc_coeffs_py, METH_VARARGS },
-    { "tns_lpc_reflection"    , lpc_reflection_py    , METH_VARARGS },
-    { "tns_quantize_rc"       , quantize_rc_py       , METH_VARARGS },
-    { "tns_unquantize_rc"     , unquantize_rc_py     , METH_VARARGS },
-    { "tns_analyze"           , analyze_py           , METH_VARARGS },
-    { "tns_synthesize"        , synthesize_py        , METH_VARARGS },
-    { "tns_get_nbits"         , get_nbits_py         , METH_VARARGS },
+    { "tns_lpc_reflection", lpc_reflection_py, METH_VARARGS },
+    { "tns_quantize_rc", quantize_rc_py, METH_VARARGS },
+    { "tns_unquantize_rc", unquantize_rc_py, METH_VARARGS },
+    { "tns_analyze", analyze_py, METH_VARARGS },
+    { "tns_synthesize", synthesize_py, METH_VARARGS },
+    { "tns_get_nbits", get_nbits_py, METH_VARARGS },
     { NULL },
 };
 

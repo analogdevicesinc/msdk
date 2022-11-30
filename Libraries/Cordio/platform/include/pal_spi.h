@@ -37,30 +37,27 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Signaling mode. */
-typedef enum
-{
-  PAL_SPI_MODE_SLAVE,                   /*!< Slave mode. */
-  PAL_SPI_MODE_MASTER                   /*!< Master mode. */
+typedef enum {
+    PAL_SPI_MODE_SLAVE, /*!< Slave mode. */
+    PAL_SPI_MODE_MASTER /*!< Master mode. */
 } PalSpiMode_t;
 
 /*! \brief      Data exchange completion callback. */
 typedef void (*PalSpiCompCback)(void);
 
 /*! \brief      Peripheral configuration. */
-typedef struct
-{
-  uint32_t clkRateHz;                   /*!< Clock rate in Hz. */
-  PalSpiMode_t mode;                    /*!< Signaling mode. */
-  PalSpiCompCback compCback;            /*!< Data exchange completion callback. */
+typedef struct {
+    uint32_t clkRateHz; /*!< Clock rate in Hz. */
+    PalSpiMode_t mode; /*!< Signaling mode. */
+    PalSpiCompCback compCback; /*!< Data exchange completion callback. */
 } PalSpiConfig_t;
 
 /*! \brief      Operational states. */
-typedef enum
-{
-  PAL_SPI_STATE_UNINIT = 0,             /*!< Uninitialized state. */
-  PAL_SPI_STATE_ERROR  = 0,             /*!< Error state. */
-  PAL_SPI_STATE_READY,                  /*!< Ready state. */
-  PAL_SPI_STATE_BUSY                    /*!< Data exchange in progress. */
+typedef enum {
+    PAL_SPI_STATE_UNINIT = 0, /*!< Uninitialized state. */
+    PAL_SPI_STATE_ERROR = 0, /*!< Error state. */
+    PAL_SPI_STATE_READY, /*!< Ready state. */
+    PAL_SPI_STATE_BUSY /*!< Data exchange in progress. */
 } PalSpiState_t;
 
 /**************************************************************************************************
@@ -75,9 +72,10 @@ void PalSpiDeInit(void);
 PalSpiState_t PalSpiGetState(void);
 
 /* Data Transfer */
-void PalSpiDataExchange(uint8_t *pRdData, uint16_t rdDataLen, const uint8_t *pWrData, uint16_t wrDataLen);
+void PalSpiDataExchange(uint8_t *pRdData, uint16_t rdDataLen, const uint8_t *pWrData,
+                        uint16_t wrDataLen);
 
-/*! \} */    /* PAL_SPI */
+/*! \} */ /* PAL_SPI */
 
 #ifdef __cplusplus
 };

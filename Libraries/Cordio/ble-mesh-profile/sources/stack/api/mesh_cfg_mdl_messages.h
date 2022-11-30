@@ -27,8 +27,7 @@
 #define MESH_CFG_MDL_MESSAGES_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "wsf_types.h"
@@ -40,13 +39,20 @@ extern "C"
 **************************************************************************************************/
 
 /*! BSTREAM wrapper for serializing vendor model ID's */
-#define VEND_MDL_TO_BSTREAM(p, n) { UINT16_TO_BSTREAM((p), MESH_VENDOR_MODEL_ID_TO_COMPANY_ID((n)));\
-                                    UINT16_TO_BSTREAM((p), MESH_VENDOR_MODEL_ID_TO_MODEL_ID((n))); }
+#define VEND_MDL_TO_BSTREAM(p, n)                                        \
+    {                                                                    \
+        UINT16_TO_BSTREAM((p), MESH_VENDOR_MODEL_ID_TO_COMPANY_ID((n))); \
+        UINT16_TO_BSTREAM((p), MESH_VENDOR_MODEL_ID_TO_MODEL_ID((n)));   \
+    }
 
 /*! BSTREAM wrapper for deserializing vendor model ID's */
-#define BSTREAM_TO_VEND_MDL(n, p) { uint16_t c, m;\
-                                    BSTREAM_TO_UINT16(c, (p)); BSTREAM_TO_UINT16(m, (p));\
-                                    n = MESH_VENDOR_MODEL_MK(c, m);}
+#define BSTREAM_TO_VEND_MDL(n, p)       \
+    {                                   \
+        uint16_t c, m;                  \
+        BSTREAM_TO_UINT16(c, (p));      \
+        BSTREAM_TO_UINT16(m, (p));      \
+        n = MESH_VENDOR_MODEL_MK(c, m); \
+    }
 
 /**************************************************************************************************
   Function Declarations
@@ -86,12 +92,12 @@ void meshCfgMsgUnpackModelPubParam(uint8_t *pBuf, meshModelPublicationParams_t *
                                    meshSigModelId_t *pSigId, meshVendorModelId_t *pVendorId,
                                    bool_t isSig);
 
-void meshCfgMsgPackModelAppBind(uint8_t *pBuf, meshAddress_t elemAddr,
-                                uint16_t appKeyIndex, meshSigModelId_t sigModelId,
-                                meshVendorModelId_t vendorModelId, bool_t isSig);
+void meshCfgMsgPackModelAppBind(uint8_t *pBuf, meshAddress_t elemAddr, uint16_t appKeyIndex,
+                                meshSigModelId_t sigModelId, meshVendorModelId_t vendorModelId,
+                                bool_t isSig);
 
-void meshCfgMsgUnpackModelAppBind(uint8_t *pBuf, meshAddress_t *pElemAddr,
-                                  uint16_t *pAppKeyIndex, meshSigModelId_t *pSigModelId,
+void meshCfgMsgUnpackModelAppBind(uint8_t *pBuf, meshAddress_t *pElemAddr, uint16_t *pAppKeyIndex,
+                                  meshSigModelId_t *pSigModelId,
                                   meshVendorModelId_t *pVendorModelId, bool_t isSig);
 
 void meshCfgMsgPackHbPub(uint8_t *pBuf, meshHbPub_t *pHbPub);

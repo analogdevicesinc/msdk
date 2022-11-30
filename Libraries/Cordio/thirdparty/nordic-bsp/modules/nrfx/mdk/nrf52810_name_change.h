@@ -48,17 +48,17 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * nrf52810_bitfields.h. The macros defined in this file were available previously. Do not use these
  * macros on purpose. Use the ones defined in nrf52810.h and nrf52810_bitfields.h instead.
  */
- 
- /* IRQ */
- /* Changes of interrupt names */
- #define SPIM0_SPIS0_IRQn       SPIM0_SPIS0_SPI0_IRQn
- #define TWIM0_TWIS0_IRQn       TWIM0_TWIS0_TWI0_IRQn
- #define UARTE0_IRQn            UARTE0_UART0_IRQn
- 
- #define SPIM0_SPIS0_IRQHandler SPIM0_SPIS0_SPI0_IRQHandler
- #define TWIM0_TWIS0_IRQHandler TWIM0_TWIS0_TWI0_IRQHandler
- #define UARTE0_IRQHandler      UARTE0_UART0_IRQHandler
- 
- /*lint --flb "Leave library region" */
+
+/* IRQ */
+/* Changes of interrupt names */
+#define SPIM0_SPIS0_IRQn SPIM0_SPIS0_SPI0_IRQn
+#define TWIM0_TWIS0_IRQn TWIM0_TWIS0_TWI0_IRQn
+#define UARTE0_IRQn UARTE0_UART0_IRQn
+
+#define SPIM0_SPIS0_IRQHandler SPIM0_SPIS0_SPI0_IRQHandler
+#define TWIM0_TWIS0_IRQHandler TWIM0_TWIS0_TWI0_IRQHandler
+#define UARTE0_IRQHandler UARTE0_UART0_IRQHandler
+
+/*lint --flb "Leave library region" */
 
 #endif /* NRF52810_NAME_CHANGE_H */

@@ -52,8 +52,8 @@ typedef void (*wsfTestHandler_t)(wsfEventMask_t event, void *pMsg);
  *  \return Event handler ID.
  */
 /*************************************************************************************************/
-void wsfOsInit(uint8_t msPerTick,
-    uint16_t bufMemLen, uint8_t *pBufMem, uint8_t numPools, wsfBufPoolDesc_t *pDesc);
+void wsfOsInit(uint8_t msPerTick, uint16_t bufMemLen, uint8_t *pBufMem, uint8_t numPools,
+               wsfBufPoolDesc_t *pDesc);
 
 /*************************************************************************************************/
 /*!

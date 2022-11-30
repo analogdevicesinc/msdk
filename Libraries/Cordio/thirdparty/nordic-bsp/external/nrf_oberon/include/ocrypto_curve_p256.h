@@ -55,7 +55,6 @@ extern "C" {
 
 #include "ocrypto_sc_p256.h"
 
-
 // (x,y) only jacobian coordinates
 /**@cond */
 typedef struct {
@@ -73,7 +72,6 @@ typedef struct {
  * @retval -1 Otherwise.
  */
 int ocrypto_curve_p256_from32bytes(ocrypto_cp_p256 *r, const uint8_t p[32]);
-
 
 /** Load point from bytes.
  *
@@ -112,7 +110,8 @@ void ocrypto_curve_p256_to64bytes(uint8_t r[64], ocrypto_cp_p256 *p);
  * @retval 0  If 0 < s < q.
  * @retval 1  If s > q.
  */
-int ocrypto_curve_p256_scalarmult(ocrypto_cp_p256 *r, const ocrypto_cp_p256 *p, const ocrypto_sc_p256 *s);
+int ocrypto_curve_p256_scalarmult(ocrypto_cp_p256 *r, const ocrypto_cp_p256 *p,
+                                  const ocrypto_sc_p256 *s);
 
 /** P256 scalar base multiplication.
  *

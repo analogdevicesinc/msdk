@@ -31,8 +31,7 @@
 #define MMDL_LIGHT_LIGHTNESS_CL_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "mmdl_lightlightness_defs.h"
@@ -45,7 +44,7 @@ extern "C"
 extern wsfHandlerId_t mmdlLightLightnessClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t  mmdlLightLightnessClRcvdOpcodes[];
+extern const meshMsgOpcode_t mmdlLightLightnessClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations
@@ -85,8 +84,8 @@ void MmdlLightLightnessClHandler(wsfMsgHdr_t *pMsg);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightLightnessClGet(meshElementId_t elementId, meshAddress_t serverAddr,  uint8_t ttl,
-                          uint16_t appKeyIndex);
+void MmdlLightLightnessClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+                             uint16_t appKeyIndex);
 
 /*************************************************************************************************/
 /*!
@@ -133,8 +132,8 @@ void MmdlLightLightnessClSetNoAck(meshElementId_t elementId, meshAddress_t serve
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightLightnessLinearClGet(meshElementId_t elementId, meshAddress_t serverAddr,
-                                   uint8_t ttl, uint16_t appKeyIndex);
+void MmdlLightLightnessLinearClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+                                   uint16_t appKeyIndex);
 
 /*************************************************************************************************/
 /*!
@@ -249,8 +248,8 @@ void MmdlLightLightnessDefaultClSetNoAck(meshElementId_t elementId, meshAddress_
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightLightnessRangeClGet(meshElementId_t elementId, meshAddress_t serverAddr,
-                                  uint8_t ttl, uint16_t appKeyIndex);
+void MmdlLightLightnessRangeClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+                                  uint16_t appKeyIndex);
 
 /*************************************************************************************************/
 /*!

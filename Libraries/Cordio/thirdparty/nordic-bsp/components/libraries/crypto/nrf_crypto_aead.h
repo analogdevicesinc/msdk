@@ -141,7 +141,6 @@ extern const nrf_crypto_aead_info_t g_nrf_crypto_aes_gcm_256_info;
 */
 extern const nrf_crypto_aead_info_t g_nrf_crypto_chacha_poly_256_info;
 
-
 /**
  * @brief Context type for AEAD.
  *
@@ -149,7 +148,6 @@ extern const nrf_crypto_aead_info_t g_nrf_crypto_chacha_poly_256_info;
  *       enabled in @ref sdk_config.
  */
 typedef nrf_crypto_backend_aead_context_t nrf_crypto_aead_context_t;
-
 
 /**@brief Function for initializing the AEAD calculation context.
  *
@@ -162,9 +160,8 @@ typedef nrf_crypto_backend_aead_context_t nrf_crypto_aead_context_t;
  *
  * @retval  NRF_SUCCESS  Context was successfully initialized.
  */
-ret_code_t nrf_crypto_aead_init(nrf_crypto_aead_context_t * const    p_context,
-                                nrf_crypto_aead_info_t const * const p_info,
-                                uint8_t *                            p_key);
+ret_code_t nrf_crypto_aead_init(nrf_crypto_aead_context_t *const p_context,
+                                nrf_crypto_aead_info_t const *const p_info, uint8_t *p_key);
 
 /**@brief Function for uninitializing the AEAD calculation context.
  *
@@ -172,7 +169,7 @@ ret_code_t nrf_crypto_aead_init(nrf_crypto_aead_context_t * const    p_context,
  *
  * @retval  NRF_SUCCESS  Context was successfully uninitialized.
  */
-ret_code_t nrf_crypto_aead_uninit(void * const p_context);
+ret_code_t nrf_crypto_aead_uninit(void *const p_context);
 
 /**@brief Integrated encryption / decryption function.
  *
@@ -212,17 +209,11 @@ ret_code_t nrf_crypto_aead_uninit(void * const p_context);
  *
  * @retval  NRF_SUCCESS  Message was successfully encrypted.
  */
-ret_code_t nrf_crypto_aead_crypt(nrf_crypto_aead_context_t * const p_context,
-                                 nrf_crypto_operation_t            operation,
-                                 uint8_t *                         p_nonce,
-                                 uint8_t                           nonce_size,
-                                 uint8_t *                         p_adata,
-                                 size_t                            adata_size,
-                                 uint8_t *                         p_data_in,
-                                 size_t                            data_in_size,
-                                 uint8_t *                         p_data_out,
-                                 uint8_t *                         p_mac,
-                                 uint8_t                           mac_size);
+ret_code_t nrf_crypto_aead_crypt(nrf_crypto_aead_context_t *const p_context,
+                                 nrf_crypto_operation_t operation, uint8_t *p_nonce,
+                                 uint8_t nonce_size, uint8_t *p_adata, size_t adata_size,
+                                 uint8_t *p_data_in, size_t data_in_size, uint8_t *p_data_out,
+                                 uint8_t *p_mac, uint8_t mac_size);
 
 #ifdef __cplusplus
 }

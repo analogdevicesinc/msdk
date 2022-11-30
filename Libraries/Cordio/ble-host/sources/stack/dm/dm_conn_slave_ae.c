@@ -35,13 +35,9 @@
 **************************************************************************************************/
 
 /* Action set for this module */
-static const dmConnAct_t dmConnActSetSlave[] =
-{
-  dmExtConnSmActAccept,
-  dmExtConnSmActCancelAccept,
-  dmExtConnSmActConnAccepted,
-  dmExtConnSmActAcceptFailed
-};
+static const dmConnAct_t dmConnActSetSlave[] = { dmExtConnSmActAccept, dmExtConnSmActCancelAccept,
+                                                 dmExtConnSmActConnAccepted,
+                                                 dmExtConnSmActAcceptFailed };
 
 /*************************************************************************************************/
 /*!
@@ -55,9 +51,9 @@ static const dmConnAct_t dmConnActSetSlave[] =
 /*************************************************************************************************/
 void dmExtConnSmActAccept(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-  dmExtAdvStartDirected(pCcb->connId, pMsg->apiOpen.advHandle, pMsg->apiOpen.advType,
-                        pMsg->apiOpen.duration, pMsg->apiOpen.maxEaEvents, pMsg->apiOpen.addrType,
-                        pMsg->apiOpen.peerAddr);
+    dmExtAdvStartDirected(pCcb->connId, pMsg->apiOpen.advHandle, pMsg->apiOpen.advType,
+                          pMsg->apiOpen.duration, pMsg->apiOpen.maxEaEvents, pMsg->apiOpen.addrType,
+                          pMsg->apiOpen.peerAddr);
 }
 
 /*************************************************************************************************/
@@ -72,9 +68,9 @@ void dmExtConnSmActAccept(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmExtConnSmActCancelAccept(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-  dmExtAdvStopDirected(pCcb->connId);
+    dmExtAdvStopDirected(pCcb->connId);
 
-  dmConnSmActConnFailed(pCcb, pMsg);
+    dmConnSmActConnFailed(pCcb, pMsg);
 }
 
 /*************************************************************************************************/
@@ -89,9 +85,9 @@ void dmExtConnSmActCancelAccept(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmExtConnSmActConnAccepted(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-  dmExtAdvConnected(pCcb->connId);
+    dmExtAdvConnected(pCcb->connId);
 
-  dmConnSmActConnOpened(pCcb, pMsg);
+    dmConnSmActConnOpened(pCcb, pMsg);
 }
 
 /*************************************************************************************************/
@@ -106,9 +102,9 @@ void dmExtConnSmActConnAccepted(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmExtConnSmActAcceptFailed(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-  dmExtAdvConnectFailed(pCcb->connId);
+    dmExtAdvConnectFailed(pCcb->connId);
 
-  dmConnSmActConnFailed(pCcb, pMsg);
+    dmConnSmActConnFailed(pCcb, pMsg);
 }
 
 /*************************************************************************************************/
@@ -120,10 +116,10 @@ void dmExtConnSmActAcceptFailed(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void DmExtConnSlaveInit(void)
 {
-  WsfTaskLock();
+    WsfTaskLock();
 
-  dmConnActSet[DM_CONN_ACT_SET_SLAVE] = (dmConnAct_t *) dmConnActSetSlave;
-  dmConnUpdActSet[DM_CONN_ACT_SET_SLAVE] = (dmConnAct_t *) dmConnUpdActSetSlave;
+    dmConnActSet[DM_CONN_ACT_SET_SLAVE] = (dmConnAct_t *)dmConnActSetSlave;
+    dmConnUpdActSet[DM_CONN_ACT_SET_SLAVE] = (dmConnAct_t *)dmConnUpdActSetSlave;
 
-  WsfTaskUnlock();
+    WsfTaskUnlock();
 }

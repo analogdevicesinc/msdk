@@ -35,14 +35,14 @@
 /*************************************************************************************************/
 void LlInitLhciHandler(void)
 {
-  wsfHandlerId_t handlerId;
+    wsfHandlerId_t handlerId;
 
 #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
-  handlerId = WsfOsSetNextHandler(LhciIsoHandler);
-  LhciIsoHandlerInit(handlerId);
+    handlerId = WsfOsSetNextHandler(LhciIsoHandler);
+    LhciIsoHandlerInit(handlerId);
 #else
-  handlerId = WsfOsSetNextHandler(LhciHandler);
-  LhciHandlerInit(handlerId);
+    handlerId = WsfOsSetNextHandler(LhciHandler);
+    LhciHandlerInit(handlerId);
 #endif
 }
 
@@ -56,8 +56,8 @@ void LlInitLhciHandler(void)
 /*************************************************************************************************/
 void LlInitChciTrInit(uint16_t maxAclLen, uint16_t maxIsoSduLen)
 {
-  wsfHandlerId_t handlerId = WsfOsSetNextHandler(ChciTrHandler);
-  ChciTrHandlerInit(handlerId, maxAclLen, maxIsoSduLen);
+    wsfHandlerId_t handlerId = WsfOsSetNextHandler(ChciTrHandler);
+    ChciTrHandlerInit(handlerId, maxAclLen, maxIsoSduLen);
 }
 
 /*************************************************************************************************/
@@ -67,81 +67,81 @@ void LlInitChciTrInit(uint16_t maxAclLen, uint16_t maxIsoSduLen)
 /*************************************************************************************************/
 void LlInitLhciInit(void)
 {
-  #ifdef INIT_CENTRAL
+#ifdef INIT_CENTRAL
     LhciScanMasterInit();
-    #ifdef INIT_ENCRYPTED
-      LhciEncMasterInit();
-    #endif
+#ifdef INIT_ENCRYPTED
+    LhciEncMasterInit();
+#endif
     LhciConnMasterInit();
-  #else
-    #ifdef INIT_OBSERVER
-      LhciScanMasterInit();
-    #endif
-  #endif
+#else
+#ifdef INIT_OBSERVER
+    LhciScanMasterInit();
+#endif
+#endif
 
-  #ifdef INIT_PERIPHERAL
+#ifdef INIT_PERIPHERAL
     LhciAdvSlaveInit();
-    #ifdef INIT_ENCRYPTED
-      LhciEncSlaveInit();
-    #endif
+#ifdef INIT_ENCRYPTED
+    LhciEncSlaveInit();
+#endif
     LhciConnInit();
-  #else
-    #ifdef INIT_BROADCASTER
-      LhciAdvSlaveInit();
-    #endif
-  #endif
+#else
+#ifdef INIT_BROADCASTER
+    LhciAdvSlaveInit();
+#endif
+#endif
 
-  #ifdef INIT_ENCRYPTED
+#ifdef INIT_ENCRYPTED
     LhciPrivAdvInit();
     LhciPrivConnInit();
     LhciScInit();
-  #endif
+#endif
 
-  #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    #ifdef INIT_CENTRAL
-      LhciExtScanMasterInit();
-      LhciExtConnMasterInit();
-    #else
-      #ifdef INIT_OBSERVER
-        LhciExtScanMasterInit();
-      #endif
-    #endif
+#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_0)
+#ifdef INIT_CENTRAL
+    LhciExtScanMasterInit();
+    LhciExtConnMasterInit();
+#else
+#ifdef INIT_OBSERVER
+    LhciExtScanMasterInit();
+#endif
+#endif
 
-    #ifdef INIT_BROADCASTER
-      LhciExtAdvSlaveInit();
-    #endif
+#ifdef INIT_BROADCASTER
+    LhciExtAdvSlaveInit();
+#endif
 
-    #if defined(INIT_PERIPHERAL) || defined(INIT_CENTRAL)
-      LhciChannelSelection2Init();
-      LhciPhyInit();
-      #if defined(INIT_OBSERVER) || defined(INIT_BROADCASTER)
-        #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_1)
-          LhciPastInit();
-        #endif
-      #endif
-    #endif
-  #endif
+#if defined(INIT_PERIPHERAL) || defined(INIT_CENTRAL)
+    LhciChannelSelection2Init();
+    LhciPhyInit();
+#if defined(INIT_OBSERVER) || defined(INIT_BROADCASTER)
+#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_1)
+    LhciPastInit();
+#endif
+#endif
+#endif
+#endif
 
-  #if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
-    #ifdef INIT_CENTRAL
-      LhciCisMasterInit();
-      LhciBisMasterInit();
-    #else
-      #ifdef INIT_OBSERVER
-        LhciBisMasterInit();
-      #endif
-    #endif
+#if (BT_VER >= LL_VER_BT_CORE_SPEC_5_2)
+#ifdef INIT_CENTRAL
+    LhciCisMasterInit();
+    LhciBisMasterInit();
+#else
+#ifdef INIT_OBSERVER
+    LhciBisMasterInit();
+#endif
+#endif
 
-    #ifdef INIT_BROADCASTER
-      LhciBisSlaveInit();
-    #endif
+#ifdef INIT_BROADCASTER
+    LhciBisSlaveInit();
+#endif
 
-    #ifdef INIT_PERIPHERAL
-      LhciCisSlaveInit();
-    #endif
+#ifdef INIT_PERIPHERAL
+    LhciCisSlaveInit();
+#endif
 
     LhciIsoInit();
-  #endif
+#endif
 }
 
 /*************************************************************************************************/
@@ -155,14 +155,14 @@ void LlInitLhciInit(void)
 /*************************************************************************************************/
 uint32_t LlInitControllerInit(LlInitRtCfg_t *pCfg)
 {
-  uint32_t totalMemUsed;
+    uint32_t totalMemUsed;
 
-  totalMemUsed = LlInit(pCfg);
+    totalMemUsed = LlInit(pCfg);
 
-  LlInitChciTrInit(pCfg->pLlRtCfg->maxAclLen, pCfg->pLlRtCfg->maxIsoSduLen);
-  LlInitLhciInit();
-  LlInitLhciHandler();
-  LhciInitFinalize();
+    LlInitChciTrInit(pCfg->pLlRtCfg->maxAclLen, pCfg->pLlRtCfg->maxIsoSduLen);
+    LlInitLhciInit();
+    LlInitLhciHandler();
+    LhciInitFinalize();
 
-  return totalMemUsed;
+    return totalMemUsed;
 }

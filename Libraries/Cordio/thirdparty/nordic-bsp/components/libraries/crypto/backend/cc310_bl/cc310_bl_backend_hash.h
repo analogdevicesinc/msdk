@@ -62,11 +62,10 @@
 extern "C" {
 #endif
 
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256)
 
 // Flag that nrf_crypto_hash frontend can be compiled
-#undef  NRF_CRYPTO_HASH_ENABLED
+#undef NRF_CRYPTO_HASH_ENABLED
 #define NRF_CRYPTO_HASH_ENABLED 1
 
 // Flag that SHA-256 is enabled in backend
@@ -75,14 +74,11 @@ extern "C" {
 #endif
 #define NRF_CRYPTO_HASH_SHA256_ENABLED 1
 
-
 /**@internal @brief nrf_crypto_hash context for SHA-256 in nrf_crypto CC310_BL backend. */
-typedef struct
-{
-    nrf_crypto_hash_internal_context_t header;     /**< Common header for context. */
-    nrf_cc310_bl_hash_context_sha256_t context;    /**< Hash context internal to CC310_BL. */
+typedef struct {
+    nrf_crypto_hash_internal_context_t header; /**< Common header for context. */
+    nrf_cc310_bl_hash_context_sha256_t context; /**< Hash context internal to CC310_BL. */
 } nrf_crypto_backend_hash_sha256_context_t;
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256)
 

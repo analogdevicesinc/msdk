@@ -56,19 +56,19 @@ extern "C" {
  */
 
 /** @brief QSPI driver instance configuration structure. */
-typedef struct
-{
-    uint32_t             xip_offset;   /**< Address offset into the external memory for Execute in Place operation. */
-    nrf_qspi_pins_t      pins;         /**< Pin configuration structure. */
-    nrf_qspi_prot_conf_t prot_if;      /**< Protocol layer interface configuration structure. */
-    nrf_qspi_phy_conf_t  phy_if;       /**< Physical layer interface configuration structure. */
-    uint8_t              irq_priority; /**< Interrupt priority. */
+typedef struct {
+    uint32_t
+        xip_offset; /**< Address offset into the external memory for Execute in Place operation. */
+    nrf_qspi_pins_t pins; /**< Pin configuration structure. */
+    nrf_qspi_prot_conf_t prot_if; /**< Protocol layer interface configuration structure. */
+    nrf_qspi_phy_conf_t phy_if; /**< Physical layer interface configuration structure. */
+    uint8_t irq_priority; /**< Interrupt priority. */
 } nrfx_qspi_config_t;
 
 /** @brief QSPI instance default configuration. */
-#define NRFX_QSPI_DEFAULT_CONFIG                                        \
-{                                                                       \
-    .xip_offset  = NRFX_QSPI_CONFIG_XIP_OFFSET,                         \
+#define NRFX_QSPI_DEFAULT_CONFIG                                               \
+    {                                                                          \
+        .xip_offset  = NRFX_QSPI_CONFIG_XIP_OFFSET,                         \
     .pins = {                                                           \
        .sck_pin     = NRFX_QSPI_PIN_SCK,                                \
        .csn_pin     = NRFX_QSPI_PIN_CSN,                                \
@@ -89,31 +89,26 @@ typedef struct
         .spi_mode   = (nrf_qspi_spi_mode_t)NRFX_QSPI_CONFIG_MODE,       \
         .sck_freq   = (nrf_qspi_frequency_t)NRFX_QSPI_CONFIG_FREQUENCY, \
     },                                                                  \
-    .irq_priority   = (uint8_t)NRFX_QSPI_CONFIG_IRQ_PRIORITY,           \
-}
+    .irq_priority   = (uint8_t)NRFX_QSPI_CONFIG_IRQ_PRIORITY, \
+    }
 
 /** @brief QSPI custom instruction helper with the default configuration. */
-#define NRFX_QSPI_DEFAULT_CINSTR(opc, len) \
-{                                          \
-    .opcode    = (opc),                    \
-    .length    = (len),                    \
-    .io2_level = false,                    \
-    .io3_level = false,                    \
-    .wipwait   = false,                    \
-    .wren      = false                     \
-}
+#define NRFX_QSPI_DEFAULT_CINSTR(opc, len)                                        \
+    {                                                                             \
+        .opcode = (opc), .length = (len), .io2_level = false, .io3_level = false, \
+        .wipwait = false, .wren = false                                           \
+    }
 
 /**
  * @brief QSPI master driver event types, passed to the handler routine provided
  *        during initialization.
  */
-typedef enum
-{
+typedef enum {
     NRFX_QSPI_EVENT_DONE, /**< Transfer done. */
 } nrfx_qspi_evt_t;
 
 /** @brief QSPI driver event handler type. */
-typedef void (*nrfx_qspi_handler_t)(nrfx_qspi_evt_t event, void * p_context);
+typedef void (*nrfx_qspi_handler_t)(nrfx_qspi_evt_t event, void *p_context);
 
 /**
  * @brief Function for initializing the QSPI driver instance.
@@ -140,9 +135,8 @@ typedef void (*nrfx_qspi_handler_t)(nrfx_qspi_evt_t event, void * p_context);
  * @retval NRFX_ERROR_INVALID_STATE The driver was already initialized.
  * @retval NRFX_ERROR_INVALID_PARAM The pin configuration was incorrect.
  */
-nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const * p_config,
-                          nrfx_qspi_handler_t        handler,
-                          void *                     p_context);
+nrfx_err_t nrfx_qspi_init(nrfx_qspi_config_t const *p_config, nrfx_qspi_handler_t handler,
+                          void *p_context);
 
 /** @brief Function for uninitializing the QSPI driver instance. */
 void nrfx_qspi_uninit(void);
@@ -167,9 +161,7 @@ void nrfx_qspi_uninit(void);
  * @retval NRFX_ERROR_INVALID_ADDR The provided buffer is not placed in the Data RAM region
  *                                 or its address is not aligned to a 32-bit word.
  */
-nrfx_err_t nrfx_qspi_read(void *   p_rx_buffer,
-                          size_t   rx_buffer_length,
-                          uint32_t src_address);
+nrfx_err_t nrfx_qspi_read(void *p_rx_buffer, size_t rx_buffer_length, uint32_t src_address);
 
 /**
  * @brief Function for writing data to QSPI memory.
@@ -195,9 +187,7 @@ nrfx_err_t nrfx_qspi_read(void *   p_rx_buffer,
  * @retval NRFX_ERROR_INVALID_ADDR The provided buffer is not placed in the Data RAM region
  *                                 or its address is not aligned to a 32-bit word.
  */
-nrfx_err_t nrfx_qspi_write(void const * p_tx_buffer,
-                           size_t       tx_buffer_length,
-                           uint32_t     dst_address);
+nrfx_err_t nrfx_qspi_write(void const *p_tx_buffer, size_t tx_buffer_length, uint32_t dst_address);
 
 /**
  * @brief Function for starting erasing of one memory block - 4KB, 64KB, or the whole chip.
@@ -222,8 +212,7 @@ nrfx_err_t nrfx_qspi_write(void const * p_tx_buffer,
  * @retval NRFX_ERROR_INVALID_ADDR The provided start address is not aligned to a 32-bit word.
  * @retval NRFX_ERROR_BUSY         The driver currently handles another operation.
  */
-nrfx_err_t nrfx_qspi_erase(nrf_qspi_erase_len_t length,
-                           uint32_t             start_address);
+nrfx_err_t nrfx_qspi_erase(nrf_qspi_erase_len_t length, uint32_t start_address);
 
 /**
  * @brief Function for starting an erase operation of the whole chip.
@@ -258,9 +247,8 @@ nrfx_err_t nrfx_qspi_mem_busy_check(void);
  * @retval NRFX_ERROR_TIMEOUT The external memory is busy or there are connection issues.
  * @retval NRFX_ERROR_BUSY    The driver currently handles other operation.
  */
-nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
-                                 void const *                   p_tx_buffer,
-                                 void *                         p_rx_buffer);
+nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const *p_config, void const *p_tx_buffer,
+                                 void *p_rx_buffer);
 
 /**
  * @brief Function for sending operation code and data to the memory device with simpler configuration.
@@ -275,9 +263,8 @@ nrfx_err_t nrfx_qspi_cinstr_xfer(nrf_qspi_cinstr_conf_t const * p_config,
  * @retval NRFX_SUCCESS    The operation was successful.
  * @retval NRFX_ERROR_BUSY The driver currently handles another operation.
  */
-nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
-                                       nrf_qspi_cinstr_len_t length,
-                                       void const *          p_tx_buffer);
+nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t opcode, nrf_qspi_cinstr_len_t length,
+                                       void const *p_tx_buffer);
 
 /**
  * @brief Function for starting the custom instruction long frame mode.
@@ -293,7 +280,7 @@ nrfx_err_t nrfx_qspi_cinstr_quick_send(uint8_t               opcode,
  * @retval NRFX_ERROR_BUSY    Driver currently handles other operation.
  * @retval NRFX_ERROR_TIMEOUT External memory is busy or there are connection issues.
  */
-nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config);
+nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const *p_config);
 
 /**
  * @brief Function for sending and receiving data in the custom instruction long frame mode.
@@ -312,16 +299,12 @@ nrfx_err_t nrfx_qspi_lfm_start(nrf_qspi_cinstr_conf_t const * p_config);
  * @retval NRFX_ERROR_TIMEOUT External memory is busy or there are connection issues.
  *                            Long frame mode becomes deactivated.
  */
-nrfx_err_t nrfx_qspi_lfm_xfer(void const * p_tx_buffer,
-                              void *       p_rx_buffer,
-                              size_t       transfer_length,
-                              bool         finalize);
+nrfx_err_t nrfx_qspi_lfm_xfer(void const *p_tx_buffer, void *p_rx_buffer, size_t transfer_length,
+                              bool finalize);
 
 /** @} */
 
-
 void nrfx_qspi_irq_handler(void);
-
 
 #ifdef __cplusplus
 }

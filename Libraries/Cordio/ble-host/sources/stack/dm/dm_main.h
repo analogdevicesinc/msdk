@@ -36,46 +36,46 @@ extern "C" {
 **************************************************************************************************/
 
 /* DM component IDs */
-#define DM_ID_ADV                     0
-#define DM_ID_DEV_PRIV                1
-#define DM_ID_SCAN                    2
-#define DM_ID_CONN                    3
-#define DM_ID_CONN_2                  4
-#define DM_ID_SEC                     5
-#define DM_ID_PRIV                    6
-#define DM_ID_DEV                     7
-#define DM_ID_LESC                    8
-#define DM_ID_PHY                     9
-#define DM_ID_ADV_PER                 10
-#define DM_ID_SYNC                    11
-#define DM_ID_PAST                    12
-#define DM_ID_CONN_CTE                13
-#define DM_ID_CONN_UPD                14
-#define DM_ID_PRIV_AES                15
-#define DM_ID_CIS                     16
-#define DM_ID_CIS_CIG                 17
-#define DM_ID_BIS                     18
-#define DM_ID_BIS_SYNC                19
-#define DM_ID_ISO                     20
-#define DM_NUM_IDS                    21
+#define DM_ID_ADV 0
+#define DM_ID_DEV_PRIV 1
+#define DM_ID_SCAN 2
+#define DM_ID_CONN 3
+#define DM_ID_CONN_2 4
+#define DM_ID_SEC 5
+#define DM_ID_PRIV 6
+#define DM_ID_DEV 7
+#define DM_ID_LESC 8
+#define DM_ID_PHY 9
+#define DM_ID_ADV_PER 10
+#define DM_ID_SYNC 11
+#define DM_ID_PAST 12
+#define DM_ID_CONN_CTE 13
+#define DM_ID_CONN_UPD 14
+#define DM_ID_PRIV_AES 15
+#define DM_ID_CIS 16
+#define DM_ID_CIS_CIG 17
+#define DM_ID_BIS 18
+#define DM_ID_BIS_SYNC 19
+#define DM_ID_ISO 20
+#define DM_NUM_IDS 21
 
 /* Start of component message enumeration */
-#define DM_MSG_START(id)              ((id) << 3)
+#define DM_MSG_START(id) ((id) << 3)
 
 /* Get the component ID from a message ID */
-#define DM_ID_FROM_MSG(msg)           ((msg) >> 3)
+#define DM_ID_FROM_MSG(msg) ((msg) >> 3)
 
 /* Mask off the ID from the message ID */
-#define DM_MSG_MASK(msg)              ((msg) & 0x07)
+#define DM_MSG_MASK(msg) ((msg)&0x07)
 
 /* Length of hash part of private resolvable address */
-#define DM_PRIV_HASH_LEN              3
+#define DM_PRIV_HASH_LEN 3
 
 /* Length of random part of private resolvable address */
-#define DM_PRIV_PRAND_LEN             3
+#define DM_PRIV_PRAND_LEN 3
 
 /* Length of plaintext used for private resolvable address calculation */
-#define DM_PRIV_PLAINTEXT_LEN         16
+#define DM_PRIV_PLAINTEXT_LEN 16
 
 /**************************************************************************************************
   Data Types
@@ -89,34 +89,32 @@ typedef void (*dmMsgHandler_t)(wsfMsgHdr_t *pMsg);
 typedef void (*dmHciHandler_t)(hciEvt_t *pEvent);
 
 /* DM component reset and handler function interface */
-typedef struct
-{
-  dmReset_t           reset;
-  dmHciHandler_t      hciHandler;
-  dmMsgHandler_t      msgHandler;
+typedef struct {
+    dmReset_t reset;
+    dmHciHandler_t hciHandler;
+    dmMsgHandler_t msgHandler;
 } dmFcnIf_t;
 
 /* Main control block of the DM subsystem */
-typedef struct
-{
-  bdAddr_t            localAddr;
-  dmCback_t           cback;
-  wsfHandlerId_t      handlerId;
-  uint8_t             connAddrType;
-  uint8_t             advAddrType;
-  uint8_t             scanAddrType;
-  bool_t              resetting;
+typedef struct {
+    bdAddr_t localAddr;
+    dmCback_t cback;
+    wsfHandlerId_t handlerId;
+    uint8_t connAddrType;
+    uint8_t advAddrType;
+    uint8_t scanAddrType;
+    bool_t resetting;
 
-  /* Filter policies for Advertising, Scanning, Initiator and Synchronization */
-  uint8_t             advFiltPolicy[DM_NUM_ADV_SETS];
-  uint8_t             scanFiltPolicy;
-  uint8_t             initFiltPolicy;
+    /* Filter policies for Advertising, Scanning, Initiator and Synchronization */
+    uint8_t advFiltPolicy[DM_NUM_ADV_SETS];
+    uint8_t scanFiltPolicy;
+    uint8_t initFiltPolicy;
 
-  /* Options (filter policies and periodic advertising report enablement) for Synchronization */
-  uint8_t             syncOptions;
+    /* Options (filter policies and periodic advertising report enablement) for Synchronization */
+    uint8_t syncOptions;
 
-  /* LL Privacy */
-  bool_t              llPrivEnabled;
+    /* LL Privacy */
+    bool_t llPrivEnabled;
 } dmCb_t;
 
 /**************************************************************************************************

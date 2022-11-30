@@ -34,8 +34,7 @@
 #define MESH_BEARER_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "cfg_mesh_stack.h"
@@ -45,59 +44,57 @@ extern "C"
 **************************************************************************************************/
 
 /*! Maximum number of Mesh Bearer interfaces supported */
-#define MESH_BR_MAX_INTERFACES                (MESH_ADV_MAX_INTERFACES + MESH_GATT_MAX_CONNECTIONS)
+#define MESH_BR_MAX_INTERFACES (MESH_ADV_MAX_INTERFACES + MESH_GATT_MAX_CONNECTIONS)
 
 /*! Invalid Mesh Bearer interface ID value */
-#define MESH_BR_INVALID_INTERFACE_ID          0xFF
+#define MESH_BR_INVALID_INTERFACE_ID 0xFF
 
 /*! Defines the bit mask for bearer type inside the bearer interface identifier */
-#define MESH_BR_INTERFACE_ID_TYPE_MASK        0xF0
+#define MESH_BR_INTERFACE_ID_TYPE_MASK 0xF0
 
 /*! Defines the bit mask for interface identifier inside the bearer interface identifier */
-#define MESH_BR_INTERFACE_ID_INTERFACE_MASK   0x0F
+#define MESH_BR_INTERFACE_ID_INTERFACE_MASK 0x0F
 
 /*! Defines offset of the bearer type inside the bearer interface identifier */
-#define MESH_BR_INTERFACE_ID_TYPE_OFFSET      5
+#define MESH_BR_INTERFACE_ID_TYPE_OFFSET 5
 
 /*! Extract bearer type from a bearer interface identifier. See ::meshBrInterfaceId_t */
-#define MESH_BR_GET_BR_TYPE(brInterfaceId)   (MESH_UTILS_BF_GET(brInterfaceId, \
-                                              MESH_BR_INTERFACE_ID_TYPE_OFFSET, \
-                                              MESH_BR_INTERFACE_ID_TYPE_OFFSET))
+#define MESH_BR_GET_BR_TYPE(brInterfaceId)                              \
+    (MESH_UTILS_BF_GET(brInterfaceId, MESH_BR_INTERFACE_ID_TYPE_OFFSET, \
+                       MESH_BR_INTERFACE_ID_TYPE_OFFSET))
 
 /*! Create bearer interface identifier from ADV interface identifier. See ::meshBrInterfaceId_t */
-#define MESH_BR_ADV_IF_TO_BR_IF(interfaceId) (MESH_UTILS_BITMASK_SET(interfaceId, \
-                                              (MESH_ADV_BEARER << MESH_BR_INTERFACE_ID_TYPE_OFFSET)))
+#define MESH_BR_ADV_IF_TO_BR_IF(interfaceId) \
+    (MESH_UTILS_BITMASK_SET(interfaceId, (MESH_ADV_BEARER << MESH_BR_INTERFACE_ID_TYPE_OFFSET)))
 
 /*! Create ADV interface interface identifier from bearer identifier. See ::meshBrInterfaceId_t */
-#define MESH_BR_IF_TO_ADV_IF(brInterfaceId)  (MESH_UTILS_BITMASK_CLR(brInterfaceId, \
-                                              MESH_BR_INTERFACE_ID_TYPE_MASK))
+#define MESH_BR_IF_TO_ADV_IF(brInterfaceId) \
+    (MESH_UTILS_BITMASK_CLR(brInterfaceId, MESH_BR_INTERFACE_ID_TYPE_MASK))
 
 /*! Create bearer interface identifier from GATT connection identifier. See ::meshBrInterfaceId_t */
-#define MESH_BR_CONN_ID_TO_BR_IF(connId) (MESH_UTILS_BITMASK_SET(connId, \
-                                          (MESH_GATT_BEARER << MESH_BR_INTERFACE_ID_TYPE_OFFSET)))
+#define MESH_BR_CONN_ID_TO_BR_IF(connId) \
+    (MESH_UTILS_BITMASK_SET(connId, (MESH_GATT_BEARER << MESH_BR_INTERFACE_ID_TYPE_OFFSET)))
 
 /*! Create GATT connection identifier from bearer identifier. See ::meshBrInterfaceId_t */
-#define MESH_BR_IF_TO_CONN_ID(brInterfaceId)  (MESH_UTILS_BITMASK_CLR(brInterfaceId, \
-                                               MESH_BR_INTERFACE_ID_TYPE_MASK))
+#define MESH_BR_IF_TO_CONN_ID(brInterfaceId) \
+    (MESH_UTILS_BITMASK_CLR(brInterfaceId, MESH_BR_INTERFACE_ID_TYPE_MASK))
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Mesh Bearer notification event types enumeration */
-enum meshBrEventTypes
-{
-  MESH_BR_INTERFACE_OPENED_EVT                = 0x00,  /*!< Bearer interface opened */
-  MESH_BR_INTERFACE_CLOSED_EVT                = 0x01,  /*!< Bearer interface closed */
-  MESH_BR_INTERFACE_PACKET_SENT_EVT           = 0x02,  /*!< Reference of sent packet */
+enum meshBrEventTypes {
+    MESH_BR_INTERFACE_OPENED_EVT = 0x00, /*!< Bearer interface opened */
+    MESH_BR_INTERFACE_CLOSED_EVT = 0x01, /*!< Bearer interface closed */
+    MESH_BR_INTERFACE_PACKET_SENT_EVT = 0x02, /*!< Reference of sent packet */
 };
 
 /*! Mesh Bearer interface types enumeration */
-enum meshBrType
-{
-  MESH_ADV_BEARER         = 0x00,  /*!< Mesh Advertising Bearer */
-  MESH_GATT_BEARER        = 0x01,  /*!< Mesh GATT Bearer */
-  MESH_INVALID_BEARER     = 0x02   /*!< Mesh Invalid Bearer type */
+enum meshBrType {
+    MESH_ADV_BEARER = 0x00, /*!< Mesh Advertising Bearer */
+    MESH_GATT_BEARER = 0x01, /*!< Mesh GATT Bearer */
+    MESH_INVALID_BEARER = 0x02 /*!< Mesh Invalid Bearer type */
 };
 
 /*! Unique Mesh Bearer interface ID. The identifier is described as follows:
@@ -113,25 +110,22 @@ typedef uint8_t meshBrType_t;
 typedef uint8_t meshBrEvent_t;
 
 /*! Mesh Bearer configuration structure */
-typedef struct meshBrConfig_tag
-{
-  meshBrType_t  bearerType;  /*!< Mesh Bearer interface type */
+typedef struct meshBrConfig_tag {
+    meshBrType_t bearerType; /*!< Mesh Bearer interface type */
 } meshBrConfig_t;
 
 /*! Mesh Bearer PDU status structure */
-typedef struct meshBrPduStatus_tag
-{
-  meshBrType_t  bearerType;  /*!< Mesh Bearer interface type */
-  uint8_t       *pPdu;       /*!< Pointer to the delivered PDU */
+typedef struct meshBrPduStatus_tag {
+    meshBrType_t bearerType; /*!< Mesh Bearer interface type */
+    uint8_t *pPdu; /*!< Pointer to the delivered PDU */
 } meshBrPduStatus_t;
 
 /*! Mesh Bearer Event notification union */
-typedef union meshBrEventParams_tag
-{
-  meshBrConfig_t          brConfig;           /*!< MESH_BR_INTERFACE_OPENED_EVT
+typedef union meshBrEventParams_tag {
+    meshBrConfig_t brConfig; /*!< MESH_BR_INTERFACE_OPENED_EVT
                                                *   MESH_BR_INTERFACE_CLOSED_EVT
                                                */
-  meshBrPduStatus_t       brPduStatus;        /*!< MESH_BR_INTERFACE_PACKET_SENT_EVT */
+    meshBrPduStatus_t brPduStatus; /*!< MESH_BR_INTERFACE_PACKET_SENT_EVT */
 } meshBrEventParams_t;
 
 /*************************************************************************************************/
@@ -222,7 +216,8 @@ void MeshBrInit(void);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshBrRegisterNwk(meshBrEventNotifyCback_t eventCback, meshBrNwkPduRecvCback_t nwkPduRecvCback);
+void MeshBrRegisterNwk(meshBrEventNotifyCback_t eventCback,
+                       meshBrNwkPduRecvCback_t nwkPduRecvCback);
 
 /*************************************************************************************************/
 /*!

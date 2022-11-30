@@ -44,21 +44,21 @@ extern "C" {
 #include <stddef.h>
 
 #ifndef bool_t
-  #define bool_t uint8_t
+#define bool_t uint8_t
 #endif
 
 #ifndef FALSE
-  #define FALSE 0
+#define FALSE 0
 #endif
 
 #ifndef TRUE
-  #define TRUE (!FALSE)
+#define TRUE (!FALSE)
 #endif
 
-/*! \} */    /* Integer Data Types */
+/*! \} */ /* Integer Data Types */
 
 #ifdef __cplusplus
 };
 #endif
-/*! \} */    /* WSF_TYPES */
+/*! \} */ /* WSF_TYPES */
 #endif /* WSF_TYPES_H */

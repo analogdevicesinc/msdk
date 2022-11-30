@@ -74,24 +74,22 @@ extern "C" {
 #endif
 /* Flag that AES CBC is enabled in backend */
 #define NRF_CRYPTO_AES_CBC_ENABLED 1
-#undef  NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
-#undef  NRF_CRYPTO_MBEDTLS_AES_ENABLED
+#undef NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
+#undef NRF_CRYPTO_MBEDTLS_AES_ENABLED
 #define NRF_CRYPTO_MBEDTLS_AES_ENABLED 1
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_CBC_128_ENABLED  1
-#define NRF_CRYPTO_AES_CBC_192_ENABLED  1
-#define NRF_CRYPTO_AES_CBC_256_ENABLED  1
+#define NRF_CRYPTO_AES_CBC_128_ENABLED 1
+#define NRF_CRYPTO_AES_CBC_192_ENABLED 1
+#define NRF_CRYPTO_AES_CBC_256_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aes_internal_context_t header;   /**< Common header for context. */
-    nrf_crypto_backend_aes_ctx_t      backend;  /**< Backend-specific internal context. */
-    mbedtls_aes_context               context;  /**< AES context internal to mbed TLS. */
+typedef struct {
+    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
+    nrf_crypto_backend_aes_ctx_t backend; /**< Backend-specific internal context. */
+    mbedtls_aes_context context; /**< AES context internal to mbed TLS. */
 } nrf_crypto_backend_aes_cbc_context_t;
 #endif
-
 
 /* AES CTR */
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_AES_CTR)
@@ -99,21 +97,20 @@ typedef struct
 #error "Duplicate definition of AES CTR mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CTR_ENABLED 1
-#undef  NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
-#undef  NRF_CRYPTO_MBEDTLS_AES_ENABLED
+#undef NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
+#undef NRF_CRYPTO_MBEDTLS_AES_ENABLED
 #define NRF_CRYPTO_MBEDTLS_AES_ENABLED 1
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_CTR_128_ENABLED  1
-#define NRF_CRYPTO_AES_CTR_192_ENABLED  1
-#define NRF_CRYPTO_AES_CTR_256_ENABLED  1
+#define NRF_CRYPTO_AES_CTR_128_ENABLED 1
+#define NRF_CRYPTO_AES_CTR_192_ENABLED 1
+#define NRF_CRYPTO_AES_CTR_256_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aes_internal_context_t header;   /**< Common header for context. */
-    nrf_crypto_backend_aes_ctx_t      backend;  /**< Backend-specific internal context. */
-    mbedtls_aes_context               context;  /**< AES context internal to mbed TLS. */
+typedef struct {
+    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
+    nrf_crypto_backend_aes_ctx_t backend; /**< Backend-specific internal context. */
+    mbedtls_aes_context context; /**< AES context internal to mbed TLS. */
 } nrf_crypto_backend_aes_ctr_context_t;
 #endif
 
@@ -123,21 +120,20 @@ typedef struct
 #error "Duplicate definition of AES CFB mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CFB_ENABLED 1
-#undef  NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
-#undef  NRF_CRYPTO_MBEDTLS_AES_ENABLED
+#undef NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
+#undef NRF_CRYPTO_MBEDTLS_AES_ENABLED
 #define NRF_CRYPTO_MBEDTLS_AES_ENABLED 1
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_CFB_128_ENABLED  1
-#define NRF_CRYPTO_AES_CFB_192_ENABLED  1
-#define NRF_CRYPTO_AES_CFB_256_ENABLED  1
+#define NRF_CRYPTO_AES_CFB_128_ENABLED 1
+#define NRF_CRYPTO_AES_CFB_192_ENABLED 1
+#define NRF_CRYPTO_AES_CFB_256_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aes_internal_context_t header;   /**< Common header for context. */
-    nrf_crypto_backend_aes_ctx_t      backend;  /**< Backend-specific internal context. */
-    mbedtls_aes_context               context;  /**< AES context internal to mbed TLS. */
+typedef struct {
+    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
+    nrf_crypto_backend_aes_ctx_t backend; /**< Backend-specific internal context. */
+    mbedtls_aes_context context; /**< AES context internal to mbed TLS. */
 } nrf_crypto_backend_aes_cfb_context_t;
 #endif
 
@@ -147,24 +143,22 @@ typedef struct
 #error "Duplicate definition of AES ECB mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_ECB_ENABLED 1
-#undef  NRF_CRYPTO_AES_ENABLED
+#undef NRF_CRYPTO_AES_ENABLED
 #define NRF_CRYPTO_AES_ENABLED 1
-#undef  NRF_CRYPTO_MBEDTLS_AES_ENABLED
+#undef NRF_CRYPTO_MBEDTLS_AES_ENABLED
 #define NRF_CRYPTO_MBEDTLS_AES_ENABLED 1
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_ECB_128_ENABLED  1
-#define NRF_CRYPTO_AES_ECB_192_ENABLED  1
-#define NRF_CRYPTO_AES_ECB_256_ENABLED  1
+#define NRF_CRYPTO_AES_ECB_128_ENABLED 1
+#define NRF_CRYPTO_AES_ECB_192_ENABLED 1
+#define NRF_CRYPTO_AES_ECB_256_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aes_internal_context_t   header;   /**< Common header for context. */
-    nrf_crypto_backend_no_iv_aes_ctx_t  backend;  /**< Backend-specific internal context. */
-    mbedtls_aes_context                 context;  /**< AES context internal to mbed TLS. */
+typedef struct {
+    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
+    nrf_crypto_backend_no_iv_aes_ctx_t backend; /**< Backend-specific internal context. */
+    mbedtls_aes_context context; /**< AES context internal to mbed TLS. */
 } nrf_crypto_backend_aes_ecb_context_t;
 #endif
-
 
 /* AES CBC MAC */
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_AES_CBC_MAC)
@@ -173,24 +167,22 @@ typedef struct
 #endif
 /* Flag that AES CBC MAC is enabled in backend */
 #define NRF_CRYPTO_AES_CBC_MAC_ENABLED 1
-#undef  NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
-#undef  NRF_CRYPTO_MBEDTLS_AES_ENABLED
+#undef NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
+#undef NRF_CRYPTO_MBEDTLS_AES_ENABLED
 #define NRF_CRYPTO_MBEDTLS_AES_ENABLED 1
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_CBC_MAC_128_ENABLED  1
-#define NRF_CRYPTO_AES_CBC_MAC_192_ENABLED  1
-#define NRF_CRYPTO_AES_CBC_MAC_256_ENABLED  1
+#define NRF_CRYPTO_AES_CBC_MAC_128_ENABLED 1
+#define NRF_CRYPTO_AES_CBC_MAC_192_ENABLED 1
+#define NRF_CRYPTO_AES_CBC_MAC_256_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aes_internal_context_t header;   /**< Common header for context. */
-    nrf_crypto_backend_aes_ctx_t      backend;  /**< Backend-specific internal context. */
-    mbedtls_aes_context               context;  /**< AES context internal to mbed TLS. */
+typedef struct {
+    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
+    nrf_crypto_backend_aes_ctx_t backend; /**< Backend-specific internal context. */
+    mbedtls_aes_context context; /**< AES context internal to mbed TLS. */
 } nrf_crypto_backend_aes_cbc_mac_context_t;
 #endif
-
 
 /* AES CMAC */
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_AES_CMAC)
@@ -198,21 +190,20 @@ typedef struct
 #error "Duplicate definition of AES CMAC mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CMAC_ENABLED 1
-#undef  NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
-#undef  NRF_CRYPTO_MBEDTLS_AES_ENABLED
+#undef NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
+#undef NRF_CRYPTO_MBEDTLS_AES_ENABLED
 #define NRF_CRYPTO_MBEDTLS_AES_ENABLED 1
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_CMAC_128_ENABLED  1
-#define NRF_CRYPTO_AES_CMAC_192_ENABLED  1
-#define NRF_CRYPTO_AES_CMAC_256_ENABLED  1
+#define NRF_CRYPTO_AES_CMAC_128_ENABLED 1
+#define NRF_CRYPTO_AES_CMAC_192_ENABLED 1
+#define NRF_CRYPTO_AES_CMAC_256_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aes_internal_context_t  header;   /**< Common header for context. */
-    nrf_crypto_backend_no_iv_aes_ctx_t backend;  /**< Backend-specific internal context. */
-    mbedtls_cipher_context_t           context;  /**< AES context internal to mbedtls. */
+typedef struct {
+    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
+    nrf_crypto_backend_no_iv_aes_ctx_t backend; /**< Backend-specific internal context. */
+    mbedtls_cipher_context_t context; /**< AES context internal to mbedtls. */
 } nrf_crypto_backend_aes_cmac_context_t;
 #endif
 

@@ -40,19 +40,19 @@
  * @file  hid.h
  * @brief Human Interface Device Class
  */
-#define HID_MAX_PACKET 	  64
+#define HID_MAX_PACKET 64
 
 /// USB HID class requests
-#define HID_GET_REPORT    0x01
-#define HID_GET_IDLE      0x02
-#define HID_GET_PROTOCOL  0x03
-#define HID_SET_REPORT    0x09
-#define HID_SET_IDLE      0x0a
-#define HID_SET_PROTOCOL  0x0b
+#define HID_GET_REPORT 0x01
+#define HID_GET_IDLE 0x02
+#define HID_GET_PROTOCOL 0x03
+#define HID_SET_REPORT 0x09
+#define HID_SET_IDLE 0x0a
+#define HID_SET_PROTOCOL 0x0b
 
 /// Class-specific descriptor types for GET_DESCRIPTOR
-#define DESC_HID          0x21
-#define DESC_REPORT       0x22
+#define DESC_HID 0x21
+#define DESC_REPORT 0x22
 
 /// HID Descriptor
 #if defined(__GNUC__)
@@ -60,13 +60,13 @@ typedef struct __attribute__((packed)) {
 #else
 typedef __packed struct {
 #endif
-  uint8_t  bFunctionalLength;
-  uint8_t  bDescriptorType;
-  uint16_t bcdHID;
-  uint8_t  bCountryCode;
-  uint8_t  bNumDescriptors;
-  uint8_t  bHIDDescriptorType;
-  uint16_t wDescriptorLength;
+    uint8_t bFunctionalLength;
+    uint8_t bDescriptorType;
+    uint16_t bcdHID;
+    uint8_t bCountryCode;
+    uint8_t bNumDescriptors;
+    uint8_t bHIDDescriptorType;
+    uint16_t wDescriptorLength;
 } hid_descriptor_t;
 
 #endif /* _HID_H_ */

@@ -46,7 +46,7 @@ static ScppsAppCback_t *scppsAppCback;
 /*************************************************************************************************/
 void ScppsRegisterCback(ScppsAppCback_t *cback)
 {
-  scppsAppCback = cback;
+    scppsAppCback = cback;
 }
 
 /*************************************************************************************************/
@@ -56,20 +56,19 @@ void ScppsRegisterCback(ScppsAppCback_t *cback)
  *  \return Status
  */
 /*************************************************************************************************/
-uint8_t ScppsAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                            uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+uint8_t ScppsAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                            uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-  if (scppsAppCback && handle == SCPSS_SIW_HDL)
-  {
-    uint16_t interval;
-    uint16_t window;
+    if (scppsAppCback && handle == SCPSS_SIW_HDL) {
+        uint16_t interval;
+        uint16_t window;
 
-    BSTREAM_TO_UINT16(interval, pValue);
-    BSTREAM_TO_UINT16(window, pValue);
+        BSTREAM_TO_UINT16(interval, pValue);
+        BSTREAM_TO_UINT16(window, pValue);
 
-    /* Call the callback to the application layer */
-    (*scppsAppCback)(connId, interval, window);
-  }
+        /* Call the callback to the application layer */
+        (*scppsAppCback)(connId, interval, window);
+    }
 
-  return 0;
+    return 0;
 }

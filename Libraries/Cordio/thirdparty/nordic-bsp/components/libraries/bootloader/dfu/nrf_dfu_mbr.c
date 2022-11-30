@@ -43,40 +43,33 @@
 #include "nrf_log.h"
 #include "nrf_bootloader_info.h"
 
-#define MBR_IRQ_FORWARD_ADDRESS_ADDRESS (0x20000000) //!< The address of the variable that decides where the MBR forwards interrupts
+#define MBR_IRQ_FORWARD_ADDRESS_ADDRESS \
+    (0x20000000) //!< The address of the variable that decides where the MBR forwards interrupts
 
-uint32_t nrf_dfu_mbr_copy_bl(uint32_t * p_src, uint32_t len)
+uint32_t nrf_dfu_mbr_copy_bl(uint32_t *p_src, uint32_t len)
 {
     uint32_t ret_val;
     uint32_t const len_words = len / sizeof(uint32_t);
 
-    sd_mbr_command_t command =
-    {
-        .command = SD_MBR_COMMAND_COPY_BL,
-        .params.copy_bl.bl_src = p_src,
-        .params.copy_bl.bl_len = len_words
-    };
+    sd_mbr_command_t command = { .command = SD_MBR_COMMAND_COPY_BL,
+                                 .params.copy_bl.bl_src = p_src,
+                                 .params.copy_bl.bl_len = len_words };
 
     ret_val = sd_mbr_command(&command);
 
     return ret_val;
 }
-
 
 uint32_t nrf_dfu_mbr_init_sd(void)
 {
     uint32_t ret_val;
 
-    sd_mbr_command_t command =
-    {
-        .command = SD_MBR_COMMAND_INIT_SD
-    };
+    sd_mbr_command_t command = { .command = SD_MBR_COMMAND_INIT_SD };
 
     ret_val = sd_mbr_command(&command);
 
     return ret_val;
 }
-
 
 uint32_t nrf_dfu_mbr_irq_forward_address_set(void)
 {
@@ -84,8 +77,7 @@ uint32_t nrf_dfu_mbr_irq_forward_address_set(void)
     uint32_t address = MBR_SIZE;
 
 #if !defined(BLE_STACK_SUPPORT_REQD) && !defined(ANT_STACK_SUPPORT_REQD)
-    sd_mbr_command_t command =
-    {
+    sd_mbr_command_t command = {
         .command = SD_MBR_COMMAND_IRQ_FORWARD_ADDRESS_SET,
         .params.irq_forward_address_set.address = address,
     };
@@ -93,8 +85,7 @@ uint32_t nrf_dfu_mbr_irq_forward_address_set(void)
     ret_val = sd_mbr_command(&command);
 #endif
 
-    if (ret_val == NRF_ERROR_INVALID_PARAM)
-    {
+    if (ret_val == NRF_ERROR_INVALID_PARAM) {
         // Manually set the forward address if this MBR doesn't have the command.
         *(uint32_t *)(MBR_IRQ_FORWARD_ADDRESS_ADDRESS) = address;
 

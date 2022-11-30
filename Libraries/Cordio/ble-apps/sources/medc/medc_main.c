@@ -93,61 +93,55 @@
 **************************************************************************************************/
 
 /*! configurable parameters for master */
-const appMasterCfg_t medcMasterCfg =
-{
-  96,                                      /*! The scan interval, in 0.625 ms units */
-  48,                                      /*! The scan window, in 0.625 ms units  */
-  4000,                                    /*! The scan duration in ms */
-  DM_DISC_MODE_NONE,                       /*! The GAP discovery mode */
-  DM_SCAN_TYPE_ACTIVE                      /*! The scan type (active or passive) */
+const appMasterCfg_t medcMasterCfg = {
+    96, /*! The scan interval, in 0.625 ms units */
+    48, /*! The scan window, in 0.625 ms units  */
+    4000, /*! The scan duration in ms */
+    DM_DISC_MODE_NONE, /*! The GAP discovery mode */
+    DM_SCAN_TYPE_ACTIVE /*! The scan type (active or passive) */
 };
 
 /*! configurable parameters for security */
-static const appSecCfg_t medcSecCfg =
-{
-  DM_AUTH_BOND_FLAG | DM_AUTH_MITM_FLAG,  /*! Authentication and bonding flags */
-  0,                                      /*! Initiator key distribution flags */
-  DM_KEY_DIST_LTK,                        /*! Responder key distribution flags */
-  FALSE,                                  /*! TRUE if Out-of-band pairing data is present */
-  FALSE                                   /*! TRUE to initiate security upon connection */
+static const appSecCfg_t medcSecCfg = {
+    DM_AUTH_BOND_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
+    0, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK, /*! Responder key distribution flags */
+    FALSE, /*! TRUE if Out-of-band pairing data is present */
+    FALSE /*! TRUE to initiate security upon connection */
 };
 
 /*! SMP security parameter configuration */
-static const smpCfg_t medcSmpCfg =
-{
-  500,                                    /*! 'Repeated attempts' timeout in msec */
-  SMP_IO_KEY_DISP,                        /*! I/O Capability */
-  7,                                      /*! Minimum encryption key length */
-  16,                                     /*! Maximum encryption key length */
-  1,                                      /*! Attempts to trigger 'repeated attempts' timeout */
-  0,                                      /*! Device authentication requirements */
-  64000,                                  /*! Maximum repeated attempts timeout in msec */
-  64000,                                  /*! Time msec before attemptExp decreases */
-  2                                       /*! Repeated attempts multiplier exponent */
+static const smpCfg_t medcSmpCfg = {
+    500, /*! 'Repeated attempts' timeout in msec */
+    SMP_IO_KEY_DISP, /*! I/O Capability */
+    7, /*! Minimum encryption key length */
+    16, /*! Maximum encryption key length */
+    1, /*! Attempts to trigger 'repeated attempts' timeout */
+    0, /*! Device authentication requirements */
+    64000, /*! Maximum repeated attempts timeout in msec */
+    64000, /*! Time msec before attemptExp decreases */
+    2 /*! Repeated attempts multiplier exponent */
 };
 
 /*! Connection parameters */
-static const hciConnSpec_t medcConnCfg =
-{
-  40,                                     /*! Minimum connection interval in 1.25ms units */
-  40,                                     /*! Maximum connection interval in 1.25ms units */
-  0,                                      /*! Connection latency */
-  600,                                    /*! Supervision timeout in 10ms units */
-  0,                                      /*! Unused */
-  0                                       /*! Unused */
+static const hciConnSpec_t medcConnCfg = {
+    40, /*! Minimum connection interval in 1.25ms units */
+    40, /*! Maximum connection interval in 1.25ms units */
+    0, /*! Connection latency */
+    600, /*! Supervision timeout in 10ms units */
+    0, /*! Unused */
+    0 /*! Unused */
 };
 
 /*! Configurable parameters for service and characteristic discovery */
-static const appDiscCfg_t medcDiscCfg =
-{
-  FALSE,                                   /*! TRUE to wait for a secure connection before initiating discovery */
-  FALSE                                    /*! TRUE to fall back on database hash to verify handles when no bond exists. */
+static const appDiscCfg_t medcDiscCfg = {
+    FALSE, /*! TRUE to wait for a secure connection before initiating discovery */
+    FALSE /*! TRUE to fall back on database hash to verify handles when no bond exists. */
 };
 
-static const appCfg_t medcAppCfg =
-{
-  TRUE,                                   /*! TRUE to abort service discovery if service not found */
-  TRUE                                    /*! TRUE to disconnect if ATT transaction times out */
+static const appCfg_t medcAppCfg = {
+    TRUE, /*! TRUE to abort service discovery if service not found */
+    TRUE /*! TRUE to disconnect if ATT transaction times out */
 };
 
 /**************************************************************************************************
@@ -155,12 +149,11 @@ static const appCfg_t medcAppCfg =
 **************************************************************************************************/
 
 /*! Discovery states:  enumeration of services to be discovered */
-enum
-{
-  MEDC_DISC_GATT_SVC,      /*! GATT service */
-  MEDC_DISC_DIS_SVC,       /*! Device Information service */
-  MEDC_DISC_MED_SVC,       /*! Configured med. service */
-  MEDC_DISC_SVC_MAX        /*! Discovery complete */
+enum {
+    MEDC_DISC_GATT_SVC, /*! GATT service */
+    MEDC_DISC_DIS_SVC, /*! Device Information service */
+    MEDC_DISC_MED_SVC, /*! Configured med. service */
+    MEDC_DISC_SVC_MAX /*! Discovery complete */
 };
 
 /*! Pointers into handle list for each service's handles */
@@ -172,12 +165,11 @@ uint16_t *pMedcDisHdlList = &medcCb.hdlList[MEDC_DISC_DIS_START];
 **************************************************************************************************/
 
 /*! Configuration states:  enumeration of services to be discovered */
-enum
-{
-  MEDC_CFG_DIS_SVC,         /*! DIS services */
-  MEDC_CFG_GATT_SVC,        /*! GATT services */
-  MEDC_CFG_MED_SVC,         /*! Configured med. service */
-  MEDC_CFG_SVC_MAX          /*! Configuration complete */
+enum {
+    MEDC_CFG_DIS_SVC, /*! DIS services */
+    MEDC_CFG_GATT_SVC, /*! GATT services */
+    MEDC_CFG_MED_SVC, /*! Configured med. service */
+    MEDC_CFG_SVC_MAX /*! Configuration complete */
 };
 
 /*
@@ -185,61 +177,59 @@ enum
  */
 
 /* Default value for CCC indications */
-const uint8_t medcCccIndVal[2] = {UINT16_TO_BYTES(ATT_CLIENT_CFG_INDICATE)};
+const uint8_t medcCccIndVal[2] = { UINT16_TO_BYTES(ATT_CLIENT_CFG_INDICATE) };
 
 /* Default value for CCC notifications */
-const uint8_t medcCccNtfVal[2] = {UINT16_TO_BYTES(ATT_CLIENT_CFG_NOTIFY)};
+const uint8_t medcCccNtfVal[2] = { UINT16_TO_BYTES(ATT_CLIENT_CFG_NOTIFY) };
 
 /* Default value for Client Supported Features (enable Robust Caching) */
-const uint8_t medcCsfVal[1] = {ATTS_CSF_ROBUST_CACHING};
+const uint8_t medcCsfVal[1] = { ATTS_CSF_ROBUST_CACHING };
 
 /* HRS Control point "Reset Energy Expended" */
-/* static const uint8_t medcHrsRstEnExp[] = {CH_HRCP_RESET_ENERGY_EXP}; */\
+/* static const uint8_t medcHrsRstEnExp[] = {CH_HRCP_RESET_ENERGY_EXP}; */
 
 /* List of DIS characteristics to configure after service discovery */
-static const attcDiscCfg_t medcCfgDisList[] =
-{
-  /* Read:  DIS Manufacturer name string */
-  {NULL, 0, DIS_MFNS_HDL_IDX},
+static const attcDiscCfg_t medcCfgDisList[] = {
+    /* Read:  DIS Manufacturer name string */
+    { NULL, 0, DIS_MFNS_HDL_IDX },
 
-  /* Read:  DIS Model number string */
-  {NULL, 0, DIS_MNS_HDL_IDX},
+    /* Read:  DIS Model number string */
+    { NULL, 0, DIS_MNS_HDL_IDX },
 
-  /* Read:  DIS Serial number string */
-  {NULL, 0, DIS_SNS_HDL_IDX},
+    /* Read:  DIS Serial number string */
+    { NULL, 0, DIS_SNS_HDL_IDX },
 
-  /* Read:  DIS Hardware revision string */
-  {NULL, 0, DIS_HRS_HDL_IDX},
+    /* Read:  DIS Hardware revision string */
+    { NULL, 0, DIS_HRS_HDL_IDX },
 
-  /* Read:  DIS Firmware revision string */
-  {NULL, 0, DIS_FRS_HDL_IDX},
+    /* Read:  DIS Firmware revision string */
+    { NULL, 0, DIS_FRS_HDL_IDX },
 
-  /* Read:  DIS Software revision string */
-  {NULL, 0, DIS_SRS_HDL_IDX},
+    /* Read:  DIS Software revision string */
+    { NULL, 0, DIS_SRS_HDL_IDX },
 
-  /* Read:  DIS System ID */
-  {NULL, 0, DIS_SID_HDL_IDX},
+    /* Read:  DIS System ID */
+    { NULL, 0, DIS_SID_HDL_IDX },
 
-  /* Read:  DIS Registration certificate data */
-  {NULL, 0, DIS_RCD_HDL_IDX},
+    /* Read:  DIS Registration certificate data */
+    { NULL, 0, DIS_RCD_HDL_IDX },
 
-  /* Read:  DIS PnP ID */
-  {NULL, 0, DIS_PNP_ID_HDL_IDX}
+    /* Read:  DIS PnP ID */
+    { NULL, 0, DIS_PNP_ID_HDL_IDX }
 };
 
 /* List of GATT characteristics to configure after service discovery */
-static const attcDiscCfg_t medcCfgGattList[] =
-{
-  /* Write:  GATT service changed ccc descriptor */
-  {medcCccIndVal, sizeof(medcCccIndVal), GATT_SC_CCC_HDL_IDX},
+static const attcDiscCfg_t medcCfgGattList[] = {
+    /* Write:  GATT service changed ccc descriptor */
+    { medcCccIndVal, sizeof(medcCccIndVal), GATT_SC_CCC_HDL_IDX },
 
-  /* Write:  GATT client supported features */
-  {medcCsfVal, sizeof(medcCsfVal), GATT_CSF_HDL_IDX},
+    /* Write:  GATT client supported features */
+    { medcCsfVal, sizeof(medcCsfVal), GATT_CSF_HDL_IDX },
 };
 
 /* Characteristic configuration list length */
-#define MEDC_CFG_GATT_LIST_LEN   (sizeof(medcCfgGattList) / sizeof(attcDiscCfg_t))
-#define MEDC_CFG_DIS_LIST_LEN   (sizeof(medcCfgDisList) / sizeof(attcDiscCfg_t))
+#define MEDC_CFG_GATT_LIST_LEN (sizeof(medcCfgGattList) / sizeof(attcDiscCfg_t))
+#define MEDC_CFG_DIS_LIST_LEN (sizeof(medcCfgDisList) / sizeof(attcDiscCfg_t))
 
 /**************************************************************************************************
   Global Variables
@@ -250,10 +240,10 @@ medcCb_t medcCb;
 
 /*! connection control block */
 typedef struct {
-  appDbHdl_t          dbHdl;                        /*! Device database record handle type */
-  uint8_t             addrType;                     /*! Type of address of device to connect to */
-  bdAddr_t            addr;                         /*! Address of device to connect to */
-  bool_t              doConnect;                    /*! TRUE to issue connect on scan complete */
+    appDbHdl_t dbHdl; /*! Device database record handle type */
+    uint8_t addrType; /*! Type of address of device to connect to */
+    bdAddr_t addr; /*! Address of device to connect to */
+    bool_t doConnect; /*! TRUE to issue connect on scan complete */
 } medcConnInfo_t;
 
 medcConnInfo_t medcConnInfo;
@@ -269,31 +259,26 @@ medcConnInfo_t medcConnInfo;
 /*************************************************************************************************/
 static void medcDmCback(dmEvt_t *pDmEvt)
 {
-  dmEvt_t   *pMsg;
-  uint16_t  len;
-  uint16_t  reportLen;
+    dmEvt_t *pMsg;
+    uint16_t len;
+    uint16_t reportLen;
 
-  len = DmSizeOfEvt(pDmEvt);
+    len = DmSizeOfEvt(pDmEvt);
 
-  if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND)
-  {
-    reportLen = pDmEvt->scanReport.len;
-  }
-  else
-  {
-    reportLen = 0;
-  }
-
-  if ((pMsg = WsfMsgAlloc(len + reportLen)) != NULL)
-  {
-    memcpy(pMsg, pDmEvt, len);
-    if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND)
-    {
-      pMsg->scanReport.pData = (uint8_t *) ((uint8_t *) pMsg + len);
-      memcpy(pMsg->scanReport.pData, pDmEvt->scanReport.pData, reportLen);
+    if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND) {
+        reportLen = pDmEvt->scanReport.len;
+    } else {
+        reportLen = 0;
     }
-    WsfMsgSend(medcCb.handlerId, pMsg);
-  }
+
+    if ((pMsg = WsfMsgAlloc(len + reportLen)) != NULL) {
+        memcpy(pMsg, pDmEvt, len);
+        if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND) {
+            pMsg->scanReport.pData = (uint8_t *)((uint8_t *)pMsg + len);
+            memcpy(pMsg->scanReport.pData, pDmEvt->scanReport.pData, reportLen);
+        }
+        WsfMsgSend(medcCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -307,15 +292,14 @@ static void medcDmCback(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 static void medcAttCback(attEvt_t *pEvt)
 {
-  attEvt_t *pMsg;
+    attEvt_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL)
-  {
-    memcpy(pMsg, pEvt, sizeof(attEvt_t));
-    pMsg->pValue = (uint8_t *) (pMsg + 1);
-    memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
-    WsfMsgSend(medcCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
+        memcpy(pMsg, pEvt, sizeof(attEvt_t));
+        pMsg->pValue = (uint8_t *)(pMsg + 1);
+        memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
+        WsfMsgSend(medcCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -329,10 +313,9 @@ static void medcAttCback(attEvt_t *pEvt)
 /*************************************************************************************************/
 static void medcScanStart(dmEvt_t *pMsg)
 {
-  if (pMsg->hdr.status == HCI_SUCCESS)
-  {
-    medcCb.scanning = TRUE;
-  }
+    if (pMsg->hdr.status == HCI_SUCCESS) {
+        medcCb.scanning = TRUE;
+    }
 }
 
 /*************************************************************************************************/
@@ -346,20 +329,18 @@ static void medcScanStart(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcScanStop(dmEvt_t *pMsg)
 {
-  if (pMsg->hdr.status == HCI_SUCCESS)
-  {
-    medcCb.scanning = FALSE;
-    medcCb.autoConnect = FALSE;
+    if (pMsg->hdr.status == HCI_SUCCESS) {
+        medcCb.scanning = FALSE;
+        medcCb.autoConnect = FALSE;
 
-    /* Open connection */
-    if (medcConnInfo.doConnect)
-    {
-      APP_TRACE_INFO0("medcScanStop: Opening Connection");
+        /* Open connection */
+        if (medcConnInfo.doConnect) {
+            APP_TRACE_INFO0("medcScanStop: Opening Connection");
 
-      AppConnOpen(medcConnInfo.addrType, medcConnInfo.addr, medcConnInfo.dbHdl);
-      medcConnInfo.doConnect = FALSE;
+            AppConnOpen(medcConnInfo.addrType, medcConnInfo.addr, medcConnInfo.dbHdl);
+            medcConnInfo.doConnect = FALSE;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -373,77 +354,68 @@ static void medcScanStop(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcScanReport(dmEvt_t *pMsg)
 {
-  uint8_t *pData;
-  uint8_t len;
-  appDbHdl_t dbHdl;
-  bool_t  connect = FALSE;
+    uint8_t *pData;
+    uint8_t len;
+    appDbHdl_t dbHdl;
+    bool_t connect = FALSE;
 
-  /* disregard if not scanning or autoconnecting */
-  if (!medcCb.scanning || !medcCb.autoConnect)
-  {
-    return;
-  }
-
-  /* if we already have a bond with this device then connect to it */
-  if ((dbHdl = AppDbFindByAddr(pMsg->scanReport.addrType, pMsg->scanReport.addr)) != APP_DB_HDL_NONE)
-  {
-    connect = TRUE;
-  }
-  /* otherwise look for desired service in advertising data */
-  else
-  {
-    /* find Service UUID list; if full list not found search for partial */
-    if ((pData = DmFindAdType(DM_ADV_TYPE_16_UUID, pMsg->scanReport.len,
-                              pMsg->scanReport.pData)) == NULL)
-    {
-      pData = DmFindAdType(DM_ADV_TYPE_16_UUID_PART, pMsg->scanReport.len,
-                           pMsg->scanReport.pData);
+    /* disregard if not scanning or autoconnecting */
+    if (!medcCb.scanning || !medcCb.autoConnect) {
+        return;
     }
 
-    /* if found and length checks out ok */
-    if (pData != NULL && pData[DM_AD_LEN_IDX] >= (ATT_16_UUID_LEN + 1))
-    {
-      len = pData[DM_AD_LEN_IDX] - 1;
-      pData += DM_AD_DATA_IDX;
-
-      while ((!connect) && (len >= ATT_16_UUID_LEN))
-      {
-        int8_t i;
-
-        for (i=0; i < MEDC_MAX_AUTO_UUID; i++)
-        {
-          if (medcCb.autoUuid[i] == 0)
-          {
-            continue;
-          }
-
-          if (BYTES_UINT16_CMP(pData, medcCb.autoUuid[i]))
-          {
-            connect = TRUE;
-            break;
-          }
+    /* if we already have a bond with this device then connect to it */
+    if ((dbHdl = AppDbFindByAddr(pMsg->scanReport.addrType, pMsg->scanReport.addr)) !=
+        APP_DB_HDL_NONE) {
+        connect = TRUE;
+    }
+    /* otherwise look for desired service in advertising data */
+    else {
+        /* find Service UUID list; if full list not found search for partial */
+        if ((pData = DmFindAdType(DM_ADV_TYPE_16_UUID, pMsg->scanReport.len,
+                                  pMsg->scanReport.pData)) == NULL) {
+            pData = DmFindAdType(DM_ADV_TYPE_16_UUID_PART, pMsg->scanReport.len,
+                                 pMsg->scanReport.pData);
         }
 
-        pData += ATT_16_UUID_LEN;
-        len -= ATT_16_UUID_LEN;
-      }
+        /* if found and length checks out ok */
+        if (pData != NULL && pData[DM_AD_LEN_IDX] >= (ATT_16_UUID_LEN + 1)) {
+            len = pData[DM_AD_LEN_IDX] - 1;
+            pData += DM_AD_DATA_IDX;
+
+            while ((!connect) && (len >= ATT_16_UUID_LEN)) {
+                int8_t i;
+
+                for (i = 0; i < MEDC_MAX_AUTO_UUID; i++) {
+                    if (medcCb.autoUuid[i] == 0) {
+                        continue;
+                    }
+
+                    if (BYTES_UINT16_CMP(pData, medcCb.autoUuid[i])) {
+                        connect = TRUE;
+                        break;
+                    }
+                }
+
+                pData += ATT_16_UUID_LEN;
+                len -= ATT_16_UUID_LEN;
+            }
+        }
     }
-  }
 
-  if (connect)
-  {
-    APP_TRACE_INFO0("medcScanReport: Peer found.");
+    if (connect) {
+        APP_TRACE_INFO0("medcScanReport: Peer found.");
 
-    /* stop scanning and connect */
-    medcCb.autoConnect = FALSE;
-    AppScanStop();
+        /* stop scanning and connect */
+        medcCb.autoConnect = FALSE;
+        AppScanStop();
 
-    /* Store peer information for connect on scan stop */
-    medcConnInfo.addrType = pMsg->scanReport.addrType;
-    memcpy(medcConnInfo.addr, pMsg->scanReport.addr, sizeof(bdAddr_t));
-    medcConnInfo.dbHdl = dbHdl;
-    medcConnInfo.doConnect = TRUE;
-  }
+        /* Store peer information for connect on scan stop */
+        medcConnInfo.addrType = pMsg->scanReport.addrType;
+        memcpy(medcConnInfo.addr, pMsg->scanReport.addr, sizeof(bdAddr_t));
+        medcConnInfo.dbHdl = dbHdl;
+        medcConnInfo.doConnect = TRUE;
+    }
 }
 
 /*************************************************************************************************/
@@ -455,10 +427,7 @@ static void medcScanReport(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void medcOpen(dmEvt_t *pMsg)
-{
-
-}
+static void medcOpen(dmEvt_t *pMsg) {}
 
 /*************************************************************************************************/
 /*!
@@ -471,11 +440,11 @@ static void medcOpen(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcSetup(dmEvt_t *pMsg)
 {
-  medcCb.scanning = FALSE;
-  medcCb.autoConnect = FALSE;
-  medcConnInfo.doConnect = FALSE;
+    medcCb.scanning = FALSE;
+    medcCb.autoConnect = FALSE;
+    medcConnInfo.doConnect = FALSE;
 
-  DmConnSetConnSpec((hciConnSpec_t *) &medcConnCfg);
+    DmConnSetConnSpec((hciConnSpec_t *)&medcConnCfg);
 }
 
 /*************************************************************************************************/
@@ -489,56 +458,50 @@ static void medcSetup(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcBtnCback(uint8_t btn)
 {
-  dmConnId_t      connId;
+    dmConnId_t connId;
 
-  /* button actions when connected */
-  if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE)
-  {
-    switch (btn)
-    {
-      case APP_UI_BTN_1_LONG:
-        /* disconnect */
-        AppConnClose(connId);
-        break;
+    /* button actions when connected */
+    if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE) {
+        switch (btn) {
+        case APP_UI_BTN_1_LONG:
+            /* disconnect */
+            AppConnClose(connId);
+            break;
 
-      default:
-        /* all other button presses-- send to profile */
-        medcCb.pIf->btn(connId, btn);
-        break;
-    }
-  }
-  /* button actions when not connected */
-  else
-  {
-    switch (btn)
-    {
-      case APP_UI_BTN_1_SHORT:
-        /* if scanning cancel scanning */
-        if (medcCb.scanning)
-        {
-          AppScanStop();
+        default:
+            /* all other button presses-- send to profile */
+            medcCb.pIf->btn(connId, btn);
+            break;
         }
-        /* else auto connect */
-        else if (!medcCb.autoConnect)
-        {
-          medcCb.autoConnect = TRUE;
-          medcConnInfo.doConnect = FALSE;
-          AppScanStart(medcMasterCfg.discMode, medcMasterCfg.scanType,
-                       medcMasterCfg.scanDuration);
-        }
-        break;
-
-      case APP_UI_BTN_1_LONG:
-        /* clear all bonding info */
-        AppClearAllBondingInfo();
-        break;
-
-      default:
-        /* all other button presses-- send to profile */
-        medcCb.pIf->btn(connId, btn);
-        break;
     }
-  }
+    /* button actions when not connected */
+    else {
+        switch (btn) {
+        case APP_UI_BTN_1_SHORT:
+            /* if scanning cancel scanning */
+            if (medcCb.scanning) {
+                AppScanStop();
+            }
+            /* else auto connect */
+            else if (!medcCb.autoConnect) {
+                medcCb.autoConnect = TRUE;
+                medcConnInfo.doConnect = FALSE;
+                AppScanStart(medcMasterCfg.discMode, medcMasterCfg.scanType,
+                             medcMasterCfg.scanDuration);
+            }
+            break;
+
+        case APP_UI_BTN_1_LONG:
+            /* clear all bonding info */
+            AppClearAllBondingInfo();
+            break;
+
+        default:
+            /* all other button presses-- send to profile */
+            medcCb.pIf->btn(connId, btn);
+            break;
+        }
+    }
 }
 
 /*************************************************************************************************/
@@ -553,111 +516,94 @@ static void medcBtnCback(uint8_t btn)
 /*************************************************************************************************/
 static void medcDiscCback(dmConnId_t connId, uint8_t status)
 {
-  switch(status)
-  {
+    switch (status) {
     case APP_DISC_INIT:
-      /* set handle list when initialization requested */
-      AppDiscSetHdlList(connId, medcCb.hdlListLen, medcCb.hdlList);
-      break;
+        /* set handle list when initialization requested */
+        AppDiscSetHdlList(connId, medcCb.hdlListLen, medcCb.hdlList);
+        break;
 
     case APP_DISC_READ_DATABASE_HASH:
-      /* Read peer's database hash */
-      AppDiscReadDatabaseHash(connId);
-      break;
+        /* Read peer's database hash */
+        AppDiscReadDatabaseHash(connId);
+        break;
 
     case APP_DISC_SEC_REQUIRED:
-      /* initiate security */
-      AppMasterSecurityReq(connId);
-      break;
+        /* initiate security */
+        AppMasterSecurityReq(connId);
+        break;
 
     case APP_DISC_START:
-      /* initialize discovery state */
-      medcCb.discState = MEDC_DISC_GATT_SVC;
+        /* initialize discovery state */
+        medcCb.discState = MEDC_DISC_GATT_SVC;
 
-      /* discover GATT service */
-      GattDiscover(connId, pMedcGattHdlList);
-      break;
+        /* discover GATT service */
+        GattDiscover(connId, pMedcGattHdlList);
+        break;
 
     case APP_DISC_FAILED:
-      if (pAppCfg->abortDisc)
-      {
-        /* if discovery failed for desired service then disconnect */
-        if (medcCb.discState == MEDC_DISC_MED_SVC)
-        {
-          AppConnClose(connId);
-          break;
+        if (pAppCfg->abortDisc) {
+            /* if discovery failed for desired service then disconnect */
+            if (medcCb.discState == MEDC_DISC_MED_SVC) {
+                AppConnClose(connId);
+                break;
+            }
         }
-      }
-      /* Else falls through. */
+        /* Else falls through. */
 
     case APP_DISC_CMPL:
-      /* next discovery state */
-      medcCb.discState++;
+        /* next discovery state */
+        medcCb.discState++;
 
-      if (medcCb.discState == MEDC_DISC_DIS_SVC)
-      {
-        /* discover device information service */
-        DisDiscover(connId, pMedcDisHdlList);
-      }
-      else if (medcCb.discState == MEDC_DISC_MED_SVC)
-      {
-        /* discover med profile service */
-        if (medcCb.pIf->discover(connId) == FALSE)
-        {
-          /* There are other profiles to discover. Stay in the MEDC_DISC_MED_SVC state */
-          medcCb.discState = MEDC_DISC_MED_SVC - 1;
+        if (medcCb.discState == MEDC_DISC_DIS_SVC) {
+            /* discover device information service */
+            DisDiscover(connId, pMedcDisHdlList);
+        } else if (medcCb.discState == MEDC_DISC_MED_SVC) {
+            /* discover med profile service */
+            if (medcCb.pIf->discover(connId) == FALSE) {
+                /* There are other profiles to discover. Stay in the MEDC_DISC_MED_SVC state */
+                medcCb.discState = MEDC_DISC_MED_SVC - 1;
+            }
+        } else {
+            /* discovery complete */
+            AppDiscComplete(connId, APP_DISC_CMPL);
+
+            /* start configuration: configure DIS service */
+            medcCb.cfgState = MEDC_CFG_DIS_SVC;
+            AppDiscConfigure(connId, APP_DISC_CFG_START, MEDC_CFG_DIS_LIST_LEN,
+                             (attcDiscCfg_t *)medcCfgDisList, DIS_HDL_LIST_LEN, pMedcDisHdlList);
         }
-      }
-      else
-      {
-        /* discovery complete */
-        AppDiscComplete(connId, APP_DISC_CMPL);
+        break;
 
+    case APP_DISC_CFG_START:
         /* start configuration: configure DIS service */
         medcCb.cfgState = MEDC_CFG_DIS_SVC;
         AppDiscConfigure(connId, APP_DISC_CFG_START, MEDC_CFG_DIS_LIST_LEN,
-                         (attcDiscCfg_t *) medcCfgDisList,
-                         DIS_HDL_LIST_LEN, pMedcDisHdlList);
-      }
-      break;
-
-    case APP_DISC_CFG_START:
-      /* start configuration: configure DIS service */
-      medcCb.cfgState = MEDC_CFG_DIS_SVC;
-      AppDiscConfigure(connId, APP_DISC_CFG_START, MEDC_CFG_DIS_LIST_LEN,
-                       (attcDiscCfg_t *) medcCfgDisList,
-                       DIS_HDL_LIST_LEN, pMedcDisHdlList);
-      break;
+                         (attcDiscCfg_t *)medcCfgDisList, DIS_HDL_LIST_LEN, pMedcDisHdlList);
+        break;
 
     case APP_DISC_CFG_CMPL:
-      /* next configuration state */
-      medcCb.cfgState++;
+        /* next configuration state */
+        medcCb.cfgState++;
 
-      if (medcCb.cfgState == MEDC_CFG_GATT_SVC)
-      {
-        /* configure GATT */
-        AppDiscConfigure(connId, APP_DISC_CFG_START, MEDC_CFG_GATT_LIST_LEN,
-                         (attcDiscCfg_t *) medcCfgGattList,
-                         GATT_HDL_LIST_LEN, pMedcGattHdlList);
-      }
-      else if (medcCb.cfgState == MEDC_CFG_MED_SVC)
-      {
-        /* configure med profile service */
-        medcCb.pIf->configure(connId, APP_DISC_CFG_START);
-      }
-      else
-      {
-        AppDiscComplete(connId, status);
-      }
-      break;
+        if (medcCb.cfgState == MEDC_CFG_GATT_SVC) {
+            /* configure GATT */
+            AppDiscConfigure(connId, APP_DISC_CFG_START, MEDC_CFG_GATT_LIST_LEN,
+                             (attcDiscCfg_t *)medcCfgGattList, GATT_HDL_LIST_LEN, pMedcGattHdlList);
+        } else if (medcCb.cfgState == MEDC_CFG_MED_SVC) {
+            /* configure med profile service */
+            medcCb.pIf->configure(connId, APP_DISC_CFG_START);
+        } else {
+            AppDiscComplete(connId, status);
+        }
+        break;
 
     case APP_DISC_CFG_CONN_START:
-      /* no connection setup configuration */
-      break;
+        /* no connection setup configuration */
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -671,82 +617,80 @@ static void medcDiscCback(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 static void medcProcMsg(dmEvt_t *pMsg)
 {
-  uint8_t uiEvent = APP_UI_NONE;
+    uint8_t uiEvent = APP_UI_NONE;
 
-  switch(pMsg->hdr.event)
-  {
+    switch (pMsg->hdr.event) {
     case ATTC_READ_RSP:
     case ATTC_WRITE_RSP:
     case ATTC_HANDLE_VALUE_NTF:
     case ATTC_HANDLE_VALUE_IND:
     case MEDC_TIMER_IND:
-      medcCb.pIf->procMsg(&pMsg->hdr);
-      break;
+        medcCb.pIf->procMsg(&pMsg->hdr);
+        break;
 
     case DM_RESET_CMPL_IND:
-      AttsCalculateDbHash();
-      medcSetup(pMsg);
-      uiEvent = APP_UI_RESET_CMPL;
-      break;
+        AttsCalculateDbHash();
+        medcSetup(pMsg);
+        uiEvent = APP_UI_RESET_CMPL;
+        break;
 
     case DM_SCAN_START_IND:
-      medcScanStart(pMsg);
-      uiEvent = APP_UI_SCAN_START;
-      break;
+        medcScanStart(pMsg);
+        uiEvent = APP_UI_SCAN_START;
+        break;
 
     case DM_SCAN_STOP_IND:
-      medcScanStop(pMsg);
-      uiEvent = APP_UI_SCAN_STOP;
-      break;
+        medcScanStop(pMsg);
+        uiEvent = APP_UI_SCAN_STOP;
+        break;
 
     case DM_SCAN_REPORT_IND:
-      medcScanReport(pMsg);
-      break;
+        medcScanReport(pMsg);
+        break;
 
     case DM_CONN_OPEN_IND:
-      medcOpen(pMsg);
-      uiEvent = APP_UI_CONN_OPEN;
-      break;
+        medcOpen(pMsg);
+        uiEvent = APP_UI_CONN_OPEN;
+        break;
 
     case DM_CONN_CLOSE_IND:
-      medcCb.pIf->procMsg(&pMsg->hdr);
-      uiEvent = APP_UI_CONN_CLOSE;
-      break;
+        medcCb.pIf->procMsg(&pMsg->hdr);
+        uiEvent = APP_UI_CONN_CLOSE;
+        break;
 
     case DM_SEC_PAIR_CMPL_IND:
-      uiEvent = APP_UI_SEC_PAIR_CMPL;
-      break;
+        uiEvent = APP_UI_SEC_PAIR_CMPL;
+        break;
 
     case DM_SEC_PAIR_FAIL_IND:
-      uiEvent = APP_UI_SEC_PAIR_FAIL;
-      break;
+        uiEvent = APP_UI_SEC_PAIR_FAIL;
+        break;
 
     case DM_SEC_ENCRYPT_IND:
-      medcCb.pIf->procMsg(&pMsg->hdr);
-      uiEvent = APP_UI_SEC_ENCRYPT;
-      break;
+        medcCb.pIf->procMsg(&pMsg->hdr);
+        uiEvent = APP_UI_SEC_ENCRYPT;
+        break;
 
     case DM_SEC_ENCRYPT_FAIL_IND:
-      medcCb.pIf->procMsg(&pMsg->hdr);
-      uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
-      break;
+        medcCb.pIf->procMsg(&pMsg->hdr);
+        uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
+        break;
 
     case DM_SEC_AUTH_REQ_IND:
-      AppHandlePasskey(&pMsg->authReq);
-      break;
+        AppHandlePasskey(&pMsg->authReq);
+        break;
 
     case DM_PRIV_CLEAR_RES_LIST_IND:
-      APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
-      break;
+        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  if (uiEvent != APP_UI_NONE)
-  {
-    AppUiAction(uiEvent);
-  }
+    if (uiEvent != APP_UI_NONE) {
+        AppUiAction(uiEvent);
+    }
 }
 
 /*************************************************************************************************/
@@ -760,26 +704,26 @@ static void medcProcMsg(dmEvt_t *pMsg)
 /*************************************************************************************************/
 void MedcHandlerInit(wsfHandlerId_t handlerId)
 {
-  APP_TRACE_INFO0("MedcHandlerInit");
+    APP_TRACE_INFO0("MedcHandlerInit");
 
-  /* store handler ID */
-  medcCb.handlerId = handlerId;
+    /* store handler ID */
+    medcCb.handlerId = handlerId;
 
-  /* Set configuration pointers */
-  pAppMasterCfg = (appMasterCfg_t *) &medcMasterCfg;
-  pAppSecCfg = (appSecCfg_t *) &medcSecCfg;
-  pAppDiscCfg = (appDiscCfg_t *) &medcDiscCfg;
-  pAppCfg = (appCfg_t *) &medcAppCfg;
+    /* Set configuration pointers */
+    pAppMasterCfg = (appMasterCfg_t *)&medcMasterCfg;
+    pAppSecCfg = (appSecCfg_t *)&medcSecCfg;
+    pAppDiscCfg = (appDiscCfg_t *)&medcDiscCfg;
+    pAppCfg = (appCfg_t *)&medcAppCfg;
 
-  /* Set stack configuration pointers */
-  pSmpCfg = (smpCfg_t *) &medcSmpCfg;
+    /* Set stack configuration pointers */
+    pSmpCfg = (smpCfg_t *)&medcSmpCfg;
 
-  /* Initialize application framework */
-  AppMasterInit();
-  AppDiscInit();
+    /* Initialize application framework */
+    AppMasterInit();
+    AppDiscInit();
 
-  /* Set default profile to use */
-  MedcSetProfile(MEDC_PROFILE);
+    /* Set default profile to use */
+    MedcSetProfile(MEDC_PROFILE);
 }
 
 /*************************************************************************************************/
@@ -794,35 +738,32 @@ void MedcHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MedcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  if (pMsg != NULL)
-  {
-    APP_TRACE_INFO1("Medc got evt %d", pMsg->event);
+    if (pMsg != NULL) {
+        APP_TRACE_INFO1("Medc got evt %d", pMsg->event);
 
-    /* process ATT messages */
-    if (pMsg->event <= ATT_CBACK_END)
-    {
-      /* process discovery-related ATT messages */
-      AppDiscProcAttMsg((attEvt_t *) pMsg);
+        /* process ATT messages */
+        if (pMsg->event <= ATT_CBACK_END) {
+            /* process discovery-related ATT messages */
+            AppDiscProcAttMsg((attEvt_t *)pMsg);
 
-      /* process server-related ATT messages */
-      AppServerProcAttMsg(pMsg);
+            /* process server-related ATT messages */
+            AppServerProcAttMsg(pMsg);
+        }
+        /* process DM messages */
+        else if (pMsg->event <= DM_CBACK_END) {
+            /* process advertising and connection-related messages */
+            AppMasterProcDmMsg((dmEvt_t *)pMsg);
+
+            /* process security-related messages */
+            AppMasterSecProcDmMsg((dmEvt_t *)pMsg);
+
+            /* process discovery-related messages */
+            AppDiscProcDmMsg((dmEvt_t *)pMsg);
+        }
+
+        /* perform profile and user interface-related operations */
+        medcProcMsg((dmEvt_t *)pMsg);
     }
-    /* process DM messages */
-    else if (pMsg->event <= DM_CBACK_END)
-    {
-      /* process advertising and connection-related messages */
-      AppMasterProcDmMsg((dmEvt_t *) pMsg);
-
-      /* process security-related messages */
-      AppMasterSecProcDmMsg((dmEvt_t *) pMsg);
-
-      /* process discovery-related messages */
-      AppDiscProcDmMsg((dmEvt_t *) pMsg);
-    }
-
-    /* perform profile and user interface-related operations */
-    medcProcMsg((dmEvt_t *) pMsg);
-  }
 }
 
 /*************************************************************************************************/
@@ -834,22 +775,22 @@ void MedcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MedcStart(void)
 {
-  /* Register for stack callbacks */
-  DmRegister(medcDmCback);
-  DmConnRegister(DM_CLIENT_ID_APP, medcDmCback);
-  AttRegister(medcAttCback);
+    /* Register for stack callbacks */
+    DmRegister(medcDmCback);
+    DmConnRegister(DM_CLIENT_ID_APP, medcDmCback);
+    AttRegister(medcAttCback);
 
-  /* Register for app framework button callbacks */
-  AppUiBtnRegister(medcBtnCback);
+    /* Register for app framework button callbacks */
+    AppUiBtnRegister(medcBtnCback);
 
-  /* Initialize attribute server database */
-  SvcCoreAddGroup();
+    /* Initialize attribute server database */
+    SvcCoreAddGroup();
 
-  /* Register for app framework discovery callbacks */
-  AppDiscRegister(medcDiscCback);
+    /* Register for app framework discovery callbacks */
+    AppDiscRegister(medcDiscCback);
 
-  /* Reset the device */
-  DmDevReset();
+    /* Reset the device */
+    DmDevReset();
 }
 
 /*************************************************************************************************/
@@ -866,46 +807,45 @@ void MedcStart(void)
 /*************************************************************************************************/
 void MedcSetProfile(uint8_t profile)
 {
-  switch (profile)
-  {
+    switch (profile) {
 #if MEDC_HRP_INCLUDED == TRUE
     case MEDC_ID_HRP:
-      medcCb.pIf = &medcHrpIf;
-      medcCb.pIf->init();
-      break;
+        medcCb.pIf = &medcHrpIf;
+        medcCb.pIf->init();
+        break;
 #endif
 #if MEDC_BLP_INCLUDED == TRUE
     case MEDC_ID_BLP:
-      medcCb.pIf = &medcBlpIf;
-      medcCb.pIf->init();
-      break;
+        medcCb.pIf = &medcBlpIf;
+        medcCb.pIf->init();
+        break;
 #endif
 #if MEDC_GLP_INCLUDED == TRUE
     case MEDC_ID_GLP:
-      medcCb.pIf = &medcGlpIf;
-      medcCb.pIf->init();
-      break;
+        medcCb.pIf = &medcGlpIf;
+        medcCb.pIf->init();
+        break;
 #endif
 #if MEDC_WSP_INCLUDED == TRUE
     case MEDC_ID_WSP:
-      medcCb.pIf = &medcWspIf;
-      medcCb.pIf->init();
-      break;
+        medcCb.pIf = &medcWspIf;
+        medcCb.pIf->init();
+        break;
 #endif
 #if MEDC_HTP_INCLUDED == TRUE
     case MEDC_ID_HTP:
-      medcCb.pIf = &medcHtpIf;
-      medcCb.pIf->init();
-      break;
+        medcCb.pIf = &medcHtpIf;
+        medcCb.pIf->init();
+        break;
 #endif
 #if MEDC_PLX_INCLUDED == TRUE
     case MEDC_ID_PLX:
-      medcCb.pIf = &medcPlxpIf;
-      medcCb.pIf->init();
-      break;
+        medcCb.pIf = &medcPlxpIf;
+        medcCb.pIf->init();
+        break;
 #endif
     default:
-      APP_TRACE_WARN1("MedcSetProfile invalid profile:%d", profile);
-      break;
-  }
+        APP_TRACE_WARN1("MedcSetProfile invalid profile:%d", profile);
+        break;
+    }
 }

@@ -24,11 +24,9 @@
  * http://math.libtomcrypt.com
  */
 
-
 #ifndef CTAO_CRYPT_INTEGER_H
 #define CTAO_CRYPT_INTEGER_H
 
 #include <wolfssl/wolfcrypt/integer.h>
 
-#endif  /* CTAO_CRYPT_INTEGER_H */
-
+#endif /* CTAO_CRYPT_INTEGER_H */

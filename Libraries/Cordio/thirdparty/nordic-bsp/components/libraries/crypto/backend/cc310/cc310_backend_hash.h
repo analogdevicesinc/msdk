@@ -62,11 +62,10 @@
 extern "C" {
 #endif
 
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HASH_SHA256)
 
 // Flag that nrf_crypto_hash frontend can be compiled
-#undef  NRF_CRYPTO_HASH_ENABLED
+#undef NRF_CRYPTO_HASH_ENABLED
 #define NRF_CRYPTO_HASH_ENABLED 1
 
 // Flag that SHA-256 is enabled in backend
@@ -75,21 +74,18 @@ extern "C" {
 #endif
 #define NRF_CRYPTO_HASH_SHA256_ENABLED 1
 
-
 /**@internal @brief nrf_crypto_hash context for SHA-256 in nrf_crypto CC310 backend. */
-typedef struct
-{
-    nrf_crypto_hash_internal_context_t  header;     /**< Common header for context. */
-    CRYS_HASHUserContext_t              context;    /**< Hash context internal to CC310. */
+typedef struct {
+    nrf_crypto_hash_internal_context_t header; /**< Common header for context. */
+    CRYS_HASHUserContext_t context; /**< Hash context internal to CC310. */
 } nrf_crypto_backend_hash_sha256_context_t;
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HASH_SHA256)
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HASH_SHA512)
 
 // Flag that nrf_crypto_hash frontend can be compiled
-#undef  NRF_CRYPTO_HASH_ENABLED
+#undef NRF_CRYPTO_HASH_ENABLED
 #define NRF_CRYPTO_HASH_ENABLED 1
 
 // Duplicate backend enabled test for SHA-512
@@ -100,14 +96,11 @@ typedef struct
 // Flag that SHA-512 is enabled in backend
 #define NRF_CRYPTO_HASH_SHA512_ENABLED 1
 
-
 /**@internal @brief nrf_crypto_hash context for SHA-512 in nrf_crypto CC310 backend. */
-typedef struct
-{
-    nrf_crypto_hash_internal_context_t  header;         /**< Common header for context. */
-    CRYS_HASHUserContext_t              context;        /**< Hash context internal to CC310. */
+typedef struct {
+    nrf_crypto_hash_internal_context_t header; /**< Common header for context. */
+    CRYS_HASHUserContext_t context; /**< Hash context internal to CC310. */
 } nrf_crypto_backend_hash_sha512_context_t;
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HASH_SHA512)
 

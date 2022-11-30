@@ -33,11 +33,7 @@
 **************************************************************************************************/
 
 /* Action set for this module */
-static const dmConnAct_t dmConnActSetMaster[] =
-{
-  dmExtConnSmActOpen,
-  dmConnSmActCancelOpen
-};
+static const dmConnAct_t dmConnActSetMaster[] = { dmExtConnSmActOpen, dmConnSmActCancelOpen };
 
 /*************************************************************************************************/
 /*!
@@ -52,40 +48,38 @@ static const dmConnAct_t dmConnActSetMaster[] =
 /*************************************************************************************************/
 static void dmExtConnOpen(uint8_t initPhys, uint8_t addrType, uint8_t *pAddr)
 {
-  uint8_t i;
-  uint8_t idx;
-  uint8_t phyIdx;
-  hciExtInitParam_t initParam;
-  hciConnSpec_t connSpec[DM_NUM_PHYS];
-  hciExtInitScanParam_t scanParam[DM_NUM_PHYS];
+    uint8_t i;
+    uint8_t idx;
+    uint8_t phyIdx;
+    hciExtInitParam_t initParam;
+    hciConnSpec_t connSpec[DM_NUM_PHYS];
+    hciExtInitScanParam_t scanParam[DM_NUM_PHYS];
 
-  /* set initiating parameters */
-  initParam.filterPolicy = dmCb.initFiltPolicy;
-  initParam.ownAddrType = DmLlAddrType(dmCb.connAddrType);
-  initParam.peerAddrType = addrType;
-  initParam.pPeerAddr = pAddr;
-  initParam.initPhys = initPhys;
+    /* set initiating parameters */
+    initParam.filterPolicy = dmCb.initFiltPolicy;
+    initParam.ownAddrType = DmLlAddrType(dmCb.connAddrType);
+    initParam.peerAddrType = addrType;
+    initParam.pPeerAddr = pAddr;
+    initParam.initPhys = initPhys;
 
-  /* see advertising packets to be received on which PHY */
-  for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++)
-  {
-    if (initPhys & (1 << i))
-    {
-      phyIdx = DmInitPhyToIdx(1 << i);
+    /* see advertising packets to be received on which PHY */
+    for (i = 0, idx = 0; (i < 8) && (idx < DM_NUM_PHYS); i++) {
+        if (initPhys & (1 << i)) {
+            phyIdx = DmInitPhyToIdx(1 << i);
 
-      /* set extended create conection parameters for this PHY */
-      scanParam[idx].scanInterval = dmConnCb.scanInterval[phyIdx];
-      scanParam[idx].scanWindow = dmConnCb.scanWindow[phyIdx];
-      connSpec[idx] = dmConnCb.connSpec[phyIdx];
-      idx++;
+            /* set extended create conection parameters for this PHY */
+            scanParam[idx].scanInterval = dmConnCb.scanInterval[phyIdx];
+            scanParam[idx].scanWindow = dmConnCb.scanWindow[phyIdx];
+            connSpec[idx] = dmConnCb.connSpec[phyIdx];
+            idx++;
+        }
     }
-  }
 
-  /* Create connection */
-  HciLeExtCreateConnCmd(&initParam, scanParam, connSpec);
+    /* Create connection */
+    HciLeExtCreateConnCmd(&initParam, scanParam, connSpec);
 
-  /* pass connection initiation started to dev priv */
-  dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_START, 0, 0);
+    /* pass connection initiation started to dev priv */
+    dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_START, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -100,7 +94,7 @@ static void dmExtConnOpen(uint8_t initPhys, uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 void dmExtConnSmActOpen(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-  dmExtConnOpen(pMsg->apiOpen.initPhys, pMsg->apiOpen.addrType, pMsg->apiOpen.peerAddr);
+    dmExtConnOpen(pMsg->apiOpen.initPhys, pMsg->apiOpen.addrType, pMsg->apiOpen.peerAddr);
 }
 
 /*************************************************************************************************/
@@ -112,10 +106,10 @@ void dmExtConnSmActOpen(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void DmExtConnMasterInit(void)
 {
-  WsfTaskLock();
+    WsfTaskLock();
 
-  dmConnActSet[DM_CONN_ACT_SET_MASTER] = (dmConnAct_t *) dmConnActSetMaster;
-  dmConnUpdActSet[DM_CONN_ACT_SET_MASTER] = (dmConnAct_t *) dmConnUpdActSetMaster;
+    dmConnActSet[DM_CONN_ACT_SET_MASTER] = (dmConnAct_t *)dmConnActSetMaster;
+    dmConnUpdActSet[DM_CONN_ACT_SET_MASTER] = (dmConnAct_t *)dmConnUpdActSetMaster;
 
-  WsfTaskUnlock();
+    WsfTaskUnlock();
 }

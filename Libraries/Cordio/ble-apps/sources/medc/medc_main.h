@@ -51,19 +51,18 @@ extern "C" {
  */
 
 /*! Maximum number of Service UUID for autoconnect */
-#define MEDC_MAX_AUTO_UUID          2
+#define MEDC_MAX_AUTO_UUID 2
 
 /*! Start of each service's handles in the the handle list */
-#define MEDC_DISC_GATT_START        0
-#define MEDC_DISC_DIS_START         (MEDC_DISC_GATT_START + GATT_HDL_LIST_LEN)
+#define MEDC_DISC_GATT_START 0
+#define MEDC_DISC_DIS_START (MEDC_DISC_GATT_START + GATT_HDL_LIST_LEN)
 
 /*! WSF message event starting value */
-#define MEDC_MSG_START             0xA0
+#define MEDC_MSG_START 0xA0
 
 /*! WSF message event enumeration */
-enum
-{
-  MEDC_TIMER_IND = MEDC_MSG_START,    /*! Timer expired */
+enum {
+    MEDC_TIMER_IND = MEDC_MSG_START, /*! Timer expired */
 };
 
 /**************************************************************************************************
@@ -78,27 +77,25 @@ typedef void (*medcProcMsgCback_t)(wsfMsgHdr_t *pMsg);
 typedef void (*medcBtnCback_t)(dmConnId_t connId, uint8_t btn);
 
 /*! profile interface structure */
-typedef struct
-{
-  medcInitCback_t       init;
-  medcDiscoverCback_t   discover;
-  medcConfigureCback_t  configure;
-  medcProcMsgCback_t    procMsg;
-  medcBtnCback_t        btn;
+typedef struct {
+    medcInitCback_t init;
+    medcDiscoverCback_t discover;
+    medcConfigureCback_t configure;
+    medcProcMsgCback_t procMsg;
+    medcBtnCback_t btn;
 } medcIf_t;
 
 /*! application control block */
-typedef struct
-{
-  uint16_t          hdlList[APP_DB_HDL_LIST_LEN];   /*! Cached handle list */
-  medcIf_t          *pIf;                           /*! Profile interface */
-  wsfHandlerId_t    handlerId;                      /*! WSF hander ID */
-  uint16_t          autoUuid[MEDC_MAX_AUTO_UUID];   /*! Service UUID for autoconnect */
-  bool_t            scanning;                       /*! TRUE if scanning */
-  bool_t            autoConnect;                    /*! TRUE if auto-connecting */
-  uint8_t           hdlListLen;                     /*! Cached handle list length */
-  uint8_t           discState;                      /*! Service discovery state */
-  uint8_t           cfgState;                       /*! Service configuration state */
+typedef struct {
+    uint16_t hdlList[APP_DB_HDL_LIST_LEN]; /*! Cached handle list */
+    medcIf_t *pIf; /*! Profile interface */
+    wsfHandlerId_t handlerId; /*! WSF hander ID */
+    uint16_t autoUuid[MEDC_MAX_AUTO_UUID]; /*! Service UUID for autoconnect */
+    bool_t scanning; /*! TRUE if scanning */
+    bool_t autoConnect; /*! TRUE if auto-connecting */
+    uint8_t hdlListLen; /*! Cached handle list length */
+    uint8_t discState; /*! Service discovery state */
+    uint8_t cfgState; /*! Service configuration state */
 } medcCb_t;
 
 /**************************************************************************************************
@@ -119,12 +116,12 @@ extern uint16_t *pMedcDisHdlList;
 extern medcCb_t medcCb;
 
 /*! profile interface pointers */
-extern medcIf_t medcHrpIf;          /* heart rate profile */
-extern medcIf_t medcBlpIf;          /* blood pressure profile */
-extern medcIf_t medcGlpIf;          /* glucose profile */
-extern medcIf_t medcWspIf;          /* weight scale profile */
-extern medcIf_t medcHtpIf;          /* health thermometer profile */
-extern medcIf_t medcPlxpIf;         /* pulse oximeter profile */
+extern medcIf_t medcHrpIf; /* heart rate profile */
+extern medcIf_t medcBlpIf; /* blood pressure profile */
+extern medcIf_t medcGlpIf; /* glucose profile */
+extern medcIf_t medcWspIf; /* weight scale profile */
+extern medcIf_t medcHtpIf; /* health thermometer profile */
+extern medcIf_t medcPlxpIf; /* pulse oximeter profile */
 
 /**************************************************************************************************
   Function Declarations
@@ -135,4 +132,3 @@ extern medcIf_t medcPlxpIf;         /* pulse oximeter profile */
 #endif
 
 #endif /* MEDC_MAIN_H */
-

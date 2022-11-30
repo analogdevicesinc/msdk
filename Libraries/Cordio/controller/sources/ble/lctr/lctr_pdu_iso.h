@@ -35,33 +35,31 @@
 extern "C" {
 #endif
 
-
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
 
 /*! \brief      Get length of ISO Header. */
-#define LCTR_GET_ISO_DATA_HDR_LEN(pIsoHdr)      (HCI_ISO_HDR_LEN + (((pIsoHdr)->tsFlag) ? HCI_ISO_DL_MAX_LEN : HCI_ISO_DL_MIN_LEN))
+#define LCTR_GET_ISO_DATA_HDR_LEN(pIsoHdr) \
+    (HCI_ISO_HDR_LEN + (((pIsoHdr)->tsFlag) ? HCI_ISO_DL_MAX_LEN : HCI_ISO_DL_MIN_LEN))
 
 /**************************************************************************************************
   Constants
 **************************************************************************************************/
 
 /*! \brief      Packet boundary flags. */
-typedef enum
-{
-  LCTR_PB_FIRST     = 0,                /*!< Data is the first fragment of a fragmented SDU. */
-  LCTR_PB_CONT      = 1,                /*!< Data is a continuation fragment of a fragmented SDU. */
-  LCTR_PB_COMP      = 2,                /*!< Data is a complete SDU. */
-  LCTR_PB_LAST      = 3                 /*!< Data is the last fragment of a fragmented SDU. */
+typedef enum {
+    LCTR_PB_FIRST = 0, /*!< Data is the first fragment of a fragmented SDU. */
+    LCTR_PB_CONT = 1, /*!< Data is a continuation fragment of a fragmented SDU. */
+    LCTR_PB_COMP = 2, /*!< Data is a complete SDU. */
+    LCTR_PB_LAST = 3 /*!< Data is the last fragment of a fragmented SDU. */
 } lctrPktBoundary_t;
 
 /*! \brief      Packet status flags. */
-typedef enum
-{
-  LCTR_PS_VALID     = 0,                /*!< Data is received correctly. */
-  LCTR_PS_INVALID   = 1,                /*!< Data with possible errors. */
-  LCTR_PS_LOST      = 2,                /*!< Data with lost data. */
+typedef enum {
+    LCTR_PS_VALID = 0, /*!< Data is received correctly. */
+    LCTR_PS_INVALID = 1, /*!< Data with possible errors. */
+    LCTR_PS_LOST = 2, /*!< Data with lost data. */
 } lctrPktStatus_t;
 
 /**************************************************************************************************
@@ -69,57 +67,52 @@ typedef enum
 **************************************************************************************************/
 
 /*! \brief      ISO header. */
-typedef struct
-{
-  /* ISO header */
-  uint16_t          handle;             /*!< CIS or BIS handle. */
-  lctrPktBoundary_t pb:8;               /*!< Packet boundary flag. */
-  bool_t            tsFlag;             /*!< Timestamp flag. */
-  uint16_t          len;                /*!< Data length. */
+typedef struct {
+    /* ISO header */
+    uint16_t handle; /*!< CIS or BIS handle. */
+    lctrPktBoundary_t pb : 8; /*!< Packet boundary flag. */
+    bool_t tsFlag; /*!< Timestamp flag. */
+    uint16_t len; /*!< Data length. */
 
-  /* ISO Data Load */
-  uint32_t          ts;                 /*!< Timestamp. */
-  uint16_t          pktSn;              /*!< Packet sequence number. */
-  uint16_t          sduLen;             /*!< SDU length. */
-  lctrPktStatus_t   ps:8;               /*!< Packet status. */
-  const uint8_t     *pSdu;              /*!< First byte of ISO SDU. */
+    /* ISO Data Load */
+    uint32_t ts; /*!< Timestamp. */
+    uint16_t pktSn; /*!< Packet sequence number. */
+    uint16_t sduLen; /*!< SDU length. */
+    lctrPktStatus_t ps : 8; /*!< Packet status. */
+    const uint8_t *pSdu; /*!< First byte of ISO SDU. */
 } lctrIsoHdr_t;
 
 /*! \brief      ISO SDU descriptor. */
-typedef struct
-{
-  lctrIsoHdr_t      hdr;                /*!< ISO header. */
-  uint32_t          ts;                 /*!< Timestamp. */
-  uint8_t           data;               /*!< Data. */
+typedef struct {
+    lctrIsoHdr_t hdr; /*!< ISO header. */
+    uint32_t ts; /*!< Timestamp. */
+    uint8_t data; /*!< Data. */
 } lctrSduDesc_t;
 
 /*! \brief      ISO CIS PDU header. */
-typedef struct
-{
-  uint8_t           llid;               /*!< PDU type. */
-  uint8_t           nesn;               /*!< Next Expected Sequence Number. */
-  uint8_t           sn;                 /*!< Sequence Number. */
-  uint8_t           cie;                /*!< TRUE if stop next subevent. */
-  uint8_t           np;                 /*!< PDU type, whether a NULL PDU. */
-  uint8_t           len;                /*!< Payload length. */
+typedef struct {
+    uint8_t llid; /*!< PDU type. */
+    uint8_t nesn; /*!< Next Expected Sequence Number. */
+    uint8_t sn; /*!< Sequence Number. */
+    uint8_t cie; /*!< TRUE if stop next subevent. */
+    uint8_t np; /*!< PDU type, whether a NULL PDU. */
+    uint8_t len; /*!< Payload length. */
 } lctrCisDataPduHdr_t;
 
 /*! \brief      ISO BIS PDU header. */
-typedef struct
-{
-  LlIsoLlid_t       llid:8;             /*!< PDU type. */
-  uint8_t           cssn;               /*!< Control Subevent Sequence Number. */
-  bool_t            cstf;               /*!< Control Subevent Submission Flag. */
-  uint8_t           len;                /*!< Payload length. */
+typedef struct {
+    LlIsoLlid_t llid : 8; /*!< PDU type. */
+    uint8_t cssn; /*!< Control Subevent Sequence Number. */
+    bool_t cstf; /*!< Control Subevent Submission Flag. */
+    uint8_t len; /*!< Payload length. */
 } lctrBisDataPduHdr_t;
 
 /*! \brief      ISOAL Segmentation Header. */
-typedef struct
-{
-  bool_t            sc;                 /*!< Segment continuation flag. */
-  bool_t            cmplt;              /*!< Segment complete flag. */
-  uint8_t           len;                /*!< Payload length. */
-  uint32_t          toffs;              /*!< Time offset. */
+typedef struct {
+    bool_t sc; /*!< Segment continuation flag. */
+    bool_t cmplt; /*!< Segment complete flag. */
+    uint8_t len; /*!< Payload length. */
+    uint32_t toffs; /*!< Time offset. */
 } lctrIsoSegHdr_t;
 
 /**************************************************************************************************

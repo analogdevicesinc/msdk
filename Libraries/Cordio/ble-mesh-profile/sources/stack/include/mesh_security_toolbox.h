@@ -34,8 +34,7 @@
 #define MESH_SECURITY_TOOLBOX_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -43,48 +42,48 @@ extern "C"
 **************************************************************************************************/
 
 /*! AES-128 block size in bytes */
-#define MESH_SEC_TOOL_AES_BLOCK_SIZE       16
+#define MESH_SEC_TOOL_AES_BLOCK_SIZE 16
 
 /*! Nonce size for Mesh CCM operations is fixed: 13 bytes */
-#define MESH_SEC_TOOL_CCM_NONCE_SIZE       13
+#define MESH_SEC_TOOL_CCM_NONCE_SIZE 13
 
 /*! Maximum CCM MAC size for Mesh Security operations */
-#define MESH_SEC_TOOL_CCM_MAX_MAC_SIZE     8
+#define MESH_SEC_TOOL_CCM_MAX_MAC_SIZE 8
 
 /*! ECC key length in P-256 space */
-#define MESH_SEC_TOOL_ECC_KEY_SIZE         32
+#define MESH_SEC_TOOL_ECC_KEY_SIZE 32
 
 /*! Request queue size for AES-128 requests */
 #ifndef MESH_SEC_TOOL_AES_REQ_QUEUE_SIZE
-#define MESH_SEC_TOOL_AES_REQ_QUEUE_SIZE   6
+#define MESH_SEC_TOOL_AES_REQ_QUEUE_SIZE 6
 #endif
 
 /*! Request queue size for AES-CMAC requests */
 #ifndef MESH_SEC_TOOL_CMAC_REQ_QUEUE_SIZE
-#define MESH_SEC_TOOL_CMAC_REQ_QUEUE_SIZE  6
+#define MESH_SEC_TOOL_CMAC_REQ_QUEUE_SIZE 6
 #endif
 
 /*! Request queue size for AES-CCM requests */
 #ifndef MESH_SEC_TOOL_CCM_REQ_QUEUE_SIZE
-#define MESH_SEC_TOOL_CCM_REQ_QUEUE_SIZE   6
+#define MESH_SEC_TOOL_CCM_REQ_QUEUE_SIZE 6
 #endif
 
 /*! Request queue size for Kx derivation requests */
 #ifndef MESH_SEC_TOOL_KX_REQ_QUEUE_SIZE
-#define MESH_SEC_TOOL_KX_REQ_QUEUE_SIZE    6
+#define MESH_SEC_TOOL_KX_REQ_QUEUE_SIZE 6
 #endif
 
 /*! K1 derivation function result size in bytes */
-#define MESH_SEC_TOOL_K1_RESULT_SIZE       16
+#define MESH_SEC_TOOL_K1_RESULT_SIZE 16
 
 /*! K2 derivation function result size in bytes */
-#define MESH_SEC_TOOL_K2_RESULT_SIZE       33
+#define MESH_SEC_TOOL_K2_RESULT_SIZE 33
 
 /*! K3 derivation function result size in bytes */
-#define MESH_SEC_TOOL_K3_RESULT_SIZE       8
+#define MESH_SEC_TOOL_K3_RESULT_SIZE 8
 
 /*! K4 derivation function result size in bytes */
-#define MESH_SEC_TOOL_K4_RESULT_SIZE       1
+#define MESH_SEC_TOOL_K4_RESULT_SIZE 1
 
 /**************************************************************************************************
   Data Types
@@ -94,75 +93,68 @@ extern "C"
 typedef uint16_t meshSecToolRetVal_t;
 
 /*! Mesh Security Toolbox used algorithms bitmask */
-enum meshSecToolAlgoBitMask
-{
-  MESH_SEC_TOOL_ALGO_AES_128  = (1 << 0),  /*!< AES 128 */
-  MESH_SEC_TOOL_ALGO_AES_CMAC = (1 << 1),  /*!< AES-CMAC */
-  MESH_SEC_TOOL_ALGO_CCM      = (1 << 2),  /*!< AES-CCM */
-  MESH_SEC_TOOL_ALGO_ECC      = (1 << 3),  /*!< ECC KeyGen and ECDH */
+enum meshSecToolAlgoBitMask {
+    MESH_SEC_TOOL_ALGO_AES_128 = (1 << 0), /*!< AES 128 */
+    MESH_SEC_TOOL_ALGO_AES_CMAC = (1 << 1), /*!< AES-CMAC */
+    MESH_SEC_TOOL_ALGO_CCM = (1 << 2), /*!< AES-CCM */
+    MESH_SEC_TOOL_ALGO_ECC = (1 << 3), /*!< ECC KeyGen and ECDH */
 };
 
 /*! Mesh Security Toolbox supported algorithms bitfield */
 typedef uint8_t meshSecToolAlgoBitfield_t;
 
 /*! Mesh Security CCM operation types */
-enum meshSecToolCcmOperationType
-{
-  MESH_SEC_TOOL_CCM_ENCRYPT = 0x00, /*!< Encrypt operation */
-  MESH_SEC_TOOL_CCM_DECRYPT = 0x01, /*!< Decrypt operation */
+enum meshSecToolCcmOperationType {
+    MESH_SEC_TOOL_CCM_ENCRYPT = 0x00, /*!< Encrypt operation */
+    MESH_SEC_TOOL_CCM_DECRYPT = 0x01, /*!< Decrypt operation */
 };
 
 /*! Mesh Security CCM operation type. See ::meshSecToolCcmOperationType */
 typedef uint8_t meshSecToolCcmOperation_t;
 
 /*! Mesh Security Toolbox CCM request parameter structure */
-typedef struct meshSecToolCcmParams_tag
-{
-  uint8_t  *pIn;           /*!< Pointer to input buffer */
-  uint8_t  *pOut;          /*!< Pointer output buffer */
-  uint8_t  *pAuthData;     /*!< Pointer to authentication data */
-  uint8_t  *pCbcMac;       /*!< Pointer to CBC-MAC in/out buffer */
-  uint8_t  *pCcmKey;       /*!< Pointer to 128-bit AES CCM Key */
-  uint8_t  *pNonce;        /*!< 13-byte Nonce for counter */
-  uint16_t inputLen;       /*!< Input/Output buffer length */
-  uint16_t authDataLen;    /*!< Authentication data length */
-  uint8_t  cbcMacSize;     /*!< Size of the CBC-MAC */
+typedef struct meshSecToolCcmParams_tag {
+    uint8_t *pIn; /*!< Pointer to input buffer */
+    uint8_t *pOut; /*!< Pointer output buffer */
+    uint8_t *pAuthData; /*!< Pointer to authentication data */
+    uint8_t *pCbcMac; /*!< Pointer to CBC-MAC in/out buffer */
+    uint8_t *pCcmKey; /*!< Pointer to 128-bit AES CCM Key */
+    uint8_t *pNonce; /*!< 13-byte Nonce for counter */
+    uint16_t inputLen; /*!< Input/Output buffer length */
+    uint16_t authDataLen; /*!< Authentication data length */
+    uint8_t cbcMacSize; /*!< Size of the CBC-MAC */
 } meshSecToolCcmParams_t;
 
 /*! Mesh Security CCM Encrypt operation result */
-typedef struct meshSecToolCcmEncryptResult_tag
-{
-  uint8_t  *pCipherText;   /*!< Pointer to buffer storing the ciphertext
+typedef struct meshSecToolCcmEncryptResult_tag {
+    uint8_t *pCipherText; /*!< Pointer to buffer storing the ciphertext
                             *   (passed as pOut in the request)
                             */
-  uint16_t cipherTextSize; /*!< Size of the ciphertext */
-  uint8_t  *pCbcMac;       /*!< Pointer to buffer storing the CBC-MAC calculation
+    uint16_t cipherTextSize; /*!< Size of the ciphertext */
+    uint8_t *pCbcMac; /*!< Pointer to buffer storing the CBC-MAC calculation
                             *   (passed as parameter in the request)
                             */
-  uint8_t  cbcMacSize;     /*!< Size in bytes of the CBC-MAC */
+    uint8_t cbcMacSize; /*!< Size in bytes of the CBC-MAC */
 } meshSecToolCcmEncryptResult_t;
 
 /*! Mesh CCM Decrypt operation result */
-typedef struct meshSecToolCcmDecryptResult_tag
-{
-  uint8_t  *pPlainText;    /*!< Pointer to buffer storing the plaintext
+typedef struct meshSecToolCcmDecryptResult_tag {
+    uint8_t *pPlainText; /*!< Pointer to buffer storing the plaintext
                             *   (passed as pOut in the request)
                             */
-  uint16_t plainTextSize;  /*!< Size of the plaintext */
-  bool_t   isAuthSuccess;  /*!< TRUE if PDU is authenticated */
+    uint16_t plainTextSize; /*!< Size of the plaintext */
+    bool_t isAuthSuccess; /*!< TRUE if PDU is authenticated */
 } meshSecToolCcmDecryptResult_t;
 
-typedef union meshSecToolCcmResults_tag
-{
-  meshSecToolCcmEncryptResult_t encryptResult;  /*!< Encryption result */
-  meshSecToolCcmDecryptResult_t decryptResult;  /*!< Decryption result */
+typedef union meshSecToolCcmResults_tag {
+    meshSecToolCcmEncryptResult_t encryptResult; /*!< Encryption result */
+    meshSecToolCcmDecryptResult_t decryptResult; /*!< Decryption result */
 } meshSecToolCcmResults_t;
 
 /*! Mesh CCM operation result */
-typedef struct meshSecToolCcmResult_tag
-{
-  meshSecToolCcmOperation_t op;      /*!< Operation identifier */
-  meshSecToolCcmResults_t   results; /*!< Results union */
+typedef struct meshSecToolCcmResult_tag {
+    meshSecToolCcmOperation_t op; /*!< Operation identifier */
+    meshSecToolCcmResults_t results; /*!< Results union */
 } meshSecToolCcmResult_t;
 
 /*************************************************************************************************/
@@ -216,8 +208,7 @@ typedef void (*meshSecToolCcmCback_t)(const meshSecToolCcmResult_t *pCcmResult, 
  *  \remarks   The caller must copy the value of the ECC keys until the callback ends execution.
  */
 /*************************************************************************************************/
-typedef void (*meshSecToolEccKeyGenCback_t)(const uint8_t *pPubX,
-                                            const uint8_t *pPubY,
+typedef void (*meshSecToolEccKeyGenCback_t)(const uint8_t *pPubX, const uint8_t *pPubY,
                                             const uint8_t *pPriv);
 
 /*************************************************************************************************/
@@ -245,8 +236,8 @@ typedef void (*meshSecToolEcdhCback_t)(bool_t isValid, const uint8_t *pSharedSec
  *  \return    None.
  */
 /*************************************************************************************************/
-typedef void(*meshSecToolKeyDerivationCback_t)(const uint8_t *pResult, uint8_t resultSize,
-                                               void *pParam);
+typedef void (*meshSecToolKeyDerivationCback_t)(const uint8_t *pResult, uint8_t resultSize,
+                                                void *pParam);
 
 /**************************************************************************************************
   Function Declarations
@@ -307,7 +298,8 @@ meshSecToolRetVal_t MeshSecToolAesEncrypt(uint8_t *pAesKey, uint8_t *pPlainTextB
  *             callback is triggered.
  */
 /*************************************************************************************************/
-meshSecToolRetVal_t MeshSecToolCmacCalculate(uint8_t *pKey, uint8_t *pPlainText, uint16_t plainTextLen,
+meshSecToolRetVal_t MeshSecToolCmacCalculate(uint8_t *pKey, uint8_t *pPlainText,
+                                             uint16_t plainTextLen,
                                              meshSecToolCmacCback_t cmacCback, void *pParam);
 
 /*************************************************************************************************/
@@ -493,9 +485,8 @@ meshSecToolRetVal_t MeshSecToolGenerateSalt(uint8_t *pPlainText, uint16_t plainT
  *             callback is triggered.
  */
 /*************************************************************************************************/
-meshSecToolRetVal_t MeshSecToolK1Derive(uint8_t *pPlainText, uint16_t plainTextSize,
-                                        uint8_t *pSalt, uint8_t *pTempKeyMaterial,
-                                        uint16_t tempKeyMaterialSize,
+meshSecToolRetVal_t MeshSecToolK1Derive(uint8_t *pPlainText, uint16_t plainTextSize, uint8_t *pSalt,
+                                        uint8_t *pTempKeyMaterial, uint16_t tempKeyMaterialSize,
                                         meshSecToolKeyDerivationCback_t derivCompleteCback,
                                         void *pParam);
 

@@ -36,22 +36,22 @@
 /*************************************************************************************************/
 static inline uint32_t lctrCalcPerm(uint32_t v)
 {
-  uint32_t mask;
+    uint32_t mask;
 
-  /*          abcd efgh ijkl mnop */
-  mask = 0x0F0F0F0F;
-  v    = ((v << 8) & mask) | (v & ~mask);
+    /*          abcd efgh ijkl mnop */
+    mask = 0x0F0F0F0F;
+    v = ((v << 8) & mask) | (v & ~mask);
 
-  /*     efgh abcd mnop ijkl xxxx */
-  mask = mask ^ (mask << 2);
-  v    = ((v << 4) & mask) | (v & ~mask);
+    /*     efgh abcd mnop ijkl xxxx */
+    mask = mask ^ (mask << 2);
+    v = ((v << 4) & mask) | (v & ~mask);
 
-  /*  gh efcd abop mnkl ijxx xxxx */
-  mask = mask ^ (mask << 1);
-  v    = ((v << 2) & mask) | (v & ~mask);
+    /*  gh efcd abop mnkl ijxx xxxx */
+    mask = mask ^ (mask << 1);
+    v = ((v << 2) & mask) | (v & ~mask);
 
-  /* hgf edcb apon mlkj ixxx xxxx */
-  return v >> 7;
+    /* hgf edcb apon mlkj ixxx xxxx */
+    return v >> 7;
 }
 
 /*************************************************************************************************/
@@ -66,8 +66,8 @@ static inline uint32_t lctrCalcPerm(uint32_t v)
 /*************************************************************************************************/
 static inline uint16_t lctrCalcMAM(uint16_t a, uint16_t b)
 {
-  /* (17 x a + b) mod 2^16 */
-  return ((17 * a) + b) & 0xFFFFF;
+    /* (17 x a + b) mod 2^16 */
+    return ((17 * a) + b) & 0xFFFFF;
 }
 
 /*************************************************************************************************/
@@ -82,39 +82,38 @@ static inline uint16_t lctrCalcMAM(uint16_t a, uint16_t b)
 /*************************************************************************************************/
 uint8_t lctrSelectNextChannel2(lctrConnCtx_t *pCtx, uint16_t numSkip)
 {
-  /* Ignore parameter since eventCounter is adjusted by client. */
-  (void)numSkip;
+    /* Ignore parameter since eventCounter is adjusted by client. */
+    (void)numSkip;
 
-  unsigned int prn;
+    unsigned int prn;
 
-  /* Pseudo random number */
+    /* Pseudo random number */
 
-  prn = pCtx->eventCounter ^ pCtx->chIdentifier;
-  prn = lctrCalcPerm(prn);
-  prn = lctrCalcMAM(prn, pCtx->chIdentifier);
-  prn = lctrCalcPerm(prn);
-  prn = lctrCalcMAM(prn, pCtx->chIdentifier);
-  prn = lctrCalcPerm(prn);
-  prn = lctrCalcMAM(prn, pCtx->chIdentifier);
-  /* uint16_t prn_s = prn; */
-  unsigned int prn_e = prn ^ pCtx->chIdentifier;
+    prn = pCtx->eventCounter ^ pCtx->chIdentifier;
+    prn = lctrCalcPerm(prn);
+    prn = lctrCalcMAM(prn, pCtx->chIdentifier);
+    prn = lctrCalcPerm(prn);
+    prn = lctrCalcMAM(prn, pCtx->chIdentifier);
+    prn = lctrCalcPerm(prn);
+    prn = lctrCalcMAM(prn, pCtx->chIdentifier);
+    /* uint16_t prn_s = prn; */
+    unsigned int prn_e = prn ^ pCtx->chIdentifier;
 
-  /* unmappedChannel */
+    /* unmappedChannel */
 
-  uint16_t unmapChan = LL_MATH_MOD_37(prn_e & 0xFFFF);
+    uint16_t unmapChan = LL_MATH_MOD_37(prn_e & 0xFFFF);
 
-  pCtx->lastChanIdx = unmapChan;
+    pCtx->lastChanIdx = unmapChan;
 
-  /* remappingIndex */
+    /* remappingIndex */
 
-  if (!((UINT64_C(1) << unmapChan) & pCtx->chanMask))
-  {
-    /* remappingIndex = (N * prn_e) / 2^16 */
-    uint8_t remapIdx = (pCtx->numUsedChan * prn_e) >> 16;
-    return pCtx->chanRemapTbl[remapIdx];
-  }
+    if (!((UINT64_C(1) << unmapChan) & pCtx->chanMask)) {
+        /* remappingIndex = (N * prn_e) / 2^16 */
+        uint8_t remapIdx = (pCtx->numUsedChan * prn_e) >> 16;
+        return pCtx->chanRemapTbl[remapIdx];
+    }
 
-  return unmapChan;
+    return unmapChan;
 }
 
 /*************************************************************************************************/
@@ -124,11 +123,10 @@ uint8_t lctrSelectNextChannel2(lctrConnCtx_t *pCtx, uint16_t numSkip)
 /*************************************************************************************************/
 void LctrChannelSelection2Init(void)
 {
-  lctrChSelHdlr[LL_CH_SEL_2] = lctrSelectNextChannel2;
+    lctrChSelHdlr[LL_CH_SEL_2] = lctrSelectNextChannel2;
 
-  /* Set supported features. */
-  if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_0)
-  {
-    lmgrPersistCb.featuresDefault |= LL_FEAT_CH_SEL_2;
-  }
+    /* Set supported features. */
+    if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_0) {
+        lmgrPersistCb.featuresDefault |= LL_FEAT_CH_SEL_2;
+    }
 }

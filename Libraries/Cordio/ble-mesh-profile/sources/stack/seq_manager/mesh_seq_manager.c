@@ -45,20 +45,19 @@
 **************************************************************************************************/
 
 /*! Invalid value for the sequence number */
-#define MESH_SEQ_NUMBER_INVALID_VALUE        (MESH_SEQ_MAX_VAL + 1)
+#define MESH_SEQ_NUMBER_INVALID_VALUE (MESH_SEQ_MAX_VAL + 1)
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Structure containing information required by this module */
-typedef struct meshSeqManagerLocals_tag
-{
-  meshSeqThreshCback_t  threshCback;     /*!< SEQ number threshold exceeded callback callback */
-  uint32_t              lowThresh;       /*!< Lower threshold to trigger notification */
-  uint32_t              highThresh;      /*!< Higher threshold to trigger notification */
-  bool_t                lowThreshNotif;  /*!< TRUE if lower threshold notification is triggered */
-  bool_t                highThreshNotif; /*!< TRUE if higher threshold notification is triggered */
+typedef struct meshSeqManagerLocals_tag {
+    meshSeqThreshCback_t threshCback; /*!< SEQ number threshold exceeded callback callback */
+    uint32_t lowThresh; /*!< Lower threshold to trigger notification */
+    uint32_t highThresh; /*!< Higher threshold to trigger notification */
+    bool_t lowThreshNotif; /*!< TRUE if lower threshold notification is triggered */
+    bool_t highThreshNotif; /*!< TRUE if higher threshold notification is triggered */
 } meshSeqManagerCb_t;
 
 /**************************************************************************************************
@@ -66,14 +65,11 @@ typedef struct meshSeqManagerLocals_tag
 **************************************************************************************************/
 
 /*! Sequence Number Manager control block */
-static meshSeqManagerCb_t seqCb =
-{
-  .lowThreshNotif = FALSE,
-  .highThreshNotif = FALSE,
-  .lowThresh = MESH_SEQ_MAX_VAL,
-  .highThresh = MESH_SEQ_MAX_VAL,
-  .threshCback = NULL
-};
+static meshSeqManagerCb_t seqCb = { .lowThreshNotif = FALSE,
+                                    .highThreshNotif = FALSE,
+                                    .lowThresh = MESH_SEQ_MAX_VAL,
+                                    .highThresh = MESH_SEQ_MAX_VAL,
+                                    .threshCback = NULL };
 
 /**************************************************************************************************
   Local Functions
@@ -91,10 +87,10 @@ static meshSeqManagerCb_t seqCb =
 /*************************************************************************************************/
 static void meshSeqExhaustEmptyCback(bool_t lowThresh, bool_t highThresh)
 {
-  (void)lowThresh;
-  (void)highThresh;
-  MESH_TRACE_ERR0("MESH SEQ: Exhaust callback not initialized!");
-  return;
+    (void)lowThresh;
+    (void)highThresh;
+    MESH_TRACE_ERR0("MESH SEQ: Exhaust callback not initialized!");
+    return;
 }
 
 /**************************************************************************************************
@@ -110,7 +106,7 @@ static void meshSeqExhaustEmptyCback(bool_t lowThresh, bool_t highThresh)
 /*************************************************************************************************/
 void MeshSeqInit(void)
 {
-  seqCb.threshCback = meshSeqExhaustEmptyCback;
+    seqCb.threshCback = meshSeqExhaustEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -126,18 +122,17 @@ void MeshSeqInit(void)
 /*************************************************************************************************/
 void MeshSeqRegister(meshSeqThreshCback_t seqThreshCback, uint32_t lowThresh, uint32_t highThresh)
 {
-  /* Validate init parameter. */
-  if ((seqThreshCback == NULL) || (lowThresh > highThresh) || (lowThresh > MESH_SEQ_MAX_VAL))
-  {
-    return;
-  }
+    /* Validate init parameter. */
+    if ((seqThreshCback == NULL) || (lowThresh > highThresh) || (lowThresh > MESH_SEQ_MAX_VAL)) {
+        return;
+    }
 
-  /* Configure threshold parameters and callback. */
-  seqCb.threshCback = seqThreshCback;
-  seqCb.lowThresh = lowThresh;
-  seqCb.highThresh = highThresh;
-  seqCb.lowThreshNotif = FALSE;
-  seqCb.highThreshNotif = FALSE;
+    /* Configure threshold parameters and callback. */
+    seqCb.threshCback = seqThreshCback;
+    seqCb.lowThresh = lowThresh;
+    seqCb.highThresh = highThresh;
+    seqCb.lowThreshNotif = FALSE;
+    seqCb.highThreshNotif = FALSE;
 }
 
 /*************************************************************************************************/
@@ -153,71 +148,61 @@ void MeshSeqRegister(meshSeqThreshCback_t seqThreshCback, uint32_t lowThresh, ui
 /*************************************************************************************************/
 meshSeqRetVal_t MeshSeqGetNumber(meshAddress_t srcAddr, meshSeqNumber_t *pOutSeqNo, bool_t autoInc)
 {
-  meshSeqNumber_t      seqNumber = MESH_SEQ_NUMBER_INVALID_VALUE;
-  meshElementId_t      elemId    = 0;
+    meshSeqNumber_t seqNumber = MESH_SEQ_NUMBER_INVALID_VALUE;
+    meshElementId_t elemId = 0;
 
-  /* Validate output parameter. */
-  if (pOutSeqNo == NULL)
-  {
-    return MESH_SEQ_INVALID_PARAMS;
-  }
-
-  /* Validate source address type. */
-  if (!MESH_IS_ADDR_UNICAST(srcAddr))
-  {
-    return MESH_SEQ_INVALID_ADDRESS;
-  }
-
-  /* Validate address value by reading element identifier from local config module. */
-  if(MeshLocalCfgGetElementIdFromAddr(srcAddr, &elemId) != MESH_SUCCESS)
-  {
-    return MESH_SEQ_INVALID_ADDRESS;
-  }
-
-  /* Read sequence number. */
-  if (MeshLocalCfgGetSeqNumber(elemId, &seqNumber) != MESH_SUCCESS)
-  {
-    WSF_ASSERT(MeshLocalCfgGetSeqNumber(elemId, &seqNumber) == MESH_SUCCESS);
-  }
-
-  /* Validate sequence number range. */
-  if ((seqNumber > MESH_SEQ_MAX_VAL) ||
-      (seqNumber == MESH_SEQ_MAX_VAL && autoInc))
-  {
-    return MESH_SEQ_EXHAUSTED;
-  }
-
-  /* Check if autoincrement is required. */
-  if (autoInc)
-  {
-    /* Set sequence number as read sequence number + 1. */
-    if (MeshLocalCfgSetSeqNumber(elemId, seqNumber + 1) != MESH_SUCCESS)
-    {
-      /* Trap if it ever happens. */
-      WSF_ASSERT(MeshLocalCfgSetSeqNumber(elemId, seqNumber + 1) == MESH_SUCCESS)
+    /* Validate output parameter. */
+    if (pOutSeqNo == NULL) {
+        return MESH_SEQ_INVALID_PARAMS;
     }
 
-    /* Verify if thresholds are exceeded. */
-    if ((seqNumber >= seqCb.lowThresh) && (!seqCb.lowThreshNotif))
-    {
-      /* Invoke callback. */
-      seqCb.threshCback(TRUE, FALSE);
-      /* Set flag to TRUE. */
-      seqCb.lowThreshNotif = TRUE;
+    /* Validate source address type. */
+    if (!MESH_IS_ADDR_UNICAST(srcAddr)) {
+        return MESH_SEQ_INVALID_ADDRESS;
     }
-    if ((seqNumber >= seqCb.highThresh) && (!seqCb.highThreshNotif))
-    {
-      /* Invoke callback. */
-      seqCb.threshCback(FALSE, TRUE);
-      /* Set flag to TRUE. */
-      seqCb.highThreshNotif = TRUE;
+
+    /* Validate address value by reading element identifier from local config module. */
+    if (MeshLocalCfgGetElementIdFromAddr(srcAddr, &elemId) != MESH_SUCCESS) {
+        return MESH_SEQ_INVALID_ADDRESS;
     }
-  }
 
-  /* Set sequence number to output parameter. */
-  *pOutSeqNo = seqNumber;
+    /* Read sequence number. */
+    if (MeshLocalCfgGetSeqNumber(elemId, &seqNumber) != MESH_SUCCESS) {
+        WSF_ASSERT(MeshLocalCfgGetSeqNumber(elemId, &seqNumber) == MESH_SUCCESS);
+    }
 
-  return MESH_SUCCESS;
+    /* Validate sequence number range. */
+    if ((seqNumber > MESH_SEQ_MAX_VAL) || (seqNumber == MESH_SEQ_MAX_VAL && autoInc)) {
+        return MESH_SEQ_EXHAUSTED;
+    }
+
+    /* Check if autoincrement is required. */
+    if (autoInc) {
+        /* Set sequence number as read sequence number + 1. */
+        if (MeshLocalCfgSetSeqNumber(elemId, seqNumber + 1) != MESH_SUCCESS) {
+            /* Trap if it ever happens. */
+            WSF_ASSERT(MeshLocalCfgSetSeqNumber(elemId, seqNumber + 1) == MESH_SUCCESS)
+        }
+
+        /* Verify if thresholds are exceeded. */
+        if ((seqNumber >= seqCb.lowThresh) && (!seqCb.lowThreshNotif)) {
+            /* Invoke callback. */
+            seqCb.threshCback(TRUE, FALSE);
+            /* Set flag to TRUE. */
+            seqCb.lowThreshNotif = TRUE;
+        }
+        if ((seqNumber >= seqCb.highThresh) && (!seqCb.highThreshNotif)) {
+            /* Invoke callback. */
+            seqCb.threshCback(FALSE, TRUE);
+            /* Set flag to TRUE. */
+            seqCb.highThreshNotif = TRUE;
+        }
+    }
+
+    /* Set sequence number to output parameter. */
+    *pOutSeqNo = seqNumber;
+
+    return MESH_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -231,12 +216,12 @@ meshSeqRetVal_t MeshSeqGetNumber(meshAddress_t srcAddr, meshSeqNumber_t *pOutSeq
 /*************************************************************************************************/
 meshSeqRetVal_t MeshSeqIncNumber(meshAddress_t srcAddr)
 {
-  meshSeqNumber_t dummySeqNumber = 0;
+    meshSeqNumber_t dummySeqNumber = 0;
 
-  /* Since read-modify-write sequence is needed,
+    /* Since read-modify-write sequence is needed,
    * call get sequence number with a dummy sequence number.
    */
-  return MeshSeqGetNumber(srcAddr, &dummySeqNumber, TRUE);
+    return MeshSeqGetNumber(srcAddr, &dummySeqNumber, TRUE);
 }
 
 /*************************************************************************************************/
@@ -248,21 +233,20 @@ meshSeqRetVal_t MeshSeqIncNumber(meshAddress_t srcAddr)
 /*************************************************************************************************/
 void MeshSeqReset(void)
 {
-  meshElementId_t      elemId;
-  meshLocalCfgRetVal_t retVal;
+    meshElementId_t elemId;
+    meshLocalCfgRetVal_t retVal;
 
-  /* Reset all sequence numbers for increasing element identifiers until an error occurs. */
-  for(elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++)
-  {
-    /* Call local config to set 0 as the new sequence number. */
-    retVal = MeshLocalCfgSetSeqNumber(elemId, 0);
+    /* Reset all sequence numbers for increasing element identifiers until an error occurs. */
+    for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++) {
+        /* Call local config to set 0 as the new sequence number. */
+        retVal = MeshLocalCfgSetSeqNumber(elemId, 0);
 
-    WSF_ASSERT(retVal == MESH_SUCCESS);
-  }
+        WSF_ASSERT(retVal == MESH_SUCCESS);
+    }
 
-  /* Set threshold notification flag to FALSE. */
-  seqCb.lowThreshNotif = FALSE;
-  seqCb.highThreshNotif = FALSE;
+    /* Set threshold notification flag to FALSE. */
+    seqCb.lowThreshNotif = FALSE;
+    seqCb.highThreshNotif = FALSE;
 
-  (void)retVal;
+    (void)retVal;
 }

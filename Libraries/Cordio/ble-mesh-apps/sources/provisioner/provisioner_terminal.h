@@ -26,8 +26,7 @@
 #define PROVISIONER_TERMINAL_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "mesh_prv_cl_api.h"
@@ -36,7 +35,7 @@ extern "C"
   Global Variables
 **************************************************************************************************/
 
-extern char * const pProvisionerLogo[];
+extern char *const pProvisionerLogo[];
 extern meshPrvClSessionInfo_t prvClSessionInfo;
 
 /**************************************************************************************************

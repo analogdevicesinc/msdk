@@ -35,5 +35,5 @@
 /*************************************************************************************************/
 void LlPhySlaveInit(void)
 {
-  LctrSlvPhyConnInit();
+    LctrSlvPhyConnInit();
 }

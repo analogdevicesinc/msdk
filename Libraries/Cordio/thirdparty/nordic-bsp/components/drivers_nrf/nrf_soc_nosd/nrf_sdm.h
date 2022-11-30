@@ -44,13 +44,10 @@
 extern "C" {
 #endif
 
-
-#define NRF_FAULT_ID_SD_RANGE_START     0x00000000            /**< SoftDevice ID range start. */
-#define NRF_FAULT_ID_APP_RANGE_START    0x00001000            /**< Application ID range start. */
+#define NRF_FAULT_ID_SD_RANGE_START 0x00000000 /**< SoftDevice ID range start. */
+#define NRF_FAULT_ID_APP_RANGE_START 0x00001000 /**< Application ID range start. */
 
 #ifdef __cplusplus
 }
 #endif
 #endif // NRF_SDM_H__
-
-

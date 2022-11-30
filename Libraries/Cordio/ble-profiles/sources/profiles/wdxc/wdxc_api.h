@@ -39,23 +39,21 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief WDXC enumeration of handle indexes of characteristics to be discovered */
-enum
-{
-  WDXC_DC_HDL_IDX,              /*!< \brief WDX Device Configuration */
-  WDXC_DC_CCC_HDL_IDX,          /*!< \brief WDX Device Configuration CCC descriptor */
-  WDXC_FTC_HDL_IDX,             /*!< \brief WDX File Transfer Control */
-  WDXC_FTC_CCC_HDL_IDX,         /*!< \brief WDX File Transfer Control CCC descriptor */
-  WDXC_FTD_HDL_IDX,             /*!< \brief WDX File Transfer Data */
-  WDXC_FTD_CCC_HDL_IDX,         /*!< \brief WDX File Transfer Data CCC descriptor */
-  WDXC_AU_HDL_IDX,              /*!< \brief WDX Authenticationa */
-  WDXC_AU_CCC_HDL_IDX,          /*!< \brief WDX Authentication CCC descriptor */
-  WDXC_HDL_LIST_LEN             /*!< \brief WDX handle list length. */
+enum {
+    WDXC_DC_HDL_IDX, /*!< \brief WDX Device Configuration */
+    WDXC_DC_CCC_HDL_IDX, /*!< \brief WDX Device Configuration CCC descriptor */
+    WDXC_FTC_HDL_IDX, /*!< \brief WDX File Transfer Control */
+    WDXC_FTC_CCC_HDL_IDX, /*!< \brief WDX File Transfer Control CCC descriptor */
+    WDXC_FTD_HDL_IDX, /*!< \brief WDX File Transfer Data */
+    WDXC_FTD_CCC_HDL_IDX, /*!< \brief WDX File Transfer Data CCC descriptor */
+    WDXC_AU_HDL_IDX, /*!< \brief WDX Authenticationa */
+    WDXC_AU_CCC_HDL_IDX, /*!< \brief WDX Authentication CCC descriptor */
+    WDXC_HDL_LIST_LEN /*!< \brief WDX handle list length. */
 };
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
-
 
 /**************************************************************************************************
   Global Variables
@@ -235,8 +233,8 @@ void WdxcFtcSendVerifyFile(dmConnId_t connId, uint16_t fileHdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
-                       uint32_t len, uint32_t fileSize, uint8_t type);
+void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len,
+                       uint32_t fileSize, uint8_t type);
 
 /*************************************************************************************************/
 /*!
@@ -251,7 +249,8 @@ void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
  *  \return None.
  */
 /*************************************************************************************************/
-void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len, uint8_t type);
+void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len,
+                       uint8_t type);
 
 /*************************************************************************************************/
 /*!
@@ -266,7 +265,7 @@ void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uin
 /*************************************************************************************************/
 void WdxcFtdSendBlock(dmConnId_t connId, uint32_t len, uint8_t *pData);
 
-/*! \} */    /* WIRELESS_DATA_EXCHANGE_PROFILE */
+/*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
 };

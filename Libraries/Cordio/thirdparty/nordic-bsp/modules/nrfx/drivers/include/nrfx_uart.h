@@ -56,10 +56,9 @@ extern "C" {
  */
 
 /** @brief Data structure of the UART driver instance. */
-typedef struct
-{
-    NRF_UART_Type * p_reg;        ///< Pointer to a structure with UART registers.
-    uint8_t         drv_inst_idx; ///< Index of the driver instance. For internal use only.
+typedef struct {
+    NRF_UART_Type *p_reg; ///< Pointer to a structure with UART registers.
+    uint8_t drv_inst_idx; ///< Index of the driver instance. For internal use only.
 } nrfx_uart_t;
 
 #ifndef __NRFX_DOXYGEN__
@@ -72,71 +71,62 @@ enum {
 #endif
 
 /** @brief Macro for creating a UART driver instance. */
-#define NRFX_UART_INSTANCE(id)                               \
-{                                                            \
-    .p_reg        = NRFX_CONCAT_2(NRF_UART, id),             \
-    .drv_inst_idx = NRFX_CONCAT_3(NRFX_UART, id, _INST_IDX), \
-}
+#define NRFX_UART_INSTANCE(id)                                   \
+    {                                                            \
+        .p_reg = NRFX_CONCAT_2(NRF_UART, id),                    \
+        .drv_inst_idx = NRFX_CONCAT_3(NRFX_UART, id, _INST_IDX), \
+    }
 
 /** @brief Types of UART driver events. */
-typedef enum
-{
+typedef enum {
     NRFX_UART_EVT_TX_DONE, ///< Requested TX transfer completed.
     NRFX_UART_EVT_RX_DONE, ///< Requested RX transfer completed.
-    NRFX_UART_EVT_ERROR,   ///< Error reported by UART peripheral.
+    NRFX_UART_EVT_ERROR, ///< Error reported by UART peripheral.
 } nrfx_uart_evt_type_t;
 
 /** @brief Structure for the UART configuration. */
-typedef struct
-{
-    uint32_t            pseltxd;            ///< TXD pin number.
-    uint32_t            pselrxd;            ///< RXD pin number.
-    uint32_t            pselcts;            ///< CTS pin number.
-    uint32_t            pselrts;            ///< RTS pin number.
-    void *              p_context;          ///< Context passed to interrupt handler.
-    nrf_uart_hwfc_t     hwfc;               ///< Flow control configuration.
-    nrf_uart_parity_t   parity;             ///< Parity configuration.
-    nrf_uart_baudrate_t baudrate;           ///< Baud rate.
-    uint8_t             interrupt_priority; ///< Interrupt priority.
+typedef struct {
+    uint32_t pseltxd; ///< TXD pin number.
+    uint32_t pselrxd; ///< RXD pin number.
+    uint32_t pselcts; ///< CTS pin number.
+    uint32_t pselrts; ///< RTS pin number.
+    void *p_context; ///< Context passed to interrupt handler.
+    nrf_uart_hwfc_t hwfc; ///< Flow control configuration.
+    nrf_uart_parity_t parity; ///< Parity configuration.
+    nrf_uart_baudrate_t baudrate; ///< Baud rate.
+    uint8_t interrupt_priority; ///< Interrupt priority.
 } nrfx_uart_config_t;
 
 /** @brief UART default configuration. */
-#define NRFX_UART_DEFAULT_CONFIG                                                  \
-{                                                                                 \
-    .pseltxd            = NRF_UART_PSEL_DISCONNECTED,                             \
-    .pselrxd            = NRF_UART_PSEL_DISCONNECTED,                             \
-    .pselcts            = NRF_UART_PSEL_DISCONNECTED,                             \
-    .pselrts            = NRF_UART_PSEL_DISCONNECTED,                             \
-    .p_context          = NULL,                                                   \
-    .hwfc               = (nrf_uart_hwfc_t)NRFX_UART_DEFAULT_CONFIG_HWFC,         \
-    .parity             = (nrf_uart_parity_t)NRFX_UART_DEFAULT_CONFIG_PARITY,     \
-    .baudrate           = (nrf_uart_baudrate_t)NRFX_UART_DEFAULT_CONFIG_BAUDRATE, \
-    .interrupt_priority = NRFX_UART_DEFAULT_CONFIG_IRQ_PRIORITY,                  \
-}
+#define NRFX_UART_DEFAULT_CONFIG                                                      \
+    {                                                                                 \
+        .pseltxd = NRF_UART_PSEL_DISCONNECTED, .pselrxd = NRF_UART_PSEL_DISCONNECTED, \
+        .pselcts = NRF_UART_PSEL_DISCONNECTED, .pselrts = NRF_UART_PSEL_DISCONNECTED, \
+        .p_context = NULL, .hwfc = (nrf_uart_hwfc_t)NRFX_UART_DEFAULT_CONFIG_HWFC,    \
+        .parity = (nrf_uart_parity_t)NRFX_UART_DEFAULT_CONFIG_PARITY,                 \
+        .baudrate = (nrf_uart_baudrate_t)NRFX_UART_DEFAULT_CONFIG_BAUDRATE,           \
+        .interrupt_priority = NRFX_UART_DEFAULT_CONFIG_IRQ_PRIORITY,                  \
+    }
 
 /** @brief Structure for the UART transfer completion event. */
-typedef struct
-{
-    uint8_t * p_data; ///< Pointer to memory used for transfer.
-    uint32_t  bytes;  ///< Number of bytes transfered.
+typedef struct {
+    uint8_t *p_data; ///< Pointer to memory used for transfer.
+    uint32_t bytes; ///< Number of bytes transfered.
 } nrfx_uart_xfer_evt_t;
 
 /** @brief Structure for the UART error event. */
-typedef struct
-{
-    nrfx_uart_xfer_evt_t rxtx;       ///< Transfer details, including number of bytes transferred.
-    uint32_t             error_mask; ///< Mask of error flags that generated the event.
+typedef struct {
+    nrfx_uart_xfer_evt_t rxtx; ///< Transfer details, including number of bytes transferred.
+    uint32_t error_mask; ///< Mask of error flags that generated the event.
 } nrfx_uart_error_evt_t;
 
 /** @brief Structure for the UART event. */
-typedef struct
-{
+typedef struct {
     nrfx_uart_evt_type_t type; ///< Event type.
-    union
-    {
-        nrfx_uart_xfer_evt_t  rxtx;  ///< Data provided for transfer completion events.
+    union {
+        nrfx_uart_xfer_evt_t rxtx; ///< Data provided for transfer completion events.
         nrfx_uart_error_evt_t error; ///< Data provided for error event.
-    } data;                          ///< Union to store event data.
+    } data; ///< Union to store event data.
 } nrfx_uart_event_t;
 
 /**
@@ -146,8 +136,7 @@ typedef struct
  *                      only within the context of the event handler.
  * @param[in] p_context Context passed to the interrupt handler, set on initialization.
  */
-typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const * p_event,
-                                          void *                    p_context);
+typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const *p_event, void *p_context);
 
 /**
  * @brief Function for initializing the UART driver.
@@ -166,16 +155,15 @@ typedef void (*nrfx_uart_event_handler_t)(nrfx_uart_event_t const * p_event,
  *                                  possible only if @ref nrfx_prs module
  *                                  is enabled.
  */
-nrfx_err_t nrfx_uart_init(nrfx_uart_t const *        p_instance,
-                          nrfx_uart_config_t const * p_config,
-                          nrfx_uart_event_handler_t  event_handler);
+nrfx_err_t nrfx_uart_init(nrfx_uart_t const *p_instance, nrfx_uart_config_t const *p_config,
+                          nrfx_uart_event_handler_t event_handler);
 
 /**
  * @brief Function for uninitializing the UART driver.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_uart_uninit(nrfx_uart_t const * p_instance);
+void nrfx_uart_uninit(nrfx_uart_t const *p_instance);
 
 /**
  * @brief Function for getting the address of the specified UART task.
@@ -185,8 +173,8 @@ void nrfx_uart_uninit(nrfx_uart_t const * p_instance);
  *
  * @return Task address.
  */
-__STATIC_INLINE uint32_t nrfx_uart_task_address_get(nrfx_uart_t const * p_instance,
-                                                    nrf_uart_task_t     task);
+__STATIC_INLINE uint32_t nrfx_uart_task_address_get(nrfx_uart_t const *p_instance,
+                                                    nrf_uart_task_t task);
 
 /**
  * @brief Function for getting the address of the specified UART event.
@@ -196,8 +184,8 @@ __STATIC_INLINE uint32_t nrfx_uart_task_address_get(nrfx_uart_t const * p_instan
  *
  * @return Event address.
  */
-__STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_instance,
-                                                     nrf_uart_event_t    event);
+__STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const *p_instance,
+                                                     nrf_uart_event_t event);
 
 /**
  * @brief Function for sending data over UART.
@@ -217,9 +205,7 @@ __STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_insta
  * @retval NRFX_ERROR_FORBIDDEN The transfer was aborted from a different context
  *                              (blocking mode only).
  */
-nrfx_err_t nrfx_uart_tx(nrfx_uart_t const * p_instance,
-                        uint8_t const *     p_data,
-                        size_t              length);
+nrfx_err_t nrfx_uart_tx(nrfx_uart_t const *p_instance, uint8_t const *p_data, size_t length);
 
 /**
  * @brief Function for checking if UART is currently transmitting.
@@ -229,7 +215,7 @@ nrfx_err_t nrfx_uart_tx(nrfx_uart_t const * p_instance,
  * @retval true  The UART is transmitting.
  * @retval false The UART is not transmitting.
  */
-bool nrfx_uart_tx_in_progress(nrfx_uart_t const * p_instance);
+bool nrfx_uart_tx_in_progress(nrfx_uart_t const *p_instance);
 
 /**
  * @brief Function for aborting any ongoing transmission.
@@ -239,7 +225,7 @@ bool nrfx_uart_tx_in_progress(nrfx_uart_t const * p_instance);
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_uart_tx_abort(nrfx_uart_t const * p_instance);
+void nrfx_uart_tx_abort(nrfx_uart_t const *p_instance);
 
 /**
  * @brief Function for receiving data over UART.
@@ -276,9 +262,7 @@ void nrfx_uart_tx_abort(nrfx_uart_t const * p_instance);
  *                                 (blocking mode only, also see @ref nrfx_uart_rx_disable).
  * @retval    NRFX_ERROR_INTERNAL  The UART peripheral reported an error.
  */
-nrfx_err_t nrfx_uart_rx(nrfx_uart_t const * p_instance,
-                        uint8_t *           p_data,
-                        size_t              length);
+nrfx_err_t nrfx_uart_rx(nrfx_uart_t const *p_instance, uint8_t *p_data, size_t length);
 
 /**
  * @brief Function for testing the receiver state in blocking mode.
@@ -288,7 +272,7 @@ nrfx_err_t nrfx_uart_rx(nrfx_uart_t const * p_instance,
  * @retval true  The receiver has at least one byte of data to get.
  * @retval false The receiver is empty.
  */
-bool nrfx_uart_rx_ready(nrfx_uart_t const * p_instance);
+bool nrfx_uart_rx_ready(nrfx_uart_t const *p_instance);
 
 /**
  * @brief Function for enabling the receiver.
@@ -299,7 +283,7 @@ bool nrfx_uart_rx_ready(nrfx_uart_t const * p_instance);
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_uart_rx_enable(nrfx_uart_t const * p_instance);
+void nrfx_uart_rx_enable(nrfx_uart_t const *p_instance);
 
 /**
  * @brief Function for disabling the receiver.
@@ -309,7 +293,7 @@ void nrfx_uart_rx_enable(nrfx_uart_t const * p_instance);
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_uart_rx_disable(nrfx_uart_t const * p_instance);
+void nrfx_uart_rx_disable(nrfx_uart_t const *p_instance);
 
 /**
  * @brief Function for aborting any ongoing reception.
@@ -319,7 +303,7 @@ void nrfx_uart_rx_disable(nrfx_uart_t const * p_instance);
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_uart_rx_abort(nrfx_uart_t const * p_instance);
+void nrfx_uart_rx_abort(nrfx_uart_t const *p_instance);
 
 /**
  * @brief Function for reading error source mask. Mask contains values from @ref nrf_uart_error_mask_t.
@@ -330,18 +314,17 @@ void nrfx_uart_rx_abort(nrfx_uart_t const * p_instance);
  *
  * @return Mask of reported errors.
  */
-uint32_t nrfx_uart_errorsrc_get(nrfx_uart_t const * p_instance);
-
+uint32_t nrfx_uart_errorsrc_get(nrfx_uart_t const *p_instance);
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
-__STATIC_INLINE uint32_t nrfx_uart_task_address_get(nrfx_uart_t const * p_instance,
-                                                    nrf_uart_task_t     task)
+__STATIC_INLINE uint32_t nrfx_uart_task_address_get(nrfx_uart_t const *p_instance,
+                                                    nrf_uart_task_t task)
 {
     return nrf_uart_task_address_get(p_instance->p_reg, task);
 }
 
-__STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_instance,
-                                                     nrf_uart_event_t    event)
+__STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const *p_instance,
+                                                     nrf_uart_event_t event)
 {
     return nrf_uart_event_address_get(p_instance->p_reg, event);
 }
@@ -349,9 +332,7 @@ __STATIC_INLINE uint32_t nrfx_uart_event_address_get(nrfx_uart_t const * p_insta
 
 /** @} */
 
-
 void nrfx_uart_0_irq_handler(void);
-
 
 #ifdef __cplusplus
 }

@@ -39,16 +39,16 @@ extern "C" {
  *
  */
 /**@{*/
-#define HID_INFO_CONTROL_POINT                  0  /*!< \brief Control point information. */
-#define HID_INFO_PROTOCOL_MODE                  1  /*!< \brief Protocol mode information. */
+#define HID_INFO_CONTROL_POINT 0 /*!< \brief Control point information. */
+#define HID_INFO_PROTOCOL_MODE 1 /*!< \brief Protocol mode information. */
 /**@}*/
 
 /** \name HID Boot Report ID
  *
  */
 /**@{*/
-#define HID_KEYBOARD_BOOT_ID                    0xFF  /*!< \brief Keyboard boot ID. */
-#define HID_MOUSE_BOOT_ID                       0xFE  /*!< \brief Mouse boot ID. */
+#define HID_KEYBOARD_BOOT_ID 0xFF /*!< \brief Keyboard boot ID. */
+#define HID_MOUSE_BOOT_ID 0xFE /*!< \brief Mouse boot ID. */
 /**@}*/
 
 /**************************************************************************************************
@@ -67,7 +67,8 @@ extern "C" {
  *  \return None.
  */
 /*************************************************************************************************/
-typedef void (*hidOutputReportCback_t)(dmConnId_t connId, uint8_t id, uint16_t len, uint8_t *pReport);
+typedef void (*hidOutputReportCback_t)(dmConnId_t connId, uint8_t id, uint16_t len,
+                                       uint8_t *pReport);
 
 /*************************************************************************************************/
 /*!
@@ -81,7 +82,8 @@ typedef void (*hidOutputReportCback_t)(dmConnId_t connId, uint8_t id, uint16_t l
  *  \return None.
  */
 /*************************************************************************************************/
-typedef void (*hidFeatureReportCback_t)(dmConnId_t connId, uint8_t id, uint16_t len, uint8_t *pReport);
+typedef void (*hidFeatureReportCback_t)(dmConnId_t connId, uint8_t id, uint16_t len,
+                                        uint8_t *pReport);
 
 /*************************************************************************************************/
 /*!
@@ -98,21 +100,21 @@ typedef void (*hidFeatureReportCback_t)(dmConnId_t connId, uint8_t id, uint16_t 
 typedef void (*hidInfoCback_t)(dmConnId_t connId, uint8_t type, uint8_t value);
 
 /*! \brief HID Report Type/ID to Attribute handle map item */
-typedef struct
-{
-  uint8_t type;     /*!< \brief Type */
-  uint8_t id;       /*!< \brief Id */
-  uint16_t handle;  /*!< \brief Handle */
+typedef struct {
+    uint8_t type; /*!< \brief Type */
+    uint8_t id; /*!< \brief Id */
+    uint16_t handle; /*!< \brief Handle */
 } hidReportIdMap_t;
 
 /*! \brief HID Profile Configuration */
-typedef struct
-{
-  hidReportIdMap_t            *pReportIdMap;        /*!< \brief A map between report Type/ID and Attribute handle */
-  uint8_t                     reportIdMapSize;      /*!< \brief The number of Reports in the ID map (pReportIdMap) */
-  hidOutputReportCback_t      outputCback;          /*!< \brief Callback called on receipt of an Output Report */
-  hidFeatureReportCback_t     featureCback;         /*!< \brief Callback called on receipt of a Feature Report */
-  hidInfoCback_t              infoCback;            /*!< \brief Callback called on receipt of protocol mode or control point */
+typedef struct {
+    hidReportIdMap_t *pReportIdMap; /*!< \brief A map between report Type/ID and Attribute handle */
+    uint8_t reportIdMapSize; /*!< \brief The number of Reports in the ID map (pReportIdMap) */
+    hidOutputReportCback_t outputCback; /*!< \brief Callback called on receipt of an Output Report */
+    hidFeatureReportCback_t
+        featureCback; /*!< \brief Callback called on receipt of a Feature Report */
+    hidInfoCback_t
+        infoCback; /*!< \brief Callback called on receipt of protocol mode or control point */
 } hidConfig_t;
 
 /**************************************************************************************************
@@ -189,12 +191,10 @@ void HidInit(const hidConfig_t *pConfig);
  *
  */
 /*************************************************************************************************/
-uint8_t HidAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                          uint16_t offset, uint16_t len, uint8_t *pValue,
-                          attsAttr_t *pAttr);
+uint8_t HidAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
 
-
-/*! \} */    /* HUMAN_INTERFACE_DEVICE_PROFILE */
+/*! \} */ /* HUMAN_INTERFACE_DEVICE_PROFILE */
 
 #ifdef __cplusplus
 };

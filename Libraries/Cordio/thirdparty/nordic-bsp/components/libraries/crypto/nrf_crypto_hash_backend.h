@@ -56,7 +56,7 @@ extern "C" {
 
 /**@internal @brief Fallback type for SHA-256 hash context (if no backend is enabled).
  */
-typedef nrf_crypto_hash_internal_context_t  nrf_crypto_backend_hash_sha256_context_t;
+typedef nrf_crypto_hash_internal_context_t nrf_crypto_backend_hash_sha256_context_t;
 
 #endif
 
@@ -64,18 +64,17 @@ typedef nrf_crypto_hash_internal_context_t  nrf_crypto_backend_hash_sha256_conte
 
 /**@internal @brief Fallback type for SHA-512 hash context (if no backend is enabled).
  */
-typedef nrf_crypto_hash_internal_context_t  nrf_crypto_backend_hash_sha512_context_t;
+typedef nrf_crypto_hash_internal_context_t nrf_crypto_backend_hash_sha512_context_t;
 
 #endif
 
-
 /** @internal @brief Union holding a hash context. */
-typedef union
-{
-    nrf_crypto_backend_hash_sha256_context_t hash_sha256_context;   /**< @brief Holds context for SHA-256. */
-    nrf_crypto_backend_hash_sha512_context_t hash_sha512_context;   /**< @brief Holds context for SHA-512. */
+typedef union {
+    nrf_crypto_backend_hash_sha256_context_t
+        hash_sha256_context; /**< @brief Holds context for SHA-256. */
+    nrf_crypto_backend_hash_sha512_context_t
+        hash_sha512_context; /**< @brief Holds context for SHA-512. */
 } nrf_crypto_backend_hash_context_t;
-
 
 #ifdef __cplusplus
 }

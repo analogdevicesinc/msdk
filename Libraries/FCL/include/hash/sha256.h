@@ -52,5 +52,4 @@
  */
 void sha256_stone(u32 hash[8], u32 stone[16]);
 
-
 #endif /* __UCL_SHA256_H_ */

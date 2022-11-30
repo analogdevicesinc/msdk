@@ -27,8 +27,7 @@
 #define MMDL_TIME_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -45,8 +44,8 @@ void mmdlTimeSrHandleDeltaGet(const meshModelMsgRecvEvt_t *pMsg);
 
 void mmdlTimeSrGetDesc(meshElementId_t elementId, mmdlTimeSrDesc_t **ppOutDesc);
 
-void mmdlTimeSrSendStatus(meshElementId_t elementId, meshAddress_t dstAddr,
-                          uint16_t appKeyIndex, bool_t recvOnUnicast);
+void mmdlTimeSrSendStatus(meshElementId_t elementId, meshAddress_t dstAddr, uint16_t appKeyIndex,
+                          bool_t recvOnUnicast);
 
 #ifdef __cplusplus
 }

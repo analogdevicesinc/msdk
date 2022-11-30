@@ -56,14 +56,14 @@ static LlRtCfg_t mainLlRtCfg;
 /*************************************************************************************************/
 static void mainLoadConfiguration(void)
 {
-  PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
 
-  LlGetDefaultRunTimeCfg(&mainLlRtCfg);
-  PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
-  PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
+    LlGetDefaultRunTimeCfg(&mainLlRtCfg);
+    PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
+    PalCfgLoadData(PAL_CFG_ID_BLE_PHY, &mainLlRtCfg.phy2mSup, 4);
 
-  /* Set 5.2 requirements. */
-  mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_5_2;
+    /* Set 5.2 requirements. */
+    mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_5_2;
 }
 
 /*************************************************************************************************/
@@ -73,40 +73,41 @@ static void mainLoadConfiguration(void)
 /*************************************************************************************************/
 static void mainWsfInit(void)
 {
-  /* +12 for message headroom, + 2 event header, +255 maximum parameter length. */
-  const uint16_t maxRptBufSize = 12 + 2 + 255;
+    /* +12 for message headroom, + 2 event header, +255 maximum parameter length. */
+    const uint16_t maxRptBufSize = 12 + 2 + 255;
 
-  /* +12 for message headroom, +ISO Data Load, +4 for header. */
-  const uint16_t dataBufSize = 12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
+    /* +12 for message headroom, +ISO Data Load, +4 for header. */
+    const uint16_t dataBufSize =
+        12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
-  /* Use single pool for data buffers. */
-  WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
+    /* Use single pool for data buffers. */
+    WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
 
-  /* Ensure pool buffers are ordered correctly. */
-  WSF_ASSERT(maxRptBufSize < dataBufSize);
+    /* Ensure pool buffers are ordered correctly. */
+    WSF_ASSERT(maxRptBufSize < dataBufSize);
 
-  wsfBufPoolDesc_t poolDesc[] =
-  {
-    { 16,            8 },
-    { 32,            4 },
-    { 128,           mainLlRtCfg.maxAdvReports },
-    { maxRptBufSize, mainLlRtCfg.maxAdvReports },       /* Extended reports. */
-    { dataBufSize,   mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf + mainLlRtCfg.numIsoRxBuf }
-  };
+    wsfBufPoolDesc_t poolDesc[] = {
+        { 16, 8 },
+        { 32, 4 },
+        { 128, mainLlRtCfg.maxAdvReports },
+        { maxRptBufSize, mainLlRtCfg.maxAdvReports }, /* Extended reports. */
+        { dataBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs + mainLlRtCfg.numIsoTxBuf +
+                           mainLlRtCfg.numIsoRxBuf }
+    };
 
-  const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
+    const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
-  /* Initial buffer configuration. */
-  uint16_t memUsed;
-  memUsed = WsfBufInit(numPools, poolDesc);
-  WsfHeapAlloc(memUsed);
+    /* Initial buffer configuration. */
+    uint16_t memUsed;
+    memUsed = WsfBufInit(numPools, poolDesc);
+    WsfHeapAlloc(memUsed);
 
-  /* Initialize RTOS resources. */
-  WsfOsInit();
-  WsfTimerInit();
-  #if (WSF_TOKEN_ENABLED == TRUE)
+    /* Initialize RTOS resources. */
+    WsfOsInit();
+    WsfTimerInit();
+#if (WSF_TOKEN_ENABLED == TRUE)
     WsfTraceRegisterHandler(LhciVsEncodeTraceMsgEvtPkt);
-  #endif
+#endif
 }
 
 #if (WSF_TOKEN_ENABLED == TRUE)
@@ -119,29 +120,27 @@ static void mainWsfInit(void)
 /*************************************************************************************************/
 static bool_t mainCheckServiceTokens(void)
 {
-  bool_t eventPending = FALSE;
+    bool_t eventPending = FALSE;
 
 #if (WSF_TOKEN_ENABLED == TRUE) || (BB_SNIFFER_ENABLED == TRUE)
-  eventPending = LhciIsEventPending();
+    eventPending = LhciIsEventPending();
 #endif
 
 #if WSF_TOKEN_ENABLED == TRUE
-  /* Allow only a single token to be processed at a time. */
-  if (!eventPending)
-  {
-    eventPending = WsfTokenService();
-  }
+    /* Allow only a single token to be processed at a time. */
+    if (!eventPending) {
+        eventPending = WsfTokenService();
+    }
 #endif
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-  /* Service one sniffer packet, if in the buffer. */
-  if (!eventPending)
-  {
-    eventPending = LhciSnifferHandler();
-  }
+    /* Service one sniffer packet, if in the buffer. */
+    if (!eventPending) {
+        eventPending = LhciSnifferHandler();
+    }
 #endif
 
-  return eventPending;
+    return eventPending;
 }
 #endif
 
@@ -152,37 +151,34 @@ static bool_t mainCheckServiceTokens(void)
 /*************************************************************************************************/
 int main(void)
 {
-  mainLoadConfiguration();
-  mainWsfInit();
+    mainLoadConfiguration();
+    mainWsfInit();
 
-  LlInitRtCfg_t llCfg =
-  {
-    .pBbRtCfg     = &mainBbRtCfg,
-    .wlSizeCfg    = 4,
-    .rlSizeCfg    = 4,
-    .plSizeCfg    = 4,
-    .pLlRtCfg     = &mainLlRtCfg,
-    .pFreeMem     = WsfHeapGetFreeStartAddress(),
-    .freeMemAvail = WsfHeapCountAvailable()
-  };
+    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
+                            .wlSizeCfg = 4,
+                            .rlSizeCfg = 4,
+                            .plSizeCfg = 4,
+                            .pLlRtCfg = &mainLlRtCfg,
+                            .pFreeMem = WsfHeapGetFreeStartAddress(),
+                            .freeMemAvail = WsfHeapCountAvailable() };
 
-  uint32_t memUsed;
+    uint32_t memUsed;
 
-  memUsed = LlInitControllerInit(&llCfg);
-  WsfHeapAlloc(memUsed);
+    memUsed = LlInitControllerInit(&llCfg);
+    WsfHeapAlloc(memUsed);
 
-  bdAddr_t bdAddr;
-  PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
-  /* Coverity[uninit_use_in_call] */
-  LlSetBdAddr((uint8_t *)&bdAddr);
-  LlMathSetSeed((uint32_t *)&bdAddr);
+    bdAddr_t bdAddr;
+    PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
+    /* Coverity[uninit_use_in_call] */
+    LlSetBdAddr((uint8_t *)&bdAddr);
+    LlMathSetSeed((uint32_t *)&bdAddr);
 
-  #if (WSF_TOKEN_ENABLED == TRUE)
+#if (WSF_TOKEN_ENABLED == TRUE)
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
-  #endif
-  WsfOsRegisterSleepCheckFunc(ChciTrService);
-  WsfOsEnterMainLoop();
+#endif
+    WsfOsRegisterSleepCheckFunc(ChciTrService);
+    WsfOsEnterMainLoop();
 
-  /* Does not return. */
-  return 0;
+    /* Does not return. */
+    return 0;
 }

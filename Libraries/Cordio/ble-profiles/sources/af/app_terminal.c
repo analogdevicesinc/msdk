@@ -79,18 +79,18 @@ static terminalCommand_t appTerminalCmd = { NULL, "cmd", "cmd <parameter list>",
 /*************************************************************************************************/
 void AppTerminalInit(void)
 {
-  wsfHandlerId_t handlerId;
+    wsfHandlerId_t handlerId;
 
-  /* Initialize Serial Communication. */
-  WsfBufIoUartRegister(TerminalRx);
-  TerminalRegisterUartTxFunc(WsfBufIoWrite);
-  handlerId = WsfOsSetNextHandler(TerminalHandler);
-  TerminalInit(handlerId);
+    /* Initialize Serial Communication. */
+    WsfBufIoUartRegister(TerminalRx);
+    TerminalRegisterUartTxFunc(WsfBufIoWrite);
+    handlerId = WsfOsSetNextHandler(TerminalHandler);
+    TerminalInit(handlerId);
 
-  /* Register commands. */
-  TerminalRegisterCommand(&appTerminalButtonPress);
-  TerminalRegisterCommand(&appTerminalPinCode);
-  TerminalRegisterCommand(&appTerminalCmd);
+    /* Register commands. */
+    TerminalRegisterCommand(&appTerminalButtonPress);
+    TerminalRegisterCommand(&appTerminalPinCode);
+    TerminalRegisterCommand(&appTerminalCmd);
 }
 
 /*************************************************************************************************/
@@ -105,66 +105,45 @@ void AppTerminalInit(void)
 /*************************************************************************************************/
 static uint8_t appTerminalCommandBtnHandler(uint32_t argc, char **argv)
 {
-  if (argc < 3)
-  {
-    return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
-  }
-  else if (argc == 3)
-  {
-    uint8_t btnIndx;
-    uint8_t event;
+    if (argc < 3) {
+        return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
+    } else if (argc == 3) {
+        uint8_t btnIndx;
+        uint8_t event;
 
-    if (strcmp(argv[1], "1") == 0)
-    {
-      btnIndx = 1;
-    }
-    else if (strcmp(argv[1], "2") == 0)
-    {
-      btnIndx = 2;
-    }
-    else
-    {
-      return TERMINAL_ERROR_BAD_ARGUMENTS;
-    }
+        if (strcmp(argv[1], "1") == 0) {
+            btnIndx = 1;
+        } else if (strcmp(argv[1], "2") == 0) {
+            btnIndx = 2;
+        } else {
+            return TERMINAL_ERROR_BAD_ARGUMENTS;
+        }
 
-    if (strcmp(argv[2], "d") == 0)
-    {
-      TerminalTxPrint("Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
-      event = (btnIndx == 1? APP_UI_BTN_1_DOWN : APP_UI_BTN_2_DOWN);
-    }
-    else if (strcmp(argv[2], "s") == 0)
-    {
-      TerminalTxPrint("Short Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
-      event = (btnIndx == 1? APP_UI_BTN_1_SHORT : APP_UI_BTN_2_SHORT);
-    }
-    else if (strcmp(argv[2], "m") == 0)
-    {
-      TerminalTxPrint("Medium Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
-      event = (btnIndx == 1? APP_UI_BTN_1_MED : APP_UI_BTN_2_MED);
-    }
-    else if (strcmp(argv[2], "l") == 0)
-    {
-      TerminalTxPrint("Long Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
-      event = (btnIndx == 1? APP_UI_BTN_1_LONG : APP_UI_BTN_2_LONG);
-    }
-    else if (strcmp(argv[2], "x") == 0)
-    {
-      TerminalTxPrint("XL Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
-      event = (btnIndx == 1? APP_UI_BTN_1_EX_LONG : APP_UI_BTN_2_EX_LONG);
-    }
-    else
-    {
-      return TERMINAL_ERROR_BAD_ARGUMENTS;
+        if (strcmp(argv[2], "d") == 0) {
+            TerminalTxPrint("Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
+            event = (btnIndx == 1 ? APP_UI_BTN_1_DOWN : APP_UI_BTN_2_DOWN);
+        } else if (strcmp(argv[2], "s") == 0) {
+            TerminalTxPrint("Short Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
+            event = (btnIndx == 1 ? APP_UI_BTN_1_SHORT : APP_UI_BTN_2_SHORT);
+        } else if (strcmp(argv[2], "m") == 0) {
+            TerminalTxPrint("Medium Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
+            event = (btnIndx == 1 ? APP_UI_BTN_1_MED : APP_UI_BTN_2_MED);
+        } else if (strcmp(argv[2], "l") == 0) {
+            TerminalTxPrint("Long Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
+            event = (btnIndx == 1 ? APP_UI_BTN_1_LONG : APP_UI_BTN_2_LONG);
+        } else if (strcmp(argv[2], "x") == 0) {
+            TerminalTxPrint("XL Button %s Press" TERMINAL_STRING_NEW_LINE, argv[1]);
+            event = (btnIndx == 1 ? APP_UI_BTN_1_EX_LONG : APP_UI_BTN_2_EX_LONG);
+        } else {
+            return TERMINAL_ERROR_BAD_ARGUMENTS;
+        }
+
+        AppUiBtnTest(event);
+    } else {
+        return TERMINAL_ERROR_TOO_MANY_ARGUMENTS;
     }
 
-    AppUiBtnTest(event);
-  }
-  else
-  {
-    return TERMINAL_ERROR_TOO_MANY_ARGUMENTS;
-  }
-
-  return TERMINAL_ERROR_OK;
+    return TERMINAL_ERROR_OK;
 }
 
 /*************************************************************************************************/
@@ -179,41 +158,35 @@ static uint8_t appTerminalCommandBtnHandler(uint32_t argc, char **argv)
 /*************************************************************************************************/
 static uint8_t appTerminalPinCodeHandler(uint32_t argc, char **argv)
 {
-  if (argc < 2)
-  {
-    return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
-  }
-  else if (argc == 3)
-  {
-    uint32_t passkey;
-    uint8_t  buf[SMP_PIN_LEN];
-    uint8_t connId;
+    if (argc < 2) {
+        return TERMINAL_ERROR_TOO_FEW_ARGUMENTS;
+    } else if (argc == 3) {
+        uint32_t passkey;
+        uint8_t buf[SMP_PIN_LEN];
+        uint8_t connId;
 
-    passkey = atoi(argv[2]);
-    connId = atoi(argv[1]);
+        passkey = atoi(argv[2]);
+        connId = atoi(argv[1]);
 
-    if (connId < 1 || connId > DM_CONN_MAX)
-    {
-      TerminalTxPrint("ConnID must be in the range [1 .. %d]\n", DM_CONN_MAX);
-      return TERMINAL_ERROR_BAD_ARGUMENTS;
+        if (connId < 1 || connId > DM_CONN_MAX) {
+            TerminalTxPrint("ConnID must be in the range [1 .. %d]\n", DM_CONN_MAX);
+            return TERMINAL_ERROR_BAD_ARGUMENTS;
+        }
+
+        passkey %= 1000000;
+
+        /* convert to byte buffer */
+        buf[0] = UINT32_TO_BYTE0(passkey);
+        buf[1] = UINT32_TO_BYTE1(passkey);
+        buf[2] = UINT32_TO_BYTE2(passkey);
+
+        /* send authentication response to DM */
+        DmSecAuthRsp((dmConnId_t)connId, SMP_PIN_LEN, buf);
+    } else {
+        return TERMINAL_ERROR_TOO_MANY_ARGUMENTS;
     }
 
-    passkey %= 1000000;
-
-    /* convert to byte buffer */
-    buf[0] = UINT32_TO_BYTE0(passkey);
-    buf[1] = UINT32_TO_BYTE1(passkey);
-    buf[2] = UINT32_TO_BYTE2(passkey);
-
-    /* send authentication response to DM */
-    DmSecAuthRsp((dmConnId_t) connId, SMP_PIN_LEN, buf);
-  }
-  else
-  {
-    return TERMINAL_ERROR_TOO_MANY_ARGUMENTS;
-  }
-
-  return TERMINAL_ERROR_OK;
+    return TERMINAL_ERROR_OK;
 }
 
 /*************************************************************************************************/

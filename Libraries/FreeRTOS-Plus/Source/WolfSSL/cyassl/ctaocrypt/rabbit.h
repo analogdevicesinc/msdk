@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 #ifndef NO_RABBIT
 
 #ifndef CTAO_CRYPT_RABBIT_H
@@ -29,11 +28,10 @@
 
 /* for rabbit reverse compatibility */
 #ifndef NO_RABBIT
-    #define RabbitProcess wc_RabbitProcess
-    #define RabbitSetKey  wc_RabbitSetKey
+#define RabbitProcess wc_RabbitProcess
+#define RabbitSetKey wc_RabbitSetKey
 #endif
 
 #endif /* CTAO_CRYPT_RABBIT_H */
 
 #endif /* NO_RABBIT */
-

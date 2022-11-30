@@ -67,14 +67,13 @@
  *
  * @ref APP_USBD_CLASS_TYPEDEF
  */
-typedef struct { } app_usbd_hid_mouse_t;
+typedef struct {
+} app_usbd_hid_mouse_t;
 #else
 /*lint -save -e10 -e26 -e123 -e505 */
-APP_USBD_CLASS_TYPEDEF(app_usbd_hid_mouse,                      \
-            APP_USBD_HID_MOUSE_CONFIG(0, NRF_DRV_USBD_EPIN1),   \
-            APP_USBD_HID_MOUSE_INSTANCE_SPECIFIC_DEC,           \
-            APP_USBD_HID_MOUSE_DATA_SPECIFIC_DEC                \
-);
+APP_USBD_CLASS_TYPEDEF(app_usbd_hid_mouse, APP_USBD_HID_MOUSE_CONFIG(0, NRF_DRV_USBD_EPIN1),
+                       APP_USBD_HID_MOUSE_INSTANCE_SPECIFIC_DEC,
+                       APP_USBD_HID_MOUSE_DATA_SPECIFIC_DEC);
 /*lint -restore*/
 #endif
 
@@ -94,20 +93,13 @@ APP_USBD_CLASS_TYPEDEF(app_usbd_hid_mouse,                      \
    APP_USBD_HID_MOUSE_GLOBAL_DEF(my_awesome_mouse, 0, NRF_DRV_USBD_EPIN1, 3, NULL);
  * @endcode
  */
-#define APP_USBD_HID_MOUSE_GLOBAL_DEF(instance_name,                                                    \
-                                      interface_number,                                                 \
-                                      endpoint,                                                         \
-                                      bcnt,                                                             \
-                                      user_ev_handler,                                                  \
-                                      subclass_boot)                                                    \
-    APP_USBD_HID_GENERIC_SUBCLASS_REPORT_DESC(mouse_desc, APP_USBD_HID_MOUSE_REPORT_DSC_BUTTON(bcnt));  \
-    static const app_usbd_hid_subclass_desc_t * mouse_descs[] = {&mouse_desc};                          \
-    APP_USBD_HID_MOUSE_GLOBAL_DEF_INTERNAL(instance_name,                                               \
-                                           interface_number,                                            \
-                                           endpoint,                                                    \
-                                           bcnt,                                                        \
-                                           user_ev_handler,                                             \
-                                           subclass_boot)
+#define APP_USBD_HID_MOUSE_GLOBAL_DEF(instance_name, interface_number, endpoint, bcnt,      \
+                                      user_ev_handler, subclass_boot)                       \
+    APP_USBD_HID_GENERIC_SUBCLASS_REPORT_DESC(mouse_desc,                                   \
+                                              APP_USBD_HID_MOUSE_REPORT_DSC_BUTTON(bcnt));  \
+    static const app_usbd_hid_subclass_desc_t *mouse_descs[] = { &mouse_desc };             \
+    APP_USBD_HID_MOUSE_GLOBAL_DEF_INTERNAL(instance_name, interface_number, endpoint, bcnt, \
+                                           user_ev_handler, subclass_boot)
 
 /**
  * @brief Helper function to get class instance from HID mouse internals.
@@ -117,7 +109,7 @@ APP_USBD_CLASS_TYPEDEF(app_usbd_hid_mouse,                      \
  * @return Base class instance.
  */
 static inline app_usbd_class_inst_t const *
-app_usbd_hid_mouse_class_inst_get(app_usbd_hid_mouse_t const * p_mouse)
+app_usbd_hid_mouse_class_inst_get(app_usbd_hid_mouse_t const *p_mouse)
 {
     return &p_mouse->base;
 }
@@ -130,7 +122,7 @@ app_usbd_hid_mouse_class_inst_get(app_usbd_hid_mouse_t const * p_mouse)
  * @return HID mouse class handle.
  */
 static inline app_usbd_hid_mouse_t const *
-app_usbd_hid_mouse_class_get(app_usbd_class_inst_t const * p_inst)
+app_usbd_hid_mouse_class_get(app_usbd_class_inst_t const *p_inst)
 {
     return (app_usbd_hid_mouse_t const *)p_inst;
 }
@@ -143,7 +135,7 @@ app_usbd_hid_mouse_class_get(app_usbd_class_inst_t const * p_inst)
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_hid_mouse_x_move(app_usbd_hid_mouse_t const * p_mouse, int8_t offset);
+ret_code_t app_usbd_hid_mouse_x_move(app_usbd_hid_mouse_t const *p_mouse, int8_t offset);
 
 /**
  * @brief Move mouse Y axis.
@@ -153,7 +145,7 @@ ret_code_t app_usbd_hid_mouse_x_move(app_usbd_hid_mouse_t const * p_mouse, int8_
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_hid_mouse_y_move(app_usbd_hid_mouse_t const * p_mouse, int8_t offset);
+ret_code_t app_usbd_hid_mouse_y_move(app_usbd_hid_mouse_t const *p_mouse, int8_t offset);
 
 /**
  * @brief Move mouse scroll.
@@ -163,7 +155,7 @@ ret_code_t app_usbd_hid_mouse_y_move(app_usbd_hid_mouse_t const * p_mouse, int8_
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_hid_mouse_scroll_move(app_usbd_hid_mouse_t const * p_mouse, int8_t offset);
+ret_code_t app_usbd_hid_mouse_scroll_move(app_usbd_hid_mouse_t const *p_mouse, int8_t offset);
 
 /**
  * @brief Set mouse button state.
@@ -174,8 +166,7 @@ ret_code_t app_usbd_hid_mouse_scroll_move(app_usbd_hid_mouse_t const * p_mouse, 
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_hid_mouse_button_state(app_usbd_hid_mouse_t const * p_mouse,
-                                           uint8_t button_id,
+ret_code_t app_usbd_hid_mouse_button_state(app_usbd_hid_mouse_t const *p_mouse, uint8_t button_id,
                                            bool state);
 
 /**
@@ -187,7 +178,7 @@ ret_code_t app_usbd_hid_mouse_button_state(app_usbd_hid_mouse_t const * p_mouse,
  *
  * @return Standard error code.
  */
-ret_code_t hid_mouse_on_set_protocol(app_usbd_hid_mouse_t const * p_mouse,
+ret_code_t hid_mouse_on_set_protocol(app_usbd_hid_mouse_t const *p_mouse,
                                      app_usbd_hid_user_event_t ev);
 
 /**
@@ -197,7 +188,7 @@ ret_code_t hid_mouse_on_set_protocol(app_usbd_hid_mouse_t const * p_mouse,
  *
  * @return Standard error code.
  */
-ret_code_t hid_mouse_clear_buffer(app_usbd_class_inst_t const * p_inst);
+ret_code_t hid_mouse_clear_buffer(app_usbd_class_inst_t const *p_inst);
 
 /** @} */
 

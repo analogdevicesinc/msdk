@@ -57,37 +57,33 @@
 #define NRF_LOG_MODULE_NAME usbd_dummy
 
 #if APP_USBD_DUMMY_CONFIG_LOG_ENABLED
-#define NRF_LOG_LEVEL       APP_USBD_DUMMY_CONFIG_LOG_LEVEL
-#define NRF_LOG_INFO_COLOR  APP_USBD_DUMMY_CONFIG_INFO_COLOR
+#define NRF_LOG_LEVEL APP_USBD_DUMMY_CONFIG_LOG_LEVEL
+#define NRF_LOG_INFO_COLOR APP_USBD_DUMMY_CONFIG_INFO_COLOR
 #define NRF_LOG_DEBUG_COLOR APP_USBD_DUMMY_CONFIG_DEBUG_COLOR
 #else //APP_USBD_DUMMY_CONFIG_LOG_ENABLED
-#define NRF_LOG_LEVEL       0
+#define NRF_LOG_LEVEL 0
 #endif //APP_USBD_DUMMY_CONFIG_LOG_ENABLED
 #include "nrf_log.h"
 NRF_LOG_MODULE_REGISTER();
 
 /** @brief @ref app_usbd_class_methods_t::event_handler */
-static ret_code_t dummy_class_event_handler(app_usbd_class_inst_t const *  p_inst,
-                                            app_usbd_complex_evt_t const * p_event)
+static ret_code_t dummy_class_event_handler(app_usbd_class_inst_t const *p_inst,
+                                            app_usbd_complex_evt_t const *p_event)
 {
-    if((p_event->app_evt.type  == APP_USBD_EVT_INST_APPEND) || 
-       (p_event->app_evt.type  == APP_USBD_EVT_INST_REMOVE))
-    {
+    if ((p_event->app_evt.type == APP_USBD_EVT_INST_APPEND) ||
+        (p_event->app_evt.type == APP_USBD_EVT_INST_REMOVE)) {
         return NRF_SUCCESS;
-    }
-    else
-    {
+    } else {
         return NRF_ERROR_NOT_SUPPORTED;
     }
 }
 
 /** @brief @ref app_usbd_class_methods_t::feed_descriptors */
-static bool dummy_class_feed_descriptors(app_usbd_class_descriptor_ctx_t * p_ctx,
-                                         app_usbd_class_inst_t const     * p_inst,
-                                         uint8_t                         * p_buff,
-                                         size_t                            max_size)
+static bool dummy_class_feed_descriptors(app_usbd_class_descriptor_ctx_t *p_ctx,
+                                         app_usbd_class_inst_t const *p_inst, uint8_t *p_buff,
+                                         size_t max_size)
 {
-    static app_usbd_class_iface_conf_t const * p_cur_iface = 0;
+    static app_usbd_class_iface_conf_t const *p_cur_iface = 0;
     p_cur_iface = app_usbd_class_iface_get(p_inst, 0);
 
     APP_USBD_CLASS_DESCRIPTOR_BEGIN(p_ctx, p_buff, max_size)
@@ -95,7 +91,8 @@ static bool dummy_class_feed_descriptors(app_usbd_class_descriptor_ctx_t * p_ctx
     /* INTERFACE DESCRIPTOR */
     APP_USBD_CLASS_DESCRIPTOR_WRITE(sizeof(app_usbd_descriptor_iface_t)); // bLength
     APP_USBD_CLASS_DESCRIPTOR_WRITE(APP_USBD_DESCRIPTOR_INTERFACE); // bDescriptorType
-    APP_USBD_CLASS_DESCRIPTOR_WRITE(app_usbd_class_iface_number_get(p_cur_iface)); // bInterfaceNumber
+    APP_USBD_CLASS_DESCRIPTOR_WRITE(
+        app_usbd_class_iface_number_get(p_cur_iface)); // bInterfaceNumber
     APP_USBD_CLASS_DESCRIPTOR_WRITE(0x00); // bAlternateSetting
     APP_USBD_CLASS_DESCRIPTOR_WRITE(0); // bNumEndpoints
     APP_USBD_CLASS_DESCRIPTOR_WRITE(APP_USBD_DUMMY_CLASS); // bInterfaceClass
@@ -107,9 +104,8 @@ static bool dummy_class_feed_descriptors(app_usbd_class_descriptor_ctx_t * p_ctx
 }
 
 const app_usbd_class_methods_t app_usbd_dummy_class_methods = {
-    .event_handler    = dummy_class_event_handler,
+    .event_handler = dummy_class_event_handler,
     .feed_descriptors = dummy_class_feed_descriptors,
 };
-
 
 #endif //NRF_MODULE_ENABLED(APP_USBD_DUMMY)

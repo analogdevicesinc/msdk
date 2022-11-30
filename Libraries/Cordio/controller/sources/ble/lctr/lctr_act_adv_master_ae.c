@@ -46,26 +46,26 @@
  *  \return     TRUE if successful, FALSE otherwise.
  */
 /*************************************************************************************************/
-static uint8_t lctrPerScanSetup(lctrPerCreateSyncCtrlBlk_t *pPerCreateSync, lctrPerCreateSyncMsg_t *pMsg, uint8_t createDispId)
+static uint8_t lctrPerScanSetup(lctrPerCreateSyncCtrlBlk_t *pPerCreateSync,
+                                lctrPerCreateSyncMsg_t *pMsg, uint8_t createDispId)
 {
-  lctrPerScanCtx_t *pPerScanCtx;
+    lctrPerScanCtx_t *pPerScanCtx;
 
-  if ((pPerScanCtx = lctrAllocPerScanCtx()) == NULL)
-  {
-    return LL_ERROR_CODE_CONN_LIMIT_EXCEEDED;
-  }
+    if ((pPerScanCtx = lctrAllocPerScanCtx()) == NULL) {
+        return LL_ERROR_CODE_CONN_LIMIT_EXCEEDED;
+    }
 
-  pPerCreateSync->pPerScanCtx = pPerScanCtx;
-  pPerScanCtx->filtParam.filterPolicy = pMsg->filterPolicy;
-  pPerScanCtx->filtParam.advSID = pMsg->advSID;
-  pPerScanCtx->filtParam.advAddrType = pMsg->advAddrType;
-  pPerScanCtx->filtParam.advAddr = pMsg->advAddr;
-  pPerScanCtx->skip = pMsg->skip;
-  pPerScanCtx->syncTimeOutMs = LCTR_PER_SYNC_TIMEOUT_TO_MS(pMsg->syncTimeOut);
-  pPerScanCtx->createDispId = createDispId;
-  pPerScanCtx->repDisabled = pMsg->repDisabled;
+    pPerCreateSync->pPerScanCtx = pPerScanCtx;
+    pPerScanCtx->filtParam.filterPolicy = pMsg->filterPolicy;
+    pPerScanCtx->filtParam.advSID = pMsg->advSID;
+    pPerScanCtx->filtParam.advAddrType = pMsg->advAddrType;
+    pPerScanCtx->filtParam.advAddr = pMsg->advAddr;
+    pPerScanCtx->skip = pMsg->skip;
+    pPerScanCtx->syncTimeOutMs = LCTR_PER_SYNC_TIMEOUT_TO_MS(pMsg->syncTimeOut);
+    pPerScanCtx->createDispId = createDispId;
+    pPerScanCtx->repDisabled = pMsg->repDisabled;
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -80,16 +80,16 @@ static uint8_t lctrPerScanSetup(lctrPerCreateSyncCtrlBlk_t *pPerCreateSync, lctr
 /*************************************************************************************************/
 static bool_t lctrPerAdvSyncEstRptPack(lctrPerScanCtx_t *pPerScanCtx, lmgrPerAdvSyncEstdInd_t *pRpt)
 {
-  memset(pRpt, 0, sizeof(lmgrPerAdvSyncEstdInd_t));
+    memset(pRpt, 0, sizeof(lmgrPerAdvSyncEstdInd_t));
 
-  pRpt->advSID = pPerScanCtx->advSID;
-  Bda64ToBstream(pRpt->addr, pPerScanCtx->advAddr);
-  pRpt->addrType = pPerScanCtx->advAddrType;
-  pRpt->advPhy = pPerScanCtx->rxPhys;
-  pRpt->advInterval = LCTR_PER_INTER_TO_MS(pPerScanCtx->perInterUsec);
-  pRpt->advClkAccuracy = pPerScanCtx->sca;
+    pRpt->advSID = pPerScanCtx->advSID;
+    Bda64ToBstream(pRpt->addr, pPerScanCtx->advAddr);
+    pRpt->addrType = pPerScanCtx->advAddrType;
+    pRpt->advPhy = pPerScanCtx->rxPhys;
+    pRpt->advInterval = LCTR_PER_INTER_TO_MS(pPerScanCtx->perInterUsec);
+    pRpt->advClkAccuracy = pPerScanCtx->sca;
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -101,23 +101,21 @@ static bool_t lctrPerAdvSyncEstRptPack(lctrPerScanCtx_t *pPerScanCtx, lmgrPerAdv
 /*************************************************************************************************/
 static void lctrMstPerScanCleanupOp(lctrPerScanCtx_t *pPerScanCtx)
 {
-  BbStop(BB_PROT_BLE);
+    BbStop(BB_PROT_BLE);
 
-  if (pPerScanCtx->termCback)
-  {
-    pPerScanCtx->termCback(LCTR_GET_PER_SCAN_HANDLE(pPerScanCtx));
-  }
+    if (pPerScanCtx->termCback) {
+        pPerScanCtx->termCback(LCTR_GET_PER_SCAN_HANDLE(pPerScanCtx));
+    }
 
-  SchTmRemove(LCTR_GET_PER_SCAN_TM_HANDLE(pPerScanCtx));
+    SchTmRemove(LCTR_GET_PER_SCAN_TM_HANDLE(pPerScanCtx));
 
-  if (pPerScanCtx->filtParam.filterPolicy)
-  {
-    LmgrDecPeriodiclistRefCount();
-  }
+    if (pPerScanCtx->filtParam.filterPolicy) {
+        LmgrDecPeriodiclistRefCount();
+    }
 
-  LmgrDecResetRefCount();
+    LmgrDecResetRefCount();
 
-  pPerScanCtx->enabled = FALSE;
+    pPerScanCtx->enabled = FALSE;
 }
 
 /*************************************************************************************************/
@@ -129,33 +127,30 @@ static void lctrMstPerScanCleanupOp(lctrPerScanCtx_t *pPerScanCtx)
 /*************************************************************************************************/
 static void lctrMstExtScanCleanupOp(lctrExtScanCtx_t *pExtScanCtx)
 {
-  BbStop(BB_PROT_BLE);
+    BbStop(BB_PROT_BLE);
 
-  switch (pExtScanCtx->scanParam.scanFiltPolicy)
-  {
+    switch (pExtScanCtx->scanParam.scanFiltPolicy) {
     case LL_SCAN_FILTER_WL_BIT:
     case LL_SCAN_FILTER_WL_OR_RES_INIT:
-      LmgrDecWhitelistRefCount();
-      break;
+        LmgrDecWhitelistRefCount();
+        break;
     default:
-      break;
-  }
+        break;
+    }
 
-  BbBleMstAdvEvent_t * const pScan = &pExtScanCtx->scanBleData.op.mstAdv;
-  if (pScan->pRxAdvBuf)
-  {
-    WsfMsgFree(pScan->pRxAdvBuf);
-    pScan->pRxAdvBuf = NULL;
-  }
-  if (pScan->pRxRspBuf)
-  {
-    WsfMsgFree(pScan->pRxRspBuf);
-    pScan->pRxRspBuf = NULL;
-  }
+    BbBleMstAdvEvent_t *const pScan = &pExtScanCtx->scanBleData.op.mstAdv;
+    if (pScan->pRxAdvBuf) {
+        WsfMsgFree(pScan->pRxAdvBuf);
+        pScan->pRxAdvBuf = NULL;
+    }
+    if (pScan->pRxRspBuf) {
+        WsfMsgFree(pScan->pRxRspBuf);
+        pScan->pRxRspBuf = NULL;
+    }
 
-  WSF_ASSERT(lmgrCb.numScanEnabled > 0);
-  lmgrCb.numScanEnabled--;
-  LmgrDecResetRefCount();
+    WSF_ASSERT(lmgrCb.numScanEnabled > 0);
+    lmgrCb.numScanEnabled--;
+    LmgrDecResetRefCount();
 }
 
 /*************************************************************************************************/
@@ -167,42 +162,40 @@ static void lctrMstExtScanCleanupOp(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanActDiscover(lctrExtScanCtx_t *pExtScanCtx)
 {
-  BbStart(BB_PROT_BLE);
+    BbStart(BB_PROT_BLE);
 
-  switch (pExtScanCtx->scanParam.scanFiltPolicy)
-  {
+    switch (pExtScanCtx->scanParam.scanFiltPolicy) {
     case LL_SCAN_FILTER_WL_BIT:
     case LL_SCAN_FILTER_WL_OR_RES_INIT:
-      LmgrIncWhitelistRefCount();
-      break;
+        LmgrIncWhitelistRefCount();
+        break;
     default:
-      break;
-  }
+        break;
+    }
 
-  /* Reset state. */
-  pExtScanCtx->selfTerm = FALSE;
-  pExtScanCtx->shutdown = FALSE;
-  pExtScanCtx->auxOpPending = FALSE;
-  pExtScanCtx->bodTermCnt = 0;
-  pExtScanCtx->data.scan.advRptState = LCTR_RPT_STATE_IDLE;
+    /* Reset state. */
+    pExtScanCtx->selfTerm = FALSE;
+    pExtScanCtx->shutdown = FALSE;
+    pExtScanCtx->auxOpPending = FALSE;
+    pExtScanCtx->bodTermCnt = 0;
+    pExtScanCtx->data.scan.advRptState = LCTR_RPT_STATE_IDLE;
 
-  uint8_t status;
+    uint8_t status;
 
-  if (((status = lctrMstExtDiscoverBuildOp(pExtScanCtx)) != LL_SUCCESS) ||
-      ((status = lctrMstAuxDiscoverBuildOp(pExtScanCtx)) != LL_SUCCESS))
-  {
-    LmgrSendExtScanEnableCnf(status);
-    lctrSendExtScanMsg(pExtScanCtx, LCTR_EXT_SCAN_MSG_TERMINATE);
-    return;
-  }
+    if (((status = lctrMstExtDiscoverBuildOp(pExtScanCtx)) != LL_SUCCESS) ||
+        ((status = lctrMstAuxDiscoverBuildOp(pExtScanCtx)) != LL_SUCCESS)) {
+        LmgrSendExtScanEnableCnf(status);
+        lctrSendExtScanMsg(pExtScanCtx, LCTR_EXT_SCAN_MSG_TERMINATE);
+        return;
+    }
 
-  lmgrCb.numScanEnabled++;
-  LmgrIncResetRefCount();
+    lmgrCb.numScanEnabled++;
+    LmgrIncResetRefCount();
 
-  pExtScanCtx->data.scan.backoffCount = 1;
-  pExtScanCtx->data.scan.upperLimit = 1;
+    pExtScanCtx->data.scan.backoffCount = 1;
+    pExtScanCtx->data.scan.upperLimit = 1;
 
-  LmgrSendExtScanEnableCnf(LL_SUCCESS);
+    LmgrSendExtScanEnableCnf(LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -214,7 +207,7 @@ void lctrExtScanActDiscover(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanActUpdateDiscover(lctrExtScanCtx_t *pExtScanCtx)
 {
-  LmgrSendExtScanEnableCnf(LL_SUCCESS);
+    LmgrSendExtScanEnableCnf(LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -226,29 +219,25 @@ void lctrExtScanActUpdateDiscover(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanActShutdown(lctrExtScanCtx_t *pExtScanCtx)
 {
-  const uint8_t scanPhyIndex = (LCTR_GET_EXT_SCAN_HANDLE(pExtScanCtx) == LCTR_SCAN_PHY_CODED) ? LCTR_SCAN_PHY_CODED : LCTR_SCAN_PHY_1M;
+    const uint8_t scanPhyIndex = (LCTR_GET_EXT_SCAN_HANDLE(pExtScanCtx) == LCTR_SCAN_PHY_CODED) ?
+                                     LCTR_SCAN_PHY_CODED :
+                                     LCTR_SCAN_PHY_1M;
 
-  pExtScanCtx->shutdown = TRUE;
+    pExtScanCtx->shutdown = TRUE;
 
-  if (scanPhyIndex == lctrActiveExtScan.scanIndex)
-  {
-    if (!pExtScanCtx->auxOpPending)
-    {
-      SchRemove(&pExtScanCtx->scanBod);
+    if (scanPhyIndex == lctrActiveExtScan.scanIndex) {
+        if (!pExtScanCtx->auxOpPending) {
+            SchRemove(&pExtScanCtx->scanBod);
+        } else {
+            SchRemove(&pExtScanCtx->auxScanBod);
+        }
+
+        /* Shutdown completes with events generated in BOD end callback. */
+    } else {
+        /* BOD of this scan context is not scheduled. No need to remove it. */
+        lctrActiveExtScan.scanMask &= ~(1 << scanPhyIndex);
+        lctrSendExtScanMsg(pExtScanCtx, LCTR_EXT_SCAN_MSG_TERMINATE);
     }
-    else
-    {
-      SchRemove(&pExtScanCtx->auxScanBod);
-    }
-
-    /* Shutdown completes with events generated in BOD end callback. */
-  }
-  else
-  {
-    /* BOD of this scan context is not scheduled. No need to remove it. */
-    lctrActiveExtScan.scanMask &= ~(1 << scanPhyIndex);
-    lctrSendExtScanMsg(pExtScanCtx, LCTR_EXT_SCAN_MSG_TERMINATE);
-  }
 }
 
 /*************************************************************************************************/
@@ -260,7 +249,7 @@ void lctrExtScanActShutdown(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanActScanCnf(lctrExtScanCtx_t *pExtScanCtx)
 {
-  LmgrSendExtScanEnableCnf(LL_SUCCESS);
+    LmgrSendExtScanEnableCnf(LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -272,15 +261,14 @@ void lctrExtScanActScanCnf(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanHostDisable(lctrExtScanCtx_t *pExtScanCtx)
 {
-  if (lctrMstExtScan.scanTermByHost > 1)
-  {
-    LmgrSendExtScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
-    return;
-  }
+    if (lctrMstExtScan.scanTermByHost > 1) {
+        LmgrSendExtScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
+        return;
+    }
 
-  /* Start/Restart timers. */
-  WsfTimerStop(&lctrMstExtScan.tmrScanDur);
-  WsfTimerStop(&lctrMstExtScan.tmrScanPer);
+    /* Start/Restart timers. */
+    WsfTimerStop(&lctrMstExtScan.tmrScanDur);
+    WsfTimerStop(&lctrMstExtScan.tmrScanPer);
 }
 
 /*************************************************************************************************/
@@ -292,10 +280,9 @@ void lctrExtScanHostDisable(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanActDisallowScan(lctrExtScanCtx_t *pExtScanCtx)
 {
-  if (lctrMstExtScan.scanTermByHost)
-  {
-    LmgrSendExtScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
-  }
+    if (lctrMstExtScan.scanTermByHost) {
+        LmgrSendExtScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
+    }
 }
 
 /*************************************************************************************************/
@@ -307,15 +294,11 @@ void lctrExtScanActDisallowScan(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanActHostEnable(lctrExtScanCtx_t *pExtScanCtx)
 {
-  if (lctrMstExtScan.scanTermByHost)
-  {
-    LmgrSendExtScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
-  }
-  else
-  {
-    LmgrSendExtScanEnableCnf(LL_SUCCESS);
-  }
-
+    if (lctrMstExtScan.scanTermByHost) {
+        LmgrSendExtScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
+    } else {
+        LmgrSendExtScanEnableCnf(LL_SUCCESS);
+    }
 }
 
 /*************************************************************************************************/
@@ -327,12 +310,11 @@ void lctrExtScanActHostEnable(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanActScanTerm(lctrExtScanCtx_t *pExtScanCtx)
 {
-  lctrMstExtScanCleanupOp(pExtScanCtx);
+    lctrMstExtScanCleanupOp(pExtScanCtx);
 
-  if (lctrMstExtScan.scanTermByHost)
-  {
-    LmgrSendExtScanEnableCnf(LL_SUCCESS);
-  }
+    if (lctrMstExtScan.scanTermByHost) {
+        LmgrSendExtScanEnableCnf(LL_SUCCESS);
+    }
 }
 
 /*************************************************************************************************/
@@ -344,7 +326,7 @@ void lctrExtScanActScanTerm(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrExtScanActSelfTerm(lctrExtScanCtx_t *pExtScanCtx)
 {
-  lctrMstExtScanCleanupOp(pExtScanCtx);
+    lctrMstExtScanCleanupOp(pExtScanCtx);
 }
 
 /*************************************************************************************************/
@@ -354,24 +336,23 @@ void lctrExtScanActSelfTerm(lctrExtScanCtx_t *pExtScanCtx)
 /*************************************************************************************************/
 void lctrCreateSyncActCreate(void)
 {
-  lctrPerCreateSyncMsg_t *pMsg  = (lctrPerCreateSyncMsg_t *)pLctrMstPerScanMsg;
+    lctrPerCreateSyncMsg_t *pMsg = (lctrPerCreateSyncMsg_t *)pLctrMstPerScanMsg;
 
-  BbStart(BB_PROT_BLE);
+    BbStart(BB_PROT_BLE);
 
-  if (pMsg->filterPolicy)
-  {
-    LmgrIncPeriodiclistRefCount();
-  }
+    if (pMsg->filterPolicy) {
+        LmgrIncPeriodiclistRefCount();
+    }
 
-  lctrPerCreateSync.filtParam.filterPolicy = pMsg->filterPolicy;
-  lctrPerCreateSync.filtParam.advAddr = pMsg->advAddr;
-  lctrPerCreateSync.filtParam.advAddrType = pMsg->advAddrType;
-  lctrPerCreateSync.filtParam.advSID = pMsg->advSID;
+    lctrPerCreateSync.filtParam.filterPolicy = pMsg->filterPolicy;
+    lctrPerCreateSync.filtParam.advAddr = pMsg->advAddr;
+    lctrPerCreateSync.filtParam.advAddrType = pMsg->advAddrType;
+    lctrPerCreateSync.filtParam.advSID = pMsg->advSID;
 
-  lctrPerScanSetup(&lctrPerCreateSync, pMsg, LCTR_DISP_PER_CREATE_SYNC);
-  lctrMstPerScanBuildOp(lctrPerCreateSync.pPerScanCtx);
+    lctrPerScanSetup(&lctrPerCreateSync, pMsg, LCTR_DISP_PER_CREATE_SYNC);
+    lctrMstPerScanBuildOp(lctrPerCreateSync.pPerScanCtx);
 
-  LmgrIncResetRefCount();
+    LmgrIncResetRefCount();
 }
 
 /*************************************************************************************************/
@@ -381,10 +362,9 @@ void lctrCreateSyncActCreate(void)
 /*************************************************************************************************/
 void lctrCreateSyncActDone(void)
 {
-  if (lctrPerCreateSync.createSyncPending == TRUE)
-  {
-    lctrPerCreateSync.createSyncPending = FALSE;
-  }
+    if (lctrPerCreateSync.createSyncPending == TRUE) {
+        lctrPerCreateSync.createSyncPending = FALSE;
+    }
 }
 
 /*************************************************************************************************/
@@ -394,14 +374,13 @@ void lctrCreateSyncActDone(void)
 /*************************************************************************************************/
 void lctrCreateSyncActCancel(void)
 {
-  if (lctrPerCreateSync.createSyncPending == TRUE)
-  {
-    lctrPerCreateSync.pPerScanCtx->cancelCreateSync = TRUE;
-    SchRemove(&lctrPerCreateSync.pPerScanCtx->bod);
-  }
+    if (lctrPerCreateSync.createSyncPending == TRUE) {
+        lctrPerCreateSync.pPerScanCtx->cancelCreateSync = TRUE;
+        SchRemove(&lctrPerCreateSync.pPerScanCtx->bod);
+    }
 
-  lctrPerCreateSync.pPerScanCtx->cancelByHost = TRUE;
-  lctrSendCreateSyncMsg(lctrPerCreateSync.pPerScanCtx, LCTR_CREATE_SYNC_MSG_TERMINATE);
+    lctrPerCreateSync.pPerScanCtx->cancelByHost = TRUE;
+    lctrSendCreateSyncMsg(lctrPerCreateSync.pPerScanCtx, LCTR_CREATE_SYNC_MSG_TERMINATE);
 }
 
 /*************************************************************************************************/
@@ -411,19 +390,19 @@ void lctrCreateSyncActCancel(void)
 /*************************************************************************************************/
 void lctrCreateSyncActFailed(void)
 {
-  if (lctrPerCreateSync.createSyncPending == TRUE)
-  {
-    lctrPerCreateSync.pPerScanCtx->cancelCreateSync = TRUE;
-    lctrPerCreateSync.pPerScanCtx->cancelByHost = FALSE;
-    SchRemove(&lctrPerCreateSync.pPerScanCtx->bod);
+    if (lctrPerCreateSync.createSyncPending == TRUE) {
+        lctrPerCreateSync.pPerScanCtx->cancelCreateSync = TRUE;
+        lctrPerCreateSync.pPerScanCtx->cancelByHost = FALSE;
+        SchRemove(&lctrPerCreateSync.pPerScanCtx->bod);
 
-    lctrPerCreateSync.createSyncPending = FALSE;
-  }
+        lctrPerCreateSync.createSyncPending = FALSE;
+    }
 
-  /* Pack and notify the host about sync established event with failed status. */
-  lmgrPerAdvSyncEstdInd_t rpt;
-  lctrPerAdvSyncEstRptPack(lctrPerCreateSync.pPerScanCtx, &rpt);
-  LmgrSendSyncEstInd(LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH, LCTR_GET_PER_SCAN_HANDLE(lctrPerCreateSync.pPerScanCtx), &rpt);
+    /* Pack and notify the host about sync established event with failed status. */
+    lmgrPerAdvSyncEstdInd_t rpt;
+    lctrPerAdvSyncEstRptPack(lctrPerCreateSync.pPerScanCtx, &rpt);
+    LmgrSendSyncEstInd(LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH,
+                       LCTR_GET_PER_SCAN_HANDLE(lctrPerCreateSync.pPerScanCtx), &rpt);
 }
 
 /*************************************************************************************************/
@@ -433,19 +412,18 @@ void lctrCreateSyncActFailed(void)
 /*************************************************************************************************/
 void lctrCreateSyncActTerminate(void)
 {
-  if (lctrPerCreateSync.pPerScanCtx->cancelCreateSync == TRUE)
-  {
-    lctrPerCreateSync.pPerScanCtx->cancelCreateSync = FALSE;
-  }
+    if (lctrPerCreateSync.pPerScanCtx->cancelCreateSync == TRUE) {
+        lctrPerCreateSync.pPerScanCtx->cancelCreateSync = FALSE;
+    }
 
-  lctrMstPerScanCleanupOp(lctrPerCreateSync.pPerScanCtx);
+    lctrMstPerScanCleanupOp(lctrPerCreateSync.pPerScanCtx);
 
-  if (lctrPerCreateSync.pPerScanCtx->cancelByHost)
-  {
-    lmgrPerAdvSyncEstdInd_t rpt;
-    memset(&rpt, 0, sizeof(lmgrPerAdvSyncEstdInd_t));
-    LmgrSendSyncEstInd(LL_ERROR_CODE_OP_CANCELLED_BY_HOST, LCTR_GET_PER_SCAN_HANDLE(lctrPerCreateSync.pPerScanCtx), &rpt);
-  }
+    if (lctrPerCreateSync.pPerScanCtx->cancelByHost) {
+        lmgrPerAdvSyncEstdInd_t rpt;
+        memset(&rpt, 0, sizeof(lmgrPerAdvSyncEstdInd_t));
+        LmgrSendSyncEstInd(LL_ERROR_CODE_OP_CANCELLED_BY_HOST,
+                           LCTR_GET_PER_SCAN_HANDLE(lctrPerCreateSync.pPerScanCtx), &rpt);
+    }
 }
 
 /*************************************************************************************************/
@@ -455,69 +433,68 @@ void lctrCreateSyncActTerminate(void)
 /*************************************************************************************************/
 void lctrTransferSyncActStart(void)
 {
-  lctrPerScanCtx_t *pPerScanCtx;
+    lctrPerScanCtx_t *pPerScanCtx;
 
-  lctrPerTransferSyncMsg_t *pMsg  = (lctrPerTransferSyncMsg_t *)pLctrMstPerScanMsg;
+    lctrPerTransferSyncMsg_t *pMsg = (lctrPerTransferSyncMsg_t *)pLctrMstPerScanMsg;
 
-  if ((pPerScanCtx = lctrAllocPerScanCtx()) == NULL)
-  {
-    return;
-  }
-
-  BbStart(BB_PROT_BLE);
-
-  lctrPerTransferSync.pPerScanCtx = pPerScanCtx;
-
-  pPerScanCtx->filtParam.filterPolicy = LL_PER_SCAN_FILTER_NONE;    //TODO: to be handled later.
-  pPerScanCtx->filtParam.advSID = pMsg->advSID;
-  pPerScanCtx->filtParam.advAddrType = pMsg->advAddrType;
-  pPerScanCtx->filtParam.advAddr = pMsg->advAddr;
-  pPerScanCtx->rxPhys = pMsg->rxPhy;
-
-  pPerScanCtx->syncTimeOutMs = LCTR_PER_SYNC_TIMEOUT_TO_MS(100);    //TODO: to be handled later.
-  pPerScanCtx->skip = 0;                                            //TODO: to be handled later.
-  pPerScanCtx->createDispId = LCTR_DISP_TRANFER_SYNC;
-
-  /* Decode syncInfo */
-  lctrUnpackSyncInfo(&trsfSyncInfo, pMsg->bSyncInfo);
-  pPerScanCtx->perInterUsec = LCTR_PER_INTER_TO_US(trsfSyncInfo.syncInter);
-  pPerScanCtx->advSID = pMsg->advSID;
-  pPerScanCtx->advAddrType = pMsg->advAddrType;
-  pPerScanCtx->advAddr = pMsg->advAddr;
-
-  /* Check if received address is resolvable. */
-  if ((pMsg->advAddrType & LL_ADDR_RANDOM_BIT) && BDA64_ADDR_IS_RPA(pMsg->advAddr))
-  {
-    uint64_t peerIdAddr = 0;
-    uint8_t peerIdAddrType = 0;
-
-    if (BbBleResListResolvePeer(pMsg->advAddr, &peerIdAddrType, &peerIdAddr))
-    {
-      pPerScanCtx->advAddrType = peerIdAddrType | LL_ADDR_IDENTITY_BIT;
-      pPerScanCtx->advAddr = peerIdAddr;
+    if ((pPerScanCtx = lctrAllocPerScanCtx()) == NULL) {
+        return;
     }
-  }
 
-  LL_TRACE_INFO1("Periodic sync transfer -- syncInfo --, syncOffset=%u", trsfSyncInfo.syncOffset);
-  LL_TRACE_INFO1("                                       offsetUnits=%u", trsfSyncInfo.offsetUnits);
-  LL_TRACE_INFO1("                                       syncInter=%u", trsfSyncInfo.syncInter);
-  LL_TRACE_INFO1("                                       eventCounter=%u", trsfSyncInfo.eventCounter);
+    BbStart(BB_PROT_BLE);
 
-  lctrMstPerScanBuildOp(lctrPerTransferSync.pPerScanCtx);
+    lctrPerTransferSync.pPerScanCtx = pPerScanCtx;
 
-  LmgrIncResetRefCount();
+    pPerScanCtx->filtParam.filterPolicy = LL_PER_SCAN_FILTER_NONE; //TODO: to be handled later.
+    pPerScanCtx->filtParam.advSID = pMsg->advSID;
+    pPerScanCtx->filtParam.advAddrType = pMsg->advAddrType;
+    pPerScanCtx->filtParam.advAddr = pMsg->advAddr;
+    pPerScanCtx->rxPhys = pMsg->rxPhy;
 
-  /* All information is transfered, we can start scanning periodic sync immediately. */
-  lctrPerTransferSync.connHandle = pMsg->connHandle;
-  lctrPerTransferSync.serviceData = pMsg->id;
-  lctrPerTransferSync.ceRef = pMsg->ceRef;
-  lctrPerTransferSync.ceRcvd = pMsg->ceRcvd;
-  lctrPerTransferSync.syncCe = pMsg->syncConnEvtCounter;
-  lctrPerTransferSync.scaB = pMsg->scaB;
-  lctrPerTransferSync.lastPECounter = pMsg->lastPECounter;
-  lctrMstPerScanTransferOpCommit(pMsg->connHandle);
+    pPerScanCtx->syncTimeOutMs = LCTR_PER_SYNC_TIMEOUT_TO_MS(100); //TODO: to be handled later.
+    pPerScanCtx->skip = 0; //TODO: to be handled later.
+    pPerScanCtx->createDispId = LCTR_DISP_TRANFER_SYNC;
 
-  lctrMstPerScanIsrInit();
+    /* Decode syncInfo */
+    lctrUnpackSyncInfo(&trsfSyncInfo, pMsg->bSyncInfo);
+    pPerScanCtx->perInterUsec = LCTR_PER_INTER_TO_US(trsfSyncInfo.syncInter);
+    pPerScanCtx->advSID = pMsg->advSID;
+    pPerScanCtx->advAddrType = pMsg->advAddrType;
+    pPerScanCtx->advAddr = pMsg->advAddr;
+
+    /* Check if received address is resolvable. */
+    if ((pMsg->advAddrType & LL_ADDR_RANDOM_BIT) && BDA64_ADDR_IS_RPA(pMsg->advAddr)) {
+        uint64_t peerIdAddr = 0;
+        uint8_t peerIdAddrType = 0;
+
+        if (BbBleResListResolvePeer(pMsg->advAddr, &peerIdAddrType, &peerIdAddr)) {
+            pPerScanCtx->advAddrType = peerIdAddrType | LL_ADDR_IDENTITY_BIT;
+            pPerScanCtx->advAddr = peerIdAddr;
+        }
+    }
+
+    LL_TRACE_INFO1("Periodic sync transfer -- syncInfo --, syncOffset=%u", trsfSyncInfo.syncOffset);
+    LL_TRACE_INFO1("                                       offsetUnits=%u",
+                   trsfSyncInfo.offsetUnits);
+    LL_TRACE_INFO1("                                       syncInter=%u", trsfSyncInfo.syncInter);
+    LL_TRACE_INFO1("                                       eventCounter=%u",
+                   trsfSyncInfo.eventCounter);
+
+    lctrMstPerScanBuildOp(lctrPerTransferSync.pPerScanCtx);
+
+    LmgrIncResetRefCount();
+
+    /* All information is transfered, we can start scanning periodic sync immediately. */
+    lctrPerTransferSync.connHandle = pMsg->connHandle;
+    lctrPerTransferSync.serviceData = pMsg->id;
+    lctrPerTransferSync.ceRef = pMsg->ceRef;
+    lctrPerTransferSync.ceRcvd = pMsg->ceRcvd;
+    lctrPerTransferSync.syncCe = pMsg->syncConnEvtCounter;
+    lctrPerTransferSync.scaB = pMsg->scaB;
+    lctrPerTransferSync.lastPECounter = pMsg->lastPECounter;
+    lctrMstPerScanTransferOpCommit(pMsg->connHandle);
+
+    lctrMstPerScanIsrInit();
 }
 
 /*************************************************************************************************/
@@ -525,9 +502,7 @@ void lctrTransferSyncActStart(void)
  *  \brief      Transfer sync done action function.
  */
 /*************************************************************************************************/
-void lctrTransferSyncActDone(void)
-{
-}
+void lctrTransferSyncActDone(void) {}
 
 /*************************************************************************************************/
 /*!
@@ -536,11 +511,12 @@ void lctrTransferSyncActDone(void)
 /*************************************************************************************************/
 void lctrTransferSyncActFailed(void)
 {
-  lctrPerTransferSync.pPerScanCtx->cancelCreateSync = TRUE;
-  SchRemove(&lctrPerTransferSync.pPerScanCtx->bod);
+    lctrPerTransferSync.pPerScanCtx->cancelCreateSync = TRUE;
+    SchRemove(&lctrPerTransferSync.pPerScanCtx->bod);
 
-  /* Notify the host that controller failed to receive AUX_SYNC_IND within 6 periodic ADV events. */
-  LctrSendPerSyncTrsfRcvdEvt(LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH, lctrPerTransferSync.pPerScanCtx);
+    /* Notify the host that controller failed to receive AUX_SYNC_IND within 6 periodic ADV events. */
+    LctrSendPerSyncTrsfRcvdEvt(LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH,
+                               lctrPerTransferSync.pPerScanCtx);
 }
 
 /*************************************************************************************************/
@@ -550,8 +526,8 @@ void lctrTransferSyncActFailed(void)
 /*************************************************************************************************/
 void lctrTransferSyncActCancel(void)
 {
-  lctrPerTransferSync.pPerScanCtx->cancelCreateSync = TRUE;
-  SchRemove(&lctrPerTransferSync.pPerScanCtx->bod);
+    lctrPerTransferSync.pPerScanCtx->cancelCreateSync = TRUE;
+    SchRemove(&lctrPerTransferSync.pPerScanCtx->bod);
 }
 
 /*************************************************************************************************/
@@ -561,12 +537,11 @@ void lctrTransferSyncActCancel(void)
 /*************************************************************************************************/
 void lctrTransferSyncActTerminate(void)
 {
-  if (lctrPerTransferSync.pPerScanCtx->cancelCreateSync == TRUE)
-  {
-    lctrPerTransferSync.pPerScanCtx->cancelCreateSync = FALSE;
-  }
+    if (lctrPerTransferSync.pPerScanCtx->cancelCreateSync == TRUE) {
+        lctrPerTransferSync.pPerScanCtx->cancelCreateSync = FALSE;
+    }
 
-  lctrMstPerScanCleanupOp(lctrPerTransferSync.pPerScanCtx);
+    lctrMstPerScanCleanupOp(lctrPerTransferSync.pPerScanCtx);
 }
 
 /*************************************************************************************************/
@@ -578,19 +553,16 @@ void lctrTransferSyncActTerminate(void)
 /*************************************************************************************************/
 void lctrPerScanActSyncEstd(lctrPerScanCtx_t *pPerScanCtx)
 {
-  if (pPerScanCtx->createDispId == LCTR_DISP_PER_CREATE_SYNC)
-  {
-    /* Pack and notify the host about sync established event. */
-    lmgrPerAdvSyncEstdInd_t rpt;
+    if (pPerScanCtx->createDispId == LCTR_DISP_PER_CREATE_SYNC) {
+        /* Pack and notify the host about sync established event. */
+        lmgrPerAdvSyncEstdInd_t rpt;
 
-    lctrPerAdvSyncEstRptPack(pPerScanCtx, &rpt);
-    LmgrSendSyncEstInd(LL_SUCCESS, LCTR_GET_PER_SCAN_HANDLE(pPerScanCtx), &rpt);
-  }
-  else if (pPerScanCtx->createDispId == LCTR_DISP_TRANFER_SYNC)
-  {
-    /* Notify the host about periodic sync transfer received event. */
-    LctrSendPerSyncTrsfRcvdEvt(LL_SUCCESS, pPerScanCtx);
-  }
+        lctrPerAdvSyncEstRptPack(pPerScanCtx, &rpt);
+        LmgrSendSyncEstInd(LL_SUCCESS, LCTR_GET_PER_SCAN_HANDLE(pPerScanCtx), &rpt);
+    } else if (pPerScanCtx->createDispId == LCTR_DISP_TRANFER_SYNC) {
+        /* Notify the host about periodic sync transfer received event. */
+        LctrSendPerSyncTrsfRcvdEvt(LL_SUCCESS, pPerScanCtx);
+    }
 }
 
 /*************************************************************************************************/
@@ -602,11 +574,11 @@ void lctrPerScanActSyncEstd(lctrPerScanCtx_t *pPerScanCtx)
 /*************************************************************************************************/
 void lctrPerScanActSyncTerminate(lctrPerScanCtx_t *pPerScanCtx)
 {
-  pPerScanCtx->shutdown = TRUE;
+    pPerScanCtx->shutdown = TRUE;
 
-  SchRemove(&pPerScanCtx->bod);
+    SchRemove(&pPerScanCtx->bod);
 
-  /* Shutdown completes with events generated in BOD end callback. */
+    /* Shutdown completes with events generated in BOD end callback. */
 }
 
 /*************************************************************************************************/
@@ -618,7 +590,7 @@ void lctrPerScanActSyncTerminate(lctrPerScanCtx_t *pPerScanCtx)
 /*************************************************************************************************/
 void lctrPerScanActSyncTerminateDone(lctrPerScanCtx_t *pPerScanCtx)
 {
-  lctrMstPerScanCleanupOp(pPerScanCtx);
+    lctrMstPerScanCleanupOp(pPerScanCtx);
 }
 
 /*************************************************************************************************/
@@ -630,15 +602,15 @@ void lctrPerScanActSyncTerminateDone(lctrPerScanCtx_t *pPerScanCtx)
 /*************************************************************************************************/
 void lctrPerScanActSyncTimeout(lctrPerScanCtx_t *pPerScanCtx)
 {
-  pPerScanCtx->shutdown = TRUE;
+    pPerScanCtx->shutdown = TRUE;
 
-  SchRemove(&pPerScanCtx->bod);
+    SchRemove(&pPerScanCtx->bod);
 
-  WsfTimerStop(&pPerScanCtx->tmrSupTimeout);
+    WsfTimerStop(&pPerScanCtx->tmrSupTimeout);
 
-  LmgrSendSyncLostInd(LCTR_GET_PER_SCAN_HANDLE(pPerScanCtx));
+    LmgrSendSyncLostInd(LCTR_GET_PER_SCAN_HANDLE(pPerScanCtx));
 
-  /* Shutdown completes with events generated in BOD end callback. */
+    /* Shutdown completes with events generated in BOD end callback. */
 }
 
 /*************************************************************************************************/
@@ -650,32 +622,29 @@ void lctrPerScanActSyncTimeout(lctrPerScanCtx_t *pPerScanCtx)
 /*************************************************************************************************/
 void lctrPerScanActProcessAcad(lctrAcadMsg_t *pMsg)
 {
-  lctrPerScanCtx_t *pPerScanCtx = LCTR_GET_PER_SCAN_CTX(pMsg->hdr.handle);
+    lctrPerScanCtx_t *pPerScanCtx = LCTR_GET_PER_SCAN_CTX(pMsg->hdr.handle);
 
-  switch (pMsg->hdr.acadId)
-  {
-    case LCTR_ACAD_ID_CHAN_MAP_UPDATE:
-    {
-      LctrAcadChanMapUpd_t *pChanMapUpd = &pPerScanCtx->acadParams[LCTR_ACAD_ID_CHAN_MAP_UPDATE].chanMapUpdate;
+    switch (pMsg->hdr.acadId) {
+    case LCTR_ACAD_ID_CHAN_MAP_UPDATE: {
+        LctrAcadChanMapUpd_t *pChanMapUpd =
+            &pPerScanCtx->acadParams[LCTR_ACAD_ID_CHAN_MAP_UPDATE].chanMapUpdate;
 
-      if ((pChanMapUpd->instant - pMsg->hdr.eventCtr) <= pMsg->hdr.skip)
-      {
-        pPerScanCtx->chanParam.chanMask = pChanMapUpd->chanMask;
-        LmgrBuildRemapTable(&pPerScanCtx->chanParam);
-        pChanMapUpd->hdr.state = LCTR_ACAD_STATE_DISABLED;
-      }
-      break;
+        if ((pChanMapUpd->instant - pMsg->hdr.eventCtr) <= pMsg->hdr.skip) {
+            pPerScanCtx->chanParam.chanMask = pChanMapUpd->chanMask;
+            LmgrBuildRemapTable(&pPerScanCtx->chanParam);
+            pChanMapUpd->hdr.state = LCTR_ACAD_STATE_DISABLED;
+        }
+        break;
     }
 
-    case LCTR_ACAD_ID_BIG_INFO:
-    {
-      LctrAcadBigInfo_t *pBigInfo = &pPerScanCtx->acadParams[LCTR_ACAD_ID_BIG_INFO].bigInfo;
-      /* No action required. */
-      pBigInfo->hdr.state = LCTR_ACAD_STATE_DISABLED;
-      break;
+    case LCTR_ACAD_ID_BIG_INFO: {
+        LctrAcadBigInfo_t *pBigInfo = &pPerScanCtx->acadParams[LCTR_ACAD_ID_BIG_INFO].bigInfo;
+        /* No action required. */
+        pBigInfo->hdr.state = LCTR_ACAD_STATE_DISABLED;
+        break;
     }
 
     default:
-      break;
-  }
+        break;
+    }
 }

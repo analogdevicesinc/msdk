@@ -53,26 +53,25 @@ extern "C" {
 #include "redstat.h"
 
 /** Open for reading only. */
-#define RED_O_RDONLY    0x00000001U
+#define RED_O_RDONLY 0x00000001U
 
 /** Open for writing only. */
-#define RED_O_WRONLY    0x00000002U
+#define RED_O_WRONLY 0x00000002U
 
 /** Open for reading and writing. */
-#define RED_O_RDWR      0x00000004U
+#define RED_O_RDWR 0x00000004U
 
 /** File offset for all writes is end-of-file. */
-#define RED_O_APPEND    0x00000008U
+#define RED_O_APPEND 0x00000008U
 
 /** Create the file. */
-#define RED_O_CREAT     0x00000010U
+#define RED_O_CREAT 0x00000010U
 
 /** Error if path already exists. */
-#define RED_O_EXCL      0x00000020U
+#define RED_O_EXCL 0x00000020U
 
 /** Truncate file to size zero. */
-#define RED_O_TRUNC     0x00000040U
-
+#define RED_O_TRUNC 0x00000040U
 
 /** @brief Last file system error (errno).
 
@@ -101,37 +100,31 @@ extern "C" {
 */
 #define red_errno (*red_errnoptr())
 
-
 /** @brief Positions from which to seek within a file.
 */
-typedef enum
-{
+typedef enum {
     /*  0/1/2 are the traditional values for SET/CUR/END, respectively.  Prior
         to the release of Unix System V in 1983, the SEEK_* symbols did not
         exist and C programs hard-coded the 0/1/2 values with those meanings.
     */
-    RED_SEEK_SET = 0,   /**< Set file offset to given offset. */
-    RED_SEEK_CUR = 1,   /**< Set file offset to current offset plus signed offset. */
-    RED_SEEK_END = 2    /**< Set file offset to EOF plus signed offset. */
+    RED_SEEK_SET = 0, /**< Set file offset to given offset. */
+    RED_SEEK_CUR = 1, /**< Set file offset to current offset plus signed offset. */
+    RED_SEEK_END = 2 /**< Set file offset to EOF plus signed offset. */
 } REDWHENCE;
-
 
 #if REDCONF_API_POSIX_READDIR == 1
 /** @brief Opaque directory handle.
 */
 typedef struct sREDHANDLE REDDIR;
 
-
 /** @brief Directory entry information.
 */
-typedef struct
-{
-    uint32_t    d_ino;  /**< File serial number (inode number). */
-    char        d_name[REDCONF_NAME_MAX+1U];    /**< Name of entry. */
-    REDSTAT     d_stat; /**< File information (POSIX extension). */
+typedef struct {
+    uint32_t d_ino; /**< File serial number (inode number). */
+    char d_name[REDCONF_NAME_MAX + 1U]; /**< Name of entry. */
+    REDSTAT d_stat; /**< File information (POSIX extension). */
 } REDDIRENT;
 #endif
-
 
 int32_t red_init(void);
 int32_t red_uninit(void);
@@ -187,10 +180,8 @@ REDSTATUS *red_errnoptr(void);
 
 #endif /* REDCONF_API_POSIX */
 
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-

@@ -36,17 +36,16 @@
 **************************************************************************************************/
 
 /* Time to wait for control point response in seconds */
-#define UDSC_RESPONSE_TIMEOUT             45
+#define UDSC_RESPONSE_TIMEOUT 45
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /* Control block */
-static struct
-{
-  UdsRspCback_t     rspCback;            /* Control Point Response Callback */
-  wsfTimer_t        rspTimer;
+static struct {
+    UdsRspCback_t rspCback; /* Control Point Response Callback */
+    wsfTimer_t rspTimer;
 
 } UdscCb;
 
@@ -59,53 +58,31 @@ static struct
  */
 
 /*! Database change increment */
-static const attcDiscChar_t udscDbci =
-{
-  attDbciChUuid,
-  0
-};
+static const attcDiscChar_t udscDbci = { attDbciChUuid, 0 };
 
 /*! Database change increment CCC descriptor */
-static const attcDiscChar_t udscDcbiCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t udscDcbiCcc = { attCliChCfgUuid, ATTC_SET_DESCRIPTOR };
 
 /*! User index */
-static const attcDiscChar_t udscUi =
-{
-  attUiChUuid,
-  0
-};
+static const attcDiscChar_t udscUi = { attUiChUuid, 0 };
 
 /*! User control point */
-static const attcDiscChar_t udscUcp =
-{
-  attUcpChUuid,
-  0
-};
+static const attcDiscChar_t udscUcp = { attUcpChUuid, 0 };
 
 /*! User control point CCC descriptor */
-static const attcDiscChar_t udscUcpCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t udscUcpCcc = { attCliChCfgUuid, ATTC_SET_DESCRIPTOR };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *udscDiscCharList[] =
-{
-  &udscDbci,                   /*! Database Change Increment */
-  &udscDcbiCcc,                /*! Database Change Interval CCC descriptor */
-  &udscUi,                     /*! User Index */
-  &udscUcp,                    /*! User control point */
-  &udscUcpCcc,                 /*! User control point CCC descriptor */
+static const attcDiscChar_t *udscDiscCharList[] = {
+    &udscDbci, /*! Database Change Increment */
+    &udscDcbiCcc, /*! Database Change Interval CCC descriptor */
+    &udscUi, /*! User Index */
+    &udscUcp, /*! User control point */
+    &udscUcpCcc, /*! User control point CCC descriptor */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
 WSF_CT_ASSERT(UDSC_HDL_LIST_LEN == ((sizeof(udscDiscCharList) / sizeof(attcDiscChar_t *))));
-
 
 /*************************************************************************************************/
 /*!
@@ -122,8 +99,8 @@ WSF_CT_ASSERT(UDSC_HDL_LIST_LEN == ((sizeof(udscDiscCharList) / sizeof(attcDiscC
 /*************************************************************************************************/
 void UdscDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attUdsSvcUuid,
-                     UDSC_HDL_LIST_LEN, (attcDiscChar_t **) udscDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attUdsSvcUuid, UDSC_HDL_LIST_LEN,
+                       (attcDiscChar_t **)udscDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -139,32 +116,29 @@ void UdscDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 static void udscParseUcp(dmConnId_t connId, uint8_t *pValue, uint16_t len)
 {
-  uint8_t opcode;
+    uint8_t opcode;
 
-  BSTREAM_TO_INT8(opcode, pValue);
+    BSTREAM_TO_INT8(opcode, pValue);
 
-  if (opcode == UDSC_UCP_OPCODE_RESPONSE)
-  {
-    /* Opcode is a response message */
-    uint8_t responseOpcode;
-    uint8_t response, index = 0;
+    if (opcode == UDSC_UCP_OPCODE_RESPONSE) {
+        /* Opcode is a response message */
+        uint8_t responseOpcode;
+        uint8_t response, index = 0;
 
-    BSTREAM_TO_INT8(responseOpcode, pValue);
-    BSTREAM_TO_INT8(response, pValue);
+        BSTREAM_TO_INT8(responseOpcode, pValue);
+        BSTREAM_TO_INT8(response, pValue);
 
-    /* Stop the timer waiting for a control point response */
-    WsfTimerStop(&UdscCb.rspTimer);
+        /* Stop the timer waiting for a control point response */
+        WsfTimerStop(&UdscCb.rspTimer);
 
-    if ((response == UDSC_UCP_RSP_SUCCESS) && (responseOpcode == UDSC_UCP_OPCODE_RNU))
-    {
-      BSTREAM_TO_INT8(index, pValue);
+        if ((response == UDSC_UCP_RSP_SUCCESS) && (responseOpcode == UDSC_UCP_OPCODE_RNU)) {
+            BSTREAM_TO_INT8(index, pValue);
+        }
+
+        if (UdscCb.rspCback) {
+            UdscCb.rspCback(connId, responseOpcode, response, index);
+        }
     }
-
-    if (UdscCb.rspCback)
-    {
-      UdscCb.rspCback(connId, responseOpcode, response, index);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -182,22 +156,19 @@ static void udscParseUcp(dmConnId_t connId, uint8_t *pValue, uint16_t len)
 /*************************************************************************************************/
 uint8_t UdscValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 {
-  uint8_t status = ATT_SUCCESS;
+    uint8_t status = ATT_SUCCESS;
 
-  /* User Control Point */
-  if (pMsg->handle == pHdlList[UDSC_UCP_IDX])
-  {
-    APP_TRACE_INFO0("UDSC: User Control Point notification");
+    /* User Control Point */
+    if (pMsg->handle == pHdlList[UDSC_UCP_IDX]) {
+        APP_TRACE_INFO0("UDSC: User Control Point notification");
 
-    /* parse value */
-    udscParseUcp((dmConnId_t) pMsg->hdr.param, pMsg->pValue, pMsg->valueLen);
-  }
-  else
-  {
-    status = ATT_ERR_NOT_FOUND;
-  }
+        /* parse value */
+        udscParseUcp((dmConnId_t)pMsg->hdr.param, pMsg->pValue, pMsg->valueLen);
+    } else {
+        status = ATT_ERR_NOT_FOUND;
+    }
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -212,10 +183,9 @@ uint8_t UdscValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 /*************************************************************************************************/
 void UdscReadUserIndex(dmConnId_t connId, uint16_t handle)
 {
-  if (handle != ATT_HANDLE_NONE)
-  {
-    AttcReadReq(connId, handle);
-  }
+    if (handle != ATT_HANDLE_NONE) {
+        AttcReadReq(connId, handle);
+    }
 }
 
 /*************************************************************************************************/
@@ -230,10 +200,9 @@ void UdscReadUserIndex(dmConnId_t connId, uint16_t handle)
 /*************************************************************************************************/
 void UdscReadDatabaseChangeIncrement(dmConnId_t connId, uint16_t handle)
 {
-  if (handle != ATT_HANDLE_NONE)
-  {
-    AttcReadReq(connId, handle);
-  }
+    if (handle != ATT_HANDLE_NONE) {
+        AttcReadReq(connId, handle);
+    }
 }
 
 /*************************************************************************************************/
@@ -249,16 +218,15 @@ void UdscReadDatabaseChangeIncrement(dmConnId_t connId, uint16_t handle)
 /*************************************************************************************************/
 void UdscWriteDatabaseChangeIncrement(dmConnId_t connId, uint16_t handle, uint32_t increment)
 {
-  uint8_t   buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t   *p = buf;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t *p = buf;
 
-  if (handle != ATT_HANDLE_NONE)
-  {
-    /* build command */
-    UINT32_TO_BSTREAM(p, increment);
+    if (handle != ATT_HANDLE_NONE) {
+        /* build command */
+        UINT32_TO_BSTREAM(p, increment);
 
-    AttcWriteReq(connId, handle, (uint16_t) (p - buf), buf);
-  }
+        AttcWriteReq(connId, handle, (uint16_t)(p - buf), buf);
+    }
 }
 
 /*************************************************************************************************/
@@ -273,13 +241,14 @@ void UdscWriteDatabaseChangeIncrement(dmConnId_t connId, uint16_t handle, uint32
  *  \return None.
  */
 /*************************************************************************************************/
-static void udscWriteControlPoint(dmConnId_t connId, uint16_t handle, uint16_t valueLen, uint8_t *pValue)
+static void udscWriteControlPoint(dmConnId_t connId, uint16_t handle, uint16_t valueLen,
+                                  uint8_t *pValue)
 {
-  /* Start timer waiting for response */
-  WsfTimerStartSec(&UdscCb.rspTimer, UDSC_RESPONSE_TIMEOUT);
+    /* Start timer waiting for response */
+    WsfTimerStartSec(&UdscCb.rspTimer, UDSC_RESPONSE_TIMEOUT);
 
-  /* Send write request */
-  AttcWriteReq(connId, handle, valueLen, pValue);
+    /* Send write request */
+    AttcWriteReq(connId, handle, valueLen, pValue);
 }
 
 /*************************************************************************************************/
@@ -295,17 +264,16 @@ static void udscWriteControlPoint(dmConnId_t connId, uint16_t handle, uint16_t v
 /*************************************************************************************************/
 void UdscRegisterNewUser(dmConnId_t connId, uint16_t handle, uint16_t consentCode)
 {
-  uint8_t   buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t   *p = buf;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t *p = buf;
 
-  if (handle != ATT_HANDLE_NONE)
-  {
-    /* build command */
-    UINT8_TO_BSTREAM(p, UDSC_UCP_OPCODE_RNU);
-    UINT16_TO_BSTREAM(p, consentCode);
+    if (handle != ATT_HANDLE_NONE) {
+        /* build command */
+        UINT8_TO_BSTREAM(p, UDSC_UCP_OPCODE_RNU);
+        UINT16_TO_BSTREAM(p, consentCode);
 
-    udscWriteControlPoint(connId, handle, (uint16_t) (p - buf), buf);
-  }
+        udscWriteControlPoint(connId, handle, (uint16_t)(p - buf), buf);
+    }
 }
 
 /*************************************************************************************************/
@@ -322,18 +290,17 @@ void UdscRegisterNewUser(dmConnId_t connId, uint16_t handle, uint16_t consentCod
 /*************************************************************************************************/
 void UdscConsent(dmConnId_t connId, uint16_t handle, uint8_t index, uint16_t consentCode)
 {
-  uint8_t   buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t   *p = buf;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t *p = buf;
 
-  if (handle != ATT_HANDLE_NONE)
-  {
-    /* build command */
-    UINT8_TO_BSTREAM(p, UDSC_UCP_OPCODE_CONSENT);
-    UINT8_TO_BSTREAM(p, index);
-    UINT16_TO_BSTREAM(p, consentCode);
+    if (handle != ATT_HANDLE_NONE) {
+        /* build command */
+        UINT8_TO_BSTREAM(p, UDSC_UCP_OPCODE_CONSENT);
+        UINT8_TO_BSTREAM(p, index);
+        UINT16_TO_BSTREAM(p, consentCode);
 
-    udscWriteControlPoint(connId, handle, (uint16_t) (p - buf), buf);
-  }
+        udscWriteControlPoint(connId, handle, (uint16_t)(p - buf), buf);
+    }
 }
 
 /*************************************************************************************************/
@@ -348,16 +315,15 @@ void UdscConsent(dmConnId_t connId, uint16_t handle, uint8_t index, uint16_t con
 /*************************************************************************************************/
 void UdscDeleteUserData(dmConnId_t connId, uint16_t handle)
 {
-  uint8_t   buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t   *p = buf;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t *p = buf;
 
-  if (handle != ATT_HANDLE_NONE)
-  {
-    /* build command */
-    UINT8_TO_BSTREAM(p, UDSC_UCP_OPCODE_DUD);
+    if (handle != ATT_HANDLE_NONE) {
+        /* build command */
+        UINT8_TO_BSTREAM(p, UDSC_UCP_OPCODE_DUD);
 
-    udscWriteControlPoint(connId, handle, (uint16_t) (p - buf), buf);
-  }
+        udscWriteControlPoint(connId, handle, (uint16_t)(p - buf), buf);
+    }
 }
 
 /*************************************************************************************************/
@@ -369,8 +335,8 @@ void UdscDeleteUserData(dmConnId_t connId, uint16_t handle)
 /*************************************************************************************************/
 void UdscClose(void)
 {
-  /* Stop the timer waiting for a control point response */
-  WsfTimerStop(&UdscCb.rspTimer);
+    /* Stop the timer waiting for a control point response */
+    WsfTimerStop(&UdscCb.rspTimer);
 }
 
 /*************************************************************************************************/
@@ -386,8 +352,8 @@ void UdscClose(void)
 /*************************************************************************************************/
 void UdscInit(wsfHandlerId_t handlerId, uint8_t timerEvent, UdsRspCback_t rspCback)
 {
-  UdscCb.rspTimer.handlerId = handlerId;
-  UdscCb.rspTimer.msg.event = timerEvent;
+    UdscCb.rspTimer.handlerId = handlerId;
+    UdscCb.rspTimer.msg.event = timerEvent;
 
-  UdscCb.rspCback = rspCback;
+    UdscCb.rspCback = rspCback;
 }

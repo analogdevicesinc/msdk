@@ -64,10 +64,10 @@ extern uint8_t lctrChoosePreferredPhy(uint8_t val);
 /*************************************************************************************************/
 static void lctrCisMstResetHandler(void)
 {
-  BbBleCisSlaveInit();
-  BbBleCisMasterInit();
-  lctrCisDefaults();
-  LmgrMstCisInit();
+    BbBleCisSlaveInit();
+    BbBleCisMasterInit();
+    lctrCisDefaults();
+    LmgrMstCisInit();
 }
 
 /*************************************************************************************************/
@@ -77,19 +77,16 @@ static void lctrCisMstResetHandler(void)
 /*************************************************************************************************/
 static void lctrIsoTxPendingHandler(void)
 {
-  unsigned int i;
+    unsigned int i;
 
-  for (i = 0; i < pLctrRtCfg->maxCis; i++)
-  {
-    lctrCisCtx_t *pCisCtx = &pLctrCisTbl[i];
+    for (i = 0; i < pLctrRtCfg->maxCis; i++) {
+        lctrCisCtx_t *pCisCtx = &pLctrCisTbl[i];
 
-    if ((pCisCtx->enabled) &&
-        !WsfQueueEmpty(&pCisCtx->txArqQ))
-    {
-      lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
-      SchReload(&pCigCtx->cigBod);
+        if ((pCisCtx->enabled) && !WsfQueueEmpty(&pCisCtx->txArqQ)) {
+            lctrCigCtx_t *pCigCtx = lctrFindCigById(pCisCtx->cigId);
+            SchReload(&pCigCtx->cigBod);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -103,20 +100,17 @@ static void lctrIsoTxPendingHandler(void)
 /*************************************************************************************************/
 static uint8_t lctrMstCisChClassUpdate(uint64_t chanMap)
 {
-  uint16_t handle;
+    uint16_t handle;
 
-  /* Update for connections */
-  for (handle = 0; handle < pLctrRtCfg->maxConn; handle++)
-  {
-    if ((LctrIsConnHandleEnabled(handle)) &&
-        (LctrGetRole(handle) == LL_ROLE_MASTER))
-    {
-      /* Update the channel map for CIS master as well. */
-      LctrCisUpdateChanMap(handle);
+    /* Update for connections */
+    for (handle = 0; handle < pLctrRtCfg->maxConn; handle++) {
+        if ((LctrIsConnHandleEnabled(handle)) && (LctrGetRole(handle) == LL_ROLE_MASTER)) {
+            /* Update the channel map for CIS master as well. */
+            LctrCisUpdateChanMap(handle);
+        }
     }
-  }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -130,13 +124,13 @@ static uint8_t lctrMstCisChClassUpdate(uint64_t chanMap)
 /*************************************************************************************************/
 static bool_t lctrCisMstCheckCigParams(lctrCigCtx_t *pCigCtx)
 {
-  /* Check whether the CIG could be scheduled within the interval. */
-  if (pCigCtx->cigSyncDelayUsec >= (uint32_t)(LCTR_ISO_INT_TO_US(pCigCtx->isoInterval) - LL_BLE_TMSS_US))
-  {
-    return FALSE;
-  }
+    /* Check whether the CIG could be scheduled within the interval. */
+    if (pCigCtx->cigSyncDelayUsec >=
+        (uint32_t)(LCTR_ISO_INT_TO_US(pCigCtx->isoInterval) - LL_BLE_TMSS_US)) {
+        return FALSE;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -153,18 +147,18 @@ static bool_t lctrCisMstCheckCigParams(lctrCigCtx_t *pCigCtx)
 /*************************************************************************************************/
 static uint32_t lctrCalcSubEvtDurationUsecInterTest(LlCisCigParamsTest_t *pSetCigParamTest)
 {
-  uint32_t duration = 0;
+    uint32_t duration = 0;
 
-  lctrCisCtx_t *pCisCtx;
+    lctrCisCtx_t *pCisCtx;
 
-  for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++)
-  {
-    pCisCtx = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId);
+    for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++) {
+        pCisCtx = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId);
 
-    duration += lctrCisCalcSubEvtDurationUsecSeq(pCisCtx->phyMToS, pCisCtx->phySToM,
-                                                 pCisCtx->localDataPdu.maxTxLen, pCisCtx->localDataPdu.maxRxLen);
-  }
-  return duration;
+        duration += lctrCisCalcSubEvtDurationUsecSeq(pCisCtx->phyMToS, pCisCtx->phySToM,
+                                                     pCisCtx->localDataPdu.maxTxLen,
+                                                     pCisCtx->localDataPdu.maxRxLen);
+    }
+    return duration;
 }
 
 /*************************************************************************************************/
@@ -176,109 +170,106 @@ static uint32_t lctrCalcSubEvtDurationUsecInterTest(LlCisCigParamsTest_t *pSetCi
  *  \param      pCisParam         CIS parameters.
  */
 /*************************************************************************************************/
-static void lctrSetCis(lctrCisCtx_t *pCisCtx, LlCisCigParams_t *pSetCigParam, LlCisCisParams_t *pCisParam)
+static void lctrSetCis(lctrCisCtx_t *pCisCtx, LlCisCigParams_t *pSetCigParam,
+                       LlCisCisParams_t *pCisParam)
 {
-  pCisCtx->cisId = pCisParam->cisId;
-  pCisCtx->sca = pSetCigParam->sca;
-  pCisCtx->packing = pSetCigParam->packing;
-  pCisCtx->framing = pSetCigParam->framing;
-  pCisCtx->accessAddr = lctrComputeAccessAddr();
+    pCisCtx->cisId = pCisParam->cisId;
+    pCisCtx->sca = pSetCigParam->sca;
+    pCisCtx->packing = pSetCigParam->packing;
+    pCisCtx->framing = pSetCigParam->framing;
+    pCisCtx->accessAddr = lctrComputeAccessAddr();
 
-  if (pCisCtx->framing == LL_ISO_PDU_TYPE_UNFRAMED)
-  {
-    if (pSetCigParam->sduIntervalMToS <= 1250)
-    {
-      pSetCigParam->sduIntervalMToS = 1250;
-    }
-    if (pSetCigParam->sduIntervalSToM <= 1250)
-    {
-      pSetCigParam->sduIntervalSToM = 1250;
-    }
+    if (pCisCtx->framing == LL_ISO_PDU_TYPE_UNFRAMED) {
+        if (pSetCigParam->sduIntervalMToS <= 1250) {
+            pSetCigParam->sduIntervalMToS = 1250;
+        }
+        if (pSetCigParam->sduIntervalSToM <= 1250) {
+            pSetCigParam->sduIntervalSToM = 1250;
+        }
 
-    pCisCtx->isoInterval = LL_MATH_DIV_1250(pSetCigParam->sduIntervalMToS);    /* Make sure PDU interval the same as the SDU interval. Assume sduIntervalMToS equals sduIntervalSToM */
-    pCisCtx->sduIntervalMToS = pSetCigParam->sduIntervalMToS;
-    pCisCtx->sduIntervalSToM = pSetCigParam->sduIntervalSToM;
-    pCisCtx->localDataPdu.maxTxLen = WSF_MIN(pCisParam->sduSizeMToS, pLctrRtCfg->maxIsoPduLen);
-    pCisCtx->localDataPdu.maxRxLen = WSF_MIN(pCisParam->sduSizeSToM, pLctrRtCfg->maxIsoPduLen);
-    pCisCtx->sduSizeMToS = pCisParam->sduSizeMToS;
-    pCisCtx->sduSizeSToM = pCisParam->sduSizeSToM;
-    pCisCtx->phyMToS = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCisParam->phyMToS));
-    pCisCtx->phySToM = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCisParam->phySToM));
-    pCisCtx->ftMToS = LlMathDivideUint32(pSetCigParam->transLatMToS * 1000, LCTR_ISO_INT_TO_US(pCisCtx->isoInterval));
-    pCisCtx->ftSToM = LlMathDivideUint32(pSetCigParam->transLatSToM * 1000, LCTR_ISO_INT_TO_US(pCisCtx->isoInterval));
+        pCisCtx->isoInterval = LL_MATH_DIV_1250(
+            pSetCigParam
+                ->sduIntervalMToS); /* Make sure PDU interval the same as the SDU interval. Assume sduIntervalMToS equals sduIntervalSToM */
+        pCisCtx->sduIntervalMToS = pSetCigParam->sduIntervalMToS;
+        pCisCtx->sduIntervalSToM = pSetCigParam->sduIntervalSToM;
+        pCisCtx->localDataPdu.maxTxLen = WSF_MIN(pCisParam->sduSizeMToS, pLctrRtCfg->maxIsoPduLen);
+        pCisCtx->localDataPdu.maxRxLen = WSF_MIN(pCisParam->sduSizeSToM, pLctrRtCfg->maxIsoPduLen);
+        pCisCtx->sduSizeMToS = pCisParam->sduSizeMToS;
+        pCisCtx->sduSizeSToM = pCisParam->sduSizeSToM;
+        pCisCtx->phyMToS = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCisParam->phyMToS));
+        pCisCtx->phySToM = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCisParam->phySToM));
+        pCisCtx->ftMToS = LlMathDivideUint32(pSetCigParam->transLatMToS * 1000,
+                                             LCTR_ISO_INT_TO_US(pCisCtx->isoInterval));
+        pCisCtx->ftSToM = LlMathDivideUint32(pSetCigParam->transLatSToM * 1000,
+                                             LCTR_ISO_INT_TO_US(pCisCtx->isoInterval));
 
-    if (pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen * pCisCtx->localDataPdu.maxTxLen < pCisCtx->sduSizeMToS)
-    {
-      pCisCtx->bnMToS = pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen + 1;
-    }
-    else
-    {
-      pCisCtx->bnMToS = pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen;
-    }
+        if (pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen * pCisCtx->localDataPdu.maxTxLen <
+            pCisCtx->sduSizeMToS) {
+            pCisCtx->bnMToS = pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen + 1;
+        } else {
+            pCisCtx->bnMToS = pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen;
+        }
 
-    if (pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen * pCisCtx->localDataPdu.maxRxLen < pCisCtx->sduSizeSToM)
-    {
-      pCisCtx->bnSToM = pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen + 1;
-    }
-    else
-    {
-      pCisCtx->bnSToM = pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen;
-    }
+        if (pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen * pCisCtx->localDataPdu.maxRxLen <
+            pCisCtx->sduSizeSToM) {
+            pCisCtx->bnSToM = pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen + 1;
+        } else {
+            pCisCtx->bnSToM = pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen;
+        }
 
-    pCisCtx->nse = WSF_MAX(pCisCtx->bnSToM, pCisCtx->bnMToS) + WSF_MAX(pCisParam->rteMToS, pCisParam->rteSToM);
+        pCisCtx->nse = WSF_MAX(pCisCtx->bnSToM, pCisCtx->bnMToS) +
+                       WSF_MAX(pCisParam->rteMToS, pCisParam->rteSToM);
 
-    LL_TRACE_INFO1("lctrSetCis, maxTxLen=%d", pCisCtx->localDataPdu.maxTxLen);
-    LL_TRACE_INFO1("lctrSetCis, sduMToS=%d", pCisCtx->sduSizeMToS);
-    LL_TRACE_INFO1("lctrSetCis, bnMToS=%d", pCisCtx->bnMToS);
+        LL_TRACE_INFO1("lctrSetCis, maxTxLen=%d", pCisCtx->localDataPdu.maxTxLen);
+        LL_TRACE_INFO1("lctrSetCis, sduMToS=%d", pCisCtx->sduSizeMToS);
+        LL_TRACE_INFO1("lctrSetCis, bnMToS=%d", pCisCtx->bnMToS);
 
-  }
-  else /* LL_ISO_PDU_TYPE_FRAMED */
-  {
-    if (pSetCigParam->sduIntervalMToS <= 1250)
+    } else /* LL_ISO_PDU_TYPE_FRAMED */
     {
-      pSetCigParam->sduIntervalMToS = 1250;
-    }
-    if (pSetCigParam->sduIntervalSToM <= 1250)
-    {
-      pSetCigParam->sduIntervalSToM = 1250;
-    }
+        if (pSetCigParam->sduIntervalMToS <= 1250) {
+            pSetCigParam->sduIntervalMToS = 1250;
+        }
+        if (pSetCigParam->sduIntervalSToM <= 1250) {
+            pSetCigParam->sduIntervalSToM = 1250;
+        }
 
-    pCisCtx->isoInterval = LL_MATH_DIV_1250(pSetCigParam->sduIntervalMToS);    /* Make sure PDU interval the same as the SDU interval. Assume sduIntervalMToS equals sduIntervalSToM */
-    pCisCtx->sduIntervalMToS = pSetCigParam->sduIntervalMToS;
-    pCisCtx->sduIntervalSToM = pSetCigParam->sduIntervalSToM;
-    pCisCtx->localDataPdu.maxTxLen = WSF_MIN(pCisParam->sduSizeMToS, pLctrRtCfg->maxIsoPduLen);
-    pCisCtx->localDataPdu.maxRxLen = WSF_MIN(pCisParam->sduSizeSToM, pLctrRtCfg->maxIsoPduLen);
-    pCisCtx->sduSizeMToS = pCisParam->sduSizeMToS;
-    pCisCtx->sduSizeSToM = pCisParam->sduSizeSToM;
-    pCisCtx->phyMToS = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCisParam->phyMToS));
-    pCisCtx->phySToM = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCisParam->phySToM));
-    pCisCtx->ftMToS = LlMathDivideUint32(pSetCigParam->transLatMToS * 1000, LCTR_ISO_INT_TO_US(pCisCtx->isoInterval));
-    pCisCtx->ftSToM = LlMathDivideUint32(pSetCigParam->transLatSToM * 1000, LCTR_ISO_INT_TO_US(pCisCtx->isoInterval));
+        pCisCtx->isoInterval = LL_MATH_DIV_1250(
+            pSetCigParam
+                ->sduIntervalMToS); /* Make sure PDU interval the same as the SDU interval. Assume sduIntervalMToS equals sduIntervalSToM */
+        pCisCtx->sduIntervalMToS = pSetCigParam->sduIntervalMToS;
+        pCisCtx->sduIntervalSToM = pSetCigParam->sduIntervalSToM;
+        pCisCtx->localDataPdu.maxTxLen = WSF_MIN(pCisParam->sduSizeMToS, pLctrRtCfg->maxIsoPduLen);
+        pCisCtx->localDataPdu.maxRxLen = WSF_MIN(pCisParam->sduSizeSToM, pLctrRtCfg->maxIsoPduLen);
+        pCisCtx->sduSizeMToS = pCisParam->sduSizeMToS;
+        pCisCtx->sduSizeSToM = pCisParam->sduSizeSToM;
+        pCisCtx->phyMToS = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCisParam->phyMToS));
+        pCisCtx->phySToM = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCisParam->phySToM));
+        pCisCtx->ftMToS = LlMathDivideUint32(pSetCigParam->transLatMToS * 1000,
+                                             LCTR_ISO_INT_TO_US(pCisCtx->isoInterval));
+        pCisCtx->ftSToM = LlMathDivideUint32(pSetCigParam->transLatSToM * 1000,
+                                             LCTR_ISO_INT_TO_US(pCisCtx->isoInterval));
 
-    if (pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen * pCisCtx->localDataPdu.maxTxLen < pCisCtx->sduSizeMToS)
-    {
-      pCisCtx->bnMToS = pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen + 1;
-    }
-    else
-    {
-      pCisCtx->bnMToS = pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen;
-    }
+        if (pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen * pCisCtx->localDataPdu.maxTxLen <
+            pCisCtx->sduSizeMToS) {
+            pCisCtx->bnMToS = pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen + 1;
+        } else {
+            pCisCtx->bnMToS = pCisCtx->sduSizeMToS / pCisCtx->localDataPdu.maxTxLen;
+        }
 
-    if (pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen * pCisCtx->localDataPdu.maxRxLen < pCisCtx->sduSizeSToM)
-    {
-      pCisCtx->bnSToM = pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen + 1;
-    }
-    else
-    {
-      pCisCtx->bnSToM = pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen;
-    }
+        if (pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen * pCisCtx->localDataPdu.maxRxLen <
+            pCisCtx->sduSizeSToM) {
+            pCisCtx->bnSToM = pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen + 1;
+        } else {
+            pCisCtx->bnSToM = pCisCtx->sduSizeSToM / pCisCtx->localDataPdu.maxRxLen;
+        }
 
-    pCisCtx->nse = WSF_MAX(pCisCtx->bnSToM, pCisCtx->bnMToS) + WSF_MAX(pCisParam->rteMToS, pCisParam->rteSToM);
+        pCisCtx->nse = WSF_MAX(pCisCtx->bnSToM, pCisCtx->bnMToS) +
+                       WSF_MAX(pCisParam->rteMToS, pCisParam->rteSToM);
 
-    LL_TRACE_INFO1("lctrSetCis, maxTxLen=%d", pCisCtx->localDataPdu.maxTxLen);
-    LL_TRACE_INFO1("lctrSetCis, sduMToS=%d", pCisCtx->sduSizeMToS);
-    LL_TRACE_INFO1("lctrSetCis, bnMToS=%d", pCisCtx->bnMToS);
-  }
+        LL_TRACE_INFO1("lctrSetCis, maxTxLen=%d", pCisCtx->localDataPdu.maxTxLen);
+        LL_TRACE_INFO1("lctrSetCis, sduMToS=%d", pCisCtx->sduSizeMToS);
+        LL_TRACE_INFO1("lctrSetCis, bnMToS=%d", pCisCtx->bnMToS);
+    }
 }
 
 /*************************************************************************************************/
@@ -291,91 +282,98 @@ static void lctrSetCis(lctrCisCtx_t *pCisCtx, LlCisCigParams_t *pSetCigParam, Ll
 /*************************************************************************************************/
 static void lctrSetCig(lctrCigCtx_t *pCigCtx, LlCisCigParams_t *pSetCigParam)
 {
-  lctrCisCtx_t *pCisCtx, *pCisCtxTemp, *pCisCtxFirst;
+    lctrCisCtx_t *pCisCtx, *pCisCtxTemp, *pCisCtxFirst;
 
-  /* Calculate subevent interval and offset for each CIS. */
-  for (unsigned int i = 0; i < pSetCigParam->numCis; i++)
-  {
-    pCisCtx = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[i].cisId);
+    /* Calculate subevent interval and offset for each CIS. */
+    for (unsigned int i = 0; i < pSetCigParam->numCis; i++) {
+        pCisCtx = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[i].cisId);
 
-    WSF_ASSERT(pCisCtx);
+        WSF_ASSERT(pCisCtx);
 
-    if (pSetCigParam->packing == LL_PACKING_INTERLEAVED)
-    {
-      pCisCtx->subIntervUsec = lctrCisCalcSubEvtDurationUsecInter(pSetCigParam);
-      pCisCtx->delayUsec = lctrCisCalcSubEvtDurationUsecSeq(pCisCtx->phyMToS, pCisCtx->phySToM,
-                                                            pCisCtx->localDataPdu.maxTxLen, pCisCtx->localDataPdu.maxRxLen);
+        if (pSetCigParam->packing == LL_PACKING_INTERLEAVED) {
+            pCisCtx->subIntervUsec = lctrCisCalcSubEvtDurationUsecInter(pSetCigParam);
+            pCisCtx->delayUsec = lctrCisCalcSubEvtDurationUsecSeq(pCisCtx->phyMToS,
+                                                                  pCisCtx->phySToM,
+                                                                  pCisCtx->localDataPdu.maxTxLen,
+                                                                  pCisCtx->localDataPdu.maxRxLen);
+        } else {
+            /* LL_PACKING_SEQUENTIAL */
+            pCisCtx->subIntervUsec = lctrCisCalcSubEvtDurationUsecSeq(
+                pCisCtx->phyMToS, pCisCtx->phySToM, pCisCtx->localDataPdu.maxTxLen,
+                pCisCtx->localDataPdu.maxRxLen);
+            pCisCtx->delayUsec = pCisCtx->subIntervUsec;
+        }
+
+        /* The formula is (2 * CIS_interval * (master_sca + slave_sca) / 1000000) */
+        WSF_ASSERT((uint64_t)pCisCtx->subIntervUsec >
+                   WSF_MIN(LL_BLE_TMSS_US,
+                           LL_MATH_DIV_10E6(2 * LCTR_ISO_INT_TO_US(pCisCtx->isoInterval) *
+                                            ((uint64_t)lctrCalcTotalAccuracy(pSetCigParam->sca)))));
+        LL_TRACE_INFO1("lctrSetCig,     subIntervUsec=%d", pCisCtx->subIntervUsec);
+        LL_TRACE_INFO1("lctrSetCig,     delayUsec=%d", pCisCtx->delayUsec);
     }
-    else
-    {
-      /* LL_PACKING_SEQUENTIAL */
-      pCisCtx->subIntervUsec = lctrCisCalcSubEvtDurationUsecSeq(pCisCtx->phyMToS, pCisCtx->phySToM,
-                                                                pCisCtx->localDataPdu.maxTxLen, pCisCtx->localDataPdu.maxRxLen);
-      pCisCtx->delayUsec = pCisCtx->subIntervUsec;
+
+    /* Calculate CIG sync delay and CIS sync delay. */
+    if (pSetCigParam->packing == LL_PACKING_INTERLEAVED) {
+        pCisCtxFirst = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[0].cisId);
+        WSF_ASSERT(pCisCtxFirst);
+
+        pCigCtx->cigSyncDelayUsec = pCisCtxFirst->cigSyncDelayUsec =
+            pCisCtxFirst->cisSyncDelayUsec = pCisCtxFirst->subIntervUsec * pCisCtxFirst->nse;
+        pCigCtx->isoInterval =
+            pCisCtxFirst
+                ->isoInterval; /* CISs have the same ISO interval and it is the same as CIG. */
+
+        for (unsigned int i = 1; i < pSetCigParam->numCis; i++) {
+            pCisCtx = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[i].cisId);
+
+            WSF_ASSERT(pCisCtx);
+
+            uint32_t durationUs = 0;
+
+            for (unsigned int j = 0; j < i; j++) {
+                pCisCtxTemp =
+                    lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[j].cisId);
+                durationUs += lctrCisCalcSubEvtDurationUsecSeq(pCisCtxTemp->phyMToS,
+                                                               pCisCtxTemp->phySToM,
+                                                               pCisCtxTemp->localDataPdu.maxTxLen,
+                                                               pCisCtxTemp->localDataPdu.maxRxLen);
+            }
+            pCisCtx->cisSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec - durationUs;
+            pCisCtx->cigSyncDelayUsec =
+                pCisCtxFirst->cisSyncDelayUsec; /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
+        }
+    } else {
+        /* LL_PACKING_SEQUENTIAL */
+        pCisCtxFirst = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[0].cisId);
+
+        WSF_ASSERT(pCisCtxFirst);
+
+        for (unsigned int i = 0; i < pSetCigParam->numCis; i++) {
+            pCisCtx = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[i].cisId);
+
+            WSF_ASSERT(pCisCtx);
+
+            for (unsigned int j = i; j < pSetCigParam->numCis; j++) {
+                pCisCtxTemp =
+                    lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[j].cisId);
+
+                pCisCtx->cisSyncDelayUsec += (pCisCtxTemp->subIntervUsec * pCisCtxTemp->nse);
+            }
+
+            pCisCtx->cigSyncDelayUsec =
+                pCisCtxFirst->cisSyncDelayUsec; /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
+            LL_TRACE_INFO1("LL_PACKING_SEQUENTIAL, cisSyncDelayUsec=%d", pCisCtx->cisSyncDelayUsec);
+        }
+        pCigCtx->cigSyncDelayUsec =
+            pCisCtxFirst->cisSyncDelayUsec; /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
+        pCigCtx->isoInterval =
+            pCisCtxFirst
+                ->isoInterval; /* CISs have the same ISO interval and it is the same as CIG. */
     }
 
-    /* The formula is (2 * CIS_interval * (master_sca + slave_sca) / 1000000) */
-    WSF_ASSERT((uint64_t)pCisCtx->subIntervUsec > WSF_MIN(LL_BLE_TMSS_US, LL_MATH_DIV_10E6(2 * LCTR_ISO_INT_TO_US(pCisCtx->isoInterval) * ((uint64_t)lctrCalcTotalAccuracy(pSetCigParam->sca)))));
-    LL_TRACE_INFO1("lctrSetCig,     subIntervUsec=%d",      pCisCtx->subIntervUsec);
-    LL_TRACE_INFO1("lctrSetCig,     delayUsec=%d",          pCisCtx->delayUsec);
-  }
-
-  /* Calculate CIG sync delay and CIS sync delay. */
-  if (pSetCigParam->packing == LL_PACKING_INTERLEAVED)
-  {
-    pCisCtxFirst = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[0].cisId);
-    WSF_ASSERT(pCisCtxFirst);
-
-    pCigCtx->cigSyncDelayUsec = pCisCtxFirst->cigSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec = pCisCtxFirst->subIntervUsec * pCisCtxFirst->nse;
-    pCigCtx->isoInterval = pCisCtxFirst->isoInterval;    /* CISs have the same ISO interval and it is the same as CIG. */
-
-    for (unsigned int i = 1; i < pSetCigParam->numCis; i++)
-    {
-      pCisCtx = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[i].cisId);
-
-      WSF_ASSERT(pCisCtx);
-
-      uint32_t durationUs = 0;
-
-      for (unsigned int j = 0; j < i; j++)
-      {
-        pCisCtxTemp = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[j].cisId);
-        durationUs += lctrCisCalcSubEvtDurationUsecSeq(pCisCtxTemp->phyMToS, pCisCtxTemp->phySToM,
-                                                       pCisCtxTemp->localDataPdu.maxTxLen, pCisCtxTemp->localDataPdu.maxRxLen);
-      }
-      pCisCtx->cisSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec - durationUs;
-      pCisCtx->cigSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec;   /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
-    }
-  }
-  else
-  {
-    /* LL_PACKING_SEQUENTIAL */
-    pCisCtxFirst = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[0].cisId);
-
-    WSF_ASSERT(pCisCtxFirst);
-
-    for (unsigned int i = 0; i < pSetCigParam->numCis; i++)
-    {
-      pCisCtx = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[i].cisId);
-
-      WSF_ASSERT(pCisCtx);
-
-      for (unsigned int j = i; j < pSetCigParam->numCis; j++)
-      {
-        pCisCtxTemp = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[j].cisId);
-
-        pCisCtx->cisSyncDelayUsec += (pCisCtxTemp->subIntervUsec * pCisCtxTemp->nse);
-      }
-
-      pCisCtx->cigSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec;   /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
-      LL_TRACE_INFO1("LL_PACKING_SEQUENTIAL, cisSyncDelayUsec=%d", pCisCtx->cisSyncDelayUsec);
-    }
-    pCigCtx->cigSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec;    /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
-    pCigCtx->isoInterval = pCisCtxFirst->isoInterval;              /* CISs have the same ISO interval and it is the same as CIG. */
-  }
-
-  pCigCtx->packing = pSetCigParam->packing;
-  pCigCtx->isValid = lctrCisMstCheckCigParams(pCigCtx);
+    pCigCtx->packing = pSetCigParam->packing;
+    pCigCtx->isValid = lctrCisMstCheckCigParams(pCigCtx);
 }
 
 /*************************************************************************************************/
@@ -388,88 +386,100 @@ static void lctrSetCig(lctrCigCtx_t *pCigCtx, LlCisCigParams_t *pSetCigParam)
 /*************************************************************************************************/
 static void lctrSetCigTest(lctrCigCtx_t *pCigCtx, LlCisCigParamsTest_t *pSetCigParamTest)
 {
-  lctrCisCtx_t *pCisCtx, *pCisCtxTemp, *pCisCtxFirst;
+    lctrCisCtx_t *pCisCtx, *pCisCtxTemp, *pCisCtxFirst;
 
-  /* Calculate subevent interval for each CIS. */
-  for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++)
-  {
-    pCisCtx = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId);
+    /* Calculate subevent interval for each CIS. */
+    for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++) {
+        pCisCtx = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId);
 
-    WSF_ASSERT(pCisCtx);
+        WSF_ASSERT(pCisCtx);
 
-    if (pSetCigParamTest->packing == LL_PACKING_INTERLEAVED)
-    {
-      pCisCtx->subIntervUsec = lctrCalcSubEvtDurationUsecInterTest(pSetCigParamTest);
-      pCisCtx->delayUsec = lctrCisCalcSubEvtDurationUsecSeq(pCisCtx->phyMToS, pCisCtx->phySToM,
-                                                            pCisCtx->localDataPdu.maxTxLen, pCisCtx->localDataPdu.maxRxLen);
+        if (pSetCigParamTest->packing == LL_PACKING_INTERLEAVED) {
+            pCisCtx->subIntervUsec = lctrCalcSubEvtDurationUsecInterTest(pSetCigParamTest);
+            pCisCtx->delayUsec = lctrCisCalcSubEvtDurationUsecSeq(pCisCtx->phyMToS,
+                                                                  pCisCtx->phySToM,
+                                                                  pCisCtx->localDataPdu.maxTxLen,
+                                                                  pCisCtx->localDataPdu.maxRxLen);
+        } else {
+            /* LL_PACKING_SEQUENTIAL */
+            pCisCtx->subIntervUsec = lctrCisCalcSubEvtDurationUsecSeq(
+                pCisCtx->phyMToS, pCisCtx->phySToM, pCisCtx->localDataPdu.maxTxLen,
+                pCisCtx->localDataPdu.maxRxLen);
+            pCisCtx->delayUsec = pCisCtx->subIntervUsec;
+        }
+
+        /* The formula is (2 * CIS_interva *(master_sca + slave_sca) / 1000000) */
+        WSF_ASSERT(
+            (uint64_t)pCisCtx->subIntervUsec >
+            WSF_MIN(LL_BLE_TMSS_US,
+                    LL_MATH_DIV_10E6(2 * LCTR_ISO_INT_TO_US(pCisCtx->isoInterval) *
+                                     ((uint64_t)lctrCalcTotalAccuracy(pSetCigParamTest->sca)))));
     }
-    else
-    {
-      /* LL_PACKING_SEQUENTIAL */
-      pCisCtx->subIntervUsec = lctrCisCalcSubEvtDurationUsecSeq(pCisCtx->phyMToS, pCisCtx->phySToM,
-                                                                pCisCtx->localDataPdu.maxTxLen, pCisCtx->localDataPdu.maxRxLen);
-      pCisCtx->delayUsec = pCisCtx->subIntervUsec;
+
+    /* Calculate CIG sync delay and CIS sync delay. */
+    if (pSetCigParamTest->packing == LL_PACKING_INTERLEAVED) {
+        pCisCtxFirst =
+            lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[0].cisId);
+        WSF_ASSERT(pCisCtxFirst);
+
+        pCigCtx->cigSyncDelayUsec = pCisCtxFirst->cigSyncDelayUsec =
+            pCisCtxFirst->cisSyncDelayUsec = pCisCtxFirst->subIntervUsec * pCisCtxFirst->nse;
+        pCigCtx->isoInterval =
+            pCisCtxFirst
+                ->isoInterval; /* CISs have the same ISO interval and it is the same as CIG. */
+
+        for (unsigned int i = 1; i < pSetCigParamTest->numCis; i++) {
+            pCisCtx =
+                lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId);
+
+            WSF_ASSERT(pCisCtx);
+
+            uint32_t durationUs = 0;
+
+            for (unsigned int j = 0; j < i; j++) {
+                pCisCtxTemp =
+                    lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[j].cisId);
+                durationUs += lctrCisCalcSubEvtDurationUsecSeq(pCisCtxTemp->phyMToS,
+                                                               pCisCtxTemp->phySToM,
+                                                               pCisCtxTemp->localDataPdu.maxTxLen,
+                                                               pCisCtxTemp->localDataPdu.maxRxLen);
+            }
+            pCisCtx->cisSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec - durationUs;
+            pCisCtx->cigSyncDelayUsec =
+                pCisCtxFirst->cisSyncDelayUsec; /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
+        }
+    } else {
+        pCisCtxFirst =
+            lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[0].cisId);
+
+        WSF_ASSERT(pCisCtxFirst);
+
+        /* LL_PACKING_SEQUENTIAL */
+        for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++) {
+            pCisCtx =
+                lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId);
+
+            WSF_ASSERT(pCisCtx);
+
+            for (unsigned int j = i; j < pSetCigParamTest->numCis; j++) {
+                pCisCtxTemp =
+                    lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[j].cisId);
+
+                pCisCtx->cisSyncDelayUsec += (pCisCtxTemp->subIntervUsec * pCisCtxTemp->nse);
+            }
+
+            pCisCtx->cigSyncDelayUsec =
+                pCisCtxFirst->cisSyncDelayUsec; /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
+        }
+        pCigCtx->cigSyncDelayUsec =
+            pCisCtxFirst->cisSyncDelayUsec; /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
+        pCigCtx->isoInterval =
+            pCisCtxFirst
+                ->isoInterval; /* CISs have the same ISO interval and it is the same as CIG. */
     }
 
-    /* The formula is (2 * CIS_interva *(master_sca + slave_sca) / 1000000) */
-    WSF_ASSERT((uint64_t)pCisCtx->subIntervUsec > WSF_MIN(LL_BLE_TMSS_US, LL_MATH_DIV_10E6(2 * LCTR_ISO_INT_TO_US(pCisCtx->isoInterval) * ((uint64_t)lctrCalcTotalAccuracy(pSetCigParamTest->sca)))));
-  }
-
-  /* Calculate CIG sync delay and CIS sync delay. */
-  if (pSetCigParamTest->packing == LL_PACKING_INTERLEAVED)
-  {
-    pCisCtxFirst = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[0].cisId);
-    WSF_ASSERT(pCisCtxFirst);
-
-    pCigCtx->cigSyncDelayUsec = pCisCtxFirst->cigSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec = pCisCtxFirst->subIntervUsec * pCisCtxFirst->nse;
-    pCigCtx->isoInterval = pCisCtxFirst->isoInterval;    /* CISs have the same ISO interval and it is the same as CIG. */
-
-    for (unsigned int i = 1; i < pSetCigParamTest->numCis; i++)
-    {
-      pCisCtx = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId);
-
-      WSF_ASSERT(pCisCtx);
-
-      uint32_t durationUs = 0;
-
-      for (unsigned int j = 0; j < i; j++)
-      {
-        pCisCtxTemp = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[j].cisId);
-        durationUs += lctrCisCalcSubEvtDurationUsecSeq(pCisCtxTemp->phyMToS, pCisCtxTemp->phySToM,
-                                                       pCisCtxTemp->localDataPdu.maxTxLen, pCisCtxTemp->localDataPdu.maxRxLen);
-      }
-      pCisCtx->cisSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec - durationUs;
-      pCisCtx->cigSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec;   /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
-    }
-  }
-  else
-  {
-    pCisCtxFirst = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[0].cisId);
-
-    WSF_ASSERT(pCisCtxFirst);
-
-    /* LL_PACKING_SEQUENTIAL */
-    for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++)
-    {
-      pCisCtx = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId);
-
-      WSF_ASSERT(pCisCtx);
-
-      for (unsigned int j = i; j < pSetCigParamTest->numCis; j++)
-      {
-        pCisCtxTemp = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[j].cisId);
-
-        pCisCtx->cisSyncDelayUsec += (pCisCtxTemp->subIntervUsec * pCisCtxTemp->nse);
-      }
-
-      pCisCtx->cigSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec;   /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
-    }
-    pCigCtx->cigSyncDelayUsec = pCisCtxFirst->cisSyncDelayUsec;             /* CIG_SYNC_DELAY = CIS_SYNC_DELAY[0] */
-    pCigCtx->isoInterval = pCisCtxFirst->isoInterval;                       /* CISs have the same ISO interval and it is the same as CIG. */
-  }
-
-  pCigCtx->packing = pSetCigParamTest->packing;
-  pCigCtx->isValid = lctrCisMstCheckCigParams(pCigCtx);
+    pCigCtx->packing = pSetCigParamTest->packing;
+    pCigCtx->isValid = lctrCisMstCheckCigParams(pCigCtx);
 }
 
 /*************************************************************************************************/
@@ -484,32 +494,32 @@ static void lctrSetCigTest(lctrCigCtx_t *pCigCtx, LlCisCigParamsTest_t *pSetCigP
 static void lctrSetCisTest(lctrCisCtx_t *pCisCtx, LlCisCigParamsTest_t *pSetCigParamTest,
                            LlCisCigCisParamsTest_t *pCigCisParamTest)
 {
-  pCisCtx->sduIntervalMToS = pSetCigParamTest->sduIntervalMToS;
-  pCisCtx->sduIntervalSToM = pSetCigParamTest->sduIntervalSToM;
-  pCisCtx->ftMToS = pSetCigParamTest->ftMToS;
-  pCisCtx->ftSToM = pSetCigParamTest->ftSToM;
-  pCisCtx->isoInterval = pSetCigParamTest->isoInterval;
-  pCisCtx->sca = pSetCigParamTest->sca;
-  pCisCtx->packing = pSetCigParamTest->packing;
-  pCisCtx->framing = pSetCigParamTest->framing;
+    pCisCtx->sduIntervalMToS = pSetCigParamTest->sduIntervalMToS;
+    pCisCtx->sduIntervalSToM = pSetCigParamTest->sduIntervalSToM;
+    pCisCtx->ftMToS = pSetCigParamTest->ftMToS;
+    pCisCtx->ftSToM = pSetCigParamTest->ftSToM;
+    pCisCtx->isoInterval = pSetCigParamTest->isoInterval;
+    pCisCtx->sca = pSetCigParamTest->sca;
+    pCisCtx->packing = pSetCigParamTest->packing;
+    pCisCtx->framing = pSetCigParamTest->framing;
 
-  pCisCtx->cisId = pCigCisParamTest->cisId;
-  pCisCtx->nse = pCigCisParamTest->nse;
-  pCisCtx->sduSizeMToS = pCigCisParamTest->sduSizeMToS;
-  pCisCtx->sduSizeSToM = pCigCisParamTest->sduSizeSToM;
-  pCisCtx->phyMToS = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCigCisParamTest->phyMToS));
-  pCisCtx->phySToM = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCigCisParamTest->phySToM));
-  pCisCtx->bnMToS = pCigCisParamTest->bnMToS;
-  pCisCtx->bnSToM = pCigCisParamTest->bnSToM;
+    pCisCtx->cisId = pCigCisParamTest->cisId;
+    pCisCtx->nse = pCigCisParamTest->nse;
+    pCisCtx->sduSizeMToS = pCigCisParamTest->sduSizeMToS;
+    pCisCtx->sduSizeSToM = pCigCisParamTest->sduSizeSToM;
+    pCisCtx->phyMToS = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCigCisParamTest->phyMToS));
+    pCisCtx->phySToM = lctrPhysBitToPhy(lctrChoosePreferredPhy(pCigCisParamTest->phySToM));
+    pCisCtx->bnMToS = pCigCisParamTest->bnMToS;
+    pCisCtx->bnSToM = pCigCisParamTest->bnSToM;
 
-  pCisCtx->accessAddr = lctrComputeAccessAddr();
-  lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(pCisCtx->aclHandle);
-  WSF_ASSERT(pCtx);
-  pCisCtx->crcInit = pCtx->crcInit;
-  pCisCtx->supTimeoutMs = pCtx->supTimeoutMs;
+    pCisCtx->accessAddr = lctrComputeAccessAddr();
+    lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(pCisCtx->aclHandle);
+    WSF_ASSERT(pCtx);
+    pCisCtx->crcInit = pCtx->crcInit;
+    pCisCtx->supTimeoutMs = pCtx->supTimeoutMs;
 
-  pCisCtx->localDataPdu.maxTxLen = pCigCisParamTest->pduSizeMToS;
-  pCisCtx->localDataPdu.maxRxLen = pCigCisParamTest->pduSizeSToM;
+    pCisCtx->localDataPdu.maxTxLen = pCigCisParamTest->pduSizeMToS;
+    pCisCtx->localDataPdu.maxRxLen = pCigCisParamTest->pduSizeSToM;
 }
 
 /*************************************************************************************************/
@@ -524,84 +534,67 @@ static void lctrSetCisTest(lctrCisCtx_t *pCisCtx, LlCisCigParamsTest_t *pSetCigP
 /*************************************************************************************************/
 uint8_t LctrSetCigParam(LlCisCigParams_t *pSetCigParam, uint16_t *pCisHandles)
 {
-  lctrCigCtx_t *pCigCtx;
+    lctrCigCtx_t *pCigCtx;
 
-  if ((pCigCtx = lctrFindCigById(pSetCigParam->cigId)) == NULL)
-  {
-    if ((pCigCtx = lctrAllocCigCtx(pSetCigParam->cigId)) == NULL)
-    {
-      LL_TRACE_WARN0("LctrSetCigParam, there is no more CIG context");
-      return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-    }
-  }
-
-  if (pCigCtx->numCisEsted > 0)
-  {
-    LL_TRACE_WARN0("LctrSetCigParam, there is an established CIS");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
-
-  if (lmgrCisMstCb.createCisPend == TRUE)
-  {
-    LL_TRACE_WARN0("LctrSetCigParam, there is a pending CIS");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
-
-  lctrCisCtx_t *pCisCtx;
-
-  uint8_t numEnableCis = lctrGetNumEnabledCisCtx(pSetCigParam);
-
-  if (numEnableCis == 0)
-  {
-    /* Set up new CIS contexts. */
-    if (pSetCigParam->numCis > lctrGetNumAvailCisCtx())
-    {
-      LL_TRACE_WARN0("LctrSetCigParam, there is no more CIS context");
-      return LL_ERROR_CODE_CONN_LIMIT_EXCEEDED;
-    }
-    else
-    {
-      for (unsigned int i = 0; i < pSetCigParam->numCis; i++)
-      {
-        pCisCtx = lctrAllocCisCtx(pCigCtx);
-        pCisCtx->role = LL_ROLE_MASTER;
-        lctrSetCis(pCisCtx, pSetCigParam, &pSetCigParam->pCisParam[i]);
-        pCisHandles[i] = pCisCtx->cisHandle;
-      }
-      lctrSetCig(pCigCtx, pSetCigParam);
-    }
-  }
-  else
-  {
-    if ((pSetCigParam->numCis - numEnableCis) > lctrGetNumAvailCisCtx())
-    {
-      return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-    }
-    else
-    {
-      for (unsigned int i = 0; i < pSetCigParam->numCis; i++)
-      {
-        if ((pCisCtx = lctrFindCisById(pSetCigParam->cigId, pSetCigParam->pCisParam[i].cisId)) != NULL)
-        {
-          /* Update the context which is already set up. */
-          lctrSetCis(pCisCtx, pSetCigParam, &pSetCigParam->pCisParam[i]);
+    if ((pCigCtx = lctrFindCigById(pSetCigParam->cigId)) == NULL) {
+        if ((pCigCtx = lctrAllocCigCtx(pSetCigParam->cigId)) == NULL) {
+            LL_TRACE_WARN0("LctrSetCigParam, there is no more CIG context");
+            return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
         }
-        else
-        {
-          /* Allocate new context, no allocation error, already checked. */
-          pCisCtx = lctrAllocCisCtx(pCigCtx);
-          pCisCtx->role = LL_ROLE_MASTER;
-          lctrSetCis(pCisCtx, pSetCigParam, &pSetCigParam->pCisParam[i]);
-        }
-        pCisHandles[i] = pCisCtx->cisHandle;
-      }
-      lctrSetCig(pCigCtx, pSetCigParam);
     }
-  }
 
-  pCigCtx->roleData.mst.numCis = pSetCigParam->numCis;
+    if (pCigCtx->numCisEsted > 0) {
+        LL_TRACE_WARN0("LctrSetCigParam, there is an established CIS");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  return LL_SUCCESS;
+    if (lmgrCisMstCb.createCisPend == TRUE) {
+        LL_TRACE_WARN0("LctrSetCigParam, there is a pending CIS");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
+
+    lctrCisCtx_t *pCisCtx;
+
+    uint8_t numEnableCis = lctrGetNumEnabledCisCtx(pSetCigParam);
+
+    if (numEnableCis == 0) {
+        /* Set up new CIS contexts. */
+        if (pSetCigParam->numCis > lctrGetNumAvailCisCtx()) {
+            LL_TRACE_WARN0("LctrSetCigParam, there is no more CIS context");
+            return LL_ERROR_CODE_CONN_LIMIT_EXCEEDED;
+        } else {
+            for (unsigned int i = 0; i < pSetCigParam->numCis; i++) {
+                pCisCtx = lctrAllocCisCtx(pCigCtx);
+                pCisCtx->role = LL_ROLE_MASTER;
+                lctrSetCis(pCisCtx, pSetCigParam, &pSetCigParam->pCisParam[i]);
+                pCisHandles[i] = pCisCtx->cisHandle;
+            }
+            lctrSetCig(pCigCtx, pSetCigParam);
+        }
+    } else {
+        if ((pSetCigParam->numCis - numEnableCis) > lctrGetNumAvailCisCtx()) {
+            return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
+        } else {
+            for (unsigned int i = 0; i < pSetCigParam->numCis; i++) {
+                if ((pCisCtx = lctrFindCisById(pSetCigParam->cigId,
+                                               pSetCigParam->pCisParam[i].cisId)) != NULL) {
+                    /* Update the context which is already set up. */
+                    lctrSetCis(pCisCtx, pSetCigParam, &pSetCigParam->pCisParam[i]);
+                } else {
+                    /* Allocate new context, no allocation error, already checked. */
+                    pCisCtx = lctrAllocCisCtx(pCigCtx);
+                    pCisCtx->role = LL_ROLE_MASTER;
+                    lctrSetCis(pCisCtx, pSetCigParam, &pSetCigParam->pCisParam[i]);
+                }
+                pCisHandles[i] = pCisCtx->cisHandle;
+            }
+            lctrSetCig(pCigCtx, pSetCigParam);
+        }
+    }
+
+    pCigCtx->roleData.mst.numCis = pSetCigParam->numCis;
+
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -616,78 +609,62 @@ uint8_t LctrSetCigParam(LlCisCigParams_t *pSetCigParam, uint16_t *pCisHandles)
 /*************************************************************************************************/
 uint8_t LctrSetCigParamTest(LlCisCigParamsTest_t *pSetCigParamTest, uint16_t *pCisHandles)
 {
-  lctrCigCtx_t *pCigCtx;
+    lctrCigCtx_t *pCigCtx;
 
-  if ((pCigCtx = lctrFindCigById(pSetCigParamTest->cigId)) == NULL)
-  {
-    if ((pCigCtx = lctrAllocCigCtx(pSetCigParamTest->cigId)) == NULL)
-    {
-      LL_TRACE_WARN0("LctrSetCigParamTest, there is no more CIG context");
-      return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-    }
-  }
-
-  if (pCigCtx->numCisEsted > 0)
-  {
-    LL_TRACE_WARN0("LctrSetCigParamTest, there is an established CIS");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
-
-  lctrCisCtx_t *pCisCtx;
-
-  uint8_t numEnableCis = lctrGetNumEnabledCisCtxTest(pSetCigParamTest);
-
-  if (numEnableCis == 0)
-  {
-    /* Set up new CIS contexts. */
-    if (pSetCigParamTest->numCis > lctrGetNumAvailCisCtx())
-    {
-      LL_TRACE_WARN0("LctrSetCigParamTest, there is no more CIS context");
-      return LL_ERROR_CODE_CONN_LIMIT_EXCEEDED;
-    }
-    else
-    {
-      for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++)
-      {
-        pCisCtx = lctrAllocCisCtx(pCigCtx);
-        pCisCtx->role = LL_ROLE_MASTER;
-        lctrSetCisTest(pCisCtx, pSetCigParamTest, &pSetCigParamTest->pCisParam[i]);
-        pCisHandles[i] = pCisCtx->cisHandle;
-      }
-      lctrSetCigTest(pCigCtx, pSetCigParamTest);
-    }
-  }
-  else
-  {
-    if ((pSetCigParamTest->numCis - numEnableCis) > lctrGetNumAvailCisCtx())
-    {
-      return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-    }
-    else
-    {
-      for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++)
-      {
-        if ((pCisCtx = lctrFindCisById(pSetCigParamTest->cigId, pSetCigParamTest->pCisParam[i].cisId)) != NULL)
-        {
-          /* Update the context which is already set up. */
-          lctrSetCisTest(pCisCtx, pSetCigParamTest, &pSetCigParamTest->pCisParam[i]);
+    if ((pCigCtx = lctrFindCigById(pSetCigParamTest->cigId)) == NULL) {
+        if ((pCigCtx = lctrAllocCigCtx(pSetCigParamTest->cigId)) == NULL) {
+            LL_TRACE_WARN0("LctrSetCigParamTest, there is no more CIG context");
+            return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
         }
-        else
-        {
-          /* Allocate new context, no allocation error, already checked. */
-          pCisCtx = lctrAllocCisCtx(pCigCtx);
-          pCisCtx->role = LL_ROLE_MASTER;
-          lctrSetCisTest(pCisCtx, pSetCigParamTest, &pSetCigParamTest->pCisParam[i]);
-        }
-        pCisHandles[i] = pCisCtx->cisHandle;
-      }
-      lctrSetCigTest(pCigCtx, pSetCigParamTest);
     }
-  }
 
-  pCigCtx->roleData.mst.numCis = pSetCigParamTest->numCis;
+    if (pCigCtx->numCisEsted > 0) {
+        LL_TRACE_WARN0("LctrSetCigParamTest, there is an established CIS");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  return LL_SUCCESS;
+    lctrCisCtx_t *pCisCtx;
+
+    uint8_t numEnableCis = lctrGetNumEnabledCisCtxTest(pSetCigParamTest);
+
+    if (numEnableCis == 0) {
+        /* Set up new CIS contexts. */
+        if (pSetCigParamTest->numCis > lctrGetNumAvailCisCtx()) {
+            LL_TRACE_WARN0("LctrSetCigParamTest, there is no more CIS context");
+            return LL_ERROR_CODE_CONN_LIMIT_EXCEEDED;
+        } else {
+            for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++) {
+                pCisCtx = lctrAllocCisCtx(pCigCtx);
+                pCisCtx->role = LL_ROLE_MASTER;
+                lctrSetCisTest(pCisCtx, pSetCigParamTest, &pSetCigParamTest->pCisParam[i]);
+                pCisHandles[i] = pCisCtx->cisHandle;
+            }
+            lctrSetCigTest(pCigCtx, pSetCigParamTest);
+        }
+    } else {
+        if ((pSetCigParamTest->numCis - numEnableCis) > lctrGetNumAvailCisCtx()) {
+            return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
+        } else {
+            for (unsigned int i = 0; i < pSetCigParamTest->numCis; i++) {
+                if ((pCisCtx = lctrFindCisById(pSetCigParamTest->cigId,
+                                               pSetCigParamTest->pCisParam[i].cisId)) != NULL) {
+                    /* Update the context which is already set up. */
+                    lctrSetCisTest(pCisCtx, pSetCigParamTest, &pSetCigParamTest->pCisParam[i]);
+                } else {
+                    /* Allocate new context, no allocation error, already checked. */
+                    pCisCtx = lctrAllocCisCtx(pCigCtx);
+                    pCisCtx->role = LL_ROLE_MASTER;
+                    lctrSetCisTest(pCisCtx, pSetCigParamTest, &pSetCigParamTest->pCisParam[i]);
+                }
+                pCisHandles[i] = pCisCtx->cisHandle;
+            }
+            lctrSetCigTest(pCigCtx, pSetCigParamTest);
+        }
+    }
+
+    pCigCtx->roleData.mst.numCis = pSetCigParamTest->numCis;
+
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -701,60 +678,48 @@ uint8_t LctrSetCigParamTest(LlCisCigParamsTest_t *pSetCigParamTest, uint16_t *pC
 /*************************************************************************************************/
 uint8_t LctrRemoveCig(uint8_t cigId)
 {
-  lctrCigCtx_t *pCigCtx;
+    lctrCigCtx_t *pCigCtx;
 
-  if ((pCigCtx = lctrFindCigById(cigId)) == NULL)
-  {
-    LL_TRACE_WARN1("LctrRemoveCig, invalid CIG_ID=%d.", cigId);
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
-
-  /* Return LL_ERROR_CODE_CMD_DISALLOWED if anyone of the CIS is pending or slave role in the CIG. */
-  for (unsigned int i = 0; i < pLctrRtCfg->maxCis; i++)
-  {
-    lctrCisCtx_t *pCisCtx = &pLctrCisTbl[i];
-
-    if ((pCisCtx->enabled == TRUE) &&
-        (pCisCtx->cigId == cigId))
-    {
-      if (pCisCtx->role == LL_ROLE_SLAVE)
-      {
-        LL_TRACE_WARN0("LctrRemoveCig, invalid role");
+    if ((pCigCtx = lctrFindCigById(cigId)) == NULL) {
+        LL_TRACE_WARN1("LctrRemoveCig, invalid CIG_ID=%d.", cigId);
         return LL_ERROR_CODE_CMD_DISALLOWED;
-      }
+    }
 
-      if (pCisCtx->isCisReqPend == TRUE)
-      {
-        LL_TRACE_WARN0("LctrRemoveCig, there is a pending CIS");
+    /* Return LL_ERROR_CODE_CMD_DISALLOWED if anyone of the CIS is pending or slave role in the CIG. */
+    for (unsigned int i = 0; i < pLctrRtCfg->maxCis; i++) {
+        lctrCisCtx_t *pCisCtx = &pLctrCisTbl[i];
+
+        if ((pCisCtx->enabled == TRUE) && (pCisCtx->cigId == cigId)) {
+            if (pCisCtx->role == LL_ROLE_SLAVE) {
+                LL_TRACE_WARN0("LctrRemoveCig, invalid role");
+                return LL_ERROR_CODE_CMD_DISALLOWED;
+            }
+
+            if (pCisCtx->isCisReqPend == TRUE) {
+                LL_TRACE_WARN0("LctrRemoveCig, there is a pending CIS");
+                return LL_ERROR_CODE_CMD_DISALLOWED;
+            }
+        }
+    }
+
+    if (lctrGetNumEstCisCtxByCigCtx(pCigCtx) > 0) {
+        LL_TRACE_WARN0("LctrRemoveCig, there is an established CIS");
         return LL_ERROR_CODE_CMD_DISALLOWED;
-      }
     }
-  }
 
-  if (lctrGetNumEstCisCtxByCigCtx(pCigCtx) > 0)
-  {
-    LL_TRACE_WARN0("LctrRemoveCig, there is an established CIS");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    for (unsigned int i = 0; i < pLctrRtCfg->maxCis; i++) {
+        lctrCisCtx_t *pCisCtx = &pLctrCisTbl[i];
 
-  for (unsigned int i = 0; i < pLctrRtCfg->maxCis; i++)
-  {
-    lctrCisCtx_t *pCisCtx = &pLctrCisTbl[i];
-
-    if ((pCisCtx->enabled == TRUE) &&
-        (pCisCtx->cigId == cigId) &&
-        (pCisCtx->role == LL_ROLE_MASTER))
-    {
-      lctrFreeCisCtx(pCisCtx);
+        if ((pCisCtx->enabled == TRUE) && (pCisCtx->cigId == cigId) &&
+            (pCisCtx->role == LL_ROLE_MASTER)) {
+            lctrFreeCisCtx(pCisCtx);
+        }
     }
-  }
 
-  lctrFreeCigCtx(pCigCtx);
+    lctrFreeCigCtx(pCigCtx);
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
-
-
 
 /*************************************************************************************************/
 /*!
@@ -763,33 +728,32 @@ uint8_t LctrRemoveCig(uint8_t cigId)
 /*************************************************************************************************/
 void LctrMstCisInit(void)
 {
-  /* Add reset handler. */
-  lctrResetHdlrTbl[LCTR_DISP_CIS] = lctrCisMstResetHandler;
+    /* Add reset handler. */
+    lctrResetHdlrTbl[LCTR_DISP_CIS] = lctrCisMstResetHandler;
 
-  /* Add CIS message dispatcher. */
-  lctrMsgDispTbl[LCTR_DISP_CIS] = (LctrMsgDisp_t)lctrCisDisp;
+    /* Add CIS message dispatcher. */
+    lctrMsgDispTbl[LCTR_DISP_CIS] = (LctrMsgDisp_t)lctrCisDisp;
 
-  /* Add CIS function pointers */
-  LctrUpdateCisChanMapFn = LctrCisUpdateChanMap;
-  lctrRegisterChClassHandler(lctrMstCisChClassUpdate);
+    /* Add CIS function pointers */
+    LctrUpdateCisChanMapFn = LctrCisUpdateChanMap;
+    lctrRegisterChClassHandler(lctrMstCisChClassUpdate);
 
-  /* Add CIS event handlers. */
-  lctrEventHdlrTbl[LCTR_EVENT_CIS_TX_PENDING]  = lctrIsoTxPendingHandler;
-  lctrEventHdlrTbl[LCTR_EVENT_CIS_RX_PENDING]  = lctrCisRxPendingHandler;
-  lctrEventHdlrTbl[LCTR_EVENT_ISO_TX_COMPLETE] = lctrIsoTxCompletedHandler;
+    /* Add CIS event handlers. */
+    lctrEventHdlrTbl[LCTR_EVENT_CIS_TX_PENDING] = lctrIsoTxPendingHandler;
+    lctrEventHdlrTbl[LCTR_EVENT_CIS_RX_PENDING] = lctrCisRxPendingHandler;
+    lctrEventHdlrTbl[LCTR_EVENT_ISO_TX_COMPLETE] = lctrIsoTxCompletedHandler;
 
-  /* Add LLCP SM handler. */
-  lctrMstLlcpSmTbl[LCTR_LLCP_SM_CIS_EST]      = lctrMstLlcpExecuteCisEstSm;
-  lctrMstLlcpSmTbl[LCTR_LLCP_SM_CIS_TERM]     = lctrLlcpExecuteCisTermSm;
+    /* Add LLCP SM handler. */
+    lctrMstLlcpSmTbl[LCTR_LLCP_SM_CIS_EST] = lctrMstLlcpExecuteCisEstSm;
+    lctrMstLlcpSmTbl[LCTR_LLCP_SM_CIS_TERM] = lctrLlcpExecuteCisTermSm;
 
-  lctrCisDefaults();
-  LmgrMstCisInit();
+    lctrCisDefaults();
+    LmgrMstCisInit();
 
-  /* Set supported features. */
-  if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_1)
-  {
-    lmgrPersistCb.featuresDefault |= LL_FEAT_CIS_MASTER_ROLE;
-  }
+    /* Set supported features. */
+    if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_1) {
+        lmgrPersistCb.featuresDefault |= LL_FEAT_CIS_MASTER_ROLE;
+    }
 }
 
 /*************************************************************************************************/
@@ -804,55 +768,49 @@ void LctrMstCisInit(void)
 /*************************************************************************************************/
 uint8_t LctrCreateCis(uint8_t numCis, LlCisCreateCisParams_t *pCreateCisParam)
 {
-  /* Return error if the previous create CIS is pending. */
-  if (lmgrCisMstCb.createCisPend == TRUE)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
-
-  /* Make sure handle is valid and CIS is not yet established. */
-  for (unsigned int i = 0; i < numCis; i++)
-  {
-    lctrCisCtx_t *pCisCtx;
-
-    if ((pCisCtx = lctrFindCisByHandle(pCreateCisParam->pCisHandle[i])) == NULL)
-    {
-      LL_TRACE_WARN0("LctrCreateCis, invalid CIS handle");
-      return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    /* Return error if the previous create CIS is pending. */
+    if (lmgrCisMstCb.createCisPend == TRUE) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
     }
 
-    if (lctrIsCisEst(pCisCtx) == TRUE)
-    {
-      LL_TRACE_WARN0("LctrCreateCis, CIS is already established");
-      return LL_ERROR_CODE_ACL_CONN_ALREADY_EXISTS;
+    /* Make sure handle is valid and CIS is not yet established. */
+    for (unsigned int i = 0; i < numCis; i++) {
+        lctrCisCtx_t *pCisCtx;
+
+        if ((pCisCtx = lctrFindCisByHandle(pCreateCisParam->pCisHandle[i])) == NULL) {
+            LL_TRACE_WARN0("LctrCreateCis, invalid CIS handle");
+            return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+        }
+
+        if (lctrIsCisEst(pCisCtx) == TRUE) {
+            LL_TRACE_WARN0("LctrCreateCis, CIS is already established");
+            return LL_ERROR_CODE_ACL_CONN_ALREADY_EXISTS;
+        }
     }
-  }
 
-  lmgrCisMstCb.createCisPend = TRUE;
+    lmgrCisMstCb.createCisPend = TRUE;
 
-  lctrMstCreateCisPend.numCis = numCis;
-  /* Save the handles */
-  for (unsigned int i = 0; i < numCis; i++)
-  {
-    lctrMstCreateCisPend.cisHandle[i] = pCreateCisParam->pCisHandle[i];
-    lctrMstCreateCisPend.aclHandle[i] = pCreateCisParam->pAclHandle[i];
-    lctrMstCreateCisPend.isCreateCisDone[i] = FALSE;
-  }
+    lctrMstCreateCisPend.numCis = numCis;
+    /* Save the handles */
+    for (unsigned int i = 0; i < numCis; i++) {
+        lctrMstCreateCisPend.cisHandle[i] = pCreateCisParam->pCisHandle[i];
+        lctrMstCreateCisPend.aclHandle[i] = pCreateCisParam->pAclHandle[i];
+        lctrMstCreateCisPend.isCreateCisDone[i] = FALSE;
+    }
 
-  /* Only start first CIS establishment procedure. */
-  lctrCreateCis_t *pMsg;
+    /* Only start first CIS establishment procedure. */
+    lctrCreateCis_t *pMsg;
 
-  if ((pMsg = (lctrCreateCis_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.handle = lctrMstCreateCisPend.aclHandle[0];
-    pMsg->hdr.dispId = LCTR_DISP_CONN;
-    pMsg->hdr.event = LCTR_CONN_MSG_API_CIS_REQ;
+    if ((pMsg = (lctrCreateCis_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.handle = lctrMstCreateCisPend.aclHandle[0];
+        pMsg->hdr.dispId = LCTR_DISP_CONN;
+        pMsg->hdr.event = LCTR_CONN_MSG_API_CIS_REQ;
 
-    pMsg->cisHandle =  lctrMstCreateCisPend.cisHandle[0];
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        pMsg->cisHandle = lctrMstCreateCisPend.cisHandle[0];
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -864,84 +822,86 @@ uint8_t LctrCreateCis(uint8_t numCis, LlCisCreateCisParams_t *pCreateCisParam)
 /*************************************************************************************************/
 void lctrMstCisBuildCigOp(lctrCigCtx_t *pCigCtx)
 {
-  /* Pre-resolve common structures for efficient access. */
-  BbOpDesc_t * const pOp = &pCigCtx->cigBod;
+    /* Pre-resolve common structures for efficient access. */
+    BbOpDesc_t *const pOp = &pCigCtx->cigBod;
 
-  /* When build the BOD, always setup channel use the first CIS context in the CIG. */
-  lctrCisCtx_t  *pCisCtx = lctrCisGetHeadCis(&pCigCtx->list);
-  pCigCtx->pCisCtx = pCisCtx;
+    /* When build the BOD, always setup channel use the first CIS context in the CIG. */
+    lctrCisCtx_t *pCisCtx = lctrCisGetHeadCis(&pCigCtx->list);
+    pCigCtx->pCisCtx = pCisCtx;
 
-  BbBleData_t * const pBle = &pCisCtx->bleData;
-  BbBleMstCisEvent_t * const pCis = &pBle->op.mstCis;
+    BbBleData_t *const pBle = &pCisCtx->bleData;
+    BbBleMstCisEvent_t *const pCis = &pBle->op.mstCis;
 
-  memset(pOp, 0, sizeof(BbOpDesc_t));
-  memset(pBle, 0, sizeof(BbBleData_t));
-  memset(pCis, 0, sizeof(BbBleMstCisEvent_t));
+    memset(pOp, 0, sizeof(BbOpDesc_t));
+    memset(pBle, 0, sizeof(BbBleData_t));
+    memset(pCis, 0, sizeof(BbBleMstCisEvent_t));
 
-  /*** CIS context setup ***/
+    /*** CIS context setup ***/
 
-  /* pFirstCisCtx->cisEvtCounter = 0; */            /* cleared in alloc. */
-  /* pFirstCisCtx->txHdr.sn = 0; */                 /* cleared in alloc */
-  /* pFirstCisCtx->txHdr.nesn = 0; */               /* cleared in alloc */
+    /* pFirstCisCtx->cisEvtCounter = 0; */ /* cleared in alloc. */
+    /* pFirstCisCtx->txHdr.sn = 0; */ /* cleared in alloc */
+    /* pFirstCisCtx->txHdr.nesn = 0; */ /* cleared in alloc */
 
-  /*** BLE general setup ***/
+    /*** BLE general setup ***/
 
-  pBle->chan.opType = BB_BLE_OP_MST_CIS_EVENT;
+    pBle->chan.opType = BB_BLE_OP_MST_CIS_EVENT;
 
-  pBle->chan.chanIdx = pCisCtx->chIdx;         /* Set in the lctrCisSetupChanParam. */
-  pBle->chan.txPower = pLctrRtCfg->defTxPwrLvl;
-  pBle->chan.accAddr = pCisCtx->accessAddr;
-  pBle->chan.crcInit = pCisCtx->crcInit;
-  pBle->chan.txPhy = pCisCtx->phyMToS;
-  pBle->chan.rxPhy = pCisCtx->phySToM;;
-  pBle->chan.peerTxStableModIdx = TRUE;
-  pBle->chan.peerRxStableModIdx = TRUE;
+    pBle->chan.chanIdx = pCisCtx->chIdx; /* Set in the lctrCisSetupChanParam. */
+    pBle->chan.txPower = pLctrRtCfg->defTxPwrLvl;
+    pBle->chan.accAddr = pCisCtx->accessAddr;
+    pBle->chan.crcInit = pCisCtx->crcInit;
+    pBle->chan.txPhy = pCisCtx->phyMToS;
+    pBle->chan.rxPhy = pCisCtx->phySToM;
+    {
+    }
+    pBle->chan.peerTxStableModIdx = TRUE;
+    pBle->chan.peerRxStableModIdx = TRUE;
 
-  /* Set PHY options to mirror acl connection option. */
-  pBle->chan.initTxPhyOptions = BB_PHY_OPTIONS_BLE_S8;
+    /* Set PHY options to mirror acl connection option. */
+    pBle->chan.initTxPhyOptions = BB_PHY_OPTIONS_BLE_S8;
 
 #if (LL_ENABLE_TESTER)
-  pBle->chan.accAddrRx = pCisCtx->accessAddr ^ llTesterCb.cisAccessAddrRx;
-  pBle->chan.accAddrTx = pCisCtx->accessAddr ^ llTesterCb.cisAccessAddrRx;
-  pBle->chan.crcInitRx = pCisCtx->crcInit    ^ llTesterCb.cisCrcInitRx;
-  pBle->chan.crcInitTx = pCisCtx->crcInit    ^ llTesterCb.cisCrcInitTx;
+    pBle->chan.accAddrRx = pCisCtx->accessAddr ^ llTesterCb.cisAccessAddrRx;
+    pBle->chan.accAddrTx = pCisCtx->accessAddr ^ llTesterCb.cisAccessAddrRx;
+    pBle->chan.crcInitRx = pCisCtx->crcInit ^ llTesterCb.cisCrcInitRx;
+    pBle->chan.crcInitTx = pCisCtx->crcInit ^ llTesterCb.cisCrcInitTx;
 #endif
 
-  /* pBle->chan.enc.enaEncrypt = FALSE; */  /* cleared in alloc */
-  /* pBle->chan.enc.enaDecrypt = FALSE; */
-  pBle->chan.enc.enaAuth = TRUE;
-  pBle->chan.enc.nonceMode = PAL_BB_NONCE_MODE_EXT64_CNTR;
-  pBle->chan.enc.pTxPktCounter = &pCisCtx->txPktCounter;
-  pBle->chan.enc.pRxPktCounter = &pCisCtx->rxPktCounter;
+    /* pBle->chan.enc.enaEncrypt = FALSE; */ /* cleared in alloc */
+    /* pBle->chan.enc.enaDecrypt = FALSE; */
+    pBle->chan.enc.enaAuth = TRUE;
+    pBle->chan.enc.nonceMode = PAL_BB_NONCE_MODE_EXT64_CNTR;
+    pBle->chan.enc.pTxPktCounter = &pCisCtx->txPktCounter;
+    pBle->chan.enc.pRxPktCounter = &pCisCtx->rxPktCounter;
 
-  /*** General setup ***/
+    /*** General setup ***/
 
-  /* pOp->minDurUsec = pFirstCisCtx->subIntervUsec * WSF_MAX(pFirstCisCtx->bnMToS, pFirstCisCtx->bnSToM); */ /* Guarantee at least Max BN */
-  pOp->minDurUsec = pCigCtx->cigSyncDelayUsec;
-  pOp->maxDurUsec = pCigCtx->cigSyncDelayUsec;
+    /* pOp->minDurUsec = pFirstCisCtx->subIntervUsec * WSF_MAX(pFirstCisCtx->bnMToS, pFirstCisCtx->bnSToM); */ /* Guarantee at least Max BN */
+    pOp->minDurUsec = pCigCtx->cigSyncDelayUsec;
+    pOp->maxDurUsec = pCigCtx->cigSyncDelayUsec;
 
-  /* pOp->due = 0 */  /* set in lctrMstCisCigOpCommit() */
-  pOp->reschPolicy = BB_RESCH_FIXED_PREFERRED;
-  pOp->protId = BB_PROT_BLE;
-  pOp->prot.pBle = pBle;
-  pOp->endCback = lctrMstCisCigEndOp;
-  pOp->abortCback = lctrMstCisCigAbortOp;
-  pOp->pCtx = pCigCtx;
+    /* pOp->due = 0 */ /* set in lctrMstCisCigOpCommit() */
+    pOp->reschPolicy = BB_RESCH_FIXED_PREFERRED;
+    pOp->protId = BB_PROT_BLE;
+    pOp->prot.pBle = pBle;
+    pOp->endCback = lctrMstCisCigEndOp;
+    pOp->abortCback = lctrMstCisCigAbortOp;
+    pOp->pCtx = pCigCtx;
 
-  /*** BLE stream setup ***/
+    /*** BLE stream setup ***/
 
-  pCis->checkContOpCback = lctrMstCisCheckContOp;
-  pCis->execCback = lctrMstCisCigBeginOp;
-  pCis->contExecCback = lctrMstCisCigContOp;
-  pCis->postSubEvtCback = lctrMstCisCigPostSubEvt;
-  pCis->cancelCback = lctrMstCisCigCleanupOp;
-  pCis->txDataCback = lctrMstCisCigTxCompletion;
-  pCis->rxDataCback = lctrMstCisCigRxCompletion;
+    pCis->checkContOpCback = lctrMstCisCheckContOp;
+    pCis->execCback = lctrMstCisCigBeginOp;
+    pCis->contExecCback = lctrMstCisCigContOp;
+    pCis->postSubEvtCback = lctrMstCisCigPostSubEvt;
+    pCis->cancelCback = lctrMstCisCigCleanupOp;
+    pCis->txDataCback = lctrMstCisCigTxCompletion;
+    pCis->rxDataCback = lctrMstCisCigRxCompletion;
 
-  /*** Commit operation ***/
+    /*** Commit operation ***/
 
-  /* Postponed in lctrMstCisCigOpCommit(). */
-  pCigCtx->isBodBuilt = TRUE;
+    /* Postponed in lctrMstCisCigOpCommit(). */
+    pCigCtx->isBodBuilt = TRUE;
 }
 
 /*************************************************************************************************/
@@ -953,66 +913,65 @@ void lctrMstCisBuildCigOp(lctrCigCtx_t *pCigCtx)
 /*************************************************************************************************/
 void lctrMstCisBuildCisData(lctrCisCtx_t *pCisCtx)
 {
-  BbBleData_t * const pBle = &pCisCtx->bleData;
-  BbBleMstCisEvent_t * const pCis = &pBle->op.mstCis;
-  lctrConnCtx_t * pConnCtx = LCTR_GET_CONN_CTX(pCisCtx->aclHandle);
+    BbBleData_t *const pBle = &pCisCtx->bleData;
+    BbBleMstCisEvent_t *const pCis = &pBle->op.mstCis;
+    lctrConnCtx_t *pConnCtx = LCTR_GET_CONN_CTX(pCisCtx->aclHandle);
 
-  memset(pBle, 0, sizeof(BbBleData_t));
-  memset(pCis, 0, sizeof(BbBleMstCisEvent_t));
+    memset(pBle, 0, sizeof(BbBleData_t));
+    memset(pCis, 0, sizeof(BbBleMstCisEvent_t));
 
-  /*** CIS context setup ***/
+    /*** CIS context setup ***/
 
-  /* pCisCtx->cisEvtCounter = 0; */            /* cleared in alloc. */
-  /* pCisCtx->txHdr.sn = 0; */                 /* cleared in alloc */
-  /* pCisCtx->txHdr.nesn = 0; */               /* cleared in alloc */
+    /* pCisCtx->cisEvtCounter = 0; */ /* cleared in alloc. */
+    /* pCisCtx->txHdr.sn = 0; */ /* cleared in alloc */
+    /* pCisCtx->txHdr.nesn = 0; */ /* cleared in alloc */
 
-  /*** BLE general setup ***/
+    /*** BLE general setup ***/
 
-  pBle->chan.opType = BB_BLE_OP_MST_CIS_EVENT;
+    pBle->chan.opType = BB_BLE_OP_MST_CIS_EVENT;
 
-  pBle->chan.chanIdx = pCisCtx->chIdx;         /* Set in the lctrCisSetupChanParam. */
-  pBle->chan.txPower = pLctrRtCfg->defTxPwrLvl;
-  pBle->chan.accAddr = pCisCtx->accessAddr;
-  pBle->chan.crcInit = pCisCtx->crcInit;
-  pBle->chan.txPhy = pCisCtx->phyMToS;
-  pBle->chan.rxPhy = pCisCtx->phySToM;;
-  pBle->chan.peerTxStableModIdx = TRUE;
-  pBle->chan.peerRxStableModIdx = TRUE;
+    pBle->chan.chanIdx = pCisCtx->chIdx; /* Set in the lctrCisSetupChanParam. */
+    pBle->chan.txPower = pLctrRtCfg->defTxPwrLvl;
+    pBle->chan.accAddr = pCisCtx->accessAddr;
+    pBle->chan.crcInit = pCisCtx->crcInit;
+    pBle->chan.txPhy = pCisCtx->phyMToS;
+    pBle->chan.rxPhy = pCisCtx->phySToM;
+    {
+    }
+    pBle->chan.peerTxStableModIdx = TRUE;
+    pBle->chan.peerRxStableModIdx = TRUE;
 
-  /* Set PHY options to mirror acl connection option. */
-  if (pConnCtx->bleData.chan.tifsTxPhyOptions != BB_PHY_OPTIONS_DEFAULT)
-  {
-    /* Set PHY options to host defined behavior. */
-    pBle->chan.initTxPhyOptions = pConnCtx->bleData.chan.tifsTxPhyOptions;
-  }
-  else
-  {
-    pBle->chan.initTxPhyOptions = BB_PHY_OPTIONS_BLE_S8;
-  }
+    /* Set PHY options to mirror acl connection option. */
+    if (pConnCtx->bleData.chan.tifsTxPhyOptions != BB_PHY_OPTIONS_DEFAULT) {
+        /* Set PHY options to host defined behavior. */
+        pBle->chan.initTxPhyOptions = pConnCtx->bleData.chan.tifsTxPhyOptions;
+    } else {
+        pBle->chan.initTxPhyOptions = BB_PHY_OPTIONS_BLE_S8;
+    }
 
 #if (LL_ENABLE_TESTER)
-  pBle->chan.accAddrRx = pCisCtx->accessAddr ^ llTesterCb.cisAccessAddrRx;
-  pBle->chan.accAddrTx = pCisCtx->accessAddr ^ llTesterCb.cisAccessAddrRx;
-  pBle->chan.crcInitRx = pCisCtx->crcInit    ^ llTesterCb.cisCrcInitRx;
-  pBle->chan.crcInitTx = pCisCtx->crcInit    ^ llTesterCb.cisCrcInitTx;
+    pBle->chan.accAddrRx = pCisCtx->accessAddr ^ llTesterCb.cisAccessAddrRx;
+    pBle->chan.accAddrTx = pCisCtx->accessAddr ^ llTesterCb.cisAccessAddrRx;
+    pBle->chan.crcInitRx = pCisCtx->crcInit ^ llTesterCb.cisCrcInitRx;
+    pBle->chan.crcInitTx = pCisCtx->crcInit ^ llTesterCb.cisCrcInitTx;
 #endif
 
-  /* pBle->chan.enc.enaEncrypt = FALSE; */  /* cleared in alloc */
-  /* pBle->chan.enc.enaDecrypt = FALSE; */
-  pBle->chan.enc.enaAuth = TRUE;
-  pBle->chan.enc.nonceMode = PAL_BB_NONCE_MODE_EXT64_CNTR;
-  pBle->chan.enc.pTxPktCounter = &pCisCtx->txPktCounter;
-  pBle->chan.enc.pRxPktCounter = &pCisCtx->rxPktCounter;
+    /* pBle->chan.enc.enaEncrypt = FALSE; */ /* cleared in alloc */
+    /* pBle->chan.enc.enaDecrypt = FALSE; */
+    pBle->chan.enc.enaAuth = TRUE;
+    pBle->chan.enc.nonceMode = PAL_BB_NONCE_MODE_EXT64_CNTR;
+    pBle->chan.enc.pTxPktCounter = &pCisCtx->txPktCounter;
+    pBle->chan.enc.pRxPktCounter = &pCisCtx->rxPktCounter;
 
-  /*** BLE stream setup ***/
+    /*** BLE stream setup ***/
 
-  pCis->checkContOpCback = lctrMstCisCheckContOp;
-  pCis->execCback = lctrMstCisCigBeginOp;
-  pCis->contExecCback = lctrMstCisCigContOp;
-  pCis->postSubEvtCback = lctrMstCisCigPostSubEvt;
-  pCis->cancelCback = lctrMstCisCigCleanupOp;
-  pCis->txDataCback = lctrMstCisCigTxCompletion;
-  pCis->rxDataCback = lctrMstCisCigRxCompletion;
+    pCis->checkContOpCback = lctrMstCisCheckContOp;
+    pCis->execCback = lctrMstCisCigBeginOp;
+    pCis->contExecCback = lctrMstCisCigContOp;
+    pCis->postSubEvtCback = lctrMstCisCigPostSubEvt;
+    pCis->cancelCback = lctrMstCisCigCleanupOp;
+    pCis->txDataCback = lctrMstCisCigTxCompletion;
+    pCis->rxDataCback = lctrMstCisCigRxCompletion;
 }
 
 /*************************************************************************************************/
@@ -1026,32 +985,32 @@ void lctrMstCisBuildCisData(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrMstCisCigOpCommit(lctrCigCtx_t *pCigCtx, lctrConnCtx_t *pCtx, lctrCisCtx_t *pCisCtx)
 {
-  BbOpDesc_t * const pOp = &pCigCtx->cigBod;
-  BbOpDesc_t *pConnBod = &pCtx->connBod;
-  uint32_t refTime;
+    BbOpDesc_t *const pOp = &pCigCtx->cigBod;
+    BbOpDesc_t *pConnBod = &pCtx->connBod;
+    uint32_t refTime;
 
-  if (pCisCtx->ceRef <= pCtx->eventCounter)
-  {
-    /* Recalculate the CE ref if it is already past. */
-    pCisCtx->ceRef = pCtx->eventCounter +
-                     LL_MIN_INSTANT + 1 +     /* +1 for next CE */
-                     pCtx->maxLatency;        /* ensure slave will listen to this packet */
+    if (pCisCtx->ceRef <= pCtx->eventCounter) {
+        /* Recalculate the CE ref if it is already past. */
+        pCisCtx->ceRef = pCtx->eventCounter + LL_MIN_INSTANT + 1 + /* +1 for next CE */
+                         pCtx->maxLatency; /* ensure slave will listen to this packet */
 
-    refTime = pConnBod->dueUsec + (pCisCtx->ceRef - pCtx->eventCounter) * LCTR_CONN_IND_US(pCtx->connInterval);
+        refTime = pConnBod->dueUsec +
+                  (pCisCtx->ceRef - pCtx->eventCounter) * LCTR_CONN_IND_US(pCtx->connInterval);
 
-    pCisCtx->offsetUsec = SchRmGetOffsetUsec(LCTR_ISO_INT_TO_US(pCigCtx->isoInterval),
-                                             LCTR_GET_CIG_RM_HANDLE(pCigCtx), refTime);
-  }
-  else
-  {
-    refTime = pConnBod->dueUsec + (pCisCtx->ceRef - pCtx->eventCounter) * LCTR_CONN_IND_US(pCtx->connInterval);
-  }
+        pCisCtx->offsetUsec = SchRmGetOffsetUsec(LCTR_ISO_INT_TO_US(pCigCtx->isoInterval),
+                                                 LCTR_GET_CIG_RM_HANDLE(pCigCtx), refTime);
+    } else {
+        refTime = pConnBod->dueUsec +
+                  (pCisCtx->ceRef - pCtx->eventCounter) * LCTR_CONN_IND_US(pCtx->connInterval);
+    }
 
-  pOp->dueUsec = refTime + pCisCtx->offsetUsec;
+    pOp->dueUsec = refTime + pCisCtx->offsetUsec;
 
-  (void)SchInsertAtDueTime(pOp, lctrCisResolveConflict);    /* CIS has the highest priority so scheduling will never fail. */
+    (void)SchInsertAtDueTime(
+        pOp,
+        lctrCisResolveConflict); /* CIS has the highest priority so scheduling will never fail. */
 
-  pCigCtx->isBodStarted = TRUE;
+    pCigCtx->isBodStarted = TRUE;
 }
 
 /*************************************************************************************************/
@@ -1066,21 +1025,19 @@ void lctrMstCisCigOpCommit(lctrCigCtx_t *pCigCtx, lctrConnCtx_t *pCtx, lctrCisCt
 /*************************************************************************************************/
 uint32_t lctrGetCigRefTime(uint8_t rmHandle, uint32_t *pDurUsec)
 {
-  uint32_t refTime = 0;
-  lctrCigCtx_t *pCigCtx = LCTR_GET_CIG_RM_CTX(rmHandle);
+    uint32_t refTime = 0;
+    lctrCigCtx_t *pCigCtx = LCTR_GET_CIG_RM_CTX(rmHandle);
 
-  WSF_ASSERT(pCigCtx);
+    WSF_ASSERT(pCigCtx);
 
-  if (pCigCtx->isBodStarted)
-  {
-    refTime = pCigCtx->cigBod.dueUsec;
-    if (pDurUsec)
-    {
-      *pDurUsec = pCigCtx->cigBod.minDurUsec;
+    if (pCigCtx->isBodStarted) {
+        refTime = pCigCtx->cigBod.dueUsec;
+        if (pDurUsec) {
+            *pDurUsec = pCigCtx->cigBod.minDurUsec;
+        }
     }
-  }
 
-  return refTime;
+    return refTime;
 }
 
 /*************************************************************************************************/
@@ -1092,36 +1049,31 @@ uint32_t lctrGetCigRefTime(uint8_t rmHandle, uint32_t *pDurUsec)
 /*************************************************************************************************/
 void lctrMstCreateCisDone(lctrCisCtx_t *pCisCtx)
 {
-  /* Update the create CIS pending data structure. */
-  for (unsigned int i = 0; i < lctrMstCreateCisPend.numCis; i++)
-  {
-    if (pCisCtx->cisHandle == lctrMstCreateCisPend.cisHandle[i])
-    {
-      lctrMstCreateCisPend.isCreateCisDone[i] = TRUE;
-      break;
+    /* Update the create CIS pending data structure. */
+    for (unsigned int i = 0; i < lctrMstCreateCisPend.numCis; i++) {
+        if (pCisCtx->cisHandle == lctrMstCreateCisPend.cisHandle[i]) {
+            lctrMstCreateCisPend.isCreateCisDone[i] = TRUE;
+            break;
+        }
     }
-  }
 
-  /* Continue creating next CIS. */
-  for (unsigned int i = 0; i < lctrMstCreateCisPend.numCis; i++)
-  {
-    if (lctrMstCreateCisPend.isCreateCisDone[i] == FALSE)
-    {
-      lctrCreateCis_t *pMsg;
+    /* Continue creating next CIS. */
+    for (unsigned int i = 0; i < lctrMstCreateCisPend.numCis; i++) {
+        if (lctrMstCreateCisPend.isCreateCisDone[i] == FALSE) {
+            lctrCreateCis_t *pMsg;
 
-      if ((pMsg = (lctrCreateCis_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-      {
-        pMsg->hdr.handle = lctrMstCreateCisPend.aclHandle[i];
-        pMsg->hdr.dispId = LCTR_DISP_CONN;
-        pMsg->hdr.event = LCTR_CONN_MSG_API_CIS_REQ;
+            if ((pMsg = (lctrCreateCis_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+                pMsg->hdr.handle = lctrMstCreateCisPend.aclHandle[i];
+                pMsg->hdr.dispId = LCTR_DISP_CONN;
+                pMsg->hdr.event = LCTR_CONN_MSG_API_CIS_REQ;
 
-        pMsg->cisHandle =  lctrMstCreateCisPend.cisHandle[i];
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-      }
-      return;
+                pMsg->cisHandle = lctrMstCreateCisPend.cisHandle[i];
+                WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+            }
+            return;
+        }
     }
-  }
 
-  /* No create CIS is pending. */
-  lmgrCisMstCb.createCisPend = FALSE;
+    /* No create CIS is pending. */
+    lmgrCisMstCb.createCisPend = FALSE;
 }

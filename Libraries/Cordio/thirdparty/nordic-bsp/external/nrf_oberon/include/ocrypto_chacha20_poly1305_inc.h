@@ -65,7 +65,6 @@ extern "C" {
 #include "ocrypto_chacha20_poly1305.h"
 #include "ocrypto_poly1305.h"
 
-
 /**@cond */
 typedef struct {
     ocrypto_poly1305_ctx auth_ctx;
@@ -79,7 +78,6 @@ typedef struct {
     size_t aad_len;
 } ocrypto_chacha20_poly1305_ctx;
 /**@endcond */
-
 
 /**@name Incremental ChaCha20-Poly1305 generator.
  *
@@ -122,10 +120,9 @@ typedef struct {
  * @param      n_len Length of @p n. 0 <= @p n_len <= @c ocrypto_chacha20_poly1305_NONCE_BYTES_MAX.
  * @param      k     Encryption key.
  */
-void ocrypto_chacha20_poly1305_init(
-    ocrypto_chacha20_poly1305_ctx *ctx,
-    const uint8_t *n, size_t n_len,
-    const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
+void ocrypto_chacha20_poly1305_init(ocrypto_chacha20_poly1305_ctx *ctx, const uint8_t *n,
+                                    size_t n_len,
+                                    const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
 
 /**
  * SHA-ChaCha20-Poly1305 incremental aad input.
@@ -144,9 +141,8 @@ void ocrypto_chacha20_poly1305_init(
  * @remark @c ocrypto_chacha20_poly1305_update_aad must be called before any call to 
  *         @c ocrypto_chacha20_poly1305_update_enc or @c ocrypto_chacha20_poly1305_update_dec.
  */
-void ocrypto_chacha20_poly1305_update_aad(
-    ocrypto_chacha20_poly1305_ctx *ctx,
-    const uint8_t *a, size_t a_len);
+void ocrypto_chacha20_poly1305_update_aad(ocrypto_chacha20_poly1305_ctx *ctx, const uint8_t *a,
+                                          size_t a_len);
 
 /**
  * SHA-ChaCha20-Poly1305 incremental encoder input.
@@ -171,12 +167,10 @@ void ocrypto_chacha20_poly1305_update_aad(
  *
  * @remark @p c and @p m can point to the same address.
  */
-void ocrypto_chacha20_poly1305_update_enc(
-    ocrypto_chacha20_poly1305_ctx *ctx,
-    uint8_t *c,
-    const uint8_t *m, size_t m_len,
-    const uint8_t *n, size_t n_len,
-    const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
+void ocrypto_chacha20_poly1305_update_enc(ocrypto_chacha20_poly1305_ctx *ctx, uint8_t *c,
+                                          const uint8_t *m, size_t m_len, const uint8_t *n,
+                                          size_t n_len,
+                                          const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
 
 /**
  * SHA-ChaCha20-Poly1305 incremental decoder input.
@@ -201,12 +195,10 @@ void ocrypto_chacha20_poly1305_update_enc(
  *
  * @remark @p m and @p c can point to the same address.
  */
-void ocrypto_chacha20_poly1305_update_dec(
-    ocrypto_chacha20_poly1305_ctx *ctx,
-    uint8_t *m,
-    const uint8_t *c, size_t c_len,
-    const uint8_t *n, size_t n_len,
-    const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
+void ocrypto_chacha20_poly1305_update_dec(ocrypto_chacha20_poly1305_ctx *ctx, uint8_t *m,
+                                          const uint8_t *c, size_t c_len, const uint8_t *n,
+                                          size_t n_len,
+                                          const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
 
 /**
  * SHA-ChaCha20-Poly1305 final encoder step.
@@ -216,9 +208,8 @@ void ocrypto_chacha20_poly1305_update_dec(
  * @param      ctx   Generator state.
  * @param[out] tag   Generated authentication tag.
  */
-void ocrypto_chacha20_poly1305_final_enc(
-    ocrypto_chacha20_poly1305_ctx *ctx,
-    uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES]);
+void ocrypto_chacha20_poly1305_final_enc(ocrypto_chacha20_poly1305_ctx *ctx,
+                                         uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES]);
 
 /**
  * SHA-ChaCha20-Poly1305 final decoder step.
@@ -231,9 +222,8 @@ void ocrypto_chacha20_poly1305_final_enc(
  * @retval 0  If @p tag is valid.
  * @retval -1 Otherwise.
  */
-int ocrypto_chacha20_poly1305_final_dec(
-    ocrypto_chacha20_poly1305_ctx *ctx,
-    const uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES]);
+int ocrypto_chacha20_poly1305_final_dec(ocrypto_chacha20_poly1305_ctx *ctx,
+                                        const uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES]);
 /**@}*/
 
 #ifdef __cplusplus

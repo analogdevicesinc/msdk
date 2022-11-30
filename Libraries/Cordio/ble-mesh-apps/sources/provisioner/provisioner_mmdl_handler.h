@@ -26,8 +26,7 @@
 #define PROVISIONER_MMDL_HANDLER_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************

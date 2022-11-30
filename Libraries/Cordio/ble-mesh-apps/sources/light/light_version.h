@@ -30,6 +30,6 @@
 **************************************************************************************************/
 
 /*! \brief    Light Application version. */
-#define LIGHT_VERSION              ((const char *)"light_mesh1.0_0.07.14")
+#define LIGHT_VERSION ((const char *)"light_mesh1.0_0.07.14")
 
 #endif /* LIGHT_VERSION_H */

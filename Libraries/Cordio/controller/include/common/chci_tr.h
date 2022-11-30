@@ -38,12 +38,12 @@ extern "C" {
 
 #ifndef UART_BAUD
 /*! \brief  Default UART baud rate. */
-#define UART_BAUD   1000000
+#define UART_BAUD 1000000
 #endif
 
 #ifndef UART_HWFC
 /*! \brief  Default Hardware Flow Control. */
-#define UART_HWFC    1
+#define UART_HWFC 1
 #endif
 
 /**************************************************************************************************

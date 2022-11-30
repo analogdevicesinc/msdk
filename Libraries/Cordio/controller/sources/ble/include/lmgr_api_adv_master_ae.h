@@ -36,14 +36,13 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Periodic advertising sync established event */
-typedef struct
-{
-  uint8_t       advSID;         /*!< Advertising SID. */
-  uint8_t       addrType;       /*!< Address type. */
-  bdAddr_t      addr;           /*!< Address. */
-  uint8_t       advPhy;         /*!< Advertising PHY. */
-  uint16_t      advInterval;    /*!< Advertising interval. */
-  uint8_t       advClkAccuracy; /*!< Advertising clock accuracy. */
+typedef struct {
+    uint8_t advSID; /*!< Advertising SID. */
+    uint8_t addrType; /*!< Address type. */
+    bdAddr_t addr; /*!< Address. */
+    uint8_t advPhy; /*!< Advertising PHY. */
+    uint16_t advInterval; /*!< Advertising interval. */
+    uint8_t advClkAccuracy; /*!< Advertising clock accuracy. */
 } lmgrPerAdvSyncEstdInd_t;
 
 /**************************************************************************************************

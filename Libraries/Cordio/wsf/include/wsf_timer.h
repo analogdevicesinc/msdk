@@ -39,7 +39,7 @@ extern "C" {
 
 #ifndef WSF_MS_PER_TICK
 /*! \brief Default milliseconds per tick rate */
-#define WSF_MS_PER_TICK   10
+#define WSF_MS_PER_TICK 10
 #endif
 
 /**************************************************************************************************
@@ -50,13 +50,12 @@ extern "C" {
 typedef uint32_t wsfTimerTicks_t;
 
 /*! \brief Timer structure */
-typedef struct wsfTimer_tag
-{
-  struct wsfTimer_tag *pNext;             /*!< \brief pointer to next timer in queue */
-  wsfMsgHdr_t         msg;                /*!< \brief application-defined timer event parameters */
-  wsfTimerTicks_t     ticks;              /*!< \brief number of ticks until expiration */
-  wsfHandlerId_t      handlerId;          /*!< \brief event handler for this timer */
-  bool_t              isStarted;          /*!< \brief TRUE if timer has been started */
+typedef struct wsfTimer_tag {
+    struct wsfTimer_tag *pNext; /*!< \brief pointer to next timer in queue */
+    wsfMsgHdr_t msg; /*!< \brief application-defined timer event parameters */
+    wsfTimerTicks_t ticks; /*!< \brief number of ticks until expiration */
+    wsfHandlerId_t handlerId; /*!< \brief event handler for this timer */
+    bool_t isStarted; /*!< \brief TRUE if timer has been started */
 } wsfTimer_t;
 
 /**************************************************************************************************
@@ -139,7 +138,7 @@ void WsfTimerSleep(void);
 /*************************************************************************************************/
 void WsfTimerSleepUpdate(void);
 
-/*! \} */    /* WSF_TIMER_API */
+/*! \} */ /* WSF_TIMER_API */
 
 #ifdef __cplusplus
 };

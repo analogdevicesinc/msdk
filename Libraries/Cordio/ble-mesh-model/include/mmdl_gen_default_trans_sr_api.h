@@ -31,8 +31,7 @@
 #define MMDL_GEN_DEFAULT_TRANS_SR_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -40,43 +39,39 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Number of stored states (Present + Target) */
-#define MMDL_GEN_DEFAULT_TRANS_STATE_CNT             2
+#define MMDL_GEN_DEFAULT_TRANS_STATE_CNT 2
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Model Default Transition Server Status parameters structure */
-typedef struct mmdlGenDefaultTransStatusParam_tag
-{
-  mmdlGenDefaultTransState_t  transitionTime;     /*!< Present Transition Time State */
+typedef struct mmdlGenDefaultTransStatusParam_tag {
+    mmdlGenDefaultTransState_t transitionTime; /*!< Present Transition Time State */
 } mmdlGenDefaultTransStatusParam_t;
 
 /*! \brief Generic Default Transition Server Model State Update event structure */
-typedef struct mmdlGenDefaultTransSrStateUpdate_tag
-{
-  wsfMsgHdr_t                 hdr;                /*!< WSF message header */
-  meshElementId_t             elemId;             /*!< Element identifier */
-  mmdlStateUpdateSrc_t        stateUpdateSource;  /*!< Updated state source */
-  mmdlGenDefaultTransState_t  state;              /*!< Updated state */
+typedef struct mmdlGenDefaultTransSrStateUpdate_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlStateUpdateSrc_t stateUpdateSource; /*!< Updated state source */
+    mmdlGenDefaultTransState_t state; /*!< Updated state */
 } mmdlGenDefaultTransSrStateUpdate_t;
 
 /*! \brief Generic Default Transition Server Model Current State event structure */
-typedef struct mmdlGenDefaultTransSrCurrentState_tag
-{
-  wsfMsgHdr_t                 hdr;                /*!< WSF message header */
-  meshElementId_t             elemId;             /*!< Element identifier */
-  mmdlGenDefaultTransState_t  state;              /*!< Updated state */
+typedef struct mmdlGenDefaultTransSrCurrentState_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlGenDefaultTransState_t state; /*!< Updated state */
 } mmdlGenDefaultTransSrCurrentState_t;
 
 /*! \brief Generic Default Transition Server Model event callback parameters structure */
-typedef union mmdlGenDefaultTransSrEvent_tag
-{
-  wsfMsgHdr_t                         hdr;                 /*!< WSF message header */
-  mmdlGenDefaultTransSrStateUpdate_t  statusEvent;         /*!< State updated event. Used for
+typedef union mmdlGenDefaultTransSrEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    mmdlGenDefaultTransSrStateUpdate_t statusEvent; /*!< State updated event. Used for
                                                             *   ::MMDL_GEN_DEFAULT_TRANS_SR_STATE_UPDATE_EVENT.
                                                             */
-  mmdlGenDefaultTransSrCurrentState_t currentStateEvent;   /*!< Current state event. Sent after
+    mmdlGenDefaultTransSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after
                                                             * a Get request from the upper layer.
                                                             * Used for
                                                             * ::MMDL_GEN_DEFAULT_TRANS_SR_CURRENT_STATE_EVENT.
@@ -84,9 +79,8 @@ typedef union mmdlGenDefaultTransSrEvent_tag
 } mmdlGenDefaultTransSrEvent_t;
 
 /*! \brief Model Generic Default Transition Server descriptor definition */
-typedef struct mmdlGenDefaultTransSrDesc_tag
-{
-  mmdlGenDefaultTransState_t   *pStoredStates;    /*!< Pointer to the structure that stores
+typedef struct mmdlGenDefaultTransSrDesc_tag {
+    mmdlGenDefaultTransState_t *pStoredStates; /*!< Pointer to the structure that stores
                                                    *   current state and scene data. First
                                                    *   value is always the current one.
                                                    *   Second value is the target state.
@@ -160,7 +154,8 @@ void MmdlGenDefaultTransSrPublish(meshElementId_t elementId);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenDefaultTransSrSetState(meshElementId_t elementId, mmdlGenDefaultTransState_t targetState);
+void MmdlGenDefaultTransSrSetState(meshElementId_t elementId,
+                                   mmdlGenDefaultTransState_t targetState);
 
 /*************************************************************************************************/
 /*!

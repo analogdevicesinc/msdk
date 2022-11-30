@@ -61,8 +61,7 @@ extern "C" {
  * @return  This function will return only if the command request could not be run.
  *          See @ref sd_mbr_command_copy_bl_t for possible return values.
  */
-uint32_t nrf_dfu_mbr_copy_bl(uint32_t * p_src, uint32_t len);
-
+uint32_t nrf_dfu_mbr_copy_bl(uint32_t *p_src, uint32_t len);
 
 /** @brief Function for initializing the SoftDevice using an MBR command.
  *
@@ -72,14 +71,12 @@ uint32_t nrf_dfu_mbr_copy_bl(uint32_t * p_src, uint32_t len);
  */
 uint32_t nrf_dfu_mbr_init_sd(void);
 
-
 /** @brief Function for setting the address of the IRQ table to the app's using an MBR command.
  *
  * @retval  NRF_SUCCESS  If the address of the new irq table was set. Any other
  *                       return value indicates that the address could not be set.
  */
 uint32_t nrf_dfu_mbr_irq_forward_address_set(void);
-
 
 #ifdef __cplusplus
 }

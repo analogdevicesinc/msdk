@@ -60,61 +60,59 @@
 
 #include <string.h>
 
-
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /*! Mesh Configuration Server operation request action table */
-const meshCfgMdlSrOpReqAct_t meshCfgMdlSrOpReqActTbl[MESH_CFG_MDL_CL_MAX_OP] =
-{
-  meshCfgMdlSrHandleBeaconGet,
-  meshCfgMdlSrHandleBeaconSet,
-  meshCfgMdlSrHandleCompositionDataGet,
-  meshCfgMdlSrHandleDefaultTtlGet,
-  meshCfgMdlSrHandleDefaultTtlSet,
-  meshCfgMdlSrHandleGattProxyGet,
-  meshCfgMdlSrHandleGattProxySet,
-  meshCfgMdlSrHandleRelayGet,
-  meshCfgMdlSrHandleRelaySet,
-  meshCfgMdlSrHandleModelPubGet,
-  meshCfgMdlSrHandleModelPubSet,
-  meshCfgMdlSrHandleModelPubVirtSet,
-  meshCfgMdlSrHandleModelSubscrAdd,
-  meshCfgMdlSrHandleModelSubscrVirtAdd,
-  meshCfgMdlSrHandleModelSubscrDel,
-  meshCfgMdlSrHandleModelSubscrVirtDel,
-  meshCfgMdlSrHandleModelSubscrOvr,
-  meshCfgMdlSrHandleModelSubscrVirtOvr,
-  meshCfgMdlSrHandleModelSubscrDelAll,
-  meshCfgMdlSrHandleModelSubscrSigGet,
-  meshCfgMdlSrHandleModelSubscrVendorGet,
-  meshCfgMdlSrHandleNetKeyAdd,
-  meshCfgMdlSrHandleNetKeyUpdt,
-  meshCfgMdlSrHandleNetKeyDel,
-  meshCfgMdlSrHandleNetKeyGet,
-  meshCfgMdlSrHandleAppKeyAdd,
-  meshCfgMdlSrHandleAppKeyUpdt,
-  meshCfgMdlSrHandleAppKeyDel,
-  meshCfgMdlSrHandleAppKeyGet,
-  meshCfgMdlSrHandleNodeIdentityGet,
-  meshCfgMdlSrHandleNodeIdentitySet,
-  meshCfgMdlSrHandleModelAppBind,
-  meshCfgMdlSrHandleModelAppUnbind,
-  meshCfgMdlSrHandleModelAppSigGet,
-  meshCfgMdlSrHandleModelAppVendorGet,
-  meshCfgMdlSrHandleNodeReset,
-  meshCfgMdlSrHandleFriendGet,
-  meshCfgMdlSrHandleFriendSet,
-  meshCfgMdlSrHandleKeyRefPhaseGet,
-  meshCfgMdlSrHandleKeyRefPhaseSet,
-  meshCfgMdlSrHandleHbPubGet,
-  meshCfgMdlSrHandleHbPubSet,
-  meshCfgMdlSrHandleHbSubGet,
-  meshCfgMdlSrHandleHbSubSet,
-  meshCfgMdlSrHandleLpnPollTimeoutGet,
-  meshCfgMdlSrHandleNwkTransGet,
-  meshCfgMdlSrHandleNwkTransSet,
+const meshCfgMdlSrOpReqAct_t meshCfgMdlSrOpReqActTbl[MESH_CFG_MDL_CL_MAX_OP] = {
+    meshCfgMdlSrHandleBeaconGet,
+    meshCfgMdlSrHandleBeaconSet,
+    meshCfgMdlSrHandleCompositionDataGet,
+    meshCfgMdlSrHandleDefaultTtlGet,
+    meshCfgMdlSrHandleDefaultTtlSet,
+    meshCfgMdlSrHandleGattProxyGet,
+    meshCfgMdlSrHandleGattProxySet,
+    meshCfgMdlSrHandleRelayGet,
+    meshCfgMdlSrHandleRelaySet,
+    meshCfgMdlSrHandleModelPubGet,
+    meshCfgMdlSrHandleModelPubSet,
+    meshCfgMdlSrHandleModelPubVirtSet,
+    meshCfgMdlSrHandleModelSubscrAdd,
+    meshCfgMdlSrHandleModelSubscrVirtAdd,
+    meshCfgMdlSrHandleModelSubscrDel,
+    meshCfgMdlSrHandleModelSubscrVirtDel,
+    meshCfgMdlSrHandleModelSubscrOvr,
+    meshCfgMdlSrHandleModelSubscrVirtOvr,
+    meshCfgMdlSrHandleModelSubscrDelAll,
+    meshCfgMdlSrHandleModelSubscrSigGet,
+    meshCfgMdlSrHandleModelSubscrVendorGet,
+    meshCfgMdlSrHandleNetKeyAdd,
+    meshCfgMdlSrHandleNetKeyUpdt,
+    meshCfgMdlSrHandleNetKeyDel,
+    meshCfgMdlSrHandleNetKeyGet,
+    meshCfgMdlSrHandleAppKeyAdd,
+    meshCfgMdlSrHandleAppKeyUpdt,
+    meshCfgMdlSrHandleAppKeyDel,
+    meshCfgMdlSrHandleAppKeyGet,
+    meshCfgMdlSrHandleNodeIdentityGet,
+    meshCfgMdlSrHandleNodeIdentitySet,
+    meshCfgMdlSrHandleModelAppBind,
+    meshCfgMdlSrHandleModelAppUnbind,
+    meshCfgMdlSrHandleModelAppSigGet,
+    meshCfgMdlSrHandleModelAppVendorGet,
+    meshCfgMdlSrHandleNodeReset,
+    meshCfgMdlSrHandleFriendGet,
+    meshCfgMdlSrHandleFriendSet,
+    meshCfgMdlSrHandleKeyRefPhaseGet,
+    meshCfgMdlSrHandleKeyRefPhaseSet,
+    meshCfgMdlSrHandleHbPubGet,
+    meshCfgMdlSrHandleHbPubSet,
+    meshCfgMdlSrHandleHbSubGet,
+    meshCfgMdlSrHandleHbSubSet,
+    meshCfgMdlSrHandleLpnPollTimeoutGet,
+    meshCfgMdlSrHandleNwkTransGet,
+    meshCfgMdlSrHandleNwkTransSet,
 };
 
 /**************************************************************************************************
@@ -136,26 +134,25 @@ const meshCfgMdlSrOpReqAct_t meshCfgMdlSrOpReqActTbl[MESH_CFG_MDL_CL_MAX_OP] =
  */
 /*************************************************************************************************/
 void meshCfgMdlSrSendRsp(meshCfgMdlSrOpId_t opId, uint8_t *pMsgParam, uint16_t msgParamLen,
-                      meshAddress_t cfgMdlClAddr, uint8_t recvTtl, uint16_t cfgMdlClNetKeyIndex)
+                         meshAddress_t cfgMdlClAddr, uint8_t recvTtl, uint16_t cfgMdlClNetKeyIndex)
 {
-  meshMsgInfo_t msgInfo =
-  {
-    .appKeyIndex = MESH_APPKEY_INDEX_LOCAL_DEV_KEY, /* Use local device key for the response. */
-    .elementId = 0,                                 /* Configuration Server allowed on element 0. */
-    .modelId.sigModelId = MESH_CFG_MDL_SR_MODEL_ID  /* Configuration Server model identifier. */
-  };
+    meshMsgInfo_t msgInfo = {
+        .appKeyIndex = MESH_APPKEY_INDEX_LOCAL_DEV_KEY, /* Use local device key for the response. */
+        .elementId = 0, /* Configuration Server allowed on element 0. */
+        .modelId.sigModelId = MESH_CFG_MDL_SR_MODEL_ID /* Configuration Server model identifier. */
+    };
 
-  /* Response address is Configuration Client address. */
-  msgInfo.dstAddr = cfgMdlClAddr;
-  /* Set opcode. */
-  msgInfo.opcode = meshCfgMdlSrOpcodes[opId];
-  msgInfo.pDstLabelUuid = NULL;
-  /* Set TTL to max or 0 depending on receiving TTL. */
-  msgInfo.ttl = recvTtl == 0 ? 0 : MESH_USE_DEFAULT_TTL;
+    /* Response address is Configuration Client address. */
+    msgInfo.dstAddr = cfgMdlClAddr;
+    /* Set opcode. */
+    msgInfo.opcode = meshCfgMdlSrOpcodes[opId];
+    msgInfo.pDstLabelUuid = NULL;
+    /* Set TTL to max or 0 depending on receiving TTL. */
+    msgInfo.ttl = recvTtl == 0 ? 0 : MESH_USE_DEFAULT_TTL;
 
-  /* Send message. */
-  MeshAccSendMessage((const meshMsgInfo_t *)&msgInfo, pMsgParam, msgParamLen, cfgMdlClNetKeyIndex,
-                     MESH_ACC_RSP_MIN_SEND_DELAY_MS, MESH_ACC_RSP_MAX_SEND_DELAY_MS(TRUE));
+    /* Send message. */
+    MeshAccSendMessage((const meshMsgInfo_t *)&msgInfo, pMsgParam, msgParamLen, cfgMdlClNetKeyIndex,
+                       MESH_ACC_RSP_MIN_SEND_DELAY_MS, MESH_ACC_RSP_MAX_SEND_DELAY_MS(TRUE));
 }
 
 /*************************************************************************************************/
@@ -169,8 +166,8 @@ void meshCfgMdlSrSendRsp(meshCfgMdlSrOpId_t opId, uint8_t *pMsgParam, uint16_t m
 /*************************************************************************************************/
 void meshCfgMdlSrEmptyCback(const meshCfgMdlSrEvt_t *pEvt)
 {
-  (void)pEvt;
-  MESH_TRACE_ERR0("MESH CFG SR: User callback not registered!");
+    (void)pEvt;
+    MESH_TRACE_ERR0("MESH CFG SR: User callback not registered!");
 }
 
 /*************************************************************************************************/
@@ -180,10 +177,7 @@ void meshCfgMdlSrEmptyCback(const meshCfgMdlSrEvt_t *pEvt)
  *  \return None.
  */
 /*************************************************************************************************/
-void meshCfgMdlSrEmptyFriendStateChgCback(void)
-{
-
-}
+void meshCfgMdlSrEmptyFriendStateChgCback(void) {}
 
 /*************************************************************************************************/
 /*!
@@ -194,7 +188,7 @@ void meshCfgMdlSrEmptyFriendStateChgCback(void)
 /*************************************************************************************************/
 void meshCfgMdlSrEmptyNetKeyDelNotifyCback(uint16_t netKeyIndex)
 {
-  (void)netKeyIndex;
+    (void)netKeyIndex;
 }
 
 /*************************************************************************************************/
@@ -206,8 +200,8 @@ void meshCfgMdlSrEmptyNetKeyDelNotifyCback(uint16_t netKeyIndex)
 /*************************************************************************************************/
 uint32_t meshCfgMdlSrEmptyPollTimeoutGetCback(meshAddress_t lpnAddr)
 {
-  (void)lpnAddr;
-  return 0;
+    (void)lpnAddr;
+    return 0;
 }
 
 /*************************************************************************************************/
@@ -226,17 +220,15 @@ uint32_t meshCfgMdlSrEmptyPollTimeoutGetCback(meshAddress_t lpnAddr)
  *  \return    None.
  */
 /*************************************************************************************************/
-void meshCfgMdlSrAccMsgRcvCback(uint8_t opcodeIdx, uint8_t *pMsgParam,
-                                uint16_t msgParamLen, meshAddress_t src,
-                                meshElementId_t elemId, uint8_t ttl,
+void meshCfgMdlSrAccMsgRcvCback(uint8_t opcodeIdx, uint8_t *pMsgParam, uint16_t msgParamLen,
+                                meshAddress_t src, meshElementId_t elemId, uint8_t ttl,
                                 uint16_t netKeyIndex)
 {
-   /* Check received message opcode matches expected request opcode and valid element id. */
-  if ((opcodeIdx < MESH_CFG_MDL_CL_MAX_OP) && (elemId == 0))
-  {
-    /* Use action function to handle request. */
-    meshCfgMdlSrOpReqActTbl[opcodeIdx](pMsgParam, msgParamLen, src, ttl, netKeyIndex);
-  }
+    /* Check received message opcode matches expected request opcode and valid element id. */
+    if ((opcodeIdx < MESH_CFG_MDL_CL_MAX_OP) && (elemId == 0)) {
+        /* Use action function to handle request. */
+        meshCfgMdlSrOpReqActTbl[opcodeIdx](pMsgParam, msgParamLen, src, ttl, netKeyIndex);
+    }
 }
 
 /*************************************************************************************************/
@@ -256,21 +248,20 @@ void meshCfgMdlSrAccMsgRcvCback(uint8_t opcodeIdx, uint8_t *pMsgParam,
 void meshCfgMdlSrHandleBeaconGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshBeaconStates_t beaconState;
+    meshBeaconStates_t beaconState;
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_BEACON_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_BEACON_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Read from local config. */
-  beaconState = MeshLocalCfgGetBeaconState();
+    /* Read from local config. */
+    beaconState = MeshLocalCfgGetBeaconState();
 
-  /* Send Beacons Status. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_BEACON_STATUS, &beaconState, sizeof(beaconState), src, ttl,
-                      netKeyIndex);
-  (void)pMsgParam;
+    /* Send Beacons Status. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_BEACON_STATUS, &beaconState, sizeof(beaconState), src, ttl,
+                        netKeyIndex);
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -290,42 +281,38 @@ void meshCfgMdlSrHandleBeaconGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshA
 void meshCfgMdlSrHandleBeaconSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshCfgMdlBeaconStateEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_BEACON_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    meshCfgMdlBeaconStateEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                       .cfgMdlHdr.hdr.param = MESH_CFG_MDL_BEACON_SET_EVENT,
+                                       .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_BEACON_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_BEACON_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
+    }
 
-  /* Get Beacon state. */
-  evt.state = pMsgParam[0];
+    /* Get Beacon state. */
+    evt.state = pMsgParam[0];
 
-  /* Validate Beacon state values. */
-  if (!MESH_BEACON_STATE_IS_VALID(evt.state))
-  {
-    return;
-  }
+    /* Validate Beacon state values. */
+    if (!MESH_BEACON_STATE_IS_VALID(evt.state)) {
+        return;
+    }
 
-  /* Store Beacon state. */
-  MeshLocalCfgSetBeaconState(evt.state);
+    /* Store Beacon state. */
+    MeshLocalCfgSetBeaconState(evt.state);
 
-  /* Signal Beacon state changed. */
-  MeshNwkBeaconHandleStateChanged();
+    /* Signal Beacon state changed. */
+    MeshNwkBeaconHandleStateChanged();
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_BEACON_STATUS, pMsgParam, msgParamLen, src, ttl, netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_BEACON_STATUS, pMsgParam, msgParamLen, src, ttl,
+                        netKeyIndex);
 
-  /* Set event parameters. */
-  evt.cfgMdlHdr.peerAddress = src;
+    /* Set event parameters. */
+    evt.cfgMdlHdr.peerAddress = src;
 
-  /* Call notification callback. */
-  meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    /* Call notification callback. */
+    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -342,44 +329,42 @@ void meshCfgMdlSrHandleBeaconSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshA
  *  \return    None.
  */
 /*************************************************************************************************/
-void meshCfgMdlSrHandleCompositionDataGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                          uint8_t ttl, uint16_t netKeyIndex)
+void meshCfgMdlSrHandleCompositionDataGet(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                          meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint8_t page;
-  uint8_t *rspMsgParam;
-  uint16_t rspMsgParamLen;
+    uint8_t page;
+    uint8_t *rspMsgParam;
+    uint16_t rspMsgParamLen;
 
-  /* Validate length. */
-  if (msgParamLen < CFG_MDL_MSG_COMP_DATA_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen < CFG_MDL_MSG_COMP_DATA_GET_NUM_BYTES) {
+        return;
+    }
 
-  page = pMsgParam[0];
+    page = pMsgParam[0];
 
-  /* Only page 0 supported. */
-  if (page != 0)
-  {
-    page = 0;
-  }
+    /* Only page 0 supported. */
+    if (page != 0) {
+        page = 0;
+    }
 
-  /* Get required memory for Composition Data Status with Page 0. */
-  rspMsgParamLen = CFG_MDL_MSG_COMP_DATA_STATE_NUM_BYTES + meshCfgMsgGetPackedCompDataPg0Size();
+    /* Get required memory for Composition Data Status with Page 0. */
+    rspMsgParamLen = CFG_MDL_MSG_COMP_DATA_STATE_NUM_BYTES + meshCfgMsgGetPackedCompDataPg0Size();
 
-  /* Allocate memory for it. */
-  if ((rspMsgParam = (uint8_t *)WsfBufAlloc(rspMsgParamLen)) == NULL)
-  {
-    return;
-  }
+    /* Allocate memory for it. */
+    if ((rspMsgParam = (uint8_t *)WsfBufAlloc(rspMsgParamLen)) == NULL) {
+        return;
+    }
 
-  /* Pack state. */
-  meshCfgMsgPackCompData(rspMsgParam, page);
+    /* Pack state. */
+    meshCfgMsgPackCompData(rspMsgParam, page);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_COMP_DATA_STATUS, rspMsgParam, rspMsgParamLen, src, ttl, netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_COMP_DATA_STATUS, rspMsgParam, rspMsgParamLen, src, ttl,
+                        netKeyIndex);
 
-  /* Free memory. */
-  WsfBufFree(rspMsgParam);
+    /* Free memory. */
+    WsfBufFree(rspMsgParam);
 }
 
 /*************************************************************************************************/
@@ -399,21 +384,20 @@ void meshCfgMdlSrHandleCompositionDataGet(uint8_t *pMsgParam, uint16_t msgParamL
 void meshCfgMdlSrHandleDefaultTtlGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                      uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint8_t defaultTtl = 0;
+    uint8_t defaultTtl = 0;
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_DEFAULT_TTL_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_DEFAULT_TTL_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Read from local config. */
-  defaultTtl = MeshLocalCfgGetDefaultTtl();
+    /* Read from local config. */
+    defaultTtl = MeshLocalCfgGetDefaultTtl();
 
-  /* Send Default TTL Status. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_DEFAULT_TTL_STATUS, &defaultTtl, sizeof(defaultTtl), src, ttl,
-                      netKeyIndex);
-  (void)pMsgParam;
+    /* Send Default TTL Status. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_DEFAULT_TTL_STATUS, &defaultTtl, sizeof(defaultTtl), src,
+                        ttl, netKeyIndex);
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -433,40 +417,37 @@ void meshCfgMdlSrHandleDefaultTtlGet(uint8_t *pMsgParam, uint16_t msgParamLen, m
 void meshCfgMdlSrHandleDefaultTtlSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                      uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshCfgMdlDefaultTtlStateEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    meshCfgMdlDefaultTtlStateEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                           .cfgMdlHdr.hdr.param =
+                                               MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT,
+                                           .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_DEFAULT_TTL_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_DEFAULT_TTL_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
+    }
 
-  /* Get Default TTL. */
-  evt.ttl = pMsgParam[0];
+    /* Get Default TTL. */
+    evt.ttl = pMsgParam[0];
 
-  /* Validate TTL state values. */
-  if (!MESH_TTL_IS_VALID(evt.ttl) || (evt.ttl == MESH_TX_TTL_FILTER_VALUE) ||
-      (evt.ttl == MESH_USE_DEFAULT_TTL))
-  {
-    return;
-  }
+    /* Validate TTL state values. */
+    if (!MESH_TTL_IS_VALID(evt.ttl) || (evt.ttl == MESH_TX_TTL_FILTER_VALUE) ||
+        (evt.ttl == MESH_USE_DEFAULT_TTL)) {
+        return;
+    }
 
-  /* Store Default TTL. */
-  MeshLocalCfgSetDefaultTtl(evt.ttl);
+    /* Store Default TTL. */
+    MeshLocalCfgSetDefaultTtl(evt.ttl);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_DEFAULT_TTL_STATUS, pMsgParam, msgParamLen, src, ttl, netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_DEFAULT_TTL_STATUS, pMsgParam, msgParamLen, src, ttl,
+                        netKeyIndex);
 
-  /* Set event parameters. */
-  evt.cfgMdlHdr.peerAddress = src;
+    /* Set event parameters. */
+    evt.cfgMdlHdr.peerAddress = src;
 
-  /* Call notification callback. */
-  meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    /* Call notification callback. */
+    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -484,23 +465,22 @@ void meshCfgMdlSrHandleDefaultTtlSet(uint8_t *pMsgParam, uint16_t msgParamLen, m
  */
 /*************************************************************************************************/
 void meshCfgMdlSrHandleGattProxyGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                     uint8_t ttl, uint16_t netKeyIndex)
+                                    uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshGattProxyStates_t gattProxyState;
+    meshGattProxyStates_t gattProxyState;
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_GATT_PROXY_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_GATT_PROXY_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Read from local config. */
-  gattProxyState = MeshLocalCfgGetGattProxyState();
+    /* Read from local config. */
+    gattProxyState = MeshLocalCfgGetGattProxyState();
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_GATT_PROXY_STATUS, &gattProxyState, sizeof(gattProxyState), src,
-                      ttl, netKeyIndex);
-  (void)pMsgParam;
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_GATT_PROXY_STATUS, &gattProxyState, sizeof(gattProxyState),
+                        src, ttl, netKeyIndex);
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -520,84 +500,71 @@ void meshCfgMdlSrHandleGattProxyGet(uint8_t *pMsgParam, uint16_t msgParamLen, me
 void meshCfgMdlSrHandleGattProxySet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                     uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint16_t keyIndex;
-  uint16_t indexer = 0;
-  uint8_t rspMsgParam[CFG_MDL_MSG_GATT_PROXY_STATUS_NUM_BYTES];
-  meshCfgMdlGattProxyEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_GATT_PROXY_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    uint16_t keyIndex;
+    uint16_t indexer = 0;
+    uint8_t rspMsgParam[CFG_MDL_MSG_GATT_PROXY_STATUS_NUM_BYTES];
+    meshCfgMdlGattProxyEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                     .cfgMdlHdr.hdr.param = MESH_CFG_MDL_GATT_PROXY_SET_EVENT,
+                                     .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  bool_t notifyUpperLayers = FALSE;
+    bool_t notifyUpperLayers = FALSE;
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_GATT_PROXY_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
-
-  /* Get Gatt Proxy state. */
-  evt.gattProxy = pMsgParam[0];
-
-  /* Validate Gatt Proxy state values. */
-  if (evt.gattProxy > MESH_GATT_PROXY_FEATURE_NOT_SUPPORTED)
-  {
-    return;
-  }
-
-  /* Check if feature supported. */
-  if (MeshLocalCfgGetGattProxyState() == MESH_GATT_PROXY_FEATURE_NOT_SUPPORTED)
-  {
-    evt.gattProxy = MESH_GATT_PROXY_FEATURE_NOT_SUPPORTED;
-  }
-  else
-  {
-    /* Check for actual changes to notify upper layers. */
-    if(MeshLocalCfgGetGattProxyState() != evt.gattProxy)
-    {
-      notifyUpperLayers = TRUE;
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_GATT_PROXY_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
     }
 
-    /* Store Gatt Proxy state. */
-    MeshLocalCfgSetGattProxyState(evt.gattProxy);
+    /* Get Gatt Proxy state. */
+    evt.gattProxy = pMsgParam[0];
 
-    if (notifyUpperLayers)
-    {
-      /* Inform Hearbeat module that feature is changed. */
-      MeshHbFeatureStateChanged(MESH_FEAT_PROXY);
+    /* Validate Gatt Proxy state values. */
+    if (evt.gattProxy > MESH_GATT_PROXY_FEATURE_NOT_SUPPORTED) {
+        return;
     }
 
-    /* Disable Proxy feature. Disconnect GATT if available. */
-    if (evt.gattProxy == MESH_GATT_PROXY_FEATURE_DISABLED)
-    {
-      /* Disable Proxy on the node. */
-      MeshProxySrDisable();
+    /* Check if feature supported. */
+    if (MeshLocalCfgGetGattProxyState() == MESH_GATT_PROXY_FEATURE_NOT_SUPPORTED) {
+        evt.gattProxy = MESH_GATT_PROXY_FEATURE_NOT_SUPPORTED;
+    } else {
+        /* Check for actual changes to notify upper layers. */
+        if (MeshLocalCfgGetGattProxyState() != evt.gattProxy) {
+            notifyUpperLayers = TRUE;
+        }
 
-      /* Set Node Identity state to stopped for all subnets. */
-      while (MeshLocalCfgGetNextNetKeyIndex(&keyIndex, &indexer) == MESH_SUCCESS)
-      {
-        MeshLocalCfgSetNodeIdentityState(keyIndex, MESH_NODE_IDENTITY_STOPPED);
-      }
+        /* Store Gatt Proxy state. */
+        MeshLocalCfgSetGattProxyState(evt.gattProxy);
+
+        if (notifyUpperLayers) {
+            /* Inform Hearbeat module that feature is changed. */
+            MeshHbFeatureStateChanged(MESH_FEAT_PROXY);
+        }
+
+        /* Disable Proxy feature. Disconnect GATT if available. */
+        if (evt.gattProxy == MESH_GATT_PROXY_FEATURE_DISABLED) {
+            /* Disable Proxy on the node. */
+            MeshProxySrDisable();
+
+            /* Set Node Identity state to stopped for all subnets. */
+            while (MeshLocalCfgGetNextNetKeyIndex(&keyIndex, &indexer) == MESH_SUCCESS) {
+                MeshLocalCfgSetNodeIdentityState(keyIndex, MESH_NODE_IDENTITY_STOPPED);
+            }
+        }
     }
-  }
 
-  /* Set response. */
-  rspMsgParam[0] = evt.gattProxy;
+    /* Set response. */
+    rspMsgParam[0] = evt.gattProxy;
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_GATT_PROXY_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_GATT_PROXY_STATUS, rspMsgParam, sizeof(rspMsgParam), src,
+                        ttl, netKeyIndex);
 
-  if (notifyUpperLayers)
-  {
-    /* Set event parameters. */
-    evt.cfgMdlHdr.peerAddress = src;
+    if (notifyUpperLayers) {
+        /* Set event parameters. */
+        evt.cfgMdlHdr.peerAddress = src;
 
-    /* Call notification callback. */
-    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
-  }
+        /* Call notification callback. */
+        meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    }
 }
 
 /*************************************************************************************************/
@@ -617,30 +584,30 @@ void meshCfgMdlSrHandleGattProxySet(uint8_t *pMsgParam, uint16_t msgParamLen, me
 void meshCfgMdlSrHandleRelayGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                 uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshRelayStates_t state;
-  meshRelayRetransState_t retranState;
-  uint8_t rspMsgParam[CFG_MDL_MSG_RELAY_COMP_STATE_NUM_BYTES];
+    meshRelayStates_t state;
+    meshRelayRetransState_t retranState;
+    uint8_t rspMsgParam[CFG_MDL_MSG_RELAY_COMP_STATE_NUM_BYTES];
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_RELAY_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_RELAY_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Read Relay State. */
-  state = MeshLocalCfgGetRelayState();
+    /* Read Relay State. */
+    state = MeshLocalCfgGetRelayState();
 
-  /* Read Relay Retransmit state. */
-  retranState.retransCount = MeshLocalCfgGetRelayRetransmitCount();
-  retranState.retransIntervalSteps10Ms = MeshLocalCfgGetRelayRetransmitIntvlSteps();
+    /* Read Relay Retransmit state. */
+    retranState.retransCount = MeshLocalCfgGetRelayRetransmitCount();
+    retranState.retransIntervalSteps10Ms = MeshLocalCfgGetRelayRetransmitIntvlSteps();
 
-  /* Pack response. */
-  meshCfgMsgPackRelay(rspMsgParam, &state, &retranState);
+    /* Pack response. */
+    meshCfgMsgPackRelay(rspMsgParam, &state, &retranState);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_RELAY_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl, netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_RELAY_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
+                        netKeyIndex);
 
-  (void)pMsgParam;
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -660,71 +627,60 @@ void meshCfgMdlSrHandleRelayGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAd
 void meshCfgMdlSrHandleRelaySet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                 uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint8_t rspMsgParam[CFG_MDL_MSG_RELAY_STATUS_NUM_BYTES];
-  meshCfgMdlRelayCompositeStateEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_RELAY_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    uint8_t rspMsgParam[CFG_MDL_MSG_RELAY_STATUS_NUM_BYTES];
+    meshCfgMdlRelayCompositeStateEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                               .cfgMdlHdr.hdr.param = MESH_CFG_MDL_RELAY_SET_EVENT,
+                                               .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  bool_t notifyUpperLayers = FALSE;
+    bool_t notifyUpperLayers = FALSE;
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_RELAY_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
-
-  /* Unpack states. */
-  meshCfgMsgUnpackRelay(pMsgParam, &evt.relayState, &evt.relayRetrans);
-
-  if (evt.relayState > MESH_RELAY_FEATURE_NOT_SUPPORTED)
-  {
-    return;
-  }
-
-  /* Check if feature supported. */
-  if (MeshLocalCfgGetRelayState() == MESH_RELAY_FEATURE_NOT_SUPPORTED)
-  {
-    evt.relayState = MESH_RELAY_FEATURE_NOT_SUPPORTED;
-    evt.relayRetrans.retransCount = 0;
-    evt.relayRetrans.retransIntervalSteps10Ms = 0;
-  }
-  else
-  {
-    /* Check if there is an actual state change. */
-    if(MeshLocalCfgGetRelayState() != evt.relayState)
-    {
-      notifyUpperLayers = TRUE;
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_RELAY_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
     }
-    /* Set new states. */
-    MeshLocalCfgSetRelayState(evt.relayState);
-    MeshLocalCfgSetRelayRetransmitCount(evt.relayRetrans.retransCount);
-    MeshLocalCfgSetRelayRetransmitIntvlSteps(evt.relayRetrans.retransIntervalSteps10Ms);
 
-    if (notifyUpperLayers)
-    {
-      /* Inform Heartbeat module that feature is changed. */
-      MeshHbFeatureStateChanged(MESH_FEAT_RELAY);
+    /* Unpack states. */
+    meshCfgMsgUnpackRelay(pMsgParam, &evt.relayState, &evt.relayRetrans);
+
+    if (evt.relayState > MESH_RELAY_FEATURE_NOT_SUPPORTED) {
+        return;
     }
-  }
 
-  /* Pack response. */
-  meshCfgMsgPackRelay(rspMsgParam, &evt.relayState, &evt.relayRetrans);
+    /* Check if feature supported. */
+    if (MeshLocalCfgGetRelayState() == MESH_RELAY_FEATURE_NOT_SUPPORTED) {
+        evt.relayState = MESH_RELAY_FEATURE_NOT_SUPPORTED;
+        evt.relayRetrans.retransCount = 0;
+        evt.relayRetrans.retransIntervalSteps10Ms = 0;
+    } else {
+        /* Check if there is an actual state change. */
+        if (MeshLocalCfgGetRelayState() != evt.relayState) {
+            notifyUpperLayers = TRUE;
+        }
+        /* Set new states. */
+        MeshLocalCfgSetRelayState(evt.relayState);
+        MeshLocalCfgSetRelayRetransmitCount(evt.relayRetrans.retransCount);
+        MeshLocalCfgSetRelayRetransmitIntvlSteps(evt.relayRetrans.retransIntervalSteps10Ms);
 
-  /* Response contains the same packed states as set message. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_RELAY_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+        if (notifyUpperLayers) {
+            /* Inform Heartbeat module that feature is changed. */
+            MeshHbFeatureStateChanged(MESH_FEAT_RELAY);
+        }
+    }
 
-  if(notifyUpperLayers)
-  {
-    /* Set event parameters. */
-    evt.cfgMdlHdr.peerAddress = src;
+    /* Pack response. */
+    meshCfgMsgPackRelay(rspMsgParam, &evt.relayState, &evt.relayRetrans);
 
-    /* Call notification callback. */
-    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
-  }
+    /* Response contains the same packed states as set message. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_RELAY_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
+                        netKeyIndex);
+
+    if (notifyUpperLayers) {
+        /* Set event parameters. */
+        evt.cfgMdlHdr.peerAddress = src;
+
+        /* Call notification callback. */
+        meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    }
 }
 
 /*************************************************************************************************/
@@ -744,44 +700,40 @@ void meshCfgMdlSrHandleRelaySet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAd
 void meshCfgMdlSrHandleNodeIdentityGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                        uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint8_t *ptr;
-  uint16_t msgNetKeyIndex;
-  meshNodeIdentityStates_t state;
-  uint8_t rspMsgParam[CFG_MDL_MSG_NODE_IDENTITY_STATUS_NUM_BYTES];
+    uint8_t *ptr;
+    uint16_t msgNetKeyIndex;
+    meshNodeIdentityStates_t state;
+    uint8_t rspMsgParam[CFG_MDL_MSG_NODE_IDENTITY_STATUS_NUM_BYTES];
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_NODE_IDENTITY_GET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_NODE_IDENTITY_GET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
+    }
 
-  /* Unpack NetKey Index.*/
-  (void)meshCfgMsgUnpackSingleKeyIndex(pMsgParam, &msgNetKeyIndex);
+    /* Unpack NetKey Index.*/
+    (void)meshCfgMsgUnpackSingleKeyIndex(pMsgParam, &msgNetKeyIndex);
 
-  /* Verify if NetKey exists by reading Node Identity. */
-  state = MeshLocalCfgGetNodeIdentityState(msgNetKeyIndex);
+    /* Verify if NetKey exists by reading Node Identity. */
+    state = MeshLocalCfgGetNodeIdentityState(msgNetKeyIndex);
 
-  if (state >= MESH_NODE_IDENTITY_PROHIBITED_START)
-  {
-    rspMsgParam[0] = MESH_CFG_MDL_ERR_INVALID_NETKEY_INDEX;
-    state = 0;
-  }
-  else
-  {
-    rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
-  }
+    if (state >= MESH_NODE_IDENTITY_PROHIBITED_START) {
+        rspMsgParam[0] = MESH_CFG_MDL_ERR_INVALID_NETKEY_INDEX;
+        state = 0;
+    } else {
+        rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
+    }
 
-  ptr = &rspMsgParam[1];
+    ptr = &rspMsgParam[1];
 
-  /* Pack NetKey Index. */
-  ptr += meshCfgMsgPackSingleKeyIndex(ptr, msgNetKeyIndex);
+    /* Pack NetKey Index. */
+    ptr += meshCfgMsgPackSingleKeyIndex(ptr, msgNetKeyIndex);
 
-  /* Pack state. */
-  UINT8_TO_BSTREAM(ptr, state);
+    /* Pack state. */
+    UINT8_TO_BSTREAM(ptr, state);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NODE_IDENTITY_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NODE_IDENTITY_STATUS, rspMsgParam, sizeof(rspMsgParam), src,
+                        ttl, netKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -801,77 +753,65 @@ void meshCfgMdlSrHandleNodeIdentityGet(uint8_t *pMsgParam, uint16_t msgParamLen,
 void meshCfgMdlSrHandleNodeIdentitySet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                        uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint8_t *ptr;
-  meshCfgMdlNodeIdentityEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
-  meshNodeIdentityStates_t localState;
-  uint8_t rspMsgParam[CFG_MDL_MSG_NODE_IDENTITY_STATUS_NUM_BYTES];
+    uint8_t *ptr;
+    meshCfgMdlNodeIdentityEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                        .cfgMdlHdr.hdr.param = MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT,
+                                        .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
+    meshNodeIdentityStates_t localState;
+    uint8_t rspMsgParam[CFG_MDL_MSG_NODE_IDENTITY_STATUS_NUM_BYTES];
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_NODE_IDENTITY_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_NODE_IDENTITY_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
+    }
 
-  /* Unpack NetKey Index.*/
-  pMsgParam += meshCfgMsgUnpackSingleKeyIndex(pMsgParam, &evt.netKeyIndex);
+    /* Unpack NetKey Index.*/
+    pMsgParam += meshCfgMsgUnpackSingleKeyIndex(pMsgParam, &evt.netKeyIndex);
 
-  /* Unpack state. */
-  BSTREAM_TO_UINT8(evt.state, pMsgParam);
+    /* Unpack state. */
+    BSTREAM_TO_UINT8(evt.state, pMsgParam);
 
-  /* Check if received state is prohitibed. */
-  if (evt.state >= MESH_NODE_IDENTITY_NOT_SUPPORTED)
-  {
-    return;
-  }
+    /* Check if received state is prohitibed. */
+    if (evt.state >= MESH_NODE_IDENTITY_NOT_SUPPORTED) {
+        return;
+    }
 
-  /* Verify if NetKey exists by reading Node Identity. */
-  localState = MeshLocalCfgGetNodeIdentityState(evt.netKeyIndex);
+    /* Verify if NetKey exists by reading Node Identity. */
+    localState = MeshLocalCfgGetNodeIdentityState(evt.netKeyIndex);
 
-  if (localState >= MESH_NODE_IDENTITY_PROHIBITED_START)
-  {
-    rspMsgParam[0] = MESH_CFG_MDL_ERR_INVALID_NETKEY_INDEX;
-    evt.state = 0;
-  }
-  else if (localState == MESH_NODE_IDENTITY_NOT_SUPPORTED)
-  {
-    evt.state = MESH_NODE_IDENTITY_NOT_SUPPORTED;
-    rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
-  }
-  else if (MeshLocalCfgGetGattProxyState() == MESH_GATT_PROXY_FEATURE_DISABLED)
-  {
-    evt.state = MESH_NODE_IDENTITY_STOPPED;
-    rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
-  }
-  else
-  {
-    /* Set state in local config. */
-    MeshLocalCfgSetNodeIdentityState(evt.netKeyIndex, evt.state);
+    if (localState >= MESH_NODE_IDENTITY_PROHIBITED_START) {
+        rspMsgParam[0] = MESH_CFG_MDL_ERR_INVALID_NETKEY_INDEX;
+        evt.state = 0;
+    } else if (localState == MESH_NODE_IDENTITY_NOT_SUPPORTED) {
+        evt.state = MESH_NODE_IDENTITY_NOT_SUPPORTED;
+        rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
+    } else if (MeshLocalCfgGetGattProxyState() == MESH_GATT_PROXY_FEATURE_DISABLED) {
+        evt.state = MESH_NODE_IDENTITY_STOPPED;
+        rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
+    } else {
+        /* Set state in local config. */
+        MeshLocalCfgSetNodeIdentityState(evt.netKeyIndex, evt.state);
 
-    rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
-  }
+        rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
+    }
 
-  ptr = &rspMsgParam[1];
+    ptr = &rspMsgParam[1];
 
-  /* Pack NetKey Index. */
-  ptr += meshCfgMsgPackSingleKeyIndex(ptr, evt.netKeyIndex);
+    /* Pack NetKey Index. */
+    ptr += meshCfgMsgPackSingleKeyIndex(ptr, evt.netKeyIndex);
 
-  /* Pack state. */
-  UINT8_TO_BSTREAM(ptr, evt.state);
+    /* Pack state. */
+    UINT8_TO_BSTREAM(ptr, evt.state);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NODE_IDENTITY_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                   netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NODE_IDENTITY_STATUS, rspMsgParam, sizeof(rspMsgParam), src,
+                        ttl, netKeyIndex);
 
-  if ((rspMsgParam[0] == MESH_CFG_MDL_SR_SUCCESS) && (evt.state != MESH_NODE_IDENTITY_NOT_SUPPORTED))
-  {
-    /* Invoke callback on state changed. */
-    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
-  }
+    if ((rspMsgParam[0] == MESH_CFG_MDL_SR_SUCCESS) &&
+        (evt.state != MESH_NODE_IDENTITY_NOT_SUPPORTED)) {
+        /* Invoke callback on state changed. */
+        meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    }
 }
 
 /*************************************************************************************************/
@@ -891,30 +831,26 @@ void meshCfgMdlSrHandleNodeIdentitySet(uint8_t *pMsgParam, uint16_t msgParamLen,
 void meshCfgMdlSrHandleNodeReset(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshCfgMdlNodeResetStateEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_NODE_RESET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    meshCfgMdlNodeResetStateEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                          .cfgMdlHdr.hdr.param = MESH_CFG_MDL_NODE_RESET_EVENT,
+                                          .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_NODE_RESET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_NODE_RESET_NUM_BYTES) {
+        return;
+    }
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NODE_RESET_STATUS, NULL, CFG_MDL_MSG_NODE_RESET_NUM_BYTES, src, ttl,
-                      netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NODE_RESET_STATUS, NULL, CFG_MDL_MSG_NODE_RESET_NUM_BYTES,
+                        src, ttl, netKeyIndex);
 
-  /* Set event parameters. */
-  evt.cfgMdlHdr.peerAddress = src;
+    /* Set event parameters. */
+    evt.cfgMdlHdr.peerAddress = src;
 
-  /* Call notification callback. */
-  meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    /* Call notification callback. */
+    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
 
-  (void)pMsgParam;
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -934,21 +870,20 @@ void meshCfgMdlSrHandleNodeReset(uint8_t *pMsgParam, uint16_t msgParamLen, meshA
 void meshCfgMdlSrHandleFriendGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshFriendStates_t friendState;
+    meshFriendStates_t friendState;
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_FRIEND_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_FRIEND_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Read from local config. */
-  friendState =  MeshLocalCfgGetFriendState();
+    /* Read from local config. */
+    friendState = MeshLocalCfgGetFriendState();
 
-  /* Send Friend Status. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_FRIEND_STATUS, &friendState, sizeof(friendState), src, ttl,
-                      netKeyIndex);
-  (void)pMsgParam;
+    /* Send Friend Status. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_FRIEND_STATUS, &friendState, sizeof(friendState), src, ttl,
+                        netKeyIndex);
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -968,71 +903,60 @@ void meshCfgMdlSrHandleFriendGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshA
 void meshCfgMdlSrHandleFriendSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint8_t rspMsgParam[CFG_MDL_MSG_FRIEND_STATUS_NUM_BYTES];
-  meshCfgMdlFriendEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_FRIEND_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    uint8_t rspMsgParam[CFG_MDL_MSG_FRIEND_STATUS_NUM_BYTES];
+    meshCfgMdlFriendEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                  .cfgMdlHdr.hdr.param = MESH_CFG_MDL_FRIEND_SET_EVENT,
+                                  .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  bool_t notifyUpperLayers = FALSE;
+    bool_t notifyUpperLayers = FALSE;
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_FRIEND_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
-
-  /* Get Friend state. */
-  evt.friendState = pMsgParam[0];
-
-  /* Validate Friend state values. */
-  if (evt.friendState > MESH_FRIEND_FEATURE_NOT_SUPPORTED)
-  {
-    return;
-  }
-
-  /* Check if feature supported. */
-  if (MeshLocalCfgGetFriendState() == MESH_FRIEND_FEATURE_NOT_SUPPORTED)
-  {
-    evt.friendState = MESH_FRIEND_FEATURE_NOT_SUPPORTED;
-  }
-  else
-  {
-    /* Check if there is an actual change. */
-    if(MeshLocalCfgGetFriendState() != evt.friendState)
-    {
-      notifyUpperLayers = TRUE;
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_FRIEND_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
     }
-    /* Store Friend state. */
-    MeshLocalCfgSetFriendState(evt.friendState);
 
-    if (notifyUpperLayers)
-    {
-      /* Inform Hearbeat module that feature is changed. */
-      MeshHbFeatureStateChanged(MESH_FEAT_FRIEND);
+    /* Get Friend state. */
+    evt.friendState = pMsgParam[0];
+
+    /* Validate Friend state values. */
+    if (evt.friendState > MESH_FRIEND_FEATURE_NOT_SUPPORTED) {
+        return;
     }
-  }
 
-  /* Set response. */
-  rspMsgParam[0] = evt.friendState;
+    /* Check if feature supported. */
+    if (MeshLocalCfgGetFriendState() == MESH_FRIEND_FEATURE_NOT_SUPPORTED) {
+        evt.friendState = MESH_FRIEND_FEATURE_NOT_SUPPORTED;
+    } else {
+        /* Check if there is an actual change. */
+        if (MeshLocalCfgGetFriendState() != evt.friendState) {
+            notifyUpperLayers = TRUE;
+        }
+        /* Store Friend state. */
+        MeshLocalCfgSetFriendState(evt.friendState);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_FRIEND_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+        if (notifyUpperLayers) {
+            /* Inform Hearbeat module that feature is changed. */
+            MeshHbFeatureStateChanged(MESH_FEAT_FRIEND);
+        }
+    }
 
-  if (notifyUpperLayers)
-  {
-    /* Inform Friendship module that feature is changed. */
-    meshCfgMdlSrCb.friendStateChgCback();
+    /* Set response. */
+    rspMsgParam[0] = evt.friendState;
 
-    /* Set event parameters. */
-    evt.cfgMdlHdr.peerAddress = src;
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_FRIEND_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
+                        netKeyIndex);
 
-    /* Call notification callback. */
-    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
-  }
+    if (notifyUpperLayers) {
+        /* Inform Friendship module that feature is changed. */
+        meshCfgMdlSrCb.friendStateChgCback();
+
+        /* Set event parameters. */
+        evt.cfgMdlHdr.peerAddress = src;
+
+        /* Call notification callback. */
+        meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    }
 }
 
 /*************************************************************************************************/
@@ -1052,53 +976,46 @@ void meshCfgMdlSrHandleFriendSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshA
 void meshCfgMdlSrHandleHbPubGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                 uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshHbPub_t hbPubState;
-  uint8_t rspMsgParam[CFG_MDL_MSG_HB_PUB_STATUS_NUM_BYTES];
+    meshHbPub_t hbPubState;
+    uint8_t rspMsgParam[CFG_MDL_MSG_HB_PUB_STATUS_NUM_BYTES];
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_HB_PUB_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_HB_PUB_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Read Heartbeat Publication local state. */
+    /* Read Heartbeat Publication local state. */
 
-  /* Read destination. */
-  hbPubState.dstAddr = MeshLocalCfgGetHbPubDst();
+    /* Read destination. */
+    hbPubState.dstAddr = MeshLocalCfgGetHbPubDst();
 
-  /* Handle disabled publication (destination is unassigned, 4.4.1.2.15). */
-  if (MESH_IS_ADDR_UNASSIGNED(hbPubState.dstAddr))
-  {
-    hbPubState.countLog = 0;
-    hbPubState.periodLog = 0;
-    hbPubState.ttl = 0;
-  }
-  else
-  {
-    hbPubState.countLog = MeshLocalCfgGetHbPubCountLog();
-    hbPubState.periodLog = MeshLocalCfgGetHbPubPeriodLog();
-    hbPubState.ttl = MeshLocalCfgGetHbPubTtl();
-  }
+    /* Handle disabled publication (destination is unassigned, 4.4.1.2.15). */
+    if (MESH_IS_ADDR_UNASSIGNED(hbPubState.dstAddr)) {
+        hbPubState.countLog = 0;
+        hbPubState.periodLog = 0;
+        hbPubState.ttl = 0;
+    } else {
+        hbPubState.countLog = MeshLocalCfgGetHbPubCountLog();
+        hbPubState.periodLog = MeshLocalCfgGetHbPubPeriodLog();
+        hbPubState.ttl = MeshLocalCfgGetHbPubTtl();
+    }
 
-  hbPubState.features = MeshLocalCfgGetHbPubFeatures();
+    hbPubState.features = MeshLocalCfgGetHbPubFeatures();
 
-  if (MeshLocalCfgGetHbPubNetKeyIndex(&hbPubState.netKeyIndex) == MESH_SUCCESS)
-  {
-    rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
-  }
-  else
-  {
-    rspMsgParam[0] = MESH_CFG_MDL_ERR_INVALID_NETKEY_INDEX;
-  }
+    if (MeshLocalCfgGetHbPubNetKeyIndex(&hbPubState.netKeyIndex) == MESH_SUCCESS) {
+        rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
+    } else {
+        rspMsgParam[0] = MESH_CFG_MDL_ERR_INVALID_NETKEY_INDEX;
+    }
 
-  /* Pack response. */
-  meshCfgMsgPackHbPub(&rspMsgParam[1], &hbPubState);
+    /* Pack response. */
+    meshCfgMsgPackHbPub(&rspMsgParam[1], &hbPubState);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_HB_PUB_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_HB_PUB_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
+                        netKeyIndex);
 
-  (void)pMsgParam;
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -1118,100 +1035,88 @@ void meshCfgMdlSrHandleHbPubGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAd
 void meshCfgMdlSrHandleHbPubSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                 uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint8_t rspMsgParam[CFG_MDL_MSG_HB_PUB_STATUS_NUM_BYTES];
+    uint8_t rspMsgParam[CFG_MDL_MSG_HB_PUB_STATUS_NUM_BYTES];
 
-  meshCfgMdlHbPubEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_HB_PUB_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    meshCfgMdlHbPubEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                 .cfgMdlHdr.hdr.param = MESH_CFG_MDL_HB_PUB_SET_EVENT,
+                                 .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_HB_PUB_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
-
-  /* Unpack states. */
-  meshCfgMsgUnpackHbPub(pMsgParam, &evt.hbPub);
-
-  /* Validate destination. */
-  if (MESH_IS_ADDR_VIRTUAL(evt.hbPub.dstAddr))
-  {
-    return;
-  }
-
-  /* Read Key Refresh Phase to validate NetKeyIndex. */
-  if(MeshLocalCfgGetKeyRefreshPhaseState(evt.hbPub.netKeyIndex)
-     >= MESH_KEY_REFRESH_PROHIBITED_START)
-  {
-    rspMsgParam[0] = MESH_CFG_MDL_ERR_INVALID_NETKEY_INDEX;
-  }
-  else
-  {
-    /* Check destination to see if publication is disabled. */
-    if (MESH_IS_ADDR_UNASSIGNED(evt.hbPub.dstAddr))
-    {
-      /* Reset countLog, periodLog and TTL. */
-      evt.hbPub.countLog = 0;
-      evt.hbPub.periodLog = 0;
-      evt.hbPub.periodLog = 0;
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_HB_PUB_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
     }
 
-    /* Validate Heartbeat Publication data. */
-    if (((evt.hbPub.countLog >= CFG_MDL_HB_PUB_COUNT_LOG_NOT_ALLOW_START) &&
-         (evt.hbPub.countLog <= CFG_MDL_HB_PUB_COUNT_LOG_NOT_ALLOW_END)) ||
-        (evt.hbPub.periodLog >= CFG_MDL_HB_PUB_PERIOD_LOG_NOT_ALLOW_START) ||
-        (evt.hbPub.ttl >= CFG_MDL_HB_PUB_TTL_NOT_ALLOW_START))
-    {
-      return;
+    /* Unpack states. */
+    meshCfgMsgUnpackHbPub(pMsgParam, &evt.hbPub);
+
+    /* Validate destination. */
+    if (MESH_IS_ADDR_VIRTUAL(evt.hbPub.dstAddr)) {
+        return;
     }
 
-    /* Clear RFU bits. */
-    evt.hbPub.features &= (MESH_FEAT_RFU_START - 1);
+    /* Read Key Refresh Phase to validate NetKeyIndex. */
+    if (MeshLocalCfgGetKeyRefreshPhaseState(evt.hbPub.netKeyIndex) >=
+        MESH_KEY_REFRESH_PROHIBITED_START) {
+        rspMsgParam[0] = MESH_CFG_MDL_ERR_INVALID_NETKEY_INDEX;
+    } else {
+        /* Check destination to see if publication is disabled. */
+        if (MESH_IS_ADDR_UNASSIGNED(evt.hbPub.dstAddr)) {
+            /* Reset countLog, periodLog and TTL. */
+            evt.hbPub.countLog = 0;
+            evt.hbPub.periodLog = 0;
+            evt.hbPub.periodLog = 0;
+        }
 
-    /* Set new states. */
-    switch (MeshLocalCfgSetHbPubDst(evt.hbPub.dstAddr))
-    {
-      case MESH_LOCAL_CFG_ALREADY_EXIST:
-      /* Fall-through. */
-      case MESH_SUCCESS:
-        rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
-        MeshLocalCfgSetHbPubCountLog(evt.hbPub.countLog);
-        MeshLocalCfgSetHbPubPeriodLog(evt.hbPub.periodLog);
-        MeshLocalCfgSetHbPubTtl(evt.hbPub.ttl);
-        MeshLocalCfgSetHbPubFeatures(evt.hbPub.features);
-        MeshLocalCfgSetHbPubNetKeyIndex(evt.hbPub.netKeyIndex);
-        break;
-      case MESH_LOCAL_CFG_OUT_OF_MEMORY:
-        rspMsgParam[0] = MESH_CFG_MDL_ERR_INSUFFICIENT_RESOURCES;
-        break;
-      default:
-        rspMsgParam[0] = MESH_CFG_MDL_ERR_UNSPECIFIED;
-        break;
+        /* Validate Heartbeat Publication data. */
+        if (((evt.hbPub.countLog >= CFG_MDL_HB_PUB_COUNT_LOG_NOT_ALLOW_START) &&
+             (evt.hbPub.countLog <= CFG_MDL_HB_PUB_COUNT_LOG_NOT_ALLOW_END)) ||
+            (evt.hbPub.periodLog >= CFG_MDL_HB_PUB_PERIOD_LOG_NOT_ALLOW_START) ||
+            (evt.hbPub.ttl >= CFG_MDL_HB_PUB_TTL_NOT_ALLOW_START)) {
+            return;
+        }
+
+        /* Clear RFU bits. */
+        evt.hbPub.features &= (MESH_FEAT_RFU_START - 1);
+
+        /* Set new states. */
+        switch (MeshLocalCfgSetHbPubDst(evt.hbPub.dstAddr)) {
+        case MESH_LOCAL_CFG_ALREADY_EXIST:
+        /* Fall-through. */
+        case MESH_SUCCESS:
+            rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
+            MeshLocalCfgSetHbPubCountLog(evt.hbPub.countLog);
+            MeshLocalCfgSetHbPubPeriodLog(evt.hbPub.periodLog);
+            MeshLocalCfgSetHbPubTtl(evt.hbPub.ttl);
+            MeshLocalCfgSetHbPubFeatures(evt.hbPub.features);
+            MeshLocalCfgSetHbPubNetKeyIndex(evt.hbPub.netKeyIndex);
+            break;
+        case MESH_LOCAL_CFG_OUT_OF_MEMORY:
+            rspMsgParam[0] = MESH_CFG_MDL_ERR_INSUFFICIENT_RESOURCES;
+            break;
+        default:
+            rspMsgParam[0] = MESH_CFG_MDL_ERR_UNSPECIFIED;
+            break;
+        }
     }
-  }
 
-  /* Pack response. */
-  meshCfgMsgPackHbPub(&rspMsgParam[1], &evt.hbPub);
+    /* Pack response. */
+    meshCfgMsgPackHbPub(&rspMsgParam[1], &evt.hbPub);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_HB_PUB_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_HB_PUB_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
+                        netKeyIndex);
 
-  /* Inform Heartbeat module and trigger callback on success. */
-  if (rspMsgParam[0] == MESH_CFG_MDL_SR_SUCCESS)
-  {
-    /* Notify Publication changed. */
-    MeshHbPublicationStateChanged();
+    /* Inform Heartbeat module and trigger callback on success. */
+    if (rspMsgParam[0] == MESH_CFG_MDL_SR_SUCCESS) {
+        /* Notify Publication changed. */
+        MeshHbPublicationStateChanged();
 
-    /* Set event parameters. */
-    evt.cfgMdlHdr.peerAddress = src;
+        /* Set event parameters. */
+        evt.cfgMdlHdr.peerAddress = src;
 
-    /* Call notification callback. */
-    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
-  }
+        /* Call notification callback. */
+        meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    }
 }
 
 /*************************************************************************************************/
@@ -1231,47 +1136,43 @@ void meshCfgMdlSrHandleHbPubSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAd
 void meshCfgMdlSrHandleHbSubGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                 uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshHbSub_t hbSubState;
-  uint8_t rspMsgParam[CFG_MDL_MSG_HB_SUB_STATUS_NUM_BYTES];
+    meshHbSub_t hbSubState;
+    uint8_t rspMsgParam[CFG_MDL_MSG_HB_SUB_STATUS_NUM_BYTES];
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_HB_SUB_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_HB_SUB_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Read Heartbeat Subscription local state. */
-  hbSubState.srcAddr = MeshLocalCfgGetHbSubSrc();
-  hbSubState.dstAddr = MeshLocalCfgGetHbSubDst();
+    /* Read Heartbeat Subscription local state. */
+    hbSubState.srcAddr = MeshLocalCfgGetHbSubSrc();
+    hbSubState.dstAddr = MeshLocalCfgGetHbSubDst();
 
-  /* Check if subscription is disabled. (4.4.1.2.16 Heartbeat Subscription state) */
-  if(MESH_IS_ADDR_UNASSIGNED(hbSubState.srcAddr) ||
-     MESH_IS_ADDR_UNASSIGNED(hbSubState.dstAddr))
-  {
-    hbSubState.periodLog = 0;
-    hbSubState.countLog = 0;
-    hbSubState.minHops = 0;
-    hbSubState.maxHops = 0;
-  }
-  else
-  {
-    /* Read subscription parameters. */
-    hbSubState.periodLog = MeshLocalCfgGetHbSubPeriodLog();
-    hbSubState.countLog = MeshLocalCfgGetHbSubCountLog();
-    hbSubState.minHops = MeshLocalCfgGetHbSubMinHops();
-    hbSubState.maxHops = MeshLocalCfgGetHbSubMaxHops();
-  }
+    /* Check if subscription is disabled. (4.4.1.2.16 Heartbeat Subscription state) */
+    if (MESH_IS_ADDR_UNASSIGNED(hbSubState.srcAddr) ||
+        MESH_IS_ADDR_UNASSIGNED(hbSubState.dstAddr)) {
+        hbSubState.periodLog = 0;
+        hbSubState.countLog = 0;
+        hbSubState.minHops = 0;
+        hbSubState.maxHops = 0;
+    } else {
+        /* Read subscription parameters. */
+        hbSubState.periodLog = MeshLocalCfgGetHbSubPeriodLog();
+        hbSubState.countLog = MeshLocalCfgGetHbSubCountLog();
+        hbSubState.minHops = MeshLocalCfgGetHbSubMinHops();
+        hbSubState.maxHops = MeshLocalCfgGetHbSubMaxHops();
+    }
 
-  rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
+    rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
 
-  /* Pack response. */
-  meshCfgMsgPackHbSubState(&rspMsgParam[1], &hbSubState);
+    /* Pack response. */
+    meshCfgMsgPackHbSubState(&rspMsgParam[1], &hbSubState);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_HB_SUB_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_HB_SUB_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
+                        netKeyIndex);
 
-  (void)pMsgParam;
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -1291,138 +1192,118 @@ void meshCfgMdlSrHandleHbSubGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAd
 void meshCfgMdlSrHandleHbSubSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                 uint8_t ttl, uint16_t netKeyIndex)
 {
-  uint8_t rspMsgParam[CFG_MDL_MSG_HB_SUB_STATUS_NUM_BYTES];
-  meshAddress_t oldSrc, oldDst, elem0Addr;
-  meshLocalCfgRetVal_t retVal;
+    uint8_t rspMsgParam[CFG_MDL_MSG_HB_SUB_STATUS_NUM_BYTES];
+    meshAddress_t oldSrc, oldDst, elem0Addr;
+    meshLocalCfgRetVal_t retVal;
 
-  meshCfgMdlHbSubEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_HB_SUB_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    meshCfgMdlHbSubEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                 .cfgMdlHdr.hdr.param = MESH_CFG_MDL_HB_SUB_SET_EVENT,
+                                 .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_HB_SUB_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
-
-  /* Unpack states. */
-  meshCfgMsgUnpackHbSubSet(pMsgParam, &evt.hbSub);
-
-  /* Validate Heartbeat Subscription data. */
-  if ((evt.hbSub.periodLog >= CFG_MDL_HB_SUB_PERIOD_LOG_NOT_ALLOW_START) ||
-      MESH_IS_ADDR_VIRTUAL(evt.hbSub.srcAddr) ||
-      MESH_IS_ADDR_GROUP(evt.hbSub.srcAddr) ||
-      MESH_IS_ADDR_VIRTUAL(evt.hbSub.dstAddr))
-  {
-    return;
-  }
-
-  /* Check if unicast destination is primary element address. */
-  if(MESH_IS_ADDR_UNICAST(evt.hbSub.dstAddr))
-  {
-    MeshLocalCfgGetAddrFromElementId(0, &elem0Addr);
-
-    if(elem0Addr != evt.hbSub.dstAddr)
-    {
-      return;
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_HB_SUB_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
     }
-  }
 
-  /* Check if conditions are met to disable subscription. */
-  if(MESH_IS_ADDR_UNASSIGNED(evt.hbSub.srcAddr) ||
-     MESH_IS_ADDR_UNASSIGNED(evt.hbSub.dstAddr))
-  {
-    evt.hbSub.srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
-    evt.hbSub.dstAddr = MESH_ADDR_TYPE_UNASSIGNED;
-    evt.hbSub.periodLog = 0;
+    /* Unpack states. */
+    meshCfgMsgUnpackHbSubSet(pMsgParam, &evt.hbSub);
 
-    /* There should be no error in writing unassigned address. */
-    (void)MeshLocalCfgSetHbSubSrc(evt.hbSub.srcAddr);
-    (void)MeshLocalCfgSetHbSubDst(evt.hbSub.dstAddr);
-    MeshLocalCfgSetHbSubPeriodLog(evt.hbSub.periodLog);
-
-    /* Get states for Count Log, Min & Max Hops */
-    evt.hbSub.countLog = MeshLocalCfgGetHbSubCountLog();
-    evt.hbSub.minHops = MeshLocalCfgGetHbSubMinHops();
-    evt.hbSub.maxHops = MeshLocalCfgGetHbSubMaxHops();
-
-    rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
-  }
-  else
-  {
-    /* Read old. */
-    oldSrc = MeshLocalCfgGetHbSubSrc();
-    /* Read old. */
-    oldDst = MeshLocalCfgGetHbSubDst();
-
-    /* Set new states. */
-    retVal =  MeshLocalCfgSetHbSubSrc(evt.hbSub.srcAddr);
-
-    if((retVal != MESH_SUCCESS) && (retVal != MESH_LOCAL_CFG_ALREADY_EXIST))
-    {
-      rspMsgParam[0] = MESH_CFG_MDL_ERR_UNSPECIFIED;
+    /* Validate Heartbeat Subscription data. */
+    if ((evt.hbSub.periodLog >= CFG_MDL_HB_SUB_PERIOD_LOG_NOT_ALLOW_START) ||
+        MESH_IS_ADDR_VIRTUAL(evt.hbSub.srcAddr) || MESH_IS_ADDR_GROUP(evt.hbSub.srcAddr) ||
+        MESH_IS_ADDR_VIRTUAL(evt.hbSub.dstAddr)) {
+        return;
     }
-    else
-    {
-      retVal = MeshLocalCfgSetHbSubDst(evt.hbSub.dstAddr);
-      if((retVal != MESH_SUCCESS) && (retVal != MESH_LOCAL_CFG_ALREADY_EXIST))
-      {
-        /* Restore source and set error code. */
-        (void)MeshLocalCfgSetHbSubSrc(oldSrc);
-        rspMsgParam[0] = MESH_CFG_MDL_ERR_INSUFFICIENT_RESOURCES;
-      }
-      else
-      {
-        /* Set Period Log. */
+
+    /* Check if unicast destination is primary element address. */
+    if (MESH_IS_ADDR_UNICAST(evt.hbSub.dstAddr)) {
+        MeshLocalCfgGetAddrFromElementId(0, &elem0Addr);
+
+        if (elem0Addr != evt.hbSub.dstAddr) {
+            return;
+        }
+    }
+
+    /* Check if conditions are met to disable subscription. */
+    if (MESH_IS_ADDR_UNASSIGNED(evt.hbSub.srcAddr) || MESH_IS_ADDR_UNASSIGNED(evt.hbSub.dstAddr)) {
+        evt.hbSub.srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
+        evt.hbSub.dstAddr = MESH_ADDR_TYPE_UNASSIGNED;
+        evt.hbSub.periodLog = 0;
+
+        /* There should be no error in writing unassigned address. */
+        (void)MeshLocalCfgSetHbSubSrc(evt.hbSub.srcAddr);
+        (void)MeshLocalCfgSetHbSubDst(evt.hbSub.dstAddr);
         MeshLocalCfgSetHbSubPeriodLog(evt.hbSub.periodLog);
 
-        /* Decide if subscription information must also be reset. */
-        if((evt.hbSub.periodLog != 0) || (oldSrc != evt.hbSub.srcAddr) || (oldDst != evt.hbSub.dstAddr))
-        {
-          /* Set CountLog, Min & Max Hops to their initial values. */
-          MeshLocalCfgSetHbSubCountLog(0);
-          MeshLocalCfgSetHbSubMinHops(CFG_MDL_HB_SUB_MIN_HOPS_NOT_ALLOW_START - 1);
-          MeshLocalCfgSetHbSubMaxHops(0);
-          /* Set values for Count Log, Min & Max Hops */
-          evt.hbSub.countLog = 0;
-          evt.hbSub.minHops = CFG_MDL_HB_SUB_MIN_HOPS_NOT_ALLOW_START - 1;
-          evt.hbSub.maxHops = 0;
-        }
-        else
-        {
-          /* Get states for Count Log, Min & Max Hops */
-          evt.hbSub.countLog = MeshLocalCfgGetHbSubCountLog();
-          evt.hbSub.minHops = MeshLocalCfgGetHbSubMinHops();
-          evt.hbSub.maxHops = MeshLocalCfgGetHbSubMaxHops();
-        }
+        /* Get states for Count Log, Min & Max Hops */
+        evt.hbSub.countLog = MeshLocalCfgGetHbSubCountLog();
+        evt.hbSub.minHops = MeshLocalCfgGetHbSubMinHops();
+        evt.hbSub.maxHops = MeshLocalCfgGetHbSubMaxHops();
 
-        /* Set status to success. */
         rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
-      }
+    } else {
+        /* Read old. */
+        oldSrc = MeshLocalCfgGetHbSubSrc();
+        /* Read old. */
+        oldDst = MeshLocalCfgGetHbSubDst();
+
+        /* Set new states. */
+        retVal = MeshLocalCfgSetHbSubSrc(evt.hbSub.srcAddr);
+
+        if ((retVal != MESH_SUCCESS) && (retVal != MESH_LOCAL_CFG_ALREADY_EXIST)) {
+            rspMsgParam[0] = MESH_CFG_MDL_ERR_UNSPECIFIED;
+        } else {
+            retVal = MeshLocalCfgSetHbSubDst(evt.hbSub.dstAddr);
+            if ((retVal != MESH_SUCCESS) && (retVal != MESH_LOCAL_CFG_ALREADY_EXIST)) {
+                /* Restore source and set error code. */
+                (void)MeshLocalCfgSetHbSubSrc(oldSrc);
+                rspMsgParam[0] = MESH_CFG_MDL_ERR_INSUFFICIENT_RESOURCES;
+            } else {
+                /* Set Period Log. */
+                MeshLocalCfgSetHbSubPeriodLog(evt.hbSub.periodLog);
+
+                /* Decide if subscription information must also be reset. */
+                if ((evt.hbSub.periodLog != 0) || (oldSrc != evt.hbSub.srcAddr) ||
+                    (oldDst != evt.hbSub.dstAddr)) {
+                    /* Set CountLog, Min & Max Hops to their initial values. */
+                    MeshLocalCfgSetHbSubCountLog(0);
+                    MeshLocalCfgSetHbSubMinHops(CFG_MDL_HB_SUB_MIN_HOPS_NOT_ALLOW_START - 1);
+                    MeshLocalCfgSetHbSubMaxHops(0);
+                    /* Set values for Count Log, Min & Max Hops */
+                    evt.hbSub.countLog = 0;
+                    evt.hbSub.minHops = CFG_MDL_HB_SUB_MIN_HOPS_NOT_ALLOW_START - 1;
+                    evt.hbSub.maxHops = 0;
+                } else {
+                    /* Get states for Count Log, Min & Max Hops */
+                    evt.hbSub.countLog = MeshLocalCfgGetHbSubCountLog();
+                    evt.hbSub.minHops = MeshLocalCfgGetHbSubMinHops();
+                    evt.hbSub.maxHops = MeshLocalCfgGetHbSubMaxHops();
+                }
+
+                /* Set status to success. */
+                rspMsgParam[0] = MESH_CFG_MDL_SR_SUCCESS;
+            }
+        }
     }
-  }
 
-  /* Pack state to build status message. */
-  meshCfgMsgPackHbSubState(&rspMsgParam[1], &evt.hbSub);
+    /* Pack state to build status message. */
+    meshCfgMsgPackHbSubState(&rspMsgParam[1], &evt.hbSub);
 
-  /* Response contains the same packed states as set message. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_HB_SUB_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl, netKeyIndex);
+    /* Response contains the same packed states as set message. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_HB_SUB_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
+                        netKeyIndex);
 
-  /* On success, notify Hearbeat module and invoke callback. */
-  if (rspMsgParam[0] == MESH_CFG_MDL_SR_SUCCESS)
-  {
-    /* Notify Subscription changed. */
-    MeshHbSubscriptionStateChanged();
+    /* On success, notify Hearbeat module and invoke callback. */
+    if (rspMsgParam[0] == MESH_CFG_MDL_SR_SUCCESS) {
+        /* Notify Subscription changed. */
+        MeshHbSubscriptionStateChanged();
 
-    /* Set event parameters. */
-    evt.cfgMdlHdr.peerAddress = src;
+        /* Set event parameters. */
+        evt.cfgMdlHdr.peerAddress = src;
 
-    /* Call notification callback. */
-    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
-  }
+        /* Call notification callback. */
+        meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    }
 }
 
 /*************************************************************************************************/
@@ -1439,44 +1320,39 @@ void meshCfgMdlSrHandleHbSubSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAd
  *  \return    None.
  */
 /*************************************************************************************************/
-void meshCfgMdlSrHandleLpnPollTimeoutGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                         uint8_t ttl, uint16_t netKeyIndex)
+void meshCfgMdlSrHandleLpnPollTimeoutGet(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                         meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshAddress_t lpnAddr;
-  uint32_t timeout = 0;
-  uint8_t rspMsgParam[CFG_MDL_MSG_LPN_POLLTIMEOUT_STATUS_NUM_BYTES];
+    meshAddress_t lpnAddr;
+    uint32_t timeout = 0;
+    uint8_t rspMsgParam[CFG_MDL_MSG_LPN_POLLTIMEOUT_STATUS_NUM_BYTES];
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_LPN_POLLTIMEOUT_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_LPN_POLLTIMEOUT_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Unpack address. */
-  BSTREAM_TO_UINT16(lpnAddr, pMsgParam);
+    /* Unpack address. */
+    BSTREAM_TO_UINT16(lpnAddr, pMsgParam);
 
-  /* Validate address. */
-  if (!MESH_IS_ADDR_UNICAST(lpnAddr))
-  {
-    return;
-  }
+    /* Validate address. */
+    if (!MESH_IS_ADDR_UNICAST(lpnAddr)) {
+        return;
+    }
 
-  if (MeshLocalCfgGetFriendState() != MESH_FRIEND_FEATURE_ENABLED)
-  {
-    timeout = 0;
-  }
-  else
-  {
-    /* Read Poll Timeout. */
-    timeout = meshCfgMdlSrCb.pollTimeoutGetCback(lpnAddr);
-  }
+    if (MeshLocalCfgGetFriendState() != MESH_FRIEND_FEATURE_ENABLED) {
+        timeout = 0;
+    } else {
+        /* Read Poll Timeout. */
+        timeout = meshCfgMdlSrCb.pollTimeoutGetCback(lpnAddr);
+    }
 
-  /* Pack state. */
-  meshCfgMsgPackLpnPollTimeout(rspMsgParam, lpnAddr, timeout);
+    /* Pack state. */
+    meshCfgMsgPackLpnPollTimeout(rspMsgParam, lpnAddr, timeout);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_LPN_PT_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_LPN_PT_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
+                        netKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -1496,27 +1372,26 @@ void meshCfgMdlSrHandleLpnPollTimeoutGet(uint8_t *pMsgParam, uint16_t msgParamLe
 void meshCfgMdlSrHandleNwkTransGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                    uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshNwkTransState_t state;
-  uint8_t rspMsgParam[CFG_MDL_MSG_NWK_TRANS_STATE_NUM_BYTES] = { 0 };
+    meshNwkTransState_t state;
+    uint8_t rspMsgParam[CFG_MDL_MSG_NWK_TRANS_STATE_NUM_BYTES] = { 0 };
 
-  /* Validate length. */
-  if (msgParamLen != CFG_MDL_MSG_NWK_TRANS_GET_NUM_BYTES)
-  {
-    return;
-  }
+    /* Validate length. */
+    if (msgParamLen != CFG_MDL_MSG_NWK_TRANS_GET_NUM_BYTES) {
+        return;
+    }
 
-  /* Read Network Transmit state. */
-  state.transCount = MeshLocalCfgGetNwkTransmitCount();
-  state.transIntervalSteps10Ms = MeshLocalCfgGetNwkTransmitIntvlSteps();
+    /* Read Network Transmit state. */
+    state.transCount = MeshLocalCfgGetNwkTransmitCount();
+    state.transIntervalSteps10Ms = MeshLocalCfgGetNwkTransmitIntvlSteps();
 
-  /* Pack state. */
-  meshCfgMsgPackNwkTrans(rspMsgParam, &state);
+    /* Pack state. */
+    meshCfgMsgPackNwkTrans(rspMsgParam, &state);
 
-  /* Send response. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NWK_TRANS_STATUS, rspMsgParam, sizeof(rspMsgParam), src, ttl,
-                      netKeyIndex);
+    /* Send response. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NWK_TRANS_STATUS, rspMsgParam, sizeof(rspMsgParam), src,
+                        ttl, netKeyIndex);
 
-  (void)pMsgParam;
+    (void)pMsgParam;
 }
 
 /*************************************************************************************************/
@@ -1536,32 +1411,29 @@ void meshCfgMdlSrHandleNwkTransGet(uint8_t *pMsgParam, uint16_t msgParamLen, mes
 void meshCfgMdlSrHandleNwkTransSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                    uint8_t ttl, uint16_t netKeyIndex)
 {
-  meshCfgMdlNwkTransStateEvt_t evt =
-  {
-    .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
-    .cfgMdlHdr.hdr.param = MESH_CFG_MDL_NWK_TRANS_SET_EVENT,
-    .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS
-  };
+    meshCfgMdlNwkTransStateEvt_t evt = { .cfgMdlHdr.hdr.event = MESH_CFG_MDL_SR_EVENT,
+                                         .cfgMdlHdr.hdr.param = MESH_CFG_MDL_NWK_TRANS_SET_EVENT,
+                                         .cfgMdlHdr.hdr.status = MESH_CFG_MDL_SR_SUCCESS };
 
-  /* Validate length. */
-  if ((msgParamLen != CFG_MDL_MSG_NWK_TRANS_SET_NUM_BYTES) || (pMsgParam == NULL))
-  {
-    return;
-  }
+    /* Validate length. */
+    if ((msgParamLen != CFG_MDL_MSG_NWK_TRANS_SET_NUM_BYTES) || (pMsgParam == NULL)) {
+        return;
+    }
 
-  /* Unpack state. */
-  meshCfgMsgUnpackNwkTrans(pMsgParam, &evt.nwkTransState);
+    /* Unpack state. */
+    meshCfgMsgUnpackNwkTrans(pMsgParam, &evt.nwkTransState);
 
-  /* Store new values. */
-  MeshLocalCfgSetNwkTransmitCount(evt.nwkTransState.transCount);
-  MeshLocalCfgSetNwkTransmitIntvlSteps(evt.nwkTransState.transIntervalSteps10Ms);
+    /* Store new values. */
+    MeshLocalCfgSetNwkTransmitCount(evt.nwkTransState.transCount);
+    MeshLocalCfgSetNwkTransmitIntvlSteps(evt.nwkTransState.transIntervalSteps10Ms);
 
-  /* Response contains state exactly as set message. */
-  meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NWK_TRANS_STATUS, pMsgParam, msgParamLen, src, ttl, netKeyIndex);
+    /* Response contains state exactly as set message. */
+    meshCfgMdlSrSendRsp(MESH_CFG_MDL_SR_NWK_TRANS_STATUS, pMsgParam, msgParamLen, src, ttl,
+                        netKeyIndex);
 
-  /* Set event parameters. */
-  evt.cfgMdlHdr.peerAddress = src;
+    /* Set event parameters. */
+    evt.cfgMdlHdr.peerAddress = src;
 
-  /* Call notification callback. */
-  meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
+    /* Call notification callback. */
+    meshCfgMdlSrCb.cback((meshCfgMdlSrEvt_t *)&evt);
 }

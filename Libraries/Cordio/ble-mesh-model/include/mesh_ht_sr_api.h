@@ -32,8 +32,7 @@
 #define MESH_HT_SR_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "wsf_timer.h"
@@ -45,74 +44,70 @@ extern "C"
 
 /*! Maximum number of companies supported by an instance of Mesh Health Server */
 #ifndef MESH_HT_SR_MAX_NUM_COMP
-#define MESH_HT_SR_MAX_NUM_COMP       1
+#define MESH_HT_SR_MAX_NUM_COMP 1
 #endif
 
 /*! Maximum number of fault identifiers that can be stored on an instance of Health Server */
 #ifndef MESH_HT_SR_MAX_NUM_FAULTS
-#define MESH_HT_SR_MAX_NUM_FAULTS     5
+#define MESH_HT_SR_MAX_NUM_FAULTS 5
 #endif
 
 /*! \brief Number of supported opcodes for receiving Health Messages */
-#define MESH_HT_SR_NUM_RECVD_OPCODES  11
+#define MESH_HT_SR_NUM_RECVD_OPCODES 11
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Structure that stores a Health Server Fault state. Configured by the caller. */
-typedef struct meshHtSrFaultState_tag
-{
-  uint16_t            companyId;                                   /*!< 16-Bit SIG assigned company
+typedef struct meshHtSrFaultState_tag {
+    uint16_t companyId; /*!< 16-Bit SIG assigned company
                                                                     *   identifier
                                                                     */
-  meshHtMdlTestId_t   testId;                                      /*!< Test ID for the most recently
+    meshHtMdlTestId_t testId; /*!< Test ID for the most recently
                                                                     *   performed test
                                                                     */
-  meshHtFaultId_t     regFaultIdArray[MESH_HT_SR_MAX_NUM_FAULTS];  /*!< Array for storing registered
+    meshHtFaultId_t regFaultIdArray[MESH_HT_SR_MAX_NUM_FAULTS]; /*!< Array for storing registered
                                                                     *   faults
                                                                     */
-  meshHtFaultId_t     crtFaultIdArray[MESH_HT_SR_MAX_NUM_FAULTS];  /*!< Array for storing current
+    meshHtFaultId_t crtFaultIdArray[MESH_HT_SR_MAX_NUM_FAULTS]; /*!< Array for storing current
                                                                     *   faults
                                                                     */
 } meshHtSrFaultState_t;
 
 /*! \brief Structure that describes a Mesh Health Server instance */
-typedef struct meshHtSrDescriptor_tag
-{
-  meshHtSrFaultState_t faultStateArray[MESH_HT_SR_MAX_NUM_COMP];   /*!< Fault state array */
-  wsfTimer_t           fastPubTmr;                                 /*!< Fast publication timer */
-  uint32_t             pubPeriodMs;                                /*!< Publication period */
-  meshHtPeriod_t       fastPeriodDiv;                              /*!< Fast period divisor. Divides
+typedef struct meshHtSrDescriptor_tag {
+    meshHtSrFaultState_t faultStateArray[MESH_HT_SR_MAX_NUM_COMP]; /*!< Fault state array */
+    wsfTimer_t fastPubTmr; /*!< Fast publication timer */
+    uint32_t pubPeriodMs; /*!< Publication period */
+    meshHtPeriod_t fastPeriodDiv; /*!< Fast period divisor. Divides
                                                                     *   Health Publish Period
                                                                     *   by pow(2, fastPeriodDiv)
                                                                     */
-  bool_t               fastPubOn;                                  /*!< TRUE if fast publishing
+    bool_t fastPubOn; /*!< TRUE if fast publishing
                                                                     *   using divisor is on
                                                                     */
 } meshHtSrDescriptor_t;
 
 /*! \brief Health Server Test Start event data structure */
-typedef struct meshHtSrTestStartEvt_tag
-{
-  wsfMsgHdr_t          hdr;          /*!< Header */
-  meshElementId_t      elemId;       /*!< Current element Identifier */
-  meshAddress_t        htClAddr;     /*!< Address of the remote element containing
+typedef struct meshHtSrTestStartEvt_tag {
+    wsfMsgHdr_t hdr; /*!< Header */
+    meshElementId_t elemId; /*!< Current element Identifier */
+    meshAddress_t htClAddr; /*!< Address of the remote element containing
                                       *   an instance of Health Client
                                       */
-  uint16_t             companyId;    /*!< Company identifier */
-  meshHtMdlTestId_t    testId;       /*!< Identifier of test to start */
-  uint16_t             appKeyIndex;  /*!< AppKey identifier when signaling test end */
-  bool_t               useTtlZero;   /*!< TTL flag used when signaling test end */
-  bool_t               unicastReq;   /*!< Unicast flag used when signaling test end */
-  bool_t               notifTestEnd; /*!< TRUE if upper layer should signal test end */
+    uint16_t companyId; /*!< Company identifier */
+    meshHtMdlTestId_t testId; /*!< Identifier of test to start */
+    uint16_t appKeyIndex; /*!< AppKey identifier when signaling test end */
+    bool_t useTtlZero; /*!< TTL flag used when signaling test end */
+    bool_t unicastReq; /*!< Unicast flag used when signaling test end */
+    bool_t notifTestEnd; /*!< TRUE if upper layer should signal test end */
 } meshHtSrTestStartEvt_t;
 
 /*! \brief Union of all Health Server model events */
-typedef union meshHtSrEvt_tag
-{
-  wsfMsgHdr_t                   hdr;            /*!< Header */
-  meshHtSrTestStartEvt_t        testStartEvt;   /*!< Valid for
+typedef union meshHtSrEvt_tag {
+    wsfMsgHdr_t hdr; /*!< Header */
+    meshHtSrTestStartEvt_t testStartEvt; /*!< Valid for
                                                  *   ::MESH_HT_SR_TEST_START_EVENT
                                                  */
 } meshHtSrEvt_t;
@@ -205,8 +200,8 @@ void MeshHtSrSetCompanyId(meshElementId_t elementId, uint8_t faultStateIndex, ui
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshHtSrAddFault(meshElementId_t elementId, uint16_t companyId,
-                      meshHtMdlTestId_t recentTestId, meshHtFaultId_t faultId);
+void MeshHtSrAddFault(meshElementId_t elementId, uint16_t companyId, meshHtMdlTestId_t recentTestId,
+                      meshHtFaultId_t faultId);
 
 /*************************************************************************************************/
 /*!

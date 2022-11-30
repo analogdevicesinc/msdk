@@ -35,9 +35,9 @@
 /*************************************************************************************************/
 void LhciExtScanMasterInit(void)
 {
-  lhciCmdTbl[LHCI_MSG_EXT_SCAN] = lhciMstExtScanDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_EXT_SCAN] = lhciMstExtScanEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_EXT_SCAN] = lhciMstExtScanDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_EXT_SCAN] = lhciMstExtScanEncodeEvtPkt;
 
-  lhciCmdTbl[LHCI_MSG_PER_SCAN] = lhciMstExtScanDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_PER_SCAN] = lhciMstExtScanEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_PER_SCAN] = lhciMstExtScanDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_PER_SCAN] = lhciMstExtScanEncodeEvtPkt;
 }

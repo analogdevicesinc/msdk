@@ -55,14 +55,13 @@
 static bool_t prvSrInitialized = FALSE;
 
 /*! Mesh Provisioning Server callback event length table */
-static const uint16_t meshPrvSrEvtCbackLen[] =
-{
-  sizeof(wsfMsgHdr_t),                   /*!< MESH_PRV_SR_LINK_OPENED_EVENT */
-  sizeof(meshPrvSrEvtOutputOob_t),       /*!< MESH_PRV_SR_OUTPUT_OOB_EVENT */
-  sizeof(wsfMsgHdr_t),                   /*!< MESH_PRV_SR_OUTPUT_CONFIRMED_EVENT */
-  sizeof(meshPrvSrEvtInputOob_t),        /*!< MESH_PRV_SR_INPUT_OOB_EVENT */
-  sizeof(meshPrvSrEvtPrvComplete_t),     /*!< MESH_PRV_SR_PROVISIONING_COMPLETE_EVENT */
-  sizeof(meshPrvSrEvtPrvFailed_t),       /*!< MESH_PRV_SR_PROVISIONING_FAILED_EVENT */
+static const uint16_t meshPrvSrEvtCbackLen[] = {
+    sizeof(wsfMsgHdr_t), /*!< MESH_PRV_SR_LINK_OPENED_EVENT */
+    sizeof(meshPrvSrEvtOutputOob_t), /*!< MESH_PRV_SR_OUTPUT_OOB_EVENT */
+    sizeof(wsfMsgHdr_t), /*!< MESH_PRV_SR_OUTPUT_CONFIRMED_EVENT */
+    sizeof(meshPrvSrEvtInputOob_t), /*!< MESH_PRV_SR_INPUT_OOB_EVENT */
+    sizeof(meshPrvSrEvtPrvComplete_t), /*!< MESH_PRV_SR_PROVISIONING_COMPLETE_EVENT */
+    sizeof(meshPrvSrEvtPrvFailed_t), /*!< MESH_PRV_SR_PROVISIONING_FAILED_EVENT */
 };
 
 /**************************************************************************************************
@@ -87,72 +86,65 @@ meshPrvSrCb_t meshPrvSrCb;
 /*************************************************************************************************/
 static bool_t meshPrvSrValidateStartParams(meshPrvSrRecvStart_t *pParams)
 {
-  /* Range validation for Algorithm, Public Key and Authentication Method */
-  if (pParams->algorithm >= MESH_PRV_START_ALGO_RFU_START ||
-      pParams->oobPubKeyUsed >= MESH_PRV_START_PUB_KEY_PROHIBITED_START ||
-      pParams->authMethod >= MESH_PRV_START_AUTH_METHOD_PROHIBITED_START)
-  {
-    return FALSE;
-  }
+    /* Range validation for Algorithm, Public Key and Authentication Method */
+    if (pParams->algorithm >= MESH_PRV_START_ALGO_RFU_START ||
+        pParams->oobPubKeyUsed >= MESH_PRV_START_PUB_KEY_PROHIBITED_START ||
+        pParams->authMethod >= MESH_PRV_START_AUTH_METHOD_PROHIBITED_START) {
+        return FALSE;
+    }
 
-  /* Range validation for Authentication Action and Authentication Size
+    /* Range validation for Authentication Action and Authentication Size
    * when using Output OOB */
-  if (pParams->authMethod == MESH_PRV_START_AUTH_METHOD_OUTPUT_OOB &&
-       (pParams->authAction >= MESH_PRV_START_OUT_OOB_ACTION_RFU_START ||
-        pParams->authSize == MESH_PRV_START_OOB_SIZE_PROHIBITED ||
-        pParams->authSize >= MESH_PRV_START_OOB_SIZE_RFU_START))
-  {
-    return FALSE;
-  }
+    if (pParams->authMethod == MESH_PRV_START_AUTH_METHOD_OUTPUT_OOB &&
+        (pParams->authAction >= MESH_PRV_START_OUT_OOB_ACTION_RFU_START ||
+         pParams->authSize == MESH_PRV_START_OOB_SIZE_PROHIBITED ||
+         pParams->authSize >= MESH_PRV_START_OOB_SIZE_RFU_START)) {
+        return FALSE;
+    }
 
-  /* Range validation for Authentication Action and Authentication Size
+    /* Range validation for Authentication Action and Authentication Size
    * when using Input OOB */
-  if (pParams->authMethod == MESH_PRV_START_AUTH_METHOD_INPUT_OOB &&
-       (pParams->authAction >= MESH_PRV_START_IN_OOB_ACTION_RFU_START ||
-        pParams->authSize == MESH_PRV_START_OOB_SIZE_PROHIBITED ||
-        pParams->authSize >= MESH_PRV_START_OOB_SIZE_RFU_START))
-  {
-    return FALSE;
-  }
+    if (pParams->authMethod == MESH_PRV_START_AUTH_METHOD_INPUT_OOB &&
+        (pParams->authAction >= MESH_PRV_START_IN_OOB_ACTION_RFU_START ||
+         pParams->authSize == MESH_PRV_START_OOB_SIZE_PROHIBITED ||
+         pParams->authSize >= MESH_PRV_START_OOB_SIZE_RFU_START)) {
+        return FALSE;
+    }
 
-  /* Range validation for Authentication Action and Authentication Size
+    /* Range validation for Authentication Action and Authentication Size
    * when using Static or No OOB */
-  if ((pParams->authMethod == MESH_PRV_START_AUTH_METHOD_STATIC_OOB ||
-       pParams->authMethod == MESH_PRV_START_AUTH_METHOD_NO_OOB) &&
-      (pParams->authAction != MESH_PRV_START_OOB_NO_SIZE_NO_ACTION ||
-       pParams->authSize != MESH_PRV_START_OOB_NO_SIZE_NO_ACTION))
-  {
-    return FALSE;
-  }
+    if ((pParams->authMethod == MESH_PRV_START_AUTH_METHOD_STATIC_OOB ||
+         pParams->authMethod == MESH_PRV_START_AUTH_METHOD_NO_OOB) &&
+        (pParams->authAction != MESH_PRV_START_OOB_NO_SIZE_NO_ACTION ||
+         pParams->authSize != MESH_PRV_START_OOB_NO_SIZE_NO_ACTION)) {
+        return FALSE;
+    }
 
-  /* Public Key validation against capabilities */
-  if (pParams->oobPubKeyUsed == MESH_PRV_START_PUB_KEY_OOB_AVAILABLE &&
-      !(meshPrvSrCb.pUpdInfo->pCapabilities->publicKeyType & MESH_PRV_PUB_KEY_OOB))
-  {
-    return FALSE;
-  }
+    /* Public Key validation against capabilities */
+    if (pParams->oobPubKeyUsed == MESH_PRV_START_PUB_KEY_OOB_AVAILABLE &&
+        !(meshPrvSrCb.pUpdInfo->pCapabilities->publicKeyType & MESH_PRV_PUB_KEY_OOB)) {
+        return FALSE;
+    }
 
-  /* Authentication Method, Action and Size validation against capabilities
+    /* Authentication Method, Action and Size validation against capabilities
    * when using Output OOB */
-  if (pParams->authMethod == MESH_PRV_START_AUTH_METHOD_OUTPUT_OOB &&
-       (meshPrvSrCb.pUpdInfo->pCapabilities->outputOobSize == MESH_PRV_OUTPUT_OOB_NOT_SUPPORTED ||
-        meshPrvSrCb.pUpdInfo->pCapabilities->outputOobSize < pParams->authSize ||
-        !(meshPrvSrCb.pUpdInfo->pCapabilities->outputOobAction & (1 << pParams->authAction))))
-  {
-    return FALSE;
-  }
+    if (pParams->authMethod == MESH_PRV_START_AUTH_METHOD_OUTPUT_OOB &&
+        (meshPrvSrCb.pUpdInfo->pCapabilities->outputOobSize == MESH_PRV_OUTPUT_OOB_NOT_SUPPORTED ||
+         meshPrvSrCb.pUpdInfo->pCapabilities->outputOobSize < pParams->authSize ||
+         !(meshPrvSrCb.pUpdInfo->pCapabilities->outputOobAction & (1 << pParams->authAction)))) {
+        return FALSE;
+    }
 
-  /* Authentication Method, Action and Size validation against capabilities
+    /* Authentication Method, Action and Size validation against capabilities
      * when using Input OOB */
-  if (pParams->authMethod == MESH_PRV_START_AUTH_METHOD_INPUT_OOB &&
-       (meshPrvSrCb.pUpdInfo->pCapabilities->inputOobSize == MESH_PRV_INPUT_OOB_NOT_SUPPORTED ||
-        meshPrvSrCb.pUpdInfo->pCapabilities->inputOobSize < pParams->authSize ||
-        !(meshPrvSrCb.pUpdInfo->pCapabilities->inputOobAction & (1 << pParams->authAction))))
-  {
-    return FALSE;
-  }
+    if (pParams->authMethod == MESH_PRV_START_AUTH_METHOD_INPUT_OOB &&
+        (meshPrvSrCb.pUpdInfo->pCapabilities->inputOobSize == MESH_PRV_INPUT_OOB_NOT_SUPPORTED ||
+         meshPrvSrCb.pUpdInfo->pCapabilities->inputOobSize < pParams->authSize ||
+         !(meshPrvSrCb.pUpdInfo->pCapabilities->inputOobAction & (1 << pParams->authAction)))) {
+        return FALSE;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -167,163 +159,137 @@ static bool_t meshPrvSrValidateStartParams(meshPrvSrRecvStart_t *pParams)
 /*************************************************************************************************/
 static void meshPrvSrPduRecvCback(const uint8_t *pPrvPdu, uint8_t pduLen)
 {
-  meshPrvSrSmMsg_t *pMsg;
+    meshPrvSrSmMsg_t *pMsg;
 
-  if (meshPrvSrCb.pSessionData == NULL)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Session data not allocated when receiving PDU!");
-    return;
-  }
+    if (meshPrvSrCb.pSessionData == NULL) {
+        MESH_TRACE_ERR0("MESH PRV SR: Session data not allocated when receiving PDU!");
+        return;
+    }
 
-  if (pduLen < MESH_PRV_PDU_OPCODE_SIZE)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: No Opcode in Provisioning PDU!");
-    return;
-  }
+    if (pduLen < MESH_PRV_PDU_OPCODE_SIZE) {
+        MESH_TRACE_ERR0("MESH PRV SR: No Opcode in Provisioning PDU!");
+        return;
+    }
 
-  pMsg = WsfMsgAlloc(sizeof (meshPrvSrSmMsg_t));
-  if (pMsg == NULL)
-  {
-    /* Should never happen if buffers are properly configured */
-    return;
-  }
+    pMsg = WsfMsgAlloc(sizeof(meshPrvSrSmMsg_t));
+    if (pMsg == NULL) {
+        /* Should never happen if buffers are properly configured */
+        return;
+    }
 
-  switch (pPrvPdu[MESH_PRV_PDU_OPCODE_INDEX])
-  {
+    switch (pPrvPdu[MESH_PRV_PDU_OPCODE_INDEX]) {
     case MESH_PRV_PDU_INVITE:
-      if (pduLen != MESH_PRV_PDU_INVITE_PDU_SIZE)
-      {
-        MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Invite PDU length: %d", pduLen);
-        pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-        pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
-      }
-      else
-      {
-        /* Copy parameters to the ConfirmationInputs */
-        memcpy(meshPrvSrCb.pSessionData->authParams.confirmationInputs,
-               &pPrvPdu[MESH_PRV_PDU_PARAM_INDEX],
-               MESH_PRV_PDU_INVITE_PARAM_SIZE);
+        if (pduLen != MESH_PRV_PDU_INVITE_PDU_SIZE) {
+            MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Invite PDU length: %d",
+                             pduLen);
+            pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+            pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
+        } else {
+            /* Copy parameters to the ConfirmationInputs */
+            memcpy(meshPrvSrCb.pSessionData->authParams.confirmationInputs,
+                   &pPrvPdu[MESH_PRV_PDU_PARAM_INDEX], MESH_PRV_PDU_INVITE_PARAM_SIZE);
 
-        pMsg->recvInvite.hdr.event = PRV_SR_EVT_RECV_INVITE;
-        pMsg->recvInvite.attentionTimer = pPrvPdu[MESH_PRV_PDU_INVITE_ATTENTION_INDEX];
-      }
-      break;
+            pMsg->recvInvite.hdr.event = PRV_SR_EVT_RECV_INVITE;
+            pMsg->recvInvite.attentionTimer = pPrvPdu[MESH_PRV_PDU_INVITE_ATTENTION_INDEX];
+        }
+        break;
 
     case MESH_PRV_PDU_START:
-      if (pduLen != MESH_PRV_PDU_START_PDU_SIZE)
-      {
-        MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Start PDU length: %d", pduLen);
-        pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-        pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
-      }
-      else
-      {
-        /* Unpack parameters */
-        pMsg->recvStart.hdr.event = PRV_SR_EVT_RECV_START;
-        pMsg->recvStart.algorithm = pPrvPdu[MESH_PRV_PDU_START_ALGORITHM_INDEX];
-        pMsg->recvStart.oobPubKeyUsed = pPrvPdu[MESH_PRV_PDU_START_PUB_KEY_INDEX];
-        pMsg->recvStart.authMethod = pPrvPdu[MESH_PRV_PDU_START_AUTH_METHOD_INDEX];
-        pMsg->recvStart.authAction = pPrvPdu[MESH_PRV_PDU_START_AUTH_ACTION_INDEX];
-        pMsg->recvStart.authSize = pPrvPdu[MESH_PRV_PDU_START_AUTH_SIZE_INDEX];
+        if (pduLen != MESH_PRV_PDU_START_PDU_SIZE) {
+            MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Start PDU length: %d",
+                             pduLen);
+            pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+            pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
+        } else {
+            /* Unpack parameters */
+            pMsg->recvStart.hdr.event = PRV_SR_EVT_RECV_START;
+            pMsg->recvStart.algorithm = pPrvPdu[MESH_PRV_PDU_START_ALGORITHM_INDEX];
+            pMsg->recvStart.oobPubKeyUsed = pPrvPdu[MESH_PRV_PDU_START_PUB_KEY_INDEX];
+            pMsg->recvStart.authMethod = pPrvPdu[MESH_PRV_PDU_START_AUTH_METHOD_INDEX];
+            pMsg->recvStart.authAction = pPrvPdu[MESH_PRV_PDU_START_AUTH_ACTION_INDEX];
+            pMsg->recvStart.authSize = pPrvPdu[MESH_PRV_PDU_START_AUTH_SIZE_INDEX];
 
-        /* Parameter validation */
-        if (!meshPrvSrValidateStartParams(&pMsg->recvStart))
-        {
-          pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-          pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
+            /* Parameter validation */
+            if (!meshPrvSrValidateStartParams(&pMsg->recvStart)) {
+                pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+                pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
+            } else {
+                /* Copy packed parameters required by the ConfirmationInputs */
+                memcpy(pMsg->recvStart.packedPduParam, &pPrvPdu[MESH_PRV_PDU_PARAM_INDEX],
+                       MESH_PRV_PDU_START_PARAM_SIZE);
+            }
         }
-        else
-        {
-          /* Copy packed parameters required by the ConfirmationInputs */
-          memcpy(pMsg->recvStart.packedPduParam,
-                 &pPrvPdu[MESH_PRV_PDU_PARAM_INDEX],
-                 MESH_PRV_PDU_START_PARAM_SIZE);
-
-        }
-      }
-      break;
+        break;
 
     case MESH_PRV_PDU_PUB_KEY:
-      if (pduLen != MESH_PRV_PDU_PUB_KEY_PDU_SIZE)
-      {
-        MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Public Key PDU length: %d", pduLen);
-        pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-        pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
-      }
-      else
-      {
-        pMsg->hdr.event = PRV_SR_EVT_RECV_PUBLIC_KEY;
-        memcpy(pMsg->recvPubKey.pubKeyPdu,
-               pPrvPdu,
-               MESH_PRV_PDU_PUB_KEY_PDU_SIZE);
-      }
-      break;
+        if (pduLen != MESH_PRV_PDU_PUB_KEY_PDU_SIZE) {
+            MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Public Key PDU length: %d",
+                             pduLen);
+            pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+            pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
+        } else {
+            pMsg->hdr.event = PRV_SR_EVT_RECV_PUBLIC_KEY;
+            memcpy(pMsg->recvPubKey.pubKeyPdu, pPrvPdu, MESH_PRV_PDU_PUB_KEY_PDU_SIZE);
+        }
+        break;
 
     case MESH_PRV_PDU_CONFIRMATION:
-      if (pduLen != MESH_PRV_PDU_CONFIRM_PDU_SIZE)
-      {
-        MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Confirmation PDU length: %d", pduLen);
-        pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-        pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
-      }
-      else
-      {
-        pMsg->recvConfirm.hdr.event = PRV_SR_EVT_RECV_CONFIRMATION;
-        memcpy(pMsg->recvConfirm.confirm,
-               &pPrvPdu[MESH_PRV_PDU_CONFIRM_CONFIRM_INDEX],
-               MESH_PRV_PDU_CONFIRM_CONFIRM_SIZE);
-      }
-      break;
+        if (pduLen != MESH_PRV_PDU_CONFIRM_PDU_SIZE) {
+            MESH_TRACE_WARN1(
+                "MESH PRV SR: Received invalid Provisioning Confirmation PDU length: %d", pduLen);
+            pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+            pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
+        } else {
+            pMsg->recvConfirm.hdr.event = PRV_SR_EVT_RECV_CONFIRMATION;
+            memcpy(pMsg->recvConfirm.confirm, &pPrvPdu[MESH_PRV_PDU_CONFIRM_CONFIRM_INDEX],
+                   MESH_PRV_PDU_CONFIRM_CONFIRM_SIZE);
+        }
+        break;
 
     case MESH_PRV_PDU_RANDOM:
-      if (pduLen != MESH_PRV_PDU_RANDOM_PDU_SIZE)
-      {
-        MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Random PDU length: %d", pduLen);
-        pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-        pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
-      }
-      else
-      {
-        pMsg->recvRandom.hdr.event = PRV_SR_EVT_RECV_RANDOM;
-        memcpy(pMsg->recvRandom.random,
-               &pPrvPdu[MESH_PRV_PDU_RANDOM_RANDOM_INDEX],
-               MESH_PRV_PDU_RANDOM_RANDOM_SIZE);
-      }
-      break;
+        if (pduLen != MESH_PRV_PDU_RANDOM_PDU_SIZE) {
+            MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Random PDU length: %d",
+                             pduLen);
+            pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+            pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
+        } else {
+            pMsg->recvRandom.hdr.event = PRV_SR_EVT_RECV_RANDOM;
+            memcpy(pMsg->recvRandom.random, &pPrvPdu[MESH_PRV_PDU_RANDOM_RANDOM_INDEX],
+                   MESH_PRV_PDU_RANDOM_RANDOM_SIZE);
+        }
+        break;
 
     case MESH_PRV_PDU_DATA:
-      if (pduLen != MESH_PRV_PDU_DATA_PDU_SIZE)
-      {
-        MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Data PDU length: %d", pduLen);
-        pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-        pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
-      }
-      else
-      {
-        pMsg->recvData.hdr.event = PRV_SR_EVT_RECV_DATA;
-        memcpy(pMsg->recvData.encryptedDataAndMic,
-               &pPrvPdu[MESH_PRV_PDU_DATA_ENC_DATA_INDEX],
-               MESH_PRV_PDU_DATA_PARAM_SIZE);
-      }
-      break;
+        if (pduLen != MESH_PRV_PDU_DATA_PDU_SIZE) {
+            MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning Data PDU length: %d",
+                             pduLen);
+            pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+            pMsg->hdr.param = MESH_PRV_ERR_INVALID_FORMAT;
+        } else {
+            pMsg->recvData.hdr.event = PRV_SR_EVT_RECV_DATA;
+            memcpy(pMsg->recvData.encryptedDataAndMic, &pPrvPdu[MESH_PRV_PDU_DATA_ENC_DATA_INDEX],
+                   MESH_PRV_PDU_DATA_PARAM_SIZE);
+        }
+        break;
 
     case MESH_PRV_PDU_CAPABILITIES: /* Fallthrough */
     case MESH_PRV_PDU_INPUT_COMPLETE: /* Fallthrough */
     case MESH_PRV_PDU_COMPLETE: /* Fallthrough */
     case MESH_PRV_PDU_FAILED:
-      MESH_TRACE_WARN1("MESH PRV SR: Received unexpected Provisioning PDU type: 0x%02X", pPrvPdu[0]);
-      pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-      pMsg->hdr.param = MESH_PRV_ERR_UNEXPECTED_PDU;
-      break;
+        MESH_TRACE_WARN1("MESH PRV SR: Received unexpected Provisioning PDU type: 0x%02X",
+                         pPrvPdu[0]);
+        pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+        pMsg->hdr.param = MESH_PRV_ERR_UNEXPECTED_PDU;
+        break;
 
     default:
-      MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning PDU type: 0x%02X", pPrvPdu[0]);
-      pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
-      pMsg->hdr.param = MESH_PRV_ERR_INVALID_PDU;
-      break;
-  }
+        MESH_TRACE_WARN1("MESH PRV SR: Received invalid Provisioning PDU type: 0x%02X", pPrvPdu[0]);
+        pMsg->hdr.event = PRV_SR_EVT_RECV_BAD_PDU;
+        pMsg->hdr.param = MESH_PRV_ERR_INVALID_PDU;
+        break;
+    }
 
-  WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+    WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
 }
 
 /*************************************************************************************************/
@@ -340,96 +306,90 @@ static void meshPrvSrPduRecvCback(const uint8_t *pPrvPdu, uint8_t pduLen)
 static void meshPrvSrBrEventNotifyCback(meshPrvBrEvent_t evt,
                                         const meshPrvBrEventParams_t *pEvtParams)
 {
-  wsfMsgHdr_t *pMsg = WsfMsgAlloc(sizeof (wsfMsgHdr_t));
-  if (pMsg == NULL)
-  {
-    /* Should never happen if buffers are properly configured */
-    return;
-  }
+    wsfMsgHdr_t *pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t));
+    if (pMsg == NULL) {
+        /* Should never happen if buffers are properly configured */
+        return;
+    }
 
-  switch (evt)
-  {
+    switch (evt) {
     case MESH_PRV_BR_LINK_OPENED:
-      pMsg->event = PRV_SR_EVT_LINK_OPENED;
-      WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-      break;
+        pMsg->event = PRV_SR_EVT_LINK_OPENED;
+        WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+        break;
 
     case MESH_PRV_BR_LINK_CLOSED_BY_PEER:
-      if (pEvtParams->linkCloseReason == MESH_PRV_BR_REASON_SUCCESS)
-      {
-        pMsg->event = PRV_SR_EVT_LINK_CLOSED_SUCCESS;
-      }
-      else
-      {
-        pMsg->event = PRV_SR_EVT_LINK_CLOSED_FAIL;
-      }
-      WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-      break;
+        if (pEvtParams->linkCloseReason == MESH_PRV_BR_REASON_SUCCESS) {
+            pMsg->event = PRV_SR_EVT_LINK_CLOSED_SUCCESS;
+        } else {
+            pMsg->event = PRV_SR_EVT_LINK_CLOSED_FAIL;
+        }
+        WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+        break;
 
     case MESH_PRV_BR_CONN_CLOSED:
-      /* This event is ignored in the IDLE state, so it will signal a failure
+        /* This event is ignored in the IDLE state, so it will signal a failure
        * to the upper layer only if the connection is closed before provisioning
        * is complete (i.e., in a state different than IDLE). */
-      pMsg->event = PRV_SR_EVT_LINK_CLOSED_FAIL;
-      WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-      break;
+        pMsg->event = PRV_SR_EVT_LINK_CLOSED_FAIL;
+        WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+        break;
 
     case MESH_PRV_BR_SEND_TIMEOUT:
-      pMsg->event = PRV_SR_EVT_SEND_TIMEOUT;
-      WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-      break;
+        pMsg->event = PRV_SR_EVT_SEND_TIMEOUT;
+        WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+        break;
 
     case MESH_PRV_BR_PDU_SENT:
-      switch (pEvtParams->pduSentOpcode)
-      {
+        switch (pEvtParams->pduSentOpcode) {
         case MESH_PRV_PDU_FAILED:
-          MESH_TRACE_INFO0("MESH PRV SR: Provisioning Failed PDU sent successfully.");
-          /* No event needed after sending a Provisioning Failed PDU */
-          WsfMsgFree(pMsg);
-          break;
+            MESH_TRACE_INFO0("MESH PRV SR: Provisioning Failed PDU sent successfully.");
+            /* No event needed after sending a Provisioning Failed PDU */
+            WsfMsgFree(pMsg);
+            break;
 
         case MESH_PRV_PDU_CAPABILITIES:
-          pMsg->event = PRV_SR_EVT_SENT_CAPABILITIES;
-          WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-          break;
+            pMsg->event = PRV_SR_EVT_SENT_CAPABILITIES;
+            WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+            break;
 
         case MESH_PRV_PDU_PUB_KEY:
-          pMsg->event = PRV_SR_EVT_SENT_PUBLIC_KEY;
-          WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-          break;
+            pMsg->event = PRV_SR_EVT_SENT_PUBLIC_KEY;
+            WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+            break;
 
         case MESH_PRV_PDU_INPUT_COMPLETE:
-          pMsg->event = PRV_SR_EVT_SENT_INPUT_COMPLETE;
-          WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-          break;
+            pMsg->event = PRV_SR_EVT_SENT_INPUT_COMPLETE;
+            WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+            break;
 
         case MESH_PRV_PDU_CONFIRMATION:
-          pMsg->event = PRV_SR_EVT_SENT_CONFIRMATION;
-          WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-          break;
+            pMsg->event = PRV_SR_EVT_SENT_CONFIRMATION;
+            WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+            break;
 
         case MESH_PRV_PDU_RANDOM:
-          pMsg->event = PRV_SR_EVT_SENT_RANDOM;
-          WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-          break;
+            pMsg->event = PRV_SR_EVT_SENT_RANDOM;
+            WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+            break;
 
         case MESH_PRV_PDU_COMPLETE:
-          pMsg->event = PRV_SR_EVT_SENT_COMPLETE;
-          WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-          break;
+            pMsg->event = PRV_SR_EVT_SENT_COMPLETE;
+            WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+            break;
 
         default:
-          MESH_TRACE_WARN0("MESH PRV SR: Received PDU Sent event with invalid opcode.");
-          WsfMsgFree(pMsg);
-          break;
-      }
-      break;
+            MESH_TRACE_WARN0("MESH PRV SR: Received PDU Sent event with invalid opcode.");
+            WsfMsgFree(pMsg);
+            break;
+        }
+        break;
 
     default:
-      MESH_TRACE_WARN1("MESH PRV SR: Received PRV BR event with invalid type: %d.", evt);
-      WsfMsgFree(pMsg);
-      break;
-  }
+        MESH_TRACE_WARN1("MESH PRV SR: Received PRV BR event with invalid type: %d.", evt);
+        WsfMsgFree(pMsg);
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -444,8 +404,8 @@ static void meshPrvSrBrEventNotifyCback(meshPrvBrEvent_t evt,
 /*************************************************************************************************/
 static void meshPrvSrEventNotifyEmptyCback(meshPrvSrEvt_t *pEvent)
 {
-  (void)pEvent;
-  MESH_TRACE_WARN0("MESH PRV SR: Event notification callback not installed!");
+    (void)pEvent;
+    MESH_TRACE_WARN0("MESH PRV SR: Event notification callback not installed!");
 }
 
 /**************************************************************************************************
@@ -461,51 +421,48 @@ static void meshPrvSrEventNotifyEmptyCback(meshPrvSrEvt_t *pEvent)
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshPrvSrInit(const meshPrvSrUnprovisionedDeviceInfo_t* pUpdInfo)
+void MeshPrvSrInit(const meshPrvSrUnprovisionedDeviceInfo_t *pUpdInfo)
 {
-  if (prvSrInitialized)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Attempting multiple initialization sequences!");
-    return;
-  }
+    if (prvSrInitialized) {
+        MESH_TRACE_ERR0("MESH PRV SR: Attempting multiple initialization sequences!");
+        return;
+    }
 
-  if (pUpdInfo == NULL)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Unprovisioned Device information parameter is NULL!");
-    return;
-  }
+    if (pUpdInfo == NULL) {
+        MESH_TRACE_ERR0("MESH PRV SR: Unprovisioned Device information parameter is NULL!");
+        return;
+    }
 
-  if ((pUpdInfo->pCapabilities->publicKeyType == MESH_PRV_PUB_KEY_OOB) &&
-      (pUpdInfo->pAppOobEccKeys == NULL))
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: App OOB Key is NULL!");
-    return;
-  }
+    if ((pUpdInfo->pCapabilities->publicKeyType == MESH_PRV_PUB_KEY_OOB) &&
+        (pUpdInfo->pAppOobEccKeys == NULL)) {
+        MESH_TRACE_ERR0("MESH PRV SR: App OOB Key is NULL!");
+        return;
+    }
 
-  /* Initialize timer event value */
-  meshPrvSrCb.timer.msg.event = PRV_SR_EVT_RECV_TIMEOUT;
+    /* Initialize timer event value */
+    meshPrvSrCb.timer.msg.event = PRV_SR_EVT_RECV_TIMEOUT;
 
-  /* Link state machine instance */
-  meshPrvSrCb.pSm = &meshPrvSrSmIf;
+    /* Link state machine instance */
+    meshPrvSrCb.pSm = &meshPrvSrSmIf;
 
-  /* Store capabilities */
-  meshPrvSrCb.pUpdInfo = pUpdInfo;
+    /* Store capabilities */
+    meshPrvSrCb.pUpdInfo = pUpdInfo;
 
-  /* Set empty callback */
-  meshPrvSrCb.prvSrEvtNotifyCback = meshPrvSrEventNotifyEmptyCback;
+    /* Set empty callback */
+    meshPrvSrCb.prvSrEvtNotifyCback = meshPrvSrEventNotifyEmptyCback;
 
-  /* Initialize empty session data */
-  meshPrvSrCb.pSessionData = NULL;
+    /* Initialize empty session data */
+    meshPrvSrCb.pSessionData = NULL;
 
-  /* Initialize the provisioning bearer module and register callbacks */
-  MeshPrvBrInit();
-  MeshPrvBrRegisterCback(meshPrvSrPduRecvCback, meshPrvSrBrEventNotifyCback);
+    /* Initialize the provisioning bearer module and register callbacks */
+    MeshPrvBrInit();
+    MeshPrvBrRegisterCback(meshPrvSrPduRecvCback, meshPrvSrBrEventNotifyCback);
 
-  /* Set initial state */
-  meshPrvSrCb.state = PRV_SR_ST_IDLE;
+    /* Set initial state */
+    meshPrvSrCb.state = PRV_SR_ST_IDLE;
 
-  /* Set flag */
-  prvSrInitialized = TRUE;
+    /* Set flag */
+    prvSrInitialized = TRUE;
 }
 
 /*************************************************************************************************/
@@ -519,8 +476,8 @@ void MeshPrvSrInit(const meshPrvSrUnprovisionedDeviceInfo_t* pUpdInfo)
 /*************************************************************************************************/
 void MeshPrvSrHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Store Handler ID */
-  meshPrvSrCb.timer.handlerId = handlerId;
+    /* Store Handler ID */
+    meshPrvSrCb.timer.handlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -535,16 +492,13 @@ void MeshPrvSrHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MeshPrvSrHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  /* Handle messages */
-  if (pMsg != NULL)
-  {
-    meshPrvSrSmExecute(&meshPrvSrCb, (meshPrvSrSmMsg_t*)pMsg);
-  }
-  /* Handle events */
-  else if (event)
-  {
-
-  }
+    /* Handle messages */
+    if (pMsg != NULL) {
+        meshPrvSrSmExecute(&meshPrvSrCb, (meshPrvSrSmMsg_t *)pMsg);
+    }
+    /* Handle events */
+    else if (event) {
+    }
 }
 
 /*************************************************************************************************/
@@ -558,14 +512,11 @@ void MeshPrvSrHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MeshPrvSrRegister(meshPrvSrEvtNotifyCback_t eventCback)
 {
-  if (eventCback != NULL)
-  {
-    meshPrvSrCb.prvSrEvtNotifyCback = eventCback;
-  }
-  else
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Attempting to install NULL event notification callback!");
-  }
+    if (eventCback != NULL) {
+        meshPrvSrCb.prvSrEvtNotifyCback = eventCback;
+    } else {
+        MESH_TRACE_ERR0("MESH PRV SR: Attempting to install NULL event notification callback!");
+    }
 }
 
 /*************************************************************************************************/
@@ -580,48 +531,42 @@ void MeshPrvSrRegister(meshPrvSrEvtNotifyCback_t eventCback)
 /*************************************************************************************************/
 void MeshPrvSrEnterPbAdvProvisioningMode(uint8_t ifId, uint32_t beaconInterval)
 {
-  meshPrvSrEnterPbAdv_t *pMsg;
+    meshPrvSrEnterPbAdv_t *pMsg;
 
-  /* Check module is initialized */
-  if (prvSrInitialized == FALSE)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Mesh Provisioning Server not initialized!");
-    return;
-  }
+    /* Check module is initialized */
+    if (prvSrInitialized == FALSE) {
+        MESH_TRACE_ERR0("MESH PRV SR: Mesh Provisioning Server not initialized!");
+        return;
+    }
 
-  /* Check session data is not already allocated */
-  if (meshPrvSrCb.pSessionData != NULL)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Session data already allocated!");
-    return;
-  }
+    /* Check session data is not already allocated */
+    if (meshPrvSrCb.pSessionData != NULL) {
+        MESH_TRACE_ERR0("MESH PRV SR: Session data already allocated!");
+        return;
+    }
 
-  /* Allocate session data */
-  meshPrvSrCb.pSessionData = WsfBufAlloc(sizeof(meshPrvSrSessionData_t));
-  if (meshPrvSrCb.pSessionData == NULL)
-  {
-    /* Should not happen if buffers are properly configured */
-    return;
-  }
+    /* Allocate session data */
+    meshPrvSrCb.pSessionData = WsfBufAlloc(sizeof(meshPrvSrSessionData_t));
+    if (meshPrvSrCb.pSessionData == NULL) {
+        /* Should not happen if buffers are properly configured */
+        return;
+    }
 
-  /* Allocate the Stack Message and additional size for message parameters. */
-  if ((pMsg = WsfMsgAlloc(sizeof(meshPrvSrEnterPbAdv_t))) != NULL)
-  {
-    /* Set event type. */
-    pMsg->hdr.event = PRV_SR_EVT_BEGIN_NO_LINK;
+    /* Allocate the Stack Message and additional size for message parameters. */
+    if ((pMsg = WsfMsgAlloc(sizeof(meshPrvSrEnterPbAdv_t))) != NULL) {
+        /* Set event type. */
+        pMsg->hdr.event = PRV_SR_EVT_BEGIN_NO_LINK;
 
-    /* Copy parameters */
-    pMsg->ifId = ifId;
-    pMsg->beaconInterval = beaconInterval;
+        /* Copy parameters */
+        pMsg->ifId = ifId;
+        pMsg->beaconInterval = beaconInterval;
 
-    /* Send Message. */
-    WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-  }
-  else
-  {
-    /* Should not happen if buffers are properly configured. */
-    WsfBufFree(meshPrvSrCb.pSessionData);
-  }
+        /* Send Message. */
+        WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+    } else {
+        /* Should not happen if buffers are properly configured. */
+        WsfBufFree(meshPrvSrCb.pSessionData);
+    }
 }
 
 /*************************************************************************************************/
@@ -635,47 +580,41 @@ void MeshPrvSrEnterPbAdvProvisioningMode(uint8_t ifId, uint32_t beaconInterval)
 /*************************************************************************************************/
 void MeshPrvSrEnterPbGattProvisioningMode(uint8_t connId)
 {
-  meshPrvSrEnterPbGatt_t *pMsg;
+    meshPrvSrEnterPbGatt_t *pMsg;
 
-  /* Check module is initialized */
-  if (prvSrInitialized == FALSE)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Mesh Provisioning Server not initialized!");
-    return;
-  }
+    /* Check module is initialized */
+    if (prvSrInitialized == FALSE) {
+        MESH_TRACE_ERR0("MESH PRV SR: Mesh Provisioning Server not initialized!");
+        return;
+    }
 
-  /* Check session data is not already allocated */
-  if (meshPrvSrCb.pSessionData != NULL)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Session data already allocated!");
-    return;
-  }
+    /* Check session data is not already allocated */
+    if (meshPrvSrCb.pSessionData != NULL) {
+        MESH_TRACE_ERR0("MESH PRV SR: Session data already allocated!");
+        return;
+    }
 
-  /* Allocate session data */
-  meshPrvSrCb.pSessionData = WsfBufAlloc(sizeof(meshPrvSrSessionData_t));
-  if (meshPrvSrCb.pSessionData == NULL)
-  {
-    /* Should not happen if buffers are properly configured */
-    return;
-  }
+    /* Allocate session data */
+    meshPrvSrCb.pSessionData = WsfBufAlloc(sizeof(meshPrvSrSessionData_t));
+    if (meshPrvSrCb.pSessionData == NULL) {
+        /* Should not happen if buffers are properly configured */
+        return;
+    }
 
-  /* Allocate the Stack Message and additional size for message parameters. */
-  if ((pMsg = WsfMsgAlloc(sizeof(meshPrvSrEnterPbGatt_t))) != NULL)
-  {
-    /* Set event type. */
-    pMsg->hdr.event = PRV_SR_EVT_BEGIN_LINK_OPEN;
+    /* Allocate the Stack Message and additional size for message parameters. */
+    if ((pMsg = WsfMsgAlloc(sizeof(meshPrvSrEnterPbGatt_t))) != NULL) {
+        /* Set event type. */
+        pMsg->hdr.event = PRV_SR_EVT_BEGIN_LINK_OPEN;
 
-    /* Copy parameters */
-    pMsg->connId = connId;
+        /* Copy parameters */
+        pMsg->connId = connId;
 
-    /* Send Message. */
-    WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-  }
-  else
-  {
-    /* Should not happen if buffers are properly configured. */
-    WsfBufFree(meshPrvSrCb.pSessionData);
-  }
+        /* Send Message. */
+        WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+    } else {
+        /* Should not happen if buffers are properly configured. */
+        WsfBufFree(meshPrvSrCb.pSessionData);
+    }
 }
 
 /*************************************************************************************************/
@@ -697,35 +636,32 @@ void MeshPrvSrEnterPbGattProvisioningMode(uint8_t connId)
 /*************************************************************************************************/
 void MeshPrvSrInputComplete(meshPrvInputOobSize_t inputOobSize, meshPrvInOutOobData_t inputOobData)
 {
-  meshPrvSrInputOob_t *pMsg;
+    meshPrvSrInputOob_t *pMsg;
 
-  if (prvSrInitialized == FALSE)
-  {
-    MESH_TRACE_ERR0("MESH PRV SR: Mesh Provisioning Server not initialized!");
-    return;
-  }
+    if (prvSrInitialized == FALSE) {
+        MESH_TRACE_ERR0("MESH PRV SR: Mesh Provisioning Server not initialized!");
+        return;
+    }
 
-  /* Validate parameters */
-  if (inputOobSize >= MESH_PRV_INPUT_OOB_SIZE_RFU_START ||
-      (inputOobSize > 0 &&
-       !meshPrvIsAlphanumericArray(inputOobData.alphanumericOob, inputOobSize)))
-  {
-    MESH_TRACE_ERR0("MESH PRV CL: Invalid parameters in MeshPrvSrInputComplete!");
-    return;
-  }
+    /* Validate parameters */
+    if (inputOobSize >= MESH_PRV_INPUT_OOB_SIZE_RFU_START ||
+        (inputOobSize > 0 &&
+         !meshPrvIsAlphanumericArray(inputOobData.alphanumericOob, inputOobSize))) {
+        MESH_TRACE_ERR0("MESH PRV CL: Invalid parameters in MeshPrvSrInputComplete!");
+        return;
+    }
 
-  /* Allocate the Stack Message and additional size for message parameters. */
-  if ((pMsg = WsfMsgAlloc(sizeof(meshPrvSrInputOob_t))) != NULL)
-  {
-    /* Set event type. */
-    pMsg->hdr.event = PRV_SR_EVT_INPUT_READY;
-    pMsg->inputOobSize = inputOobSize;
-    pMsg->inputOobData = inputOobData;
+    /* Allocate the Stack Message and additional size for message parameters. */
+    if ((pMsg = WsfMsgAlloc(sizeof(meshPrvSrInputOob_t))) != NULL) {
+        /* Set event type. */
+        pMsg->hdr.event = PRV_SR_EVT_INPUT_READY;
+        pMsg->inputOobSize = inputOobSize;
+        pMsg->inputOobData = inputOobData;
 
-    /* Send Message. */
-    WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
-  }
-  /* Else should not happen if buffers are properly configured. */
+        /* Send Message. */
+        WsfMsgSend(meshPrvSrCb.timer.handlerId, pMsg);
+    }
+    /* Else should not happen if buffers are properly configured. */
 }
 
 /*************************************************************************************************/
@@ -739,20 +675,17 @@ void MeshPrvSrInputComplete(meshPrvInputOobSize_t inputOobSize, meshPrvInOutOobD
 /*************************************************************************************************/
 uint16_t MeshPrvSrSizeOfEvt(meshPrvSrEvt_t *pMeshPrvSrEvt)
 {
-  uint16_t len;
+    uint16_t len;
 
-  /* If a valid Provisioning Server event ID */
-  if ((pMeshPrvSrEvt->hdr.event == MESH_PRV_SR_EVENT) &&
-      (pMeshPrvSrEvt->hdr.param <= MESH_PRV_SR_MAX_EVENT))
-  {
-    len = meshPrvSrEvtCbackLen[pMeshPrvSrEvt->hdr.param];
-  }
-  else
-  {
-    len = sizeof(wsfMsgHdr_t);
-  }
+    /* If a valid Provisioning Server event ID */
+    if ((pMeshPrvSrEvt->hdr.event == MESH_PRV_SR_EVENT) &&
+        (pMeshPrvSrEvt->hdr.param <= MESH_PRV_SR_MAX_EVENT)) {
+        len = meshPrvSrEvtCbackLen[pMeshPrvSrEvt->hdr.param];
+    } else {
+        len = sizeof(wsfMsgHdr_t);
+    }
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -769,15 +702,14 @@ uint16_t MeshPrvSrSizeOfEvt(meshPrvSrEvt_t *pMeshPrvSrEvt)
 /*************************************************************************************************/
 void meshPrvSrSendFailedPdu(uint8_t errorCode)
 {
-  WSF_ASSERT(errorCode != MESH_PRV_ERR_PROHIBITED && errorCode < MESH_PRV_ERR_RFU_START);
+    WSF_ASSERT(errorCode != MESH_PRV_ERR_PROHIBITED && errorCode < MESH_PRV_ERR_RFU_START);
 
-  /* Allocate buffer for the Provisioning Failed PDU */
-  uint8_t *pBuf = WsfBufAlloc(MESH_PRV_PDU_FAILED_PDU_SIZE);
-  if (pBuf != NULL)
-  {
-    pBuf[MESH_PRV_PDU_OPCODE_INDEX] = MESH_PRV_PDU_FAILED;
-    pBuf[MESH_PRV_PDU_FAILED_ERROR_CODE_INDEX] = errorCode;
+    /* Allocate buffer for the Provisioning Failed PDU */
+    uint8_t *pBuf = WsfBufAlloc(MESH_PRV_PDU_FAILED_PDU_SIZE);
+    if (pBuf != NULL) {
+        pBuf[MESH_PRV_PDU_OPCODE_INDEX] = MESH_PRV_PDU_FAILED;
+        pBuf[MESH_PRV_PDU_FAILED_ERROR_CODE_INDEX] = errorCode;
 
-    (void)MeshPrvBrSendProvisioningPdu(pBuf, MESH_PRV_PDU_FAILED_PDU_SIZE);
-  }
+        (void)MeshPrvBrSendProvisioningPdu(pBuf, MESH_PRV_PDU_FAILED_PDU_SIZE);
+    }
 }

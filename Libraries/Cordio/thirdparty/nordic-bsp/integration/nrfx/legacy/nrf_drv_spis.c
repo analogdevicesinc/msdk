@@ -42,22 +42,18 @@
 
 static nrf_drv_spis_event_handler_t m_handlers[SPIS_COUNT];
 
-static void spis_event_handler(nrfx_spis_evt_t const * p_event,
-                               void *                  p_context)
+static void spis_event_handler(nrfx_spis_evt_t const *p_event, void *p_context)
 {
     uint32_t inst_idx = (uint32_t)p_context;
     m_handlers[inst_idx](*p_event);
 }
 
-ret_code_t nrf_drv_spis_init(nrf_drv_spis_t const * const  p_instance,
-                             nrf_drv_spis_config_t const * p_config,
-                             nrf_drv_spis_event_handler_t  event_handler)
+ret_code_t nrf_drv_spis_init(nrf_drv_spis_t const *const p_instance,
+                             nrf_drv_spis_config_t const *p_config,
+                             nrf_drv_spis_event_handler_t event_handler)
 {
     uint32_t inst_idx = p_instance->drv_inst_idx;
     m_handlers[inst_idx] = event_handler;
 
-    return nrfx_spis_init(p_instance,
-                          p_config,
-                          spis_event_handler,
-                          (void *)inst_idx);
+    return nrfx_spis_init(p_instance, p_config, spis_event_handler, (void *)inst_idx);
 }

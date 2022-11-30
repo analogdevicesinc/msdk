@@ -46,8 +46,8 @@
 #ifndef TRC_SNAPSHOT_CONFIG_H
 #define TRC_SNAPSHOT_CONFIG_H
 
-#define TRC_SNAPSHOT_MODE_RING_BUFFER		(0x01)
-#define TRC_SNAPSHOT_MODE_STOP_WHEN_FULL	(0x02)
+#define TRC_SNAPSHOT_MODE_RING_BUFFER (0x01)
+#define TRC_SNAPSHOT_MODE_STOP_WHEN_FULL (0x02)
 
 /******************************************************************************
  * TRC_CFG_SNAPSHOT_MODE
@@ -106,16 +106,15 @@
  * check the actual usage by selecting View menu -> Trace Details ->
  * Resource Usage -> Object Table.
  ******************************************************************************/
-#define TRC_CFG_NTASK			150
-#define TRC_CFG_NISR			90
-#define TRC_CFG_NQUEUE			90
-#define TRC_CFG_NSEMAPHORE		90
-#define TRC_CFG_NMUTEX			90
-#define TRC_CFG_NTIMER			250
-#define TRC_CFG_NEVENTGROUP		90
-#define TRC_CFG_NSTREAMBUFFER	50
-#define TRC_CFG_NMESSAGEBUFFER	50
-
+#define TRC_CFG_NTASK 150
+#define TRC_CFG_NISR 90
+#define TRC_CFG_NQUEUE 90
+#define TRC_CFG_NSEMAPHORE 90
+#define TRC_CFG_NMUTEX 90
+#define TRC_CFG_NTIMER 250
+#define TRC_CFG_NEVENTGROUP 90
+#define TRC_CFG_NSTREAMBUFFER 50
+#define TRC_CFG_NMESSAGEBUFFER 50
 
 /******************************************************************************
  * TRC_CFG_INCLUDE_FLOAT_SUPPORT
@@ -162,15 +161,15 @@
  * kernel objects, such as tasks and queues. If longer names are used, they will
  * be truncated when stored in the recorder.
  *****************************************************************************/
-#define TRC_CFG_NAME_LEN_TASK			15
-#define TRC_CFG_NAME_LEN_ISR			15
-#define TRC_CFG_NAME_LEN_QUEUE			15
-#define TRC_CFG_NAME_LEN_SEMAPHORE		15
-#define TRC_CFG_NAME_LEN_MUTEX			15
-#define TRC_CFG_NAME_LEN_TIMER			15
-#define TRC_CFG_NAME_LEN_EVENTGROUP 	15
-#define TRC_CFG_NAME_LEN_STREAMBUFFER 	15
-#define TRC_CFG_NAME_LEN_MESSAGEBUFFER 	15
+#define TRC_CFG_NAME_LEN_TASK 15
+#define TRC_CFG_NAME_LEN_ISR 15
+#define TRC_CFG_NAME_LEN_QUEUE 15
+#define TRC_CFG_NAME_LEN_SEMAPHORE 15
+#define TRC_CFG_NAME_LEN_MUTEX 15
+#define TRC_CFG_NAME_LEN_TIMER 15
+#define TRC_CFG_NAME_LEN_EVENTGROUP 15
+#define TRC_CFG_NAME_LEN_STREAMBUFFER 15
+#define TRC_CFG_NAME_LEN_MESSAGEBUFFER 15
 
 /******************************************************************************
  *** ADVANCED SETTINGS ********************************************************

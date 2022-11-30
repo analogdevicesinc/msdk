@@ -61,15 +61,13 @@ extern "C" {
  * @ingroup UCL_HASH
  */
 
-
 /** <b>The SIA256 context</b>.
  * This structure is associated to the 'step by step' process.
  *
  * @ingroup UCL_SIA256
  */
 
-struct ucl_sia256_ctx
-{
+struct ucl_sia256_ctx {
     /** Intermediate and then final hash. */
     u32 state[8];
     /** Counter in bits. */
@@ -83,7 +81,6 @@ struct ucl_sia256_ctx
  */
 
 typedef struct ucl_sia256_ctx ucl_sia256_ctx_t;
-
 
 /** <b>Core block size</b>.
  * Byte size of a SIA256 core block.
@@ -105,7 +102,6 @@ typedef struct ucl_sia256_ctx ucl_sia256_ctx_t;
  */
 #define UCL_SIA256_HASHW32SIZE 8
 
-
 /*============================================================================*/
 /** <b>SIA256</b>.
  * The complete process of SIA256.
@@ -125,7 +121,6 @@ typedef struct ucl_sia256_ctx ucl_sia256_ctx_t;
  */
 int __API__ ucl_sia256(u8 *hash, u8 *data, u32 data_byteLen);
 
-
 /*============================================================================*/
 /** <b>SIA256 Init</b>.
  * The initialisation of SIA256.
@@ -140,7 +135,6 @@ int __API__ ucl_sia256(u8 *hash, u8 *data, u32 data_byteLen);
  * @ingroup UCL_SIA256
  */
 int __API__ ucl_sia256_init(ucl_sia256_ctx_t *context);
-
 
 /*============================================================================*/
 /** <b>SIA256 Core</b>.
@@ -160,9 +154,7 @@ int __API__ ucl_sia256_init(ucl_sia256_ctx_t *context);
  *
  * @ingroup UCL_SIA256
  */
-int __API__ ucl_sia256_core(ucl_sia256_ctx_t *context, u8 *data,
-                    u32 data_byteLen);
-
+int __API__ ucl_sia256_core(ucl_sia256_ctx_t *context, u8 *data, u32 data_byteLen);
 
 /*============================================================================*/
 /** <b>SIA256 Finish</b>.
@@ -185,10 +177,9 @@ int __API__ ucl_sia256_core(ucl_sia256_ctx_t *context, u8 *data,
  */
 int __API__ ucl_sia256_finish(u8 *hash, ucl_sia256_ctx_t *context);
 
-
 #ifdef __cplusplus
 }
 #endif /* _ cplusplus  */
 
 #endif /* _UCL_SIA256_H_ */
-#endif//PROFILE2
+#endif //PROFILE2

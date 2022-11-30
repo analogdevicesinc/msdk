@@ -38,6 +38,6 @@
 /*************************************************************************************************/
 bool_t lhciMstEncEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  /* Fall back to slave encryption handler. */
-  return lhciSlvEncEncodeEvtPkt(pEvt);      /* exit routine */
+    /* Fall back to slave encryption handler. */
+    return lhciSlvEncEncodeEvtPkt(pEvt); /* exit routine */
 }

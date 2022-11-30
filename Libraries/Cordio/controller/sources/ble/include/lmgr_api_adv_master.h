@@ -41,21 +41,19 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Scan parameters. */
-typedef struct
-{
-  uint16_t scanInterval;                /*!< Scan interval in BLE ticks. */
-  uint16_t scanWindow;                  /*!< Scan window duration in BLE ticks. */
-  uint8_t scanType;                     /*!< Advertising type. */
-  uint8_t ownAddrType;                  /*!< Address type used by this device. */
-  uint8_t scanFiltPolicy;               /*!< Scanning filter policy. */
+typedef struct {
+    uint16_t scanInterval; /*!< Scan interval in BLE ticks. */
+    uint16_t scanWindow; /*!< Scan window duration in BLE ticks. */
+    uint8_t scanType; /*!< Advertising type. */
+    uint8_t ownAddrType; /*!< Address type used by this device. */
+    uint8_t scanFiltPolicy; /*!< Scanning filter policy. */
 } lmgrScanParam_t;
 
 /*! \brief      Master role device parameter definition. */
-typedef struct
-{
-  lmgrScanParam_t   scanParam;          /*!< Scan parameters. */
-  uint8_t           scanChanMap;        /*!< Scan channel map. */
-  uint8_t           numAdvReport;       /*!< Number of pending advertising reports. */
+typedef struct {
+    lmgrScanParam_t scanParam; /*!< Scan parameters. */
+    uint8_t scanChanMap; /*!< Scan channel map. */
+    uint8_t numAdvReport; /*!< Number of pending advertising reports. */
 } lmgrMstScanCtrlBlk_t;
 
 /**************************************************************************************************
@@ -71,7 +69,7 @@ extern lmgrMstScanCtrlBlk_t lmgrMstScanCb;
 /* Initialization */
 void LmgrMstInit(void);
 
-/*! \} */    /* LL_LMGR_API_ADV_MST */
+/*! \} */ /* LL_LMGR_API_ADV_MST */
 
 #ifdef __cplusplus
 };

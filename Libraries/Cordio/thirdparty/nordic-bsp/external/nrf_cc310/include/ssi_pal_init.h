@@ -32,16 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
 #ifndef _SSI_PAL_INIT_H
 #define _SSI_PAL_INIT_H
 
 #include "ssi_pal_types.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*!
@@ -63,16 +60,12 @@ extern "C"
  */
 int SaSi_PalInit(void);
 
-
-
 /**
  * @brief This function is used to terminate the PAL implementation and free the resources that were taken by ::SaSi_PalInit.
  *
  * @return Void.
  */
 void SaSi_PalTerminate(void);
-
-
 
 #ifdef __cplusplus
 }
@@ -81,5 +74,3 @@ void SaSi_PalTerminate(void);
 @}
  */
 #endif
-
-

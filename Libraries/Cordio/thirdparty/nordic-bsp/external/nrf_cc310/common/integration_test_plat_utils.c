@@ -56,20 +56,18 @@ uint32_t *g_test_stack_base_addr;
 uint32_t g_rom_base_addr;
 uint32_t g_env_rom_base_addr;
 
-
-CRYS_RND_WorkBuff_t*  rndWorkBuff_ptr;
-CRYS_RND_State_t*     rndState_ptr;
+CRYS_RND_WorkBuff_t *rndWorkBuff_ptr;
+CRYS_RND_State_t *rndState_ptr;
 
 #if defined(__CC_ARM)
-CRYS_RND_State_t   	 rndState = {0};
-CRYS_RND_WorkBuff_t  rndWorkBuff = {0};
+CRYS_RND_State_t rndState = { 0 };
+CRYS_RND_WorkBuff_t rndWorkBuff = { 0 };
 #else
-CRYS_RND_State_t   	 rndState;
-CRYS_RND_WorkBuff_t  rndWorkBuff;
+CRYS_RND_State_t rndState;
+CRYS_RND_WorkBuff_t rndWorkBuff;
 #endif
 
-uint32_t* UserSpace = 0;
-
+uint32_t *UserSpace = 0;
 
 //initializatoins that need to be done prior to running the integration tests.
 SaSiError_t integration_tests_setup(void)
@@ -91,30 +89,26 @@ SaSiError_t integration_tests_setup(void)
     return ret;
 }
 
-
 void integration_tests_clear(void)
 {
     INTEG_TEST_PRINT("==================== TEST END ====================\r\n");
-    while(1)
-    {
+    while (1) {
         __WFI();
     }
 }
-
 
 void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
 {
     (void)id;
     (void)pc;
     (void)info;
-    while(1);
+    while (1) {}
 }
-
 
 void SaSi_PalAbort(const char *msg)
 {
     // This function overrides SaSi_PalAbort implemented in the library.
     // The library version does a NVIC_SystemReset() and has no logging.
     INTEG_TEST_PRINT("CC310 abort called: %s\r\n", msg);
-    while(1);
+    while (1) {}
 }

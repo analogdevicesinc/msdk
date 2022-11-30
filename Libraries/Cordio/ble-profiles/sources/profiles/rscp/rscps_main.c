@@ -37,15 +37,14 @@
 *************************************************************************************************/
 
 /*! \brief The maximum length of a power measurement */
-#define RSCPS_PM_MAX_LEN     10
+#define RSCPS_PM_MAX_LEN 10
 
 /*! \brief Running Speed Measurement Flag Indicies */
-enum
-{
-  RSCPS_ISLP_FLAG_INDEX,          /*! \brief Instantaneous Stride Length Present Present */
-  RSCPS_TDP_FLAG_INDEX,           /*! \brief Total Distance Present */
-  RSCPS_WRS_FLAG_INDEX,           /*! \brief  Walking or Running Status bits */
-  RSCPS_NUM_FLAGS
+enum {
+    RSCPS_ISLP_FLAG_INDEX, /*! \brief Instantaneous Stride Length Present Present */
+    RSCPS_TDP_FLAG_INDEX, /*! \brief Total Distance Present */
+    RSCPS_WRS_FLAG_INDEX, /*! \brief  Walking or Running Status bits */
+    RSCPS_NUM_FLAGS
 };
 
 /**************************************************************************************************
@@ -53,13 +52,12 @@ Data Types
 **************************************************************************************************/
 
 /*! \brief Running Speed Measurement Data */
-typedef struct
-{
-  uint8_t   flags;                  /*! \brief Speed Measurement Flags */
-  uint16_t  speed;                  /*! \brief Instantaneous Speed */
-  uint8_t   cadence;                /*! \brief Instantaneous Cadence */
-  uint16_t  stride;                 /*! \brief Instantaneous Stride Length */
-  uint32_t  distance;               /*! \brief Total Distance */
+typedef struct {
+    uint8_t flags; /*! \brief Speed Measurement Flags */
+    uint16_t speed; /*! \brief Instantaneous Speed */
+    uint8_t cadence; /*! \brief Instantaneous Cadence */
+    uint16_t stride; /*! \brief Instantaneous Stride Length */
+    uint32_t distance; /*! \brief Total Distance */
 } rscpSmData_t;
 
 /**************************************************************************************************
@@ -80,7 +78,7 @@ rscpSmData_t rscpSmData;
 /*************************************************************************************************/
 void RscpsSetSensorLocation(uint8_t location)
 {
-  AttsSetAttr(RSCS_SL_HDL, sizeof(uint8_t), &location);
+    AttsSetAttr(RSCS_SL_HDL, sizeof(uint8_t), &location);
 }
 
 /*************************************************************************************************/
@@ -94,8 +92,8 @@ void RscpsSetSensorLocation(uint8_t location)
 /*************************************************************************************************/
 void RscpsSetFeatures(uint16_t features)
 {
-  uint8_t tempData[2] = {UINT16_TO_BYTES(features)};
-  AttsSetAttr(RSCS_RSF_HDL, sizeof(tempData), tempData);
+    uint8_t tempData[2] = { UINT16_TO_BYTES(features) };
+    AttsSetAttr(RSCS_RSF_HDL, sizeof(tempData), tempData);
 }
 
 /*************************************************************************************************/
@@ -110,40 +108,36 @@ void RscpsSetFeatures(uint16_t features)
 /*************************************************************************************************/
 void RscpsSetParameter(uint8_t type, uint32_t value)
 {
-  switch (type)
-  {
-  case RSCP_SM_PARAM_SPEED:
-    rscpSmData.speed = (uint16_t) value;
-    break;
+    switch (type) {
+    case RSCP_SM_PARAM_SPEED:
+        rscpSmData.speed = (uint16_t)value;
+        break;
 
-  case RSCP_SM_PARAM_CADENCE:
-    rscpSmData.cadence = (uint8_t) value;
-    break;
+    case RSCP_SM_PARAM_CADENCE:
+        rscpSmData.cadence = (uint8_t)value;
+        break;
 
-  case RSCP_SM_PARAM_STRIDE_LENGTH:
-    rscpSmData.flags |= (1 << RSCPS_ISLP_FLAG_INDEX);
-    rscpSmData.stride = (uint16_t) value;
-    break;
+    case RSCP_SM_PARAM_STRIDE_LENGTH:
+        rscpSmData.flags |= (1 << RSCPS_ISLP_FLAG_INDEX);
+        rscpSmData.stride = (uint16_t)value;
+        break;
 
-  case RSCP_SM_PARAM_TOTAL_DISTANCE:
-    rscpSmData.flags |= (1 << RSCPS_TDP_FLAG_INDEX);
-    rscpSmData.distance = value;
-    break;
+    case RSCP_SM_PARAM_TOTAL_DISTANCE:
+        rscpSmData.flags |= (1 << RSCPS_TDP_FLAG_INDEX);
+        rscpSmData.distance = value;
+        break;
 
-  case RSCP_SM_PARAM_STATUS:
-    if (value)
-    {
-      rscpSmData.flags |= (1 << RSCPS_WRS_FLAG_INDEX);
+    case RSCP_SM_PARAM_STATUS:
+        if (value) {
+            rscpSmData.flags |= (1 << RSCPS_WRS_FLAG_INDEX);
+        } else {
+            rscpSmData.flags &= ~(1 << RSCPS_WRS_FLAG_INDEX);
+        }
+        break;
+
+    default:
+        break;
     }
-    else
-    {
-      rscpSmData.flags &= ~(1 << RSCPS_WRS_FLAG_INDEX);
-    }
-    break;
-
-  default:
-    break;
-  }
 }
 
 /*************************************************************************************************/
@@ -157,42 +151,39 @@ void RscpsSetParameter(uint8_t type, uint32_t value)
 /*************************************************************************************************/
 void RscpsSendSpeedMeasurement(dmConnId_t connId)
 {
-  int8_t i;
-  uint16_t len;
-  uint8_t msg[RSCPS_PM_MAX_LEN];
-  uint8_t *p = msg;
+    int8_t i;
+    uint16_t len;
+    uint8_t msg[RSCPS_PM_MAX_LEN];
+    uint8_t *p = msg;
 
-  /* Add manditory parameters */
-  UINT8_TO_BSTREAM(p, rscpSmData.flags);
-  UINT16_TO_BSTREAM(p, rscpSmData.speed);
-  UINT8_TO_BSTREAM(p, rscpSmData.cadence);
+    /* Add manditory parameters */
+    UINT8_TO_BSTREAM(p, rscpSmData.flags);
+    UINT16_TO_BSTREAM(p, rscpSmData.speed);
+    UINT8_TO_BSTREAM(p, rscpSmData.cadence);
 
-  /* Add optional parameters */
-  for (i = 0; i < RSCPS_NUM_FLAGS; i++)
-  {
-    if (rscpSmData.flags & (1 << i))
-    {
-      switch (i)
-      {
-      case RSCPS_ISLP_FLAG_INDEX:
-        UINT16_TO_BSTREAM(p, rscpSmData.stride);
-        break;
-      case RSCPS_TDP_FLAG_INDEX:
-        UINT32_TO_BSTREAM(p, rscpSmData.distance);
-        break;
+    /* Add optional parameters */
+    for (i = 0; i < RSCPS_NUM_FLAGS; i++) {
+        if (rscpSmData.flags & (1 << i)) {
+            switch (i) {
+            case RSCPS_ISLP_FLAG_INDEX:
+                UINT16_TO_BSTREAM(p, rscpSmData.stride);
+                break;
+            case RSCPS_TDP_FLAG_INDEX:
+                UINT32_TO_BSTREAM(p, rscpSmData.distance);
+                break;
 
-      default:
-        break;
-      }
+            default:
+                break;
+            }
+        }
     }
-  }
 
-  /* Calculate message length */
-  len = (uint16_t) (p - msg);
+    /* Calculate message length */
+    len = (uint16_t)(p - msg);
 
-  /* Transmit notification */
-  AttsHandleValueNtf(connId, RSCS_RSM_HDL, len, msg);
+    /* Transmit notification */
+    AttsHandleValueNtf(connId, RSCS_RSM_HDL, len, msg);
 
-  /* Clear the measurement data */
-  memset(&rscpSmData, 0, sizeof(rscpSmData));
+    /* Clear the measurement data */
+    memset(&rscpSmData, 0, sizeof(rscpSmData));
 }

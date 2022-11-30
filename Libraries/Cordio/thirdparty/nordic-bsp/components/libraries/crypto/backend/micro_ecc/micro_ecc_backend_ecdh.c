@@ -53,33 +53,28 @@
 #include "micro_ecc_backend_shared.h"
 #include "uECC.h"
 
-
-ret_code_t nrf_crypto_backend_micro_ecc_ecdh_compute(
-    void       * p_context,
-    void const * p_private_key,
-    void const * p_public_key,
-    uint8_t    * p_shared_secret)
+ret_code_t nrf_crypto_backend_micro_ecc_ecdh_compute(void *p_context, void const *p_private_key,
+                                                     void const *p_public_key,
+                                                     uint8_t *p_shared_secret)
 {
     int result;
 
-    nrf_crypto_backend_micro_ecc_common_key_t const * p_prv =
+    nrf_crypto_backend_micro_ecc_common_key_t const *p_prv =
         (nrf_crypto_backend_micro_ecc_common_key_t const *)p_private_key;
-    nrf_crypto_backend_micro_ecc_common_key_t const * p_pub =
+    nrf_crypto_backend_micro_ecc_common_key_t const *p_pub =
         (nrf_crypto_backend_micro_ecc_common_key_t const *)p_public_key;
 
-    nrf_crypto_ecc_curve_info_t const * p_info = p_prv->header.p_info;
+    nrf_crypto_ecc_curve_info_t const *p_info = p_prv->header.p_info;
 
     uECC_Curve p_micro_ecc_curve = nrf_crypto_backend_micro_ecc_curve_get(p_prv);
 
-    // Check that the public key is valid 
-    if (!uECC_valid_public_key((uint8_t *)(&p_pub->key[0]), p_micro_ecc_curve))
-    {
+    // Check that the public key is valid
+    if (!uECC_valid_public_key((uint8_t *)(&p_pub->key[0]), p_micro_ecc_curve)) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
-    
+
     result = uECC_shared_secret((uint8_t const *)(&p_pub->key[0]),
-                                (uint8_t const *)(&p_prv->key[0]),
-                                p_shared_secret,
+                                (uint8_t const *)(&p_prv->key[0]), p_shared_secret,
                                 p_micro_ecc_curve);
 
 #if ECC_BACKEND_SWAP_BYTES
@@ -88,16 +83,11 @@ ret_code_t nrf_crypto_backend_micro_ecc_ecdh_compute(
     UNUSED_PARAMETER(p_info);
 #endif
 
-    if (result == 0)
-    {
+    if (result == 0) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
-    
-    
 
-    
     return NRF_SUCCESS;
 }
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC)

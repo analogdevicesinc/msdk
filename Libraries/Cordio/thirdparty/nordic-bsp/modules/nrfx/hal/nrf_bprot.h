@@ -66,9 +66,8 @@ extern "C" {
  * @param[in] block_mask Non-volatile memory blocks to protect. Each bit in bitmask represents
  *                       one memory block in the specified group.
  */
-__STATIC_INLINE void nrf_bprot_nvm_blocks_protection_enable(NRF_BPROT_Type * p_reg,
-                                                            uint8_t          group_idx,
-                                                            uint32_t         block_mask);
+__STATIC_INLINE void nrf_bprot_nvm_blocks_protection_enable(NRF_BPROT_Type *p_reg,
+                                                            uint8_t group_idx, uint32_t block_mask);
 
 /**
  * @brief Function for setting the non-volatile memory (NVM) protection during debug.
@@ -79,48 +78,43 @@ __STATIC_INLINE void nrf_bprot_nvm_blocks_protection_enable(NRF_BPROT_Type * p_r
  * @param[in] enable True if NVM protection during debug is to be enabled.
  *                   False if otherwise.
  */
-__STATIC_INLINE void nrf_bprot_nvm_protection_in_debug_set(NRF_BPROT_Type * p_reg,
-                                                           bool             enable);
+__STATIC_INLINE void nrf_bprot_nvm_protection_in_debug_set(NRF_BPROT_Type *p_reg, bool enable);
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
-__STATIC_INLINE void nrf_bprot_nvm_blocks_protection_enable(NRF_BPROT_Type * p_reg,
-                                                            uint8_t          group_idx,
-                                                            uint32_t         block_mask)
+__STATIC_INLINE void nrf_bprot_nvm_blocks_protection_enable(NRF_BPROT_Type *p_reg,
+                                                            uint8_t group_idx, uint32_t block_mask)
 {
-    switch (group_idx)
-    {
-        case 0:
-            p_reg->CONFIG0 = block_mask;
-            break;
+    switch (group_idx) {
+    case 0:
+        p_reg->CONFIG0 = block_mask;
+        break;
 
-        case 1:
-            p_reg->CONFIG1 = block_mask;
-            break;
+    case 1:
+        p_reg->CONFIG1 = block_mask;
+        break;
 
 #if defined(BPROT_CONFIG2_REGION64_Pos)
-        case 2:
-            p_reg->CONFIG2 = block_mask;
-            break;
+    case 2:
+        p_reg->CONFIG2 = block_mask;
+        break;
 #endif
 
 #if defined(BPROT_CONFIG3_REGION96_Pos)
-        case 3:
-            p_reg->CONFIG3 = block_mask;
-            break;
+    case 3:
+        p_reg->CONFIG3 = block_mask;
+        break;
 #endif
 
-        default:
-            NRFX_ASSERT(false);
-            break;
+    default:
+        NRFX_ASSERT(false);
+        break;
     }
 }
 
-__STATIC_INLINE void nrf_bprot_nvm_protection_in_debug_set(NRF_BPROT_Type * p_reg,
-                                                           bool             enable)
+__STATIC_INLINE void nrf_bprot_nvm_protection_in_debug_set(NRF_BPROT_Type *p_reg, bool enable)
 {
-    p_reg->DISABLEINDEBUG =
-        (enable ? 0 : BPROT_DISABLEINDEBUG_DISABLEINDEBUG_Msk);
+    p_reg->DISABLEINDEBUG = (enable ? 0 : BPROT_DISABLEINDEBUG_DISABLEINDEBUG_Msk);
 }
 
 #endif // SUPPRESS_INLINE_IMPLEMENTATION

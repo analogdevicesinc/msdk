@@ -36,13 +36,13 @@ extern "C" {
 /*** Controller HCI ***/
 
 #ifndef CHCI_BUF_TAILROOM
-#define CHCI_BUF_TAILROOM       4       /*!< Extra byte allocation required for buffer (e.g., for MIC). */
+#define CHCI_BUF_TAILROOM 4 /*!< Extra byte allocation required for buffer (e.g., for MIC). */
 #endif
 
 /*** Scheduler ***/
 
 #ifndef SCH_TIMER_REQUIRED
-#define SCH_TIMER_REQUIRED      TRUE    /*!< If hardware timer is required for radio access scheduler.*/
+#define SCH_TIMER_REQUIRED TRUE /*!< If hardware timer is required for radio access scheduler.*/
 #endif
 
 #ifdef __cplusplus

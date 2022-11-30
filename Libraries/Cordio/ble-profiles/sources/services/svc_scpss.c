@@ -41,7 +41,7 @@
 
 /*! Characteristic write permissions */
 #ifndef SCPSS_SEC_PERMIT_WRITE
-#define SCPSS_SEC_PERMIT_WRITE  (ATTS_PERMIT_WRITE | ATTS_PERMIT_WRITE_ENC)
+#define SCPSS_SEC_PERMIT_WRITE (ATTS_PERMIT_WRITE | ATTS_PERMIT_WRITE_ENC)
 #endif
 
 /**************************************************************************************************
@@ -49,61 +49,35 @@
 **************************************************************************************************/
 
 /*Scan parameter service declaration */
-static const uint8_t scpssValSvc[] = {UINT16_TO_BYTES(ATT_UUID_SCAN_PARAM_SERVICE)};
+static const uint8_t scpssValSvc[] = { UINT16_TO_BYTES(ATT_UUID_SCAN_PARAM_SERVICE) };
 static const uint16_t scpssLenSvc = sizeof(scpssValSvc);
 
 /* Scan interval window characteristic */
-static const uint8_t scpssValSiwCh[] = {ATT_PROP_WRITE_NO_RSP, UINT16_TO_BYTES(SCPSS_SIW_HDL), UINT16_TO_BYTES(ATT_UUID_SCAN_INT_WIND)};
+static const uint8_t scpssValSiwCh[] = { ATT_PROP_WRITE_NO_RSP, UINT16_TO_BYTES(SCPSS_SIW_HDL),
+                                         UINT16_TO_BYTES(ATT_UUID_SCAN_INT_WIND) };
 static const uint16_t scpssLenSiwCh = sizeof(scpssValSiwCh);
 
 /* Scan interval window measurement */
 /* Note these are dummy values */
-static const uint8_t scpssValSiw[] = {0};
+static const uint8_t scpssValSiw[] = { 0 };
 static const uint16_t scpssLenSiw = CH_SCPP_INTERVAL_WINDOW_LEN;
 
-
 /* Attribute list for SCPSS group */
-static const attsAttr_t scpssList[] =
-{
-  /* Scan Parameter Service declaration */
-  {
-    attPrimSvcUuid,
-    (uint8_t *) scpssValSvc,
-    (uint16_t *) &scpssLenSvc,
-    sizeof(scpssValSvc),
-    0,
-    ATTS_PERMIT_READ
-  },
-  /* Scan interval window characteristic */
-  {
-    attChUuid,
-    (uint8_t *)scpssValSiwCh,
-    (uint16_t *) &scpssLenSiwCh,
-    sizeof(scpssValSiwCh),
-    0,
-    ATTS_PERMIT_READ
-  },
-  /* Scan interval window */
-  {
-    attSiwChUuid,
-    (uint8_t *)scpssValSiw,
-    (uint16_t *) &scpssLenSiw,
-    CH_SCPP_INTERVAL_WINDOW_LEN,
-    ATTS_SET_WRITE_CBACK,
-    SCPSS_SEC_PERMIT_WRITE
-  },
+static const attsAttr_t scpssList[] = {
+    /* Scan Parameter Service declaration */
+    { attPrimSvcUuid, (uint8_t *)scpssValSvc, (uint16_t *)&scpssLenSvc, sizeof(scpssValSvc), 0,
+      ATTS_PERMIT_READ },
+    /* Scan interval window characteristic */
+    { attChUuid, (uint8_t *)scpssValSiwCh, (uint16_t *)&scpssLenSiwCh, sizeof(scpssValSiwCh), 0,
+      ATTS_PERMIT_READ },
+    /* Scan interval window */
+    { attSiwChUuid, (uint8_t *)scpssValSiw, (uint16_t *)&scpssLenSiw, CH_SCPP_INTERVAL_WINDOW_LEN,
+      ATTS_SET_WRITE_CBACK, SCPSS_SEC_PERMIT_WRITE },
 };
 
 /* SCPSS group structure */
-static attsGroup_t svcScpssGroup =
-{
-  NULL,
-  (attsAttr_t *) scpssList,
-  NULL,
-  NULL,
-  SCPSS_START_HDL,
-  SCPSS_END_HDL
-};
+static attsGroup_t svcScpssGroup = { NULL, (attsAttr_t *)scpssList, NULL,
+                                     NULL, SCPSS_START_HDL,         SCPSS_END_HDL };
 
 /*************************************************************************************************/
 /*!
@@ -114,7 +88,7 @@ static attsGroup_t svcScpssGroup =
 /*************************************************************************************************/
 void SvcScpssAddGroup(void)
 {
-  AttsAddGroup(&svcScpssGroup);
+    AttsAddGroup(&svcScpssGroup);
 }
 
 /*************************************************************************************************/
@@ -126,7 +100,7 @@ void SvcScpssAddGroup(void)
 /*************************************************************************************************/
 void SvcScpssRemoveGroup(void)
 {
-  AttsRemoveGroup(SCPSS_START_HDL);
+    AttsRemoveGroup(SCPSS_START_HDL);
 }
 
 /*************************************************************************************************/
@@ -140,5 +114,5 @@ void SvcScpssRemoveGroup(void)
 /*************************************************************************************************/
 void SvcScpssCbackRegister(attsWriteCback_t writeCback)
 {
-  svcScpssGroup.writeCback = writeCback;
+    svcScpssGroup.writeCback = writeCback;
 }

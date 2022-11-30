@@ -43,18 +43,15 @@
 /*************************************************************************************************/
 uint8_t LlGetTime(uint32_t *pTime)
 {
-  /* Only use BB clock when the BB is active. */
-  if ((lmgrCb.numConnEnabled == 0) &&
-      !lmgrCb.advEnabled &&
-      !lmgrCb.numExtAdvEnabled &&
-      !lmgrCb.numScanEnabled)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    /* Only use BB clock when the BB is active. */
+    if ((lmgrCb.numConnEnabled == 0) && !lmgrCb.advEnabled && !lmgrCb.numExtAdvEnabled &&
+        !lmgrCb.numScanEnabled) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  *pTime = PalBbGetCurrentTime();
+    *pTime = PalBbGetCurrentTime();
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -71,5 +68,5 @@ uint8_t LlGetTime(uint32_t *pTime)
 /*************************************************************************************************/
 uint32_t LlCalcDeltaTimeUsec(uint32_t endTime, uint32_t startTime)
 {
-  return endTime - startTime;
+    return endTime - startTime;
 }

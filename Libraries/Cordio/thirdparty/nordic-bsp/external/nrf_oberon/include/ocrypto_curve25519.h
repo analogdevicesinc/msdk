@@ -61,7 +61,6 @@ extern "C" {
 
 #include <stdint.h>
 
-
 /**
  * Length of a scalar.
  */
@@ -71,7 +70,6 @@ extern "C" {
  * Length of a curve point.
  */
 #define ocrypto_curve25519_BYTES (32)
-
 
 /**
  * Curve25519 scalar multiplication `r = n * basePoint`.
@@ -86,9 +84,8 @@ extern "C" {
  *
  * @remark @p r and @p n can point to the same address.
  */
-void ocrypto_curve25519_scalarmult_base(
-    uint8_t r[ocrypto_curve25519_BYTES],
-    const uint8_t n[ocrypto_curve25519_SCALAR_BYTES]);
+void ocrypto_curve25519_scalarmult_base(uint8_t r[ocrypto_curve25519_BYTES],
+                                        const uint8_t n[ocrypto_curve25519_SCALAR_BYTES]);
 
 /**
  * Curve25519 scalar multiplication `r = n * p`.
@@ -104,10 +101,9 @@ void ocrypto_curve25519_scalarmult_base(
  *
  * @remark @p r and @p n can point to the same address.
  */
-void ocrypto_curve25519_scalarmult(
-    uint8_t r[ocrypto_curve25519_BYTES],
-    const uint8_t n[ocrypto_curve25519_SCALAR_BYTES],
-    const uint8_t p[ocrypto_curve25519_BYTES]);
+void ocrypto_curve25519_scalarmult(uint8_t r[ocrypto_curve25519_BYTES],
+                                   const uint8_t n[ocrypto_curve25519_SCALAR_BYTES],
+                                   const uint8_t p[ocrypto_curve25519_BYTES]);
 
 #ifdef __cplusplus
 }

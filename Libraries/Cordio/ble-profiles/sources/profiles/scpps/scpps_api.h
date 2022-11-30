@@ -67,10 +67,10 @@ void ScppsRegisterCback(ScppsAppCback_t *cback);
  *  \return Status
  */
 /*************************************************************************************************/
-uint8_t ScppsAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                            uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
+uint8_t ScppsAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                            uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
 
-/*! \} */    /* SCAN_PARAMETER_PROFILE */
+/*! \} */ /* SCAN_PARAMETER_PROFILE */
 
 #ifdef __cplusplus
 };

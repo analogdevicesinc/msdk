@@ -33,21 +33,20 @@
 #define LWIP_LWIPCFG_H
 
 /** Default DHCP Configuration: (In Order to Enable, Set Definition to 1) **/
-#define USE_DHCP    					0
+#define USE_DHCP 0
 
 /** Default Static IP Address Configuration: (Configured by User) **/
-#define LWIP_PORT_INIT_IPADDR(addr)   	IP4_ADDR((addr), 192,168,100,200)
-#define LWIP_PORT_INIT_GW(addr)       	IP4_ADDR((addr), 192,168,100,1)
-#define LWIP_PORT_INIT_NETMASK(addr)  	IP4_ADDR((addr), 255,255,255,0)
+#define LWIP_PORT_INIT_IPADDR(addr) IP4_ADDR((addr), 192, 168, 100, 200)
+#define LWIP_PORT_INIT_GW(addr) IP4_ADDR((addr), 192, 168, 100, 1)
+#define LWIP_PORT_INIT_NETMASK(addr) IP4_ADDR((addr), 255, 255, 255, 0)
 
 /** Default Ethernet MAC Address Values: (Configured by User) **/
-#define MAC_BYTE1			0x00
-#define MAC_BYTE2			0x18
-#define MAC_BYTE3			0x80
-#define MAC_BYTE4			0x03
-#define MAC_BYTE5			0x25
-#define MAC_BYTE6			0x70
-#define MAC_LEN				6
+#define MAC_BYTE1 0x00
+#define MAC_BYTE2 0x18
+#define MAC_BYTE3 0x80
+#define MAC_BYTE4 0x03
+#define MAC_BYTE5 0x25
+#define MAC_BYTE6 0x70
+#define MAC_LEN 6
 
 #endif /* LWIP_LWIPCFG_H */
-

@@ -52,31 +52,25 @@ extern "C" {
 
 /**@brief Structure holding the secp256r1 public key represented by X,Y coordinates.
 */
-typedef struct
-{
+typedef struct {
     uint8_t x[32]; //!< Public key X coordinate in big-endian format.
     uint8_t y[32]; //!< Public key Y coordinate in big-endian format.
 } nrf_cc310_bl_ecc_public_key_secp256r1_t;
 
-
 /**@brief Structure holding the secp256r1 signature represented by R,S values.
 */
-typedef struct
-{
+typedef struct {
     uint8_t r[32]; //!< Signature R part in big-endian format.
     uint8_t s[32]; //!< Signature S part in big-endian format.
 } nrf_cc310_bl_ecc_signature_secp256r1_t;
 
-
 /**@brief Structure holding memory required for allocation of CC310 ECDSA verify context
  *        using curve secp256r1.
  */
-typedef struct
-{
-    uint32_t    init_val;
-    uint8_t     context_buffer[NRF_CC310_BL_ECDSA_VERIFY_CONTEXT_SIZE_SECP256R1];
-}  nrf_cc310_bl_ecdsa_verify_context_secp256r1_t;
-
+typedef struct {
+    uint32_t init_val;
+    uint8_t context_buffer[NRF_CC310_BL_ECDSA_VERIFY_CONTEXT_SIZE_SECP256R1];
+} nrf_cc310_bl_ecdsa_verify_context_secp256r1_t;
 
 /**@brief Function for initializing the context information for an ECDSA verify operation.
  *
@@ -91,9 +85,8 @@ typedef struct
  * @retval CRYS_ECDSA_VERIFY_SIGNER_PUBL_KEY_VALIDATION_TAG_ERROR  p_public_key was NULL.
  */
 CRYSError_t nrf_cc310_bl_ecdsa_verify_init_secp256r1(
-    nrf_cc310_bl_ecdsa_verify_context_secp256r1_t  * const p_context,
-    nrf_cc310_bl_ecc_public_key_secp256r1_t  const * const p_public_key);
-
+    nrf_cc310_bl_ecdsa_verify_context_secp256r1_t *const p_context,
+    nrf_cc310_bl_ecc_public_key_secp256r1_t const *const p_public_key);
 
 /**@brief Function for executing an ECDSA verify operation using secp256r1 with hash input.
  *
@@ -116,10 +109,9 @@ CRYSError_t nrf_cc310_bl_ecdsa_verify_init_secp256r1(
  * @retval CRYS_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR          Signature verification failed.
  */
 CRYSError_t nrf_cc310_bl_ecdsa_verify_hash_secp256r1(
-    nrf_cc310_bl_ecdsa_verify_context_secp256r1_t * const p_context,
-    nrf_cc310_bl_ecc_signature_secp256r1_t  const * const p_signature,
-    uint8_t                                 const * const p_hash,
-    uint32_t                                              hash_len);
+    nrf_cc310_bl_ecdsa_verify_context_secp256r1_t *const p_context,
+    nrf_cc310_bl_ecc_signature_secp256r1_t const *const p_signature, uint8_t const *const p_hash,
+    uint32_t hash_len);
 
 /**@brief Function for executing an ECDSA verify operation using secp256r1 with
  *                                  hash input in integrated form.
@@ -146,11 +138,10 @@ CRYSError_t nrf_cc310_bl_ecdsa_verify_hash_secp256r1(
  * @retval CRYS_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR          Signature verification failed.
  */
 CRYSError_t nrf_cc310_bl_ecdsa_verify_secp256r1(
-    nrf_cc310_bl_ecdsa_verify_context_secp256r1_t   * const p_context,
-    nrf_cc310_bl_ecc_public_key_secp256r1_t   const * const p_public_key,
-    nrf_cc310_bl_ecc_signature_secp256r1_t    const * const p_signature,
-    uint8_t                                   const * const p_hash,
-    uint32_t                                                hash_len);
+    nrf_cc310_bl_ecdsa_verify_context_secp256r1_t *const p_context,
+    nrf_cc310_bl_ecc_public_key_secp256r1_t const *const p_public_key,
+    nrf_cc310_bl_ecc_signature_secp256r1_t const *const p_signature, uint8_t const *const p_hash,
+    uint32_t hash_len);
 
 #ifdef __cplusplus
 }

@@ -34,6 +34,6 @@
 /*************************************************************************************************/
 void LlPowerControlInit(void)
 {
-  LhciPowerControlInit();
-  LctrPowerControlInit();
+    LhciPowerControlInit();
+    LctrPowerControlInit();
 }

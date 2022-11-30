@@ -66,7 +66,7 @@ extern "C" {
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_SW_HASH_SHA256)
 
 // Flag that nrf_crypto_hash frontend can be compiled
-#undef  NRF_CRYPTO_HASH_ENABLED
+#undef NRF_CRYPTO_HASH_ENABLED
 #define NRF_CRYPTO_HASH_ENABLED 1
 
 // Duplicate backend enabled test for SHA-256
@@ -79,14 +79,11 @@ extern "C" {
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_SW_HASH_SHA256)
 
-
 /**@brief nrf_crypto_hash context for SHA-256 in nrf_crypto nrf_sw backend. */
-typedef struct
-{
-    nrf_crypto_hash_internal_context_t  header;     /**< Common header for context. */
-    sha256_context_t                    context;    /**< Hash context internal to nrf_sw. */
+typedef struct {
+    nrf_crypto_hash_internal_context_t header; /**< Common header for context. */
+    sha256_context_t context; /**< Hash context internal to nrf_sw. */
 } nrf_crypto_backend_hash_sha256_context_t;
-
 
 #ifdef __cplusplus
 }

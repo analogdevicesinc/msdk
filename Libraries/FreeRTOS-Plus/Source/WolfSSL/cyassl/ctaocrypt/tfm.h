@@ -19,23 +19,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 /*
  * Based on public domain TomsFastMath 0.10 by Tom St Denis, tomstdenis@iahu.ca,
  * http://math.libtomcrypt.com
  */
-
 
 /**
  *  Edited by Moisés Guimarães (moises.guimaraes@phoebus.com.br)
  *  to fit CyaSSL's needs.
  */
 
-
 #ifndef CTAO_CRYPT_TFM_H
 #define CTAO_CRYPT_TFM_H
 
 #include <wolfssl/wolfcrypt/tfm.h>
 
-#endif  /* CTAO_CRYPT_TFM_H */
-
+#endif /* CTAO_CRYPT_TFM_H */

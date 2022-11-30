@@ -33,8 +33,7 @@
 #include "wsf_timer.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -42,78 +41,70 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Model Time Server Status parameters structure */
-typedef struct mmdlTimeStatusParam_tag
-{
-  uint64_t     taiSeconds;         /*!< Current TAI time in seconds */
-  uint8_t      subSecond;          /*!< Sub-second time */
-  uint8_t      uncertainty;        /*!< Time Authority */
-  uint8_t      timeAuthority;      /*!< TAI-UTC Delta */
-  int16_t      taiUtcDelta;        /*!< Current difference between TAI and UTC in seconds */
-  int8_t       timeZoneOffset;     /*!< Local Time Zone Offset in 15-minutes increments */
+typedef struct mmdlTimeStatusParam_tag {
+    uint64_t taiSeconds; /*!< Current TAI time in seconds */
+    uint8_t subSecond; /*!< Sub-second time */
+    uint8_t uncertainty; /*!< Time Authority */
+    uint8_t timeAuthority; /*!< TAI-UTC Delta */
+    int16_t taiUtcDelta; /*!< Current difference between TAI and UTC in seconds */
+    int8_t timeZoneOffset; /*!< Local Time Zone Offset in 15-minutes increments */
 } mmdlTimeStatusParam_t;
 
 /*! \brief Model Time Zone Server Status parameters structure */
-typedef struct mmdlTimeZoneStatusParam_tag
-{
-  uint8_t      currentOffset;      /*!< Time Zone Offset Current */
-  uint8_t      newOffset;          /*!< Time Zone Offset New */
-  uint64_t     taiOfZoneChange;    /*!< TAI Seconds time of upcoming offset change */
+typedef struct mmdlTimeZoneStatusParam_tag {
+    uint8_t currentOffset; /*!< Time Zone Offset Current */
+    uint8_t newOffset; /*!< Time Zone Offset New */
+    uint64_t taiOfZoneChange; /*!< TAI Seconds time of upcoming offset change */
 } mmdlTimeZoneStatusParam_t;
 
 /*! \brief Model Time Role Server Status parameters structure */
-typedef struct mmdlTimeRoleStatusParam_tag
-{
-  uint8_t      timeRole;           /*!< Time Role */
+typedef struct mmdlTimeRoleStatusParam_tag {
+    uint8_t timeRole; /*!< Time Role */
 } mmdlTimeRoleStatusParam_t;
 
 /*! \brief Union of Time states */
-typedef union
-{
-  mmdlTimeState_t        timeState;          /*!< Time state */
-  mmdlTimeZoneState_t    timeZoneState;      /*!< Time Zone state */
-  mmdlTimeDeltaState_t   timeDeltaState;     /*!< Time Delta state */
-  mmdlTimeRoleState_t    timeRoleState;      /*!< Time Role state */
+typedef union {
+    mmdlTimeState_t timeState; /*!< Time state */
+    mmdlTimeZoneState_t timeZoneState; /*!< Time Zone state */
+    mmdlTimeDeltaState_t timeDeltaState; /*!< Time Delta state */
+    mmdlTimeRoleState_t timeRoleState; /*!< Time Role state */
 } mmdlTimeStates_t;
 
 /*! \brief Time Server Model State Update event structure */
-typedef struct mmdlTimeSrStateUpdate_tag
-{
-  wsfMsgHdr_t              hdr;                /*!< WSF message header */
-  meshElementId_t          elemId;             /*!< Element identifier */
-  mmdlStateUpdateSrc_t     stateUpdateSource;  /*!< Updated state source */
-  mmdlTimeStates_t         state;              /*!< Update time state union */
+typedef struct mmdlTimeSrStateUpdate_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlStateUpdateSrc_t stateUpdateSource; /*!< Updated state source */
+    mmdlTimeStates_t state; /*!< Update time state union */
 } mmdlTimeSrStateUpdate_t;
 
 /*! \brief Time Server Model Current State event structure */
-typedef struct mmdlTimeSrCurrentState_tag
-{
-  wsfMsgHdr_t              hdr;                /*!< WSF message header */
-  meshElementId_t          elemId;             /*!< Element identifier */
-  mmdlTimeStates_t         state;              /*!< Update time state union */
+typedef struct mmdlTimeSrCurrentState_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlTimeStates_t state; /*!< Update time state union */
 } mmdlTimeSrCurrentState_t;
 
 /*! \brief Time Server Model event callback parameters structure */
-typedef union mmdlGenTimeSrEvent_tag
-{
-  wsfMsgHdr_t              hdr;               /*!< WSF message header */
+typedef union mmdlGenTimeSrEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
 
-  mmdlTimeSrStateUpdate_t  statusEvent;       /*!< State updated event. Used for
+    mmdlTimeSrStateUpdate_t statusEvent; /*!< State updated event. Used for
                                                *   ::MMDL_TIME_SR_STATE_UPDATE_EVENT.
                                                */
-  mmdlTimeSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
+    mmdlTimeSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
                                                *   from the upper layer. Used for
                                                *   ::MMDL_TIME_SR_CURRENT_STATE_EVENT.
                                                */
 } mmdlTimeSrEvent_t;
 
 /*! \brief Model Time Server descriptor definition */
-typedef struct mmdlTimeSrDesc_tag
-{
-  mmdlTimeState_t          storedTimeState;       /*!< Field that stores the Time state */
-  mmdlTimeZoneState_t      storedTimeZoneState;   /*!< Field that stores the Time Zone state */
-  mmdlTimeDeltaState_t     storedTimeDeltaState;  /*!< Field that stores the Time Delta state */
-  mmdlTimeRoleState_t      storedTimeRoleState;   /*!< Field that stores the Time Zone state */
-  mmdlTimeRoleState_t      initialState;          /*!< Initial state within a transaction. */
+typedef struct mmdlTimeSrDesc_tag {
+    mmdlTimeState_t storedTimeState; /*!< Field that stores the Time state */
+    mmdlTimeZoneState_t storedTimeZoneState; /*!< Field that stores the Time Zone state */
+    mmdlTimeDeltaState_t storedTimeDeltaState; /*!< Field that stores the Time Delta state */
+    mmdlTimeRoleState_t storedTimeRoleState; /*!< Field that stores the Time Zone state */
+    mmdlTimeRoleState_t initialState; /*!< Initial state within a transaction. */
 } mmdlTimeSrDesc_t;
 
 /**************************************************************************************************

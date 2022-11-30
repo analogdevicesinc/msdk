@@ -32,12 +32,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 #ifndef _SSI_PAL_PERF_PLAT_H__
 #define _SSI_PAL_PERF_PLAT_H__
-
-
-
 
 typedef unsigned int SaSi_PalPerfData_t;
 
@@ -50,6 +46,5 @@ typedef unsigned int SaSi_PalPerfData_t;
  * @return None
  */
 void SaSi_PalDsmWorkarround(void);
-
 
 #endif /*_SSI_PAL_PERF_PLAT_H__*/

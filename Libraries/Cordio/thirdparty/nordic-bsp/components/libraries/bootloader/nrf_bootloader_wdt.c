@@ -46,28 +46,22 @@
 #include "nrf_log.h"
 NRF_LOG_MODULE_REGISTER();
 
-
 static void wdt_feed(void)
 {
-    if (nrf_wdt_started())
-    {
-        for (nrf_wdt_rr_register_t i = NRF_WDT_RR0; i < NRF_WDT_RR7; i++)
-        {
-            if (nrf_wdt_reload_request_is_enabled(i))
-            {
+    if (nrf_wdt_started()) {
+        for (nrf_wdt_rr_register_t i = NRF_WDT_RR0; i < NRF_WDT_RR7; i++) {
+            if (nrf_wdt_reload_request_is_enabled(i)) {
                 nrf_wdt_reload_request_set(i);
             }
         }
     }
 }
 
-
 static void wdt_feed_timer_handler(void)
 {
     NRF_LOG_INFO("Internal feed");
     wdt_feed();
 }
-
 
 void WDT_IRQHandler(void)
 {
@@ -81,20 +75,18 @@ void nrf_bootloader_wdt_init(void)
 {
     static bool initialized = false;
 
-    if (initialized)
-    {
+    if (initialized) {
         return;
     }
 
-    if (nrf_wdt_started())
-    {
+    if (nrf_wdt_started()) {
         uint32_t wdt_ticks = nrf_wdt_reload_value_get();
 
         NRF_LOG_INFO("WDT enabled CRV:%d ticks", wdt_ticks);
 
         //wdt_ticks must be reduced to feed the watchdog before the timeout.
-        uint32_t reduced_timeout_ticks = MAX((int32_t)wdt_ticks - MAX_FLASH_OP_TIME_TICKS,
-                                             NRF_BOOTLOADER_MIN_TIMEOUT_TICKS);
+        uint32_t reduced_timeout_ticks =
+            MAX((int32_t)wdt_ticks - MAX_FLASH_OP_TIME_TICKS, NRF_BOOTLOADER_MIN_TIMEOUT_TICKS);
 
         /* initial watchdog feed */
         wdt_feed();
@@ -103,9 +95,7 @@ void nrf_bootloader_wdt_init(void)
         nrf_bootloader_wdt_feed_timer_start(reduced_timeout_ticks, wdt_feed_timer_handler);
 
         NVIC_EnableIRQ(WDT_IRQn);
-    }
-    else
-    {
+    } else {
         NRF_LOG_INFO("WDT is not enabled");
     }
 
@@ -114,8 +104,7 @@ void nrf_bootloader_wdt_init(void)
 
 void nrf_bootloader_wdt_feed(void)
 {
-    if (nrf_wdt_started())
-    {
+    if (nrf_wdt_started()) {
         wdt_feed();
     }
 }

@@ -45,22 +45,21 @@
 /*************************************************************************************************/
 void DmSecPairRsp(dmConnId_t connId, uint8_t oob, uint8_t auth, uint8_t iKeyDist, uint8_t rKeyDist)
 {
-  smpDmPair_t  *pMsg;
+    smpDmPair_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(smpDmPair_t))) != NULL)
-  {
-    pMsg->hdr.event = SMP_MSG_API_PAIR_RSP;
-    pMsg->hdr.param = connId;
-    pMsg->oob = oob;
-    pMsg->auth = auth;
+    if ((pMsg = WsfMsgAlloc(sizeof(smpDmPair_t))) != NULL) {
+        pMsg->hdr.event = SMP_MSG_API_PAIR_RSP;
+        pMsg->hdr.param = connId;
+        pMsg->oob = oob;
+        pMsg->auth = auth;
 
-    /* clear any erroneous key dist bits set by app */
-    pMsg->iKeyDist = iKeyDist & SMP_KEY_DIST_MASK;
-    pMsg->rKeyDist = rKeyDist & SMP_KEY_DIST_MASK;
+        /* clear any erroneous key dist bits set by app */
+        pMsg->iKeyDist = iKeyDist & SMP_KEY_DIST_MASK;
+        pMsg->rKeyDist = rKeyDist & SMP_KEY_DIST_MASK;
 
-    /* note we're sending this to SMP */
-    SmpDmMsgSend((smpDmMsg_t *) pMsg);
-  }
+        /* note we're sending this to SMP */
+        SmpDmMsgSend((smpDmMsg_t *)pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -76,17 +75,16 @@ void DmSecPairRsp(dmConnId_t connId, uint8_t oob, uint8_t auth, uint8_t iKeyDist
 /*************************************************************************************************/
 void DmSecSlaveReq(dmConnId_t connId, uint8_t auth)
 {
-  smpDmSecurityReq_t  *pMsg;
+    smpDmSecurityReq_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(smpDmSecurityReq_t))) != NULL)
-  {
-    pMsg->hdr.event = SMP_MSG_API_SECURITY_REQ;
-    pMsg->hdr.param = connId;
-    pMsg->auth = auth;
+    if ((pMsg = WsfMsgAlloc(sizeof(smpDmSecurityReq_t))) != NULL) {
+        pMsg->hdr.event = SMP_MSG_API_SECURITY_REQ;
+        pMsg->hdr.param = connId;
+        pMsg->auth = auth;
 
-    /* note we're sending this to SMP */
-    SmpDmMsgSend((smpDmMsg_t *) pMsg);
-  }
+        /* note we're sending this to SMP */
+        SmpDmMsgSend((smpDmMsg_t *)pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -104,19 +102,17 @@ void DmSecSlaveReq(dmConnId_t connId, uint8_t auth)
 /*************************************************************************************************/
 void DmSecLtkRsp(dmConnId_t connId, bool_t keyFound, uint8_t secLevel, uint8_t *pKey)
 {
-  dmSecApiLtkRsp_t  *pMsg;
+    dmSecApiLtkRsp_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(dmSecApiLtkRsp_t))) != NULL)
-  {
-    pMsg->hdr.event = DM_SEC_MSG_API_LTK_RSP;
-    pMsg->hdr.param = connId;
-    pMsg->keyFound = keyFound;
-    pMsg->secLevel = secLevel;
-    if (keyFound)
-    {
-      Calc128Cpy(pMsg->key, pKey);
+    if ((pMsg = WsfMsgAlloc(sizeof(dmSecApiLtkRsp_t))) != NULL) {
+        pMsg->hdr.event = DM_SEC_MSG_API_LTK_RSP;
+        pMsg->hdr.param = connId;
+        pMsg->keyFound = keyFound;
+        pMsg->secLevel = secLevel;
+        if (keyFound) {
+            Calc128Cpy(pMsg->key, pKey);
+        }
+
+        WsfMsgSend(dmCb.handlerId, pMsg);
     }
-
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
 }

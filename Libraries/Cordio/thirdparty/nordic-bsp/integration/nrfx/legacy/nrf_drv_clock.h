@@ -57,12 +57,11 @@ extern "C" {
 /**
  * @brief Clock events.
  */
-typedef enum
-{
+typedef enum {
     NRF_DRV_CLOCK_EVT_HFCLK_STARTED, ///< HFCLK has been started.
     NRF_DRV_CLOCK_EVT_LFCLK_STARTED, ///< LFCLK has been started.
-    NRF_DRV_CLOCK_EVT_CAL_DONE,      ///< Calibration is done.
-    NRF_DRV_CLOCK_EVT_CAL_ABORTED,   ///< Calibration has been aborted.
+    NRF_DRV_CLOCK_EVT_CAL_DONE, ///< Calibration is done.
+    NRF_DRV_CLOCK_EVT_CAL_ABORTED, ///< Calibration has been aborted.
 } nrf_drv_clock_evt_type_t;
 
 /**
@@ -75,10 +74,10 @@ typedef void (*nrf_drv_clock_event_handler_t)(nrf_drv_clock_evt_type_t event);
 // Forward declaration of the nrf_drv_clock_handler_item_t type.
 typedef struct nrf_drv_clock_handler_item_s nrf_drv_clock_handler_item_t;
 
-struct nrf_drv_clock_handler_item_s
-{
-    nrf_drv_clock_handler_item_t * p_next;        ///< A pointer to the next handler that should be called when the clock is started.
-    nrf_drv_clock_event_handler_t  event_handler; ///< Function to be called when the clock is started.
+struct nrf_drv_clock_handler_item_s {
+    nrf_drv_clock_handler_item_t
+        *p_next; ///< A pointer to the next handler that should be called when the clock is started.
+    nrf_drv_clock_event_handler_t event_handler; ///< Function to be called when the clock is started.
 };
 
 /**
@@ -126,7 +125,7 @@ void nrf_drv_clock_uninit(void);
  *
  * @param[in] p_handler_item A pointer to the event handler structure.
  */
-void nrf_drv_clock_lfclk_request(nrf_drv_clock_handler_item_t * p_handler_item);
+void nrf_drv_clock_lfclk_request(nrf_drv_clock_handler_item_t *p_handler_item);
 
 /**
  * @brief Function for releasing the LFCLK.
@@ -164,7 +163,7 @@ bool nrf_drv_clock_lfclk_is_running(void);
  *
  * @param[in] p_handler_item A pointer to the event handler structure.
  */
-void nrf_drv_clock_hfclk_request(nrf_drv_clock_handler_item_t * p_handler_item);
+void nrf_drv_clock_hfclk_request(nrf_drv_clock_handler_item_t *p_handler_item);
 
 /**
  * @brief Function for releasing the high-accuracy source HFCLK.
@@ -228,7 +227,7 @@ ret_code_t nrf_drv_clock_calibration_abort(void);
  * @retval NRF_SUCCESS         If the procedure was successful.
  * @retval NRF_ERROR_FORBIDDEN If a SoftDevice is present or the selected LFCLK source is not an RC oscillator.
  */
-ret_code_t nrf_drv_clock_is_calibrating(bool * p_is_calibrating);
+ret_code_t nrf_drv_clock_is_calibrating(bool *p_is_calibrating);
 
 /**@brief Function for returning a requested task address for the clock driver module.
  *
@@ -245,7 +244,6 @@ __STATIC_INLINE uint32_t nrf_drv_clock_ppi_task_addr(nrf_clock_task_t task);
  * @return Event address.
  */
 __STATIC_INLINE uint32_t nrf_drv_clock_ppi_event_addr(nrf_clock_event_t event);
-
 
 #ifdef SOFTDEVICE_PRESENT
 /**

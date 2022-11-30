@@ -56,15 +56,14 @@ extern "C" {
  */
 
 /** @brief Structure for TEMP configuration. */
-typedef struct
-{
-    uint8_t interrupt_priority;    /**< Interrupt priority. */
+typedef struct {
+    uint8_t interrupt_priority; /**< Interrupt priority. */
 } nrfx_temp_config_t;
 
 /** @brief TEMP default configuration. */
-#define NRFX_TEMP_DEFAULT_CONFIG                                        \
-    {                                                                   \
-        .interrupt_priority = NRFX_TEMP_DEFAULT_CONFIG_IRQ_PRIORITY,    \
+#define NRFX_TEMP_DEFAULT_CONFIG                                     \
+    {                                                                \
+        .interrupt_priority = NRFX_TEMP_DEFAULT_CONFIG_IRQ_PRIORITY, \
     }
 
 /**
@@ -74,7 +73,7 @@ typedef struct
  *                     representation. This value can be converted to Celsius
  *                     scale using the @ref nrfx_temp_calculate() function.
  */
-typedef void (* nrfx_temp_data_handler_t)(int32_t raw_temperature);
+typedef void (*nrfx_temp_data_handler_t)(int32_t raw_temperature);
 
 /**
  * @brief Function for initializing the TEMP driver.
@@ -86,7 +85,7 @@ typedef void (* nrfx_temp_data_handler_t)(int32_t raw_temperature);
  * @retval NRFX_SUCCESS                    Driver was successfully initialized.
  * @retval NRFX_ERROR_ALREADY_INITIALIZED  Driver was already initialized.
  */
-nrfx_err_t nrfx_temp_init(nrfx_temp_config_t const * p_config, nrfx_temp_data_handler_t handler);
+nrfx_err_t nrfx_temp_init(nrfx_temp_config_t const *p_config, nrfx_temp_data_handler_t handler);
 
 /** @brief Function for uninitializing the TEMP driver. */
 void nrfx_temp_uninit(void);

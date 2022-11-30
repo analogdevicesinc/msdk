@@ -35,6 +35,6 @@
 /*************************************************************************************************/
 void LlPrivInit(void)
 {
-  LmgrPrivInit();
-  LctrPrivInit();
+    LmgrPrivInit();
+    LctrPrivInit();
 }

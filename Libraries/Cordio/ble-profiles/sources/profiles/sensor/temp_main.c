@@ -38,10 +38,9 @@
 **************************************************************************************************/
 
 /*! Control block. */
-static struct
-{
-  wsfTimer_t  measTimer;
-  bool_t      measTimerStarted;
+static struct {
+    wsfTimer_t measTimer;
+    bool_t measTimerStarted;
 } tempCb;
 
 /*************************************************************************************************/
@@ -53,48 +52,40 @@ static struct
 /*************************************************************************************************/
 static void tempUpdateTimer(void)
 {
-  uint8_t  config;
-  uint8_t *pConfig = NULL;
-  uint8_t  period;
-  uint8_t *pPeriod = NULL;
-  uint16_t attLen = 0;
+    uint8_t config;
+    uint8_t *pConfig = NULL;
+    uint8_t period;
+    uint8_t *pPeriod = NULL;
+    uint16_t attLen = 0;
 
-  /* Get config & period. */
-  AttsGetAttr(TEMP_HANDLE_CONFIG, &attLen, &pConfig);
-  if (pConfig == NULL)
-  {
-    WSF_TRACE_ERR0("temp: unable to read config");
-    return;
-  }
-  config = *pConfig;
-  AttsGetAttr(TEMP_HANDLE_PERIOD, &attLen, &pPeriod);
-  if (pPeriod == NULL)
-  {
-    WSF_TRACE_ERR0("temp: unable to read period");
-    return;
-  }
-  period = *pPeriod;
-  if (period < TEMP_ATT_PERIOD_MIN)
-  {
-    period = TEMP_ATT_PERIOD_MIN;
-  }
+    /* Get config & period. */
+    AttsGetAttr(TEMP_HANDLE_CONFIG, &attLen, &pConfig);
+    if (pConfig == NULL) {
+        WSF_TRACE_ERR0("temp: unable to read config");
+        return;
+    }
+    config = *pConfig;
+    AttsGetAttr(TEMP_HANDLE_PERIOD, &attLen, &pPeriod);
+    if (pPeriod == NULL) {
+        WSF_TRACE_ERR0("temp: unable to read period");
+        return;
+    }
+    period = *pPeriod;
+    if (period < TEMP_ATT_PERIOD_MIN) {
+        period = TEMP_ATT_PERIOD_MIN;
+    }
 
-  if (config == TEMP_ATT_CONFIG_ENABLE)
-  {
-    if (!tempCb.measTimerStarted)
-    {
-      tempCb.measTimerStarted = TRUE;
-      WsfTimerStartMs(&tempCb.measTimer, period * 10u);
+    if (config == TEMP_ATT_CONFIG_ENABLE) {
+        if (!tempCb.measTimerStarted) {
+            tempCb.measTimerStarted = TRUE;
+            WsfTimerStartMs(&tempCb.measTimer, period * 10u);
+        }
+    } else {
+        if (tempCb.measTimerStarted) {
+            tempCb.measTimerStarted = FALSE;
+            WsfTimerStop(&tempCb.measTimer);
+        }
     }
-  }
-  else
-  {
-    if (tempCb.measTimerStarted)
-    {
-      tempCb.measTimerStarted = FALSE;
-      WsfTimerStop(&tempCb.measTimer);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -105,51 +96,43 @@ static void tempUpdateTimer(void)
  */
 /*************************************************************************************************/
 static uint8_t tempWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                              uint16_t offset, uint16_t len, uint8_t *pValue,
-                              attsAttr_t *pAttr)
+                              uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-  switch (handle)
-  {
-    case TEMP_HANDLE_CONFIG:
-    {
-      uint8_t config;
+    switch (handle) {
+    case TEMP_HANDLE_CONFIG: {
+        uint8_t config;
 
-      /* Check attribute value. */
-      if (len != 1)
-      {
-        return ATT_ERR_LENGTH;
-      }
-      config = *pValue;
-      if ((config != TEMP_ATT_CONFIG_DISABLE) && (config != TEMP_ATT_CONFIG_ENABLE))
-      {
-        return ATT_ERR_RANGE;
-      }
+        /* Check attribute value. */
+        if (len != 1) {
+            return ATT_ERR_LENGTH;
+        }
+        config = *pValue;
+        if ((config != TEMP_ATT_CONFIG_DISABLE) && (config != TEMP_ATT_CONFIG_ENABLE)) {
+            return ATT_ERR_RANGE;
+        }
 
-      /* Save value. */
-      AttsSetAttr(TEMP_HANDLE_CONFIG, len, pValue);
+        /* Save value. */
+        AttsSetAttr(TEMP_HANDLE_CONFIG, len, pValue);
 
-      /* Enable or disable timer. */
-      tempUpdateTimer();
-      return ATT_SUCCESS;
+        /* Enable or disable timer. */
+        tempUpdateTimer();
+        return ATT_SUCCESS;
     }
-    case TEMP_HANDLE_PERIOD:
-    {
-      uint8_t period;
+    case TEMP_HANDLE_PERIOD: {
+        uint8_t period;
 
-      if (len != 1)
-      {
-        return ATT_ERR_LENGTH;
-      }
-      period = *pValue;
-      if ((period < TEMP_ATT_PERIOD_MIN) || (period > TEMP_ATT_PERIOD_MAX))
-      {
-        return ATT_ERR_RANGE;
-      }
-      AttsSetAttr(TEMP_HANDLE_PERIOD, len, pValue);
-      return ATT_SUCCESS;
+        if (len != 1) {
+            return ATT_ERR_LENGTH;
+        }
+        period = *pValue;
+        if ((period < TEMP_ATT_PERIOD_MIN) || (period > TEMP_ATT_PERIOD_MAX)) {
+            return ATT_ERR_RANGE;
+        }
+        AttsSetAttr(TEMP_HANDLE_PERIOD, len, pValue);
+        return ATT_SUCCESS;
     }
-  }
-  return ATT_ERR_NOT_SUP;
+    }
+    return ATT_ERR_NOT_SUP;
 }
 
 /*************************************************************************************************/
@@ -164,12 +147,12 @@ static uint8_t tempWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operat
 /*************************************************************************************************/
 void TempStart(wsfHandlerId_t handlerId, uint8_t timerEvt)
 {
-  SvcTempAddGroup();
-  SvcTempCbackRegister(tempWriteCback);
+    SvcTempAddGroup();
+    SvcTempCbackRegister(tempWriteCback);
 
-  tempCb.measTimer.handlerId = handlerId;
-  tempCb.measTimer.msg.event = timerEvt;
-  tempCb.measTimerStarted    = FALSE;
+    tempCb.measTimer.handlerId = handlerId;
+    tempCb.measTimer.msg.event = timerEvt;
+    tempCb.measTimerStarted = FALSE;
 }
 
 /*************************************************************************************************/
@@ -181,8 +164,8 @@ void TempStart(wsfHandlerId_t handlerId, uint8_t timerEvt)
 /*************************************************************************************************/
 void TempStop(void)
 {
-  TempMeasStop();
-  SvcTempRemoveGroup();
+    TempMeasStop();
+    SvcTempRemoveGroup();
 }
 
 /*************************************************************************************************/
@@ -194,8 +177,8 @@ void TempStop(void)
 /*************************************************************************************************/
 void TempMeasStop(void)
 {
-  tempCb.measTimerStarted = FALSE;
-  WsfTimerStop(&tempCb.measTimer);
+    tempCb.measTimerStarted = FALSE;
+    WsfTimerStop(&tempCb.measTimer);
 }
 
 /*************************************************************************************************/
@@ -207,7 +190,7 @@ void TempMeasStop(void)
 /*************************************************************************************************/
 void TempMeasStart(void)
 {
-  tempUpdateTimer();
+    tempUpdateTimer();
 }
 
 /*************************************************************************************************/
@@ -222,11 +205,11 @@ void TempMeasStart(void)
 /*************************************************************************************************/
 void TempMeasComplete(dmConnId_t connId, int16_t temp)
 {
-  tempCb.measTimerStarted = FALSE;
+    tempCb.measTimerStarted = FALSE;
 
-  uint8_t tempData[2] = {UINT16_TO_BYTES(temp)};
-  AttsSetAttr(TEMP_HANDLE_DATA, sizeof(tempData), tempData);
-  AttsHandleValueNtf(connId, TEMP_HANDLE_DATA, sizeof(tempData), tempData);
+    uint8_t tempData[2] = { UINT16_TO_BYTES(temp) };
+    AttsSetAttr(TEMP_HANDLE_DATA, sizeof(tempData), tempData);
+    AttsHandleValueNtf(connId, TEMP_HANDLE_DATA, sizeof(tempData), tempData);
 
-  tempUpdateTimer();
+    tempUpdateTimer();
 }

@@ -34,9 +34,7 @@
 #include <redfs.h>
 #include <redtestutils.h>
 
-
 static uint32_t nlz64(uint64_t ullValue);
-
 
 /** @brief Return a ratio value formatted as a floating point string accurate to
            the specified number of decimal places.
@@ -92,26 +90,20 @@ static uint32_t nlz64(uint64_t ullValue);
 
     @return @p pBuffer.
 */
-char *RedRatio(
-    char       *pBuffer,
-    uint32_t    ulBufferLen,
-    uint64_t    ullDividend,
-    uint64_t    ullDivisor,
-    uint32_t    ulDecPlaces)
+char *RedRatio(char *pBuffer, uint32_t ulBufferLen, uint64_t ullDividend, uint64_t ullDivisor,
+               uint32_t ulDecPlaces)
 {
     REDASSERT(pBuffer != NULL);
     REDASSERT(ulBufferLen > 0U);
-    REDASSERT(ulDecPlaces <= 9U);   /* arbitrary */
+    REDASSERT(ulDecPlaces <= 9U); /* arbitrary */
 
-    if((ullDivisor > 0U) && (ullDividend > 0U))
-    {
-        uint32_t    ii;
-        uint32_t    ulFactor = 1U;
-        uint64_t    ullDecimal;
-        uint64_t    ullTemp;
+    if ((ullDivisor > 0U) && (ullDividend > 0U)) {
+        uint32_t ii;
+        uint32_t ulFactor = 1U;
+        uint64_t ullDecimal;
+        uint64_t ullTemp;
 
-        for(ii = 1U; ii <= ulDecPlaces; ii++)
-        {
+        for (ii = 1U; ii <= ulDecPlaces; ii++) {
             ulFactor *= 10U;
         }
 
@@ -122,8 +114,7 @@ char *RedRatio(
         */
         REDASSERT(ullDecimal != UINT64_MAX);
 
-        if(ullDivisor <= ullDividend)
-        {
+        if (ullDivisor <= ullDividend) {
             uint32_t ulDecimal;
 
             (void)RedUint64DivMod32(ullDecimal, ulFactor, &ulDecimal);
@@ -132,27 +123,19 @@ char *RedRatio(
 
         ullTemp = RedUint64DivMod64(ullDividend, ullDivisor, NULL);
 
-        if(ulDecPlaces > 0U)
-        {
+        if (ulDecPlaces > 0U) {
             RedSNPrintf(pBuffer, ulBufferLen, "%llu.%0*llu", (unsigned long long)ullTemp,
-                (unsigned)ulDecPlaces, (unsigned long long)ullDecimal);
-        }
-        else
-        {
+                        (unsigned)ulDecPlaces, (unsigned long long)ullDecimal);
+        } else {
             RedSNPrintf(pBuffer, ulBufferLen, "%llu", (unsigned long long)ullTemp);
         }
-    }
-    else
-    {
+    } else {
         /*  If either the dividend or divisor is zero, then just output a "0.0"
             string with the prescribed number of decimal places.
         */
-        if(ulDecPlaces > 0U)
-        {
+        if (ulDecPlaces > 0U) {
             RedSNPrintf(pBuffer, ulBufferLen, "0.%0*u", (unsigned)ulDecPlaces, 0U);
-        }
-        else
-        {
+        } else {
             RedStrNCpy(pBuffer, "0", ulBufferLen);
         }
     }
@@ -163,7 +146,6 @@ char *RedRatio(
 
     return pBuffer;
 }
-
 
 /** @brief Multiply 64-bit and 32-bit numbers, and divide by a 64-bit number,
            returning a 64-bit result.
@@ -181,23 +163,18 @@ char *RedRatio(
             @p ullDivisor is).  Returns UINT64_MAX if an overflow condition
             occurred, or if @p ullDivisor is zero.
 */
-uint64_t RedMulDiv64(
-    uint64_t ullBase,
-    uint32_t ulMultiplier,
-    uint64_t ullDivisor)
+uint64_t RedMulDiv64(uint64_t ullBase, uint32_t ulMultiplier, uint64_t ullDivisor)
 {
     uint64_t ullTemp;
 
     /*  Result would always be zero if either of these are zero.  Specifically
         test this case before looking for a zero divisor.
     */
-    if((ullBase == 0U) || (ulMultiplier == 0U))
-    {
+    if ((ullBase == 0U) || (ulMultiplier == 0U)) {
         return 0U;
     }
 
-    if(ullDivisor == 0U)
-    {
+    if (ullDivisor == 0U) {
         return UINT64_MAX;
     }
 
@@ -223,8 +200,7 @@ uint64_t RedMulDiv64(
     */
 
     ullTemp = RedUint64DivMod32(UINT64_MAX, ulMultiplier, NULL);
-    while(ullBase > ullTemp)
-    {
+    while (ullBase > ullTemp) {
         uint64_t ullMod;
         uint64_t ullBaseTemp;
         uint64_t ullWideMultiplier;
@@ -235,10 +211,8 @@ uint64_t RedMulDiv64(
             evenly divisible by 2, we can scale the numbers so the result does
             not overflow the intermediate 64-bit value.
         */
-        if((ullDivisor & 1U) == 0U)
-        {
-            if((ullBase & 1U) == 0U)
-            {
+        if ((ullDivisor & 1U) == 0U) {
+            if ((ullBase & 1U) == 0U) {
                 /*  CODE-PATH #1a
                 */
                 ullDivisor >>= 1U;
@@ -246,8 +220,8 @@ uint64_t RedMulDiv64(
                 continue;
             }
 
-            if(((ulMultiplier & 1U) == 0U) && ((ullTemp & UINT64_SUFFIX(0x8000000000000000)) == 0U))
-            {
+            if (((ulMultiplier & 1U) == 0U) &&
+                ((ullTemp & UINT64_SUFFIX(0x8000000000000000)) == 0U)) {
                 /*  CODE-PATH #1b
                 */
                 ullDivisor >>= 1U;
@@ -268,17 +242,13 @@ uint64_t RedMulDiv64(
         /*  CODE-PATH #2
         */
         ullBaseTemp = RedUint64DivMod64(ullBase, ullDivisor, &ullMod);
-        if(ullMod == 0U)
-        {
+        if (ullMod == 0U) {
             /*  Evenly divides, so check that we won't overflow, and finish up.
             */
             ullBase = ullBaseTemp;
-            if(ullBase > ullTemp)
-            {
+            if (ullBase > ullTemp) {
                 return UINT64_MAX;
-            }
-            else
-            {
+            } else {
                 /*  We've validated that this will not overflow.
                 */
                 ullBase *= ulMultiplier;
@@ -289,20 +259,16 @@ uint64_t RedMulDiv64(
         /*  CODE-PATH #3
         */
         ullWideMultiplier = RedUint64DivMod64(ulMultiplier, ullDivisor, &ullMod);
-        if(ullMod == 0U)
-        {
+        if (ullMod == 0U) {
             /*  Evenly divides, so check that we won't overflow, and finish up.
             */
 
             /*  Must recalculate ullTemp relative to ullBase
             */
             ullTemp = RedUint64DivMod64(UINT64_MAX, ullBase, NULL);
-            if(ullWideMultiplier > ullTemp)
-            {
+            if (ullWideMultiplier > ullTemp) {
                 return UINT64_MAX;
-            }
-            else
-            {
+            } else {
                 uint32_t ulNarrowMultiplier = (uint32_t)ullWideMultiplier;
 
                 /*  We've validated that this will not overflow.
@@ -325,8 +291,7 @@ uint64_t RedMulDiv64(
         /*  If necessary reverse the ullBase and ulMultiplier operands so that
             ullBase contains the larger of the two values.
         */
-        if(ullBase < ulMultiplier)
-        {
+        if (ullBase < ulMultiplier) {
             uint32_t ulTemp = ulMultiplier;
 
             ulMultiplier = (uint32_t)ullBase;
@@ -335,12 +300,9 @@ uint64_t RedMulDiv64(
 
         ullBase = RedUint64DivMod64(ullBase, ullDivisor, NULL);
         ullTemp = RedUint64DivMod32(UINT64_MAX, ulMultiplier, NULL);
-        if(ullBase > ullTemp)
-        {
+        if (ullBase > ullTemp) {
             return UINT64_MAX;
-        }
-        else
-        {
+        } else {
             ullBase *= ulMultiplier;
             return ullBase;
         }
@@ -356,7 +318,6 @@ uint64_t RedMulDiv64(
 
     return ullBase;
 }
-
 
 /** @brief Divide a 64-bit value by a 32-bit value, returning the quotient and
            the remainder.
@@ -380,44 +341,36 @@ uint64_t RedMulDiv64(
 
     @return The quotient (result of the division).
 */
-uint64_t RedUint64DivMod32(
-    uint64_t    ullDividend,
-    uint32_t    ulDivisor,
-    uint32_t   *pulRemainder)
+uint64_t RedUint64DivMod32(uint64_t ullDividend, uint32_t ulDivisor, uint32_t *pulRemainder)
 {
-    uint64_t    ullQuotient;
-    uint32_t    ulResultRemainder;
+    uint64_t ullQuotient;
+    uint32_t ulResultRemainder;
 
     /*  Check for divide by zero.
     */
-    if(ulDivisor == 0U)
-    {
+    if (ulDivisor == 0U) {
         REDERROR();
 
         /*  Nonsense value if no asserts.
         */
         ullQuotient = UINT64_SUFFIX(0xFFFFFFFFFFFFFBAD);
         ulResultRemainder = 0xFFFFFBADU;
-    }
-    else if(ullDividend <= UINT32_MAX)
-    {
+    } else if (ullDividend <= UINT32_MAX) {
         uint32_t ulDividend = (uint32_t)ullDividend;
 
         ullQuotient = ulDividend / ulDivisor;
         ulResultRemainder = ulDividend % ulDivisor;
-    }
-    else
-    {
-        uint32_t    ulResultHi;
-        uint32_t    ulResultLo;
-        uint32_t    ulRemainder;
-        uint8_t     bIndex;
-        uint32_t    ulThisDivision;
-        uint32_t    ulMask;
-        uint8_t     ucNextValue;
-        uint32_t    ulInterimHi, ulInterimLo;
-        uint32_t    ulLowDword = (uint32_t)ullDividend;
-        uint32_t    ulHighDword = (uint32_t)(ullDividend >> 32U);
+    } else {
+        uint32_t ulResultHi;
+        uint32_t ulResultLo;
+        uint32_t ulRemainder;
+        uint8_t bIndex;
+        uint32_t ulThisDivision;
+        uint32_t ulMask;
+        uint8_t ucNextValue;
+        uint32_t ulInterimHi, ulInterimLo;
+        uint32_t ulLowDword = (uint32_t)ullDividend;
+        uint32_t ulHighDword = (uint32_t)(ullDividend >> 32U);
 
         /*  Compute the high part and get the remainder
         */
@@ -428,14 +381,13 @@ uint64_t RedUint64DivMod32(
         /*  Compute the low part
         */
         ulMask = 0xFF000000U;
-        for(bIndex = 0U; bIndex < sizeof(uint32_t); bIndex++)
-        {
-            ucNextValue = (uint8_t)((ulLowDword & ulMask) >> ((sizeof(uint32_t) - 1U - bIndex) * 8U));
+        for (bIndex = 0U; bIndex < sizeof(uint32_t); bIndex++) {
+            ucNextValue =
+                (uint8_t)((ulLowDword & ulMask) >> ((sizeof(uint32_t) - 1U - bIndex) * 8U));
             ulInterimHi = ulRemainder >> 24U;
             ulInterimLo = (ulRemainder << 8U) | ucNextValue;
             ulThisDivision = 0U;
-            while(ulInterimHi != 0U)
-            {
+            while (ulInterimHi != 0U) {
                 uint64_t ullInterim = ((uint64_t)ulInterimHi << 32U) + ulInterimLo;
 
                 ullInterim -= ulDivisor;
@@ -455,14 +407,12 @@ uint64_t RedUint64DivMod32(
         ulResultRemainder = (uint32_t)(ullDividend - (ullQuotient * ulDivisor));
     }
 
-    if(pulRemainder != NULL)
-    {
+    if (pulRemainder != NULL) {
         *pulRemainder = ulResultRemainder;
     }
 
     return ullQuotient;
 }
-
 
 /** @brief Divide a 64-bit value by a 64-bit value, returning the quotient and
            the remainder.
@@ -486,21 +436,18 @@ uint64_t RedUint64DivMod32(
 
     @return The quotient (result of the division).
 */
-uint64_t RedUint64DivMod64(
-    uint64_t    ullDividend,
-    uint64_t    ullDivisor,
-    uint64_t   *pullRemainder)
+uint64_t RedUint64DivMod64(uint64_t ullDividend, uint64_t ullDivisor, uint64_t *pullRemainder)
 {
     /*  The variables u0, u1, etc. take on only 32-bit values, but they are
         declared uint64_t to avoid some compiler warning messages and to avoid
         some unnecessary EXTRs that the compiler would put in, to convert
         uint64_ts to ints.
     */
-    uint64_t    u0;
-    uint64_t    u1;
-    uint64_t    q0;
-    uint64_t    q1;
-    uint64_t    ullQuotient;
+    uint64_t u0;
+    uint64_t u1;
+    uint64_t q0;
+    uint64_t q1;
+    uint64_t ullQuotient;
 
     /*  First the procedure takes care of the case in which the divisor is a
         32-bit quantity.  There are two subcases: (1) If the left half of the
@@ -509,16 +456,12 @@ uint64_t RedUint64DivMod64(
         does two divisions, using the grade school method.
     */
 
-    if((ullDivisor >> 32U) == 0U)
-    {
-        if((ullDividend >> 32U) < ullDivisor)
-        {
+    if ((ullDivisor >> 32U) == 0U) {
+        if ((ullDividend >> 32U) < ullDivisor) {
             /*  If ullDividend/ullDivisor cannot overflow, just do one division.
             */
             ullQuotient = RedUint64DivMod32(ullDividend, (uint32_t)ullDivisor, NULL);
-        }
-        else
-        {
+        } else {
             uint32_t k;
 
             /*  If ullDividend/ullDivisor would overflow:
@@ -539,45 +482,39 @@ uint64_t RedUint64DivMod64(
 
             ullQuotient = (q1 << 32U) + q0;
         }
-    }
-    else
-    {
+    } else {
         uint64_t n;
         uint64_t v1;
 
-        n = nlz64(ullDivisor);          /* 0 <= n <= 31. */
-        v1 = (ullDivisor << n) >> 32U;  /* Normalize the divisor so its MSB is 1. */
-        u1 = ullDividend >> 1U;         /* To ensure no overflow. */
+        n = nlz64(ullDivisor); /* 0 <= n <= 31. */
+        v1 = (ullDivisor << n) >> 32U; /* Normalize the divisor so its MSB is 1. */
+        u1 = ullDividend >> 1U; /* To ensure no overflow. */
 
         /*  Get quotient from divide unsigned insn.
         */
         q1 = RedUint64DivMod32(u1, (uint32_t)v1, NULL);
 
-        q0 = (q1 << n) >> 31U;  /* Undo normalization and division of ullDividend by 2. */
+        q0 = (q1 << n) >> 31U; /* Undo normalization and division of ullDividend by 2. */
 
         /*  Make q0 correct or too small by 1.
         */
-        if(q0 != 0U)
-        {
+        if (q0 != 0U) {
             q0--;
         }
 
-        if((ullDividend - (q0 * ullDivisor)) >= ullDivisor)
-        {
-            q0++;   /* Now q0 is correct. */
+        if ((ullDividend - (q0 * ullDivisor)) >= ullDivisor) {
+            q0++; /* Now q0 is correct. */
         }
 
         ullQuotient = q0;
     }
 
-    if(pullRemainder != NULL)
-    {
+    if (pullRemainder != NULL) {
         *pullRemainder = ullDividend - (ullQuotient * ullDivisor);
     }
 
     return ullQuotient;
 }
-
 
 /** @brief Compute the number of leading zeroes in a 64-bit value.
 
@@ -585,57 +522,46 @@ uint64_t RedUint64DivMod64(
 
     @return The number of leading zeroes in @p ullValue.
 */
-static uint32_t nlz64(
-    uint64_t    ullValue)
+static uint32_t nlz64(uint64_t ullValue)
 {
-    uint32_t    n;
+    uint32_t n;
 
-    if(ullValue == 0U)
-    {
+    if (ullValue == 0U) {
         n = 64U;
-    }
-    else
-    {
+    } else {
         uint64_t x = ullValue;
 
         n = 0U;
 
-        if(x <= UINT64_SUFFIX(0x00000000FFFFFFFF))
-        {
+        if (x <= UINT64_SUFFIX(0x00000000FFFFFFFF)) {
             n += 32U;
             x <<= 32U;
         }
 
-        if(x <= UINT64_SUFFIX(0x0000FFFFFFFFFFFF))
-        {
+        if (x <= UINT64_SUFFIX(0x0000FFFFFFFFFFFF)) {
             n += 16U;
             x <<= 16U;
         }
 
-        if(x <= UINT64_SUFFIX(0x00FFFFFFFFFFFFFF))
-        {
+        if (x <= UINT64_SUFFIX(0x00FFFFFFFFFFFFFF)) {
             n += 8U;
             x <<= 8U;
         }
 
-        if(x <= UINT64_SUFFIX(0x0FFFFFFFFFFFFFFF))
-        {
+        if (x <= UINT64_SUFFIX(0x0FFFFFFFFFFFFFFF)) {
             n += 4U;
             x <<= 4U;
         }
 
-        if(x <= UINT64_SUFFIX(0x3FFFFFFFFFFFFFFF))
-        {
+        if (x <= UINT64_SUFFIX(0x3FFFFFFFFFFFFFFF)) {
             n += 2U;
             x <<= 2U;
         }
 
-        if(x <= UINT64_SUFFIX(0x7FFFFFFFFFFFFFFF))
-        {
+        if (x <= UINT64_SUFFIX(0x7FFFFFFFFFFFFFFF)) {
             n += 1;
         }
     }
 
     return n;
 }
-

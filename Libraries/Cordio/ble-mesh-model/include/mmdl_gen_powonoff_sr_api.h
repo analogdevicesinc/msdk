@@ -31,8 +31,7 @@
 #define MMDL_GEN_POWER_ONOFF_SR_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -40,55 +39,50 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Number of stored states (Present + Target) */
-#define MMDL_GEN_POWER_ONOFF_STATE_CNT             2
+#define MMDL_GEN_POWER_ONOFF_STATE_CNT 2
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Model Power OnOff Server Status parameters structure */
-typedef struct mmdlGenPowOnOffStatusParam_tag
-{
-  mmdlGenOnPowerUpState_t         onPowerUp;          /*!< Value of the OnPowerUp State */
+typedef struct mmdlGenPowOnOffStatusParam_tag {
+    mmdlGenOnPowerUpState_t onPowerUp; /*!< Value of the OnPowerUp State */
 } mmdlGenPowOnOffStatusParam_t;
 
 /*! \brief Generic Power OnOff Server Model State Update event structure */
-typedef struct mmdlGenPowOnOffSrStateUpdate_tag
-{
-  wsfMsgHdr_t                     hdr;                /*!< WSF message header */
-  meshElementId_t                 elemId;             /*!< Element identifier */
-  mmdlStateUpdateSrc_t            stateUpdateSource;  /*!< Updated state source */
-  mmdlGenOnPowerUpState_t         state;              /*!< Updated state */
+typedef struct mmdlGenPowOnOffSrStateUpdate_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlStateUpdateSrc_t stateUpdateSource; /*!< Updated state source */
+    mmdlGenOnPowerUpState_t state; /*!< Updated state */
 } mmdlGenPowOnOffSrStateUpdate_t;
 
 /*! \brief Generic Power OnOff Server Model Current State event structure */
-typedef struct mmdlGenPowOnOffSrCurrentState_tag
-{
-  wsfMsgHdr_t                     hdr;                /*!< WSF message header */
-  meshElementId_t                 elemId;             /*!< Element identifier */
-  mmdlGenOnPowerUpState_t         state;              /*!< Updated state */
+typedef struct mmdlGenPowOnOffSrCurrentState_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlGenOnPowerUpState_t state; /*!< Updated state */
 } mmdlGenPowOnOffSrCurrentState_t;
 
 /*! \brief Generic Power OnOff Server Model event callback parameters structure */
-typedef union mmdlGenPowOnOffSrEvent_tag
-{
-  wsfMsgHdr_t                     hdr;                /*!< WSF message header */
-  mmdlGenPowOnOffSrStateUpdate_t  statusEvent;        /*!< State updated event. Used for
+typedef union mmdlGenPowOnOffSrEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    mmdlGenPowOnOffSrStateUpdate_t statusEvent; /*!< State updated event. Used for
                                                        *   ::MMDL_GEN_POWER_ONOFF_SR_STATE_UPDATE_EVENT.
                                                        */
-  mmdlGenPowOnOffSrCurrentState_t currentStateEvent;  /*!< Current state event. Sent after a Get
+    mmdlGenPowOnOffSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get
                                                        *   request from the upper layer. Used for
                                                        *   ::MMDL_GEN_POWER_ONOFF_SR_CURRENT_STATE_EVENT.
                                                        */
 } mmdlGenPowOnOffSrEvent_t;
 
 /*! \brief Model Power Generic OnOff Server descriptor definition */
-typedef struct mmdlGenPowOnOffSrDesc_tag
-{
-  mmdlGenOnPowerUpState_t         *pStoredStates;     /*!< The structure that stores
+typedef struct mmdlGenPowOnOffSrDesc_tag {
+    mmdlGenOnPowerUpState_t *pStoredStates; /*!< The structure that stores
                                                        *   current state.
                                                        */
-  mmdlNvmSaveHandler_t            fNvmSaveStates;     /*!< Pointer to function that saves
+    mmdlNvmSaveHandler_t fNvmSaveStates; /*!< Pointer to function that saves
                                                        *   Model instance states in NVM
                                                        */
 } mmdlGenPowOnOffSrDesc_t;

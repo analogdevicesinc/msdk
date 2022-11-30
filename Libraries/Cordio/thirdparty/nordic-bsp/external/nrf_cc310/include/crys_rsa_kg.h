@@ -32,9 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
-
 #ifndef CRYS_RSA_KG_H
 #define CRYS_RSA_KG_H
 
@@ -42,8 +39,7 @@
 #include "crys_rnd.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*!
@@ -58,16 +54,13 @@ extern "C"
 
 /* Max allowed size and values of public exponent for key generation in CRYS */
 /*! Maximal public exponent size in bits. */
-#define CRYS_RSA_KG_PUB_EXP_MAX_SIZE_BITS    17
+#define CRYS_RSA_KG_PUB_EXP_MAX_SIZE_BITS 17
 /*! Definition of public exponent value. */
-#define CRYS_RSA_KG_PUB_EXP_ALLOW_VAL_1      0x000003
+#define CRYS_RSA_KG_PUB_EXP_ALLOW_VAL_1 0x000003
 /*! Definition of public exponent value. */
-#define CRYS_RSA_KG_PUB_EXP_ALLOW_VAL_2      0x000011
+#define CRYS_RSA_KG_PUB_EXP_ALLOW_VAL_2 0x000011
 /*! Definition of public exponent value. */
-#define CRYS_RSA_KG_PUB_EXP_ALLOW_VAL_3      0x010001
-
-
-
+#define CRYS_RSA_KG_PUB_EXP_ALLOW_VAL_3 0x010001
 
 /***********************************************************************************************/
 
@@ -82,16 +75,19 @@ extern "C"
 */
 
 CIMPORT_C CRYSError_t CRYS_RSA_KG_GenerateKeyPair(
-                                        void   *rndState_ptr,                 /*!< [in/out] Pointer to the RND state structure. */
-                                        SaSiRndGenerateVectWorkFunc_t rndGenerateVectFunc,   /*!< [in] Pointer to the random vector generation function. */
-                                        uint8_t             *pubExp_ptr,            /*!< [in]  The pointer to the public exponent (public key). */
-                                        uint16_t             pubExpSizeInBytes,     /*!< [in]  The public exponent size in bytes. */
-                                        uint32_t             keySize,               /*!< [in]  The size of the key, in bits. Supported sizes are
+    void *rndState_ptr, /*!< [in/out] Pointer to the RND state structure. */
+    SaSiRndGenerateVectWorkFunc_t
+        rndGenerateVectFunc, /*!< [in] Pointer to the random vector generation function. */
+    uint8_t *pubExp_ptr, /*!< [in]  The pointer to the public exponent (public key). */
+    uint16_t pubExpSizeInBytes, /*!< [in]  The public exponent size in bytes. */
+    uint32_t keySize, /*!< [in]  The size of the key, in bits. Supported sizes are
                                                    512, 1024, 2048, 3072 and 4096 bit. */
-                                        CRYS_RSAUserPrivKey_t *userPrivKey_ptr,     /*!< [out] Pointer to the private key structure. */
-                                        CRYS_RSAUserPubKey_t  *userPubKey_ptr,      /*!< [out] Pointer to the public key structure. */
-                    CRYS_RSAKGData_t      *keyGenData_ptr,      /*!< [in]  Pointer to a temporary structure required for the KeyGen operation. */
-                                        CRYS_RSAKGFipsContext_t    *pFipsCtx        /*!< [in]  Pointer to temporary buffer used in case FIPS certification if required. */
+    CRYS_RSAUserPrivKey_t *userPrivKey_ptr, /*!< [out] Pointer to the private key structure. */
+    CRYS_RSAUserPubKey_t *userPubKey_ptr, /*!< [out] Pointer to the public key structure. */
+    CRYS_RSAKGData_t *
+        keyGenData_ptr, /*!< [in]  Pointer to a temporary structure required for the KeyGen operation. */
+    CRYS_RSAKGFipsContext_t *
+        pFipsCtx /*!< [in]  Pointer to temporary buffer used in case FIPS certification if required. */
 );
 
 /***********************************************************************************************/
@@ -105,18 +101,20 @@ CIMPORT_C CRYSError_t CRYS_RSA_KG_GenerateKeyPair(
 */
 
 CIMPORT_C CRYSError_t CRYS_RSA_KG_GenerateKeyPairCRT(
-                                        void   *rndState_ptr,                 /*!< [in/out] Pointer to the RND state structure. */
-                                        SaSiRndGenerateVectWorkFunc_t rndGenerateVectFunc,   /*!< [in] Pointer to the random vector generation function. */
-                                        uint8_t             *pubExp_ptr,           /*!< [in]  The pointer to the public exponent (public key). */
-                                        uint16_t             pubExpSizeInBytes,    /*!< [in]  The public exponent size in bytes. */
-                                        uint32_t             keySize,              /*!< [in]  The size of the key, in bits. Supported sizes are
+    void *rndState_ptr, /*!< [in/out] Pointer to the RND state structure. */
+    SaSiRndGenerateVectWorkFunc_t
+        rndGenerateVectFunc, /*!< [in] Pointer to the random vector generation function. */
+    uint8_t *pubExp_ptr, /*!< [in]  The pointer to the public exponent (public key). */
+    uint16_t pubExpSizeInBytes, /*!< [in]  The public exponent size in bytes. */
+    uint32_t keySize, /*!< [in]  The size of the key, in bits. Supported sizes are
                                                                                               512, 1024, 2048, 3072 and 4096 bit. */
-                                        CRYS_RSAUserPrivKey_t *userPrivKey_ptr,    /*!< [out] Pointer to the private key structure. */
-                                        CRYS_RSAUserPubKey_t  *userPubKey_ptr,     /*!< [out] Pointer to the public key structure. */
-                                        CRYS_RSAKGData_t      *keyGenData_ptr,     /*!< [in] Pointer to a temporary structure required for the KeyGen operation. */
-                                        CRYS_RSAKGFipsContext_t    *pFipsCtx       /*!< [in] Pointer to temporary buffer used in case FIPS certification if required. */
+    CRYS_RSAUserPrivKey_t *userPrivKey_ptr, /*!< [out] Pointer to the private key structure. */
+    CRYS_RSAUserPubKey_t *userPubKey_ptr, /*!< [out] Pointer to the public key structure. */
+    CRYS_RSAKGData_t *
+        keyGenData_ptr, /*!< [in] Pointer to a temporary structure required for the KeyGen operation. */
+    CRYS_RSAKGFipsContext_t *
+        pFipsCtx /*!< [in] Pointer to temporary buffer used in case FIPS certification if required. */
 );
-
 
 #ifdef __cplusplus
 }
@@ -125,5 +123,3 @@ CIMPORT_C CRYSError_t CRYS_RSA_KG_GenerateKeyPairCRT(
 @}
  */
 #endif
-
-

@@ -52,9 +52,9 @@
 /*************************************************************************************************/
 void hciCoreInit(void)
 {
-  hciCmdInit();
+    hciCmdInit();
 #if defined(HCI_TR_UART) && (HCI_TR_UART == 1)
-  hciTrInit(PAL_UART_ID_CHCI, UART_BAUD, UART_HWFC);
+    hciTrInit(PAL_UART_ID_CHCI, UART_BAUD, UART_HWFC);
 #endif
 }
 
@@ -69,44 +69,41 @@ void hciCoreInit(void)
 /*************************************************************************************************/
 void hciCoreNumCmplPkts(uint8_t *pMsg)
 {
-  uint8_t         numHandles;
-  uint16_t        bufs;
-  uint16_t        handle;
-  uint8_t         availBufs = 0;
-  hciCoreConn_t   *pConn;
+    uint8_t numHandles;
+    uint16_t bufs;
+    uint16_t handle;
+    uint8_t availBufs = 0;
+    hciCoreConn_t *pConn;
 
-  /* parse number of handles */
-  BSTREAM_TO_UINT8(numHandles, pMsg);
+    /* parse number of handles */
+    BSTREAM_TO_UINT8(numHandles, pMsg);
 
-  /* for each handle in event */
-  while (numHandles-- > 0)
-  {
-    /* parse handle and number of buffers */
-    BSTREAM_TO_UINT16(handle, pMsg);
-    BSTREAM_TO_UINT16(bufs, pMsg);
+    /* for each handle in event */
+    while (numHandles-- > 0) {
+        /* parse handle and number of buffers */
+        BSTREAM_TO_UINT16(handle, pMsg);
+        BSTREAM_TO_UINT16(bufs, pMsg);
 
-    if ((pConn = hciCoreConnByHandle(handle)) != NULL)
-    {
-      /* decrement outstanding buffer count to controller */
-      pConn->outBufs -= (uint8_t) bufs;
+        if ((pConn = hciCoreConnByHandle(handle)) != NULL) {
+            /* decrement outstanding buffer count to controller */
+            pConn->outBufs -= (uint8_t)bufs;
 
-      /* decrement queued buffer count for this connection */
-      pConn->queuedBufs -= (uint8_t) bufs;
+            /* decrement queued buffer count for this connection */
+            pConn->queuedBufs -= (uint8_t)bufs;
 
-      /* increment available buffer count */
-      availBufs += (uint8_t) bufs;
+            /* increment available buffer count */
+            availBufs += (uint8_t)bufs;
 
-      /* call flow control callback */
-      if (pConn->flowDisabled && pConn->queuedBufs <= hciCoreCb.aclQueueLo)
-      {
-        pConn->flowDisabled = FALSE;
-        (*hciCb.flowCback)(handle, FALSE);
-      }
+            /* call flow control callback */
+            if (pConn->flowDisabled && pConn->queuedBufs <= hciCoreCb.aclQueueLo) {
+                pConn->flowDisabled = FALSE;
+                (*hciCb.flowCback)(handle, FALSE);
+            }
+        }
     }
-  }
 
-  /* service TX data path */
-  hciCoreTxReady(availBufs);
+    /* service TX data path */
+    hciCoreTxReady(availBufs);
 }
 
 /*************************************************************************************************/
@@ -121,25 +118,20 @@ void hciCoreNumCmplPkts(uint8_t *pMsg)
 /*************************************************************************************************/
 void hciCoreRecv(uint8_t msgType, uint8_t *pCoreRecvMsg)
 {
-  /* dump event for protocol analysis */
-  if (msgType == HCI_EVT_TYPE)
-  {
-    HCI_PDUMP_EVT(*(pCoreRecvMsg + 1) + HCI_EVT_HDR_LEN, pCoreRecvMsg);
-  }
-  else if (msgType == HCI_ACL_TYPE)
-  {
-    HCI_PDUMP_RX_ACL(*(pCoreRecvMsg + 2) + HCI_ACL_HDR_LEN, pCoreRecvMsg);
-  }
-  else if (msgType == HCI_ISO_TYPE)
-  {
-    HCI_PDUMP_RX_ISO(*(pCoreRecvMsg + 2) + HCI_ACL_HDR_LEN, pCoreRecvMsg);
-  }
+    /* dump event for protocol analysis */
+    if (msgType == HCI_EVT_TYPE) {
+        HCI_PDUMP_EVT(*(pCoreRecvMsg + 1) + HCI_EVT_HDR_LEN, pCoreRecvMsg);
+    } else if (msgType == HCI_ACL_TYPE) {
+        HCI_PDUMP_RX_ACL(*(pCoreRecvMsg + 2) + HCI_ACL_HDR_LEN, pCoreRecvMsg);
+    } else if (msgType == HCI_ISO_TYPE) {
+        HCI_PDUMP_RX_ISO(*(pCoreRecvMsg + 2) + HCI_ACL_HDR_LEN, pCoreRecvMsg);
+    }
 
-  /* queue buffer */
-  WsfMsgEnq(&hciCb.rxQueue, (wsfHandlerId_t) msgType, pCoreRecvMsg);
+    /* queue buffer */
+    WsfMsgEnq(&hciCb.rxQueue, (wsfHandlerId_t)msgType, pCoreRecvMsg);
 
-  /* set event */
-  WsfSetEvent(hciCb.handlerId, HCI_EVT_RX);
+    /* set event */
+    WsfSetEvent(hciCb.handlerId, HCI_EVT_RX);
 }
 
 /*************************************************************************************************/
@@ -154,65 +146,53 @@ void hciCoreRecv(uint8_t msgType, uint8_t *pCoreRecvMsg)
 /*************************************************************************************************/
 void HciCoreHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  uint8_t         *pBuf;
-  wsfHandlerId_t  handlerId;
+    uint8_t *pBuf;
+    wsfHandlerId_t handlerId;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    /* Handle HCI command timeout */
-    if (pMsg->event == HCI_MSG_CMD_TIMEOUT)
-    {
-      hciCmdTimeout(pMsg);
+    /* Handle message */
+    if (pMsg != NULL) {
+        /* Handle HCI command timeout */
+        if (pMsg->event == HCI_MSG_CMD_TIMEOUT) {
+            hciCmdTimeout(pMsg);
+        }
     }
-  }
-  /* Handle events */
-  else if (event & HCI_EVT_RX)
-  {
-    /* Process rx queue */
-    while ((pBuf = WsfMsgDeq(&hciCb.rxQueue, &handlerId)) != NULL)
-    {
-      /* Handle incoming HCI events */
-      if (handlerId == HCI_EVT_TYPE)
-      {
-        /* Parse/process events */
-        hciEvtProcessMsg(pBuf);
+    /* Handle events */
+    else if (event & HCI_EVT_RX) {
+        /* Process rx queue */
+        while ((pBuf = WsfMsgDeq(&hciCb.rxQueue, &handlerId)) != NULL) {
+            /* Handle incoming HCI events */
+            if (handlerId == HCI_EVT_TYPE) {
+                /* Parse/process events */
+                hciEvtProcessMsg(pBuf);
 
-        /* Handle events during reset sequence */
-        if (hciCb.resetting)
-        {
-          hciCoreResetSequence(pBuf);
-        }
+                /* Handle events during reset sequence */
+                if (hciCb.resetting) {
+                    hciCoreResetSequence(pBuf);
+                }
 
-        /* Free buffer */
-        WsfMsgFree(pBuf);
-      }
-      /* Handle ACL data */
-      else if (handlerId == HCI_ACL_TYPE)
-      {
-        /* Reassemble */
-        if ((pBuf = hciCoreAclReassembly(pBuf)) != NULL)
-        {
-          /* Call ACL callback; client will free buffer */
-          hciCb.aclCback(pBuf);
+                /* Free buffer */
+                WsfMsgFree(pBuf);
+            }
+            /* Handle ACL data */
+            else if (handlerId == HCI_ACL_TYPE) {
+                /* Reassemble */
+                if ((pBuf = hciCoreAclReassembly(pBuf)) != NULL) {
+                    /* Call ACL callback; client will free buffer */
+                    hciCb.aclCback(pBuf);
+                }
+            }
+            /* Handle ISO data */
+            else {
+                if (hciCb.isoCback) {
+                    /* Call ISO callback; client will free buffer */
+                    hciCb.isoCback(pBuf);
+                } else {
+                    /* free buffer */
+                    WsfMsgFree(pBuf);
+                }
+            }
         }
-      }
-      /* Handle ISO data */
-      else
-      {
-        if (hciCb.isoCback)
-        {
-          /* Call ISO callback; client will free buffer */
-          hciCb.isoCback(pBuf);
-        }
-        else
-        {
-          /* free buffer */
-          WsfMsgFree(pBuf);
-        }
-      }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -224,7 +204,7 @@ void HciCoreHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 uint8_t *HciGetBdAddr(void)
 {
-  return hciCoreCb.bdAddr;
+    return hciCoreCb.bdAddr;
 }
 
 /*************************************************************************************************/
@@ -236,7 +216,7 @@ uint8_t *HciGetBdAddr(void)
 /*************************************************************************************************/
 uint8_t HciGetWhiteListSize(void)
 {
-  return hciCoreCb.whiteListSize;
+    return hciCoreCb.whiteListSize;
 }
 
 /*************************************************************************************************/
@@ -248,7 +228,7 @@ uint8_t HciGetWhiteListSize(void)
 /*************************************************************************************************/
 int8_t HciGetAdvTxPwr(void)
 {
-  return hciCoreCb.advTxPwr;
+    return hciCoreCb.advTxPwr;
 }
 
 /*************************************************************************************************/
@@ -260,7 +240,7 @@ int8_t HciGetAdvTxPwr(void)
 /*************************************************************************************************/
 uint16_t HciGetBufSize(void)
 {
-  return hciCoreCb.bufSize;
+    return hciCoreCb.bufSize;
 }
 
 /*************************************************************************************************/
@@ -272,7 +252,7 @@ uint16_t HciGetBufSize(void)
 /*************************************************************************************************/
 uint8_t HciGetNumBufs(void)
 {
-  return hciCoreCb.numBufs;
+    return hciCoreCb.numBufs;
 }
 
 /*************************************************************************************************/
@@ -284,7 +264,7 @@ uint8_t HciGetNumBufs(void)
 /*************************************************************************************************/
 uint8_t *HciGetSupStates(void)
 {
-  return hciCoreCb.leStates;
+    return hciCoreCb.leStates;
 }
 
 /*************************************************************************************************/
@@ -296,7 +276,7 @@ uint8_t *HciGetSupStates(void)
 /*************************************************************************************************/
 uint64_t HciGetLeSupFeat(void)
 {
-  return hciCoreCb.leSupFeat;
+    return hciCoreCb.leSupFeat;
 }
 
 /*************************************************************************************************/
@@ -308,7 +288,7 @@ uint64_t HciGetLeSupFeat(void)
 /*************************************************************************************************/
 uint32_t HciGetLeSupFeat32(void)
 {
-  return (uint32_t) hciCoreCb.leSupFeat;
+    return (uint32_t)hciCoreCb.leSupFeat;
 }
 
 /*************************************************************************************************/
@@ -320,7 +300,7 @@ uint32_t HciGetLeSupFeat32(void)
 /*************************************************************************************************/
 uint16_t HciGetMaxRxAclLen(void)
 {
-  return hciCoreCb.maxRxAclLen;
+    return hciCoreCb.maxRxAclLen;
 }
 
 /*************************************************************************************************/
@@ -332,7 +312,7 @@ uint16_t HciGetMaxRxAclLen(void)
 /*************************************************************************************************/
 uint8_t HciGetResolvingListSize(void)
 {
-  return hciCoreCb.resListSize;
+    return hciCoreCb.resListSize;
 }
 
 /*************************************************************************************************/
@@ -344,7 +324,7 @@ uint8_t HciGetResolvingListSize(void)
 /*************************************************************************************************/
 bool_t HciLlPrivacySupported(void)
 {
-  return (hciCoreCb.resListSize > 0) ? TRUE : FALSE;
+    return (hciCoreCb.resListSize > 0) ? TRUE : FALSE;
 }
 
 /*************************************************************************************************/
@@ -356,7 +336,7 @@ bool_t HciLlPrivacySupported(void)
 /*************************************************************************************************/
 uint16_t HciGetMaxAdvDataLen(void)
 {
-  return hciCoreCb.maxAdvDataLen;
+    return hciCoreCb.maxAdvDataLen;
 }
 
 /*************************************************************************************************/
@@ -368,7 +348,7 @@ uint16_t HciGetMaxAdvDataLen(void)
 /*************************************************************************************************/
 uint8_t HciGetNumSupAdvSets(void)
 {
-  return hciCoreCb.numSupAdvSets;
+    return hciCoreCb.numSupAdvSets;
 }
 
 /*************************************************************************************************/
@@ -380,7 +360,7 @@ uint8_t HciGetNumSupAdvSets(void)
 /*************************************************************************************************/
 bool_t HciLeAdvExtSupported(void)
 {
-  return (hciCoreCb.numSupAdvSets > 0) ? TRUE : FALSE;
+    return (hciCoreCb.numSupAdvSets > 0) ? TRUE : FALSE;
 }
 
 /*************************************************************************************************/
@@ -392,7 +372,7 @@ bool_t HciLeAdvExtSupported(void)
 /*************************************************************************************************/
 uint8_t HciGetPerAdvListSize(void)
 {
-  return hciCoreCb.perAdvListSize;
+    return hciCoreCb.perAdvListSize;
 }
 
 /*************************************************************************************************/
@@ -404,5 +384,5 @@ uint8_t HciGetPerAdvListSize(void)
 /*************************************************************************************************/
 hciLocalVerInfo_t *HciGetLocalVerInfo(void)
 {
-  return &hciCoreCb.locVerInfo;
+    return &hciCoreCb.locVerInfo;
 }

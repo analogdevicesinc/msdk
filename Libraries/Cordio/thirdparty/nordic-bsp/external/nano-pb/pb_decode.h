@@ -25,8 +25,7 @@ extern "C" {
  *    is different than from the main stream. Don't use bytes_left to compute
  *    any pointers.
  */
-struct pb_istream_s
-{
+struct pb_istream_s {
 #ifdef PB_BUFFER_ONLY
     /* Callback pointer is not used in buffer-only configuration.
      * Having an int pointer here allows binary compatibility but
@@ -39,9 +38,10 @@ struct pb_istream_s
 
     void *state; /* Free field for use by callback implementation */
     size_t bytes_left;
-    
+
     /* Informative callback for field decoding */
-    void (* decoding_callback)(pb_istream_t *strem, uint32_t tag, pb_wire_type_t wire_type, void *iter);
+    void (*decoding_callback)(pb_istream_t *strem, uint32_t tag, pb_wire_type_t wire_type,
+                              void *iter);
 
 #ifndef PB_NO_ERRMSG
     const char *errmsg;
@@ -51,7 +51,7 @@ struct pb_istream_s
 /***************************
  * Main decoding functions *
  ***************************/
- 
+
 /* Decode a single protocol buffers message from input stream into a C structure.
  * Returns true on success, false on any failure.
  * The actual struct pointed to by dest must match the description in fields.
@@ -96,7 +96,6 @@ bool pb_decode_delimited(pb_istream_t *stream, const pb_field_t fields[], void *
 void pb_release(const pb_field_t fields[], void *dest_struct);
 #endif
 
-
 /**************************************
  * Functions for manipulating streams *
  **************************************/
@@ -112,7 +111,6 @@ pb_istream_t pb_istream_from_buffer(const pb_byte_t *buf, size_t bufsize);
  * read some custom header data, or to read data in field callbacks.
  */
 bool pb_read(pb_istream_t *stream, pb_byte_t *buf, size_t count);
-
 
 /************************************************
  * Helper functions for writing field callbacks *

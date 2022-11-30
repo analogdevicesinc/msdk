@@ -40,7 +40,7 @@
   Global Variables
 **************************************************************************************************/
 
-BbBleDataPktStats_t bbConnStats;          /*!< Connection packet statistics. */
+BbBleDataPktStats_t bbConnStats; /*!< Connection packet statistics. */
 
 /*************************************************************************************************/
 /*!
@@ -57,25 +57,21 @@ BbBleDataPktStats_t bbConnStats;          /*!< Connection packet statistics. */
 void BbBleTxData(PalBbBleTxBufDesc_t descs[], uint8_t cnt)
 {
 #if (BB_SNIFFER_ENABLED == TRUE)
-  if (bbSnifferCtx.enabled)
-  {
-    memcpy(bbSnifferCtx.txBuf, descs->pBuf, LL_DATA_HDR_MAX_LEN);
-  }
+    if (bbSnifferCtx.enabled) {
+        memcpy(bbSnifferCtx.txBuf, descs->pBuf, LL_DATA_HDR_MAX_LEN);
+    }
 #endif
-  if ((BbGetCurrentBod()->prot.pBle->chan.opType == BB_BLE_OP_MST_CONN_EVENT) &&
-      (bbBleCb.evtState == 0))
-  {
-    bbBleSetTifs();     /* master always Rx's after Tx */
-    PalBbBleTxData(descs, cnt);
-  }
-  else
-  {
-    BB_ISR_MARK(bbConnStats.txSetupUsec);
+    if ((BbGetCurrentBod()->prot.pBle->chan.opType == BB_BLE_OP_MST_CONN_EVENT) &&
+        (bbBleCb.evtState == 0)) {
+        bbBleSetTifs(); /* master always Rx's after Tx */
+        PalBbBleTxData(descs, cnt);
+    } else {
+        BB_ISR_MARK(bbConnStats.txSetupUsec);
 
-    /* TODO set only if master or if slave and Rx may follow in CE. */
-    bbBleSetTifs();
-    PalBbBleTxTifsData(descs, cnt);
-  }
+        /* TODO set only if master or if slave and Rx may follow in CE. */
+        bbBleSetTifs();
+        PalBbBleTxTifsData(descs, cnt);
+    }
 }
 
 /*************************************************************************************************/
@@ -96,17 +92,16 @@ void BbBleTxData(PalBbBleTxBufDesc_t descs[], uint8_t cnt)
 /*************************************************************************************************/
 void BbBleRxData(uint8_t *pBuf, uint16_t len)
 {
-  WSF_ASSERT(!bbBleCb.pRxDataBuf);
+    WSF_ASSERT(!bbBleCb.pRxDataBuf);
 
-  bbBleCb.pRxDataBuf = pBuf;
-  bbBleCb.rxDataLen = len;
+    bbBleCb.pRxDataBuf = pBuf;
+    bbBleCb.rxDataLen = len;
 
-  if ((BbGetCurrentBod()->prot.pBle->chan.opType == BB_BLE_OP_SLV_CONN_EVENT) &&
-      (bbBleCb.evtState == 0))
-  {
-    bbBleSetTifs();       /* slave always Tx's after Rx */
-    PalBbBleRxData(pBuf, len);
-  }
+    if ((BbGetCurrentBod()->prot.pBle->chan.opType == BB_BLE_OP_SLV_CONN_EVENT) &&
+        (bbBleCb.evtState == 0)) {
+        bbBleSetTifs(); /* slave always Tx's after Rx */
+        PalBbBleRxData(pBuf, len);
+    }
 }
 
 /*************************************************************************************************/
@@ -116,7 +111,7 @@ void BbBleRxData(uint8_t *pBuf, uint16_t len)
 /*************************************************************************************************/
 void BbBleGetConnStats(BbBleDataPktStats_t *pStats)
 {
-  *pStats = bbConnStats;
+    *pStats = bbConnStats;
 }
 
 /*************************************************************************************************/
@@ -126,5 +121,5 @@ void BbBleGetConnStats(BbBleDataPktStats_t *pStats)
 /*************************************************************************************************/
 void BbBleResetConnStats(void)
 {
-  memset(&bbConnStats, 0, sizeof(BbBleDataPktStats_t));
+    memset(&bbConnStats, 0, sizeof(BbBleDataPktStats_t));
 }

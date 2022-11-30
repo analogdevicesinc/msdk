@@ -32,16 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 #ifndef CRYS_SRP_ERROR_H
 #define CRYS_SRP_ERROR_H
-
 
 #include "crys_error.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*!
@@ -52,23 +49,21 @@ extern "C"
 @ingroup crys_srp
 */
 
-
-
 /************************ Defines ******************************/
 
 /*! The CRYS SRP module errors base address - 0x00F02600. */
 /*! Illegal parameter. */
-#define CRYS_SRP_PARAM_INVALID_ERROR               (CRYS_SRP_MODULE_ERROR_BASE + 0x01UL)
+#define CRYS_SRP_PARAM_INVALID_ERROR (CRYS_SRP_MODULE_ERROR_BASE + 0x01UL)
 /*! Illegal modulus size . */
-#define CRYS_SRP_MOD_SIZE_INVALID_ERROR            (CRYS_SRP_MODULE_ERROR_BASE + 0x02UL)
+#define CRYS_SRP_MOD_SIZE_INVALID_ERROR (CRYS_SRP_MODULE_ERROR_BASE + 0x02UL)
 /*! Illegal state (uninitialized) . */
-#define CRYS_SRP_STATE_UNINITIALIZED_ERROR         (CRYS_SRP_MODULE_ERROR_BASE + 0x03UL)
+#define CRYS_SRP_STATE_UNINITIALIZED_ERROR (CRYS_SRP_MODULE_ERROR_BASE + 0x03UL)
 /*! Result validation error. */
-#define CRYS_SRP_RESULT_ERROR                  (CRYS_SRP_MODULE_ERROR_BASE + 0x04UL)
+#define CRYS_SRP_RESULT_ERROR (CRYS_SRP_MODULE_ERROR_BASE + 0x04UL)
 /*! Invalid parameter. */
-#define CRYS_SRP_PARAM_ERROR                   (CRYS_SRP_MODULE_ERROR_BASE + 0x05UL)
+#define CRYS_SRP_PARAM_ERROR (CRYS_SRP_MODULE_ERROR_BASE + 0x05UL)
 /*! Internal PKI error */
-#define CRYS_SRP_PKI_INTERNAL_ERROR                (CRYS_SRP_MODULE_ERROR_BASE + 0x06UL)
+#define CRYS_SRP_PKI_INTERNAL_ERROR (CRYS_SRP_MODULE_ERROR_BASE + 0x06UL)
 
 /************************ Enums ********************************/
 
@@ -87,5 +82,3 @@ extern "C"
 @}
  */
 #endif
-
-

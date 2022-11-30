@@ -51,64 +51,58 @@
 extern bool nrfx_power_irq_enabled;
 #endif
 
-#define EVT_TO_STR(event)                                                     \
-    (event == NRF_CLOCK_EVENT_HFCLKSTARTED ? "NRF_CLOCK_EVENT_HFCLKSTARTED" : \
-    (event == NRF_CLOCK_EVENT_LFCLKSTARTED ? "NRF_CLOCK_EVENT_LFCLKSTARTED" : \
-    (event == NRF_CLOCK_EVENT_DONE         ? "NRF_CLOCK_EVENT_DONE"         : \
-    (event == NRF_CLOCK_EVENT_CTTO         ? "NRF_CLOCK_EVENT_CTTO"         : \
-                                             "UNKNOWN EVENT"))))
+#define EVT_TO_STR(event)                         \
+    (event == NRF_CLOCK_EVENT_HFCLKSTARTED ?      \
+         "NRF_CLOCK_EVENT_HFCLKSTARTED" :         \
+         (event == NRF_CLOCK_EVENT_LFCLKSTARTED ? \
+              "NRF_CLOCK_EVENT_LFCLKSTARTED" :    \
+              (event == NRF_CLOCK_EVENT_DONE ?    \
+                   "NRF_CLOCK_EVENT_DONE" :       \
+                   (event == NRF_CLOCK_EVENT_CTTO ? "NRF_CLOCK_EVENT_CTTO" : "UNKNOWN EVENT"))))
 
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-    #if (NRF_CLOCK_HAS_CALIBRATION == 0)
-        #error "Calibration is not available in the SoC that is used."
-    #endif
-    #if (NRFX_CLOCK_CONFIG_LF_SRC != CLOCK_LFCLKSRC_SRC_RC)
-        #error "Calibration can be performed only for the RC Oscillator."
-    #endif
+#if (NRF_CLOCK_HAS_CALIBRATION == 0)
+#error "Calibration is not available in the SoC that is used."
+#endif
+#if (NRFX_CLOCK_CONFIG_LF_SRC != CLOCK_LFCLKSRC_SRC_RC)
+#error "Calibration can be performed only for the RC Oscillator."
+#endif
 #endif
 
-#if !defined(USE_WORKAROUND_FOR_ANOMALY_132) && \
-    (defined(NRF52832_XXAA) || defined(NRF52832_XXAB))
-    // ANOMALY 132 - LFCLK needs to avoid frame from 66us to 138us after LFCLK stop. This solution
-    //               applies delay of 138us before starting LFCLK.
-    #define USE_WORKAROUND_FOR_ANOMALY_132 1
+#if !defined(USE_WORKAROUND_FOR_ANOMALY_132) && (defined(NRF52832_XXAA) || defined(NRF52832_XXAB))
+// ANOMALY 132 - LFCLK needs to avoid frame from 66us to 138us after LFCLK stop. This solution
+//               applies delay of 138us before starting LFCLK.
+#define USE_WORKAROUND_FOR_ANOMALY_132 1
 
-    // Convert time to cycles (nRF52832 is clocked with 64 MHz, use delay of 138 us).
-    #define ANOMALY_132_DELAY_CYCLES (64UL * 138)
+// Convert time to cycles (nRF52832 is clocked with 64 MHz, use delay of 138 us).
+#define ANOMALY_132_DELAY_CYCLES (64UL * 138)
 #endif
 
-#if !defined(USE_WORKAROUND_FOR_ANOMALY_192) && \
-    (defined(NRF52810_XXAA) || \
-     defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
+#if !defined(USE_WORKAROUND_FOR_ANOMALY_192) &&                                    \
+    (defined(NRF52810_XXAA) || defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
      defined(NRF52840_XXAA))
-    // Enable workaround for nRF52 anomaly 192 (LFRC oscillator frequency is wrong
-    // after calibration, exceeding 500 ppm).
-    #define USE_WORKAROUND_FOR_ANOMALY_192 1
+// Enable workaround for nRF52 anomaly 192 (LFRC oscillator frequency is wrong
+// after calibration, exceeding 500 ppm).
+#define USE_WORKAROUND_FOR_ANOMALY_192 1
 #endif
 
-#if !defined(USE_WORKAROUND_FOR_ANOMALY_201) && \
-    (defined(NRF52810_XXAA) || \
-     defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
+#if !defined(USE_WORKAROUND_FOR_ANOMALY_201) &&                                    \
+    (defined(NRF52810_XXAA) || defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
      defined(NRF52840_XXAA))
-    // Enable workaround for nRF52 anomaly 201 (EVENTS_HFCLKSTARTED might be generated twice).
-    #define USE_WORKAROUND_FOR_ANOMALY_201 1
+// Enable workaround for nRF52 anomaly 201 (EVENTS_HFCLKSTARTED might be generated twice).
+#define USE_WORKAROUND_FOR_ANOMALY_201 1
 #endif
 
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-typedef enum
-{
-    CAL_STATE_IDLE,
-    CAL_STATE_CAL
-} nrfx_clock_cal_state_t;
+typedef enum { CAL_STATE_IDLE, CAL_STATE_CAL } nrfx_clock_cal_state_t;
 #endif
 
 /**@brief CLOCK control block. */
-typedef struct
-{
-    nrfx_clock_event_handler_t      event_handler;
-    bool                            module_initialized; /*< Indicate the state of module */
+typedef struct {
+    nrfx_clock_event_handler_t event_handler;
+    bool module_initialized; /*< Indicate the state of module */
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_201)
-    bool                            hfclk_started;      /*< Anomaly 201 workaround. */
+    bool hfclk_started; /*< Anomaly 201 workaround. */
 #endif
 
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
@@ -150,8 +144,7 @@ static void nrfx_clock_anomaly_132(void)
     cyccnt_inital = DWT->CYCCNT;
 
     // Delay required time.
-    while ((DWT->CYCCNT - cyccnt_inital) < ANOMALY_132_DELAY_CYCLES)
-    {}
+    while ((DWT->CYCCNT - cyccnt_inital) < ANOMALY_132_DELAY_CYCLES) {}
 
     // Restore preserved registers.
     DWT->CTRL = dwt_ctrl;
@@ -164,12 +157,9 @@ nrfx_err_t nrfx_clock_init(nrfx_clock_event_handler_t event_handler)
     NRFX_ASSERT(event_handler);
 
     nrfx_err_t err_code = NRFX_SUCCESS;
-    if (m_clock_cb.module_initialized)
-    {
+    if (m_clock_cb.module_initialized) {
         err_code = NRFX_ERROR_ALREADY_INITIALIZED;
-    }
-    else
-    {
+    } else {
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
         m_clock_cb.cal_state = CAL_STATE_IDLE;
 #endif
@@ -207,11 +197,9 @@ void nrfx_clock_disable(void)
     {
         NRFX_IRQ_DISABLE(nrfx_get_irq_number(NRF_CLOCK));
     }
-    nrf_clock_int_disable(CLOCK_INTENSET_HFCLKSTARTED_Msk |
-                          CLOCK_INTENSET_LFCLKSTARTED_Msk |
+    nrf_clock_int_disable(CLOCK_INTENSET_HFCLKSTARTED_Msk | CLOCK_INTENSET_LFCLKSTARTED_Msk |
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-                          CLOCK_INTENSET_DONE_Msk |
-                          CLOCK_INTENSET_CTTO_Msk |
+                          CLOCK_INTENSET_DONE_Msk | CLOCK_INTENSET_CTTO_Msk |
 #endif
                           0);
 #if NRFX_CHECK(NRFX_POWER_ENABLED)
@@ -246,8 +234,7 @@ void nrfx_clock_lfclk_stop(void)
 {
     NRFX_ASSERT(m_clock_cb.module_initialized);
     nrf_clock_task_trigger(NRF_CLOCK_TASK_LFCLKSTOP);
-    while (nrf_clock_lf_is_running())
-    {}
+    while (nrf_clock_lf_is_running()) {}
 }
 
 void nrfx_clock_hfclk_start(void)
@@ -262,8 +249,7 @@ void nrfx_clock_hfclk_stop(void)
 {
     NRFX_ASSERT(m_clock_cb.module_initialized);
     nrf_clock_task_trigger(NRF_CLOCK_TASK_HFCLKSTOP);
-    while (nrf_clock_hf_is_running(NRF_CLOCK_HFCLK_HIGH_ACCURACY))
-    {}
+    while (nrf_clock_hf_is_running(NRF_CLOCK_HFCLK_HIGH_ACCURACY)) {}
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_201)
     m_clock_cb.hfclk_started = false;
 #endif
@@ -274,18 +260,15 @@ nrfx_err_t nrfx_clock_calibration_start(void)
     nrfx_err_t err_code = NRFX_SUCCESS;
 
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-    if (nrfx_clock_hfclk_is_running() == false)
-    {
+    if (nrfx_clock_hfclk_is_running() == false) {
         return NRFX_ERROR_INVALID_STATE;
     }
 
-    if (nrfx_clock_lfclk_is_running() == false)
-    {
+    if (nrfx_clock_lfclk_is_running() == false) {
         return NRFX_ERROR_INVALID_STATE;
     }
 
-    if (m_clock_cb.cal_state == CAL_STATE_IDLE)
-    {
+    if (m_clock_cb.cal_state == CAL_STATE_IDLE) {
         nrf_clock_event_clear(NRF_CLOCK_EVENT_DONE);
         nrf_clock_int_enable(NRF_CLOCK_INT_DONE_MASK);
         m_clock_cb.cal_state = CAL_STATE_CAL;
@@ -293,15 +276,12 @@ nrfx_err_t nrfx_clock_calibration_start(void)
         *(volatile uint32_t *)0x40000C34 = 0x00000002;
 #endif
         nrf_clock_task_trigger(NRF_CLOCK_TASK_CAL);
-    }
-    else
-    {
+    } else {
         err_code = NRFX_ERROR_BUSY;
     }
 #endif // NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
 
-    NRFX_LOG_WARNING("Function: %s, error code: %s.",
-                     __func__,
+    NRFX_LOG_WARNING("Function: %s, error code: %s.", __func__,
                      NRFX_LOG_ERROR_STRING_GET(err_code));
     return err_code;
 }
@@ -309,8 +289,7 @@ nrfx_err_t nrfx_clock_calibration_start(void)
 nrfx_err_t nrfx_clock_is_calibrating(void)
 {
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-    if (m_clock_cb.cal_state == CAL_STATE_CAL)
-    {
+    if (m_clock_cb.cal_state == CAL_STATE_CAL) {
         return NRFX_ERROR_BUSY;
     }
 #endif
@@ -337,15 +316,13 @@ void nrfx_clock_calibration_timer_stop(void)
 
 void nrfx_clock_irq_handler(void)
 {
-    if (nrf_clock_event_check(NRF_CLOCK_EVENT_HFCLKSTARTED))
-    {
+    if (nrf_clock_event_check(NRF_CLOCK_EVENT_HFCLKSTARTED)) {
         nrf_clock_event_clear(NRF_CLOCK_EVENT_HFCLKSTARTED);
         NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_CLOCK_EVENT_HFCLKSTARTED));
         nrf_clock_int_disable(NRF_CLOCK_INT_HF_STARTED_MASK);
 
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_201)
-        if (!m_clock_cb.hfclk_started)
-        {
+        if (!m_clock_cb.hfclk_started) {
             m_clock_cb.hfclk_started = true;
             m_clock_cb.event_handler(NRFX_CLOCK_EVT_HFCLK_STARTED);
         }
@@ -353,8 +330,7 @@ void nrfx_clock_irq_handler(void)
         m_clock_cb.event_handler(NRFX_CLOCK_EVT_HFCLK_STARTED);
 #endif
     }
-    if (nrf_clock_event_check(NRF_CLOCK_EVENT_LFCLKSTARTED))
-    {
+    if (nrf_clock_event_check(NRF_CLOCK_EVENT_LFCLKSTARTED)) {
         nrf_clock_event_clear(NRF_CLOCK_EVENT_LFCLKSTARTED);
         NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_CLOCK_EVENT_LFCLKSTARTED));
         nrf_clock_int_disable(NRF_CLOCK_INT_LF_STARTED_MASK);
@@ -363,8 +339,7 @@ void nrfx_clock_irq_handler(void)
     }
 
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-    if (nrf_clock_event_check(NRF_CLOCK_EVENT_CTTO))
-    {
+    if (nrf_clock_event_check(NRF_CLOCK_EVENT_CTTO)) {
         nrf_clock_event_clear(NRF_CLOCK_EVENT_CTTO);
         NRFX_LOG_DEBUG("Event: %s.", EVT_TO_STR(NRF_CLOCK_EVENT_CTTO));
         nrf_clock_int_disable(NRF_CLOCK_INT_CTTO_MASK);
@@ -372,8 +347,7 @@ void nrfx_clock_irq_handler(void)
         m_clock_cb.event_handler(NRFX_CLOCK_EVT_CTTO);
     }
 
-    if (nrf_clock_event_check(NRF_CLOCK_EVENT_DONE))
-    {
+    if (nrf_clock_event_check(NRF_CLOCK_EVENT_DONE)) {
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_192)
         *(volatile uint32_t *)0x40000C34 = 0x00000000;
 #endif

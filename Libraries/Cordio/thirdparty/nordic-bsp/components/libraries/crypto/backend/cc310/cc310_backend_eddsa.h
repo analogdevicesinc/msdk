@@ -44,28 +44,27 @@
 #include "sdk_config.h"
 #include "nordic_common.h"
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO) && \
-    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310) && \
+#if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310) && \
     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_ED25519)
 
 #include <stdint.h>
 #include "nrf_crypto_ecc_shared.h"
 #include "nrf_crypto_eddsa_shared.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define NRF_CRYPTO_BACKEND_ED25519_SIGN_CONTEXT_SIZE sizeof(nrf_crypto_backend_cc310_ed25519_context_t)
-#define NRF_CRYPTO_BACKEND_ED25519_VERIFY_CONTEXT_SIZE sizeof(nrf_crypto_backend_cc310_ed25519_context_t)
+#define NRF_CRYPTO_BACKEND_ED25519_SIGN_CONTEXT_SIZE \
+    sizeof(nrf_crypto_backend_cc310_ed25519_context_t)
+#define NRF_CRYPTO_BACKEND_ED25519_VERIFY_CONTEXT_SIZE \
+    sizeof(nrf_crypto_backend_cc310_ed25519_context_t)
 typedef nrf_crypto_backend_cc310_ed25519_context_t nrf_crypto_backend_ed25519_sign_context_t;
 typedef nrf_crypto_backend_cc310_ed25519_context_t nrf_crypto_backend_ed25519_verify_context_t;
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif // #if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_ED25519)
 

@@ -26,8 +26,7 @@
 #define APP_MESH_TERMINAL_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -52,7 +51,7 @@ void AppMeshTerminalInit(void);
  *  \return    None.
  */
 /*************************************************************************************************/
-void AppMeshPrintMenu(char * const pMenu[]);
+void AppMeshPrintMenu(char *const pMenu[]);
 
 #ifdef __cplusplus
 }

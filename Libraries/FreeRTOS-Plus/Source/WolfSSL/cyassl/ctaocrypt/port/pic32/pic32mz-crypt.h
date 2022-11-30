@@ -25,4 +25,3 @@
 #include <wolfssl/wolfcrypt/port/pic32/pic32mz-crypt.h>
 
 #endif /* PIC32MZ_CRYPT_H */
-

@@ -48,81 +48,76 @@ lhciIsoCb_t lhciIsoCb;
 /*************************************************************************************************/
 bool_t lhciIsoVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-  uint8_t status = HCI_SUCCESS;
-  uint8_t evtParamLen = 1;      /* default is status field only */
+    uint8_t status = HCI_SUCCESS;
+    uint8_t evtParamLen = 1; /* default is status field only */
 
-  /* Decode and consume command packet. */
-  switch (pHdr->opCode)
-  {
-    /* --- ISO --- */
+    /* Decode and consume command packet. */
+    switch (pHdr->opCode) {
+        /* --- ISO --- */
 
     case LHCI_OPCODE_VS_GET_ISO_TEST_REPORT:
-      evtParamLen += sizeof(uint32_t) * 4;
-      break;
+        evtParamLen += sizeof(uint32_t) * 4;
+        break;
     case LHCI_OPCODE_VS_ENA_ISO_SINK:
-      lhciIsoCb.recvIsoSink = pBuf[0];
-      break;
+        lhciIsoCb.recvIsoSink = pBuf[0];
+        break;
     case LHCI_OPCODE_VS_ENA_AUTO_GEN_ISO:
-      BSTREAM_TO_UINT16(lhciIsoCb.genPktLen, pBuf);
-      break;
-    case LHCI_OPCODE_VS_GENERATE_ISO:
-    {
-      uint16_t handle;
-      uint16_t pktLen;
-      uint8_t numPkts;
+        BSTREAM_TO_UINT16(lhciIsoCb.genPktLen, pBuf);
+        break;
+    case LHCI_OPCODE_VS_GENERATE_ISO: {
+        uint16_t handle;
+        uint16_t pktLen;
+        uint8_t numPkts;
 
-      BSTREAM_TO_UINT16(handle, pBuf);
-      BSTREAM_TO_UINT16(pktLen, pBuf);
-      numPkts = *pBuf++;
+        BSTREAM_TO_UINT16(handle, pBuf);
+        BSTREAM_TO_UINT16(pktLen, pBuf);
+        numPkts = *pBuf++;
 
-      lhciGenerateIso(handle, pktLen, numPkts);
-      break;
+        lhciGenerateIso(handle, pktLen, numPkts);
+        break;
     }
     case LHCI_OPCODE_VS_GET_CIS_STATS:
-      evtParamLen += sizeof(BbBleDataPktStats_t);
-      break;
+        evtParamLen += sizeof(BbBleDataPktStats_t);
+        break;
 
-    /* --- default --- */
+        /* --- default --- */
 
     default:
-      return FALSE;       /* exit dispatcher routine */
-  }
-
-  uint8_t *pEvtBuf;
-
-  /* Encode and send command complete event packet. */
-  if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL)
-  {
-    pBuf  = pEvtBuf;
-    pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
-
-    switch (pHdr->opCode)
-    {
-      case LHCI_OPCODE_VS_GET_ISO_TEST_REPORT:
-        UINT32_TO_BSTREAM(pBuf, lhciIsoCb.recvIsoPktCnt);
-        UINT32_TO_BSTREAM(pBuf, lhciIsoCb.recvIsoOctetCnt);
-        UINT32_TO_BSTREAM(pBuf, lhciIsoCb.genPktCnt);
-        UINT32_TO_BSTREAM(pBuf, lhciIsoCb.genOctetCnt);
-        break;
-
-      case LHCI_OPCODE_VS_GET_CIS_STATS:
-      {
-        BbBleDataPktStats_t stats;
-        BbBleGetCisStats(&stats);
-        memcpy(pBuf, (uint8_t *)&stats, sizeof(stats));
-        break;
-      }
-
-      /* --- default --- */
-
-      default:
-        break;
+        return FALSE; /* exit dispatcher routine */
     }
 
-    lhciSendCmdCmplEvt(pEvtBuf);
-  }
+    uint8_t *pEvtBuf;
 
-  return TRUE;
+    /* Encode and send command complete event packet. */
+    if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL) {
+        pBuf = pEvtBuf;
+        pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
+
+        switch (pHdr->opCode) {
+        case LHCI_OPCODE_VS_GET_ISO_TEST_REPORT:
+            UINT32_TO_BSTREAM(pBuf, lhciIsoCb.recvIsoPktCnt);
+            UINT32_TO_BSTREAM(pBuf, lhciIsoCb.recvIsoOctetCnt);
+            UINT32_TO_BSTREAM(pBuf, lhciIsoCb.genPktCnt);
+            UINT32_TO_BSTREAM(pBuf, lhciIsoCb.genOctetCnt);
+            break;
+
+        case LHCI_OPCODE_VS_GET_CIS_STATS: {
+            BbBleDataPktStats_t stats;
+            BbBleGetCisStats(&stats);
+            memcpy(pBuf, (uint8_t *)&stats, sizeof(stats));
+            break;
+        }
+
+            /* --- default --- */
+
+        default:
+            break;
+        }
+
+        lhciSendCmdCmplEvt(pEvtBuf);
+    }
+
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -136,29 +131,26 @@ bool_t lhciIsoVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 /*************************************************************************************************/
 void lhciGenerateIso(uint16_t handle, uint16_t pktLen, uint8_t numPkts)
 {
-  if (lhciIsoCb.genEnaFlag)
-  {
-    /* Prevent re-entrance. */
-    return;
-  }
-
-  lhciIsoCb.genEnaFlag = TRUE;
-
-  while (numPkts--)
-  {
-    uint8_t *pIsoBuf;
-    if ((pIsoBuf = (uint8_t*)WsfMsgAlloc(LL_ISO_PDU_MAX_LEN)) == NULL)
-    {
-      break;
+    if (lhciIsoCb.genEnaFlag) {
+        /* Prevent re-entrance. */
+        return;
     }
 
-    uint8_t *pBuf = pIsoBuf;
-    UINT16_TO_BSTREAM(pBuf, handle & 0xFFF);   /* BTS=0 and BF=0 */
-    UINT16_TO_BSTREAM(pBuf, pktLen);
-    memset(pBuf, lhciIsoCb.genPldCnt++, pktLen);
+    lhciIsoCb.genEnaFlag = TRUE;
 
-    LlSendIsoData(pIsoBuf);
-  }
+    while (numPkts--) {
+        uint8_t *pIsoBuf;
+        if ((pIsoBuf = (uint8_t *)WsfMsgAlloc(LL_ISO_PDU_MAX_LEN)) == NULL) {
+            break;
+        }
 
-  lhciIsoCb.genEnaFlag = FALSE;
+        uint8_t *pBuf = pIsoBuf;
+        UINT16_TO_BSTREAM(pBuf, handle & 0xFFF); /* BTS=0 and BF=0 */
+        UINT16_TO_BSTREAM(pBuf, pktLen);
+        memset(pBuf, lhciIsoCb.genPldCnt++, pktLen);
+
+        LlSendIsoData(pIsoBuf);
+    }
+
+    lhciIsoCb.genEnaFlag = FALSE;
 }

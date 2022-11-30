@@ -40,21 +40,20 @@ extern "C" {
  *
  */
 /**@{*/
-#define BATT_START_HDL                    0x60                /*!< \brief Service start handle. */
-#define BATT_END_HDL                      (BATT_MAX_HDL - 1)  /*!< \brief Service end handle. */
+#define BATT_START_HDL 0x60 /*!< \brief Service start handle. */
+#define BATT_END_HDL (BATT_MAX_HDL - 1) /*!< \brief Service end handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Battery Service Handles */
-enum
-{
-  BATT_SVC_HDL = BATT_START_HDL,        /*!< \brief Battery service declaration */
-  BATT_LVL_CH_HDL,                      /*!< \brief Battery level characteristic */
-  BATT_LVL_HDL,                         /*!< \brief Battery level */
-  BATT_LVL_CH_CCC_HDL,                  /*!< \brief Battery level CCCD */
-  BATT_MAX_HDL                          /*!< \brief Maximum handle. */
+enum {
+    BATT_SVC_HDL = BATT_START_HDL, /*!< \brief Battery service declaration */
+    BATT_LVL_CH_HDL, /*!< \brief Battery level characteristic */
+    BATT_LVL_HDL, /*!< \brief Battery level */
+    BATT_LVL_CH_CCC_HDL, /*!< \brief Battery level CCCD */
+    BATT_MAX_HDL /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -101,11 +100,10 @@ void SvcBattCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback
 /*************************************************************************************************/
 void *SvcBattAddGroupDyn(void);
 
-/*! \} */    /* BATTERY_SERVICE */
+/*! \} */ /* BATTERY_SERVICE */
 
 #ifdef __cplusplus
 };
 #endif
 
 #endif /* SVC_BATT_H */
-

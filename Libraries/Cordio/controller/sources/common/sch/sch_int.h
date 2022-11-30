@@ -38,20 +38,19 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Maximum span of scheduler elements. Half of the boundary time. */
-#define SCH_MAX_SPAN            ((BbGetBbTimerBoundaryUs() >> 1) + 1)
+#define SCH_MAX_SPAN ((BbGetBbTimerBoundaryUs() >> 1) + 1)
 
 /*! \brief      Typical time needed for loading BOD. */
-#define SCH_LOAD_DELAY_US       300
+#define SCH_LOAD_DELAY_US 300
 
 /**************************************************************************************************
   Constants
 **************************************************************************************************/
 
 /*! \brief      Scheduler states. */
-typedef enum
-{
-  SCH_STATE_IDLE,               /*!< Scheduler idle. */
-  SCH_STATE_EXEC                /*!< Scheduler executing BOD. */
+typedef enum {
+    SCH_STATE_IDLE, /*!< Scheduler idle. */
+    SCH_STATE_EXEC /*!< Scheduler executing BOD. */
 } schState_t;
 
 /**************************************************************************************************
@@ -59,19 +58,18 @@ typedef enum
 **************************************************************************************************/
 
 /*! \brief      Scheduler control block. */
-typedef struct
-{
-  schState_t state:8;               /*!< Current scheduler state. */
-  uint8_t eventSetFlagCount;        /*!< Scheduler event set count. */
-  wsfHandlerId_t handlerId;         /*!< System event handler ID. */
+typedef struct {
+    schState_t state : 8; /*!< Current scheduler state. */
+    uint8_t eventSetFlagCount; /*!< Scheduler event set count. */
+    wsfHandlerId_t handlerId; /*!< System event handler ID. */
 
-  BbOpDesc_t *pHead;                /*!< Head element of scheduled list of BOD. */
-  BbOpDesc_t *pTail;                /*!< Tail element of scheduled list of BOD. */
+    BbOpDesc_t *pHead; /*!< Head element of scheduled list of BOD. */
+    BbOpDesc_t *pTail; /*!< Tail element of scheduled list of BOD. */
 
-  uint16_t schHandlerWatermarkUsec; /*!< Statistics: Handler duration watermark in microseconds. */
-  uint16_t delayLoadWatermarkCount; /*!< Statistics: Delay loading watermark count. */
-  uint16_t delayLoadCount;          /*!< Statistics: Delay loading count. */
-  uint32_t delayLoadTotalCount;     /*!< Statistics: Delay loading total count. */
+    uint16_t schHandlerWatermarkUsec; /*!< Statistics: Handler duration watermark in microseconds. */
+    uint16_t delayLoadWatermarkCount; /*!< Statistics: Delay loading watermark count. */
+    uint16_t delayLoadCount; /*!< Statistics: Delay loading count. */
+    uint32_t delayLoadTotalCount; /*!< Statistics: Delay loading total count. */
 } SchCtrlBlk_t;
 
 /**************************************************************************************************
@@ -102,11 +100,10 @@ void schRemoveHead(void);
 /*************************************************************************************************/
 static inline bool_t schDueTimeInFuture(BbOpDesc_t *pBod)
 {
-  const uint32_t curTime = PalBbGetCurrentTime();
+    const uint32_t curTime = PalBbGetCurrentTime();
 
-  return (BbGetTargetTimeDelta(pBod->dueUsec, curTime) > 0);
+    return (BbGetTargetTimeDelta(pBod->dueUsec, curTime) > 0);
 }
-
 
 /*************************************************************************************************/
 /*!
@@ -119,22 +116,19 @@ static inline bool_t schDueTimeInFuture(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 static inline uint32_t schGetTimeToExecBod(BbOpDesc_t *pBod)
 {
-  uint32_t result = 0;
+    uint32_t result = 0;
 
-  const uint32_t curTime = PalBbGetCurrentTime();
+    const uint32_t curTime = PalBbGetCurrentTime();
 
-  result = BbGetTargetTimeDelta(pBod->dueUsec, curTime);
+    result = BbGetTargetTimeDelta(pBod->dueUsec, curTime);
 
-  if (result >= SCH_LOAD_DELAY_US)
-  {
-    result -= SCH_LOAD_DELAY_US;
-  }
-  else
-  {
-     result = 0;
-  }
+    if (result >= SCH_LOAD_DELAY_US) {
+        result -= SCH_LOAD_DELAY_US;
+    } else {
+        result = 0;
+    }
 
-  return result;
+    return result;
 }
 
 #ifdef __cplusplus

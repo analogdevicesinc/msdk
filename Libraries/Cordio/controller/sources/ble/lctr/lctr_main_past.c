@@ -54,54 +54,47 @@
 /*************************************************************************************************/
 uint8_t LctrPeriodicAdvSyncTransfer(uint16_t connHandle, uint16_t serviceData, uint16_t syncHandle)
 {
-  lctrPerAdvSyncTrsf_t *pMsg;
+    lctrPerAdvSyncTrsf_t *pMsg;
 
-  if (syncHandle > LL_SYNC_MAX_HANDLE)
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if (syncHandle > LL_SYNC_MAX_HANDLE) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if (syncHandle >= LL_MAX_PER_SCAN)
-  {
-    return LL_ERROR_CODE_UNKNOWN_ADV_ID;
-  }
+    if (syncHandle >= LL_MAX_PER_SCAN) {
+        return LL_ERROR_CODE_UNKNOWN_ADV_ID;
+    }
 
-  if ((lctrMstPerScanTbl[syncHandle].enabled == FALSE) ||
-      (lctrMstPerScanTbl[syncHandle].state != LCTR_PER_SCAN_STATE_SYNC_ESTD))
-  {
-    return LL_ERROR_CODE_UNKNOWN_ADV_ID;
-  }
+    if ((lctrMstPerScanTbl[syncHandle].enabled == FALSE) ||
+        (lctrMstPerScanTbl[syncHandle].state != LCTR_PER_SCAN_STATE_SYNC_ESTD)) {
+        return LL_ERROR_CODE_UNKNOWN_ADV_ID;
+    }
 
-  if (connHandle >= pLctrRtCfg->maxConn)
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    if (connHandle >= pLctrRtCfg->maxConn) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(connHandle);
-  if (!pCtx->enabled)
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(connHandle);
+    if (!pCtx->enabled) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  /* Do not allow long control PDU if we do not know the remote feature explicitly. */
-  if (((pCtx->usedFeatSet & LL_FEAT_PAST_RECIPIENT) == 0) || !pCtx->featExchFlag)
-  {
-    return LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE;
-  }
+    /* Do not allow long control PDU if we do not know the remote feature explicitly. */
+    if (((pCtx->usedFeatSet & LL_FEAT_PAST_RECIPIENT) == 0) || !pCtx->featExchFlag) {
+        return LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE;
+    }
 
-  if ((pMsg = (lctrPerAdvSyncTrsf_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.handle = connHandle;
-    pMsg->hdr.dispId = LCTR_DISP_CONN;
-    pMsg->hdr.event  = LCTR_CONN_MSG_API_PER_ADV_SYNC_TRSF;
-    pMsg->syncSource = LCTR_SYNC_SRC_SCAN;
-    pMsg->syncHandle = syncHandle;
-    pMsg->serviceData = serviceData;
+    if ((pMsg = (lctrPerAdvSyncTrsf_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.handle = connHandle;
+        pMsg->hdr.dispId = LCTR_DISP_CONN;
+        pMsg->hdr.event = LCTR_CONN_MSG_API_PER_ADV_SYNC_TRSF;
+        pMsg->syncSource = LCTR_SYNC_SRC_SCAN;
+        pMsg->syncHandle = syncHandle;
+        pMsg->serviceData = serviceData;
 
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -120,49 +113,43 @@ uint8_t LctrPeriodicAdvSyncTransfer(uint16_t connHandle, uint16_t serviceData, u
 /*************************************************************************************************/
 uint8_t LctrPeriodicAdvSetInfoTransfer(uint16_t connHandle, uint16_t serviceData, uint8_t advHandle)
 {
-  lctrPerAdvSyncTrsf_t *pMsg;
-  lctrAdvSet_t *pAdvSet;
+    lctrPerAdvSyncTrsf_t *pMsg;
+    lctrAdvSet_t *pAdvSet;
 
-  if (connHandle >= pLctrRtCfg->maxConn)
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    if (connHandle >= pLctrRtCfg->maxConn) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  if ((pAdvSet = lctrFindAdvSet(advHandle)) == NULL)
-  {
-    return LL_ERROR_CODE_UNKNOWN_ADV_ID;
-  }
+    if ((pAdvSet = lctrFindAdvSet(advHandle)) == NULL) {
+        return LL_ERROR_CODE_UNKNOWN_ADV_ID;
+    }
 
-  if (pAdvSet->perParam.perAdvEnabled != TRUE)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (pAdvSet->perParam.perAdvEnabled != TRUE) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(connHandle);
-  if (!pCtx->enabled)
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(connHandle);
+    if (!pCtx->enabled) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  /* Do not allow long control PDU if we do not know the remote feature explicitly. */
-  if (((pCtx->usedFeatSet & LL_FEAT_PAST_RECIPIENT) == 0) || !pCtx->featExchFlag)
-  {
-    return LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE;
-  }
+    /* Do not allow long control PDU if we do not know the remote feature explicitly. */
+    if (((pCtx->usedFeatSet & LL_FEAT_PAST_RECIPIENT) == 0) || !pCtx->featExchFlag) {
+        return LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE;
+    }
 
-  if ((pMsg = (lctrPerAdvSyncTrsf_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.handle = connHandle;
-    pMsg->hdr.dispId = LCTR_DISP_CONN;
-    pMsg->hdr.event  = LCTR_CONN_MSG_API_PER_ADV_SYNC_TRSF;
-    pMsg->syncSource = LCTR_SYNC_SRC_BCST;
-    pMsg->syncHandle = advHandle;
-    pMsg->serviceData = serviceData;
+    if ((pMsg = (lctrPerAdvSyncTrsf_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.handle = connHandle;
+        pMsg->hdr.dispId = LCTR_DISP_CONN;
+        pMsg->hdr.event = LCTR_CONN_MSG_API_PER_ADV_SYNC_TRSF;
+        pMsg->syncSource = LCTR_SYNC_SRC_BCST;
+        pMsg->syncHandle = advHandle;
+        pMsg->serviceData = serviceData;
 
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -180,24 +167,23 @@ uint8_t LctrPeriodicAdvSetInfoTransfer(uint16_t connHandle, uint16_t serviceData
  *  Set periodic advertising sync transfer parameters.
  */
 /*************************************************************************************************/
-uint8_t LctrSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uint16_t skip, uint16_t syncTimeout, uint8_t cteType)
+uint8_t LctrSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uint16_t skip,
+                                          uint16_t syncTimeout, uint8_t cteType)
 {
-  if (connHandle >= pLctrRtCfg->maxConn)
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    if (connHandle >= pLctrRtCfg->maxConn) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(connHandle);
-  if (!pCtx->enabled)
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(connHandle);
+    if (!pCtx->enabled) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  pCtx->syncMode = mode;
-  pCtx->syncSkip = skip;
-  pCtx->syncTimeout = syncTimeout;
+    pCtx->syncMode = mode;
+    pCtx->syncSkip = skip;
+    pCtx->syncTimeout = syncTimeout;
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -209,9 +195,9 @@ uint8_t LctrSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uin
 /*************************************************************************************************/
 void LctrPastInit(void)
 {
-  lctrSendPerSyncFromScanFn = lctrSendPerSyncFromScan;
-  lctrSendPerSyncFromBcstFn = lctrSendPerSyncFromBcst;
-  lctrStorePeriodicSyncTrsfFn = lctrStorePeriodicSyncTrsf;
-  lctrSendPeriodicSyncIndFn = lctrSendPeriodicSyncInd;
-  lctrReceivePeriodicSyncIndFn = lctrReceivePeriodicSyncInd;
+    lctrSendPerSyncFromScanFn = lctrSendPerSyncFromScan;
+    lctrSendPerSyncFromBcstFn = lctrSendPerSyncFromBcst;
+    lctrStorePeriodicSyncTrsfFn = lctrStorePeriodicSyncTrsf;
+    lctrSendPeriodicSyncIndFn = lctrSendPeriodicSyncInd;
+    lctrReceivePeriodicSyncIndFn = lctrReceivePeriodicSyncInd;
 }

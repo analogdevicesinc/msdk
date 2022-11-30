@@ -41,9 +41,9 @@
 /*************************************************************************************************/
 uint16_t LlGetIsoMaxBufSize(void)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlGetIsoMaxBufSize, maxBufSize=%u", pLctrRtCfg->maxIsoSduLen);
+    LL_TRACE_INFO1("### LlApi ###  LlGetIsoMaxBufSize, maxBufSize=%u", pLctrRtCfg->maxIsoSduLen);
 
-  return pLctrRtCfg->maxIsoSduLen;
+    return pLctrRtCfg->maxIsoSduLen;
 }
 
 /*************************************************************************************************/
@@ -55,9 +55,9 @@ uint16_t LlGetIsoMaxBufSize(void)
 /*************************************************************************************************/
 uint8_t LlGetIsoTxBufs(void)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlGetIsoTxBufs, numBufs=%u", pLctrRtCfg->numIsoTxBuf);
+    LL_TRACE_INFO1("### LlApi ###  LlGetIsoTxBufs, numBufs=%u", pLctrRtCfg->numIsoTxBuf);
 
-  return pLctrRtCfg->numIsoTxBuf;
+    return pLctrRtCfg->numIsoTxBuf;
 }
 
 /*************************************************************************************************/
@@ -69,9 +69,9 @@ uint8_t LlGetIsoTxBufs(void)
 /*************************************************************************************************/
 uint8_t LlGetIsoRxBufs(void)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlGetIsoRxBufs, numBufs=%u", pLctrRtCfg->numIsoRxBuf);
+    LL_TRACE_INFO1("### LlApi ###  LlGetIsoRxBufs, numBufs=%u", pLctrRtCfg->numIsoRxBuf);
 
-  return pLctrRtCfg->numIsoRxBuf;
+    return pLctrRtCfg->numIsoRxBuf;
 }
 
 /*************************************************************************************************/
@@ -83,11 +83,11 @@ uint8_t LlGetIsoRxBufs(void)
  *  \return     Status error code.
  */
 /*************************************************************************************************/
-uint8_t LlReadIsoLinkQual(uint16_t handle, LlIsoLinkQual_t * pStats)
+uint8_t LlReadIsoLinkQual(uint16_t handle, LlIsoLinkQual_t *pStats)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlReadIsoLinkQual, handle=%u", handle);
+    LL_TRACE_INFO1("### LlApi ###  LlReadIsoLinkQual, handle=%u", handle);
 
-  return LctrReadIsoLinkQual(handle, pStats);
+    return LctrReadIsoLinkQual(handle, pStats);
 }
 
 /*************************************************************************************************/
@@ -97,7 +97,7 @@ uint8_t LlReadIsoLinkQual(uint16_t handle, LlIsoLinkQual_t * pStats)
 /*************************************************************************************************/
 void LlInitCodec(void)
 {
-  LctrInitCodec();
+    LctrInitCodec();
 }
 
 /*************************************************************************************************/
@@ -112,16 +112,15 @@ void LlInitCodec(void)
 /*************************************************************************************************/
 void LlSendIsoData(uint8_t *pData)
 {
-  if (lmgrIsoCb.availTxBuf == 0)
-  {
-    LL_TRACE_WARN0("!!! ISO flow control detected; dropping Tx data PDU");
+    if (lmgrIsoCb.availTxBuf == 0) {
+        LL_TRACE_WARN0("!!! ISO flow control detected; dropping Tx data PDU");
 
-    /* Drop packet. */
-    WsfMsgFree(pData);
-    return;
-  }
+        /* Drop packet. */
+        WsfMsgFree(pData);
+        return;
+    }
 
-  LctrTxIso(pData);
+    LctrTxIso(pData);
 }
 
 /*************************************************************************************************/
@@ -140,7 +139,7 @@ void LlSendIsoData(uint8_t *pData)
 /*************************************************************************************************/
 uint8_t *LlRecvIsoData(void)
 {
-  return LctrRxIso();
+    return LctrRxIso();
 }
 
 /*************************************************************************************************/
@@ -154,7 +153,7 @@ uint8_t *LlRecvIsoData(void)
 /*************************************************************************************************/
 void LlRecvIsoDataComplete(uint8_t numBufs)
 {
-  LctrRxIsoComplete(numBufs);
+    LctrRxIsoComplete(numBufs);
 }
 
 /*************************************************************************************************/
@@ -172,8 +171,8 @@ void LlRecvIsoDataComplete(uint8_t numBufs)
 /*************************************************************************************************/
 uint8_t LlReadIsoTxSync(uint16_t handle, uint16_t *pPktSn, uint32_t *pTs, uint32_t *pTimeOffs)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlReadIsoTxSync, handle=%u", handle);
-  return LctrReadIsoTxSync(handle, pPktSn, pTs, pTimeOffs);
+    LL_TRACE_INFO1("### LlApi ###  LlReadIsoTxSync, handle=%u", handle);
+    return LctrReadIsoTxSync(handle, pPktSn, pTs, pTimeOffs);
 }
 
 /*************************************************************************************************/
@@ -186,9 +185,10 @@ uint8_t LlReadIsoTxSync(uint16_t handle, uint16_t *pPktSn, uint32_t *pTs, uint32
 /*************************************************************************************************/
 uint8_t LlSetupIsoDataPath(LlIsoSetupDataPath_t *pSetupDataPath)
 {
-  LL_TRACE_INFO3("### LlApi ###  LlSetupIsoDataPath, handle=%u, dpDir=%u, dpId=%u", pSetupDataPath->handle, pSetupDataPath->dpDir, pSetupDataPath->dpId);
+    LL_TRACE_INFO3("### LlApi ###  LlSetupIsoDataPath, handle=%u, dpDir=%u, dpId=%u",
+                   pSetupDataPath->handle, pSetupDataPath->dpDir, pSetupDataPath->dpId);
 
-  return LctrSetupIsoDataPath(pSetupDataPath);
+    return LctrSetupIsoDataPath(pSetupDataPath);
 }
 
 /*************************************************************************************************/
@@ -202,9 +202,9 @@ uint8_t LlSetupIsoDataPath(LlIsoSetupDataPath_t *pSetupDataPath)
 /*************************************************************************************************/
 uint8_t LlRemoveIsoDataPath(uint16_t handle, uint8_t dpDir)
 {
-  LL_TRACE_INFO2("### LlApi ###  LlRemoveIsoDataPath, handle=%u, dpDir=%u", handle, dpDir);
+    LL_TRACE_INFO2("### LlApi ###  LlRemoveIsoDataPath, handle=%u, dpDir=%u", handle, dpDir);
 
-  return LctrRemoveIsoDataPath(handle, dpDir);
+    return LctrRemoveIsoDataPath(handle, dpDir);
 }
 
 /*************************************************************************************************/
@@ -219,9 +219,9 @@ uint8_t LlRemoveIsoDataPath(uint16_t handle, uint8_t dpDir)
 /*************************************************************************************************/
 uint8_t LlIsoTxTest(uint16_t handle, uint8_t pldType)
 {
-  LL_TRACE_INFO2("### LlApi ###  LlIsoTxTest handle=%d pldType=%d", handle, pldType);
+    LL_TRACE_INFO2("### LlApi ###  LlIsoTxTest handle=%d pldType=%d", handle, pldType);
 
-  return LctrIsoTxTest(handle, pldType);
+    return LctrIsoTxTest(handle, pldType);
 }
 
 /*************************************************************************************************/
@@ -236,9 +236,9 @@ uint8_t LlIsoTxTest(uint16_t handle, uint8_t pldType)
 /*************************************************************************************************/
 uint8_t LlIsoRxTest(uint16_t handle, uint8_t pldType)
 {
-  LL_TRACE_INFO2("### LlApi ###  LlIsoRxTest handle=%d pldType=%d", handle, pldType);
+    LL_TRACE_INFO2("### LlApi ###  LlIsoRxTest handle=%d pldType=%d", handle, pldType);
 
-  return LctrIsoRxTest(handle, pldType);
+    return LctrIsoRxTest(handle, pldType);
 }
 
 /*************************************************************************************************/
@@ -253,11 +253,11 @@ uint8_t LlIsoRxTest(uint16_t handle, uint8_t pldType)
 /*************************************************************************************************/
 uint8_t LlIsoReadTestCounter(uint16_t handle, LlIsoTestCtrs_t *pCtr)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlIsoReadTestCounter handle=%d", handle);
+    LL_TRACE_INFO1("### LlApi ###  LlIsoReadTestCounter handle=%d", handle);
 
-  LctrIsoReadTestCounter(handle, pCtr);
+    LctrIsoReadTestCounter(handle, pCtr);
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -272,7 +272,7 @@ uint8_t LlIsoReadTestCounter(uint16_t handle, LlIsoTestCtrs_t *pCtr)
 /*************************************************************************************************/
 uint8_t LlIsoTestEnd(uint16_t handle, LlIsoTestCtrs_t *pCtr)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlIsoTestEnd handle=%d", handle);
+    LL_TRACE_INFO1("### LlApi ###  LlIsoTestEnd handle=%d", handle);
 
-  return LctrIsoTestEnd(handle, pCtr);
+    return LctrIsoTestEnd(handle, pCtr);
 }

@@ -87,9 +87,8 @@ extern "C" {
 #error "RTC2 not present in selected MCU."
 #endif
 
-#if ((defined(TWIS0_ENABLED) || defined(TWIS1_ENABLED)) &&\
-    ((TWIS0_ENABLED + TWIS1_ENABLED) > 0) &&\
-    (!defined(TWIS_PRESENT)))
+#if ((defined(TWIS0_ENABLED) || defined(TWIS1_ENABLED)) && \
+     ((TWIS0_ENABLED + TWIS1_ENABLED) > 0) && (!defined(TWIS_PRESENT)))
 #error "TWIS not present in selected MCU."
 #endif
 
@@ -97,177 +96,143 @@ extern "C" {
 #error "SPI2/SPIS2 instance not present in selected MCU."
 #endif
 
-#if ((defined(TIMER3_ENABLED) || defined(TIMER4_ENABLED)) &&\
-    ((TIMER3_ENABLED + TIMER4_ENABLED ) > 0) &&\
-    (TIMER_COUNT < 5))
+#if ((defined(TIMER3_ENABLED) || defined(TIMER4_ENABLED)) && \
+     ((TIMER3_ENABLED + TIMER4_ENABLED) > 0) && (TIMER_COUNT < 5))
 #error "TIMER3 and TIMER4 not present in selected MCU."
 #endif
 
 // Validate peripheral sharing feature
 #if !NRFX_CHECK(NRFX_PRS_ENABLED)
 
-#if ((defined(TWIM0_ENABLED) && defined(TWIS0_ENABLED)) &&\
-    ((TWIM0_ENABLED + TWIS0_ENABLED) > 1))
+#if ((defined(TWIM0_ENABLED) && defined(TWIS0_ENABLED)) && ((TWIM0_ENABLED + TWIS0_ENABLED) > 1))
 #error "Peripherals overlap. TWIM0, TWIS0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM0_ENABLED) && defined(SPIM0_ENABLED)) &&\
-    ((TWIM0_ENABLED + SPIM0_ENABLED) > 1))
+#if ((defined(TWIM0_ENABLED) && defined(SPIM0_ENABLED)) && ((TWIM0_ENABLED + SPIM0_ENABLED) > 1))
 #error "Peripherals overlap. TWIM0, SPIM0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM0_ENABLED) && defined(SPIS0_ENABLED)) &&\
-    ((TWIM0_ENABLED + SPIS0_ENABLED) > 1))
+#if ((defined(TWIM0_ENABLED) && defined(SPIS0_ENABLED)) && ((TWIM0_ENABLED + SPIS0_ENABLED) > 1))
 #error "Peripherals overlap. TWIM0, SPIS0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM0_ENABLED) && defined(SPI0_ENABLED)) &&\
-    ((TWIM0_ENABLED + SPI0_ENABLED) > 1))
+#if ((defined(TWIM0_ENABLED) && defined(SPI0_ENABLED)) && ((TWIM0_ENABLED + SPI0_ENABLED) > 1))
 #error "Peripherals overlap. TWIM0, SPI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM0_ENABLED) && defined(TWI0_ENABLED)) &&\
-    ((TWIM0_ENABLED + TWI0_ENABLED) > 1))
+#if ((defined(TWIM0_ENABLED) && defined(TWI0_ENABLED)) && ((TWIM0_ENABLED + TWI0_ENABLED) > 1))
 #error "Peripherals overlap. TWIM0, TWI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIS0_ENABLED) && defined(SPIM0_ENABLED)) &&\
-    ((TWIS0_ENABLED + SPIM0_ENABLED) > 1))
+#if ((defined(TWIS0_ENABLED) && defined(SPIM0_ENABLED)) && ((TWIS0_ENABLED + SPIM0_ENABLED) > 1))
 #error "Peripherals overlap. TWIS0, SPIM0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIS0_ENABLED) && defined(SPIS0_ENABLED)) &&\
-    ((TWIS0_ENABLED + SPIS0_ENABLED) > 1))
+#if ((defined(TWIS0_ENABLED) && defined(SPIS0_ENABLED)) && ((TWIS0_ENABLED + SPIS0_ENABLED) > 1))
 #error "Peripherals overlap. TWIS0, SPIS0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIS0_ENABLED) && defined(SPI0_ENABLED)) &&\
-    ((TWIS0_ENABLED + SPI0_ENABLED) > 1))
+#if ((defined(TWIS0_ENABLED) && defined(SPI0_ENABLED)) && ((TWIS0_ENABLED + SPI0_ENABLED) > 1))
 #error "Peripherals overlap. TWIS0, SPI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIS0_ENABLED) && defined(TWI0_ENABLED)) &&\
-    ((TWIS0_ENABLED + TWI0_ENABLED) > 1))
+#if ((defined(TWIS0_ENABLED) && defined(TWI0_ENABLED)) && ((TWIS0_ENABLED + TWI0_ENABLED) > 1))
 #error "Peripherals overlap. TWIS0, TWI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIM0_ENABLED) && defined(SPIS0_ENABLED)) &&\
-    ((SPIM0_ENABLED + SPIS0_ENABLED) > 1))
+#if ((defined(SPIM0_ENABLED) && defined(SPIS0_ENABLED)) && ((SPIM0_ENABLED + SPIS0_ENABLED) > 1))
 #error "Peripherals overlap. SPIM0, SPIS0 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIM0_ENABLED) && defined(SPI0_ENABLED)) &&\
-    ((SPIM0_ENABLED + SPI0_ENABLED) > 1))
+#if ((defined(SPIM0_ENABLED) && defined(SPI0_ENABLED)) && ((SPIM0_ENABLED + SPI0_ENABLED) > 1))
 #error "Peripherals overlap. SPIM0, SPI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIM0_ENABLED) && defined(TWI0_ENABLED)) &&\
-    ((SPIM0_ENABLED + TWI0_ENABLED) > 1))
+#if ((defined(SPIM0_ENABLED) && defined(TWI0_ENABLED)) && ((SPIM0_ENABLED + TWI0_ENABLED) > 1))
 #error "Peripherals overlap. SPIM0, TWI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIS0_ENABLED) && defined(SPI0_ENABLED)) &&\
-    ((SPIS0_ENABLED + SPI0_ENABLED) > 1))
+#if ((defined(SPIS0_ENABLED) && defined(SPI0_ENABLED)) && ((SPIS0_ENABLED + SPI0_ENABLED) > 1))
 #error "Peripherals overlap. SPIS0, SPI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIS0_ENABLED) && defined(TWI0_ENABLED)) &&\
-    ((SPIS0_ENABLED + TWI0_ENABLED) > 1))
+#if ((defined(SPIS0_ENABLED) && defined(TWI0_ENABLED)) && ((SPIS0_ENABLED + TWI0_ENABLED) > 1))
 #error "Peripherals overlap. SPIS0, TWI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPI0_ENABLED) && defined(TWI0_ENABLED)) &&\
-    ((SPI0_ENABLED + TWI0_ENABLED) > 1))
+#if ((defined(SPI0_ENABLED) && defined(TWI0_ENABLED)) && ((SPI0_ENABLED + TWI0_ENABLED) > 1))
 #error "Peripherals overlap. SPI0, TWI0 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM1_ENABLED) && defined(TWIS1_ENABLED)) &&\
-    ((TWIM1_ENABLED + TWIS1_ENABLED) > 1))
+#if ((defined(TWIM1_ENABLED) && defined(TWIS1_ENABLED)) && ((TWIM1_ENABLED + TWIS1_ENABLED) > 1))
 #error "Peripherals overlap. TWIM1, TWIS1 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM1_ENABLED) && defined(SPIM1_ENABLED)) &&\
-    ((TWIM1_ENABLED + SPIM1_ENABLED) > 1))
+#if ((defined(TWIM1_ENABLED) && defined(SPIM1_ENABLED)) && ((TWIM1_ENABLED + SPIM1_ENABLED) > 1))
 #error "Peripherals overlap. TWIM1, SPIM1 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM1_ENABLED) && defined(SPIS1_ENABLED)) &&\
-    ((TWIM1_ENABLED + SPIS1_ENABLED) > 1))
+#if ((defined(TWIM1_ENABLED) && defined(SPIS1_ENABLED)) && ((TWIM1_ENABLED + SPIS1_ENABLED) > 1))
 #error "Peripherals overlap. TWIM1, SPIS1 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM1_ENABLED) && defined(SPI1_ENABLED)) &&\
-    ((TWIM1_ENABLED + SPI1_ENABLED) > 1))
+#if ((defined(TWIM1_ENABLED) && defined(SPI1_ENABLED)) && ((TWIM1_ENABLED + SPI1_ENABLED) > 1))
 #error "Peripherals overlap. TWIM1, SPI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIM1_ENABLED) && defined(TWI1_ENABLED)) &&\
-    ((TWIM1_ENABLED + TWI1_ENABLED) > 1))
+#if ((defined(TWIM1_ENABLED) && defined(TWI1_ENABLED)) && ((TWIM1_ENABLED + TWI1_ENABLED) > 1))
 #error "Peripherals overlap. TWIM1, TWI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIS1_ENABLED) && defined(SPIM1_ENABLED)) &&\
-    ((TWIS1_ENABLED + SPIM1_ENABLED) > 1))
+#if ((defined(TWIS1_ENABLED) && defined(SPIM1_ENABLED)) && ((TWIS1_ENABLED + SPIM1_ENABLED) > 1))
 #error "Peripherals overlap. TWIS1, SPIM1 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIS1_ENABLED) && defined(SPIS1_ENABLED)) &&\
-    ((TWIS1_ENABLED + SPIS1_ENABLED) > 1))
+#if ((defined(TWIS1_ENABLED) && defined(SPIS1_ENABLED)) && ((TWIS1_ENABLED + SPIS1_ENABLED) > 1))
 #error "Peripherals overlap. TWIS1, SPIS1 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIS1_ENABLED) && defined(SPI1_ENABLED)) &&\
-    ((TWIS1_ENABLED + SPI1_ENABLED) > 1))
+#if ((defined(TWIS1_ENABLED) && defined(SPI1_ENABLED)) && ((TWIS1_ENABLED + SPI1_ENABLED) > 1))
 #error "Peripherals overlap. TWIS1, SPI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(TWIS1_ENABLED) && defined(TWI1_ENABLED)) &&\
-    ((TWIS1_ENABLED + TWI1_ENABLED) > 1))
+#if ((defined(TWIS1_ENABLED) && defined(TWI1_ENABLED)) && ((TWIS1_ENABLED + TWI1_ENABLED) > 1))
 #error "Peripherals overlap. TWIS1, TWI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIM1_ENABLED) && defined(SPIS1_ENABLED)) &&\
-    ((SPIM1_ENABLED + SPIS1_ENABLED) > 1))
+#if ((defined(SPIM1_ENABLED) && defined(SPIS1_ENABLED)) && ((SPIM1_ENABLED + SPIS1_ENABLED) > 1))
 #error "Peripherals overlap. SPIM1, SPIS1 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIM1_ENABLED) && defined(SPI1_ENABLED)) &&\
-    ((SPIM1_ENABLED + SPI1_ENABLED) > 1))
+#if ((defined(SPIM1_ENABLED) && defined(SPI1_ENABLED)) && ((SPIM1_ENABLED + SPI1_ENABLED) > 1))
 #error "Peripherals overlap. SPIM1, SPI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIM1_ENABLED) && defined(TWI1_ENABLED)) &&\
-    ((SPIM1_ENABLED + TWI1_ENABLED) > 1))
+#if ((defined(SPIM1_ENABLED) && defined(TWI1_ENABLED)) && ((SPIM1_ENABLED + TWI1_ENABLED) > 1))
 #error "Peripherals overlap. SPIM1, TWI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIS1_ENABLED) && defined(SPI1_ENABLED)) &&\
-    ((SPIS1_ENABLED + SPI1_ENABLED) > 1))
+#if ((defined(SPIS1_ENABLED) && defined(SPI1_ENABLED)) && ((SPIS1_ENABLED + SPI1_ENABLED) > 1))
 #error "Peripherals overlap. SPIS1, SPI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIS1_ENABLED) && defined(TWI1_ENABLED)) &&\
-    ((SPIS1_ENABLED + TWI1_ENABLED) > 1))
+#if ((defined(SPIS1_ENABLED) && defined(TWI1_ENABLED)) && ((SPIS1_ENABLED + TWI1_ENABLED) > 1))
 #error "Peripherals overlap. SPIS1, TWI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPI1_ENABLED) && defined(TWI1_ENABLED)) &&\
-    ((SPI1_ENABLED + TWI1_ENABLED) > 1))
+#if ((defined(SPI1_ENABLED) && defined(TWI1_ENABLED)) && ((SPI1_ENABLED + TWI1_ENABLED) > 1))
 #error "Peripherals overlap. SPI1, TWI1 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPI2_ENABLED) && defined(SPIS2_ENABLED)) &&\
-    ((SPI2_ENABLED + SPIS2_ENABLED) > 1))
+#if ((defined(SPI2_ENABLED) && defined(SPIS2_ENABLED)) && ((SPI2_ENABLED + SPIS2_ENABLED) > 1))
 #error "Peripherals overlap. SPI2, SPIS2 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIM2_ENABLED) && defined(SPIS2_ENABLED)) &&\
-    ((SPI2_ENABLED + SPIS2_ENABLED) > 1))
+#if ((defined(SPIM2_ENABLED) && defined(SPIS2_ENABLED)) && ((SPI2_ENABLED + SPIS2_ENABLED) > 1))
 #error "Peripherals overlap. SPIM2, SPIS2 - only one of these can be enabled."
 #endif
 
-#if ((defined(SPIM2_ENABLED) && defined(SPI2_ENABLED)) &&\
-    ((SPI2_ENABLED + SPIS2_ENABLED) > 1))
+#if ((defined(SPIM2_ENABLED) && defined(SPI2_ENABLED)) && ((SPI2_ENABLED + SPIS2_ENABLED) > 1))
 #error "Peripherals overlap. SPIM2, SPI2 - only one of these can be enabled."
 #endif
 
@@ -275,13 +240,13 @@ extern "C" {
 
 #ifdef NFCT_PRESENT
 
-#if ((defined(NFC_HAL_ENABLED) && defined(NRF_CLOCK_ENABLED)) &&\
-    ((NFC_HAL_ENABLED) && (!NRF_CLOCK_ENABLED)))
+#if ((defined(NFC_HAL_ENABLED) && defined(NRF_CLOCK_ENABLED)) && \
+     ((NFC_HAL_ENABLED) && (!NRF_CLOCK_ENABLED)))
 #error "NFC_HAL requires CLOCK to work. NFC_HAL can not be enabled without CLOCK."
 #endif
 
-#if ((defined(NFC_HAL_ENABLED) && defined(TIMER4_ENABLED)) &&\
-    ((NFC_HAL_ENABLED + TIMER4_ENABLED) > 1))
+#if ((defined(NFC_HAL_ENABLED) && defined(TIMER4_ENABLED)) && \
+     ((NFC_HAL_ENABLED + TIMER4_ENABLED) > 1))
 #error "TIMER4 is used by NFC_HAL. NFC_HAL, TIMER4 - only one of these can be enabled."
 #endif
 
@@ -289,14 +254,12 @@ extern "C" {
 // Complex driver validation
 #ifdef LPCOMP_PRESENT
 
-#if ((defined(COMP_ENABLED) && defined(LPCOMP_ENABLED)) && \
-     (!NRFX_CHECK(NRFX_PRS_ENABLED)) && \
+#if ((defined(COMP_ENABLED) && defined(LPCOMP_ENABLED)) && (!NRFX_CHECK(NRFX_PRS_ENABLED)) && \
      ((COMP_ENABLED + LPCOMP_ENABLED) > 1))
 #error "Peripherals overlap. COMP, LPCOMP - only one of these can be enabled."
 #endif
 
 #endif
-
 
 #ifdef __cplusplus
 }

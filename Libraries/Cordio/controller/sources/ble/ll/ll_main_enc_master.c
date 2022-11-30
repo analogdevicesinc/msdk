@@ -44,47 +44,41 @@
  *  operating in master role.
  */
 /*************************************************************************************************/
-uint8_t LlStartEncryption(uint16_t handle, const uint8_t *pRand, uint16_t diversifier, const uint8_t *pKey)
+uint8_t LlStartEncryption(uint16_t handle, const uint8_t *pRand, uint16_t diversifier,
+                          const uint8_t *pKey)
 {
-  lctrStartEnc_t *pMsg;
+    lctrStartEnc_t *pMsg;
 
-  LL_TRACE_INFO1("### LlApi ###  LlStartEncryption, handle=%u", handle);
+    LL_TRACE_INFO1("### LlApi ###  LlStartEncryption, handle=%u", handle);
 
-  if (LctrIsProcActPended(handle, LCTR_CONN_MSG_API_START_ENC) == TRUE)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrIsProcActPended(handle, LCTR_CONN_MSG_API_START_ENC) == TRUE) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if (LctrIsCisEnabled(handle) == TRUE)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrIsCisEnabled(handle) == TRUE) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-       ((handle >= pLctrRtCfg->maxConn) ||
-       !LctrIsConnHandleEnabled(handle)))
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (LctrGetRole(handle) != LL_ROLE_MASTER))
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (LctrGetRole(handle) != LL_ROLE_MASTER)) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((pMsg = (lctrStartEnc_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.handle = handle;
-    pMsg->hdr.dispId = LCTR_DISP_CONN;
-    pMsg->hdr.event  = LCTR_CONN_MSG_API_START_ENC;
+    if ((pMsg = (lctrStartEnc_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.handle = handle;
+        pMsg->hdr.dispId = LCTR_DISP_CONN;
+        pMsg->hdr.event = LCTR_CONN_MSG_API_START_ENC;
 
-    memcpy(pMsg->rand, pRand, sizeof(pMsg->rand));
-    pMsg->diversifier = diversifier;
-    memcpy(pMsg->key, pKey, sizeof(pMsg->key));
+        memcpy(pMsg->rand, pRand, sizeof(pMsg->rand));
+        pMsg->diversifier = diversifier;
+        memcpy(pMsg->key, pKey, sizeof(pMsg->key));
 
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }

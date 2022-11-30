@@ -42,8 +42,8 @@ extern "C" {
  *
  */
 /**@{*/
-#define MPRVS_START_HDL               0x0500              /*!< \brief Start handle. */
-#define MPRVS_END_HDL                 (MPRVS_MAX_HDL - 1) /*!< \brief End handle. */
+#define MPRVS_START_HDL 0x0500 /*!< \brief Start handle. */
+#define MPRVS_END_HDL (MPRVS_MAX_HDL - 1) /*!< \brief End handle. */
 /**@}*/
 
 /**************************************************************************************************
@@ -51,15 +51,14 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh Provisioning Service handles */
-enum
-{
-  MPRVS_SVC_HDL = MPRVS_START_HDL,      /*!< Mesh Provisioning Server Service declaration */
-  MPRVS_DIN_CH_HDL,                     /*!< Mesh Provisioning Data In characteristic */
-  MPRVS_DIN_HDL,                        /*!< Mesh Provisioning Data In */
-  MPRVS_DOUT_CH_HDL,                    /*!< Mesh Provisioning Data Out characteristic */
-  MPRVS_DOUT_HDL,                       /*!< Mesh Provisioning Data Out */
-  MPRVS_DOUT_CH_CCC_HDL,                /*!< Mesh Provisioning Data Out Client Characteristic Configuration Descriptor */
-  MPRVS_MAX_HDL                         /*!< Max handle */
+enum {
+    MPRVS_SVC_HDL = MPRVS_START_HDL, /*!< Mesh Provisioning Server Service declaration */
+    MPRVS_DIN_CH_HDL, /*!< Mesh Provisioning Data In characteristic */
+    MPRVS_DIN_HDL, /*!< Mesh Provisioning Data In */
+    MPRVS_DOUT_CH_HDL, /*!< Mesh Provisioning Data Out characteristic */
+    MPRVS_DOUT_HDL, /*!< Mesh Provisioning Data Out */
+    MPRVS_DOUT_CH_CCC_HDL, /*!< Mesh Provisioning Data Out Client Characteristic Configuration Descriptor */
+    MPRVS_MAX_HDL /*!< Max handle */
 };
 
 /**************************************************************************************************
@@ -95,7 +94,7 @@ void SvcMprvsRemoveGroup(void);
 /*************************************************************************************************/
 void SvcMprvsRegister(attsWriteCback_t writeCback);
 
-/*! \} */    /* MESH_PROVISIONING_PROFILE */
+/*! \} */ /* MESH_PROVISIONING_PROFILE */
 
 #ifdef __cplusplus
 };

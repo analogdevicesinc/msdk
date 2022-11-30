@@ -85,7 +85,7 @@ typedef void (*uriCfgLockChangeCback_t)(uint8_t lockState, const uint8_t *pLock)
  */
 /*************************************************************************************************/
 void UriCfgStart(const uint8_t *pUriData, uint8_t uriDataLen, uint8_t uriFlags,
-    int8_t *pAdvTxPwrLevels, uint8_t txPwrMode, uint16_t beaconPeriod);
+                 int8_t *pAdvTxPwrLevels, uint8_t txPwrMode, uint16_t beaconPeriod);
 
 /*************************************************************************************************/
 /*!
@@ -131,7 +131,7 @@ void UriCfgMakeLockable(uint8_t lockState, uint8_t *pLock, uriCfgLockChangeCback
 /*************************************************************************************************/
 void UriCfgSetUriDataResetValue(const uint8_t *pUriData);
 
-/*! \} */    /* URIBEACON_CONFIGURATION_PROFILE */
+/*! \} */ /* URIBEACON_CONFIGURATION_PROFILE */
 
 #ifdef __cplusplus
 };

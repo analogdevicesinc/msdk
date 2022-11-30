@@ -26,8 +26,7 @@
 #define APP_MESH_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "wsf_assert.h"
@@ -40,41 +39,40 @@ extern "C"
 **************************************************************************************************/
 
 /*! Mesh callback events start */
-#define APP_MESH_CBACK_START                 0xF0 /*! Mesh App callback event starting value */
+#define APP_MESH_CBACK_START 0xF0 /*! Mesh App callback event starting value */
 
 /*! Mesh App callback events */
-enum appMeshEventValues
-{
-  APP_BR_TIMEOUT_EVT            = APP_MESH_CBACK_START, /*! App bearer timeout event */
-  APP_MESH_NODE_IDENTITY_TIMEOUT_EVT,                   /*! ADV with Node Identity timeout event */
-  APP_MESH_NODE_IDENTITY_USER_INTERACTION_EVT,          /*! ADV with Node Identity user interaction
+enum appMeshEventValues {
+    APP_BR_TIMEOUT_EVT = APP_MESH_CBACK_START, /*! App bearer timeout event */
+    APP_MESH_NODE_IDENTITY_TIMEOUT_EVT, /*! ADV with Node Identity timeout event */
+    APP_MESH_NODE_IDENTITY_USER_INTERACTION_EVT, /*! ADV with Node Identity user interaction
                                                          *  event
                                                          */
-  APP_MESH_NODE_RST_TIMEOUT_EVT,                        /*! Node Reset timeout event */
+    APP_MESH_NODE_RST_TIMEOUT_EVT, /*! Node Reset timeout event */
 };
 
 /*! Mesh App callback events end */
-#define APP_MESH_CBACK_END                   APP_MESH_NODE_RST_TIMEOUT_EVT  /*! Mesh App callback
+#define APP_MESH_CBACK_END \
+    APP_MESH_NODE_RST_TIMEOUT_EVT /*! Mesh App callback
                                                                              *  event ending value
                                                                              */
 
 /*! ADV with Node Identity timeout */
-#define APP_MESH_NODE_IDENTITY_TIMEOUT_MS    60000
+#define APP_MESH_NODE_IDENTITY_TIMEOUT_MS 60000
 
 /*! Node Reset timeout */
-#define APP_MESH_NODE_RST_TIMEOUT_MS         100
+#define APP_MESH_NODE_RST_TIMEOUT_MS 100
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Configurable parameters for Provisioning Server */
-typedef struct meshPrvSrCfg_tag
-{
-  uint8_t   devUuid[MESH_PRV_DEVICE_UUID_SIZE]; /*!< Device UUID */
-  uint32_t  pbAdvInterval;                      /*!< Provisioning Bearer advertising interval */
-  uint8_t   pbAdvIfId;                          /*!< Provisioning Bearer ADV interface ID */
-  bool_t    pbAdvRestart;                       /*!< Auto-restart Provisioning */
+typedef struct meshPrvSrCfg_tag {
+    uint8_t devUuid[MESH_PRV_DEVICE_UUID_SIZE]; /*!< Device UUID */
+    uint32_t pbAdvInterval; /*!< Provisioning Bearer advertising interval */
+    uint8_t pbAdvIfId; /*!< Provisioning Bearer ADV interface ID */
+    bool_t pbAdvRestart; /*!< Auto-restart Provisioning */
 } meshPrvSrCfg_t;
 
 /**************************************************************************************************

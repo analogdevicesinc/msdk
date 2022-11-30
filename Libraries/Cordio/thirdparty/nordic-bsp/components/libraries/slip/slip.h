@@ -59,21 +59,19 @@ extern "C" {
  */
 
 /** @brief Status information that is used while receiving and decoding a packet. */
-typedef enum
-{
-  SLIP_STATE_DECODING, //!< Ready to receive the next byte.
-  SLIP_STATE_ESC_RECEIVED, //!< An ESC byte has been received and the next byte must be decoded differently.
-  SLIP_STATE_CLEARING_INVALID_PACKET //!< The received data is invalid and transfer must be restarted.
+typedef enum {
+    SLIP_STATE_DECODING, //!< Ready to receive the next byte.
+    SLIP_STATE_ESC_RECEIVED, //!< An ESC byte has been received and the next byte must be decoded differently.
+    SLIP_STATE_CLEARING_INVALID_PACKET //!< The received data is invalid and transfer must be restarted.
 } slip_read_state_t;
 
-  /** @brief Representation of a SLIP packet. */
-typedef struct
-{
-  slip_read_state_t   state; //!< Current state of the packet (see @ref slip_read_state_t).
+/** @brief Representation of a SLIP packet. */
+typedef struct {
+    slip_read_state_t state; //!< Current state of the packet (see @ref slip_read_state_t).
 
-  uint8_t             * p_buffer; //!< Decoded data.
-  uint32_t            current_index; //!< Current length of the packet that has been received.
-  uint32_t            buffer_len; //!< Size of the buffer that is available.
+    uint8_t *p_buffer; //!< Decoded data.
+    uint32_t current_index; //!< Current length of the packet that has been received.
+    uint32_t buffer_len; //!< Size of the buffer that is available.
 } slip_t;
 
 /**@brief Function for encoding a SLIP packet.
@@ -88,7 +86,8 @@ typedef struct
  * @retval  NRF_SUCCESS         If the input was successfully encoded into output.
  * @retval  NRF_ERROR_NULL      If one of the provided parameters is NULL.
  */
-ret_code_t slip_encode(uint8_t * p_output,  uint8_t * p_input, uint32_t input_length, uint32_t * p_output_buffer_length);
+ret_code_t slip_encode(uint8_t *p_output, uint8_t *p_input, uint32_t input_length,
+                       uint32_t *p_output_buffer_length);
 
 /**@brief Function for decoding a SLIP packet.
  *
@@ -106,7 +105,7 @@ ret_code_t slip_encode(uint8_t * p_output,  uint8_t * p_input, uint32_t input_le
  * @retval NRF_ERROR_INVALID_DATA   If the packet is encoded wrong. In this case, @p p_slip::state is set to @ref SLIP_STATE_CLEARING_INVALID_PACKET,
  *                                  and decoding will stay in this state until the END byte is received.
  */
-ret_code_t slip_decode_add_byte(slip_t * p_slip, uint8_t c);
+ret_code_t slip_decode_add_byte(slip_t *p_slip, uint8_t c);
 
 #ifdef __cplusplus
 }

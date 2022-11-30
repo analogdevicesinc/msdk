@@ -48,14 +48,13 @@ extern secCb_t secCb;
 /*************************************************************************************************/
 static uint8_t getNextToken()
 {
-  uint8_t token = secCb.token++;
+    uint8_t token = secCb.token++;
 
-  if (token == SEC_TOKEN_INVALID)
-  {
-    token = secCb.token++;
-  }
+    if (token == SEC_TOKEN_INVALID) {
+        token = secCb.token++;
+    }
 
-  return token;
+    return token;
 }
 
 /*************************************************************************************************/
@@ -74,27 +73,26 @@ static uint8_t getNextToken()
  *  \return Token value.
  */
 /*************************************************************************************************/
-uint8_t SecAesRev(uint8_t *pKey, uint8_t *pPlaintext, wsfHandlerId_t handlerId,
-                  uint16_t param, uint8_t event)
+uint8_t SecAesRev(uint8_t *pKey, uint8_t *pPlaintext, wsfHandlerId_t handlerId, uint16_t param,
+                  uint8_t event)
 {
-  secQueueBuf_t  *pBuf;
+    secQueueBuf_t *pBuf;
 
-  /* allocate a buffer */
-  if ((pBuf = WsfMsgAlloc(sizeof(secQueueBuf_t))) != NULL)
-  {
-    pBuf->msg.hdr.status = getNextToken();
-    pBuf->msg.hdr.param = param;
-    pBuf->msg.hdr.event = event;
+    /* allocate a buffer */
+    if ((pBuf = WsfMsgAlloc(sizeof(secQueueBuf_t))) != NULL) {
+        pBuf->msg.hdr.status = getNextToken();
+        pBuf->msg.hdr.param = param;
+        pBuf->msg.hdr.event = event;
 
-    pBuf->type = SEC_TYPE_AES_REV;
+        pBuf->type = SEC_TYPE_AES_REV;
 
-    /* call HCI encrypt function */
-    SecLeEncryptCmd(pKey, pPlaintext, pBuf, handlerId);
+        /* call HCI encrypt function */
+        SecLeEncryptCmd(pKey, pPlaintext, pBuf, handlerId);
 
-    return pBuf->msg.hdr.status;
-  }
+        return pBuf->msg.hdr.status;
+    }
 
-  return SEC_TOKEN_INVALID;
+    return SEC_TOKEN_INVALID;
 }
 
 /*************************************************************************************************/
@@ -111,15 +109,15 @@ uint8_t SecAesRev(uint8_t *pKey, uint8_t *pPlaintext, wsfHandlerId_t handlerId,
 /*************************************************************************************************/
 void SecAesRevHciCback(secQueueBuf_t *pBuf, hciEvt_t *pEvent, wsfHandlerId_t handlerId)
 {
-  secAes_t *pAes = (secAes_t *) &pBuf->msg;
+    secAes_t *pAes = (secAes_t *)&pBuf->msg;
 
-  /* set encrypted data pointer and copy */
-  pAes->pCiphertext = pBuf->ciphertext;
+    /* set encrypted data pointer and copy */
+    pAes->pCiphertext = pBuf->ciphertext;
 
-  Calc128Cpy(pAes->pCiphertext, pEvent->leEncryptCmdCmpl.data);
+    Calc128Cpy(pAes->pCiphertext, pEvent->leEncryptCmdCmpl.data);
 
-  /* send message */
-  WsfMsgSend(handlerId, pAes);
+    /* send message */
+    WsfMsgSend(handlerId, pAes);
 }
 
 /*************************************************************************************************/
@@ -133,5 +131,5 @@ void SecAesRevHciCback(secQueueBuf_t *pBuf, hciEvt_t *pEvent, wsfHandlerId_t han
 /*************************************************************************************************/
 void SecAesRevInit()
 {
-  secCb.hciCbackTbl[SEC_TYPE_AES_REV] = SecAesRevHciCback;
+    secCb.hciCbackTbl[SEC_TYPE_AES_REV] = SecAesRevHciCback;
 }

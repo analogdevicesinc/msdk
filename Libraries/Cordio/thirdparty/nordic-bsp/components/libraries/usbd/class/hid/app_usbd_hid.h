@@ -60,9 +60,9 @@ extern "C" {
  * @{
  */
 
-#define APP_USBD_HID_IFACE_IDX 0    /**< @brief HID instance interface index.   */
-#define APP_USBD_HID_EPIN_IDX  0    /**< @brief HID instance endpoint IN index. */
-#define APP_USBD_HID_EPOUT_IDX 1    /**< @brief HID instance endpoint OUT index.*/
+#define APP_USBD_HID_IFACE_IDX 0 /**< @brief HID instance interface index.   */
+#define APP_USBD_HID_EPIN_IDX 0 /**< @brief HID instance endpoint IN index. */
+#define APP_USBD_HID_EPOUT_IDX 1 /**< @brief HID instance endpoint OUT index.*/
 
 /**
  * @brief HID context state flags.
@@ -70,9 +70,9 @@ extern "C" {
  * Bit numbers in @ref app_usbd_hid_ctx_t::state_flags.
  */
 typedef enum {
-    APP_USBD_HID_STATE_FLAG_APPENDED          = 0, /**< State flag APPENDED.          */
-    APP_USBD_HID_STATE_FLAG_STARTED           = 1, /**< State flag STARTED.           */
-    APP_USBD_HID_STATE_FLAG_SUSPENDED         = 2, /**< State flag SUSPENDED.         */
+    APP_USBD_HID_STATE_FLAG_APPENDED = 0, /**< State flag APPENDED.          */
+    APP_USBD_HID_STATE_FLAG_STARTED = 1, /**< State flag STARTED.           */
+    APP_USBD_HID_STATE_FLAG_SUSPENDED = 2, /**< State flag SUSPENDED.         */
     APP_USBD_HID_STATE_FLAG_TRANS_IN_PROGRESS = 3, /**< State flag TRANS_IN_PROGRESS. */
 } app_usbd_hid_state_flag_t;
 
@@ -86,13 +86,12 @@ typedef enum {
    @endcode
  */
 typedef enum {
-    APP_USBD_HID_USER_EVT_SET_BOOT_PROTO,           /**< Event SET_BOOT_PROTOCOL.       */
-    APP_USBD_HID_USER_EVT_SET_REPORT_PROTO,         /**< Event SET_REPORT_PROTOCOL.     */
-    APP_USBD_HID_USER_EVT_OUT_REPORT_READY,         /**< Event OUT_REPORT_READY.        */
-    APP_USBD_HID_USER_EVT_IN_REPORT_DONE,           /**< Event IN_REPORT_DONE.          */
-    APP_USBD_HID_USER_EVT_FEATURE_REPORT_READY,     /**< Event FEATURE_REPORT_READY.    */
+    APP_USBD_HID_USER_EVT_SET_BOOT_PROTO, /**< Event SET_BOOT_PROTOCOL.       */
+    APP_USBD_HID_USER_EVT_SET_REPORT_PROTO, /**< Event SET_REPORT_PROTOCOL.     */
+    APP_USBD_HID_USER_EVT_OUT_REPORT_READY, /**< Event OUT_REPORT_READY.        */
+    APP_USBD_HID_USER_EVT_IN_REPORT_DONE, /**< Event IN_REPORT_DONE.          */
+    APP_USBD_HID_USER_EVT_FEATURE_REPORT_READY, /**< Event FEATURE_REPORT_READY.    */
 } app_usbd_hid_user_event_t;
-
 
 /**
  * @brief User event handler.
@@ -100,7 +99,7 @@ typedef enum {
  * @param[in] p_inst Class instance.
  * @param[in] event  User event.
  */
-typedef void (*app_usbd_hid_user_ev_handler_t)(app_usbd_class_inst_t const * p_inst,
+typedef void (*app_usbd_hid_user_ev_handler_t)(app_usbd_class_inst_t const *p_inst,
                                                app_usbd_hid_user_event_t event);
 
 /**
@@ -109,14 +108,13 @@ typedef void (*app_usbd_hid_user_ev_handler_t)(app_usbd_class_inst_t const * p_i
  * @param[in] p_inst        Class instance.
  * @param[in] report_id     Number of report ID that needs idle transfer.
  */
-typedef ret_code_t (*app_usbd_hid_idle_handler_t)(app_usbd_class_inst_t const * p_inst,
+typedef ret_code_t (*app_usbd_hid_idle_handler_t)(app_usbd_class_inst_t const *p_inst,
                                                   uint8_t report_id);
 
 /**
  * @brief HID unified interface
  * */
 typedef struct {
-
     /**
      * @brief Function called on HID specific, GetReport request.
      *
@@ -127,8 +125,8 @@ typedef struct {
      *
      * @return                  Standard error code.
      */
-    ret_code_t (*on_get_report)(app_usbd_class_inst_t const * p_inst,
-                                app_usbd_setup_evt_t const * p_setup_ev);
+    ret_code_t (*on_get_report)(app_usbd_class_inst_t const *p_inst,
+                                app_usbd_setup_evt_t const *p_setup_ev);
 
     /**
      * @brief Function called on HID specific, SetReport request.
@@ -141,8 +139,8 @@ typedef struct {
      *
      * @return                  Standard error code.
      */
-    ret_code_t (*on_set_report)(app_usbd_class_inst_t const * p_inst,
-                                app_usbd_setup_evt_t const * p_setup_ev);
+    ret_code_t (*on_set_report)(app_usbd_class_inst_t const *p_inst,
+                                app_usbd_setup_evt_t const *p_setup_ev);
 
     /**
      * @brief Function called on IN endpoint transfer.
@@ -153,7 +151,7 @@ typedef struct {
      *
      * @return                  Standard error code.
      */
-    ret_code_t (*ep_transfer_in)(app_usbd_class_inst_t const * p_inst);
+    ret_code_t (*ep_transfer_in)(app_usbd_class_inst_t const *p_inst);
 
     /**
      * @brief Function called on OUT endpoint transfer.
@@ -165,7 +163,7 @@ typedef struct {
      *
      * @return                  Standard error code.
      */
-    ret_code_t (*ep_transfer_out)(app_usbd_class_inst_t const * p_inst);
+    ret_code_t (*ep_transfer_out)(app_usbd_class_inst_t const *p_inst);
 
     /**
      * @brief Function returns subclass descriptor size.
@@ -175,8 +173,7 @@ typedef struct {
      *
      * @return                  Size of descriptor
      */
-    size_t (*subclass_length)(app_usbd_class_inst_t const * p_inst,
-                              uint8_t                       desc_num);
+    size_t (*subclass_length)(app_usbd_class_inst_t const *p_inst, uint8_t desc_num);
 
     /**
      * @brief Function returns pointer to subclass descriptor data.
@@ -187,9 +184,8 @@ typedef struct {
      *
      * @return                  Pointer to requested byte in subclass descriptor
      */
-    const uint8_t * (*subclass_data)(app_usbd_class_inst_t const * p_inst,
-                                     uint8_t                       desc_num,
-                                     uint32_t                      cur_byte);
+    const uint8_t *(*subclass_data)(app_usbd_class_inst_t const *p_inst, uint8_t desc_num,
+                                    uint32_t cur_byte);
 
     /**
      * @brief Function called on idle transfer
@@ -201,9 +197,9 @@ typedef struct {
      *
      * @return  Standard error code.
      */
-    ret_code_t (*on_idle)(app_usbd_class_inst_t const * p_inst, uint8_t report_id);
-    
-    ret_code_t (*set_idle_handler)(app_usbd_class_inst_t const * p_inst,
+    ret_code_t (*on_idle)(app_usbd_class_inst_t const *p_inst, uint8_t report_id);
+
+    ret_code_t (*set_idle_handler)(app_usbd_class_inst_t const *p_inst,
                                    app_usbd_hid_idle_handler_t handler);
 } app_usbd_hid_methods_t;
 
@@ -211,11 +207,9 @@ typedef struct {
  * @brief HID report buffers.
  */
 typedef struct {
-    uint8_t * p_buff;
-    size_t    size;
+    uint8_t *p_buff;
+    size_t size;
 } app_usbd_hid_report_buffer_t;
-
-
 
 /**
  * @brief Define OUT report buffer structure @ref app_usbd_hid_report_buffer_t.
@@ -223,11 +217,11 @@ typedef struct {
  * @param name        Instance name.
  * @param rep_size    Output report size.
  */
-#define APP_USBD_HID_GENERIC_GLOBAL_OUT_REP_DEF(name, rep_size)  \
-    static uint8_t CONCAT_2(name, _buf)[(rep_size)];             \
-    const app_usbd_hid_report_buffer_t name = {                  \
-            .p_buff = CONCAT_2(name, _buf),                      \
-            .size = sizeof(CONCAT_2(name, _buf)),                \
+#define APP_USBD_HID_GENERIC_GLOBAL_OUT_REP_DEF(name, rep_size) \
+    static uint8_t CONCAT_2(name, _buf)[(rep_size)];            \
+    const app_usbd_hid_report_buffer_t name = {                 \
+        .p_buff = CONCAT_2(name, _buf),                         \
+        .size = sizeof(CONCAT_2(name, _buf)),                   \
     }
 
 /**
@@ -236,22 +230,21 @@ typedef struct {
  * @param name        Instance name.
  * @param rep_size    Feature report size.
  */
-#define APP_USBD_HID_GENERIC_GLOBAL_FEATURE_REP_DEF(name, rep_size)  \
-    static uint8_t CONCAT_2(name, _feature_buf)[(rep_size)];         \
-    const app_usbd_hid_report_buffer_t name = {                      \
-            .p_buff = CONCAT_2(name, _feature_buf),                  \
-            .size = sizeof(CONCAT_2(name, _feature_buf)),            \
+#define APP_USBD_HID_GENERIC_GLOBAL_FEATURE_REP_DEF(name, rep_size) \
+    static uint8_t CONCAT_2(name, _feature_buf)[(rep_size)];        \
+    const app_usbd_hid_report_buffer_t name = {                     \
+        .p_buff = CONCAT_2(name, _feature_buf),                     \
+        .size = sizeof(CONCAT_2(name, _feature_buf)),               \
     }
-
 
 /**
  * @brief HID subclass descriptor.
  */
 
 typedef struct {
-    size_t                size;
+    size_t size;
     app_usbd_descriptor_t type;
-    uint8_t const * const p_data;
+    uint8_t const *const p_data;
 } app_usbd_hid_subclass_desc_t;
 
 /**
@@ -261,16 +254,11 @@ typedef struct {
  * @param ...   Report descriptor data
  */
 
-#define APP_USBD_HID_GENERIC_SUBCLASS_REPORT_DESC(name, ...)    \
-    static uint8_t const CONCAT_2(name,  _data)[] =             \
-        __VA_ARGS__                                             \
-    ;                                                           \
-    static const app_usbd_hid_subclass_desc_t name =            \
-    {                                                           \
-        sizeof(CONCAT_2(name, _data)),                          \
-        APP_USBD_DESCRIPTOR_REPORT,                             \
-        CONCAT_2(name,_data)                                    \
-    }
+#define APP_USBD_HID_GENERIC_SUBCLASS_REPORT_DESC(name, ...)                          \
+    static uint8_t const CONCAT_2(name, _data)[] = __VA_ARGS__;                       \
+    static const app_usbd_hid_subclass_desc_t name = { sizeof(CONCAT_2(name, _data)), \
+                                                       APP_USBD_DESCRIPTOR_REPORT,    \
+                                                       CONCAT_2(name, _data) }
 
 /**
  * @brief Initializer of HID physical descriptor
@@ -279,35 +267,29 @@ typedef struct {
  * @param ...   Physical descriptor data
  */
 
-#define APP_USBD_HID_GENERIC_SUBCLASS_PHYSICAL_DESC(name, ...)  \
-    static uint8_t const CONCAT_2(name,  _data)[] =             \
-        __VA_ARGS__                                             \
-    ;                                                           \
-    static const app_usbd_hid_subclass_desc_t name =            \
-    {                                                           \
-        sizeof(CONCAT_2(name, _data)),                          \
-        APP_USBD_DESCRIPTOR_PHYSICAL,                           \
-        CONCAT_2(name,_data)                                    \
-    }
-
+#define APP_USBD_HID_GENERIC_SUBCLASS_PHYSICAL_DESC(name, ...)                        \
+    static uint8_t const CONCAT_2(name, _data)[] = __VA_ARGS__;                       \
+    static const app_usbd_hid_subclass_desc_t name = { sizeof(CONCAT_2(name, _data)), \
+                                                       APP_USBD_DESCRIPTOR_PHYSICAL,  \
+                                                       CONCAT_2(name, _data) }
 
 /**
  * @brief USB HID instance.
  */
 typedef struct {
-    app_usbd_hid_subclass_desc_t const ** const p_subclass_desc; //!< HID subclass descriptors array.
-    size_t subclass_desc_count;                                  //!< HID subclass descriptors count.
+    app_usbd_hid_subclass_desc_t const **const p_subclass_desc; //!< HID subclass descriptors array.
+    size_t subclass_desc_count; //!< HID subclass descriptors count.
 
-    app_usbd_hid_subclass_t subclass_boot;    //!< Boot device (see HID definition).
-    app_usbd_hid_protocol_t protocol;         //!< HID protocol (see HID definition).
+    app_usbd_hid_subclass_t subclass_boot; //!< Boot device (see HID definition).
+    app_usbd_hid_protocol_t protocol; //!< HID protocol (see HID definition).
 
-    app_usbd_hid_report_buffer_t       * p_rep_buffer_in;        //!< Report buffer IN.
-    app_usbd_hid_report_buffer_t const * p_rep_buffer_out;       //!< Report buffer OUT (only one instance).
-    app_usbd_hid_report_buffer_t const * p_rep_buffer_feature;   //!< Report buffer FEATURE.
-    app_usbd_hid_methods_t const       * p_hid_methods;          //!< Hid interface methods.
-    app_usbd_hid_user_ev_handler_t       user_event_handler;     //!< User event handler.
+    app_usbd_hid_report_buffer_t *p_rep_buffer_in; //!< Report buffer IN.
+    app_usbd_hid_report_buffer_t const *p_rep_buffer_out; //!< Report buffer OUT (only one instance).
+    app_usbd_hid_report_buffer_t const *p_rep_buffer_feature; //!< Report buffer FEATURE.
+    app_usbd_hid_methods_t const *p_hid_methods; //!< Hid interface methods.
+    app_usbd_hid_user_ev_handler_t user_event_handler; //!< User event handler.
 
-    uint8_t * p_ep_interval;   //!< Endpoint intervals.
+    uint8_t *p_ep_interval; //!< Endpoint intervals.
 } app_usbd_hid_inst_t;
 
 /**
@@ -324,43 +306,31 @@ typedef struct {
  * @param ep_list               List of endpoints and intervals
  * */
 
-#define APP_USBD_HID_INST_CONFIG(subclass_dsc,               \
-                                 sub_boot,                   \
-                                 protocl,                    \
-                                 report_buff_in,             \
-                                 report_buff_out,            \
-                                 report_buff_feature,        \
-                                 user_ev_handler,            \
-                                 hid_methods,                \
-                                 ep_list)                    \
-    {                                                        \
-        .p_subclass_desc = subclass_dsc,                     \
-        .subclass_desc_count = ARRAY_SIZE(subclass_dsc),     \
-        .p_rep_buffer_in = report_buff_in,                   \
-        .p_rep_buffer_out = report_buff_out,                 \
-        .p_rep_buffer_feature = report_buff_feature,         \
-        .user_event_handler = user_ev_handler,               \
-        .p_hid_methods = hid_methods,                        \
-        .subclass_boot = sub_boot,                           \
-        .protocol = protocl,                                 \
-        .p_ep_interval = ep_list                             \
+#define APP_USBD_HID_INST_CONFIG(subclass_dsc, sub_boot, protocl, report_buff_in, report_buff_out, \
+                                 report_buff_feature, user_ev_handler, hid_methods, ep_list)       \
+    {                                                                                              \
+        .p_subclass_desc = subclass_dsc, .subclass_desc_count = ARRAY_SIZE(subclass_dsc),          \
+        .p_rep_buffer_in = report_buff_in, .p_rep_buffer_out = report_buff_out,                    \
+        .p_rep_buffer_feature = report_buff_feature, .user_event_handler = user_ev_handler,        \
+        .p_hid_methods = hid_methods, .subclass_boot = sub_boot, .protocol = protocl,              \
+        .p_ep_interval = ep_list                                                                   \
     }
 
 /**
  * @brief HID internal context.
  * */
 typedef struct {
-    nrf_atomic_u32_t                state_flags;                                     //!< HID state flags @ref app_usbd_hid_state_flag_t.
-    nrf_atomic_flag_t               access_lock;                                     //!< Lock flag to internal data.
-    uint8_t                         idle_rate[APP_USBD_HID_REPORT_IDLE_TABLE_SIZE];  //!< HID idle rate (4ms units).
-    app_usbd_hid_protocol_select_t  selected_protocol;                               //!< Currently selected HID protocol.
-    app_usbd_hid_idle_handler_t     idle_handler;                                    //!< Idle report handler.
-    uint32_t                        first_idle[APP_USBD_HID_REPORT_IDLE_TABLE_SIZE]; //!< Number of frame at first idle transaction.
-    bool                            lock_idle[APP_USBD_HID_REPORT_IDLE_TABLE_SIZE];  //!< Lock flag to idle transactions.
-    bool                            idle_on;                                         //!< Idle transactions flag.
-    bool                            idle_id_report;                                  //!< Idle transactions with nonzero report id flag.
+    nrf_atomic_u32_t state_flags; //!< HID state flags @ref app_usbd_hid_state_flag_t.
+    nrf_atomic_flag_t access_lock; //!< Lock flag to internal data.
+    uint8_t idle_rate[APP_USBD_HID_REPORT_IDLE_TABLE_SIZE]; //!< HID idle rate (4ms units).
+    app_usbd_hid_protocol_select_t selected_protocol; //!< Currently selected HID protocol.
+    app_usbd_hid_idle_handler_t idle_handler; //!< Idle report handler.
+    uint32_t first_idle
+        [APP_USBD_HID_REPORT_IDLE_TABLE_SIZE]; //!< Number of frame at first idle transaction.
+    bool lock_idle[APP_USBD_HID_REPORT_IDLE_TABLE_SIZE]; //!< Lock flag to idle transactions.
+    bool idle_on; //!< Idle transactions flag.
+    bool idle_id_report; //!< Idle transactions with nonzero report id flag.
 } app_usbd_hid_ctx_t;
-
 
 /**
  * @brief Locks internal hid context.
@@ -370,12 +340,11 @@ typedef struct {
  *
  * @param[in] p_hid_ctx Internal hid context
  */
-static inline void app_usbd_hid_access_lock(app_usbd_hid_ctx_t * p_hid_ctx)
+static inline void app_usbd_hid_access_lock(app_usbd_hid_ctx_t *p_hid_ctx)
 {
     UNUSED_RETURN_VALUE(nrf_atomic_flag_set(&p_hid_ctx->access_lock));
     __DSB();
 }
-
 
 /**
  * @brief Unlocks internal hid context.
@@ -385,7 +354,7 @@ static inline void app_usbd_hid_access_lock(app_usbd_hid_ctx_t * p_hid_ctx)
  *
  * @param[in] p_hid_ctx Internal hid context.
  */
-static inline void app_usbd_hid_access_unlock(app_usbd_hid_ctx_t * p_hid_ctx)
+static inline void app_usbd_hid_access_unlock(app_usbd_hid_ctx_t *p_hid_ctx)
 {
     UNUSED_RETURN_VALUE(nrf_atomic_flag_clear(&p_hid_ctx->access_lock));
     __DSB();
@@ -399,7 +368,7 @@ static inline void app_usbd_hid_access_unlock(app_usbd_hid_ctx_t * p_hid_ctx)
  * @retval true  Locked.
  * @retval false Unlocked.
  */
-static inline bool app_usbd_hid_access_lock_test(app_usbd_hid_ctx_t * p_hid_ctx)
+static inline bool app_usbd_hid_access_lock_test(app_usbd_hid_ctx_t *p_hid_ctx)
 {
     return p_hid_ctx->access_lock != 0;
 }
@@ -410,7 +379,7 @@ static inline bool app_usbd_hid_access_lock_test(app_usbd_hid_ctx_t * p_hid_ctx)
  * @param[in] p_hid_ctx     Internal HID context.
  * @param[in] flag          Flag to set.
  */
-static inline void app_usbd_hid_state_flag_set(app_usbd_hid_ctx_t * p_hid_ctx,
+static inline void app_usbd_hid_state_flag_set(app_usbd_hid_ctx_t *p_hid_ctx,
                                                app_usbd_hid_state_flag_t flag)
 {
     UNUSED_RETURN_VALUE(nrf_atomic_u32_or(&p_hid_ctx->state_flags, 1u << flag));
@@ -422,12 +391,11 @@ static inline void app_usbd_hid_state_flag_set(app_usbd_hid_ctx_t * p_hid_ctx,
  * @param[in] p_hid_ctx     Internal HID context.
  * @param[in] flag          Flag to clear.
  */
-static inline void app_usbd_hid_state_flag_clr(app_usbd_hid_ctx_t * p_hid_ctx,
+static inline void app_usbd_hid_state_flag_clr(app_usbd_hid_ctx_t *p_hid_ctx,
                                                app_usbd_hid_state_flag_t flag)
 {
     UNUSED_RETURN_VALUE(nrf_atomic_u32_and(&p_hid_ctx->state_flags, ~(1u << flag)));
 }
-
 
 /**
  * @brief Test one of the HID internal state flags.
@@ -438,7 +406,7 @@ static inline void app_usbd_hid_state_flag_clr(app_usbd_hid_ctx_t * p_hid_ctx,
  * @retval true  Flag is set.
  * @retval false Flag is not set.
  */
-static inline bool app_usbd_hid_state_flag_test(app_usbd_hid_ctx_t * p_hid_ctx,
+static inline bool app_usbd_hid_state_flag_test(app_usbd_hid_ctx_t *p_hid_ctx,
                                                 app_usbd_hid_state_flag_t flag)
 {
     return ((p_hid_ctx->state_flags >> flag) & 1) == 1;
@@ -452,10 +420,9 @@ static inline bool app_usbd_hid_state_flag_test(app_usbd_hid_ctx_t * p_hid_ctx,
  * @retval true  Input endpoint transfer required.
  * @retval false Transfer in progress or not allowed.
  */
-static inline bool app_usbd_hid_trans_required(app_usbd_hid_ctx_t * p_hid_ctx)
+static inline bool app_usbd_hid_trans_required(app_usbd_hid_ctx_t *p_hid_ctx)
 {
-    if (app_usbd_hid_state_flag_test(p_hid_ctx, APP_USBD_HID_STATE_FLAG_SUSPENDED) != 0)
-    {
+    if (app_usbd_hid_state_flag_test(p_hid_ctx, APP_USBD_HID_STATE_FLAG_SUSPENDED) != 0) {
         UNUSED_RETURN_VALUE(app_usbd_wakeup_req());
         return false;
     }
@@ -473,12 +440,11 @@ static inline bool app_usbd_hid_trans_required(app_usbd_hid_ctx_t * p_hid_ctx)
  * @retval true  State is valid.
  * @retval false State is invalid.
  */
-static inline bool app_usbd_hid_state_valid(app_usbd_hid_ctx_t * p_hid_ctx)
+static inline bool app_usbd_hid_state_valid(app_usbd_hid_ctx_t *p_hid_ctx)
 {
     /*Check whether internal flags allow to enable mouse*/
-    if ((app_usbd_hid_state_flag_test(p_hid_ctx, APP_USBD_HID_STATE_FLAG_APPENDED) == 0)  ||
-        (app_usbd_hid_state_flag_test(p_hid_ctx, APP_USBD_HID_STATE_FLAG_STARTED) == 0))
-    {
+    if ((app_usbd_hid_state_flag_test(p_hid_ctx, APP_USBD_HID_STATE_FLAG_APPENDED) == 0) ||
+        (app_usbd_hid_state_flag_test(p_hid_ctx, APP_USBD_HID_STATE_FLAG_STARTED) == 0)) {
         return false;
     }
 
@@ -498,11 +464,10 @@ static inline bool app_usbd_hid_state_valid(app_usbd_hid_ctx_t * p_hid_ctx)
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_hid_event_handler(app_usbd_class_inst_t const * p_inst,
-                                      app_usbd_hid_inst_t const * p_hinst,
-                                      app_usbd_hid_ctx_t * p_hid_ctx,
-                                      app_usbd_complex_evt_t const * p_event);
-
+ret_code_t app_usbd_hid_event_handler(app_usbd_class_inst_t const *p_inst,
+                                      app_usbd_hid_inst_t const *p_hinst,
+                                      app_usbd_hid_ctx_t *p_hid_ctx,
+                                      app_usbd_complex_evt_t const *p_event);
 
 /**
  * @brief Returns IN report buffer.
@@ -511,7 +476,7 @@ ret_code_t app_usbd_hid_event_handler(app_usbd_class_inst_t const * p_inst,
  *
  * @return Report buffer handle or NULL if report doesn't exist.
  */
-app_usbd_hid_report_buffer_t * app_usbd_hid_rep_buff_in_get(app_usbd_hid_inst_t const * p_hinst);
+app_usbd_hid_report_buffer_t *app_usbd_hid_rep_buff_in_get(app_usbd_hid_inst_t const *p_hinst);
 
 /**
  * @brief Returns OUT report buffer.
@@ -525,7 +490,7 @@ app_usbd_hid_report_buffer_t * app_usbd_hid_rep_buff_in_get(app_usbd_hid_inst_t 
  * @return Report buffer handle or NULL if report doesn't exist.
  */
 static inline app_usbd_hid_report_buffer_t const *
-app_usbd_hid_rep_buff_out_get(app_usbd_hid_inst_t const * p_hinst)
+app_usbd_hid_rep_buff_out_get(app_usbd_hid_inst_t const *p_hinst)
 {
     ASSERT(p_hinst);
     return p_hinst->p_rep_buffer_out;
@@ -538,7 +503,8 @@ app_usbd_hid_rep_buff_out_get(app_usbd_hid_inst_t const * p_hinst)
  *
  * @return Report buffer handle or NULL if report doesn't exist.
  */
-app_usbd_hid_report_buffer_t const * app_usbd_hid_rep_buff_feature_get(app_usbd_hid_inst_t const * p_hinst);
+app_usbd_hid_report_buffer_t const *
+app_usbd_hid_rep_buff_feature_get(app_usbd_hid_inst_t const *p_hinst);
 
 /**
  * @brief Returns HID selected protocol.
@@ -547,7 +513,8 @@ app_usbd_hid_report_buffer_t const * app_usbd_hid_rep_buff_feature_get(app_usbd_
  *
  * @return Currently selected protocol (@ref app_usbd_hid_protocol_select_t).
  */
-static inline app_usbd_hid_protocol_select_t app_usbd_hid_selected_protocol_get(app_usbd_hid_ctx_t * p_hid_ctx)
+static inline app_usbd_hid_protocol_select_t
+app_usbd_hid_selected_protocol_get(app_usbd_hid_ctx_t *p_hid_ctx)
 {
     ASSERT(p_hid_ctx);
     return p_hid_ctx->selected_protocol;
@@ -560,12 +527,12 @@ static inline app_usbd_hid_protocol_select_t app_usbd_hid_selected_protocol_get(
  *
  * @return IN endpoint address.
  */
-static inline nrf_drv_usbd_ep_t app_usbd_hid_epin_addr_get(app_usbd_class_inst_t const * p_inst)
+static inline nrf_drv_usbd_ep_t app_usbd_hid_epin_addr_get(app_usbd_class_inst_t const *p_inst)
 {
-    app_usbd_class_iface_conf_t const * class_iface;
+    app_usbd_class_iface_conf_t const *class_iface;
     class_iface = app_usbd_class_iface_get(p_inst, APP_USBD_HID_IFACE_IDX);
 
-    app_usbd_class_ep_conf_t const * ep_cfg;
+    app_usbd_class_ep_conf_t const *ep_cfg;
     ep_cfg = app_usbd_class_iface_ep_get(class_iface, APP_USBD_HID_EPIN_IDX);
 
     return app_usbd_class_ep_address_get(ep_cfg);
@@ -578,12 +545,12 @@ static inline nrf_drv_usbd_ep_t app_usbd_hid_epin_addr_get(app_usbd_class_inst_t
  *
  * @return OUT endpoint address.
  */
-static inline nrf_drv_usbd_ep_t  app_usbd_hid_epout_addr_get(app_usbd_class_inst_t const * p_inst)
+static inline nrf_drv_usbd_ep_t app_usbd_hid_epout_addr_get(app_usbd_class_inst_t const *p_inst)
 {
-    app_usbd_class_iface_conf_t const * class_iface;
+    app_usbd_class_iface_conf_t const *class_iface;
     class_iface = app_usbd_class_iface_get(p_inst, APP_USBD_HID_IFACE_IDX);
 
-    app_usbd_class_ep_conf_t const * ep_cfg;
+    app_usbd_class_ep_conf_t const *ep_cfg;
     ep_cfg = app_usbd_class_iface_ep_get(class_iface, APP_USBD_HID_EPOUT_IDX);
 
     return app_usbd_class_ep_address_get(ep_cfg);

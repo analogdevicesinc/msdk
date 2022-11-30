@@ -39,18 +39,18 @@
 /*************************************************************************************************/
 static uint8_t lhciPackPowerReportEvt(uint8_t *pBuf, const LlPowerReportInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_POWER_REPORT;
+    const uint8_t len = HCI_LEN_LE_POWER_REPORT;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_POWER_REPORT_EVT);
-  UINT8_TO_BSTREAM (pBuf, pEvt->status)
-  UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->reason);
-  UINT8_TO_BSTREAM (pBuf, pEvt->phy);
-  UINT8_TO_BSTREAM (pBuf, pEvt->txPower);
-  UINT8_TO_BSTREAM (pBuf, pEvt->txPowerLimits);
-  UINT8_TO_BSTREAM (pBuf, pEvt->delta);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_POWER_REPORT_EVT);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status)
+    UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->reason);
+    UINT8_TO_BSTREAM(pBuf, pEvt->phy);
+    UINT8_TO_BSTREAM(pBuf, pEvt->txPower);
+    UINT8_TO_BSTREAM(pBuf, pEvt->txPowerLimits);
+    UINT8_TO_BSTREAM(pBuf, pEvt->delta);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -65,14 +65,14 @@ static uint8_t lhciPackPowerReportEvt(uint8_t *pBuf, const LlPowerReportInd_t *p
 /*************************************************************************************************/
 static uint8_t lhciPackPathLossEvt(uint8_t *pBuf, const LlPathLossThresholdEvt_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_PATH_LOSS_ZONE;
+    const uint8_t len = HCI_LEN_LE_PATH_LOSS_ZONE;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_PATH_LOSS_REPORT_EVT);
-  UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->curPathLoss);
-  UINT8_TO_BSTREAM (pBuf, pEvt->zoneEntered);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_PATH_LOSS_REPORT_EVT);
+    UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->curPathLoss);
+    UINT8_TO_BSTREAM(pBuf, pEvt->zoneEntered);
 
-  return len;
+    return len;
 }
 /*************************************************************************************************/
 /*!
@@ -85,40 +85,36 @@ static uint8_t lhciPackPathLossEvt(uint8_t *pBuf, const LlPathLossThresholdEvt_t
 /*************************************************************************************************/
 bool_t lhciPclEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
+    uint8_t *pEvtBuf = NULL;
 
-  switch (pEvt->hdr.event)
-  {
+    switch (pEvt->hdr.event) {
     case LL_TX_POWER_REPORTING_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_TX_POWER_REPORT_EVT) << LHCI_BYTE_TO_BITS(4))) &&
-           (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_POWER_REPORT)) != NULL)
-        {
-          lhciPackPowerReportEvt(pEvtBuf, &pEvt->powerRptInd);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_TX_POWER_REPORT_EVT) << LHCI_BYTE_TO_BITS(4))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_POWER_REPORT)) != NULL) {
+                lhciPackPowerReportEvt(pEvtBuf, &pEvt->powerRptInd);
+            }
         }
-      }
-      break;
+        break;
     case LL_PATH_LOSS_REPORTING_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_PATH_LOSS_REPORT_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-           (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_PATH_LOSS_ZONE)) != NULL)
-        {
-          lhciPackPathLossEvt(pEvtBuf, &pEvt->pathLossEvt);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_PATH_LOSS_REPORT_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_PATH_LOSS_ZONE)) != NULL) {
+                lhciPackPathLossEvt(pEvtBuf, &pEvt->pathLossEvt);
+            }
         }
-      }
-      break;
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  if (pEvtBuf)
-  {
-    lhciSendEvt(pEvtBuf);
-    return TRUE;
-  }
+    if (pEvtBuf) {
+        lhciSendEvt(pEvtBuf);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }

@@ -42,13 +42,13 @@
 /*************************************************************************************************/
 static uint8_t lhciPackNumCompPktsEvt(uint8_t *pBuf, uint16_t connHandle, uint16_t numPkts)
 {
-  const uint8_t len = HCI_LEN_NUM_CMPL_PKTS(1);
+    const uint8_t len = HCI_LEN_NUM_CMPL_PKTS(1);
 
-  UINT8_TO_BSTREAM (pBuf, 1);
-  UINT16_TO_BSTREAM(pBuf, connHandle);
-  UINT16_TO_BSTREAM(pBuf, numPkts);
+    UINT8_TO_BSTREAM(pBuf, 1);
+    UINT16_TO_BSTREAM(pBuf, connHandle);
+    UINT16_TO_BSTREAM(pBuf, numPkts);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -63,32 +63,31 @@ static uint8_t lhciPackNumCompPktsEvt(uint8_t *pBuf, uint16_t connHandle, uint16
 /*************************************************************************************************/
 static uint8_t lhciPackConnCompleteEvt(uint8_t *pBuf, const LlConnInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_CONN_CMPL;
+    const uint8_t len = HCI_LEN_LE_CONN_CMPL;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_CONN_CMPL_EVT);
-  UINT8_TO_BSTREAM (pBuf, pEvt->status);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->role);
-  switch (pEvt->addrType)
-  {
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_CONN_CMPL_EVT);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->role);
+    switch (pEvt->addrType) {
     default:
     case HCI_ADDR_TYPE_PUBLIC:
     case HCI_ADDR_TYPE_RANDOM:
-      UINT8_TO_BSTREAM (pBuf, pEvt->addrType);
-      BDA_TO_BSTREAM   (pBuf, pEvt->peerAddr);
-      break;
+        UINT8_TO_BSTREAM(pBuf, pEvt->addrType);
+        BDA_TO_BSTREAM(pBuf, pEvt->peerAddr);
+        break;
     case HCI_ADDR_TYPE_PUBLIC_IDENTITY:
     case HCI_ADDR_TYPE_RANDOM_IDENTITY:
-      UINT8_TO_BSTREAM (pBuf, HCI_ADDR_TYPE_RANDOM);
-      BDA_TO_BSTREAM   (pBuf, pEvt->peerRpa);
-      break;
-  }
-  UINT16_TO_BSTREAM(pBuf, pEvt->connInterval);
-  UINT16_TO_BSTREAM(pBuf, pEvt->connLatency);
-  UINT16_TO_BSTREAM(pBuf, pEvt->supTimeout);
-  UINT8_TO_BSTREAM (pBuf, pEvt->clockAccuracy);
+        UINT8_TO_BSTREAM(pBuf, HCI_ADDR_TYPE_RANDOM);
+        BDA_TO_BSTREAM(pBuf, pEvt->peerRpa);
+        break;
+    }
+    UINT16_TO_BSTREAM(pBuf, pEvt->connInterval);
+    UINT16_TO_BSTREAM(pBuf, pEvt->connLatency);
+    UINT16_TO_BSTREAM(pBuf, pEvt->supTimeout);
+    UINT8_TO_BSTREAM(pBuf, pEvt->clockAccuracy);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -103,13 +102,13 @@ static uint8_t lhciPackConnCompleteEvt(uint8_t *pBuf, const LlConnInd_t *pEvt)
 /*************************************************************************************************/
 static uint8_t lhciPackDiscCompleteEvt(uint8_t *pBuf, const LlDisconnectInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_DISCONNECT_CMPL;
+    const uint8_t len = HCI_LEN_DISCONNECT_CMPL;
 
-  UINT8_TO_BSTREAM (pBuf, pEvt->status);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->reason);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->reason);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -124,16 +123,16 @@ static uint8_t lhciPackDiscCompleteEvt(uint8_t *pBuf, const LlDisconnectInd_t *p
 /*************************************************************************************************/
 static uint8_t lhciPackConnUpdateCompleteEvt(uint8_t *pBuf, const LlConnUpdateInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_CONN_UPDATE_CMPL;
+    const uint8_t len = HCI_LEN_LE_CONN_UPDATE_CMPL;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_CONN_UPDATE_CMPL_EVT);
-  UINT8_TO_BSTREAM (pBuf, pEvt->status);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  UINT16_TO_BSTREAM(pBuf, pEvt->connInterval);
-  UINT16_TO_BSTREAM(pBuf, pEvt->connLatency);
-  UINT16_TO_BSTREAM(pBuf, pEvt->supTimeout);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_CONN_UPDATE_CMPL_EVT);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT16_TO_BSTREAM(pBuf, pEvt->connInterval);
+    UINT16_TO_BSTREAM(pBuf, pEvt->connLatency);
+    UINT16_TO_BSTREAM(pBuf, pEvt->supTimeout);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -148,16 +147,16 @@ static uint8_t lhciPackConnUpdateCompleteEvt(uint8_t *pBuf, const LlConnUpdateIn
 /*************************************************************************************************/
 static uint8_t lhciPackRemoteConnParamEvt(uint8_t *pBuf, const LlRemConnParamInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_REM_CONN_PARAM_REQ;
+    const uint8_t len = HCI_LEN_LE_REM_CONN_PARAM_REQ;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_REM_CONN_PARAM_REQ_EVT);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  UINT16_TO_BSTREAM(pBuf, pEvt->connIntervalMin);
-  UINT16_TO_BSTREAM(pBuf, pEvt->connIntervalMax);
-  UINT16_TO_BSTREAM(pBuf, pEvt->connLatency);
-  UINT16_TO_BSTREAM(pBuf, pEvt->supTimeout);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_REM_CONN_PARAM_REQ_EVT);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT16_TO_BSTREAM(pBuf, pEvt->connIntervalMin);
+    UINT16_TO_BSTREAM(pBuf, pEvt->connIntervalMax);
+    UINT16_TO_BSTREAM(pBuf, pEvt->connLatency);
+    UINT16_TO_BSTREAM(pBuf, pEvt->supTimeout);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -170,16 +169,17 @@ static uint8_t lhciPackRemoteConnParamEvt(uint8_t *pBuf, const LlRemConnParamInd
  *  \return Packet length.
  */
 /*************************************************************************************************/
-static uint8_t lhciPackReadRemoteUsedFeatCompleteEvt(uint8_t *pBuf, const LlReadRemoteFeatCnf_t *pEvt)
+static uint8_t lhciPackReadRemoteUsedFeatCompleteEvt(uint8_t *pBuf,
+                                                     const LlReadRemoteFeatCnf_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_READ_REMOTE_FEAT_CMPL;
+    const uint8_t len = HCI_LEN_LE_READ_REMOTE_FEAT_CMPL;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_READ_REMOTE_FEAT_CMPL_EVT);
-  UINT8_TO_BSTREAM (pBuf, pEvt->status);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  memcpy(pBuf, pEvt->features, sizeof(pEvt->features));
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_READ_REMOTE_FEAT_CMPL_EVT);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    memcpy(pBuf, pEvt->features, sizeof(pEvt->features));
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -192,17 +192,18 @@ static uint8_t lhciPackReadRemoteUsedFeatCompleteEvt(uint8_t *pBuf, const LlRead
  *  \return Packet length.
  */
 /*************************************************************************************************/
-static uint8_t lhciPackReadRemoteVerInfoCompleteEvt(uint8_t *pBuf, const LlReadRemoteVerInfoCnf_t *pEvt)
+static uint8_t lhciPackReadRemoteVerInfoCompleteEvt(uint8_t *pBuf,
+                                                    const LlReadRemoteVerInfoCnf_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_READ_REMOTE_VER_INFO_CMPL;
+    const uint8_t len = HCI_LEN_READ_REMOTE_VER_INFO_CMPL;
 
-  UINT8_TO_BSTREAM (pBuf, pEvt->status);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->version);
-  UINT16_TO_BSTREAM(pBuf, pEvt->mfrName);
-  UINT16_TO_BSTREAM(pBuf, pEvt->subversion);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->version);
+    UINT16_TO_BSTREAM(pBuf, pEvt->mfrName);
+    UINT16_TO_BSTREAM(pBuf, pEvt->subversion);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -217,16 +218,16 @@ static uint8_t lhciPackReadRemoteVerInfoCompleteEvt(uint8_t *pBuf, const LlReadR
 /*************************************************************************************************/
 static uint8_t lhciPackDataLenChangeEvt(uint8_t *pBuf, const LlDataLenChangeInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_DATA_LEN_CHANGE;
+    const uint8_t len = HCI_LEN_LE_DATA_LEN_CHANGE;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_DATA_LEN_CHANGE_EVT);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  UINT16_TO_BSTREAM(pBuf, pEvt->maxTxLen);
-  UINT16_TO_BSTREAM(pBuf, pEvt->maxTxTime);
-  UINT16_TO_BSTREAM(pBuf, pEvt->maxRxLen);
-  UINT16_TO_BSTREAM(pBuf, pEvt->maxRxTime);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_DATA_LEN_CHANGE_EVT);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT16_TO_BSTREAM(pBuf, pEvt->maxTxLen);
+    UINT16_TO_BSTREAM(pBuf, pEvt->maxTxTime);
+    UINT16_TO_BSTREAM(pBuf, pEvt->maxRxLen);
+    UINT16_TO_BSTREAM(pBuf, pEvt->maxRxTime);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -241,14 +242,14 @@ static uint8_t lhciPackDataLenChangeEvt(uint8_t *pBuf, const LlDataLenChangeInd_
 /*************************************************************************************************/
 static uint8_t lhciPackReqPeerScaCompleteEvt(uint8_t *pBuf, const LlPeerScaCnf_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_PEER_SCA_CMPL;
+    const uint8_t len = HCI_LEN_LE_PEER_SCA_CMPL;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_REQ_PEER_SCA_CMPLT_EVT);
-  UINT8_TO_BSTREAM(pBuf, pEvt->status)
-  UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
-  UINT8_TO_BSTREAM(pBuf, pEvt->peerSca);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_REQ_PEER_SCA_CMPLT_EVT);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status)
+    UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->peerSca);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -263,18 +264,18 @@ static uint8_t lhciPackReqPeerScaCompleteEvt(uint8_t *pBuf, const LlPeerScaCnf_t
 /*************************************************************************************************/
 static uint8_t lhciPackPowerReportEvt(uint8_t *pBuf, const LlPowerReportInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_POWER_REPORT;
+    const uint8_t len = HCI_LEN_LE_POWER_REPORT;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_POWER_REPORT_EVT);
-  UINT8_TO_BSTREAM (pBuf, pEvt->status)
-  UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->reason);
-  UINT8_TO_BSTREAM (pBuf, pEvt->phy);
-  UINT8_TO_BSTREAM (pBuf, pEvt->txPower);
-  UINT8_TO_BSTREAM (pBuf, pEvt->txPowerLimits);
-  UINT8_TO_BSTREAM (pBuf, pEvt->delta);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_POWER_REPORT_EVT);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status)
+    UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->reason);
+    UINT8_TO_BSTREAM(pBuf, pEvt->phy);
+    UINT8_TO_BSTREAM(pBuf, pEvt->txPower);
+    UINT8_TO_BSTREAM(pBuf, pEvt->txPowerLimits);
+    UINT8_TO_BSTREAM(pBuf, pEvt->delta);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -289,14 +290,14 @@ static uint8_t lhciPackPowerReportEvt(uint8_t *pBuf, const LlPowerReportInd_t *p
 /*************************************************************************************************/
 static uint8_t lhciPackPathLossEvt(uint8_t *pBuf, const LlPathLossThresholdEvt_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_PATH_LOSS_ZONE;
+    const uint8_t len = HCI_LEN_LE_PATH_LOSS_ZONE;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_PATH_LOSS_REPORT_EVT);
-  UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->curPathLoss);
-  UINT8_TO_BSTREAM (pBuf, pEvt->zoneEntered);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_PATH_LOSS_REPORT_EVT);
+    UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->curPathLoss);
+    UINT8_TO_BSTREAM(pBuf, pEvt->zoneEntered);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -309,23 +310,19 @@ static uint8_t lhciPackPathLossEvt(uint8_t *pBuf, const LlPathLossThresholdEvt_t
 /*************************************************************************************************/
 void lhciAclSendComplete(uint16_t handle, uint8_t numBufs)
 {
-  if (lhciCb.genPktLen == 0)
-  {
-    uint8_t *pEvtBuf;
+    if (lhciCb.genPktLen == 0) {
+        uint8_t *pEvtBuf;
 
-    if ((pEvtBuf = lhciAllocEvt(HCI_NUM_CMPL_PKTS_EVT, HCI_LEN_NUM_CMPL_PKTS(1))) != NULL)
-    {
-      lhciPackNumCompPktsEvt(pEvtBuf, handle, numBufs);
-      lhciSendEvt(pEvtBuf);
+        if ((pEvtBuf = lhciAllocEvt(HCI_NUM_CMPL_PKTS_EVT, HCI_LEN_NUM_CMPL_PKTS(1))) != NULL) {
+            lhciPackNumCompPktsEvt(pEvtBuf, handle, numBufs);
+            lhciSendEvt(pEvtBuf);
+        }
+    } else {
+        lhciCb.genPktCnt++;
+        lhciCb.genOctetCnt += lhciCb.genPktLen;
+
+        lhciGenerateAcl(handle, lhciCb.genPktLen, numBufs);
     }
-  }
-  else
-  {
-    lhciCb.genPktCnt++;
-    lhciCb.genOctetCnt += lhciCb.genPktLen;
-
-    lhciGenerateAcl(handle, lhciCb.genPktLen, numBufs);
-  }
 }
 
 /*************************************************************************************************/
@@ -339,19 +336,18 @@ void lhciAclSendComplete(uint16_t handle, uint8_t numBufs)
 /*************************************************************************************************/
 static bool_t lhciSinkAcl(uint8_t *pBuf)
 {
-  if (lhciCb.recvAclSink)
-  {
-    uint16_t len;
+    if (lhciCb.recvAclSink) {
+        uint16_t len;
 
-    BYTES_TO_UINT16(len, &pBuf[2]);
-    lhciCb.recvAclPktCnt++;
-    lhciCb.recvAclOctetCnt += len;
+        BYTES_TO_UINT16(len, &pBuf[2]);
+        lhciCb.recvAclPktCnt++;
+        lhciCb.recvAclOctetCnt += len;
 
-    WsfMsgFree(pBuf);
-    LlRecvAclDataComplete(1);
-    return TRUE;
-  }
-  return FALSE;
+        WsfMsgFree(pBuf);
+        LlRecvAclDataComplete(1);
+        return TRUE;
+    }
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -363,17 +359,15 @@ static bool_t lhciSinkAcl(uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t *lhciRecvAcl(void)
 {
-  uint8_t *pAclData;
+    uint8_t *pAclData;
 
-  if ((pAclData = LlRecvAclData()) != NULL)
-  {
-    if (!lhciSinkAcl(pAclData))
-    {
-      return pAclData;
+    if ((pAclData = LlRecvAclData()) != NULL) {
+        if (!lhciSinkAcl(pAclData)) {
+            return pAclData;
+        }
     }
-  }
 
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -386,15 +380,14 @@ uint8_t *lhciRecvAcl(void)
 /*************************************************************************************************/
 void lhciAclRecvPending(uint16_t handle, uint8_t numBufs)
 {
-  uint8_t *pAclData;
+    uint8_t *pAclData;
 
-  if (lhciCb.recvAclSink && ((pAclData = LlRecvAclData()) != NULL))
-  {
-    lhciSinkAcl(pAclData);
-    return;
-  }
+    if (lhciCb.recvAclSink && ((pAclData = LlRecvAclData()) != NULL)) {
+        lhciSinkAcl(pAclData);
+        return;
+    }
 
-  ChciTrNeedsService(CHCI_TR_PROT_BLE);
+    ChciTrNeedsService(CHCI_TR_PROT_BLE);
 }
 
 /*************************************************************************************************/
@@ -408,123 +401,113 @@ void lhciAclRecvPending(uint16_t handle, uint8_t numBufs)
 /*************************************************************************************************/
 bool_t lhciConnEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
+    uint8_t *pEvtBuf = NULL;
 
-  switch (pEvt->hdr.event)
-  {
+    switch (pEvt->hdr.event) {
     case LL_CONN_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_CONN_CMPL_EVT) << LHCI_BYTE_TO_BITS(0))) &&
-         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CONN_CMPL)) != NULL)
-        {
-          lhciPackConnCompleteEvt(pEvtBuf, &pEvt->connInd);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_CONN_CMPL_EVT) << LHCI_BYTE_TO_BITS(0))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CONN_CMPL)) != NULL) {
+                lhciPackConnCompleteEvt(pEvtBuf, &pEvt->connInd);
+            }
         }
-      }
-      break;
+        break;
 
     case LL_DISCONNECT_IND:
-      if (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_DISCONNECT_CMPL) << LHCI_BYTE_TO_BITS(0)))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_DISCONNECT_CMPL_EVT, HCI_LEN_DISCONNECT_CMPL)) != NULL)
-        {
-          lhciPackDiscCompleteEvt(pEvtBuf, &pEvt->disconnectInd);
+        if (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_DISCONNECT_CMPL) << LHCI_BYTE_TO_BITS(0))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_DISCONNECT_CMPL_EVT, HCI_LEN_DISCONNECT_CMPL)) !=
+                NULL) {
+                lhciPackDiscCompleteEvt(pEvtBuf, &pEvt->disconnectInd);
+            }
         }
-      }
-      break;
+        break;
 
     case LL_CONN_UPDATE_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_CONN_UPDATE_CMPL_EVT) << LHCI_BYTE_TO_BITS(0))) &&
-         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CONN_UPDATE_CMPL)) != NULL)
-        {
-          lhciPackConnUpdateCompleteEvt(pEvtBuf, &pEvt->connUpdateInd);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_CONN_UPDATE_CMPL_EVT) << LHCI_BYTE_TO_BITS(0))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CONN_UPDATE_CMPL)) != NULL) {
+                lhciPackConnUpdateCompleteEvt(pEvtBuf, &pEvt->connUpdateInd);
+            }
         }
-      }
-      break;
+        break;
 
     case LL_REM_CONN_PARAM_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_REMOTE_CONN_PARAM_REQ_EVT) << LHCI_BYTE_TO_BITS(0))) &&
-         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_REM_CONN_PARAM_REQ)) != NULL)
-        {
-          lhciPackRemoteConnParamEvt(pEvtBuf, &pEvt->remConnParamInd);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_REMOTE_CONN_PARAM_REQ_EVT) << LHCI_BYTE_TO_BITS(0))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_REM_CONN_PARAM_REQ)) != NULL) {
+                lhciPackRemoteConnParamEvt(pEvtBuf, &pEvt->remConnParamInd);
+            }
         }
-      }
-      break;
+        break;
 
     case LL_READ_REMOTE_FEAT_CNF:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_READ_REMOTE_FEAT_CMPL_EVT) << LHCI_BYTE_TO_BITS(0))) &&
-         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_READ_REMOTE_FEAT_CMPL)) != NULL)
-        {
-          lhciPackReadRemoteUsedFeatCompleteEvt(pEvtBuf, &pEvt->readRemoteFeatCnf);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_READ_REMOTE_FEAT_CMPL_EVT) << LHCI_BYTE_TO_BITS(0))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_READ_REMOTE_FEAT_CMPL)) !=
+                NULL) {
+                lhciPackReadRemoteUsedFeatCompleteEvt(pEvtBuf, &pEvt->readRemoteFeatCnf);
+            }
         }
-      }
-      break;
+        break;
 
     case LL_READ_REMOTE_VER_INFO_CNF:
-      if (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_READ_REMOTE_VER_INFO_CMPL) << LHCI_BYTE_TO_BITS(1)))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_READ_REMOTE_VER_INFO_CMPL_EVT, HCI_LEN_READ_REMOTE_VER_INFO_CMPL)) != NULL)
-        {
-          lhciPackReadRemoteVerInfoCompleteEvt(pEvtBuf, &pEvt->readRemoteVerInfoCnf);
+        if (lhciCb.evtMsk &
+            ((uint64_t)(HCI_EVT_MASK_READ_REMOTE_VER_INFO_CMPL) << LHCI_BYTE_TO_BITS(1))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_READ_REMOTE_VER_INFO_CMPL_EVT,
+                                        HCI_LEN_READ_REMOTE_VER_INFO_CMPL)) != NULL) {
+                lhciPackReadRemoteVerInfoCompleteEvt(pEvtBuf, &pEvt->readRemoteVerInfoCnf);
+            }
         }
-      }
-      break;
+        break;
 
     case LL_DATA_LEN_CHANGE_IND:
-      if (lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_DATA_LEN_CHANGE_EVT) << LHCI_BYTE_TO_BITS(0)))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_DATA_LEN_CHANGE)) != NULL)
-        {
-          lhciPackDataLenChangeEvt(pEvtBuf, &pEvt->dataLenChangeInd);
+        if (lhciCb.leEvtMsk &
+            ((uint64_t)(HCI_EVT_MASK_LE_DATA_LEN_CHANGE_EVT) << LHCI_BYTE_TO_BITS(0))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_DATA_LEN_CHANGE)) != NULL) {
+                lhciPackDataLenChangeEvt(pEvtBuf, &pEvt->dataLenChangeInd);
+            }
         }
-      }
-      break;
+        break;
     case LL_REQ_PEER_SCA_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_PEER_SCA_CMPL_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-           (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_PEER_SCA_CMPL)) != NULL)
-        {
-          lhciPackReqPeerScaCompleteEvt(pEvtBuf, &pEvt->peerScaCnf);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_PEER_SCA_CMPL_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_PEER_SCA_CMPL)) != NULL) {
+                lhciPackReqPeerScaCompleteEvt(pEvtBuf, &pEvt->peerScaCnf);
+            }
         }
-      }
-      break;
+        break;
     case LL_TX_POWER_REPORTING_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_TX_POWER_REPORT_EVT) << LHCI_BYTE_TO_BITS(4))) &&
-           (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_POWER_REPORT)) != NULL)
-        {
-          lhciPackPowerReportEvt(pEvtBuf, &pEvt->powerRptInd);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_TX_POWER_REPORT_EVT) << LHCI_BYTE_TO_BITS(4))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_POWER_REPORT)) != NULL) {
+                lhciPackPowerReportEvt(pEvtBuf, &pEvt->powerRptInd);
+            }
         }
-      }
-      break;
+        break;
     case LL_PATH_LOSS_REPORTING_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_PATH_LOSS_REPORT_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-           (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_PATH_LOSS_ZONE)) != NULL)
-        {
-          lhciPackPathLossEvt(pEvtBuf, &pEvt->pathLossEvt);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_PATH_LOSS_REPORT_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_PATH_LOSS_ZONE)) != NULL) {
+                lhciPackPathLossEvt(pEvtBuf, &pEvt->pathLossEvt);
+            }
         }
-      }
-      break;
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  if (pEvtBuf)
-  {
-    lhciSendEvt(pEvtBuf);
-    return TRUE;
-  }
+    if (pEvtBuf) {
+        lhciSendEvt(pEvtBuf);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }

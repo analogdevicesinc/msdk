@@ -88,7 +88,7 @@ void GyroMeasStart(void);
 /*************************************************************************************************/
 void GyroMeasComplete(dmConnId_t connId, int16_t x, int16_t y, int16_t z);
 
-/*! \} */    /* GYROSCOPE_SERVICE_PROFILE */
+/*! \} */ /* GYROSCOPE_SERVICE_PROFILE */
 
 #ifdef __cplusplus
 };

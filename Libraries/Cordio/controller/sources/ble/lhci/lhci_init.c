@@ -38,16 +38,16 @@
 /*************************************************************************************************/
 void LhciHandlerInit(wsfHandlerId_t handlerId)
 {
-  ChciTrSetCbacks(CHCI_TR_PROT_BLE, lhciRecv, lhciSendComplete, lhciService);
-  ChciTrSetSendHwErrorCback(lhciSendHwError);
+    ChciTrSetCbacks(CHCI_TR_PROT_BLE, lhciRecv, lhciSendComplete, lhciService);
+    ChciTrSetSendHwErrorCback(lhciSendHwError);
 
-  memset(&lhciPersistCb, 0, sizeof(lhciPersistCb));
-  lhciPersistCb.handlerId = handlerId;
-  memset(&lhciCb, 0, sizeof(lhciCb));
+    memset(&lhciPersistCb, 0, sizeof(lhciPersistCb));
+    lhciPersistCb.handlerId = handlerId;
+    memset(&lhciCb, 0, sizeof(lhciCb));
 
-  LlEvtRegister(lhciLlEvtHandler);
+    LlEvtRegister(lhciLlEvtHandler);
 
-  lhciReset();
+    lhciReset();
 }
 
 /*************************************************************************************************/
@@ -59,5 +59,5 @@ void LhciHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void LhciVsExtInit(lhciCmdHandler_t decodeCmd)
 {
-  lhciCmdTbl[LHCI_MSG_VS_EXT] = decodeCmd;
+    lhciCmdTbl[LHCI_MSG_VS_EXT] = decodeCmd;
 }

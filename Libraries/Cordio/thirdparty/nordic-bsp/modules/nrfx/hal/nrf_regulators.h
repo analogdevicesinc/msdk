@@ -60,7 +60,7 @@ extern "C" {
  * @param[in] p_reg  Pointer to the structure of registers of the peripheral.
  * @param[in] enable Set true to enable or false to disable DCDC converter.
  */
-__STATIC_INLINE void nrf_regulators_dcdcen_set(NRF_REGULATORS_Type * p_reg, bool enable);
+__STATIC_INLINE void nrf_regulators_dcdcen_set(NRF_REGULATORS_Type *p_reg, bool enable);
 
 /**
  * @brief Function for putting CPU in system OFF mode.
@@ -72,23 +72,22 @@ __STATIC_INLINE void nrf_regulators_dcdcen_set(NRF_REGULATORS_Type * p_reg, bool
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
-__STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg);
+__STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type *p_reg);
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
-__STATIC_INLINE void nrf_regulators_dcdcen_set(NRF_REGULATORS_Type * p_reg, bool enable)
+__STATIC_INLINE void nrf_regulators_dcdcen_set(NRF_REGULATORS_Type *p_reg, bool enable)
 {
     p_reg->DCDCEN = (enable ? REGULATORS_DCDCEN_DCDCEN_Msk : 0);
 }
 
-__STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type * p_reg)
+__STATIC_INLINE void nrf_regulators_system_off(NRF_REGULATORS_Type *p_reg)
 {
     p_reg->SYSTEMOFF = REGULATORS_SYSTEMOFF_SYSTEMOFF_Msk;
     __DSB();
 
     /* Solution for simulated System OFF in debug mode */
-    while (true)
-    {
+    while (true) {
         __WFE();
     }
 }

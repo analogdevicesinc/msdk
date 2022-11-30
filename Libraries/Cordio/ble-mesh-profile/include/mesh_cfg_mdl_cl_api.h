@@ -32,10 +32,8 @@
 
 #include "mesh_cfg_mdl_api.h"
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -43,21 +41,22 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Mesh Configuration Client API address used for modifying local states */
-#define MESH_CFG_MDL_CL_LOCAL_NODE_SR         MESH_ADDR_TYPE_UNASSIGNED
+#define MESH_CFG_MDL_CL_LOCAL_NODE_SR MESH_ADDR_TYPE_UNASSIGNED
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Configuration Client event status. Applicable to all event types */
-enum meshCfgMdlClEventStatusValues
-{
-  MESH_CFG_MDL_CL_SUCCESS           = 0x00,  /*!< Operation completed without errors */
-  MESH_CFG_MDL_CL_OUT_OF_RESOURCES  = 0x01,  /*!< Client has no resources to perform the procedure */
-  MESH_CFG_MDL_CL_INVALID_PARAMS    = 0x02,  /*!< Parameters passed to the API are not valid */
-  MESH_CFG_MDL_CL_TIMEOUT           = 0x03,  /*!< No response received from the Configuration Server */
-  MESH_CFG_MDL_CL_UNKOWN_ERROR      = 0x04,  /*!< Unknown error */
-  MESH_CFG_MDL_CL_REMOTE_ERROR_BASE = 0x05   /*!< Start of procedure-specific codes for errors received
+enum meshCfgMdlClEventStatusValues {
+    MESH_CFG_MDL_CL_SUCCESS = 0x00, /*!< Operation completed without errors */
+    MESH_CFG_MDL_CL_OUT_OF_RESOURCES =
+        0x01, /*!< Client has no resources to perform the procedure */
+    MESH_CFG_MDL_CL_INVALID_PARAMS = 0x02, /*!< Parameters passed to the API are not valid */
+    MESH_CFG_MDL_CL_TIMEOUT = 0x03, /*!< No response received from the Configuration Server */
+    MESH_CFG_MDL_CL_UNKOWN_ERROR = 0x04, /*!< Unknown error */
+    MESH_CFG_MDL_CL_REMOTE_ERROR_BASE =
+        0x05 /*!< Start of procedure-specific codes for errors received
                                               *   from Server. Error codes above this value are obtained
                                               *   by subtracting base from the error code and comparing
                                               *   to ::meshCfgMdlOtaErrCodes.
@@ -65,21 +64,20 @@ enum meshCfgMdlClEventStatusValues
 };
 
 /*! \brief Operations that can be performed over the Subscription List of a model */
-enum meshCfgMdlClSubscrAddrOpValues
-{
-  MESH_CFG_MDL_CL_SUBSCR_ADDR_ADD = 0, /*!< Subscription Address Add. Generates
+enum meshCfgMdlClSubscrAddrOpValues {
+    MESH_CFG_MDL_CL_SUBSCR_ADDR_ADD = 0, /*!< Subscription Address Add. Generates
                                         *   ::MESH_CFG_MDL_SUBSCR_ADD_EVENT or
                                         *   ::MESH_CFG_MDL_SUBSCR_VIRT_ADD_EVENT event
                                         */
-  MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL,     /*!< Subscription Address Delete. Generates
+    MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL, /*!< Subscription Address Delete. Generates
                                         *   ::MESH_CFG_MDL_SUBSCR_DEL_EVENT or
                                         *   ::MESH_CFG_MDL_SUBSCR_VIRT_DEL_EVENT event
                                         */
-  MESH_CFG_MDL_CL_SUBSCR_ADDR_OVR,     /*!< Subscription Address Overwrite. Generates
+    MESH_CFG_MDL_CL_SUBSCR_ADDR_OVR, /*!< Subscription Address Overwrite. Generates
                                         *   ::MESH_CFG_MDL_SUBSCR_OVR_EVENT or
                                         *   ::MESH_CFG_MDL_SUBSCR_VIRT_OVR_EVENT event
                                         */
-  MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL_ALL, /*!< Subscription Address Delete All. Generates
+    MESH_CFG_MDL_CL_SUBSCR_ADDR_DEL_ALL, /*!< Subscription Address Delete All. Generates
                                         *   ::MESH_CFG_MDL_SUBSCR_DEL_ALL_EVENT event
                                         */
 };
@@ -88,12 +86,11 @@ enum meshCfgMdlClSubscrAddrOpValues
 typedef uint8_t meshCfgMdlClSubscrAddrOp_t;
 
 /*! \brief Operations that can be performed over an AppKey or a NetKey */
-enum meshCfgMdlClKeyOpValues
-{
-  MESH_CFG_MDL_CL_KEY_ADD = 0,  /*!< AppKey or NetKey Add */
-  MESH_CFG_MDL_CL_KEY_UPDT,     /*!< AppKey or NetKey Update */
-  MESH_CFG_MDL_CL_KEY_DEL,      /*!< AppKey or NetKey Delete */
-  MESH_CFG_MDL_CL_KEY_UNDEFINED /*!< Undefined Op Value */
+enum meshCfgMdlClKeyOpValues {
+    MESH_CFG_MDL_CL_KEY_ADD = 0, /*!< AppKey or NetKey Add */
+    MESH_CFG_MDL_CL_KEY_UPDT, /*!< AppKey or NetKey Update */
+    MESH_CFG_MDL_CL_KEY_DEL, /*!< AppKey or NetKey Delete */
+    MESH_CFG_MDL_CL_KEY_UNDEFINED /*!< Undefined Op Value */
 };
 
 /*! \brief Configuration Client AppKey or NetKey operations. See ::meshCfgMdlClKeyOpValues */
@@ -104,9 +101,8 @@ typedef uint8_t meshCfgMdlClKeyOp_t;
  *  \attention If the operation status (hdr.status) is not success or an OTA error code,
  *             then only the hdr and cfgMdlHdr structure of any event contains valid information.
  */
-typedef union meshCfgMdlClEvt_tag
-{
-  wsfMsgHdr_t                        hdr;             /*!< Header structure. This is used for all
+typedef union meshCfgMdlClEvt_tag {
+    wsfMsgHdr_t hdr; /*!< Header structure. This is used for all
                                                        *   events in case the status field is
                                                        *   ::MESH_CFG_MDL_CL_OUT_OF_RESOURCES or
                                                        *   ::MESH_CFG_MDL_CL_INVALID_PARAMS or
@@ -115,34 +111,34 @@ typedef union meshCfgMdlClEvt_tag
                                                        *   For these error codes, the param field
                                                        *   contains the server address
                                                        */
-  meshCfgMdlHdr_t                    cfgMdlHdr;       /*!< Header structure extension for
+    meshCfgMdlHdr_t cfgMdlHdr; /*!< Header structure extension for
                                                        *   Configuration Model events.
                                                        */
-  meshCfgMdlBeaconStateEvt_t         beacon;          /*!< Valid if event is
+    meshCfgMdlBeaconStateEvt_t beacon; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_BEACON_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_BEACON_SET_EVENT or
                                                        */
-  meshCfgMdlCompDataEvt_t            compData;        /*!< Valid if event is
+    meshCfgMdlCompDataEvt_t compData; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_COMP_PAGE_GET_EVENT
                                                        */
-  meshCfgMdlDefaultTtlStateEvt_t     defaultTtl;      /*!< Valid if event is
+    meshCfgMdlDefaultTtlStateEvt_t defaultTtl; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_DEFAULT_TTL_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT or
                                                        */
-  meshCfgMdlGattProxyEvt_t           gattProxy;       /*!< Valid if event is
+    meshCfgMdlGattProxyEvt_t gattProxy; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_GATT_PROXY_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_GATT_PROXY_SET_EVENT
                                                        */
-  meshCfgMdlRelayCompositeStateEvt_t relayComposite;  /*!< Valid if event is
+    meshCfgMdlRelayCompositeStateEvt_t relayComposite; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_RELAY_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_RELAY_SET_EVENT
                                                        */
-  meshCfgMdlModelPubEvt_t            modelPub;        /*!< Valid if event is
+    meshCfgMdlModelPubEvt_t modelPub; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_PUB_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_PUB_SET_EVENT or
                                                        *   ::MESH_CFG_MDL_PUB_VIRT_SET_EVENT
                                                        */
-  meshCfgMdlModelSubscrChgEvt_t      subscrChg;       /*!< Valid if event is
+    meshCfgMdlModelSubscrChgEvt_t subscrChg; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_SUBSCR_ADD_EVENT or
                                                        *   ::MESH_CFG_MDL_SUBSCR_VIRT_ADD_EVENT or
                                                        *   ::MESH_CFG_MDL_SUBSCR_DEL_EVENT or
@@ -151,61 +147,61 @@ typedef union meshCfgMdlClEvt_tag
                                                        *   ::MESH_CFG_MDL_SUBSCR_VIRT_OVR_EVENT or
                                                        *   ::MESH_CFG_MDL_SUBSCR_DEL_ALL_EVENT
                                                        */
-  meshCfgMdlModelSubscrListEvt_t     subscrList;      /*!< Valid if event is
+    meshCfgMdlModelSubscrListEvt_t subscrList; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT
                                                        */
-  meshCfgMdlNetKeyChgEvt_t           netKeyChg;       /*!< Valid if event is
+    meshCfgMdlNetKeyChgEvt_t netKeyChg; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_NETKEY_ADD_EVENT or
                                                        *   ::MESH_CFG_MDL_NETKEY_DEL_EVENT or
                                                        *   ::MESH_CFG_MDL_NETKEY_UPDT_EVENT
                                                        */
-  meshCfgMdlNetKeyListEvt_t          netKeyList;      /*!< Valid if event is
+    meshCfgMdlNetKeyListEvt_t netKeyList; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_NETKEY_GET_EVENT
                                                        */
-  meshCfgMdlAppKeyChgEvt_t           appKeyChg;       /*!< Valid if event is
+    meshCfgMdlAppKeyChgEvt_t appKeyChg; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_APPKEY_ADD_EVENT or
                                                        *   ::MESH_CFG_MDL_APPKEY_DEL_EVENT or
                                                        *   ::MESH_CFG_MDL_APPKEY_UPDT_EVENT
                                                        */
-  meshCfgMdlAppKeyListEvt_t          appKeyList;      /*!< Valid if event is
+    meshCfgMdlAppKeyListEvt_t appKeyList; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_APPKEY_GET_EVENT
                                                        */
-  meshCfgMdlNodeIdentityEvt_t        nodeIdentity;    /*!< Valid if event is
+    meshCfgMdlNodeIdentityEvt_t nodeIdentity; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_NODE_IDENTITY_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT
                                                        */
-  meshCfgMdlModelAppBindEvt_t        modelAppBind;    /*!< Valid if event is
+    meshCfgMdlModelAppBindEvt_t modelAppBind; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_APP_BIND_EVENT or
                                                        *   ::MESH_CFG_MDL_APP_UNBIND_EVENT
                                                        */
-  meshCfgMdlModelAppListEvt_t        modelAppList;    /*!< Valid if event is
+    meshCfgMdlModelAppListEvt_t modelAppList; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_APP_SIG_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_APP_VENDOR_GET_EVENT
                                                        */
-  meshCfgMdlNodeResetStateEvt_t      nodeReset;       /*!< Valid if event is
+    meshCfgMdlNodeResetStateEvt_t nodeReset; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_NODE_RESET_EVENT
                                                        */
-  meshCfgMdlFriendEvt_t              friendState;     /*!< Valid if event is
+    meshCfgMdlFriendEvt_t friendState; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_FRIEND_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_FRIEND_SET_EVENT
                                                        */
-  meshCfgMdlKeyRefPhaseEvt_t         keyRefPhase;     /*!< Valid if event is
+    meshCfgMdlKeyRefPhaseEvt_t keyRefPhase; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_KEY_REF_PHASE_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_KEY_REF_PHASE_SET_EVENT
                                                        */
-  meshCfgMdlHbPubEvt_t               hbPub;           /*!< Valid if event is
+    meshCfgMdlHbPubEvt_t hbPub; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_HB_PUB_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_HB_PUB_SET_EVENT
                                                        */
-  meshCfgMdlHbSubEvt_t               hbSub;           /*!< Valid if event is
+    meshCfgMdlHbSubEvt_t hbSub; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_HB_SUB_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_HB_SUB_SET_EVENT
                                                        */
-  meshCfgMdlLpnPollTimeoutEvt_t      pollTimeout;     /*!< Valid if event is
+    meshCfgMdlLpnPollTimeoutEvt_t pollTimeout; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_LPN_POLLTIMEOUT_GET_EVENT
                                                        */
-  meshCfgMdlNwkTransStateEvt_t       nwkTrans;        /*!< Valid if event is
+    meshCfgMdlNwkTransStateEvt_t nwkTrans; /*!< Valid if event is
                                                        *   ::MESH_CFG_MDL_NWK_TRANS_GET_EVENT or
                                                        *   ::MESH_CFG_MDL_NWK_TRANS_SET_EVENT
                                                        */
@@ -222,7 +218,7 @@ typedef union meshCfgMdlClEvt_tag
  *  \see meshCfgMdlClEvt_t
  */
 /*************************************************************************************************/
-typedef void (*meshCfgMdlClCback_t)(meshCfgMdlClEvt_t* pEvt);
+typedef void (*meshCfgMdlClCback_t)(meshCfgMdlClEvt_t *pEvt);
 
 /**************************************************************************************************
   Function Declarations
@@ -491,9 +487,10 @@ void MeshCfgMdlClPubGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex
  */
 /*************************************************************************************************/
 void MeshCfgMdlClPubSet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
-                        const uint8_t *pCfgMdlSrDevKey, meshAddress_t elemAddr, meshAddress_t pubAddr,
-                        const uint8_t *pLabelUuid, meshModelPublicationParams_t *pPubParams,
-                        meshSigModelId_t sigModelId, meshVendorModelId_t vendorModelId, bool_t isSig);
+                        const uint8_t *pCfgMdlSrDevKey, meshAddress_t elemAddr,
+                        meshAddress_t pubAddr, const uint8_t *pLabelUuid,
+                        meshModelPublicationParams_t *pPubParams, meshSigModelId_t sigModelId,
+                        meshVendorModelId_t vendorModelId, bool_t isSig);
 
 /*************************************************************************************************/
 /*!
@@ -556,8 +553,8 @@ void MeshCfgMdlClSubscrListChg(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetK
 /*************************************************************************************************/
 void MeshCfgMdlClSubscrListGet(meshAddress_t cfgMdlSrAddr, uint16_t cfgMdlSrNetKeyIndex,
                                const uint8_t *pCfgMdlSrDevKey, meshAddress_t elemAddr,
-                               meshSigModelId_t sigModelId,
-                               meshVendorModelId_t vendorModelId, bool_t isSig);
+                               meshSigModelId_t sigModelId, meshVendorModelId_t vendorModelId,
+                               bool_t isSig);
 
 /*************************************************************************************************/
 /*!

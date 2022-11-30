@@ -52,42 +52,39 @@
 /*************************************************************************************************/
 bool_t lhciMstEncDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-  uint8_t status = HCI_SUCCESS;
-  uint8_t paramLen = 0;
+    uint8_t status = HCI_SUCCESS;
+    uint8_t paramLen = 0;
 
-  switch (pHdr->opCode)
-  {
-    /* --- Encryption --- */
+    switch (pHdr->opCode) {
+        /* --- Encryption --- */
 
-    case HCI_OPCODE_LE_START_ENCRYPTION:
-    {
-      uint16_t handle;
-      uint8_t *pRand = pBuf;
-      uint16_t diversifier;
-      uint8_t *pKey;
+    case HCI_OPCODE_LE_START_ENCRYPTION: {
+        uint16_t handle;
+        uint8_t *pRand = pBuf;
+        uint16_t diversifier;
+        uint8_t *pKey;
 
-      BSTREAM_TO_UINT16(handle, pBuf);
-      pRand = pBuf;
-      pBuf += HCI_RAND_LEN;
-      BSTREAM_TO_UINT16(diversifier, pBuf);
-      pKey  = pBuf;
+        BSTREAM_TO_UINT16(handle, pBuf);
+        pRand = pBuf;
+        pBuf += HCI_RAND_LEN;
+        BSTREAM_TO_UINT16(diversifier, pBuf);
+        pKey = pBuf;
 
-      status = LlStartEncryption(handle, pRand, diversifier, pKey);
-      paramLen = LHCI_LEN_CMD_STATUS_EVT;
-      break;
+        status = LlStartEncryption(handle, pRand, diversifier, pKey);
+        paramLen = LHCI_LEN_CMD_STATUS_EVT;
+        break;
     }
 
-    /* --- default --- */
+        /* --- default --- */
 
     default:
-      /* Fall back to slave encryption handler. */
-      return lhciSlvEncDecodeCmdPkt(pHdr, pBuf);    /* exit dispatcher routine */
-  }
+        /* Fall back to slave encryption handler. */
+        return lhciSlvEncDecodeCmdPkt(pHdr, pBuf); /* exit dispatcher routine */
+    }
 
-  if (paramLen == LHCI_LEN_CMD_STATUS_EVT)
-  {
-    lhciSendCmdStatusEvt(pHdr, status);
-  }
+    if (paramLen == LHCI_LEN_CMD_STATUS_EVT) {
+        lhciSendCmdStatusEvt(pHdr, status);
+    }
 
-  return TRUE;
+    return TRUE;
 }

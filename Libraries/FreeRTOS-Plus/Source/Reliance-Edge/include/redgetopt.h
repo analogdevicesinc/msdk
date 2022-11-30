@@ -38,16 +38,13 @@
 #ifndef REDGETOPT_H
 #define REDGETOPT_H
 
-
-#define red_no_argument         0
-#define red_required_argument   1
-#define red_optional_argument   2
-
+#define red_no_argument 0
+#define red_required_argument 1
+#define red_optional_argument 2
 
 /** @brief Specifies a long option.
 */
-typedef struct
-{
+typedef struct {
     /* name of long option */
     const char *name;
     /*
@@ -61,10 +58,9 @@ typedef struct
     int32_t val;
 } REDOPTION;
 
-
-int32_t RedGetopt(int32_t nargc, char * const *nargv, const char *options);
-int32_t RedGetoptLong(int32_t nargc, char * const *nargv, const char *options, const REDOPTION *long_options, int32_t *idx);
-
+int32_t RedGetopt(int32_t nargc, char *const *nargv, const char *options);
+int32_t RedGetoptLong(int32_t nargc, char *const *nargv, const char *options,
+                      const REDOPTION *long_options, int32_t *idx);
 
 extern const char *red_optarg;
 extern int32_t red_optind;
@@ -72,6 +68,4 @@ extern int32_t red_opterr;
 extern int32_t red_optopt;
 extern int32_t red_optreset;
 
-
 #endif
-

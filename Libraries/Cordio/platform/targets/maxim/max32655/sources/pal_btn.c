@@ -26,8 +26,8 @@
 
 /*! \brief      Device control block. */
 struct {
-  PalBtnActionCback_t actionCback;                           /*!< Action call back functions. */
-  PalBtnState_t       state;                                 /*!< State of the buttons. */
+    PalBtnActionCback_t actionCback; /*!< Action call back functions. */
+    PalBtnState_t state; /*!< State of the buttons. */
 } palBtnCb;
 
 /**************************************************************************************************
@@ -45,39 +45,38 @@ struct {
  *  Figure out which button interrupted and if it's pressed or depressed.
  */
 /*************************************************************************************************/
-void palBtnCallback(void* pb)
+void palBtnCallback(void *pb)
 {
-  unsigned i;
-  int button = -1;
-  PalBtnState_t btnState = PAL_BTN_POS_UP;
+    unsigned i;
+    int button = -1;
+    PalBtnState_t btnState = PAL_BTN_POS_UP;
 
-  /* Figure out which button caused this interrupt */
-  for(i = 0; i < num_pbs; i++) {
-
-    /* This is the button */
-    if((void*)&pb_pin[i] == pb) {
-      button = (int)i;
-      if(PB_Get(i)) {
-        btnState = PAL_BTN_POS_DOWN;
-      } else {
-        btnState = PAL_BTN_POS_UP;
-      }
-      break;
+    /* Figure out which button caused this interrupt */
+    for (i = 0; i < num_pbs; i++) {
+        /* This is the button */
+        if ((void *)&pb_pin[i] == pb) {
+            button = (int)i;
+            if (PB_Get(i)) {
+                btnState = PAL_BTN_POS_DOWN;
+            } else {
+                btnState = PAL_BTN_POS_UP;
+            }
+            break;
+        }
     }
-  }
 
-  /* We didn't find the button */
-  if(button == -1) {
-    return;
-  }
+    /* We didn't find the button */
+    if (button == -1) {
+        return;
+    }
 
-  /* App UI btn index starts at 1 */
-  button++;
+    /* App UI btn index starts at 1 */
+    button++;
 
-  /* Call the registered callback */
-  if(palBtnCb.actionCback != NULL) {
-    palBtnCb.actionCback((uint8_t)button, btnState);
-  }
+    /* Call the registered callback */
+    if (palBtnCb.actionCback != NULL) {
+        palBtnCb.actionCback((uint8_t)button, btnState);
+    }
 }
 
 /*************************************************************************************************/
@@ -93,20 +92,20 @@ void palBtnCallback(void* pb)
 /*************************************************************************************************/
 void PalBtnInit(PalBtnActionCback_t actCback)
 {
-  unsigned i;
+    unsigned i;
 
-  PB_Init();
+    PB_Init();
 
-  /* Initialize callback */
-  palBtnCb.actionCback = actCback;
+    /* Initialize callback */
+    palBtnCb.actionCback = actCback;
 
-  /* Register the callback for all of the buttons */
-  for(i = 0; i < num_pbs; i++) {
-    PB_RegisterCallbackRiseFall(i, palBtnCallback);
-    PB_IntEnable(i);
-  }
+    /* Register the callback for all of the buttons */
+    for (i = 0; i < num_pbs; i++) {
+        PB_RegisterCallbackRiseFall(i, palBtnCallback);
+        PB_IntEnable(i);
+    }
 
-  palBtnCb.state = PAL_BTN_STATE_READY;
+    palBtnCb.state = PAL_BTN_STATE_READY;
 }
 
 /*************************************************************************************************/
@@ -120,17 +119,17 @@ void PalBtnInit(PalBtnActionCback_t actCback)
 /*************************************************************************************************/
 void PalBtnDeInit(void)
 {
-  unsigned i;
+    unsigned i;
 
-  /* Initialize callback */
-  palBtnCb.actionCback = NULL;
+    /* Initialize callback */
+    palBtnCb.actionCback = NULL;
 
-  /* Register the callback for all of the buttons */
-  for(i = 0; i < num_pbs; i++) {
-    PB_IntDisable(i);
-  }
+    /* Register the callback for all of the buttons */
+    for (i = 0; i < num_pbs; i++) {
+        PB_IntDisable(i);
+    }
 
-  palBtnCb.state = PAL_BTN_STATE_UNINIT;
+    palBtnCb.state = PAL_BTN_STATE_UNINIT;
 }
 
 /*************************************************************************************************/
@@ -144,9 +143,8 @@ void PalBtnDeInit(void)
 /*************************************************************************************************/
 PalBtnState_t PalBtnGetState(void)
 {
-  return palBtnCb.state;
+    return palBtnCb.state;
 }
-
 
 /*************************************************************************************************/
 /*!
@@ -161,5 +159,5 @@ PalBtnState_t PalBtnGetState(void)
 /*************************************************************************************************/
 PalBtnPos_t PalBtnGetPosition(uint8_t btnId)
 {
-  return PB_Get(btnId);
+    return PB_Get(btnId);
 }

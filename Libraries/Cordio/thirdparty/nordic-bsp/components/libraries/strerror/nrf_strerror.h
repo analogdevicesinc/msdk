@@ -66,7 +66,7 @@ extern "C" {
  *         If the string is not found,
  *         it returns a simple string that says that the error is unknown.
  */
-char const * nrf_strerror_get(ret_code_t code);
+char const *nrf_strerror_get(ret_code_t code);
 
 /**
  * @brief Function for finding a printable error string.
@@ -78,7 +78,7 @@ char const * nrf_strerror_get(ret_code_t code);
  * @return      Pointer to the printable string.
  *              If the string is not found, NULL is returned.
  */
-char const * nrf_strerror_find(ret_code_t code);
+char const *nrf_strerror_find(ret_code_t code);
 
 /** @} */
 

@@ -70,17 +70,15 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
-
 /**@cond */
 typedef struct {
     uint32_t xkey[60];
-    uint8_t  counter[16];
-    uint8_t  cypher[16];
-    uint8_t  size;  // Key size (16, 24, or 32 bytes).
+    uint8_t counter[16];
+    uint8_t cypher[16];
+    uint8_t size; // Key size (16, 24, or 32 bytes).
     uint32_t valid; // Valid bytes in cypher.
 } ocrypto_aes_ctr_ctx;
 /**@endcond */
-
 
 /**@name Incremental AES-CTR encryption/decryption.
  *
@@ -98,7 +96,8 @@ typedef struct {
  * @param      size  Key size (16, 24, or 32 bytes).
  * @param      iv    Initial vector.
  */
-void ocrypto_aes_ctr_init(ocrypto_aes_ctr_ctx *ctx, const uint8_t *key, size_t size, const uint8_t iv[16]);
+void ocrypto_aes_ctr_init(ocrypto_aes_ctr_ctx *ctx, const uint8_t *key, size_t size,
+                          const uint8_t iv[16]);
 
 /**
  * AES-CTR incremental encryption.
@@ -116,7 +115,8 @@ void ocrypto_aes_ctr_init(ocrypto_aes_ctr_ctx *ctx, const uint8_t *key, size_t s
  * @remark Initialization of the context @p ctx through
  *         @c ocrypto_aes_ctr_init is required before this function can be called.
  */
-void ocrypto_aes_ctr_encrypt(ocrypto_aes_ctr_ctx *ctx, uint8_t* ct, const uint8_t* pt, size_t pt_len);
+void ocrypto_aes_ctr_encrypt(ocrypto_aes_ctr_ctx *ctx, uint8_t *ct, const uint8_t *pt,
+                             size_t pt_len);
 
 /**
  * AES-CTR incremental decryption.
@@ -134,9 +134,9 @@ void ocrypto_aes_ctr_encrypt(ocrypto_aes_ctr_ctx *ctx, uint8_t* ct, const uint8_
  * @remark Initialization of the context @p ctx through
  *         @c ocrypto_aes_ctr_init is required before this function can be called.
  */
-void ocrypto_aes_ctr_decrypt(ocrypto_aes_ctr_ctx *ctx, uint8_t* pt, const uint8_t* ct, size_t ct_len);
+void ocrypto_aes_ctr_decrypt(ocrypto_aes_ctr_ctx *ctx, uint8_t *pt, const uint8_t *ct,
+                             size_t ct_len);
 /**@}*/
-
 
 #ifdef __cplusplus
 }
@@ -145,4 +145,3 @@ void ocrypto_aes_ctr_decrypt(ocrypto_aes_ctr_ctx *ctx, uint8_t* pt, const uint8_
 #endif
 
 /** @} */
-

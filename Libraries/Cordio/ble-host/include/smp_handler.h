@@ -53,7 +53,6 @@ extern "C" {
 /*************************************************************************************************/
 void SmpHandlerInit(wsfHandlerId_t handlerId);
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for SMP.
@@ -68,7 +67,7 @@ void SmpHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 /**@}*/
 
-/*! \} */    /* STACK_SMP_API */
+/*! \} */ /* STACK_SMP_API */
 
 #ifdef __cplusplus
 };

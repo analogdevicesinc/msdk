@@ -44,45 +44,45 @@
 #include "nordic_common.h"
 
 #if defined(BOARD_NRF6310)
-  #include "nrf6310.h"
+#include "nrf6310.h"
 #elif defined(BOARD_PCA10000)
-  #include "pca10000.h"
+#include "pca10000.h"
 #elif defined(BOARD_PCA10001)
-  #include "pca10001.h"
+#include "pca10001.h"
 #elif defined(BOARD_PCA10002)
-  #include "pca10000.h"
+#include "pca10000.h"
 #elif defined(BOARD_PCA10003)
-  #include "pca10003.h"
+#include "pca10003.h"
 #elif defined(BOARD_PCA20006)
-  #include "pca20006.h"
+#include "pca20006.h"
 #elif defined(BOARD_PCA10028)
-  #include "pca10028.h"
+#include "pca10028.h"
 #elif defined(BOARD_PCA10031)
-  #include "pca10031.h"
+#include "pca10031.h"
 #elif defined(BOARD_PCA10036)
-  #include "pca10036.h"
+#include "pca10036.h"
 #elif defined(BOARD_PCA10040)
-  #include "pca10040.h"
+#include "pca10040.h"
 #elif defined(BOARD_PCA10056)
-  #include "pca10056.h"
+#include "pca10056.h"
 #elif defined(BOARD_PCA10100)
-  #include "pca10100.h"
+#include "pca10100.h"
 #elif defined(BOARD_PCA20020)
-  #include "pca20020.h"
+#include "pca20020.h"
 #elif defined(BOARD_PCA10059)
-  #include "pca10059.h"
+#include "pca10059.h"
 #elif defined(BOARD_WT51822)
-  #include "wt51822.h"
+#include "wt51822.h"
 #elif defined(BOARD_N5DK1)
-  #include "n5_starterkit.h"
-#elif defined (BOARD_D52DK1)
-  #include "d52_starterkit.h"
-#elif defined (BOARD_ARDUINO_PRIMO)
-  #include "arduino_primo.h"
-#elif defined (CUSTOM_BOARD_INC)
-  #include STRINGIFY(CUSTOM_BOARD_INC.h)
+#include "n5_starterkit.h"
+#elif defined(BOARD_D52DK1)
+#include "d52_starterkit.h"
+#elif defined(BOARD_ARDUINO_PRIMO)
+#include "arduino_primo.h"
+#elif defined(CUSTOM_BOARD_INC)
+#include STRINGIFY(CUSTOM_BOARD_INC.h)
 #elif defined(BOARD_CUSTOM)
-  #include "custom_board.h"
+#include "custom_board.h"
 #else
 #error "Board is not defined"
 
@@ -94,8 +94,8 @@ extern "C" {
 
 /**@defgroup BSP_BOARD_INIT_FLAGS Board initialization flags.
  * @{ */
-#define BSP_INIT_NONE    0        /**< No initialization of LEDs or buttons (@ref bsp_board_init).*/
-#define BSP_INIT_LEDS    (1 << 0) /**< Enable LEDs during initialization (@ref bsp_board_init).*/
+#define BSP_INIT_NONE 0 /**< No initialization of LEDs or buttons (@ref bsp_board_init).*/
+#define BSP_INIT_LEDS (1 << 0) /**< Enable LEDs during initialization (@ref bsp_board_init).*/
 #define BSP_INIT_BUTTONS (1 << 1) /**< Enable buttons during initialization (@ref bsp_board_init).*/
 /**@} */
 
@@ -184,7 +184,6 @@ bool bsp_board_button_state_get(uint32_t button_idx);
  */
 uint32_t bsp_board_pin_to_button_idx(uint32_t pin_number);
 
-
 /**
  * Function for converting button index to pin number.
  *
@@ -203,9 +202,8 @@ uint32_t bsp_board_button_idx_to_pin(uint32_t button_idx);
 #define BSP_BOARD_LED_6 6
 #define BSP_BOARD_LED_7 7
 
-#define PIN_MASK(_pin)  /*lint -save -e504 */                     \
-                        (1u << (uint32_t)((_pin) & (~P0_PIN_NUM))) \
-                        /*lint -restore    */
+#define PIN_MASK(_pin) /*lint -save -e504 */ \
+    (1u << (uint32_t)((_pin) & (~P0_PIN_NUM))) /*lint -restore    */
 
 #define PIN_PORT(_pin) (((_pin) >= P0_PIN_NUM) ? NRF_P1 : NRF_GPIO)
 
@@ -266,11 +264,9 @@ uint32_t bsp_board_button_idx_to_pin(uint32_t button_idx);
 #define BSP_LED_7_PORT 0
 #endif
 
-
-#define LEDS_MASK      (BSP_LED_0_MASK | BSP_LED_1_MASK | \
-                        BSP_LED_2_MASK | BSP_LED_3_MASK | \
-                        BSP_LED_4_MASK | BSP_LED_5_MASK | \
-                        BSP_LED_6_MASK | BSP_LED_7_MASK)
+#define LEDS_MASK                                                                         \
+    (BSP_LED_0_MASK | BSP_LED_1_MASK | BSP_LED_2_MASK | BSP_LED_3_MASK | BSP_LED_4_MASK | \
+     BSP_LED_5_MASK | BSP_LED_6_MASK | BSP_LED_7_MASK)
 
 #define BSP_BOARD_BUTTON_0 0
 #define BSP_BOARD_BUTTON_1 1
@@ -281,74 +277,83 @@ uint32_t bsp_board_button_idx_to_pin(uint32_t button_idx);
 #define BSP_BOARD_BUTTON_6 6
 #define BSP_BOARD_BUTTON_7 7
 
-
 #ifdef BSP_BUTTON_0
-#define BSP_BUTTON_0_MASK (1<<BSP_BUTTON_0)
+#define BSP_BUTTON_0_MASK (1 << BSP_BUTTON_0)
 #else
 #define BSP_BUTTON_0_MASK 0
 #endif
 #ifdef BSP_BUTTON_1
-#define BSP_BUTTON_1_MASK (1<<BSP_BUTTON_1)
+#define BSP_BUTTON_1_MASK (1 << BSP_BUTTON_1)
 #else
 #define BSP_BUTTON_1_MASK 0
 #endif
 #ifdef BSP_BUTTON_2
-#define BSP_BUTTON_2_MASK (1<<BSP_BUTTON_2)
+#define BSP_BUTTON_2_MASK (1 << BSP_BUTTON_2)
 #else
 #define BSP_BUTTON_2_MASK 0
 #endif
 #ifdef BSP_BUTTON_3
-#define BSP_BUTTON_3_MASK (1<<BSP_BUTTON_3)
+#define BSP_BUTTON_3_MASK (1 << BSP_BUTTON_3)
 #else
 #define BSP_BUTTON_3_MASK 0
 #endif
 #ifdef BSP_BUTTON_4
-#define BSP_BUTTON_4_MASK (1<<BSP_BUTTON_4)
+#define BSP_BUTTON_4_MASK (1 << BSP_BUTTON_4)
 #else
 #define BSP_BUTTON_4_MASK 0
 #endif
 #ifdef BSP_BUTTON_5
-#define BSP_BUTTON_5_MASK (1<<BSP_BUTTON_5)
+#define BSP_BUTTON_5_MASK (1 << BSP_BUTTON_5)
 #else
 #define BSP_BUTTON_5_MASK 0
 #endif
 #ifdef BSP_BUTTON_6
-#define BSP_BUTTON_6_MASK (1<<BSP_BUTTON_6)
+#define BSP_BUTTON_6_MASK (1 << BSP_BUTTON_6)
 #else
 #define BSP_BUTTON_6_MASK 0
 #endif
 #ifdef BSP_BUTTON_7
-#define BSP_BUTTON_7_MASK (1<<BSP_BUTTON_7)
+#define BSP_BUTTON_7_MASK (1 << BSP_BUTTON_7)
 #else
 #define BSP_BUTTON_7_MASK 0
 #endif
 
-#define BUTTONS_MASK   (BSP_BUTTON_0_MASK | BSP_BUTTON_1_MASK | \
-                        BSP_BUTTON_2_MASK | BSP_BUTTON_3_MASK | \
-                        BSP_BUTTON_4_MASK | BSP_BUTTON_5_MASK | \
-                        BSP_BUTTON_6_MASK | BSP_BUTTON_7_MASK)
+#define BUTTONS_MASK                                                                 \
+    (BSP_BUTTON_0_MASK | BSP_BUTTON_1_MASK | BSP_BUTTON_2_MASK | BSP_BUTTON_3_MASK | \
+     BSP_BUTTON_4_MASK | BSP_BUTTON_5_MASK | BSP_BUTTON_6_MASK | BSP_BUTTON_7_MASK)
 
+#define LEDS_OFF(leds_mask)                                            \
+    do {                                                               \
+        ASSERT(sizeof(leds_mask) == 4);                                \
+        NRF_GPIO->OUTSET = (leds_mask) & (LEDS_MASK & LEDS_INV_MASK);  \
+        NRF_GPIO->OUTCLR = (leds_mask) & (LEDS_MASK & ~LEDS_INV_MASK); \
+    } while (0)
 
-#define LEDS_OFF(leds_mask) do {  ASSERT(sizeof(leds_mask) == 4);                     \
-                        NRF_GPIO->OUTSET = (leds_mask) & (LEDS_MASK & LEDS_INV_MASK); \
-                        NRF_GPIO->OUTCLR = (leds_mask) & (LEDS_MASK & ~LEDS_INV_MASK); } while (0)
+#define LEDS_ON(leds_mask)                                             \
+    do {                                                               \
+        ASSERT(sizeof(leds_mask) == 4);                                \
+        NRF_GPIO->OUTCLR = (leds_mask) & (LEDS_MASK & LEDS_INV_MASK);  \
+        NRF_GPIO->OUTSET = (leds_mask) & (LEDS_MASK & ~LEDS_INV_MASK); \
+    } while (0)
 
-#define LEDS_ON(leds_mask) do {  ASSERT(sizeof(leds_mask) == 4);                     \
-                       NRF_GPIO->OUTCLR = (leds_mask) & (LEDS_MASK & LEDS_INV_MASK); \
-                       NRF_GPIO->OUTSET = (leds_mask) & (LEDS_MASK & ~LEDS_INV_MASK); } while (0)
+#define LED_IS_ON(leds_mask) ((leds_mask) & (NRF_GPIO->OUT ^ LEDS_INV_MASK))
 
-#define LED_IS_ON(leds_mask) ((leds_mask) & (NRF_GPIO->OUT ^ LEDS_INV_MASK) )
+#define LEDS_INVERT(leds_mask)                          \
+    do {                                                \
+        uint32_t gpio_state = NRF_GPIO->OUT;            \
+        ASSERT(sizeof(leds_mask) == 4);                 \
+        NRF_GPIO->OUTSET = ((leds_mask) & ~gpio_state); \
+        NRF_GPIO->OUTCLR = ((leds_mask)&gpio_state);    \
+    } while (0)
 
-#define LEDS_INVERT(leds_mask) do { uint32_t gpio_state = NRF_GPIO->OUT;      \
-                              ASSERT(sizeof(leds_mask) == 4);                 \
-                              NRF_GPIO->OUTSET = ((leds_mask) & ~gpio_state); \
-                              NRF_GPIO->OUTCLR = ((leds_mask) & gpio_state); } while (0)
-
-#define LEDS_CONFIGURE(leds_mask) do { uint32_t pin;                  \
-                                  ASSERT(sizeof(leds_mask) == 4);     \
-                                  for (pin = 0; pin < 32; pin++)      \
-                                      if ( (leds_mask) & (1 << pin) ) \
-                                          nrf_gpio_cfg_output(pin); } while (0)
+#define LEDS_CONFIGURE(leds_mask)         \
+    do {                                  \
+        uint32_t pin;                     \
+        ASSERT(sizeof(leds_mask) == 4);   \
+        for (pin = 0; pin < 32; pin++)    \
+            if ((leds_mask) & (1 << pin)) \
+                nrf_gpio_cfg_output(pin); \
+    } while (0)
 
 #ifdef __cplusplus
 }

@@ -38,14 +38,13 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Blood Pressure service enumeration of handle indexes of characteristics to be discovered */
-enum
-{
-  BLPC_BPS_BPM_HDL_IDX,           /*!< \brief Blood pressure measurement */
-  BLPC_BPS_BPM_CCC_HDL_IDX,       /*!< \brief Blood pressure measurement CCC descriptor */
-  BLPC_BPS_ICP_HDL_IDX,           /*!< \brief Intermediate cuff pressure */
-  BLPC_BPS_ICP_CCC_HDL_IDX,       /*!< \brief Intermediate cuff pressure CCC descriptor */
-  BLPC_BPS_BPF_HDL_IDX,           /*!< \brief Blood pressure feature */
-  BLPC_BPS_HDL_LIST_LEN           /*!< \brief Handle list length */
+enum {
+    BLPC_BPS_BPM_HDL_IDX, /*!< \brief Blood pressure measurement */
+    BLPC_BPS_BPM_CCC_HDL_IDX, /*!< \brief Blood pressure measurement CCC descriptor */
+    BLPC_BPS_ICP_HDL_IDX, /*!< \brief Intermediate cuff pressure */
+    BLPC_BPS_ICP_CCC_HDL_IDX, /*!< \brief Intermediate cuff pressure CCC descriptor */
+    BLPC_BPS_BPF_HDL_IDX, /*!< \brief Blood pressure feature */
+    BLPC_BPS_HDL_LIST_LEN /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -82,7 +81,7 @@ void BlpcBpsDiscover(dmConnId_t connId, uint16_t *pHdlList);
 /*************************************************************************************************/
 uint8_t BlpcBpsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */    /* BLOOD_PRESSURE_PROFILE */
+/*! \} */ /* BLOOD_PRESSURE_PROFILE */
 
 #ifdef __cplusplus
 };

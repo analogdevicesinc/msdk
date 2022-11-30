@@ -33,12 +33,10 @@
 
 #if REDCONF_TASK_COUNT > 1U
 
-
 static SemaphoreHandle_t xMutex;
 #if defined(configSUPPORT_STATIC_ALLOCATION) && (configSUPPORT_STATIC_ALLOCATION == 1)
 static StaticSemaphore_t xMutexBuffer;
 #endif
-
 
 /** @brief Initialize the mutex.
 
@@ -54,30 +52,27 @@ static StaticSemaphore_t xMutexBuffer;
 REDSTATUS RedOsMutexInit(void)
 {
     REDSTATUS ret = 0;
-    
-  #if defined(configSUPPORT_STATIC_ALLOCATION) && (configSUPPORT_STATIC_ALLOCATION == 1)
+
+#if defined(configSUPPORT_STATIC_ALLOCATION) && (configSUPPORT_STATIC_ALLOCATION == 1)
     xMutex = xSemaphoreCreateMutexStatic(&xMutexBuffer);
-    
-    if(xMutex == NULL)
-    {
+
+    if (xMutex == NULL) {
         /*  The only error case for xSemaphoreCreateMutexStatic is that the mutex
             buffer parameter is NULL, which is not the case.
         */
         REDERROR();
         ret = -RED_EINVAL;
-    }        
-    
-  #else
+    }
+
+#else
     xMutex = xSemaphoreCreateMutex();
-    if(xMutex == NULL)
-    {
+    if (xMutex == NULL) {
         ret = -RED_ENOMEM;
     }
-  #endif
+#endif
 
     return ret;
 }
-
 
 /** @brief Uninitialize the mutex.
 
@@ -97,7 +92,6 @@ REDSTATUS RedOsMutexUninit(void)
     return 0;
 }
 
-
 /** @brief Acquire the mutex.
 
     The behavior of calling this function when the mutex is not initialized is
@@ -106,11 +100,8 @@ REDSTATUS RedOsMutexUninit(void)
 */
 void RedOsMutexAcquire(void)
 {
-    while(xSemaphoreTake(xMutex, portMAX_DELAY) != pdTRUE)
-    {
-    }
+    while (xSemaphoreTake(xMutex, portMAX_DELAY) != pdTRUE) {}
 }
-
 
 /** @brief Release the mutex.
 
@@ -131,4 +122,3 @@ void RedOsMutexRelease(void)
 }
 
 #endif
-

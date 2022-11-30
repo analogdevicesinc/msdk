@@ -37,11 +37,10 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Reserved LED IDs. */
-enum
-{
-  /* System signals. */
-  PAL_LED_ID_CPU_ACTIVE     = 0x30,  /*!< CPU active LED ID. */
-  PAL_LED_ID_ERROR          = 0x31,  /*!< Error LED ID. */
+enum {
+    /* System signals. */
+    PAL_LED_ID_CPU_ACTIVE = 0x30, /*!< CPU active LED ID. */
+    PAL_LED_ID_ERROR = 0x31, /*!< Error LED ID. */
 };
 
 /**************************************************************************************************
@@ -56,7 +55,7 @@ void PalLedDeInit(void);
 void PalLedOn(uint8_t id);
 void PalLedOff(uint8_t id);
 
-/*! \} */    /* PAL_LED */
+/*! \} */ /* PAL_LED */
 
 #ifdef __cplusplus
 };

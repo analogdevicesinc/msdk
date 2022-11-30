@@ -31,7 +31,7 @@
   Globals
 **************************************************************************************************/
 
-bbBleCtrlBlk_t bbBleCb;               /*!< BB BLE control block. */
+bbBleCtrlBlk_t bbBleCb; /*!< BB BLE control block. */
 
 /**************************************************************************************************
   Functions
@@ -44,8 +44,8 @@ bbBleCtrlBlk_t bbBleCb;               /*!< BB BLE control block. */
 /*************************************************************************************************/
 static void bbBleStartBle(void)
 {
-  PalBbBleEnable();
-  PalBbBleEnableDataWhitening(TRUE);
+    PalBbBleEnable();
+    PalBbBleEnableDataWhitening(TRUE);
 }
 
 /*************************************************************************************************/
@@ -55,7 +55,7 @@ static void bbBleStartBle(void)
 /*************************************************************************************************/
 static void bbBleStopBle(void)
 {
-  PalBbBleDisable();
+    PalBbBleDisable();
 }
 
 /*************************************************************************************************/
@@ -65,8 +65,8 @@ static void bbBleStopBle(void)
 /*************************************************************************************************/
 static void bbBleStartBleDtm(void)
 {
-  PalBbBleEnable();
-  PalBbBleEnableDataWhitening(FALSE);
+    PalBbBleEnable();
+    PalBbBleEnableDataWhitening(FALSE);
 }
 
 /*************************************************************************************************/
@@ -76,9 +76,9 @@ static void bbBleStartBleDtm(void)
 /*************************************************************************************************/
 static void bbBleStartPrbs15(void)
 {
-  PalBbBleEnable();
-  PalBbBleEnableDataWhitening(FALSE);
-  PalBbBleEnablePrbs15(TRUE);
+    PalBbBleEnable();
+    PalBbBleEnableDataWhitening(FALSE);
+    PalBbBleEnablePrbs15(TRUE);
 }
 
 /*************************************************************************************************/
@@ -88,8 +88,8 @@ static void bbBleStartPrbs15(void)
 /*************************************************************************************************/
 static void bbBleStopPrbs15(void)
 {
-  PalBbBleDisable();
-  PalBbBleEnablePrbs15(FALSE);
+    PalBbBleDisable();
+    PalBbBleEnablePrbs15(FALSE);
 }
 
 /*************************************************************************************************/
@@ -101,14 +101,13 @@ static void bbBleStopPrbs15(void)
 /*************************************************************************************************/
 static void bbBleExecOp(BbOpDesc_t *pBod)
 {
-  BbBleData_t * const pBle = pBod->prot.pBle;
+    BbBleData_t *const pBle = pBod->prot.pBle;
 
-  WSF_ASSERT(pBle->chan.opType < BB_BLE_OP_NUM);
+    WSF_ASSERT(pBle->chan.opType < BB_BLE_OP_NUM);
 
-  if (bbBleCb.opCbacks[pBle->chan.opType].execOpCback)
-  {
-    bbBleCb.opCbacks[pBle->chan.opType].execOpCback(pBod, pBle);
-  }
+    if (bbBleCb.opCbacks[pBle->chan.opType].execOpCback) {
+        bbBleCb.opCbacks[pBle->chan.opType].execOpCback(pBod, pBle);
+    }
 }
 
 /*************************************************************************************************/
@@ -120,14 +119,13 @@ static void bbBleExecOp(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 static void bbBleCancelOp(BbOpDesc_t *pBod)
 {
-  BbBleData_t * const pBle = pBod->prot.pBle;
+    BbBleData_t *const pBle = pBod->prot.pBle;
 
-  WSF_ASSERT(pBle->chan.opType < BB_BLE_OP_NUM);
+    WSF_ASSERT(pBle->chan.opType < BB_BLE_OP_NUM);
 
-  if (bbBleCb.opCbacks[pBle->chan.opType].cancelOpCback)
-  {
-    bbBleCb.opCbacks[pBle->chan.opType].cancelOpCback(pBod, pBle);
-  }
+    if (bbBleCb.opCbacks[pBle->chan.opType].cancelOpCback) {
+        bbBleCb.opCbacks[pBle->chan.opType].cancelOpCback(pBod, pBle);
+    }
 }
 
 /*************************************************************************************************/
@@ -138,7 +136,7 @@ static void bbBleCancelOp(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 static void bbBleLowPower(void)
 {
-  PalBbBleLowPower();
+    PalBbBleLowPower();
 }
 
 /*************************************************************************************************/
@@ -150,13 +148,13 @@ static void bbBleLowPower(void)
 /*************************************************************************************************/
 void BbBleInit(void)
 {
-  PalBbBleInit();
-  BbRegisterProt(BB_PROT_BLE,     bbBleExecOp, bbBleCancelOp, bbBleStartBle,    bbBleStopBle);
-  BbRegisterProt(BB_PROT_BLE_DTM, bbBleExecOp, bbBleCancelOp, bbBleStartBleDtm, bbBleStopBle);
-  BbRegisterProt(BB_PROT_PRBS15,  NULL,        bbBleCancelOp, bbBleStartPrbs15, bbBleStopPrbs15);
-  BbRegisterProtLowPower(BB_PROT_BLE, bbBleLowPower);
+    PalBbBleInit();
+    BbRegisterProt(BB_PROT_BLE, bbBleExecOp, bbBleCancelOp, bbBleStartBle, bbBleStopBle);
+    BbRegisterProt(BB_PROT_BLE_DTM, bbBleExecOp, bbBleCancelOp, bbBleStartBleDtm, bbBleStopBle);
+    BbRegisterProt(BB_PROT_PRBS15, NULL, bbBleCancelOp, bbBleStartPrbs15, bbBleStopPrbs15);
+    BbRegisterProtLowPower(BB_PROT_BLE, bbBleLowPower);
 
-  memset(&bbBleCb, 0, sizeof(bbBleCb));
+    memset(&bbBleCb, 0, sizeof(bbBleCb));
 }
 
 /*************************************************************************************************/
@@ -170,6 +168,6 @@ void BbBleInit(void)
 /*************************************************************************************************/
 void bbBleRegisterOp(uint8_t opType, bbBleExecOpFn_t execOpCback, bbBleExecOpFn_t cancelOpCback)
 {
-  bbBleCb.opCbacks[opType].execOpCback   = execOpCback;
-  bbBleCb.opCbacks[opType].cancelOpCback = cancelOpCback;
+    bbBleCb.opCbacks[opType].execOpCback = execOpCback;
+    bbBleCb.opCbacks[opType].cancelOpCback = cancelOpCback;
 }

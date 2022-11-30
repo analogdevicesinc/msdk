@@ -44,13 +44,12 @@
 **************************************************************************************************/
 
 /*! Time control block type definition */
-typedef struct mmdlTImeClCb_tag
-{
-  mmdlEventCback_t recvCback;    /*!< Model Time received callback */
-}mmdlTimeClCb_t;
+typedef struct mmdlTImeClCb_tag {
+    mmdlEventCback_t recvCback; /*!< Model Time received callback */
+} mmdlTimeClCb_t;
 
 /*! Time Client message handler type definition */
-typedef void (*mmdlTimeClHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlTimeClHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
@@ -60,29 +59,24 @@ typedef void (*mmdlTimeClHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
 wsfHandlerId_t mmdlTimeClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlTimeClRcvdOpcodes[MMDL_TIME_CL_NUM_RCVD_OPCODES] =
-{
-  { {UINT8_OPCODE_TO_BYTES(MMDL_TIME_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_TIMEZONE_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_TIMEDELTA_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_TIMEROLE_STATUS_OPCODE)} }
+const meshMsgOpcode_t mmdlTimeClRcvdOpcodes[MMDL_TIME_CL_NUM_RCVD_OPCODES] = {
+    { { UINT8_OPCODE_TO_BYTES(MMDL_TIME_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_TIMEZONE_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_TIMEDELTA_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_TIMEROLE_STATUS_OPCODE) } }
 };
-
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! Time Client control block */
-static mmdlTimeClCb_t  timeClCb;
+static mmdlTimeClCb_t timeClCb;
 
 /*! Handler functions for supported opcodes */
-const mmdlTimeClHandleMsg_t mmdlTimeClHandleMsg[MMDL_TIME_CL_NUM_RCVD_OPCODES] =
-{
-  mmdlTimeClHandleStatus,
-  mmdlTimeClHandleZoneStatus,
-  mmdlTimeClHandleDeltaStatus,
-  mmdlTimeClHandleRoleStatus
+const mmdlTimeClHandleMsg_t mmdlTimeClHandleMsg[MMDL_TIME_CL_NUM_RCVD_OPCODES] = {
+    mmdlTimeClHandleStatus, mmdlTimeClHandleZoneStatus, mmdlTimeClHandleDeltaStatus,
+    mmdlTimeClHandleRoleStatus
 };
 
 /**************************************************************************************************
@@ -105,32 +99,32 @@ const mmdlTimeClHandleMsg_t mmdlTimeClHandleMsg[MMDL_TIME_CL_NUM_RCVD_OPCODES] =
 static void mmdlTimeSendSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             const mmdlTimeSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, 0);
-  uint8_t *pParam;
-  uint8_t paramMsg[MMDL_TIME_SET_LENGTH];
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, 0);
+    uint8_t *pParam;
+    uint8_t paramMsg[MMDL_TIME_SET_LENGTH];
 
-  if (pSetParam != NULL)
-  {
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (pSetParam != NULL) {
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    msgInfo.opcode.opcodeBytes[0] = MMDL_TIME_SET_OPCODE;
+        msgInfo.opcode.opcodeBytes[0] = MMDL_TIME_SET_OPCODE;
 
-    /* Build param message. */
-    pParam = paramMsg;
-    UINT40_TO_BSTREAM(pParam, pSetParam->state.taiSeconds);
-    UINT8_TO_BSTREAM(pParam, pSetParam->state.subSecond);
-    UINT8_TO_BSTREAM(pParam, pSetParam->state.uncertainty);
-    UINT8_TO_BSTREAM(pParam, ((pSetParam->state.taiUtcDelta & 0x7F) << 1) | pSetParam->state.timeAuthority);
-    UINT8_TO_BSTREAM(pParam, (uint8_t)(pSetParam->state.taiUtcDelta >> 7));
-    UINT8_TO_BSTREAM(pParam, pSetParam->state.timeZoneOffset);
+        /* Build param message. */
+        pParam = paramMsg;
+        UINT40_TO_BSTREAM(pParam, pSetParam->state.taiSeconds);
+        UINT8_TO_BSTREAM(pParam, pSetParam->state.subSecond);
+        UINT8_TO_BSTREAM(pParam, pSetParam->state.uncertainty);
+        UINT8_TO_BSTREAM(pParam, ((pSetParam->state.taiUtcDelta & 0x7F) << 1) |
+                                     pSetParam->state.timeAuthority);
+        UINT8_TO_BSTREAM(pParam, (uint8_t)(pSetParam->state.taiUtcDelta >> 7));
+        UINT8_TO_BSTREAM(pParam, pSetParam->state.timeZoneOffset);
 
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, MMDL_TIME_SET_LENGTH, 0, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, MMDL_TIME_SET_LENGTH, 0, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -149,26 +143,25 @@ static void mmdlTimeSendSet(meshElementId_t elementId, meshAddress_t serverAddr,
 static void mmdlTimeSendZoneSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                 const mmdlTimeZoneSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEZONE_SET_OPCODE);
-  uint8_t *pParam;
-  uint8_t paramMsg[MMDL_TIMEZONE_SET_LENGTH];
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEZONE_SET_OPCODE);
+    uint8_t *pParam;
+    uint8_t paramMsg[MMDL_TIMEZONE_SET_LENGTH];
 
-  if (pSetParam != NULL)
-  {
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (pSetParam != NULL) {
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Build param message. */
-    pParam = paramMsg;
-    UINT8_TO_BSTREAM(pParam, pSetParam->state.offsetNew);
-    UINT40_TO_BSTREAM(pParam, pSetParam->state.taiZoneChange);
+        /* Build param message. */
+        pParam = paramMsg;
+        UINT8_TO_BSTREAM(pParam, pSetParam->state.offsetNew);
+        UINT40_TO_BSTREAM(pParam, pSetParam->state.taiZoneChange);
 
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, MMDL_TIMEZONE_SET_LENGTH, 0, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, MMDL_TIMEZONE_SET_LENGTH, 0, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -187,26 +180,25 @@ static void mmdlTimeSendZoneSet(meshElementId_t elementId, meshAddress_t serverA
 static void mmdlTimeSendDeltaSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                  const mmdlTimeDeltaSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEDELTA_SET_OPCODE);
-  uint8_t *pParams;
-  uint8_t paramMsg[MMDL_TIMEDELTA_SET_LENGTH];
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEDELTA_SET_OPCODE);
+    uint8_t *pParams;
+    uint8_t paramMsg[MMDL_TIMEDELTA_SET_LENGTH];
 
-  if (pSetParam != NULL)
-  {
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (pSetParam != NULL) {
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Build param message. */
-    pParams = paramMsg;
-    UINT16_TO_BSTREAM(pParams, pSetParam->state.deltaNew);
-    UINT40_TO_BSTREAM(pParams, pSetParam->state.deltaChange);
+        /* Build param message. */
+        pParams = paramMsg;
+        UINT16_TO_BSTREAM(pParams, pSetParam->state.deltaNew);
+        UINT40_TO_BSTREAM(pParams, pSetParam->state.deltaChange);
 
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, MMDL_TIMEDELTA_SET_LENGTH, 0, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, MMDL_TIMEDELTA_SET_LENGTH, 0, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -227,25 +219,23 @@ static void mmdlTimeSendRoleSet(uint16_t opcode, meshElementId_t elementId,
                                 meshAddress_t serverAddr, uint8_t ttl,
                                 const mmdlTimeRoleSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEROLE_SET_OPCODE);
-  uint8_t paramMsg[MMDL_TIMEROLE_SET_LENGTH];
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEROLE_SET_OPCODE);
+    uint8_t paramMsg[MMDL_TIMEROLE_SET_LENGTH];
 
-  if (pSetParam != NULL)
-  {
+    if (pSetParam != NULL) {
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
+        UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, opcode);
 
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
-    UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, opcode);
+        /* Build param message. */
+        paramMsg[0] = pSetParam->state.timeRole;
 
-    /* Build param message. */
-    paramMsg[0] = pSetParam->state.timeRole;
-
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, MMDL_TIMEROLE_SET_LENGTH, 0, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, MMDL_TIMEROLE_SET_LENGTH, 0, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -259,42 +249,40 @@ static void mmdlTimeSendRoleSet(uint16_t opcode, meshElementId_t elementId,
 /*************************************************************************************************/
 void mmdlTimeClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlTimeClStatusEvent_t event;
-  uint8_t *pParams, byte7, byte8;
+    mmdlTimeClStatusEvent_t event;
+    uint8_t *pParams, byte7, byte8;
 
-  /* Validate message length */
-  if ((pMsg->messageParamsLen != MMDL_TIME_STATUS_MAX_LENGTH) &&
-      (pMsg->messageParamsLen != MMDL_TIME_STATUS_MIN_LENGTH))
-  {
-    return;
-  }
+    /* Validate message length */
+    if ((pMsg->messageParamsLen != MMDL_TIME_STATUS_MAX_LENGTH) &&
+        (pMsg->messageParamsLen != MMDL_TIME_STATUS_MIN_LENGTH)) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_TIME_CL_EVENT;
-  event.hdr.param = MMDL_TIME_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_TIME_CL_EVENT;
+    event.hdr.param = MMDL_TIME_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
-  event.state.taiSeconds = 0;
-  BSTREAM_TO_UINT40(event.state.taiSeconds, pParams);
+    pParams = pMsg->pMessageParams;
+    event.state.taiSeconds = 0;
+    BSTREAM_TO_UINT40(event.state.taiSeconds, pParams);
 
-  if (event.state.taiSeconds != 0)
-  {
-    BSTREAM_TO_UINT8(event.state.subSecond, pParams);
-    BSTREAM_TO_UINT8(event.state.uncertainty, pParams);
-    BSTREAM_TO_UINT8(byte7, pParams);
-    BSTREAM_TO_UINT8(byte8, pParams);
-    BSTREAM_TO_UINT8(event.state.timeZoneOffset, pParams);
-    event.state.timeAuthority = byte7 & 0x01;
-    event.state.taiUtcDelta = ((uint16_t)byte7 >> 1) + ((uint16_t)byte8 << 7);
-  }
+    if (event.state.taiSeconds != 0) {
+        BSTREAM_TO_UINT8(event.state.subSecond, pParams);
+        BSTREAM_TO_UINT8(event.state.uncertainty, pParams);
+        BSTREAM_TO_UINT8(byte7, pParams);
+        BSTREAM_TO_UINT8(byte8, pParams);
+        BSTREAM_TO_UINT8(event.state.timeZoneOffset, pParams);
+        event.state.timeAuthority = byte7 & 0x01;
+        event.state.taiUtcDelta = ((uint16_t)byte7 >> 1) + ((uint16_t)byte8 << 7);
+    }
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  timeClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    timeClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -308,31 +296,30 @@ void mmdlTimeClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlTimeClHandleZoneStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlTimeClZoneStatusEvent_t event;
-  uint8_t *pParams;
+    mmdlTimeClZoneStatusEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_TIMEZONE_STATUS_LENGTH)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_TIMEZONE_STATUS_LENGTH) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_TIME_CL_EVENT;
-  event.hdr.param = MMDL_TIMEZONE_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_TIME_CL_EVENT;
+    event.hdr.param = MMDL_TIMEZONE_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
-  BSTREAM_TO_UINT8(event.offsetCurrent, pParams);
-  BSTREAM_TO_UINT8(event.offsetNew, pParams);
-  BSTREAM_TO_UINT40(event.taiZoneChange, pParams);
+    pParams = pMsg->pMessageParams;
+    BSTREAM_TO_UINT8(event.offsetCurrent, pParams);
+    BSTREAM_TO_UINT8(event.offsetNew, pParams);
+    BSTREAM_TO_UINT40(event.taiZoneChange, pParams);
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  timeClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    timeClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -346,32 +333,31 @@ void mmdlTimeClHandleZoneStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlTimeClHandleDeltaStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlTimeClDeltaStatusEvent_t event;
-  uint8_t *pParams;
+    mmdlTimeClDeltaStatusEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_TIMEDELTA_STATUS_LENGTH)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_TIMEDELTA_STATUS_LENGTH) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_TIME_CL_EVENT;
-  event.hdr.param = MMDL_TIMEDELTA_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_TIME_CL_EVENT;
+    event.hdr.param = MMDL_TIMEDELTA_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  BSTREAM_TO_UINT16(event.deltaCurrent, pParams);
-  BSTREAM_TO_UINT16(event.deltaNew, pParams);
-  BSTREAM_TO_UINT40(event.deltaChange, pParams);
+    BSTREAM_TO_UINT16(event.deltaCurrent, pParams);
+    BSTREAM_TO_UINT16(event.deltaNew, pParams);
+    BSTREAM_TO_UINT40(event.deltaChange, pParams);
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  timeClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    timeClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -385,27 +371,26 @@ void mmdlTimeClHandleDeltaStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlTimeClHandleRoleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlTimeClRoleStatusEvent_t event;
+    mmdlTimeClRoleStatusEvent_t event;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_TIMEROLE_STATUS_LENGTH)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_TIMEROLE_STATUS_LENGTH) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_TIME_CL_EVENT;
-  event.hdr.param = MMDL_TIMEROLE_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_TIME_CL_EVENT;
+    event.hdr.param = MMDL_TIMEROLE_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  event.timeRole = pMsg->pMessageParams[0];
+    event.timeRole = pMsg->pMessageParams[0];
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  timeClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    timeClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /**************************************************************************************************
@@ -423,11 +408,11 @@ void mmdlTimeClHandleRoleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlTimeClHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Set handler ID */
-  mmdlTimeClHandlerId = handlerId;
+    /* Set handler ID */
+    mmdlTimeClHandlerId = handlerId;
 
-  /* Initialize control block */
-  timeClCb.recvCback = MmdlEmptyCback;
+    /* Initialize control block */
+    timeClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -442,35 +427,31 @@ void MmdlTimeClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlTimeClHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelMsgRecvEvt_t *pModelMsg;
-  uint8_t opcodeIdx, opcodeSize;
+    meshModelMsgRecvEvt_t *pModelMsg;
+    uint8_t opcodeIdx, opcodeSize;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-        /* Match the received opcode */
-        for (opcodeIdx = 0; opcodeIdx < MMDL_TIME_CL_NUM_RCVD_OPCODES; opcodeIdx++)
-        {
-          opcodeSize = MESH_OPCODE_SIZE(pModelMsg->opCode);
-          if (!memcmp(&mmdlTimeClRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
-              opcodeSize))
-          {
-            /* Process message */
-            (void)mmdlTimeClHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
-          }
+            /* Match the received opcode */
+            for (opcodeIdx = 0; opcodeIdx < MMDL_TIME_CL_NUM_RCVD_OPCODES; opcodeIdx++) {
+                opcodeSize = MESH_OPCODE_SIZE(pModelMsg->opCode);
+                if (!memcmp(&mmdlTimeClRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
+                            opcodeSize)) {
+                    /* Process message */
+                    (void)mmdlTimeClHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
+                }
+            }
+            break;
+
+        default:
+            MMDL_TRACE_WARN0("TIME CL: Invalid event message received!");
+            break;
         }
-        break;
-
-      default:
-        MMDL_TRACE_WARN0("TIME CL: Invalid event message received!");
-        break;
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -488,16 +469,16 @@ void MmdlTimeClHandler(wsfMsgHdr_t *pMsg)
 void MmdlTimeClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                    uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIME_GET_OPCODE);
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIME_GET_OPCODE);
 
-  /* Fill in the msg info parameters */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core instantly */
-  MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -514,9 +495,9 @@ void MmdlTimeClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t 
  */
 /*************************************************************************************************/
 void MmdlTimeClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                       const mmdlTimeSetParam_t *pSetParam, uint16_t appKeyIndex)
+                   const mmdlTimeSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  mmdlTimeSendSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex);
+    mmdlTimeSendSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -534,16 +515,16 @@ void MmdlTimeClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t 
 void MmdlTimeClZoneGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEZONE_GET_OPCODE);
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEZONE_GET_OPCODE);
 
-  /* Fill in the msg info parameters */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core instantly */
-  MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -562,7 +543,7 @@ void MmdlTimeClZoneGet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlTimeClZoneSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        const mmdlTimeZoneSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  mmdlTimeSendZoneSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex);
+    mmdlTimeSendZoneSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -580,16 +561,16 @@ void MmdlTimeClZoneSet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlTimeClDeltaGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                         uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEDELTA_GET_OPCODE);
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEDELTA_GET_OPCODE);
 
-  /* Fill in the msg info parameters */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core instantly */
-  MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -606,9 +587,9 @@ void MmdlTimeClDeltaGet(meshElementId_t elementId, meshAddress_t serverAddr, uin
  */
 /*************************************************************************************************/
 void MmdlTimeClDeltaSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                       const mmdlTimeDeltaSetParam_t *pSetParam, uint16_t appKeyIndex)
+                        const mmdlTimeDeltaSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  mmdlTimeSendDeltaSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex);
+    mmdlTimeSendDeltaSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -626,16 +607,16 @@ void MmdlTimeClDeltaSet(meshElementId_t elementId, meshAddress_t serverAddr, uin
 void MmdlTimeClRoleGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEROLE_GET_OPCODE);
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_TIME_CL_MDL_ID, MMDL_TIMEROLE_GET_OPCODE);
 
-  /* Fill in the msg info parameters */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core instantly */
-  MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -654,8 +635,8 @@ void MmdlTimeClRoleGet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlTimeClRoleSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        const mmdlTimeRoleSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  mmdlTimeSendRoleSet(MMDL_TIMEROLE_SET_OPCODE, elementId, serverAddr, ttl, pSetParam,
-                      appKeyIndex);
+    mmdlTimeSendRoleSet(MMDL_TIMEROLE_SET_OPCODE, elementId, serverAddr, ttl, pSetParam,
+                        appKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -669,9 +650,8 @@ void MmdlTimeClRoleSet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 /*************************************************************************************************/
 void MmdlTimeClRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback*/
-  if (recvCback != NULL)
-  {
-    timeClCb.recvCback = recvCback;
-  }
+    /* Store valid callback*/
+    if (recvCback != NULL) {
+        timeClCb.recvCback = recvCback;
+    }
 }

@@ -54,11 +54,9 @@
 #include "nrf_cc310_bl_ecdsa_verify_secp256r1.h"
 #endif
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
@@ -67,33 +65,31 @@ extern "C" {
 #endif
 #define NRF_CRYPTO_ECC_SECP224R1_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_internal_ecc_key_header_t header;        /**< @internal @brief Common ECC key header */
-    nrf_cc310_bl_ecc_public_key_secp224r1_t public_key; /**< @internal @brief CC310_BL specific key representation */
+typedef struct {
+    nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
+    nrf_cc310_bl_ecc_public_key_secp224r1_t
+        public_key; /**< @internal @brief CC310_BL specific key representation */
 } nrf_crypto_backend_secp224r1_public_key_t;
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_from_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_secp224r1_public_key_from_raw(
-    void          * p_public_key,
-    uint8_t const * p_raw_data);
+ret_code_t nrf_crypto_backend_secp224r1_public_key_from_raw(void *p_public_key,
+                                                            uint8_t const *p_raw_data);
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_to_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_secp224r1_public_key_to_raw(
-    void const * p_public_key,
-    uint8_t    * p_raw_data);
+ret_code_t nrf_crypto_backend_secp224r1_public_key_to_raw(void const *p_public_key,
+                                                          uint8_t *p_raw_data);
 
 // Dummy and empty definitions for unused symbols
-#define nrf_crypto_backend_secp224r1_key_pair_generate    NULL
+#define nrf_crypto_backend_secp224r1_key_pair_generate NULL
 #define nrf_crypto_backend_secp224r1_public_key_calculate NULL
 #define nrf_crypto_backend_secp224r1_private_key_from_raw NULL
-#define nrf_crypto_backend_secp224r1_private_key_to_raw   NULL
-#define nrf_crypto_backend_secp224r1_private_key_free     NULL
-#define nrf_crypto_backend_secp224r1_public_key_free      NULL
+#define nrf_crypto_backend_secp224r1_private_key_to_raw NULL
+#define nrf_crypto_backend_secp224r1_private_key_free NULL
+#define nrf_crypto_backend_secp224r1_public_key_free NULL
 
-#define NRF_CRYPTO_BACKEND_SECP224R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
+#define NRF_CRYPTO_BACKEND_SECP224R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
 #define NRF_CRYPTO_BACKEND_SECP224R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 
 typedef uint32_t nrf_crypto_backend_secp224r1_private_key_t;
@@ -102,7 +98,6 @@ typedef uint32_t nrf_crypto_backend_secp224r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_ECC_SECP256R1)
@@ -110,33 +105,31 @@ typedef uint32_t nrf_crypto_backend_secp224r1_public_key_calculate_context_t;
 #endif
 #define NRF_CRYPTO_ECC_SECP256R1_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_internal_ecc_key_header_t header;        /**< @internal @brief Common ECC key header */
-    nrf_cc310_bl_ecc_public_key_secp256r1_t public_key; /**< @internal @brief CC310_BL specific key representation */
+typedef struct {
+    nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
+    nrf_cc310_bl_ecc_public_key_secp256r1_t
+        public_key; /**< @internal @brief CC310_BL specific key representation */
 } nrf_crypto_backend_secp256r1_public_key_t;
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_from_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_secp256r1_public_key_from_raw(
-    void          * p_public_key,
-    uint8_t const * p_raw_data);
+ret_code_t nrf_crypto_backend_secp256r1_public_key_from_raw(void *p_public_key,
+                                                            uint8_t const *p_raw_data);
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_to_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_secp256r1_public_key_to_raw(
-    void const * p_public_key,
-    uint8_t    * p_raw_data);
+ret_code_t nrf_crypto_backend_secp256r1_public_key_to_raw(void const *p_public_key,
+                                                          uint8_t *p_raw_data);
 
 // Dummy and empty definitions for unused symbols
-#define nrf_crypto_backend_secp256r1_key_pair_generate    NULL
+#define nrf_crypto_backend_secp256r1_key_pair_generate NULL
 #define nrf_crypto_backend_secp256r1_public_key_calculate NULL
 #define nrf_crypto_backend_secp256r1_private_key_from_raw NULL
-#define nrf_crypto_backend_secp256r1_private_key_to_raw   NULL
-#define nrf_crypto_backend_secp256r1_private_key_free     NULL
-#define nrf_crypto_backend_secp256r1_public_key_free      NULL
+#define nrf_crypto_backend_secp256r1_private_key_to_raw NULL
+#define nrf_crypto_backend_secp256r1_private_key_free NULL
+#define nrf_crypto_backend_secp256r1_public_key_free NULL
 
-#define NRF_CRYPTO_BACKEND_SECP256R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
+#define NRF_CRYPTO_BACKEND_SECP256R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
 #define NRF_CRYPTO_BACKEND_SECP256R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 
 typedef uint32_t nrf_crypto_backend_secp256r1_private_key_t;
@@ -144,7 +137,6 @@ typedef uint32_t nrf_crypto_backend_secp256r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp256r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
-
 
 #ifdef __cplusplus
 }

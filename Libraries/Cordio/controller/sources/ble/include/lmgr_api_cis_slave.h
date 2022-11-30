@@ -40,9 +40,8 @@ extern "C" {
   Data Types
 **************************************************************************************************/
 /*! \brief      Slave role device parameter definition. */
-typedef struct
-{
-  uint8_t           maxNumCis;          /*!< Maximum number of CIS. */
+typedef struct {
+    uint8_t maxNumCis; /*!< Maximum number of CIS. */
 } lmgrCisSlvCtrlBlk_t;
 
 /**************************************************************************************************
@@ -55,7 +54,7 @@ typedef struct
 /* Initialization */
 void LmgrMstInit(void);
 
-/*! \} */    /* LL_LMGR_API_CIS_SLV */
+/*! \} */ /* LL_LMGR_API_CIS_SLV */
 
 #ifdef __cplusplus
 };

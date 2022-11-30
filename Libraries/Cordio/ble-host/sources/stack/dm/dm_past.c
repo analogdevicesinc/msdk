@@ -38,38 +38,26 @@
 **************************************************************************************************/
 
 /*! DM past event handler messages */
-enum
-{
-  /* messages from API */
-  DM_PAST_MSG_API_RCV_ENABLE = DM_MSG_START(DM_ID_PAST), /*!< Enable receiving report */
-  DM_PAST_MSG_API_SYNC_TRSF,                             /*!< Transfer sync */
-  DM_PAST_MSG_API_SET_INFO_TRSF,                         /*!< Transfer set info */
-  DM_PAST_MSG_API_CFG,                                   /*!< Configure PAST parameters */
-  DM_PAST_MSG_API_DEFAULT_CFG                            /*!< Configure PAST default parameters */
+enum {
+    /* messages from API */
+    DM_PAST_MSG_API_RCV_ENABLE = DM_MSG_START(DM_ID_PAST), /*!< Enable receiving report */
+    DM_PAST_MSG_API_SYNC_TRSF, /*!< Transfer sync */
+    DM_PAST_MSG_API_SET_INFO_TRSF, /*!< Transfer set info */
+    DM_PAST_MSG_API_CFG, /*!< Configure PAST parameters */
+    DM_PAST_MSG_API_DEFAULT_CFG /*!< Configure PAST default parameters */
 };
-
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /* action function table */
-static const dmPastAct_t dmPastAct[] =
-{
-  dmPastActRptRcvEnable,
-  dmPastActSyncTsfr,
-  dmPastActSetInfoTrsf,
-  dmPastActConfig,
-  dmPastActDefaultConfig
-};
+static const dmPastAct_t dmPastAct[] = { dmPastActRptRcvEnable, dmPastActSyncTsfr,
+                                         dmPastActSetInfoTrsf, dmPastActConfig,
+                                         dmPastActDefaultConfig };
 
 /*! DM PAST component function interface */
-static const dmFcnIf_t dmPastFcnIf =
-{
-  dmEmptyReset,
-  dmPastHciHandler,
-  dmPastMsgHandler
-};
+static const dmFcnIf_t dmPastFcnIf = { dmEmptyReset, dmPastHciHandler, dmPastMsgHandler };
 
 /*************************************************************************************************/
 /*!
@@ -80,14 +68,16 @@ static const dmFcnIf_t dmPastFcnIf =
 /*************************************************************************************************/
 void DmPastInit(void)
 {
-  WsfTaskLock();
+    WsfTaskLock();
 
-  /* set function interface table */
-  dmFcnIfTbl[DM_ID_PAST] = (dmFcnIf_t *) &dmPastFcnIf;
+    /* set function interface table */
+    dmFcnIfTbl[DM_ID_PAST] = (dmFcnIf_t *)&dmPastFcnIf;
 
-  HciSetLeSupFeat((HCI_LE_SUP_FEAT_RECV_CTE | HCI_LE_SUP_FEAT_PAST_SENDER | HCI_LE_SUP_FEAT_PAST_RECIPIENT), TRUE);
+    HciSetLeSupFeat((HCI_LE_SUP_FEAT_RECV_CTE | HCI_LE_SUP_FEAT_PAST_SENDER |
+                     HCI_LE_SUP_FEAT_PAST_RECIPIENT),
+                    TRUE);
 
-  WsfTaskUnlock();
+    WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -101,25 +91,21 @@ void DmPastInit(void)
 /*************************************************************************************************/
 void dmPastHciHandler(hciEvt_t *pEvent)
 {
-  dmConnCcb_t *pCcb = dmConnCcbByHandle(pEvent->hdr.param);
+    dmConnCcb_t *pCcb = dmConnCcbByHandle(pEvent->hdr.param);
 
-  /* if ccb found */
-  if (pCcb != NULL)
-  {
-    /* set conn id */
-    pEvent->hdr.param = pCcb->connId;
+    /* if ccb found */
+    if (pCcb != NULL) {
+        /* set conn id */
+        pEvent->hdr.param = pCcb->connId;
 
-    if (pEvent->hdr.event == HCI_LE_PER_ADV_SYNC_TRSF_CMD_CMPL_CBACK_EVT)
-    {
-      pEvent->hdr.event = DM_PER_ADV_SYNC_TRSF_IND;
-      (*dmCb.cback)((dmEvt_t *) pEvent);
+        if (pEvent->hdr.event == HCI_LE_PER_ADV_SYNC_TRSF_CMD_CMPL_CBACK_EVT) {
+            pEvent->hdr.event = DM_PER_ADV_SYNC_TRSF_IND;
+            (*dmCb.cback)((dmEvt_t *)pEvent);
+        } else if (pEvent->hdr.event == HCI_LE_PER_ADV_SET_INFO_TRSF_CMD_CMPL_CBACK_EVT) {
+            pEvent->hdr.event = DM_PER_ADV_SET_INFO_TRSF_IND;
+            (*dmCb.cback)((dmEvt_t *)pEvent);
+        }
     }
-    else if (pEvent->hdr.event == HCI_LE_PER_ADV_SET_INFO_TRSF_CMD_CMPL_CBACK_EVT)
-    {
-      pEvent->hdr.event = DM_PER_ADV_SET_INFO_TRSF_IND;
-      (*dmCb.cback)((dmEvt_t *) pEvent);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -133,8 +119,8 @@ void dmPastHciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 void dmPastMsgHandler(wsfMsgHdr_t *pMsg)
 {
-  /* execute action function */
-  (*dmPastAct[DM_MSG_MASK(pMsg->event)])((dmPastMsg_t *) pMsg);
+    /* execute action function */
+    (*dmPastAct[DM_MSG_MASK(pMsg->event)])((dmPastMsg_t *)pMsg);
 }
 
 /*************************************************************************************************/
@@ -148,13 +134,12 @@ void dmPastMsgHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void dmPastActRptRcvEnable(dmPastMsg_t *pMsg)
 {
-  dmSyncCb_t *pScb;
+    dmSyncCb_t *pScb;
 
-  /* look up scb from sync id */
-  if ((pScb = dmSyncCbById((dmSyncId_t) pMsg->hdr.param)) != NULL)
-  {
-    HciLeSetPerAdvRcvEnableCmd(pScb->handle, (pMsg->hdr.status ? TRUE : FALSE));
-  }
+    /* look up scb from sync id */
+    if ((pScb = dmSyncCbById((dmSyncId_t)pMsg->hdr.param)) != NULL) {
+        HciLeSetPerAdvRcvEnableCmd(pScb->handle, (pMsg->hdr.status ? TRUE : FALSE));
+    }
 }
 
 /*************************************************************************************************/
@@ -168,19 +153,17 @@ void dmPastActRptRcvEnable(dmPastMsg_t *pMsg)
 /*************************************************************************************************/
 void dmPastActSyncTsfr(dmPastMsg_t *pMsg)
 {
-  dmSyncCb_t *pScb;
+    dmSyncCb_t *pScb;
 
-  /* look up scb from sync id */
-  if ((pScb = dmSyncCbById((dmSyncId_t) pMsg->hdr.param)) != NULL)
-  {
-    dmConnCcb_t *pCcb;
+    /* look up scb from sync id */
+    if ((pScb = dmSyncCbById((dmSyncId_t)pMsg->hdr.param)) != NULL) {
+        dmConnCcb_t *pCcb;
 
-    /* look up ccb from conn id */
-    if ((pCcb = dmConnCcbById(pMsg->apiPastTrsf.connId)) != NULL)
-    {
-      HciLePerAdvSyncTrsfCmd(pCcb->handle, pMsg->apiPastTrsf.serviceData, pScb->handle);
+        /* look up ccb from conn id */
+        if ((pCcb = dmConnCcbById(pMsg->apiPastTrsf.connId)) != NULL) {
+            HciLePerAdvSyncTrsfCmd(pCcb->handle, pMsg->apiPastTrsf.serviceData, pScb->handle);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -194,19 +177,17 @@ void dmPastActSyncTsfr(dmPastMsg_t *pMsg)
 /*************************************************************************************************/
 void dmPastActSetInfoTrsf(dmPastMsg_t *pMsg)
 {
-  uint8_t advHandle = (uint8_t) pMsg->hdr.param;
+    uint8_t advHandle = (uint8_t)pMsg->hdr.param;
 
-  /* if periodic advertising is currently in progress for the advertising set */
-  if (dmPerAdvState(advHandle) == DM_ADV_PER_STATE_ADVERTISING)
-  {
-    dmConnCcb_t *pCcb;
+    /* if periodic advertising is currently in progress for the advertising set */
+    if (dmPerAdvState(advHandle) == DM_ADV_PER_STATE_ADVERTISING) {
+        dmConnCcb_t *pCcb;
 
-    /* look up ccb from conn id */
-    if ((pCcb = dmConnCcbById(pMsg->apiPastTrsf.connId)) != NULL)
-    {
-      HciLePerAdvSetInfoTrsfCmd(pCcb->handle, pMsg->apiPastTrsf.serviceData, advHandle);
+        /* look up ccb from conn id */
+        if ((pCcb = dmConnCcbById(pMsg->apiPastTrsf.connId)) != NULL) {
+            HciLePerAdvSetInfoTrsfCmd(pCcb->handle, pMsg->apiPastTrsf.serviceData, advHandle);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -220,14 +201,13 @@ void dmPastActSetInfoTrsf(dmPastMsg_t *pMsg)
 /*************************************************************************************************/
 void dmPastActConfig(dmPastMsg_t *pMsg)
 {
-  dmConnCcb_t *pCcb;
+    dmConnCcb_t *pCcb;
 
-  /* look up ccb from conn id */
-  if ((pCcb = dmConnCcbById((dmConnId_t) pMsg->hdr.param)) != NULL)
-  {
-    HciLeSetPerAdvSyncTrsfParamsCmd(pCcb->handle, pMsg->apiPastCfg.mode, pMsg->apiPastCfg.skip,
-                                    pMsg->apiPastCfg.syncTimeout, pMsg->apiPastCfg.cteType);
-  }
+    /* look up ccb from conn id */
+    if ((pCcb = dmConnCcbById((dmConnId_t)pMsg->hdr.param)) != NULL) {
+        HciLeSetPerAdvSyncTrsfParamsCmd(pCcb->handle, pMsg->apiPastCfg.mode, pMsg->apiPastCfg.skip,
+                                        pMsg->apiPastCfg.syncTimeout, pMsg->apiPastCfg.cteType);
+    }
 }
 
 /*************************************************************************************************/
@@ -241,8 +221,8 @@ void dmPastActConfig(dmPastMsg_t *pMsg)
 /*************************************************************************************************/
 void dmPastActDefaultConfig(dmPastMsg_t *pMsg)
 {
-  HciLeSetDefaultPerAdvSyncTrsfParamsCmd(pMsg->apiPastCfg.mode, pMsg->apiPastCfg.skip,
-                                         pMsg->apiPastCfg.syncTimeout, pMsg->apiPastCfg.cteType);
+    HciLeSetDefaultPerAdvSyncTrsfParamsCmd(pMsg->apiPastCfg.mode, pMsg->apiPastCfg.skip,
+                                           pMsg->apiPastCfg.syncTimeout, pMsg->apiPastCfg.cteType);
 }
 
 /*************************************************************************************************/
@@ -257,15 +237,14 @@ void dmPastActDefaultConfig(dmPastMsg_t *pMsg)
 /*************************************************************************************************/
 void DmPastRptRcvEnable(dmSyncId_t syncId, bool_t enable)
 {
-  wsfMsgHdr_t *pMsg;
+    wsfMsgHdr_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL)
-  {
-    pMsg->param = syncId;
-    pMsg->event = DM_PAST_MSG_API_RCV_ENABLE;
-    pMsg->status = enable;
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL) {
+        pMsg->param = syncId;
+        pMsg->event = DM_PAST_MSG_API_RCV_ENABLE;
+        pMsg->status = enable;
+        WsfMsgSend(dmCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -282,16 +261,15 @@ void DmPastRptRcvEnable(dmSyncId_t syncId, bool_t enable)
 /*************************************************************************************************/
 void DmPastSyncTrsf(dmConnId_t connId, uint16_t serviceData, dmSyncId_t syncId)
 {
-  dmPastApiTrsf_t *pMsg;
+    dmPastApiTrsf_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(dmPastApiTrsf_t))) != NULL)
-  {
-    pMsg->hdr.param = syncId;
-    pMsg->hdr.event = DM_PAST_MSG_API_SYNC_TRSF;
-    pMsg->serviceData = serviceData;
-    pMsg->connId = connId;
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(dmPastApiTrsf_t))) != NULL) {
+        pMsg->hdr.param = syncId;
+        pMsg->hdr.event = DM_PAST_MSG_API_SYNC_TRSF;
+        pMsg->serviceData = serviceData;
+        pMsg->connId = connId;
+        WsfMsgSend(dmCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -308,16 +286,15 @@ void DmPastSyncTrsf(dmConnId_t connId, uint16_t serviceData, dmSyncId_t syncId)
 /*************************************************************************************************/
 void DmPastSetInfoTrsf(dmConnId_t connId, uint16_t serviceData, uint8_t advHandle)
 {
-  dmPastApiTrsf_t *pMsg;
+    dmPastApiTrsf_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(dmPastApiTrsf_t))) != NULL)
-  {
-    pMsg->hdr.param = advHandle;
-    pMsg->hdr.event = DM_PAST_MSG_API_SET_INFO_TRSF;
-    pMsg->serviceData = serviceData;
-    pMsg->connId = connId;
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(dmPastApiTrsf_t))) != NULL) {
+        pMsg->hdr.param = advHandle;
+        pMsg->hdr.event = DM_PAST_MSG_API_SET_INFO_TRSF;
+        pMsg->serviceData = serviceData;
+        pMsg->connId = connId;
+        WsfMsgSend(dmCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -340,18 +317,17 @@ void DmPastSetInfoTrsf(dmConnId_t connId, uint16_t serviceData, uint8_t advHandl
 void DmPastConfig(dmConnId_t connId, uint8_t mode, uint16_t skip, uint16_t syncTimeout,
                   uint8_t cteType)
 {
-  dmPastApiCfg_t *pMsg;
+    dmPastApiCfg_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(dmPastApiCfg_t))) != NULL)
-  {
-    pMsg->hdr.param = connId;
-    pMsg->hdr.event = DM_PAST_MSG_API_CFG;
-    pMsg->mode = mode;
-    pMsg->skip = skip;
-    pMsg->syncTimeout = syncTimeout;
-    pMsg->cteType = cteType;
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(dmPastApiCfg_t))) != NULL) {
+        pMsg->hdr.param = connId;
+        pMsg->hdr.event = DM_PAST_MSG_API_CFG;
+        pMsg->mode = mode;
+        pMsg->skip = skip;
+        pMsg->syncTimeout = syncTimeout;
+        pMsg->cteType = cteType;
+        WsfMsgSend(dmCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -372,15 +348,14 @@ void DmPastConfig(dmConnId_t connId, uint8_t mode, uint16_t skip, uint16_t syncT
 /*************************************************************************************************/
 void DmPastDefaultConfig(uint8_t mode, uint16_t skip, uint16_t syncTimeout, uint8_t cteType)
 {
-  dmPastApiCfg_t *pMsg;
+    dmPastApiCfg_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(dmPastApiCfg_t))) != NULL)
-  {
-    pMsg->hdr.event = DM_PAST_MSG_API_DEFAULT_CFG;
-    pMsg->mode = mode;
-    pMsg->skip = skip;
-    pMsg->syncTimeout = syncTimeout;
-    pMsg->cteType = cteType;
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(dmPastApiCfg_t))) != NULL) {
+        pMsg->hdr.event = DM_PAST_MSG_API_DEFAULT_CFG;
+        pMsg->mode = mode;
+        pMsg->skip = skip;
+        pMsg->syncTimeout = syncTimeout;
+        pMsg->cteType = cteType;
+        WsfMsgSend(dmCb.handlerId, pMsg);
+    }
 }

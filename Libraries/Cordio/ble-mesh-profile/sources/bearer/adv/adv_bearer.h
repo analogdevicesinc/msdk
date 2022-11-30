@@ -42,24 +42,23 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Invalid Advertising Bearer interface ID */
-#define ADV_BEARER_INVALID_IF_ID              0xFF
+#define ADV_BEARER_INVALID_IF_ID 0xFF
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Configurable parameters for Mesh Advertising Bearer */
-typedef struct
-{
-  uint16_t scanInterval;    /*!< The scan interval, in 0.625 ms units */
-  uint16_t scanWindow;      /*!< The scan window, in 0.625 ms units. Must be less than or equal
+typedef struct {
+    uint16_t scanInterval; /*!< The scan interval, in 0.625 ms units */
+    uint16_t scanWindow; /*!< The scan window, in 0.625 ms units. Must be less than or equal
                              *   to scan interval.
                              */
-  uint8_t  discMode;        /*!< The GAP discovery mode (general, limited, or none) */
-  uint8_t  scanType;        /*!< The scan type (active or passive) */
-  uint16_t advDuration;     /*!< The advertising duration in ms */
-  uint16_t intervalMin;     /*!< Minimum advertising interval, in 0.625 ms units */
-  uint16_t intervalMax;     /*!< Maximum advertising interval, in 0.625 ms units*/
+    uint8_t discMode; /*!< The GAP discovery mode (general, limited, or none) */
+    uint8_t scanType; /*!< The scan type (active or passive) */
+    uint16_t advDuration; /*!< The advertising duration in ms */
+    uint16_t intervalMin; /*!< Minimum advertising interval, in 0.625 ms units */
+    uint16_t intervalMax; /*!< Maximum advertising interval, in 0.625 ms units*/
 } advBearerCfg_t;
 
 /**************************************************************************************************
@@ -138,7 +137,7 @@ void AdvBearerSendPacket(meshAdvPduSendEvt_t *pEvt);
 /*************************************************************************************************/
 void AdvBearerProcDmMsg(dmEvt_t *pMsg);
 
-/*! \} */    /* MESH_BEARER_ADV */
+/*! \} */ /* MESH_BEARER_ADV */
 
 #ifdef __cplusplus
 };

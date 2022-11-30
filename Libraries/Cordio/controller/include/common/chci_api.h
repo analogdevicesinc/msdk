@@ -34,53 +34,50 @@ extern "C" {
 #endif
 
 /*! \brief    Protocols that source and sink messages. */
-enum
-{
-  CHCI_TR_PROT_BLE = 0,                   /*!< BLE protocol. */
-  CHCI_TR_PROT_BOOT = 1,                  /*!< Boot protocol. */
-  CHCI_TR_PROT_15P4 = 2,                  /*!< 802.15.4 protocol */
-  CHCI_TR_PROT_CAL = 3,                   /*!< Radio Calibration protocol */
-  CHCI_TR_PROT_NUM                        /*!< Number of protocols. */
+enum {
+    CHCI_TR_PROT_BLE = 0, /*!< BLE protocol. */
+    CHCI_TR_PROT_BOOT = 1, /*!< Boot protocol. */
+    CHCI_TR_PROT_15P4 = 2, /*!< 802.15.4 protocol */
+    CHCI_TR_PROT_CAL = 3, /*!< Radio Calibration protocol */
+    CHCI_TR_PROT_NUM /*!< Number of protocols. */
 };
 
 /*! \brief    Type of message. */
-enum
-{
-  CHCI_TR_TYPE_CMD  = 0,                  /*!< Command message (receive only). */
-  CHCI_TR_TYPE_ACL,                       /*!< ACL data message (send or receive). */
-  CHCI_TR_TYPE_EVT,                       /*!< Event message (send only). */
-  CHCI_TR_TYPE_ISO,                       /*!< ISO data message (send or receive). */
-  CHCI_TR_TYPE_NUM                        /*!< Number of types. */
+enum {
+    CHCI_TR_TYPE_CMD = 0, /*!< Command message (receive only). */
+    CHCI_TR_TYPE_ACL, /*!< ACL data message (send or receive). */
+    CHCI_TR_TYPE_EVT, /*!< Event message (send only). */
+    CHCI_TR_TYPE_ISO, /*!< ISO data message (send or receive). */
+    CHCI_TR_TYPE_NUM /*!< Number of types. */
 };
 
 /*! \brief      Error codes. */
-enum
-{
-  CHCI_TR_CODE_INVALID_DATA     = 0xA0,   /*!< Invalid data received. */
-  CHCI_TR_CODE_INVALID_DATA_LEN = 0xA1,   /*!< Invalid data length. */
-  CHCI_TR_CODE_OUT_OF_MEMORY    = 0xA2    /*!< Out of memory. */
+enum {
+    CHCI_TR_CODE_INVALID_DATA = 0xA0, /*!< Invalid data received. */
+    CHCI_TR_CODE_INVALID_DATA_LEN = 0xA1, /*!< Invalid data length. */
+    CHCI_TR_CODE_OUT_OF_MEMORY = 0xA2 /*!< Out of memory. */
 };
 
 /*! \brief      802.15.4 protocol command type. */
-#define CHCI_15P4_CMD_TYPE      0x80
+#define CHCI_15P4_CMD_TYPE 0x80
 
 /*! \brief      802.15.4 protocol data type. */
-#define CHCI_15P4_DATA_TYPE     0x81
+#define CHCI_15P4_DATA_TYPE 0x81
 
 /*! \brief      Radio calibration command type. */
-#define CHCI_CAL_CMD_TYPE       0xF1
+#define CHCI_CAL_CMD_TYPE 0xF1
 
 /*! \brief      Radio calibration signal type. */
-#define CHCI_CAL_SIG_TYPE       0xF2
+#define CHCI_CAL_SIG_TYPE 0xF2
 
 /*! \brief      Radio calibration event type. */
-#define CHCI_CAL_EVT_TYPE       0xF4
+#define CHCI_CAL_EVT_TYPE 0xF4
 
 /*! \brief      802.15.4 protocol header length. */
-#define CHCI_15P4_HDR_LEN       3
+#define CHCI_15P4_HDR_LEN 3
 
 /*! \brief      Radio calibration header length. */
-#define CHCI_CAL_HDR_LEN        3
+#define CHCI_CAL_HDR_LEN 3
 
 /*! \brief      Message received callback. */
 typedef void (*ChciTrRecvCback_t)(uint8_t type, uint8_t *pBuf);
@@ -129,8 +126,9 @@ void ChciTrHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
  *  \param  serviceCback        Service callback.
  */
 /*************************************************************************************************/
-void ChciTrSetCbacks(uint8_t prot, ChciTrRecvCback_t recvCback, ChciTrSendCompleteCback_t sendCompleteCback,
-    ChciTrServiceCback_t serviceCback);
+void ChciTrSetCbacks(uint8_t prot, ChciTrRecvCback_t recvCback,
+                     ChciTrSendCompleteCback_t sendCompleteCback,
+                     ChciTrServiceCback_t serviceCback);
 
 /*************************************************************************************************/
 /*!

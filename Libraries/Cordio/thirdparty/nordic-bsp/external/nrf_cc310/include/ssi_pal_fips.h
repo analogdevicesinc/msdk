@@ -32,9 +32,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-#ifndef  _SSI_PAL_FIPS_H
-#define  _SSI_PAL_FIPS_H
+#ifndef _SSI_PAL_FIPS_H
+#define _SSI_PAL_FIPS_H
 
 /*!
 @file
@@ -55,7 +54,6 @@ need to be replaced according to Platform and OS.
  */
 SaSiError_t SaSi_PalFipsGetState(CC_FipsState_t *pFipsState);
 
-
 /**
  * @brief This function purpose is to get the FIPS Error.
  *
@@ -64,7 +62,6 @@ SaSiError_t SaSi_PalFipsGetState(CC_FipsState_t *pFipsState);
  * @return A non-zero value on failure.
  */
 SaSiError_t SaSi_PalFipsGetError(CC_FipsError_t *pFipsError);
-
 
 /**
  * @brief This function purpose is to get the FIPS trace.
@@ -75,7 +72,6 @@ SaSiError_t SaSi_PalFipsGetError(CC_FipsError_t *pFipsError);
  */
 SaSiError_t SaSi_PalFipsGetTrace(CC_FipsTrace_t *pFipsTrace);
 
-
 /**
  * @brief This function purpose is to set the FIPS state.
  *
@@ -84,7 +80,6 @@ SaSiError_t SaSi_PalFipsGetTrace(CC_FipsTrace_t *pFipsTrace);
  * @return A non-zero value on failure.
  */
 SaSiError_t SaSi_PalFipsSetState(CC_FipsState_t fipsState);
-
 
 /**
  * @brief This function purpose is to set the FIPS error.
@@ -95,7 +90,6 @@ SaSiError_t SaSi_PalFipsSetState(CC_FipsState_t fipsState);
  */
 SaSiError_t SaSi_PalFipsSetError(CC_FipsError_t fipsError);
 
-
 /**
  * @brief This function purpose is to set the FIPS trace.
  *
@@ -104,7 +98,6 @@ SaSiError_t SaSi_PalFipsSetError(CC_FipsError_t fipsError);
  * @return A non-zero value on failure.
  */
 SaSiError_t SaSi_PalFipsSetTrace(CC_FipsTrace_t fipsTrace);
-
 
 /**
  * @brief This function should push the FIPS TEE library error towards the REE library,
@@ -116,4 +109,4 @@ SaSiError_t SaSi_PalFipsSetTrace(CC_FipsTrace_t fipsTrace);
  */
 SaSiError_t SaSi_PalFipsNotifyUponTeeError(void);
 
-#endif  // _SSI_PAL_FIPS_H
+#endif // _SSI_PAL_FIPS_H

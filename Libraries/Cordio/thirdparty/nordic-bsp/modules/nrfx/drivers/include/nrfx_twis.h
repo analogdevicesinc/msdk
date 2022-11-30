@@ -57,10 +57,9 @@ extern "C" {
  */
 
 /** @brief TWIS driver instance data structure. */
-typedef struct
-{
-    NRF_TWIS_Type * p_reg;        ///< Pointer to a structure with TWIS registers.
-    uint8_t         drv_inst_idx; ///< Index of the driver instance. For internal use only.
+typedef struct {
+    NRF_TWIS_Type *p_reg; ///< Pointer to a structure with TWIS registers.
+    uint8_t drv_inst_idx; ///< Index of the driver instance. For internal use only.
 } nrfx_twis_t;
 
 #ifndef __NRFX_DOXYGEN__
@@ -82,27 +81,26 @@ enum {
 #endif
 
 /** @brief Macro for creating a TWIS driver instance. */
-#define NRFX_TWIS_INSTANCE(id)                               \
-{                                                            \
-    .p_reg        = NRFX_CONCAT_2(NRF_TWIS, id),             \
-    .drv_inst_idx = NRFX_CONCAT_3(NRFX_TWIS, id, _INST_IDX), \
-}
+#define NRFX_TWIS_INSTANCE(id)                                   \
+    {                                                            \
+        .p_reg = NRFX_CONCAT_2(NRF_TWIS, id),                    \
+        .drv_inst_idx = NRFX_CONCAT_3(NRFX_TWIS, id, _INST_IDX), \
+    }
 
 /** @brief Event callback function event definitions. */
-typedef enum
-{
-    NRFX_TWIS_EVT_READ_REQ,     ///< Read request detected.
-                                /**< If there is no buffer prepared, buf_req flag in the even will be set.
+typedef enum {
+    NRFX_TWIS_EVT_READ_REQ, ///< Read request detected.
+    /**< If there is no buffer prepared, buf_req flag in the even will be set.
                                      Call then @ref nrfx_twis_tx_prepare to give parameters for buffer.
                                      */
-    NRFX_TWIS_EVT_READ_DONE,    ///< Read request finished - free any data.
-    NRFX_TWIS_EVT_READ_ERROR,   ///< Read request finished with error.
-    NRFX_TWIS_EVT_WRITE_REQ,    ///< Write request detected.
-                                /**< If there is no buffer prepared, buf_req flag in the even will be set.
+    NRFX_TWIS_EVT_READ_DONE, ///< Read request finished - free any data.
+    NRFX_TWIS_EVT_READ_ERROR, ///< Read request finished with error.
+    NRFX_TWIS_EVT_WRITE_REQ, ///< Write request detected.
+    /**< If there is no buffer prepared, buf_req flag in the even will be set.
                                      Call then @ref nrfx_twis_rx_prepare to give parameters for buffer.
                                      */
-    NRFX_TWIS_EVT_WRITE_DONE,   ///< Write request finished - process data.
-    NRFX_TWIS_EVT_WRITE_ERROR,  ///< Write request finished with error.
+    NRFX_TWIS_EVT_WRITE_DONE, ///< Write request finished - process data.
+    NRFX_TWIS_EVT_WRITE_ERROR, ///< Write request finished with error.
     NRFX_TWIS_EVT_GENERAL_ERROR ///< Error that happens not inside WRITE or READ transaction.
 } nrfx_twis_evt_type_t;
 
@@ -114,26 +112,26 @@ typedef enum
  * You can use directly @ref nrf_twis_error_t. Error type enum is redefined here because
  * of possible future extension (eg. supporting timeouts and synchronous mode).
  */
-typedef enum
-{
-    NRFX_TWIS_ERROR_OVERFLOW         = NRF_TWIS_ERROR_OVERFLOW,  /**< RX buffer overflow detected, and prevented. */
-    NRFX_TWIS_ERROR_DATA_NACK        = NRF_TWIS_ERROR_DATA_NACK, /**< NACK sent after receiving a data byte. */
-    NRFX_TWIS_ERROR_OVERREAD         = NRF_TWIS_ERROR_OVERREAD,  /**< TX buffer over-read detected, and prevented. */
-    NRFX_TWIS_ERROR_UNEXPECTED_EVENT = 1 << 8                    /**< Unexpected event detected by state machine. */
+typedef enum {
+    NRFX_TWIS_ERROR_OVERFLOW =
+        NRF_TWIS_ERROR_OVERFLOW, /**< RX buffer overflow detected, and prevented. */
+    NRFX_TWIS_ERROR_DATA_NACK =
+        NRF_TWIS_ERROR_DATA_NACK, /**< NACK sent after receiving a data byte. */
+    NRFX_TWIS_ERROR_OVERREAD =
+        NRF_TWIS_ERROR_OVERREAD, /**< TX buffer over-read detected, and prevented. */
+    NRFX_TWIS_ERROR_UNEXPECTED_EVENT = 1 << 8 /**< Unexpected event detected by state machine. */
 } nrfx_twis_error_t;
 
 /** @brief TWIS driver event structure. */
-typedef struct
-{
+typedef struct {
     nrfx_twis_evt_type_t type; ///< Event type.
-    union
-    {
-        bool buf_req;       ///< Flag for @ref NRFX_TWIS_EVT_READ_REQ and @ref NRFX_TWIS_EVT_WRITE_REQ.
-                            /**< Information if transmission buffer requires to be prepared. */
+    union {
+        bool buf_req; ///< Flag for @ref NRFX_TWIS_EVT_READ_REQ and @ref NRFX_TWIS_EVT_WRITE_REQ.
+        /**< Information if transmission buffer requires to be prepared. */
         uint32_t tx_amount; ///< Data for @ref NRFX_TWIS_EVT_READ_DONE.
         uint32_t rx_amount; ///< Data for @ref NRFX_TWIS_EVT_WRITE_DONE.
-        uint32_t error;     ///< Data for @ref NRFX_TWIS_EVT_GENERAL_ERROR.
-    } data;                 ///< Union to store event data.
+        uint32_t error; ///< Data for @ref NRFX_TWIS_EVT_GENERAL_ERROR.
+    } data; ///< Union to store event data.
 } nrfx_twis_evt_t;
 
 /**
@@ -141,30 +139,26 @@ typedef struct
  *
  * @param[in] p_event Event information structure.
  */
-typedef void (*nrfx_twis_event_handler_t)(nrfx_twis_evt_t const * p_event);
+typedef void (*nrfx_twis_event_handler_t)(nrfx_twis_evt_t const *p_event);
 
 /** @brief Structure for TWIS configuration. */
-typedef struct
-{
-    uint32_t            addr[2];            //!< Set addresses that this slave should respond. Set 0 to disable.
-    uint32_t            scl;                //!< SCL pin number.
-    uint32_t            sda;                //!< SDA pin number.
-    nrf_gpio_pin_pull_t scl_pull;           //!< SCL pin pull.
-    nrf_gpio_pin_pull_t sda_pull;           //!< SDA pin pull.
-    uint8_t             interrupt_priority; //!< The priority of interrupt for the module to be set.
+typedef struct {
+    uint32_t addr[2]; //!< Set addresses that this slave should respond. Set 0 to disable.
+    uint32_t scl; //!< SCL pin number.
+    uint32_t sda; //!< SDA pin number.
+    nrf_gpio_pin_pull_t scl_pull; //!< SCL pin pull.
+    nrf_gpio_pin_pull_t sda_pull; //!< SDA pin pull.
+    uint8_t interrupt_priority; //!< The priority of interrupt for the module to be set.
 } nrfx_twis_config_t;
 
 /** @brief Generate the default configuration for the TWIS driver instance. */
-#define NRFX_TWIS_DEFAULT_CONFIG                                                  \
-{                                                                                 \
-    .addr               = { NRFX_TWIS_DEFAULT_CONFIG_ADDR0,                       \
-                            NRFX_TWIS_DEFAULT_CONFIG_ADDR1 },                     \
-    .scl                = 31,                                                     \
-    .sda                = 31,                                                     \
-    .scl_pull           = (nrf_gpio_pin_pull_t)NRFX_TWIS_DEFAULT_CONFIG_SCL_PULL, \
-    .sda_pull           = (nrf_gpio_pin_pull_t)NRFX_TWIS_DEFAULT_CONFIG_SDA_PULL, \
-    .interrupt_priority = NRFX_TWIS_DEFAULT_CONFIG_IRQ_PRIORITY                   \
-}
+#define NRFX_TWIS_DEFAULT_CONFIG                                                               \
+    {                                                                                          \
+        .addr = { NRFX_TWIS_DEFAULT_CONFIG_ADDR0, NRFX_TWIS_DEFAULT_CONFIG_ADDR1 }, .scl = 31, \
+        .sda = 31, .scl_pull = (nrf_gpio_pin_pull_t)NRFX_TWIS_DEFAULT_CONFIG_SCL_PULL,         \
+        .sda_pull = (nrf_gpio_pin_pull_t)NRFX_TWIS_DEFAULT_CONFIG_SDA_PULL,                    \
+        .interrupt_priority = NRFX_TWIS_DEFAULT_CONFIG_IRQ_PRIORITY                            \
+    }
 
 /**
  * @brief Function for initializing the TWIS driver instance.
@@ -186,9 +180,8 @@ typedef struct
  *                                  possible only if NRFX_PRS_ENABLED
  *                                  is set to a value other than zero.
  */
-nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
-                          nrfx_twis_config_t const * p_config,
-                          nrfx_twis_event_handler_t  event_handler);
+nrfx_err_t nrfx_twis_init(nrfx_twis_t const *p_instance, nrfx_twis_config_t const *p_config,
+                          nrfx_twis_event_handler_t event_handler);
 
 /**
  * @brief Function for uninitializing the TWIS driver instance.
@@ -205,7 +198,7 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_twis_uninit(nrfx_twis_t const * p_instance);
+void nrfx_twis_uninit(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for enabling the TWIS instance.
@@ -217,7 +210,7 @@ void nrfx_twis_uninit(nrfx_twis_t const * p_instance);
  *
  * @param p_instance Pointer to the driver instance structure.
  */
-void nrfx_twis_enable(nrfx_twis_t const * p_instance);
+void nrfx_twis_enable(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for disabling the TWIS instance.
@@ -227,7 +220,7 @@ void nrfx_twis_enable(nrfx_twis_t const * p_instance);
  *
  * @param p_instance Pointer to the driver instance structure.
  */
-void nrfx_twis_disable(nrfx_twis_t const * p_instance);
+void nrfx_twis_disable(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for getting and clearing the last error flags.
@@ -241,7 +234,7 @@ void nrfx_twis_disable(nrfx_twis_t const * p_instance);
  *
  * @return Error flags defined in @ref nrfx_twis_error_t.
  */
-uint32_t nrfx_twis_error_get_and_clear(nrfx_twis_t const * p_instance);
+uint32_t nrfx_twis_error_get_and_clear(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for preparing the data for sending.
@@ -262,9 +255,7 @@ uint32_t nrfx_twis_error_get_and_clear(nrfx_twis_t const * p_instance);
  * @retval NRFX_ERROR_INVALID_LENGTH There is a wrong value in the @em size parameter.
  * @retval NRFX_ERROR_INVALID_STATE  The module is not initialized or not enabled.
  */
-nrfx_err_t nrfx_twis_tx_prepare(nrfx_twis_t const * p_instance,
-                                void const *        p_buf,
-                                size_t              size);
+nrfx_err_t nrfx_twis_tx_prepare(nrfx_twis_t const *p_instance, void const *p_buf, size_t size);
 
 /**
  * @brief Function for getting the number of transmitted bytes.
@@ -276,7 +267,7 @@ nrfx_err_t nrfx_twis_tx_prepare(nrfx_twis_t const * p_instance,
  *
  * @return Number of bytes sent.
  */
-__STATIC_INLINE size_t nrfx_twis_tx_amount(nrfx_twis_t const * p_instance);
+__STATIC_INLINE size_t nrfx_twis_tx_amount(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for preparing the data for receiving.
@@ -296,9 +287,7 @@ __STATIC_INLINE size_t nrfx_twis_tx_amount(nrfx_twis_t const * p_instance);
  * @retval NRFX_ERROR_INVALID_LENGTH There is a wrong value in the @em size parameter.
  * @retval NRFX_ERROR_INVALID_STATE  The module is not initialized or not enabled.
  */
-nrfx_err_t nrfx_twis_rx_prepare(nrfx_twis_t const * p_instance,
-                                void *              p_buf,
-                                size_t              size);
+nrfx_err_t nrfx_twis_rx_prepare(nrfx_twis_t const *p_instance, void *p_buf, size_t size);
 
 /**
  * @brief Function for getting the number of received bytes.
@@ -310,7 +299,7 @@ nrfx_err_t nrfx_twis_rx_prepare(nrfx_twis_t const * p_instance,
  *
  * @return Number of bytes received.
  */
-__STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const * p_instance);
+__STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for checking if the driver is busy right now.
@@ -323,7 +312,7 @@ __STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const * p_instance);
  * @retval true  The driver is in state other than ERROR or IDLE.
  * @retval false There is no transmission pending.
  */
-bool nrfx_twis_is_busy(nrfx_twis_t const * p_instance);
+bool nrfx_twis_is_busy(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for checking if the driver is waiting for a TX buffer.
@@ -336,7 +325,7 @@ bool nrfx_twis_is_busy(nrfx_twis_t const * p_instance);
  * @retval true  The driver is waiting for @ref nrfx_twis_tx_prepare.
  * @retval false The driver is not in the state where it is waiting for preparing a TX buffer.
  */
-bool nrfx_twis_is_waiting_tx_buff(nrfx_twis_t const * p_instance);
+bool nrfx_twis_is_waiting_tx_buff(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for checking if the driver is waiting for an RX buffer.
@@ -349,7 +338,7 @@ bool nrfx_twis_is_waiting_tx_buff(nrfx_twis_t const * p_instance);
  * @retval true  The driver is waiting for @ref nrfx_twis_rx_prepare.
  * @retval false The driver is not in the state where it is waiting for preparing an RX buffer.
  */
-bool nrfx_twis_is_waiting_rx_buff(nrfx_twis_t const * p_instance);
+bool nrfx_twis_is_waiting_rx_buff(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for checking if the driver is sending data.
@@ -361,7 +350,7 @@ bool nrfx_twis_is_waiting_rx_buff(nrfx_twis_t const * p_instance);
  * @retval true  There is an ongoing output transmission.
  * @retval false The driver is in other state.
  */
-bool nrfx_twis_is_pending_tx(nrfx_twis_t const * p_instance);
+bool nrfx_twis_is_pending_tx(nrfx_twis_t const *p_instance);
 
 /**
  * @brief Function for checking if the driver is receiving data.
@@ -373,15 +362,15 @@ bool nrfx_twis_is_pending_tx(nrfx_twis_t const * p_instance);
  * @retval true  There is an ongoing input transmission.
  * @retval false The driver is in other state.
  */
-bool nrfx_twis_is_pending_rx(nrfx_twis_t const * p_instance);
+bool nrfx_twis_is_pending_rx(nrfx_twis_t const *p_instance);
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
-__STATIC_INLINE size_t nrfx_twis_tx_amount(nrfx_twis_t const * p_instance)
+__STATIC_INLINE size_t nrfx_twis_tx_amount(nrfx_twis_t const *p_instance)
 {
     return nrf_twis_tx_amount_get(p_instance->p_reg);
 }
 
-__STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const * p_instance)
+__STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const *p_instance)
 {
     return nrf_twis_rx_amount_get(p_instance->p_reg);
 }
@@ -389,12 +378,10 @@ __STATIC_INLINE size_t nrfx_twis_rx_amount(nrfx_twis_t const * p_instance)
 
 /** @} */
 
-
 void nrfx_twis_0_irq_handler(void);
 void nrfx_twis_1_irq_handler(void);
 void nrfx_twis_2_irq_handler(void);
 void nrfx_twis_3_irq_handler(void);
-
 
 #ifdef __cplusplus
 }

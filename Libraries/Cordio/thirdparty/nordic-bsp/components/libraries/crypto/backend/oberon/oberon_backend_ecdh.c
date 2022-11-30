@@ -56,28 +56,23 @@
 #include "ocrypto_curve25519.h"
 #endif
 
-
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1)
 
-ret_code_t nrf_crypto_backend_secp256r1_ecdh_compute(
-    void       * p_context,
-    void const * p_private_key,
-    void const * p_public_key,
-    uint8_t    * p_shared_secret)
+ret_code_t nrf_crypto_backend_secp256r1_ecdh_compute(void *p_context, void const *p_private_key,
+                                                     void const *p_public_key,
+                                                     uint8_t *p_shared_secret)
 {
     int result;
 
-    nrf_crypto_backend_secp256r1_private_key_t const * p_prv =
+    nrf_crypto_backend_secp256r1_private_key_t const *p_prv =
         (nrf_crypto_backend_secp256r1_private_key_t const *)p_private_key;
 
-    nrf_crypto_backend_secp256r1_public_key_t const * p_pub =
+    nrf_crypto_backend_secp256r1_public_key_t const *p_pub =
         (nrf_crypto_backend_secp256r1_public_key_t const *)p_public_key;
 
     result = ocrypto_ecdh_p256_common_secret(p_shared_secret, p_prv->key, p_pub->key);
 
-    if (result != 0)
-    {
+    if (result != 0) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     return NRF_SUCCESS;
@@ -87,16 +82,14 @@ ret_code_t nrf_crypto_backend_secp256r1_ecdh_compute(
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519)
 
-ret_code_t nrf_crypto_backend_curve25519_ecdh_compute(
-    void       * p_context,
-    void const * p_private_key,
-    void const * p_public_key,
-    uint8_t    * p_shared_secret)
+ret_code_t nrf_crypto_backend_curve25519_ecdh_compute(void *p_context, void const *p_private_key,
+                                                      void const *p_public_key,
+                                                      uint8_t *p_shared_secret)
 {
-    nrf_crypto_backend_curve25519_private_key_t const * p_prv =
+    nrf_crypto_backend_curve25519_private_key_t const *p_prv =
         (nrf_crypto_backend_curve25519_private_key_t const *)p_private_key;
 
-    nrf_crypto_backend_curve25519_public_key_t const * p_pub =
+    nrf_crypto_backend_curve25519_public_key_t const *p_pub =
         (nrf_crypto_backend_curve25519_public_key_t const *)p_public_key;
 
     // Private key can be completely random at this point.

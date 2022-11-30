@@ -41,10 +41,9 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Slave role device parameter definition. */
-typedef struct
-{
-  uint32_t          resPrivAddrTimeout; /*!< Resolvable private address timeout. */
-  uint8_t           numPendingAddrRes;  /*!< Number of pending address resolutions. */
+typedef struct {
+    uint32_t resPrivAddrTimeout; /*!< Resolvable private address timeout. */
+    uint8_t numPendingAddrRes; /*!< Number of pending address resolutions. */
 } lmgrPrivCtrlBlk_t;
 
 /**************************************************************************************************
@@ -60,7 +59,7 @@ extern lmgrPrivCtrlBlk_t lmgrPrivCb;
 /* Initialization */
 void LmgrPrivInit(void);
 
-/*! \} */    /* LL_LMGR_API_PRIV */
+/*! \} */ /* LL_LMGR_API_PRIV */
 
 #ifdef __cplusplus
 };

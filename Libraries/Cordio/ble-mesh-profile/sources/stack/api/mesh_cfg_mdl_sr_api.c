@@ -54,16 +54,15 @@
 **************************************************************************************************/
 
 /*! Definition of Core model to be registered in the Access Layer */
-static meshAccCoreMdl_t cfgMdlSrAccMdl =
-{
-  .msgRecvCback   = meshCfgMdlSrAccMsgRcvCback,        /*!< Message received callback */
-  .pOpcodeArray   = meshCfgMdlClOpcodes,               /*!< Opcodes registered for Rx */
-  .opcodeArrayLen = MESH_CFG_MDL_CL_MAX_OP,            /*!< Number of opcodes */
-  .elemId         = 0,                                 /*!< Only primary element allowed for
+static meshAccCoreMdl_t cfgMdlSrAccMdl = {
+    .msgRecvCback = meshCfgMdlSrAccMsgRcvCback, /*!< Message received callback */
+    .pOpcodeArray = meshCfgMdlClOpcodes, /*!< Opcodes registered for Rx */
+    .opcodeArrayLen = MESH_CFG_MDL_CL_MAX_OP, /*!< Number of opcodes */
+    .elemId = 0, /*!< Only primary element allowed for
                                                         *   Configuration Server
                                                         */
-  .mdlId.isSigModel         = TRUE,                    /*! SIG model */
-  .mdlId.modelId.sigModelId = MESH_CFG_MDL_SR_MODEL_ID /*! Configuration Server Model ID. */
+    .mdlId.isSigModel = TRUE, /*! SIG model */
+    .mdlId.modelId.sigModelId = MESH_CFG_MDL_SR_MODEL_ID /*! Configuration Server Model ID. */
 };
 
 /**************************************************************************************************
@@ -71,13 +70,10 @@ static meshAccCoreMdl_t cfgMdlSrAccMdl =
 **************************************************************************************************/
 
 /*! Mesh Configuration Server control block */
-meshCfgMdlSrCb_t meshCfgMdlSrCb =
-{
-  .cback = meshCfgMdlSrEmptyCback,
-  .friendStateChgCback = meshCfgMdlSrEmptyFriendStateChgCback,
-  .netKeyDelNotifyCback = meshCfgMdlSrEmptyNetKeyDelNotifyCback,
-  .pollTimeoutGetCback = meshCfgMdlSrEmptyPollTimeoutGetCback
-};
+meshCfgMdlSrCb_t meshCfgMdlSrCb = { .cback = meshCfgMdlSrEmptyCback,
+                                    .friendStateChgCback = meshCfgMdlSrEmptyFriendStateChgCback,
+                                    .netKeyDelNotifyCback = meshCfgMdlSrEmptyNetKeyDelNotifyCback,
+                                    .pollTimeoutGetCback = meshCfgMdlSrEmptyPollTimeoutGetCback };
 
 /**************************************************************************************************
   Global Functions
@@ -92,19 +88,19 @@ meshCfgMdlSrCb_t meshCfgMdlSrCb =
 /*************************************************************************************************/
 void MeshCfgMdlSrInit(void)
 {
-  MESH_TRACE_INFO0("MESH CFG SR: init");
+    MESH_TRACE_INFO0("MESH CFG SR: init");
 
-  /* Register the Configuration Server in the Access Layer. */
-  MeshAccRegisterCoreModel(&cfgMdlSrAccMdl);
+    /* Register the Configuration Server in the Access Layer. */
+    MeshAccRegisterCoreModel(&cfgMdlSrAccMdl);
 
-  /* Register to default user callback. */
-  meshCfgMdlSrCb.cback = meshCfgMdlSrEmptyCback;
+    /* Register to default user callback. */
+    meshCfgMdlSrCb.cback = meshCfgMdlSrEmptyCback;
 
-  /* Register empty callback for Friend State changed notification. */
-  meshCfgMdlSrCb.friendStateChgCback = meshCfgMdlSrEmptyFriendStateChgCback;
+    /* Register empty callback for Friend State changed notification. */
+    meshCfgMdlSrCb.friendStateChgCback = meshCfgMdlSrEmptyFriendStateChgCback;
 
-  /* Register empty callback for NetKey deleted notification. */
-  meshCfgMdlSrCb.netKeyDelNotifyCback = meshCfgMdlSrEmptyNetKeyDelNotifyCback;
+    /* Register empty callback for NetKey deleted notification. */
+    meshCfgMdlSrCb.netKeyDelNotifyCback = meshCfgMdlSrEmptyNetKeyDelNotifyCback;
 }
 
 /*************************************************************************************************/
@@ -118,19 +114,18 @@ void MeshCfgMdlSrInit(void)
 /*************************************************************************************************/
 void MeshCfgMdlSrRegister(meshCfgMdlSrCback_t meshCfgMdlSrCback)
 {
-  /* Check if callback is not NULL. */
-  if (meshCfgMdlSrCback != NULL)
-  {
-    /* Enter critical section. */
-    WSF_CS_INIT(cs);
-    WSF_CS_ENTER(cs);
+    /* Check if callback is not NULL. */
+    if (meshCfgMdlSrCback != NULL) {
+        /* Enter critical section. */
+        WSF_CS_INIT(cs);
+        WSF_CS_ENTER(cs);
 
-    /* Store callback. */
-    meshCfgMdlSrCb.cback = meshCfgMdlSrCback;
+        /* Store callback. */
+        meshCfgMdlSrCb.cback = meshCfgMdlSrCback;
 
-    /* Exit critical section. */
-    WSF_CS_EXIT(cs);
-  }
+        /* Exit critical section. */
+        WSF_CS_EXIT(cs);
+    }
 }
 
 /*************************************************************************************************/
@@ -148,18 +143,15 @@ void MeshCfgMdlSrRegisterFriendship(meshCfgMdlSrFriendStateChgCback_t friendStat
                                     meshCfgMdlSrNetKeyDelNotifyCback_t netKeyDelNotifyCback,
                                     meshCfgMdlSrPollTimeoutGetCback_t pollTimeoutGetCback)
 {
-  if(friendStateChgCback != NULL)
-  {
-    meshCfgMdlSrCb.friendStateChgCback = friendStateChgCback;
-  }
+    if (friendStateChgCback != NULL) {
+        meshCfgMdlSrCb.friendStateChgCback = friendStateChgCback;
+    }
 
-  if (netKeyDelNotifyCback != NULL)
-  {
-    meshCfgMdlSrCb.netKeyDelNotifyCback = netKeyDelNotifyCback;
-  }
+    if (netKeyDelNotifyCback != NULL) {
+        meshCfgMdlSrCb.netKeyDelNotifyCback = netKeyDelNotifyCback;
+    }
 
-  if(pollTimeoutGetCback != NULL)
-  {
-    meshCfgMdlSrCb.pollTimeoutGetCback = pollTimeoutGetCback;
-  }
+    if (pollTimeoutGetCback != NULL) {
+        meshCfgMdlSrCb.pollTimeoutGetCback = pollTimeoutGetCback;
+    }
 }

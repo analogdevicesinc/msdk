@@ -32,16 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 #ifndef CRYS_KDF_ERROR_H
 #define CRYS_KDF_ERROR_H
 
 #include "crys_error.h"
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*!
@@ -52,32 +49,31 @@ extern "C"
 @ingroup crys_kdf
  */
 
-
 /************************ Defines *******************************/
 
 /*! The CRYS KDF module errors / base address - 0x00F01100*/
 /*! Illegal input pointer. */
-#define CRYS_KDF_INVALID_ARGUMENT_POINTER_ERROR         (CRYS_KDF_MODULE_ERROR_BASE + 0x0UL)
+#define CRYS_KDF_INVALID_ARGUMENT_POINTER_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x0UL)
 /*! Illegal input size. */
-#define CRYS_KDF_INVALID_ARGUMENT_SIZE_ERROR            (CRYS_KDF_MODULE_ERROR_BASE + 0x1UL)
+#define CRYS_KDF_INVALID_ARGUMENT_SIZE_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x1UL)
 /*! Illegal operation mode. */
-#define CRYS_KDF_INVALID_ARGUMENT_OPERATION_MODE_ERROR      (CRYS_KDF_MODULE_ERROR_BASE + 0x2UL)
+#define CRYS_KDF_INVALID_ARGUMENT_OPERATION_MODE_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x2UL)
 /*! Illegal hash mode. */
-#define CRYS_KDF_INVALID_ARGUMENT_HASH_MODE_ERROR       (CRYS_KDF_MODULE_ERROR_BASE + 0x3UL)
+#define CRYS_KDF_INVALID_ARGUMENT_HASH_MODE_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x3UL)
 /*! Illegal key derivation mode. */
-#define CRYS_KDF_INVALID_KEY_DERIVATION_MODE_ERROR              (CRYS_KDF_MODULE_ERROR_BASE + 0x4UL)
+#define CRYS_KDF_INVALID_KEY_DERIVATION_MODE_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x4UL)
 /*! Illegal shared secret value size. */
-#define CRYS_KDF_INVALID_SHARED_SECRET_VALUE_SIZE_ERROR         (CRYS_KDF_MODULE_ERROR_BASE + 0x5UL)
+#define CRYS_KDF_INVALID_SHARED_SECRET_VALUE_SIZE_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x5UL)
 /*! Illegal otherInfo size. */
-#define CRYS_KDF_INVALID_OTHER_INFO_SIZE_ERROR                  (CRYS_KDF_MODULE_ERROR_BASE + 0x6UL)
+#define CRYS_KDF_INVALID_OTHER_INFO_SIZE_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x6UL)
 /*! Illegal key data size. */
-#define CRYS_KDF_INVALID_KEYING_DATA_SIZE_ERROR                 (CRYS_KDF_MODULE_ERROR_BASE + 0x7UL)
+#define CRYS_KDF_INVALID_KEYING_DATA_SIZE_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x7UL)
 /*! Illegal algorithm ID pointer. */
-#define CRYS_KDF_INVALID_ALGORITHM_ID_POINTER_ERROR             (CRYS_KDF_MODULE_ERROR_BASE + 0x8UL)
+#define CRYS_KDF_INVALID_ALGORITHM_ID_POINTER_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x8UL)
 /*! Illegal algorithm ID size. */
-#define CRYS_KDF_INVALID_ALGORITHM_ID_SIZE_ERROR                (CRYS_KDF_MODULE_ERROR_BASE + 0x9UL)
+#define CRYS_KDF_INVALID_ALGORITHM_ID_SIZE_ERROR (CRYS_KDF_MODULE_ERROR_BASE + 0x9UL)
 /*! KDF is not supproted. */
-#define CRYS_KDF_IS_NOT_SUPPORTED                               (CRYS_KDF_MODULE_ERROR_BASE + 0xFFUL)
+#define CRYS_KDF_IS_NOT_SUPPORTED (CRYS_KDF_MODULE_ERROR_BASE + 0xFFUL)
 
 /************************ Enums *********************************/
 
@@ -89,9 +85,6 @@ extern "C"
 
 /************************ Public Functions **********************/
 
-
-
-
 #ifdef __cplusplus
 }
 #endif
@@ -99,7 +92,3 @@ extern "C"
 @}
  */
 #endif
-
-
-
-
