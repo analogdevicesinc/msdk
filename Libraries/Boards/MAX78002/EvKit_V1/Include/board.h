@@ -31,15 +31,25 @@
  *
  ******************************************************************************/
 
+#ifndef LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_BOARD_H_
+
 /**
  * @file    board.h
  * @brief   Board support package API.
  */
 
 #include <stdio.h>
+#include "spi.h"
 
-#ifndef LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_BOARD_H_
-#define LIBRARIES_BOARDS_MAX78002_EVKIT_V1_INCLUDE_BOARD_H_
+#ifdef TFT_ADAFRUIT
+#include "adafruit_3315_tft.h"
+#include "adafruit_3315_touch.h"
+#endif
+#ifdef TFT_NEWHAVEN
+#include "tft_st7789v.h"
+#include "tsc2046.h"
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -63,6 +73,10 @@ extern "C" {
 #define LED_OFF 0 /// Inactive state of LEDs
 #define LED_ON 1 /// Active state of LEDs
 
+#define TFT_SPI_PORT MXC_GPIO0 /**< GPIO port for SPI peripheral pins. */
+#define TFT_SPI_PINS \
+    MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 /**< GPIO pins for SPI peripheral. */
+
 /**
  *  A reference to LED1 of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
@@ -73,6 +87,26 @@ extern "C" {
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
 #define LED2 1
+
+#define TFT_SPI MXC_SPI0 // SPI port to use for TFT display
+#ifdef TFT_NEWHAVEN
+#define TFT_SPI_FREQ 20000000 /**< SPI clock frequency in Hertz. */
+#endif
+#define TFT_DC_PORT MXC_GPIO2 /**< GPIO port for Data/Command signal. */
+#define TFT_DC_PIN MXC_GPIO_PIN_2 /**< GPIO pin for Data/Command signal. */
+#define TFT_SS_PORT MXC_GPIO0 /**< GPIO port for select signal. */
+#define TFT_SS_PIN MXC_GPIO_PIN_3 /**< GPIO pin for select signal. */
+
+#define TS_SPI MXC_SPI0
+#define TS_SPI_FREQ 1000000
+#define TS_IRQ_PORT MXC_GPIO0
+#define TS_IRQ_PIN MXC_GPIO_PIN_19
+#define TS_SS_PORT MXC_GPIO1
+#define TS_SS_PIN MXC_GPIO_PIN_1
+
+void TFT_SPI_Init(void);
+void TFT_SPI_Write(uint8_t data, bool cmd);
+void TFT_SPI_Transmit(void *src, int count);
 
 /**
  * \brief   Initialize the BSP and board interfaces.

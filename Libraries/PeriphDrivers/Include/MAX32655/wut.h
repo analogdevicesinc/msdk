@@ -88,7 +88,6 @@ typedef enum {
     MXC_WUT_MODE_ONESHOT = MXC_V_WUT_CTRL_TMODE_ONESHOT, /// Wakeup Timer Mode ONESHOT
     MXC_WUT_MODE_CONTINUOUS = MXC_V_WUT_CTRL_TMODE_CONTINUOUS, /// Wakeup Timer Mode CONTINUOUS
     MXC_WUT_MODE_COUNTER = MXC_V_WUT_CTRL_TMODE_COUNTER, /// Wakeup Timer Mode COUNTER
-    MXC_WUT_MODE_PWM = MXC_V_WUT_CTRL_TMODE_PWM, /// Wakeup Timer Mode PWM
     MXC_WUT_MODE_CAPTURE = MXC_V_WUT_CTRL_TMODE_CAPTURE, /// Wakeup Timer Mode CAPTURE
     MXC_WUT_MODE_COMPARE = MXC_V_WUT_CTRL_TMODE_COMPARE, /// Wakeup Timer Mode COMPARE
     MXC_WUT_MODE_GATED = MXC_V_WUT_CTRL_TMODE_GATED, /// Wakeup Timer Mode GATED
@@ -158,12 +157,6 @@ void MXC_WUT_Config(const mxc_wut_cfg_t *cfg);
  * @return  Returns the current compare count.
  */
 uint32_t MXC_WUT_GetCompare(void);
-
-/**
- * @brief   Get the timer capture count.
- * @return  Returns the most recent capture count.
- */
-uint32_t MXC_WUT_GetCapture(void);
 
 /**
  * @brief   Get the timer count.

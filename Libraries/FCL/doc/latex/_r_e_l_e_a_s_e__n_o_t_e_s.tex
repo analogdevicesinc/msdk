@@ -1,0 +1,74 @@
+\hypertarget{_r_e_l_e_a_s_e__n_o_t_e_s_rn}{}\section{Release Notes}\label{_r_e_l_e_a_s_e__n_o_t_e_s_rn}
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Revision }&\textbf{ Date }&\textbf{ Description  }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Revision }&\textbf{ Date }&\textbf{ Description  }\\\cline{1-3}
+\endhead
+A &04/12/2016 &Initial Release \\\cline{1-3}
+B &03/01/2017 &Add Debug Box~\newline
+Refine interrupt handling discussion~\newline
+Introduce event management~\newline
+ Refine key management \\\cline{1-3}
+C &02/02/2017 &Clarifications in the security architecture description \\\cline{1-3}
+D &19/05/2017 &Reflect latest modifications \\\cline{1-3}
+E &19/06/2017 &Improvements, see note 1 below \\\cline{1-3}
+F &16/07/2017 &Addition of security guidelines \\\cline{1-3}
+\end{longtabu}
+
+
+Note 1\+: Revision E improvements vs v1.\+1 UL release
+
+mbed-\/\+OS improvements\+:
+\begin{DoxyItemize}
+\item Addition of M\+A\+X32552 support \& rework of file layout in target/ folder
+\item Non security related bug fixes in Maxim drivers and performance improvements.
+\item Rework of the linker file to adapt to separate box signature mechanism
+\item Some adjustments in the Maxim startup files
+\end{DoxyItemize}
+
+u\+Visor\textquotesingle{}s improvements\+:
+\begin{DoxyItemize}
+\item Upgrade from 0.\+26.\+2-\/24 to 0.\+27
+\item Support for separate box signature (see related section in the main documentation)
+\item New A\+PI to get signing key of a box (hence it\textquotesingle{}s privilege)
+\item Support for M\+A\+X32552
+\item Fix of Makefiles for correct multiple target support
+\item Improvement of debug messages in the debug version
+\item Add hook to implement A\+CL verification and enforcement at box loading time depending on signing key
+\item Add handling of N\+MI faults
+\end{DoxyItemize}
+
+Deeptrust A\+PI\textquotesingle{}s improvements\+:
+
+Globally\+:
+\begin{DoxyItemize}
+\item Support for separate box signature
+\item Reorganize folders
+\item Isolate crypto buffers
+\item Add key manager \& crypto services
+\item Separation between core firmware, firmware level boxes, trusted boxes, and other boxes
+\end{DoxyItemize}
+
+P\+CI services\+:
+\begin{DoxyItemize}
+\item Addition of a watchdog to automatically clear the P\+IN if not used
+\item Forcibly flush the P\+IN after use
+\item Keep crypto working buffer private (used to be visible from several boxes)
+\item Erase buffers containing sensitive data after use\+: data\+\_\+hash.\+data\+\_\+val, issuer\+\_\+public\+\_\+key
+\item Other minor bug fixes
+\end{DoxyItemize}
+
+Secure Sandbox services\+:
+\begin{DoxyItemize}
+\item Add a trace capability to catch security issues, and capability to add user handling for such events
+\item Add secure R\+TC control
+\item Add automatic reset every 24h
+\item Evolutions in keypad handling and display following M\+A\+X32552 support addition
+\item Buffers containing keypad/touchscreen entries are now correctly kept as private
+\item Support of power management 
+\end{DoxyItemize}

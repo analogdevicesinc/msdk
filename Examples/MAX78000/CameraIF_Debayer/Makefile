@@ -208,7 +208,10 @@ PROJECT ?= $(TARGET_LC)
 #			Ex: MFLOAT_ABI = hard
 # - LINKERFILE : Override the default linkerfile.
 #			Ex: LINKERFILE = customlinkerfile.ld
-
+# - LINKERPATH : Override the default search location for $(LINKERFILE)
+#			The default search location is $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+#			If $(LINKERFILE) cannot be found at this path, then the root project
+#			directory will be used as a fallback.
 
 # Select 'GCC' or 'IAR' compiler
 ifeq "$(COMPILER)" ""
@@ -230,10 +233,8 @@ ifeq ($(DEBUG),1)
 MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
-# Fallback default optimizes for debugging as recommended
-# by GNU for code-edit-debug cycles
-# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
-MXC_OPTIMIZE_CFLAGS ?= -Og
+# Set default optimization level -O2 to maximize performance for CNN code
+MXC_OPTIMIZE_CFLAGS ?= -O2
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
@@ -248,18 +249,20 @@ MFLOAT_ABI ?= softfp
 # MFLOAT_ABI must be exported to other Makefiles, who check this too
 export MFLOAT_ABI
 
-# Set the default linkerfile.  Since the core Makefiles later add the location of Maxim's
-# linkerfiles to VPATH, and the local project directory has also been added to VPATH, Make
-# will search both locations for the specified linkerfile if it can't find it by its path alone.
-# The result is that overriding LINKERFILE with the filename of one of Maxim's alternate linkerfiles
-# (ex: LINKERFILE=max78000_arm.ld) will work just the same as LINKERFILE=mycustom.ld 
-# even if mycustom.ld lives locally to this project.
-
 ifeq "$(RISCV_CORE)" ""
 # Default linkerfile is only specified for standard Arm-core projects.
 # Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
-LINKER = $(TARGET_LC).ld
-LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER)
+LINKERFILE ?= $(TARGET_LC).ld
+LINKERPATH ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+
+# Check if linkerfile exists
+ifeq ("$(wildcard $(LINKERPATH)/$(LINKERFILE))","")
+# Doesn't exists, attempt to use root project folder.
+LINKERPATH:=.
+endif
+
+# Form full path to linkerfile.  Works around MSYS2 edge case from (see MSDK-903).
+LINKERFILE:=$(LINKERPATH)/$(LINKERFILE)
 endif
 
 # This path contains system-level intialization files for the target micro.  Add to the build.

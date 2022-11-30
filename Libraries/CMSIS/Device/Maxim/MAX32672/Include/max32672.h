@@ -307,7 +307,7 @@ mxc_aes_key_regs_t mxc_sys_aes_key_regs_t;
 
 /******************************************************************************/
 /*                                                                        AES */
-#define MXC_BASE_AES ((uint32_t)0x40007400UL)
+#define MXC_BASE_AES ((uint32_t)0x40207400UL)
 #define MXC_AES ((mxc_aes_regs_t *)MXC_BASE_AES)
 
 // DEPRECATED(10-24-2022): Scheduled for removal.

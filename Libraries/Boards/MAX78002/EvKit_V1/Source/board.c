@@ -60,6 +60,19 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
+// TFT Data/Command pin
+const mxc_gpio_cfg_t tft_dc_pin = { TFT_DC_PORT, TFT_DC_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
+                                    MXC_GPIO_VSSEL_VDDIOH };
+// TFT Slave Select pin
+const mxc_gpio_cfg_t tft_ss_pin = { TFT_SS_PORT, TFT_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
+                                    MXC_GPIO_VSSEL_VDDIOH };
+// TS IRQ pin
+mxc_gpio_cfg_t ts_irq_pin = { TS_IRQ_PORT, TS_IRQ_PIN, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
+                              MXC_GPIO_VSSEL_VDDIOH };
+// TS SS pin
+const mxc_gpio_cfg_t ts_ss_pin = { TS_SS_PORT, TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
+                                   MXC_GPIO_VSSEL_VDDIOH };
+
 /***** File Scope Variables *****/
 // const uart_cfg_t uart_cfg = {
 //     UART_PARITY_DISABLE,
@@ -87,6 +100,183 @@ void mxc_assert(const char *expr, const char *file, int line)
 
     while (1) {}
 }
+
+#ifdef TFT_NEWHAVEN
+void TFT_SPI_Init(void)
+{
+    // Initialize SPI0
+    int master = 1;
+    int quadMode = 0;
+    int numSlaves = 0;
+    int ssPol = 0;
+    int tft_hz = TFT_SPI_FREQ;
+    mxc_spi_pins_t tft_pins = {
+        // CLK, MISO, MOSI enabled, software controlled SS
+        .clock = true, .ss0 = false, .ss1 = false,   .ss2 = false,
+        .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
+    };
+
+    MXC_SPI_Init(TFT_SPI, master, quadMode, numSlaves, ssPol, tft_hz, tft_pins);
+
+    // Set SPI pins to VDDIOH (3.3V) to be compatible with TFT display
+    MXC_GPIO_SetVSSEL(TFT_SPI_PORT, MXC_GPIO_VSSEL_VDDIOH, TFT_SPI_PINS);
+    MXC_SPI_SetDataSize(TFT_SPI, 8);
+    MXC_SPI_SetWidth(TFT_SPI, SPI_WIDTH_STANDARD);
+
+    // Initialize SPI GPIOs
+    MXC_GPIO_Config(&tft_dc_pin); // Data/Command select
+    MXC_GPIO_Config(&tft_ss_pin); // Slave Select
+    MXC_GPIO_OutSet(tft_ss_pin.port, tft_ss_pin.mask);
+
+    // If the touchscreen controller pin is unitialized, it will default
+    // to logic level 0 (active slave select) and intercept TFT traffic.
+    // Therefore it must be initialized and set to logic level 1 here.
+    MXC_GPIO_Config(&ts_ss_pin);
+    MXC_GPIO_OutSet(ts_ss_pin.port, ts_ss_pin.mask);
+}
+
+void TFT_SPI_Write(uint8_t data, bool cmd)
+{
+    // TFT and TS share the same SPI bus, and TS will set a lower SPI freq
+    // So explicity set the TFT speed again before transmitting
+    MXC_SPI_SetFrequency(TFT_SPI, TFT_SPI_FREQ);
+
+    // Software controlled Slave Select
+    MXC_GPIO_OutClr(TFT_SS_PORT, TFT_SS_PIN);
+
+    if (cmd)
+        MXC_GPIO_OutClr(TFT_DC_PORT, TFT_DC_PIN);
+    else
+        MXC_GPIO_OutSet(TFT_DC_PORT, TFT_DC_PIN);
+
+    TFT_SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN;
+
+    TFT_SPI->ctrl1 = 1 << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
+
+    *TFT_SPI->fifo8 = data;
+
+    TFT_SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    // MAX78002 Evaluation Kit is designed for firmware control of device select.
+    // Wait here until done as caller will negate select on return, possibly before FIFO is empty.
+    while (!(TFT_SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
+
+    TFT_SPI->intfl = TFT_SPI->intfl;
+
+    MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
+}
+
+void TFT_SPI_Transmit(void *src, int count)
+{
+    uint8_t *buf = (uint8_t *)src;
+
+    // TFT and TS share the same SPI bus, and TS will set a lower SPI freq
+    // So explicity set the TFT speed again before transmitting
+    MXC_SPI_SetFrequency(TFT_SPI, TFT_SPI_FREQ);
+
+    // Software controlled Slave Select
+    MXC_GPIO_OutClr(TFT_SS_PORT, TFT_SS_PIN);
+
+    MXC_GPIO_OutSet(TFT_DC_PORT, TFT_DC_PIN);
+
+    TFT_SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN;
+
+    TFT_SPI->ctrl1 = count << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
+
+    while (count--) {
+        while ((TFT_SPI->dma & MXC_F_SPI_DMA_TX_LVL) ==
+               (MXC_SPI_FIFO_DEPTH << MXC_F_SPI_DMA_TX_LVL_POS)) {}
+
+        *TFT_SPI->fifo8 = *buf++;
+
+        if (!(TFT_SPI->ctrl0 & MXC_F_SPI_CTRL0_START))
+            TFT_SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+    }
+
+    // MAX78002 Evaluation Kit is designed for firmware control of device select.
+    // Wait here until done as caller will negate select on return, possibly before FIFO is empty.
+    while (!(TFT_SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
+
+    TFT_SPI->intfl = TFT_SPI->intfl;
+
+    MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
+}
+
+void TS_SPI_Init(void)
+{
+    int master = 1;
+    int quadMode = 0;
+    int numSlaves = 0;
+    int ssPol = 0;
+
+    mxc_spi_pins_t ts_pins = {
+        // CLK, MISO, MOSI enabled, software controlled SS
+        .clock = true, .ss0 = false, .ss1 = false,   .ss2 = false,
+        .miso = true,  .mosi = true, .sdio2 = false, .sdio3 = false,
+    };
+
+    MXC_SPI_Init(TS_SPI, master, quadMode, numSlaves, ssPol, TS_SPI_FREQ, ts_pins);
+
+    // Set SPI pins to VDDIOH (3.3V) to be compatible with TFT display
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
+                      MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7);
+    MXC_SPI_SetDataSize(TS_SPI, 8);
+    MXC_SPI_SetWidth(TS_SPI, SPI_WIDTH_STANDARD);
+
+    // Configure Slave Select and IRQ GPIOs
+    MXC_GPIO_Config(&ts_irq_pin);
+    MXC_GPIO_Config(&ts_ss_pin);
+    MXC_GPIO_OutSet(ts_ss_pin.port, ts_ss_pin.mask);
+}
+
+void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
+{
+    int i;
+    uint8_t rx[2] = { 0, 0 };
+    mxc_spi_req_t request;
+
+    request.spi = TS_SPI;
+    request.ssDeassert = 0;
+    request.txData = (uint8_t *)(&datain);
+    request.rxData = NULL;
+    request.txLen = 1;
+    request.rxLen = 0;
+    request.ssIdx = 0;
+
+    MXC_SPI_SetFrequency(TS_SPI, TS_SPI_FREQ);
+    MXC_SPI_SetDataSize(TS_SPI, 8);
+
+    // Software controlled Slave Select
+    MXC_GPIO_OutClr(ts_ss_pin.port, ts_ss_pin.mask);
+
+    MXC_SPI_MasterTransaction(&request);
+
+    // Wait to clear TS busy signal
+    for (i = 0; i < 200; i++) {
+        __asm volatile("nop\n");
+    }
+
+    request.ssDeassert = 1;
+    request.txData = NULL;
+    request.rxData = (uint8_t *)(rx);
+    request.txLen = 0;
+    request.rxLen = 2;
+
+    MXC_SPI_MasterTransaction(&request);
+
+    // MAX78002 Evaluation Kit is designed for firmware control of device select.
+    // Wait here until done as caller will negate select on return, possibly before FIFO is empty.
+    while (!(TS_SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
+
+    TS_SPI->intfl = TS_SPI->intfl;
+
+    if (dataout != NULL) {
+        *dataout = (rx[1] | (rx[0] << 8)) >> 4;
+    }
+
+    MXC_GPIO_OutSet(ts_ss_pin.port, ts_ss_pin.mask);
+}
+#endif // TFT_NEWHAVEN
 
 /******************************************************************************/
 int Board_Init(void)
@@ -118,6 +308,15 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
+
+#ifdef TFT_NEWHAVEN
+    // Set falling edge triggered interrupt for TouchScreen
+    // MXC_TS_PreInit is not used because we need to take more direct
+    // control of SPI routines and initialization
+    ts_irq_pin.port->intmode |= ts_irq_pin.mask;
+    ts_irq_pin.port->intpol &= ~(ts_irq_pin.mask);
+    MXC_TS_AssignInterruptPin(ts_irq_pin);
+#endif
 
 // AI87-TODO: What's the reason for this deletion?
 // MXC_SIMO->vrego_c = 0x43; // Set CNN voltage

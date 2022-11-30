@@ -35,13 +35,32 @@ ifeq "$(BOARD_DIR)" ""
 $(error BOARD_DIR must be set)
 endif
 
+TFT?=ADAFRUIT
+# Supported values for TFT:
+# - ADAFRUIT (default)
+# - NEWHAVEN
+
 # Source files for this application (add path to VPATH below)
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
+ifeq "$(TFT)" "ADAFRUIT"
+PROJ_CFLAGS+=-DTFT_ADAFRUIT
 SRCS += adafruit_3315_tft.c
 SRCS += adafruit_3315_touch.c
+endif
+ifeq "$(TFT)" "NEWHAVEN"
+PROJ_CFLAGS+=-DTFT_NEWHAVEN
+SRCS += tft_st7789v.c
+# NewHaven TFT board has an integrated tsc2046 touchscreen driver
+# The TFT display is typically oriented with a 270 degree rotation,
+# so we need to flip the screen and swap the X,Y coordinates for
+# the touchscreen drivers to match it.
+PROJ_CFLAGS += -DFLIP_SCREEN
+PROJ_CFLAGS += -DSWAP_XY
+SRCS += tsc2046.c
+endif
 SRCS += camera.c
 SRCS += mipi_camera.c
 

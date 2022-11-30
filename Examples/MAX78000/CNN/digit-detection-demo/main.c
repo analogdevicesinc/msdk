@@ -38,7 +38,7 @@
 #include <stdio.h>
 #include "mxc_device.h"
 #include "mxc_sys.h"
-#include "bbfc_regs.h"
+#include "gcfr_regs.h"
 #include "fcr_regs.h"
 #include "icc.h"
 #include "dma.h"
@@ -197,9 +197,9 @@ int main(void)
 #endif
     MXC_TFT_ClearScreen();
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 30, font, sprintf(buff, "ANALOG DEVICES             "));
-    TFT_Print(buff, 55, 50, font, sprintf(buff, "Digit Detection Demo      "));
-    TFT_Print(buff, 55, 90, font, sprintf(buff, "Ver. 1.0.0                   "));
+    TFT_Print(buff, 55, 30, font, snprintf(buff, sizeof(buff), "ANALOG DEVICES             "));
+    TFT_Print(buff, 55, 50, font, snprintf(buff, sizeof(buff), "Digit Detection Demo      "));
+    TFT_Print(buff, 55, 90, font, snprintf(buff, sizeof(buff), "Ver. 1.0.0                   "));
     MXC_Delay(SEC(2));
 #endif //#ifdef TFT_ENABLE
 
@@ -259,7 +259,8 @@ int main(void)
 
         printf("CNN time: %d us\n\n", cnn_time);
 #ifdef TFT_ENABLE
-        TFT_Print(buff, 10, 210, font, sprintf(buff, "CNN Time: %.3f ms", (float)cnn_time / 1000));
+        TFT_Print(buff, 10, 210, font,
+                  snprintf(buff, sizeof(buff), "CNN Time: %.3f ms", (float)cnn_time / 1000));
 #endif
         MXC_Delay(SEC(1));
     }

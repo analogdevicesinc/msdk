@@ -1,0 +1,308 @@
+This section explains how to maintain P\+CI P\+TS P\+OI 5.\+0 compliance of the Deeptrust for P\+CI security architecture.
+
+The Deeptrust for P\+CI security architecture has been pre-\/evaluated and the associated report is provided. In order to guarantee the preservation of the pre-\/evaluation results, the good practices exposed here must be applied.
+
+Note\+: this document in only a set of guidelines that does not replace the applicable P\+CI P\+TS P\+OI security Requirements.\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sect_keymanag}{}\section{Key Management}\label{_p_c_i_g_u_i_d_a_n_c_e_sect_keymanag}
+Keys are needed for different purposes in the scope of P\+CI P\+TS.\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_keys}{}\subsection{Deeptrust for P\+C\+I\textquotesingle{}s  keys}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_keys}
+The Deeptrust for P\+CI software uses the following keys\+:
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{5}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Key name/purpose }&\textbf{ Key Algorithm/length }&\textbf{ Public part location }&\textbf{ Sec/\+Priv. part location }&\textbf{ Integrity protection  }\\\cline{1-5}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Key name/purpose }&\textbf{ Key Algorithm/length }&\textbf{ Public part location }&\textbf{ Sec/\+Priv. part location }&\textbf{ Integrity protection  }\\\cline{1-5}
+\endhead
+M\+RK / Maxim root key (C\+RK signing key) &E\+C\+D\+SA Secp256r1 w/ S\+H\+A256 &In M\+A\+X325xx R\+OM &In H\+SM at Maxim &Checked by C\+RC \\\cline{1-5}
+C\+RK / Core firmware signing key &E\+C\+D\+SA Secp256r1 w/ S\+H\+A256 &In M\+A\+X325xx O\+TP Memory &In H\+SM &signature verified by M\+RK \\\cline{1-5}
+Kfw / Box signing key w/ FW privilege &E\+C\+D\+SA Secp256r1 w/ S\+H\+A256 &In Core firmware &In H\+SM &signature verified by C\+RK \\\cline{1-5}
+Ktrusted / Box signing key w/ T\+R\+U\+S\+T\+ED privilege &E\+C\+D\+SA Secp256r1 w/ S\+H\+A256 &In Core firmware &In H\+SM &signature verified by C\+RK \\\cline{1-5}
+Kother / Box signing key w/ O\+T\+H\+ER privilege &E\+C\+D\+SA Secp256r1 w/ S\+H\+A256 &In Core firmware &In H\+SM &signature verified by C\+RK \\\cline{1-5}
+D\+U\+K\+PT I\+P\+EK (example) &&-\/ &&not verified, tamper response w/ processor package \\\cline{1-5}
+D\+U\+K\+PT Current/\+Future keys (example &&-\/ &&not verified, tamper response w/ processor package \\\cline{1-5}
+\end{longtabu}
+
+
+According to \mbox{[}R\+E\+F\+X\+X\+XX\mbox{]}, the M\+RK\textquotesingle{}s public part is stored in the M\+A\+X325xx\textquotesingle{}s R\+OM. The private counterpart is stored in a H\+SM controlled by Maxim. The purpose of the M\+RK is to allow loading a C\+RK previously signed. Maxim customers generate their C\+RK key pair and send the public part to Maxim. Maxim signs the C\+RK using the M\+RK stored in the H\+SM (signature operation is allowed to a restricted list of personnel). The signed C\+RK is returned to the customer who can install it into the M\+A\+X325xx. During installation, the C\+RK is transferred to the M\+A\+X325xx O\+TP memory after its signature has been verified by the M\+RK public key present in the R\+OM.
+
+After this C\+RK loading operation, the customer can download a new firmware signed by the private part of the C\+RK. Upon boot the M\+A\+X325xx verifies this firmware signature using the public part of the C\+RK present in the M\+A\+X325xx O\+TP memory.
+
+Once the core firmware is booted (if successfully verified by the C\+RK), it will check the signature of boxes using the appropriate Box signing public keys it contains (those keys are verified at the same time as the core firmware.
+
+If all boxes signatures are correct, the software will execute normally.\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_addkeys}{}\subsection{Additional keys}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_addkeys}
+Additional keys may be added while enhancing and customizing the Deeptrust for P\+CI software.
+
+
+\begin{DoxyItemize}
+\item Asymmetric Signing/\+Encryption keys must be at least 2048-\/bit long for R\+SA or 256-\/bit long for EC based algorithms
+\item Symmetric keys must be at least 128-\/bit long for A\+ES or 256-\/bit long for EC based algorithms
+\item Signing/\+Encryption keys stored out of the M\+A\+X325xx must be stored inside a Hardware Security Module (H\+SM). Access to the H\+SM must be gated by Smart Cards, protected by P\+IN codes. Vital keys must be protected by a sufficient quorum depending on the purpose of the key (e.\+g. firmware signing keys) The H\+SM should be stored in a safety deposit box when not used, and operated in a room with access control when in use.
+\item It is the responsibility of the customer to handle additional keys according to the following P\+CI requirements\+:
+\begin{DoxyItemize}
+\item Generate your own private keys using certified products (hardware or software). Do not use the test keys provided in the S\+DK for deployment. Maxim Integrated provides P\+CI compliant tools for production.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+Keep your private key really private, and have strict access control to that key.
+\begin{DoxyItemize}
+\item Export the public key into a “\+U\+C\+L” compliant format as exposed in this user manual.
+\end{DoxyItemize}\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_keystor}{}\subsection{Storing keys inside the M\+A\+X325xx}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_keystor}
+The M\+A\+X325xx contains a battery-\/backed, tamper-\/reactive, non-\/volatile R\+AM (N\+V\+S\+R\+AM). This R\+AM is internal to the M\+A\+X325xx SoC, and its content is encrypted by a random symmetric key using A\+ES.
+
+Tamper detectors and battery presence are continuously monitored. If a tamper detector is triggered or the battery is removed or drained, the N\+V\+S\+R\+AM is instantly wiped.
+
+Therefore it is strongly advised to store private or secret keys directly in the N\+V\+S\+R\+AM. If more space is needed for key storage, then store the above keys E\+N\+C\+R\+Y\+P\+T\+ED in another memory location, and keep the key encryption key in the N\+V\+S\+R\+AM.\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_prov}{}\subsection{Device Provisioning}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_prov}
+The Deeptrust for P\+CI software does not provide any platform provisioning service such as initial key loading or sensor activation. Such tasks should be performed during manufacturing. Maxim can provide detailed recommendations. The principle relies on the usage of the Secure Boot R\+OM\textquotesingle{}s S\+CP protocol to download an authenticated temporary R\+AM application that performs the provisioning and sensor initialisation.
+
+The Deeptrust for P\+CI software does not provide any key injection service.
+
+The Deeptrust for P\+CI software does not provide any separate secure box update/loading in this release..\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sect_fwdev}{}\section{Software development}\label{_p_c_i_g_u_i_d_a_n_c_e_sect_fwdev}
+Beyond the good practices applied by Maxim Integrated in the scope of the development of Deeptrust for P\+CI, the following recommendations apply to customers\+:\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_fwlayout}{}\subsection{Software layout}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_fwlayout}
+The software is split in three major parts
+\begin{DoxyItemize}
+\item Secure boot R\+OM
+\item The core firmware
+\item Additional boxes
+\end{DoxyItemize}
+
+The secure boot R\+OM is part of the M\+A\+X325xx SoC. It verifies the digital signature of the core firmware.
+
+The core firmware contains the lightweight hypervisor, mbed-\/os (drivers and R\+T\+OS), startup code, C and C++ runtime libraries. It verifies the signatures of the additional boxes and prepares them for execution.
+
+Additional boxes are\+:
+\begin{DoxyItemize}
+\item Secure Sandbox Services (a set of generic purpose secure services)
+\item P\+CI security services (a set of services dedicated to P\+IN management)
+\item An example demo (leveraging the two above boxes)
+\end{DoxyItemize}
+
+Additional boxes are compiled and linked simultaneously to the core firmware. However, their location in flash memory is clearly separated from each other. As a result, the overall layout of software image is the following\+:
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Flash Address }&\textbf{ Item  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Flash Address }&\textbf{ Item  }\\\cline{1-2}
+\endhead
+bottom &\\\cline{1-2}
+&Core FW header \\\cline{1-2}
+&Core FW image \\\cline{1-2}
+&Core FW signature \\\cline{1-2}
+&\\\cline{1-2}
+&Box\#1 header+signature \\\cline{1-2}
+&Box\#1 configuration \\\cline{1-2}
+&Box\#1 FW image \\\cline{1-2}
+&\\\cline{1-2}
+&Box\#2 header+signature \\\cline{1-2}
+&Box\#2 configuration \\\cline{1-2}
+&Box\#2 FW image \\\cline{1-2}
+&... \\\cline{1-2}
+&Box\+::n header+signature \\\cline{1-2}
+&Box\+::n configuration \\\cline{1-2}
+&Box\+::n FW image \\\cline{1-2}
+&\\\cline{1-2}
+&Additional data storage \\\cline{1-2}
+Top &\\\cline{1-2}
+&\\\cline{1-2}
+\end{longtabu}
+This layout is defined in the file ./mbed-\/os/target/\+T\+A\+R\+G\+E\+T\+\_\+\+Maxim/common/max325xx.ld.\+inc. The Makefile defines the build process\+:
+\begin{DoxyItemize}
+\item compilation and link of the whole software
+\item injection of the boxes signature verification keys into the core firmware
+\item signature of the core firwmare using the C\+RK
+\item signature of additional boxes using specific signing keys
+\end{DoxyItemize}\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_newboxes}{}\subsection{Adding new boxes}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_newboxes}
+In order to add a new box (every instance of box\+\_\+\+N\+A\+ME below must be replaced), the following rules apply\+:
+
+
+\begin{DoxyEnumerate}
+\item create a new folder box\+\_\+\+N\+A\+ME in ./sources (or in a sub folder located under ./sources).
+\item create a file sourcefile.\+cpp containing\+: 
+\begin{DoxyCode}
+\textcolor{preprocessor}{  #include "uvisor-lib/uvisor-lib.h"}
+\textcolor{preprocessor}{  #include "mbed.h"}
+
+\textcolor{preprocessor}{  #include <errors.h>}
+\textcolor{preprocessor}{  #include <stdint.h>}
+\textcolor{preprocessor}{  #include <string.h>}
+
+  \textcolor{keyword}{static} \textcolor{keyword}{const} UvisorBoxAclItem my\_acl[] = \{
+   \textcolor{comment}{//Put list of ACLs here}
+  \};
+
+\textcolor{preprocessor}{#define BOX\_NAME box\_NAME}
+
+\textcolor{comment}{// Box Main Thread}
+\textcolor{keyword}{static} \textcolor{keywordtype}{void} box\_appli\_main(\textcolor{keyword}{const} \textcolor{keywordtype}{void} *);
+
+\textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{
+  \textcolor{comment}{// Declare globals going to the box's private heap here}
+\} box\_context;
+
+\textcolor{comment}{// Configure the  box.}
+UVISOR\_BOX\_NAMESPACE(BOX\_NAME);
+UVISOR\_BOX\_HEAPSIZE(0x1000);
+UVISOR\_BOX\_MAIN(box\_appli\_main, osPriorityNormal, 0x800);
+UVISOR\_BOX\_CONFIG(BOX\_NAME, my\_acl, 1024, box\_context, SIGNING\_KEY\_XXXXX);
+
+\textcolor{keywordtype}{void} box\_appli\_main(\textcolor{keyword}{const} \textcolor{keywordtype}{void} *) \{
+
+  \textcolor{keywordflow}{while} (1) \{
+  \}
+\}
+\end{DoxyCode}
+
+\item in the above, replace S\+I\+G\+N\+I\+N\+G\+\_\+\+K\+E\+Y\+\_\+\+X\+X\+X\+XX by the appropriate signing key identifier (one of S\+I\+G\+N\+I\+N\+G\+\_\+\+K\+E\+Y\+\_\+\+FW, S\+I\+G\+N\+I\+N\+G\+\_\+\+K\+E\+Y\+\_\+\+T\+R\+U\+S\+T\+ED, S\+I\+G\+N\+I\+N\+G\+\_\+\+K\+E\+Y\+\_\+\+O\+T\+H\+ER)
+\item extend the file ./mbed-\/os/target/\+T\+A\+R\+G\+E\+T\+\_\+\+Maxim/common/max325xx.ld.\+inc
+\item below the marker \char`\"{}\+S\+E\+C\+U\+R\+E B\+O\+X\+E\+S\char`\"{}, add this set of definitions\+: 
+\begin{DoxyCode}
+.text.box\_NAME\_cfg :
+ \{
+   *path/to/box\_NAME*(.keep.addmodules*)
+ \}> FLASH\_MOD
+ .text.box\_NAME\_code :
+ \{
+   \_\_start\_box\_NAME = .;
+   *path/to/box\_NAME*(.text* .rodata*)
+   FILL(0xab)
+   . = ALIGN(4);
+ \} > FLASH\_MOD
+ .data.box\_NAME\_datainit :
+ \{
+     KEEP(*path/to/box\_NAME*(.data*))
+     FILL(0xab)
+     . = ALIGN(4);
+ \} > RAM  AT > FLASH\_MOD = 0xcc
+ \_\_start\_box\_NAME\_data\_src  = LOADADDR(.data.box\_NAME\_datainit);
+ \_\_start\_box\_NAME\_data\_dest = ADDR(.data.box\_NAME\_datainit);
+ \_\_end\_box\_NAME             = LOADADDR(.data.box\_NAME\_datainit)+SIZEOF(.data.box\_NAME\_datainit);
+\end{DoxyCode}
+
+\item Modify the top Makefile\+: in the target {\ttfamily \%.elf.\+signed\+: \%.elf Makefile}, add an additional line\+: 
+\begin{DoxyCode}
+$(call signmodule,box\_NAME,$(SIGNINGKEY\_XXX\_PEM),$(TEMPDIR)$\{<F\}.temp)
+\end{DoxyCode}
+ Replace S\+I\+G\+N\+I\+N\+G\+K\+E\+Y\+\_\+\+X\+X\+X\+\_\+\+P\+EM by the appropriate file name that contains the private signing key.
+\end{DoxyEnumerate}\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_fwsign}{}\subsection{Firmware signature}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_fwsign}
+As explained above, different software parts have to be signed using different keys.
+
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Item }&\textbf{ Signing key  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\textbf{ Item }&\textbf{ Signing key  }\\\cline{1-2}
+\endhead
+Core FW &C\+RK \\\cline{1-2}
+Box\#1 &Kfw/\+Ktrusted/\+Kother \\\cline{1-2}
+Box\#2 &Kfw/\+Ktrusted/\+Kother \\\cline{1-2}
+... &\\\cline{1-2}
+Box\+::n &Kfw/\+Ktrusted/\+Kother \\\cline{1-2}
+&\\\cline{1-2}
+\end{longtabu}
+The C\+RK protects the core firmware, which is firmware in the P\+CI terminology.
+
+The boxes signature keys protect the boxes executable code and their configuration (A\+C\+Ls). The signing key also define their privileges, via the implementation of the function \char`\"{}check\+\_\+acl\char`\"{} which is part of the core firmware, and via the access control performed during R\+PC calls (See \hyperlink{index_boxes}{Code partitioning\+: Core firmware and Secure containers (aka \char`\"{}boxes\char`\"{})}).
+
+Failure to verify any signature leads to a reset of the platform.\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_fwmod}{}\subsection{Software modularity}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_fwmod}
+In a further evolution, it will be possible to independently load/update boxes. To achieve this goal\+:
+\begin{DoxyItemize}
+\item boxes must use no global variables. Dynamic memory must be used instead. The lightweight hypervisor ensures that dynamically allocated memory is kept private to the box.
+\item boxes must be built using position independent code so that they can be loaded at unknown addresses in memory
+\item core firmware symbols must be available to allow linking boxes with the core
+\item references between boxes (achieved via R\+PC)
+\end{DoxyItemize}\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_boxrpc}{}\subsection{Secure boxes code review}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_boxrpc}
+Secure boxes must all be signed. Depending on the signing key, they will be granted various privileges. The Deeptrust for P\+CI architecture guarantees that the A\+C\+Ls requested by the box cannot go beyond what is allowed by the use of the function check\+\_\+acl, and also that boxes that provide R\+PC services can filter out calls based on the name and/or signing key of the caller.
+
+Therefore, the signature key used for signing a box must be in accordance with the purpose of the box (least privilege principle). The check\+\_\+acl function must not grant access to sensitive peripherals or memory area to boxes that do not need them.
+
+Developer guidance on how to correctly configure and review Deeptrust implementations to ensure that they are correctly isolating non-\/security code\+:
+
+Before using a signing key to approve a box for being added to the software or firmware, the developer must ensure that\+:
+\begin{DoxyItemize}
+\item the check\+\_\+acl function correctly limits the A\+C\+Ls of boxes
+\item even if allowed by check\+\_\+acl for the selected signing key,
+\item the code must be manually reviewed and tested to make sure that\+:
+\begin{DoxyItemize}
+\item their sensitive data is kept in secure memory and not leaked in the public memory (use the private heap of the box)
+\item the access control to their services offered via R\+PC is correctly implemented and tested
+\item the A\+C\+Ls of the box are restricted to what as strictly needed (minimum privilege, even if enforced by check\+\_\+acl)
+\item no bug may lead to leaking sensitive data
+\item no bug may lead to a crash of the platform
+\item the secure box does not monopolize the C\+PU resources
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+The use of static analysis is strongly recommended together with a manual code review.
+
+The lightweight hypervisor provides some runtime checks of memory corruptions and overflows, in addition to G\+CC\textquotesingle{}s stack protector feature used for the core firmware and additional boxes. This somehow mitigates the effect of bugs.
+
+Mitigation of fuzzing is also implemented\+:
+\begin{DoxyItemize}
+\item A reset counter in N\+V\+S\+R\+AM is incremented at every platform reset
+\item It is automatically erased after a while so that no more than 1 reset per 30sec period is allowed
+\item If the reset occurs too frequently, a time penalty of 60 seconds is added
+\end{DoxyItemize}\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_minconf}{}\subsection{Minimal configuration}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_minconf}
+The provided solution ensures the minimal software configuration through the use of G\+CC\textquotesingle{}s options\+:
+\begin{DoxyItemize}
+\item -\/fdata-\/sections -\/ffunction-\/sections for compiling
+\item -\/\+Wl,--gc-\/section for linking
+\end{DoxyItemize}
+
+The above options eliminates dead code. Hence, by definition, only the strictly useful code is embedded in the final binary.\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sub_crypto}{}\subsection{Cryptographic services}\label{_p_c_i_g_u_i_d_a_n_c_e_sub_crypto}
+Encryption/decryption\+: The Deeptrust for P\+CI offers A\+P\+Is \mbox{[}R\+E\+F\+X\+X\+XX\mbox{]} that do not allow arbitrary encryption/decryption or signature. It uses 3\+D\+ES for encryption of P\+IN.
+
+Digital signature\+: It uses E\+CC digital signature for verification of integrity and authenticity of firmware and application images. It may use R\+S\+A/\+E\+CC digital signature for verification of smart card certificates (not included in this release).
+
+Other services\+: An additional cryptographic library (U\+CL) is delivered and allows arbitrary cryptographic operations using any key (encryption / decryption, signature/verification, using A\+ES, 3\+D\+ES, E\+C\+D\+SA, R\+SA).
+
+An additional key manager and wrapper above the U\+CL will provide strictly controlled cryptographic services isolated within a secure box.\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sect_PIN}{}\section{P\+I\+N and cardholder data management}\label{_p_c_i_g_u_i_d_a_n_c_e_sect_PIN}
+The provided Deeptrust for P\+CI uses D\+U\+K\+PT based P\+IN encryption only using I\+SO Format 0. The P\+IN is captured upon request using the P\+CI security services box that has exclusive access to display and keypad at that time. The P\+IN is read from keypad or touchscreen and stored in a buffer for 60s. From here, it can be encrypted w/ 3\+D\+ES using D\+U\+K\+PT current key, or submitted to a smart card for verification.
+
+P\+IN is erased from memory\+:
+\begin{DoxyItemize}
+\item if the 60s timer expires
+\item if the platform is reset (whatever the reset source)
+\item if the P\+IN is used (with D\+U\+K\+PT in {\ttfamily uvisor\+\_\+ctx-\/$>$resetcount} or submitted to card in {\ttfamily \+\_\+\+\_\+pci\+\_\+verify\+\_\+offline\+\_\+pin})
+\end{DoxyItemize}
+
+N\+O\+TE\+: A\+ES for I\+SO format 4 P\+IN blocks will be supported in a further release\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sect_Prompt}{}\section{Prompt management}\label{_p_c_i_g_u_i_d_a_n_c_e_sect_Prompt}
+In the current release, prompts are hard coded in the Secure Sandbox Services box, and R\+PC clients can request displaying prompts via an identifier.
+
+Customers may relax this constraint using the new separate box signing feature\+:
+\begin{DoxyItemize}
+\item Boxes signed with Kfw are considered P\+CI firmware and can display arbitrary prompts
+\item Other boxes can not display arbitrary prompts
+\end{DoxyItemize}\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sect_SelfTest}{}\section{Self Tests}\label{_p_c_i_g_u_i_d_a_n_c_e_sect_SelfTest}
+The Deeptrust for P\+CI provides an automatic 24-\/h reboot\hypertarget{_p_c_i_g_u_i_d_a_n_c_e_sect_integ}{}\section{Customer integration}\label{_p_c_i_g_u_i_d_a_n_c_e_sect_integ}
+Adaptation of the Deeptrust for P\+CI to a new platform requires the following steps\+:
+
+
+\begin{DoxyItemize}
+\item Development of the Board Support Package within mbed-\/os/target\+:
+\begin{DoxyItemize}
+\item Adapt to the actual (touch)screen and pinpad
+\item Adapt the board level power management (battery charging, P\+M\+IC, etc)
+\end{DoxyItemize}
+\item Customization of the Deeptrust A\+PI services\+:
+\begin{DoxyItemize}
+\item Customize or adapt the A\+P\+Is provided by the boxes Secure sandbox services P\+CI security services
+\end{DoxyItemize}
+\item Adapt the data processing required for the target application\+: The default provided P\+CI security services box is able to perform E\+MV Level 2 P\+IN transaction with a smart card, and D\+U\+K\+PT based P\+IN encryption for online submission
+\begin{DoxyItemize}
+\item Add more P\+IN block formats
+\item Implement remote communication link for online transactions
+\end{DoxyItemize}
+\item Development of the client application(s) leveraging the P\+CI security services and secure sandbox services
+\item Integration of other third party applications 
+\end{DoxyItemize}

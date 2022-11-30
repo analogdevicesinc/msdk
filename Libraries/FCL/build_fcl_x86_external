@@ -1,0 +1,25 @@
+#!/bin/sh
+echo "x86 FCL validation context build script"
+echo " you have to change the FCL installation folder name"
+#exit 0
+#DIRROOT to be changed, depending on your own installation
+#once it is done, remove the "exit 0" line above
+DIRROOT=./
+DIRSOURCE=$DIRROOT/src
+DIRINCLUDE=$DIRROOT/include
+DIRMAKE=$DIRROOT/
+cd $DIRROOT
+#build the validation application
+cp Makefile_x86 src/Makefile
+cd src
+#clean
+rm *.o *.exe 2>/dev/null
+rm ../data/*.exe 2>/dev/null
+#make
+make TARGET=cygwin
+cp fcl_testing.exe ../data
+#run the tool
+cd ../data
+./fcl_testing.exe
+cd ..
+

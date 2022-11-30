@@ -5,16 +5,15 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
-#BOARD=FTHR_RevA
-# ^ For example, you can uncomment this line to make the 
-# project build for the "FTHR_RevA" board.
+#MXC_OPTIMIZE_CFLAGS = -Og
+# ^ For example, you can uncomment this line to 
+# optimize the project for debugging
 
 # **********************************************************
 
-# A higher optimization level is used for this example, but it
-# may make debugging unreliable.  Comment out the line below
-# to use the default optimization level, which is optimized
-# for a good debugging experience.
+# Set a higher optimization level.  The increased performance
+# is required for the CameraIF DMA code to work within the
+# timing requirements of the Parallel Camera Interface.
 MXC_OPTIMIZE_CFLAGS = -O2
 
 # Place build files specific to EvKit_V1 here.
@@ -28,9 +27,14 @@ endif
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
 #PROJ_CFLAGS+=-DENABLE_TFT
+
 # If enabled, it saves out the Mic samples used for inference to SDCARD
-PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
 # Note that if both SDCARD and TFT are enabled, the TFT will be disabled to avoid SPI driver conflict.
+#PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
+
+# If enabled, it captures audio from line input of MAX9867 audio codec instead of the on-board mic.
+# Note that SEND_MIC_OUT_SDCARD should be disabled in this mode
+#PROJ_CFLAGS+=-DENABLE_CODEC_MIC
 LIB_SDHC = 1
 IPATH += TFT/fthr
 VPATH += TFT/fthr

@@ -1,0 +1,165 @@
+A little fail-\/safe filesystem designed for microcontrollers.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{   | | |     .-\/-\/-\/.\_\_\_\_\_}
+\DoxyCodeLine{  .-\/-\/-\/-\/-\/.   |          |}
+\DoxyCodeLine{-\/-\/|o    |-\/-\/-\/| littlefs |}
+\DoxyCodeLine{-\/-\/|     |-\/-\/-\/|          |}
+\DoxyCodeLine{  '-\/-\/-\/-\/-\/'   '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{   | | |}
+\end{DoxyCode}
+
+
+{\bfseries{Power-\/loss resilience}} -\/ littlefs is designed to handle random power failures. All file operations have strong copy-\/on-\/write guarantees and if power is lost the filesystem will fall back to the last known good state.
+
+{\bfseries{Dynamic wear leveling}} -\/ littlefs is designed with flash in mind, and provides wear leveling over dynamic blocks. Additionally, littlefs can detect bad blocks and work around them.
+
+{\bfseries{Bounded R\+A\+M/\+R\+OM}} -\/ littlefs is designed to work with a small amount of memory. R\+AM usage is strictly bounded, which means R\+AM consumption does not change as the filesystem grows. The filesystem contains no unbounded recursion and dynamic memory is limited to configurable buffers that can be provided statically.\hypertarget{md_littlefs__r_e_a_d_m_e_autotoc_md26}{}\doxysection{Example}\label{md_littlefs__r_e_a_d_m_e_autotoc_md26}
+Here\textquotesingle{}s a simple example that updates a file named {\ttfamily boot\+\_\+count} every time main runs. The program can be interrupted at any time without losing track of how many times it has been booted and without corrupting the filesystem\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\#include "{}lfs.h"{}}
+\DoxyCodeLine{}
+\DoxyCodeLine{// variables used by the filesystem}
+\DoxyCodeLine{lfs\_t lfs;}
+\DoxyCodeLine{lfs\_file\_t file;}
+\DoxyCodeLine{}
+\DoxyCodeLine{// configuration of the filesystem is provided by this struct}
+\DoxyCodeLine{const struct lfs\_config cfg = \{}
+\DoxyCodeLine{    // block device operations}
+\DoxyCodeLine{    .read  = user\_provided\_block\_device\_read,}
+\DoxyCodeLine{    .prog  = user\_provided\_block\_device\_prog,}
+\DoxyCodeLine{    .erase = user\_provided\_block\_device\_erase,}
+\DoxyCodeLine{    .sync  = user\_provided\_block\_device\_sync,}
+\DoxyCodeLine{}
+\DoxyCodeLine{    // block device configuration}
+\DoxyCodeLine{    .read\_size = 16,}
+\DoxyCodeLine{    .prog\_size = 16,}
+\DoxyCodeLine{    .block\_size = 4096,}
+\DoxyCodeLine{    .block\_count = 128,}
+\DoxyCodeLine{    .cache\_size = 16,}
+\DoxyCodeLine{    .lookahead\_size = 16,}
+\DoxyCodeLine{    .block\_cycles = 500,}
+\DoxyCodeLine{\};}
+\DoxyCodeLine{}
+\DoxyCodeLine{// entry point}
+\DoxyCodeLine{int main(void) \{}
+\DoxyCodeLine{    // mount the filesystem}
+\DoxyCodeLine{    int err = lfs\_mount(\&lfs, \&cfg);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    // reformat if we can't mount the filesystem}
+\DoxyCodeLine{    // this should only happen on the first boot}
+\DoxyCodeLine{    if (err) \{}
+\DoxyCodeLine{        lfs\_format(\&lfs, \&cfg);}
+\DoxyCodeLine{        lfs\_mount(\&lfs, \&cfg);}
+\DoxyCodeLine{    \}}
+\DoxyCodeLine{}
+\DoxyCodeLine{    // read current count}
+\DoxyCodeLine{    uint32\_t boot\_count = 0;}
+\DoxyCodeLine{    lfs\_file\_open(\&lfs, \&file, "{}boot\_count"{}, LFS\_O\_RDWR | LFS\_O\_CREAT);}
+\DoxyCodeLine{    lfs\_file\_read(\&lfs, \&file, \&boot\_count, sizeof(boot\_count));}
+\DoxyCodeLine{}
+\DoxyCodeLine{    // update boot count}
+\DoxyCodeLine{    boot\_count += 1;}
+\DoxyCodeLine{    lfs\_file\_rewind(\&lfs, \&file);}
+\DoxyCodeLine{    lfs\_file\_write(\&lfs, \&file, \&boot\_count, sizeof(boot\_count));}
+\DoxyCodeLine{}
+\DoxyCodeLine{    // remember the storage is not updated until the file is closed successfully}
+\DoxyCodeLine{    lfs\_file\_close(\&lfs, \&file);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    // release any resources we were using}
+\DoxyCodeLine{    lfs\_unmount(\&lfs);}
+\DoxyCodeLine{}
+\DoxyCodeLine{    // print the boot count}
+\DoxyCodeLine{    printf("{}boot\_count: \%d\(\backslash\)n"{}, boot\_count);}
+\DoxyCodeLine{\}}
+\end{DoxyCode}
+\hypertarget{md_littlefs__r_e_a_d_m_e_autotoc_md27}{}\doxysection{Usage}\label{md_littlefs__r_e_a_d_m_e_autotoc_md27}
+Detailed documentation (or at least as much detail as is currently available) can be found in the comments in \href{lfs.h}{\texttt{ lfs.\+h}}.
+
+littlefs takes in a configuration structure that defines how the filesystem operates. The configuration struct provides the filesystem with the block device operations and dimensions, tweakable parameters that tradeoff memory usage for performance, and optional static buffers if the user wants to avoid dynamic memory.
+
+The state of the littlefs is stored in the {\ttfamily lfs\+\_\+t} type which is left up to the user to allocate, allowing multiple filesystems to be in use simultaneously. With the {\ttfamily lfs\+\_\+t} and configuration struct, a user can format a block device or mount the filesystem.
+
+Once mounted, the littlefs provides a full set of P\+O\+S\+I\+X-\/like file and directory functions, with the deviation that the allocation of filesystem structures must be provided by the user.
+
+All P\+O\+S\+IX operations, such as remove and rename, are atomic, even in event of power-\/loss. Additionally, file updates are not actually committed to the filesystem until sync or close is called on the file.\hypertarget{md_littlefs__r_e_a_d_m_e_autotoc_md28}{}\doxysection{Other notes}\label{md_littlefs__r_e_a_d_m_e_autotoc_md28}
+Littlefs is written in C, and specifically should compile with any compiler that conforms to the {\ttfamily C99} standard.
+
+All littlefs calls have the potential to return a negative error code. The errors can be either one of those found in the {\ttfamily enum lfs\+\_\+error} in \href{lfs.h}{\texttt{ lfs.\+h}}, or an error returned by the user\textquotesingle{}s block device operations.
+
+In the configuration struct, the {\ttfamily prog} and {\ttfamily erase} function provided by the user may return a {\ttfamily L\+F\+S\+\_\+\+E\+R\+R\+\_\+\+C\+O\+R\+R\+U\+PT} error if the implementation already can detect corrupt blocks. However, the wear leveling does not depend on the return code of these functions, instead all data is read back and checked for integrity.
+
+If your storage caches writes, make sure that the provided {\ttfamily sync} function flushes all the data to memory and ensures that the next read fetches the data from memory, otherwise data integrity can not be guaranteed. If the {\ttfamily write} function does not perform caching, and therefore each {\ttfamily read} or {\ttfamily write} call hits the memory, the {\ttfamily sync} function can simply return 0.\hypertarget{md_littlefs__r_e_a_d_m_e_autotoc_md29}{}\doxysection{Design}\label{md_littlefs__r_e_a_d_m_e_autotoc_md29}
+At a high level, littlefs is a block based filesystem that uses small logs to store metadata and larger copy-\/on-\/write (C\+OW) structures to store file data.
+
+In littlefs, these ingredients form a sort of two-\/layered cake, with the small logs (called metadata pairs) providing fast updates to metadata anywhere on storage, while the C\+OW structures store file data compactly and without any wear amplification cost.
+
+Both of these data structures are built out of blocks, which are fed by a common block allocator. By limiting the number of erases allowed on a block per allocation, the allocator provides dynamic wear leveling over the entire filesystem.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                    root}
+\DoxyCodeLine{                   .-\/-\/-\/-\/-\/-\/-\/-\/.-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{                   | A'| B'|         |}
+\DoxyCodeLine{                   |   |   |-\/>       |}
+\DoxyCodeLine{                   |   |   |         |}
+\DoxyCodeLine{                   '-\/-\/-\/-\/-\/-\/-\/-\/'-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{                .-\/-\/-\/-\/'   '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{       A       v                 B       v}
+\DoxyCodeLine{      .-\/-\/-\/-\/-\/-\/-\/-\/.-\/-\/-\/-\/-\/-\/-\/-\/.       .-\/-\/-\/-\/-\/-\/-\/-\/.-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{      | C'| D'|         |       | E'|new|         |}
+\DoxyCodeLine{      |   |   |-\/>       |       |   | E'|-\/>       |}
+\DoxyCodeLine{      |   |   |         |       |   |   |         |}
+\DoxyCodeLine{      '-\/-\/-\/-\/-\/-\/-\/-\/'-\/-\/-\/-\/-\/-\/-\/-\/'       '-\/-\/-\/-\/-\/-\/-\/-\/'-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{      .-\/'   '-\/-\/.                  |   '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{     v          v              .-\/'                        v}
+\DoxyCodeLine{.-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.        v                       .-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{|   C    |  |   D    |   .-\/-\/-\/-\/-\/-\/-\/-\/.       write       | new E  |}
+\DoxyCodeLine{|        |  |        |   |   E    |        ==>        |        |}
+\DoxyCodeLine{|        |  |        |   |        |                   |        |}
+\DoxyCodeLine{'-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'   |        |                   '-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{                         '-\/-\/-\/-\/-\/-\/-\/-\/'                   .-\/'    |}
+\DoxyCodeLine{                         .-\/'    '-\/.    .-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{                        v          v  v              v}
+\DoxyCodeLine{                   .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.       .-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{                   |   F    |  |   G    |       | new F  |}
+\DoxyCodeLine{                   |        |  |        |       |        |}
+\DoxyCodeLine{                   |        |  |        |       |        |}
+\DoxyCodeLine{                   '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'       '-\/-\/-\/-\/-\/-\/-\/-\/'}
+\end{DoxyCode}
+
+
+More details on how littlefs works can be found in \mbox{\hyperlink{md_littlefs__d_e_s_i_g_n}{D\+E\+S\+I\+GN.md}} and \mbox{\hyperlink{md_littlefs__s_p_e_c}{S\+P\+EC.md}}.
+
+
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{md_littlefs__d_e_s_i_g_n}{D\+E\+S\+I\+GN.md}} -\/ A fully detailed dive into how littlefs works. I would suggest reading it as the tradeoffs at work are quite interesting.
+\item \mbox{\hyperlink{md_littlefs__s_p_e_c}{S\+P\+EC.md}} -\/ The on-\/disk specification of littlefs with all the nitty-\/gritty details. May be useful for tooling development.
+\end{DoxyItemize}\hypertarget{md_littlefs__r_e_a_d_m_e_autotoc_md30}{}\doxysection{Testing}\label{md_littlefs__r_e_a_d_m_e_autotoc_md30}
+The littlefs comes with a test suite designed to run on a PC using the \href{emubd/lfs_emubd.h}{\texttt{ emulated block device}} found in the emubd directory. The tests assume a Linux environment and can be started with make\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{make test}
+\end{DoxyCode}
+\hypertarget{md_littlefs__r_e_a_d_m_e_autotoc_md31}{}\doxysection{License}\label{md_littlefs__r_e_a_d_m_e_autotoc_md31}
+The littlefs is provided under the \href{https://spdx.org/licenses/BSD-3-Clause.html}{\texttt{ B\+S\+D-\/3-\/\+Clause}} license. See \mbox{\hyperlink{md_littlefs__l_i_c_e_n_s_e}{L\+I\+C\+E\+N\+SE.md}} for more information. Contributions to this project are accepted under the same license.
+
+Individual files contain the following tag instead of the full license text. \begin{DoxyVerb}SPDX-License-Identifier:    BSD-3-Clause
+\end{DoxyVerb}
+
+
+This enables machine processing of license information based on the S\+P\+DX License Identifiers that are here available\+: \href{http://spdx.org/licenses/}{\texttt{ http\+://spdx.\+org/licenses/}}\hypertarget{md_littlefs__r_e_a_d_m_e_autotoc_md32}{}\doxysection{Related projects}\label{md_littlefs__r_e_a_d_m_e_autotoc_md32}
+
+\begin{DoxyItemize}
+\item \href{https://github.com/geky/littlefs-fuse}{\texttt{ littlefs-\/fuse}} -\/ A \href{https://github.com/libfuse/libfuse}{\texttt{ F\+U\+SE}} wrapper for littlefs. The project allows you to mount littlefs directly on a Linux machine. Can be useful for debugging littlefs if you have an SD card handy.
+\item \href{https://github.com/geky/littlefs-js}{\texttt{ littlefs-\/js}} -\/ A javascript wrapper for littlefs. I\textquotesingle{}m not sure why you would want this, but it is handy for demos. You can see it in action \href{http://littlefs.geky.net/demo.html}{\texttt{ here}}.
+\item \href{https://pypi.org/project/littlefs-python/}{\texttt{ littlefs-\/python}} -\/ A Python wrapper for littlefs. The project allows you to create images of the filesystem on your PC. Check if littlefs will fit your needs, create images for a later download to the target memory or inspect the content of a binary image of the target memory.
+\item \href{https://github.com/whitecatboard/Lua-RTOS-ESP32/tree/master/components/mklfs/src}{\texttt{ mklfs}} -\/ A command line tool built by the \href{https://github.com/whitecatboard/Lua-RTOS-ESP32}{\texttt{ Lua R\+T\+OS}} guys for making littlefs images from a host PC. Supports Windows, Mac OS, and Linux.
+\item \href{https://github.com/armmbed/mbed-os}{\texttt{ Mbed OS}} -\/ The easiest way to get started with littlefs is to jump into Mbed which already has block device drivers for most forms of embedded storage. littlefs is available in Mbed OS as the \href{https://os.mbed.com/docs/mbed-os/v5.12/apis/littlefilesystem.html}{\texttt{ Little\+File\+System}} class.
+\item \href{https://github.com/pellepl/spiffs}{\texttt{ S\+P\+I\+F\+FS}} -\/ Another excellent embedded filesystem for N\+OR flash. As a more traditional logging filesystem with full static wear-\/leveling, S\+P\+I\+F\+FS will likely outperform littlefs on small memories such as the internal flash on microcontrollers.
+\item \href{https://github.com/dlbeer/dhara}{\texttt{ Dhara}} -\/ An interesting N\+A\+ND flash translation layer designed for small M\+C\+Us. It offers static wear-\/leveling and power-\/resilience with only a fixed {\itshape O($\vert$address$\vert$)} pointer structure stored on each block and in R\+AM. 
+\end{DoxyItemize}

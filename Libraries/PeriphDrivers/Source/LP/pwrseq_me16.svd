@@ -1,0 +1,510 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>PWRSEQ</name>
+    <description>Power Sequencer / Low Power Control Register.</description>
+    <baseAddress>0x40006800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>LPCN</name>
+        <description>Low Power Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>RAM0RET_EN</name>
+            <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable Ram Retention.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable System RAM 0 retention.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM1RET_EN</name>
+            <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable Ram Retention.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable System RAM 1 retention.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM2RET_EN</name>
+            <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable Ram Retention.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable System RAM 2 retention.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM3RET_EN</name>
+            <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable Ram Retention.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable System RAM 3 retention.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>OVR</name>
+            <description>Operating Voltage Range</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>0_9V</name>
+                <description>0.9V 24MHz</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_0V</name>
+                <description>1.0V 48MHz</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>1_1V</name>
+                <description>1.1V 96MHz</description>
+                <value>2</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCORE_DET_BYPASS</name>
+            <description>Block Auto-Detect</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>enabled</name>
+                <description>enable</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Disable</name>
+                <description>disable</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RETREG_EN</name>
+            <description>Retention Regulator Enable. This bit controls the retention regulator in BACKUP mode. </description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>STORAGE_EN</name>
+            <description>STORAGE Mode ENable. This bit allows low-power background mode operations, while the CPU is in DeepSleep.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FASTWK_EN</name>
+            <description>Fast Wake-Up Mode. This bit enables fast wake-up from DeepSleep mode. (5uS typical). </description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>BG_DIS</name>
+            <description>Bandgap OFF. This controls the System Bandgap in DeepSleep mode.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>on</name>
+                <description>Bandgap is always ON.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>off</name>
+                <description>Bandgap is OFF in DeepSleep mode (default).</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCOREPOR_DIS</name>
+            <description>VDDC (Vcore) Power on reset Monitor Disable.This bit controls the Power-On Reset monitor on VDDC supply in
+        DeepSleep and BACKUP mode.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>LDO_DIS</name>
+            <description>Disable Main LDO</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCORE_EXT</name>
+            <description>Use external VCORE for 1V supply</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disable </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>use Vcore for retention.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VCOREMON_DIS</name>
+            <description>VDDC (Vcore) Monitor Disable. This bit controls the power monitor on the VCore supply in all operating modes.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>VDDAMON_DIS</name>
+            <description>VDDA Monitor Disable. This bit controls the power monitor of the Analog Supply in all operating modes.</description>
+            <bitOffset>22</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable if Bandgap is ON (default) </description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PORVDDMON_DIS</name>
+            <description>VDDIO Power-On Reset Monitor Disable. This bit controls the Power-On Reset monitor on VDDIO supply in all operating mods.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>INRO_EN</name>
+            <description>INRO remains on in all power modes if this bit is set otherwise it is controled by the LP controller</description>
+            <bitOffset>28</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERTCO_EN</name>
+            <description>XRTCO remains on in all power modes if this bit is set otherwise it is controled by the LP controller</description>
+            <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERTCO_PD</name>
+            <description>Powerdown ERTCO.</description>
+            <bitOffset>31</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LPWKST0</name>
+        <description>Low Power I/O Wakeup Status Register 0. This register indicates the low power wakeup status for GPIO0.</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>ST</name>
+            <description>Wakeup IRQ flags (write ones to clear). One or more of these bits will be set when the corresponding dedicated GPIO pin (s) transition (s) from low to high or high to low. If GPIO wakeup source is selected, using PM.GPIOWKEN register, and the corresponding bit is also selected in LPWKEN register, an interrupt will be gnerated to wake up the CPU from a low power mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LPWKEN0</name>
+        <description>Low Power I/O Wakeup Enable Register 0. This register enables low power wakeup functionality for GPIO0.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Enable wakeup. These bits allow wakeup from the corresponding GPIO pin (s) on transition (s) from low to high or high to low when PM.GPIOWKEN is set. Wakeup status is indicated in PPWKST register.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>31</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register derivedFrom="LPWKST0">
+        <name>LPWKST1</name>
+        <description>Low Power I/O Wakeup Status Register 1. This register indicates the low power wakeup status for GPIO1.</description>
+        <addressOffset>0x0C</addressOffset>
+      </register>
+      <register derivedFrom="LPWKEN0">
+        <name>LPWKEN1</name>
+        <description>Low Power I/O Wakeup Enable Register 1. This register enables low power wakeup functionality for GPIO1.</description>
+        <addressOffset>0x10</addressOffset>
+      </register>
+      <register>
+        <name>LPPWKST</name>
+        <description>Low Power Peripheral Wakeup Status Register.</description>
+        <addressOffset>0x30</addressOffset>
+        <fields>
+          <field>
+            <name>LPTMR0</name>
+            <description>LPTM0 Wakeup Flag.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LPTMR1</name>
+            <description>LPTMR1 Wakeup Flag.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LPUART0</name>
+            <description>LPUART0 Wakeup Flag.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LPPWKEN</name>
+        <description>Low Power Peripheral Wakeup Enable Register.</description>
+        <addressOffset>0x34</addressOffset>
+        <fields>
+          <field>
+            <name>LPTMR0</name>
+            <description> TIMER4 Wakeup Enable. This bit allows wakeup from the TIMER4.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LPTMR1</name>
+            <description> TIMER5 Wakeup Enable. This bit allows wakeup from the TIMER5.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LPUART0</name>
+            <description> LPUART Wakeup Enable. This bit allows wakeup from the LPUART.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>LPMEMSD</name>
+        <description>Low Power Memory Shutdown Control.</description>
+        <addressOffset>0x40</addressOffset>
+        <fields>
+          <field>
+            <name>RAM0</name>
+            <description>System RAM block 0 Shut Down.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM1</name>
+            <description>System RAM block 1 Shut Down.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM2</name>
+            <description>System RAM block 2 Shut Down.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM3</name>
+            <description>System RAM block 3 Shut Down.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GP0</name>
+        <description>General Purpose Register 0</description>
+        <addressOffset>0x48</addressOffset>
+      </register>
+      <register>
+        <name>GP1</name>
+        <description>General Purpose Register 1</description>
+        <addressOffset>0x4C</addressOffset>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- PWRSEQ: Power sequencer          -->
+</device>

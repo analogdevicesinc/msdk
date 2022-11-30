@@ -60,6 +60,7 @@
 #include "semphr.h"
 #include "task.h"
 #include "uart.h"
+#include "ecc_regs.h"
 
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
@@ -353,6 +354,8 @@ int main(void)
     printf("\nThis example demonstrates the CLI commands feature of FreeRTOS, various features");
     printf("\nof the Flash Controller (page erase and write), and how to use the CRC to");
     printf("\ncompute the CRC value of an array. Enter commands in the terminal window.\n\n");
+
+    MXC_ECC->en = 0; // Disable ECC on Flash, ICC, and SRAM
 
     NVIC_SetRAM();
     // Initialize the Flash

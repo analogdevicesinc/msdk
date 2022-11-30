@@ -38,18 +38,12 @@
 #include <string.h>
 #include "mxc.h"
 
-#define TOD_START_TIME (12 * SECS_PER_HR + 34 * SECS_PER_MIN + 56)
-#define TOD_ALARM_INTERVAL 2
-#define SECS_PER_MIN 60
-#define SECS_PER_HR (60 * SECS_PER_MIN)
-#define SECS_PER_DAY (24 * SECS_PER_HR)
 #define TS_X_MIN 254
 #define TS_X_MAX 3680
 #define TS_Y_MIN 193
 #define TS_Y_MAX 3661
 #define TFT_BUFF_SIZE 32 // TFT buffer size
 
-volatile bool tod_alarm = false;
 int image_bitmap = (int)&img_1_rgb565[0];
 int font_1 = (int)&Arial12x12[0];
 int font_2 = (int)&Arial24x23[0];
@@ -73,7 +67,6 @@ void TFT_test(void)
     area_t *area;
     char buff[TFT_BUFF_SIZE];
 
-    MXC_TFT_SetRotation(ROTATE_270);
     MXC_TFT_ShowImage(0, 0, image_bitmap);
 
     /* Get a good look at bitmap and allow debugger time to attach */
@@ -123,48 +116,12 @@ void TFT_test(void)
     MXC_TFT_ClearScreen();
 }
 
-void RTC_IRQHandler(void)
+void print_xy(unsigned int x, unsigned int y)
 {
-    int flags = MXC_RTC_GetFlags();
+    char buf[16];
 
-    MXC_RTC_ClearFlags(flags);
-
-    /* Check time-of-day alarm flag. */
-    if (flags & MXC_F_RTC_CTRL_TOD_ALARM) {
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
-
-        MXC_RTC_SetTimeofdayAlarm(MXC_RTC_GetSecond() + TOD_ALARM_INTERVAL);
-
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
-
-        tod_alarm = true;
-    }
-}
-
-void print_time(void)
-{
-    int day, hr, min, sec;
-    char buf[9];
-    int x, y;
-    static int last_x = 0;
-    static int last_y = 0;
-
-    sec = MXC_RTC_GetSecond();
-    day = sec / SECS_PER_DAY;
-    sec -= day * SECS_PER_DAY;
-    hr = sec / SECS_PER_HR;
-    sec -= hr * SECS_PER_HR;
-    min = sec / SECS_PER_MIN;
-    sec -= min * SECS_PER_MIN;
-
-    x = rand_r(&seed) % (DISPLAY_WIDTH - (font_5_width * 8));
-    y = rand_r(&seed) % (DISPLAY_HEIGHT - font_5_height);
-
-    TFT_Print("        ", last_x, last_y, font_5, 8);
-    TFT_Print(buf, x, y, font_5, snprintf(buf, sizeof(buf), "%02d:%02d:%02d", hr, min, sec));
-
-    last_x = x;
-    last_y = y;
+    MXC_TFT_ClearScreen();
+    TFT_Print(buf, x, y, font_1, snprintf(buf, sizeof(buf), "(%u,%u)", x, y));
 }
 
 int32_t rescale(int32_t x, int32_t min, int32_t max, int32_t a, int32_t b)
@@ -176,36 +133,36 @@ int32_t rescale(int32_t x, int32_t min, int32_t max, int32_t a, int32_t b)
 
 int main(void)
 {
+    MXC_Delay(MXC_DELAY_SEC(2));
+#ifdef TFT_ADAFRUIT
     uint16_t x, y;
     int32_t xx, yy;
+#endif
 
     MXC_ICC_Enable(MXC_ICC0);
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
 
     printf("TFT Demo Example\n");
-    /* Initialize TFT display */
-    MXC_TFT_Init(MXC_SPI0, -1, NULL, NULL);
-    TFT_test();
-
+#ifdef TFT_ADAFRUIT
     /* Initialize touch screen */
     if (MXC_TS_Init(MXC_SPI0, -1, NULL, NULL))
         printf("Touch screen initialization failed\n");
+#else
+    /* Initialize TFT display */
+    MXC_TFT_Init(NULL, NULL);
+    MXC_TFT_SetRotation(ROTATE_270);
+    TFT_test();
 
-    /* Initialize RTC */
-    MXC_RTC_Init(TOD_START_TIME, 0);
-    MXC_RTC_SetTimeofdayAlarm(TOD_START_TIME + TOD_ALARM_INTERVAL);
-    MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE);
-    NVIC_EnableIRQ(RTC_IRQn);
-    MXC_LP_EnableRTCAlarmWakeup();
-    MXC_RTC_Start();
+    /* Initialize TouchScreen*/
+    unsigned int touch_x, touch_y;
+    MXC_TS_Init();
+    MXC_TS_Start();
+    TFT_Print("Touch the screen!", 0, 120, font_5, 17);
+#endif
 
     for (;;) {
-        if (tod_alarm) {
-            tod_alarm = false;
-            print_time();
-        }
-
+#ifdef TFT_ADAFRUIT
         if (ts_event) {
             MXC_TS_GetTouch(&x, &y);
             ts_event = false;
@@ -214,5 +171,12 @@ int main(void)
             yy = rescale(y, TS_Y_MIN, TS_Y_MAX, 0, DISPLAY_WIDTH);
             printf("%d,%d\n", xx, yy);
         }
+#else
+        if (MXC_TS_GetTSEvent()) {
+            MXC_TS_ClearTSEvent();
+            MXC_TS_GetXY(&touch_x, &touch_y);
+            print_xy(touch_x, touch_y);
+        }
+#endif
     }
 }

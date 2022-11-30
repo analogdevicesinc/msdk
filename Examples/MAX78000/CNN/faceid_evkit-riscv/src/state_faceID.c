@@ -329,7 +329,7 @@ static void run_cnn(int x_offset, int y_offset)
     text_t cnn_load_time_string;
     char string_time[7];
 
-    sprintf(string_time, "%dms", cnn_load_time);
+    snprintf(string_time, sizeof(string_time), "%dms", cnn_load_time);
     cnn_load_time_string.data = string_time;
     cnn_load_time_string.len = strlen(string_time);
 

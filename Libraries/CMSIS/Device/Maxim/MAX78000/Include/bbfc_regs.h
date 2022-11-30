@@ -2,10 +2,11 @@
  * @file    bbfc_regs.h
  * @brief   The BBFC block has been renamed to GCFR.  
  *          This include file is for backwards compatibility only.
+ * @note    This file is @deprecated.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,15 +36,18 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- *************************************************************************** */
+ ******************************************************************************/
 
-#ifndef _BBFC_REGS_H_
-#define _BBFC_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_BBFC_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_BBFC_REGS_H_
 
 // The BBFC block has been renamed to GCFR.  
 // This include file is for backwards compatibility only.
+
+// Warning only pops up when a project builds with this file included.
+#warning "MXC_BBFC (bbfc_regs.h) name is deprecated. Please use MXC_GCFR (gcfr_regs.h)."
+
 #include "gcfr_regs.h"
 #define MXC_BBFC MXC_GCFR
 
-#endif
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_BBFC_REGS_H_

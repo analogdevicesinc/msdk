@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>TRNG</name>
+    <description>Random Number Generator.</description>
+    <baseAddress>0x400B5000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>TRNG</name>
+      <description>TRNG interrupt.</description>
+      <value>4</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CN</name>
+        <description>TRNG Control Register.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetValue>0x00000003</resetValue>
+        <fields>
+          <field>
+            <name>RND_IRQ_EN</name>
+            <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>disable</name>
+                <description>Disable</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>enable</name>
+                <description>Enable</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>AESKG</name>
+            <description>AES Key Generate.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AESKG_MEMPROTE</name>
+            <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ST</name>
+        <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
+        <addressOffset>0x04</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>RND_RDY</name>
+            <description>32-bit random data is ready to read from TRNG_DATA register. Reading TRNG_DATA when RND_RDY=0 will return all 0's. IRQ is generated when RND_RDY=1 if TRNG_CN.RND_IRQ_EN=1.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>Busy</name>
+                <description>TRNG Busy</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>Ready</name>
+                <description>32 bit random data is ready</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>AESKGD_MEU_S</name>
+            <description>Automatically AES transfer on going</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>DATA</name>
+        <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
+        <addressOffset>0x08</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>DATA</name>
+            <description>Data. The content of this register is valid only when RNG_IS =1. When TNRG is disabled, read returns 0x0000 0000.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- TRNG: Random Number Generator              -->
+</device>

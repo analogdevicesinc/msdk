@@ -265,8 +265,6 @@ void MXC_CTB_RevA_Handler(mxc_trng_reva_regs_t *trng)
             MXC_FreeLock((void *)&MXC_CTB_Callbacks[HSH_ID]);
             cb(req, 0);
         }
-
-        return;
     }
 
     if (features & MXC_CTB_REVA_FEATURE_CIPHER) {

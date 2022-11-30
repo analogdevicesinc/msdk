@@ -1,35 +1,35 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- * OTHER DEALINGS IN THE SOFTWARE.
- *
- * Except as contained in this notice, the name of Maxim Integrated
- * Products, Inc. shall not be used except as stated in the Maxim Integrated
- * Products, Inc. Branding Policy.
- *
- * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
- * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains all
- * ownership rights.
- *
- ******************************************************************************/
+/******************************************************************************
+* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the "Software"),
+* to deal in the Software without restriction, including without limitation
+* the rights to use, copy, modify, merge, publish, distribute, sublicense,
+* and/or sell copies of the Software, and to permit persons to whom the
+* Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+* OTHER DEALINGS IN THE SOFTWARE.
+*
+* Except as contained in this notice, the name of Maxim Integrated
+* Products, Inc. shall not be used except as stated in the Maxim Integrated
+* Products, Inc. Branding Policy.
+*
+* The mere transfer of this software does not imply any licenses
+* of trade secrets, proprietary technology, copyrights, patents,
+* trademarks, maskwork rights, or any other form of intellectual
+* property whatsoever. Maxim Integrated Products, Inc. retains all
+* ownership rights.
+*
+******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32655_INCLUDE_MAX32655_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32655_INCLUDE_MAX32655_H_
@@ -309,6 +309,15 @@ typedef enum {
 #define MXC_FCR ((mxc_fcr_regs_t *)MXC_BASE_FCR)
 
 /******************************************************************************/
+/*                                                    Windowed Watchdog Timer */
+#define MXC_CFG_WDT_INSTANCES (2)
+
+#define MXC_BASE_WDT0 ((uint32_t)0x40003000UL)
+#define MXC_WDT0 ((mxc_wdt_regs_t *)MXC_BASE_WDT0)
+#define MXC_BASE_WDT1 ((uint32_t)0x40080800UL)
+#define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
+
+/******************************************************************************/
 /*                                      Dynamic Voltage Scaling (DVS) Control */
 #define MXC_BASE_DVS ((uint32_t)0x40003C00UL)
 #define MXC_DVS ((mxc_dvs_regs_t *)MXC_BASE_DVS)
@@ -322,15 +331,6 @@ typedef enum {
 /*                                         Trim System Initalization Register */
 #define MXC_BASE_TRIMSIR ((uint32_t)0x40005400UL)
 #define MXC_TRIMSIR ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR)
-
-/******************************************************************************/
-/*                                                    Windowed Watchdog Timer */
-#define MXC_CFG_WDT_INSTANCES (2)
-
-#define MXC_BASE_WDT0 ((uint32_t)0x40003000UL)
-#define MXC_WDT0 ((mxc_wdt_regs_t *)MXC_BASE_WDT0)
-#define MXC_BASE_WDT1 ((uint32_t)0x40080800UL)
-#define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
 
 /******************************************************************************/
 /*                                                            Real Time Clock */
@@ -353,9 +353,14 @@ typedef enum {
 #define MXC_MCR ((mxc_mcr_regs_t *)MXC_BASE_MCR)
 
 /******************************************************************************/
-/*                                                  Low Power General control */
-#define MXC_BASE_LPGCR ((uint32_t)0x40080000UL)
-#define MXC_LPGCR ((mxc_lpgcr_regs_t *)MXC_BASE_LPGCR)
+/*                                                                        AES */
+#define MXC_BASE_AES ((uint32_t)0x40007400UL)
+#define MXC_AES ((mxc_aes_regs_t *)MXC_BASE_AES)
+
+/******************************************************************************/
+/*                                                                   AES Keys */
+#define MXC_BASE_AESKEY ((uint32_t)0x40007800UL)
+#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
 
 /******************************************************************************/
 /*                                                                       GPIO */
@@ -382,12 +387,21 @@ typedef enum {
 // GPIO3 does not have an interrupt
 
 /******************************************************************************/
+/*                                                  Parallel Camera Interface */
+#define MXC_BASE_PCIF ((uint32_t)0x4000E000UL)
+#define MXC_PCIF ((mxc_cameraif_regs_t *)MXC_BASE_PCIF)
 
+/******************************************************************************/
+/*                                                                        CRC */
+#define MXC_BASE_CRC ((uint32_t)0x4000F000UL)
+#define MXC_CRC ((mxc_crc_regs_t *)MXC_BASE_CRC)
+
+/******************************************************************************/
+/*                                                                      Timer */
 #define SEC(s) (((uint32_t)s) * 1000000UL)
 #define MSEC(ms) (ms * 1000UL)
 #define USEC(us) (us)
 
-/*                                                                      Timer */
 #define MXC_CFG_TMR_INSTANCES (6)
 
 #define MXC_BASE_TMR0 ((uint32_t)0x40010000UL)
@@ -488,12 +502,6 @@ typedef enum {
 #define MXC_FLC_GET_IDX(p) ((p) == MXC_FLC0 ? 0 : -1)
 
 /******************************************************************************/
-/*                                                                        ADC */
-#define MXC_BASE_ADC ((uint32_t)0x40034000UL)
-#define MXC_ADC ((mxc_adc_regs_t *)MXC_BASE_ADC)
-#define MXC_ADC_MAX_CLOCK 8000000 // Maximum ADC clock in Hz
-
-/******************************************************************************/
 /*                                                          Instruction Cache */
 #define MXC_ICC_INSTANCES (2)
 
@@ -506,7 +514,11 @@ typedef enum {
 #define MXC_ICC MXC_ICC0
 // ICC1 is the RISC-V cache
 
-#define MXC_ICC MXC_ICC0
+/******************************************************************************/
+/*                                                                        ADC */
+#define MXC_BASE_ADC ((uint32_t)0x40034000UL)
+#define MXC_ADC ((mxc_adc_regs_t *)MXC_BASE_ADC)
+#define MXC_ADC_MAX_CLOCK 8000000 // Maximum ADC clock in Hz
 
 /******************************************************************************/
 /*                                                            One Wire Master */
@@ -624,29 +636,14 @@ typedef enum {
 #define MXC_TRNG ((mxc_trng_regs_t *)MXC_BASE_TRNG)
 
 /******************************************************************************/
-/*                                                                        AES */
-#define MXC_BASE_AES ((uint32_t)0x40007400UL)
-#define MXC_AES ((mxc_aes_regs_t *)MXC_BASE_AES)
-
-/******************************************************************************/
-/*                                                                   AES Keys */
-#define MXC_BASE_AESKEY ((uint32_t)0x40007800UL)
-#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
-
-/******************************************************************************/
-/*                                                  Parallel Camera Interface */
-#define MXC_BASE_PCIF ((uint32_t)0x4000E000UL)
-#define MXC_PCIF ((mxc_cameraif_regs_t *)MXC_BASE_PCIF)
-
-/******************************************************************************/
-/*                                                                        CRC */
-#define MXC_BASE_CRC ((uint32_t)0x4000F000UL)
-#define MXC_CRC ((mxc_crc_regs_t *)MXC_BASE_CRC)
-
-/******************************************************************************/
 /*                                                                        I2S */
 #define MXC_BASE_I2S ((uint32_t)0x40060000UL)
 #define MXC_I2S ((mxc_i2s_regs_t *)MXC_BASE_I2S)
+
+/******************************************************************************/
+/*                                                  Low Power General control */
+#define MXC_BASE_LPGCR ((uint32_t)0x40080000UL)
+#define MXC_LPGCR ((mxc_lpgcr_regs_t *)MXC_BASE_LPGCR)
 
 /******************************************************************************/
 /*                                                       Low-Power Comparator */
@@ -655,7 +652,6 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                               Bit Shifting */
-
 #define MXC_F_BIT_0 (1 << 0)
 #define MXC_F_BIT_1 (1 << 1)
 #define MXC_F_BIT_2 (1 << 2)
@@ -691,7 +687,6 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                               Bit Banding  */
-
 #define BITBAND(reg, bit)                                                               \
     ((0xf0000000 & (uint32_t)(reg)) + 0x2000000 + (((uint32_t)(reg)&0x0fffffff) << 5) + \
      ((bit) << 2))

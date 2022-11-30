@@ -80,6 +80,9 @@ extern "C" {
 #define EXT_FLASH_BAUD 5000000
 #endif
 
+#define TS_SPI MXC_SPI1
+#define TS_SPI_FREQ 200000
+
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.

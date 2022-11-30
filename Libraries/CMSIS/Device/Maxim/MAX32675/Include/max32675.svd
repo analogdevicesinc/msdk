@@ -89,7 +89,7 @@
    <baseAddress>0x40007400</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x800</size>
+    <size>0x400</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
@@ -1745,7 +1745,7 @@
     <register>
      <dim>4</dim>
      <dimIncrement>4</dimIncrement>
-     <name>DATA</name>
+     <name>DATA[%s]</name>
      <description>Flash Write Data.</description>
      <addressOffset>0x30</addressOffset>
      <fields>
@@ -5495,7 +5495,7 @@
    <baseAddress>0x4002A000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x400</size>
+    <size>0x800</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
@@ -6216,14 +6216,8 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>TM_LPMODE</name>
-       <description>TBD</description>
-       <bitOffset>30</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>TM_PWRSEQ</name>
-       <description>TBD</description>
+       <name>ERTCO_PD</name>
+       <description>ERTCO Powerdown.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>

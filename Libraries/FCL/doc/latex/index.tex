@@ -1,0 +1,75 @@
+Note\+: to modify this page, edit doc/res/main.\+dox
+
+\begin{DoxyAuthor}{Author}
+Maxim Integrated 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2018
+\end{DoxyDate}
+{\bfseries Reference}
+
+~~~~~~~~\hypertarget{index_s2}{}\section{Copyright Notice}\label{index_s2}
+
+\begin{DoxyCode}
+\textcolor{comment}{/*****************************************************************************}
+\textcolor{comment}{* Copyright (C) 2015-2018 Maxim Integrated Products, Inc., All rights Reserved.}
+\textcolor{comment}{* This software is protected by copyright laws of the United States and}
+\textcolor{comment}{* of foreign countries. This material may also be protected by patent laws}
+\textcolor{comment}{* and technology transfer regulations of the United States and of foreign}
+\textcolor{comment}{* countries. This software is furnished under a license agreement and/or a}
+\textcolor{comment}{* nondisclosure agreement and may only be used or reproduced in accordance}
+\textcolor{comment}{* with the terms of those agreements. Dissemination of this information to}
+\textcolor{comment}{* any party or parties not specified in the license agreement and/or}
+\textcolor{comment}{* nondisclosure agreement is expressly prohibited.}
+\textcolor{comment}{*}
+\textcolor{comment}{* The above copyright notice and this permission notice shall be included}
+\textcolor{comment}{* in all copies or substantial portions of the Software.}
+\textcolor{comment}{*}
+\textcolor{comment}{* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS}
+\textcolor{comment}{* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF}
+\textcolor{comment}{* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.}
+\textcolor{comment}{* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES}
+\textcolor{comment}{* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,}
+\textcolor{comment}{* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR}
+\textcolor{comment}{* OTHER DEALINGS IN THE SOFTWARE.}
+\textcolor{comment}{*}
+\textcolor{comment}{* Except as contained in this notice, the name of Maxim Integrated}
+\textcolor{comment}{* Products, Inc. shall not be used except as stated in the Maxim Integrated}
+\textcolor{comment}{* Products, Inc. Branding Policy.}
+\textcolor{comment}{*}
+\textcolor{comment}{* The mere transfer of this software does not imply any licenses}
+\textcolor{comment}{* of trade secrets, proprietary technology, copyrights, patents,}
+\textcolor{comment}{* trademarks, maskwork rights, or any other form of intellectual}
+\textcolor{comment}{* property whatsoever. Maxim Integrated Products, Inc. retains all}
+\textcolor{comment}{* ownership rights.}
+\textcolor{comment}{******************************************************************************/}
+\end{DoxyCode}
+ \hypertarget{index_trademarks}{}\section{Trademarks}\label{index_trademarks}
+
+\begin{DoxyItemize}
+\item A\+RM is a registered trademark and registered service mark and Cortex is a registered trademark of A\+RM Limited.
+\item All trademarks not mentioned here that appear on this web site are the property of their respective owners.
+\end{DoxyItemize}\hypertarget{index_Introduction}{}\section{Introduction}\label{index_Introduction}
+The Free Cryptographic Library (F\+CL) is a cryptographic library with source code. This source code can be used for demo or test purposes on P\+Cs, on or with embedded platforms. Implemented algorithms are currently\+: E\+C\+D\+SA signature and verification for P192, P256, P384, P521, B\+P256, B\+P384, B\+P512, S\+H\+A256, S\+H\+A384, S\+H\+A512 and S\+I\+A256. A\+ES encryption, decryption in E\+CB, C\+BC modes and C\+B\+C-\/\+M\+AC, for 128-\/bit, 192-\/bit and 256-\/bit keys. S\+H\+A3 is also available.
+
+For more robust or specific cryptographic needs, see the Universal Cryptographic Library (U\+CL).
+
+\begin{DoxyWarning}{Warning}
+The F\+CL contains confidential documentation and code. It can be delivered as source code, even externally to Maxim. However, delivery to customers requires an N\+DA.
+\end{DoxyWarning}
+
+\begin{DoxyItemize}
+\item This software is only here for test and demo purposes.
+\item This implementation is not secure and does not protect the E\+CC private/\+A\+ES secret keys.
+\item The random number generator is not robust and will generate the same numbers at each startup (P\+R\+NG).
+\end{DoxyItemize}\hypertarget{index_Req}{}\section{Pre-\/requisites}\label{index_Req}
+Install Cygwin or M\+S\+Y\+S2 with the adequate gcc compiler.\hypertarget{index_Build}{}\section{How to build the F\+CL}\label{index_Build}
+on a x86-\/cygwin PC or M\+S\+Y\+S2, just run build\+\_\+fcl\+\_\+x86\hypertarget{index_Links}{}\section{Useful links}\label{index_Links}
+S\+VN repository\+: \href{https://svn.maxim-ic.com/svn/SWIP_reuse/library/fcl/}{\tt https\+://svn.\+maxim-\/ic.\+com/svn/\+S\+W\+I\+P\+\_\+reuse/library/fcl/} Confluence S\+W\+IP page\+: \href{https://confluence.maxim-ic.com/pages/viewpage.action?pageId=41058397}{\tt https\+://confluence.\+maxim-\/ic.\+com/pages/viewpage.\+action?page\+Id=41058397}\hypertarget{index_ReleaseNotes}{}\section{Release notes}\label{index_ReleaseNotes}
+
+\begin{DoxyItemize}
+\item 1.\+0.\+1\+: p192 initializers size corrected; hash functions number updated
+\item 1.\+1.\+0\+: sha-\/3 (sha-\/224,sha-\/256,sha-\/384, sha-\/512) has been added
+\item 1.\+2.\+0\+: secp384r1, secp521r1, bp256r1, bp384r1, bp512r1 curves added; sha384 and sha512 added
+\item 1.\+2.\+1\+: A\+ES (128,192, 256) in E\+CB, C\+BC modes and A\+E\+S-\/\+C\+B\+C-\/\+M\+AC added 
+\end{DoxyItemize}

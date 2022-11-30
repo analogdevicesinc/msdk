@@ -1,45 +1,44 @@
 /**
  * @file    afe_hart_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AFE_HART Peripheral Module.
+ * @note    This file is @generated.
  */
 
-/*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
-* 
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************
-*/
+/******************************************************************************
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
-#ifndef _AFE_HART_REGS_H_
-#define _AFE_HART_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32680_INCLUDE_AFE_HART_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32680_INCLUDE_AFE_HART_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -47,11 +46,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
- 
+
 #if defined (__ICCARM__)
   #pragma system_include
 #endif
- 
+
 #if defined (__CC_ARM)
   #pragma anon_unions
 #endif
@@ -79,29 +78,28 @@ extern "C" {
  * @ingroup     afe_hart
  * @defgroup    afe_hart_registers AFE_HART_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the AFE_HART Peripheral Module.
- * @details Analog Front End HART Registers on Stacked Die via SPI
+ * @details     Analog Front End HART Registers on Stacked Die via SPI
  */
-
 
 /* Register offsets for module AFE_HART */
 /**
  * @ingroup    afe_hart_registers
  * @defgroup   AFE_HART_Register_Offsets Register Offsets
- * @brief      AFE_HART Peripheral Register Offsets from the AFE_HART Base Peripheral Address. 
+ * @brief      AFE_HART Peripheral Register Offsets from the AFE_HART Base Peripheral Address.
  * @{
  */
- #define MXC_R_AFE_HART_CTRL                ((uint32_t)0x01800003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1800003</tt> */ 
- #define MXC_R_AFE_HART_RX_TX_CTL           ((uint32_t)0x01810003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1810003</tt> */ 
- #define MXC_R_AFE_HART_RX_CTL_EXT1         ((uint32_t)0x01820003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1820003</tt> */ 
- #define MXC_R_AFE_HART_RX_CTL_EXT2         ((uint32_t)0x01830003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1830003</tt> */ 
- #define MXC_R_AFE_HART_RX_DB_THRSHLD       ((uint32_t)0x01840003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1840003</tt> */ 
- #define MXC_R_AFE_HART_RX_CRD_UP_THRSHLD   ((uint32_t)0x01850003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1850003</tt> */ 
- #define MXC_R_AFE_HART_RX_CRD_DN_THRSHLD   ((uint32_t)0x01860003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1860003</tt> */ 
- #define MXC_R_AFE_HART_RX_CRD_DOUT_THRSHLD ((uint32_t)0x01870003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1870003</tt> */ 
- #define MXC_R_AFE_HART_TX_MARKSPACE_CNT    ((uint32_t)0x01880003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1880003</tt> */ 
- #define MXC_R_AFE_HART_STAT                ((uint32_t)0x01890003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1890003</tt> */ 
- #define MXC_R_AFE_HART_TRIM                ((uint32_t)0x018A0003UL) /**< Offset from AFE_HART Base Address: <tt> 0x18A0003</tt> */ 
- #define MXC_R_AFE_HART_TM                  ((uint32_t)0x018B0003UL) /**< Offset from AFE_HART Base Address: <tt> 0x18B0003</tt> */ 
+#define MXC_R_AFE_HART_CTRL                ((uint32_t)0x01800003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1800003</tt> */
+#define MXC_R_AFE_HART_RX_TX_CTL           ((uint32_t)0x01810003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1810003</tt> */
+#define MXC_R_AFE_HART_RX_CTL_EXT1         ((uint32_t)0x01820003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1820003</tt> */
+#define MXC_R_AFE_HART_RX_CTL_EXT2         ((uint32_t)0x01830003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1830003</tt> */
+#define MXC_R_AFE_HART_RX_DB_THRSHLD       ((uint32_t)0x01840003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1840003</tt> */
+#define MXC_R_AFE_HART_RX_CRD_UP_THRSHLD   ((uint32_t)0x01850003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1850003</tt> */
+#define MXC_R_AFE_HART_RX_CRD_DN_THRSHLD   ((uint32_t)0x01860003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1860003</tt> */
+#define MXC_R_AFE_HART_RX_CRD_DOUT_THRSHLD ((uint32_t)0x01870003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1870003</tt> */
+#define MXC_R_AFE_HART_TX_MARKSPACE_CNT    ((uint32_t)0x01880003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1880003</tt> */
+#define MXC_R_AFE_HART_STAT                ((uint32_t)0x01890003UL) /**< Offset from AFE_HART Base Address: <tt> 0x1890003</tt> */
+#define MXC_R_AFE_HART_TRIM                ((uint32_t)0x018A0003UL) /**< Offset from AFE_HART Base Address: <tt> 0x18A0003</tt> */
+#define MXC_R_AFE_HART_TM                  ((uint32_t)0x018B0003UL) /**< Offset from AFE_HART Base Address: <tt> 0x18B0003</tt> */
 /**@} end of group afe_hart_registers */
 
 /**
@@ -110,8 +108,8 @@ extern "C" {
  * @brief    HART Control
  * @{
  */
- #define MXC_F_AFE_HART_CTRL_ADM_TM_EN_POS              0 /**< CTRL_ADM_TM_EN Position */
- #define MXC_F_AFE_HART_CTRL_ADM_TM_EN                  ((uint32_t)(0x1UL << MXC_F_AFE_HART_CTRL_ADM_TM_EN_POS)) /**< CTRL_ADM_TM_EN Mask */
+#define MXC_F_AFE_HART_CTRL_ADM_TM_EN_POS              0 /**< CTRL_ADM_TM_EN Position */
+#define MXC_F_AFE_HART_CTRL_ADM_TM_EN                  ((uint32_t)(0x1UL << MXC_F_AFE_HART_CTRL_ADM_TM_EN_POS)) /**< CTRL_ADM_TM_EN Mask */
 
 /**@} end of group AFE_HART_CTRL_Register */
 
@@ -121,38 +119,38 @@ extern "C" {
  * @brief    Control HART Transmit and Receive Functions
  * @{
  */
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REF_EN_POS     0 /**< RX_TX_CTL_RX_ADC_REF_EN Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REF_EN         ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REF_EN_POS)) /**< RX_TX_CTL_RX_ADC_REF_EN Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REF_EN_POS     0 /**< RX_TX_CTL_RX_ADC_REF_EN Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REF_EN         ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REF_EN_POS)) /**< RX_TX_CTL_RX_ADC_REF_EN Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REFBUF_EN_POS  1 /**< RX_TX_CTL_RX_ADC_REFBUF_EN Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REFBUF_EN      ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REFBUF_EN_POS)) /**< RX_TX_CTL_RX_ADC_REFBUF_EN Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REFBUF_EN_POS  1 /**< RX_TX_CTL_RX_ADC_REFBUF_EN Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REFBUF_EN      ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_REFBUF_EN_POS)) /**< RX_TX_CTL_RX_ADC_REFBUF_EN Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_OFFSET_SEL_POS 2 /**< RX_TX_CTL_RX_ADC_OFFSET_SEL Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_OFFSET_SEL     ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_OFFSET_SEL_POS)) /**< RX_TX_CTL_RX_ADC_OFFSET_SEL Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_OFFSET_SEL_POS 2 /**< RX_TX_CTL_RX_ADC_OFFSET_SEL Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_OFFSET_SEL     ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_OFFSET_SEL_POS)) /**< RX_TX_CTL_RX_ADC_OFFSET_SEL Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN_POS   3 /**< RX_TX_CTL_RX_DOUT_UART_EN Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN       ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN_POS)) /**< RX_TX_CTL_RX_DOUT_UART_EN Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN_POS   3 /**< RX_TX_CTL_RX_DOUT_UART_EN Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN       ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN_POS)) /**< RX_TX_CTL_RX_DOUT_UART_EN Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR_POS 4 /**< RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR ((uint32_t)(0xFUL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR_POS)) /**< RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR_POS 4 /**< RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR ((uint32_t)(0xFUL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR_POS)) /**< RX_TX_CTL_RX_ADC_PWR_UP_SMP_IGNR Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_BP_SETTLE_CNT_POS  8 /**< RX_TX_CTL_RX_BP_SETTLE_CNT Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_BP_SETTLE_CNT      ((uint32_t)(0xFFUL << MXC_F_AFE_HART_RX_TX_CTL_RX_BP_SETTLE_CNT_POS)) /**< RX_TX_CTL_RX_BP_SETTLE_CNT Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_BP_SETTLE_CNT_POS  8 /**< RX_TX_CTL_RX_BP_SETTLE_CNT Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_BP_SETTLE_CNT      ((uint32_t)(0xFFUL << MXC_F_AFE_HART_RX_TX_CTL_RX_BP_SETTLE_CNT_POS)) /**< RX_TX_CTL_RX_BP_SETTLE_CNT Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_DLY_CNT_POS 16 /**< RX_TX_CTL_RX_ADC_PWR_DLY_CNT Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_DLY_CNT    ((uint32_t)(0xFUL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_DLY_CNT_POS)) /**< RX_TX_CTL_RX_ADC_PWR_DLY_CNT Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_DLY_CNT_POS 16 /**< RX_TX_CTL_RX_ADC_PWR_DLY_CNT Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_DLY_CNT    ((uint32_t)(0xFUL << MXC_F_AFE_HART_RX_TX_CTL_RX_ADC_PWR_DLY_CNT_POS)) /**< RX_TX_CTL_RX_ADC_PWR_DLY_CNT Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_TX_BUF_EN_POS         20 /**< RX_TX_CTL_TX_BUF_EN Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_TX_BUF_EN             ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_TX_BUF_EN_POS)) /**< RX_TX_CTL_TX_BUF_EN Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_TX_BUF_EN_POS         20 /**< RX_TX_CTL_TX_BUF_EN Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_TX_BUF_EN             ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_TX_BUF_EN_POS)) /**< RX_TX_CTL_TX_BUF_EN Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_TX_BUS_DCL_EN_POS     21 /**< RX_TX_CTL_TX_BUS_DCL_EN Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_TX_BUS_DCL_EN         ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_TX_BUS_DCL_EN_POS)) /**< RX_TX_CTL_TX_BUS_DCL_EN Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_TX_BUS_DCL_EN_POS     21 /**< RX_TX_CTL_TX_BUS_DCL_EN Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_TX_BUS_DCL_EN         ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_TX_BUS_DCL_EN_POS)) /**< RX_TX_CTL_TX_BUS_DCL_EN Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_TX_WS_DIS_RS_POS      22 /**< RX_TX_CTL_TX_WS_DIS_RS Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_TX_WS_DIS_RS          ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_TX_WS_DIS_RS_POS)) /**< RX_TX_CTL_TX_WS_DIS_RS Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_TX_WS_DIS_RS_POS      22 /**< RX_TX_CTL_TX_WS_DIS_RS Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_TX_WS_DIS_RS          ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_TX_WS_DIS_RS_POS)) /**< RX_TX_CTL_TX_WS_DIS_RS Mask */
 
- #define MXC_F_AFE_HART_RX_TX_CTL_TX_4MHZ_CLK_EN_POS    23 /**< RX_TX_CTL_TX_4MHZ_CLK_EN Position */
- #define MXC_F_AFE_HART_RX_TX_CTL_TX_4MHZ_CLK_EN        ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_TX_4MHZ_CLK_EN_POS)) /**< RX_TX_CTL_TX_4MHZ_CLK_EN Mask */
+#define MXC_F_AFE_HART_RX_TX_CTL_TX_4MHZ_CLK_EN_POS    23 /**< RX_TX_CTL_TX_4MHZ_CLK_EN Position */
+#define MXC_F_AFE_HART_RX_TX_CTL_TX_4MHZ_CLK_EN        ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_TX_CTL_TX_4MHZ_CLK_EN_POS)) /**< RX_TX_CTL_TX_4MHZ_CLK_EN Mask */
 
 /**@} end of group AFE_HART_RX_TX_CTL_Register */
 
@@ -162,8 +160,8 @@ extern "C" {
  * @brief    Receive Control Extension Register 1
  * @{
  */
- #define MXC_F_AFE_HART_RX_CTL_EXT1_RX_AN_INIT_VAL_POS  0 /**< RX_CTL_EXT1_RX_AN_INIT_VAL Position */
- #define MXC_F_AFE_HART_RX_CTL_EXT1_RX_AN_INIT_VAL      ((uint32_t)(0x7FFFFUL << MXC_F_AFE_HART_RX_CTL_EXT1_RX_AN_INIT_VAL_POS)) /**< RX_CTL_EXT1_RX_AN_INIT_VAL Mask */
+#define MXC_F_AFE_HART_RX_CTL_EXT1_RX_AN_INIT_VAL_POS  0 /**< RX_CTL_EXT1_RX_AN_INIT_VAL Position */
+#define MXC_F_AFE_HART_RX_CTL_EXT1_RX_AN_INIT_VAL      ((uint32_t)(0x7FFFFUL << MXC_F_AFE_HART_RX_CTL_EXT1_RX_AN_INIT_VAL_POS)) /**< RX_CTL_EXT1_RX_AN_INIT_VAL Mask */
 
 /**@} end of group AFE_HART_RX_CTL_EXT1_Register */
 
@@ -173,17 +171,17 @@ extern "C" {
  * @brief    Receive Control Extension Register 2
  * @{
  */
- #define MXC_F_AFE_HART_RX_CTL_EXT2_RX_ARN_INIT_VAL_POS 0 /**< RX_CTL_EXT2_RX_ARN_INIT_VAL Position */
- #define MXC_F_AFE_HART_RX_CTL_EXT2_RX_ARN_INIT_VAL     ((uint32_t)(0x7FFFUL << MXC_F_AFE_HART_RX_CTL_EXT2_RX_ARN_INIT_VAL_POS)) /**< RX_CTL_EXT2_RX_ARN_INIT_VAL Mask */
+#define MXC_F_AFE_HART_RX_CTL_EXT2_RX_ARN_INIT_VAL_POS 0 /**< RX_CTL_EXT2_RX_ARN_INIT_VAL Position */
+#define MXC_F_AFE_HART_RX_CTL_EXT2_RX_ARN_INIT_VAL     ((uint32_t)(0x7FFFUL << MXC_F_AFE_HART_RX_CTL_EXT2_RX_ARN_INIT_VAL_POS)) /**< RX_CTL_EXT2_RX_ARN_INIT_VAL Mask */
 
- #define MXC_F_AFE_HART_RX_CTL_EXT2_RX_ZC_IGN_VAL_POS   16 /**< RX_CTL_EXT2_RX_ZC_IGN_VAL Position */
- #define MXC_F_AFE_HART_RX_CTL_EXT2_RX_ZC_IGN_VAL       ((uint32_t)(0x3UL << MXC_F_AFE_HART_RX_CTL_EXT2_RX_ZC_IGN_VAL_POS)) /**< RX_CTL_EXT2_RX_ZC_IGN_VAL Mask */
+#define MXC_F_AFE_HART_RX_CTL_EXT2_RX_ZC_IGN_VAL_POS   16 /**< RX_CTL_EXT2_RX_ZC_IGN_VAL Position */
+#define MXC_F_AFE_HART_RX_CTL_EXT2_RX_ZC_IGN_VAL       ((uint32_t)(0x3UL << MXC_F_AFE_HART_RX_CTL_EXT2_RX_ZC_IGN_VAL_POS)) /**< RX_CTL_EXT2_RX_ZC_IGN_VAL Mask */
 
- #define MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN_POS 20 /**< RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN Position */
- #define MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN_POS)) /**< RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN Mask */
+#define MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN_POS 20 /**< RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN Position */
+#define MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN_POS)) /**< RX_CTL_EXT2_RX_UART_TIMER_SYN_ALWS_EN Mask */
 
- #define MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN_POS 21 /**< RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN Position */
- #define MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN_POS)) /**< RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN Mask */
+#define MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN_POS 21 /**< RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN Position */
+#define MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN ((uint32_t)(0x1UL << MXC_F_AFE_HART_RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN_POS)) /**< RX_CTL_EXT2_RX_UART_TIMER_FAST_CNT_EN Mask */
 
 /**@} end of group AFE_HART_RX_CTL_EXT2_Register */
 
@@ -193,11 +191,11 @@ extern "C" {
  * @brief    Receive Bit-Detect/Demodulation Threshold
  * @{
  */
- #define MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD_POS 0 /**< RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD Position */
- #define MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD ((uint32_t)(0x1FFUL << MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD_POS)) /**< RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD Mask */
+#define MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD_POS 0 /**< RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD Position */
+#define MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD ((uint32_t)(0x1FFUL << MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD_POS)) /**< RX_DB_THRSHLD_RX_BITDTCT_DN_THRSHLD Mask */
 
- #define MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD_POS 12 /**< RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD Position */
- #define MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD ((uint32_t)(0x1FFUL << MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD_POS)) /**< RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD Mask */
+#define MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD_POS 12 /**< RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD Position */
+#define MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD ((uint32_t)(0x1FFUL << MXC_F_AFE_HART_RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD_POS)) /**< RX_DB_THRSHLD_RX_BITDTCT_UP_THRSHLD Mask */
 
 /**@} end of group AFE_HART_RX_DB_THRSHLD_Register */
 
@@ -207,8 +205,8 @@ extern "C" {
  * @brief    Receive Carrier Detect Up Threshold Register
  * @{
  */
- #define MXC_F_AFE_HART_RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD_POS 0 /**< RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD Position */
- #define MXC_F_AFE_HART_RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD ((uint32_t)(0x7FFFFUL << MXC_F_AFE_HART_RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD_POS)) /**< RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD Mask */
+#define MXC_F_AFE_HART_RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD_POS 0 /**< RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD Position */
+#define MXC_F_AFE_HART_RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD ((uint32_t)(0x7FFFFUL << MXC_F_AFE_HART_RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD_POS)) /**< RX_CRD_UP_THRSHLD_RX_CRD_UP_THRSHLD Mask */
 
 /**@} end of group AFE_HART_RX_CRD_UP_THRSHLD_Register */
 
@@ -218,8 +216,8 @@ extern "C" {
  * @brief    Receive Carrier Detect Down Threshold Register
  * @{
  */
- #define MXC_F_AFE_HART_RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD_POS 0 /**< RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD Position */
- #define MXC_F_AFE_HART_RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD ((uint32_t)(0x7FFFFUL << MXC_F_AFE_HART_RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD_POS)) /**< RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD Mask */
+#define MXC_F_AFE_HART_RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD_POS 0 /**< RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD Position */
+#define MXC_F_AFE_HART_RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD ((uint32_t)(0x7FFFFUL << MXC_F_AFE_HART_RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD_POS)) /**< RX_CRD_DN_THRSHLD_RX_CRD_DN_THRSHLD Mask */
 
 /**@} end of group AFE_HART_RX_CRD_DN_THRSHLD_Register */
 
@@ -229,8 +227,8 @@ extern "C" {
  * @brief    Receive Carrier Detect DOUT Threshold
  * @{
  */
- #define MXC_F_AFE_HART_RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD_POS 0 /**< RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD Position */
- #define MXC_F_AFE_HART_RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD ((uint32_t)(0x7FFFFUL << MXC_F_AFE_HART_RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD_POS)) /**< RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD Mask */
+#define MXC_F_AFE_HART_RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD_POS 0 /**< RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD Position */
+#define MXC_F_AFE_HART_RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD ((uint32_t)(0x7FFFFUL << MXC_F_AFE_HART_RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD_POS)) /**< RX_CRD_DOUT_THRSHLD_RX_CRD_DOUT_THRSHLD Mask */
 
 /**@} end of group AFE_HART_RX_CRD_DOUT_THRSHLD_Register */
 
@@ -240,11 +238,11 @@ extern "C" {
  * @brief    Transmit Mark-Space Count Values
  * @{
  */
- #define MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_SPACE_CNT_POS 0 /**< TX_MARKSPACE_CNT_TX_SPACE_CNT Position */
- #define MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_SPACE_CNT   ((uint32_t)(0x3FFUL << MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_SPACE_CNT_POS)) /**< TX_MARKSPACE_CNT_TX_SPACE_CNT Mask */
+#define MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_SPACE_CNT_POS 0 /**< TX_MARKSPACE_CNT_TX_SPACE_CNT Position */
+#define MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_SPACE_CNT   ((uint32_t)(0x3FFUL << MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_SPACE_CNT_POS)) /**< TX_MARKSPACE_CNT_TX_SPACE_CNT Mask */
 
- #define MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_MARK_CNT_POS 12 /**< TX_MARKSPACE_CNT_TX_MARK_CNT Position */
- #define MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_MARK_CNT    ((uint32_t)(0x3FFUL << MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_MARK_CNT_POS)) /**< TX_MARKSPACE_CNT_TX_MARK_CNT Mask */
+#define MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_MARK_CNT_POS 12 /**< TX_MARKSPACE_CNT_TX_MARK_CNT Position */
+#define MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_MARK_CNT    ((uint32_t)(0x3FFUL << MXC_F_AFE_HART_TX_MARKSPACE_CNT_TX_MARK_CNT_POS)) /**< TX_MARKSPACE_CNT_TX_MARK_CNT Mask */
 
 /**@} end of group AFE_HART_TX_MARKSPACE_CNT_Register */
 
@@ -254,14 +252,14 @@ extern "C" {
  * @brief    HART Trim Register
  * @{
  */
- #define MXC_F_AFE_HART_TRIM_TRIM_BIAS_POS              0 /**< TRIM_TRIM_BIAS Position */
- #define MXC_F_AFE_HART_TRIM_TRIM_BIAS                  ((uint32_t)(0x1FUL << MXC_F_AFE_HART_TRIM_TRIM_BIAS_POS)) /**< TRIM_TRIM_BIAS Mask */
+#define MXC_F_AFE_HART_TRIM_TRIM_BIAS_POS              0 /**< TRIM_TRIM_BIAS Position */
+#define MXC_F_AFE_HART_TRIM_TRIM_BIAS                  ((uint32_t)(0x1FUL << MXC_F_AFE_HART_TRIM_TRIM_BIAS_POS)) /**< TRIM_TRIM_BIAS Mask */
 
- #define MXC_F_AFE_HART_TRIM_TRIM_BG_POS                8 /**< TRIM_TRIM_BG Position */
- #define MXC_F_AFE_HART_TRIM_TRIM_BG                    ((uint32_t)(0x3FUL << MXC_F_AFE_HART_TRIM_TRIM_BG_POS)) /**< TRIM_TRIM_BG Mask */
+#define MXC_F_AFE_HART_TRIM_TRIM_BG_POS                8 /**< TRIM_TRIM_BG Position */
+#define MXC_F_AFE_HART_TRIM_TRIM_BG                    ((uint32_t)(0x3FUL << MXC_F_AFE_HART_TRIM_TRIM_BG_POS)) /**< TRIM_TRIM_BG Mask */
 
- #define MXC_F_AFE_HART_TRIM_TRIM_TX_SR_POS             16 /**< TRIM_TRIM_TX_SR Position */
- #define MXC_F_AFE_HART_TRIM_TRIM_TX_SR                 ((uint32_t)(0xFUL << MXC_F_AFE_HART_TRIM_TRIM_TX_SR_POS)) /**< TRIM_TRIM_TX_SR Mask */
+#define MXC_F_AFE_HART_TRIM_TRIM_TX_SR_POS             16 /**< TRIM_TRIM_TX_SR Position */
+#define MXC_F_AFE_HART_TRIM_TRIM_TX_SR                 ((uint32_t)(0xFUL << MXC_F_AFE_HART_TRIM_TRIM_TX_SR_POS)) /**< TRIM_TRIM_TX_SR Mask */
 
 /**@} end of group AFE_HART_TRIM_Register */
 
@@ -271,17 +269,17 @@ extern "C" {
  * @brief    Testmode
  * @{
  */
- #define MXC_F_AFE_HART_TM_TM_EN_POS                    0 /**< TM_TM_EN Position */
- #define MXC_F_AFE_HART_TM_TM_EN                        ((uint32_t)(0x1UL << MXC_F_AFE_HART_TM_TM_EN_POS)) /**< TM_TM_EN Mask */
+#define MXC_F_AFE_HART_TM_TM_EN_POS                    0 /**< TM_TM_EN Position */
+#define MXC_F_AFE_HART_TM_TM_EN                        ((uint32_t)(0x1UL << MXC_F_AFE_HART_TM_TM_EN_POS)) /**< TM_TM_EN Mask */
 
- #define MXC_F_AFE_HART_TM_TM_BIAS_EN_POS               1 /**< TM_TM_BIAS_EN Position */
- #define MXC_F_AFE_HART_TM_TM_BIAS_EN                   ((uint32_t)(0x1UL << MXC_F_AFE_HART_TM_TM_BIAS_EN_POS)) /**< TM_TM_BIAS_EN Mask */
+#define MXC_F_AFE_HART_TM_TM_BIAS_EN_POS               1 /**< TM_TM_BIAS_EN Position */
+#define MXC_F_AFE_HART_TM_TM_BIAS_EN                   ((uint32_t)(0x1UL << MXC_F_AFE_HART_TM_TM_BIAS_EN_POS)) /**< TM_TM_BIAS_EN Mask */
 
- #define MXC_F_AFE_HART_TM_TM_BG_EN_POS                 3 /**< TM_TM_BG_EN Position */
- #define MXC_F_AFE_HART_TM_TM_BG_EN                     ((uint32_t)(0x1UL << MXC_F_AFE_HART_TM_TM_BG_EN_POS)) /**< TM_TM_BG_EN Mask */
+#define MXC_F_AFE_HART_TM_TM_BG_EN_POS                 3 /**< TM_TM_BG_EN Position */
+#define MXC_F_AFE_HART_TM_TM_BG_EN                     ((uint32_t)(0x1UL << MXC_F_AFE_HART_TM_TM_BG_EN_POS)) /**< TM_TM_BG_EN Mask */
 
- #define MXC_F_AFE_HART_TM_TM_VREF_EN_POS               3 /**< TM_TM_VREF_EN Position */
- #define MXC_F_AFE_HART_TM_TM_VREF_EN                   ((uint32_t)(0x1UL << MXC_F_AFE_HART_TM_TM_VREF_EN_POS)) /**< TM_TM_VREF_EN Mask */
+#define MXC_F_AFE_HART_TM_TM_VREF_EN_POS               3 /**< TM_TM_VREF_EN Position */
+#define MXC_F_AFE_HART_TM_TM_VREF_EN                   ((uint32_t)(0x1UL << MXC_F_AFE_HART_TM_TM_VREF_EN_POS)) /**< TM_TM_VREF_EN Mask */
 
 /**@} end of group AFE_HART_TM_Register */
 
@@ -289,4 +287,4 @@ extern "C" {
 }
 #endif
 
-#endif /* _AFE_HART_REGS_H_ */
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32680_INCLUDE_AFE_HART_REGS_H_

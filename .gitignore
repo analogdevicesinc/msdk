@@ -11,10 +11,13 @@ msdk-internal
 Libraries/PeriphDrivers/bin/MAX32520/softfp/libPeriphDriver_softfp.a
 Libraries/PeriphDrivers/bin/
 Tools/GNUTools
+Tools/OpenOCD
 Tools/xPack
 Tools/OpenOCD
 *.o
 *.d
+/**/make.log
+/**/.idea/
 session.txt.log
 flash.log
 Libraries/NFC

@@ -52,6 +52,7 @@
 #include "gcr_regs.h"
 #include "fcr_regs.h"
 #include "mcr_regs.h"
+#include "pwrseq_regs.h"
 
 /**
  * @ingroup mxc_sys
@@ -151,7 +152,9 @@ void MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock)
 /* ************************************************************************** */
 void MXC_SYS_RTCClockEnable()
 {
-    MXC_GCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
+    MXC_PWRSEQ->lpcn &= ~(MXC_F_PWRSEQ_LPCN_TM_PWRSEQ);
+    MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
+    MXC_MCR->clkctrl &= ~(MXC_F_MCR_CLKCTRL_ERTCO_PD);
 }
 
 /* ************************************************************************** */
@@ -159,7 +162,9 @@ int MXC_SYS_RTCClockDisable(void)
 {
     /* Check that the RTC is not the system clock source */
     if ((MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) != MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO) {
-        MXC_GCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_EN;
+        MXC_MCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_EN;
+        MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_TM_PWRSEQ;
+        MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_PD;
         return E_NO_ERROR;
     } else {
         return E_BAD_STATE;
@@ -195,9 +200,7 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERTCO:
-        MXC_MCR->clkctrl |= MXC_F_MCR_CLKCTRL_ERTCO_EN;
-        MXC_MCR->clkctrl &= ~(MXC_F_MCR_CLKCTRL_ERTCO_PD);
-
+        MXC_SYS_RTCClockEnable();
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_ERTCO_RDY);
         break;
 
@@ -241,8 +244,7 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_ERTCO:
-        MXC_GCR->clkctrl &= ~MXC_F_MCR_CLKCTRL_ERTCO_EN;
-        break;
+        return MXC_SYS_RTCClockDisable();
 
     default:
         return E_BAD_PARAM;

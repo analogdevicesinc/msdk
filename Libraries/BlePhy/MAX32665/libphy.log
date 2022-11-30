@@ -114,4 +114,4 @@ arm-none-eabi-gcc-ar rcs -o ../../libphy.a obj/pal_bb.o obj/pal_bb_ble.o obj/pal
 arm-none-eabi-strip --strip-unneeded ../../libphy.a
 +++ Copying: ../../libphy.a to msdk
 cp ../../libphy.a ../../../../../Libraries/BlePhy/MAX32665/libphy.a
-revision: 0beaf45
+revision: 52e307e

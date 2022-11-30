@@ -62,7 +62,7 @@ HW Flow Control : No
 SW Flow Control : No
 
 Commands can be send to Controller by BLE tester, or from PC as illustrated in
-Tools/HCI/BLE_hci.py. The script has built in help options to describe the usage.
+Tools/Bluetooth/BLE_hci.py. The script has built in help options to describe the usage.
 
 ### Expected Output
 
