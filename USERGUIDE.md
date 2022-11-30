@@ -181,11 +181,19 @@ The i386 version of Homebrew can be installed in parallel with the arm64 version
 
 An MSDK installation contains a `MaintenanceTool` executable program in the root directory.  This program can be used to retrieve updates, manage components, and uninstall the MSDK.
 
-Updates are typically released on a quarterly basis.  Development copies of the MSDK resources can be obtained via [Github](https://github.com/Analog-Devices-MSDK/msdk), and instructions on how to work from the development copies can be found in the repository's README.
-
 ![Figure 11](res/Fig11.jpg)
 
-TODO:  Offline release installer section, revert back to older versions
+#### Updates
+
+MSDK updates are typically released on a quarterly basis, and the Maintenance Tool will retrieve the latest release when **Update components** is run.  Additionally, update availability is checked each time [Eclipse](#eclipse) is launched.
+
+#### Development Resources
+
+Development copies of the MSDK resources can be obtained via [Github](https://github.com/Analog-Devices-MSDK/msdk), and instructions on how to work from the development repository can be found in the repository's [README](https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md).
+
+#### Older Versions and Offline Installer
+
+Older versions of the MSDK are available as an ***offline installer*** for each release tag.  They are available on the [Releases page](https://github.com/Analog-Devices-MSDK/msdk/releases) of the MSDK Github and can be used to roll back to a specific MSDK release.
 
 ## Getting Started
 
@@ -351,35 +359,30 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
 ![Figure 22](res/Fig22.jpg)
 
-#### Importing Examples
+#### Creating a New Project
 
 1. [Launch](#running-eclipse) Eclipse.
 
-2. Use **File -> Import** to open the import wizard.
+2. Ensure that the Eclipse is set to the **C/C++ perspective** in the top right corner. Otherwise, the new project wizard will not show up.
 
-3. Select **General -> Existing Projects into Workspace** and hit **Next**.
+3. Navigate to **File -> New -> Maxim Microcontrollers**.
 
-    ![Figure 23](res/Fig23.jpg)
+   ![Figure 31](res/Fig31.jpg)
 
-4. **Browse** to the [`Examples`](Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
+4. Enter the project name and hit **Next**.
 
-    ![Figure 24](res/Fig24.jpg)
+   ![Figure 32](res/Fig32.jpg)
 
-5. Ensure that **Copy projects into workspace** is selected. This will copy the projects out of the MSDK, and leave the originals unmodified.
+5. Follow the new project wizard.
 
-6. Select **Finish** to import the project(s).
+   * Chip type selects the _Target Microcontroller_
+   * Board type selects the [_Board Support Package (BSP)_](#board-support-packages)
+   * Example type selects the [example](Examples) project to be copied as the template for the new project.
+   * Adapter type selects the debug adapter to use.
 
-7. The projects should now show up in the Project Explorer.
+   ![ ](res/Fig33.jpg)
 
-    ![Figure 25](res/Fig25.jpg)
-
-8. The Eclipse projects files are configured for the **EVKIT**-type ***BSP*** by default. This can be changed by opening (right click) the **project properties** and navigating to **C/C++ Build -> Environment**.  Set the **`BOARD`** _Build Configuration Variable_ to match the target evaluation platform.  
-
-    See [Board Support Packages](#board-support-packages) for more details.
-
-    ![Figure 26](res/Fig26.jpg)
-
-9. The example is now successfully imported. From here, you may edit, build, and debug the project.
+6. Select **Finish** to create the new project.
 
 #### Building and Running Examples
 
@@ -674,7 +677,7 @@ The Project Configuration System offers a higher level user interface (typically
 
 ### Board Support Packages
 
-The role of a Board Support Package (BSP) is to provide a hardware abstraction layer for board-level initialization code such as initializing and assigning UART instances, pushbuttons, LEDs, external peripheral devices, TFT displays, and other board-specific hardware.  The MSDK's available Board Support Packages (BSPs) can be found in the [`Libraries/Boards`](Libraries/Boards) folder.
+The role of a Board Support Package (BSP) is to provide a hardware abstraction layer for board-level initialization code such as initializing and assigning UART instances, pushbuttons, LEDs, external peripheral devices, TFT displays, and other board-specific hardware.  The MSDK's available Board Support Packages (BSPs) can be found in the [`Libraries/Boards`](Libraries/Boards) folder for each *Target Microcontroller*.
 
 ![Figure 34](res/Fig34.jpg)
 
@@ -888,6 +891,31 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
 ![Figure 22](res/Fig22.jpg)
 
+#### Creating a New Project
+
+1. [Launch](#running-eclipse) Eclipse.
+
+2. Ensure that the Eclipse is set to the **C/C++ perspective** in the top right corner. Otherwise, the new project wizard will not show up.
+
+3. Navigate to **File -> New -> Maxim Microcontrollers**.
+
+   ![Figure 31](res/Fig31.jpg)
+
+4. Enter the project name and hit **Next**.
+
+   ![Figure 32](res/Fig32.jpg)
+
+5. Follow the new project wizard.
+
+   * Chip type selects the _Target Microcontroller_
+   * Board type selects the [_Board Support Package (BSP)_](#board-support-packages)
+   * Example type selects the example project to be copied as the template for the new project.
+   * Adapter type selects the debug adapter to use.
+
+   ![ ](res/Fig33.jpg)
+
+6. Select **Finish** to create the new project.
+
 #### Importing Examples
 
 1. [Launch](#running-eclipse) Eclipse.
@@ -912,7 +940,7 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
 
 #### How to Set the BSP (Eclipse)
 
-1. Imported Eclipse projects files are configured for the **EVKIT**-type *BSP* by default. This can be changed by opening (right click) the **project properties** and navigating to **C/C++ Build -> Environment**.  Set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ to match the target evaluation platform.
+1. [Imported](#importing-examples) Eclipse projects files are configured for the **EVKIT**-type *BSP* by default. To set the BSP open (right click) the **project properties** and navigate to **C/C++ Build -> Environment**.  Set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ to match the target evaluation platform.
 
    See [Board Support Packages](#board-support-packages) for a table of possible values.
 
@@ -949,33 +977,6 @@ Eclipse _must_ be launched via the **Eclipse MaximSDK** shortcut which points to
    ![Figure 30](res/Fig30.jpg)
 
 6. **Terminate** the debugger (**`CTRL+F2`**) when finished.
-
-#### Creating a New Project
-
-TODO: Use this as primary
-
-1. Launch Eclipse
-
-2. Ensure that the Eclipse is set to the **C/C++ perspective** in the top right corner. Otherwise, the new project wizard will not show up.
-
-3. Navigate to **File -> New -> Maxim Microcontrollers**.
-
-   ![Figure 31](res/Fig31.jpg)
-
-4. Enter the project name and hit **Next**.
-
-   ![Figure 32](res/Fig32.jpg)
-
-5. Follow the new project wizard.
-
-   * Chip type selects the _Target Microcontroller_
-   * Board type selects the _Board Support Package (BSP)_
-   * Example type selects the example project to be copied as the template for the new project.
-   * Adapter type selects the debug adapter to use.
-
-   ![ ](res/Fig33.jpg)
-
-6. Select **Finish** to create the new project.
 
 ---
 
