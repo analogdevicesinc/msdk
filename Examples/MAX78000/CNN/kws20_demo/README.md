@@ -20,7 +20,7 @@ The following 20 keyword subset from the complete dataset is used for this demo:
 
 The rest of the keywords and unrecognized words fall into the "**Unknown**" category. 
 
-To improve the unknown detection, the model in version 3.2 is trained with an additional 100hrs speech data from LibriSpeech (https://www.openslr.org/resources/12/train-clean-100.tar.gz), segmented to 1-sec audio data and labeled as unknown.
+To improve the unknown detection, the model in version 3.2 is trained with an additional 100hrs of speech data from LibriSpeech (https://www.openslr.org/resources/12/train-clean-100.tar.gz), segmented to 1-sec audio data and labeled as unknown.
 
 
 
