@@ -2,11 +2,6 @@
 
 CLANG_VERSION=14
 
-# Remove the submodules
-set +e
-git submodule deinit --force --all
-set -e
-
 # Find the C files
 CFILES=$(find . -iname "*.c" -not -regex ".*/Libraries/\(\(FCL\)|\(FreeRTOS\)|\(lwIP\)|\(littleFS\)|\(FreeRTOS-Plus\)|\(LC3\)|\(SDHC\)|\(MAXUSB\)|\(Cordio\)|\)/*")
 

@@ -212,13 +212,6 @@ function project_marker()
 }
 
 ###############################################################################
-# checkout submodules
-# Update the submodules, this will use ssh
-cd $MSDK_DIR/
-git submodule init
-git submodule sync
-git submodule update --init --recursive
-
 # build BLE examples
 cd $MSDK_DIR/Examples/$TARGET_1_UC
 echo pwd: `pwd`
