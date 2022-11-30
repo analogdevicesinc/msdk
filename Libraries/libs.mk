@@ -50,16 +50,6 @@ INIT_ENCRYPTED  ?= 1
 INIT_PERIPHERAL ?= 1
 INIT_BROADCASTER?= 1
 
-# For the Controller in the RISC-V core in the split host and controller
-ifeq "$(RISCV_CORE)" "1"
-ifeq "$(BLE_CONTROLLER)" "1"
-ifeq "$(HOST_PROJECT)" "BLE_fit"
-INIT_ENCRYPTED = 0
-$(info ---INFO INIT_ENCRYPTED=$(INIT_ENCRYPTED))
-endif  # PROJECT
-endif  # BLE_CONTROLLER
-endif  # RISCV_CORE
-
 # Enter standby mode when idle
 STANDBY_ENABLED ?= 0
 
