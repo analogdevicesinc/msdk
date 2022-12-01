@@ -80,7 +80,7 @@ If using Linux, perform these steps:
 Start OpenOCD:
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
 ```
 
 Load combined ARM/RISC-V application image using ARM GDB:
@@ -171,7 +171,7 @@ If using Linux, perform these steps:
 Start OpenOCD:
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
 ```
 
 Load combined ARM/RISC-V application image using ARM GDB:

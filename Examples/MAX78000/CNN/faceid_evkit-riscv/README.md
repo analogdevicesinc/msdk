@@ -71,7 +71,7 @@ If using Linux, perform these steps:
 Start OpenOCD:
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
 ```
 
 Load combined ARM/RISC-V application image using ARM GDB:
@@ -111,16 +111,10 @@ arm-none-eabi-gdb build/max78000-combined.elf
 
 To debug an application on RISC-V, connect the Olimex adapter to JH4 and start OpenOCD:
 
-In Windows:
+In Windows and Linux:
 
 ```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/ftdi/olimex-arm-usb-ocd-h.cfg -f target/max78000_riscv.cfg
-```
-
-In Linux:
-
-```bash
-./openocd -f tcl/interface/ftdi/olimex-arm-usb-ocd-h.cfg -f tcl/target/max78000_riscv.cfg
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/ftdi/olimex-arm-usb-ocd-h.cfg -f target/max78000_riscv.cfg -c "gdb_port 3334"
 ```
 
 Load combined ARM/RISC-V application image using RISC-V GDB:
@@ -162,7 +156,7 @@ If using Linux, perform these steps:
 Start OpenOCD:
 
 ```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
 ```
 
 Load combined ARM/RISC-V application image using ARM GDB:
