@@ -144,10 +144,11 @@ jobs:
           working-directory: Libraries/PeriphDrivers/Documentation
 
       - name: Build User Guide
-        run: | # Copy Periph Driver APIs
+        run: | # Build Documentation Folder and run mkdocs
           SOURCE=Libraries/PeriphDrivers/Documentation
           DEST=Documentation/$SOURCE
 
+          echo "Copying Periph Driver APIs..."
           mkdir -p $DEST/MAX32520 && cp -r $SOURCE/MAX32520 $DEST/
           mkdir -p $DEST/MAX32650 && cp -r $SOURCE/MAX32650 $DEST/
           mkdir -p $DEST/MAX32655 && cp -r $SOURCE/MAX32655 $DEST/
@@ -159,6 +160,11 @@ jobs:
           mkdir -p $DEST/MAX32680 && cp -r $SOURCE/MAX32680 $DEST/
           mkdir -p $DEST/MAX78000 && cp -r $SOURCE/MAX78000 $DEST/
           mkdir -p $DEST/MAX78002 && cp -r $SOURCE/MAX78002 $DEST/
+
+          echo "Copying root markdown folders..."
+          cp USERGUIDE.md Documentation/
+          cp CONTRIBUTING.md Documentation/
+          cp -r res Documentation/
 
           mkdocs build
 
