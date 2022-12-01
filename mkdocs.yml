@@ -5,7 +5,6 @@ nav:
   - Home: 'index.md'
   - User Guide: 'USERGUIDE.md'
   - Contributing: 'CONTRIBUTING.md'
-  - test: 'Libraries/PeriphDrivers/MAX32520/Documentation/index.html'
 theme:
   name: readthedocs
 markdown_extensions:
