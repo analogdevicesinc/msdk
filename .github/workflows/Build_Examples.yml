@@ -76,7 +76,7 @@ jobs:
           # Find all of the examples, 
           # Exclude the MAX32572, currently in development
           # Exclude the MAX32570, examples are located in another repo
-          SUBDIRS=$(find . -mindepth 3 -not -path "./MAX3257*"  -name "?akefile" -printf '%h\n')
+          SUBDIRS=$(find . -mindepth 3 -not \( -path "./MAX3257*" -o -path "./MAX*/UCL*" \) -name "?akefile" -printf '%h\n')
 
           # Exclude some examples
           SUBDIRS=${SUBDIRS//"./MAX32672/Display/lvgl-8.0.2/tests"/}
