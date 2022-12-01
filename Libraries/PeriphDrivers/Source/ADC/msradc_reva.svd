@@ -18,7 +18,7 @@
       <value>20</value>
     </interrupt>
     <registers>
-      <!-- CTRL: ADC Control -->
+      <!-- CTRL: MSRADC Control -->
       <register>
         <name>CTRL</name>
         <description>ADC Control</description>
@@ -99,7 +99,7 @@
           </field>
         </fields>
       </register>
-      <!--CMD: ADC Command-->
+      <!--CMD: MSRADC Command-->
       <register>
         <name>CMD</name>
         <description>MSRADC Command</description>
@@ -251,7 +251,7 @@
           </field>
         </fields>
       </register>
-      <!-- INTFL: ADC Interrupt Enable Register -->
+      <!-- INTEN: MSRADC Interrupt Enable Register -->
       <register>
         <name>INTEN</name>
         <description>ADC Interrupt Enable Register</description>
@@ -299,7 +299,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>DMAREQ_EN</name>
+            <name>DMAREQ</name>
             <description>DMA Request Enable.</description>
             <bitRange>[3:3]</bitRange>
             <access>read-write</access>

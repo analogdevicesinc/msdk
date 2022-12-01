@@ -669,7 +669,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DMAREQ_EN</name>
+       <name>DMAREQ</name>
        <description>DMA Request Enable.</description>
        <bitRange>[3:3]</bitRange>
        <access>read-write</access>
