@@ -38,6 +38,7 @@ Semaphore
 SPI
 SPIXF
 SPIXR
+SPI_MasterSlave
 SRCC
 TFT_Demo
 TMR

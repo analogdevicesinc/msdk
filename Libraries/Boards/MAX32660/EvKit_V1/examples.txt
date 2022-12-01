@@ -30,6 +30,7 @@ RTC
 RTC_Backup
 SPI
 SPIMSS
+SPI_MasterSlave
 TMR
 UART
 UART_Wakeup
