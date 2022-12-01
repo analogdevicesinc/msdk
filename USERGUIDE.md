@@ -446,7 +446,7 @@ For more detailed documentation, see the [Command-Line Development](#command-lin
 
 ##### Windows
 
-On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the [`Tools/MSYS2/msys.bat`](Tools/MSYS2/msys.bat) file can be launched directly.
+On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the `Tools/MSYS2/msys.bat` file can be launched directly.
 
 ![Figure 22](res/Fig22.jpg)
 
@@ -487,7 +487,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 1. First, copy an [example project](Examples) to an accessible directory outside of the SDK. It is strongly recommended to keep the MSDK examples unmodified in case they need to be referenced again later.
 
-2. Launch your terminal.  On Windows, use the MinGW shortcut or `MaximSDK/Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
+2. Launch your terminal.  On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
 
 3. `cd` into the location of the copied example project.
 
@@ -560,7 +560,7 @@ The following commands can be used to verify that the toolchain is accessible.  
         Info : Listening on port 4444 for telnet connections 
         # Note: OpenOCD is now waiting for a GDB client
 
-7. Launch a **_new_ separate terminal**. On Windows, use the MinGW shortcut or `MaximSDK/Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
+7. Launch a **_new_ separate terminal**. On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
 
 8. `cd` into the location of the copied example project.
 
@@ -1010,7 +1010,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location.  This i
 
 ##### Windows
 
-On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the [`Tools/MSYS2/msys.bat`](Tools/MSYS2/msys.bat) file can be launched directly.
+On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the `Tools/MSYS2/msys.bat` file can be launched directly.
 
 ![Figure 22](res/Fig22.jpg)
 
@@ -1180,7 +1180,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 1. [Flash](#flashing-on-the-command-line) the program using the **Flash and Hold** command.
 
-2. Launch an **_new_ separate terminal**. On Windows, use the MinGW shortcut or `MaximSDK/Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
+2. Launch an **_new_ separate terminal**. On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
 
 3. `cd` into the location of the copied example project.
 

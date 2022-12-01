@@ -31,7 +31,7 @@ Formatting and styling is enforced via [clang-format](https://www.kernel.org/doc
 
 Both utilities can be run locally.  cpplint should be run first, then clang-format.  Additionally, both should be run from the root directory of the MSDK repo so that their config files are loaded properly.
 
-clang-format rules are loaded from [.clang-format](.clang-format) and cpplint rules are loaded from [CPPLINT.cfg](CPPLINT.cfg).
+clang-format rules are loaded from the **.clang-format** and cpplint rules are loaded from **CPPLINT.cfg** in the root directory of the repo.  As a result, the utilities must also be run from the root directory of the repo.
 
 #### cpplint
 
@@ -158,7 +158,7 @@ clang-format rules are loaded from [.clang-format](.clang-format) and cpplint ru
 
 Libraries should be added to the [Libraries](Libraries) sub-folder of the MSDK.
 
-- All libraries should include a `libraryname.mk` file that can be added to [libs.mk](Libraries/libs.mk) via a toggle-switch.  The filename should match the name of library as closely as possible, and expose any required [configuration variables](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration).
+- All libraries should include a `libraryname.mk` file that can be added to `Libraries/libs.mk` via a toggle-switch.  The filename should match the name of library as closely as possible, and expose any required [configuration variables](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration).
 
 - If necessary, a library may also include a "core" Makefile or set of Makefiles to build it as a standalone static library file.  The naming convention is `lib<libraryname>.a`.
 
@@ -174,7 +174,7 @@ The first thing that the `libraryname.mk` file should do is locate its own direc
 
 All filepaths for the library should then use this `$(LIBRARYNAME_DIR)`-type variable as their "root" for all filepaths.  This is a safe and reliable way to self-reference internal library files.
 
-For an example, see the [periphdriver.mk](Libraries/PeriphDrivers/periphdriver.mk) file.
+For an example, see the `Libraries/PeriphDrivers/periphdriver.mk` file.
 
 ### Simple Libraries
 
@@ -188,7 +188,7 @@ For example:
     SRCS += libfile1.c
     SRCS += libfile2.c
 
-An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple source-file-only library.  It gets its source code selectively added to the build via [board.mk](Libraries/Boards/MAX78000/EvKit_V1/board.mk) files.
+An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple source-file-only library.  It gets its source code selectively added to the build via `Libraries/Boards/MAX78000/EvKit_V1/board.mk` files.
 
 ### Advanced Libraries
 
