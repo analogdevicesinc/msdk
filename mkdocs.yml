@@ -1,0 +1,7 @@
+site_name: Analog Devices MSDK Documentation
+docs_dir: 'Documentation'
+nav:
+  - Home: 'index.md'
+  - User Guide: 'USERGUIDE.md'
+theme:
+  name: readthedocs
