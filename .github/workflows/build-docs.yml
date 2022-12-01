@@ -144,21 +144,21 @@ jobs:
           working-directory: Libraries/PeriphDrivers/Documentation
 
       - name: Build User Guide
-        run: |
+        run: | # Copy Periph Driver APIs
           SOURCE=Libraries/PeriphDrivers/Documentation
           DEST=Documentation/$SOURCE
 
-          mkdir -p $DEST/MAX32520 && cp -r $SOURCE/MAX32520 $DEST/MAX32520
-          mkdir -p $DEST/MAX32650 && cp -r $SOURCE/MAX32650 $DEST/MAX32650
-          mkdir -p $DEST/MAX32655 && cp -r $SOURCE/MAX32655 $DEST/MAX32655
-          mkdir -p $DEST/MAX32660 && cp -r $SOURCE/MAX32660 $DEST/MAX32660
-          mkdir -p $DEST/MAX32665 && cp -r $SOURCE/MAX32665 $DEST/MAX32665
-          mkdir -p $DEST/MAX32670 && cp -r $SOURCE/MAX32670 $DEST/MAX32670
-          mkdir -p $DEST/MAX32672 && cp -r $SOURCE/MAX32672 $DEST/MAX32672
-          mkdir -p $DEST/MAX32675 && cp -r $SOURCE/MAX32675 $DEST/MAX32675
-          mkdir -p $DEST/MAX32680 && cp -r $SOURCE/MAX32680 $DEST/MAX32680
-          mkdir -p $DEST/MAX78000 && cp -r $SOURCE/MAX78000 $DEST/MAX78000
-          mkdir -p $DEST/MAX78002 && cp -r $SOURCE/MAX78002 $DEST/MAX78002
+          mkdir -p $DEST/MAX32520 && cp -r $SOURCE/MAX32520 $DEST/
+          mkdir -p $DEST/MAX32650 && cp -r $SOURCE/MAX32650 $DEST/
+          mkdir -p $DEST/MAX32655 && cp -r $SOURCE/MAX32655 $DEST/
+          mkdir -p $DEST/MAX32660 && cp -r $SOURCE/MAX32660 $DEST/
+          mkdir -p $DEST/MAX32665 && cp -r $SOURCE/MAX32665 $DEST/
+          mkdir -p $DEST/MAX32670 && cp -r $SOURCE/MAX32670 $DEST/
+          mkdir -p $DEST/MAX32672 && cp -r $SOURCE/MAX32672 $DEST/
+          mkdir -p $DEST/MAX32675 && cp -r $SOURCE/MAX32675 $DEST/
+          mkdir -p $DEST/MAX32680 && cp -r $SOURCE/MAX32680 $DEST/
+          mkdir -p $DEST/MAX78000 && cp -r $SOURCE/MAX78000 $DEST/
+          mkdir -p $DEST/MAX78002 && cp -r $SOURCE/MAX78002 $DEST/
 
           mkdocs build
 

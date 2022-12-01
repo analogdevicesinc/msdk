@@ -1429,27 +1429,27 @@ The _**implementation**_ files are further organized based on _**die type**_ and
 
 A full Peripheral Driver API reference manual is available for each microcontroller below.
 
-- [MAX32520 API](Libraries/PeriphDrivers/MAX32520/index.html)
+- [MAX32520 API](Libraries/PeriphDrivers/MAX32520/Documentation/index.html)
 
-- [MAX32650 API](Libraries/PeriphDrivers/MAX32650/index.html)
+- [MAX32650 API](Libraries/PeriphDrivers/MAX32650/Documentation/index.html)
 
-- [MAX32655 API](Libraries/PeriphDrivers/MAX32655/index.html)
+- [MAX32655 API](Libraries/PeriphDrivers/MAX32655/Documentation/index.html)
 
-- [MAX32660 API](Libraries/PeriphDrivers/MAX32660/index.html)
+- [MAX32660 API](Libraries/PeriphDrivers/MAX32660/Documentation/index.html)
 
-- [MAX32665-MAX32668 API](Libraries/PeriphDrivers/MAX32665/index.html)
+- [MAX32665-MAX32668 API](Libraries/PeriphDrivers/MAX32665/Documentation/index.html)
 
-- [MAX32670 API](Libraries/PeriphDrivers/MAX32670/index.html)
+- [MAX32670 API](Libraries/PeriphDrivers/MAX32670/Documentation/index.html)
 
-- [MAX32672 API](Libraries/PeriphDrivers/MAX32672/index.html)
+- [MAX32672 API](Libraries/PeriphDrivers/MAX32672/Documentation/index.html)
 
-- [MAX32675 API](Libraries/PeriphDrivers/MAX32675/index.html)
+- [MAX32675 API](Libraries/PeriphDrivers/MAX32675/Documentation/index.html)
 
-- [MAX32680 API](Libraries/PeriphDrivers/MAX32680/index.html)
+- [MAX32680 API](Libraries/PeriphDrivers/MAX32680/Documentation/index.html)
 
-- [MAX78000 API](Libraries/PeriphDrivers/MAX78000/index.html)
+- [MAX78000 API](Libraries/PeriphDrivers/MAX78000/Documentation/index.html)
 
-- [MAX78002 API](Libraries/PeriphDrivers/MAX78002/index.html)
+- [MAX78002 API](Libraries/PeriphDrivers/MAX78002/Documentation/index.html)
 
 ## Libraries
 
