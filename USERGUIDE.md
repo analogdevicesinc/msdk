@@ -225,7 +225,7 @@ The MSDK offers support for multiple development environments to support the use
 
     For example, if the [MAX78000EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000EVKIT.html) _or_ [MAX78000FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000FTHR.html) is being used, the _Target Microcontroller_ is the MAX78000.
 
-- **Board Support Package (BSP)**:  The MSDK supports evaluation platforms for target microcontrollers via _Board Support Packages_.  For microcontrollers with multiple evaluation platforms, multiple BSPs are available.  These can be found in the [`Libraries/Boards`](Libraries/Boards) folder of the MSDK installation.
+- **Board Support Package (BSP)**:  The MSDK supports evaluation platforms for target microcontrollers via _Board Support Packages_.  For microcontrollers with multiple evaluation platforms, multiple BSPs are available.  These can be found in the `Libraries/Boards` folder of the MSDK installation.
 
     By default, most projects in the MSDK come pre-configured for the "EVKIT"-type BSP, which is generally the largest "traditional" evaluation platform for that device.  It's important to note that the active BSP may need to be reconfigured for a project, and this is done slightly differently for each development environment.  This is covered in more detail below.
 
@@ -503,23 +503,23 @@ The following commands can be used to verify that the toolchain is accessible.  
         :::bash
         Loaded project.mk
         CC    main.c
-        CC   /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/Source/board.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/stdio.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/LED/led.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/PushButton/pb.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Display/adafruit_3315_tft.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Touchscreen/adafruit_3315_touch.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Camera/camera.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Camera/mipi_camera.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Camera/ov7692.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Camera/sccb.c
-        AS    /home/jakecarter/repos/fork/msdk/Libraries/CMSIS/Device/Maxim/MAX78002/Source/GCC/startup_max78002.S
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/CMSIS/Device/Maxim/MAX78002/Source/heap.c
-        CC    /home/jakecarter/repos/fork/msdk/Libraries/CMSIS/Device/Maxim/MAX78002/Source/system_max78002.c
-        LD    /home/jakecarter/repos/fork/msdk/Examples/MAX78002/Hello_World/build/max78002.elf
-        arm-none-eabi-size --format=berkeley /home/jakecarter/repos/fork/msdk/Examples/MAX78002/Hello_World/build/max78002.elf
+        CC   /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/Source/board.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/stdio.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/LED/led.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/PushButton/pb.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Display/adafruit_3315_tft.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Touchscreen/adafruit_3315_touch.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Camera/camera.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Camera/mipi_camera.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Camera/ov7692.c
+        CC    /home/msdk/Libraries/Boards/MAX78002/EvKit_V1/../../../MiscDrivers/Camera/sccb.c
+        AS    /home/msdk/Libraries/CMSIS/Device/Maxim/MAX78002/Source/GCC/startup_max78002.S
+        CC    /home/msdk/Libraries/CMSIS/Device/Maxim/MAX78002/Source/heap.c
+        CC    /home/msdk/Libraries/CMSIS/Device/Maxim/MAX78002/Source/system_max78002.c
+        LD    /home/msdk/Examples/MAX78002/Hello_World/build/max78002.elf
+        arm-none-eabi-size --format=berkeley /home/msdk/Examples/MAX78002/Hello_World/build/max78002.elf
         text    data     bss     dec     hex filename
-        35708    2504    1156   39368    99c8 /home/jakecarter/repos/fork/msdk/Examples/MAX78002/Hello_World/build/max78002.elf
+        35708    2504    1156   39368    99c8 /home/msdk/Examples/MAX78002/Hello_World/build/max78002.elf
 
 5. Connect a debug adapter between the host PC and the evaluation platform.  For more detailed instructions on this hardware setup refer to the evaluation platforms Datasheet and Quick-Start Guide.
 
@@ -650,7 +650,7 @@ The following commands can be used to verify that the toolchain is accessible.  
         Inferior 1 [Remote target] will be detached.
         
         Quit anyway? (y or n) [answered Y; input not from terminal]
-        Detaching from program: C:\Users\Jake.Carter\codespace\Hello_World\build\max78002.elf, Remote target
+        Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, Remote target
         [Inferior 1 (Remote target) detached]
 
 16. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command and quit.
@@ -668,7 +668,7 @@ The Project Configuration System offers a higher level user interface (typically
 
 ### Board Support Packages
 
-The role of a Board Support Package (BSP) is to provide a hardware abstraction layer for board-level initialization code such as initializing and assigning UART instances, pushbuttons, LEDs, external peripheral devices, TFT displays, and other board-specific hardware.  The MSDK's available Board Support Packages (BSPs) can be found in the [`Libraries/Boards`](Libraries/Boards) folder for each _Target Microcontroller_.
+The role of a Board Support Package (BSP) is to provide a hardware abstraction layer for board-level initialization code such as initializing and assigning UART instances, pushbuttons, LEDs, external peripheral devices, TFT displays, and other board-specific hardware.  The MSDK's available Board Support Packages (BSPs) can be found in the `Libraries/Boards` folder for each _Target Microcontroller_.
 
 ![Figure 34](res/Fig34.jpg)
 
@@ -1270,7 +1270,7 @@ The following commands can be used to verify that the toolchain is accessible.  
         Inferior 1 [Remote target] will be detached.
         
         Quit anyway? (y or n) [answered Y; input not from terminal]
-        Detaching from program: C:\Users\Jake.Carter\codespace\Hello_World\build\max78002.elf, Remote target
+        Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, Remote target
         [Inferior 1 (Remote target) detached]
 
 11. Quit OpenOCD. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command.
