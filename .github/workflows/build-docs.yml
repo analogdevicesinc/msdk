@@ -19,10 +19,6 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      pages: write
-      contents: read
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -40,14 +36,8 @@ jobs:
       - name: Build docs
         run: mkdocs build
         
-      - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v1.0.5
+      - name: Publish
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
-          # Path of the directory containing the static assets.
-          path: site # default is _site/
-          # Duration after which artifact will expire in days.
-          retention-days: 1 # optional, default is 1
-          
-          
-      - name: Deploy GitHub Pages site
-        uses: actions/deploy-pages@v1.2.3
+          branch: gh-pages # The branch the action should deploy to.
+          folder: site # The folder the action should deploy.
