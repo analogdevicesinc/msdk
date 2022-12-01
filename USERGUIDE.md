@@ -1460,7 +1460,7 @@ The _**implementation**_ files are further organized based on _**die type**_ and
 - The **_hardware** revision_ files follow the **`_revX`** naming convention.  
     - These files contain the _pure_ driver implementation for a peripheral block, and typically interact with the hardware almost entirely at the register level.
 
-### API References
+### API Reference Manuals
 
 A full Peripheral Driver API reference manual is available for each microcontroller below.
 
