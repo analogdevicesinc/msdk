@@ -14,6 +14,7 @@ Tools/GNUTools
 Tools/OpenOCD
 Tools/xPack
 Tools/OpenOCD
+Tools/MSYS2
 *.o
 *.d
 /**/make.log
