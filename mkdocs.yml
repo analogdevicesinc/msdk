@@ -3,5 +3,9 @@ docs_dir: 'Documentation'
 nav:
   - Home: 'index.md'
   - User Guide: 'USERGUIDE.md'
+  - Contributing: 'CONTRIBUTING.md'
 theme:
   name: readthedocs
+markdown_extensions:
+  codehilite:
+    use_pygments: False
