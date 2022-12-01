@@ -52,6 +52,7 @@ import threading
 # Setup the default serial port settings
 defaultBaud=115200
 defaultSP="/dev/ttyUSB0"
+defaultMonSP=""
 
 # Setup the default Bluetooth settings
 defaultAdvInterval="0x60"
@@ -148,6 +149,23 @@ class BLE_hci:
                 timeout=1.0
             )
             self.port.isOpen()
+
+            if args.monPort == "":
+                self.mon_port = None
+            else:
+                mon_port = serial.Serial()
+                self.mon_port = serial.Serial(
+                    port=str(args.monPort),
+                    baudrate=args.baud,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_ONE,
+                    bytesize=serial.EIGHTBITS,
+                    rtscts=False,
+                    dsrdtr=False,
+                    timeout=1.0
+                )
+                self.mon_port.isOpen()
+                
         except serial.SerialException as err:
             print(err)
             sys.exit(1)
@@ -156,6 +174,9 @@ class BLE_hci:
             print("baud rate exception, "+str(args.baud)+" is too large")
             print(err)
             sys.exit(1)
+
+        monTraceMsgThread = threading.Thread(target=self.monTraceMsg, daemon=True)
+        monTraceMsgThread.start()
 
     def closeListenDiscon(self):
         # Close the listener thread if active
@@ -173,9 +194,15 @@ class BLE_hci:
     def exitFunc(self, args):
 
         # Close the serial port
-        if(self.port.open == True):
+        if self.port.is_open:
             self.port.flush()
             self.port.close()
+
+        if self.mon_port is not None:
+            if self.mon_port.is_open:
+                self.mon_port.flush()
+                self.mon_port.close()
+
         print("")
 
         # Close the listener thread if active
@@ -306,6 +333,25 @@ class BLE_hci:
             print("PER        : "+str(per)+" %")
 
         return per
+
+
+    ## Monitor the UART0
+     #
+     # Listen for the trace message from the board UART0
+    ################################################################################
+    def monTraceMsg(self):
+        first = True
+        while True:
+            if self.mon_port is not None:
+                msg = self.mon_port.readline().decode("utf-8")
+                msg = msg.replace("\r\n", "")
+                if msg != "":
+                    if first:
+                        print(f'\n{str(datetime.datetime.now())} - {msg}')
+                        first = False
+                    else:
+                        print(f'{str(datetime.datetime.now())} - {msg}')
+
 
     ## Get connection stats.
      #
@@ -676,6 +722,7 @@ class BLE_hci:
 
         return per
 
+
     ## txTest function.
      #
      # Sends HCI command for the transmitter test.
@@ -950,16 +997,26 @@ if __name__ == '__main__':
 
     # Parse the command line arguments
     parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('serialPort', nargs='?', default=defaultSP,
+    parser.add_argument('serial_port', nargs='?', default="",
                         help='Serial port path or COM#, default: '+defaultSP)
     parser.add_argument('baud', nargs='?', default=defaultBaud,
+                        help='Serial port baud rate, default: '+str(defaultBaud))
+    parser.add_argument('--monPort', nargs='?', default=defaultMonSP,
+                        help='Monitor Trace Msg Serial Port path or COM#, default: ' + defaultMonSP)
+    parser.add_argument('--serialPort', nargs='?', default=defaultSP,
+                        help='Serial port path or COM#, default: '+defaultSP)
+    parser.add_argument('--baud', nargs='?', default=defaultBaud,
                         help='Serial port baud rate, default: '+str(defaultBaud))
     parser.add_argument('-c', '--command', default="", help='Commands to run')
 
     args = parser.parse_args()
-    serialPort = args.serialPort
+    if args.serial_port != "":
+        args.serialPort = args.serial_port
+    monSP = args.monPort  # monitor trace msg serial port
+
     print("Bluetooth Low Energy HCI tool")
-    print("Serial port: "+serialPort)
+    print("Serial port: " + args.serialPort)
+    print("Monitor Trace Msg Serial Port: "+monSP)
     print("8N1 "+str(args.baud))
     if(args.command != ""):
         print("running commands: "+args.command)
@@ -1183,6 +1240,7 @@ if __name__ == '__main__':
                     sys.exit(int("{0}".format(err)))
 
                 # Continue if we get a different code
+
 
     # Start the terminal
     while True:

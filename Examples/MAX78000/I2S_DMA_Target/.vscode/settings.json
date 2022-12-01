@@ -4,7 +4,7 @@
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
-
+    
     "terminal.integrated.env.linux": {
         "PATH":"${config:OCD_path}:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
@@ -13,7 +13,7 @@
         "PATH":"${config:OCD_path}/bin:${config:ARM_GCC_path}/bin:${config:xPack_GCC_path}/bin:${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
-
+    
     "target":"MAX78000",
     "board":"EvKit_V1",
 
@@ -52,14 +52,14 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -72,7 +72,6 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
@@ -80,6 +79,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
