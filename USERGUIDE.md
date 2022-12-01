@@ -1405,21 +1405,15 @@ The precedence hierarchy for the value of a configuration variable is:
 
 A microcontroller is made up of a Central Processing Unit (CPU) that is surrounded by additional _peripheral_ hardware blocks such as timers, memory controllers, UART controllers, ADCs, RTCs, audio interfaces, and many more.  The **Peripheral Driver API** is an important core library in the MSDK that allows the CPU to utilize the microcontroller's hardware blocks over a higher-level **_Application Programming Interface (API)_**.
 
-### Documentation
-
-A detailed API reference can be found in the [**Documentation**](Documentation) folder of the MSDK installation for each of the [supported parts](#supported-parts).  The top level **`Documentation/index.html`** file can be opened locally with a web browser.
-
-The documentation is organized into _modules_ matching each of the available hardware peripherals, and the MSDK will contain at _minimum_ one [example](Examples) per module demonstrating its usage.
-
 ![Figure 38](res/Fig38.jpg)
 
-This documentation is auto-generated with DoxyGen from the API's source code.
+A detailed API reference can be found in the [Documentation](Documentation) folder of the MSDK installation for each microcontroller.  This documentation is auto-generated with DoxyGen from the API's source code, and is organized into _modules_ matching each of the available hardware peripherals.  The MSDK will contain at _minimum_ one example per module demonstrating its usage.
 
 ### Organization
 
 The Peripheral Driver API's source code is organized as follows:
 
-- **Header files *(.h)*** can be found in the [`Libraries/PeriphDrivers/Include`](Libraries/PeriphDrivers/Include) folder.
+- **Header files _(.h)_** can be found in the [`Libraries/PeriphDrivers/Include`](Libraries/PeriphDrivers/Include) folder.
     - These files contain function _declarations_ for the API, describing the function prototypes and their associated documentation.
 - **Source files _(.c)_** can be found in the [`Libraries/PeriphDrivers/Source`](Libraries/PeriphDrivers/Source) folder.
     - These file contain the function _definitions_ for the API - the _implementations_ of the functions declared by the header files.
@@ -1431,25 +1425,31 @@ The _**implementation**_ files are further organized based on _**die type**_ and
 - The **_hardware** revision_ files follow the **`_revX`** naming convention.  
     - These files contain the _pure_ driver implementation for a peripheral block, and typically interact with the hardware almost entirely at the register level.
 
-As a result, the table below is a useful reference for determining which driver files match the external part number for a specific microcontroller when inspecting the API's source code.
+### API References
 
-#### Die Types to Part Number
+A full Peripheral Driver API reference manual is available for each microcontroller below.
 
-| Part Number       | Die Type |
-| ----------------- | -------- |
-| MAX32520          | ES17     |
-| MAX32570          | ME13     |
-| MAX32650          | ME10     |
-| MAX32655          | ME17     |
-| MAX32660          | ME11     |
-| MAX32665-MAX32668 | ME14     |
-| MAX32670          | ME15     |
-| MAX32672          | ME21     |
-| MAX32675          | ME16     |
-| MAX32680          | ME20     |
-| MAX32690          | ME18     |
-| MAX78000          | AI85     |
-| MAX78002          | AI87     |
+- [MAX32520 API](Libraries/PeriphDrivers/MAX32520/index.html)
+
+- [MAX32650 API](Libraries/PeriphDrivers/MAX32650/index.html)
+
+- [MAX32655 API](Libraries/PeriphDrivers/MAX32655/index.html)
+
+- [MAX32660 API](Libraries/PeriphDrivers/MAX32660/index.html)
+
+- [MAX32665-MAX32668 API](Libraries/PeriphDrivers/MAX32665/index.html)
+
+- [MAX32670 API](Libraries/PeriphDrivers/MAX32670/index.html)
+
+- [MAX32672 API](Libraries/PeriphDrivers/MAX32672/index.html)
+
+- [MAX32675 API](Libraries/PeriphDrivers/MAX32675/index.html)
+
+- [MAX32680 API](Libraries/PeriphDrivers/MAX32680/index.html)
+
+- [MAX78000 API](Libraries/PeriphDrivers/MAX78000/index.html)
+
+- [MAX78002 API](Libraries/PeriphDrivers/MAX78002/index.html)
 
 ## Libraries
 
