@@ -24,10 +24,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
         
       - name: Setup Python
         uses: actions/setup-python@v2.3.3
@@ -36,12 +32,17 @@ jobs:
           
       - name: Install mkdocs
         run: pip install mkdocs
-
+        
       - name: Build docs
         run: mkdocs build
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+        
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1.0.5
+        with:
+          # Path of the directory containing the static assets.
+          path: site # default is _site/
+          # Duration after which artifact will expire in days.
+          retention-days: 1 # optional, default is 1
+          
+      - name: Deploy GitHub Pages site
+        uses: actions/deploy-pages@v1.2.3
