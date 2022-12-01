@@ -1236,7 +1236,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 
         b main
 
-   Expected output:
+    Expected output:
 
         :::bash
         Breakpoint 1 at 0x10000224: file main.c, line 62.
@@ -1246,7 +1246,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 
         continue
 
-   Expected output (for the Hello World example):
+    Expected output (for the Hello World example):
 
         :::bash
         Continuing.
