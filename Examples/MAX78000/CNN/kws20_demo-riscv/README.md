@@ -18,7 +18,7 @@ The following 20 keyword subset from the complete dataset is used for this demo:
 
 Rest of keywords and unrecognized words fall into "**Unknown**" category.
 
-The demo application runs on two cores: ARM and RISC-V. The RISC-V core gets audio from microphone and controls CNN engine. The ARM core shows a result of keyword detection on TFT display.
+The demo application runs on two cores: ARM and RISC-V. The RISC-V core gets an audio from the microphone and controls the CNN engine. The ARM core shows the result of keyword detection on the TFT display.
 
 ## Keyword Spotting Demo Software
 
@@ -63,13 +63,13 @@ Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
 
 Connect PICO adapter to JH5 SWD header.
 
-If you are using Windows, open MinGW window and start OpenOCD:
+If you are using Windows, open the MinGW window and start OpenOCD:
 
 ```bash
 openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
 ```
 
-Open second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
+Open a second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
 
 ```bash
 arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
@@ -93,7 +93,7 @@ arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
 
 ### Debugging application on MAX78000 EVKIT
 
-To debug the application change optimization setting in project.mk and recompile the code:
+To debug the application, change an optimization setting in project.mk and recompile the code:
 
 ```bash
 # Set a higher optimization level to maximize performance
@@ -114,7 +114,7 @@ arm-none-eabi-gdb build/max78000-combined.elf
 (gdb) c
 ```
 
-Note: Debugging RISC-V core is not possible due to shared signals of RV JTAG and I2S interface.
+Note: Debugging RISC-V core is not possible due to multiplexed RV JTAG and I2S interface.
 
 ### MAX78000 EVKIT jumper setting
 
@@ -154,13 +154,13 @@ The microphone (U15) is located between JH4 and JH5 headers on EVKIT, (MK1) betw
 
 Connect USB cable to CN1 USB connector.
 
-If you are using Windows, open MinGW window and start OpenOCD:
+If you are using Windows, open the MinGW window and start OpenOCD:
 
 ```bash
 openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
 ```
 
-Open second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
+Open a second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
 
 ```bash
 arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
@@ -414,7 +414,7 @@ If a new network is developed and synthesized, the new weight file and related A
 
 ### References
 
-https://github.com/MaximIntegratedAI/MaximAI_Documentation
+[1] https://github.com/MaximIntegratedAI/MaximAI_Documentation
 
-[MaximAI_Documentation/README.md at master · MaximIntegratedAI/MaximAI_Documentation (github.com)](https://github.com/MaximIntegratedAI/MaximAI_Documentation/blob/master/MAX78000_Evaluation_Kit/README.md)
+[2] [MaximAI_Documentation/README.md at master · MaximIntegratedAI/MaximAI_Documentation (github.com)](https://github.com/MaximIntegratedAI/MaximAI_Documentation/blob/master/MAX78000_Evaluation_Kit/README.md)
 

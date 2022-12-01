@@ -9,7 +9,7 @@ For this purpose, the CNN model generates a 512-length embedding for a given ima
 
 The CNN model is trained with the VGGFace-2 dataset using MTCNN and FaceNet models for embedding generation.
 
-The demo application runs on two cores: ARM and RISC-V. The RISC-V core gets video from camera and controls CNN engine. The ARM core shows captured image and a result of face identification on TFT display.
+The demo application runs on two cores: ARM and RISC-V. The RISC-V core gets a video from the camera and controls the CNN engine. The ARM core shows captured images and a result of face identification on the TFT display.
 
 ## FaceID Demo Software
 
@@ -54,13 +54,13 @@ Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1). Note the COM 
 
 Connect PICO adapter to JH5 SWD header.
 
-If you are using Windows, open MinGW window and start OpenOCD:
+If you are using Windows, open the MinGW window and start OpenOCD:
 
 ```bash
 openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
 ```
 
-Open second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
+Open a second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
 
 ```bash
 arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
@@ -82,7 +82,7 @@ arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
 
 ### Debugging application on MAX78000 EVKIT
 
-To debug the application change optimization setting in project.mk:
+To debug the application, change optimization setting in project.mk:
 
 ```bash
 # Set a higher optimization level to maximize performance
@@ -91,7 +91,7 @@ To debug the application change optimization setting in project.mk:
 MXC_OPTIMIZE_CFLAGS = -Og
 ```
 
-disable low power mode in **faceID.h **and recompile the code:
+disable the low power mode in **faceID.h **and recompile the code:
 
 ```bash
 //#define LP_MODE_ENABLE
@@ -109,7 +109,7 @@ arm-none-eabi-gdb build/max78000-combined.elf
 (gdb) c
 ```
 
-To debug application on RISC-V connect Olimex adapter to JH4 and start OpenOCD:
+To debug an application on RISC-V, connect the Olimex adapter to JH4 and start OpenOCD:
 
 In Windows:
 
@@ -145,13 +145,13 @@ After loading FaceID firmware press "**Start_DEMO**" button on TFT screen to cap
 
 Connect USB cable to CN1 USB connector.
 
-If you are using Windows, open MinGW window and start OpenOCD:
+If you are using Windows, open the MinGW window and start OpenOCD:
 
 ```bash
 openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
 ```
 
-Open second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
+Open a second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
 
 ```bash
 arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
