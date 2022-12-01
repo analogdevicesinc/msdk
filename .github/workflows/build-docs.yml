@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      pages: write
       contents: read
 
     # Steps represent a sequence of tasks that will be executed as part of the job
