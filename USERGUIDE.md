@@ -20,18 +20,54 @@ This document describes the MSDK's installation, setup, and usage.
 
 ### Supported Parts
 
-- [MAX32520](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520.html): ChipDNA Secure Microcontroller with Secure Boot for IoT Applications
-- [MAX32570](https://www.maximintegrated.com/en/products/microcontrollers/MAX32570.html) **(Available by NDA only**): Low-Power Arm Cortex-M4 Microcontroller with Contactless Radio for Secure Applications
-- [MAX32650](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650.html): Ultra-Low-Power Arm Cortex-M4 with FPU-Based Microcontroller (MCU) with 3MB Flash and 1MB SRAM
-- [MAX32655](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655.html): Low-Power, Arm Cortex-M4 Processor with FPU-Based Microcontroller and Bluetooth 5.2
-- [MAX32660](https://www.maximintegrated.com/en/products/microcontrollers/MAX32660.html): Tiny, Ultra-Low-Power Arm Cortex-M4 Processor with FPU-Based Microcontroller (MCU) with 256KB Flash and 96KB SRAM
-- [MAX32665](https://www.maximintegrated.com/en/products/microcontrollers/MAX32665.html): Low-Power ARM Cortex-M4 with FPU-Based Microcontroller with Bluetooth 5 for Wearables
-- [MAX32670](https://www.maximintegrated.com/en/products/microcontrollers/MAX32670.html): High-Reliability, Ultra-Low-Power Microcontroller Powered by Arm Cortex-M4 Processor with FPU for Industrial and IoT
-- [MAX32672](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672.html): High-Reliability, Tiny, Ultra-Low-Power Arm Cortex-M4F Microcontroller with 12-Bit 1MSPS ADC
-- [MAX32675](https://www.maximintegrated.com/en/products/microcontrollers/MAX32675.html): Ultra-Low-Power Arm Cortex-M4F with Precision Analog Front-End for Industrial and Medical Sensors
-- [MAX32680](https://www.maximintegrated.com/en/products/microcontrollers/MAX32680.html): Ultra-Low-Power Arm Cortex-M4F with Precision Analog Front-End and Bluetooth LE 5.2
-- [MAX78000](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000.html): Artificial Intelligence Microcontroller with Ultra-Low-Power Convolutional Neural Network Accelerator
-- [MAX78002](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002.html): Artificial Intelligence Microcontroller with Low-Power Convolutional Neural Network Accelerator
+The following microcontrollers and evaluation platforms are officially supported by the MSDK.
+
+- [**MAX32520**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520.html): ChipDNA Secure Microcontroller with Secure Boot for IoT Applications
+  - [MAX32520-KIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520-KIT.html)
+  - [MAX32520FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32520FTHR.html)
+
+- [**MAX32570**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32570.html) **(Available by NDA only**): Low-Power Arm Cortex-M4 Microcontroller with Contactless Radio for Secure Applications
+- [**MAX32650**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650.html): Ultra-Low-Power Arm Cortex-M4 with FPU-Based Microcontroller (MCU) with 3MB Flash and 1MB SRAM
+  - [MAX32650-EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650-EVKIT.html)
+  - [MAX32650FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32650FTHR.html)
+
+- [**MAX32655**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655.html): Low-Power, Arm Cortex-M4 Processor with FPU-Based Microcontroller and Bluetooth 5.2
+  - [MAX32655EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655EVKIT.html)
+  - [MAX32655FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32655FTHR.html)
+
+- [**MAX32660**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32660.html): Tiny, Ultra-Low-Power Arm Cortex-M4 Processor with FPU-Based Microcontroller (MCU) with 256KB Flash and 96KB SRAM
+  - [MAX32660-EVSYS](https://www.maximintegrated.com/en/products/microcontrollers/MAX32660-EVSYS.html)
+
+- **MAX32662** (Not Yet Publicly Available)
+  - MAX32662EVKIT (Not Yet Publicly Available)
+
+- [**MAX32665-MAX32668 Family**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32665.html): Low-Power ARM Cortex-M4 with FPU-Based Microcontroller with Bluetooth 5 for Wearables
+  - [MAX32666EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32666EVKIT.html)
+  - [MAX32666FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX32666FTHR.html)
+  - MAX32666FTHR2 (Product Page Not Yet Available)
+
+- [**MAX32670**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32670.html): High-Reliability, Ultra-Low-Power Microcontroller Powered by Arm Cortex-M4 Processor with FPU for Industrial and IoT
+  - [MAX32670EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32670EVKIT.html)
+
+- [**MAX32672**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672.html): High-Reliability, Tiny, Ultra-Low-Power Arm Cortex-M4F Microcontroller with 12-Bit 1MSPS ADC
+  - [MAX32672EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32672EVKIT.html)
+
+- [**MAX32675**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32675.html): Ultra-Low-Power Arm Cortex-M4F with Precision Analog Front-End for Industrial and Medical Sensors
+  - [MAX32675EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32675EVKIT.html)
+  - MAX32675FTHR (Product Page Not Yet Available)
+
+- [**MAX32680**](https://www.maximintegrated.com/en/products/microcontrollers/MAX32680.html): Ultra-Low-Power Arm Cortex-M4F with Precision Analog Front-End and Bluetooth LE 5.2
+  - [MAX32680EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX32680EVKIT.html)
+
+- **MAX32690**: (Not Yet Publicly Available)
+- [**MAX78000**](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000.html): Artificial Intelligence Microcontroller with Ultra-Low-Power Convolutional Neural Network Accelerator
+  - [MAX78000EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000EVKIT.html)
+  - [MAX78000FTHR](https://www.maximintegrated.com/en/products/microcontrollers/MAX78000FTHR.html)
+  - [MAXREFDES178](https://www.maximintegrated.com/en/design/reference-design-center/system-board/7375.html)
+
+- [**MAX78002**](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002.html): Artificial Intelligence Microcontroller with Low-Power Convolutional Neural Network Accelerator
+  - [MAX78002EVKIT](https://www.maximintegrated.com/en/products/microcontrollers/MAX78002EVKIT.html)
+
 
 ### Supported Development Environments
 
@@ -236,11 +272,11 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
         :::json
         // There may be other settings up here...
-    
+        
         "MAXIM_PATH":"C:/MaximSDK", // Set this to the installed location of the MaximSDK.  Only use forward slashes '/' when setting this path!
         "update.mode": "manual",
         "extensions.autoUpdate": false,
-    
+        
         // There may be other settings down here...
 
 7. Save your changes to the file with **`CTRL + S`** and restart VS Code.
@@ -421,15 +457,15 @@ On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal. 
 
         # Set MAXIM_PATH to point to the MSDK
         export MAXIM_PATH=#changeme!
-    
+        
         # Add Arm Embedded GCC to path (v10.3)
         export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
         export PATH=$ARM_GCC_ROOT/bin:$PATH
-    
+        
         # Add xPack RISC-V GCC to path (v10.2)
         export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
         export PATH=$XPACK_GCC_ROOT/bin:$PATH
-    
+        
         # Add OpenOCD to path
         export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
         export PATH=$OPENOCD_ROOT:$PATH
@@ -985,15 +1021,15 @@ On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal. 
 
         # Set MAXIM_PATH to point to the MSDK
         export MAXIM_PATH=#changeme!
-    
+        
         # Add Arm Embedded GCC to path (v10.3)
         export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
         export PATH=$ARM_GCC_ROOT/bin:$PATH
-    
+        
         # Add xPack RISC-V GCC to path (v10.2)
         export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
         export PATH=$XPACK_GCC_ROOT/bin:$PATH
-    
+        
         # Add OpenOCD to path
         export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
         export PATH=$OPENOCD_ROOT:$PATH
@@ -1020,14 +1056,14 @@ The following commands can be used to verify that the toolchain is accessible.  
         # This file can be used to set build configuration
         # variables.  These variables are defined in a file called 
         # "Makefile" that is located next to this one.
-    
+        
         # For instructions on how to use this system, see
         # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
-    
+        
         # **********************************************************
-    
+        
         # Add your config here!
-    
+        
         BOARD=FTHR_RevA # Set the BSP
 
 - Alternatively, set **`BOARD`** on the command-line when building (ie. `make -r -j BOARD=FTHR_RevA`)
