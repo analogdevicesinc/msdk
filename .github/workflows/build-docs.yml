@@ -42,7 +42,6 @@ jobs:
           doxyfile-path: max32520_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32520 Documentation/Libraries/PeriphDrivers/Documentation/MAX32520
 
       - name: Doxygen (MAX32650)
         # You may pin to the exact commit or the version.
@@ -53,7 +52,6 @@ jobs:
           doxyfile-path: max32650_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32650 Documentation/Libraries/PeriphDrivers/Documentation/MAX32650
       
       - name: Doxygen (MAX32655)
         # You may pin to the exact commit or the version.
@@ -64,7 +62,6 @@ jobs:
           doxyfile-path: max32655_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32655 Documentation/Libraries/PeriphDrivers/Documentation/MAX32655
 
       - name: Doxygen (MAX32660)
         # You may pin to the exact commit or the version.
@@ -75,7 +72,6 @@ jobs:
           doxyfile-path: max32660_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32660 Documentation/Libraries/PeriphDrivers/Documentation/MAX32660
 
       - name: Doxygen (MAX32665)
         # You may pin to the exact commit or the version.
@@ -86,7 +82,6 @@ jobs:
           doxyfile-path: max32665_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32665 Documentation/Libraries/PeriphDrivers/Documentation/MAX32665
 
       - name: Doxygen (MAX32670)
         # You may pin to the exact commit or the version.
@@ -97,7 +92,6 @@ jobs:
           doxyfile-path: max32670_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32670 Documentation/Libraries/PeriphDrivers/Documentation/MAX32670
 
       - name: Doxygen (MAX32672)
         # You may pin to the exact commit or the version.
@@ -108,7 +102,6 @@ jobs:
           doxyfile-path: max32672_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32672 Documentation/Libraries/PeriphDrivers/Documentation/MAX32672
 
       - name: Doxygen (MAX32675)
         # You may pin to the exact commit or the version.
@@ -119,7 +112,6 @@ jobs:
           doxyfile-path: max32675_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32675 Documentation/Libraries/PeriphDrivers/Documentation/MAX32675
 
       - name: Doxygen (MAX32680)
         # You may pin to the exact commit or the version.
@@ -130,7 +122,6 @@ jobs:
           doxyfile-path: max32680_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX32680 Documentation/Libraries/PeriphDrivers/Documentation/MAX32680
 
       - name: Doxygen (MAX78000)
         # You may pin to the exact commit or the version.
@@ -141,7 +132,6 @@ jobs:
           doxyfile-path: max78000_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX78000 Documentation/Libraries/PeriphDrivers/Documentation/MAX78000
 
       - name: Doxygen (MAX78002)
         # You may pin to the exact commit or the version.
@@ -152,11 +142,26 @@ jobs:
           doxyfile-path: max78000_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
-        run: cp -r Libraries/PeriphDrivers/Documentation/MAX78002 Documentation/Libraries/PeriphDrivers/Documentation/MAX78002
 
       - name: Build User Guide
-        run: mkdocs build
-        
+        run: |
+          SOURCE=Libraries/PeriphDrivers/Documentation
+          DEST=Documentation/$SOURCE
+
+          cp -r $SOURCE/MAX32520 $DEST/MAX32520
+          cp -r $SOURCE/MAX32650 $DEST/MAX32650
+          cp -r $SOURCE/MAX32655 $DEST/MAX32655
+          cp -r $SOURCE/MAX32660 $DEST/MAX32660
+          cp -r $SOURCE/MAX32665 $DEST/MAX32665
+          cp -r $SOURCE/MAX32670 $DEST/MAX32670
+          cp -r $SOURCE/MAX32672 $DEST/MAX32672
+          cp -r $SOURCE/MAX32675 $DEST/MAX32675
+          cp -r $SOURCE/MAX32680 $DEST/MAX32680
+          cp -r $SOURCE/MAX78000 $DEST/MAX78000
+          cp -r $SOURCE/MAX78002 $DEST/MAX78002
+          
+          mkdocs build
+
       - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
