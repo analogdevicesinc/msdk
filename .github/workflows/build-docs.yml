@@ -139,7 +139,7 @@ jobs:
         uses: mattnotmitt/doxygen-action@1.9.4
         with:
           # Path to Doxyfile
-          doxyfile-path: max78000_Doxyfile
+          doxyfile-path: max78002_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
 
