@@ -174,9 +174,9 @@ class BLE_hci:
             print("baud rate exception, "+str(args.baud)+" is too large")
             print(err)
             sys.exit(1)
-
-        monTraceMsgThread = threading.Thread(target=self.monTraceMsg, daemon=True)
-        monTraceMsgThread.start()
+        if self.mon_port != None:
+            monTraceMsgThread = threading.Thread(target=self.monTraceMsg, daemon=True)
+            monTraceMsgThread.start()
 
     def closeListenDiscon(self):
         # Close the listener thread if active
