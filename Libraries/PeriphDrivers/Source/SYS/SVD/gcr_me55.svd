@@ -891,9 +891,27 @@
             <bitWidth>3</bitWidth>
           </field>
           <field>
-            <name>SRAM_WS</name>
-            <description>SYSRAM WS Select.</description>
+            <name>RAM4_WS</name>
+            <description>System RAM4 WS Select.</description>
             <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM5_WS</name>
+            <description>System RAM5 WS Select.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM6_WS</name>
+            <description>System RAM6 WS Select.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ROM1_WS</name>
+            <description>ROM1 WS Select.</description>
+            <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
