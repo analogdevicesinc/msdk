@@ -31,7 +31,8 @@
 #define MMDL_GEN_LEVEL_CL_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mmdl_defs.h"
@@ -40,35 +41,39 @@ extern "C" {
   Data Types
 **************************************************************************************************/
 /*! \brief Model Level Client Set parameters structure */
-typedef struct mmdlGenLevelSetParam_tag {
-    mmdlGenLevelState_t state; /*!< New Level State */
-    uint8_t tid; /*!< Transaction Identifier */
-    uint8_t transitionTime; /*!< Transition time */
-    uint8_t delay; /*!< Delay in steps of 5 ms  */
+typedef struct mmdlGenLevelSetParam_tag
+{
+  mmdlGenLevelState_t state;          /*!< New Level State */
+  uint8_t             tid;            /*!< Transaction Identifier */
+  uint8_t             transitionTime; /*!< Transition time */
+  uint8_t             delay;          /*!< Delay in steps of 5 ms  */
 } mmdlGenLevelSetParam_t;
 
 /*! \brief Model Level Client Delta Set parameters structure */
-typedef struct mmdlGenDeltaSetParam_tag {
-    mmdlGenDelta_t delta; /*!< Delta change */
-    uint8_t tid; /*!< Transaction Identifier */
-    uint8_t transitionTime; /*!< Transition time */
-    uint8_t delay; /*!< Delay in steps of 5 ms  */
+typedef struct mmdlGenDeltaSetParam_tag
+{
+  mmdlGenDelta_t      delta;          /*!< Delta change */
+  uint8_t             tid;            /*!< Transaction Identifier */
+  uint8_t             transitionTime; /*!< Transition time */
+  uint8_t             delay;          /*!< Delay in steps of 5 ms  */
 } mmdlGenDeltaSetParam_t;
 
 /*! \brief Generic Level Client Model Status event structure */
-typedef struct mmdlGenLevelClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    mmdlGenLevelState_t state; /*!< Received published state */
-    mmdlGenLevelState_t targetState; /*!< Received published target state */
-    uint8_t remainingTime; /*!< Remaining time until the transition completes */
+typedef struct mmdlGenLevelClStatusEvent_tag
+{
+  wsfMsgHdr_t          hdr;           /*!< WSF message header */
+  meshElementId_t      elementId;     /*!< Element ID */
+  meshAddress_t        serverAddr;    /*!< Server Address */
+  mmdlGenLevelState_t  state;         /*!< Received published state */
+  mmdlGenLevelState_t  targetState;   /*!< Received published target state */
+  uint8_t              remainingTime; /*!< Remaining time until the transition completes */
 } mmdlGenLevelClStatusEvent_t;
 
 /*! \brief Generic Level Client Model event callback parameters structure */
-typedef union mmdlGenLevelClEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlGenLevelClStatusEvent_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlGenLevelClEvent_tag
+{
+  wsfMsgHdr_t                 hdr;          /*!< WSF message header */
+  mmdlGenLevelClStatusEvent_t statusEvent;  /*!< State updated event. Used for
                                              *   ::MMDL_GEN_LEVEL_CL_STATUS_EVENT.
                                              */
 } mmdlGenLevelClEvent_t;
@@ -81,7 +86,7 @@ typedef union mmdlGenLevelClEvent_tag {
 extern wsfHandlerId_t mmdlGenLevelClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t mmdlGenLevelClRcvdOpcodes[];
+extern const meshMsgOpcode_t  mmdlGenLevelClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations
@@ -122,7 +127,7 @@ void MmdlGenLevelClHandler(wsfMsgHdr_t *pMsg);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenLevelClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+void MmdlGenLevelClGet(meshElementId_t elementId, meshAddress_t serverAddr,  uint8_t ttl,
                        uint16_t appKeyIndex);
 
 /*************************************************************************************************/

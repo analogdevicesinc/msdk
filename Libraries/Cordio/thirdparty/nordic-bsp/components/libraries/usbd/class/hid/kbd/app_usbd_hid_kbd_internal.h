@@ -44,6 +44,7 @@
 extern "C" {
 #endif
 
+
 /**
  * @defgroup app_usbd_hid_kbd_internal USB HID keyboard internals
  * @ingroup app_usbd_hid_kbd
@@ -58,12 +59,13 @@ extern "C" {
  */
 APP_USBD_CLASS_FORWARD(app_usbd_hid_kbd);
 
+
 /**
  * @brief HID keyboard part of class instance data.
  *
  */
 typedef struct {
-    app_usbd_hid_inst_t hid_inst; //!< HID instance data.
+    app_usbd_hid_inst_t hid_inst;  //!< HID instance data.
 } app_usbd_hid_kbd_inst_t;
 
 /**
@@ -74,14 +76,14 @@ typedef struct {
     app_usbd_hid_ctx_t hid_ctx; //!< HID class context.
 
     struct app_usbd_hid_kbd_ctx_internal_s {
-        uint8_t modifier; //!< Keyboard modifier state @ref app_usbd_hid_kbd_modifier_t.
-        uint8_t reserved; //!< Reserved value.
-        uint8_t key_table[6]; //!< Keyboard keys table @ref app_usbd_hid_kbd_codes_t.
+        uint8_t modifier;       //!< Keyboard modifier state @ref app_usbd_hid_kbd_modifier_t.
+        uint8_t reserved;       //!< Reserved value.
+        uint8_t key_table[6];   //!< Keyboard keys table @ref app_usbd_hid_kbd_codes_t.
     } rep;
 
-    uint8_t report_buff[8]; //!< Raw report buffer.
-    uint8_t leds_state; //!< Output report LEDs state.
-    uint8_t set_report; //!< Set report flag.
+    uint8_t report_buff[8];     //!< Raw report buffer.
+    uint8_t leds_state;         //!< Output report LEDs state.
+    uint8_t set_report;         //!< Set report flag.
 } app_usbd_hid_kbd_ctx_t;
 
 /**
@@ -92,6 +94,7 @@ typedef struct {
  *
  */
 #define APP_USBD_HID_KBD_CONFIG(iface, ep) ((iface, ep))
+
 
 /**
  * @brief Specific class constant data for HID keyboard class.
@@ -109,9 +112,8 @@ typedef struct {
  */
 #define APP_USBD_HID_KBD_DEFAULT_INTERVAL 0x01
 
-#define APP_USBD_HID_KBD_INTERVAL(ep)                                           \
-    (APP_USBD_EXTRACT_INTERVAL_FLAG(ep) ? APP_USBD_EXTRACT_INTERVAL_VALUE(ep) : \
-                                          APP_USBD_HID_KBD_DEFAULT_INTERVAL)
+#define APP_USBD_HID_KBD_INTERVAL(ep)   \
+(APP_USBD_EXTRACT_INTERVAL_FLAG(ep) ? APP_USBD_EXTRACT_INTERVAL_VALUE(ep) : APP_USBD_HID_KBD_DEFAULT_INTERVAL)
 
 /**
  * @brief Configure internal part of HID keyboard instance.
@@ -122,13 +124,23 @@ typedef struct {
  * @param subclass_boot     Subclass boot (@ref app_usbd_hid_subclass_t).
  * @param endpoint_list     List of endpoints and intervals
  */
-#define APP_USBD_HID_KBD_INST_CONFIG(report_buff_in, report_buff_out, user_ev_handler,         \
-                                     subclass_boot, endpoint_list)                             \
-    .inst = {                                                                                  \
-        .hid_inst = APP_USBD_HID_INST_CONFIG(                                                  \
-            keyboard_descs, subclass_boot, APP_USBD_HID_PROTO_KEYBOARD, report_buff_in,        \
-            report_buff_out, NULL, user_ev_handler, &app_usbd_hid_kbd_methods, endpoint_list), \
-    }
+#define APP_USBD_HID_KBD_INST_CONFIG(report_buff_in,                            \
+                                     report_buff_out,                           \
+                                     user_ev_handler,                           \
+                                     subclass_boot,                             \
+                                     endpoint_list)                             \
+    .inst = {                                                                   \
+         .hid_inst = APP_USBD_HID_INST_CONFIG(keyboard_descs,                   \
+                                              subclass_boot,                    \
+                                              APP_USBD_HID_PROTO_KEYBOARD,      \
+                                              report_buff_in,                   \
+                                              report_buff_out,                  \
+                                              NULL,                             \
+                                              user_ev_handler,                  \
+                                              &app_usbd_hid_kbd_methods,        \
+                                              endpoint_list),                   \
+}
+
 
 /**
  * @brief Public HID keyboard interface.
@@ -146,20 +158,29 @@ extern const app_usbd_class_methods_t app_usbd_hid_kbd_class_methods;
  * @ref  APP_USBD_HID_KBD_GLOBAL_DEF
  */
 /*lint -esym( 40, APP_USBD_HID_KBD_INTERVAL) */
-#define APP_USBD_HID_KBD_GLOBAL_DEF_INTERNAL(instance_name, interface_number, endpoint, \
-                                             user_ev_handler, subclass_boot)            \
-    static app_usbd_hid_report_buffer_t CONCAT_2(instance_name, _in)[1];                \
-    static uint8_t CONCAT_2(instance_name,                                              \
-                            _ep) = { MACRO_MAP(APP_USBD_HID_KBD_INTERVAL, endpoint) };  \
-    APP_USBD_HID_GENERIC_GLOBAL_OUT_REP_DEF(CONCAT_2(instance_name, _out), 1 + 1);      \
-    APP_USBD_CLASS_INST_GLOBAL_DEF(                                                     \
-        instance_name, app_usbd_hid_kbd, &app_usbd_hid_kbd_class_methods,               \
-        APP_USBD_HID_KBD_CONFIG(interface_number, endpoint),                            \
-        (APP_USBD_HID_KBD_INST_CONFIG(CONCAT_2(instance_name, _in),                     \
-                                      &CONCAT_2(instance_name, _out), user_ev_handler,  \
-                                      subclass_boot, &CONCAT_2(instance_name, _ep))))
+#define APP_USBD_HID_KBD_GLOBAL_DEF_INTERNAL(instance_name,                                        \
+                                             interface_number,                                     \
+                                             endpoint,                                             \
+                                             user_ev_handler,                                      \
+                                             subclass_boot)                                        \
+    static app_usbd_hid_report_buffer_t CONCAT_2(instance_name, _in)[1];                           \
+    static uint8_t CONCAT_2(instance_name, _ep) = {MACRO_MAP(APP_USBD_HID_KBD_INTERVAL,endpoint)}; \
+    APP_USBD_HID_GENERIC_GLOBAL_OUT_REP_DEF(CONCAT_2(instance_name, _out), 1 + 1);                 \
+    APP_USBD_CLASS_INST_GLOBAL_DEF(                                                                \
+        instance_name,                                                                             \
+        app_usbd_hid_kbd,                                                                          \
+        &app_usbd_hid_kbd_class_methods,                                                           \
+        APP_USBD_HID_KBD_CONFIG(interface_number, endpoint),                                       \
+        (APP_USBD_HID_KBD_INST_CONFIG(CONCAT_2(instance_name, _in),                                \
+                                      &CONCAT_2(instance_name, _out),                              \
+                                      user_ev_handler,                                             \
+                                      subclass_boot,                                               \
+                                      &CONCAT_2(instance_name, _ep)))                              \
+    )
+
 
 /** @} */
+
 
 #ifdef __cplusplus
 }

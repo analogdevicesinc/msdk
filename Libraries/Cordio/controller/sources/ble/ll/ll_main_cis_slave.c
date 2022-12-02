@@ -43,13 +43,13 @@
 /*************************************************************************************************/
 uint8_t LlAcceptCisReq(uint16_t cisHandle)
 {
-    uint8_t status = LL_SUCCESS;
+  uint8_t status = LL_SUCCESS;
 
-    LL_TRACE_INFO1("### LlApi ###  LlAcceptCisReq cisHandle=%d", cisHandle);
+  LL_TRACE_INFO1("### LlApi ###  LlAcceptCisReq cisHandle=%d", cisHandle);
 
-    status = LctrAcceptCisReq(cisHandle);
+  status = LctrAcceptCisReq(cisHandle);
 
-    return status;
+  return status;
 }
 
 /*************************************************************************************************/
@@ -65,11 +65,11 @@ uint8_t LlAcceptCisReq(uint16_t cisHandle)
 /*************************************************************************************************/
 uint8_t LlRejectCisReq(uint16_t cisHandle, uint8_t reason)
 {
-    uint8_t status = LL_SUCCESS;
+  uint8_t status = LL_SUCCESS;
 
-    LL_TRACE_INFO2("### LlApi ###  LlRejectCisReq cisHandle=%d reason=%d", cisHandle, reason);
+  LL_TRACE_INFO2("### LlApi ###  LlRejectCisReq cisHandle=%d reason=%d", cisHandle, reason);
 
-    status = LctrRejectCisReq(cisHandle, reason);
+  status = LctrRejectCisReq(cisHandle, reason);
 
-    return status;
+  return status;
 }

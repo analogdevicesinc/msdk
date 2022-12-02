@@ -38,23 +38,25 @@
 /*************************************************************************************************/
 static bool_t appMasterScanMode(void)
 {
-    /* legacy master app works with both DM legacy and extended scanning */
+  /* legacy master app works with both DM legacy and extended scanning */
 
-    /* if first time since last power-on or reset */
-    if (appMasterCb.scanMode == APP_SCAN_MODE_NONE) {
-        /* set scanning mode to legacy */
-        appMasterCb.scanMode = APP_SCAN_MODE_LEG;
+  /* if first time since last power-on or reset */
+  if (appMasterCb.scanMode == APP_SCAN_MODE_NONE)
+  {
+    /* set scanning mode to legacy */
+    appMasterCb.scanMode = APP_SCAN_MODE_LEG;
 
-        return TRUE;
-    }
+    return TRUE;
+  }
 
-    if (appMasterCb.scanMode == APP_SCAN_MODE_LEG) {
-        return TRUE;
-    }
+  if (appMasterCb.scanMode == APP_SCAN_MODE_LEG)
+  {
+    return TRUE;
+  }
 
-    APP_TRACE_WARN0("Invalid DM scanning mode; mode configured as extended");
+  APP_TRACE_WARN0("Invalid DM scanning mode; mode configured as extended");
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -72,12 +74,12 @@ static bool_t appMasterScanMode(void)
 /*************************************************************************************************/
 void AppScanStart(uint8_t mode, uint8_t scanType, uint16_t duration)
 {
-    if (appMasterScanMode()) {
-        DmScanSetInterval(HCI_SCAN_PHY_LE_1M_BIT, &pAppMasterCfg->scanInterval,
-                          &pAppMasterCfg->scanWindow);
+  if (appMasterScanMode())
+  {
+    DmScanSetInterval(HCI_SCAN_PHY_LE_1M_BIT, &pAppMasterCfg->scanInterval, &pAppMasterCfg->scanWindow);
 
-        DmScanStart(HCI_SCAN_PHY_LE_1M_BIT, mode, &scanType, TRUE, duration, 0);
-    }
+    DmScanStart(HCI_SCAN_PHY_LE_1M_BIT, mode, &scanType, TRUE, duration, 0);
+  }
 }
 
 /*************************************************************************************************/
@@ -89,12 +91,13 @@ void AppScanStart(uint8_t mode, uint8_t scanType, uint16_t duration)
 /*************************************************************************************************/
 void AppScanStop(void)
 {
-    if (appMasterScanMode()) {
-        /* stop address resolution */
-        appMasterCb.inProgress = FALSE;
+  if (appMasterScanMode())
+  {
+    /* stop address resolution */
+    appMasterCb.inProgress = FALSE;
 
-        DmScanStop();
-    }
+    DmScanStop();
+  }
 }
 
 /*************************************************************************************************/
@@ -110,10 +113,11 @@ void AppScanStop(void)
 /*************************************************************************************************/
 dmConnId_t AppConnOpen(uint8_t addrType, uint8_t *pAddr, appDbHdl_t dbHdl)
 {
-    if (appMasterScanMode()) {
-        return appConnOpen(HCI_INIT_PHY_LE_1M_BIT, addrType, pAddr, dbHdl);
-    }
+  if (appMasterScanMode())
+  {
+    return appConnOpen(HCI_INIT_PHY_LE_1M_BIT, addrType, pAddr, dbHdl);
+  }
 
-    /* wrong connect mode */
-    return DM_CONN_ID_NONE;
+  /* wrong connect mode */
+  return DM_CONN_ID_NONE;
 }

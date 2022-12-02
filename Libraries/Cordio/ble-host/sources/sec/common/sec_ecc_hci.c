@@ -65,25 +65,27 @@ Local Variables
 /*************************************************************************************************/
 void SecEccHciCback(secQueueBuf_t *pBuf, hciEvt_t *pEvent, wsfHandlerId_t handlerId)
 {
-    secEccMsg_t *pMsg = (secEccMsg_t *)&pBuf->msg;
+  secEccMsg_t *pMsg = (secEccMsg_t *) &pBuf->msg;
 
-    if (pEvent->hdr.event == HCI_LE_READ_LOCAL_P256_PUB_KEY_CMPL_CBACK_EVT) {
-        /* Reverse copy the public key (to big endian) */
-        WStrReverseCpy(pMsg->data.key.pubKey_x, pEvent->leP256.key, SEC_ECC_KEY_LEN);
-        WStrReverseCpy(pMsg->data.key.pubKey_y, pEvent->leP256.key + SEC_ECC_KEY_LEN,
-                       SEC_ECC_KEY_LEN);
+  if (pEvent->hdr.event == HCI_LE_READ_LOCAL_P256_PUB_KEY_CMPL_CBACK_EVT)
+  {
+    /* Reverse copy the public key (to big endian) */
+    WStrReverseCpy(pMsg->data.key.pubKey_x, pEvent->leP256.key, SEC_ECC_KEY_LEN);
+    WStrReverseCpy(pMsg->data.key.pubKey_y, pEvent->leP256.key + SEC_ECC_KEY_LEN, SEC_ECC_KEY_LEN);
 
-        /* Send shared secret to handler */
-        pMsg->hdr.status = pEvent->leP256.status;
-        WsfMsgSend(handlerId, pMsg);
-    } else if (pEvent->hdr.event == HCI_LE_GENERATE_DHKEY_CMPL_CBACK_EVT) {
-        /* Reverse copy the DH key (to big endian) */
-        WStrReverseCpy(pMsg->data.sharedSecret.secret, pEvent->leGenDHKey.key, SEC_ECC_KEY_LEN);
+    /* Send shared secret to handler */
+    pMsg->hdr.status = pEvent->leP256.status;
+    WsfMsgSend(handlerId, pMsg);
+  }
+  else if (pEvent->hdr.event == HCI_LE_GENERATE_DHKEY_CMPL_CBACK_EVT)
+  {
+    /* Reverse copy the DH key (to big endian) */
+    WStrReverseCpy(pMsg->data.sharedSecret.secret, pEvent->leGenDHKey.key, SEC_ECC_KEY_LEN);
 
-        /* Send shared secret to handler */
-        pMsg->hdr.status = pEvent->leGenDHKey.status;
-        WsfMsgSend(handlerId, pMsg);
-    }
+    /* Send shared secret to handler */
+    pMsg->hdr.status = pEvent->leGenDHKey.status;
+    WsfMsgSend(handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -99,25 +101,26 @@ void SecEccHciCback(secQueueBuf_t *pBuf, hciEvt_t *pEvent, wsfHandlerId_t handle
 /*************************************************************************************************/
 bool_t SecEccGenKey(wsfHandlerId_t handlerId, uint16_t param, uint8_t event)
 {
-    secQueueBuf_t *pBuf;
-    uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secEccMsg_t);
+  secQueueBuf_t *pBuf;
+  uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secEccMsg_t);
 
-    if ((pBuf = WsfMsgAlloc(bufSize)) != NULL) {
-        /* Record the event and parameter for use in the HCI response */
-        pBuf->msg.hdr.param = param;
-        pBuf->msg.hdr.event = event;
-        pBuf->type = SEC_TYPE_DH;
+  if ((pBuf = WsfMsgAlloc(bufSize)) != NULL)
+  {
+    /* Record the event and parameter for use in the HCI response */
+    pBuf->msg.hdr.param = param;
+    pBuf->msg.hdr.event = event;
+    pBuf->type = SEC_TYPE_DH;
 
-        /* queue buffer */
-        WsfMsgEnq(&secCb.pubKeyQueue, handlerId, pBuf);
+    /* queue buffer */
+    WsfMsgEnq(&secCb.pubKeyQueue, handlerId, pBuf);
 
-        /* Request the local public key via HCI */
-        HciLeReadLocalP256PubKey();
+    /* Request the local public key via HCI */
+    HciLeReadLocalP256PubKey();
 
-        return TRUE;
-    }
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -132,35 +135,35 @@ bool_t SecEccGenKey(wsfHandlerId_t handlerId, uint16_t param, uint8_t event)
  *  \return TRUE if successful, else FALSE.
  */
 /*************************************************************************************************/
-bool_t SecEccGenSharedSecret(secEccKey_t *pKey, wsfHandlerId_t handlerId, uint16_t param,
-                             uint8_t event)
+bool_t SecEccGenSharedSecret(secEccKey_t *pKey, wsfHandlerId_t handlerId, uint16_t param, uint8_t event)
 {
-    secQueueBuf_t *pBuf;
-    uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secEccMsg_t);
+  secQueueBuf_t *pBuf;
+  uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secEccMsg_t);
 
-    if ((pBuf = WsfMsgAlloc(bufSize)) != NULL) {
-        uint8_t pubKeyX[SEC_ECC_KEY_LEN];
-        uint8_t pubKeyY[SEC_ECC_KEY_LEN];
+  if ((pBuf = WsfMsgAlloc(bufSize)) != NULL)
+  {
+    uint8_t pubKeyX[SEC_ECC_KEY_LEN];
+    uint8_t pubKeyY[SEC_ECC_KEY_LEN];
 
-        /* Record the event and parameter for use in the HCI response */
-        pBuf->msg.hdr.param = param;
-        pBuf->msg.hdr.event = event;
-        pBuf->type = SEC_TYPE_DH;
+    /* Record the event and parameter for use in the HCI response */
+    pBuf->msg.hdr.param = param;
+    pBuf->msg.hdr.event = event;
+    pBuf->type = SEC_TYPE_DH;
 
-        /* queue buffer */
-        WsfMsgEnq(&secCb.dhKeyQueue, handlerId, pBuf);
+    /* queue buffer */
+    WsfMsgEnq(&secCb.dhKeyQueue, handlerId, pBuf);
 
-        /* Reverse keys (to little endian) */
-        WStrReverseCpy(pubKeyX, pKey->pubKey_x, SEC_ECC_KEY_LEN);
-        WStrReverseCpy(pubKeyY, pKey->pubKey_y, SEC_ECC_KEY_LEN);
+    /* Reverse keys (to little endian) */
+    WStrReverseCpy(pubKeyX, pKey->pubKey_x, SEC_ECC_KEY_LEN);
+    WStrReverseCpy(pubKeyY, pKey->pubKey_y, SEC_ECC_KEY_LEN);
 
-        /* Request the DH Key via HCI */
-        HciLeGenerateDHKey(pubKeyX, pubKeyY);
+    /* Request the DH Key via HCI */
+    HciLeGenerateDHKey(pubKeyX, pubKeyY);
 
-        return TRUE;
-    }
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -174,7 +177,7 @@ bool_t SecEccGenSharedSecret(secEccKey_t *pKey, wsfHandlerId_t handlerId, uint16
 /*************************************************************************************************/
 void SecEccInit()
 {
-    secCb.hciCbackTbl[SEC_TYPE_DH] = SecEccHciCback;
+  secCb.hciCbackTbl[SEC_TYPE_DH] = SecEccHciCback;
 }
 
 #endif /* SEC_ECC_CFG */

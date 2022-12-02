@@ -36,1487 +36,1481 @@ extern "C" {
 #endif
 
 /*! \brief  Version number. */
-#define LL_VER_NUM 1366
+#define LL_VER_NUM          1366
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief      The following status values are used in the LL API. */
-typedef enum {
-    LL_SUCCESS = 0x00,
-    LL_ERROR_CODE_UNKNOWN_HCI_CMD = 0x01,
-    LL_ERROR_CODE_UNKNOWN_CONN_ID = 0x02,
-    LL_ERROR_CODE_HW_FAILURE = 0x03,
-    LL_ERROR_CODE_PAGE_TIMEOUT = 0x04,
-    LL_ERROR_CODE_AUTH_FAILURE = 0x05,
-    LL_ERROR_CODE_PIN_KEY_MISSING = 0x06,
-    LL_ERROR_CODE_MEM_CAP_EXCEEDED = 0x07,
-    LL_ERROR_CODE_CONN_TIMEOUT = 0x08,
-    LL_ERROR_CODE_CONN_LIMIT_EXCEEDED = 0x09,
-    LL_ERROR_CODE_SYNCH_CONN_LIMIT_EXCEEDED = 0x0A,
-    LL_ERROR_CODE_ACL_CONN_ALREADY_EXISTS = 0x0B,
-    LL_ERROR_CODE_CMD_DISALLOWED = 0x0C,
-    LL_ERROR_CODE_CONN_REJ_LIMITED_RESOURCES = 0x0D,
-    LL_ERROR_CODE_CONN_REJECTED_SECURITY_REASONS = 0x0E,
-    LL_ERROR_CODE_CONN_REJECTED_UNACCEPTABLE_BDADDR = 0x0F,
-    LL_ERROR_CODE_CONN_ACCEPT_TIMEOUT_EXCEEDED = 0x10,
-    LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE = 0x11,
-    LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS = 0x12,
-    LL_ERROR_CODE_REMOTE_USER_TERM_CONN = 0x13,
-    LL_ERROR_CODE_REMOTE_DEVICE_TERM_CONN_LOW_RESOURCES = 0x14,
-    LL_ERROR_CODE_REMOTE_DEVICE_TERM_CONN_POWER_OFF = 0x15,
-    LL_ERROR_CODE_CONN_TERM_BY_LOCAL_HOST = 0x16,
-    LL_ERROR_CODE_REPEATED_ATTEMPTS = 0x17,
-    LL_ERROR_CODE_PAIRING_NOT_ALLOWED = 0x18,
-    LL_ERROR_CODE_UNKNOWN_LMP_PDU = 0x19,
-    LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE = 0x1A,
-    LL_ERROR_CODE_SCO_OFFSET_REJ = 0x1B,
-    LL_ERROR_CODE_SCO_INTERVAL_REJ = 0x1C,
-    LL_ERROR_CODE_SCO_AIR_MODE_REJ = 0x1D,
-    LL_ERROR_CODE_INVALID_LMP_PARAMS = 0x1E,
-    LL_ERROR_CODE_UNSPECIFIED_ERROR = 0x1F,
-    LL_ERROR_CODE_UNSUPPORTED_LMP_PARAM_VAL = 0x20,
-    LL_ERROR_CODE_ROLE_CHANGE_NOT_ALLOWED = 0x21,
-    LL_ERROR_CODE_LMP_LL_RESP_TIMEOUT = 0x22,
-    LL_ERROR_CODE_LMP_ERR_TRANSACTION_COLLISION = 0x23,
-    LL_ERROR_CODE_LMP_PDU_NOT_ALLOWED = 0x24,
-    LL_ERROR_CODE_ENCRYPT_MODE_NOT_ACCEPTABLE = 0x25,
-    LL_ERROR_CODE_LINK_KEY_CAN_NOT_BE_CHANGED = 0x26,
-    LL_ERROR_CODE_REQ_QOS_NOT_SUPPORTED = 0x27,
-    LL_ERROR_CODE_INSTANT_PASSED = 0x28,
-    LL_ERROR_CODE_PAIRING_WITH_UNIT_KEY_NOT_SUPPORTED = 0x29,
-    LL_ERROR_CODE_DIFFERENT_TRANSACTION_COLLISION = 0x2A,
-    LL_ERROR_CODE_RESERVED1 = 0x2B,
-    LL_ERROR_CODE_QOS_UNACCEPTABLE_PARAM = 0x2C,
-    LL_ERROR_CODE_QOS_REJ = 0x2D,
-    LL_ERROR_CODE_CHAN_ASSESSMENT_NOT_SUPPORTED = 0x2E,
-    LL_ERROR_CODE_INSUFFICIENT_SECURITY = 0x2F,
-    LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE = 0x30,
-    LL_ERROR_CODE_RESERVED2 = 0x31,
-    LL_ERROR_CODE_ROLE_SWITCH_PENDING = 0x32,
-    LL_ERROR_CODE_RESERVED3 = 0x33,
-    LL_ERROR_CODE_RESERVED_SLOT_VIOLATION = 0x34,
-    LL_ERROR_CODE_ROLE_SWITCH_FAILED = 0x35,
-    LL_ERROR_CODE_EXTENDED_INQUIRY_RESP_TOO_LARGE = 0x36,
-    LL_ERROR_CODE_SIMPLE_PAIRING_NOT_SUPPORTED_BY_HOST = 0x37,
-    LL_ERROR_CODE_HOST_BUSY_PAIRING = 0x38,
-    LL_ERROR_CODE_CONN_REJ_NO_SUITABLE_CHAN_FOUND = 0x39,
-    LL_ERROR_CODE_CONTROLLER_BUSY = 0x3A,
-    LL_ERROR_CODE_UNACCEPTABLE_CONN_INTERVAL = 0x3B,
-    LL_ERROR_CODE_ADV_TIMEOUT = 0x3C,
-    LL_ERROR_CODE_CONN_TERM_MIC_FAILURE = 0x3D,
-    LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH = 0x3E,
-    LL_ERROR_CODE_MAC_CONN_FAILED = 0x3F,
-    LL_ERROR_CODE_COARSE_CLK_ADJ_REJ = 0x40,
-    LL_ERROR_CODE_TYPE0_SUBMAP_NOT_DEF = 0x41,
-    LL_ERROR_CODE_UNKNOWN_ADV_ID = 0x42,
-    LL_ERROR_CODE_LIMIT_REACHED = 0x43,
-    LL_ERROR_CODE_OP_CANCELLED_BY_HOST = 0x44,
-    LL_ERROR_CODE_PKT_TOO_LONG = 0x45
+typedef enum
+{
+  LL_SUCCESS                                            = 0x00,
+  LL_ERROR_CODE_UNKNOWN_HCI_CMD                         = 0x01,
+  LL_ERROR_CODE_UNKNOWN_CONN_ID                         = 0x02,
+  LL_ERROR_CODE_HW_FAILURE                              = 0x03,
+  LL_ERROR_CODE_PAGE_TIMEOUT                            = 0x04,
+  LL_ERROR_CODE_AUTH_FAILURE                            = 0x05,
+  LL_ERROR_CODE_PIN_KEY_MISSING                         = 0x06,
+  LL_ERROR_CODE_MEM_CAP_EXCEEDED                        = 0x07,
+  LL_ERROR_CODE_CONN_TIMEOUT                            = 0x08,
+  LL_ERROR_CODE_CONN_LIMIT_EXCEEDED                     = 0x09,
+  LL_ERROR_CODE_SYNCH_CONN_LIMIT_EXCEEDED               = 0x0A,
+  LL_ERROR_CODE_ACL_CONN_ALREADY_EXISTS                 = 0x0B,
+  LL_ERROR_CODE_CMD_DISALLOWED                          = 0x0C,
+  LL_ERROR_CODE_CONN_REJ_LIMITED_RESOURCES              = 0x0D,
+  LL_ERROR_CODE_CONN_REJECTED_SECURITY_REASONS          = 0x0E,
+  LL_ERROR_CODE_CONN_REJECTED_UNACCEPTABLE_BDADDR       = 0x0F,
+  LL_ERROR_CODE_CONN_ACCEPT_TIMEOUT_EXCEEDED            = 0x10,
+  LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE         = 0x11,
+  LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS                  = 0x12,
+  LL_ERROR_CODE_REMOTE_USER_TERM_CONN                   = 0x13,
+  LL_ERROR_CODE_REMOTE_DEVICE_TERM_CONN_LOW_RESOURCES   = 0x14,
+  LL_ERROR_CODE_REMOTE_DEVICE_TERM_CONN_POWER_OFF       = 0x15,
+  LL_ERROR_CODE_CONN_TERM_BY_LOCAL_HOST                 = 0x16,
+  LL_ERROR_CODE_REPEATED_ATTEMPTS                       = 0x17,
+  LL_ERROR_CODE_PAIRING_NOT_ALLOWED                     = 0x18,
+  LL_ERROR_CODE_UNKNOWN_LMP_PDU                         = 0x19,
+  LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE              = 0x1A,
+  LL_ERROR_CODE_SCO_OFFSET_REJ                          = 0x1B,
+  LL_ERROR_CODE_SCO_INTERVAL_REJ                        = 0x1C,
+  LL_ERROR_CODE_SCO_AIR_MODE_REJ                        = 0x1D,
+  LL_ERROR_CODE_INVALID_LMP_PARAMS                      = 0x1E,
+  LL_ERROR_CODE_UNSPECIFIED_ERROR                       = 0x1F,
+  LL_ERROR_CODE_UNSUPPORTED_LMP_PARAM_VAL               = 0x20,
+  LL_ERROR_CODE_ROLE_CHANGE_NOT_ALLOWED                 = 0x21,
+  LL_ERROR_CODE_LMP_LL_RESP_TIMEOUT                     = 0x22,
+  LL_ERROR_CODE_LMP_ERR_TRANSACTION_COLLISION           = 0x23,
+  LL_ERROR_CODE_LMP_PDU_NOT_ALLOWED                     = 0x24,
+  LL_ERROR_CODE_ENCRYPT_MODE_NOT_ACCEPTABLE             = 0x25,
+  LL_ERROR_CODE_LINK_KEY_CAN_NOT_BE_CHANGED             = 0x26,
+  LL_ERROR_CODE_REQ_QOS_NOT_SUPPORTED                   = 0x27,
+  LL_ERROR_CODE_INSTANT_PASSED                          = 0x28,
+  LL_ERROR_CODE_PAIRING_WITH_UNIT_KEY_NOT_SUPPORTED     = 0x29,
+  LL_ERROR_CODE_DIFFERENT_TRANSACTION_COLLISION         = 0x2A,
+  LL_ERROR_CODE_RESERVED1                               = 0x2B,
+  LL_ERROR_CODE_QOS_UNACCEPTABLE_PARAM                  = 0x2C,
+  LL_ERROR_CODE_QOS_REJ                                 = 0x2D,
+  LL_ERROR_CODE_CHAN_ASSESSMENT_NOT_SUPPORTED           = 0x2E,
+  LL_ERROR_CODE_INSUFFICIENT_SECURITY                   = 0x2F,
+  LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE            = 0x30,
+  LL_ERROR_CODE_RESERVED2                               = 0x31,
+  LL_ERROR_CODE_ROLE_SWITCH_PENDING                     = 0x32,
+  LL_ERROR_CODE_RESERVED3                               = 0x33,
+  LL_ERROR_CODE_RESERVED_SLOT_VIOLATION                 = 0x34,
+  LL_ERROR_CODE_ROLE_SWITCH_FAILED                      = 0x35,
+  LL_ERROR_CODE_EXTENDED_INQUIRY_RESP_TOO_LARGE         = 0x36,
+  LL_ERROR_CODE_SIMPLE_PAIRING_NOT_SUPPORTED_BY_HOST    = 0x37,
+  LL_ERROR_CODE_HOST_BUSY_PAIRING                       = 0x38,
+  LL_ERROR_CODE_CONN_REJ_NO_SUITABLE_CHAN_FOUND         = 0x39,
+  LL_ERROR_CODE_CONTROLLER_BUSY                         = 0x3A,
+  LL_ERROR_CODE_UNACCEPTABLE_CONN_INTERVAL              = 0x3B,
+  LL_ERROR_CODE_ADV_TIMEOUT                             = 0x3C,
+  LL_ERROR_CODE_CONN_TERM_MIC_FAILURE                   = 0x3D,
+  LL_ERROR_CODE_CONN_FAILED_TO_ESTABLISH                = 0x3E,
+  LL_ERROR_CODE_MAC_CONN_FAILED                         = 0x3F,
+  LL_ERROR_CODE_COARSE_CLK_ADJ_REJ                      = 0x40,
+  LL_ERROR_CODE_TYPE0_SUBMAP_NOT_DEF                    = 0x41,
+  LL_ERROR_CODE_UNKNOWN_ADV_ID                          = 0x42,
+  LL_ERROR_CODE_LIMIT_REACHED                           = 0x43,
+  LL_ERROR_CODE_OP_CANCELLED_BY_HOST                    = 0x44,
+  LL_ERROR_CODE_PKT_TOO_LONG                            = 0x45
 } LlStatus_t;
 
 /*! \addtogroup LL_API_INIT
  *  \{ */
 
 /*! \brief      LL runtime configuration parameters. */
-typedef struct {
-    /* Device */
-    uint16_t compId; /*!< Company ID (default to ARM Ltd. ID). */
-    uint16_t implRev; /*!< Implementation revision number. */
-    uint8_t btVer; /*!< Core specification implementation level (LL_VER_BT_CORE_SPEC_4_2). */
-    uint32_t _align32; /*!< Unused. Align next field to word boundary. */
-    /* Advertiser */
-    uint8_t maxAdvSets; /*!< Maximum number of advertising sets. */
-    uint8_t maxAdvReports; /*!< Maximum number of pending legacy or extended advertising reports. */
-    uint16_t maxExtAdvDataLen; /*!< Maximum extended advertising data size. */
-    uint8_t defExtAdvDataFrag; /*!< Default extended advertising data fragmentation size. */
-    uint16_t auxDelayUsec; /*!< Auxiliary Offset delay above T_MAFS in microseconds. */
-    uint16_t
-        auxPtrOffsetUsec; /*!< Delay of auxiliary packet in microseconds from the time specified by auxPtr. */
-    /* Scanner */
-    uint8_t maxScanReqRcvdEvt; /*!< Maximum scan request received events. */
-    uint16_t maxExtScanDataLen; /*!< Maximum extended scan data size. */
-    /* Connection */
-    uint8_t maxConn; /*!< Maximum number of connections. */
-    uint8_t numTxBufs; /*!< Default number of transmit buffers. */
-    uint8_t numRxBufs; /*!< Default number of receive buffers. */
-    uint16_t maxAclLen; /*!< Maximum ACL buffer size. */
-    int8_t defTxPwrLvl; /*!< Default Tx power level for connections. */
-    uint8_t
-        ceJitterUsec; /*!< Allowable CE jitter on a slave (account for master's sleep clock resolution). */
-    /* ISO */
-    uint8_t numIsoTxBuf; /*!< Default number of ISO transmit buffers. */
-    uint8_t numIsoRxBuf; /*!< Default number of ISO receive buffers. */
-    uint16_t maxIsoSduLen; /*!< Maximum ISO SDU size between host and controller. */
-    uint16_t maxIsoPduLen; /*!< Maximum ISO Data PDU buffer size. */
-    /* CIS */
-    uint8_t maxCig; /*!< Maximum number of CIG. */
-    uint8_t maxCis; /*!< Maximum number of CIS, it is shared by the CIGs. */
-    uint16_t cisSubEvtSpaceDelay; /*!< Subevent spacing above T_MSS in microsecond. */
-    /* BIS */
-    uint8_t maxBig; /*!< Maximum number of BIG. */
-    uint8_t maxBis; /*!< Maximum number of BIS. */
-    /* DTM */
-    uint16_t dtmRxSyncMs; /*!< DTM Rx synchronization window in milliseconds. */
-    /* PHY */
-    bool_t phy2mSup; /*!< 2M PHY supported. */
-    bool_t phyCodedSup; /*!< Coded PHY supported. */
-    bool_t stableModIdxTxSup; /*!< Tx stable modulation index supported. */
-    bool_t stableModIdxRxSup; /*!< Rx stable modulation index supported. */
+typedef struct
+{
+  /* Device */
+  uint16_t  compId;                 /*!< Company ID (default to ARM Ltd. ID). */
+  uint16_t  implRev;                /*!< Implementation revision number. */
+  uint8_t   btVer;                  /*!< Core specification implementation level (LL_VER_BT_CORE_SPEC_4_2). */
+  uint32_t  _align32;               /*!< Unused. Align next field to word boundary. */
+  /* Advertiser */
+  uint8_t   maxAdvSets;             /*!< Maximum number of advertising sets. */
+  uint8_t   maxAdvReports;          /*!< Maximum number of pending legacy or extended advertising reports. */
+  uint16_t  maxExtAdvDataLen;       /*!< Maximum extended advertising data size. */
+  uint8_t   defExtAdvDataFrag;      /*!< Default extended advertising data fragmentation size. */
+  uint16_t  auxDelayUsec;           /*!< Auxiliary Offset delay above T_MAFS in microseconds. */
+  uint16_t  auxPtrOffsetUsec;       /*!< Delay of auxiliary packet in microseconds from the time specified by auxPtr. */
+  /* Scanner */
+  uint8_t   maxScanReqRcvdEvt;      /*!< Maximum scan request received events. */
+  uint16_t  maxExtScanDataLen;      /*!< Maximum extended scan data size. */
+  /* Connection */
+  uint8_t   maxConn;                /*!< Maximum number of connections. */
+  uint8_t   numTxBufs;              /*!< Default number of transmit buffers. */
+  uint8_t   numRxBufs;              /*!< Default number of receive buffers. */
+  uint16_t  maxAclLen;              /*!< Maximum ACL buffer size. */
+  int8_t    defTxPwrLvl;            /*!< Default Tx power level for connections. */
+  uint8_t   ceJitterUsec;           /*!< Allowable CE jitter on a slave (account for master's sleep clock resolution). */
+  /* ISO */
+  uint8_t   numIsoTxBuf;            /*!< Default number of ISO transmit buffers. */
+  uint8_t   numIsoRxBuf;            /*!< Default number of ISO receive buffers. */
+  uint16_t  maxIsoSduLen;           /*!< Maximum ISO SDU size between host and controller. */
+  uint16_t  maxIsoPduLen;           /*!< Maximum ISO Data PDU buffer size. */
+  /* CIS */
+  uint8_t   maxCig;                 /*!< Maximum number of CIG. */
+  uint8_t   maxCis;                 /*!< Maximum number of CIS, it is shared by the CIGs. */
+  uint16_t  cisSubEvtSpaceDelay;    /*!< Subevent spacing above T_MSS in microsecond. */
+  /* BIS */
+  uint8_t   maxBig;                 /*!< Maximum number of BIG. */
+  uint8_t   maxBis;                 /*!< Maximum number of BIS. */
+  /* DTM */
+  uint16_t  dtmRxSyncMs;            /*!< DTM Rx synchronization window in milliseconds. */
+  /* PHY */
+  bool_t    phy2mSup;               /*!< 2M PHY supported. */
+  bool_t    phyCodedSup;            /*!< Coded PHY supported. */
+  bool_t    stableModIdxTxSup;      /*!< Tx stable modulation index supported. */
+  bool_t    stableModIdxRxSup;      /*!< Rx stable modulation index supported. */
 } LlRtCfg_t;
 
-/*! \} */ /* LL_API_INIT */
+/*! \} */    /* LL_API_INIT */
 
 /*! \addtogroup LL_API_DEVICE
  *  \{ */
 
 /* The supported state bitmask indicates the LE states supported by the LL. */
-#define LL_SUP_STATE_NON_CONN_ADV \
-    (UINT64_C(1) << 0) /*!< Non-connectable Advertising State supported. */
-#define LL_SUP_STATE_SCAN_ADV (UINT64_C(1) << 1) /*!< Scannable Advertising State supported. */
-#define LL_SUP_STATE_CONN_ADV (UINT64_C(1) << 2) /*!< Connectable Advertising State supported. */
-#define LL_SUP_STATE_HI_DUTY_DIR_ADV \
-    (UINT64_C(1) << 3) /*!< High Duty Cycle Directed Advertising State supported. */
-#define LL_SUP_STATE_PASS_SCAN (UINT64_C(1) << 4) /*!< Passive Scanning State supported. */
-#define LL_SUP_STATE_ACT_SCAN (UINT64_C(1) << 5) /*!< Active Scanning State supported. */
-#define LL_SUP_STATE_INIT \
-    (UINT64_C(1)          \
-     << 6) /*!< Initiating State supported. Connection State in the Master Role supported is also supported. */
-#define LL_SUP_STATE_CONN_SLV \
-    (UINT64_C(1) << 7) /*!< Connection State in the Slave Role supported. */
-#define LL_SUP_STATE_NON_CONN_ADV_AND_PASS_SCAN \
-    (UINT64_C(1)                                \
-     << 8) /*!< Non-connectable Advertising State and Passive Scanning State combination supported. */
-#define LL_SUP_STATE_SCAN_ADV_AND_PASS_SCAN \
-    (UINT64_C(1)                            \
-     << 9) /*!< Scannable Advertising State and Passive Scanning State combination supported. */
-#define LL_SUP_STATE_CONN_ADV_AND_PASS_SCAN \
-    (UINT64_C(1)                            \
-     << 10) /*!< Connectable Advertising State and Passive Scanning State combination supported. */
-#define LL_SUP_STATE_HI_DUTY_DIR_ADV_AND_PASS_SCAN \
-    (UINT64_C(1)                                   \
-     << 11) /*!< Directed Advertising State and Passive Scanning State combination supported. */
-#define LL_SUP_STATE_NON_CONN_ADV_AND_ACT_SCAN \
-    (UINT64_C(1)                               \
-     << 12) /*!< Non-connectable Advertising State and Active Scanning State combination supported. */
-#define LL_SUP_STATE_SCAN_ADV_AND_ACT_SCAN \
-    (UINT64_C(1)                           \
-     << 13) /*!< Scannable Advertising State and Active Scanning State combination supported. */
-#define LL_SUP_STATE_CONN_ADV_AND_ACT_SCAN \
-    (UINT64_C(1)                           \
-     << 14) /*!< Connectable Advertising State and Active Scanning State combination supported. */
-#define LL_SUP_STATE_HI_DUTY_DIR_ADV_ACT_SCAN \
-    (UINT64_C(1)                              \
-     << 15) /*!< Directed Advertising State and Active Scanning State combination supported. */
-#define LL_SUP_STATE_NON_CONN_ADV_AND_INIT \
-    (UINT64_C(1)                           \
-     << 16) /*!< Non-connectable Advertising State and Initiating State combination supported. */
-#define LL_SUP_STATE_SCAN_ADV_AND_INIT \
-    (UINT64_C(1)                       \
-     << 17) /*!< Scannable Advertising State and Initiating State combination supported */
-#define LL_SUP_STATE_NON_CONN_ADV_MST \
-    (UINT64_C(1)                      \
-     << 18) /*!< Non-connectable Advertising State and Master Role combination supported. */
-#define LL_SUP_STATE_SCAN_ADV_MST \
-    (UINT64_C(1) << 19) /*!< Scannable Advertising State and Master Role combination supported. */
-#define LL_SUP_STATE_NON_CONN_ADV_SLV \
-    (UINT64_C(1)                      \
-     << 20) /*!< Non-connectable Advertising State and Slave Role combination supported. */
-#define LL_SUP_STATE_SCAN_ADV_SLV \
-    (UINT64_C(1) << 21) /*!< Scannable Advertising State and Slave Role combination supported. */
-#define LL_SUP_STATE_PASS_SCAN_AND_INIT \
-    (UINT64_C(1) << 22) /*!< Passive Scanning State and Initiating State combination supported. */
-#define LL_SUP_STATE_ACT_SCAN_AND_INIT \
-    (UINT64_C(1) << 23) /*!< Active Scanning State and Initiating State combination supported. */
-#define LL_SUP_STATE_PASS_SCAN_MST \
-    (UINT64_C(1) << 24) /*!< Passive Scanning State and Master Role combination supported. */
-#define LL_SUP_STATE_ACT_SCAN_MST \
-    (UINT64_C(1) << 25) /*!< Active Scanning State and Master Role combination supported. */
-#define LL_SUP_STATE_PASS_SCAN_SLV \
-    (UINT64_C(1) << 26) /*!< Passive Scanning state and Slave Role combination supported. */
-#define LL_SUP_STATE_ACT_SCAN_SLV \
-    (UINT64_C(1) << 27) /*!< Active Scanning state and Slave Role combination supported. */
-#define LL_SUP_STATE_INIT_MST \
-    (UINT64_C(1)              \
-     << 28) /*!< Initiating State and Master Role combination supported. Master Role and Master Role combination is also supported. */
-#define LL_SUP_STATE_LO_DUTY_DIR_ADV \
-    (UINT64_C(1) << 29) /*!< Low Duty Cycle Directed Advertising State. */
-#define LL_SUP_STATE_LO_DUTY_DIR_ADV_AND_PASS_SCAN \
-    (UINT64_C(1)                                   \
-     << 30) /*!< Low Duty Cycle Directed Advertising and Passive Scanning State combination supported. */
-#define LL_SUP_STATE_LO_DUTY_DIR_ADV_AND_ACT_SCAN \
-    (UINT64_C(1)                                  \
-     << 31) /*!< Low Duty Cycle Directed Advertising and Active Scanning State combination supported. */
-#define LL_SUP_STATE_CONN_ADV_AND_INIT \
-    (UINT64_C(1)                       \
-     << 32) /*!< Connectable Advertising State and Initiating State combination supported. */
-#define LL_SUP_STATE_HI_DUTY_DIR_ADV_AND_INIT \
-    (UINT64_C(1)                              \
-     << 33) /*!< High Duty Cycle Directed Advertising and Initiating combination supported. */
-#define LL_SUP_STATE_LO_DUTY_DIR_ADV_AND_INIT \
-    (UINT64_C(1)                              \
-     << 34) /*!< Low Duty Cycle Directed Advertising and Initiating combination supported. */
-#define LL_SUP_STATE_CONN_ADV_MST \
-    (UINT64_C(1) << 35) /*!< Connectable Advertising State and Master Role combination supported. */
-#define LL_SUP_STATE_HI_DUTY_DIR_ADV_MST \
-    (UINT64_C(1)                         \
-     << 36) /*!< High Duty Cycle Directed Advertising and Master Role combination supported. */
-#define LL_SUP_STATE_LO_DUTY_DIR_ADV_MST \
-    (UINT64_C(1)                         \
-     << 37) /*!< Low Duty Cycle Directed Advertising and Master Role combination supported. */
-#define LL_SUP_STATE_CONN_ADV_SLV \
-    (UINT64_C(1) << 38) /*!< Connectable Advertising State and Slave Role combination supported. */
-#define LL_SUP_STATE_HI_DUTY_DIR_ADV_SLV \
-    (UINT64_C(1)                         \
-     << 39) /*!< High Duty Cycle Directed Advertising and Slave Role combination supported. */
-#define LL_SUP_STATE_LO_DUTY_DIR_ADV_SLV \
-    (UINT64_C(1)                         \
-     << 40) /*!< Low Duty Cycle Directed Advertising and Slave Role combination supported. */
-#define LL_SUP_STATE_INIT_SLV \
-    (UINT64_C(1) << 41) /*!< Initiating State and Slave Role combination. */
+#define LL_SUP_STATE_NON_CONN_ADV                  (UINT64_C(1) <<  0)    /*!< Non-connectable Advertising State supported. */
+#define LL_SUP_STATE_SCAN_ADV                      (UINT64_C(1) <<  1)    /*!< Scannable Advertising State supported. */
+#define LL_SUP_STATE_CONN_ADV                      (UINT64_C(1) <<  2)    /*!< Connectable Advertising State supported. */
+#define LL_SUP_STATE_HI_DUTY_DIR_ADV               (UINT64_C(1) <<  3)    /*!< High Duty Cycle Directed Advertising State supported. */
+#define LL_SUP_STATE_PASS_SCAN                     (UINT64_C(1) <<  4)    /*!< Passive Scanning State supported. */
+#define LL_SUP_STATE_ACT_SCAN                      (UINT64_C(1) <<  5)    /*!< Active Scanning State supported. */
+#define LL_SUP_STATE_INIT                          (UINT64_C(1) <<  6)    /*!< Initiating State supported. Connection State in the Master Role supported is also supported. */
+#define LL_SUP_STATE_CONN_SLV                      (UINT64_C(1) <<  7)    /*!< Connection State in the Slave Role supported. */
+#define LL_SUP_STATE_NON_CONN_ADV_AND_PASS_SCAN    (UINT64_C(1) <<  8)    /*!< Non-connectable Advertising State and Passive Scanning State combination supported. */
+#define LL_SUP_STATE_SCAN_ADV_AND_PASS_SCAN        (UINT64_C(1) <<  9)    /*!< Scannable Advertising State and Passive Scanning State combination supported. */
+#define LL_SUP_STATE_CONN_ADV_AND_PASS_SCAN        (UINT64_C(1) << 10)    /*!< Connectable Advertising State and Passive Scanning State combination supported. */
+#define LL_SUP_STATE_HI_DUTY_DIR_ADV_AND_PASS_SCAN (UINT64_C(1) << 11)    /*!< Directed Advertising State and Passive Scanning State combination supported. */
+#define LL_SUP_STATE_NON_CONN_ADV_AND_ACT_SCAN     (UINT64_C(1) << 12)    /*!< Non-connectable Advertising State and Active Scanning State combination supported. */
+#define LL_SUP_STATE_SCAN_ADV_AND_ACT_SCAN         (UINT64_C(1) << 13)    /*!< Scannable Advertising State and Active Scanning State combination supported. */
+#define LL_SUP_STATE_CONN_ADV_AND_ACT_SCAN         (UINT64_C(1) << 14)    /*!< Connectable Advertising State and Active Scanning State combination supported. */
+#define LL_SUP_STATE_HI_DUTY_DIR_ADV_ACT_SCAN      (UINT64_C(1) << 15)    /*!< Directed Advertising State and Active Scanning State combination supported. */
+#define LL_SUP_STATE_NON_CONN_ADV_AND_INIT         (UINT64_C(1) << 16)    /*!< Non-connectable Advertising State and Initiating State combination supported. */
+#define LL_SUP_STATE_SCAN_ADV_AND_INIT             (UINT64_C(1) << 17)    /*!< Scannable Advertising State and Initiating State combination supported */
+#define LL_SUP_STATE_NON_CONN_ADV_MST              (UINT64_C(1) << 18)    /*!< Non-connectable Advertising State and Master Role combination supported. */
+#define LL_SUP_STATE_SCAN_ADV_MST                  (UINT64_C(1) << 19)    /*!< Scannable Advertising State and Master Role combination supported. */
+#define LL_SUP_STATE_NON_CONN_ADV_SLV              (UINT64_C(1) << 20)    /*!< Non-connectable Advertising State and Slave Role combination supported. */
+#define LL_SUP_STATE_SCAN_ADV_SLV                  (UINT64_C(1) << 21)    /*!< Scannable Advertising State and Slave Role combination supported. */
+#define LL_SUP_STATE_PASS_SCAN_AND_INIT            (UINT64_C(1) << 22)    /*!< Passive Scanning State and Initiating State combination supported. */
+#define LL_SUP_STATE_ACT_SCAN_AND_INIT             (UINT64_C(1) << 23)    /*!< Active Scanning State and Initiating State combination supported. */
+#define LL_SUP_STATE_PASS_SCAN_MST                 (UINT64_C(1) << 24)    /*!< Passive Scanning State and Master Role combination supported. */
+#define LL_SUP_STATE_ACT_SCAN_MST                  (UINT64_C(1) << 25)    /*!< Active Scanning State and Master Role combination supported. */
+#define LL_SUP_STATE_PASS_SCAN_SLV                 (UINT64_C(1) << 26)    /*!< Passive Scanning state and Slave Role combination supported. */
+#define LL_SUP_STATE_ACT_SCAN_SLV                  (UINT64_C(1) << 27)    /*!< Active Scanning state and Slave Role combination supported. */
+#define LL_SUP_STATE_INIT_MST                      (UINT64_C(1) << 28)    /*!< Initiating State and Master Role combination supported. Master Role and Master Role combination is also supported. */
+#define LL_SUP_STATE_LO_DUTY_DIR_ADV               (UINT64_C(1) << 29)    /*!< Low Duty Cycle Directed Advertising State. */
+#define LL_SUP_STATE_LO_DUTY_DIR_ADV_AND_PASS_SCAN (UINT64_C(1) << 30)    /*!< Low Duty Cycle Directed Advertising and Passive Scanning State combination supported. */
+#define LL_SUP_STATE_LO_DUTY_DIR_ADV_AND_ACT_SCAN  (UINT64_C(1) << 31)    /*!< Low Duty Cycle Directed Advertising and Active Scanning State combination supported. */
+#define LL_SUP_STATE_CONN_ADV_AND_INIT             (UINT64_C(1) << 32)    /*!< Connectable Advertising State and Initiating State combination supported. */
+#define LL_SUP_STATE_HI_DUTY_DIR_ADV_AND_INIT      (UINT64_C(1) << 33)    /*!< High Duty Cycle Directed Advertising and Initiating combination supported. */
+#define LL_SUP_STATE_LO_DUTY_DIR_ADV_AND_INIT      (UINT64_C(1) << 34)    /*!< Low Duty Cycle Directed Advertising and Initiating combination supported. */
+#define LL_SUP_STATE_CONN_ADV_MST                  (UINT64_C(1) << 35)    /*!< Connectable Advertising State and Master Role combination supported. */
+#define LL_SUP_STATE_HI_DUTY_DIR_ADV_MST           (UINT64_C(1) << 36)    /*!< High Duty Cycle Directed Advertising and Master Role combination supported. */
+#define LL_SUP_STATE_LO_DUTY_DIR_ADV_MST           (UINT64_C(1) << 37)    /*!< Low Duty Cycle Directed Advertising and Master Role combination supported. */
+#define LL_SUP_STATE_CONN_ADV_SLV                  (UINT64_C(1) << 38)    /*!< Connectable Advertising State and Slave Role combination supported. */
+#define LL_SUP_STATE_HI_DUTY_DIR_ADV_SLV           (UINT64_C(1) << 39)    /*!< High Duty Cycle Directed Advertising and Slave Role combination supported. */
+#define LL_SUP_STATE_LO_DUTY_DIR_ADV_SLV           (UINT64_C(1) << 40)    /*!< Low Duty Cycle Directed Advertising and Slave Role combination supported. */
+#define LL_SUP_STATE_INIT_SLV                      (UINT64_C(1) << 41)    /*!< Initiating State and Slave Role combination. */
 
 /*! The features bitmask indicates the LE features supported by the LL. */
 
 /* --- Core Spec 4.0 --- */
-#define LL_FEAT_ENCRYPTION (UINT64_C(1) << 0) /*!< Encryption supported. */
+#define LL_FEAT_ENCRYPTION                          (UINT64_C(1) <<  0)   /*!< Encryption supported. */
 /* --- Core Spec 4.2 --- */
-#define LL_FEAT_CONN_PARAM_REQ_PROC \
-    (UINT64_C(1) << 1) /*!< Connection Parameters Request Procedure supported. */
-#define LL_FEAT_EXT_REJECT_IND (UINT64_C(1) << 2) /*!< Extended Reject Indication supported. */
-#define LL_FEAT_SLV_INIT_FEAT_EXCH \
-    (UINT64_C(1) << 3) /*!< Slave-Initiated Features Exchange supported. */
-#define LL_FEAT_LE_PING (UINT64_C(1) << 4) /*!< LE Ping supported. */
-#define LL_FEAT_DATA_LEN_EXT (UINT64_C(1) << 5) /*!< Data Length Extension supported. */
-#define LL_FEAT_PRIVACY (UINT64_C(1) << 6) /*!< LL Privacy supported. */
-#define LL_FEAT_EXT_SCAN_FILT_POLICY \
-    (UINT64_C(1) << 7) /*!< Extended Scan Filter Policy supported. */
+#define LL_FEAT_CONN_PARAM_REQ_PROC                 (UINT64_C(1) <<  1)   /*!< Connection Parameters Request Procedure supported. */
+#define LL_FEAT_EXT_REJECT_IND                      (UINT64_C(1) <<  2)   /*!< Extended Reject Indication supported. */
+#define LL_FEAT_SLV_INIT_FEAT_EXCH                  (UINT64_C(1) <<  3)   /*!< Slave-Initiated Features Exchange supported. */
+#define LL_FEAT_LE_PING                             (UINT64_C(1) <<  4)   /*!< LE Ping supported. */
+#define LL_FEAT_DATA_LEN_EXT                        (UINT64_C(1) <<  5)   /*!< Data Length Extension supported. */
+#define LL_FEAT_PRIVACY                             (UINT64_C(1) <<  6)   /*!< LL Privacy supported. */
+#define LL_FEAT_EXT_SCAN_FILT_POLICY                (UINT64_C(1) <<  7)   /*!< Extended Scan Filter Policy supported. */
 /* --- Core Spec 5.0 --- */
-#define LL_FEAT_LE_2M_PHY (UINT64_C(1) << 8) /*!< LE 2M PHY supported. */
-#define LL_FEAT_STABLE_MOD_IDX_TRANSMITTER \
-    (UINT64_C(1) << 9) /*!< Stable Modulation Index - Transmitter supported. */
-#define LL_FEAT_STABLE_MOD_IDX_RECEIVER \
-    (UINT64_C(1) << 10) /*!< Stable Modulation Index - Receiver supported. */
-#define LL_FEAT_LE_CODED_PHY (UINT64_C(1) << 11) /*!< LE Coded PHY supported. */
-#define LL_FEAT_LE_EXT_ADV (UINT64_C(1) << 12) /*!< LE Extended Advertising supported. */
-#define LL_FEAT_LE_PER_ADV (UINT64_C(1) << 13) /*!< LE Periodic Advertising supported. */
-#define LL_FEAT_CH_SEL_2 (UINT64_C(1) << 14) /*!< Channel Selection Algorithm #2 supported. */
-#define LL_FEAT_LE_POWER_CLASS_1 (UINT64_C(1) << 15) /*!< LE Power Class 1 supported. */
-#define LL_FEAT_MIN_NUM_USED_CHAN \
-    (UINT64_C(1) << 16) /*!< Minimum Number of Used Channels supported. */
+#define LL_FEAT_LE_2M_PHY                           (UINT64_C(1) <<  8)   /*!< LE 2M PHY supported. */
+#define LL_FEAT_STABLE_MOD_IDX_TRANSMITTER          (UINT64_C(1) <<  9)   /*!< Stable Modulation Index - Transmitter supported. */
+#define LL_FEAT_STABLE_MOD_IDX_RECEIVER             (UINT64_C(1) << 10)   /*!< Stable Modulation Index - Receiver supported. */
+#define LL_FEAT_LE_CODED_PHY                        (UINT64_C(1) << 11)   /*!< LE Coded PHY supported. */
+#define LL_FEAT_LE_EXT_ADV                          (UINT64_C(1) << 12)   /*!< LE Extended Advertising supported. */
+#define LL_FEAT_LE_PER_ADV                          (UINT64_C(1) << 13)   /*!< LE Periodic Advertising supported. */
+#define LL_FEAT_CH_SEL_2                            (UINT64_C(1) << 14)   /*!< Channel Selection Algorithm #2 supported. */
+#define LL_FEAT_LE_POWER_CLASS_1                    (UINT64_C(1) << 15)   /*!< LE Power Class 1 supported. */
+#define LL_FEAT_MIN_NUM_USED_CHAN                   (UINT64_C(1) << 16)   /*!< Minimum Number of Used Channels supported. */
 /* --- Core Spec 5.1 --- */
-#define LL_FEAT_CONN_CTE_REQ (UINT64_C(1) << 17) /*!< Connection CTE Request supported */
-#define LL_FEAT_CONN_CTE_RSP (UINT64_C(1) << 18) /*!< Connection CTE Response supported */
-#define LL_FEAT_CONNLESS_CTE_TRANS \
-    (UINT64_C(1) << 19) /*!< Connectionless CTE Transmitter supported */
-#define LL_FEAT_CONNLESS_CTE_RECV (UINT64_C(1) << 20) /*!< Connectionless CTE Receiver supported */
-#define LL_FEAT_ANTENNA_SWITCH_AOD \
-    (UINT64_C(1) << 21) /*!< Anetenna Switching during CTE Transmission (AoD) supported */
-#define LL_FEAT_ANTENNA_SWITCH_AOA \
-    (UINT64_C(1) << 22) /*!< Anetenna Switching during CTE Reception (AoA) supported */
-#define LL_FEAT_RECV_CTE (UINT64_C(1) << 23) /*!< Receive Constant Tone Extension supported */
-#define LL_FEAT_PAST_SENDER \
-    (UINT64_C(1) << 24) /*!< Periodic Advertising Sync Transfer – Sender supported. */
-#define LL_FEAT_PAST_RECIPIENT \
-    (UINT64_C(1) << 25) /*!< Periodic Advertising Sync Transfer – Recipient supported. */
-#define LL_FEAT_SCA_UPDATE (UINT64_C(1) << 26) /*!< Sleep Clock Accuracy Updates supported. */
-#define LL_FEAT_REMOTE_PUB_KEY_VALIDATION \
-    (UINT64_C(1) << 27) /*!< Remote Public Key Validation supported. */
+#define LL_FEAT_CONN_CTE_REQ                        (UINT64_C(1) << 17)   /*!< Connection CTE Request supported */
+#define LL_FEAT_CONN_CTE_RSP                        (UINT64_C(1) << 18)   /*!< Connection CTE Response supported */
+#define LL_FEAT_CONNLESS_CTE_TRANS                  (UINT64_C(1) << 19)   /*!< Connectionless CTE Transmitter supported */
+#define LL_FEAT_CONNLESS_CTE_RECV                   (UINT64_C(1) << 20)   /*!< Connectionless CTE Receiver supported */
+#define LL_FEAT_ANTENNA_SWITCH_AOD                  (UINT64_C(1) << 21)   /*!< Anetenna Switching during CTE Transmission (AoD) supported */
+#define LL_FEAT_ANTENNA_SWITCH_AOA                  (UINT64_C(1) << 22)   /*!< Anetenna Switching during CTE Reception (AoA) supported */
+#define LL_FEAT_RECV_CTE                            (UINT64_C(1) << 23)   /*!< Receive Constant Tone Extension supported */
+#define LL_FEAT_PAST_SENDER                         (UINT64_C(1) << 24)   /*!< Periodic Advertising Sync Transfer – Sender supported. */
+#define LL_FEAT_PAST_RECIPIENT                      (UINT64_C(1) << 25)   /*!< Periodic Advertising Sync Transfer – Recipient supported. */
+#define LL_FEAT_SCA_UPDATE                          (UINT64_C(1) << 26)   /*!< Sleep Clock Accuracy Updates supported. */
+#define LL_FEAT_REMOTE_PUB_KEY_VALIDATION           (UINT64_C(1) << 27)   /*!< Remote Public Key Validation supported. */
 /* --- Core Spec 5.2 --- */
-#define LL_FEAT_CIS_MASTER_ROLE \
-    (UINT64_C(1) << 28) /*!< Connected Isochronous Stream Master Role supported. */
-#define LL_FEAT_CIS_SLAVE_ROLE \
-    (UINT64_C(1) << 29) /*!< Connected Isochronous Stream Slave Role supported. */
-#define LL_FEAT_ISO_BROADCASTER (UINT64_C(1) << 30) /*!< Isochronous Broadcaster Role supported. */
-#define LL_FEAT_ISO_SYNC (UINT64_C(1) << 31) /*!< Isochronous Synchronizer Role supported. */
-#define LL_FEAT_ISO_HOST_SUPPORT (UINT64_C(1) << 32) /*!< Host support for ISO Channels. */
-#define LL_FEAT_POWER_CONTROL_REQUEST (UINT64_C(1) << 33) /*!< Power control requests supported. */
-#define LL_FEAT_POWER_CHANGE_IND \
-    (UINT64_C(1) << 34) /*!< Power control power change indication supported. */
-#define LL_FEAT_PATH_LOSS_MONITOR (UINT64_C(1) << 35) /*!< Path loss monitoring supported. */
+#define LL_FEAT_CIS_MASTER_ROLE                     (UINT64_C(1) << 28)   /*!< Connected Isochronous Stream Master Role supported. */
+#define LL_FEAT_CIS_SLAVE_ROLE                      (UINT64_C(1) << 29)   /*!< Connected Isochronous Stream Slave Role supported. */
+#define LL_FEAT_ISO_BROADCASTER                     (UINT64_C(1) << 30)   /*!< Isochronous Broadcaster Role supported. */
+#define LL_FEAT_ISO_SYNC                            (UINT64_C(1) << 31)   /*!< Isochronous Synchronizer Role supported. */
+#define LL_FEAT_ISO_HOST_SUPPORT                    (UINT64_C(1) << 32)   /*!< Host support for ISO Channels. */
+#define LL_FEAT_POWER_CONTROL_REQUEST               (UINT64_C(1) << 33)   /*!< Power control requests supported. */
+#define LL_FEAT_POWER_CHANGE_IND                    (UINT64_C(1) << 34)   /*!< Power control power change indication supported. */
+#define LL_FEAT_PATH_LOSS_MONITOR                   (UINT64_C(1) << 35)   /*!< Path loss monitoring supported. */
 
-#define LL_HOST_CONTROLLED_FEAT \
-    LL_FEAT_ISO_HOST_SUPPORT /*!< Feature bits controlled by the host. */
+#define LL_HOST_CONTROLLED_FEAT                     LL_FEAT_ISO_HOST_SUPPORT  /*!< Feature bits controlled by the host. */
 
-#define LL_FEAT_ALL_MASK \
-    (UINT64_C(           \
-        0x0000000FFF01FFFF)) /*!< All feature mask, need to be updated when new features are added. */
+#define LL_FEAT_ALL_MASK                            (UINT64_C(0x0000000FFF01FFFF))  /*!< All feature mask, need to be updated when new features are added. */
 
 /*! \brief      This parameter identifies the device role. */
-typedef enum {
-    LL_ROLE_MASTER = 0, /*!< Role is master. */
-    LL_ROLE_SLAVE = 1 /*!< Role is slave. */
+typedef enum
+{
+  LL_ROLE_MASTER                = 0,            /*!< Role is master. */
+  LL_ROLE_SLAVE                 = 1             /*!< Role is slave. */
 } LlRole_t;
 
 /*! \brief      Operational mode flags. */
-enum {
-    LL_OP_MODE_FLAG_ENA_VER_LLCP_STARTUP =
-        (1 << 0), /*!< Perform version exchange LLCP at connection establishment. */
-    LL_OP_MODE_FLAG_SLV_REQ_IMMED_ACK = (1 << 1), /*!< MD bit set if data transmitted. */
-    LL_OP_MODE_FLAG_BYPASS_CE_GUARD = (1 << 2), /*!< Bypass end of CE guard. */
-    LL_OP_MODE_FLAG_MST_RETX_AFTER_RX_NACK =
-        (1 << 3), /*!< Master retransmits after receiving NACK. */
-    LL_OP_MODE_FLAG_MST_IGNORE_CP_RSP = (1 << 4), /*!< Master ignores LL_CONNECTION_PARAM_RSP. */
-    LL_OP_MODE_FLAG_MST_UNCOND_CP_RSP =
-        (1 << 5), /*!< Master unconditionally accepts LL_CONNECTION_PARAM_RSP. */
-    /*!<   (LL_OP_MODE_FLAG_MST_IGNORE_CP_RSP must be cleared). */
-    LL_OP_MODE_FLAG_ENA_LEN_LLCP_STARTUP =
-        (1 << 6), /*!< Perform data length update LLCP at connection establishment. */
-    LL_OP_MODE_FLAG_REQ_SYM_PHY = (1 << 7), /*!< Require symmetric PHYs for connection. */
-    LL_OP_MODE_FLAG_ENA_FEAT_LLCP_STARTUP =
-        (1 << 8), /*!< Perform feature exchange LLCP at connection establishment. */
-    LL_OP_MODE_FLAG_SLV_DELAY_LLCP_STARTUP = (1 << 9), /*!< Slave delays LLCP startup procedures. */
-    LL_OP_MODE_FLAG_ENA_SLV_LATENCY_WAKEUP =
-        (1 << 10), /*!< Enable slave latency wake up upon data pending. */
-    LL_OP_MODE_FLAG_ENA_SLV_AUX_SCAN_RSP_ADI = (1 << 11), /*!< Enable ADI field for aux scan. */
-    LL_OP_MODE_FLAG_ENA_MST_CIS_NULL_PDU =
-        (1 << 12), /*!< Enable CIS master sends additional NULL PDU for acknowledge scheme. */
-    LL_OP_MODE_FLAG_ENA_SLV_AUX_IND_ADVA =
-        (1 << 13), /*!< AdvA will be included in AUX_ADV_IND instead of ADV_EXT_IND. */
-    LL_OP_MODE_FLAG_ENA_ADV_CHAN_RAND = (1 << 14), /*!< Enable advertising channel randomization. */
-    LL_OP_MODE_DISABLE_POWER_MONITOR = (1 << 15), /*!< Disable power monitoring. */
-    /* diagnostics only */
-    LL_OP_MODE_FLAG_ENA_ADV_DLY = (1 << 16), /*!< Enable advertising delay. */
-    LL_OP_MODE_FLAG_ENA_SCAN_BACKOFF = (1 << 17), /*!< Enable scan backoff. */
-    LL_OP_MODE_FLAG_ENA_WW = (1 << 18), /*!< Enable window widening. */
-    LL_OP_MODE_FLAG_ENA_SLV_LATENCY = (1 << 19), /*!< Enable slave latency. */
-    LL_OP_MODE_FLAG_ENA_LLCP_TIMER = (1 << 20), /*!< Enable LLCP timer. */
-    LL_OP_MODE_FLAG_IGNORE_CRC_ERR_TS =
-        (1 << 21), /*!< Ignore timestamp of RX packet with CRC error. */
-    LL_OP_MODE_FLAG_SLV_CRC_CLOSE =
-        (1 << 22) /*!< Close the connection event on receiving a CRC error. */
+enum
+{
+  LL_OP_MODE_FLAG_ENA_VER_LLCP_STARTUP        = (1 << 0),   /*!< Perform version exchange LLCP at connection establishment. */
+  LL_OP_MODE_FLAG_SLV_REQ_IMMED_ACK           = (1 << 1),   /*!< MD bit set if data transmitted. */
+  LL_OP_MODE_FLAG_BYPASS_CE_GUARD             = (1 << 2),   /*!< Bypass end of CE guard. */
+  LL_OP_MODE_FLAG_MST_RETX_AFTER_RX_NACK      = (1 << 3),   /*!< Master retransmits after receiving NACK. */
+  LL_OP_MODE_FLAG_MST_IGNORE_CP_RSP           = (1 << 4),   /*!< Master ignores LL_CONNECTION_PARAM_RSP. */
+  LL_OP_MODE_FLAG_MST_UNCOND_CP_RSP           = (1 << 5),   /*!< Master unconditionally accepts LL_CONNECTION_PARAM_RSP. */
+                                                            /*!<   (LL_OP_MODE_FLAG_MST_IGNORE_CP_RSP must be cleared). */
+  LL_OP_MODE_FLAG_ENA_LEN_LLCP_STARTUP        = (1 << 6),   /*!< Perform data length update LLCP at connection establishment. */
+  LL_OP_MODE_FLAG_REQ_SYM_PHY                 = (1 << 7),   /*!< Require symmetric PHYs for connection. */
+  LL_OP_MODE_FLAG_ENA_FEAT_LLCP_STARTUP       = (1 << 8),   /*!< Perform feature exchange LLCP at connection establishment. */
+  LL_OP_MODE_FLAG_SLV_DELAY_LLCP_STARTUP      = (1 << 9),   /*!< Slave delays LLCP startup procedures. */
+  LL_OP_MODE_FLAG_ENA_SLV_LATENCY_WAKEUP      = (1 << 10),  /*!< Enable slave latency wake up upon data pending. */
+  LL_OP_MODE_FLAG_ENA_SLV_AUX_SCAN_RSP_ADI    = (1 << 11),  /*!< Enable ADI field for aux scan. */
+  LL_OP_MODE_FLAG_ENA_MST_CIS_NULL_PDU        = (1 << 12),  /*!< Enable CIS master sends additional NULL PDU for acknowledge scheme. */
+  LL_OP_MODE_FLAG_ENA_SLV_AUX_IND_ADVA        = (1 << 13),  /*!< AdvA will be included in AUX_ADV_IND instead of ADV_EXT_IND. */
+  LL_OP_MODE_FLAG_ENA_ADV_CHAN_RAND           = (1 << 14),  /*!< Enable advertising channel randomization. */
+  LL_OP_MODE_DISABLE_POWER_MONITOR            = (1 << 15),  /*!< Disable power monitoring. */
+  /* diagnostics only */
+  LL_OP_MODE_FLAG_ENA_ADV_DLY                 = (1 << 16),  /*!< Enable advertising delay. */
+  LL_OP_MODE_FLAG_ENA_SCAN_BACKOFF            = (1 << 17),  /*!< Enable scan backoff. */
+  LL_OP_MODE_FLAG_ENA_WW                      = (1 << 18),  /*!< Enable window widening. */
+  LL_OP_MODE_FLAG_ENA_SLV_LATENCY             = (1 << 19),  /*!< Enable slave latency. */
+  LL_OP_MODE_FLAG_ENA_LLCP_TIMER              = (1 << 20),  /*!< Enable LLCP timer. */
+  LL_OP_MODE_FLAG_IGNORE_CRC_ERR_TS           = (1 << 21),  /*!< Ignore timestamp of RX packet with CRC error. */
+  LL_OP_MODE_FLAG_SLV_CRC_CLOSE               = (1 << 22)   /*!< Close the connection event on receiving a CRC error. */
 };
 
-/*! \} */ /* LL_API_DEVICE */
+/*! \} */    /* LL_API_DEVICE */
 
 /*! \addtogroup LL_API_BROADCAST
  *  \{ */
 
 /*! \brief      The advertising type indicates the connectable and discoverable nature of the advertising packets transmitted by a device. */
-enum {
-    LL_ADV_CONN_UNDIRECT =
-        0, /*!< Connectable undirected advertising.  Peer devices can scan and connect to this device. */
-    LL_ADV_CONN_DIRECT_HIGH_DUTY =
-        1, /*!< Connectable directed advertising, high duty cycle.  Only a specified peer device can connect to this device. */
-    LL_ADV_SCAN_UNDIRECT =
-        2, /*!< Scannable undirected advertising.  Peer devices can scan this device but cannot connect. */
-    LL_ADV_NONCONN_UNDIRECT =
-        3, /*!< Non-connectable undirected advertising.  Peer devices cannot scan or connect to this device. */
-    LL_ADV_CONN_DIRECT_LOW_DUTY =
-        4 /*!< Connectable directed advertising, low duty cycle.  Only a specified peer device can connect to this device. */
+enum
+{
+  LL_ADV_CONN_UNDIRECT          = 0,            /*!< Connectable undirected advertising.  Peer devices can scan and connect to this device. */
+  LL_ADV_CONN_DIRECT_HIGH_DUTY  = 1,            /*!< Connectable directed advertising, high duty cycle.  Only a specified peer device can connect to this device. */
+  LL_ADV_SCAN_UNDIRECT          = 2,            /*!< Scannable undirected advertising.  Peer devices can scan this device but cannot connect. */
+  LL_ADV_NONCONN_UNDIRECT       = 3,            /*!< Non-connectable undirected advertising.  Peer devices cannot scan or connect to this device. */
+  LL_ADV_CONN_DIRECT_LOW_DUTY   = 4             /*!< Connectable directed advertising, low duty cycle.  Only a specified peer device can connect to this device. */
 };
 
 /*! \brief      The address type indicates whether an address is public or random. */
-enum {
-    LL_ADDR_PUBLIC = 0, /*!< Public address. */
-    LL_ADDR_RANDOM = 1, /*!< Random address. */
-    LL_ADDR_PUBLIC_IDENTITY = 2, /*!< Public identity address. */
-    LL_ADDR_RANDOM_IDENTITY = 3, /*!< Random (static) identity address. */
-    LL_ADDR_RANDOM_UNRESOLVABLE = 0xFE, /*!< Un-resolvable random address. */
-    LL_ADDR_ANONYMOUS = 0xFF /*!< Anonymous advertiser. */
+enum
+{
+  LL_ADDR_PUBLIC                = 0,            /*!< Public address. */
+  LL_ADDR_RANDOM                = 1,            /*!< Random address. */
+  LL_ADDR_PUBLIC_IDENTITY       = 2,            /*!< Public identity address. */
+  LL_ADDR_RANDOM_IDENTITY       = 3,            /*!< Random (static) identity address. */
+  LL_ADDR_RANDOM_UNRESOLVABLE   = 0xFE,         /*!< Un-resolvable random address. */
+  LL_ADDR_ANONYMOUS             = 0xFF          /*!< Anonymous advertiser. */
 };
 
-#define LL_ADDR_RANDOM_BIT LL_ADDR_RANDOM /*!< Address type random or public bit. */
-#define LL_ADDR_IDENTITY_BIT LL_ADDR_PUBLIC_IDENTITY /*!< Address type identity bit. */
+#define LL_ADDR_RANDOM_BIT      LL_ADDR_RANDOM            /*!< Address type random or public bit. */
+#define LL_ADDR_IDENTITY_BIT    LL_ADDR_PUBLIC_IDENTITY   /*!< Address type identity bit. */
 
 /*! \brief      Advertising channel bit. */
-enum {
-    LL_ADV_CHAN_37_BIT = (1 << 0), /*!< Advertising channel 37. */
-    LL_ADV_CHAN_38_BIT = (1 << 1), /*!< Advertising channel 38. */
-    LL_ADV_CHAN_39_BIT = (1 << 2), /*!< Advertising channel 39. */
-    LL_ADV_CHAN_ALL = 0x7, /*!< All advertising channels. */
+enum
+{
+  LL_ADV_CHAN_37_BIT            = (1 << 0),     /*!< Advertising channel 37. */
+  LL_ADV_CHAN_38_BIT            = (1 << 1),     /*!< Advertising channel 38. */
+  LL_ADV_CHAN_39_BIT            = (1 << 2),     /*!< Advertising channel 39. */
+  LL_ADV_CHAN_ALL               = 0x7,          /*!< All advertising channels. */
 };
 
 /*! \brief      Advertising filter policy. */
-enum {
-    LL_ADV_FILTER_NONE = 0, /*!< Scan from any device. */
-    LL_ADV_FILTER_SCAN_WL_BIT = 1, /*!< Scan from White List only. */
-    LL_ADV_FILTER_CONN_WL_BIT = 2, /*!< Connect from While List only. */
-    LL_ADV_FILTER_WL_ONLY = 3 /*!< Scan and connect from While List only. */
+enum
+{
+  LL_ADV_FILTER_NONE            = 0,            /*!< Scan from any device. */
+  LL_ADV_FILTER_SCAN_WL_BIT     = 1,            /*!< Scan from White List only. */
+  LL_ADV_FILTER_CONN_WL_BIT     = 2,            /*!< Connect from While List only. */
+  LL_ADV_FILTER_WL_ONLY         = 3             /*!< Scan and connect from While List only. */
 };
 
 /*! \brief      Advertising event properties. */
-enum {
-    LL_ADV_EVT_PROP_CONN_ADV_BIT = (1 << 0), /*!< Connectable advertising. */
-    LL_ADV_EVT_PROP_SCAN_ADV_BIT = (1 << 1), /*!< Scannable advertising. */
-    LL_ADV_EVT_PROP_DIRECT_ADV_BIT = (1 << 2), /*!< Directed advertising. */
-    LL_ADV_EVT_PROP_HIGH_DUTY_ADV_BIT = (1 << 3), /*!< High Duty Cycle advertising. */
-    LL_ADV_EVT_PROP_LEGACY_ADV_BIT = (1 << 4), /*!< Use legacy advertising PDUs. */
-    LL_ADV_EVT_PROP_OMIT_AA_BIT =
-        (1 << 5), /*!< Omit advertiser's address from all PDUs (anonymous advertising). */
-    LL_ADV_EVT_PROP_TX_PWR_BIT = (1 << 6) /*!< Include TxPower in the advertising PDU. */
+enum
+{
+  LL_ADV_EVT_PROP_CONN_ADV_BIT      = (1 << 0), /*!< Connectable advertising. */
+  LL_ADV_EVT_PROP_SCAN_ADV_BIT      = (1 << 1), /*!< Scannable advertising. */
+  LL_ADV_EVT_PROP_DIRECT_ADV_BIT    = (1 << 2), /*!< Directed advertising. */
+  LL_ADV_EVT_PROP_HIGH_DUTY_ADV_BIT = (1 << 3), /*!< High Duty Cycle advertising. */
+  LL_ADV_EVT_PROP_LEGACY_ADV_BIT    = (1 << 4), /*!< Use legacy advertising PDUs. */
+  LL_ADV_EVT_PROP_OMIT_AA_BIT       = (1 << 5), /*!< Omit advertiser's address from all PDUs (anonymous advertising). */
+  LL_ADV_EVT_PROP_TX_PWR_BIT        = (1 << 6)  /*!< Include TxPower in the advertising PDU. */
 };
 
-#define LL_ADV_EVT_PROP_NON_CONN_NON_SCAN 0 /*!< Non-connectable and non-scannable advertising. */
+#define LL_ADV_EVT_PROP_NON_CONN_NON_SCAN   0   /*!< Non-connectable and non-scannable advertising. */
 
 /*! \brief      Extended advertising parameters. */
-typedef struct {
-    uint16_t advEventProp; /*!< Advertising Event Properties. */
-    uint32_t priAdvInterMin; /*!< Primary Advertising Interval Minimum. */
-    uint32_t priAdvInterMax; /*!< Primary Advertising Interval Maximum. */
-    uint8_t priAdvChanMap; /*!< Primary Advertising Channel Map. */
-    uint8_t ownAddrType; /*!< Own Address Type. */
-    uint8_t peerAddrType; /*!< Peer Address Type. */
-    const uint8_t *pPeerAddr; /*!< Peer Address. */
-    uint8_t advFiltPolicy; /*!< Advertising Filter Policy. */
-    int8_t advTxPwr; /*!< Advertising Tx Power. */
-    uint8_t priAdvPhy; /*!< Primary Advertising PHY. */
-    uint8_t secAdvMaxSkip; /*!< Secondary Advertising Maximum Skip. */
-    uint8_t secAdvPhy; /*!< Secondary Advertising PHY. */
-    uint8_t advSID; /*!< Advertising SID. */
-    uint8_t scanReqNotifEna; /*!< Scan Request Notification Enable. */
+typedef struct
+{
+  uint16_t      advEventProp;       /*!< Advertising Event Properties. */
+  uint32_t      priAdvInterMin;     /*!< Primary Advertising Interval Minimum. */
+  uint32_t      priAdvInterMax;     /*!< Primary Advertising Interval Maximum. */
+  uint8_t       priAdvChanMap;      /*!< Primary Advertising Channel Map. */
+  uint8_t       ownAddrType;        /*!< Own Address Type. */
+  uint8_t       peerAddrType;       /*!< Peer Address Type. */
+  const uint8_t *pPeerAddr;         /*!< Peer Address. */
+  uint8_t       advFiltPolicy;      /*!< Advertising Filter Policy. */
+  int8_t        advTxPwr;           /*!< Advertising Tx Power. */
+  uint8_t       priAdvPhy;          /*!< Primary Advertising PHY. */
+  uint8_t       secAdvMaxSkip;      /*!< Secondary Advertising Maximum Skip. */
+  uint8_t       secAdvPhy;          /*!< Secondary Advertising PHY. */
+  uint8_t       advSID;             /*!< Advertising SID. */
+  uint8_t       scanReqNotifEna;    /*!< Scan Request Notification Enable. */
 } LlExtAdvParam_t;
 
 /*! \brief      Extended advertising enable parameters. */
-typedef struct {
-    uint8_t handle; /*!< Advertising handle. */
-    uint16_t duration; /*!< Duration. */
-    uint8_t numEvents; /*!< Maximum number of extended advertising events. */
+typedef struct
+{
+  uint8_t       handle;             /*!< Advertising handle. */
+  uint16_t      duration;           /*!< Duration. */
+  uint8_t       numEvents;          /*!< Maximum number of extended advertising events. */
 } LlExtAdvEnableParam_t;
 
 /*! \brief      Periodic advertising parameters. */
-typedef struct {
-    uint16_t perAdvInterMin; /*!< Periodic Advertising Interval Minimum. */
-    uint16_t perAdvInterMax; /*!< Periodic Advertising Interval Maximum. */
-    uint16_t perAdvProp; /*!< Periodic Advertising Properties. */
+typedef struct
+{
+  uint16_t      perAdvInterMin;     /*!< Periodic Advertising Interval Minimum. */
+  uint16_t      perAdvInterMax;     /*!< Periodic Advertising Interval Maximum. */
+  uint16_t      perAdvProp;         /*!< Periodic Advertising Properties. */
 } LlPerAdvParam_t;
 
 /*! \brief       Advertising data operation. */
-enum {
-    LL_ADV_DATA_OP_FRAG_INTER = 0, /*!< Intermediate fragment. */
-    LL_ADV_DATA_OP_FRAG_FIRST = 1, /*!< First fragment. */
-    LL_ADV_DATA_OP_FRAG_LAST = 2, /*!< Last fragment. */
-    LL_ADV_DATA_OP_COMP = 3, /*!< Complete extended advertising data. */
-    LL_ADV_DATA_OP_UNCHANGED = 4 /*!< Unchanged data (just update the Advertising DID). */
+enum
+{
+  LL_ADV_DATA_OP_FRAG_INTER     = 0,            /*!< Intermediate fragment. */
+  LL_ADV_DATA_OP_FRAG_FIRST     = 1,            /*!< First fragment. */
+  LL_ADV_DATA_OP_FRAG_LAST      = 2,            /*!< Last fragment. */
+  LL_ADV_DATA_OP_COMP           = 3,            /*!< Complete extended advertising data. */
+  LL_ADV_DATA_OP_UNCHANGED      = 4             /*!< Unchanged data (just update the Advertising DID). */
 };
 
 /*! \brief       Advertising data fragment preference. */
-enum {
-    LL_ADV_DATA_FRAG_ALLOW = 0, /*!< Controller may fragment all Host advertising data. */
-    LL_ADV_DATA_FRAG_DISALLOW =
-        1 /*!< Controller should not fragment nor minimize fragmentation of Host advertising data. */
+enum
+{
+  LL_ADV_DATA_FRAG_ALLOW        = 0,            /*!< Controller may fragment all Host advertising data. */
+  LL_ADV_DATA_FRAG_DISALLOW     = 1             /*!< Controller should not fragment nor minimize fragmentation of Host advertising data. */
 };
 
-/*! \} */ /* LL_API_BROADCAST */
+/*! \} */    /* LL_API_BROADCAST */
 
 /*! \addtogroup LL_API_OBSERVER
  *  \{ */
 
 /*! \brief      Type of scan. */
-enum {
-    LL_SCAN_PASSIVE = 0, /*!< Passive scanning. */
-    LL_SCAN_ACTIVE = 1 /*!< Active scanning. */
+enum
+{
+  LL_SCAN_PASSIVE               = 0,            /*!< Passive scanning. */
+  LL_SCAN_ACTIVE                = 1             /*!< Active scanning. */
 };
 
 /*! \brief      Init filter policy. */
-enum {
-    LL_INIT_FILTER_PEER = 0, /*!< Filter to only Peer addr and addr type. */
-    LL_INIT_FILTER_WL = 1, /*!< Filter to only whitelist. */
-    LL_INIT_FILTER_TOTAL /*!< Total number of filter policies. */
+enum
+{
+  LL_INIT_FILTER_PEER          = 0,             /*!< Filter to only Peer addr and addr type. */
+  LL_INIT_FILTER_WL            = 1,             /*!< Filter to only whitelist. */
+  LL_INIT_FILTER_TOTAL                          /*!< Total number of filter policies. */
 };
 
 /*! \brief      Scan filter policy. */
-enum {
-    LL_SCAN_FILTER_NONE = 0, /*!< Accept all advertising packets. */
-    LL_SCAN_FILTER_WL_BIT = 1, /*!< Accept from While List only. */
-    LL_SCAN_FILTER_RES_INIT_BIT = 2, /*!< Accept directed advertisements with RPAs. */
-    LL_SCAN_FILTER_WL_OR_RES_INIT =
-        3 /*!< Accept from White List or directed advertisements with RPAs. */
+enum
+{
+  LL_SCAN_FILTER_NONE           = 0,            /*!< Accept all advertising packets. */
+  LL_SCAN_FILTER_WL_BIT         = 1,            /*!< Accept from While List only. */
+  LL_SCAN_FILTER_RES_INIT_BIT   = 2,            /*!< Accept directed advertisements with RPAs. */
+  LL_SCAN_FILTER_WL_OR_RES_INIT = 3             /*!< Accept from White List or directed advertisements with RPAs. */
 };
 
 /*! \brief      Periodic scan filter policy. */
-enum {
-    LL_PER_SCAN_FILTER_NONE = 0, /*!< Use advSID, advAddrType and advAddr to filter. */
-    LL_PER_SCAN_FILTER_PL_BIT = 1, /*!< Use the periodic advertiser list. */
+enum
+{
+  LL_PER_SCAN_FILTER_NONE       = 0,            /*!< Use advSID, advAddrType and advAddr to filter. */
+  LL_PER_SCAN_FILTER_PL_BIT     = 1,            /*!< Use the periodic advertiser list. */
 };
 
 /*! \brief      Scan parameters. */
-typedef struct {
-    uint16_t scanInterval; /*!< Scan interval. */
-    uint16_t scanWindow; /*!< Scan window. */
-    uint8_t scanType; /*!< Scan type. */
-    uint8_t ownAddrType; /*!< Address type used by this device. */
-    uint8_t scanFiltPolicy; /*!< Scan filter policy. */
+typedef struct
+{
+  uint16_t      scanInterval;                   /*!< Scan interval. */
+  uint16_t      scanWindow;                     /*!< Scan window. */
+  uint8_t       scanType;                       /*!< Scan type. */
+  uint8_t       ownAddrType;                    /*!< Address type used by this device. */
+  uint8_t       scanFiltPolicy;                 /*!< Scan filter policy. */
 } LlScanParam_t;
 
 /*! \brief      Extended scan parameters. */
-typedef struct {
-    uint16_t scanInterval; /*!< Scan interval. */
-    uint16_t scanWindow; /*!< Scan window. */
-    uint8_t scanType; /*!< Scan type. */
+typedef struct
+{
+  uint16_t      scanInterval;                   /*!< Scan interval. */
+  uint16_t      scanWindow;                     /*!< Scan window. */
+  uint8_t       scanType;                       /*!< Scan type. */
 } LlExtScanParam_t;
 
 /*! \brief      Scan filter modes for duplicate report. */
-enum {
-    LL_SCAN_FILTER_DUP_DISABLE = 0x00, /*!< Duplicate filtering disabled. */
-    LL_SCAN_FILTER_DUP_ENABLE_ONCE = 0x01, /*!< Duplicate filtering enabled. */
-    LL_SCAN_FILTER_DUP_ENABLE_PERIODIC =
-        0x02 /*!< Duplicate filtering enabled, reset for each scan period. */
+enum
+{
+  LL_SCAN_FILTER_DUP_DISABLE            = 0x00, /*!< Duplicate filtering disabled. */
+  LL_SCAN_FILTER_DUP_ENABLE_ONCE        = 0x01, /*!< Duplicate filtering enabled. */
+  LL_SCAN_FILTER_DUP_ENABLE_PERIODIC    = 0x02  /*!< Duplicate filtering enabled, reset for each scan period. */
 };
 
 /*! \brief       Advertising report event types. */
-enum {
-    LL_RPT_TYPE_ADV_IND = 0x00, /*!< Connectable undirected advertising (ADV_IND). */
-    LL_RPT_TYPE_ADV_DIRECT_IND = 0x01, /*!< Connectable directed advertising (ADV_DIRECT_IND). */
-    LL_RPT_TYPE_ADV_SCAN_IND = 0x02, /*!< Scannable undirected advertising (ADV_SCAN_IND). */
-    LL_RPT_TYPE_ADV_NONCONN_IND =
-        0x03, /*!< Non connectable undirected advertising (ADV_NONCONN_IND). */
-    LL_RPT_TYPE_SCAN_RSP = 0x04 /*!< Scan Response (SCAN_RSP). */
+enum
+{
+  LL_RPT_TYPE_ADV_IND           = 0x00,         /*!< Connectable undirected advertising (ADV_IND). */
+  LL_RPT_TYPE_ADV_DIRECT_IND    = 0x01,         /*!< Connectable directed advertising (ADV_DIRECT_IND). */
+  LL_RPT_TYPE_ADV_SCAN_IND      = 0x02,         /*!< Scannable undirected advertising (ADV_SCAN_IND). */
+  LL_RPT_TYPE_ADV_NONCONN_IND   = 0x03,         /*!< Non connectable undirected advertising (ADV_NONCONN_IND). */
+  LL_RPT_TYPE_SCAN_RSP          = 0x04          /*!< Scan Response (SCAN_RSP). */
 };
 
 /*! \brief      Periodic advertising create sync options valid bits. */
-#define LL_PER_ADV_CREATE_SYNC_OPTIONS_BITS 0x03
+#define LL_PER_ADV_CREATE_SYNC_OPTIONS_BITS   0x03
 
 /*! \brief      Periodic advertising create sync command. */
-typedef struct {
-    uint8_t options; /*!< Options. */
-    uint8_t advSID; /*!< Advertising SID. */
-    uint8_t advAddrType; /*!< Advertiser Address Type. */
-    uint8_t *pAdvAddr; /*!< Advertiser Address. */
-    uint16_t skip; /*!< Skip. */
-    uint16_t syncTimeOut; /*!< Synchronization Timeout. */
+typedef struct
+{
+  uint8_t   options;        /*!< Options. */
+  uint8_t   advSID;         /*!< Advertising SID. */
+  uint8_t   advAddrType;    /*!< Advertiser Address Type. */
+  uint8_t   *pAdvAddr;      /*!< Advertiser Address. */
+  uint16_t  skip;           /*!< Skip. */
+  uint16_t  syncTimeOut;    /*!< Synchronization Timeout. */
 } LlPerAdvCreateSyncCmd_t;
 
 /*! \brief      Device in periodic advertiser list */
-typedef struct {
-    uint8_t advAddrType; /*!< Advertiser Address Type. */
-    uint8_t *pAdvAddr; /*!< Advertiser Address. */
-    uint8_t advSID; /*!< Advertising SID. */
+typedef struct
+{
+  uint8_t   advAddrType;    /*!< Advertiser Address Type. */
+  uint8_t   *pAdvAddr;      /*!< Advertiser Address. */
+  uint8_t   advSID;         /*!< Advertising SID. */
 } LlDevicePerAdvList_t;
 
-/*! \} */ /* LL_API_OBSERVER */
+/*! \} */    /* LL_API_OBSERVER */
 
 /*! \addtogroup LL_API_CONN
  *  \{ */
 
 /*! \brief      Master clock accuracy. */
-enum {
-    LL_MCA_500_PPM = 0x00, /*!< 500 ppm */
-    LL_MCA_250_PPM = 0x01, /*!< 250 ppm */
-    LL_MCA_150_PPM = 0x02, /*!< 150 ppm */
-    LL_MCA_100_PPM = 0x03, /*!< 100 ppm */
-    LL_MCA_75_PPM = 0x04, /*!< 75 ppm */
-    LL_MCA_50_PPM = 0x05, /*!< 50 ppm */
-    LL_MCA_30_PPM = 0x06, /*!< 30 ppm */
-    LL_MCA_20_PPM = 0x07 /*!< 20 ppm */
+enum
+{
+  LL_MCA_500_PPM                = 0x00,         /*!< 500 ppm */
+  LL_MCA_250_PPM                = 0x01,         /*!< 250 ppm */
+  LL_MCA_150_PPM                = 0x02,         /*!< 150 ppm */
+  LL_MCA_100_PPM                = 0x03,         /*!< 100 ppm */
+  LL_MCA_75_PPM                 = 0x04,         /*!< 75 ppm */
+  LL_MCA_50_PPM                 = 0x05,         /*!< 50 ppm */
+  LL_MCA_30_PPM                 = 0x06,         /*!< 30 ppm */
+  LL_MCA_20_PPM                 = 0x07          /*!< 20 ppm */
 };
 
 /*! \brief      PHYS specification. */
-enum {
-    LL_PHYS_NONE = 0, /*!< No selected PHY. */
-    LL_PHYS_LE_1M_BIT = (1 << 0), /*!< LE 1M PHY. */
-    LL_PHYS_LE_2M_BIT = (1 << 1), /*!< LE 2M PHY. */
-    LL_PHYS_LE_CODED_BIT = (1 << 2), /*!< LE Coded PHY. */
+enum
+{
+  LL_PHYS_NONE                  = 0,            /*!< No selected PHY. */
+  LL_PHYS_LE_1M_BIT             = (1 << 0),     /*!< LE 1M PHY. */
+  LL_PHYS_LE_2M_BIT             = (1 << 1),     /*!< LE 2M PHY. */
+  LL_PHYS_LE_CODED_BIT          = (1 << 2),     /*!< LE Coded PHY. */
 };
 
 /*! \brief      All PHYs preference. */
-enum {
-    LL_ALL_PHY_ALL_PREFERENCES = 0, /*!< All PHY preferences. */
-    LL_ALL_PHY_TX_PREFERENCE_BIT = (1 << 0), /*!< Set if no Tx PHY preference. */
-    LL_ALL_PHY_RX_PREFERENCE_BIT = (1 << 1) /*!< Set if no Rx PHY preference. */
+enum
+{
+  LL_ALL_PHY_ALL_PREFERENCES    = 0,            /*!< All PHY preferences. */
+  LL_ALL_PHY_TX_PREFERENCE_BIT  = (1 << 0),     /*!< Set if no Tx PHY preference. */
+  LL_ALL_PHY_RX_PREFERENCE_BIT  = (1 << 1)      /*!< Set if no Rx PHY preference. */
 };
 
 /*! \brief      PHY options. */
-enum {
-    LL_PHY_OPTIONS_NONE = 0, /*!< No preferences. */
-    LL_PHY_OPTIONS_S2_PREFERRED = 1, /*!< S=2 coding preferred when transmitting on LE Coded PHY. */
-    LL_PHY_OPTIONS_S8_PREFERRED = 2, /*!< S=8 coding preferred when transmitting on LE Coded PHY. */
+enum
+{
+  LL_PHY_OPTIONS_NONE           = 0,            /*!< No preferences. */
+  LL_PHY_OPTIONS_S2_PREFERRED   = 1,            /*!< S=2 coding preferred when transmitting on LE Coded PHY. */
+  LL_PHY_OPTIONS_S8_PREFERRED   = 2,            /*!< S=8 coding preferred when transmitting on LE Coded PHY. */
 };
 
 /*! \brief      PHY types. */
-typedef enum {
-    LL_PHY_NONE = 0, /*!< PHY not selected. */
-    LL_PHY_LE_1M = 1, /*!< LE 1M PHY. */
-    LL_PHY_LE_2M = 2, /*!< LE 2M PHY. */
-    LL_PHY_LE_CODED = 3, /*!< LE Coded PHY. */
+typedef enum
+{
+  LL_PHY_NONE                   = 0,                 /*!< PHY not selected. */
+  LL_PHY_LE_1M                  = 1,                 /*!< LE 1M PHY. */
+  LL_PHY_LE_2M                  = 2,                 /*!< LE 2M PHY. */
+  LL_PHY_LE_CODED               = 3,                 /*!< LE Coded PHY. */
 } LlPhy_t;
 
 /*! \brief     Power Control managed PHYs. */
-enum {
-    LL_PC_PHY_1M = 1,
-    LL_PC_PHY_2M = 2,
-    LL_PC_PHY_CODED_S8 = 3,
-    LL_PC_PHY_CODED_S2 = 4,
+enum
+{
+  LL_PC_PHY_1M           = 1,
+  LL_PC_PHY_2M           = 2,
+  LL_PC_PHY_CODED_S8     = 3,
+  LL_PC_PHY_CODED_S2     = 4,
 
-    LL_PC_PHY_TOTAL = LL_PC_PHY_CODED_S2,
-    LL_PC_PHY_INVALID = 0xFF
+  LL_PC_PHY_TOTAL        = LL_PC_PHY_CODED_S2,
+  LL_PC_PHY_INVALID      = 0xFF
 };
 
 /*! \brief    Power control PHY bits. */
-enum {
-    LL_PC_1M_BIT = (1 << 0), /*!< LE 1M PHY bit. */
-    LL_PC_2M_BIT = (1 << 1), /*!< LE 2M PHY bit. */
-    LL_PC_CODED_S8_BIT = (1 << 2), /*!< LE Coded S8 PHY bit. */
-    LL_PC_CODED_S2_BIT = (1 << 3), /*!< LE Coded S2 PHY bit. */
-    LL_PC_MAX_BIT = LL_PC_CODED_S2_BIT,
+enum
+{
+  LL_PC_1M_BIT             = (1 << 0),     /*!< LE 1M PHY bit. */
+  LL_PC_2M_BIT             = (1 << 1),     /*!< LE 2M PHY bit. */
+  LL_PC_CODED_S8_BIT       = (1 << 2),     /*!< LE Coded S8 PHY bit. */
+  LL_PC_CODED_S2_BIT       = (1 << 3),     /*!< LE Coded S2 PHY bit. */
+  LL_PC_MAX_BIT            = LL_PC_CODED_S2_BIT,
 
-    LL_PC_ALL_BITS = LL_PC_1M_BIT | LL_PC_2M_BIT | LL_PC_CODED_S8_BIT | LL_PC_CODED_S8_BIT
+  LL_PC_ALL_BITS = LL_PC_1M_BIT | LL_PC_2M_BIT | LL_PC_CODED_S8_BIT | LL_PC_CODED_S8_BIT
 };
 
 /*! \brief      PCL path loss monitoring unused high threshold value. */
-#define LL_PC_PATH_LOSS_UNUSED_HIGH_THRESHOLD 0xFF
+#define LL_PC_PATH_LOSS_UNUSED_HIGH_THRESHOLD      0xFF
 
 /*! \brief      Privacy modes. */
-enum {
-    LL_PRIV_MODE_NETWORK = 0, /*!< Network privacy mode. */
-    LL_PRIV_MODE_DEVICE = 1, /*!< Device privacy mode. */
+enum
+{
+  LL_PRIV_MODE_NETWORK          = 0,            /*!< Network privacy mode. */
+  LL_PRIV_MODE_DEVICE           = 1,            /*!< Device privacy mode. */
 };
 
 /*! \brief      Initiating parameters (\a LlExtCreateConn()). */
-typedef struct {
-    uint16_t scanInterval; /*!< Scan interval. */
-    uint16_t scanWindow; /*!< Scan window. */
-    uint8_t filterPolicy; /*!< Scan filter policy. */
-    uint8_t ownAddrType; /*!< Address type used by this device. */
-    uint8_t peerAddrType; /*!< Address type used for peer device. */
-    const uint8_t *pPeerAddr; /*!< Address of peer device. */
+typedef struct
+{
+  uint16_t      scanInterval;                   /*!< Scan interval. */
+  uint16_t      scanWindow;                     /*!< Scan window. */
+  uint8_t       filterPolicy;                   /*!< Scan filter policy. */
+  uint8_t       ownAddrType;                    /*!< Address type used by this device. */
+  uint8_t       peerAddrType;                   /*!< Address type used for peer device. */
+  const uint8_t *pPeerAddr;                     /*!< Address of peer device. */
 } LlInitParam_t;
 
 /*! \brief      Initiating parameters (\a LlExtCreateConn()). */
-typedef struct {
-    uint8_t filterPolicy; /*!< Scan filter policy. */
-    uint8_t ownAddrType; /*!< Address type used by this device. */
-    uint8_t peerAddrType; /*!< Address type used for peer device. */
-    const uint8_t *pPeerAddr; /*!< Address of peer device. */
-    uint8_t initPhys; /*!< Initiating PHYs. */
+typedef struct
+{
+  uint8_t       filterPolicy;                   /*!< Scan filter policy. */
+  uint8_t       ownAddrType;                    /*!< Address type used by this device. */
+  uint8_t       peerAddrType;                   /*!< Address type used for peer device. */
+  const uint8_t *pPeerAddr;                     /*!< Address of peer device. */
+  uint8_t       initPhys;                       /*!< Initiating PHYs. */
 } LlExtInitParam_t;
 
 /*! \brief      Initiating scan parameters (\a LlExtCreateConn()). */
-typedef struct {
-    uint16_t scanInterval; /*!< Scan interval. */
-    uint16_t scanWindow; /*!< Scan window. */
+typedef struct
+{
+  uint16_t      scanInterval;                   /*!< Scan interval. */
+  uint16_t      scanWindow;                     /*!< Scan window. */
 } LlExtInitScanParam_t;
 
 /*! \brief      Connection specification (\a LlCreateConn(), \a LlConnUpdate() and \a LlExtCreateConn()). */
-typedef struct {
-    uint16_t connIntervalMin; /*!< Minimum connection interval. */
-    uint16_t connIntervalMax; /*!< Maximum connection interval. */
-    uint16_t connLatency; /*!< Connection latency. */
-    uint16_t supTimeout; /*!< Supervision timeout. */
-    uint16_t minCeLen; /*!< Minimum CE length. */
-    uint16_t maxCeLen; /*!< Maximum CE length. */
+typedef struct
+{
+  uint16_t      connIntervalMin;                /*!< Minimum connection interval. */
+  uint16_t      connIntervalMax;                /*!< Maximum connection interval. */
+  uint16_t      connLatency;                    /*!< Connection latency. */
+  uint16_t      supTimeout;                     /*!< Supervision timeout. */
+  uint16_t      minCeLen;                       /*!< Minimum CE length. */
+  uint16_t      maxCeLen;                       /*!< Maximum CE length. */
 } LlConnSpec_t;
 
 /*! \brief      Channel selection algorithm methods. */
-enum {
-    LL_CH_SEL_1 = 0, /*!< Channel selection #1. */
-    LL_CH_SEL_2 = 1 /*!< Channel selection #2. */
+enum
+{
+  LL_CH_SEL_1                   = 0,            /*!< Channel selection #1. */
+  LL_CH_SEL_2                   = 1             /*!< Channel selection #2. */
 };
 
 /*! \brief      Tx power level type. */
-enum {
-    LL_TX_PWR_LVL_TYPE_CURRENT = 0x00, /*!< Current transmit power level. */
-    LL_TX_PWR_LVL_TYPE_MAX = 0x01 /*!< Maximum transmit power level. */
+enum
+{
+  LL_TX_PWR_LVL_TYPE_CURRENT    = 0x00,         /*!< Current transmit power level. */
+  LL_TX_PWR_LVL_TYPE_MAX        = 0x01          /*!< Maximum transmit power level. */
 };
 
-/*! \} */ /* LL_API_CONN */
+/*! \} */    /* LL_API_CONN */
 
 /*! \addtogroup LL_API_ISO
  *  \{ */
 
 /*! \brief      Packing scheme. */
-typedef enum {
-    LL_PACKING_SEQUENTIAL = 0, /*!< Sequential. */
-    LL_PACKING_INTERLEAVED = 1 /*!< Interleaved. */
+typedef enum
+{
+  LL_PACKING_SEQUENTIAL         = 0,            /*!< Sequential. */
+  LL_PACKING_INTERLEAVED        = 1             /*!< Interleaved. */
 } LlPacking_t;
 
 /*! \brief      CIS parameters. */
-typedef struct {
-    uint8_t cisId; /*!< Used to identify a connected isochronous stream. */
-    uint16_t sduSizeMToS; /*!< Maximum size of a data SDU from the master to the slave. */
-    uint16_t sduSizeSToM; /*!< Maximum size of a data SDU from the slave to the master. */
-    uint8_t phyMToS; /*!< PHY to be used for transmission from master to slave. */
-    uint8_t phySToM; /*!< PHY to be used for transmission from master to slave. */
-    uint8_t
-        rteMToS; /*!< Maximum number of times every PDU should be retransmitted from the master to slave. */
-    uint8_t
-        rteSToM; /*!< Maximum number of times every PDU should be retransmitted from the slave to master. */
+typedef struct
+{
+  uint8_t       cisId;                          /*!< Used to identify a connected isochronous stream. */
+  uint16_t      sduSizeMToS;                    /*!< Maximum size of a data SDU from the master to the slave. */
+  uint16_t      sduSizeSToM;                    /*!< Maximum size of a data SDU from the slave to the master. */
+  uint8_t       phyMToS;                        /*!< PHY to be used for transmission from master to slave. */
+  uint8_t       phySToM;                        /*!< PHY to be used for transmission from master to slave. */
+  uint8_t       rteMToS;                        /*!< Maximum number of times every PDU should be retransmitted from the master to slave. */
+  uint8_t       rteSToM;                        /*!< Maximum number of times every PDU should be retransmitted from the slave to master. */
 } LlCisCisParams_t;
 
 /*! \brief      CIG parameters. */
-typedef struct {
-    uint8_t cigId; /*!< Used to identify the connected isochronous group. */
-    uint32_t
-        sduIntervalMToS; /*!< The time interval between the start of consecutive SDUs from the master Host. */
-    uint32_t
-        sduIntervalSToM; /*!< The time interval between the start of consecutive SDUs from the slave Host. */
-    uint8_t sca; /*!< Sleep clock accuracy. */
-    uint8_t packing; /*!< Packing scheme. */
-    LlFraming_t framing : 8; /*!< Indicates the format of CIS Data PDUs.  */
-    uint16_t
-        transLatMToS; /*!< Maximum time in microseconds between the transmissions of a Data PDU from the Link Layer of the master to the reception of the same Data PDU in the Link Layer of the slave. */
-    uint16_t
-        transLatSToM; /*!< Maximum time in microseconds between the transmissions of a Data PDU from the Link Layer of the slave to the reception of the same Data PDU in the Link Layer of the master. */
-    uint8_t numCis; /*!< Number of CIS to set. */
-    LlCisCisParams_t *pCisParam; /*!< CIS parameters. */
+typedef struct
+{
+  uint8_t       cigId;                          /*!< Used to identify the connected isochronous group. */
+  uint32_t      sduIntervalMToS;                /*!< The time interval between the start of consecutive SDUs from the master Host. */
+  uint32_t      sduIntervalSToM;                /*!< The time interval between the start of consecutive SDUs from the slave Host. */
+  uint8_t       sca;                            /*!< Sleep clock accuracy. */
+  uint8_t       packing;                        /*!< Packing scheme. */
+  LlFraming_t   framing:8;                      /*!< Indicates the format of CIS Data PDUs.  */
+  uint16_t      transLatMToS;                   /*!< Maximum time in microseconds between the transmissions of a Data PDU from the Link Layer of the master to the reception of the same Data PDU in the Link Layer of the slave. */
+  uint16_t      transLatSToM;                   /*!< Maximum time in microseconds between the transmissions of a Data PDU from the Link Layer of the slave to the reception of the same Data PDU in the Link Layer of the master. */
+  uint8_t       numCis;                         /*!< Number of CIS to set. */
+  LlCisCisParams_t *pCisParam;                  /*!< CIS parameters. */
 } LlCisCigParams_t;
 
 /*! \brief      CIG test CIS parameters. */
-typedef struct {
-    uint8_t cisId; /*!< CIS identifier. */
-    uint8_t nse; /*!< Maximum number of subevent in each interval on CIS. */
-    uint16_t sduSizeMToS; /*!< Maximum size of a data SDU from the master to the slave. */
-    uint16_t sduSizeSToM; /*!< Maximum size of a data SDU from the slave to the master. */
-    uint16_t pduSizeMToS; /*!< Maximum size of payload from master to slave. */
-    uint16_t pduSizeSToM; /*!< Maximum size of payload from slave to master. */
-    uint8_t phyMToS; /*!< Master to slave PHY. */
-    uint8_t phySToM; /*!< Slave to master PHY. */
-    uint8_t bnMToS; /*!< Master to slave burst number. */
-    uint8_t bnSToM; /*!< Slave to master burst number. */
+typedef struct
+{
+  uint8_t       cisId;                          /*!< CIS identifier. */
+  uint8_t       nse;                            /*!< Maximum number of subevent in each interval on CIS. */
+  uint16_t      sduSizeMToS;                    /*!< Maximum size of a data SDU from the master to the slave. */
+  uint16_t      sduSizeSToM;                    /*!< Maximum size of a data SDU from the slave to the master. */
+  uint16_t      pduSizeMToS;                    /*!< Maximum size of payload from master to slave. */
+  uint16_t      pduSizeSToM;                    /*!< Maximum size of payload from slave to master. */
+  uint8_t       phyMToS;                        /*!< Master to slave PHY. */
+  uint8_t       phySToM;                        /*!< Slave to master PHY. */
+  uint8_t       bnMToS;                         /*!< Master to slave burst number. */
+  uint8_t       bnSToM;                         /*!< Slave to master burst number. */
 } LlCisCigCisParamsTest_t;
 
 /*! \brief      CIG test CIG parameters. */
-typedef struct {
-    uint8_t cigId; /*!< CIG identifier. */
-    uint32_t
-        sduIntervalMToS; /*!< The time interval between the start of consecutive SDUs from the master Host. */
-    uint32_t
-        sduIntervalSToM; /*!< The time interval between the start of consecutive SDUs from the slave Host. */
-    uint8_t
-        ftMToS; /*!< The flush timeout in multiples of ISO_Interval for each payload sent from the master to slave. */
-    uint8_t
-        ftSToM; /*!< The flush timeout in multiples of ISO_Interval for each payload sent from the slave to master. */
-    uint16_t isoInterval; /*!< The time duration of the isochronous PDU interval. */
-    uint8_t sca; /*!< Sleep clock accuracy. */
-    uint8_t packing; /*!< Packing scheme. */
-    LlFraming_t framing : 8; /*!< Indicates the format of CIS Data PDUs.  */
-    uint8_t numCis; /*!< Number of CIS. */
-    LlCisCigCisParamsTest_t *pCisParam; /*!< CIS parameters. */
+typedef struct
+{
+  uint8_t       cigId;                          /*!< CIG identifier. */
+  uint32_t      sduIntervalMToS;                /*!< The time interval between the start of consecutive SDUs from the master Host. */
+  uint32_t      sduIntervalSToM;                /*!< The time interval between the start of consecutive SDUs from the slave Host. */
+  uint8_t       ftMToS;                         /*!< The flush timeout in multiples of ISO_Interval for each payload sent from the master to slave. */
+  uint8_t       ftSToM;                         /*!< The flush timeout in multiples of ISO_Interval for each payload sent from the slave to master. */
+  uint16_t      isoInterval;                    /*!< The time duration of the isochronous PDU interval. */
+  uint8_t       sca;                            /*!< Sleep clock accuracy. */
+  uint8_t       packing;                        /*!< Packing scheme. */
+  LlFraming_t   framing:8;                      /*!< Indicates the format of CIS Data PDUs.  */
+  uint8_t       numCis;                         /*!< Number of CIS. */
+  LlCisCigCisParamsTest_t *pCisParam;           /*!< CIS parameters. */
 } LlCisCigParamsTest_t;
 
 /*! \brief      Create CIS parameters. */
-typedef struct {
-    uint16_t *pCisHandle; /*!< Pointer to the connected isochronous handle array. */
-    uint16_t *pAclHandle; /*!< Pointer to the asynchronous connection link handle array. */
+typedef struct
+{
+  uint16_t      *pCisHandle;                    /*!< Pointer to the connected isochronous handle array. */
+  uint16_t      *pAclHandle;                    /*!< Pointer to the asynchronous connection link handle array. */
 } LlCisCreateCisParams_t;
 
 /*! \brief       ISO data path direction. */
-typedef enum {
-    LL_ISO_DATA_DIR_INPUT = 0x00, /*!< Input data path. */
-    LL_ISO_DATA_DIR_OUTPUT = 0x01 /*!< Output data path. */
+typedef enum
+{
+  LL_ISO_DATA_DIR_INPUT         = 0x00,         /*!< Input data path. */
+  LL_ISO_DATA_DIR_OUTPUT        = 0x01          /*!< Output data path. */
 } LlIsoDataPathDir_t;
 
 /*! \brief       ISO data path. */
-typedef enum {
-    LL_ISO_DATA_PATH_HCI = 0x00,
-    LL_ISO_DATA_PATH_VS = 0x01, /*!< Vendor Specific. */
+typedef enum
+{
+  LL_ISO_DATA_PATH_HCI          = 0x00,
+  LL_ISO_DATA_PATH_VS           = 0x01,         /*!< Vendor Specific. */
 
-    LL_ISO_DATA_PATH_TOTAL, /*!< Total number of data path methods. */
+  LL_ISO_DATA_PATH_TOTAL,                       /*!< Total number of data path methods. */
 
-    LL_ISO_DATA_PATH_DISABLED = 0xFF, /*!< Data path is disabled. */
+  LL_ISO_DATA_PATH_DISABLED     = 0xFF,         /*!< Data path is disabled. */
 } LlIsoDataPath_t;
 
 /*! \brief      ISO data path direction bit. */
-enum {
-    LL_ISO_DATA_PATH_INPUT_BIT = (1 << 0), /*!< Data path input bit. */
-    LL_ISO_DATA_PATH_OUTPUT_BIT = (1 << 1) /*!< Data path output bit. */
+enum
+{
+  LL_ISO_DATA_PATH_INPUT_BIT    = (1 << 0),     /*!< Data path input bit. */
+  LL_ISO_DATA_PATH_OUTPUT_BIT   = (1 << 1)      /*!< Data path output bit. */
 };
 
 /*! \brief      LE setup ISO Data Path command. */
-typedef struct {
-    uint16_t handle; /*!< Handle of CIS or BIS. */
-    LlIsoDataPathDir_t dpDir : 8; /*!< Data path direction. */
-    uint8_t dpId; /*!< Data path ID. */
-    uint8_t codecFormat; /*!< Codec Format. */
-    uint16_t codecCompId; /*!< Codec Company ID. */
-    uint16_t codecId; /*!< Codec ID. */
-    uint32_t ctrDly; /*!< Codec ID. */
-    uint8_t codecConfigLen; /*!< Codec configuration length. */
-    uint8_t *pCodecConfig; /*!< Codec configuration. */
+typedef struct
+{
+  uint16_t      handle;             /*!< Handle of CIS or BIS. */
+  LlIsoDataPathDir_t dpDir:8;       /*!< Data path direction. */
+  uint8_t       dpId;               /*!< Data path ID. */
+  uint8_t       codecFormat;        /*!< Codec Format. */
+  uint16_t      codecCompId;        /*!< Codec Company ID. */
+  uint16_t      codecId;            /*!< Codec ID. */
+  uint32_t      ctrDly;             /*!< Codec ID. */
+  uint8_t       codecConfigLen;     /*!< Codec configuration length. */
+  uint8_t       *pCodecConfig;      /*!< Codec configuration. */
 } LlIsoSetupDataPath_t;
 
 /*! \brief      BIG Create BIG message. */
-typedef struct {
-    uint8_t bigHandle; /*!< Used to identify the BIG. */
-    uint8_t advHandle; /*!< Used to identify the periodic advertising train. */
-    uint8_t numBis; /*!< Total number of BISes in the BIG. */
-    uint32_t sduInterUsec; /*!< Interval, in microseconds, of BIG SDUs. */
-    uint16_t maxSdu; /*!< Maximum size of an SDU. */
-    uint16_t mtlMs; /*!< Maximum time in milliseconds. */
-    uint8_t rtn; /*!< Retransmitted number. */
-    uint8_t phys; /*!< Transmitter PHYs of packets. */
-    uint8_t packing; /*!< Sequential or Interleaved packing. */
-    LlFraming_t framing : 8; /*!< Unframed or Framed. */
-    uint8_t encrypt; /*!< Unencrypted or Encrypted. */
-    uint8_t bcstCode[LL_BC_LEN]; /*!< Session key used to encrypt and decrypt BIS payloads. */
+typedef struct
+{
+  uint8_t       bigHandle;          /*!< Used to identify the BIG. */
+  uint8_t       advHandle;          /*!< Used to identify the periodic advertising train. */
+  uint8_t       numBis;             /*!< Total number of BISes in the BIG. */
+  uint32_t      sduInterUsec;       /*!< Interval, in microseconds, of BIG SDUs. */
+  uint16_t      maxSdu;             /*!< Maximum size of an SDU. */
+  uint16_t      mtlMs;              /*!< Maximum time in milliseconds. */
+  uint8_t       rtn;                /*!< Retransmitted number. */
+  uint8_t       phys;               /*!< Transmitter PHYs of packets. */
+  uint8_t       packing;            /*!< Sequential or Interleaved packing. */
+  LlFraming_t   framing:8;          /*!< Unframed or Framed. */
+  uint8_t       encrypt;            /*!< Unencrypted or Encrypted. */
+  uint8_t       bcstCode[LL_BC_LEN];/*!< Session key used to encrypt and decrypt BIS payloads. */
 } LlCreateBig_t;
 
 /*! \brief      BIG Create BIG Test message. */
-typedef struct {
-    uint8_t bigHandle; /*!< Used to identify the BIG. */
-    uint8_t advHandle; /*!< Used to identify the periodic advertising train. */
-    uint8_t numBis; /*!< Total number of BISes in the BIG. */
-    uint32_t sduInterUsec; /*!< Interval in microseconds of BIG SDUs. */
-    uint16_t isoInter; /*!< Duration of an isochronous interval for BIG PDUs in 1.25ms unit. */
-    uint8_t nse; /*!< Total number of subevents in each interval of each BIS in the BIG. */
-    uint16_t maxSdu; /*!< Maximum size of a SDU. */
-    uint16_t maxPdu; /*!< Maximum size of payload. */
-    uint8_t phys; /*!< Transmitter PHYs of packets. */
-    uint8_t packing; /*!< Sequential or Interleaved packing. */
-    LlFraming_t framing : 8; /*!< Unframed or Framed. */
-    uint8_t bn; /*!< Number of new payloads in each interval for each BIS. */
-    uint8_t irc; /*!< Number of times the scheduled payload(s) are transmitted in a given event. */
-    uint8_t pto; /*!< Offset used for pre-transmissions. */
-    uint8_t encrypt; /*!< Unencrypted or Encrypted. */
-    uint8_t bcstCode[LL_BC_LEN]; /*!< Code used to derive the session key. */
+typedef struct
+{
+  uint8_t       bigHandle;          /*!< Used to identify the BIG. */
+  uint8_t       advHandle;          /*!< Used to identify the periodic advertising train. */
+  uint8_t       numBis;             /*!< Total number of BISes in the BIG. */
+  uint32_t      sduInterUsec;       /*!< Interval in microseconds of BIG SDUs. */
+  uint16_t      isoInter;           /*!< Duration of an isochronous interval for BIG PDUs in 1.25ms unit. */
+  uint8_t       nse;                /*!< Total number of subevents in each interval of each BIS in the BIG. */
+  uint16_t      maxSdu;             /*!< Maximum size of a SDU. */
+  uint16_t      maxPdu;             /*!< Maximum size of payload. */
+  uint8_t       phys;               /*!< Transmitter PHYs of packets. */
+  uint8_t       packing;            /*!< Sequential or Interleaved packing. */
+  LlFraming_t   framing:8;          /*!< Unframed or Framed. */
+  uint8_t       bn;                 /*!< Number of new payloads in each interval for each BIS. */
+  uint8_t       irc;                /*!< Number of times the scheduled payload(s) are transmitted in a given event. */
+  uint8_t       pto;                /*!< Offset used for pre-transmissions. */
+  uint8_t       encrypt;            /*!< Unencrypted or Encrypted. */
+  uint8_t       bcstCode[LL_BC_LEN];/*!< Code used to derive the session key. */
 } LlCreateBigTest_t;
 
 /*! \brief      BIG Create Sync message. */
-typedef struct {
-    uint8_t bigHandle; /*!< Used to identify the BIG. */
-    uint16_t syncHandle; /*!< Periodic advertising train handle. */
-    uint8_t encrypt; /*!< Unencrypted or Encrypted. */
-    uint8_t bcstCode[LL_BC_LEN]; /*!< Session key code for encrypt and decrypt BIS payloads. */
-    uint8_t mse; /*!< Maximum number of subevents. */
-    uint16_t bigSyncTimeout; /*!< Synchronization timeout for the BIS, in the units of 10ms. */
-    uint8_t numBis; /*!< Total number of BISes in the BIG. */
-    uint8_t bis[LL_MAX_BIS]; /*!< List of indices of BISes. */
+typedef struct
+{
+  uint8_t       bigHandle;          /*!< Used to identify the BIG. */
+  uint16_t      syncHandle;         /*!< Periodic advertising train handle. */
+  uint8_t       encrypt;            /*!< Unencrypted or Encrypted. */
+  uint8_t       bcstCode[LL_BC_LEN];/*!< Session key code for encrypt and decrypt BIS payloads. */
+  uint8_t       mse;                /*!< Maximum number of subevents. */
+  uint16_t      bigSyncTimeout;     /*!< Synchronization timeout for the BIS, in the units of 10ms. */
+  uint8_t       numBis;             /*!< Total number of BISes in the BIG. */
+  uint8_t       bis[LL_MAX_BIS];    /*!< List of indices of BISes. */
 } LlBigCreateSync_t;
 
-/*! \} */ /* LL_API_ISO */
+/*! \} */    /* LL_API_ISO */
 
 /*! \addtogroup LL_API_ENCRYPT
  *  \{ */
 
 /*! \brief       Nonce mode. */
-enum {
-    LL_NONCE_MODE_PKT_CNTR = 0x00, /*!< Packet counter nonce mode (default). */
-    LL_NONCE_MODE_EVT_CNTR = 0x01 /*!< Connection event counter mode. */
+enum
+{
+  LL_NONCE_MODE_PKT_CNTR        = 0x00,         /*!< Packet counter nonce mode (default). */
+  LL_NONCE_MODE_EVT_CNTR        = 0x01          /*!< Connection event counter mode. */
 };
 
 /*! \brief      Encryption mode data structure used in LlGetEncMode() and LlSetEncMode(). */
-typedef struct {
-    bool_t enaAuth; /*!< Enable authentication. */
-    bool_t nonceMode; /*!< Nonce mode. */
+typedef struct
+{
+  bool_t        enaAuth;            /*!< Enable authentication. */
+  bool_t        nonceMode;          /*!< Nonce mode. */
 } LlEncMode_t;
 
-/*! \} */ /* LL_API_ENCRYPT */
+/*! \} */    /* LL_API_ENCRYPT */
 
 /*! \addtogroup LL_API_TEST
  *  \{ */
 
 /*! \brief      Test packet payload type. */
-enum {
-    LL_TEST_PKT_TYPE_PRBS9 = 0x00, /*!< Pseudo-Random bit sequence 9. */
-    LL_TEST_PKT_TYPE_0F = 0x01, /*!< 00001111'b packet payload type. */
-    LL_TEST_PKT_TYPE_55 = 0x02, /*!< 01010101'b packet payload type. */
-    LL_TEST_PKT_TYPE_PRBS15 = 0x03, /*!< Pseudo-Random bit sequence 15. */
-    LL_TEST_PKT_TYPE_FF = 0x04, /*!< 11111111'b packet payload type. */
-    LL_TEST_PKT_TYPE_00 = 0x05, /*!< 00000000'b packet payload type. */
-    LL_TEST_PKT_TYPE_F0 = 0x06, /*!< 11110000'b packet payload type. */
-    LL_TEST_PKT_TYPE_AA = 0x07 /*!< 10101010'b packet payload type. */
+enum
+{
+  LL_TEST_PKT_TYPE_PRBS9        = 0x00,         /*!< Pseudo-Random bit sequence 9. */
+  LL_TEST_PKT_TYPE_0F           = 0x01,         /*!< 00001111'b packet payload type. */
+  LL_TEST_PKT_TYPE_55           = 0x02,         /*!< 01010101'b packet payload type. */
+  LL_TEST_PKT_TYPE_PRBS15       = 0x03,         /*!< Pseudo-Random bit sequence 15. */
+  LL_TEST_PKT_TYPE_FF           = 0x04,         /*!< 11111111'b packet payload type. */
+  LL_TEST_PKT_TYPE_00           = 0x05,         /*!< 00000000'b packet payload type. */
+  LL_TEST_PKT_TYPE_F0           = 0x06,         /*!< 11110000'b packet payload type. */
+  LL_TEST_PKT_TYPE_AA           = 0x07          /*!< 10101010'b packet payload type. */
 };
 
 /*! \brief      Test PHY type. */
-enum {
-    LL_TEST_PHY_LE_1M = 0x01, /*!< LE 1M PHY. */
-    LL_TEST_PHY_LE_2M = 0x02, /*!< LE 2M PHY. */
-    LL_TEST_PHY_LE_CODED = 0x03, /*!< LE Coded PHY (data coding unspecified). */
-    LL_TEST_PHY_LE_CODED_S8 = 0x03, /*!< LE Coded PHY with S=8 data coding. */
-    LL_TEST_PHY_LE_CODED_S2 = 0x04 /*!< LE Coded PHY with S=2 data coding. */
+enum
+{
+  LL_TEST_PHY_LE_1M             = 0x01,         /*!< LE 1M PHY. */
+  LL_TEST_PHY_LE_2M             = 0x02,         /*!< LE 2M PHY. */
+  LL_TEST_PHY_LE_CODED          = 0x03,         /*!< LE Coded PHY (data coding unspecified). */
+  LL_TEST_PHY_LE_CODED_S8       = 0x03,         /*!< LE Coded PHY with S=8 data coding. */
+  LL_TEST_PHY_LE_CODED_S2       = 0x04          /*!< LE Coded PHY with S=2 data coding. */
 };
 
 /*! \brief      Test modulation index. */
-enum {
-    LL_TEST_MOD_IDX_STANDARD = 0x00, /*!< Standard modulation index. */
-    LL_TEST_MOD_IDX_STABLE = 0x01 /*!< Stable modulation index. */
+enum
+{
+  LL_TEST_MOD_IDX_STANDARD      = 0x00,         /*!< Standard modulation index. */
+  LL_TEST_MOD_IDX_STABLE        = 0x01          /*!< Stable modulation index. */
 };
 
 /*! \brief      Test report data. */
-typedef struct {
-    uint16_t numTx; /*!< Total transmit packet count. */
-    uint16_t numRxSuccess; /*!< Successfully received packet count. */
-    uint16_t numRxCrcError; /*!< CRC failed packet count. */
-    uint16_t numRxTimeout; /*!< Receive timeout count. */
+typedef struct
+{
+  uint16_t      numTx;          /*!< Total transmit packet count. */
+  uint16_t      numRxSuccess;   /*!< Successfully received packet count. */
+  uint16_t      numRxCrcError;  /*!< CRC failed packet count. */
+  uint16_t      numRxTimeout;   /*!< Receive timeout count. */
 } LlTestReport_t;
 
 /*! \brief      ISO test packet payload type. */
-typedef enum {
-    LL_ISO_PLD_TYPE_ZERO_LEN = 0x00, /*!< Zero length payload. */
-    LL_ISO_PLD_TYPE_VAR_LEN = 0x01, /*!< Variable length payload. */
-    LL_ISO_PLD_TYPE_MAX_LEN = 0x02 /*!< Maximum length payload. */
+typedef enum
+{
+  LL_ISO_PLD_TYPE_ZERO_LEN      = 0x00,         /*!< Zero length payload. */
+  LL_ISO_PLD_TYPE_VAR_LEN       = 0x01,         /*!< Variable length payload. */
+  LL_ISO_PLD_TYPE_MAX_LEN       = 0x02          /*!< Maximum length payload. */
 } LlIsoPldType_t;
 
 /*! \brief      ISO test counter data. */
-typedef struct {
-    uint32_t numSuccess; /*!< Received good packet count. */
-    uint32_t numMissed; /*!< Received missed packet count. */
-    uint32_t numFailed; /*!< Received failed packet count. */
+typedef struct
+{
+  uint32_t      numSuccess;     /*!< Received good packet count. */
+  uint32_t      numMissed;      /*!< Received missed packet count. */
+  uint32_t      numFailed;      /*!< Received failed packet count. */
 } LlIsoTestCtrs_t;
 
 /*! \brief      ISO link quality statistics. */
-typedef struct {
-    uint32_t txUnAckPkt; /*!< Unacked packets. */
-    uint32_t txFlushedPkt; /*!< Flushed packets. */
-    uint32_t txLastSubEventPkt; /*!< The CIS slave transmit CIS Data PDU on it's last subevent. */
-    uint32_t retransmitPkt; /*!< Retransmitted packets. */
-    uint32_t crcErrPkt; /*!< CRC error packets. */
-    uint32_t rxUnreceivedPkt; /*!< Packets unreceived by flush point. */
-    uint32_t duplicatePkt; /*!< Retransmitted CIS data PDUs. */
+typedef struct
+{
+  uint32_t txUnAckPkt;          /*!< Unacked packets. */
+  uint32_t txFlushedPkt;        /*!< Flushed packets. */
+  uint32_t txLastSubEventPkt;   /*!< The CIS slave transmit CIS Data PDU on it's last subevent. */
+  uint32_t retransmitPkt;       /*!< Retransmitted packets. */
+  uint32_t crcErrPkt;           /*!< CRC error packets. */
+  uint32_t rxUnreceivedPkt;     /*!< Packets unreceived by flush point. */
+  uint32_t duplicatePkt;        /*!< Retransmitted CIS data PDUs. */
 } LlIsoLinkQual_t;
 
-/*! \} */ /* LL_API_TEST */
+
+/*! \} */    /* LL_API_TEST */
 
 /*! \addtogroup LL_API_EVENT
  *  \{ */
 
 /*! \brief      Link control callback interface events */
-enum {
-    LL_ERROR_IND, /*!< Unrecoverable LL or radio error occurred (vendor specific). */
-    /* --- Core Spec 4.0 --- */
-    LL_RESET_CNF, /*!< Reset complete. */
-    LL_ADV_REPORT_IND, /*!< Advertising report. */
-    LL_ADV_ENABLE_CNF, /*!< Advertising enable/disable complete. */
-    LL_SCAN_ENABLE_CNF, /*!< Scan enable/disable complete. */
-    LL_CONN_IND, /*!< Connection complete. */
-    LL_DISCONNECT_IND, /*!< Disconnect complete. */
-    LL_CONN_UPDATE_IND, /*!< Connection update complete. */
-    LL_CREATE_CONN_CANCEL_CNF, /*!< Create connection cancel status. */
-    LL_READ_REMOTE_VER_INFO_CNF, /*!< Read remote version information complete. */
-    LL_READ_REMOTE_FEAT_CNF, /*!< Read remote features complete. */
-    LL_ENC_CHANGE_IND, /*!< Encryption change. */
-    LL_ENC_KEY_REFRESH_IND, /*!< Key refresh. */
-    LL_LTK_REQ_IND, /*!< LTK request. */
-    LL_LTK_REQ_NEG_REPLY_CNF, /*!< LTK request negative reply status. */
-    LL_LTK_REQ_REPLY_CNF, /*!< LTK request reply status. */
-    /* --- Core Spec 4.2 --- */
-    LL_REM_CONN_PARAM_IND, /*!< Remote connection parameter change. */
-    LL_AUTH_PAYLOAD_TIMEOUT_IND, /*!< Authentication payload timeout expired. */
-    LL_DATA_LEN_CHANGE_IND, /*!< Data length changed. */
-    LL_READ_LOCAL_P256_PUB_KEY_CMPL_IND, /*!< Read local P-256 public key complete. */
-    LL_GENERATE_DHKEY_CMPL_IND, /*!< Generate Diffie-Hellman key complete. */
-    LL_SCAN_REPORT_IND, /*!< Legacy scan report (vendor specific). */
-    /* --- Core Spec 5.0 --- */
-    LL_PHY_UPDATE_IND, /*!< LE PHY update complete. */
-    LL_EXT_ADV_REPORT_IND, /*!< Extended advertising report. */
-    LL_EXT_SCAN_ENABLE_CNF, /*!< Extended scan enable/disable complete. */
-    LL_SCAN_TIMEOUT_IND, /*!< Scan timeout. */
-    LL_SCAN_REQ_RCVD_IND, /*!< Scan request received. */
-    LL_EXT_ADV_ENABLE_CNF, /*!< Extended advertising enable/disable complete. */
-    LL_ADV_SET_TERM_IND, /*!< Advertising set terminated complete. */
-    LL_PER_ADV_ENABLE_CNF, /*!< Periodic advertising enable/disable complete. */
-    LL_PER_ADV_SYNC_ESTD_IND, /*!< Periodic scanning synchronization established. */
-    LL_PER_ADV_SYNC_LOST_IND, /*!< Periodic scanning synchronization lost. */
-    LL_PER_ADV_REPORT_IND, /*!< Periodic scanning report. */
-    LL_CH_SEL_ALGO_IND, /*!< Channel selection algorithm. */
-    /* --- Core Spec 5.1 --- */
-    LL_CONNLESS_IQ_REPORT_IND, /*!< LE connectionless IQ report received. */
-    LL_CONN_IQ_REPORT_IND, /*!< LE connection IQ report received. */
-    LL_CTE_REQ_FAILED_IND, /*!< LE CTE request failed received. */
-    LL_PER_SYNC_TRSF_RCVD_IND, /*!< LE periodic advertising sync transfer received. */
-    /* --- Core Spec 5.2 --- */
-    LL_CIS_EST_IND, /*!< CIS established event. */
-    LL_CIS_REQ_IND, /*!< CIS request event. */
-    LL_CREATE_BIG_CNF, /*!< Create BIG complete. */
-    LL_TERM_BIG_IND, /*!< Terminate BIG complete. */
-    LL_BIG_TERM_SYNC_CNF, /*!< BIG Terminate Sync complete. */
-    LL_BIG_SYNC_EST_IND, /*!< BIG sync established event. */
-    LL_BIG_SYNC_LOST_IND, /*!< BIG sync lost event. */
-    LL_REQ_PEER_SCA_IND, /*!< Request peer SCA complete. */
-    LL_TX_POWER_REPORTING_IND, /*!< LL txPower change report received. */
-    LL_PATH_LOSS_REPORTING_IND, /*!< Path loss reporting event. */
-    LL_ISO_EVT_CMPL_IND, /*!< ISO Event complete event. */
-    LL_BIG_INFO_ADV_REPORT_IND /*!< BIG Info advertising report event. */
+enum
+{
+  LL_ERROR_IND,                 /*!< Unrecoverable LL or radio error occurred (vendor specific). */
+  /* --- Core Spec 4.0 --- */
+  LL_RESET_CNF,                 /*!< Reset complete. */
+  LL_ADV_REPORT_IND,            /*!< Advertising report. */
+  LL_ADV_ENABLE_CNF,            /*!< Advertising enable/disable complete. */
+  LL_SCAN_ENABLE_CNF,           /*!< Scan enable/disable complete. */
+  LL_CONN_IND,                  /*!< Connection complete. */
+  LL_DISCONNECT_IND,            /*!< Disconnect complete. */
+  LL_CONN_UPDATE_IND,           /*!< Connection update complete. */
+  LL_CREATE_CONN_CANCEL_CNF,    /*!< Create connection cancel status. */
+  LL_READ_REMOTE_VER_INFO_CNF,  /*!< Read remote version information complete. */
+  LL_READ_REMOTE_FEAT_CNF,      /*!< Read remote features complete. */
+  LL_ENC_CHANGE_IND,            /*!< Encryption change. */
+  LL_ENC_KEY_REFRESH_IND,       /*!< Key refresh. */
+  LL_LTK_REQ_IND,               /*!< LTK request. */
+  LL_LTK_REQ_NEG_REPLY_CNF,     /*!< LTK request negative reply status. */
+  LL_LTK_REQ_REPLY_CNF,         /*!< LTK request reply status. */
+  /* --- Core Spec 4.2 --- */
+  LL_REM_CONN_PARAM_IND,        /*!< Remote connection parameter change. */
+  LL_AUTH_PAYLOAD_TIMEOUT_IND,  /*!< Authentication payload timeout expired. */
+  LL_DATA_LEN_CHANGE_IND,       /*!< Data length changed. */
+  LL_READ_LOCAL_P256_PUB_KEY_CMPL_IND, /*!< Read local P-256 public key complete. */
+  LL_GENERATE_DHKEY_CMPL_IND,          /*!< Generate Diffie-Hellman key complete. */
+  LL_SCAN_REPORT_IND,           /*!< Legacy scan report (vendor specific). */
+  /* --- Core Spec 5.0 --- */
+  LL_PHY_UPDATE_IND,            /*!< LE PHY update complete. */
+  LL_EXT_ADV_REPORT_IND,        /*!< Extended advertising report. */
+  LL_EXT_SCAN_ENABLE_CNF,       /*!< Extended scan enable/disable complete. */
+  LL_SCAN_TIMEOUT_IND,          /*!< Scan timeout. */
+  LL_SCAN_REQ_RCVD_IND,         /*!< Scan request received. */
+  LL_EXT_ADV_ENABLE_CNF,        /*!< Extended advertising enable/disable complete. */
+  LL_ADV_SET_TERM_IND,          /*!< Advertising set terminated complete. */
+  LL_PER_ADV_ENABLE_CNF,        /*!< Periodic advertising enable/disable complete. */
+  LL_PER_ADV_SYNC_ESTD_IND,     /*!< Periodic scanning synchronization established. */
+  LL_PER_ADV_SYNC_LOST_IND,     /*!< Periodic scanning synchronization lost. */
+  LL_PER_ADV_REPORT_IND,        /*!< Periodic scanning report. */
+  LL_CH_SEL_ALGO_IND,           /*!< Channel selection algorithm. */
+  /* --- Core Spec 5.1 --- */
+  LL_CONNLESS_IQ_REPORT_IND,    /*!< LE connectionless IQ report received. */
+  LL_CONN_IQ_REPORT_IND,        /*!< LE connection IQ report received. */
+  LL_CTE_REQ_FAILED_IND,        /*!< LE CTE request failed received. */
+  LL_PER_SYNC_TRSF_RCVD_IND,    /*!< LE periodic advertising sync transfer received. */
+  /* --- Core Spec 5.2 --- */
+  LL_CIS_EST_IND,               /*!< CIS established event. */
+  LL_CIS_REQ_IND,               /*!< CIS request event. */
+  LL_CREATE_BIG_CNF,            /*!< Create BIG complete. */
+  LL_TERM_BIG_IND,              /*!< Terminate BIG complete. */
+  LL_BIG_TERM_SYNC_CNF,         /*!< BIG Terminate Sync complete. */
+  LL_BIG_SYNC_EST_IND,          /*!< BIG sync established event. */
+  LL_BIG_SYNC_LOST_IND,         /*!< BIG sync lost event. */
+  LL_REQ_PEER_SCA_IND,          /*!< Request peer SCA complete. */
+  LL_TX_POWER_REPORTING_IND,    /*!< LL txPower change report received. */
+  LL_PATH_LOSS_REPORTING_IND,   /*!< Path loss reporting event. */
+  LL_ISO_EVT_CMPL_IND,          /*!< ISO Event complete event. */
+  LL_BIG_INFO_ADV_REPORT_IND    /*!< BIG Info advertising report event. */
 };
 
 /*! \brief      Advertising report indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t *pData; /*!< Data buffer. */
-    uint8_t len; /*!< Data buffer length. */
-    int8_t rssi; /*!< RSSI. */
-    uint8_t eventType; /*!< Event type. */
-    uint8_t addrType; /*!< Address type. */
-    bdAddr_t addr; /*!< Address. */
-    /* --- direct fields --- */
-    uint8_t directAddrType; /*!< Direct address type. */
-    bdAddr_t directAddr; /*!< Direct address. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       *pData;         /*!< Data buffer. */
+  uint8_t       len;            /*!< Data buffer length. */
+  int8_t        rssi;           /*!< RSSI. */
+  uint8_t       eventType;      /*!< Event type. */
+  uint8_t       addrType;       /*!< Address type. */
+  bdAddr_t      addr;           /*!< Address. */
+  /* --- direct fields --- */
+  uint8_t       directAddrType; /*!< Direct address type. */
+  bdAddr_t      directAddr;     /*!< Direct address. */
 } LlAdvReportInd_t;
 
 /*! \brief      Connect indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
-    uint8_t role; /*!< Role of this device. */
-    uint8_t addrType; /*!< Address type. */
-    bdAddr_t peerAddr; /*!< Peer address. */
-    uint16_t connInterval; /*!< Connection interval. */
-    uint16_t connLatency; /*!< Connection latency. */
-    uint16_t supTimeout; /*!< Supervision timeout. */
-    uint8_t clockAccuracy; /*!< Clock accuracy. */
-    /* --- enhanced fields --- */
-    bdAddr_t localRpa; /*!< Local resolvable private address. */
-    bdAddr_t peerRpa; /*!< Peer resolvable private address. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint8_t       role;           /*!< Role of this device. */
+  uint8_t       addrType;       /*!< Address type. */
+  bdAddr_t      peerAddr;       /*!< Peer address. */
+  uint16_t      connInterval;   /*!< Connection interval. */
+  uint16_t      connLatency;    /*!< Connection latency. */
+  uint16_t      supTimeout;     /*!< Supervision timeout. */
+  uint8_t       clockAccuracy;  /*!< Clock accuracy. */
+  /* --- enhanced fields --- */
+  bdAddr_t      localRpa;       /*!< Local resolvable private address. */
+  bdAddr_t      peerRpa;        /*!< Peer resolvable private address. */
 } LlConnInd_t;
 
 /*! \brief      Disconnect indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
-    uint8_t reason; /*!< Reason code. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint8_t       reason;         /*!< Reason code. */
 } LlDisconnectInd_t;
 
 /*! \brief      Connect update indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
-    uint16_t connInterval; /*!< Connection interval. */
-    uint16_t connLatency; /*!< Connection latency. */
-    uint16_t supTimeout; /*!< Supervision timeout. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint16_t      connInterval;   /*!< Connection interval. */
+  uint16_t      connLatency;    /*!< Connection latency. */
+  uint16_t      supTimeout;     /*!< Supervision timeout. */
 } LlConnUpdateInd_t;
 
 /*! \brief      Connection parameter change indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t handle; /*!< Connection handle. */
-    uint16_t connIntervalMin; /*!< Minimum connection interval. */
-    uint16_t connIntervalMax; /*!< Maximum connection interval. */
-    uint16_t connLatency; /*!< Connection latency. */
-    uint16_t supTimeout; /*!< Supervision timeout. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint16_t      connIntervalMin;/*!< Minimum connection interval. */
+  uint16_t      connIntervalMax;/*!< Maximum connection interval. */
+  uint16_t      connLatency;    /*!< Connection latency. */
+  uint16_t      supTimeout;     /*!< Supervision timeout. */
 } LlRemConnParamInd_t;
 
 /*! \brief      Create connection cancel confirm */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
 } LlCreateConnCancelCnf_t;
 
 /*! \brief      Read remote version information confirm */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
-    uint8_t version; /*!< Bluetooth specification version. */
-    uint16_t mfrName; /*!< Manufacturer ID. */
-    uint16_t subversion; /*!< Subversion. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint8_t       version;        /*!< Bluetooth specification version. */
+  uint16_t      mfrName;        /*!< Manufacturer ID. */
+  uint16_t      subversion;     /*!< Subversion. */
 } LlReadRemoteVerInfoCnf_t;
 
-#define LL_FEAT_LEN 8 /*!< Length of features byte array */
+#define LL_FEAT_LEN             8       /*!< Length of features byte array */
 
 /*! \brief      Read remote feature confirm */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
-    uint8_t features[LL_FEAT_LEN]; /*!< Features. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint8_t       features[LL_FEAT_LEN];  /*!< Features. */
 } LlReadRemoteFeatCnf_t;
 
 /*! \brief      Encryption change indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
-    bool_t enabled; /*!< Encryption enabled. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
+  bool_t        enabled;        /*!< Encryption enabled. */
 } LlEncChangeInd_t;
 
 /*! \brief      Key refresh indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
 } LlEncKeyRefreshInd_t;
 
 /*! \brief      LTK request indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t handle; /*!< Connection handle. */
-    uint8_t randNum[LL_RAND_LEN]; /*!< Random number. */
-    uint16_t encDiversifier; /*!< Encryption diversifier. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint8_t       randNum[LL_RAND_LEN];   /*!< Random number. */
+  uint16_t      encDiversifier; /*!< Encryption diversifier. */
 } LlLtkReqInd_t;
 
 /*! \brief      LTK request reply confirm */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
 } LlLtkReqReplyCnf_t;
 
 /*! \brief      LTK request negative reply */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
 } LlLtkReqNegReplyCnf_t;
 
 /*! \brief      Authentication payload timeout expired indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t handle; /*!< Connection handle. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      handle;         /*!< Connection handle. */
 } LlAuthPayloadTimeoutInd_t;
 
 /*! \brief      Data length change */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t handle; /*!< Connection handle. */
-    uint16_t maxTxLen; /*!< Maximum transmit length. */
-    uint16_t maxTxTime; /*!< Maximum transmit time in microseconds. */
-    uint16_t maxRxLen; /*!< Maximum receive length. */
-    uint16_t maxRxTime; /*!< Maximum receive time in microseconds. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint16_t      maxTxLen;       /*!< Maximum transmit length. */
+  uint16_t      maxTxTime;      /*!< Maximum transmit time in microseconds. */
+  uint16_t      maxRxLen;       /*!< Maximum receive length. */
+  uint16_t      maxRxTime;      /*!< Maximum receive time in microseconds. */
 } LlDataLenChangeInd_t;
 
 /*! \brief      Read local P-256 key pair complete */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint8_t pubKey_x[LL_ECC_KEY_LEN]; /*!< Public key x-coordinate. */
-    uint8_t pubKey_y[LL_ECC_KEY_LEN]; /*!< Public key y-coordinate. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint8_t       pubKey_x[LL_ECC_KEY_LEN];  /*!< Public key x-coordinate. */
+  uint8_t       pubKey_y[LL_ECC_KEY_LEN];  /*!< Public key y-coordinate. */
 } LlReadLocalP256PubKeyInd_t;
 
 /*! \brief      Generate Diffie-Hellman key complete */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint8_t dhKey[LL_ECC_KEY_LEN]; /*!< Diffie-Hellman key. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint8_t       dhKey[LL_ECC_KEY_LEN];     /*!< Diffie-Hellman key. */
 } LlGenerateDhKeyInd_t;
 
 /*! \brief      PHY update complete. */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t handle; /*!< Connection handle. */
-    uint8_t txPhy; /*!< Transceiver PHY. */
-    uint8_t rxPhy; /*!< Receiver PHY. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint8_t       txPhy;          /*!< Transceiver PHY. */
+  uint8_t       rxPhy;          /*!< Receiver PHY. */
 } LlPhyUpdateInd_t;
 
 /*! \brief      HW error */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t code; /*!< Code. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       code;           /*!< Code. */
 } LlHwErrorInd_t;
 
 /*! \brief      Scan report */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t peerAddrType; /*!< Peer address type. */
-    uint64_t peerAddr; /*!< Peer address. */
-    uint64_t peerRpa; /*!< Peer RPA. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       peerAddrType;   /*!< Peer address type. */
+  uint64_t      peerAddr;       /*!< Peer address. */
+  uint64_t      peerRpa;        /*!< Peer RPA. */
 } LlScanReportInd_t;
 
 /*! \brief      Extended advertising enable */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint8_t handle; /*!< Advertising handle. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint8_t       handle;         /*!< Advertising handle. */
 } LlExtAdvEnableCnf_t;
 
 /*! \brief      Periodic advertising enable */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint8_t handle; /*!< Advertising handle. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint8_t       handle;         /*!< Advertising handle. */
 } LlPerAdvEnableCnf_t;
 
 /*! \brief      Extended advertising report event types. */
-enum {
-    LL_RPT_EVT_CONN_ADV_BIT = (1 << 0), /*!< Connectable advertising event bit. */
-    LL_RPT_EVT_SCAN_ADV_BIT = (1 << 1), /*!< Scannable advertising event bit. */
-    LL_RPT_EVT_DIRECT_ADV_BIT = (1 << 2), /*!< Directed advertising event bit. */
-    LL_RPT_EVT_SCAN_RSP_BIT = (1 << 3), /*!< Scan response event bit. */
-    LL_RPT_EVT_LEGACY_ADV_BIT = (1 << 4), /*!< Legacy advertising PDU event bit. */
+enum
+{
+  LL_RPT_EVT_CONN_ADV_BIT       = (1 << 0),     /*!< Connectable advertising event bit. */
+  LL_RPT_EVT_SCAN_ADV_BIT       = (1 << 1),     /*!< Scannable advertising event bit. */
+  LL_RPT_EVT_DIRECT_ADV_BIT     = (1 << 2),     /*!< Directed advertising event bit. */
+  LL_RPT_EVT_SCAN_RSP_BIT       = (1 << 3),     /*!< Scan response event bit. */
+  LL_RPT_EVT_LEGACY_ADV_BIT     = (1 << 4),     /*!< Legacy advertising PDU event bit. */
 };
 
 /*! \brief      Extended advertising report data status. */
-enum {
-    LL_RPT_DATA_CMPL = 0x00, /*!< Data complete. */
-    LL_RPT_DATA_INC_MORE = 0x01, /*!< Data incomplete, more date to come. */
-    LL_RPT_DATA_INC_TRUNC = 0x02 /*!< Data incomplete, data truncated, no more date to come. */
+enum
+{
+  LL_RPT_DATA_CMPL              = 0x00,         /*!< Data complete. */
+  LL_RPT_DATA_INC_MORE          = 0x01,         /*!< Data incomplete, more date to come. */
+  LL_RPT_DATA_INC_TRUNC         = 0x02          /*!< Data incomplete, data truncated, no more date to come. */
 };
 
 /*! \brief      Special SID values. */
-enum {
-    LL_SID_NO_ADI = 0xFF /*!< No ADI field in the PDU. */
+enum
+{
+  LL_SID_NO_ADI                 = 0xFF          /*!< No ADI field in the PDU. */
 };
 
 /*! \brief      Extended advertising report */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t eventType; /*!< Event type. */
-    uint8_t addrType; /*!< Address type. */
-    bdAddr_t addr; /*!< Address. */
-    uint8_t priPhy; /*!< Primary PHY. */
-    uint8_t secPhy; /*!< Secondary PHY. */
-    uint8_t advSID; /*!< Advertising SID. */
-    int8_t txPwr; /*!< Tx Power. */
-    int8_t rssi; /*!< RSSI. */
-    int16_t perAdvInter; /*!< Periodic advertising interval. */
-    uint8_t directAddrType; /*!< Direct address type. */
-    bdAddr_t directAddr; /*!< Direct address. */
-    uint16_t len; /*!< Data buffer length. */
-    const uint8_t *pData; /*!< Data buffer. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      eventType;      /*!< Event type. */
+  uint8_t       addrType;       /*!< Address type. */
+  bdAddr_t      addr;           /*!< Address. */
+  uint8_t       priPhy;         /*!< Primary PHY. */
+  uint8_t       secPhy;         /*!< Secondary PHY. */
+  uint8_t       advSID;         /*!< Advertising SID. */
+  int8_t        txPwr;          /*!< Tx Power. */
+  int8_t        rssi;           /*!< RSSI. */
+  int16_t       perAdvInter;    /*!< Periodic advertising interval. */
+  uint8_t       directAddrType; /*!< Direct address type. */
+  bdAddr_t      directAddr;     /*!< Direct address. */
+  uint16_t      len;            /*!< Data buffer length. */
+  const uint8_t *pData;         /*!< Data buffer. */
 } LlExtAdvReportInd_t;
 
 /*! \brief      Extended scan enable confirm */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
 } LlExtScanEnableCnf_t;
 
 /*! \brief      Advertising set terminated */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint8_t advHandle; /*!< Advertising handle. */
-    uint16_t connHandle; /*!< Connection handle. */
-    uint8_t numCmplAdvEvt; /*!< Number of completed advertising events. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint8_t       advHandle;      /*!< Advertising handle. */
+  uint16_t      connHandle;     /*!< Connection handle. */
+  uint8_t       numCmplAdvEvt;  /*!< Number of completed advertising events. */
 } LlAdvSetTermInd_t;
 
 /*! \brief      Scan request received */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t handle; /*!< Advertising handle. */
-    uint8_t scanAddrType; /*!< Scanner address type. */
-    bdAddr_t scanAddr; /*!< Scanner address. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       handle;         /*!< Advertising handle. */
+  uint8_t       scanAddrType;   /*!< Scanner address type. */
+  bdAddr_t      scanAddr;       /*!< Scanner address. */
 } LlScanReqRcvdInd_t;
 
 /*! \brief      Used channel selection indication */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t handle; /*!< Connection handle. */
-    uint8_t usedChSel; /*!< Used channel selection. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      handle;         /*!< Connection handle. */
+  uint8_t       usedChSel;      /*!< Used channel selection. */
 } LlChSelInd_t;
 
 /*! \brief     LE periodic advertising synchronization established */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t syncHandle; /*!< Sync handle. */
-    uint8_t advSID; /*!< Advertising SID. */
-    uint8_t addrType; /*!< Advertiser address type. */
-    bdAddr_t addr; /*!< Advertiser address. */
-    uint8_t advPhy; /*!< Advertiser PHY. */
-    uint16_t perAdvInterval; /*!< Periodic advertising interval. */
-    uint8_t advClkAccuracy; /*!< Advertiser clock accuracy. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      syncHandle;     /*!< Sync handle. */
+  uint8_t       advSID;         /*!< Advertising SID. */
+  uint8_t       addrType;       /*!< Advertiser address type. */
+  bdAddr_t      addr;           /*!< Advertiser address. */
+  uint8_t       advPhy;         /*!< Advertiser PHY. */
+  uint16_t      perAdvInterval; /*!< Periodic advertising interval. */
+  uint8_t       advClkAccuracy; /*!< Advertiser clock accuracy. */
 } LlPerAdvSyncEstdCnf_t;
 
 /*! \brief     LE periodic advertising report */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t syncHandle; /*!< Sync handle. */
-    int8_t txPwr; /*!< Tx Power. */
-    int8_t rssi; /*!< RSSI. */
-    uint8_t unused; /*!< Future use. */
-    uint8_t dataStatus; /*!< Data status. */
-    uint16_t len; /*!< Data buffer length. */
-    const uint8_t *pData; /*!< Data buffer. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      syncHandle;     /*!< Sync handle. */
+  int8_t        txPwr;          /*!< Tx Power. */
+  int8_t        rssi;           /*!< RSSI. */
+  uint8_t       unused;         /*!< Future use. */
+  uint8_t       dataStatus;     /*!< Data status. */
+  uint16_t      len;            /*!< Data buffer length. */
+  const uint8_t *pData;         /*!< Data buffer. */
 } LlPerAdvReportInd_t;
 
 /*! \brief     LE periodic advertising sync lost */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t syncHandle; /*!< Sync handle. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      syncHandle;     /*!< Sync handle. */
 } LlPerAdvSyncLostInd_t;
 
 /*! \brief     LE periodic advertising sync transfer received */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t connHandle; /*!< Connection handle. */
-    uint16_t serviceData; /*!< Service data. */
-    uint16_t syncHandle; /*!< Sync handle. */
-    uint8_t advSID; /*!< Advertising SID. */
-    uint8_t addrType; /*!< Advertiser address type. */
-    bdAddr_t addr; /*!< Advertiser address. */
-    uint8_t advPhy; /*!< Advertiser PHY. */
-    uint16_t perAdvInterval; /*!< Periodic advertising interval. */
-    uint8_t advClkAccuracy; /*!< Advertiser clock accuracy. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      connHandle;     /*!< Connection handle. */
+  uint16_t      serviceData;    /*!< Service data. */
+  uint16_t      syncHandle;     /*!< Sync handle. */
+  uint8_t       advSID;         /*!< Advertising SID. */
+  uint8_t       addrType;       /*!< Advertiser address type. */
+  bdAddr_t      addr;           /*!< Advertiser address. */
+  uint8_t       advPhy;         /*!< Advertiser PHY. */
+  uint16_t      perAdvInterval; /*!< Periodic advertising interval. */
+  uint8_t       advClkAccuracy; /*!< Advertiser clock accuracy. */
 } LlPerSyncTrsfRcvdInd_t;
 
 /*! \brief      CIS established event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t cisHandle; /*!< CIS handle. */
-    uint32_t cigSyncDelayUsec; /*!< CIG synchronization delay in usec. */
-    uint32_t cisSyncDelayUsec; /*!< CIS synchronization delay in usec. */
-    uint32_t
-        transLatUsecMToS; /*!< The maximum time, in microseconds, for transmission of SDUs of all CISes from master to slave. */
-    uint32_t
-        transLatUsecSToM; /*!< The maximum time, in microseconds, for transmission of SDUs of all CISes from slave to master. */
-    uint8_t phyMToS; /*!< Master to slave PHY. */
-    uint8_t phySToM; /*!< Slave to master PHY. */
-    uint8_t nse; /*!< Number of subevents. */
-    uint8_t bnMToS; /*!< Burst number master to slave. */
-    uint8_t bnSToM; /*!< Burst number slave to master. */
-    uint8_t ftMToS; /*!< Flush timeout master to slave. */
-    uint8_t ftSToM; /*!< Flush timeout slave to master. */
-    uint16_t maxPduMToS; /*!< Max pdu master to slave. */
-    uint16_t maxPduSToM; /*!< Max pdu slave to master. */
-    uint16_t isoInterval; /*!< Time between two consecutive ISO anchor points. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;              /*!< Event header. */
+  uint8_t       status;           /*!< Status. */
+  uint16_t      cisHandle;        /*!< CIS handle. */
+  uint32_t      cigSyncDelayUsec; /*!< CIG synchronization delay in usec. */
+  uint32_t      cisSyncDelayUsec; /*!< CIS synchronization delay in usec. */
+  uint32_t      transLatUsecMToS; /*!< The maximum time, in microseconds, for transmission of SDUs of all CISes from master to slave. */
+  uint32_t      transLatUsecSToM; /*!< The maximum time, in microseconds, for transmission of SDUs of all CISes from slave to master. */
+  uint8_t       phyMToS;          /*!< Master to slave PHY. */
+  uint8_t       phySToM;          /*!< Slave to master PHY. */
+  uint8_t       nse;              /*!< Number of subevents. */
+  uint8_t       bnMToS;           /*!< Burst number master to slave. */
+  uint8_t       bnSToM;           /*!< Burst number slave to master. */
+  uint8_t       ftMToS;           /*!< Flush timeout master to slave. */
+  uint8_t       ftSToM;           /*!< Flush timeout slave to master. */
+  uint16_t      maxPduMToS;       /*!< Max pdu master to slave. */
+  uint16_t      maxPduSToM;       /*!< Max pdu slave to master. */
+  uint16_t      isoInterval;      /*!< Time between two consecutive ISO anchor points. */
 } LlCisEstInd_t;
 
 /*! \brief      CIS request event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t aclHandle; /*!< ACL handle. */
-    uint16_t cisHandle; /*!< ACL handle. */
-    uint8_t cigId; /*!< CIG identifier. */
-    uint8_t cisId; /*!< CIS identifier. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      aclHandle;      /*!< ACL handle. */
+  uint16_t      cisHandle;      /*!< ACL handle. */
+  uint8_t       cigId;          /*!< CIG identifier. */
+  uint8_t       cisId;          /*!< CIS identifier. */
 } LlCisReqInd_t;
 
 /*! \brief      Create BIG complete event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint8_t bigHandle; /*!< BIG handle. */
-    uint32_t syncDelayUsec; /*!< Synchronization delay in microseconds. */
-    uint32_t transLatUsec; /*!< Transport latency, in microseconds. */
-    uint8_t phy; /*!< Transmit PHY. */
-    uint8_t nse; /*!< Number of Sub-Events in each BIS event in the BIG. */
-    uint8_t bn; /*!< Number of new payloads in each BIS event. */
-    uint8_t pto; /*!< Offset used for pre-transmissions. */
-    uint8_t irc; /*!< Number of times a payload is transmitted in a BIS event. */
-    uint16_t maxPdu; /*!< Maximum size of the payload. */
-    uint16_t isoInterval; /*!< Time between two consecutive ISO anchor points. */
-    uint8_t numBis; /*!< Number of BIS. */
-    uint16_t bisHandle[LL_MAX_BIS]; /*!< Connection handles of the BIS's. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint8_t       bigHandle;      /*!< BIG handle. */
+  uint32_t      syncDelayUsec;  /*!< Synchronization delay in microseconds. */
+  uint32_t      transLatUsec;   /*!< Transport latency, in microseconds. */
+  uint8_t       phy;            /*!< Transmit PHY. */
+  uint8_t       nse;            /*!< Number of Sub-Events in each BIS event in the BIG. */
+  uint8_t       bn;             /*!< Number of new payloads in each BIS event. */
+  uint8_t       pto;            /*!< Offset used for pre-transmissions. */
+  uint8_t       irc;            /*!< Number of times a payload is transmitted in a BIS event. */
+  uint16_t      maxPdu;         /*!< Maximum size of the payload. */
+  uint16_t      isoInterval;    /*!< Time between two consecutive ISO anchor points. */
+  uint8_t       numBis;         /*!< Number of BIS. */
+  uint16_t      bisHandle[LL_MAX_BIS];  /*!< Connection handles of the BIS's. */
 } LlCreateBigCnf_t;
 
 /*! \brief      Terminate BIG complete event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t bigHandle; /*!< BIG handle. */
-    uint8_t reason; /*!< Terminate reason. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       bigHandle;      /*!< BIG handle. */
+  uint8_t       reason;         /*!< Terminate reason. */
 } LlTerminateBigInd_t;
 
 /*! \brief      BIG Terminate complete event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint8_t bigHandle; /*!< BIG handle. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint8_t       bigHandle;      /*!< BIG handle. */
 } LlBigTermSyncCnf_t;
 
 /*! \brief      Create BIG complete (Sync Established) event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint8_t bigHandle; /*!< BIG handle. */
-    uint32_t
-        transLatUsec; /*!< The maximum time, in microseconds, for transmission of SDUs of all BISes. */
-    uint8_t nse; /*!< Number of Sub-Events in each BIS event in the BIG. */
-    uint8_t bn; /*!< Number of new payloads in each BIS event. */
-    uint8_t pto; /*!< Offset used for pre-transmissions. */
-    uint8_t irc; /*!< Number of times a payload is transmitted in a BIS event. */
-    uint16_t maxPdu; /*!< Maximum size of the payload. */
-    uint16_t isoInterval; /*!< Time between two consecutive ISO anchor points. */
-    uint8_t numBis; /*!< Number of BIS. */
-    uint16_t bisHandle[LL_MAX_BIS]; /*!< Connection handles of the BIS's. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint8_t       bigHandle;      /*!< BIG handle. */
+  uint32_t      transLatUsec;   /*!< The maximum time, in microseconds, for transmission of SDUs of all BISes. */
+  uint8_t       nse;            /*!< Number of Sub-Events in each BIS event in the BIG. */
+  uint8_t       bn;             /*!< Number of new payloads in each BIS event. */
+  uint8_t       pto;            /*!< Offset used for pre-transmissions. */
+  uint8_t       irc;            /*!< Number of times a payload is transmitted in a BIS event. */
+  uint16_t      maxPdu;         /*!< Maximum size of the payload. */
+  uint16_t      isoInterval;    /*!< Time between two consecutive ISO anchor points. */
+  uint8_t       numBis;         /*!< Number of BIS. */
+  uint16_t      bisHandle[LL_MAX_BIS];  /*!< Connection handles of the BIS's. */
 } LlBigSyncEstInd_t;
 
 /*! \brief      BIG sync lost event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t bigHandle; /*!< BIG handle. */
-    uint8_t reason; /*!< Sync lost reason. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       bigHandle;      /*!< BIG handle. */
+  uint8_t       reason;         /*!< Sync lost reason. */
 } LlBigSyncLostInd_t;
 
 /*! \brief     LE request peer SCA complete */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t connHandle; /*!< Connection handle. */
-    uint8_t peerSca; /*!< Peer SCA. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      connHandle;     /*!< Connection handle. */
+  uint8_t       peerSca;        /*!< Peer SCA. */
 } LlPeerScaCnf_t;
 
 /*! \brief      LE power reporting indication. */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t status; /*!< Status. */
-    uint16_t connHandle; /*!< Connection handle. */
-    uint8_t reason; /*!< Report reason. */
-    uint8_t phy; /*!< PHY. */
-    int8_t txPower; /*!< txPower. */
-    uint8_t txPowerLimits; /*!< Transmit power level limit flags. */
-    int8_t delta; /*!< Change from previous txPower. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       status;         /*!< Status. */
+  uint16_t      connHandle;     /*!< Connection handle. */
+  uint8_t       reason;         /*!< Report reason. */
+  uint8_t       phy;            /*!< PHY. */
+  int8_t        txPower;        /*!< txPower. */
+  uint8_t       txPowerLimits;  /*!< Transmit power level limit flags. */
+  int8_t        delta;          /*!< Change from previous txPower. */
 } LlPowerReportInd_t;
 
 /*! \brief      VS ISO Event complete event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint8_t handle; /*!< ISO handle. */
-    uint32_t evtCtr; /*!< Event counter. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint8_t       handle;         /*!< ISO handle. */
+  uint32_t      evtCtr;         /*!< Event counter. */
 } LlIsoEventCmplInd_t;
 
 /*! \brief      BIG Info Advertising Report event */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t syncHandle; /*!< Sync handle identifying the periodic advertising train. */
-    uint8_t numBis; /*!< Number of BIS. */
-    uint8_t nse; /*!< Number of Sub-Events in each BIS event in the BIG. */
-    uint16_t isoInterv; /*!< ISO interval. */
-    uint8_t bn; /*!< Number of new payloads in each BIS event. */
-    uint8_t pto; /*!< Offset used for pre-transmissions. */
-    uint8_t irc; /*!< Number of times a payload is transmitted in a BIS event. */
-    uint16_t maxPdu; /*!< Maximum size of the PDU. */
-    uint32_t sduInterv; /*!< SDU interval. */
-    uint16_t maxSdu; /*!< Maximum size of the SDU. */
-    LlPhy_t phy; /*!< Transmit PHY. */
-    LlFraming_t framing; /*!< Framing mode. */
-    bool_t encrypt; /*!< Encryption enabled. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      syncHandle;     /*!< Sync handle identifying the periodic advertising train. */
+  uint8_t       numBis;         /*!< Number of BIS. */
+  uint8_t       nse;            /*!< Number of Sub-Events in each BIS event in the BIG. */
+  uint16_t      isoInterv;      /*!< ISO interval. */
+  uint8_t       bn;             /*!< Number of new payloads in each BIS event. */
+  uint8_t       pto;            /*!< Offset used for pre-transmissions. */
+  uint8_t       irc;            /*!< Number of times a payload is transmitted in a BIS event. */
+  uint16_t      maxPdu;         /*!< Maximum size of the PDU. */
+  uint32_t      sduInterv;      /*!< SDU interval. */
+  uint16_t      maxSdu;         /*!< Maximum size of the SDU. */
+  LlPhy_t       phy;            /*!< Transmit PHY. */
+  LlFraming_t   framing;        /*!< Framing mode. */
+  bool_t        encrypt;        /*!< Encryption enabled. */
 } LlBigInfoAdvRptInd_t;
 
 /*! \brief      LE Path loss reporting event. */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    uint16_t connHandle; /*!< Connection handle. */
-    uint8_t curPathLoss; /*!< Current path loss. */
-    uint8_t zoneEntered; /*!< Zone entered. */
+typedef struct
+{
+  wsfMsgHdr_t   hdr;            /*!< Event header. */
+  uint16_t      connHandle;     /*!< Connection handle. */
+  uint8_t       curPathLoss;    /*!< Current path loss. */
+  uint8_t       zoneEntered;    /*!< Zone entered. */
 } LlPathLossThresholdEvt_t;
 
 /*! \brief      Union of all event types */
-typedef union {
-    wsfMsgHdr_t hdr; /*!< Event header. */
-    LlHwErrorInd_t hwErrorInd; /*!< Unrecoverable LL or radio error occurred. */
-    /* --- Core Spec 4.0 --- */
-    LlAdvReportInd_t advReportInd; /*!< LE advertising report. */
-    LlConnInd_t connInd; /*!< LE connection complete. */
-    LlDisconnectInd_t disconnectInd; /*!< LE disconnect complete. */
-    LlConnUpdateInd_t connUpdateInd; /*!< LE connection update complete. */
-    LlCreateConnCancelCnf_t createConnCancelCnf; /*!< LE create connection cancel status. */
-    LlReadRemoteVerInfoCnf_t readRemoteVerInfoCnf; /*!< Read remote version information complete. */
-    LlReadRemoteFeatCnf_t readRemoteFeatCnf; /*!< LE read remote features complete. */
-    LlEncChangeInd_t encChangeInd; /*!< Encryption change. */
-    LlEncKeyRefreshInd_t keyRefreshInd; /*!< Key refresh. */
-    LlLtkReqInd_t ltkReqInd; /*!< LE LTK request. */
-    LlLtkReqNegReplyCnf_t ltkReqNegReplyCnf; /*!< LTK request negative reply status. */
-    LlLtkReqReplyCnf_t ltkReqReplyCnf; /*!< LTK request reply status. */
-    /* --- Core Spec 4.2 --- */
-    LlRemConnParamInd_t remConnParamInd; /*!< LE remote connection parameter request. */
-    LlAuthPayloadTimeoutInd_t authPayloadTimeoutInd; /*!< Authentication payload timeout. */
-    LlDataLenChangeInd_t dataLenChangeInd; /*!< Data length changed. */
-    LlReadLocalP256PubKeyInd_t readLocalP256PubKeyInd; /*!< Read local P-256 public key complete. */
-    LlGenerateDhKeyInd_t generateDhKeyInd; /*!< Generate Diffie-Hellman key complete. */
-    LlScanReportInd_t scanReportInd; /*!< Scan report. */
-    /* --- Core Spec 5.0 --- */
-    LlPhyUpdateInd_t phyUpdateInd; /*!< PHY update complete. */
-    LlExtAdvReportInd_t extAdvReportInd; /*!< LE extended advertising report. */
-    LlExtScanEnableCnf_t extScanEnableCnf; /*!< LE extended scan enable completed. */
-    LlScanReqRcvdInd_t scanReqRcvdInd; /*!< LE scan request received. */
-    LlExtAdvEnableCnf_t extAdvEnableCnf; /*!< LE extended advertising enable complete. */
-    LlAdvSetTermInd_t advSetTermInd; /*!< LE advertising set terminated. */
-    LlChSelInd_t usedChSelInd; /*!< Used channel selection. */
-    LlPerAdvEnableCnf_t perAdvEnableCnf; /*!< LE periodic advertising enable complete. */
-    LlPerAdvSyncEstdCnf_t perAdvSyncEstdCnf; /*!< LE periodic advertising sync established. */
-    LlPerAdvReportInd_t perAdvReportInd; /*!< LE periodic advertising report. */
-    LlPerAdvSyncLostInd_t perAdvSyncLostInd; /*!< LE periodic advertising sync lost. */
-    /* --- Core Spec 5.1 --- */
-    LlPerSyncTrsfRcvdInd_t
-        perASyncTrsfRcvdInd; /*!< LE periodic advertising sync transfer received. */
-    /* --- Core Spec 5.2 --- */
-    LlCisEstInd_t cisEstInd; /*!< LE CIS established. */
-    LlCisReqInd_t cisReqInd; /*!< LE CIS request. */
-    LlCreateBigCnf_t createBigCnf; /*!< LE create BIG complete. */
-    LlTerminateBigInd_t termBigInd; /*!< LE terminate BIG complete. */
-    LlBigTermSyncCnf_t bigTermSyncCnf; /*!< LE BIG terminate sync. */
-    LlBigSyncEstInd_t bigSyncEstInd; /*!< LE BIG sync established. */
-    LlBigSyncLostInd_t bigSyncLostInd; /*!< LE BIG sync lost. */
-    LlPeerScaCnf_t peerScaCnf; /*!< LE request peer SCA complete. */
-    LlPowerReportInd_t powerRptInd; /*!< LE transmit power reporting indication. */
-    LlIsoEventCmplInd_t isoEvtCmplInd; /*!< VS ISO Event complete. */
-    LlBigInfoAdvRptInd_t bigInfoInd; /*!< LE Big Info indication. */
-    LlPathLossThresholdEvt_t pathLossEvt; /*!< LE Path loss threshold reporting event. */
+typedef union
+{
+  wsfMsgHdr_t               hdr;                    /*!< Event header. */
+  LlHwErrorInd_t            hwErrorInd;             /*!< Unrecoverable LL or radio error occurred. */
+  /* --- Core Spec 4.0 --- */
+  LlAdvReportInd_t          advReportInd;           /*!< LE advertising report. */
+  LlConnInd_t               connInd;                /*!< LE connection complete. */
+  LlDisconnectInd_t         disconnectInd;          /*!< LE disconnect complete. */
+  LlConnUpdateInd_t         connUpdateInd;          /*!< LE connection update complete. */
+  LlCreateConnCancelCnf_t   createConnCancelCnf;    /*!< LE create connection cancel status. */
+  LlReadRemoteVerInfoCnf_t  readRemoteVerInfoCnf;   /*!< Read remote version information complete. */
+  LlReadRemoteFeatCnf_t     readRemoteFeatCnf;      /*!< LE read remote features complete. */
+  LlEncChangeInd_t          encChangeInd;           /*!< Encryption change. */
+  LlEncKeyRefreshInd_t      keyRefreshInd;          /*!< Key refresh. */
+  LlLtkReqInd_t             ltkReqInd;              /*!< LE LTK request. */
+  LlLtkReqNegReplyCnf_t     ltkReqNegReplyCnf;      /*!< LTK request negative reply status. */
+  LlLtkReqReplyCnf_t        ltkReqReplyCnf;         /*!< LTK request reply status. */
+  /* --- Core Spec 4.2 --- */
+  LlRemConnParamInd_t       remConnParamInd;        /*!< LE remote connection parameter request. */
+  LlAuthPayloadTimeoutInd_t authPayloadTimeoutInd;  /*!< Authentication payload timeout. */
+  LlDataLenChangeInd_t      dataLenChangeInd;       /*!< Data length changed. */
+  LlReadLocalP256PubKeyInd_t readLocalP256PubKeyInd; /*!< Read local P-256 public key complete. */
+  LlGenerateDhKeyInd_t      generateDhKeyInd;       /*!< Generate Diffie-Hellman key complete. */
+  LlScanReportInd_t         scanReportInd;          /*!< Scan report. */
+  /* --- Core Spec 5.0 --- */
+  LlPhyUpdateInd_t          phyUpdateInd;           /*!< PHY update complete. */
+  LlExtAdvReportInd_t       extAdvReportInd;        /*!< LE extended advertising report. */
+  LlExtScanEnableCnf_t      extScanEnableCnf;       /*!< LE extended scan enable completed. */
+  LlScanReqRcvdInd_t        scanReqRcvdInd;         /*!< LE scan request received. */
+  LlExtAdvEnableCnf_t       extAdvEnableCnf;        /*!< LE extended advertising enable complete. */
+  LlAdvSetTermInd_t         advSetTermInd;          /*!< LE advertising set terminated. */
+  LlChSelInd_t              usedChSelInd;           /*!< Used channel selection. */
+  LlPerAdvEnableCnf_t       perAdvEnableCnf;        /*!< LE periodic advertising enable complete. */
+  LlPerAdvSyncEstdCnf_t     perAdvSyncEstdCnf;      /*!< LE periodic advertising sync established. */
+  LlPerAdvReportInd_t       perAdvReportInd;        /*!< LE periodic advertising report. */
+  LlPerAdvSyncLostInd_t     perAdvSyncLostInd;      /*!< LE periodic advertising sync lost. */
+  /* --- Core Spec 5.1 --- */
+  LlPerSyncTrsfRcvdInd_t    perASyncTrsfRcvdInd;    /*!< LE periodic advertising sync transfer received. */
+  /* --- Core Spec 5.2 --- */
+  LlCisEstInd_t             cisEstInd;              /*!< LE CIS established. */
+  LlCisReqInd_t             cisReqInd;              /*!< LE CIS request. */
+  LlCreateBigCnf_t          createBigCnf;           /*!< LE create BIG complete. */
+  LlTerminateBigInd_t       termBigInd;             /*!< LE terminate BIG complete. */
+  LlBigTermSyncCnf_t        bigTermSyncCnf;         /*!< LE BIG terminate sync. */
+  LlBigSyncEstInd_t         bigSyncEstInd;          /*!< LE BIG sync established. */
+  LlBigSyncLostInd_t        bigSyncLostInd;         /*!< LE BIG sync lost. */
+  LlPeerScaCnf_t            peerScaCnf;             /*!< LE request peer SCA complete. */
+  LlPowerReportInd_t        powerRptInd;            /*!< LE transmit power reporting indication. */
+  LlIsoEventCmplInd_t       isoEvtCmplInd;          /*!< VS ISO Event complete. */
+  LlBigInfoAdvRptInd_t      bigInfoInd;             /*!< LE Big Info indication. */
+  LlPathLossThresholdEvt_t  pathLossEvt;            /*!< LE Path loss threshold reporting event. */
 } LlEvt_t;
 
 /*! \brief      Event callback */
@@ -1528,7 +1522,7 @@ typedef void (*llAclCback_t)(uint16_t handle, uint8_t numBufs);
 /*! \brief      ISO callback */
 typedef void (*llIsoCback_t)(uint8_t numHandles, uint16_t *pHandle, uint16_t *pNumPkts);
 
-/*! \} */ /* LL_API_EVENT */
+/*! \} */    /* LL_API_EVENT */
 
 /**************************************************************************************************
   Function Declarations
@@ -1834,7 +1828,7 @@ void LlAclRegister(llAclCback_t sendCompCback, llAclCback_t recvPendCback);
 /*************************************************************************************************/
 void LlIsoRegister(llIsoCback_t sendIsoCompCback, llIsoCback_t recvIsoPendCback);
 
-/*! \} */ /* LL_API_INIT */
+/*! \} */    /* LL_API_INIT */
 
 /*! \addtogroup LL_API_DEVICE
  *  \{ */
@@ -2037,8 +2031,7 @@ uint8_t LlRemoveDeviceFromWhitelist(uint8_t addrType, bdAddr_t pAddr);
  *  Add device to resolving list.
  */
 /*************************************************************************************************/
-uint8_t LlAddDeviceToResolvingList(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr,
-                                   const uint8_t *pPeerIrk, const uint8_t *pLocalIrk);
+uint8_t LlAddDeviceToResolvingList(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr, const uint8_t *pPeerIrk, const uint8_t *pLocalIrk);
 
 /*************************************************************************************************/
 /*!
@@ -2179,8 +2172,7 @@ uint8_t LlGenerateP256KeyPair(void);
  *  returned.
  */
 /*************************************************************************************************/
-uint8_t LlGenerateDhKey(const uint8_t pubKey_x[LL_ECC_KEY_LEN],
-                        const uint8_t pubKey_y[LL_ECC_KEY_LEN]);
+uint8_t LlGenerateDhKey(const uint8_t pubKey_x[LL_ECC_KEY_LEN], const uint8_t pubKey_y[LL_ECC_KEY_LEN]);
 
 /*************************************************************************************************/
 /*!
@@ -2197,8 +2189,7 @@ uint8_t LlGenerateDhKey(const uint8_t pubKey_x[LL_ECC_KEY_LEN],
  *  returned. If keyType == 1, debug keys will be used in place for the keys.
  */
 /*************************************************************************************************/
-uint8_t LlGenerateDhKeyV2(uint8_t pubKey_x[LL_ECC_KEY_LEN], uint8_t pubKey_y[LL_ECC_KEY_LEN],
-                          uint8_t keyType);
+uint8_t LlGenerateDhKeyV2(uint8_t pubKey_x[LL_ECC_KEY_LEN], uint8_t pubKey_y[LL_ECC_KEY_LEN], uint8_t keyType);
 
 /*************************************************************************************************/
 /*!
@@ -2264,7 +2255,7 @@ uint8_t LlSetOpFlags(uint32_t flags, bool_t enable);
 /*************************************************************************************************/
 void LlSetDefaultExtAdvTxPhyOptions(const uint8_t phyOptions);
 
-/*! \} */ /* LL_API_DEVICE */
+/*! \} */    /* LL_API_DEVICE */
 
 /*! \addtogroup LL_API_BROADCAST
  *  \{ */
@@ -2443,8 +2434,7 @@ uint8_t LlGetExtAdvTxPowerLevel(uint16_t handle, int8_t *pLevel);
  *  Set extended advertising data data.
  */
 /*************************************************************************************************/
-uint8_t LlSetExtAdvData(uint8_t handle, uint8_t op, uint8_t fragPref, uint8_t len,
-                        const uint8_t *pData);
+uint8_t LlSetExtAdvData(uint8_t handle, uint8_t op, uint8_t fragPref, uint8_t len, const uint8_t *pData);
 
 /*************************************************************************************************/
 /*!
@@ -2461,8 +2451,7 @@ uint8_t LlSetExtAdvData(uint8_t handle, uint8_t op, uint8_t fragPref, uint8_t le
  *  Set extended scan response data.
  */
 /*************************************************************************************************/
-uint8_t LlSetExtScanRespData(uint8_t handle, uint8_t op, uint8_t fragPref, uint8_t len,
-                             const uint8_t *pData);
+uint8_t LlSetExtScanRespData(uint8_t handle, uint8_t op, uint8_t fragPref, uint8_t len, const uint8_t *pData);
 
 /*************************************************************************************************/
 /*!
@@ -2667,7 +2656,7 @@ uint8_t LlWriteRfPathComp(int16_t txPathComp, int16_t rxPathComp);
 /*************************************************************************************************/
 void LlScanReportEnable(uint8_t enable);
 
-/*! \} */ /* LL_API_BROADCAST */
+/*! \} */    /* LL_API_BROADCAST */
 
 /*! \addtogroup LL_API_OBSERVER
  *  \{ */
@@ -2728,8 +2717,7 @@ void LlScanEnable(uint8_t enable, uint8_t filterDup);
  *  Set the extended scan parameters to be used on the primary advertising channel.
  */
 /*************************************************************************************************/
-uint8_t LlSetExtScanParam(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_t scanPhys,
-                          const LlExtScanParam_t param[]);
+uint8_t LlSetExtScanParam(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_t scanPhys, const LlExtScanParam_t param[]);
 
 /*************************************************************************************************/
 /*!
@@ -2900,8 +2888,7 @@ uint8_t LlPeriodicAdvSetInfoTransfer(uint16_t connHandle, uint16_t serviceData, 
  *  Set periodic advertising sync transfer parameters.
  */
 /*************************************************************************************************/
-uint8_t LlSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uint16_t skip,
-                                        uint16_t syncTimeout, uint8_t cteType);
+uint8_t LlSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uint16_t skip, uint16_t syncTimeout, uint8_t cteType);
 
 /*************************************************************************************************/
 /*!
@@ -2917,10 +2904,9 @@ uint8_t LlSetPeriodicAdvSyncTransParams(uint16_t connHandle, uint8_t mode, uint1
  *  Set default periodic advertising sync transfer parameters.
  */
 /*************************************************************************************************/
-uint8_t LlSetDefaultPeriodicAdvSyncTransParams(uint8_t mode, uint16_t skip, uint16_t syncTimeout,
-                                               uint8_t cteType);
+uint8_t LlSetDefaultPeriodicAdvSyncTransParams(uint8_t mode, uint16_t skip, uint16_t syncTimeout, uint8_t cteType);
 
-/*! \} */ /* LL_API_OBSERVER */
+/*! \} */    /* LL_API_OBSERVER */
 
 /*! \addtogroup LL_API_CONN
  *  \{ */
@@ -3175,8 +3161,7 @@ uint8_t LlWriteDefaultDataLen(uint16_t maxTxLen, uint16_t maxTxTime);
  *  transmission and reception.
  */
 /*************************************************************************************************/
-void LlReadMaximumDataLen(uint16_t *pMaxTxLen, uint16_t *pMaxTxTime, uint16_t *pMaxRxLen,
-                          uint16_t *pMaxRxTime);
+void LlReadMaximumDataLen(uint16_t *pMaxTxLen, uint16_t *pMaxTxTime, uint16_t *pMaxRxLen, uint16_t *pMaxRxTime);
 
 /*************************************************************************************************/
 /*!
@@ -3238,8 +3223,7 @@ bool_t llValidatePhySupport(uint8_t txPhys, uint8_t rxPhys);
  *  current PHY is preferable.
  */
 /*************************************************************************************************/
-uint8_t LlSetPhy(uint16_t handle, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys,
-                 uint16_t phyOptions);
+uint8_t LlSetPhy(uint16_t handle, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys, uint16_t phyOptions);
 
 /*************************************************************************************************/
 /*!
@@ -3281,7 +3265,7 @@ uint8_t LlGetPeerMinUsedChan(uint16_t handle, uint8_t *pPeerMinUsedChan);
 /*************************************************************************************************/
 uint8_t LlRequestPeerSca(uint16_t handle);
 
-/*! \} */ /* LL_API_CONN */
+/*! \} */    /* LL_API_CONN */
 
 /*! \addtogroup LL_API_CENTRAL
  *  \{ */
@@ -3315,8 +3299,7 @@ uint8_t LlCreateConn(const LlInitParam_t *pInitParam, const LlConnSpec_t *pConnS
  *  This function is only when operating in master role.
  */
 /*************************************************************************************************/
-uint8_t LlExtCreateConn(const LlExtInitParam_t *pInitParam, const LlExtInitScanParam_t scanParam[],
-                        const LlConnSpec_t connSpec[]);
+uint8_t LlExtCreateConn(const LlExtInitParam_t *pInitParam, const LlExtInitScanParam_t scanParam[], const LlConnSpec_t connSpec[]);
 
 /*************************************************************************************************/
 /*!
@@ -3328,7 +3311,7 @@ uint8_t LlExtCreateConn(const LlExtInitParam_t *pInitParam, const LlExtInitScanP
 /*************************************************************************************************/
 void LlCreateConnCancel(void);
 
-/*! \} */ /* LL_API_CENTRAL */
+/*! \} */    /* LL_API_CENTRAL */
 
 /*! \addtogroup LL_API_ENCRYPT
  *  \{ */
@@ -3362,8 +3345,7 @@ uint8_t LlEncrypt(uint8_t *pKey, uint8_t *pData);
  *  operating in master role.
  */
 /*************************************************************************************************/
-uint8_t LlStartEncryption(uint16_t handle, const uint8_t *pRand, uint16_t diversifier,
-                          const uint8_t *pKey);
+uint8_t LlStartEncryption(uint16_t handle, const uint8_t *pRand, uint16_t diversifier, const uint8_t *pKey);
 
 /*************************************************************************************************/
 /*!
@@ -3451,7 +3433,7 @@ uint8_t LlGetEncMode(uint16_t handle, LlEncMode_t *pMode);
 /*************************************************************************************************/
 uint8_t LlSetEncMode(uint16_t handle, const LlEncMode_t *pMode);
 
-/*! \} */ /* LL_API_ENCRYPT */
+/*! \} */    /* LL_API_ENCRYPT */
 
 /*! \addtogroup LL_API_DATA
  *  \{ */
@@ -3520,7 +3502,7 @@ uint8_t LlGetIsoRxBufs(void);
  *  \return     Status error code.
  */
 /*************************************************************************************************/
-uint8_t LlReadIsoLinkQual(uint16_t handle, LlIsoLinkQual_t *pStats);
+uint8_t LlReadIsoLinkQual(uint16_t handle, LlIsoLinkQual_t * pStats);
 
 /*************************************************************************************************/
 /*!
@@ -3559,7 +3541,7 @@ uint8_t *LlRecvAclData(void);
 /*************************************************************************************************/
 void LlRecvAclDataComplete(uint8_t numBufs);
 
-/*! \} */ /* LL_API_DATA */
+/*! \} */    /* LL_API_DATA */
 
 /*! \addtogroup LL_API_TEST
  *  \{ */
@@ -3609,8 +3591,7 @@ uint8_t LlRxTest(uint8_t rfChan, uint16_t numPkt);
  *  Start the transmit test mode on the given channel.
  */
 /*************************************************************************************************/
-uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t phy,
-                         uint16_t numPkt);
+uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t phy, uint16_t numPkt);
 
 /*************************************************************************************************/
 /*!
@@ -3648,8 +3629,8 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
  */
 /*************************************************************************************************/
 uint8_t LlRxTestV3(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint8_t cteLen, uint8_t cteType,
-                   uint8_t slotDur, uint8_t swPatLen, uint8_t *antIds, uint16_t numPkt);
-
+  uint8_t slotDur, uint8_t swPatLen, uint8_t* antIds, uint16_t numPkt);
+  
 /*************************************************************************************************/
 /*!
  *  \brief      Enter enhanced transmit test mode.
@@ -3669,8 +3650,8 @@ uint8_t LlRxTestV3(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint8_t cteLen, 
  *  Start the transmit test mode on the given channel.
  */
 /*************************************************************************************************/
-uint8_t LlTxTestV3(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t phy, uint8_t cteLen,
-                   uint8_t cteType, uint8_t swPatLen, uint8_t *antIds, uint16_t numPkt);
+uint8_t LlTxTestV3(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t phy, uint8_t cteLen, uint8_t cteType,
+  uint8_t swPatLen, uint8_t* antIds, uint16_t numPkt);
 
 /*************************************************************************************************/
 /*!
@@ -3800,8 +3781,7 @@ uint8_t LlSetPowerMonitorEnable(uint16_t handle, bool_t enable);
  *  \return Status error code.
  */
 /*************************************************************************************************/
-uint8_t LlSetPathLossReportingParams(uint16_t handle, uint8_t highThresh, uint8_t highHyst,
-                                     uint8_t lowThresh, uint8_t lowHyst, uint16_t minTime);
+uint8_t LlSetPathLossReportingParams(uint16_t handle, uint8_t highThresh, uint8_t highHyst, uint8_t lowThresh, uint8_t lowHyst, uint16_t minTime);
 
 /*************************************************************************************************/
 /*!
@@ -3839,7 +3819,7 @@ uint8_t LlPowerCtrlReq(uint16_t handle, int8_t delta, uint8_t phy);
 /*************************************************************************************************/
 void LlIsoEventCompleteEnable(uint8_t enable);
 
-/*! \} */ /* LL_API_TEST */
+/*! \} */    /* LL_API_TEST */
 
 /*! \addtogroup LL_API_DIAG
  *  \{ */
@@ -3937,7 +3917,7 @@ void LlGetCisContextSize(uint8_t *pMaxCis, uint16_t *pCisCtxSize);
 /*************************************************************************************************/
 uint16_t LlStatsGetHandlerWatermarkUsec(void);
 
-/*! \} */ /* LL_API_DIAG */
+/*! \} */    /* LL_API_DIAG */
 
 /*! \addtogroup LL_API_CIS
  *  \{ */
@@ -4247,7 +4227,7 @@ uint8_t *LlRecvIsoData(void);
 /*************************************************************************************************/
 void LlRecvIsoDataComplete(uint8_t numBufs);
 
-/*! \} */ /* LL_API_CIS */
+/*! \} */    /* LL_API_CIS */
 
 #ifdef __cplusplus
 };

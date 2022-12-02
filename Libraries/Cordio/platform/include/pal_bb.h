@@ -36,102 +36,104 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Protocol types */
-typedef enum {
-    BB_PROT_NONE, /*!< Non-protocol specific operation. */
-    BB_PROT_BLE, /*!< Bluetooth Low Energy normal mode. */
-    BB_PROT_BLE_DTM, /*!< Bluetooth Low Energy direct test mode. */
-    BB_PROT_PRBS15, /*!< Enable the continuous PRBS15 transmit sequence. */
-    BB_PROT_15P4, /*!< 802.15.4. */
-    BB_PROT_NUM /*!< Number of protocols. */
+typedef enum
+{
+  BB_PROT_NONE,                         /*!< Non-protocol specific operation. */
+  BB_PROT_BLE,                          /*!< Bluetooth Low Energy normal mode. */
+  BB_PROT_BLE_DTM,                      /*!< Bluetooth Low Energy direct test mode. */
+  BB_PROT_PRBS15,                       /*!< Enable the continuous PRBS15 transmit sequence. */
+  BB_PROT_15P4,                         /*!< 802.15.4. */
+  BB_PROT_NUM                           /*!< Number of protocols. */
 } PalBbProt_t;
 
 /*! \brief      Status codes */
-enum {
-    BB_STATUS_SUCCESS, /*!< Operation successful. */
-    BB_STATUS_FAILED, /*!< General failure. */
-    BB_STATUS_CANCELED, /*!< Receive canceled. */
-    BB_STATUS_RX_TIMEOUT, /*!< Receive packet timeout. */
-    BB_STATUS_CRC_FAILED, /*!< Receive packet with CRC verification failed. */
-    BB_STATUS_FRAME_FAILED, /*!< Receive packet with frame verification failed. */
-    BB_STATUS_ACK_FAILED, /*!< ACK packet failure. */
-    BB_STATUS_ACK_TIMEOUT, /*!< ACK packet timeout. */
-    BB_STATUS_TX_CCA_FAILED, /*!< Transmit CCA failure. */
-    BB_STATUS_TX_FAILED /*!< Transmit failure. */
+enum
+{
+  BB_STATUS_SUCCESS,                    /*!< Operation successful. */
+  BB_STATUS_FAILED,                     /*!< General failure. */
+  BB_STATUS_CANCELED,                   /*!< Receive canceled. */
+  BB_STATUS_RX_TIMEOUT,                 /*!< Receive packet timeout. */
+  BB_STATUS_CRC_FAILED,                 /*!< Receive packet with CRC verification failed. */
+  BB_STATUS_FRAME_FAILED,               /*!< Receive packet with frame verification failed. */
+  BB_STATUS_ACK_FAILED,                 /*!< ACK packet failure. */
+  BB_STATUS_ACK_TIMEOUT,                /*!< ACK packet timeout. */
+  BB_STATUS_TX_CCA_FAILED,              /*!< Transmit CCA failure. */
+  BB_STATUS_TX_FAILED                   /*!< Transmit failure. */
 };
 
 /*! \brief      PHY types. */
-typedef enum {
-    BB_PHY_BLE_1M = 1, /*!< Bluetooth Low Energy 1Mbps PHY. */
-    BB_PHY_BLE_2M = 2, /*!< Bluetooth Low Energy 2Mbps PHY. */
-    BB_PHY_BLE_CODED = 3, /*!< Bluetooth Low Energy Coded PHY (data coding unspecified). */
-    BB_PHY_15P4 = 4, /*!< 802.15.4 PHY. */
+typedef enum
+{
+  BB_PHY_BLE_1M    = 1,                 /*!< Bluetooth Low Energy 1Mbps PHY. */
+  BB_PHY_BLE_2M    = 2,                 /*!< Bluetooth Low Energy 2Mbps PHY. */
+  BB_PHY_BLE_CODED = 3,                 /*!< Bluetooth Low Energy Coded PHY (data coding unspecified). */
+  BB_PHY_15P4      = 4,                 /*!< 802.15.4 PHY. */
 } PalBbPhy_t;
 
 /*! \brief      PHY options. */
-enum {
-    BB_PHY_OPTIONS_DEFAULT = 0, /*!< BB defined PHY Options behavior. */
-    BB_PHY_OPTIONS_BLE_S2 = 1, /*!< Always use S=2 coding when transmitting on LE Coded PHY. */
-    BB_PHY_OPTIONS_BLE_S8 = 2 /*!< Always use S=8 coding when transmitting on LE Coded PHY. */
+enum
+{
+  BB_PHY_OPTIONS_DEFAULT          = 0,  /*!< BB defined PHY Options behavior. */
+  BB_PHY_OPTIONS_BLE_S2           = 1,  /*!< Always use S=2 coding when transmitting on LE Coded PHY. */
+  BB_PHY_OPTIONS_BLE_S8           = 2   /*!< Always use S=8 coding when transmitting on LE Coded PHY. */
 };
 
 #ifndef BB_CLK_RATE_HZ
 /*! \brief      BB clock rate in hertz. */
-#define BB_CLK_RATE_HZ 1000000
+#define BB_CLK_RATE_HZ              1000000
 #endif
 
 /*! \brief      Binary divide with 1,000,000 divisor (n[max]=0xFFFFFFFF). */
-#define BB_MATH_DIV_10E6(n) ((uint32_t)(((uint64_t)(n)*UINT64_C(4295)) >> 32))
+#define BB_MATH_DIV_10E6(n)         ((uint32_t)(((uint64_t)(n) * UINT64_C(4295)) >> 32))
 
 #if (BB_CLK_RATE_HZ == 1000000)
 /*! \brief      Return microseconds (no conversion required). */
-#define BB_US_TO_BB_TICKS(us) (us)
+#define BB_US_TO_BB_TICKS(us)       (us)
 #elif (BB_CLK_RATE_HZ == 8000000)
 /*! \brief      Compute BB ticks from given time in microseconds (max time is interval=1,996s). */
-#define BB_US_TO_BB_TICKS(us) ((uint32_t)((us) << 3))
+#define BB_US_TO_BB_TICKS(us)       ((uint32_t)((us) << 3))
 #elif (BB_CLK_RATE_HZ == 32768)
 /*! \brief      Compute BB ticks from given time in microseconds (max time is interval=1,996s). */
-#define BB_US_TO_BB_TICKS(us)                              \
-    ((uint32_t)(((uint64_t)(us) * (uint64_t)(70368745)) >> \
-                31)) /* calculated value may be one tick low */
+#define BB_US_TO_BB_TICKS(us)       ((uint32_t)(((uint64_t)(us) * (uint64_t)(70368745)) >> 31))   /* calculated value may be one tick low */
 #else
 /*! \brief      Compute BB ticks from given time in microseconds (max time is interval=1,996s). */
-#define BB_US_TO_BB_TICKS(us) BB_MATH_DIV_10E6((uint64_t)(us) * (uint64_t)(BB_CLK_RATE_HZ))
+#define BB_US_TO_BB_TICKS(us)       BB_MATH_DIV_10E6((uint64_t)(us) * (uint64_t)(BB_CLK_RATE_HZ))
 #endif
 
-#define RTC_CLOCK_RATE 32768
-#define USE_RTC_BB_CLK (BB_CLK_RATE_HZ == RTC_CLOCK_RATE)
+#define RTC_CLOCK_RATE              32768
+#define USE_RTC_BB_CLK              (BB_CLK_RATE_HZ == RTC_CLOCK_RATE)
 
 #if (BB_CLK_RATE_HZ == 1000000)
 /*! \brief      BB ticks to microseconds (no conversion required). */
-#define BB_TICKS_TO_US(n) (n)
+#define BB_TICKS_TO_US(n)           (n)
 #elif (BB_CLK_RATE_HZ == 8000000)
 /*! \brief      BB ticks to microseconds (8MHz). */
-#define BB_TICKS_TO_US(n) ((n) >> 3)
+#define BB_TICKS_TO_US(n)           ((n) >> 3)
 #elif (BB_CLK_RATE_HZ == 32768)
 /*! \brief      BB ticks to microseconds (32768 Hz). */
-#define BB_TICKS_TO_US(n) (uint32_t)(((uint64_t)(n)*15625) >> 9)
+#define BB_TICKS_TO_US(n)           (uint32_t)(((uint64_t)(n) * 15625) >> 9)
 #else
 /*! \brief      BB ticks to microseconds. */
-#define BB_TICKS_TO_US(n) (uint32_t)((uint64_t)(n)*1000000 / BB_CLK_RATE_HZ)
+#define BB_TICKS_TO_US(n)           (uint32_t)((uint64_t)(n) * 1000000 / BB_CLK_RATE_HZ)
 #endif
 
 /*! \brief      Typical maximum duration to scan in a scan interval (BbRtCfg_t::maxScanPeriodMs). */
-#define BB_MAX_SCAN_PERIOD_MS 1000
+#define BB_MAX_SCAN_PERIOD_MS       1000
 
 /*! \brief      Typical RF setup delay (BbRtCfg_t::rfSetupDelayUs). */
-#define BB_RF_SETUP_DELAY_US 150
+#define BB_RF_SETUP_DELAY_US        150
 
 /*! \brief      Typical operation setup delay in microseconds (BbRtCfg_t::schSetupDelayUs). */
-#define BB_SCH_SETUP_DELAY_US 500
+#define BB_SCH_SETUP_DELAY_US       500
 
 /*! \brief      Maximum time tick for 32 bit timer(1MHz) in microseconds (BbRtCfg_t::schSetupDelayUs). */
-#define BB_TIMER_1MHZ_MAX_VALUE_US 0xFFFFFFFF /* 2^32 - 1 = 0xFFFFFFFF. */
+#define BB_TIMER_1MHZ_MAX_VALUE_US  0xFFFFFFFF  /* 2^32 - 1 = 0xFFFFFFFF. */
 
 /*! \brief      Maximum time tick for 32 bit timer(8MHz) in microseconds (BbRtCfg_t::schSetupDelayUs). */
-#define BB_TIMER_8MHZ_MAX_VALUE_US 0x1FFFFFFF /* 2^29 - 1 = 0x1FFFFFFF. */
+#define BB_TIMER_8MHZ_MAX_VALUE_US  0x1FFFFFFF  /* 2^29 - 1 = 0x1FFFFFFF. */
 
 /*! \brief      Maximum time tick for 24 bit RTC counter(32768Hz) in microseconds. (BbRtCfg_t::BbTimerBoundaryUs) */
-#define BB_RTC_MAX_VALUE_US 511999999 /* 2^24 / 32768 * 10^6 - 1 = 512 * 10^6 - 1 = 511999999. */
+#define BB_RTC_MAX_VALUE_US         511999999   /* 2^24 / 32768 * 10^6 - 1 = 512 * 10^6 - 1 = 511999999. */
 
 /**************************************************************************************************
   Type Definitions
@@ -141,13 +143,13 @@ enum {
 typedef void (*bbDrvIrqCback_t)(void);
 
 /*! \brief  BB configuration. */
-typedef struct {
-    uint16_t clkPpm; /*!< Clock accuracy in PPM. */
-    uint8_t rfSetupDelayUsec; /*!< RF setup delay in microseconds. */
-    uint16_t maxScanPeriodMsec; /*!< Maximum scan period in milliseconds. */
-    uint16_t schSetupDelayUsec; /*!< Schedule setup delay in microseconds. */
-    uint32_t
-        BbTimerBoundaryUsec; /*!< BB timer boundary translated in microseconds before wraparound. */
+typedef struct
+{
+  uint16_t clkPpm;                  /*!< Clock accuracy in PPM. */
+  uint8_t  rfSetupDelayUsec;        /*!< RF setup delay in microseconds. */
+  uint16_t maxScanPeriodMsec;       /*!< Maximum scan period in milliseconds. */
+  uint16_t schSetupDelayUsec;       /*!< Schedule setup delay in microseconds. */
+  uint32_t BbTimerBoundaryUsec;     /*!< BB timer boundary translated in microseconds before wraparound. */
 } PalBbCfg_t;
 
 /**************************************************************************************************
@@ -211,7 +213,7 @@ void PalBbDisable(void);
 /*************************************************************************************************/
 void PalBbLoadCfg(PalBbCfg_t *pCfg);
 
-/*! \} */ /* PAL_BB_INIT */
+/*! \} */    /* PAL_BB_INIT */
 
 /*! \addtogroup PAL_BB_CLOCK
  *  \{
@@ -265,7 +267,7 @@ void PalBbRegisterProtIrq(uint8_t protId, bbDrvIrqCback_t timerCback, bbDrvIrqCb
 /*************************************************************************************************/
 void PalBbSetProtId(uint8_t protId);
 
-/*! \} */ /* PAL_BB_CLOCK */
+/*! \} */    /* PAL_BB_CLOCK */
 
 #ifdef __cplusplus
 };

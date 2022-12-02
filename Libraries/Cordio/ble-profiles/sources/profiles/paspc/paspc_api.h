@@ -38,13 +38,14 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Phone Alert Status service enumeration of handle indexes of characteristics to be discovered */
-enum {
-    PASPC_PASS_AS_HDL_IDX, /*!< \brief Alert status */
-    PASPC_PASS_AS_CCC_HDL_IDX, /*!< \brief Alert status CCC descriptor */
-    PASPC_PASS_RS_HDL_IDX, /*!< \brief Ringer setting */
-    PASPC_PASS_RS_CCC_HDL_IDX, /*!< \brief Ringer setting CCC descriptor */
-    PASPC_PASS_RCP_HDL_IDX, /*!< \brief Ringer control point */
-    PASPC_PASS_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  PASPC_PASS_AS_HDL_IDX,              /*!< \brief Alert status */
+  PASPC_PASS_AS_CCC_HDL_IDX,          /*!< \brief Alert status CCC descriptor */
+  PASPC_PASS_RS_HDL_IDX,              /*!< \brief Ringer setting */
+  PASPC_PASS_RS_CCC_HDL_IDX,          /*!< \brief Ringer setting CCC descriptor */
+  PASPC_PASS_RCP_HDL_IDX,             /*!< \brief Ringer control point */
+  PASPC_PASS_HDL_LIST_LEN             /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -94,7 +95,7 @@ void PaspcPassControl(dmConnId_t connId, uint16_t handle, uint8_t command);
 /*************************************************************************************************/
 uint8_t PaspcPassValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */ /* PHONE_ALERT_STATUS_PROFILE */
+/*! \} */    /* PHONE_ALERT_STATUS_PROFILE */
 
 #ifdef __cplusplus
 };

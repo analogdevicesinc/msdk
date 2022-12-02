@@ -56,51 +56,51 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_comp_config_t nrf_drv_comp_config_t;
+typedef nrfx_comp_config_t  nrf_drv_comp_config_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define VOLTAGE_THRESHOLD_TO_INT NRFX_VOLTAGE_THRESHOLD_TO_INT
+#define VOLTAGE_THRESHOLD_TO_INT                NRFX_VOLTAGE_THRESHOLD_TO_INT
 /** @brief Macro for forwarding the new implementation. */
-#define COMP_CONFIG_TH NRFX_COMP_CONFIG_TH
+#define COMP_CONFIG_TH                          NRFX_COMP_CONFIG_TH
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_COMP_DEFAULT_CONFIG NRFX_COMP_DEFAULT_CONFIG
+#define NRF_DRV_COMP_DEFAULT_CONFIG             NRFX_COMP_DEFAULT_CONFIG
 
 /** @brief Macro for forwarding the new implementation. */
-#define comp_events_handler_t nrfx_comp_event_handler_t
+#define comp_events_handler_t                   nrfx_comp_event_handler_t
 /** @brief Macro for forwarding the new implementation. */
 #define NRF_DRV_COMP_SHORT_STOP_AFTER_CROSS_EVT NRFX_COMP_SHORT_STOP_AFTER_CROSS_EVT
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_COMP_SHORT_STOP_AFTER_UP_EVT NRFX_COMP_SHORT_STOP_AFTER_UP_EVT
+#define NRF_DRV_COMP_SHORT_STOP_AFTER_UP_EVT    NRFX_COMP_SHORT_STOP_AFTER_UP_EVT
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_COMP_SHORT_STOP_AFTER_DOWN_EVT NRFX_COMP_SHORT_STOP_AFTER_DOWN_EVT
+#define NRF_DRV_COMP_SHORT_STOP_AFTER_DOWN_EVT  NRFX_COMP_SHORT_STOP_AFTER_DOWN_EVT
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_short_mask_t nrfx_comp_short_mask_t
+#define nrf_drv_comp_short_mask_t               nrfx_comp_short_mask_t
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_COMP_EVT_EN_CROSS_MASK NRFX_COMP_EVT_EN_CROSS_MASK
+#define NRF_DRV_COMP_EVT_EN_CROSS_MASK          NRFX_COMP_EVT_EN_CROSS_MASK
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_COMP_EVT_EN_UP_MASK NRFX_COMP_EVT_EN_UP_MASK
+#define NRF_DRV_COMP_EVT_EN_UP_MASK             NRFX_COMP_EVT_EN_UP_MASK
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_COMP_EVT_EN_DOWN_MASK NRFX_COMP_EVT_EN_DOWN_MASK
+#define NRF_DRV_COMP_EVT_EN_DOWN_MASK           NRFX_COMP_EVT_EN_DOWN_MASK
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_COMP_EVT_EN_READY_MASK NRFX_COMP_EVT_EN_READY_MASK
+#define NRF_DRV_COMP_EVT_EN_READY_MASK          NRFX_COMP_EVT_EN_READY_MASK
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_evt_en_mask_t nrfx_comp_evt_en_mask_t
+#define nrf_drv_comp_evt_en_mask_t              nrfx_comp_evt_en_mask_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_uninit nrfx_comp_uninit
+#define nrf_drv_comp_uninit                     nrfx_comp_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_pin_select nrfx_comp_pin_select
+#define nrf_drv_comp_pin_select                 nrfx_comp_pin_select
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_start nrfx_comp_start
+#define nrf_drv_comp_start                      nrfx_comp_start
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_stop nrfx_comp_stop
+#define nrf_drv_comp_stop                       nrfx_comp_stop
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_sample nrfx_comp_sample
+#define nrf_drv_comp_sample                     nrfx_comp_sample
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_task_address_get nrfx_comp_task_address_get
+#define nrf_drv_comp_task_address_get           nrfx_comp_task_address_get
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_comp_event_address_get nrfx_comp_event_address_get
+#define nrf_drv_comp_event_address_get          nrfx_comp_event_address_get
 
 /**
  * @brief Function for initializing the COMP driver.
@@ -117,10 +117,11 @@ typedef nrfx_comp_config_t nrf_drv_comp_config_t;
  * @retval NRF_ERROR_INVALID_STATE If the driver has already been initialized.
  * @retval NRF_ERROR_BUSY          If the LPCOMP driver is initialized.
  */
-__STATIC_INLINE ret_code_t nrf_drv_comp_init(nrf_drv_comp_config_t const *p_config,
-                                             comp_events_handler_t event_handler)
+__STATIC_INLINE ret_code_t nrf_drv_comp_init(nrf_drv_comp_config_t const * p_config,
+                                             comp_events_handler_t         event_handler)
 {
-    if (p_config == NULL) {
+    if (p_config == NULL)
+    {
         static nrfx_comp_config_t const default_config = NRFX_COMP_DEFAULT_CONFIG(NRF_COMP_INPUT_0);
         p_config = &default_config;
     }

@@ -37,9 +37,9 @@
 ***************************************************************************************************/
 
 /* Keyboard ASCII codes for up, down, select keys */
-#define UI_MAIN_UP_CHAR 0x48
-#define UI_MAIN_DOWN_CHAR 0x50
-#define UI_MAIN_SELECT_CHAR 0x4d
+#define UI_MAIN_UP_CHAR                 0x48
+#define UI_MAIN_DOWN_CHAR               0x50
+#define UI_MAIN_SELECT_CHAR             0x4d
 
 /***************************************************************************************************
  Global Variables
@@ -65,23 +65,56 @@ static char uiDurationStr[LCD_LINE_LEN];
 static char uiDurationExtText[LCD_EXT_LINE_LEN];
 
 /* Duration Dialog selections */
-static constStr uiDurationSelectList[] = { "OK" };
+static constStr uiDurationSelectList[] =
+{
+  "OK"
+};
 
 /* Duration Dialog selections with extended text */
-static constStr uiDurationSelectListExt[] = { uiDurationExtText, "OK" };
+static constStr uiDurationSelectListExt[] =
+{
+  uiDurationExtText,
+  "OK"
+};
 
 /* Duration Dialog */
-static UiDialog_t uiDurationDlg = {
-    { NULL, NULL }, "", uiDurationStr,       UI_DLG_TYPE_INPUT_SELECT, NULL, 0, 0,
-    NULL,           1,  uiDurationSelectList
+static UiDialog_t uiDurationDlg =
+{
+  {NULL, NULL},
+  "",
+  uiDurationStr,
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  NULL,
+  1,
+  uiDurationSelectList
 };
 
 /* Message Selection */
-static constStr uiMessageSelectList[] = { "OK", "Exit", "Abort", "Stop" };
+static constStr uiMessageSelectList[] =
+{
+  "OK",
+  "Exit",
+  "Abort",
+  "Stop"
+};
 
 /* Message Dialog */
-static UiDialog_t uiMessageDlg = { { NULL, NULL }, "", "",  UI_DLG_TYPE_INPUT_SELECT, NULL, 0, 0,
-                                   NULL,           1,  NULL };
+static UiDialog_t uiMessageDlg =
+{
+  {NULL, NULL},
+  "",
+  "",
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  NULL,
+  1,
+  NULL
+};
 
 /*************************************************************************************************/
 /*!
@@ -94,21 +127,24 @@ static UiDialog_t uiMessageDlg = { { NULL, NULL }, "", "",  UI_DLG_TYPE_INPUT_SE
 /*************************************************************************************************/
 void UiLoadMenu(const UiMenu_t *pMenu)
 {
-    int8_t i;
+  int8_t i;
 
-    /* Store the active screen */
-    UiCb.pActiveScreen = (UiBase_t *)pMenu;
-    UiCb.activeScreenType = UI_SCREEN_MENU;
+  /* Store the active screen */
+  UiCb.pActiveScreen = (UiBase_t*) pMenu;
+  UiCb.activeScreenType = UI_SCREEN_MENU;
 
-    if (pMenu->selectCback) {
-        pMenu->selectCback(pMenu, UI_MENU_ITEM_ON_OPEN);
+  if (pMenu->selectCback)
+  {
+    pMenu->selectCback(pMenu, UI_MENU_ITEM_ON_OPEN);
+  }
+
+  for (i = 0; i < UI_DISPLAY_MAX; i++)
+  {
+    if (UiCb.uiActionTbl[i].displayMenu)
+    {
+      UiCb.uiActionTbl[i].displayMenu(pMenu);
     }
-
-    for (i = 0; i < UI_DISPLAY_MAX; i++) {
-        if (UiCb.uiActionTbl[i].displayMenu) {
-            UiCb.uiActionTbl[i].displayMenu(pMenu);
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -122,21 +158,24 @@ void UiLoadMenu(const UiMenu_t *pMenu)
 /*************************************************************************************************/
 void UiLoadSplash(const UiSplashScreen_t *pSplash)
 {
-    int8_t i;
+  int8_t i;
 
-    /* Store the active screen */
-    UiCb.pActiveScreen = (UiBase_t *)pSplash;
-    UiCb.activeScreenType = UI_SCREEN_SPLASH;
+  /* Store the active screen */
+  UiCb.pActiveScreen = (UiBase_t*) pSplash;
+  UiCb.activeScreenType = UI_SCREEN_SPLASH;
 
-    for (i = 0; i < UI_DISPLAY_MAX; i++) {
-        if (UiCb.uiActionTbl[i].displaySplash) {
-            UiCb.uiActionTbl[i].displaySplash(pSplash);
-        }
+  for (i = 0; i < UI_DISPLAY_MAX; i++)
+  {
+    if (UiCb.uiActionTbl[i].displaySplash)
+    {
+      UiCb.uiActionTbl[i].displaySplash(pSplash);
     }
+  }
 
-    if (pSplash->durMs) {
-        UiTimerStart(UI_SPLASH_TIMER_IND, pSplash->durMs);
-    }
+  if (pSplash->durMs)
+  {
+    UiTimerStart(UI_SPLASH_TIMER_IND, pSplash->durMs);
+  }
 }
 
 /*************************************************************************************************/
@@ -150,23 +189,26 @@ void UiLoadSplash(const UiSplashScreen_t *pSplash)
 /*************************************************************************************************/
 void UiLoadDialog(const UiDialog_t *pDialog)
 {
-    int8_t i;
+  int8_t i;
 
-    /* Store the active screen */
-    UiCb.pActiveScreen = (UiBase_t *)pDialog;
-    UiCb.activeScreenType = UI_SCREEN_DIALOG;
+  /* Store the active screen */
+  UiCb.pActiveScreen = (UiBase_t*) pDialog;
+  UiCb.activeScreenType = UI_SCREEN_DIALOG;
 
-    if (pDialog->pEntry && pDialog->pEntry[0] == '\0') {
-        char ch = (pDialog->type == UI_DLG_TYPE_INPUT_NUM) ? '0' : ' ';
+  if (pDialog->pEntry && pDialog->pEntry[0] == '\0')
+  {
+    char ch = (pDialog->type == UI_DLG_TYPE_INPUT_NUM) ? '0' : ' ';
 
-        memset(pDialog->pEntry, ch, pDialog->entryMaxLen);
+    memset(pDialog->pEntry, ch, pDialog->entryMaxLen);
+  }
+
+  for (i = 0; i < UI_DISPLAY_MAX; i++)
+  {
+    if (UiCb.uiActionTbl[i].displayDialog)
+    {
+      UiCb.uiActionTbl[i].displayDialog(pDialog);
     }
-
-    for (i = 0; i < UI_DISPLAY_MAX; i++) {
-        if (UiCb.uiActionTbl[i].displayDialog) {
-            UiCb.uiActionTbl[i].displayDialog(pDialog);
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -178,7 +220,10 @@ void UiLoadDialog(const UiDialog_t *pDialog)
  *  \return None
  */
 /*************************************************************************************************/
-void UiInput(char *pInput) {}
+void UiInput(char *pInput)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -191,26 +236,33 @@ void UiInput(char *pInput) {}
 /*************************************************************************************************/
 void UiSelection(uint8_t selection)
 {
-    if (UiCb.pActiveScreen) {
-        if (UiCb.activeScreenType == UI_SCREEN_MENU) {
-            UiMenu_t *pMenu = (UiMenu_t *)UiCb.pActiveScreen;
+  if (UiCb.pActiveScreen)
+  {
+    if (UiCb.activeScreenType == UI_SCREEN_MENU)
+    {
+      UiMenu_t *pMenu = (UiMenu_t*) UiCb.pActiveScreen;
 
-            /* Check if the selected item is read-only */
-            if (pMenu->readOnlyMask & (1 << (selection - 1))) {
-                return;
-            }
+      /* Check if the selected item is read-only */
+      if (pMenu->readOnlyMask & (1 << (selection-1)))
+      {
+        return;
+      }
 
-            if (pMenu->selectCback) {
-                pMenu->selectCback(pMenu, selection);
-            }
-        } else if (UiCb.activeScreenType == UI_SCREEN_DIALOG) {
-            UiDialog_t *pDialog = (UiDialog_t *)UiCb.pActiveScreen;
-
-            if (pDialog->selectCback) {
-                pDialog->selectCback(pDialog, selection);
-            }
-        }
+      if (pMenu->selectCback)
+      {
+        pMenu->selectCback(pMenu, selection);
+      }
     }
+    else if (UiCb.activeScreenType == UI_SCREEN_DIALOG)
+    {
+      UiDialog_t *pDialog = (UiDialog_t*) UiCb.pActiveScreen;
+
+      if (pDialog->selectCback)
+      {
+        pDialog->selectCback(pDialog, selection);
+      }
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -222,36 +274,43 @@ void UiSelection(uint8_t selection)
 /*************************************************************************************************/
 void UiRefresh(void)
 {
-    int8_t i;
+  int8_t i;
 
-    switch (UiCb.activeScreenType) {
-    case UI_SCREEN_SPLASH:
-        for (i = 0; i < UI_DISPLAY_MAX; i++) {
-            if (UiCb.uiActionTbl[i].displaySplash) {
-                UiCb.uiActionTbl[i].displaySplash((UiSplashScreen_t *)UiCb.pActiveScreen);
-            }
-        }
-        break;
-
-    case UI_SCREEN_MENU:
-        for (i = 0; i < UI_DISPLAY_MAX; i++) {
-            if (UiCb.uiActionTbl[i].displayMenu) {
-                UiCb.uiActionTbl[i].displayMenu((UiMenu_t *)UiCb.pActiveScreen);
-            }
-        }
-        break;
-
-    case UI_SCREEN_DIALOG:
-        for (i = 0; i < UI_DISPLAY_MAX; i++) {
-            if (UiCb.uiActionTbl[i].displayDialog) {
-                UiCb.uiActionTbl[i].displayDialog((UiDialog_t *)UiCb.pActiveScreen);
-            }
-        }
-        break;
-
-    default:
-        break;
+  switch(UiCb.activeScreenType)
+  {
+  case UI_SCREEN_SPLASH:
+    for (i = 0; i < UI_DISPLAY_MAX; i++)
+    {
+      if (UiCb.uiActionTbl[i].displaySplash)
+      {
+        UiCb.uiActionTbl[i].displaySplash((UiSplashScreen_t*) UiCb.pActiveScreen);
+      }
     }
+    break;
+
+  case UI_SCREEN_MENU:
+    for (i = 0; i < UI_DISPLAY_MAX; i++)
+    {
+      if (UiCb.uiActionTbl[i].displayMenu)
+      {
+        UiCb.uiActionTbl[i].displayMenu((UiMenu_t*) UiCb.pActiveScreen);
+      }
+    }
+    break;
+
+  case UI_SCREEN_DIALOG:
+    for (i = 0; i < UI_DISPLAY_MAX; i++)
+    {
+      if (UiCb.uiActionTbl[i].displayDialog)
+      {
+        UiCb.uiActionTbl[i].displayDialog((UiDialog_t*) UiCb.pActiveScreen);
+      }
+    }
+    break;
+
+  default:
+    break;
+  }
 }
 
 /*************************************************************************************************/
@@ -266,11 +325,11 @@ void UiRefresh(void)
 /*************************************************************************************************/
 void UiScrollTimerStart(const UiScrollCback_t scrollCback, uint16_t ms)
 {
-    /* Record control information */
-    UiCb.scrollCback = scrollCback;
+  /* Record control information */
+  UiCb.scrollCback = scrollCback;
 
-    /* Start timer */
-    UiTimerStart(UI_SCROLL_TIMER_IND, ms);
+  /* Start timer */
+  UiTimerStart(UI_SCROLL_TIMER_IND, ms);
 }
 
 /*************************************************************************************************/
@@ -282,7 +341,7 @@ void UiScrollTimerStart(const UiScrollCback_t scrollCback, uint16_t ms)
 /*************************************************************************************************/
 void UiScrollTimerStop(void)
 {
-    UiTimerStop(UI_SCROLL_TIMER_IND);
+  UiTimerStop(UI_SCROLL_TIMER_IND);
 }
 
 /*************************************************************************************************/
@@ -297,24 +356,27 @@ void UiScrollTimerStop(void)
 /*************************************************************************************************/
 static void uiDurationDlgSelect(const void *pRef, uint8_t selection)
 {
-    UiDialog_t *pDialog = (UiDialog_t *)pRef;
+  UiDialog_t *pDialog = (UiDialog_t  *) pRef;
 
-    if (pDialog->pSelectItems == uiDurationSelectListExt) {
-        if (selection == 0) {
-            return;
-        }
+  if (pDialog->pSelectItems == uiDurationSelectListExt)
+  {
+    if (selection == 0)
+    {
+      return;
     }
+  }
 
-    /* Stop the timer */
-    UiTimerStop(UI_DURATION_TIMER_IND);
+  /* Stop the timer */
+  UiTimerStop(UI_DURATION_TIMER_IND);
 
-    /* Call the exit dialog callback registered by the application */
-    if (UiCb.durationDlgCback) {
-        UiCb.durationDlgCback(pDialog, selection);
-    }
+  /* Call the exit dialog callback registered by the application */
+  if (UiCb.durationDlgCback)
+  {
+    UiCb.durationDlgCback(pDialog, selection);
+  }
 
-    /* Load the parent menu */
-    UiLoadMenu(pDialog->base.pParentMenu);
+  /* Load the parent menu */
+  UiLoadMenu(pDialog->base.pParentMenu);
 }
 
 /*************************************************************************************************/
@@ -329,22 +391,22 @@ static void uiDurationDlgSelect(const void *pRef, uint8_t selection)
 /*************************************************************************************************/
 static void uiFillDurationStr(char *pBuf, uint32_t duration)
 {
-    uint8_t seconds, minutes, hours;
+  uint8_t seconds, minutes, hours;
 
-    strcpy(pBuf, "Duration:   :  :  ");
+  strcpy(pBuf, "Duration:   :  :  ");
 
-    seconds = (uint8_t)(duration % 60);
-    minutes = (uint8_t)((duration / 60) % 60);
-    hours = (uint8_t)(duration / 3600);
+  seconds = (uint8_t) (duration % 60);
+  minutes = (uint8_t) ((duration / 60) % 60);
+  hours = (uint8_t) (duration / 3600);
 
-    pBuf[10] = '0' + (hours / 10) % 10;
-    pBuf[11] = '0' + hours % 10;
+  pBuf[10] = '0' + (hours / 10) % 10;
+  pBuf[11] = '0' + hours % 10;
 
-    pBuf[13] = '0' + (minutes / 10) % 10;
-    pBuf[14] = '0' + minutes % 10;
+  pBuf[13] = '0' + (minutes / 10) % 10;
+  pBuf[14] = '0' + minutes % 10;
 
-    pBuf[16] = '0' + (seconds / 10) % 10;
-    pBuf[17] = '0' + seconds % 10;
+  pBuf[16] = '0' + (seconds / 10) % 10;
+  pBuf[17] = '0' + seconds % 10;
 }
 
 /*************************************************************************************************/
@@ -358,16 +420,19 @@ static void uiFillDurationStr(char *pBuf, uint32_t duration)
 /*************************************************************************************************/
 void UiDurationDialogSetExtText(char *pText)
 {
-    if (pText == NULL || strlen(pText) == 0) {
-        /* Remove the extended text from the dialog */
-        uiDurationDlg.pSelectItems = uiDurationSelectList;
-    } else {
-        /* Set the extended text in the dialog */
-        strncpy(uiDurationExtText, pText, sizeof(uiDurationExtText));
-        uiDurationDlg.pSelectItems = uiDurationSelectListExt;
+  if (pText == NULL || strlen(pText) == 0)
+  {
+    /* Remove the extended text from the dialog */
+    uiDurationDlg.pSelectItems = uiDurationSelectList;
+  }
+  else
+  {
+    /* Set the extended text in the dialog */
+    strncpy(uiDurationExtText, pText, sizeof(uiDurationExtText));
+    uiDurationDlg.pSelectItems = uiDurationSelectListExt;
 
-        UiRefresh();
-    }
+    UiRefresh();
+  }
 }
 
 /*************************************************************************************************/
@@ -384,22 +449,22 @@ void UiDurationDialogSetExtText(char *pText)
 /*************************************************************************************************/
 void UiLoadDurationDialog(const char *pTitle, void *pParent, UiDialogSelCback_t cback)
 {
-    /* Configure the dialog */
-    uiDurationDlg.pTitle = pTitle;
-    uiDurationDlg.base.pParentMenu = pParent;
-    uiDurationDlg.selectCback = uiDurationDlgSelect;
+  /* Configure the dialog */
+  uiDurationDlg.pTitle = pTitle;
+  uiDurationDlg.base.pParentMenu = pParent;
+  uiDurationDlg.selectCback = uiDurationDlgSelect;
 
-    /* Register the callback */
-    UiCb.durationDlgCback = cback;
+  /* Register the callback */
+  UiCb.durationDlgCback = cback;
 
-    /* Setup and start a timer to display the duration of the test */
-    uiDuration = 0;
-    uiFillDurationStr(uiDurationStr, uiDuration);
+  /* Setup and start a timer to display the duration of the test */
+  uiDuration = 0;
+  uiFillDurationStr(uiDurationStr, uiDuration);
 
-    UiTimerStart(UI_DURATION_TIMER_IND, 1000);
+  UiTimerStart(UI_DURATION_TIMER_IND, 1000);
 
-    /* Load the dialog */
-    UiLoadDialog((const UiDialog_t *)&uiDurationDlg);
+  /* Load the dialog */
+  UiLoadDialog((const UiDialog_t*)  &uiDurationDlg);
 }
 
 /*************************************************************************************************/
@@ -414,15 +479,16 @@ void UiLoadDurationDialog(const char *pTitle, void *pParent, UiDialogSelCback_t 
 /*************************************************************************************************/
 void uiMessageDlgSelect(const void *pRef, uint8_t selection)
 {
-    UiDialog_t *pDialog = (UiDialog_t *)pRef;
+  UiDialog_t *pDialog = (UiDialog_t *) pRef;
 
-    /* Call the exit dialog callback registered by the application */
-    if (UiCb.messageDlgCback) {
-        UiCb.messageDlgCback(pDialog, selection);
-    }
+  /* Call the exit dialog callback registered by the application */
+  if (UiCb.messageDlgCback)
+  {
+    UiCb.messageDlgCback(pDialog, selection);
+  }
 
-    /* Load the parent menu */
-    UiLoadMenu(pDialog->base.pParentMenu);
+  /* Load the parent menu */
+  UiLoadMenu(pDialog->base.pParentMenu);
 }
 
 /*************************************************************************************************/
@@ -438,21 +504,20 @@ void uiMessageDlgSelect(const void *pRef, uint8_t selection)
  *  \return None
  */
 /*************************************************************************************************/
-void UiLoadMessageDialog(const char *pTitle, const char *pMsg, uint8_t pExitBtn, void *pParent,
-                         UiDialogSelCback_t cback)
+void UiLoadMessageDialog(const char *pTitle, const char *pMsg, uint8_t pExitBtn,  void *pParent, UiDialogSelCback_t cback)
 {
-    /* Configure the dialog */
-    uiMessageDlg.pTitle = pTitle;
-    uiMessageDlg.pMsg = pMsg;
-    uiMessageDlg.pSelectItems = uiMessageSelectList + pExitBtn;
-    uiMessageDlg.base.pParentMenu = pParent;
-    uiMessageDlg.selectCback = uiMessageDlgSelect;
+  /* Configure the dialog */
+  uiMessageDlg.pTitle = pTitle;
+  uiMessageDlg.pMsg = pMsg;
+  uiMessageDlg.pSelectItems = uiMessageSelectList + pExitBtn;
+  uiMessageDlg.base.pParentMenu = pParent;
+  uiMessageDlg.selectCback = uiMessageDlgSelect;
 
-    /* Register the callback */
-    UiCb.messageDlgCback = cback;
+  /* Register the callback */
+  UiCb.messageDlgCback = cback;
 
-    /* Load the dialog */
-    UiLoadDialog(&uiMessageDlg);
+  /* Load the dialog */
+  UiLoadDialog(&uiMessageDlg);
 }
 
 /*************************************************************************************************/
@@ -466,13 +531,15 @@ void UiLoadMessageDialog(const char *pTitle, const char *pMsg, uint8_t pExitBtn,
 /*************************************************************************************************/
 void UiProcessUserInput(uint8_t input)
 {
-    int8_t i;
+  int8_t i;
 
-    for (i = 0; i < UI_DISPLAY_MAX; i++) {
-        if (UiCb.uiActionTbl[i].keyPress) {
-            UiCb.uiActionTbl[i].keyPress(input);
-        }
+  for (i = 0; i < UI_DISPLAY_MAX; i++)
+  {
+    if (UiCb.uiActionTbl[i].keyPress)
+    {
+      UiCb.uiActionTbl[i].keyPress(input);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -486,7 +553,7 @@ void UiProcessUserInput(uint8_t input)
 /*************************************************************************************************/
 void UiRegisterAppEvtCback(UiProcEvent_t cback)
 {
-    uiAppEventCallback = cback;
+  uiAppEventCallback = cback;
 }
 
 /*************************************************************************************************/
@@ -500,49 +567,52 @@ void UiRegisterAppEvtCback(UiProcEvent_t cback)
 /*************************************************************************************************/
 void UiProcEvent(uint8_t event)
 {
-    switch (event) {
-    case UI_SPLASH_TIMER_IND:
-        UiLoadMenu(UiCb.pMainMenu);
-        break;
+  switch (event)
+  {
+  case UI_SPLASH_TIMER_IND:
+    UiLoadMenu(UiCb.pMainMenu);
+    break;
 
-    case UI_SCROLL_TIMER_IND:
-        if (UiCb.scrollCback) {
-            UiCb.scrollCback();
-        }
-        break;
-
-    case UI_BUTTON_UP_IND:
-        UiProcessUserInput(UI_INPUT_BTN_UP);
-        break;
-
-    case UI_BUTTON_DOWN_IND:
-        UiProcessUserInput(UI_INPUT_BTN_DOWN);
-        break;
-
-    case UI_BUTTON_SELECT_IND:
-        UiProcessUserInput(UI_INPUT_BTN_SELECT);
-        break;
-
-    case UI_DURATION_TIMER_IND:
-
-        /* Update the duration */
-        uiDuration++;
-        uiFillDurationStr(uiDurationStr, uiDuration);
-
-        /* Restart the timer */
-        UiTimerStart(UI_DURATION_TIMER_IND, 1000);
-
-        /* Refresh the UI */
-        UiRefresh();
-        break;
-
-    default:
-        break;
+  case UI_SCROLL_TIMER_IND:
+    if (UiCb.scrollCback)
+    {
+      UiCb.scrollCback();
     }
+    break;
 
-    if (uiAppEventCallback) {
-        uiAppEventCallback(event);
-    }
+  case UI_BUTTON_UP_IND:
+    UiProcessUserInput(UI_INPUT_BTN_UP);
+    break;
+
+  case UI_BUTTON_DOWN_IND:
+    UiProcessUserInput(UI_INPUT_BTN_DOWN);
+    break;
+
+  case UI_BUTTON_SELECT_IND:
+    UiProcessUserInput(UI_INPUT_BTN_SELECT);
+    break;
+
+  case UI_DURATION_TIMER_IND:
+
+    /* Update the duration */
+    uiDuration++;
+    uiFillDurationStr(uiDurationStr, uiDuration);
+
+    /* Restart the timer */
+    UiTimerStart(UI_DURATION_TIMER_IND, 1000);
+
+    /* Refresh the UI */
+    UiRefresh();
+    break;
+
+  default:
+    break;
+  }
+
+  if (uiAppEventCallback)
+  {
+    uiAppEventCallback(event);
+  }
 }
 
 /*************************************************************************************************/
@@ -558,21 +628,23 @@ void UiProcEvent(uint8_t event)
 /*************************************************************************************************/
 static char *uiFormatInt(char *pBuf, uint32_t value)
 {
-    uint32_t divider = 1;
+  uint32_t divider = 1;
 
-    while (value > divider * 10) {
-        divider *= 10;
-    }
+  while (value > divider * 10)
+  {
+    divider *= 10;
+  }
 
-    while (divider >= 1) {
-        *pBuf++ = '0' + (uint8_t)(value / divider);
-        value -= (value / divider) * divider;
-        divider /= 10;
-    }
+  while (divider >= 1)
+  {
+    *pBuf++ = '0' + (uint8_t) (value / divider);
+    value -= (value / divider) * divider;
+    divider /= 10;
+  }
 
-    *pBuf = '\0';
+  *pBuf = '\0';
 
-    return pBuf;
+  return pBuf;
 }
 
 /*************************************************************************************************/
@@ -588,13 +660,13 @@ static char *uiFormatInt(char *pBuf, uint32_t value)
 /*************************************************************************************************/
 static char *uiFormatHexByte(char *pBuf, uint8_t value)
 {
-    static const char hex[] = "0123456789ABCDEF";
+  static const char hex[] = "0123456789ABCDEF";
 
-    *pBuf++ = hex[value >> 4];
-    *pBuf++ = hex[value & 0x0F];
-    *pBuf = '\0';
+  *pBuf++ = hex[value >> 4];
+  *pBuf++ = hex[value & 0x0F];
+  *pBuf = '\0';
 
-    return pBuf;
+  return pBuf;
 }
 
 /*************************************************************************************************/
@@ -610,34 +682,38 @@ static char *uiFormatHexByte(char *pBuf, uint8_t value)
 /*************************************************************************************************/
 static char *uiFormatIntDelimited(char *pBuf, uint32_t value, uint8_t units)
 {
-    int8_t digit = 0;
-    uint32_t divider = 1;
-    static constStr uiUnitStrTbl[] = { "s", "ms", "Mbs" };
+  int8_t digit=0;
+  uint32_t divider = 1;
+  static constStr uiUnitStrTbl[] = {"s", "ms", "Mbs"};
 
-    while (value >= divider * 10) {
-        divider *= 10;
-        digit++;
+  while (value >= divider * 10)
+  {
+    divider *= 10;
+    digit++;
+  }
+
+  while (divider >= 1)
+  {
+    *pBuf++ = '0' + (uint8_t) (value / divider);
+
+    if ((digit > 0) && (digit-- % 3 == 0))
+    {
+      *pBuf++ = ',';
     }
 
-    while (divider >= 1) {
-        *pBuf++ = '0' + (uint8_t)(value / divider);
+    value -= (value / divider) * divider;
+    divider /= 10;
+  }
 
-        if ((digit > 0) && (digit-- % 3 == 0)) {
-            *pBuf++ = ',';
-        }
+  if (units < UI_FORMAT_INTEGER)
+  {
+    strcpy(pBuf, uiUnitStrTbl[units]);
+    pBuf += strlen(uiUnitStrTbl[units]);
+  }
 
-        value -= (value / divider) * divider;
-        divider /= 10;
-    }
+  *pBuf = '\0';
 
-    if (units < UI_FORMAT_INTEGER) {
-        strcpy(pBuf, uiUnitStrTbl[units]);
-        pBuf += strlen(uiUnitStrTbl[units]);
-    }
-
-    *pBuf = '\0';
-
-    return pBuf;
+  return pBuf;
 }
 
 /*************************************************************************************************/
@@ -652,24 +728,24 @@ static char *uiFormatIntDelimited(char *pBuf, uint32_t value, uint8_t units)
 /*************************************************************************************************/
 static char *uiFormatTime(char *pBuf, uint32_t time)
 {
-    uint8_t seconds, minutes, hours;
+  uint8_t seconds, minutes, hours;
 
-    seconds = (uint8_t)(time % 60);
-    minutes = (uint8_t)((time / 60) % 60);
-    hours = (uint8_t)(time / 3600);
+  seconds = (uint8_t) (time % 60);
+  minutes = (uint8_t) ((time / 60) % 60);
+  hours = (uint8_t) (time / 3600);
 
-    *pBuf++ = '0' + (hours / 10) % 10;
-    *pBuf++ = '0' + hours % 10;
-    *pBuf++ = ':';
-    *pBuf++ = '0' + (minutes / 10) % 10;
-    *pBuf++ = '0' + minutes % 10;
-    *pBuf++ = ':';
-    *pBuf++ = '0' + (seconds / 10) % 10;
-    *pBuf++ = '0' + seconds % 10;
+  *pBuf++ = '0' + (hours / 10) % 10;
+  *pBuf++ = '0' + hours % 10;
+  *pBuf++ = ':';
+  *pBuf++ = '0' + (minutes / 10) % 10;
+  *pBuf++ = '0' + minutes % 10;
+  *pBuf++ = ':';
+  *pBuf++ = '0' + (seconds / 10) % 10;
+  *pBuf++ = '0' + seconds % 10;
 
-    *pBuf = '\0';
+  *pBuf = '\0';
 
-    return pBuf;
+  return pBuf;
 }
 
 /*************************************************************************************************/
@@ -684,28 +760,28 @@ static char *uiFormatTime(char *pBuf, uint32_t time)
 /*************************************************************************************************/
 static char *uiFormatVersion(char *pBuf, uint32_t verCode)
 {
-    char *pStr = pBuf;
+  char *pStr = pBuf;
 
-    uint8_t major, minor, release;
-    uint16_t build;
+  uint8_t major, minor, release;
+  uint16_t build;
 
-    major = (uint8_t)((verCode & 0xF0000000) >> 28);
-    minor = (uint8_t)((verCode & 0x0F000000) >> 24);
-    release = (uint8_t)((verCode & 0xFF0000) >> 16);
-    build = (uint16_t)(verCode & 0xFFFF);
+  major = (uint8_t) ((verCode & 0xF0000000) >> 28);
+  minor = (uint8_t) ((verCode & 0x0F000000) >> 24);
+  release = (uint8_t) ((verCode & 0xFF0000) >> 16);
+  build = (uint16_t) (verCode & 0xFFFF);
 
-    pStr = uiFormatInt(pStr, major);
-    *pStr++ = '.';
+  pStr = uiFormatInt(pStr, major);
+  *pStr++ = '.';
 
-    pStr = uiFormatInt(pStr, minor);
-    *pStr++ = '.';
+  pStr = uiFormatInt(pStr, minor);
+  *pStr++ = '.';
 
-    pStr = uiFormatInt(pStr, release);
-    *pStr++ = '.';
+  pStr = uiFormatInt(pStr, release);
+  *pStr++ = '.';
 
-    pStr = uiFormatInt(pStr, build);
+  pStr = uiFormatInt(pStr, build);
 
-    return pStr;
+  return pStr;
 }
 
 /*************************************************************************************************/
@@ -720,22 +796,23 @@ static char *uiFormatVersion(char *pBuf, uint32_t verCode)
 /*************************************************************************************************/
 static char *array2HexStr(const uint8_t *pValue, uint8_t len)
 {
-    static const char hex[] = "0123456789ABCDEF";
-    static char str[(UI_MAX_A2HS_LEN * 2) + 1];
-    char *pStr = str;
+  static const char hex[] = "0123456789ABCDEF";
+  static char       str[(UI_MAX_A2HS_LEN*2) + 1];
+  char              *pStr = str;
 
-    /* Address is little endian so copy in reverse. */
-    pValue += len;
+  /* Address is little endian so copy in reverse. */
+  pValue += len;
 
-    while (pStr < &str[len * 2]) {
-        *pStr++ = hex[*--pValue >> 4];
-        *pStr++ = hex[*pValue & 0x0F];
-    }
+  while (pStr < &str[len*2])
+  {
+    *pStr++ = hex[*--pValue >> 4];
+    *pStr++ = hex[*pValue & 0x0F];
+  }
 
-    /* NULL terminate string. */
-    *pStr = 0;
+  /* NULL terminate string. */
+  *pStr = 0;
 
-    return str;
+  return str;
 }
 
 /*************************************************************************************************/
@@ -751,20 +828,22 @@ static char *array2HexStr(const uint8_t *pValue, uint8_t len)
 /*************************************************************************************************/
 static char *uiFormatDelimitedHex(char *pBuf, uint8_t *pValue, char delimiter, uint8_t len)
 {
-    uint8_t i, pos = 0;
-    char *pAddrStr = array2HexStr(pValue, len);
+  uint8_t i, pos=0;
+  char *pAddrStr = array2HexStr(pValue, len);
 
-    /* Copy hex string and add colons. */
-    for (i = 0; i < len; i++) {
-        pBuf[pos++] = pAddrStr[i * 2];
-        pBuf[pos++] = pAddrStr[i * 2 + 1];
+  /* Copy hex string and add colons. */
+  for (i = 0; i < len; i++)
+  {
+    pBuf[pos++] = pAddrStr[i*2];
+    pBuf[pos++] = pAddrStr[i*2 + 1];
 
-        if (i < len - 1) {
-            pBuf[pos++] = delimiter;
-        }
+    if (i < len-1)
+    {
+      pBuf[pos++] = delimiter;
     }
+  }
 
-    return pBuf;
+  return pBuf;
 }
 
 /*************************************************************************************************/
@@ -779,9 +858,9 @@ static char *uiFormatDelimitedHex(char *pBuf, uint8_t *pValue, char delimiter, u
 /*************************************************************************************************/
 uint8_t UiCpyStr(char *pBuf, char *pStr)
 {
-    strcpy(pBuf, pStr);
+  strcpy(pBuf, pStr);
 
-    return (uint8_t)strlen(pStr);
+  return (uint8_t) strlen(pStr);
 }
 
 /*************************************************************************************************/
@@ -797,19 +876,20 @@ uint8_t UiCpyStr(char *pBuf, char *pStr)
 /*************************************************************************************************/
 char *UiFormatValue(char *pBuf, uint32_t value, uint8_t format)
 {
-    switch (format) {
-    case UI_FORMAT_TIME:
-        return uiFormatTime(pBuf, value);
+  switch (format)
+  {
+  case UI_FORMAT_TIME:
+    return uiFormatTime(pBuf, value);
 
-    case UI_FORMAT_VERSION:
-        return uiFormatVersion(pBuf, value);
+  case UI_FORMAT_VERSION:
+    return uiFormatVersion(pBuf, value);
 
-    case UI_FORMAT_HEX_BYTE:
-        return uiFormatHexByte(pBuf, (uint8_t)value);
+  case UI_FORMAT_HEX_BYTE:
+    return uiFormatHexByte(pBuf, (uint8_t) value);
 
-    default:
-        return uiFormatIntDelimited(pBuf, value, format);
-    }
+  default:
+    return uiFormatIntDelimited(pBuf, value, format);
+  }
 }
 
 /*************************************************************************************************/
@@ -825,21 +905,22 @@ char *UiFormatValue(char *pBuf, uint32_t value, uint8_t format)
 /*************************************************************************************************/
 char *UiFormatArray(char *pBuf, uint8_t *pAddr, uint8_t format)
 {
-    switch (format) {
-    case UI_FORMAT_BD_ADDR:
-        return uiFormatDelimitedHex(pBuf, pAddr, ':', UI_BD_ADDR_LEN);
+  switch (format)
+  {
+  case UI_FORMAT_BD_ADDR:
+     return uiFormatDelimitedHex(pBuf, pAddr, ':', UI_BD_ADDR_LEN);
 
-    case UI_FORMAT_MAC154_ADDR:
-        return uiFormatDelimitedHex(pBuf, pAddr, ':', UI_MAC_ADDR_LEN);
+  case UI_FORMAT_MAC154_ADDR:
+     return uiFormatDelimitedHex(pBuf, pAddr, ':', UI_MAC_ADDR_LEN);
 
-    case UI_FORMAT_MESH_UUID:
-        return uiFormatDelimitedHex(pBuf, pAddr, ':', UI_UUID_ADDR_LEN);
+  case UI_FORMAT_MESH_UUID:
+     return uiFormatDelimitedHex(pBuf, pAddr, ':', UI_UUID_ADDR_LEN);
 
-    default:
-        break;
-    }
+  default:
+    break;
+  }
 
-    return pBuf;
+  return pBuf;
 }
 
 /*************************************************************************************************/
@@ -854,9 +935,9 @@ char *UiFormatArray(char *pBuf, uint8_t *pAddr, uint8_t format)
 /*************************************************************************************************/
 void UiRegisterDisplay(UiActionTbl_t actionTbl, uint8_t id)
 {
-    WSF_ASSERT(id < UI_DISPLAY_MAX);
+  WSF_ASSERT(id < UI_DISPLAY_MAX);
 
-    UiCb.uiActionTbl[id] = actionTbl;
+  UiCb.uiActionTbl[id] = actionTbl;
 }
 
 /*************************************************************************************************/
@@ -870,33 +951,46 @@ void UiRegisterDisplay(UiActionTbl_t actionTbl, uint8_t id)
 /*************************************************************************************************/
 void UiProcessKeyboardInput(uint8_t ch)
 {
-    static bool_t extended = FALSE;
+  static bool_t extended = FALSE;
 
-    if (extended) {
-        /* Process input from a keyboard (up, down, right) into one of three
+  if (extended)
+  {
+    /* Process input from a keyboard (up, down, right) into one of three
        keys (up, down, select) on the dev board */
 
-        extended = FALSE;
+    extended = FALSE;
 
-        if (ch == UI_MAIN_UP_CHAR) {
-            /* Up button */
-            UiProcessUserInput(UI_INPUT_BTN_UP);
-        } else if (ch == UI_MAIN_SELECT_CHAR) {
-            /* Right button */
-            UiProcessUserInput(UI_INPUT_BTN_SELECT);
-        } else if (ch == UI_MAIN_DOWN_CHAR) {
-            /* Down button */
-            UiProcessUserInput(UI_INPUT_BTN_DOWN);
-        } else if (ch == 75) {
-            UiProcEvent(UI_BUTTON_WAKE_IND);
-        }
-    } else {
-        if ((uint8_t)ch == 0xe0) {
-            extended = TRUE;
-        } else {
-            UiProcessUserInput((uint8_t)ch);
-        }
+    if (ch == UI_MAIN_UP_CHAR)
+    {
+      /* Up button */
+      UiProcessUserInput(UI_INPUT_BTN_UP);
     }
+    else if (ch == UI_MAIN_SELECT_CHAR)
+    {
+      /* Right button */
+      UiProcessUserInput(UI_INPUT_BTN_SELECT);
+    }
+    else if (ch == UI_MAIN_DOWN_CHAR)
+    {
+      /* Down button */
+      UiProcessUserInput(UI_INPUT_BTN_DOWN);
+    }
+    else if (ch == 75)
+    {
+      UiProcEvent(UI_BUTTON_WAKE_IND);
+    }
+  }
+  else
+  {
+    if ((uint8_t) ch == 0xe0)
+    {
+      extended = TRUE;
+    }
+    else
+    {
+      UiProcessUserInput((uint8_t) ch);
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -911,7 +1005,7 @@ void UiProcessKeyboardInput(uint8_t ch)
 /*************************************************************************************************/
 void UiInit(const UiSplashScreen_t *pSplash, const UiMenu_t *pMain)
 {
-    /* Store main meny and start splash screen. */
-    UiCb.pMainMenu = pMain;
-    UiLoadSplash(pSplash);
+  /* Store main meny and start splash screen. */
+  UiCb.pMainMenu = pMain;
+  UiLoadSplash(pSplash);
 }

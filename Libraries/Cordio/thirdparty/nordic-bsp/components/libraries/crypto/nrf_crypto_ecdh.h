@@ -76,152 +76,97 @@
 extern "C" {
 #endif
 
-#define NRF_CRYPTO_ECDH_SECP160R1_SHARED_SECRET_SIZE \
-    (160 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp160r1 (NIST 160-bit).     @ingroup nrf_crypto_ecdh_secp160r1 */
-#define NRF_CRYPTO_ECDH_SECP160R2_SHARED_SECRET_SIZE \
-    (160 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp160r2 (NIST 160-bit).     @ingroup nrf_crypto_ecdh_secp160r2 */
-#define NRF_CRYPTO_ECDH_SECP192R1_SHARED_SECRET_SIZE \
-    (192 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp192r1 (NIST 192-bit).     @ingroup nrf_crypto_ecdh_secp192r1 */
-#define NRF_CRYPTO_ECDH_SECP224R1_SHARED_SECRET_SIZE \
-    (224 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp224r1 (NIST 224-bit).     @ingroup nrf_crypto_ecdh_secp224r1 */
-#define NRF_CRYPTO_ECDH_SECP256R1_SHARED_SECRET_SIZE \
-    (256 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp256r1 (NIST 256-bit).     @ingroup nrf_crypto_ecdh_secp256r1 */
-#define NRF_CRYPTO_ECDH_SECP384R1_SHARED_SECRET_SIZE \
-    (384 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp384r1 (NIST 384-bit).     @ingroup nrf_crypto_ecdh_secp384r1 */
-#define NRF_CRYPTO_ECDH_SECP521R1_SHARED_SECRET_SIZE \
-    (528 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp521r1 (NIST 521-bit).     @ingroup nrf_crypto_ecdh_secp521r1 */
-#define NRF_CRYPTO_ECDH_SECP160K1_SHARED_SECRET_SIZE \
-    (160 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp160k1 (Koblitz 160-bit).  @ingroup nrf_crypto_ecdh_secp160k1 */
-#define NRF_CRYPTO_ECDH_SECP192K1_SHARED_SECRET_SIZE \
-    (192 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp192k1 (Koblitz 192-bit).  @ingroup nrf_crypto_ecdh_secp192k1 */
-#define NRF_CRYPTO_ECDH_SECP224K1_SHARED_SECRET_SIZE \
-    (224 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp224k1 (Koblitz 224-bit).  @ingroup nrf_crypto_ecdh_secp224k1 */
-#define NRF_CRYPTO_ECDH_SECP256K1_SHARED_SECRET_SIZE \
-    (256 /                                           \
-     8) /**< @brief Number of bytes in a shared secret using secp256k1 (Koblitz 256-bit).  @ingroup nrf_crypto_ecdh_secp256k1 */
-#define NRF_CRYPTO_ECDH_BP256R1_SHARED_SECRET_SIZE \
-    (256 /                                         \
-     8) /**< @brief Number of bytes in a shared secret using bp256r1 (Brainpool 256-bit).  @ingroup nrf_crypto_ecdh_bp256r1 */
-#define NRF_CRYPTO_ECDH_BP384R1_SHARED_SECRET_SIZE \
-    (384 /                                         \
-     8) /**< @brief Number of bytes in a shared secret using bp384r1 (Brainpool 384-bit).  @ingroup nrf_crypto_ecdh_bp384r1 */
-#define NRF_CRYPTO_ECDH_BP512R1_SHARED_SECRET_SIZE \
-    (512 /                                         \
-     8) /**< @brief Number of bytes in a shared secret using bp512r1 (Brainpool 512-bit).  @ingroup nrf_crypto_ecdh_bp512r1 */
-#define NRF_CRYPTO_ECDH_CURVE25519_SHARED_SECRET_SIZE \
-    (256 /                                            \
-     8) /**< @brief Number of bytes in a shared secret using Curve25519.                   @ingroup nrf_crypto_ecdh_curve25519 */
-#define NRF_CRYPTO_ECDH_SHARED_SECRET_MAX_SIZE \
-    NRF_CRYPTO_ECC_RAW_PRIVATE_KEY_MAX_SIZE /**< @brief Maximum size of a shared secret in bytes for all enabled curves. */
 
-typedef nrf_crypto_backend_secp160r1_ecdh_context_t
-    nrf_crypto_ecdh_secp160r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp160r1 (NIST 160-bit).     @ingroup nrf_crypto_ecdh_secp160r1 */
-typedef nrf_crypto_backend_secp160r2_ecdh_context_t
-    nrf_crypto_ecdh_secp160r2_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp160r2 (NIST 160-bit).     @ingroup nrf_crypto_ecdh_secp160r2 */
-typedef nrf_crypto_backend_secp192r1_ecdh_context_t
-    nrf_crypto_ecdh_secp192r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp192r1 (NIST 192-bit).     @ingroup nrf_crypto_ecdh_secp192r1 */
-typedef nrf_crypto_backend_secp224r1_ecdh_context_t
-    nrf_crypto_ecdh_secp224r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp224r1 (NIST 224-bit).     @ingroup nrf_crypto_ecdh_secp224r1 */
-typedef nrf_crypto_backend_secp256r1_ecdh_context_t
-    nrf_crypto_ecdh_secp256r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp256r1 (NIST 256-bit).     @ingroup nrf_crypto_ecdh_secp256r1 */
-typedef nrf_crypto_backend_secp384r1_ecdh_context_t
-    nrf_crypto_ecdh_secp384r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp384r1 (NIST 384-bit).     @ingroup nrf_crypto_ecdh_secp384r1 */
-typedef nrf_crypto_backend_secp521r1_ecdh_context_t
-    nrf_crypto_ecdh_secp521r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp521r1 (NIST 521-bit).     @ingroup nrf_crypto_ecdh_secp521r1 */
-typedef nrf_crypto_backend_secp160k1_ecdh_context_t
-    nrf_crypto_ecdh_secp160k1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp160k1 (Koblitz 160-bit).  @ingroup nrf_crypto_ecdh_secp160k1 */
-typedef nrf_crypto_backend_secp192k1_ecdh_context_t
-    nrf_crypto_ecdh_secp192k1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp192k1 (Koblitz 192-bit).  @ingroup nrf_crypto_ecdh_secp192k1 */
-typedef nrf_crypto_backend_secp224k1_ecdh_context_t
-    nrf_crypto_ecdh_secp224k1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp224k1 (Koblitz 224-bit).  @ingroup nrf_crypto_ecdh_secp224k1 */
-typedef nrf_crypto_backend_secp256k1_ecdh_context_t
-    nrf_crypto_ecdh_secp256k1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve secp256k1 (Koblitz 256-bit).  @ingroup nrf_crypto_ecdh_secp256k1 */
-typedef nrf_crypto_backend_bp256r1_ecdh_context_t
-    nrf_crypto_ecdh_bp256r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve bp256r1 (Brainpool 256-bit).  @ingroup nrf_crypto_ecdh_bp256r1 */
-typedef nrf_crypto_backend_bp384r1_ecdh_context_t
-    nrf_crypto_ecdh_bp384r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve bp384r1 (Brainpool 384-bit).  @ingroup nrf_crypto_ecdh_bp384r1 */
-typedef nrf_crypto_backend_bp512r1_ecdh_context_t
-    nrf_crypto_ecdh_bp512r1_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve bp512r1 (Brainpool 512-bit).  @ingroup nrf_crypto_ecdh_bp512r1 */
-typedef nrf_crypto_backend_curve25519_ecdh_context_t
-    nrf_crypto_ecdh_curve25519_context_t; /**< @brief Context used to store temporary data during computing ECDH for curve Curve25519.                   @ingroup nrf_crypto_ecdh_curve25519 */
+#define NRF_CRYPTO_ECDH_SECP160R1_SHARED_SECRET_SIZE  (160 / 8)   /**< @brief Number of bytes in a shared secret using secp160r1 (NIST 160-bit).     @ingroup nrf_crypto_ecdh_secp160r1 */
+#define NRF_CRYPTO_ECDH_SECP160R2_SHARED_SECRET_SIZE  (160 / 8)   /**< @brief Number of bytes in a shared secret using secp160r2 (NIST 160-bit).     @ingroup nrf_crypto_ecdh_secp160r2 */
+#define NRF_CRYPTO_ECDH_SECP192R1_SHARED_SECRET_SIZE  (192 / 8)   /**< @brief Number of bytes in a shared secret using secp192r1 (NIST 192-bit).     @ingroup nrf_crypto_ecdh_secp192r1 */
+#define NRF_CRYPTO_ECDH_SECP224R1_SHARED_SECRET_SIZE  (224 / 8)   /**< @brief Number of bytes in a shared secret using secp224r1 (NIST 224-bit).     @ingroup nrf_crypto_ecdh_secp224r1 */
+#define NRF_CRYPTO_ECDH_SECP256R1_SHARED_SECRET_SIZE  (256 / 8)   /**< @brief Number of bytes in a shared secret using secp256r1 (NIST 256-bit).     @ingroup nrf_crypto_ecdh_secp256r1 */
+#define NRF_CRYPTO_ECDH_SECP384R1_SHARED_SECRET_SIZE  (384 / 8)   /**< @brief Number of bytes in a shared secret using secp384r1 (NIST 384-bit).     @ingroup nrf_crypto_ecdh_secp384r1 */
+#define NRF_CRYPTO_ECDH_SECP521R1_SHARED_SECRET_SIZE  (528 / 8)   /**< @brief Number of bytes in a shared secret using secp521r1 (NIST 521-bit).     @ingroup nrf_crypto_ecdh_secp521r1 */
+#define NRF_CRYPTO_ECDH_SECP160K1_SHARED_SECRET_SIZE  (160 / 8)   /**< @brief Number of bytes in a shared secret using secp160k1 (Koblitz 160-bit).  @ingroup nrf_crypto_ecdh_secp160k1 */
+#define NRF_CRYPTO_ECDH_SECP192K1_SHARED_SECRET_SIZE  (192 / 8)   /**< @brief Number of bytes in a shared secret using secp192k1 (Koblitz 192-bit).  @ingroup nrf_crypto_ecdh_secp192k1 */
+#define NRF_CRYPTO_ECDH_SECP224K1_SHARED_SECRET_SIZE  (224 / 8)   /**< @brief Number of bytes in a shared secret using secp224k1 (Koblitz 224-bit).  @ingroup nrf_crypto_ecdh_secp224k1 */
+#define NRF_CRYPTO_ECDH_SECP256K1_SHARED_SECRET_SIZE  (256 / 8)   /**< @brief Number of bytes in a shared secret using secp256k1 (Koblitz 256-bit).  @ingroup nrf_crypto_ecdh_secp256k1 */
+#define NRF_CRYPTO_ECDH_BP256R1_SHARED_SECRET_SIZE    (256 / 8)   /**< @brief Number of bytes in a shared secret using bp256r1 (Brainpool 256-bit).  @ingroup nrf_crypto_ecdh_bp256r1 */
+#define NRF_CRYPTO_ECDH_BP384R1_SHARED_SECRET_SIZE    (384 / 8)   /**< @brief Number of bytes in a shared secret using bp384r1 (Brainpool 384-bit).  @ingroup nrf_crypto_ecdh_bp384r1 */
+#define NRF_CRYPTO_ECDH_BP512R1_SHARED_SECRET_SIZE    (512 / 8)   /**< @brief Number of bytes in a shared secret using bp512r1 (Brainpool 512-bit).  @ingroup nrf_crypto_ecdh_bp512r1 */
+#define NRF_CRYPTO_ECDH_CURVE25519_SHARED_SECRET_SIZE (256 / 8)   /**< @brief Number of bytes in a shared secret using Curve25519.                   @ingroup nrf_crypto_ecdh_curve25519 */
+#define NRF_CRYPTO_ECDH_SHARED_SECRET_MAX_SIZE        NRF_CRYPTO_ECC_RAW_PRIVATE_KEY_MAX_SIZE  /**< @brief Maximum size of a shared secret in bytes for all enabled curves. */
+
+
+typedef nrf_crypto_backend_secp160r1_ecdh_context_t  nrf_crypto_ecdh_secp160r1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp160r1 (NIST 160-bit).     @ingroup nrf_crypto_ecdh_secp160r1 */
+typedef nrf_crypto_backend_secp160r2_ecdh_context_t  nrf_crypto_ecdh_secp160r2_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp160r2 (NIST 160-bit).     @ingroup nrf_crypto_ecdh_secp160r2 */
+typedef nrf_crypto_backend_secp192r1_ecdh_context_t  nrf_crypto_ecdh_secp192r1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp192r1 (NIST 192-bit).     @ingroup nrf_crypto_ecdh_secp192r1 */
+typedef nrf_crypto_backend_secp224r1_ecdh_context_t  nrf_crypto_ecdh_secp224r1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp224r1 (NIST 224-bit).     @ingroup nrf_crypto_ecdh_secp224r1 */
+typedef nrf_crypto_backend_secp256r1_ecdh_context_t  nrf_crypto_ecdh_secp256r1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp256r1 (NIST 256-bit).     @ingroup nrf_crypto_ecdh_secp256r1 */
+typedef nrf_crypto_backend_secp384r1_ecdh_context_t  nrf_crypto_ecdh_secp384r1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp384r1 (NIST 384-bit).     @ingroup nrf_crypto_ecdh_secp384r1 */
+typedef nrf_crypto_backend_secp521r1_ecdh_context_t  nrf_crypto_ecdh_secp521r1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp521r1 (NIST 521-bit).     @ingroup nrf_crypto_ecdh_secp521r1 */
+typedef nrf_crypto_backend_secp160k1_ecdh_context_t  nrf_crypto_ecdh_secp160k1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp160k1 (Koblitz 160-bit).  @ingroup nrf_crypto_ecdh_secp160k1 */
+typedef nrf_crypto_backend_secp192k1_ecdh_context_t  nrf_crypto_ecdh_secp192k1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp192k1 (Koblitz 192-bit).  @ingroup nrf_crypto_ecdh_secp192k1 */
+typedef nrf_crypto_backend_secp224k1_ecdh_context_t  nrf_crypto_ecdh_secp224k1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp224k1 (Koblitz 224-bit).  @ingroup nrf_crypto_ecdh_secp224k1 */
+typedef nrf_crypto_backend_secp256k1_ecdh_context_t  nrf_crypto_ecdh_secp256k1_context_t;    /**< @brief Context used to store temporary data during computing ECDH for curve secp256k1 (Koblitz 256-bit).  @ingroup nrf_crypto_ecdh_secp256k1 */
+typedef nrf_crypto_backend_bp256r1_ecdh_context_t    nrf_crypto_ecdh_bp256r1_context_t;      /**< @brief Context used to store temporary data during computing ECDH for curve bp256r1 (Brainpool 256-bit).  @ingroup nrf_crypto_ecdh_bp256r1 */
+typedef nrf_crypto_backend_bp384r1_ecdh_context_t    nrf_crypto_ecdh_bp384r1_context_t;      /**< @brief Context used to store temporary data during computing ECDH for curve bp384r1 (Brainpool 384-bit).  @ingroup nrf_crypto_ecdh_bp384r1 */
+typedef nrf_crypto_backend_bp512r1_ecdh_context_t    nrf_crypto_ecdh_bp512r1_context_t;      /**< @brief Context used to store temporary data during computing ECDH for curve bp512r1 (Brainpool 512-bit).  @ingroup nrf_crypto_ecdh_bp512r1 */
+typedef nrf_crypto_backend_curve25519_ecdh_context_t nrf_crypto_ecdh_curve25519_context_t;   /**< @brief Context used to store temporary data during computing ECDH for curve Curve25519.                   @ingroup nrf_crypto_ecdh_curve25519 */
+
 
 typedef uint8_t nrf_crypto_ecdh_secp160r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP160R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp160r1 (NIST 160-bit).  @ingroup nrf_crypto_ecdh_secp160r1 */
+    [NRF_CRYPTO_ECDH_SECP160R1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp160r1 (NIST 160-bit).  @ingroup nrf_crypto_ecdh_secp160r1 */
 typedef uint8_t nrf_crypto_ecdh_secp160r2_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP160R2_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp160r2 (NIST 160-bit).  @ingroup nrf_crypto_ecdh_secp160r2 */
+    [NRF_CRYPTO_ECDH_SECP160R2_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp160r2 (NIST 160-bit).  @ingroup nrf_crypto_ecdh_secp160r2 */
 typedef uint8_t nrf_crypto_ecdh_secp192r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP192R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp192r1 (NIST 192-bit).  @ingroup nrf_crypto_ecdh_secp192r1 */
+    [NRF_CRYPTO_ECDH_SECP192R1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp192r1 (NIST 192-bit).  @ingroup nrf_crypto_ecdh_secp192r1 */
 typedef uint8_t nrf_crypto_ecdh_secp224r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP224R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp224r1 (NIST 224-bit).  @ingroup nrf_crypto_ecdh_secp224r1 */
+    [NRF_CRYPTO_ECDH_SECP224R1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp224r1 (NIST 224-bit).  @ingroup nrf_crypto_ecdh_secp224r1 */
 typedef uint8_t nrf_crypto_ecdh_secp256r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP256R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp256r1 (NIST 256-bit).  @ingroup nrf_crypto_ecdh_secp256r1 */
+    [NRF_CRYPTO_ECDH_SECP256R1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp256r1 (NIST 256-bit).  @ingroup nrf_crypto_ecdh_secp256r1 */
 typedef uint8_t nrf_crypto_ecdh_secp384r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP384R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp384r1 (NIST 384-bit).  @ingroup nrf_crypto_ecdh_secp384r1 */
+    [NRF_CRYPTO_ECDH_SECP384R1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp384r1 (NIST 384-bit).  @ingroup nrf_crypto_ecdh_secp384r1 */
 typedef uint8_t nrf_crypto_ecdh_secp521r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP521R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp521r1 (NIST 521-bit).  @ingroup nrf_crypto_ecdh_secp521r1 */
+    [NRF_CRYPTO_ECDH_SECP521R1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp521r1 (NIST 521-bit).  @ingroup nrf_crypto_ecdh_secp521r1 */
 typedef uint8_t nrf_crypto_ecdh_secp160k1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP160K1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp160k1 (Koblitz 160-bit).  @ingroup nrf_crypto_ecdh_secp160k1 */
+    [NRF_CRYPTO_ECDH_SECP160K1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp160k1 (Koblitz 160-bit).  @ingroup nrf_crypto_ecdh_secp160k1 */
 typedef uint8_t nrf_crypto_ecdh_secp192k1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP192K1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp192k1 (Koblitz 192-bit).  @ingroup nrf_crypto_ecdh_secp192k1 */
+    [NRF_CRYPTO_ECDH_SECP192K1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp192k1 (Koblitz 192-bit).  @ingroup nrf_crypto_ecdh_secp192k1 */
 typedef uint8_t nrf_crypto_ecdh_secp224k1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP224K1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp224k1 (Koblitz 224-bit).  @ingroup nrf_crypto_ecdh_secp224k1 */
+    [NRF_CRYPTO_ECDH_SECP224K1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp224k1 (Koblitz 224-bit).  @ingroup nrf_crypto_ecdh_secp224k1 */
 typedef uint8_t nrf_crypto_ecdh_secp256k1_shared_secret_t
-    [NRF_CRYPTO_ECDH_SECP256K1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve secp256k1 (Koblitz 256-bit).  @ingroup nrf_crypto_ecdh_secp256k1 */
+    [NRF_CRYPTO_ECDH_SECP256K1_SHARED_SECRET_SIZE];        /**< @brief Array type of a shared secret for curve secp256k1 (Koblitz 256-bit).  @ingroup nrf_crypto_ecdh_secp256k1 */
 typedef uint8_t nrf_crypto_ecdh_bp256r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_BP256R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve bp256r1 (Brainpool 256-bit).  @ingroup nrf_crypto_ecdh_bp256r1 */
+    [NRF_CRYPTO_ECDH_BP256R1_SHARED_SECRET_SIZE];          /**< @brief Array type of a shared secret for curve bp256r1 (Brainpool 256-bit).  @ingroup nrf_crypto_ecdh_bp256r1 */
 typedef uint8_t nrf_crypto_ecdh_bp384r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_BP384R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve bp384r1 (Brainpool 384-bit).  @ingroup nrf_crypto_ecdh_bp384r1 */
+    [NRF_CRYPTO_ECDH_BP384R1_SHARED_SECRET_SIZE];          /**< @brief Array type of a shared secret for curve bp384r1 (Brainpool 384-bit).  @ingroup nrf_crypto_ecdh_bp384r1 */
 typedef uint8_t nrf_crypto_ecdh_bp512r1_shared_secret_t
-    [NRF_CRYPTO_ECDH_BP512R1_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve bp512r1 (Brainpool 512-bit).  @ingroup nrf_crypto_ecdh_bp512r1 */
+    [NRF_CRYPTO_ECDH_BP512R1_SHARED_SECRET_SIZE];          /**< @brief Array type of a shared secret for curve bp512r1 (Brainpool 512-bit).  @ingroup nrf_crypto_ecdh_bp512r1 */
 typedef uint8_t nrf_crypto_ecdh_curve25519_shared_secret_t
-    [NRF_CRYPTO_ECDH_CURVE25519_SHARED_SECRET_SIZE]; /**< @brief Array type of a shared secret for curve Curve25519.  @ingroup nrf_crypto_ecdh_curve25519 */
+    [NRF_CRYPTO_ECDH_CURVE25519_SHARED_SECRET_SIZE];       /**< @brief Array type of a shared secret for curve Curve25519.  @ingroup nrf_crypto_ecdh_curve25519 */
 typedef uint8_t nrf_crypto_ecdh_shared_secret_t
-    [NRF_CRYPTO_ECDH_SHARED_SECRET_MAX_SIZE]; /**< @brief Array type of a shared secret for any of the enabled curves. */
+    [NRF_CRYPTO_ECDH_SHARED_SECRET_MAX_SIZE];              /**< @brief Array type of a shared secret for any of the enabled curves. */
+
 
 /** @brief Union holding a context for ECDH computation.
  */
-typedef union {
-    nrf_crypto_ecdh_secp160r1_context_t
-        context_secp160r1; /**< @brief Occupies space for secp160r1 (NIST 160-bit). */
-    nrf_crypto_ecdh_secp160r2_context_t
-        context_secp160r2; /**< @brief Occupies space for secp160r2 (NIST 160-bit). */
-    nrf_crypto_ecdh_secp192r1_context_t
-        context_secp192r1; /**< @brief Occupies space for secp192r1 (NIST 192-bit). */
-    nrf_crypto_ecdh_secp224r1_context_t
-        context_secp224r1; /**< @brief Occupies space for secp224r1 (NIST 224-bit). */
-    nrf_crypto_ecdh_secp256r1_context_t
-        context_secp256r1; /**< @brief Occupies space for secp256r1 (NIST 256-bit). */
-    nrf_crypto_ecdh_secp384r1_context_t
-        context_secp384r1; /**< @brief Occupies space for secp384r1 (NIST 384-bit). */
-    nrf_crypto_ecdh_secp521r1_context_t
-        context_secp521r1; /**< @brief Occupies space for secp521r1 (NIST 521-bit). */
-    nrf_crypto_ecdh_secp160k1_context_t
-        context_secp160k1; /**< @brief Occupies space for secp160k1 (Koblitz 160-bit). */
-    nrf_crypto_ecdh_secp192k1_context_t
-        context_secp192k1; /**< @brief Occupies space for secp192k1 (Koblitz 192-bit). */
-    nrf_crypto_ecdh_secp224k1_context_t
-        context_secp224k1; /**< @brief Occupies space for secp224k1 (Koblitz 224-bit). */
-    nrf_crypto_ecdh_secp256k1_context_t
-        context_secp256k1; /**< @brief Occupies space for secp256k1 (Koblitz 256-bit). */
-    nrf_crypto_ecdh_bp256r1_context_t
-        context_bp256r1; /**< @brief Occupies space for bp256r1 (Brainpool 256-bit). */
-    nrf_crypto_ecdh_bp384r1_context_t
-        context_bp384r1; /**< @brief Occupies space for bp384r1 (Brainpool 384-bit). */
-    nrf_crypto_ecdh_bp512r1_context_t
-        context_bp512r1; /**< @brief Occupies space for bp512r1 (Brainpool 512-bit). */
-    nrf_crypto_ecdh_curve25519_context_t
-        context_curve25519; /**< @brief Occupies space for Curve25519. */
+typedef union
+{
+    nrf_crypto_ecdh_secp160r1_context_t  context_secp160r1;   /**< @brief Occupies space for secp160r1 (NIST 160-bit). */
+    nrf_crypto_ecdh_secp160r2_context_t  context_secp160r2;   /**< @brief Occupies space for secp160r2 (NIST 160-bit). */
+    nrf_crypto_ecdh_secp192r1_context_t  context_secp192r1;   /**< @brief Occupies space for secp192r1 (NIST 192-bit). */
+    nrf_crypto_ecdh_secp224r1_context_t  context_secp224r1;   /**< @brief Occupies space for secp224r1 (NIST 224-bit). */
+    nrf_crypto_ecdh_secp256r1_context_t  context_secp256r1;   /**< @brief Occupies space for secp256r1 (NIST 256-bit). */
+    nrf_crypto_ecdh_secp384r1_context_t  context_secp384r1;   /**< @brief Occupies space for secp384r1 (NIST 384-bit). */
+    nrf_crypto_ecdh_secp521r1_context_t  context_secp521r1;   /**< @brief Occupies space for secp521r1 (NIST 521-bit). */
+    nrf_crypto_ecdh_secp160k1_context_t  context_secp160k1;   /**< @brief Occupies space for secp160k1 (Koblitz 160-bit). */
+    nrf_crypto_ecdh_secp192k1_context_t  context_secp192k1;   /**< @brief Occupies space for secp192k1 (Koblitz 192-bit). */
+    nrf_crypto_ecdh_secp224k1_context_t  context_secp224k1;   /**< @brief Occupies space for secp224k1 (Koblitz 224-bit). */
+    nrf_crypto_ecdh_secp256k1_context_t  context_secp256k1;   /**< @brief Occupies space for secp256k1 (Koblitz 256-bit). */
+    nrf_crypto_ecdh_bp256r1_context_t    context_bp256r1;     /**< @brief Occupies space for bp256r1 (Brainpool 256-bit). */
+    nrf_crypto_ecdh_bp384r1_context_t    context_bp384r1;     /**< @brief Occupies space for bp384r1 (Brainpool 384-bit). */
+    nrf_crypto_ecdh_bp512r1_context_t    context_bp512r1;     /**< @brief Occupies space for bp512r1 (Brainpool 512-bit). */
+    nrf_crypto_ecdh_curve25519_context_t context_curve25519;  /**< @brief Occupies space for Curve25519. */
 } nrf_crypto_ecdh_context_t;
+
 
 /** @brief Computes shared secret using ECC Diffie-Hellman.
  *
@@ -237,10 +182,13 @@ typedef union {
  *                                       the preprocessor definitions, e.g.
  *                                       @ref NRF_CRYPTO_ECDH_SECP256R1_SHARED_SECRET_SIZE.
  */
-ret_code_t nrf_crypto_ecdh_compute(nrf_crypto_ecdh_context_t *p_context,
-                                   nrf_crypto_ecc_private_key_t const *p_private_key,
-                                   nrf_crypto_ecc_public_key_t const *p_public_key,
-                                   uint8_t *p_shared_secret, size_t *p_shared_secret_size);
+ret_code_t nrf_crypto_ecdh_compute(
+    nrf_crypto_ecdh_context_t          * p_context,
+    nrf_crypto_ecc_private_key_t const * p_private_key,
+    nrf_crypto_ecc_public_key_t  const * p_public_key,
+    uint8_t                            * p_shared_secret,
+    size_t                             * p_shared_secret_size);
+
 
 #ifdef __cplusplus
 }

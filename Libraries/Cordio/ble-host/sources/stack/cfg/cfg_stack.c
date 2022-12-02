@@ -40,55 +40,61 @@
 **************************************************************************************************/
 
 /* Configuration structure */
-const dmCfg_t dmCfg = { 0 };
+const dmCfg_t dmCfg =
+{
+  0
+};
 
 /* Configuration pointer */
-dmCfg_t *pDmCfg = (dmCfg_t *)&dmCfg;
+dmCfg_t *pDmCfg = (dmCfg_t *) &dmCfg;
 
 /**************************************************************************************************
   L2C
 **************************************************************************************************/
 
 /* Configuration structure */
-const l2cCfg_t l2cCfg = {
-    30 /* Request timeout in seconds */
+const l2cCfg_t l2cCfg =
+{
+  30                                /* Request timeout in seconds */
 };
 
 /* Configuration pointer */
-l2cCfg_t *pL2cCfg = (l2cCfg_t *)&l2cCfg;
+l2cCfg_t *pL2cCfg = (l2cCfg_t *) &l2cCfg;
 
 /**************************************************************************************************
   ATT
 **************************************************************************************************/
 
 /* Configuration structure */
-const attCfg_t attCfg = {
-    15, /* ATT server service discovery connection idle timeout in seconds */
-    ATT_DEFAULT_MTU, /* desired ATT MTU */
-    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
-    4 /* number of queued prepare writes supported by server */
+const attCfg_t attCfg =
+{
+  15,                               /* ATT server service discovery connection idle timeout in seconds */
+  ATT_DEFAULT_MTU,                  /* desired ATT MTU */
+  ATT_MAX_TRANS_TIMEOUT,            /* transcation timeout in seconds */
+  4                                 /* number of queued prepare writes supported by server */
 };
 
 /* Configuration pointer */
-attCfg_t *pAttCfg = (attCfg_t *)&attCfg;
+attCfg_t *pAttCfg = (attCfg_t *) &attCfg;
 
 /**************************************************************************************************
   EATT
 **************************************************************************************************/
 
 /* Configuration structure */
-const eattCfg_t eattCfg = {
-    64, /* MTU */
-    64, /* MPS */
-    FALSE, /* Open EATT channels automatically on connect */
-    FALSE, /* Authorization required */
-    DM_SEC_LEVEL_NONE, /* Security level required */
-    0, /* Number of enhanced l2cap channels per connection */
-    NULL /* Channel priority table */
+const eattCfg_t eattCfg =
+{
+  64,                               /* MTU */
+  64,                               /* MPS */
+  FALSE,                            /* Open EATT channels automatically on connect */
+  FALSE,                            /* Authorization required */
+  DM_SEC_LEVEL_NONE,                /* Security level required */
+  0,                                /* Number of enhanced l2cap channels per connection */
+  NULL                              /* Channel priority table */
 };
 
 /* Configuration pointer */
-eattCfg_t *pEattCfg = (eattCfg_t *)&eattCfg;
+eattCfg_t *pEattCfg = (eattCfg_t *) &eattCfg;
 
 /* EATT_CONN_CHAN_MAX cannot be greater than L2C_COC_CHAN_MAX */
 WSF_CT_ASSERT(EATT_CONN_CHAN_MAX <= L2C_COC_CHAN_MAX);
@@ -98,20 +104,21 @@ WSF_CT_ASSERT(EATT_CONN_CHAN_MAX <= L2C_COC_CHAN_MAX);
 **************************************************************************************************/
 
 /* Configuration structure */
-const smpCfg_t smpCfg = {
-    500, /* 'Repeated attempts' timeout in msec */
-    SMP_IO_NO_IN_NO_OUT, /* I/O Capability */
-    7, /* Minimum encryption key length */
-    16, /* Maximum encryption key length */
-    1, /* Attempts to trigger 'repeated attempts' timeout */
-    0, /* Device authentication requirements */
-    64000, /* Maximum repeated attempts timeout in msec */
-    64000, /* Time msec before attemptExp decreases */
-    2 /* Repeated attempts multiplier exponent */
+const smpCfg_t smpCfg =
+{
+  500,                              /* 'Repeated attempts' timeout in msec */
+  SMP_IO_NO_IN_NO_OUT,              /* I/O Capability */
+  7,                                /* Minimum encryption key length */
+  16,                               /* Maximum encryption key length */
+  1,                                /* Attempts to trigger 'repeated attempts' timeout */
+  0,                                /* Device authentication requirements */
+  64000,                            /* Maximum repeated attempts timeout in msec */
+  64000,                            /* Time msec before attemptExp decreases */
+  2                                 /* Repeated attempts multiplier exponent */
 };
 
 /* Configuration pointer */
-smpCfg_t *pSmpCfg = (smpCfg_t *)&smpCfg;
+smpCfg_t *pSmpCfg = (smpCfg_t *) &smpCfg;
 
 /*************************************************************************************************/
 /*!
@@ -124,5 +131,5 @@ smpCfg_t *pSmpCfg = (smpCfg_t *)&smpCfg;
 /*************************************************************************************************/
 void StackGetVersionNumber(const char **pVersion)
 {
-    *pVersion = STACK_VERSION;
+  *pVersion = STACK_VERSION;
 }

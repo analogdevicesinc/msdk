@@ -43,7 +43,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Buffer offset of txWinOffset in a CONN_IND PDU. */
-#define LCTR_CONN_IND_TX_WIN_OFFSET (LL_DATA_HDR_LEN + 6 + 6 + 8)
+#define LCTR_CONN_IND_TX_WIN_OFFSET     (LL_DATA_HDR_LEN + 6 + 6 + 8)
 
 /**************************************************************************************************
   Global Variables

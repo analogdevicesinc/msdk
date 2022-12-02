@@ -32,13 +32,15 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 #ifndef CRYS_HKDF_H
 #define CRYS_HKDF_H
 
 #include "crys_hash.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*!
@@ -50,35 +52,36 @@ extern "C" {
 */
 
 /*! HKDF maximal key size in words. */
-#define CRYS_HKDF_MAX_HASH_KEY_SIZE_IN_BYTES 512
+#define CRYS_HKDF_MAX_HASH_KEY_SIZE_IN_BYTES        512
 
 /*! HKDF maximal HASH digest size in bytes. */
-#define CRYS_HKDF_MAX_HASH_DIGEST_SIZE_IN_BYTES CRYS_HASH_SHA512_DIGEST_SIZE_IN_BYTES
+#define CRYS_HKDF_MAX_HASH_DIGEST_SIZE_IN_BYTES     CRYS_HASH_SHA512_DIGEST_SIZE_IN_BYTES
 
 /************************ Defines ******************************/
 
 /************************ Enums ********************************/
 
 /*! Enum defining HKDF HASH available modes. */
-typedef enum {
-    /*! SHA1 mode. */
-    CRYS_HKDF_HASH_SHA1_mode = 0,
+typedef enum
+{
+        /*! SHA1 mode. */
+    CRYS_HKDF_HASH_SHA1_mode      = 0,
     /*! SHA224 mode. */
-    CRYS_HKDF_HASH_SHA224_mode = 1,
+    CRYS_HKDF_HASH_SHA224_mode  = 1,
     /*! SHA256 mode. */
-    CRYS_HKDF_HASH_SHA256_mode = 2,
+    CRYS_HKDF_HASH_SHA256_mode  = 2,
     /*! SHA384 mode. */
-    CRYS_HKDF_HASH_SHA384_mode = 3,
+    CRYS_HKDF_HASH_SHA384_mode  = 3,
     /*! SHA512 mode. */
-    CRYS_HKDF_HASH_SHA512_mode = 4,
+    CRYS_HKDF_HASH_SHA512_mode  = 4,
 
     /*! Maximal number of HASH modes. */
     CRYS_HKDF_HASH_NumOfModes,
 
     /*! Reserved */
-    CRYS_HKDF_HASH_OpModeLast = 0x7FFFFFFF,
+    CRYS_HKDF_HASH_OpModeLast    = 0x7FFFFFFF,
 
-} CRYS_HKDF_HASH_OpMode_t;
+}CRYS_HKDF_HASH_OpMode_t;
 
 /************************ Typedefs  ****************************/
 
@@ -90,6 +93,7 @@ typedef enum {
 
 /****************************************************************/
 
+
 /*********************************************************************************************************/
 /*!
 @brief CRYS_HKDF_KeyDerivFunc performs the HMAC-based key derivation, according to RFC5869
@@ -97,20 +101,18 @@ typedef enum {
 @return CRYS_OK on success.
 @return A non-zero value on failure as defined crys_kdf_error.h, crys_hash_error or crys_hmac_error.h
 */
-CEXPORT_C CRYSError_t CRYS_HKDF_KeyDerivFunc(
-    CRYS_HKDF_HASH_OpMode_t
-        HKDFhashMode, /*!< [in]   The HKDF identifier of hash function to be used. */
-    uint8_t *Salt_ptr, /*!< [in]   A pointer to a non secret random value. can be NULL. */
-    size_t SaltLen, /*!< [in]   The size of the salt_ptr. */
-    uint8_t *Ikm_ptr, /*!< [in]    A pointer to a input key message. */
-    uint32_t IkmLen, /*!< [in]   The size of the input key message */
-    uint8_t *
-        Info, /*!< [in]   A pointer to an optional context and application specific information. can be NULL */
-    uint32_t InfoLen, /*!< [in]   The size of the info. */
-    uint8_t *Okm, /*!< [in]   A pointer to a output key material. */
-    uint32_t OkmLen, /*!< [in]   The size of the output key material. */
-    SaSiBool IsStrongKey /*!< [in]    if TRUE , then no need to perform the extraction phase. */
-);
+CEXPORT_C CRYSError_t  CRYS_HKDF_KeyDerivFunc(
+                        CRYS_HKDF_HASH_OpMode_t HKDFhashMode,   /*!< [in]   The HKDF identifier of hash function to be used. */
+                        uint8_t*                Salt_ptr,       /*!< [in]   A pointer to a non secret random value. can be NULL. */
+                        size_t                  SaltLen,        /*!< [in]   The size of the salt_ptr. */
+                        uint8_t*                Ikm_ptr,        /*!< [in]    A pointer to a input key message. */
+                        uint32_t                IkmLen,         /*!< [in]   The size of the input key message */
+                        uint8_t*                Info,           /*!< [in]   A pointer to an optional context and application specific information. can be NULL */
+                        uint32_t                InfoLen,        /*!< [in]   The size of the info. */
+                        uint8_t*                Okm,            /*!< [in]   A pointer to a output key material. */
+                        uint32_t                OkmLen,         /*!< [in]   The size of the output key material. */
+                        SaSiBool                IsStrongKey    /*!< [in]    if TRUE , then no need to perform the extraction phase. */
+                        );
 
 #ifdef __cplusplus
 }
@@ -119,3 +121,4 @@ CEXPORT_C CRYSError_t CRYS_HKDF_KeyDerivFunc(
 @}
  */
 #endif
+

@@ -38,17 +38,18 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Enumeration of handle indexes of characteristics to be discovered */
-enum {
-    DIS_MFNS_HDL_IDX, /*!< \brief Manufacturer name string */
-    DIS_MNS_HDL_IDX, /*!< \brief Model number string */
-    DIS_SNS_HDL_IDX, /*!< \brief Serial number string */
-    DIS_HRS_HDL_IDX, /*!< \brief Hardware revision string */
-    DIS_FRS_HDL_IDX, /*!< \brief Firmware revision string */
-    DIS_SRS_HDL_IDX, /*!< \brief Software revision string */
-    DIS_SID_HDL_IDX, /*!< \brief System ID */
-    DIS_RCD_HDL_IDX, /*!< \brief Registration certificate data */
-    DIS_PNP_ID_HDL_IDX, /*!< \brief PnP ID */
-    DIS_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  DIS_MFNS_HDL_IDX,         /*!< \brief Manufacturer name string */
+  DIS_MNS_HDL_IDX,          /*!< \brief Model number string */
+  DIS_SNS_HDL_IDX,          /*!< \brief Serial number string */
+  DIS_HRS_HDL_IDX,          /*!< \brief Hardware revision string */
+  DIS_FRS_HDL_IDX,          /*!< \brief Firmware revision string */
+  DIS_SRS_HDL_IDX,          /*!< \brief Software revision string */
+  DIS_SID_HDL_IDX,          /*!< \brief System ID */
+  DIS_RCD_HDL_IDX,          /*!< \brief Registration certificate data */
+  DIS_PNP_ID_HDL_IDX,       /*!< \brief PnP ID */
+  DIS_HDL_LIST_LEN          /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -85,7 +86,7 @@ void DisDiscover(dmConnId_t connId, uint16_t *pHdlList);
 /*************************************************************************************************/
 uint8_t DisValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */ /* DEVICE_INFORMATION_PROFILE */
+/*! \} */    /* DEVICE_INFORMATION_PROFILE */
 
 #ifdef __cplusplus
 };

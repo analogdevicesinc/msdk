@@ -34,7 +34,8 @@
 #define MESH_GATT_BEARER_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -42,10 +43,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh GATT Bearer notification event types enumeration */
-enum meshGattEventTypes {
-    MESH_GATT_PROXY_CONN_OPENED = 0x00, /*!< GATT Proxy connection opened */
-    MESH_GATT_PROXY_CONN_CLOSED = 0x01, /*!< GATT Proxy connection closed */
-    MESH_GATT_PACKET_PROCESSED = 0x02 /*!< GATT packet processed by the lower layers.
+enum meshGattEventTypes
+{
+  MESH_GATT_PROXY_CONN_OPENED = 0x00,  /*!< GATT Proxy connection opened */
+  MESH_GATT_PROXY_CONN_CLOSED = 0x01,  /*!< GATT Proxy connection closed */
+  MESH_GATT_PACKET_PROCESSED  = 0x02   /*!< GATT packet processed by the lower layers.
                                         *   This means that either the packet has been sent
                                         *   over-the-air or that it was dropped as a consequence of
                                         *   a removed interface.
@@ -56,16 +58,18 @@ enum meshGattEventTypes {
 typedef uint8_t meshGattEventType_t;
 
 /*! Mesh GATT Bearer PDU status structure */
-typedef struct meshGattBrPduStatus_tag {
-    meshGattEventType_t eventType; /*!< Mesh GATT Bearer notification event type.*/
-    meshGattProxyPduType_t pduType; /*!< GATT PDU type. See ::meshGattProxyPduType */
-    uint8_t *pPdu; /*!< Pointer to the sent PDU mentioned in the event */
+typedef struct meshGattBrPduStatus_tag
+{
+  meshGattEventType_t     eventType;   /*!< Mesh GATT Bearer notification event type.*/
+  meshGattProxyPduType_t  pduType;     /*!< GATT PDU type. See ::meshGattProxyPduType */
+  uint8_t                 *pPdu;       /*!< Pointer to the sent PDU mentioned in the event */
 } meshGattBrPduStatus_t;
 
 /*! Mesh GATT Bearer Event notification union */
-typedef union meshGattBrEventParams_tag {
-    meshGattEventType_t eventType; /*!< Mesh GATT Bearer notification event type.*/
-    meshGattBrPduStatus_t brPduStatus; /*!< PDU status structure. See ::meshGattBrPduStatus_t */
+typedef union meshGattBrEventParams_tag
+{
+  meshGattEventType_t      eventType;     /*!< Mesh GATT Bearer notification event type.*/
+  meshGattBrPduStatus_t    brPduStatus;   /*!< PDU status structure. See ::meshGattBrPduStatus_t */
 } meshGattEvent_t;
 
 /*************************************************************************************************/

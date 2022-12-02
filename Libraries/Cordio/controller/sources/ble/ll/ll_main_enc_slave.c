@@ -44,11 +44,11 @@
 /*************************************************************************************************/
 uint8_t LlEncrypt(uint8_t *pKey, uint8_t *pData)
 {
-    LL_TRACE_INFO0("### LlApi ###  LlEncrypt");
+  LL_TRACE_INFO0("### LlApi ###  LlEncrypt");
 
-    PalCryptoAesEcb(pKey, pData, pData);
+  PalCryptoAesEcb(pKey, pData, pData);
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -64,31 +64,36 @@ uint8_t LlEncrypt(uint8_t *pKey, uint8_t *pData)
 /*************************************************************************************************/
 uint8_t LlLtkReqReply(uint16_t handle, const uint8_t *pKey)
 {
-    lctrLtkReply_t *pMsg;
+  lctrLtkReply_t *pMsg;
 
-    LL_TRACE_INFO1("### LlApi ###  LlLtkReqReply, handle=%u", handle);
+  LL_TRACE_INFO1("### LlApi ###  LlLtkReqReply, handle=%u", handle);
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
-        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+       ((handle >= pLctrRtCfg->maxConn) ||
+       !LctrIsConnHandleEnabled(handle)))
+  {
+    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) && ((LctrGetRole(handle) != LL_ROLE_SLAVE) ||
-                                      !LctrIsWaitingForReply(handle, LCTR_HOST_REPLY_LTK_REQ))) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((LctrGetRole(handle) != LL_ROLE_SLAVE) ||
+       !LctrIsWaitingForReply(handle, LCTR_HOST_REPLY_LTK_REQ)))
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if ((pMsg = (lctrLtkReply_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
-        pMsg->hdr.handle = handle;
-        pMsg->hdr.dispId = LCTR_DISP_CONN;
-        pMsg->hdr.event = LCTR_CONN_MSG_API_LTK_REPLY;
+  if ((pMsg = (lctrLtkReply_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
+  {
+    pMsg->hdr.handle = handle;
+    pMsg->hdr.dispId = LCTR_DISP_CONN;
+    pMsg->hdr.event  = LCTR_CONN_MSG_API_LTK_REPLY;
 
-        memcpy(pMsg->key, pKey, sizeof(pMsg->key));
+    memcpy(pMsg->key, pKey, sizeof(pMsg->key));
 
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-    }
+    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -103,29 +108,34 @@ uint8_t LlLtkReqReply(uint16_t handle, const uint8_t *pKey)
 /*************************************************************************************************/
 uint8_t LlLtkReqNegReply(uint16_t handle)
 {
-    lctrMsgHdr_t *pMsg;
+  lctrMsgHdr_t *pMsg;
 
-    LL_TRACE_INFO1("### LlApi ###  LlLtkReqNegReply, handle=%u", handle);
+  LL_TRACE_INFO1("### LlApi ###  LlLtkReqNegReply, handle=%u", handle);
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
-        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+       ((handle >= pLctrRtCfg->maxConn) ||
+       !LctrIsConnHandleEnabled(handle)))
+  {
+    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) && ((LctrGetRole(handle) != LL_ROLE_SLAVE) ||
-                                      !LctrIsWaitingForReply(handle, LCTR_HOST_REPLY_LTK_REQ))) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((LctrGetRole(handle) != LL_ROLE_SLAVE) ||
+       !LctrIsWaitingForReply(handle, LCTR_HOST_REPLY_LTK_REQ)))
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
-        pMsg->handle = handle;
-        pMsg->dispId = LCTR_DISP_CONN;
-        pMsg->event = LCTR_CONN_MSG_API_LTK_NEG_REPLY;
+  if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
+  {
+    pMsg->handle = handle;
+    pMsg->dispId = LCTR_DISP_CONN;
+    pMsg->event  = LCTR_CONN_MSG_API_LTK_NEG_REPLY;
 
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-    }
+    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -142,18 +152,20 @@ uint8_t LlLtkReqNegReply(uint16_t handle)
 /*************************************************************************************************/
 uint8_t LlReadAuthPayloadTimeout(uint16_t handle, uint16_t *pTimeout)
 {
-    LL_TRACE_INFO1("### LlApi ###  LlReadAuthPayloadTimeout, handle=%u", handle);
+  LL_TRACE_INFO1("### LlApi ###  LlReadAuthPayloadTimeout, handle=%u", handle);
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
-        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((handle >= pLctrRtCfg->maxConn) ||
+      !LctrIsConnHandleEnabled(handle)))
+  {
+    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+  }
 
-    uint32_t timeoutMs = LctrGetAuthPayloadTimeout(handle);
-    /* Convert to 10-milliseconds units. */
-    *pTimeout = LL_MATH_DIV_10(timeoutMs);
+  uint32_t timeoutMs = LctrGetAuthPayloadTimeout(handle);
+  /* Convert to 10-milliseconds units. */
+  *pTimeout = LL_MATH_DIV_10(timeoutMs);
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -170,29 +182,33 @@ uint8_t LlReadAuthPayloadTimeout(uint16_t handle, uint16_t *pTimeout)
 /*************************************************************************************************/
 uint8_t LlWriteAuthPayloadTimeout(uint16_t handle, uint16_t timeout)
 {
-    const uint16_t timeoutMin = 0x0001; /*      10 ms */
-    /* const uint16_t timeoutMax = 0xFFFF; */ /* 655,350 ms */
+  const uint16_t timeoutMin = 0x0001;       /*      10 ms */
+  /* const uint16_t timeoutMax = 0xFFFF; */ /* 655,350 ms */
 
-    LL_TRACE_INFO2("### LlApi ###  LlWriteAuthPayloadTimeout, handle=%u, timeout=%u", handle,
-                   timeout);
+  LL_TRACE_INFO2("### LlApi ###  LlWriteAuthPayloadTimeout, handle=%u, timeout=%u", handle, timeout);
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
-        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((handle >= pLctrRtCfg->maxConn) ||
+      !LctrIsConnHandleEnabled(handle)))
+  {
+    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) && (timeout < timeoutMin)) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      (timeout < timeoutMin))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    /* Convert to milliseconds. */
-    uint32_t timeoutMs = timeout * 10;
+  /* Convert to milliseconds. */
+  uint32_t timeoutMs = timeout * 10;
 
-    if (!LctrSetAuthPayloadTimeout(handle, timeoutMs)) {
-        return LL_ERROR_CODE_INVALID_LMP_PARAMS;
-    }
+  if (!LctrSetAuthPayloadTimeout(handle, timeoutMs))
+  {
+    return LL_ERROR_CODE_INVALID_LMP_PARAMS;
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -209,16 +225,18 @@ uint8_t LlWriteAuthPayloadTimeout(uint16_t handle, uint16_t timeout)
 /*************************************************************************************************/
 uint8_t LlGetEncMode(uint16_t handle, LlEncMode_t *pMode)
 {
-    LL_TRACE_INFO1("### LlApi ###  LlGetEncMode, handle=%u", handle);
+  LL_TRACE_INFO1("### LlApi ###  LlGetEncMode, handle=%u", handle);
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
-        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+       ((handle >= pLctrRtCfg->maxConn) ||
+       !LctrIsConnHandleEnabled(handle)))
+  {
+    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+  }
 
-    LctrGetEncMode(handle, pMode);
+  LctrGetEncMode(handle, pMode);
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -236,16 +254,21 @@ uint8_t LlGetEncMode(uint16_t handle, LlEncMode_t *pMode)
 /*************************************************************************************************/
 uint8_t LlSetEncMode(uint16_t handle, const LlEncMode_t *pMode)
 {
-    LL_TRACE_INFO1("### LlApi ###  LlSetEncMode, handle=%u", handle);
+  LL_TRACE_INFO1("### LlApi ###  LlSetEncMode, handle=%u", handle);
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
-        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+       ((handle >= pLctrRtCfg->maxConn) ||
+       !LctrIsConnHandleEnabled(handle)))
+  {
+    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+  }
 
-    if (LctrSetEncMode(handle, pMode)) {
-        return LL_SUCCESS;
-    } else {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if (LctrSetEncMode(handle, pMode))
+  {
+    return LL_SUCCESS;
+  }
+  else
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 }

@@ -56,11 +56,14 @@
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OPTIGA)
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OPTIGA_RNG)
 
+
 #include "nrf_crypto_rng_shared.h"
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_RNG)
 #error "More than one RNG backend enabled."
@@ -70,16 +73,19 @@ extern "C" {
 /**
  * @internal @brief Context for nRF RNG peripheral.
  */
-typedef struct {
-    nrf_crypto_rng_internal_context_t header; //!< Internal common context header.
+typedef struct
+{
+    nrf_crypto_rng_internal_context_t   header;         //!< Internal common context header.
 } nrf_crypto_backend_rng_context_t;
 
 /**
  * @internal @brief Dummy temp buffer for nRF RNG peripheral.
  */
-typedef struct {
+typedef struct
+{
     uint32_t reserved;
 } nrf_crypto_backend_rng_temp_buffer_t;
+
 
 #ifdef __cplusplus
 }

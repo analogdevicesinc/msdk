@@ -56,55 +56,55 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_power_config_t nrf_drv_power_config_t;
+typedef nrfx_power_config_t             nrf_drv_power_config_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_power_pofwarn_config_t nrf_drv_power_pofwarn_config_t;
+typedef nrfx_power_pofwarn_config_t     nrf_drv_power_pofwarn_config_t;
 #if NRF_POWER_HAS_SLEEPEVT || defined(__SDK_DOXYGEN__)
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_power_sleepevt_config_t nrf_drv_power_sleepevt_config_t;
+typedef nrfx_power_sleepevt_config_t    nrf_drv_power_sleepevt_config_t;
 #endif
 #if NRF_POWER_HAS_USBREG || defined(__SDK_DOXYGEN__)
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_power_usbevt_config_t nrf_drv_power_usbevt_config_t;
+typedef nrfx_power_usbevt_config_t      nrf_drv_power_usbevt_config_t;
 #endif
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_MODE_CONSTLAT NRFX_POWER_MODE_CONSTLAT
+#define NRF_DRV_POWER_MODE_CONSTLAT            NRFX_POWER_MODE_CONSTLAT
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_MODE_LOWPWR NRFX_POWER_MODE_LOWPWR
+#define NRF_DRV_POWER_MODE_LOWPWR              NRFX_POWER_MODE_LOWPWR
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_power_mode_t nrfx_power_mode_t
+#define nrf_drv_power_mode_t                   nrfx_power_mode_t
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_SLEEP_EVT_ENTER NRFX_POWER_SLEEP_EVT_ENTER
+#define NRF_DRV_POWER_SLEEP_EVT_ENTER          NRFX_POWER_SLEEP_EVT_ENTER
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_SLEEP_EVT_EXIT NRFX_POWER_SLEEP_EVT_EXIT
+#define NRF_DRV_POWER_SLEEP_EVT_EXIT           NRFX_POWER_SLEEP_EVT_EXIT
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_power_sleep_evt_t nrfx_power_sleep_evt_t
+#define nrf_drv_power_sleep_evt_t              nrfx_power_sleep_evt_t
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_USB_EVT_DETECTED NRFX_POWER_USB_EVT_DETECTED
+#define NRF_DRV_POWER_USB_EVT_DETECTED         NRFX_POWER_USB_EVT_DETECTED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_USB_EVT_REMOVED NRFX_POWER_USB_EVT_REMOVED
+#define NRF_DRV_POWER_USB_EVT_REMOVED          NRFX_POWER_USB_EVT_REMOVED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_USB_EVT_READY NRFX_POWER_USB_EVT_READY
+#define NRF_DRV_POWER_USB_EVT_READY            NRFX_POWER_USB_EVT_READY
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_power_usb_evt_t nrfx_power_usb_evt_t
+#define nrf_drv_power_usb_evt_t                nrfx_power_usb_evt_t
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_USB_STATE_DISCONNECTED NRFX_POWER_USB_STATE_DISCONNECTED
+#define NRF_DRV_POWER_USB_STATE_DISCONNECTED   NRFX_POWER_USB_STATE_DISCONNECTED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_USB_STATE_CONNECTED NRFX_POWER_USB_STATE_CONNECTED
+#define NRF_DRV_POWER_USB_STATE_CONNECTED      NRFX_POWER_USB_STATE_CONNECTED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_POWER_USB_STATE_READY NRFX_POWER_USB_STATE_READY
+#define NRF_DRV_POWER_USB_STATE_READY          NRFX_POWER_USB_STATE_READY
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_power_usb_state_t nrfx_power_usb_state_t
+#define nrf_drv_power_usb_state_t              nrfx_power_usb_state_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_power_pofwarn_event_handler_t nrfx_power_pofwarn_event_handler_t
+#define nrf_drv_power_pofwarn_event_handler_t  nrfx_power_pofwarn_event_handler_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_power_sleep_event_handler_t nrfx_power_sleep_event_handler_t
+#define nrf_drv_power_sleep_event_handler_t    nrfx_power_sleep_event_handler_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_power_usb_event_handler_t nrfx_power_usb_event_handler_t
+#define nrf_drv_power_usb_event_handler_t      nrfx_power_usb_event_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_power_usbstatus_get nrfx_power_usbstatus_get
+#define nrf_drv_power_usbstatus_get            nrfx_power_usbstatus_get
 
 /**
  * @brief Function for checking if driver is already initialized
@@ -132,7 +132,7 @@ bool nrf_drv_power_init_check(void);
  * @retval NRF_ERROR_MODULE_ALREADY_INITIALIZED Module is initialized already.
  * @retval NRF_SUCCESS                          Successfully initialized.
  */
-ret_code_t nrf_drv_power_init(nrf_drv_power_config_t const *p_config);
+ret_code_t nrf_drv_power_init(nrf_drv_power_config_t const * p_config);
 
 /**
  * @brief Unintialize power module driver
@@ -156,7 +156,7 @@ void nrf_drv_power_uninit(void);
  *                                 is not possible to be set using SD interface.
  * @retval NRF_SUCCESS             Successfully initialized and configured.
  */
-ret_code_t nrf_drv_power_pof_init(nrf_drv_power_pofwarn_config_t const *p_config);
+ret_code_t nrf_drv_power_pof_init(nrf_drv_power_pofwarn_config_t const * p_config);
 
 /**
  * @brief Turn off the power failure comparator
@@ -185,7 +185,7 @@ void nrf_drv_power_pof_uninit(void);
  *                                 when SD is enabled.
  * @retval NRF_SUCCESS             Successfully initialized and configured.
  */
-ret_code_t nrf_drv_power_sleepevt_init(nrf_drv_power_sleepevt_config_t const *p_config);
+ret_code_t nrf_drv_power_sleepevt_init(nrf_drv_power_sleepevt_config_t const * p_config);
 
 /**
  * @brief Uninitialize sleep entering and exiting events processing
@@ -212,7 +212,7 @@ void nrf_drv_power_sleepevt_uninit(void);
  *                                 USB power events.
  * @retval NRF_SUCCESS             Successfully initialized and configured.
  */
-ret_code_t nrf_drv_power_usbevt_init(nrf_drv_power_usbevt_config_t const *p_config);
+ret_code_t nrf_drv_power_usbevt_init(nrf_drv_power_usbevt_config_t const * p_config);
 
 /**
  * @brief Uninitalize USB power event processing

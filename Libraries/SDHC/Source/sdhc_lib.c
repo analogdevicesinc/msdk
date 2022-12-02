@@ -57,32 +57,32 @@
 /* **** Definitions **** */
 
 /* SDHC commands and associated cmd register bits which inform hardware to wait for response, etc. */
-#define MXC_SDHC_LIB_CMD0 0x0000
-#define MXC_SDHC_LIB_CMD1 0x0102
-#define MXC_SDHC_LIB_CMD2 0x0209
-#define MXC_SDHC_LIB_CMD3 0x031A
-#define MXC_SDHC_LIB_CMD4 0x0400
-#define MXC_SDHC_LIB_CMD5 0x051A
-#define MXC_SDHC_LIB_CMD6 0x060A
-#define MXC_SDHC_LIB_CMD7 0x071B
-#define MXC_SDHC_LIB_CMD8 0x081A
-#define MXC_SDHC_LIB_CMD9 0x0901
-#define MXC_SDHC_LIB_CMD10 0x0A01
-#define MXC_SDHC_LIB_CMD11 0x0B1A
-#define MXC_SDHC_LIB_CMD12 0x0C1B
-#define MXC_SDHC_LIB_CMD13 0x0D1A
-#define MXC_SDHC_LIB_CMD16 0x101A
-#define MXC_SDHC_LIB_CMD17 0x113A
-#define MXC_SDHC_LIB_CMD18 0x123A
-#define MXC_SDHC_LIB_CMD23 0x171A
-#define MXC_SDHC_LIB_CMD24 0x183E
-#define MXC_SDHC_LIB_CMD25 0x193E
-#define MXC_SDHC_LIB_CMD55 0x371A
+#define MXC_SDHC_LIB_CMD0       0x0000
+#define MXC_SDHC_LIB_CMD1       0x0102
+#define MXC_SDHC_LIB_CMD2       0x0209
+#define MXC_SDHC_LIB_CMD3       0x031A
+#define MXC_SDHC_LIB_CMD4       0x0400
+#define MXC_SDHC_LIB_CMD5       0x051A
+#define MXC_SDHC_LIB_CMD6       0x060A
+#define MXC_SDHC_LIB_CMD7       0x071B
+#define MXC_SDHC_LIB_CMD8       0x081A
+#define MXC_SDHC_LIB_CMD9       0x0901
+#define MXC_SDHC_LIB_CMD10      0x0A01
+#define MXC_SDHC_LIB_CMD11      0x0B1A
+#define MXC_SDHC_LIB_CMD12      0x0C1B
+#define MXC_SDHC_LIB_CMD13      0x0D1A
+#define MXC_SDHC_LIB_CMD16      0x101A
+#define MXC_SDHC_LIB_CMD17      0x113A
+#define MXC_SDHC_LIB_CMD18      0x123A
+#define MXC_SDHC_LIB_CMD23      0x171A
+#define MXC_SDHC_LIB_CMD24      0x183E
+#define MXC_SDHC_LIB_CMD25      0x193E
+#define MXC_SDHC_LIB_CMD55      0x371A
 /* Application commands (SD Card) which are prefixed by CMD55 */
-#define MXC_SDHC_LIB_ACMD6 0x061B
-#define MXC_SDHC_LIB_ACMD41 0x2902
+#define MXC_SDHC_LIB_ACMD6      0x061B
+#define MXC_SDHC_LIB_ACMD41     0x2902
 
-#define MXC_SDHC_LIB_BLOCK_SIZE 512
+#define MXC_SDHC_LIB_BLOCK_SIZE  512
 
 #define MXC_SDHC_LIB_CURRENT_STATE_POS 9
 #define MXC_SDHC_LIB_CURRENT_STATE ((uint32_t)(0xFUL << MXC_SDHC_LIB_CURRENT_STATE_POS))
@@ -94,8 +94,7 @@
 #define MXC_SDHC_LIB_DEFAULT_MAX_BLOCK_REG_VALUE 9
 //ACMD41 Command arg
 #define MXC_SDHC_LIB_HOST_CAPACITY_SUPPORT_POS 30
-#define MXC_SDHC_LIB_HOST_CAPACITY_SUPPORT \
-    ((uint32_t)(0x1UL << MXC_SDHC_LIB_HOST_CAPACITY_SUPPORT_POS))
+#define MXC_SDHC_LIB_HOST_CAPACITY_SUPPORT ((uint32_t)(0x1UL << MXC_SDHC_LIB_HOST_CAPACITY_SUPPORT_POS))
 #define MXC_SDHC_LIB_SDXC_POWER_POS 28
 #define MXC_SDHC_LIB_SDXC_POWER ((uint32_t)(0x1UL << MXC_SDHC_LIB_SDXC_POWER_POS))
 
@@ -111,7 +110,7 @@ mxc_sdhc_lib_card_type card_type = CARD_NONE;
 
 mxc_sdhc_lib_card_type MXC_SDHC_Lib_Get_Card_Type(void)
 {
-    return card_type;
+  return card_type;
 }
 
 /* ************************************************************************** */
@@ -153,29 +152,29 @@ int MXC_SDHC_Lib_GetCSD(mxc_sdhc_csd_regs_t *csd)
     cmd_cfg.command = MXC_SDHC_LIB_CMD9;
 
     if ((result = MXC_SDHC_SendCommand(&cmd_cfg)) == E_NO_ERROR) {
-        MXC_SDHC_Get_Response128((unsigned char *)csd->array);
+    MXC_SDHC_Get_Response128((unsigned char *)csd->array);
     }
 
     return result;
 }
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t *csd)
+unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd)
 {
     unsigned int size = csd->csd.c_size;
 
-    return (size * (512 * 1024));
+    return (size*(512*1024));
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_GetBlockSize(mxc_sdhc_csd_regs_t *csd)
+int MXC_SDHC_Lib_GetBlockSize(mxc_sdhc_csd_regs_t* csd)
 {
     unsigned int size = csd->csd.write_bl_len;
 
     if (size == MXC_SDHC_LIB_DEFAULT_MAX_BLOCK_REG_VALUE) {
         return MXC_SDHC_LIB_DEFAULT_MAX_BLOCK_SIZE;
     } else {
-        return E_BAD_PARAM;
+      return E_BAD_PARAM;
     }
 }
 
@@ -234,38 +233,38 @@ int MXC_SDHC_Lib_SetBusWidth(mxc_sdhc_data_width bus_width)
     cmd_cfg.callback = NULL;
 
     if (card_type == CARD_SDHC) {
-        cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
-        cmd_cfg.arg_1 = card_rca;
-        cmd_cfg.command = MXC_SDHC_LIB_CMD55;
-        result = MXC_SDHC_SendCommand(&cmd_cfg);
+    cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
+    cmd_cfg.arg_1 = card_rca;
+    cmd_cfg.command = MXC_SDHC_LIB_CMD55;
+    result = MXC_SDHC_SendCommand(&cmd_cfg);
 
-        if (result == E_NO_ERROR) {
-            cmd_cfg.host_control_1 |= bus_width;
-            cmd_cfg.arg_1 = bus_width;
-            cmd_cfg.command = MXC_SDHC_LIB_ACMD6;
-            result = MXC_SDHC_SendCommand(&cmd_cfg);
-        }
-    } else if (card_type == CARD_MMC) {
-        cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
-        if (bus_width == MXC_SDHC_LIB_SINGLE_DATA) {
-            /* 1-bit bus */
-            cmd_cfg.arg_1 = 0x03B70000;
-        } else {
-            /* 4-bit bus */
-            cmd_cfg.arg_1 = 0x03B70100;
-            cmd_cfg.host_control_1 |= MXC_F_SDHC_HOST_CN_1_DATA_TRANSFER_WIDTH;
-        }
-        cmd_cfg.command = MXC_SDHC_LIB_CMD6;
+    if (result == E_NO_ERROR) {
+        cmd_cfg.host_control_1 |= bus_width;
+        cmd_cfg.arg_1 = bus_width;
+        cmd_cfg.command = MXC_SDHC_LIB_ACMD6;
         result = MXC_SDHC_SendCommand(&cmd_cfg);
-        /* Wait until card busy (D0 low) disappears */
-        while (MXC_SDHC_Card_Busy()) {}
-        card_status = MXC_SDHC_Get_Response32();
-        if ((result == E_NO_ERROR) && (card_status & 0x80)) {
-            /* SWITCH_ERROR */
-            result = E_BAD_STATE;
-        }
+    }
+    } else if (card_type == CARD_MMC) {
+      cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
+      if (bus_width == MXC_SDHC_LIB_SINGLE_DATA) {
+    /* 1-bit bus */
+    cmd_cfg.arg_1 = 0x03B70000;
+      } else {
+    /* 4-bit bus */
+    cmd_cfg.arg_1 = 0x03B70100;
+    cmd_cfg.host_control_1 |= MXC_F_SDHC_HOST_CN_1_DATA_TRANSFER_WIDTH;
+      }
+      cmd_cfg.command = MXC_SDHC_LIB_CMD6;
+      result = MXC_SDHC_SendCommand(&cmd_cfg);
+      /* Wait until card busy (D0 low) disappears */
+      while (MXC_SDHC_Card_Busy()) {}
+      card_status = MXC_SDHC_Get_Response32();
+      if ((result == E_NO_ERROR) && (card_status & 0x80)) {
+    /* SWITCH_ERROR */
+    result = E_BAD_STATE;
+      }
     } else {
-        result = E_BAD_STATE;
+    result = E_BAD_STATE;
     }
 
     return result;
@@ -404,7 +403,7 @@ int MXC_SDHC_Lib_InitCard(int retries)
     }
     ocr = MXC_SDHC_Get_Response32();
     err = MXC_SDHC_Lib_SetRCA();
-    if (err != E_NO_ERROR) {
+        if (err != E_NO_ERROR) {
         return err;
     }
 
@@ -429,58 +428,57 @@ int MXC_SDHC_Lib_Prepare_Trans(mxc_sdhc_data_width width)
     cmd_cfg.callback = NULL;
 
     do {
-        if ((result = MXC_SDHC_Lib_GetCurrentState(&state)) != E_NO_ERROR) {
+    if ((result = MXC_SDHC_Lib_GetCurrentState(&state)) != E_NO_ERROR) {
+        return result;
+    }
+
+    /* We expect to be in STBY, TRANS, or PRG state, otherwise failure */
+    switch (state) {
+        case MXC_SDHC_LIB_STBY_STATE:
+        if ((result = MXC_SDHC_Lib_SetDsr()) != E_NO_ERROR) {
             return result;
         }
-
-        /* We expect to be in STBY, TRANS, or PRG state, otherwise failure */
-        switch (state) {
-        case MXC_SDHC_LIB_STBY_STATE:
-            if ((result = MXC_SDHC_Lib_SetDsr()) != E_NO_ERROR) {
-                return result;
-            }
-            cmd_cfg.arg_1 = card_rca;
-            cmd_cfg.command = MXC_SDHC_LIB_CMD7;
-            if ((result = MXC_SDHC_SendCommand(&cmd_cfg)) != E_NO_ERROR) {
-                return result;
-            }
-            break;
+        cmd_cfg.arg_1 = card_rca;
+        cmd_cfg.command = MXC_SDHC_LIB_CMD7;
+        if ((result = MXC_SDHC_SendCommand(&cmd_cfg)) != E_NO_ERROR) {
+            return result;
+        }
+        break;
         case MXC_SDHC_LIB_TRAN_STATE:
-            /* No action, ready to go */
-            break;
+        /* No action, ready to go */
+        break;
         case MXC_SDHC_LIB_PRG_STATE:
-            /* If card is currently in the programming state (writing data to card) with BUSY=1,
+        /* If card is currently in the programming state (writing data to card) with BUSY=1,
          * block until that is done. This could be optimized in the case of the Async
          * calls, but that is left as a future enhancement to the library.
          */
-            if (!MXC_SDHC_Card_Busy()) {
-                /* Bump us out of the loop */
-                state = MXC_SDHC_LIB_TRAN_STATE;
-            }
-            break;
-        default:
-            /* Other states are errors at this point */
-            return E_BAD_STATE;
+        if (!MXC_SDHC_Card_Busy()) {
+            /* Bump us out of the loop */
+            state = MXC_SDHC_LIB_TRAN_STATE;
         }
+        break;
+        default:
+        /* Other states are errors at this point */
+        return E_BAD_STATE;
+    }
     } while (state != MXC_SDHC_LIB_TRAN_STATE);
 
     if ((result = MXC_SDHC_Lib_SetBusWidth(width)) != E_NO_ERROR) {
-        return result;
+    return result;
     }
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt,
-                       mxc_sdhc_data_width width)
+int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt, mxc_sdhc_data_width width)
 {
     int result;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
     result = MXC_SDHC_Lib_Prepare_Trans(width);
     if (result != E_NO_ERROR) {
-        return result;
+    return result;
     }
 
     cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
@@ -491,9 +489,9 @@ int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt,
     cmd_cfg.direction = MXC_SDHC_DIRECTION_WRITE;
     cmd_cfg.arg_1 = dst_addr;
     if (cnt > 1) {
-        cmd_cfg.command = MXC_SDHC_LIB_CMD25;
+      cmd_cfg.command = MXC_SDHC_LIB_CMD25;
     } else {
-        cmd_cfg.command = MXC_SDHC_LIB_CMD24;
+      cmd_cfg.command = MXC_SDHC_LIB_CMD24;
     }
     cmd_cfg.callback = NULL;
 
@@ -501,15 +499,14 @@ int MXC_SDHC_Lib_Write(unsigned int dst_addr, void *src_addr, unsigned int cnt,
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt,
-                      mxc_sdhc_data_width width)
+int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt, mxc_sdhc_data_width width)
 {
     int result;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
     result = MXC_SDHC_Lib_Prepare_Trans(width);
     if (result != E_NO_ERROR) {
-        return result;
+    return result;
     }
 
     cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
@@ -520,9 +517,9 @@ int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt,
     cmd_cfg.direction = MXC_SDHC_DIRECTION_READ;
     cmd_cfg.arg_1 = src_addr;
     if (cnt > 1) {
-        cmd_cfg.command = MXC_SDHC_LIB_CMD18;
+      cmd_cfg.command = MXC_SDHC_LIB_CMD18;
     } else {
-        cmd_cfg.command = MXC_SDHC_LIB_CMD17;
+      cmd_cfg.command = MXC_SDHC_LIB_CMD17;
     }
     cmd_cfg.callback = NULL;
 
@@ -530,15 +527,14 @@ int MXC_SDHC_Lib_Read(void *dst_addr, unsigned int src_addr, unsigned int cnt,
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int cnt,
-                            mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback)
+int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int cnt, mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback)
 {
     int data;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
 
     data = MXC_SDHC_Lib_Prepare_Trans(width);
     if (data == E_BUSY) {
-        return E_BUSY;
+    return E_BUSY;
     }
     if (data == E_BAD_STATE) {
         return E_BAD_STATE;
@@ -552,9 +548,9 @@ int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int 
     cmd_cfg.direction = MXC_SDHC_DIRECTION_WRITE;
     cmd_cfg.arg_1 = dst_addr;
     if (cnt > 1) {
-        cmd_cfg.command = MXC_SDHC_LIB_CMD25;
+      cmd_cfg.command = MXC_SDHC_LIB_CMD25;
     } else {
-        cmd_cfg.command = MXC_SDHC_LIB_CMD24;
+      cmd_cfg.command = MXC_SDHC_LIB_CMD24;
     }
     cmd_cfg.callback = callback;
 
@@ -562,8 +558,7 @@ int MXC_SDHC_Lib_WriteAsync(unsigned int dst_addr, void *src_addr, unsigned int 
 }
 
 /* ************************************************************************** */
-int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int cnt,
-                           mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback)
+int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int cnt, mxc_sdhc_data_width width, mxc_sdhc_callback_fn callback)
 {
     int data;
     mxc_sdhc_cmd_cfg_t cmd_cfg;
@@ -584,9 +579,9 @@ int MXC_SDHC_Lib_ReadAsync(void *dst_addr, unsigned int src_addr, unsigned int c
     cmd_cfg.direction = MXC_SDHC_DIRECTION_READ;
     cmd_cfg.arg_1 = src_addr;
     if (cnt > 1) {
-        cmd_cfg.command = MXC_SDHC_LIB_CMD18;
+      cmd_cfg.command = MXC_SDHC_LIB_CMD18;
     } else {
-        cmd_cfg.command = MXC_SDHC_LIB_CMD17;
+      cmd_cfg.command = MXC_SDHC_LIB_CMD17;
     }
     cmd_cfg.callback = callback;
 

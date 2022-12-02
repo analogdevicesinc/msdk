@@ -30,6 +30,6 @@
 **************************************************************************************************/
 
 /*! \brief    Provisioner Application version. */
-#define PROVISIONER_VERSION ((const char *)"provisioner_mesh1.0_0.07.14")
+#define PROVISIONER_VERSION              ((const char *)"provisioner_mesh1.0_0.07.14")
 
 #endif /* PROVISIONER_VERSION_H */

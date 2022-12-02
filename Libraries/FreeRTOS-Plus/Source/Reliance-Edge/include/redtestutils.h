@@ -28,14 +28,15 @@
 #ifndef REDTESTUTILS_H
 #define REDTESTUTILS_H
 
-#define ISDIGIT(c) (((c) >= '0') && ((c) <= '9'))
+
+#define ISDIGIT(c)  (((c) >= '0') && ((c) <= '9'))
+
 
 void RedRandSeed(uint64_t ullSeed);
 uint64_t RedRand64(uint64_t *pullSeed);
 uint32_t RedRand32(uint32_t *pulSeed);
 
-char *RedRatio(char *pBuffer, uint32_t ulBufferLen, uint64_t ullDividend, uint64_t ullDivisor,
-               uint32_t ulDecPlaces);
+char *RedRatio(char *pBuffer, uint32_t ulBufferLen, uint64_t ullDividend, uint64_t ullDivisor, uint32_t ulDecPlaces);
 uint64_t RedMulDiv64(uint64_t ullBase, uint32_t ulMultiplier, uint64_t ullDivisor);
 uint64_t RedUint64DivMod32(uint64_t ullDividend, uint32_t ulDivisor, uint32_t *pulRemainder);
 uint64_t RedUint64DivMod64(uint64_t ullDividend, uint64_t ullDivisor, uint64_t *pullRemainder);
@@ -65,4 +66,6 @@ void RedVPrintf(const char *pszFormat, va_list arglist);
 int32_t RedSNPrintf(char *pcBuffer, uint32_t ulBufferLen, const char *pszFormat, ...);
 int32_t RedVSNPrintf(char *pcBuffer, uint32_t ulBufferLen, const char *pszFormat, va_list arglist);
 
+
 #endif
+

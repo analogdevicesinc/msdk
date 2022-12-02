@@ -37,10 +37,13 @@
 #include <redcoreapi.h>
 #include <redfse.h>
 
+
 static REDSTATUS FseEnter(uint8_t bVolNum);
 static void FseLeave(void);
 
-static bool gfFseInited; /* Whether driver is initialized. */
+
+static bool gfFseInited;    /* Whether driver is initialized. */
+
 
 /** @brief Initialize the Reliance Edge file system driver.
 
@@ -62,18 +65,23 @@ REDSTATUS RedFseInit(void)
 {
     REDSTATUS ret;
 
-    if (gfFseInited) {
+    if(gfFseInited)
+    {
         ret = 0;
-    } else {
+    }
+    else
+    {
         ret = RedCoreInit();
 
-        if (ret == 0) {
+        if(ret == 0)
+        {
             gfFseInited = true;
         }
     }
 
     return ret;
 }
+
 
 /** @brief Uninitialize the Reliance Edge file system driver.
 
@@ -96,37 +104,45 @@ REDSTATUS RedFseUninit(void)
 {
     REDSTATUS ret = 0;
 
-    if (!gfFseInited) {
+    if(!gfFseInited)
+    {
         ret = 0;
-    } else {
+    }
+    else
+    {
         uint8_t bVolNum;
 
-#if REDCONF_TASK_COUNT > 1U
+      #if REDCONF_TASK_COUNT > 1U
         RedOsMutexAcquire();
-#endif
+      #endif
 
-        for (bVolNum = 0U; bVolNum < REDCONF_VOLUME_COUNT; bVolNum++) {
-            if (gaRedVolume[bVolNum].fMounted) {
+        for(bVolNum = 0U; bVolNum < REDCONF_VOLUME_COUNT; bVolNum++)
+        {
+            if(gaRedVolume[bVolNum].fMounted)
+            {
                 ret = -RED_EBUSY;
                 break;
             }
         }
 
-        if (ret == 0) {
+        if(ret == 0)
+        {
             gfFseInited = false;
         }
 
-#if REDCONF_TASK_COUNT > 1U
+      #if REDCONF_TASK_COUNT > 1U
         RedOsMutexRelease();
-#endif
+      #endif
 
-        if (ret == 0) {
+        if(ret == 0)
+        {
             ret = RedCoreUninit();
         }
     }
 
     return ret;
 }
+
 
 /** @brief Mount a file system volume.
 
@@ -146,14 +162,17 @@ REDSTATUS RedFseUninit(void)
                         uninitialized.
     @retval -RED_EIO    Volume not formatted, improperly formatted, or corrupt.
 */
-REDSTATUS RedFseMount(uint8_t bVolNum)
+REDSTATUS RedFseMount(
+    uint8_t     bVolNum)
 {
-    REDSTATUS ret;
+    REDSTATUS   ret;
 
     ret = FseEnter(bVolNum);
 
-    if (ret == 0) {
-        if (!gpRedVolume->fMounted) {
+    if(ret == 0)
+    {
+        if(!gpRedVolume->fMounted)
+        {
             ret = RedCoreVolMount();
         }
 
@@ -162,6 +181,7 @@ REDSTATUS RedFseMount(uint8_t bVolNum)
 
     return ret;
 }
+
 
 /** @brief Unmount a file system volume.
 
@@ -192,14 +212,17 @@ REDSTATUS RedFseMount(uint8_t bVolNum)
                         uninitialized.
     @retval -RED_EIO    I/O error during unmount automatic transaction point.
 */
-REDSTATUS RedFseUnmount(uint8_t bVolNum)
+REDSTATUS RedFseUnmount(
+    uint8_t     bVolNum)
 {
-    REDSTATUS ret;
+    REDSTATUS   ret;
 
     ret = FseEnter(bVolNum);
 
-    if (ret == 0) {
-        if (gpRedVolume->fMounted) {
+    if(ret == 0)
+    {
+        if(gpRedVolume->fMounted)
+        {
             ret = RedCoreVolUnmount();
         }
 
@@ -208,6 +231,7 @@ REDSTATUS RedFseUnmount(uint8_t bVolNum)
 
     return ret;
 }
+
 
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_FSE_FORMAT == 1)
 /** @brief Format a file system volume.
@@ -227,13 +251,15 @@ REDSTATUS RedFseUnmount(uint8_t bVolNum)
                         uninitialized.
     @retval -RED_EIO    I/O error formatting the volume.
 */
-REDSTATUS RedFseFormat(uint8_t bVolNum)
+REDSTATUS RedFseFormat(
+    uint8_t     bVolNum)
 {
-    REDSTATUS ret;
+    REDSTATUS   ret;
 
     ret = FseEnter(bVolNum);
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         ret = RedCoreVolFormat();
 
         FseLeave();
@@ -242,6 +268,7 @@ REDSTATUS RedFseFormat(uint8_t bVolNum)
     return ret;
 }
 #endif
+
 
 /** @brief Read from a file.
 
@@ -271,31 +298,41 @@ REDSTATUS RedFseFormat(uint8_t bVolNum)
                         INT32_MAX and cannot be returned properly.
     @retval -RED_EIO    A disk I/O error occurred.
 */
-int32_t RedFseRead(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset, uint32_t ulLength,
-                   void *pBuffer)
+int32_t RedFseRead(
+    uint8_t     bVolNum,
+    uint32_t    ulFileNum,
+    uint64_t    ullFileOffset,
+    uint32_t    ulLength,
+    void       *pBuffer)
 {
-    int32_t ret;
+    int32_t     ret;
 
-    if (ulLength > (uint32_t)INT32_MAX) {
+    if(ulLength > (uint32_t)INT32_MAX)
+    {
         ret = -RED_EINVAL;
-    } else {
+    }
+    else
+    {
         ret = FseEnter(bVolNum);
     }
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         uint32_t ulReadLen = ulLength;
 
         ret = RedCoreFileRead(ulFileNum, ullFileOffset, &ulReadLen, pBuffer);
 
         FseLeave();
 
-        if (ret == 0) {
+        if(ret == 0)
+        {
             ret = (int32_t)ulReadLen;
         }
     }
 
     return ret;
 }
+
 
 #if REDCONF_READ_ONLY == 0
 /** @brief Write to a file.
@@ -336,25 +373,34 @@ int32_t RedFseRead(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset, 
                         free space.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-int32_t RedFseWrite(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset, uint32_t ulLength,
-                    const void *pBuffer)
+int32_t RedFseWrite(
+    uint8_t     bVolNum,
+    uint32_t    ulFileNum,
+    uint64_t    ullFileOffset,
+    uint32_t    ulLength,
+    const void *pBuffer)
 {
-    int32_t ret;
+    int32_t     ret;
 
-    if (ulLength > (uint32_t)INT32_MAX) {
+    if(ulLength > (uint32_t)INT32_MAX)
+    {
         ret = -RED_EINVAL;
-    } else {
+    }
+    else
+    {
         ret = FseEnter(bVolNum);
     }
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         uint32_t ulWriteLen = ulLength;
 
         ret = RedCoreFileWrite(ulFileNum, ullFileOffset, &ulWriteLen, pBuffer);
 
         FseLeave();
 
-        if (ret == 0) {
+        if(ret == 0)
+        {
             ret = (int32_t)ulWriteLen;
         }
     }
@@ -362,6 +408,7 @@ int32_t RedFseWrite(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset,
     return ret;
 }
 #endif
+
 
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_FSE_TRUNCATE == 1)
 /** @brief Truncate a file (set the file size).
@@ -393,13 +440,17 @@ int32_t RedFseWrite(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullFileOffset,
     @retval -RED_ENOSPC Insufficient free space to perform the truncate.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-REDSTATUS RedFseTruncate(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullNewFileSize)
+REDSTATUS RedFseTruncate(
+    uint8_t     bVolNum,
+    uint32_t    ulFileNum,
+    uint64_t    ullNewFileSize)
 {
-    REDSTATUS ret;
+    REDSTATUS   ret;
 
     ret = FseEnter(bVolNum);
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         ret = RedCoreFileTruncate(ulFileNum, ullNewFileSize);
 
         FseLeave();
@@ -408,6 +459,7 @@ REDSTATUS RedFseTruncate(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullNewFil
     return ret;
 }
 #endif
+
 
 /** @brief Retrieve the size of a file.
 
@@ -422,20 +474,24 @@ REDSTATUS RedFseTruncate(uint8_t bVolNum, uint32_t ulFileNum, uint64_t ullNewFil
     @retval -RED_EINVAL @p bVolNum is an invalid volume number or not mounted.
     @retval -RED_EIO    A disk I/O error occurred.
 */
-int64_t RedFseSizeGet(uint8_t bVolNum, uint32_t ulFileNum)
+int64_t RedFseSizeGet(
+    uint8_t     bVolNum,
+    uint32_t    ulFileNum)
 {
-    int64_t ret;
+    int64_t     ret;
 
     ret = FseEnter(bVolNum);
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         uint64_t ullSize;
 
         ret = RedCoreFileSizeGet(ulFileNum, &ullSize);
 
         FseLeave();
 
-        if (ret == 0) {
+        if(ret == 0)
+        {
             /*  Unless there is an on-disk format change, the maximum file size
                 is guaranteed to be less than INT64_MAX, and so it can be safely
                 returned in an int64_t.
@@ -448,6 +504,7 @@ int64_t RedFseSizeGet(uint8_t bVolNum, uint32_t ulFileNum)
 
     return ret;
 }
+
 
 #if (REDCONF_READ_ONLY == 0) && (REDCONF_API_FSE_TRANSMASKSET == 1)
 /** @brief Update the transaction mask.
@@ -478,13 +535,16 @@ int64_t RedFseSizeGet(uint8_t bVolNum, uint32_t ulFileNum)
                         or @p ulEventMask contains invalid bits.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-REDSTATUS RedFseTransMaskSet(uint8_t bVolNum, uint32_t ulEventMask)
+REDSTATUS RedFseTransMaskSet(
+    uint8_t     bVolNum,
+    uint32_t    ulEventMask)
 {
-    REDSTATUS ret;
+    REDSTATUS   ret;
 
     ret = FseEnter(bVolNum);
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         ret = RedCoreTransMaskSet(ulEventMask);
 
         FseLeave();
@@ -493,6 +553,7 @@ REDSTATUS RedFseTransMaskSet(uint8_t bVolNum, uint32_t ulEventMask)
     return ret;
 }
 #endif
+
 
 #if REDCONF_API_FSE_TRANSMASKGET == 1
 /** @brief Read the transaction mask.
@@ -511,13 +572,16 @@ REDSTATUS RedFseTransMaskSet(uint8_t bVolNum, uint32_t ulEventMask)
     @retval -RED_EINVAL @p bVolNum is an invalid volume number or not mounted;
                         or @p pulEventMask is `NULL`.
 */
-REDSTATUS RedFseTransMaskGet(uint8_t bVolNum, uint32_t *pulEventMask)
+REDSTATUS RedFseTransMaskGet(
+    uint8_t     bVolNum,
+    uint32_t   *pulEventMask)
 {
-    REDSTATUS ret;
+    REDSTATUS   ret;
 
     ret = FseEnter(bVolNum);
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         ret = RedCoreTransMaskGet(pulEventMask);
 
         FseLeave();
@@ -526,6 +590,7 @@ REDSTATUS RedFseTransMaskGet(uint8_t bVolNum, uint32_t *pulEventMask)
     return ret;
 }
 #endif
+
 
 #if REDCONF_READ_ONLY == 0
 /** @brief Commit a transaction point.
@@ -547,13 +612,15 @@ REDSTATUS RedFseTransMaskGet(uint8_t bVolNum, uint32_t *pulEventMask)
     @retval -RED_EIO    A disk I/O error occurred.
     @retval -RED_EROFS  The file system volume is read-only.
 */
-REDSTATUS RedFseTransact(uint8_t bVolNum)
+REDSTATUS RedFseTransact(
+    uint8_t     bVolNum)
 {
-    REDSTATUS ret;
+    REDSTATUS   ret;
 
     ret = FseEnter(bVolNum);
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         ret = RedCoreVolTransact();
 
         FseLeave();
@@ -575,31 +642,37 @@ REDSTATUS RedFseTransact(uint8_t bVolNum)
     @retval -RED_EINVAL The file system driver is uninitialized; or @p bVolNum
                         is not a valid volume number.
 */
-static REDSTATUS FseEnter(uint8_t bVolNum)
+static REDSTATUS FseEnter(
+    uint8_t   bVolNum)
 {
     REDSTATUS ret;
 
-    if (gfFseInited) {
-#if REDCONF_TASK_COUNT > 1U
+    if(gfFseInited)
+    {
+      #if REDCONF_TASK_COUNT > 1U
         RedOsMutexAcquire();
-#endif
+      #endif
 
         /*  This also serves to range-check the volume number (even in single
             volume configurations).
         */
         ret = RedCoreVolSetCurrent(bVolNum);
 
-#if REDCONF_TASK_COUNT > 1U
-        if (ret != 0) {
+      #if REDCONF_TASK_COUNT > 1U
+        if(ret != 0)
+        {
             RedOsMutexRelease();
         }
-#endif
-    } else {
+      #endif
+    }
+    else
+    {
         ret = -RED_EINVAL;
     }
 
     return ret;
 }
+
 
 /** @brief Leave the file system driver.
 */
@@ -607,9 +680,11 @@ static void FseLeave(void)
 {
     REDASSERT(gfFseInited);
 
-#if REDCONF_TASK_COUNT > 1U
+  #if REDCONF_TASK_COUNT > 1U
     RedOsMutexRelease();
-#endif
+  #endif
 }
 
+
 #endif /* REDCONF_API_FSE == 1 */
+

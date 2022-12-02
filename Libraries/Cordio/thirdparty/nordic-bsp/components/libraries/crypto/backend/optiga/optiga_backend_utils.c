@@ -38,6 +38,7 @@
  *
  */
 
+
 #include <string.h>
 #include "optiga_backend_utils.h"
 #include "nrf_crypto_error.h"
@@ -53,27 +54,35 @@
  *
  * @returns NRF_SUCCESS on success, otherwise NRF_ERROR_CRYPTO_INTERNAL.
  */
-ret_code_t asn1_to_ecdsa_rs(uint8_t const *p_asn1, size_t asn1_len, uint8_t *p_rs, size_t *p_rs_len)
+ret_code_t asn1_to_ecdsa_rs(uint8_t const * p_asn1,
+                            size_t          asn1_len,
+                            uint8_t       * p_rs,
+                            size_t        * p_rs_len)
 {
-    uint8_t const *p_cur = p_asn1;
-    uint8_t const *p_end = p_asn1 + asn1_len; // Points to first invalid mem-location
-    uint8_t r_len;
-    uint8_t s_len;
 
-    if (p_asn1 == NULL || p_rs == NULL || p_rs_len == NULL) {
+    uint8_t const * p_cur = p_asn1;
+    uint8_t const * p_end = p_asn1 + asn1_len; // Points to first invalid mem-location
+    uint8_t         r_len;
+    uint8_t         s_len;
+
+    if (p_asn1 == NULL || p_rs == NULL || p_rs_len == NULL)
+    {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
-    if (asn1_len == 0 || *p_rs_len == 0) {
+    if (asn1_len == 0 || *p_rs_len == 0)
+    {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
-    if (*p_cur != DER_TAG_INTEGER) {
+    if (*p_cur != DER_TAG_INTEGER)
+    {
         // Wrong tag type
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
-    if ((p_cur + 2) >= p_end) {
+    if ((p_cur + 2) >= p_end)
+    {
         // Prevented out-of-bounds read
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -82,7 +91,8 @@ ret_code_t asn1_to_ecdsa_rs(uint8_t const *p_asn1, size_t asn1_len, uint8_t *p_r
     p_cur++;
     r_len = *p_cur;
 
-    if (r_len > DER_INTEGER_MAX_LEN) {
+    if (r_len > DER_INTEGER_MAX_LEN)
+    {
         // Unsupported length
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -91,19 +101,22 @@ ret_code_t asn1_to_ecdsa_rs(uint8_t const *p_asn1, size_t asn1_len, uint8_t *p_r
     p_cur++;
 
     // Check for stuffing bits
-    if (*p_cur == 0x00) {
+    if (*p_cur == 0x00)
+    {
         p_cur++;
         r_len--;
     }
 
     // Check for out-of-bounds read
-    if ((p_cur + r_len) >= p_end) {
+    if ((p_cur + r_len) >= p_end)
+    {
         // prevented out-of-bounds read
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
     // Check for out-of-bounds write
-    if ((p_rs + r_len) > (p_rs + *p_rs_len)) {
+    if ((p_rs + r_len) > (p_rs + *p_rs_len))
+    {
         // prevented out-of-bounds write
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -114,37 +127,43 @@ ret_code_t asn1_to_ecdsa_rs(uint8_t const *p_asn1, size_t asn1_len, uint8_t *p_r
     // Move to next tag
     p_cur += r_len;
 
-    if (*p_cur != DER_TAG_INTEGER) {
+    if (*p_cur != DER_TAG_INTEGER)
+    {
         // Wrong tag type
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
-    if ((p_cur + 2) >= p_end) {
+    if ((p_cur + 2) >= p_end)
+    {
         // Prevented out-of-bounds read
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     p_cur++;
     s_len = *p_cur;
 
-    if (s_len > DER_INTEGER_MAX_LEN) {
+    if (s_len > DER_INTEGER_MAX_LEN)
+    {
         // Unsupported length
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     p_cur++;
 
-    if (*p_cur == 0x00) {
+    if (*p_cur == 0x00)
+    {
         p_cur++;
         s_len--;
     }
 
     // Check for out-of-bounds read
-    if ((p_cur + s_len) > p_end) {
+    if ((p_cur + s_len) > p_end)
+    {
         // prevented out-of-bounds read
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
     // Check for out-of-bounds write
-    if ((p_rs + r_len + s_len) > (p_rs + *p_rs_len)) {
+    if ((p_rs + r_len + s_len) > (p_rs + *p_rs_len))
+    {
         // Prevented out-of-bounds write
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -155,6 +174,7 @@ ret_code_t asn1_to_ecdsa_rs(uint8_t const *p_asn1, size_t asn1_len, uint8_t *p_r
 
     return NRF_SUCCESS;
 }
+
 
 /**
  * @brief Encodes the ECDSA signature components (r, s) in ASN.1 format.
@@ -170,22 +190,29 @@ ret_code_t asn1_to_ecdsa_rs(uint8_t const *p_asn1, size_t asn1_len, uint8_t *p_r
  *
  * @returns     True on success, otherwise false.
  */
-bool ecdsa_rs_to_asn1(uint8_t const *p_r, size_t r_len, uint8_t const *p_s, size_t s_len,
-                      uint8_t *p_asn_sig, size_t *p_asn_sig_len)
+bool ecdsa_rs_to_asn1(uint8_t const * p_r,
+                      size_t          r_len,
+                      uint8_t const * p_s,
+                      size_t          s_len,
+                      uint8_t       * p_asn_sig,
+                      size_t        * p_asn_sig_len)
 {
     size_t index = 0;
     // NULL checks
-    if (p_r == NULL || p_s == NULL || p_asn_sig_len == NULL) {
+    if (p_r == NULL || p_s == NULL || p_asn_sig_len == NULL)
+    {
         return false;
     }
 
-    if (r_len == 0 || r_len > DER_INTEGER_MAX_LEN || s_len == 0 || s_len > DER_INTEGER_MAX_LEN) {
+    if (r_len == 0 || r_len > DER_INTEGER_MAX_LEN || s_len == 0 || s_len > DER_INTEGER_MAX_LEN)
+    {
         return false;
     }
 
-    if (*p_asn_sig_len < (r_len + s_len + DER_OVERHEAD)) {
-        // Not enough space in output buffer
-        return false;
+    if (*p_asn_sig_len < (r_len + s_len + DER_OVERHEAD))
+    {
+    	// Not enough space in output buffer
+    	return false;
     }
 
     // R component
@@ -197,12 +224,13 @@ bool ecdsa_rs_to_asn1(uint8_t const *p_r, size_t r_len, uint8_t const *p_s, size
     p_asn_sig[index] = r_len;
 
     // check if extra byte needed
-    if (p_r[0] & 0x80) {
+    if (p_r[0] & 0x80)
+    {
         // Update length value
         p_asn_sig[index] += 1;
         index++;
         // Insert zero byte for padding
-        p_asn_sig[index] = 0;
+        p_asn_sig[index] =  0;
     }
 
     index++;
@@ -217,12 +245,13 @@ bool ecdsa_rs_to_asn1(uint8_t const *p_r, size_t r_len, uint8_t const *p_s, size
     // Set length
     p_asn_sig[index] = s_len;
 
-    if (p_s[0] & 0x80) {
+    if (p_s[0] & 0x80)
+    {
         // Update length value
         p_asn_sig[index] += 1;
         index++;
         // Insert zero byte for padding
-        p_asn_sig[index] = 0;
+        p_asn_sig[index] =  0;
     }
 
     index++;

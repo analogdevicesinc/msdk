@@ -59,62 +59,85 @@
 #include "mbedtls/ecp.h"
 /*lint -restore*/
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
 /** @internal @brief Common structure holding private key for mbed TLS.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    mbedtls_mpi key; /**< @internal @brief mbed TLS specific key representation */
+    mbedtls_mpi key;                             /**< @internal @brief mbed TLS specific key representation */
 } nrf_crypto_backend_mbedtls_ecc_private_key_t;
+
 
 /** @internal @brief Common structure holding public key for mbed TLS.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    mbedtls_ecp_point key; /**< @internal @brief mbed TLS specific key representation */
+    mbedtls_ecp_point key;                       /**< @internal @brief mbed TLS specific key representation */
 } nrf_crypto_backend_mbedtls_ecc_public_key_t;
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_key_pair_generate_fn_t.
  */
-ret_code_t nrf_crypto_backend_mbedtls_key_pair_generate(void *p_context, void *p_private_key,
-                                                        void *p_public_key);
+ret_code_t nrf_crypto_backend_mbedtls_key_pair_generate(
+    void * p_context,
+    void * p_private_key,
+    void * p_public_key);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_calculate_fn_t.
 */
-ret_code_t nrf_crypto_backend_mbedtls_public_key_calculate(void *p_context,
-                                                           void const *p_private_key,
-                                                           void *p_public_key);
+ret_code_t nrf_crypto_backend_mbedtls_public_key_calculate(
+    void       * p_context,
+    void const * p_private_key,
+    void       * p_public_key);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_private_key_from_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_mbedtls_private_key_from_raw(void *p_private_key,
-                                                           uint8_t const *p_raw_data);
+ret_code_t nrf_crypto_backend_mbedtls_private_key_from_raw(
+    void          * p_private_key,
+    uint8_t const * p_raw_data);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_private_key_to_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_mbedtls_private_key_to_raw(void const *p_private_key,
-                                                         uint8_t *p_raw_data);
+ret_code_t nrf_crypto_backend_mbedtls_private_key_to_raw(
+    void    const * p_private_key,
+    uint8_t       * p_raw_data);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_from_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_mbedtls_public_key_from_raw(void *p_public_key,
-                                                          uint8_t const *p_raw_data);
+ret_code_t nrf_crypto_backend_mbedtls_public_key_from_raw(
+    void          * p_public_key,
+    uint8_t const * p_raw_data);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_to_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_mbedtls_public_key_to_raw(void const *p_public_key,
-                                                        uint8_t *p_raw_data);
+ret_code_t nrf_crypto_backend_mbedtls_public_key_to_raw(
+    void const * p_public_key,
+    uint8_t    * p_raw_data);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_key_free_fn_t.
 */
-ret_code_t nrf_crypto_backend_mbedtls_private_key_free(void *p_private_key);
+ret_code_t nrf_crypto_backend_mbedtls_private_key_free(
+    void * p_private_key);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_key_free_fn_t.
 */
-ret_code_t nrf_crypto_backend_mbedtls_public_key_free(void *p_public_key);
+ret_code_t nrf_crypto_backend_mbedtls_public_key_free(
+    void * p_public_key);
+
 
 /** @internal @brief Loads mbed TLS ECC group of specified curve type.
  *
@@ -122,8 +145,10 @@ ret_code_t nrf_crypto_backend_mbedtls_public_key_free(void *p_public_key);
  *  @param[in]  curve_type ECC curve type from enum @ref nrf_crypto_ecc_curve_type_t.
  *  @returns               true on success, false if curve is not supported or no found in mbed TLS.
  */
-bool nrf_crypto_backend_mbedtls_ecc_group_load(mbedtls_ecp_group *p_group,
-                                               struct nrf_crypto_ecc_curve_info_s const *p_info);
+bool nrf_crypto_backend_mbedtls_ecc_group_load(
+    mbedtls_ecp_group                        * p_group,
+    struct nrf_crypto_ecc_curve_info_s const * p_info);
+
 
 /** @internal @brief Function that can be used as a parameter to mbed TLS functions requiring random
  *  number generator.
@@ -134,7 +159,8 @@ bool nrf_crypto_backend_mbedtls_ecc_group_load(mbedtls_ecp_group *p_group,
  *  @param[out] p_data    Pointer where to put random number.
  *  @returns              0 on success, mbed TLS error code on error.
  */
-int nrf_crypto_backend_mbedtls_ecc_mbedtls_rng(void *p_param, unsigned char *p_data, size_t size);
+int nrf_crypto_backend_mbedtls_ecc_mbedtls_rng(void * p_param, unsigned char * p_data, size_t size);
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP192R1)
 
@@ -144,29 +170,26 @@ int nrf_crypto_backend_mbedtls_ecc_mbedtls_rng(void *p_param, unsigned char *p_d
 #define NRF_CRYPTO_ECC_SECP192R1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_secp192r1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_secp192r1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_secp192r1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_secp192r1_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_secp192r1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_secp192r1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_secp192r1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_secp192r1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_secp192r1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_secp192r1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_secp192r1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_secp192r1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_secp192r1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_secp192r1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_secp192r1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_secp192r1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_SECP192R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP192R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_SECP192R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_secp192r1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_secp192r1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_secp192r1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_secp192r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp192r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP192R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP224R1)
 
@@ -176,29 +199,26 @@ typedef uint32_t nrf_crypto_backend_secp192r1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_SECP224R1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_secp224r1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_secp224r1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_secp224r1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_secp224r1_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_secp224r1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_secp224r1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_secp224r1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_secp224r1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_secp224r1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_secp224r1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_secp224r1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_secp224r1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_secp224r1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_secp224r1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_secp224r1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_secp224r1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_SECP224R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP224R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_SECP224R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_secp224r1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_secp224r1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_secp224r1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_secp224r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp224r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP224R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP256R1)
 
@@ -208,29 +228,26 @@ typedef uint32_t nrf_crypto_backend_secp224r1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_SECP256R1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_secp256r1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_secp256r1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_secp256r1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_secp256r1_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_secp256r1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_secp256r1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_secp256r1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_secp256r1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_secp256r1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_secp256r1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_secp256r1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_secp256r1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_secp256r1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_secp256r1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_secp256r1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_secp256r1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_SECP256R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP256R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_SECP256R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_secp256r1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_secp256r1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_secp256r1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_secp256r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp256r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP256R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP384R1)
 
@@ -240,29 +257,26 @@ typedef uint32_t nrf_crypto_backend_secp256r1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_SECP384R1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_secp384r1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_secp384r1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_secp384r1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_secp384r1_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_secp384r1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_secp384r1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_secp384r1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_secp384r1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_secp384r1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_secp384r1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_secp384r1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_secp384r1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_secp384r1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_secp384r1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_secp384r1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_secp384r1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_SECP384R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP384R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_SECP384R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_secp384r1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_secp384r1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_secp384r1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_secp384r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp384r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP384R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP521R1)
 
@@ -272,29 +286,26 @@ typedef uint32_t nrf_crypto_backend_secp384r1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_SECP521R1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_secp521r1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_secp521r1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_secp521r1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_secp521r1_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_secp521r1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_secp521r1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_secp521r1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_secp521r1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_secp521r1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_secp521r1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_secp521r1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_secp521r1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_secp521r1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_secp521r1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_secp521r1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_secp521r1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_SECP521R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP521R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_SECP521R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_secp521r1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_secp521r1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_secp521r1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_secp521r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp521r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP521R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP192K1)
 
@@ -304,29 +315,26 @@ typedef uint32_t nrf_crypto_backend_secp521r1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_SECP192K1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_secp192k1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_secp192k1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_secp192k1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_secp192k1_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_secp192k1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_secp192k1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_secp192k1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_secp192k1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_secp192k1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_secp192k1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_secp192k1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_secp192k1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_secp192k1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_secp192k1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_secp192k1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_secp192k1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_SECP192K1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP192K1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_SECP192K1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_secp192k1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_secp192k1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_secp192k1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_secp192k1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp192k1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP192K1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP224K1)
 
@@ -336,29 +344,26 @@ typedef uint32_t nrf_crypto_backend_secp192k1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_SECP224K1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_secp224k1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_secp224k1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_secp224k1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_secp224k1_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_secp224k1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_secp224k1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_secp224k1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_secp224k1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_secp224k1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_secp224k1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_secp224k1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_secp224k1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_secp224k1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_secp224k1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_secp224k1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_secp224k1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_SECP224K1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP224K1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_SECP224K1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_secp224k1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_secp224k1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_secp224k1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_secp224k1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp224k1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP224K1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP256K1)
 
@@ -368,29 +373,26 @@ typedef uint32_t nrf_crypto_backend_secp224k1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_SECP256K1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_secp256k1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_secp256k1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_secp256k1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_secp256k1_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_secp256k1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_secp256k1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_secp256k1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_secp256k1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_secp256k1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_secp256k1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_secp256k1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_secp256k1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_secp256k1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_secp256k1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_secp256k1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_secp256k1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_SECP256K1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP256K1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_SECP256K1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_secp256k1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_secp256k1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_secp256k1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_secp256k1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp256k1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP256K1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP256R1)
 
@@ -400,28 +402,26 @@ typedef uint32_t nrf_crypto_backend_secp256k1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_BP256R1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_bp256r1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_bp256r1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_bp256r1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_bp256r1_private_key_to_raw nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_bp256r1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_bp256r1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_bp256r1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_bp256r1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_bp256r1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_bp256r1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_bp256r1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_bp256r1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_bp256r1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_bp256r1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_bp256r1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_bp256r1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_BP256R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_BP256R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_BP256R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_bp256r1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_bp256r1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_bp256r1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_bp256r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_bp256r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP256R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP384R1)
 
@@ -431,28 +431,26 @@ typedef uint32_t nrf_crypto_backend_bp256r1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_BP384R1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_bp384r1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_bp384r1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_bp384r1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_bp384r1_private_key_to_raw nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_bp384r1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_bp384r1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_bp384r1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_bp384r1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_bp384r1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_bp384r1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_bp384r1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_bp384r1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_bp384r1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_bp384r1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_bp384r1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_bp384r1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_BP384R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_BP384R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_BP384R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_bp384r1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_bp384r1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_bp384r1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_bp384r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_bp384r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP384R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP512R1)
 
@@ -462,28 +460,26 @@ typedef uint32_t nrf_crypto_backend_bp384r1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_BP512R1_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_bp512r1_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_bp512r1_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_bp512r1_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_bp512r1_private_key_to_raw nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_bp512r1_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_bp512r1_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_bp512r1_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_bp512r1_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_bp512r1_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_bp512r1_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_bp512r1_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_bp512r1_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_bp512r1_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_bp512r1_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_bp512r1_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_bp512r1_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_BP512R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_BP512R1_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_BP512R1_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_bp512r1_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_bp512r1_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_bp512r1_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_bp512r1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_bp512r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP512R1)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_CURVE25519)
 
@@ -493,29 +489,26 @@ typedef uint32_t nrf_crypto_backend_bp512r1_public_key_calculate_context_t;
 #define NRF_CRYPTO_ECC_CURVE25519_ENABLED 1
 
 // Aliases for one common MBEDTLS implementation
-#define nrf_crypto_backend_curve25519_key_pair_generate nrf_crypto_backend_mbedtls_key_pair_generate
-#define nrf_crypto_backend_curve25519_public_key_calculate \
-    nrf_crypto_backend_mbedtls_public_key_calculate
-#define nrf_crypto_backend_curve25519_private_key_from_raw \
-    nrf_crypto_backend_mbedtls_private_key_from_raw
-#define nrf_crypto_backend_curve25519_private_key_to_raw \
-    nrf_crypto_backend_mbedtls_private_key_to_raw
-#define nrf_crypto_backend_curve25519_public_key_from_raw \
-    nrf_crypto_backend_mbedtls_public_key_from_raw
-#define nrf_crypto_backend_curve25519_public_key_to_raw nrf_crypto_backend_mbedtls_public_key_to_raw
-#define nrf_crypto_backend_curve25519_private_key_free nrf_crypto_backend_mbedtls_private_key_free
-#define nrf_crypto_backend_curve25519_public_key_free nrf_crypto_backend_mbedtls_public_key_free
+#define nrf_crypto_backend_curve25519_key_pair_generate    nrf_crypto_backend_mbedtls_key_pair_generate
+#define nrf_crypto_backend_curve25519_public_key_calculate nrf_crypto_backend_mbedtls_public_key_calculate
+#define nrf_crypto_backend_curve25519_private_key_from_raw nrf_crypto_backend_mbedtls_private_key_from_raw
+#define nrf_crypto_backend_curve25519_private_key_to_raw   nrf_crypto_backend_mbedtls_private_key_to_raw
+#define nrf_crypto_backend_curve25519_public_key_from_raw  nrf_crypto_backend_mbedtls_public_key_from_raw
+#define nrf_crypto_backend_curve25519_public_key_to_raw    nrf_crypto_backend_mbedtls_public_key_to_raw
+#define nrf_crypto_backend_curve25519_private_key_free     nrf_crypto_backend_mbedtls_private_key_free
+#define nrf_crypto_backend_curve25519_public_key_free      nrf_crypto_backend_mbedtls_public_key_free
 // mbed TLS does not require context, so its size is 0.
-#define NRF_CRYPTO_BACKEND_CURVE25519_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_CURVE25519_KEY_PAIR_GENERATE_CONTEXT_SIZE    0
 #define NRF_CRYPTO_BACKEND_CURVE25519_PUBLIC_KEY_CALCULATE_CONTEXT_SIZE 0
 // All MBEDTLS curve types share the same data structures
 typedef nrf_crypto_backend_mbedtls_ecc_private_key_t nrf_crypto_backend_curve25519_private_key_t;
-typedef nrf_crypto_backend_mbedtls_ecc_public_key_t nrf_crypto_backend_curve25519_public_key_t;
+typedef nrf_crypto_backend_mbedtls_ecc_public_key_t  nrf_crypto_backend_curve25519_public_key_t;
 // Dummy typedef for unused context
 typedef uint32_t nrf_crypto_backend_curve25519_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_curve25519_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_CURVE25519)
+
 
 #ifdef __cplusplus
 }

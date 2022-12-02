@@ -55,25 +55,30 @@
 #include "nrf_cc310_bl_ecdsa_verify_secp256r1.h"
 #endif
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
 /** @internal @brief Common structure holding context for ECDSA verify.
  */
-typedef struct {
-    nrf_cc310_bl_ecdsa_verify_context_secp224r1_t
-        user_context; /**< @internal @brief Temporary buffer for CC310_BL internal storage */
+typedef struct
+{
+    nrf_cc310_bl_ecdsa_verify_context_secp224r1_t user_context;          /**< @internal @brief Temporary buffer for CC310_BL internal storage */
 } nrf_crypto_backend_secp224r1_verify_context_t;
 
 #define NRF_CRYPTO_BACKEND_SECP224R1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_secp224r1_verify_context_t)
 
-ret_code_t nrf_crypto_backend_secp224r1_verify(void *p_context, void const *p_public_key,
-                                               uint8_t const *p_data, size_t data_size,
-                                               uint8_t const *p_signature);
+ret_code_t nrf_crypto_backend_secp224r1_verify(
+    void           * p_context,
+    void     const * p_public_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t  const * p_signature);
 
 // Dummy and empty definitions for unused symbols
 #define NRF_CRYPTO_BACKEND_SECP224R1_SIGN_CONTEXT_SIZE 0
@@ -82,21 +87,25 @@ typedef uint32_t nrf_crypto_backend_secp224r1_sign_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
 
 /** @internal @brief Common structure holding context for ECDSA verify.
  */
-typedef struct {
-    nrf_cc310_bl_ecdsa_verify_context_secp256r1_t
-        user_context; /**< @internal @brief Temporary buffer for CC310_BL internal storage */
+typedef struct
+{
+    nrf_cc310_bl_ecdsa_verify_context_secp256r1_t user_context;          /**< @internal @brief Temporary buffer for CC310_BL internal storage */
 } nrf_crypto_backend_secp256r1_verify_context_t;
 
 #define NRF_CRYPTO_BACKEND_SECP256R1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_secp256r1_verify_context_t)
 
-ret_code_t nrf_crypto_backend_secp256r1_verify(void *p_context, void const *p_public_key,
-                                               uint8_t const *p_data, size_t data_size,
-                                               uint8_t const *p_signature);
+ret_code_t nrf_crypto_backend_secp256r1_verify(
+    void           * p_context,
+    void     const * p_public_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t  const * p_signature);
 
 // Dummy and empty definitions for unused symbols
 #define NRF_CRYPTO_BACKEND_SECP256R1_SIGN_CONTEXT_SIZE 0
@@ -104,6 +113,7 @@ typedef uint32_t nrf_crypto_backend_secp256r1_sign_context_t;
 #define nrf_crypto_backend_secp256r1_sign NULL
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
+
 
 #ifdef __cplusplus
 }

@@ -47,6 +47,7 @@ extern "C" {
 #define SDIO_CONFIG_CLOCK_PIN_NUMBER 24
 #define SDIO_CONFIG_DATA_PIN_NUMBER 25
 
+
 #ifdef __cplusplus
 }
 #endif

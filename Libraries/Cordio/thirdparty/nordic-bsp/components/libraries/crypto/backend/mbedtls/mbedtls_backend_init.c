@@ -51,28 +51,33 @@
 #include "mbedtls/platform.h"
 /*lint -restore*/
 
+
 #if NRF_CRYPTO_ALLOC_ON_STACK
 #error "MBED TLS backend does not support memory allocation on stack. Use different allocator."
 #endif
 
+
 /** @internal @brief Function to use NRF_CRYPTO_ALLOC for MBED TLS memory allocation.
  */
-static void *mbedtls_backend_calloc(size_t count, size_t size)
+static void * mbedtls_backend_calloc(size_t count, size_t size)
 {
     size_t total_size = count * size;
-    void *p_data = NRF_CRYPTO_ALLOC(total_size);
-    if (p_data != NULL) {
+    void * p_data = NRF_CRYPTO_ALLOC(total_size);
+    if (p_data != NULL)
+    {
         memset(p_data, 0, total_size);
     }
     return p_data;
 }
 
+
 /** @internal @brief Function to use NRF_CRYPTO_FREE for MBED TLS memory deallocation.
  */
-static void mbedtls_backend_free(void *p_data)
+static void mbedtls_backend_free(void * p_data)
 {
     NRF_CRYPTO_FREE(p_data);
 }
+
 
 /** @internal @brief Function to initialize MBED TLS backend - setup memory management for.
  */
@@ -82,6 +87,7 @@ static ret_code_t mbedtls_backend_init(void)
     return NRF_SUCCESS;
 }
 
+
 /** @internal @brief Function to uninitialize MBED TLS backend - currently no implementation is required.
  */
 static ret_code_t mbedtls_backend_uninit(void)
@@ -90,9 +96,11 @@ static ret_code_t mbedtls_backend_uninit(void)
     return NRF_SUCCESS;
 }
 
-CRYPTO_BACKEND_REGISTER(nrf_crypto_backend_info_t const mbedtls_backend) = {
-    .init_fn = mbedtls_backend_init,
-    .uninit_fn = mbedtls_backend_uninit,
+
+CRYPTO_BACKEND_REGISTER(nrf_crypto_backend_info_t const mbedtls_backend) =
+{
+    .init_fn    = mbedtls_backend_init,
+    .uninit_fn  = mbedtls_backend_uninit,
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS)

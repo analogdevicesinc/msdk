@@ -52,51 +52,51 @@
 /*************************************************************************************************/
 void StackInitWatch(void)
 {
-    wsfHandlerId_t handlerId;
+  wsfHandlerId_t handlerId;
 
-    SecInit();
-    SecAesInit();
-    SecCmacInit();
-    SecEccInit();
+  SecInit();
+  SecAesInit();
+  SecCmacInit();
+  SecEccInit();
 
-    handlerId = WsfOsSetNextHandler(HciHandler);
-    HciHandlerInit(handlerId);
+  handlerId = WsfOsSetNextHandler(HciHandler);
+  HciHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(DmHandler);
-    DmDevVsInit(0);
-    DmConnInit();
-    DmAdvInit();
-    DmConnMasterInit();
-    DmConnSlaveInit();
-    DmScanInit();
-    DmSecInit();
-    DmSecLescInit();
-    DmPrivInit();
-    DmHandlerInit(handlerId);
+  handlerId = WsfOsSetNextHandler(DmHandler);
+  DmDevVsInit(0);
+  DmConnInit();
+  DmAdvInit();
+  DmConnMasterInit();
+  DmConnSlaveInit();
+  DmScanInit();
+  DmSecInit();
+  DmSecLescInit();
+  DmPrivInit();
+  DmHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
-    L2cSlaveHandlerInit(handlerId);
-    L2cInit();
-    L2cMasterInit();
-    L2cSlaveInit();
+  handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
+  L2cSlaveHandlerInit(handlerId);
+  L2cInit();
+  L2cMasterInit();
+  L2cSlaveInit();
 
-    handlerId = WsfOsSetNextHandler(AttHandler);
-    AttHandlerInit(handlerId);
-    AttsInit();
-    AttsIndInit();
-    AttcInit();
+  handlerId = WsfOsSetNextHandler(AttHandler);
+  AttHandlerInit(handlerId);
+  AttsInit();
+  AttsIndInit();
+  AttcInit();
 
-    handlerId = WsfOsSetNextHandler(SmpHandler);
-    SmpHandlerInit(handlerId);
-    SmpiInit();
-    SmprInit();
-    SmpiScInit();
-    SmprScInit();
-    HciSetMaxRxAclLen(100);
+  handlerId = WsfOsSetNextHandler(SmpHandler);
+  SmpHandlerInit(handlerId);
+  SmpiInit();
+  SmprInit();
+  SmpiScInit();
+  SmprScInit();
+  HciSetMaxRxAclLen(100);
 
-    handlerId = WsfOsSetNextHandler(AppHandler);
-    AppHandlerInit(handlerId);
+  handlerId = WsfOsSetNextHandler(AppHandler);
+  AppHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(WatchHandler);
-    WatchHandlerInit(handlerId);
+  handlerId = WsfOsSetNextHandler(WatchHandler);
+  WatchHandlerInit(handlerId);
 }

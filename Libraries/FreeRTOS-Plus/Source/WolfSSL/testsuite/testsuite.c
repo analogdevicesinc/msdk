@@ -20,7 +20,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+    #include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
@@ -39,29 +39,34 @@
 #include "examples/server/server.h"
 #include "examples/client/client.h"
 
-void file_test(const char *file, byte *hash);
 
-void simple_test(func_args *);
+void file_test(const char* file, byte* hash);
 
-enum { NUMARGS = 3 };
+void simple_test(func_args*);
+
+enum {
+    NUMARGS = 3
+};
 
 static const char *outputName;
 
 int myoptind = 0;
-char *myoptarg = NULL;
+char* myoptarg = NULL;
+
 
 #ifndef NO_TESTSUITE_MAIN_DRIVER
 
-static int testsuite_test(int argc, char **argv);
+    static int testsuite_test(int argc, char** argv);
 
-int main(int argc, char **argv)
-{
-    return testsuite_test(argc, argv);
-}
+    int main(int argc, char** argv)
+    {
+        return testsuite_test(argc, argv);
+    }
 
 #endif /* NO_TESTSUITE_MAIN_DRIVER */
 
-int testsuite_test(int argc, char **argv)
+
+int testsuite_test(int argc, char** argv)
 {
     func_args server_args;
 
@@ -79,9 +84,9 @@ int testsuite_test(int argc, char **argv)
 #endif
 
 #ifdef HAVE_CAVIUM
-    int ret = OpenNitroxDevice(CAVIUM_DIRECT, CAVIUM_DEV_ID);
-    if (ret != 0)
-        err_sys("Cavium OpenNitroxDevice failed");
+        int ret = OpenNitroxDevice(CAVIUM_DIRECT, CAVIUM_DEV_ID);
+        if (ret != 0)
+            err_sys("Cavium OpenNitroxDevice failed");
 #endif /* HAVE_CAVIUM */
 
     StartTCP();
@@ -98,10 +103,10 @@ int testsuite_test(int argc, char **argv)
     if (CurrentDir("testsuite") || CurrentDir("_build"))
         ChangeDirBack(1);
     else if (CurrentDir("Debug") || CurrentDir("Release"))
-        ChangeDirBack(3); /* Xcode->Preferences->Locations->Locations*/
-        /* Derived Data Advanced -> Custom  */
-        /* Relative to Workspace, Build/Products */
-        /* Debug or Release */
+        ChangeDirBack(3);          /* Xcode->Preferences->Locations->Locations*/
+                                   /* Derived Data Advanced -> Custom  */
+                                   /* Relative to Workspace, Build/Products */
+                                   /* Debug or Release */
 #endif
 
 #ifdef WOLFSSL_TIRTOS
@@ -113,20 +118,18 @@ int testsuite_test(int argc, char **argv)
 
     /* wc_ test */
     wolfcrypt_test(&server_args);
-    if (server_args.return_code != 0)
-        return server_args.return_code;
-
+    if (server_args.return_code != 0) return server_args.return_code;
+ 
     /* Simple wolfSSL client server test */
     simple_test(&server_args);
-    if (server_args.return_code != 0)
-        return server_args.return_code;
+    if (server_args.return_code != 0) return server_args.return_code;
 
     /* Echo input wolfSSL client server test */
     start_thread(echoserver_test, &server_args, &serverThread);
     wait_tcp_ready(&server_args);
     {
         func_args echo_args;
-        char *myArgv[NUMARGS];
+        char* myArgv[NUMARGS];
 
         char argc0[32];
         char argc1[32];
@@ -155,8 +158,7 @@ int testsuite_test(int argc, char **argv)
 
         /* make sure OK */
         echoclient_test(&echo_args);
-        if (echo_args.return_code != 0)
-            return echo_args.return_code;
+        if (echo_args.return_code != 0) return echo_args.return_code;
 
 #ifdef WOLFSSL_DTLS
         wait_tcp_ready(&server_args);
@@ -166,18 +168,16 @@ int testsuite_test(int argc, char **argv)
         strcpy(echo_args.argv[1], "quit");
 
         echoclient_test(&echo_args);
-        if (echo_args.return_code != 0)
-            return echo_args.return_code;
+        if (echo_args.return_code != 0) return echo_args.return_code;
         join_thread(serverThread);
-        if (server_args.return_code != 0)
-            return server_args.return_code;
+        if (server_args.return_code != 0) return server_args.return_code;
     }
 
     /* show ciphers */
     {
         char ciphers[1024];
         XMEMSET(ciphers, 0, sizeof(ciphers));
-        wolfSSL_get_ciphers(ciphers, sizeof(ciphers) - 1);
+        wolfSSL_get_ciphers(ciphers, sizeof(ciphers)-1);
         printf("ciphers = %s\n", ciphers);
     }
 
@@ -186,7 +186,7 @@ int testsuite_test(int argc, char **argv)
         byte input[SHA256_DIGEST_SIZE];
         byte output[SHA256_DIGEST_SIZE];
 
-        file_test("input", input);
+        file_test("input",  input);
         file_test(outputName, output);
         remove(outputName);
         if (memcmp(input, output, sizeof(input)) != 0)
@@ -201,13 +201,13 @@ int testsuite_test(int argc, char **argv)
 #endif
 
 #ifdef HAVE_CAVIUM
-    CspShutdown(CAVIUM_DEV_ID);
+        CspShutdown(CAVIUM_DEV_ID);
 #endif
     printf("\nAll tests passed!\n");
     return EXIT_SUCCESS;
 }
 
-void simple_test(func_args *args)
+void simple_test(func_args* args)
 {
     THREAD_TYPE serverThread;
 
@@ -250,18 +250,19 @@ void simple_test(func_args *args)
     cliArgs.return_code = 0;
 
     strcpy(svrArgs.argv[0], "SimpleServer");
-#if !defined(USE_WINDOWS_API) && !defined(WOLFSSL_SNIFFER) && !defined(WOLFSSL_TIRTOS)
-    strcpy(svrArgs.argv[svrArgs.argc++], "-p");
-    strcpy(svrArgs.argv[svrArgs.argc++], "0");
-#endif
-#ifdef HAVE_NTRU
-    strcpy(svrArgs.argv[svrArgs.argc++], "-d");
-    strcpy(svrArgs.argv[svrArgs.argc++], "-n");
-    strcpy(svrArgs.argv[svrArgs.argc++], "-c");
-    strcpy(svrArgs.argv[svrArgs.argc++], "./certs/ntru-cert.pem");
-    strcpy(svrArgs.argv[svrArgs.argc++], "-k");
-    strcpy(svrArgs.argv[svrArgs.argc++], "./certs/ntru-key.raw");
-#endif
+    #if !defined(USE_WINDOWS_API) && !defined(WOLFSSL_SNIFFER)  && \
+                                     !defined(WOLFSSL_TIRTOS)
+        strcpy(svrArgs.argv[svrArgs.argc++], "-p");
+        strcpy(svrArgs.argv[svrArgs.argc++], "0");
+    #endif
+    #ifdef HAVE_NTRU
+        strcpy(svrArgs.argv[svrArgs.argc++], "-d");
+        strcpy(svrArgs.argv[svrArgs.argc++], "-n");
+        strcpy(svrArgs.argv[svrArgs.argc++], "-c");
+        strcpy(svrArgs.argv[svrArgs.argc++], "./certs/ntru-cert.pem");
+        strcpy(svrArgs.argv[svrArgs.argc++], "-k");
+        strcpy(svrArgs.argv[svrArgs.argc++], "./certs/ntru-key.raw");
+    #endif
     /* Set the last arg later, when it is known. */
 
     args->return_code = 0;
@@ -271,11 +272,11 @@ void simple_test(func_args *args)
 
     /* Setting the actual port number. */
     strcpy(cliArgs.argv[0], "SimpleClient");
-#ifndef USE_WINDOWS_API
-    cliArgs.argc = NUMARGS;
-    strcpy(cliArgs.argv[1], "-p");
-    snprintf(cliArgs.argv[2], sizeof(argc2c), "%d", svrArgs.signal->port);
-#endif
+    #ifndef USE_WINDOWS_API
+        cliArgs.argc = NUMARGS;
+        strcpy(cliArgs.argv[1], "-p");
+        snprintf(cliArgs.argv[2], sizeof(argc2c), "%d", svrArgs.signal->port);
+    #endif
 
     client_test(&cliArgs);
     if (cliArgs.return_code != 0) {
@@ -283,11 +284,11 @@ void simple_test(func_args *args)
         return;
     }
     join_thread(serverThread);
-    if (svrArgs.return_code != 0)
-        args->return_code = svrArgs.return_code;
+    if (svrArgs.return_code != 0) args->return_code = svrArgs.return_code;
 }
 
-void wait_tcp_ready(func_args *args)
+
+void wait_tcp_ready(func_args* args)
 {
 #if defined(_POSIX_THREADS) && !defined(__MINGW32__)
     pthread_mutex_lock(&args->signal->mutex);
@@ -302,7 +303,8 @@ void wait_tcp_ready(func_args *args)
 #endif
 }
 
-void start_thread(THREAD_FUNC fun, func_args *args, THREAD_TYPE *thread)
+
+void start_thread(THREAD_FUNC fun, func_args* args, THREAD_TYPE* thread)
 {
 #if defined(_POSIX_THREADS) && !defined(__MINGW32__)
     pthread_create(thread, 0, fun, args);
@@ -323,14 +325,15 @@ void start_thread(THREAD_FUNC fun, func_args *args, THREAD_TYPE *thread)
 #endif
 }
 
+
 void join_thread(THREAD_TYPE thread)
 {
 #if defined(_POSIX_THREADS) && !defined(__MINGW32__)
     pthread_join(thread, 0);
 #elif defined(WOLFSSL_TIRTOS)
-    while (1) {
+    while(1) {
         if (Task_getMode(thread) == Task_Mode_TERMINATED) {
-            Task_sleep(5);
+		    Task_sleep(5);
             break;
         }
         Task_yield();
@@ -343,17 +346,19 @@ void join_thread(THREAD_TYPE thread)
 #endif
 }
 
-void InitTcpReady(tcp_ready *ready)
+
+void InitTcpReady(tcp_ready* ready)
 {
     ready->ready = 0;
     ready->port = 0;
 #if defined(_POSIX_THREADS) && !defined(__MINGW32__)
-    pthread_mutex_init(&ready->mutex, 0);
-    pthread_cond_init(&ready->cond, 0);
+      pthread_mutex_init(&ready->mutex, 0);
+      pthread_cond_init(&ready->cond, 0);
 #endif
 }
 
-void FreeTcpReady(tcp_ready *ready)
+
+void FreeTcpReady(tcp_ready* ready)
 {
 #if defined(_POSIX_THREADS) && !defined(__MINGW32__)
     pthread_mutex_destroy(&ready->mutex);
@@ -363,24 +368,25 @@ void FreeTcpReady(tcp_ready *ready)
 #endif
 }
 
-void file_test(const char *file, byte *check)
+
+void file_test(const char* file, byte* check)
 {
-    FILE *f;
-    int i = 0, j, ret;
-    Sha256 sha256;
-    byte buf[1024];
-    byte shasum[SHA256_DIGEST_SIZE];
+    FILE* f;
+    int   i = 0, j, ret;
+    Sha256   sha256;
+    byte  buf[1024];
+    byte  shasum[SHA256_DIGEST_SIZE];
 
     ret = wc_InitSha256(&sha256);
     if (ret != 0) {
         printf("Can't wc_InitSha256 %d\n", ret);
         return;
     }
-    if (!(f = fopen(file, "rb"))) {
+    if( !( f = fopen( file, "rb" ) )) {
         printf("Can't open %s\n", file);
         return;
     }
-    while ((i = (int)fread(buf, 1, sizeof(buf), f)) > 0) {
+    while( ( i = (int)fread(buf, 1, sizeof(buf), f )) > 0 ) {
         ret = wc_Sha256Update(&sha256, buf, i);
         if (ret != 0) {
             printf("Can't wc_Sha256Update %d\n", ret);
@@ -396,19 +402,23 @@ void file_test(const char *file, byte *check)
 
     memcpy(check, shasum, sizeof(shasum));
 
-    for (j = 0; j < SHA256_DIGEST_SIZE; ++j) printf("%02x", shasum[j]);
+    for(j = 0; j < SHA256_DIGEST_SIZE; ++j )
+        printf( "%02x", shasum[j] );
 
     printf("  %s\n", file);
 
     fclose(f);
 }
 
+
 #else /* SINGLE_THREADED */
 
-int myoptind = 0;
-char *myoptarg = NULL;
 
-int main(int argc, char **argv)
+int myoptind = 0;
+char* myoptarg = NULL;
+
+
+int main(int argc, char** argv)
 {
     func_args server_args;
 
@@ -418,17 +428,18 @@ int main(int argc, char **argv)
     if (CurrentDir("testsuite") || CurrentDir("_build"))
         ChangeDirBack(1);
     else if (CurrentDir("Debug") || CurrentDir("Release"))
-        ChangeDirBack(3); /* Xcode->Preferences->Locations->Locations*/
-    /* Derived Data Advanced -> Custom  */
-    /* Relative to Workspace, Build/Products */
-    /* Debug or Release */
+        ChangeDirBack(3);          /* Xcode->Preferences->Locations->Locations*/
+                                   /* Derived Data Advanced -> Custom  */
+                                   /* Relative to Workspace, Build/Products */
+                                   /* Debug or Release */
 
     wolfcrypt_test(&server_args);
-    if (server_args.return_code != 0)
-        return server_args.return_code;
+    if (server_args.return_code != 0) return server_args.return_code;
 
     printf("\nAll tests passed!\n");
     return EXIT_SUCCESS;
 }
 
+
 #endif /* SINGLE_THREADED */
+

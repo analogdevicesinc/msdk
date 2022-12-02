@@ -43,19 +43,17 @@
 **************************************************************************************************/
 
 /*! Initializer of a message info for the specified model ID and opcode */
-#define MSG_INFO(modelId, opcode)                                                                  \
-    {                                                                                              \
-        { (meshVendorModelId_t)modelId }, { opcode }, 0xFF, NULL, MESH_ADDR_TYPE_UNASSIGNED, 0xFF, \
-            0xFF                                                                                   \
-    }
+#define MSG_INFO(modelId, opcode) {{(meshVendorModelId_t)modelId }, {opcode},\
+                                    0xFF, NULL, MESH_ADDR_TYPE_UNASSIGNED, 0xFF, 0xFF}
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Vendor Test Client control block type definition */
-typedef struct mmdlVendorTestClCb_tag {
-    mmdlVendorTestClRecvCback_t recvCback; /*!< Model Vendor Test received callback */
+typedef struct mmdlVendorTestClCb_tag
+{
+  mmdlVendorTestClRecvCback_t recvCback;    /*!< Model Vendor Test received callback */
 } mmdlVendorTestClCb_t;
 
 /**************************************************************************************************
@@ -66,8 +64,9 @@ typedef struct mmdlVendorTestClCb_tag {
 wsfHandlerId_t mmdlVendorTestClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlVendorTestClRcvdOpcodes[] = {
-    { { UINT24_OPCODE_TO_BYTES(MMDL_VENDOR_TEST_STATUS_OPCODE) } }
+const meshMsgOpcode_t mmdlVendorTestClRcvdOpcodes[] =
+{
+  { {UINT24_OPCODE_TO_BYTES(MMDL_VENDOR_TEST_STATUS_OPCODE)} }
 };
 
 /**************************************************************************************************
@@ -75,7 +74,7 @@ const meshMsgOpcode_t mmdlVendorTestClRcvdOpcodes[] = {
 **************************************************************************************************/
 
 /*! Vendor Test Client control block */
-static mmdlVendorTestClCb_t vendorTestClCb;
+static mmdlVendorTestClCb_t  vendorTestClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -92,8 +91,8 @@ static mmdlVendorTestClCb_t vendorTestClCb;
 /*************************************************************************************************/
 static void mmdlVendorTestClRecvEmptyCback(const mmdlVendorTestClEvent_t *pEvent)
 {
-    MESH_TRACE_WARN0("VENDOR TEST CL: Receive callback not set!");
-    (void)pEvent;
+  MESH_TRACE_WARN0("VENDOR TEST CL: Receive callback not set!");
+  (void)pEvent;
 }
 
 /*************************************************************************************************/
@@ -107,21 +106,21 @@ static void mmdlVendorTestClRecvEmptyCback(const mmdlVendorTestClEvent_t *pEvent
 /*************************************************************************************************/
 static void mmdlVendorTestClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlVendorTestClStatusEvent_t event;
+  mmdlVendorTestClStatusEvent_t event;
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_VENDOR_TEST_CL_STATUS_EVENT;
-    event.hdr.status = MMDL_VENDOR_TEST_CL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_VENDOR_TEST_CL_STATUS_EVENT;
+  event.hdr.status = MMDL_VENDOR_TEST_CL_SUCCESS;
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
-    event.pMsgParams = pMsg->pMessageParams;
-    event.ttl = pMsg->ttl;
-    event.messageParamsLen = pMsg->messageParamsLen;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
+  event.pMsgParams = pMsg->pMessageParams;
+  event.ttl = pMsg->ttl;
+  event.messageParamsLen = pMsg->messageParamsLen;
 
-    /* Send event to the upper layer */
-    vendorTestClCb.recvCback((mmdlVendorTestClEvent_t *)&event);
+  /* Send event to the upper layer */
+  vendorTestClCb.recvCback((mmdlVendorTestClEvent_t *)&event);
 }
 
 /**************************************************************************************************
@@ -139,11 +138,11 @@ static void mmdlVendorTestClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlVendorTestClHandlerInit(wsfHandlerId_t handlerId)
 {
-    /* Set handler ID */
-    mmdlVendorTestClHandlerId = handlerId;
+  /* Set handler ID */
+  mmdlVendorTestClHandlerId = handlerId;
 
-    /* Initialize control block */
-    vendorTestClCb.recvCback = mmdlVendorTestClRecvEmptyCback;
+  /* Initialize control block */
+  vendorTestClCb.recvCback = mmdlVendorTestClRecvEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -158,23 +157,26 @@ void MmdlVendorTestClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlVendorTestClHandler(wsfMsgHdr_t *pMsg)
 {
-    meshModelMsgRecvEvt_t *pModelMsg;
+  meshModelMsgRecvEvt_t *pModelMsg;
 
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-            /* Process Status message */
-            mmdlVendorTestClHandleStatus(pModelMsg);
-            break;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-        default:
-            MESH_TRACE_WARN0("VENDOR TEST CL: Invalid event message received!");
-            break;
-        }
+        /* Process Status message */
+        mmdlVendorTestClHandleStatus(pModelMsg);
+        break;
+
+      default:
+        MESH_TRACE_WARN0("VENDOR TEST CL: Invalid event message received!");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -188,8 +190,9 @@ void MmdlVendorTestClHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MmdlVendorTestClRegister(mmdlVendorTestClRecvCback_t recvCback)
 {
-    /* Store valid callback*/
-    if (recvCback != NULL) {
-        vendorTestClCb.recvCback = recvCback;
-    }
+  /* Store valid callback*/
+  if (recvCback != NULL)
+  {
+    vendorTestClCb.recvCback = recvCback;
+  }
 }

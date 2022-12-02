@@ -27,7 +27,8 @@
 #define MMDL_GEN_ONOFF_SR_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -83,7 +84,8 @@ void MmdlGenOnOffSrStoreScene(void *pDesc, uint8_t sceneIdx);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenOnOffSrRecallScene(meshElementId_t elementId, uint8_t sceneIdx, uint32_t transitionMs);
+void MmdlGenOnOffSrRecallScene(meshElementId_t elementId, uint8_t sceneIdx,
+                               uint32_t transitionMs);
 
 #ifdef __cplusplus
 }

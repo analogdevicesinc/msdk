@@ -54,7 +54,7 @@ extern "C" {
  *  \param  cs    Critical section variable.
  */
 /*************************************************************************************************/
-#define WSF_CS_ENTER(cs) WsfTaskLock()
+#define WSF_CS_ENTER(cs)        WsfTaskLock()
 
 /*************************************************************************************************/
 /*!
@@ -65,7 +65,7 @@ extern "C" {
  *  \param  cs    Critical section variable.
  */
 /*************************************************************************************************/
-#define WSF_CS_EXIT(cs) WsfTaskUnlock()
+#define WSF_CS_EXIT(cs)        WsfTaskUnlock()
 
 #ifdef __cplusplus
 };

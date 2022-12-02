@@ -59,34 +59,37 @@ extern "C" {
 /**
  * @brief Power mode possible configurations
  */
-typedef enum {
+typedef enum
+{
     NRFX_POWER_MODE_CONSTLAT, /**< Constant latency mode */
-    NRFX_POWER_MODE_LOWPWR /**< Low power mode        */
-} nrfx_power_mode_t;
+    NRFX_POWER_MODE_LOWPWR    /**< Low power mode        */
+}nrfx_power_mode_t;
 
 #if NRF_POWER_HAS_SLEEPEVT || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Events from power system
  */
-typedef enum {
+typedef enum
+{
     NRFX_POWER_SLEEP_EVT_ENTER, /**< CPU entered WFI/WFE sleep
                                  *
                                  * Keep in mind that if this interrupt is enabled,
                                  * it means that CPU was waken up just after WFI by this interrupt.
                                  */
-    NRFX_POWER_SLEEP_EVT_EXIT /**< CPU exited WFI/WFE sleep */
-} nrfx_power_sleep_evt_t;
+    NRFX_POWER_SLEEP_EVT_EXIT   /**< CPU exited WFI/WFE sleep */
+}nrfx_power_sleep_evt_t;
 #endif /* NRF_POWER_HAS_SLEEPEVT */
 
 #if NRF_POWER_HAS_USBREG || defined(__NRFX_DOXYGEN__)
 /**
  * @brief Events from USB power system
  */
-typedef enum {
+typedef enum
+{
     NRFX_POWER_USB_EVT_DETECTED, /**< USB power detected on the connector (plugged in). */
-    NRFX_POWER_USB_EVT_REMOVED, /**< USB power removed from the connector. */
-    NRFX_POWER_USB_EVT_READY /**< USB power regulator ready. */
-} nrfx_power_usb_evt_t;
+    NRFX_POWER_USB_EVT_REMOVED,  /**< USB power removed from the connector. */
+    NRFX_POWER_USB_EVT_READY     /**< USB power regulator ready. */
+}nrfx_power_usb_evt_t;
 
 /**
  * @brief USB power state
@@ -96,11 +99,12 @@ typedef enum {
  *
  * Organized this way that higher power state has higher numeric value
  */
-typedef enum {
+typedef enum
+{
     NRFX_POWER_USB_STATE_DISCONNECTED, /**< No power on USB lines detected. */
-    NRFX_POWER_USB_STATE_CONNECTED, /**< The USB power is detected, but USB power regulator is not ready. */
-    NRFX_POWER_USB_STATE_READY /**< From the power viewpoint, USB is ready for working. */
-} nrfx_power_usb_state_t;
+    NRFX_POWER_USB_STATE_CONNECTED,    /**< The USB power is detected, but USB power regulator is not ready. */
+    NRFX_POWER_USB_STATE_READY         /**< From the power viewpoint, USB is ready for working. */
+}nrfx_power_usb_state_t;
 #endif /* NRF_POWER_HAS_USBREG */
 
 /**
@@ -138,7 +142,8 @@ typedef void (*nrfx_power_usb_event_handler_t)(nrfx_power_usb_evt_t event);
  *
  * Parameters required to initialize power driver.
  */
-typedef struct {
+typedef struct
+{
     /**
      * @brief Enable main DCDC regulator.
      *
@@ -147,7 +152,7 @@ typedef struct {
      * The regulator will be enabled or disabled automatically
      * by the hardware, basing on current power requirement.
      */
-    bool dcdcen : 1;
+    bool dcdcen:1;
 
 #if NRF_POWER_HAS_VDDH || defined(__NRFX_DOXYGEN__)
     /**
@@ -158,24 +163,25 @@ typedef struct {
      * The regulator will be enabled or disabled automatically
      * by the hardware, basing on current power requirement.
      */
-    bool dcdcenhv : 1;
+    bool dcdcenhv: 1;
 #endif
-} nrfx_power_config_t;
+}nrfx_power_config_t;
 
 /**
  * @brief The configuration for power failure comparator.
  *
  * Configuration used to enable and configure the power failure comparator.
  */
-typedef struct {
+typedef struct
+{
     nrfx_power_pofwarn_event_handler_t handler; //!< Event handler.
 #if NRF_POWER_HAS_POFCON || defined(__NRFX_DOXYGEN__)
-    nrf_power_pof_thr_t thr; //!< Threshold for power failure detection
+    nrf_power_pof_thr_t                thr;     //!< Threshold for power failure detection
 #endif
 #if NRF_POWER_HAS_VDDH || defined(__NRFX_DOXYGEN__)
-    nrf_power_pof_thrvddh_t thrvddh; //!< Threshold for power failure detection on the VDDH pin.
+    nrf_power_pof_thrvddh_t            thrvddh; //!< Threshold for power failure detection on the VDDH pin.
 #endif
-} nrfx_power_pofwarn_config_t;
+}nrfx_power_pofwarn_config_t;
 
 #if NRF_POWER_HAS_SLEEPEVT || defined(__NRFX_DOXYGEN__)
 /**
@@ -183,11 +189,12 @@ typedef struct {
  *
  * Configuration used to enable and configure sleep event handling.
  */
-typedef struct {
-    nrfx_power_sleep_event_handler_t handler; //!< Event handler.
-    bool en_enter : 1; //!< Enable event on sleep entering.
-    bool en_exit : 1; //!< Enable event on sleep exiting.
-} nrfx_power_sleepevt_config_t;
+typedef struct
+{
+    nrfx_power_sleep_event_handler_t handler;    //!< Event handler.
+    bool                             en_enter:1; //!< Enable event on sleep entering.
+    bool                             en_exit :1; //!< Enable event on sleep exiting.
+}nrfx_power_sleepevt_config_t;
 #endif
 
 #if NRF_POWER_HAS_USBREG || defined(__NRFX_DOXYGEN__)
@@ -196,9 +203,10 @@ typedef struct {
  *
  * Configuration used to enable and configure USB power event handling.
  */
-typedef struct {
+typedef struct
+{
     nrfx_power_usb_event_handler_t handler; //!< Event processing.
-} nrfx_power_usbevt_config_t;
+}nrfx_power_usbevt_config_t;
 #endif /* NRF_POWER_HAS_USBREG */
 
 /**
@@ -225,7 +233,7 @@ nrfx_power_usb_event_handler_t nrfx_power_usb_handler_get(void);
  * @retval NRFX_SUCCESS                   Successfully initialized.
  * @retval NRFX_ERROR_ALREADY_INITIALIZED Module was already initialized.
  */
-nrfx_err_t nrfx_power_init(nrfx_power_config_t const *p_config);
+nrfx_err_t nrfx_power_init(nrfx_power_config_t const * p_config);
 
 /**
  * @brief Function for unintializing the power module driver.
@@ -247,7 +255,7 @@ void nrfx_power_uninit(void);
  * @param[in] p_config Configuration with values and event handler.
  *                     If event handler is set to NULL, the interrupt will be disabled.
  */
-void nrfx_power_pof_init(nrfx_power_pofwarn_config_t const *p_config);
+void nrfx_power_pof_init(nrfx_power_pofwarn_config_t const * p_config);
 
 /**
  * @brief Function for enabling the power failure comparator.
@@ -257,7 +265,7 @@ void nrfx_power_pof_init(nrfx_power_pofwarn_config_t const *p_config);
  *
  * @param[in] p_config Configuration with values and event handler.
  */
-void nrfx_power_pof_enable(nrfx_power_pofwarn_config_t const *p_config);
+void nrfx_power_pof_enable(nrfx_power_pofwarn_config_t const * p_config);
 
 /**
  * @brief Function for disabling the power failure comparator.
@@ -285,14 +293,14 @@ void nrfx_power_pof_uninit(void);
  * @sa nrfx_power_sleepevt_uninit
  *
  */
-void nrfx_power_sleepevt_init(nrfx_power_sleepevt_config_t const *p_config);
+void nrfx_power_sleepevt_init(nrfx_power_sleepevt_config_t const * p_config);
 
 /**
  * @brief Function for enabling the processing of the sleep events.
  *
  * @param[in] p_config Configuration with values and event handler.
  */
-void nrfx_power_sleepevt_enable(nrfx_power_sleepevt_config_t const *p_config);
+void nrfx_power_sleepevt_enable(nrfx_power_sleepevt_config_t const * p_config);
 
 /** @brief Function for disabling the processing of the sleep events. */
 void nrfx_power_sleepevt_disable(void);
@@ -315,7 +323,7 @@ void nrfx_power_sleepevt_uninit(void);
  *
  * @sa nrfx_power_usbevt_uninit
  */
-void nrfx_power_usbevt_init(nrfx_power_usbevt_config_t const *p_config);
+void nrfx_power_usbevt_init(nrfx_power_usbevt_config_t const * p_config);
 
 /** @brief Function for enabling the processing of USB power event. */
 void nrfx_power_usbevt_enable(void);
@@ -345,10 +353,12 @@ __STATIC_INLINE nrfx_power_usb_state_t nrfx_power_usbstatus_get(void);
 __STATIC_INLINE nrfx_power_usb_state_t nrfx_power_usbstatus_get(void)
 {
     uint32_t status = nrf_power_usbregstatus_get();
-    if (0 == (status & NRF_POWER_USBREGSTATUS_VBUSDETECT_MASK)) {
+    if(0 == (status & NRF_POWER_USBREGSTATUS_VBUSDETECT_MASK))
+    {
         return NRFX_POWER_USB_STATE_DISCONNECTED;
     }
-    if (0 == (status & NRF_POWER_USBREGSTATUS_OUTPUTRDY_MASK)) {
+    if(0 == (status & NRF_POWER_USBREGSTATUS_OUTPUTRDY_MASK))
+    {
         return NRFX_POWER_USB_STATE_CONNECTED;
     }
     return NRFX_POWER_USB_STATE_READY;
@@ -359,7 +369,9 @@ __STATIC_INLINE nrfx_power_usb_state_t nrfx_power_usbstatus_get(void)
 
 /** @} */
 
+
 void nrfx_power_irq_handler(void);
+
 
 #ifdef __cplusplus
 }

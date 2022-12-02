@@ -90,7 +90,7 @@ void nrfx_systick_init(void);
  *
  * @param[out] p_state The pointer to the state variable to be filled.
  */
-void nrfx_systick_get(nrfx_systick_state_t *p_state);
+void nrfx_systick_get(nrfx_systick_state_t * p_state);
 
 /**
  * @brief Function for testing if the current time is higher in relation to the remembered state.
@@ -101,7 +101,7 @@ void nrfx_systick_get(nrfx_systick_state_t *p_state);
  * @retval true  The current time is higher than the specified state plus the given time-out.
  * @retval false The current time is lower than the specified state plus the given time-out.
  */
-bool nrfx_systick_test(nrfx_systick_state_t const *p_state, uint32_t us);
+bool nrfx_systick_test(nrfx_systick_state_t const * p_state, uint32_t us);
 
 /**
  * @brief Function for delaying the execution for the specified amount of CPU ticks.

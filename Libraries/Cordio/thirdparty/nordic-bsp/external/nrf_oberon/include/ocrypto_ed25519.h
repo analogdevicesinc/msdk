@@ -59,6 +59,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+
 /**
  * Length of a public key.
  */
@@ -73,6 +74,7 @@
  * Length of a signature.
  */
 #define ocrypto_ed25519_BYTES (64)
+
 
 /**
  * Ed25519 signature key pair generation.
@@ -98,7 +100,8 @@ void ocrypto_ed25519_public_key(uint8_t pk[ocrypto_ed25519_PUBLIC_KEY_BYTES],
  * @param      sk    Secret key.
  * @param      pk    Public key.
  */
-void ocrypto_ed25519_sign(uint8_t sig[ocrypto_ed25519_BYTES], const uint8_t *m, size_t m_len,
+void ocrypto_ed25519_sign(uint8_t sig[ocrypto_ed25519_BYTES],
+                          const uint8_t *m, size_t m_len,
                           const uint8_t sk[ocrypto_ed25519_SECRET_KEY_BYTES],
                           const uint8_t pk[ocrypto_ed25519_PUBLIC_KEY_BYTES]);
 
@@ -116,7 +119,8 @@ void ocrypto_ed25519_sign(uint8_t sig[ocrypto_ed25519_BYTES], const uint8_t *m, 
  * @retval 0  If signature is OK.
  * @retval -1 Otherwise.
  */
-int ocrypto_ed25519_verify(const uint8_t sig[ocrypto_ed25519_BYTES], const uint8_t *m, size_t m_len,
+int ocrypto_ed25519_verify(const uint8_t sig[ocrypto_ed25519_BYTES],
+                           const uint8_t *m, size_t m_len,
                            const uint8_t pk[ocrypto_ed25519_PUBLIC_KEY_BYTES]);
 
 #endif

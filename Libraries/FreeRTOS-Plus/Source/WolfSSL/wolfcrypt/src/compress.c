@@ -19,47 +19,53 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+    #include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
 
 #ifdef HAVE_LIBZ
 
+
 #include <wolfssl/wolfcrypt/compress.h>
 #include <wolfssl/wolfcrypt/error-crypt.h>
 #include <wolfssl/wolfcrypt/logging.h>
 #ifdef NO_INLINE
-#include <wolfssl/wolfcrypt/misc.h>
+    #include <wolfssl/wolfcrypt/misc.h>
 #else
-#include <wolfcrypt/src/misc.c>
+    #include <wolfcrypt/src/misc.c>
 #endif
 
 #include <zlib.h>
 
+
 /* alloc user allocs to work with zlib */
-static void *myAlloc(void *opaque, unsigned int item, unsigned int size)
+static void* myAlloc(void* opaque, unsigned int item, unsigned int size)
 {
     (void)opaque;
     return XMALLOC(item * size, opaque, DYNAMIC_TYPE_LIBZ);
 }
 
-static void myFree(void *opaque, void *memory)
+
+static void myFree(void* opaque, void* memory)
 {
     (void)opaque;
     XFREE(memory, opaque, DYNAMIC_TYPE_LIBZ);
 }
 
+
 #ifdef HAVE_MCAPI
-#define DEFLATE_DEFAULT_WINDOWBITS 11
-#define DEFLATE_DEFAULT_MEMLEVEL 1
+    #define DEFLATE_DEFAULT_WINDOWBITS  11
+    #define DEFLATE_DEFAULT_MEMLEVEL     1
 #else
-#define DEFLATE_DEFAULT_WINDOWBITS 15
-#define DEFLATE_DEFAULT_MEMLEVEL 8
+    #define DEFLATE_DEFAULT_WINDOWBITS 15
+    #define DEFLATE_DEFAULT_MEMLEVEL    8
 #endif
 
-int wc_Compress(byte *out, word32 outSz, const byte *in, word32 inSz, word32 flags)
+
+int wc_Compress(byte* out, word32 outSz, const byte* in, word32 inSz, word32 flags)
 /*
  * out - pointer to destination buffer
  * outSz - size of destination buffer
@@ -80,24 +86,23 @@ int wc_Compress(byte *out, word32 outSz, const byte *in, word32 inSz, word32 fla
     z_stream stream;
     int result = 0;
 
-    stream.next_in = (Bytef *)in;
+    stream.next_in = (Bytef*)in;
     stream.avail_in = (uInt)inSz;
 #ifdef MAXSEG_64K
     /* Check for source > 64K on 16-bit machine: */
-    if ((uLong)stream.avail_in != inSz)
-        return COMPRESS_INIT_E;
+    if ((uLong)stream.avail_in != inSz) return COMPRESS_INIT_E;
 #endif
     stream.next_out = out;
     stream.avail_out = (uInt)outSz;
-    if ((uLong)stream.avail_out != outSz)
-        return COMPRESS_INIT_E;
+    if ((uLong)stream.avail_out != outSz) return COMPRESS_INIT_E;
 
     stream.zalloc = (alloc_func)myAlloc;
     stream.zfree = (free_func)myFree;
     stream.opaque = (voidpf)0;
 
-    if (deflateInit2(&stream, Z_DEFAULT_COMPRESSION, Z_DEFLATED, DEFLATE_DEFAULT_WINDOWBITS,
-                     DEFLATE_DEFAULT_MEMLEVEL, flags ? Z_FIXED : Z_DEFAULT_STRATEGY) != Z_OK)
+    if (deflateInit2(&stream, Z_DEFAULT_COMPRESSION, Z_DEFLATED,
+                     DEFLATE_DEFAULT_WINDOWBITS, DEFLATE_DEFAULT_MEMLEVEL,
+                     flags ? Z_FIXED : Z_DEFAULT_STRATEGY) != Z_OK)
         return COMPRESS_INIT_E;
 
     if (deflate(&stream, Z_FINISH) != Z_STREAM_END) {
@@ -113,7 +118,8 @@ int wc_Compress(byte *out, word32 outSz, const byte *in, word32 inSz, word32 fla
     return result;
 }
 
-int wc_DeCompress(byte *out, word32 outSz, const byte *in, word32 inSz)
+
+int wc_DeCompress(byte* out, word32 outSz, const byte* in, word32 inSz)
 /*
  * out - pointer to destination buffer
  * outSz - size of destination buffer
@@ -124,21 +130,19 @@ int wc_DeCompress(byte *out, word32 outSz, const byte *in, word32 inSz)
  * return:
  *    negative - error code
  *    positive - bytes stored in out buffer
- */
+ */ 
 {
     z_stream stream;
     int result = 0;
 
-    stream.next_in = (Bytef *)in;
+    stream.next_in = (Bytef*)in;
     stream.avail_in = (uInt)inSz;
     /* Check for source > 64K on 16-bit machine: */
-    if ((uLong)stream.avail_in != inSz)
-        return DECOMPRESS_INIT_E;
+    if ((uLong)stream.avail_in != inSz) return DECOMPRESS_INIT_E;
 
     stream.next_out = out;
     stream.avail_out = (uInt)outSz;
-    if ((uLong)stream.avail_out != outSz)
-        return DECOMPRESS_INIT_E;
+    if ((uLong)stream.avail_out != outSz) return DECOMPRESS_INIT_E;
 
     stream.zalloc = (alloc_func)myAlloc;
     stream.zfree = (free_func)myFree;
@@ -151,7 +155,7 @@ int wc_DeCompress(byte *out, word32 outSz, const byte *in, word32 inSz)
         inflateEnd(&stream);
         return DECOMPRESS_E;
     }
-
+    
     result = (int)stream.total_out;
 
     if (inflateEnd(&stream) != Z_OK)
@@ -160,4 +164,6 @@ int wc_DeCompress(byte *out, word32 outSz, const byte *in, word32 inSz)
     return result;
 }
 
+
 #endif /* HAVE_LIBZ */
+

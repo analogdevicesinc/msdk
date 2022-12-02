@@ -35,25 +35,25 @@ extern size_t utf16UTF8Count(const uint16_t *s, size_t nElem);
 
 inline size_t utf16EncodeRune(uint32_t rune, __wchar_t *encoded)
 {
-    return utf16EncodeRune(rune, reinterpret_cast<uint16_t *>(encoded));
+	return utf16EncodeRune(rune, reinterpret_cast<uint16_t *>(encoded));
 }
 
 inline const __wchar_t *utf16DecodeRune(const __wchar_t *s, size_t nElem, uint32_t *rune)
 {
-    const uint16_t *ret;
+	const uint16_t *ret;
 
-    ret = utf16DecodeRune(reinterpret_cast<const uint16_t *>(s), nElem, rune);
-    return reinterpret_cast<const __wchar_t *>(ret);
+	ret = utf16DecodeRune(reinterpret_cast<const uint16_t *>(s), nElem, rune);
+	return reinterpret_cast<const __wchar_t *>(ret);
 }
 
 inline size_t utf16RuneCount(const __wchar_t *s, size_t nElem)
 {
-    return utf16RuneCount(reinterpret_cast<const uint16_t *>(s), nElem);
+	return utf16RuneCount(reinterpret_cast<const uint16_t *>(s), nElem);
 }
 
 inline size_t utf16UTF8Count(const __wchar_t *s, size_t nElem)
 {
-    return utf16UTF8Count(reinterpret_cast<const uint16_t *>(s), nElem);
+	return utf16UTF8Count(reinterpret_cast<const uint16_t *>(s), nElem);
 }
 
 #endif

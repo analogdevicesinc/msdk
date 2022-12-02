@@ -46,12 +46,13 @@
 **************************************************************************************************/
 
 /* State machine states */
-enum {
-    SEC_CCM_STATE_XI_HDR,
-    SEC_CCM_STATE_XI_MSG,
-    SEC_CCM_STATE_S0,
-    SEC_CCM_STATE_SI,
-    SEC_CCM_STATE_MIC_COMPLETE,
+enum
+{
+  SEC_CCM_STATE_XI_HDR,
+  SEC_CCM_STATE_XI_MSG,
+  SEC_CCM_STATE_S0,
+  SEC_CCM_STATE_SI,
+  SEC_CCM_STATE_MIC_COMPLETE,
 };
 
 /**************************************************************************************************
@@ -73,11 +74,12 @@ extern secCb_t secCb;
 /*************************************************************************************************/
 static void secCcmCalcXor(uint8_t *pDst, uint8_t *pSrc, uint8_t size)
 {
-    uint8_t i;
+  uint8_t i;
 
-    for (i = 0; i < size; i++) {
-        *pDst++ ^= *pSrc++;
-    }
+  for (i = 0; i < size; i++)
+  {
+    *pDst++ ^= *pSrc++;
+  }
 }
 
 /*************************************************************************************************/
@@ -94,8 +96,8 @@ static void secCcmCalcXor(uint8_t *pDst, uint8_t *pSrc, uint8_t size)
 /*************************************************************************************************/
 static void secCcmBlockEncrypt(secQueueBuf_t *pBuf, uint8_t *pText)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
-    SecLeEncryptCmd(pCcm->key, pText, pBuf, pCcm->handlerId);
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t*) pBuf->pCb;
+  SecLeEncryptCmd(pCcm->key, pText, pBuf, pCcm->handlerId);
 }
 
 /*************************************************************************************************/
@@ -111,19 +113,18 @@ static void secCcmBlockEncrypt(secQueueBuf_t *pBuf, uint8_t *pText)
 /*************************************************************************************************/
 static void secCcmGenX0(secQueueBuf_t *pBuf)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t*) pBuf->pCb;
 
-    /* Scratch buffer contains nonce, add flags and message length */
-    pCcm->scratch[0] = (SEC_CCM_L - 1) | (((pCcm->micLen - 2) / 2) << 3) |
-                       ((pCcm->clearLen > 0 ? 1 : 0) << 6);
-    pCcm->scratch[SEC_BLOCK_LEN - 2] = pCcm->textLen >> 8;
-    pCcm->scratch[SEC_BLOCK_LEN - 1] = pCcm->textLen & 0xFF;
+  /* Scratch buffer contains nonce, add flags and message length */
+  pCcm->scratch[0] = (SEC_CCM_L - 1) | (((pCcm->micLen - 2) / 2) << 3) | ((pCcm->clearLen > 0? 1:0) << 6);
+  pCcm->scratch[SEC_BLOCK_LEN - 2] = pCcm->textLen >> 8;
+  pCcm->scratch[SEC_BLOCK_LEN - 1] = pCcm->textLen & 0xFF;
 
-    pCcm->state = pCcm->clearLen > 0 ? SEC_CCM_STATE_XI_HDR : SEC_CCM_STATE_XI_MSG;
-    pCcm->position = 0;
+  pCcm->state = pCcm->clearLen > 0 ? SEC_CCM_STATE_XI_HDR : SEC_CCM_STATE_XI_MSG;
+  pCcm->position = 0;
 
-    /* AES Operation */
-    secCcmBlockEncrypt(pBuf, pCcm->scratch);
+  /* AES Operation */
+  secCcmBlockEncrypt(pBuf, pCcm->scratch);
 }
 
 /*************************************************************************************************/
@@ -140,44 +141,49 @@ static void secCcmGenX0(secQueueBuf_t *pBuf)
 /*************************************************************************************************/
 static void secCcmGenXiHdr(secQueueBuf_t *pBuf, uint8_t *pPriorX)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
-    uint8_t b_i[SEC_BLOCK_LEN];
-    uint16_t remaining;
-    uint16_t offset = 0;
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t*) pBuf->pCb;
+  uint8_t b_i[SEC_BLOCK_LEN];
+  uint16_t remaining;
+  uint16_t offset = 0;
 
-    if (pCcm->position == 0) {
-        /* Copy additional data into working buffer */
-        memcpy(pCcm->pWorking, pCcm->pClear, pCcm->clearLen);
+  if (pCcm->position == 0)
+  {
+    /* Copy additional data into working buffer */
+    memcpy(pCcm->pWorking, pCcm->pClear, pCcm->clearLen);
 
-        /* First two bytes of b_0 contain length of additional data */
-        b_i[0] = pCcm->clearLen >> 8;
-        b_i[1] = pCcm->clearLen & 0xFF;
-        pCcm->position = offset = 2;
+    /* First two bytes of b_0 contain length of additional data */
+    b_i[0] = pCcm->clearLen >> 8;
+    b_i[1] = pCcm->clearLen & 0xFF;
+    pCcm->position = offset = 2;
+  }
+
+  remaining = (int16_t) pCcm->clearLen - pCcm->position + 2;
+
+  /* Copy additional to b_i */
+  if (remaining >= SEC_BLOCK_LEN - offset)
+  {
+    memcpy(b_i + offset, pCcm->pClear + pCcm->position - 2, SEC_BLOCK_LEN - offset);
+    pCcm->position += SEC_BLOCK_LEN - offset;
+
+    if (remaining == SEC_BLOCK_LEN - offset)
+    {
+      pCcm->state = SEC_CCM_STATE_XI_MSG;
+      pCcm->position = 0;
     }
+  }
+  else
+  {
+    memcpy(b_i + offset, pCcm->pClear + pCcm->position - 2, remaining);
+    memset(b_i + offset + remaining, 0, SEC_BLOCK_LEN - remaining - offset);
+    pCcm->state = SEC_CCM_STATE_XI_MSG;
+    pCcm->position = 0;
+  }
 
-    remaining = (int16_t)pCcm->clearLen - pCcm->position + 2;
+  /* X_i XOR B_i */
+  Calc128Xor(b_i, pPriorX);
 
-    /* Copy additional to b_i */
-    if (remaining >= SEC_BLOCK_LEN - offset) {
-        memcpy(b_i + offset, pCcm->pClear + pCcm->position - 2, SEC_BLOCK_LEN - offset);
-        pCcm->position += SEC_BLOCK_LEN - offset;
-
-        if (remaining == SEC_BLOCK_LEN - offset) {
-            pCcm->state = SEC_CCM_STATE_XI_MSG;
-            pCcm->position = 0;
-        }
-    } else {
-        memcpy(b_i + offset, pCcm->pClear + pCcm->position - 2, remaining);
-        memset(b_i + offset + remaining, 0, SEC_BLOCK_LEN - remaining - offset);
-        pCcm->state = SEC_CCM_STATE_XI_MSG;
-        pCcm->position = 0;
-    }
-
-    /* X_i XOR B_i */
-    Calc128Xor(b_i, pPriorX);
-
-    /* AES Operation */
-    secCcmBlockEncrypt(pBuf, b_i);
+  /* AES Operation */
+  secCcmBlockEncrypt(pBuf, b_i);
 }
 
 /*************************************************************************************************/
@@ -194,29 +200,33 @@ static void secCcmGenXiHdr(secQueueBuf_t *pBuf, uint8_t *pPriorX)
 /*************************************************************************************************/
 static void secCcmGenXiMsg(secQueueBuf_t *pBuf, uint8_t *pPriorX)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
-    uint8_t b_i[SEC_BLOCK_LEN];
-    uint16_t remaining = (int16_t)pCcm->textLen - pCcm->position;
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t*) pBuf->pCb;
+  uint8_t b_i[SEC_BLOCK_LEN];
+  uint16_t remaining = (int16_t) pCcm->textLen - pCcm->position;
 
-    /* Copy data to b_i */
-    if (remaining >= SEC_BLOCK_LEN) {
-        Calc128Cpy(b_i, pCcm->pText + pCcm->position);
-        pCcm->position += SEC_BLOCK_LEN;
+  /* Copy data to b_i */
+  if (remaining >= SEC_BLOCK_LEN)
+  {
+    Calc128Cpy(b_i, pCcm->pText + pCcm->position);
+    pCcm->position += SEC_BLOCK_LEN;
 
-        if (remaining == SEC_BLOCK_LEN) {
-            pCcm->state = SEC_CCM_STATE_S0;
-        }
-    } else {
-        memcpy(b_i, pCcm->pText + pCcm->position, remaining);
-        memset(b_i + remaining, 0, SEC_BLOCK_LEN - remaining);
-        pCcm->state = SEC_CCM_STATE_S0;
+    if (remaining == SEC_BLOCK_LEN)
+    {
+      pCcm->state = SEC_CCM_STATE_S0;
     }
+  }
+  else
+  {
+    memcpy(b_i, pCcm->pText + pCcm->position, remaining);
+    memset(b_i + remaining, 0, SEC_BLOCK_LEN - remaining);
+    pCcm->state = SEC_CCM_STATE_S0;
+  }
 
-    /* X_i XOR B_i */
-    Calc128Xor(b_i, pPriorX);
+  /* X_i XOR B_i */
+  Calc128Xor(b_i, pPriorX);
 
-    /* AES Operation */
-    secCcmBlockEncrypt(pBuf, b_i);
+  /* AES Operation */
+  secCcmBlockEncrypt(pBuf, b_i);
 }
 
 /*************************************************************************************************/
@@ -233,20 +243,20 @@ static void secCcmGenXiMsg(secQueueBuf_t *pBuf, uint8_t *pPriorX)
 /*************************************************************************************************/
 static void secCcmGenS0(secQueueBuf_t *pBuf, uint8_t *x_n)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
-    uint16_t offset = pCcm->textLen + pCcm->clearLen;
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t*) pBuf->pCb;
+  uint16_t offset = pCcm->textLen + pCcm->clearLen;
 
-    /* Copy T to working buffer */
-    memcpy(pCcm->pWorking + offset, x_n, pCcm->micLen);
+  /* Copy T to working buffer */
+  memcpy(pCcm->pWorking + offset, x_n, pCcm->micLen);
 
-    /* Scratch buffer contains nonce, add flags and counter */
-    pCcm->scratch[0] = (SEC_CCM_L - 1);
-    pCcm->scratch[SEC_BLOCK_LEN - 2] = pCcm->scratch[SEC_BLOCK_LEN - 1] = 0;
+  /* Scratch buffer contains nonce, add flags and counter */
+  pCcm->scratch[0] = (SEC_CCM_L - 1);
+  pCcm->scratch[SEC_BLOCK_LEN - 2] = pCcm->scratch[SEC_BLOCK_LEN - 1] = 0;
 
-    pCcm->state = SEC_CCM_STATE_MIC_COMPLETE;
+  pCcm->state = SEC_CCM_STATE_MIC_COMPLETE;
 
-    /* AES Operation */
-    secCcmBlockEncrypt(pBuf, pCcm->scratch);
+  /* AES Operation */
+  secCcmBlockEncrypt(pBuf, pCcm->scratch);
 }
 
 /*************************************************************************************************/
@@ -262,21 +272,21 @@ static void secCcmGenS0(secQueueBuf_t *pBuf, uint8_t *x_n)
 /*************************************************************************************************/
 static void secCcmGenS1(secQueueBuf_t *pBuf)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t*) pBuf->pCb;
 
-    /* Set counter. */
-    pCcm->counter = 1;
+  /* Set counter. */
+  pCcm->counter = 1;
 
-    /* Scratch buffer contains nonce, add flags and counter. */
-    pCcm->scratch[0] = (SEC_CCM_L - 1);
-    pCcm->scratch[SEC_BLOCK_LEN - 2] = 0;
-    pCcm->scratch[SEC_BLOCK_LEN - 1] = 1;
+  /* Scratch buffer contains nonce, add flags and counter. */
+  pCcm->scratch[0] = (SEC_CCM_L - 1);
+  pCcm->scratch[SEC_BLOCK_LEN - 2] = 0;
+  pCcm->scratch[SEC_BLOCK_LEN - 1] = 1;
 
-    /* Change state to S_i state. */
-    pCcm->state = SEC_CCM_STATE_SI;
+  /* Change state to S_i state. */
+  pCcm->state = SEC_CCM_STATE_SI;
 
-    /* AES Operation. */
-    secCcmBlockEncrypt(pBuf, pCcm->scratch);
+  /* AES Operation. */
+  secCcmBlockEncrypt(pBuf, pCcm->scratch);
 }
 
 /*************************************************************************************************/
@@ -293,33 +303,39 @@ static void secCcmGenS1(secQueueBuf_t *pBuf)
 /*************************************************************************************************/
 static void secCcmMicComplete(secQueueBuf_t *pBuf, uint8_t *s_0)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
-    int16_t micOffset;
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t*) pBuf->pCb;
+  int16_t micOffset;
 
-    /* MIC = s_0 XOR T (store in result buffer). */
-    micOffset = pCcm->textLen + pCcm->clearLen;
-    secCcmCalcXor(pCcm->pWorking + micOffset, s_0, pCcm->micLen);
+  /* MIC = s_0 XOR T (store in result buffer). */
+  micOffset = pCcm->textLen + pCcm->clearLen;
+  secCcmCalcXor(pCcm->pWorking + micOffset, s_0, pCcm->micLen);
 
-    if (pCcm->operation == SEC_CCM_OP_ENCRYPT) {
-        /* When encrypting, continue S_i calculations */
-        secCcmGenS1(pBuf);
-    } else {
-        /* Decryption complete.  Send notification. */
-        secCcmDecMsg_t *pMsg = (secCcmDecMsg_t *)&pBuf->msg;
+  if (pCcm->operation == SEC_CCM_OP_ENCRYPT)
+  {
+    /* When encrypting, continue S_i calculations */
+    secCcmGenS1(pBuf);
+  }
+  else
+  {
+    /* Decryption complete.  Send notification. */
+    secCcmDecMsg_t *pMsg = (secCcmDecMsg_t *) &pBuf->msg;
 
-        /* Verify MIC value */
-        if (memcmp(pCcm->pRcvMic, pCcm->pWorking + micOffset, pCcm->micLen) == 0) {
-            pMsg->pText = pCcm->pWorking + pCcm->clearLen;
-            pMsg->textLen = pCcm->textLen;
-            pMsg->success = TRUE;
-        } else {
-            pMsg->pText = NULL;
-            pMsg->textLen = 0;
-            pMsg->success = FALSE;
-        }
-
-        WsfMsgSend(pCcm->handlerId, pMsg);
+    /* Verify MIC value */
+    if (memcmp(pCcm->pRcvMic, pCcm->pWorking + micOffset, pCcm->micLen) == 0)
+    {
+      pMsg->pText = pCcm->pWorking + pCcm->clearLen;
+      pMsg->textLen = pCcm->textLen;
+      pMsg->success = TRUE;
     }
+    else
+    {
+      pMsg->pText = NULL;
+      pMsg->textLen = 0;
+      pMsg->success = FALSE;
+    }
+
+    WsfMsgSend(pCcm->handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -336,43 +352,49 @@ static void secCcmMicComplete(secQueueBuf_t *pBuf, uint8_t *s_0)
 /*************************************************************************************************/
 static void secCcmGenSi(secQueueBuf_t *pBuf, uint8_t *pPriorS)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
-    int16_t resultOffset = 0;
-    uint16_t len;
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t*) pBuf->pCb;
+  int16_t resultOffset = 0;
+  uint16_t len;
 
-    /* Determine length of XOR operation. */
-    len = pCcm->textLen - ((pCcm->counter - 1) * SEC_BLOCK_LEN);
-    len = len > SEC_BLOCK_LEN ? SEC_BLOCK_LEN : len;
+  /* Determine length of XOR operation. */
+  len = pCcm->textLen - ((pCcm->counter - 1) * SEC_BLOCK_LEN);
+  len = len > SEC_BLOCK_LEN? SEC_BLOCK_LEN : len;
 
-    /* m_i XOR s_i+1. */
-    resultOffset = (pCcm->counter - 1) * SEC_BLOCK_LEN + pCcm->clearLen;
+  /* m_i XOR s_i+1. */
+  resultOffset = (pCcm->counter - 1) * SEC_BLOCK_LEN + pCcm->clearLen;
 
-    secCcmCalcXor(pCcm->pWorking + resultOffset, pPriorS, (uint8_t)len);
+  secCcmCalcXor(pCcm->pWorking + resultOffset, pPriorS, (uint8_t) len);
 
-    if (pCcm->counter * SEC_BLOCK_LEN >= pCcm->textLen) {
-        if (pCcm->operation == SEC_CCM_OP_ENCRYPT) {
-            /* Encription complete.  Send notification. */
-            secCcmEncMsg_t *pMsg = (secCcmEncMsg_t *)&pBuf->msg;
+  if (pCcm->counter * SEC_BLOCK_LEN >= pCcm->textLen)
+  {
+    if (pCcm->operation == SEC_CCM_OP_ENCRYPT)
+    {
+      /* Encription complete.  Send notification. */
+      secCcmEncMsg_t *pMsg = (secCcmEncMsg_t *) &pBuf->msg;
 
-            pMsg->pCiphertext = pCcm->pWorking;
-            pMsg->textLen = pCcm->textLen + pCcm->clearLen + pCcm->micLen;
-            WsfMsgSend(pCcm->handlerId, pMsg);
-        } else {
-            /* Set pText to point to the decrypted result in pWorking */
-            pCcm->pText = pCcm->pWorking + pCcm->clearLen;
-
-            /* Begin calculating the MIC */
-            secCcmGenX0(pBuf);
-        }
-    } else {
-        /* Update counter. */
-        pCcm->counter++;
-        pCcm->scratch[SEC_BLOCK_LEN - 2] = pCcm->counter >> 8;
-        pCcm->scratch[SEC_BLOCK_LEN - 1] = pCcm->counter & 0xFF;
-
-        /* AES Operation. */
-        secCcmBlockEncrypt(pBuf, pCcm->scratch);
+      pMsg->pCiphertext = pCcm->pWorking;
+      pMsg->textLen = pCcm->textLen + pCcm->clearLen + pCcm->micLen;
+      WsfMsgSend(pCcm->handlerId, pMsg);
     }
+    else
+    {
+      /* Set pText to point to the decrypted result in pWorking */
+      pCcm->pText = pCcm->pWorking + pCcm->clearLen;
+
+      /* Begin calculating the MIC */
+      secCcmGenX0(pBuf);
+    }
+  }
+  else
+  {
+    /* Update counter. */
+    pCcm->counter++;
+    pCcm->scratch[SEC_BLOCK_LEN - 2] = pCcm->counter  >> 8;
+    pCcm->scratch[SEC_BLOCK_LEN - 1] = pCcm->counter  & 0xFF;
+
+    /* AES Operation. */
+    secCcmBlockEncrypt(pBuf, pCcm->scratch);
+  }
 }
 
 /*************************************************************************************************/
@@ -389,29 +411,30 @@ static void secCcmGenSi(secQueueBuf_t *pBuf, uint8_t *pPriorS)
 /*************************************************************************************************/
 void SecCcmHciCback(secQueueBuf_t *pBuf, hciEvt_t *pEvent, wsfHandlerId_t handlerId)
 {
-    secCcmSecCb_t *pCcm = (secCcmSecCb_t *)pBuf->pCb;
+  secCcmSecCb_t *pCcm = (secCcmSecCb_t *) pBuf->pCb;
 
-    switch (pCcm->state) {
-    case SEC_CCM_STATE_XI_HDR:
-        secCcmGenXiHdr(pBuf, pEvent->leEncryptCmdCmpl.data);
-        break;
+  switch (pCcm->state)
+  {
+  case SEC_CCM_STATE_XI_HDR:
+    secCcmGenXiHdr(pBuf, pEvent->leEncryptCmdCmpl.data);
+    break;
 
-    case SEC_CCM_STATE_XI_MSG:
-        secCcmGenXiMsg(pBuf, pEvent->leEncryptCmdCmpl.data);
-        break;
+  case SEC_CCM_STATE_XI_MSG:
+    secCcmGenXiMsg(pBuf, pEvent->leEncryptCmdCmpl.data);
+    break;
 
-    case SEC_CCM_STATE_S0:
-        secCcmGenS0(pBuf, pEvent->leEncryptCmdCmpl.data);
-        break;
+  case SEC_CCM_STATE_S0:
+    secCcmGenS0(pBuf, pEvent->leEncryptCmdCmpl.data);
+    break;
 
-    case SEC_CCM_STATE_SI:
-        secCcmGenSi(pBuf, pEvent->leEncryptCmdCmpl.data);
-        break;
+  case SEC_CCM_STATE_SI:
+    secCcmGenSi(pBuf, pEvent->leEncryptCmdCmpl.data);
+    break;
 
-    case SEC_CCM_STATE_MIC_COMPLETE:
-        secCcmMicComplete(pBuf, pEvent->leEncryptCmdCmpl.data);
-        break;
-    }
+  case SEC_CCM_STATE_MIC_COMPLETE:
+    secCcmMicComplete(pBuf, pEvent->leEncryptCmdCmpl.data);
+    break;
+  }
 }
 
 /*************************************************************************************************/
@@ -439,45 +462,46 @@ bool_t SecCcmEnc(const uint8_t *pKey, uint8_t *pNonce, uint8_t *pPlainText, uint
                  uint8_t *pClear, uint16_t clearLen, uint8_t micLen, uint8_t *pResult,
                  wsfHandlerId_t handlerId, uint16_t param, uint8_t event)
 {
-    secQueueBuf_t *pBuf;
-    uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secCcmSecCb_t);
+  secQueueBuf_t *pBuf;
+  uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secCcmSecCb_t);
 
-    WSF_ASSERT(clearLen < SEC_CCM_MAX_ADDITIONAL_LEN);
+  WSF_ASSERT(clearLen < SEC_CCM_MAX_ADDITIONAL_LEN);
 
-    if ((pBuf = WsfMsgAlloc(bufSize)) != NULL) {
-        secCcmSecCb_t *pCcm = (secCcmSecCb_t *)(pBuf + 1);
+  if ((pBuf = WsfMsgAlloc(bufSize)) != NULL)
+  {
+    secCcmSecCb_t *pCcm = (secCcmSecCb_t *) (pBuf + 1);
 
-        /* Setup queue buffer */
-        pBuf->pCb = pCcm;
-        pBuf->type = SEC_TYPE_CCM;
+    /* Setup queue buffer */
+    pBuf->pCb = pCcm;
+    pBuf->type = SEC_TYPE_CCM;
 
-        pBuf->msg.hdr.status = secCb.token++;
-        pBuf->msg.hdr.param = param;
-        pBuf->msg.hdr.event = event;
+    pBuf->msg.hdr.status = secCb.token++;
+    pBuf->msg.hdr.param = param;
+    pBuf->msg.hdr.event = event;
 
-        pCcm->handlerId = handlerId;
+    pCcm->handlerId = handlerId;
 
-        pCcm->pText = pPlainText;
-        pCcm->textLen = textLen;
-        pCcm->pClear = pClear;
-        pCcm->pWorking = pResult;
-        pCcm->clearLen = clearLen;
-        pCcm->micLen = micLen;
-        pCcm->counter = 0;
+    pCcm->pText = pPlainText;
+    pCcm->textLen = textLen;
+    pCcm->pClear = pClear;
+    pCcm->pWorking = pResult;
+    pCcm->clearLen = clearLen;
+    pCcm->micLen = micLen;
+    pCcm->counter = 0;
 
-        memcpy(pCcm->pWorking + clearLen, pPlainText, textLen);
-        memcpy(&pCcm->scratch[1], pNonce, SEC_CCM_NONCE_LEN);
-        Calc128Cpy(pCcm->key, (uint8_t *)pKey);
+    memcpy(pCcm->pWorking + clearLen, pPlainText, textLen);
+    memcpy(&pCcm->scratch[1], pNonce, SEC_CCM_NONCE_LEN);
+    Calc128Cpy(pCcm->key, (uint8_t *) pKey);
 
-        pCcm->operation = SEC_CCM_OP_ENCRYPT;
+    pCcm->operation = SEC_CCM_OP_ENCRYPT;
 
-        /* Begin encryption of text by generation of X_0 */
-        secCcmGenX0(pBuf);
+    /* Begin encryption of text by generation of X_0 */
+    secCcmGenX0(pBuf);
 
-        return TRUE;
-    }
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -506,49 +530,50 @@ bool_t SecCcmDec(const uint8_t *pKey, uint8_t *pNonce, uint8_t *pCypherText, uin
                  uint8_t *pClear, uint16_t clearLen, uint8_t *pMic, uint8_t micLen,
                  uint8_t *pResult, wsfHandlerId_t handlerId, uint16_t param, uint8_t event)
 {
-    secQueueBuf_t *pBuf;
-    uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secCcmSecCb_t);
+  secQueueBuf_t *pBuf;
+  uint16_t bufSize = sizeof(secQueueBuf_t) + sizeof(secCcmSecCb_t);
 
-    WSF_ASSERT(clearLen < SEC_CCM_MAX_ADDITIONAL_LEN);
+  WSF_ASSERT(clearLen < SEC_CCM_MAX_ADDITIONAL_LEN);
 
-    if ((pBuf = WsfMsgAlloc(bufSize)) != NULL) {
-        secCcmSecCb_t *pCcm = (secCcmSecCb_t *)(pBuf + 1);
+  if ((pBuf = WsfMsgAlloc(bufSize)) != NULL)
+  {
+    secCcmSecCb_t *pCcm = (secCcmSecCb_t *) (pBuf + 1);
 
-        /* Setup queue buffer */
-        pBuf->pCb = pCcm;
-        pBuf->type = SEC_TYPE_CCM;
+    /* Setup queue buffer */
+    pBuf->pCb = pCcm;
+    pBuf->type = SEC_TYPE_CCM;
 
-        pBuf->msg.hdr.status = secCb.token++;
-        pBuf->msg.hdr.param = param;
-        pBuf->msg.hdr.event = event;
+    pBuf->msg.hdr.status = secCb.token++;
+    pBuf->msg.hdr.param = param;
+    pBuf->msg.hdr.event = event;
 
-        pCcm->handlerId = handlerId;
+    pCcm->handlerId = handlerId;
 
-        pCcm->pClear = pClear;
-        pCcm->pRcvMic = pMic;
-        pCcm->pWorking = pResult;
-        pCcm->textLen = textLen;
-        pCcm->clearLen = clearLen;
-        pCcm->micLen = micLen;
-        pCcm->counter = 0;
+    pCcm->pClear = pClear;
+    pCcm->pRcvMic = pMic;
+    pCcm->pWorking = pResult;
+    pCcm->textLen = textLen;
+    pCcm->clearLen = clearLen;
+    pCcm->micLen = micLen;
+    pCcm->counter = 0;
 
-        /* Prepare the working buffer */
-        memcpy(pCcm->pWorking, pClear, clearLen);
-        memcpy(pCcm->pWorking + clearLen, pCypherText, textLen);
-        memcpy(pCcm->pWorking + clearLen + textLen, pMic, micLen);
+    /* Prepare the working buffer */
+    memcpy(pCcm->pWorking, pClear, clearLen);
+    memcpy(pCcm->pWorking + clearLen, pCypherText, textLen);
+    memcpy(pCcm->pWorking + clearLen + textLen, pMic, micLen);
 
-        memcpy(&pCcm->scratch[1], pNonce, SEC_CCM_NONCE_LEN);
-        Calc128Cpy(pCcm->key, (uint8_t *)pKey);
+    memcpy(&pCcm->scratch[1], pNonce, SEC_CCM_NONCE_LEN);
+    Calc128Cpy(pCcm->key, (uint8_t *) pKey);
 
-        pCcm->operation = SEC_CCM_OP_DECRYPT;
+    pCcm->operation = SEC_CCM_OP_DECRYPT;
 
-        /* Begin decryption of text by generation of S_1 */
-        secCcmGenS1(pBuf);
+    /* Begin decryption of text by generation of S_1 */
+    secCcmGenS1(pBuf);
 
-        return TRUE;
-    }
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -564,7 +589,7 @@ bool_t SecCcmDec(const uint8_t *pKey, uint8_t *pNonce, uint8_t *pCypherText, uin
 /*************************************************************************************************/
 void SecCcmInit(void)
 {
-    secCb.hciCbackTbl[SEC_TYPE_CCM] = SecCcmHciCback;
+  secCb.hciCbackTbl[SEC_TYPE_CCM] = SecCcmHciCback;
 }
 
 #endif /* SEC_CCM_CFG */

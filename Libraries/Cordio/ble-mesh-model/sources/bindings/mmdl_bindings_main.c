@@ -41,9 +41,10 @@
 **************************************************************************************************/
 
 /*! Model bind resolver control block type definition */
-typedef struct mmdlBindCb_tag {
-    mmdlBind_t bindings[MMDL_BINDINGS_MAX]; /*!< Bindings table */
-    uint8_t bindingsCount; /*!< Number of registered state bindings */
+typedef struct mmdlBindCb_tag
+{
+  mmdlBind_t  bindings[MMDL_BINDINGS_MAX];  /*!< Bindings table */
+  uint8_t     bindingsCount;                /*!< Number of registered state bindings */
 } mmdlBindCb_t;
 
 /**************************************************************************************************
@@ -70,36 +71,40 @@ static mmdlBindCb_t bindCb;
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlAddBind(mmdlBoundState_t srcState, mmdlBoundState_t tgtState, meshElementId_t srcElementId,
-                 meshElementId_t tgtElementId, mmdlBindResolver_t pBindResolverFunc)
+void MmdlAddBind(mmdlBoundState_t srcState, mmdlBoundState_t tgtState,
+                 meshElementId_t srcElementId, meshElementId_t tgtElementId,
+                 mmdlBindResolver_t pBindResolverFunc)
 {
-    uint8_t bindIdx;
+  uint8_t bindIdx;
 
-    /* Find a matching binding, */
-    for (bindIdx = 0; bindIdx < bindCb.bindingsCount; bindIdx++) {
-        if ((bindCb.bindings[bindIdx].srcBoundState == srcState) &&
-            (bindCb.bindings[bindIdx].tgtBoundState == tgtState) &&
-            (bindCb.bindings[bindIdx].srcElementId == srcElementId) &&
-            (bindCb.bindings[bindIdx].tgtElementId == tgtElementId)) {
-            /* Binding exists. */
-            return;
-        }
+  /* Find a matching binding, */
+  for (bindIdx = 0; bindIdx < bindCb.bindingsCount; bindIdx++)
+  {
+    if ((bindCb.bindings[bindIdx].srcBoundState == srcState) &&
+        (bindCb.bindings[bindIdx].tgtBoundState == tgtState) &&
+        (bindCb.bindings[bindIdx].srcElementId == srcElementId) &&
+        (bindCb.bindings[bindIdx].tgtElementId == tgtElementId))
+    {
+      /* Binding exists. */
+      return;
     }
+  }
 
-    /* New binding must be added*/
-    WSF_ASSERT(bindCb.bindingsCount < MMDL_BINDINGS_MAX);
+  /* New binding must be added*/
+  WSF_ASSERT(bindCb.bindingsCount < MMDL_BINDINGS_MAX);
 
-    if (bindCb.bindingsCount < MMDL_BINDINGS_MAX) {
-        /* Add binding to the next entry. */
-        bindCb.bindings[bindCb.bindingsCount].srcBoundState = srcState;
-        bindCb.bindings[bindCb.bindingsCount].tgtBoundState = tgtState;
-        bindCb.bindings[bindCb.bindingsCount].srcElementId = srcElementId;
-        bindCb.bindings[bindCb.bindingsCount].tgtElementId = tgtElementId;
-        bindCb.bindings[bindCb.bindingsCount].pBindResolverFunc = pBindResolverFunc;
+  if (bindCb.bindingsCount < MMDL_BINDINGS_MAX)
+  {
+    /* Add binding to the next entry. */
+    bindCb.bindings[bindCb.bindingsCount].srcBoundState = srcState;
+    bindCb.bindings[bindCb.bindingsCount].tgtBoundState = tgtState;
+    bindCb.bindings[bindCb.bindingsCount].srcElementId = srcElementId;
+    bindCb.bindings[bindCb.bindingsCount].tgtElementId = tgtElementId;
+    bindCb.bindings[bindCb.bindingsCount].pBindResolverFunc = pBindResolverFunc;
 
-        /* Increase bindings count */
-        bindCb.bindingsCount++;
-    }
+    /* Increase bindings count */
+    bindCb.bindingsCount++;
+  }
 }
 
 /**************************************************************************************************
@@ -115,8 +120,8 @@ void MmdlAddBind(mmdlBoundState_t srcState, mmdlBoundState_t tgtState, meshEleme
 /*************************************************************************************************/
 void MmdlBindingsInit(void)
 {
-    bindCb.bindingsCount = 0;
-    memset(bindCb.bindings, 0, sizeof(mmdlBind_t) * MMDL_BINDINGS_MAX);
+  bindCb.bindingsCount = 0;
+  memset(bindCb.bindings, 0, sizeof(mmdlBind_t) * MMDL_BINDINGS_MAX);
 }
 
 /*************************************************************************************************/
@@ -136,15 +141,17 @@ void MmdlBindingsInit(void)
 void MmdlBindResolve(meshElementId_t srcElementId, mmdlBoundState_t srcBoundState,
                      void *pStateValue)
 {
-    uint8_t bindIdx;
+  uint8_t bindIdx;
 
-    /* Find a matching binding, */
-    for (bindIdx = 0; bindIdx < bindCb.bindingsCount; bindIdx++) {
-        if ((bindCb.bindings[bindIdx].srcBoundState == srcBoundState) &&
-            (bindCb.bindings[bindIdx].srcElementId == srcElementId)) {
-            /* Call bind resolver */
-            bindCb.bindings[bindIdx].pBindResolverFunc(bindCb.bindings[bindIdx].tgtElementId,
-                                                       pStateValue);
-        }
+  /* Find a matching binding, */
+  for (bindIdx = 0; bindIdx < bindCb.bindingsCount; bindIdx++)
+  {
+    if ((bindCb.bindings[bindIdx].srcBoundState == srcBoundState) &&
+        (bindCb.bindings[bindIdx].srcElementId == srcElementId))
+    {
+      /* Call bind resolver */
+      bindCb.bindings[bindIdx].pBindResolverFunc(bindCb.bindings[bindIdx].tgtElementId,
+                                                 pStateValue);
     }
+  }
 }

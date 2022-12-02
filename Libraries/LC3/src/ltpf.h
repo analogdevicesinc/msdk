@@ -29,6 +29,7 @@
 #include "common.h"
 #include "bits.h"
 
+
 /**
  * LTPF data
  */
@@ -37,6 +38,7 @@ typedef struct lc3_ltpf_data {
     bool active;
     int pitch_index;
 } lc3_ltpf_data_t;
+
 
 /* ----------------------------------------------------------------------------
  *  Encoding
@@ -55,8 +57,8 @@ typedef struct lc3_ltpf_data {
  * The number of previous samples `d` accessed on `x` is :
  *   d: { 10, 20, 30, 40, 60 } - 1 for samplerates from 8KHz to 48KHz
  */
-bool lc3_ltpf_analyse(enum lc3_dt dt, enum lc3_srate sr, lc3_ltpf_analysis_t *ltpf,
-                      const int16_t *x, lc3_ltpf_data_t *data);
+bool lc3_ltpf_analyse(enum lc3_dt dt, enum lc3_srate sr,
+    lc3_ltpf_analysis_t *ltpf, const int16_t *x, lc3_ltpf_data_t *data);
 
 /**
  * LTPF disable
@@ -77,6 +79,7 @@ int lc3_ltpf_get_nbits(bool pitch);
  * data            LTPF data
  */
 void lc3_ltpf_put_data(lc3_bits_t *bits, const lc3_ltpf_data_t *data);
+
 
 /* ----------------------------------------------------------------------------
  *  Decoding
@@ -100,7 +103,9 @@ void lc3_ltpf_get_data(lc3_bits_t *bits, lc3_ltpf_data_t *data);
  * The size of the ring buffer is `nh + ns`.
  * The filtering needs an history of at least 18 ms.
  */
-void lc3_ltpf_synthesize(enum lc3_dt dt, enum lc3_srate sr, int nbytes, lc3_ltpf_synthesis_t *ltpf,
-                         const lc3_ltpf_data_t *data, const float *xr, float *x);
+void lc3_ltpf_synthesize(enum lc3_dt dt, enum lc3_srate sr, int nbytes,
+    lc3_ltpf_synthesis_t *ltpf, const lc3_ltpf_data_t *data,
+    const float *xr, float *x);
+
 
 #endif /* __LC3_LTPF_H */

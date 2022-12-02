@@ -34,12 +34,13 @@
 /*************************************************************************************************/
 void LhciConnInit(void)
 {
-    LlAclRegister(lhciAclSendComplete, lhciAclRecvPending);
+  LlAclRegister(lhciAclSendComplete, lhciAclRecvPending);
 
-    /* Don't override master's handler if set. */
-    if (!lhciCmdTbl[LHCI_MSG_CONN]) {
-        lhciCmdTbl[LHCI_MSG_CONN] = lhciConnDecodeCmdPkt;
-        lhciEvtTbl[LHCI_MSG_CONN] = lhciConnEncodeEvtPkt;
-    }
-    lhciServiceAcl = lhciRecvAcl;
+  /* Don't override master's handler if set. */
+  if (!lhciCmdTbl[LHCI_MSG_CONN])
+  {
+    lhciCmdTbl[LHCI_MSG_CONN] = lhciConnDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_CONN] = lhciConnEncodeEvtPkt;
+  }
+  lhciServiceAcl = lhciRecvAcl;
 }

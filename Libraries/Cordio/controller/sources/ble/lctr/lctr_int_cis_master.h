@@ -47,10 +47,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      CIS master establishment states. */
-enum {
-    LCTR_CIS_MST_EST_STATE_IDLE, /*!< Idle state. */
-    LCTR_CIS_MST_EST_STATE_CIS_RSP, /*!< Wait for LL_CIS_RSP state. */
-    LCTR_CIS_MST_EST_STATE_TOTAL /*!< Total CIS master establishment states. */
+enum
+{
+  LCTR_CIS_MST_EST_STATE_IDLE,                         /*!< Idle state. */
+  LCTR_CIS_MST_EST_STATE_CIS_RSP,                      /*!< Wait for LL_CIS_RSP state. */
+  LCTR_CIS_MST_EST_STATE_TOTAL                         /*!< Total CIS master establishment states. */
 };
 
 /**************************************************************************************************
@@ -58,11 +59,12 @@ enum {
 **************************************************************************************************/
 
 /*! \brief      Create CIS pending. */
-typedef struct {
-    uint8_t numCis; /*!< Number of CISs to create. */
-    uint16_t cisHandle[LL_MAX_CIS]; /*!< CIS handle array. */
-    uint16_t aclHandle[LL_MAX_CIS]; /*!< ACL handle array. */
-    uint8_t isCreateCisDone[LL_MAX_CIS]; /*!< TRUE if create CIS is done, either succeed or fail. */
+typedef struct
+{
+  uint8_t           numCis;                           /*!< Number of CISs to create. */
+  uint16_t          cisHandle[LL_MAX_CIS];            /*!< CIS handle array. */
+  uint16_t          aclHandle[LL_MAX_CIS];            /*!< ACL handle array. */
+  uint8_t           isCreateCisDone[LL_MAX_CIS];      /*!< TRUE if create CIS is done, either succeed or fail. */
 } lctrCreateCisPend_t;
 
 /**************************************************************************************************

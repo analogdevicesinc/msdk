@@ -93,8 +93,8 @@ static inline bool nrfx_usbd_errata_type_52833_eng_a_or_later(void)
  **/
 static inline bool nrfx_usbd_errata_104(void)
 {
-    return (NRFX_USBD_ERRATA_ENABLE &&
-            (nrfx_usbd_errata_type_52840() && !nrfx_usbd_errata_type_52840_eng_b_or_later()));
+    return (NRFX_USBD_ERRATA_ENABLE && (nrfx_usbd_errata_type_52840()
+                                        && !nrfx_usbd_errata_type_52840_eng_b_or_later()));
 }
 
 /* Errata: During setup read/write transfer USBD acknowledges setup stage without SETUP task.
@@ -103,8 +103,8 @@ static inline bool nrfx_usbd_errata_104(void)
  **/
 static inline bool nrfx_usbd_errata_154(void)
 {
-    return (NRFX_USBD_ERRATA_ENABLE &&
-            (nrfx_usbd_errata_type_52840() && !nrfx_usbd_errata_type_52840_eng_b_or_later()));
+    return (NRFX_USBD_ERRATA_ENABLE && (nrfx_usbd_errata_type_52840()
+                                        && !nrfx_usbd_errata_type_52840_eng_b_or_later()));
 }
 
 /* Errata: ISO double buffering not functional.
@@ -131,8 +131,8 @@ static inline bool nrfx_usbd_errata_171(void)
  **/
 static inline bool nrfx_usbd_errata_187(void)
 {
-    return (NRFX_USBD_ERRATA_ENABLE &&
-            (nrfx_usbd_errata_type_52840_eng_b_or_later() || nrfx_usbd_errata_type_52833()));
+    return (NRFX_USBD_ERRATA_ENABLE && (nrfx_usbd_errata_type_52840_eng_b_or_later()
+                                        || nrfx_usbd_errata_type_52833()));
 }
 
 /* Errata: USBD cannot receive tasks during DMA.
@@ -150,8 +150,8 @@ static inline bool nrfx_usbd_errata_199(void)
  **/
 static inline bool nrfx_usbd_errata_200(void)
 {
-    return (NRFX_USBD_ERRATA_ENABLE &&
-            (nrfx_usbd_errata_type_52840() && !nrfx_usbd_errata_type_52840_eng_b_or_later()));
+    return (NRFX_USBD_ERRATA_ENABLE && (nrfx_usbd_errata_type_52840()
+                                        && !nrfx_usbd_errata_type_52840_eng_b_or_later()));
 }
 
 #endif // NRFX_USBD_ERRATA_H__

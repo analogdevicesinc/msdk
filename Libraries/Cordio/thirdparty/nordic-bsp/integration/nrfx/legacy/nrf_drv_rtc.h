@@ -56,69 +56,69 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_rtc_t nrf_drv_rtc_t;
+typedef nrfx_rtc_t          nrf_drv_rtc_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_rtc_config_t nrf_drv_rtc_config_t;
+typedef nrfx_rtc_config_t   nrf_drv_rtc_config_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RTC_INSTANCE NRFX_RTC_INSTANCE
+#define NRF_DRV_RTC_INSTANCE            NRFX_RTC_INSTANCE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RTC_DEFAULT_CONFIG NRFX_RTC_DEFAULT_CONFIG
+#define NRF_DRV_RTC_DEFAULT_CONFIG      NRFX_RTC_DEFAULT_CONFIG
 /** @brief Macro for forwarding the new implementation. */
-#define RTC_US_TO_TICKS NRFX_RTC_US_TO_TICKS
+#define RTC_US_TO_TICKS                 NRFX_RTC_US_TO_TICKS
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RTC_INT_COMPARE0 NRFX_RTC_INT_COMPARE0
+#define NRF_DRV_RTC_INT_COMPARE0        NRFX_RTC_INT_COMPARE0
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RTC_INT_COMPARE1 NRFX_RTC_INT_COMPARE1
+#define NRF_DRV_RTC_INT_COMPARE1        NRFX_RTC_INT_COMPARE1
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RTC_INT_COMPARE2 NRFX_RTC_INT_COMPARE2
+#define NRF_DRV_RTC_INT_COMPARE2        NRFX_RTC_INT_COMPARE2
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RTC_INT_COMPARE3 NRFX_RTC_INT_COMPARE3
+#define NRF_DRV_RTC_INT_COMPARE3        NRFX_RTC_INT_COMPARE3
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RTC_INT_TICK NRFX_RTC_INT_TICK
+#define NRF_DRV_RTC_INT_TICK            NRFX_RTC_INT_TICK
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RTC_INT_OVERFLOW NRFX_RTC_INT_OVERFLOW
+#define NRF_DRV_RTC_INT_OVERFLOW        NRFX_RTC_INT_OVERFLOW
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_int_type_t nrfx_rtc_int_type_t
+#define nrf_drv_rtc_int_type_t          nrfx_rtc_int_type_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_handler_t nrfx_rtc_handler_t
+#define nrf_drv_rtc_handler_t           nrfx_rtc_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_init nrfx_rtc_init
+#define nrf_drv_rtc_init                nrfx_rtc_init
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_uninit nrfx_rtc_uninit
+#define nrf_drv_rtc_uninit              nrfx_rtc_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_enable nrfx_rtc_enable
+#define nrf_drv_rtc_enable              nrfx_rtc_enable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_disable nrfx_rtc_disable
+#define nrf_drv_rtc_disable             nrfx_rtc_disable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_cc_set nrfx_rtc_cc_set
+#define nrf_drv_rtc_cc_set              nrfx_rtc_cc_set
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_cc_disable nrfx_rtc_cc_disable
+#define nrf_drv_rtc_cc_disable          nrfx_rtc_cc_disable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_tick_enable nrfx_rtc_tick_enable
+#define nrf_drv_rtc_tick_enable         nrfx_rtc_tick_enable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_tick_disable nrfx_rtc_tick_disable
+#define nrf_drv_rtc_tick_disable        nrfx_rtc_tick_disable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_overflow_enable nrfx_rtc_overflow_enable
+#define nrf_drv_rtc_overflow_enable     nrfx_rtc_overflow_enable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_overflow_disable nrfx_rtc_overflow_disable
+#define nrf_drv_rtc_overflow_disable    nrfx_rtc_overflow_disable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_max_ticks_get nrfx_rtc_max_ticks_get
+#define nrf_drv_rtc_max_ticks_get       nrfx_rtc_max_ticks_get
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_int_disable nrfx_rtc_int_disable
+#define nrf_drv_rtc_int_disable         nrfx_rtc_int_disable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_int_enable nrfx_rtc_int_enable
+#define nrf_drv_rtc_int_enable          nrfx_rtc_int_enable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_counter_get nrfx_rtc_counter_get
+#define nrf_drv_rtc_counter_get         nrfx_rtc_counter_get
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_counter_clear nrfx_rtc_counter_clear
+#define nrf_drv_rtc_counter_clear       nrfx_rtc_counter_clear
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_task_address_get nrfx_rtc_task_address_get
+#define nrf_drv_rtc_task_address_get    nrfx_rtc_task_address_get
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_rtc_event_address_get nrfx_rtc_event_address_get
+#define nrf_drv_rtc_event_address_get   nrfx_rtc_event_address_get
 
 /** @} */
 

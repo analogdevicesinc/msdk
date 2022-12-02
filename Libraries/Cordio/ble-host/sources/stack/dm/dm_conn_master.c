@@ -36,7 +36,11 @@
 **************************************************************************************************/
 
 /* Action set for this module */
-const dmConnAct_t dmConnUpdActSetMaster[] = { dmConnUpdActUpdateMaster, dmConnUpdActL2cUpdateInd };
+const dmConnAct_t dmConnUpdActSetMaster[] =
+{
+  dmConnUpdActUpdateMaster,
+  dmConnUpdActL2cUpdateInd
+};
 
 /*************************************************************************************************/
 /*!
@@ -50,11 +54,11 @@ const dmConnAct_t dmConnUpdActSetMaster[] = { dmConnUpdActUpdateMaster, dmConnUp
 /*************************************************************************************************/
 void dmConnSmActCancelOpen(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    /* cancel create connection */
-    HciLeCreateConnCancelCmd();
+  /* cancel create connection */
+  HciLeCreateConnCancelCmd();
 
-    /* pass connection initiation stopped to dev priv */
-    dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_STOP, 0, 0);
+  /* pass connection initiation stopped to dev priv */
+  dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_STOP, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -69,8 +73,8 @@ void dmConnSmActCancelOpen(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnUpdActUpdateMaster(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    /* send HCI command */
-    HciLeConnUpdateCmd(pCcb->handle, &pMsg->apiUpdate.connSpec);
+  /* send HCI command */
+  HciLeConnUpdateCmd(pCcb->handle, &pMsg->apiUpdate.connSpec);
 }
 
 /*************************************************************************************************/
@@ -85,11 +89,11 @@ void dmConnUpdActUpdateMaster(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void dmConnUpdActL2cUpdateInd(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    /* always send back response */
-    L2cDmConnUpdateRsp(pMsg->l2cUpdateInd.identifier, pCcb->handle, L2C_CONN_PARAM_ACCEPTED);
+  /* always send back response */
+  L2cDmConnUpdateRsp(pMsg->l2cUpdateInd.identifier, pCcb->handle, L2C_CONN_PARAM_ACCEPTED);
 
-    /* send HCI command */
-    HciLeConnUpdateCmd(pCcb->handle, pMsg->l2cUpdateInd.pConnSpec);
+  /* send HCI command */
+  HciLeConnUpdateCmd(pCcb->handle, pMsg->l2cUpdateInd.pConnSpec);
 }
 
 /*************************************************************************************************/
@@ -105,16 +109,17 @@ void dmConnUpdActL2cUpdateInd(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void DmL2cConnUpdateInd(uint8_t identifier, uint16_t handle, hciConnSpec_t *pConnSpec)
 {
-    dmConnL2cUpdateInd_t updateInd;
-    dmConnCcb_t *pCcb;
+  dmConnL2cUpdateInd_t  updateInd;
+  dmConnCcb_t           *pCcb;
 
-    if ((pCcb = dmConnCcbByHandle(handle)) != NULL) {
-        updateInd.hdr.event = DM_CONN_MSG_L2C_UPDATE_IND;
-        updateInd.pConnSpec = pConnSpec;
-        updateInd.identifier = identifier;
+  if ((pCcb = dmConnCcbByHandle(handle)) != NULL)
+  {
+    updateInd.hdr.event = DM_CONN_MSG_L2C_UPDATE_IND;
+    updateInd.pConnSpec = pConnSpec;
+    updateInd.identifier = identifier;
 
-        dmConnUpdExecute(pCcb, (dmConnMsg_t *)&updateInd);
-    }
+    dmConnUpdExecute(pCcb, (dmConnMsg_t *) &updateInd);
+  }
 }
 
 /*************************************************************************************************/
@@ -131,7 +136,7 @@ void DmL2cConnUpdateInd(uint8_t identifier, uint16_t handle, hciConnSpec_t *pCon
 /*************************************************************************************************/
 dmConnId_t DmConnOpen(uint8_t clientId, uint8_t initPhys, uint8_t addrType, uint8_t *pAddr)
 {
-    return dmConnOpenAccept(clientId, initPhys, 0, 0, 0, 0, addrType, pAddr, DM_ROLE_MASTER);
+  return dmConnOpenAccept(clientId, initPhys, 0, 0, 0, 0, addrType, pAddr, DM_ROLE_MASTER);
 }
 
 /*************************************************************************************************/
@@ -145,7 +150,7 @@ dmConnId_t DmConnOpen(uint8_t clientId, uint8_t initPhys, uint8_t addrType, uint
 /*************************************************************************************************/
 void DmConnSetAddrType(uint8_t addrType)
 {
-    WsfTaskLock();
-    dmCb.connAddrType = addrType;
-    WsfTaskUnlock();
+  WsfTaskLock();
+  dmCb.connAddrType = addrType;
+  WsfTaskUnlock();
 }

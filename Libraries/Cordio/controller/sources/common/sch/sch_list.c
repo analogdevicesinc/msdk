@@ -34,36 +34,36 @@
 **************************************************************************************************/
 
 /*! \brief      Total BOD time including setup delay. */
-#define SCH_TOTAL_DUR(p) (p->minDurUsec + BbGetSchSetupDelayUs())
+#define SCH_TOTAL_DUR(p)                (p->minDurUsec + BbGetSchSetupDelayUs())
 
 /*! \brief      Time immediately after the given BOD. */
-#define SCH_END_TIME(p) (p->dueUsec + SCH_TOTAL_DUR(p))
+#define SCH_END_TIME(p)                 (p->dueUsec + SCH_TOTAL_DUR(p))
 
 /*! \brief      Is BOD[a] due time before BOD[b] due time (rt = reference time). */
-#define SCH_IS_DUE_BEFORE(a, b) (BbGetTargetTimeDelta(((b)->dueUsec), ((a)->dueUsec)) > 0)
+#define SCH_IS_DUE_BEFORE(a, b)         (BbGetTargetTimeDelta(((b)->dueUsec), ((a)->dueUsec)) > 0)
 
 /*! \brief      Is BOD[a] completion time before BOD[b] due time (rt = reference time). */
-#define SCH_IS_DONE_BEFORE(a, b) (BbGetTargetTimeDelta(SCH_END_TIME(a), ((b)->dueUsec)) == 0)
+#define SCH_IS_DONE_BEFORE(a, b)        (BbGetTargetTimeDelta(SCH_END_TIME(a), ((b)->dueUsec)) == 0)
 
 /*! \brief      Is BOD[a] due time after BOD[b] completion time. */
-#define SCH_IS_DUE_AFTER(a, b) (BbGetTargetTimeDelta(SCH_END_TIME(b), ((a)->dueUsec)) == 0)
+#define SCH_IS_DUE_AFTER(a, b)          (BbGetTargetTimeDelta(SCH_END_TIME(b), ((a)->dueUsec)) == 0)
 
 /*! \brief      Minimum time in microseconds to start scheduler timer. */
-#define SCH_MIN_TIMER_USEC 200
+#define SCH_MIN_TIMER_USEC      200
 
 /*! \brief      Margin in microseconds to cancel a BOD. */
-#define SCH_CANCEL_MARGIN_USEC 15
+#define SCH_CANCEL_MARGIN_USEC           15
 
 #ifndef SCH_TRACE_ENABLE
 /*! \brief      Enable scheduler trace. */
-#define SCH_TRACE_ENABLE FALSE
+#define SCH_TRACE_ENABLE  FALSE
 #endif
 
 #if SCH_TRACE_ENABLE
-#define SCH_TRACE_INFO0(msg) WSF_TRACE0("SCH", "INFO", msg)
-#define SCH_TRACE_INFO1(msg, var1) WSF_TRACE1("SCH", "INFO", msg, var1)
-#define SCH_TRACE_WARN0(msg) WSF_TRACE0("SCH", "WARN", msg)
-#define SCH_TRACE_WARN1(msg, var1) WSF_TRACE1("SCH", "WARN", msg, var1)
+#define SCH_TRACE_INFO0(msg)             WSF_TRACE0("SCH", "INFO", msg)
+#define SCH_TRACE_INFO1(msg, var1)       WSF_TRACE1("SCH", "INFO", msg, var1)
+#define SCH_TRACE_WARN0(msg)             WSF_TRACE0("SCH", "WARN", msg)
+#define SCH_TRACE_WARN1(msg, var1)       WSF_TRACE1("SCH", "WARN", msg, var1)
 #else
 /*! \brief      Information trace with 0 parameters. */
 #define SCH_TRACE_INFO0(msg)
@@ -75,10 +75,10 @@
 #define SCH_TRACE_WARN1(msg, var1)
 #endif
 /*! \brief      Maximum allowed number of deleted BOD due to conflicts. */
-#define SCH_MAX_DELETE_BOD 8
+#define SCH_MAX_DELETE_BOD                  8
 #ifndef SCH_CHECK_LIST_INTEGRITY
 /*! \brief      Check list requirements upon insertions and removals. */
-#define SCH_CHECK_LIST_INTEGRITY FALSE
+#define SCH_CHECK_LIST_INTEGRITY            FALSE
 #endif
 
 #if (SCH_CHECK_LIST_INTEGRITY)
@@ -91,12 +91,13 @@
 /*************************************************************************************************/
 static inline void SchCheckIsNotInserted(BbOpDesc_t *pBod)
 {
-    BbOpDesc_t *pCur = schCb.pHead;
+  BbOpDesc_t *pCur = schCb.pHead;
 
-    while (pCur != NULL) {
-        WSF_ASSERT(pCur != pBod);
-        pCur = pCur->pNext;
-    }
+  while (pCur != NULL)
+  {
+    WSF_ASSERT(pCur != pBod);
+    pCur = pCur->pNext;
+  }
 }
 #endif
 
@@ -111,17 +112,19 @@ static inline void SchCheckIsNotInserted(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 static inline bool_t SchCheckIsInserted(BbOpDesc_t *pBod)
 {
-    BbOpDesc_t *pCur = schCb.pHead;
+  BbOpDesc_t *pCur = schCb.pHead;
 
-    while (pCur != NULL) {
-        if (pCur == pBod) {
-            /* pBod found in the list. */
-            return TRUE;
-        }
-        pCur = pCur->pNext;
+  while (pCur != NULL)
+  {
+    if (pCur == pBod)
+    {
+      /* pBod found in the list. */
+      return TRUE;
     }
+    pCur = pCur->pNext;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -135,16 +138,17 @@ static inline bool_t SchCheckIsInserted(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 static inline bool_t SchEnoughTimeToCancel(BbOpDesc_t *pBod)
 {
-    bool_t result = FALSE;
+  bool_t result = FALSE;
 
-    const uint32_t curTime = PalBbGetCurrentTime();
-    const uint32_t delta = BbGetTargetTimeDelta(pBod->dueUsec, curTime);
+  const uint32_t curTime = PalBbGetCurrentTime();
+  const uint32_t delta = BbGetTargetTimeDelta(pBod->dueUsec, curTime);
 
-    if (delta >= BbGetSchSetupDelayUs()) {
-        result = TRUE;
-    }
+  if (delta >= BbGetSchSetupDelayUs())
+  {
+    result = TRUE;
+  }
 
-    return result;
+  return result;
 }
 
 /*************************************************************************************************/
@@ -156,22 +160,26 @@ static inline bool_t SchEnoughTimeToCancel(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 static inline bool_t schCheckCancelHead(void)
 {
-    bool_t result = FALSE;
+  bool_t result = FALSE;
 #if SCH_TIMER_REQUIRED == TRUE
-    if (schCb.state == SCH_STATE_IDLE) {
-        result = SchEnoughTimeToCancel(schCb.pHead);
-    } else {
-        /* If head BOD is executing, it can't be canceled. */
-        result = FALSE;
-    }
+  if (schCb.state == SCH_STATE_IDLE)
+  {
+    result = SchEnoughTimeToCancel(schCb.pHead);
+  }
+  else
+  {
+    /* If head BOD is executing, it can't be canceled. */
+    result = FALSE;
+  }
 #else
-    /* For platforms without sch timer, cancel the head. */
-    if ((result = SchEnoughTimeToCancel(schCb.pHead)) == TRUE) {
-        BbCancelBod();
-        schCb.state = SCH_STATE_IDLE;
-    }
+  /* For platforms without sch timer, cancel the head. */
+  if ((result = SchEnoughTimeToCancel(schCb.pHead)) == TRUE)
+  {
+    BbCancelBod();
+    schCb.state = SCH_STATE_IDLE;
+  }
 #endif
-    return result;
+  return result;
 }
 
 /*************************************************************************************************/
@@ -183,20 +191,20 @@ static inline bool_t schCheckCancelHead(void)
 /*************************************************************************************************/
 static inline void schInsertToEmptyList(BbOpDesc_t *pItem)
 {
-    WSF_ASSERT(pItem);
-    WSF_ASSERT(schCb.pHead == NULL);
-    WSF_ASSERT(schCb.pTail == NULL);
+  WSF_ASSERT(pItem);
+  WSF_ASSERT(schCb.pHead == NULL);
+  WSF_ASSERT(schCb.pTail == NULL);
 
-    schCb.pHead = pItem;
-    schCb.pTail = pItem;
+  schCb.pHead = pItem;
+  schCb.pTail = pItem;
 
-    pItem->pPrev = NULL;
-    pItem->pNext = NULL;
+  pItem->pPrev = NULL;
+  pItem->pNext = NULL;
 
-    SCH_TRACE_INFO1("++| schInsertToEmptyList |++ pBod=0x%08x", (uint32_t)pItem);
-    SCH_TRACE_INFO1("++|                      |++     .dueUsec=%u", pItem->dueUsec);
-    SCH_TRACE_INFO1("++|                      |++     .minDurUsec=%u", pItem->minDurUsec);
-    SCH_TRACE_INFO1("++|                      |++     .maxDurUsec=%u", pItem->maxDurUsec);
+  SCH_TRACE_INFO1("++| schInsertToEmptyList |++ pBod=0x%08x", (uint32_t)pItem);
+  SCH_TRACE_INFO1("++|                      |++     .dueUsec=%u", pItem->dueUsec);
+  SCH_TRACE_INFO1("++|                      |++     .minDurUsec=%u", pItem->minDurUsec);
+  SCH_TRACE_INFO1("++|                      |++     .maxDurUsec=%u", pItem->maxDurUsec);
 }
 
 /*************************************************************************************************/
@@ -209,23 +217,26 @@ static inline void schInsertToEmptyList(BbOpDesc_t *pItem)
 /*************************************************************************************************/
 static inline void schInsertBefore(BbOpDesc_t *pItem, BbOpDesc_t *pTgt)
 {
-    WSF_ASSERT(pTgt);
-    WSF_ASSERT(pItem);
+  WSF_ASSERT(pTgt);
+  WSF_ASSERT(pItem);
 
-    pItem->pNext = pTgt;
-    pItem->pPrev = pTgt->pPrev;
-    pTgt->pPrev = pItem;
+  pItem->pNext = pTgt;
+  pItem->pPrev = pTgt->pPrev;
+  pTgt->pPrev = pItem;
 
-    if (pItem->pPrev) {
-        pItem->pPrev->pNext = pItem;
-    } else {
-        schCb.pHead = pItem;
-    }
+  if (pItem->pPrev)
+  {
+    pItem->pPrev->pNext = pItem;
+  }
+  else
+  {
+    schCb.pHead = pItem;
+  }
 
-    SCH_TRACE_INFO1("++| schInsertBefore      |++ pBod=0x%08x", (uint32_t)pItem);
-    SCH_TRACE_INFO1("++|                      |++     .dueUsec=%u", pItem->dueUsec);
-    SCH_TRACE_INFO1("++|                      |++     .minDurUsec=%u", pItem->minDurUsec);
-    SCH_TRACE_INFO1("++|                      |++     .maxDurUsec=%u", pItem->maxDurUsec);
+  SCH_TRACE_INFO1("++| schInsertBefore      |++ pBod=0x%08x", (uint32_t)pItem);
+  SCH_TRACE_INFO1("++|                      |++     .dueUsec=%u", pItem->dueUsec);
+  SCH_TRACE_INFO1("++|                      |++     .minDurUsec=%u", pItem->minDurUsec);
+  SCH_TRACE_INFO1("++|                      |++     .maxDurUsec=%u", pItem->maxDurUsec);
 }
 
 /*************************************************************************************************/
@@ -238,23 +249,26 @@ static inline void schInsertBefore(BbOpDesc_t *pItem, BbOpDesc_t *pTgt)
 /*************************************************************************************************/
 static inline void schInsertAfter(BbOpDesc_t *pItem, BbOpDesc_t *pTgt)
 {
-    WSF_ASSERT(pTgt);
-    WSF_ASSERT(pItem);
+  WSF_ASSERT(pTgt);
+  WSF_ASSERT(pItem);
 
-    pItem->pPrev = pTgt;
-    pItem->pNext = pTgt->pNext;
-    pTgt->pNext = pItem;
+  pItem->pPrev = pTgt;
+  pItem->pNext = pTgt->pNext;
+  pTgt->pNext = pItem;
 
-    if (pItem->pNext) {
-        pItem->pNext->pPrev = pItem;
-    } else {
-        schCb.pTail = pItem;
-    }
+  if (pItem->pNext)
+  {
+    pItem->pNext->pPrev = pItem;
+  }
+  else
+  {
+    schCb.pTail = pItem;
+  }
 
-    SCH_TRACE_INFO1("++| schInsertAfter       |++ pBod=0x%08x", (uint32_t)pItem);
-    SCH_TRACE_INFO1("++|                      |++     .dueUsec=%u", pItem->dueUsec);
-    SCH_TRACE_INFO1("++|                      |++     .minDurUsec=%u", pItem->minDurUsec);
-    SCH_TRACE_INFO1("++|                      |++     .maxDurUsec=%u", pItem->maxDurUsec);
+  SCH_TRACE_INFO1("++| schInsertAfter       |++ pBod=0x%08x", (uint32_t)pItem);
+  SCH_TRACE_INFO1("++|                      |++     .dueUsec=%u", pItem->dueUsec);
+  SCH_TRACE_INFO1("++|                      |++     .minDurUsec=%u", pItem->minDurUsec);
+  SCH_TRACE_INFO1("++|                      |++     .maxDurUsec=%u", pItem->maxDurUsec);
 }
 
 /*************************************************************************************************/
@@ -264,16 +278,19 @@ static inline void schInsertAfter(BbOpDesc_t *pItem, BbOpDesc_t *pTgt)
 /*************************************************************************************************/
 void schRemoveHead(void)
 {
-    WSF_ASSERT(schCb.pHead);
+  WSF_ASSERT(schCb.pHead);
 
-    schCb.pHead = schCb.pHead->pNext;
+  schCb.pHead = schCb.pHead->pNext;
 
-    if (schCb.pHead) {
-        schCb.pHead->pPrev = NULL;
-    } else {
-        /* Now empty list */
-        schCb.pTail = NULL;
-    }
+  if (schCb.pHead)
+  {
+    schCb.pHead->pPrev = NULL;
+  }
+  else
+  {
+    /* Now empty list */
+    schCb.pTail = NULL;
+  }
 }
 
 /*************************************************************************************************/
@@ -285,25 +302,31 @@ void schRemoveHead(void)
 /*************************************************************************************************/
 static void schRemoveMiddle(BbOpDesc_t *pBod)
 {
-    if (schCb.pTail == pBod) {
-        /* Last element */
-        schCb.pTail = schCb.pTail->pPrev;
+  if (schCb.pTail == pBod)
+  {
+    /* Last element */
+    schCb.pTail = schCb.pTail->pPrev;
 
-        if (schCb.pTail) {
-            schCb.pTail->pNext = NULL;
-        } else {
-            /* Now empty list */
-            schCb.pHead = NULL;
-        }
-    } else {
-        /* Linkage is intact. */
-        WSF_ASSERT(pBod->pPrev);
-        WSF_ASSERT(pBod->pNext);
-
-        /* Middle element */
-        pBod->pPrev->pNext = pBod->pNext;
-        pBod->pNext->pPrev = pBod->pPrev;
+    if (schCb.pTail)
+    {
+      schCb.pTail->pNext = NULL;
     }
+    else
+    {
+      /* Now empty list */
+      schCb.pHead = NULL;
+    }
+  }
+  else
+  {
+    /* Linkage is intact. */
+    WSF_ASSERT(pBod->pPrev);
+    WSF_ASSERT(pBod->pNext);
+
+    /* Middle element */
+    pBod->pPrev->pNext = pBod->pNext;
+    pBod->pNext->pPrev = pBod->pPrev;
+  }
 }
 
 /*************************************************************************************************/
@@ -320,60 +343,72 @@ static void schRemoveMiddle(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 static bool_t schRemoveForConflict(BbOpDesc_t *pBod)
 {
-    if (schCb.pHead == NULL) {
-        return FALSE;
-    }
+  if (schCb.pHead == NULL)
+  {
+    return FALSE;
+  }
 
-    bool_t result = FALSE;
+  bool_t result = FALSE;
 
 #if SCH_TIMER_REQUIRED == FALSE
-    if (schCb.pHead == pBod) {
-        if ((result = SchEnoughTimeToCancel(pBod)) == TRUE) {
-            /* Stop timer for canceled BOD. */
-            PalTimerStop();
+  if (schCb.pHead == pBod)
+  {
+    if ((result = SchEnoughTimeToCancel(pBod)) == TRUE)
+    {
+      /* Stop timer for canceled BOD. */
+      PalTimerStop();
 
-            schRemoveHead();
+      schRemoveHead();
 
-            if (schCb.pHead) {
-                PalTimerStart(schGetTimeToExecBod(schCb.pHead));
-            }
-            schCb.state = SCH_STATE_IDLE;
-            result = TRUE;
-        }
+      if (schCb.pHead)
+      {
+        PalTimerStart(schGetTimeToExecBod(schCb.pHead));
+      }
+      schCb.state = SCH_STATE_IDLE;
+      result = TRUE;
     }
+  }
 #else
-    if (schCb.pHead == pBod) {
-        if (schCb.state == SCH_STATE_IDLE && (result = SchEnoughTimeToCancel(pBod)) == TRUE) {
-            /* Stop timer for canceled BOD. */
-            PalTimerStop();
+  if (schCb.pHead == pBod)
+  {
+    if (schCb.state == SCH_STATE_IDLE && (result = SchEnoughTimeToCancel(pBod)) == TRUE)
+    {
+      /* Stop timer for canceled BOD. */
+      PalTimerStop();
 
-            schRemoveHead();
+      schRemoveHead();
 
-            if (schCb.pHead) {
-                PalTimerStart(schGetTimeToExecBod(schCb.pHead));
-            }
-            result = TRUE;
-        }
-    } else if (schCb.pHead->pNext == pBod && schCb.state == SCH_STATE_EXEC) {
-        if ((result = SchEnoughTimeToCancel(pBod)) == TRUE) {
-            /* Stop timer for next BOD. */
-            PalTimerStop();
-
-            schRemoveMiddle(pBod);
-
-            if (schCb.pHead->pNext) {
-                PalTimerStart(schGetTimeToExecBod(schCb.pHead->pNext));
-            }
-            result = TRUE;
-        }
+      if (schCb.pHead)
+      {
+        PalTimerStart(schGetTimeToExecBod(schCb.pHead));
+      }
+      result = TRUE;
     }
+  }
+  else if (schCb.pHead->pNext == pBod && schCb.state == SCH_STATE_EXEC)
+  {
+    if ((result = SchEnoughTimeToCancel(pBod)) == TRUE)
+    {
+      /* Stop timer for next BOD. */
+      PalTimerStop();
+
+      schRemoveMiddle(pBod);
+
+      if (schCb.pHead->pNext)
+      {
+        PalTimerStart(schGetTimeToExecBod(schCb.pHead->pNext));
+      }
+      result = TRUE;
+    }
+  }
 #endif
-    else {
-        schRemoveMiddle(pBod);
-        result = TRUE;
-    }
+  else
+  {
+    schRemoveMiddle(pBod);
+    result = TRUE;
+  }
 
-    return result;
+  return result;
 }
 
 /*************************************************************************************************/
@@ -389,22 +424,27 @@ static bool_t schRemoveForConflict(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 static bool_t SchIsBodResolvable(BbOpDesc_t *pItem, BbOpDesc_t *pTgt, BbConflictAct_t conflictCback)
 {
-    bool_t result = FALSE;
+  bool_t result = FALSE;
 
-    if (pItem->reschPolicy < pTgt->reschPolicy) {
-        result = TRUE;
-    } else if ((pItem->reschPolicy == pTgt->reschPolicy) && conflictCback) {
-        if (conflictCback(pItem, pTgt) == pItem) {
-            result = TRUE;
-        }
-    } else {
-        /* pItem is lower priority; no insertion. */
-        LL_TRACE_WARN2(
-            "!!! Scheduling conflict: existing policy=%u prioritized over incoming policy=%u",
-            pTgt->reschPolicy, pItem->reschPolicy);
+  if (pItem->reschPolicy < pTgt->reschPolicy)
+  {
+    result = TRUE;
+  }
+  else if ((pItem->reschPolicy == pTgt->reschPolicy) &&
+           conflictCback)
+  {
+    if (conflictCback(pItem, pTgt) == pItem)
+    {
+      result = TRUE;
     }
+  }
+  else
+  {
+    /* pItem is lower priority; no insertion. */
+    LL_TRACE_WARN2("!!! Scheduling conflict: existing policy=%u prioritized over incoming policy=%u", pTgt->reschPolicy, pItem->reschPolicy);
+  }
 
-    return result;
+  return result;
 }
 
 /*************************************************************************************************/
@@ -423,60 +463,75 @@ static bool_t SchIsBodResolvable(BbOpDesc_t *pItem, BbOpDesc_t *pTgt, BbConflict
 /*************************************************************************************************/
 static bool_t SchResolveConflict(BbOpDesc_t *pItem, BbOpDesc_t *pTgt)
 {
-    bool_t result = FALSE;
-    BbOpDesc_t *pCur = pTgt;
-    int numDeletedBod = 0;
-    BbOpDesc_t *pDeleted[SCH_MAX_DELETE_BOD];
+  bool_t result = FALSE;
+  BbOpDesc_t *pCur = pTgt;
+  int numDeletedBod = 0;
+  BbOpDesc_t *pDeleted[SCH_MAX_DELETE_BOD];
 
-    WSF_ASSERT(pTgt);
-    WSF_ASSERT(pItem);
+  WSF_ASSERT(pTgt);
+  WSF_ASSERT(pItem);
 
-    while (TRUE) {
-        if (numDeletedBod == SCH_MAX_DELETE_BOD) {
-            result = FALSE;
-            break;
-        }
-
-        pDeleted[numDeletedBod++] = pCur;
-
-        if ((pCur->pNext == NULL) || /* pCur is the tail. */
-            (SCH_IS_DONE_BEFORE(pItem, pCur->pNext))) /* Only conflict with pCur. */
-        {
-            /* Remove only 1 conflicting BOD. */
-            result = schRemoveForConflict(pCur);
-            break;
-        } else {
-            /* Remove all conflicting BODs until it fails. */
-            if ((result = schRemoveForConflict(pCur)) == FALSE) {
-                break;
-            }
-        }
-
-        /* Traverse to the next BOD. */
-        pCur = pCur->pNext;
+  while (TRUE)
+  {
+    if (numDeletedBod == SCH_MAX_DELETE_BOD)
+    {
+      result = FALSE;
+      break;
     }
 
-    if (result == TRUE) {
-        if (pCur->pNext) {
-            schInsertBefore(pItem, pCur->pNext);
-        } else if (pTgt->pPrev) {
-            schInsertAfter(pItem, pTgt->pPrev);
-        } else {
-            /* Insert at head. */
-            schInsertToEmptyList(pItem);
-        }
+    pDeleted[numDeletedBod++] = pCur;
 
-        /* Call abort callback for all removed BODs. */
-        for (int i = 0; i < numDeletedBod; i++) {
-            if (pDeleted[i]->abortCback) {
-                pDeleted[i]->abortCback(pDeleted[i]);
-            }
-        }
-    } else {
-        LL_TRACE_WARN0("!!! Could not remove existing BOD");
+    if ((pCur->pNext == NULL) ||                                /* pCur is the tail. */
+        (SCH_IS_DONE_BEFORE(pItem, pCur->pNext)))               /* Only conflict with pCur. */
+    {
+      /* Remove only 1 conflicting BOD. */
+      result = schRemoveForConflict(pCur);
+      break;
+    }
+    else
+    {
+      /* Remove all conflicting BODs until it fails. */
+      if ((result = schRemoveForConflict(pCur)) == FALSE)
+      {
+        break;
+      }
     }
 
-    return result;
+    /* Traverse to the next BOD. */
+    pCur = pCur->pNext;
+  }
+
+  if (result == TRUE)
+  {
+    if (pCur->pNext)
+    {
+      schInsertBefore(pItem, pCur->pNext);
+    }
+    else if (pTgt->pPrev)
+    {
+      schInsertAfter(pItem, pTgt->pPrev);
+    }
+    else
+    {
+      /* Insert at head. */
+      schInsertToEmptyList(pItem);
+    }
+
+    /* Call abort callback for all removed BODs. */
+    for (int i = 0; i < numDeletedBod; i++)
+    {
+      if (pDeleted[i]->abortCback)
+      {
+        pDeleted[i]->abortCback(pDeleted[i]);
+      }
+    }
+  }
+  else
+  {
+    LL_TRACE_WARN0("!!! Could not remove existing BOD");
+  }
+
+  return result;
 }
 
 /*************************************************************************************************/
@@ -491,34 +546,37 @@ static bool_t SchResolveConflict(BbOpDesc_t *pItem, BbOpDesc_t *pTgt)
  *  \return     TRUE if conflict is resolvable, FALSE otherwise.
  */
 /*************************************************************************************************/
-static bool_t SchIsConflictResolvable(BbOpDesc_t *pItem, BbOpDesc_t *pTgt,
-                                      BbConflictAct_t conflictCback)
+static bool_t SchIsConflictResolvable(BbOpDesc_t *pItem, BbOpDesc_t *pTgt, BbConflictAct_t conflictCback)
 {
-    bool_t result;
+  bool_t result;
 
-    BbOpDesc_t *pCur = pTgt;
+  BbOpDesc_t *pCur = pTgt;
 
-    WSF_ASSERT(pTgt)
-    WSF_ASSERT(pItem);
+  WSF_ASSERT(pTgt)
+  WSF_ASSERT(pItem);
 
-    while (TRUE) {
-        if ((pCur->pNext == NULL) || /* pCur is the tail. */
-            (SCH_IS_DONE_BEFORE(pItem, pCur->pNext))) /* Only conflict with pCur. */
-        {
-            /* Only 1 conflicting BOD. */
-            result = SchIsBodResolvable(pItem, pCur, conflictCback);
-            break;
-        } else {
-            /* Check all conflicting BODs. */
-            if ((result = SchIsBodResolvable(pItem, pCur, conflictCback)) == FALSE) {
-                break;
-            }
-        }
-        /* Traverse to the next BOD. */
-        pCur = pCur->pNext;
+  while (TRUE)
+  {
+    if ((pCur->pNext == NULL) ||                                /* pCur is the tail. */
+        (SCH_IS_DONE_BEFORE(pItem, pCur->pNext)))     /* Only conflict with pCur. */
+    {
+      /* Only 1 conflicting BOD. */
+      result = SchIsBodResolvable(pItem, pCur, conflictCback);
+      break;
     }
+    else
+    {
+      /* Check all conflicting BODs. */
+      if ((result = SchIsBodResolvable(pItem, pCur, conflictCback)) == FALSE)
+      {
+        break;
+      }
+    }
+    /* Traverse to the next BOD. */
+    pCur = pCur->pNext;
+  }
 
-    return result;
+  return result;
 }
 
 /*************************************************************************************************/
@@ -530,45 +588,53 @@ static bool_t SchIsConflictResolvable(BbOpDesc_t *pItem, BbOpDesc_t *pTgt,
 /*************************************************************************************************/
 static inline void SchInsertTryLoadBod(BbOpDesc_t *pBod)
 {
-    uint32_t execTimeUsec = schGetTimeToExecBod(pBod);
+  uint32_t execTimeUsec = schGetTimeToExecBod(pBod);
 
-    WSF_ASSERT(pBod);
-    WSF_ASSERT(schCb.pHead);
+  WSF_ASSERT(pBod);
+  WSF_ASSERT(schCb.pHead);
 
-    /* If inserted BOD is head. */
-    if (pBod == schCb.pHead) {
-        /* At this moment, head BOD should not be loaded. */
-        WSF_ASSERT(schCb.state == SCH_STATE_IDLE);
-        if (execTimeUsec >= SCH_MIN_TIMER_USEC) {
-            /* If HEAD BOD due time is not close, add scheduler timer to load it in the future.
+  /* If inserted BOD is head. */
+  if (pBod == schCb.pHead)
+  {
+    /* At this moment, head BOD should not be loaded. */
+    WSF_ASSERT(schCb.state == SCH_STATE_IDLE);
+    if (execTimeUsec >= SCH_MIN_TIMER_USEC)
+    {
+      /* If HEAD BOD due time is not close, add scheduler timer to load it in the future.
        * Always stop existing timer first for simplicity.
        */
-            PalTimerStop();
-            PalTimerStart(execTimeUsec);
-        } else {
-            /* Send scheduler load event. */
-            SchLoadHandler();
-        }
+      PalTimerStop();
+      PalTimerStart(execTimeUsec);
     }
+    else
+    {
+      /* Send scheduler load event. */
+      SchLoadHandler();
+    }
+  }
 #if SCH_TIMER_REQUIRED == TRUE
-    /* If head is executing and inserted BOD is the second one in the list,
+  /* If head is executing and inserted BOD is the second one in the list,
    * we might need to add scheduler timer or do curtail load.
    */
-    else if (pBod == schCb.pHead->pNext && schCb.state == SCH_STATE_EXEC) {
-        /* At this moment, head BOD should be in the past.  */
-        WSF_ASSERT(schGetTimeToExecBod(schCb.pHead) < SCH_MIN_TIMER_USEC);
+  else if (pBod == schCb.pHead->pNext && schCb.state == SCH_STATE_EXEC)
+  {
+    /* At this moment, head BOD should be in the past.  */
+    WSF_ASSERT(schGetTimeToExecBod(schCb.pHead) < SCH_MIN_TIMER_USEC);
 
-        if (execTimeUsec >= SCH_MIN_TIMER_USEC) {
-            /* If BOD due time is not close, add scheduler timer to load it in the future.
+    if (execTimeUsec >= SCH_MIN_TIMER_USEC)
+    {
+      /* If BOD due time is not close, add scheduler timer to load it in the future.
        * Always stop existing timer first for simplicity.
        */
-            PalTimerStop();
-            PalTimerStart(execTimeUsec);
-        } else {
-            /* Send scheduler load event. */
-            SchLoadHandler();
-        }
+      PalTimerStop();
+      PalTimerStart(execTimeUsec);
     }
+    else
+    {
+      /* Send scheduler load event. */
+      SchLoadHandler();
+    }
+  }
 #endif
 }
 
@@ -584,39 +650,48 @@ static inline void SchInsertTryLoadBod(BbOpDesc_t *pBod)
 void SchInsertNextAvailable(BbOpDesc_t *pBod)
 {
 #if (SCH_CHECK_LIST_INTEGRITY)
-    SchCheckIsNotInserted(pBod);
+  SchCheckIsNotInserted(pBod);
 #endif
 
-    pBod->dueUsec = PalBbGetCurrentTime() + BbGetSchSetupDelayUs();
+  pBod->dueUsec = PalBbGetCurrentTime() + BbGetSchSetupDelayUs();
 
-    if (schCb.pHead == NULL) {
-        schInsertToEmptyList(pBod);
-    } else if (SCH_IS_DONE_BEFORE(pBod, schCb.pHead) && schCheckCancelHead()) {
-        /* Insert at head */
-        WSF_ASSERT(pBod != schCb.pHead);
-        schInsertBefore(pBod, schCb.pHead);
-    } else {
-        BbOpDesc_t *pCur = schCb.pHead;
+  if (schCb.pHead == NULL)
+  {
+    schInsertToEmptyList(pBod);
+  }
+  else if (SCH_IS_DONE_BEFORE(pBod, schCb.pHead) &&
+           schCheckCancelHead())
+  {
+    /* Insert at head */
+    WSF_ASSERT(pBod != schCb.pHead);
+    schInsertBefore(pBod, schCb.pHead);
+  }
+  else
+  {
+    BbOpDesc_t *pCur = schCb.pHead;
 
-        while (TRUE) {
-            WSF_ASSERT(pBod != pCur);
+    while (TRUE)
+    {
+      WSF_ASSERT(pBod != pCur);
 
-            /* Only update due time when pCur ends in the future. */
-            if (!SCH_IS_DONE_BEFORE(pCur, pBod)) {
-                pBod->dueUsec = SCH_END_TIME(pCur);
-            }
+      /* Only update due time when pCur ends in the future. */
+      if (!SCH_IS_DONE_BEFORE(pCur, pBod))
+      {
+        pBod->dueUsec = SCH_END_TIME(pCur);
+      }
 
-            if ((pCur->pNext == NULL) || /* insert at tail */
-                SCH_IS_DONE_BEFORE(pBod, pCur->pNext)) {
-                schInsertAfter(pBod, pCur);
-                break;
-            }
+      if ((pCur->pNext == NULL) ||                          /* insert at tail */
+          SCH_IS_DONE_BEFORE(pBod, pCur->pNext))
+      {
+        schInsertAfter(pBod, pCur);
+        break;
+      }
 
-            pCur = pCur->pNext;
-        }
+      pCur = pCur->pNext;
     }
+  }
 
-    SchInsertTryLoadBod(pBod);
+  SchInsertTryLoadBod(pBod);
 }
 
 /*************************************************************************************************/
@@ -633,65 +708,70 @@ void SchInsertNextAvailable(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 bool_t SchInsertAtDueTime(BbOpDesc_t *pBod, BbConflictAct_t conflictCback)
 {
-    bool_t result = FALSE;
+  bool_t result = FALSE;
 
 #if (SCH_CHECK_LIST_INTEGRITY)
-    SchCheckIsNotInserted(pBod);
+  SchCheckIsNotInserted(pBod);
 #endif
 
-    if (!schDueTimeInFuture(pBod)) {
-        return FALSE;
-    }
+  if (!schDueTimeInFuture(pBod))
+  {
+    return FALSE;
+  }
 
-    if (schCb.pHead == NULL) {
-        /* No conflict when list is empty. */
-        WSF_ASSERT(pBod != schCb.pHead);
-        schInsertToEmptyList(pBod);
-        result = TRUE;
-    } else {
-        /* List is not empty. */
-        BbOpDesc_t *pCur = schCb.pHead;
+  if (schCb.pHead == NULL)
+  {
+    /* No conflict when list is empty. */
+    WSF_ASSERT(pBod != schCb.pHead);
+    schInsertToEmptyList(pBod);
+    result = TRUE;
+  }
+  else
+  {
+    /* List is not empty. */
+    BbOpDesc_t *pCur = schCb.pHead;
 
-        while (TRUE) {
-            WSF_ASSERT(pBod != pCur);
-            if (SCH_IS_DONE_BEFORE(
-                    pBod,
-                    pCur)) /* BOD is due and done before pCur(no overlap), try to insert before. */
-            {
-                if (pCur == schCb.pHead) {
-                    (void)schCheckCancelHead();
-                }
-                /* Insert before head case. */
-                schInsertBefore(pBod, pCur);
-                result = TRUE;
-                break;
-            } else if (!SCH_IS_DONE_BEFORE(
-                           pCur,
-                           pBod)) /* pCur has overlap with pBod, check priority and resolve BOD. */
-            {
-                if ((result = SchIsConflictResolvable(pBod, pCur, conflictCback)) == TRUE) {
-                    /* Resolve conflict here otherwise delay conflict resolution when BOD is executed. */
-                    result = SchResolveConflict(pBod, pCur);
-                }
-                break;
-            } else if (pCur->pNext ==
-                       NULL) /* BOD is due after pCur and pCur is tail, insert after. */
-            {
-                schInsertAfter(pBod, pCur);
-                result = TRUE;
-                break;
-            }
-
-            /* Traverse to the next BOD. */
-            pCur = pCur->pNext;
+    while (TRUE)
+    {
+      WSF_ASSERT(pBod != pCur);
+      if (SCH_IS_DONE_BEFORE(pBod, pCur))          /* BOD is due and done before pCur(no overlap), try to insert before. */
+      {
+        if (pCur == schCb.pHead)
+        {
+          (void) schCheckCancelHead();
         }
-    }
+        /* Insert before head case. */
+        schInsertBefore(pBod, pCur);
+        result = TRUE;
+        break;
+      }
+      else if (!SCH_IS_DONE_BEFORE(pCur, pBod))    /* pCur has overlap with pBod, check priority and resolve BOD. */
+      {
+        if ((result = SchIsConflictResolvable(pBod, pCur, conflictCback)) == TRUE)
+        {
+          /* Resolve conflict here otherwise delay conflict resolution when BOD is executed. */
+          result = SchResolveConflict(pBod, pCur);
+        }
+        break;
+      }
+      else if (pCur->pNext == NULL)                /* BOD is due after pCur and pCur is tail, insert after. */
+      {
+        schInsertAfter(pBod, pCur);
+        result = TRUE;
+        break;
+      }
 
-    if (result) {
-        SchInsertTryLoadBod(pBod);
+      /* Traverse to the next BOD. */
+      pCur = pCur->pNext;
     }
+  }
 
-    return result;
+  if (result)
+  {
+    SchInsertTryLoadBod(pBod);
+  }
+
+  return result;
 }
 
 /*************************************************************************************************/
@@ -710,84 +790,105 @@ bool_t SchInsertAtDueTime(BbOpDesc_t *pBod, BbConflictAct_t conflictCback)
 /*************************************************************************************************/
 bool_t SchInsertEarlyAsPossible(BbOpDesc_t *pBod, uint32_t min, uint32_t max)
 {
-    WSF_ASSERT(min <= max);
+  WSF_ASSERT(min <= max);
 
 #if (SCH_CHECK_LIST_INTEGRITY)
-    SchCheckIsNotInserted(pBod);
+  SchCheckIsNotInserted(pBod);
 #endif
 
-    bool_t result = FALSE;
+  bool_t result = FALSE;
 
-    const uint32_t dueOrigin = pBod->dueUsec;
+  const uint32_t dueOrigin = pBod->dueUsec;
 
-    /* Try inserting at minimum interval. */
-    pBod->dueUsec += min;
+  /* Try inserting at minimum interval. */
+  pBod->dueUsec += min;
 
-    if (!schDueTimeInFuture(pBod)) {
-        if (max != SCH_MAX_SPAN) {
-            /* Reset due time origin. */
-            pBod->dueUsec = dueOrigin;
-            return FALSE;
-        } else {
-            /* With SCH_MAX_SPAN, this function will insert the BOD regardless of the current due. */
-            pBod->dueUsec = PalBbGetCurrentTime() + BbGetSchSetupDelayUs();
+  if (!schDueTimeInFuture(pBod))
+  {
+    if (max != SCH_MAX_SPAN)
+    {
+      /* Reset due time origin. */
+      pBod->dueUsec = dueOrigin;
+      return FALSE;
+    }
+    else
+    {
+      /* With SCH_MAX_SPAN, this function will insert the BOD regardless of the current due. */
+      pBod->dueUsec = PalBbGetCurrentTime() + BbGetSchSetupDelayUs();
+    }
+  }
+
+  if (schCb.pHead == NULL)
+  {
+    schInsertToEmptyList(pBod);
+    result = TRUE;
+  }
+  else if (SCH_IS_DUE_BEFORE (pBod, schCb.pHead) &&
+           SCH_IS_DONE_BEFORE(pBod, schCb.pHead) &&
+           schCheckCancelHead())
+  {
+    /* Insert at head */
+    WSF_ASSERT(pBod != schCb.pHead);
+    schInsertBefore(pBod, schCb.pHead);
+    result = TRUE;
+  }
+  else if (SCH_IS_DONE_BEFORE(schCb.pTail, pBod))
+  {
+    /* Insert at tail */
+    WSF_ASSERT(pBod != schCb.pTail);
+    schInsertAfter(pBod, schCb.pTail);
+    result = TRUE;
+  }
+  else
+  {
+    BbOpDesc_t *pCur = schCb.pHead;
+
+    while (pCur)
+    {
+      WSF_ASSERT(pBod != pCur);
+
+      /* Only update due time when pCur ends in the future. */
+      if (!SCH_IS_DONE_BEFORE(pCur, pBod))
+      {
+        pBod->dueUsec = SCH_END_TIME(pCur);
+      }
+      uint32_t nextAvailInter = pBod->dueUsec - dueOrigin;
+
+      if ((nextAvailInter >= min) &&
+          (nextAvailInter <= max))
+      {
+        if (pCur->pNext == NULL)
+        {
+          /* Insert at tail */
+          schInsertAfter(pBod, pCur);
+          result = TRUE;
+          break;
         }
-    }
-
-    if (schCb.pHead == NULL) {
-        schInsertToEmptyList(pBod);
-        result = TRUE;
-    } else if (SCH_IS_DUE_BEFORE(pBod, schCb.pHead) && SCH_IS_DONE_BEFORE(pBod, schCb.pHead) &&
-               schCheckCancelHead()) {
-        /* Insert at head */
-        WSF_ASSERT(pBod != schCb.pHead);
-        schInsertBefore(pBod, schCb.pHead);
-        result = TRUE;
-    } else if (SCH_IS_DONE_BEFORE(schCb.pTail, pBod)) {
-        /* Insert at tail */
-        WSF_ASSERT(pBod != schCb.pTail);
-        schInsertAfter(pBod, schCb.pTail);
-        result = TRUE;
-    } else {
-        BbOpDesc_t *pCur = schCb.pHead;
-
-        while (pCur) {
-            WSF_ASSERT(pBod != pCur);
-
-            /* Only update due time when pCur ends in the future. */
-            if (!SCH_IS_DONE_BEFORE(pCur, pBod)) {
-                pBod->dueUsec = SCH_END_TIME(pCur);
-            }
-            uint32_t nextAvailInter = pBod->dueUsec - dueOrigin;
-
-            if ((nextAvailInter >= min) && (nextAvailInter <= max)) {
-                if (pCur->pNext == NULL) {
-                    /* Insert at tail */
-                    schInsertAfter(pBod, pCur);
-                    result = TRUE;
-                    break;
-                } else if (SCH_IS_DONE_BEFORE(pBod, pCur->pNext)) {
-                    /* Insert middle. */
-                    schInsertBefore(pBod, pCur->pNext);
-                    result = TRUE;
-                    break;
-                }
-            }
-
-            pCur = pCur->pNext;
+        else if (SCH_IS_DONE_BEFORE(pBod, pCur->pNext))
+        {
+          /* Insert middle. */
+          schInsertBefore(pBod, pCur->pNext);
+          result = TRUE;
+          break;
         }
-    }
+      }
 
-    if (result) {
-        SchInsertTryLoadBod(pBod);
+      pCur = pCur->pNext;
     }
+  }
 
-    if (!result) {
-        /* Reset due time origin. */
-        pBod->dueUsec = dueOrigin;
-    }
+  if (result)
+  {
+    SchInsertTryLoadBod(pBod);
+  }
 
-    return result;
+  if (!result)
+  {
+    /* Reset due time origin. */
+    pBod->dueUsec = dueOrigin;
+  }
+
+  return result;
 }
 
 /*************************************************************************************************/
@@ -806,85 +907,102 @@ bool_t SchInsertEarlyAsPossible(BbOpDesc_t *pBod, uint32_t min, uint32_t max)
 /*************************************************************************************************/
 bool_t SchInsertLateAsPossible(BbOpDesc_t *pBod, uint32_t min, uint32_t max)
 {
-    WSF_ASSERT(min <= max);
+  WSF_ASSERT(min <= max);
 
-    bool_t result = FALSE;
+  bool_t result = FALSE;
 
 #if (SCH_CHECK_LIST_INTEGRITY)
-    SchCheckIsNotInserted(pBod);
+  SchCheckIsNotInserted(pBod);
 #endif
 
-    const uint32_t dueOrigin = pBod->dueUsec;
+  const uint32_t dueOrigin = pBod->dueUsec;
 
-    /* Try inserting at maximum interval. */
-    pBod->dueUsec = dueOrigin + max;
+  /* Try inserting at maximum interval. */
+  pBod->dueUsec = dueOrigin + max;
 
-    if (schCb.pTail == NULL) {
-        if (schDueTimeInFuture(pBod)) {
-            schInsertToEmptyList(pBod);
-            result = TRUE;
-        }
-    } else if (SCH_IS_DUE_AFTER(pBod, schCb.pTail)) {
-        if (schDueTimeInFuture(pBod)) {
-            /* Insert at tail. */
-            WSF_ASSERT(pBod != schCb.pTail);
-            schInsertAfter(pBod, schCb.pTail);
-            result = TRUE;
-        }
-    } else {
-        BbOpDesc_t *pCur = schCb.pTail;
-
-        while (pCur) {
-            WSF_ASSERT(pBod != pCur);
-
-            /* The current BOD is the head BOD, check to see if there is time to schedule it before. */
-            if (pCur->pPrev == NULL) {
-                uint32_t nextAvailInter =
-                    BbGetTargetTimeDelta((pCur->dueUsec - SCH_TOTAL_DUR(pBod)), dueOrigin);
-                uint32_t targetOffset = WSF_MIN(max, nextAvailInter);
-                pBod->dueUsec = dueOrigin + targetOffset;
-
-                if ((targetOffset >= min) && SCH_IS_DUE_BEFORE(pBod, pCur) &&
-                    schDueTimeInFuture(pBod) && schCheckCancelHead()) {
-                    /* Insert at head. */
-                    schInsertBefore(pBod, pCur);
-                    result = TRUE;
-                    break;
-                }
-            }
-            /* The current BOD is a intermediate BOD, check to see if we can insert in-between BODs. */
-            else {
-                pBod->dueUsec = SCH_END_TIME(pCur->pPrev);
-
-                if (!schDueTimeInFuture(pBod)) {
-                    break;
-                }
-
-                uint32_t nextAvailInter = BbGetTargetTimeDelta(pBod->dueUsec, dueOrigin);
-
-                if ((nextAvailInter >= min) && (nextAvailInter <= max) &&
-                    SCH_IS_DONE_BEFORE(pBod, pCur)) {
-                    /* Insert middle. */
-                    schInsertBefore(pBod, pCur);
-                    result = TRUE;
-                    break;
-                }
-            }
-
-            pCur = pCur->pPrev;
-        }
+  if (schCb.pTail == NULL)
+  {
+    if (schDueTimeInFuture(pBod))
+    {
+      schInsertToEmptyList(pBod);
+      result = TRUE;
     }
-
-    if (result) {
-        SchInsertTryLoadBod(pBod);
+  }
+  else if (SCH_IS_DUE_AFTER(pBod, schCb.pTail))
+  {
+    if (schDueTimeInFuture(pBod))
+    {
+      /* Insert at tail. */
+      WSF_ASSERT(pBod != schCb.pTail);
+      schInsertAfter(pBod, schCb.pTail);
+      result = TRUE;
     }
+  }
+  else
+  {
+    BbOpDesc_t *pCur = schCb.pTail;
 
-    if (!result) {
-        /* Reset due time origin. */
-        pBod->dueUsec = dueOrigin;
+    while (pCur)
+    {
+      WSF_ASSERT(pBod != pCur);
+
+      /* The current BOD is the head BOD, check to see if there is time to schedule it before. */
+      if (pCur->pPrev == NULL)
+      {
+        uint32_t nextAvailInter = BbGetTargetTimeDelta((pCur->dueUsec - SCH_TOTAL_DUR(pBod)), dueOrigin);
+        uint32_t targetOffset = WSF_MIN(max, nextAvailInter);
+        pBod->dueUsec = dueOrigin + targetOffset;
+
+        if ((targetOffset >= min) &&
+            SCH_IS_DUE_BEFORE(pBod, pCur) &&
+            schDueTimeInFuture(pBod) &&
+            schCheckCancelHead())
+        {
+          /* Insert at head. */
+          schInsertBefore(pBod, pCur);
+          result = TRUE;
+          break;
+        }
+      }
+      /* The current BOD is a intermediate BOD, check to see if we can insert in-between BODs. */
+      else
+      {
+        pBod->dueUsec = SCH_END_TIME(pCur->pPrev);
+
+        if (!schDueTimeInFuture(pBod))
+        {
+          break;
+        }
+
+        uint32_t nextAvailInter = BbGetTargetTimeDelta(pBod->dueUsec, dueOrigin);
+
+        if ((nextAvailInter >= min) &&
+            (nextAvailInter <= max) &&
+            SCH_IS_DONE_BEFORE(pBod, pCur))
+        {
+          /* Insert middle. */
+          schInsertBefore(pBod, pCur);
+          result = TRUE;
+          break;
+        }
+      }
+
+      pCur = pCur->pPrev;
     }
+  }
 
-    return result;
+  if (result)
+  {
+    SchInsertTryLoadBod(pBod);
+  }
+
+  if (!result)
+  {
+    /* Reset due time origin. */
+    pBod->dueUsec = dueOrigin;
+  }
+
+  return result;
 }
 
 /*************************************************************************************************/
@@ -900,79 +1018,97 @@ bool_t SchInsertLateAsPossible(BbOpDesc_t *pBod, uint32_t min, uint32_t max)
 /*************************************************************************************************/
 bool_t SchRemove(BbOpDesc_t *pBod)
 {
-    WSF_ASSERT(pBod);
+  WSF_ASSERT(pBod);
 
-    if (!SchCheckIsInserted(pBod)) {
-        LL_TRACE_WARN0("No such BOD to remove");
-        return FALSE;
-    }
+  if (!SchCheckIsInserted(pBod))
+  {
+    LL_TRACE_WARN0("No such BOD to remove");
+    return FALSE;
+  }
 
-    bool_t result = FALSE;
+  bool_t result = FALSE;
 
 #if SCH_TIMER_REQUIRED == FALSE
-    if (schCb.pHead == pBod) {
-        if ((result = SchEnoughTimeToCancel(pBod)) == TRUE) {
-            /* Stop timer for canceled BOD. */
-            PalTimerStop();
+  if (schCb.pHead == pBod)
+  {
+    if ((result = SchEnoughTimeToCancel(pBod)) == TRUE)
+    {
+      /* Stop timer for canceled BOD. */
+      PalTimerStop();
 
-            /* Call callback after removing from list. */
-            schRemoveHead();
+      /* Call callback after removing from list. */
+      schRemoveHead();
 
-            if (schCb.pHead) {
-                PalTimerStart(schGetTimeToExecBod(schCb.pHead));
-            }
+      if (schCb.pHead)
+      {
+        PalTimerStart(schGetTimeToExecBod(schCb.pHead));
+      }
 
-            schCb.state = SCH_STATE_IDLE;
-            result = TRUE;
-        } else {
-            BbSetBodTerminateFlag();
-        }
+      schCb.state = SCH_STATE_IDLE;
+      result = TRUE;
     }
+    else
+    {
+      BbSetBodTerminateFlag();
+    }
+  }
 #else
-    if (schCb.pHead == pBod) {
-        if (schCb.state == SCH_STATE_IDLE && (result = SchEnoughTimeToCancel(pBod)) == TRUE) {
-            /* Stop timer for canceled BOD. */
-            PalTimerStop();
+  if (schCb.pHead == pBod)
+  {
+    if (schCb.state == SCH_STATE_IDLE && (result = SchEnoughTimeToCancel(pBod)) == TRUE)
+    {
+      /* Stop timer for canceled BOD. */
+      PalTimerStop();
 
-            /* Call callback after removing from list. */
-            schRemoveHead();
+      /* Call callback after removing from list. */
+      schRemoveHead();
 
-            if (schCb.pHead) {
-                PalTimerStart(schGetTimeToExecBod(schCb.pHead));
-            }
-            result = TRUE;
-        } else {
-            BbSetBodTerminateFlag();
-        }
-    } else if (schCb.pHead->pNext == pBod && schCb.state == SCH_STATE_EXEC) {
-        if ((result = SchEnoughTimeToCancel(pBod)) == TRUE) {
-            /* Stop timer for next BOD. */
-            PalTimerStop();
-
-            schRemoveMiddle(pBod);
-
-            if (schCb.pHead->pNext) {
-                PalTimerStart(schGetTimeToExecBod(schCb.pHead->pNext));
-            }
-            result = TRUE;
-        }
+      if (schCb.pHead)
+      {
+        PalTimerStart(schGetTimeToExecBod(schCb.pHead));
+      }
+      result = TRUE;
     }
+    else
+    {
+      BbSetBodTerminateFlag();
+    }
+  }
+  else if (schCb.pHead->pNext == pBod && schCb.state == SCH_STATE_EXEC)
+  {
+    if ((result = SchEnoughTimeToCancel(pBod)) == TRUE)
+    {
+      /* Stop timer for next BOD. */
+      PalTimerStop();
+
+      schRemoveMiddle(pBod);
+
+      if (schCb.pHead->pNext)
+      {
+        PalTimerStart(schGetTimeToExecBod(schCb.pHead->pNext));
+      }
+      result = TRUE;
+    }
+  }
 #endif
-    else {
-        /* Call callback after removing from list. */
-        schRemoveMiddle(pBod);
-        result = TRUE;
-    }
+  else
+  {
+    /* Call callback after removing from list. */
+    schRemoveMiddle(pBod);
+    result = TRUE;
+  }
 
-    if (result) {
-        if (pBod->abortCback) {
-            pBod->abortCback(pBod);
-        }
-        SCH_TRACE_INFO1("--| SchRemove            |-- pBod=0x%08x", (uint32_t)pBod);
-        SCH_TRACE_INFO1("--|                      |--     .dueUsec=%u", pBod->dueUsec);
+  if (result)
+  {
+    if (pBod->abortCback)
+    {
+      pBod->abortCback(pBod);
     }
+    SCH_TRACE_INFO1("--| SchRemove            |-- pBod=0x%08x", (uint32_t)pBod);
+    SCH_TRACE_INFO1("--|                      |--     .dueUsec=%u", pBod->dueUsec);
+  }
 
-    return result;
+  return result;
 }
 
 /*************************************************************************************************/
@@ -986,11 +1122,13 @@ bool_t SchRemove(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 void SchReload(BbOpDesc_t *pBod)
 {
-    if ((schCb.pHead == pBod) && schCheckCancelHead()) {
-        PalTimerStop();
+  if ((schCb.pHead == pBod) &&
+      schCheckCancelHead())
+  {
+    PalTimerStop();
 
-        SchInsertTryLoadBod(pBod);
-    }
+    SchInsertTryLoadBod(pBod);
+  }
 }
 
 /*************************************************************************************************/
@@ -1006,15 +1144,16 @@ void SchReload(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 bool_t SchIsBodCancellable(BbOpDesc_t *pBod)
 {
-    WSF_ASSERT(pBod);
+  WSF_ASSERT(pBod);
 
-    bool_t result = FALSE;
-    const uint32_t curTime = PalBbGetCurrentTime();
-    const uint32_t delta = BbGetTargetTimeDelta(pBod->dueUsec, curTime);
+  bool_t result = FALSE;
+  const uint32_t curTime = PalBbGetCurrentTime();
+  const uint32_t delta = BbGetTargetTimeDelta(pBod->dueUsec, curTime);
 
-    if (delta >= (uint32_t)(BbGetSchSetupDelayUs() + SCH_CANCEL_MARGIN_USEC)) {
-        result = TRUE;
-    }
+  if (delta >= (uint32_t)(BbGetSchSetupDelayUs() + SCH_CANCEL_MARGIN_USEC))
+  {
+    result = TRUE;
+  }
 
-    return result;
+  return result;
 }

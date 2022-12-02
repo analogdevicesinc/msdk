@@ -9,11 +9,11 @@
 If uECC_PLATFORM is not defined, the code will try to guess it based on compiler macros.
 Possible values for uECC_PLATFORM are defined below: */
 #define uECC_arch_other 0
-#define uECC_x86 1
-#define uECC_x86_64 2
-#define uECC_arm 3
-#define uECC_arm_thumb 4
-#define uECC_avr 5
+#define uECC_x86        1
+#define uECC_x86_64     2
+#define uECC_arm        3
+#define uECC_arm_thumb  4
+#define uECC_avr        5
 #define uECC_arm_thumb2 6
 
 /* If desired, you can define uECC_WORD_SIZE as appropriate for your platform (1, 4, or 8 bytes).
@@ -25,11 +25,11 @@ uECC_asm_none  - Use standard C99 only.
 uECC_asm_small - Use GCC inline assembly for the target platform (if available), optimized for
                  minimum size.
 uECC_asm_fast  - Use GCC inline assembly optimized for maximum speed. */
-#define uECC_asm_none 0
+#define uECC_asm_none  0
 #define uECC_asm_small 1
-#define uECC_asm_fast 2
+#define uECC_asm_fast  2
 #ifndef uECC_ASM
-#define uECC_ASM uECC_asm_fast
+    #define uECC_ASM uECC_asm_fast
 #endif
 
 /* Curve selection options. */
@@ -39,14 +39,14 @@ uECC_asm_fast  - Use GCC inline assembly optimized for maximum speed. */
 #define uECC_secp256k1 4
 #define uECC_secp224r1 5
 #ifndef uECC_CURVE
-#define uECC_CURVE uECC_secp256r1
+    #define uECC_CURVE uECC_secp256r1
 #endif
 
 /* uECC_SQUARE_FUNC - If enabled (defined as nonzero), this will cause a specific function to be
 used for (scalar) squaring instead of the generic multiplication function. This will make things
 faster by about 8% but increases the code size. */
 #ifndef uECC_SQUARE_FUNC
-#define uECC_SQUARE_FUNC 1
+    #define uECC_SQUARE_FUNC 1
 #endif
 
 #define uECC_CONCAT1(a, b) a##b
@@ -61,7 +61,8 @@ faster by about 8% but increases the code size. */
 #define uECC_BYTES uECC_CONCAT(uECC_size_, uECC_CURVE)
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* uECC_RNG_Function type
@@ -105,7 +106,7 @@ Returns 1 if the key pair was generated successfully, 0 if an error occurred.
 */
 void uECC_make_key_start(const uint8_t private_key[uECC_BYTES]);
 int uECC_make_key_continue(void);
-void uECC_make_key_complete(uint8_t public_key[uECC_BYTES * 2], uint8_t private_key[uECC_BYTES]);
+void uECC_make_key_complete(uint8_t public_key[uECC_BYTES*2], uint8_t private_key[uECC_BYTES]);
 
 /* uECC_valid_public_key() function.
 Check to see if a public key is valid.
@@ -119,7 +120,7 @@ Inputs:
 
 Returns 1 if the public key is valid, 0 if it is invalid.
 */
-int uECC_valid_public_key_ll(const uint8_t public_key[uECC_BYTES * 2]);
+int uECC_valid_public_key_ll(const uint8_t public_key[uECC_BYTES*2]);
 
 /* uECC_shared_secret() function.
 Compute a shared secret given your secret key and someone else's public key.
@@ -135,7 +136,7 @@ Outputs:
 
 Returns 1 if the shared secret was generated successfully, 0 if an error occurred.
 */
-void uECC_shared_secret_start(const uint8_t public_key[uECC_BYTES * 2],
+void uECC_shared_secret_start(const uint8_t public_key[uECC_BYTES*2],
                               const uint8_t private_key[uECC_BYTES]);
 int uECC_shared_secret_continue(void);
 void uECC_shared_secret_complete(uint8_t secret[uECC_BYTES]);

@@ -35,15 +35,16 @@
 **************************************************************************************************/
 
 /*! \brief      Set advertising parameter command. */
-typedef struct {
-    uint16_t advIntervalMin; /*!< Minimum advertising interval. */
-    uint16_t advIntervalMax; /*!< Maximum advertising interval. */
-    uint8_t advType; /*!< Advertising type. */
-    uint8_t ownAddrType; /*!< Address type used by this device. */
-    uint8_t directAddrType; /*!< Address type of peer device.  Only used for directed advertising. */
-    bdAddr_t directAddr; /*!< Address of peer device.  Only used for directed advertising. */
-    uint8_t advChanMap; /*!< Advertising channel map. */
-    uint8_t advFiltPolicy; /*!< Advertising filter policy. */
+typedef struct
+{
+  uint16_t      advIntervalMin;         /*!< Minimum advertising interval. */
+  uint16_t      advIntervalMax;         /*!< Maximum advertising interval. */
+  uint8_t       advType;                /*!< Advertising type. */
+  uint8_t       ownAddrType;            /*!< Address type used by this device. */
+  uint8_t       directAddrType;         /*!< Address type of peer device.  Only used for directed advertising. */
+  bdAddr_t      directAddr;             /*!< Address of peer device.  Only used for directed advertising. */
+  uint8_t       advChanMap;             /*!< Advertising channel map. */
+  uint8_t       advFiltPolicy;          /*!< Advertising filter policy. */
 } lhciSetAdvParamCmd_t;
 
 /*************************************************************************************************/
@@ -58,19 +59,19 @@ typedef struct {
 /*************************************************************************************************/
 static uint8_t lhciUnpackSetAdvParamCmd(lhciSetAdvParamCmd_t *pCmd, const uint8_t *pBuf)
 {
-    const uint8_t len = 15;
+  const uint8_t len = 15;
 
-    BSTREAM_TO_UINT16(pCmd->advIntervalMin, pBuf);
-    BSTREAM_TO_UINT16(pCmd->advIntervalMax, pBuf);
-    BSTREAM_TO_UINT8(pCmd->advType, pBuf);
-    BSTREAM_TO_UINT8(pCmd->ownAddrType, pBuf);
-    BSTREAM_TO_UINT8(pCmd->directAddrType, pBuf);
-    memcpy(pCmd->directAddr, pBuf, sizeof(pCmd->directAddr));
-    pBuf += sizeof(pCmd->directAddr);
-    BSTREAM_TO_UINT8(pCmd->advChanMap, pBuf);
-    BSTREAM_TO_UINT8(pCmd->advFiltPolicy, pBuf);
+  BSTREAM_TO_UINT16(pCmd->advIntervalMin, pBuf);
+  BSTREAM_TO_UINT16(pCmd->advIntervalMax, pBuf);
+  BSTREAM_TO_UINT8 (pCmd->advType, pBuf);
+  BSTREAM_TO_UINT8 (pCmd->ownAddrType, pBuf);
+  BSTREAM_TO_UINT8 (pCmd->directAddrType, pBuf);
+  memcpy(pCmd->directAddr, pBuf, sizeof(pCmd->directAddr));
+  pBuf += sizeof(pCmd->directAddr);
+  BSTREAM_TO_UINT8 (pCmd->advChanMap, pBuf);
+  BSTREAM_TO_UINT8 (pCmd->advFiltPolicy, pBuf);
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -84,40 +85,43 @@ static uint8_t lhciUnpackSetAdvParamCmd(lhciSetAdvParamCmd_t *pCmd, const uint8_
 /*************************************************************************************************/
 static void lhciSlvAdvSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t paramLen)
 {
-    uint8_t *pBuf;
-    uint8_t *pEvtBuf;
+  uint8_t *pBuf;
+  uint8_t *pEvtBuf;
 
-    if ((pEvtBuf = lhciAllocCmdCmplEvt(paramLen, pCmdHdr->opCode)) == NULL) {
-        return;
-    }
-    pBuf = pEvtBuf;
+  if ((pEvtBuf = lhciAllocCmdCmplEvt(paramLen, pCmdHdr->opCode)) == NULL)
+  {
+    return;
+  }
+  pBuf = pEvtBuf;
 
-    switch (pCmdHdr->opCode) {
-        /* --- command completion with status only parameter --- */
+  switch (pCmdHdr->opCode)
+  {
+    /* --- command completion with status only parameter --- */
 
     case HCI_OPCODE_LE_SET_ADV_PARAM:
     case HCI_OPCODE_LE_SET_ADV_DATA:
     case HCI_OPCODE_LE_SET_SCAN_RESP_DATA:
-        lhciPackCmdCompleteEvtStatus(pBuf, status);
-        break;
+      lhciPackCmdCompleteEvtStatus(pBuf, status);
+      break;
 
-        /* --- advertising control --- */
+    /* --- advertising control --- */
 
-    case HCI_OPCODE_LE_READ_ADV_TX_POWER: {
-        int8_t advTxPwr = 0;
-        status = LlGetAdvTxPower(&advTxPwr);
-        pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
-        UINT8_TO_BSTREAM(pBuf, advTxPwr);
-        break;
+    case HCI_OPCODE_LE_READ_ADV_TX_POWER:
+    {
+      int8_t advTxPwr = 0;
+      status = LlGetAdvTxPower(&advTxPwr);
+      pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
+      UINT8_TO_BSTREAM(pBuf, advTxPwr);
+      break;
     }
 
-        /* --- default --- */
+    /* --- default --- */
 
     default:
-        break;
-    }
+      break;
+  }
 
-    lhciSendCmdCmplEvt(pEvtBuf);
+  lhciSendCmdCmplEvt(pEvtBuf);
 }
 
 /*************************************************************************************************/
@@ -139,54 +143,57 @@ static void lhciSlvAdvSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t
 bool_t lhciSlvAdvDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
 #if LHCI_ENABLE_VS
-    if (lhciSlvAdvVsStdDecodeCmdPkt(pHdr, pBuf)) {
-        return TRUE;
-    }
+  if (lhciSlvAdvVsStdDecodeCmdPkt(pHdr, pBuf))
+  {
+    return TRUE;
+  }
 #endif
 
-    uint8_t status = HCI_SUCCESS;
-    uint8_t paramLen = 0;
+  uint8_t status = HCI_SUCCESS;
+  uint8_t paramLen = 0;
 
-    switch (pHdr->opCode) {
-        /* --- status --- */
+  switch (pHdr->opCode)
+  {
+    /* --- status --- */
 
     case HCI_OPCODE_LE_READ_ADV_TX_POWER:
-        paramLen = LHCI_LEN_LE_READ_ADV_TX_POWER_EVT;
-        break;
+      paramLen = LHCI_LEN_LE_READ_ADV_TX_POWER_EVT;
+      break;
 
-        /* --- advertising control --- */
+    /* --- advertising control --- */
 
     case HCI_OPCODE_LE_SET_ADV_DATA:
-        /* coverity[check_return] */
-        status = LlSetAdvData(pBuf[0], pBuf + 1);
-        paramLen = LHCI_LEN_LE_SET_ADV_DATA_EVT;
-        break;
+      /* coverity[check_return] */
+      status = LlSetAdvData(pBuf[0], pBuf + 1);
+      paramLen = LHCI_LEN_LE_SET_ADV_DATA_EVT;
+      break;
     case HCI_OPCODE_LE_SET_SCAN_RESP_DATA:
-        /* coverity[check_return] */
-        status = LlSetScanRespData(pBuf[0], pBuf + 1);
-        paramLen = LHCI_LEN_LE_SET_SCAN_RESP_DATA_EVT;
-        break;
-    case HCI_OPCODE_LE_SET_ADV_PARAM: {
-        lhciSetAdvParamCmd_t cmd;
-        lhciUnpackSetAdvParamCmd(&cmd, pBuf);
-        /* coverity[check_return] */
-        status = LlSetAdvParam(cmd.advIntervalMin, cmd.advIntervalMax, cmd.advType, cmd.ownAddrType,
-                               cmd.directAddrType, cmd.directAddr, cmd.advChanMap,
-                               cmd.advFiltPolicy);
-        paramLen = LHCI_LEN_LE_SET_ADV_PARAM_EVT;
-        break;
+      /* coverity[check_return] */
+      status = LlSetScanRespData(pBuf[0], pBuf + 1);
+      paramLen = LHCI_LEN_LE_SET_SCAN_RESP_DATA_EVT;
+      break;
+    case HCI_OPCODE_LE_SET_ADV_PARAM:
+    {
+      lhciSetAdvParamCmd_t cmd;
+      lhciUnpackSetAdvParamCmd(&cmd, pBuf);
+      /* coverity[check_return] */
+      status = LlSetAdvParam(cmd.advIntervalMin, cmd.advIntervalMax, cmd.advType,
+                             cmd.ownAddrType, cmd.directAddrType, cmd.directAddr,
+                             cmd.advChanMap, cmd.advFiltPolicy);
+      paramLen = LHCI_LEN_LE_SET_ADV_PARAM_EVT;
+      break;
     }
     case HCI_OPCODE_LE_SET_ADV_ENABLE:
-        LlAdvEnable(pBuf[0]);
-        return TRUE; /* LL event handler sends command completion */
+      LlAdvEnable(pBuf[0]);
+      return TRUE;       /* LL event handler sends command completion */
 
-        /* --- default --- */
+    /* --- default --- */
 
     default:
-        return FALSE; /* exit dispatcher routine */
-    }
+      return FALSE;       /* exit dispatcher routine */
+  }
 
-    lhciSlvAdvSendCmdCmplEvt(pHdr, status, paramLen);
+  lhciSlvAdvSendCmdCmplEvt(pHdr, status, paramLen);
 
-    return TRUE;
+  return TRUE;
 }

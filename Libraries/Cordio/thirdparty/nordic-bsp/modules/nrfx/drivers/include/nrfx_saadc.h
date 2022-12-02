@@ -61,13 +61,13 @@ extern "C" {
 #define NRFX_SAADC_LIMITL_DISABLED (-2048)
 
 /** @brief Macro for setting @ref nrfx_saadc_config_t to default settings. */
-#define NRFX_SAADC_DEFAULT_CONFIG                                           \
-    {                                                                       \
-        .resolution = (nrf_saadc_resolution_t)NRFX_SAADC_CONFIG_RESOLUTION, \
-        .oversample = (nrf_saadc_oversample_t)NRFX_SAADC_CONFIG_OVERSAMPLE, \
-        .interrupt_priority = NRFX_SAADC_CONFIG_IRQ_PRIORITY,               \
-        .low_power_mode = NRFX_SAADC_CONFIG_LP_MODE                         \
-    }
+#define NRFX_SAADC_DEFAULT_CONFIG                                               \
+{                                                                               \
+    .resolution         = (nrf_saadc_resolution_t)NRFX_SAADC_CONFIG_RESOLUTION, \
+    .oversample         = (nrf_saadc_oversample_t)NRFX_SAADC_CONFIG_OVERSAMPLE, \
+    .interrupt_priority = NRFX_SAADC_CONFIG_IRQ_PRIORITY,                       \
+    .low_power_mode     = NRFX_SAADC_CONFIG_LP_MODE                             \
+}
 
 /**
  * @brief Macro for setting @ref nrf_saadc_channel_config_t to default settings
@@ -75,14 +75,18 @@ extern "C" {
  *
  * @param PIN_P Analog input.
  */
-#define NRFX_SAADC_DEFAULT_CHANNEL_CONFIG_SE(PIN_P)                                           \
-    {                                                                                         \
-        .resistor_p = NRF_SAADC_RESISTOR_DISABLED, .resistor_n = NRF_SAADC_RESISTOR_DISABLED, \
-        .gain = NRF_SAADC_GAIN1_6, .reference = NRF_SAADC_REFERENCE_INTERNAL,                 \
-        .acq_time = NRF_SAADC_ACQTIME_10US, .mode = NRF_SAADC_MODE_SINGLE_ENDED,              \
-        .burst = NRF_SAADC_BURST_DISABLED, .pin_p = (nrf_saadc_input_t)(PIN_P),               \
-        .pin_n = NRF_SAADC_INPUT_DISABLED                                                     \
-    }
+#define NRFX_SAADC_DEFAULT_CHANNEL_CONFIG_SE(PIN_P) \
+{                                                   \
+    .resistor_p = NRF_SAADC_RESISTOR_DISABLED,      \
+    .resistor_n = NRF_SAADC_RESISTOR_DISABLED,      \
+    .gain       = NRF_SAADC_GAIN1_6,                \
+    .reference  = NRF_SAADC_REFERENCE_INTERNAL,     \
+    .acq_time   = NRF_SAADC_ACQTIME_10US,           \
+    .mode       = NRF_SAADC_MODE_SINGLE_ENDED,      \
+    .burst      = NRF_SAADC_BURST_DISABLED,         \
+    .pin_p      = (nrf_saadc_input_t)(PIN_P),       \
+    .pin_n      = NRF_SAADC_INPUT_DISABLED          \
+}
 
 /**
  * @brief Macro for setting @ref nrf_saadc_channel_config_t to default settings
@@ -91,49 +95,59 @@ extern "C" {
  * @param PIN_P Positive analog input.
  * @param PIN_N Negative analog input.
  */
-#define NRFX_SAADC_DEFAULT_CHANNEL_CONFIG_DIFFERENTIAL(PIN_P, PIN_N)                          \
-    {                                                                                         \
-        .resistor_p = NRF_SAADC_RESISTOR_DISABLED, .resistor_n = NRF_SAADC_RESISTOR_DISABLED, \
-        .gain = NRF_SAADC_GAIN1_6, .reference = NRF_SAADC_REFERENCE_INTERNAL,                 \
-        .acq_time = NRF_SAADC_ACQTIME_10US, .mode = NRF_SAADC_MODE_DIFFERENTIAL,              \
-        .burst = NRF_SAADC_BURST_DISABLED, .pin_p = (nrf_saadc_input_t)(PIN_P),               \
-        .pin_n = (nrf_saadc_input_t)(PIN_N)                                                   \
-    }
+#define NRFX_SAADC_DEFAULT_CHANNEL_CONFIG_DIFFERENTIAL(PIN_P, PIN_N) \
+{                                                                    \
+    .resistor_p = NRF_SAADC_RESISTOR_DISABLED,                       \
+    .resistor_n = NRF_SAADC_RESISTOR_DISABLED,                       \
+    .gain       = NRF_SAADC_GAIN1_6,                                 \
+    .reference  = NRF_SAADC_REFERENCE_INTERNAL,                      \
+    .acq_time   = NRF_SAADC_ACQTIME_10US,                            \
+    .mode       = NRF_SAADC_MODE_DIFFERENTIAL,                       \
+    .burst      = NRF_SAADC_BURST_DISABLED,                          \
+    .pin_p      = (nrf_saadc_input_t)(PIN_P),                        \
+    .pin_n      = (nrf_saadc_input_t)(PIN_N)                         \
+}
 
 /** @brief SAADC driver configuration structure. */
-typedef struct {
-    nrf_saadc_resolution_t resolution; ///< Resolution configuration.
-    nrf_saadc_oversample_t oversample; ///< Oversampling configuration.
-    uint8_t interrupt_priority; ///< Interrupt priority.
-    bool low_power_mode; ///< Indicates if low power mode is active.
+typedef struct
+{
+    nrf_saadc_resolution_t resolution;         ///< Resolution configuration.
+    nrf_saadc_oversample_t oversample;         ///< Oversampling configuration.
+    uint8_t                interrupt_priority; ///< Interrupt priority.
+    bool                   low_power_mode;     ///< Indicates if low power mode is active.
 } nrfx_saadc_config_t;
 
 /** @brief SAADC driver event types. */
-typedef enum {
-    NRFX_SAADC_EVT_DONE, ///< Event generated when the buffer is filled with samples.
-    NRFX_SAADC_EVT_LIMIT, ///< Event generated after one of the limits is reached.
+typedef enum
+{
+    NRFX_SAADC_EVT_DONE,         ///< Event generated when the buffer is filled with samples.
+    NRFX_SAADC_EVT_LIMIT,        ///< Event generated after one of the limits is reached.
     NRFX_SAADC_EVT_CALIBRATEDONE ///< Event generated when the calibration is complete.
 } nrfx_saadc_evt_type_t;
 
 /** @brief SAADC driver done event data. */
-typedef struct {
-    nrf_saadc_value_t *p_buffer; ///< Pointer to buffer with converted samples.
-    uint16_t size; ///< Number of samples in the buffer.
+typedef struct
+{
+    nrf_saadc_value_t * p_buffer; ///< Pointer to buffer with converted samples.
+    uint16_t            size;     ///< Number of samples in the buffer.
 } nrfx_saadc_done_evt_t;
 
 /** @brief SAADC driver limit event data. */
-typedef struct {
-    uint8_t channel; ///< Channel on which the limit was detected.
+typedef struct
+{
+    uint8_t           channel;    ///< Channel on which the limit was detected.
     nrf_saadc_limit_t limit_type; ///< Type of limit detected.
 } nrfx_saadc_limit_evt_t;
 
 /** @brief SAADC driver event structure. */
-typedef struct {
+typedef struct
+{
     nrfx_saadc_evt_type_t type; ///< Event type.
-    union {
-        nrfx_saadc_done_evt_t done; ///< Data for @ref NRFX_SAADC_EVT_DONE event.
+    union
+    {
+        nrfx_saadc_done_evt_t  done;  ///< Data for @ref NRFX_SAADC_EVT_DONE event.
         nrfx_saadc_limit_evt_t limit; ///< Data for @ref NRFX_SAADC_EVT_LIMIT event.
-    } data; ///< Union to store event data.
+    } data;                           ///< Union to store event data.
 } nrfx_saadc_evt_t;
 
 /**
@@ -142,7 +156,7 @@ typedef struct {
  * @param[in] p_event Pointer to an SAADC driver event. The event structure is allocated on
  *                    the stack, so it is valid only within the context of the event handler.
  */
-typedef void (*nrfx_saadc_event_handler_t)(nrfx_saadc_evt_t const *p_event);
+typedef void (* nrfx_saadc_event_handler_t)(nrfx_saadc_evt_t const * p_event);
 
 /**
  * @brief Function for initializing the SAADC.
@@ -154,8 +168,8 @@ typedef void (*nrfx_saadc_event_handler_t)(nrfx_saadc_evt_t const *p_event);
  * @retval NRFX_SUCCESS             Initialization was successful.
  * @retval NRFX_ERROR_INVALID_STATE The driver is already initialized.
  */
-nrfx_err_t nrfx_saadc_init(nrfx_saadc_config_t const *p_config,
-                           nrfx_saadc_event_handler_t event_handler);
+nrfx_err_t nrfx_saadc_init(nrfx_saadc_config_t const * p_config,
+                           nrfx_saadc_event_handler_t  event_handler);
 
 /**
  * @brief Function for uninitializing the SAADC.
@@ -163,6 +177,7 @@ nrfx_err_t nrfx_saadc_init(nrfx_saadc_config_t const *p_config,
  * This function stops all ongoing conversions and disables all channels.
  */
 void nrfx_saadc_uninit(void);
+
 
 /**
  * @brief Function for getting the address of a SAMPLE SAADC task.
@@ -183,8 +198,8 @@ uint32_t nrfx_saadc_sample_task_get(void);
  * @retval NRFX_ERROR_INVALID_STATE The SAADC was not initialized.
  * @retval NRFX_ERROR_NO_MEM        The specified channel was already allocated.
  */
-nrfx_err_t nrfx_saadc_channel_init(uint8_t channel,
-                                   nrf_saadc_channel_config_t const *const p_config);
+nrfx_err_t nrfx_saadc_channel_init(uint8_t                                  channel,
+                                   nrf_saadc_channel_config_t const * const p_config);
 
 /**
  * @brief Function for uninitializing an SAADC channel.
@@ -218,7 +233,7 @@ nrfx_err_t nrfx_saadc_sample(void);
  * @retval NRFX_SUCCESS    The conversion was successful.
  * @retval NRFX_ERROR_BUSY The SAADC driver is busy.
  */
-nrfx_err_t nrfx_saadc_sample_convert(uint8_t channel, nrf_saadc_value_t *p_value);
+nrfx_err_t nrfx_saadc_sample_convert(uint8_t channel, nrf_saadc_value_t * p_value);
 
 /**
  * @brief Function for issuing conversion of data to the buffer.
@@ -239,7 +254,7 @@ nrfx_err_t nrfx_saadc_sample_convert(uint8_t channel, nrf_saadc_value_t *p_value
  * @retval NRFX_SUCCESS    The conversion was successful.
  * @retval NRFX_ERROR_BUSY The driver already has two buffers set or the calibration is in progress.
  */
-nrfx_err_t nrfx_saadc_buffer_convert(nrf_saadc_value_t *buffer, uint16_t size);
+nrfx_err_t nrfx_saadc_buffer_convert(nrf_saadc_value_t * buffer, uint16_t size);
 
 /**
  * @brief Function for triggering the SAADC offset calibration.
@@ -289,10 +304,13 @@ void nrfx_saadc_limits_set(uint8_t channel, int16_t limit_low, int16_t limit_hig
 
 /** @} */
 
+
 void nrfx_saadc_irq_handler(void);
+
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif // NRFX_SAADC_H__
+

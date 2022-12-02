@@ -50,26 +50,28 @@
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_AES)
 
-static ret_code_t context_verify(nrf_crypto_aes_internal_context_t const *p_context)
+static ret_code_t context_verify(nrf_crypto_aes_internal_context_t const * p_context)
 {
-    if (p_context == NULL) {
+    if (p_context == NULL)
+    {
         return NRF_ERROR_CRYPTO_CONTEXT_NULL;
     }
 
-    if (p_context->init_value != NRF_CRYPTO_AES_INIT_MAGIC_VALUE) {
+    if (p_context->init_value != NRF_CRYPTO_AES_INIT_MAGIC_VALUE)
+    {
         return NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
     }
 
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_aes_init(nrf_crypto_aes_context_t *const p_context,
-                               nrf_crypto_aes_info_t const *const p_info,
-                               nrf_crypto_operation_t operation)
+ret_code_t nrf_crypto_aes_init(nrf_crypto_aes_context_t * const    p_context,
+                               nrf_crypto_aes_info_t const * const p_info,
+                               nrf_crypto_operation_t              operation)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aes_internal_context_t *p_int_context =
+    nrf_crypto_aes_internal_context_t * p_int_context =
         (nrf_crypto_aes_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
@@ -82,26 +84,29 @@ ret_code_t nrf_crypto_aes_init(nrf_crypto_aes_context_t *const p_context,
 
     ret_val = p_info->init_fn(p_context, operation);
 
-    if (ret_val == NRF_SUCCESS) {
+    if (ret_val == NRF_SUCCESS)
+    {
         p_int_context->init_value = NRF_CRYPTO_AES_INIT_MAGIC_VALUE;
     }
 
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aes_uninit(nrf_crypto_aes_context_t *const p_context)
+ret_code_t nrf_crypto_aes_uninit(nrf_crypto_aes_context_t * const p_context)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aes_internal_context_t *p_int_context =
+    nrf_crypto_aes_internal_context_t * p_int_context =
         (nrf_crypto_aes_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
 
-    if (ret_val == NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED) {
+    if (ret_val == NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED)
+    {
         /* If context was uninitialized with function nrf_crypto_aes_finalize it shall be still
            possible to clear init_value */
-        if (p_int_context->init_value == NRF_CRYPTO_AES_UNINIT_MAGIC_VALUE) {
+        if (p_int_context->init_value == NRF_CRYPTO_AES_UNINIT_MAGIC_VALUE)
+        {
             ret_val = NRF_SUCCESS;
         }
     }
@@ -114,11 +119,11 @@ ret_code_t nrf_crypto_aes_uninit(nrf_crypto_aes_context_t *const p_context)
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aes_key_set(nrf_crypto_aes_context_t *const p_context, uint8_t *p_key)
+ret_code_t nrf_crypto_aes_key_set(nrf_crypto_aes_context_t * const p_context, uint8_t * p_key)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aes_internal_context_t *p_int_context =
+    nrf_crypto_aes_internal_context_t * p_int_context =
         (nrf_crypto_aes_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
@@ -131,11 +136,11 @@ ret_code_t nrf_crypto_aes_key_set(nrf_crypto_aes_context_t *const p_context, uin
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aes_iv_set(nrf_crypto_aes_context_t *const p_context, uint8_t *p_iv)
+ret_code_t nrf_crypto_aes_iv_set(nrf_crypto_aes_context_t * const p_context, uint8_t * p_iv)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aes_internal_context_t *p_int_context =
+    nrf_crypto_aes_internal_context_t * p_int_context =
         (nrf_crypto_aes_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
@@ -150,18 +155,20 @@ ret_code_t nrf_crypto_aes_iv_set(nrf_crypto_aes_context_t *const p_context, uint
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aes_iv_get(nrf_crypto_aes_context_t *const p_context, uint8_t *p_iv)
+ret_code_t nrf_crypto_aes_iv_get(nrf_crypto_aes_context_t * const p_context, uint8_t * p_iv)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aes_internal_context_t *p_int_context =
+    nrf_crypto_aes_internal_context_t * p_int_context =
         (nrf_crypto_aes_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
-    if (ret_val == NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED) {
+    if (ret_val == NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED)
+    {
         /* If context was uninitialized with function nrf_crypto_aes_finalize it shall be still
            possible to read IV value */
-        if (p_int_context->init_value == NRF_CRYPTO_AES_UNINIT_MAGIC_VALUE) {
+        if (p_int_context->init_value == NRF_CRYPTO_AES_UNINIT_MAGIC_VALUE)
+        {
             ret_val = NRF_SUCCESS;
         }
     }
@@ -176,12 +183,14 @@ ret_code_t nrf_crypto_aes_iv_get(nrf_crypto_aes_context_t *const p_context, uint
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aes_update(nrf_crypto_aes_context_t *const p_context, uint8_t *p_data_in,
-                                 size_t data_size, uint8_t *p_data_out)
+ret_code_t nrf_crypto_aes_update(nrf_crypto_aes_context_t * const p_context,
+                                 uint8_t *                        p_data_in,
+                                 size_t                           data_size,
+                                 uint8_t *                        p_data_out)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aes_internal_context_t *p_int_context =
+    nrf_crypto_aes_internal_context_t * p_int_context =
         (nrf_crypto_aes_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
@@ -193,22 +202,29 @@ ret_code_t nrf_crypto_aes_update(nrf_crypto_aes_context_t *const p_context, uint
 
     VERIFY_TRUE((p_data_out != NULL), NRF_ERROR_CRYPTO_OUTPUT_NULL);
 
-    if ((data_size & 0xF) != 0) {
+    if ((data_size & 0xF) != 0)
+    {
         VERIFY_TRUE((p_int_context->p_info->mode == NRF_CRYPTO_AES_MODE_CFB),
                     NRF_ERROR_CRYPTO_INPUT_LENGTH);
     }
 
-    ret_val = p_int_context->p_info->update_fn(p_context, p_data_in, data_size, p_data_out);
+    ret_val = p_int_context->p_info->update_fn(p_context,
+                                               p_data_in,
+                                               data_size,
+                                               p_data_out);
 
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aes_finalize(nrf_crypto_aes_context_t *const p_context, uint8_t *p_data_in,
-                                   size_t data_size, uint8_t *p_data_out, size_t *p_data_out_size)
+ret_code_t nrf_crypto_aes_finalize(nrf_crypto_aes_context_t * const p_context,
+                                   uint8_t *                        p_data_in,
+                                   size_t                           data_size,
+                                   uint8_t *                        p_data_out,
+                                   size_t *                         p_data_out_size)
 {
     ret_code_t ret_val;
 
-    nrf_crypto_aes_internal_context_t *p_int_context =
+    nrf_crypto_aes_internal_context_t * p_int_context =
         (nrf_crypto_aes_internal_context_t *)p_context;
 
     ret_val = context_verify(p_int_context);
@@ -220,14 +236,18 @@ ret_code_t nrf_crypto_aes_finalize(nrf_crypto_aes_context_t *const p_context, ui
 
     VERIFY_TRUE((p_data_out_size != NULL), NRF_ERROR_CRYPTO_OUTPUT_NULL);
 
-    ret_val = p_int_context->p_info->finalize_fn(p_context, p_data_in, data_size, p_data_out,
+    ret_val = p_int_context->p_info->finalize_fn(p_context,
+                                                 p_data_in,
+                                                 data_size,
+                                                 p_data_out,
                                                  p_data_out_size);
 
     VERIFY_TRUE((ret_val == NRF_SUCCESS), ret_val);
 
     ret_val = nrf_crypto_aes_uninit(p_context);
 
-    if (ret_val == NRF_SUCCESS) {
+    if (ret_val == NRF_SUCCESS)
+    {
         /* This line will allow to read IV for AES supporting IV get function. */
         p_int_context->init_value = NRF_CRYPTO_AES_UNINIT_MAGIC_VALUE;
     }
@@ -235,22 +255,28 @@ ret_code_t nrf_crypto_aes_finalize(nrf_crypto_aes_context_t *const p_context, ui
     return ret_val;
 }
 
-ret_code_t nrf_crypto_aes_crypt(nrf_crypto_aes_context_t *const p_context,
-                                nrf_crypto_aes_info_t const *const p_info,
-                                nrf_crypto_operation_t operation, uint8_t *p_key, uint8_t *p_iv,
-                                uint8_t *p_data_in, size_t data_size, uint8_t *p_data_out,
-                                size_t *p_data_out_size)
+ret_code_t nrf_crypto_aes_crypt(nrf_crypto_aes_context_t * const    p_context,
+                                nrf_crypto_aes_info_t const * const p_info,
+                                nrf_crypto_operation_t              operation,
+                                uint8_t *                           p_key,
+                                uint8_t *                           p_iv,
+                                uint8_t *                           p_data_in,
+                                size_t                              data_size,
+                                uint8_t *                           p_data_out,
+                                size_t *                            p_data_out_size)
 {
     ret_code_t ret_val;
-    void *p_allocated_context = NULL;
+    void *     p_allocated_context = NULL;
 
-    nrf_crypto_aes_context_t *p_ctx = p_context;
+    nrf_crypto_aes_context_t * p_ctx = p_context;
 
     VERIFY_TRUE(p_info != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
 
-    if (p_ctx == NULL) {
+    if (p_ctx == NULL)
+    {
         p_allocated_context = NRF_CRYPTO_ALLOC(p_info->context_size);
-        if (p_allocated_context == NULL) {
+        if (p_allocated_context == NULL)
+        {
             return NRF_ERROR_CRYPTO_ALLOC_FAILED;
         }
         p_ctx = (nrf_crypto_aes_context_t *)p_allocated_context;
@@ -264,17 +290,24 @@ ret_code_t nrf_crypto_aes_crypt(nrf_crypto_aes_context_t *const p_context,
 
     ret_val = nrf_crypto_aes_iv_set(p_ctx, p_iv);
     /* not all AES modes support IV */
-    if (ret_val != NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE) {
+    if (ret_val != NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE)
+    {
         NRF_CRYPTO_VERIFY_SUCCESS_DEALLOCATE(ret_val, p_allocated_context);
     }
 
-    ret_val = nrf_crypto_aes_finalize(p_ctx, p_data_in, data_size, p_data_out, p_data_out_size);
-    if (ret_val != NRF_SUCCESS) {
+    ret_val = nrf_crypto_aes_finalize(p_ctx,
+                                      p_data_in,
+                                      data_size,
+                                      p_data_out,
+                                      p_data_out_size);
+    if (ret_val != NRF_SUCCESS)
+    {
         /* Context was not successfully deinitialized in nrf_crypto_aes_finalize */
         UNUSED_RETURN_VALUE(nrf_crypto_aes_uninit(p_ctx));
     }
 
-    if (p_allocated_context != NULL) {
+    if (p_allocated_context != NULL)
+    {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 
@@ -283,3 +316,4 @@ ret_code_t nrf_crypto_aes_crypt(nrf_crypto_aes_context_t *const p_context,
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_AES)
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO)
+

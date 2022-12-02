@@ -30,199 +30,198 @@
  * ownership rights.
  *
  ******************************************************************************/
-
+ 
 #include <stdint.h>
 #include "fifo.h"
 #include "usb_hwopt.h"
 
-#if defined(__ICCARM__) || defined(__GNUC__) || defined(__CC_ARM)
+#if defined ( __ICCARM__ ) || defined( __GNUC__ ) || defined ( __CC_ARM )
 #include <mxc_device.h>
 #else
 #include <inmaxq.h>
 #endif
 
 /****************************************************************************/
-void fifo_init(fifo_t *fifo, void *mem, unsigned int length)
+void fifo_init(fifo_t * fifo, void * mem, unsigned int length)
 {
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
 
-    fifo->rindex = 0;
+  fifo->rindex = 0;
+  fifo->windex = 0;
+  fifo->data = mem;
+  fifo->length = length;
+
+  MAXUSB_EXIT_CRITICAL();
+}
+
+/****************************************************************************/
+int fifo_put8(fifo_t * fifo, uint8_t element)
+{
+  // Check if FIFO is full
+  if ( (fifo->windex == (fifo->rindex - 1)) ||
+       ((fifo->rindex == 0) && (fifo->windex == (fifo->length - 1))) ) {
+    return -1;
+  }
+
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
+
+  // Put data into FIFO
+  ((uint8_t*)(fifo->data))[fifo->windex] = element;
+
+  // Increment pointer
+  fifo->windex++;
+  if (fifo->windex == fifo->length) {
     fifo->windex = 0;
-    fifo->data = mem;
-    fifo->length = length;
+  }
 
-    MAXUSB_EXIT_CRITICAL();
+  MAXUSB_EXIT_CRITICAL();
+    
+  return 0;
 }
 
 /****************************************************************************/
-int fifo_put8(fifo_t *fifo, uint8_t element)
+int fifo_get8(fifo_t * fifo, uint8_t * element)
 {
-    // Check if FIFO is full
-    if ((fifo->windex == (fifo->rindex - 1)) ||
-        ((fifo->rindex == 0) && (fifo->windex == (fifo->length - 1)))) {
-        return -1;
-    }
+  // Check if FIFO is empty
+  if (fifo->rindex == fifo->windex)
+    return -1;
 
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
 
-    // Put data into FIFO
-    ((uint8_t *)(fifo->data))[fifo->windex] = element;
+   // Get data from FIFO
+  *element = ((uint8_t*)(fifo->data))[fifo->rindex];
 
-    // Increment pointer
-    fifo->windex++;
-    if (fifo->windex == fifo->length) {
-        fifo->windex = 0;
-    }
-
-    MAXUSB_EXIT_CRITICAL();
-
-    return 0;
-}
-
-/****************************************************************************/
-int fifo_get8(fifo_t *fifo, uint8_t *element)
-{
-    // Check if FIFO is empty
-    if (fifo->rindex == fifo->windex)
-        return -1;
-
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
-
-    // Get data from FIFO
-    *element = ((uint8_t *)(fifo->data))[fifo->rindex];
-
-    // Increment pointer
-    fifo->rindex++;
-    if (fifo->rindex == fifo->length) {
-        fifo->rindex = 0;
-    }
-
-    MAXUSB_EXIT_CRITICAL();
-
-    return 0;
-}
-
-/****************************************************************************/
-int fifo_put16(fifo_t *fifo, uint16_t element)
-{
-    // Check if FIFO is full
-    if ((fifo->windex == (fifo->rindex - 1)) ||
-        ((fifo->rindex == 0) && (fifo->windex == (fifo->length - 1)))) {
-        return -1;
-    }
-
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
-
-    // Put data into FIFO
-    ((uint16_t *)(fifo->data))[fifo->windex] = element;
-
-    // Increment pointer
-    fifo->windex++;
-    if (fifo->windex == fifo->length) {
-        fifo->windex = 0;
-    }
-
-    MAXUSB_EXIT_CRITICAL();
-
-    return 0;
-}
-
-/****************************************************************************/
-int fifo_get16(fifo_t *fifo, uint16_t *element)
-{
-    // Check if FIFO is empty
-    if (fifo->rindex == fifo->windex)
-        return -1;
-
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
-
-    // Get data from FIFO
-    *element = ((uint16_t *)(fifo->data))[fifo->rindex];
-
-    // Increment pointer
-    fifo->rindex++;
-    if (fifo->rindex == fifo->length) {
-        fifo->rindex = 0;
-    }
-
-    MAXUSB_EXIT_CRITICAL();
-
-    return 0;
-}
-
-/****************************************************************************/
-void fifo_clear(fifo_t *fifo)
-{
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
-
+  // Increment pointer
+  fifo->rindex++;
+  if (fifo->rindex == fifo->length) {
     fifo->rindex = 0;
+  }
+
+  MAXUSB_EXIT_CRITICAL();
+
+  return 0;
+}
+
+/****************************************************************************/
+int fifo_put16(fifo_t * fifo, uint16_t element)
+{
+  // Check if FIFO is full
+  if ( (fifo->windex == (fifo->rindex - 1)) ||
+       ((fifo->rindex == 0) && (fifo->windex == (fifo->length - 1))) ) {
+    return -1;
+  }
+
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
+
+  // Put data into FIFO
+  ((uint16_t*)(fifo->data))[fifo->windex] = element;
+
+  // Increment pointer
+  fifo->windex++;
+  if (fifo->windex == fifo->length) {
     fifo->windex = 0;
+  }
 
-    MAXUSB_EXIT_CRITICAL();
+  MAXUSB_EXIT_CRITICAL();
+    
+  return 0;
 }
 
 /****************************************************************************/
-int fifo_empty(fifo_t *fifo)
+int fifo_get16(fifo_t * fifo, uint16_t * element)
 {
-    return (fifo->rindex == fifo->windex);
+  // Check if FIFO is empty
+  if (fifo->rindex == fifo->windex)
+    return -1;
+
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
+
+  // Get data from FIFO
+  *element = ((uint16_t*)(fifo->data))[fifo->rindex];
+
+  // Increment pointer
+  fifo->rindex++;
+  if (fifo->rindex == fifo->length) {
+    fifo->rindex = 0;
+  }
+
+  MAXUSB_EXIT_CRITICAL();
+    
+  return 0;
 }
 
 /****************************************************************************/
-int fifo_full(fifo_t *fifo)
+void fifo_clear(fifo_t * fifo)
 {
-    int retval;
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
 
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
+  fifo->rindex = 0;
+  fifo->windex = 0;
 
-    retval = ((fifo->windex == (fifo->rindex - 1)) ||
-              ((fifo->rindex == 0) && (fifo->windex == (fifo->length - 1))));
-
-    MAXUSB_EXIT_CRITICAL();
-
-    return retval;
+  MAXUSB_EXIT_CRITICAL();
 }
 
 /****************************************************************************/
-unsigned int fifo_level(fifo_t *fifo)
+int fifo_empty(fifo_t * fifo)
 {
-    uint16_t value;
-
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
-
-    if (fifo->windex >= fifo->rindex) {
-        value = fifo->windex - fifo->rindex;
-    } else {
-        value = fifo->length - fifo->rindex + fifo->windex;
-    }
-
-    MAXUSB_EXIT_CRITICAL();
-
-    return value;
+  return (fifo->rindex == fifo->windex);
 }
 
 /****************************************************************************/
-unsigned int fifo_remaining(fifo_t *fifo)
+int fifo_full(fifo_t * fifo)
 {
-    uint16_t value;
+  int retval;
 
-    // atomic FIFO access
-    MAXUSB_ENTER_CRITICAL();
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
 
-    if (fifo->rindex > fifo->windex) {
-        value = fifo->rindex - fifo->windex - 1;
-    } else {
-        value = fifo->length - fifo->windex + fifo->rindex - 1;
-    }
+  retval = ( (fifo->windex == (fifo->rindex - 1)) || ((fifo->rindex == 0) && (fifo->windex == (fifo->length - 1))) );
 
-    MAXUSB_EXIT_CRITICAL();
+  MAXUSB_EXIT_CRITICAL();
 
-    return value;
+  return retval;
+}
+
+/****************************************************************************/
+unsigned int fifo_level(fifo_t * fifo)
+{
+  uint16_t value;
+
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
+
+  if (fifo->windex >= fifo->rindex) {
+    value = fifo->windex - fifo->rindex;
+  } else {
+    value = fifo->length - fifo->rindex + fifo->windex;
+  }
+
+  MAXUSB_EXIT_CRITICAL();
+
+  return value;
+}
+
+/****************************************************************************/
+unsigned int fifo_remaining(fifo_t * fifo)
+{
+  uint16_t value;
+
+  // atomic FIFO access
+  MAXUSB_ENTER_CRITICAL();
+
+  if (fifo->rindex > fifo->windex) {
+    value = fifo->rindex - fifo->windex - 1;
+  } else {
+    value = fifo->length - fifo->windex + fifo->rindex - 1;
+  }
+
+  MAXUSB_EXIT_CRITICAL();
+
+  return value;
 }

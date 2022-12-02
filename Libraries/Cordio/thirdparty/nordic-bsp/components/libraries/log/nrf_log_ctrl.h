@@ -68,6 +68,7 @@ extern "C" {
  */
 typedef uint32_t (*nrf_log_timestamp_func_t)(void);
 
+
 /**@brief Macro for initializing the logs.
  *
  * Macro has one or two parameters. First parameter (obligatory) is the timestamp function (@ref nrf_log_timestamp_func_t).
@@ -79,6 +80,7 @@ typedef uint32_t (*nrf_log_timestamp_func_t)(void);
  */
 #define NRF_LOG_INIT(...) NRF_LOG_INTERNAL_INIT(__VA_ARGS__)
 
+
 /**@brief Macro for processing a single log entry from a queue of deferred logs.
  *
  * You can call this macro from the main context or from the error handler to process
@@ -89,14 +91,14 @@ typedef uint32_t (*nrf_log_timestamp_func_t)(void);
  * @retval true    There are more logs to process in the buffer.
  * @retval false   No more logs in the buffer.
  */
-#define NRF_LOG_PROCESS() NRF_LOG_INTERNAL_PROCESS()
+#define NRF_LOG_PROCESS()    NRF_LOG_INTERNAL_PROCESS()
 
 /** @brief Macro for processing all log entries from the buffer.
  * It blocks until all buffered entries are processed by the backend.
  *
  * @note If logs are not deferred, this call has no use and is empty.
  */
-#define NRF_LOG_FLUSH() NRF_LOG_INTERNAL_FLUSH()
+#define NRF_LOG_FLUSH()      NRF_LOG_INTERNAL_FLUSH()
 
 /** @brief Macro for flushing log data before reset.
  *
@@ -129,7 +131,7 @@ ret_code_t nrf_log_init(nrf_log_timestamp_func_t timestamp_func, uint32_t timest
  *                  option is only applicable if @ref NRF_LOG_FILTERS_ENABLED is set.
  * @return -1 if backend cannot be added or positive number (backend ID).
  */
-int32_t nrf_log_backend_add(nrf_log_backend_t const *p_backend, nrf_log_severity_t severity);
+int32_t nrf_log_backend_add(nrf_log_backend_t const * p_backend, nrf_log_severity_t severity);
 
 /**
  * @brief Function for removing backend from the logger.
@@ -137,7 +139,7 @@ int32_t nrf_log_backend_add(nrf_log_backend_t const *p_backend, nrf_log_severity
  * @param p_backend Pointer to the backend interface.
  *
  */
-void nrf_log_backend_remove(nrf_log_backend_t const *p_backend);
+void nrf_log_backend_remove(nrf_log_backend_t const * p_backend);
 
 /**
  * @brief Function for setting logger backends into panic mode.
@@ -172,7 +174,7 @@ uint32_t nrf_log_module_cnt_get(void);
  * @param is_ordered_idx Module ID is given is index in alphabetically sorted list of modules.
  * @return Pointer to string with module name.
  */
-const char *nrf_log_module_name_get(uint32_t module_id, bool is_ordered_idx);
+const char * nrf_log_module_name_get(uint32_t module_id, bool is_ordered_idx);
 
 /**
  * @brief Function for getting coloring of specific logs.
@@ -193,7 +195,8 @@ uint8_t nrf_log_color_id_get(uint32_t module_id, nrf_log_severity_t severity);
  * @param module_id  Module ID which logs will be reconfigured.
  * @param severity   New severity filter.
  */
-void nrf_log_module_filter_set(uint32_t backend_id, uint32_t module_id,
+void nrf_log_module_filter_set(uint32_t backend_id,
+                               uint32_t module_id,
                                nrf_log_severity_t severity);
 
 /**
@@ -208,8 +211,10 @@ void nrf_log_module_filter_set(uint32_t backend_id, uint32_t module_id,
  *
  * @return Severity.
  */
-nrf_log_severity_t nrf_log_module_filter_get(uint32_t backend_id, uint32_t module_id,
-                                             bool is_ordered_idx, bool dynamic);
+nrf_log_severity_t nrf_log_module_filter_get(uint32_t backend_id,
+                                             uint32_t module_id,
+                                             bool     is_ordered_idx,
+                                             bool     dynamic);
 
 /**
  * @brief Function stores current filtering configuration into non-volatile memory using @ref fds module.

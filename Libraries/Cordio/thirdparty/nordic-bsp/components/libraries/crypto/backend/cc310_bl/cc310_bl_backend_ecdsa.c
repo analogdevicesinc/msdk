@@ -43,11 +43,14 @@
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL)
 
+
 #if defined(NRF_CRYPTO_BACKEND_CC310_BL_ECC_LITTLE_ENDIAN_ENABLED)
 
 #error The configuration NRF_CRYPTO_BACKEND_CC310_BL_ECC_LITTLE_ENDIAN_ENABLED was removed in SDK 15.1.0. Please see release notes for details on removing this error message.
 
 #endif // defined(NRF_CRYPTO_BACKEND_CC310_BL_ECC_LITTLE_ENDIAN_ENABLED)
+
+
 
 #include <string.h>
 #include "app_util.h"
@@ -59,20 +62,22 @@
 #include "cc310_backend_mutex.h"
 #include "crys_ecpki_error.h"
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1) || \
     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
 
 static ret_code_t crys_error_to_ret_code(CRYSError_t crys_error)
 {
-    switch (crys_error) {
-    case CRYS_OK:
-        return NRF_SUCCESS;
+    switch (crys_error)
+    {
+        case CRYS_OK:
+            return NRF_SUCCESS;
 
-    case CRYS_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR:
-        return NRF_ERROR_CRYPTO_ECDSA_INVALID_SIGNATURE;
+        case CRYS_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR:
+            return NRF_ERROR_CRYPTO_ECDSA_INVALID_SIGNATURE;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return NRF_ERROR_CRYPTO_INTERNAL;
@@ -80,26 +85,31 @@ static ret_code_t crys_error_to_ret_code(CRYSError_t crys_error)
 
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
 STATIC_ASSERT(offsetof(nrf_cc310_bl_ecc_signature_secp224r1_t, r) == 0,
               "Offset of r in nrf_cc310_bl_ecc_signature_secp224r1_t is unexpected");
 STATIC_ASSERT(offsetof(nrf_cc310_bl_ecc_signature_secp224r1_t, s) ==
-                  NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE,
+              NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE,
               "Offset of s in nrf_cc310_bl_ecc_signature_secp224r1_t is unexpected");
 
-ret_code_t nrf_crypto_backend_secp224r1_verify(void *p_context, void const *p_public_key,
-                                               uint8_t const *p_data, size_t data_size,
-                                               uint8_t const *p_signature)
-{
-    ret_code_t result;
-    CRYSError_t crys_error;
-    bool mutex_locked;
 
-    nrf_crypto_backend_secp224r1_verify_context_t *p_ctx =
+ret_code_t nrf_crypto_backend_secp224r1_verify(
+    void           * p_context,
+    void     const * p_public_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t  const * p_signature)
+{
+    ret_code_t  result;
+    CRYSError_t crys_error;
+    bool        mutex_locked;
+
+    nrf_crypto_backend_secp224r1_verify_context_t * p_ctx =
         (nrf_crypto_backend_secp224r1_verify_context_t *)p_context;
 
-    nrf_crypto_backend_secp224r1_public_key_t *p_pub =
+    nrf_crypto_backend_secp224r1_public_key_t * p_pub =
         (nrf_crypto_backend_secp224r1_public_key_t *)p_public_key;
 
     p_ctx->user_context.init_val = NRF_CC310_BL_ECDSA_CONTEXT_INITIALIZED;
@@ -107,11 +117,14 @@ ret_code_t nrf_crypto_backend_secp224r1_verify(void *p_context, void const *p_pu
     mutex_locked = cc310_backend_mutex_trylock();
     VERIFY_TRUE(mutex_locked, NRF_ERROR_CRYPTO_BUSY);
 
-    cc310_bl_backend_enable();
+    cc310_bl_backend_enable();        
 
     crys_error = nrf_cc310_bl_ecdsa_verify_secp224r1(
-        &p_ctx->user_context, &p_pub->public_key,
-        (nrf_cc310_bl_ecc_signature_secp224r1_t const *)p_signature, p_data, data_size);
+        &p_ctx->user_context,
+        &p_pub->public_key,
+        (nrf_cc310_bl_ecc_signature_secp224r1_t const *)p_signature,
+        p_data,
+        data_size);
 
     cc310_bl_backend_disable();
 
@@ -122,29 +135,37 @@ ret_code_t nrf_crypto_backend_secp224r1_verify(void *p_context, void const *p_pu
     return result;
 }
 
+
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
+
 
 STATIC_ASSERT(offsetof(nrf_cc310_bl_ecc_signature_secp256r1_t, r) == 0,
               "Offset of r in nrf_cc310_bl_ecc_signature_secp256r1_t is unexpected");
 
 STATIC_ASSERT(offsetof(nrf_cc310_bl_ecc_signature_secp256r1_t, s) ==
-                  NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE,
+              NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE,
               "Offset of s in nrf_cc310_bl_ecc_signature_secp256r1_t is unexpected");
 
-ret_code_t nrf_crypto_backend_secp256r1_verify(void *p_context, void const *p_public_key,
-                                               uint8_t const *p_data, size_t data_size,
-                                               uint8_t const *p_signature)
-{
-    ret_code_t result;
-    CRYSError_t crys_error;
-    bool mutex_locked;
 
-    nrf_crypto_backend_secp256r1_verify_context_t *p_ctx =
+ret_code_t nrf_crypto_backend_secp256r1_verify(
+    void           * p_context,
+    void     const * p_public_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t  const * p_signature)
+{
+    ret_code_t  result;
+    CRYSError_t crys_error;
+    bool        mutex_locked;
+    
+
+    nrf_crypto_backend_secp256r1_verify_context_t * p_ctx =
         (nrf_crypto_backend_secp256r1_verify_context_t *)p_context;
 
-    nrf_crypto_backend_secp256r1_public_key_t *p_pub =
+    nrf_crypto_backend_secp256r1_public_key_t * p_pub =
         (nrf_crypto_backend_secp256r1_public_key_t *)p_public_key;
 
     p_ctx->user_context.init_val = NRF_CC310_BL_ECDSA_CONTEXT_INITIALIZED;
@@ -155,8 +176,11 @@ ret_code_t nrf_crypto_backend_secp256r1_verify(void *p_context, void const *p_pu
     cc310_bl_backend_enable();
 
     crys_error = nrf_cc310_bl_ecdsa_verify_secp256r1(
-        &p_ctx->user_context, &p_pub->public_key,
-        (nrf_cc310_bl_ecc_signature_secp256r1_t const *)p_signature, p_data, data_size);
+        &p_ctx->user_context,
+        &p_pub->public_key,
+        (nrf_cc310_bl_ecc_signature_secp256r1_t const *)p_signature,
+        p_data,
+        data_size);
 
     cc310_bl_backend_disable();
 
@@ -166,6 +190,7 @@ ret_code_t nrf_crypto_backend_secp256r1_verify(void *p_context, void const *p_pu
 
     return result;
 }
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
 

@@ -31,6 +31,7 @@ extern "C" {
 /*! \addtogroup WSF_BUF_IO_API
  *  \{ */
 
+
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -79,9 +80,9 @@ void WsfBufIoUartRegister(WsfBufIoUartRxCback_t rxCback);
  *  \param  len     Length of buffer in octets.
  */
 /*************************************************************************************************/
-bool_t WsfBufIoWrite(const uint8_t *pBuf, uint32_t len);
+bool_t WsfBufIoWrite(const      uint8_t *pBuf, uint32_t len);
 
-/*! \} */ /* WSF_BUF_IO_API */
+/*! \} */    /* WSF_BUF_IO_API */
 
 #ifdef __cplusplus
 };

@@ -55,12 +55,12 @@ static LlRtCfg_t mainLlRtCfg;
 /*************************************************************************************************/
 static void mainLoadConfiguration(void)
 {
-    PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
-    LlGetDefaultRunTimeCfg(&mainLlRtCfg);
-    PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
+  PalBbLoadCfg((PalBbCfg_t *)&mainBbRtCfg);
+  LlGetDefaultRunTimeCfg(&mainLlRtCfg);
+  PalCfgLoadData(PAL_CFG_ID_LL_PARAM, &mainLlRtCfg.maxAdvSets, sizeof(LlRtCfg_t) - 9);
 
-    /* Set 4.2 requirements. */
-    mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_4_2;
+  /* Set 4.2 requirements. */
+  mainLlRtCfg.btVer = LL_VER_BT_CORE_SPEC_4_2;
 }
 
 /*************************************************************************************************/
@@ -70,25 +70,28 @@ static void mainLoadConfiguration(void)
 /*************************************************************************************************/
 static void mainWsfInit(void)
 {
-    /* +12 for message headroom, +4 for header. */
-    const uint16_t aclBufSize = 12 + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
+  /* +12 for message headroom, +4 for header. */
+  const uint16_t aclBufSize = 12 + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
-    wsfBufPoolDesc_t poolDesc[] = { { 16, 8 },
-                                    { 32, 4 },
-                                    { 128, mainLlRtCfg.maxAdvReports },
-                                    { aclBufSize, mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs } };
+  wsfBufPoolDesc_t poolDesc[] =
+  {
+    { 16,               8 },
+    { 32,               4 },
+    { 128,              mainLlRtCfg.maxAdvReports },
+    { aclBufSize,       mainLlRtCfg.numTxBufs + mainLlRtCfg.numRxBufs }
+  };
 
-    const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
+  const uint8_t numPools = sizeof(poolDesc) / sizeof(poolDesc[0]);
 
-    /* Initial buffer configuration. */
-    uint16_t memUsed;
-    memUsed = WsfBufInit(numPools, poolDesc);
-    WsfHeapAlloc(memUsed);
-    WsfOsInit();
-    WsfTimerInit();
-#if (WSF_TOKEN_ENABLED == TRUE)
+  /* Initial buffer configuration. */
+  uint16_t memUsed;
+  memUsed = WsfBufInit(numPools, poolDesc);
+  WsfHeapAlloc(memUsed);
+  WsfOsInit();
+  WsfTimerInit();
+  #if (WSF_TOKEN_ENABLED == TRUE)
     WsfTraceRegisterHandler(LhciVsEncodeTraceMsgEvtPkt);
-#endif
+  #endif
 }
 
 /*************************************************************************************************/
@@ -100,27 +103,29 @@ static void mainWsfInit(void)
 /*************************************************************************************************/
 static bool_t mainCheckServiceTokens(void)
 {
-    bool_t eventPending = FALSE;
+  bool_t eventPending = FALSE;
 
 #if (WSF_TOKEN_ENABLED == TRUE) || (BB_SNIFFER_ENABLED == TRUE)
-    eventPending = LhciIsEventPending();
+  eventPending = LhciIsEventPending();
 #endif
 
 #if WSF_TOKEN_ENABLED == TRUE
-    /* Allow only a single token to be processed at a time. */
-    if (!eventPending) {
-        eventPending = WsfTokenService();
-    }
+  /* Allow only a single token to be processed at a time. */
+  if (!eventPending)
+  {
+    eventPending = WsfTokenService();
+  }
 #endif
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-    /* Service one sniffer packet, if in the buffer. */
-    if (!eventPending) {
-        eventPending = LhciSnifferHandler();
-    }
+  /* Service one sniffer packet, if in the buffer. */
+  if (!eventPending)
+  {
+    eventPending = LhciSnifferHandler();
+  }
 #endif
 
-    return eventPending;
+  return eventPending;
 }
 
 /*************************************************************************************************/
@@ -130,32 +135,35 @@ static bool_t mainCheckServiceTokens(void)
 /*************************************************************************************************/
 int main(void)
 {
-    mainLoadConfiguration();
-    mainWsfInit();
+  mainLoadConfiguration();
+  mainWsfInit();
 
-    LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
-                            .wlSizeCfg = 4,
-                            .rlSizeCfg = 4,
-                            .plSizeCfg = 4,
-                            .pLlRtCfg = &mainLlRtCfg,
-                            .pFreeMem = WsfHeapGetFreeStartAddress(),
-                            .freeMemAvail = WsfHeapCountAvailable() };
+  LlInitRtCfg_t llCfg =
+  {
+    .pBbRtCfg     = &mainBbRtCfg,
+    .wlSizeCfg    = 4,
+    .rlSizeCfg    = 4,
+    .plSizeCfg    = 4,
+    .pLlRtCfg     = &mainLlRtCfg,
+    .pFreeMem     = WsfHeapGetFreeStartAddress(),
+    .freeMemAvail = WsfHeapCountAvailable()
+  };
 
-    uint32_t memUsed;
+  uint32_t memUsed;
 
-    memUsed = LlInitControllerInit(&llCfg);
-    WsfHeapAlloc(memUsed);
+  memUsed = LlInitControllerInit(&llCfg);
+  WsfHeapAlloc(memUsed);
 
-    bdAddr_t bdAddr;
-    PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
-    /* Coverity[uninit_use_in_call] */
-    LlSetBdAddr((uint8_t *)&bdAddr);
-    LlMathSetSeed((uint32_t *)&bdAddr);
+  bdAddr_t bdAddr;
+  PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
+  /* Coverity[uninit_use_in_call] */
+  LlSetBdAddr((uint8_t *)&bdAddr);
+  LlMathSetSeed((uint32_t *)&bdAddr);
 
-    WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
-    WsfOsRegisterSleepCheckFunc(ChciTrService);
-    WsfOsEnterMainLoop();
+  WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
+  WsfOsRegisterSleepCheckFunc(ChciTrService);
+  WsfOsEnterMainLoop();
 
-    /* Does not return. */
-    return 0;
+  /* Does not return. */
+  return 0;
 }

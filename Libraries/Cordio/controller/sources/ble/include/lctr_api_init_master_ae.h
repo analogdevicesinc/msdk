@@ -43,14 +43,15 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Master extended initiate task messages for \a LCTR_DISP_EXT_INIT dispatcher. */
-enum {
-    /* Broadcast events */
-    LCTR_EXT_INIT_MSG_RESET = LCTR_MSG_RESET, /*!< Reset API message. */
-    /* Initiate events */
-    LCTR_EXT_INIT_MSG_INITIATE, /*!< Initiate API event. */
-    LCTR_EXT_INIT_MSG_INITIATE_CANCEL, /*!< Initiate cancel API event. */
-    LCTR_EXT_INIT_MSG_TERMINATE, /*!< Initiate scan BOD terminated event. */
-    LCTR_EXT_INIT_MSG_TOTAL /*!< Total number of initiate events. */
+enum
+{
+  /* Broadcast events */
+  LCTR_EXT_INIT_MSG_RESET                   = LCTR_MSG_RESET,   /*!< Reset API message. */
+  /* Initiate events */
+  LCTR_EXT_INIT_MSG_INITIATE,               /*!< Initiate API event. */
+  LCTR_EXT_INIT_MSG_INITIATE_CANCEL,        /*!< Initiate cancel API event. */
+  LCTR_EXT_INIT_MSG_TERMINATE,              /*!< Initiate scan BOD terminated event. */
+  LCTR_EXT_INIT_MSG_TOTAL                   /*!< Total number of initiate events. */
 };
 
 /*! \brief  LCTR_EXT_INIT_MSG_INITIATE_CANCEL and LCTR_INIT_MSG_INITIATE_CANCEL shall be aligned. */
@@ -69,8 +70,7 @@ void LctrMstExtInitInit(void);
 void LctrMstExtInitDefaults(void);
 
 /* Control */
-void LctrMstExtInitParam(uint8_t initPhy, const LlExtInitScanParam_t *pScanParam,
-                         const LlConnSpec_t *pConnSpec);
+void LctrMstExtInitParam(uint8_t initPhy, const LlExtInitScanParam_t *pScanParam, const LlConnSpec_t *pConnSpec);
 void LctrMstExtInitSetScanPhy(uint8_t scanPhy);
 void LctrMstExtInitClearScanPhy(uint8_t scanPhy);
 
@@ -78,7 +78,7 @@ void LctrMstExtInitClearScanPhy(uint8_t scanPhy);
 bool_t LctrMstExtInitIsEnabled(uint8_t scanPhy);
 bool_t LctrMstExtInitIsPrivAddr(uint8_t scanPhy);
 
-/*! \} */ /* LL_LCTR_API_INIT_MST_AE */
+/*! \} */    /* LL_LCTR_API_INIT_MST_AE */
 
 #ifdef __cplusplus
 };

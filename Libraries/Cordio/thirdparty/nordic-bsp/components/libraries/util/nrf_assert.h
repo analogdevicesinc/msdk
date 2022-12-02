@@ -84,29 +84,36 @@ void assert_nrf_callback(uint16_t line_num, const uint8_t *file_name);
 //#if defined(DEBUG_NRF) || defined(DEBUG_NRF_USER)
 
 /*lint -emacro(506, ASSERT) */ /* Suppress "Constant value Boolean */
-/*lint -emacro(774, ASSERT) */ /* Suppress "Boolean within 'if' always evaluates to True" */
+/*lint -emacro(774, ASSERT) */ /* Suppress "Boolean within 'if' always evaluates to True" */ \
 
 /** @brief Function for checking intended for production code.
  *
  * Check passes if "expr" evaluates to true. */
 
 #ifdef _lint
-#define ASSERT(expr) \
-    if (expr) {      \
-    } else {         \
-        while (1)    \
-            ;        \
-    }
+#define ASSERT(expr)                                                          \
+if (expr)                                                                     \
+{                                                                             \
+}                                                                             \
+else                                                                          \
+{                                                                             \
+    while (1);                                                                \
+}
 #else //_lint
-#define ASSERT(expr)                                                      \
-    if (NRF_ASSERT_PRESENT) {                                             \
-        if (expr) {                                                       \
-        } else {                                                          \
-            assert_nrf_callback((uint16_t)__LINE__, (uint8_t *)__FILE__); \
-        }                                                                 \
-    }
+#define ASSERT(expr)                                                          \
+if (NRF_ASSERT_PRESENT)                                                       \
+{                                                                             \
+    if (expr)                                                                 \
+    {                                                                         \
+    }                                                                         \
+    else                                                                      \
+    {                                                                         \
+        assert_nrf_callback((uint16_t)__LINE__, (uint8_t *)__FILE__);         \
+    }                                                                         \
+}
 
 #endif
+
 
 #ifdef __cplusplus
 }

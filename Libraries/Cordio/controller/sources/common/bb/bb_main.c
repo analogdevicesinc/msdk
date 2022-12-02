@@ -31,8 +31,8 @@
   Globals
 **************************************************************************************************/
 
-BbCtrlBlk_t bbCb; /*!< BB control block. */
-const BbRtCfg_t *pBbRtCfg = NULL; /*!< Runtime configuration. */
+BbCtrlBlk_t bbCb;                       /*!< BB control block. */
+const BbRtCfg_t *pBbRtCfg = NULL;       /*!< Runtime configuration. */
 
 /**************************************************************************************************
   Functions
@@ -51,16 +51,16 @@ const BbRtCfg_t *pBbRtCfg = NULL; /*!< Runtime configuration. */
 /*************************************************************************************************/
 void BbInitRunTimeCfg(const BbRtCfg_t *pCfg)
 {
-    WSF_ASSERT(pBbRtCfg == NULL);
-    WSF_ASSERT(pCfg);
+  WSF_ASSERT(pBbRtCfg == NULL);
+  WSF_ASSERT(pCfg);
 
-    WSF_ASSERT(pCfg->clkPpm >= 20);
-    WSF_ASSERT(pCfg->rfSetupDelayUs > 0);
-    WSF_ASSERT(pCfg->maxScanPeriodMs > 0);
-    WSF_ASSERT(pCfg->schSetupDelayUs > 0);
-    WSF_ASSERT(pCfg->BbTimerBoundaryUs > 0);
+  WSF_ASSERT(pCfg->clkPpm >= 20);
+  WSF_ASSERT(pCfg->rfSetupDelayUs > 0);
+  WSF_ASSERT(pCfg->maxScanPeriodMs > 0);
+  WSF_ASSERT(pCfg->schSetupDelayUs > 0);
+  WSF_ASSERT(pCfg->BbTimerBoundaryUs > 0);
 
-    pBbRtCfg = pCfg;
+  pBbRtCfg = pCfg;
 }
 
 /*************************************************************************************************/
@@ -72,11 +72,11 @@ void BbInitRunTimeCfg(const BbRtCfg_t *pCfg)
 /*************************************************************************************************/
 void BbInit(void)
 {
-    WSF_ASSERT(pBbRtCfg);
+  WSF_ASSERT(pBbRtCfg);
 
-    PalBbInit();
+  PalBbInit();
 
-    memset(&bbCb, 0, sizeof(bbCb));
+  memset(&bbCb, 0, sizeof(bbCb));
 }
 
 /*************************************************************************************************/
@@ -90,7 +90,7 @@ void BbInit(void)
 /*************************************************************************************************/
 void BbRegister(BbBodCompCback_t eventCback)
 {
-    bbCb.bodCompCback = eventCback;
+  bbCb.bodCompCback = eventCback;
 }
 
 /*************************************************************************************************/
@@ -102,15 +102,15 @@ void BbRegister(BbBodCompCback_t eventCback)
 /*************************************************************************************************/
 static void bbProtStart(PalBbProt_t protId)
 {
-    WSF_ASSERT(bbCb.prot[protId].startProtCback != NULL);
+  WSF_ASSERT(bbCb.prot[protId].startProtCback != NULL);
 
-    /* Enable protocol-specific BB. */
-    bbCb.prot[protId].startProtCback();
+  /* Enable protocol-specific BB. */
+  bbCb.prot[protId].startProtCback();
 
-    /* Protocol now started. */
-    bbCb.protStarted = TRUE;
-    bbCb.protIdStarted = protId;
-    PalBbSetProtId(protId);
+  /* Protocol now started. */
+  bbCb.protStarted   = TRUE;
+  bbCb.protIdStarted = protId;
+  PalBbSetProtId(protId);
 }
 
 /*************************************************************************************************/
@@ -126,17 +126,18 @@ static void bbProtStart(PalBbProt_t protId)
 /*************************************************************************************************/
 void BbStart(PalBbProt_t protId)
 {
-    WSF_ASSERT(protId < BB_PROT_NUM);
+  WSF_ASSERT(protId < BB_PROT_NUM);
 
-    if (!bbCb.protStarted) {
-        /* Enable generic BB. */
-        PalBbEnable();
+  if (!bbCb.protStarted)
+  {
+    /* Enable generic BB. */
+    PalBbEnable();
 
-        /* Enable protocol-specific BB. */
-        bbProtStart(protId);
-    }
+    /* Enable protocol-specific BB. */
+    bbProtStart(protId);
+  }
 
-    bbCb.prot[protId].startCnt++;
+  bbCb.prot[protId].startCnt++;
 }
 
 /*************************************************************************************************/
@@ -148,13 +149,13 @@ void BbStart(PalBbProt_t protId)
 /*************************************************************************************************/
 static void bbProtStop(PalBbProt_t protId)
 {
-    WSF_ASSERT(bbCb.prot[protId].stopProtCback != NULL);
+  WSF_ASSERT(bbCb.prot[protId].stopProtCback != NULL);
 
-    /* No protocol started. */
-    bbCb.protStarted = FALSE;
+  /* No protocol started. */
+  bbCb.protStarted = FALSE;
 
-    /* Disable protocol-specific BB. */
-    bbCb.prot[protId].stopProtCback();
+  /* Disable protocol-specific BB. */
+  bbCb.prot[protId].stopProtCback();
 }
 
 /*************************************************************************************************/
@@ -171,18 +172,19 @@ static void bbProtStop(PalBbProt_t protId)
 /*************************************************************************************************/
 void BbStop(PalBbProt_t protId)
 {
-    WSF_ASSERT(protId < BB_PROT_NUM);
-    WSF_ASSERT(bbCb.prot[protId].startCnt > 0);
+  WSF_ASSERT(protId < BB_PROT_NUM);
+  WSF_ASSERT(bbCb.prot[protId].startCnt > 0);
 
-    bbCb.prot[protId].startCnt--;
+  bbCb.prot[protId].startCnt--;
 
-    if (bbCb.protStarted && (bbCb.protIdStarted == protId) && (bbCb.prot[protId].startCnt == 0)) {
-        /* Disable protocol-specific BB. */
-        bbProtStop(protId);
+  if (bbCb.protStarted && (bbCb.protIdStarted == protId) && (bbCb.prot[protId].startCnt == 0))
+  {
+    /* Disable protocol-specific BB. */
+    bbProtStop(protId);
 
-        /* Disable generic BB. */
-        PalBbDisable();
-    }
+    /* Disable generic BB. */
+    PalBbDisable();
+  }
 }
 
 /*************************************************************************************************/
@@ -196,36 +198,41 @@ void BbStop(PalBbProt_t protId)
 /*************************************************************************************************/
 void BbExecuteBod(BbOpDesc_t *pBod)
 {
-    WSF_ASSERT(pBod);
+  WSF_ASSERT(pBod);
 
-    WSF_ASSERT(pBod->protId < BB_PROT_NUM);
-    /* TODO: Removed this assert as it spuriously seems to be taken. */
-    /* WSF_ASSERT(!bbCb.pOpInProgress); */
-    bbCb.pOpInProgress = pBod;
-    bbCb.termBod = FALSE;
+  WSF_ASSERT(pBod->protId < BB_PROT_NUM);
+  /* TODO: Removed this assert as it spuriously seems to be taken. */
+  /* WSF_ASSERT(!bbCb.pOpInProgress); */
+  bbCb.pOpInProgress = pBod;
+  bbCb.termBod = FALSE;
 
-    /* Enable generic BB. */
-    if (!bbCb.protStarted) {
-        PalBbEnable();
-    }
+  /* Enable generic BB. */
+  if (!bbCb.protStarted)
+  {
+    PalBbEnable();
+  }
 
-    /* Switch protocols if necessary. */
-    if (bbCb.protStarted && (bbCb.protIdStarted != pBod->protId)) {
-        /* Disable protocol-specific BB. */
-        bbProtStop(bbCb.protIdStarted); /* sets bbCb.protStarted = FALSE */
-    }
-    if (!bbCb.protStarted) {
-        /* Enable protocol-specific BB. */
-        bbProtStart(pBod->protId);
-    }
+  /* Switch protocols if necessary. */
+  if (bbCb.protStarted && (bbCb.protIdStarted != pBod->protId))
+  {
+    /* Disable protocol-specific BB. */
+    bbProtStop(bbCb.protIdStarted);   /* sets bbCb.protStarted = FALSE */
+  }
+  if (!bbCb.protStarted)
+  {
+    /* Enable protocol-specific BB. */
+    bbProtStart(pBod->protId);
+  }
 
-    if (bbCb.prot[pBod->protId].execOpCback != NULL) {
-        bbCb.prot[pBod->protId].execOpCback(pBod);
-    }
+  if (bbCb.prot[pBod->protId].execOpCback != NULL)
+  {
+    bbCb.prot[pBod->protId].execOpCback(pBod);
+  }
 
-    if (bbCb.termBod) {
-        bbCb.pOpInProgress = NULL;
-    }
+  if (bbCb.termBod)
+  {
+    bbCb.pOpInProgress = NULL;
+  }
 }
 
 /*************************************************************************************************/
@@ -235,16 +242,18 @@ void BbExecuteBod(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 void BbCancelBod(void)
 {
-    if (bbCb.pOpInProgress) {
-        BbOpDesc_t *const pBod = bbCb.pOpInProgress;
+  if (bbCb.pOpInProgress)
+  {
+    BbOpDesc_t * const pBod = bbCb.pOpInProgress;
 
-        WSF_ASSERT(pBod->protId < BB_PROT_NUM);
-        if (bbCb.prot[pBod->protId].cancelOpCback != NULL) {
-            bbCb.prot[pBod->protId].cancelOpCback(pBod);
-        }
-
-        bbCb.pOpInProgress = NULL;
+    WSF_ASSERT(pBod->protId < BB_PROT_NUM);
+    if (bbCb.prot[pBod->protId].cancelOpCback != NULL)
+    {
+      bbCb.prot[pBod->protId].cancelOpCback(pBod);
     }
+
+    bbCb.pOpInProgress = NULL;
+  }
 }
 
 /*************************************************************************************************/
@@ -256,7 +265,7 @@ void BbCancelBod(void)
 /*************************************************************************************************/
 BbOpDesc_t *BbGetCurrentBod(void)
 {
-    return bbCb.pOpInProgress;
+  return bbCb.pOpInProgress;
 }
 
 /*************************************************************************************************/
@@ -270,9 +279,10 @@ BbOpDesc_t *BbGetCurrentBod(void)
 /*************************************************************************************************/
 void BbSetBodTerminateFlag(void)
 {
-    if (bbCb.pOpInProgress) {
-        bbCb.termBod = TRUE;
-    }
+  if (bbCb.pOpInProgress)
+  {
+    bbCb.termBod = TRUE;
+  }
 }
 
 /*************************************************************************************************/
@@ -284,7 +294,7 @@ void BbSetBodTerminateFlag(void)
 /*************************************************************************************************/
 bool_t BbGetBodTerminateFlag(void)
 {
-    return bbCb.termBod;
+  return bbCb.termBod;
 }
 
 /*************************************************************************************************/
@@ -297,16 +307,18 @@ bool_t BbGetBodTerminateFlag(void)
 /*************************************************************************************************/
 void BbTerminateBod(void)
 {
-    WSF_ASSERT(bbCb.bodCompCback);
+  WSF_ASSERT(bbCb.bodCompCback);
 
-    BbOpDesc_t *const pBod = bbCb.pOpInProgress;
-    if (pBod && (bbCb.prot[pBod->protId].lowPowerOpCback != NULL)) {
-        bbCb.prot[pBod->protId].lowPowerOpCback();
-    }
+  BbOpDesc_t * const pBod = bbCb.pOpInProgress;
+  if (pBod &&
+      (bbCb.prot[pBod->protId].lowPowerOpCback != NULL))
+  {
+    bbCb.prot[pBod->protId].lowPowerOpCback();
+  }
 
-    bbCb.pOpInProgress = NULL;
-    bbCb.termBod = TRUE;
-    bbCb.bodCompCback();
+  bbCb.pOpInProgress = NULL;
+  bbCb.termBod = TRUE;
+  bbCb.bodCompCback();
 }
 
 /*************************************************************************************************/
@@ -320,7 +332,7 @@ void BbTerminateBod(void)
 /*************************************************************************************************/
 uint16_t BbGetClockAccuracy(void)
 {
-    return pBbRtCfg->clkPpm;
+  return pBbRtCfg->clkPpm;
 }
 
 /*************************************************************************************************/
@@ -333,7 +345,7 @@ uint16_t BbGetClockAccuracy(void)
 /*************************************************************************************************/
 uint32_t BbGetBbTimerBoundaryUs(void)
 {
-    return pBbRtCfg->BbTimerBoundaryUs;
+  return pBbRtCfg->BbTimerBoundaryUs;
 }
 
 /*************************************************************************************************/
@@ -347,7 +359,7 @@ uint32_t BbGetBbTimerBoundaryUs(void)
 /*************************************************************************************************/
 uint16_t BbGetSchSetupDelayUs(void)
 {
-    return pBbRtCfg->schSetupDelayUs;
+  return pBbRtCfg->schSetupDelayUs;
 }
 
 /*************************************************************************************************/
@@ -361,7 +373,7 @@ uint16_t BbGetSchSetupDelayUs(void)
 /*************************************************************************************************/
 uint16_t BbGetRfSetupDelayUs(void)
 {
-    return pBbRtCfg->rfSetupDelayUs;
+  return pBbRtCfg->rfSetupDelayUs;
 }
 
 /*************************************************************************************************/
@@ -378,24 +390,28 @@ uint16_t BbGetRfSetupDelayUs(void)
 /*************************************************************************************************/
 uint32_t BbAdjustTime(uint32_t dueUsec)
 {
-    /* If and only of dueUsec is outside the range of [0, BbTimerBoundaryUs], mapping adjustment is needed. */
-    if (dueUsec > pBbRtCfg->BbTimerBoundaryUs) {
-        /* dueUsec is in range [-(BbTimerBoundaryUs + 1)/2, 0). */
-        if (dueUsec >= ~(pBbRtCfg->BbTimerBoundaryUs >> 1)) {
-            dueUsec += (pBbRtCfg->BbTimerBoundaryUs + 1);
-        }
-        /* dueUsec is in range [(BbTimerBoundaryUs + 1), (BbTimerBoundaryUs + 1) + (BbTimerBoundaryUs + 1) / 2). */
-        else if (dueUsec <=
-                 (pBbRtCfg->BbTimerBoundaryUs + 1 + (pBbRtCfg->BbTimerBoundaryUs >> 1))) {
-            dueUsec -= (pBbRtCfg->BbTimerBoundaryUs + 1);
-        } else {
-            /* It should never happen here. */
-            WSF_ASSERT(FALSE);
-        }
+  /* If and only of dueUsec is outside the range of [0, BbTimerBoundaryUs], mapping adjustment is needed. */
+  if (dueUsec > pBbRtCfg->BbTimerBoundaryUs)
+  {
+    /* dueUsec is in range [-(BbTimerBoundaryUs + 1)/2, 0). */
+    if (dueUsec >= ~(pBbRtCfg->BbTimerBoundaryUs >> 1))
+    {
+      dueUsec += (pBbRtCfg->BbTimerBoundaryUs + 1);
     }
+    /* dueUsec is in range [(BbTimerBoundaryUs + 1), (BbTimerBoundaryUs + 1) + (BbTimerBoundaryUs + 1) / 2). */
+    else if (dueUsec <= (pBbRtCfg->BbTimerBoundaryUs + 1 + (pBbRtCfg->BbTimerBoundaryUs >> 1)))
+    {
+      dueUsec -= (pBbRtCfg->BbTimerBoundaryUs + 1);
+    }
+    else
+    {
+      /* It should never happen here. */
+      WSF_ASSERT(FALSE);
+    }
+  }
 
-    /* If dueUsec is  in range [0, BbTimerBoundaryUs], no need to adjust. */
-    return dueUsec;
+  /* If dueUsec is  in range [0, BbTimerBoundaryUs], no need to adjust. */
+  return dueUsec;
 }
 
 /*************************************************************************************************/
@@ -413,32 +429,41 @@ uint32_t BbAdjustTime(uint32_t dueUsec)
 /*************************************************************************************************/
 uint32_t BbGetTargetTimeDelta(uint32_t targetUsec, uint32_t refUsec)
 {
-    targetUsec = BbAdjustTime(targetUsec);
-    refUsec = BbAdjustTime(refUsec);
+  targetUsec = BbAdjustTime(targetUsec);
+  refUsec = BbAdjustTime(refUsec);
 
-    uint32_t delta = 0;
+  uint32_t delta = 0;
 
-    if (targetUsec > refUsec) {
-        /* Always bigger number minus smaller number. */
-        if ((targetUsec - refUsec) < ((pBbRtCfg->BbTimerBoundaryUs >> 1) + 1)) {
-            /* Normal case. */
-            delta = targetUsec - refUsec;
-        } else {
-            /* reference time must be wraparound and target time is in the past.*/
-            delta = 0;
-        }
-    } else {
-        /* Always bigger number minus smaller number. */
-        if ((refUsec - targetUsec) < ((pBbRtCfg->BbTimerBoundaryUs >> 1) + 1)) {
-            /* target time is in the past. */
-            delta = 0;
-        } else {
-            /* Target time must be wraparound. */
-            delta = pBbRtCfg->BbTimerBoundaryUs - (refUsec - targetUsec) + 1;
-        }
+  if (targetUsec > refUsec)
+  {
+    /* Always bigger number minus smaller number. */
+    if ((targetUsec - refUsec) < ((pBbRtCfg->BbTimerBoundaryUs >> 1) + 1))
+    {
+      /* Normal case. */
+      delta = targetUsec - refUsec;
     }
+    else
+    {
+      /* reference time must be wraparound and target time is in the past.*/
+      delta = 0;
+    }
+  }
+  else
+  {
+    /* Always bigger number minus smaller number. */
+    if ((refUsec - targetUsec) < ((pBbRtCfg->BbTimerBoundaryUs >> 1) + 1))
+    {
+      /* target time is in the past. */
+      delta = 0;
+    }
+    else
+    {
+      /* Target time must be wraparound. */
+      delta = pBbRtCfg->BbTimerBoundaryUs - (refUsec - targetUsec) + 1;
+    }
+  }
 
-    return delta;
+  return delta;
 }
 
 /*************************************************************************************************/
@@ -450,7 +475,7 @@ uint32_t BbGetTargetTimeDelta(uint32_t targetUsec, uint32_t refUsec)
 /*************************************************************************************************/
 uint8_t BbGetActiveProtocol(void)
 {
-    return bbCb.protIdStarted;
+  return bbCb.protIdStarted;
 }
 
 /*************************************************************************************************/
@@ -467,14 +492,14 @@ uint8_t BbGetActiveProtocol(void)
 void BbRegisterProt(PalBbProt_t protId, BbBodCback_t execOpCback, BbBodCback_t cancelOpCback,
                     BbProtCback_t startProtCback, BbProtCback_t stopProtCback)
 {
-    WSF_ASSERT(protId < BB_PROT_NUM);
-    WSF_ASSERT(startProtCback != NULL);
-    WSF_ASSERT(stopProtCback != NULL);
+  WSF_ASSERT(protId < BB_PROT_NUM);
+  WSF_ASSERT(startProtCback != NULL);
+  WSF_ASSERT(stopProtCback != NULL);
 
-    bbCb.prot[protId].execOpCback = execOpCback;
-    bbCb.prot[protId].cancelOpCback = cancelOpCback;
-    bbCb.prot[protId].startProtCback = startProtCback;
-    bbCb.prot[protId].stopProtCback = stopProtCback;
+  bbCb.prot[protId].execOpCback    = execOpCback;
+  bbCb.prot[protId].cancelOpCback  = cancelOpCback;
+  bbCb.prot[protId].startProtCback = startProtCback;
+  bbCb.prot[protId].stopProtCback  = stopProtCback;
 }
 
 /*************************************************************************************************/
@@ -487,7 +512,7 @@ void BbRegisterProt(PalBbProt_t protId, BbBodCback_t execOpCback, BbBodCback_t c
 /*************************************************************************************************/
 void BbRegisterProtLowPower(PalBbProt_t protId, BbLowPowerCback_t lowPowerOpCback)
 {
-    WSF_ASSERT(protId < BB_PROT_NUM);
-    WSF_ASSERT(lowPowerOpCback != NULL);
-    bbCb.prot[protId].lowPowerOpCback = lowPowerOpCback;
+  WSF_ASSERT(protId < BB_PROT_NUM);
+  WSF_ASSERT(lowPowerOpCback != NULL);
+  bbCb.prot[protId].lowPowerOpCback    = lowPowerOpCback;
 }

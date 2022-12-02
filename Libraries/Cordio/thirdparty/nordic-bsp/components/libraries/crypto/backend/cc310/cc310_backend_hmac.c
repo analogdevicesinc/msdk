@@ -62,70 +62,78 @@ static ret_code_t result_get(CRYSError_t err_code)
 {
     ret_code_t ret_val;
 
-    switch (err_code) {
-    case CRYS_OK:
-        ret_val = NRF_SUCCESS;
-        break;
+    switch (err_code)
+    {
+        case CRYS_OK:
+            ret_val = NRF_SUCCESS;
+            break;
 
-    case CRYS_HMAC_INVALID_USER_CONTEXT_POINTER_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_CONTEXT_NULL;
-        break;
+        case CRYS_HMAC_INVALID_USER_CONTEXT_POINTER_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_CONTEXT_NULL;
+            break;
 
-    case CRYS_HMAC_USER_CONTEXT_CORRUPTED_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
-        break;
+        case CRYS_HMAC_USER_CONTEXT_CORRUPTED_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
+            break;
 
-    case CRYS_HMAC_DATA_IN_POINTER_INVALID_ERROR:
-    case CRYS_HMAC_INVALID_KEY_POINTER_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_INPUT_NULL;
-        break;
+        case CRYS_HMAC_DATA_IN_POINTER_INVALID_ERROR:
+        case CRYS_HMAC_INVALID_KEY_POINTER_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_INPUT_NULL;
+            break;
 
-    case CRYS_HMAC_INVALID_RESULT_BUFFER_POINTER_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_OUTPUT_NULL;
-        break;
+        case CRYS_HMAC_INVALID_RESULT_BUFFER_POINTER_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_OUTPUT_NULL;
+            break;
 
-    case CRYS_HMAC_ILLEGAL_PARAMS_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_INVALID_PARAM;
-        break;
+        case CRYS_HMAC_ILLEGAL_PARAMS_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_INVALID_PARAM;
+            break;
 
-    case CRYS_HMAC_UNVALID_KEY_SIZE_ERROR:
-    case CRYS_HMAC_DATA_SIZE_ILLEGAL:
-        ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
-        break;
+        case CRYS_HMAC_UNVALID_KEY_SIZE_ERROR:
+        case CRYS_HMAC_DATA_SIZE_ILLEGAL:
+            ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
+            break;
 
-    case CRYS_HMAC_ILLEGAL_OPERATION_MODE_ERROR:
-    case CRYS_HMAC_LAST_BLOCK_ALREADY_PROCESSED_ERROR:
-    case CRYS_HMAC_IS_NOT_SUPPORTED:
-    case CRYS_HMAC_CTX_SIZES_ERROR:
-    default:
-        ret_val = NRF_ERROR_CRYPTO_INTERNAL;
-        break;
+        case CRYS_HMAC_ILLEGAL_OPERATION_MODE_ERROR:
+        case CRYS_HMAC_LAST_BLOCK_ALREADY_PROCESSED_ERROR:
+        case CRYS_HMAC_IS_NOT_SUPPORTED:
+        case CRYS_HMAC_CTX_SIZES_ERROR:
+        default:
+            ret_val = NRF_ERROR_CRYPTO_INTERNAL;
+            break;
     }
     return ret_val;
 }
 
-static ret_code_t cc310_backend_hmac_init(void *const p_context, uint8_t const *p_key,
-                                          size_t key_size)
-{
-    CRYSError_t err_code;
-    CRYS_HASH_OperationMode_t hash_mode;
-    ret_code_t ret_val;
-    bool mutex_locked;
 
-    nrf_crypto_backend_cc310_hmac_context_t *p_ctx =
+static ret_code_t cc310_backend_hmac_init(void      * const p_context,
+                                          uint8_t   const * p_key,
+                                          size_t            key_size)
+{
+    CRYSError_t                 err_code;
+    CRYS_HASH_OperationMode_t   hash_mode;
+    ret_code_t                  ret_val;
+    bool                        mutex_locked;
+
+
+    nrf_crypto_backend_cc310_hmac_context_t * p_ctx =
         (nrf_crypto_backend_cc310_hmac_context_t *)p_context;
 
-    switch (p_ctx->header.p_info->type) {
-    case NRF_CRYPTO_HMAC_SHA256_TYPE: {
-        hash_mode = CRYS_HASH_SHA256_mode;
-    } break;
-    case NRF_CRYPTO_HMAC_SHA512_TYPE: {
-        hash_mode = CRYS_HASH_SHA512_mode;
-    } break;
-    default: {
-        NRF_LOG_ERROR("Hash algorithm not supported by CC310 backend wrapper");
-        return NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
-    }
+    switch (p_ctx->header.p_info->type)
+    {
+        case NRF_CRYPTO_HMAC_SHA256_TYPE:
+        {
+            hash_mode = CRYS_HASH_SHA256_mode;
+        } break;
+        case NRF_CRYPTO_HMAC_SHA512_TYPE:
+        {
+            hash_mode = CRYS_HASH_SHA512_mode;
+        } break;
+        default:
+        {
+            NRF_LOG_ERROR("Hash algorithm not supported by CC310 backend wrapper");
+            return NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
+        }
     }
 
     // Key in flash could lead to silently calculating wrong HMAC.
@@ -147,17 +155,19 @@ static ret_code_t cc310_backend_hmac_init(void *const p_context, uint8_t const *
     return ret_val;
 }
 
-static ret_code_t cc310_backend_hmac_update(void *const p_context, uint8_t const *p_data,
-                                            size_t size)
-{
-    CRYSError_t err_code;
-    ret_code_t ret_val;
-    bool mutex_locked;
-    size_t cur_len;
-    size_t len_left = size;
-    uint8_t const *p_cur = p_data;
 
-    nrf_crypto_backend_cc310_hmac_context_t *p_ctx =
+static ret_code_t cc310_backend_hmac_update(void    * const p_context,
+                                            uint8_t const * p_data,
+                                            size_t          size)
+{
+    CRYSError_t         err_code;
+    ret_code_t          ret_val;
+    bool                mutex_locked;
+    size_t              cur_len;
+    size_t              len_left  = size;
+    uint8_t const *     p_cur     = p_data;
+
+    nrf_crypto_backend_cc310_hmac_context_t * p_ctx =
         (nrf_crypto_backend_cc310_hmac_context_t *)p_context;
 
     // Data in flash could lead to silently calculating wrong HMAC.
@@ -169,9 +179,10 @@ static ret_code_t cc310_backend_hmac_update(void *const p_context, uint8_t const
     cc310_backend_enable();
 
     // If the input is larger than CC310_MAX_LENGTH_DMA_OPERATIONS, split into smaller
-    do {
-        cur_len = (len_left > CC310_MAX_LENGTH_DMA_OPERATIONS) ? CC310_MAX_LENGTH_DMA_OPERATIONS :
-                                                                 len_left;
+    do
+    {
+        cur_len = (len_left > CC310_MAX_LENGTH_DMA_OPERATIONS) ?
+            CC310_MAX_LENGTH_DMA_OPERATIONS : len_left;
 
         err_code = CRYS_HMAC_Update(&p_ctx->crys_context, (uint8_t *)p_cur, cur_len);
 
@@ -189,15 +200,17 @@ static ret_code_t cc310_backend_hmac_update(void *const p_context, uint8_t const
     return ret_val;
 }
 
-static ret_code_t cc310_backend_hmac_finalize(void *const p_context, uint8_t *p_digest,
-                                              size_t *const p_size)
-{
-    CRYSError_t err_code;
-    ret_code_t ret_val;
-    bool mutex_locked;
-    CRYS_HASH_Result_t *p_int_digest = (CRYS_HASH_Result_t *)p_digest;
 
-    nrf_crypto_backend_cc310_hmac_context_t *p_ctx =
+static ret_code_t cc310_backend_hmac_finalize(void      * const p_context,
+                                              uint8_t         * p_digest,
+                                              size_t    * const p_size)
+{
+    CRYSError_t             err_code;
+    ret_code_t              ret_val;
+    bool                    mutex_locked;
+    CRYS_HASH_Result_t    * p_int_digest = (CRYS_HASH_Result_t *)p_digest;
+
+    nrf_crypto_backend_cc310_hmac_context_t * p_ctx =
         (nrf_crypto_backend_cc310_hmac_context_t *)p_context;
 
     // Set the digest length to 0 so that this is used in case of any error.
@@ -215,7 +228,8 @@ static ret_code_t cc310_backend_hmac_finalize(void *const p_context, uint8_t *p_
     cc310_backend_mutex_unlock();
 
     ret_val = result_get(err_code);
-    if (err_code != NRF_SUCCESS) {
+    if (err_code != NRF_SUCCESS)
+    {
         return ret_val;
     }
 
@@ -227,26 +241,29 @@ static ret_code_t cc310_backend_hmac_finalize(void *const p_context, uint8_t *p_
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HMAC_SHA256)
 
 // Information structure for HMAC SHA256 using CC310 backend.
-const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha256_info = {
-    .init_fn = cc310_backend_hmac_init,
-    .update_fn = cc310_backend_hmac_update,
-    .finalize_fn = cc310_backend_hmac_finalize,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA256,
-    .context_size = sizeof(nrf_crypto_backend_hmac_sha256_context_t),
-    .type = NRF_CRYPTO_HMAC_SHA256_TYPE,
+const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha256_info =
+{
+    .init_fn        = cc310_backend_hmac_init,
+    .update_fn      = cc310_backend_hmac_update,
+    .finalize_fn    = cc310_backend_hmac_finalize,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA256,
+    .context_size   = sizeof(nrf_crypto_backend_hmac_sha256_context_t),
+    .type           = NRF_CRYPTO_HMAC_SHA256_TYPE,
 };
 
 #endif // NRF_CRYPTO_BACKEND_CC310_HMAC_SHA256_ENABLED
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HMAC_SHA512)
 
 // Information structure for HMAC SHA512 using CC310 backend.
-const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha512_info = {
-    .init_fn = cc310_backend_hmac_init,
-    .update_fn = cc310_backend_hmac_update,
-    .finalize_fn = cc310_backend_hmac_finalize,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA512,
-    .context_size = sizeof(nrf_crypto_backend_hmac_sha512_context_t),
+const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha512_info =
+{
+    .init_fn        = cc310_backend_hmac_init,
+    .update_fn      = cc310_backend_hmac_update,
+    .finalize_fn    = cc310_backend_hmac_finalize,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA512,
+    .context_size   = sizeof(nrf_crypto_backend_hmac_sha512_context_t),
     .type = NRF_CRYPTO_HMAC_SHA512_TYPE,
 };
 

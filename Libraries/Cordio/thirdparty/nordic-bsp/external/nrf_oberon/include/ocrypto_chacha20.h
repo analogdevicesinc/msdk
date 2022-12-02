@@ -68,6 +68,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+
 /**
  * Length of the encryption key.
  */
@@ -77,6 +78,7 @@ extern "C" {
  * Maximum length of the nonce.
  */
 #define ocrypto_chacha20_NONCE_BYTES_MAX (12)
+
 
 /**
  * ChaCha20 cipher stream generator.
@@ -99,8 +101,11 @@ extern "C" {
  * @remark This function is equivalent to @c chacha20_stream_xor with a
  *         message @p m consisting of @p c_len zeroes.
  */
-void ocrypto_chacha20_stream(uint8_t *c, size_t c_len, const uint8_t *n, size_t n_len,
-                             const uint8_t k[ocrypto_chacha20_KEY_BYTES], uint32_t count);
+void ocrypto_chacha20_stream(
+    uint8_t *c, size_t c_len,
+    const uint8_t *n, size_t n_len,
+    const uint8_t k[ocrypto_chacha20_KEY_BYTES],
+    uint32_t count);
 
 /**
  * ChaCha20 cipher stream encoder.
@@ -125,9 +130,12 @@ void ocrypto_chacha20_stream(uint8_t *c, size_t c_len, const uint8_t *n, size_t 
  * @remark When reusing an encryption key @p k for a different message @p m, a
  *         different nonce @p n or initial block counter @p count must be used.
  */
-void ocrypto_chacha20_stream_xor(uint8_t *c, const uint8_t *m, size_t m_len, const uint8_t *n,
-                                 size_t n_len, const uint8_t k[ocrypto_chacha20_KEY_BYTES],
-                                 uint32_t count);
+void ocrypto_chacha20_stream_xor(
+    uint8_t *c,
+    const uint8_t *m, size_t m_len,
+    const uint8_t *n, size_t n_len,
+    const uint8_t k[ocrypto_chacha20_KEY_BYTES],
+    uint32_t count);
 
 #ifdef __cplusplus
 }

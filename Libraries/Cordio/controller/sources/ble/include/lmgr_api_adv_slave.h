@@ -41,27 +41,29 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Advertising parameters. */
-typedef struct {
-    uint32_t advInterMinUsec; /*!< Minimum advertising interval in microseconds. */
-    uint32_t advInterMaxUsec; /*!< Maximum advertising interval in microseconds. */
-    uint8_t advType; /*!< Advertising type. */
-    uint8_t ownAddrType; /*!< Address type used by this device. */
-    uint8_t peerAddrType; /*!< Address type of peer device. Only used for directed advertising. */
-    uint64_t peerAddr; /*!< Address of peer device. Only used for directed advertising. */
-    uint8_t advChanMap; /*!< Advertising channel map. */
-    uint8_t advFiltPolicy; /*!< Advertising filter policy. */
+typedef struct
+{
+  uint32_t          advInterMinUsec;    /*!< Minimum advertising interval in microseconds. */
+  uint32_t          advInterMaxUsec;    /*!< Maximum advertising interval in microseconds. */
+  uint8_t           advType;            /*!< Advertising type. */
+  uint8_t           ownAddrType;        /*!< Address type used by this device. */
+  uint8_t           peerAddrType;       /*!< Address type of peer device. Only used for directed advertising. */
+  uint64_t          peerAddr;           /*!< Address of peer device. Only used for directed advertising. */
+  uint8_t           advChanMap;         /*!< Advertising channel map. */
+  uint8_t           advFiltPolicy;      /*!< Advertising filter policy. */
 } lmgrAdvParam_t;
 
 /*! \brief      Slave role device parameter definition. */
-typedef struct {
-    uint32_t advTermCntDownUsec; /*!< Advertising termination count down in microseconds. */
-    lmgrAdvParam_t advParam; /*!< Advertising parameters. */
-    lmgrAdvbUser_t advData; /*!< Advertising host data buffer. */
-    lmgrAdvbUser_t scanRspData; /*!< Scan response host data buffer. */
-    uint8_t ownAddrType; /*!< Actual address type used by this device. */
-    uint64_t localRpa; /*!< Local RPA used by this device. */
-    bool_t scanReportEna; /*!< Scan report events enabled. */
-    uint8_t defTxPhyOpts; /*!< Default Tx PHY options */
+typedef struct
+{
+  uint32_t          advTermCntDownUsec; /*!< Advertising termination count down in microseconds. */
+  lmgrAdvParam_t    advParam;           /*!< Advertising parameters. */
+  lmgrAdvbUser_t    advData;            /*!< Advertising host data buffer. */
+  lmgrAdvbUser_t    scanRspData;        /*!< Scan response host data buffer. */
+  uint8_t           ownAddrType;        /*!< Actual address type used by this device. */
+  uint64_t          localRpa;           /*!< Local RPA used by this device. */
+  bool_t            scanReportEna;      /*!< Scan report events enabled. */
+  uint8_t           defTxPhyOpts;       /*!< Default Tx PHY options */
 } lmgrSlvAdvCtrlBlk_t;
 
 /**************************************************************************************************
@@ -77,7 +79,7 @@ extern lmgrSlvAdvCtrlBlk_t lmgrSlvAdvCb;
 /* Initialization */
 void LmgrSlvInit(void);
 
-/*! \} */ /* LL_LMGR_API_ADV_SLV */
+/*! \} */    /* LL_LMGR_API_ADV_SLV */
 
 #ifdef __cplusplus
 };

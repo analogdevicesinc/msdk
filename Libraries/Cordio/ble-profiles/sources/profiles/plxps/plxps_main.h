@@ -38,25 +38,27 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Minimum RACP write length */
-#define PLXPS_RACP_MIN_WRITE_LEN 2
+#define PLXPS_RACP_MIN_WRITE_LEN       2
 
 /*! \brief RACP response length */
-#define PLXPS_RACP_RSP_LEN 4
+#define PLXPS_RACP_RSP_LEN             4
 
 /*! \brief Pulse Oximeter RACP number of stored records response length */
-#define PLXPS_RACP_NUM_REC_RSP_LEN 4
+#define PLXPS_RACP_NUM_REC_RSP_LEN     4
 
 /*! \brief RACP operand maximum length */
-#define PLXPS_OPERAND_MAX ((CH_RACP_GLS_FILTER_TIME_LEN * 2) + 1)
+#define PLXPS_OPERAND_MAX              ((CH_RACP_GLS_FILTER_TIME_LEN * 2) + 1)
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Pulse Oximeter measurement record */
-typedef struct {
-    plxpScm_t spotCheck; /*!< \brief Pulse Oximeter spot check measurement */
+typedef struct
+{
+  plxpScm_t   spotCheck;              /*!< \brief Pulse Oximeter spot check measurement */
 } plxpsRec_t;
+
 
 /*************************************************************************************************/
 /*!
@@ -79,7 +81,7 @@ void plxpsDbInit(void);
  *  \return \ref CH_RACP_RSP_SUCCESS if a record is found, otherwise an error status is returned.
  */
 /*************************************************************************************************/
-uint8_t plxpsDbGetNextRecord(uint8_t oper, plxpsRec_t *pCurrRec, plxpsRec_t **pRec);
+uint8_t plxpsDbGetNextRecord(uint8_t oper, plxpsRec_t *pCurrRec,  plxpsRec_t **pRec);
 
 /*************************************************************************************************/
 /*!
@@ -114,7 +116,8 @@ uint8_t plxpsDbGetNumRecords(uint8_t oper, uint8_t *pNumRec);
 /*************************************************************************************************/
 void plxpsDbGenerateRecord(void);
 
-/*! \} */ /* PULSE_OXIMETER_PROFILE */
+
+/*! \} */    /* PULSE_OXIMETER_PROFILE */
 
 #ifdef __cplusplus
 };

@@ -36,27 +36,28 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief HCI event statistics */
-typedef struct {
-    uint16_t numDiscCmplEvt; /*!< \brief Number discovery complete events. */
-    uint16_t numEncChangeEvt; /*!< \brief Number encryption change events. */
-    uint16_t
-        numReadRemoteVerInfoCmpEvt; /*!< \brief Number read remote version info complete events. */
-    uint16_t numCmdCmplEvt; /*!< \brief Number command complete events. */
-    uint16_t numCmdStatusEvt; /*!< \brief Number command status events. */
-    uint16_t numHwErrorEvt; /*!< \brief Number hardware error events. */
-    uint16_t numCmplPktsEvt; /*!< \brief Number complete packet events. */
-    uint16_t numDataBufOverflowEvt; /*!< \brief Number data buf overflow events. */
-    uint16_t numEncKeyRefreshCmplEvt; /*!< \brief Number encryption key refresh complete events. */
-    uint16_t numLeMetaEvt; /*!< \brief Number LE meta events. */
-    uint16_t numVendorSpecEvt; /*!< \brief Number vendor specific events. */
-    uint16_t numAuthToEvt; /*!< \brief Number authenticated to events. */
+typedef struct
+{
+  uint16_t numDiscCmplEvt;              /*!< \brief Number discovery complete events. */
+  uint16_t numEncChangeEvt;             /*!< \brief Number encryption change events. */
+  uint16_t numReadRemoteVerInfoCmpEvt;  /*!< \brief Number read remote version info complete events. */
+  uint16_t numCmdCmplEvt;               /*!< \brief Number command complete events. */
+  uint16_t numCmdStatusEvt;             /*!< \brief Number command status events. */
+  uint16_t numHwErrorEvt;               /*!< \brief Number hardware error events. */
+  uint16_t numCmplPktsEvt;              /*!< \brief Number complete packet events. */
+  uint16_t numDataBufOverflowEvt;       /*!< \brief Number data buf overflow events. */
+  uint16_t numEncKeyRefreshCmplEvt;     /*!< \brief Number encryption key refresh complete events. */
+  uint16_t numLeMetaEvt;                /*!< \brief Number LE meta events. */
+  uint16_t numVendorSpecEvt;            /*!< \brief Number vendor specific events. */
+  uint16_t numAuthToEvt;                /*!< \brief Number authenticated to events. */
 } hciEvtStats_t;
 
-/*! \} */ /* STACK_HCI_API */
+/*! \} */    /* STACK_HCI_API */
 
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
+
 
 /*************************************************************************************************/
 /*!

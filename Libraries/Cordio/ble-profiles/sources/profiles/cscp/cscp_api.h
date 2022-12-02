@@ -40,10 +40,10 @@ Macros
  *
  */
 /**@{*/
-#define CSCP_SM_PARAM_WHEEL_REVOLUTIONS 0 /* Cumulative Wheel Revolutions */
-#define CSCP_SM_PARAM_LAST_WHEEL_EVT_TIME 1 /* Last Wheel Event Time */
-#define CSCP_SM_PARAM_CRANK_REVOLUTIONS 2 /* Cumulative Crank Revolutions */
-#define CSCP_SM_PARAM_LAST_CRANK_TIME 3 /* Last Crank Event Time */
+#define CSCP_SM_PARAM_WHEEL_REVOLUTIONS             0     /* Cumulative Wheel Revolutions */
+#define CSCP_SM_PARAM_LAST_WHEEL_EVT_TIME           1     /* Last Wheel Event Time */
+#define CSCP_SM_PARAM_CRANK_REVOLUTIONS             2     /* Cumulative Crank Revolutions */
+#define CSCP_SM_PARAM_LAST_CRANK_TIME               3     /* Last Crank Event Time */
 /**@}*/
 
 /**************************************************************************************************
@@ -95,7 +95,7 @@ void CscpsSetSensorLocation(uint8_t location);
 /*************************************************************************************************/
 void CscpsSetFeatures(uint16_t features);
 
-/*! \} */ /* CYCLING_SPEED_AND_CADENCE_PROFILE */
+/*! \} */    /* CYCLING_SPEED_AND_CADENCE_PROFILE */
 
 #ifdef __cplusplus
 };

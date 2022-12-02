@@ -43,7 +43,7 @@
 **************************************************************************************************/
 
 /*! \brief Maximum size of a single trace log message. */
-#define WSF_TOKEN_BUFFER_SIZE 128
+#define WSF_TOKEN_BUFFER_SIZE             128
 
 /**************************************************************************************************
  Functions
@@ -56,7 +56,7 @@
 /*************************************************************************************************/
 void WsfDetokenInit()
 {
-    /* Take no action - place holder should future platform require initialization */
+  /* Take no action - place holder should future platform require initialization */
 }
 
 /*************************************************************************************************/
@@ -68,13 +68,13 @@ void WsfDetokenInit()
 /*************************************************************************************************/
 void WsfDetokenEnable(bool_t enable)
 {
-    uint8_t pEvtMask[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+  uint8_t pEvtMask[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
-    if (enable) {
-        pEvtMask[0] = WSF_DETOKEN_ENABLE_BIT;
-    }
+  if (enable) {
+    pEvtMask[0] = WSF_DETOKEN_ENABLE_BIT;
+  }
 
-    HciVendorSpecificCmd(WSF_DETOKEN_VS_SET_EVENT_MASK_OPCODE, sizeof(pEvtMask), pEvtMask);
+  HciVendorSpecificCmd(WSF_DETOKEN_VS_SET_EVENT_MASK_OPCODE, sizeof(pEvtMask), pEvtMask);
 }
 
 /*************************************************************************************************/
@@ -86,28 +86,28 @@ void WsfDetokenEnable(bool_t enable)
 /*************************************************************************************************/
 static const tokenElem_t *wsfDetokenFindToken(uint32_t token)
 {
-    uint16_t numTokens = sizeof(tokenLookupTbl) / sizeof(tokenElem_t);
-    uint16_t top = 0;
-    uint16_t bottom = numTokens - 1;
-    uint16_t midPoint = (top + bottom) / 2;
+  uint16_t numTokens = sizeof (tokenLookupTbl) / sizeof(tokenElem_t);
+  uint16_t top = 0;
+  uint16_t bottom = numTokens - 1;
+  uint16_t midPoint = (top + bottom) / 2;
 
-    if ((token < tokenLookupTbl[0].token) || (token > tokenLookupTbl[numTokens - 1].token)) {
-        return NULL;
-    }
-
-    while (top <= bottom) {
-        if (tokenLookupTbl[midPoint].token < token) {
-            top = midPoint + 1;
-        } else if (tokenLookupTbl[midPoint].token == token) {
-            return &tokenLookupTbl[midPoint];
-        } else {
-            bottom = midPoint - 1;
-        }
-
-        midPoint = (top + bottom) / 2;
-    }
-
+  if ((token < tokenLookupTbl[0].token) || (token > tokenLookupTbl[numTokens-1].token)) {
     return NULL;
+  }
+
+  while (top <= bottom) {
+    if (tokenLookupTbl[midPoint].token < token) {
+      top = midPoint + 1;
+    } else if (tokenLookupTbl[midPoint].token == token) {
+      return &tokenLookupTbl[midPoint];
+    } else {
+      bottom = midPoint - 1;
+    }
+
+    midPoint = (top + bottom) / 2;
+  }
+
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -119,24 +119,24 @@ static const tokenElem_t *wsfDetokenFindToken(uint32_t token)
 /*************************************************************************************************/
 static const char *wsfDetokenFindTokenString(uint32_t token)
 {
-    uint16_t numTokens = sizeof(tokenLookupTbl) / sizeof(tokenElem_t);
-    uint16_t top = 0;
-    uint16_t bottom = numTokens - 1;
-    uint16_t midPoint = (top + bottom) / 2;
+  uint16_t numTokens = sizeof (tokenLookupTbl) / sizeof(tokenElem_t);
+  uint16_t top = 0;
+  uint16_t bottom = numTokens - 1;
+  uint16_t midPoint = (top + bottom) / 2;
 
-    while (top <= bottom) {
-        if (tokenStrTbl[midPoint].strId < token) {
-            top = midPoint + 1;
-        } else if (tokenStrTbl[midPoint].strId == token) {
-            return tokenStrTbl[midPoint].pText;
-        } else {
-            bottom = midPoint - 1;
-        }
-
-        midPoint = (top + bottom) / 2;
+  while (top <= bottom) {
+    if (tokenStrTbl[midPoint].strId < token) {
+      top = midPoint + 1;
+    } else if (tokenStrTbl[midPoint].strId == token) {
+      return tokenStrTbl[midPoint].pText;
+    } else {
+      bottom = midPoint - 1;
     }
 
-    return NULL;
+    midPoint = (top + bottom) / 2;
+  }
+
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -148,54 +148,54 @@ static const char *wsfDetokenFindTokenString(uint32_t token)
 /*************************************************************************************************/
 static void wsfDetokenDecodeHciTokenTrace(uint8_t *pBuffer)
 {
-    uint32_t tokenId;
-    uint32_t var;
-    const tokenElem_t *pToken;
-    char lineBuf[WSF_TOKEN_BUFFER_SIZE + 1];
+  uint32_t tokenId;
+  uint32_t var;
+  const tokenElem_t *pToken;
+  char  lineBuf[WSF_TOKEN_BUFFER_SIZE + 1];
 
-    BYTES_TO_UINT32(tokenId, (pBuffer + 2));
-    BYTES_TO_UINT32(var, (pBuffer + 6));
+  BYTES_TO_UINT32(tokenId, (pBuffer + 2));
+  BYTES_TO_UINT32(var, (pBuffer + 6));
 
-    tokenId = tokenId & 0x0FFFFFFF;
+  tokenId = tokenId & 0x0FFFFFFF;
 
-    pToken = wsfDetokenFindToken(tokenId);
+  pToken = wsfDetokenFindToken(tokenId);
 
-    if (pToken != NULL) {
-        uint8_t numParams = pToken->paramInfo & 0xf;
-        uint8_t paramMask = pToken->paramInfo >> 4;
+  if (pToken != NULL) {
+    uint8_t numParams = pToken->paramInfo & 0xf;
+    uint8_t paramMask = pToken->paramInfo >> 4;
 
-        strncpy(lineBuf, pToken->pMsg, WSF_TOKEN_BUFFER_SIZE);
+    strncpy(lineBuf, pToken->pMsg, WSF_TOKEN_BUFFER_SIZE);
 
-        switch (numParams) {
-        case 0:
-            LL_TRACE_INFO0(lineBuf);
-            break;
+    switch (numParams) {
+      case 0:
+        LL_TRACE_INFO0(lineBuf);
+        break;
 
-        case 1:
-            if (paramMask == WSF_DETOKEN_PARAM_VARIABLE) {
-                LL_TRACE_INFO1(lineBuf, var);
-            } else {
-                LL_TRACE_INFO1(lineBuf, wsfDetokenFindTokenString(var));
-            }
-            break;
-
-        case 2:
-            if (paramMask == WSF_DETOKEN_PARAM_VARIABLE) {
-                LL_TRACE_INFO2(lineBuf, var & 0xfff, var >> 16);
-            } else if (paramMask == WSF_DETOKEN_PARAM_STRING) {
-                LL_TRACE_INFO2(lineBuf, var & 0xfff, wsfDetokenFindTokenString(var >> 16));
-            } else {
-                LL_TRACE_INFO2(lineBuf, wsfDetokenFindTokenString(var & 0xfff), var >> 16);
-            }
-            break;
-
-        case 3:
-            LL_TRACE_INFO3(lineBuf, var & 0xff, (var >> 8) & 0xff, (var >> 16) & 0xffff);
-            break;
+      case 1:
+        if (paramMask == WSF_DETOKEN_PARAM_VARIABLE) {
+          LL_TRACE_INFO1(lineBuf, var);
+        } else {
+          LL_TRACE_INFO1(lineBuf, wsfDetokenFindTokenString(var));
         }
-    } else {
-        LL_TRACE_INFO0("UNKNOWN TOKEN TRACE\n");
+        break;
+
+      case 2:
+        if (paramMask == WSF_DETOKEN_PARAM_VARIABLE) {
+          LL_TRACE_INFO2(lineBuf, var & 0xfff, var >> 16);
+        } else if (paramMask == WSF_DETOKEN_PARAM_STRING) {
+          LL_TRACE_INFO2(lineBuf, var & 0xfff, wsfDetokenFindTokenString(var >> 16));
+        } else {
+          LL_TRACE_INFO2(lineBuf, wsfDetokenFindTokenString(var & 0xfff), var >> 16);
+        }
+        break;
+
+      case 3:
+        LL_TRACE_INFO3(lineBuf, var & 0xff, (var >> 8) & 0xff, (var >> 16) & 0xffff);
+        break;
     }
+  } else {
+    LL_TRACE_INFO0("UNKNOWN TOKEN TRACE\n");
+  }
 }
 
 /*************************************************************************************************/
@@ -210,16 +210,16 @@ static void wsfDetokenDecodeHciTokenTrace(uint8_t *pBuffer)
 /*************************************************************************************************/
 bool_t WsfDetokenProcessHciEvent(uint16_t len, uint8_t *pBuffer)
 {
-    uint16_t vsEvent;
+  uint16_t vsEvent;
 
-    BYTES_TO_UINT16(vsEvent, pBuffer);
+  BYTES_TO_UINT16(vsEvent, pBuffer);
 
-    if (vsEvent == WSF_DETOKEN_VS_EVT_TOKEN) {
-        wsfDetokenDecodeHciTokenTrace(pBuffer);
-        return TRUE;
-    }
+  if (vsEvent == WSF_DETOKEN_VS_EVT_TOKEN) {
+    wsfDetokenDecodeHciTokenTrace(pBuffer);
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 #endif /* WSF_DETOKEN_TRACE */

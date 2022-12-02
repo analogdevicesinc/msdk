@@ -64,6 +64,7 @@ extern "C" {
  */
 void nrf_bootloader_wdt_init(void);
 
+
 /**
  * @brief Function for feeding the watchdog (if active).
  */

@@ -39,7 +39,7 @@
 #include "mesh_gatt_bearer.h"
 #include "mesh_bearer.h"
 
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
 #include "mesh_test_api.h"
 #include "mesh_error_codes.h"
 #endif
@@ -49,31 +49,32 @@
 **************************************************************************************************/
 
 /*! Mesh Control Block */
-static struct meshBrCb_tag {
-    meshBrEventNotifyCback_t brNwkEventCback; /*! Event notification callback for Network
+static struct meshBrCb_tag
+{
+  meshBrEventNotifyCback_t    brNwkEventCback;           /*! Event notification callback for Network
                                                           */
-    meshBrEventNotifyCback_t brNwkBeaconEventCback; /*!< Event notification callback for Secure
+  meshBrEventNotifyCback_t    brNwkBeaconEventCback;     /*!< Event notification callback for Secure
                                                           *   Network Beacon
                                                           */
-    meshBrEventNotifyCback_t brPbEventCback; /*! Event notification callback for
+  meshBrEventNotifyCback_t    brPbEventCback;            /*! Event notification callback for
                                                           *  Provisioning Bearer
                                                           */
-    meshBrEventNotifyCback_t brPbBeaconEventCback; /*! Event notification callback for
+  meshBrEventNotifyCback_t    brPbBeaconEventCback;      /*! Event notification callback for
                                                           *  Unprovisioned Device Beacon
                                                           */
-    meshBrNwkPduRecvCback_t brNwkPduRecvCback; /*! Network PDU received callback */
-    meshBrBeaconRecvCback_t brNwkBeaconPduRecvCback; /*! Secure Beacon PDU received callback */
-    meshBrPbPduRecvCback_t brPbPduRecvCback; /*! Provisioning Bearer PDU received
+  meshBrNwkPduRecvCback_t     brNwkPduRecvCback;         /*! Network PDU received callback */
+  meshBrBeaconRecvCback_t     brNwkBeaconPduRecvCback;   /*! Secure Beacon PDU received callback */
+  meshBrPbPduRecvCback_t      brPbPduRecvCback;          /*! Provisioning Bearer PDU received
                                                           *  callback
                                                           */
-    meshBrBeaconRecvCback_t brPbBeaconPduRecvCback; /*! Unprovisioned Device Beacon PDU
+  meshBrBeaconRecvCback_t     brPbBeaconPduRecvCback;    /*! Unprovisioned Device Beacon PDU
                                                           *  received callback
                                                           */
-    meshBrNwkPduRecvCback_t brProxyMsgRecvCback; /*! Proxy message received callback for
+  meshBrNwkPduRecvCback_t     brProxyMsgRecvCback;       /*! Proxy message received callback for
                                                           *  upper layer. Message is similar to a
                                                           *  NWK PDU.
                                                           */
-    meshBrEventNotifyCback_t brProxyEventCback; /*! Event notification callback for upper
+  meshBrEventNotifyCback_t    brProxyEventCback;         /*! Event notification callback for upper
                                                           *  layer
                                                           */
 } brCb;
@@ -95,47 +96,51 @@ static struct meshBrCb_tag {
  *  \return    None.
  */
 /*************************************************************************************************/
-static void meshBrProcessAdvPduCback(meshAdvIfId_t advIfId, meshAdvType_t advType,
+static void meshBrProcessAdvPduCback(meshAdvIfId_t advIfId, meshAdvType_t  advType,
                                      const uint8_t *pBrPdu, uint8_t pduLen)
 {
-    /* Advertising interface occupies only the least significant nibble. It will be checked
+  /* Advertising interface occupies only the least significant nibble. It will be checked
    * by the Advertising Bearer
    */
-    WSF_ASSERT(advIfId <= MESH_BR_INTERFACE_ID_INTERFACE_MASK);
+  WSF_ASSERT(advIfId <= MESH_BR_INTERFACE_ID_INTERFACE_MASK);
 
-    /* AD type should be Mesh Beacon or Mesh Packet*/
-    WSF_ASSERT((advType == MESH_AD_TYPE_PACKET) || (advType == MESH_AD_TYPE_BEACON) ||
-               (advType == MESH_AD_TYPE_PB));
+  /* AD type should be Mesh Beacon or Mesh Packet*/
+  WSF_ASSERT((advType == MESH_AD_TYPE_PACKET) || (advType == MESH_AD_TYPE_BEACON) ||
+             (advType == MESH_AD_TYPE_PB));
 
-    /* Check for valid input parameters */
-    WSF_ASSERT(pBrPdu != NULL);
-    WSF_ASSERT(pduLen != 0);
+  /* Check for valid input parameters */
+  WSF_ASSERT(pBrPdu != NULL);
+  WSF_ASSERT(pduLen != 0);
 
-    /* Send PDU to specified bearer type interface */
-    switch (advType) {
+  /* Send PDU to specified bearer type interface */
+  switch (advType)
+  {
     case MESH_AD_TYPE_PACKET:
-        /* Network PDU received. Call CB registered by upper layer */
-        brCb.brNwkPduRecvCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), pBrPdu, pduLen);
-        break;
+      /* Network PDU received. Call CB registered by upper layer */
+      brCb.brNwkPduRecvCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), pBrPdu, pduLen);
+      break;
 
     case MESH_AD_TYPE_BEACON:
-        if (pBrPdu[0] == MESH_BEACON_TYPE_UNPROV) {
-            /* Unprovisioned Device Beacon received. Call CB registered by upper layer */
-            brCb.brPbBeaconPduRecvCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), pBrPdu, pduLen);
-        } else if (pBrPdu[0] == MESH_BEACON_TYPE_SEC_NWK) {
-            /* Secure Network Beacon received. Call CB registered by upper layer */
-            brCb.brNwkBeaconPduRecvCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), pBrPdu, pduLen);
-        }
-        break;
+      if (pBrPdu[0] == MESH_BEACON_TYPE_UNPROV)
+      {
+        /* Unprovisioned Device Beacon received. Call CB registered by upper layer */
+        brCb.brPbBeaconPduRecvCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), pBrPdu, pduLen);
+      }
+      else if (pBrPdu[0] == MESH_BEACON_TYPE_SEC_NWK)
+      {
+        /* Secure Network Beacon received. Call CB registered by upper layer */
+        brCb.brNwkBeaconPduRecvCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), pBrPdu, pduLen);
+      }
+      break;
 
     case MESH_AD_TYPE_PB:
-        /* Generic Provisioning PDU received. Call CB registered by upper layer */
-        brCb.brPbPduRecvCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), pBrPdu, pduLen);
-        break;
+      /* Generic Provisioning PDU received. Call CB registered by upper layer */
+      brCb.brPbPduRecvCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), pBrPdu, pduLen);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -152,72 +157,81 @@ static void meshBrProcessAdvPduCback(meshAdvIfId_t advIfId, meshAdvType_t advTyp
 static void meshBrProcessAdvEventCback(meshAdvIfId_t advIfId, meshAdvEvent_t event,
                                        const meshAdvBrEventParams_t *pEventParams)
 {
-    meshBrEventParams_t brEventParams;
+  meshBrEventParams_t brEventParams;
 
-    /* Advertising interface occupies only the least significant nibble. It will be checked
+  /* Advertising interface occupies only the least significant nibble. It will be checked
    * by the Advertising Bearer
    */
-    WSF_ASSERT(advIfId <= MESH_BR_INTERFACE_ID_INTERFACE_MASK);
+  WSF_ASSERT(advIfId <= MESH_BR_INTERFACE_ID_INTERFACE_MASK);
 
-    /* Event. Call Cback registered by upper layer */
-    switch (event) {
+  /* Event. Call Cback registered by upper layer */
+  switch (event)
+  {
     case MESH_ADV_INTERFACE_OPENED:
-        MESH_TRACE_INFO0("MESH BEARER: advertising interface open");
+      MESH_TRACE_INFO0("MESH BEARER: advertising interface open");
 
-        /* Event doesn't have any parameters. Assert if event is not NULL. */
-        WSF_ASSERT(pEventParams == NULL);
+      /* Event doesn't have any parameters. Assert if event is not NULL. */
+      WSF_ASSERT(pEventParams == NULL);
 
-        /* Translate the ADV interface opened event into a Bearer interface opened event */
-        brEventParams.brConfig.bearerType = MESH_ADV_BEARER;
-        brCb.brNwkEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_OPENED_EVT,
-                             &brEventParams);
-        brCb.brPbEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_OPENED_EVT,
-                            &brEventParams);
+      /* Translate the ADV interface opened event into a Bearer interface opened event */
+      brEventParams.brConfig.bearerType = MESH_ADV_BEARER;
+      brCb.brNwkEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_OPENED_EVT,
+                           &brEventParams);
+      brCb.brPbEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_OPENED_EVT,
+                          &brEventParams);
 
-        break;
+      break;
 
     case MESH_ADV_INTERFACE_CLOSED:
-        MESH_TRACE_INFO0("MESH BEARER: advertising interface closed");
+      MESH_TRACE_INFO0("MESH BEARER: advertising interface closed");
 
-        /* Event doesn't have any parameters. Assert if event is not NULL. */
-        WSF_ASSERT(pEventParams == NULL);
+      /* Event doesn't have any parameters. Assert if event is not NULL. */
+      WSF_ASSERT(pEventParams == NULL);
 
-        /* Translate the ADV interface closed event into a Bearer interface closed event */
-        brEventParams.brConfig.bearerType = MESH_ADV_BEARER;
-        brCb.brNwkEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_CLOSED_EVT,
-                             &brEventParams);
-        brCb.brPbEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_CLOSED_EVT,
-                            &brEventParams);
-        break;
+      /* Translate the ADV interface closed event into a Bearer interface closed event */
+      brEventParams.brConfig.bearerType = MESH_ADV_BEARER;
+      brCb.brNwkEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_CLOSED_EVT,
+                           &brEventParams);
+      brCb.brPbEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_CLOSED_EVT,
+                          &brEventParams);
+      break;
 
     case MESH_ADV_PACKET_PROCESSED:
-        /* Event has parameters. Assert if event is NULL. */
-        WSF_ASSERT(pEventParams != NULL);
+      /* Event has parameters. Assert if event is NULL. */
+      WSF_ASSERT(pEventParams != NULL);
 
-        /* Translate the ADV packet sent event into a Bearer packet sent event */
-        brEventParams.brPduStatus.pPdu = pEventParams->brPduStatus.pPdu;
-        if (pEventParams->brPduStatus.adType == MESH_AD_TYPE_PACKET) {
-            brCb.brNwkEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId),
-                                 MESH_BR_INTERFACE_PACKET_SENT_EVT, &brEventParams);
-        } else if (pEventParams->brPduStatus.adType == MESH_AD_TYPE_PB) {
-            brCb.brPbEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_PACKET_SENT_EVT,
-                                &brEventParams);
-        } else if (pEventParams->brPduStatus.adType == MESH_AD_TYPE_BEACON) {
-            if (pEventParams->brPduStatus.pPdu[0] == MESH_BEACON_TYPE_UNPROV) {
-                brCb.brPbBeaconEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId),
-                                          MESH_BR_INTERFACE_PACKET_SENT_EVT, &brEventParams);
-            } else if (pEventParams->brPduStatus.pPdu[0] == MESH_BEACON_TYPE_SEC_NWK) {
-                brCb.brNwkBeaconEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId),
-                                           MESH_BR_INTERFACE_PACKET_SENT_EVT, &brEventParams);
-            }
+      /* Translate the ADV packet sent event into a Bearer packet sent event */
+      brEventParams.brPduStatus.pPdu = pEventParams->brPduStatus.pPdu;
+      if (pEventParams->brPduStatus.adType == MESH_AD_TYPE_PACKET)
+      {
+        brCb.brNwkEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_PACKET_SENT_EVT,
+                             &brEventParams);
+      }
+      else if (pEventParams->brPduStatus.adType == MESH_AD_TYPE_PB)
+      {
+        brCb.brPbEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId), MESH_BR_INTERFACE_PACKET_SENT_EVT,
+                            &brEventParams);
+      }
+      else if (pEventParams->brPduStatus.adType == MESH_AD_TYPE_BEACON)
+      {
+        if (pEventParams->brPduStatus.pPdu[0] == MESH_BEACON_TYPE_UNPROV)
+        {
+          brCb.brPbBeaconEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId),
+                                    MESH_BR_INTERFACE_PACKET_SENT_EVT, &brEventParams);
         }
-        break;
+        else if (pEventParams->brPduStatus.pPdu[0] == MESH_BEACON_TYPE_SEC_NWK)
+        {
+          brCb.brNwkBeaconEventCback(MESH_BR_ADV_IF_TO_BR_IF(advIfId),
+                                     MESH_BR_INTERFACE_PACKET_SENT_EVT, &brEventParams);
+        }
+      }
+      break;
 
     default:
-        /* Assert if received event is unknown */
-        WSF_ASSERT(event <= MESH_ADV_PACKET_PROCESSED);
-        break;
-    }
+      /* Assert if received event is unknown */
+      WSF_ASSERT(event <= MESH_ADV_PACKET_PROCESSED);
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -237,53 +251,56 @@ static void meshBrProcessAdvEventCback(meshAdvIfId_t advIfId, meshAdvEvent_t eve
 static void meshBrProcessGattPduCback(meshGattProxyConnId_t connId, meshGattProxyPduType_t pduType,
                                       const uint8_t *pBrPdu, uint16_t brPduLen)
 {
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
     meshTestProxyCfgPduRcvdInd_t proxyPduRcvdInd;
 
-    if (meshTestCb.listenMask & MESH_TEST_PROXY_LISTEN) {
-        proxyPduRcvdInd.hdr.event = MESH_TEST_EVENT;
-        proxyPduRcvdInd.hdr.param = MESH_TEST_PROXY_PDU_RCVD_IND;
-        proxyPduRcvdInd.hdr.status = MESH_SUCCESS;
-        proxyPduRcvdInd.pPdu = pBrPdu;
-        proxyPduRcvdInd.pduLen = brPduLen;
-        proxyPduRcvdInd.pduType = pduType;
+  if (meshTestCb.listenMask & MESH_TEST_PROXY_LISTEN)
+  {
+    proxyPduRcvdInd.hdr.event = MESH_TEST_EVENT;
+    proxyPduRcvdInd.hdr.param = MESH_TEST_PROXY_PDU_RCVD_IND;
+    proxyPduRcvdInd.hdr.status = MESH_SUCCESS;
+    proxyPduRcvdInd.pPdu = pBrPdu;
+    proxyPduRcvdInd.pduLen = brPduLen;
+    proxyPduRcvdInd.pduType = pduType;
 
-        meshTestCb.testCback((meshTestEvt_t *)&proxyPduRcvdInd);
-    }
+    meshTestCb.testCback((meshTestEvt_t *)&proxyPduRcvdInd);
+  }
 #endif
-    /* Send PDU to specified bearer type interface. GATT bearer takes care of the PDU length to be
+  /* Send PDU to specified bearer type interface. GATT bearer takes care of the PDU length to be
    * in range
    */
-    switch (pduType) {
+  switch (pduType)
+  {
     case MESH_GATT_PROXY_PDU_TYPE_NETWORK_PDU:
         /* Network PDU received. Call CB registered by upper layer.  */
         brCb.brNwkPduRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu, (uint8_t)brPduLen);
-        break;
+      break;
 
     case MESH_GATT_PROXY_PDU_TYPE_BEACON:
-        /* Beacon received. Call CB registered by upper layer */
-        if (pBrPdu[0] == MESH_BEACON_TYPE_UNPROV) {
-            brCb.brPbBeaconPduRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu,
-                                        (uint8_t)brPduLen);
-        } else if (pBrPdu[0] == MESH_BEACON_TYPE_SEC_NWK) {
-            brCb.brNwkBeaconPduRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu,
-                                         (uint8_t)brPduLen);
-        }
-        break;
+      /* Beacon received. Call CB registered by upper layer */
+      if (pBrPdu[0] == MESH_BEACON_TYPE_UNPROV)
+      {
+        brCb.brPbBeaconPduRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu, (uint8_t)brPduLen);
+      }
+      else if (pBrPdu[0] == MESH_BEACON_TYPE_SEC_NWK)
+      {
+        brCb.brNwkBeaconPduRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu, (uint8_t)brPduLen);
+      }
+      break;
 
     case MESH_GATT_PROXY_PDU_TYPE_PROVISIONING:
-        /* Generic Provisioning PDU received. Call CB registered by upper layer */
-        brCb.brPbPduRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu, (uint8_t)brPduLen);
-        break;
+      /* Generic Provisioning PDU received. Call CB registered by upper layer */
+      brCb.brPbPduRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu, (uint8_t)brPduLen);
+      break;
 
     case MESH_GATT_PROXY_PDU_TYPE_CONFIGURATION:
-        /* Config Message received. Call CB registered by upper layer */
-        brCb.brProxyMsgRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu, (uint8_t)brPduLen);
-        break;
+      /* Config Message received. Call CB registered by upper layer */
+      brCb.brProxyMsgRecvCback(MESH_BR_CONN_ID_TO_BR_IF(connId), pBrPdu, (uint8_t)brPduLen);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -299,73 +316,75 @@ static void meshBrProcessGattPduCback(meshGattProxyConnId_t connId, meshGattProx
 /*************************************************************************************************/
 static void meshBrProcessGattEventCback(meshGattProxyConnId_t connId, const meshGattEvent_t *pEvent)
 {
-    meshBrEventParams_t brEventParams;
+  meshBrEventParams_t brEventParams;
 
-    /* Interface occupies only the least significant nibble. It will be checked
+  /* Interface occupies only the least significant nibble. It will be checked
    * by the GATT Bearer.
    */
-    WSF_ASSERT(connId <= MESH_BR_INTERFACE_ID_INTERFACE_MASK);
+  WSF_ASSERT(connId <= MESH_BR_INTERFACE_ID_INTERFACE_MASK);
 
-    /* Event. Call Cback registered by upper layer */
-    switch (pEvent->eventType) {
+  /* Event. Call Cback registered by upper layer */
+  switch (pEvent->eventType)
+  {
     case MESH_GATT_PROXY_CONN_OPENED:
-        MESH_TRACE_INFO0("MESH BEARER: GATT connection open");
+      MESH_TRACE_INFO0("MESH BEARER: GATT connection open");
 
-        /* Translate the ADV interface opened event into a Bearer interface opened event */
-        brEventParams.brConfig.bearerType = MESH_GATT_BEARER;
+      /* Translate the ADV interface opened event into a Bearer interface opened event */
+      brEventParams.brConfig.bearerType = MESH_GATT_BEARER;
 
-        brCb.brNwkEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_OPENED_EVT,
-                             &brEventParams);
-        brCb.brPbEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_OPENED_EVT,
-                            &brEventParams);
-        brCb.brProxyEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_OPENED_EVT,
-                               &brEventParams);
-        break;
+      brCb.brNwkEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_OPENED_EVT,
+                           &brEventParams);
+      brCb.brPbEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_OPENED_EVT,
+                          &brEventParams);
+      brCb.brProxyEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_OPENED_EVT,
+          &brEventParams);
+      break;
 
     case MESH_GATT_PROXY_CONN_CLOSED:
-        MESH_TRACE_INFO0("MESH BEARER: GATT connection closed");
+      MESH_TRACE_INFO0("MESH BEARER: GATT connection closed");
 
-        /* Translate the ADV interface closed event into a Bearer interface closed event */
-        brEventParams.brConfig.bearerType = MESH_GATT_BEARER;
-        brCb.brNwkEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_CLOSED_EVT,
+      /* Translate the ADV interface closed event into a Bearer interface closed event */
+      brEventParams.brConfig.bearerType = MESH_GATT_BEARER;
+      brCb.brNwkEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_CLOSED_EVT,
+                           &brEventParams);
+      brCb.brPbEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_CLOSED_EVT,
+                          &brEventParams);
+      brCb.brProxyEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_CLOSED_EVT,
                              &brEventParams);
-        brCb.brPbEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_CLOSED_EVT,
-                            &brEventParams);
-        brCb.brProxyEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_CLOSED_EVT,
-                               &brEventParams);
-        break;
+      break;
     case MESH_GATT_PACKET_PROCESSED:
-        brEventParams.brPduStatus.bearerType = MESH_GATT_BEARER;
-        brEventParams.brPduStatus.pPdu = pEvent->brPduStatus.pPdu;
+      brEventParams.brPduStatus.bearerType = MESH_GATT_BEARER;
+      brEventParams.brPduStatus.pPdu = pEvent->brPduStatus.pPdu;
 
-        switch (pEvent->brPduStatus.pduType) {
+      switch (pEvent->brPduStatus.  pduType)
+      {
         case MESH_GATT_PROXY_PDU_TYPE_NETWORK_PDU:
-            brCb.brNwkEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId),
-                                 MESH_BR_INTERFACE_PACKET_SENT_EVT, &brEventParams);
-            break;
+          brCb.brNwkEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_PACKET_SENT_EVT,
+                               &brEventParams);
+          break;
 
         case MESH_GATT_PROXY_PDU_TYPE_BEACON:
-            brCb.brNwkBeaconEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId),
-                                       MESH_BR_INTERFACE_PACKET_SENT_EVT, &brEventParams);
-            break;
+          brCb.brNwkBeaconEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_PACKET_SENT_EVT,
+                               &brEventParams);
+          break;
         case MESH_GATT_PROXY_PDU_TYPE_CONFIGURATION:
-            brCb.brProxyEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId),
-                                   MESH_BR_INTERFACE_PACKET_SENT_EVT, &brEventParams);
-            break;
+          brCb.brProxyEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_PACKET_SENT_EVT,
+                                 &brEventParams);
+          break;
         case MESH_GATT_PROXY_PDU_TYPE_PROVISIONING:
-            brCb.brPbEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_PACKET_SENT_EVT,
-                                &brEventParams);
-            break;
+          brCb.brPbEventCback(MESH_BR_CONN_ID_TO_BR_IF(connId), MESH_BR_INTERFACE_PACKET_SENT_EVT,
+                              &brEventParams);
+          break;
         default:
-            break;
-        }
-        break;
+          break;
+      }
+      break;
 
     default:
-        /* Assert if received event is unknown */
-        WSF_ASSERT(pEvent->eventType <= MESH_GATT_PROXY_CONN_CLOSED);
-        break;
-    }
+      /* Assert if received event is unknown */
+      WSF_ASSERT(pEvent->eventType <= MESH_GATT_PROXY_CONN_CLOSED);
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -382,10 +401,10 @@ static void meshBrProcessGattEventCback(meshGattProxyConnId_t connId, const mesh
 static void brEmptyEvtCback(meshBrInterfaceId_t brInterfaceId, meshBrEvent_t event,
                             const meshBrEventParams_t *pEventParams)
 {
-    (void)brInterfaceId;
-    (void)event;
-    (void)pEventParams;
-    MESH_TRACE_ERR0("MESH BEARER: Event callback not installed");
+  (void)brInterfaceId;
+  (void)event;
+  (void)pEventParams;
+  MESH_TRACE_ERR0("MESH BEARER: Event callback not installed");
 }
 
 /*************************************************************************************************/
@@ -401,10 +420,10 @@ static void brEmptyEvtCback(meshBrInterfaceId_t brInterfaceId, meshBrEvent_t eve
 /*************************************************************************************************/
 static void brEmptyNwkPduCback(meshBrInterfaceId_t brIfId, const uint8_t *pNwkPdu, uint8_t pduLen)
 {
-    (void)brIfId;
-    (void)pNwkPdu;
-    (void)pduLen;
-    MESH_TRACE_ERR0("MESH BEARER: Network PDU receive callback not installed");
+  (void)brIfId;
+  (void)pNwkPdu;
+  (void)pduLen;
+  MESH_TRACE_ERR0("MESH BEARER: Network PDU receive callback not installed");
 }
 
 /*************************************************************************************************/
@@ -420,10 +439,10 @@ static void brEmptyNwkPduCback(meshBrInterfaceId_t brIfId, const uint8_t *pNwkPd
 /*************************************************************************************************/
 static void brEmptyBeaconCback(meshBrInterfaceId_t brIfId, const uint8_t *pBeaconData, uint8_t len)
 {
-    (void)brIfId;
-    (void)pBeaconData;
-    (void)len;
-    MESH_TRACE_ERR0("MESH BEARER: Beacon callback not installed");
+  (void)brIfId;
+  (void)pBeaconData;
+  (void)len;
+  MESH_TRACE_ERR0("MESH BEARER: Beacon callback not installed");
 }
 
 /*************************************************************************************************/
@@ -439,10 +458,10 @@ static void brEmptyBeaconCback(meshBrInterfaceId_t brIfId, const uint8_t *pBeaco
 /*************************************************************************************************/
 static void brEmptyPbPduCback(meshBrInterfaceId_t brIfId, const uint8_t *pPrvBrPdu, uint8_t pduLen)
 {
-    (void)brIfId;
-    (void)pPrvBrPdu;
-    (void)pduLen;
-    MESH_TRACE_ERR0("MESH BEARER: Provisioning Bearer PDU receive callback not installed");
+  (void)brIfId;
+  (void)pPrvBrPdu;
+  (void)pduLen;
+  MESH_TRACE_ERR0("MESH BEARER: Provisioning Bearer PDU receive callback not installed");
 }
 
 /*************************************************************************************************/
@@ -459,10 +478,10 @@ static void brEmptyPbPduCback(meshBrInterfaceId_t brIfId, const uint8_t *pPrvBrP
 static void brEmptyRecvProxyPduCback(meshBrInterfaceId_t brIfId, const uint8_t *pNwkPdu,
                                      uint8_t pduLen)
 {
-    (void)brIfId;
-    (void)pNwkPdu;
-    (void)pduLen;
-    MESH_TRACE_ERR0("MESH BEARER: Proxy PDU receive callback not installed");
+  (void)brIfId;
+  (void)pNwkPdu;
+  (void)pduLen;
+  MESH_TRACE_ERR0("MESH BEARER: Proxy PDU receive callback not installed");
 }
 
 /**************************************************************************************************
@@ -478,22 +497,22 @@ static void brEmptyRecvProxyPduCback(meshBrInterfaceId_t brIfId, const uint8_t *
 /*************************************************************************************************/
 void MeshBrInit(void)
 {
-    MESH_TRACE_INFO0("MESH BEARER: init");
+  MESH_TRACE_INFO0("MESH BEARER: init");
 
-    /* Set event callbacks */
-    brCb.brNwkEventCback = brEmptyEvtCback;
-    brCb.brNwkBeaconEventCback = brEmptyEvtCback;
-    brCb.brPbEventCback = brEmptyEvtCback;
-    brCb.brPbBeaconEventCback = brEmptyEvtCback;
-    brCb.brPbBeaconPduRecvCback = brEmptyBeaconCback;
-    brCb.brNwkPduRecvCback = brEmptyNwkPduCback;
-    brCb.brNwkBeaconPduRecvCback = brEmptyBeaconCback;
-    brCb.brPbPduRecvCback = brEmptyPbPduCback;
-    brCb.brProxyEventCback = brEmptyEvtCback;
-    brCb.brProxyMsgRecvCback = brEmptyRecvProxyPduCback;
+  /* Set event callbacks */
+  brCb.brNwkEventCback = brEmptyEvtCback;
+  brCb.brNwkBeaconEventCback = brEmptyEvtCback;
+  brCb.brPbEventCback = brEmptyEvtCback;
+  brCb.brPbBeaconEventCback = brEmptyEvtCback;
+  brCb.brPbBeaconPduRecvCback = brEmptyBeaconCback;
+  brCb.brNwkPduRecvCback = brEmptyNwkPduCback;
+  brCb.brNwkBeaconPduRecvCback = brEmptyBeaconCback;
+  brCb.brPbPduRecvCback = brEmptyPbPduCback;
+  brCb.brProxyEventCback = brEmptyEvtCback;
+  brCb.brProxyMsgRecvCback = brEmptyRecvProxyPduCback;
 
-    /* Initialize the ADV Bearer functionality */
-    MeshAdvRegister(meshBrProcessAdvPduCback, meshBrProcessAdvEventCback);
+  /* Initialize the ADV Bearer functionality */
+  MeshAdvRegister(meshBrProcessAdvPduCback, meshBrProcessAdvEventCback);
 }
 
 /*************************************************************************************************/
@@ -510,11 +529,12 @@ void MeshBrInit(void)
 /*************************************************************************************************/
 void MeshBrRegisterNwk(meshBrEventNotifyCback_t eventCback, meshBrNwkPduRecvCback_t nwkPduRecvCback)
 {
-    /* Check for valid callbacks */
-    if ((eventCback != NULL) && (nwkPduRecvCback != NULL)) {
-        brCb.brNwkEventCback = eventCback;
-        brCb.brNwkPduRecvCback = nwkPduRecvCback;
-    }
+  /* Check for valid callbacks */
+  if ((eventCback != NULL) && (nwkPduRecvCback != NULL))
+  {
+    brCb.brNwkEventCback = eventCback;
+    brCb.brNwkPduRecvCback = nwkPduRecvCback;
+  }
 }
 
 /*************************************************************************************************/
@@ -532,11 +552,12 @@ void MeshBrRegisterNwk(meshBrEventNotifyCback_t eventCback, meshBrNwkPduRecvCbac
 void MeshBrRegisterNwkBeacon(meshBrEventNotifyCback_t eventCback,
                              meshBrBeaconRecvCback_t beaconRecvCback)
 {
-    /* Check for valid callback */
-    if ((eventCback != NULL) && (beaconRecvCback != NULL)) {
-        brCb.brNwkBeaconEventCback = eventCback;
-        brCb.brNwkBeaconPduRecvCback = beaconRecvCback;
-    }
+  /* Check for valid callback */
+  if ((eventCback != NULL) && (beaconRecvCback != NULL))
+  {
+    brCb.brNwkBeaconEventCback = eventCback;
+    brCb.brNwkBeaconPduRecvCback = beaconRecvCback;
+  }
 }
 
 /*************************************************************************************************/
@@ -553,11 +574,12 @@ void MeshBrRegisterNwkBeacon(meshBrEventNotifyCback_t eventCback,
 /*************************************************************************************************/
 void MeshBrRegisterPb(meshBrEventNotifyCback_t eventCback, meshBrPbPduRecvCback_t pbPduRecvCback)
 {
-    /* Check for valid callbacks */
-    if ((eventCback != NULL) && (pbPduRecvCback != NULL)) {
-        brCb.brPbEventCback = eventCback;
-        brCb.brPbPduRecvCback = pbPduRecvCback;
-    }
+  /* Check for valid callbacks */
+  if ((eventCback != NULL) && (pbPduRecvCback != NULL))
+  {
+    brCb.brPbEventCback = eventCback;
+    brCb.brPbPduRecvCback = pbPduRecvCback;
+  }
 }
 
 /*************************************************************************************************/
@@ -575,11 +597,12 @@ void MeshBrRegisterPb(meshBrEventNotifyCback_t eventCback, meshBrPbPduRecvCback_
 void MeshBrRegisterPbBeacon(meshBrEventNotifyCback_t eventCback,
                             meshBrBeaconRecvCback_t pbBeaconPduRecvCback)
 {
-    /* Check for valid callback */
-    if ((eventCback != NULL) && (pbBeaconPduRecvCback != NULL)) {
-        brCb.brPbBeaconEventCback = eventCback;
-        brCb.brPbBeaconPduRecvCback = pbBeaconPduRecvCback;
-    }
+  /* Check for valid callback */
+  if ((eventCback != NULL) && (pbBeaconPduRecvCback != NULL))
+  {
+    brCb.brPbBeaconEventCback = eventCback;
+    brCb.brPbBeaconPduRecvCback = pbBeaconPduRecvCback;
+  }
 }
 
 /*************************************************************************************************/
@@ -596,11 +619,12 @@ void MeshBrRegisterPbBeacon(meshBrEventNotifyCback_t eventCback,
 /*************************************************************************************************/
 void MeshBrRegisterProxy(meshBrEventNotifyCback_t eventCback, meshBrNwkPduRecvCback_t pduRecvCback)
 {
-    /* Check for valid callbacks */
-    if ((eventCback != NULL) && (pduRecvCback != NULL)) {
-        brCb.brProxyEventCback = eventCback;
-        brCb.brProxyMsgRecvCback = pduRecvCback;
-    }
+  /* Check for valid callbacks */
+  if ((eventCback != NULL) && (pduRecvCback != NULL))
+  {
+    brCb.brProxyEventCback = eventCback;
+    brCb.brProxyMsgRecvCback= pduRecvCback;
+  }
 }
 
 /*************************************************************************************************/
@@ -619,36 +643,39 @@ void MeshBrRegisterProxy(meshBrEventNotifyCback_t eventCback, meshBrNwkPduRecvCb
 /*************************************************************************************************/
 bool_t MeshBrSendNwkPdu(meshBrInterfaceId_t brIfId, const uint8_t *pNwkPdu, uint8_t pduLen)
 {
-    bool_t ret;
+  bool_t ret;
 
-    WSF_ASSERT(pNwkPdu != NULL);
-    WSF_ASSERT(pduLen != 0);
+  WSF_ASSERT(pNwkPdu != NULL);
+  WSF_ASSERT(pduLen != 0);
 
-    /* Check for valid input parameters */
-    if (brIfId == MESH_BR_INVALID_INTERFACE_ID) {
-        return FALSE;
-    }
+  /* Check for valid input parameters */
+  if (brIfId == MESH_BR_INVALID_INTERFACE_ID)
+  {
+    return FALSE;
+  }
 
-    /* Send PDU to specified bearer type interface */
-    switch (MESH_BR_GET_BR_TYPE(brIfId)) {
+  /* Send PDU to specified bearer type interface */
+  switch (MESH_BR_GET_BR_TYPE(brIfId))
+  {
     case MESH_ADV_BEARER:
-        MESH_TRACE_INFO0("MESH BEARER: Sending PDU to advertising interface");
-        ret = MeshAdvSendBrPdu(MESH_BR_IF_TO_ADV_IF(brIfId), MESH_AD_TYPE_PACKET, pNwkPdu, pduLen);
-        break;
+      MESH_TRACE_INFO0("MESH BEARER: Sending PDU to advertising interface");
+      ret = MeshAdvSendBrPdu(MESH_BR_IF_TO_ADV_IF(brIfId), MESH_AD_TYPE_PACKET,
+                                   pNwkPdu, pduLen);
+      break;
 
     case MESH_GATT_BEARER:
-        MESH_TRACE_INFO0("MESH BEARER: Sending PDU to GATT interface");
-        ret = MeshGattSendBrPdu(MESH_BR_IF_TO_CONN_ID(brIfId), MESH_GATT_PROXY_PDU_TYPE_NETWORK_PDU,
-                                pNwkPdu, pduLen);
-        break;
+      MESH_TRACE_INFO0("MESH BEARER: Sending PDU to GATT interface");
+      ret = MeshGattSendBrPdu(MESH_BR_IF_TO_CONN_ID(brIfId), MESH_GATT_PROXY_PDU_TYPE_NETWORK_PDU,
+                              pNwkPdu, pduLen);
+      break;
 
     default:
-        MESH_TRACE_ERR0("MESH BEARER: Sending PDU to invalid interface");
-        ret = FALSE;
-        break;
-    }
+      MESH_TRACE_ERR0("MESH BEARER: Sending PDU to invalid interface");
+      ret = FALSE;
+      break;
+  }
 
-    return ret;
+  return ret;
 }
 
 /*************************************************************************************************/
@@ -664,38 +691,39 @@ bool_t MeshBrSendNwkPdu(meshBrInterfaceId_t brIfId, const uint8_t *pNwkPdu, uint
 /*************************************************************************************************/
 bool_t MeshBrSendBeaconPdu(meshBrInterfaceId_t brIfId, uint8_t *pBeaconData, uint8_t dataLen)
 {
-    bool_t ret;
+  bool_t ret;
 
-    WSF_ASSERT(pBeaconData != NULL);
-    WSF_ASSERT(dataLen != 0);
+  WSF_ASSERT(pBeaconData != NULL);
+  WSF_ASSERT(dataLen != 0);
 
-    /* Check for valid input parameters */
-    if (brIfId == MESH_BR_INVALID_INTERFACE_ID) {
-        MESH_TRACE_ERR0("MESH BEARER: Invalid parameters");
-        return FALSE;
-    }
+  /* Check for valid input parameters */
+  if (brIfId == MESH_BR_INVALID_INTERFACE_ID)
+  {
+    MESH_TRACE_ERR0("MESH BEARER: Invalid parameters");
+    return FALSE;
+  }
 
-    /* Send PDU to specified bearer type interface */
-    switch (MESH_BR_GET_BR_TYPE(brIfId)) {
+  /* Send PDU to specified bearer type interface */
+  switch (MESH_BR_GET_BR_TYPE(brIfId))
+  {
     case MESH_ADV_BEARER:
-        MESH_TRACE_INFO0("MESH BEARER: Sending beacon to advertising interface");
-        ret = MeshAdvSendBrPdu(MESH_BR_IF_TO_ADV_IF(brIfId), MESH_AD_TYPE_BEACON, pBeaconData,
-                               dataLen);
-        break;
+      MESH_TRACE_INFO0("MESH BEARER: Sending beacon to advertising interface");
+      ret = MeshAdvSendBrPdu(MESH_BR_IF_TO_ADV_IF(brIfId), MESH_AD_TYPE_BEACON, pBeaconData, dataLen);
+      break;
 
     case MESH_GATT_BEARER:
-        MESH_TRACE_INFO0("MESH BEARER: Sending beacon to GATT interface");
-        ret = MeshGattSendBrPdu(MESH_BR_IF_TO_CONN_ID(brIfId), MESH_GATT_PROXY_PDU_TYPE_BEACON,
-                                pBeaconData, dataLen);
-        break;
+      MESH_TRACE_INFO0("MESH BEARER: Sending beacon to GATT interface");
+      ret = MeshGattSendBrPdu(MESH_BR_IF_TO_CONN_ID(brIfId), MESH_GATT_PROXY_PDU_TYPE_BEACON,
+                              pBeaconData, dataLen);
+      break;
 
     default:
-        MESH_TRACE_ERR0("MESH BEARER: Sending PDU to invalid interface");
-        ret = FALSE;
-        break;
-    }
+      MESH_TRACE_ERR0("MESH BEARER: Sending PDU to invalid interface");
+      ret = FALSE;
+      break;
+  }
 
-    return ret;
+  return ret;
 }
 
 /*************************************************************************************************/
@@ -711,37 +739,39 @@ bool_t MeshBrSendBeaconPdu(meshBrInterfaceId_t brIfId, uint8_t *pBeaconData, uin
 /*************************************************************************************************/
 bool_t MeshBrSendPrvPdu(meshBrInterfaceId_t brIfId, const uint8_t *pPrvPdu, uint8_t pduLen)
 {
-    bool_t ret;
+  bool_t ret;
 
-    WSF_ASSERT(pPrvPdu != NULL);
-    WSF_ASSERT(pduLen != 0);
+  WSF_ASSERT(pPrvPdu != NULL);
+  WSF_ASSERT(pduLen != 0);
 
-    /* Check for valid input parameters */
-    if (brIfId == MESH_BR_INVALID_INTERFACE_ID) {
-        MESH_TRACE_ERR0("MESH BEARER: Invalid parameters");
-        return FALSE;
-    }
+  /* Check for valid input parameters */
+  if (brIfId == MESH_BR_INVALID_INTERFACE_ID)
+  {
+    MESH_TRACE_ERR0("MESH BEARER: Invalid parameters");
+    return FALSE;
+  }
 
-    /* Send PDU to specified bearer type interface */
-    switch (MESH_BR_GET_BR_TYPE(brIfId)) {
+  /* Send PDU to specified bearer type interface */
+  switch (MESH_BR_GET_BR_TYPE(brIfId))
+  {
     case MESH_ADV_BEARER:
-        MESH_TRACE_INFO0("MESH BEARER: Sending Prv PDU to advertising interface");
-        ret = MeshAdvSendBrPdu(MESH_BR_IF_TO_ADV_IF(brIfId), MESH_AD_TYPE_PB, pPrvPdu, pduLen);
-        break;
+      MESH_TRACE_INFO0("MESH BEARER: Sending Prv PDU to advertising interface");
+      ret = MeshAdvSendBrPdu(MESH_BR_IF_TO_ADV_IF(brIfId), MESH_AD_TYPE_PB, pPrvPdu, pduLen);
+      break;
 
     case MESH_GATT_BEARER:
-        MESH_TRACE_INFO0("MESH BEARER: Sending Prv PDU to GATT interface");
-        ret = MeshGattSendBrPdu(MESH_BR_IF_TO_CONN_ID(brIfId),
-                                MESH_GATT_PROXY_PDU_TYPE_PROVISIONING, pPrvPdu, pduLen);
-        break;
+      MESH_TRACE_INFO0("MESH BEARER: Sending Prv PDU to GATT interface");
+      ret = MeshGattSendBrPdu(MESH_BR_IF_TO_CONN_ID(brIfId), MESH_GATT_PROXY_PDU_TYPE_PROVISIONING,
+                              pPrvPdu, pduLen);
+      break;
 
     default:
-        MESH_TRACE_ERR0("MESH BEARER: Sending PDU to invalid interface");
-        ret = FALSE;
-        break;
-    }
+      MESH_TRACE_ERR0("MESH BEARER: Sending PDU to invalid interface");
+      ret = FALSE;
+      break;
+  }
 
-    return ret;
+  return ret;
 }
 
 /*************************************************************************************************/
@@ -757,24 +787,26 @@ bool_t MeshBrSendPrvPdu(meshBrInterfaceId_t brIfId, const uint8_t *pPrvPdu, uint
 /*************************************************************************************************/
 bool_t MeshBrSendCfgPdu(meshBrInterfaceId_t brIfId, const uint8_t *pCfgPdu, uint8_t pduLen)
 {
-    WSF_ASSERT(pCfgPdu != NULL);
-    WSF_ASSERT(pduLen != 0);
+  WSF_ASSERT(pCfgPdu != NULL);
+  WSF_ASSERT(pduLen != 0);
 
-    /* Check for valid input parameters */
-    if (brIfId == MESH_BR_INVALID_INTERFACE_ID) {
-        MESH_TRACE_ERR0("MESH BEARER: Invalid parameters");
-        return FALSE;
-    }
+  /* Check for valid input parameters */
+  if (brIfId == MESH_BR_INVALID_INTERFACE_ID)
+  {
+    MESH_TRACE_ERR0("MESH BEARER: Invalid parameters");
+    return FALSE;
+  }
 
-    /* Send PDU to specified bearer type interface */
-    if (MESH_BR_GET_BR_TYPE(brIfId) != MESH_GATT_BEARER) {
-        MESH_TRACE_ERR0("MESH BEARER: Sending PDU to invalid interface");
-        return FALSE;
-    }
+  /* Send PDU to specified bearer type interface */
+  if (MESH_BR_GET_BR_TYPE(brIfId) != MESH_GATT_BEARER)
+  {
+    MESH_TRACE_ERR0("MESH BEARER: Sending PDU to invalid interface");
+    return FALSE;
+  }
 
-    MESH_TRACE_INFO0("MESH BEARER: Sending Config PDU to GATT interface");
-    return MeshGattSendBrPdu(MESH_BR_IF_TO_CONN_ID(brIfId), MESH_GATT_PROXY_PDU_TYPE_CONFIGURATION,
-                             pCfgPdu, pduLen);
+  MESH_TRACE_INFO0("MESH BEARER: Sending Config PDU to GATT interface");
+  return MeshGattSendBrPdu(MESH_BR_IF_TO_CONN_ID(brIfId), MESH_GATT_PROXY_PDU_TYPE_CONFIGURATION,
+                           pCfgPdu, pduLen);
 }
 
 /*************************************************************************************************/
@@ -788,12 +820,13 @@ bool_t MeshBrSendCfgPdu(meshBrInterfaceId_t brIfId, const uint8_t *pCfgPdu, uint
 /*************************************************************************************************/
 void MeshBrCloseIf(meshBrInterfaceId_t brIfId)
 {
-    WSF_ASSERT(brIfId != MESH_BR_INVALID_INTERFACE_ID);
+  WSF_ASSERT(brIfId != MESH_BR_INVALID_INTERFACE_ID);
 
-    if (MESH_BR_GET_BR_TYPE(brIfId) == MESH_GATT_BEARER) {
-        /* Close GATT connection. */
-        MeshGattCloseProxyConn(MESH_BR_IF_TO_CONN_ID(brIfId));
-    }
+  if (MESH_BR_GET_BR_TYPE(brIfId) == MESH_GATT_BEARER)
+  {
+    /* Close GATT connection. */
+    MeshGattCloseProxyConn(MESH_BR_IF_TO_CONN_ID(brIfId));
+  }
 }
 /*************************************************************************************************/
 /*!
@@ -804,7 +837,7 @@ void MeshBrCloseIf(meshBrInterfaceId_t brIfId)
 /*************************************************************************************************/
 void MeshBrEnableGatt(void)
 {
-    /* Initialize the GATT Bearer functionality */
-    MeshGattInit();
-    MeshGattRegister(meshBrProcessGattPduCback, meshBrProcessGattEventCback);
+  /* Initialize the GATT Bearer functionality */
+  MeshGattInit();
+  MeshGattRegister(meshBrProcessGattPduCback, meshBrProcessGattEventCback);
 }

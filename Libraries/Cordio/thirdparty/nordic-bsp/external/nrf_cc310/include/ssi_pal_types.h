@@ -32,6 +32,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 /*!
 @file
 @brief This file contains the platform dependent definitions and types.
@@ -54,61 +55,59 @@ typedef enum {
 } SaSiBool;
 
 /*! Success definition. */
-#define SASI_SUCCESS 0UL
+#define SASI_SUCCESS              0UL
 /*! Failure definition. */
-#define SASI_FAIL 1UL
+#define SASI_FAIL         1UL
 
 /*! Defintion of 1KB in bytes. */
-#define SASI_1K_SIZE_IN_BYTES 1024
+#define SASI_1K_SIZE_IN_BYTES   1024
 /*! Defintion of number of bits in a byte. */
-#define SASI_BITS_IN_BYTE 8
+#define SASI_BITS_IN_BYTE   8
 /*! Defintion of number of bits in a 32bits word. */
 #define SASI_BITS_IN_32BIT_WORD 32
 /*! Defintion of number of bytes in a 32bits word. */
-#define SASI_32BIT_WORD_SIZE (sizeof(uint32_t))
+#define SASI_32BIT_WORD_SIZE    (sizeof(uint32_t))
 
 /*! Success (OK) defintion. */
-#define SASI_OK SASI_SUCCESS
+#define SASI_OK   SASI_SUCCESS
 
 /*! Macro that handles unused parameters in the code (to avoid compilation warnings).  */
-#define SASI_UNUSED_PARAM(prm) ((void)prm)
+#define SASI_UNUSED_PARAM(prm)  ((void)prm)
 
 /*! Maximal uint32 value.*/
-#define SASI_MAX_UINT32_VAL (0xFFFFFFFF)
+#define SASI_MAX_UINT32_VAL     (0xFFFFFFFF)
+
 
 /* Minimum and Maximum macros */
-#ifdef min
+#ifdef  min
 /*! Definition for minimum. */
-#define CRYS_MIN(a, b) min(a, b)
+#define CRYS_MIN(a,b) min( a , b )
 #else
 /*! Definition for minimum. */
-#define CRYS_MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define CRYS_MIN( a , b ) ( ( (a) < (b) ) ? (a) : (b) )
 #endif
 
 #ifdef max
 /*! Definition for maximum. */
-#define CRYS_MAX(a, b) max(a, b)
+#define CRYS_MAX(a,b) max( a , b )
 #else
 /*! Definition for maximum. */
-#define CRYS_MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define CRYS_MAX( a , b ) ( ( (a) > (b) ) ? (a) : (b) )
 #endif
 
 /*! Macro that calculates number of full bytes from bits (i.e. 7 bits are 1 byte). */
-#define CALC_FULL_BYTES(numBits) (((numBits) + (SASI_BITS_IN_BYTE - 1)) / SASI_BITS_IN_BYTE)
+#define CALC_FULL_BYTES(numBits)        (((numBits) + (SASI_BITS_IN_BYTE -1))/SASI_BITS_IN_BYTE)
 /*! Macro that calculates number of full 32bits words from bits (i.e. 31 bits are 1 word). */
-#define CALC_FULL_32BIT_WORDS(numBits) \
-    (((numBits) + (SASI_BITS_IN_32BIT_WORD - 1)) / SASI_BITS_IN_32BIT_WORD)
+#define CALC_FULL_32BIT_WORDS(numBits)      (((numBits) + (SASI_BITS_IN_32BIT_WORD -1))/SASI_BITS_IN_32BIT_WORD)
 /*! Macro that calculates number of full 32bits words from bytes (i.e. 3 bytes are 1 word). */
-#define CALC_32BIT_WORDS_FROM_BYTES(sizeBytes) \
-    (((sizeBytes) + SASI_32BIT_WORD_SIZE - 1) / SASI_32BIT_WORD_SIZE)
+#define CALC_32BIT_WORDS_FROM_BYTES(sizeBytes)  (((sizeBytes) + SASI_32BIT_WORD_SIZE - 1) / SASI_32BIT_WORD_SIZE)
 /*! Macro that round up bits to 32bits words. */
-#define ROUNDUP_BITS_TO_32BIT_WORD(numBits) \
-    (CALC_FULL_32BIT_WORDS(numBits) * SASI_BITS_IN_32BIT_WORD)
+#define ROUNDUP_BITS_TO_32BIT_WORD(numBits)     (CALC_FULL_32BIT_WORDS(numBits)*SASI_BITS_IN_32BIT_WORD)
 /*! Macro that round up bits to bytes. */
-#define ROUNDUP_BITS_TO_BYTES(numBits) (CALC_FULL_BYTES(numBits) * SASI_BITS_IN_BYTE)
+#define ROUNDUP_BITS_TO_BYTES(numBits)      (CALC_FULL_BYTES(numBits)*SASI_BITS_IN_BYTE)
 /*! Macro that round up bytes to 32bits words. */
-#define ROUNDUP_BYTES_TO_32BIT_WORD(numBytes) \
-    (SASI_32BIT_WORD_SIZE * (((numBytes) + SASI_32BIT_WORD_SIZE - 1) / SASI_32BIT_WORD_SIZE))
+#define ROUNDUP_BYTES_TO_32BIT_WORD(numBytes)   (SASI_32BIT_WORD_SIZE*(((numBytes)+SASI_32BIT_WORD_SIZE-1)/SASI_32BIT_WORD_SIZE))
+
 
 /**
 @}

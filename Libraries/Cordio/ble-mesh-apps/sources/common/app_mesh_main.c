@@ -35,10 +35,11 @@
 **************************************************************************************************/
 
 /*! Mesh App control block structure */
-typedef struct appMeshCb_tag {
-    const char *pAppVersion; /*!< Pointer to application version string */
-    uint8_t meshNvmInstanceId; /*!< Mesh Stack NVM instance. */
-    uint8_t mmdlNvmInstanceId; /*!< Mesh Models NVM instance. */
+typedef struct appMeshCb_tag
+{
+  const char    *pAppVersion;                       /*!< Pointer to application version string */
+  uint8_t       meshNvmInstanceId;                  /*!< Mesh Stack NVM instance. */
+  uint8_t       mmdlNvmInstanceId;                  /*!< Mesh Models NVM instance. */
 } appMeshCb_t;
 
 /**************************************************************************************************
@@ -68,8 +69,8 @@ static appMeshCb_t appMeshCb;
 /*************************************************************************************************/
 void AppMeshNodeInit(void)
 {
-    /* Load Device UUID. */
-    PalCfgLoadData(PAL_CFG_ID_UUID, pMeshPrvSrCfg->devUuid, MESH_PRV_DEVICE_UUID_SIZE);
+  /* Load Device UUID. */
+  PalCfgLoadData(PAL_CFG_ID_UUID, pMeshPrvSrCfg->devUuid, MESH_PRV_DEVICE_UUID_SIZE);
 }
 
 /*************************************************************************************************/
@@ -83,7 +84,7 @@ void AppMeshNodeInit(void)
 /*************************************************************************************************/
 void AppMeshSetVersion(const char *pVersion)
 {
-    appMeshCb.pAppVersion = pVersion;
+  appMeshCb.pAppVersion = pVersion;
 }
 
 /*************************************************************************************************/
@@ -95,7 +96,7 @@ void AppMeshSetVersion(const char *pVersion)
 /*************************************************************************************************/
 const char *AppMeshGetVersion(void)
 {
-    return appMeshCb.pAppVersion;
+  return appMeshCb.pAppVersion;
 }
 
 /*************************************************************************************************/
@@ -107,8 +108,8 @@ const char *AppMeshGetVersion(void)
 /*************************************************************************************************/
 void AppMeshClearNvm(void)
 {
-    MeshLocalCfgEraseNvm();
-    MeshRpNvmErase();
+  MeshLocalCfgEraseNvm();
+  MeshRpNvmErase();
 }
 
 /*************************************************************************************************/

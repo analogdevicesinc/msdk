@@ -36,8 +36,9 @@
 **************************************************************************************************/
 
 /*! HID control block */
-typedef struct {
-    const hidConfig_t *pConfig; /* HID Configuration passed in from the application */
+typedef struct
+{
+  const hidConfig_t         *pConfig;             /* HID Configuration passed in from the application */
 } hidCb_t;
 
 hidCb_t hidCb;
@@ -54,23 +55,25 @@ hidCb_t hidCb;
 /*************************************************************************************************/
 static uint16_t hidGetReportHandle(uint8_t type, uint8_t id)
 {
-    hidReportIdMap_t *pMap;
-    uint8_t count;
-    uint8_t i;
+  hidReportIdMap_t *pMap;
+  uint8_t count;
+  uint8_t i;
 
-    WSF_ASSERT(hidCb.pConfig);
-    WSF_ASSERT(hidCb.pConfig->pReportIdMap);
+  WSF_ASSERT(hidCb.pConfig);
+  WSF_ASSERT(hidCb.pConfig->pReportIdMap);
 
-    pMap = hidCb.pConfig->pReportIdMap;
-    count = hidCb.pConfig->reportIdMapSize;
+  pMap = hidCb.pConfig->pReportIdMap;
+  count = hidCb.pConfig->reportIdMapSize;
 
-    for (i = 0; i < count; i++) {
-        if (pMap[i].type == type && pMap[i].id == id) {
-            return pMap[i].handle;
-        }
+  for (i = 0; i < count; i++)
+  {
+    if (pMap[i].type == type && pMap[i].id == id)
+    {
+      return pMap[i].handle;
     }
+  }
 
-    return ATT_HANDLE_NONE;
+  return ATT_HANDLE_NONE;
 }
 
 /*************************************************************************************************/
@@ -84,23 +87,25 @@ static uint16_t hidGetReportHandle(uint8_t type, uint8_t id)
 /*************************************************************************************************/
 static hidReportIdMap_t *hidGetReportIdMap(uint16_t handle)
 {
-    hidReportIdMap_t *pMap;
-    uint8_t count;
-    uint8_t i;
+  hidReportIdMap_t *pMap;
+  uint8_t count;
+  uint8_t i;
 
-    WSF_ASSERT(hidCb.pConfig);
-    WSF_ASSERT(hidCb.pConfig->pReportIdMap);
+  WSF_ASSERT(hidCb.pConfig);
+  WSF_ASSERT(hidCb.pConfig->pReportIdMap);
 
-    pMap = hidCb.pConfig->pReportIdMap;
-    count = hidCb.pConfig->reportIdMapSize;
+  pMap = hidCb.pConfig->pReportIdMap;
+  count = hidCb.pConfig->reportIdMapSize;
 
-    for (i = 0; i < count; i++) {
-        if (pMap[i].handle == handle) {
-            return &pMap[i];
-        }
+  for (i = 0; i < count; i++)
+  {
+    if (pMap[i].handle == handle)
+    {
+      return &pMap[i];
     }
+  }
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -112,12 +117,12 @@ static hidReportIdMap_t *hidGetReportIdMap(uint16_t handle)
 /*************************************************************************************************/
 uint8_t HidGetControlPoint(void)
 {
-    uint16_t len = 1;
-    uint8_t *pValue = NULL;
+  uint16_t len = 1;
+  uint8_t *pValue = NULL;
 
-    AttsGetAttr(HID_CONTROL_POINT_HDL, &len, &pValue);
+  AttsGetAttr(HID_CONTROL_POINT_HDL, &len, &pValue);
 
-    return *pValue;
+  return *pValue;
 }
 
 /*************************************************************************************************/
@@ -129,12 +134,12 @@ uint8_t HidGetControlPoint(void)
 /*************************************************************************************************/
 uint8_t HidGetProtocolMode(void)
 {
-    uint16_t len = 1;
-    uint8_t *pValue = NULL;
+  uint16_t len = 1;
+  uint8_t *pValue = NULL;
 
-    AttsGetAttr(HID_PROTOCOL_MODE_HDL, &len, &pValue);
+  AttsGetAttr(HID_PROTOCOL_MODE_HDL, &len, &pValue);
 
-    return *pValue;
+  return *pValue;
 }
 
 /*************************************************************************************************/
@@ -148,7 +153,7 @@ uint8_t HidGetProtocolMode(void)
 /*************************************************************************************************/
 void HidSetProtocolMode(uint8_t protocolMode)
 {
-    AttsSetAttr(HID_PROTOCOL_MODE_HDL, 1, &protocolMode);
+  AttsSetAttr(HID_PROTOCOL_MODE_HDL, 1, &protocolMode);
 }
 
 /*************************************************************************************************/
@@ -165,15 +170,16 @@ void HidSetProtocolMode(uint8_t protocolMode)
 /*************************************************************************************************/
 void HidSendInputReport(dmConnId_t connId, uint8_t reportId, uint16_t len, uint8_t *pValue)
 {
-    uint16_t handle = hidGetReportHandle(HID_REPORT_TYPE_INPUT, reportId);
+  uint16_t handle = hidGetReportHandle(HID_REPORT_TYPE_INPUT, reportId);
 
-    if (handle != ATT_HANDLE_NONE) {
-        /* Store the attribute value */
-        AttsSetAttr(handle, len, pValue);
+  if (handle != ATT_HANDLE_NONE)
+  {
+    /* Store the attribute value */
+    AttsSetAttr(handle, len, pValue);
 
-        /* send notification */
-        AttsHandleValueNtf(connId, handle, len, pValue);
-    }
+    /* send notification */
+    AttsHandleValueNtf(connId, handle, len, pValue);
+  }
 }
 
 /*************************************************************************************************/
@@ -184,70 +190,82 @@ void HidSendInputReport(dmConnId_t connId, uint8_t reportId, uint16_t len, uint8
  *
  */
 /*************************************************************************************************/
-uint8_t HidAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+uint8_t HidAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
+                          uint16_t offset, uint16_t len, uint8_t *pValue,
+                          attsAttr_t *pAttr)
 {
-    hidReportIdMap_t *pIdMap;
+  hidReportIdMap_t *pIdMap;
 
-    WSF_ASSERT(hidCb.pConfig);
+  WSF_ASSERT(hidCb.pConfig);
 
-    switch (handle) {
-    case HID_CONTROL_POINT_HDL:
+  switch (handle)
+  {
+  case HID_CONTROL_POINT_HDL:
 
-        /* notify the application */
-        if (hidCb.pConfig->infoCback != NULL) {
-            hidCb.pConfig->infoCback(connId, HID_INFO_CONTROL_POINT, *pValue);
-        }
-        break;
-
-    case HID_PROTOCOL_MODE_HDL:
-
-        /* Record the value of the protocol mode */
-        HidSetProtocolMode(pValue[0]);
-
-        if (hidCb.pConfig->infoCback != NULL) {
-            hidCb.pConfig->infoCback(connId, HID_INFO_PROTOCOL_MODE, *pValue);
-        }
-        break;
-
-    case HID_KEYBOARD_BOOT_OUT_HDL:
-
-        /* set the attribute value so it can be read by the host */
-        AttsSetAttr(handle, len, pValue);
-
-        /* notify the application */
-        if (hidCb.pConfig->outputCback != NULL) {
-            pIdMap = hidGetReportIdMap(handle);
-
-            if (pIdMap != NULL) {
-                hidCb.pConfig->outputCback(connId, pIdMap->id, len, pValue);
-            }
-        }
-        break;
-
-    default:
-
-        pIdMap = hidGetReportIdMap(handle);
-
-        if (pIdMap != NULL) {
-            /* set the attribute value so it can be read by the host */
-            AttsSetAttr(handle, len, pValue);
-
-            /* notify the application */
-            if (pIdMap->type == HID_REPORT_TYPE_FEATURE) {
-                if (hidCb.pConfig->featureCback != NULL) {
-                    hidCb.pConfig->featureCback(connId, pIdMap->id, len, pValue);
-                }
-            } else if (pIdMap->type == HID_REPORT_TYPE_OUTPUT) {
-                if (hidCb.pConfig->outputCback != NULL) {
-                    hidCb.pConfig->outputCback(connId, pIdMap->id, len, pValue);
-                }
-            }
-        }
-        break;
+    /* notify the application */
+    if (hidCb.pConfig->infoCback != NULL)
+    {
+      hidCb.pConfig->infoCback(connId, HID_INFO_CONTROL_POINT, *pValue);
     }
+    break;
 
-    return 0;
+  case HID_PROTOCOL_MODE_HDL:
+
+    /* Record the value of the protocol mode */
+    HidSetProtocolMode(pValue[0]);
+
+    if (hidCb.pConfig->infoCback != NULL)
+    {
+      hidCb.pConfig->infoCback(connId, HID_INFO_PROTOCOL_MODE, *pValue);
+    }
+    break;
+
+  case HID_KEYBOARD_BOOT_OUT_HDL:
+
+    /* set the attribute value so it can be read by the host */
+    AttsSetAttr(handle, len, pValue);
+
+    /* notify the application */
+    if (hidCb.pConfig->outputCback != NULL)
+    {
+      pIdMap = hidGetReportIdMap(handle);
+
+      if (pIdMap != NULL)
+      {
+        hidCb.pConfig->outputCback(connId, pIdMap->id, len, pValue);
+      }
+    }
+    break;
+
+  default:
+
+    pIdMap = hidGetReportIdMap(handle);
+
+    if (pIdMap != NULL)
+    {
+      /* set the attribute value so it can be read by the host */
+      AttsSetAttr(handle, len, pValue);
+
+      /* notify the application */
+      if (pIdMap->type == HID_REPORT_TYPE_FEATURE)
+      {
+        if (hidCb.pConfig->featureCback != NULL)
+        {
+          hidCb.pConfig->featureCback(connId, pIdMap->id, len, pValue);
+        }
+      }
+      else if (pIdMap->type == HID_REPORT_TYPE_OUTPUT)
+      {
+        if (hidCb.pConfig->outputCback != NULL)
+        {
+          hidCb.pConfig->outputCback(connId, pIdMap->id, len, pValue);
+        }
+      }
+    }
+    break;
+  }
+
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -261,8 +279,8 @@ uint8_t HidAttsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
 /*************************************************************************************************/
 void HidInit(const hidConfig_t *pConfig)
 {
-    WSF_ASSERT(pConfig);
+  WSF_ASSERT(pConfig);
 
-    /* Store the configuration */
-    hidCb.pConfig = pConfig;
+  /* Store the configuration */
+  hidCb.pConfig = pConfig;
 }

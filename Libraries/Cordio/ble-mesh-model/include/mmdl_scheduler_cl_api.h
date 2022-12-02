@@ -31,7 +31,8 @@
 #define MMDL_SCHEDULER_CL_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mmdl_defs.h"
@@ -41,33 +42,36 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Scheduler Client Model Status event structure */
-typedef struct mmdlSchedulerClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    uint16_t schedulesBf; /*!< Each bit of the Schedules field set to 1 identifies
+typedef struct mmdlSchedulerClStatusEvent_tag
+{
+  wsfMsgHdr_t           hdr;              /*!< WSF message header */
+  meshElementId_t       elementId;        /*!< Element ID */
+  meshAddress_t         serverAddr;       /*!< Server Address */
+  uint16_t              schedulesBf;      /*!< Each bit of the Schedules field set to 1 identifies
                                            *   a corresponding entry of the Schedule Register
                                            */
 } mmdlSchedulerClStatusEvent_t;
 
 /*! \brief Scheduler Client Model Status event structure */
-typedef struct mmdlSchedulerClActionStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    uint8_t index; /*!< Selected Schedule Register entry */
-    mmdlSchedulerRegisterEntry_t scheduleRegister; /*!< Current values of the entry in the Schedule
+typedef struct mmdlSchedulerClActionStatusEvent_tag
+{
+  wsfMsgHdr_t                   hdr;              /*!< WSF message header */
+  meshElementId_t               elementId;        /*!< Element ID */
+  meshAddress_t                 serverAddr;       /*!< Server Address */
+  uint8_t                       index;            /*!< Selected Schedule Register entry */
+  mmdlSchedulerRegisterEntry_t  scheduleRegister; /*!< Current values of the entry in the Schedule
                                                    *   Register state
                                                    */
 } mmdlSchedulerClActionStatusEvent_t;
 
 /*! \brief Scheduler Client Model event callback parameters structure */
-typedef union mmdlSchedulerClEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlSchedulerClStatusEvent_t statusEvent; /*!< Status event. Valid for
+typedef union mmdlSchedulerClEvent_tag
+{
+  wsfMsgHdr_t                         hdr;                /*!< WSF message header */
+  mmdlSchedulerClStatusEvent_t        statusEvent;        /*!< Status event. Valid for
                                                            *   ::MMDL_SCHEDULER_CL_STATUS_EVENT
                                                            */
-    mmdlSchedulerClActionStatusEvent_t actionStatusEvent; /*!< Action status event. Valid for
+  mmdlSchedulerClActionStatusEvent_t  actionStatusEvent;  /*!< Action status event. Valid for
                                                            *   ::MMDL_SCHEDULER_CL_ACTION_STATUS_EVENT
                                                            */
 } mmdlSchedulerClEvent_t;
@@ -80,7 +84,7 @@ typedef union mmdlSchedulerClEvent_tag {
 extern wsfHandlerId_t mmdlSchedulerClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t mmdlSchedulerClRcvdOpcodes[];
+extern const meshMsgOpcode_t  mmdlSchedulerClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations

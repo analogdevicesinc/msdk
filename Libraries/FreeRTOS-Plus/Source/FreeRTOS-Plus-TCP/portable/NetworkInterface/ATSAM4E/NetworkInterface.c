@@ -23,6 +23,7 @@
  * http://www.FreeRTOS.org
  */
 
+
 /* Standard includes. */
 #include <stdint.h>
 #include <stdio.h>
@@ -47,50 +48,50 @@
 #include <sysclk.h>
 #include <ethernet_phy.h>
 
-#ifndef BMSR_LINK_STATUS
-#define BMSR_LINK_STATUS 0x0004 //!< Link status
+#ifndef	BMSR_LINK_STATUS
+	#define BMSR_LINK_STATUS            0x0004  //!< Link status
 #endif
 
-#ifndef PHY_LS_HIGH_CHECK_TIME_MS
-/* Check if the LinkSStatus in the PHY is still high after 15 seconds of not
+#ifndef	PHY_LS_HIGH_CHECK_TIME_MS
+	/* Check if the LinkSStatus in the PHY is still high after 15 seconds of not
 	receiving packets. */
-#define PHY_LS_HIGH_CHECK_TIME_MS 15000
+	#define PHY_LS_HIGH_CHECK_TIME_MS	15000
 #endif
 
-#ifndef PHY_LS_LOW_CHECK_TIME_MS
-/* Check if the LinkSStatus in the PHY is still low every second. */
-#define PHY_LS_LOW_CHECK_TIME_MS 1000
+#ifndef	PHY_LS_LOW_CHECK_TIME_MS
+	/* Check if the LinkSStatus in the PHY is still low every second. */
+	#define PHY_LS_LOW_CHECK_TIME_MS	1000
 #endif
 
 /* Interrupt events to process.  Currently only the Rx event is processed
 although code for other events is included to allow for possible future
 expansion. */
-#define EMAC_IF_RX_EVENT 1UL
-#define EMAC_IF_TX_EVENT 2UL
-#define EMAC_IF_ERR_EVENT 4UL
-#define EMAC_IF_ALL_EVENT (EMAC_IF_RX_EVENT | EMAC_IF_TX_EVENT | EMAC_IF_ERR_EVENT)
+#define EMAC_IF_RX_EVENT        1UL
+#define EMAC_IF_TX_EVENT        2UL
+#define EMAC_IF_ERR_EVENT       4UL
+#define EMAC_IF_ALL_EVENT       ( EMAC_IF_RX_EVENT | EMAC_IF_TX_EVENT | EMAC_IF_ERR_EVENT )
 
-#define ETHERNET_CONF_PHY_ADDR BOARD_GMAC_PHY_ADDR
+#define ETHERNET_CONF_PHY_ADDR  BOARD_GMAC_PHY_ADDR
 
-#define HZ_PER_MHZ (1000000UL)
+#define HZ_PER_MHZ				( 1000000UL )
 
-#ifndef EMAC_MAX_BLOCK_TIME_MS
-#define EMAC_MAX_BLOCK_TIME_MS 100ul
+#ifndef	EMAC_MAX_BLOCK_TIME_MS
+	#define	EMAC_MAX_BLOCK_TIME_MS	100ul
 #endif
 
-#if !defined(GMAC_USES_TX_CALLBACK) || (GMAC_USES_TX_CALLBACK != 1)
-#error Please define GMAC_USES_TX_CALLBACK as 1
+#if !defined( GMAC_USES_TX_CALLBACK ) || ( GMAC_USES_TX_CALLBACK != 1 )
+	#error Please define GMAC_USES_TX_CALLBACK as 1
 #endif
 
-#if (ipconfigZERO_COPY_RX_DRIVER != 0)
-#warning The EMAC of SAM4E has fixed-size RX buffers so ZERO_COPY_RX is not possible
+#if( ipconfigZERO_COPY_RX_DRIVER != 0 )
+	#warning The EMAC of SAM4E has fixed-size RX buffers so ZERO_COPY_RX is not possible
 #endif
 
 /* Default the size of the stack used by the EMAC deferred handler task to 4x
 the size of the stack used by the idle task - but allow this to be overridden in
 FreeRTOSConfig.h as configMINIMAL_STACK_SIZE is a user definable constant. */
 #ifndef configEMAC_TASK_STACK_SIZE
-#define configEMAC_TASK_STACK_SIZE (4 * configMINIMAL_STACK_SIZE)
+	#define configEMAC_TASK_STACK_SIZE ( 4 * configMINIMAL_STACK_SIZE )
 #endif
 
 /*-----------------------------------------------------------*/
@@ -98,32 +99,32 @@ FreeRTOSConfig.h as configMINIMAL_STACK_SIZE is a user definable constant. */
 /*
  * Wait a fixed time for the link status to indicate the network is up.
  */
-static BaseType_t xGMACWaitLS(TickType_t xMaxTime);
+static BaseType_t xGMACWaitLS( TickType_t xMaxTime );
 
-#if (ipconfigDRIVER_INCLUDED_TX_IP_CHECKSUM == 1) && (ipconfigHAS_TX_CRC_OFFLOADING == 0)
-void vGMACGenerateChecksum(uint8_t *apBuffer);
+#if( ipconfigDRIVER_INCLUDED_TX_IP_CHECKSUM == 1 ) && ( ipconfigHAS_TX_CRC_OFFLOADING == 0 )
+	void vGMACGenerateChecksum( uint8_t *apBuffer );
 #endif
 
 /*
  * Called from the ASF GMAC driver.
  */
-static void prvRxCallback(uint32_t ulStatus);
-static void prvTxCallback(uint32_t ulStatus, uint8_t *puc_buffer);
+static void prvRxCallback( uint32_t ulStatus );
+static void prvTxCallback( uint32_t ulStatus, uint8_t *puc_buffer );
 
 /*
  * A deferred interrupt handler task that processes GMAC interrupts.
  */
-static void prvEMACHandlerTask(void *pvParameters);
+static void prvEMACHandlerTask( void *pvParameters );
 
 /*
  * Initialise the ASF GMAC driver.
  */
-static BaseType_t prvGMACInit(void);
+static BaseType_t prvGMACInit( void );
 
 /*
  * Try to obtain an Rx packet from the hardware.
  */
-static uint32_t prvEMACRxPoll(void);
+static uint32_t prvEMACRxPoll( void );
 
 /*-----------------------------------------------------------*/
 
@@ -148,7 +149,7 @@ static const uint8_t llmnr_mac_address[] = { 0x01, 0x00, 0x5E, 0x00, 0x00, 0xFC 
 static gmac_device_t gs_gmac_dev;
 
 /* MAC address to use. */
-extern const uint8_t ucMACAddress[6];
+extern const uint8_t ucMACAddress[ 6 ];
 
 /* Holds the handle of the task used as a deferred interrupt processor.  The
 handle is used so direct notifications can be sent to the task for all EMAC/DMA
@@ -156,7 +157,7 @@ related interrupts. */
 TaskHandle_t xEMACTaskHandle = NULL;
 
 static QueueHandle_t xTxBufferQueue;
-int tx_release_count[4];
+int tx_release_count[ 4 ];
 
 /* xTXDescriptorSemaphore is a counting semaphore with
 a maximum count of GMAC_TX_BUFFERS, which is the number of
@@ -170,439 +171,479 @@ static SemaphoreHandle_t xTXDescriptorSemaphore = NULL;
  */
 void GMAC_Handler(void)
 {
-    xGMACSwitchRequired = pdFALSE;
+	xGMACSwitchRequired = pdFALSE;
 
-    /* gmac_handler() may call prvRxCallback() which may change
+	/* gmac_handler() may call prvRxCallback() which may change
 	the value of xGMACSwitchRequired. */
-    gmac_handler(&gs_gmac_dev);
+	gmac_handler( &gs_gmac_dev );
 
-    if (xGMACSwitchRequired != pdFALSE) {
-        portEND_SWITCHING_ISR(xGMACSwitchRequired);
-    }
+	if( xGMACSwitchRequired != pdFALSE )
+	{
+		portEND_SWITCHING_ISR( xGMACSwitchRequired );
+	}
 }
 /*-----------------------------------------------------------*/
 
-static void prvRxCallback(uint32_t ulStatus)
+static void prvRxCallback( uint32_t ulStatus )
 {
-    if (((ulStatus & GMAC_RSR_REC) != 0) && (xEMACTaskHandle != NULL)) {
-        /* let the prvEMACHandlerTask know that there was an RX event. */
-        ulISREvents |= EMAC_IF_RX_EVENT;
-        /* Only an RX interrupt can wakeup prvEMACHandlerTask. */
-        vTaskNotifyGiveFromISR(xEMACTaskHandle, (BaseType_t *)&xGMACSwitchRequired);
-    }
+	if( ( ( ulStatus & GMAC_RSR_REC ) != 0 ) && ( xEMACTaskHandle != NULL ) )
+	{
+		/* let the prvEMACHandlerTask know that there was an RX event. */
+		ulISREvents |= EMAC_IF_RX_EVENT;
+		/* Only an RX interrupt can wakeup prvEMACHandlerTask. */
+		vTaskNotifyGiveFromISR( xEMACTaskHandle, ( BaseType_t * ) &xGMACSwitchRequired );
+	}
 }
 /*-----------------------------------------------------------*/
 
-static void prvTxCallback(uint32_t ulStatus, uint8_t *puc_buffer)
+static void prvTxCallback( uint32_t ulStatus, uint8_t *puc_buffer )
 {
-    if ((xTxBufferQueue != NULL) && (xEMACTaskHandle != NULL)) {
-        /* let the prvEMACHandlerTask know that there was an RX event. */
-        ulISREvents |= EMAC_IF_TX_EVENT;
+	if( ( xTxBufferQueue != NULL ) && ( xEMACTaskHandle != NULL ) )
+	{
+		/* let the prvEMACHandlerTask know that there was an RX event. */
+		ulISREvents |= EMAC_IF_TX_EVENT;
 
-        vTaskNotifyGiveFromISR(xEMACTaskHandle, (BaseType_t *)&xGMACSwitchRequired);
-        xQueueSendFromISR(xTxBufferQueue, &puc_buffer, (BaseType_t *)&xGMACSwitchRequired);
-        tx_release_count[2]++;
-    }
+		vTaskNotifyGiveFromISR( xEMACTaskHandle, ( BaseType_t * ) &xGMACSwitchRequired );
+		xQueueSendFromISR( xTxBufferQueue, &puc_buffer, ( BaseType_t * ) &xGMACSwitchRequired );
+		tx_release_count[ 2 ]++;
+	}
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xNetworkInterfaceInitialise(void)
+BaseType_t xNetworkInterfaceInitialise( void )
 {
-    const TickType_t x5_Seconds = 5000UL;
+const TickType_t x5_Seconds = 5000UL;
 
-    if (xEMACTaskHandle == NULL) {
-        prvGMACInit();
+	if( xEMACTaskHandle == NULL )
+	{
+		prvGMACInit();
 
-        /* Wait at most 5 seconds for a Link Status in the PHY. */
-        xGMACWaitLS(pdMS_TO_TICKS(x5_Seconds));
+		/* Wait at most 5 seconds for a Link Status in the PHY. */
+		xGMACWaitLS( pdMS_TO_TICKS( x5_Seconds ) );
 
-        /* The handler task is created at the highest possible priority to
+		/* The handler task is created at the highest possible priority to
 		ensure the interrupt handler can return directly to it. */
-        xTaskCreate(prvEMACHandlerTask, "EMAC", configEMAC_TASK_STACK_SIZE, NULL,
-                    configMAX_PRIORITIES - 1, &xEMACTaskHandle);
-        configASSERT(xEMACTaskHandle);
-    }
+		xTaskCreate( prvEMACHandlerTask, "EMAC", configEMAC_TASK_STACK_SIZE, NULL, configMAX_PRIORITIES - 1, &xEMACTaskHandle );
+		configASSERT( xEMACTaskHandle );
+	}
 
-    if (xTxBufferQueue == NULL) {
-        xTxBufferQueue = xQueueCreate(GMAC_TX_BUFFERS, sizeof(void *));
-        configASSERT(xTxBufferQueue);
-    }
+	if( xTxBufferQueue == NULL )
+	{
+		xTxBufferQueue = xQueueCreate( GMAC_TX_BUFFERS, sizeof( void * ) );
+		configASSERT( xTxBufferQueue );
+	}
 
-    if (xTXDescriptorSemaphore == NULL) {
-        xTXDescriptorSemaphore =
-            xSemaphoreCreateCounting((UBaseType_t)GMAC_TX_BUFFERS, (UBaseType_t)GMAC_TX_BUFFERS);
-        configASSERT(xTXDescriptorSemaphore);
-    }
-    /* When returning non-zero, the stack will become active and
+	if( xTXDescriptorSemaphore == NULL )
+	{
+		xTXDescriptorSemaphore = xSemaphoreCreateCounting( ( UBaseType_t ) GMAC_TX_BUFFERS, ( UBaseType_t ) GMAC_TX_BUFFERS );
+		configASSERT( xTXDescriptorSemaphore );
+	}
+	/* When returning non-zero, the stack will become active and
     start DHCP (in configured) */
-    return (ulPHYLinkStatus & BMSR_LINK_STATUS) != 0;
+	return ( ulPHYLinkStatus & BMSR_LINK_STATUS ) != 0;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xGetPhyLinkStatus(void)
+BaseType_t xGetPhyLinkStatus( void )
 {
-    BaseType_t xResult;
+BaseType_t xResult;
 
-    /* This function returns true if the Link Status in the PHY is high. */
-    if ((ulPHYLinkStatus & BMSR_LINK_STATUS) != 0) {
-        xResult = pdTRUE;
-    } else {
-        xResult = pdFALSE;
-    }
+	/* This function returns true if the Link Status in the PHY is high. */
+	if( ( ulPHYLinkStatus & BMSR_LINK_STATUS ) != 0 )
+	{
+		xResult = pdTRUE;
+	}
+	else
+	{
+		xResult = pdFALSE;
+	}
 
-    return xResult;
+	return xResult;
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xNetworkInterfaceOutput(NetworkBufferDescriptor_t *const pxDescriptor,
-                                   BaseType_t bReleaseAfterSend)
+BaseType_t xNetworkInterfaceOutput( NetworkBufferDescriptor_t * const pxDescriptor, BaseType_t bReleaseAfterSend )
 {
-    /* Do not wait too long for a free TX DMA buffer. */
-    const TickType_t xBlockTimeTicks = pdMS_TO_TICKS(50u);
+/* Do not wait too long for a free TX DMA buffer. */
+const TickType_t xBlockTimeTicks = pdMS_TO_TICKS( 50u );
 
-    do {
-        if ((ulPHYLinkStatus & BMSR_LINK_STATUS) == 0) {
-            /* Do not attempt to send packets as long as the Link Status is low. */
-            break;
-        }
-        if (xTXDescriptorSemaphore == NULL) {
-            /* Semaphore has not been created yet? */
-            break;
-        }
-        if (xSemaphoreTake(xTXDescriptorSemaphore, xBlockTimeTicks) != pdPASS) {
-            /* Time-out waiting for a free TX descriptor. */
-            tx_release_count[3]++;
-            break;
-        }
-#if (ipconfigZERO_COPY_TX_DRIVER != 0)
-        {
-            /* Confirm that the pxDescriptor may be kept by the driver. */
-            configASSERT(bReleaseAfterSend != pdFALSE);
-        }
-#endif /* ipconfigZERO_COPY_TX_DRIVER */
+	do {
+		if( ( ulPHYLinkStatus & BMSR_LINK_STATUS ) == 0 )
+		{
+			/* Do not attempt to send packets as long as the Link Status is low. */
+			break;
+		}
+		if( xTXDescriptorSemaphore == NULL )
+		{
+			/* Semaphore has not been created yet? */
+			break;
+		}
+		if( xSemaphoreTake( xTXDescriptorSemaphore, xBlockTimeTicks ) != pdPASS )
+		{
+			/* Time-out waiting for a free TX descriptor. */
+			tx_release_count[ 3 ]++;
+			break;
+		}
+		#if( ipconfigZERO_COPY_TX_DRIVER != 0 )
+		{
+			/* Confirm that the pxDescriptor may be kept by the driver. */
+			configASSERT( bReleaseAfterSend != pdFALSE );
+		}
+		#endif /* ipconfigZERO_COPY_TX_DRIVER */
 
-        gmac_dev_write(&gs_gmac_dev, (void *)pxDescriptor->pucEthernetBuffer,
-                       pxDescriptor->xDataLength, prvTxCallback);
+		gmac_dev_write( &gs_gmac_dev, (void *)pxDescriptor->pucEthernetBuffer, pxDescriptor->xDataLength, prvTxCallback );
 
-#if (ipconfigZERO_COPY_TX_DRIVER != 0)
-        {
-            /* Confirm that the pxDescriptor may be kept by the driver. */
-            bReleaseAfterSend = pdFALSE;
-        }
-#endif /* ipconfigZERO_COPY_TX_DRIVER */
-        /* Not interested in a call-back after TX. */
-        iptraceNETWORK_INTERFACE_TRANSMIT();
-    } while (0);
+		#if( ipconfigZERO_COPY_TX_DRIVER != 0 )
+		{
+			/* Confirm that the pxDescriptor may be kept by the driver. */
+			bReleaseAfterSend = pdFALSE;
+		}
+		#endif /* ipconfigZERO_COPY_TX_DRIVER */
+		/* Not interested in a call-back after TX. */
+		iptraceNETWORK_INTERFACE_TRANSMIT();
+	} while( 0 );
 
-    if (bReleaseAfterSend != pdFALSE) {
-        vReleaseNetworkBufferAndDescriptor(pxDescriptor);
-    }
-    return pdTRUE;
+	if( bReleaseAfterSend != pdFALSE )
+	{
+		vReleaseNetworkBufferAndDescriptor( pxDescriptor );
+	}
+	return pdTRUE;
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t prvGMACInit(void)
+static BaseType_t prvGMACInit( void )
 {
-    uint32_t ncfgr;
+uint32_t ncfgr;
 
-    gmac_options_t gmac_option;
+	gmac_options_t gmac_option;
 
-    memset(&gmac_option, '\0', sizeof(gmac_option));
-    gmac_option.uc_copy_all_frame = 0;
-    gmac_option.uc_no_boardcast = 0;
-    memcpy(gmac_option.uc_mac_addr, ucMACAddress, sizeof(gmac_option.uc_mac_addr));
+	memset( &gmac_option, '\0', sizeof( gmac_option ) );
+	gmac_option.uc_copy_all_frame = 0;
+	gmac_option.uc_no_boardcast = 0;
+	memcpy( gmac_option.uc_mac_addr, ucMACAddress, sizeof( gmac_option.uc_mac_addr ) );
 
-    gs_gmac_dev.p_hw = GMAC;
-    gmac_dev_init(GMAC, &gs_gmac_dev, &gmac_option);
+	gs_gmac_dev.p_hw = GMAC;
+	gmac_dev_init( GMAC, &gs_gmac_dev, &gmac_option );
 
-    NVIC_SetPriority(GMAC_IRQn, configMAC_INTERRUPT_PRIORITY);
-    NVIC_EnableIRQ(GMAC_IRQn);
+	NVIC_SetPriority( GMAC_IRQn, configMAC_INTERRUPT_PRIORITY );
+	NVIC_EnableIRQ( GMAC_IRQn );
 
-    /* Contact the Ethernet PHY and store it's address in 'ethernet_phy_addr' */
-    ethernet_phy_init(GMAC, ETHERNET_CONF_PHY_ADDR, sysclk_get_cpu_hz());
+	/* Contact the Ethernet PHY and store it's address in 'ethernet_phy_addr' */
+	ethernet_phy_init( GMAC, ETHERNET_CONF_PHY_ADDR, sysclk_get_cpu_hz() );
 
-    ethernet_phy_auto_negotiate(GMAC, ethernet_phy_addr);
-    ethernet_phy_set_link(GMAC, ethernet_phy_addr, 1);
+	ethernet_phy_auto_negotiate( GMAC, ethernet_phy_addr );
+	ethernet_phy_set_link( GMAC, ethernet_phy_addr, 1 );
 
-    /* The GMAC driver will call a hook prvRxCallback(), which
+	/* The GMAC driver will call a hook prvRxCallback(), which
 	in turn will wake-up the task by calling vTaskNotifyGiveFromISR() */
-    gmac_dev_set_rx_callback(&gs_gmac_dev, prvRxCallback);
-    gmac_set_address(GMAC, 1, (uint8_t *)llmnr_mac_address);
+	gmac_dev_set_rx_callback( &gs_gmac_dev, prvRxCallback );
+	gmac_set_address( GMAC, 1, (uint8_t*)llmnr_mac_address );
 
-    ncfgr = GMAC_NCFGR_SPD | GMAC_NCFGR_FD;
+	ncfgr = GMAC_NCFGR_SPD | GMAC_NCFGR_FD;
 
-    GMAC->GMAC_NCFGR = (GMAC->GMAC_NCFGR & ~(GMAC_NCFGR_SPD | GMAC_NCFGR_FD)) | ncfgr;
+	GMAC->GMAC_NCFGR = ( GMAC->GMAC_NCFGR & ~( GMAC_NCFGR_SPD | GMAC_NCFGR_FD ) ) | ncfgr;
 
-    return 1;
+	return 1;
 }
 /*-----------------------------------------------------------*/
 
-static inline unsigned long ulReadMDIO(unsigned /*short*/ usAddress)
+static inline unsigned long ulReadMDIO( unsigned /*short*/ usAddress )
 {
-    uint32_t ulValue, ulReturn;
-    int rc;
+uint32_t ulValue, ulReturn;
+int rc;
 
-    gmac_enable_management(GMAC, 1);
-    rc = gmac_phy_read(GMAC, ethernet_phy_addr, usAddress, &ulValue);
-    gmac_enable_management(GMAC, 0);
-    if (rc == GMAC_OK) {
-        ulReturn = ulValue;
-    } else {
-        ulReturn = 0UL;
-    }
+	gmac_enable_management( GMAC, 1 );
+	rc = gmac_phy_read( GMAC, ethernet_phy_addr, usAddress, &ulValue );
+	gmac_enable_management( GMAC, 0 );
+	if( rc == GMAC_OK )
+	{
+		ulReturn = ulValue;
+	}
+	else
+	{
+		ulReturn = 0UL;
+	}
 
-    return ulReturn;
+	return ulReturn;
 }
 /*-----------------------------------------------------------*/
 
-static BaseType_t xGMACWaitLS(TickType_t xMaxTime)
+static BaseType_t xGMACWaitLS( TickType_t xMaxTime )
 {
-    TickType_t xStartTime = xTaskGetTickCount();
-    TickType_t xEndTime;
-    BaseType_t xReturn;
-    const TickType_t xShortTime = pdMS_TO_TICKS(100UL);
+TickType_t xStartTime = xTaskGetTickCount();
+TickType_t xEndTime;
+BaseType_t xReturn;
+const TickType_t xShortTime = pdMS_TO_TICKS( 100UL );
 
-    for (;;) {
-        xEndTime = xTaskGetTickCount();
+	for( ;; )
+	{
+		xEndTime = xTaskGetTickCount();
 
-        if ((xEndTime - xStartTime) > xMaxTime) {
-            /* Wated more than xMaxTime, return. */
-            xReturn = pdFALSE;
-            break;
-        }
+		if( ( xEndTime - xStartTime ) > xMaxTime )
+		{
+			/* Wated more than xMaxTime, return. */
+			xReturn = pdFALSE;
+			break;
+		}
 
-        /* Check the link status again. */
-        ulPHYLinkStatus = ulReadMDIO(PHY_REG_01_BMSR);
+		/* Check the link status again. */
+		ulPHYLinkStatus = ulReadMDIO( PHY_REG_01_BMSR );
 
-        if ((ulPHYLinkStatus & BMSR_LINK_STATUS) != 0) {
-            /* Link is up - return. */
-            xReturn = pdTRUE;
-            break;
-        }
+		if( ( ulPHYLinkStatus & BMSR_LINK_STATUS ) != 0 )
+		{
+			/* Link is up - return. */
+			xReturn = pdTRUE;
+			break;
+		}
 
-        /* Link is down - wait in the Blocked state for a short while (to allow
+		/* Link is down - wait in the Blocked state for a short while (to allow
 		other tasks to execute) before checking again. */
-        vTaskDelay(xShortTime);
-    }
+		vTaskDelay( xShortTime );
+	}
 
-    FreeRTOS_printf(("xGMACWaitLS: %ld (PHY %d) freq %lu Mz\n", xReturn, ethernet_phy_addr,
-                     sysclk_get_cpu_hz() / HZ_PER_MHZ));
+	FreeRTOS_printf( ( "xGMACWaitLS: %ld (PHY %d) freq %lu Mz\n",
+		xReturn,
+		ethernet_phy_addr,
+		sysclk_get_cpu_hz() / HZ_PER_MHZ ) );
 
-    return xReturn;
+	return xReturn;
 }
 /*-----------------------------------------------------------*/
 
 //#if( ipconfigDRIVER_INCLUDED_TX_IP_CHECKSUM == 1 ) && ( ipconfigHAS_TX_CRC_OFFLOADING == 0 )
 
-void vGMACGenerateChecksum(uint8_t *apBuffer)
-{
-    ProtocolPacket_t *xProtPacket = (ProtocolPacket_t *)apBuffer;
+	void vGMACGenerateChecksum( uint8_t *apBuffer )
+	{
+	ProtocolPacket_t *xProtPacket = (ProtocolPacket_t *)apBuffer;
 
-    if (xProtPacket->xTCPPacket.xEthernetHeader.usFrameType == ipIPv4_FRAME_TYPE) {
-        IPHeader_t *pxIPHeader = &(xProtPacket->xTCPPacket.xIPHeader);
+		if ( xProtPacket->xTCPPacket.xEthernetHeader.usFrameType == ipIPv4_FRAME_TYPE )
+		{
+			IPHeader_t *pxIPHeader = &( xProtPacket->xTCPPacket.xIPHeader );
 
-        /* Calculate the IP header checksum. */
-        pxIPHeader->usHeaderChecksum = 0x00;
-        pxIPHeader->usHeaderChecksum = usGenerateChecksum(
-            0u, (uint8_t *)&(pxIPHeader->ucVersionHeaderLength), ipSIZE_OF_IPv4_HEADER);
-        pxIPHeader->usHeaderChecksum = ~FreeRTOS_htons(pxIPHeader->usHeaderChecksum);
+			/* Calculate the IP header checksum. */
+			pxIPHeader->usHeaderChecksum = 0x00;
+			pxIPHeader->usHeaderChecksum = usGenerateChecksum( 0u, ( uint8_t * ) &( pxIPHeader->ucVersionHeaderLength ), ipSIZE_OF_IPv4_HEADER );
+			pxIPHeader->usHeaderChecksum = ~FreeRTOS_htons( pxIPHeader->usHeaderChecksum );
 
-        /* Calculate the TCP checksum for an outgoing packet. */
-        usGenerateProtocolChecksum((uint8_t *)apBuffer, pdTRUE);
-    }
-}
+			/* Calculate the TCP checksum for an outgoing packet. */
+			usGenerateProtocolChecksum( ( uint8_t * ) apBuffer, pdTRUE );
+		}
+	}
 
 //#endif
 /*-----------------------------------------------------------*/
 
-static uint32_t prvEMACRxPoll(void)
+static uint32_t prvEMACRxPoll( void )
 {
-    unsigned char *pucUseBuffer;
-    uint32_t ulReceiveCount, ulResult, ulReturnValue = 0;
-    static NetworkBufferDescriptor_t *pxNextNetworkBufferDescriptor = NULL;
-    const UBaseType_t xMinDescriptorsToLeave = 2UL;
-    const TickType_t xBlockTime = pdMS_TO_TICKS(100UL);
-    static IPStackEvent_t xRxEvent = { eNetworkRxEvent, NULL };
+unsigned char *pucUseBuffer;
+uint32_t ulReceiveCount, ulResult, ulReturnValue = 0;
+static NetworkBufferDescriptor_t *pxNextNetworkBufferDescriptor = NULL;
+const UBaseType_t xMinDescriptorsToLeave = 2UL;
+const TickType_t xBlockTime = pdMS_TO_TICKS( 100UL );
+static IPStackEvent_t xRxEvent = { eNetworkRxEvent, NULL };
 
-    for (;;) {
-        /* If pxNextNetworkBufferDescriptor was not left pointing at a valid
+	for( ;; )
+	{
+		/* If pxNextNetworkBufferDescriptor was not left pointing at a valid
 		descriptor then allocate one now. */
-        if ((pxNextNetworkBufferDescriptor == NULL) &&
-            (uxGetNumberOfFreeNetworkBuffers() > xMinDescriptorsToLeave)) {
-            pxNextNetworkBufferDescriptor =
-                pxGetNetworkBufferWithDescriptor(ipTOTAL_ETHERNET_FRAME_SIZE, xBlockTime);
-        }
+		if( ( pxNextNetworkBufferDescriptor == NULL ) && ( uxGetNumberOfFreeNetworkBuffers() > xMinDescriptorsToLeave ) )
+		{
+			pxNextNetworkBufferDescriptor = pxGetNetworkBufferWithDescriptor( ipTOTAL_ETHERNET_FRAME_SIZE, xBlockTime );
+		}
 
-        if (pxNextNetworkBufferDescriptor != NULL) {
-            /* Point pucUseBuffer to the buffer pointed to by the descriptor. */
-            pucUseBuffer = (unsigned char *)(pxNextNetworkBufferDescriptor->pucEthernetBuffer -
-                                             ipconfigPACKET_FILLER_SIZE);
-        } else {
-            /* As long as pxNextNetworkBufferDescriptor is NULL, the incoming
+		if( pxNextNetworkBufferDescriptor != NULL )
+		{
+			/* Point pucUseBuffer to the buffer pointed to by the descriptor. */
+			pucUseBuffer = ( unsigned char* ) ( pxNextNetworkBufferDescriptor->pucEthernetBuffer - ipconfigPACKET_FILLER_SIZE );
+		}
+		else
+		{
+			/* As long as pxNextNetworkBufferDescriptor is NULL, the incoming
 			messages will be flushed and ignored. */
-            pucUseBuffer = NULL;
-        }
+			pucUseBuffer = NULL;
+		}
 
-        /* Read the next packet from the hardware into pucUseBuffer. */
-        ulResult =
-            gmac_dev_read(&gs_gmac_dev, pucUseBuffer, ipTOTAL_ETHERNET_FRAME_SIZE, &ulReceiveCount);
+		/* Read the next packet from the hardware into pucUseBuffer. */
+		ulResult = gmac_dev_read( &gs_gmac_dev, pucUseBuffer, ipTOTAL_ETHERNET_FRAME_SIZE, &ulReceiveCount );
 
-        if ((ulResult != GMAC_OK) || (ulReceiveCount == 0)) {
-            /* No data from the hardware. */
-            break;
-        }
+		if( ( ulResult != GMAC_OK ) || ( ulReceiveCount == 0 ) )
+		{
+			/* No data from the hardware. */
+			break;
+		}
 
-        if (pxNextNetworkBufferDescriptor == NULL) {
-            /* Data was read from the hardware, but no descriptor was available
+		if( pxNextNetworkBufferDescriptor == NULL )
+		{
+			/* Data was read from the hardware, but no descriptor was available
 			for it, so it will be dropped. */
-            iptraceETHERNET_RX_EVENT_LOST();
-            continue;
-        }
+			iptraceETHERNET_RX_EVENT_LOST();
+			continue;
+		}
 
-        iptraceNETWORK_INTERFACE_RECEIVE();
-        pxNextNetworkBufferDescriptor->xDataLength = (size_t)ulReceiveCount;
-        xRxEvent.pvData = (void *)pxNextNetworkBufferDescriptor;
+		iptraceNETWORK_INTERFACE_RECEIVE();
+		pxNextNetworkBufferDescriptor->xDataLength = ( size_t ) ulReceiveCount;
+		xRxEvent.pvData = ( void * ) pxNextNetworkBufferDescriptor;
 
-        /* Send the descriptor to the IP task for processing. */
-        if (xSendEventStructToIPTask(&xRxEvent, xBlockTime) != pdTRUE) {
-            /* The buffer could not be sent to the stack so must be released
+		/* Send the descriptor to the IP task for processing. */
+		if( xSendEventStructToIPTask( &xRxEvent, xBlockTime ) != pdTRUE )
+		{
+			/* The buffer could not be sent to the stack so must be released
 			again. */
-            vReleaseNetworkBufferAndDescriptor(pxNextNetworkBufferDescriptor);
-            iptraceETHERNET_RX_EVENT_LOST();
-            FreeRTOS_printf(("prvEMACRxPoll: Can not queue return packet!\n"));
-        }
+			vReleaseNetworkBufferAndDescriptor( pxNextNetworkBufferDescriptor );
+			iptraceETHERNET_RX_EVENT_LOST();
+			FreeRTOS_printf( ( "prvEMACRxPoll: Can not queue return packet!\n" ) );
+		}
 
-        /* Now the buffer has either been passed to the IP-task,
+		/* Now the buffer has either been passed to the IP-task,
 		or it has been released in the code above. */
-        pxNextNetworkBufferDescriptor = NULL;
-        ulReturnValue++;
-    }
+		pxNextNetworkBufferDescriptor = NULL;
+		ulReturnValue++;
+	}
 
-    return ulReturnValue;
+	return ulReturnValue;
 }
 /*-----------------------------------------------------------*/
 
-void vCheckBuffersAndQueue(void)
+void vCheckBuffersAndQueue( void )
 {
-    static UBaseType_t uxLastMinBufferCount = 0;
-#if (ipconfigCHECK_IP_QUEUE_SPACE != 0)
-    static UBaseType_t uxLastMinQueueSpace;
+static UBaseType_t uxLastMinBufferCount = 0;
+#if( ipconfigCHECK_IP_QUEUE_SPACE != 0 )
+	static UBaseType_t uxLastMinQueueSpace;
 #endif
-    static UBaseType_t uxCurrentCount;
+static UBaseType_t uxCurrentCount;
 
-#if (ipconfigCHECK_IP_QUEUE_SPACE != 0)
-    {
-        uxCurrentCount = uxGetMinimumIPQueueSpace();
-        if (uxLastMinQueueSpace != uxCurrentCount) {
-            /* The logging produced below may be helpful
+	#if( ipconfigCHECK_IP_QUEUE_SPACE != 0 )
+	{
+		uxCurrentCount = uxGetMinimumIPQueueSpace();
+		if( uxLastMinQueueSpace != uxCurrentCount )
+		{
+			/* The logging produced below may be helpful
 			while tuning +TCP: see how many buffers are in use. */
-            uxLastMinQueueSpace = uxCurrentCount;
-            FreeRTOS_printf(("Queue space: lowest %lu\n", uxCurrentCount));
-        }
-    }
-#endif /* ipconfigCHECK_IP_QUEUE_SPACE */
-    uxCurrentCount = uxGetMinimumFreeNetworkBuffers();
-    if (uxLastMinBufferCount != uxCurrentCount) {
-        /* The logging produced below may be helpful
+			uxLastMinQueueSpace = uxCurrentCount;
+			FreeRTOS_printf( ( "Queue space: lowest %lu\n", uxCurrentCount ) );
+		}
+	}
+	#endif /* ipconfigCHECK_IP_QUEUE_SPACE */
+	uxCurrentCount = uxGetMinimumFreeNetworkBuffers();
+	if( uxLastMinBufferCount != uxCurrentCount )
+	{
+		/* The logging produced below may be helpful
 		while tuning +TCP: see how many buffers are in use. */
-        uxLastMinBufferCount = uxCurrentCount;
-        FreeRTOS_printf(("Network buffers: %lu lowest %lu\n", uxGetNumberOfFreeNetworkBuffers(),
-                         uxCurrentCount));
-    }
+		uxLastMinBufferCount = uxCurrentCount;
+		FreeRTOS_printf( ( "Network buffers: %lu lowest %lu\n",
+			uxGetNumberOfFreeNetworkBuffers(), uxCurrentCount ) );
+	}
+
 }
 
-static void prvEMACHandlerTask(void *pvParameters)
+static void prvEMACHandlerTask( void *pvParameters )
 {
-    TimeOut_t xPhyTime;
-    TickType_t xPhyRemTime;
-    UBaseType_t uxCount;
-#if (ipconfigZERO_COPY_TX_DRIVER != 0)
-    NetworkBufferDescriptor_t *pxBuffer;
+TimeOut_t xPhyTime;
+TickType_t xPhyRemTime;
+UBaseType_t uxCount;
+#if( ipconfigZERO_COPY_TX_DRIVER != 0 )
+	NetworkBufferDescriptor_t *pxBuffer;
 #endif
-    uint8_t *pucBuffer;
-    BaseType_t xResult = 0;
-    uint32_t xStatus;
-    const TickType_t ulMaxBlockTime = pdMS_TO_TICKS(EMAC_MAX_BLOCK_TIME_MS);
+uint8_t *pucBuffer;
+BaseType_t xResult = 0;
+uint32_t xStatus;
+const TickType_t ulMaxBlockTime = pdMS_TO_TICKS( EMAC_MAX_BLOCK_TIME_MS );
 
-    /* Remove compiler warnings about unused parameters. */
-    (void)pvParameters;
+	/* Remove compiler warnings about unused parameters. */
+	( void ) pvParameters;
 
-    configASSERT(xEMACTaskHandle);
+	configASSERT( xEMACTaskHandle );
 
-    vTaskSetTimeOutState(&xPhyTime);
-    xPhyRemTime = pdMS_TO_TICKS(PHY_LS_LOW_CHECK_TIME_MS);
+	vTaskSetTimeOutState( &xPhyTime );
+	xPhyRemTime = pdMS_TO_TICKS( PHY_LS_LOW_CHECK_TIME_MS );
 
-    for (;;) {
-        vCheckBuffersAndQueue();
+	for( ;; )
+	{
+		vCheckBuffersAndQueue();
 
-        if ((ulISREvents & EMAC_IF_ALL_EVENT) == 0) {
-            /* No events to process now, wait for the next. */
-            ulTaskNotifyTake(pdFALSE, ulMaxBlockTime);
-        }
+		if( ( ulISREvents & EMAC_IF_ALL_EVENT ) == 0 )
+		{
+			/* No events to process now, wait for the next. */
+			ulTaskNotifyTake( pdFALSE, ulMaxBlockTime );
+		}
 
-        if ((ulISREvents & EMAC_IF_RX_EVENT) != 0) {
-            ulISREvents &= ~EMAC_IF_RX_EVENT;
+		if( ( ulISREvents & EMAC_IF_RX_EVENT ) != 0 )
+		{
+			ulISREvents &= ~EMAC_IF_RX_EVENT;
 
-            /* Wait for the EMAC interrupt to indicate that another packet has been
+			/* Wait for the EMAC interrupt to indicate that another packet has been
 			received. */
-            xResult = prvEMACRxPoll();
-        }
+			xResult = prvEMACRxPoll();
+		}
 
-        if ((ulISREvents & EMAC_IF_TX_EVENT) != 0) {
-            /* Future extension: code to release TX buffers if zero-copy is used. */
-            ulISREvents &= ~EMAC_IF_TX_EVENT;
-            while (xQueueReceive(xTxBufferQueue, &pucBuffer, 0) != pdFALSE) {
-#if (ipconfigZERO_COPY_TX_DRIVER != 0)
-                {
-                    pxBuffer = pxPacketBuffer_to_NetworkBuffer(pucBuffer);
-                    if (pxBuffer != NULL) {
-                        vReleaseNetworkBufferAndDescriptor(pxBuffer);
-                        tx_release_count[0]++;
-                    } else {
-                        tx_release_count[1]++;
-                    }
-                }
-#else
-                {
-                    tx_release_count[0]++;
-                }
-#endif
-                uxCount = uxQueueMessagesWaiting((QueueHandle_t)xTXDescriptorSemaphore);
-                if (uxCount < GMAC_TX_BUFFERS) {
-                    /* Tell the counting semaphore that one more TX descriptor is available. */
-                    xSemaphoreGive(xTXDescriptorSemaphore);
-                }
-            }
-        }
+		if( ( ulISREvents & EMAC_IF_TX_EVENT ) != 0 )
+		{
+			/* Future extension: code to release TX buffers if zero-copy is used. */
+			ulISREvents &= ~EMAC_IF_TX_EVENT;
+			while( xQueueReceive( xTxBufferQueue, &pucBuffer, 0 ) != pdFALSE )
+			{
+				#if( ipconfigZERO_COPY_TX_DRIVER != 0 )
+				{
+					pxBuffer = pxPacketBuffer_to_NetworkBuffer( pucBuffer );
+					if( pxBuffer != NULL )
+					{
+						vReleaseNetworkBufferAndDescriptor( pxBuffer );
+						tx_release_count[ 0 ]++;
+					}
+					else
+					{
+						tx_release_count[ 1 ]++;
+					}
+				}
+				#else
+				{
+					tx_release_count[ 0 ]++;
+				}
+				#endif
+				uxCount = uxQueueMessagesWaiting( ( QueueHandle_t ) xTXDescriptorSemaphore );
+				if( uxCount < GMAC_TX_BUFFERS )
+				{
+					/* Tell the counting semaphore that one more TX descriptor is available. */
+					xSemaphoreGive( xTXDescriptorSemaphore );
+				}
+			}
+		}
 
-        if ((ulISREvents & EMAC_IF_ERR_EVENT) != 0) {
-            /* Future extension: logging about errors that occurred. */
-            ulISREvents &= ~EMAC_IF_ERR_EVENT;
-        }
+		if( ( ulISREvents & EMAC_IF_ERR_EVENT ) != 0 )
+		{
+			/* Future extension: logging about errors that occurred. */
+			ulISREvents &= ~EMAC_IF_ERR_EVENT;
+		}
 
-        if (xResult > 0) {
-            /* A packet was received. No need to check for the PHY status now,
+		if( xResult > 0 )
+		{
+			/* A packet was received. No need to check for the PHY status now,
 			but set a timer to check it later on. */
-            vTaskSetTimeOutState(&xPhyTime);
-            xPhyRemTime = pdMS_TO_TICKS(PHY_LS_HIGH_CHECK_TIME_MS);
-            xResult = 0;
-        } else if (xTaskCheckForTimeOut(&xPhyTime, &xPhyRemTime) != pdFALSE) {
-            /* Check the link status again. */
-            xStatus = ulReadMDIO(PHY_REG_01_BMSR);
+			vTaskSetTimeOutState( &xPhyTime );
+			xPhyRemTime = pdMS_TO_TICKS( PHY_LS_HIGH_CHECK_TIME_MS );
+			xResult = 0;
+		}
+		else if( xTaskCheckForTimeOut( &xPhyTime, &xPhyRemTime ) != pdFALSE )
+		{
+			/* Check the link status again. */
+			xStatus = ulReadMDIO( PHY_REG_01_BMSR );
 
-            if ((ulPHYLinkStatus & BMSR_LINK_STATUS) != (xStatus & BMSR_LINK_STATUS)) {
-                ulPHYLinkStatus = xStatus;
-                FreeRTOS_printf(("prvEMACHandlerTask: PHY LS now %d\n",
-                                 (ulPHYLinkStatus & BMSR_LINK_STATUS) != 0));
-            }
+			if( ( ulPHYLinkStatus & BMSR_LINK_STATUS ) != ( xStatus & BMSR_LINK_STATUS ) )
+			{
+				ulPHYLinkStatus = xStatus;
+				FreeRTOS_printf( ( "prvEMACHandlerTask: PHY LS now %d\n", ( ulPHYLinkStatus & BMSR_LINK_STATUS ) != 0 ) );
+			}
 
-            vTaskSetTimeOutState(&xPhyTime);
-            if ((ulPHYLinkStatus & BMSR_LINK_STATUS) != 0) {
-                xPhyRemTime = pdMS_TO_TICKS(PHY_LS_HIGH_CHECK_TIME_MS);
-            } else {
-                xPhyRemTime = pdMS_TO_TICKS(PHY_LS_LOW_CHECK_TIME_MS);
-            }
-        }
-    }
+			vTaskSetTimeOutState( &xPhyTime );
+			if( ( ulPHYLinkStatus & BMSR_LINK_STATUS ) != 0 )
+			{
+				xPhyRemTime = pdMS_TO_TICKS( PHY_LS_HIGH_CHECK_TIME_MS );
+			}
+			else
+			{
+				xPhyRemTime = pdMS_TO_TICKS( PHY_LS_LOW_CHECK_TIME_MS );
+			}
+		}
+	}
 }
 /*-----------------------------------------------------------*/

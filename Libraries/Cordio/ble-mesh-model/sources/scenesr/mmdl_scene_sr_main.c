@@ -59,22 +59,23 @@
 **************************************************************************************************/
 
 /*! Present scene index in stored scenes */
-#define PRESENT_SCENE_IDX 0
+#define PRESENT_SCENE_IDX                   0
 
 /*! Scene register index in stored scenes */
-#define SCENE_REGISTER_IDX 1
+#define SCENE_REGISTER_IDX                  1
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Scenes Server control block type definition */
-typedef struct mmdlSceneSrCb_tag {
-    mmdlEventCback_t recvCback; /*!< Model Scene Server received callback */
+typedef struct mmdlSceneSrCb_tag
+{
+  mmdlEventCback_t          recvCback;            /*!< Model Scene Server received callback */
 } mmdlSceneSrCb_t;
 
 /*! Scenes Server message handler type definition */
-typedef void (*mmdlSceneSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlSceneSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
@@ -84,11 +85,12 @@ typedef void (*mmdlSceneSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 wsfHandlerId_t mmdlSceneSrHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlSceneSrRcvdOpcodes[MMDL_SCENE_SR_NUM_RCVD_OPCODES] = {
-    { { UINT16_OPCODE_TO_BYTES(MMDL_SCENE_GET_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_SCENE_REGISTER_GET_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_SCENE_RECALL_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_SCENE_RECALL_NO_ACK_OPCODE) } }
+const meshMsgOpcode_t mmdlSceneSrRcvdOpcodes[MMDL_SCENE_SR_NUM_RCVD_OPCODES] =
+{
+  { {UINT16_OPCODE_TO_BYTES(MMDL_SCENE_GET_OPCODE) }},
+  { {UINT16_OPCODE_TO_BYTES(MMDL_SCENE_REGISTER_GET_OPCODE) }},
+  { {UINT16_OPCODE_TO_BYTES(MMDL_SCENE_RECALL_OPCODE) }},
+  { {UINT16_OPCODE_TO_BYTES(MMDL_SCENE_RECALL_NO_ACK_OPCODE) }}
 };
 
 /**************************************************************************************************
@@ -96,9 +98,12 @@ const meshMsgOpcode_t mmdlSceneSrRcvdOpcodes[MMDL_SCENE_SR_NUM_RCVD_OPCODES] = {
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlSceneSrHandleMsg_t mmdlSceneSrHandleMsg[MMDL_SCENE_SR_NUM_RCVD_OPCODES] = {
-    mmdlSceneSrHandleGet, mmdlSceneSrHandleRegisterGet, mmdlSceneSrHandleRecall,
-    mmdlSceneSrHandleRecallNoAck
+const mmdlSceneSrHandleMsg_t mmdlSceneSrHandleMsg[MMDL_SCENE_SR_NUM_RCVD_OPCODES] =
+{
+  mmdlSceneSrHandleGet,
+  mmdlSceneSrHandleRegisterGet,
+  mmdlSceneSrHandleRecall,
+  mmdlSceneSrHandleRecallNoAck
 };
 
 /*! Scenes Server Control Block */
@@ -121,25 +126,27 @@ const mmdlSceneSrHandleMsg_t mmdlSceneSrHandleMsg[MMDL_SCENE_SR_NUM_RCVD_OPCODES
 /*************************************************************************************************/
 void mmdlSceneSrGetDesc(meshElementId_t elementId, mmdlSceneSrDesc_t **ppOutDesc)
 {
-    uint8_t modelIdx;
+  uint8_t modelIdx;
 
-    *ppOutDesc = NULL;
+  *ppOutDesc = NULL;
 
-    /* Check if element exists. */
-    if (elementId >= pMeshConfig->elementArrayLen) {
-        return;
+  /* Check if element exists. */
+  if (elementId >= pMeshConfig->elementArrayLen)
+  {
+    return;
+  }
+
+  /* Look for the model instance */
+  for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx ++)
+  {
+    if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
+        MMDL_SCENE_SR_MDL_ID)
+    {
+      /* Matching model ID on elementId */
+      *ppOutDesc = pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
+      break;
     }
-
-    /* Look for the model instance */
-    for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx++) {
-        if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
-            MMDL_SCENE_SR_MDL_ID) {
-            /* Matching model ID on elementId */
-            *ppOutDesc =
-                pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
-            break;
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -154,41 +161,44 @@ void mmdlSceneSrGetDesc(meshElementId_t elementId, mmdlSceneSrDesc_t **ppOutDesc
 /*************************************************************************************************/
 static void mmdlSceneSrRecallModelData(uint8_t sceneIdx, uint32_t transitionMs)
 {
-    meshElementId_t elemId;
-    uint8_t modelIdx;
+  meshElementId_t elemId;
+  uint8_t modelIdx;
 
-    for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++) {
-        for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elemId].numSigModels; modelIdx++) {
-            switch (pMeshConfig->pElementArray[elemId].pSigModelArray[modelIdx].modelId) {
-            case MMDL_GEN_ONOFF_SR_MDL_ID:
-                MmdlGenOnOffSrRecallScene(elemId, sceneIdx, transitionMs);
-                break;
+  for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++)
+  {
+    for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elemId].numSigModels; modelIdx ++)
+    {
+      switch (pMeshConfig->pElementArray[elemId].pSigModelArray[modelIdx].modelId)
+      {
+        case MMDL_GEN_ONOFF_SR_MDL_ID:
+          MmdlGenOnOffSrRecallScene(elemId, sceneIdx, transitionMs);
+          break;
 
-            case MMDL_GEN_LEVEL_SR_MDL_ID:
-                MmdlGenLevelSrRecallScene(elemId, sceneIdx, transitionMs);
-                break;
+        case MMDL_GEN_LEVEL_SR_MDL_ID:
+          MmdlGenLevelSrRecallScene(elemId, sceneIdx, transitionMs);
+          break;
 
-            case MMDL_GEN_POWER_LEVEL_SR_MDL_ID:
-                MmdlGenPowerLevelSrRecallScene(elemId, sceneIdx, transitionMs);
-                break;
+        case MMDL_GEN_POWER_LEVEL_SR_MDL_ID:
+          MmdlGenPowerLevelSrRecallScene(elemId, sceneIdx, transitionMs);
+          break;
 
-            case MMDL_LIGHT_HSL_SR_MDL_ID:
-                MmdlLightHslSrRecallScene(elemId, sceneIdx, transitionMs);
-                break;
+        case MMDL_LIGHT_HSL_SR_MDL_ID:
+          MmdlLightHslSrRecallScene(elemId, sceneIdx, transitionMs);
+          break;
 
-            case MMDL_LIGHT_LIGHTNESS_SR_MDL_ID:
-                MmdlLightLightnessSrRecallScene(elemId, sceneIdx, transitionMs);
-                break;
+        case MMDL_LIGHT_LIGHTNESS_SR_MDL_ID:
+          MmdlLightLightnessSrRecallScene(elemId, sceneIdx, transitionMs);
+          break;
 
-            case MMDL_LIGHT_CTL_SR_MDL_ID:
-                MmdlLightCtlSrRecallScene(elemId, sceneIdx, transitionMs);
-                break;
+        case MMDL_LIGHT_CTL_SR_MDL_ID:
+          MmdlLightCtlSrRecallScene(elemId, sceneIdx, transitionMs);
+          break;
 
-            default:
-                break;
-            }
-        }
+        default:
+          break;
+      }
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -204,61 +214,68 @@ static void mmdlSceneSrRecallModelData(uint8_t sceneIdx, uint32_t transitionMs)
  *  \return    None.
  */
 /*************************************************************************************************/
-static void mmdlSceneSrRecall(meshElementId_t elementId, uint8_t sceneIdx, uint32_t transitionMs,
-                              uint8_t delay5Ms, mmdlStateUpdateSrc_t stateUpdateSrc)
+static void mmdlSceneSrRecall(meshElementId_t elementId, uint8_t sceneIdx,
+                              uint32_t transitionMs, uint8_t delay5Ms,
+                              mmdlStateUpdateSrc_t stateUpdateSrc)
 {
-    mmdlSceneSrDesc_t *pDesc = NULL;
+  mmdlSceneSrDesc_t *pDesc = NULL;
 
-    /* Get model instance descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get model instance descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        MMDL_TRACE_INFO3("SCENE SR: Recall Target=0x%X, TimeRem=%d ms, Delay=0x%X",
-                         pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx], transitionMs,
-                         delay5Ms);
+  if (pDesc != NULL)
+  {
+    MMDL_TRACE_INFO3("SCENE SR: Recall Target=0x%X, TimeRem=%d ms, Delay=0x%X",
+                     pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx], transitionMs, delay5Ms);
 
-        /* Update descriptor */
-        pDesc->remainingTimeMs = transitionMs;
-        pDesc->delay5Ms = delay5Ms;
-        pDesc->targetSceneIdx = sceneIdx;
+    /* Update descriptor */
+    pDesc->remainingTimeMs = transitionMs;
+    pDesc->delay5Ms = delay5Ms;
+    pDesc->targetSceneIdx = sceneIdx;
 
-        /* Update Target and Present State */
-        pDesc->pStoredScenes[PRESENT_SCENE_IDX] = 0;
+    /* Update Target and Present State */
+    pDesc->pStoredScenes[PRESENT_SCENE_IDX] = 0;
 
-        /* Check if the set is delayed */
-        if (pDesc->delay5Ms > 0) {
-            /* Start Timer */
-            WsfTimerStartMs(&pDesc->transitionTimer, DELAY_5MS_TO_MS(pDesc->delay5Ms));
+    /* Check if the set is delayed */
+    if (pDesc->delay5Ms > 0)
+    {
+      /* Start Timer */
+      WsfTimerStartMs(&pDesc->transitionTimer, DELAY_5MS_TO_MS(pDesc->delay5Ms));
 
-            /* State change is delayed */
-            return;
-        }
-        /* Check if state will change after a transition or immediately */
-        else if (pDesc->remainingTimeMs > 0) {
-            /* Start Timer */
-            WsfTimerStartMs(&pDesc->transitionTimer, pDesc->remainingTimeMs);
-
-            /* Recall scene with transition */
-            mmdlSceneSrRecallModelData(sceneIdx, pDesc->remainingTimeMs);
-        } else {
-            /* Stop transition */
-            if (pDesc->transitionTimer.isStarted) {
-                WsfTimerStop(&pDesc->transitionTimer);
-            } else {
-                /* No transition with this scene. Recall it. */
-                mmdlSceneSrRecallModelData(sceneIdx, 0);
-            }
-
-            /* Update Scene */
-            pDesc->pStoredScenes[PRESENT_SCENE_IDX] =
-                pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx];
-
-            /* Publish state change */
-            MmdlSceneSrPublish(elementId);
-        }
+      /* State change is delayed */
+      return;
     }
+    /* Check if state will change after a transition or immediately */
+    else if (pDesc->remainingTimeMs > 0)
+    {
+      /* Start Timer */
+      WsfTimerStartMs(&pDesc->transitionTimer, pDesc->remainingTimeMs);
 
-    (void)stateUpdateSrc;
+      /* Recall scene with transition */
+      mmdlSceneSrRecallModelData(sceneIdx, pDesc->remainingTimeMs);
+    }
+    else
+    {
+      /* Stop transition */
+      if (pDesc->transitionTimer.isStarted)
+      {
+        WsfTimerStop(&pDesc->transitionTimer);
+      }
+      else
+      {
+        /* No transition with this scene. Recall it. */
+        mmdlSceneSrRecallModelData(sceneIdx, 0);
+      }
+
+      /* Update Scene */
+      pDesc->pStoredScenes[PRESENT_SCENE_IDX] = pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx];
+
+      /* Publish state change */
+      MmdlSceneSrPublish(elementId);
+    }
+  }
+
+  (void)stateUpdateSrc;
 }
 
 /*************************************************************************************************/
@@ -278,57 +295,62 @@ static void mmdlSceneSrSendStatus(meshElementId_t elementId, meshAddress_t dstAd
                                   uint16_t appKeyIndex, bool_t recvOnUnicast,
                                   mmdlSceneStatus_t opStatus)
 {
-    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_SCENE_SR_MDL_ID, 0);
-    uint8_t msgParams[MMDL_SCENE_STATUS_MAX_LEN];
-    mmdlSceneSrDesc_t *pDesc = NULL;
-    uint8_t *pMsgParams, tranTime;
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_SCENE_SR_MDL_ID, 0);
+  uint8_t msgParams[MMDL_SCENE_STATUS_MAX_LEN];
+  mmdlSceneSrDesc_t *pDesc = NULL;
+  uint8_t *pMsgParams, tranTime;
 
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = dstAddr;
-    msgInfo.ttl = MESH_USE_DEFAULT_TTL;
-    msgInfo.appKeyIndex = appKeyIndex;
-    msgInfo.opcode.opcodeBytes[0] = MMDL_SCENE_STATUS_OPCODE;
+  /* Fill in the msg info parameters */
+  msgInfo.elementId = elementId;
+  msgInfo.dstAddr = dstAddr;
+  msgInfo.ttl = MESH_USE_DEFAULT_TTL;
+  msgInfo.appKeyIndex = appKeyIndex;
+  msgInfo.opcode.opcodeBytes[0] = MMDL_SCENE_STATUS_OPCODE;
 
-    /* Get the model instance descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        pMsgParams = msgParams;
+  if (pDesc != NULL)
+  {
+    pMsgParams = msgParams;
 
-        /* Copy the message parameters from the descriptor */
-        UINT8_TO_BSTREAM(pMsgParams, opStatus);
-        UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
+    /* Copy the message parameters from the descriptor */
+    UINT8_TO_BSTREAM(pMsgParams, opStatus);
+    UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
 
-        if ((pDesc->remainingTimeMs > 0) && (opStatus == MMDL_SCENE_SUCCESS)) {
-            UINT16_TO_BSTREAM(pMsgParams,
-                              pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx]);
+    if ((pDesc->remainingTimeMs > 0) && (opStatus == MMDL_SCENE_SUCCESS))
+    {
+      UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx]);
 
-            if (pDesc->delay5Ms == 0) {
-                /* Timer is running the transition */
-                tranTime =
-                    MmdlGenDefaultTimeMsToTransTime(pDesc->transitionTimer.ticks * WSF_MS_PER_TICK);
-            } else {
-                /* Timer is running the delay. Transition did not start. */
-                tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->remainingTimeMs);
-            }
+      if (pDesc->delay5Ms == 0)
+      {
+        /* Timer is running the transition */
+        tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->transitionTimer.ticks *
+                                                             WSF_MS_PER_TICK);
+      }
+      else
+      {
+        /* Timer is running the delay. Transition did not start. */
+        tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->remainingTimeMs);
+      }
 
-            UINT8_TO_BSTREAM(pMsgParams, tranTime);
+      UINT8_TO_BSTREAM(pMsgParams, tranTime);
 
-            MMDL_TRACE_INFO3("SCENE SR: Send Status Present=0x%X, Target=0x%X Time=0x%X",
-                             pDesc->pStoredScenes[PRESENT_SCENE_IDX],
-                             pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx],
-                             tranTime);
-        } else {
-            MMDL_TRACE_INFO2("SCENE SR: Send Status OpStatus=%d Present=0x%X", opStatus,
-                             pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
-        }
-
-        /* Send message to the Mesh Core */
-        MeshSendMessage(&msgInfo, msgParams, (uint8_t)(pMsgParams - msgParams),
-                        MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
-                        MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(recvOnUnicast));
+      MMDL_TRACE_INFO3("SCENE SR: Send Status Present=0x%X, Target=0x%X Time=0x%X",
+                       pDesc->pStoredScenes[PRESENT_SCENE_IDX],
+                       pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx], tranTime);
     }
+    else
+    {
+      MMDL_TRACE_INFO2("SCENE SR: Send Status OpStatus=%d Present=0x%X", opStatus,
+                       pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
+    }
+
+    /* Send message to the Mesh Core */
+    MeshSendMessage(&msgInfo, msgParams, (uint8_t)(pMsgParams - msgParams),
+                    MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
+                    MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(recvOnUnicast));
+  }
 }
 
 /*************************************************************************************************/
@@ -348,48 +370,52 @@ void mmdlSceneSrSendRegisterStatus(meshElementId_t elementId, meshAddress_t dstA
                                    uint16_t appKeyIndex, bool_t recvOnUnicast,
                                    mmdlSceneStatus_t opStatus)
 {
-    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_SCENE_SR_MDL_ID, MMDL_SCENE_REGISTER_STATUS_OPCODE);
-    mmdlSceneSrDesc_t *pDesc = NULL;
-    uint8_t *pMsgParams, *pMsg, sceneIdx;
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_SCENE_SR_MDL_ID, MMDL_SCENE_REGISTER_STATUS_OPCODE);
+  mmdlSceneSrDesc_t *pDesc = NULL;
+  uint8_t *pMsgParams, *pMsg, sceneIdx;
 
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = dstAddr;
-    msgInfo.ttl = MESH_USE_DEFAULT_TTL;
-    msgInfo.appKeyIndex = appKeyIndex;
+  /* Fill in the msg info parameters */
+  msgInfo.elementId = elementId;
+  msgInfo.dstAddr = dstAddr;
+  msgInfo.ttl = MESH_USE_DEFAULT_TTL;
+  msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Get the model instance descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        /* Allocate memory for the message params and number of scenes */
-        if ((pMsg = WsfBufAlloc(MMDL_SCENE_REG_STATUS_MAX_LEN)) == NULL) {
-            return;
-        }
-
-        /* Copy the message parameters from the descriptor */
-        pMsgParams = pMsg;
-        UINT8_TO_BSTREAM(pMsgParams, opStatus);
-        UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
-
-        /* Add all available scenes */
-        for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++) {
-            if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] != 0) {
-                UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx]);
-            }
-        }
-
-        MMDL_TRACE_INFO2("SCENE SR: Send Register Status = %d Present=0x%X", opStatus,
-                         pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
-
-        /* Send message to the Mesh Core */
-        MeshSendMessage(&msgInfo, pMsg, (uint8_t)(pMsgParams - pMsg),
-                        MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
-                        MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(recvOnUnicast));
-
-        /* Free buffer */
-        WsfBufFree(pMsg);
+  if (pDesc != NULL)
+  {
+    /* Allocate memory for the message params and number of scenes */
+    if ((pMsg = WsfBufAlloc(MMDL_SCENE_REG_STATUS_MAX_LEN)) == NULL)
+    {
+      return;
     }
+
+    /* Copy the message parameters from the descriptor */
+    pMsgParams = pMsg;
+    UINT8_TO_BSTREAM(pMsgParams, opStatus);
+    UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
+
+    /* Add all available scenes */
+    for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++)
+    {
+      if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] != 0)
+      {
+        UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx]);
+      }
+    }
+
+    MMDL_TRACE_INFO2("SCENE SR: Send Register Status = %d Present=0x%X", opStatus,
+                     pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
+
+    /* Send message to the Mesh Core */
+    MeshSendMessage(&msgInfo, pMsg, (uint8_t)(pMsgParams - pMsg),
+                    MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
+                    MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(recvOnUnicast));
+
+    /* Free buffer */
+    WsfBufFree(pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -403,12 +429,13 @@ void mmdlSceneSrSendRegisterStatus(meshElementId_t elementId, meshAddress_t dstA
 /*************************************************************************************************/
 void mmdlSceneSrHandleGet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    /* Validate message length */
-    if (pMsg->messageParamsLen == 0) {
-        /* Send Status message as a response to the Get message */
-        mmdlSceneSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                              pMsg->recvOnUnicast, MMDL_SCENE_SUCCESS);
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen == 0)
+  {
+    /* Send Status message as a response to the Get message */
+    mmdlSceneSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast,
+                          MMDL_SCENE_SUCCESS);
+  }
 }
 
 /*************************************************************************************************/
@@ -422,12 +449,13 @@ void mmdlSceneSrHandleGet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlSceneSrHandleRegisterGet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    /* Validate message length */
-    if (pMsg->messageParamsLen == 0) {
-        /* Send Register Status message as a response to the Register Get message */
-        mmdlSceneSrSendRegisterStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                                      pMsg->recvOnUnicast, MMDL_SCENE_SUCCESS);
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen == 0)
+  {
+    /* Send Register Status message as a response to the Register Get message */
+    mmdlSceneSrSendRegisterStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                                  pMsg->recvOnUnicast, MMDL_SCENE_SUCCESS);
+  }
 }
 
 /*************************************************************************************************/
@@ -444,108 +472,127 @@ void mmdlSceneSrHandleRegisterGet(const meshModelMsgRecvEvt_t *pMsg)
 static bool_t mmdlSceneSrProcessRecall(const meshModelMsgRecvEvt_t *pMsg, bool_t ackRequired,
                                        mmdlSceneStatus_t *pOutOpStatus)
 {
-    mmdlSceneSrDesc_t *pDesc = NULL;
-    uint8_t transactionId, sceneIdx;
-    uint32_t transMs;
-    mmdlSceneNumber_t sceneNum;
+  mmdlSceneSrDesc_t *pDesc = NULL;
+  uint8_t transactionId, sceneIdx;
+  uint32_t transMs;
+  mmdlSceneNumber_t sceneNum;
 
-    /* Set default value */
-    *pOutOpStatus = MMDL_SCENE_PROHIBITED;
+  /* Set default value */
+  *pOutOpStatus = MMDL_SCENE_PROHIBITED;
 
-    WSF_ASSERT(pMsg != NULL);
-    WSF_ASSERT(pMsg->pMessageParams != NULL);
+  WSF_ASSERT(pMsg != NULL);
+  WSF_ASSERT(pMsg->pMessageParams != NULL);
 
-    /* Validate message length. It can take only min and max values. */
-    if (pMsg->messageParamsLen != MMDL_SCENE_RECALL_MAX_LEN &&
-        pMsg->messageParamsLen != MMDL_SCENE_RECALL_MIN_LEN) {
-        return FALSE;
+  /* Validate message length. It can take only min and max values. */
+  if (pMsg->messageParamsLen != MMDL_SCENE_RECALL_MAX_LEN &&
+      pMsg->messageParamsLen != MMDL_SCENE_RECALL_MIN_LEN)
+  {
+    return FALSE;
+  }
+
+  /* Extract scene number */
+  BYTES_TO_UINT16(sceneNum, pMsg->pMessageParams);
+
+  /* Check prohibited values for Scene Number */
+  if (sceneNum == MMDL_SCENE_NUM_PROHIBITED)
+  {
+    return FALSE;
+  }
+
+  /* Check if it contains optional parameters */
+  if (pMsg->messageParamsLen == MMDL_SCENE_RECALL_MAX_LEN)
+  {
+    /* Check prohibited values for Transition Time */
+    if (TRANSITION_TIME_STEPS(pMsg->pMessageParams[MMDL_SCENE_RECALL_TRANSITION_IDX]) ==
+        MMDL_GEN_TR_UNKNOWN)
+    {
+      return FALSE;
     }
 
-    /* Extract scene number */
-    BYTES_TO_UINT16(sceneNum, pMsg->pMessageParams);
+    /* Get Transition time */
+    transMs = MmdlGenDefaultTransTimeToMs(pMsg->pMessageParams[MMDL_SCENE_RECALL_TRANSITION_IDX]);
+  }
+  else
+  {
+    /* Get Default Transition time */
+    transMs = MmdlGenDefaultTransGetTime(pMsg->elementId);
+  }
 
-    /* Check prohibited values for Scene Number */
-    if (sceneNum == MMDL_SCENE_NUM_PROHIBITED) {
-        return FALSE;
+  /* Get model instance descriptor */
+  mmdlSceneSrGetDesc(pMsg->elementId, &pDesc);
+
+  if (pDesc != NULL)
+  {
+    /* Get Transaction ID */
+    transactionId = pMsg->pMessageParams[MMDL_SCENE_RECALL_TID_IDX];
+
+    /* Validate message against last transaction */
+    if ((pMsg->srcAddr == pDesc->srcAddr) && (transactionId == pDesc->transactionId))
+    {
+      return FALSE;
     }
 
-    /* Check if it contains optional parameters */
-    if (pMsg->messageParamsLen == MMDL_SCENE_RECALL_MAX_LEN) {
-        /* Check prohibited values for Transition Time */
-        if (TRANSITION_TIME_STEPS(pMsg->pMessageParams[MMDL_SCENE_RECALL_TRANSITION_IDX]) ==
-            MMDL_GEN_TR_UNKNOWN) {
-            return FALSE;
-        }
+    /* Update last transaction fields and restart 6 seconds timer */
+    pDesc->ackPending = ackRequired;
+    pDesc->srcAddr = pMsg->srcAddr;
+    pDesc->transactionId = transactionId;
+    pDesc->ackAppKeyIndex = pMsg->appKeyIndex;
+    pDesc->ackForUnicast = pMsg->recvOnUnicast;
 
-        /* Get Transition time */
-        transMs =
-            MmdlGenDefaultTransTimeToMs(pMsg->pMessageParams[MMDL_SCENE_RECALL_TRANSITION_IDX]);
-    } else {
-        /* Get Default Transition time */
-        transMs = MmdlGenDefaultTransGetTime(pMsg->elementId);
+    /* Set default operation status */
+    *pOutOpStatus = MMDL_SCENE_NOT_FOUND;
+
+    /* Add all available scenes */
+    for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++)
+    {
+      if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == sceneNum)
+      {
+        /* Scene found */
+        *pOutOpStatus = MMDL_SCENE_SUCCESS;
+        break;
+      }
     }
 
-    /* Get model instance descriptor */
-    mmdlSceneSrGetDesc(pMsg->elementId, &pDesc);
+    pDesc->delayedStatus = *pOutOpStatus;
 
-    if (pDesc != NULL) {
-        /* Get Transaction ID */
-        transactionId = pMsg->pMessageParams[MMDL_SCENE_RECALL_TID_IDX];
+    WsfTimerStartMs(&pDesc->msgRcvdTimer, MSG_RCVD_TIMEOUT_MS);
 
-        /* Validate message against last transaction */
-        if ((pMsg->srcAddr == pDesc->srcAddr) && (transactionId == pDesc->transactionId)) {
-            return FALSE;
-        }
+    if (pDesc->delayedStatus == MMDL_SCENE_SUCCESS)
+    {
+      /* If target scene is present scene consider the transition complete*/
+      if (pDesc->pStoredScenes[PRESENT_SCENE_IDX] == pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx])
+      {
+        transMs = 0;
+      }
 
-        /* Update last transaction fields and restart 6 seconds timer */
-        pDesc->ackPending = ackRequired;
-        pDesc->srcAddr = pMsg->srcAddr;
-        pDesc->transactionId = transactionId;
-        pDesc->ackAppKeyIndex = pMsg->appKeyIndex;
-        pDesc->ackForUnicast = pMsg->recvOnUnicast;
-
-        /* Set default operation status */
-        *pOutOpStatus = MMDL_SCENE_NOT_FOUND;
-
-        /* Add all available scenes */
-        for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++) {
-            if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == sceneNum) {
-                /* Scene found */
-                *pOutOpStatus = MMDL_SCENE_SUCCESS;
-                break;
-            }
-        }
-
-        pDesc->delayedStatus = *pOutOpStatus;
-
-        WsfTimerStartMs(&pDesc->msgRcvdTimer, MSG_RCVD_TIMEOUT_MS);
-
-        if (pDesc->delayedStatus == MMDL_SCENE_SUCCESS) {
-            /* If target scene is present scene consider the transition complete*/
-            if (pDesc->pStoredScenes[PRESENT_SCENE_IDX] ==
-                pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx]) {
-                transMs = 0;
-            }
-
-            /* Change scene only when scene exists */
-            if (pMsg->messageParamsLen == MMDL_SCENE_RECALL_MAX_LEN) {
-                mmdlSceneSrRecall(pMsg->elementId, sceneIdx, transMs,
-                                  pMsg->pMessageParams[MMDL_SCENE_RECALL_DELAY_IDX],
-                                  MMDL_STATE_UPDATED_BY_CL);
-            } else {
-                mmdlSceneSrRecall(pMsg->elementId, sceneIdx, transMs, 0, MMDL_STATE_UPDATED_BY_CL);
-            }
-        }
-
-        /* If message is delayed return FALSE to avoid sending the ack */
-        if (pDesc->delay5Ms != 0) {
-            return FALSE;
-        } else {
-            return TRUE;
-        }
-    } else {
-        return FALSE;
+      /* Change scene only when scene exists */
+      if (pMsg->messageParamsLen == MMDL_SCENE_RECALL_MAX_LEN)
+      {
+        mmdlSceneSrRecall(pMsg->elementId, sceneIdx, transMs,
+                          pMsg->pMessageParams[MMDL_SCENE_RECALL_DELAY_IDX],
+                          MMDL_STATE_UPDATED_BY_CL);
+      }
+      else
+      {
+        mmdlSceneSrRecall(pMsg->elementId, sceneIdx, transMs, 0,
+                          MMDL_STATE_UPDATED_BY_CL);
+      }
     }
+
+    /* If message is delayed return FALSE to avoid sending the ack */
+    if (pDesc->delay5Ms != 0)
+    {
+      return FALSE;
+    }
+    else
+    {
+      return TRUE;
+    }
+  }
+  else
+  {
+    return FALSE;
+  }
 }
 
 /*************************************************************************************************/
@@ -559,14 +606,15 @@ static bool_t mmdlSceneSrProcessRecall(const meshModelMsgRecvEvt_t *pMsg, bool_t
 /*************************************************************************************************/
 void mmdlSceneSrHandleRecall(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlSceneStatus_t opStatus = MMDL_SCENE_PROHIBITED;
+  mmdlSceneStatus_t opStatus = MMDL_SCENE_PROHIBITED;
 
-    /* Change state */
-    if (mmdlSceneSrProcessRecall(pMsg, TRUE, &opStatus) && (opStatus != MMDL_SCENE_PROHIBITED)) {
-        /* Send Status message as a response to the Set message */
-        mmdlSceneSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                              pMsg->recvOnUnicast, opStatus);
-    }
+  /* Change state */
+  if (mmdlSceneSrProcessRecall(pMsg, TRUE, &opStatus) && (opStatus!= MMDL_SCENE_PROHIBITED))
+  {
+    /* Send Status message as a response to the Set message */
+    mmdlSceneSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast,
+                          opStatus);
+  }
 }
 
 /*************************************************************************************************/
@@ -580,9 +628,9 @@ void mmdlSceneSrHandleRecall(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlSceneSrHandleRecallNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlSceneStatus_t opStatus = MMDL_SCENE_PROHIBITED;
+  mmdlSceneStatus_t opStatus = MMDL_SCENE_PROHIBITED;
 
-    (void)mmdlSceneSrProcessRecall(pMsg, FALSE, &opStatus);
+  (void)mmdlSceneSrProcessRecall(pMsg, FALSE, &opStatus);
 }
 
 /*************************************************************************************************/
@@ -596,33 +644,38 @@ void mmdlSceneSrHandleRecallNoAck(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static void mmdlSceneSrHandleTmrCback(meshElementId_t elementId)
 {
-    mmdlSceneSrDesc_t *pDesc = NULL;
+  mmdlSceneSrDesc_t *pDesc = NULL;
 
-    /* Get model instance descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get model instance descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        if (pDesc->delay5Ms != 0) {
-            /* Reset Delay */
-            pDesc->delay5Ms = 0;
+  if (pDesc != NULL)
+  {
+    if (pDesc->delay5Ms != 0)
+    {
+      /* Reset Delay */
+      pDesc->delay5Ms = 0;
 
-            /* Timeout. Set state. */
-            mmdlSceneSrRecall(elementId, pDesc->targetSceneIdx, pDesc->remainingTimeMs, 0,
-                              MMDL_STATE_UPDATED_BY_CL);
+      /* Timeout. Set state. */
+      mmdlSceneSrRecall(elementId, pDesc->targetSceneIdx, pDesc->remainingTimeMs, 0,
+                        MMDL_STATE_UPDATED_BY_CL);
 
-            /* Send Status if it was a delayed Acknowledged Set */
-            if (pDesc->ackPending) {
-                mmdlSceneSrSendStatus(elementId, pDesc->srcAddr, pDesc->ackAppKeyIndex,
-                                      pDesc->ackForUnicast, pDesc->delayedStatus);
-            }
-        } else if (pDesc->remainingTimeMs != 0) {
-            /* Reset Transition Time */
-            pDesc->remainingTimeMs = 0;
-
-            /* Timeout. Set state. */
-            mmdlSceneSrRecall(elementId, pDesc->targetSceneIdx, 0, 0, MMDL_STATE_UPDATED_BY_CL);
-        }
+      /* Send Status if it was a delayed Acknowledged Set */
+      if (pDesc->ackPending)
+      {
+        mmdlSceneSrSendStatus(elementId, pDesc->srcAddr, pDesc->ackAppKeyIndex,
+                              pDesc->ackForUnicast, pDesc->delayedStatus);
+      }
     }
+    else if (pDesc->remainingTimeMs != 0)
+    {
+      /* Reset Transition Time */
+      pDesc->remainingTimeMs = 0;
+
+      /* Timeout. Set state. */
+      mmdlSceneSrRecall(elementId, pDesc->targetSceneIdx, 0, 0, MMDL_STATE_UPDATED_BY_CL);
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -637,15 +690,16 @@ static void mmdlSceneSrHandleTmrCback(meshElementId_t elementId)
 /*************************************************************************************************/
 static void mmdlSceneSrHandleMsgRcvdTmrCback(meshElementId_t elementId)
 {
-    mmdlSceneSrDesc_t *pDesc = NULL;
+  mmdlSceneSrDesc_t *pDesc = NULL;
 
-    /* Get model instance descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get model instance descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        /* Reset source address and transaction ID for last stored transaction */
-        pDesc->srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
-    }
+  if (pDesc != NULL)
+  {
+    /* Reset source address and transaction ID for last stored transaction */
+    pDesc->srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
+  }
 }
 
 /*************************************************************************************************/
@@ -659,44 +713,47 @@ static void mmdlSceneSrHandleMsgRcvdTmrCback(meshElementId_t elementId)
 /*************************************************************************************************/
 static void mmdlSceneSrStoreModelData(uint8_t sceneIdx)
 {
-    uint8_t modelIdx;
-    meshElementId_t elemId;
-    void *pDesc;
+  uint8_t modelIdx;
+  meshElementId_t elemId;
+  void *pDesc;
 
-    for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++) {
-        for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elemId].numSigModels; modelIdx++) {
-            pDesc = pMeshConfig->pElementArray[elemId].pSigModelArray[modelIdx].pModelDescriptor;
+  for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++)
+  {
+    for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elemId].numSigModels; modelIdx ++)
+    {
+      pDesc = pMeshConfig->pElementArray[elemId].pSigModelArray[modelIdx].pModelDescriptor;
 
-            switch (pMeshConfig->pElementArray[elemId].pSigModelArray[modelIdx].modelId) {
-            case MMDL_GEN_ONOFF_SR_MDL_ID:
-                MmdlGenOnOffSrStoreScene(pDesc, sceneIdx);
-                break;
+      switch (pMeshConfig->pElementArray[elemId].pSigModelArray[modelIdx].modelId)
+      {
+        case MMDL_GEN_ONOFF_SR_MDL_ID:
+          MmdlGenOnOffSrStoreScene(pDesc, sceneIdx);
+          break;
 
-            case MMDL_GEN_LEVEL_SR_MDL_ID:
-                MmdlGenLevelSrStoreScene(pDesc, sceneIdx);
-                break;
+        case MMDL_GEN_LEVEL_SR_MDL_ID:
+          MmdlGenLevelSrStoreScene(pDesc, sceneIdx);
+          break;
 
-            case MMDL_GEN_POWER_LEVEL_SR_MDL_ID:
-                MmdlGenPowerLevelSrStoreScene(pDesc, sceneIdx);
-                break;
+        case MMDL_GEN_POWER_LEVEL_SR_MDL_ID:
+          MmdlGenPowerLevelSrStoreScene(pDesc, sceneIdx);
+          break;
 
-            case MMDL_LIGHT_LIGHTNESS_SR_MDL_ID:
-                MmdlLightLightnessSrStoreScene(pDesc, sceneIdx);
-                break;
+        case MMDL_LIGHT_LIGHTNESS_SR_MDL_ID:
+          MmdlLightLightnessSrStoreScene(pDesc, sceneIdx);
+          break;
 
-            case MMDL_LIGHT_HSL_SR_MDL_ID:
-                MmdlLightHslSrStoreScene(pDesc, sceneIdx);
-                break;
+        case MMDL_LIGHT_HSL_SR_MDL_ID:
+          MmdlLightHslSrStoreScene(pDesc, sceneIdx);
+          break;
 
-            case MMDL_LIGHT_CTL_SR_MDL_ID:
-                MmdlLightCtlSrStoreScene(pDesc, sceneIdx);
-                break;
+        case MMDL_LIGHT_CTL_SR_MDL_ID:
+          MmdlLightCtlSrStoreScene(pDesc, sceneIdx);
+          break;
 
-            default:
-                break;
-            }
-        }
+        default:
+          break;
+      }
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -711,49 +768,58 @@ static void mmdlSceneSrStoreModelData(uint8_t sceneIdx)
 /*************************************************************************************************/
 mmdlSceneStatus_t mmdlSceneSrStore(meshElementId_t elementId, mmdlSceneNumber_t sceneNum)
 {
-    uint8_t sceneIdx, emptyIdx = 0;
-    mmdlSceneSrDesc_t *pDesc;
+  uint8_t sceneIdx, emptyIdx = 0;
+  mmdlSceneSrDesc_t *pDesc;
 
-    /* Get scene descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get scene descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    if (pDesc == NULL) {
-        return MMDL_SCENE_PROHIBITED;
+  if (pDesc == NULL)
+  {
+    return MMDL_SCENE_PROHIBITED;
+  }
+
+  for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++)
+  {
+    /* Find empty scene index */
+    if ((emptyIdx == 0) && (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == 0))
+    {
+      emptyIdx = sceneIdx;
     }
 
-    for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++) {
-        /* Find empty scene index */
-        if ((emptyIdx == 0) && (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == 0)) {
-            emptyIdx = sceneIdx;
-        }
-
-        /* Find duplicate */
-        if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == sceneNum) {
-            break;
-        }
+    /* Find duplicate */
+    if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == sceneNum)
+    {
+      break;
     }
+  }
 
-    if (sceneIdx != MMDL_NUM_OF_SCENES) {
-        /* Scene already found. Will be overwritten */
-        pDesc->pStoredScenes[PRESENT_SCENE_IDX] = sceneNum;
+  if (sceneIdx != MMDL_NUM_OF_SCENES)
+  {
+    /* Scene already found. Will be overwritten */
+    pDesc->pStoredScenes[PRESENT_SCENE_IDX] = sceneNum;
 
-        /* Store model data */
-        mmdlSceneSrStoreModelData(sceneIdx);
+    /* Store model data */
+    mmdlSceneSrStoreModelData(sceneIdx);
 
-        return MMDL_SCENE_SUCCESS;
-    } else if (emptyIdx != 0) {
-        /* No duplicate found. Write empty scene slot */
-        pDesc->pStoredScenes[SCENE_REGISTER_IDX + emptyIdx] = sceneNum;
-        pDesc->pStoredScenes[PRESENT_SCENE_IDX] = sceneNum;
+    return MMDL_SCENE_SUCCESS;
+  }
+  else if (emptyIdx != 0)
+  {
+    /* No duplicate found. Write empty scene slot */
+    pDesc->pStoredScenes[SCENE_REGISTER_IDX + emptyIdx] = sceneNum;
+    pDesc->pStoredScenes[PRESENT_SCENE_IDX] = sceneNum;
 
-        /* Store model data */
-        mmdlSceneSrStoreModelData(emptyIdx);
+    /* Store model data */
+    mmdlSceneSrStoreModelData(emptyIdx);
 
-        return MMDL_SCENE_SUCCESS;
-    } else {
-        /* No duplicate or empty slot found. */
-        return MMDL_SCENE_REGISTER_FULL;
-    }
+    return MMDL_SCENE_SUCCESS;
+  }
+  else
+  {
+    /* No duplicate or empty slot found. */
+    return MMDL_SCENE_REGISTER_FULL;
+  }
 }
 
 /*************************************************************************************************/
@@ -768,38 +834,47 @@ mmdlSceneStatus_t mmdlSceneSrStore(meshElementId_t elementId, mmdlSceneNumber_t 
 /*************************************************************************************************/
 mmdlSceneStatus_t mmdlSceneSrDelete(mmdlSceneSrDesc_t *pDesc, mmdlSceneNumber_t sceneNum)
 {
-    uint8_t sceneIdx;
+  uint8_t sceneIdx;
 
-    for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++) {
-        /* Find scene index */
-        if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == sceneNum) {
-            /* Cancel ongoing transaction. */
-            if ((pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx] == sceneNum) &&
-                (pDesc->remainingTimeMs != 0)) {
-                pDesc->targetSceneIdx = 0;
-                pDesc->remainingTimeMs = 0;
+  for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++)
+  {
+    /* Find scene index */
+    if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == sceneNum)
+    {
+      /* Cancel ongoing transaction. */
+      if ((pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx] == sceneNum) &&
+          (pDesc->remainingTimeMs != 0))
+      {
+        pDesc->targetSceneIdx = 0;
+        pDesc->remainingTimeMs = 0;
 
-                if (pDesc->transitionTimer.isStarted) {
-                    WsfTimerStop(&pDesc->transitionTimer);
-                }
-            }
-
-            /* Check if the deleted scene is the present scene. */
-            if (pDesc->pStoredScenes[PRESENT_SCENE_IDX] == sceneNum) {
-                pDesc->pStoredScenes[PRESENT_SCENE_IDX] = 0;
-            }
-
-            pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] = 0;
-            break;
+        if (pDesc->transitionTimer.isStarted)
+        {
+          WsfTimerStop(&pDesc->transitionTimer);
         }
-    }
+      }
 
-    if (sceneIdx == MMDL_NUM_OF_SCENES) {
-        return MMDL_SCENE_NOT_FOUND;
-    } else {
-        return MMDL_SCENE_SUCCESS;
+      /* Check if the deleted scene is the present scene. */
+      if (pDesc->pStoredScenes[PRESENT_SCENE_IDX] == sceneNum)
+      {
+        pDesc->pStoredScenes[PRESENT_SCENE_IDX] = 0;
+      }
+
+      pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] = 0;
+      break;
     }
+  }
+
+  if (sceneIdx == MMDL_NUM_OF_SCENES)
+  {
+    return MMDL_SCENE_NOT_FOUND;
+  }
+  else
+  {
+    return MMDL_SCENE_SUCCESS;
+  }
 }
+
 
 /**************************************************************************************************
   Global Function
@@ -814,34 +889,36 @@ mmdlSceneStatus_t mmdlSceneSrDelete(mmdlSceneSrDesc_t *pDesc, mmdlSceneNumber_t 
 /*************************************************************************************************/
 void MmdlSceneSrInit(void)
 {
-    meshElementId_t elemId;
-    mmdlSceneSrDesc_t *pDesc = NULL;
+  meshElementId_t elemId;
+  mmdlSceneSrDesc_t *pDesc = NULL;
 
-    MMDL_TRACE_INFO0("SCENE SR: init");
+  MMDL_TRACE_INFO0("SCENE SR: init");
 
-    /* Set event callbacks */
-    /* For future enhancement */
-    /* sceneSrCb.recvCback = MmdlEmptyCback; */
+  /* Set event callbacks */
+  /* For future enhancement */
+  /* sceneSrCb.recvCback = MmdlEmptyCback; */
 
-    /* Initialize timers */
-    for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++) {
-        /* Get the model instance descriptor */
-        mmdlSceneSrGetDesc(elemId, &pDesc);
+  /* Initialize timers */
+  for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++)
+  {
+    /* Get the model instance descriptor */
+    mmdlSceneSrGetDesc(elemId, &pDesc);
 
-        if (pDesc != NULL) {
-            pDesc->srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
+    if (pDesc != NULL)
+    {
+      pDesc->srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
 
-            /* Set transition timer parameters*/
-            pDesc->transitionTimer.handlerId = mmdlSceneSrHandlerId;
-            pDesc->transitionTimer.msg.event = MMDL_SCENE_SR_EVT_TMR_CBACK;
-            pDesc->transitionTimer.msg.param = elemId;
+      /* Set transition timer parameters*/
+      pDesc->transitionTimer.handlerId = mmdlSceneSrHandlerId;
+      pDesc->transitionTimer.msg.event = MMDL_SCENE_SR_EVT_TMR_CBACK;
+      pDesc->transitionTimer.msg.param = elemId;
 
-            /* Set msg Received timer parameters*/
-            pDesc->msgRcvdTimer.handlerId = mmdlSceneSrHandlerId;
-            pDesc->msgRcvdTimer.msg.event = MMDL_SCENE_SR_MSG_RCVD_TMR_CBACK;
-            pDesc->msgRcvdTimer.msg.param = elemId;
-        }
+      /* Set msg Received timer parameters*/
+      pDesc->msgRcvdTimer.handlerId = mmdlSceneSrHandlerId;
+      pDesc->msgRcvdTimer.msg.event = MMDL_SCENE_SR_MSG_RCVD_TMR_CBACK;
+      pDesc->msgRcvdTimer.msg.param = elemId;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -855,7 +932,7 @@ void MmdlSceneSrInit(void)
 /*************************************************************************************************/
 void MmdlSceneSrHandlerInit(wsfHandlerId_t handlerId)
 {
-    mmdlSceneSrHandlerId = handlerId;
+  mmdlSceneSrHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -869,52 +946,57 @@ void MmdlSceneSrHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlSceneSrHandler(wsfMsgHdr_t *pMsg)
 {
-    meshModelEvt_t *pModelMsg;
-    uint8_t opcodeIdx;
+  meshModelEvt_t *pModelMsg;
+  uint8_t opcodeIdx;
 
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            pModelMsg = (meshModelEvt_t *)pMsg;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        pModelMsg = (meshModelEvt_t *)pMsg;
 
-            /* Validate opcode size and value */
-            if (MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode) == 2) {
-                /* Match the received opcode */
-                for (opcodeIdx = 0; opcodeIdx < MMDL_SCENE_SR_NUM_RCVD_OPCODES; opcodeIdx++) {
-                    if (!memcmp(&mmdlSceneSrRcvdOpcodes[opcodeIdx],
-                                pModelMsg->msgRecvEvt.opCode.opcodeBytes,
-                                MMDL_SCENE_OPCODES_SIZE)) {
-                        /* Process message */
-                        (void)mmdlSceneSrHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
-                    }
-                }
+        /* Validate opcode size and value */
+        if (MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode) == 2)
+        {
+          /* Match the received opcode */
+          for (opcodeIdx = 0; opcodeIdx < MMDL_SCENE_SR_NUM_RCVD_OPCODES; opcodeIdx++)
+          {
+            if (!memcmp(&mmdlSceneSrRcvdOpcodes[opcodeIdx],
+                        pModelMsg->msgRecvEvt.opCode.opcodeBytes, MMDL_SCENE_OPCODES_SIZE))
+            {
+              /* Process message */
+              (void)mmdlSceneSrHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
             }
-            break;
-
-        case MESH_MODEL_EVT_PERIODIC_PUB:
-            pModelMsg = (meshModelEvt_t *)pMsg;
-
-            /* Check if periodic publishing was not disabled. */
-            if (pModelMsg->periodicPubEvt.nextPubTimeMs != 0) {
-                /* Publishing is requested part of the periodic publishing. */
-                MmdlSceneSrPublish(pModelMsg->periodicPubEvt.elementId);
-            }
-            break;
-
-        case MMDL_SCENE_SR_EVT_TMR_CBACK:
-            mmdlSceneSrHandleTmrCback((meshElementId_t)pMsg->param);
-            break;
-
-        case MMDL_SCENE_SR_MSG_RCVD_TMR_CBACK:
-            mmdlSceneSrHandleMsgRcvdTmrCback((meshElementId_t)pMsg->param);
-            break;
-
-        default:
-            MMDL_TRACE_WARN0("SCENE SR: Invalid event message received!");
-            break;
+          }
         }
+        break;
+
+      case MESH_MODEL_EVT_PERIODIC_PUB:
+        pModelMsg = (meshModelEvt_t *)pMsg;
+
+        /* Check if periodic publishing was not disabled. */
+        if(pModelMsg->periodicPubEvt.nextPubTimeMs != 0)
+        {
+          /* Publishing is requested part of the periodic publishing. */
+          MmdlSceneSrPublish(pModelMsg->periodicPubEvt.elementId);
+        }
+        break;
+
+      case MMDL_SCENE_SR_EVT_TMR_CBACK:
+        mmdlSceneSrHandleTmrCback((meshElementId_t)pMsg->param);
+        break;
+
+      case MMDL_SCENE_SR_MSG_RCVD_TMR_CBACK:
+        mmdlSceneSrHandleMsgRcvdTmrCback((meshElementId_t)pMsg->param);
+        break;
+
+      default:
+        MMDL_TRACE_WARN0("SCENE SR: Invalid event message received!");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -928,52 +1010,55 @@ void MmdlSceneSrHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MmdlSceneSrPublish(meshElementId_t elementId)
 {
-    meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_SCENE_SR_MDL_ID, 0);
-    uint8_t msgParams[MMDL_SCENE_STATUS_MAX_LEN];
-    mmdlSceneSrDesc_t *pDesc = NULL;
-    uint8_t *pMsgParams, tranTime;
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_SCENE_SR_MDL_ID, 0);
+  uint8_t msgParams[MMDL_SCENE_STATUS_MAX_LEN];
+  mmdlSceneSrDesc_t *pDesc = NULL;
+  uint8_t *pMsgParams, tranTime;
 
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
-    pubMsgInfo.opcode.opcodeBytes[0] = MMDL_SCENE_STATUS_OPCODE;
+  /* Fill in the msg info parameters */
+  pubMsgInfo.elementId = elementId;
+  pubMsgInfo.opcode.opcodeBytes[0] = MMDL_SCENE_STATUS_OPCODE;
 
-    /* Get the model instance descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        pMsgParams = msgParams;
+  if (pDesc != NULL)
+  {
+    pMsgParams = msgParams;
 
-        /* Copy the message parameters from the descriptor */
-        UINT8_TO_BSTREAM(pMsgParams, MMDL_SCENE_SUCCESS);
-        UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
+    /* Copy the message parameters from the descriptor */
+    UINT8_TO_BSTREAM(pMsgParams, MMDL_SCENE_SUCCESS);
+    UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
 
-        if (pDesc->remainingTimeMs > 0) {
-            UINT16_TO_BSTREAM(pMsgParams,
-                              pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx]);
+    if (pDesc->remainingTimeMs > 0)
+    {
+      UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx]);
 
-            if (pDesc->delay5Ms == 0) {
-                /* Timer is running the transition */
-                tranTime =
-                    MmdlGenDefaultTimeMsToTransTime(pDesc->transitionTimer.ticks * WSF_MS_PER_TICK);
-            } else {
-                /* Timer is running the delay. Transition did not start. */
-                tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->remainingTimeMs);
-            }
+      if (pDesc->delay5Ms == 0)
+      {
+        /* Timer is running the transition */
+        tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->transitionTimer.ticks * WSF_MS_PER_TICK);
+      }
+      else
+      {
+        /* Timer is running the delay. Transition did not start. */
+        tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->remainingTimeMs);
+      }
 
-            UINT8_TO_BSTREAM(pMsgParams, tranTime);
+      UINT8_TO_BSTREAM(pMsgParams, tranTime);
 
-            MMDL_TRACE_INFO3("SCENE SR: Publish Present=0x%X, Target=0x%X Time=0x%X",
-                             pDesc->pStoredScenes[PRESENT_SCENE_IDX],
-                             pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx],
-                             tranTime);
-        } else {
-            MMDL_TRACE_INFO1("SCENE SR: Publish Present=0x%X",
-                             pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
-        }
-
-        /* Send message to the Mesh Core */
-        MeshPublishMessage(&pubMsgInfo, msgParams, (uint8_t)(pMsgParams - msgParams));
+      MMDL_TRACE_INFO3("SCENE SR: Publish Present=0x%X, Target=0x%X Time=0x%X",
+                       pDesc->pStoredScenes[PRESENT_SCENE_IDX],
+                       pDesc->pStoredScenes[SCENE_REGISTER_IDX + pDesc->targetSceneIdx], tranTime);
     }
+    else
+    {
+      MMDL_TRACE_INFO1("SCENE SR: Publish Present=0x%X", pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
+    }
+
+    /* Send message to the Mesh Core */
+    MeshPublishMessage(&pubMsgInfo, msgParams, (uint8_t)(pMsgParams - msgParams));
+  }
 }
 
 /*************************************************************************************************/
@@ -987,44 +1072,46 @@ void MmdlSceneSrPublish(meshElementId_t elementId)
 /*************************************************************************************************/
 void MmdlSceneSrPublishRegister(meshElementId_t elementId)
 {
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_SCENE_SR_MDL_ID, MMDL_SCENE_REGISTER_STATUS_OPCODE);
-    mmdlSceneSrDesc_t *pDesc = NULL;
-    uint8_t *pMsgParams, *pMsg, sceneIdx;
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_SCENE_SR_MDL_ID, MMDL_SCENE_REGISTER_STATUS_OPCODE);
+  mmdlSceneSrDesc_t *pDesc = NULL;
+  uint8_t *pMsgParams, *pMsg, sceneIdx;
 
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+  /* Fill in the msg info parameters */
+  pubMsgInfo.elementId = elementId;
 
-    /* Get the model instance descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        /* Allocate memory for the message params and number of scenes */
-        if ((pMsg = WsfBufAlloc(MMDL_SCENE_REG_STATUS_MAX_LEN)) == NULL) {
-            return;
-        }
-
-        /* Copy the message parameters from the descriptor */
-        pMsgParams = pMsg;
-        UINT8_TO_BSTREAM(pMsgParams, MMDL_SCENE_SUCCESS);
-        UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
-
-        /* Add all available scenes */
-        for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++) {
-            if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] != 0) {
-                UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx]);
-            }
-        }
-
-        MMDL_TRACE_INFO1("SCENE SR: Publish Register Present=0x%X",
-                         pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
-
-        /* Send message to the Mesh Core */
-        MeshPublishMessage(&pubMsgInfo, pMsg, (uint8_t)(pMsgParams - pMsg));
-
-        /* Free buffer */
-        WsfBufFree(pMsg);
+  if (pDesc != NULL)
+  {
+    /* Allocate memory for the message params and number of scenes */
+    if ((pMsg = WsfBufAlloc(MMDL_SCENE_REG_STATUS_MAX_LEN)) == NULL)
+    {
+      return;
     }
+
+    /* Copy the message parameters from the descriptor */
+    pMsgParams = pMsg;
+    UINT8_TO_BSTREAM(pMsgParams, MMDL_SCENE_SUCCESS);
+    UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
+
+    /* Add all available scenes */
+    for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++)
+    {
+      if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] != 0)
+      {
+        UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx]);
+      }
+    }
+
+    MMDL_TRACE_INFO1("SCENE SR: Publish Register Present=0x%X", pDesc->pStoredScenes[PRESENT_SCENE_IDX]);
+
+    /* Send message to the Mesh Core */
+    MeshPublishMessage(&pubMsgInfo, pMsg, (uint8_t)(pMsgParams - pMsg));
+
+    /* Free buffer */
+    WsfBufFree(pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1041,24 +1128,27 @@ void MmdlSceneSrPublishRegister(meshElementId_t elementId)
 void MmdlSceneSrRecallSceneWithTrans(meshElementId_t elementId, mmdlSceneNumber_t sceneNumber,
                                      uint8_t transState)
 {
-    mmdlSceneSrDesc_t *pDesc;
-    uint32_t transTimeMs = MmdlGenDefaultTransTimeToMs(transState);
-    uint8_t sceneIdx;
+  mmdlSceneSrDesc_t *pDesc;
+  uint32_t transTimeMs = MmdlGenDefaultTransTimeToMs(transState);
+  uint8_t sceneIdx;
 
-    /* Get the model instance descriptor */
-    mmdlSceneSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlSceneSrGetDesc(elementId, &pDesc);
 
-    /* Search scene number */
-    for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++) {
-        if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == sceneNumber) {
-            /* Scene found */
-            break;
-        }
+  /* Search scene number */
+  for (sceneIdx = 0; sceneIdx < MMDL_NUM_OF_SCENES; sceneIdx++)
+  {
+    if (pDesc->pStoredScenes[SCENE_REGISTER_IDX + sceneIdx] == sceneNumber)
+    {
+      /* Scene found */
+      break;
     }
+  }
 
-    if (sceneIdx < MMDL_NUM_OF_SCENES) {
-        mmdlSceneSrRecall(elementId, sceneIdx, transTimeMs, 0, MMDL_STATE_UPDATED_BY_BIND);
-    }
+  if(sceneIdx < MMDL_NUM_OF_SCENES)
+  {
+    mmdlSceneSrRecall(elementId, sceneIdx, transTimeMs, 0, MMDL_STATE_UPDATED_BY_BIND);
+  }
 }
 
 /*************************************************************************************************/
@@ -1072,9 +1162,9 @@ void MmdlSceneSrRecallSceneWithTrans(meshElementId_t elementId, mmdlSceneNumber_
 /*************************************************************************************************/
 void MmdlSceneSrRegister(mmdlEventCback_t recvCback)
 {
-    /* Store valid callback*/
-    /* For future enhancement */
-    /*
+  /* Store valid callback*/
+  /* For future enhancement */
+  /*
   if (recvCback != NULL)
   {
     sceneSrCb.recvCback = recvCback;

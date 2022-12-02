@@ -40,10 +40,12 @@
 #include "nrf_dfu_transport.h"
 #include "nrf_log.h"
 
-#define DFU_TRANS_SECTION_ITEM_GET(i) NRF_SECTION_ITEM_GET(dfu_trans, nrf_dfu_transport_t, (i))
-#define DFU_TRANS_SECTION_ITEM_COUNT NRF_SECTION_ITEM_COUNT(dfu_trans, nrf_dfu_transport_t)
+
+#define DFU_TRANS_SECTION_ITEM_GET(i)       NRF_SECTION_ITEM_GET(dfu_trans, nrf_dfu_transport_t, (i))
+#define DFU_TRANS_SECTION_ITEM_COUNT        NRF_SECTION_ITEM_COUNT(dfu_trans, nrf_dfu_transport_t)
 
 NRF_SECTION_DEF(dfu_trans, const nrf_dfu_transport_t);
+
 
 uint32_t nrf_dfu_transports_init(nrf_dfu_observer_t observer)
 {
@@ -52,10 +54,12 @@ uint32_t nrf_dfu_transports_init(nrf_dfu_observer_t observer)
 
     NRF_LOG_DEBUG("Initializing transports (found: %d)", num_transports);
 
-    for (uint32_t i = 0; i < num_transports; i++) {
-        nrf_dfu_transport_t *const trans = DFU_TRANS_SECTION_ITEM_GET(i);
+    for (uint32_t i = 0; i < num_transports; i++)
+    {
+        nrf_dfu_transport_t * const trans = DFU_TRANS_SECTION_ITEM_GET(i);
         ret_val = trans->init_func(observer);
-        if (ret_val != NRF_SUCCESS) {
+        if (ret_val != NRF_SUCCESS)
+        {
             NRF_LOG_DEBUG("Failed to initialize transport %d, error %d", i, ret_val);
             break;
         }
@@ -64,17 +68,20 @@ uint32_t nrf_dfu_transports_init(nrf_dfu_observer_t observer)
     return ret_val;
 }
 
-uint32_t nrf_dfu_transports_close(nrf_dfu_transport_t const *p_exception)
+
+uint32_t nrf_dfu_transports_close(nrf_dfu_transport_t const * p_exception)
 {
     uint32_t const num_transports = DFU_TRANS_SECTION_ITEM_COUNT;
     uint32_t ret_val = NRF_SUCCESS;
 
     NRF_LOG_DEBUG("Shutting down transports (found: %d)", num_transports);
 
-    for (uint32_t i = 0; i < num_transports; i++) {
-        nrf_dfu_transport_t *const trans = DFU_TRANS_SECTION_ITEM_GET(i);
+    for (uint32_t i = 0; i < num_transports; i++)
+    {
+        nrf_dfu_transport_t * const trans = DFU_TRANS_SECTION_ITEM_GET(i);
         ret_val = trans->close_func(p_exception);
-        if (ret_val != NRF_SUCCESS) {
+        if (ret_val != NRF_SUCCESS)
+        {
             NRF_LOG_DEBUG("Failed to shutdown transport %d, error %d", i, ret_val);
             break;
         }

@@ -50,168 +50,191 @@
 #include "nrf_crypto_ecdsa_shared.h"
 #include "crys_ecpki_types.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
 /** @internal @brief Common structure holding context for ECDSA sign.
  */
-typedef struct {
-    CRYS_ECDSA_SignUserContext_t
-        user_context; /**< @internal @brief Temporary buffer for CC310 internal storage */
+typedef struct
+{
+    CRYS_ECDSA_SignUserContext_t user_context;        /**< @internal @brief Temporary buffer for CC310 internal storage */
 } nrf_crypto_backend_cc310_sign_context_t;
+
 
 /** @internal @brief Common structure holding context for ECDSA verify.
  */
-typedef union {
-    CRYS_ECDSA_VerifyUserContext_t
-        user_context; /**< @internal @brief Temporary buffer for CC310 internal storage */
-    CRYS_ECPKI_BUILD_TempData_t
-        key_build_temp_data; /**< @internal @brief Temporary buffer for CC310 public key build */
+typedef union
+{
+    CRYS_ECDSA_VerifyUserContext_t user_context;        /**< @internal @brief Temporary buffer for CC310 internal storage */
+    CRYS_ECPKI_BUILD_TempData_t    key_build_temp_data; /**< @internal @brief Temporary buffer for CC310 public key build */
 } nrf_crypto_backend_cc310_verify_context_t;
+
 
 /** @internal See @ref nrf_crypto_backend_ecdsa_sign_fn_t.
  */
-ret_code_t nrf_crypto_backend_cc310_sign(void *p_context, void const *p_private_key,
-                                         uint8_t const *p_data, size_t data_size,
-                                         uint8_t *p_signature);
+ret_code_t nrf_crypto_backend_cc310_sign(
+    void           * p_context,
+    void     const * p_private_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t        * p_signature);
+
 
 /** @internal See @ref nrf_crypto_backend_ecdsa_verify_fn_t.
  */
-ret_code_t nrf_crypto_backend_cc310_verify(void *p_context, void const *p_public_key,
-                                           uint8_t const *p_data, size_t data_size,
-                                           uint8_t const *p_signature);
+ret_code_t nrf_crypto_backend_cc310_verify(
+    void           * p_context,
+    void     const * p_public_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t  const * p_signature);
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160R1)
 #define NRF_CRYPTO_BACKEND_SECP160R1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP160R1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp160r1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp160r1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp160r1_verify_context_t;
-#define nrf_crypto_backend_secp160r1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp160r1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp160r1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp160r1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160R2)
 #define NRF_CRYPTO_BACKEND_SECP160R2_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP160R2_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp160r2_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp160r2_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp160r2_verify_context_t;
-#define nrf_crypto_backend_secp160r2_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp160r2_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp160r2_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp160r2_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP192R1)
 #define NRF_CRYPTO_BACKEND_SECP192R1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP192R1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp192r1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp192r1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp192r1_verify_context_t;
-#define nrf_crypto_backend_secp192r1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp192r1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp192r1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp192r1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP224R1)
 #define NRF_CRYPTO_BACKEND_SECP224R1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP224R1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp224r1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp224r1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp224r1_verify_context_t;
-#define nrf_crypto_backend_secp224r1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp224r1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp224r1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp224r1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP256R1)
 #define NRF_CRYPTO_BACKEND_SECP256R1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP256R1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp256r1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp256r1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp256r1_verify_context_t;
-#define nrf_crypto_backend_secp256r1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp256r1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp256r1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp256r1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP384R1)
 #define NRF_CRYPTO_BACKEND_SECP384R1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP384R1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp384r1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp384r1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp384r1_verify_context_t;
-#define nrf_crypto_backend_secp384r1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp384r1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp384r1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp384r1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP521R1)
 #define NRF_CRYPTO_BACKEND_SECP521R1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP521R1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp521r1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp521r1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp521r1_verify_context_t;
-#define nrf_crypto_backend_secp521r1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp521r1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp521r1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp521r1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP160K1)
 #define NRF_CRYPTO_BACKEND_SECP160K1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP160K1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp160k1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp160k1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp160k1_verify_context_t;
-#define nrf_crypto_backend_secp160k1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp160k1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp160k1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp160k1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP192K1)
 #define NRF_CRYPTO_BACKEND_SECP192K1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP192K1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp192k1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp192k1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp192k1_verify_context_t;
-#define nrf_crypto_backend_secp192k1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp192k1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp192k1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp192k1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP224K1)
 #define NRF_CRYPTO_BACKEND_SECP224K1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP224K1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp224k1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp224k1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp224k1_verify_context_t;
-#define nrf_crypto_backend_secp224k1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp224k1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp224k1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp224k1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_SECP256K1)
 #define NRF_CRYPTO_BACKEND_SECP256K1_SIGN_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_sign_context_t)
 #define NRF_CRYPTO_BACKEND_SECP256K1_VERIFY_CONTEXT_SIZE \
     sizeof(nrf_crypto_backend_cc310_verify_context_t)
-typedef nrf_crypto_backend_cc310_sign_context_t nrf_crypto_backend_secp256k1_sign_context_t;
+typedef nrf_crypto_backend_cc310_sign_context_t   nrf_crypto_backend_secp256k1_sign_context_t;
 typedef nrf_crypto_backend_cc310_verify_context_t nrf_crypto_backend_secp256k1_verify_context_t;
-#define nrf_crypto_backend_secp256k1_sign nrf_crypto_backend_cc310_sign
-#define nrf_crypto_backend_secp256k1_verify nrf_crypto_backend_cc310_verify
+#define nrf_crypto_backend_secp256k1_sign         nrf_crypto_backend_cc310_sign
+#define nrf_crypto_backend_secp256k1_verify       nrf_crypto_backend_cc310_verify
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_CURVE25519)
 // Curve25519 is not designed for ECDSA
-#define NRF_CRYPTO_BACKEND_CURVE25519_SIGN_CONTEXT_SIZE 0
-#define NRF_CRYPTO_BACKEND_CURVE25519_VERIFY_CONTEXT_SIZE 0
-typedef uint32_t nrf_crypto_backend_curve25519_sign_context_t;
-typedef uint32_t nrf_crypto_backend_curve25519_verify_context_t;
-#define nrf_crypto_backend_curve25519_sign NULL
-#define nrf_crypto_backend_curve25519_verify NULL
+#define NRF_CRYPTO_BACKEND_CURVE25519_SIGN_CONTEXT_SIZE     0
+#define NRF_CRYPTO_BACKEND_CURVE25519_VERIFY_CONTEXT_SIZE   0
+typedef uint32_t                                  nrf_crypto_backend_curve25519_sign_context_t;
+typedef uint32_t                                  nrf_crypto_backend_curve25519_verify_context_t;
+#define nrf_crypto_backend_curve25519_sign        NULL
+#define nrf_crypto_backend_curve25519_verify      NULL
 #endif
+
 
 #ifdef __cplusplus
 }

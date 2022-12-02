@@ -31,6 +31,7 @@
 
 #include <redosdeviations.h>
 
+
 /** @brief Invoke the native assertion handler.
 
     @param pszFileName  Null-terminated string containing the name of the file
@@ -38,13 +39,18 @@
     @param ulLineNum    Line number in @p pszFileName where the assertion
                         fired.
 */
-void RedOsAssertFail(const char *pszFileName, uint32_t ulLineNum)
+void RedOsAssertFail(
+    const char *pszFileName,
+    uint32_t    ulLineNum)
 {
-#if REDCONF_OUTPUT == 1
+  #if REDCONF_OUTPUT == 1
     IGNORE_ERRORS(PRINT_ASSERT(pszFileName, ulLineNum));
-#endif
+  #endif
 
-    while (true) {}
+    while(true)
+    {
+    }
 }
 
 #endif
+

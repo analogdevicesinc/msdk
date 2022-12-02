@@ -44,43 +44,47 @@
 /*************************************************************************************************/
 bool_t lhciMstBisDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-    uint8_t status = HCI_SUCCESS;
-    uint8_t paramLen = 0;
+  uint8_t status = HCI_SUCCESS;
+  uint8_t paramLen = 0;
 
-    switch (pHdr->opCode) {
-    case HCI_OPCODE_LE_BIG_CREATE_SYNC: {
-        LlBigCreateSync_t param;
+  switch (pHdr->opCode)
+  {
+    case HCI_OPCODE_LE_BIG_CREATE_SYNC:
+    {
+      LlBigCreateSync_t param;
 
-        BSTREAM_TO_UINT8(param.bigHandle, pBuf);
-        BSTREAM_TO_UINT16(param.syncHandle, pBuf);
-        BSTREAM_TO_UINT8(param.encrypt, pBuf);
-        memcpy(param.bcstCode, pBuf, sizeof(param.bcstCode));
-        pBuf += 16;
-        BSTREAM_TO_UINT8(param.mse, pBuf);
-        BSTREAM_TO_UINT16(param.bigSyncTimeout, pBuf);
-        BSTREAM_TO_UINT8(param.numBis, pBuf);
-        memcpy(param.bis, pBuf, WSF_MIN(param.numBis, sizeof(param.bis)));
+      BSTREAM_TO_UINT8(param.bigHandle, pBuf);
+      BSTREAM_TO_UINT16(param.syncHandle, pBuf);
+      BSTREAM_TO_UINT8(param.encrypt, pBuf);
+      memcpy(param.bcstCode, pBuf, sizeof(param.bcstCode));
+      pBuf += 16;
+      BSTREAM_TO_UINT8(param.mse, pBuf);
+      BSTREAM_TO_UINT16(param.bigSyncTimeout, pBuf);
+      BSTREAM_TO_UINT8(param.numBis, pBuf);
+      memcpy(param.bis, pBuf, WSF_MIN(param.numBis, sizeof(param.bis)));
 
-        status = LlBigCreateSync(&param);
-        paramLen = LHCI_LEN_CMD_STATUS_EVT;
-        break;
+      status = LlBigCreateSync(&param);
+      paramLen = LHCI_LEN_CMD_STATUS_EVT;
+      break;
     }
-    case HCI_OPCODE_LE_BIG_TERMINATE_SYNC: {
-        uint8_t bigHandle;
+    case HCI_OPCODE_LE_BIG_TERMINATE_SYNC:
+    {
+      uint8_t bigHandle;
 
-        BSTREAM_TO_UINT8(bigHandle, pBuf);
+      BSTREAM_TO_UINT8(bigHandle, pBuf);
 
-        LlBigTerminateSync(bigHandle);
-        break;
+      LlBigTerminateSync(bigHandle);
+      break;
     }
 
     default:
-        return FALSE; /* exit dispatcher routine */
-    }
+      return FALSE;     /* exit dispatcher routine */
+  }
 
-    if (paramLen == LHCI_LEN_CMD_STATUS_EVT) {
-        lhciSendCmdStatusEvt(pHdr, status);
-    }
+  if (paramLen == LHCI_LEN_CMD_STATUS_EVT)
+  {
+    lhciSendCmdStatusEvt(pHdr, status);
+  }
 
-    return TRUE;
+  return TRUE;
 }

@@ -32,17 +32,22 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
+
+
 #ifndef _SSI_PAL_SEM_H
 #define _SSI_PAL_SEM_H
 
 #include "ssi_pal_sem_plat.h"
 
-#define SASI_PAL_SEM_NO_WAIT 0
-#define SASI_PAL_SEM_FREE 1
-#define SASI_PAL_SEM_LOCKED 0
+#define SASI_PAL_SEM_NO_WAIT          0
+#define SASI_PAL_SEM_FREE         1
+#define SASI_PAL_SEM_LOCKED       0
+
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**
@@ -53,6 +58,9 @@ extern "C" {
 *        of the APIs in illegal parameters case is dependent on the operating system behavior.
 *
 */
+
+
+
 
 /*----------------------------
       PUBLIC FUNCTIONS
@@ -103,8 +111,13 @@ extern "C" {
 
 #define SaSi_PalSemGive _SaSi_PalSemGive
 
+
+
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
+

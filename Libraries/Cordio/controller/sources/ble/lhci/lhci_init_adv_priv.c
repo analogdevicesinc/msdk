@@ -34,8 +34,9 @@
 /*************************************************************************************************/
 void LhciPrivAdvInit(void)
 {
-    if (!lhciCmdTbl[LHCI_MSG_PRIV]) {
-        lhciCmdTbl[LHCI_MSG_PRIV] = lhciPrivAdvDecodeCmdPkt;
-        lhciEvtTbl[LHCI_MSG_PRIV] = NULL;
-    }
+  if (!lhciCmdTbl[LHCI_MSG_PRIV])
+  {
+    lhciCmdTbl[LHCI_MSG_PRIV] = lhciPrivAdvDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_PRIV] = NULL;
+  }
 }

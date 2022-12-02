@@ -32,7 +32,8 @@
 #define MESH_HT_CL_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mesh_ht_mdl_api.h"
@@ -42,68 +43,74 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Number of supported opcodes for receiving Health Messages */
-#define MESH_HT_CL_NUM_RECVD_OPCODES 4
+#define MESH_HT_CL_NUM_RECVD_OPCODES  4
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Mesh Health Client Status values */
-enum meshHtClStatusValues {
-    MESH_HT_CL_SUCCESS = 0x00, /*!< Procedure returned with success */
+enum meshHtClStatusValues
+{
+  MESH_HT_CL_SUCCESS         = 0x00,  /*!< Procedure returned with success */
 };
 
 /*! \brief Mesh Health Client Health Fault Status event parameter */
-typedef struct meshHtClFaultStatus_tag {
-    meshHtMdlTestId_t testId; /*!< Test identifier (8 bit) */
-    uint16_t companyId; /*!< Company identifier 16-bit */
-    meshHtFaultId_t *pFaultIdArray; /*!< Pointer to a fault identifier array */
-    uint8_t faultIdArrayLen; /*!< Length of the array referenced by pFaultIdArray */
+typedef struct meshHtClFaultStatus_tag
+{
+  meshHtMdlTestId_t   testId;           /*!< Test identifier (8 bit) */
+  uint16_t            companyId;        /*!< Company identifier 16-bit */
+  meshHtFaultId_t     *pFaultIdArray;   /*!< Pointer to a fault identifier array */
+  uint8_t             faultIdArrayLen;  /*!< Length of the array referenced by pFaultIdArray */
 } meshHtClFaultStatus_t;
 
 /*! \brief Data structure for ::MESH_HT_CL_ATTENTION_STATUS_EVENT */
-typedef struct meshHtClAttentionStatusEvt_tag {
-    wsfMsgHdr_t hdr; /*!< Header */
-    meshElementId_t elemId; /*!< Current element Identifier */
-    meshAddress_t htSrElemAddr; /*!< Address of the remote element containing
+typedef struct meshHtClAttentionStatusEvt_tag
+{
+  wsfMsgHdr_t          hdr;           /*!< Header */
+  meshElementId_t      elemId;        /*!< Current element Identifier */
+  meshAddress_t        htSrElemAddr;  /*!< Address of the remote element containing
                                        *   an instance of Health Server
                                        */
-    meshHtAttTimer_t attTimerState; /*!< Attention Timer state. */
+  meshHtAttTimer_t     attTimerState; /*!< Attention Timer state. */
 } meshHtClAttentionStatusEvt_t;
 
 /*! \brief Data structure for ::MESH_HT_CL_PERIOD_STATUS_EVENT */
-typedef struct meshHtClPeriodStatusEvt_tag {
-    wsfMsgHdr_t hdr; /*!< Header */
-    meshElementId_t elemId; /*!< Current element Identifier */
-    meshAddress_t htSrElemAddr; /*!< Address of the remote element containing
+typedef struct meshHtClPeriodStatusEvt_tag
+{
+  wsfMsgHdr_t          hdr;           /*!< Header */
+  meshElementId_t      elemId;        /*!< Current element Identifier */
+  meshAddress_t        htSrElemAddr;  /*!< Address of the remote element containing
                                        *   an instance of Health Server
                                        */
-    meshHtPeriod_t periodDivisor; /*!< Fast Period Divisor */
+  meshHtPeriod_t       periodDivisor; /*!< Fast Period Divisor */
 } meshHtClPeriodStatusEvt_t;
 
 /*! \brief Data structure for ::MESH_HT_CL_CURRENT_STATUS_EVENT and ::MESH_HT_CL_FAULT_STATUS_EVENT */
-typedef struct meshHtClFaultStatusEvt_tag {
-    wsfMsgHdr_t hdr; /*!< Header */
-    meshElementId_t elemId; /*!< Current element Identifier */
-    meshAddress_t htSrElemAddr; /*!< Address of the remote element containing
+typedef struct meshHtClFaultStatusEvt_tag
+{
+  wsfMsgHdr_t             hdr;           /*!< Header */
+  meshElementId_t         elemId;        /*!< Current element Identifier */
+  meshAddress_t           htSrElemAddr;  /*!< Address of the remote element containing
                                           *   an instance of Health Server
                                           */
-    meshHtClFaultStatus_t healthStatus; /*!< Current health Status */
+  meshHtClFaultStatus_t   healthStatus;  /*!< Current health Status */
 } meshHtClFaultStatusEvt_t;
 
 /*! \brief Union of all Health Client model events */
-typedef union meshHtClEvt_tag {
-    wsfMsgHdr_t hdr; /*!< Common header */
-    meshHtClFaultStatusEvt_t currentStatusEvt; /*!< Current status event. Used for
+typedef union meshHtClEvt_tag
+{
+  wsfMsgHdr_t                   hdr;                 /*!< Common header */
+  meshHtClFaultStatusEvt_t      currentStatusEvt;    /*!< Current status event. Used for
                                                       *   ::MESH_HT_CL_CURRENT_STATUS_EVENT.
                                                       */
-    meshHtClFaultStatusEvt_t faultStatusEvt; /*!< Fault status event.  Used for
+  meshHtClFaultStatusEvt_t      faultStatusEvt;      /*!< Fault status event.  Used for
                                                       *   ::MESH_HT_CL_FAULT_STATUS_EVENT.
                                                       */
-    meshHtClPeriodStatusEvt_t periodStatusEvt; /*!< Period status event.  Used for
+  meshHtClPeriodStatusEvt_t     periodStatusEvt;     /*!< Period status event.  Used for
                                                       *   ::MESH_HT_CL_PERIOD_STATUS_EVENT.
                                                       */
-    meshHtClAttentionStatusEvt_t attentionStatusEvt; /*!< Attention status event.  Used for
+  meshHtClAttentionStatusEvt_t  attentionStatusEvt;  /*!< Attention status event.  Used for
                                                       *   ::MESH_HT_CL_ATTENTION_STATUS_EVENT.
                                                       */
 } meshHtClEvt_t;
@@ -208,8 +215,8 @@ void MeshHtClFaultGet(meshElementId_t elementId, meshAddress_t htSrElemAddr, uin
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshHtClFaultClear(meshElementId_t elementId, meshAddress_t htSrElemAddr, uint16_t appKeyIndex,
-                        uint8_t ttl, uint16_t companyId, bool_t ackRequired);
+void MeshHtClFaultClear(meshElementId_t elementId, meshAddress_t htSrElemAddr,
+                        uint16_t appKeyIndex, uint8_t ttl, uint16_t companyId, bool_t ackRequired);
 
 /*************************************************************************************************/
 /*!
@@ -292,7 +299,7 @@ void MeshHtClAttentionGet(meshElementId_t elementId, meshAddress_t htSrElemAddr,
  */
 /*************************************************************************************************/
 void MeshHtClAttentionSet(meshElementId_t elementId, meshAddress_t htSrElemAddr,
-                          uint16_t appKeyIndex, uint8_t ttl, meshHtAttTimer_t attTimerState,
+                          uint16_t appKeyIndex, uint8_t ttl, meshHtAttTimer_t  attTimerState,
                           bool_t ackRequired);
 
 #ifdef __cplusplus

@@ -38,65 +38,67 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief UI event enumeration  */
-enum {
-    APP_UI_NONE, /*!< \brief No event */
-    APP_UI_RESET_CMPL, /*!< \brief Reset complete */
-    APP_UI_DISCOVERABLE, /*!< \brief Enter discoverable mode */
-    APP_UI_ADV_START, /*!< \brief Advertising started */
-    APP_UI_ADV_STOP, /*!< \brief Advertising stopped */
-    APP_UI_SCAN_START, /*!< \brief Scanning started */
-    APP_UI_SCAN_STOP, /*!< \brief Scanning stopped */
-    APP_UI_SCAN_REPORT, /*!< \brief Scan data received from peer device */
-    APP_UI_CONN_OPEN, /*!< \brief Connection opened */
-    APP_UI_CONN_CLOSE, /*!< \brief Connection closed */
-    APP_UI_SEC_PAIR_CMPL, /*!< \brief Pairing completed successfully */
-    APP_UI_SEC_PAIR_FAIL, /*!< \brief Pairing failed or other security failure */
-    APP_UI_SEC_ENCRYPT, /*!< \brief Connection encrypted */
-    APP_UI_SEC_ENCRYPT_FAIL, /*!< \brief Encryption failed */
-    APP_UI_PASSKEY_PROMPT, /*!< \brief Prompt user to enter passkey */
-    APP_UI_DISPLAY_PASSKEY, /*!< \brief Display passkey */
-    APP_UI_DISPLAY_CONFIRM, /*!< \brief Display confirm value */
-    APP_UI_DISPLAY_RSSI, /*!< \brief Display rssi */
-    APP_UI_ALERT_CANCEL, /*!< \brief Cancel a low or high alert */
-    APP_UI_ALERT_LOW, /*!< \brief Low alert */
-    APP_UI_ALERT_HIGH, /*!< \brief High alert */
-    APP_UI_ADV_SET_START_IND, /*!< \brief Advertising set(s) started */
-    APP_UI_ADV_SET_STOP_IND, /*!< \brief Advertising set(s) stopped */
-    APP_UI_SCAN_REQ_RCVD_IND, /*!< \brief Scan request received */
-    APP_UI_EXT_SCAN_START_IND, /*!< \brief Extended scanning started */
-    APP_UI_EXT_SCAN_STOP_IND, /*!< \brief Extended scanning stopped */
-    APP_UI_PER_ADV_SET_START_IND, /*!< \brief Periodic advertising set started */
-    APP_UI_PER_ADV_SET_STOP_IND, /*!< \brief Periodic advertising set stopped */
-    APP_UI_PER_ADV_SYNC_EST_IND, /*!< \brief Periodic advertising sync established */
-    APP_UI_PER_ADV_SYNC_LOST_IND, /*!< \brief Periodic advertising sync lost */
-    APP_UI_HW_ERROR /*!< \brief Hardware error */
+enum
+{
+  APP_UI_NONE,                            /*!< \brief No event */
+  APP_UI_RESET_CMPL,                      /*!< \brief Reset complete */
+  APP_UI_DISCOVERABLE,                    /*!< \brief Enter discoverable mode */
+  APP_UI_ADV_START,                       /*!< \brief Advertising started */
+  APP_UI_ADV_STOP,                        /*!< \brief Advertising stopped */
+  APP_UI_SCAN_START,                      /*!< \brief Scanning started */
+  APP_UI_SCAN_STOP,                       /*!< \brief Scanning stopped */
+  APP_UI_SCAN_REPORT,                     /*!< \brief Scan data received from peer device */
+  APP_UI_CONN_OPEN,                       /*!< \brief Connection opened */
+  APP_UI_CONN_CLOSE,                      /*!< \brief Connection closed */
+  APP_UI_SEC_PAIR_CMPL,                   /*!< \brief Pairing completed successfully */
+  APP_UI_SEC_PAIR_FAIL,                   /*!< \brief Pairing failed or other security failure */
+  APP_UI_SEC_ENCRYPT,                     /*!< \brief Connection encrypted */
+  APP_UI_SEC_ENCRYPT_FAIL,                /*!< \brief Encryption failed */
+  APP_UI_PASSKEY_PROMPT,                  /*!< \brief Prompt user to enter passkey */
+  APP_UI_DISPLAY_PASSKEY,                 /*!< \brief Display passkey */
+  APP_UI_DISPLAY_CONFIRM,                 /*!< \brief Display confirm value */
+  APP_UI_DISPLAY_RSSI,                    /*!< \brief Display rssi */
+  APP_UI_ALERT_CANCEL,                    /*!< \brief Cancel a low or high alert */
+  APP_UI_ALERT_LOW,                       /*!< \brief Low alert */
+  APP_UI_ALERT_HIGH,                      /*!< \brief High alert */
+  APP_UI_ADV_SET_START_IND,               /*!< \brief Advertising set(s) started */
+  APP_UI_ADV_SET_STOP_IND,                /*!< \brief Advertising set(s) stopped */
+  APP_UI_SCAN_REQ_RCVD_IND,               /*!< \brief Scan request received */
+  APP_UI_EXT_SCAN_START_IND,              /*!< \brief Extended scanning started */
+  APP_UI_EXT_SCAN_STOP_IND,               /*!< \brief Extended scanning stopped */
+  APP_UI_PER_ADV_SET_START_IND,           /*!< \brief Periodic advertising set started */
+  APP_UI_PER_ADV_SET_STOP_IND,            /*!< \brief Periodic advertising set stopped */
+  APP_UI_PER_ADV_SYNC_EST_IND,            /*!< \brief Periodic advertising sync established */
+  APP_UI_PER_ADV_SYNC_LOST_IND,           /*!< \brief Periodic advertising sync lost */
+  APP_UI_HW_ERROR                         /*!< \brief Hardware error */
 };
 
 /*! \brief Button press enumeration */
-enum {
-    APP_UI_BTN_NONE, /*!< \brief No button press */
-    APP_UI_BTN_1_DOWN, /*!< \brief Button 1 on down press */
-    APP_UI_BTN_1_SHORT, /*!< \brief Button 1 short press */
-    APP_UI_BTN_1_MED, /*!< \brief Button 1 medium press */
-    APP_UI_BTN_1_LONG, /*!< \brief Button 1 long press */
-    APP_UI_BTN_1_EX_LONG, /*!< \brief Button 1 extra long press */
-    APP_UI_BTN_2_DOWN, /*!< \brief Button 2 on down press */
-    APP_UI_BTN_2_SHORT, /*!< \brief Button 2 short press */
-    APP_UI_BTN_2_MED, /*!< \brief Button 2 medium press */
-    APP_UI_BTN_2_LONG, /*!< \brief Button 2 long press */
-    APP_UI_BTN_2_EX_LONG /*!< \brief Button 2 extra long press */
+enum
+{
+  APP_UI_BTN_NONE,                        /*!< \brief No button press */
+  APP_UI_BTN_1_DOWN,                      /*!< \brief Button 1 on down press */
+  APP_UI_BTN_1_SHORT,                     /*!< \brief Button 1 short press */
+  APP_UI_BTN_1_MED,                       /*!< \brief Button 1 medium press */
+  APP_UI_BTN_1_LONG,                      /*!< \brief Button 1 long press */
+  APP_UI_BTN_1_EX_LONG,                   /*!< \brief Button 1 extra long press */
+  APP_UI_BTN_2_DOWN,                      /*!< \brief Button 2 on down press */
+  APP_UI_BTN_2_SHORT,                     /*!< \brief Button 2 short press */
+  APP_UI_BTN_2_MED,                       /*!< \brief Button 2 medium press */
+  APP_UI_BTN_2_LONG,                      /*!< \brief Button 2 long press */
+  APP_UI_BTN_2_EX_LONG                    /*!< \brief Button 2 extra long press */
 };
 
 /*! \brief LED values */
-#define APP_UI_LED_NONE 0x00 /*!< \brief No LED */
-#define APP_UI_LED_1 0x01 /*!< \brief LED 1 */
-#define APP_UI_LED_2 0x02 /*!< \brief LED 2 */
-#define APP_UI_LED_3 0x04 /*!< \brief LED 3 */
-#define APP_UI_LED_4 0x08 /*!< \brief LED 4 */
-#define APP_UI_LED_WRAP 0xFF /*!< \brief Wrap to beginning of sequence */
+#define APP_UI_LED_NONE     0x00          /*!< \brief No LED */
+#define APP_UI_LED_1        0x01          /*!< \brief LED 1 */
+#define APP_UI_LED_2        0x02          /*!< \brief LED 2 */
+#define APP_UI_LED_3        0x04          /*!< \brief LED 3 */
+#define APP_UI_LED_4        0x08          /*!< \brief LED 4 */
+#define APP_UI_LED_WRAP     0xFF          /*!< \brief Wrap to beginning of sequence */
 
 /*! \brief Sound tone value for wrap/repeat */
-#define APP_UI_SOUND_WRAP 0xFFFF
+#define APP_UI_SOUND_WRAP   0xFFFF
 
 /**************************************************************************************************
   Data Types
@@ -115,23 +117,26 @@ typedef void (*appUiBtnPollCback_t)(void);
 typedef void (*appUiPrintFunc_t)(const char *txt);
 
 /*! \brief Sound data structure */
-typedef struct {
-    uint16_t tone; /*!< \brief Sound tone in Hz.  Use 0 for silence. */
-    uint16_t duration; /*!< \brief Sound duration in milliseconds */
+typedef struct
+{
+  uint16_t      tone;                     /*!< \brief Sound tone in Hz.  Use 0 for silence. */
+  uint16_t      duration;                 /*!< \brief Sound duration in milliseconds */
 } appUiSound_t;
 
 /*! \brief LED data structure */
-typedef struct {
-    uint8_t led; /*!< \brief LED to control */
-    uint8_t state; /*!< \brief On or off */
-    uint16_t duration; /*!< \brief duration in milliseconds */
+typedef struct
+{
+  uint8_t       led;                      /*!< \brief LED to control */
+  uint8_t       state;                    /*!< \brief On or off */
+  uint16_t      duration;                 /*!< \brief duration in milliseconds */
 } appUiLed_t;
 
 /*! \brief Callback structure */
-typedef struct {
-    appUiBtnCback_t btnCback; /*!< \brief Called when button pressed */
-    appUiActionCback_t actionCback; /*!< \brief Called when action event received */
-    appUiBtnPollCback_t btnPollCback; /*!< \brief Called to poll button hardware */
+typedef struct
+{
+  appUiBtnCback_t       btnCback;         /*!< \brief Called when button pressed */
+  appUiActionCback_t    actionCback;      /*!< \brief Called when action event received */
+  appUiBtnPollCback_t   btnPollCback;     /*!< \brief Called to poll button hardware */
 } appUiCback_t;
 
 /**************************************************************************************************
@@ -288,7 +293,7 @@ void AppUiBtnTest(uint8_t btn);
 
 /**@}*/
 
-/*! \} */ /*! APP_FRAMEWORK_UI_API */
+/*! \} */    /*! APP_FRAMEWORK_UI_API */
 
 #ifdef __cplusplus
 };

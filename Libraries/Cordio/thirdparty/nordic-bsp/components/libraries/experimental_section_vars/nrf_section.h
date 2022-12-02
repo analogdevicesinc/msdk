@@ -58,7 +58,7 @@ extern "C" {
 
 #if defined(__ICCARM__)
 // Enable IAR language extensions
-#pragma language = extended
+#pragma language=extended
 #endif
 
 /**@brief   Macro for obtaining the address of the beginning of a section.
@@ -67,14 +67,15 @@ extern "C" {
  * @hideinitializer
  */
 #if defined(__CC_ARM)
-#define NRF_SECTION_START_ADDR(section_name) &CONCAT_2(section_name, $$Base)
+#define NRF_SECTION_START_ADDR(section_name)       &CONCAT_2(section_name, $$Base)
 
 #elif defined(__GNUC__)
-#define NRF_SECTION_START_ADDR(section_name) &CONCAT_2(__start_, section_name)
+#define NRF_SECTION_START_ADDR(section_name)       &CONCAT_2(__start_, section_name)
 
 #elif defined(__ICCARM__)
-#define NRF_SECTION_START_ADDR(section_name) __section_begin(STRINGIFY(section_name))
+#define NRF_SECTION_START_ADDR(section_name)       __section_begin(STRINGIFY(section_name))
 #endif
+
 
 /**@brief    Macro for obtaining the address of the end of a section.
  *
@@ -82,22 +83,25 @@ extern "C" {
  * @hideinitializer
  */
 #if defined(__CC_ARM)
-#define NRF_SECTION_END_ADDR(section_name) &CONCAT_2(section_name, $$Limit)
+#define NRF_SECTION_END_ADDR(section_name)         &CONCAT_2(section_name, $$Limit)
 
 #elif defined(__GNUC__)
-#define NRF_SECTION_END_ADDR(section_name) &CONCAT_2(__stop_, section_name)
+#define NRF_SECTION_END_ADDR(section_name)         &CONCAT_2(__stop_, section_name)
 
 #elif defined(__ICCARM__)
-#define NRF_SECTION_END_ADDR(section_name) __section_end(STRINGIFY(section_name))
+#define NRF_SECTION_END_ADDR(section_name)         __section_end(STRINGIFY(section_name))
 #endif
+
 
 /**@brief   Macro for retrieving the length of a given section, in bytes.
  *
  * @param[in]   section_name    Name of the section.
  * @hideinitializer
  */
-#define NRF_SECTION_LENGTH(section_name) \
-    ((size_t)NRF_SECTION_END_ADDR(section_name) - (size_t)NRF_SECTION_START_ADDR(section_name))
+#define NRF_SECTION_LENGTH(section_name)                        \
+    ((size_t)NRF_SECTION_END_ADDR(section_name) -               \
+     (size_t)NRF_SECTION_START_ADDR(section_name))
+
 
 /**@brief   Macro for creating a section.
  *
@@ -108,20 +112,21 @@ extern "C" {
  * @hideinitializer
  */
 #if defined(__CC_ARM)
-#define NRF_SECTION_DEF(section_name, data_type)      \
-    extern data_type *CONCAT_2(section_name, $$Base); \
-    extern void *CONCAT_2(section_name, $$Limit)
+#define NRF_SECTION_DEF(section_name, data_type)                \
+    extern data_type * CONCAT_2(section_name, $$Base);          \
+    extern void      * CONCAT_2(section_name, $$Limit)
 
 #elif defined(__GNUC__)
-#define NRF_SECTION_DEF(section_name, data_type)        \
-    extern data_type *CONCAT_2(__start_, section_name); \
-    extern void *CONCAT_2(__stop_, section_name)
+#define NRF_SECTION_DEF(section_name, data_type)                \
+    extern data_type * CONCAT_2(__start_, section_name);        \
+    extern void      * CONCAT_2(__stop_,  section_name)
 
 #elif defined(__ICCARM__)
-#define NRF_SECTION_DEF(section_name, data_type) \
+#define NRF_SECTION_DEF(section_name, data_type)                \
     _Pragma(STRINGIFY(section = STRINGIFY(section_name)));
 
 #endif
+
 
 /**@brief   Macro for declaring a variable and registering it in a section.
  *
@@ -137,16 +142,17 @@ extern "C" {
  */
 #if defined(__CC_ARM)
 #define NRF_SECTION_ITEM_REGISTER(section_name, section_var) \
-    section_var __attribute__((section(STRINGIFY(section_name)))) __attribute__((used))
+    section_var __attribute__ ((section(STRINGIFY(section_name)))) __attribute__((used))
 
 #elif defined(__GNUC__)
 #define NRF_SECTION_ITEM_REGISTER(section_name, section_var) \
-    section_var __attribute__((section("." STRINGIFY(section_name)))) __attribute__((used))
+    section_var __attribute__ ((section("." STRINGIFY(section_name)))) __attribute__((used))
 
 #elif defined(__ICCARM__)
 #define NRF_SECTION_ITEM_REGISTER(section_name, section_var) \
-    __root section_var @STRINGIFY(section_name)
+    __root section_var @ STRINGIFY(section_name)
 #endif
+
 
 /**@brief   Macro for retrieving a variable from a section.
  *
@@ -162,7 +168,8 @@ extern "C" {
  * @hideinitializer
  */
 #define NRF_SECTION_ITEM_GET(section_name, data_type, i) \
-    ((data_type *)NRF_SECTION_START_ADDR(section_name) + (i))
+    ((data_type*)NRF_SECTION_START_ADDR(section_name) + (i))
+
 
 /**@brief   Macro for getting the number of variables in a section.
  *

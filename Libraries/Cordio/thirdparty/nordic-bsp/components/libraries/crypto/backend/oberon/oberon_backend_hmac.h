@@ -53,9 +53,9 @@
 
 #include "sdk_common.h"
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) &&              \
-    (NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA256) || \
-     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA512))
+#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) &&                    \
+        ( NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA256) || \
+          NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA512) )
 
 #include "nrf_crypto_hmac_shared.h"
 #include "ocrypto_hmac_sha256.h"
@@ -65,8 +65,9 @@
 extern "C" {
 #endif
 
-#undef NRF_CRYPTO_HMAC_ENABLED
+#undef  NRF_CRYPTO_HMAC_ENABLED
 #define NRF_CRYPTO_HMAC_ENABLED 1
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA256)
 
@@ -81,17 +82,21 @@ extern "C" {
  * @note This should never be used directly. Use @ref nrf_crypto_backend_hmac_sha256_context_t
  * instead.
  */
-typedef struct {
-    nrf_crypto_hmac_internal_context_t header; //!< Internal nrf_crypto_hmac context.
-    ocrypto_hmac_sha256_ctx oberon_ctx; //!< Oberon context object.
+typedef struct
+{
+    nrf_crypto_hmac_internal_context_t  header;     //!< Internal nrf_crypto_hmac context.
+    ocrypto_hmac_sha256_ctx             oberon_ctx; //!< Oberon context object.
 } nrf_crypto_backend_oberon_hmac_sha256_context_t;
+
 
 /**
  * @internal @brief Context for HMAC SHA256 using Oberon backend.
  */
 typedef nrf_crypto_backend_oberon_hmac_sha256_context_t nrf_crypto_backend_hmac_sha256_context_t;
 
+
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA256)
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA512)
 
@@ -106,15 +111,17 @@ typedef nrf_crypto_backend_oberon_hmac_sha256_context_t nrf_crypto_backend_hmac_
  * @note This should never be used directly. Use @ref nrf_crypto_backend_hmac_sha512_context_t
  * instead.
  */
-typedef struct {
-    nrf_crypto_hmac_internal_context_t header; //!< Internal nrf_crypto_hmac context header.
-    ocrypto_hmac_sha512_ctx oberon_ctx; //!< Oberon context object.
+typedef struct
+{
+    nrf_crypto_hmac_internal_context_t  header;     //!< Internal nrf_crypto_hmac context header.
+    ocrypto_hmac_sha512_ctx             oberon_ctx; //!< Oberon context object.
 } nrf_crypto_backend_oberon_hmac_sha512_context_t;
 
 /**
  * @internal @brief Context for HMAC SHA512 using Oberon backend.
  */
 typedef nrf_crypto_backend_oberon_hmac_sha512_context_t nrf_crypto_backend_hmac_sha512_context_t;
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HMAC_SHA512)
 

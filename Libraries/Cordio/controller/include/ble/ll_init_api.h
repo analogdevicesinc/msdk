@@ -62,7 +62,7 @@ extern "C" {
 
 #ifndef BT_VER
 /*! \brief  Initialize default BT version. */
-#define BT_VER LL_VER_BT_CORE_SPEC_5_2
+#define BT_VER        LL_VER_BT_CORE_SPEC_5_2
 #endif
 
 /**************************************************************************************************
@@ -70,15 +70,15 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Runtime configuration parameters. */
-typedef struct {
-    const BbRtCfg_t *pBbRtCfg; /*!< BB runtime configuration. */
-    const uint8_t wlSizeCfg; /*!< Whitelist size configuration. */
-    const uint8_t rlSizeCfg; /*!< Resolving list size configuration. */
-    const uint8_t plSizeCfg; /*!< Periodic list size configuration. */
-    const LlRtCfg_t *pLlRtCfg; /*!< LL runtime configuration. */
-    uint8_t *pFreeMem; /*!< Pointer to free memory, returns adjusted location of free memory. */
-    uint32_t
-        freeMemAvail; /*!< Amount of free memory available, returns adjusted amount of free memory. */
+typedef struct
+{
+  const BbRtCfg_t   *pBbRtCfg;      /*!< BB runtime configuration. */
+  const uint8_t     wlSizeCfg;      /*!< Whitelist size configuration. */
+  const uint8_t     rlSizeCfg;      /*!< Resolving list size configuration. */
+  const uint8_t     plSizeCfg;      /*!< Periodic list size configuration. */
+  const LlRtCfg_t   *pLlRtCfg;      /*!< LL runtime configuration. */
+  uint8_t           *pFreeMem;      /*!< Pointer to free memory, returns adjusted location of free memory. */
+  uint32_t          freeMemAvail;   /*!< Amount of free memory available, returns adjusted amount of free memory. */
 } LlInitRtCfg_t;
 
 /**************************************************************************************************
@@ -90,9 +90,8 @@ uint32_t LlInit(LlInitRtCfg_t *pCfg);
 uint32_t LlInitControllerInit(LlInitRtCfg_t *pCfg);
 
 /* Intermediate initializers. */
-uint32_t LlInitSetBbRtCfg(const BbRtCfg_t *pBbRtCfg, const uint8_t wlSizeCfg,
-                          const uint8_t rlSizeCfg, const uint8_t plSizeCfg, uint8_t *pFreeMem,
-                          uint32_t freeMemAvail);
+uint32_t LlInitSetBbRtCfg(const BbRtCfg_t *pBbRtCfg, const uint8_t wlSizeCfg, const uint8_t rlSizeCfg,
+                          const uint8_t plSizeCfg, uint8_t *pFreeMem, uint32_t freeMemAvail);
 uint32_t LlInitSetLlRtCfg(const LlRtCfg_t *pLlRtCfg, uint8_t *pFreeMem, uint32_t freeMemAvail);
 void LlInitBbInit(void);
 void LlInitSchInit(void);
@@ -102,7 +101,7 @@ void LlInitLhciInit(void);
 void LlMathSetSeed(const uint32_t *pSeed);
 void LlInitLhciHandler(void);
 
-/*! \} */ /* LL_INIT_API */
+/*! \} */    /* LL_INIT_API */
 
 #ifdef __cplusplus
 };

@@ -27,7 +27,8 @@
 #define MESH_NETWORK_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,40 +36,42 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Transport layer receives PDU's from the Network layer this format */
-typedef struct meshNwkPduRxInfo_tag {
-    uint8_t *pLtrPdu; /*!< Pointer to the Lower Transport PDU */
-    uint8_t pduLen; /*!< Length of the Lower Transport PDU */
-    uint8_t ctl; /*!< Control or Access PDU: 1 for Control PDU, 0 for Access PDU */
-    uint8_t ttl; /*!< TTL to be used. Shall be a valid value. */
-    meshAddress_t src; /*!< SRC address */
-    meshAddress_t dst; /*!< DST address */
-    meshAddress_t friendLpnAddr; /*!< Friend or LPN address to identify credentials used on decrypt
+typedef struct meshNwkPduRxInfo_tag
+{
+  uint8_t          *pLtrPdu;     /*!< Pointer to the Lower Transport PDU */
+  uint8_t          pduLen;       /*!< Length of the Lower Transport PDU */
+  uint8_t          ctl;          /*!< Control or Access PDU: 1 for Control PDU, 0 for Access PDU */
+  uint8_t          ttl;          /*!< TTL to be used. Shall be a valid value. */
+  meshAddress_t    src;          /*!< SRC address */
+  meshAddress_t    dst;          /*!< DST address */
+  meshAddress_t    friendLpnAddr;/*!< Friend or LPN address to identify credentials used on decrypt
                                   */
-    meshSeqNumber_t seqNo; /*!< Sequence number */
-    uint32_t ivIndex; /*!< IV index */
-    uint16_t netKeyIndex; /*!< NetKey index to be used for encrypting the packet */
+  meshSeqNumber_t  seqNo;        /*!< Sequence number */
+  uint32_t         ivIndex;      /*!< IV index */
+  uint16_t         netKeyIndex;  /*!< NetKey index to be used for encrypting the packet */
 } meshNwkPduRxInfo_t;
 
 /*! Transport layer sends PDU's to the Network layer this format */
-typedef struct meshNwkPduTxInfo_tag {
-    uint8_t *pLtrHdr; /*!< Pointer to the Lower Transport PDU Header */
-    uint8_t *pUtrPdu; /*!< Pointer to Upper Transport PDU or segment of it
+typedef struct meshNwkPduTxInfo_tag
+{
+  uint8_t          *pLtrHdr;     /*!< Pointer to the Lower Transport PDU Header */
+  uint8_t          *pUtrPdu;     /*!< Pointer to Upper Transport PDU or segment of it
                                   *   in case the transaction was segmented
                                   */
-    uint8_t ltrHdrLen; /*!< Lower Transport PDU Header length */
-    uint8_t utrPduLen; /*!< Length of the Upper Transport PDU or the segment
+  uint8_t          ltrHdrLen;    /*!< Lower Transport PDU Header length */
+  uint8_t          utrPduLen;    /*!< Length of the Upper Transport PDU or the segment
                                   *   in case the transaction was segmented
                                   */
-    uint8_t ctl; /*!< Control or Access PDU: 1 for Control PDU, 0 for Access PDU */
-    uint8_t ttl; /*!< TTL to be used. Shall be a valid value. */
-    meshAddress_t src; /*!< SRC address */
-    meshAddress_t dst; /*!< DST address */
-    meshAddress_t friendLpnAddr; /*!< Friend or LPN address to identify credentials used on encrypt
+  uint8_t          ctl;          /*!< Control or Access PDU: 1 for Control PDU, 0 for Access PDU */
+  uint8_t          ttl;          /*!< TTL to be used. Shall be a valid value. */
+  meshAddress_t    src;          /*!< SRC address */
+  meshAddress_t    dst;          /*!< DST address */
+  meshAddress_t    friendLpnAddr;/*!< Friend or LPN address to identify credentials used on encrypt
                                   */
-    meshSeqNumber_t seqNo; /*!< Sequence number */
-    uint16_t netKeyIndex; /*!< NetKey index to be used for encrypting the packet */
-    bool_t prioritySend; /*!< TRUE if PDU must be sent with priority */
-    bool_t ifPassthr; /*!< Friendship pass-through flag for Network interface */
+  meshSeqNumber_t  seqNo;        /*!< Sequence number */
+  uint16_t         netKeyIndex;  /*!< NetKey index to be used for encrypting the packet */
+  bool_t           prioritySend; /*!< TRUE if PDU must be sent with priority */
+  bool_t           ifPassthr;    /*!< Friendship pass-through flag for Network interface */
 } meshNwkPduTxInfo_t;
 
 /*! Mesh Network layer return value. See ::meshReturnValues
@@ -77,12 +80,13 @@ typedef struct meshNwkPduTxInfo_tag {
 typedef uint16_t meshNwkRetVal_t;
 
 /*! Mesh Network notification event types enumeration */
-enum meshNwkEventTypes {
-    MESH_NWK_SEND_SUCCESS = 0x00, /*!< Network PDU transmission completed successfully */
-    MESH_NWK_SEND_FAILED = 0x01, /*!< Network PDU transmission failed due to failure of
+enum meshNwkEventTypes
+{
+  MESH_NWK_SEND_SUCCESS        = 0x00,  /*!< Network PDU transmission completed successfully */
+  MESH_NWK_SEND_FAILED         = 0x01,  /*!< Network PDU transmission failed due to failure of
                                          *   encryption or due to bearer error
                                          */
-    MESH_NWK_SEND_INVALID_PARAM = 0x02, /*!< Network PDU transmission/reception failed due to
+  MESH_NWK_SEND_INVALID_PARAM  = 0x02,  /*!< Network PDU transmission/reception failed due to
                                          *   invalid parameters
                                          */
 };

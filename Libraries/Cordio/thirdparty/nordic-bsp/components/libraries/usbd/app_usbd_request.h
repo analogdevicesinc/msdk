@@ -91,10 +91,10 @@ ANON_UNIONS_ENABLE;
  * @note It is part of @ref app_usbd_setup_reqtype_t variable type.
  */
 typedef enum {
-    APP_USBD_SETUP_REQREC_DEVICE = 0x0, /**< The whole device is a request target   */
+    APP_USBD_SETUP_REQREC_DEVICE    = 0x0, /**< The whole device is a request target   */
     APP_USBD_SETUP_REQREC_INTERFACE = 0x1, /**< Selected interface is a request target */
-    APP_USBD_SETUP_REQREC_ENDPOINT = 0x2, /**< Selected endpoint is a request target  */
-    APP_USBD_SETUP_REQREC_OTHER = 0x3 /**< Other element is a request target      */
+    APP_USBD_SETUP_REQREC_ENDPOINT  = 0x2, /**< Selected endpoint is a request target  */
+    APP_USBD_SETUP_REQREC_OTHER     = 0x3  /**< Other element is a request target      */
 } app_usbd_setup_reqrec_t;
 
 /**
@@ -103,9 +103,9 @@ typedef enum {
  * @note It is part of @ref app_usbd_setup_reqtype_t variable type.
  */
 typedef enum {
-    APP_USBD_SETUP_REQTYPE_STD = 0x0, /**< Standard request */
-    APP_USBD_SETUP_REQTYPE_CLASS = 0x1, /**< Class specific request */
-    APP_USBD_SETUP_REQTYPE_VENDOR = 0x2 /**< Vendor specific request */
+    APP_USBD_SETUP_REQTYPE_STD    = 0x0, /**< Standard request */
+    APP_USBD_SETUP_REQTYPE_CLASS  = 0x1, /**< Class specific request */
+    APP_USBD_SETUP_REQTYPE_VENDOR = 0x2  /**< Vendor specific request */
 } app_usbd_setup_reqtype_t;
 
 /**
@@ -115,8 +115,9 @@ typedef enum {
  */
 typedef enum {
     APP_USBD_SETUP_REQDIR_OUT = 0x0, /**< Host to device */
-    APP_USBD_SETUP_REQDIR_IN = 0x1, /**< Device to host */
+    APP_USBD_SETUP_REQDIR_IN  = 0x1, /**< Device to host */
 } app_usbd_setup_reqdir_t;
+
 
 /**
  * @brief Standard requests.
@@ -124,7 +125,7 @@ typedef enum {
  * Enumerator for standard requests values.
  */
 typedef enum {
-    APP_USBD_SETUP_STDREQ_GET_STATUS = 0x00, /**<
+    APP_USBD_SETUP_STDREQ_GET_STATUS        = 0x00, /**<
                                                      * Targets: Device, Interface, Endpoint
                                                      * Expected SETUP frame format:
                                                      * - wValue: Zero
@@ -141,7 +142,7 @@ typedef enum {
                                                      *        - D15..D1: Reserved (Reset to zero)
                                                      *        - D0: Halt
                                                      */
-    APP_USBD_SETUP_STDREQ_CLEAR_FEATURE = 0x01, /**<
+    APP_USBD_SETUP_STDREQ_CLEAR_FEATURE     = 0x01, /**<
                                                      * Targets: Device, Interface, Endpoint
                                                      * Expected SETUP frame format:
                                                      * - wValue: Feature selector (@ref app_usbd_setup_stdfeature_t)
@@ -149,7 +150,7 @@ typedef enum {
                                                      * - wLength: 0
                                                      * - Data: None
                                                      */
-    APP_USBD_SETUP_STDREQ_SET_FEATURE = 0x03, /**<
+    APP_USBD_SETUP_STDREQ_SET_FEATURE       = 0x03, /**<
                                                      * Targets: Device, Interface, Endpoint
                                                      * Expected SETUP frame format:
                                                      * - wValue: Feature selector (@ref app_usbd_setup_stdfeature_t)
@@ -157,7 +158,7 @@ typedef enum {
                                                      * - wLength: 0
                                                      * - Data: None
                                                      */
-    APP_USBD_SETUP_STDREQ_SET_ADDRESS = 0x05, /**<
+    APP_USBD_SETUP_STDREQ_SET_ADDRESS       = 0x05, /**<
                                                      * @note This SETUP request is processed in hardware.
                                                      *       Use it only to mark current USB state.
                                                      *
@@ -168,14 +169,14 @@ typedef enum {
                                                      * - wLength: 0
                                                      * - Data: None
                                                      */
-    APP_USBD_SETUP_STDREQ_GET_DESCRIPTOR = 0x06, /**<
+    APP_USBD_SETUP_STDREQ_GET_DESCRIPTOR    = 0x06, /**<
                                                      * Targets: Device
                                                      * - wValue: (hb): Descriptor Type and (lb): Descriptor Index
                                                      * - wIndex: Zero of Language ID
                                                      * - wLength: Descriptor Length
                                                      * - Data: Descriptor
                                                      */
-    APP_USBD_SETUP_STDREQ_SET_DESCRIPTOR = 0x07, /**<
+    APP_USBD_SETUP_STDREQ_SET_DESCRIPTOR    = 0x07, /**<
                                                      * Not supported - Stall when called.
                                                      */
     APP_USBD_SETUP_STDREQ_GET_CONFIGURATION = 0x08, /**<
@@ -194,7 +195,7 @@ typedef enum {
                                                      * - wLength: 0
                                                      * - Data: None
                                                      */
-    APP_USBD_SETUP_STDREQ_GET_INTERFACE = 0x0A, /**<
+    APP_USBD_SETUP_STDREQ_GET_INTERFACE     = 0x0A, /**<
                                                      * Target: Interface
                                                      * Expected SETUP frame format:
                                                      * - wValue: 0
@@ -202,7 +203,7 @@ typedef enum {
                                                      * - wLength: 1
                                                      * - Data: Alternate setting
                                                      */
-    APP_USBD_SETUP_STDREQ_SET_INTERFACE = 0x0B, /**<
+    APP_USBD_SETUP_STDREQ_SET_INTERFACE     = 0x0B, /**<
                                                      * Target: Interface
                                                      * Expected SETUP frame format:
                                                      * - wValue: Alternate setting
@@ -210,7 +211,7 @@ typedef enum {
                                                      * - wLength: 0
                                                      * - Data: None
                                                      */
-    APP_USBD_SETUP_STDREQ_SYNCH_FRAME = 0x0C /**<
+    APP_USBD_SETUP_STDREQ_SYNCH_FRAME       = 0x0C  /**<
                                                      * Target: Endpoint
                                                      * Expected SETUP frame format:
                                                      * - wValue: 0
@@ -235,11 +236,11 @@ typedef enum {
                                                          *   Remote wakeup feature.
                                                          *   Target: Device only
                                                          */
-    APP_USBD_SETUP_STDFEATURE_ENDPOINT_HALT = 0, /**<
+    APP_USBD_SETUP_STDFEATURE_ENDPOINT_HALT        = 0, /**<
                                                          *   Stall or clear the endpoint.
                                                          *   Target: Endpoint different than default (0)
                                                          */
-    APP_USBD_SETUP_STDFEATURE_TEST_MODE = 2 /**<
+    APP_USBD_SETUP_STDFEATURE_TEST_MODE            = 2  /**<
                                                          *   Upstream port test mode.
                                                          *   Power has to be cycled to exit test mode.
                                                          *   This feature cannot be cleared.
@@ -252,12 +253,14 @@ typedef enum {
                                                          */
 } app_usbd_setup_stdfeature_t;
 
+
 /**
  * @brief Universal way to access 16 bit values and its parts.
  */
 typedef union {
     uint16_t w; //!< 16 bit access
-    struct {
+    struct
+    {
         uint8_t lb; //!< Low byte access
         uint8_t hb; //!< High byte access
     };
@@ -272,14 +275,15 @@ typedef union {
  * The structure layout is always the same like @ref nrf_drv_usbd_setup_t
  */
 typedef struct {
-    uint8_t bmRequestType; //!< Setup type bitfield
-    uint8_t bRequest; //!< One of @ref app_usbd_setup_stdrequest_t values or class dependent one.
-    app_usbd_setup_w_t wValue; //!< byte 2, 3
-    app_usbd_setup_w_t wIndex; //!< byte 4, 5
-    app_usbd_setup_w_t wLength; //!< byte 6, 7
+    uint8_t            bmRequestType; //!< Setup type bitfield
+    uint8_t            bRequest;      //!< One of @ref app_usbd_setup_stdrequest_t values or class dependent one.
+    app_usbd_setup_w_t wValue;        //!< byte 2, 3
+    app_usbd_setup_w_t wIndex;        //!< byte 4, 5
+    app_usbd_setup_w_t wLength;       //!< byte 6, 7
 } app_usbd_setup_t;
 
 #pragma pack(pop)
+
 
 /**
  * @brief Extract recipient from request type.
@@ -305,6 +309,7 @@ static inline app_usbd_setup_reqtype_t app_usbd_setup_req_typ(uint8_t bmRequestT
     return (app_usbd_setup_reqtype_t)BF_CX_GET(bmRequestType, APP_USBD_SETUP_REQ_BF_TYP);
 }
 
+
 /**
  * @brief Extract direction from request type.
  *
@@ -326,17 +331,20 @@ static inline app_usbd_setup_reqdir_t app_usbd_setup_req_dir(uint8_t bmRequestTy
  *
  * @return Assembled request type value.
  */
-static inline uint8_t app_usbd_setup_req_val(app_usbd_setup_reqrec_t rec,
+static inline uint8_t app_usbd_setup_req_val(app_usbd_setup_reqrec_t  rec,
                                              app_usbd_setup_reqtype_t typ,
-                                             app_usbd_setup_reqdir_t dir)
+                                             app_usbd_setup_reqdir_t  dir)
 {
-    uint32_t bmRequestType =
-        (BF_CX_VAL(rec, APP_USBD_SETUP_REQ_BF_REC) | BF_CX_VAL(typ, APP_USBD_SETUP_REQ_BF_TYP) |
-         BF_CX_VAL(dir, APP_USBD_SETUP_REQ_BF_DIR));
+    uint32_t bmRequestType = (
+        BF_CX_VAL(rec, APP_USBD_SETUP_REQ_BF_REC) |
+        BF_CX_VAL(typ, APP_USBD_SETUP_REQ_BF_TYP) |
+        BF_CX_VAL(dir, APP_USBD_SETUP_REQ_BF_DIR)
+        );
 
     ASSERT(bmRequestType < 256U);
     return (uint8_t)bmRequestType;
 }
+
 
 ANON_UNIONS_DISABLE;
 /** @} */

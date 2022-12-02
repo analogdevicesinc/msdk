@@ -32,6 +32,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
+
+
 #ifndef _SSI_PAL_DMA_H
 #define _SSI_PAL_DMA_H
 
@@ -46,7 +49,8 @@ need to be replaced according to Platform and OS.
 */
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "ssi_pal_types.h"
@@ -55,16 +59,16 @@ extern "C" {
 
 /*! User buffer scatter information. */
 typedef struct {
-    SaSiDmaAddr_t blockPhysAddr; /*!< Physical address.*/
-    uint32_t blockSize; /*!< Block size.*/
-} SaSi_PalDmaBlockInfo_t;
+    SaSiDmaAddr_t       blockPhysAddr; /*!< Physical address.*/
+    uint32_t        blockSize;     /*!< Block size.*/
+}SaSi_PalDmaBlockInfo_t;
 
 #ifdef BIG__ENDIAN
 /*! Defintion for big to little endian. */
-#define SET_WORD_LE(val) cpu_to_le32(val)
+#define  SET_WORD_LE(val) cpu_to_le32(val)
 #else
 /*! Defintion for big to little endian. */
-#define SET_WORD_LE
+#define  SET_WORD_LE
 #endif
 
 /**
@@ -77,11 +81,9 @@ typedef struct {
  *
  * @return A non-zero value in case of failure.
  */
-uint32_t SaSi_PalDmaBufferMap(
-    uint8_t *pDataBuffer, /*!< [in] Address of the buffer to map. */
-    uint32_t buffSize, /*!< [in] Buffer size in bytes. */
-    SaSi_PalDmaBufferDirection_t
-        copyDirection, /*!< [in] Copy direction of the buffer, according to ::SaSi_PalDmaBufferDirection_t,
+uint32_t SaSi_PalDmaBufferMap(uint8_t                     *pDataBuffer,     /*!< [in] Address of the buffer to map. */
+                 uint32_t                     buffSize,     /*!< [in] Buffer size in bytes. */
+                 SaSi_PalDmaBufferDirection_t  copyDirection,   /*!< [in] Copy direction of the buffer, according to ::SaSi_PalDmaBufferDirection_t,
                                               <ul><li>TO_DEVICE - the original buffer is the input to the operation,
                                               and this function should copy it to the temp buffer,
                                               prior to the activating the HW on the temp buffer.</li>
@@ -90,12 +92,10 @@ uint32_t SaSi_PalDmaBufferMap(
                                               the result of encryption or decryption is written over the original data
                                               at the same address. Should be treated by this API same as
                                               TO_DEVICE. </li></ul> */
-    uint32_t
-        *pNumOfBlocks, /*!< [in/out]  Maximum numOfBlocks to fill, as output the actual number. */
-    SaSi_PalDmaBlockInfo_t
-        *pDmaBlockList, /*!< [out] List of DMA-able blocks that the buffer maps to. */
-    SaSi_PalDmaBufferHandle
-        *dmaBuffHandle /*!< [out] A handle to the mapped buffer private resources.*/);
+                 uint32_t                     *pNumOfBlocks,    /*!< [in/out]  Maximum numOfBlocks to fill, as output the actual number. */
+                 SaSi_PalDmaBlockInfo_t        *pDmaBlockList,  /*!< [out] List of DMA-able blocks that the buffer maps to. */
+                 SaSi_PalDmaBufferHandle       *dmaBuffHandle   /*!< [out] A handle to the mapped buffer private resources.*/ );
+
 
 /**
  * @brief   This function is called by the ARM TrustZone CryptoCell TEE runtime library after the HW is used.
@@ -106,11 +106,9 @@ uint32_t SaSi_PalDmaBufferMap(
  *      of the ARM TrustZone CryptoCell TEE runtime library.
  * @return A non-zero value in case of failure.
  */
-uint32_t SaSi_PalDmaBufferUnmap(
-    uint8_t *pDataBuffer, /*!< [in] Address of the buffer to unmap. */
-    uint32_t buffSize, /*!< [in] Buffer size in bytes. */
-    SaSi_PalDmaBufferDirection_t
-        copyDirection, /*!< [in] Copy direction of the buffer, according to ::SaSi_PalDmaBufferDirection_t
+uint32_t SaSi_PalDmaBufferUnmap(uint8_t                      *pDataBuffer,  /*!< [in] Address of the buffer to unmap. */
+                    uint32_t                     buffSize,      /*!< [in] Buffer size in bytes. */
+                    SaSi_PalDmaBufferDirection_t copyDirection, /*!< [in] Copy direction of the buffer, according to ::SaSi_PalDmaBufferDirection_t
                                               <ul><li>TO_DEVICE - not relevant for this API. </li>
                                               <li>FROM_DEVICE - the temp buffer holds the output of the HW, and this
                                               API should copy it to the actual output buffer.</li>
@@ -118,11 +116,10 @@ uint32_t SaSi_PalDmaBufferUnmap(
                                               the result of encryption or decryption is written over the original data
                                               at the same address. Should be treated by this API same as
                                               FROM_DEVICE.</li></ul> */
-    uint32_t numOfBlocks, /*!< [in] Number of DMA-able blocks that the buffer maps to. */
-    SaSi_PalDmaBlockInfo_t
-        *pDmaBlockList, /*!< [in] List of DMA-able blocks that the buffer maps to. */
-    SaSi_PalDmaBufferHandle
-        dmaBuffHandle /*!< [in] A handle to the mapped buffer private resources. */);
+                    uint32_t                     numOfBlocks,   /*!< [in] Number of DMA-able blocks that the buffer maps to. */
+                    SaSi_PalDmaBlockInfo_t       *pDmaBlockList,    /*!< [in] List of DMA-able blocks that the buffer maps to. */
+                    SaSi_PalDmaBufferHandle      dmaBuffHandle  /*!< [in] A handle to the mapped buffer private resources. */);
+
 
 /**
  * @brief Allocates a DMA-contiguous buffer for CPU use, and returns its virtual address.
@@ -132,9 +129,10 @@ uint32_t SaSi_PalDmaBufferUnmap(
  *
  * @return A non-zero value in case of failure.
  */
-uint32_t SaSi_PalDmaContigBufferAllocate(
-    uint32_t buffSize, /*!< [in] Buffer size in bytes.*/
-    uint8_t **ppVirtBuffAddr /*!< [out]  Virtual address of the allocated buffer.*/);
+uint32_t SaSi_PalDmaContigBufferAllocate(uint32_t          buffSize, /*!< [in] Buffer size in bytes.*/
+                     uint8_t           **ppVirtBuffAddr /*!< [out]  Virtual address of the allocated buffer.*/);
+
+
 
 /**
  * @brief Frees resources previously allocated by ::SaSi_PalDmaContigBufferAllocate.
@@ -142,9 +140,10 @@ uint32_t SaSi_PalDmaContigBufferAllocate(
  *
  * @return A non-zero value in case of failure.
  */
-uint32_t SaSi_PalDmaContigBufferFree(
-    uint32_t buffSize, /*!< [in] Buffer size in Bytes. */
-    uint8_t *pVirtBuffAddr /*!< [in] Virtual address of the buffer to free. */);
+uint32_t SaSi_PalDmaContigBufferFree(uint32_t          buffSize, /*!< [in] Buffer size in Bytes. */
+                     uint8_t           *pVirtBuffAddr /*!< [in] Virtual address of the buffer to free. */);
+
+
 
 /**
  * @brief Checks whether the buffer is guaranteed to be a single contiguous DMA block.
@@ -152,8 +151,9 @@ uint32_t SaSi_PalDmaContigBufferFree(
  *
  * @return Returns TRUE if the buffer is guaranteed to be a single contiguous DMA block, and FALSE otherwise.
  */
-uint32_t SaSi_PalIsDmaBufferContiguous(uint8_t *pDataBuffer, /*!< [in] User buffer address. */
-                                       uint32_t buffSize /*!< [in] User buffer size. */);
+uint32_t SaSi_PalIsDmaBufferContiguous(uint8_t                    *pDataBuffer, /*!< [in] User buffer address. */
+                       uint32_t                    buffSize   /*!< [in] User buffer size. */);
+
 
 /**
  * @brief Maps virtual address to physical address.
@@ -161,8 +161,8 @@ uint32_t SaSi_PalIsDmaBufferContiguous(uint8_t *pDataBuffer, /*!< [in] User buff
  *
  * @return Physical address.
  */
-SaSiDmaAddr_t
-SaSi_PalMapVirtualToPhysical(uint8_t *pVirtualAddr /*!< [in] Pointer to virtual address. */);
+SaSiDmaAddr_t SaSi_PalMapVirtualToPhysical(uint8_t *pVirtualAddr /*!< [in] Pointer to virtual address. */);
+
 
 #ifdef __cplusplus
 }
@@ -171,3 +171,5 @@ SaSi_PalMapVirtualToPhysical(uint8_t *pVirtualAddr /*!< [in] Pointer to virtual 
 @}
  */
 #endif
+
+

@@ -27,7 +27,8 @@
 #define MESH_ACCESS_MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -36,51 +37,53 @@ extern "C" {
 
 /*! Tick value in milliseconds for published messages retransmission */
 #ifndef MESH_ACC_PUB_RETRANS_TMR_TICK_MS
-#define MESH_ACC_PUB_RETRANS_TMR_TICK_MS (10)
+#define MESH_ACC_PUB_RETRANS_TMR_TICK_MS     (10)
 #endif
 
 /*! Extracts SIG model instance from mesh configuration array */
-#define SIG_MODEL_INSTANCE(elemId, modelIdx) \
-    (pMeshConfig->pElementArray[(elemId)].pSigModelArray[(modelIdx)])
+#define SIG_MODEL_INSTANCE(elemId, modelIdx) (pMeshConfig->pElementArray[(elemId)].\
+                                              pSigModelArray[(modelIdx)])
 
 /*! Extracts vendor model instance from mesh configuration array */
-#define VENDOR_MODEL_INSTANCE(elemId, modelIdx) \
-    (pMeshConfig->pElementArray[(elemId)].pVendorModelArray[(modelIdx)])
+#define VENDOR_MODEL_INSTANCE(elemId, modelIdx)  (pMeshConfig->pElementArray[(elemId)].\
+                                                  pVendorModelArray[(modelIdx)])
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Mesh Access Layer WSF message events */
-enum meshAccWsfMsgEvents {
-    MESH_ACC_MSG_RETRANS_TMR_EXPIRED = MESH_ACC_MSG_START, /*!< Retransmission timer expired */
-    MESH_ACC_MSG_DELAY_TMR_EXPIRED, /*!< Random Delay timer expired */
-    MESH_ACC_MSG_PP_TMR_EXPIRED, /*!< Periodic publishing timer expired */
+enum meshAccWsfMsgEvents
+{
+  MESH_ACC_MSG_RETRANS_TMR_EXPIRED = MESH_ACC_MSG_START, /*!< Retransmission timer expired */
+  MESH_ACC_MSG_DELAY_TMR_EXPIRED,                        /*!< Random Delay timer expired */
+  MESH_ACC_MSG_PP_TMR_EXPIRED,                           /*!< Periodic publishing timer expired */
 };
 
 /*! Periodic publishing state changed callback */
 typedef void (*meshAccPpChangedCback_t)(meshElementId_t elemId, meshModelId_t *pModelId);
 
 /*! Mesh Access Control Block */
-typedef struct meshAccCb_tag {
-    wsfQueue_t coreMdlQueue; /*!< Queue of core models */
-    wsfQueue_t pubRetransQueue; /*!< Queue used for retransmitting
+typedef struct meshAccCb_tag
+{
+  wsfQueue_t               coreMdlQueue;                         /*!< Queue of core models */
+  wsfQueue_t               pubRetransQueue;                      /*!< Queue used for retransmitting
                                                                   *   published messages
                                                                   */
-    wsfQueue_t msgSendQueue; /*!< Queue used for delaying
+  wsfQueue_t               msgSendQueue;                         /*!< Queue used for delaying
                                                                   *   access messages
                                                                   */
-    meshAccPpChangedCback_t ppChangedCback; /*!< Callback to inform the
+  meshAccPpChangedCback_t  ppChangedCback;                       /*!< Callback to inform the
                                                                   *   Periodic publishing module
                                                                   *   that a state was changed
                                                                   */
-    meshWsfMsgHandlerCback_t ppWsfMsgCback; /*!< Periodic publishing WSF
+  meshWsfMsgHandlerCback_t ppWsfMsgCback;                        /*!< Periodic publishing WSF
                                                                   *   message callback
                                                                   */
-    meshAccFriendAddrFromSubnetCback_t friendAddrFromSubnetCback; /*!< Callback to get the Friend
+  meshAccFriendAddrFromSubnetCback_t friendAddrFromSubnetCback;  /*!< Callback to get the Friend
                                                                   *   address from sub-net
                                                                   */
-    uint16_t tmrUidGen; /*!< Timer unique identifier
+  uint16_t                 tmrUidGen;                            /*!< Timer unique identifier
                                                                   *   generator variable
                                                                   */
 } meshAccCb_t;

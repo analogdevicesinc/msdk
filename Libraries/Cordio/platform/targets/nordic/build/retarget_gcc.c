@@ -42,11 +42,11 @@ extern uint32_t SystemHeapSize;
 /*************************************************************************************************/
 int _open(const char *name, int flags, int mode)
 {
-    /* No implementation. */
-    (void)name;
-    (void)flags;
-    (void)mode;
-    return -1;
+  /* No implementation. */
+  (void)name;
+  (void)flags;
+  (void)mode;
+  return -1;
 }
 
 /*************************************************************************************************/
@@ -60,9 +60,9 @@ int _open(const char *name, int flags, int mode)
 /*************************************************************************************************/
 int _close(int file)
 {
-    /* No implementation. */
-    (void)file;
-    return 0;
+  /* No implementation. */
+  (void)file;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -77,10 +77,10 @@ int _close(int file)
 /*************************************************************************************************/
 int _fstat(int file, struct stat *st)
 {
-    /* No implementation. */
-    (void)file;
-    (void)st;
-    return 0;
+  /* No implementation. */
+  (void)file;
+  (void)st;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -94,9 +94,9 @@ int _fstat(int file, struct stat *st)
 /*************************************************************************************************/
 int _isatty(int file)
 {
-    /* No implementation. */
-    (void)file;
-    return 1;
+  /* No implementation. */
+  (void)file;
+  return 1;
 }
 
 /*************************************************************************************************/
@@ -112,11 +112,11 @@ int _isatty(int file)
 /*************************************************************************************************/
 int _lseek(int file, int ptr, int dir)
 {
-    /* No implementation. */
-    (void)file;
-    (void)ptr;
-    (void)dir;
-    return 0;
+  /* No implementation. */
+  (void)file;
+  (void)ptr;
+  (void)dir;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -132,11 +132,11 @@ int _lseek(int file, int ptr, int dir)
 /*************************************************************************************************/
 int _read(int file, char *ptr, int len)
 {
-    /* No implementation. */
-    (void)file;
-    (void)ptr;
-    (void)len;
-    return 0;
+  /* No implementation. */
+  (void)file;
+  (void)ptr;
+  (void)len;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -152,11 +152,11 @@ int _read(int file, char *ptr, int len)
 /*************************************************************************************************/
 int _write(int file, char *ptr, int len)
 {
-    /* No implementation. */
-    (void)file;
-    (void)ptr;
-    (void)len;
-    return 0;
+  /* No implementation. */
+  (void)file;
+  (void)ptr;
+  (void)len;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -170,11 +170,11 @@ int _write(int file, char *ptr, int len)
 /*************************************************************************************************/
 caddr_t _sbrk(int incr)
 {
-    caddr_t addr = (caddr_t)SystemHeapStart;
+  caddr_t addr = (caddr_t)SystemHeapStart;
 
-    /* Round up to nearest multiple of 4 for word alignment */
-    incr = (incr + 3) & ~3;
-    SystemHeapStart += incr;
-    SystemHeapSize -= incr;
-    return addr;
+  /* Round up to nearest multiple of 4 for word alignment */
+  incr = (incr + 3) & ~3;
+  SystemHeapStart += incr;
+  SystemHeapSize -= incr;
+  return addr;
 }

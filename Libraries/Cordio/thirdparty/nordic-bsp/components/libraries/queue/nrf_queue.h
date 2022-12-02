@@ -66,34 +66,36 @@ extern "C" {
 #define NRF_QUEUE_LOG_NAME queue
 
 /**@brief Queue control block. */
-typedef struct {
-    volatile size_t front; //!< Queue front index.
-    volatile size_t back; //!< Queue back index.
-    size_t max_utilization; //!< Maximum utilization of the queue.
+typedef struct
+{
+    volatile size_t front;          //!< Queue front index.
+    volatile size_t back;           //!< Queue back index.
+    size_t max_utilization;         //!< Maximum utilization of the queue.
 } nrf_queue_cb_t;
 
 /**@brief Supported queue modes. */
-typedef enum {
-    NRF_QUEUE_MODE_OVERFLOW, //!< If the queue is full, new element will overwrite the oldest.
-    NRF_QUEUE_MODE_NO_OVERFLOW, //!< If the queue is full, new element will not be accepted.
+typedef enum
+{
+    NRF_QUEUE_MODE_OVERFLOW,        //!< If the queue is full, new element will overwrite the oldest.
+    NRF_QUEUE_MODE_NO_OVERFLOW,     //!< If the queue is full, new element will not be accepted.
 } nrf_queue_mode_t;
 
 /**@brief Instance of the queue. */
-typedef struct {
-    nrf_queue_cb_t *p_cb; //!< Pointer to the instance control block.
-    void *p_buffer; //!< Pointer to the memory that is used as storage.
-    size_t size; //!< Size of the queue.
-    size_t element_size; //!< Size of one element.
-    nrf_queue_mode_t mode; //!< Mode of the queue.
+typedef struct
+{
+    nrf_queue_cb_t * p_cb;              //!< Pointer to the instance control block.
+    void           * p_buffer;          //!< Pointer to the memory that is used as storage.
+    size_t           size;              //!< Size of the queue.
+    size_t           element_size;      //!< Size of one element.
+    nrf_queue_mode_t mode;              //!< Mode of the queue.
 #if NRF_QUEUE_CLI_CMDS
-    const char *p_name; //!< Pointer to string with queue name.
+    const char      * p_name;           //!< Pointer to string with queue name.
 #endif
-    NRF_LOG_INSTANCE_PTR_DECLARE(
-        p_log) //!< Pointer to instance of the logger object (Conditionally compiled).
+    NRF_LOG_INSTANCE_PTR_DECLARE(p_log) //!< Pointer to instance of the logger object (Conditionally compiled).
 } nrf_queue_t;
 
 #if NRF_QUEUE_CLI_CMDS
-#define __NRF_QUEUE_ASSIGN_POOL_NAME(_name) .p_name = STRINGIFY(_name),
+#define __NRF_QUEUE_ASSIGN_POOL_NAME(_name)            .p_name = STRINGIFY(_name),
 #else
 #define __NRF_QUEUE_ASSIGN_POOL_NAME(_name)
 #endif
@@ -106,22 +108,25 @@ typedef struct {
  * @param[in]   _size       Size of the queue.
  * @param[in]   _mode       Mode of the queue.
  */
-#define NRF_QUEUE_DEF(_type, _name, _size, _mode)                                             \
-    static _type CONCAT_2(_name, _nrf_queue_buffer[(_size) + 1]);                             \
-    static nrf_queue_cb_t CONCAT_2(_name, _nrf_queue_cb);                                     \
-    NRF_LOG_INSTANCE_REGISTER(                                                                \
-        NRF_QUEUE_LOG_NAME, _name, NRF_QUEUE_CONFIG_INFO_COLOR, NRF_QUEUE_CONFIG_DEBUG_COLOR, \
-        NRF_QUEUE_CONFIG_LOG_INIT_FILTER_LEVEL,                                               \
-        NRF_QUEUE_CONFIG_LOG_ENABLED ? NRF_QUEUE_CONFIG_LOG_LEVEL : NRF_LOG_SEVERITY_NONE);   \
-    NRF_SECTION_ITEM_REGISTER(nrf_queue, const nrf_queue_t _name) = {                         \
-        .p_cb = &CONCAT_2(_name, _nrf_queue_cb),                                              \
-        .p_buffer = CONCAT_2(_name, _nrf_queue_buffer),                                       \
-        .size = (_size),                                                                      \
-        .element_size = sizeof(_type),                                                        \
-        .mode = _mode,                                                                        \
-        __NRF_QUEUE_ASSIGN_POOL_NAME(_name)                                                   \
-            NRF_LOG_INSTANCE_PTR_INIT(p_log, NRF_QUEUE_LOG_NAME, _name)                       \
-    }
+#define NRF_QUEUE_DEF(_type, _name, _size, _mode)                                        \
+    static _type             CONCAT_2(_name, _nrf_queue_buffer[(_size) + 1]);            \
+    static nrf_queue_cb_t    CONCAT_2(_name, _nrf_queue_cb);                             \
+    NRF_LOG_INSTANCE_REGISTER(NRF_QUEUE_LOG_NAME, _name,                                 \
+                                  NRF_QUEUE_CONFIG_INFO_COLOR,                           \
+                                  NRF_QUEUE_CONFIG_DEBUG_COLOR,                          \
+                                  NRF_QUEUE_CONFIG_LOG_INIT_FILTER_LEVEL,                \
+                                  NRF_QUEUE_CONFIG_LOG_ENABLED ?                         \
+                                    NRF_QUEUE_CONFIG_LOG_LEVEL : NRF_LOG_SEVERITY_NONE); \
+     NRF_SECTION_ITEM_REGISTER(nrf_queue, const nrf_queue_t  _name) =                    \
+        {                                                                                \
+            .p_cb           = &CONCAT_2(_name, _nrf_queue_cb),                           \
+            .p_buffer       = CONCAT_2(_name,_nrf_queue_buffer),                         \
+            .size           = (_size),                                                   \
+            .element_size   = sizeof(_type),                                             \
+            .mode           = _mode,                                                     \
+            __NRF_QUEUE_ASSIGN_POOL_NAME(_name)                                          \
+            NRF_LOG_INSTANCE_PTR_INIT(p_log, NRF_QUEUE_LOG_NAME, _name)                  \
+        }
 
 #if !(defined(__LINT__))
 /**@brief Create multiple queue instances.
@@ -134,20 +139,23 @@ typedef struct {
  * @param[in]   _mode       Mode of single queue instance.
  * @param[in]   _num        Number of queue instances within array.
  */
-#define NRF_QUEUE_ARRAY_DEF(_type, _name, _size, _mode, _num)                                  \
-    MACRO_REPEAT_FOR(_num, NRF_QUEUE_ARRAY_INSTANCE_ELEMS_DEC, _type, _name, _size, _mode)     \
-    static const nrf_queue_t _name[] = { MACRO_REPEAT_FOR(_num, NRF_QUEUE_ARRAY_INSTANCE_INIT, \
-                                                          _type, _name, _size, _mode) };       \
+#define NRF_QUEUE_ARRAY_DEF(_type, _name, _size, _mode, _num)                                 \
+    MACRO_REPEAT_FOR(_num, NRF_QUEUE_ARRAY_INSTANCE_ELEMS_DEC, _type, _name, _size, _mode)    \
+    static const nrf_queue_t _name[] =                                                        \
+        {                                                                                     \
+            MACRO_REPEAT_FOR(_num, NRF_QUEUE_ARRAY_INSTANCE_INIT, _type, _name, _size, _mode) \
+        };                                                                                    \
     STATIC_ASSERT(ARRAY_SIZE(_name) == _num)
 #else
-#define NRF_QUEUE_ARRAY_DEF(_type, _name, _size, _mode, _num) static const nrf_queue_t _name[_num];
+#define NRF_QUEUE_ARRAY_DEF(_type, _name, _size, _mode, _num) \
+    static const nrf_queue_t _name[_num];
 #endif // !(defined(__LINT__))
 
 /**@brief Helping macro used to declare elements for nrf_queue_t instance.
  *        Used in @ref NRF_QUEUE_ARRAY_DEF.
  */
-#define NRF_QUEUE_ARRAY_INSTANCE_ELEMS_DEC(_num, _type, _name, _size, _mode) \
-    static _type CONCAT_3(_name, _num, _nrf_queue_buffer[(_size) + 1]);      \
+#define NRF_QUEUE_ARRAY_INSTANCE_ELEMS_DEC(_num, _type, _name, _size, _mode)     \
+    static _type          CONCAT_3(_name, _num, _nrf_queue_buffer[(_size) + 1]); \
     static nrf_queue_cb_t CONCAT_3(_name, _num, _nrf_queue_cb);
 
 /**@brief Helping macro used to initialize nrf_queue_t instance in an array fashion.
@@ -155,11 +163,11 @@ typedef struct {
  */
 #define NRF_QUEUE_ARRAY_INSTANCE_INIT(_num, _type, _name, _size, _mode) \
     {                                                                   \
-        .p_cb = &CONCAT_3(_name, _num, _nrf_queue_cb),                  \
-        .p_buffer = CONCAT_3(_name, _num, _nrf_queue_buffer),           \
-        .size = (_size),                                                \
-        .element_size = sizeof(_type),                                  \
-        .mode = _mode,                                                  \
+        .p_cb           = &CONCAT_3(_name, _num, _nrf_queue_cb),        \
+        .p_buffer       = CONCAT_3(_name, _num, _nrf_queue_buffer),     \
+        .size           = (_size),                                      \
+        .element_size   = sizeof(_type),                                \
+        .mode           = _mode,                                        \
     },
 
 /**@brief Declare a queue interface.
@@ -167,20 +175,24 @@ typedef struct {
  * @param[in]   _type    Type which is stored.
  * @param[in]   _name    Name of the queue.
  */
-#define NRF_QUEUE_INTERFACE_DEC(_type, _name)                            \
-    ret_code_t _name##_push(_type const *p_element);                     \
-    ret_code_t _name##_pop(_type *p_element);                            \
-    ret_code_t _name##_peek(_type *p_element);                           \
-    ret_code_t _name##_write(_type const *p_data, size_t element_count); \
-    ret_code_t _name##_read(_type *p_data, size_t element_count);        \
-    size_t _name##_out(_type *p_data, size_t element_count);             \
-    size_t _name##_in(_type const *p_data, size_t element_count);        \
-    bool _name##_is_full(void);                                          \
-    bool _name##_is_empty(void);                                         \
-    size_t _name##_utilization_get(void);                                \
-    size_t _name##_available_get(void);                                  \
-    size_t _name##_max_utilization_get(void);                            \
-    void _name##_reset(void)
+#define NRF_QUEUE_INTERFACE_DEC(_type, _name)               \
+    ret_code_t  _name##_push(_type const * p_element);      \
+    ret_code_t  _name##_pop(_type * p_element);             \
+    ret_code_t  _name##_peek(_type * p_element);            \
+    ret_code_t  _name##_write(_type const * p_data,         \
+                              size_t        element_count); \
+    ret_code_t  _name##_read(_type * p_data,                \
+                             size_t  element_count);        \
+    size_t      _name##_out(_type * p_data,                 \
+                            size_t  element_count);         \
+    size_t      _name##_in(_type const * p_data,            \
+                            size_t element_count);          \
+    bool        _name##_is_full(void);                      \
+    bool        _name##_is_empty(void);                     \
+    size_t      _name##_utilization_get(void);              \
+    size_t      _name##_available_get(void);                \
+    size_t      _name##_max_utilization_get(void);          \
+    void        _name##_reset(void)
 
 /**@brief Define a queue interface.
  *
@@ -189,7 +201,7 @@ typedef struct {
  * @param[in]   _p_queue Queue instance.
  */
 #define NRF_QUEUE_INTERFACE_DEF(_type, _name, _p_queue)                 \
-    ret_code_t _name##_push(_type const *p_element)                     \
+    ret_code_t _name##_push(_type const * p_element)                    \
     {                                                                   \
         GCC_PRAGMA("GCC diagnostic push")                               \
         GCC_PRAGMA("GCC diagnostic ignored \"-Waddress\"")              \
@@ -198,7 +210,7 @@ typedef struct {
         GCC_PRAGMA("GCC diagnostic pop")                                \
         return nrf_queue_push((_p_queue), p_element);                   \
     }                                                                   \
-    ret_code_t _name##_pop(_type *p_element)                            \
+    ret_code_t _name##_pop(_type * p_element)                           \
     {                                                                   \
         GCC_PRAGMA("GCC diagnostic push")                               \
         GCC_PRAGMA("GCC diagnostic ignored \"-Waddress\"")              \
@@ -207,7 +219,7 @@ typedef struct {
         GCC_PRAGMA("GCC diagnostic pop")                                \
         return nrf_queue_pop((_p_queue), p_element);                    \
     }                                                                   \
-    ret_code_t _name##_peek(_type *p_element)                           \
+    ret_code_t _name##_peek(_type * p_element)                          \
     {                                                                   \
         GCC_PRAGMA("GCC diagnostic push")                               \
         GCC_PRAGMA("GCC diagnostic ignored \"-Waddress\"")              \
@@ -216,7 +228,8 @@ typedef struct {
         GCC_PRAGMA("GCC diagnostic pop")                                \
         return nrf_queue_peek((_p_queue), p_element);                   \
     }                                                                   \
-    ret_code_t _name##_write(_type const *p_data, size_t element_count) \
+    ret_code_t _name##_write(_type const * p_data,                      \
+                             size_t        element_count)               \
     {                                                                   \
         GCC_PRAGMA("GCC diagnostic push")                               \
         GCC_PRAGMA("GCC diagnostic ignored \"-Waddress\"")              \
@@ -225,7 +238,8 @@ typedef struct {
         GCC_PRAGMA("GCC diagnostic pop")                                \
         return nrf_queue_write((_p_queue), p_data, element_count);      \
     }                                                                   \
-    ret_code_t _name##_read(_type *p_data, size_t element_count)        \
+    ret_code_t _name##_read(_type * p_data,                             \
+                            size_t  element_count)                      \
     {                                                                   \
         GCC_PRAGMA("GCC diagnostic push")                               \
         GCC_PRAGMA("GCC diagnostic ignored \"-Waddress\"")              \
@@ -234,7 +248,8 @@ typedef struct {
         GCC_PRAGMA("GCC diagnostic pop")                                \
         return nrf_queue_read((_p_queue), p_data, element_count);       \
     }                                                                   \
-    size_t _name##_in(_type const *p_data, size_t element_count)        \
+    size_t _name##_in(_type const * p_data,                             \
+                      size_t  element_count)                            \
     {                                                                   \
         GCC_PRAGMA("GCC diagnostic push")                               \
         GCC_PRAGMA("GCC diagnostic ignored \"-Waddress\"")              \
@@ -243,7 +258,8 @@ typedef struct {
         GCC_PRAGMA("GCC diagnostic pop")                                \
         return nrf_queue_in((_p_queue), p_data, element_count);         \
     }                                                                   \
-    size_t _name##_out(_type *p_data, size_t element_count)             \
+    size_t _name##_out(_type * p_data,                                  \
+                       size_t  element_count)                           \
     {                                                                   \
         GCC_PRAGMA("GCC diagnostic push")                               \
         GCC_PRAGMA("GCC diagnostic ignored \"-Waddress\"")              \
@@ -309,7 +325,7 @@ typedef struct {
  * @return      NRF_SUCCESS         If an element has been successfully added.
  * @return      NRF_ERROR_NO_MEM    If the queue is full (only in @ref NRF_QUEUE_MODE_NO_OVERFLOW).
  */
-ret_code_t nrf_queue_push(nrf_queue_t const *p_queue, void const *p_element);
+ret_code_t nrf_queue_push(nrf_queue_t const * p_queue, void const * p_element);
 
 /**@brief Generic pop implementation.
  *
@@ -320,7 +336,9 @@ ret_code_t nrf_queue_push(nrf_queue_t const *p_queue, void const *p_element);
  * @return      NRF_SUCCESS         If an element was returned.
  * @return      NRF_ERROR_NOT_FOUND If there are no more elements in the queue.
  */
-ret_code_t nrf_queue_generic_pop(nrf_queue_t const *p_queue, void *p_element, bool just_peek);
+ret_code_t nrf_queue_generic_pop(nrf_queue_t const * p_queue,
+                                 void              * p_element,
+                                 bool                just_peek);
 
 /**@brief Pop element from the front of the queue.
  *
@@ -351,7 +369,9 @@ ret_code_t nrf_queue_generic_pop(nrf_queue_t const *p_queue, void *p_element, bo
  * @return      NRF_SUCCESS         If an element was written.
  * @return      NRF_ERROR_NO_MEM    There is not enough space in the queue. No element was written.
  */
-ret_code_t nrf_queue_write(nrf_queue_t const *p_queue, void const *p_data, size_t element_count);
+ret_code_t nrf_queue_write(nrf_queue_t const * p_queue,
+                           void const        * p_data,
+                           size_t              element_count);
 
 /**@brief Function for writing a portion of elements to the queue.
  *
@@ -361,7 +381,9 @@ ret_code_t nrf_queue_write(nrf_queue_t const *p_queue, void const *p_data, size_
  *
  * @return      The number of added elements.
  */
-size_t nrf_queue_in(nrf_queue_t const *p_queue, void const *p_data, size_t element_count);
+size_t nrf_queue_in(nrf_queue_t const * p_queue,
+                    void const        * p_data,
+                    size_t              element_count);
 
 /**@brief Function for reading elements from the queue.
  *
@@ -372,7 +394,9 @@ size_t nrf_queue_in(nrf_queue_t const *p_queue, void const *p_data, size_t eleme
  * @return      NRF_SUCCESS         If an element was returned.
  * @return      NRF_ERROR_NOT_FOUND There is not enough elements in the queue.
  */
-ret_code_t nrf_queue_read(nrf_queue_t const *p_queue, void *p_data, size_t element_count);
+ret_code_t nrf_queue_read(nrf_queue_t const * p_queue,
+                          void              * p_data,
+                          size_t              element_count);
 
 /**@brief Function for reading a portion of elements from the queue.
  *
@@ -382,7 +406,9 @@ ret_code_t nrf_queue_read(nrf_queue_t const *p_queue, void *p_data, size_t eleme
  *
  * @return      The number of read elements.
  */
-size_t nrf_queue_out(nrf_queue_t const *p_queue, void *p_data, size_t element_count);
+size_t nrf_queue_out(nrf_queue_t const * p_queue,
+                    void               * p_data,
+                    size_t               element_count);
 
 /**@brief Function for checking if the queue is full.
  *
@@ -390,7 +416,7 @@ size_t nrf_queue_out(nrf_queue_t const *p_queue, void *p_data, size_t element_co
  *
  * @return      True if the queue is full.
  */
-bool nrf_queue_is_full(nrf_queue_t const *p_queue);
+bool nrf_queue_is_full(nrf_queue_t const * p_queue);
 
 /**@brief Function for checking if the queue is empty.
  *
@@ -398,7 +424,7 @@ bool nrf_queue_is_full(nrf_queue_t const *p_queue);
  *
  * @return      True if the queue is empty.
  */
-bool nrf_queue_is_empty(nrf_queue_t const *p_queue);
+bool nrf_queue_is_empty(nrf_queue_t const * p_queue);
 
 /**@brief Function for getting the current queue utilization.
  *
@@ -406,7 +432,7 @@ bool nrf_queue_is_empty(nrf_queue_t const *p_queue);
  *
  * @return      Current queue utilization.
  */
-size_t nrf_queue_utilization_get(nrf_queue_t const *p_queue);
+size_t nrf_queue_utilization_get(nrf_queue_t const * p_queue);
 
 /**@brief Function for getting the size of available space.
  *
@@ -414,7 +440,7 @@ size_t nrf_queue_utilization_get(nrf_queue_t const *p_queue);
  *
  * @return      Size of available space.
  */
-size_t nrf_queue_available_get(nrf_queue_t const *p_queue);
+size_t nrf_queue_available_get(nrf_queue_t const * p_queue);
 
 /**@brief Function for getting the maximal queue utilization.
  *
@@ -422,20 +448,20 @@ size_t nrf_queue_available_get(nrf_queue_t const *p_queue);
  *
  * @return      Maximal queue utilization.
  */
-size_t nrf_queue_max_utilization_get(nrf_queue_t const *p_queue);
+size_t nrf_queue_max_utilization_get(nrf_queue_t const * p_queue);
 
 /**@brief Function for resetting the maximal queue utilization.
  *
  * @param[in]   p_queue     Pointer to the queue instance.
  *
  */
-void nrf_queue_max_utilization_reset(nrf_queue_t const *p_queue);
+void nrf_queue_max_utilization_reset(nrf_queue_t const * p_queue);
 
 /**@brief Function for resetting the queue state.
  *
  * @param[in]   p_queue     Pointer to the queue instance.
  */
-void nrf_queue_reset(nrf_queue_t const *p_queue);
+void nrf_queue_reset(nrf_queue_t const * p_queue);
 
 #ifdef __cplusplus
 }

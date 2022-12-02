@@ -48,7 +48,7 @@
 /*************************************************************************************************/
 uint8_t LlGenerateP256KeyPair(void)
 {
-    return LctrGenerateP256KeyPair();
+  return LctrGenerateP256KeyPair();
 }
 
 /*************************************************************************************************/
@@ -65,17 +65,16 @@ uint8_t LlGenerateP256KeyPair(void)
  *  will be returned.
  */
 /*************************************************************************************************/
-uint8_t LlGenerateDhKey(const uint8_t pubKey_x[LL_ECC_KEY_LEN],
-                        const uint8_t pubKey_y[LL_ECC_KEY_LEN])
+uint8_t LlGenerateDhKey(const uint8_t pubKey_x[LL_ECC_KEY_LEN], const uint8_t pubKey_y[LL_ECC_KEY_LEN])
 {
-    uint8_t pubKey[LL_ECC_KEY_LEN * 2];
-    uint8_t privKey[LL_ECC_KEY_LEN];
+  uint8_t pubKey[LL_ECC_KEY_LEN * 2];
+  uint8_t privKey[LL_ECC_KEY_LEN];
 
-    memcpy(pubKey, pubKey_x, LL_ECC_KEY_LEN);
-    memcpy(pubKey + LL_ECC_KEY_LEN, pubKey_y, LL_ECC_KEY_LEN);
-    memcpy(privKey, lmgrScCb.privKey, LL_ECC_KEY_LEN);
+  memcpy(pubKey, pubKey_x, LL_ECC_KEY_LEN);
+  memcpy(pubKey + LL_ECC_KEY_LEN, pubKey_y, LL_ECC_KEY_LEN);
+  memcpy(privKey, lmgrScCb.privKey, LL_ECC_KEY_LEN);
 
-    return LctrGenerateDhKey(pubKey, privKey);
+  return LctrGenerateDhKey(pubKey, privKey);
 }
 
 /*************************************************************************************************/
@@ -93,22 +92,25 @@ uint8_t LlGenerateDhKey(const uint8_t pubKey_x[LL_ECC_KEY_LEN],
  *  will be returned. If keyType == HCI_PRIVATE_KEY_DEBUG, debug keys will be used.
  */
 /*************************************************************************************************/
-uint8_t LlGenerateDhKeyV2(uint8_t pubKey_x[LL_ECC_KEY_LEN], uint8_t pubKey_y[LL_ECC_KEY_LEN],
-                          uint8_t keyType)
+uint8_t LlGenerateDhKeyV2(uint8_t pubKey_x[LL_ECC_KEY_LEN], uint8_t pubKey_y[LL_ECC_KEY_LEN], uint8_t keyType)
 {
-    if (keyType == HCI_PRIVATE_KEY_DEBUG) {
-        LL_TRACE_INFO0("Using Debug keys for DHKey generation");
-        return LctrGenerateDebugDhKey();
-    } else {
-        uint8_t pubKey[LL_ECC_KEY_LEN * 2];
-        uint8_t privKey[LL_ECC_KEY_LEN];
 
-        memcpy(pubKey, pubKey_x, LL_ECC_KEY_LEN);
-        memcpy(pubKey + LL_ECC_KEY_LEN, pubKey_y, LL_ECC_KEY_LEN);
-        memcpy(privKey, lmgrScCb.privKey, LL_ECC_KEY_LEN);
+  if (keyType == HCI_PRIVATE_KEY_DEBUG)
+  {
+    LL_TRACE_INFO0("Using Debug keys for DHKey generation");
+    return LctrGenerateDebugDhKey();
+  }
+  else
+  {
+    uint8_t pubKey[LL_ECC_KEY_LEN * 2];
+    uint8_t privKey[LL_ECC_KEY_LEN];
 
-        return LctrGenerateDhKey(pubKey, privKey);
-    }
+    memcpy(pubKey, pubKey_x, LL_ECC_KEY_LEN);
+    memcpy(pubKey + LL_ECC_KEY_LEN, pubKey_y, LL_ECC_KEY_LEN);
+    memcpy(privKey, lmgrScCb.privKey, LL_ECC_KEY_LEN);
+
+    return LctrGenerateDhKey(pubKey, privKey);
+  }
 }
 
 /*************************************************************************************************/
@@ -125,24 +127,29 @@ uint8_t LlGenerateDhKeyV2(uint8_t pubKey_x[LL_ECC_KEY_LEN], uint8_t pubKey_y[LL_
 /*************************************************************************************************/
 uint8_t LlSetP256PrivateKey(const uint8_t privKey[LL_ECC_KEY_LEN])
 {
-    bool_t allZeros = TRUE;
-    unsigned int i;
+  bool_t allZeros = TRUE;
+  unsigned int i;
 
-    for (i = 0; i < LL_ECC_KEY_LEN; i++) {
-        if (privKey[i] != 0) {
-            allZeros = FALSE;
-            break;
-        }
+  for (i = 0; i < LL_ECC_KEY_LEN; i++)
+  {
+    if (privKey[i] != 0)
+    {
+      allZeros = FALSE;
+      break;
     }
+  }
 
-    if (allZeros) {
-        lmgrScCb.privKeySet = FALSE;
-    } else {
-        memcpy(lmgrScCb.privKey, privKey, LL_ECC_KEY_LEN);
-        lmgrScCb.privKeySet = TRUE;
-    }
+  if (allZeros)
+  {
+    lmgrScCb.privKeySet = FALSE;
+  }
+  else
+  {
+    memcpy(lmgrScCb.privKey, privKey, LL_ECC_KEY_LEN);
+    lmgrScCb.privKeySet = TRUE;
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -157,9 +164,10 @@ uint8_t LlSetP256PrivateKey(const uint8_t privKey[LL_ECC_KEY_LEN])
 /*************************************************************************************************/
 uint8_t LlSetValidatePublicKeyMode(uint8_t validateMode)
 {
-    if (validateMode > KEY_VALIDATE_MODE_MAX) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if (validateMode > KEY_VALIDATE_MODE_MAX)
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    return LctrSetValidatePublicKeyMode(validateMode);
+  return LctrSetValidatePublicKeyMode(validateMode);
 }

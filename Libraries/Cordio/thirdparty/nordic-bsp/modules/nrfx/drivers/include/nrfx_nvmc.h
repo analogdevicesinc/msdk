@@ -207,7 +207,7 @@ void nrfx_nvmc_word_write(uint32_t address, uint32_t value);
  * @param src       Pointer to the data to copy from.
  * @param num_bytes Number of bytes to write.
  */
-void nrfx_nvmc_bytes_write(uint32_t address, void const *src, uint32_t num_bytes);
+void nrfx_nvmc_bytes_write(uint32_t address, void const * src, uint32_t num_bytes);
 
 /**
  * @brief Function for writing consecutive words to flash.
@@ -222,7 +222,7 @@ void nrfx_nvmc_bytes_write(uint32_t address, void const *src, uint32_t num_bytes
  * @param src       Pointer to data to copy from. Must be word-aligned.
  * @param num_words Number of words to write.
  */
-void nrfx_nvmc_words_write(uint32_t address, void const *src, uint32_t num_words);
+void nrfx_nvmc_words_write(uint32_t address, void const * src, uint32_t num_words);
 
 /**
  * @brief Function for getting the total flash size in bytes.

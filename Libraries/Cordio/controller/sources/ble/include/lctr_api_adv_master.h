@@ -42,15 +42,16 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Master scan task messages for \a LCTR_DISP_SCAN dispatcher. */
-enum {
-    /* Broadcast events */
-    LCTR_SCAN_MSG_RESET = LCTR_MSG_RESET, /*!< Reset API message. */
-    /* Scan events */
-    LCTR_SCAN_MSG_DISCOVER_ENABLE, /*!< Scan enable API event. */
-    LCTR_SCAN_MSG_DISCOVER_DISABLE, /*!< Scan disable API event. */
-    LCTR_SCAN_MSG_TERMINATE, /*!< Scan BOD terminated event. */
-    LCTR_SCAN_MSG_PARAM_UPD, /*!< Scan parameter update event. */
-    LCTR_SCAN_MSG_TOTAL /*!< Total number of scan events. */
+enum
+{
+  /* Broadcast events */
+  LCTR_SCAN_MSG_RESET                   = LCTR_MSG_RESET,   /*!< Reset API message. */
+  /* Scan events */
+  LCTR_SCAN_MSG_DISCOVER_ENABLE,        /*!< Scan enable API event. */
+  LCTR_SCAN_MSG_DISCOVER_DISABLE,       /*!< Scan disable API event. */
+  LCTR_SCAN_MSG_TERMINATE,              /*!< Scan BOD terminated event. */
+  LCTR_SCAN_MSG_PARAM_UPD,              /*!< Scan parameter update event. */
+  LCTR_SCAN_MSG_TOTAL                   /*!< Total number of scan events. */
 };
 
 /**************************************************************************************************
@@ -58,31 +59,35 @@ enum {
 **************************************************************************************************/
 
 /*! \brief      Scan parameter message. */
-typedef struct {
-    lctrMsgHdr_t hdr; /*!< Message header. */
-    lmgrScanParam_t param; /*!< Scan parameters. */
+typedef struct
+{
+  lctrMsgHdr_t      hdr;                /*!< Message header. */
+  lmgrScanParam_t   param;              /*!< Scan parameters. */
 } lctrScanParamMsg_t;
 
 /*! \brief      Scan enable message. */
-typedef struct {
-    lctrMsgHdr_t hdr; /*!< Message header. */
-    bool_t filtDup; /*!< Filter out duplicate advertisers. */
+typedef struct
+{
+  lctrMsgHdr_t      hdr;                /*!< Message header. */
+  bool_t            filtDup;            /*!< Filter out duplicate advertisers. */
 } lctrScanEnableMsg_t;
 
 /*! \brief      Initiate message. */
-typedef struct {
-    lctrMsgHdr_t hdr; /*!< Message header. */
-    LlConnSpec_t connSpec; /*!< Connection spec. */
-    lmgrScanParam_t scanParam; /*!< Scan parameters. */
-    uint64_t peerAddr; /*!< Peer address. */
-    uint8_t peerAddrType; /*!< Peer address type. */
+typedef struct
+{
+  lctrMsgHdr_t      hdr;                /*!< Message header. */
+  LlConnSpec_t      connSpec;           /*!< Connection spec. */
+  lmgrScanParam_t   scanParam;          /*!< Scan parameters. */
+  uint64_t          peerAddr;           /*!< Peer address. */
+  uint8_t           peerAddrType;       /*!< Peer address type. */
 } lctrInitiateMsg_t;
 
 /*! \brief      Advertising report message. */
-typedef struct {
-    lctrMsgHdr_t hdr; /*!< Message header. */
-    LlAdvReportInd_t rpt; /*!< Report data. */
-    uint32_t hash; /*!< Event data hash. */
+typedef struct
+{
+  lctrMsgHdr_t      hdr;                /*!< Message header. */
+  LlAdvReportInd_t  rpt;                /*!< Report data. */
+  uint32_t          hash;               /*!< Event data hash. */
 } lctrAdvReportMsg_t;
 
 /**************************************************************************************************
@@ -101,7 +106,7 @@ void lctrAdvReportsDec(void);
 bool_t LctrMstScanIsEnabled(void);
 bool_t LctrMstScanIsPrivAddr(void);
 
-/*! \} */ /* LL_LCTR_API_ADV_MST */
+/*! \} */    /* LL_LCTR_API_ADV_MST */
 
 #ifdef __cplusplus
 };

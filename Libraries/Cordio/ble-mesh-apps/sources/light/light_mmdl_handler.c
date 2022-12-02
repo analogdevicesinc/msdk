@@ -65,66 +65,67 @@
 /*************************************************************************************************/
 static void lightHandleSigModelMsg(wsfMsgHdr_t *pMsg, meshSigModelId_t modelId)
 {
-    switch (modelId) {
+  switch (modelId)
+  {
     case MESH_HT_SR_MDL_ID:
-        MeshHtSrHandler(pMsg);
-        break;
+      MeshHtSrHandler(pMsg);
+      break;
 
     case MMDL_GEN_ONOFF_SR_MDL_ID:
-        MmdlGenOnOffSrHandler(pMsg);
-        break;
+      MmdlGenOnOffSrHandler(pMsg);
+      break;
 
     case MMDL_GEN_POWER_ONOFF_SR_MDL_ID:
-        MmdlGenPowOnOffSrHandler(pMsg);
-        break;
+      MmdlGenPowOnOffSrHandler(pMsg);
+      break;
 
     case MMDL_GEN_POWER_ONOFFSETUP_SR_MDL_ID:
-        MmdlGenPowOnOffSetupSrHandler(pMsg);
-        break;
+      MmdlGenPowOnOffSetupSrHandler(pMsg);
+      break;
 
     case MMDL_GEN_LEVEL_SR_MDL_ID:
-        MmdlGenLevelSrHandler(pMsg);
-        break;
+      MmdlGenLevelSrHandler(pMsg);
+      break;
 
     case MMDL_SCENE_SETUP_SR_MDL_ID:
-        MmdlSceneSetupSrHandler(pMsg);
-        break;
+      MmdlSceneSetupSrHandler(pMsg);
+      break;
 
     case MMDL_SCENE_SR_MDL_ID:
-        MmdlSceneSrHandler(pMsg);
-        break;
+      MmdlSceneSrHandler(pMsg);
+      break;
 
     case MMDL_GEN_DEFAULT_TRANS_SR_MDL_ID:
-        MmdlGenDefaultTransSrHandler(pMsg);
-        break;
+      MmdlGenDefaultTransSrHandler(pMsg);
+      break;
 
     case MMDL_LIGHT_LIGHTNESS_SR_MDL_ID:
-        MmdlLightLightnessSrHandler(pMsg);
-        break;
+      MmdlLightLightnessSrHandler(pMsg);
+      break;
 
     case MMDL_LIGHT_LIGHTNESSSETUP_SR_MDL_ID:
-        MmdlLightLightnessSetupSrHandler(pMsg);
-        break;
+      MmdlLightLightnessSetupSrHandler(pMsg);
+      break;
 
     case MMDL_LIGHT_HSL_SR_MDL_ID:
-        MmdlLightHslSrHandler(pMsg);
-        break;
+      MmdlLightHslSrHandler(pMsg);
+      break;
 
     case MMDL_LIGHT_HSL_SETUP_SR_MDL_ID:
-        MmdlLightHslSetupSrHandler(pMsg);
-        break;
+      MmdlLightHslSetupSrHandler(pMsg);
+      break;
 
     case MMDL_LIGHT_HSL_HUE_SR_MDL_ID:
-        MmdlLightHslHueSrHandler(pMsg);
-        break;
+      MmdlLightHslHueSrHandler(pMsg);
+      break;
 
     case MMDL_LIGHT_HSL_SAT_SR_MDL_ID:
-        MmdlLightHslSatSrHandler(pMsg);
-        break;
+      MmdlLightHslSatSrHandler(pMsg);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -139,8 +140,8 @@ static void lightHandleSigModelMsg(wsfMsgHdr_t *pMsg, meshSigModelId_t modelId)
 /*************************************************************************************************/
 static void lightHandleVendorModelMsg(wsfMsgHdr_t *pMsg, meshVendorModelId_t modelId)
 {
-    (void)pMsg;
-    (void)modelId;
+  (void)pMsg;
+  (void)modelId;
 }
 
 /**************************************************************************************************
@@ -159,82 +160,88 @@ static void lightHandleVendorModelMsg(wsfMsgHdr_t *pMsg, meshVendorModelId_t mod
 /*************************************************************************************************/
 void LightMmdlHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            if (MESH_OPCODE_IS_VENDOR(((meshModelMsgRecvEvt_t *)pMsg)->opCode)) {
-                /* Handle message for SIG defined model. */
-                lightHandleVendorModelMsg(pMsg,
-                                          ((meshModelMsgRecvEvt_t *)pMsg)->modelId.vendorModelId);
-            } else {
-                /* Handle message for vendor defined model. */
-                lightHandleSigModelMsg(pMsg, ((meshModelMsgRecvEvt_t *)pMsg)->modelId.sigModelId);
-            }
-            break;
-
-        case MESH_MODEL_EVT_PERIODIC_PUB:
-            if (((meshModelPeriodicPubEvt_t *)pMsg)->isVendorModel) {
-                /* Handle message for SIG defined model. */
-                lightHandleVendorModelMsg(
-                    pMsg, ((meshModelPeriodicPubEvt_t *)pMsg)->modelId.vendorModelId);
-            } else {
-                /* Handle message for vendor defined model. */
-                lightHandleSigModelMsg(pMsg,
-                                       ((meshModelPeriodicPubEvt_t *)pMsg)->modelId.sigModelId);
-            }
-            break;
-
-        case HT_SR_EVT_TMR_CBACK:
-            MeshHtSrHandler(pMsg);
-            break;
-
-        case MMDL_GEN_ON_OFF_SR_EVT_TMR_CBACK:
-        case MMDL_GEN_ON_OFF_SR_MSG_RCVD_TMR_CBACK:
-            MmdlGenOnOffSrHandler(pMsg);
-            break;
-
-        case MMDL_GEN_LEVEL_SR_EVT_TMR_CBACK:
-        case MMDL_GEN_LEVEL_SR_MSG_RCVD_TMR_CBACK:
-            MmdlGenLevelSrHandler(pMsg);
-            break;
-
-        case MMDL_SCENE_SR_EVT_TMR_CBACK:
-        case MMDL_SCENE_SR_MSG_RCVD_TMR_CBACK:
-            MmdlSceneSrHandler(pMsg);
-            break;
-
-        case MMDL_LIGHT_LIGHTNESS_SR_EVT_TMR_CBACK:
-        case MMDL_LIGHT_LIGHTNESS_SR_MSG_RCVD_TMR_CBACK:
-            MmdlLightLightnessSrHandler(pMsg);
-            break;
-
-        case MMDL_LIGHT_LIGHTNESSSETUP_SR_EVT_TMR_CBACK:
-        case MMDL_LIGHT_LIGHTNESSSETUP_SR_MSG_RCVD_TMR_CBACK:
-            MmdlLightLightnessSetupSrHandler(pMsg);
-            break;
-
-        case MMDL_LIGHT_HSL_SR_EVT_TMR_CBACK:
-        case MMDL_LIGHT_HSL_SR_MSG_RCVD_TMR_CBACK:
-            MmdlLightHslSrHandler(pMsg);
-            break;
-
-        case MMDL_LIGHT_HSL_HUE_SR_EVT_TMR_CBACK:
-        case MMDL_LIGHT_HSL_HUE_SR_MSG_RCVD_TMR_CBACK:
-            MmdlLightHslHueSrHandler(pMsg);
-            break;
-
-        case MMDL_LIGHT_HSL_SAT_SR_EVT_TMR_CBACK:
-        case MMDL_LIGHT_HSL_SAT_SR_MSG_RCVD_TMR_CBACK:
-            MmdlLightHslSatSrHandler(pMsg);
-            break;
-
-        default:
-            MESH_TRACE_WARN0("MMDL: Invalid event message received!");
-            break;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        if (MESH_OPCODE_IS_VENDOR(((meshModelMsgRecvEvt_t *)pMsg)->opCode))
+        {
+          /* Handle message for SIG defined model. */
+          lightHandleVendorModelMsg(pMsg, ((meshModelMsgRecvEvt_t *)pMsg)->modelId.vendorModelId);
         }
+        else
+        {
+          /* Handle message for vendor defined model. */
+          lightHandleSigModelMsg(pMsg, ((meshModelMsgRecvEvt_t *)pMsg)->modelId.sigModelId);
+        }
+        break;
+
+      case MESH_MODEL_EVT_PERIODIC_PUB:
+        if (((meshModelPeriodicPubEvt_t *)pMsg)->isVendorModel)
+        {
+          /* Handle message for SIG defined model. */
+          lightHandleVendorModelMsg(pMsg, ((meshModelPeriodicPubEvt_t *)pMsg)->modelId.vendorModelId);
+        }
+        else
+        {
+          /* Handle message for vendor defined model. */
+          lightHandleSigModelMsg(pMsg, ((meshModelPeriodicPubEvt_t *)pMsg)->modelId.sigModelId);
+        }
+        break;
+
+      case HT_SR_EVT_TMR_CBACK:
+        MeshHtSrHandler(pMsg);
+        break;
+
+      case MMDL_GEN_ON_OFF_SR_EVT_TMR_CBACK:
+      case MMDL_GEN_ON_OFF_SR_MSG_RCVD_TMR_CBACK:
+        MmdlGenOnOffSrHandler(pMsg);
+        break;
+
+      case MMDL_GEN_LEVEL_SR_EVT_TMR_CBACK:
+      case MMDL_GEN_LEVEL_SR_MSG_RCVD_TMR_CBACK:
+        MmdlGenLevelSrHandler(pMsg);
+        break;
+
+      case MMDL_SCENE_SR_EVT_TMR_CBACK:
+      case MMDL_SCENE_SR_MSG_RCVD_TMR_CBACK:
+        MmdlSceneSrHandler(pMsg);
+        break;
+
+      case MMDL_LIGHT_LIGHTNESS_SR_EVT_TMR_CBACK:
+      case MMDL_LIGHT_LIGHTNESS_SR_MSG_RCVD_TMR_CBACK:
+        MmdlLightLightnessSrHandler(pMsg);
+        break;
+
+      case MMDL_LIGHT_LIGHTNESSSETUP_SR_EVT_TMR_CBACK:
+      case MMDL_LIGHT_LIGHTNESSSETUP_SR_MSG_RCVD_TMR_CBACK:
+        MmdlLightLightnessSetupSrHandler(pMsg);
+        break;
+
+      case MMDL_LIGHT_HSL_SR_EVT_TMR_CBACK:
+      case MMDL_LIGHT_HSL_SR_MSG_RCVD_TMR_CBACK:
+        MmdlLightHslSrHandler(pMsg);
+        break;
+
+      case MMDL_LIGHT_HSL_HUE_SR_EVT_TMR_CBACK:
+      case MMDL_LIGHT_HSL_HUE_SR_MSG_RCVD_TMR_CBACK:
+        MmdlLightHslHueSrHandler(pMsg);
+        break;
+
+      case MMDL_LIGHT_HSL_SAT_SR_EVT_TMR_CBACK:
+      case MMDL_LIGHT_HSL_SAT_SR_MSG_RCVD_TMR_CBACK:
+        MmdlLightHslSatSrHandler(pMsg);
+        break;
+
+      default:
+        MESH_TRACE_WARN0("MMDL: Invalid event message received!");
+        break;
     }
-    /* Handle events */
-    else if (event) {
-    }
+  }
+  /* Handle events */
+  else if (event)
+  {
+  }
 }

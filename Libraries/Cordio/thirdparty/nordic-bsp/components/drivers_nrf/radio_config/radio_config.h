@@ -44,11 +44,12 @@
 extern "C" {
 #endif
 
-#define PACKET_BASE_ADDRESS_LENGTH (4UL) //!< Packet base address length field size in bytes
-#define PACKET_STATIC_LENGTH (1UL) //!< Packet static length in bytes
-#define PACKET_PAYLOAD_MAXSIZE (PACKET_STATIC_LENGTH) //!< Packet payload maximum size in bytes
+#define PACKET_BASE_ADDRESS_LENGTH  (4UL)                   //!< Packet base address length field size in bytes
+#define PACKET_STATIC_LENGTH        (1UL)                   //!< Packet static length in bytes
+#define PACKET_PAYLOAD_MAXSIZE      (PACKET_STATIC_LENGTH)  //!< Packet payload maximum size in bytes
 
 void radio_configure(void);
+
 
 #ifdef __cplusplus
 }

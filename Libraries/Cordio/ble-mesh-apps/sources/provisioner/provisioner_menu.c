@@ -42,24 +42,24 @@
 **************************************************************************************************/
 
 /*! Dialog message string length */
-#define PROVISIONER_DLG_MSG_LEN 128
+#define PROVISIONER_DLG_MSG_LEN               128
 
 /*! Format buffer argument length */
-#define PROVISIONER_FORMAT_BUF_ARG_LEN 16
+#define PROVISIONER_FORMAT_BUF_ARG_LEN        16
 
 /*! Main menu selections. */
-#define PROVISIONER_SEL_ADD_RM_SW 1 /*! Add room switch */
-#define PROVISIONER_SEL_ADD_MSTR_SW 2 /*! Add master switch */
+#define PROVISIONER_SEL_ADD_RM_SW             1     /*! Add room switch */
+#define PROVISIONER_SEL_ADD_MSTR_SW           2     /*! Add master switch */
 
 /*! Add light dialog selections. */
-#define PROVISIONER_SEL_RETRY_ADD_ANOTHER 1 /*! Retry or Add another */
-#define PROVISIONER_SEL_CANCEL_DONE 2 /*! Cancel or Done */
+#define PROVISIONER_SEL_RETRY_ADD_ANOTHER     1     /*! Retry or Add another */
+#define PROVISIONER_SEL_CANCEL_DONE           2     /*! Cancel or Done */
 
 /*! UI states. */
-#define PROVISIONER_STATE_IDLE 0 /*! Idle state */
-#define PROVISIONER_STATE_ADDING_RM_SW 1 /*! Adding room switch state */
-#define PROVISIONER_STATE_ADDING_MSTR_SW 2 /*! Adding master switch state */
-#define PROVISIONER_STATE_ADDING_LIGHT 3 /*! Adding light state */
+#define PROVISIONER_STATE_IDLE                0     /*! Idle state */
+#define PROVISIONER_STATE_ADDING_RM_SW        1     /*! Adding room switch state */
+#define PROVISIONER_STATE_ADDING_MSTR_SW      2     /*! Adding master switch state */
+#define PROVISIONER_STATE_ADDING_LIGHT        3     /*! Adding light state */
 
 /**************************************************************************************************
   Function Prototypes
@@ -85,172 +85,198 @@ uint8_t provisionerUiState = PROVISIONER_STATE_IDLE;
 char provisionerDlgMsgStr[PROVISIONER_DLG_MSG_LEN];
 
 /*! Splash Screen */
-static const UiSplashScreen_t provisionerSplash = { "Mesh Provisioner, r19.02",
-                                                    "(c)2018-2019 Arm, Ltd.", "\0", 1500 };
+static const UiSplashScreen_t provisionerSplash =
+{
+  "Mesh Provisioner, r19.02",
+  "(c)2018-2019 Arm, Ltd.",
+  "\0",
+  1500
+};
 
 /*! List of menu selections */
-static constStr provisionerMainSelectList[] = {
-    "Add Room",
-    "Add Master Switch",
+static constStr provisionerMainSelectList[] =
+{
+  "Add Room",
+  "Add Master Switch",
 };
 
 /*! Main menu */
-static const UiMenu_t provisionerMain = { { NULL, NULL },
-                                          "Main Menu",
-                                          sizeof(provisionerMainSelectList) / sizeof(constStr),
-                                          0,
-                                          provisionerProcSelMain,
-                                          provisionerMainSelectList,
-                                          0 };
+static const UiMenu_t provisionerMain =
+{
+  {NULL, NULL},
+  "Main Menu",
+  sizeof(provisionerMainSelectList) / sizeof(constStr),
+  0,
+  provisionerProcSelMain,
+  provisionerMainSelectList,
+  0
+};
 
 /*! Single cancel selection */
-static constStr provisionerSelectionCancel[] = {
-    "Cancel",
+static constStr provisionerSelectionCancel[] =
+{
+  "Cancel",
 };
 
 /*! Single next selection */
-static constStr provisionerSelectionNext[] = {
-    "Next",
+static constStr provisionerSelectionNext[] =
+{
+  "Next",
 };
 
 /*! Single retry selection */
-static constStr provisionerSelectionRetry[] = {
-    "Retry",
-    "Cancel",
+static constStr provisionerSelectionRetry[] =
+{
+  "Retry",
+  "Cancel",
 };
 
 /*! Single done selection */
-static constStr provisionerSelectionDone[] = {
-    "Done",
+static constStr provisionerSelectionDone[] =
+{
+  "Done",
 };
 
 /*! Two option Add Another Light or Done selection */
-static constStr provisionerSelectionAddAnother[] = { "Add Another Light", "Done" };
+static constStr provisionerSelectionAddAnother[] =
+{
+  "Add Another Light",
+  "Done"
+};
 
 /*! Add room switch dialog */
-static const UiDialog_t provisionerDlgAddRmSwitch = {
-    { NULL, NULL },
-    "Add Room Switch",
-    "Power on switch...",
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelGoToMainMenu,
-    sizeof(provisionerSelectionCancel) / sizeof(constStr),
-    provisionerSelectionCancel,
+static const UiDialog_t provisionerDlgAddRmSwitch =
+{
+  {NULL, NULL},
+  "Add Room Switch",
+  "Power on switch...",
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelGoToMainMenu,
+  sizeof(provisionerSelectionCancel) / sizeof(constStr),
+  provisionerSelectionCancel,
 };
 
 /*! Add master switch dialog */
-static const UiDialog_t provisionerDlgAddMstrSwitch = {
-    { NULL, NULL },
-    "Add Master Switch",
-    "Power on switch...",
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelGoToMainMenu,
-    sizeof(provisionerSelectionCancel) / sizeof(constStr),
-    provisionerSelectionCancel,
+static const UiDialog_t provisionerDlgAddMstrSwitch =
+{
+  {NULL, NULL},
+  "Add Master Switch",
+  "Power on switch...",
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelGoToMainMenu,
+  sizeof(provisionerSelectionCancel) / sizeof(constStr),
+  provisionerSelectionCancel,
 };
 
 /*! Add light dialog */
-static const UiDialog_t provisionerDlgAddLight = {
-    { NULL, NULL },
-    "Add Light",
-    "Power on light...",
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelGoToMainMenu,
-    sizeof(provisionerSelectionCancel) / sizeof(constStr),
-    provisionerSelectionCancel,
+static const UiDialog_t provisionerDlgAddLight =
+{
+  {NULL, NULL},
+  "Add Light",
+  "Power on light...",
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelGoToMainMenu,
+  sizeof(provisionerSelectionCancel) / sizeof(constStr),
+  provisionerSelectionCancel,
 };
 
 /*! Room switch added dialog */
-static const UiDialog_t provisionerDlgRmSwAdded = {
-    { NULL, NULL },
-    "Room Switch Added",
-    provisionerDlgMsgStr,
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelGoToAddLight,
-    sizeof(provisionerSelectionNext) / sizeof(constStr),
-    provisionerSelectionNext,
+static const UiDialog_t provisionerDlgRmSwAdded =
+{
+  {NULL, NULL},
+  "Room Switch Added",
+  provisionerDlgMsgStr,
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelGoToAddLight,
+  sizeof(provisionerSelectionNext) / sizeof(constStr),
+  provisionerSelectionNext,
 };
 
 /*! Room switch error dialog */
-static const UiDialog_t provisionerDlgRmSwError = {
-    { NULL, NULL },
-    "Room Switch Error",
-    provisionerDlgMsgStr,
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelGoToAddRmSwitch,
-    sizeof(provisionerSelectionRetry) / sizeof(constStr),
-    provisionerSelectionRetry,
+static const UiDialog_t provisionerDlgRmSwError =
+{
+  {NULL, NULL},
+  "Room Switch Error",
+  provisionerDlgMsgStr,
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelGoToAddRmSwitch,
+  sizeof(provisionerSelectionRetry) / sizeof(constStr),
+  provisionerSelectionRetry,
 };
 
 /*! Master switch added dialog */
-static const UiDialog_t provisionerDlgMstrSwAdded = {
-    { NULL, NULL },
-    "Master Switch Added",
-    provisionerDlgMsgStr,
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelGoToMainMenu,
-    sizeof(provisionerSelectionDone) / sizeof(constStr),
-    provisionerSelectionDone,
+static const UiDialog_t provisionerDlgMstrSwAdded =
+{
+  {NULL, NULL},
+  "Master Switch Added",
+  provisionerDlgMsgStr,
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelGoToMainMenu,
+  sizeof(provisionerSelectionDone) / sizeof(constStr),
+  provisionerSelectionDone,
 };
 
 /*! Master switch error dialog */
-static const UiDialog_t provisionerDlgMstrSwError = {
-    { NULL, NULL },
-    "Master Switch Error",
-    provisionerDlgMsgStr,
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelGoToAddMstrSwitch,
-    sizeof(provisionerSelectionRetry) / sizeof(constStr),
-    provisionerSelectionRetry,
+static const UiDialog_t provisionerDlgMstrSwError =
+{
+  {NULL, NULL},
+  "Master Switch Error",
+  provisionerDlgMsgStr,
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelGoToAddMstrSwitch,
+  sizeof(provisionerSelectionRetry) / sizeof(constStr),
+  provisionerSelectionRetry,
 };
 
 /*! Light added dialog */
-static const UiDialog_t provisionerDlgLightAdded = {
-    { NULL, NULL },
-    "Light Added",
-    provisionerDlgMsgStr,
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelLightAdded,
-    sizeof(provisionerSelectionAddAnother) / sizeof(constStr),
-    provisionerSelectionAddAnother,
+static const UiDialog_t provisionerDlgLightAdded =
+{
+  {NULL, NULL},
+  "Light Added",
+  provisionerDlgMsgStr,
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelLightAdded,
+  sizeof(provisionerSelectionAddAnother) / sizeof(constStr),
+  provisionerSelectionAddAnother,
 };
 
 /*! Light error dialog */
-static const UiDialog_t provisionerDlgLightError = {
-    { NULL, NULL },
-    "Light Error",
-    provisionerDlgMsgStr,
-    UI_DLG_TYPE_INPUT_SELECT,
-    NULL,
-    0,
-    0,
-    provisionerProcSelRetryAddLight,
-    sizeof(provisionerSelectionRetry) / sizeof(constStr),
-    provisionerSelectionRetry,
+static const UiDialog_t provisionerDlgLightError =
+{
+  {NULL, NULL},
+  "Light Error",
+  provisionerDlgMsgStr,
+  UI_DLG_TYPE_INPUT_SELECT,
+  NULL,
+  0,
+  0,
+  provisionerProcSelRetryAddLight,
+  sizeof(provisionerSelectionRetry) / sizeof(constStr),
+  provisionerSelectionRetry,
 };
 
 /*************************************************************************************************/
@@ -264,22 +290,23 @@ static const UiDialog_t provisionerDlgLightError = {
 /*************************************************************************************************/
 static char *bin2Str(const uint8_t *pBuf)
 {
-    static const char hex[] = "0123456789ABCDEF";
-    static char str[(PROVISIONER_FORMAT_BUF_ARG_LEN * 2) + 1];
-    char *pStr = str;
+  static const char hex[] = "0123456789ABCDEF";
+  static char       str[(PROVISIONER_FORMAT_BUF_ARG_LEN * 2) + 1];
+  char              *pStr = str;
 
-    /* Address is little endian so copy in reverse. */
-    pBuf += PROVISIONER_FORMAT_BUF_ARG_LEN;
+  /* Address is little endian so copy in reverse. */
+  pBuf += PROVISIONER_FORMAT_BUF_ARG_LEN;
 
-    while (pStr < &str[PROVISIONER_FORMAT_BUF_ARG_LEN * 2]) {
-        *pStr++ = hex[*--pBuf >> 4];
-        *pStr++ = hex[*pBuf & 0x0F];
-    }
+  while (pStr < &str[PROVISIONER_FORMAT_BUF_ARG_LEN * 2])
+  {
+    *pStr++ = hex[*--pBuf >> 4];
+    *pStr++ = hex[*pBuf & 0x0F];
+  }
 
-    /* NULL terminate string. */
-    *pStr = 0;
+  /* NULL terminate string. */
+  *pStr = 0;
 
-    return str;
+  return str;
 }
 
 /*************************************************************************************************/
@@ -294,23 +321,25 @@ static char *bin2Str(const uint8_t *pBuf)
 /*************************************************************************************************/
 static char *format128BitBuf(char *pStr, uint8_t *pBuf)
 {
-    unsigned int i, pos = 0;
-    char *pIdStr = bin2Str(pBuf);
+  unsigned int i, pos=0;
+  char *pIdStr = bin2Str(pBuf);
 
-    /* Copy buffer and add colons. */
-    for (i = 0; i < PROVISIONER_FORMAT_BUF_ARG_LEN; i++) {
-        pStr[pos++] = pIdStr[i * 2];
-        pStr[pos++] = pIdStr[i * 2 + 1];
+  /* Copy buffer and add colons. */
+  for (i = 0; i < PROVISIONER_FORMAT_BUF_ARG_LEN; i++)
+  {
+    pStr[pos++] = pIdStr[i*2];
+    pStr[pos++] = pIdStr[i*2 + 1];
 
-        if (i < PROVISIONER_FORMAT_BUF_ARG_LEN - 1) {
-            pStr[pos++] = ':';
-        }
+    if (i < PROVISIONER_FORMAT_BUF_ARG_LEN - 1)
+    {
+      pStr[pos++] = ':';
     }
+  }
 
-    pStr[pos++] = '\0';
+  pStr[pos++] = '\0';
 
-    /* Return pointer in case caller wishes to append more data. */
-    return &pStr[pos - 1];
+  /* Return pointer in case caller wishes to append more data. */
+  return &pStr[pos - 1];
 }
 
 /*************************************************************************************************/
@@ -325,14 +354,14 @@ static char *format128BitBuf(char *pStr, uint8_t *pBuf)
 /*************************************************************************************************/
 static void strCatError(char *pStr, uint8_t error)
 {
-    static const char hex[] = "0123456789ABCDEF";
+  static const char hex[] = "0123456789ABCDEF";
 
-    strcat(pStr, "\r\nError: ");
-    pStr += strlen(pStr);
+  strcat(pStr, "\r\nError: ");
+  pStr += strlen(pStr);
 
-    *pStr++ = hex[error >> 4];
-    *pStr++ = hex[error & 0x0F];
-    *pStr = '\0';
+  *pStr++ = hex[error >> 4];
+  *pStr++ = hex[error & 0x0F];
+  *pStr = '\0';
 }
 
 /*************************************************************************************************/
@@ -344,14 +373,14 @@ static void strCatError(char *pStr, uint8_t error)
 /*************************************************************************************************/
 static void provisionerAddRoomSwitch(void)
 {
-    /* Update state */
-    provisionerUiState = PROVISIONER_STATE_ADDING_RM_SW;
+  /* Update state */
+  provisionerUiState = PROVISIONER_STATE_ADDING_RM_SW;
 
-    /* Display Dialog */
-    UiLoadDialog(&provisionerDlgAddRmSwitch);
+  /* Display Dialog */
+  UiLoadDialog(&provisionerDlgAddRmSwitch);
 
-    /* Begin Provisioning */
-    ProvisionerProvisionDevice(PROVISIONER_PRV_ROOM_SWITCH);
+  /* Begin Provisioning */
+  ProvisionerProvisionDevice(PROVISIONER_PRV_ROOM_SWITCH);
 }
 
 /*************************************************************************************************/
@@ -363,14 +392,14 @@ static void provisionerAddRoomSwitch(void)
 /*************************************************************************************************/
 static void provisionerAddMasterSwitch(void)
 {
-    /* Update state */
-    provisionerUiState = PROVISIONER_STATE_ADDING_MSTR_SW;
+  /* Update state */
+  provisionerUiState = PROVISIONER_STATE_ADDING_MSTR_SW;
 
-    /* Display Dialog */
-    UiLoadDialog(&provisionerDlgAddMstrSwitch);
+  /* Display Dialog */
+  UiLoadDialog(&provisionerDlgAddMstrSwitch);
 
-    /* Begin Provisioning */
-    ProvisionerProvisionDevice(PROVISIONER_PRV_MASTER_SWITCH);
+  /* Begin Provisioning */
+  ProvisionerProvisionDevice(PROVISIONER_PRV_MASTER_SWITCH);
 }
 
 /*************************************************************************************************/
@@ -382,14 +411,14 @@ static void provisionerAddMasterSwitch(void)
 /*************************************************************************************************/
 static void provisionerAddLight(void)
 {
-    /* Update state */
-    provisionerUiState = PROVISIONER_STATE_ADDING_LIGHT;
+  /* Update state */
+  provisionerUiState = PROVISIONER_STATE_ADDING_LIGHT;
 
-    /* Display Dialog */
-    UiLoadDialog(&provisionerDlgAddLight);
+  /* Display Dialog */
+  UiLoadDialog(&provisionerDlgAddLight);
 
-    /* Begin Provisioning */
-    ProvisionerProvisionDevice(PROVISIONER_PRV_LIGHT);
+  /* Begin Provisioning */
+  ProvisionerProvisionDevice(PROVISIONER_PRV_LIGHT);
 }
 
 /*************************************************************************************************/
@@ -405,31 +434,34 @@ static void provisionerAddLight(void)
 /*************************************************************************************************/
 static void provisionerAddRoomSwitchCmpl(uint8_t status, uint8_t *pUuid, uint8_t *pDevKey)
 {
-    char *p;
+  char *p;
 
-    /* Return to IDLE state */
-    provisionerUiState = PROVISIONER_STATE_IDLE;
+  /* Return to IDLE state */
+  provisionerUiState = PROVISIONER_STATE_IDLE;
 
-    p = provisionerDlgMsgStr;
+  p = provisionerDlgMsgStr;
 
-    strcpy(p, "ID: ");
-    p += strlen(p);
+  strcpy(p, "ID: ");
+  p += strlen(p);
 
-    /* Set UUID */
-    p = format128BitBuf(p, pUuid);
+  /* Set UUID */
+  p = format128BitBuf(p, pUuid);
 
-    /* Add new line for device key */
-    strcpy(p, "\r\nDevice Key: ");
-    p += strlen(p);
-    (void)format128BitBuf(p, pDevKey);
+  /* Add new line for device key */
+  strcpy(p, "\r\nDevice Key: ");
+  p += strlen(p);
+  (void) format128BitBuf(p, pDevKey);
 
-    /* Display next dialog */
-    if (status == MESH_SUCCESS) {
-        UiLoadDialog(&provisionerDlgRmSwAdded);
-    } else {
-        strCatError(provisionerDlgMsgStr, status);
-        UiLoadDialog(&provisionerDlgRmSwError);
-    }
+  /* Display next dialog */
+  if (status == MESH_SUCCESS)
+  {
+    UiLoadDialog(&provisionerDlgRmSwAdded);
+  }
+  else
+  {
+    strCatError(provisionerDlgMsgStr, status);
+    UiLoadDialog(&provisionerDlgRmSwError);
+  }
 }
 
 /*************************************************************************************************/
@@ -445,31 +477,34 @@ static void provisionerAddRoomSwitchCmpl(uint8_t status, uint8_t *pUuid, uint8_t
 /*************************************************************************************************/
 static void provisionerAddMstrSwitchCmpl(uint8_t status, uint8_t *pUuid, uint8_t *pDevKey)
 {
-    char *p;
+  char *p;
 
-    /* Return to IDLE state */
-    provisionerUiState = PROVISIONER_STATE_IDLE;
+  /* Return to IDLE state */
+  provisionerUiState = PROVISIONER_STATE_IDLE;
 
-    p = provisionerDlgMsgStr;
+  p = provisionerDlgMsgStr;
 
-    strcpy(p, "ID: ");
-    p += strlen(p);
+  strcpy(p, "ID: ");
+  p += strlen(p);
 
-    /* Set UUID */
-    p = format128BitBuf(p, pUuid);
+  /* Set UUID */
+  p = format128BitBuf(p, pUuid);
 
-    /* Add new line for device key */
-    strcpy(p, "\r\nDevice Key: ");
-    p += strlen(p);
-    (void)format128BitBuf(p, pDevKey);
+  /* Add new line for device key */
+  strcpy(p, "\r\nDevice Key: ");
+  p += strlen(p);
+  (void) format128BitBuf(p, pDevKey);
 
-    /* Display next dialog */
-    if (status == MESH_SUCCESS) {
-        UiLoadDialog(&provisionerDlgMstrSwAdded);
-    } else {
-        strCatError(provisionerDlgMsgStr, status);
-        UiLoadDialog(&provisionerDlgMstrSwError);
-    }
+  /* Display next dialog */
+  if (status == MESH_SUCCESS)
+  {
+    UiLoadDialog(&provisionerDlgMstrSwAdded);
+  }
+  else
+  {
+    strCatError(provisionerDlgMsgStr, status);
+    UiLoadDialog(&provisionerDlgMstrSwError);
+  }
 }
 
 /*************************************************************************************************/
@@ -485,31 +520,34 @@ static void provisionerAddMstrSwitchCmpl(uint8_t status, uint8_t *pUuid, uint8_t
 /*************************************************************************************************/
 static void provisionerAddLightCmpl(uint8_t status, uint8_t *pUuid, uint8_t *pDevKey)
 {
-    char *p;
+  char *p;
 
-    /* Return to IDLE state */
-    provisionerUiState = PROVISIONER_STATE_IDLE;
+  /* Return to IDLE state */
+  provisionerUiState = PROVISIONER_STATE_IDLE;
 
-    p = provisionerDlgMsgStr;
+  p = provisionerDlgMsgStr;
 
-    strcpy(p, "ID: ");
-    p += strlen(p);
+  strcpy(p, "ID: ");
+  p += strlen(p);
 
-    /* Set UUID */
-    p = format128BitBuf(p, pUuid);
+  /* Set UUID */
+  p = format128BitBuf(p, pUuid);
 
-    /* Add new line for device key */
-    strcpy(p, "\r\nDevice Key: ");
-    p += strlen(p);
-    (void)format128BitBuf(p, pDevKey);
+  /* Add new line for device key */
+  strcpy(p, "\r\nDevice Key: ");
+  p += strlen(p);
+  (void) format128BitBuf(p, pDevKey);
 
-    /* Display next dialog */
-    if (status == MESH_SUCCESS) {
-        UiLoadDialog(&provisionerDlgLightAdded);
-    } else {
-        strCatError(provisionerDlgMsgStr, status);
-        UiLoadDialog(&provisionerDlgLightError);
-    }
+  /* Display next dialog */
+  if (status == MESH_SUCCESS)
+  {
+    UiLoadDialog(&provisionerDlgLightAdded);
+  }
+  else
+  {
+    strCatError(provisionerDlgMsgStr, status);
+    UiLoadDialog(&provisionerDlgLightError);
+  }
 }
 
 /*************************************************************************************************/
@@ -524,18 +562,19 @@ static void provisionerAddLightCmpl(uint8_t status, uint8_t *pUuid, uint8_t *pDe
 /*************************************************************************************************/
 static void provisionerProcSelMain(const void *pMenu, uint8_t selection)
 {
-    switch (selection) {
-    case PROVISIONER_SEL_ADD_RM_SW:
-        provisionerAddRoomSwitch();
-        break;
+  switch(selection)
+  {
+  case PROVISIONER_SEL_ADD_RM_SW:
+    provisionerAddRoomSwitch();
+    break;
 
-    case PROVISIONER_SEL_ADD_MSTR_SW:
-        provisionerAddMasterSwitch();
-        break;
+  case PROVISIONER_SEL_ADD_MSTR_SW:
+    provisionerAddMasterSwitch();
+    break;
 
-    default:
-        break;
-    }
+  default:
+    break;
+  }
 }
 
 /*************************************************************************************************/
@@ -550,19 +589,20 @@ static void provisionerProcSelMain(const void *pMenu, uint8_t selection)
 /*************************************************************************************************/
 static void provisionerProcSelGoToMainMenu(const void *pDialog, uint8_t selection)
 {
-    switch (provisionerUiState) {
-    case PROVISIONER_STATE_ADDING_RM_SW: /* Fallthrough */
+  switch(provisionerUiState)
+  {
+    case PROVISIONER_STATE_ADDING_RM_SW:   /* Fallthrough */
     case PROVISIONER_STATE_ADDING_MSTR_SW: /* Fallthrough */
-    case PROVISIONER_STATE_ADDING_LIGHT: /* Fallthrough */
+    case PROVISIONER_STATE_ADDING_LIGHT:   /* Fallthrough */
     default:
-        ProvisionerCancelProvisioning();
-        break;
-    }
+      ProvisionerCancelProvisioning();
+      break;
+  }
 
-    /* Return to idle state. */
-    provisionerUiState = PROVISIONER_STATE_IDLE;
+  /* Return to idle state. */
+  provisionerUiState = PROVISIONER_STATE_IDLE;
 
-    UiLoadMenu(&provisionerMain);
+  UiLoadMenu(&provisionerMain);
 }
 
 /*************************************************************************************************/
@@ -577,20 +617,21 @@ static void provisionerProcSelGoToMainMenu(const void *pDialog, uint8_t selectio
 /*************************************************************************************************/
 static void provisionerProcSelGoToAddRmSwitch(const void *pDialog, uint8_t selection)
 {
-    switch (selection) {
+  switch(selection)
+  {
     case PROVISIONER_SEL_RETRY_ADD_ANOTHER:
-        provisionerAddRoomSwitch();
-        break;
+      provisionerAddRoomSwitch();
+      break;
 
     case PROVISIONER_SEL_CANCEL_DONE:
-        /* Return to idle state. */
-        provisionerUiState = PROVISIONER_STATE_IDLE;
-        UiLoadMenu(&provisionerMain);
-        break;
+      /* Return to idle state. */
+      provisionerUiState = PROVISIONER_STATE_IDLE;
+      UiLoadMenu(&provisionerMain);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -605,20 +646,21 @@ static void provisionerProcSelGoToAddRmSwitch(const void *pDialog, uint8_t selec
 /*************************************************************************************************/
 static void provisionerProcSelGoToAddMstrSwitch(const void *pDialog, uint8_t selection)
 {
-    switch (selection) {
+  switch(selection)
+  {
     case PROVISIONER_SEL_RETRY_ADD_ANOTHER:
-        provisionerAddMasterSwitch();
-        break;
+      provisionerAddMasterSwitch();
+      break;
 
     case PROVISIONER_SEL_CANCEL_DONE:
-        /* Return to idle state. */
-        provisionerUiState = PROVISIONER_STATE_IDLE;
-        UiLoadMenu(&provisionerMain);
-        break;
+      /* Return to idle state. */
+      provisionerUiState = PROVISIONER_STATE_IDLE;
+      UiLoadMenu(&provisionerMain);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -633,7 +675,7 @@ static void provisionerProcSelGoToAddMstrSwitch(const void *pDialog, uint8_t sel
 /*************************************************************************************************/
 static void provisionerProcSelGoToAddLight(const void *pDialog, uint8_t selection)
 {
-    provisionerAddLight();
+  provisionerAddLight();
 }
 
 /*************************************************************************************************/
@@ -648,20 +690,21 @@ static void provisionerProcSelGoToAddLight(const void *pDialog, uint8_t selectio
 /*************************************************************************************************/
 static void provisionerProcSelRetryAddLight(const void *pDialog, uint8_t selection)
 {
-    switch (selection) {
+  switch (selection)
+  {
     case PROVISIONER_SEL_RETRY_ADD_ANOTHER:
-        provisionerAddLight();
-        break;
+      provisionerAddLight();
+      break;
 
     case PROVISIONER_SEL_CANCEL_DONE:
-        /* Return to idle state. */
-        provisionerUiState = PROVISIONER_STATE_IDLE;
-        UiLoadMenu(&provisionerMain);
-        break;
+     /* Return to idle state. */
+     provisionerUiState = PROVISIONER_STATE_IDLE;
+     UiLoadMenu(&provisionerMain);
+     break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -676,18 +719,19 @@ static void provisionerProcSelRetryAddLight(const void *pDialog, uint8_t selecti
 /*************************************************************************************************/
 static void provisionerProcSelLightAdded(const void *pDialog, uint8_t selection)
 {
-    switch (selection) {
-    case PROVISIONER_SEL_RETRY_ADD_ANOTHER:
-        provisionerAddLight();
-        break;
+  switch (selection)
+  {
+  case PROVISIONER_SEL_RETRY_ADD_ANOTHER:
+    provisionerAddLight();
+    break;
 
-    case PROVISIONER_SEL_CANCEL_DONE:
-        UiLoadMenu(&provisionerMain);
-        break;
+  case PROVISIONER_SEL_CANCEL_DONE:
+    UiLoadMenu(&provisionerMain);
+    break;
 
-    default:
-        break;
-    }
+  default:
+    break;
+  }
 }
 
 /*************************************************************************************************/
@@ -703,23 +747,24 @@ static void provisionerProcSelLightAdded(const void *pDialog, uint8_t selection)
 /*************************************************************************************************/
 void ProvisionerMenuHandleEvent(uint8_t status, uint8_t *pUuid, uint8_t *pDevKey)
 {
-    /* Complete activity */
-    switch (provisionerUiState) {
+  /* Complete activity */
+  switch (provisionerUiState)
+  {
     case PROVISIONER_STATE_ADDING_RM_SW:
-        provisionerAddRoomSwitchCmpl(status, pUuid, pDevKey);
-        break;
+      provisionerAddRoomSwitchCmpl(status, pUuid, pDevKey);
+      break;
 
     case PROVISIONER_STATE_ADDING_MSTR_SW:
-        provisionerAddMstrSwitchCmpl(status, pUuid, pDevKey);
-        break;
+      provisionerAddMstrSwitchCmpl(status, pUuid, pDevKey);
+      break;
 
     case PROVISIONER_STATE_ADDING_LIGHT:
-        provisionerAddLightCmpl(status, pUuid, pDevKey);
-        break;
+      provisionerAddLightCmpl(status, pUuid, pDevKey);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -731,8 +776,8 @@ void ProvisionerMenuHandleEvent(uint8_t status, uint8_t *pUuid, uint8_t *pDevKey
 /*************************************************************************************************/
 void ProvisionerUiInit(void)
 {
-    /* Initialize UI */
-    UiTimerInit();
-    UiConsoleInit();
-    UiInit(&provisionerSplash, &provisionerMain);
+  /* Initialize UI */
+  UiTimerInit();
+  UiConsoleInit();
+  UiInit(&provisionerSplash, &provisionerMain);
 }

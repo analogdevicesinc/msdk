@@ -58,17 +58,17 @@
 #define TRC_START_AWAIT_HOST 2
 
 /* Command codes for TzCtrl task */
-#define CMD_SET_ACTIVE 1 /* Start (param1 = 1) or Stop (param1 = 0) */
+#define CMD_SET_ACTIVE      1 /* Start (param1 = 1) or Stop (param1 = 0) */
 
 /* The final command code, used to validate commands. */
 #define CMD_LAST_COMMAND 1
 
-#define TRC_RECORDER_MODE_SNAPSHOT 0
-#define TRC_RECORDER_MODE_STREAMING 1
+#define TRC_RECORDER_MODE_SNAPSHOT		0
+#define TRC_RECORDER_MODE_STREAMING		1
 
-#define TRC_RECORDER_BUFFER_ALLOCATION_STATIC (0x00)
-#define TRC_RECORDER_BUFFER_ALLOCATION_DYNAMIC (0x01)
-#define TRC_RECORDER_BUFFER_ALLOCATION_CUSTOM (0x02)
+#define TRC_RECORDER_BUFFER_ALLOCATION_STATIC   (0x00)
+#define TRC_RECORDER_BUFFER_ALLOCATION_DYNAMIC  (0x01)
+#define TRC_RECORDER_BUFFER_ALLOCATION_CUSTOM   (0x02)
 
 /* Filter Groups */
 #define FilterGroup0 (uint16_t)0x0001
@@ -116,22 +116,22 @@
  *****************************************************************************/
 
 /****** Port Name ************************************* Code ** Official ** OS Platform *********/
-#define TRC_HARDWARE_PORT_APPLICATION_DEFINED 98 /*	-			-					*/
-#define TRC_HARDWARE_PORT_NOT_SET 99 /*	-			-					*/
-#define TRC_HARDWARE_PORT_HWIndependent 0 /*	Yes			Any					*/
-#define TRC_HARDWARE_PORT_Win32 1 /*	Yes			FreeRTOS on Win32	*/
-#define TRC_HARDWARE_PORT_Atmel_AT91SAM7 2 /*	No			Any					*/
-#define TRC_HARDWARE_PORT_Atmel_UC3A0 3 /*	No			Any					*/
-#define TRC_HARDWARE_PORT_ARM_Cortex_M 4 /*	Yes			Any					*/
-#define TRC_HARDWARE_PORT_Renesas_RX600 6 /*	Yes			Any					*/
-#define TRC_HARDWARE_PORT_MICROCHIP_PIC24_PIC32 7 /*	Yes			Any					*/
-#define TRC_HARDWARE_PORT_TEXAS_INSTRUMENTS_TMS570_RM48 8 /*	Yes			Any					*/
-#define TRC_HARDWARE_PORT_TEXAS_INSTRUMENTS_MSP430 9 /*	No			Any					*/
-#define TRC_HARDWARE_PORT_XILINX_PPC405 11 /*	No			FreeRTOS			*/
-#define TRC_HARDWARE_PORT_XILINX_PPC440 12 /*	No			FreeRTOS			*/
-#define TRC_HARDWARE_PORT_XILINX_MICROBLAZE 13 /*	No			Any					*/
-#define TRC_HARDWARE_PORT_NXP_LPC210X 14 /*	No			Any					*/
-#define TRC_HARDWARE_PORT_ARM_CORTEX_A9 15 /*	Yes			Any					*/
-#define TRC_HARDWARE_PORT_POWERPC_Z4 16 /*  No          FreeRTOS            */
-#define TRC_HARDWARE_PORT_Altera_NiosII 17 /*  No          Any                 */
+#define TRC_HARDWARE_PORT_APPLICATION_DEFINED			98	/*	-			-					*/
+#define TRC_HARDWARE_PORT_NOT_SET						99	/*	-			-					*/
+#define TRC_HARDWARE_PORT_HWIndependent					0	/*	Yes			Any					*/
+#define TRC_HARDWARE_PORT_Win32							1	/*	Yes			FreeRTOS on Win32	*/
+#define TRC_HARDWARE_PORT_Atmel_AT91SAM7				2	/*	No			Any					*/
+#define TRC_HARDWARE_PORT_Atmel_UC3A0					3	/*	No			Any					*/
+#define TRC_HARDWARE_PORT_ARM_Cortex_M					4	/*	Yes			Any					*/
+#define TRC_HARDWARE_PORT_Renesas_RX600					6	/*	Yes			Any					*/
+#define TRC_HARDWARE_PORT_MICROCHIP_PIC24_PIC32			7	/*	Yes			Any					*/
+#define TRC_HARDWARE_PORT_TEXAS_INSTRUMENTS_TMS570_RM48	8	/*	Yes			Any					*/
+#define TRC_HARDWARE_PORT_TEXAS_INSTRUMENTS_MSP430		9	/*	No			Any					*/
+#define TRC_HARDWARE_PORT_XILINX_PPC405					11	/*	No			FreeRTOS			*/
+#define TRC_HARDWARE_PORT_XILINX_PPC440					12	/*	No			FreeRTOS			*/
+#define TRC_HARDWARE_PORT_XILINX_MICROBLAZE				13	/*	No			Any					*/
+#define TRC_HARDWARE_PORT_NXP_LPC210X					14	/*	No			Any					*/
+#define TRC_HARDWARE_PORT_ARM_CORTEX_A9					15	/*	Yes			Any					*/
+#define TRC_HARDWARE_PORT_POWERPC_Z4                    16  /*  No          FreeRTOS            */
+#define TRC_HARDWARE_PORT_Altera_NiosII					17  /*  No          Any                 */
 #endif /*TRC_PORTDEFINES_H*/

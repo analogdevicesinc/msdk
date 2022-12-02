@@ -43,49 +43,54 @@
 /*************************************************************************************************/
 bool_t lhciSlvEncVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-    uint8_t status = HCI_SUCCESS;
-    uint8_t evtParamLen = 1; /* default is status field only */
+  uint8_t status = HCI_SUCCESS;
+  uint8_t evtParamLen = 1;      /* default is status field only */
 
-    /* Decode and consume command packet. */
-    switch (pHdr->opCode) {
-        /* --- extended device commands --- */
+  /* Decode and consume command packet. */
+  switch (pHdr->opCode)
+  {
+    /* --- extended device commands --- */
 
-    case LHCI_OPCODE_VS_SET_ENC_MODE: {
-        LlEncMode_t mode;
-        uint16_t handle;
-        BSTREAM_TO_UINT16(handle, pBuf);
+    case LHCI_OPCODE_VS_SET_ENC_MODE:
+    {
+      LlEncMode_t mode;
+      uint16_t handle;
+      BSTREAM_TO_UINT16(handle, pBuf);
 
-        /* Force valid values. */
-        mode.enaAuth = (pBuf[0]) ? TRUE : FALSE;
-        mode.nonceMode = (pBuf[1] == LL_NONCE_MODE_EVT_CNTR) ? LL_NONCE_MODE_EVT_CNTR :
-                                                               LL_NONCE_MODE_PKT_CNTR;
+      /* Force valid values. */
+      mode.enaAuth = (pBuf[0]) ? TRUE : FALSE;
+      mode.nonceMode = (pBuf[1] == LL_NONCE_MODE_EVT_CNTR) ?
+                       LL_NONCE_MODE_EVT_CNTR : LL_NONCE_MODE_PKT_CNTR;
 
-        status = LlSetEncMode(handle, &mode);
+      status = LlSetEncMode(handle, &mode);
+      break;
+    }
+
+    /* --- default --- */
+
+    default:
+      return FALSE;       /* exit dispatcher routine */
+  }
+
+  uint8_t *pEvtBuf;
+
+  /* Encode and send command complete event packet. */
+  if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL)
+  {
+    pBuf  = pEvtBuf;
+    /* pBuf += */ lhciPackCmdCompleteEvtStatus(pBuf, status);
+
+    switch (pHdr->opCode)
+    {
+
+      /* --- default --- */
+
+      default:
         break;
     }
 
-        /* --- default --- */
+    lhciSendCmdCmplEvt(pEvtBuf);
+  }
 
-    default:
-        return FALSE; /* exit dispatcher routine */
-    }
-
-    uint8_t *pEvtBuf;
-
-    /* Encode and send command complete event packet. */
-    if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL) {
-        pBuf = pEvtBuf;
-        /* pBuf += */ lhciPackCmdCompleteEvtStatus(pBuf, status);
-
-        switch (pHdr->opCode) {
-            /* --- default --- */
-
-        default:
-            break;
-        }
-
-        lhciSendCmdCmplEvt(pEvtBuf);
-    }
-
-    return TRUE;
+  return TRUE;
 }

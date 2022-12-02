@@ -32,8 +32,10 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-#ifndef _SSI_PAL_LIST_H
-#define _SSI_PAL_LIST_H
+
+#ifndef  _SSI_PAL_LIST_H
+#define  _SSI_PAL_LIST_H
+
 
 typedef struct SaSi_PalListItem {
     struct SaSi_PalListItem *prev;
@@ -113,3 +115,4 @@ static inline int SaSi_PalIsListEmpty(const SaSi_PalListItem_s *head)
 }
 
 #endif
+

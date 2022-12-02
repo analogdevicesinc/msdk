@@ -34,7 +34,8 @@
 #define MESH_ADV_BEARER_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -42,10 +43,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh Advertising Bearer notification event types enumeration */
-enum meshAdvEventTypes {
-    MESH_ADV_INTERFACE_OPENED = 0x00, /*!< Advertising interface opened */
-    MESH_ADV_INTERFACE_CLOSED = 0x01, /*!< Advertising interface closed */
-    MESH_ADV_PACKET_PROCESSED = 0x02 /*!< Advertising packet processed by the lower layers.
+enum meshAdvEventTypes
+{
+  MESH_ADV_INTERFACE_OPENED = 0x00,  /*!< Advertising interface opened */
+  MESH_ADV_INTERFACE_CLOSED = 0x01,  /*!< Advertising interface closed */
+  MESH_ADV_PACKET_PROCESSED = 0x02   /*!< Advertising packet processed by the lower layers.
                                       *   This means that either the packet has been sent
                                       *   over-the-air or that it was dropped as a consequence of
                                       *   a removed interface.
@@ -59,14 +61,16 @@ typedef uint8_t meshAdvType_t;
 typedef uint8_t meshAdvEvent_t;
 
 /*! Mesh Advertising Bearer PDU status structure */
-typedef struct meshAdvBrPduStatus_tag {
-    meshAdvType_t adType; /*!< Advertising Type. */
-    uint8_t *pPdu; /*!< Pointer to the sent PDU mentioned in the event */
+typedef struct meshAdvBrPduStatus_tag
+{
+  meshAdvType_t  adType; /*!< Advertising Type. */
+  uint8_t        *pPdu;  /*!< Pointer to the sent PDU mentioned in the event */
 } meshAdvBrPduStatus_t;
 
 /*! Mesh Advertising Bearer Event notification union */
-typedef union meshAdvBrEventParams_tag {
-    meshAdvBrPduStatus_t brPduStatus; /*!< PDU status structure. See ::meshAdvBrPduStatus_t */
+typedef union meshAdvBrEventParams_tag
+{
+  meshAdvBrPduStatus_t    brPduStatus;   /*!< PDU status structure. See ::meshAdvBrPduStatus_t */
 } meshAdvBrEventParams_t;
 
 /*************************************************************************************************/
@@ -197,8 +201,8 @@ void MeshAdvSignalInterfaceReady(meshAdvIfId_t advIfId);
  *  \return    TRUE if message is sent or queued for later transmission, FALSE otherwise.
  */
 /*************************************************************************************************/
-bool_t MeshAdvSendBrPdu(meshAdvIfId_t advIfId, meshAdvType_t advType, const uint8_t *pBrPdu,
-                        uint8_t pduLen);
+bool_t MeshAdvSendBrPdu(meshAdvIfId_t advIfId, meshAdvType_t advType,
+                                 const uint8_t *pBrPdu, uint8_t pduLen);
 
 #ifdef __cplusplus
 }

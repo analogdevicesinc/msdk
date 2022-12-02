@@ -60,6 +60,7 @@
 #include <redcoreapi.h>
 #endif
 
+
 /*  Create POSIX types.  Use #define to avoid name conflicts in those
     environments where the type names already exist.
 */
@@ -69,19 +70,23 @@
 #define mode_t uint16_t
 #define __int64_t int64_t
 
+
 /** @brief Generate a random number.
 
     @return A nonnegative random number.
 */
 #define random() ((int)(RedRand32(NULL) & 0x7FFFFFFF))
 
+
 /** @brief Seed the random number generator.
 */
 #define srandom(seed) RedRandSeed(seed)
 
+
 #define _exit(status) exit(status)
 #define getpagesize() 4096U
 #define getpid() 1
+
 
 /** @brief Determine the maximum file size.
 
@@ -89,15 +94,18 @@
 */
 static uint64_t MaxFileSize(void)
 {
-    REDSTATFS info;
-    int32_t iStatus;
-    REDSTATUS errnoSave = errno;
-    uint64_t ullMaxFileSize;
+    REDSTATFS   info;
+    int32_t     iStatus;
+    REDSTATUS   errnoSave = errno;
+    uint64_t    ullMaxFileSize;
 
     iStatus = red_statvfs("", &info);
-    if (iStatus == 0) {
+    if(iStatus == 0)
+    {
         ullMaxFileSize = info.f_maxfsize;
-    } else {
+    }
+    else
+    {
         /*  This function does not change errno.
         */
         errno = errnoSave;
@@ -108,9 +116,11 @@ static uint64_t MaxFileSize(void)
     return ullMaxFileSize;
 }
 
+
 /*-------------------------------------------------------------------
     Simulated current working directory support
 -------------------------------------------------------------------*/
+
 
 /*  Forward declaration for red_chdir().
 */
@@ -122,6 +132,7 @@ static int red_stat(const char *pszPath, REDSTAT *pStat);
 #undef getcwd
 #define chdir(path) red_chdir(path)
 #define getcwd(buf, size) red_getcwd(buf, size)
+
 
 /*  Redefine the path-based APIs to call MakeFullPath() on their arguments
     since there is no CWD support in the red_*() APIs.
@@ -147,6 +158,7 @@ static int red_stat(const char *pszPath, REDSTAT *pStat);
 */
 static char szLocalCwd[FSSTRESS_BUF_SIZE] = "/";
 
+
 /** @brief Change the current working directory.
 
     This function only supports a subset of what is possible with POSIX chdir().
@@ -156,47 +168,64 @@ static char szLocalCwd[FSSTRESS_BUF_SIZE] = "/";
     @return Upon successful completion, 0 shall be returned.  Otherwise, -1
             shall be returned, and errno shall be set to indicate the error.
 */
-static int red_chdir(const char *pszPath)
+static int red_chdir(
+    const char *pszPath)
 {
-    uint32_t ulIdx;
-    int iErrno = 0;
+    uint32_t    ulIdx;
+    int         iErrno = 0;
 
-    if (strcmp(pszPath, "..") == 0) {
+    if(strcmp(pszPath, "..") == 0)
+    {
         uint32_t ulLastSlashIdx = 0U;
 
         /*  Chop off the last path separator and everything after it, so that
             "/foo/bar/baz" becomes "/foo/bar", moving the CWD up one directory.
         */
-        for (ulIdx = 0U; szLocalCwd[ulIdx] != '\0'; ulIdx++) {
-            if (szLocalCwd[ulIdx] == '/') {
+        for(ulIdx = 0U; szLocalCwd[ulIdx] != '\0'; ulIdx++)
+        {
+            if(szLocalCwd[ulIdx] == '/')
+            {
                 ulLastSlashIdx = ulIdx;
             }
         }
 
-        if (ulLastSlashIdx != 0U) {
+        if(ulLastSlashIdx != 0U)
+        {
             szLocalCwd[ulLastSlashIdx] = '\0';
         }
-    } else {
-        char szOldCwd[FSSTRESS_BUF_SIZE];
+    }
+    else
+    {
+        char    szOldCwd[FSSTRESS_BUF_SIZE];
 
         /*  chdir() must have no effect on the CWD if it fails, so save the CWD
             so we can revert it if necessary.
         */
         strcpy(szOldCwd, szLocalCwd);
 
-        if (pszPath[0U] == '/') {
-            if (strlen(pszPath) >= sizeof(szLocalCwd)) {
+        if(pszPath[0U] == '/')
+        {
+            if(strlen(pszPath) >= sizeof(szLocalCwd))
+            {
                 iErrno = RED_ENAMETOOLONG;
-            } else {
+            }
+            else
+            {
                 strcpy(szLocalCwd, pszPath);
             }
-        } else {
+        }
+        else
+        {
             ulIdx = strlen(szLocalCwd);
 
-            if ((ulIdx + 1U + strlen(pszPath)) >= sizeof(szLocalCwd)) {
+            if((ulIdx + 1U + strlen(pszPath)) >= sizeof(szLocalCwd))
+            {
                 iErrno = RED_ENAMETOOLONG;
-            } else {
-                if (szLocalCwd[1U] != '\0') {
+            }
+            else
+            {
+                if(szLocalCwd[1U] != '\0')
+                {
                     szLocalCwd[ulIdx] = '/';
                     ulIdx++;
                 }
@@ -205,32 +234,41 @@ static int red_chdir(const char *pszPath)
             }
         }
 
-        if (iErrno == 0) {
+        if(iErrno == 0)
+        {
             REDSTAT s;
-            int iStatus;
+            int     iStatus;
 
             iStatus = red_stat(szLocalCwd, &s);
-            if (iStatus != 0) {
+            if(iStatus != 0)
+            {
                 iErrno = errno;
-            } else if (!S_ISDIR(s.st_mode)) {
+            }
+            else if(!S_ISDIR(s.st_mode))
+            {
                 iErrno = RED_ENOTDIR;
-            } else {
+            }
+            else
+            {
                 /*  No error, new CWD checks out.
                 */
             }
         }
 
-        if (iErrno != 0) {
+        if(iErrno != 0)
+        {
             strcpy(szLocalCwd, szOldCwd);
         }
     }
 
-    if (iErrno != 0) {
+    if(iErrno != 0)
+    {
         errno = iErrno;
     }
 
     return iErrno == 0 ? 0 : -1;
 }
+
 
 /** @brief Retrieve the current working directory.
 
@@ -244,21 +282,31 @@ static int red_chdir(const char *pszPath)
             CWD which must be freed by the caller.  On failure, returns NULL
             and errno will be set.
 */
-static char *red_getcwd(char *pszBuf, size_t nSize)
+static char *red_getcwd(
+    char   *pszBuf,
+    size_t  nSize)
 {
-    char *pszRet;
+    char   *pszRet;
 
-    if (pszBuf == NULL) {
+    if(pszBuf == NULL)
+    {
         pszRet = malloc(strlen(szLocalCwd) + 1U);
-        if (pszRet == NULL) {
+        if(pszRet == NULL)
+        {
             errno = RED_ENOMEM;
-        } else {
+        }
+        else
+        {
             strcpy(pszRet, szLocalCwd);
         }
-    } else if (nSize < strlen(szLocalCwd) + 1U) {
+    }
+    else if(nSize < strlen(szLocalCwd) + 1U)
+    {
         errno = RED_ERANGE;
         pszRet = NULL;
-    } else {
+    }
+    else
+    {
         strcpy(pszBuf, szLocalCwd);
         pszRet = pszBuf;
     }
@@ -266,38 +314,49 @@ static char *red_getcwd(char *pszBuf, size_t nSize)
     return pszRet;
 }
 
+
 /** @brief Make a relative path into a fully qualified path.
 
     @param pszName  The relative path.
 
     @return On success, a pointer to a fully qualified path.  On error, NULL.
 */
-static const char *MakeFullPath(const char *pszName)
+static const char *MakeFullPath(
+    const char     *pszName)
 {
-#define MAXVOLNAME 64U /* Enough for most configs. */
-    static char aszFullPath[2U][MAXVOLNAME + 1U + FSSTRESS_BUF_SIZE];
+    #define         MAXVOLNAME 64U /* Enough for most configs. */
+    static char     aszFullPath[2U][MAXVOLNAME + 1U + FSSTRESS_BUF_SIZE];
     static uint32_t ulWhich = 0U;
 
-    char *pszFullPath = aszFullPath[ulWhich];
-    const char *pszVolume = gpRedVolConf->pszPathPrefix;
-    int32_t iLen;
+    char           *pszFullPath = aszFullPath[ulWhich];
+    const char     *pszVolume = gpRedVolConf->pszPathPrefix;
+    int32_t         iLen;
 
-    if (pszName[0U] == '/') {
+    if(pszName[0U] == '/')
+    {
         iLen = RedSNPrintf(pszFullPath, sizeof(aszFullPath[0U]), "%s%s", pszVolume, pszName);
-    } else if (strcmp(pszName, ".") == 0U) {
+    }
+    else if(strcmp(pszName, ".") == 0U)
+    {
         iLen = RedSNPrintf(pszFullPath, sizeof(aszFullPath[0U]), "%s%s", pszVolume, szLocalCwd);
-    } else if ((szLocalCwd[0U] == '/') && (szLocalCwd[1U] == '\0')) {
+    }
+    else if((szLocalCwd[0U] == '/') && (szLocalCwd[1U] == '\0'))
+    {
         iLen = RedSNPrintf(pszFullPath, sizeof(aszFullPath[0U]), "%s/%s", pszVolume, pszName);
-    } else {
-        iLen = RedSNPrintf(pszFullPath, sizeof(aszFullPath[0U]), "%s%s/%s", pszVolume, szLocalCwd,
-                           pszName);
+    }
+    else
+    {
+        iLen = RedSNPrintf(pszFullPath, sizeof(aszFullPath[0U]), "%s%s/%s", pszVolume, szLocalCwd, pszName);
     }
 
-    if (iLen == -1) {
+    if(iLen == -1)
+    {
         /*  Insufficient path buffer space.
         */
         pszFullPath = NULL;
-    } else {
+    }
+    else
+    {
         /*  Toggle between two full path arrays; a kluge to make rename() and
             link() work correctly.
         */
@@ -306,6 +365,7 @@ static const char *MakeFullPath(const char *pszName)
 
     return pszFullPath;
 }
+
 
 /*-------------------------------------------------------------------
     POSIX functions not implemented by the RED POSIX-like API
@@ -318,16 +378,20 @@ static const char *MakeFullPath(const char *pszName)
 #define truncate(p, s) red_truncate(p, s)
 #define truncate64(p, s) truncate(p, s)
 
+
 /** @brief Get the status of a file or directory.
 */
-static int red_stat(const char *pszPath, REDSTAT *pStat)
+static int red_stat(
+    const char *pszPath,
+    REDSTAT    *pStat)
 {
-    int iFd;
-    int iRet;
+    int         iFd;
+    int         iRet;
 
     iFd = open(pszPath, O_RDONLY);
     iRet = iFd;
-    if (iFd != -1) {
+    if(iFd != -1)
+    {
         iRet = fstat(iFd, pStat);
 
         (void)close(iFd);
@@ -336,16 +400,20 @@ static int red_stat(const char *pszPath, REDSTAT *pStat)
     return iRet;
 }
 
+
 /** @brief Truncate a file to a specified length.
 */
-static int red_truncate(const char *pszPath, off_t llSize)
+static int red_truncate(
+    const char *pszPath,
+    off_t       llSize)
 {
-    int iFd;
-    int iRet;
+    int         iFd;
+    int         iRet;
 
     iFd = open(pszPath, O_WRONLY);
     iRet = iFd;
-    if (iFd != -1) {
+    if(iFd != -1)
+    {
         iRet = ftruncate(iFd, llSize);
 
         (void)close(iFd);
@@ -354,22 +422,24 @@ static int red_truncate(const char *pszPath, off_t llSize)
     return iRet;
 }
 
+
 /*-------------------------------------------------------------------
     Begin ported fsstress code
 -------------------------------------------------------------------*/
 
 /* Stuff from xfscompat.h */
 
-#define MAXNAMELEN (REDCONF_NAME_MAX + 1U) /* Assumed to include NUL */
+#define MAXNAMELEN (REDCONF_NAME_MAX+1U) /* Assumed to include NUL */
 
 struct dioattr {
     int d_miniosz, d_maxiosz, d_mem;
 };
 
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define MIN(a,b) ((a)<(b) ? (a):(b))
+#define MAX(a,b) ((a)>(b) ? (a):(b))
 
 /* End xfscompat.h */
+
 
 typedef enum {
     OP_CREAT,
@@ -385,13 +455,13 @@ typedef enum {
     OP_TRUNCATE,
     OP_UNLINK,
     OP_WRITE,
-#if REDCONF_CHECKER == 1
+  #if REDCONF_CHECKER == 1
     OP_CHECK,
-#endif
+  #endif
     OP_LAST
 } opty_t;
 
-typedef void (*opfnc_t)(int, long);
+typedef void (*opfnc_t) (int, long);
 
 typedef struct opdesc {
     opty_t op;
@@ -418,20 +488,20 @@ typedef struct pathname {
     char *path;
 } pathname_t;
 
-#define FT_DIR 0
-#define FT_DIRm (1 << FT_DIR)
-#define FT_REG 1
-#define FT_REGm (1 << FT_REG)
-#define FT_SYM 2
-#define FT_SYMm (1 << FT_SYM)
-#define FT_DEV 3
-#define FT_DEVm (1 << FT_DEV)
-#define FT_RTF 4
-#define FT_RTFm (1 << FT_RTF)
-#define FT_nft 5
-#define FT_ANYm ((1 << FT_nft) - 1)
-#define FT_REGFILE (FT_REGm | FT_RTFm)
-#define FT_NOTDIR (FT_ANYm & ~FT_DIRm)
+#define FT_DIR      0
+#define FT_DIRm     (1 << FT_DIR)
+#define FT_REG      1
+#define FT_REGm     (1 << FT_REG)
+#define FT_SYM      2
+#define FT_SYMm     (1 << FT_SYM)
+#define FT_DEV      3
+#define FT_DEVm     (1 << FT_DEV)
+#define FT_RTF      4
+#define FT_RTFm     (1 << FT_RTF)
+#define FT_nft      5
+#define FT_ANYm     ((1 << FT_nft) - 1)
+#define FT_REGFILE  (FT_REGm | FT_RTFm)
+#define FT_NOTDIR   (FT_ANYm & ~FT_DIRm)
 
 #define FLIST_SLOT_INCR 16
 #define NDCACHE 64
@@ -469,14 +539,17 @@ static opdesc_t ops[] = {
     {OP_TRUNCATE, "truncate", truncate_f, 2, 1},
     {OP_UNLINK, "unlink", unlink_f, 1, 1},
     {OP_WRITE, "write", write_f, 4, 1},
-#if REDCONF_CHECKER == 1
+  #if REDCONF_CHECKER == 1
     {OP_CHECK, "check", check_f, 1, 1},
-#endif
+  #endif
 }, *ops_end;
 
 static flist_t flist[FT_nft] = {
-    { 0, 0, 'd', NULL }, { 0, 0, 'f', NULL }, { 0, 0, 'l', NULL },
-    { 0, 0, 'c', NULL }, { 0, 0, 'r', NULL },
+    {0, 0, 'd', NULL},
+    {0, 0, 'f', NULL},
+    {0, 0, 'l', NULL},
+    {0, 0, 'c', NULL},
+    {0, 0, 'r', NULL},
 };
 
 static int dcache[NDCACHE];
@@ -528,6 +601,7 @@ static int truncate64_path(pathname_t *name, off64_t length);
 static int unlink_path(pathname_t *name);
 static void usage(const char *progname);
 
+
 /** @brief Parse parameters for fsstress.
 
     @param argc         The number of arguments from main().
@@ -539,30 +613,39 @@ static void usage(const char *progname);
 
     @return The result of parsing the parameters.
 */
-PARAMSTATUS FsstressParseParams(int argc, char *argv[], FSSTRESSPARAM *pParam, uint8_t *pbVolNum,
-                                const char **ppszDevice)
+PARAMSTATUS FsstressParseParams(
+    int             argc,
+    char           *argv[],
+    FSSTRESSPARAM  *pParam,
+    uint8_t        *pbVolNum,
+    const char    **ppszDevice)
 {
-    int c;
-    uint8_t bVolNum;
-    const REDOPTION aLongopts[] = { { "no-cleanup", red_no_argument, NULL, 'c' },
-                                    { "loops", red_required_argument, NULL, 'l' },
-                                    { "nops", red_required_argument, NULL, 'n' },
-                                    { "namepad", red_no_argument, NULL, 'r' },
-                                    { "seed", red_required_argument, NULL, 's' },
-                                    { "verbose", red_no_argument, NULL, 'v' },
-                                    { "dev", red_required_argument, NULL, 'D' },
-                                    { "help", red_no_argument, NULL, 'H' },
-                                    { NULL } };
+    int             c;
+    uint8_t         bVolNum;
+    const REDOPTION aLongopts[] =
+    {
+        { "no-cleanup", red_no_argument, NULL, 'c' },
+        { "loops", red_required_argument, NULL, 'l' },
+        { "nops", red_required_argument, NULL, 'n' },
+        { "namepad", red_no_argument, NULL, 'r' },
+        { "seed", red_required_argument, NULL, 's' },
+        { "verbose", red_no_argument, NULL, 'v' },
+        { "dev", red_required_argument, NULL, 'D' },
+        { "help", red_no_argument, NULL, 'H' },
+        { NULL }
+    };
 
     /*  If run without parameters, treat as a help request.
     */
-    if (argc <= 1) {
+    if(argc <= 1)
+    {
         goto Help;
     }
 
     /*  Assume no device argument to start with.
     */
-    if (ppszDevice != NULL) {
+    if(ppszDevice != NULL)
+    {
         *ppszDevice = NULL;
     }
 
@@ -570,63 +653,71 @@ PARAMSTATUS FsstressParseParams(int argc, char *argv[], FSSTRESSPARAM *pParam, u
     */
     FsstressDefaultParams(pParam);
 
-    while ((c = RedGetoptLong(argc, argv, "cl:n:rs:vD:H", aLongopts, NULL)) != -1) {
-        switch (c) {
-        case 'c': /* --no-cleanup */
-            pParam->fNoCleanup = true;
-            break;
-        case 'l': /* --loops */
-            pParam->ulLoops = RedAtoI(red_optarg);
-            break;
-        case 'n': /* --nops */
-            pParam->ulNops = RedAtoI(red_optarg);
-            break;
-        case 'r': /* --namepad */
-            pParam->fNamePad = true;
-            break;
-        case 's': /* --seed */
-            pParam->ulSeed = RedAtoI(red_optarg);
-            break;
-        case 'v': /* --verbose */
-            pParam->fVerbose = true;
-            break;
-        case 'D': /* --dev */
-            if (ppszDevice != NULL) {
-                *ppszDevice = red_optarg;
-            }
-            break;
-        case 'H': /* --help */
-            goto Help;
-        case '?': /* Unknown or ambiguous option */
-        case ':': /* Option missing required argument */
-        default:
-            goto BadOpt;
+    while((c = RedGetoptLong(argc, argv, "cl:n:rs:vD:H", aLongopts, NULL)) != -1)
+    {
+        switch(c)
+        {
+            case 'c': /* --no-cleanup */
+                pParam->fNoCleanup = true;
+                break;
+            case 'l': /* --loops */
+                pParam->ulLoops = RedAtoI(red_optarg);
+                break;
+            case 'n': /* --nops */
+                pParam->ulNops = RedAtoI(red_optarg);
+                break;
+            case 'r': /* --namepad */
+                pParam->fNamePad = true;
+                break;
+            case 's': /* --seed */
+                pParam->ulSeed = RedAtoI(red_optarg);
+                break;
+            case 'v': /* --verbose */
+                pParam->fVerbose = true;
+                break;
+            case 'D': /* --dev */
+                if(ppszDevice != NULL)
+                {
+                    *ppszDevice = red_optarg;
+                }
+                break;
+            case 'H': /* --help */
+                goto Help;
+            case '?': /* Unknown or ambiguous option */
+            case ':': /* Option missing required argument */
+            default:
+                goto BadOpt;
         }
     }
 
     /*  RedGetoptLong() has permuted argv to move all non-option arguments to
         the end.  We expect to find a volume identifier.
     */
-    if (red_optind >= argc) {
+    if(red_optind >= argc)
+    {
         RedPrintf("Missing volume argument\n");
         goto BadOpt;
     }
 
     bVolNum = RedFindVolumeNumber(argv[red_optind]);
-    if (bVolNum == REDCONF_VOLUME_COUNT) {
+    if(bVolNum == REDCONF_VOLUME_COUNT)
+    {
         RedPrintf("Error: \"%s\" is not a valid volume identifier.\n", argv[red_optind]);
         goto BadOpt;
     }
 
-    if (pbVolNum != NULL) {
+    if(pbVolNum != NULL)
+    {
         *pbVolNum = bVolNum;
     }
 
     red_optind++; /* Move past volume parameter. */
-    if (red_optind < argc) {
+    if(red_optind < argc)
+    {
         int32_t ii;
 
-        for (ii = red_optind; ii < argc; ii++) {
+        for(ii = red_optind; ii < argc; ii++)
+        {
             RedPrintf("Error: Unexpected command-line argument \"%s\".\n", argv[ii]);
         }
 
@@ -635,28 +726,31 @@ PARAMSTATUS FsstressParseParams(int argc, char *argv[], FSSTRESSPARAM *pParam, u
 
     return PARAMSTATUS_OK;
 
-BadOpt:
+  BadOpt:
 
     RedPrintf("%s - invalid parameters\n", argv[0U]);
     usage(argv[0U]);
     return PARAMSTATUS_BAD;
 
-Help:
+  Help:
 
     usage(argv[0U]);
     return PARAMSTATUS_HELP;
 }
 
+
 /** @brief Set default fsstress parameters.
 
     @param pParam   Populated with the default fsstress parameters.
 */
-void FsstressDefaultParams(FSSTRESSPARAM *pParam)
+void FsstressDefaultParams(
+    FSSTRESSPARAM *pParam)
 {
     RedMemSet(pParam, 0U, sizeof(*pParam));
     pParam->ulLoops = 1U;
     pParam->ulNops = 10000U;
 }
+
 
 /** @brief Start fsstress.
 
@@ -665,7 +759,8 @@ void FsstressDefaultParams(FSSTRESSPARAM *pParam)
 
     @return Zero on success, otherwise nonzero.
 */
-int FsstressStart(const FSSTRESSPARAM *pParam)
+int FsstressStart(
+    const FSSTRESSPARAM *pParam)
 {
     char buf[10];
     int fd;
@@ -691,7 +786,7 @@ int FsstressStart(const FSSTRESSPARAM *pParam)
     while ((loopcntr <= loops) || (loops == 0)) {
         RedSNPrintf(buf, sizeof(buf), "fss%x", getpid());
         fd = creat(buf, 0666);
-        maxfsize = (off64_t)MAXFSIZE;
+        maxfsize = (off64_t) MAXFSIZE;
         dcache_init();
         if (!seed) {
             seed = (unsigned long)RedOsClockGetTime();
@@ -735,7 +830,7 @@ static int delete_tree(const char *path)
     if (dp == NULL)
         return errno;
 
-    while ((dep = readdir(dp)) != NULL) {
+    while((dep = readdir(dp)) != NULL) {
         len = strlen(path) + 1 + strlen(dep->d_name) + 1;
         childpath = malloc(len);
 
@@ -784,6 +879,7 @@ static void append_pathname(pathname_t *name, const char *str)
         RedPrintf("fsstress: append_pathname failure\n");
         chdir(homedir);
         abort();
+
     }
 #endif
     name->path = realloc(name->path, name->len + 1 + len);
@@ -832,7 +928,8 @@ static void dcache_init(void)
 {
     int i;
 
-    for (i = 0; i < NDCACHE; i++) dcache[i] = -1;
+    for (i = 0; i < NDCACHE; i++)
+        dcache[i] = -1;
 }
 
 static fent_t *dcache_lookup(int dirid)
@@ -986,7 +1083,8 @@ static int generate_fname(fent_t *fep, int ft, pathname_t *name, int *idp, int *
     return 1;
 }
 
-static int get_fname(int which, long r, pathname_t *name, flist_t **flpp, fent_t **fepp, int *v)
+static int
+get_fname(int which, long r, pathname_t *name, flist_t **flpp, fent_t **fepp, int *v)
 {
     int c;
     fent_t *fep;
@@ -1035,6 +1133,7 @@ static int get_fname(int which, long r, pathname_t *name, flist_t **flpp, fent_t
     abort();
 #endif
     return -1;
+
 }
 
 static void init_pathname(pathname_t *name)
@@ -1072,7 +1171,8 @@ static int link_path(pathname_t *name1, pathname_t *name2)
         else if (strlen(buf2) == 0)
             down1 = 1;
         else
-            down1 = MAX(newname1.len, 3 + name2->len) <= MAX(3 + name1->len, newname2.len);
+            down1 = MAX(newname1.len, 3 + name2->len) <=
+                MAX(3 + name1->len, newname2.len);
         if (down1) {
             free_pathname(&newname2);
             append_pathname(&newname2, "../");
@@ -1120,11 +1220,13 @@ static void make_freq_table(void)
     int i;
     opdesc_t *p;
 
-    for (p = ops, f = 0; p < ops_end; p++) f += p->freq;
+    for (p = ops, f = 0; p < ops_end; p++)
+        f += p->freq;
     freq_table = malloc(f * sizeof(*freq_table));
     freq_table_size = f;
     for (p = ops, i = 0; p < ops_end; p++) {
-        for (f = 0; f < p->freq; f++, i++) freq_table[i] = p->op;
+        for (f = 0; f < p->freq; f++, i++)
+            freq_table[i] = p->op;
     }
 }
 
@@ -1149,7 +1251,7 @@ static int mkdir_path(pathname_t *name, mode_t mode)
 static void namerandpad(int id, char *buf, int len)
 {
     int bucket;
-    static int buckets[8] = { 0 };
+    static int buckets[8] = {0};
     static int bucket_count = 0;
     int bucket_value;
     int i;
@@ -1259,7 +1361,8 @@ static int rename_path(pathname_t *name1, pathname_t *name2)
         else if (strlen(buf2) == 0)
             down1 = 1;
         else
-            down1 = MAX(newname1.len, 3 + name2->len) <= MAX(3 + name1->len, newname2.len);
+            down1 = MAX(newname1.len, 3 + name2->len) <=
+                MAX(3 + name1->len, newname2.len);
         if (down1) {
             free_pathname(&newname2);
             append_pathname(&newname2, "../");
@@ -1429,7 +1532,8 @@ static void creat_f(int opno, long r)
     if (!e) {
         if (v) {
             fent_to_name(&f, &flist[FT_DIR], fep);
-            RedPrintf("%d/%d: creat - no filename from %s\n", procid, opno, f.path);
+            RedPrintf("%d/%d: creat - no filename from %s\n",
+                   procid, opno, f.path);
         }
         free_pathname(&f);
         return;
@@ -1444,7 +1548,8 @@ static void creat_f(int opno, long r)
         close(fd);
     }
     if (v)
-        RedPrintf("%d/%d: creat %s x:%d %d %d\n", procid, opno, f.path, esz, e, e1);
+        RedPrintf("%d/%d: creat %s x:%d %d %d\n", procid, opno, f.path,
+               esz, e, e1);
     free_pathname(&f);
 }
 
@@ -1458,7 +1563,8 @@ static void fdatasync_f(int opno, long r)
     init_pathname(&f);
     if (!get_fname(FT_REGFILE, r, &f, NULL, NULL, &v)) {
         if (v)
-            RedPrintf("%d/%d: fdatasync - no filename\n", procid, opno);
+            RedPrintf("%d/%d: fdatasync - no filename\n",
+                   procid, opno);
         free_pathname(&f);
         return;
     }
@@ -1467,7 +1573,8 @@ static void fdatasync_f(int opno, long r)
     check_cwd();
     if (fd < 0) {
         if (v)
-            RedPrintf("%d/%d: fdatasync - open %s failed %d\n", procid, opno, f.path, e);
+            RedPrintf("%d/%d: fdatasync - open %s failed %d\n",
+                   procid, opno, f.path, e);
         free_pathname(&f);
         return;
     }
@@ -1497,7 +1604,8 @@ static void fsync_f(int opno, long r)
     check_cwd();
     if (fd < 0) {
         if (v)
-            RedPrintf("%d/%d: fsync - open %s failed %d\n", procid, opno, f.path, e);
+            RedPrintf("%d/%d: fsync - open %s failed %d\n",
+                   procid, opno, f.path, e);
         free_pathname(&f);
         return;
     }
@@ -1521,11 +1629,13 @@ static void getdents_f(int opno, long r)
     check_cwd();
     if (dir == NULL) {
         if (v)
-            RedPrintf("%d/%d: getdents - can't open %s\n", procid, opno, f.path);
+            RedPrintf("%d/%d: getdents - can't open %s\n",
+                   procid, opno, f.path);
         free_pathname(&f);
         return;
     }
-    while (readdir64(dir) != NULL) continue;
+    while (readdir64(dir) != NULL)
+        continue;
     if (v)
         RedPrintf("%d/%d: getdents %s 0\n", procid, opno, f.path);
     free_pathname(&f);
@@ -1562,7 +1672,8 @@ static void link_f(int opno, long r)
     if (!e) {
         if (v) {
             fent_to_name(&l, &flist[FT_DIR], fep);
-            RedPrintf("%d/%d: link - no filename from %s\n", procid, opno, l.path);
+            RedPrintf("%d/%d: link - no filename from %s\n",
+                   procid, opno, l.path);
         }
         free_pathname(&l);
         free_pathname(&f);
@@ -1573,7 +1684,8 @@ static void link_f(int opno, long r)
     if (e == 0)
         add_to_flist((int)(flp - flist), id, parid);
     if (v)
-        RedPrintf("%d/%d: link %s %s %d\n", procid, opno, f.path, l.path, e);
+        RedPrintf("%d/%d: link %s %s %d\n", procid, opno, f.path, l.path,
+               e);
     free_pathname(&l);
     free_pathname(&f);
 }
@@ -1598,7 +1710,8 @@ static void mkdir_f(int opno, long r)
     if (!e) {
         if (v) {
             fent_to_name(&f, &flist[FT_DIR], fep);
-            RedPrintf("%d/%d: mkdir - no filename from %s\n", procid, opno, f.path);
+            RedPrintf("%d/%d: mkdir - no filename from %s\n",
+                   procid, opno, f.path);
         }
         free_pathname(&f);
         return;
@@ -1636,34 +1749,37 @@ static void read_f(int opno, long r)
     check_cwd();
     if (fd < 0) {
         if (v)
-            RedPrintf("%d/%d: read - open %s failed %d\n", procid, opno, f.path, e);
+            RedPrintf("%d/%d: read - open %s failed %d\n",
+                   procid, opno, f.path, e);
         free_pathname(&f);
         return;
     }
     if (fstat64(fd, &stb) < 0) {
         if (v)
-            RedPrintf("%d/%d: read - fstat64 %s failed %d\n", procid, opno, f.path, errno);
+            RedPrintf("%d/%d: read - fstat64 %s failed %d\n",
+                   procid, opno, f.path, errno);
         free_pathname(&f);
         close(fd);
         return;
     }
     if (stb.st_size == 0) {
         if (v)
-            RedPrintf("%d/%d: read - %s zero size\n", procid, opno, f.path);
+            RedPrintf("%d/%d: read - %s zero size\n", procid, opno,
+                   f.path);
         free_pathname(&f);
         close(fd);
         return;
     }
-    lr = ((__int64_t)random() << 32) + random();
-    off = (off64_t)(lr % stb.st_size);
+    lr = ((__int64_t) random() << 32) + random();
+    off = (off64_t) (lr % stb.st_size);
     lseek64(fd, off, SEEK_SET);
     len = (random() % (getpagesize() * 4)) + 1;
     buf = malloc(len);
     e = read(fd, buf, len) < 0 ? errno : 0;
     free(buf);
     if (v)
-        RedPrintf("%d/%d: read %s [%lld,%ld] %d\n", procid, opno, f.path, (long long)off,
-                  (long int)len, e);
+        RedPrintf("%d/%d: read %s [%lld,%ld] %d\n",
+               procid, opno, f.path, (long long)off, (long int)len, e);
     free_pathname(&f);
     close(fd);
 }
@@ -1700,7 +1816,8 @@ static void rename_f(int opno, long r)
     if (!e) {
         if (v) {
             fent_to_name(&f, &flist[FT_DIR], dfep);
-            RedPrintf("%d/%d: rename - no filename from %s\n", procid, opno, f.path);
+            RedPrintf("%d/%d: rename - no filename from %s\n",
+                   procid, opno, f.path);
         }
         free_pathname(&newf);
         free_pathname(&f);
@@ -1717,7 +1834,8 @@ static void rename_f(int opno, long r)
         add_to_flist((int)(flp - flist), id, parid);
     }
     if (v)
-        RedPrintf("%d/%d: rename %s to %s %d\n", procid, opno, f.path, newf.path, e);
+        RedPrintf("%d/%d: rename %s to %s %d\n", procid, opno, f.path,
+               newf.path, e);
     free_pathname(&newf);
     free_pathname(&f);
 }
@@ -1786,17 +1904,19 @@ static void truncate_f(int opno, long r)
     check_cwd();
     if (e > 0) {
         if (v)
-            RedPrintf("%d/%d: truncate - stat64 %s failed %d\n", procid, opno, f.path, e);
+            RedPrintf("%d/%d: truncate - stat64 %s failed %d\n",
+                   procid, opno, f.path, e);
         free_pathname(&f);
         return;
     }
-    lr = ((__int64_t)random() << 32) + random();
+    lr = ((__int64_t) random() << 32) + random();
     off = lr % MIN(stb.st_size + (1024 * 1024), MAXFSIZE);
     off %= maxfsize;
     e = truncate64_path(&f, off) < 0 ? errno : 0;
     check_cwd();
     if (v)
-        RedPrintf("%d/%d: truncate %s %lld %d\n", procid, opno, f.path, (long long)off, e);
+        RedPrintf("%d/%d: truncate %s %lld %d\n", procid, opno, f.path,
+               (long long)off, e);
     free_pathname(&f);
 }
 
@@ -1848,19 +1968,21 @@ static void write_f(int opno, long r)
     check_cwd();
     if (fd < 0) {
         if (v)
-            RedPrintf("%d/%d: write - open %s failed %d\n", procid, opno, f.path, e);
+            RedPrintf("%d/%d: write - open %s failed %d\n",
+                   procid, opno, f.path, e);
         free_pathname(&f);
         return;
     }
     if (fstat64(fd, &stb) < 0) {
         if (v)
-            RedPrintf("%d/%d: write - fstat64 %s failed %d\n", procid, opno, f.path, errno);
+            RedPrintf("%d/%d: write - fstat64 %s failed %d\n",
+                   procid, opno, f.path, errno);
         free_pathname(&f);
         close(fd);
         return;
     }
-    lr = ((__int64_t)random() << 32) + random();
-    off = (off64_t)(lr % MIN(stb.st_size + (1024 * 1024), MAXFSIZE));
+    lr = ((__int64_t) random() << 32) + random();
+    off = (off64_t) (lr % MIN(stb.st_size + (1024 * 1024), MAXFSIZE));
     off %= maxfsize;
     lseek64(fd, off, SEEK_SET);
     len = (random() % (getpagesize() * 4)) + 1;
@@ -1869,11 +1991,12 @@ static void write_f(int opno, long r)
     e = write(fd, buf, len) < 0 ? errno : 0;
     free(buf);
     if (v)
-        RedPrintf("%d/%d: write %s [%lld,%ld] %d\n", procid, opno, f.path, (long long)off,
-                  (long int)len, e);
+        RedPrintf("%d/%d: write %s [%lld,%ld] %d\n",
+               procid, opno, f.path, (long long)off, (long int)len, e);
     free_pathname(&f);
     close(fd);
 }
+
 
 #if REDCONF_CHECKER == 1
 static void check_f(int opno, long r)
@@ -1887,33 +2010,41 @@ static void check_f(int opno, long r)
 
     ret = red_transact(pszVolume);
 
-    if (ret == 0) {
+    if(ret == 0)
+    {
         ret = red_umount(pszVolume);
 
-        if (ret == 0) {
+        if(ret == 0)
+        {
             int32_t ret2;
 
             errno = -RedCoreVolCheck();
-            if (errno != 0) {
+            if(errno != 0)
+            {
                 ret = -1;
             }
 
             ret2 = red_mount(pszVolume);
 
-            if (ret == 0) {
+            if(ret == 0)
+            {
                 ret = ret2;
             }
 
-            if (ret2 != 0) {
+            if(ret2 != 0)
+            {
                 exit(1);
             }
         }
     }
 
-    if (verbose) {
+    if (verbose)
+    {
         RedPrintf("%d/%d: check %s %d\n", procid, opno, pszVolume, errno);
     }
 }
 #endif
 
+
 #endif /* FSSTRESS_SUPPORTED */
+

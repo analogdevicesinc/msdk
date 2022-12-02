@@ -38,11 +38,15 @@
 /*************************************************************************************************/
 void LmgrSendAdvEnableCnf(uint8_t status)
 {
-    wsfMsgHdr_t evt = { .event = LL_ADV_ENABLE_CNF, .status = status };
+  wsfMsgHdr_t evt =
+  {
+    .event  = LL_ADV_ENABLE_CNF,
+    .status = status
+  };
 
-    LL_TRACE_INFO1("### LlEvent ###  LL_ADV_ENABLE_CNF, status=%u", status);
+  LL_TRACE_INFO1("### LlEvent ###  LL_ADV_ENABLE_CNF, status=%u", status);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -54,11 +58,15 @@ void LmgrSendAdvEnableCnf(uint8_t status)
 /*************************************************************************************************/
 void LmgrSendScanEnableCnf(uint8_t status)
 {
-    wsfMsgHdr_t evt = { .event = LL_SCAN_ENABLE_CNF, .status = status };
+  wsfMsgHdr_t evt =
+  {
+    .event  = LL_SCAN_ENABLE_CNF,
+    .status = status
+  };
 
-    LL_TRACE_INFO1("### LlEvent ###  LL_SCAN_ENABLE_CNF, status=%u", status);
+  LL_TRACE_INFO1("### LlEvent ###  LL_SCAN_ENABLE_CNF, status=%u", status);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -73,18 +81,24 @@ void LmgrSendScanEnableCnf(uint8_t status)
 /*************************************************************************************************/
 void LmgrSendAdvSetTermInd(uint8_t handle, uint8_t status, uint16_t connHandle, uint8_t numEvents)
 {
-    LlAdvSetTermInd_t evt = {
-        .hdr = { .event = LL_ADV_SET_TERM_IND, .param = handle, .status = status },
+  LlAdvSetTermInd_t evt =
+  {
+    .hdr =
+    {
+      .event  = LL_ADV_SET_TERM_IND,
+      .param  = handle,
+      .status = status
+    },
 
-        .status = status,
-        .advHandle = handle,
-        .connHandle = connHandle,
-        .numCmplAdvEvt = numEvents
-    };
+    .status = status,
+    .advHandle = handle,
+    .connHandle = connHandle,
+    .numCmplAdvEvt = numEvents
+  };
 
-    LL_TRACE_INFO2("### LlEvent ###  LL_ADV_SET_TERM_IND, handle=%u, status=%u", handle, status);
+  LL_TRACE_INFO2("### LlEvent ###  LL_ADV_SET_TERM_IND, handle=%u, status=%u", handle, status);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -98,10 +112,11 @@ void LmgrSendAdvSetTermInd(uint8_t handle, uint8_t status, uint16_t connHandle, 
 /*************************************************************************************************/
 bool_t LmgrSendEvent(LlEvt_t *pEvt)
 {
-    bool_t evtSent = FALSE;
+  bool_t evtSent = FALSE;
 
-    if (lmgrPersistCb.evtCback) {
-        evtSent = lmgrPersistCb.evtCback(pEvt);
-    }
-    return evtSent;
+  if (lmgrPersistCb.evtCback)
+  {
+    evtSent = lmgrPersistCb.evtCback(pEvt);
+  }
+  return evtSent;
 }

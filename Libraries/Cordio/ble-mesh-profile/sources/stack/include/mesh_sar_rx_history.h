@@ -26,7 +26,8 @@
 #define MESH_SAR_RX_HISTORY_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -34,7 +35,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Apply seqZero 13-bit mask on SEQ */
-#define SAR_RX_SEQZERO(seqNo) ((uint16_t)seqNo & MESH_SEQ_ZERO_MASK)
+#define SAR_RX_SEQZERO(seqNo)   ((uint16_t)seqNo & MESH_SEQ_ZERO_MASK)
 
 /**************************************************************************************************
   Function Declarations

@@ -73,91 +73,91 @@ void StackInitProvisioner(void);
 /*************************************************************************************************/
 void StackInitProvisioner(void)
 {
-    wsfHandlerId_t handlerId;
+  wsfHandlerId_t handlerId;
 
-    SecInit();
-    SecAesInit();
-    SecAesRevInit();
-    SecCmacInit();
-    SecEccInit();
-    SecCcmInit();
+  SecInit();
+  SecAesInit();
+  SecAesRevInit();
+  SecCmacInit();
+  SecEccInit();
+  SecCcmInit();
 
-    /* Initialize stack handlers. */
-    handlerId = WsfOsSetNextHandler(HciHandler);
-    HciHandlerInit(handlerId);
+  /* Initialize stack handlers. */
+  handlerId = WsfOsSetNextHandler(HciHandler);
+  HciHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(DmHandler);
-    DmDevVsInit(0);
+  handlerId = WsfOsSetNextHandler(DmHandler);
+  DmDevVsInit(0);
 
 #if (LL_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    DmExtScanInit();
-    DmExtAdvInit();
+  DmExtScanInit();
+  DmExtAdvInit();
 #else
-    DmScanInit();
-    DmAdvInit();
+  DmScanInit();
+  DmAdvInit();
 #endif
 
-    DmConnInit();
+  DmConnInit();
 #if (LL_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    DmExtConnMasterInit();
-    DmExtConnSlaveInit();
+  DmExtConnMasterInit();
+  DmExtConnSlaveInit();
 #else
-    DmConnMasterInit();
-    DmConnSlaveInit();
+  DmConnMasterInit();
+  DmConnSlaveInit();
 #endif
 
-    DmSecInit();
-    DmSecLescInit();
-    DmPrivInit();
-    DmHandlerInit(handlerId);
+  DmSecInit();
+  DmSecLescInit();
+  DmPrivInit();
+  DmHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
-    L2cSlaveHandlerInit(handlerId);
-    L2cInit();
-    L2cMasterInit();
-    L2cSlaveInit();
+  handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
+  L2cSlaveHandlerInit(handlerId);
+  L2cInit();
+  L2cMasterInit();
+  L2cSlaveInit();
 
-    handlerId = WsfOsSetNextHandler(AttHandler);
-    AttHandlerInit(handlerId);
-    AttsInit();
-    AttsIndInit();
-    AttcInit();
+  handlerId = WsfOsSetNextHandler(AttHandler);
+  AttHandlerInit(handlerId);
+  AttsInit();
+  AttsIndInit();
+  AttcInit();
 
-    handlerId = WsfOsSetNextHandler(SmpHandler);
-    SmpHandlerInit(handlerId);
-    SmpiInit();
-    SmprInit();
-    SmpiScInit();
-    SmprScInit();
-    HciSetMaxRxAclLen(100);
+  handlerId = WsfOsSetNextHandler(SmpHandler);
+  SmpHandlerInit(handlerId);
+  SmpiInit();
+  SmprInit();
+  SmpiScInit();
+  SmprScInit();
+  HciSetMaxRxAclLen(100);
 
-    /* Initialize Mesh handlers. */
-    handlerId = WsfOsSetNextHandler(MeshHandler);
-    MeshHandlerInit(handlerId);
+  /* Initialize Mesh handlers. */
+  handlerId = WsfOsSetNextHandler(MeshHandler);
+  MeshHandlerInit(handlerId);
 
-    /* Initialize Mesh Security handler. */
-    handlerId = WsfOsSetNextHandler(MeshSecurityHandler);
-    MeshSecurityHandlerInit(handlerId);
+  /* Initialize Mesh Security handler. */
+  handlerId = WsfOsSetNextHandler(MeshSecurityHandler);
+  MeshSecurityHandlerInit(handlerId);
 
-    /* Initialize Mesh Provisioning Server handler. */
-    handlerId = WsfOsSetNextHandler(MeshPrvClHandler);
-    MeshPrvClHandlerInit(handlerId);
+  /* Initialize Mesh Provisioning Server handler. */
+  handlerId = WsfOsSetNextHandler(MeshPrvClHandler);
+  MeshPrvClHandlerInit(handlerId);
 
-    /* Initialize Mesh Models handler. */
-    handlerId = WsfOsSetNextHandler(ProvisionerMmdlHandler);
+  /* Initialize Mesh Models handler. */
+  handlerId = WsfOsSetNextHandler(ProvisionerMmdlHandler);
 
-    /* Initialize Health Server model handler. */
-    MeshHtSrHandlerInit(handlerId);
+  /* Initialize Health Server model handler. */
+  MeshHtSrHandlerInit(handlerId);
 
-    /* Initialize Generic OnOff Client model handler. */
-    MmdlGenOnOffClHandlerInit(handlerId);
+  /* Initialize Generic OnOff Client model handler. */
+  MmdlGenOnOffClHandlerInit(handlerId);
 
-    /* Initialize Light HSL Client model handler. */
-    MmdlLightHslClHandlerInit(handlerId);
+  /* Initialize Light HSL Client model handler. */
+  MmdlLightHslClHandlerInit(handlerId);
 
-    /* Initialize application handler. */
-    handlerId = WsfOsSetNextHandler(ProvisionerHandler);
-    ProvisionerHandlerInit(handlerId);
+  /* Initialize application handler. */
+  handlerId = WsfOsSetNextHandler(ProvisionerHandler);
+  ProvisionerHandlerInit(handlerId);
 }
 
 /*************************************************************************************************/
@@ -169,5 +169,5 @@ void StackInitProvisioner(void)
 /*************************************************************************************************/
 void StackInitCfgProvisioner(void)
 {
-    ProvisionerConfigInit();
+  ProvisionerConfigInit();
 }

@@ -55,9 +55,11 @@
 #include "micro_ecc_backend_shared.h"
 #include "uECC.h"
 
+
 typedef uECC_Curve (*micro_ecc_curve_fn_t)(void);
 
-int nrf_crypto_backend_micro_ecc_rng_callback(uint8_t *dest, unsigned size)
+
+int nrf_crypto_backend_micro_ecc_rng_callback(uint8_t * dest, unsigned size)
 {
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_RNG)
 
@@ -66,7 +68,8 @@ int nrf_crypto_backend_micro_ecc_rng_callback(uint8_t *dest, unsigned size)
     result = nrf_crypto_rng_vector_generate(dest, size);
 
     // Return values compatible with mbed TLS
-    if (result != NRF_SUCCESS) {
+    if (result != NRF_SUCCESS)
+    {
         return 0;
     }
     return 1;
@@ -78,10 +81,11 @@ int nrf_crypto_backend_micro_ecc_rng_callback(uint8_t *dest, unsigned size)
 #endif
 }
 
-uECC_Curve
-nrf_crypto_backend_micro_ecc_curve_get(nrf_crypto_backend_micro_ecc_common_key_t const *p_key)
+
+uECC_Curve nrf_crypto_backend_micro_ecc_curve_get(
+    nrf_crypto_backend_micro_ecc_common_key_t const * p_key)
 {
-    nrf_crypto_internal_ecc_key_header_t const *p_key_header =
+    nrf_crypto_internal_ecc_key_header_t const * p_key_header =
         (nrf_crypto_internal_ecc_key_header_t const *)p_key;
 
     //lint -save -e611 (Suspicious cast)
@@ -94,61 +98,73 @@ nrf_crypto_backend_micro_ecc_curve_get(nrf_crypto_backend_micro_ecc_common_key_t
     return p_micro_ecc_curve;
 }
 
-ret_code_t nrf_crypto_backend_micro_ecc_key_pair_generate(void *p_context, void *p_private_key,
-                                                          void *p_public_key)
+
+ret_code_t nrf_crypto_backend_micro_ecc_key_pair_generate(
+    void * p_context,
+    void * p_private_key,
+    void * p_public_key)
 {
     int result;
 
-    nrf_crypto_backend_micro_ecc_common_key_t *p_prv =
+    nrf_crypto_backend_micro_ecc_common_key_t * p_prv =
         (nrf_crypto_backend_micro_ecc_common_key_t *)p_private_key;
-    nrf_crypto_backend_micro_ecc_common_key_t *p_pub =
+    nrf_crypto_backend_micro_ecc_common_key_t * p_pub =
         (nrf_crypto_backend_micro_ecc_common_key_t *)p_public_key;
 
     uECC_Curve p_micro_ecc_curve = nrf_crypto_backend_micro_ecc_curve_get(p_prv);
 
     uECC_set_rng(nrf_crypto_backend_micro_ecc_rng_callback);
 
-    result =
-        uECC_make_key((uint8_t *)(&p_pub->key[0]), (uint8_t *)(&p_prv->key[0]), p_micro_ecc_curve);
+    result = uECC_make_key((uint8_t *)(&p_pub->key[0]),
+                           (uint8_t *)(&p_prv->key[0]),
+                           p_micro_ecc_curve);
 
-    if (result == 0) {
+    if (result == 0)
+    {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_backend_micro_ecc_public_key_calculate(void *p_context,
-                                                             void const *p_private_key,
-                                                             void *p_public_key)
+
+ret_code_t nrf_crypto_backend_micro_ecc_public_key_calculate(
+    void       * p_context,
+    void const * p_private_key,
+    void       * p_public_key)
 {
     int result;
 
-    nrf_crypto_backend_micro_ecc_common_key_t const *p_prv =
+    nrf_crypto_backend_micro_ecc_common_key_t const * p_prv =
         (nrf_crypto_backend_micro_ecc_common_key_t const *)p_private_key;
-    nrf_crypto_backend_micro_ecc_common_key_t *p_pub =
+    nrf_crypto_backend_micro_ecc_common_key_t       * p_pub =
         (nrf_crypto_backend_micro_ecc_common_key_t *)p_public_key;
 
     uECC_Curve p_micro_ecc_curve = nrf_crypto_backend_micro_ecc_curve_get(p_prv);
 
-    result = uECC_compute_public_key((uint8_t *)(&p_prv->key[0]), (uint8_t *)(&p_pub->key[0]),
+    result = uECC_compute_public_key((uint8_t *)(&p_prv->key[0]),
+                                     (uint8_t *)(&p_pub->key[0]),
                                      p_micro_ecc_curve);
 
-    if (result == 0) {
+    if (result == 0)
+    {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_backend_micro_ecc_private_key_from_raw(void *p_private_key,
-                                                             uint8_t const *p_raw_data)
+
+ret_code_t nrf_crypto_backend_micro_ecc_private_key_from_raw(
+    void          * p_private_key,
+    uint8_t const * p_raw_data)
 {
-    nrf_crypto_backend_micro_ecc_common_key_t *p_prv =
+    nrf_crypto_backend_micro_ecc_common_key_t * p_prv =
         (nrf_crypto_backend_micro_ecc_common_key_t *)p_private_key;
 
-    nrf_crypto_ecc_curve_info_t const *p_info = p_prv->header.p_info;
+    nrf_crypto_ecc_curve_info_t const * p_info = p_prv->header.p_info;
 
 #if ECC_BACKEND_SWAP_BYTES
-    nrf_crypto_internal_swap_endian((uint8_t *)(&p_prv->key[0]), p_raw_data,
+    nrf_crypto_internal_swap_endian((uint8_t *)(&p_prv->key[0]),
+                                    p_raw_data,
                                     p_info->raw_private_key_size);
 #else
     memcpy(&p_prv->key[0], p_raw_data, p_info->raw_private_key_size);
@@ -157,16 +173,19 @@ ret_code_t nrf_crypto_backend_micro_ecc_private_key_from_raw(void *p_private_key
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_backend_micro_ecc_private_key_to_raw(void const *p_private_key,
-                                                           uint8_t *p_raw_data)
+
+ret_code_t nrf_crypto_backend_micro_ecc_private_key_to_raw(
+    void    const * p_private_key,
+    uint8_t       * p_raw_data)
 {
-    nrf_crypto_backend_micro_ecc_common_key_t const *p_prv =
+    nrf_crypto_backend_micro_ecc_common_key_t const * p_prv =
         (nrf_crypto_backend_micro_ecc_common_key_t const *)p_private_key;
 
-    nrf_crypto_ecc_curve_info_t const *p_info = p_prv->header.p_info;
+    nrf_crypto_ecc_curve_info_t const * p_info = p_prv->header.p_info;
 
 #if ECC_BACKEND_SWAP_BYTES
-    nrf_crypto_internal_swap_endian(p_raw_data, (uint8_t *)(&p_prv->key[0]),
+    nrf_crypto_internal_swap_endian(p_raw_data,
+                                    (uint8_t *)(&p_prv->key[0]),
                                     p_info->raw_private_key_size);
 #else
     memcpy(p_raw_data, &p_prv->key[0], p_info->raw_private_key_size);
@@ -175,16 +194,19 @@ ret_code_t nrf_crypto_backend_micro_ecc_private_key_to_raw(void const *p_private
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_backend_micro_ecc_public_key_from_raw(void *p_public_key,
-                                                            uint8_t const *p_raw_data)
+
+ret_code_t nrf_crypto_backend_micro_ecc_public_key_from_raw(
+    void          * p_public_key,
+    uint8_t const * p_raw_data)
 {
-    nrf_crypto_backend_micro_ecc_common_key_t *p_pub =
+    nrf_crypto_backend_micro_ecc_common_key_t * p_pub =
         (nrf_crypto_backend_micro_ecc_common_key_t *)p_public_key;
 
-    nrf_crypto_ecc_curve_info_t const *p_info = p_pub->header.p_info;
+    nrf_crypto_ecc_curve_info_t const * p_info = p_pub->header.p_info;
 
 #if ECC_BACKEND_SWAP_BYTES
-    nrf_crypto_internal_double_swap_endian((uint8_t *)(&p_pub->key[0]), p_raw_data,
+    nrf_crypto_internal_double_swap_endian((uint8_t *)(&p_pub->key[0]),
+                                           p_raw_data,
                                            p_info->raw_private_key_size);
 #else
     memcpy(&p_pub->key[0], p_raw_data, p_info->raw_public_key_size);
@@ -193,16 +215,19 @@ ret_code_t nrf_crypto_backend_micro_ecc_public_key_from_raw(void *p_public_key,
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_backend_micro_ecc_public_key_to_raw(void const *p_public_key,
-                                                          uint8_t *p_raw_data)
+
+ret_code_t nrf_crypto_backend_micro_ecc_public_key_to_raw(
+    void const * p_public_key,
+    uint8_t    * p_raw_data)
 {
-    nrf_crypto_backend_micro_ecc_common_key_t const *p_pub =
+    nrf_crypto_backend_micro_ecc_common_key_t const * p_pub =
         (nrf_crypto_backend_micro_ecc_common_key_t const *)p_public_key;
 
-    nrf_crypto_ecc_curve_info_t const *p_info = p_pub->header.p_info;
+    nrf_crypto_ecc_curve_info_t const * p_info = p_pub->header.p_info;
 
 #if ECC_BACKEND_SWAP_BYTES
-    nrf_crypto_internal_double_swap_endian(p_raw_data, (uint8_t *)(&p_pub->key[0]),
+    nrf_crypto_internal_double_swap_endian(p_raw_data,
+                                           (uint8_t *)(&p_pub->key[0]),
                                            p_info->raw_private_key_size);
 #else
     memcpy(p_raw_data, &p_pub->key[0], p_info->raw_public_key_size);
@@ -211,96 +236,106 @@ ret_code_t nrf_crypto_backend_micro_ecc_public_key_to_raw(void const *p_public_k
     return NRF_SUCCESS;
 }
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP192R1)
 
 // Make sure that common key structure match secp192r1 (NIST 192-bit) key structure to safely cast types.
 STATIC_ASSERT(offsetof(nrf_crypto_backend_micro_ecc_common_key_t, key) ==
-                  offsetof(nrf_crypto_backend_secp192r1_private_key_t, key),
+              offsetof(nrf_crypto_backend_secp192r1_private_key_t, key),
               "Common uECC private key structure does not match secp192r1 (NIST 192-bit) one.");
 STATIC_ASSERT(offsetof(nrf_crypto_backend_micro_ecc_common_key_t, key) ==
-                  offsetof(nrf_crypto_backend_secp192r1_public_key_t, key),
+              offsetof(nrf_crypto_backend_secp192r1_public_key_t, key),
               "Common ECC public key structure does not match secp192r1 (NIST 192-bit) one.");
 
-const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp192r1_curve_info = {
-    .public_key_size = sizeof(nrf_crypto_backend_secp192r1_public_key_t),
-    .private_key_size = sizeof(nrf_crypto_backend_secp192r1_private_key_t),
-    .curve_type = NRF_CRYPTO_ECC_SECP192R1_CURVE_TYPE,
+const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp192r1_curve_info =
+{
+    .public_key_size      = sizeof(nrf_crypto_backend_secp192r1_public_key_t),
+    .private_key_size     = sizeof(nrf_crypto_backend_secp192r1_private_key_t),
+    .curve_type           = NRF_CRYPTO_ECC_SECP192R1_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_SECP192R1_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size = NRF_CRYPTO_ECC_SECP192R1_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size  = NRF_CRYPTO_ECC_SECP192R1_RAW_PUBLIC_KEY_SIZE,
     //lint -save -e611 -e546 (Suspicious cast, Suspicious use of &)
-    .p_backend_data = (void *)&uECC_secp192r1,
+    .p_backend_data       = (void *)&uECC_secp192r1,
     //lint -restore
 };
 
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP224R1)
 
 // Make sure that common key structure match secp224r1 (NIST 224-bit) key structure to safely cast types.
 STATIC_ASSERT(offsetof(nrf_crypto_backend_micro_ecc_common_key_t, key) ==
-                  offsetof(nrf_crypto_backend_secp224r1_private_key_t, key),
+              offsetof(nrf_crypto_backend_secp224r1_private_key_t, key),
               "Common uECC private key structure does not match secp224r1 (NIST 224-bit) one.");
 STATIC_ASSERT(offsetof(nrf_crypto_backend_micro_ecc_common_key_t, key) ==
-                  offsetof(nrf_crypto_backend_secp224r1_public_key_t, key),
+              offsetof(nrf_crypto_backend_secp224r1_public_key_t, key),
               "Common ECC public key structure does not match secp224r1 (NIST 224-bit) one.");
 
-const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp224r1_curve_info = {
-    .public_key_size = sizeof(nrf_crypto_backend_secp224r1_public_key_t),
-    .private_key_size = sizeof(nrf_crypto_backend_secp224r1_private_key_t),
-    .curve_type = NRF_CRYPTO_ECC_SECP224R1_CURVE_TYPE,
+const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp224r1_curve_info =
+{
+    .public_key_size      = sizeof(nrf_crypto_backend_secp224r1_public_key_t),
+    .private_key_size     = sizeof(nrf_crypto_backend_secp224r1_private_key_t),
+    .curve_type           = NRF_CRYPTO_ECC_SECP224R1_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size = NRF_CRYPTO_ECC_SECP224R1_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size  = NRF_CRYPTO_ECC_SECP224R1_RAW_PUBLIC_KEY_SIZE,
     //lint -save -e611 -e546 (Suspicious cast, Suspicious use of &)
-    .p_backend_data = (void *)&uECC_secp224r1,
+    .p_backend_data       = (void *)&uECC_secp224r1,
     //lint -restore
 };
 
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP256R1)
 
 // Make sure that common key structure match secp256r1 (NIST 256-bit) key structure to safely cast types.
 STATIC_ASSERT(offsetof(nrf_crypto_backend_micro_ecc_common_key_t, key) ==
-                  offsetof(nrf_crypto_backend_secp256r1_private_key_t, key),
+              offsetof(nrf_crypto_backend_secp256r1_private_key_t, key),
               "Common uECC private key structure does not match secp256r1 (NIST 256-bit) one.");
 STATIC_ASSERT(offsetof(nrf_crypto_backend_micro_ecc_common_key_t, key) ==
-                  offsetof(nrf_crypto_backend_secp256r1_public_key_t, key),
+              offsetof(nrf_crypto_backend_secp256r1_public_key_t, key),
               "Common ECC public key structure does not match secp256r1 (NIST 256-bit) one.");
 
-const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp256r1_curve_info = {
-    .public_key_size = sizeof(nrf_crypto_backend_secp256r1_public_key_t),
-    .private_key_size = sizeof(nrf_crypto_backend_secp256r1_private_key_t),
-    .curve_type = NRF_CRYPTO_ECC_SECP256R1_CURVE_TYPE,
+const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp256r1_curve_info =
+{
+    .public_key_size      = sizeof(nrf_crypto_backend_secp256r1_public_key_t),
+    .private_key_size     = sizeof(nrf_crypto_backend_secp256r1_private_key_t),
+    .curve_type           = NRF_CRYPTO_ECC_SECP256R1_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size = NRF_CRYPTO_ECC_SECP256R1_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size  = NRF_CRYPTO_ECC_SECP256R1_RAW_PUBLIC_KEY_SIZE,
     //lint -save -e611 -e546 (Suspicious cast, Suspicious use of &)
-    .p_backend_data = (void *)&uECC_secp256r1,
+    .p_backend_data       = (void *)&uECC_secp256r1,
     //lint -restore
 };
 
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP256K1)
 
 // Make sure that common key structure match secp256k1 (Koblitz 256-bit) key structure to safely cast types.
 STATIC_ASSERT(offsetof(nrf_crypto_backend_micro_ecc_common_key_t, key) ==
-                  offsetof(nrf_crypto_backend_secp256k1_private_key_t, key),
+              offsetof(nrf_crypto_backend_secp256k1_private_key_t, key),
               "Common uECC private key structure does not match secp256k1 (Koblitz 256-bit) one.");
 STATIC_ASSERT(offsetof(nrf_crypto_backend_micro_ecc_common_key_t, key) ==
-                  offsetof(nrf_crypto_backend_secp256k1_public_key_t, key),
+              offsetof(nrf_crypto_backend_secp256k1_public_key_t, key),
               "Common ECC public key structure does not match secp256k1 (Koblitz 256-bit) one.");
 
-const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp256k1_curve_info = {
-    .public_key_size = sizeof(nrf_crypto_backend_secp256k1_public_key_t),
-    .private_key_size = sizeof(nrf_crypto_backend_secp256k1_private_key_t),
-    .curve_type = NRF_CRYPTO_ECC_SECP256K1_CURVE_TYPE,
+
+const nrf_crypto_ecc_curve_info_t g_nrf_crypto_ecc_secp256k1_curve_info =
+{
+    .public_key_size      = sizeof(nrf_crypto_backend_secp256k1_public_key_t),
+    .private_key_size     = sizeof(nrf_crypto_backend_secp256k1_private_key_t),
+    .curve_type           = NRF_CRYPTO_ECC_SECP256K1_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_SECP256K1_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size = NRF_CRYPTO_ECC_SECP256K1_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size  = NRF_CRYPTO_ECC_SECP256K1_RAW_PUBLIC_KEY_SIZE,
     //lint -save -e611 -e546 (Suspicious cast, Suspicious use of &)
-    .p_backend_data = (void *)&uECC_secp256k1,
+    .p_backend_data       = (void *)&uECC_secp256k1,
     //lint -restore
 };
 
 #endif
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC)

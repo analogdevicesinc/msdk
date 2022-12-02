@@ -55,41 +55,45 @@
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HASH_SHA256)
 
-static ret_code_t oberon_backend_hash_sha256_init(void *const p_context)
+static ret_code_t oberon_backend_hash_sha256_init(void * const p_context)
 {
     // No parameter testing on this level.
     // This has been done on upper level.
 
-    ocrypto_sha256_ctx *p_backend_context =
-        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
+    ocrypto_sha256_ctx * p_backend_context
+        = &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
 
     ocrypto_sha256_init(p_backend_context);
 
     return NRF_SUCCESS;
 }
 
-static uint32_t oberon_backend_hash_sha256_update(void *const p_context, uint8_t const *p_data,
-                                                  size_t size)
+
+static uint32_t oberon_backend_hash_sha256_update(void     * const p_context,
+                                                  uint8_t  const * p_data,
+                                                  size_t           size)
 {
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    ocrypto_sha256_ctx *p_backend_context =
-        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
+    ocrypto_sha256_ctx * p_backend_context
+        = &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
 
     ocrypto_sha256_update(p_backend_context, p_data, size);
 
     return NRF_SUCCESS;
 }
 
-static uint32_t oberon_backend_hash_sha256_finalize(void *const p_context, uint8_t *p_digest,
-                                                    size_t *const p_digest_size)
+
+static uint32_t oberon_backend_hash_sha256_finalize(void   * const p_context,
+                                                 uint8_t         * p_digest,
+                                                 size_t    * const p_digest_size)
 {
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    ocrypto_sha256_ctx *p_backend_context =
-        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
+    ocrypto_sha256_ctx * p_backend_context
+        = &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
 
     ocrypto_sha256_final(p_backend_context, p_digest);
 
@@ -98,54 +102,62 @@ static uint32_t oberon_backend_hash_sha256_finalize(void *const p_context, uint8
     return NRF_SUCCESS;
 }
 
-const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha256_info = {
-    .init_fn = oberon_backend_hash_sha256_init,
-    .update_fn = oberon_backend_hash_sha256_update,
-    .finalize_fn = oberon_backend_hash_sha256_finalize,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA256,
-    .context_size = sizeof(nrf_crypto_backend_hash_sha256_context_t),
-    .hash_mode = NRF_CRYPTO_HASH_MODE_SHA256
+
+const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha256_info =
+{
+    .init_fn        = oberon_backend_hash_sha256_init,
+    .update_fn      = oberon_backend_hash_sha256_update,
+    .finalize_fn    = oberon_backend_hash_sha256_finalize,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA256,
+    .context_size   = sizeof(nrf_crypto_backend_hash_sha256_context_t),
+    .hash_mode      = NRF_CRYPTO_HASH_MODE_SHA256
 };
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HASH_SHA256)
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HASH_SHA512)
 
-static ret_code_t oberon_backend_hash_sha512_init(void *p_context)
+
+static ret_code_t oberon_backend_hash_sha512_init(void * p_context)
 {
     // No parameter testing on this level.
     // This has been done on upper level.
 
-    ocrypto_sha512_ctx *p_backend_context =
-        &(((nrf_crypto_backend_hash_sha512_context_t *)p_context)->context);
+    ocrypto_sha512_ctx * p_backend_context
+        = &(((nrf_crypto_backend_hash_sha512_context_t *)p_context)->context);
 
     ocrypto_sha512_init(p_backend_context);
 
     return NRF_SUCCESS;
 }
 
-static ret_code_t oberon_backend_hash_sha512_update(void *const p_context, uint8_t const *p_data,
-                                                    size_t size)
+
+static ret_code_t oberon_backend_hash_sha512_update(void    * const p_context,
+                                                    uint8_t const * p_data,
+                                                    size_t          size)
 {
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    ocrypto_sha512_ctx *p_backend_context =
-        &(((nrf_crypto_backend_hash_sha512_context_t *)p_context)->context);
+    ocrypto_sha512_ctx * p_backend_context
+        = &(((nrf_crypto_backend_hash_sha512_context_t *)p_context)->context);
 
     ocrypto_sha512_update(p_backend_context, p_data, size);
 
     return NRF_SUCCESS;
 }
 
-static ret_code_t oberon_backend_hash_sha512_finalize(void *const p_context, uint8_t *p_digest,
-                                                      size_t *const p_digest_size)
+
+static ret_code_t oberon_backend_hash_sha512_finalize(void  * const p_context,
+                                                 uint8_t          * p_digest,
+                                                 size_t     * const p_digest_size)
 {
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    ocrypto_sha512_ctx *p_backend_context =
-        &(((nrf_crypto_backend_hash_sha512_context_t *)p_context)->context);
+    ocrypto_sha512_ctx * p_backend_context
+        = &(((nrf_crypto_backend_hash_sha512_context_t *)p_context)->context);
 
     ocrypto_sha512_final(p_backend_context, p_digest);
 
@@ -154,13 +166,15 @@ static ret_code_t oberon_backend_hash_sha512_finalize(void *const p_context, uin
     return NRF_SUCCESS;
 }
 
-const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha512_info = {
-    .init_fn = oberon_backend_hash_sha512_init,
-    .update_fn = oberon_backend_hash_sha512_update,
-    .finalize_fn = oberon_backend_hash_sha512_finalize,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA512,
-    .context_size = sizeof(nrf_crypto_backend_hash_sha512_context_t),
-    .hash_mode = NRF_CRYPTO_HASH_MODE_SHA512
+
+const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha512_info =
+{
+    .init_fn        = oberon_backend_hash_sha512_init,
+    .update_fn      = oberon_backend_hash_sha512_update,
+    .finalize_fn    = oberon_backend_hash_sha512_finalize,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA512,
+    .context_size   = sizeof(nrf_crypto_backend_hash_sha512_context_t),
+    .hash_mode      = NRF_CRYPTO_HASH_MODE_SHA512
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_HASH_SHA512)

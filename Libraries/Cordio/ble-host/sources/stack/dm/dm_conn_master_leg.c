@@ -33,7 +33,11 @@ Local Variables
 **************************************************************************************************/
 
 /* Action set for this module */
-static const dmConnAct_t dmConnActSetMaster[] = { dmConnSmActOpen, dmConnSmActCancelOpen };
+static const dmConnAct_t dmConnActSetMaster[] =
+{
+  dmConnSmActOpen,
+  dmConnSmActCancelOpen
+};
 
 /*************************************************************************************************/
 /*!
@@ -48,15 +52,14 @@ static const dmConnAct_t dmConnActSetMaster[] = { dmConnSmActOpen, dmConnSmActCa
 /*************************************************************************************************/
 static void dmConnOpen(uint8_t initPhys, uint8_t addrType, uint8_t *pAddr)
 {
-    uint8_t phyIdx = DmScanPhyToIdx(HCI_SCAN_PHY_LE_1M_BIT);
+  uint8_t phyIdx = DmScanPhyToIdx(HCI_SCAN_PHY_LE_1M_BIT);
 
-    /* Create connection */
-    HciLeCreateConnCmd(dmConnCb.scanInterval[phyIdx], dmConnCb.scanWindow[phyIdx],
-                       dmCb.initFiltPolicy, addrType, pAddr, DmLlAddrType(dmCb.connAddrType),
-                       &(dmConnCb.connSpec[phyIdx]));
+  /* Create connection */
+  HciLeCreateConnCmd(dmConnCb.scanInterval[phyIdx], dmConnCb.scanWindow[phyIdx], dmCb.initFiltPolicy,
+                     addrType, pAddr, DmLlAddrType(dmCb.connAddrType), &(dmConnCb.connSpec[phyIdx]));
 
-    /* pass connection initiation started to dev priv */
-    dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_START, 0, 0);
+  /* pass connection initiation started to dev priv */
+  dmDevPassEvtToDevPriv(DM_DEV_PRIV_MSG_CTRL, DM_DEV_PRIV_MSG_CONN_INIT_START, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -71,7 +74,7 @@ static void dmConnOpen(uint8_t initPhys, uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 void dmConnSmActOpen(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-    dmConnOpen(pMsg->apiOpen.initPhys, pMsg->apiOpen.addrType, pMsg->apiOpen.peerAddr);
+  dmConnOpen(pMsg->apiOpen.initPhys, pMsg->apiOpen.addrType, pMsg->apiOpen.peerAddr);
 }
 
 /*************************************************************************************************/
@@ -83,10 +86,10 @@ void dmConnSmActOpen(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 /*************************************************************************************************/
 void DmConnMasterInit(void)
 {
-    WsfTaskLock();
+  WsfTaskLock();
 
-    dmConnActSet[DM_CONN_ACT_SET_MASTER] = (dmConnAct_t *)dmConnActSetMaster;
-    dmConnUpdActSet[DM_CONN_ACT_SET_MASTER] = (dmConnAct_t *)dmConnUpdActSetMaster;
+  dmConnActSet[DM_CONN_ACT_SET_MASTER] = (dmConnAct_t *) dmConnActSetMaster;
+  dmConnUpdActSet[DM_CONN_ACT_SET_MASTER] = (dmConnAct_t *) dmConnUpdActSetMaster;
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }

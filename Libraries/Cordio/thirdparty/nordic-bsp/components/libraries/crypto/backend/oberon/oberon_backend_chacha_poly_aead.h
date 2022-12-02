@@ -59,6 +59,7 @@
 #include "nrf_crypto_error.h"
 #include "nrf_crypto_types.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -70,17 +71,18 @@ extern "C" {
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_CHACHA_POLY)
 #error "Duplicate definition of CHACHA-POLY mode. More than one backend enabled");
 #endif
-#define NRF_CRYPTO_CHACHA_POLY_ENABLED 1
-#undef NRF_CRYPTO_AEAD_ENABLED
-#define NRF_CRYPTO_AEAD_ENABLED 1 // Flag that nrf_crypto_aead frontend can be compiled
-#undef NRF_CRYPTO_OBERON_CHACHA_POLY_AEAD_ENABLED
-#define NRF_CRYPTO_OBERON_CHACHA_POLY_AEAD_ENABLED 1 // aead backend for Oberon can be compiled
+#define NRF_CRYPTO_CHACHA_POLY_ENABLED  1
+#undef  NRF_CRYPTO_AEAD_ENABLED
+#define NRF_CRYPTO_AEAD_ENABLED  1  // Flag that nrf_crypto_aead frontend can be compiled
+#undef  NRF_CRYPTO_OBERON_CHACHA_POLY_AEAD_ENABLED
+#define NRF_CRYPTO_OBERON_CHACHA_POLY_AEAD_ENABLED   1   // aead backend for Oberon can be compiled
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_CHACHA_POLY_256_ENABLED 1
+#define NRF_CRYPTO_AES_CHACHA_POLY_256_ENABLED  1
 
-typedef struct {
-    nrf_crypto_aead_internal_context_t header; /**< Common header for context. */
+typedef struct
+{
+    nrf_crypto_aead_internal_context_t header;  /**< Common header for context. */
 
     uint8_t key[NRF_CRYPTO_OBERON_CHACHA_POLY_BACKEND_KEY_SIZE];
 } nrf_crypto_backend_chacha_poly_context_t;
@@ -95,3 +97,4 @@ typedef struct {
 /** @} */
 
 #endif // OBERON_BACKEND_CHACHA_POLY_AEAD_H__
+

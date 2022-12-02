@@ -90,9 +90,9 @@ extern "C" {
  * @param _chunk_size Size of a single chunk.
  * @param _pool_size  Number of chunks in the pool.
  */
-#define NRF_MEMOBJ_POOL_DEF(_name, _chunk_size, _pool_size) \
-    STATIC_ASSERT((_chunk_size) > sizeof(uint32_t));        \
-    NRF_BALLOC_DEF(_name, ((_chunk_size) + NRF_MEMOBJ_STD_HEADER_SIZE), (_pool_size))
+#define NRF_MEMOBJ_POOL_DEF(_name, _chunk_size, _pool_size)                           \
+    STATIC_ASSERT((_chunk_size) > sizeof(uint32_t));                                  \
+    NRF_BALLOC_DEF(_name, ((_chunk_size)+NRF_MEMOBJ_STD_HEADER_SIZE), (_pool_size))
 
 /**
  * @brief Pool of memory objects.
@@ -102,7 +102,7 @@ typedef nrf_balloc_t nrf_memobj_pool_t;
 /**
  * @brief Memory object handle.
  */
-typedef void *nrf_memobj_t;
+typedef void * nrf_memobj_t;
 
 /**
  * @brief Function for initializing the memobj pool instance.
@@ -113,7 +113,7 @@ typedef void *nrf_memobj_t;
  *
  * @return  NRF_SUCCESS on success, otherwise an error code.
  */
-ret_code_t nrf_memobj_pool_init(nrf_memobj_pool_t const *p_pool);
+ret_code_t nrf_memobj_pool_init(nrf_memobj_pool_t const * p_pool);
 
 /**
  * @brief Function for allocating a memobj with a requested size.
@@ -128,7 +128,8 @@ ret_code_t nrf_memobj_pool_init(nrf_memobj_pool_t const *p_pool);
  *
  * @return  Pointer to a memory object or NULL if the requested size cannot be allocated.
  */
-nrf_memobj_t *nrf_memobj_alloc(nrf_memobj_pool_t const *p_pool, size_t size);
+nrf_memobj_t * nrf_memobj_alloc(nrf_memobj_pool_t const * p_pool,
+                                size_t size);
 
 /**
  * @brief Function for indicating that a memory object is used and cannot be freed.
@@ -139,7 +140,8 @@ nrf_memobj_t *nrf_memobj_alloc(nrf_memobj_pool_t const *p_pool, size_t size);
  *
  * @param[in] p_obj  Pointer to memory object.
  */
-void nrf_memobj_get(nrf_memobj_t const *p_obj);
+void nrf_memobj_get(nrf_memobj_t const * p_obj);
+
 
 /**
  * @brief Function for indicated that memory object is no longer used by the module and can be freed
@@ -153,7 +155,8 @@ void nrf_memobj_get(nrf_memobj_t const *p_obj);
  *
  * @param[in] p_obj  Pointer to memory object.
  */
-void nrf_memobj_put(nrf_memobj_t *p_obj);
+void nrf_memobj_put(nrf_memobj_t * p_obj);
+
 
 /**
  * @brief Function for forcing freeing of the memory object.
@@ -163,7 +166,7 @@ void nrf_memobj_put(nrf_memobj_t *p_obj);
  *
  * @param[in] p_obj  Pointer to memory object.
  */
-void nrf_memobj_free(nrf_memobj_t *p_obj);
+void nrf_memobj_free(nrf_memobj_t * p_obj);
 
 /**
  * @brief Function for writing data to the memory object.
@@ -173,7 +176,10 @@ void nrf_memobj_free(nrf_memobj_t *p_obj);
  * @param[in]      len    Amount of data to be written to the memory object.
  * @param[in]      offset Offset.
  */
-void nrf_memobj_write(nrf_memobj_t *p_obj, void *p_data, size_t len, size_t offset);
+void nrf_memobj_write(nrf_memobj_t * p_obj,
+                      void *         p_data,
+                      size_t         len,
+                      size_t         offset);
 
 /**
  * @brief Function for reading data from the memory object.
@@ -183,7 +189,10 @@ void nrf_memobj_write(nrf_memobj_t *p_obj, void *p_data, size_t len, size_t offs
  * @param[in]     len    Amount of data to be read from the memory object.
  * @param[in]     offset Offset.
  */
-void nrf_memobj_read(nrf_memobj_t *p_obj, void *p_data, size_t len, size_t offset);
+void nrf_memobj_read(nrf_memobj_t * p_obj,
+                     void *         p_data,
+                     size_t         len,
+                     size_t         offset);
 
 #ifdef __cplusplus
 }

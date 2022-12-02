@@ -27,7 +27,8 @@
 #define MESH_CFG_MDL_SR_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -41,7 +42,7 @@ typedef void (*meshCfgMdlSrFriendStateChgCback_t)(void);
 typedef void (*meshCfgMdlSrNetKeyDelNotifyCback_t)(uint16_t netKeyIndex);
 
 /*! Poll Timeout Timer read callback for friendship module. */
-typedef uint32_t (*meshCfgMdlSrPollTimeoutGetCback_t)(meshAddress_t lpnAddr);
+typedef uint32_t (*meshCfgMdlSrPollTimeoutGetCback_t) (meshAddress_t lpnAddr);
 
 /**************************************************************************************************
   Function Declarations

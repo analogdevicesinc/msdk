@@ -32,6 +32,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 #ifndef CRYS_EC_MONT_EDW_ERROR_H
 #define CRYS_EC_MONT_EDW_ERROR_H
 
@@ -46,8 +47,10 @@
 #include "crys_error.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
+
 
 /************************ Defines ******************************/
 
@@ -55,37 +58,40 @@ extern "C" {
  * CRYS EC Montgomery-Edwards MODULE ERRORS    base address - 0x00F02300                                  *
  **********************************************************************************************************/
 /*! Illegal input pointer */
-#define CRYS_ECEDW_INVALID_INPUT_POINTER_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x00UL)
+#define CRYS_ECEDW_INVALID_INPUT_POINTER_ERROR                (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x00UL)
 /*! Illegal input size */
-#define CRYS_ECEDW_INVALID_INPUT_SIZE_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x01UL)
+#define CRYS_ECEDW_INVALID_INPUT_SIZE_ERROR               (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x01UL)
 /*! Illegal scalar size */
-#define CRYS_ECEDW_INVALID_SCALAR_SIZE_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x02UL)
+#define CRYS_ECEDW_INVALID_SCALAR_SIZE_ERROR                  (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x02UL)
 /*! Illegal scalar data */
-#define CRYS_ECEDW_INVALID_SCALAR_DATA_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x03UL)
+#define CRYS_ECEDW_INVALID_SCALAR_DATA_ERROR                  (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x03UL)
 /*! Invalid RND context pointer */
-#define CRYS_ECEDW_RND_CONTEXT_PTR_INVALID_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x04UL)
+#define CRYS_ECEDW_RND_CONTEXT_PTR_INVALID_ERROR              (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x04UL)
 /*! Invalid RND generate vector functions pointer */
-#define CRYS_ECEDW_RND_GEN_VECTOR_FUNC_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x05UL)
+#define CRYS_ECEDW_RND_GEN_VECTOR_FUNC_ERROR                  (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x05UL)
 /*! Signing or verification operation failed */
-#define CRYS_ECEDW_SIGN_VERIFY_FAILED_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x20UL)
+#define CRYS_ECEDW_SIGN_VERIFY_FAILED_ERROR               (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x20UL)
 /*! Illegal input pointer */
-#define CRYS_ECMONT_INVALID_INPUT_POINTER_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x30UL)
+#define CRYS_ECMONT_INVALID_INPUT_POINTER_ERROR              (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x30UL)
 /*! Illegal input size */
-#define CRYS_ECMONT_INVALID_INPUT_SIZE_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x31UL)
+#define CRYS_ECMONT_INVALID_INPUT_SIZE_ERROR                 (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x31UL)
 /*! Illegal domain id */
-#define CRYS_ECMONT_INVALID_DOMAIN_ID_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x32UL)
+#define CRYS_ECMONT_INVALID_DOMAIN_ID_ERROR                  (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x32UL)
 /*! Internal PKI error */
-#define CRYS_ECEDW_PKI_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x33UL)
+#define CRYS_ECEDW_PKI_ERROR                                 (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x33UL)
 /*! Internal PKI error */
-#define CRYS_ECMONT_PKI_ERROR (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x34UL)
+#define CRYS_ECMONT_PKI_ERROR                                (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0x34UL)
+
 
 /************************************************************************************************************
  *    NOT SUPPORTED MODULES ERROR IDs                                                                       *
  ************************************************************************************************************/
 /*! EC montgomery is not supported */
-#define CRYS_ECMONT_IS_NOT_SUPPORTED (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0xFEUL)
+#define CRYS_ECMONT_IS_NOT_SUPPORTED                         (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0xFEUL)
 /*! EC edwards is not supported */
-#define CRYS_ECEDW_IS_NOT_SUPPORTED (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0xFFUL)
+#define CRYS_ECEDW_IS_NOT_SUPPORTED                          (CRYS_EC_MONT_EDW_MODULE_ERROR_BASE + 0xFFUL)
+
+
 
 /************************ Enums ********************************/
 
@@ -104,3 +110,5 @@ extern "C" {
 @}
 */
 #endif
+
+

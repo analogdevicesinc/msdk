@@ -36,15 +36,24 @@
 /*! GAP service characteristics for discovery */
 
 /*! Central Address Resolution */
-static const attcDiscChar_t gapCar = { attCarChUuid, 0 };
+static const attcDiscChar_t gapCar =
+{
+  attCarChUuid,
+  0
+};
 
 /*! Resolvable Private Address Only */
-static const attcDiscChar_t gapRpao = { attRpaoChUuid, 0 };
+static const attcDiscChar_t gapRpao =
+{
+  attRpaoChUuid,
+  0
+};
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *gapDiscCharList[] = {
-    &gapCar, /* Central Address Resolution */
-    &gapRpao /* Resolvable Private Address Only */
+static const attcDiscChar_t *gapDiscCharList[] =
+{
+  &gapCar,                   /* Central Address Resolution */
+  &gapRpao                   /* Resolvable Private Address Only */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
@@ -65,8 +74,8 @@ WSF_CT_ASSERT(GAP_HDL_LIST_LEN == ((sizeof(gapDiscCharList) / sizeof(attcDiscCha
 /*************************************************************************************************/
 void GapDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attGapSvcUuid, GAP_HDL_LIST_LEN,
-                       (attcDiscChar_t **)gapDiscCharList, pHdlList);
+  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attGapSvcUuid,
+                     GAP_HDL_LIST_LEN, (attcDiscChar_t **) gapDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -84,29 +93,35 @@ void GapDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 uint8_t GapValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 {
-    uint8_t status = ATT_SUCCESS;
+  uint8_t status = ATT_SUCCESS;
 
-    /* Central Address Resolution */
-    if (pMsg->handle == pHdlList[GAP_CAR_HDL_IDX]) {
-        appDbHdl_t dbHdl;
+  /* Central Address Resolution */
+  if (pMsg->handle == pHdlList[GAP_CAR_HDL_IDX])
+  {
+    appDbHdl_t dbHdl;
 
-        /* if there's a device record */
-        if ((dbHdl = AppDbGetHdl((dmConnId_t)pMsg->hdr.param)) != APP_DB_HDL_NONE) {
-            if ((pMsg->pValue[0] == FALSE) || (pMsg->pValue[0] == TRUE)) {
-                /* store value in device database */
-                AppDbSetPeerAddrRes(dbHdl, pMsg->pValue[0]);
-            } else {
-                /* invalid value */
-                status = ATT_ERR_RANGE;
-            }
+    /* if there's a device record */
+    if ((dbHdl = AppDbGetHdl((dmConnId_t)pMsg->hdr.param)) != APP_DB_HDL_NONE)
+    {
+      if ((pMsg->pValue[0] == FALSE) || (pMsg->pValue[0] == TRUE))
+      {
+        /* store value in device database */
+        AppDbSetPeerAddrRes(dbHdl, pMsg->pValue[0]);
+      }
+      else
+      {
+        /* invalid value */
+        status = ATT_ERR_RANGE;
+      }
 
-            APP_TRACE_INFO1("Central address resolution: %d", pMsg->pValue[0]);
-        }
+      APP_TRACE_INFO1("Central address resolution: %d", pMsg->pValue[0]);
     }
-    /* handle not found in list */
-    else {
-        status = ATT_ERR_NOT_FOUND;
-    }
+  }
+  /* handle not found in list */
+  else
+  {
+    status = ATT_ERR_NOT_FOUND;
+  }
 
-    return status;
+  return status;
 }

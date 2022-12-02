@@ -79,7 +79,7 @@ uint32_t sd_nvic_DisableIRQ(IRQn_Type IRQn);
  *
  * @retval ::NRF_SUCCESS The interrupt is available for the application.
  */
-uint32_t sd_nvic_GetPendingIRQ(IRQn_Type IRQn, uint32_t *p_pending_irq);
+uint32_t sd_nvic_GetPendingIRQ(IRQn_Type IRQn, uint32_t * p_pending_irq);
 
 /**@brief  Set Pending Interrupt.
  * @note Corresponds to NVIC_SetPendingIRQ in CMSIS.
@@ -126,7 +126,7 @@ uint32_t sd_nvic_SetPriority(IRQn_Type IRQn, uint32_t priority);
  *
  * @retval ::NRF_SUCCESS The interrupt priority is returned in p_priority.
  */
-uint32_t sd_nvic_GetPriority(IRQn_Type IRQn, uint32_t *p_priority);
+uint32_t sd_nvic_GetPriority(IRQn_Type IRQn, uint32_t * p_priority);
 
 /**@brief System Reset.
  * @note Corresponds to NVIC_SystemReset in CMSIS.
@@ -145,7 +145,7 @@ uint32_t sd_nvic_SystemReset(void);
  *
  * @retval ::NRF_SUCCESS
  */
-uint32_t sd_nvic_critical_region_enter(uint8_t *p_is_nested_critical_region);
+uint32_t sd_nvic_critical_region_enter(uint8_t * p_is_nested_critical_region);
 
 /**@brief Exit critical region.
  *
@@ -157,6 +157,7 @@ uint32_t sd_nvic_critical_region_enter(uint8_t *p_is_nested_critical_region);
  * @retval ::NRF_SUCCESS
  */
 uint32_t sd_nvic_critical_region_exit(uint8_t is_nested_critical_region);
+
 
 #ifdef __cplusplus
 }

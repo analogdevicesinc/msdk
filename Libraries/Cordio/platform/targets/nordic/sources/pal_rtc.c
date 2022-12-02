@@ -38,12 +38,7 @@
 #ifdef DEBUG
 
 /*! \brief      Parameter and state check. */
-#define PAL_RTC_CHECK(expr) \
-    {                       \
-        if (!(expr)) {      \
-            while (1) {}    \
-        }                   \
-    }
+#define PAL_RTC_CHECK(expr)         { if (!(expr)) { while(1); } }
 
 #else
 
@@ -52,7 +47,7 @@
 
 #endif
 
-#define RTC_TIMER_TOTAL_CHANNEL 4
+#define RTC_TIMER_TOTAL_CHANNEL         4
 
 /**************************************************************************************************
   Variables
@@ -69,10 +64,10 @@ static palRtcIrqCback_t palRtcTimerCback[RTC_TIMER_TOTAL_CHANNEL];
 /*************************************************************************************************/
 void PalRtcClearCompareEvents(uint8_t channelId)
 {
-    PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
+  PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
 
-    NRF_RTC1->EVENTS_COMPARE[channelId] = 0;
-    (void)NRF_RTC1->EVENTS_COMPARE[channelId];
+  NRF_RTC1->EVENTS_COMPARE[channelId] = 0;
+  (void)NRF_RTC1->EVENTS_COMPARE[channelId];
 }
 
 /*************************************************************************************************/
@@ -84,30 +79,31 @@ void PalRtcClearCompareEvents(uint8_t channelId)
 /*************************************************************************************************/
 void PalRtcEnableCompareIrq(uint8_t channelId)
 {
-    PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
+  PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
 
-    PalRtcClearCompareEvents(channelId);
+  PalRtcClearCompareEvents(channelId);
 
-    switch (channelId) {
+  switch (channelId)
+  {
     case 0:
-        NRF_RTC1->INTENSET = RTC_INTENSET_COMPARE0_Msk;
-        NRF_RTC1->EVTENSET = RTC_EVTENSET_COMPARE0_Msk;
-        break;
+      NRF_RTC1->INTENSET = RTC_INTENSET_COMPARE0_Msk;
+      NRF_RTC1->EVTENSET = RTC_EVTENSET_COMPARE0_Msk;
+      break;
     case 1:
-        NRF_RTC1->INTENSET = RTC_INTENSET_COMPARE1_Msk;
-        NRF_RTC1->EVTENSET = RTC_EVTENSET_COMPARE1_Msk;
-        break;
+      NRF_RTC1->INTENSET = RTC_INTENSET_COMPARE1_Msk;
+      NRF_RTC1->EVTENSET = RTC_EVTENSET_COMPARE1_Msk;
+      break;
     case 2:
-        NRF_RTC1->INTENSET = RTC_INTENSET_COMPARE2_Msk;
-        NRF_RTC1->EVTENSET = RTC_EVTENSET_COMPARE2_Msk;
-        break;
+      NRF_RTC1->INTENSET = RTC_INTENSET_COMPARE2_Msk;
+      NRF_RTC1->EVTENSET = RTC_EVTENSET_COMPARE2_Msk;
+      break;
     case 3:
-        NRF_RTC1->INTENSET = RTC_INTENSET_COMPARE3_Msk;
-        NRF_RTC1->EVTENSET = RTC_EVTENSET_COMPARE3_Msk;
-        break;
+      NRF_RTC1->INTENSET = RTC_INTENSET_COMPARE3_Msk;
+      NRF_RTC1->EVTENSET = RTC_EVTENSET_COMPARE3_Msk;
+      break;
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -119,28 +115,29 @@ void PalRtcEnableCompareIrq(uint8_t channelId)
 /*************************************************************************************************/
 void PalRtcDisableCompareIrq(uint8_t channelId)
 {
-    PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
+  PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
 
-    switch (channelId) {
+  switch (channelId)
+  {
     case 0:
-        NRF_RTC1->INTENCLR = RTC_INTENCLR_COMPARE0_Msk;
-        NRF_RTC1->EVTENCLR = RTC_EVTENCLR_COMPARE0_Msk;
-        break;
+      NRF_RTC1->INTENCLR = RTC_INTENCLR_COMPARE0_Msk;
+      NRF_RTC1->EVTENCLR = RTC_EVTENCLR_COMPARE0_Msk;
+      break;
     case 1:
-        NRF_RTC1->INTENCLR = RTC_INTENCLR_COMPARE1_Msk;
-        NRF_RTC1->EVTENCLR = RTC_EVTENCLR_COMPARE1_Msk;
-        break;
+      NRF_RTC1->INTENCLR = RTC_INTENCLR_COMPARE1_Msk;
+      NRF_RTC1->EVTENCLR = RTC_EVTENCLR_COMPARE1_Msk;
+      break;
     case 2:
-        NRF_RTC1->INTENCLR = RTC_INTENCLR_COMPARE2_Msk;
-        NRF_RTC1->EVTENCLR = RTC_EVTENCLR_COMPARE2_Msk;
-        break;
+      NRF_RTC1->INTENCLR = RTC_INTENCLR_COMPARE2_Msk;
+      NRF_RTC1->EVTENCLR = RTC_EVTENCLR_COMPARE2_Msk;
+      break;
     case 3:
-        NRF_RTC1->INTENCLR = RTC_INTENCLR_COMPARE3_Msk;
-        NRF_RTC1->EVTENCLR = RTC_EVTENCLR_COMPARE3_Msk;
-        break;
+      NRF_RTC1->INTENCLR = RTC_INTENCLR_COMPARE3_Msk;
+      NRF_RTC1->EVTENCLR = RTC_EVTENCLR_COMPARE3_Msk;
+      break;
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -152,12 +149,12 @@ void PalRtcDisableCompareIrq(uint8_t channelId)
 /*************************************************************************************************/
 uint32_t PalRtcCounterGet(void)
 {
-    NRF_CLOCK->EVENTS_LFCLKSTARTED = 0;
-    NRF_CLOCK->TASKS_LFCLKSTART = 1;
-    while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0) {}
-    NRF_RTC1->TASKS_STOP = 0;
+  NRF_CLOCK->EVENTS_LFCLKSTARTED  = 0;
+  NRF_CLOCK->TASKS_LFCLKSTART     = 1;
+  while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0) {}
+  NRF_RTC1->TASKS_STOP = 0;
 
-    return NRF_RTC1->COUNTER;
+  return NRF_RTC1->COUNTER;
 }
 
 /*************************************************************************************************/
@@ -170,8 +167,8 @@ uint32_t PalRtcCounterGet(void)
 /*************************************************************************************************/
 void PalRtcCompareSet(uint8_t channelId, uint32_t value)
 {
-    PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
-    NRF_RTC1->CC[channelId] = value;
+  PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
+  NRF_RTC1->CC[channelId] = value;
 }
 
 /*************************************************************************************************/
@@ -185,8 +182,8 @@ void PalRtcCompareSet(uint8_t channelId, uint32_t value)
 /*************************************************************************************************/
 uint32_t PalRtcCompareGet(uint8_t channelId)
 {
-    PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
-    return NRF_RTC1->CC[channelId];
+  PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
+  return NRF_RTC1->CC[channelId];
 }
 
 /*************************************************************************************************/
@@ -200,15 +197,18 @@ uint32_t PalRtcCompareGet(uint8_t channelId)
 /*************************************************************************************************/
 void RTC1_IRQHandler(void)
 {
-    for (unsigned int channelId = 0; channelId < RTC_TIMER_TOTAL_CHANNEL; channelId++) {
-        if (NRF_RTC1->EVENTS_COMPARE[channelId]) {
-            PalRtcClearCompareEvents(channelId);
+  for (unsigned int channelId = 0; channelId < RTC_TIMER_TOTAL_CHANNEL; channelId++)
+  {
+    if (NRF_RTC1->EVENTS_COMPARE[channelId])
+    {
+      PalRtcClearCompareEvents(channelId);
 
-            if (palRtcTimerCback[channelId]) {
-                palRtcTimerCback[channelId]();
-            }
-        }
+      if (palRtcTimerCback[channelId])
+      {
+        palRtcTimerCback[channelId]();
+      }
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -218,27 +218,28 @@ void RTC1_IRQHandler(void)
 /*************************************************************************************************/
 void PalRtcInit(void)
 {
-    /* Stop RTC to prevent any running timers from expiring. */
-    for (unsigned int channelId = 0; channelId < RTC_TIMER_TOTAL_CHANNEL; channelId++) {
-        PalRtcDisableCompareIrq(channelId);
-    }
+  /* Stop RTC to prevent any running timers from expiring. */
+  for (unsigned int channelId = 0; channelId < RTC_TIMER_TOTAL_CHANNEL; channelId++)
+  {
+    PalRtcDisableCompareIrq(channelId);
+  }
 
-    /* Configure low-frequency clock. */
-    NRF_CLOCK->LFCLKSRC = (CLOCK_LFCLKSRC_SRC_Xtal << CLOCK_LFCLKSRC_SRC_Pos);
+  /* Configure low-frequency clock. */
+  NRF_CLOCK->LFCLKSRC             = (CLOCK_LFCLKSRC_SRC_Xtal << CLOCK_LFCLKSRC_SRC_Pos);
 
-    NRF_CLOCK->EVENTS_LFCLKSTARTED = 0;
-    NRF_CLOCK->TASKS_LFCLKSTART = 1;
-    while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0) {}
-    NRF_RTC1->TASKS_STOP = 0;
+  NRF_CLOCK->EVENTS_LFCLKSTARTED  = 0;
+  NRF_CLOCK->TASKS_LFCLKSTART     = 1;
+  while (NRF_CLOCK->EVENTS_LFCLKSTARTED == 0) { }
+  NRF_RTC1->TASKS_STOP = 0;
 
-    NRF_RTC1->TASKS_STOP = 1;
-    NRF_RTC1->TASKS_CLEAR = 1;
-    NRF_RTC1->PRESCALER = 0; /* clear prescaler */
-    NRF_RTC1->TASKS_START = 1;
+  NRF_RTC1->TASKS_STOP  = 1;
+  NRF_RTC1->TASKS_CLEAR = 1;
+  NRF_RTC1->PRESCALER   = 0;            /* clear prescaler */
+  NRF_RTC1->TASKS_START = 1;
 
-    NVIC_SetPriority(RTC1_IRQn, 0x80); /* medium priority */
-    NVIC_ClearPendingIRQ(RTC1_IRQn);
-    NVIC_EnableIRQ(RTC1_IRQn);
+  NVIC_SetPriority(RTC1_IRQn, 0x80);    /* medium priority */
+  NVIC_ClearPendingIRQ(RTC1_IRQn);
+  NVIC_EnableIRQ(RTC1_IRQn);
 }
 
 /*************************************************************************************************/
@@ -254,6 +255,6 @@ void PalRtcInit(void)
 /*************************************************************************************************/
 void PalRtcIrqRegister(uint8_t channelId, palRtcIrqCback_t cback)
 {
-    PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
-    palRtcTimerCback[channelId] = cback;
+  PAL_RTC_CHECK(channelId < RTC_TIMER_TOTAL_CHANNEL);
+  palRtcTimerCback[channelId] = cback;
 }

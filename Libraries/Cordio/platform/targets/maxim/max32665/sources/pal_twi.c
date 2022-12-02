@@ -31,40 +31,28 @@
 
 /* Allow compiler directive override. */
 #ifndef PAL_TWI_MAX_DEVICE
-#define PAL_TWI_MAX_DEVICE 4
+#define PAL_TWI_MAX_DEVICE      4
 #endif
 
 /*! \brief TWI instance ID. */
 #ifndef PAL_TWI_INSTANCE_ID
-#define PAL_TWI_INSTANCE_ID 0
+#define PAL_TWI_INSTANCE_ID     0
 #endif
 
 #ifndef PAL_TWI_FREQ
-#define PAL_TWI_FREQ 400000
+#define PAL_TWI_FREQ            400000
 #endif
 
 /*! \brief      Get next handle value, includes wrap around. */
-#define PAL_TWI_GET_NEXT_HANDLE(h) (((h) + 1) & (PAL_TWI_MAX_DEVICE - 1))
+#define PAL_TWI_GET_NEXT_HANDLE(h)  (((h) + 1) & (PAL_TWI_MAX_DEVICE - 1))
 
 #ifdef DEBUG
 
 /*! \brief      Parameter check. */
-#define PAL_TWI_PARAM_CHECK(expr)                    \
-    {                                                \
-        if (!(expr)) {                               \
-            palTwiCb.drvState = PAL_TWI_STATE_ERROR; \
-            return;                                  \
-        }                                            \
-    }
+#define PAL_TWI_PARAM_CHECK(expr)           { if (!(expr)) { palTwiCb.drvState = PAL_TWI_STATE_ERROR; return; } }
 
 /*! \brief      Parameter check, with return value. */
-#define PAL_TWI_PARAM_CHECK_RET(expr, rv)            \
-    {                                                \
-        if (!(expr)) {                               \
-            palTwiCb.drvState = PAL_TWI_STATE_ERROR; \
-            return (rv);                             \
-        }                                            \
-    }
+#define PAL_TWI_PARAM_CHECK_RET(expr, rv)   { if (!(expr)) { palTwiCb.drvState = PAL_TWI_STATE_ERROR; return (rv); } }
 
 #else
 
@@ -82,15 +70,15 @@
 
 /*! \brief      Commands state. */
 typedef enum {
-    PAL_TWI_CMD_IDLE, /*!< Idle state. */
-    PAL_TWI_CMD_TX_DATA, /*!< Write data state. */
-    PAL_TWI_CMD_RX_DATA /*!< Read data state. */
+  PAL_TWI_CMD_IDLE,             /*!< Idle state. */
+  PAL_TWI_CMD_TX_DATA,          /*!< Write data state. */
+  PAL_TWI_CMD_RX_DATA           /*!< Read data state. */
 } PalTwiCmdState_t;
 
 /*! \brief      Device configuration. */
 typedef struct {
-    bool_t opPending; /*!< Operation pending flag. */
-    PalTwiDevConfig_t devCfg; /*!< Device configuration. */
+  bool_t opPending;             /*!< Operation pending flag. */
+  PalTwiDevConfig_t devCfg;     /*!< Device configuration. */
 } PalTwiDevCtx_t;
 
 /**************************************************************************************************
@@ -104,19 +92,19 @@ typedef struct {
 /*************************************************************************************************/
 void I2C0_IRQHandler(void)
 {
-    MXC_I2C_AsyncHandler(MXC_I2C0_BUS0);
+  MXC_I2C_AsyncHandler(MXC_I2C0_BUS0);
 }
 
 /*************************************************************************************************/
 void I2C1_IRQHandler(void)
 {
-    MXC_I2C_AsyncHandler(MXC_I2C1_BUS0);
+  MXC_I2C_AsyncHandler(MXC_I2C1_BUS0);
 }
 
 /*************************************************************************************************/
 void I2C2_IRQHandler(void)
 {
-    MXC_I2C_AsyncHandler(MXC_I2C2_BUS0);
+  MXC_I2C_AsyncHandler(MXC_I2C2_BUS0);
 }
 
 /*************************************************************************************************/
@@ -124,14 +112,20 @@ void I2C2_IRQHandler(void)
  *  \brief      Initialize TWI resources.
  */
 /*************************************************************************************************/
-void PalTwiInit(void) {}
+void PalTwiInit(void)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
  *  \brief      De-Initialize the TWI resources.
  */
 /*************************************************************************************************/
-void PalTwiDeInit(void) {}
+void PalTwiDeInit(void)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -144,7 +138,7 @@ void PalTwiDeInit(void) {}
 /*************************************************************************************************/
 uint8_t PalTwiRegisterDevice(PalTwiDevConfig_t *pDevCfg)
 {
-    return 0;
+  return 0;
 }
 
 /**************************************************************************************************
@@ -162,7 +156,7 @@ uint8_t PalTwiRegisterDevice(PalTwiDevConfig_t *pDevCfg)
 /*************************************************************************************************/
 PalTwiState_t PalTwiGetState(void)
 {
-    return PAL_TWI_STATE_UNINIT;
+  return PAL_TWI_STATE_UNINIT;
 }
 
 /**************************************************************************************************
@@ -176,7 +170,10 @@ PalTwiState_t PalTwiGetState(void)
  *  \param      handle      Device handle.
  */
 /*************************************************************************************************/
-void PalTwiStartOperation(uint8_t handle) {}
+void PalTwiStartOperation(uint8_t handle)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -185,7 +182,10 @@ void PalTwiStartOperation(uint8_t handle) {}
  *  \param      handle      Device handle.
  */
 /*************************************************************************************************/
-void PalTwiStopOperation(uint8_t handle) {}
+void PalTwiStopOperation(uint8_t handle)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -198,7 +198,10 @@ void PalTwiStopOperation(uint8_t handle) {}
  *  Read \a len bytes from \a pData to the TWI device.
  */
 /*************************************************************************************************/
-void PalTwiReadData(uint8_t handle, uint8_t *pData, uint8_t len) {}
+void PalTwiReadData(uint8_t handle, uint8_t *pData, uint8_t len)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -211,4 +214,7 @@ void PalTwiReadData(uint8_t handle, uint8_t *pData, uint8_t len) {}
  *  Transfer \a len bytes from \a pData to the TWI device.
  */
 /*************************************************************************************************/
-void PalTwiWriteData(uint8_t handle, const uint8_t *pData, uint8_t len) {}
+void PalTwiWriteData(uint8_t handle, const uint8_t *pData, uint8_t len)
+{
+
+}

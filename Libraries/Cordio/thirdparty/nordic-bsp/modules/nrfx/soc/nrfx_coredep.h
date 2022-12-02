@@ -63,17 +63,18 @@
 #define NRFX_COREDEP_DELAY_US_LOOP_CYCLES
 
 #elif defined(NRF51)
-#define NRFX_DELAY_CPU_FREQ_MHZ 16
-#define NRFX_DELAY_DWT_PRESENT 0
+    #define NRFX_DELAY_CPU_FREQ_MHZ 16
+    #define NRFX_DELAY_DWT_PRESENT  0
 #elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA)
-#define NRFX_DELAY_CPU_FREQ_MHZ 64
-#define NRFX_DELAY_DWT_PRESENT 0
-#elif defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || defined(NRF52833_XXAA) || \
-    defined(NRF52840_XXAA) || defined(NRF9160_XXAA)
-#define NRFX_DELAY_CPU_FREQ_MHZ 64
-#define NRFX_DELAY_DWT_PRESENT 1
+    #define NRFX_DELAY_CPU_FREQ_MHZ 64
+    #define NRFX_DELAY_DWT_PRESENT  0
+#elif defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
+      defined(NRF52833_XXAA) || defined(NRF52840_XXAA) || \
+      defined(NRF9160_XXAA)
+    #define NRFX_DELAY_CPU_FREQ_MHZ 64
+    #define NRFX_DELAY_DWT_PRESENT  1
 #else
-#error "Unknown device."
+    #error "Unknown device."
 #endif
 
 /**
@@ -102,7 +103,8 @@ __STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us);
 
 __STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
 {
-    if (time_us == 0) {
+    if (time_us == 0)
+    {
         return;
     }
     uint32_t time_cycles = time_us * NRFX_DELAY_CPU_FREQ_MHZ;
@@ -121,7 +123,8 @@ __STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
     uint32_t cyccnt_initial = DWT->CYCCNT;
 
     // Delay required time.
-    while ((DWT->CYCCNT - cyccnt_initial) < time_cycles) {}
+    while ((DWT->CYCCNT - cyccnt_initial) < time_cycles)
+    {}
 
     // Restore preserved registers.
     DWT->CTRL = dwt_ctrl;
@@ -132,36 +135,37 @@ __STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
 
 __STATIC_INLINE void nrfx_coredep_delay_us(uint32_t time_us)
 {
-    if (time_us == 0) {
+    if (time_us == 0)
+    {
         return;
     }
 
-// Allow overriding the number of cycles per loop iteration, in case it is
-// needed to adjust this number externally (for example, when the SoC is
-// emulated).
-#ifndef NRFX_COREDEP_DELAY_US_LOOP_CYCLES
-#if defined(NRF51)
-// The loop takes 4 cycles: 1 for SUBS, 3 for BHI.
-#define NRFX_COREDEP_DELAY_US_LOOP_CYCLES 4
-#elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA)
-// The loop takes 7 cycles: 1 for SUBS, 2 for BHI, 2 wait states
-// for each instruction.
-#define NRFX_COREDEP_DELAY_US_LOOP_CYCLES 7
-#else
-// The loop takes 3 cycles: 1 for SUBS, 2 for BHI.
-#define NRFX_COREDEP_DELAY_US_LOOP_CYCLES 3
-#endif
-#endif // NRFX_COREDEP_DELAY_US_LOOP_CYCLES
+    // Allow overriding the number of cycles per loop iteration, in case it is
+    // needed to adjust this number externally (for example, when the SoC is
+    // emulated).
+    #ifndef NRFX_COREDEP_DELAY_US_LOOP_CYCLES
+        #if defined(NRF51)
+            // The loop takes 4 cycles: 1 for SUBS, 3 for BHI.
+            #define NRFX_COREDEP_DELAY_US_LOOP_CYCLES  4
+        #elif defined(NRF52810_XXAA) || defined(NRF52811_XXAA)
+            // The loop takes 7 cycles: 1 for SUBS, 2 for BHI, 2 wait states
+            // for each instruction.
+            #define NRFX_COREDEP_DELAY_US_LOOP_CYCLES  7
+        #else
+            // The loop takes 3 cycles: 1 for SUBS, 2 for BHI.
+            #define NRFX_COREDEP_DELAY_US_LOOP_CYCLES  3
+        #endif
+    #endif // NRFX_COREDEP_DELAY_US_LOOP_CYCLES
     // Align the machine code, so that it can be cached properly and no extra
     // wait states appear.
     __ALIGN(16)
     static const uint16_t delay_machine_code[] = {
         0x3800 + NRFX_COREDEP_DELAY_US_LOOP_CYCLES, // SUBS r0, #loop_cycles
         0xd8fd, // BHI .-2
-        0x4770 // BX LR
+        0x4770  // BX LR
     };
 
-    typedef void (*delay_func_t)(uint32_t);
+    typedef void (* delay_func_t)(uint32_t);
     const delay_func_t delay_cycles =
         // Set LSB to 1 to execute the code in the Thumb mode.
         (delay_func_t)((((uint32_t)delay_machine_code) | 1));

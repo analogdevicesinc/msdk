@@ -49,13 +49,13 @@
 /*************************************************************************************************/
 void HciLeIsoTxTest(uint16_t handle, uint8_t pldType)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlIsoTxTest(handle, pldType);
+  status = LlIsoTxTest(handle, pldType);
 
-    (void)status;
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -70,13 +70,13 @@ void HciLeIsoTxTest(uint16_t handle, uint8_t pldType)
 /*************************************************************************************************/
 void HciLeIsoRxTest(uint16_t handle, uint8_t pldType)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlIsoRxTest(handle, pldType);
+  status = LlIsoRxTest(handle, pldType);
 
-    (void)status;
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -90,7 +90,7 @@ void HciLeIsoRxTest(uint16_t handle, uint8_t pldType)
 /*************************************************************************************************/
 void HciLeIsoReadTestCounters(uint16_t handle)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -104,7 +104,7 @@ void HciLeIsoReadTestCounters(uint16_t handle)
 /*************************************************************************************************/
 void HciLeIsoTestEnd(uint16_t handle)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -118,16 +118,16 @@ void HciLeIsoTestEnd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeSetupIsoDataPathCmd(HciIsoSetupDataPath_t *pDataPathParam)
 {
-    hciLeSetupIsoDataPathCmdCmplEvt_t evt;
+  hciLeSetupIsoDataPathCmdCmplEvt_t evt;
 
-    evt.hdr.param = pDataPathParam->handle;
-    evt.hdr.status = LlSetupIsoDataPath((LlIsoSetupDataPath_t *)pDataPathParam);
-    evt.hdr.event = HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT;
+  evt.hdr.param = pDataPathParam->handle;
+  evt.hdr.status = LlSetupIsoDataPath((LlIsoSetupDataPath_t *) pDataPathParam);
+  evt.hdr.event = HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT;
 
-    evt.status = evt.hdr.status;
-    evt.handle = pDataPathParam->handle;
+  evt.status = evt.hdr.status;
+  evt.handle = pDataPathParam->handle;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -142,16 +142,16 @@ void HciLeSetupIsoDataPathCmd(HciIsoSetupDataPath_t *pDataPathParam)
 /*************************************************************************************************/
 void HciLeRemoveIsoDataPathCmd(uint16_t handle, uint8_t directionBits)
 {
-    hciLeRemoveIsoDataPathCmdCmplEvt_t evt;
+  hciLeRemoveIsoDataPathCmdCmplEvt_t evt;
 
-    evt.hdr.param = handle;
-    evt.hdr.status = LlRemoveIsoDataPath(handle, directionBits);
-    evt.hdr.event = HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT;
+  evt.hdr.param = handle;
+  evt.hdr.status = LlRemoveIsoDataPath(handle, directionBits);
+  evt.hdr.event = HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT;
 
-    evt.status = evt.hdr.status;
-    evt.handle = handle;
+  evt.status = evt.hdr.status;
+  evt.handle = handle;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -165,17 +165,20 @@ void HciLeRemoveIsoDataPathCmd(uint16_t handle, uint8_t directionBits)
 /*************************************************************************************************/
 void HciConfigDataPathCmd(HciConfigDataPath_t *pDataPathParam)
 {
-    hciConfigDataPathCmdCmplEvt_t evt;
+  hciConfigDataPathCmdCmplEvt_t evt;
 
-    if (PalCodecConfigureDataPath(pDataPathParam->dpDir, pDataPathParam->dpId)) {
-        evt.hdr.status = evt.status = HCI_SUCCESS;
-    } else {
-        evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
-    }
+  if (PalCodecConfigureDataPath(pDataPathParam->dpDir, pDataPathParam->dpId))
+  {
+    evt.hdr.status = evt.status = HCI_SUCCESS;
+  }
+  else
+  {
+    evt.hdr.status = evt.status =  HCI_ERR_INVALID_PARAM;
+  }
 
-    evt.hdr.event = HCI_CONFIG_DATA_PATH_CMD_CMPL_CBACK_EVT;
+  evt.hdr.event = HCI_CONFIG_DATA_PATH_CMD_CMPL_CBACK_EVT;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -187,24 +190,26 @@ void HciConfigDataPathCmd(HciConfigDataPath_t *pDataPathParam)
 /*************************************************************************************************/
 void HciReadLocalSupCodecsCmd(void)
 {
-    hciReadLocalSupCodecsCmdCmplEvt_t evt;
+  hciReadLocalSupCodecsCmdCmplEvt_t evt;
 
-    evt.numStdCodecs = evt.numVsCodecs = HCI_MAX_CODEC;
-    PalCodecReadLocalSupportedCodecs(&evt.numStdCodecs, (AudioStdCodecInfo_t *)evt.stdCodecs,
-                                     &evt.numVsCodecs, (AudioVsCodecInfo_t *)evt.vsCodecs);
+  evt.numStdCodecs = evt.numVsCodecs = HCI_MAX_CODEC;
+  PalCodecReadLocalSupportedCodecs(&evt.numStdCodecs, (AudioStdCodecInfo_t *) evt.stdCodecs,
+                                   &evt.numVsCodecs, (AudioVsCodecInfo_t *) evt.vsCodecs);
 
-    for (uint8_t i = 0; i < evt.numStdCodecs; i++) {
-        evt.stdCodecTrans[i] = HCI_CODEC_TRANS_CIS_BIT | HCI_CODEC_TRANS_BIS_BIT;
-    }
+  for (uint8_t i = 0; i < evt.numStdCodecs; i++)
+  {
+    evt.stdCodecTrans[i] = HCI_CODEC_TRANS_CIS_BIT | HCI_CODEC_TRANS_BIS_BIT;
+  }
 
-    for (uint8_t i = 0; i < evt.numVsCodecs; i++) {
-        evt.vsCodecTrans[i] = HCI_CODEC_TRANS_CIS_BIT | HCI_CODEC_TRANS_BIS_BIT;
-    }
+  for (uint8_t i = 0; i < evt.numVsCodecs; i++)
+  {
+    evt.vsCodecTrans[i] = HCI_CODEC_TRANS_CIS_BIT | HCI_CODEC_TRANS_BIS_BIT;
+  }
 
-    evt.hdr.status = evt.status = HCI_SUCCESS;
-    evt.hdr.event = HCI_READ_LOCAL_SUP_CODECS_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = evt.status = HCI_SUCCESS;
+  evt.hdr.event = HCI_READ_LOCAL_SUP_CODECS_CMD_CMPL_CBACK_EVT;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -218,23 +223,28 @@ void HciReadLocalSupCodecsCmd(void)
 /*************************************************************************************************/
 void HciReadLocalSupCodecCapCmd(HciReadLocalSupCodecCaps_t *pCodecParam)
 {
-    hciReadLocalSupCodecCapCmdCmplEvt_t evt;
+  hciReadLocalSupCodecCapCmdCmplEvt_t evt;
 
-    if (PalCodecReadLocalSupportedCodecCapabilities(pCodecParam->codingFmt, pCodecParam->compId,
-                                                    pCodecParam->vsCodecId,
-                                                    pCodecParam->direction)) {
-        if ((pCodecParam->transType & (HCI_CODEC_TRANS_CIS_BIT | HCI_CODEC_TRANS_BIS_BIT)) == 0) {
-            evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
-        } else {
-            evt.hdr.status = evt.status = HCI_SUCCESS;
-        }
-    } else {
-        evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
+  if (PalCodecReadLocalSupportedCodecCapabilities(pCodecParam->codingFmt, pCodecParam->compId,
+                                                  pCodecParam->vsCodecId, pCodecParam->direction))
+  {
+    if ((pCodecParam->transType & (HCI_CODEC_TRANS_CIS_BIT | HCI_CODEC_TRANS_BIS_BIT)) == 0)
+    {
+      evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
     }
+    else
+    {
+      evt.hdr.status = evt.status = HCI_SUCCESS;
+    }
+  }
+  else
+  {
+    evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
+  }
 
-    evt.hdr.event = HCI_READ_LOCAL_SUP_CODEC_CAP_CMD_CMPL_CBACK_EVT;
+  evt.hdr.event = HCI_READ_LOCAL_SUP_CODEC_CAP_CMD_CMPL_CBACK_EVT;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -248,23 +258,29 @@ void HciReadLocalSupCodecCapCmd(HciReadLocalSupCodecCaps_t *pCodecParam)
 /*************************************************************************************************/
 void HciReadLocalSupControllerDlyCmd(HciReadLocalSupControllerDly_t *pDelayParam)
 {
-    hciReadLocalSupCtrDlyCmdCmplEvt_t evt;
+  hciReadLocalSupCtrDlyCmdCmplEvt_t evt;
 
-    evt.minDly = evt.maxDly = 0;
+  evt.minDly = evt.maxDly = 0;
 
-    if (PalCodecReadLocalSupportedControllerDelay(pDelayParam->codingFmt, pDelayParam->compId,
-                                                  pDelayParam->vsCodecId, pDelayParam->direction,
-                                                  &evt.minDly, &evt.maxDly)) {
-        if ((pDelayParam->transType & (HCI_CODEC_TRANS_CIS_BIT | HCI_CODEC_TRANS_BIS_BIT)) == 0) {
-            evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
-        } else {
-            evt.hdr.status = evt.status = HCI_SUCCESS;
-        }
-    } else {
-        evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
+  if (PalCodecReadLocalSupportedControllerDelay(pDelayParam->codingFmt, pDelayParam->compId,
+                                                pDelayParam->vsCodecId, pDelayParam->direction,
+                                                &evt.minDly, &evt.maxDly))
+  {
+    if ((pDelayParam->transType & (HCI_CODEC_TRANS_CIS_BIT | HCI_CODEC_TRANS_BIS_BIT)) == 0)
+    {
+      evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
     }
+    else
+    {
+      evt.hdr.status = evt.status = HCI_SUCCESS;
+    }
+  }
+  else
+  {
+    evt.hdr.status = evt.status = HCI_ERR_INVALID_PARAM;
+  }
 
-    evt.hdr.event = HCI_READ_LOCAL_SUP_CTR_DLY_CMD_CMPL_CBACK_EVT;
+  evt.hdr.event = HCI_READ_LOCAL_SUP_CTR_DLY_CMD_CMPL_CBACK_EVT;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }

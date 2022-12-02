@@ -28,6 +28,7 @@
 #ifndef REDOSTYPES_H
 #define REDOSTYPES_H
 
+
 /** @brief Implementation-defined timestamp type.
 
     This can be an integer, a structure, or a pointer: anything that is
@@ -36,4 +37,6 @@
 */
 typedef uint32_t REDTIMESTAMP;
 
+
 #endif
+

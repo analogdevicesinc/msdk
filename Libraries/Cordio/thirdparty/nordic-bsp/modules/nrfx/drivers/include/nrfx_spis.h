@@ -57,9 +57,10 @@ extern "C" {
  */
 
 /** @brief Data structure for the Serial Peripheral Interface Slave with EasyDMA (SPIS) driver instance. */
-typedef struct {
-    NRF_SPIS_Type *p_reg; //!< Pointer to a structure with SPIS registers.
-    uint8_t drv_inst_idx; //!< Index of the driver instance. For internal use only.
+typedef struct
+{
+    NRF_SPIS_Type * p_reg;          //!< Pointer to a structure with SPIS registers.
+    uint8_t         drv_inst_idx;   //!< Index of the driver instance. For internal use only.
 } nrfx_spis_t;
 
 #ifndef __NRFX_DOXYGEN__
@@ -81,69 +82,76 @@ enum {
 #endif
 
 /** @brief Macro for creating an instance of the SPI slave driver. */
-#define NRFX_SPIS_INSTANCE(id)                                   \
-    {                                                            \
-        .p_reg = NRFX_CONCAT_2(NRF_SPIS, id),                    \
-        .drv_inst_idx = NRFX_CONCAT_3(NRFX_SPIS, id, _INST_IDX), \
-    }
+#define NRFX_SPIS_INSTANCE(id)                               \
+{                                                            \
+    .p_reg        = NRFX_CONCAT_2(NRF_SPIS, id),             \
+    .drv_inst_idx = NRFX_CONCAT_3(NRFX_SPIS, id, _INST_IDX), \
+}
 
 /**
  * @brief This value can be provided instead of a pin number for the signals MOSI
  *        and MISO to specify that the given signal is not used and therefore
  *        does not need to be connected to a pin.
  */
-#define NRFX_SPIS_PIN_NOT_USED 0xFF
+#define NRFX_SPIS_PIN_NOT_USED  0xFF
 
 /** @brief Default pull-up configuration of the SPI CS. */
-#define NRFX_SPIS_DEFAULT_CSN_PULLUP NRF_GPIO_PIN_NOPULL
+#define NRFX_SPIS_DEFAULT_CSN_PULLUP  NRF_GPIO_PIN_NOPULL
 /** @brief Default drive configuration of the SPI MISO. */
-#define NRFX_SPIS_DEFAULT_MISO_DRIVE NRF_GPIO_PIN_S0S1
+#define NRFX_SPIS_DEFAULT_MISO_DRIVE  NRF_GPIO_PIN_S0S1
 
 /** @brief SPI slave driver event types. */
-typedef enum {
+typedef enum
+{
     NRFX_SPIS_BUFFERS_SET_DONE, //!< Memory buffer set event. Memory buffers have been set successfully to the SPI slave device, and SPI transaction can be done.
-    NRFX_SPIS_XFER_DONE, //!< SPI transaction event. SPI transaction has been completed.
-    NRFX_SPIS_EVT_TYPE_MAX //!< Enumeration upper bound.
+    NRFX_SPIS_XFER_DONE,        //!< SPI transaction event. SPI transaction has been completed.
+    NRFX_SPIS_EVT_TYPE_MAX      //!< Enumeration upper bound.
 } nrfx_spis_evt_type_t;
 
 /** @brief SPI slave driver event structure. */
-typedef struct {
-    nrfx_spis_evt_type_t evt_type; //!< Type of the event.
-    size_t
-        rx_amount; //!< Number of bytes received in the last transaction. This parameter is only valid for @ref NRFX_SPIS_XFER_DONE events.
-    size_t
-        tx_amount; //!< Number of bytes transmitted in the last transaction. This parameter is only valid for @ref NRFX_SPIS_XFER_DONE events.
+typedef struct
+{
+    nrfx_spis_evt_type_t evt_type;  //!< Type of the event.
+    size_t               rx_amount; //!< Number of bytes received in the last transaction. This parameter is only valid for @ref NRFX_SPIS_XFER_DONE events.
+    size_t               tx_amount; //!< Number of bytes transmitted in the last transaction. This parameter is only valid for @ref NRFX_SPIS_XFER_DONE events.
 } nrfx_spis_evt_t;
 
 /** @brief The default configuration of the SPI slave instance. */
-#define NRFX_SPIS_DEFAULT_CONFIG                                                                \
-    {                                                                                           \
-        .miso_pin = NRFX_SPIS_PIN_NOT_USED, .mosi_pin = NRFX_SPIS_PIN_NOT_USED,                 \
-        .sck_pin = NRFX_SPIS_PIN_NOT_USED, .csn_pin = NRFX_SPIS_PIN_NOT_USED,                   \
-        .mode = NRF_SPIS_MODE_0, .bit_order = NRF_SPIS_BIT_ORDER_MSB_FIRST,                     \
-        .csn_pullup = NRFX_SPIS_DEFAULT_CSN_PULLUP, .miso_drive = NRFX_SPIS_DEFAULT_MISO_DRIVE, \
-        .def = NRFX_SPIS_DEFAULT_DEF, .orc = NRFX_SPIS_DEFAULT_ORC,                             \
-        .irq_priority = NRFX_SPIS_DEFAULT_CONFIG_IRQ_PRIORITY,                                  \
-    }
+#define NRFX_SPIS_DEFAULT_CONFIG                           \
+{                                                          \
+    .miso_pin     = NRFX_SPIS_PIN_NOT_USED,                \
+    .mosi_pin     = NRFX_SPIS_PIN_NOT_USED,                \
+    .sck_pin      = NRFX_SPIS_PIN_NOT_USED,                \
+    .csn_pin      = NRFX_SPIS_PIN_NOT_USED,                \
+    .mode         = NRF_SPIS_MODE_0,                       \
+    .bit_order    = NRF_SPIS_BIT_ORDER_MSB_FIRST,          \
+    .csn_pullup   = NRFX_SPIS_DEFAULT_CSN_PULLUP,          \
+    .miso_drive   = NRFX_SPIS_DEFAULT_MISO_DRIVE,          \
+    .def          = NRFX_SPIS_DEFAULT_DEF,                 \
+    .orc          = NRFX_SPIS_DEFAULT_ORC,                 \
+    .irq_priority = NRFX_SPIS_DEFAULT_CONFIG_IRQ_PRIORITY, \
+}
 
 /** @brief SPI peripheral device configuration data. */
-typedef struct {
-    uint32_t miso_pin; //!< SPI MISO pin (optional).
-    /**< Set @ref NRFX_SPIS_PIN_NOT_USED
+typedef struct
+{
+    uint32_t             miso_pin;      //!< SPI MISO pin (optional).
+                                        /**< Set @ref NRFX_SPIS_PIN_NOT_USED
                                          *   if this signal is not needed. */
-    uint32_t mosi_pin; //!< SPI MOSI pin (optional).
-    /**< Set @ref NRFX_SPIS_PIN_NOT_USED
+    uint32_t             mosi_pin;      //!< SPI MOSI pin (optional).
+                                        /**< Set @ref NRFX_SPIS_PIN_NOT_USED
                                          *   if this signal is not needed. */
-    uint32_t sck_pin; //!< SPI SCK pin.
-    uint32_t csn_pin; //!< SPI CSN pin.
-    nrf_spis_mode_t mode; //!< SPI mode.
-    nrf_spis_bit_order_t bit_order; //!< SPI transaction bit order.
-    nrf_gpio_pin_pull_t csn_pullup; //!< CSN pin pull-up configuration.
-    nrf_gpio_pin_drive_t miso_drive; //!< MISO pin drive configuration.
-    uint8_t def; //!< Character clocked out in case of an ignored transaction.
-    uint8_t orc; //!< Character clocked out after an over-read of the transmit buffer.
-    uint8_t irq_priority; //!< Interrupt priority.
+    uint32_t             sck_pin;       //!< SPI SCK pin.
+    uint32_t             csn_pin;       //!< SPI CSN pin.
+    nrf_spis_mode_t      mode;          //!< SPI mode.
+    nrf_spis_bit_order_t bit_order;     //!< SPI transaction bit order.
+    nrf_gpio_pin_pull_t  csn_pullup;    //!< CSN pin pull-up configuration.
+    nrf_gpio_pin_drive_t miso_drive;    //!< MISO pin drive configuration.
+    uint8_t              def;           //!< Character clocked out in case of an ignored transaction.
+    uint8_t              orc;           //!< Character clocked out after an over-read of the transmit buffer.
+    uint8_t              irq_priority;  //!< Interrupt priority.
 } nrfx_spis_config_t;
+
 
 /**
  * @brief SPI slave driver event handler type.
@@ -153,7 +161,8 @@ typedef struct {
  *                       the event handler returns.
  * @param[in] p_context  Context set on initialization.
  */
-typedef void (*nrfx_spis_event_handler_t)(nrfx_spis_evt_t const *p_event, void *p_context);
+typedef void (*nrfx_spis_event_handler_t)(nrfx_spis_evt_t const * p_event,
+                                          void *                  p_context);
 
 /**
  * @brief Function for initializing the SPI slave driver instance.
@@ -179,15 +188,17 @@ typedef void (*nrfx_spis_event_handler_t)(nrfx_spis_evt_t const *p_event, void *
  *                                  on CSN pin cannot be initialized. Possible
  *                                  only when using nRF52 Anomaly 109 workaround.
  */
-nrfx_err_t nrfx_spis_init(nrfx_spis_t const *const p_instance, nrfx_spis_config_t const *p_config,
-                          nrfx_spis_event_handler_t event_handler, void *p_context);
+nrfx_err_t nrfx_spis_init(nrfx_spis_t const * const  p_instance,
+                          nrfx_spis_config_t const * p_config,
+                          nrfx_spis_event_handler_t  event_handler,
+                          void *                     p_context);
 
 /**
  * @brief Function for uninitializing the SPI slave driver instance.
  *
  * @param[in] p_instance Pointer to the driver instance structure.
  */
-void nrfx_spis_uninit(nrfx_spis_t const *const p_instance);
+void nrfx_spis_uninit(nrfx_spis_t const * const p_instance);
 
 /**
  * @brief Function for preparing the SPI slave instance for a single SPI transaction.
@@ -222,19 +233,24 @@ void nrfx_spis_uninit(nrfx_spis_t const *const p_instance);
  * @retval NRFX_ERROR_INVALID_LENGTH Provided lengths exceed the EasyDMA limits for the peripheral.
  * @retval NRFX_ERROR_INTERNAL       The operation failed because of an internal error.
  */
-nrfx_err_t nrfx_spis_buffers_set(nrfx_spis_t const *const p_instance, uint8_t const *p_tx_buffer,
-                                 size_t tx_buffer_length, uint8_t *p_rx_buffer,
-                                 size_t rx_buffer_length);
+nrfx_err_t nrfx_spis_buffers_set(nrfx_spis_t const * const p_instance,
+                                 uint8_t const *           p_tx_buffer,
+                                 size_t                    tx_buffer_length,
+                                 uint8_t *                 p_rx_buffer,
+                                 size_t                    rx_buffer_length);
 
 /** @} */
+
 
 void nrfx_spis_0_irq_handler(void);
 void nrfx_spis_1_irq_handler(void);
 void nrfx_spis_2_irq_handler(void);
 void nrfx_spis_3_irq_handler(void);
 
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif // NRFX_SPIS_H__
+

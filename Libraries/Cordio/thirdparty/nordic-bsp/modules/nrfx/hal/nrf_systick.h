@@ -73,31 +73,19 @@ extern "C" {
  * @sa nrf_systick_csr_get
  */
 typedef enum {
-    NRF_SYSTICK_CSR_COUNTFLAG_MASK =
-        SysTick_CTRL_COUNTFLAG_Msk, /**< Status flag: Returns 1 if timer counted to 0 since the last read of this register. */
+    NRF_SYSTICK_CSR_COUNTFLAG_MASK  = SysTick_CTRL_COUNTFLAG_Msk,       /**< Status flag: Returns 1 if timer counted to 0 since the last read of this register. */
 
-    NRF_SYSTICK_CSR_CLKSOURCE_MASK =
-        SysTick_CTRL_CLKSOURCE_Msk, /**< Configuration bit: Select the SysTick clock source. */
-    NRF_SYSTICK_CSR_CLKSOURCE_REF =
-        0U << SysTick_CTRL_CLKSOURCE_Pos, /**< Configuration value: Select reference clock. */
-    NRF_SYSTICK_CSR_CLKSOURCE_CPU =
-        1U << SysTick_CTRL_CLKSOURCE_Pos, /**< Configuration value: Select CPU clock. */
+    NRF_SYSTICK_CSR_CLKSOURCE_MASK  = SysTick_CTRL_CLKSOURCE_Msk,       /**< Configuration bit: Select the SysTick clock source. */
+    NRF_SYSTICK_CSR_CLKSOURCE_REF   = 0U << SysTick_CTRL_CLKSOURCE_Pos, /**< Configuration value: Select reference clock. */
+    NRF_SYSTICK_CSR_CLKSOURCE_CPU   = 1U << SysTick_CTRL_CLKSOURCE_Pos, /**< Configuration value: Select CPU clock. */
 
-    NRF_SYSTICK_CSR_TICKINT_MASK =
-        SysTick_CTRL_TICKINT_Msk, /**< Configuration bit: Enables SysTick exception request. */
-    NRF_SYSTICK_CSR_TICKINT_ENABLE =
-        1U
-        << SysTick_CTRL_TICKINT_Pos, /**< Configuration value: Counting down to zero does not assert the SysTick exception request. */
-    NRF_SYSTICK_CSR_TICKINT_DISABLE =
-        0U
-        << SysTick_CTRL_TICKINT_Pos, /**< Configuration value: Counting down to zero to asserts the SysTick exception request. */
+    NRF_SYSTICK_CSR_TICKINT_MASK    = SysTick_CTRL_TICKINT_Msk,         /**< Configuration bit: Enables SysTick exception request. */
+    NRF_SYSTICK_CSR_TICKINT_ENABLE  = 1U << SysTick_CTRL_TICKINT_Pos,   /**< Configuration value: Counting down to zero does not assert the SysTick exception request. */
+    NRF_SYSTICK_CSR_TICKINT_DISABLE = 0U << SysTick_CTRL_TICKINT_Pos,   /**< Configuration value: Counting down to zero to asserts the SysTick exception request. */
 
-    NRF_SYSTICK_CSR_ENABLE_MASK =
-        SysTick_CTRL_ENABLE_Msk, /**< Configuration bit: Enable the SysTick timer. */
-    NRF_SYSTICK_CSR_ENABLE =
-        1U << SysTick_CTRL_ENABLE_Pos, /**< Configuration value: Counter enabled. */
-    NRF_SYSTICK_CSR_DISABLE =
-        0U << SysTick_CTRL_ENABLE_Pos /**< Configuration value: Counter disabled. */
+    NRF_SYSTICK_CSR_ENABLE_MASK     = SysTick_CTRL_ENABLE_Msk,          /**< Configuration bit: Enable the SysTick timer. */
+    NRF_SYSTICK_CSR_ENABLE          = 1U << SysTick_CTRL_ENABLE_Pos,    /**< Configuration value: Counter enabled. */
+    NRF_SYSTICK_CSR_DISABLE         = 0U << SysTick_CTRL_ENABLE_Pos     /**< Configuration value: Counter disabled. */
 } nrf_systick_csr_flags_t;
 
 /**
@@ -151,6 +139,7 @@ __STATIC_INLINE void nrf_systick_val_clear(void);
  * @return The calibration register value.
  */
 __STATIC_INLINE uint32_t nrf_systick_calib_get(void);
+
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 

@@ -40,8 +40,8 @@
 /*************************************************************************************************/
 static void lhciPackCmdCompleteBigTerminateSync(uint8_t *pBuf, const LlBigTermSyncCnf_t *pEvt)
 {
-    UINT8_TO_BSTREAM(pBuf, pEvt->status);
-    UINT8_TO_BSTREAM(pBuf, pEvt->bigHandle);
+  UINT8_TO_BSTREAM(pBuf, pEvt->status);
+  UINT8_TO_BSTREAM(pBuf, pEvt->bigHandle);
 }
 
 /*************************************************************************************************/
@@ -54,20 +54,21 @@ static void lhciPackCmdCompleteBigTerminateSync(uint8_t *pBuf, const LlBigTermSy
 /*************************************************************************************************/
 static void lhciPackBigSyncEstEvt(uint8_t *pBuf, const LlBigSyncEstInd_t *pEvt)
 {
-    UINT8_TO_BSTREAM(pBuf, HCI_LE_BIG_SYNC_EST_EVT);
-    UINT8_TO_BSTREAM(pBuf, pEvt->status);
-    UINT8_TO_BSTREAM(pBuf, pEvt->bigHandle);
-    UINT24_TO_BSTREAM(pBuf, pEvt->transLatUsec);
-    UINT8_TO_BSTREAM(pBuf, pEvt->nse);
-    UINT8_TO_BSTREAM(pBuf, pEvt->bn);
-    UINT8_TO_BSTREAM(pBuf, pEvt->pto);
-    UINT8_TO_BSTREAM(pBuf, pEvt->irc);
-    UINT16_TO_BSTREAM(pBuf, pEvt->maxPdu);
-    UINT16_TO_BSTREAM(pBuf, pEvt->isoInterval);
-    UINT8_TO_BSTREAM(pBuf, pEvt->numBis);
-    for (unsigned int i = 0; i < pEvt->numBis; i++) {
-        UINT16_TO_BSTREAM(pBuf, pEvt->bisHandle[i]);
-    }
+  UINT8_TO_BSTREAM (pBuf, HCI_LE_BIG_SYNC_EST_EVT);
+  UINT8_TO_BSTREAM (pBuf, pEvt->status);
+  UINT8_TO_BSTREAM (pBuf, pEvt->bigHandle);
+  UINT24_TO_BSTREAM(pBuf, pEvt->transLatUsec);
+  UINT8_TO_BSTREAM (pBuf, pEvt->nse);
+  UINT8_TO_BSTREAM (pBuf, pEvt->bn);
+  UINT8_TO_BSTREAM (pBuf, pEvt->pto);
+  UINT8_TO_BSTREAM (pBuf, pEvt->irc);
+  UINT16_TO_BSTREAM(pBuf, pEvt->maxPdu);
+  UINT16_TO_BSTREAM(pBuf, pEvt->isoInterval);
+  UINT8_TO_BSTREAM (pBuf, pEvt->numBis);
+  for (unsigned int i = 0; i < pEvt->numBis; i++)
+  {
+    UINT16_TO_BSTREAM(pBuf, pEvt->bisHandle[i]);
+  }
 }
 
 /*************************************************************************************************/
@@ -80,9 +81,9 @@ static void lhciPackBigSyncEstEvt(uint8_t *pBuf, const LlBigSyncEstInd_t *pEvt)
 /*************************************************************************************************/
 static void lhciPackBigSyncLostEvt(uint8_t *pBuf, const LlBigSyncLostInd_t *pEvt)
 {
-    UINT8_TO_BSTREAM(pBuf, HCI_LE_BIG_SYNC_LOST_EVT);
-    UINT8_TO_BSTREAM(pBuf, pEvt->bigHandle);
-    UINT8_TO_BSTREAM(pBuf, pEvt->reason);
+  UINT8_TO_BSTREAM(pBuf, HCI_LE_BIG_SYNC_LOST_EVT);
+  UINT8_TO_BSTREAM(pBuf, pEvt->bigHandle);
+  UINT8_TO_BSTREAM(pBuf, pEvt->reason);
 }
 
 /*************************************************************************************************/
@@ -95,20 +96,20 @@ static void lhciPackBigSyncLostEvt(uint8_t *pBuf, const LlBigSyncLostInd_t *pEvt
 /*************************************************************************************************/
 static void lhciPackBigBigInfoAdvReportEvt(uint8_t *pBuf, const LlBigInfoAdvRptInd_t *pEvt)
 {
-    UINT8_TO_BSTREAM(pBuf, HCI_LE_BIG_INFO_ADV_REPORT_EVT);
-    UINT16_TO_BSTREAM(pBuf, pEvt->syncHandle);
-    UINT8_TO_BSTREAM(pBuf, pEvt->numBis);
-    UINT8_TO_BSTREAM(pBuf, pEvt->nse);
-    UINT16_TO_BSTREAM(pBuf, pEvt->isoInterv);
-    UINT8_TO_BSTREAM(pBuf, pEvt->bn);
-    UINT8_TO_BSTREAM(pBuf, pEvt->pto);
-    UINT8_TO_BSTREAM(pBuf, pEvt->irc);
-    UINT16_TO_BSTREAM(pBuf, pEvt->maxPdu);
-    UINT24_TO_BSTREAM(pBuf, pEvt->sduInterv);
-    UINT16_TO_BSTREAM(pBuf, pEvt->maxSdu);
-    UINT8_TO_BSTREAM(pBuf, pEvt->phy);
-    UINT8_TO_BSTREAM(pBuf, pEvt->framing);
-    UINT8_TO_BSTREAM(pBuf, pEvt->encrypt);
+  UINT8_TO_BSTREAM (pBuf, HCI_LE_BIG_INFO_ADV_REPORT_EVT);
+  UINT16_TO_BSTREAM(pBuf, pEvt->syncHandle);
+  UINT8_TO_BSTREAM (pBuf, pEvt->numBis);
+  UINT8_TO_BSTREAM (pBuf, pEvt->nse);
+  UINT16_TO_BSTREAM(pBuf, pEvt->isoInterv);
+  UINT8_TO_BSTREAM (pBuf, pEvt->bn);
+  UINT8_TO_BSTREAM (pBuf, pEvt->pto);
+  UINT8_TO_BSTREAM (pBuf, pEvt->irc);
+  UINT16_TO_BSTREAM(pBuf, pEvt->maxPdu);
+  UINT24_TO_BSTREAM(pBuf, pEvt->sduInterv);
+  UINT16_TO_BSTREAM(pBuf, pEvt->maxSdu);
+  UINT8_TO_BSTREAM (pBuf, pEvt->phy);
+  UINT8_TO_BSTREAM (pBuf, pEvt->framing);
+  UINT8_TO_BSTREAM (pBuf, pEvt->encrypt);
 }
 
 /*************************************************************************************************/
@@ -122,58 +123,61 @@ static void lhciPackBigBigInfoAdvReportEvt(uint8_t *pBuf, const LlBigInfoAdvRptI
 /*************************************************************************************************/
 bool_t lhciMstBisEncodeEvtPkt(LlEvt_t *pEvt)
 {
-    uint8_t *pEvtBuf = NULL;
+  uint8_t *pEvtBuf = NULL;
 
-    switch (pEvt->hdr.event) {
+  switch (pEvt->hdr.event)
+  {
     case LL_BIG_TERM_SYNC_CNF:
-        if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT,
-                                    HCI_LEN_CMD_CMPL + LHCI_LEN_LE_BIG_TERMINATE_SYNC)) != NULL) {
-            uint8_t *pBuf = pEvtBuf;
-            pBuf += LhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_BIG_TERMINATE_SYNC);
-            lhciPackCmdCompleteBigTerminateSync(pBuf, &pEvt->bigTermSyncCnf);
-        }
-        break;
+      if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + LHCI_LEN_LE_BIG_TERMINATE_SYNC)) != NULL)
+      {
+        uint8_t *pBuf = pEvtBuf;
+        pBuf += LhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_BIG_TERMINATE_SYNC);
+        lhciPackCmdCompleteBigTerminateSync(pBuf, &pEvt->bigTermSyncCnf);
+      }
+      break;
 
     case LL_BIG_SYNC_EST_IND:
-        if ((lhciCb.leEvtMsk &
-             ((uint64_t)(HCI_EVT_MASK_LE_BIG_SYNC_EST_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
-            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT,
-                                        HCI_LEN_LE_BIG_SYNC_EST(pEvt->bigSyncEstInd.numBis))) !=
-                NULL) {
-                lhciPackBigSyncEstEvt(pEvtBuf, &pEvt->bigSyncEstInd);
-            }
+      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_BIG_SYNC_EST_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
+      {
+        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_BIG_SYNC_EST(pEvt->bigSyncEstInd.numBis))) != NULL)
+        {
+          lhciPackBigSyncEstEvt(pEvtBuf, &pEvt->bigSyncEstInd);
         }
-        break;
+      }
+      break;
 
     case LL_BIG_SYNC_LOST_IND:
-        if ((lhciCb.leEvtMsk &
-             ((uint64_t)(HCI_EVT_MASK_LE_BIG_SYNC_LOST_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
-            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_BIG_SYNC_LOST)) != NULL) {
-                lhciPackBigSyncLostEvt(pEvtBuf, &pEvt->bigSyncLostInd);
-            }
+      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_BIG_SYNC_LOST_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
+      {
+        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_BIG_SYNC_LOST)) != NULL)
+        {
+          lhciPackBigSyncLostEvt(pEvtBuf, &pEvt->bigSyncLostInd);
         }
-        break;
+      }
+      break;
 
     case LL_BIG_INFO_ADV_REPORT_IND:
-        if ((lhciCb.leEvtMsk &
-             ((uint64_t)(HCI_EVT_MASK_LE_BIG_INFO_ADV_RPT_EVT) << LHCI_BYTE_TO_BITS(4))) &&
-            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
-            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_BIG_INFO_ADV_REPORT)) != NULL) {
-                lhciPackBigBigInfoAdvReportEvt(pEvtBuf, &pEvt->bigInfoInd);
-            }
+      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_BIG_INFO_ADV_RPT_EVT) << LHCI_BYTE_TO_BITS(4))) &&
+         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
+      {
+        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_BIG_INFO_ADV_REPORT)) != NULL)
+        {
+          lhciPackBigBigInfoAdvReportEvt(pEvtBuf, &pEvt->bigInfoInd);
         }
-        break;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    if (pEvtBuf) {
-        lhciSendEvt(pEvtBuf);
-        return TRUE;
-    }
+  if (pEvtBuf)
+  {
+    lhciSendEvt(pEvtBuf);
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }

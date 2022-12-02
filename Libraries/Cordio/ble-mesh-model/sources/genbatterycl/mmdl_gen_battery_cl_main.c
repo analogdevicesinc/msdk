@@ -42,8 +42,9 @@
 **************************************************************************************************/
 
 /*! Generic Battery control block type definition */
-typedef struct mmdlGenBetteryClCb_tag {
-    mmdlEventCback_t recvCback; /*!< Model Generic Battery received callback */
+typedef struct mmdlGenBetteryClCb_tag
+{
+  mmdlEventCback_t recvCback;    /*!< Model Generic Battery received callback */
 } mmdlGenBatteryClCb_t;
 
 /**************************************************************************************************
@@ -54,8 +55,9 @@ typedef struct mmdlGenBetteryClCb_tag {
 wsfHandlerId_t mmdlGenBatteryClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlGenBatteryClRcvdOpcodes[] = {
-    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_BATTERY_STATUS_OPCODE) } }
+const meshMsgOpcode_t mmdlGenBatteryClRcvdOpcodes[] =
+{
+  { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_BATTERY_STATUS_OPCODE)} }
 };
 
 /**************************************************************************************************
@@ -63,7 +65,7 @@ const meshMsgOpcode_t mmdlGenBatteryClRcvdOpcodes[] = {
 **************************************************************************************************/
 
 /*! Battery Client control block */
-static mmdlGenBatteryClCb_t batteryClCb;
+static mmdlGenBatteryClCb_t  batteryClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -80,33 +82,34 @@ static mmdlGenBatteryClCb_t batteryClCb;
 /*************************************************************************************************/
 static void mmdlGenBatteryClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlGenBatteryClStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlGenBatteryClStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_GEN_BATTERY_STATUS_LENGTH) {
-        return;
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_GEN_BATTERY_STATUS_LENGTH)
+  {
+    return;
+  }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_GEN_BATTERY_CL_EVENT;
-    event.hdr.param = MMDL_GEN_BATTERY_CL_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_GEN_BATTERY_CL_EVENT;
+  event.hdr.param = MMDL_GEN_BATTERY_CL_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
 
-    pParams = pMsg->pMessageParams;
+  pParams = pMsg->pMessageParams;
 
-    /* Extract status event parameters */
-    BSTREAM_TO_UINT8(event.state, pParams);
-    BSTREAM_TO_UINT24(event.timeToDischarge, pParams);
-    BSTREAM_TO_UINT24(event.timeToCharge, pParams);
-    BSTREAM_TO_UINT8(event.flags, pParams);
+  /* Extract status event parameters */
+  BSTREAM_TO_UINT8(event.state, pParams);
+  BSTREAM_TO_UINT24(event.timeToDischarge, pParams);
+  BSTREAM_TO_UINT24(event.timeToCharge, pParams);
+  BSTREAM_TO_UINT8(event.flags, pParams);
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Send event to the upper layer */
-    batteryClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  batteryClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /**************************************************************************************************
@@ -124,11 +127,11 @@ static void mmdlGenBatteryClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenBatteryClHandlerInit(wsfHandlerId_t handlerId)
 {
-    /* Set handler ID */
-    mmdlGenBatteryClHandlerId = handlerId;
+  /* Set handler ID */
+  mmdlGenBatteryClHandlerId = handlerId;
 
-    /* Initialize control block */
-    batteryClCb.recvCback = MmdlEmptyCback;
+  /* Initialize control block */
+  batteryClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -143,28 +146,31 @@ void MmdlGenBatteryClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlGenBatteryClHandler(wsfMsgHdr_t *pMsg)
 {
-    meshModelMsgRecvEvt_t *pModelMsg;
+  meshModelMsgRecvEvt_t *pModelMsg;
 
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-            /* Validate opcode size and value */
-            if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_BATTERY_OPCODES_SIZE &&
-                !memcmp(&mmdlGenBatteryClRcvdOpcodes[0], pModelMsg->opCode.opcodeBytes,
-                        MMDL_GEN_BATTERY_OPCODES_SIZE)) {
-                /* Process Status message */
-                mmdlGenBatteryClHandleStatus(pModelMsg);
-            }
-            break;
-
-        default:
-            MMDL_TRACE_WARN0("GEN BATTERY CL: Invalid event message received!");
-            break;
+        /* Validate opcode size and value */
+        if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_BATTERY_OPCODES_SIZE &&
+            !memcmp(&mmdlGenBatteryClRcvdOpcodes[0], pModelMsg->opCode.opcodeBytes,
+                    MMDL_GEN_BATTERY_OPCODES_SIZE))
+        {
+          /* Process Status message */
+          mmdlGenBatteryClHandleStatus(pModelMsg);
         }
+        break;
+
+      default:
+        MMDL_TRACE_WARN0("GEN BATTERY CL: Invalid event message received!");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -182,26 +188,28 @@ void MmdlGenBatteryClHandler(wsfMsgHdr_t *pMsg)
 void MmdlGenBatteryClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                          uint16_t appKeyIndex)
 {
-    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_BATTERY_CL_MDL_ID, MMDL_GEN_BATTERY_GET_OPCODE);
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_GEN_BATTERY_CL_MDL_ID, MMDL_GEN_BATTERY_GET_OPCODE);
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_BATTERY_CL_MDL_ID, MMDL_GEN_BATTERY_GET_OPCODE);
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_BATTERY_CL_MDL_ID, MMDL_GEN_BATTERY_GET_OPCODE);
 
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        /* Fill in the msg info parameters */
-        msgInfo.elementId = elementId;
-        msgInfo.dstAddr = serverAddr;
-        msgInfo.ttl = ttl;
-        msgInfo.appKeyIndex = appKeyIndex;
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-        /* Send message to the Mesh Core instantly */
-        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-    } else {
-        /* Fill in the msg info parameters */
-        pubMsgInfo.elementId = elementId;
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+  }
+  else
+  {
+    /* Fill in the msg info parameters */
+    pubMsgInfo.elementId = elementId;
 
-        /* Send message to the Mesh Core */
-        MeshPublishMessage(&pubMsgInfo, NULL, 0);
-    }
+    /* Send message to the Mesh Core */
+    MeshPublishMessage(&pubMsgInfo, NULL, 0);
+  }
 }
 
 /*************************************************************************************************/
@@ -215,8 +223,9 @@ void MmdlGenBatteryClGet(meshElementId_t elementId, meshAddress_t serverAddr, ui
 /*************************************************************************************************/
 void MmdlGenBatteryClRegister(mmdlEventCback_t recvCback)
 {
-    /* Store valid callback*/
-    if (recvCback != NULL) {
-        batteryClCb.recvCback = recvCback;
-    }
+  /* Store valid callback*/
+  if (recvCback != NULL)
+  {
+    batteryClCb.recvCback = recvCback;
+  }
 }

@@ -44,58 +44,61 @@ extern "C" {
  * Discoverable/connectable mode used by function \ref AppAdvStart.
  */
 /**@{*/
-#define APP_MODE_CONNECTABLE 0 /*!< \brief Connectable mode */
-#define APP_MODE_DISCOVERABLE 1 /*!< \brief Discoverable mode */
-#define APP_MODE_AUTO_INIT 2 /*!< \brief Automatically configure mode based on bonding info */
-#define APP_MODE_NONE 255 /*!< \brief For internal use only */
+#define APP_MODE_CONNECTABLE        0          /*!< \brief Connectable mode */
+#define APP_MODE_DISCOVERABLE       1          /*!< \brief Discoverable mode */
+#define APP_MODE_AUTO_INIT          2          /*!< \brief Automatically configure mode based on bonding info */
+#define APP_MODE_NONE               255        /*!< \brief For internal use only */
 
 /*! \brief Number of Discoverable/connectable modes */
-#define APP_NUM_MODES 2
+#define APP_NUM_MODES               2
 /**@}*/
 
 /*! \brief Advertising states */
-enum {
-    APP_ADV_STATE1, /*!< \brief Advertising state 1 */
-    APP_ADV_STATE2, /*!< \brief Advertising state 2 */
-    APP_ADV_STATE3, /*!< \brief Advertising state 3 */
-    APP_ADV_STOPPED /*!< \brief Advertising stopped */
+enum
+{
+  APP_ADV_STATE1,                              /*!< \brief Advertising state 1 */
+  APP_ADV_STATE2,                              /*!< \brief Advertising state 2 */
+  APP_ADV_STATE3,                              /*!< \brief Advertising state 3 */
+  APP_ADV_STOPPED                              /*!< \brief Advertising stopped */
 };
 
 /*! \brief Advertising and scan data storage locations */
-enum {
-    APP_ADV_DATA_CONNECTABLE, /*!< \brief Advertising data for connectable mode */
-    APP_SCAN_DATA_CONNECTABLE, /*!< \brief Scan data for connectable mode */
-    APP_ADV_DATA_DISCOVERABLE, /*!< \brief Advertising data for discoverable mode */
-    APP_SCAN_DATA_DISCOVERABLE, /*!< \brief Scan data for discoverable mode */
-    APP_NUM_DATA_LOCATIONS /*!< \brief number of data storage locations. */
+enum
+{
+  APP_ADV_DATA_CONNECTABLE,                    /*!< \brief Advertising data for connectable mode */
+  APP_SCAN_DATA_CONNECTABLE,                   /*!< \brief Scan data for connectable mode */
+  APP_ADV_DATA_DISCOVERABLE,                   /*!< \brief Advertising data for discoverable mode */
+  APP_SCAN_DATA_DISCOVERABLE,                  /*!< \brief Scan data for discoverable mode */
+  APP_NUM_DATA_LOCATIONS                       /*!< \brief number of data storage locations. */
 };
 
 /*! \brief Number of advertising configurations */
-#define APP_ADV_NUM_CFG APP_ADV_STOPPED
+#define APP_ADV_NUM_CFG             APP_ADV_STOPPED
 
 /*! \brief Service discovery and configuration client status */
-enum {
-    APP_DISC_INIT, /*!< \brief No discovery or configuration complete */
-    APP_DISC_READ_DATABASE_HASH, /*!< \brief Read peer's database hash */
-    APP_DISC_SEC_REQUIRED, /*!< \brief Security required to complete configuration */
-    APP_DISC_START, /*!< \brief Service discovery started */
-    APP_DISC_CMPL, /*!< \brief Service discovery complete */
-    APP_DISC_FAILED, /*!< \brief Service discovery failed */
-    APP_DISC_CFG_START, /*!< \brief Service configuration started */
-    APP_DISC_CFG_CONN_START, /*!< \brief Configuration for connection setup started */
-    APP_DISC_CFG_CMPL, /*!< \brief Service configuration complete */
+enum
+{
+  APP_DISC_INIT,                               /*!< \brief No discovery or configuration complete */
+  APP_DISC_READ_DATABASE_HASH,                 /*!< \brief Read peer's database hash */
+  APP_DISC_SEC_REQUIRED,                       /*!< \brief Security required to complete configuration */
+  APP_DISC_START,                              /*!< \brief Service discovery started */
+  APP_DISC_CMPL,                               /*!< \brief Service discovery complete */
+  APP_DISC_FAILED,                             /*!< \brief Service discovery failed */
+  APP_DISC_CFG_START,                          /*!< \brief Service configuration started */
+  APP_DISC_CFG_CONN_START,                     /*!< \brief Configuration for connection setup started */
+  APP_DISC_CFG_CMPL,                           /*!< \brief Service configuration complete */
 };
 
 /*! \brief Actions for incoming requests */
-enum {
-    APP_ACT_ACCEPT, /*!< \brief Accept incoming request */
-    APP_ACT_REJECT, /*!< \brief Reject incoming request */
-    APP_ACT_NONE /*!< \brief Do nothing - app will handle incoming request */
+enum
+{
+  APP_ACT_ACCEPT,                              /*!< \brief Accept incoming request */
+  APP_ACT_REJECT,                              /*!< \brief Reject incoming request */
+  APP_ACT_NONE                                 /*!< \brief Do nothing - app will handle incoming request */
 };
 
-#define APP_RESOLVE_ADV_RPA 0 /*!< \brief Resolving the advertiser's RPA (AdvA) */
-#define APP_RESOLVE_DIRECT_RPA \
-    1 /*!< \brief Resolving RPA the directed advertisement is being
+#define APP_RESOLVE_ADV_RPA         0          /*!< \brief Resolving the advertiser's RPA (AdvA) */
+#define APP_RESOLVE_DIRECT_RPA      1          /*!< \brief Resolving RPA the directed advertisement is being
                                                     directed to (InitA) */
 
 /**************************************************************************************************
@@ -103,105 +106,110 @@ enum {
 **************************************************************************************************/
 
 /*! \brief Configurable parameters for advertising */
-typedef struct {
-    uint16_t advDuration[APP_ADV_NUM_CFG]; /*!< \brief Advertising durations in ms */
-    uint16_t advInterval
-        [APP_ADV_NUM_CFG]; /*!< \brief Advertising intervals in 0.625 ms units (20 ms to 10.24 s). */
+typedef struct
+{
+  uint16_t    advDuration[APP_ADV_NUM_CFG];    /*!< \brief Advertising durations in ms */
+  uint16_t    advInterval[APP_ADV_NUM_CFG];    /*!< \brief Advertising intervals in 0.625 ms units (20 ms to 10.24 s). */
 } appAdvCfg_t;
 
 /*! \brief Configurable parameters for extended and periodic advertising */
-typedef struct {
-    uint16_t advDuration
-        [DM_NUM_ADV_SETS]; /*!< \brief Advertising durations for extended advertising in ms */
-    uint16_t advInterval
-        [DM_NUM_ADV_SETS]; /*!< \brief Advertising intervals for extended advertising in 0.625
+typedef struct
+{
+  uint16_t    advDuration[DM_NUM_ADV_SETS];    /*!< \brief Advertising durations for extended advertising in ms */
+  uint16_t    advInterval[DM_NUM_ADV_SETS];    /*!< \brief Advertising intervals for extended advertising in 0.625
                                                     ms units (20 ms to 10.24 s). */
-    uint8_t maxEaEvents
-        [DM_NUM_ADV_SETS]; /*!< \brief Maximum number of extended advertising events Controller
+  uint8_t     maxEaEvents[DM_NUM_ADV_SETS];    /*!< \brief Maximum number of extended advertising events Controller
                                                     will send prior to terminating extended advertising */
-    bool_t
-        useLegacyPdu[DM_NUM_ADV_SETS]; /*!< \brief Whether to use legacy advertising PDUs with extended
+  bool_t      useLegacyPdu[DM_NUM_ADV_SETS];   /*!< \brief Whether to use legacy advertising PDUs with extended
                                                     advertising. If set to TRUE then length of advertising
                                                     data cannot exceed 31 octets. */
-    uint16_t perAdvInterval
-        [DM_NUM_ADV_SETS]; /*!< \brief Advertising intervals for periodic advertising in 1.25
+  uint16_t    perAdvInterval[DM_NUM_ADV_SETS]; /*!< \brief Advertising intervals for periodic advertising in 1.25
                                                     ms units (7.5 ms to 81.91875 s). */
 } appExtAdvCfg_t;
 
 /*! \brief Configurable parameters for slave */
-typedef struct {
-    uint8_t connMax; /*!< \brief Maximum connections */
+typedef struct
+{
+  uint8_t     connMax;                         /*!< \brief Maximum connections */
 } appSlaveCfg_t;
 
 /*! \brief Configurable parameters for master */
-typedef struct {
-    uint16_t scanInterval; /*!< \brief The scan interval, in 0.625 ms units */
-    uint16_t scanWindow; /*!< \brief The scan window, in 0.625 ms units.   Must be
+typedef struct
+{
+  uint16_t    scanInterval;                    /*!< \brief The scan interval, in 0.625 ms units */
+  uint16_t    scanWindow;                      /*!< \brief The scan window, in 0.625 ms units.   Must be
                                                     less than or equal to scan interval. */
-    uint16_t scanDuration; /*!< \brief The scan duration in ms.  Set to zero to scan
+  uint16_t    scanDuration;                    /*!< \brief The scan duration in ms.  Set to zero to scan
                                                     until stopped. */
-    uint8_t discMode; /*!< \brief The GAP discovery mode (general, limited, or none) */
-    uint8_t scanType; /*!< \brief The scan type (active or passive) */
+  uint8_t     discMode;                        /*!< \brief The GAP discovery mode (general, limited, or none) */
+  uint8_t     scanType;                        /*!< \brief The scan type (active or passive) */
 } appMasterCfg_t;
 
 /*! \brief Configurable parameters for extended master */
-typedef struct {
-    uint16_t scanInterval[DM_NUM_PHYS]; /*!< \brief The scan interval, in 0.625 ms units */
-    uint16_t scanWindow[DM_NUM_PHYS]; /*!< \brief The scan window, in 0.625 ms units.   Must be
+typedef struct
+{
+  uint16_t    scanInterval[DM_NUM_PHYS];       /*!< \brief The scan interval, in 0.625 ms units */
+  uint16_t    scanWindow[DM_NUM_PHYS];         /*!< \brief The scan window, in 0.625 ms units.   Must be
                                                     less than or equal to scan interval. */
-    uint16_t scanDuration; /*!< \brief The scan duration in ms.  Set to zero or both duration
+  uint16_t    scanDuration;                    /*!< \brief The scan duration in ms.  Set to zero or both duration
                                                     and period to non-zero to scan until stopped. */
-    uint16_t scanPeriod; /*!< \brief The scan period, in 1.28 sec units.  Set to zero to
+  uint16_t    scanPeriod;                      /*!< \brief The scan period, in 1.28 sec units.  Set to zero to
                                                     disable periodic scanning. */
-    uint8_t discMode; /*!< \brief The GAP discovery mode (general, limited, or none) */
-    uint8_t scanType[DM_NUM_PHYS]; /*!< \brief The scan type (active or passive) */
+  uint8_t     discMode;                        /*!< \brief The GAP discovery mode (general, limited, or none) */
+  uint8_t     scanType[DM_NUM_PHYS];           /*!< \brief The scan type (active or passive) */
 } appExtMasterCfg_t;
 
 /*! \brief Configurable parameters for security */
-typedef struct {
-    uint8_t auth; /*!< \brief Authentication and bonding flags */
-    uint8_t iKeyDist; /*!< \brief Initiator key distribution flags */
-    uint8_t rKeyDist; /*!< \brief Responder key distribution flags */
-    bool_t oob; /*!< \brief TRUE if Out-of-band pairing data is present */
-    bool_t initiateSec; /*!< \brief TRUE to initiate security upon connection */
+typedef struct
+{
+  uint8_t     auth;                            /*!< \brief Authentication and bonding flags */
+  uint8_t     iKeyDist;                        /*!< \brief Initiator key distribution flags */
+  uint8_t     rKeyDist;                        /*!< \brief Responder key distribution flags */
+  bool_t      oob;                             /*!< \brief TRUE if Out-of-band pairing data is present */
+  bool_t      initiateSec;                     /*!< \brief TRUE to initiate security upon connection */
 } appSecCfg_t;
 
 /*! \brief Configurable parameters for connection parameter update */
-typedef struct {
-    wsfTimerTicks_t idlePeriod; /*!< \brief Connection idle period in ms before attempting
+typedef struct
+{
+  wsfTimerTicks_t idlePeriod;                  /*!< \brief Connection idle period in ms before attempting
                                                     connection parameter update; set to zero to disable */
-    uint16_t connIntervalMin; /*!< \brief Minimum connection interval in 1.25ms units */
-    uint16_t connIntervalMax; /*!< \brief Maximum connection interval in 1.25ms units */
-    uint16_t connLatency; /*!< \brief Connection latency */
-    uint16_t supTimeout; /*!< \brief Supervision timeout in 10ms units */
-    uint8_t maxAttempts; /*!< \brief Number of update attempts before giving up */
+  uint16_t    connIntervalMin;                 /*!< \brief Minimum connection interval in 1.25ms units */
+  uint16_t    connIntervalMax;                 /*!< \brief Maximum connection interval in 1.25ms units */
+  uint16_t    connLatency;                     /*!< \brief Connection latency */
+  uint16_t    supTimeout;                      /*!< \brief Supervision timeout in 10ms units */
+  uint8_t     maxAttempts;                     /*!< \brief Number of update attempts before giving up */
 } appUpdateCfg_t;
 
 /*! \brief Configurable parameters for incoming request actions */
-typedef struct {
-    uint8_t remConnParamReqAct; /*!< \brief Action for the remote connection parameter request */
+typedef struct
+{
+  uint8_t     remConnParamReqAct;              /*!< \brief Action for the remote connection parameter request */
 } appReqActCfg_t;
 
 /*! \brief Configurable parameters for service and characteristic discovery */
-typedef struct {
-    bool_t waitForSec; /*!< \brief TRUE to wait for a secure connection before initiating
+typedef struct
+{
+  bool_t      waitForSec;                      /*!< \brief TRUE to wait for a secure connection before initiating
                                                     discovery */
-    bool_t readDbHash; /*!< \brief TRUE to try and read peer's database hash rather than
+  bool_t      readDbHash;                      /*!< \brief TRUE to try and read peer's database hash rather than
                                                     perform service discovery.  */
 } appDiscCfg_t;
 
 /*! \brief Configurable parameters for application */
-typedef struct {
-    bool_t abortDisc; /*!< \brief TRUE to abort service discovery if service not found */
-    bool_t disconnect; /*!< \brief TRUE to disconnect if ATT transaction times out */
+typedef struct
+{
+  bool_t      abortDisc;                       /*!< \brief TRUE to abort service discovery if service not found */
+  bool_t      disconnect;                      /*!< \brief TRUE to disconnect if ATT transaction times out */
 } appCfg_t;
 
 /*! \brief Device information data type */
-typedef struct {
-    bdAddr_t addr; /*!< \brief Peer device address */
-    uint8_t addrType; /*!< \brief Peer address type */
-    uint8_t directAddrType; /*!< \brief Address directed advertisement is addressed to */
-    bdAddr_t directAddr; /*!< \brief Type of address directed advertisement is addressed to */
+typedef struct
+{
+  bdAddr_t    addr;                            /*!< \brief Peer device address */
+  uint8_t     addrType;                        /*!< \brief Peer address type */
+  uint8_t     directAddrType;                  /*!< \brief Address directed advertisement is addressed to */
+  bdAddr_t    directAddr;                      /*!< \brief Type of address directed advertisement is addressed to */
 } appDevInfo_t;
 
 /*!
@@ -398,7 +406,7 @@ void AppAdvStop(void);
  *
  *  \return Connection identifier.
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 dmConnId_t AppConnAccept(uint8_t advType, uint8_t addrType, uint8_t *pAddr, appDbHdl_t dbHdl);
 
 /*************************************************************************************************/
@@ -450,8 +458,7 @@ void AppExtSetAdvPeerAddr(uint8_t advHandle, uint8_t peerAddrType, uint8_t *pPee
  *  \return None.
  */
 /*************************************************************************************************/
-void AppExtAdvSetData(uint8_t advHandle, uint8_t location, uint16_t len, uint8_t *pData,
-                      uint16_t bufLen);
+void AppExtAdvSetData(uint8_t advHandle, uint8_t location, uint16_t len, uint8_t *pData, uint16_t bufLen);
 
 /*************************************************************************************************/
 /*!
@@ -528,7 +535,7 @@ void AppExtSetAdvType(uint8_t advHandle, uint8_t advType);
  *
  *  \return Connection identifier.
  */
-/*************************************************************************************************/
+ /*************************************************************************************************/
 dmConnId_t AppExtConnAccept(uint8_t advHandle, uint8_t advType, uint8_t addrType, uint8_t *pAddr,
                             appDbHdl_t dbHdl);
 
@@ -1156,7 +1163,8 @@ void AppUpdatePrivacyMode(appDbHdl_t hdl);
 
 /**!@}*/
 
-/*! \} */ /* APP_FRAMEWORK_API */
+/*! \} */    /* APP_FRAMEWORK_API */
+
 
 /*! \addtogroup STACK_EVENT
  *  \{ */
@@ -1191,7 +1199,8 @@ void AppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 /**@}*/
 
-/*! \} */ /* STACK_EVENT */
+/*! \} */    /* STACK_EVENT */
+
 
 #ifdef __cplusplus
 };

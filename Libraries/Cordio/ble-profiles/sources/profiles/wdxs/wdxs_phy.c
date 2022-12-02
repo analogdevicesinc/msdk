@@ -47,26 +47,27 @@
 /*************************************************************************************************/
 static uint8_t wdxsDcSetPhyReq(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-    uint8_t allPhys;
-    uint8_t txPhys;
-    uint8_t rxPhys;
-    uint16_t phyOptions;
+  uint8_t allPhys;
+  uint8_t txPhys;
+  uint8_t rxPhys;
+  uint16_t phyOptions;
 
-    /* verify parameter length */
-    if (len != WDX_DC_LEN_PHY_UPDATE_REQ) {
-        return ATT_ERR_LENGTH;
-    }
+  /* verify parameter length */
+  if (len != WDX_DC_LEN_PHY_UPDATE_REQ)
+  {
+    return ATT_ERR_LENGTH;
+  }
 
-    /* parse parameters */
-    BSTREAM_TO_UINT8(allPhys, pValue);
-    BSTREAM_TO_UINT8(txPhys, pValue);
-    BSTREAM_TO_UINT8(rxPhys, pValue);
-    BSTREAM_TO_UINT16(phyOptions, pValue);
+  /* parse parameters */
+  BSTREAM_TO_UINT8(allPhys, pValue);
+  BSTREAM_TO_UINT8(txPhys, pValue);
+  BSTREAM_TO_UINT8(rxPhys, pValue);
+  BSTREAM_TO_UINT16(phyOptions, pValue);
 
-    /* request update to PHY */
-    DmSetPhy(connId, allPhys, txPhys, rxPhys, phyOptions);
+  /* request update to PHY */
+  DmSetPhy(connId, allPhys, txPhys, rxPhys, phyOptions);
 
-    return ATT_SUCCESS;
+  return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -78,7 +79,7 @@ static uint8_t wdxsDcSetPhyReq(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 /*************************************************************************************************/
 static uint8_t wdxsDcGetPhy(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-    return wdxsDcUpdatePhy(connId, HCI_SUCCESS);
+  return wdxsDcUpdatePhy(connId, HCI_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -88,39 +89,44 @@ static uint8_t wdxsDcGetPhy(dmConnId_t connId, uint16_t len, uint8_t *pValue)
  *  \return ATT status.
  */
 /*************************************************************************************************/
-static uint8_t wdxsDcPhyWrite(dmConnId_t connId, uint8_t op, uint8_t id, uint16_t len,
-                              uint8_t *pValue)
+static uint8_t wdxsDcPhyWrite(dmConnId_t connId, uint8_t op, uint8_t id, uint16_t len, uint8_t *pValue)
 {
-    uint8_t status;
+  uint8_t status;
 
-    /* set operation */
-    if (op == WDX_DC_OP_SET) {
-        switch (id) {
-        case WDX_DC_ID_PHY_UPDATE_REQ:
-            status = wdxsDcSetPhyReq(connId, len, pValue);
-            break;
+  /* set operation */
+  if (op == WDX_DC_OP_SET)
+  {
+    switch (id)
+    {
+      case WDX_DC_ID_PHY_UPDATE_REQ:
+        status = wdxsDcSetPhyReq(connId, len, pValue);
+        break;
 
-        default:
-            status = ATT_ERR_RANGE;
-            break;
-        }
-    }
-    /* get operation */
-    else if (op == WDX_DC_OP_GET) {
-        switch (id) {
-        case WDX_DC_ID_PHY:
-            status = wdxsDcGetPhy(connId, len, pValue);
-            break;
-
-        default:
-            status = ATT_ERR_RANGE;
-            break;
-        }
-    } else {
+     default:
         status = ATT_ERR_RANGE;
-    }
+        break;
+     }
+  }
+  /* get operation */
+  else if (op == WDX_DC_OP_GET)
+  {
+    switch (id)
+    {
+      case WDX_DC_ID_PHY:
+        status = wdxsDcGetPhy(connId, len, pValue);
+        break;
 
-    return status;
+      default:
+        status = ATT_ERR_RANGE;
+        break;
+    }
+  }
+  else
+  {
+    status = ATT_ERR_RANGE;
+  }
+
+  return status;
 }
 
 /*************************************************************************************************/
@@ -134,8 +140,8 @@ static uint8_t wdxsDcPhyWrite(dmConnId_t connId, uint8_t op, uint8_t id, uint16_
 /*************************************************************************************************/
 void WdxsPhyInit(void)
 {
-    /* register device configuration phy write callback */
-    wdxsDcPhyRegister(wdxsDcPhyWrite);
+  /* register device configuration phy write callback */
+  wdxsDcPhyRegister(wdxsDcPhyWrite);
 }
 
-#endif /* WDXS_DC_ENABLED */
+#endif  /* WDXS_DC_ENABLED */

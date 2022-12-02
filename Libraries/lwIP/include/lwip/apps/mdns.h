@@ -3,7 +3,7 @@
  * MDNS responder
  */
 
-/*
+ /*
  * Copyright (c) 2015 Verisure Innovation AB
  * All rights reserved.
  *
@@ -47,12 +47,15 @@ extern "C" {
 
 #if LWIP_MDNS_RESPONDER
 
-enum mdns_sd_proto { DNSSD_PROTO_UDP = 0, DNSSD_PROTO_TCP = 1 };
+enum mdns_sd_proto {
+  DNSSD_PROTO_UDP = 0,
+  DNSSD_PROTO_TCP = 1
+};
 
-#define MDNS_PROBING_CONFLICT 0
+#define MDNS_PROBING_CONFLICT   0
 #define MDNS_PROBING_SUCCESSFUL 1
 
-#define MDNS_LABEL_MAXLEN 63
+#define MDNS_LABEL_MAXLEN  63
 
 struct mdns_host;
 struct mdns_service;
@@ -64,7 +67,7 @@ typedef void (*service_get_txt_fn_t)(struct mdns_service *service, void *txt_use
  * uniqueness, called with result MDNS_PROBING_SUCCESSFUL if no other node claimed
  * use for the name for the netif or a service and is safe to use, or MDNS_PROBING_CONFLICT
  * if another node is already using it and mdns is disabled on this interface */
-typedef void (*mdns_name_result_cb_t)(struct netif *netif, u8_t result);
+typedef void (*mdns_name_result_cb_t)(struct netif* netif, u8_t result);
 
 void mdns_resp_init(void);
 
@@ -74,9 +77,7 @@ err_t mdns_resp_add_netif(struct netif *netif, const char *hostname, u32_t dns_t
 err_t mdns_resp_remove_netif(struct netif *netif);
 err_t mdns_resp_rename_netif(struct netif *netif, const char *hostname);
 
-s8_t mdns_resp_add_service(struct netif *netif, const char *name, const char *service,
-                           enum mdns_sd_proto proto, u16_t port, u32_t dns_ttl,
-                           service_get_txt_fn_t txt_fn, void *txt_userdata);
+s8_t  mdns_resp_add_service(struct netif *netif, const char *name, const char *service, enum mdns_sd_proto proto, u16_t port, u32_t dns_ttl, service_get_txt_fn_t txt_fn, void *txt_userdata);
 err_t mdns_resp_del_service(struct netif *netif, s8_t slot);
 err_t mdns_resp_rename_service(struct netif *netif, s8_t slot, const char *name);
 

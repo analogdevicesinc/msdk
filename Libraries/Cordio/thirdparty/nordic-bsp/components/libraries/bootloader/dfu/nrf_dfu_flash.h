@@ -55,11 +55,13 @@
 extern "C" {
 #endif
 
+
 /**@brief   nrf_fstorage event handler function for DFU fstorage operations.
  *
  * This function will be called after a flash operation has completed.
  */
-typedef void (*nrf_dfu_flash_callback_t)(void *p_buf);
+typedef void (*nrf_dfu_flash_callback_t)(void * p_buf);
+
 
 /**@brief Function for initializing the flash module.
  *
@@ -71,6 +73,7 @@ typedef void (*nrf_dfu_flash_callback_t)(void *p_buf);
  * @retval NRF_SUCCESS  If the operation was successful.
   */
 ret_code_t nrf_dfu_flash_init(bool sd_irq_initialized);
+
 
 /**@brief Function for storing data to flash.
  *
@@ -93,8 +96,11 @@ ret_code_t nrf_dfu_flash_init(bool sd_irq_initialized);
  * @retval  NRF_ERROR_NULL              If @p p_src is NULL.
  * @retval  NRF_ERROR_NO_MEM            If nrf_fstorage is out of memory.
  */
-ret_code_t nrf_dfu_flash_store(uint32_t dest, void const *p_src, uint32_t len,
-                               nrf_dfu_flash_callback_t callback);
+ret_code_t nrf_dfu_flash_store(uint32_t                     dest,
+                               void                 const * p_src,
+                               uint32_t                     len,
+                               nrf_dfu_flash_callback_t     callback);
+
 
 /**@brief Function for erasing data from flash.
  *
@@ -114,12 +120,13 @@ ret_code_t nrf_dfu_flash_store(uint32_t dest, void const *p_src, uint32_t len,
  * @retval  NRF_ERROR_NULL              If @p page_addr is NULL.
  * @retval  NRF_ERROR_NO_MEM            If the queue of nrf_fstorage is full.
  */
-ret_code_t nrf_dfu_flash_erase(uint32_t page_addr, uint32_t num_pages,
-                               nrf_dfu_flash_callback_t callback);
+ret_code_t nrf_dfu_flash_erase(uint32_t page_addr, uint32_t num_pages, nrf_dfu_flash_callback_t callback);
+
 
 #ifdef __cplusplus
 }
 #endif
+
 
 #endif // NRF_DFU_FLASH_H__
 /** @} */

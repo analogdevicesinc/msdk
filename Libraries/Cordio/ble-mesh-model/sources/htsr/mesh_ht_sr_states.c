@@ -59,16 +59,18 @@
 /*************************************************************************************************/
 uint8_t htSrGetNumFaults(uint8_t *pFaultArray)
 {
-    uint8_t idx = 0;
-    uint8_t cnt = 0;
+  uint8_t idx = 0;
+  uint8_t cnt = 0;
 
-    for (idx = 0; idx < MESH_HT_SR_MAX_NUM_FAULTS; idx++) {
-        if (pFaultArray[idx] != MESH_HT_MODEL_FAULT_NO_FAULT) {
-            cnt++;
-        }
+  for(idx = 0; idx < MESH_HT_SR_MAX_NUM_FAULTS; idx++)
+  {
+    if(pFaultArray[idx] != MESH_HT_MODEL_FAULT_NO_FAULT)
+    {
+      cnt++;
     }
+  }
 
-    return cnt;
+  return cnt;
 }
 
 /*************************************************************************************************/
@@ -83,20 +85,21 @@ uint8_t htSrGetNumFaults(uint8_t *pFaultArray)
 /*************************************************************************************************/
 void meshHtSrGetDesc(meshElementId_t elementId, meshHtSrDescriptor_t **ppOutDesc)
 {
-    uint8_t modelIdx;
+  uint8_t modelIdx;
 
-    *ppOutDesc = NULL;
+  *ppOutDesc = NULL;
 
-    /* Look for the model instance. */
-    for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx++) {
-        if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
-            MESH_HT_SR_MDL_ID) {
-            /* Matching model ID on elementId */
-            *ppOutDesc =
-                pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
-            break;
-        }
+  /* Look for the model instance. */
+  for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx ++)
+  {
+    if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
+        MESH_HT_SR_MDL_ID)
+    {
+      /* Matching model ID on elementId */
+      *ppOutDesc = pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
+      break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -110,74 +113,87 @@ void meshHtSrGetDesc(meshElementId_t elementId, meshHtSrDescriptor_t **ppOutDesc
 /*************************************************************************************************/
 void meshHtSrPublishCrtHt(meshElementId_t elementId)
 {
-    uint8_t *pRspMsgParam, *pTemp;
-    meshHtSrDescriptor_t *pDesc;
-    uint16_t rspMsgParamLen, tempLen;
-    uint8_t cidx, fidx;
-    uint8_t rspMsgParamNoFault[sizeof(meshHtMdlTestId_t) + sizeof(uint16_t)];
-    meshPubMsgInfo_t pubMsgInfo = { .modelId.sigModelId = MESH_HT_SR_MDL_ID,
-                                    .opcode = { MESH_HT_CRT_STATUS_OPCODE } };
+  uint8_t *pRspMsgParam, *pTemp;
+  meshHtSrDescriptor_t *pDesc;
+  uint16_t rspMsgParamLen, tempLen;
+  uint8_t cidx, fidx;
+  uint8_t rspMsgParamNoFault[sizeof(meshHtMdlTestId_t) + sizeof(uint16_t)];
+  meshPubMsgInfo_t pubMsgInfo =
+  {
+    .modelId.sigModelId = MESH_HT_SR_MDL_ID,
+    .opcode = { MESH_HT_CRT_STATUS_OPCODE }
+  };
 
-    pubMsgInfo.elementId = elementId;
+  pubMsgInfo.elementId = elementId;
 
-    /* Get descriptor. */
-    meshHtSrGetDesc(elementId, &pDesc);
+  /* Get descriptor. */
+  meshHtSrGetDesc(elementId, &pDesc);
 
-    if (pDesc == NULL) {
-        return;
+  if(pDesc == NULL)
+  {
+    return;
+  }
+
+  /* Search matching company ID. */
+  for(cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++)
+  {
+    /* Get response length of status. */
+    rspMsgParamLen = sizeof(rspMsgParamNoFault) +
+                     htSrGetNumFaults(pDesc->faultStateArray[cidx].crtFaultIdArray);
+
+    /* Configure response parameters based on number of faults. */
+    if(rspMsgParamLen == sizeof(rspMsgParamNoFault))
+    {
+      pRspMsgParam = rspMsgParamNoFault;
+    }
+    else
+    {
+      /* Check response size and truncate if needed. */
+      if(rspMsgParamLen + MESH_OPCODE_SIZE(pubMsgInfo.opcode) > MESH_ACC_MAX_PDU_SIZE)
+      {
+        rspMsgParamLen = MESH_ACC_MAX_PDU_SIZE - MESH_OPCODE_SIZE(pubMsgInfo.opcode);
+      }
+
+      /* Allocate memory for response. */
+      if((pRspMsgParam = (uint8_t *)WsfBufAlloc(rspMsgParamLen)) == NULL)
+      {
+        continue;
+      }
     }
 
-    /* Search matching company ID. */
-    for (cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++) {
-        /* Get response length of status. */
-        rspMsgParamLen = sizeof(rspMsgParamNoFault) +
-                         htSrGetNumFaults(pDesc->faultStateArray[cidx].crtFaultIdArray);
+    /* Prepare for packing. */
+    pTemp = pRspMsgParam;
+    tempLen = rspMsgParamLen - sizeof(rspMsgParamNoFault);
 
-        /* Configure response parameters based on number of faults. */
-        if (rspMsgParamLen == sizeof(rspMsgParamNoFault)) {
-            pRspMsgParam = rspMsgParamNoFault;
-        } else {
-            /* Check response size and truncate if needed. */
-            if (rspMsgParamLen + MESH_OPCODE_SIZE(pubMsgInfo.opcode) > MESH_ACC_MAX_PDU_SIZE) {
-                rspMsgParamLen = MESH_ACC_MAX_PDU_SIZE - MESH_OPCODE_SIZE(pubMsgInfo.opcode);
-            }
+    /* Pack test ID and company ID. */
+    UINT8_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].testId);
+    UINT16_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].companyId);
 
-            /* Allocate memory for response. */
-            if ((pRspMsgParam = (uint8_t *)WsfBufAlloc(rspMsgParamLen)) == NULL) {
-                continue;
-            }
-        }
+    /* Search registered faults and pack them. */
+    for(fidx = 0; fidx < MESH_HT_SR_MAX_NUM_FAULTS; fidx++)
+    {
+      /* If no more room available, break search. */
+      if(tempLen == 0)
+      {
+        break;
+      }
 
-        /* Prepare for packing. */
-        pTemp = pRspMsgParam;
-        tempLen = rspMsgParamLen - sizeof(rspMsgParamNoFault);
-
-        /* Pack test ID and company ID. */
-        UINT8_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].testId);
-        UINT16_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].companyId);
-
-        /* Search registered faults and pack them. */
-        for (fidx = 0; fidx < MESH_HT_SR_MAX_NUM_FAULTS; fidx++) {
-            /* If no more room available, break search. */
-            if (tempLen == 0) {
-                break;
-            }
-
-            if (pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] !=
-                MESH_HT_MODEL_FAULT_NO_FAULT) {
-                /* Pack fault. */
-                UINT8_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].crtFaultIdArray[fidx]);
-                tempLen--;
-            }
-        }
-        /* Send message */
-        MeshPublishMessage(&pubMsgInfo, pRspMsgParam, rspMsgParamLen);
-
-        /* Verify if memory is allocated and free it. */
-        if (pRspMsgParam != rspMsgParamNoFault) {
-            WsfBufFree(pRspMsgParam);
-        }
+      if(pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] != MESH_HT_MODEL_FAULT_NO_FAULT)
+      {
+        /* Pack fault. */
+        UINT8_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].crtFaultIdArray[fidx]);
+        tempLen--;
+      }
     }
+    /* Send message */
+    MeshPublishMessage(&pubMsgInfo, pRspMsgParam, rspMsgParamLen);
+
+    /* Verify if memory is allocated and free it. */
+    if(pRspMsgParam != rspMsgParamNoFault)
+    {
+      WsfBufFree(pRspMsgParam);
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -200,24 +216,25 @@ static void meshHtSrSendStatus(meshElementId_t elementId, meshAddress_t dstAddr,
                                uint16_t appKeyIndex, meshMsgOpcode_t *pOpcode, uint8_t *pMsgParam,
                                uint16_t msgParamLen, uint8_t ttl, bool_t unicastRsp)
 {
-    WSF_ASSERT(pOpcode != NULL);
-    WSF_ASSERT(pMsgParam != NULL);
+  WSF_ASSERT(pOpcode != NULL);
+  WSF_ASSERT(pMsgParam != NULL);
 
-    meshMsgInfo_t msgInfo;
+  meshMsgInfo_t msgInfo;
 
-    /* Fill in the msg info parameters. */
-    msgInfo.modelId.sigModelId = MESH_HT_SR_MDL_ID;
-    msgInfo.opcode = *pOpcode;
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = dstAddr;
-    msgInfo.pDstLabelUuid = NULL;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+  /* Fill in the msg info parameters. */
+  msgInfo.modelId.sigModelId = MESH_HT_SR_MDL_ID;
+  msgInfo.opcode = *pOpcode;
+  msgInfo.elementId = elementId;
+  msgInfo.dstAddr = dstAddr;
+  msgInfo.pDstLabelUuid = NULL;
+  msgInfo.ttl = ttl;
+  msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Send message to the Mesh Core instantly. */
-    MeshSendMessage(&msgInfo, (const uint8_t *)pMsgParam, msgParamLen,
-                    MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
-                    MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(unicastRsp));
+
+  /* Send message to the Mesh Core instantly. */
+  MeshSendMessage(&msgInfo, (const uint8_t *)pMsgParam, msgParamLen,
+                  MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
+                  MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(unicastRsp));
 }
 
 /*************************************************************************************************/
@@ -234,79 +251,91 @@ static void meshHtSrSendStatus(meshElementId_t elementId, meshAddress_t dstAddr,
  *  \return    None.
  */
 /*************************************************************************************************/
-void meshHtSrSendFaultStatus(uint16_t companyId, meshElementId_t elementId, meshAddress_t dstAddr,
-                             uint16_t appKeyIndex, uint8_t recvTtl, bool_t unicastRsp)
+void meshHtSrSendFaultStatus(uint16_t companyId, meshElementId_t elementId,
+                             meshAddress_t dstAddr, uint16_t appKeyIndex, uint8_t recvTtl,
+                             bool_t unicastRsp)
 {
-    uint8_t *pRspMsgParam, *pTemp;
-    meshHtSrDescriptor_t *pDesc;
-    uint16_t rspMsgParamLen, tempLen;
-    uint8_t cidx, fidx;
-    uint8_t rspMsgParamNoFault[sizeof(meshHtMdlTestId_t) + sizeof(companyId)];
-    meshMsgOpcode_t opcode = { MESH_HT_FAULT_STATUS_OPCODE };
+  uint8_t *pRspMsgParam, *pTemp;
+  meshHtSrDescriptor_t *pDesc;
+  uint16_t rspMsgParamLen, tempLen;
+  uint8_t cidx, fidx;
+  uint8_t rspMsgParamNoFault[sizeof(meshHtMdlTestId_t) + sizeof(companyId)];
+  meshMsgOpcode_t opcode = { MESH_HT_FAULT_STATUS_OPCODE };
 
-    /* Get descriptor. */
-    meshHtSrGetDesc(elementId, &pDesc);
+  /* Get descriptor. */
+  meshHtSrGetDesc(elementId, &pDesc);
 
-    if (pDesc == NULL) {
-        return;
-    }
+  if(pDesc == NULL)
+  {
+    return;
+  }
 
-    /* Search matching company ID. */
-    for (cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++) {
-        if (pDesc->faultStateArray[cidx].companyId == companyId) {
-            /* Get response length of status. */
-            rspMsgParamLen = sizeof(rspMsgParamNoFault) +
-                             htSrGetNumFaults(pDesc->faultStateArray[cidx].regFaultIdArray);
+  /* Search matching company ID. */
+  for(cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++)
+  {
+    if(pDesc->faultStateArray[cidx].companyId == companyId)
+    {
+      /* Get response length of status. */
+      rspMsgParamLen = sizeof(rspMsgParamNoFault) +
+                       htSrGetNumFaults(pDesc->faultStateArray[cidx].regFaultIdArray);
 
-            /* Configure response parameters based on number of faults. */
-            if (rspMsgParamLen == sizeof(rspMsgParamNoFault)) {
-                pRspMsgParam = rspMsgParamNoFault;
-            } else {
-                /* Check response size and truncate if needed. */
-                if (rspMsgParamLen + MESH_OPCODE_SIZE(opcode) > MESH_ACC_MAX_PDU_SIZE) {
-                    rspMsgParamLen = MESH_ACC_MAX_PDU_SIZE - MESH_OPCODE_SIZE(opcode);
-                }
-
-                /* Allocate memory for response. */
-                if ((pRspMsgParam = (uint8_t *)WsfBufAlloc(rspMsgParamLen)) == NULL) {
-                    return;
-                }
-            }
-
-            /* Prepare for packing. */
-            pTemp = pRspMsgParam;
-            tempLen = rspMsgParamLen - sizeof(rspMsgParamNoFault);
-
-            /* Pack test ID and company ID. */
-            UINT8_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].testId);
-            UINT16_TO_BSTREAM(pTemp, companyId);
-
-            /* Search registered faults and pack them. */
-            for (fidx = 0; fidx < MESH_HT_SR_MAX_NUM_FAULTS; fidx++) {
-                /* If no more room available, break search. */
-                if (tempLen == 0) {
-                    break;
-                }
-
-                if (pDesc->faultStateArray[cidx].regFaultIdArray[fidx] !=
-                    MESH_HT_MODEL_FAULT_NO_FAULT) {
-                    /* Pack fault. */
-                    UINT8_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].regFaultIdArray[fidx]);
-                    tempLen--;
-                }
-            }
-            /* Send message */
-            meshHtSrSendStatus(elementId, dstAddr, appKeyIndex, &opcode, pRspMsgParam,
-                               rspMsgParamLen, recvTtl == 0 ? 0 : MESH_USE_DEFAULT_TTL, unicastRsp);
-
-            /* Verify if memory is allocated and free it. */
-            if (pRspMsgParam != rspMsgParamNoFault) {
-                WsfBufFree(pRspMsgParam);
-            }
-
-            return;
+      /* Configure response parameters based on number of faults. */
+      if(rspMsgParamLen == sizeof(rspMsgParamNoFault))
+      {
+        pRspMsgParam = rspMsgParamNoFault;
+      }
+      else
+      {
+        /* Check response size and truncate if needed. */
+        if(rspMsgParamLen + MESH_OPCODE_SIZE(opcode) > MESH_ACC_MAX_PDU_SIZE)
+        {
+          rspMsgParamLen = MESH_ACC_MAX_PDU_SIZE - MESH_OPCODE_SIZE(opcode);
         }
+
+        /* Allocate memory for response. */
+        if((pRspMsgParam = (uint8_t *)WsfBufAlloc(rspMsgParamLen)) == NULL)
+        {
+          return;
+        }
+      }
+
+      /* Prepare for packing. */
+      pTemp = pRspMsgParam;
+      tempLen = rspMsgParamLen - sizeof(rspMsgParamNoFault);
+
+      /* Pack test ID and company ID. */
+      UINT8_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].testId);
+      UINT16_TO_BSTREAM(pTemp, companyId);
+
+      /* Search registered faults and pack them. */
+      for(fidx = 0; fidx < MESH_HT_SR_MAX_NUM_FAULTS; fidx++)
+      {
+        /* If no more room available, break search. */
+        if(tempLen == 0)
+        {
+          break;
+        }
+
+        if(pDesc->faultStateArray[cidx].regFaultIdArray[fidx] != MESH_HT_MODEL_FAULT_NO_FAULT)
+        {
+          /* Pack fault. */
+          UINT8_TO_BSTREAM(pTemp, pDesc->faultStateArray[cidx].regFaultIdArray[fidx]);
+          tempLen--;
+        }
+      }
+      /* Send message */
+      meshHtSrSendStatus(elementId, dstAddr, appKeyIndex, &opcode, pRspMsgParam, rspMsgParamLen,
+                         recvTtl == 0 ? 0 : MESH_USE_DEFAULT_TTL, unicastRsp);
+
+      /* Verify if memory is allocated and free it. */
+      if(pRspMsgParam != rspMsgParamNoFault)
+      {
+        WsfBufFree(pRspMsgParam);
+      }
+
+      return;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -320,34 +349,38 @@ void meshHtSrSendFaultStatus(uint16_t companyId, meshElementId_t elementId, mesh
 /*************************************************************************************************/
 void meshHtSrHandleFaultGet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrDescriptor_t *pDesc;
-    uint16_t companyId;
-    uint8_t cidx;
+  meshHtSrDescriptor_t *pDesc;
+  uint16_t companyId;
+  uint8_t cidx;
 
-    /* Validate message parameters length. */
-    if (pMsg->messageParamsLen != sizeof(companyId)) {
-        return;
+  /* Validate message parameters length. */
+  if(pMsg->messageParamsLen != sizeof(companyId))
+  {
+    return;
+  }
+
+  /* Get descriptor. */
+  meshHtSrGetDesc(pMsg->elementId, &pDesc);
+
+  if(pDesc == NULL)
+  {
+    return;
+  }
+
+  /* Extract company ID. */
+  BYTES_TO_UINT16(companyId, pMsg->pMessageParams);
+
+  /* Search for matching company ID. */
+  for(cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++)
+  {
+    if(pDesc->faultStateArray[cidx].companyId == companyId)
+    {
+      /* Send status. */
+      meshHtSrSendFaultStatus(companyId, pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                              pMsg->ttl, pMsg->recvOnUnicast);
+      return;
     }
-
-    /* Get descriptor. */
-    meshHtSrGetDesc(pMsg->elementId, &pDesc);
-
-    if (pDesc == NULL) {
-        return;
-    }
-
-    /* Extract company ID. */
-    BYTES_TO_UINT16(companyId, pMsg->pMessageParams);
-
-    /* Search for matching company ID. */
-    for (cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++) {
-        if (pDesc->faultStateArray[cidx].companyId == companyId) {
-            /* Send status. */
-            meshHtSrSendFaultStatus(companyId, pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                                    pMsg->ttl, pMsg->recvOnUnicast);
-            return;
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -362,46 +395,51 @@ void meshHtSrHandleFaultGet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static void meshHtSrHandleFaultClearAll(const meshModelMsgRecvEvt_t *pMsg, bool_t ackReq)
 {
-    meshHtSrDescriptor_t *pDesc;
-    uint16_t companyId;
-    uint8_t cidx;
+  meshHtSrDescriptor_t *pDesc;
+  uint16_t companyId;
+  uint8_t cidx;
 
-    /* Validate message parameters length. */
-    if (pMsg->messageParamsLen != sizeof(companyId)) {
-        return;
+  /* Validate message parameters length. */
+  if(pMsg->messageParamsLen != sizeof(companyId))
+  {
+    return;
+  }
+
+  /* Get descriptor. */
+  meshHtSrGetDesc(pMsg->elementId, &pDesc);
+
+  if(pDesc == NULL)
+  {
+    return;
+  }
+
+  /* Extract company ID. */
+  BYTES_TO_UINT16(companyId, pMsg->pMessageParams);
+
+  /* Search for matching company ID. */
+  for(cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++)
+  {
+    if(pDesc->faultStateArray[cidx].companyId == companyId)
+    {
+      WsfTimerStop(&(pDesc->fastPubTmr));
+
+      pDesc->fastPubOn = FALSE;
+
+      /* Reset registered fault array. */
+      memset(pDesc->faultStateArray[cidx].regFaultIdArray, MESH_HT_MODEL_FAULT_NO_FAULT,
+             MESH_HT_SR_MAX_NUM_FAULTS);
+
+      /* Send status if needed. */
+      if(ackReq)
+      {
+        /* Send status. */
+        meshHtSrSendFaultStatus(companyId, pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                                pMsg->ttl, pMsg->recvOnUnicast);
+      }
+
+      return;
     }
-
-    /* Get descriptor. */
-    meshHtSrGetDesc(pMsg->elementId, &pDesc);
-
-    if (pDesc == NULL) {
-        return;
-    }
-
-    /* Extract company ID. */
-    BYTES_TO_UINT16(companyId, pMsg->pMessageParams);
-
-    /* Search for matching company ID. */
-    for (cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++) {
-        if (pDesc->faultStateArray[cidx].companyId == companyId) {
-            WsfTimerStop(&(pDesc->fastPubTmr));
-
-            pDesc->fastPubOn = FALSE;
-
-            /* Reset registered fault array. */
-            memset(pDesc->faultStateArray[cidx].regFaultIdArray, MESH_HT_MODEL_FAULT_NO_FAULT,
-                   MESH_HT_SR_MAX_NUM_FAULTS);
-
-            /* Send status if needed. */
-            if (ackReq) {
-                /* Send status. */
-                meshHtSrSendFaultStatus(companyId, pMsg->elementId, pMsg->srcAddr,
-                                        pMsg->appKeyIndex, pMsg->ttl, pMsg->recvOnUnicast);
-            }
-
-            return;
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -415,7 +453,7 @@ static void meshHtSrHandleFaultClearAll(const meshModelMsgRecvEvt_t *pMsg, bool_
 /*************************************************************************************************/
 void meshHtSrHandleFaultClearUnack(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrHandleFaultClearAll(pMsg, FALSE);
+  meshHtSrHandleFaultClearAll(pMsg, FALSE);
 }
 
 /*************************************************************************************************/
@@ -429,7 +467,7 @@ void meshHtSrHandleFaultClearUnack(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void meshHtSrHandleFaultClear(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrHandleFaultClearAll(pMsg, TRUE);
+  meshHtSrHandleFaultClearAll(pMsg, TRUE);
 }
 
 /*************************************************************************************************/
@@ -444,51 +482,58 @@ void meshHtSrHandleFaultClear(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static void meshHtSrHandleFaultTestAll(const meshModelMsgRecvEvt_t *pMsg, bool_t ackReq)
 {
-    meshHtSrDescriptor_t *pDesc;
-    uint8_t *pTemp;
-    meshHtSrTestStartEvt_t evt = { .hdr.event = MESH_HT_SR_EVENT,
-                                   .hdr.param = MESH_HT_SR_TEST_START_EVENT,
-                                   .hdr.status = MMDL_SUCCESS };
-    uint8_t cidx;
+  meshHtSrDescriptor_t *pDesc;
+  uint8_t *pTemp;
+  meshHtSrTestStartEvt_t evt =
+  {
+    .hdr.event = MESH_HT_SR_EVENT,
+    .hdr.param = MESH_HT_SR_TEST_START_EVENT,
+    .hdr.status = MMDL_SUCCESS
+  };
+  uint8_t cidx;
 
-    /* Validate message parameters length. */
-    if (pMsg->messageParamsLen != (sizeof(uint16_t) + sizeof(meshHtMdlTestId_t))) {
-        return;
+  /* Validate message parameters length. */
+  if(pMsg->messageParamsLen != (sizeof(uint16_t) + sizeof(meshHtMdlTestId_t)))
+  {
+    return;
+  }
+
+  /* Get descriptor. */
+  meshHtSrGetDesc(pMsg->elementId, &pDesc);
+
+  if(pDesc == NULL)
+  {
+    return;
+  }
+
+  pTemp = pMsg->pMessageParams;
+
+  /* Extract test id. */
+  BSTREAM_TO_UINT8(evt.testId, pTemp);
+
+  /* Extract company ID. */
+  BSTREAM_TO_UINT16(evt.companyId, pTemp);
+
+  /* Search for matching company ID. */
+  for(cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++)
+  {
+    if(pDesc->faultStateArray[cidx].companyId == evt.companyId)
+    {
+      /* Configure event. */
+      evt.elemId = pMsg->elementId;
+      evt.htClAddr = pMsg->srcAddr;
+      evt.useTtlZero = (pMsg->ttl == 0);
+      evt.unicastReq = pMsg->recvOnUnicast;
+      evt.appKeyIndex = pMsg->appKeyIndex;
+
+      evt.notifTestEnd = ackReq;
+
+      /* Trigger event callback. */
+      htSrCb.recvCback((wsfMsgHdr_t*)&evt);
+
+      return;
     }
-
-    /* Get descriptor. */
-    meshHtSrGetDesc(pMsg->elementId, &pDesc);
-
-    if (pDesc == NULL) {
-        return;
-    }
-
-    pTemp = pMsg->pMessageParams;
-
-    /* Extract test id. */
-    BSTREAM_TO_UINT8(evt.testId, pTemp);
-
-    /* Extract company ID. */
-    BSTREAM_TO_UINT16(evt.companyId, pTemp);
-
-    /* Search for matching company ID. */
-    for (cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++) {
-        if (pDesc->faultStateArray[cidx].companyId == evt.companyId) {
-            /* Configure event. */
-            evt.elemId = pMsg->elementId;
-            evt.htClAddr = pMsg->srcAddr;
-            evt.useTtlZero = (pMsg->ttl == 0);
-            evt.unicastReq = pMsg->recvOnUnicast;
-            evt.appKeyIndex = pMsg->appKeyIndex;
-
-            evt.notifTestEnd = ackReq;
-
-            /* Trigger event callback. */
-            htSrCb.recvCback((wsfMsgHdr_t *)&evt);
-
-            return;
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -502,7 +547,7 @@ static void meshHtSrHandleFaultTestAll(const meshModelMsgRecvEvt_t *pMsg, bool_t
 /*************************************************************************************************/
 void meshHtSrHandleFaultTest(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrHandleFaultTestAll(pMsg, TRUE);
+  meshHtSrHandleFaultTestAll(pMsg, TRUE);
 }
 
 /*************************************************************************************************/
@@ -516,7 +561,7 @@ void meshHtSrHandleFaultTest(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void meshHtSrHandleFaultTestUnack(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrHandleFaultTestAll(pMsg, FALSE);
+  meshHtSrHandleFaultTestAll(pMsg, FALSE);
 }
 
 /*************************************************************************************************/
@@ -534,14 +579,14 @@ void meshHtSrHandleFaultTestUnack(const meshModelMsgRecvEvt_t *pMsg)
  */
 /*************************************************************************************************/
 void meshHtSrSendPeriodStatus(meshHtPeriod_t period, meshElementId_t elementId,
-                              meshAddress_t dstAddr, uint16_t appKeyIndex, uint8_t recvTtl,
-                              bool_t unicastRsp)
+                              meshAddress_t dstAddr, uint16_t appKeyIndex,
+                              uint8_t recvTtl, bool_t unicastRsp)
 {
-    meshMsgOpcode_t opcode = { MESH_HT_PERIOD_STATUS_OPCODE };
+  meshMsgOpcode_t opcode = { MESH_HT_PERIOD_STATUS_OPCODE };
 
-    /* Send status message. */
-    meshHtSrSendStatus(elementId, dstAddr, appKeyIndex, &opcode, &period, 1,
-                       recvTtl == 0 ? 0 : MESH_USE_DEFAULT_TTL, unicastRsp);
+  /* Send status message. */
+  meshHtSrSendStatus(elementId, dstAddr, appKeyIndex, &opcode, &period, 1,
+                     recvTtl == 0 ? 0 : MESH_USE_DEFAULT_TTL, unicastRsp);
 }
 
 /*************************************************************************************************/
@@ -555,24 +600,26 @@ void meshHtSrSendPeriodStatus(meshHtPeriod_t period, meshElementId_t elementId,
 /*************************************************************************************************/
 void meshHtSrHandlePeriodGet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrDescriptor_t *pDesc;
+  meshHtSrDescriptor_t *pDesc;
 
-    /* Validate message parameters length. */
-    if (pMsg->messageParamsLen != 0) {
-        return;
-    }
+  /* Validate message parameters length. */
+  if(pMsg->messageParamsLen != 0)
+  {
+    return;
+  }
 
-    /* Get descriptor. */
-    meshHtSrGetDesc(pMsg->elementId, &pDesc);
+  /* Get descriptor. */
+  meshHtSrGetDesc(pMsg->elementId, &pDesc);
 
-    /* Validate descriptor and state existing. */
-    if (pDesc == NULL) {
-        return;
-    }
+  /* Validate descriptor and state existing. */
+  if(pDesc == NULL)
+  {
+    return;
+  }
 
-    /* Send status. */
-    meshHtSrSendPeriodStatus(pDesc->fastPeriodDiv, pMsg->elementId, pMsg->srcAddr,
-                             pMsg->appKeyIndex, pMsg->ttl, pMsg->recvOnUnicast);
+  /* Send status. */
+  meshHtSrSendPeriodStatus(pDesc->fastPeriodDiv, pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                           pMsg->ttl, pMsg->recvOnUnicast);
 }
 
 /*************************************************************************************************/
@@ -586,45 +633,53 @@ void meshHtSrHandlePeriodGet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static void meshHtSrHandlePeriodSetAll(const meshModelMsgRecvEvt_t *pMsg, bool_t ackReq)
 {
-    meshHtSrDescriptor_t *pDesc;
+  meshHtSrDescriptor_t *pDesc;
 
-    /* Validate message parameters length. */
-    if ((pMsg->messageParamsLen != 1) || (pMsg->pMessageParams == NULL)) {
-        return;
+  /* Validate message parameters length. */
+  if((pMsg->messageParamsLen != 1) || (pMsg->pMessageParams == NULL))
+  {
+    return;
+  }
+
+  /* Get descriptor. */
+  meshHtSrGetDesc(pMsg->elementId, &pDesc);
+
+  /* Validate descriptor and state existing. */
+  if(pDesc == NULL)
+  {
+    return;
+  }
+
+  /* Validate state */
+  if(pMsg->pMessageParams[0] > MESH_HT_PERIOD_MAX_VALUE)
+  {
+    return;
+  }
+
+  /* Set state. */
+  if(pDesc->fastPeriodDiv != pMsg->pMessageParams[0])
+  {
+    pDesc->fastPeriodDiv = pMsg->pMessageParams[0];
+    if((pDesc->fastPubOn) && (pDesc->fastPeriodDiv != 0) && (pDesc->pubPeriodMs != 0))
+    {
+      /* Publish Current Health Status. */
+      meshHtSrPublishCrtHt(pMsg->elementId);
+
+      /* Start timer. */
+      WsfTimerStartMs(&(pDesc->fastPubTmr), FAST_PUB_TIME(pDesc));
     }
-
-    /* Get descriptor. */
-    meshHtSrGetDesc(pMsg->elementId, &pDesc);
-
-    /* Validate descriptor and state existing. */
-    if (pDesc == NULL) {
-        return;
+    else
+    {
+      WsfTimerStop(&(pDesc->fastPubTmr));
     }
+  }
 
-    /* Validate state */
-    if (pMsg->pMessageParams[0] > MESH_HT_PERIOD_MAX_VALUE) {
-        return;
-    }
-
-    /* Set state. */
-    if (pDesc->fastPeriodDiv != pMsg->pMessageParams[0]) {
-        pDesc->fastPeriodDiv = pMsg->pMessageParams[0];
-        if ((pDesc->fastPubOn) && (pDesc->fastPeriodDiv != 0) && (pDesc->pubPeriodMs != 0)) {
-            /* Publish Current Health Status. */
-            meshHtSrPublishCrtHt(pMsg->elementId);
-
-            /* Start timer. */
-            WsfTimerStartMs(&(pDesc->fastPubTmr), FAST_PUB_TIME(pDesc));
-        } else {
-            WsfTimerStop(&(pDesc->fastPubTmr));
-        }
-    }
-
-    if (ackReq) {
-        /* Send status if needed. */
-        meshHtSrSendPeriodStatus(pDesc->fastPeriodDiv, pMsg->elementId, pMsg->srcAddr,
-                                 pMsg->appKeyIndex, pMsg->ttl, pMsg->recvOnUnicast);
-    }
+  if(ackReq)
+  {
+    /* Send status if needed. */
+    meshHtSrSendPeriodStatus(pDesc->fastPeriodDiv, pMsg->elementId, pMsg->srcAddr,
+                             pMsg->appKeyIndex, pMsg->ttl, pMsg->recvOnUnicast);
+  }
 }
 
 /*************************************************************************************************/
@@ -638,7 +693,7 @@ static void meshHtSrHandlePeriodSetAll(const meshModelMsgRecvEvt_t *pMsg, bool_t
 /*************************************************************************************************/
 void meshHtSrHandlePeriodSetUnack(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrHandlePeriodSetAll(pMsg, FALSE);
+  meshHtSrHandlePeriodSetAll(pMsg, FALSE);
 }
 
 /*************************************************************************************************/
@@ -652,7 +707,7 @@ void meshHtSrHandlePeriodSetUnack(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void meshHtSrHandlePeriodSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrHandlePeriodSetAll(pMsg, TRUE);
+  meshHtSrHandlePeriodSetAll(pMsg, TRUE);
 }
 
 /*************************************************************************************************/
@@ -670,14 +725,14 @@ void meshHtSrHandlePeriodSet(const meshModelMsgRecvEvt_t *pMsg)
  */
 /*************************************************************************************************/
 void meshHtSrSendAttentionStatus(uint8_t attTimerSec, meshElementId_t elementId,
-                                 meshAddress_t dstAddr, uint16_t appKeyIndex, uint8_t recvTtl,
-                                 bool_t unicastRsp)
+                                 meshAddress_t dstAddr, uint16_t appKeyIndex,
+                                 uint8_t recvTtl, bool_t unicastRsp)
 {
-    meshMsgOpcode_t opcode = { MESH_HT_ATTENTION_STATUS_OPCODE };
+  meshMsgOpcode_t opcode = { MESH_HT_ATTENTION_STATUS_OPCODE };
 
-    /* Send status message. */
-    meshHtSrSendStatus(elementId, dstAddr, appKeyIndex, &opcode, &attTimerSec, 1,
-                       recvTtl == 0 ? 0 : MESH_USE_DEFAULT_TTL, unicastRsp);
+  /* Send status message. */
+  meshHtSrSendStatus(elementId, dstAddr, appKeyIndex, &opcode, &attTimerSec, 1,
+                     recvTtl == 0 ? 0 : MESH_USE_DEFAULT_TTL, unicastRsp);
 }
 
 /*************************************************************************************************/
@@ -691,27 +746,29 @@ void meshHtSrSendAttentionStatus(uint8_t attTimerSec, meshElementId_t elementId,
 /*************************************************************************************************/
 void meshHtSrHandleAttentionGet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrDescriptor_t *pDesc;
-    uint8_t attTimerSec;
-    /* Validate message parameters length. */
-    if (pMsg->messageParamsLen != 0) {
-        return;
-    }
+  meshHtSrDescriptor_t *pDesc;
+  uint8_t attTimerSec;
+  /* Validate message parameters length. */
+  if(pMsg->messageParamsLen != 0)
+  {
+    return;
+  }
 
-    /* Get descriptor. */
-    meshHtSrGetDesc(pMsg->elementId, &pDesc);
+  /* Get descriptor. */
+  meshHtSrGetDesc(pMsg->elementId, &pDesc);
 
-    /* Validate descriptor and state existing. */
-    if (pDesc == NULL) {
-        return;
-    }
+  /* Validate descriptor and state existing. */
+  if(pDesc == NULL)
+  {
+    return;
+  }
 
-    /* Read attention timer state. */
-    attTimerSec = MeshAttentionGet(pMsg->elementId);
+  /* Read attention timer state. */
+  attTimerSec = MeshAttentionGet(pMsg->elementId);
 
-    /* Send status. */
-    meshHtSrSendAttentionStatus(attTimerSec, pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                                pMsg->ttl, pMsg->recvOnUnicast);
+  /* Send status. */
+  meshHtSrSendAttentionStatus(attTimerSec, pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                              pMsg->ttl, pMsg->recvOnUnicast);
 }
 
 /*************************************************************************************************/
@@ -726,29 +783,32 @@ void meshHtSrHandleAttentionGet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static void meshHtSrHandleAttentionSetAll(const meshModelMsgRecvEvt_t *pMsg, bool_t ackReq)
 {
-    meshHtSrDescriptor_t *pDesc;
+  meshHtSrDescriptor_t *pDesc;
 
-    /* Validate message parameters length. */
-    if ((pMsg->messageParamsLen != 1) || (pMsg->pMessageParams == NULL)) {
-        return;
-    }
+  /* Validate message parameters length. */
+  if((pMsg->messageParamsLen != 1) || (pMsg->pMessageParams == NULL))
+  {
+    return;
+  }
 
-    /* Get descriptor. */
-    meshHtSrGetDesc(pMsg->elementId, &pDesc);
+  /* Get descriptor. */
+  meshHtSrGetDesc(pMsg->elementId, &pDesc);
 
-    /* Validate descriptor and state existing. */
-    if (pDesc == NULL) {
-        return;
-    }
+  /* Validate descriptor and state existing. */
+  if(pDesc == NULL)
+  {
+    return;
+  }
 
-    /* Set state. */
-    MeshAttentionSet(pMsg->elementId, pMsg->pMessageParams[0]);
+  /* Set state. */
+  MeshAttentionSet(pMsg->elementId, pMsg->pMessageParams[0]);
 
-    if (ackReq) {
-        /* Send status if needed. */
-        meshHtSrSendAttentionStatus(pMsg->pMessageParams[0], pMsg->elementId, pMsg->srcAddr,
-                                    pMsg->appKeyIndex, pMsg->ttl, pMsg->recvOnUnicast);
-    }
+  if(ackReq)
+  {
+    /* Send status if needed. */
+    meshHtSrSendAttentionStatus(pMsg->pMessageParams[0], pMsg->elementId, pMsg->srcAddr,
+                                pMsg->appKeyIndex, pMsg->ttl, pMsg->recvOnUnicast);
+  }
 }
 
 /*************************************************************************************************/
@@ -762,7 +822,7 @@ static void meshHtSrHandleAttentionSetAll(const meshModelMsgRecvEvt_t *pMsg, boo
 /*************************************************************************************************/
 void meshHtSrHandleAttentionSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrHandleAttentionSetAll(pMsg, TRUE);
+  meshHtSrHandleAttentionSetAll(pMsg, TRUE);
 }
 
 /*************************************************************************************************/
@@ -776,5 +836,5 @@ void meshHtSrHandleAttentionSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void meshHtSrHandleAttentionSetUnack(const meshModelMsgRecvEvt_t *pMsg)
 {
-    meshHtSrHandleAttentionSetAll(pMsg, FALSE);
+  meshHtSrHandleAttentionSetAll(pMsg, FALSE);
 }

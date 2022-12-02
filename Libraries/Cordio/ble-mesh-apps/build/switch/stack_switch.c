@@ -77,85 +77,85 @@ void StackInitSwitch(void);
 /*************************************************************************************************/
 void StackInitSwitch(void)
 {
-    wsfHandlerId_t handlerId;
+  wsfHandlerId_t handlerId;
 
-    SecInit();
-    SecAesInit();
-    SecAesRevInit();
-    SecCmacInit();
-    SecEccInit();
-    SecCcmInit();
+  SecInit();
+  SecAesInit();
+  SecAesRevInit();
+  SecCmacInit();
+  SecEccInit();
+  SecCcmInit();
 
-    /* Initialize stack handlers. */
-    handlerId = WsfOsSetNextHandler(HciHandler);
-    HciHandlerInit(handlerId);
+  /* Initialize stack handlers. */
+  handlerId = WsfOsSetNextHandler(HciHandler);
+  HciHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(DmHandler);
-    DmDevVsInit(0);
+  handlerId = WsfOsSetNextHandler(DmHandler);
+  DmDevVsInit(0);
 
 #if (LL_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    DmExtScanInit();
-    DmExtAdvInit();
+  DmExtScanInit();
+  DmExtAdvInit();
 #else
-    DmScanInit();
-    DmAdvInit();
+  DmScanInit();
+  DmAdvInit();
 #endif
 
-    DmSecInit();
-    DmHandlerInit(handlerId);
+  DmSecInit();
+  DmHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
-    L2cSlaveHandlerInit(handlerId);
-    L2cInit();
-    L2cSlaveInit();
+  handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
+  L2cSlaveHandlerInit(handlerId);
+  L2cInit();
+  L2cSlaveInit();
 
-    handlerId = WsfOsSetNextHandler(AttHandler);
-    AttHandlerInit(handlerId);
-    AttsInit();
-    AttsIndInit();
+  handlerId = WsfOsSetNextHandler(AttHandler);
+  AttHandlerInit(handlerId);
+  AttsInit();
+  AttsIndInit();
 
-    handlerId = WsfOsSetNextHandler(SmpHandler);
-    SmpHandlerInit(handlerId);
-    SmprInit();
-    SmprScInit();
-    HciSetMaxRxAclLen(100);
+  handlerId = WsfOsSetNextHandler(SmpHandler);
+  SmpHandlerInit(handlerId);
+  SmprInit();
+  SmprScInit();
+  HciSetMaxRxAclLen(100);
 
-    /* Initialize Mesh handlers. */
-    handlerId = WsfOsSetNextHandler(MeshHandler);
-    MeshHandlerInit(handlerId);
+  /* Initialize Mesh handlers. */
+  handlerId = WsfOsSetNextHandler(MeshHandler);
+  MeshHandlerInit(handlerId);
 
-    /* Initialize Mesh Security handler. */
-    handlerId = WsfOsSetNextHandler(MeshSecurityHandler);
-    MeshSecurityHandlerInit(handlerId);
+  /* Initialize Mesh Security handler. */
+  handlerId = WsfOsSetNextHandler(MeshSecurityHandler);
+  MeshSecurityHandlerInit(handlerId);
 
-    /* Initialize Mesh Provisioning Server handler. */
-    handlerId = WsfOsSetNextHandler(MeshPrvSrHandler);
-    MeshPrvSrHandlerInit(handlerId);
+  /* Initialize Mesh Provisioning Server handler. */
+  handlerId = WsfOsSetNextHandler(MeshPrvSrHandler);
+  MeshPrvSrHandlerInit(handlerId);
 
-    /* Initialize Mesh Models handler. */
-    handlerId = WsfOsSetNextHandler(SwitchMmdlHandler);
+  /* Initialize Mesh Models handler. */
+  handlerId = WsfOsSetNextHandler(SwitchMmdlHandler);
 
-    /* Initialize Health Server model handler. */
-    MeshHtSrHandlerInit(handlerId);
+  /* Initialize Health Server model handler. */
+  MeshHtSrHandlerInit(handlerId);
 
-    /* Initialize Generic OnOff Client model handler. */
-    MmdlGenOnOffClHandlerInit(handlerId);
+  /* Initialize Generic OnOff Client model handler. */
+  MmdlGenOnOffClHandlerInit(handlerId);
 
-    /* Initialize Generic Power On Off Client model handler. */
-    MmdlGenPowOnOffClHandlerInit(handlerId);
+  /* Initialize Generic Power On Off Client model handler. */
+  MmdlGenPowOnOffClHandlerInit(handlerId);
 
-    /* Initialize Generic Level Client model handler. */
-    MmdlGenLevelClHandlerInit(handlerId);
+  /* Initialize Generic Level Client model handler. */
+  MmdlGenLevelClHandlerInit(handlerId);
 
-    /* Initialize Light Lightness Client model handler. */
-    MmdlLightLightnessClHandlerInit(handlerId);
+  /* Initialize Light Lightness Client model handler. */
+  MmdlLightLightnessClHandlerInit(handlerId);
 
-    /* Initialize Light HSL Client model handler. */
-    MmdlLightHslClHandlerInit(handlerId);
+  /* Initialize Light HSL Client model handler. */
+  MmdlLightHslClHandlerInit(handlerId);
 
-    /* Initialize application handler. */
-    handlerId = WsfOsSetNextHandler(SwitchHandler);
-    SwitchHandlerInit(handlerId);
+  /* Initialize application handler. */
+  handlerId = WsfOsSetNextHandler(SwitchHandler);
+  SwitchHandlerInit(handlerId);
 }
 
 /*************************************************************************************************/
@@ -167,5 +167,5 @@ void StackInitSwitch(void)
 /*************************************************************************************************/
 void StackInitCfgSwitch(void)
 {
-    SwitchConfigInit();
+  SwitchConfigInit();
 }

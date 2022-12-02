@@ -52,34 +52,41 @@
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_HMAC)
 
-static ret_code_t hkdf_expand(nrf_crypto_hmac_context_t *const p_context,
-                              nrf_crypto_hmac_info_t const *p_info, uint8_t *const p_output_key,
-                              size_t output_key_size, uint8_t const *const p_ainfo,
-                              size_t ainfo_size, uint8_t *const p_temp, uint8_t const *const p_prk,
-                              size_t prk_size)
+static ret_code_t hkdf_expand(nrf_crypto_hmac_context_t      * const p_context,
+                              nrf_crypto_hmac_info_t         const * p_info,
+                              uint8_t                        * const p_output_key,
+                              size_t                                 output_key_size,
+                              uint8_t                  const * const p_ainfo,
+                              size_t                                 ainfo_size,
+                              uint8_t                        * const p_temp,
+                              uint8_t                  const * const p_prk,
+                              size_t                                 prk_size)
 {
-    size_t const hash_digest_size = p_info->digest_size;
-    uint32_t const n_iterations = (output_key_size + hash_digest_size - 1) / hash_digest_size;
-    ret_code_t err_code = NRF_SUCCESS;
-    size_t temp_size;
-    uint8_t n_current;
-    int write_offset;
+    size_t const    hash_digest_size  = p_info->digest_size;
+    uint32_t const  n_iterations      = (output_key_size + hash_digest_size - 1) / hash_digest_size;
+    ret_code_t      err_code          = NRF_SUCCESS;
+    size_t          temp_size;
+    uint8_t         n_current;
+    int             write_offset;
 
     VERIFY_TRUE(n_iterations <= 255, NRF_ERROR_CRYPTO_OUTPUT_LENGTH);
 
     write_offset = 0;
-    for (uint32_t i = 0; i < n_iterations; i++) {
+    for (uint32_t i = 0; i < n_iterations; i++)
+    {
         n_current = i + 1;
 
         err_code = nrf_crypto_hmac_init(p_context, p_info, p_prk, prk_size);
         VERIFY_SUCCESS(err_code);
 
-        if (i != 0) {
+        if (i != 0)
+        {
             err_code = nrf_crypto_hmac_update(p_context, p_temp, hash_digest_size);
             VERIFY_SUCCESS(err_code);
         }
 
-        if (p_ainfo != NULL) {
+        if (p_ainfo != NULL)
+        {
             err_code = nrf_crypto_hmac_update(p_context, p_ainfo, ainfo_size);
             VERIFY_SUCCESS(err_code);
         }
@@ -91,7 +98,8 @@ static ret_code_t hkdf_expand(nrf_crypto_hmac_context_t *const p_context,
         err_code = nrf_crypto_hmac_finalize(p_context, p_temp, &temp_size);
         VERIFY_SUCCESS(err_code);
 
-        memcpy(p_output_key + write_offset, p_temp,
+        memcpy(p_output_key + write_offset,
+               p_temp,
                (n_current != n_iterations) ? hash_digest_size : (output_key_size - write_offset));
 
         write_offset += hash_digest_size;
@@ -100,21 +108,26 @@ static ret_code_t hkdf_expand(nrf_crypto_hmac_context_t *const p_context,
     return err_code;
 }
 
-ret_code_t nrf_crypto_hkdf_calculate(nrf_crypto_hmac_context_t *const p_context,
-                                     nrf_crypto_hmac_info_t const *p_info,
-                                     uint8_t *const p_output_key, size_t *const p_output_key_size,
-                                     uint8_t const *const p_input_key, size_t input_key_size,
-                                     uint8_t const *p_salt, size_t salt_size,
-                                     uint8_t const *const p_ainfo, size_t ainfo_size,
-                                     nrf_crypto_hkdf_mode_t mode)
+
+ret_code_t nrf_crypto_hkdf_calculate(nrf_crypto_hmac_context_t      * const p_context,
+                                     nrf_crypto_hmac_info_t         const * p_info,
+                                     uint8_t                        * const p_output_key,
+                                     size_t                         * const p_output_key_size,
+                                     uint8_t                  const * const p_input_key,
+                                     size_t                                 input_key_size,
+                                     uint8_t                        const * p_salt,
+                                     size_t                                 salt_size,
+                                     uint8_t                  const * const p_ainfo,
+                                     size_t                                 ainfo_size,
+                                     nrf_crypto_hkdf_mode_t                 mode)
 {
-    uint8_t prk[NRF_CRYPTO_HASH_SIZE_SHA512]; // Scaled for the largest supported hash size.
-    uint8_t temp[NRF_CRYPTO_HASH_SIZE_SHA512]; // Scaled for the largest supported hash size.
-    void *p_ctx = NULL;
-    void *p_allocated_context = NULL;
-    size_t prk_size = sizeof(prk);
-    size_t output_key_size = *p_output_key_size;
-    ret_code_t err_code;
+    uint8_t         prk[NRF_CRYPTO_HASH_SIZE_SHA512];                           // Scaled for the largest supported hash size.
+    uint8_t         temp[NRF_CRYPTO_HASH_SIZE_SHA512];                          // Scaled for the largest supported hash size.
+    void          * p_ctx                               = NULL;
+    void          * p_allocated_context                 = NULL;
+    size_t          prk_size                            = sizeof(prk);
+    size_t          output_key_size                     = *p_output_key_size;
+    ret_code_t      err_code;
 
     VERIFY_TRUE(p_info != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
     VERIFY_TRUE(p_output_key != NULL, NRF_ERROR_CRYPTO_OUTPUT_NULL);
@@ -122,29 +135,37 @@ ret_code_t nrf_crypto_hkdf_calculate(nrf_crypto_hmac_context_t *const p_context,
     VERIFY_TRUE(p_input_key != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
     VERIFY_TRUE(input_key_size > 0, NRF_ERROR_CRYPTO_INPUT_LENGTH);
 
-    if (p_salt != NULL) {
+    if (p_salt != NULL)
+    {
         VERIFY_TRUE(salt_size > 0, NRF_ERROR_CRYPTO_INPUT_LENGTH);
     }
 
-    if (p_ainfo != NULL) {
+    if (p_ainfo != NULL)
+    {
         VERIFY_TRUE(ainfo_size > 0, NRF_ERROR_CRYPTO_INPUT_LENGTH);
     }
 
     *p_output_key_size = 0; // Set output length to 0 as default value (in case of error).
 
     // Allocate context internally if p_context is NULL
-    if (p_context == NULL) {
+    if (p_context == NULL)
+    {
         p_allocated_context = NRF_CRYPTO_ALLOC(p_info->context_size);
-        if (p_allocated_context == NULL) {
+        if (p_allocated_context == NULL)
+        {
             return NRF_ERROR_CRYPTO_ALLOC_FAILED;
         }
         p_ctx = p_allocated_context;
-    } else {
+    }
+    else
+    {
         p_ctx = p_context;
     }
 
-    if (mode == NRF_CRYPTO_HKDF_EXTRACT_AND_EXPAND) {
-        if (p_salt == NULL) {
+    if (mode == NRF_CRYPTO_HKDF_EXTRACT_AND_EXPAND)
+    {
+        if (p_salt == NULL)
+        {
             // Use default salt defined in RFC 5869: String of zeros of hash length.
             salt_size = p_info->digest_size;
             ASSERT(sizeof(temp) >= salt_size);
@@ -153,22 +174,44 @@ ret_code_t nrf_crypto_hkdf_calculate(nrf_crypto_hmac_context_t *const p_context,
         }
 
         // Step 1: Extract
-        err_code = nrf_crypto_hmac_calculate(p_context, p_info, prk, &prk_size, p_salt, salt_size,
-                                             p_input_key, input_key_size);
+        err_code = nrf_crypto_hmac_calculate(p_context,
+                                             p_info,
+                                             prk,
+                                             &prk_size,
+                                             p_salt,
+                                             salt_size,
+                                             p_input_key,
+                                             input_key_size);
         NRF_CRYPTO_VERIFY_SUCCESS_DEALLOCATE(err_code, p_allocated_context);
 
         // Step 2: Expand
-        err_code = hkdf_expand(p_ctx, p_info, p_output_key, output_key_size, p_ainfo, ainfo_size,
-                               temp, prk, prk_size);
+        err_code = hkdf_expand(p_ctx,
+                               p_info,
+                               p_output_key,
+                               output_key_size,
+                               p_ainfo,
+                               ainfo_size,
+                               temp,
+                               prk,
+                               prk_size);
         NRF_CRYPTO_VERIFY_SUCCESS_DEALLOCATE(err_code, p_allocated_context);
-    } else // NRF_CRYPTO_HKDF_EXPAND_ONLY
+    }
+    else // NRF_CRYPTO_HKDF_EXPAND_ONLY
     {
-        err_code = hkdf_expand(p_ctx, p_info, p_output_key, output_key_size, p_ainfo, ainfo_size,
-                               temp, p_input_key, input_key_size);
+        err_code = hkdf_expand(p_ctx,
+                               p_info,
+                               p_output_key,
+                               output_key_size,
+                               p_ainfo,
+                               ainfo_size,
+                               temp,
+                               p_input_key,
+                               input_key_size);
         NRF_CRYPTO_VERIFY_SUCCESS_DEALLOCATE(err_code, p_allocated_context);
     }
 
-    if (p_allocated_context != NULL) {
+    if (p_allocated_context != NULL)
+    {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 
@@ -176,6 +219,7 @@ ret_code_t nrf_crypto_hkdf_calculate(nrf_crypto_hmac_context_t *const p_context,
 
     return NRF_SUCCESS;
 }
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_HMAC)
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO)

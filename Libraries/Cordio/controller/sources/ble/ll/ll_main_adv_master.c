@@ -43,19 +43,22 @@
 /*************************************************************************************************/
 uint8_t LlSetSetScanChanMap(uint8_t chanMap)
 {
-    LL_TRACE_INFO1("### LlApi ###  LlSetSetScanChanMap, chanMap=0x%02x", chanMap);
+  LL_TRACE_INFO1("### LlApi ###  LlSetSetScanChanMap, chanMap=0x%02x", chanMap);
 
-    if (lmgrCb.numScanEnabled || lmgrCb.numInitEnabled) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if (lmgrCb.numScanEnabled || lmgrCb.numInitEnabled)
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) && ((chanMap & ~LL_ADV_CHAN_ALL) || (chanMap == 0))) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      ((chanMap & ~LL_ADV_CHAN_ALL) || (chanMap == 0)))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    lmgrMstScanCb.scanChanMap = chanMap;
+  lmgrMstScanCb.scanChanMap = chanMap;
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -73,50 +76,52 @@ uint8_t LlSetSetScanChanMap(uint8_t chanMap)
 /*************************************************************************************************/
 uint8_t LlSetScanParam(const LlScanParam_t *pParam)
 {
-    const uint16_t rangeMin = 0x0004; /*      2.5 ms */
-    const uint16_t rangeMax = 0x4000; /* 10,240.0 ms */
-    const uint8_t scanTypeMax = LL_SCAN_ACTIVE;
-    const uint8_t scanFiltPolicyMax = ((lmgrCb.features & LL_FEAT_EXT_SCAN_FILT_POLICY) != 0) ?
-                                          LL_SCAN_FILTER_WL_OR_RES_INIT :
-                                          LL_SCAN_FILTER_WL_BIT;
-    const uint8_t ownAddrTypeMax =
-        ((lmgrCb.features & LL_FEAT_PRIVACY) != 0) ? LL_ADDR_RANDOM_IDENTITY : LL_ADDR_RANDOM;
+  const uint16_t rangeMin = 0x0004;         /*      2.5 ms */
+  const uint16_t rangeMax = 0x4000;         /* 10,240.0 ms */
+  const uint8_t scanTypeMax = LL_SCAN_ACTIVE;
+  const uint8_t scanFiltPolicyMax = ((lmgrCb.features & LL_FEAT_EXT_SCAN_FILT_POLICY) != 0) ? LL_SCAN_FILTER_WL_OR_RES_INIT : LL_SCAN_FILTER_WL_BIT;
+  const uint8_t ownAddrTypeMax = ((lmgrCb.features & LL_FEAT_PRIVACY) != 0) ? LL_ADDR_RANDOM_IDENTITY : LL_ADDR_RANDOM;
 
-    LL_TRACE_INFO1("### LlApi ###  LlSetScanParam, scanType=%u", pParam->scanType);
+  LL_TRACE_INFO1("### LlApi ###  LlSetScanParam, scanType=%u", pParam->scanType);
 
-    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsLegacyCommandAllowed()) {
-        LL_TRACE_WARN0(
-            "Extended Advertising/Scanning operation enabled; legacy commands not available");
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      !LmgrIsLegacyCommandAllowed())
+  {
+    LL_TRACE_WARN0("Extended Advertising/Scanning operation enabled; legacy commands not available");
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if (lmgrCb.numScanEnabled || lmgrCb.numInitEnabled) {
-        return LL_ERROR_CODE_CMD_DISALLOWED;
-    }
+  if (lmgrCb.numScanEnabled || lmgrCb.numInitEnabled)
+  {
+    return LL_ERROR_CODE_CMD_DISALLOWED;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) &&
-        ((rangeMax < pParam->scanInterval) || (pParam->scanInterval < pParam->scanWindow) ||
-         (pParam->scanWindow < rangeMin) || (pParam->scanType > scanTypeMax) ||
-         (pParam->ownAddrType > ownAddrTypeMax) || (pParam->scanFiltPolicy > scanFiltPolicyMax))) {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+     ((rangeMax < pParam->scanInterval) || (pParam->scanInterval < pParam->scanWindow) || (pParam->scanWindow < rangeMin) ||
+      (pParam->scanType > scanTypeMax) ||
+      (pParam->ownAddrType > ownAddrTypeMax) ||
+      (pParam->scanFiltPolicy > scanFiltPolicyMax)))
+  {
+    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+  }
 
-    lctrScanParamMsg_t *pMsg;
+  lctrScanParamMsg_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
-        pMsg->hdr.dispId = LCTR_DISP_SCAN;
-        pMsg->hdr.event = LCTR_SCAN_MSG_PARAM_UPD;
+  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
+  {
+    pMsg->hdr.dispId = LCTR_DISP_SCAN;
+    pMsg->hdr.event = LCTR_SCAN_MSG_PARAM_UPD;
 
-        pMsg->param.scanInterval = pParam->scanInterval;
-        pMsg->param.scanWindow = pParam->scanWindow;
-        pMsg->param.scanType = pParam->scanType;
-        pMsg->param.ownAddrType = pParam->ownAddrType;
-        pMsg->param.scanFiltPolicy = pParam->scanFiltPolicy;
+    pMsg->param.scanInterval   = pParam->scanInterval;
+    pMsg->param.scanWindow     = pParam->scanWindow;
+    pMsg->param.scanType       = pParam->scanType;
+    pMsg->param.ownAddrType    = pParam->ownAddrType;
+    pMsg->param.scanFiltPolicy = pParam->scanFiltPolicy;
 
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-    }
+    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+  }
 
-    return LL_SUCCESS;
+  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -131,31 +136,34 @@ uint8_t LlSetScanParam(const LlScanParam_t *pParam)
 /*************************************************************************************************/
 void LlScanEnable(uint8_t enable, uint8_t filterDup)
 {
-    lctrScanEnableMsg_t *pMsg;
+  lctrScanEnableMsg_t *pMsg;
 
-    LL_TRACE_INFO2("### LlApi ###  LlScanEnable: enable=%u, filterDup=%u", enable, filterDup);
+  LL_TRACE_INFO2("### LlApi ###  LlScanEnable: enable=%u, filterDup=%u", enable, filterDup);
 
-    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsLegacyCommandAllowed()) {
-        LL_TRACE_WARN0(
-            "Extended Advertising/Scanning operation enabled; legacy commands not available");
-        LmgrSendScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
-        return;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      !LmgrIsLegacyCommandAllowed())
+  {
+    LL_TRACE_WARN0("Extended Advertising/Scanning operation enabled; legacy commands not available");
+    LmgrSendScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
+    return;
+  }
 
-    if ((LL_API_PARAM_CHECK == 1) && (enable == TRUE) &&
-        !LmgrIsAddressTypeAvailable(lmgrMstScanCb.scanParam.ownAddrType)) {
-        LL_TRACE_WARN1("Address type invalid or not available, ownAddrType=%u",
-                       lmgrMstScanCb.scanParam.ownAddrType);
-        LmgrSendScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
-        return;
-    }
+  if ((LL_API_PARAM_CHECK == 1) &&
+      (enable == TRUE) &&
+      !LmgrIsAddressTypeAvailable(lmgrMstScanCb.scanParam.ownAddrType))
+  {
+    LL_TRACE_WARN1("Address type invalid or not available, ownAddrType=%u", lmgrMstScanCb.scanParam.ownAddrType);
+    LmgrSendScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
+    return;
+  }
 
-    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
-        pMsg->hdr.dispId = LCTR_DISP_SCAN;
-        pMsg->hdr.event = enable ? LCTR_SCAN_MSG_DISCOVER_ENABLE : LCTR_SCAN_MSG_DISCOVER_DISABLE;
+  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
+  {
+    pMsg->hdr.dispId = LCTR_DISP_SCAN;
+    pMsg->hdr.event = enable ? LCTR_SCAN_MSG_DISCOVER_ENABLE : LCTR_SCAN_MSG_DISCOVER_DISABLE;
 
-        pMsg->filtDup = filterDup;
+    pMsg->filtDup = filterDup;
 
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-    }
+    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+  }
 }

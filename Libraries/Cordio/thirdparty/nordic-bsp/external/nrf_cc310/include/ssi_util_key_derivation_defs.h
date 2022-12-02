@@ -32,8 +32,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-#ifndef _SSI_UTIL_KEY_DERIVATION_DEFS_H
-#define _SSI_UTIL_KEY_DERIVATION_DEFS_H
+
+#ifndef  _SSI_UTIL_KEY_DERIVATION_DEFS_H
+#define  _SSI_UTIL_KEY_DERIVATION_DEFS_H
 
 /*!
 @file
@@ -45,7 +46,8 @@
 */
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /******************************************************************************
@@ -53,19 +55,18 @@ extern "C" {
 ******************************************************************************/
 
 /*! Maximal label length in bytes. */
-#define SASI_UTIL_MAX_LABEL_LENGTH_IN_BYTES 64
+#define SASI_UTIL_MAX_LABEL_LENGTH_IN_BYTES     64
 /*! Maximal context length in bytes. */
-#define SASI_UTIL_MAX_CONTEXT_LENGTH_IN_BYTES 64
+#define SASI_UTIL_MAX_CONTEXT_LENGTH_IN_BYTES   64
 
 /*! Minimal fixed data size in bytes. */
-#define SASI_UTIL_FIX_DATA_MIN_SIZE_IN_BYTES 3 /*!< \internal counter, 0x00, lengt(-0xff) */
+#define SASI_UTIL_FIX_DATA_MIN_SIZE_IN_BYTES    3 /*!< \internal counter, 0x00, lengt(-0xff) */
 /*! Maximal fixed data size in bytes. */
-#define SASI_UTIL_FIX_DATA_MAX_SIZE_IN_BYTES 4 /*!< \internal counter, 0x00, lengt(0x100-0xff0) */
+#define SASI_UTIL_FIX_DATA_MAX_SIZE_IN_BYTES    4 /*!< \internal counter, 0x00, lengt(0x100-0xff0) */
 
 /*! Maximal derived key material size in bytes. */
-#define SASI_UTIL_MAX_KDF_SIZE_IN_BYTES                                            \
-    (SASI_UTIL_MAX_LABEL_LENGTH_IN_BYTES + SASI_UTIL_MAX_CONTEXT_LENGTH_IN_BYTES + \
-     SASI_UTIL_FIX_DATA_MAX_SIZE_IN_BYTES)
+#define SASI_UTIL_MAX_KDF_SIZE_IN_BYTES (SASI_UTIL_MAX_LABEL_LENGTH_IN_BYTES+ \
+                     SASI_UTIL_MAX_CONTEXT_LENGTH_IN_BYTES+SASI_UTIL_FIX_DATA_MAX_SIZE_IN_BYTES)
 
 /*! Maximal derived key size in bytes. */
 #define SASI_UTIL_MAX_DERIVED_KEY_SIZE_IN_BYTES 4080
@@ -77,3 +78,4 @@ extern "C" {
 @}
  */
 #endif /*_SSI_UTIL_KEY_DERIVATION_DEFS_H*/
+

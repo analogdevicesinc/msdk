@@ -38,15 +38,16 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Pulse Oximeter service enumeration of handle indexes of characteristics to be discovered */
-enum {
-    PLXPC_PLXS_PLXSC_HDL_IDX, /*!< \brief Pulse Oximeter Spot Check measurement */
-    PLXPC_PLXS_PLXSC_CCC_HDL_IDX, /*!< \brief Pulse Oximeter Spot Check measurement CCC descriptor */
-    PLXPC_PLXS_PLXC_HDL_IDX, /*!< \brief Pulse Oximeter Continuous measurement */
-    PLXPC_PLXS_PLXC_CCC_HDL_IDX, /*!< \brief Pulse Oximeter Continuous measurement CCC descriptor */
-    PLXPC_PLXS_PLXF_HDL_IDX, /*!< \brief Pulse Oximeter features */
-    PLXPC_PLXS_RACP_HDL_IDX, /*!< \brief Record access control point */
-    PLXPC_PLXS_RACP_CCC_HDL_IDX, /*!< \brief Record access control point CCC descriptor */
-    PLXPC_PLXS_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  PLXPC_PLXS_PLXSC_HDL_IDX,         /*!< \brief Pulse Oximeter Spot Check measurement */
+  PLXPC_PLXS_PLXSC_CCC_HDL_IDX,     /*!< \brief Pulse Oximeter Spot Check measurement CCC descriptor */
+  PLXPC_PLXS_PLXC_HDL_IDX,          /*!< \brief Pulse Oximeter Continuous measurement */
+  PLXPC_PLXS_PLXC_CCC_HDL_IDX,      /*!< \brief Pulse Oximeter Continuous measurement CCC descriptor */
+  PLXPC_PLXS_PLXF_HDL_IDX,          /*!< \brief Pulse Oximeter features */
+  PLXPC_PLXS_RACP_HDL_IDX,          /*!< \brief Record access control point */
+  PLXPC_PLXS_RACP_CCC_HDL_IDX,      /*!< \brief Record access control point CCC descriptor */
+  PLXPC_PLXS_HDL_LIST_LEN           /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -97,7 +98,8 @@ uint8_t PlxpcPlxsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 /*************************************************************************************************/
 void PlxpcPlxsRacpSend(dmConnId_t connId, uint16_t handle, uint8_t opcode, uint8_t oper);
 
-/*! \} */ /* PULSE_OXIMETER_PROFILE */
+
+/*! \} */    /* PULSE_OXIMETER_PROFILE */
 
 #ifdef __cplusplus
 };

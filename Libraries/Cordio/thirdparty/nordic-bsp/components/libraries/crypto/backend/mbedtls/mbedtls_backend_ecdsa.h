@@ -49,165 +49,187 @@
 #include "nrf_crypto_ecc_shared.h"
 #include "nrf_crypto_ecdsa_shared.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
 /** @internal See @ref nrf_crypto_backend_ecdsa_sign_fn_t.
  */
-ret_code_t nrf_crypto_backend_mbedtls_sign(void *p_context, void const *p_private_key,
-                                           uint8_t const *p_data, size_t data_size,
-                                           uint8_t *p_signature);
+ret_code_t nrf_crypto_backend_mbedtls_sign(
+    void           * p_context,
+    void     const * p_private_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t        * p_signature);
+
 
 /** @internal See @ref nrf_crypto_backend_ecdsa_verify_fn_t.
  */
-ret_code_t nrf_crypto_backend_mbedtls_verify(void *p_context, void const *p_public_key,
-                                             uint8_t const *p_data, size_t data_size,
-                                             uint8_t const *p_signature);
+ret_code_t nrf_crypto_backend_mbedtls_verify(
+    void           * p_context,
+    void     const * p_public_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t  const * p_signature);
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP192R1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_SECP192R1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP192R1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_SECP192R1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_secp192r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp192r1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_secp192r1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_secp192r1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_secp192r1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP224R1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_SECP224R1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP224R1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_SECP224R1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_secp224r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp224r1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_secp224r1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_secp224r1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_secp224r1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP256R1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_SECP256R1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP256R1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_SECP256R1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_secp256r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp256r1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_secp256r1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_secp256r1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_secp256r1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP384R1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_SECP384R1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP384R1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_SECP384R1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_secp384r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp384r1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_secp384r1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_secp384r1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_secp384r1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP521R1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_SECP521R1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP521R1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_SECP521R1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_secp521r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp521r1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_secp521r1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_secp521r1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_secp521r1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP192K1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_SECP192K1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP192K1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_SECP192K1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_secp192k1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp192k1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_secp192k1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_secp192k1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_secp192k1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP224K1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_SECP224K1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP224K1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_SECP224K1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_secp224k1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp224k1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_secp224k1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_secp224k1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_secp224k1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_SECP256K1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_SECP256K1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_SECP256K1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_SECP256K1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_secp256k1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp256k1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_secp256k1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_secp256k1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_secp256k1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP256R1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_BP256R1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_BP256R1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_BP256R1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_bp256r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_bp256r1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_bp256r1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_bp256r1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_bp256r1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP384R1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_BP384R1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_BP384R1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_BP384R1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_bp384r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_bp384r1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_bp384r1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_bp384r1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_bp384r1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_BP512R1)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_BP512R1_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_BP512R1_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_BP512R1_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_bp512r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_bp512r1_verify_context_t;
 // Alias for common mbed TLS
-#define nrf_crypto_backend_bp512r1_sign nrf_crypto_backend_mbedtls_sign
+#define nrf_crypto_backend_bp512r1_sign   nrf_crypto_backend_mbedtls_sign
 #define nrf_crypto_backend_bp512r1_verify nrf_crypto_backend_mbedtls_verify
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_ECC_CURVE25519)
 // Context is not used by mbed TLS, so its size is 0
-#define NRF_CRYPTO_BACKEND_CURVE25519_SIGN_CONTEXT_SIZE 0
+#define NRF_CRYPTO_BACKEND_CURVE25519_SIGN_CONTEXT_SIZE   0
 #define NRF_CRYPTO_BACKEND_CURVE25519_VERIFY_CONTEXT_SIZE 0
 // Dummy typedefs for unused contexts
 typedef uint32_t nrf_crypto_backend_curve25519_sign_context_t;
 typedef uint32_t nrf_crypto_backend_curve25519_verify_context_t;
 // No ECDSA implementation for Curve25519
-#define nrf_crypto_backend_curve25519_sign NULL
+#define nrf_crypto_backend_curve25519_sign   NULL
 #define nrf_crypto_backend_curve25519_verify NULL
 #endif
+
 
 #ifdef __cplusplus
 }

@@ -37,8 +37,7 @@ extern "C" {
 void LctrPowerControlInit(void);
 
 /* HCI functions. */
-uint8_t lctrSetPathLossReportingParams(uint16_t handle, uint8_t highThresh, uint8_t highHyst,
-                                       uint8_t lowThresh, uint8_t lowHyst, uint16_t minTime);
+uint8_t lctrSetPathLossReportingParams(uint16_t handle, uint8_t highThresh, uint8_t highHyst, uint8_t lowThresh, uint8_t lowHyst, uint16_t minTime);
 uint8_t lctrSetPathLossReportingEnable(uint16_t handle, uint8_t enable);
 
 #ifdef __cplusplus

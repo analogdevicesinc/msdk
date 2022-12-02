@@ -56,27 +56,27 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_qdec_config_t nrf_drv_qdec_config_t;
+typedef nrfx_qdec_config_t          nrf_drv_qdec_config_t;
 /** @brief Type definition for forwarding the new implementation. */
 typedef nrfx_qdec_sample_data_evt_t nrf_drv_qdec_sample_data_evt_t;
 /** @brief Type definition for forwarding the new implementation. */
 typedef nrfx_qdec_report_data_evt_t nrf_drv_qdec_report_data_evt_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_qdec_event_t nrf_drv_qdec_event_t;
+typedef nrfx_qdec_event_t           nrf_drv_qdec_event_t;
 
 /** @brief Macro for forwarding the new implementation. */
 #define NRF_DRV_QDEC_DEFAULT_CONFIG NRFX_QDEC_DEFAULT_CONFIG
 
 /** @brief Macro for forwarding the new implementation. */
-#define qdec_event_handler_t nrfx_qdec_event_handler_t
+#define qdec_event_handler_t            nrfx_qdec_event_handler_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qdec_uninit nrfx_qdec_uninit
+#define nrf_drv_qdec_uninit             nrfx_qdec_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qdec_enable nrfx_qdec_enable
+#define nrf_drv_qdec_enable             nrfx_qdec_enable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qdec_disable nrfx_qdec_disable
+#define nrf_drv_qdec_disable            nrfx_qdec_disable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qdec_accumulators_read nrfx_qdec_accumulators_read
+#define nrf_drv_qdec_accumulators_read  nrfx_qdec_accumulators_read
 
 /**
  * @brief Function for initializing QDEC.
@@ -88,10 +88,11 @@ typedef nrfx_qdec_event_t nrf_drv_qdec_event_t;
  * @retval NRF_ERROR_INVALID_PARAM If invalid parameters were supplied.
  * @retval NRF_ERROR_INVALID_STATE If QDEC was already initialized.
  */
-__STATIC_INLINE ret_code_t nrf_drv_qdec_init(nrf_drv_qdec_config_t const *p_config,
-                                             qdec_event_handler_t event_handler)
+__STATIC_INLINE ret_code_t nrf_drv_qdec_init(nrf_drv_qdec_config_t const * p_config,
+                                             qdec_event_handler_t          event_handler)
 {
-    if (p_config == NULL) {
+    if (p_config == NULL)
+    {
         static nrf_drv_qdec_config_t const default_config = NRFX_QDEC_DEFAULT_CONFIG;
         p_config = &default_config;
     }
@@ -104,7 +105,7 @@ __STATIC_INLINE ret_code_t nrf_drv_qdec_init(nrf_drv_qdec_config_t const *p_conf
  * @param[in]  task       QDEC task.
  * @param[out] p_task     Task address.
  */
-void nrf_drv_qdec_task_address_get(nrf_qdec_task_t task, uint32_t *p_task)
+void nrf_drv_qdec_task_address_get(nrf_qdec_task_t task, uint32_t * p_task)
 {
     *p_task = nrfx_qdec_task_address_get(task);
 }
@@ -115,7 +116,7 @@ void nrf_drv_qdec_task_address_get(nrf_qdec_task_t task, uint32_t *p_task)
  * @param[in]  event       QDEC event.
  * @param[out] p_event     Event address.
  */
-void nrf_drv_qdec_event_address_get(nrf_qdec_event_t event, uint32_t *p_event)
+void nrf_drv_qdec_event_address_get(nrf_qdec_event_t event, uint32_t * p_event)
 {
     *p_event = nrfx_qdec_event_address_get(event);
 }

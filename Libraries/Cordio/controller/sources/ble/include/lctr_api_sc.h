@@ -47,7 +47,7 @@ uint8_t LctrGenerateDhKey(const uint8_t *pPubKey, const uint8_t *pPrivKey);
 uint8_t LctrGenerateDebugDhKey(void);
 uint8_t LctrSetValidatePublicKeyMode(uint8_t validateMode);
 
-/*! \} */ /* LL_LCTR_API_SC */
+/*! \} */    /* LL_LCTR_API_SC */
 
 #ifdef __cplusplus
 };

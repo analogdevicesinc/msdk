@@ -75,12 +75,12 @@ void WsfAssertTrapEnable(bool_t enaAssertTrap);
 
 #ifndef WSF_ASSERT_ENABLED
 /*! \brief  Enable assertion statements. */
-#define WSF_ASSERT_ENABLED FALSE
+#define WSF_ASSERT_ENABLED  FALSE
 #endif
 
 #ifndef WSF_TOKEN_ENABLED
 /*! \brief  Enable tokenized tracing. */
-#define WSF_TOKEN_ENABLED FALSE
+#define WSF_TOKEN_ENABLED   FALSE
 #endif
 
 /*************************************************************************************************/
@@ -92,18 +92,12 @@ void WsfAssertTrapEnable(bool_t enaAssertTrap);
 /*************************************************************************************************/
 #if WSF_ASSERT_ENABLED == TRUE
 #if WSF_TOKEN_ENABLED == TRUE
-#define WSF_ASSERT(expr)                          \
-    if (!(expr)) {                                \
-        WsfAssert(MODULE_ID, (uint16_t)__LINE__); \
-    }
+#define WSF_ASSERT(expr)      if (!(expr)) {WsfAssert(MODULE_ID, (uint16_t) __LINE__);}
 #else
-#define WSF_ASSERT(expr)                         \
-    if (!(expr)) {                               \
-        WsfAssert(__FILE__, (uint16_t)__LINE__); \
-    }
+#define WSF_ASSERT(expr)      if (!(expr)) {WsfAssert(__FILE__, (uint16_t) __LINE__);}
 #endif
 #else
-#define WSF_ASSERT(expr) (void)(expr);
+#define WSF_ASSERT(expr)      (void)(expr);
 #endif
 
 /*************************************************************************************************/
@@ -115,9 +109,9 @@ void WsfAssertTrapEnable(bool_t enaAssertTrap);
  *  \param  expr    Boolean expression to be tested.
  */
 /*************************************************************************************************/
-#define WSF_CT_ASSERT(expr) extern char wsf_ct_assert[(expr) ? 1 : -1]
+#define WSF_CT_ASSERT(expr)     extern char wsf_ct_assert[(expr) ? 1 : -1]
 
-/*! \} */ /* WSF_ASSERT_API */
+/*! \} */    /* WSF_ASSERT_API */
 
 #ifdef __cplusplus
 };

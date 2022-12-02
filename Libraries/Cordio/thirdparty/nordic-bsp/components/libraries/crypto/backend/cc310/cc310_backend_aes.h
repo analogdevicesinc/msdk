@@ -63,24 +63,26 @@
 extern "C" {
 #endif
 
+
 /* AES CBC */
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_AES_CBC)
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_AES_CBC)
 #error "Duplicate definition of AES CBC mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CBC_ENABLED 1
-#undef NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
-#undef NRF_CRYPTO_CC310_AES_ENABLED
+#undef  NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
+#undef  NRF_CRYPTO_CC310_AES_ENABLED
 #define NRF_CRYPTO_CC310_AES_ENABLED 1
 
 /* define for test purposes */
-#define NRF_CRYPTO_AES_CBC_128_ENABLED 1
+#define NRF_CRYPTO_AES_CBC_128_ENABLED  1
 
-typedef struct {
-    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
-    SaSiAesUserContext_t context; /**< AES context internal to CC310. */
-    nrf_crypto_backend_aes_ctx_t backend;
+typedef struct
+{
+    nrf_crypto_aes_internal_context_t header;  /**< Common header for context. */
+    SaSiAesUserContext_t              context; /**< AES context internal to CC310. */
+    nrf_crypto_backend_aes_ctx_t      backend;
 } nrf_crypto_backend_aes_cbc_context_t;
 #endif
 
@@ -90,18 +92,19 @@ typedef struct {
 #error "Duplicate definition of AES CTR mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CTR_ENABLED 1
-#undef NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
-#undef NRF_CRYPTO_CC310_AES_ENABLED
+#undef  NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
+#undef  NRF_CRYPTO_CC310_AES_ENABLED
 #define NRF_CRYPTO_CC310_AES_ENABLED 1
 
 /* define for test purposes */
 #define NRF_CRYPTO_AES_CTR_128_ENABLED 1
 
-typedef struct {
-    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
-    SaSiAesUserContext_t context; /**< AES context internal to CC310. */
-    nrf_crypto_backend_aes_ctx_t backend;
+typedef struct
+{
+    nrf_crypto_aes_internal_context_t header;  /**< Common header for context. */
+    SaSiAesUserContext_t              context; /**< AES context internal to CC310. */
+    nrf_crypto_backend_aes_ctx_t      backend;
 } nrf_crypto_backend_aes_ctr_context_t;
 #endif
 
@@ -111,20 +114,22 @@ typedef struct {
 #error "Duplicate definition of AES ECB mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_ECB_ENABLED 1
-#undef NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
-#undef NRF_CRYPTO_CC310_AES_ENABLED
+#undef  NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
+#undef  NRF_CRYPTO_CC310_AES_ENABLED
 #define NRF_CRYPTO_CC310_AES_ENABLED 1
 
 /* define for test purposes */
 #define NRF_CRYPTO_AES_ECB_128_ENABLED 1
 
-typedef struct {
-    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
-    SaSiAesUserContext_t context; /**< AES context internal to CC310. */
+typedef struct
+{
+    nrf_crypto_aes_internal_context_t  header;  /**< Common header for context. */
+    SaSiAesUserContext_t               context; /**< AES context internal to CC310. */
     nrf_crypto_backend_no_iv_aes_ctx_t backend;
 } nrf_crypto_backend_aes_ecb_context_t;
 #endif
+
 
 /* AES CBC_MAC */
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_AES_CBC_MAC)
@@ -132,18 +137,19 @@ typedef struct {
 #error "Duplicate definition of AES CBC_MAC mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CBC_MAC_ENABLED 1
-#undef NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
-#undef NRF_CRYPTO_CC310_AES_ENABLED
+#undef  NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
+#undef  NRF_CRYPTO_CC310_AES_ENABLED
 #define NRF_CRYPTO_CC310_AES_ENABLED 1
 
 /* define for test purposes */
 #define NRF_CRYPTO_AES_CBC_MAC_128_ENABLED 1
 
-typedef struct {
-    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
-    SaSiAesUserContext_t context; /**< AES context internal to CC310. */
-    nrf_crypto_backend_aes_ctx_t backend;
+typedef struct
+{
+    nrf_crypto_aes_internal_context_t header;  /**< Common header for context. */
+    SaSiAesUserContext_t              context; /**< AES context internal to CC310. */
+    nrf_crypto_backend_aes_ctx_t      backend;
 } nrf_crypto_backend_aes_cbc_mac_context_t;
 #endif
 
@@ -153,17 +159,18 @@ typedef struct {
 #error "Duplicate definition of AES CMAC mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CMAC_ENABLED 1
-#undef NRF_CRYPTO_AES_ENABLED
-#define NRF_CRYPTO_AES_ENABLED 1 // Flag that nrf_crypto_aes frontend can be compiled
-#undef NRF_CRYPTO_CC310_AES_ENABLED
+#undef  NRF_CRYPTO_AES_ENABLED
+#define NRF_CRYPTO_AES_ENABLED 1    // Flag that nrf_crypto_aes frontend can be compiled
+#undef  NRF_CRYPTO_CC310_AES_ENABLED
 #define NRF_CRYPTO_CC310_AES_ENABLED 1
 
 /* define for test purposes */
 #define NRF_CRYPTO_AES_CMAC_128_ENABLED 1
 
-typedef struct {
-    nrf_crypto_aes_internal_context_t header; /**< Common header for context. */
-    SaSiAesUserContext_t context; /**< AES context internal to CC310. */
+typedef struct
+{
+    nrf_crypto_aes_internal_context_t  header;  /**< Common header for context. */
+    SaSiAesUserContext_t               context; /**< AES context internal to CC310. */
     nrf_crypto_backend_no_iv_aes_ctx_t backend;
 } nrf_crypto_backend_aes_cmac_context_t;
 

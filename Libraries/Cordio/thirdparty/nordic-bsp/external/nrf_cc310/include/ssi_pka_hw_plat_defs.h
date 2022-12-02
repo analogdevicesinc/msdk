@@ -32,11 +32,14 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
+
 #ifndef PKA_HW_PLAT_DEFS_H
 #define PKA_HW_PLAT_DEFS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*!
@@ -49,18 +52,19 @@ extern "C" {
 */
 
 /*! Size of PKA engine word.*/
-#define SASI_PKA_WORD_SIZE_IN_BITS 64
+#define SASI_PKA_WORD_SIZE_IN_BITS  64
 /*! Maximal supported modulus size in bits. */
-#define CRYS_SRP_MAX_MODULUS_SIZE_IN_BITS 3072
+#define CRYS_SRP_MAX_MODULUS_SIZE_IN_BITS       3072
 /*! Maximal supported modulus size in RSA in bits. */
-#define CRYS_RSA_MAX_VALID_KEY_SIZE_VALUE_IN_BITS 2048
+#define CRYS_RSA_MAX_VALID_KEY_SIZE_VALUE_IN_BITS       2048
 /*! Maximal supported key generation size in RSA in bits. */
-#define CRYS_RSA_MAX_KEY_GENERATION_HW_SIZE_BITS 2048
+#define CRYS_RSA_MAX_KEY_GENERATION_HW_SIZE_BITS        2048
 
 /*! PKA operations maximal count of extra bits. */
-#define PKA_EXTRA_BITS 8
+#define PKA_EXTRA_BITS  8
 /*! PKA operations number of memory registers. */
-#define PKA_MAX_COUNT_OF_PHYS_MEM_REGS 32
+#define PKA_MAX_COUNT_OF_PHYS_MEM_REGS  32
+
 
 #ifdef __cplusplus
 }
@@ -69,3 +73,5 @@ extern "C" {
 @}
  */
 #endif //PKA_HW_PLAT_DEFS_H
+
+

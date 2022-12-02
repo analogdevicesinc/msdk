@@ -31,7 +31,8 @@
 #define MMDL_GEN_POWER_LEVEL_CL_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mmdl_defs.h"
@@ -41,73 +42,81 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Model Power Level Client Set parameters structure */
-typedef struct mmdlGenPowerLevelSetParam_tag {
-    mmdlGenPowerLevelState_t state; /*!< New Power State */
-    uint8_t tid; /*!< Transaction Identifier */
-    uint8_t transitionTime; /*!< Transition time */
-    uint8_t delay; /*!< Delay in steps of 5 ms  */
+typedef struct mmdlGenPowerLevelSetParam_tag
+{
+  mmdlGenPowerLevelState_t state;          /*!< New Power State */
+  uint8_t                  tid;            /*!< Transaction Identifier */
+  uint8_t                  transitionTime; /*!< Transition time */
+  uint8_t                  delay;          /*!< Delay in steps of 5 ms  */
 } mmdlGenPowerLevelSetParam_t;
 
 /*! \brief Model Power Range Client Set parameters structure */
-typedef struct mmdlGenPowerDefaultSetParam_tag {
-    mmdlGenPowerLevelState_t state; /*!< Default Power State */
+typedef struct mmdlGenPowerDefaultSetParam_tag
+{
+  mmdlGenPowerLevelState_t state;          /*!< Default Power State */
 } mmdlGenPowerDefaultSetParam_t;
 
 /*! \brief Model Power Level Client Set parameters structure */
-typedef struct mmdlGenPowerRangeSetParam_tag {
-    mmdlGenPowerLevelState_t powerMin; /*!< Minimum Power Range State */
-    mmdlGenPowerLevelState_t powerMax; /*!< Maximum Power Range State */
+typedef struct mmdlGenPowerRangeSetParam_tag
+{
+  mmdlGenPowerLevelState_t powerMin;       /*!< Minimum Power Range State */
+  mmdlGenPowerLevelState_t powerMax;       /*!< Maximum Power Range State */
 } mmdlGenPowerRangeSetParam_t;
 
 /*! \brief Generic Power Level Client Model Status event structure */
-typedef struct mmdlGenPowerLevelClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    mmdlGenPowerLevelState_t state; /*!< Received published state */
-    mmdlGenPowerLevelState_t targetState; /*!< Received published target state */
-    uint8_t remainingTime; /*!< Remaining time until the transition completes */
+typedef struct mmdlGenPowerLevelClStatusEvent_tag
+{
+  wsfMsgHdr_t               hdr;           /*!< WSF message header */
+  meshElementId_t           elementId;     /*!< Element ID */
+  meshAddress_t             serverAddr;    /*!< Server Address */
+  mmdlGenPowerLevelState_t  state;         /*!< Received published state */
+  mmdlGenPowerLevelState_t  targetState;   /*!< Received published target state */
+  uint8_t                   remainingTime; /*!< Remaining time until the transition completes */
 } mmdlGenPowerLevelClStatusEvent_t;
 
 /*! \brief Generic Power Last Client Model Status event structure */
-typedef struct mmdlGenPowerLastClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    mmdlGenPowerLevelState_t lastState; /*!< Received published last state */
+typedef struct mmdlGenPowerLastClStatusEvent_tag
+{
+  wsfMsgHdr_t               hdr;           /*!< WSF message header */
+  meshElementId_t           elementId;     /*!< Element ID */
+  meshAddress_t             serverAddr;    /*!< Server Address */
+  mmdlGenPowerLevelState_t  lastState;     /*!< Received published last state */
 } mmdlGenPowerLastClStatusEvent_t;
 
 /*! \brief Generic Power Default Client Model Status event structure */
-typedef struct mmdlGenPowerDefaultClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    mmdlGenPowerLevelState_t state; /*!< Received published state */
+typedef struct mmdlGenPowerDefaultClStatusEvent_tag
+{
+  wsfMsgHdr_t               hdr;           /*!< WSF message header */
+  meshElementId_t           elementId;     /*!< Element ID */
+  meshAddress_t             serverAddr;    /*!< Server Address */
+  mmdlGenPowerLevelState_t  state;         /*!< Received published state */
 } mmdlGenPowerDefaultClStatusEvent_t;
 
 /*! \brief Generic Power Range Client Model Status event structure */
-typedef struct mmdlGenPowerRangeClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    uint8_t statusCode; /*!< Status Code */
-    mmdlGenPowerLevelState_t powerMin; /*!< Minimum Power Range state */
-    mmdlGenPowerLevelState_t powerMax; /*!< Maximum Power Range state */
+typedef struct mmdlGenPowerRangeClStatusEvent_tag
+{
+  wsfMsgHdr_t               hdr;           /*!< WSF message header */
+  meshElementId_t           elementId;     /*!< Element ID */
+  meshAddress_t             serverAddr;    /*!< Server Address */
+  uint8_t                   statusCode;    /*!< Status Code */
+  mmdlGenPowerLevelState_t  powerMin;      /*!< Minimum Power Range state */
+  mmdlGenPowerLevelState_t  powerMax;      /*!< Maximum Power Range state */
 } mmdlGenPowerRangeClStatusEvent_t;
 
 /*! \brief Generic Power Level Client Model event callback parameters structure */
-typedef union mmdlGenPowerLevelClEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlGenPowerLevelClStatusEvent_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlGenPowerLevelClEvent_tag
+{
+  wsfMsgHdr_t                        hdr;                 /*!< WSF message header */
+  mmdlGenPowerLevelClStatusEvent_t   statusEvent;         /*!< State updated event. Used for
                                                            *   ::MMDL_GEN_POWER_LEVEL_CL_STATUS_EVENT.
                                                            */
-    mmdlGenPowerLastClStatusEvent_t lastStatusEvent; /*!< State updated event. Used for
+  mmdlGenPowerLastClStatusEvent_t    lastStatusEvent;     /*!< State updated event. Used for
                                                            *    ::MMDL_GEN_POWER_LAST_CL_STATUS_EVENT.
                                                            */
-    mmdlGenPowerDefaultClStatusEvent_t defaultStatusEvent; /*!< State updated event. Used for
+  mmdlGenPowerDefaultClStatusEvent_t defaultStatusEvent;  /*!< State updated event. Used for
                                                            *   ::MMDL_GEN_POWER_DEFAULT_CL_STATUS_EVENT.
                                                            */
-    mmdlGenPowerRangeClStatusEvent_t rangeStatusEvent; /*!< State updated event. Used for
+  mmdlGenPowerRangeClStatusEvent_t   rangeStatusEvent;    /*!< State updated event. Used for
                                                            *   ::MMDL_GEN_POWER_RANGE_CL_STATUS_EVENT.
                                                            */
 } mmdlGenPowerLevelClEvent_t;
@@ -120,7 +129,7 @@ typedef union mmdlGenPowerLevelClEvent_tag {
 extern wsfHandlerId_t mmdlGenPowerLevelClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t mmdlGenPowerLevelClRcvdOpcodes[];
+extern const meshMsgOpcode_t  mmdlGenPowerLevelClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations
@@ -161,7 +170,7 @@ void MmdlGenPowerLevelClHandler(wsfMsgHdr_t *pMsg);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenPowerLevelClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+void MmdlGenPowerLevelClGet(meshElementId_t elementId, meshAddress_t serverAddr,  uint8_t ttl,
                             uint16_t appKeyIndex);
 
 /*************************************************************************************************/
@@ -194,8 +203,7 @@ void MmdlGenPowerLevelClSet(meshElementId_t elementId, meshAddress_t serverAddr,
  */
 /*************************************************************************************************/
 void MmdlGenPowerLevelClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                                 const mmdlGenPowerLevelSetParam_t *pSetParam,
-                                 uint16_t appKeyIndex);
+                                 const mmdlGenPowerLevelSetParam_t *pSetParam, uint16_t appKeyIndex);
 
 /*************************************************************************************************/
 /*!
@@ -210,7 +218,7 @@ void MmdlGenPowerLevelClSetNoAck(meshElementId_t elementId, meshAddress_t server
  */
 /*************************************************************************************************/
 void MmdlGenPowerLastClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                           uint16_t appKeyIndex);
+                            uint16_t appKeyIndex);
 
 /*************************************************************************************************/
 /*!
@@ -304,8 +312,7 @@ void MmdlGenPowerRangeClSet(meshElementId_t elementId, meshAddress_t serverAddr,
  */
 /*************************************************************************************************/
 void MmdlGenPowerRangeClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                                 uint16_t appKeyIndex,
-                                 const mmdlGenPowerRangeSetParam_t *pSetParam);
+                                 uint16_t appKeyIndex, const mmdlGenPowerRangeSetParam_t *pSetParam);
 
 /*************************************************************************************************/
 /*!

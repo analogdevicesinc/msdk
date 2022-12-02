@@ -43,36 +43,38 @@ extern "C" {
   Data Types
 **************************************************************************************************/
 
-typedef enum {
-    PAL_RADIO_STATE_UNINIT = 0, /*!< Uninitialized state. */
-    PAL_RADIO_STATE_ERROR = 0, /*!< Error state. */
-    PAL_RADIO_STATE_IDLE, /*!< Idle state. */
-    PAL_RADIO_STATE_TX, /*!< Tx state. */
-    PAL_RADIO_STATE_RX, /*!< Rx state. */
-    PAL_RADIO_STATE_DIAG /*!< Diagnostics state. */
+typedef enum
+{
+  PAL_RADIO_STATE_UNINIT = 0,       /*!< Uninitialized state. */
+  PAL_RADIO_STATE_ERROR = 0,        /*!< Error state. */
+  PAL_RADIO_STATE_IDLE,             /*!< Idle state. */
+  PAL_RADIO_STATE_TX,               /*!< Tx state. */
+  PAL_RADIO_STATE_RX,               /*!< Rx state. */
+  PAL_RADIO_STATE_DIAG              /*!< Diagnostics state. */
 } PalRadioState_t;
 
-typedef enum {
-    PAL_RADIO_STATUS_SUCCESS, /*!< Operation completed successfully. */
-    PAL_RADIO_STATUS_FAILED, /*!< General failure. */
-    PAL_RADIO_STATUS_TIMEOUT, /*!< Rx timed out. */
-    PAL_RADIO_STATUS_CRC_FAILED /*!< Rx CRC match failed. */
+typedef enum
+{
+  PAL_RADIO_STATUS_SUCCESS,         /*!< Operation completed successfully. */
+  PAL_RADIO_STATUS_FAILED,          /*!< General failure. */
+  PAL_RADIO_STATUS_TIMEOUT,         /*!< Rx timed out. */
+  PAL_RADIO_STATUS_CRC_FAILED       /*!< Rx CRC match failed. */
 } PalRadioStatus_t;
 
-typedef enum {
-    PAL_RADIO_PHY_1M, /*!< 1M PHY. */
-    PAL_RADIO_PHY_2M, /*!< 2M PHY. */
-    PAL_RADIO_PHY_CODED_DEFAULT, /*!< Coded with options not specified. */
-    PAL_RADIO_PHY_CODED_S2, /*!< Coded S2 PHY (500-kbps). */
-    PAL_RADIO_PHY_CODED_S8 /*!< Coded S8 PHY (128-kbps). */
+typedef enum
+{
+  PAL_RADIO_PHY_1M,                 /*!< 1M PHY. */
+  PAL_RADIO_PHY_2M,                 /*!< 2M PHY. */
+  PAL_RADIO_PHY_CODED_DEFAULT,      /*!< Coded with options not specified. */
+  PAL_RADIO_PHY_CODED_S2,           /*!< Coded S2 PHY (500-kbps). */
+  PAL_RADIO_PHY_CODED_S8            /*!< Coded S8 PHY (128-kbps). */
 } PalRadioPhy_t;
 
 /*! \brief  Tx completion call signature. */
 typedef void (*PalRadioTxComp_t)(PalRadioStatus_t status);
 
 /*! \brief  Rx completion call signature. */
-typedef void (*PalRadioRxComp_t)(PalRadioStatus_t status, uint32_t tstamp, PalRadioPhy_t phy,
-                                 int8_t rssi);
+typedef void (*PalRadioRxComp_t)(PalRadioStatus_t status, uint32_t tstamp, PalRadioPhy_t phy, int8_t rssi);
 
 /**************************************************************************************************
   Functions
@@ -104,7 +106,7 @@ void PalRadioRxNext(uint32_t offsUsec, uint32_t rxTimeoutUsec);
 void PalRadioRxData(uint8_t *pBuf, uint16_t len);
 void PalRadioStop(void);
 
-/*! \} */ /* PAL_RADIO */
+/*! \} */    /* PAL_RADIO */
 
 #ifdef __cplusplus
 };

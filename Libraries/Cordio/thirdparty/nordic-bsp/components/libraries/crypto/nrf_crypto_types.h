@@ -60,31 +60,34 @@ extern "C" {
  *
  * @note    All cryptographic hash types may not be available through the nrf_crypto backend.
  */
-typedef enum {
-    NRF_CRYPTO_HASH_TYPE_INVALID = 0x00, //!< Invalid hashing algorithm.
-    NRF_CRYPTO_HASH_TYPE_MD5 = 0x01, //!< MD5.
-    NRF_CRYPTO_HASH_TYPE_SHA1 = 0x03, //!< SHA-1.
-    NRF_CRYPTO_HASH_TYPE_SHA224 = 0x04, //!< SHA-224 (SHA-2).
-    NRF_CRYPTO_HASH_TYPE_SHA256 = 0x05, //!< SHA-256 (SHA-2).
-    NRF_CRYPTO_HASH_TYPE_SHA384 = 0x06, //!< SHA-384 (SHA-2).
-    NRF_CRYPTO_HASH_TYPE_SHA512 = 0x07, //!< SHA-512 (SHA-2).
+typedef enum
+{
+    NRF_CRYPTO_HASH_TYPE_INVALID    = 0x00,        //!< Invalid hashing algorithm.
+    NRF_CRYPTO_HASH_TYPE_MD5        = 0x01,        //!< MD5.
+    NRF_CRYPTO_HASH_TYPE_SHA1       = 0x03,        //!< SHA-1.
+    NRF_CRYPTO_HASH_TYPE_SHA224     = 0x04,        //!< SHA-224 (SHA-2).
+    NRF_CRYPTO_HASH_TYPE_SHA256     = 0x05,        //!< SHA-256 (SHA-2).
+    NRF_CRYPTO_HASH_TYPE_SHA384     = 0x06,        //!< SHA-384 (SHA-2).
+    NRF_CRYPTO_HASH_TYPE_SHA512     = 0x07,        //!< SHA-512 (SHA-2).
 
 } nrf_hash_type_t;
 
 /**@defgroup NRF_CRYPTO_HASH_SIZES Cryptographic hash sizes
  * @brief Sizes of different cryptographic hashes.
  * @{ */
-#define NRF_CRYPTO_HASH_SIZE_MD5 (20)
-#define NRF_CRYPTO_HASH_SIZE_SHA1 (20)
-#define NRF_CRYPTO_HASH_SIZE_SHA224 (28)
-#define NRF_CRYPTO_HASH_SIZE_SHA256 (32)
-#define NRF_CRYPTO_HASH_SIZE_SHA384 (48)
-#define NRF_CRYPTO_HASH_SIZE_SHA512 (64)
+#define NRF_CRYPTO_HASH_SIZE_MD5        (20)
+#define NRF_CRYPTO_HASH_SIZE_SHA1       (20)
+#define NRF_CRYPTO_HASH_SIZE_SHA224     (28)
+#define NRF_CRYPTO_HASH_SIZE_SHA256     (32)
+#define NRF_CRYPTO_HASH_SIZE_SHA384     (48)
+#define NRF_CRYPTO_HASH_SIZE_SHA512     (64)
 /** @}  */
+
 
 /**@brief Type definition for key size.
  */
-typedef enum {
+typedef enum
+{
     NRF_CRYPTO_KEY_SIZE_128 = 128,
     NRF_CRYPTO_KEY_SIZE_192 = 192,
     NRF_CRYPTO_KEY_SIZE_256 = 256
@@ -92,13 +95,14 @@ typedef enum {
 
 /**@brief Type specifying whether decrypt or encrypt operation shall be performed.
  */
-typedef enum {
-    NRF_CRYPTO_DECRYPT = 0,
-    NRF_CRYPTO_ENCRYPT = 1,
+typedef enum
+{
+    NRF_CRYPTO_DECRYPT       = 0,
+    NRF_CRYPTO_ENCRYPT       = 1,
     NRF_CRYPTO_MAC_CALCULATE = 2
 } nrf_crypto_operation_t;
 
-#define NRF_CRYPTO_AES_BLOCK_SIZE (16u) // 16 bytes
+#define NRF_CRYPTO_AES_BLOCK_SIZE   (16u) // 16 bytes
 
 #ifdef __cplusplus
 }

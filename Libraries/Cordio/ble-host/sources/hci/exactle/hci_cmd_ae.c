@@ -45,7 +45,7 @@
 /*************************************************************************************************/
 void HciLeSetAdvSetRandAddrCmd(uint8_t advHandle, const uint8_t *pAddr)
 {
-    LlSetAdvSetRandAddr(advHandle, pAddr);
+  LlSetAdvSetRandAddr(advHandle, pAddr);
 }
 
 /*************************************************************************************************/
@@ -60,7 +60,7 @@ void HciLeSetAdvSetRandAddrCmd(uint8_t advHandle, const uint8_t *pAddr)
 /*************************************************************************************************/
 void HciLeSetExtAdvParamCmd(uint8_t advHandle, hciExtAdvParam_t *pExtAdvParam)
 {
-    LlSetExtAdvParam(advHandle, (LlExtAdvParam_t *)pExtAdvParam);
+  LlSetExtAdvParam(advHandle, (LlExtAdvParam_t *)pExtAdvParam);
 }
 
 /*************************************************************************************************/
@@ -79,7 +79,7 @@ void HciLeSetExtAdvParamCmd(uint8_t advHandle, hciExtAdvParam_t *pExtAdvParam)
 void HciLeSetExtAdvDataCmd(uint8_t advHandle, uint8_t op, uint8_t fragPref, uint8_t len,
                            const uint8_t *pData)
 {
-    LlSetExtAdvData(advHandle, op, fragPref, len, pData);
+  LlSetExtAdvData(advHandle, op, fragPref, len, pData);
 }
 
 /*************************************************************************************************/
@@ -98,7 +98,7 @@ void HciLeSetExtAdvDataCmd(uint8_t advHandle, uint8_t op, uint8_t fragPref, uint
 void HciLeSetExtScanRespDataCmd(uint8_t advHandle, uint8_t op, uint8_t fragPref, uint8_t len,
                                 const uint8_t *pData)
 {
-    LlSetExtScanRespData(advHandle, op, fragPref, len, pData);
+  LlSetExtScanRespData(advHandle, op, fragPref, len, pData);
 }
 
 /*************************************************************************************************/
@@ -114,9 +114,9 @@ void HciLeSetExtScanRespDataCmd(uint8_t advHandle, uint8_t op, uint8_t fragPref,
 /*************************************************************************************************/
 void HciLeSetExtAdvEnableCmd(uint8_t enable, uint8_t numSets, hciExtAdvEnableParam_t *pEnableParam)
 {
-    WSF_ASSERT(numSets <= LL_MAX_ADV_SETS);
+  WSF_ASSERT(numSets <= LL_MAX_ADV_SETS);
 
-    LlExtAdvEnable(enable, numSets, (LlExtAdvEnableParam_t *)pEnableParam);
+  LlExtAdvEnable(enable, numSets, (LlExtAdvEnableParam_t *)pEnableParam);
 }
 
 /*************************************************************************************************/
@@ -128,7 +128,7 @@ void HciLeSetExtAdvEnableCmd(uint8_t enable, uint8_t numSets, hciExtAdvEnablePar
 /*************************************************************************************************/
 void HciLeReadMaxAdvDataLen(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -140,7 +140,7 @@ void HciLeReadMaxAdvDataLen(void)
 /*************************************************************************************************/
 void HciLeReadNumSupAdvSets(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -154,7 +154,7 @@ void HciLeReadNumSupAdvSets(void)
 /*************************************************************************************************/
 void HciLeRemoveAdvSet(uint8_t advHandle)
 {
-    LlRemoveAdvSet(advHandle);
+  LlRemoveAdvSet(advHandle);
 }
 
 /*************************************************************************************************/
@@ -166,7 +166,7 @@ void HciLeRemoveAdvSet(uint8_t advHandle)
 /*************************************************************************************************/
 void HciLeClearAdvSets(void)
 {
-    LlClearAdvSets();
+  LlClearAdvSets();
 }
 
 /*************************************************************************************************/
@@ -184,17 +184,17 @@ void HciLeClearAdvSets(void)
 void HciLeSetPerAdvParamCmd(uint8_t advHandle, uint16_t advIntervalMin, uint16_t advIntervalMax,
                             uint16_t advProps)
 {
-    LlPerAdvParam_t perAdvParam;
-    uint8_t status;
+  LlPerAdvParam_t perAdvParam;
+  uint8_t status;
 
-    perAdvParam.perAdvInterMin = advIntervalMin;
-    perAdvParam.perAdvInterMax = advIntervalMax;
-    perAdvParam.perAdvProp = advProps;
+  perAdvParam.perAdvInterMin = advIntervalMin;
+  perAdvParam.perAdvInterMax = advIntervalMax;
+  perAdvParam.perAdvProp = advProps;
 
-    status = LlSetPeriodicAdvParam(advHandle, &perAdvParam);
-    (void)status;
+  status = LlSetPeriodicAdvParam(advHandle, &perAdvParam);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -211,13 +211,13 @@ void HciLeSetPerAdvParamCmd(uint8_t advHandle, uint16_t advIntervalMin, uint16_t
 /*************************************************************************************************/
 void HciLeSetPerAdvDataCmd(uint8_t advHandle, uint8_t op, uint8_t len, const uint8_t *pData)
 {
-    uint8_t status;
+  uint8_t status;
 
-    /* return value used when asserts are enabled */
-    status = LlSetPeriodicAdvData(advHandle, op, len, pData);
-    (void)status;
+  /* return value used when asserts are enabled */
+  status = LlSetPeriodicAdvData(advHandle, op, len, pData);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -232,7 +232,7 @@ void HciLeSetPerAdvDataCmd(uint8_t advHandle, uint8_t op, uint8_t len, const uin
 /*************************************************************************************************/
 void HciLeSetPerAdvEnableCmd(uint8_t enable, uint8_t advHandle)
 {
-    LlSetPeriodicAdvEnable(enable, advHandle);
+  LlSetPeriodicAdvEnable(enable, advHandle);
 }
 
 /*************************************************************************************************/
@@ -244,7 +244,7 @@ void HciLeSetPerAdvEnableCmd(uint8_t enable, uint8_t advHandle)
 /*************************************************************************************************/
 void HciLeReadTxPower(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -256,7 +256,7 @@ void HciLeReadTxPower(void)
 /*************************************************************************************************/
 void HciLeReadRfPathComp(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -271,5 +271,5 @@ void HciLeReadRfPathComp(void)
 /*************************************************************************************************/
 void HciLeWriteRfPathComp(int16_t txPathComp, int16_t rxPathComp)
 {
-    LlWriteRfPathComp(txPathComp, rxPathComp);
+  LlWriteRfPathComp(txPathComp, rxPathComp);
 }

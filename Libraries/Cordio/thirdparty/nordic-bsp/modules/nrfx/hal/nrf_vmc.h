@@ -55,27 +55,21 @@ extern "C" {
  */
 
 /** @brief Power configuration bits for each section in particular RAM block. */
-typedef enum {
-    NRF_VMC_POWER_S0 =
-        VMC_RAM_POWER_S0POWER_Msk, ///< Keep retention on RAM section S0 of the particular RAM block when RAM section is switched off.
-    NRF_VMC_POWER_S1 =
-        VMC_RAM_POWER_S1POWER_Msk, ///< Keep retention on RAM section S1 of the particular RAM block when RAM section is switched off.
-    NRF_VMC_POWER_S2 =
-        VMC_RAM_POWER_S2POWER_Msk, ///< Keep retention on RAM section S2 of the particular RAM block when RAM section is switched off.
-    NRF_VMC_POWER_S3 =
-        VMC_RAM_POWER_S3POWER_Msk, ///< Keep retention on RAM section S3 of the particular RAM block when RAM section is switched off.
+typedef enum
+{
+    NRF_VMC_POWER_S0  = VMC_RAM_POWER_S0POWER_Msk, ///< Keep retention on RAM section S0 of the particular RAM block when RAM section is switched off.
+    NRF_VMC_POWER_S1  = VMC_RAM_POWER_S1POWER_Msk, ///< Keep retention on RAM section S1 of the particular RAM block when RAM section is switched off.
+    NRF_VMC_POWER_S2  = VMC_RAM_POWER_S2POWER_Msk, ///< Keep retention on RAM section S2 of the particular RAM block when RAM section is switched off.
+    NRF_VMC_POWER_S3  = VMC_RAM_POWER_S3POWER_Msk, ///< Keep retention on RAM section S3 of the particular RAM block when RAM section is switched off.
 } nrf_vmc_power_t;
 
 /** @brief Retention configuration bits for each section in particular RAM block. */
-typedef enum {
-    NRF_VMC_RETENTION_S0 =
-        VMC_RAM_POWER_S0RETENTION_Msk, ///< Keep RAM section S0 of the particular RAM block on or off in System ON mode.
-    NRF_VMC_RETENTION_S1 =
-        VMC_RAM_POWER_S1RETENTION_Msk, ///< Keep RAM section S1 of the particular RAM block on or off in System ON mode.
-    NRF_VMC_RETENTION_S2 =
-        VMC_RAM_POWER_S2RETENTION_Msk, ///< Keep RAM section S2 of the particular RAM block on or off in System ON mode.
-    NRF_VMC_RETENTION_S3 =
-        VMC_RAM_POWER_S3RETENTION_Msk, ///< Keep RAM section S3 of the particular RAM block on or off in System ON mode.
+typedef enum
+{
+    NRF_VMC_RETENTION_S0  = VMC_RAM_POWER_S0RETENTION_Msk, ///< Keep RAM section S0 of the particular RAM block on or off in System ON mode.
+    NRF_VMC_RETENTION_S1  = VMC_RAM_POWER_S1RETENTION_Msk, ///< Keep RAM section S1 of the particular RAM block on or off in System ON mode.
+    NRF_VMC_RETENTION_S2  = VMC_RAM_POWER_S2RETENTION_Msk, ///< Keep RAM section S2 of the particular RAM block on or off in System ON mode.
+    NRF_VMC_RETENTION_S3  = VMC_RAM_POWER_S3RETENTION_Msk, ///< Keep RAM section S3 of the particular RAM block on or off in System ON mode.
 } nrf_vmc_retention_t;
 
 /**
@@ -90,8 +84,10 @@ typedef enum {
  * @param[in] retention_mask Bitmask with sections configuration of particular RAM block.
  *                           @ref nrf_vmc_retention_t should be use to prepare this bitmask.
  */
-__STATIC_INLINE void nrf_vmc_ram_block_config(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
-                                              uint32_t power_mask, uint32_t retention_mask);
+__STATIC_INLINE void nrf_vmc_ram_block_config(NRF_VMC_Type * p_reg,
+                                              uint8_t        ram_block_num,
+                                              uint32_t       power_mask,
+                                              uint32_t       retention_mask);
 
 /**
  * @brief Function for clearing power configuration for the particular RAM block.
@@ -99,7 +95,7 @@ __STATIC_INLINE void nrf_vmc_ram_block_config(NRF_VMC_Type *p_reg, uint8_t ram_b
  * @param[in] p_reg         Pointer to the structure of registers of the peripheral.
  * @param[in] ram_block_num RAM block number.
  */
-__STATIC_INLINE void nrf_vmc_ram_block_clear(NRF_VMC_Type *p_reg, uint8_t ram_block_num);
+__STATIC_INLINE void nrf_vmc_ram_block_clear(NRF_VMC_Type * p_reg, uint8_t ram_block_num);
 
 /**
  * @brief Function for setting power configuration for the particular RAM block.
@@ -108,7 +104,8 @@ __STATIC_INLINE void nrf_vmc_ram_block_clear(NRF_VMC_Type *p_reg, uint8_t ram_bl
  * @param[in] ram_block_num RAM block number.
  * @param[in] sect_power    Paricular section of the RAM block.
  */
-__STATIC_INLINE void nrf_vmc_ram_block_power_set(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
+__STATIC_INLINE void nrf_vmc_ram_block_power_set(NRF_VMC_Type *  p_reg,
+                                                 uint8_t         ram_block_num,
                                                  nrf_vmc_power_t sect_power);
 
 /**
@@ -118,7 +115,8 @@ __STATIC_INLINE void nrf_vmc_ram_block_power_set(NRF_VMC_Type *p_reg, uint8_t ra
  * @param[in] ram_block_num RAM block number.
  * @param[in] sect_power    Paricular section of the RAM block.
  */
-__STATIC_INLINE void nrf_vmc_ram_block_power_clear(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
+__STATIC_INLINE void nrf_vmc_ram_block_power_clear(NRF_VMC_Type *  p_reg,
+                                                   uint8_t         ram_block_num,
                                                    nrf_vmc_power_t sect_power);
 
 /**
@@ -129,8 +127,8 @@ __STATIC_INLINE void nrf_vmc_ram_block_power_clear(NRF_VMC_Type *p_reg, uint8_t 
  *
  * @return Bitmask with power configuration of sections of particular RAM block.
  */
-__STATIC_INLINE uint32_t nrf_vmc_ram_block_power_mask_get(NRF_VMC_Type const *p_reg,
-                                                          uint8_t ram_block_num);
+__STATIC_INLINE uint32_t nrf_vmc_ram_block_power_mask_get(NRF_VMC_Type const * p_reg,
+                                                          uint8_t              ram_block_num);
 
 /**
  * @brief Function for setting retention configuration for the particular RAM block.
@@ -139,7 +137,8 @@ __STATIC_INLINE uint32_t nrf_vmc_ram_block_power_mask_get(NRF_VMC_Type const *p_
  * @param[in] ram_block_num  RAM block number.
  * @param[in] sect_retention Paricular section of the RAM block.
  */
-__STATIC_INLINE void nrf_vmc_ram_block_retention_set(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
+__STATIC_INLINE void nrf_vmc_ram_block_retention_set(NRF_VMC_Type *      p_reg,
+                                                     uint8_t             ram_block_num,
                                                      nrf_vmc_retention_t sect_retention);
 
 /**
@@ -149,7 +148,8 @@ __STATIC_INLINE void nrf_vmc_ram_block_retention_set(NRF_VMC_Type *p_reg, uint8_
  * @param[in] ram_block_num  RAM block number.
  * @param[in] sect_retention Paricular section of the RAM block.
  */
-__STATIC_INLINE void nrf_vmc_ram_block_retention_clear(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
+__STATIC_INLINE void nrf_vmc_ram_block_retention_clear(NRF_VMC_Type *      p_reg,
+                                                       uint8_t             ram_block_num,
                                                        nrf_vmc_retention_t sect_retention);
 
 /**
@@ -160,31 +160,40 @@ __STATIC_INLINE void nrf_vmc_ram_block_retention_clear(NRF_VMC_Type *p_reg, uint
  *
  * @return Bitmask with retention configuration of sections of particular RAM block
  */
-__STATIC_INLINE uint32_t nrf_vmc_ram_block_retention_mask_get(NRF_VMC_Type const *p_reg,
-                                                              uint8_t ram_block_num);
+__STATIC_INLINE uint32_t nrf_vmc_ram_block_retention_mask_get(NRF_VMC_Type const * p_reg,
+                                                              uint8_t              ram_block_num);
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
-__STATIC_INLINE void nrf_vmc_ram_block_config(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
-                                              uint32_t power_mask, uint32_t retention_mask)
+__STATIC_INLINE void nrf_vmc_ram_block_config(NRF_VMC_Type * p_reg,
+                                              uint8_t        ram_block_num,
+                                              uint32_t       power_mask,
+                                              uint32_t       retention_mask)
 {
     p_reg->RAM[ram_block_num].POWER =
-        (power_mask & (VMC_RAM_POWER_S0POWER_Msk | VMC_RAM_POWER_S1POWER_Msk |
-                       VMC_RAM_POWER_S2POWER_Msk | VMC_RAM_POWER_S3POWER_Msk)) |
-        (retention_mask & (VMC_RAM_POWER_S0RETENTION_Msk | VMC_RAM_POWER_S1RETENTION_Msk |
-                           VMC_RAM_POWER_S2RETENTION_Msk | VMC_RAM_POWER_S3RETENTION_Msk));
+            (power_mask & (
+                VMC_RAM_POWER_S0POWER_Msk |
+                VMC_RAM_POWER_S1POWER_Msk |
+                VMC_RAM_POWER_S2POWER_Msk |
+                VMC_RAM_POWER_S3POWER_Msk)) |
+            (retention_mask & (
+                VMC_RAM_POWER_S0RETENTION_Msk |
+                VMC_RAM_POWER_S1RETENTION_Msk |
+                VMC_RAM_POWER_S2RETENTION_Msk |
+                VMC_RAM_POWER_S3RETENTION_Msk));
     // Perform dummy read of the POWER register to ensure that configuration of sections was
     // written to the VMC peripheral.
     volatile uint32_t dummy = p_reg->RAM[ram_block_num].POWER;
     (void)dummy;
 }
 
-__STATIC_INLINE void nrf_vmc_ram_block_clear(NRF_VMC_Type *p_reg, uint8_t ram_block_num)
+__STATIC_INLINE void nrf_vmc_ram_block_clear(NRF_VMC_Type * p_reg, uint8_t ram_block_num)
 {
     p_reg->RAM[ram_block_num].POWER = 0;
 }
 
-__STATIC_INLINE void nrf_vmc_ram_block_power_set(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
+__STATIC_INLINE void nrf_vmc_ram_block_power_set(NRF_VMC_Type *  p_reg,
+                                                 uint8_t         ram_block_num,
                                                  nrf_vmc_power_t sect_power)
 {
     p_reg->RAM[ram_block_num].POWERSET = (uint32_t)sect_power;
@@ -194,21 +203,25 @@ __STATIC_INLINE void nrf_vmc_ram_block_power_set(NRF_VMC_Type *p_reg, uint8_t ra
     (void)dummy;
 }
 
-__STATIC_INLINE void nrf_vmc_ram_block_power_clear(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
+__STATIC_INLINE void nrf_vmc_ram_block_power_clear(NRF_VMC_Type *  p_reg,
+                                                   uint8_t         ram_block_num,
                                                    nrf_vmc_power_t sect_power)
 {
     p_reg->RAM[ram_block_num].POWERCLR = (uint32_t)sect_power;
 }
 
-__STATIC_INLINE uint32_t nrf_vmc_ram_block_power_mask_get(NRF_VMC_Type const *p_reg,
-                                                          uint8_t ram_block_num)
+__STATIC_INLINE uint32_t nrf_vmc_ram_block_power_mask_get(NRF_VMC_Type const * p_reg,
+                                                          uint8_t              ram_block_num)
 {
-    return p_reg->RAM[ram_block_num].POWER &
-           (VMC_RAM_POWER_S0POWER_Msk | VMC_RAM_POWER_S1POWER_Msk | VMC_RAM_POWER_S2POWER_Msk |
-            VMC_RAM_POWER_S3POWER_Msk);
+    return p_reg->RAM[ram_block_num].POWER & (
+                VMC_RAM_POWER_S0POWER_Msk |
+                VMC_RAM_POWER_S1POWER_Msk |
+                VMC_RAM_POWER_S2POWER_Msk |
+                VMC_RAM_POWER_S3POWER_Msk);
 }
 
-__STATIC_INLINE void nrf_vmc_ram_block_retention_set(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
+__STATIC_INLINE void nrf_vmc_ram_block_retention_set(NRF_VMC_Type *      p_reg,
+                                                     uint8_t             ram_block_num,
                                                      nrf_vmc_retention_t sect_retention)
 {
     p_reg->RAM[ram_block_num].POWERSET = (uint32_t)sect_retention;
@@ -218,18 +231,21 @@ __STATIC_INLINE void nrf_vmc_ram_block_retention_set(NRF_VMC_Type *p_reg, uint8_
     (void)dummy;
 }
 
-__STATIC_INLINE void nrf_vmc_ram_block_retention_clear(NRF_VMC_Type *p_reg, uint8_t ram_block_num,
+__STATIC_INLINE void nrf_vmc_ram_block_retention_clear(NRF_VMC_Type *      p_reg,
+                                                       uint8_t             ram_block_num,
                                                        nrf_vmc_retention_t sect_retention)
 {
     p_reg->RAM[ram_block_num].POWERCLR = (uint32_t)sect_retention;
 }
 
-__STATIC_INLINE uint32_t nrf_vmc_ram_block_retention_mask_get(NRF_VMC_Type const *p_reg,
-                                                              uint8_t ram_block_num)
+__STATIC_INLINE uint32_t nrf_vmc_ram_block_retention_mask_get(NRF_VMC_Type const * p_reg,
+                                                              uint8_t              ram_block_num)
 {
-    return p_reg->RAM[ram_block_num].POWER &
-           (VMC_RAM_POWER_S0RETENTION_Msk | VMC_RAM_POWER_S1RETENTION_Msk |
-            VMC_RAM_POWER_S2RETENTION_Msk | VMC_RAM_POWER_S3RETENTION_Msk);
+    return p_reg->RAM[ram_block_num].POWER & (
+                VMC_RAM_POWER_S0RETENTION_Msk |
+                VMC_RAM_POWER_S1RETENTION_Msk |
+                VMC_RAM_POWER_S2RETENTION_Msk |
+                VMC_RAM_POWER_S3RETENTION_Msk);
 }
 
 #endif // SUPPRESS_INLINE_IMPLEMENTATION

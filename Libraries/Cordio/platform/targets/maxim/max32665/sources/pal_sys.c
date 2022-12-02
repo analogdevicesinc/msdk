@@ -62,43 +62,43 @@ static uint32_t palSysBusyCount;
 /*************************************************************************************************/
 void DMA0_IRQHandler(void)
 {
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_DMA_Handler(MXC_DMA0); /* DMA channel 0 is associated with DMA instance 0 */
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  MXC_DMA_Handler(MXC_DMA0); /* DMA channel 0 is associated with DMA instance 0 */
 }
 void DMA1_IRQHandler(void)
 {
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_DMA_Handler(MXC_DMA0); /* DMA channel 1 is associated with DMA instance 0 */
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  MXC_DMA_Handler(MXC_DMA0); /* DMA channel 1 is associated with DMA instance 0 */
 }
 void DMA2_IRQHandler(void)
 {
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_DMA_Handler(MXC_DMA0); /* DMA channel 2 is associated with DMA instance 0 */
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  MXC_DMA_Handler(MXC_DMA0); /* DMA channel 2 is associated with DMA instance 0 */
 }
 void DMA3_IRQHandler(void)
 {
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_DMA_Handler(MXC_DMA0); /* DMA channel 3 is associated with DMA instance 0 */
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  MXC_DMA_Handler(MXC_DMA0); /* DMA channel 3 is associated with DMA instance 0 */
 }
 void DMA4_IRQHandler(void)
 {
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_DMA_Handler(MXC_DMA0); /* DMA channel 4 is associated with DMA instance 0 */
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  MXC_DMA_Handler(MXC_DMA0); /* DMA channel 4 is associated with DMA instance 0 */
 }
 void DMA5_IRQHandler(void)
 {
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_DMA_Handler(MXC_DMA0); /* DMA channel 5 is associated with DMA instance 0 */
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  MXC_DMA_Handler(MXC_DMA0); /* DMA channel 5 is associated with DMA instance 0 */
 }
 void DMA6_IRQHandler(void)
 {
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_DMA_Handler(MXC_DMA0); /* DMA channel 6 is associated with DMA instance 0 */
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  MXC_DMA_Handler(MXC_DMA0); /* DMA channel 6 is associated with DMA instance 0 */
 }
 void DMA7_IRQHandler(void)
 {
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-    MXC_DMA_Handler(MXC_DMA0); /* DMA channel 7 is associated with DMA instance 0 */
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  MXC_DMA_Handler(MXC_DMA0); /* DMA channel 7 is associated with DMA instance 0 */
 }
 
 /*************************************************************************************************/
@@ -108,7 +108,7 @@ void DMA7_IRQHandler(void)
 /*************************************************************************************************/
 void PalEnterCs(void)
 {
-    __disable_irq();
+  __disable_irq();
 }
 
 /*************************************************************************************************/
@@ -118,7 +118,7 @@ void PalEnterCs(void)
 /*************************************************************************************************/
 void PalExitCs(void)
 {
-    __enable_irq();
+  __enable_irq();
 }
 
 /*************************************************************************************************/
@@ -128,26 +128,26 @@ void PalExitCs(void)
 /*************************************************************************************************/
 void PalSysInit(void)
 {
-    /* Delay to prevent lockup when debugging */
+  /* Delay to prevent lockup when debugging */
 #ifdef DEBUG
-    volatile int i;
-    for (i = 0; i < 0x3FFFFF; i++) {}
+  volatile int i;
+  for(i = 0; i < 0x3FFFFF; i++) {}
 #endif
 
-    palSysAssertCount = 0;
-    PalSysAssertTrapEnable = TRUE;
-    palSysBusyCount = 0;
+  palSysAssertCount = 0;
+  PalSysAssertTrapEnable = TRUE;
+  palSysBusyCount = 0;
 #ifdef DEBUG
-    PalLedInit();
-    PalLedOff(PAL_LED_ID_ERROR);
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  PalLedInit();
+  PalLedOff(PAL_LED_ID_ERROR);
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
 #endif
+  
+  /* Initialize DMA for UART */
+  MXC_DMA_Init(MXC_DMA0);
 
-    /* Initialize DMA for UART */
-    MXC_DMA_Init(MXC_DMA0);
-
-    PalCryptoInit();
-    PalRtcInit();
+  PalCryptoInit();
+  PalRtcInit();
 }
 
 /*************************************************************************************************/
@@ -157,11 +157,12 @@ void PalSysInit(void)
 /*************************************************************************************************/
 void PalSysAssertTrap(void)
 {
-    PalEnterCs();
-    PalLedOn(PAL_LED_ID_ERROR);
-    palSysAssertCount++;
-    while (PalSysAssertTrapEnable) {}
-    PalExitCs();
+
+  PalEnterCs();
+  PalLedOn(PAL_LED_ID_ERROR);
+  palSysAssertCount++;
+  while (PalSysAssertTrapEnable);
+  PalExitCs();
 }
 
 /*************************************************************************************************/
@@ -173,7 +174,7 @@ void PalSysAssertTrap(void)
 /*************************************************************************************************/
 void PalSysSetTrap(bool_t enable)
 {
-    PalSysAssertTrapEnable = enable;
+  PalSysAssertTrapEnable = enable;
 }
 
 /*************************************************************************************************/
@@ -183,7 +184,7 @@ void PalSysSetTrap(bool_t enable)
 /*************************************************************************************************/
 uint32_t PalSysGetAssertCount(void)
 {
-    return palSysAssertCount;
+  return palSysAssertCount;
 }
 
 /*************************************************************************************************/
@@ -195,8 +196,8 @@ uint32_t PalSysGetAssertCount(void)
 /*************************************************************************************************/
 uint32_t PalSysGetStackUsage(void)
 {
-    /* Not available; stub routine. */
-    return 0;
+  /* Not available; stub routine. */
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -210,17 +211,17 @@ uint32_t PalSysGetStackUsage(void)
 /*************************************************************************************************/
 void PalSysSleep(void)
 {
-    if (palSysBusyCount) {
-        /* Work pending; do not sleep yet. */
-        return;
-    }
-
-#ifdef DEBUG
-    /* Stay active to prevent debugger dropout */
+  if (palSysBusyCount) {
+    /* Work pending; do not sleep yet. */
     return;
-#endif
+  }
 
-    MXC_LP_EnterSleepMode();
+  #ifdef DEBUG
+  /* Stay active to prevent debugger dropout */
+  return;
+  #endif
+
+  MXC_LP_EnterSleepMode();
 }
 
 /*************************************************************************************************/
@@ -230,9 +231,9 @@ void PalSysSleep(void)
 /*************************************************************************************************/
 void PalSysSetBusy(void)
 {
-    PalEnterCs();
-    palSysBusyCount++;
-    PalExitCs();
+  PalEnterCs();
+  palSysBusyCount++;
+  PalExitCs();
 }
 
 /*************************************************************************************************/
@@ -242,11 +243,11 @@ void PalSysSetBusy(void)
 /*************************************************************************************************/
 void PalSysSetIdle(void)
 {
-    PalEnterCs();
-    if (palSysBusyCount) {
-        palSysBusyCount--;
-    }
-    PalExitCs();
+  PalEnterCs();
+  if (palSysBusyCount) {
+    palSysBusyCount--;
+  }
+  PalExitCs();
 }
 
 /*************************************************************************************************/
@@ -258,9 +259,9 @@ void PalSysSetIdle(void)
 /*************************************************************************************************/
 bool_t PalSysIsBusy(void)
 {
-    bool_t sysIsBusy = FALSE;
-    PalEnterCs();
-    sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
-    PalExitCs();
-    return sysIsBusy;
+  bool_t sysIsBusy = FALSE;
+  PalEnterCs();
+  sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
+  PalExitCs();
+  return sysIsBusy;
 }

@@ -45,17 +45,20 @@ static void hciCoreReadPerAdvListSize(void);
 /*************************************************************************************************/
 static void hciCoreReadMaxAdvDataLen(void)
 {
-    /* if LE Extended Advertising is supported by Controller and included */
-    if ((hciCoreCb.leSupFeat & HCI_LE_SUP_FEAT_LE_EXT_ADV) &&
-        (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_EXT_ADV)) {
-        /* send next command in sequence */
-        HciLeReadMaxAdvDataLen();
-    } else {
-        hciCoreCb.maxAdvDataLen = 0;
+  /* if LE Extended Advertising is supported by Controller and included */
+  if ((hciCoreCb.leSupFeat & HCI_LE_SUP_FEAT_LE_EXT_ADV) &&
+      (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_EXT_ADV))
+  {
+    /* send next command in sequence */
+    HciLeReadMaxAdvDataLen();
+  }
+  else
+  {
+    hciCoreCb.maxAdvDataLen = 0;
 
-        /* send next command in sequence */
-        hciCoreReadNumSupAdvSets();
-    }
+    /* send next command in sequence */
+    hciCoreReadNumSupAdvSets();
+  }
 }
 
 /*************************************************************************************************/
@@ -67,17 +70,20 @@ static void hciCoreReadMaxAdvDataLen(void)
 /*************************************************************************************************/
 static void hciCoreReadNumSupAdvSets(void)
 {
-    /* if LE Extended Advertising is supported by Controller and included */
-    if ((hciCoreCb.leSupFeat & HCI_LE_SUP_FEAT_LE_EXT_ADV) &&
-        (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_EXT_ADV)) {
-        /* send next command in sequence */
-        HciLeReadNumSupAdvSets();
-    } else {
-        hciCoreCb.numSupAdvSets = 0;
+  /* if LE Extended Advertising is supported by Controller and included */
+  if ((hciCoreCb.leSupFeat & HCI_LE_SUP_FEAT_LE_EXT_ADV) &&
+      (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_EXT_ADV))
+  {
+    /* send next command in sequence */
+    HciLeReadNumSupAdvSets();
+  }
+  else
+  {
+    hciCoreCb.numSupAdvSets = 0;
 
-        /* send next command in sequence */
-        hciCoreReadPerAdvListSize();
-    }
+    /* send next command in sequence */
+    hciCoreReadPerAdvListSize();
+  }
 }
 
 /*************************************************************************************************/
@@ -89,17 +95,20 @@ static void hciCoreReadNumSupAdvSets(void)
 /*************************************************************************************************/
 static void hciCoreReadPerAdvListSize(void)
 {
-    /* if LE Extended Advertising is supported by Controller and included */
-    if ((hciCoreCb.leSupFeat & HCI_LE_SUP_FEAT_LE_PER_ADV) &&
-        (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_PER_ADV)) {
-        /* send next command in sequence */
-        HciLeReadPerAdvListSizeCmd();
-    } else {
-        hciCoreCb.perAdvListSize = 0;
+  /* if LE Extended Advertising is supported by Controller and included */
+  if ((hciCoreCb.leSupFeat & HCI_LE_SUP_FEAT_LE_PER_ADV) &&
+      (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_PER_ADV))
+  {
+    /* send next command in sequence */
+    HciLeReadPerAdvListSizeCmd();
+  }
+  else
+  {
+    hciCoreCb.perAdvListSize = 0;
 
-        /* send next command in sequence */
-        HciLeRandCmd();
-    }
+    /* send next command in sequence */
+    HciLeRandCmd();
+  }
 }
 
 /*************************************************************************************************/
@@ -114,39 +123,40 @@ static void hciCoreReadPerAdvListSize(void)
 /*************************************************************************************************/
 static void hciCoreExtResetSequence(uint8_t *pMsg, uint16_t opcode)
 {
-    /* decode opcode */
-    switch (opcode) {
+  /* decode opcode */
+  switch (opcode)
+  {
     case HCI_OPCODE_READ_LOCAL_VER_INFO:
-        /* send next command in sequence */
-        hciCoreReadMaxAdvDataLen();
-        break;
+      /* send next command in sequence */
+      hciCoreReadMaxAdvDataLen();
+      break;
 
     case HCI_OPCODE_LE_READ_MAX_ADV_DATA_LEN:
-        BSTREAM_TO_UINT16(hciCoreCb.maxAdvDataLen, pMsg);
+      BSTREAM_TO_UINT16(hciCoreCb.maxAdvDataLen, pMsg);
 
-        /* send next command in sequence */
-        hciCoreReadNumSupAdvSets();
-        break;
+      /* send next command in sequence */
+      hciCoreReadNumSupAdvSets();
+      break;
 
     case HCI_OPCODE_LE_READ_NUM_SUP_ADV_SETS:
-        /* parse and store event parameters */
-        BSTREAM_TO_UINT8(hciCoreCb.numSupAdvSets, pMsg);
+      /* parse and store event parameters */
+      BSTREAM_TO_UINT8(hciCoreCb.numSupAdvSets, pMsg);
 
-        /* send next command in sequence */
-        hciCoreReadPerAdvListSize();
-        break;
+      /* send next command in sequence */
+      hciCoreReadPerAdvListSize();
+      break;
 
     case HCI_OPCODE_LE_READ_PER_ADV_LIST_SIZE:
-        /* parse and store event parameters */
-        BSTREAM_TO_UINT8(hciCoreCb.perAdvListSize, pMsg);
+      /* parse and store event parameters */
+      BSTREAM_TO_UINT8(hciCoreCb.perAdvListSize, pMsg);
 
-        /* send next command in sequence */
-        HciLeRandCmd();
-        break;
+      /* send next command in sequence */
+      HciLeRandCmd();
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -160,7 +170,7 @@ static void hciCoreExtResetSequence(uint8_t *pMsg, uint16_t opcode)
 /*************************************************************************************************/
 void HciVsAeInit(uint8_t param)
 {
-    hciCoreCb.extResetSeq = hciCoreExtResetSequence;
+  hciCoreCb.extResetSeq = hciCoreExtResetSequence;
 }
 
 #endif

@@ -49,10 +49,7 @@ void WsfAssert(const char *pFile, uint16_t line);
  *  \param  expr    Boolean expression to be tested.
  */
 /*************************************************************************************************/
-#define WSF_ASSERT(expr)                         \
-    if (!(expr)) {                               \
-        WsfAssert(__FILE__, (uint16_t)__LINE__); \
-    }
+#define WSF_ASSERT(expr)      if (!(expr)) {WsfAssert(__FILE__, (uint16_t) __LINE__);}
 
 /*************************************************************************************************/
 /*!
@@ -65,7 +62,7 @@ void WsfAssert(const char *pFile, uint16_t line);
  *  \param  expr    Boolean expression to be tested.
  */
 /*************************************************************************************************/
-#define WSF_CT_ASSERT(expr) extern char wsf_ct_assert[(expr) ? 1 : -1]
+#define WSF_CT_ASSERT(expr)     extern char wsf_ct_assert[(expr) ? 1 : -1]
 
 #ifdef __cplusplus
 };

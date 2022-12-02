@@ -40,7 +40,7 @@ extern "C" {
  *
  */
 /**@{*/
-#define HRS_ERR_CP_NOT_SUP 0x80 /*!< \brief Control Point value not supported */
+#define HRS_ERR_CP_NOT_SUP          0x80    /*!< \brief Control Point value not supported */
 /**@}*/
 
 /**************************************************************************************************
@@ -51,24 +51,25 @@ extern "C" {
  *
  */
 /**@{*/
-#define HRS_START_HDL 0x20 /*!< \brief Start handle. */
-#define HRS_END_HDL (HRS_MAX_HDL - 1) /*!< \brief End handle. */
+#define HRS_START_HDL               0x20              /*!< \brief Start handle. */
+#define HRS_END_HDL                 (HRS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Heart Rate Service Handles */
-enum {
-    HRS_SVC_HDL = HRS_START_HDL, /*!< \brief Heart rate service declaration */
-    HRS_HRM_CH_HDL, /*!< \brief Heart rate measurement characteristic */
-    HRS_HRM_HDL, /*!< \brief Heart rate measurement */
-    HRS_HRM_CH_CCC_HDL, /*!< \brief Heart rate measurement client characteristic configuration */
-    HRS_SL_CH_HDL, /*!< \brief Body sensor location characteristic */
-    HRS_SL_HDL, /*!< \brief Body sensor location */
-    HRS_CP_CH_HDL, /*!< \brief Heart rate control point characteristic */
-    HRS_CP_HDL, /*!< \brief Heart rate control point */
-    HRS_MAX_HDL /*!< \brief Maximum handle. */
+enum
+{
+  HRS_SVC_HDL = HRS_START_HDL,      /*!< \brief Heart rate service declaration */
+  HRS_HRM_CH_HDL,                   /*!< \brief Heart rate measurement characteristic */
+  HRS_HRM_HDL,                      /*!< \brief Heart rate measurement */
+  HRS_HRM_CH_CCC_HDL,               /*!< \brief Heart rate measurement client characteristic configuration */
+  HRS_SL_CH_HDL,                    /*!< \brief Body sensor location characteristic */
+  HRS_SL_HDL,                       /*!< \brief Body sensor location */
+  HRS_CP_CH_HDL,                    /*!< \brief Heart rate control point characteristic */
+  HRS_CP_HDL,                       /*!< \brief Heart rate control point */
+  HRS_MAX_HDL                       /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -106,7 +107,7 @@ void SvcHrsRemoveGroup(void);
 /*************************************************************************************************/
 void SvcHrsCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
 
-/*! \} */ /* HEART_RATE_SERVICE */
+/*! \} */    /* HEART_RATE_SERVICE */
 
 #ifdef __cplusplus
 };

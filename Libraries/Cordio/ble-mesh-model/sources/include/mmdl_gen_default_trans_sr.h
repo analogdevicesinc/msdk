@@ -27,23 +27,24 @@
 #define MMDL_GEN_DEFAULT_TRANS_SR_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
 /*! Gets the transition time steps */
-#define TRANSITION_TIME_STEPS(time) ((time)&0x3F)
+#define TRANSITION_TIME_STEPS(time)                       ((time) & 0x3F)
 
 /*! Sets the transition time steps */
-#define SET_TRANSITION_TIME_RESOLUTION(time, res) ((time) |= ((res) << 6))
+#define SET_TRANSITION_TIME_RESOLUTION(time, res)         ((time) |= ((res) << 6))
 
 /*! Gets the transition time resolution */
-#define TRANSITION_TIME_RESOLUTION(time) ((time) >> 6)
+#define TRANSITION_TIME_RESOLUTION(time)                  ((time) >> 6)
 
 /*! Transforms the Delay defined by the spec in milliseconds*/
-#define DELAY_5MS_TO_MS(delay5Ms) ((delay5Ms)*5)
+#define DELAY_5MS_TO_MS(delay5Ms)                         ((delay5Ms) * 5)
 
 /**************************************************************************************************
   Function Declarations

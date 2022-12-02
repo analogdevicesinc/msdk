@@ -41,16 +41,16 @@
 /*************************************************************************************************/
 void HciLeReadPhyCmd(uint16_t handle)
 {
-    hciLeReadPhyCmdCmplEvt_t evt;
+  hciLeReadPhyCmdCmplEvt_t evt;
 
-    evt.hdr.param = handle;
-    evt.hdr.event = HCI_LE_READ_PHY_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlReadPhy(handle, &evt.txPhy, &evt.rxPhy);
+  evt.hdr.param = handle;
+  evt.hdr.event = HCI_LE_READ_PHY_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlReadPhy(handle, &evt.txPhy, &evt.rxPhy);
 
-    evt.handle = handle;
-    evt.status = evt.hdr.status;
+  evt.handle = handle;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -62,15 +62,15 @@ void HciLeReadPhyCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeSetDefaultPhyCmd(uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys)
 {
-    hciLeSetDefPhyCmdCmplEvt_t evt;
+  hciLeSetDefPhyCmdCmplEvt_t evt;
 
-    evt.hdr.param = 0;
-    evt.hdr.event = HCI_LE_SET_DEF_PHY_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlSetDefaultPhy(allPhys, txPhys, rxPhys);
+  evt.hdr.param = 0;
+  evt.hdr.event = HCI_LE_SET_DEF_PHY_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlSetDefaultPhy(allPhys, txPhys, rxPhys);
 
-    evt.status = evt.hdr.status;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -80,8 +80,7 @@ void HciLeSetDefaultPhyCmd(uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys)
 *  \return None.
 */
 /*************************************************************************************************/
-void HciLeSetPhyCmd(uint16_t handle, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys,
-                    uint16_t phyOptions)
+void HciLeSetPhyCmd(uint16_t handle, uint8_t allPhys, uint8_t txPhys, uint8_t rxPhys, uint16_t phyOptions)
 {
-    LlSetPhy(handle, allPhys, txPhys, rxPhys, phyOptions);
+  LlSetPhy(handle, allPhys, txPhys, rxPhys, phyOptions);
 }

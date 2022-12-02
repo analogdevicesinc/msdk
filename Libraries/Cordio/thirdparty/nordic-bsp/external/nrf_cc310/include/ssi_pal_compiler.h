@@ -32,6 +32,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 #ifndef __SSI_PAL_COMPILER_H__
 #define __SSI_PAL_COMPILER_H__
 
@@ -49,13 +50,13 @@
 /************************ Defines ******************************/
 
 /*! Associate a symbol with a link section. */
-#define SASI_PAL_COMPILER_SECTION(sectionName) __attribute__((section(sectionName)))
+#define SASI_PAL_COMPILER_SECTION(sectionName)  __attribute__((section(sectionName)))
 
 /*! Mark symbol as used, i.e., prevent garbage collector from dropping it. */
 #define SASI_PAL_COMPILER_KEEP_SYMBOL __attribute__((used))
 
 /*! Make given data item aligned (alignment in bytes). */
-#define SASI_PAL_COMPILER_ALIGN(alignement) __attribute__((aligned(alignement)))
+#define SASI_PAL_COMPILER_ALIGN(alignement)  __attribute__((aligned(alignement)))
 
 /*! Mark function that never returns. */
 #define SASI_PAL_COMPILER_FUNC_NEVER_RETURNS __attribute__((noreturn))
@@ -69,24 +70,24 @@
 
 /*! Get sizeof for a structure type member. */
 #define SASI_PAL_COMPILER_SIZEOF_STRUCT_MEMBER(type_name, member_name) \
-    sizeof(((type_name *)0)->member_name)
+	sizeof(((type_name *)0)->member_name)
 
 /*! Assertion. */
 #define SASI_ASSERT_CONCAT_(a, b) a##b
 #define SASI_ASSERT_CONCAT(a, b) SASI_ASSERT_CONCAT_(a, b)
 #define SASI_PAL_COMPILER_ASSERT(cond, message) \
-    enum { SASI_ASSERT_CONCAT(assert_line_, __LINE__) = 1 / (!!(cond)) }
+	enum { SASI_ASSERT_CONCAT(assert_line_, __LINE__) = 1/(!!(cond)) }
 
 #elif defined(__ARM_DSM__) || defined(__CC_ARM)
-#define inline
+#define inline 
 /*! Associate a symbol with a link section. */
-#define SASI_PAL_COMPILER_SECTION(sectionName) __attribute__((section(sectionName)))
+#define SASI_PAL_COMPILER_SECTION(sectionName)  __attribute__((section(sectionName)))
 
 /*! Mark symbol as used, i.e., prevent garbage collector from dropping it. */
 #define SASI_PAL_COMPILER_KEEP_SYMBOL __attribute__((used))
 
 /*! Make given data item aligned (alignment in bytes). */
-#define SASI_PAL_COMPILER_ALIGN(alignement) __attribute__((aligned(alignement)))
+#define SASI_PAL_COMPILER_ALIGN(alignement)  __attribute__((aligned(alignement)))
 
 /*! Mark function that never returns. */
 #define SASI_PAL_COMPILER_FUNC_NEVER_RETURNS __attribute__((noreturn))
@@ -100,24 +101,24 @@
 
 /*! Get sizeof for a structure type member. */
 #define SASI_PAL_COMPILER_SIZEOF_STRUCT_MEMBER(type_name, member_name) \
-    sizeof(((type_name *)0)->member_name)
+	sizeof(((type_name *)0)->member_name)
 
 /*! Assertion. */
 #define SASI_ASSERT_CONCAT_(a, b) a##b
 #define SASI_ASSERT_CONCAT(a, b) SASI_ASSERT_CONCAT_(a, b)
 #define SASI_PAL_COMPILER_ASSERT(cond, message) \
-    enum { SASI_ASSERT_CONCAT(assert_line_, __LINE__) = 1 / (!!(cond)) }
+	enum { SASI_ASSERT_CONCAT(assert_line_, __LINE__) = 1/(!!(cond)) }
 
 #elif defined(__ARM_DS__)
 #define inline
 /*! Associate a symbol with a link section. */
-#define SASI_PAL_COMPILER_SECTION(sectionName) __attribute__((section(sectionName)))
+#define SASI_PAL_COMPILER_SECTION(sectionName)  __attribute__((section(sectionName)))
 
 /*! Mark symbol as used, i.e., prevent garbage collector from dropping it. */
 #define SASI_PAL_COMPILER_KEEP_SYMBOL __attribute__((used))
 
 /*! Make given data item aligned (alignment in bytes). */
-#define SASI_PAL_COMPILER_ALIGN(alignement) __attribute__((aligned(alignement)))
+#define SASI_PAL_COMPILER_ALIGN(alignement)  __attribute__((aligned(alignement)))
 
 /*! Mark function that never returns. */
 #define SASI_PAL_COMPILER_FUNC_NEVER_RETURNS __attribute__((noreturn))
@@ -127,24 +128,24 @@
 
 /*! Given data type may cast (alias) another data type pointer. */
 /* (this is used for "superclass" struct casting)             */
-#define SASI_PAL_COMPILER_TYPE_MAY_ALIAS
+#define SASI_PAL_COMPILER_TYPE_MAY_ALIAS 
 
 /*! Get sizeof for a structure type member. */
 #define SASI_PAL_COMPILER_SIZEOF_STRUCT_MEMBER(type_name, member_name) \
-    sizeof(((type_name *)0)->member_name)
+	sizeof(((type_name *)0)->member_name)
 
 /*! Assertion. */
 #define SASI_ASSERT_CONCAT_(a, b) a##b
 #define SASI_ASSERT_CONCAT(a, b) SASI_ASSERT_CONCAT_(a, b)
 #define SASI_PAL_COMPILER_ASSERT(cond, message) \
-    enum { SASI_ASSERT_CONCAT(assert_line_, __LINE__) = 1 / (!!(cond)) }
+	enum { SASI_ASSERT_CONCAT(assert_line_, __LINE__) = 1/(!!(cond)) }
 
 #elif defined(__ICCARM__)
 
 /************************ Defines ******************************/
 
 /*! Associate a symbol with a link section. */
-#define SASI_PAL_COMPILER_SECTION(sectionName) __attribute__((section(sectionName)))
+#define SASI_PAL_COMPILER_SECTION(sectionName)  __attribute__((section(sectionName)))
 
 /*! Mark symbol as used, i.e., prevent garbage collector from dropping it. */
 #define SASI_PAL_COMPILER_KEEP_SYMBOL __attribute__((used))
@@ -162,20 +163,21 @@
 
 /*! Given data type may cast (alias) another data type pointer. */
 /* (this is used for "superclass" struct casting). Not implemented */
-#define SASI_PAL_COMPILER_TYPE_MAY_ALIAS
+#define SASI_PAL_COMPILER_TYPE_MAY_ALIAS 
 
 /*! Get sizeof for a structure type member. */
 #define SASI_PAL_COMPILER_SIZEOF_STRUCT_MEMBER(type_name, member_name) \
-    sizeof(((type_name *)0)->member_name)
+	sizeof(((type_name *)0)->member_name)
 
 /*! Assertion. */
 #define SASI_ASSERT_CONCAT_(a, b) a##b
 #define SASI_ASSERT_CONCAT(a, b) SASI_ASSERT_CONCAT_(a, b)
 
 #define SASI_PAL_COMPILER_ASSERT(cond, message) \
-    enum { SASI_ASSERT_CONCAT(assert_line_, __LINE__) = 1 / (!!(cond)) }
+	enum { SASI_ASSERT_CONCAT(assert_line_, __LINE__) = 1/(!!(cond)) }
 
-#else
+
+#else    
 #error Unsupported compiler.
 #endif
 /**

@@ -51,59 +51,65 @@ extern "C" {
 #define _SPI_5W_
 
 /**@brief Struct containing configuration parameters of the SPI master. */
-typedef struct {
-    uint32_t SPI_Freq; /**< SPI frequency. */
-    uint32_t SPI_Pin_SCK; /**< SCK pin number. */
-    uint32_t SPI_Pin_MISO; /**< MISO pin number. */
-    uint32_t SPI_Pin_MOSI; /**< MOSI pin number .*/
-    uint32_t SPI_Pin_SS; /**< Slave select pin number. */
-    uint8_t SPI_ORDER; /**< Bytes order MSBFIRST or LSBFIRST. */
-    uint8_t SPI_CPOL; /**< Serial clock polarity ACTIVEHIGH or ACTIVELOW. */
-    uint8_t SPI_CPHA; /**< Serial clock phase LEADING or TRAILING. */
-} spi_master_config_t;
+typedef struct
+{
+    uint32_t SPI_Freq;      /**< SPI frequency. */
+    uint32_t SPI_Pin_SCK;   /**< SCK pin number. */
+    uint32_t SPI_Pin_MISO;  /**< MISO pin number. */
+    uint32_t SPI_Pin_MOSI;  /**< MOSI pin number .*/
+    uint32_t SPI_Pin_SS;    /**< Slave select pin number. */
+    uint8_t SPI_ORDER;      /**< Bytes order MSBFIRST or LSBFIRST. */
+    uint8_t SPI_CPOL;       /**< Serial clock polarity ACTIVEHIGH or ACTIVELOW. */
+    uint8_t SPI_CPHA;       /**< Serial clock phase LEADING or TRAILING. */
+ } spi_master_config_t;
 
 /**@brief SPI master driver events types. */
-typedef enum {
+typedef enum
+{
     SPI_MASTER_EVT_TRANSFER_STARTED = 0, /**< An event indicating that transfer has been started */
-    SPI_MASTER_EVT_TRANSFER_COMPLETED, /**< An event indicating that transfer has been completed */
-    SPI_MASTER_EVT_TRANSFER_ABORTED, /**< An event indicating that transfer has been aborted */
-    SPI_MASTER_EVT_TRANSFER_RESTARTED, /**< An event indicating that transfer has been resumed */
-    SPI_MASTER_EVT_FIRST_BYTE_RECEIVED, /**< An event indicating end of one byte transfer  */
-    SPI_MASTER_EVT_TYPE_MAX /**< Enumeration upper bound. */
+    SPI_MASTER_EVT_TRANSFER_COMPLETED,   /**< An event indicating that transfer has been completed */
+    SPI_MASTER_EVT_TRANSFER_ABORTED,   /**< An event indicating that transfer has been aborted */
+    SPI_MASTER_EVT_TRANSFER_RESTARTED,   /**< An event indicating that transfer has been resumed */
+    SPI_MASTER_EVT_FIRST_BYTE_RECEIVED,   /**< An event indicating end of one byte transfer  */
+    SPI_MASTER_EVT_TYPE_MAX              /**< Enumeration upper bound. */
 } spi_master_evt_type_t;
 
 /**@brief Struct containing parameters of the SPI MASTER event */
-typedef struct {
-    spi_master_evt_type_t type; /**< Type of an event */
-    uint16_t data; /**< event data - context dependent */
-} spi_master_evt_t;
+ typedef struct
+ {
+   spi_master_evt_type_t type; /**< Type of an event */
+   uint16_t data;                   /**< event data - context dependent */
+ } spi_master_evt_t;
 
-/**@brief SPI MASTER internal states types. */
-typedef enum {
-    SPI_MASTER_STATE_DISABLED, /**< A state indicating that SPI master is disabled. */
-    SPI_MASTER_STATE_BUSY, /**< A state indicating that SPI master is sending now. */
-    SPI_MASTER_STATE_ABORTED,
-    SPI_MASTER_STATE_IDLE /**< A state indicating that SPI master is idle now. */
-} spi_master_state_t;
+ /**@brief SPI MASTER internal states types. */
+ typedef enum
+ {
+   SPI_MASTER_STATE_DISABLED, /**< A state indicating that SPI master is disabled. */
+   SPI_MASTER_STATE_BUSY,     /**< A state indicating that SPI master is sending now. */
+   SPI_MASTER_STATE_ABORTED,
+   SPI_MASTER_STATE_IDLE      /**< A state indicating that SPI master is idle now. */
+ } spi_master_state_t;
 
-/**@brief Instances of SPI master module. */
-typedef enum {
-#ifdef SPI_MASTER_0_ENABLE
-    SPI_MASTER_0, /**< A instance of SPI master 0. */
-#endif
+ /**@brief Instances of SPI master module. */
+ typedef enum
+ {
+     #ifdef SPI_MASTER_0_ENABLE
+        SPI_MASTER_0,   /**< A instance of SPI master 0. */
+     #endif
 
-#ifdef SPI_MASTER_1_ENABLE
-    SPI_MASTER_1, /**< A instance of SPI master 1. */
-#endif
+     #ifdef SPI_MASTER_1_ENABLE
+        SPI_MASTER_1,   /**< A instance of SPI master 1. */
+     #endif
 
-    SPI_MASTER_HW_ENABLED_COUNT /**< A number of enabled instances of SPI master. */
-} spi_master_hw_instance_t;
+     SPI_MASTER_HW_ENABLED_COUNT    /**< A number of enabled instances of SPI master. */
+ } spi_master_hw_instance_t;
 
 /**@brief Type of generic callback function handler to be used by all SPI MASTER driver events.
  *
  * @param[in] spi_master_evt    SPI MASTER driver event.
  */
-typedef void (*spi_master_event_handler_t)(spi_master_evt_t spi_master_evt);
+typedef void (*spi_master_event_handler_t) (spi_master_evt_t spi_master_evt);
+
 
 /**@brief Function for opening and initializing a SPI master driver.
  *
@@ -123,7 +129,8 @@ typedef void (*spi_master_event_handler_t)(spi_master_evt_t spi_master_evt);
  * @retval NRF_ERROR_NULL             Operation failure. NULL pointer supplied.
  */
 uint32_t spi_master_open(const spi_master_hw_instance_t spi_master_hw_instance,
-                         spi_master_config_t const *const p_spi_master_config);
+                         spi_master_config_t const * const p_spi_master_config);
+
 
 /**@brief Function for closing a SPI MASTER driver.
  *
@@ -133,6 +140,7 @@ uint32_t spi_master_open(const spi_master_hw_instance_t spi_master_hw_instance,
  * @param[in] spi_master_hw_instance    A instance of SPI master.
  */
 void spi_master_close(const spi_master_hw_instance_t spi_master_hw_instance);
+
 
 /**@brief Function for transferring data between SPI master and SPI slave
  *
@@ -150,9 +158,10 @@ void spi_master_close(const spi_master_hw_instance_t spi_master_hw_instance);
  *                                    and event will be send upon transmission completion.
  * @retval NRF_ERROR_BUSY             Operation failure. Transmitting of a data is in progress.
  */
-uint32_t spi_master_send_recv(const spi_master_hw_instance_t spi_master_hw_instance,
-                              uint8_t *const p_tx_buf, const uint16_t tx_buf_len,
-                              uint8_t *const p_rx_buf, const uint16_t rx_buf_len);
+ uint32_t spi_master_send_recv(const spi_master_hw_instance_t spi_master_hw_instance,
+                               uint8_t * const p_tx_buf, const uint16_t tx_buf_len,
+                               uint8_t * const p_rx_buf, const uint16_t rx_buf_len);
+
 
 /**@brief Function for registration event handler.
 *
@@ -165,6 +174,7 @@ uint32_t spi_master_send_recv(const spi_master_hw_instance_t spi_master_hw_insta
 */
 void spi_master_evt_handler_reg(const spi_master_hw_instance_t spi_master_hw_instance,
                                 spi_master_event_handler_t event_handler);
+
 
 /**@brief Function for getting current state of the SPI master driver.
  *
@@ -185,8 +195,9 @@ uint32_t spi_master_abort(const spi_master_hw_instance_t spi_master_hw_instance)
 uint32_t spi_master_restart(const spi_master_hw_instance_t spi_master_hw_instance);
 
 void spi_5W_master_evt_handler_reg(const spi_master_hw_instance_t spi_master_hw_instance,
-                                   spi_master_event_handler_t event_handler);
+                                         spi_master_event_handler_t event_handler);
 #endif
+
 
 #ifdef __cplusplus
 }

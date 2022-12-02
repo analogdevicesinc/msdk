@@ -42,68 +42,79 @@
 /*************************************************************************************************/
 uint8_t lctrUnpackExtAdvHeader(lctrExtAdvHdr_t *pPdu, uint8_t *pNewFlags, const uint8_t *pBuf)
 {
-    const uint8_t *pStartBuf = pBuf;
+  const uint8_t *pStartBuf = pBuf;
 
-    *pNewFlags = 0;
+  *pNewFlags = 0;
 
-    uint8_t field8;
-    BSTREAM_TO_UINT8(field8, pBuf);
+  uint8_t field8;
+  BSTREAM_TO_UINT8(field8, pBuf);
 
-    pPdu->extHdrLen = field8 & 0x3F;
-    pPdu->advMode = field8 >> 6;
+  pPdu->extHdrLen = field8 & 0x3F;
+  pPdu->advMode = field8 >> 6;
 
-    /* Extended Header Flags only present if length >= 1. */
-    if (pPdu->extHdrLen) {
-        uint8_t extHdrFlags;
-        BSTREAM_TO_UINT8(extHdrFlags, pBuf);
-        *pNewFlags = extHdrFlags;
-        pPdu->extHdrFlags |= extHdrFlags;
+  /* Extended Header Flags only present if length >= 1. */
+  if (pPdu->extHdrLen)
+  {
+    uint8_t extHdrFlags;
+    BSTREAM_TO_UINT8(extHdrFlags, pBuf);
+    *pNewFlags = extHdrFlags;
+    pPdu->extHdrFlags |= extHdrFlags;
 
-        if (extHdrFlags & LL_EXT_HDR_ADV_ADDR_BIT) {
-            BSTREAM_TO_BDA64(pPdu->advAddr, pBuf);
-        }
-
-        if (extHdrFlags & LL_EXT_HDR_TGT_ADDR_BIT) {
-            BSTREAM_TO_BDA64(pPdu->tgtAddr, pBuf);
-        }
-
-        if (extHdrFlags & LL_EXT_HDR_CTE_INFO_BIT) {
-            /* Skip CTEInfo byte. */
-            pBuf++;
-        }
-
-        if (extHdrFlags & LL_EXT_HDR_ADI_BIT) {
-            uint16_t adi;
-            BSTREAM_TO_UINT16(adi, pBuf);
-            pPdu->did = (adi >> 0) & 0x0FFF;
-            pPdu->sid = (adi >> 12) & 0x000F;
-        }
-
-        if (extHdrFlags & LL_EXT_HDR_AUX_PTR_BIT) {
-            pPdu->pAuxPtr = pBuf;
-            pBuf += 3;
-        }
-
-        if (extHdrFlags & LL_EXT_HDR_SYNC_INFO_BIT) {
-            pPdu->pSyncInfo = pBuf;
-            pBuf += 18;
-        }
-
-        if (extHdrFlags & LL_EXT_HDR_TX_PWR_BIT) {
-            BSTREAM_TO_UINT8(pPdu->txPwr, pBuf);
-        }
+    if (extHdrFlags & LL_EXT_HDR_ADV_ADDR_BIT)
+    {
+      BSTREAM_TO_BDA64(pPdu->advAddr, pBuf);
     }
 
-    if ((pPdu->extHdrLen + 1) > (pBuf - pStartBuf)) {
-        pPdu->pAcad = pBuf;
-        pPdu->acadLen = (pPdu->extHdrLen + 1) - (pBuf - pStartBuf);
-        pBuf += pPdu->acadLen;
-    } else {
-        pPdu->pAcad = NULL;
-        pPdu->acadLen = 0;
+    if (extHdrFlags & LL_EXT_HDR_TGT_ADDR_BIT)
+    {
+      BSTREAM_TO_BDA64(pPdu->tgtAddr, pBuf);
     }
 
-    return pBuf - pStartBuf;
+    if (extHdrFlags & LL_EXT_HDR_CTE_INFO_BIT)
+    {
+      /* Skip CTEInfo byte. */
+      pBuf++;
+    }
+
+    if (extHdrFlags & LL_EXT_HDR_ADI_BIT)
+    {
+      uint16_t adi;
+      BSTREAM_TO_UINT16(adi, pBuf);
+      pPdu->did = (adi >>  0) & 0x0FFF;
+      pPdu->sid = (adi >> 12) & 0x000F;
+    }
+
+    if (extHdrFlags & LL_EXT_HDR_AUX_PTR_BIT)
+    {
+      pPdu->pAuxPtr = pBuf;
+      pBuf += 3;
+    }
+
+    if (extHdrFlags & LL_EXT_HDR_SYNC_INFO_BIT)
+    {
+      pPdu->pSyncInfo = pBuf;
+      pBuf += 18;
+    }
+
+    if (extHdrFlags & LL_EXT_HDR_TX_PWR_BIT)
+    {
+      BSTREAM_TO_UINT8(pPdu->txPwr, pBuf);
+    }
+  }
+
+  if ((pPdu->extHdrLen + 1) > (pBuf - pStartBuf))
+  {
+    pPdu->pAcad = pBuf;
+    pPdu->acadLen = (pPdu->extHdrLen + 1) - (pBuf - pStartBuf);
+    pBuf += pPdu->acadLen;
+  }
+  else
+  {
+    pPdu->pAcad = NULL;
+    pPdu->acadLen = 0;
+  }
+
+  return pBuf - pStartBuf;
 }
 
 /*************************************************************************************************/
@@ -116,15 +127,15 @@ uint8_t lctrUnpackExtAdvHeader(lctrExtAdvHdr_t *pPdu, uint8_t *pNewFlags, const 
 /*************************************************************************************************/
 void lctrUnpackAuxPtr(lctrAuxPtr_t *pAuxPtr, const uint8_t *pBuf)
 {
-    pAuxPtr->auxChIdx = (pBuf[0] >> 0) & 0x3F;
-    pAuxPtr->ca = (pBuf[0] >> 6) & 0x01;
-    pAuxPtr->offsetUnits = (pBuf[0] >> 7) & 0x01;
-    pBuf++;
+  pAuxPtr->auxChIdx    = (pBuf[0] >> 0) & 0x3F;
+  pAuxPtr->ca          = (pBuf[0] >> 6) & 0x01;
+  pAuxPtr->offsetUnits = (pBuf[0] >> 7) & 0x01;
+  pBuf++;
 
-    uint16_t field16;
-    BYTES_TO_UINT16(field16, pBuf);
-    pAuxPtr->auxOffset = (field16 >> 0) & 0x1FFF;
-    pAuxPtr->auxPhy = (field16 >> 13) & 0x0007;
+  uint16_t field16;
+  BYTES_TO_UINT16(field16, pBuf);
+  pAuxPtr->auxOffset   = (field16 >>  0) & 0x1FFF;
+  pAuxPtr->auxPhy      = (field16 >> 13) & 0x0007;
 }
 
 /*************************************************************************************************/
@@ -137,26 +148,26 @@ void lctrUnpackAuxPtr(lctrAuxPtr_t *pAuxPtr, const uint8_t *pBuf)
 /*************************************************************************************************/
 void lctrUnpackSyncInfo(lctrSyncInfo_t *pSyncInfo, const uint8_t *pBuf)
 {
-    uint16_t field16;
-    BYTES_TO_UINT16(field16, pBuf);
-    pSyncInfo->syncOffset = (field16 >> 0) & 0x1FFF;
-    pSyncInfo->offsetUnits = (field16 >> 13) & 0x1;
-    pSyncInfo->offsetAdjust = (field16 >> 14) & 0x1;
-    pBuf += sizeof(uint16_t);
+  uint16_t field16;
+  BYTES_TO_UINT16(field16, pBuf);
+  pSyncInfo->syncOffset   = (field16 >>  0) & 0x1FFF;
+  pSyncInfo->offsetUnits  = (field16 >> 13) & 0x1;
+  pSyncInfo->offsetAdjust = (field16 >> 14) & 0x1;
+  pBuf += sizeof(uint16_t);
 
-    BSTREAM_TO_UINT16(pSyncInfo->syncInter, pBuf);
+  BSTREAM_TO_UINT16(pSyncInfo->syncInter, pBuf);
 
-    uint64_t field64;
-    BYTES_TO_UINT40(field64, pBuf);
-    pSyncInfo->chanMap = (field64 >> 0) & LL_CHAN_DATA_ALL;
-    pSyncInfo->sca = (field64 >> 37) & 0x07;
-    pBuf += 5;
+  uint64_t field64;
+  BYTES_TO_UINT40(field64, pBuf);
+  pSyncInfo->chanMap    = (field64 >>  0) & LL_CHAN_DATA_ALL;
+  pSyncInfo->sca        = (field64 >>  37) & 0x07;
+  pBuf += 5;
 
-    BSTREAM_TO_UINT32(pSyncInfo->accAddr, pBuf);
+  BSTREAM_TO_UINT32(pSyncInfo->accAddr, pBuf);
 
-    BSTREAM_TO_UINT24(pSyncInfo->crcInit, pBuf);
+  BSTREAM_TO_UINT24(pSyncInfo->crcInit, pBuf);
 
-    BSTREAM_TO_UINT16(pSyncInfo->eventCounter, pBuf);
+  BSTREAM_TO_UINT16(pSyncInfo->eventCounter, pBuf);
 }
 
 /*************************************************************************************************/
@@ -169,8 +180,8 @@ void lctrUnpackSyncInfo(lctrSyncInfo_t *pSyncInfo, const uint8_t *pBuf)
 /*************************************************************************************************/
 void lctrUnpackAcadChanMapUpd(LctrAcadChanMapUpd_t *pChanMapUpd, const uint8_t *pBuf)
 {
-    BSTREAM_TO_UINT40(pChanMapUpd->chanMask, pBuf);
-    BSTREAM_TO_UINT16(pChanMapUpd->instant, pBuf);
+  BSTREAM_TO_UINT40(pChanMapUpd->chanMask, pBuf);
+  BSTREAM_TO_UINT16(pChanMapUpd->instant, pBuf);
 }
 
 /*************************************************************************************************/
@@ -184,47 +195,50 @@ void lctrUnpackAcadChanMapUpd(LctrAcadChanMapUpd_t *pChanMapUpd, const uint8_t *
 /*************************************************************************************************/
 void lctrUnpackAcadBigInfo(LctrAcadBigInfo_t *pBigInfo, const uint8_t *pBuf, uint8_t len)
 {
-    uint32_t field32;
-    uint64_t field64;
+  uint32_t field32;
+  uint64_t field64;
 
-    BSTREAM_TO_UINT32(field32, pBuf);
-    pBigInfo->bigOffs = (field32 >> 0) & 0x3FFF;
-    pBigInfo->bigOffsUnits = (field32 >> 14) & 0x0001;
-    pBigInfo->isoInter = (field32 >> 15) & 0x0FFF;
-    pBigInfo->numBis = (field32 >> 27) & 0x001F;
-    BSTREAM_TO_UINT32(field32, pBuf);
-    pBigInfo->nse = (field32 >> 0) & 0x0001F;
-    pBigInfo->bn = (field32 >> 5) & 0x00007;
-    pBigInfo->subEvtInterUsec = (field32 >> 8) & 0xFFFFF;
-    pBigInfo->pto = (field32 >> 28) & 0x0000F;
-    BSTREAM_TO_UINT32(field32, pBuf);
-    pBigInfo->bisSpaceUsec = (field32 >> 0) & 0xFFFFF;
-    pBigInfo->irc = (field32 >> 20) & 0x0000F;
-    pBigInfo->maxPdu = (field32 >> 24) & 0x000FF;
-    pBuf++; /* RFU */
-    BSTREAM_TO_UINT32(pBigInfo->seedAccAddr, pBuf);
-    BSTREAM_TO_UINT32(field32, pBuf);
-    pBigInfo->sduInterUsec = (field32 >> 0) & 0xFFFFF;
-    pBigInfo->maxSdu = (field32 >> 20) & 0x00FFF;
-    BSTREAM_TO_UINT16(pBigInfo->baseCrcInit, pBuf);
-    BSTREAM_TO_UINT40(field64, pBuf);
-    pBigInfo->chanMap = (field64 >> 0) & UINT64_C(0x1FFFFFFFFF);
-    pBigInfo->phy = (field64 >> 37) & 0x0007;
-    BSTREAM_TO_UINT40(field64, pBuf);
-    pBigInfo->bisPldCtr = (field64 >> 0) & UINT64_C(0x7FFFFFFFFF);
-    pBigInfo->framing = (field64 >> 39) & 0x0001;
+  BSTREAM_TO_UINT32(field32, pBuf);
+  pBigInfo->bigOffs         = (field32 >>  0) & 0x3FFF;
+  pBigInfo->bigOffsUnits    = (field32 >> 14) & 0x0001;
+  pBigInfo->isoInter        = (field32 >> 15) & 0x0FFF;
+  pBigInfo->numBis          = (field32 >> 27) & 0x001F;
+  BSTREAM_TO_UINT32(field32, pBuf);
+  pBigInfo->nse             = (field32 >>  0) & 0x0001F;
+  pBigInfo->bn              = (field32 >>  5) & 0x00007;
+  pBigInfo->subEvtInterUsec = (field32 >>  8) & 0xFFFFF;
+  pBigInfo->pto             = (field32 >> 28) & 0x0000F;
+  BSTREAM_TO_UINT32(field32, pBuf);
+  pBigInfo->bisSpaceUsec    = (field32 >>  0) & 0xFFFFF;
+  pBigInfo->irc             = (field32 >> 20) & 0x0000F;
+  pBigInfo->maxPdu          = (field32 >> 24) & 0x000FF;
+  pBuf++;  /* RFU */
+  BSTREAM_TO_UINT32(pBigInfo->seedAccAddr, pBuf);
+  BSTREAM_TO_UINT32(field32, pBuf);
+  pBigInfo->sduInterUsec    = (field32 >>  0) & 0xFFFFF;
+  pBigInfo->maxSdu          = (field32 >> 20) & 0x00FFF;
+  BSTREAM_TO_UINT16(pBigInfo->baseCrcInit, pBuf);
+  BSTREAM_TO_UINT40(field64, pBuf);
+  pBigInfo->chanMap         = (field64 >>  0) & UINT64_C(0x1FFFFFFFFF);
+  pBigInfo->phy             = (field64 >> 37) & 0x0007;
+  BSTREAM_TO_UINT40(field64, pBuf);
+  pBigInfo->bisPldCtr       = (field64 >>  0) & UINT64_C(0x7FFFFFFFFF);
+  pBigInfo->framing         = (field64 >> 39) & 0x0001;
 
-    /* Convert BIG Info enumeration to PHY value. */
-    pBigInfo->phy += 1;
+  /* Convert BIG Info enumeration to PHY value. */
+  pBigInfo->phy += 1;
 
-    if (len > (LL_ACAD_BIG_INFO_UNENCRPT_LEN + LL_ACAD_LEN_FIELD_LEN)) {
-        pBigInfo->encrypt = TRUE;
+  if (len > (LL_ACAD_BIG_INFO_UNENCRPT_LEN + LL_ACAD_LEN_FIELD_LEN))
+  {
+    pBigInfo->encrypt = TRUE;
 
-        memcpy(pBigInfo->giv, pBuf, LL_GIV_LEN);
-        pBuf += LL_GIV_LEN;
-        memcpy(pBigInfo->gskd, pBuf, LL_GSKD_LEN);
-        /* pBuf += LL_GSKD_LEN; */
-    } else {
-        pBigInfo->encrypt = FALSE;
-    }
+    memcpy(pBigInfo->giv, pBuf, LL_GIV_LEN);
+    pBuf += LL_GIV_LEN;
+    memcpy(pBigInfo->gskd, pBuf, LL_GSKD_LEN);
+    /* pBuf += LL_GSKD_LEN; */
+  }
+  else
+  {
+    pBigInfo->encrypt = FALSE;
+  }
 }

@@ -39,30 +39,33 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Operational states. */
-typedef enum {
-    PAL_BTN_STATE_UNINIT = 0, /*!< Uninitialized state. */
-    PAL_BTN_STATE_ERROR = 0, /*!< Error state. */
-    PAL_BTN_STATE_READY /*!< Ready state. */
+typedef enum
+{
+  PAL_BTN_STATE_UNINIT = 0,     /*!< Uninitialized state. */
+  PAL_BTN_STATE_ERROR  = 0,     /*!< Error state. */
+  PAL_BTN_STATE_READY           /*!< Ready state. */
 } PalBtnState_t;
 
 /*! \brief      Button position. */
-typedef enum {
-    PAL_BTN_POS_INVALID, /*!< Button position is invalid. */
-    PAL_BTN_POS_DOWN, /*!< Button position is depressed. */
-    PAL_BTN_POS_UP /*!< Button position is released. */
+typedef enum
+{
+  PAL_BTN_POS_INVALID,          /*!< Button position is invalid. */
+  PAL_BTN_POS_DOWN,             /*!< Button position is depressed. */
+  PAL_BTN_POS_UP                /*!< Button position is released. */
 } PalBtnPos_t;
 
 /*! \brief      Action callback signature. */
 typedef void (*PalBtnActionCback_t)(uint8_t btnId, PalBtnPos_t state);
 
 /*! \brief      Audio button assignments (only mapped in audio applications). */
-enum {
-    PAL_BTN_AUDIO_PLAY = 0x80, /*!< Play button. */
-    PAL_BTN_AUDIO_FWD, /*!< Fast Forward button. */
-    PAL_BTN_AUDIO_RWD, /*!< Fast Rewind button. */
-    PAL_BTN_AUDIO_VOL_UP, /*!< Volume Up button. */
-    PAL_BTN_AUDIO_VOL_DN, /*!< Volume Down button. */
-    PAL_BTN_AUDIO_MUTE /*!< Mute button. */
+enum
+{
+  PAL_BTN_AUDIO_PLAY = 0x80,    /*!< Play button. */
+  PAL_BTN_AUDIO_FWD,            /*!< Fast Forward button. */
+  PAL_BTN_AUDIO_RWD,            /*!< Fast Rewind button. */
+  PAL_BTN_AUDIO_VOL_UP,         /*!< Volume Up button. */
+  PAL_BTN_AUDIO_VOL_DN,         /*!< Volume Down button. */
+  PAL_BTN_AUDIO_MUTE            /*!< Mute button. */
 };
 
 /**************************************************************************************************
@@ -77,7 +80,7 @@ void PalBtnDeInit(void);
 PalBtnState_t PalBtnGetState(void);
 PalBtnPos_t PalBtnGetPosition(uint8_t id);
 
-/*! \} */ /* PAL_BUTTON */
+/*! \} */    /* PAL_BUTTON */
 
 #ifdef __cplusplus
 };

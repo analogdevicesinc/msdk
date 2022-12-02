@@ -73,167 +73,150 @@
   Macros
 **************************************************************************************************/
 
-#define MESH_HT_CL_OFFSET 0
-#define MESH_HT_SR_OFFSET (MESH_HT_CL_OFFSET + MESH_HT_CL_MAX_EVENT)
-#define MMDL_GEN_BATTERY_CL_OFFSET (MESH_HT_SR_OFFSET + MESH_HT_SR_MAX_EVENT)
-#define MMDL_GEN_BATTERY_SR_OFFSET (MMDL_GEN_BATTERY_CL_OFFSET + MMDL_GEN_BATTERY_CL_MAX_EVENT)
-#define MMDL_GEN_DEFAULT_TRANS_CL_OFFSET \
-    (MMDL_GEN_BATTERY_SR_OFFSET + MMDL_GEN_BATTERY_SR_MAX_EVENT)
-#define MMDL_GEN_DEFAULT_TRANS_SR_OFFSET \
-    (MMDL_GEN_DEFAULT_TRANS_CL_OFFSET + MMDL_GEN_DEFAULT_TRANS_CL_MAX_EVENT)
-#define MMDL_GEN_LEVEL_CL_OFFSET \
-    (MMDL_GEN_DEFAULT_TRANS_SR_OFFSET + MMDL_GEN_DEFAULT_TRANS_SR_MAX_EVENT)
-#define MMDL_GEN_LEVEL_SR_OFFSET (MMDL_GEN_LEVEL_CL_OFFSET + MMDL_GEN_LEVEL_CL_MAX_EVENT)
-#define MMDL_GEN_ONOFF_CL_OFFSET (MMDL_GEN_LEVEL_SR_OFFSET + MMDL_GEN_LEVEL_SR_MAX_EVENT)
-#define MMDL_GEN_ONOFF_SR_OFFSET (MMDL_GEN_ONOFF_CL_OFFSET + MMDL_GEN_ONOFF_CL_MAX_EVENT)
-#define MMDL_GEN_POWER_ONOFF_CL_OFFSET (MMDL_GEN_ONOFF_SR_OFFSET + MMDL_GEN_ONOFF_SR_MAX_EVENT)
-#define MMDL_GEN_POWER_ONOFF_SR_OFFSET \
-    (MMDL_GEN_POWER_ONOFF_CL_OFFSET + MMDL_GEN_POWER_ONOFF_CL_MAX_EVENT)
-#define MMDL_GEN_POWER_LEVEL_CL_OFFSET \
-    (MMDL_GEN_POWER_ONOFF_SR_OFFSET + MMDL_GEN_POWER_ONOFF_SR_MAX_EVENT)
-#define MMDL_GEN_POWER_LEVEL_SR_OFFSET \
-    (MMDL_GEN_POWER_LEVEL_CL_OFFSET + MMDL_GEN_POWER_CL_MAX_EVENT)
-#define MMDL_LIGHT_LIGHTNESS_CL_OFFSET \
-    (MMDL_GEN_POWER_LEVEL_SR_OFFSET + MMDL_GEN_POWER_SR_MAX_EVENT)
-#define MMDL_LIGHT_LIGHTNESS_SR_OFFSET \
-    (MMDL_LIGHT_LIGHTNESS_CL_OFFSET + MMDL_LIGHT_LIGHTNESS_CL_MAX_EVENT)
-#define MMDL_LIGHT_HSL_CL_OFFSET \
-    (MMDL_LIGHT_LIGHTNESS_SR_OFFSET + MMDL_LIGHT_LIGHTNESS_SR_MAX_EVENT)
-#define MMDL_LIGHT_HSL_SR_OFFSET (MMDL_LIGHT_HSL_CL_OFFSET + MMDL_LIGHT_HSL_CL_MAX_EVENT)
-#define MMDL_SCENE_CL_OFFSET (MMDL_LIGHT_HSL_SR_OFFSET + MMDL_LIGHT_HSL_SR_MAX_EVENT)
-#define MMDL_SCHEDULER_CL_OFFSET (MMDL_SCENE_CL_OFFSET + MMDL_SCENE_CL_MAX_EVENT)
-#define MMDL_SCHEDULER_SR_OFFSET (MMDL_SCHEDULER_CL_OFFSET + MMDL_SCHEDULER_CL_MAX_EVENT)
-#define MMDL_TIME_CL_OFFSET (MMDL_SCHEDULER_SR_OFFSET + MMDL_SCHEDULER_SR_MAX_EVENT)
-#define MMDL_TIME_SR_OFFSET (MMDL_TIME_CL_OFFSET + MMDL_TIME_CL_MAX_EVENT)
-#define MMDL_LIGHT_CTL_CL_OFFSET (MMDL_TIME_SR_OFFSET + MMDL_TIME_SR_MAX_EVENT)
-#define MMDL_LIGHT_CTL_SR_OFFSET (MMDL_LIGHT_CTL_CL_OFFSET + MMDL_LIGHT_CTL_CL_MAX_EVENT)
+#define MESH_HT_CL_OFFSET                 0
+#define MESH_HT_SR_OFFSET                 (MESH_HT_CL_OFFSET                + MESH_HT_CL_MAX_EVENT)
+#define MMDL_GEN_BATTERY_CL_OFFSET        (MESH_HT_SR_OFFSET                + MESH_HT_SR_MAX_EVENT)
+#define MMDL_GEN_BATTERY_SR_OFFSET        (MMDL_GEN_BATTERY_CL_OFFSET       + MMDL_GEN_BATTERY_CL_MAX_EVENT)
+#define MMDL_GEN_DEFAULT_TRANS_CL_OFFSET  (MMDL_GEN_BATTERY_SR_OFFSET       + MMDL_GEN_BATTERY_SR_MAX_EVENT)
+#define MMDL_GEN_DEFAULT_TRANS_SR_OFFSET  (MMDL_GEN_DEFAULT_TRANS_CL_OFFSET + MMDL_GEN_DEFAULT_TRANS_CL_MAX_EVENT)
+#define MMDL_GEN_LEVEL_CL_OFFSET          (MMDL_GEN_DEFAULT_TRANS_SR_OFFSET + MMDL_GEN_DEFAULT_TRANS_SR_MAX_EVENT)
+#define MMDL_GEN_LEVEL_SR_OFFSET          (MMDL_GEN_LEVEL_CL_OFFSET         + MMDL_GEN_LEVEL_CL_MAX_EVENT)
+#define MMDL_GEN_ONOFF_CL_OFFSET          (MMDL_GEN_LEVEL_SR_OFFSET         + MMDL_GEN_LEVEL_SR_MAX_EVENT)
+#define MMDL_GEN_ONOFF_SR_OFFSET          (MMDL_GEN_ONOFF_CL_OFFSET         + MMDL_GEN_ONOFF_CL_MAX_EVENT)
+#define MMDL_GEN_POWER_ONOFF_CL_OFFSET    (MMDL_GEN_ONOFF_SR_OFFSET         + MMDL_GEN_ONOFF_SR_MAX_EVENT)
+#define MMDL_GEN_POWER_ONOFF_SR_OFFSET    (MMDL_GEN_POWER_ONOFF_CL_OFFSET   + MMDL_GEN_POWER_ONOFF_CL_MAX_EVENT)
+#define MMDL_GEN_POWER_LEVEL_CL_OFFSET    (MMDL_GEN_POWER_ONOFF_SR_OFFSET   + MMDL_GEN_POWER_ONOFF_SR_MAX_EVENT)
+#define MMDL_GEN_POWER_LEVEL_SR_OFFSET    (MMDL_GEN_POWER_LEVEL_CL_OFFSET   + MMDL_GEN_POWER_CL_MAX_EVENT)
+#define MMDL_LIGHT_LIGHTNESS_CL_OFFSET    (MMDL_GEN_POWER_LEVEL_SR_OFFSET   + MMDL_GEN_POWER_SR_MAX_EVENT)
+#define MMDL_LIGHT_LIGHTNESS_SR_OFFSET    (MMDL_LIGHT_LIGHTNESS_CL_OFFSET   + MMDL_LIGHT_LIGHTNESS_CL_MAX_EVENT)
+#define MMDL_LIGHT_HSL_CL_OFFSET          (MMDL_LIGHT_LIGHTNESS_SR_OFFSET   + MMDL_LIGHT_LIGHTNESS_SR_MAX_EVENT)
+#define MMDL_LIGHT_HSL_SR_OFFSET          (MMDL_LIGHT_HSL_CL_OFFSET         + MMDL_LIGHT_HSL_CL_MAX_EVENT)
+#define MMDL_SCENE_CL_OFFSET              (MMDL_LIGHT_HSL_SR_OFFSET         + MMDL_LIGHT_HSL_SR_MAX_EVENT)
+#define MMDL_SCHEDULER_CL_OFFSET          (MMDL_SCENE_CL_OFFSET             + MMDL_SCENE_CL_MAX_EVENT)
+#define MMDL_SCHEDULER_SR_OFFSET          (MMDL_SCHEDULER_CL_OFFSET         + MMDL_SCHEDULER_CL_MAX_EVENT)
+#define MMDL_TIME_CL_OFFSET               (MMDL_SCHEDULER_SR_OFFSET         + MMDL_SCHEDULER_SR_MAX_EVENT)
+#define MMDL_TIME_SR_OFFSET               (MMDL_TIME_CL_OFFSET              + MMDL_TIME_CL_MAX_EVENT)
+#define MMDL_LIGHT_CTL_CL_OFFSET          (MMDL_TIME_SR_OFFSET              + MMDL_TIME_SR_MAX_EVENT)
+#define MMDL_LIGHT_CTL_SR_OFFSET          (MMDL_LIGHT_CTL_CL_OFFSET         + MMDL_LIGHT_CTL_CL_MAX_EVENT)
+
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Mesh Model event lengths. */
-static const uint16_t mmdlEventCbackLen[] = {
-    sizeof(meshHtClAttentionStatusEvt_t), /*!< MESH_HT_CL_ATTENTION_STATUS_EVENT */
-    sizeof(meshHtClFaultStatusEvt_t), /*!< MESH_HT_CL_CURRENT_STATUS_EVENT */
-    sizeof(meshHtClFaultStatusEvt_t), /*!< MESH_HT_CL_FAULT_STATUS_EVENT */
-    sizeof(meshHtClPeriodStatusEvt_t), /*!< MESH_HT_CL_PERIOD_STATUS_EVENT */
-    sizeof(meshHtSrTestStartEvt_t), /*!< MESH_HT_SR_TEST_START_EVENT */
-    sizeof(mmdlGenBatteryClStatusEvent_t), /*!< MMDL_GEN_BATTERY_CL_STATUS_EVENT */
-    sizeof(mmdlGenBatterySrCurrentState_t), /*!< MMDL_GEN_BATTERY_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlGenBatterySrStateUpdate_t), /*!< MMDL_GEN_BATTERY_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlGenDefaultTransClStatusEvent_t), /*!< MMDL_GEN_DEFAULT_TRANS_CL_STATUS_EVENT */
-    sizeof(
-        mmdlGenDefaultTransSrCurrentState_t), /*!< MMDL_GEN_DEFAULT_TRANS_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlGenDefaultTransSrStateUpdate_t), /*!< MMDL_GEN_DEFAULT_TRANS_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlGenLevelClStatusEvent_t), /*!< MMDL_GEN_LEVEL_CL_STATUS_EVENT */
-    sizeof(mmdlGenLevelSrCurrentState_t), /*!< MMDL_GEN_LEVEL_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlGenLevelSrStateUpdate_t), /*!< MMDL_GEN_LEVEL_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlGenOnOffClStatusEvent_t), /*!< MMDL_GEN_ONOFF_CL_STATUS_EVENT */
-    sizeof(mmdlGenOnOffSrCurrentState_t), /*!< MMDL_GEN_ONOFF_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlGenOnOffSrStateUpdate_t), /*!< MMDL_GEN_ONOFF_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlGenPowOnOffClStatusEvent_t), /*!< MMDL_GEN_POWER_ONOFF_CL_STATUS_EVENT */
-    sizeof(mmdlGenPowOnOffSrCurrentState_t), /*!< MMDL_GEN_POWER_ONOFF_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlGenPowOnOffSrStateUpdate_t), /*!< MMDL_GEN_POWER_ONOFF_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlGenPowerDefaultClStatusEvent_t), /*!< MMDL_GEN_POWER_DEFAULT_CL_STATUS_EVENT */
-    sizeof(mmdlGenPowerLastClStatusEvent_t), /*!< MMDL_GEN_POWER_LAST_CL_STATUS_EVENT */
-    sizeof(mmdlGenPowerLevelClStatusEvent_t), /*!< MMDL_GEN_POWER_LEVEL_CL_STATUS_EVENT */
-    sizeof(mmdlGenPowerRangeClStatusEvent_t), /*!< MMDL_GEN_POWER_RANGE_CL_STATUS_EVENT */
-    sizeof(mmdlGenPowerLevelSrCurrentState_t), /*!< MMDL_GEN_POWER_DEFAULT_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlGenPowerLevelSrStateUpdate_t), /*!< MMDL_GEN_POWER_DEFAULT_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlGenPowerLevelSrCurrentState_t), /*!< MMDL_GEN_POWER_LAST_SR_CURRENT_STATE_EVENT */
-    sizeof(
-        mmdlGenPowerLevelSrStateUpdate_t), /*!< MMDL_GEN_POWER_LAST_SR_STATE_UPDATE_EVENT TODO useful?*/
-    sizeof(mmdlGenPowerLevelSrCurrentState_t), /*!< MMDL_GEN_POWER_LEVEL_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlGenPowerLevelSrStateUpdate_t), /*!< MMDL_GEN_POWER_LEVEL_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlGenPowerLevelSrCurrentState_t), /*!< MMDL_GEN_POWER_RANGE_SR_CURRENT_EVENT */
-    sizeof(mmdlGenPowerLevelSrStateUpdate_t), /*!< MMDL_GEN_POWER_RANGE_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightLightnessActualStatusParam_t), /*!< MMDL_LIGHT_LIGHTNESS_CL_STATUS_EVENT */
-    sizeof(
-        mmdlLightLightnessDefaultStatusParam_t), /*!< MMDL_LIGHT_LIGHTNESS_DEFAULT_CL_STATUS_EVENT */
-    sizeof(mmdlLightLightnessLastStatusParam_t), /*!< MMDL_LIGHT_LIGHTNESS_LAST_CL_STATUS_EVENT */
-    sizeof(
-        mmdlLightLightnessLinearStatusParam_t), /*!< MMDL_LIGHT_LIGHTNESS_LINEAR_CL_STATUS_EVENT */
-    sizeof(mmdlLightLightnessRangeStatusParam_t), /*!< MMDL_LIGHT_LIGHTNESS_RANGE_CL_STATUS_EVENT */
-    sizeof(
-        mmdlLightLightnessSrCurrentState_t), /*!< MMDL_LIGHT_LIGHTNESS_DEFAULT_SR_CURRENT_STATE_EVENT */
-    sizeof(
-        mmdlLightLightnessSrStateUpdate_t), /*!< MMDL_LIGHT_LIGHTNESS_DEFAULT_SR_STATE_UPDATE_EVENT */
-    sizeof(
-        mmdlLightLightnessSrCurrentState_t), /*!< MMDL_LIGHT_LIGHTNESS_LAST_SR_CURRENT_STATE_EVENT */
-    sizeof(
-        mmdlLightLightnessSrCurrentState_t), /*!< MMDL_LIGHT_LIGHTNESS_LINEAR_SR_CURRENT_STATE_EVENT */
-    sizeof(
-        mmdlLightLightnessSrStateUpdate_t), /*!< MMDL_LIGHT_LIGHTNESS_LINEAR_SR_STATE_UPDATE_EVENT */
-    sizeof(
-        mmdlLightLightnessSrCurrentState_t), /*!< MMDL_LIGHT_LIGHTNESS_RANGE_SR_CURRENT_STATE_EVENT */
-    sizeof(
-        mmdlLightLightnessSrStateUpdate_t), /*!< MMDL_LIGHT_LIGHTNESS_RANGE_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightLightnessSrStateUpdate_t), /*!< MMDL_LIGHT_LIGHTNESS_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlLightLightnessSrCurrentState_t), /*!< MMDL_LIGHT_LIGHTNESS_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightHslClDefStatusEvent_t), /*!< MMDL_LIGHT_HSL_CL_DEF_STATUS_EVENT */
-    sizeof(mmdlLightHslClHueStatusEvent_t), /*!< MMDL_LIGHT_HSL_CL_HUE_STATUS_EVENT */
-    sizeof(mmdlLightHslClRangeStatusEvent_t), /*!< MMDL_LIGHT_HSL_CL_RANGE_STATUS_EVENT */
-    sizeof(mmdlLightHslClSatStatusEvent_t), /*!< MMDL_LIGHT_HSL_CL_SAT_STATUS_EVENT */
-    sizeof(mmdlLightHslClStatusEvent_t), /*!< MMDL_LIGHT_HSL_CL_STATUS_EVENT */
-    sizeof(mmdlLightHslClStatusEvent_t), /*!< MMDL_LIGHT_HSL_CL_TARGET_STATUS_EVENT */
-    sizeof(mmdlLightHslHueSrStateUpdate_t), /*!< MMDL_LIGHT_HSL_HUE_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightHslSatSrStateUpdate_t), /*!< MMDL_LIGHT_HSL_SAT_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightHslSrStateUpdate_t), /*!< MMDL_LIGHT_HSL_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightHslSrStateUpdate_t), /*!< MMDL_LIGHT_HSL_SR_RANGE_STATE_UPDATE_EVENT */
-    sizeof(mmdlSceneClRegStatusEvent_t), /*!< MMDL_SCENE_CL_REG_STATUS_EVENT */
-    sizeof(mmdlSceneClStatusEvent_t), /*!< MMDL_SCENE_CL_STATUS_EVENT */
-    sizeof(mmdlSchedulerClActionStatusEvent_t), /*!< MMDL_SCHEDULER_CL_ACTION_STATUS_EVENT */
-    sizeof(mmdlSchedulerClStatusEvent_t), /*!< MMDL_SCHEDULER_CL_STATUS_EVENT */
-    sizeof(mmdlSchedulerSrStartScheduleEvent_t), /*!< MMDL_SCHEDULER_SR_START_SCHEDULE_EVENT */
-    sizeof(mmdlSchedulerSrStopScheduleEvent_t), /*!< MMDL_SCHEDULER_SR_STOP_SCHEDULE_EVENT */
-    sizeof(mmdlTimeClDeltaStatusEvent_t), /*!< MMDL_TIMEDELTA_CL_STATUS_EVENT */
-    sizeof(mmdlTimeClRoleStatusEvent_t), /*!< MMDL_TIMEROLE_CL_STATUS_EVENT */
-    sizeof(mmdlTimeClZoneStatusEvent_t), /*!< MMDL_TIMEZONE_CL_STATUS_EVENT */
-    sizeof(mmdlTimeClStatusEvent_t), /*!< MMDL_TIME_CL_STATUS_EVENT */
-    sizeof(mmdlTimeSrCurrentState_t), /*!< MMDL_TIMEDELTA_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlTimeSrStateUpdate_t), /*!< MMDL_TIMEDELTA_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlTimeSrCurrentState_t), /*!< MMDL_TIMEROLE_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlTimeSrStateUpdate_t), /*!< MMDL_TIMEROLE_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlTimeSrCurrentState_t), /*!< MMDL_TIMEZONE_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlTimeSrStateUpdate_t), /*!< MMDL_TIMEZONE_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlTimeSrCurrentState_t), /*!< MMDL_TIME_SR_CURRENT_STATE_EVENT */
-    sizeof(mmdlTimeSrStateUpdate_t), /*!< MMDL_TIME_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightCtlClDefStatusEvent_t), /*!< MMDL_LIGHT_CTL_CL_DEF_STATUS_EVENT */
-    sizeof(mmdlLightCtlClTemperatureStatusEvent_t), /*!< MMDL_LIGHT_CTL_CL_TEMP_STATUS_EVENT */
-    sizeof(mmdlLightCtlClRangeStatusEvent_t), /*!< MMDL_LIGHT_CTL_CL_RANGE_STATUS_EVENT */
-    sizeof(mmdlLightCtlClStatusEvent_t), /*!< MMDL_LIGHT_CTL_CL_STATUS_EVENT */
-    sizeof(mmdlLightCtlTempSrStateUpdate_t), /*!< MMDL_LIGHT_CTL_TEMP_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightCtlSrStateUpdate_t), /*!< MMDL_LIGHT_CTL_SR_STATE_UPDATE_EVENT */
-    sizeof(mmdlLightCtlSrStateUpdate_t) /*!< MMDL_LIGHT_CTL_SR_RANGE_STATE_UPDATE_EVENT */
+static const uint16_t mmdlEventCbackLen[] =
+{
+  sizeof(meshHtClAttentionStatusEvt_t),            /*!< MESH_HT_CL_ATTENTION_STATUS_EVENT */
+  sizeof(meshHtClFaultStatusEvt_t),                /*!< MESH_HT_CL_CURRENT_STATUS_EVENT */
+  sizeof(meshHtClFaultStatusEvt_t),                /*!< MESH_HT_CL_FAULT_STATUS_EVENT */
+  sizeof(meshHtClPeriodStatusEvt_t),               /*!< MESH_HT_CL_PERIOD_STATUS_EVENT */
+  sizeof(meshHtSrTestStartEvt_t),                  /*!< MESH_HT_SR_TEST_START_EVENT */
+  sizeof(mmdlGenBatteryClStatusEvent_t),           /*!< MMDL_GEN_BATTERY_CL_STATUS_EVENT */
+  sizeof(mmdlGenBatterySrCurrentState_t),          /*!< MMDL_GEN_BATTERY_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlGenBatterySrStateUpdate_t),           /*!< MMDL_GEN_BATTERY_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlGenDefaultTransClStatusEvent_t),      /*!< MMDL_GEN_DEFAULT_TRANS_CL_STATUS_EVENT */
+  sizeof(mmdlGenDefaultTransSrCurrentState_t),     /*!< MMDL_GEN_DEFAULT_TRANS_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlGenDefaultTransSrStateUpdate_t),      /*!< MMDL_GEN_DEFAULT_TRANS_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlGenLevelClStatusEvent_t),             /*!< MMDL_GEN_LEVEL_CL_STATUS_EVENT */
+  sizeof(mmdlGenLevelSrCurrentState_t),            /*!< MMDL_GEN_LEVEL_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlGenLevelSrStateUpdate_t),             /*!< MMDL_GEN_LEVEL_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlGenOnOffClStatusEvent_t),             /*!< MMDL_GEN_ONOFF_CL_STATUS_EVENT */
+  sizeof(mmdlGenOnOffSrCurrentState_t),            /*!< MMDL_GEN_ONOFF_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlGenOnOffSrStateUpdate_t),             /*!< MMDL_GEN_ONOFF_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlGenPowOnOffClStatusEvent_t),          /*!< MMDL_GEN_POWER_ONOFF_CL_STATUS_EVENT */
+  sizeof(mmdlGenPowOnOffSrCurrentState_t),         /*!< MMDL_GEN_POWER_ONOFF_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlGenPowOnOffSrStateUpdate_t),          /*!< MMDL_GEN_POWER_ONOFF_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlGenPowerDefaultClStatusEvent_t),      /*!< MMDL_GEN_POWER_DEFAULT_CL_STATUS_EVENT */
+  sizeof(mmdlGenPowerLastClStatusEvent_t),         /*!< MMDL_GEN_POWER_LAST_CL_STATUS_EVENT */
+  sizeof(mmdlGenPowerLevelClStatusEvent_t),        /*!< MMDL_GEN_POWER_LEVEL_CL_STATUS_EVENT */
+  sizeof(mmdlGenPowerRangeClStatusEvent_t),        /*!< MMDL_GEN_POWER_RANGE_CL_STATUS_EVENT */
+  sizeof(mmdlGenPowerLevelSrCurrentState_t),       /*!< MMDL_GEN_POWER_DEFAULT_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlGenPowerLevelSrStateUpdate_t),        /*!< MMDL_GEN_POWER_DEFAULT_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlGenPowerLevelSrCurrentState_t),       /*!< MMDL_GEN_POWER_LAST_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlGenPowerLevelSrStateUpdate_t),        /*!< MMDL_GEN_POWER_LAST_SR_STATE_UPDATE_EVENT TODO useful?*/
+  sizeof(mmdlGenPowerLevelSrCurrentState_t),       /*!< MMDL_GEN_POWER_LEVEL_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlGenPowerLevelSrStateUpdate_t),        /*!< MMDL_GEN_POWER_LEVEL_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlGenPowerLevelSrCurrentState_t),       /*!< MMDL_GEN_POWER_RANGE_SR_CURRENT_EVENT */
+  sizeof(mmdlGenPowerLevelSrStateUpdate_t),        /*!< MMDL_GEN_POWER_RANGE_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightLightnessActualStatusParam_t),   /*!< MMDL_LIGHT_LIGHTNESS_CL_STATUS_EVENT */
+  sizeof(mmdlLightLightnessDefaultStatusParam_t),  /*!< MMDL_LIGHT_LIGHTNESS_DEFAULT_CL_STATUS_EVENT */
+  sizeof(mmdlLightLightnessLastStatusParam_t),     /*!< MMDL_LIGHT_LIGHTNESS_LAST_CL_STATUS_EVENT */
+  sizeof(mmdlLightLightnessLinearStatusParam_t),   /*!< MMDL_LIGHT_LIGHTNESS_LINEAR_CL_STATUS_EVENT */
+  sizeof(mmdlLightLightnessRangeStatusParam_t),    /*!< MMDL_LIGHT_LIGHTNESS_RANGE_CL_STATUS_EVENT */
+  sizeof(mmdlLightLightnessSrCurrentState_t),      /*!< MMDL_LIGHT_LIGHTNESS_DEFAULT_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlLightLightnessSrStateUpdate_t),       /*!< MMDL_LIGHT_LIGHTNESS_DEFAULT_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightLightnessSrCurrentState_t),      /*!< MMDL_LIGHT_LIGHTNESS_LAST_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlLightLightnessSrCurrentState_t),      /*!< MMDL_LIGHT_LIGHTNESS_LINEAR_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlLightLightnessSrStateUpdate_t),       /*!< MMDL_LIGHT_LIGHTNESS_LINEAR_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightLightnessSrCurrentState_t),      /*!< MMDL_LIGHT_LIGHTNESS_RANGE_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlLightLightnessSrStateUpdate_t),       /*!< MMDL_LIGHT_LIGHTNESS_RANGE_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightLightnessSrStateUpdate_t),       /*!< MMDL_LIGHT_LIGHTNESS_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlLightLightnessSrCurrentState_t),      /*!< MMDL_LIGHT_LIGHTNESS_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightHslClDefStatusEvent_t),          /*!< MMDL_LIGHT_HSL_CL_DEF_STATUS_EVENT */
+  sizeof(mmdlLightHslClHueStatusEvent_t),          /*!< MMDL_LIGHT_HSL_CL_HUE_STATUS_EVENT */
+  sizeof(mmdlLightHslClRangeStatusEvent_t),        /*!< MMDL_LIGHT_HSL_CL_RANGE_STATUS_EVENT */
+  sizeof(mmdlLightHslClSatStatusEvent_t),          /*!< MMDL_LIGHT_HSL_CL_SAT_STATUS_EVENT */
+  sizeof(mmdlLightHslClStatusEvent_t),             /*!< MMDL_LIGHT_HSL_CL_STATUS_EVENT */
+  sizeof(mmdlLightHslClStatusEvent_t),             /*!< MMDL_LIGHT_HSL_CL_TARGET_STATUS_EVENT */
+  sizeof(mmdlLightHslHueSrStateUpdate_t),          /*!< MMDL_LIGHT_HSL_HUE_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightHslSatSrStateUpdate_t),          /*!< MMDL_LIGHT_HSL_SAT_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightHslSrStateUpdate_t),             /*!< MMDL_LIGHT_HSL_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightHslSrStateUpdate_t),             /*!< MMDL_LIGHT_HSL_SR_RANGE_STATE_UPDATE_EVENT */
+  sizeof(mmdlSceneClRegStatusEvent_t),             /*!< MMDL_SCENE_CL_REG_STATUS_EVENT */
+  sizeof(mmdlSceneClStatusEvent_t),                /*!< MMDL_SCENE_CL_STATUS_EVENT */
+  sizeof(mmdlSchedulerClActionStatusEvent_t),      /*!< MMDL_SCHEDULER_CL_ACTION_STATUS_EVENT */
+  sizeof(mmdlSchedulerClStatusEvent_t),            /*!< MMDL_SCHEDULER_CL_STATUS_EVENT */
+  sizeof(mmdlSchedulerSrStartScheduleEvent_t),     /*!< MMDL_SCHEDULER_SR_START_SCHEDULE_EVENT */
+  sizeof(mmdlSchedulerSrStopScheduleEvent_t),      /*!< MMDL_SCHEDULER_SR_STOP_SCHEDULE_EVENT */
+  sizeof(mmdlTimeClDeltaStatusEvent_t),            /*!< MMDL_TIMEDELTA_CL_STATUS_EVENT */
+  sizeof(mmdlTimeClRoleStatusEvent_t),             /*!< MMDL_TIMEROLE_CL_STATUS_EVENT */
+  sizeof(mmdlTimeClZoneStatusEvent_t),             /*!< MMDL_TIMEZONE_CL_STATUS_EVENT */
+  sizeof(mmdlTimeClStatusEvent_t),                 /*!< MMDL_TIME_CL_STATUS_EVENT */
+  sizeof(mmdlTimeSrCurrentState_t),                /*!< MMDL_TIMEDELTA_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlTimeSrStateUpdate_t),                 /*!< MMDL_TIMEDELTA_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlTimeSrCurrentState_t),                /*!< MMDL_TIMEROLE_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlTimeSrStateUpdate_t),                 /*!< MMDL_TIMEROLE_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlTimeSrCurrentState_t),                /*!< MMDL_TIMEZONE_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlTimeSrStateUpdate_t),                 /*!< MMDL_TIMEZONE_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlTimeSrCurrentState_t),                /*!< MMDL_TIME_SR_CURRENT_STATE_EVENT */
+  sizeof(mmdlTimeSrStateUpdate_t),                 /*!< MMDL_TIME_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightCtlClDefStatusEvent_t),          /*!< MMDL_LIGHT_CTL_CL_DEF_STATUS_EVENT */
+  sizeof(mmdlLightCtlClTemperatureStatusEvent_t),  /*!< MMDL_LIGHT_CTL_CL_TEMP_STATUS_EVENT */
+  sizeof(mmdlLightCtlClRangeStatusEvent_t),        /*!< MMDL_LIGHT_CTL_CL_RANGE_STATUS_EVENT */
+  sizeof(mmdlLightCtlClStatusEvent_t),             /*!< MMDL_LIGHT_CTL_CL_STATUS_EVENT */
+  sizeof(mmdlLightCtlTempSrStateUpdate_t),         /*!< MMDL_LIGHT_CTL_TEMP_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightCtlSrStateUpdate_t),             /*!< MMDL_LIGHT_CTL_SR_STATE_UPDATE_EVENT */
+  sizeof(mmdlLightCtlSrStateUpdate_t)              /*!< MMDL_LIGHT_CTL_SR_RANGE_STATE_UPDATE_EVENT */
 };
 
-static const uint8_t mmdlEventOffsets[] = {
-    MESH_HT_CL_OFFSET, /*!< MESH_MMDL_HT_CL_EVENT */
-    MESH_HT_SR_OFFSET, /*!< MESH_MMDL_HT_SR_EVENT */
-    MMDL_GEN_BATTERY_CL_OFFSET, /*!< MESH_MMDL_GEN_BATTERY_CL_EVENT */
-    MMDL_GEN_BATTERY_SR_OFFSET, /*!< MESH_MMDL_GEN_BATTERY_SR_EVENT */
-    MMDL_GEN_DEFAULT_TRANS_CL_OFFSET, /*!< MESH_MMDL_GEN_DEFAULT_TRANS_CL_EVENT */
-    MMDL_GEN_DEFAULT_TRANS_SR_OFFSET, /*!< MESH_MMDL_GEN_DEFAULT_TRANS_SR_EVENT */
-    MMDL_GEN_LEVEL_CL_OFFSET, /*!< MESH_MMDL_GEN_LEVEL_CL_EVENT */
-    MMDL_GEN_LEVEL_SR_OFFSET, /*!< MESH_MMDL_GEN_LEVEL_SR_EVENT */
-    MMDL_GEN_ONOFF_CL_OFFSET, /*!< MESH_MMDL_GEN_ONOFF_CL_EVENT */
-    MMDL_GEN_ONOFF_SR_OFFSET, /*!< MESH_MMDL_GEN_ONOFF_SR_EVENT */
-    MMDL_GEN_POWER_ONOFF_CL_OFFSET, /*!< MESH_MMDL_GEN_POWER_ONOFF_CL_EVENT */
-    MMDL_GEN_POWER_ONOFF_SR_OFFSET, /*!< MESH_MMDL_GEN_POWER_ONOFF_SR_EVENT */
-    MMDL_GEN_POWER_LEVEL_CL_OFFSET, /*!< MESH_MMDL_GEN_POWER_LEVEL_CL_EVENT */
-    MMDL_GEN_POWER_LEVEL_SR_OFFSET, /*!< MESH_MMDL_GEN_POWER_LEVEL_SR_EVENT */
-    MMDL_LIGHT_LIGHTNESS_CL_OFFSET, /*!< MESH_MMDL_LIGHT_LIGHTNESS_CL_EVENT */
-    MMDL_LIGHT_LIGHTNESS_SR_OFFSET, /*!< MESH_MMDL_LIGHT_LIGHTNESS_SR_EVENT */
-    MMDL_LIGHT_HSL_CL_OFFSET, /*!< MESH_MMDL_LIGHT_HSL_CL_EVENT */
-    MMDL_LIGHT_HSL_SR_OFFSET, /*!< MESH_MMDL_LIGHT_HSL_SR_EVENT */
-    MMDL_SCENE_CL_OFFSET, /*!< MESH_MMDL_SCENE_CL_EVENT */
-    MMDL_SCHEDULER_CL_OFFSET, /*!< MESH_MMDL_SCHEDULER_CL_EVENT */
-    MMDL_SCHEDULER_SR_OFFSET, /*!< MESH_MMDL_SCHEDULER_SR_EVENT */
-    MMDL_TIME_CL_OFFSET, /*!< MESH_MMDL_TIME_CL_EVENT */
-    MMDL_TIME_SR_OFFSET, /*!< MESH_MMDL_TIME_SR_EVENT */
-    MMDL_LIGHT_CTL_CL_OFFSET, /*!< MESH_MMDL_LIGHT_CTL_CL_EVENT */
-    MMDL_LIGHT_CTL_SR_OFFSET /*!< MESH_MMDL_LIGHT_CTL_SR_EVENT */
+static const uint8_t mmdlEventOffsets[] =
+{
+  MESH_HT_CL_OFFSET,                               /*!< MESH_MMDL_HT_CL_EVENT */
+  MESH_HT_SR_OFFSET,                               /*!< MESH_MMDL_HT_SR_EVENT */
+  MMDL_GEN_BATTERY_CL_OFFSET,                      /*!< MESH_MMDL_GEN_BATTERY_CL_EVENT */
+  MMDL_GEN_BATTERY_SR_OFFSET,                      /*!< MESH_MMDL_GEN_BATTERY_SR_EVENT */
+  MMDL_GEN_DEFAULT_TRANS_CL_OFFSET,                /*!< MESH_MMDL_GEN_DEFAULT_TRANS_CL_EVENT */
+  MMDL_GEN_DEFAULT_TRANS_SR_OFFSET,                /*!< MESH_MMDL_GEN_DEFAULT_TRANS_SR_EVENT */
+  MMDL_GEN_LEVEL_CL_OFFSET,                        /*!< MESH_MMDL_GEN_LEVEL_CL_EVENT */
+  MMDL_GEN_LEVEL_SR_OFFSET,                        /*!< MESH_MMDL_GEN_LEVEL_SR_EVENT */
+  MMDL_GEN_ONOFF_CL_OFFSET,                        /*!< MESH_MMDL_GEN_ONOFF_CL_EVENT */
+  MMDL_GEN_ONOFF_SR_OFFSET,                        /*!< MESH_MMDL_GEN_ONOFF_SR_EVENT */
+  MMDL_GEN_POWER_ONOFF_CL_OFFSET,                  /*!< MESH_MMDL_GEN_POWER_ONOFF_CL_EVENT */
+  MMDL_GEN_POWER_ONOFF_SR_OFFSET,                  /*!< MESH_MMDL_GEN_POWER_ONOFF_SR_EVENT */
+  MMDL_GEN_POWER_LEVEL_CL_OFFSET,                  /*!< MESH_MMDL_GEN_POWER_LEVEL_CL_EVENT */
+  MMDL_GEN_POWER_LEVEL_SR_OFFSET,                  /*!< MESH_MMDL_GEN_POWER_LEVEL_SR_EVENT */
+  MMDL_LIGHT_LIGHTNESS_CL_OFFSET,                  /*!< MESH_MMDL_LIGHT_LIGHTNESS_CL_EVENT */
+  MMDL_LIGHT_LIGHTNESS_SR_OFFSET,                  /*!< MESH_MMDL_LIGHT_LIGHTNESS_SR_EVENT */
+  MMDL_LIGHT_HSL_CL_OFFSET,                        /*!< MESH_MMDL_LIGHT_HSL_CL_EVENT */
+  MMDL_LIGHT_HSL_SR_OFFSET,                        /*!< MESH_MMDL_LIGHT_HSL_SR_EVENT */
+  MMDL_SCENE_CL_OFFSET,                            /*!< MESH_MMDL_SCENE_CL_EVENT */
+  MMDL_SCHEDULER_CL_OFFSET,                        /*!< MESH_MMDL_SCHEDULER_CL_EVENT */
+  MMDL_SCHEDULER_SR_OFFSET,                        /*!< MESH_MMDL_SCHEDULER_SR_EVENT */
+  MMDL_TIME_CL_OFFSET,                             /*!< MESH_MMDL_TIME_CL_EVENT */
+  MMDL_TIME_SR_OFFSET,                             /*!< MESH_MMDL_TIME_SR_EVENT */
+  MMDL_LIGHT_CTL_CL_OFFSET,                        /*!< MESH_MMDL_LIGHT_CTL_CL_EVENT */
+  MMDL_LIGHT_CTL_SR_OFFSET                         /*!< MESH_MMDL_LIGHT_CTL_SR_EVENT */
 };
 
 /**************************************************************************************************
@@ -251,7 +234,7 @@ static const uint8_t mmdlEventOffsets[] = {
 /*************************************************************************************************/
 void MmdlEmptyCback(const wsfMsgHdr_t *pEvent)
 {
-    (void)pEvent;
+  (void)pEvent;
 }
 
 /**************************************************************************************************
@@ -269,9 +252,10 @@ void MmdlEmptyCback(const wsfMsgHdr_t *pEvent)
 /*************************************************************************************************/
 uint16_t MmdlSizeOfEvt(wsfMsgHdr_t *pEvt)
 {
-    if ((pEvt->event >= MMDL_CBACK_START) && (pEvt->event <= MMDL_CBACK_END)) {
-        return mmdlEventCbackLen[mmdlEventOffsets[pEvt->event - MMDL_CBACK_START] + pEvt->param];
-    }
+  if ((pEvt->event >= MMDL_CBACK_START) && (pEvt->event <= MMDL_CBACK_END))
+  {
+    return mmdlEventCbackLen[mmdlEventOffsets[pEvt->event - MMDL_CBACK_START] + pEvt->param];
+  }
 
-    return 0;
+  return 0;
 }

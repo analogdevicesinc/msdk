@@ -67,7 +67,8 @@ extern "C" {
  *
  * @return The updated CRC-32 value, based on the input supplied.
  */
-uint32_t crc32_compute(uint8_t const *p_data, uint32_t size, uint32_t const *p_crc);
+uint32_t crc32_compute(uint8_t const * p_data, uint32_t size, uint32_t const * p_crc);
+
 
 #ifdef __cplusplus
 }

@@ -39,30 +39,31 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Maximum value for maximum Data PDU length (spec limit is 251) */
-#define LCTR_CIS_MAX_DATA_LEN_MAX BB_DATA_PLD_MAX_LEN
+#define LCTR_CIS_MAX_DATA_LEN_MAX       BB_DATA_PLD_MAX_LEN
 
 /*! \brief      Data channel PDU length (header + payload + MIC). */
-#define LCTR_CIS_DATA_PDU_LEN(len) ((len) + LL_DATA_HDR_LEN + LL_DATA_MIC_LEN)
+#define LCTR_CIS_DATA_PDU_LEN(len)      ((len) + LL_DATA_HDR_LEN + LL_DATA_MIC_LEN)
 
 /*! \brief      Maximum data channel PDU length (header + payload + MIC). */
-#define LCTR_CIS_DATA_PDU_MAX_LEN LCTR_CIS_DATA_PDU_LEN(LCTR_CIS_MAX_DATA_LEN_MAX)
+#define LCTR_CIS_DATA_PDU_MAX_LEN       LCTR_CIS_DATA_PDU_LEN(LCTR_CIS_MAX_DATA_LEN_MAX)
 
 /*! \brief      Minimum data channel PDU length (header + payload + MIC). */
-#define LCTR_CIS_DATA_PDU_MIN_LEN LCTR_CIS_DATA_PDU_LEN(0)
+#define LCTR_CIS_DATA_PDU_MIN_LEN       LCTR_CIS_DATA_PDU_LEN(0)
 
 /*! \brief      CIS messages. */
-enum {
-    /* Broadcast events */
-    LCTR_CIS_MSG_RESET = LCTR_MSG_RESET, /*!< Reset API message. */
-    /* Scan events */
-    LCTR_CIS_MSG_CIS_EST, /*!< CIS established event. */
-    LCTR_CIS_MSG_CIS_EST_FAIL, /*!< CIS establishment failed event. */
-    LCTR_CIS_MSG_CIS_DISC, /*!< CIS disconnect event. */
-    LCTR_CIS_MSG_CIS_CONN_FAIL, /*!< CIS connection fail to maintain event. */
-    LCTR_CIS_MSG_CIS_CLOSED, /*!< CIS closed event. */
-    LCTR_CIS_MSG_CIS_TERM_MIC_FAILED, /*!< CIS terminated due to MIC failiure event. */
-    LCTR_CIS_MSG_TOTAL, /*!< Total number of CIS slave events. */
-    LCTR_CIS_MSG_INVALID = 0xFF, /*!< Invalid CIS message. */
+enum
+{
+  /* Broadcast events */
+  LCTR_CIS_MSG_RESET               = LCTR_MSG_RESET,    /*!< Reset API message. */
+  /* Scan events */
+  LCTR_CIS_MSG_CIS_EST,                                 /*!< CIS established event. */
+  LCTR_CIS_MSG_CIS_EST_FAIL,                            /*!< CIS establishment failed event. */
+  LCTR_CIS_MSG_CIS_DISC,                                /*!< CIS disconnect event. */
+  LCTR_CIS_MSG_CIS_CONN_FAIL,                           /*!< CIS connection fail to maintain event. */
+  LCTR_CIS_MSG_CIS_CLOSED,                              /*!< CIS closed event. */
+  LCTR_CIS_MSG_CIS_TERM_MIC_FAILED,                     /*!< CIS terminated due to MIC failiure event. */
+  LCTR_CIS_MSG_TOTAL,                                   /*!< Total number of CIS slave events. */
+  LCTR_CIS_MSG_INVALID= 0xFF,                           /*!< Invalid CIS message. */
 };
 
 /**************************************************************************************************
@@ -70,15 +71,17 @@ enum {
 **************************************************************************************************/
 
 /*! \brief      Disconnect message. Make sure it has the same structure as lctrDisconnect_t. */
-typedef struct {
-    lctrMsgHdr_t hdr; /*!< Message header. */
-    uint8_t reason; /*!< Disconnect reason. */
+typedef struct
+{
+  lctrMsgHdr_t          hdr;        /*!< Message header. */
+  uint8_t               reason;     /*!< Disconnect reason. */
 } lctrCisDisconnect_t;
 
 /*! \brief      Link layer controller message data. */
-typedef union {
-    lctrMsgHdr_t hdr; /*!< Message header. */
-    lctrCisDisconnect_t disc; /*!< Disconnect message data. */
+typedef union
+{
+  lctrMsgHdr_t          hdr;        /*!< Message header. */
+  lctrCisDisconnect_t   disc;       /*!< Disconnect message data. */
 } lctrCisMsg_t;
 
 /**************************************************************************************************

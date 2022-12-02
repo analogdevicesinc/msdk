@@ -62,35 +62,49 @@
 #include "mbedtls/sha512.h"
 /*lint -restore*/
 
-ret_code_t nrf_crypto_backend_mbedtls_sign(void *p_context, void const *p_private_key,
-                                           uint8_t const *p_data, size_t data_size,
-                                           uint8_t *p_signature)
+
+ret_code_t nrf_crypto_backend_mbedtls_sign(
+    void           * p_context,
+    void     const * p_private_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t        * p_signature)
 {
-    int result;
-    mbedtls_mpi r_mpi;
-    mbedtls_mpi s_mpi;
+    int               result;
+    mbedtls_mpi       r_mpi;
+    mbedtls_mpi       s_mpi;
     mbedtls_ecp_group group;
 
-    nrf_crypto_backend_mbedtls_ecc_private_key_t const *p_prv =
+    nrf_crypto_backend_mbedtls_ecc_private_key_t const * p_prv =
         (nrf_crypto_backend_mbedtls_ecc_private_key_t const *)p_private_key;
 
-    nrf_crypto_ecc_curve_info_t const *p_info = p_prv->header.p_info;
+    nrf_crypto_ecc_curve_info_t const * p_info = p_prv->header.p_info;
 
-    if (!nrf_crypto_backend_mbedtls_ecc_group_load(&group, p_info)) {
+    if (!nrf_crypto_backend_mbedtls_ecc_group_load(&group, p_info))
+    {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
     mbedtls_mpi_init(&r_mpi);
     mbedtls_mpi_init(&s_mpi);
-    result = mbedtls_ecdsa_sign(&group, &r_mpi, &s_mpi, &p_prv->key, p_data, data_size,
-                                nrf_crypto_backend_mbedtls_ecc_mbedtls_rng, NULL);
+    result = mbedtls_ecdsa_sign(&group,
+                                &r_mpi,
+                                &s_mpi,
+                                &p_prv->key,
+                                p_data,
+                                data_size,
+                                nrf_crypto_backend_mbedtls_ecc_mbedtls_rng,
+                                NULL);
 
     mbedtls_ecp_group_free(&group);
 
-    if (result == 0) {
+    if (result == 0)
+    {
         result = mbedtls_mpi_write_binary(&r_mpi, p_signature, p_info->raw_private_key_size);
-        if (result == 0) {
-            result = mbedtls_mpi_write_binary(&s_mpi, &p_signature[p_info->raw_private_key_size],
+        if (result == 0)
+        {
+            result = mbedtls_mpi_write_binary(&s_mpi,
+                                              &p_signature[p_info->raw_private_key_size],
                                               p_info->raw_private_key_size);
         }
     }
@@ -98,27 +112,33 @@ ret_code_t nrf_crypto_backend_mbedtls_sign(void *p_context, void const *p_privat
     mbedtls_mpi_free(&r_mpi);
     mbedtls_mpi_free(&s_mpi);
 
-    if (result != 0) {
+    if (result != 0)
+    {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_backend_mbedtls_verify(void *p_context, void const *p_public_key,
-                                             uint8_t const *p_data, size_t data_size,
-                                             uint8_t const *p_signature)
+
+ret_code_t nrf_crypto_backend_mbedtls_verify(
+    void           * p_context,
+    void     const * p_public_key,
+    uint8_t  const * p_data,
+    size_t           data_size,
+    uint8_t  const * p_signature)
 {
-    int result;
-    mbedtls_mpi r_mpi;
-    mbedtls_mpi s_mpi;
+    int               result;
+    mbedtls_mpi       r_mpi;
+    mbedtls_mpi       s_mpi;
     mbedtls_ecp_group group;
 
-    nrf_crypto_backend_mbedtls_ecc_public_key_t const *p_pub =
+    nrf_crypto_backend_mbedtls_ecc_public_key_t const * p_pub =
         (nrf_crypto_backend_mbedtls_ecc_public_key_t const *)p_public_key;
 
-    nrf_crypto_ecc_curve_info_t const *p_info = p_pub->header.p_info;
+    nrf_crypto_ecc_curve_info_t const * p_info = p_pub->header.p_info;
 
-    if (!nrf_crypto_backend_mbedtls_ecc_group_load(&group, p_info)) {
+    if (!nrf_crypto_backend_mbedtls_ecc_group_load(&group, p_info))
+    {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
@@ -126,10 +146,13 @@ ret_code_t nrf_crypto_backend_mbedtls_verify(void *p_context, void const *p_publ
     mbedtls_mpi_init(&s_mpi);
 
     result = mbedtls_mpi_read_binary(&r_mpi, p_signature, p_info->raw_private_key_size);
-    if (result == 0) {
-        result = mbedtls_mpi_read_binary(&s_mpi, &p_signature[p_info->raw_private_key_size],
+    if (result == 0)
+    {
+        result = mbedtls_mpi_read_binary(&s_mpi,
+                                         &p_signature[p_info->raw_private_key_size],
                                          p_info->raw_private_key_size);
-        if (result == 0) {
+        if (result == 0)
+        {
             result = mbedtls_ecdsa_verify(&group, p_data, data_size, &p_pub->key, &r_mpi, &s_mpi);
         }
     }
@@ -138,12 +161,16 @@ ret_code_t nrf_crypto_backend_mbedtls_verify(void *p_context, void const *p_publ
     mbedtls_mpi_free(&r_mpi);
     mbedtls_mpi_free(&s_mpi);
 
-    if (result == MBEDTLS_ERR_ECP_VERIFY_FAILED) {
+    if (result == MBEDTLS_ERR_ECP_VERIFY_FAILED)
+    {
         return NRF_ERROR_CRYPTO_ECDSA_INVALID_SIGNATURE;
-    } else if (result != 0) {
+    }
+    else if (result != 0)
+    {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     return NRF_SUCCESS;
 }
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS)

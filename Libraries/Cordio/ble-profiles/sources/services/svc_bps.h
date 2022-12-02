@@ -40,25 +40,26 @@ extern "C" {
  *
  */
 /**@{*/
-#define BPS_START_HDL 0xE0 /*!< \brief Start handle. */
-#define BPS_END_HDL (BPS_MAX_HDL - 1) /*!< \brief End handle. */
+#define BPS_START_HDL               0xE0              /*!< \brief Start handle. */
+#define BPS_END_HDL                 (BPS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Blood Pressure Service Handles */
-enum {
-    BPS_SVC_HDL = BPS_START_HDL, /*!< \brief Blood pressure service declaration */
-    BPS_BPM_CH_HDL, /*!< \brief Blood pressure measurement characteristic */
-    BPS_BPM_HDL, /*!< \brief Blood pressure measurement */
-    BPS_BPM_CH_CCC_HDL, /*!< \brief Blood pressure measurement client characteristic configuration */
-    BPS_ICP_CH_HDL, /*!< \brief Intermediate cuff pressure characteristic */
-    BPS_ICP_HDL, /*!< \brief Intermediate cuff pressure */
-    BPS_ICP_CH_CCC_HDL, /*!< \brief Intermediate cuff pressure client characteristic configuration */
-    BPS_BPF_CH_HDL, /*!< \brief Blood pressure feature characteristic */
-    BPS_BPF_HDL, /*!< \brief Blood pressure feature */
-    BPS_MAX_HDL /*!< \brief Maximum handle. */
+enum
+{
+  BPS_SVC_HDL = BPS_START_HDL,      /*!< \brief Blood pressure service declaration */
+  BPS_BPM_CH_HDL,                   /*!< \brief Blood pressure measurement characteristic */
+  BPS_BPM_HDL,                      /*!< \brief Blood pressure measurement */
+  BPS_BPM_CH_CCC_HDL,               /*!< \brief Blood pressure measurement client characteristic configuration */
+  BPS_ICP_CH_HDL,                   /*!< \brief Intermediate cuff pressure characteristic */
+  BPS_ICP_HDL,                      /*!< \brief Intermediate cuff pressure */
+  BPS_ICP_CH_CCC_HDL,               /*!< \brief Intermediate cuff pressure client characteristic configuration */
+  BPS_BPF_CH_HDL,                   /*!< \brief Blood pressure feature characteristic */
+  BPS_BPF_HDL,                      /*!< \brief Blood pressure feature */
+  BPS_MAX_HDL                       /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -107,7 +108,7 @@ void SvcBpsCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback)
 /*************************************************************************************************/
 void SvcBpsToggleFeatureFlags(uint8_t flag);
 
-/*! \} */ /* BLOOD_PRESSURE_SERVICE */
+/*! \} */    /* BLOOD_PRESSURE_SERVICE */
 
 #ifdef __cplusplus
 };

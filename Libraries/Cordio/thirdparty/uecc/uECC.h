@@ -9,11 +9,11 @@
 If uECC_PLATFORM is not defined, the code will try to guess it based on compiler macros.
 Possible values for uECC_PLATFORM are defined below: */
 #define uECC_arch_other 0
-#define uECC_x86 1
-#define uECC_x86_64 2
-#define uECC_arm 3
-#define uECC_arm_thumb 4
-#define uECC_avr 5
+#define uECC_x86        1
+#define uECC_x86_64     2
+#define uECC_arm        3
+#define uECC_arm_thumb  4
+#define uECC_avr        5
 #define uECC_arm_thumb2 6
 
 /* If desired, you can define uECC_WORD_SIZE as appropriate for your platform (1, 4, or 8 bytes).
@@ -25,11 +25,11 @@ uECC_asm_none  - Use standard C99 only.
 uECC_asm_small - Use GCC inline assembly for the target platform (if available), optimized for
                  minimum size.
 uECC_asm_fast  - Use GCC inline assembly optimized for maximum speed. */
-#define uECC_asm_none 0
+#define uECC_asm_none  0
 #define uECC_asm_small 1
-#define uECC_asm_fast 2
+#define uECC_asm_fast  2
 #ifndef uECC_ASM
-#define uECC_ASM uECC_asm_fast
+    #define uECC_ASM uECC_asm_fast
 #endif
 
 /* Curve selection options. */
@@ -39,14 +39,14 @@ uECC_asm_fast  - Use GCC inline assembly optimized for maximum speed. */
 #define uECC_secp256k1 4
 #define uECC_secp224r1 5
 #ifndef uECC_CURVE
-#define uECC_CURVE uECC_secp256r1
+    #define uECC_CURVE uECC_secp256r1
 #endif
 
 /* uECC_SQUARE_FUNC - If enabled (defined as nonzero), this will cause a specific function to be
 used for (scalar) squaring instead of the generic multiplication function. This will make things
 faster by about 8% but increases the code size. */
 #ifndef uECC_SQUARE_FUNC
-#define uECC_SQUARE_FUNC 1
+    #define uECC_SQUARE_FUNC 1
 #endif
 
 #define uECC_CONCAT1(a, b) a##b
@@ -61,7 +61,8 @@ faster by about 8% but increases the code size. */
 #define uECC_BYTES uECC_CONCAT(uECC_size_, uECC_CURVE)
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* uECC_RNG_Function type
@@ -103,7 +104,7 @@ Outputs:
 
 Returns 1 if the key pair was generated successfully, 0 if an error occurred.
 */
-int uECC_make_key(uint8_t public_key[uECC_BYTES * 2], uint8_t private_key[uECC_BYTES]);
+int uECC_make_key(uint8_t public_key[uECC_BYTES*2], uint8_t private_key[uECC_BYTES]);
 
 /* uECC_shared_secret() function.
 Compute a shared secret given your secret key and someone else's public key.
@@ -119,8 +120,9 @@ Outputs:
 
 Returns 1 if the shared secret was generated successfully, 0 if an error occurred.
 */
-int uECC_shared_secret(const uint8_t public_key[uECC_BYTES * 2],
-                       const uint8_t private_key[uECC_BYTES], uint8_t secret[uECC_BYTES]);
+int uECC_shared_secret(const uint8_t public_key[uECC_BYTES*2],
+                       const uint8_t private_key[uECC_BYTES],
+                       uint8_t secret[uECC_BYTES]);
 
 /* uECC_sign() function.
 Generate an ECDSA signature for a given hash value.
@@ -137,8 +139,9 @@ Outputs:
 
 Returns 1 if the signature generated successfully, 0 if an error occurred.
 */
-int uECC_sign(const uint8_t private_key[uECC_BYTES], const uint8_t message_hash[uECC_BYTES],
-              uint8_t signature[uECC_BYTES * 2]);
+int uECC_sign(const uint8_t private_key[uECC_BYTES],
+              const uint8_t message_hash[uECC_BYTES],
+              uint8_t signature[uECC_BYTES*2]);
 
 /* uECC_HashContext structure.
 This is used to pass in an arbitrary hash function to uECC_sign_deterministic().
@@ -180,7 +183,8 @@ void finish_SHA256(uECC_HashContext *base, uint8_t *hash_result) {
 */
 typedef struct uECC_HashContext {
     void (*init_hash)(struct uECC_HashContext *context);
-    void (*update_hash)(struct uECC_HashContext *context, const uint8_t *message,
+    void (*update_hash)(struct uECC_HashContext *context,
+                        const uint8_t *message,
                         unsigned message_size);
     void (*finish_hash)(struct uECC_HashContext *context, uint8_t *hash_result);
     unsigned block_size; /* Hash function block size in bytes, eg 64 for SHA-256. */
@@ -208,8 +212,9 @@ Outputs:
 Returns 1 if the signature generated successfully, 0 if an error occurred.
 */
 int uECC_sign_deterministic(const uint8_t private_key[uECC_BYTES],
-                            const uint8_t message_hash[uECC_BYTES], uECC_HashContext *hash_context,
-                            uint8_t signature[uECC_BYTES * 2]);
+                            const uint8_t message_hash[uECC_BYTES],
+                            uECC_HashContext *hash_context,
+                            uint8_t signature[uECC_BYTES*2]);
 
 /* uECC_verify() function.
 Verify an ECDSA signature.
@@ -224,8 +229,9 @@ Inputs:
 
 Returns 1 if the signature is valid, 0 if it is invalid.
 */
-int uECC_verify(const uint8_t private_key[uECC_BYTES * 2], const uint8_t hash[uECC_BYTES],
-                const uint8_t signature[uECC_BYTES * 2]);
+int uECC_verify(const uint8_t private_key[uECC_BYTES*2],
+                const uint8_t hash[uECC_BYTES],
+                const uint8_t signature[uECC_BYTES*2]);
 
 /* uECC_compress() function.
 Compress a public key.
@@ -236,7 +242,7 @@ Inputs:
 Outputs:
     compressed - Will be filled in with the compressed public key.
 */
-void uECC_compress(const uint8_t public_key[uECC_BYTES * 2], uint8_t compressed[uECC_BYTES + 1]);
+void uECC_compress(const uint8_t public_key[uECC_BYTES*2], uint8_t compressed[uECC_BYTES+1]);
 
 /* uECC_decompress() function.
 Decompress a compressed public key.
@@ -247,7 +253,7 @@ Inputs:
 Outputs:
     public_key - Will be filled in with the decompressed public key.
 */
-void uECC_decompress(const uint8_t compressed[uECC_BYTES + 1], uint8_t public_key[uECC_BYTES * 2]);
+void uECC_decompress(const uint8_t compressed[uECC_BYTES+1], uint8_t public_key[uECC_BYTES*2]);
 
 /* uECC_valid_public_key() function.
 Check to see if a public key is valid.
@@ -261,7 +267,7 @@ Inputs:
 
 Returns 1 if the public key is valid, 0 if it is invalid.
 */
-int uECC_valid_public_key(const uint8_t public_key[uECC_BYTES * 2]);
+int uECC_valid_public_key(const uint8_t public_key[uECC_BYTES*2]);
 
 /* uECC_compute_public_key() function.
 Compute the corresponding public key for a private key.
@@ -276,6 +282,7 @@ Returns 1 if the key was computed successfully, 0 if an error occurred.
 */
 int uECC_compute_public_key(const uint8_t private_key[uECC_BYTES],
                             uint8_t public_key[uECC_BYTES * 2]);
+
 
 /* uECC_bytes() function.
 Returns the value of uECC_BYTES. Helpful for foreign-interfaces to higher-level languages.

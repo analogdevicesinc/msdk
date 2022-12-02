@@ -69,20 +69,21 @@ extern "C" {
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_AES_EAX)
 #error "Duplicate definition of AES EAX mode. More than one backend enabled");
 #endif
-#define NRF_CRYPTO_AES_EAX_ENABLED 1
-#undef NRF_CRYPTO_AEAD_ENABLED
-#define NRF_CRYPTO_AEAD_ENABLED 1 // Flag that nrf_crypto_aes_aead frontend can be compiled
-#undef NRF_CRYPTO_CIFRA_AES_AEAD_ENABLED
-#define NRF_CRYPTO_CIFRA_AES_AEAD_ENABLED 1 // aes_aead backend cifra can be compiled
+#define NRF_CRYPTO_AES_EAX_ENABLED  1
+#undef  NRF_CRYPTO_AEAD_ENABLED
+#define NRF_CRYPTO_AEAD_ENABLED  1  // Flag that nrf_crypto_aes_aead frontend can be compiled
+#undef  NRF_CRYPTO_CIFRA_AES_AEAD_ENABLED
+#define NRF_CRYPTO_CIFRA_AES_AEAD_ENABLED   1   // aes_aead backend cifra can be compiled
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_EAX_128_ENABLED 1
-#define NRF_CRYPTO_AES_EAX_192_ENABLED 1
-#define NRF_CRYPTO_AES_EAX_256_ENABLED 1
+#define NRF_CRYPTO_AES_EAX_128_ENABLED  1
+#define NRF_CRYPTO_AES_EAX_192_ENABLED  1
+#define NRF_CRYPTO_AES_EAX_256_ENABLED  1
 
-typedef struct {
-    nrf_crypto_aead_internal_context_t header; /**< Common header for context. */
-    cf_aes_context context; /**< AES EAX context internal to Cifra. */
+typedef struct
+{
+    nrf_crypto_aead_internal_context_t header;  /**< Common header for context. */
+    cf_aes_context                     context; /**< AES EAX context internal to Cifra. */
 } nrf_crypto_backend_aes_eax_context_t;
 #endif
 
@@ -94,3 +95,4 @@ typedef struct {
 /** @} */
 
 #endif // CIFRA_BACKEND_AES_AEAD_H__
+
