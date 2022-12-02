@@ -62,12 +62,12 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="SPIXF_ICC.null.923778415" name="SPIXF_ICC"/>
+		<project id="SPIXF_SFCC.null.923778415" name="SPIXF_SFCC"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/SPIXF_ICC"/>
+			<resource resourceType="PROJECT" workspacePath="/SPIXF_SFCC"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
