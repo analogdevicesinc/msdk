@@ -51,9 +51,9 @@ Alternatively download and install the GNU Arm Embedded Toolchain from here and 
 
 Select a project to build. The following folders contains buildable projects:
 
-* Packetcraft Profile sample application: [ble-apps/build](ble-apps/build)
-* Packetcraft Mesh sample application: [ble-mesh-apps/build](ble-mesh-apps/build)
-* Packetcraft Controller sample application: [controller/build](controller/build)
+* Packetcraft Profile sample application: [ble-apps/build](../ble-apps/build)
+* Packetcraft Mesh sample application: [ble-mesh-apps/build](../ble-mesh-apps/build)
+* Packetcraft Controller sample application: [controller/build](../controller/build)
 
 Consult the Sample App Developer's Guide (below) for more information about the application usage.
 
