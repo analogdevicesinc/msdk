@@ -49,7 +49,7 @@
 #include "mesh_security_deriv.h"
 #include "mesh_security_crypto.h"
 
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
 #include "mesh_test_api.h"
 #endif
 
@@ -58,18 +58,17 @@
 **************************************************************************************************/
 
 /*! Storage for security material. */
-meshSecMaterial_t secMatLocals =
-{
-  .appKeyInfoListSize = 0,
-  .netKeyInfoListSize = 0,
-  .friendMatListSize = 0,
+meshSecMaterial_t secMatLocals = {
+    .appKeyInfoListSize = 0,
+    .netKeyInfoListSize = 0,
+    .friendMatListSize = 0,
 };
 
 /*! Security control block */
 meshSecCb_t meshSecCb = { NULL };
 
 /*! Request sources for crypto operations. */
-meshSecCryptoRequests_t   secCryptoReq;
+meshSecCryptoRequests_t secCryptoReq;
 
 /*! Request sources for key derivation operations. */
 meshSecKeyDerivRequests_t secKeyDerivReq;
@@ -89,7 +88,7 @@ meshSecKeyDerivRequests_t secKeyDerivReq;
 /*************************************************************************************************/
 static inline uint32_t meshSecGetAppKeyMatRequiredMemory(uint16_t numAppKeys)
 {
-  return MESH_UTILS_ALIGN(numAppKeys * sizeof(meshSecAppKeyInfo_t));
+    return MESH_UTILS_ALIGN(numAppKeys * sizeof(meshSecAppKeyInfo_t));
 }
 
 /*************************************************************************************************/
@@ -103,7 +102,7 @@ static inline uint32_t meshSecGetAppKeyMatRequiredMemory(uint16_t numAppKeys)
 /*************************************************************************************************/
 static inline uint32_t meshSecGetNetKeyMatRequiredMemory(uint16_t numNetKeys)
 {
-  return MESH_UTILS_ALIGN(numNetKeys * sizeof(meshSecNetKeyInfo_t));
+    return MESH_UTILS_ALIGN(numNetKeys * sizeof(meshSecNetKeyInfo_t));
 }
 
 /*************************************************************************************************/
@@ -117,7 +116,7 @@ static inline uint32_t meshSecGetNetKeyMatRequiredMemory(uint16_t numNetKeys)
 /*************************************************************************************************/
 static inline uint32_t meshSecGetFriendMatRequiredMemory(uint16_t numFriendships)
 {
-  return MESH_UTILS_ALIGN(numFriendships * sizeof(meshSecFriendMat_t));
+    return MESH_UTILS_ALIGN(numFriendships * sizeof(meshSecFriendMat_t));
 }
 
 /**************************************************************************************************
@@ -133,20 +132,19 @@ static inline uint32_t meshSecGetFriendMatRequiredMemory(uint16_t numFriendships
 /*************************************************************************************************/
 uint32_t MeshSecGetRequiredMemory(void)
 {
-  uint32_t reqMem = MESH_MEM_REQ_INVALID_CFG;
+    uint32_t reqMem = MESH_MEM_REQ_INVALID_CFG;
 
-  if (pMeshConfig->pMemoryConfig->netKeyListSize == 0)
-  {
-    return reqMem;
-  }
+    if (pMeshConfig->pMemoryConfig->netKeyListSize == 0) {
+        return reqMem;
+    }
 
-  /* Get memory required by AppKey, NetKey and Friendship material. */
-  uint32_t totalMem =
-    meshSecGetAppKeyMatRequiredMemory(pMeshConfig->pMemoryConfig->appKeyListSize) +
-    meshSecGetNetKeyMatRequiredMemory(pMeshConfig->pMemoryConfig->netKeyListSize) +
-    meshSecGetFriendMatRequiredMemory(pMeshConfig->pMemoryConfig->maxNumFriendships);
+    /* Get memory required by AppKey, NetKey and Friendship material. */
+    uint32_t totalMem =
+        meshSecGetAppKeyMatRequiredMemory(pMeshConfig->pMemoryConfig->appKeyListSize) +
+        meshSecGetNetKeyMatRequiredMemory(pMeshConfig->pMemoryConfig->netKeyListSize) +
+        meshSecGetFriendMatRequiredMemory(pMeshConfig->pMemoryConfig->maxNumFriendships);
 
-  return totalMem;
+    return totalMem;
 }
 
 /*************************************************************************************************/
@@ -158,69 +156,70 @@ uint32_t MeshSecGetRequiredMemory(void)
 /*************************************************************************************************/
 void MeshSecInit(void)
 {
-  uint32_t memReq = 0;
-  uint16_t idx;
+    uint32_t memReq = 0;
+    uint16_t idx;
 
-  memReq = MeshSecGetRequiredMemory();
+    memReq = MeshSecGetRequiredMemory();
 
-  /* Set number of AppKeys. */
-  secMatLocals.appKeyInfoListSize = pMeshConfig->pMemoryConfig->appKeyListSize;
-  /* Set number of NetKeys. */
-  secMatLocals.netKeyInfoListSize = pMeshConfig->pMemoryConfig->netKeyListSize;
-  /* Set number of friendships. */
-  secMatLocals.friendMatListSize  = pMeshConfig->pMemoryConfig->maxNumFriendships;
+    /* Set number of AppKeys. */
+    secMatLocals.appKeyInfoListSize = pMeshConfig->pMemoryConfig->appKeyListSize;
+    /* Set number of NetKeys. */
+    secMatLocals.netKeyInfoListSize = pMeshConfig->pMemoryConfig->netKeyListSize;
+    /* Set number of friendships. */
+    secMatLocals.friendMatListSize = pMeshConfig->pMemoryConfig->maxNumFriendships;
 
-  /* Set start of memory for AppKey material. */
-  secMatLocals.pAppKeyInfoArray = (meshSecAppKeyInfo_t *)(meshCb.pMemBuff);
-  /* Forward pointer. */
-  meshCb.pMemBuff += meshSecGetAppKeyMatRequiredMemory(secMatLocals.appKeyInfoListSize);
+    /* Set start of memory for AppKey material. */
+    secMatLocals.pAppKeyInfoArray = (meshSecAppKeyInfo_t *)(meshCb.pMemBuff);
+    /* Forward pointer. */
+    meshCb.pMemBuff += meshSecGetAppKeyMatRequiredMemory(secMatLocals.appKeyInfoListSize);
 
-  /* Set start of memory for the NetKey material. */
-  secMatLocals.pNetKeyInfoArray = (meshSecNetKeyInfo_t *)(meshCb.pMemBuff);
-  /* Forward pointer. */
-  meshCb.pMemBuff += meshSecGetNetKeyMatRequiredMemory(secMatLocals.netKeyInfoListSize);
+    /* Set start of memory for the NetKey material. */
+    secMatLocals.pNetKeyInfoArray = (meshSecNetKeyInfo_t *)(meshCb.pMemBuff);
+    /* Forward pointer. */
+    meshCb.pMemBuff += meshSecGetNetKeyMatRequiredMemory(secMatLocals.netKeyInfoListSize);
 
-  /* Set start of memory for the Friendship material. */
-  secMatLocals.pFriendMatArray = (meshSecFriendMat_t *)(meshCb.pMemBuff);
-  /* Forward pointer. */
-  meshCb.pMemBuff += meshSecGetFriendMatRequiredMemory(secMatLocals.friendMatListSize);
+    /* Set start of memory for the Friendship material. */
+    secMatLocals.pFriendMatArray = (meshSecFriendMat_t *)(meshCb.pMemBuff);
+    /* Forward pointer. */
+    meshCb.pMemBuff += meshSecGetFriendMatRequiredMemory(secMatLocals.friendMatListSize);
 
-  /* Subtract used memory. */
-  meshCb.memBuffSize -= memReq;
+    /* Subtract used memory. */
+    meshCb.memBuffSize -= memReq;
 
-  /* Reset Network Key derivation material. */
-  memset(secMatLocals.pNetKeyInfoArray, 0, secMatLocals.netKeyInfoListSize * sizeof(meshSecNetKeyInfo_t));
+    /* Reset Network Key derivation material. */
+    memset(secMatLocals.pNetKeyInfoArray, 0,
+           secMatLocals.netKeyInfoListSize * sizeof(meshSecNetKeyInfo_t));
 
-  /* Reset Application Key derivation material. */
-  memset(secMatLocals.pAppKeyInfoArray, 0, secMatLocals.appKeyInfoListSize * sizeof(meshSecAppKeyInfo_t));
+    /* Reset Application Key derivation material. */
+    memset(secMatLocals.pAppKeyInfoArray, 0,
+           secMatLocals.appKeyInfoListSize * sizeof(meshSecAppKeyInfo_t));
 
-  /* Reset Friendship material. */
-  for (idx = 0; idx < secMatLocals.friendMatListSize; idx++)
-  {
-    secMatLocals.pFriendMatArray[idx].netKeyInfoIndex = MESH_SEC_INVALID_ENTRY_INDEX;
-    secMatLocals.pFriendMatArray[idx].hasUpdtMaterial = FALSE;
-  }
+    /* Reset Friendship material. */
+    for (idx = 0; idx < secMatLocals.friendMatListSize; idx++) {
+        secMatLocals.pFriendMatArray[idx].netKeyInfoIndex = MESH_SEC_INVALID_ENTRY_INDEX;
+        secMatLocals.pFriendMatArray[idx].hasUpdtMaterial = FALSE;
+    }
 
-  /* Reset key derivation requests. */
-  secKeyDerivReq.friendMatDerivReq.friendListIdx = MESH_SEC_INVALID_ENTRY_INDEX;
-  secKeyDerivReq.netKeyDerivReq.netKeyListIdx = MESH_SEC_INVALID_ENTRY_INDEX;
-  secKeyDerivReq.appKeyDerivReq.appKeyListIdx = MESH_SEC_INVALID_ENTRY_INDEX;
+    /* Reset key derivation requests. */
+    secKeyDerivReq.friendMatDerivReq.friendListIdx = MESH_SEC_INVALID_ENTRY_INDEX;
+    secKeyDerivReq.netKeyDerivReq.netKeyListIdx = MESH_SEC_INVALID_ENTRY_INDEX;
+    secKeyDerivReq.appKeyDerivReq.appKeyListIdx = MESH_SEC_INVALID_ENTRY_INDEX;
 
-  /* Reset Upper Transport security requests. */
-  secCryptoReq.utrEncReq.cback = NULL;
-  secCryptoReq.utrDecReq.cback = NULL;
+    /* Reset Upper Transport security requests. */
+    secCryptoReq.utrEncReq.cback = NULL;
+    secCryptoReq.utrDecReq.cback = NULL;
 
-  /* Reset Network security requests. */
-  secCryptoReq.nwkEncObfReq[MESH_SEC_NWK_ENC_SRC_NWK].cback    = NULL;
-  secCryptoReq.nwkEncObfReq[MESH_SEC_NWK_ENC_SRC_PROXY].cback  = NULL;
-  secCryptoReq.nwkEncObfReq[MESH_SEC_NWK_ENC_SRC_FRIEND].cback = NULL;
+    /* Reset Network security requests. */
+    secCryptoReq.nwkEncObfReq[MESH_SEC_NWK_ENC_SRC_NWK].cback = NULL;
+    secCryptoReq.nwkEncObfReq[MESH_SEC_NWK_ENC_SRC_PROXY].cback = NULL;
+    secCryptoReq.nwkEncObfReq[MESH_SEC_NWK_ENC_SRC_FRIEND].cback = NULL;
 
-  secCryptoReq.nwkDeobfDecReq[MESH_SEC_NWK_DEC_SRC_NWK_FRIEND].cback = NULL;
-  secCryptoReq.nwkDeobfDecReq[MESH_SEC_NWK_DEC_SRC_PROXY].cback      = NULL;
+    secCryptoReq.nwkDeobfDecReq[MESH_SEC_NWK_DEC_SRC_NWK_FRIEND].cback = NULL;
+    secCryptoReq.nwkDeobfDecReq[MESH_SEC_NWK_DEC_SRC_PROXY].cback = NULL;
 
-  /* Reset Beacon Authentication requests. */
-  secCryptoReq.beaconAuthReq.cback     = NULL;
-  secCryptoReq.beaconCompAuthReq.cback = NULL;
+    /* Reset Beacon Authentication requests. */
+    secCryptoReq.beaconAuthReq.cback = NULL;
+    secCryptoReq.beaconCompAuthReq.cback = NULL;
 }
 
 /*************************************************************************************************/
@@ -238,11 +237,11 @@ void MeshSecInit(void)
 /*************************************************************************************************/
 void MeshSecRegisterRemoteDevKeyReader(meshSecRemoteDevKeyReadCback_t devKeyReader)
 {
-  /* Store the callback provided by the caller for reading remote Device Keys. */
-  meshSecCb.secRemoteDevKeyReader = devKeyReader;
+    /* Store the callback provided by the caller for reading remote Device Keys. */
+    meshSecCb.secRemoteDevKeyReader = devKeyReader;
 }
 
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
 /*************************************************************************************************/
 /*!
  *  \brief     Alters the NetKey list size in Security for Mesh Test.
@@ -254,6 +253,6 @@ void MeshSecRegisterRemoteDevKeyReader(meshSecRemoteDevKeyReadCback_t devKeyRead
 /*************************************************************************************************/
 void MeshTestSecAlterNetKeyListSize(uint16_t listSize)
 {
-  secMatLocals.netKeyInfoListSize = listSize;
+    secMatLocals.netKeyInfoListSize = listSize;
 }
 #endif

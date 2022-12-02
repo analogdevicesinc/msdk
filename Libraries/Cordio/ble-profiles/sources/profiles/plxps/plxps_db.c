@@ -38,61 +38,53 @@
 **************************************************************************************************/
 
 /*! Number of records in example database */
-#define PLXPS_DB_NUM_RECORDS     3
+#define PLXPS_DB_NUM_RECORDS 3
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! Control block */
-static struct
-{
-  uint8_t     numRec;
+static struct {
+    uint8_t numRec;
 } plxpsDbCb;
 
 /*! Example record database */
-static const plxpsRec_t plxpsDb[PLXPS_DB_NUM_RECORDS] =
-{
-  /* record 1 */
-  {
-    /* spotCheck */
-    {
-      0,                                                        /* Flags */
-      SFLT_TO_UINT16(96, 1),                                    /* Pulse Oximeter Spo2 (SFLOAT) */
-      SFLT_TO_UINT16(60, 1),                                    /* Pulse Oximeter Pulse (SFLOAT) */
-      {2012, 6, 15, 20, 52, 36},                                /* timestamp */
-      0,                                                        /* Measurement status */
-      0,                                                        /* Sensor status */
-      SFLT_TO_UINT16(96, 1),                                    /* Pulse Amplitude Index */
-    }
-  },
+static const plxpsRec_t plxpsDb[PLXPS_DB_NUM_RECORDS] = {
+    /* record 1 */
+    { /* spotCheck */
+      {
+          0, /* Flags */
+          SFLT_TO_UINT16(96, 1), /* Pulse Oximeter Spo2 (SFLOAT) */
+          SFLT_TO_UINT16(60, 1), /* Pulse Oximeter Pulse (SFLOAT) */
+          { 2012, 6, 15, 20, 52, 36 }, /* timestamp */
+          0, /* Measurement status */
+          0, /* Sensor status */
+          SFLT_TO_UINT16(96, 1), /* Pulse Amplitude Index */
+      } },
 
-  /* record 2 */
-  {
-    /* spotCheck */
-    {
-      0,                                                        /* Flags */
-      SFLT_TO_UINT16(96, 1),                                    /* Pulse Oximeter Spo2 (SFLOAT) */
-      SFLT_TO_UINT16(60, 1),                                    /* Pulse Oximeter Pulse (SFLOAT) */
-      {2012, 6, 15, 20, 52, 36},                                /* timestamp */
-      0,                                                        /* Measurement status */
-      0,                                                        /* Sensor status */
-      SFLT_TO_UINT16(96, 1),                                    /* Pulse Amplitude Index */
-    }
-  },
-  /* record 3 */
-  {
-    /* spotCheck */
-    {
-      0,                                                        /* Flags */
-      SFLT_TO_UINT16(96, 1),                                    /* Pulse Oximeter Spo2 (SFLOAT) */
-      SFLT_TO_UINT16(60, 1),                                    /* Pulse Oximeter Pulse (SFLOAT) */
-      {2012, 6, 15, 20, 52, 36},                                /* timestamp */
-      0,                                                        /* Measurement status */
-      0,                                                        /* Sensor status */
-      SFLT_TO_UINT16(96, 1),                                    /* Pulse Amplitude Index */
-    }
-  }
+    /* record 2 */
+    { /* spotCheck */
+      {
+          0, /* Flags */
+          SFLT_TO_UINT16(96, 1), /* Pulse Oximeter Spo2 (SFLOAT) */
+          SFLT_TO_UINT16(60, 1), /* Pulse Oximeter Pulse (SFLOAT) */
+          { 2012, 6, 15, 20, 52, 36 }, /* timestamp */
+          0, /* Measurement status */
+          0, /* Sensor status */
+          SFLT_TO_UINT16(96, 1), /* Pulse Amplitude Index */
+      } },
+    /* record 3 */
+    { /* spotCheck */
+      {
+          0, /* Flags */
+          SFLT_TO_UINT16(96, 1), /* Pulse Oximeter Spo2 (SFLOAT) */
+          SFLT_TO_UINT16(60, 1), /* Pulse Oximeter Pulse (SFLOAT) */
+          { 2012, 6, 15, 20, 52, 36 }, /* timestamp */
+          0, /* Measurement status */
+          0, /* Sensor status */
+          SFLT_TO_UINT16(96, 1), /* Pulse Amplitude Index */
+      } }
 };
 
 /*************************************************************************************************/
@@ -106,7 +98,7 @@ static const plxpsRec_t plxpsDb[PLXPS_DB_NUM_RECORDS] =
 /*************************************************************************************************/
 static const plxpsRec_t *plxpsDbGetEnd()
 {
-  return plxpsDb + plxpsDbCb.numRec;
+    return plxpsDb + plxpsDbCb.numRec;
 }
 
 /*************************************************************************************************/
@@ -120,19 +112,14 @@ static const plxpsRec_t *plxpsDbGetEnd()
 /*************************************************************************************************/
 static plxpsRec_t *plxpsDbGetNext(plxpsRec_t *pCurrRec)
 {
-  if (plxpsDbCb.numRec == 0 || pCurrRec == plxpsDbGetEnd())
-  {
-    plxpsDbCb.numRec = 0;
-    return NULL;
-  }
-  else if (pCurrRec == NULL)
-  {
-    return (plxpsRec_t *) plxpsDb;
-  }
-  else
-  {
-    return (pCurrRec + 1);
-  }
+    if (plxpsDbCb.numRec == 0 || pCurrRec == plxpsDbGetEnd()) {
+        plxpsDbCb.numRec = 0;
+        return NULL;
+    } else if (pCurrRec == NULL) {
+        return (plxpsRec_t *)plxpsDb;
+    } else {
+        return (pCurrRec + 1);
+    }
 }
 
 /*************************************************************************************************/
@@ -145,10 +132,10 @@ static plxpsRec_t *plxpsDbGetNext(plxpsRec_t *pCurrRec)
  *  \return CH_RACP_RSP_SUCCESS if a record is found, otherwise an error status is returned.
  */
 /*************************************************************************************************/
-static uint8_t plxpsDbOpAll(plxpsRec_t *pCurrRec,  plxpsRec_t **pRec)
+static uint8_t plxpsDbOpAll(plxpsRec_t *pCurrRec, plxpsRec_t **pRec)
 {
-  *pRec = plxpsDbGetNext(pCurrRec);
-  return (*pRec != NULL) ? CH_RACP_RSP_SUCCESS : CH_RACP_RSP_NO_RECORDS;
+    *pRec = plxpsDbGetNext(pCurrRec);
+    return (*pRec != NULL) ? CH_RACP_RSP_SUCCESS : CH_RACP_RSP_NO_RECORDS;
 }
 
 /*************************************************************************************************/
@@ -160,7 +147,7 @@ static uint8_t plxpsDbOpAll(plxpsRec_t *pCurrRec,  plxpsRec_t **pRec)
 /*************************************************************************************************/
 void plxpsDbInit(void)
 {
-  plxpsDbCb.numRec = PLXPS_DB_NUM_RECORDS;
+    plxpsDbCb.numRec = PLXPS_DB_NUM_RECORDS;
 }
 
 /*************************************************************************************************/
@@ -175,20 +162,17 @@ void plxpsDbInit(void)
  *  \return CH_RACP_RSP_SUCCESS if a record is found, otherwise an error status is returned.
  */
 /*************************************************************************************************/
-uint8_t plxpsDbGetNextRecord(uint8_t oper, plxpsRec_t *pCurrRec,  plxpsRec_t **pRec)
+uint8_t plxpsDbGetNextRecord(uint8_t oper, plxpsRec_t *pCurrRec, plxpsRec_t **pRec)
 {
-  uint8_t status;
+    uint8_t status;
 
-  if (oper == CH_RACP_OPERATOR_ALL)
-  {
-    status = plxpsDbOpAll(pCurrRec, pRec);
-  }
-  else
-  {
-    status = CH_RACP_RSP_INV_OPERATOR;
-  }
+    if (oper == CH_RACP_OPERATOR_ALL) {
+        status = plxpsDbOpAll(pCurrRec, pRec);
+    } else {
+        status = CH_RACP_RSP_INV_OPERATOR;
+    }
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -202,17 +186,14 @@ uint8_t plxpsDbGetNextRecord(uint8_t oper, plxpsRec_t *pCurrRec,  plxpsRec_t **p
 /*************************************************************************************************/
 uint8_t plxpsDbDeleteRecords(uint8_t oper)
 {
-  /* only 'all records' is supported */
-  if (oper == CH_RACP_OPERATOR_ALL)
-  {
-    plxpsDbCb.numRec = 0;
+    /* only 'all records' is supported */
+    if (oper == CH_RACP_OPERATOR_ALL) {
+        plxpsDbCb.numRec = 0;
 
-    return CH_RACP_RSP_SUCCESS;
-  }
-  else
-  {
-    return CH_RACP_RSP_INV_OPERATOR;
-  }
+        return CH_RACP_RSP_SUCCESS;
+    } else {
+        return CH_RACP_RSP_INV_OPERATOR;
+    }
 }
 
 /*************************************************************************************************/
@@ -228,21 +209,19 @@ uint8_t plxpsDbDeleteRecords(uint8_t oper)
 /*************************************************************************************************/
 uint8_t plxpsDbGetNumRecords(uint8_t oper, uint8_t *pNumRec)
 {
-  plxpsRec_t *pCurrRec = NULL;
-  uint8_t   status;
+    plxpsRec_t *pCurrRec = NULL;
+    uint8_t status;
 
-  *pNumRec = 0;
-  while ((status = plxpsDbGetNextRecord(oper, pCurrRec, &pCurrRec)) == CH_RACP_RSP_SUCCESS)
-  {
-    (*pNumRec)++;
-  }
+    *pNumRec = 0;
+    while ((status = plxpsDbGetNextRecord(oper, pCurrRec, &pCurrRec)) == CH_RACP_RSP_SUCCESS) {
+        (*pNumRec)++;
+    }
 
-  if (status == CH_RACP_RSP_NO_RECORDS)
-  {
-    status = CH_RACP_RSP_SUCCESS;
-  }
+    if (status == CH_RACP_RSP_NO_RECORDS) {
+        status = CH_RACP_RSP_SUCCESS;
+    }
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -254,8 +233,7 @@ uint8_t plxpsDbGetNumRecords(uint8_t oper, uint8_t *pNumRec)
 /*************************************************************************************************/
 void plxpsDbGenerateRecord(void)
 {
-  if (plxpsDbCb.numRec < PLXPS_DB_NUM_RECORDS)
-  {
-    plxpsDbCb.numRec++;
-  }
+    if (plxpsDbCb.numRec < PLXPS_DB_NUM_RECORDS) {
+        plxpsDbCb.numRec++;
+    }
 }

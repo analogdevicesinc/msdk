@@ -34,9 +34,9 @@
 /*************************************************************************************************/
 void LhciExtAdvSlaveInit(void)
 {
-  lhciCmdTbl[LHCI_MSG_EXT_ADV] = lhciSlvExtAdvDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_EXT_ADV] = lhciSlvExtAdvEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_EXT_ADV] = lhciSlvExtAdvDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_EXT_ADV] = lhciSlvExtAdvEncodeEvtPkt;
 
-  lhciCmdTbl[LHCI_MSG_PER_ADV] = lhciSlvExtAdvDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_PER_ADV] = lhciSlvExtAdvEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_PER_ADV] = lhciSlvExtAdvDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_PER_ADV] = lhciSlvExtAdvEncodeEvtPkt;
 }

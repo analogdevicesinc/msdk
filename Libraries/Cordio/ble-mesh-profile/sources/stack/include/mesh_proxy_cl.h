@@ -27,8 +27,7 @@
 #define MESH_PROXY_CLIENT_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -39,9 +38,8 @@ extern "C"
 typedef void (*meshProxyClMsgHandler_t)(wsfMsgHdr_t *pMsg);
 
 /*! Mesh Proxy Client Control Block */
-typedef struct meshProxyClCb_tag
-{
-  meshProxyClMsgHandler_t   msgHandlerCback;   /*!< WSF Event handler for API */
+typedef struct meshProxyClCb_tag {
+    meshProxyClMsgHandler_t msgHandlerCback; /*!< WSF Event handler for API */
 } meshProxyClCb_t;
 
 /**************************************************************************************************

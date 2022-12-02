@@ -24,7 +24,8 @@ int main()
 {
     int r, ret = 0;
 
-    printf("Checking LTPF ARM... "); fflush(stdout);
+    printf("Checking LTPF ARM... ");
+    fflush(stdout);
     printf("%s\n", (r = check_ltpf()) == 0 ? "OK" : "Failed");
     ret = ret || r;
 

@@ -92,7 +92,6 @@ extern "C" {
  */
 #define NRFX_LOG_DEBUG(format, ...)
 
-
 /**
  * @brief Macro for logging a memory dump with the severity level ERROR.
  *
@@ -124,7 +123,6 @@ extern "C" {
  * @param[in] length   Length of the memory region in bytes.
  */
 #define NRFX_LOG_HEXDUMP_DEBUG(p_memory, length)
-
 
 /**
  * @brief Macro for getting the textual representation of a given error code.

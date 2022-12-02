@@ -32,12 +32,11 @@
 **************************************************************************************************/
 
 /*! \brief      Random number generator control block. */
-static struct
-{
-  uint32_t rngW;
-  uint32_t rngX;
-  uint32_t rngY;
-  uint32_t rngZ;
+static struct {
+    uint32_t rngW;
+    uint32_t rngX;
+    uint32_t rngY;
+    uint32_t rngZ;
 } prandCb;
 
 /*************************************************************************************************/
@@ -47,11 +46,11 @@ static struct
 /*************************************************************************************************/
 void PrandInit(void)
 {
-  /* Seed PRNG. */
-  prandCb.rngW = 88675123;
-  prandCb.rngX = 123456789;
-  prandCb.rngY = 362436069;
-  prandCb.rngZ = 521288629;
+    /* Seed PRNG. */
+    prandCb.rngW = 88675123;
+    prandCb.rngX = 123456789;
+    prandCb.rngY = 362436069;
+    prandCb.rngZ = 521288629;
 }
 
 /*************************************************************************************************/
@@ -68,14 +67,14 @@ void PrandInit(void)
 /*************************************************************************************************/
 static uint32_t prandNum(void)
 {
-  uint32_t t;
+    uint32_t t;
 
-  t = prandCb.rngX ^ (prandCb.rngX << 11);
-  prandCb.rngX = prandCb.rngY;
-  prandCb.rngY = prandCb.rngZ;
-  prandCb.rngZ = prandCb.rngW;
-  prandCb.rngW = prandCb.rngW ^ (prandCb.rngW >> 19) ^ (t ^ (t >> 8));
-  return prandCb.rngW;
+    t = prandCb.rngX ^ (prandCb.rngX << 11);
+    prandCb.rngX = prandCb.rngY;
+    prandCb.rngY = prandCb.rngZ;
+    prandCb.rngZ = prandCb.rngW;
+    prandCb.rngW = prandCb.rngW ^ (prandCb.rngW >> 19) ^ (t ^ (t >> 8));
+    return prandCb.rngW;
 }
 
 /*************************************************************************************************/
@@ -88,24 +87,19 @@ static uint32_t prandNum(void)
 /*************************************************************************************************/
 void PrandGen(uint8_t *pBuf, uint16_t len)
 {
-  while (len > 0)
-  {
-    uint32_t randNum;
+    while (len > 0) {
+        uint32_t randNum;
 
-    randNum = prandNum();
-    if (len >= 4)
-    {
-      UINT32_TO_BSTREAM(pBuf, randNum);
-      len -= 4;
+        randNum = prandNum();
+        if (len >= 4) {
+            UINT32_TO_BSTREAM(pBuf, randNum);
+            len -= 4;
+        } else {
+            while (len > 0) {
+                UINT8_TO_BSTREAM(pBuf, randNum);
+                len -= 1;
+                randNum >>= 8;
+            }
+        }
     }
-    else
-    {
-      while (len > 0)
-      {
-        UINT8_TO_BSTREAM(pBuf, randNum);
-        len -= 1;
-        randNum >>= 8;
-      }
-    }
-  }
 }

@@ -73,7 +73,7 @@ extern "C" {
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  * @param[in] size  Size of the RAM region 0, in bytes. Must be word-aligned.
  */
-__STATIC_INLINE void nrf_mpu_region0_ram_size_set(NRF_MPU_Type * p_reg, uint32_t size);
+__STATIC_INLINE void nrf_mpu_region0_ram_size_set(NRF_MPU_Type *p_reg, uint32_t size);
 
 /**
  * @brief Function for configuring specified peripherals in the memory region 0.
@@ -88,8 +88,7 @@ __STATIC_INLINE void nrf_mpu_region0_ram_size_set(NRF_MPU_Type * p_reg, uint32_t
  * @param[in] peripheral_mask Mask that specifies peripherals to be configured in the memory region 0.
  *                            Compose this mask using @ref NRF_MPU_PERIPHERAL_MASK_GET macro.
  */
-__STATIC_INLINE void nrf_mpu_region0_peripherals_set(NRF_MPU_Type * p_reg,
-                                                     uint32_t       peripheral_mask);
+__STATIC_INLINE void nrf_mpu_region0_peripherals_set(NRF_MPU_Type *p_reg, uint32_t peripheral_mask);
 
 /**
  * @brief Function for getting the bitmask that specifies peripherals configured in the memory region 0.
@@ -98,7 +97,7 @@ __STATIC_INLINE void nrf_mpu_region0_peripherals_set(NRF_MPU_Type * p_reg,
  *
  * @return Bitmask representing peripherals configured in region 0.
  */
-__STATIC_INLINE uint32_t nrf_mpu_region0_peripherals_get(NRF_MPU_Type const * p_reg);
+__STATIC_INLINE uint32_t nrf_mpu_region0_peripherals_get(NRF_MPU_Type const *p_reg);
 
 /**
  * @brief Function for enabling protection for specified non-volatile memory blocks.
@@ -112,9 +111,8 @@ __STATIC_INLINE uint32_t nrf_mpu_region0_peripherals_get(NRF_MPU_Type const * p_
  * @param[in] block_mask Non-volatile memory blocks to protect. Each bit in bitmask represents
  *                       one memory block in the specified group.
  */
-__STATIC_INLINE void nrf_mpu_nvm_blocks_protection_enable(NRF_MPU_Type * p_reg,
-                                                          uint8_t        group_idx,
-                                                          uint32_t       block_mask);
+__STATIC_INLINE void nrf_mpu_nvm_blocks_protection_enable(NRF_MPU_Type *p_reg, uint8_t group_idx,
+                                                          uint32_t block_mask);
 
 /**
  * @brief Function for setting the non-volatile memory (NVM) protection during debug.
@@ -125,53 +123,47 @@ __STATIC_INLINE void nrf_mpu_nvm_blocks_protection_enable(NRF_MPU_Type * p_reg,
  * @param[in] enable True if NVM protection during debug is to be enabled.
  *                   False if otherwise.
  */
-__STATIC_INLINE void nrf_mpu_nvm_protection_in_debug_set(NRF_MPU_Type * p_reg,
-                                                         bool           enable);
+__STATIC_INLINE void nrf_mpu_nvm_protection_in_debug_set(NRF_MPU_Type *p_reg, bool enable);
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
-__STATIC_INLINE void nrf_mpu_region0_ram_size_set(NRF_MPU_Type * p_reg, uint32_t size)
+__STATIC_INLINE void nrf_mpu_region0_ram_size_set(NRF_MPU_Type *p_reg, uint32_t size)
 {
     NRFX_ASSERT(nrfx_is_word_aligned((const void *)size));
     p_reg->RLENR0 = size;
 }
 
-__STATIC_INLINE void nrf_mpu_region0_peripherals_set(NRF_MPU_Type * p_reg,
-                                                     uint32_t       peripheral_mask)
+__STATIC_INLINE void nrf_mpu_region0_peripherals_set(NRF_MPU_Type *p_reg, uint32_t peripheral_mask)
 {
     p_reg->PERR0 = peripheral_mask;
 }
 
-__STATIC_INLINE uint32_t nrf_mpu_region0_peripherals_get(NRF_MPU_Type const * p_reg)
+__STATIC_INLINE uint32_t nrf_mpu_region0_peripherals_get(NRF_MPU_Type const *p_reg)
 {
     return p_reg->PERR0;
 }
 
-__STATIC_INLINE void nrf_mpu_nvm_blocks_protection_enable(NRF_MPU_Type * p_reg,
-                                                          uint8_t        group_idx,
-                                                          uint32_t       block_mask)
+__STATIC_INLINE void nrf_mpu_nvm_blocks_protection_enable(NRF_MPU_Type *p_reg, uint8_t group_idx,
+                                                          uint32_t block_mask)
 {
-    switch (group_idx)
-    {
-        case 0:
-            p_reg->PROTENSET0 = block_mask;
-            break;
+    switch (group_idx) {
+    case 0:
+        p_reg->PROTENSET0 = block_mask;
+        break;
 
-        case 1:
-            p_reg->PROTENSET1 = block_mask;
-            break;
+    case 1:
+        p_reg->PROTENSET1 = block_mask;
+        break;
 
-        default:
-            NRFX_ASSERT(false);
-            break;
+    default:
+        NRFX_ASSERT(false);
+        break;
     }
 }
 
-__STATIC_INLINE void nrf_mpu_nvm_protection_in_debug_set(NRF_MPU_Type * p_reg,
-                                                         bool           enable)
+__STATIC_INLINE void nrf_mpu_nvm_protection_in_debug_set(NRF_MPU_Type *p_reg, bool enable)
 {
-    p_reg->DISABLEINDEBUG =
-        (enable ? 0 : MPU_DISABLEINDEBUG_DISABLEINDEBUG_Msk);
+    p_reg->DISABLEINDEBUG = (enable ? 0 : MPU_DISABLEINDEBUG_DISABLEINDEBUG_Msk);
 }
 
 #endif // SUPPRESS_INLINE_IMPLEMENTATION

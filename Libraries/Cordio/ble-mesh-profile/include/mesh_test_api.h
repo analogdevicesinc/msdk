@@ -38,8 +38,7 @@
 #endif
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -47,145 +46,133 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Listen Mode values */
-enum meshTestListenMaskValues
-{
-  MESH_TEST_LISTEN_OFF          = 0x0000,    /*!< Listen mode disabled */
-  MESH_TEST_PRVBR_LISTEN        = (1 << 0),  /*!< Dump Prv Bearer messages in terminal */
-  MESH_TEST_NWK_LISTEN          = (1 << 1),  /*!< Dump NWK messages in terminal */
-  MESH_TEST_SAR_LISTEN          = (1 << 2),  /*!< Dump SAR messages in terminal */
-  MESH_TEST_UTR_LISTEN          = (1 << 3),  /*!< Dump UTR messages in terminal */
-  MESH_TEST_PROXY_LISTEN        = (1 << 4),  /*!< Dump Proxy Config messages in terminal */
-  MESH_TEST_LISTEN_ALL_MASK     = 0x000F     /*!< Dump all messages */
+enum meshTestListenMaskValues {
+    MESH_TEST_LISTEN_OFF = 0x0000, /*!< Listen mode disabled */
+    MESH_TEST_PRVBR_LISTEN = (1 << 0), /*!< Dump Prv Bearer messages in terminal */
+    MESH_TEST_NWK_LISTEN = (1 << 1), /*!< Dump NWK messages in terminal */
+    MESH_TEST_SAR_LISTEN = (1 << 2), /*!< Dump SAR messages in terminal */
+    MESH_TEST_UTR_LISTEN = (1 << 3), /*!< Dump UTR messages in terminal */
+    MESH_TEST_PROXY_LISTEN = (1 << 4), /*!< Dump Proxy Config messages in terminal */
+    MESH_TEST_LISTEN_ALL_MASK = 0x000F /*!< Dump all messages */
 };
 
 /*! \brief Link control callback interface events */
-enum meshTestEvtValues
-{
-  MESH_TEST_PB_LINK_CLOSED_IND,            /*!< Provisioning Bearer Link Closed. */
-  MESH_TEST_PB_INVALID_OPCODE_IND,         /*!< Provisioning Bearer Invalid opcode received. */
-  MESH_TEST_NWK_PDU_RCVD_IND,              /*!< Network PDU received. */
-  MESH_TEST_SAR_RX_TIMEOUT_IND,            /*!< SAR RX timeout. */
-  MESH_TEST_UTR_ACC_PDU_RCVD_IND,          /*!< UTR Access PDU received. */
-  MESH_TEST_UTR_CTL_PDU_RCVD_IND,          /*!< UTR Control PDU received. */
-  MESH_TEST_PROXY_PDU_RCVD_IND,            /*!< Proxy PDU received. */
-  MESH_TEST_SEC_NWK_BEACON_RCVD_IND,       /*!< Secure Network Beacon received. */
-  MESH_TEST_MPRVS_WRITE_INVALID_RCVD_IND,  /*!< MPRVS write invalid data received. */
+enum meshTestEvtValues {
+    MESH_TEST_PB_LINK_CLOSED_IND, /*!< Provisioning Bearer Link Closed. */
+    MESH_TEST_PB_INVALID_OPCODE_IND, /*!< Provisioning Bearer Invalid opcode received. */
+    MESH_TEST_NWK_PDU_RCVD_IND, /*!< Network PDU received. */
+    MESH_TEST_SAR_RX_TIMEOUT_IND, /*!< SAR RX timeout. */
+    MESH_TEST_UTR_ACC_PDU_RCVD_IND, /*!< UTR Access PDU received. */
+    MESH_TEST_UTR_CTL_PDU_RCVD_IND, /*!< UTR Control PDU received. */
+    MESH_TEST_PROXY_PDU_RCVD_IND, /*!< Proxy PDU received. */
+    MESH_TEST_SEC_NWK_BEACON_RCVD_IND, /*!< Secure Network Beacon received. */
+    MESH_TEST_MPRVS_WRITE_INVALID_RCVD_IND, /*!< MPRVS write invalid data received. */
 };
 
 /*! \brief Provisioning Bearer Link Closed indication event structure for test API */
-typedef struct meshTestPbLinkClosedInd_tag
-{
-  wsfMsgHdr_t  hdr;            /*!< Event header */
+typedef struct meshTestPbLinkClosedInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header */
 } meshTestPbLinkClosedInd_t;
 
 /*! \brief Provisioning Bearer invalid opcode indication event structure for test API */
-typedef struct meshTestPbInvalidOpcodeInd_tag
-{
-  wsfMsgHdr_t  hdr;            /*!< Event header */
-  uint8_t      opcode;         /*!< Opcode value */
+typedef struct meshTestPbInvalidOpcodeInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header */
+    uint8_t opcode; /*!< Opcode value */
 } meshTestPbInvalidOpcodeInd_t;
 
 /*! \brief Network PDU received indication event structure for test API */
-typedef struct meshTestNwkPduRcvdInd_tag
-{
-  wsfMsgHdr_t      hdr;          /*!< Event header. */
-  uint8_t          *pLtrPdu;     /*!< Pointer to the Lower Transport PDU */
-  uint8_t          pduLen;       /*!< Length of the Lower Transport PDU */
-  uint8_t          nid;          /*!< Sub-net identifier */
-  uint8_t          ctl;          /*!< Control or Access PDU: 1 for Control PDU, 0 for Access PDU */
-  uint8_t          ttl;          /*!< TTL to be used. Shall be a valid value. */
-  meshAddress_t    src;          /*!< SRC address */
-  meshAddress_t    dst;          /*!< DST address */
-  meshSeqNumber_t  seqNo;        /*!< Sequence number */
-  uint32_t         ivIndex;      /*!< IV index */
-  uint16_t         netKeyIndex;  /*!< NetKey index to be used for encrypting the packet */
+typedef struct meshTestNwkPduRcvdInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header. */
+    uint8_t *pLtrPdu; /*!< Pointer to the Lower Transport PDU */
+    uint8_t pduLen; /*!< Length of the Lower Transport PDU */
+    uint8_t nid; /*!< Sub-net identifier */
+    uint8_t ctl; /*!< Control or Access PDU: 1 for Control PDU, 0 for Access PDU */
+    uint8_t ttl; /*!< TTL to be used. Shall be a valid value. */
+    meshAddress_t src; /*!< SRC address */
+    meshAddress_t dst; /*!< DST address */
+    meshSeqNumber_t seqNo; /*!< Sequence number */
+    uint32_t ivIndex; /*!< IV index */
+    uint16_t netKeyIndex; /*!< NetKey index to be used for encrypting the packet */
 } meshTestNwkPduRcvdInd_t;
 
 /*! \brief UTR Access PDU received indication event structure for test API */
-typedef struct meshTestUtrAccPduRcvdInd_tag
-{
-  wsfMsgHdr_t    hdr;            /*!< Event header. */
-  meshAddress_t  src;            /*!< SRC address */
-  meshAddress_t  dst;            /*!< DST address */
-  const uint8_t  *pDstLabelUuid; /*!< Pointer to Label UUID for destination virtual address */
-  uint16_t       appKeyIndex;    /*!< AppKey index to be used for encrypting the Access PDU */
-  uint16_t       netKeyIndex;    /*!< NetKey index to be used for encrypting the Transport PDU */
-  uint8_t        ttl;            /*!< TTL to be used. If invalid, Default TTL will be used */
-  bool_t         devKeyUse;      /*!< Device Key is used instead of Application Key */
-  const uint8_t  *pAccPdu;       /*!< Pointer to the Access PDU */
-  uint16_t       pduLen;         /*!< Size of the PDU */
+typedef struct meshTestUtrAccPduRcvdInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header. */
+    meshAddress_t src; /*!< SRC address */
+    meshAddress_t dst; /*!< DST address */
+    const uint8_t *pDstLabelUuid; /*!< Pointer to Label UUID for destination virtual address */
+    uint16_t appKeyIndex; /*!< AppKey index to be used for encrypting the Access PDU */
+    uint16_t netKeyIndex; /*!< NetKey index to be used for encrypting the Transport PDU */
+    uint8_t ttl; /*!< TTL to be used. If invalid, Default TTL will be used */
+    bool_t devKeyUse; /*!< Device Key is used instead of Application Key */
+    const uint8_t *pAccPdu; /*!< Pointer to the Access PDU */
+    uint16_t pduLen; /*!< Size of the PDU */
 } meshTestUtrAccPduRcvdInd_t;
 
 /*! \brief UTR Control PDU received indication event structure for test API */
-typedef struct meshTestUtrCtlPduRcvdInd_tag
-{
-  wsfMsgHdr_t      hdr;          /*!< Event header. */
-  meshAddress_t    src;          /*!< SRC address */
-  meshAddress_t    dst;          /*!< DST address */
-  uint16_t         netKeyIndex;  /*!< NetKey index to be used for encrypting the Transport PDU */
-  uint8_t          ttl;          /*!< TTL to be used. If invalid, Default TTL will be used */
-  meshSeqNumber_t  seqNo;        /*!< Sequence number */
-  uint8_t          opcode;       /*!< Control Message opcode */
-  uint8_t          *pUtrCtlPdu;  /*!< Pointer to the Upper Transport Control PDU */
-  uint16_t         pduLen;       /*!< Size of the PDU */
+typedef struct meshTestUtrCtlPduRcvdInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header. */
+    meshAddress_t src; /*!< SRC address */
+    meshAddress_t dst; /*!< DST address */
+    uint16_t netKeyIndex; /*!< NetKey index to be used for encrypting the Transport PDU */
+    uint8_t ttl; /*!< TTL to be used. If invalid, Default TTL will be used */
+    meshSeqNumber_t seqNo; /*!< Sequence number */
+    uint8_t opcode; /*!< Control Message opcode */
+    uint8_t *pUtrCtlPdu; /*!< Pointer to the Upper Transport Control PDU */
+    uint16_t pduLen; /*!< Size of the PDU */
 } meshTestUtrCtlPduRcvdInd_t;
 
 /*! \brief SAR RX timeout indication event structure for test API */
-typedef struct meshTestSarRxTimeoutInd_tag
-{
-  wsfMsgHdr_t    hdr;            /*!< Event header */
-  meshAddress_t  srcAddr;        /*!< Source address */
+typedef struct meshTestSarRxTimeoutInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header */
+    meshAddress_t srcAddr; /*!< Source address */
 } meshTestSarRxTimeoutInd_t;
 
 /*! \brief Proxy Config PDU received indication event structure for test API */
-typedef struct meshTestProxyCfgPduRcvdInd_tag
-{
-  wsfMsgHdr_t             hdr;        /*!< Event header */
-  const uint8_t           *pPdu;      /*!< Pointer to the Proxy Configuration PDU */
-  uint16_t                pduLen;     /*!< Size of the PDU */
-  meshGattProxyPduType_t  pduType;    /*!< PDU Type */
+typedef struct meshTestProxyCfgPduRcvdInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header */
+    const uint8_t *pPdu; /*!< Pointer to the Proxy Configuration PDU */
+    uint16_t pduLen; /*!< Size of the PDU */
+    meshGattProxyPduType_t pduType; /*!< PDU Type */
 } meshTestProxyCfgPduRcvdInd_t;
 
 /*! \brief Secure Network Beacon received indication event structure for test API */
-typedef struct meshTestSecNwkBeaconRcvdInd_tag
-{
-  wsfMsgHdr_t  hdr;                               /*!< Event header */
-  uint32_t     ivi;                               /*!< IV index */
-  bool_t       ivUpdate;                          /*!< IV update flag */
-  bool_t       keyRefresh;                        /*!< Key Refresh flag */
-  uint8_t      networkId[MESH_NWK_ID_NUM_BYTES];  /*!< Network ID */
+typedef struct meshTestSecNwkBeaconRcvdInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header */
+    uint32_t ivi; /*!< IV index */
+    bool_t ivUpdate; /*!< IV update flag */
+    bool_t keyRefresh; /*!< Key Refresh flag */
+    uint8_t networkId[MESH_NWK_ID_NUM_BYTES]; /*!< Network ID */
 } meshTestSecNwkBeaconRcvdInd_t;
 
 /*! \brief MPRVS write invalid data received indication event structure for test API */
-typedef struct meshTestMprvsWriteInvalidRcvdInd_tag
-{
-  wsfMsgHdr_t  hdr;          /*!< Event header. */
-  uint16_t     handle;       /*!< Attribute handle. */
-  uint8_t      *pValue;      /*!< Pointer to data to write. */
-  uint16_t     len;          /*!< Length of data to write. */
+typedef struct meshTestMprvsWriteInvalidRcvdInd_tag {
+    wsfMsgHdr_t hdr; /*!< Event header. */
+    uint16_t handle; /*!< Attribute handle. */
+    uint8_t *pValue; /*!< Pointer to data to write. */
+    uint16_t len; /*!< Length of data to write. */
 } meshTestMprvsWriteInvalidRcvdInd_t;
 
 /*! \brief Union of all Mesh Test event types */
-typedef union meshTestEvt_tag
-{
-  wsfMsgHdr_t                         hdr;                      /*!< Event header */
-  meshTestPbLinkClosedInd_t           pbLinkClosedInd;          /*!< PB Link Closed event */
-  meshTestPbInvalidOpcodeInd_t        pbInvalidOpcodeInd;       /*!< PB Invalid opcode received */
-  meshTestNwkPduRcvdInd_t             nwkPduRcvdInd;            /*!< Network PDU received */
-  meshTestSarRxTimeoutInd_t           sarRxTimeoutInd;          /*!< SAR RX timeout indication */
-  meshTestProxyCfgPduRcvdInd_t        proxyCfgPduRcvdInd;       /*!< Proxy Configuration PDU received */
-  meshTestSecNwkBeaconRcvdInd_t       secNwkBeaconRcvdInd;      /*!< Secure Network Beacon received */
-  meshTestMprvsWriteInvalidRcvdInd_t  mprvsWriteInvalidRcvdInd; /*!< MPRVS write invalid data received */
+typedef union meshTestEvt_tag {
+    wsfMsgHdr_t hdr; /*!< Event header */
+    meshTestPbLinkClosedInd_t pbLinkClosedInd; /*!< PB Link Closed event */
+    meshTestPbInvalidOpcodeInd_t pbInvalidOpcodeInd; /*!< PB Invalid opcode received */
+    meshTestNwkPduRcvdInd_t nwkPduRcvdInd; /*!< Network PDU received */
+    meshTestSarRxTimeoutInd_t sarRxTimeoutInd; /*!< SAR RX timeout indication */
+    meshTestProxyCfgPduRcvdInd_t proxyCfgPduRcvdInd; /*!< Proxy Configuration PDU received */
+    meshTestSecNwkBeaconRcvdInd_t secNwkBeaconRcvdInd; /*!< Secure Network Beacon received */
+    meshTestMprvsWriteInvalidRcvdInd_t
+        mprvsWriteInvalidRcvdInd; /*!< MPRVS write invalid data received */
 } meshTestEvt_t;
 
 /*! \brief Mesh Stack Test event notification callback */
-typedef void(*meshTestCback_t) (meshTestEvt_t *pEvt);
+typedef void (*meshTestCback_t)(meshTestEvt_t *pEvt);
 
 /*! \brief Mesh Test Control Block. */
-typedef struct meshTestCb_tag
-{
-  meshTestCback_t       testCback;      /*!< Mesh Test event notification callback */
-  uint16_t              listenMask;     /*!< Enable Test Listen Mode on various layers */
+typedef struct meshTestCb_tag {
+    meshTestCback_t testCback; /*!< Mesh Test event notification callback */
+    uint16_t listenMask; /*!< Enable Test Listen Mode on various layers */
 } meshTestCb_t;
 
 /**************************************************************************************************
@@ -193,7 +180,7 @@ typedef struct meshTestCb_tag
 **************************************************************************************************/
 
 /*! Mesh Stack Test mode control block */
-extern meshTestCb_t  meshTestCb;
+extern meshTestCb_t meshTestCb;
 
 /**************************************************************************************************
   Function Declarations

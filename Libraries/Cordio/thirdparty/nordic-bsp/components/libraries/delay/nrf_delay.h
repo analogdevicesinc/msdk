@@ -54,7 +54,6 @@ extern "C" {
  */
 #define nrf_delay_us(us_time) NRFX_DELAY_US(us_time)
 
-
 /**
  * @brief Function for delaying execution for a number of milliseconds.
  *
@@ -63,8 +62,7 @@ extern "C" {
 
 __STATIC_INLINE void nrf_delay_ms(uint32_t ms_time)
 {
-    if (ms_time == 0)
-    {
+    if (ms_time == 0) {
         return;
     }
 

@@ -54,7 +54,6 @@ extern "C" {
 
 #include <stdint.h>
 
-
 /** ECDH P-256 public key r = n * p.
  *
  * @param[out]  r   Resulting public key.
@@ -75,7 +74,6 @@ int ocrypto_ecdh_p256_public_key(uint8_t r[64], const uint8_t s[32]);
  * @retval 0 If @p s is a legal secret key and @p p is a legal public key.
  */
 int ocrypto_ecdh_p256_common_secret(uint8_t r[32], const uint8_t s[32], const uint8_t p[64]);
-
 
 #ifdef __cplusplus
 }

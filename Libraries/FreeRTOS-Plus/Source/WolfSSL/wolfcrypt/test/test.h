@@ -22,12 +22,11 @@
 #pragma once
 
 #ifdef __cplusplus
-    extern "C" {
+extern "C" {
 #endif
 
-int wolfcrypt_test(void* args);
+int wolfcrypt_test(void *args);
 
 #ifdef __cplusplus
-    }  /* extern "C" */
+} /* extern "C" */
 #endif
-

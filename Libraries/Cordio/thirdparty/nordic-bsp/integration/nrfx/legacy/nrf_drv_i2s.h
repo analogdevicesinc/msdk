@@ -56,29 +56,29 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_i2s_config_t   nrf_drv_i2s_config_t;
+typedef nrfx_i2s_config_t nrf_drv_i2s_config_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_i2s_buffers_t  nrf_drv_i2s_buffers_t;
+typedef nrfx_i2s_buffers_t nrf_drv_i2s_buffers_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_I2S_PIN_NOT_USED               NRFX_I2S_PIN_NOT_USED
+#define NRF_DRV_I2S_PIN_NOT_USED NRFX_I2S_PIN_NOT_USED
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_I2S_FLAG_SYNCHRONIZED_MODE     NRFX_I2S_FLAG_SYNCHRONIZED_MODE
+#define NRF_DRV_I2S_FLAG_SYNCHRONIZED_MODE NRFX_I2S_FLAG_SYNCHRONIZED_MODE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_I2S_DEFAULT_CONFIG             NRFX_I2S_DEFAULT_CONFIG
+#define NRF_DRV_I2S_DEFAULT_CONFIG NRFX_I2S_DEFAULT_CONFIG
 /** @brief Macro for forwarding the new implementation. */
 #define NRF_DRV_I2S_STATUS_NEXT_BUFFERS_NEEDED NRFX_I2S_STATUS_NEXT_BUFFERS_NEEDED
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_i2s_data_handler_t             nrfx_i2s_data_handler_t
+#define nrf_drv_i2s_data_handler_t nrfx_i2s_data_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_i2s_uninit                     nrfx_i2s_uninit
+#define nrf_drv_i2s_uninit nrfx_i2s_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_i2s_start                      nrfx_i2s_start
+#define nrf_drv_i2s_start nrfx_i2s_start
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_i2s_next_buffers_set           nrfx_i2s_next_buffers_set
+#define nrf_drv_i2s_next_buffers_set nrfx_i2s_next_buffers_set
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_i2s_stop                       nrfx_i2s_stop
+#define nrf_drv_i2s_stop nrfx_i2s_stop
 
 /**
  * @brief Function for initializing the I2S driver.
@@ -92,11 +92,10 @@ typedef nrfx_i2s_buffers_t  nrf_drv_i2s_buffers_t;
  * @retval NRF_ERROR_INVALID_PARAM If the requested combination of configuration
   *                                 options is not allowed by the I2S peripheral.
  */
-__STATIC_INLINE ret_code_t nrf_drv_i2s_init(nrf_drv_i2s_config_t const * p_config,
-                                            nrf_drv_i2s_data_handler_t   handler)
+__STATIC_INLINE ret_code_t nrf_drv_i2s_init(nrf_drv_i2s_config_t const *p_config,
+                                            nrf_drv_i2s_data_handler_t handler)
 {
-    if (p_config == NULL)
-    {
+    if (p_config == NULL) {
         static nrfx_i2s_config_t const default_config = NRFX_I2S_DEFAULT_CONFIG;
         p_config = &default_config;
     }

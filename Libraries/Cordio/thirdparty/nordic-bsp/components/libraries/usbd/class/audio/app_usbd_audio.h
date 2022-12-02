@@ -74,24 +74,20 @@ extern "C" {
  * @{
  */
 
-
 #ifdef DOXYGEN
 /**
  * @brief Audio class instance type
  *
  * @ref APP_USBD_CLASS_TYPEDEF
  */
-typedef struct { } app_usbd_audio_t;
+typedef struct {
+} app_usbd_audio_t;
 #else
 /*lint -save -e10 -e26 -e123 -e505 */
-APP_USBD_CLASS_TYPEDEF(app_usbd_audio,    \
-    APP_USBD_AUDIO_CONFIG(0, 1),          \
-    APP_USBD_AUDIO_INSTANCE_SPECIFIC_DEC, \
-    APP_USBD_AUDIO_DATA_SPECIFIC_DEC      \
-);
+APP_USBD_CLASS_TYPEDEF(app_usbd_audio, APP_USBD_AUDIO_CONFIG(0, 1),
+                       APP_USBD_AUDIO_INSTANCE_SPECIFIC_DEC, APP_USBD_AUDIO_DATA_SPECIFIC_DEC);
 /*lint -restore*/
 #endif
-
 
 /*lint -save -e407 */
 
@@ -106,9 +102,9 @@ APP_USBD_CLASS_TYPEDEF(app_usbd_audio,    \
  * @endcode
  */
 typedef enum app_usbd_audio_user_event_e {
-    APP_USBD_AUDIO_USER_EVT_CLASS_REQ,   /**< User event CLASS_REQ */
-    APP_USBD_AUDIO_USER_EVT_RX_DONE,     /**< User event RX_DONE   */
-    APP_USBD_AUDIO_USER_EVT_TX_DONE,     /**< User event TX_DONE   */
+    APP_USBD_AUDIO_USER_EVT_CLASS_REQ, /**< User event CLASS_REQ */
+    APP_USBD_AUDIO_USER_EVT_RX_DONE, /**< User event RX_DONE   */
+    APP_USBD_AUDIO_USER_EVT_TX_DONE, /**< User event TX_DONE   */
 } app_usbd_audio_user_event_t;
 
 /*lint -restore*/
@@ -132,31 +128,14 @@ typedef enum app_usbd_audio_user_event_e {
  * @note This macro is just simplified version of @ref APP_USBD_AUDIO_GLOBAL_DEF_INTERNAL
  *
  */
-#define APP_USBD_AUDIO_GLOBAL_DEF(instance_name,            \
-                                  interfaces_configs,       \
-                                  user_ev_handler,          \
-                                  format_descriptor,        \
-                                  input_descriptor,         \
-                                  output_descriptor,        \
-                                  feature_descriptor,       \
-                                  delay,                    \
-                                  format,                   \
-                                  ep_size,                  \
-                                  type_str,                 \
-                                  terminal_link)            \
-    APP_USBD_AUDIO_GLOBAL_DEF_INTERNAL(instance_name,       \
-                                       interfaces_configs,  \
-                                       user_ev_handler,     \
-                                       format_descriptor,   \
-                                       input_descriptor,    \
-                                       output_descriptor,   \
-                                       feature_descriptor,  \
-                                       delay,               \
-                                       format,              \
-                                       ep_size,             \
-                                       type_str,            \
+#define APP_USBD_AUDIO_GLOBAL_DEF(instance_name, interfaces_configs, user_ev_handler,          \
+                                  format_descriptor, input_descriptor, output_descriptor,      \
+                                  feature_descriptor, delay, format, ep_size, type_str,        \
+                                  terminal_link)                                               \
+    APP_USBD_AUDIO_GLOBAL_DEF_INTERNAL(instance_name, interfaces_configs, user_ev_handler,     \
+                                       format_descriptor, input_descriptor, output_descriptor, \
+                                       feature_descriptor, delay, format, ep_size, type_str,   \
                                        terminal_link)
-
 
 /**
  * @brief Initializer of Audio Format descriptor.
@@ -165,16 +144,11 @@ typedef enum app_usbd_audio_user_event_e {
  * @param ...   Format descriptor data.
 */
 
-#define APP_USBD_AUDIO_FORMAT_DESCRIPTOR(name, ...)             \
-    static uint8_t const CONCAT_2(name,  _data)[] =             \
-    {                                                           \
-        __VA_ARGS__                                             \
-    };                                                          \
-    static const app_usbd_audio_subclass_desc_t name =          \
-    {                                                           \
-        sizeof(CONCAT_2(name, _data)),                          \
-        APP_USBD_AUDIO_AS_IFACE_SUBTYPE_FORMAT_TYPE,            \
-        CONCAT_2(name,_data)                                    \
+#define APP_USBD_AUDIO_FORMAT_DESCRIPTOR(name, ...)                                 \
+    static uint8_t const CONCAT_2(name, _data)[] = { __VA_ARGS__ };                 \
+    static const app_usbd_audio_subclass_desc_t name = {                            \
+        sizeof(CONCAT_2(name, _data)), APP_USBD_AUDIO_AS_IFACE_SUBTYPE_FORMAT_TYPE, \
+        CONCAT_2(name, _data)                                                       \
     }
 
 /**
@@ -184,16 +158,11 @@ typedef enum app_usbd_audio_user_event_e {
  * @param ...   Input descriptor data.
 */
 
-#define APP_USBD_AUDIO_INPUT_DESCRIPTOR(name, ...)              \
-    static uint8_t const CONCAT_2(name,  _data)[] =             \
-    {                                                           \
-        __VA_ARGS__                                             \
-    };                                                          \
-    static const app_usbd_audio_subclass_desc_t name =          \
-    {                                                           \
-        sizeof(CONCAT_2(name, _data)),                          \
-        APP_USBD_AUDIO_AC_IFACE_SUBTYPE_INPUT_TERMINAL,         \
-        CONCAT_2(name,_data)                                    \
+#define APP_USBD_AUDIO_INPUT_DESCRIPTOR(name, ...)                                     \
+    static uint8_t const CONCAT_2(name, _data)[] = { __VA_ARGS__ };                    \
+    static const app_usbd_audio_subclass_desc_t name = {                               \
+        sizeof(CONCAT_2(name, _data)), APP_USBD_AUDIO_AC_IFACE_SUBTYPE_INPUT_TERMINAL, \
+        CONCAT_2(name, _data)                                                          \
     }
 
 /**
@@ -203,16 +172,11 @@ typedef enum app_usbd_audio_user_event_e {
  * @param ...   Output descriptor data.
 */
 
-#define APP_USBD_AUDIO_OUTPUT_DESCRIPTOR(name, ...)             \
-    static uint8_t const CONCAT_2(name,  _data)[] =             \
-    {                                                           \
-        __VA_ARGS__                                             \
-    };                                                          \
-    static const app_usbd_audio_subclass_desc_t name =          \
-    {                                                           \
-        sizeof(CONCAT_2(name, _data)),                          \
-        APP_USBD_AUDIO_AC_IFACE_SUBTYPE_OUTPUT_TERMINAL,        \
-        CONCAT_2(name,_data)                                    \
+#define APP_USBD_AUDIO_OUTPUT_DESCRIPTOR(name, ...)                                     \
+    static uint8_t const CONCAT_2(name, _data)[] = { __VA_ARGS__ };                     \
+    static const app_usbd_audio_subclass_desc_t name = {                                \
+        sizeof(CONCAT_2(name, _data)), APP_USBD_AUDIO_AC_IFACE_SUBTYPE_OUTPUT_TERMINAL, \
+        CONCAT_2(name, _data)                                                           \
     }
 
 /**
@@ -222,16 +186,11 @@ typedef enum app_usbd_audio_user_event_e {
  * @param ...   Feture descriptor data.
 */
 
-#define APP_USBD_AUDIO_FEATURE_DESCRIPTOR(name, ...)            \
-    static uint8_t const CONCAT_2(name,  _data)[] =             \
-    {                                                           \
-        __VA_ARGS__                                             \
-    };                                                          \
-    static const app_usbd_audio_subclass_desc_t name =          \
-    {                                                           \
-        sizeof(CONCAT_2(name, _data)),                          \
-        APP_USBD_AUDIO_AC_IFACE_SUBTYPE_FEATURE_UNIT,           \
-        CONCAT_2(name,_data)                                    \
+#define APP_USBD_AUDIO_FEATURE_DESCRIPTOR(name, ...)                                 \
+    static uint8_t const CONCAT_2(name, _data)[] = { __VA_ARGS__ };                  \
+    static const app_usbd_audio_subclass_desc_t name = {                             \
+        sizeof(CONCAT_2(name, _data)), APP_USBD_AUDIO_AC_IFACE_SUBTYPE_FEATURE_UNIT, \
+        CONCAT_2(name, _data)                                                        \
     }
 
 /**
@@ -241,7 +200,7 @@ typedef enum app_usbd_audio_user_event_e {
  * @return Base class instance.
  */
 static inline app_usbd_class_inst_t const *
-app_usbd_audio_class_inst_get(app_usbd_audio_t const * p_audio)
+app_usbd_audio_class_inst_get(app_usbd_audio_t const *p_audio)
 {
     return &p_audio->base;
 }
@@ -253,7 +212,7 @@ app_usbd_audio_class_inst_get(app_usbd_audio_t const * p_audio)
  * @return Audio class specific request.
  */
 static inline app_usbd_audio_req_t *
-app_usbd_audio_class_request_get(app_usbd_audio_t const * p_audio)
+app_usbd_audio_class_request_get(app_usbd_audio_t const *p_audio)
 {
     return &p_audio->specific.p_data->ctx.request;
 }
@@ -264,8 +223,7 @@ app_usbd_audio_class_request_get(app_usbd_audio_t const * p_audio)
  * @param[in] p_inst Base class instance.
  * @return Audio class handle.
  */
-static inline app_usbd_audio_t const *
-app_usbd_audio_class_get(app_usbd_class_inst_t const * p_inst)
+static inline app_usbd_audio_t const *app_usbd_audio_class_get(app_usbd_class_inst_t const *p_inst)
 {
     return (app_usbd_audio_t const *)p_inst;
 }
@@ -279,7 +237,7 @@ app_usbd_audio_class_get(app_usbd_class_inst_t const * p_inst)
  *
  * @return Number of bytes received in the last transmission.
  */
-size_t app_usbd_audio_class_rx_size_get(app_usbd_class_inst_t const * p_inst);
+size_t app_usbd_audio_class_rx_size_get(app_usbd_class_inst_t const *p_inst);
 
 /**
  * @brief Start audio data copying from the endpoint buffer.
@@ -298,10 +256,8 @@ size_t app_usbd_audio_class_rx_size_get(app_usbd_class_inst_t const * p_inst);
  * @note This function should be called in reaction to a SOF event.
  *       Isochronous endpoints are double buffered and they are automatically switched at every SOF.
  */
-ret_code_t app_usbd_audio_class_rx_start(
-    app_usbd_class_inst_t const * p_inst,
-    void * p_buff,
-    size_t size);
+ret_code_t app_usbd_audio_class_rx_start(app_usbd_class_inst_t const *p_inst, void *p_buff,
+                                         size_t size);
 
 /**
  * @brief Start copying audio data to the endpoint buffer.
@@ -318,10 +274,8 @@ ret_code_t app_usbd_audio_class_rx_start(
  * @note This function should be called in reaction to a SOF event.
  *       Isochronous endpoints are double buffered and they are automatically switched at every SOF.
  */
-ret_code_t app_usbd_audio_class_tx_start(
-    app_usbd_class_inst_t const * p_inst,
-    const void * p_buff,
-    size_t size);
+ret_code_t app_usbd_audio_class_tx_start(app_usbd_class_inst_t const *p_inst, const void *p_buff,
+                                         size_t size);
 
 /**
  * @brief Register audio instance as the one that requires SOF events in interrupt.
@@ -335,7 +289,7 @@ ret_code_t app_usbd_audio_class_tx_start(
  *
  * @sa app_usbd_class_sof_interrupt_register
  */
-ret_code_t app_usbd_audio_sof_interrupt_register(app_usbd_class_inst_t const * p_inst,
+ret_code_t app_usbd_audio_sof_interrupt_register(app_usbd_class_inst_t const *p_inst,
                                                  app_usbd_sof_interrupt_handler_t handler);
 /** @} */
 

@@ -76,7 +76,7 @@ nrf_dfu_result_t nrf_dfu_validation_init_cmd_create(uint32_t size);
  *
  * @return       Operation result. See @ref nrf_dfu_result_t
  */
-nrf_dfu_result_t nrf_dfu_validation_init_cmd_append(uint8_t const * p_data, uint32_t length);
+nrf_dfu_result_t nrf_dfu_validation_init_cmd_append(uint8_t const *p_data, uint32_t length);
 
 /**
  * @brief Function for getting init command status.
@@ -85,9 +85,8 @@ nrf_dfu_result_t nrf_dfu_validation_init_cmd_append(uint8_t const * p_data, uint
  * @param[out] p_crc      Current CRC.
  * @param[out] p_max_size Maximum size of init command.
  */
-void nrf_dfu_validation_init_cmd_status_get(uint32_t * p_offset,
-                                            uint32_t * p_crc,
-                                            uint32_t * p_max_size);
+void nrf_dfu_validation_init_cmd_status_get(uint32_t *p_offset, uint32_t *p_crc,
+                                            uint32_t *p_max_size);
 
 /**
  * @brief Function for inquiring whether a valid init command has been received.
@@ -110,8 +109,8 @@ bool nrf_dfu_validation_init_cmd_present(void);
  *
  * @return       Operation result. See @ref nrf_dfu_result_t
  */
-nrf_dfu_result_t nrf_dfu_validation_init_cmd_execute(uint32_t * p_dst_data_addr,
-                                                     uint32_t * p_data_len);
+nrf_dfu_result_t nrf_dfu_validation_init_cmd_execute(uint32_t *p_dst_data_addr,
+                                                     uint32_t *p_data_len);
 
 /**
  * @brief Function for validating the init command.
@@ -129,7 +128,8 @@ nrf_dfu_result_t nrf_dfu_validation_prevalidate(void);
  *
  * @return       Whether the firmware is valid for booting.
  */
-bool nrf_dfu_validation_boot_validate(boot_validation_t const * p_validation, uint32_t data_addr, uint32_t data_len);
+bool nrf_dfu_validation_boot_validate(boot_validation_t const *p_validation, uint32_t data_addr,
+                                      uint32_t data_len);
 
 /**
  * @brief Function for postvalidating the update after all data is received.
@@ -185,7 +185,8 @@ nrf_dfu_result_t nrf_dfu_validation_activation_prepare(uint32_t data_addr, uint3
  *
  * @return      Operation result. see @ref nrf_dfu_result_t.
  */
-nrf_dfu_result_t nrf_dfu_validation_post_external_app_execute(dfu_init_command_t const * p_init, bool is_trusted);
+nrf_dfu_result_t nrf_dfu_validation_post_external_app_execute(dfu_init_command_t const *p_init,
+                                                              bool is_trusted);
 
 /**
 * @brief Function to check if there is a valid external app in Bank 1.

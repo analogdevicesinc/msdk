@@ -51,7 +51,6 @@ void HidAppStart(void);
 /*************************************************************************************************/
 void HidAppHandlerInit(wsfHandlerId_t handlerId);
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for the application.

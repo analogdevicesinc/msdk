@@ -275,7 +275,6 @@ extern const nrf_crypto_aes_info_t g_nrf_crypto_aes_cbc_mac_192_pad_pkcs7_info;
 */
 extern const nrf_crypto_aes_info_t g_nrf_crypto_aes_cbc_mac_256_pad_pkcs7_info;
 
-
 /**@brief External variable declaration to the info structure for AES CMAC mode with a 128-bit key.
 *
 * @note The variable is defined in the nrf_crypto backend that is
@@ -321,9 +320,9 @@ typedef nrf_crypto_backend_aes_context_t nrf_crypto_aes_context_t;
  *
  * @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_aes_init(nrf_crypto_aes_context_t * const    p_context,
-                               nrf_crypto_aes_info_t const * const p_info,
-                               nrf_crypto_operation_t              operation);
+ret_code_t nrf_crypto_aes_init(nrf_crypto_aes_context_t *const p_context,
+                               nrf_crypto_aes_info_t const *const p_info,
+                               nrf_crypto_operation_t operation);
 
 /**@brief Internal function for uninitializing the AES context.
  *
@@ -331,7 +330,7 @@ ret_code_t nrf_crypto_aes_init(nrf_crypto_aes_context_t * const    p_context,
  *
  * @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_aes_uninit(nrf_crypto_aes_context_t * const p_context);
+ret_code_t nrf_crypto_aes_uninit(nrf_crypto_aes_context_t *const p_context);
 
 /**@brief Function for setting the AES key.
  *
@@ -341,7 +340,7 @@ ret_code_t nrf_crypto_aes_uninit(nrf_crypto_aes_context_t * const p_context);
  *
  * @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_aes_key_set(nrf_crypto_aes_context_t * const p_context, uint8_t * p_key);
+ret_code_t nrf_crypto_aes_key_set(nrf_crypto_aes_context_t *const p_context, uint8_t *p_key);
 
 /**@brief Function for setting an AES IV or a counter for AES modes which are using it.
  *
@@ -351,7 +350,7 @@ ret_code_t nrf_crypto_aes_key_set(nrf_crypto_aes_context_t * const p_context, ui
  *
  * @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_aes_iv_set(nrf_crypto_aes_context_t * const p_context, uint8_t * p_iv);
+ret_code_t nrf_crypto_aes_iv_set(nrf_crypto_aes_context_t *const p_context, uint8_t *p_iv);
 
 /**@brief Function for getting an AES IV or a counter for mode which is supporting it.
  *
@@ -360,7 +359,7 @@ ret_code_t nrf_crypto_aes_iv_set(nrf_crypto_aes_context_t * const p_context, uin
  *
  * @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_aes_iv_get(nrf_crypto_aes_context_t * const p_context, uint8_t * p_iv);
+ret_code_t nrf_crypto_aes_iv_get(nrf_crypto_aes_context_t *const p_context, uint8_t *p_iv);
 
 /**@brief AES update function for encryption, decryption and MAC calculation. It can be called once
  *  on the whole data block, or as many times as needed, until all the input data is processed.
@@ -376,11 +375,8 @@ ret_code_t nrf_crypto_aes_iv_get(nrf_crypto_aes_context_t * const p_context, uin
  *
  * @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_aes_update(nrf_crypto_aes_context_t * const p_context,
-                                 uint8_t *                        p_data_in,
-                                 size_t                           data_size,
-                                 uint8_t *                        p_data_out);
-
+ret_code_t nrf_crypto_aes_update(nrf_crypto_aes_context_t *const p_context, uint8_t *p_data_in,
+                                 size_t data_size, uint8_t *p_data_out);
 
 /**@brief Function processes the last data block if needed and finalizes the AES operation (ie. adds
  *  padding) and produces operation results (for MAC operations).
@@ -415,14 +411,8 @@ ret_code_t nrf_crypto_aes_update(nrf_crypto_aes_context_t * const p_context,
  *
  * @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_aes_finalize(nrf_crypto_aes_context_t * const p_context,
-                                   uint8_t *                        p_data_in,
-                                   size_t                           data_size,
-                                   uint8_t *                        p_data_out,
-                                   size_t *                         p_data_out_size);
-
-
-
+ret_code_t nrf_crypto_aes_finalize(nrf_crypto_aes_context_t *const p_context, uint8_t *p_data_in,
+                                   size_t data_size, uint8_t *p_data_out, size_t *p_data_out_size);
 
 /**@brief AES integrated function for encryption, decryption and MAC calculation.
  *  It should be called once on the whole data block.
@@ -461,15 +451,11 @@ ret_code_t nrf_crypto_aes_finalize(nrf_crypto_aes_context_t * const p_context,
  *
  * @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_aes_crypt(nrf_crypto_aes_context_t * const    p_context,
-                                nrf_crypto_aes_info_t const * const p_info,
-                                nrf_crypto_operation_t              operation,
-                                uint8_t *                           p_key,
-                                uint8_t *                           p_iv,
-                                uint8_t *                           p_data_in,
-                                size_t                              data_size,
-                                uint8_t *                           p_data_out,
-                                size_t *                            p_data_out_size);
+ret_code_t nrf_crypto_aes_crypt(nrf_crypto_aes_context_t *const p_context,
+                                nrf_crypto_aes_info_t const *const p_info,
+                                nrf_crypto_operation_t operation, uint8_t *p_key, uint8_t *p_iv,
+                                uint8_t *p_data_in, size_t data_size, uint8_t *p_data_out,
+                                size_t *p_data_out_size);
 #ifdef __cplusplus
 }
 #endif

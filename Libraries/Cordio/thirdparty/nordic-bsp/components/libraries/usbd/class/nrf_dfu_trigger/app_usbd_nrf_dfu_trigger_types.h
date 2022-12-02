@@ -64,7 +64,7 @@ extern "C" {
  * @brief Nordic DFU Trigger subclass possible value.
  */
 typedef enum {
-    APP_USBD_NRF_DFU_TRIGGER_SUBCLASS          = 0x01,    /**< Device Firmware Upgrade Code */
+    APP_USBD_NRF_DFU_TRIGGER_SUBCLASS = 0x01, /**< Device Firmware Upgrade Code */
 } app_usbd_nrf_dfu_trigger_subclass_t;
 
 /**
@@ -73,7 +73,7 @@ typedef enum {
  * @note Only Run-time protocol is implemented, as DFU mode is covered by Nordic DFU.
  */
 typedef enum {
-    APP_USBD_NRF_DFU_TRIGGER_PROTOCOL_RUNTIME  = 0x01,    /**< Run-time Protocol */
+    APP_USBD_NRF_DFU_TRIGGER_PROTOCOL_RUNTIME = 0x01, /**< Run-time Protocol */
 } app_usbd_nrf_dfu_trigger_protocol_t;
 
 /**
@@ -82,9 +82,9 @@ typedef enum {
  * @note Requests are limited only to @ref APP_USBD_NRF_DFU_TRIGGER_PROTOCOL_RUNTIME protocol type.
  */
 typedef enum {
-    APP_USBD_NRF_DFU_TRIGGER_REQ_DETACH      = 0x00, /**< Switch to DFU mode */
+    APP_USBD_NRF_DFU_TRIGGER_REQ_DETACH = 0x00, /**< Switch to DFU mode */
     APP_USBD_NRF_DFU_TRIGGER_REQ_NORDIC_INFO = 0x07, /**< Request Nordic DFU information */
-    APP_USBD_NRF_DFU_TRIGGER_REQ_SEM_VER     = 0x08, /**< Request semantic version information */
+    APP_USBD_NRF_DFU_TRIGGER_REQ_SEM_VER = 0x08, /**< Request semantic version information */
 } app_usbd_nrf_dfu_trigger_req_t;
 
 /**
@@ -100,10 +100,10 @@ typedef enum {
  * @note For future compatibility with DFU class.
  */
 typedef enum {
-    APP_USBD_NRF_DFU_TRIGGER_BIT_CAN_DNLOAD    = 0x01, /**< bitCanDnload */
-    APP_USBD_NRF_DFU_TRIGGER_BIT_CAB_UPLOAD    = 0x02, /**< bitCanUpload */
+    APP_USBD_NRF_DFU_TRIGGER_BIT_CAN_DNLOAD = 0x01, /**< bitCanDnload */
+    APP_USBD_NRF_DFU_TRIGGER_BIT_CAB_UPLOAD = 0x02, /**< bitCanUpload */
     APP_USBD_NRF_DFU_TRIGGER_BIT_MANI_TOLERANT = 0x04, /**< bitManifestationTolerant */
-    APP_USBD_NRF_DFU_TRIGGER_BIT_WILL_DETACH   = 0x08, /**< bitWillDetach */
+    APP_USBD_NRF_DFU_TRIGGER_BIT_WILL_DETACH = 0x08, /**< bitWillDetach */
 } app_usbd_nrf_dfu_trigger_bm_attributes_t;
 
 #pragma pack(push, 1)
@@ -112,29 +112,28 @@ typedef enum {
  * @brief Nordic DFU Trigger Functional Descriptor.
  */
 typedef struct {
-    uint8_t  bFunctionLength; //!< Size of this descriptor in bytes.
-    uint8_t  bDescriptorType; //!< Descriptor type.
-    uint8_t  bmAttributes;    //!< Attributes bits.
-    uint16_t wDetachTimeOut;  //!< Device detach timeout - left for compatibility with USB DFU spec.
-    uint16_t wTransferSize;   //!< Transfer size - left for compatibility with USB DFU spec.
-    uint16_t bcdDFUVersion;   //!< DFU version.
+    uint8_t bFunctionLength; //!< Size of this descriptor in bytes.
+    uint8_t bDescriptorType; //!< Descriptor type.
+    uint8_t bmAttributes; //!< Attributes bits.
+    uint16_t wDetachTimeOut; //!< Device detach timeout - left for compatibility with USB DFU spec.
+    uint16_t wTransferSize; //!< Transfer size - left for compatibility with USB DFU spec.
+    uint16_t bcdDFUVersion; //!< DFU version.
 } app_usbd_nrf_dfu_trigger_desc_func_t;
 
 /**
  * @brief Nordic custom DFU information.
  */
 typedef struct {
-    uint32_t wAddress;          //!< Firmware start address.
-    uint32_t wFirmwareSize;     //!< Firmware size.
-    uint16_t wVersionMajor;     //!< Firmware version major.
-    uint16_t wVersionMinor;     //!< Firmware version minor.
-    uint32_t wFirmwareID;       //!< Firmware ID.
-    uint32_t wFlashSize;        //!< Flash size.
-    uint32_t wFlashPageSize;    //!< Flash page size.
+    uint32_t wAddress; //!< Firmware start address.
+    uint32_t wFirmwareSize; //!< Firmware size.
+    uint16_t wVersionMajor; //!< Firmware version major.
+    uint16_t wVersionMinor; //!< Firmware version minor.
+    uint32_t wFirmwareID; //!< Firmware ID.
+    uint32_t wFlashSize; //!< Flash size.
+    uint32_t wFlashPageSize; //!< Flash page size.
 } app_usbd_nrf_dfu_trigger_nordic_info_t;
 
 #pragma pack(pop)
-
 
 /** @} */
 

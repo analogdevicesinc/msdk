@@ -49,11 +49,11 @@ extern unsigned long __heap_start__;
 /*************************************************************************************************/
 void WsfHeapAlloc(uint32_t size)
 {
-  /* Round up to nearest multiple of 4 for word alignment */
-  size = (size + 3) & ~3;
+    /* Round up to nearest multiple of 4 for word alignment */
+    size = (size + 3) & ~3;
 
-  SystemHeapStart += size;
-  SystemHeapSize -= size;
+    SystemHeapStart += size;
+    SystemHeapSize -= size;
 }
 
 /*************************************************************************************************/
@@ -65,7 +65,7 @@ void WsfHeapAlloc(uint32_t size)
 /*************************************************************************************************/
 void *WsfHeapGetFreeStartAddress(void)
 {
-  return (void *)SystemHeapStart;
+    return (void *)SystemHeapStart;
 }
 
 /*************************************************************************************************/
@@ -77,7 +77,7 @@ void *WsfHeapGetFreeStartAddress(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountAvailable(void)
 {
-  return SystemHeapSize;
+    return SystemHeapSize;
 }
 
 /*************************************************************************************************/
@@ -90,8 +90,8 @@ uint32_t WsfHeapCountAvailable(void)
 uint32_t WsfHeapCountUsed(void)
 {
 #ifdef __GNUC__
-  return ((uint8_t *)&__heap_end__ - (uint8_t *)&__heap_start__) - SystemHeapSize;
+    return ((uint8_t *)&__heap_end__ - (uint8_t *)&__heap_start__) - SystemHeapSize;
 #else
-  return 0;
+    return 0;
 #endif
 }

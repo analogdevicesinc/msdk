@@ -54,12 +54,10 @@
 #ifdef HAVE_CAMELLIA
 
 #ifdef __cplusplus
-    extern "C" {
+extern "C" {
 #endif
 
-enum {
-    CAMELLIA_BLOCK_SIZE = 16
-};
+enum { CAMELLIA_BLOCK_SIZE = 16 };
 
 #define CAMELLIA_TABLE_BYTE_LEN 272
 #define CAMELLIA_TABLE_WORD_LEN (CAMELLIA_TABLE_BYTE_LEN / sizeof(word32))
@@ -73,24 +71,16 @@ typedef struct Camellia {
     word32 tmp[CAMELLIA_BLOCK_SIZE / sizeof(word32)]; /* for CBC mode */
 } Camellia;
 
-
-WOLFSSL_API int  wc_CamelliaSetKey(Camellia* cam,
-                                   const byte* key, word32 len, const byte* iv);
-WOLFSSL_API int  wc_CamelliaSetIV(Camellia* cam, const byte* iv);
-WOLFSSL_API void wc_CamelliaEncryptDirect(Camellia* cam, byte* out,
-                                                                const byte* in);
-WOLFSSL_API void wc_CamelliaDecryptDirect(Camellia* cam, byte* out,
-                                                                const byte* in);
-WOLFSSL_API void wc_CamelliaCbcEncrypt(Camellia* cam,
-                                          byte* out, const byte* in, word32 sz);
-WOLFSSL_API void wc_CamelliaCbcDecrypt(Camellia* cam,
-                                          byte* out, const byte* in, word32 sz);
-
+WOLFSSL_API int wc_CamelliaSetKey(Camellia *cam, const byte *key, word32 len, const byte *iv);
+WOLFSSL_API int wc_CamelliaSetIV(Camellia *cam, const byte *iv);
+WOLFSSL_API void wc_CamelliaEncryptDirect(Camellia *cam, byte *out, const byte *in);
+WOLFSSL_API void wc_CamelliaDecryptDirect(Camellia *cam, byte *out, const byte *in);
+WOLFSSL_API void wc_CamelliaCbcEncrypt(Camellia *cam, byte *out, const byte *in, word32 sz);
+WOLFSSL_API void wc_CamelliaCbcDecrypt(Camellia *cam, byte *out, const byte *in, word32 sz);
 
 #ifdef __cplusplus
-    } /* extern "C" */
+} /* extern "C" */
 #endif
 
 #endif /* HAVE_CAMELLIA */
 #endif /* WOLF_CRYPT_CAMELLIA_H */
-

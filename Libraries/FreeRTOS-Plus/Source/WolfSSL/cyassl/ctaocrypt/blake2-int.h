@@ -31,13 +31,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
-
 #ifndef CTAOCRYPT_BLAKE2_INT_H
 #define CTAOCRYPT_BLAKE2_INT_H
 
 #include <cyassl/ctaocrypt/types.h>
 #include <wolfssl/wolfcrypt/blake2_int.h>
 
-#endif  /* CTAOCRYPT_BLAKE2_INT_H */
-
+#endif /* CTAOCRYPT_BLAKE2_INT_H */

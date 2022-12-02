@@ -34,6 +34,6 @@
 /*************************************************************************************************/
 void LhciPrivConnInit(void)
 {
-  lhciCmdTbl[LHCI_MSG_PRIV] = lhciPrivConnDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_PRIV] = lhciPrivConnEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_PRIV] = lhciPrivConnDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_PRIV] = lhciPrivConnEncodeEvtPkt;
 }

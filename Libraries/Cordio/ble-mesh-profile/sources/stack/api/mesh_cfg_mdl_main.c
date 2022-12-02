@@ -65,55 +65,54 @@
 **************************************************************************************************/
 
 /*! Mesh Provisioning Client callback event length table */
-static const uint16_t meshCfgEvtCbackLen[MESH_CFG_MDL_MAX_EVENT] =
-{
-  sizeof(meshCfgMdlBeaconStateEvt_t),         /*!< MESH_CFG_MDL_BEACON_GET_EVENT */
-  sizeof(meshCfgMdlBeaconStateEvt_t),         /*!< MESH_CFG_MDL_BEACON_SET_EVENT */
-  sizeof(meshCfgMdlCompDataEvt_t),            /*!< MESH_CFG_MDL_COMP_PAGE_GET_EVENT */
-  sizeof(meshCfgMdlDefaultTtlStateEvt_t),     /*!< MESH_CFG_MDL_DEFAULT_TTL_GET_EVENT */
-  sizeof(meshCfgMdlDefaultTtlStateEvt_t),     /*!< MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT */
-  sizeof(meshCfgMdlGattProxyEvt_t),           /*!< MESH_CFG_MDL_GATT_PROXY_GET_EVENT */
-  sizeof(meshCfgMdlGattProxyEvt_t),           /*!< MESH_CFG_MDL_GATT_PROXY_SET_EVENT */
-  sizeof(meshCfgMdlRelayCompositeStateEvt_t), /*!< MESH_CFG_MDL_RELAY_GET_EVENT */
-  sizeof(meshCfgMdlRelayCompositeStateEvt_t), /*!< MESH_CFG_MDL_RELAY_SET_EVENT */
-  sizeof(meshCfgMdlModelPubEvt_t),            /*!< MESH_CFG_MDL_PUB_GET_EVENT */
-  sizeof(meshCfgMdlModelPubEvt_t),            /*!< MESH_CFG_MDL_PUB_SET_EVENT */
-  sizeof(meshCfgMdlModelPubEvt_t),            /*!< MESH_CFG_MDL_PUB_VIRT_SET_EVENT */
-  sizeof(meshCfgMdlModelSubscrChgEvt_t),      /*!< MESH_CFG_MDL_SUBSCR_ADD_EVENT */
-  sizeof(meshCfgMdlModelSubscrChgEvt_t),      /*!< MESH_CFG_MDL_SUBSCR_VIRT_ADD_EVENT */
-  sizeof(meshCfgMdlModelSubscrChgEvt_t),      /*!< MESH_CFG_MDL_SUBSCR_DEL_EVENT */
-  sizeof(meshCfgMdlModelSubscrChgEvt_t),      /*!< MESH_CFG_MDL_SUBSCR_VIRT_DEL_EVENT */
-  sizeof(meshCfgMdlModelSubscrChgEvt_t),      /*!< MESH_CFG_MDL_SUBSCR_OVR_EVENT */
-  sizeof(meshCfgMdlModelSubscrChgEvt_t),      /*!< MESH_CFG_MDL_SUBSCR_VIRT_OVR_EVENT */
-  sizeof(meshCfgMdlModelSubscrChgEvt_t),      /*!< MESH_CFG_MDL_SUBSCR_DEL_ALL_EVENT */
-  sizeof(meshCfgMdlModelSubscrListEvt_t),     /*!< MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT */
-  sizeof(meshCfgMdlModelSubscrListEvt_t),     /*!< MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT */
-  sizeof(meshCfgMdlNetKeyChgEvt_t),           /*!< MESH_CFG_MDL_NETKEY_ADD_EVENT */
-  sizeof(meshCfgMdlNetKeyChgEvt_t),           /*!< MESH_CFG_MDL_NETKEY_UPDT_EVENT */
-  sizeof(meshCfgMdlNetKeyChgEvt_t),           /*!< MESH_CFG_MDL_NETKEY_DEL_EVENT */
-  sizeof(meshCfgMdlNetKeyListEvt_t),          /*!< MESH_CFG_MDL_NETKEY_GET_EVENT */
-  sizeof(meshCfgMdlAppKeyChgEvt_t),           /*!< MESH_CFG_MDL_APPKEY_ADD_EVENT */
-  sizeof(meshCfgMdlAppKeyChgEvt_t),           /*!< MESH_CFG_MDL_APPKEY_UPDT_EVENT */
-  sizeof(meshCfgMdlAppKeyChgEvt_t),           /*!< MESH_CFG_MDL_APPKEY_DEL_EVENT */
-  sizeof(meshCfgMdlAppKeyListEvt_t),          /*!< MESH_CFG_MDL_APPKEY_GET_EVENT */
-  sizeof(meshCfgMdlNodeIdentityEvt_t),        /*!< MESH_CFG_MDL_NODE_IDENTITY_GET_EVENT */
-  sizeof(meshCfgMdlNodeIdentityEvt_t),        /*!< MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT */
-  sizeof(meshCfgMdlModelAppBindEvt_t),        /*!< MESH_CFG_MDL_APP_BIND_EVENT */
-  sizeof(meshCfgMdlModelAppBindEvt_t),        /*!< MESH_CFG_MDL_APP_UNBIND_EVENT */
-  sizeof(meshCfgMdlModelAppListEvt_t),        /*!< MESH_CFG_MDL_APP_SIG_GET_EVENT */
-  sizeof(meshCfgMdlModelAppListEvt_t),        /*!< MESH_CFG_MDL_APP_VENDOR_GET_EVENT */
-  sizeof(meshCfgMdlNodeResetStateEvt_t),      /*!< MESH_CFG_MDL_NODE_RESET_EVENT */
-  sizeof(meshCfgMdlFriendEvt_t),              /*!< MESH_CFG_MDL_FRIEND_GET_EVENT */
-  sizeof(meshCfgMdlFriendEvt_t),              /*!< MESH_CFG_MDL_FRIEND_SET_EVENT */
-  sizeof(meshCfgMdlKeyRefPhaseEvt_t),         /*!< MESH_CFG_MDL_KEY_REF_PHASE_GET_EVENT */
-  sizeof(meshCfgMdlKeyRefPhaseEvt_t),         /*!< MESH_CFG_MDL_KEY_REF_PHASE_SET_EVENT */
-  sizeof(meshCfgMdlHbPubEvt_t),               /*!< MESH_CFG_MDL_HB_PUB_GET_EVENT */
-  sizeof(meshCfgMdlHbPubEvt_t),               /*!< MESH_CFG_MDL_HB_PUB_SET_EVENT */
-  sizeof(meshCfgMdlHbSubEvt_t),               /*!< MESH_CFG_MDL_HB_SUB_GET_EVENT */
-  sizeof(meshCfgMdlHbSubEvt_t),               /*!< MESH_CFG_MDL_HB_SUB_SET_EVENT */
-  sizeof(meshCfgMdlLpnPollTimeoutEvt_t),      /*!< MESH_CFG_MDL_LPN_POLLTIMEOUT_GET_EVENT */
-  sizeof(meshCfgMdlNwkTransStateEvt_t),       /*!< MESH_CFG_MDL_NWK_TRANS_GET_EVENT */
-  sizeof(meshCfgMdlNwkTransStateEvt_t),       /*!< MESH_CFG_MDL_NWK_TRANS_SET_EVENT */
+static const uint16_t meshCfgEvtCbackLen[MESH_CFG_MDL_MAX_EVENT] = {
+    sizeof(meshCfgMdlBeaconStateEvt_t), /*!< MESH_CFG_MDL_BEACON_GET_EVENT */
+    sizeof(meshCfgMdlBeaconStateEvt_t), /*!< MESH_CFG_MDL_BEACON_SET_EVENT */
+    sizeof(meshCfgMdlCompDataEvt_t), /*!< MESH_CFG_MDL_COMP_PAGE_GET_EVENT */
+    sizeof(meshCfgMdlDefaultTtlStateEvt_t), /*!< MESH_CFG_MDL_DEFAULT_TTL_GET_EVENT */
+    sizeof(meshCfgMdlDefaultTtlStateEvt_t), /*!< MESH_CFG_MDL_DEFAULT_TTL_SET_EVENT */
+    sizeof(meshCfgMdlGattProxyEvt_t), /*!< MESH_CFG_MDL_GATT_PROXY_GET_EVENT */
+    sizeof(meshCfgMdlGattProxyEvt_t), /*!< MESH_CFG_MDL_GATT_PROXY_SET_EVENT */
+    sizeof(meshCfgMdlRelayCompositeStateEvt_t), /*!< MESH_CFG_MDL_RELAY_GET_EVENT */
+    sizeof(meshCfgMdlRelayCompositeStateEvt_t), /*!< MESH_CFG_MDL_RELAY_SET_EVENT */
+    sizeof(meshCfgMdlModelPubEvt_t), /*!< MESH_CFG_MDL_PUB_GET_EVENT */
+    sizeof(meshCfgMdlModelPubEvt_t), /*!< MESH_CFG_MDL_PUB_SET_EVENT */
+    sizeof(meshCfgMdlModelPubEvt_t), /*!< MESH_CFG_MDL_PUB_VIRT_SET_EVENT */
+    sizeof(meshCfgMdlModelSubscrChgEvt_t), /*!< MESH_CFG_MDL_SUBSCR_ADD_EVENT */
+    sizeof(meshCfgMdlModelSubscrChgEvt_t), /*!< MESH_CFG_MDL_SUBSCR_VIRT_ADD_EVENT */
+    sizeof(meshCfgMdlModelSubscrChgEvt_t), /*!< MESH_CFG_MDL_SUBSCR_DEL_EVENT */
+    sizeof(meshCfgMdlModelSubscrChgEvt_t), /*!< MESH_CFG_MDL_SUBSCR_VIRT_DEL_EVENT */
+    sizeof(meshCfgMdlModelSubscrChgEvt_t), /*!< MESH_CFG_MDL_SUBSCR_OVR_EVENT */
+    sizeof(meshCfgMdlModelSubscrChgEvt_t), /*!< MESH_CFG_MDL_SUBSCR_VIRT_OVR_EVENT */
+    sizeof(meshCfgMdlModelSubscrChgEvt_t), /*!< MESH_CFG_MDL_SUBSCR_DEL_ALL_EVENT */
+    sizeof(meshCfgMdlModelSubscrListEvt_t), /*!< MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT */
+    sizeof(meshCfgMdlModelSubscrListEvt_t), /*!< MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT */
+    sizeof(meshCfgMdlNetKeyChgEvt_t), /*!< MESH_CFG_MDL_NETKEY_ADD_EVENT */
+    sizeof(meshCfgMdlNetKeyChgEvt_t), /*!< MESH_CFG_MDL_NETKEY_UPDT_EVENT */
+    sizeof(meshCfgMdlNetKeyChgEvt_t), /*!< MESH_CFG_MDL_NETKEY_DEL_EVENT */
+    sizeof(meshCfgMdlNetKeyListEvt_t), /*!< MESH_CFG_MDL_NETKEY_GET_EVENT */
+    sizeof(meshCfgMdlAppKeyChgEvt_t), /*!< MESH_CFG_MDL_APPKEY_ADD_EVENT */
+    sizeof(meshCfgMdlAppKeyChgEvt_t), /*!< MESH_CFG_MDL_APPKEY_UPDT_EVENT */
+    sizeof(meshCfgMdlAppKeyChgEvt_t), /*!< MESH_CFG_MDL_APPKEY_DEL_EVENT */
+    sizeof(meshCfgMdlAppKeyListEvt_t), /*!< MESH_CFG_MDL_APPKEY_GET_EVENT */
+    sizeof(meshCfgMdlNodeIdentityEvt_t), /*!< MESH_CFG_MDL_NODE_IDENTITY_GET_EVENT */
+    sizeof(meshCfgMdlNodeIdentityEvt_t), /*!< MESH_CFG_MDL_NODE_IDENTITY_SET_EVENT */
+    sizeof(meshCfgMdlModelAppBindEvt_t), /*!< MESH_CFG_MDL_APP_BIND_EVENT */
+    sizeof(meshCfgMdlModelAppBindEvt_t), /*!< MESH_CFG_MDL_APP_UNBIND_EVENT */
+    sizeof(meshCfgMdlModelAppListEvt_t), /*!< MESH_CFG_MDL_APP_SIG_GET_EVENT */
+    sizeof(meshCfgMdlModelAppListEvt_t), /*!< MESH_CFG_MDL_APP_VENDOR_GET_EVENT */
+    sizeof(meshCfgMdlNodeResetStateEvt_t), /*!< MESH_CFG_MDL_NODE_RESET_EVENT */
+    sizeof(meshCfgMdlFriendEvt_t), /*!< MESH_CFG_MDL_FRIEND_GET_EVENT */
+    sizeof(meshCfgMdlFriendEvt_t), /*!< MESH_CFG_MDL_FRIEND_SET_EVENT */
+    sizeof(meshCfgMdlKeyRefPhaseEvt_t), /*!< MESH_CFG_MDL_KEY_REF_PHASE_GET_EVENT */
+    sizeof(meshCfgMdlKeyRefPhaseEvt_t), /*!< MESH_CFG_MDL_KEY_REF_PHASE_SET_EVENT */
+    sizeof(meshCfgMdlHbPubEvt_t), /*!< MESH_CFG_MDL_HB_PUB_GET_EVENT */
+    sizeof(meshCfgMdlHbPubEvt_t), /*!< MESH_CFG_MDL_HB_PUB_SET_EVENT */
+    sizeof(meshCfgMdlHbSubEvt_t), /*!< MESH_CFG_MDL_HB_SUB_GET_EVENT */
+    sizeof(meshCfgMdlHbSubEvt_t), /*!< MESH_CFG_MDL_HB_SUB_SET_EVENT */
+    sizeof(meshCfgMdlLpnPollTimeoutEvt_t), /*!< MESH_CFG_MDL_LPN_POLLTIMEOUT_GET_EVENT */
+    sizeof(meshCfgMdlNwkTransStateEvt_t), /*!< MESH_CFG_MDL_NWK_TRANS_GET_EVENT */
+    sizeof(meshCfgMdlNwkTransStateEvt_t), /*!< MESH_CFG_MDL_NWK_TRANS_SET_EVENT */
 };
 
 /**************************************************************************************************
@@ -135,51 +134,51 @@ static const uint16_t meshCfgEvtCbackLen[MESH_CFG_MDL_MAX_EVENT] =
 /*************************************************************************************************/
 uint16_t MeshCfgSizeOfEvt(wsfMsgHdr_t *pMeshCfgEvt)
 {
-  /* If a valid event ID */
-  if (((pMeshCfgEvt->event == MESH_CFG_MDL_CL_EVENT) ||
-       (pMeshCfgEvt->event == MESH_CFG_MDL_SR_EVENT)) &&
-      (pMeshCfgEvt->param < MESH_CFG_MDL_MAX_EVENT))
-  {
-    uint16_t len;
+    /* If a valid event ID */
+    if (((pMeshCfgEvt->event == MESH_CFG_MDL_CL_EVENT) ||
+         (pMeshCfgEvt->event == MESH_CFG_MDL_SR_EVENT)) &&
+        (pMeshCfgEvt->param < MESH_CFG_MDL_MAX_EVENT)) {
+        uint16_t len;
 
-    len = meshCfgEvtCbackLen[pMeshCfgEvt->param];
+        len = meshCfgEvtCbackLen[pMeshCfgEvt->param];
 
-    if (pMeshCfgEvt->status == MESH_CFG_MDL_CL_SUCCESS)
-    {
+        if (pMeshCfgEvt->status == MESH_CFG_MDL_CL_SUCCESS) {
+            switch (pMeshCfgEvt->param) {
+            case MESH_CFG_MDL_COMP_PAGE_GET_EVENT:
+                len += ((meshCfgMdlCompDataEvt_t *)pMeshCfgEvt)->data.pageSize * sizeof(uint8_t);
+                break;
 
-      switch (pMeshCfgEvt->param)
-      {
-        case MESH_CFG_MDL_COMP_PAGE_GET_EVENT:
-          len += ((meshCfgMdlCompDataEvt_t *) pMeshCfgEvt)->data.pageSize * sizeof(uint8_t);
-          break;
+            case MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT:
+            case MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT:
+                len += ((meshCfgMdlModelSubscrListEvt_t *)pMeshCfgEvt)->subscrListSize *
+                       sizeof(meshAddress_t);
+                break;
 
-        case MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT:
-        case MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT:
-          len += ((meshCfgMdlModelSubscrListEvt_t *) pMeshCfgEvt)->subscrListSize * sizeof(meshAddress_t);
-          break;
+            case MESH_CFG_MDL_NETKEY_GET_EVENT:
+                len += ((meshCfgMdlNetKeyListEvt_t *)pMeshCfgEvt)->netKeyList.netKeyCount *
+                       sizeof(uint16_t);
+                break;
 
-        case MESH_CFG_MDL_NETKEY_GET_EVENT:
-          len += ((meshCfgMdlNetKeyListEvt_t *) pMeshCfgEvt)->netKeyList.netKeyCount * sizeof(uint16_t);
-          break;
+            case MESH_CFG_MDL_APPKEY_GET_EVENT:
+                len += ((meshCfgMdlAppKeyListEvt_t *)pMeshCfgEvt)->appKeyList.appKeyCount *
+                       sizeof(uint16_t);
+                break;
 
-        case MESH_CFG_MDL_APPKEY_GET_EVENT:
-          len += ((meshCfgMdlAppKeyListEvt_t *) pMeshCfgEvt)->appKeyList.appKeyCount * sizeof(uint16_t);
-          break;
+            case MESH_CFG_MDL_APP_SIG_GET_EVENT:
+            case MESH_CFG_MDL_APP_VENDOR_GET_EVENT:
+                len += ((meshCfgMdlModelAppListEvt_t *)pMeshCfgEvt)->modelAppList.appKeyCount *
+                       sizeof(uint16_t);
+                break;
 
-        case MESH_CFG_MDL_APP_SIG_GET_EVENT:
-        case MESH_CFG_MDL_APP_VENDOR_GET_EVENT:
-          len += ((meshCfgMdlModelAppListEvt_t *) pMeshCfgEvt)->modelAppList.appKeyCount * sizeof(uint16_t);
-          break;
+            default:
+                break;
+            }
+        }
 
-        default:
-          break;
-      }
+        return len;
     }
 
-    return len;
-  }
-
-  return 0;
+    return 0;
 }
 
 /*************************************************************************************************/
@@ -194,69 +193,74 @@ uint16_t MeshCfgSizeOfEvt(wsfMsgHdr_t *pMeshCfgEvt)
 /*************************************************************************************************/
 bool_t MeshCfgMsgDeepCopy(wsfMsgHdr_t *pMeshCfgEvtOut, const wsfMsgHdr_t *pMeshCfgEvtIn)
 {
-  if (((pMeshCfgEvtIn->event == MESH_CFG_MDL_CL_EVENT) ||
-       (pMeshCfgEvtIn->event == MESH_CFG_MDL_SR_EVENT)) &&
-      (pMeshCfgEvtIn->param < MESH_CFG_MDL_MAX_EVENT))
-  {
-    /* Copy over basic structure */
-    memcpy(pMeshCfgEvtOut, pMeshCfgEvtIn, meshCfgEvtCbackLen[pMeshCfgEvtIn->param]);
+    if (((pMeshCfgEvtIn->event == MESH_CFG_MDL_CL_EVENT) ||
+         (pMeshCfgEvtIn->event == MESH_CFG_MDL_SR_EVENT)) &&
+        (pMeshCfgEvtIn->param < MESH_CFG_MDL_MAX_EVENT)) {
+        /* Copy over basic structure */
+        memcpy(pMeshCfgEvtOut, pMeshCfgEvtIn, meshCfgEvtCbackLen[pMeshCfgEvtIn->param]);
 
-    if (pMeshCfgEvtIn->status == MESH_CFG_MDL_CL_SUCCESS)
-    {
+        if (pMeshCfgEvtIn->status == MESH_CFG_MDL_CL_SUCCESS) {
+            /* Perform event specific copying. */
+            switch (pMeshCfgEvtIn->param) {
+            case MESH_CFG_MDL_COMP_PAGE_GET_EVENT:
+                ((meshCfgMdlCompDataEvt_t *)pMeshCfgEvtOut)->data.pPage =
+                    (uint8_t *)((meshCfgMdlCompDataEvt_t *)pMeshCfgEvtOut + 1);
 
-      /* Perform event specific copying. */
-      switch (pMeshCfgEvtIn->param)
-      {
-        case MESH_CFG_MDL_COMP_PAGE_GET_EVENT:
-          ((meshCfgMdlCompDataEvt_t *) pMeshCfgEvtOut)->data.pPage = (uint8_t *) ((meshCfgMdlCompDataEvt_t *) pMeshCfgEvtOut + 1);
+                memcpy(((meshCfgMdlCompDataEvt_t *)pMeshCfgEvtOut)->data.pPage,
+                       ((meshCfgMdlCompDataEvt_t *)pMeshCfgEvtIn)->data.pPage,
+                       ((meshCfgMdlCompDataEvt_t *)pMeshCfgEvtIn)->data.pageSize);
+                break;
 
-          memcpy(((meshCfgMdlCompDataEvt_t *) pMeshCfgEvtOut)->data.pPage,
-                 ((meshCfgMdlCompDataEvt_t *) pMeshCfgEvtIn)->data.pPage,
-                 ((meshCfgMdlCompDataEvt_t *) pMeshCfgEvtIn)->data.pageSize);
-          break;
+            case MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT:
+            case MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT:
+                ((meshCfgMdlModelSubscrListEvt_t *)pMeshCfgEvtOut)->pSubscrList =
+                    (uint16_t *)((meshCfgMdlModelSubscrListEvt_t *)pMeshCfgEvtOut + 1);
 
-        case MESH_CFG_MDL_SUBSCR_SIG_GET_EVENT:
-        case MESH_CFG_MDL_SUBSCR_VENDOR_GET_EVENT:
-          ((meshCfgMdlModelSubscrListEvt_t *) pMeshCfgEvtOut)->pSubscrList = (uint16_t *) ((meshCfgMdlModelSubscrListEvt_t *) pMeshCfgEvtOut + 1);
+                memcpy(((meshCfgMdlModelSubscrListEvt_t *)pMeshCfgEvtOut)->pSubscrList,
+                       ((meshCfgMdlModelSubscrListEvt_t *)pMeshCfgEvtIn)->pSubscrList,
+                       ((meshCfgMdlModelSubscrListEvt_t *)pMeshCfgEvtIn)->subscrListSize *
+                           sizeof(meshAddress_t));
 
-          memcpy(((meshCfgMdlModelSubscrListEvt_t *) pMeshCfgEvtOut)->pSubscrList,
-                 ((meshCfgMdlModelSubscrListEvt_t *) pMeshCfgEvtIn)->pSubscrList,
-                 ((meshCfgMdlModelSubscrListEvt_t *) pMeshCfgEvtIn)->subscrListSize * sizeof(meshAddress_t));
+                break;
 
-          break;
+            case MESH_CFG_MDL_NETKEY_GET_EVENT:
+                ((meshCfgMdlNetKeyListEvt_t *)pMeshCfgEvtOut)->netKeyList.pNetKeyIndexes =
+                    (uint16_t *)((meshCfgMdlNetKeyListEvt_t *)pMeshCfgEvtOut + 1);
 
-        case MESH_CFG_MDL_NETKEY_GET_EVENT:
-          ((meshCfgMdlNetKeyListEvt_t *) pMeshCfgEvtOut)->netKeyList.pNetKeyIndexes = (uint16_t *) ((meshCfgMdlNetKeyListEvt_t *) pMeshCfgEvtOut + 1);
+                memcpy(((meshCfgMdlNetKeyListEvt_t *)pMeshCfgEvtOut)->netKeyList.pNetKeyIndexes,
+                       ((meshCfgMdlNetKeyListEvt_t *)pMeshCfgEvtIn)->netKeyList.pNetKeyIndexes,
+                       ((meshCfgMdlNetKeyListEvt_t *)pMeshCfgEvtIn)->netKeyList.netKeyCount *
+                           sizeof(uint16_t));
+                break;
 
-          memcpy(((meshCfgMdlNetKeyListEvt_t *) pMeshCfgEvtOut)->netKeyList.pNetKeyIndexes,
-                 ((meshCfgMdlNetKeyListEvt_t *) pMeshCfgEvtIn)->netKeyList.pNetKeyIndexes,
-                 ((meshCfgMdlNetKeyListEvt_t *) pMeshCfgEvtIn)->netKeyList.netKeyCount * sizeof(uint16_t));
-          break;
+            case MESH_CFG_MDL_APPKEY_GET_EVENT:
+                ((meshCfgMdlAppKeyListEvt_t *)pMeshCfgEvtOut)->appKeyList.pAppKeyIndexes =
+                    (uint16_t *)((meshCfgMdlAppKeyListEvt_t *)pMeshCfgEvtOut + 1);
 
-        case MESH_CFG_MDL_APPKEY_GET_EVENT:
-          ((meshCfgMdlAppKeyListEvt_t *) pMeshCfgEvtOut)->appKeyList.pAppKeyIndexes = (uint16_t *) ((meshCfgMdlAppKeyListEvt_t *) pMeshCfgEvtOut + 1);
+                memcpy(((meshCfgMdlAppKeyListEvt_t *)pMeshCfgEvtOut)->appKeyList.pAppKeyIndexes,
+                       ((meshCfgMdlAppKeyListEvt_t *)pMeshCfgEvtIn)->appKeyList.pAppKeyIndexes,
+                       ((meshCfgMdlAppKeyListEvt_t *)pMeshCfgEvtIn)->appKeyList.appKeyCount *
+                           sizeof(uint16_t));
+                break;
 
-          memcpy(((meshCfgMdlAppKeyListEvt_t *) pMeshCfgEvtOut)->appKeyList.pAppKeyIndexes,
-                 ((meshCfgMdlAppKeyListEvt_t *) pMeshCfgEvtIn)->appKeyList.pAppKeyIndexes,
-                 ((meshCfgMdlAppKeyListEvt_t *) pMeshCfgEvtIn)->appKeyList.appKeyCount * sizeof(uint16_t));
-          break;
+            case MESH_CFG_MDL_APP_SIG_GET_EVENT:
+            case MESH_CFG_MDL_APP_VENDOR_GET_EVENT:
+                ((meshCfgMdlModelAppListEvt_t *)pMeshCfgEvtOut)->modelAppList.pAppKeyIndexes =
+                    (uint16_t *)((meshCfgMdlModelAppListEvt_t *)pMeshCfgEvtOut + 1);
 
-        case MESH_CFG_MDL_APP_SIG_GET_EVENT:
-        case MESH_CFG_MDL_APP_VENDOR_GET_EVENT:
-          ((meshCfgMdlModelAppListEvt_t *) pMeshCfgEvtOut)->modelAppList.pAppKeyIndexes = (uint16_t *) ((meshCfgMdlModelAppListEvt_t *) pMeshCfgEvtOut + 1);
+                memcpy(((meshCfgMdlModelAppListEvt_t *)pMeshCfgEvtOut)->modelAppList.pAppKeyIndexes,
+                       ((meshCfgMdlModelAppListEvt_t *)pMeshCfgEvtIn)->modelAppList.pAppKeyIndexes,
+                       ((meshCfgMdlModelAppListEvt_t *)pMeshCfgEvtIn)->modelAppList.appKeyCount *
+                           sizeof(uint16_t));
+                break;
 
-          memcpy(((meshCfgMdlModelAppListEvt_t *) pMeshCfgEvtOut)->modelAppList.pAppKeyIndexes,
-                 ((meshCfgMdlModelAppListEvt_t *) pMeshCfgEvtIn)->modelAppList.pAppKeyIndexes,
-                 ((meshCfgMdlModelAppListEvt_t *) pMeshCfgEvtIn)->modelAppList.appKeyCount * sizeof(uint16_t));
-          break;
+            default:
+                break;
+            }
+        }
 
-        default:
-          break;
-      }
+        return TRUE;
     }
 
-    return TRUE;
-  }
-
-  return FALSE;
+    return FALSE;
 }

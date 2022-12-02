@@ -32,14 +32,11 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
 #ifndef _SSI_PAL_TRNG_H
 #define _SSI_PAL_TRNG_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*----------------------------
@@ -53,7 +50,8 @@ extern "C"
  * @return Zero on success.
  * @return A non-zero value on failure.
  */
-SaSiError_t SaSi_PalTrngParameterGet(uint32_t *SubSamplingRatio /*!< [out] TRNG characterization parameters, array size = 4. */);
+SaSiError_t SaSi_PalTrngParameterGet(
+    uint32_t *SubSamplingRatio /*!< [out] TRNG characterization parameters, array size = 4. */);
 
 #ifdef __cplusplus
 }
@@ -62,5 +60,3 @@ SaSiError_t SaSi_PalTrngParameterGet(uint32_t *SubSamplingRatio /*!< [out] TRNG 
 @}
  */
 #endif
-
-

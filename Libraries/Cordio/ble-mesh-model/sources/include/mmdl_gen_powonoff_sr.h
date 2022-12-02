@@ -27,8 +27,7 @@
 #define MMDL_GEN_POWER_ONOFF_SR_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -47,8 +46,8 @@ extern "C"
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenPowOnOffSrSendStatus(uint16_t modelId, meshElementId_t elementId,
-                                 meshAddress_t dstAddr, uint16_t appKeyIndex);
+void MmdlGenPowOnOffSrSendStatus(uint16_t modelId, meshElementId_t elementId, meshAddress_t dstAddr,
+                                 uint16_t appKeyIndex);
 
 /*************************************************************************************************/
 /*!

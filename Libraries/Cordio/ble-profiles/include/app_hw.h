@@ -36,81 +36,74 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Heart rate measurement structure */
-typedef struct
-{
-  uint16_t          *pRrInterval;         /*!< \brief Array of RR intervals */
-  uint8_t           numIntervals;         /*!< \brief Length of RR interval array */
-  uint16_t          energyExp;            /*!< \brief Energy expended value */
-  uint16_t          heartRate;            /*!< \brief Heart rate */
-  uint8_t           flags;                /*!< \brief Heart rate measurement flags */
+typedef struct {
+    uint16_t *pRrInterval; /*!< \brief Array of RR intervals */
+    uint8_t numIntervals; /*!< \brief Length of RR interval array */
+    uint16_t energyExp; /*!< \brief Energy expended value */
+    uint16_t heartRate; /*!< \brief Heart rate */
+    uint8_t flags; /*!< \brief Heart rate measurement flags */
 } appHrm_t;
 
 /*! \brief Date and time structure */
-typedef struct
-{
-  uint16_t          year;                 /*!< \brief Year */
-  uint8_t           month;                /*!< \brief Month */
-  uint8_t           day;                  /*!< \brief Day */
-  uint8_t           hour;                 /*!< \brief Hour */
-  uint8_t           min;                  /*!< \brief Minutes */
-  uint8_t           sec;                  /*!< \brief Seconds */
+typedef struct {
+    uint16_t year; /*!< \brief Year */
+    uint8_t month; /*!< \brief Month */
+    uint8_t day; /*!< \brief Day */
+    uint8_t hour; /*!< \brief Hour */
+    uint8_t min; /*!< \brief Minutes */
+    uint8_t sec; /*!< \brief Seconds */
 } appDateTime_t;
 
 /*! \brief Blood pressure measurement structure */
-typedef struct
-{
-  appDateTime_t     timestamp;            /*!< \brief Date-time */
-  uint16_t          systolic;             /*!< \brief Systolic pressure */
-  uint16_t          diastolic;            /*!< \brief Diastolic pressure */
-  uint16_t          map;                  /*!< \brief Mean arterial pressure */
-  uint16_t          pulseRate;            /*!< \brief Pulse rate */
-  uint16_t          measStatus;           /*!< \brief Measurement status */
-  uint8_t           flags;                /*!< \brief Flags */
-  uint8_t           userId;               /*!< \brief User ID */
+typedef struct {
+    appDateTime_t timestamp; /*!< \brief Date-time */
+    uint16_t systolic; /*!< \brief Systolic pressure */
+    uint16_t diastolic; /*!< \brief Diastolic pressure */
+    uint16_t map; /*!< \brief Mean arterial pressure */
+    uint16_t pulseRate; /*!< \brief Pulse rate */
+    uint16_t measStatus; /*!< \brief Measurement status */
+    uint8_t flags; /*!< \brief Flags */
+    uint8_t userId; /*!< \brief User ID */
 } appBpm_t;
 
 /*! \brief Weight scale measurement structure */
-typedef struct
-{
-  appDateTime_t     timestamp;            /*!< \brief Date-time */
-  uint16_t          weight;               /*!< \brief Weight */
-  uint8_t           flags;                /*!< \brief Weight measurement flags */
+typedef struct {
+    appDateTime_t timestamp; /*!< \brief Date-time */
+    uint16_t weight; /*!< \brief Weight */
+    uint8_t flags; /*!< \brief Weight measurement flags */
 } appWsm_t;
 
 /*! \brief Temperature measurement structure */
-typedef struct
-{
-  appDateTime_t     timestamp;            /*!< \brief Date-time */
-  uint32_t          temperature;          /*!< \brief Temperature */
-  uint8_t           flags;                /*!< \brief Flags */
-  uint8_t           tempType;             /*!< \brief Temperature type */
+typedef struct {
+    appDateTime_t timestamp; /*!< \brief Date-time */
+    uint32_t temperature; /*!< \brief Temperature */
+    uint8_t flags; /*!< \brief Flags */
+    uint8_t tempType; /*!< \brief Temperature type */
 } appTm_t;
 
 /*! \brief Pulse Oximeter continuous measurement structure */
-typedef struct
-{
-  uint8_t         flags;            /*!< \brief Flags */
-  uint16_t        spo2;             /*!< \brief SpO2PR-Spot-Check - SpO2 */
-  uint16_t        pulseRate;        /*!< \brief SpO2PR-Spot-Check - Pulse Rate */
-  uint16_t        spo2Fast;         /*!< \brief SpO2PR-Spot-Check Fast - SpO2 */
-  uint16_t        pulseRateFast;    /*!< \brief SpO2PR-Spot-Check Fast - Pulse Rate */
-  uint16_t        spo2Slow;         /*!< \brief SpO2PR-Spot-Check Slow - SpO2 */
-  uint16_t        pulseRateSlow;    /*!< \brief SpO2PR-Spot-Check Slow - Pulse Rate */
-  uint16_t        measStatus;       /*!< \brief Measurement Status */
-  uint32_t        sensorStatus;     /*!< \brief Device and Sensor Status */
-  uint16_t        pulseAmpIndex;    /*!< \brief Pulse Amplitude Index */
+typedef struct {
+    uint8_t flags; /*!< \brief Flags */
+    uint16_t spo2; /*!< \brief SpO2PR-Spot-Check - SpO2 */
+    uint16_t pulseRate; /*!< \brief SpO2PR-Spot-Check - Pulse Rate */
+    uint16_t spo2Fast; /*!< \brief SpO2PR-Spot-Check Fast - SpO2 */
+    uint16_t pulseRateFast; /*!< \brief SpO2PR-Spot-Check Fast - Pulse Rate */
+    uint16_t spo2Slow; /*!< \brief SpO2PR-Spot-Check Slow - SpO2 */
+    uint16_t pulseRateSlow; /*!< \brief SpO2PR-Spot-Check Slow - Pulse Rate */
+    uint16_t measStatus; /*!< \brief Measurement Status */
+    uint32_t sensorStatus; /*!< \brief Device and Sensor Status */
+    uint16_t pulseAmpIndex; /*!< \brief Pulse Amplitude Index */
 } appPlxCm_t;
 
 /*! \brief Pulse Oximeter spot check measurement structure */
-typedef struct
-{
-  uint8_t         flags;            /*!< \brief Flags */
-  uint16_t        spo2;             /*!< \brief SpO2PR-Spot-Check - SpO2 */
-  uint16_t        pulseRate;        /*!< \brief SpO2PR-Spot-Check - Pulse Rate */
-  appDateTime_t   timestamp;        /*!< \brief Timestamp */
-  uint16_t        measStatus;       /*!< \brief Measurement Status */
-  uint32_t        sensorStatus;     /*!< \brief Device and Sensor Status */
-  uint16_t        pulseAmpIndex;    /*!< \brief Pulse Amplitude Index */
+typedef struct {
+    uint8_t flags; /*!< \brief Flags */
+    uint16_t spo2; /*!< \brief SpO2PR-Spot-Check - SpO2 */
+    uint16_t pulseRate; /*!< \brief SpO2PR-Spot-Check - Pulse Rate */
+    appDateTime_t timestamp; /*!< \brief Timestamp */
+    uint16_t measStatus; /*!< \brief Measurement Status */
+    uint32_t sensorStatus; /*!< \brief Device and Sensor Status */
+    uint16_t pulseAmpIndex; /*!< \brief Pulse Amplitude Index */
 } appPlxScm_t;
 
 /**************************************************************************************************
@@ -215,7 +208,6 @@ void AppHwTmRead(bool_t intermed, appTm_t *pTm);
 /*************************************************************************************************/
 void AppHwTmSetUnits(uint8_t units);
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  Set the weight measurement units.
@@ -238,7 +230,6 @@ void AppHwWmSetUnits(uint8_t units);
 /*************************************************************************************************/
 void AppHwPlxcmRead(appPlxCm_t *pPlxcm);
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  Perform a pulse oximeter spot check measurement.
@@ -252,7 +243,7 @@ void AppHwPlxscmRead(appPlxScm_t *pPlxscm);
 
 /**@}*/
 
-/*! \} */    /*! APP_FRAMEWORK_HW_API */
+/*! \} */ /*! APP_FRAMEWORK_HW_API */
 
 #ifdef __cplusplus
 };

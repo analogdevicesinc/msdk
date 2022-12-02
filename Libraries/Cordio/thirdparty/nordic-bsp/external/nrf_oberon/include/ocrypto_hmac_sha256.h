@@ -68,7 +68,6 @@ extern "C" {
 #include <stdint.h>
 #include "include/ocrypto_sha256.h"
 
-
 /**
  * Maximum key length.
  */
@@ -79,17 +78,14 @@ extern "C" {
  */
 #define ocrypto_hmac_sha256_BYTES (32)
 
-
 /**@cond */
-typedef struct
-{
+typedef struct {
     ocrypto_sha256_ctx hash_ctx;
-    uint8_t        ikey[ocrypto_hmac_sha256_KEY_BYTES_MAX];
-    uint8_t        okey[ocrypto_hmac_sha256_KEY_BYTES_MAX];
-    uint8_t        key[ocrypto_hmac_sha256_KEY_BYTES_MAX];
+    uint8_t ikey[ocrypto_hmac_sha256_KEY_BYTES_MAX];
+    uint8_t okey[ocrypto_hmac_sha256_KEY_BYTES_MAX];
+    uint8_t key[ocrypto_hmac_sha256_KEY_BYTES_MAX];
 } ocrypto_hmac_sha256_ctx;
 /**@endcond */
-
 
 /**@name Incremental HMAC-SHA256 generator.
  *
@@ -107,8 +103,7 @@ typedef struct
  * @param      key     HMAC key.
  * @param      key_len Length of @p key.
  */
-void ocrypto_hmac_sha256_init(ocrypto_hmac_sha256_ctx * ctx,
-                              const uint8_t* key, size_t key_len);
+void ocrypto_hmac_sha256_init(ocrypto_hmac_sha256_ctx *ctx, const uint8_t *key, size_t key_len);
 
 /**
  * HMAC-SHA256 incremental data input.
@@ -124,8 +119,7 @@ void ocrypto_hmac_sha256_init(ocrypto_hmac_sha256_ctx * ctx,
  * @remark Initialization of the generator state @p ctx through
  *         @c ocrypto_hmac_sha256_init is required before this function can be called.
  */
-void ocrypto_hmac_sha256_update(ocrypto_hmac_sha256_ctx * ctx,
-                                const uint8_t* in, size_t in_len);
+void ocrypto_hmac_sha256_update(ocrypto_hmac_sha256_ctx *ctx, const uint8_t *in, size_t in_len);
 
 /**
  * HMAC-SHA256 output.
@@ -143,10 +137,8 @@ void ocrypto_hmac_sha256_update(ocrypto_hmac_sha256_ctx * ctx,
  *         @c ocrypto_hmac_sha256_update and @c ocrypto_hmac_sha256_final unless it is
  *         reinitialized using @c ocrypto_hmac_sha256_init.
  */
-void ocrypto_hmac_sha256_final(ocrypto_hmac_sha256_ctx * ctx,
-                               uint8_t r[ocrypto_hmac_sha256_BYTES]);
+void ocrypto_hmac_sha256_final(ocrypto_hmac_sha256_ctx *ctx, uint8_t r[ocrypto_hmac_sha256_BYTES]);
 /**@}*/
-
 
 /**
  * HMAC-SHA256 algorithm.
@@ -162,10 +154,8 @@ void ocrypto_hmac_sha256_final(ocrypto_hmac_sha256_ctx * ctx,
  * @param      in      Input data.
  * @param      in_len  Length of @p in.
  */
-void ocrypto_hmac_sha256(
-    uint8_t r[ocrypto_hmac_sha256_BYTES],
-    const uint8_t* key, size_t key_len,
-    const uint8_t* in, size_t in_len);
+void ocrypto_hmac_sha256(uint8_t r[ocrypto_hmac_sha256_BYTES], const uint8_t *key, size_t key_len,
+                         const uint8_t *in, size_t in_len);
 
 #ifdef __cplusplus
 }

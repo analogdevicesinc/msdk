@@ -50,34 +50,23 @@
 #include "nrf_crypto_ecc_shared.h"
 #include "nrf_crypto_ecdsa_shared.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1)
-
 
 /** @internal See @ref nrf_crypto_backend_ecdsa_sign_fn_t.
  */
-ret_code_t nrf_crypto_backend_secp256r1_sign(
-    void          * p_context,
-    void    const * p_private_key,
-    uint8_t const * p_data,
-    size_t          data_size,
-    uint8_t       * p_signature);
-
+ret_code_t nrf_crypto_backend_secp256r1_sign(void *p_context, void const *p_private_key,
+                                             uint8_t const *p_data, size_t data_size,
+                                             uint8_t *p_signature);
 
 /** @internal See @ref nrf_crypto_backend_ecdsa_verify_fn_t.
  */
-ret_code_t nrf_crypto_backend_secp256r1_verify(
-    void          * p_context,
-    void    const * p_public_key,
-    uint8_t const * p_data,
-    size_t          data_size,
-    uint8_t const * p_signature);
-
+ret_code_t nrf_crypto_backend_secp256r1_verify(void *p_context, void const *p_public_key,
+                                               uint8_t const *p_data, size_t data_size,
+                                               uint8_t const *p_signature);
 
 #define NRF_CRYPTO_BACKEND_SECP256R1_SIGN_CONTEXT_SIZE 0
 #define NRF_CRYPTO_BACKEND_SECP256R1_VERIFY_CONTEXT_SIZE 0
@@ -85,7 +74,6 @@ typedef uint32_t nrf_crypto_backend_secp256r1_sign_context_t;
 typedef uint32_t nrf_crypto_backend_secp256r1_verify_context_t;
 
 #endif
-
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_CURVE25519)
 
@@ -98,7 +86,6 @@ typedef uint32_t nrf_crypto_backend_curve25519_verify_context_t;
 #define nrf_crypto_backend_curve25519_verify NULL
 
 #endif
-
 
 #ifdef __cplusplus
 }

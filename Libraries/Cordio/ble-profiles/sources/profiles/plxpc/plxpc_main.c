@@ -36,7 +36,7 @@
 **************************************************************************************************/
 
 /* Length of response data contained in a received RACP message */
-#define PLXPC_PLX_RACP_RSP_LEN         4
+#define PLXPC_PLX_RACP_RSP_LEN 4
 
 /**************************************************************************************************
   Local Variables
@@ -47,68 +47,40 @@
  */
 
 /*! Pulse Oximeter spot check measurement */
-static const attcDiscChar_t plxpcPlxsPlxsc =
-{
-  attPlxscmChUuid,
-  0
-};
+static const attcDiscChar_t plxpcPlxsPlxsc = { attPlxscmChUuid, 0 };
 
 /*! Pulse Oximeter spot check measurement CCC descriptor */
-static const attcDiscChar_t plxpcPlxsPlxscCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t plxpcPlxsPlxscCcc = { attCliChCfgUuid, ATTC_SET_DESCRIPTOR };
 
 /*! Pulse Oximeter continuous measurement */
-static const attcDiscChar_t plxpcPlxsPlxc =
-{
-  attPlxcmChUuid,
-  0
-};
+static const attcDiscChar_t plxpcPlxsPlxc = { attPlxcmChUuid, 0 };
 
 /*! Pulse Oximeter continuous measurement CCC descriptor */
-static const attcDiscChar_t plxpcPlxsPlxcCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t plxpcPlxsPlxcCcc = { attCliChCfgUuid, ATTC_SET_DESCRIPTOR };
 
 /*! Pulse Oximeter features */
-static const attcDiscChar_t plxpcPlxsPlxf =
-{
-  attPlxfChUuid,
-  ATTC_SET_REQUIRED
-};
+static const attcDiscChar_t plxpcPlxsPlxf = { attPlxfChUuid, ATTC_SET_REQUIRED };
 
 /*! Record access control point */
-static const attcDiscChar_t plxpcPlxsRacp =
-{
-  attRacpChUuid,
-  0
-};
+static const attcDiscChar_t plxpcPlxsRacp = { attRacpChUuid, 0 };
 
 /*! Record access control point CCC descriptor */
-static const attcDiscChar_t plxpcPlxsRacpCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t plxpcPlxsRacpCcc = { attCliChCfgUuid, ATTC_SET_DESCRIPTOR };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *plxpcPlxsDiscCharList[] =
-{
-  &plxpcPlxsPlxsc,                  /*! Pulse Oximeter measurement */
-  &plxpcPlxsPlxscCcc,               /*! Pulse Oximeter measurement CCC descriptor */
-  &plxpcPlxsPlxc,                   /*! Pulse Oximeter measurement context */
-  &plxpcPlxsPlxcCcc,                /*! Pulse Oximeter measurement context CCC descriptor */
-  &plxpcPlxsPlxf,                   /*! Pulse Oximeter feature */
-  &plxpcPlxsRacp,                   /*! Record access control point */
-  &plxpcPlxsRacpCcc                 /*! Record access control point CCC descriptor */
+static const attcDiscChar_t *plxpcPlxsDiscCharList[] = {
+    &plxpcPlxsPlxsc, /*! Pulse Oximeter measurement */
+    &plxpcPlxsPlxscCcc, /*! Pulse Oximeter measurement CCC descriptor */
+    &plxpcPlxsPlxc, /*! Pulse Oximeter measurement context */
+    &plxpcPlxsPlxcCcc, /*! Pulse Oximeter measurement context CCC descriptor */
+    &plxpcPlxsPlxf, /*! Pulse Oximeter feature */
+    &plxpcPlxsRacp, /*! Record access control point */
+    &plxpcPlxsRacpCcc /*! Record access control point CCC descriptor */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
-WSF_CT_ASSERT(PLXPC_PLXS_HDL_LIST_LEN == ((sizeof(plxpcPlxsDiscCharList) / sizeof(attcDiscChar_t *))));
+WSF_CT_ASSERT(PLXPC_PLXS_HDL_LIST_LEN ==
+              ((sizeof(plxpcPlxsDiscCharList) / sizeof(attcDiscChar_t *))));
 
 /*************************************************************************************************/
 /*!
@@ -122,98 +94,96 @@ WSF_CT_ASSERT(PLXPC_PLXS_HDL_LIST_LEN == ((sizeof(plxpcPlxsDiscCharList) / sizeo
 /*************************************************************************************************/
 void plxpcPlxsParsePlxsc(uint8_t *pValue, uint16_t len)
 {
-  uint8_t   flags = 0;
-  uint16_t  year;
-  uint8_t   month, day, hour, min, sec;
-  int16_t   mantissa;
-  int8_t    exponent;
-  uint16_t  spo2;
-  uint16_t  pulse;
-  uint32_t  sensorStatus;
-  uint16_t  measurementStatus;
-  uint16_t  pulseAmpIndex;
-  uint16_t  minLen = CH_PLX_FLAGS_LEN + CH_PLX_SPO2_LEN + CH_PLX_PULSE_LEN;
+    uint8_t flags = 0;
+    uint16_t year;
+    uint8_t month, day, hour, min, sec;
+    int16_t mantissa;
+    int8_t exponent;
+    uint16_t spo2;
+    uint16_t pulse;
+    uint32_t sensorStatus;
+    uint16_t measurementStatus;
+    uint16_t pulseAmpIndex;
+    uint16_t minLen = CH_PLX_FLAGS_LEN + CH_PLX_SPO2_LEN + CH_PLX_PULSE_LEN;
 
-  /* Suppress unused variable compile warning */
-  (void)measurementStatus; (void)sensorStatus; (void)exponent; (void)mantissa;
-  (void)year; (void)month; (void)day; (void)hour; (void)min; (void)sec;
+    /* Suppress unused variable compile warning */
+    (void)measurementStatus;
+    (void)sensorStatus;
+    (void)exponent;
+    (void)mantissa;
+    (void)year;
+    (void)month;
+    (void)day;
+    (void)hour;
+    (void)min;
+    (void)sec;
 
-  if (len > 0)
-  {
-    /* get flags */
-    BSTREAM_TO_UINT8(flags, pValue);
+    if (len > 0) {
+        /* get flags */
+        BSTREAM_TO_UINT8(flags, pValue);
 
-    /* determine expected minimum length based on flags */
-    if (flags & CH_PLXSC_FLAG_TIMESTAMP)
-    {
-      minLen += CH_PLXSC_TIMESTAMP_LEN;
+        /* determine expected minimum length based on flags */
+        if (flags & CH_PLXSC_FLAG_TIMESTAMP) {
+            minLen += CH_PLXSC_TIMESTAMP_LEN;
+        }
+        if (flags & CH_PLXSC_FLAG_MEASUREMENT_STATUS) {
+            minLen += CH_PLX_MEASUREMENT_STATUS_LEN;
+        }
+        if (flags & CH_PLXSC_FLAG_SENSOR_STATUS) {
+            minLen += CH_PLX_SENSOR_STATUS_LEN;
+        }
+        if (flags & CH_PLXSC_FLAG_PULSE_AMP_INDX) {
+            minLen += CH_PLX_PULSE_AMP_INDX_LEN;
+        }
     }
-    if (flags & CH_PLXSC_FLAG_MEASUREMENT_STATUS)
-    {
-      minLen += CH_PLX_MEASUREMENT_STATUS_LEN;
+
+    /* verify length */
+    if (len < minLen) {
+        APP_TRACE_INFO2("Pulse Oximeter meas len:%d minLen:%d", len, minLen);
+        return;
     }
-    if (flags & CH_PLXSC_FLAG_SENSOR_STATUS)
-    {
-      minLen += CH_PLX_SENSOR_STATUS_LEN;
+
+    /* get SpO2 */
+    BSTREAM_TO_UINT16(spo2, pValue);
+    UINT16_TO_SFLT(mantissa, exponent, spo2);
+    APP_TRACE_INFO2("  Pulse Oximeter SpO2: %de%d", mantissa, exponent);
+
+    /* get pulse */
+    BSTREAM_TO_UINT16(pulse, pValue);
+    UINT16_TO_SFLT(mantissa, exponent, pulse);
+    APP_TRACE_INFO2("  Pulse Oximeter Pulse: %de%d", mantissa, exponent);
+
+    /* timestamp */
+    if (flags & CH_PLXSC_FLAG_TIMESTAMP) {
+        /* base time */
+        BSTREAM_TO_UINT16(year, pValue);
+        BSTREAM_TO_UINT8(month, pValue);
+        BSTREAM_TO_UINT8(day, pValue);
+        BSTREAM_TO_UINT8(hour, pValue);
+        BSTREAM_TO_UINT8(min, pValue);
+        BSTREAM_TO_UINT8(sec, pValue);
+        APP_TRACE_INFO3("  Date: %d/%d/%d", month, day, year);
+        APP_TRACE_INFO3("  Time: %02d:%02d:%02d", hour, min, sec);
     }
-    if (flags & CH_PLXSC_FLAG_PULSE_AMP_INDX)
-    {
-      minLen += CH_PLX_PULSE_AMP_INDX_LEN;
+
+    /* measurement status */
+    if (flags & CH_PLXSC_FLAG_MEASUREMENT_STATUS) {
+        BSTREAM_TO_UINT16(measurementStatus, pValue);
+        APP_TRACE_INFO1("  Pulse Oximeter measurement status: 0x%04", measurementStatus);
     }
-  }
 
-  /* verify length */
-  if (len < minLen)
-  {
-    APP_TRACE_INFO2("Pulse Oximeter meas len:%d minLen:%d", len, minLen);
-    return;
-  }
+    /* sensor status */
+    if (flags & CH_PLXSC_FLAG_SENSOR_STATUS) {
+        BSTREAM_TO_UINT24(sensorStatus, pValue);
+        APP_TRACE_INFO1("   Pulse Oximeter Sensor status: 0x%04x", sensorStatus);
+    }
 
-  /* get SpO2 */
-  BSTREAM_TO_UINT16(spo2, pValue);
-  UINT16_TO_SFLT(mantissa, exponent, spo2);
-  APP_TRACE_INFO2("  Pulse Oximeter SpO2: %de%d", mantissa, exponent);
-
-  /* get pulse */
-  BSTREAM_TO_UINT16(pulse, pValue);
-  UINT16_TO_SFLT(mantissa, exponent, pulse);
-  APP_TRACE_INFO2("  Pulse Oximeter Pulse: %de%d", mantissa, exponent);
-
-  /* timestamp */
-  if (flags & CH_PLXSC_FLAG_TIMESTAMP)
-  {
-    /* base time */
-    BSTREAM_TO_UINT16(year, pValue);
-    BSTREAM_TO_UINT8(month, pValue);
-    BSTREAM_TO_UINT8(day, pValue);
-    BSTREAM_TO_UINT8(hour, pValue);
-    BSTREAM_TO_UINT8(min, pValue);
-    BSTREAM_TO_UINT8(sec, pValue);
-    APP_TRACE_INFO3("  Date: %d/%d/%d", month, day, year);
-    APP_TRACE_INFO3("  Time: %02d:%02d:%02d", hour, min, sec);
-  }
-
-  /* measurement status */
-  if (flags & CH_PLXSC_FLAG_MEASUREMENT_STATUS)
-  {
-    BSTREAM_TO_UINT16(measurementStatus, pValue);
-    APP_TRACE_INFO1("  Pulse Oximeter measurement status: 0x%04", measurementStatus);
-  }
-
-  /* sensor status */
-  if (flags & CH_PLXSC_FLAG_SENSOR_STATUS)
-  {
-    BSTREAM_TO_UINT24(sensorStatus, pValue);
-    APP_TRACE_INFO1("   Pulse Oximeter Sensor status: 0x%04x", sensorStatus);
-  }
-
-  /* Pulse amplitde index */
-  if (flags & CH_PLXSC_FLAG_PULSE_AMP_INDX)
-  {
-    BSTREAM_TO_UINT16(pulseAmpIndex, pValue);
-    UINT16_TO_SFLT(mantissa, exponent, pulseAmpIndex);
-    APP_TRACE_INFO2("  Pulse Oximeter Pulse Amplitude Index: %de%d", mantissa, exponent);
-  }
+    /* Pulse amplitde index */
+    if (flags & CH_PLXSC_FLAG_PULSE_AMP_INDX) {
+        BSTREAM_TO_UINT16(pulseAmpIndex, pValue);
+        UINT16_TO_SFLT(mantissa, exponent, pulseAmpIndex);
+        APP_TRACE_INFO2("  Pulse Oximeter Pulse Amplitude Index: %de%d", mantissa, exponent);
+    }
 }
 
 /*************************************************************************************************/
@@ -228,113 +198,104 @@ void plxpcPlxsParsePlxsc(uint8_t *pValue, uint16_t len)
 /*************************************************************************************************/
 void plxpcPlxsParsePlxc(uint8_t *pValue, uint16_t len)
 {
-  uint8_t   flags = 0;
-  int16_t   mantissa;
-  int8_t    exponent;
-  uint16_t  spo2;
-  uint16_t  pulse;
-  uint32_t  sensorStatus;
-  uint16_t  measurementStatus;
-  uint16_t  pulseAmpIndex;
-  uint16_t  minLen = CH_PLX_FLAGS_LEN + CH_PLX_SPO2_LEN + CH_PLX_PULSE_LEN;
+    uint8_t flags = 0;
+    int16_t mantissa;
+    int8_t exponent;
+    uint16_t spo2;
+    uint16_t pulse;
+    uint32_t sensorStatus;
+    uint16_t measurementStatus;
+    uint16_t pulseAmpIndex;
+    uint16_t minLen = CH_PLX_FLAGS_LEN + CH_PLX_SPO2_LEN + CH_PLX_PULSE_LEN;
 
-  /* Suppress unused variable compile warning */
-  (void)measurementStatus; (void)sensorStatus; (void)exponent; (void)mantissa;
+    /* Suppress unused variable compile warning */
+    (void)measurementStatus;
+    (void)sensorStatus;
+    (void)exponent;
+    (void)mantissa;
 
-  if (len > 0)
-  {
-    /* get flags */
-    BSTREAM_TO_UINT8(flags, pValue);
+    if (len > 0) {
+        /* get flags */
+        BSTREAM_TO_UINT8(flags, pValue);
 
-    /* determine expected minimum length based on flags */
-    if (flags & CH_PLXC_FLAG_SPO2PR_FAST)
-    {
-      minLen += CH_PLXC_SPO2PR_FAST_LEN;
+        /* determine expected minimum length based on flags */
+        if (flags & CH_PLXC_FLAG_SPO2PR_FAST) {
+            minLen += CH_PLXC_SPO2PR_FAST_LEN;
+        }
+        if (flags & CH_PLXC_FLAG_SPO2PR_SLOW) {
+            minLen += CH_PLXC_SPO2PR_SLOW_LEN;
+        }
+        if (flags & CH_PLXC_FLAG_MEASUREMENT_STATUS) {
+            minLen += CH_PLX_MEASUREMENT_STATUS_LEN;
+        }
+        if (flags & CH_PLXC_FLAG_SENSOR_STATUS) {
+            minLen += CH_PLX_SENSOR_STATUS_LEN;
+        }
+        if (flags & CH_PLXC_FLAG_PULSE_AMP_INDX) {
+            minLen += CH_PLX_PULSE_AMP_INDX_LEN;
+        }
     }
-    if (flags & CH_PLXC_FLAG_SPO2PR_SLOW)
-    {
-      minLen += CH_PLXC_SPO2PR_SLOW_LEN;
-    }
-    if (flags & CH_PLXC_FLAG_MEASUREMENT_STATUS)
-    {
-      minLen += CH_PLX_MEASUREMENT_STATUS_LEN;
-    }
-    if (flags & CH_PLXC_FLAG_SENSOR_STATUS)
-    {
-      minLen += CH_PLX_SENSOR_STATUS_LEN;
-    }
-    if (flags & CH_PLXC_FLAG_PULSE_AMP_INDX)
-    {
-      minLen += CH_PLX_PULSE_AMP_INDX_LEN;
-    }
-  }
 
-  /* verify length */
-  if (len < minLen)
-  {
-    APP_TRACE_INFO2("Pulse Oximeter meas len:%d minLen:%d", len, minLen);
-    return;
-  }
+    /* verify length */
+    if (len < minLen) {
+        APP_TRACE_INFO2("Pulse Oximeter meas len:%d minLen:%d", len, minLen);
+        return;
+    }
 
-  /* get SpO2 */
-  BSTREAM_TO_UINT16(spo2, pValue);
-  UINT16_TO_SFLT(mantissa, exponent, spo2);
-  APP_TRACE_INFO2("  Pulse Oximeter SpO2: %de%d", mantissa, exponent);
-
-  /* get pulse */
-  BSTREAM_TO_UINT16(pulse, pValue);
-  UINT16_TO_SFLT(mantissa, exponent, pulse);
-  APP_TRACE_INFO2("  Pulse Oximeter Pulse: %de%d", mantissa, exponent);
-
-  /* SpO2PR-Fast */
-  if (flags & CH_PLXC_FLAG_SPO2PR_FAST)
-  {
     /* get SpO2 */
     BSTREAM_TO_UINT16(spo2, pValue);
     UINT16_TO_SFLT(mantissa, exponent, spo2);
-    APP_TRACE_INFO2("  Pulse Oximeter SpO2-Fast: %de%d", mantissa, exponent);
+    APP_TRACE_INFO2("  Pulse Oximeter SpO2: %de%d", mantissa, exponent);
 
     /* get pulse */
     BSTREAM_TO_UINT16(pulse, pValue);
     UINT16_TO_SFLT(mantissa, exponent, pulse);
-    APP_TRACE_INFO2("  Pulse Oximeter Pulse-Fast: %de%d", mantissa, exponent);
-  }
+    APP_TRACE_INFO2("  Pulse Oximeter Pulse: %de%d", mantissa, exponent);
 
-  /* SpO2PR-Slow */
-  if (flags & CH_PLXC_FLAG_SPO2PR_SLOW)
-  {
-    /* get SpO2 */
-    BSTREAM_TO_UINT16(spo2, pValue);
-    UINT16_TO_SFLT(mantissa, exponent, spo2);
-    APP_TRACE_INFO2("  Pulse Oximeter SpO2-Slow: %de%d", mantissa, exponent);
+    /* SpO2PR-Fast */
+    if (flags & CH_PLXC_FLAG_SPO2PR_FAST) {
+        /* get SpO2 */
+        BSTREAM_TO_UINT16(spo2, pValue);
+        UINT16_TO_SFLT(mantissa, exponent, spo2);
+        APP_TRACE_INFO2("  Pulse Oximeter SpO2-Fast: %de%d", mantissa, exponent);
 
-    /* get pulse */
-    BSTREAM_TO_UINT16(pulse, pValue);
-    UINT16_TO_SFLT(mantissa, exponent, pulse);
-    APP_TRACE_INFO2("  Pulse Oximeter Pulse-Slow: %de%d", mantissa, exponent);
-  }
+        /* get pulse */
+        BSTREAM_TO_UINT16(pulse, pValue);
+        UINT16_TO_SFLT(mantissa, exponent, pulse);
+        APP_TRACE_INFO2("  Pulse Oximeter Pulse-Fast: %de%d", mantissa, exponent);
+    }
 
-  /* measurement status */
-  if (flags & CH_PLXC_FLAG_MEASUREMENT_STATUS)
-  {
-    BSTREAM_TO_UINT16(measurementStatus, pValue);
-    APP_TRACE_INFO1("  Pulse Oximeter measurement status: 0x%04", measurementStatus);
-  }
+    /* SpO2PR-Slow */
+    if (flags & CH_PLXC_FLAG_SPO2PR_SLOW) {
+        /* get SpO2 */
+        BSTREAM_TO_UINT16(spo2, pValue);
+        UINT16_TO_SFLT(mantissa, exponent, spo2);
+        APP_TRACE_INFO2("  Pulse Oximeter SpO2-Slow: %de%d", mantissa, exponent);
 
-  /* sensor status */
-  if (flags & CH_PLXC_FLAG_SENSOR_STATUS)
-  {
-    BSTREAM_TO_UINT24(sensorStatus, pValue);
-    APP_TRACE_INFO1("   Pulse Oximeter Sensor status: 0x%04x", sensorStatus);
-  }
+        /* get pulse */
+        BSTREAM_TO_UINT16(pulse, pValue);
+        UINT16_TO_SFLT(mantissa, exponent, pulse);
+        APP_TRACE_INFO2("  Pulse Oximeter Pulse-Slow: %de%d", mantissa, exponent);
+    }
 
-  /* Pulse amplitde index */
-  if (flags & CH_PLXC_FLAG_PULSE_AMP_INDX)
-  {
-    BSTREAM_TO_UINT16(pulseAmpIndex, pValue);
-    UINT16_TO_SFLT(mantissa, exponent, pulseAmpIndex);
-    APP_TRACE_INFO2("  Pulse Oximeter Pulse Amplitude Index: %de%d", mantissa, exponent);
-  }
+    /* measurement status */
+    if (flags & CH_PLXC_FLAG_MEASUREMENT_STATUS) {
+        BSTREAM_TO_UINT16(measurementStatus, pValue);
+        APP_TRACE_INFO1("  Pulse Oximeter measurement status: 0x%04", measurementStatus);
+    }
+
+    /* sensor status */
+    if (flags & CH_PLXC_FLAG_SENSOR_STATUS) {
+        BSTREAM_TO_UINT24(sensorStatus, pValue);
+        APP_TRACE_INFO1("   Pulse Oximeter Sensor status: 0x%04x", sensorStatus);
+    }
+
+    /* Pulse amplitde index */
+    if (flags & CH_PLXC_FLAG_PULSE_AMP_INDX) {
+        BSTREAM_TO_UINT16(pulseAmpIndex, pValue);
+        UINT16_TO_SFLT(mantissa, exponent, pulseAmpIndex);
+        APP_TRACE_INFO2("  Pulse Oximeter Pulse Amplitude Index: %de%d", mantissa, exponent);
+    }
 }
 
 /*************************************************************************************************/
@@ -349,38 +310,36 @@ void plxpcPlxsParsePlxc(uint8_t *pValue, uint16_t len)
 /*************************************************************************************************/
 void plxpcPlxsProcRacp(uint8_t *pValue, uint16_t len)
 {
-  uint8_t   opcode;
-  uint16_t  numRecords;
-  uint16_t  reqOpcode;
-  uint16_t  status;
+    uint8_t opcode;
+    uint16_t numRecords;
+    uint16_t reqOpcode;
+    uint16_t status;
 
-  /* Suppress unused variable compile warning */
-  (void)status; (void)reqOpcode; (void)numRecords;
+    /* Suppress unused variable compile warning */
+    (void)status;
+    (void)reqOpcode;
+    (void)numRecords;
 
-  /* verify length */
-  if (len != PLXPC_PLX_RACP_RSP_LEN)
-  {
-    APP_TRACE_INFO1("Unexpected RACP message length: %d", len);
-    return;
-  }
+    /* verify length */
+    if (len != PLXPC_PLX_RACP_RSP_LEN) {
+        APP_TRACE_INFO1("Unexpected RACP message length: %d", len);
+        return;
+    }
 
-  /* parse message */
-  BSTREAM_TO_UINT8(opcode, pValue);
+    /* parse message */
+    BSTREAM_TO_UINT8(opcode, pValue);
 
-  /* Operator unused */
-  pValue++;
+    /* Operator unused */
+    pValue++;
 
-  if (opcode == CH_RACP_OPCODE_NUM_RSP)
-  {
-    BSTREAM_TO_UINT16(numRecords, pValue);
-    APP_TRACE_INFO1("Number of records: %d", numRecords);
-  }
-  else if (opcode == CH_RACP_OPCODE_RSP)
-  {
-    BSTREAM_TO_UINT8(reqOpcode, pValue);
-    BSTREAM_TO_UINT8(status, pValue);
-    APP_TRACE_INFO2("Response opcode: %d status: %d", reqOpcode, status);
-  }
+    if (opcode == CH_RACP_OPCODE_NUM_RSP) {
+        BSTREAM_TO_UINT16(numRecords, pValue);
+        APP_TRACE_INFO1("Number of records: %d", numRecords);
+    } else if (opcode == CH_RACP_OPCODE_RSP) {
+        BSTREAM_TO_UINT8(reqOpcode, pValue);
+        BSTREAM_TO_UINT8(status, pValue);
+        APP_TRACE_INFO2("Response opcode: %d status: %d", reqOpcode, status);
+    }
 }
 
 /*************************************************************************************************/
@@ -395,54 +354,49 @@ void plxpcPlxsProcRacp(uint8_t *pValue, uint16_t len)
 /*************************************************************************************************/
 void plxpcPlxParsePlxf(uint8_t *pValue, uint16_t len)
 {
-  int16_t   features=0;
-  int16_t   measStatusSupport;
-  int16_t   sensorStatusSupport;
+    int16_t features = 0;
+    int16_t measStatusSupport;
+    int16_t sensorStatusSupport;
 
-  uint16_t  minLen = CH_PLXF_MIN_FEATURES_LEN;
+    uint16_t minLen = CH_PLXF_MIN_FEATURES_LEN;
 
-  /* Suppress unused variable compile warning */
-  (void)measStatusSupport; (void)sensorStatusSupport;
+    /* Suppress unused variable compile warning */
+    (void)measStatusSupport;
+    (void)sensorStatusSupport;
 
-  if (len >= minLen)
-  {
-    /* get flags */
-    BSTREAM_TO_UINT16(features, pValue);
+    if (len >= minLen) {
+        /* get flags */
+        BSTREAM_TO_UINT16(features, pValue);
 
-    /* determine expected minimum length based on features */
-    if (features & CH_PLF_FLAG_MEAS_STATUS_SUP)
-    {
-      minLen += CH_PLXF_SENSOR_SUPPORT_LEN;
+        /* determine expected minimum length based on features */
+        if (features & CH_PLF_FLAG_MEAS_STATUS_SUP) {
+            minLen += CH_PLXF_SENSOR_SUPPORT_LEN;
+        }
+
+        if (features & CH_PLF_FLAG_SENSOR_STATUS_SUP) {
+            minLen += CH_PLXF_MEASUREMENT_SUPPORT_LEN;
+        }
     }
 
-    if (features & CH_PLF_FLAG_SENSOR_STATUS_SUP)
-    {
-      minLen += CH_PLXF_MEASUREMENT_SUPPORT_LEN;
+    /* verify length */
+    if (len < minLen) {
+        APP_TRACE_INFO2("Pulse Oximeter feature len:%d minLen:%d", len, minLen);
+        return;
     }
-  }
 
-  /* verify length */
-  if (len < minLen)
-  {
-    APP_TRACE_INFO2("Pulse Oximeter feature len:%d minLen:%d", len, minLen);
-    return;
-  }
+    /* SpO2PR-Fast */
+    if (features & CH_PLF_FLAG_MEAS_STATUS_SUP) {
+        /* get Measurement Status Support */
+        BSTREAM_TO_UINT16(measStatusSupport, pValue);
+        APP_TRACE_INFO1("  Pulse Oximeter measurement status sypported: 0x%04", measStatusSupport);
+    }
 
-  /* SpO2PR-Fast */
-  if (features & CH_PLF_FLAG_MEAS_STATUS_SUP)
-  {
-    /* get Measurement Status Support */
-    BSTREAM_TO_UINT16(measStatusSupport, pValue);
-    APP_TRACE_INFO1("  Pulse Oximeter measurement status sypported: 0x%04", measStatusSupport);
-  }
-
-  /* SpO2PR-Slow */
-  if (features & CH_PLF_FLAG_SENSOR_STATUS_SUP)
-  {
-    /* get Device and Sensor Status Support */
-    BSTREAM_TO_UINT16(sensorStatusSupport, pValue);
-    APP_TRACE_INFO1("  Pulse Oximeter sensor status supported: 0x%04", sensorStatusSupport);
-  }
+    /* SpO2PR-Slow */
+    if (features & CH_PLF_FLAG_SENSOR_STATUS_SUP) {
+        /* get Device and Sensor Status Support */
+        BSTREAM_TO_UINT16(sensorStatusSupport, pValue);
+        APP_TRACE_INFO1("  Pulse Oximeter sensor status supported: 0x%04", sensorStatusSupport);
+    }
 }
 
 /*************************************************************************************************/
@@ -460,8 +414,8 @@ void plxpcPlxParsePlxf(uint8_t *pValue, uint16_t len)
 /*************************************************************************************************/
 void PlxpcPlxsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attPlxsSvcUuid,
-                     PLXPC_PLXS_HDL_LIST_LEN, (attcDiscChar_t **) plxpcPlxsDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attPlxsSvcUuid, PLXPC_PLXS_HDL_LIST_LEN,
+                       (attcDiscChar_t **)plxpcPlxsDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -479,43 +433,37 @@ void PlxpcPlxsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 uint8_t PlxpcPlxsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 {
-  uint8_t   status = ATT_SUCCESS;
+    uint8_t status = ATT_SUCCESS;
 
-  /* spot check measurement */
-  if (pMsg->handle == pHdlList[PLXPC_PLXS_PLXSC_HDL_IDX])
-  {
-    APP_TRACE_INFO0("Pulse Oximeter spot check measurement.");
+    /* spot check measurement */
+    if (pMsg->handle == pHdlList[PLXPC_PLXS_PLXSC_HDL_IDX]) {
+        APP_TRACE_INFO0("Pulse Oximeter spot check measurement.");
 
-    /* parse value */
-    plxpcPlxsParsePlxsc(pMsg->pValue, pMsg->valueLen);
-  }
-  /* continuous measurement */
-  else if (pMsg->handle == pHdlList[PLXPC_PLXS_PLXC_HDL_IDX])
-  {
-    APP_TRACE_INFO0("Pulse Oximeter continuous measurement");
+        /* parse value */
+        plxpcPlxsParsePlxsc(pMsg->pValue, pMsg->valueLen);
+    }
+    /* continuous measurement */
+    else if (pMsg->handle == pHdlList[PLXPC_PLXS_PLXC_HDL_IDX]) {
+        APP_TRACE_INFO0("Pulse Oximeter continuous measurement");
 
-    /* parse value */
-    plxpcPlxsParsePlxc(pMsg->pValue, pMsg->valueLen);
-  }
-  /* record access control point */
-  else if (pMsg->handle == pHdlList[PLXPC_PLXS_RACP_HDL_IDX])
-  {
-    plxpcPlxsProcRacp(pMsg->pValue, pMsg->valueLen);
-  }
-  /* pulse oximeter feature  */
-  else if (pMsg->handle == pHdlList[PLXPC_PLXS_PLXF_HDL_IDX])
-  {
-    APP_TRACE_INFO0("Pulse Oximeter features");
+        /* parse value */
+        plxpcPlxsParsePlxc(pMsg->pValue, pMsg->valueLen);
+    }
+    /* record access control point */
+    else if (pMsg->handle == pHdlList[PLXPC_PLXS_RACP_HDL_IDX]) {
+        plxpcPlxsProcRacp(pMsg->pValue, pMsg->valueLen);
+    }
+    /* pulse oximeter feature  */
+    else if (pMsg->handle == pHdlList[PLXPC_PLXS_PLXF_HDL_IDX]) {
+        APP_TRACE_INFO0("Pulse Oximeter features");
 
-    /* parse value */
-    plxpcPlxParsePlxf(pMsg->pValue, pMsg->valueLen);
-  }
-  else
-  {
-    status = ATT_ERR_NOT_FOUND;
-  }
+        /* parse value */
+        plxpcPlxParsePlxf(pMsg->pValue, pMsg->valueLen);
+    } else {
+        status = ATT_ERR_NOT_FOUND;
+    }
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -532,15 +480,14 @@ uint8_t PlxpcPlxsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 /*************************************************************************************************/
 void PlxpcPlxsRacpSend(dmConnId_t connId, uint16_t handle, uint8_t opcode, uint8_t oper)
 {
-  uint8_t   buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t   *p = buf;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t *p = buf;
 
-  if (handle != ATT_HANDLE_NONE)
-  {
-    /* build RACP command */
-    UINT8_TO_BSTREAM(p, opcode);
-    UINT8_TO_BSTREAM(p, oper);
+    if (handle != ATT_HANDLE_NONE) {
+        /* build RACP command */
+        UINT8_TO_BSTREAM(p, opcode);
+        UINT8_TO_BSTREAM(p, oper);
 
-    AttcWriteReq(connId, handle, (uint16_t) (p - buf), buf);
-  }
+        AttcWriteReq(connId, handle, (uint16_t)(p - buf), buf);
+    }
 }

@@ -74,15 +74,13 @@ extern "C" {
 #define ocrypto_hmac_sha512_BYTES (64)
 
 /**@cond */
-typedef struct
-{
-    ocrypto_sha512_ctx  hash_ctx;
-    uint8_t             ikey[ocrypto_hmac_sha512_KEY_BYTES_MAX];
-    uint8_t             okey[ocrypto_hmac_sha512_KEY_BYTES_MAX];
-    uint8_t             key[ocrypto_hmac_sha512_KEY_BYTES_MAX];
+typedef struct {
+    ocrypto_sha512_ctx hash_ctx;
+    uint8_t ikey[ocrypto_hmac_sha512_KEY_BYTES_MAX];
+    uint8_t okey[ocrypto_hmac_sha512_KEY_BYTES_MAX];
+    uint8_t key[ocrypto_hmac_sha512_KEY_BYTES_MAX];
 } ocrypto_hmac_sha512_ctx;
 /**@endcond */
-
 
 /**@name Incremental HMAC-SHA512 generator.
  *
@@ -90,7 +88,6 @@ typedef struct
  * for a given message.
  */
 /**@{*/
-
 
 /**
  * HMAC-SHA512 initialization.
@@ -101,8 +98,7 @@ typedef struct
  * @param      key     HMAC key.
  * @param      key_len Length of @p key.
  */
-void ocrypto_hmac_sha512_init(ocrypto_hmac_sha512_ctx * ctx,
-                              const uint8_t* key, size_t key_len);
+void ocrypto_hmac_sha512_init(ocrypto_hmac_sha512_ctx *ctx, const uint8_t *key, size_t key_len);
 
 /**
  * HMAC-SHA512 incremental data input.
@@ -118,8 +114,7 @@ void ocrypto_hmac_sha512_init(ocrypto_hmac_sha512_ctx * ctx,
  * @remark Initialization of the generator state @p ctx through
  *         @c ocrypto_hmac_sha512_init is required before this function can be called.
  */
-void ocrypto_hmac_sha512_update(ocrypto_hmac_sha512_ctx * ctx,
-                                const uint8_t* in, size_t in_len);
+void ocrypto_hmac_sha512_update(ocrypto_hmac_sha512_ctx *ctx, const uint8_t *in, size_t in_len);
 
 /**
  * HMAC-SHA512 output.
@@ -137,11 +132,8 @@ void ocrypto_hmac_sha512_update(ocrypto_hmac_sha512_ctx * ctx,
  *         @c ocrypto_hmac_sha512_update and @c ocrypto_hmac_sha512_final unless it is
  *         reinitialized using @c ocrypto_hmac_sha512_init.
  */
-void ocrypto_hmac_sha512_final(ocrypto_hmac_sha512_ctx * ctx,
-                               uint8_t r[ocrypto_hmac_sha512_BYTES]);
+void ocrypto_hmac_sha512_final(ocrypto_hmac_sha512_ctx *ctx, uint8_t r[ocrypto_hmac_sha512_BYTES]);
 /**@}*/
-
-
 
 /**
  * HMAC-SHA512 algorithm.
@@ -157,10 +149,8 @@ void ocrypto_hmac_sha512_final(ocrypto_hmac_sha512_ctx * ctx,
  * @param      in      Input data.
  * @param      in_len  Length of @p in.
  */
-void ocrypto_hmac_sha512(
-    uint8_t r[ocrypto_hmac_sha512_BYTES],
-    const uint8_t* key, size_t key_len,
-    const uint8_t* in, size_t in_len);
+void ocrypto_hmac_sha512(uint8_t r[ocrypto_hmac_sha512_BYTES], const uint8_t *key, size_t key_len,
+                         const uint8_t *in, size_t in_len);
 
 #ifdef __cplusplus
 }

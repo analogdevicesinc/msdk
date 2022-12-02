@@ -56,8 +56,6 @@
  * @}
  *
  */
- 
-
 
 #include <stdint.h>
 #include "nrf_crypto_init.h"
@@ -73,6 +71,5 @@
 #include "nrf_crypto_hmac.h"
 #include "nrf_crypto_hkdf.h"
 #include "nrf_crypto_eddsa.h"
-
 
 #endif // NRF_CRYPTO_H__

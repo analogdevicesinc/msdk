@@ -41,21 +41,19 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Master initiate task messages for \a LCTR_DISP_INIT dispatcher. */
-enum
-{
-  /* Broadcast events */
-  LCTR_INIT_MSG_RESET                   = LCTR_MSG_RESET,   /*!< Reset API message. */
-  /* Initiate events */
-  LCTR_INIT_MSG_INITIATE,               /*!< Initiate API event. */
-  LCTR_INIT_MSG_INITIATE_CANCEL,        /*!< Initiate cancel API event. */
-  LCTR_INIT_MSG_TERMINATE,              /*!< Scan BOD terminated event. */
-  LCTR_INIT_MSG_TOTAL                   /*!< Total number of initiate events. */
+enum {
+    /* Broadcast events */
+    LCTR_INIT_MSG_RESET = LCTR_MSG_RESET, /*!< Reset API message. */
+    /* Initiate events */
+    LCTR_INIT_MSG_INITIATE, /*!< Initiate API event. */
+    LCTR_INIT_MSG_INITIATE_CANCEL, /*!< Initiate cancel API event. */
+    LCTR_INIT_MSG_TERMINATE, /*!< Scan BOD terminated event. */
+    LCTR_INIT_MSG_TOTAL /*!< Total number of initiate events. */
 };
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
-
 
 /**************************************************************************************************
   Function Declarations
@@ -69,7 +67,7 @@ void LctrMstInitDefaults(void);
 bool_t LctrMstInitIsEnabled(void);
 bool_t LctrMstInitIsPrivAddr(void);
 
-/*! \} */    /* LL_LCTR_API_INIT_MST */
+/*! \} */ /* LL_LCTR_API_INIT_MST */
 
 #ifdef __cplusplus
 };

@@ -38,13 +38,12 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Heart Rate service enumeration of handle indexes of characteristics to be discovered */
-enum
-{
-  HRPC_HRS_HRM_HDL_IDX,           /*!< \brief Heart rate measurement */
-  HRPC_HRS_HRM_CCC_HDL_IDX,       /*!< \brief Heart rate measurement CCC descriptor */
-  HRPC_HRS_BSL_HDL_IDX,           /*!< \brief Body sensor location */
-  HRPC_HRS_HRCP_HDL_IDX,          /*!< \brief Heart rate control point */
-  HRPC_HRS_HDL_LIST_LEN           /*!< \brief Handle list length */
+enum {
+    HRPC_HRS_HRM_HDL_IDX, /*!< \brief Heart rate measurement */
+    HRPC_HRS_HRM_CCC_HDL_IDX, /*!< \brief Heart rate measurement CCC descriptor */
+    HRPC_HRS_BSL_HDL_IDX, /*!< \brief Body sensor location */
+    HRPC_HRS_HRCP_HDL_IDX, /*!< \brief Heart rate control point */
+    HRPC_HRS_HDL_LIST_LEN /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -94,7 +93,7 @@ void HrpcHrsControl(dmConnId_t connId, uint16_t handle, uint8_t command);
 /*************************************************************************************************/
 uint8_t HrpcHrsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */    /* HEART_RATE_PROFILE */
+/*! \} */ /* HEART_RATE_PROFILE */
 
 #ifdef __cplusplus
 };

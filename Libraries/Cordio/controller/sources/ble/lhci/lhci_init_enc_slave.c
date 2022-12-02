@@ -34,10 +34,9 @@
 /*************************************************************************************************/
 void LhciEncSlaveInit(void)
 {
-  /* Don't override master's handler if set. */
-  if (!lhciCmdTbl[LHCI_MSG_ENC])
-  {
-    lhciCmdTbl[LHCI_MSG_ENC] = lhciSlvEncDecodeCmdPkt;
-    lhciEvtTbl[LHCI_MSG_ENC] = lhciSlvEncEncodeEvtPkt;
-  }
+    /* Don't override master's handler if set. */
+    if (!lhciCmdTbl[LHCI_MSG_ENC]) {
+        lhciCmdTbl[LHCI_MSG_ENC] = lhciSlvEncDecodeCmdPkt;
+        lhciEvtTbl[LHCI_MSG_ENC] = lhciSlvEncEncodeEvtPkt;
+    }
 }

@@ -65,25 +65,23 @@ extern "C" {
 
 #define NRF_CRYPTO_CC310_AES_BACKEND_KEY_SIZE (16)
 
-
 /* AES CCM */
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_AES_CCM)
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_AES_CCM)
 #error "Duplicate definition of AES CCM mode. More than one backend enabled");
 #endif
-#define NRF_CRYPTO_AES_CCM_ENABLED  1
-#undef  NRF_CRYPTO_AEAD_ENABLED
-#define NRF_CRYPTO_AEAD_ENABLED  1  // Flag that nrf_crypto_aead frontend can be compiled
-#undef  NRF_CRYPTO_CC310_AES_AEAD_ENABLED
-#define NRF_CRYPTO_CC310_AES_AEAD_ENABLED   1   // aead backend for cc310 can be compiled
+#define NRF_CRYPTO_AES_CCM_ENABLED 1
+#undef NRF_CRYPTO_AEAD_ENABLED
+#define NRF_CRYPTO_AEAD_ENABLED 1 // Flag that nrf_crypto_aead frontend can be compiled
+#undef NRF_CRYPTO_CC310_AES_AEAD_ENABLED
+#define NRF_CRYPTO_CC310_AES_AEAD_ENABLED 1 // aead backend for cc310 can be compiled
 
 /* define for test purposes */
-#define NRF_CRYPTO_AES_CCM_128_ENABLED  1
+#define NRF_CRYPTO_AES_CCM_128_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aead_internal_context_t header;  /**< Common header for context. */
-    CRYS_AESCCM_UserContext_t          context; /**< AES CCM context internal to CC310. */
+typedef struct {
+    nrf_crypto_aead_internal_context_t header; /**< Common header for context. */
+    CRYS_AESCCM_UserContext_t context; /**< AES CCM context internal to CC310. */
 
     uint8_t key[NRF_CRYPTO_CC310_AES_BACKEND_KEY_SIZE];
 } nrf_crypto_backend_aes_ccm_context_t;
@@ -95,18 +93,17 @@ typedef struct
 #error "Duplicate definition of AES CCM* (star) mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CCM_STAR_ENABLED 1
-#undef  NRF_CRYPTO_AEAD_ENABLED
-#define NRF_CRYPTO_AEAD_ENABLED  1  // Flag that nrf_crypto_aes_aead frontend can be compiled
-#undef  NRF_CRYPTO_CC310_AES_AEAD_ENABLED
-#define NRF_CRYPTO_CC310_AES_AEAD_ENABLED   1   // aead backend for cc310 can be compiled
+#undef NRF_CRYPTO_AEAD_ENABLED
+#define NRF_CRYPTO_AEAD_ENABLED 1 // Flag that nrf_crypto_aes_aead frontend can be compiled
+#undef NRF_CRYPTO_CC310_AES_AEAD_ENABLED
+#define NRF_CRYPTO_CC310_AES_AEAD_ENABLED 1 // aead backend for cc310 can be compiled
 
 /* define for test purposes */
-#define NRF_CRYPTO_AES_CCM_STAR_128_ENABLED  1
+#define NRF_CRYPTO_AES_CCM_STAR_128_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aead_internal_context_t header;  /**< Common header for context. */
-    CRYS_AESCCM_UserContext_t          context; /**< AES CCM context internal to CC310. */
+typedef struct {
+    nrf_crypto_aead_internal_context_t header; /**< Common header for context. */
+    CRYS_AESCCM_UserContext_t context; /**< AES CCM context internal to CC310. */
 
     uint8_t key[NRF_CRYPTO_CC310_AES_BACKEND_KEY_SIZE];
 } nrf_crypto_backend_aes_ccm_star_context_t;
@@ -121,4 +118,3 @@ typedef struct
 /** @} */
 
 #endif // CC310_BACKEND_AES_AEAD_H__
-

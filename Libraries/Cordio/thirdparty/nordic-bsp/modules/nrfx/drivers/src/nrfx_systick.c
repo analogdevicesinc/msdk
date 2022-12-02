@@ -120,18 +120,16 @@ static inline uint32_t nrfx_systick_ms_tick(uint32_t ms)
 void nrfx_systick_init(void)
 {
     nrf_systick_load_set(NRF_SYSTICK_VAL_MASK);
-    nrf_systick_csr_set(
-        NRF_SYSTICK_CSR_CLKSOURCE_CPU |
-        NRF_SYSTICK_CSR_TICKINT_DISABLE |
-        NRF_SYSTICK_CSR_ENABLE);
+    nrf_systick_csr_set(NRF_SYSTICK_CSR_CLKSOURCE_CPU | NRF_SYSTICK_CSR_TICKINT_DISABLE |
+                        NRF_SYSTICK_CSR_ENABLE);
 }
 
-void nrfx_systick_get(nrfx_systick_state_t * p_state)
+void nrfx_systick_get(nrfx_systick_state_t *p_state)
 {
     p_state->time = nrf_systick_val_get();
 }
 
-bool nrfx_systick_test(nrfx_systick_state_t const * p_state, uint32_t us)
+bool nrfx_systick_test(nrfx_systick_state_t const *p_state, uint32_t us)
 {
     NRFX_SYSTICK_ASSERT_TIMEOUT(us);
 
@@ -144,8 +142,7 @@ void nrfx_systick_delay_ticks(uint32_t ticks)
     NRFX_ASSERT(ticks <= NRFX_SYSTICK_TICKS_MAX);
 
     const uint32_t start = nrf_systick_val_get();
-    while ((NRF_SYSTICK_VAL_MASK & (start - nrf_systick_val_get())) < ticks)
-    {
+    while ((NRF_SYSTICK_VAL_MASK & (start - nrf_systick_val_get())) < ticks) {
         /* Nothing to do */
     }
 }
@@ -160,8 +157,7 @@ void nrfx_systick_delay_ms(uint32_t ms)
 {
     uint32_t n = ms / NRFX_SYSTICK_MS_STEP;
     uint32_t r = ms % NRFX_SYSTICK_MS_STEP;
-    while (0 != (n--))
-    {
+    while (0 != (n--)) {
         nrfx_systick_delay_ticks(nrfx_systick_ms_tick(NRFX_SYSTICK_MS_STEP));
     }
     nrfx_systick_delay_ticks(nrfx_systick_ms_tick(r));

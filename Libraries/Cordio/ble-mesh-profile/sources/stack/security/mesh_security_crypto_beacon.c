@@ -66,36 +66,33 @@ static meshSecRetVal_t meshSecTryNextAuthParams(meshSecNwkBeaconAuthReq_t *pReq)
 /*************************************************************************************************/
 static void meshSecBeaconCompCback(const uint8_t *pCmacResult, void *pParam)
 {
-  /* Recover request. */
-  meshSecNwkBeaconComputeAuthReq_t *pReq;
-  meshSecBeaconComputeAuthCback_t  cback;
+    /* Recover request. */
+    meshSecNwkBeaconComputeAuthReq_t *pReq;
+    meshSecBeaconComputeAuthCback_t cback;
 
-  /* Recover request. */
-  pReq = (meshSecNwkBeaconComputeAuthReq_t *)pParam;
+    /* Recover request. */
+    pReq = (meshSecNwkBeaconComputeAuthReq_t *)pParam;
 
-  /* Check if module is reinitialized. */
-  if (pReq->cback == NULL)
-  {
-    return;
-  }
+    /* Check if module is reinitialized. */
+    if (pReq->cback == NULL) {
+        return;
+    }
 
-  /* Store user callback. */
-  cback = pReq->cback;
+    /* Store user callback. */
+    cback = pReq->cback;
 
-  /* Clear callback to make request available. */
-  pReq->cback = NULL;
+    /* Clear callback to make request available. */
+    pReq->cback = NULL;
 
-  /* Handle success. */
-  if (pCmacResult != NULL)
-  {
-    /* Copy authentication bytes. */
-    memcpy(&(pReq->pSecBeacon[MESH_NWK_BEACON_NUM_BYTES - MESH_NWK_BEACON_AUTH_NUM_BYTES]),
-           pCmacResult,
-           MESH_NWK_BEACON_AUTH_NUM_BYTES);
-  }
+    /* Handle success. */
+    if (pCmacResult != NULL) {
+        /* Copy authentication bytes. */
+        memcpy(&(pReq->pSecBeacon[MESH_NWK_BEACON_NUM_BYTES - MESH_NWK_BEACON_AUTH_NUM_BYTES]),
+               pCmacResult, MESH_NWK_BEACON_AUTH_NUM_BYTES);
+    }
 
-   /* Invoke user callback. */
-  cback(pCmacResult != NULL, pReq->pSecBeacon, pReq->netKeyIndex, pReq->pParam);
+    /* Invoke user callback. */
+    cback(pCmacResult != NULL, pReq->pSecBeacon, pReq->netKeyIndex, pReq->pParam);
 }
 
 /*************************************************************************************************/
@@ -110,56 +107,49 @@ static void meshSecBeaconCompCback(const uint8_t *pCmacResult, void *pParam)
 /*************************************************************************************************/
 static void meshSecBeaconVerificationCback(const uint8_t *pCmacResult, void *pParam)
 {
-  /* Recover request. */
-  meshSecNwkBeaconAuthReq_t *pReq;
-  meshSecBeaconAuthCback_t cback;
-  bool_t isSuccess = FALSE;
+    /* Recover request. */
+    meshSecNwkBeaconAuthReq_t *pReq;
+    meshSecBeaconAuthCback_t cback;
+    bool_t isSuccess = FALSE;
 
-  /* Recover request. */
-  pReq = (meshSecNwkBeaconAuthReq_t *)pParam;
+    /* Recover request. */
+    pReq = (meshSecNwkBeaconAuthReq_t *)pParam;
 
-  /* Check if module is reinitialized. */
-  if (pReq->cback == NULL)
-  {
-    return;
-  }
-
-  /* Store user callback. */
-  cback = pReq->cback;
-
-  /* Handle success. */
-  if (pCmacResult != NULL)
-  {
-    /* Verify if computed authentication values matches Beacon Authentication value. */
-    if(memcmp(&pReq->pSecBeacon[MESH_NWK_BEACON_NUM_BYTES - MESH_NWK_BEACON_AUTH_NUM_BYTES],
-              pCmacResult, MESH_NWK_BEACON_AUTH_NUM_BYTES) == 0x00)
-    {
-      /* Clear callback to make request available. */
-      pReq->cback = NULL;
-
-      /* Invoke user callback. */
-      cback(TRUE, pReq->newKeyUsed, pReq->pSecBeacon, pReq->netKeyIndex, pReq->pParam);
-
-      isSuccess = TRUE;
+    /* Check if module is reinitialized. */
+    if (pReq->cback == NULL) {
+        return;
     }
-    else
-    {
-      /* Try next NetKey Index having a match on Network ID. */
-      if (meshSecTryNextAuthParams(pReq) == MESH_SUCCESS)
-      {
-        isSuccess = TRUE;
-      }
+
+    /* Store user callback. */
+    cback = pReq->cback;
+
+    /* Handle success. */
+    if (pCmacResult != NULL) {
+        /* Verify if computed authentication values matches Beacon Authentication value. */
+        if (memcmp(&pReq->pSecBeacon[MESH_NWK_BEACON_NUM_BYTES - MESH_NWK_BEACON_AUTH_NUM_BYTES],
+                   pCmacResult, MESH_NWK_BEACON_AUTH_NUM_BYTES) == 0x00) {
+            /* Clear callback to make request available. */
+            pReq->cback = NULL;
+
+            /* Invoke user callback. */
+            cback(TRUE, pReq->newKeyUsed, pReq->pSecBeacon, pReq->netKeyIndex, pReq->pParam);
+
+            isSuccess = TRUE;
+        } else {
+            /* Try next NetKey Index having a match on Network ID. */
+            if (meshSecTryNextAuthParams(pReq) == MESH_SUCCESS) {
+                isSuccess = TRUE;
+            }
+        }
     }
-  }
 
-  if (!isSuccess)
-  {
-    /* Clear callback to make request available. */
-    pReq->cback = NULL;
+    if (!isSuccess) {
+        /* Clear callback to make request available. */
+        pReq->cback = NULL;
 
-    /* Invoke user callback for error. */
-    cback(FALSE, FALSE, pReq->pSecBeacon, MESH_SEC_INVALID_KEY_INDEX, pReq->pParam);
-  }
+        /* Invoke user callback for error. */
+        cback(FALSE, FALSE, pReq->pSecBeacon, MESH_SEC_INVALID_KEY_INDEX, pReq->pParam);
+    }
 }
 
 /*************************************************************************************************/
@@ -177,81 +167,71 @@ static void meshSecBeaconVerificationCback(const uint8_t *pCmacResult, void *pPa
 /*************************************************************************************************/
 static meshSecRetVal_t meshSecTryNextAuthParams(meshSecNwkBeaconAuthReq_t *pReq)
 {
-  meshSecNetKeyInfo_t *pNetKeyInfo = NULL;
-  meshKeyRefreshStates_t state;
-  uint16_t keyInfoId;
-  uint8_t  entryId = 0;
+    meshSecNetKeyInfo_t *pNetKeyInfo = NULL;
+    meshKeyRefreshStates_t state;
+    uint16_t keyInfoId;
+    uint8_t entryId = 0;
 
-  /* Iterate through Network Key information. */
-  for (; pReq->keySearchIndex < MESH_SEC_KEY_MAT_PER_INDEX * secMatLocals.netKeyInfoListSize;
-       pReq->keySearchIndex++)
-  {
+    /* Iterate through Network Key information. */
+    for (; pReq->keySearchIndex < MESH_SEC_KEY_MAT_PER_INDEX * secMatLocals.netKeyInfoListSize;
+         pReq->keySearchIndex++) {
+        keyInfoId = (uint8_t)(pReq->keySearchIndex >> (MESH_SEC_KEY_MAT_PER_INDEX - 1));
 
-    keyInfoId = (uint8_t)(pReq->keySearchIndex >> (MESH_SEC_KEY_MAT_PER_INDEX - 1));
+        /* Get index in material array. */
+        entryId = pReq->keySearchIndex & (MESH_SEC_KEY_MAT_PER_INDEX - 1);
+        pNetKeyInfo = &secMatLocals.pNetKeyInfoArray[keyInfoId];
 
-    /* Get index in material array. */
-    entryId = pReq->keySearchIndex & (MESH_SEC_KEY_MAT_PER_INDEX - 1);
-    pNetKeyInfo = &secMatLocals.pNetKeyInfoArray[keyInfoId];
+        /* Check if key material is required and it does not exist. */
+        if (!(pNetKeyInfo->hdr.flags & MESH_SEC_KEY_CRT_MAT_AVAILABLE)) {
+            continue;
+        }
 
-    /* Check if key material is required and it does not exist. */
-    if (!(pNetKeyInfo->hdr.flags & MESH_SEC_KEY_CRT_MAT_AVAILABLE))
-    {
-      continue;
-    }
-
-    /* Check if the Key Refresh Phase allows use of updated material. Key Refresh Read shoud
+        /* Check if the Key Refresh Phase allows use of updated material. Key Refresh Read shoud
      * never fail for keys that are in sync with security key information.
      */
-    state = MeshLocalCfgGetKeyRefreshPhaseState(pNetKeyInfo->hdr.keyIndex);
+        state = MeshLocalCfgGetKeyRefreshPhaseState(pNetKeyInfo->hdr.keyIndex);
 
-    /* 3.10.4.2, 3.10.4.3 In phase 2 (and 3) a node shall only receive Secure Network beacons
+        /* 3.10.4.2, 3.10.4.3 In phase 2 (and 3) a node shall only receive Secure Network beacons
      * secured using the new NetKey.
      */
-    if ((state > MESH_KEY_REFRESH_FIRST_PHASE) && (entryId == pNetKeyInfo->hdr.crtKeyId))
-    {
-      continue;
+        if ((state > MESH_KEY_REFRESH_FIRST_PHASE) && (entryId == pNetKeyInfo->hdr.crtKeyId)) {
+            continue;
+        }
+
+        /* Check if search hits updated key and material is not available. */
+        if ((entryId != pNetKeyInfo->hdr.crtKeyId) &&
+            !(pNetKeyInfo->hdr.flags & MESH_SEC_KEY_UPDT_MAT_AVAILABLE)) {
+            continue;
+        }
+
+        /* Check Network ID match. */
+        if (memcmp(&(pReq->pSecBeacon[MESH_NWK_BEACON_NWK_ID_START_BYTE]),
+                   pNetKeyInfo->keyMaterial[entryId].networkID, MESH_NWK_ID_NUM_BYTES) != 0x00) {
+            continue;
+        }
+
+        /* Copy Beacon Key. */
+        memcpy(pReq->bk, pNetKeyInfo->keyMaterial[entryId].beaconKey, MESH_SEC_TOOL_AES_BLOCK_SIZE);
+        break;
     }
 
-    /* Check if search hits updated key and material is not available. */
-    if ((entryId != pNetKeyInfo->hdr.crtKeyId) &&
-        !(pNetKeyInfo->hdr.flags & MESH_SEC_KEY_UPDT_MAT_AVAILABLE))
-    {
-      continue;
+    if (pReq->keySearchIndex == (MESH_SEC_KEY_MAT_PER_INDEX * secMatLocals.netKeyInfoListSize)) {
+        return MESH_SEC_KEY_MATERIAL_NOT_FOUND;
     }
 
-    /* Check Network ID match. */
-    if(memcmp(&(pReq->pSecBeacon[MESH_NWK_BEACON_NWK_ID_START_BYTE]),
-              pNetKeyInfo->keyMaterial[entryId].networkID,
-              MESH_NWK_ID_NUM_BYTES) != 0x00)
-    {
-      continue;
-    }
+    /* Set new Key used flag based on what key is used. */
+    pReq->newKeyUsed = (entryId != pNetKeyInfo->hdr.crtKeyId);
 
-    /* Copy Beacon Key. */
-    memcpy(pReq->bk, pNetKeyInfo->keyMaterial[entryId].beaconKey, MESH_SEC_TOOL_AES_BLOCK_SIZE);
-    break;
-  }
+    /* Set NetKey Index. */
+    pReq->netKeyIndex = pNetKeyInfo->hdr.keyIndex;
 
-  if (pReq->keySearchIndex == (MESH_SEC_KEY_MAT_PER_INDEX * secMatLocals.netKeyInfoListSize))
-  {
-    return MESH_SEC_KEY_MATERIAL_NOT_FOUND;
-  }
+    /* Increment key search index for the following requests. */
+    ++(pReq->keySearchIndex);
 
-  /* Set new Key used flag based on what key is used. */
-  pReq->newKeyUsed = (entryId != pNetKeyInfo->hdr.crtKeyId);
-
-  /* Set NetKey Index. */
-  pReq->netKeyIndex = pNetKeyInfo->hdr.keyIndex;
-
-  /* Increment key search index for the following requests. */
-  ++(pReq->keySearchIndex);
-
-  /* Call Toolbox to compute authentication value. */
-  return (meshSecRetVal_t)MeshSecToolCmacCalculate(pReq->bk,
-                                                   &pReq->pSecBeacon[MESH_NWK_BEACON_FLAGS_BYTE_POS],
-                                                   MESH_SEC_BEACON_AUTH_INPUT_NUM_BYTES,
-                                                   meshSecBeaconVerificationCback,
-                                                   (void *)pReq);
+    /* Call Toolbox to compute authentication value. */
+    return (meshSecRetVal_t)MeshSecToolCmacCalculate(
+        pReq->bk, &pReq->pSecBeacon[MESH_NWK_BEACON_FLAGS_BYTE_POS],
+        MESH_SEC_BEACON_AUTH_INPUT_NUM_BYTES, meshSecBeaconVerificationCback, (void *)pReq);
 }
 
 /**************************************************************************************************
@@ -288,92 +268,79 @@ meshSecRetVal_t MeshSecBeaconComputeAuth(uint8_t *pSecNwkBeacon, uint16_t netKey
                                          meshSecBeaconComputeAuthCback_t secNwkBeaconGenCback,
                                          void *pParam)
 {
-  meshSecNetKeyInfo_t  *pNetKeyInfo = NULL;
-  uint8_t              *pLocalNwkId = NULL;
-  meshSecRetVal_t      retVal       = MESH_SUCCESS;
-  uint16_t             idx          = 0;
+    meshSecNetKeyInfo_t *pNetKeyInfo = NULL;
+    uint8_t *pLocalNwkId = NULL;
+    meshSecRetVal_t retVal = MESH_SUCCESS;
+    uint16_t idx = 0;
 
-  /* Validate parameters. */
-  if((pSecNwkBeacon == NULL) ||
-     (netKeyIndex > MESH_SEC_MAX_KEY_INDEX) ||
-     (secNwkBeaconGenCback == NULL))
-  {
-    return MESH_SEC_INVALID_PARAMS;
-  }
-
-  /* Check if module is busy. */
-  if (secCryptoReq.beaconCompAuthReq.cback != NULL)
-  {
-    return MESH_SEC_OUT_OF_MEMORY;
-  }
-
-  /* Search for material matching input NetKey Index. */
-  for (idx = 0; idx < secMatLocals.netKeyInfoListSize; idx++)
-  {
-    if((secMatLocals.pNetKeyInfoArray[idx].hdr.keyIndex == netKeyIndex) &&
-       (secMatLocals.pNetKeyInfoArray[idx].hdr.flags & MESH_SEC_KEY_CRT_MAT_AVAILABLE))
-    {
-      pNetKeyInfo = &secMatLocals.pNetKeyInfoArray[idx];
-      break;
+    /* Validate parameters. */
+    if ((pSecNwkBeacon == NULL) || (netKeyIndex > MESH_SEC_MAX_KEY_INDEX) ||
+        (secNwkBeaconGenCback == NULL)) {
+        return MESH_SEC_INVALID_PARAMS;
     }
-  }
 
-  /* Check if no NetKey Index matched. */
-  if (pNetKeyInfo == NULL)
-  {
-    return MESH_SEC_KEY_MATERIAL_NOT_FOUND;
-  }
-
-  /* Check if updated material exists in case new key should be used. */
-  if (useNewKey)
-  {
-    if (!(pNetKeyInfo->hdr.flags & MESH_SEC_KEY_UPDT_MAT_AVAILABLE))
-    {
-      return MESH_SEC_KEY_MATERIAL_NOT_FOUND;
+    /* Check if module is busy. */
+    if (secCryptoReq.beaconCompAuthReq.cback != NULL) {
+        return MESH_SEC_OUT_OF_MEMORY;
     }
-  }
 
-  /* Additional validation of Network ID since the Beacon module reads Network ID from the security
+    /* Search for material matching input NetKey Index. */
+    for (idx = 0; idx < secMatLocals.netKeyInfoListSize; idx++) {
+        if ((secMatLocals.pNetKeyInfoArray[idx].hdr.keyIndex == netKeyIndex) &&
+            (secMatLocals.pNetKeyInfoArray[idx].hdr.flags & MESH_SEC_KEY_CRT_MAT_AVAILABLE)) {
+            pNetKeyInfo = &secMatLocals.pNetKeyInfoArray[idx];
+            break;
+        }
+    }
+
+    /* Check if no NetKey Index matched. */
+    if (pNetKeyInfo == NULL) {
+        return MESH_SEC_KEY_MATERIAL_NOT_FOUND;
+    }
+
+    /* Check if updated material exists in case new key should be used. */
+    if (useNewKey) {
+        if (!(pNetKeyInfo->hdr.flags & MESH_SEC_KEY_UPDT_MAT_AVAILABLE)) {
+            return MESH_SEC_KEY_MATERIAL_NOT_FOUND;
+        }
+    }
+
+    /* Additional validation of Network ID since the Beacon module reads Network ID from the security
    * module.
    */
-  pLocalNwkId = useNewKey ? pNetKeyInfo->keyMaterial[1 - pNetKeyInfo->hdr.crtKeyId].networkID :
-                            pNetKeyInfo->keyMaterial[pNetKeyInfo->hdr.crtKeyId].networkID;
+    pLocalNwkId = useNewKey ? pNetKeyInfo->keyMaterial[1 - pNetKeyInfo->hdr.crtKeyId].networkID :
+                              pNetKeyInfo->keyMaterial[pNetKeyInfo->hdr.crtKeyId].networkID;
 
-  /* Copy Network ID. */
-  memcpy(&(pSecNwkBeacon[MESH_NWK_BEACON_NWK_ID_START_BYTE]), pLocalNwkId, MESH_NWK_ID_NUM_BYTES);
+    /* Copy Network ID. */
+    memcpy(&(pSecNwkBeacon[MESH_NWK_BEACON_NWK_ID_START_BYTE]), pLocalNwkId, MESH_NWK_ID_NUM_BYTES);
 
-  /* Copy Beacon key. */
-  if (useNewKey)
-  {
-    memcpy(secCryptoReq.beaconCompAuthReq.bk,
-           pNetKeyInfo->keyMaterial[1 - pNetKeyInfo->hdr.crtKeyId].beaconKey,
-           MESH_SEC_TOOL_AES_BLOCK_SIZE);
-  }
-  else
-  {
-    memcpy(secCryptoReq.beaconCompAuthReq.bk,
-           pNetKeyInfo->keyMaterial[pNetKeyInfo->hdr.crtKeyId].beaconKey,
-           MESH_SEC_TOOL_AES_BLOCK_SIZE);
-  }
+    /* Copy Beacon key. */
+    if (useNewKey) {
+        memcpy(secCryptoReq.beaconCompAuthReq.bk,
+               pNetKeyInfo->keyMaterial[1 - pNetKeyInfo->hdr.crtKeyId].beaconKey,
+               MESH_SEC_TOOL_AES_BLOCK_SIZE);
+    } else {
+        memcpy(secCryptoReq.beaconCompAuthReq.bk,
+               pNetKeyInfo->keyMaterial[pNetKeyInfo->hdr.crtKeyId].beaconKey,
+               MESH_SEC_TOOL_AES_BLOCK_SIZE);
+    }
 
-  /* Configure request parameters. */
-  secCryptoReq.beaconCompAuthReq.pSecBeacon  = pSecNwkBeacon;
-  secCryptoReq.beaconCompAuthReq.netKeyIndex = netKeyIndex;
+    /* Configure request parameters. */
+    secCryptoReq.beaconCompAuthReq.pSecBeacon = pSecNwkBeacon;
+    secCryptoReq.beaconCompAuthReq.netKeyIndex = netKeyIndex;
 
-  retVal = (meshSecRetVal_t)MeshSecToolCmacCalculate(secCryptoReq.beaconCompAuthReq.bk,
-                                                     &pSecNwkBeacon[MESH_NWK_BEACON_FLAGS_BYTE_POS],
-                                                     MESH_SEC_BEACON_AUTH_INPUT_NUM_BYTES,
-                                                     meshSecBeaconCompCback,
-                                                     (void *)&(secCryptoReq.beaconCompAuthReq));
+    retVal = (meshSecRetVal_t)MeshSecToolCmacCalculate(
+        secCryptoReq.beaconCompAuthReq.bk, &pSecNwkBeacon[MESH_NWK_BEACON_FLAGS_BYTE_POS],
+        MESH_SEC_BEACON_AUTH_INPUT_NUM_BYTES, meshSecBeaconCompCback,
+        (void *)&(secCryptoReq.beaconCompAuthReq));
 
-  if (retVal == MESH_SUCCESS)
-  {
-    /* Set user callback and parameter. */
-    secCryptoReq.beaconCompAuthReq.cback = secNwkBeaconGenCback;
-    secCryptoReq.beaconCompAuthReq.pParam   = pParam;
-  }
+    if (retVal == MESH_SUCCESS) {
+        /* Set user callback and parameter. */
+        secCryptoReq.beaconCompAuthReq.cback = secNwkBeaconGenCback;
+        secCryptoReq.beaconCompAuthReq.pParam = pParam;
+    }
 
-  return retVal;
+    return retVal;
 }
 
 /*************************************************************************************************/
@@ -399,35 +366,32 @@ meshSecRetVal_t MeshSecBeaconAuthenticate(uint8_t *pSecNwkBeacon,
                                           meshSecBeaconAuthCback_t secNwkBeaconAuthCback,
                                           void *pParam)
 {
-  meshSecRetVal_t retVal = MESH_SUCCESS;
+    meshSecRetVal_t retVal = MESH_SUCCESS;
 
-  /* Validate parameters. */
-  if ((pSecNwkBeacon == NULL) || (secNwkBeaconAuthCback == NULL))
-  {
-    return MESH_SEC_INVALID_PARAMS;
-  }
+    /* Validate parameters. */
+    if ((pSecNwkBeacon == NULL) || (secNwkBeaconAuthCback == NULL)) {
+        return MESH_SEC_INVALID_PARAMS;
+    }
 
-  /* Check if request is in progress. */
-  if (secCryptoReq.beaconAuthReq.cback != NULL)
-  {
-    return MESH_SEC_OUT_OF_MEMORY;
-  }
+    /* Check if request is in progress. */
+    if (secCryptoReq.beaconAuthReq.cback != NULL) {
+        return MESH_SEC_OUT_OF_MEMORY;
+    }
 
-  /* Reset key search index. */
-  secCryptoReq.beaconAuthReq.keySearchIndex = 0;
+    /* Reset key search index. */
+    secCryptoReq.beaconAuthReq.keySearchIndex = 0;
 
-  /* Store beacon parameter. */
-  secCryptoReq.beaconAuthReq.pSecBeacon = pSecNwkBeacon;
+    /* Store beacon parameter. */
+    secCryptoReq.beaconAuthReq.pSecBeacon = pSecNwkBeacon;
 
-  /* Start searching Network Key material and authenticate beacon. */
-  retVal = meshSecTryNextAuthParams(&(secCryptoReq.beaconAuthReq));
+    /* Start searching Network Key material and authenticate beacon. */
+    retVal = meshSecTryNextAuthParams(&(secCryptoReq.beaconAuthReq));
 
-  if (retVal == MESH_SUCCESS)
-  {
-    /* Set user callback and request parameter. */
-    secCryptoReq.beaconAuthReq.cback = secNwkBeaconAuthCback;
-    secCryptoReq.beaconAuthReq.pParam   = pParam;
-  }
+    if (retVal == MESH_SUCCESS) {
+        /* Set user callback and request parameter. */
+        secCryptoReq.beaconAuthReq.cback = secNwkBeaconAuthCback;
+        secCryptoReq.beaconAuthReq.pParam = pParam;
+    }
 
-  return retVal;
+    return retVal;
 }

@@ -42,44 +42,41 @@
  **************************************************************************************************/
 
 /*! SEQ Interval for one single SAR transaction */
-#define SAR_RX_SEQ_INTEVAL      MESH_SEQ_ZERO_MASK
+#define SAR_RX_SEQ_INTEVAL MESH_SEQ_ZERO_MASK
 
 /*! Mask of least significant 3 bits of the IVI */
-#define SAR_RX_IVI_MASK         0x00000007U
+#define SAR_RX_IVI_MASK 0x00000007U
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! SAR Rx Transaction History Entry */
-typedef struct meshSarRxHistoryEntry_tag
-{
-  void          *pNext;   /*!< Pointer to next entry */
-  uint32_t      seqNo;    /*!< Sequence number of the first fragment of the Upper Transport PDU.
+typedef struct meshSarRxHistoryEntry_tag {
+    void *pNext; /*!< Pointer to next entry */
+    uint32_t seqNo; /*!< Sequence number of the first fragment of the Upper Transport PDU.
                            *   It is used to extract seqZero.
                            */
-  meshAddress_t srcAddr;  /*!< Address of the element originating the message. */
-  uint8_t       iviLsb;   /*!< Least significant byte of the 32-bit IV index value */
-  uint8_t       segNo;    /*!< Number of segments expected for a completed transaction. If set
+    meshAddress_t srcAddr; /*!< Address of the element originating the message. */
+    uint8_t iviLsb; /*!< Least significant byte of the 32-bit IV index value */
+    uint8_t segNo; /*!< Number of segments expected for a completed transaction. If set
                            *   to 0, then the transaction wasn't completed. It is used
                            *   to send late acks for completed transactions.
                            */
-  bool_t        obo;      /*!< OBO flag. */
+    bool_t obo; /*!< OBO flag. */
 } meshSarRxHistoryEntry_t;
 
 /*! SAR Rx Transaction History */
-typedef struct meshSarRxHistory_tag
-{
-  wsfQueue_t              usedHistQueue;  /*!< Transaction history queue of allocate entries */
-  wsfQueue_t              freeHistQueue;  /*!< Transaction history queue of used entries */
-  meshSarRxHistoryEntry_t *pTranHistory;  /*!< Transaction history memory pointer */
+typedef struct meshSarRxHistory_tag {
+    wsfQueue_t usedHistQueue; /*!< Transaction history queue of allocate entries */
+    wsfQueue_t freeHistQueue; /*!< Transaction history queue of used entries */
+    meshSarRxHistoryEntry_t *pTranHistory; /*!< Transaction history memory pointer */
 } meshSarRxHistory_t;
 
 /*! SAR Rx Transaction History control block type */
-typedef struct sarRxHistoryCb_tag
-{
-  meshSarRxHistory_t  history;      /*!< Transaction history */
-  uint8_t             historySize;  /*!< Transaction history maximum size */
+typedef struct sarRxHistoryCb_tag {
+    meshSarRxHistory_t history; /*!< Transaction history */
+    uint8_t historySize; /*!< Transaction history maximum size */
 } sarRxHistoryCb_t;
 
 /**************************************************************************************************
@@ -104,8 +101,8 @@ static sarRxHistoryCb_t sarRxHistoryCb;
 /*************************************************************************************************/
 static inline uint32_t meshSarRxHistoryGetRequiredMemory(uint8_t historySize)
 {
-  /* Compute required memory size for SAR Rx Transaction History */
-  return  MESH_UTILS_ALIGN(sizeof(meshSarRxHistoryEntry_t) * historySize);
+    /* Compute required memory size for SAR Rx Transaction History */
+    return MESH_UTILS_ALIGN(sizeof(meshSarRxHistoryEntry_t) * historySize);
 }
 
 /**************************************************************************************************
@@ -121,12 +118,12 @@ static inline uint32_t meshSarRxHistoryGetRequiredMemory(uint8_t historySize)
 /*************************************************************************************************/
 uint32_t MeshSarRxHistoryGetRequiredMemory(void)
 {
-  uint32_t reqMem;
+    uint32_t reqMem;
 
-  /* Compute the required memory. */
-  reqMem = meshSarRxHistoryGetRequiredMemory(pMeshConfig->pMemoryConfig->sarRxTranHistorySize);
+    /* Compute the required memory. */
+    reqMem = meshSarRxHistoryGetRequiredMemory(pMeshConfig->pMemoryConfig->sarRxTranHistorySize);
 
-  return reqMem;
+    return reqMem;
 }
 
 /*************************************************************************************************/
@@ -138,29 +135,29 @@ uint32_t MeshSarRxHistoryGetRequiredMemory(void)
 /*************************************************************************************************/
 void MeshSarRxHistoryInit(void)
 {
-  uint8_t *pMemBuff;
-  uint32_t reqMem;
+    uint8_t *pMemBuff;
+    uint32_t reqMem;
 
-  pMemBuff = meshCb.pMemBuff;
+    pMemBuff = meshCb.pMemBuff;
 
-  /* Save the pointer for the SAR Rx Transaction history */
-  sarRxHistoryCb.history.pTranHistory = (meshSarRxHistoryEntry_t *)pMemBuff;
+    /* Save the pointer for the SAR Rx Transaction history */
+    sarRxHistoryCb.history.pTranHistory = (meshSarRxHistoryEntry_t *)pMemBuff;
 
-  /* Increment the memory buffer pointer. */
-  reqMem = meshSarRxHistoryGetRequiredMemory(pMeshConfig->pMemoryConfig->sarRxTranHistorySize);
-  pMemBuff += reqMem;
+    /* Increment the memory buffer pointer. */
+    reqMem = meshSarRxHistoryGetRequiredMemory(pMeshConfig->pMemoryConfig->sarRxTranHistorySize);
+    pMemBuff += reqMem;
 
-  /* Save the updated address. */
-  meshCb.pMemBuff = pMemBuff;
+    /* Save the updated address. */
+    meshCb.pMemBuff = pMemBuff;
 
-  /* Subtract the reserved size from memory buffer size. */
-  meshCb.memBuffSize -= reqMem;
+    /* Subtract the reserved size from memory buffer size. */
+    meshCb.memBuffSize -= reqMem;
 
-  /* Set history size. */
-  sarRxHistoryCb.historySize = pMeshConfig->pMemoryConfig->sarRxTranHistorySize;
+    /* Set history size. */
+    sarRxHistoryCb.historySize = pMeshConfig->pMemoryConfig->sarRxTranHistorySize;
 
-  /* Reset SAR Rx Transaction history internals. */
-  MeshSarRxHistoryReset();
+    /* Reset SAR Rx Transaction history internals. */
+    MeshSarRxHistoryReset();
 }
 
 /*************************************************************************************************/
@@ -179,32 +176,28 @@ void MeshSarRxHistoryInit(void)
 void MeshSarRxHistoryAdd(meshAddress_t srcAddr, uint32_t seqNo, uint8_t iviLsb, uint8_t segN,
                          bool_t obo)
 {
-  meshSarRxHistoryEntry_t *pEntry;
+    meshSarRxHistoryEntry_t *pEntry;
 
-  /* Check if no empty entries left. */
-  if(WsfQueueEmpty(&(sarRxHistoryCb.history.freeHistQueue)))
-  {
-    /* Get oldest from the used queue. */
-    pEntry = (meshSarRxHistoryEntry_t *)WsfQueueDeq(&(sarRxHistoryCb.history.usedHistQueue));
-  }
-  else
-  {
-    /* Get one from the free queue. */
-    pEntry = (meshSarRxHistoryEntry_t *)WsfQueueDeq(&(sarRxHistoryCb.history.freeHistQueue));
-  }
+    /* Check if no empty entries left. */
+    if (WsfQueueEmpty(&(sarRxHistoryCb.history.freeHistQueue))) {
+        /* Get oldest from the used queue. */
+        pEntry = (meshSarRxHistoryEntry_t *)WsfQueueDeq(&(sarRxHistoryCb.history.usedHistQueue));
+    } else {
+        /* Get one from the free queue. */
+        pEntry = (meshSarRxHistoryEntry_t *)WsfQueueDeq(&(sarRxHistoryCb.history.freeHistQueue));
+    }
 
-  if (pEntry != NULL)
-  {
-    /* A new SAR Rx transaction has ended - add it to the queue. */
-    pEntry->srcAddr  = srcAddr;
-    pEntry->seqNo = seqNo;
-    pEntry->segNo = segN + 1;
-    pEntry->iviLsb = iviLsb;
-    pEntry->obo = obo;
+    if (pEntry != NULL) {
+        /* A new SAR Rx transaction has ended - add it to the queue. */
+        pEntry->srcAddr = srcAddr;
+        pEntry->seqNo = seqNo;
+        pEntry->segNo = segN + 1;
+        pEntry->iviLsb = iviLsb;
+        pEntry->obo = obo;
 
-    /* Enqueue in the used queue. */
-    WsfQueueEnq(&(sarRxHistoryCb.history.usedHistQueue),pEntry);
-  }
+        /* Enqueue in the used queue. */
+        WsfQueueEnq(&(sarRxHistoryCb.history.usedHistQueue), pEntry);
+    }
 }
 
 /*************************************************************************************************/
@@ -226,62 +219,54 @@ void MeshSarRxHistoryAdd(meshAddress_t srcAddr, uint32_t seqNo, uint8_t iviLsb, 
 bool_t MeshSarRxHistoryCheck(meshAddress_t srcAddr, uint32_t seqNo, uint16_t seqZero,
                              uint8_t iviLsb, uint8_t segN, bool_t *pOutSendAck, bool_t *pOutObo)
 {
-  meshSarRxHistoryEntry_t *pEntry;
+    meshSarRxHistoryEntry_t *pEntry;
 
-  /* By default, we do not send any Ack */
-  *pOutSendAck = FALSE;
-  *pOutObo = FALSE;
+    /* By default, we do not send any Ack */
+    *pOutSendAck = FALSE;
+    *pOutObo = FALSE;
 
-  /* Check if history is empty. */
-  if(WsfQueueEmpty(&(sarRxHistoryCb.history.usedHistQueue)))
-  {
-    return TRUE;
-  }
+    /* Check if history is empty. */
+    if (WsfQueueEmpty(&(sarRxHistoryCb.history.usedHistQueue))) {
+        return TRUE;
+    }
 
-  /* Point to start of the queue. */
-  pEntry = (meshSarRxHistoryEntry_t *)(&(sarRxHistoryCb.history.usedHistQueue))->pHead;
+    /* Point to start of the queue. */
+    pEntry = (meshSarRxHistoryEntry_t *)(&(sarRxHistoryCb.history.usedHistQueue))->pHead;
 
-  /* Search from head to tail to always check the latest entries first. */
-  while (pEntry != NULL)
-  {
-    /* Find the same source address */
-    if (pEntry->srcAddr == srcAddr)
-    {
-      if (iviLsb == pEntry->iviLsb)
-      {
-        /* Drop if it is a lower seqAuth = lower SEQ for same IVI */
-        if (seqNo < pEntry->seqNo)
-        {
-          return FALSE;
-        }
+    /* Search from head to tail to always check the latest entries first. */
+    while (pEntry != NULL) {
+        /* Find the same source address */
+        if (pEntry->srcAddr == srcAddr) {
+            if (iviLsb == pEntry->iviLsb) {
+                /* Drop if it is a lower seqAuth = lower SEQ for same IVI */
+                if (seqNo < pEntry->seqNo) {
+                    return FALSE;
+                }
 
-        /* Check if a segment belongs to a completed or canceled transaction. */
-        if ((SAR_RX_SEQZERO(pEntry->seqNo) == seqZero) &&
-            ((pEntry->seqNo + SAR_RX_SEQ_INTEVAL) > seqNo))
-        {
-          /* For a completed transaction (same SeqAuth) send it again. Maybe the last ACK
+                /* Check if a segment belongs to a completed or canceled transaction. */
+                if ((SAR_RX_SEQZERO(pEntry->seqNo) == seqZero) &&
+                    ((pEntry->seqNo + SAR_RX_SEQ_INTEVAL) > seqNo)) {
+                    /* For a completed transaction (same SeqAuth) send it again. Maybe the last ACK
            * was missed by the remote element.
            */
-          if ((segN + 1) == pEntry->segNo)
-          {
-            *pOutSendAck = TRUE;
-            *pOutObo = pEntry->obo;
-          }
+                    if ((segN + 1) == pEntry->segNo) {
+                        *pOutSendAck = TRUE;
+                        *pOutObo = pEntry->obo;
+                    }
 
-          return FALSE;
+                    return FALSE;
+                }
+            }
+
+            if (((iviLsb + 1) & 0x3) == pEntry->iviLsb) {
+                return FALSE;
+            }
         }
-      }
-
-      if (((iviLsb + 1) & 0x3) == pEntry->iviLsb)
-      {
-        return FALSE;
-      }
+        /* Move to next entry */
+        pEntry = (meshSarRxHistoryEntry_t *)(pEntry->pNext);
     }
-    /* Move to next entry */
-    pEntry = (meshSarRxHistoryEntry_t *)(pEntry->pNext);
-  }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -293,22 +278,21 @@ bool_t MeshSarRxHistoryCheck(meshAddress_t srcAddr, uint32_t seqNo, uint16_t seq
 /*************************************************************************************************/
 void MeshSarRxHistoryReset(void)
 {
-  uint8_t idx;
+    uint8_t idx;
 
-  /* Reset memory */
-  memset(sarRxHistoryCb.history.pTranHistory, 0,
-         sizeof(meshSarRxHistoryEntry_t) * sarRxHistoryCb.historySize);
+    /* Reset memory */
+    memset(sarRxHistoryCb.history.pTranHistory, 0,
+           sizeof(meshSarRxHistoryEntry_t) * sarRxHistoryCb.historySize);
 
-  /* Initialize queues. */
-  WSF_QUEUE_INIT(&(sarRxHistoryCb.history.freeHistQueue));
-  WSF_QUEUE_INIT(&(sarRxHistoryCb.history.usedHistQueue));
+    /* Initialize queues. */
+    WSF_QUEUE_INIT(&(sarRxHistoryCb.history.freeHistQueue));
+    WSF_QUEUE_INIT(&(sarRxHistoryCb.history.usedHistQueue));
 
-  /* Add all entries to the free queue. */
-  for(idx = 0; idx < sarRxHistoryCb.historySize; idx++)
-  {
-    WsfQueueEnq(&(sarRxHistoryCb.history.freeHistQueue),
-                &(sarRxHistoryCb.history.pTranHistory[idx]));
-  }
+    /* Add all entries to the free queue. */
+    for (idx = 0; idx < sarRxHistoryCb.historySize; idx++) {
+        WsfQueueEnq(&(sarRxHistoryCb.history.freeHistQueue),
+                    &(sarRxHistoryCb.history.pTranHistory[idx]));
+    }
 }
 
 /*************************************************************************************************/
@@ -324,54 +308,49 @@ void MeshSarRxHistoryReset(void)
 /*************************************************************************************************/
 void MeshSarRxHistoryCleanupOld(meshAddress_t srcAddr, uint16_t seqZero, uint8_t iviLsb)
 {
-  meshSarRxHistoryEntry_t *pEntry, *pPrev, *pNext;
-  uint16_t count;
-  bool_t entryRemoved = FALSE;
+    meshSarRxHistoryEntry_t *pEntry, *pPrev, *pNext;
+    uint16_t count;
+    bool_t entryRemoved = FALSE;
 
-  if(WsfQueueEmpty(&(sarRxHistoryCb.history.usedHistQueue)))
-  {
-    return;
-  }
-
-  /* Set previous to NULL. */
-  pPrev = NULL;
-  /* Point to start of the queue. */
-  pEntry = (meshSarRxHistoryEntry_t *)(&(sarRxHistoryCb.history.usedHistQueue))->pHead;
-  /* Get queue count. */
-  count = WsfQueueCount((&(sarRxHistoryCb.history.usedHistQueue)));
-
-  /* Find all entries which have an IVI value lower than IVI - 1 */
-  while(count > 0)
-  {
-    entryRemoved = FALSE;
-
-    pNext = (meshSarRxHistoryEntry_t *)(pEntry->pNext);
-    if (pEntry->srcAddr == srcAddr)
-    {
-      if((pEntry->iviLsb < iviLsb) ||
-         ((pEntry->iviLsb == iviLsb) && (SAR_RX_SEQZERO(pEntry->seqNo) < seqZero)))
-      {
-        /* Invalidate history entry by setting address to 0 */
-        pEntry->srcAddr = 0;
-
-        /* Remove from used queue */
-        WsfQueueRemove(&(sarRxHistoryCb.history.usedHistQueue), pEntry, pPrev);
-
-        /* Add to free queue. */
-        WsfQueueEnq(&(sarRxHistoryCb.history.freeHistQueue), pEntry);
-
-        entryRemoved = TRUE;
-      }
+    if (WsfQueueEmpty(&(sarRxHistoryCb.history.usedHistQueue))) {
+        return;
     }
 
-    if (entryRemoved == FALSE)
-    {
-      pPrev = pEntry;
-    }
+    /* Set previous to NULL. */
+    pPrev = NULL;
+    /* Point to start of the queue. */
+    pEntry = (meshSarRxHistoryEntry_t *)(&(sarRxHistoryCb.history.usedHistQueue))->pHead;
+    /* Get queue count. */
+    count = WsfQueueCount((&(sarRxHistoryCb.history.usedHistQueue)));
 
-    pEntry = pNext;
-    count--;
-  }
+    /* Find all entries which have an IVI value lower than IVI - 1 */
+    while (count > 0) {
+        entryRemoved = FALSE;
+
+        pNext = (meshSarRxHistoryEntry_t *)(pEntry->pNext);
+        if (pEntry->srcAddr == srcAddr) {
+            if ((pEntry->iviLsb < iviLsb) ||
+                ((pEntry->iviLsb == iviLsb) && (SAR_RX_SEQZERO(pEntry->seqNo) < seqZero))) {
+                /* Invalidate history entry by setting address to 0 */
+                pEntry->srcAddr = 0;
+
+                /* Remove from used queue */
+                WsfQueueRemove(&(sarRxHistoryCb.history.usedHistQueue), pEntry, pPrev);
+
+                /* Add to free queue. */
+                WsfQueueEnq(&(sarRxHistoryCb.history.freeHistQueue), pEntry);
+
+                entryRemoved = TRUE;
+            }
+        }
+
+        if (entryRemoved == FALSE) {
+            pPrev = pEntry;
+        }
+
+        pEntry = pNext;
+        count--;
+    }
 }
 
 /*************************************************************************************************/
@@ -385,48 +364,44 @@ void MeshSarRxHistoryCleanupOld(meshAddress_t srcAddr, uint16_t seqZero, uint8_t
 /*************************************************************************************************/
 void MeshSarRxHistoryIviCleanup(uint32_t newIvIndex)
 {
-  meshSarRxHistoryEntry_t *pEntry, *pPrev, *pNext;
-  uint16_t count;
-  bool_t entryRemoved = FALSE;
+    meshSarRxHistoryEntry_t *pEntry, *pPrev, *pNext;
+    uint16_t count;
+    bool_t entryRemoved = FALSE;
 
-  if(WsfQueueEmpty(&(sarRxHistoryCb.history.usedHistQueue)))
-  {
-    return;
-  }
-
-  /* Set previous to NULL. */
-  pPrev = NULL;
-  /* Point to start of the queue. */
-  pEntry = (meshSarRxHistoryEntry_t *)(&(sarRxHistoryCb.history.usedHistQueue))->pHead;
-  /* Get queue count. */
-  count = WsfQueueCount((&(sarRxHistoryCb.history.usedHistQueue)));
-
-  /* Find all entries which have an IVI value lower than IVI - 1 */
-  while(count > 0)
-  {
-    entryRemoved = FALSE;
-
-    pNext = (meshSarRxHistoryEntry_t *)(pEntry->pNext);
-    if (pEntry->iviLsb + 1 < (uint8_t)(newIvIndex & SAR_RX_IVI_MASK))
-    {
-      /* Invalidate history entry by setting address to 0 */
-      pEntry->srcAddr = 0;
-
-      /* Remove from used queue */
-      WsfQueueRemove(&(sarRxHistoryCb.history.usedHistQueue), pEntry, pPrev);
-
-      /* Add to free queue. */
-      WsfQueueEnq(&(sarRxHistoryCb.history.freeHistQueue), pEntry);
-
-      entryRemoved = TRUE;
+    if (WsfQueueEmpty(&(sarRxHistoryCb.history.usedHistQueue))) {
+        return;
     }
 
-    if (entryRemoved == FALSE)
-    {
-      pPrev = pEntry;
-    }
+    /* Set previous to NULL. */
+    pPrev = NULL;
+    /* Point to start of the queue. */
+    pEntry = (meshSarRxHistoryEntry_t *)(&(sarRxHistoryCb.history.usedHistQueue))->pHead;
+    /* Get queue count. */
+    count = WsfQueueCount((&(sarRxHistoryCb.history.usedHistQueue)));
 
-    pEntry = pNext;
-    count--;
-  }
+    /* Find all entries which have an IVI value lower than IVI - 1 */
+    while (count > 0) {
+        entryRemoved = FALSE;
+
+        pNext = (meshSarRxHistoryEntry_t *)(pEntry->pNext);
+        if (pEntry->iviLsb + 1 < (uint8_t)(newIvIndex & SAR_RX_IVI_MASK)) {
+            /* Invalidate history entry by setting address to 0 */
+            pEntry->srcAddr = 0;
+
+            /* Remove from used queue */
+            WsfQueueRemove(&(sarRxHistoryCb.history.usedHistQueue), pEntry, pPrev);
+
+            /* Add to free queue. */
+            WsfQueueEnq(&(sarRxHistoryCb.history.freeHistQueue), pEntry);
+
+            entryRemoved = TRUE;
+        }
+
+        if (entryRemoved == FALSE) {
+            pPrev = pEntry;
+        }
+
+        pEntry = pNext;
+        count--;
+    }
 }

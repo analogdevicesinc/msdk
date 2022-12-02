@@ -32,16 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
 #ifndef CRYS_RSA_PRIM_H
 #define CRYS_RSA_PRIM_H
 
 #include "crys_rsa_types.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*!
@@ -56,8 +53,6 @@ extern "C"
 susceptible to well-known attacks.
 */
 
-
-
 /**********************************************************************************/
 /*!
 @brief Implements the RSAEP algorithm, as defined in [PKCS1_2.1] - 6.1.1.
@@ -66,18 +61,20 @@ susceptible to well-known attacks.
 @return A non-zero value from crys_rsa_error.h on failure.
  */
 CIMPORT_C CRYSError_t CRYS_RSA_PRIM_Encrypt(
-                                CRYS_RSAUserPubKey_t *UserPubKey_ptr,       /*!< [in]  Pointer to the public key data structure. */
-                                CRYS_RSAPrimeData_t  *PrimeData_ptr,        /*!< [in]  Pointer to a temporary structure containing internal buffers. */
-                                uint8_t              *Data_ptr,             /*!< [in]  Pointer to the data to encrypt. */
-                                uint16_t              DataSize,             /*!< [in]  The size (in bytes) of input data must be &le; modulus size. If is smaller,
+    CRYS_RSAUserPubKey_t *UserPubKey_ptr, /*!< [in]  Pointer to the public key data structure. */
+    CRYS_RSAPrimeData_t
+        *PrimeData_ptr, /*!< [in]  Pointer to a temporary structure containing internal buffers. */
+    uint8_t *Data_ptr, /*!< [in]  Pointer to the data to encrypt. */
+    uint16_t
+        DataSize, /*!< [in]  The size (in bytes) of input data must be &le; modulus size. If is smaller,
                                                                                        then the function padds it by zeros on left side up to the modulus size
                                                                                    and therefore, after further decrypt operation, its result will contain
                                                                                        zero-padding also. If the function is used for recovering the plain data
                                                                                        from result of inverse function (CRYS_RSA_PRIM_Decrypt), the input size
                                                                                        must be equal to modulus size exactly. */
-                                uint8_t              *Output_ptr            /*!< [out] Pointer to the encrypted data. The buffer size must be &ge; the modulus size. */
+    uint8_t *
+        Output_ptr /*!< [out] Pointer to the encrypted data. The buffer size must be &ge; the modulus size. */
 );
-
 
 /**********************************************************************************/
 /*!
@@ -88,22 +85,23 @@ CIMPORT_C CRYSError_t CRYS_RSA_PRIM_Encrypt(
 
 */
 CIMPORT_C CRYSError_t CRYS_RSA_PRIM_Decrypt(
-                            CRYS_RSAUserPrivKey_t *UserPrivKey_ptr,     /*!< [in]  Pointer to the private key data structure.
+    CRYS_RSAUserPrivKey_t *UserPrivKey_ptr, /*!< [in]  Pointer to the private key data structure.
                                                                                    The key representation (pair or quintuple) and hence the RSA algorithm
                                                                                    (CRT or not-CRT) is determined by enum value in the structure
                                            ::CRYS_RSA_Build_PrivKey or ::CRYS_RSA_Build_PrivKeyCRT. */
-                            CRYS_RSAPrimeData_t   *PrimeData_ptr,       /*!< [in]  Pointer to a temporary structure containing internal buffers required for
+    CRYS_RSAPrimeData_t *
+        PrimeData_ptr, /*!< [in]  Pointer to a temporary structure containing internal buffers required for
                                            the RSA operation. */
-                            uint8_t     *Data_ptr,                      /*!< [in]  Pointer to the data to be decrypted. */
-                            uint16_t     DataSize,                      /*!< [in]  The size (in bytes) of input data must be &le; modulus size.
+    uint8_t *Data_ptr, /*!< [in]  Pointer to the data to be decrypted. */
+    uint16_t DataSize, /*!< [in]  The size (in bytes) of input data must be &le; modulus size.
                                                                                    If the size is smaller (not recommendet), then the data will be zero-padded
                                                                                    by the function on left side up to the modulus size and therefore, after further
                                                                                    decrypt operation,its result will contain zero-padding also. If the function is used
                                                                                    for recovering the plain data from result of inverse function (CRYS_RSA_PRIM_Encrypt),
                                                                                    the input size must be equal to modulus size exactly. */
-                            uint8_t     *Output_ptr                     /*!< [out] Pointer to the decrypted data. The buffer size must be &le; the modulus size. */
+    uint8_t *
+        Output_ptr /*!< [out] Pointer to the decrypted data. The buffer size must be &le; the modulus size. */
 );
-
 
 /*!
 @brief Implements the RSASP1 algorithm, as defined in [PKCS1_2.1] - 6.2.1, as a call to ::CRYS_RSA_PRIM_Decrypt,

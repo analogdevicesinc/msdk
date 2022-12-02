@@ -53,9 +53,10 @@ typedef int16_t q15_t;
 #define SYS_COMPLETE LED_Off(0)
 
 /* Run software SoftMax on unloaded data */
-void softmax_q17p14_q15(const q31_t * vec_in, const uint16_t dim_vec, q15_t * p_out);
+void softmax_q17p14_q15(const q31_t *vec_in, const uint16_t dim_vec, q15_t *p_out);
 /* Shift the input, then calculate SoftMax */
-void softmax_shift_q17p14_q15(q31_t * vec_in, const uint16_t dim_vec, uint8_t in_shift, q15_t * p_out);
+void softmax_shift_q17p14_q15(q31_t *vec_in, const uint16_t dim_vec, uint8_t in_shift,
+                              q15_t *p_out);
 
 /* Stopwatch - holds the runtime when accelerator finishes */
 extern volatile uint32_t cnn_time;

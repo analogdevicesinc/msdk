@@ -27,8 +27,7 @@
 #define MESH_HT_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -43,20 +42,19 @@ extern "C"
 **************************************************************************************************/
 
 /*! Health Server control block type definition */
-typedef struct meshHtSrCb_tag
-{
-  mmdlEventCback_t          recvCback;   /*!< Health Server event callback */
+typedef struct meshHtSrCb_tag {
+    mmdlEventCback_t recvCback; /*!< Health Server event callback */
 } meshHtSrCb_t;
 
 /*! Health Server message handler type definition */
-typedef void (*meshHtSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*meshHtSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Variables Declarations
 **************************************************************************************************/
 
 /*! Generic On Off Server Control Block */
-extern meshHtSrCb_t  htSrCb;
+extern meshHtSrCb_t htSrCb;
 
 /**************************************************************************************************
   Function Declarations
@@ -76,15 +74,14 @@ void meshHtSrHandleAttentionGet(const meshModelMsgRecvEvt_t *pMsg);
 void meshHtSrHandleAttentionSet(const meshModelMsgRecvEvt_t *pMsg);
 void meshHtSrHandleAttentionSetUnack(const meshModelMsgRecvEvt_t *pMsg);
 
-void meshHtSrSendFaultStatus(uint16_t companyId, meshElementId_t elementId,
-                             meshAddress_t dstAddr, uint16_t appKeyIndex, uint8_t recvTtl,
-                             bool_t unicastRsp);
+void meshHtSrSendFaultStatus(uint16_t companyId, meshElementId_t elementId, meshAddress_t dstAddr,
+                             uint16_t appKeyIndex, uint8_t recvTtl, bool_t unicastRsp);
 void meshHtSrSendPeriodStatus(meshHtPeriod_t period, meshElementId_t elementId,
-                              meshAddress_t dstAddr, uint16_t appKeyIndex,
-                              uint8_t recvTtl, bool_t unicastRsp);
+                              meshAddress_t dstAddr, uint16_t appKeyIndex, uint8_t recvTtl,
+                              bool_t unicastRsp);
 void meshHtSrSendAttentionStatus(uint8_t attTimerSec, meshElementId_t elementId,
-                                 meshAddress_t dstAddr, uint16_t appKeyIndex,
-                                 uint8_t recvTtl, bool_t unicastRsp);
+                                 meshAddress_t dstAddr, uint16_t appKeyIndex, uint8_t recvTtl,
+                                 bool_t unicastRsp);
 void meshHtSrPublishCrtHt(meshElementId_t elementId);
 
 uint8_t htSrGetNumFaults(uint8_t *pFaultArray);

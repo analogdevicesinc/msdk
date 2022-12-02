@@ -32,38 +32,35 @@
 **************************************************************************************************/
 
 /*! \brief      Power control LLCP types. */
-enum
-{
-  LCTR_PC_PROC_IND,   /*!< Power Indication process. */
-  LCTR_PC_PROC_CTRL,  /*!< Power control process. */
+enum {
+    LCTR_PC_PROC_IND, /*!< Power Indication process. */
+    LCTR_PC_PROC_CTRL, /*!< Power control process. */
 
-  LCTR_PC_PROC_TOTAL  /*!< Total power control procedures. */
+    LCTR_PC_PROC_TOTAL /*!< Total power control procedures. */
 };
 
 /*! \brief      Common LLCP actions. */
-enum
-{
-  LCTR_PROC_CMN_ACT_API_PARAM,  /*!< Store host API parameter action. */
-  LCTR_PROC_CMN_ACT_SEND_REQ,   /*!< Send request action. */
-  LCTR_PROC_CMN_ACT_RECV_REQ,   /*!< Receive request action. */
-  LCTR_PROC_CMN_ACT_SEND_RSP,   /*!< Send response action. */
-  LCTR_PROC_CMN_ACT_RECV_RSP,   /*!< Receive response action. */
-  LCTR_PROC_CMN_ACT_TOTAL       /*!< Total common procedure actions. */
+enum {
+    LCTR_PROC_CMN_ACT_API_PARAM, /*!< Store host API parameter action. */
+    LCTR_PROC_CMN_ACT_SEND_REQ, /*!< Send request action. */
+    LCTR_PROC_CMN_ACT_RECV_REQ, /*!< Receive request action. */
+    LCTR_PROC_CMN_ACT_SEND_RSP, /*!< Send response action. */
+    LCTR_PROC_CMN_ACT_RECV_RSP, /*!< Receive response action. */
+    LCTR_PROC_CMN_ACT_TOTAL /*!< Total common procedure actions. */
 };
 
 /*! \brief      Common LLCP events. */
-enum
-{
-  LCTR_PROC_CMN_EVT_HOST_START, /*!< Host initiated start procedure event. */
-  LCTR_PROC_CMN_EVT_INT_START,  /*!< LL initiated start procedure event. */
-  LCTR_PROC_CMN_EVT_INT_INCOMP, /*!< Complete an interrupted procedure event. */
-  LCTR_PROC_CMN_EVT_RECV_IND,   /*!< Receive indication event. */
-  LCTR_PROC_CMN_EVT_RECV_REQ,   /*!< Receive request event. */
-  LCTR_PROC_CMN_EVT_RECV_RSP,   /*!< Receive response event. */
-  LCTR_PROC_CMN_EVT_PROC_COMP,  /*!< Procedure completed event. */
-  LCTR_PROC_CMN_EVT_REJECT,     /*!< Procedure rejected event. */
-  LCTR_PROC_CMN_EVT_TOTAL,      /*!< Total common procedure events. */
-  LCTR_PROC_CMN_EVT_INVALID = 0xFF  /*!< Invalid event. */
+enum {
+    LCTR_PROC_CMN_EVT_HOST_START, /*!< Host initiated start procedure event. */
+    LCTR_PROC_CMN_EVT_INT_START, /*!< LL initiated start procedure event. */
+    LCTR_PROC_CMN_EVT_INT_INCOMP, /*!< Complete an interrupted procedure event. */
+    LCTR_PROC_CMN_EVT_RECV_IND, /*!< Receive indication event. */
+    LCTR_PROC_CMN_EVT_RECV_REQ, /*!< Receive request event. */
+    LCTR_PROC_CMN_EVT_RECV_RSP, /*!< Receive response event. */
+    LCTR_PROC_CMN_EVT_PROC_COMP, /*!< Procedure completed event. */
+    LCTR_PROC_CMN_EVT_REJECT, /*!< Procedure rejected event. */
+    LCTR_PROC_CMN_EVT_TOTAL, /*!< Total common procedure events. */
+    LCTR_PROC_CMN_EVT_INVALID = 0xFF /*!< Invalid event. */
 };
 
 /**************************************************************************************************
@@ -71,24 +68,23 @@ enum
 **************************************************************************************************/
 
 /*! \brief      Common procedure state machine action table. */
-const lctrLlcpEh_t lctrPclProcTbl[LCTR_PC_PROC_TOTAL][LCTR_PROC_CMN_ACT_TOTAL] =
-{
-  /* LCTR_PROC_PWR_IND */
-  {
-    NULL,                         /* LCTR_PROC_CMN_ACT_API_PARAM */
-    NULL,                         /* LCTR_PROC_CMN_ACT_SEND_REQ */
-    lctrStorePeerPowerInd,        /* LCTR_PROC_CMN_ACT_RECV_REQ */
-    lctrSendPeerPowerRsp,         /* LCTR_PROC_CMN_ACT_SEND_RSP */
-    NULL                          /* LCTR_PROC_CMN_ACT_RECV_RSP */
-  },
-  /* LCTR_PROC_PWR_CTRL */
-  {
-    lctrStorePowerControlAction,  /* LCTR_PROC_CMN_ACT_API_PARAM */
-    lctrSendPeerPowerControlReq,  /* LCTR_PROC_CMN_ACT_SEND_REQ */
-    lctrStorePeerPowerControlReq, /* LCTR_PROC_CMN_ACT_RECV_REQ */
-    lctrSendPeerPowerControlRsp,  /* LCTR_PROC_CMN_ACT_SEND_RSP */
-    lctrStorePeerPowerControlRsp  /* LCTR_PROC_CMN_ACT_RECV_RSP */
-  }
+const lctrLlcpEh_t lctrPclProcTbl[LCTR_PC_PROC_TOTAL][LCTR_PROC_CMN_ACT_TOTAL] = {
+    /* LCTR_PROC_PWR_IND */
+    {
+        NULL, /* LCTR_PROC_CMN_ACT_API_PARAM */
+        NULL, /* LCTR_PROC_CMN_ACT_SEND_REQ */
+        lctrStorePeerPowerInd, /* LCTR_PROC_CMN_ACT_RECV_REQ */
+        lctrSendPeerPowerRsp, /* LCTR_PROC_CMN_ACT_SEND_RSP */
+        NULL /* LCTR_PROC_CMN_ACT_RECV_RSP */
+    },
+    /* LCTR_PROC_PWR_CTRL */
+    {
+        lctrStorePowerControlAction, /* LCTR_PROC_CMN_ACT_API_PARAM */
+        lctrSendPeerPowerControlReq, /* LCTR_PROC_CMN_ACT_SEND_REQ */
+        lctrStorePeerPowerControlReq, /* LCTR_PROC_CMN_ACT_RECV_REQ */
+        lctrSendPeerPowerControlRsp, /* LCTR_PROC_CMN_ACT_SEND_RSP */
+        lctrStorePeerPowerControlRsp /* LCTR_PROC_CMN_ACT_RECV_RSP */
+    }
 };
 
 /*************************************************************************************************/
@@ -102,19 +98,14 @@ const lctrLlcpEh_t lctrPclProcTbl[LCTR_PC_PROC_TOTAL][LCTR_PROC_CMN_ACT_TOTAL] =
 /*************************************************************************************************/
 static uint8_t lctrGetPclProcSmIndex(uint8_t proc)
 {
-  if (proc == LCTR_PROC_PWR_IND)
-  {
-    return LCTR_PC_PROC_IND;
-  }
-  else if (proc == LCTR_PROC_PWR_CTRL)
-  {
-    return LCTR_PC_PROC_CTRL;
-  }
-  else
-  {
-    LL_TRACE_ERR1("lctrGetPclProcSmIndex, invalid proc=%d", proc);
-    return LCTR_PROC_INVALID;
-  }
+    if (proc == LCTR_PROC_PWR_IND) {
+        return LCTR_PC_PROC_IND;
+    } else if (proc == LCTR_PROC_PWR_CTRL) {
+        return LCTR_PC_PROC_CTRL;
+    } else {
+        LL_TRACE_ERR1("lctrGetPclProcSmIndex, invalid proc=%d", proc);
+        return LCTR_PROC_INVALID;
+    }
 }
 
 /*************************************************************************************************/
@@ -128,12 +119,11 @@ static uint8_t lctrGetPclProcSmIndex(uint8_t proc)
 /*************************************************************************************************/
 static inline void lctrExecAction(lctrConnCtx_t *pCtx, uint8_t proc, uint8_t act)
 {
-  uint8_t pclProc = lctrGetPclProcSmIndex(proc);
+    uint8_t pclProc = lctrGetPclProcSmIndex(proc);
 
-  if (lctrPclProcTbl[pclProc][act])
-  {
-    lctrPclProcTbl[pclProc][act](pCtx);
-  }
+    if (lctrPclProcTbl[pclProc][act]) {
+        lctrPclProcTbl[pclProc][act](pCtx);
+    }
 }
 
 /*************************************************************************************************/
@@ -148,49 +138,45 @@ static inline void lctrExecAction(lctrConnCtx_t *pCtx, uint8_t proc, uint8_t act
 /*************************************************************************************************/
 static uint8_t lctrGetPclProcId(lctrConnCtx_t *pCtx, uint8_t event)
 {
-  switch (event)
-  {
+    switch (event) {
     case LCTR_CONN_MSG_API_PWR_CTRL_REQ:
-      return LCTR_PROC_PWR_CTRL;
+        return LCTR_PROC_PWR_CTRL;
 
     case LCTR_CONN_MSG_RX_LLCP:
-      switch (lctrDataPdu.opcode)
-      {
+        switch (lctrDataPdu.opcode) {
         case LL_PDU_PWR_CHNG_IND:
-          return LCTR_PROC_PWR_IND;
+            return LCTR_PROC_PWR_IND;
 
         case LL_PDU_PWR_CTRL_REQ:
         case LL_PDU_PWR_CTRL_RSP:
-          return LCTR_PROC_PWR_CTRL;
+            return LCTR_PROC_PWR_CTRL;
 
         case LL_PDU_REJECT_IND:
         case LL_PDU_REJECT_EXT_IND:
-          return pCtx->llcpActiveProc;
+            return pCtx->llcpActiveProc;
 
         default:
-          break;
-      }
+            break;
+        }
 
-      break;
+        break;
 
     case LCTR_CONN_LLCP_START_PENDING:
-      if (pCtx->llcpPendMask & (1 << LCTR_PROC_PWR_IND))
-      {
-        pCtx->llcpPendMask &= ~(1 << LCTR_PROC_PWR_IND);
-        return LCTR_PROC_PWR_IND;
-      }
-      if (pCtx->llcpPendMask & (1 << LCTR_PROC_PWR_CTRL))
-      {
-        pCtx->llcpPendMask &= ~(1 << LCTR_PROC_PWR_CTRL);
-        return LCTR_PROC_PWR_CTRL;
-      }
-      break;
+        if (pCtx->llcpPendMask & (1 << LCTR_PROC_PWR_IND)) {
+            pCtx->llcpPendMask &= ~(1 << LCTR_PROC_PWR_IND);
+            return LCTR_PROC_PWR_IND;
+        }
+        if (pCtx->llcpPendMask & (1 << LCTR_PROC_PWR_CTRL)) {
+            pCtx->llcpPendMask &= ~(1 << LCTR_PROC_PWR_CTRL);
+            return LCTR_PROC_PWR_CTRL;
+        }
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  return LCTR_PROC_INVALID;
+    return LCTR_PROC_INVALID;
 }
 
 /*************************************************************************************************/
@@ -208,50 +194,45 @@ static uint8_t lctrGetPclProcId(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 static uint8_t lctrRemapCmnProcEvent(lctrConnCtx_t *pCtx, uint8_t event)
 {
-  switch (event)
-  {
+    switch (event) {
     case LCTR_CONN_MSG_API_PWR_CTRL_REQ:
-      return LCTR_PROC_CMN_EVT_HOST_START;
+        return LCTR_PROC_CMN_EVT_HOST_START;
 
     case LCTR_CONN_MSG_RX_LLCP_UNKNOWN:
-      return LCTR_PROC_CMN_EVT_RECV_REQ;
+        return LCTR_PROC_CMN_EVT_RECV_REQ;
 
     case LCTR_CONN_MSG_RX_LLCP:
-      switch (lctrDataPdu.opcode)
-      {
+        switch (lctrDataPdu.opcode) {
         case LL_PDU_PWR_CTRL_REQ:
-          return LCTR_PROC_CMN_EVT_RECV_REQ;
+            return LCTR_PROC_CMN_EVT_RECV_REQ;
 
         case LL_PDU_PWR_CHNG_IND:
-          return LCTR_PROC_CMN_EVT_RECV_IND;
+            return LCTR_PROC_CMN_EVT_RECV_IND;
 
         case LL_PDU_PWR_CTRL_RSP:
-          return LCTR_PROC_CMN_EVT_RECV_RSP;
+            return LCTR_PROC_CMN_EVT_RECV_RSP;
 
         case LL_PDU_UNKNOWN_RSP:
         case LL_PDU_REJECT_IND:
         case LL_PDU_REJECT_EXT_IND:
-          return LCTR_PROC_CMN_EVT_REJECT;
+            return LCTR_PROC_CMN_EVT_REJECT;
 
         default:
-          return LCTR_PROC_CMN_EVT_INVALID;
-      }
+            return LCTR_PROC_CMN_EVT_INVALID;
+        }
 
     case LCTR_CONN_LLCP_START_PENDING:
-      if (pCtx->llcpIncompMask)
-      {
-        return LCTR_PROC_CMN_EVT_INT_INCOMP;
-      }
-      else
-      {
-        return LCTR_PROC_CMN_EVT_INT_START;
-      }
+        if (pCtx->llcpIncompMask) {
+            return LCTR_PROC_CMN_EVT_INT_INCOMP;
+        } else {
+            return LCTR_PROC_CMN_EVT_INT_START;
+        }
 
     default:
-      break;
-  }
+        break;
+    }
 
-  return LCTR_PROC_CMN_EVT_INVALID;
+    return LCTR_PROC_CMN_EVT_INVALID;
 }
 
 /*************************************************************************************************/
@@ -267,29 +248,28 @@ static uint8_t lctrRemapCmnProcEvent(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 static bool_t lctrFeatureAvail(lctrConnCtx_t *pCtx, uint8_t proc, uint8_t event)
 {
-  bool_t result = TRUE;
+    bool_t result = TRUE;
 
-  switch (proc)
-  {
+    switch (proc) {
     case LCTR_PROC_PWR_IND:
-      if ((lmgrCb.features & LL_FEAT_POWER_CHANGE_IND) == 0)
-      {
-        LL_TRACE_WARN1("Requested LCTR_PROC_PWR_IND not available, FeatSet=0x%08x", lmgrCb.features);
-        result = FALSE;
-      }
-      break;
+        if ((lmgrCb.features & LL_FEAT_POWER_CHANGE_IND) == 0) {
+            LL_TRACE_WARN1("Requested LCTR_PROC_PWR_IND not available, FeatSet=0x%08x",
+                           lmgrCb.features);
+            result = FALSE;
+        }
+        break;
     case LCTR_PROC_PWR_CTRL:
-      if ((lmgrCb.features & LL_FEAT_POWER_CONTROL_REQUEST) == 0)
-      {
-        LL_TRACE_WARN1("Requested LCTR_PROC_PWR_CTRL not available, FeatSet=0x%08x", lmgrCb.features);
-        result = FALSE;
-      }
-      break;
+        if ((lmgrCb.features & LL_FEAT_POWER_CONTROL_REQUEST) == 0) {
+            LL_TRACE_WARN1("Requested LCTR_PROC_PWR_CTRL not available, FeatSet=0x%08x",
+                           lmgrCb.features);
+            result = FALSE;
+        }
+        break;
     default:
-      break;
-  }
+        break;
+    }
 
-  return result;
+    return result;
 }
 
 /*************************************************************************************************/
@@ -302,27 +282,23 @@ static bool_t lctrFeatureAvail(lctrConnCtx_t *pCtx, uint8_t proc, uint8_t event)
 /*************************************************************************************************/
 static void lctrNotifyHostSuccess(lctrConnCtx_t *pCtx, uint8_t proc)
 {
-  if ((pCtx->llcpNotifyMask & (1 << proc)) == 0)
-  {
-    return;
-  }
+    if ((pCtx->llcpNotifyMask & (1 << proc)) == 0) {
+        return;
+    }
 
-  pCtx->llcpNotifyMask &= ~(1 << proc);
+    pCtx->llcpNotifyMask &= ~(1 << proc);
 
-  switch (proc)
-  {
+    switch (proc) {
     case LCTR_PROC_PWR_CTRL:
-      if (pCtx->readRemoteTxPower)
-      {
-        lctrNotifyPowerReportInd(pCtx, LL_POWER_REPORT_REASON_READ_REMOTE,
-                                    pCtx->reqPhy, pCtx->peerTxPower, pCtx->peerPwrLimits,
-                                    pCtx->delta);
-        pCtx->readRemoteTxPower = FALSE;
-      }
-      break;
+        if (pCtx->readRemoteTxPower) {
+            lctrNotifyPowerReportInd(pCtx, LL_POWER_REPORT_REASON_READ_REMOTE, pCtx->reqPhy,
+                                     pCtx->peerTxPower, pCtx->peerPwrLimits, pCtx->delta);
+            pCtx->readRemoteTxPower = FALSE;
+        }
+        break;
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -335,12 +311,11 @@ static void lctrNotifyHostSuccess(lctrConnCtx_t *pCtx, uint8_t proc)
 /*************************************************************************************************/
 static void lctrNotifyHostReject(lctrConnCtx_t *pCtx, uint8_t proc)
 {
-  if ((pCtx->llcpNotifyMask & (1 << proc)) == 0)
-  {
-    return;
-  }
+    if ((pCtx->llcpNotifyMask & (1 << proc)) == 0) {
+        return;
+    }
 
-  pCtx->llcpNotifyMask &= ~(1 << proc);
+    pCtx->llcpNotifyMask &= ~(1 << proc);
 }
 
 /*************************************************************************************************/
@@ -355,192 +330,163 @@ static void lctrNotifyHostReject(lctrConnCtx_t *pCtx, uint8_t proc)
 /*************************************************************************************************/
 bool_t lctrLlcpExecutePclSm(lctrConnCtx_t *pCtx, uint8_t event)
 {
-  uint8_t proc;
-  uint8_t llEvent = event;
+    uint8_t proc;
+    uint8_t llEvent = event;
 
-  if ((event = lctrRemapCmnProcEvent(pCtx, event)) == LCTR_PROC_CMN_EVT_INVALID)
-  {
-    return FALSE;
-  }
+    if ((event = lctrRemapCmnProcEvent(pCtx, event)) == LCTR_PROC_CMN_EVT_INVALID) {
+        return FALSE;
+    }
 
-  if ((proc = lctrGetPclProcId(pCtx, llEvent)) == LCTR_PROC_INVALID)
-  {
-    return FALSE;
-  }
+    if ((proc = lctrGetPclProcId(pCtx, llEvent)) == LCTR_PROC_INVALID) {
+        return FALSE;
+    }
 
-  switch (pCtx->llcpState)
-  {
+    switch (pCtx->llcpState) {
     case LCTR_LLCP_STATE_IDLE:
-      LL_TRACE_INFO3("lctrLlcpExecutePclSm: handle=%u, proc=%u, state=IDLE, event=%u", LCTR_GET_CONN_HANDLE(pCtx), proc, event);
+        LL_TRACE_INFO3("lctrLlcpExecutePclSm: handle=%u, proc=%u, state=IDLE, event=%u",
+                       LCTR_GET_CONN_HANDLE(pCtx), proc, event);
 
-      switch (event)
-      {
+        switch (event) {
         case LCTR_PROC_CMN_EVT_HOST_START:
-          pCtx->llcpNotifyMask |= 1 << proc;
-          lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_API_PARAM);
-          /* Fallthrough */
+            pCtx->llcpNotifyMask |= 1 << proc;
+            lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_API_PARAM);
+            /* Fallthrough */
         case LCTR_PROC_CMN_EVT_INT_START:
-          if (lctrFeatureAvail(pCtx, proc, event))
-          {
-            lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_SEND_REQ);
-            lctrStartLlcpTimer(pCtx);
-            pCtx->llcpActiveProc = proc;
-            pCtx->cmnState = LCTR_CMN_STATE_BUSY;
-            pCtx->llcpState = LCTR_LLCP_STATE_BUSY;
-          }
-          else
-          {
-            lctrNotifyHostReject(pCtx, proc);
-          }
-          break;
+            if (lctrFeatureAvail(pCtx, proc, event)) {
+                lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_SEND_REQ);
+                lctrStartLlcpTimer(pCtx);
+                pCtx->llcpActiveProc = proc;
+                pCtx->cmnState = LCTR_CMN_STATE_BUSY;
+                pCtx->llcpState = LCTR_LLCP_STATE_BUSY;
+            } else {
+                lctrNotifyHostReject(pCtx, proc);
+            }
+            break;
 
         case LCTR_PROC_CMN_EVT_INT_INCOMP:
         case LCTR_PROC_CMN_EVT_RECV_IND:
         case LCTR_PROC_CMN_EVT_RECV_REQ:
-          if (lctrFeatureAvail(pCtx, proc, event))
-          {
-            if (event != LCTR_PROC_CMN_EVT_INT_INCOMP)
-            {
-              lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_REQ);
-            }
+            if (lctrFeatureAvail(pCtx, proc, event)) {
+                if (event != LCTR_PROC_CMN_EVT_INT_INCOMP) {
+                    lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_REQ);
+                }
 
-            if (lctrPclProcTbl[lctrGetPclProcSmIndex(proc)][LCTR_PROC_CMN_ACT_SEND_RSP])
-            {
-              /* Procedure completes; no transition to BUSY. */
-              lctrPclProcTbl[lctrGetPclProcSmIndex(proc)][LCTR_PROC_CMN_ACT_SEND_RSP](pCtx);
+                if (lctrPclProcTbl[lctrGetPclProcSmIndex(proc)][LCTR_PROC_CMN_ACT_SEND_RSP]) {
+                    /* Procedure completes; no transition to BUSY. */
+                    lctrPclProcTbl[lctrGetPclProcSmIndex(proc)][LCTR_PROC_CMN_ACT_SEND_RSP](pCtx);
+                } else {
+                    /* No response; procedure completes at CE instant. */
+                    pCtx->llcpActiveProc = proc;
+                    pCtx->llcpInstantComp = FALSE;
+                    pCtx->cmnState = LCTR_CMN_STATE_BUSY;
+                    pCtx->llcpState = LCTR_LLCP_STATE_BUSY;
+                }
+            } else {
+                lctrSendRejectInd(pCtx, LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE, FALSE);
             }
-            else
-            {
-              /* No response; procedure completes at CE instant. */
-              pCtx->llcpActiveProc = proc;
-              pCtx->llcpInstantComp = FALSE;
-              pCtx->cmnState = LCTR_CMN_STATE_BUSY;
-              pCtx->llcpState = LCTR_LLCP_STATE_BUSY;
-            }
-          }
-          else
-          {
-            lctrSendRejectInd(pCtx, LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE, FALSE);
-          }
-          break;
+            break;
 
         case LCTR_PROC_CMN_EVT_RECV_RSP:
         case LCTR_PROC_CMN_EVT_PROC_COMP:
         case LCTR_PROC_CMN_EVT_REJECT:
         default:
-          /* No action required. */
-          break;
-      }
-      break;
+            /* No action required. */
+            break;
+        }
+        break;
 
     case LCTR_LLCP_STATE_BUSY:
-      LL_TRACE_INFO3("lctrLlcpExecutePclSm: handle=%u, proc=%u, state=BUSY, event=%u", LCTR_GET_CONN_HANDLE(pCtx), proc, event);
+        LL_TRACE_INFO3("lctrLlcpExecutePclSm: handle=%u, proc=%u, state=BUSY, event=%u",
+                       LCTR_GET_CONN_HANDLE(pCtx), proc, event);
 
-      switch (event)
-      {
+        switch (event) {
         case LCTR_PROC_CMN_EVT_HOST_START:
         case LCTR_PROC_CMN_EVT_INT_START:
-          if (lctrFeatureAvail(pCtx, proc, event))
-          {
-            if (event == LCTR_PROC_CMN_EVT_HOST_START)
-            {
-              pCtx->llcpNotifyMask |= 1 << proc;
-            }
+            if (lctrFeatureAvail(pCtx, proc, event)) {
+                if (event == LCTR_PROC_CMN_EVT_HOST_START) {
+                    pCtx->llcpNotifyMask |= 1 << proc;
+                }
 
-            if (pCtx->llcpActiveProc != proc)
-            {
-              LL_TRACE_INFO1("Pending procedure in progress: activeProc=%u", pCtx->llcpActiveProc);
-              pCtx->llcpPendMask |= 1 << proc;
-            }
-            if (event == LCTR_PROC_CMN_EVT_HOST_START)
-            {
-              lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_API_PARAM);
-            }
-          }
-          else
-          {
-            lctrNotifyHostReject(pCtx, proc);
-          }
-          break;
-
-        case LCTR_PROC_CMN_EVT_RECV_IND:        /* Completion from message */
-          if (proc != pCtx->llcpActiveProc)
-          {
-            if (lctrFeatureAvail(pCtx, proc, event))
-            {
-              LL_TRACE_WARN1("Procedure collision; pending incomplete request, activeProc=%u", pCtx->llcpActiveProc);
-              lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_REQ);
-              pCtx->llcpIncompMask |= 1 << proc;
+                if (pCtx->llcpActiveProc != proc) {
+                    LL_TRACE_INFO1("Pending procedure in progress: activeProc=%u",
+                                   pCtx->llcpActiveProc);
+                    pCtx->llcpPendMask |= 1 << proc;
+                }
+                if (event == LCTR_PROC_CMN_EVT_HOST_START) {
+                    lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_API_PARAM);
+                }
+            } else {
+                lctrNotifyHostReject(pCtx, proc);
             }
             break;
-          }
-          /* Fallthrough */
+
+        case LCTR_PROC_CMN_EVT_RECV_IND: /* Completion from message */
+            if (proc != pCtx->llcpActiveProc) {
+                if (lctrFeatureAvail(pCtx, proc, event)) {
+                    LL_TRACE_WARN1("Procedure collision; pending incomplete request, activeProc=%u",
+                                   pCtx->llcpActiveProc);
+                    lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_REQ);
+                    pCtx->llcpIncompMask |= 1 << proc;
+                }
+                break;
+            }
+            /* Fallthrough */
         case LCTR_PROC_CMN_EVT_RECV_RSP:
-          if (proc == pCtx->llcpActiveProc)
-          {
-            /* Incoming procedure matches the active one. */
-            lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_RSP);
-          }
-          else if (pCtx->llcpPendMask & (1 << proc))
-          {
-            /* Incoming procedure matches one of the pended one. */
-            pCtx->llcpPendMask &= ~(1 << proc);
-            if (pCtx->llcpIsOverridden == TRUE)
-            {
-              pCtx->llcpIsOverridden = FALSE;
+            if (proc == pCtx->llcpActiveProc) {
+                /* Incoming procedure matches the active one. */
+                lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_RSP);
+            } else if (pCtx->llcpPendMask & (1 << proc)) {
+                /* Incoming procedure matches one of the pended one. */
+                pCtx->llcpPendMask &= ~(1 << proc);
+                if (pCtx->llcpIsOverridden == TRUE) {
+                    pCtx->llcpIsOverridden = FALSE;
+                }
+                lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_RSP);
+                lctrNotifyHostSuccess(pCtx, proc);
+                break;
+            } else {
+                LL_TRACE_ERR1("Unexpected response packet, expected llcpActiveProc=%u",
+                              pCtx->llcpActiveProc);
+                break;
             }
-            lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_RSP);
-            lctrNotifyHostSuccess(pCtx, proc);
+            /* Fallthrough */
+        case LCTR_PROC_CMN_EVT_PROC_COMP: /* Completion from CE */
+        case LCTR_PROC_CMN_EVT_REJECT: /* Failed completion */
+            if (event == LCTR_PROC_CMN_EVT_REJECT) {
+                lctrNotifyHostReject(pCtx, proc);
+            } else {
+                lctrNotifyHostSuccess(pCtx, proc);
+            }
+
+            lctrStopLlcpTimer(pCtx);
+
+            pCtx->llcpActiveProc = LCTR_PROC_INVALID;
+            pCtx->cmnState = LCTR_CMN_STATE_IDLE;
+            pCtx->llcpState = LCTR_LLCP_STATE_IDLE;
+
+            lctrStartPendingLlcp(pCtx);
             break;
-          }
-          else
-          {
-            LL_TRACE_ERR1("Unexpected response packet, expected llcpActiveProc=%u", pCtx->llcpActiveProc);
-            break;
-          }
-          /* Fallthrough */
-        case LCTR_PROC_CMN_EVT_PROC_COMP:       /* Completion from CE */
-        case LCTR_PROC_CMN_EVT_REJECT:          /* Failed completion */
-          if (event == LCTR_PROC_CMN_EVT_REJECT)
-          {
-            lctrNotifyHostReject(pCtx, proc);
-          }
-          else
-          {
-            lctrNotifyHostSuccess(pCtx, proc);
-          }
-
-          lctrStopLlcpTimer(pCtx);
-
-          pCtx->llcpActiveProc = LCTR_PROC_INVALID;
-          pCtx->cmnState = LCTR_CMN_STATE_IDLE;
-          pCtx->llcpState = LCTR_LLCP_STATE_IDLE;
-
-          lctrStartPendingLlcp(pCtx);
-          break;
 
         case LCTR_PROC_CMN_EVT_RECV_REQ:
-          LL_TRACE_WARN1("Procedure collision; pending incomplete request, activeProc=%u", pCtx->llcpActiveProc);
-          lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_REQ);
-          if (lctrFeatureAvail(pCtx, proc, event))
-          {
-            lctrPclProcTbl[lctrGetPclProcSmIndex(proc)][LCTR_PROC_CMN_ACT_SEND_RSP](pCtx);
-          }
-          else
-          {
-            lctrSendRejectInd(pCtx, LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE, FALSE);
-          }
-          break;
+            LL_TRACE_WARN1("Procedure collision; pending incomplete request, activeProc=%u",
+                           pCtx->llcpActiveProc);
+            lctrExecAction(pCtx, proc, LCTR_PROC_CMN_ACT_RECV_REQ);
+            if (lctrFeatureAvail(pCtx, proc, event)) {
+                lctrPclProcTbl[lctrGetPclProcSmIndex(proc)][LCTR_PROC_CMN_ACT_SEND_RSP](pCtx);
+            } else {
+                lctrSendRejectInd(pCtx, LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE, FALSE);
+            }
+            break;
 
         default:
-          /* No action. */
-          break;
-      }
-      break;
+            /* No action. */
+            break;
+        }
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  return TRUE;
+    return TRUE;
 }

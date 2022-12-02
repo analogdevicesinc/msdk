@@ -53,33 +53,25 @@
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_HMAC)
 
 // Magic word that is set when initializing the context and checked by functions that use it.
-#define NRF_CRYPTO_HMAC_INIT_MAGIC_VALUE     0xBADEBA11
+#define NRF_CRYPTO_HMAC_INIT_MAGIC_VALUE 0xBADEBA11
 
-
-static ret_code_t verify_context_valid(nrf_crypto_hmac_internal_context_t * const p_context)
+static ret_code_t verify_context_valid(nrf_crypto_hmac_internal_context_t *const p_context)
 {
-    if (p_context == NULL)
-    {
+    if (p_context == NULL) {
         return NRF_ERROR_CRYPTO_CONTEXT_NULL;
-    }
-    else if (p_context->init_value != NRF_CRYPTO_HMAC_INIT_MAGIC_VALUE)
-    {
+    } else if (p_context->init_value != NRF_CRYPTO_HMAC_INIT_MAGIC_VALUE) {
         return NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
-    }
-    else
-    {
+    } else {
         return NRF_SUCCESS;
     }
 }
 
-
-ret_code_t nrf_crypto_hmac_init(nrf_crypto_hmac_context_t   * const p_context,
-                                nrf_crypto_hmac_info_t      const * p_info,
-                                uint8_t                     const * p_key,
-                                size_t                              key_size)
+ret_code_t nrf_crypto_hmac_init(nrf_crypto_hmac_context_t *const p_context,
+                                nrf_crypto_hmac_info_t const *p_info, uint8_t const *p_key,
+                                size_t key_size)
 {
-    ret_code_t                           err_code;
-    nrf_crypto_hmac_internal_context_t * p_ctx = (nrf_crypto_hmac_internal_context_t *)p_context;
+    ret_code_t err_code;
+    nrf_crypto_hmac_internal_context_t *p_ctx = (nrf_crypto_hmac_internal_context_t *)p_context;
 
     VERIFY_TRUE(nrf_crypto_is_initialized(), NRF_ERROR_CRYPTO_NOT_INITIALIZED);
 
@@ -95,23 +87,20 @@ ret_code_t nrf_crypto_hmac_init(nrf_crypto_hmac_context_t   * const p_context,
     // Do backend specific initialization by calling the backend init function pointed
     // to in the configuration struct in the context (nrf_crypto_hmac_config_t)
     err_code = p_ctx->p_info->init_fn(p_context, p_key, key_size);
-    if (err_code == NRF_SUCCESS)
-    {
+    if (err_code == NRF_SUCCESS) {
         p_ctx->init_value = NRF_CRYPTO_HMAC_INIT_MAGIC_VALUE;
     }
 
     return err_code;
 }
 
-
-ret_code_t nrf_crypto_hmac_update(nrf_crypto_hmac_context_t * const p_context,
-                                  uint8_t                   const * p_data,
-                                  size_t                            data_size)
+ret_code_t nrf_crypto_hmac_update(nrf_crypto_hmac_context_t *const p_context, uint8_t const *p_data,
+                                  size_t data_size)
 {
     ret_code_t err_code;
 
     // The context header by definition has to be the first element of the context struct.
-    nrf_crypto_hmac_internal_context_t * p_ctx = (nrf_crypto_hmac_internal_context_t *)p_context;
+    nrf_crypto_hmac_internal_context_t *p_ctx = (nrf_crypto_hmac_internal_context_t *)p_context;
 
     // Validate input
     err_code = verify_context_valid(p_ctx);
@@ -125,15 +114,13 @@ ret_code_t nrf_crypto_hmac_update(nrf_crypto_hmac_context_t * const p_context,
     return err_code;
 }
 
-
-ret_code_t nrf_crypto_hmac_finalize(nrf_crypto_hmac_context_t   * const p_context,
-                                    uint8_t                           * p_digest,
-                                    size_t                      * const p_digest_size)
+ret_code_t nrf_crypto_hmac_finalize(nrf_crypto_hmac_context_t *const p_context, uint8_t *p_digest,
+                                    size_t *const p_digest_size)
 {
     ret_code_t err_code;
 
     // The context header by definition has to be the first element of the context struct.
-    nrf_crypto_hmac_internal_context_t * p_ctx = (nrf_crypto_hmac_internal_context_t *)p_context;
+    nrf_crypto_hmac_internal_context_t *p_ctx = (nrf_crypto_hmac_internal_context_t *)p_context;
 
     // Validate input
     err_code = verify_context_valid(p_ctx);
@@ -147,36 +134,27 @@ ret_code_t nrf_crypto_hmac_finalize(nrf_crypto_hmac_context_t   * const p_contex
     return err_code;
 }
 
-
-ret_code_t nrf_crypto_hmac_calculate(nrf_crypto_hmac_context_t  * const p_context,
-                                     nrf_crypto_hmac_info_t     const * p_info,
-                                     uint8_t                          * p_digest,
-                                     size_t                     * const p_digest_size,
-                                     uint8_t                    const * p_key,
-                                     size_t                             key_size,
-                                     uint8_t                    const * p_data,
-                                     size_t                             data_size)
+ret_code_t nrf_crypto_hmac_calculate(nrf_crypto_hmac_context_t *const p_context,
+                                     nrf_crypto_hmac_info_t const *p_info, uint8_t *p_digest,
+                                     size_t *const p_digest_size, uint8_t const *p_key,
+                                     size_t key_size, uint8_t const *p_data, size_t data_size)
 {
-    ret_code_t                      err_code;
-    nrf_crypto_hmac_context_t     * p_ctx;
-    void                          * p_allocated_context = NULL;
+    ret_code_t err_code;
+    nrf_crypto_hmac_context_t *p_ctx;
+    void *p_allocated_context = NULL;
 
     // Validate input. Only validate input parameters that are used locally, others are validated
     // in the init, update and/or finalize functions.
     VERIFY_TRUE(p_info != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
 
     // Allocate context if needed (not provided by the user).
-    if (p_context == NULL)
-    {
+    if (p_context == NULL) {
         p_allocated_context = NRF_CRYPTO_ALLOC(p_info->context_size);
-        if (p_allocated_context == NULL)
-        {
+        if (p_allocated_context == NULL) {
             return NRF_ERROR_CRYPTO_ALLOC_FAILED;
         }
         p_ctx = (nrf_crypto_hmac_context_t *)p_allocated_context;
-    }
-    else
-    {
+    } else {
         p_ctx = (nrf_crypto_hmac_context_t *)p_context;
     }
 
@@ -191,8 +169,7 @@ ret_code_t nrf_crypto_hmac_calculate(nrf_crypto_hmac_context_t  * const p_contex
     NRF_CRYPTO_VERIFY_SUCCESS_DEALLOCATE(err_code, p_allocated_context);
 
     // Free context if allocated internally
-    if (p_allocated_context != NULL)
-    {
+    if (p_allocated_context != NULL) {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 

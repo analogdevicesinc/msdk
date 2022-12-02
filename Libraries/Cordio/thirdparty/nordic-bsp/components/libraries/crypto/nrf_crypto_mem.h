@@ -62,21 +62,22 @@
 extern "C" {
 #endif
 
-
 #ifndef __SDK_DOXYGEN__
 
-
-#define NRF_CRYPTO_ALLOCATOR_DEFAULT    0  /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select default memory allocation. */
-#define NRF_CRYPTO_ALLOCATOR_USER       1  /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select user defined memory allocation. */
-#define NRF_CRYPTO_ALLOCATOR_ALLOCA     2  /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select stack based memory allocation. */
-#define NRF_CRYPTO_ALLOCATOR_MALLOC     3  /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select stdlib's dynamic memory allocation. */
-#define NRF_CRYPTO_ALLOCATOR_NRF_MALLOC 4  /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select mem_manager for memory allocation. */
-
+#define NRF_CRYPTO_ALLOCATOR_DEFAULT \
+    0 /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select default memory allocation. */
+#define NRF_CRYPTO_ALLOCATOR_USER \
+    1 /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select user defined memory allocation. */
+#define NRF_CRYPTO_ALLOCATOR_ALLOCA \
+    2 /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select stack based memory allocation. */
+#define NRF_CRYPTO_ALLOCATOR_MALLOC \
+    3 /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select stdlib's dynamic memory allocation. */
+#define NRF_CRYPTO_ALLOCATOR_NRF_MALLOC \
+    4 /**< @internal @brief Value for NRF_CRYPTO_ALLOCATOR to select mem_manager for memory allocation. */
 
 #ifndef NRF_CRYPTO_ALLOCATOR
 #define NRF_CRYPTO_ALLOCATOR NRF_CRYPTO_ALLOCATOR_DEFAULT
 #endif
-
 
 #if NRF_CRYPTO_ALLOCATOR == NRF_CRYPTO_ALLOCATOR_DEFAULT
 #undef NRF_CRYPTO_ALLOCATOR
@@ -86,7 +87,6 @@ extern "C" {
 #define NRF_CRYPTO_ALLOCATOR NRF_CRYPTO_ALLOCATOR_NRF_MALLOC
 #endif
 #endif
-
 
 #if NRF_CRYPTO_ALLOCATOR == NRF_CRYPTO_ALLOCATOR_USER
 
@@ -106,21 +106,21 @@ extern "C" {
 #if !SDK_ALLOCA_DEFINED
 #warning "Stack based allocation is selected, but alloca() is not supported on this platform"
 #endif
-#define NRF_CRYPTO_ALLOC(size)    (alloca((size_t)(size)))
+#define NRF_CRYPTO_ALLOC(size) (alloca((size_t)(size)))
 #define NRF_CRYPTO_FREE(p_buffer) // Empty
 #define NRF_CRYPTO_ALLOC_ON_STACK 1
 
 #elif NRF_CRYPTO_ALLOCATOR == NRF_CRYPTO_ALLOCATOR_MALLOC
 
 #include "stdlib.h"
-#define NRF_CRYPTO_ALLOC(size)    (malloc((size_t)(size)))
+#define NRF_CRYPTO_ALLOC(size) (malloc((size_t)(size)))
 #define NRF_CRYPTO_FREE(p_buffer) (free((void *)(p_buffer)))
 #define NRF_CRYPTO_ALLOC_ON_STACK 0
 
 #elif NRF_CRYPTO_ALLOCATOR == NRF_CRYPTO_ALLOCATOR_NRF_MALLOC
 
 #include "mem_manager.h"
-#define NRF_CRYPTO_ALLOC(size)    (nrf_malloc((uint32_t)(size)))
+#define NRF_CRYPTO_ALLOC(size) (nrf_malloc((uint32_t)(size)))
 #define NRF_CRYPTO_FREE(p_buffer) (nrf_free((void *)(p_buffer)))
 #define NRF_CRYPTO_ALLOC_ON_STACK 0
 
@@ -130,9 +130,7 @@ extern "C" {
 
 #endif
 
-
 #else // __SDK_DOXYGEN__
-
 
 /** @brief Defines memory allocation function for nrf_crypto.
  *
@@ -173,7 +171,6 @@ extern "C" {
  */
 #define NRF_CRYPTO_ALLOC_ON_STACK
 
-
 #endif // __SDK_DOXYGEN__
 
 #ifdef __cplusplus
@@ -182,4 +179,4 @@ extern "C" {
 
 /**@} */
 
- #endif // NRF_CRYPTO_MEM_H__
+#endif // NRF_CRYPTO_MEM_H__

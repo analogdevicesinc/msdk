@@ -27,8 +27,7 @@
 #define MESH_ACCESS_PERIOD_PUB_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -37,7 +36,7 @@ extern "C"
 
 /*! Periodic publishing timer number of milliseconds per tick. */
 #ifndef MESH_ACC_PP_TMR_TICK_MS
-#define MESH_ACC_PP_TMR_TICK_MS  (100)
+#define MESH_ACC_PP_TMR_TICK_MS (100)
 #endif
 
 /**************************************************************************************************

@@ -41,12 +41,12 @@ lmgrIsoCtrlBlk_t lmgrIsoCb;
 /*************************************************************************************************/
 void LmgrIsoInit(void)
 {
-  memset(&lmgrIsoCb, 0, sizeof(lmgrIsoCb));
+    memset(&lmgrIsoCb, 0, sizeof(lmgrIsoCb));
 
-  lmgrIsoCb.availTxBuf = pLctrRtCfg->numIsoTxBuf;
-  lmgrIsoCb.availRxBuf = pLctrRtCfg->numIsoRxBuf;
+    lmgrIsoCb.availTxBuf = pLctrRtCfg->numIsoTxBuf;
+    lmgrIsoCb.availRxBuf = pLctrRtCfg->numIsoRxBuf;
 
-  lmgrIsoCb.allPhys = LL_ALL_PHY_TX_PREFERENCE_BIT | LL_ALL_PHY_RX_PREFERENCE_BIT;
-  lmgrIsoCb.rxPhys = LL_PHYS_NONE;
-  lmgrIsoCb.txPhys = LL_PHYS_NONE;
+    lmgrIsoCb.allPhys = LL_ALL_PHY_TX_PREFERENCE_BIT | LL_ALL_PHY_RX_PREFERENCE_BIT;
+    lmgrIsoCb.rxPhys = LL_PHYS_NONE;
+    lmgrIsoCb.txPhys = LL_PHYS_NONE;
 }

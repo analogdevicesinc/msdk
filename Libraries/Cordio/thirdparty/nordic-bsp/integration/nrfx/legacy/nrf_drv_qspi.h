@@ -59,59 +59,59 @@ extern "C" {
 typedef nrfx_qspi_config_t nrf_drv_qspi_config_t;
 
 #if QSPI_PIN_SCK == NRF_QSPI_PIN_NOT_CONNECTED
-    #undef QSPI_PIN_SCK
-    #define QSPI_PIN_SCK  BSP_QSPI_SCK_PIN
+#undef QSPI_PIN_SCK
+#define QSPI_PIN_SCK BSP_QSPI_SCK_PIN
 #endif
 #if QSPI_PIN_CSN == NRF_QSPI_PIN_NOT_CONNECTED
-    #undef QSPI_PIN_CSN
-    #define QSPI_PIN_CSN  BSP_QSPI_CSN_PIN
+#undef QSPI_PIN_CSN
+#define QSPI_PIN_CSN BSP_QSPI_CSN_PIN
 #endif
 #if QSPI_PIN_IO0 == NRF_QSPI_PIN_NOT_CONNECTED
-    #undef QSPI_PIN_IO0
-    #define QSPI_PIN_IO0  BSP_QSPI_IO0_PIN
+#undef QSPI_PIN_IO0
+#define QSPI_PIN_IO0 BSP_QSPI_IO0_PIN
 #endif
 #if QSPI_PIN_IO1 == NRF_QSPI_PIN_NOT_CONNECTED
-    #undef QSPI_PIN_IO1
-    #define QSPI_PIN_IO1  BSP_QSPI_IO1_PIN
+#undef QSPI_PIN_IO1
+#define QSPI_PIN_IO1 BSP_QSPI_IO1_PIN
 #endif
 #if QSPI_PIN_IO2 == NRF_QSPI_PIN_NOT_CONNECTED
-    #undef QSPI_PIN_IO2
-    #define QSPI_PIN_IO2  BSP_QSPI_IO2_PIN
+#undef QSPI_PIN_IO2
+#define QSPI_PIN_IO2 BSP_QSPI_IO2_PIN
 #endif
 #if QSPI_PIN_IO3 == NRF_QSPI_PIN_NOT_CONNECTED
-    #undef QSPI_PIN_IO3
-    #define QSPI_PIN_IO3  BSP_QSPI_IO3_PIN
+#undef QSPI_PIN_IO3
+#define QSPI_PIN_IO3 BSP_QSPI_IO3_PIN
 #endif
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_QSPI_DEFAULT_CONFIG     NRFX_QSPI_DEFAULT_CONFIG
+#define NRF_DRV_QSPI_DEFAULT_CONFIG NRFX_QSPI_DEFAULT_CONFIG
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_QSPI_DEFAULT_CINSTR     NRFX_QSPI_DEFAULT_CINSTR
+#define NRF_DRV_QSPI_DEFAULT_CINSTR NRFX_QSPI_DEFAULT_CINSTR
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_QSPI_EVENT_DONE         NRFX_QSPI_EVENT_DONE
+#define NRF_DRV_QSPI_EVENT_DONE NRFX_QSPI_EVENT_DONE
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_evt_t              nrfx_qspi_evt_t
+#define nrf_drv_qspi_evt_t nrfx_qspi_evt_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_handler_t          nrfx_qspi_handler_t
+#define nrf_drv_qspi_handler_t nrfx_qspi_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_init               nrfx_qspi_init
+#define nrf_drv_qspi_init nrfx_qspi_init
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_uninit             nrfx_qspi_uninit
+#define nrf_drv_qspi_uninit nrfx_qspi_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_read               nrfx_qspi_read
+#define nrf_drv_qspi_read nrfx_qspi_read
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_write              nrfx_qspi_write
+#define nrf_drv_qspi_write nrfx_qspi_write
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_erase              nrfx_qspi_erase
+#define nrf_drv_qspi_erase nrfx_qspi_erase
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_chip_erase         nrfx_qspi_chip_erase
+#define nrf_drv_qspi_chip_erase nrfx_qspi_chip_erase
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_mem_busy_check     nrfx_qspi_mem_busy_check
+#define nrf_drv_qspi_mem_busy_check nrfx_qspi_mem_busy_check
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_cinstr_xfer        nrfx_qspi_cinstr_xfer
+#define nrf_drv_qspi_cinstr_xfer nrfx_qspi_cinstr_xfer
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_qspi_cinstr_quick_send  nrfx_qspi_cinstr_quick_send
+#define nrf_drv_qspi_cinstr_quick_send nrfx_qspi_cinstr_quick_send
 
 /** @} */
 

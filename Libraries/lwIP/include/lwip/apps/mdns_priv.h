@@ -3,7 +3,7 @@
  * MDNS responder private definitions
  */
 
- /*
+/*
  * Copyright (c) 2015 Verisure Innovation AB
  * All rights reserved.
  *
@@ -52,12 +52,12 @@ extern "C" {
 #define MDNS_READNAME_ERROR 0xFFFF
 
 struct mdns_domain {
-  /* Encoded domain name */
-  u8_t name[MDNS_DOMAIN_MAXLEN];
-  /* Total length of domain name, including zero */
-  u16_t length;
-  /* Set if compression of this domain is not allowed */
-  u8_t skip_compression;
+    /* Encoded domain name */
+    u8_t name[MDNS_DOMAIN_MAXLEN];
+    /* Total length of domain name, including zero */
+    u16_t length;
+    /* Set if compression of this domain is not allowed */
+    u8_t skip_compression;
 };
 
 err_t mdns_domain_add_label(struct mdns_domain *domain, const char *label, u8_t len);

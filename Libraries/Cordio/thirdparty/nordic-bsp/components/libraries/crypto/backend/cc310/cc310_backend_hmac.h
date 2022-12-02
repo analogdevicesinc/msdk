@@ -53,9 +53,9 @@
 
 #include "sdk_common.h"
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310) &&                   \
-        ( NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HMAC_SHA256) || \
-          NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HMAC_SHA512) )
+#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310) &&              \
+    (NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HMAC_SHA256) || \
+     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HMAC_SHA512))
 
 #include "nrf_crypto_hmac_shared.h"
 #include "crys_hmac.h"
@@ -64,9 +64,8 @@
 extern "C" {
 #endif
 
-#undef  NRF_CRYPTO_HMAC_ENABLED
-#define NRF_CRYPTO_HMAC_ENABLED         1
-
+#undef NRF_CRYPTO_HMAC_ENABLED
+#define NRF_CRYPTO_HMAC_ENABLED 1
 
 /**
  * @internal @brief Internal context object used by the CC310 backend wrapper.
@@ -76,19 +75,17 @@ extern "C" {
  * @note This should never be used directly. Use @ref nrf_crypto_backend_hmac_sha256_context_t or
  * @ref nrf_crypto_backend_hmac_sha512_context_t instead.
  */
-typedef struct
-{
-    nrf_crypto_hmac_internal_context_t  header;         //!< Internal nrf_crypto_hmac context header.
-    CRYS_HMACUserContext_t              crys_context;   //!< CC310 context object.
+typedef struct {
+    nrf_crypto_hmac_internal_context_t header; //!< Internal nrf_crypto_hmac context header.
+    CRYS_HMACUserContext_t crys_context; //!< CC310 context object.
 } nrf_crypto_backend_cc310_hmac_context_t;
-
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_HMAC_SHA256)
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_HMAC_SHA256)
 #error "Duplicate definition of HMAC SHA-256. More than one backend enabled"
 #endif // NRF_CRYPTO_HMAC_SHA256_ENABLED
-#define NRF_CRYPTO_HMAC_SHA256_ENABLED  1
+#define NRF_CRYPTO_HMAC_SHA256_ENABLED 1
 
 /**
  * @internal @brief Context for HMAC SHA256 using CC310 backend.
@@ -102,7 +99,7 @@ typedef nrf_crypto_backend_cc310_hmac_context_t nrf_crypto_backend_hmac_sha256_c
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_HMAC_SHA512)
 #error "Duplicate definition of HMAC SHA-512. More than one backend enabled"
 #endif // NRF_CRYPTO_HMAC_SHA512_ENABLED
-#define NRF_CRYPTO_HMAC_SHA512_ENABLED  1
+#define NRF_CRYPTO_HMAC_SHA512_ENABLED 1
 
 /**
  * @internal @brief Context for HMAC SHA512 using CC310 backend.

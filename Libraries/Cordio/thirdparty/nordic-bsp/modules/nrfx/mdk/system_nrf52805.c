@@ -30,7 +30,7 @@ NOTICE: This file has been modified by Nordic Semiconductor ASA.
 
 /*lint ++flb "Enter library region" */
 
-#define __SYSTEM_CLOCK_64M      (64000000UL)
+#define __SYSTEM_CLOCK_64M (64000000UL)
 
 static bool errata_31(void);
 static bool errata_36(void);
@@ -38,12 +38,12 @@ static bool errata_66(void);
 static bool errata_136(void);
 static bool errata_217(void);
 
-#if defined ( __CC_ARM )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_64M;
-#elif defined ( __ICCARM__ )
-    __root uint32_t SystemCoreClock = __SYSTEM_CLOCK_64M;
-#elif defined ( __GNUC__ )
-    uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_64M;
+#if defined(__CC_ARM)
+uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_64M;
+#elif defined(__ICCARM__)
+__root uint32_t SystemCoreClock = __SYSTEM_CLOCK_64M;
+#elif defined(__GNUC__)
+uint32_t SystemCoreClock __attribute__((used)) = __SYSTEM_CLOCK_64M;
 #endif
 
 void SystemCoreClockUpdate(void)
@@ -55,21 +55,21 @@ void SystemInit(void)
 {
     /* Workaround for Errata 31 "CLOCK: Calibration values are not correctly loaded from FICR at reset" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp */
-    if (errata_31()){
+    if (errata_31()) {
         *(volatile uint32_t *)0x4000053C = ((*(volatile uint32_t *)0x10000244) & 0x0000E000) >> 13;
     }
 
     /* Workaround for Errata 36 "CLOCK: Some registers are not reset when expected" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_36()){
+    if (errata_36()) {
         NRF_CLOCK->EVENTS_DONE = 0;
         NRF_CLOCK->EVENTS_CTTO = 0;
         NRF_CLOCK->CTIV = 0;
     }
-    
+
     /* Workaround for Errata 66 "TEMP: Linearity specification not met with default settings" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_66()){
+    if (errata_66()) {
         NRF_TEMP->A0 = NRF_FICR->TEMP.A0;
         NRF_TEMP->A1 = NRF_FICR->TEMP.A1;
         NRF_TEMP->A2 = NRF_FICR->TEMP.A2;
@@ -91,46 +91,48 @@ void SystemInit(void)
 
     /* Workaround for Errata 136 "System: Bits in RESETREAS are set when they should not be" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_136()){
-        if (NRF_POWER->RESETREAS & POWER_RESETREAS_RESETPIN_Msk){
-            NRF_POWER->RESETREAS =  ~POWER_RESETREAS_RESETPIN_Msk;
+    if (errata_136()) {
+        if (NRF_POWER->RESETREAS & POWER_RESETREAS_RESETPIN_Msk) {
+            NRF_POWER->RESETREAS = ~POWER_RESETREAS_RESETPIN_Msk;
         }
     }
-    
+
     /* Workaround for Errata 217 "RAM: RAM content cannot be trusted upon waking up from System ON Idle or System OFF mode" found at the Errata document
        for your device located at https://infocenter.nordicsemi.com/index.jsp  */
-    if (errata_217()){
+    if (errata_217()) {
         *(volatile uint32_t *)0x40000EE4ul |= 0x0000000Ful;
     }
-    
-    /* Configure GPIO pads as pPin Reset pin if Pin Reset capabilities desired. If CONFIG_GPIO_AS_PINRESET is not
+
+/* Configure GPIO pads as pPin Reset pin if Pin Reset capabilities desired. If CONFIG_GPIO_AS_PINRESET is not
       defined, pin reset will not be available. One GPIO (see Product Specification to see which one) will then be
       reserved for PinReset and not available as normal GPIO. */
-    #if defined (CONFIG_GPIO_AS_PINRESET)
+#if defined(CONFIG_GPIO_AS_PINRESET)
 
-        #define RESET_PIN 21
+#define RESET_PIN 21
 
-        if (((NRF_UICR->PSELRESET[0] & UICR_PSELRESET_CONNECT_Msk) != (UICR_PSELRESET_CONNECT_Connected << UICR_PSELRESET_CONNECT_Pos)) ||
-            ((NRF_UICR->PSELRESET[1] & UICR_PSELRESET_CONNECT_Msk) != (UICR_PSELRESET_CONNECT_Connected << UICR_PSELRESET_CONNECT_Pos))){
-            NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen << NVMC_CONFIG_WEN_Pos;
-            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
-            NRF_UICR->PSELRESET[0] = RESET_PIN;
-            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
-            NRF_UICR->PSELRESET[1] = RESET_PIN;
-            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
-            NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren << NVMC_CONFIG_WEN_Pos;
-            while (NRF_NVMC->READY == NVMC_READY_READY_Busy){}
-            NVIC_SystemReset();
-        }
-    #endif
+    if (((NRF_UICR->PSELRESET[0] & UICR_PSELRESET_CONNECT_Msk) !=
+         (UICR_PSELRESET_CONNECT_Connected << UICR_PSELRESET_CONNECT_Pos)) ||
+        ((NRF_UICR->PSELRESET[1] & UICR_PSELRESET_CONNECT_Msk) !=
+         (UICR_PSELRESET_CONNECT_Connected << UICR_PSELRESET_CONNECT_Pos))) {
+        NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen << NVMC_CONFIG_WEN_Pos;
+        while (NRF_NVMC->READY == NVMC_READY_READY_Busy) {}
+        NRF_UICR->PSELRESET[0] = RESET_PIN;
+        while (NRF_NVMC->READY == NVMC_READY_READY_Busy) {}
+        NRF_UICR->PSELRESET[1] = RESET_PIN;
+        while (NRF_NVMC->READY == NVMC_READY_READY_Busy) {}
+        NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren << NVMC_CONFIG_WEN_Pos;
+        while (NRF_NVMC->READY == NVMC_READY_READY_Busy) {}
+        NVIC_SystemReset();
+    }
+#endif
 
     SystemCoreClockUpdate();
 }
 
 static bool errata_31(void)
 {
-    if (*(uint32_t *)0x10000130ul == 0xFul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
+    if (*(uint32_t *)0x10000130ul == 0xFul) {
+        if (*(uint32_t *)0x10000134ul == 0x0ul) {
             return true;
         }
     }
@@ -141,8 +143,8 @@ static bool errata_31(void)
 
 static bool errata_36(void)
 {
-    if (*(uint32_t *)0x10000130ul == 0xFul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
+    if (*(uint32_t *)0x10000130ul == 0xFul) {
+        if (*(uint32_t *)0x10000134ul == 0x0ul) {
             return true;
         }
     }
@@ -153,8 +155,8 @@ static bool errata_36(void)
 
 static bool errata_66(void)
 {
-    if (*(uint32_t *)0x10000130ul == 0xFul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
+    if (*(uint32_t *)0x10000130ul == 0xFul) {
+        if (*(uint32_t *)0x10000134ul == 0x0ul) {
             return true;
         }
     }
@@ -165,8 +167,8 @@ static bool errata_66(void)
 
 static bool errata_136(void)
 {
-    if (*(uint32_t *)0x10000130ul == 0xFul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
+    if (*(uint32_t *)0x10000130ul == 0xFul) {
+        if (*(uint32_t *)0x10000134ul == 0x0ul) {
             return true;
         }
     }
@@ -177,8 +179,8 @@ static bool errata_136(void)
 
 static bool errata_217(void)
 {
-    if (*(uint32_t *)0x10000130ul == 0xFul){
-        if (*(uint32_t *)0x10000134ul == 0x0ul){
+    if (*(uint32_t *)0x10000130ul == 0xFul) {
+        if (*(uint32_t *)0x10000134ul == 0x0ul) {
             return true;
         }
     }
@@ -186,6 +188,5 @@ static bool errata_217(void)
     /* Apply by default for unknown devices until errata is confirmed fixed. */
     return true;
 }
-
 
 /*lint --flb "Leave library region" */

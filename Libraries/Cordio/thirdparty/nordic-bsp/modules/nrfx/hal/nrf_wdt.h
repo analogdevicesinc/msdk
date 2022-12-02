@@ -58,49 +58,46 @@ extern "C" {
 #define NRF_WDT_CHANNEL_NUMBER 0x8UL
 
 /** @brief WDT register reload value. */
-#define NRF_WDT_RR_VALUE       0x6E524635UL /* Fixed value; should not be modified. */
-
+#define NRF_WDT_RR_VALUE 0x6E524635UL /* Fixed value; should not be modified. */
 
 /** @brief WDT tasks. */
-typedef enum
-{
+typedef enum {
     NRF_WDT_TASK_START = offsetof(NRF_WDT_Type, TASKS_START), /**< Task for starting WDT. */
 } nrf_wdt_task_t;
 
 /** @brief WDT events. */
-typedef enum
-{
+typedef enum {
     NRF_WDT_EVENT_TIMEOUT = offsetof(NRF_WDT_Type, EVENTS_TIMEOUT), /**< Event from WDT time-out. */
 } nrf_wdt_event_t;
 
 /** @brief WDT behavior in the SLEEP or HALT CPU modes. */
-typedef enum
-{
-    NRF_WDT_BEHAVIOUR_RUN_SLEEP        = WDT_CONFIG_SLEEP_Msk,                       /**< WDT will run when CPU is in SLEEP mode. */
-    NRF_WDT_BEHAVIOUR_RUN_HALT         = WDT_CONFIG_HALT_Msk,                        /**< WDT will run when CPU is in HALT mode. */
-    NRF_WDT_BEHAVIOUR_RUN_SLEEP_HALT   = WDT_CONFIG_SLEEP_Msk | WDT_CONFIG_HALT_Msk, /**< WDT will run when CPU is in SLEEP or HALT mode. */
-    NRF_WDT_BEHAVIOUR_PAUSE_SLEEP_HALT = 0,                                          /**< WDT will be paused when CPU is in SLEEP or HALT mode. */
+typedef enum {
+    NRF_WDT_BEHAVIOUR_RUN_SLEEP =
+        WDT_CONFIG_SLEEP_Msk, /**< WDT will run when CPU is in SLEEP mode. */
+    NRF_WDT_BEHAVIOUR_RUN_HALT = WDT_CONFIG_HALT_Msk, /**< WDT will run when CPU is in HALT mode. */
+    NRF_WDT_BEHAVIOUR_RUN_SLEEP_HALT =
+        WDT_CONFIG_SLEEP_Msk |
+        WDT_CONFIG_HALT_Msk, /**< WDT will run when CPU is in SLEEP or HALT mode. */
+    NRF_WDT_BEHAVIOUR_PAUSE_SLEEP_HALT =
+        0, /**< WDT will be paused when CPU is in SLEEP or HALT mode. */
 } nrf_wdt_behaviour_t;
 
 /** @brief WDT reload request registers. */
-typedef enum
-{
+typedef enum {
     NRF_WDT_RR0 = 0, /**< Reload request register 0. */
-    NRF_WDT_RR1,     /**< Reload request register 1. */
-    NRF_WDT_RR2,     /**< Reload request register 2. */
-    NRF_WDT_RR3,     /**< Reload request register 3. */
-    NRF_WDT_RR4,     /**< Reload request register 4. */
-    NRF_WDT_RR5,     /**< Reload request register 5. */
-    NRF_WDT_RR6,     /**< Reload request register 6. */
-    NRF_WDT_RR7      /**< Reload request register 7. */
+    NRF_WDT_RR1, /**< Reload request register 1. */
+    NRF_WDT_RR2, /**< Reload request register 2. */
+    NRF_WDT_RR3, /**< Reload request register 3. */
+    NRF_WDT_RR4, /**< Reload request register 4. */
+    NRF_WDT_RR5, /**< Reload request register 5. */
+    NRF_WDT_RR6, /**< Reload request register 6. */
+    NRF_WDT_RR7 /**< Reload request register 7. */
 } nrf_wdt_rr_register_t;
 
 /** @brief WDT interrupts. */
-typedef enum
-{
+typedef enum {
     NRF_WDT_INT_TIMEOUT_MASK = WDT_INTENSET_TIMEOUT_Msk, /**< WDT interrupt from time-out event. */
 } nrf_wdt_int_mask_t;
-
 
 /**
  * @brief Function for configuring the watchdog behavior when the CPU is sleeping or halted.
@@ -165,8 +162,7 @@ __STATIC_INLINE void nrf_wdt_int_disable(uint32_t int_mask);
  * @param[in] task    Task for which to set the configuration.
  * @param[in] channel Channel through which to subscribe events.
  */
-__STATIC_INLINE void nrf_wdt_subscribe_set(nrf_wdt_task_t task,
-                                           uint8_t        channel);
+__STATIC_INLINE void nrf_wdt_subscribe_set(nrf_wdt_task_t task, uint8_t channel);
 
 /**
  * @brief Function for clearing the subscribe configuration for a given
@@ -183,8 +179,7 @@ __STATIC_INLINE void nrf_wdt_subscribe_clear(nrf_wdt_task_t task);
  * @param[in] event   Event for which to set the configuration.
  * @param[in] channel Channel through which to publish the event.
  */
-__STATIC_INLINE void nrf_wdt_publish_set(nrf_wdt_event_t event,
-                                         uint8_t         channel);
+__STATIC_INLINE void nrf_wdt_publish_set(nrf_wdt_event_t event, uint8_t channel);
 
 /**
  * @brief Function for clearing the publish configuration for a given
@@ -316,28 +311,26 @@ __STATIC_INLINE void nrf_wdt_int_disable(uint32_t int_mask)
 }
 
 #if defined(DPPI_PRESENT)
-__STATIC_INLINE void nrf_wdt_subscribe_set(nrf_wdt_task_t task,
-                                           uint8_t        channel)
+__STATIC_INLINE void nrf_wdt_subscribe_set(nrf_wdt_task_t task, uint8_t channel)
 {
-    *((volatile uint32_t *) ((uint8_t *) NRF_WDT + (uint32_t) task + 0x80uL)) =
-            ((uint32_t)channel | WDT_SUBSCRIBE_START_EN_Msk);
+    *((volatile uint32_t *)((uint8_t *)NRF_WDT + (uint32_t)task + 0x80uL)) =
+        ((uint32_t)channel | WDT_SUBSCRIBE_START_EN_Msk);
 }
 
 __STATIC_INLINE void nrf_wdt_subscribe_clear(nrf_wdt_task_t task)
 {
-    *((volatile uint32_t *) ((uint8_t *) NRF_WDT + (uint32_t) task + 0x80uL)) = 0;
+    *((volatile uint32_t *)((uint8_t *)NRF_WDT + (uint32_t)task + 0x80uL)) = 0;
 }
 
-__STATIC_INLINE void nrf_wdt_publish_set(nrf_wdt_event_t event,
-                                         uint8_t         channel)
+__STATIC_INLINE void nrf_wdt_publish_set(nrf_wdt_event_t event, uint8_t channel)
 {
-    *((volatile uint32_t *) ((uint8_t *) NRF_WDT + (uint32_t) event + 0x80uL)) =
-            ((uint32_t)channel | WDT_PUBLISH_TIMEOUT_EN_Msk);
+    *((volatile uint32_t *)((uint8_t *)NRF_WDT + (uint32_t)event + 0x80uL)) =
+        ((uint32_t)channel | WDT_PUBLISH_TIMEOUT_EN_Msk);
 }
 
 __STATIC_INLINE void nrf_wdt_publish_clear(nrf_wdt_event_t event)
 {
-    *((volatile uint32_t *) ((uint8_t *) NRF_WDT + (uint32_t) event + 0x80uL)) = 0;
+    *((volatile uint32_t *)((uint8_t *)NRF_WDT + (uint32_t)event + 0x80uL)) = 0;
 }
 #endif // defined(DPPI_PRESENT)
 

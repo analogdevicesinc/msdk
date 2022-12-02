@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 #ifndef WOLFSSL_SNIFFER_ERROR_H
 #define WOLFSSL_SNIFFER_ERROR_H
 
@@ -101,7 +100,7 @@
 #define BAD_COMPRESSION_STR 67
 #define BAD_DERIVE_STR 68
 #define ACK_MISSED_STR 69
-#define BAD_DECRYPT    70 
+#define BAD_DECRYPT 70
 
 #define DECRYPT_KEYS_NOT_SETUP 71
 #define CLIENT_HELLO_LATE_KEY_STR 72
@@ -109,6 +108,4 @@
 #define RSA_KEY_MISSING_STR 74
 /* !!!! also add to msgTable in sniffer.c and .rc file !!!! */
 
-
 #endif /* wolfSSL_SNIFFER_ERROR_H */
-

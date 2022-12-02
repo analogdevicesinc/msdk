@@ -37,28 +37,25 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief WDXC Connection Control Block */
-typedef struct
-{
-  uint16_t          *pHdlList;              /*!< \brief Attrtibute Handles */
+typedef struct {
+    uint16_t *pHdlList; /*!< \brief Attrtibute Handles */
 
-  /* Operation in progress Control */
-  uint16_t          fileHdl;                /*!< \brief File Handle */
+    /* Operation in progress Control */
+    uint16_t fileHdl; /*!< \brief File Handle */
 
-  /* File Listing Control */
-  wsfEfsFileInfo_t  *pFileList;             /*!< \brief File Listing storage */
-  uint16_t          maxFiles;               /*!< \brief Size of pFileList in number of wsfEfsFileInfo_t objects */
-  uint16_t          fileCount;              /*!< \brief Number of files on peer device */
-  uint16_t          fDlPos;                 /*!< \brief Position in the download of file information */
+    /* File Listing Control */
+    wsfEfsFileInfo_t *pFileList; /*!< \brief File Listing storage */
+    uint16_t maxFiles; /*!< \brief Size of pFileList in number of wsfEfsFileInfo_t objects */
+    uint16_t fileCount; /*!< \brief Number of files on peer device */
+    uint16_t fDlPos; /*!< \brief Position in the download of file information */
 } wdxcConnCb_t;
 
 /*! \brief WDXC Control Block */
-typedef struct
-{
-  wdxcConnCb_t      conn[DM_CONN_MAX];      /*!< \brief Connection control */
-  WdxcFtdCallback_t *pFtdCallback;          /*!< \brief File Transfer Data Application Callback */
-  WdxcFtcCallback_t *pFtcCallback;          /*!< \brief File Transfer Control Application Callback */
+typedef struct {
+    wdxcConnCb_t conn[DM_CONN_MAX]; /*!< \brief Connection control */
+    WdxcFtdCallback_t *pFtdCallback; /*!< \brief File Transfer Data Application Callback */
+    WdxcFtcCallback_t *pFtcCallback; /*!< \brief File Transfer Control Application Callback */
 } wdxcCb_t;
-
 
 /**************************************************************************************************
   Function Declarations
@@ -114,8 +111,8 @@ void WdxcFtcSendVerifyFile(dmConnId_t connId, uint16_t fileHdl);
  *  \return None.
  */
 /*************************************************************************************************/
-void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
-                       uint32_t len, uint32_t fileSize, uint8_t type);
+void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len,
+                       uint32_t fileSize, uint8_t type);
 
 /*************************************************************************************************/
 /*!
@@ -130,9 +127,10 @@ void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
  *  \return None.
  */
 /*************************************************************************************************/
-void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len, uint8_t type);
+void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len,
+                       uint8_t type);
 
-/*! \} */    /* WIRELESS_DATA_EXCHANGE_PROFILE */
+/*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
 };

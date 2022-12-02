@@ -57,19 +57,17 @@ static nrfx_drv_state_t m_rng_state;
  */
 static nrfx_rng_evt_handler_t m_rng_hndl;
 
-nrfx_err_t nrfx_rng_init(nrfx_rng_config_t const * p_config, nrfx_rng_evt_handler_t handler)
+nrfx_err_t nrfx_rng_init(nrfx_rng_config_t const *p_config, nrfx_rng_evt_handler_t handler)
 {
     NRFX_ASSERT(p_config);
     NRFX_ASSERT(handler);
-    if (m_rng_state != NRFX_DRV_STATE_UNINITIALIZED)
-    {
+    if (m_rng_state != NRFX_DRV_STATE_UNINITIALIZED) {
         return NRFX_ERROR_ALREADY_INITIALIZED;
     }
 
     m_rng_hndl = handler;
 
-    if (p_config->error_correction)
-    {
+    if (p_config->error_correction) {
         nrf_rng_error_correction_enable();
     }
     nrf_rng_shorts_disable(NRF_RNG_SHORT_VALRDY_STOP_MASK);

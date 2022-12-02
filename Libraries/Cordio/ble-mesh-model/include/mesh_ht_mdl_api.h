@@ -32,8 +32,7 @@
 #define MESH_HT_MDL_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -41,41 +40,86 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Health Attention Get Opcode */
-#define MESH_HT_ATTENTION_GET_OPCODE       {0x80, 0x04}
+#define MESH_HT_ATTENTION_GET_OPCODE \
+    {                                \
+        0x80, 0x04                   \
+    }
 /*! \brief Health Attention Set Opcode */
-#define MESH_HT_ATTENTION_SET_OPCODE       {0x80, 0x05}
+#define MESH_HT_ATTENTION_SET_OPCODE \
+    {                                \
+        0x80, 0x05                   \
+    }
 /*! \brief Health Attention Set Unacknowledged Opcode */
-#define MESH_HT_ATTENTION_SET_UNACK_OPCODE {0x80, 0x06}
+#define MESH_HT_ATTENTION_SET_UNACK_OPCODE \
+    {                                      \
+        0x80, 0x06                         \
+    }
 /*! \brief Health Attention Status Opcode */
-#define MESH_HT_ATTENTION_STATUS_OPCODE    {0x80, 0x07}
+#define MESH_HT_ATTENTION_STATUS_OPCODE \
+    {                                   \
+        0x80, 0x07                      \
+    }
 
 /*! \brief Health Current Status Opcode */
-#define MESH_HT_CRT_STATUS_OPCODE          {0x04}
+#define MESH_HT_CRT_STATUS_OPCODE \
+    {                             \
+        0x04                      \
+    }
 
 /*! \brief Health Fault Clear Opcode */
-#define MESH_HT_FAULT_CLEAR_OPCODE         {0x80, 0x2F}
+#define MESH_HT_FAULT_CLEAR_OPCODE \
+    {                              \
+        0x80, 0x2F                 \
+    }
 /*! \brief Health Fault Clear Unacknowledged Opcode */
-#define MESH_HT_FAULT_CLEAR_UNACK_OPCODE   {0x80, 0x30}
+#define MESH_HT_FAULT_CLEAR_UNACK_OPCODE \
+    {                                    \
+        0x80, 0x30                       \
+    }
 /*! \brief Health Fault Get Opcode */
-#define MESH_HT_FAULT_GET_OPCODE           {0x80, 0x31}
+#define MESH_HT_FAULT_GET_OPCODE \
+    {                            \
+        0x80, 0x31               \
+    }
 /*! \brief Health Fault Test Opcode */
-#define MESH_HT_FAULT_TEST_OPCODE          {0x80, 0x32}
+#define MESH_HT_FAULT_TEST_OPCODE \
+    {                             \
+        0x80, 0x32                \
+    }
 /*! \brief Health Fault Test Unacknowledged Opcode */
-#define MESH_HT_FAULT_TEST_UNACK_OPCODE    {0x80, 0x33}
+#define MESH_HT_FAULT_TEST_UNACK_OPCODE \
+    {                                   \
+        0x80, 0x33                      \
+    }
 /*! \brief Health Fault Status Opcode */
-#define MESH_HT_FAULT_STATUS_OPCODE        {0x05}
+#define MESH_HT_FAULT_STATUS_OPCODE \
+    {                               \
+        0x05                        \
+    }
 
 /*! \brief Health Period Get Opcode */
-#define MESH_HT_PERIOD_GET_OPCODE          {0x80, 0x34}
+#define MESH_HT_PERIOD_GET_OPCODE \
+    {                             \
+        0x80, 0x34                \
+    }
 /*! \brief Health Period Set Opcode */
-#define MESH_HT_PERIOD_SET_OPCODE          {0x80, 0x35}
+#define MESH_HT_PERIOD_SET_OPCODE \
+    {                             \
+        0x80, 0x35                \
+    }
 /*! \brief Health Period Set Unacknowledged Opcode */
-#define MESH_HT_PERIOD_SET_UNACK_OPCODE    {0x80, 0x36}
+#define MESH_HT_PERIOD_SET_UNACK_OPCODE \
+    {                                   \
+        0x80, 0x36                      \
+    }
 /*! \brief Health Period Status Opcode */
-#define MESH_HT_PERIOD_STATUS_OPCODE       {0x80, 0x37}
+#define MESH_HT_PERIOD_STATUS_OPCODE \
+    {                                \
+        0x80, 0x37                   \
+    }
 
 /*! \brief Maximum allowed value for the Fast Period Divizor State */
-#define MESH_HT_PERIOD_MAX_VALUE           15
+#define MESH_HT_PERIOD_MAX_VALUE 15
 
 /**************************************************************************************************
   Data Types

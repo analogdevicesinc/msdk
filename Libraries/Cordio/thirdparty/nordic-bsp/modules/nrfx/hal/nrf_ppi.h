@@ -56,18 +56,17 @@ extern "C" {
  */
 
 /** @brief PPI channels. */
-typedef enum
-{
-    NRF_PPI_CHANNEL0  = PPI_CHEN_CH0_Pos,  /**< Channel 0. */
-    NRF_PPI_CHANNEL1  = PPI_CHEN_CH1_Pos,  /**< Channel 1. */
-    NRF_PPI_CHANNEL2  = PPI_CHEN_CH2_Pos,  /**< Channel 2. */
-    NRF_PPI_CHANNEL3  = PPI_CHEN_CH3_Pos,  /**< Channel 3. */
-    NRF_PPI_CHANNEL4  = PPI_CHEN_CH4_Pos,  /**< Channel 4. */
-    NRF_PPI_CHANNEL5  = PPI_CHEN_CH5_Pos,  /**< Channel 5. */
-    NRF_PPI_CHANNEL6  = PPI_CHEN_CH6_Pos,  /**< Channel 6. */
-    NRF_PPI_CHANNEL7  = PPI_CHEN_CH7_Pos,  /**< Channel 7. */
-    NRF_PPI_CHANNEL8  = PPI_CHEN_CH8_Pos,  /**< Channel 8. */
-    NRF_PPI_CHANNEL9  = PPI_CHEN_CH9_Pos,  /**< Channel 9. */
+typedef enum {
+    NRF_PPI_CHANNEL0 = PPI_CHEN_CH0_Pos, /**< Channel 0. */
+    NRF_PPI_CHANNEL1 = PPI_CHEN_CH1_Pos, /**< Channel 1. */
+    NRF_PPI_CHANNEL2 = PPI_CHEN_CH2_Pos, /**< Channel 2. */
+    NRF_PPI_CHANNEL3 = PPI_CHEN_CH3_Pos, /**< Channel 3. */
+    NRF_PPI_CHANNEL4 = PPI_CHEN_CH4_Pos, /**< Channel 4. */
+    NRF_PPI_CHANNEL5 = PPI_CHEN_CH5_Pos, /**< Channel 5. */
+    NRF_PPI_CHANNEL6 = PPI_CHEN_CH6_Pos, /**< Channel 6. */
+    NRF_PPI_CHANNEL7 = PPI_CHEN_CH7_Pos, /**< Channel 7. */
+    NRF_PPI_CHANNEL8 = PPI_CHEN_CH8_Pos, /**< Channel 8. */
+    NRF_PPI_CHANNEL9 = PPI_CHEN_CH9_Pos, /**< Channel 9. */
     NRF_PPI_CHANNEL10 = PPI_CHEN_CH10_Pos, /**< Channel 10. */
     NRF_PPI_CHANNEL11 = PPI_CHEN_CH11_Pos, /**< Channel 11. */
     NRF_PPI_CHANNEL12 = PPI_CHEN_CH12_Pos, /**< Channel 12. */
@@ -91,55 +90,62 @@ typedef enum
     NRF_PPI_CHANNEL28 = PPI_CHEN_CH28_Pos, /**< Channel 28. */
     NRF_PPI_CHANNEL29 = PPI_CHEN_CH29_Pos, /**< Channel 29. */
     NRF_PPI_CHANNEL30 = PPI_CHEN_CH30_Pos, /**< Channel 30. */
-    NRF_PPI_CHANNEL31 = PPI_CHEN_CH31_Pos  /**< Channel 31. */
+    NRF_PPI_CHANNEL31 = PPI_CHEN_CH31_Pos /**< Channel 31. */
 } nrf_ppi_channel_t;
 
 /** @brief PPI channel groups. */
-typedef enum
-{
+typedef enum {
     NRF_PPI_CHANNEL_GROUP0 = 0, /**< Channel group 0. */
     NRF_PPI_CHANNEL_GROUP1 = 1, /**< Channel group 1. */
     NRF_PPI_CHANNEL_GROUP2 = 2, /**< Channel group 2. */
     NRF_PPI_CHANNEL_GROUP3 = 3, /**< Channel group 3. */
 #if (PPI_GROUP_NUM > 4) || defined(__NRFX_DOXYGEN__)
     NRF_PPI_CHANNEL_GROUP4 = 4, /**< Channel group 4. */
-    NRF_PPI_CHANNEL_GROUP5 = 5  /**< Channel group 5. */
+    NRF_PPI_CHANNEL_GROUP5 = 5 /**< Channel group 5. */
 #endif
 } nrf_ppi_channel_group_t;
 
 /** @brief Definition of whether a PPI channel belongs to a group. */
-typedef enum
-{
+typedef enum {
     NRF_PPI_CHANNEL_EXCLUDE = PPI_CHG_CH0_Excluded, /**< Channel excluded from a group. */
-    NRF_PPI_CHANNEL_INCLUDE = PPI_CHG_CH0_Included  /**< Channel included in a group. */
+    NRF_PPI_CHANNEL_INCLUDE = PPI_CHG_CH0_Included /**< Channel included in a group. */
 } nrf_ppi_channel_include_t;
 
 /** @brief Definition of whether a PPI channel is enabled. */
-typedef enum
-{
+typedef enum {
     NRF_PPI_CHANNEL_DISABLED = PPI_CHEN_CH0_Disabled, /**< Channel disabled. */
-    NRF_PPI_CHANNEL_ENABLED  = PPI_CHEN_CH0_Enabled   /**< Channel enabled. */
+    NRF_PPI_CHANNEL_ENABLED = PPI_CHEN_CH0_Enabled /**< Channel enabled. */
 } nrf_ppi_channel_enable_t;
 
 /** @brief PPI tasks. */
-typedef enum
-{
-    NRF_PPI_TASK_CHG0_EN  = offsetof(NRF_PPI_Type, TASKS_CHG[0].EN),  /**< Task for enabling channel group 0. */
-    NRF_PPI_TASK_CHG0_DIS = offsetof(NRF_PPI_Type, TASKS_CHG[0].DIS), /**< Task for disabling channel group 0. */
-    NRF_PPI_TASK_CHG1_EN  = offsetof(NRF_PPI_Type, TASKS_CHG[1].EN),  /**< Task for enabling channel group 1. */
-    NRF_PPI_TASK_CHG1_DIS = offsetof(NRF_PPI_Type, TASKS_CHG[1].DIS), /**< Task for disabling channel group 1. */
-    NRF_PPI_TASK_CHG2_EN  = offsetof(NRF_PPI_Type, TASKS_CHG[2].EN),  /**< Task for enabling channel group 2. */
-    NRF_PPI_TASK_CHG2_DIS = offsetof(NRF_PPI_Type, TASKS_CHG[2].DIS), /**< Task for disabling channel group 2. */
-    NRF_PPI_TASK_CHG3_EN  = offsetof(NRF_PPI_Type, TASKS_CHG[3].EN),  /**< Task for enabling channel group 3. */
-    NRF_PPI_TASK_CHG3_DIS = offsetof(NRF_PPI_Type, TASKS_CHG[3].DIS), /**< Task for disabling channel group 3. */
+typedef enum {
+    NRF_PPI_TASK_CHG0_EN =
+        offsetof(NRF_PPI_Type, TASKS_CHG[0].EN), /**< Task for enabling channel group 0. */
+    NRF_PPI_TASK_CHG0_DIS =
+        offsetof(NRF_PPI_Type, TASKS_CHG[0].DIS), /**< Task for disabling channel group 0. */
+    NRF_PPI_TASK_CHG1_EN =
+        offsetof(NRF_PPI_Type, TASKS_CHG[1].EN), /**< Task for enabling channel group 1. */
+    NRF_PPI_TASK_CHG1_DIS =
+        offsetof(NRF_PPI_Type, TASKS_CHG[1].DIS), /**< Task for disabling channel group 1. */
+    NRF_PPI_TASK_CHG2_EN =
+        offsetof(NRF_PPI_Type, TASKS_CHG[2].EN), /**< Task for enabling channel group 2. */
+    NRF_PPI_TASK_CHG2_DIS =
+        offsetof(NRF_PPI_Type, TASKS_CHG[2].DIS), /**< Task for disabling channel group 2. */
+    NRF_PPI_TASK_CHG3_EN =
+        offsetof(NRF_PPI_Type, TASKS_CHG[3].EN), /**< Task for enabling channel group 3. */
+    NRF_PPI_TASK_CHG3_DIS =
+        offsetof(NRF_PPI_Type, TASKS_CHG[3].DIS), /**< Task for disabling channel group 3. */
 #if (PPI_GROUP_NUM > 4) || defined(__NRFX_DOXYGEN__)
-    NRF_PPI_TASK_CHG4_EN  = offsetof(NRF_PPI_Type, TASKS_CHG[4].EN),  /**< Task for enabling channel group 4. */
-    NRF_PPI_TASK_CHG4_DIS = offsetof(NRF_PPI_Type, TASKS_CHG[4].DIS), /**< Task for disabling channel group 4. */
-    NRF_PPI_TASK_CHG5_EN  = offsetof(NRF_PPI_Type, TASKS_CHG[5].EN),  /**< Task for enabling channel group 5. */
-    NRF_PPI_TASK_CHG5_DIS = offsetof(NRF_PPI_Type, TASKS_CHG[5].DIS)  /**< Task for disabling channel group 5. */
+    NRF_PPI_TASK_CHG4_EN =
+        offsetof(NRF_PPI_Type, TASKS_CHG[4].EN), /**< Task for enabling channel group 4. */
+    NRF_PPI_TASK_CHG4_DIS =
+        offsetof(NRF_PPI_Type, TASKS_CHG[4].DIS), /**< Task for disabling channel group 4. */
+    NRF_PPI_TASK_CHG5_EN =
+        offsetof(NRF_PPI_Type, TASKS_CHG[5].EN), /**< Task for enabling channel group 5. */
+    NRF_PPI_TASK_CHG5_DIS =
+        offsetof(NRF_PPI_Type, TASKS_CHG[5].DIS) /**< Task for disabling channel group 5. */
 #endif
 } nrf_ppi_task_t;
-
 
 /**
  * @brief Function for enabling a given PPI channel.
@@ -196,9 +202,8 @@ __STATIC_INLINE void nrf_ppi_channels_disable(uint32_t mask);
  * @param[in] tep     Task register address.
  * @param[in] channel Channel to which the given endpoints are assigned.
  */
-__STATIC_INLINE void nrf_ppi_channel_endpoint_setup(nrf_ppi_channel_t channel,
-                                                    uint32_t          eep,
-                                                    uint32_t          tep);
+__STATIC_INLINE void nrf_ppi_channel_endpoint_setup(nrf_ppi_channel_t channel, uint32_t eep,
+                                                    uint32_t tep);
 
 /**
  * @brief Function for setting up the event endpoint for a given PPI channel.
@@ -206,8 +211,7 @@ __STATIC_INLINE void nrf_ppi_channel_endpoint_setup(nrf_ppi_channel_t channel,
  * @param[in] eep     Event register address.
  * @param[in] channel Channel to which the given endpoint is assigned.
  */
-__STATIC_INLINE void nrf_ppi_event_endpoint_setup(nrf_ppi_channel_t channel,
-                                                  uint32_t          eep);
+__STATIC_INLINE void nrf_ppi_event_endpoint_setup(nrf_ppi_channel_t channel, uint32_t eep);
 
 /**
  * @brief Function for setting up the task endpoint for a given PPI channel.
@@ -215,9 +219,7 @@ __STATIC_INLINE void nrf_ppi_event_endpoint_setup(nrf_ppi_channel_t channel,
  * @param[in] tep     Task register address.
  * @param[in] channel Channel to which the given endpoint is assigned.
  */
-__STATIC_INLINE void nrf_ppi_task_endpoint_setup(nrf_ppi_channel_t channel,
-                                                 uint32_t          tep);
-
+__STATIC_INLINE void nrf_ppi_task_endpoint_setup(nrf_ppi_channel_t channel, uint32_t tep);
 
 #if defined(PPI_FEATURE_FORKS_PRESENT) || defined(__NRFX_DOXYGEN__)
 /**
@@ -226,8 +228,7 @@ __STATIC_INLINE void nrf_ppi_task_endpoint_setup(nrf_ppi_channel_t channel,
  * @param[in] fork_tep Task register address.
  * @param[in] channel  Channel to which the given fork endpoint is assigned.
  */
-__STATIC_INLINE void nrf_ppi_fork_endpoint_setup(nrf_ppi_channel_t channel,
-                                                 uint32_t          fork_tep);
+__STATIC_INLINE void nrf_ppi_fork_endpoint_setup(nrf_ppi_channel_t channel, uint32_t fork_tep);
 
 /**
  * @brief Function for setting up event and task endpoints for a given PPI channel and fork.
@@ -238,9 +239,8 @@ __STATIC_INLINE void nrf_ppi_fork_endpoint_setup(nrf_ppi_channel_t channel,
  * @param[in] channel  Channel to which the given endpoints are assigned.
  */
 __STATIC_INLINE void nrf_ppi_channel_and_fork_endpoint_setup(nrf_ppi_channel_t channel,
-                                                             uint32_t          eep,
-                                                             uint32_t          tep,
-                                                             uint32_t          fork_tep);
+                                                             uint32_t eep, uint32_t tep,
+                                                             uint32_t fork_tep);
 #endif
 
 /**
@@ -251,7 +251,7 @@ __STATIC_INLINE void nrf_ppi_channel_and_fork_endpoint_setup(nrf_ppi_channel_t c
  * @param[in] channel       Channel to be included in the group.
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrf_ppi_channel_include_in_group(nrf_ppi_channel_t       channel,
+__STATIC_INLINE void nrf_ppi_channel_include_in_group(nrf_ppi_channel_t channel,
                                                       nrf_ppi_channel_group_t channel_group);
 
 /**
@@ -262,7 +262,7 @@ __STATIC_INLINE void nrf_ppi_channel_include_in_group(nrf_ppi_channel_t       ch
  * @param[in] channel_mask  Channels to be included in the group.
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrf_ppi_channels_include_in_group(uint32_t                channel_mask,
+__STATIC_INLINE void nrf_ppi_channels_include_in_group(uint32_t channel_mask,
                                                        nrf_ppi_channel_group_t channel_group);
 
 /**
@@ -273,7 +273,7 @@ __STATIC_INLINE void nrf_ppi_channels_include_in_group(uint32_t                c
  * @param[in] channel       Channel to be removed from the group.
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrf_ppi_channel_remove_from_group(nrf_ppi_channel_t       channel,
+__STATIC_INLINE void nrf_ppi_channel_remove_from_group(nrf_ppi_channel_t channel,
                                                        nrf_ppi_channel_group_t channel_group);
 
 /**
@@ -284,7 +284,7 @@ __STATIC_INLINE void nrf_ppi_channel_remove_from_group(nrf_ppi_channel_t       c
  * @param[in] channel_mask  Channels to be removed from the group.
  * @param[in] channel_group Channel group.
  */
-__STATIC_INLINE void nrf_ppi_channels_remove_from_group(uint32_t                channel_mask,
+__STATIC_INLINE void nrf_ppi_channels_remove_from_group(uint32_t channel_mask,
                                                         nrf_ppi_channel_group_t channel_group);
 
 /**
@@ -322,7 +322,7 @@ __STATIC_INLINE void nrf_ppi_task_trigger(nrf_ppi_task_t ppi_task);
  *
  * @return Address of the requested PPI task register.
  */
-__STATIC_INLINE uint32_t * nrf_ppi_task_address_get(nrf_ppi_task_t ppi_task);
+__STATIC_INLINE uint32_t *nrf_ppi_task_address_get(nrf_ppi_task_t ppi_task);
 
 /**
  * @brief Function for getting the PPI enable task address of the specified group.
@@ -331,7 +331,7 @@ __STATIC_INLINE uint32_t * nrf_ppi_task_address_get(nrf_ppi_task_t ppi_task);
  *
  * @return PPI enable task address of the specified group.
  */
-__STATIC_INLINE uint32_t * nrf_ppi_task_group_enable_address_get(nrf_ppi_channel_group_t group);
+__STATIC_INLINE uint32_t *nrf_ppi_task_group_enable_address_get(nrf_ppi_channel_group_t group);
 
 /**
  * @brief Function for getting the PPI disable task address of the specified group.
@@ -340,7 +340,7 @@ __STATIC_INLINE uint32_t * nrf_ppi_task_group_enable_address_get(nrf_ppi_channel
  *
  * @return PPI disable task address of the specified group.
  */
-__STATIC_INLINE uint32_t * nrf_ppi_task_group_disable_address_get(nrf_ppi_channel_group_t group);
+__STATIC_INLINE uint32_t *nrf_ppi_task_group_disable_address_get(nrf_ppi_channel_group_t group);
 
 /**
  * @brief Function for getting the ENABLE task associated with the specified channel group.
@@ -360,27 +360,23 @@ __STATIC_INLINE nrf_ppi_task_t nrf_ppi_group_enable_task_get(uint8_t index);
  */
 __STATIC_INLINE nrf_ppi_task_t nrf_ppi_group_disable_task_get(uint8_t index);
 
-
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
 __STATIC_INLINE void nrf_ppi_channel_enable(nrf_ppi_channel_t channel)
 {
-    NRF_PPI->CHENSET = PPI_CHENSET_CH0_Set << ((uint32_t) channel);
+    NRF_PPI->CHENSET = PPI_CHENSET_CH0_Set << ((uint32_t)channel);
 }
 
 __STATIC_INLINE void nrf_ppi_channel_disable(nrf_ppi_channel_t channel)
 {
-    NRF_PPI->CHENCLR = PPI_CHENCLR_CH0_Clear << ((uint32_t) channel);
+    NRF_PPI->CHENCLR = PPI_CHENCLR_CH0_Clear << ((uint32_t)channel);
 }
 
 __STATIC_INLINE nrf_ppi_channel_enable_t nrf_ppi_channel_enable_get(nrf_ppi_channel_t channel)
 {
-    if (NRF_PPI->CHEN & (PPI_CHEN_CH0_Msk << ((uint32_t) channel)))
-    {
+    if (NRF_PPI->CHEN & (PPI_CHEN_CH0_Msk << ((uint32_t)channel))) {
         return NRF_PPI_CHANNEL_ENABLED;
-    }
-    else
-    {
+    } else {
         return NRF_PPI_CHANNEL_DISABLED;
     }
 }
@@ -400,105 +396,98 @@ __STATIC_INLINE void nrf_ppi_channels_disable(uint32_t mask)
     NRF_PPI->CHENCLR = mask;
 }
 
-__STATIC_INLINE void nrf_ppi_channel_endpoint_setup(nrf_ppi_channel_t channel,
-                                                    uint32_t          eep,
-                                                    uint32_t          tep)
+__STATIC_INLINE void nrf_ppi_channel_endpoint_setup(nrf_ppi_channel_t channel, uint32_t eep,
+                                                    uint32_t tep)
 {
-    NRF_PPI->CH[(uint32_t) channel].EEP = eep;
-    NRF_PPI->CH[(uint32_t) channel].TEP = tep;
+    NRF_PPI->CH[(uint32_t)channel].EEP = eep;
+    NRF_PPI->CH[(uint32_t)channel].TEP = tep;
 }
 
-__STATIC_INLINE void nrf_ppi_event_endpoint_setup(nrf_ppi_channel_t channel,
-                                                  uint32_t          eep)
+__STATIC_INLINE void nrf_ppi_event_endpoint_setup(nrf_ppi_channel_t channel, uint32_t eep)
 {
-    NRF_PPI->CH[(uint32_t) channel].EEP = eep;
+    NRF_PPI->CH[(uint32_t)channel].EEP = eep;
 }
 
-__STATIC_INLINE void nrf_ppi_task_endpoint_setup(nrf_ppi_channel_t channel,
-                                                 uint32_t          tep)
+__STATIC_INLINE void nrf_ppi_task_endpoint_setup(nrf_ppi_channel_t channel, uint32_t tep)
 {
-    NRF_PPI->CH[(uint32_t) channel].TEP = tep;
+    NRF_PPI->CH[(uint32_t)channel].TEP = tep;
 }
 
 #if defined(PPI_FEATURE_FORKS_PRESENT)
 
-__STATIC_INLINE void nrf_ppi_fork_endpoint_setup(nrf_ppi_channel_t channel,
-                                                 uint32_t          fork_tep)
+__STATIC_INLINE void nrf_ppi_fork_endpoint_setup(nrf_ppi_channel_t channel, uint32_t fork_tep)
 {
-    NRF_PPI->FORK[(uint32_t) channel].TEP = fork_tep;
+    NRF_PPI->FORK[(uint32_t)channel].TEP = fork_tep;
 }
 
 __STATIC_INLINE void nrf_ppi_channel_and_fork_endpoint_setup(nrf_ppi_channel_t channel,
-                                                             uint32_t          eep,
-                                                             uint32_t          tep,
-                                                             uint32_t          fork_tep)
+                                                             uint32_t eep, uint32_t tep,
+                                                             uint32_t fork_tep)
 {
     nrf_ppi_channel_endpoint_setup(channel, eep, tep);
     nrf_ppi_fork_endpoint_setup(channel, fork_tep);
 }
 #endif
 
-__STATIC_INLINE void nrf_ppi_channel_include_in_group(nrf_ppi_channel_t       channel,
+__STATIC_INLINE void nrf_ppi_channel_include_in_group(nrf_ppi_channel_t channel,
                                                       nrf_ppi_channel_group_t channel_group)
 {
-    NRF_PPI->CHG[(uint32_t) channel_group] =
-        NRF_PPI->CHG[(uint32_t) channel_group] | (PPI_CHG_CH0_Included << ((uint32_t)  channel));
+    NRF_PPI->CHG[(uint32_t)channel_group] = NRF_PPI->CHG[(uint32_t)channel_group] |
+                                            (PPI_CHG_CH0_Included << ((uint32_t)channel));
 }
 
-__STATIC_INLINE void nrf_ppi_channels_include_in_group(uint32_t                channel_mask,
+__STATIC_INLINE void nrf_ppi_channels_include_in_group(uint32_t channel_mask,
                                                        nrf_ppi_channel_group_t channel_group)
 {
-    NRF_PPI->CHG[(uint32_t) channel_group] =
-        NRF_PPI->CHG[(uint32_t) channel_group] | (channel_mask);
+    NRF_PPI->CHG[(uint32_t)channel_group] = NRF_PPI->CHG[(uint32_t)channel_group] | (channel_mask);
 }
 
-__STATIC_INLINE void nrf_ppi_channel_remove_from_group(nrf_ppi_channel_t       channel,
+__STATIC_INLINE void nrf_ppi_channel_remove_from_group(nrf_ppi_channel_t channel,
                                                        nrf_ppi_channel_group_t channel_group)
 {
-    NRF_PPI->CHG[(uint32_t) channel_group] =
-        NRF_PPI->CHG[(uint32_t) channel_group] & ~(PPI_CHG_CH0_Included << ((uint32_t) channel));
+    NRF_PPI->CHG[(uint32_t)channel_group] = NRF_PPI->CHG[(uint32_t)channel_group] &
+                                            ~(PPI_CHG_CH0_Included << ((uint32_t)channel));
 }
 
-__STATIC_INLINE void nrf_ppi_channels_remove_from_group(uint32_t                channel_mask,
+__STATIC_INLINE void nrf_ppi_channels_remove_from_group(uint32_t channel_mask,
                                                         nrf_ppi_channel_group_t channel_group)
 {
-    NRF_PPI->CHG[(uint32_t) channel_group] =
-        NRF_PPI->CHG[(uint32_t) channel_group] & ~(channel_mask);
+    NRF_PPI->CHG[(uint32_t)channel_group] = NRF_PPI->CHG[(uint32_t)channel_group] & ~(channel_mask);
 }
 
 __STATIC_INLINE void nrf_ppi_channel_group_clear(nrf_ppi_channel_group_t group)
 {
-    NRF_PPI->CHG[(uint32_t) group] = 0;
+    NRF_PPI->CHG[(uint32_t)group] = 0;
 }
 
 __STATIC_INLINE void nrf_ppi_group_enable(nrf_ppi_channel_group_t group)
 {
-    NRF_PPI->TASKS_CHG[(uint32_t) group].EN = 1UL;
+    NRF_PPI->TASKS_CHG[(uint32_t)group].EN = 1UL;
 }
 
 __STATIC_INLINE void nrf_ppi_group_disable(nrf_ppi_channel_group_t group)
 {
-    NRF_PPI->TASKS_CHG[(uint32_t) group].DIS = 1UL;
+    NRF_PPI->TASKS_CHG[(uint32_t)group].DIS = 1UL;
 }
 
 __STATIC_INLINE void nrf_ppi_task_trigger(nrf_ppi_task_t ppi_task)
 {
-    *((volatile uint32_t *) ((uint8_t *) NRF_PPI_BASE + (uint32_t) ppi_task)) = 1UL;
+    *((volatile uint32_t *)((uint8_t *)NRF_PPI_BASE + (uint32_t)ppi_task)) = 1UL;
 }
 
-__STATIC_INLINE uint32_t * nrf_ppi_task_address_get(nrf_ppi_task_t ppi_task)
+__STATIC_INLINE uint32_t *nrf_ppi_task_address_get(nrf_ppi_task_t ppi_task)
 {
-    return (uint32_t *) ((uint8_t *) NRF_PPI_BASE + (uint32_t) ppi_task);
+    return (uint32_t *)((uint8_t *)NRF_PPI_BASE + (uint32_t)ppi_task);
 }
 
-__STATIC_INLINE uint32_t * nrf_ppi_task_group_enable_address_get(nrf_ppi_channel_group_t group)
+__STATIC_INLINE uint32_t *nrf_ppi_task_group_enable_address_get(nrf_ppi_channel_group_t group)
 {
-    return (uint32_t *) &NRF_PPI->TASKS_CHG[(uint32_t) group].EN;
+    return (uint32_t *)&NRF_PPI->TASKS_CHG[(uint32_t)group].EN;
 }
 
-__STATIC_INLINE uint32_t * nrf_ppi_task_group_disable_address_get(nrf_ppi_channel_group_t group)
+__STATIC_INLINE uint32_t *nrf_ppi_task_group_disable_address_get(nrf_ppi_channel_group_t group)
 {
-    return (uint32_t *) &NRF_PPI->TASKS_CHG[(uint32_t) group].DIS;
+    return (uint32_t *)&NRF_PPI->TASKS_CHG[(uint32_t)group].DIS;
 }
 
 __STATIC_INLINE nrf_ppi_task_t nrf_ppi_group_enable_task_get(uint8_t index)

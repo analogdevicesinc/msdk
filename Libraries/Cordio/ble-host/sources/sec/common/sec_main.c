@@ -51,52 +51,48 @@ secCb_t secCb;
 /*************************************************************************************************/
 static void secHciCback(hciEvt_t *pEvent)
 {
-  secQueueBuf_t *pBuf = NULL;
-  wsfHandlerId_t handlerId = 0;
+    secQueueBuf_t *pBuf = NULL;
+    wsfHandlerId_t handlerId = 0;
 
-  /* Handle random number event. */
-  switch (pEvent->hdr.event)
-  {
-  case HCI_LE_RAND_CMD_CMPL_CBACK_EVT:
+    /* Handle random number event. */
+    switch (pEvent->hdr.event) {
+    case HCI_LE_RAND_CMD_CMPL_CBACK_EVT:
 
-    /* Copy new data to circular buffer of random data. */
-    memcpy(&secCb.rand[HCI_RAND_LEN * secCb.randTop], pEvent->leRandCmdCmpl.randNum, HCI_RAND_LEN);
-    secCb.randTop = (secCb.randTop >= SEC_HCI_RAND_MULT - 1) ? 0 : secCb.randTop + 1;
-    break;
+        /* Copy new data to circular buffer of random data. */
+        memcpy(&secCb.rand[HCI_RAND_LEN * secCb.randTop], pEvent->leRandCmdCmpl.randNum,
+               HCI_RAND_LEN);
+        secCb.randTop = (secCb.randTop >= SEC_HCI_RAND_MULT - 1) ? 0 : secCb.randTop + 1;
+        break;
 
-  case HCI_LE_ENCRYPT_CMD_CMPL_CBACK_EVT:
-    pBuf = WsfMsgDeq(&secCb.aesEncQueue, &handlerId);
-    if (pBuf != NULL)
-    {
-      if (pBuf->type == SEC_TYPE_CCM || pBuf->type == SEC_TYPE_CMAC || pBuf->type == SEC_TYPE_AES_REV)
-      {
-        WStrReverse(pEvent->leEncryptCmdCmpl.data, HCI_ENCRYPT_DATA_LEN);
-      }
+    case HCI_LE_ENCRYPT_CMD_CMPL_CBACK_EVT:
+        pBuf = WsfMsgDeq(&secCb.aesEncQueue, &handlerId);
+        if (pBuf != NULL) {
+            if (pBuf->type == SEC_TYPE_CCM || pBuf->type == SEC_TYPE_CMAC ||
+                pBuf->type == SEC_TYPE_AES_REV) {
+                WStrReverse(pEvent->leEncryptCmdCmpl.data, HCI_ENCRYPT_DATA_LEN);
+            }
+        } else {
+            /* Should never happen */
+            WSF_ASSERT(0);
+        }
+        break;
+
+    case HCI_LE_READ_LOCAL_P256_PUB_KEY_CMPL_CBACK_EVT:
+        pBuf = WsfMsgDeq(&secCb.pubKeyQueue, &handlerId);
+        break;
+
+    case HCI_LE_GENERATE_DHKEY_CMPL_CBACK_EVT:
+        pBuf = WsfMsgDeq(&secCb.dhKeyQueue, &handlerId);
+        break;
+
+    default:
+        break;
     }
-    else
-    {
-      /* Should never happen */
-      WSF_ASSERT(0);
+
+    if (pBuf) {
+        WSF_ASSERT(secCb.hciCbackTbl[pBuf->type]);
+        secCb.hciCbackTbl[pBuf->type](pBuf, pEvent, handlerId);
     }
-    break;
-
-  case HCI_LE_READ_LOCAL_P256_PUB_KEY_CMPL_CBACK_EVT:
-    pBuf = WsfMsgDeq(&secCb.pubKeyQueue, &handlerId);
-    break;
-
-  case HCI_LE_GENERATE_DHKEY_CMPL_CBACK_EVT:
-    pBuf = WsfMsgDeq(&secCb.dhKeyQueue, &handlerId);
-    break;
-
-  default:
-    break;
-  }
-
-  if (pBuf)
-  {
-    WSF_ASSERT(secCb.hciCbackTbl[pBuf->type]);
-    secCb.hciCbackTbl[pBuf->type](pBuf, pEvent, handlerId);
-  }
 }
 
 /*************************************************************************************************/
@@ -109,14 +105,14 @@ static void secHciCback(hciEvt_t *pEvent)
 /*************************************************************************************************/
 void SecInit(void)
 {
-  WSF_QUEUE_INIT(&secCb.aesEncQueue);
-  WSF_QUEUE_INIT(&secCb.pubKeyQueue);
-  WSF_QUEUE_INIT(&secCb.dhKeyQueue);
+    WSF_QUEUE_INIT(&secCb.aesEncQueue);
+    WSF_QUEUE_INIT(&secCb.pubKeyQueue);
+    WSF_QUEUE_INIT(&secCb.dhKeyQueue);
 
-  secCb.token = 0;
+    secCb.token = 0;
 
-  /* Register callback with HCI */
-  HciSecRegister(secHciCback);
+    /* Register callback with HCI */
+    HciSecRegister(secHciCback);
 }
 
 /*************************************************************************************************/
@@ -129,13 +125,12 @@ void SecInit(void)
 /*************************************************************************************************/
 void SecRandInit(void)
 {
-  int8_t i;
+    int8_t i;
 
-  /* get new random numbers */
-  for (i=0; i<SEC_HCI_RAND_MULT; i++)
-  {
-    HciLeRandCmd();
-  }
+    /* get new random numbers */
+    for (i = 0; i < SEC_HCI_RAND_MULT; i++) {
+        HciLeRandCmd();
+    }
 }
 
 /*************************************************************************************************/
@@ -151,26 +146,24 @@ void SecRandInit(void)
 /*************************************************************************************************/
 void SecRand(uint8_t *pRand, uint8_t randLen)
 {
-  int8_t count = (randLen + HCI_RAND_LEN - 1) / HCI_RAND_LEN;
-  uint8_t index = secCb.randBtm * HCI_RAND_LEN;
+    int8_t count = (randLen + HCI_RAND_LEN - 1) / HCI_RAND_LEN;
+    uint8_t index = secCb.randBtm * HCI_RAND_LEN;
 
-  WSF_ASSERT(randLen <= SEC_RAND_DATA_LEN);
+    WSF_ASSERT(randLen <= SEC_RAND_DATA_LEN);
 
-  /* Copy from circular buffer of random data. */
-  while (randLen--)
-  {
-    *pRand++ = secCb.rand[index];
-    index = (index == SEC_RAND_DATA_LEN - 1) ? 0 : index + 1;
-  }
+    /* Copy from circular buffer of random data. */
+    while (randLen--) {
+        *pRand++ = secCb.rand[index];
+        index = (index == SEC_RAND_DATA_LEN - 1) ? 0 : index + 1;
+    }
 
-  while (count--)
-  {
-    /* Request more random data. */
-    HciLeRandCmd();
+    while (count--) {
+        /* Request more random data. */
+        HciLeRandCmd();
 
-    /* Update copy index. */
-    secCb.randBtm = (secCb.randBtm >= SEC_HCI_RAND_MULT - 1) ? 0 : secCb.randBtm + 1;
-  }
+        /* Update copy index. */
+        secCb.randBtm = (secCb.randBtm >= SEC_HCI_RAND_MULT - 1) ? 0 : secCb.randBtm + 1;
+    }
 }
 
 /*************************************************************************************************/
@@ -187,12 +180,12 @@ void SecRand(uint8_t *pRand, uint8_t randLen)
 /*************************************************************************************************/
 void SecLeEncryptCmd(uint8_t *pKey, uint8_t *pText, void *pBuf, wsfHandlerId_t handlerId)
 {
-  uint8_t revKey[HCI_KEY_LEN];
-  uint8_t revText[HCI_ENCRYPT_DATA_LEN];
+    uint8_t revKey[HCI_KEY_LEN];
+    uint8_t revText[HCI_ENCRYPT_DATA_LEN];
 
-  WStrReverseCpy(revKey, pKey, HCI_KEY_LEN);
-  WStrReverseCpy(revText, pText, HCI_ENCRYPT_DATA_LEN);
+    WStrReverseCpy(revKey, pKey, HCI_KEY_LEN);
+    WStrReverseCpy(revText, pText, HCI_ENCRYPT_DATA_LEN);
 
-  WsfMsgEnq(&secCb.aesEncQueue, handlerId, pBuf);
-  HciLeEncryptCmd(revKey, revText);
+    WsfMsgEnq(&secCb.aesEncQueue, handlerId, pBuf);
+    HciLeEncryptCmd(revKey, revText);
 }

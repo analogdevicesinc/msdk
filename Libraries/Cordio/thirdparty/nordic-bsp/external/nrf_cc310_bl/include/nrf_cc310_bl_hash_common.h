@@ -46,10 +46,12 @@
 extern "C" {
 #endif
 
-#define NRF_CC310_BL_HASH_CONTEXT_INITIALIZED           (0xBBAA55DD)    //!< Value indicating that the hash context is initialized.
-#define NRF_CC310_BL_HASH_CONTEXT_BUFFER_SIZE_SHA256    (112)           //!< Size of internal representation of SHA-256 hash context.
-#define NRF_CC310_BL_SHA256_DIGEST_SIZE_IN_WORDS        (8)             //!< Size of SHA-256 hash digest in words.
-#define NRF_CC310_BL_SHA256_DIGEST_SIZE_IN_BYTES        (32)            //!< Size of SHA-256 hash digest in bytes.
+#define NRF_CC310_BL_HASH_CONTEXT_INITIALIZED \
+    (0xBBAA55DD) //!< Value indicating that the hash context is initialized.
+#define NRF_CC310_BL_HASH_CONTEXT_BUFFER_SIZE_SHA256 \
+    (112) //!< Size of internal representation of SHA-256 hash context.
+#define NRF_CC310_BL_SHA256_DIGEST_SIZE_IN_WORDS (8) //!< Size of SHA-256 hash digest in words.
+#define NRF_CC310_BL_SHA256_DIGEST_SIZE_IN_BYTES (32) //!< Size of SHA-256 hash digest in bytes.
 
 #ifdef __cplusplus
 }

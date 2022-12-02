@@ -1,4 +1,4 @@
- /*************************************************************************************************/
+/*************************************************************************************************/
 /*!
  *  \file
  *
@@ -39,13 +39,12 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Configuration ID. */
-typedef enum
-{
-  PAL_CFG_ID_BD_ADDR,                       /*!< BD address. */
-  PAL_CFG_ID_BLE_PHY,                       /*!< Ble PHY. */
-  PAL_CFG_ID_LL_PARAM,                      /*!< LL parameters. */
-  PAL_CFG_ID_MAC_ADDR,                      /*!< MAC address. */
-  PAL_CFG_ID_UUID,                          /*!< UUID. */
+typedef enum {
+    PAL_CFG_ID_BD_ADDR, /*!< BD address. */
+    PAL_CFG_ID_BLE_PHY, /*!< Ble PHY. */
+    PAL_CFG_ID_LL_PARAM, /*!< LL parameters. */
+    PAL_CFG_ID_MAC_ADDR, /*!< MAC address. */
+    PAL_CFG_ID_UUID, /*!< UUID. */
 } PalCfgId_t;
 
 /**************************************************************************************************
@@ -54,7 +53,7 @@ typedef enum
 void PalCfgLoadData(uint8_t cfgId, uint8_t *pBuf, uint32_t len);
 void PalCfgSetDeviceUuid(uint8_t *pBuf);
 
-/*! \} */    /* PAL_CFG */
+/*! \} */ /* PAL_CFG */
 
 #ifdef __cplusplus
 };

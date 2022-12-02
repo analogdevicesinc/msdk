@@ -72,7 +72,6 @@ typedef nrf_crypto_aes_internal_context_t nrf_crypto_backend_aes_ctr_context_t;
 typedef nrf_crypto_aes_internal_context_t nrf_crypto_backend_aes_ecb_context_t;
 #endif
 
-
 /**@internal @brief Fallback type for AES CBC_MAC context (if no backend is enabled).
  */
 #if !NRF_MODULE_ENABLED(NRF_CRYPTO_AES_CBC_MAC)
@@ -91,18 +90,18 @@ typedef nrf_crypto_aes_internal_context_t nrf_crypto_backend_aes_cmac_context_t;
 typedef nrf_crypto_aes_internal_context_t nrf_crypto_backend_aes_cmac_prf128_context_t;
 #endif
 
-
 /** @internal @brief Union holding a AES context. */
-typedef union
-{
-    nrf_crypto_backend_aes_cbc_context_t cbc_context;   /**< @brief Holds context for AES CBC. */
-    nrf_crypto_backend_aes_cfb_context_t cfb_context;   /**< @brief Holds context for AES CFB. */
-    nrf_crypto_backend_aes_ctr_context_t ctr_context;   /**< @brief Holds context for AES CFB. */
-    nrf_crypto_backend_aes_ecb_context_t ecb_context;   /**< @brief Holds context for AES ECB. */
+typedef union {
+    nrf_crypto_backend_aes_cbc_context_t cbc_context; /**< @brief Holds context for AES CBC. */
+    nrf_crypto_backend_aes_cfb_context_t cfb_context; /**< @brief Holds context for AES CFB. */
+    nrf_crypto_backend_aes_ctr_context_t ctr_context; /**< @brief Holds context for AES CFB. */
+    nrf_crypto_backend_aes_ecb_context_t ecb_context; /**< @brief Holds context for AES ECB. */
 
-    nrf_crypto_backend_aes_cbc_mac_context_t     cbc_mac_context;       /**< @brief Holds context for CBC-MAC. */
-    nrf_crypto_backend_aes_cmac_context_t        cmac_context;          /**< @brief Holds context for CMAC. */
-    nrf_crypto_backend_aes_cmac_prf128_context_t cmac_prf128_context;   /**< @brief Holds context for CMAC_PRF128. */
+    nrf_crypto_backend_aes_cbc_mac_context_t
+        cbc_mac_context; /**< @brief Holds context for CBC-MAC. */
+    nrf_crypto_backend_aes_cmac_context_t cmac_context; /**< @brief Holds context for CMAC. */
+    nrf_crypto_backend_aes_cmac_prf128_context_t
+        cmac_prf128_context; /**< @brief Holds context for CMAC_PRF128. */
 } nrf_crypto_backend_aes_context_t;
 
 #ifdef __cplusplus

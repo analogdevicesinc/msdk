@@ -27,8 +27,7 @@
 #define MESH_PRV_BR_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "mesh_bearer.h"
@@ -38,24 +37,22 @@ extern "C"
 **************************************************************************************************/
 
 /*! Mesh Provisioning bearer types enumeration */
-enum meshPrvType
-{
-  MESH_PRV_SERVER,  /*!< Provisioner Server */
-  MESH_PRV_CLIENT   /*!< Provisioner Client */
+enum meshPrvType {
+    MESH_PRV_SERVER, /*!< Provisioner Server */
+    MESH_PRV_CLIENT /*!< Provisioner Client */
 };
 
 /*! Mesh Provisioner type. See ::meshPrvType */
 typedef uint8_t meshPrvType_t;
 
 /*! Mesh Provisioning Bearer notification event types enumeration */
-enum meshPrvBrEventTypes
-{
-  MESH_PRV_BR_LINK_OPENED,           /*!< Provisioning bearer link opened */
-  MESH_PRV_BR_LINK_FAILED,           /*!< Provisioning bearer link failed to open */
-  MESH_PRV_BR_LINK_CLOSED_BY_PEER,   /*!< Provisioning bearer link closed by peer */
-  MESH_PRV_BR_SEND_TIMEOUT,          /*!< Provisioning bearer link closed on Tx transaction failure */
-  MESH_PRV_BR_PDU_SENT,              /*!< Provisioning PDU was sent */
-  MESH_PRV_BR_CONN_CLOSED,           /*!< Provisioning bearer GATT connection closed */
+enum meshPrvBrEventTypes {
+    MESH_PRV_BR_LINK_OPENED, /*!< Provisioning bearer link opened */
+    MESH_PRV_BR_LINK_FAILED, /*!< Provisioning bearer link failed to open */
+    MESH_PRV_BR_LINK_CLOSED_BY_PEER, /*!< Provisioning bearer link closed by peer */
+    MESH_PRV_BR_SEND_TIMEOUT, /*!< Provisioning bearer link closed on Tx transaction failure */
+    MESH_PRV_BR_PDU_SENT, /*!< Provisioning PDU was sent */
+    MESH_PRV_BR_CONN_CLOSED, /*!< Provisioning bearer GATT connection closed */
 };
 
 /*! Mesh Bearer notification event type. See ::meshPrvBrEventTypes */
@@ -65,10 +62,9 @@ typedef uint8_t meshPrvBrEvent_t;
 typedef uint8_t meshPrvBrReason_t;
 
 /*! Mesh Bearer Event notification union */
-typedef union meshPrvBrEventParams_tag
-{
-  uint8_t     linkCloseReason;        /*!< Reason for PB link closure */
-  uint8_t     pduSentOpcode;          /*!< Opcode of the PDU that was sent */
+typedef union meshPrvBrEventParams_tag {
+    uint8_t linkCloseReason; /*!< Reason for PB link closure */
+    uint8_t pduSentOpcode; /*!< Opcode of the PDU that was sent */
 } meshPrvBrEventParams_t;
 
 /*************************************************************************************************/
@@ -94,8 +90,8 @@ typedef void (*meshPrvBrPduRecvCback_t)(const uint8_t *pPrvPdu, uint8_t pduLen);
  *  \return    None.
  */
 /*************************************************************************************************/
-typedef void (*meshPrvBrEventNotifyCback_t) (meshPrvBrEvent_t event,
-                                              const meshPrvBrEventParams_t *pEventParams);
+typedef void (*meshPrvBrEventNotifyCback_t)(meshPrvBrEvent_t event,
+                                            const meshPrvBrEventParams_t *pEventParams);
 
 /**************************************************************************************************
   Function Declarations
@@ -138,7 +134,7 @@ void MeshPrvBrRegisterCback(meshPrvBrPduRecvCback_t prvPduRecvCback,
  */
 /*************************************************************************************************/
 void MeshPrvBrEnablePbAdvServer(uint8_t advIfId, uint32_t periodInMs, const uint8_t *pUuid,
-                               uint16_t oobInfoSrc, const uint8_t *pUriData, uint8_t uriLen);
+                                uint16_t oobInfoSrc, const uint8_t *pUriData, uint8_t uriLen);
 
 /*************************************************************************************************/
 /*!
@@ -224,7 +220,7 @@ void MeshPrvBrOpenPbAdvLink(const uint8_t *pUuid);
  *  \return    TRUE if the PDU can be send, FALSE otherwise.
  */
 /*************************************************************************************************/
-bool_t MeshPrvBrSendProvisioningPdu(uint8_t* pPrvPdu, uint8_t pduLen);
+bool_t MeshPrvBrSendProvisioningPdu(uint8_t *pPrvPdu, uint8_t pduLen);
 
 #ifdef __cplusplus
 }

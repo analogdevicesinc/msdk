@@ -111,7 +111,7 @@ bool_t BbBlePeriodicListAdd(uint8_t addrType, uint64_t addr, uint8_t SID);
 /*************************************************************************************************/
 bool_t BbBlePeriodicListRemove(bool_t randAddr, uint64_t addr, uint8_t SID);
 
-/*! \} */    /* BB_API_BLE_WL */
+/*! \} */ /* BB_API_BLE_WL */
 
 #ifdef __cplusplus
 };

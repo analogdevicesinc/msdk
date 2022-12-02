@@ -71,14 +71,12 @@
 extern "C" {
 #endif
 
-
 /**
  * @brief Context type for RNG.
  *
  * @note The actual type depend on the backend in use.
  */
 typedef nrf_crypto_backend_rng_context_t nrf_crypto_rng_context_t;
-
 
 /**
  * @brief Temporary work buffer type for RNG.
@@ -90,7 +88,6 @@ typedef nrf_crypto_backend_rng_context_t nrf_crypto_rng_context_t;
  * @note The actual type depend on the backend in use.
  */
 typedef nrf_crypto_backend_rng_temp_buffer_t nrf_crypto_rng_temp_buffer_t;
-
 
 /**@brief Initialize the random number generator.
  *
@@ -137,9 +134,8 @@ typedef nrf_crypto_backend_rng_temp_buffer_t nrf_crypto_rng_temp_buffer_t;
  *                                              on the stack when using CC310 backend.
  * @retval  NRF_ERROR_CRYPTO_BUSY               RNG is busy. Rerun at a later time.
  */
-ret_code_t nrf_crypto_rng_init(nrf_crypto_rng_context_t       * p_context,
-                               nrf_crypto_rng_temp_buffer_t   * p_temp_buffer);
-
+ret_code_t nrf_crypto_rng_init(nrf_crypto_rng_context_t *p_context,
+                               nrf_crypto_rng_temp_buffer_t *p_temp_buffer);
 
 /**@brief Uninitialize the random number generator.
  *
@@ -150,7 +146,6 @@ ret_code_t nrf_crypto_rng_init(nrf_crypto_rng_context_t       * p_context,
  * @retval  NRF_ERROR_CRYPTO_BUSY                       RNG is busy. Rerun at a later time.
  */
 ret_code_t nrf_crypto_rng_uninit(void);
-
 
 /**@brief Generate random data of given size.
  *
@@ -181,8 +176,7 @@ ret_code_t nrf_crypto_rng_uninit(void);
  *                                                      on the stack when using CC310 backend.
  * @retval  NRF_ERROR_CRYPTO_BUSY                       RNG is busy. Rerun at a later time.
  */
-ret_code_t nrf_crypto_rng_vector_generate(uint8_t * const p_target, size_t size);
-
+ret_code_t nrf_crypto_rng_vector_generate(uint8_t *const p_target, size_t size);
 
 /**@brief Generate a vector of constrained random data of given size, between the specified min
  *        and max values.
@@ -223,11 +217,9 @@ ret_code_t nrf_crypto_rng_vector_generate(uint8_t * const p_target, size_t size)
  *                                                      on the stack when using CC310 backend.
  * @retval  NRF_ERROR_CRYPTO_BUSY                       RNG is busy. Rerun at a later time.
  */
-ret_code_t nrf_crypto_rng_vector_generate_in_range(uint8_t          * const p_target,
-                                                   uint8_t    const * const p_min,
-                                                   uint8_t    const * const p_max,
-                                                   size_t                   size);
-
+ret_code_t nrf_crypto_rng_vector_generate_in_range(uint8_t *const p_target,
+                                                   uint8_t const *const p_min,
+                                                   uint8_t const *const p_max, size_t size);
 
 /**
  * @brief This function is used for reseeding the RNG with additional entropy.
@@ -271,10 +263,8 @@ ret_code_t nrf_crypto_rng_vector_generate_in_range(uint8_t          * const p_ta
  *                                                      on the stack when using CC310 backend.
  * @retval  NRF_ERROR_CRYPTO_BUSY                       RNG is busy. Rerun at a later time.
  */
-ret_code_t nrf_crypto_rng_reseed(nrf_crypto_rng_temp_buffer_t * p_temp_buffer,
-                                 uint8_t                      * p_input_data,
-                                 size_t                         size);
-
+ret_code_t nrf_crypto_rng_reseed(nrf_crypto_rng_temp_buffer_t *p_temp_buffer, uint8_t *p_input_data,
+                                 size_t size);
 
 #ifdef __cplusplus
 }

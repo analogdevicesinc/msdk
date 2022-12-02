@@ -46,20 +46,19 @@
 void HciLeSetConnCteRxParamsCmd(uint16_t connHandle, uint8_t samplingEnable, uint8_t slotDurations,
                                 uint8_t switchPatternLen, uint8_t *pAntennaIDs)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_CONN_CTE_RX_PARAMS,
-                          HCI_LEN_LE_SET_CONN_CTE_RX_PARAMS(switchPatternLen))) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, connHandle);
-    UINT8_TO_BSTREAM(p, samplingEnable);
-    UINT8_TO_BSTREAM(p, slotDurations);
-    UINT8_TO_BSTREAM(p, switchPatternLen);
-    memcpy(p, pAntennaIDs, switchPatternLen);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_CONN_CTE_RX_PARAMS,
+                            HCI_LEN_LE_SET_CONN_CTE_RX_PARAMS(switchPatternLen))) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, connHandle);
+        UINT8_TO_BSTREAM(p, samplingEnable);
+        UINT8_TO_BSTREAM(p, slotDurations);
+        UINT8_TO_BSTREAM(p, switchPatternLen);
+        memcpy(p, pAntennaIDs, switchPatternLen);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -77,19 +76,18 @@ void HciLeSetConnCteRxParamsCmd(uint16_t connHandle, uint8_t samplingEnable, uin
 void HciLeSetConnCteTxParamsCmd(uint16_t connHandle, uint8_t cteTypeBits, uint8_t switchPatternLen,
                                 uint8_t *pAntennaIDs)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_CONN_CTE_TX_PARAMS,
-                          HCI_LEN_LE_SET_CONN_CTE_TX_PARAMS(switchPatternLen))) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, connHandle);
-    UINT8_TO_BSTREAM(p, cteTypeBits);
-    UINT8_TO_BSTREAM(p, switchPatternLen);
-    memcpy(p, pAntennaIDs, switchPatternLen);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_CONN_CTE_TX_PARAMS,
+                            HCI_LEN_LE_SET_CONN_CTE_TX_PARAMS(switchPatternLen))) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, connHandle);
+        UINT8_TO_BSTREAM(p, cteTypeBits);
+        UINT8_TO_BSTREAM(p, switchPatternLen);
+        memcpy(p, pAntennaIDs, switchPatternLen);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -108,20 +106,19 @@ void HciLeSetConnCteTxParamsCmd(uint16_t connHandle, uint8_t cteTypeBits, uint8_
 void HciLeConnCteReqEnableCmd(uint16_t connHandle, uint8_t enable, uint16_t cteReqInt,
                               uint8_t reqCteLen, uint8_t reqCteType)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CONN_CTE_REQ_ENABLE,
-                          HCI_LEN_LE_CONN_CTE_REQ_ENABLE)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, connHandle);
-    UINT8_TO_BSTREAM(p, enable);
-    UINT16_TO_BSTREAM(p, cteReqInt);
-    UINT8_TO_BSTREAM(p, reqCteLen);
-    UINT8_TO_BSTREAM(p, reqCteType);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CONN_CTE_REQ_ENABLE, HCI_LEN_LE_CONN_CTE_REQ_ENABLE)) !=
+        NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, connHandle);
+        UINT8_TO_BSTREAM(p, enable);
+        UINT16_TO_BSTREAM(p, cteReqInt);
+        UINT8_TO_BSTREAM(p, reqCteLen);
+        UINT8_TO_BSTREAM(p, reqCteType);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -136,17 +133,16 @@ void HciLeConnCteReqEnableCmd(uint16_t connHandle, uint8_t enable, uint16_t cteR
 /*************************************************************************************************/
 void HciLeConnCteRspEnableCmd(uint16_t connHandle, uint8_t enable)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CONN_CTE_RSP_ENABLE,
-                          HCI_LEN_LE_CONN_CTE_RSP_ENABLE)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, connHandle);
-    UINT8_TO_BSTREAM(p, enable);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CONN_CTE_RSP_ENABLE, HCI_LEN_LE_CONN_CTE_RSP_ENABLE)) !=
+        NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, connHandle);
+        UINT8_TO_BSTREAM(p, enable);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -158,10 +154,10 @@ void HciLeConnCteRspEnableCmd(uint16_t connHandle, uint8_t enable)
 /*************************************************************************************************/
 void HciLeReadAntennaInfoCmd(void)
 {
-  uint8_t *pBuf;
+    uint8_t *pBuf;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_ANTENNA_INFO, HCI_LEN_LE_READ_ANTENNA_INFO)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_READ_ANTENNA_INFO, HCI_LEN_LE_READ_ANTENNA_INFO)) !=
+        NULL) {
+        hciCmdSend(pBuf);
+    }
 }

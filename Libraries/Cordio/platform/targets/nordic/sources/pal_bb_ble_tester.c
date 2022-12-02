@@ -51,20 +51,20 @@ extern bool_t bbTxAccAddrShiftInc;
 extern bool_t invalidateAccAddrOnceRx;
 extern bool_t invalidateAccAddrOnceTx;
 
-#define NSEC_PER_USEC             1000    /* Convert Nanoseconds to Microseconds */
+#define NSEC_PER_USEC 1000 /* Convert Nanoseconds to Microseconds */
 /* adjust prescaler for the clock rate */
-#if   (BB_CLK_RATE_HZ == 1000000)
-  #define TICKS_PER_USEC    1
+#if (BB_CLK_RATE_HZ == 1000000)
+#define TICKS_PER_USEC 1
 #elif (BB_CLK_RATE_HZ == 2000000)
-  #define TICKS_PER_USEC    2
+#define TICKS_PER_USEC 2
 #elif (BB_CLK_RATE_HZ == 4000000)
-  #define TICKS_PER_USEC    4
+#define TICKS_PER_USEC 4
 #elif (BB_CLK_RATE_HZ == 8000000)
-  #define TICKS_PER_USEC    8
+#define TICKS_PER_USEC 8
 #elif (BB_CLK_RATE_HZ == 32768)
-  #define TICKS_PER_USEC    1
+#define TICKS_PER_USEC 1
 #else
-  #error "Unsupported clock rate."
+#error "Unsupported clock rate."
 #endif
 
 /*************************************************************************************************/
@@ -79,8 +79,8 @@ extern bool_t invalidateAccAddrOnceTx;
 /*************************************************************************************************/
 void PalBbTesterAdjTxTifsNs(int16_t adjNs)
 {
-  /* set adjustment global variable the is added to TIFS transmit */
-  bbTxTifsAdj = adjNs * TICKS_PER_USEC / NSEC_PER_USEC;
+    /* set adjustment global variable the is added to TIFS transmit */
+    bbTxTifsAdj = adjNs * TICKS_PER_USEC / NSEC_PER_USEC;
 }
 
 /*************************************************************************************************/
@@ -100,8 +100,8 @@ void PalBbTesterAdjTxTifsNs(int16_t adjNs)
 /*************************************************************************************************/
 void PalBbTesterSetModifyTxPktTrigger(uint16_t hdrMask, uint16_t hdrValue)
 {
-  bbModifyTxHdrMask = hdrMask;
-  bbModifyTxHdrValue = hdrValue;
+    bbModifyTxHdrMask = hdrMask;
+    bbModifyTxHdrValue = hdrValue;
 }
 
 /*************************************************************************************************/
@@ -117,18 +117,15 @@ void PalBbTesterSetModifyTxPktTrigger(uint16_t hdrMask, uint16_t hdrValue)
 /*************************************************************************************************/
 void PalBbTesterSetInvalidCrcInit(uint64_t chanMask, uint32_t adjMask, bool_t forRx)
 {
-  if (forRx)
-  {
-    bbRxCrcInitInvalidChanMask = chanMask;
-    bbRxCrcInitInvalidAdjMask = adjMask;
-    bbRxCrcInitInvalidStep = 0;
-  }
-  else
-  {
-    bbTxCrcInitInvalidChanMask = chanMask;
-    bbTxCrcInitInvalidAdjMask = adjMask;
-    bbTxCrcInitInvalidStep = 0;
-  }
+    if (forRx) {
+        bbRxCrcInitInvalidChanMask = chanMask;
+        bbRxCrcInitInvalidAdjMask = adjMask;
+        bbRxCrcInitInvalidStep = 0;
+    } else {
+        bbTxCrcInitInvalidChanMask = chanMask;
+        bbTxCrcInitInvalidAdjMask = adjMask;
+        bbTxCrcInitInvalidStep = 0;
+    }
 }
 
 /*************************************************************************************************/
@@ -143,27 +140,24 @@ void PalBbTesterSetInvalidCrcInit(uint64_t chanMask, uint32_t adjMask, bool_t fo
  *  Force the receiver to receiver a miss a packet up to adjCount packets.
  */
 /*************************************************************************************************/
-void PalBbTesterSetInvalidAccessAddress(uint64_t chanMask, uint32_t adjMask, bool_t shiftMask, bool_t forRx)
+void PalBbTesterSetInvalidAccessAddress(uint64_t chanMask, uint32_t adjMask, bool_t shiftMask,
+                                        bool_t forRx)
 {
-  if (forRx)
-  {
-    bbRxAccAddrInvalidChanMask = chanMask;
-    bbRxAccAddrInvalidAdjMask = adjMask;
-    bbRxAccAddrInvalidStep = 0;
-    bbRxAccAddrShiftMask = shiftMask;
-  }
-  else
-  {
-    bbTxAccAddrInvalidChanMask = chanMask;
-    bbTxAccAddrInvalidAdjMask = adjMask;
-    bbTxAccAddrInvalidStep = 0;
-    bbTxAccAddrShiftMask = shiftMask;
-    if (bbTxAccAddrShiftMask == TRUE)
-    {
-      bbTxAccAddrInvalidStep = 1;
-      bbTxAccAddrShiftInc = TRUE;
+    if (forRx) {
+        bbRxAccAddrInvalidChanMask = chanMask;
+        bbRxAccAddrInvalidAdjMask = adjMask;
+        bbRxAccAddrInvalidStep = 0;
+        bbRxAccAddrShiftMask = shiftMask;
+    } else {
+        bbTxAccAddrInvalidChanMask = chanMask;
+        bbTxAccAddrInvalidAdjMask = adjMask;
+        bbTxAccAddrInvalidStep = 0;
+        bbTxAccAddrShiftMask = shiftMask;
+        if (bbTxAccAddrShiftMask == TRUE) {
+            bbTxAccAddrInvalidStep = 1;
+            bbTxAccAddrShiftInc = TRUE;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -177,7 +171,7 @@ void PalBbTesterSetInvalidAccessAddress(uint64_t chanMask, uint32_t adjMask, boo
 /*************************************************************************************************/
 void PalBbTesterEnablePduFilterBypass(bool_t enable)
 {
-  bbBlePduFiltEnableBypass = enable;
+    bbBlePduFiltEnableBypass = enable;
 }
 
 /*************************************************************************************************/
@@ -189,12 +183,9 @@ void PalBbTesterEnablePduFilterBypass(bool_t enable)
 /*************************************************************************************************/
 void PalBbTesterInvalidateNextAccAddr(bool_t forRx)
 {
-  if (forRx)
-  {
-    invalidateAccAddrOnceRx = TRUE;
-  }
-  else
-  {
-    invalidateAccAddrOnceTx = TRUE;
-  }
+    if (forRx) {
+        invalidateAccAddrOnceRx = TRUE;
+    } else {
+        invalidateAccAddrOnceTx = TRUE;
+    }
 }

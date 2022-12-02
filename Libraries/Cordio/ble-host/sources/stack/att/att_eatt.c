@@ -43,21 +43,21 @@
 **************************************************************************************************/
 
 /* EATT PSM identifier */
-#define EATT_PSM                        0x0027
+#define EATT_PSM 0x0027
 
 /* Initial number of credits on EATT L2CAP COC channels */
-#define EATT_INIT_CREDITS               1
+#define EATT_INIT_CREDITS 1
 
 /* EATT Connect state machine states */
 enum {
-  EATT_CONN_STATE_IDLE = 0,             /* Idle state */
-  EATT_CONN_STATE_INITIATING,           /* Initiating connections state */
-  EATT_CONN_STATE_RECONFIG,             /* Reconfiguring MTU/MPS state */
-  EATT_CONN_STATE_ACCEPTING             /* Accepting connections state */
+    EATT_CONN_STATE_IDLE = 0, /* Idle state */
+    EATT_CONN_STATE_INITIATING, /* Initiating connections state */
+    EATT_CONN_STATE_RECONFIG, /* Reconfiguring MTU/MPS state */
+    EATT_CONN_STATE_ACCEPTING /* Accepting connections state */
 };
 
 /* EATT Connect state machine events */
-#define EATT_BACKOFF_EVT                EATT_MSG_START
+#define EATT_BACKOFF_EVT EATT_MSG_START
 
 /**************************************************************************************************
   Local Variables
@@ -89,19 +89,19 @@ extern attCb_t attCb;
 /*************************************************************************************************/
 static wsfTimerTicks_t eattBackoffPeriod(uint16_t connInterval)
 {
-  uint16_t randMs;
-  uint16_t minInterval = (uint16_t) (2 * 1.25 * connInterval);
+    uint16_t randMs;
+    uint16_t minInterval = (uint16_t)(2 * 1.25 * connInterval);
 
-  /* Get a random value */
-  SecRand((uint8_t*) &randMs, sizeof(randMs));
+    /* Get a random value */
+    SecRand((uint8_t *)&randMs, sizeof(randMs));
 
-  /* Limit random value to 1024ms */
-  randMs &= 0x3FF;
+    /* Limit random value to 1024ms */
+    randMs &= 0x3FF;
 
-  /* Ensure the random time is greater than 2x the connection interval */
-  randMs = (randMs > minInterval) ? randMs : randMs + minInterval;
+    /* Ensure the random time is greater than 2x the connection interval */
+    randMs = (randMs > minInterval) ? randMs : randMs + minInterval;
 
-  return randMs;
+    return randMs;
 }
 
 /*************************************************************************************************/
@@ -115,9 +115,9 @@ static wsfTimerTicks_t eattBackoffPeriod(uint16_t connInterval)
 /*************************************************************************************************/
 eattConnCb_t *eattGetConnCb(dmConnId_t connId)
 {
-  WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
+    WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
 
-  return &eattCb.ccb[connId - 1];
+    return &eattCb.ccb[connId - 1];
 }
 
 /*************************************************************************************************/
@@ -132,10 +132,10 @@ eattConnCb_t *eattGetConnCb(dmConnId_t connId)
 /*************************************************************************************************/
 eattChanCb_t *eattGetChanCbBySlot(dmConnId_t connId, uint8_t slot)
 {
-  WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
-  WSF_ASSERT((slot > 0) && (slot <= EATT_CONN_CHAN_MAX));
+    WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
+    WSF_ASSERT((slot > 0) && (slot <= EATT_CONN_CHAN_MAX));
 
-  return &eattCb.ccb[connId - 1].pChanCb[slot - 1];
+    return &eattCb.ccb[connId - 1].pChanCb[slot - 1];
 }
 
 /*************************************************************************************************/
@@ -150,21 +150,18 @@ eattChanCb_t *eattGetChanCbBySlot(dmConnId_t connId, uint8_t slot)
 /*************************************************************************************************/
 static eattChanCb_t *eattGetChanCbByCid(dmConnId_t connId, uint16_t cid)
 {
-  eattConnCb_t *pConnCb = eattGetConnCb(connId);
-  uint8_t      i;
+    eattConnCb_t *pConnCb = eattGetConnCb(connId);
+    uint8_t i;
 
-  if (pConnCb)
-  {
-    for (i = 0; i < EATT_CONN_CHAN_MAX; i++)
-    {
-      if (pConnCb->pChanCb[i].cid == cid)
-      {
-        return &pConnCb->pChanCb[i];
-      }
+    if (pConnCb) {
+        for (i = 0; i < EATT_CONN_CHAN_MAX; i++) {
+            if (pConnCb->pChanCb[i].cid == cid) {
+                return &pConnCb->pChanCb[i];
+            }
+        }
     }
-  }
 
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -179,26 +176,22 @@ static eattChanCb_t *eattGetChanCbByCid(dmConnId_t connId, uint16_t cid)
 /*************************************************************************************************/
 uint8_t eattGetSlotId(dmConnId_t connId, uint16_t cid)
 {
-  eattConnCb_t *pCcb = eattGetConnCb(connId);
-  uint8_t      i;
+    eattConnCb_t *pCcb = eattGetConnCb(connId);
+    uint8_t i;
 
-  if (cid == L2C_CID_ATT)
-  {
-    return ATT_BEARER_SLOT_ID;
-  }
-
-  if (pCcb)
-  {
-    for (i = 0; i < EATT_CONN_CHAN_MAX; i++)
-    {
-      if (pCcb->pChanCb[i].cid == cid)
-      {
-        return i + 1;
-      }
+    if (cid == L2C_CID_ATT) {
+        return ATT_BEARER_SLOT_ID;
     }
-  }
 
-  return ATT_BEARER_SLOT_INVALID;
+    if (pCcb) {
+        for (i = 0; i < EATT_CONN_CHAN_MAX; i++) {
+            if (pCcb->pChanCb[i].cid == cid) {
+                return i + 1;
+            }
+        }
+    }
+
+    return ATT_BEARER_SLOT_INVALID;
 }
 
 /*************************************************************************************************/
@@ -212,21 +205,18 @@ uint8_t eattGetSlotId(dmConnId_t connId, uint16_t cid)
 /*************************************************************************************************/
 static uint8_t eattGetUnusedSlot(dmConnId_t connId)
 {
-  eattConnCb_t *pCcb = eattGetConnCb(connId);
-  uint8_t      i;
+    eattConnCb_t *pCcb = eattGetConnCb(connId);
+    uint8_t i;
 
-  if (pCcb)
-  {
-    for (i = 0; i < EATT_CONN_CHAN_MAX; i++)
-    {
-      if (pCcb->pChanCb[i].inUse == FALSE)
-      {
-        return i + 1;
-      }
+    if (pCcb) {
+        for (i = 0; i < EATT_CONN_CHAN_MAX; i++) {
+            if (pCcb->pChanCb[i].inUse == FALSE) {
+                return i + 1;
+            }
+        }
     }
-  }
 
-  return ATT_BEARER_SLOT_INVALID;
+    return ATT_BEARER_SLOT_INVALID;
 }
 
 /*************************************************************************************************/
@@ -241,16 +231,15 @@ static uint8_t eattGetUnusedSlot(dmConnId_t connId)
 /*************************************************************************************************/
 static void eattUpdateMtu(dmConnId_t connId, uint8_t slot)
 {
-  eattChanCb_t *pChanCb = eattGetChanCbBySlot(connId, slot);
+    eattChanCb_t *pChanCb = eattGetChanCbBySlot(connId, slot);
 
-  if (pChanCb)
-  {
-    /* The peer MTU must be greater than or equal to ATT_DEFAULT_MTU.  */
-    uint16_t peerMtu = WSF_MAX(ATT_DEFAULT_MTU, pChanCb->peerMtu);
+    if (pChanCb) {
+        /* The peer MTU must be greater than or equal to ATT_DEFAULT_MTU.  */
+        uint16_t peerMtu = WSF_MAX(ATT_DEFAULT_MTU, pChanCb->peerMtu);
 
-    /* Set the ATT mtu to the minimum to the local and peer MTU */
-    attCb.ccb[connId-1].sccb[slot].mtu = WSF_MIN(pChanCb->localMtu, peerMtu);
-  }
+        /* Set the ATT mtu to the minimum to the local and peer MTU */
+        attCb.ccb[connId - 1].sccb[slot].mtu = WSF_MIN(pChanCb->localMtu, peerMtu);
+    }
 }
 
 /*************************************************************************************************/
@@ -265,17 +254,16 @@ static void eattUpdateMtu(dmConnId_t connId, uint8_t slot)
 /*************************************************************************************************/
 static uint8_t eattL2cCocAcceptCback(dmConnId_t connId, uint8_t numChans)
 {
-  eattConnCb_t *pCcb = eattGetConnCb(connId);
+    eattConnCb_t *pCcb = eattGetConnCb(connId);
 
-  if ((pCcb->state == EATT_CONN_STATE_INITIATING) || (pCcb->state == EATT_CONN_STATE_RECONFIG))
-  {
-    // Reject all requests while busy connecting and configuring channels
-    return 0;
-  }
+    if ((pCcb->state == EATT_CONN_STATE_INITIATING) || (pCcb->state == EATT_CONN_STATE_RECONFIG)) {
+        // Reject all requests while busy connecting and configuring channels
+        return 0;
+    }
 
-  // Limit the number of channels to value define by application in pEattCfg->numChans 
-  uint8_t maxChans = pEattCfg->numChans - EattGetNumChannelsInUse(connId);
-  return (maxChans > numChans) ? maxChans : numChans;
+    // Limit the number of channels to value define by application in pEattCfg->numChans
+    uint8_t maxChans = pEattCfg->numChans - EattGetNumChannelsInUse(connId);
+    return (maxChans > numChans) ? maxChans : numChans;
 }
 
 /*************************************************************************************************/
@@ -289,48 +277,41 @@ static uint8_t eattL2cCocAcceptCback(dmConnId_t connId, uint8_t numChans)
 /*************************************************************************************************/
 static void eattReconfigureNextChannels(dmConnId_t connId)
 {
-  eattConnCb_t *pConnCb = eattGetConnCb(connId);
-  
-  if (pConnCb)
-  {
-    uint16_t chanList[L2C_MAX_EN_CHAN];
-    uint8_t  numChan = 0;
-    uint8_t  i = 0;
+    eattConnCb_t *pConnCb = eattGetConnCb(connId);
 
-    while ((i < EATT_CONN_CHAN_MAX) && (numChan < L2C_MAX_EN_CHAN))
-    {
-      eattChanCb_t *pChanCb = eattGetChanCbBySlot(connId, i + 1);
+    if (pConnCb) {
+        uint16_t chanList[L2C_MAX_EN_CHAN];
+        uint8_t numChan = 0;
+        uint8_t i = 0;
 
-      if (pChanCb->inUse)
-      {
-        if ((pChanCb->localMtu <= pConnCb->pendingMtu) && (pChanCb->localMps <= pConnCb->pendingMps))
-        {
-          chanList[numChan++] = pChanCb->cid;
+        while ((i < EATT_CONN_CHAN_MAX) && (numChan < L2C_MAX_EN_CHAN)) {
+            eattChanCb_t *pChanCb = eattGetChanCbBySlot(connId, i + 1);
+
+            if (pChanCb->inUse) {
+                if ((pChanCb->localMtu <= pConnCb->pendingMtu) &&
+                    (pChanCb->localMps <= pConnCb->pendingMps)) {
+                    chanList[numChan++] = pChanCb->cid;
+                }
+            }
+
+            i++;
         }
-      }
 
-      i++;
-    }
+        if (numChan > 0) {
+            bool_t success = L2cCocEnhancedReconfigReq(connId, pConnCb->pendingMtu,
+                                                       pConnCb->pendingMps, numChan, chanList);
 
-    if (numChan > 0)
-    {
-      bool_t success = L2cCocEnhancedReconfigReq(connId, pConnCb->pendingMtu, pConnCb->pendingMps,
-                                                 numChan, chanList);
-
-      if (!success)
-      {
-        /* Reconfigure failed, notify callback */
-        pConnCb->state = EATT_CONN_STATE_IDLE;
-        eattExecCallback(connId, ATT_EATT_RECONFIG_CMPL_IND, ATT_ERR_RESOURCES);
-      }
+            if (!success) {
+                /* Reconfigure failed, notify callback */
+                pConnCb->state = EATT_CONN_STATE_IDLE;
+                eattExecCallback(connId, ATT_EATT_RECONFIG_CMPL_IND, ATT_ERR_RESOURCES);
+            }
+        } else {
+            /* Reconfigure complete. */
+            pConnCb->state = EATT_CONN_STATE_IDLE;
+            eattExecCallback(connId, ATT_EATT_RECONFIG_CMPL_IND, ATT_SUCCESS);
+        }
     }
-    else
-    {
-      /* Reconfigure complete. */
-      pConnCb->state = EATT_CONN_STATE_IDLE;
-      eattExecCallback(connId, ATT_EATT_RECONFIG_CMPL_IND, ATT_SUCCESS);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -344,32 +325,29 @@ static void eattReconfigureNextChannels(dmConnId_t connId)
 /*************************************************************************************************/
 static void eattReqNextChannels(dmConnId_t connId)
 {
-  bool_t        success;
-  eattConnCb_t  *pConnCb = eattGetConnCb(connId);
-  uint8_t       numChans = pEattCfg->numChans - EattGetNumChannelsInUse(connId);
-  
-  numChans = (numChans > L2C_MAX_EN_CHAN) ? L2C_MAX_EN_CHAN : numChans;
-  
-  EATT_TRACE_INFO1("eattReqNextChannels: numChans: %d", numChans);
+    bool_t success;
+    eattConnCb_t *pConnCb = eattGetConnCb(connId);
+    uint8_t numChans = pEattCfg->numChans - EattGetNumChannelsInUse(connId);
 
-  if (numChans > 0)
-  {
-    /* Request L2CAP enhanced channels */
-    success = L2cCocEnhancedConnectReq(connId, eattCb.cocRegId, EATT_PSM, EATT_INIT_CREDITS, numChans);
+    numChans = (numChans > L2C_MAX_EN_CHAN) ? L2C_MAX_EN_CHAN : numChans;
 
-    if (!success)
-    {
-      /* Connect failed, notify callback */
-      pConnCb->state = EATT_CONN_STATE_IDLE;
-      eattExecCallback(connId, ATT_EATT_CONN_CMPL_IND, ATT_ERR_RESOURCES);
+    EATT_TRACE_INFO1("eattReqNextChannels: numChans: %d", numChans);
+
+    if (numChans > 0) {
+        /* Request L2CAP enhanced channels */
+        success = L2cCocEnhancedConnectReq(connId, eattCb.cocRegId, EATT_PSM, EATT_INIT_CREDITS,
+                                           numChans);
+
+        if (!success) {
+            /* Connect failed, notify callback */
+            pConnCb->state = EATT_CONN_STATE_IDLE;
+            eattExecCallback(connId, ATT_EATT_CONN_CMPL_IND, ATT_ERR_RESOURCES);
+        }
+    } else {
+        /* No more channels to create. */
+        pConnCb->state = EATT_CONN_STATE_IDLE;
+        eattExecCallback(connId, ATT_EATT_CONN_CMPL_IND, ATT_SUCCESS);
     }
-  }
-  else
-  {
-    /* No more channels to create. */
-    pConnCb->state = EATT_CONN_STATE_IDLE;
-    eattExecCallback(connId, ATT_EATT_CONN_CMPL_IND, ATT_SUCCESS);
-  }
 }
 
 /*************************************************************************************************/
@@ -383,82 +361,65 @@ static void eattReqNextChannels(dmConnId_t connId)
 /*************************************************************************************************/
 static void eattL2cEnChanInd(l2cCocEnConnectInd_t *pMsg)
 {
-  dmConnId_t    connId = (dmConnId_t) pMsg->hdr.param;
-  eattConnCb_t  *pCcb = eattGetConnCb(connId);
-  uint8_t       i;
+    dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
+    eattConnCb_t *pCcb = eattGetConnCb(connId);
+    uint8_t i;
 
-  if (pCcb)
-  {
-    if (pMsg->req && (pCcb->state == EATT_CONN_STATE_INITIATING))
-    {
-      /* Shouldn't happen */
-      WSF_ASSERT(0);
-    }
+    if (pCcb) {
+        if (pMsg->req && (pCcb->state == EATT_CONN_STATE_INITIATING)) {
+            /* Shouldn't happen */
+            WSF_ASSERT(0);
+        }
 
-    /* Check status */
-    if ((pMsg->hdr.status == L2C_CONN_SUCCESS) || (pMsg->hdr.status == L2C_CONN_FAIL_RES) ||
-        (pMsg->hdr.status == L2C_CONN_FAIL_INVALID_SCID) || (pMsg->hdr.status == L2C_CONN_FAIL_ALLOCATED_SCID))
-    {
-      /* Store connection identifiers */
-      for (i = 0; i < L2C_MAX_EN_CHAN; i++)
-      {
-        if (pMsg->cidList[i])
-        {
-          uint8_t slot = eattGetUnusedSlot(connId);
+        /* Check status */
+        if ((pMsg->hdr.status == L2C_CONN_SUCCESS) || (pMsg->hdr.status == L2C_CONN_FAIL_RES) ||
+            (pMsg->hdr.status == L2C_CONN_FAIL_INVALID_SCID) ||
+            (pMsg->hdr.status == L2C_CONN_FAIL_ALLOCATED_SCID)) {
+            /* Store connection identifiers */
+            for (i = 0; i < L2C_MAX_EN_CHAN; i++) {
+                if (pMsg->cidList[i]) {
+                    uint8_t slot = eattGetUnusedSlot(connId);
 
-          if (slot != ATT_BEARER_SLOT_INVALID)
-          {
-            eattChanCb_t *pChanCb = eattGetChanCbBySlot(connId, slot);
+                    if (slot != ATT_BEARER_SLOT_INVALID) {
+                        eattChanCb_t *pChanCb = eattGetChanCbBySlot(connId, slot);
 
-            if (pChanCb)
-            {
-              pChanCb->cid = pMsg->cidList[i];
-              pChanCb->peerMtu = pMsg->mtu;
-              pChanCb->localMtu = pEattCfg->mtu;
-              pChanCb->priority = pEattCfg->pPriorityTbl[slot - 1];
-              pChanCb->inUse = TRUE;
+                        if (pChanCb) {
+                            pChanCb->cid = pMsg->cidList[i];
+                            pChanCb->peerMtu = pMsg->mtu;
+                            pChanCb->localMtu = pEattCfg->mtu;
+                            pChanCb->priority = pEattCfg->pPriorityTbl[slot - 1];
+                            pChanCb->inUse = TRUE;
 
-              eattUpdateMtu(connId, slot);
+                            eattUpdateMtu(connId, slot);
+                        } else {
+                            /* Shouldn't happen */
+                            WSF_ASSERT(0);
+                        }
+                    }
+                }
             }
-            else
-            {
-              /* Shouldn't happen */
-              WSF_ASSERT(0);
-            }
-          }
-        }
-      }
 
-      /* When initiating, check if more channels need to be created */
-      if (pCcb->state == EATT_CONN_STATE_INITIATING)
-      {
-        if (pMsg->hdr.status != L2C_CONN_FAIL_RES)
-        {
-          eattReqNextChannels((dmConnId_t)pMsg->hdr.param);
+            /* When initiating, check if more channels need to be created */
+            if (pCcb->state == EATT_CONN_STATE_INITIATING) {
+                if (pMsg->hdr.status != L2C_CONN_FAIL_RES) {
+                    eattReqNextChannels((dmConnId_t)pMsg->hdr.param);
+                } else {
+                    /* Peer will not accept any more channels */
+                    pCcb->state = EATT_CONN_STATE_IDLE;
+                }
+            } else {
+                if (EattGetNumChannelsInUse(connId) == pEattCfg->numChans) {
+                    /* Max channels reached. */
+                    pCcb->state = EATT_CONN_STATE_IDLE;
+                    WsfTimerStop(&pCcb->backoffTimer);
+                }
+            }
+        } else {
+            /* Peer cannot accept more channels. */
+            pCcb->state = EATT_CONN_STATE_IDLE;
+            eattExecCallback(connId, ATT_EATT_CONN_CMPL_IND, ATT_SUCCESS);
         }
-        else
-        {
-          /* Peer will not accept any more channels */
-          pCcb->state = EATT_CONN_STATE_IDLE;
-        }
-      }
-      else
-      {
-        if (EattGetNumChannelsInUse(connId) == pEattCfg->numChans)
-        {
-          /* Max channels reached. */
-          pCcb->state = EATT_CONN_STATE_IDLE;
-          WsfTimerStop(&pCcb->backoffTimer);
-        }
-      }
     }
-    else
-    {
-      /* Peer cannot accept more channels. */
-      pCcb->state = EATT_CONN_STATE_IDLE;
-      eattExecCallback(connId, ATT_EATT_CONN_CMPL_IND, ATT_SUCCESS);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -472,42 +433,34 @@ static void eattL2cEnChanInd(l2cCocEnConnectInd_t *pMsg)
 /*************************************************************************************************/
 static void eattL2cEnReconfigInd(l2cCocEnConnectInd_t *pMsg)
 {
-  dmConnId_t    connId = (dmConnId_t) pMsg->hdr.param;
-  eattConnCb_t  *pConnCb = eattGetConnCb(connId);
-  uint8_t       i;
+    dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
+    eattConnCb_t *pConnCb = eattGetConnCb(connId);
+    uint8_t i;
 
-  if (pConnCb)
-  {
-    for (i = 0; i < L2C_MAX_EN_CHAN; i++)
-    {
-      if (pMsg->cidList[i])
-      {
-        eattChanCb_t *pChanCb = eattGetChanCbByCid(connId, pMsg->cidList[i]);
+    if (pConnCb) {
+        for (i = 0; i < L2C_MAX_EN_CHAN; i++) {
+            if (pMsg->cidList[i]) {
+                eattChanCb_t *pChanCb = eattGetChanCbByCid(connId, pMsg->cidList[i]);
 
-        if (pChanCb)
-        {
-          if (pMsg->req)
-          {
-            /* The peer changed their MTU */
-            pChanCb->peerMtu = pMsg->mtu;
-          }
-          else
-          {
-            pChanCb->localMtu = pConnCb->pendingMtu;
-            pChanCb->localMps = pConnCb->pendingMps;
-          }
+                if (pChanCb) {
+                    if (pMsg->req) {
+                        /* The peer changed their MTU */
+                        pChanCb->peerMtu = pMsg->mtu;
+                    } else {
+                        pChanCb->localMtu = pConnCb->pendingMtu;
+                        pChanCb->localMps = pConnCb->pendingMps;
+                    }
 
-          eattUpdateMtu(connId, i + 1);
+                    eattUpdateMtu(connId, i + 1);
+                }
+            }
         }
-      }
-    }
 
-    if (!pMsg->req)
-    {
-      /* If this was a response, send the next reconfiguration */
-      eattReconfigureNextChannels(connId);
+        if (!pMsg->req) {
+            /* If this was a response, send the next reconfiguration */
+            eattReconfigureNextChannels(connId);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -521,21 +474,19 @@ static void eattL2cEnReconfigInd(l2cCocEnConnectInd_t *pMsg)
 /*************************************************************************************************/
 static void eattL2cDataInd(l2cCocDataInd_t *pMsg)
 {
-  /* parse PDU type */
-  uint8_t pduType = *pMsg->pData;
+    /* parse PDU type */
+    uint8_t pduType = *pMsg->pData;
 
-  /* if from server */
-  if ((pduType & ATT_PDU_MASK_SERVER) != 0)
-  {
-    /* call client data callback */
-    (*attCb.pEnClient->l2cCocData)((l2cCocEvt_t*) pMsg);
-  }
-  /* else from client */
-  else
-  {
-    /* call server data callback */
-    (*attCb.pEnServer->l2cCocData)((l2cCocEvt_t*) pMsg);
-  }
+    /* if from server */
+    if ((pduType & ATT_PDU_MASK_SERVER) != 0) {
+        /* call client data callback */
+        (*attCb.pEnClient->l2cCocData)((l2cCocEvt_t *)pMsg);
+    }
+    /* else from client */
+    else {
+        /* call server data callback */
+        (*attCb.pEnServer->l2cCocData)((l2cCocEvt_t *)pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -549,40 +500,33 @@ static void eattL2cDataInd(l2cCocDataInd_t *pMsg)
 /*************************************************************************************************/
 static void eattL2cDataCnf(l2cCocDataCnf_t *pMsg)
 {
-  attCcb_t *pCcb = attCcbByConnId((dmConnId_t) pMsg->hdr.param);
+    attCcb_t *pCcb = attCcbByConnId((dmConnId_t)pMsg->hdr.param);
 
-  if (pCcb)
-  {
-    uint8_t slot = eattGetSlotId((dmConnId_t) pMsg->hdr.param, pMsg->cid);
+    if (pCcb) {
+        uint8_t slot = eattGetSlotId((dmConnId_t)pMsg->hdr.param, pMsg->cid);
 
-    if (slot != ATT_BEARER_SLOT_INVALID)
-    {
-      /* verify connection is open */
-      if (pCcb && pCcb->connId != DM_CONN_ID_NONE)
-      {
-        if (pMsg->hdr.event == L2C_CTRL_FLOW_DISABLE_IND)
-        {
-          /* flow disabled */
-          pCcb->sccb[slot].control |= ATT_CCB_STATUS_FLOW_DISABLED;
+        if (slot != ATT_BEARER_SLOT_INVALID) {
+            /* verify connection is open */
+            if (pCcb && pCcb->connId != DM_CONN_ID_NONE) {
+                if (pMsg->hdr.event == L2C_CTRL_FLOW_DISABLE_IND) {
+                    /* flow disabled */
+                    pCcb->sccb[slot].control |= ATT_CCB_STATUS_FLOW_DISABLED;
+                } else {
+                    /* flow enabled */
+                    pCcb->sccb[slot].control &= ~ATT_CCB_STATUS_FLOW_DISABLED;
+
+                    /* call server control callback */
+                    (*attCb.pEnClient->l2cCocCnf)((l2cCocEvt_t *)pMsg);
+
+                    /* check flow again; could be changed recursively */
+                    if (!(pCcb->sccb[slot].control & ATT_CCB_STATUS_FLOW_DISABLED)) {
+                        /* call client control callback */
+                        (*attCb.pEnClient->l2cCocCnf)((l2cCocEvt_t *)pMsg);
+                    }
+                }
+            }
         }
-        else
-        {
-          /* flow enabled */
-          pCcb->sccb[slot].control &= ~ATT_CCB_STATUS_FLOW_DISABLED;
-
-          /* call server control callback */
-          (*attCb.pEnClient->l2cCocCnf)((l2cCocEvt_t*) pMsg);
-
-          /* check flow again; could be changed recursively */
-          if (!(pCcb->sccb[slot].control & ATT_CCB_STATUS_FLOW_DISABLED))
-          {
-            /* call client control callback */
-            (*attCb.pEnClient->l2cCocCnf)((l2cCocEvt_t*) pMsg);
-          }
-        }
-      }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -596,12 +540,11 @@ static void eattL2cDataCnf(l2cCocDataCnf_t *pMsg)
 /*************************************************************************************************/
 static void eattL2cDisconnectInd(l2cCocDisconnectInd_t *pMsg)
 {
-  eattChanCb_t *pCcb = eattGetChanCbByCid((dmConnId_t) pMsg->hdr.param, pMsg->cid);
+    eattChanCb_t *pCcb = eattGetChanCbByCid((dmConnId_t)pMsg->hdr.param, pMsg->cid);
 
-  if (pCcb)
-  {
-    pCcb->inUse = FALSE;
-  }
+    if (pCcb) {
+        pCcb->inUse = FALSE;
+    }
 }
 
 /*************************************************************************************************/
@@ -615,31 +558,30 @@ static void eattL2cDisconnectInd(l2cCocDisconnectInd_t *pMsg)
 /*************************************************************************************************/
 static void eattL2cCocCback(l2cCocEvt_t *pMsg)
 {
-  switch (pMsg->hdr.event)
-  {
-  case L2C_COC_EN_CONNECT_IND:
-    eattL2cEnChanInd(&pMsg->enConnectInd);
-    break;
+    switch (pMsg->hdr.event) {
+    case L2C_COC_EN_CONNECT_IND:
+        eattL2cEnChanInd(&pMsg->enConnectInd);
+        break;
 
-  case L2C_COC_DISCONNECT_IND:
-    eattL2cDisconnectInd(&pMsg->disconnectInd);
-    break;
+    case L2C_COC_DISCONNECT_IND:
+        eattL2cDisconnectInd(&pMsg->disconnectInd);
+        break;
 
-  case L2C_COC_EN_RECONFIG_IND:
-    eattL2cEnReconfigInd(&pMsg->enConnectInd);
-    break;
+    case L2C_COC_EN_RECONFIG_IND:
+        eattL2cEnReconfigInd(&pMsg->enConnectInd);
+        break;
 
-  case L2C_COC_DATA_IND:
-    eattL2cDataInd(&pMsg->dataInd);
-    break;
+    case L2C_COC_DATA_IND:
+        eattL2cDataInd(&pMsg->dataInd);
+        break;
 
-  case L2C_COC_DATA_CNF:
-    eattL2cDataCnf(&pMsg->dataCnf);
-    break;
+    case L2C_COC_DATA_CNF:
+        eattL2cDataCnf(&pMsg->dataCnf);
+        break;
 
-  default:
-    break;
-  }
+    default:
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -653,17 +595,16 @@ static void eattL2cCocCback(l2cCocEvt_t *pMsg)
 /*************************************************************************************************/
 void eattOnConnOpen(dmEvt_t *pDmEvt)
 {
-  eattConnCb_t *pCcb = eattGetConnCb((dmConnId_t) pDmEvt->hdr.param);
+    eattConnCb_t *pCcb = eattGetConnCb((dmConnId_t)pDmEvt->hdr.param);
 
-  if (pCcb)
-  {
-    /* Initialize channel control block. */
-    memset(&pCcb->backoffTimer, 0, sizeof(wsfTimer_t));
-    pCcb->state = EATT_CONN_STATE_IDLE;
-    pCcb->connInterval = pDmEvt->connOpen.connInterval;
-    pCcb->pendingMtu = 0;
-    pCcb->pendingMps = 0;
-  }
+    if (pCcb) {
+        /* Initialize channel control block. */
+        memset(&pCcb->backoffTimer, 0, sizeof(wsfTimer_t));
+        pCcb->state = EATT_CONN_STATE_IDLE;
+        pCcb->connInterval = pDmEvt->connOpen.connInterval;
+        pCcb->pendingMtu = 0;
+        pCcb->pendingMps = 0;
+    }
 }
 
 /*************************************************************************************************/
@@ -677,32 +618,27 @@ void eattOnConnOpen(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 void EattEstablishChannels(dmConnId_t connId)
 {
-  if (DmConnInUse(connId))
-  {
-    eattConnCb_t *pCcb = eattGetConnCb(connId);
+    if (DmConnInUse(connId)) {
+        eattConnCb_t *pCcb = eattGetConnCb(connId);
 
-    EATT_TRACE_INFO1("EattEstablishChannels: connId: %#x", connId);
+        EATT_TRACE_INFO1("EattEstablishChannels: connId: %#x", connId);
 
-    if (pCcb)
-    {
-      /* Request first set of channels. */
-      if (DmConnRole(connId) == DM_ROLE_MASTER)
-      {
-        pCcb->state = EATT_CONN_STATE_INITIATING;
-        eattReqNextChannels(connId);
-      }
-      else
-      {
-        /* Set a timer to initiate creation of channels */
-        pCcb->state = EATT_CONN_STATE_ACCEPTING;
+        if (pCcb) {
+            /* Request first set of channels. */
+            if (DmConnRole(connId) == DM_ROLE_MASTER) {
+                pCcb->state = EATT_CONN_STATE_INITIATING;
+                eattReqNextChannels(connId);
+            } else {
+                /* Set a timer to initiate creation of channels */
+                pCcb->state = EATT_CONN_STATE_ACCEPTING;
 
-        pCcb->backoffTimer.msg.event = EATT_BACKOFF_EVT;
-        pCcb->backoffTimer.msg.param = connId;
-        pCcb->backoffTimer.handlerId = attCb.handlerId;
-        WsfTimerStartMs(&pCcb->backoffTimer, eattBackoffPeriod(pCcb->connInterval));
-      }
+                pCcb->backoffTimer.msg.event = EATT_BACKOFF_EVT;
+                pCcb->backoffTimer.msg.param = connId;
+                pCcb->backoffTimer.handlerId = attCb.handlerId;
+                WsfTimerStartMs(&pCcb->backoffTimer, eattBackoffPeriod(pCcb->connInterval));
+            }
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -716,22 +652,19 @@ void EattEstablishChannels(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t EattGetNumChannelsInUse(dmConnId_t connId)
 {
-  eattConnCb_t *pCcb = eattGetConnCb(connId);
-  uint8_t      count = 0;
-  uint8_t      i;
+    eattConnCb_t *pCcb = eattGetConnCb(connId);
+    uint8_t count = 0;
+    uint8_t i;
 
-  if (pCcb)
-  {
-    for (i = 0; i < EATT_CONN_CHAN_MAX; i++)
-    {
-      if (pCcb->pChanCb[i].inUse == TRUE)
-      {
-        count++;
-      }
+    if (pCcb) {
+        for (i = 0; i < EATT_CONN_CHAN_MAX; i++) {
+            if (pCcb->pChanCb[i].inUse == TRUE) {
+                count++;
+            }
+        }
     }
-  }
 
-  return count;
+    return count;
 }
 
 /*************************************************************************************************/
@@ -745,35 +678,31 @@ uint8_t EattGetNumChannelsInUse(dmConnId_t connId)
 /*************************************************************************************************/
 static void eattDmCback(dmEvt_t *pDmEvt)
 {
-  dmConnId_t   connId = (dmConnId_t) pDmEvt->hdr.param;
-  eattConnCb_t *pCcb = eattGetConnCb(connId);
+    dmConnId_t connId = (dmConnId_t)pDmEvt->hdr.param;
+    eattConnCb_t *pCcb = eattGetConnCb(connId);
 
-  switch (pDmEvt->hdr.event)
-  {
-  case DM_CONN_OPEN_IND:
-    eattOnConnOpen(pDmEvt);
+    switch (pDmEvt->hdr.event) {
+    case DM_CONN_OPEN_IND:
+        eattOnConnOpen(pDmEvt);
 
-    if (pEattCfg->initiateEatt)
-    {
-      EattEstablishChannels(connId);
+        if (pEattCfg->initiateEatt) {
+            EattEstablishChannels(connId);
+        }
+        break;
+
+    case DM_CONN_CLOSE_IND:
+        WsfTimerStop(&pCcb->backoffTimer);
+        break;
+
+    case DM_CONN_UPDATE_IND:
+        if (pCcb) {
+            pCcb->connInterval = pDmEvt->connUpdate.connInterval;
+        }
+        break;
+
+    default:
+        break;
     }
-    break;
-
-  case DM_CONN_CLOSE_IND:
-    WsfTimerStop(&pCcb->backoffTimer);
-    break;
-
-  case DM_CONN_UPDATE_IND:
-    if (pCcb)
-    {
-      pCcb->connInterval =  pDmEvt->connUpdate.connInterval;
-    }
-    break;
-
-  default:
-    break;
-  }
-
 }
 
 /*************************************************************************************************/
@@ -788,15 +717,12 @@ static void eattDmCback(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 uint16_t eattGetCid(dmConnId_t connId, uint8_t slot)
 {
-  if (slot == ATT_BEARER_SLOT_ID)
-  {
-    return L2C_CID_ATT;
-  }
-  else
-  {
-    eattConnCb_t *pCcb = eattGetConnCb(connId);
-    return pCcb->pChanCb[slot-1].cid;
-  }
+    if (slot == ATT_BEARER_SLOT_ID) {
+        return L2C_CID_ATT;
+    } else {
+        eattConnCb_t *pCcb = eattGetConnCb(connId);
+        return pCcb->pChanCb[slot - 1].cid;
+    }
 }
 
 /*************************************************************************************************/
@@ -812,17 +738,16 @@ uint16_t eattGetCid(dmConnId_t connId, uint8_t slot)
 /*************************************************************************************************/
 void eattExecCallback(dmConnId_t connId, uint8_t event, uint8_t status)
 {
-  if (attCb.cback)
-  {
-    attEvt_t evt;
+    if (attCb.cback) {
+        attEvt_t evt;
 
-    memset(&evt, 0, sizeof(evt));
-    evt.hdr.param = connId;
-    evt.hdr.event = event;
-    evt.hdr.status = status;
+        memset(&evt, 0, sizeof(evt));
+        evt.hdr.param = connId;
+        evt.hdr.event = event;
+        evt.hdr.status = status;
 
-    (*attCb.cback)(&evt);
-  }
+        (*attCb.cback)(&evt);
+    }
 }
 
 /*************************************************************************************************/
@@ -836,17 +761,15 @@ void eattExecCallback(dmConnId_t connId, uint8_t event, uint8_t status)
 /*************************************************************************************************/
 void eattHandler(wsfMsgHdr_t *pMsg)
 {
-  if (pMsg->event == EATT_BACKOFF_EVT)
-  {
-    dmConnId_t connId = (dmConnId_t) pMsg->param;
-    eattConnCb_t *pCcb = eattGetConnCb(connId);
+    if (pMsg->event == EATT_BACKOFF_EVT) {
+        dmConnId_t connId = (dmConnId_t)pMsg->param;
+        eattConnCb_t *pCcb = eattGetConnCb(connId);
 
-    if (pCcb)
-    {
-      pCcb->state = EATT_CONN_STATE_INITIATING;
-      eattReqNextChannels(connId);
+        if (pCcb) {
+            pCcb->state = EATT_CONN_STATE_INITIATING;
+            eattReqNextChannels(connId);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -862,15 +785,14 @@ void eattHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void EattReconfigureChannels(dmConnId_t connId, uint16_t mtu, uint16_t mps)
 {
-  eattConnCb_t *pConnCb = eattGetConnCb(connId);
-  
-  if (pConnCb && (pConnCb->state == EATT_CONN_STATE_IDLE))
-  {
-    pConnCb->pendingMtu = mtu;
-    pConnCb->pendingMps = mps;
+    eattConnCb_t *pConnCb = eattGetConnCb(connId);
 
-    eattReconfigureNextChannels(connId);
-  }
+    if (pConnCb && (pConnCb->state == EATT_CONN_STATE_IDLE)) {
+        pConnCb->pendingMtu = mtu;
+        pConnCb->pendingMps = mps;
+
+        eattReconfigureNextChannels(connId);
+    }
 }
 
 /*************************************************************************************************/
@@ -888,11 +810,11 @@ void EattReconfigureChannels(dmConnId_t connId, uint16_t mtu, uint16_t mps)
 /*************************************************************************************************/
 static void eattL2cDataReq(attCcb_t *pCcb, uint8_t slot, uint16_t len, uint8_t *pPacket)
 {
-  /* send EATT packet to L2CAP via COC channel for the slot */
-  uint16_t cid = eattGetCid(pCcb->connId, slot);
+    /* send EATT packet to L2CAP via COC channel for the slot */
+    uint16_t cid = eattGetCid(pCcb->connId, slot);
 
-  L2cCocDataReq(cid, len, pPacket + L2C_PAYLOAD_START);
-  WsfMsgFree(pPacket);
+    L2cCocDataReq(cid, len, pPacket + L2C_PAYLOAD_START);
+    WsfMsgFree(pPacket);
 }
 
 /*************************************************************************************************/
@@ -904,35 +826,34 @@ static void eattL2cDataReq(attCcb_t *pCcb, uint8_t slot, uint16_t len, uint8_t *
 /*************************************************************************************************/
 void EattInit(uint8_t roleBits)
 {
-  l2cCocReg_t reg;
+    l2cCocReg_t reg;
 
-  /* EATT_CONN_CHAN_MAX must be greater than 0 */
-  WSF_ASSERT(EATT_CONN_CHAN_MAX);
+    /* EATT_CONN_CHAN_MAX must be greater than 0 */
+    WSF_ASSERT(EATT_CONN_CHAN_MAX);
 
-  /* Register with L2CAP */
-  reg.psm = EATT_PSM;
-  reg.mtu = pEattCfg->mtu;
-  reg.mps = pEattCfg->mps;
-  reg.credits = EATT_INIT_CREDITS;
-  reg.authoriz = pEattCfg->authoriz;
-  reg.secLevel = pEattCfg->secLevel;
-  reg.role = roleBits;
+    /* Register with L2CAP */
+    reg.psm = EATT_PSM;
+    reg.mtu = pEattCfg->mtu;
+    reg.mps = pEattCfg->mps;
+    reg.credits = EATT_INIT_CREDITS;
+    reg.authoriz = pEattCfg->authoriz;
+    reg.secLevel = pEattCfg->secLevel;
+    reg.role = roleBits;
 
-  eattCb.cocRegId = L2cCocRegister(eattL2cCocCback, &reg);
-  L2cCocSetAcceptCback(eattCb.cocRegId, eattL2cCocAcceptCback);
+    eattCb.cocRegId = L2cCocRegister(eattL2cCocCback, &reg);
+    L2cCocSetAcceptCback(eattCb.cocRegId, eattL2cCocAcceptCback);
 
-  /* Register with DM */
-  attCb.eattDmCback = eattDmCback;
+    /* Register with DM */
+    attCb.eattDmCback = eattDmCback;
 
-  /* Register functions with ATT control block */
-  attCb.eattHandler = eattHandler;
-  attCb.eattL2cDataReq = eattL2cDataReq;
+    /* Register functions with ATT control block */
+    attCb.eattHandler = eattHandler;
+    attCb.eattL2cDataReq = eattL2cDataReq;
 
-  /* Set the channel control blocks in the connection control blocks */
+    /* Set the channel control blocks in the connection control blocks */
 #if EATT_CONN_CHAN_MAX > 0
-  for (uint8_t i = 0; i < DM_CONN_MAX; i++)
-  {
-    eattCb.ccb[i].pChanCb = eattChanCb[i];
-  }
+    for (uint8_t i = 0; i < DM_CONN_MAX; i++) {
+        eattCb.ccb[i].pChanCb = eattChanCb[i];
+    }
 #endif
 }

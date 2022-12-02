@@ -18,16 +18,17 @@
 
 #include "bwdet.h"
 
-
 /**
  * Bandwidth detector
  */
-enum lc3_bandwidth lc3_bwdet_run(
-    enum lc3_dt dt, enum lc3_srate sr, const float *e)
+enum lc3_bandwidth lc3_bwdet_run(enum lc3_dt dt, enum lc3_srate sr, const float *e)
 {
     /* Bandwidth regions (Table 3.6)  */
 
-    struct region { int is : 8; int ie : 8; };
+    struct region {
+        int is : 8;
+        int ie : 8;
+    };
 
     static const struct region bws_table[LC3_NUM_DT]
             [LC3_NUM_BANDWIDTH-1][LC3_NUM_BANDWIDTH-1] = {
@@ -47,7 +48,7 @@ enum lc3_bandwidth lc3_bwdet_run(
         },
     };
 
-    static const int l_table[LC3_NUM_DT][LC3_NUM_BANDWIDTH-1] = {
+    static const int l_table[LC3_NUM_DT][LC3_NUM_BANDWIDTH - 1] = {
         [LC3_DT_7M5] = { 4, 4, 3, 2 },
         [LC3_DT_10M] = { 4, 4, 3, 1 },
     };
@@ -61,15 +62,14 @@ enum lc3_bandwidth lc3_bwdet_run(
     if (bwn <= bw0)
         return bwn;
 
-    const struct region *bwr = bws_table[dt][bwn-1];
+    const struct region *bwr = bws_table[dt][bwn - 1];
 
     for (enum lc3_bandwidth bw = bw0; bw < bwn; bw++) {
         int i = bwr[bw].is, ie = bwr[bw].ie;
         int n = ie - i;
 
         float se = e[i];
-        for (i++; i < ie; i++)
-            se += e[i];
+        for (i++; i < ie; i++) se += e[i];
 
         if (se >= (10 << (bw == LC3_BANDWIDTH_NB)) * n)
             bw0 = bw + 1;
@@ -84,13 +84,11 @@ enum lc3_bandwidth lc3_bwdet_run(
 
     if (!hold) {
         int i0 = bwr[bw0].is, l = l_table[dt][bw0];
-        float tc = (const float []){
-             31.62277660, 199.52623150, 100, 100 }[bw0];
+        float tc = (const float[]){ 31.62277660, 199.52623150, 100, 100 }[bw0];
 
         for (int i = i0 - l + 1; !hold && i <= i0 + 1; i++) {
-            hold = e[i-l] > tc * e[i];
+            hold = e[i - l] > tc * e[i];
         }
-
     }
 
     return hold ? bw0 : bwn;
@@ -107,8 +105,7 @@ int lc3_bwdet_get_nbits(enum lc3_srate sr)
 /**
  * Put bandwidth indication
  */
-void lc3_bwdet_put_bw(lc3_bits_t *bits,
-    enum lc3_srate sr, enum lc3_bandwidth bw)
+void lc3_bwdet_put_bw(lc3_bits_t *bits, enum lc3_srate sr, enum lc3_bandwidth bw)
 {
     int nbits_bw = lc3_bwdet_get_nbits(sr);
     if (nbits_bw > 0)
@@ -118,8 +115,7 @@ void lc3_bwdet_put_bw(lc3_bits_t *bits,
 /**
  * Get bandwidth indication
  */
-int lc3_bwdet_get_bw(lc3_bits_t *bits,
-    enum lc3_srate sr, enum lc3_bandwidth *bw)
+int lc3_bwdet_get_bw(lc3_bits_t *bits, enum lc3_srate sr, enum lc3_bandwidth *bw)
 {
     enum lc3_bandwidth max_bw = (enum lc3_bandwidth)sr;
     int nbits_bw = lc3_bwdet_get_nbits(sr);

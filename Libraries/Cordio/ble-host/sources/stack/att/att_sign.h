@@ -33,17 +33,16 @@ extern "C" {
 **************************************************************************************************/
 
 /* CMAC algorithm subkey length */
-#define ATT_CMAC_SUBKEY_LEN       16
+#define ATT_CMAC_SUBKEY_LEN 16
 
 /* CMAC algorithm block length */
-#define ATT_CMAC_BLOCK_LEN        16
+#define ATT_CMAC_BLOCK_LEN 16
 
 /* CMAC constant Rb */
-#define ATT_CMAC_RB               0x87
+#define ATT_CMAC_RB 0x87
 
 /* CMAC signature result length */
-#define ATT_CMAC_RESULT_LEN       8
-
+#define ATT_CMAC_RESULT_LEN 8
 
 #ifdef __cplusplus
 };

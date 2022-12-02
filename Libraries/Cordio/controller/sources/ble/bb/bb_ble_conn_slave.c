@@ -32,7 +32,7 @@
   Global Variables
 **************************************************************************************************/
 
-extern BbBleDataPktStats_t  bbConnStats;    /*!< Connection packet statistics. */
+extern BbBleDataPktStats_t bbConnStats; /*!< Connection packet statistics. */
 
 /*************************************************************************************************/
 /*!
@@ -45,79 +45,69 @@ extern BbBleDataPktStats_t  bbConnStats;    /*!< Connection packet statistics. *
 /*************************************************************************************************/
 static void bbSlvConnTxCompCback(uint8_t status)
 {
-  BB_ISR_START();
+    BB_ISR_START();
 
-  WSF_ASSERT(BbGetCurrentBod());
+    WSF_ASSERT(BbGetCurrentBod());
 
-  BbOpDesc_t * const pCur = BbGetCurrentBod();
-  BbBleSlvConnEvent_t * const pConn = &pCur->prot.pBle->op.slvConn;
+    BbOpDesc_t *const pCur = BbGetCurrentBod();
+    BbBleSlvConnEvent_t *const pConn = &pCur->prot.pBle->op.slvConn;
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-  uint8_t evtState = bbBleCb.evtState;
-  BbBleSnifferPkt_t * pPkt = NULL;
-  if (bbSnifferCtx.enabled)
-  {
-    pPkt = bbSnifferCtx.snifferGetPktFn();
-  }
+    uint8_t evtState = bbBleCb.evtState;
+    BbBleSnifferPkt_t *pPkt = NULL;
+    if (bbSnifferCtx.enabled) {
+        pPkt = bbSnifferCtx.snifferGetPktFn();
+    }
 #endif
 
-  pConn->txDataCback(pCur, status);
+    pConn->txDataCback(pCur, status);
 
-  if (status == BB_STATUS_SUCCESS)
-  {
-    if (bbBleCb.pRxDataBuf)
-    {
-      BB_ISR_MARK(bbConnStats.rxSetupUsec);
+    if (status == BB_STATUS_SUCCESS) {
+        if (bbBleCb.pRxDataBuf) {
+            BB_ISR_MARK(bbConnStats.rxSetupUsec);
 
-      bbBleSetTifs();     /* slave always Tx's after Rx */
-      PalBbBleRxTifsData(bbBleCb.pRxDataBuf, bbBleCb.rxDataLen);
-    }
-    else
-    {
-      /* Cancel TIFS timer if active. */
-      PalBbBleCancelTifs();
+            bbBleSetTifs(); /* slave always Tx's after Rx */
+            PalBbBleRxTifsData(bbBleCb.pRxDataBuf, bbBleCb.rxDataLen);
+        } else {
+            /* Cancel TIFS timer if active. */
+            PalBbBleCancelTifs();
 
-      /* Tx completion is end of BOD. */
-      BbTerminateBod();
-    }
-  }
-  else
-  {
-    if (bbBleCb.pRxDataBuf != NULL)
-    {
-      uint8_t *pBuf = bbBleCb.pRxDataBuf;
-      bbBleCb.pRxDataBuf = NULL;
-      pConn->rxDataCback(pCur, pBuf, BB_STATUS_CANCELED);
+            /* Tx completion is end of BOD. */
+            BbTerminateBod();
+        }
+    } else {
+        if (bbBleCb.pRxDataBuf != NULL) {
+            uint8_t *pBuf = bbBleCb.pRxDataBuf;
+            bbBleCb.pRxDataBuf = NULL;
+            pConn->rxDataCback(pCur, pBuf, BB_STATUS_CANCELED);
+        }
+
+        /* Tx failure is end of BOD. */
+        BbTerminateBod();
     }
 
-    /* Tx failure is end of BOD. */
-    BbTerminateBod();
-  }
-
-  /* Update statistics. */
-  switch (status)
-  {
+    /* Update statistics. */
+    switch (status) {
     case BB_STATUS_SUCCESS:
-      BB_INC_STAT(bbConnStats.txData);
-      break;
+        BB_INC_STAT(bbConnStats.txData);
+        break;
     case BB_STATUS_FAILED:
     default:
-      BB_INC_STAT(bbConnStats.errData);
-      break;
-  }
+        BB_INC_STAT(bbConnStats.errData);
+        break;
+    }
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-  if (pPkt)
-  {
-   pPkt->pktType.meta.type = BB_SNIFF_PKT_TYPE_TX;
-   pPkt->pktType.meta.state = evtState;
-   pPkt->pktType.meta.status = status;
+    if (pPkt) {
+        pPkt->pktType.meta.type = BB_SNIFF_PKT_TYPE_TX;
+        pPkt->pktType.meta.state = evtState;
+        pPkt->pktType.meta.status = status;
 
-    bbBleSnifferConnPktHandler(pCur, pPkt);
-  }
+        bbBleSnifferConnPktHandler(pCur, pPkt);
+    }
 #endif
 
-  BB_ISR_MARK(bbConnStats.txIsrUsec);
+    BB_ISR_MARK(bbConnStats.txIsrUsec);
 }
 
 /*************************************************************************************************/
@@ -133,98 +123,92 @@ static void bbSlvConnTxCompCback(uint8_t status)
  *  Setup for next action in the operation or complete the operation.
  */
 /*************************************************************************************************/
-static void bbSlvConnRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp, uint8_t rxPhyOptions)
+static void bbSlvConnRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp,
+                                 uint8_t rxPhyOptions)
 {
-  BB_ISR_START();
+    BB_ISR_START();
 
-  WSF_ASSERT(BbGetCurrentBod());
+    WSF_ASSERT(BbGetCurrentBod());
 
-  BbOpDesc_t * const pCur = BbGetCurrentBod();
-  BbBleSlvConnEvent_t * const pConn = &pCur->prot.pBle->op.slvConn;
+    BbOpDesc_t *const pCur = BbGetCurrentBod();
+    BbBleSlvConnEvent_t *const pConn = &pCur->prot.pBle->op.slvConn;
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-  uint8_t evtState = bbBleCb.evtState;
-  BbBleSnifferPkt_t * pPkt = NULL;
-  if (bbSnifferCtx.enabled)
-  {
-    pPkt = bbSnifferCtx.snifferGetPktFn();
-  }
+    uint8_t evtState = bbBleCb.evtState;
+    BbBleSnifferPkt_t *pPkt = NULL;
+    if (bbSnifferCtx.enabled) {
+        pPkt = bbSnifferCtx.snifferGetPktFn();
+    }
 
-  /* Copy to sniffer packet buffer before overwriting. */
-  if (pPkt)
-  {
-    memcpy(pPkt->pktType.dataPkt.hdr, bbBleCb.pRxDataBuf, LL_DATA_HDR_MAX_LEN);
-  }
+    /* Copy to sniffer packet buffer before overwriting. */
+    if (pPkt) {
+        memcpy(pPkt->pktType.dataPkt.hdr, bbBleCb.pRxDataBuf, LL_DATA_HDR_MAX_LEN);
+    }
 #endif
 
-  pConn->rssi = rssi;
-  pConn->rxPhyOptions = rxPhyOptions;
+    pConn->rssi = rssi;
+    pConn->rxPhyOptions = rxPhyOptions;
 
-  if (bbBleCb.evtState == 0)
-  {
-    bbBleCb.evtState = 1;
+    if (bbBleCb.evtState == 0) {
+        bbBleCb.evtState = 1;
 
-    pConn->startTsUsec = timestamp;
-  }
+        pConn->startTsUsec = timestamp;
+    }
 
-  WSF_ASSERT(bbBleCb.pRxDataBuf);
+    WSF_ASSERT(bbBleCb.pRxDataBuf);
 
-  uint8_t *pBuf = bbBleCb.pRxDataBuf;
-  bbBleCb.pRxDataBuf = NULL;
+    uint8_t *pBuf = bbBleCb.pRxDataBuf;
+    bbBleCb.pRxDataBuf = NULL;
 
-  /* Set Tx buffer or BOD cancel expected to be called during this routine. */
-  pConn->rxDataCback(pCur, pBuf, status);
+    /* Set Tx buffer or BOD cancel expected to be called during this routine. */
+    pConn->rxDataCback(pCur, pBuf, status);
 
-  if (BbGetBodTerminateFlag())
-  {
-    WSF_ASSERT(!bbBleCb.pRxDataBuf);
+    if (BbGetBodTerminateFlag()) {
+        WSF_ASSERT(!bbBleCb.pRxDataBuf);
 
-    /* Cancel TIFS timer if active. */
-    switch (status)
-    {
-      case BB_STATUS_SUCCESS:
-      case BB_STATUS_CRC_FAILED:
-        PalBbBleCancelTifs();
+        /* Cancel TIFS timer if active. */
+        switch (status) {
+        case BB_STATUS_SUCCESS:
+        case BB_STATUS_CRC_FAILED:
+            PalBbBleCancelTifs();
+            break;
+        default:
+            break;
+        }
+
+        BbTerminateBod();
+    }
+
+    /* Update statistics. */
+    switch (status) {
+    case BB_STATUS_SUCCESS:
+        BB_INC_STAT(bbConnStats.rxData);
         break;
-      default:
+    case BB_STATUS_RX_TIMEOUT:
+        BB_INC_STAT(bbConnStats.rxDataTimeout);
+        break;
+    case BB_STATUS_CRC_FAILED:
+        BB_INC_STAT(bbConnStats.rxDataCrc);
+        break;
+    case BB_STATUS_FAILED:
+    default:
+        BB_INC_STAT(bbConnStats.errData);
         break;
     }
 
-    BbTerminateBod();
-  }
-
-  /* Update statistics. */
-  switch (status)
-  {
-    case BB_STATUS_SUCCESS:
-      BB_INC_STAT(bbConnStats.rxData);
-      break;
-    case BB_STATUS_RX_TIMEOUT:
-      BB_INC_STAT(bbConnStats.rxDataTimeout);
-      break;
-    case BB_STATUS_CRC_FAILED:
-      BB_INC_STAT(bbConnStats.rxDataCrc);
-      break;
-    case BB_STATUS_FAILED:
-    default:
-      BB_INC_STAT(bbConnStats.errData);
-      break;
-  }
-
 #if (BB_SNIFFER_ENABLED == TRUE)
-  if (pPkt)
-  {
-    pPkt->pktType.meta.type = BB_SNIFF_PKT_TYPE_RX;
-    pPkt->pktType.meta.rssi = rssi;
-    pPkt->pktType.meta.timeStamp = timestamp;
-    pPkt->pktType.meta.state = evtState;
-    pPkt->pktType.meta.status = status;
+    if (pPkt) {
+        pPkt->pktType.meta.type = BB_SNIFF_PKT_TYPE_RX;
+        pPkt->pktType.meta.rssi = rssi;
+        pPkt->pktType.meta.timeStamp = timestamp;
+        pPkt->pktType.meta.state = evtState;
+        pPkt->pktType.meta.status = status;
 
-    bbBleSnifferConnPktHandler(pCur, pPkt);
-  }
+        bbBleSnifferConnPktHandler(pCur, pPkt);
+    }
 #endif
 
-  BB_ISR_MARK(bbConnStats.rxIsrUsec);
+    BB_ISR_MARK(bbConnStats.rxIsrUsec);
 }
 
 /*************************************************************************************************/
@@ -237,28 +221,28 @@ static void bbSlvConnRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint
 /*************************************************************************************************/
 static void bbSlvExecuteConnOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 {
-  BbBleSlvConnEvent_t * const pConn = &pBod->prot.pBle->op.slvConn;
+    BbBleSlvConnEvent_t *const pConn = &pBod->prot.pBle->op.slvConn;
 
-  WSF_ASSERT(pConn->txDataCback);
-  WSF_ASSERT(pConn->rxDataCback);
+    WSF_ASSERT(pConn->txDataCback);
+    WSF_ASSERT(pConn->rxDataCback);
 
-#if(LL_ENABLE_TESTER)
-  pBle->chan.txPower += pBle->chan.txPwrOffset;
+#if (LL_ENABLE_TESTER)
+    pBle->chan.txPower += pBle->chan.txPwrOffset;
 #endif
 
-  PalBbBleSetChannelParam(&pBle->chan);
+    PalBbBleSetChannelParam(&pBle->chan);
 
-  bbBleCb.bbParam.txCback = bbSlvConnTxCompCback;
-  bbBleCb.bbParam.rxCback = bbSlvConnRxCompCback;
-  bbBleCb.bbParam.dueUsec = BbAdjustTime(pBod->dueUsec);
-  pBod->dueUsec = bbBleCb.bbParam.dueUsec;
-  bbBleCb.bbParam.rxTimeoutUsec = pConn->rxSyncDelayUsec;
+    bbBleCb.bbParam.txCback = bbSlvConnTxCompCback;
+    bbBleCb.bbParam.rxCback = bbSlvConnRxCompCback;
+    bbBleCb.bbParam.dueUsec = BbAdjustTime(pBod->dueUsec);
+    pBod->dueUsec = bbBleCb.bbParam.dueUsec;
+    bbBleCb.bbParam.rxTimeoutUsec = pConn->rxSyncDelayUsec;
 
-  PalBbBleSetDataParams(&bbBleCb.bbParam);
+    PalBbBleSetDataParams(&bbBleCb.bbParam);
 
-  bbBleCb.evtState = 0;
+    bbBleCb.evtState = 0;
 
-  pBle->op.slvConn.execCback(pBod);
+    pBle->op.slvConn.execCback(pBod);
 }
 
 /*************************************************************************************************/
@@ -271,22 +255,21 @@ static void bbSlvExecuteConnOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 /*************************************************************************************************/
 static void bbSlvCancelConnOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 {
-  WSF_ASSERT(pBod);
-  WSF_ASSERT(pBle);
-  WSF_ASSERT(pBle->op.slvConn.rxDataCback);
+    WSF_ASSERT(pBod);
+    WSF_ASSERT(pBle);
+    WSF_ASSERT(pBle->op.slvConn.rxDataCback);
 
-  PalBbBleCancelData();
+    PalBbBleCancelData();
 
-  if (bbBleCb.pRxDataBuf)
-  {
-    uint8_t *pBuf = bbBleCb.pRxDataBuf;
-    bbBleCb.pRxDataBuf = NULL;
+    if (bbBleCb.pRxDataBuf) {
+        uint8_t *pBuf = bbBleCb.pRxDataBuf;
+        bbBleCb.pRxDataBuf = NULL;
 
-    /* Buffer free expected to be called during this routine. */
-    pBle->op.slvConn.rxDataCback(pBod, pBuf, BB_STATUS_CANCELED);
-  }
+        /* Buffer free expected to be called during this routine. */
+        pBle->op.slvConn.rxDataCback(pBod, pBuf, BB_STATUS_CANCELED);
+    }
 
-  pBle->op.slvConn.cancelCback(pBod);
+    pBle->op.slvConn.cancelCback(pBod);
 }
 
 /*************************************************************************************************/
@@ -298,7 +281,7 @@ static void bbSlvCancelConnOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 /*************************************************************************************************/
 void BbBleConnSlaveInit(void)
 {
-  bbBleRegisterOp(BB_BLE_OP_SLV_CONN_EVENT, bbSlvExecuteConnOp, bbSlvCancelConnOp);
+    bbBleRegisterOp(BB_BLE_OP_SLV_CONN_EVENT, bbSlvExecuteConnOp, bbSlvCancelConnOp);
 
-  memset(&bbConnStats, 0, sizeof(bbConnStats));
+    memset(&bbConnStats, 0, sizeof(bbConnStats));
 }

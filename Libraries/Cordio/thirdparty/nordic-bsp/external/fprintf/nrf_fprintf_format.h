@@ -73,14 +73,10 @@ extern "C" {
  * @param p_fmt                 Format string.
  * @param p_args                List of parameters to print.
  * */
-void nrf_fprintf_fmt(nrf_fprintf_ctx_t * const p_ctx,
-                    char const *               p_fmt,
-                    va_list *                  p_args);
-
+void nrf_fprintf_fmt(nrf_fprintf_ctx_t *const p_ctx, char const *p_fmt, va_list *p_args);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* NRF_FPRINTF_FORMAT_H__ */
-

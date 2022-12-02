@@ -50,7 +50,7 @@
 
 #include "gpio.h"
 
-void configure_intn(void (*p_handler) (uint32_t, uint32_t));
+void configure_intn(void (*p_handler)(uint32_t, uint32_t));
 void ksz8851_reg_setbits(uint16_t reg, uint16_t bits_to_set);
 void ksz8851_reg_clrbits(uint16_t reg, uint16_t bits_to_clr);
 void ksz8851_fifo_read(uint8_t *buf, uint32_t len);
@@ -61,7 +61,7 @@ uint16_t ksz8851_reg_read(uint16_t reg);
 uint32_t ksz8851snl_init(void);
 uint32_t ksz8851snl_reinit(void);
 
-uint32_t ksz8851snl_reset_rx( void );
-uint32_t ksz8851snl_reset_tx( void );
+uint32_t ksz8851snl_reset_rx(void);
+uint32_t ksz8851snl_reset_tx(void);
 
 #endif /* KSZ8851SNL_H_INCLUDED */

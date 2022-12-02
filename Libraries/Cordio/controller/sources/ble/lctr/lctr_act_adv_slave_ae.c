@@ -45,32 +45,29 @@
 /*************************************************************************************************/
 static void lctrExtAdvCleanup(lctrAdvSet_t *pAdvSet)
 {
-  lctrMsgHdr_t *pMsg;
+    lctrMsgHdr_t *pMsg;
 
-  BbBleSlvAuxAdvEvent_t * const pAuxAdv = &pAdvSet->auxBleData.op.slvAuxAdv;
+    BbBleSlvAuxAdvEvent_t *const pAuxAdv = &pAdvSet->auxBleData.op.slvAuxAdv;
 
-  if ((pMsg = (lctrMsgHdr_t *)pAuxAdv->pRxAuxReqBuf) != NULL)
-  {
-    /* Recover header. */
-    WsfMsgFree(pMsg - 1);
-    pAuxAdv->pRxAuxReqBuf = NULL;
-  }
+    if ((pMsg = (lctrMsgHdr_t *)pAuxAdv->pRxAuxReqBuf) != NULL) {
+        /* Recover header. */
+        WsfMsgFree(pMsg - 1);
+        pAuxAdv->pRxAuxReqBuf = NULL;
+    }
 
-  BbBleSlvAdvEvent_t * const pAdv = &pAdvSet->bleData.op.slvAdv;
-  if ((pMsg = (lctrMsgHdr_t *)pAdv->pRxReqBuf) != NULL)
-  {
-    /* Recover header. */
-    WsfMsgFree(pMsg - 1);
-    pAdv->pRxReqBuf = NULL;
-  }
+    BbBleSlvAdvEvent_t *const pAdv = &pAdvSet->bleData.op.slvAdv;
+    if ((pMsg = (lctrMsgHdr_t *)pAdv->pRxReqBuf) != NULL) {
+        /* Recover header. */
+        WsfMsgFree(pMsg - 1);
+        pAdv->pRxReqBuf = NULL;
+    }
 
-  if (pAdvSet->param.advFiltPolicy)
-  {
-    LmgrDecWhitelistRefCount();
-  }
+    if (pAdvSet->param.advFiltPolicy) {
+        LmgrDecWhitelistRefCount();
+    }
 
-  WSF_ASSERT(lmgrCb.numExtAdvEnabled > 0);
-  lmgrCb.numExtAdvEnabled--;
+    WSF_ASSERT(lmgrCb.numExtAdvEnabled > 0);
+    lmgrCb.numExtAdvEnabled--;
 }
 
 /*************************************************************************************************/
@@ -82,10 +79,10 @@ static void lctrExtAdvCleanup(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 static void lctrPeriodicAdvACleanup(lctrAdvSet_t *pAdvSet)
 {
-  BbStop(BB_PROT_BLE);
+    BbStop(BB_PROT_BLE);
 
-  SchRmRemove(LCTR_GET_PER_RM_HANDLE(pAdvSet));
-  LmgrDecResetRefCount();
+    SchRmRemove(LCTR_GET_PER_RM_HANDLE(pAdvSet));
+    LmgrDecResetRefCount();
 }
 
 /*************************************************************************************************/
@@ -97,39 +94,36 @@ static void lctrPeriodicAdvACleanup(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActStart(lctrAdvSet_t *pAdvSet)
 {
-  BbStart(BB_PROT_BLE);
+    BbStart(BB_PROT_BLE);
 
-  /* Reset state. */
-  pAdvSet->maxEvents = pLctrSlvExtAdvMsg->enable.maxEvents;
-  pAdvSet->numEvents = 0;
-  pAdvSet->termReason = LL_SUCCESS;
-  pAdvSet->pExtAdvAuxPtr = NULL;
-  pAdvSet->connIndRcvd = FALSE;
-  pAdvSet->shutdown = FALSE;
-  pAdvSet->bodTermCnt = 0;
+    /* Reset state. */
+    pAdvSet->maxEvents = pLctrSlvExtAdvMsg->enable.maxEvents;
+    pAdvSet->numEvents = 0;
+    pAdvSet->termReason = LL_SUCCESS;
+    pAdvSet->pExtAdvAuxPtr = NULL;
+    pAdvSet->connIndRcvd = FALSE;
+    pAdvSet->shutdown = FALSE;
+    pAdvSet->bodTermCnt = 0;
 
-  uint8_t status;
-  if ((status = lctrSlvExtAdvBuildOp(pAdvSet, pLctrSlvExtAdvMsg->enable.durMs)) != LL_SUCCESS)
-  {
-    /* TODO suppress terminate event on failed start */
-    LmgrSendExtAdvEnableCnf(pAdvSet->handle, status);
-    lctrSendAdvSetMsg(pAdvSet, LCTR_EXT_ADV_MSG_TERMINATE);
-    return;
-  }
+    uint8_t status;
+    if ((status = lctrSlvExtAdvBuildOp(pAdvSet, pLctrSlvExtAdvMsg->enable.durMs)) != LL_SUCCESS) {
+        /* TODO suppress terminate event on failed start */
+        LmgrSendExtAdvEnableCnf(pAdvSet->handle, status);
+        lctrSendAdvSetMsg(pAdvSet, LCTR_EXT_ADV_MSG_TERMINATE);
+        return;
+    }
 
-  lmgrCb.numExtAdvEnabled++;
+    lmgrCb.numExtAdvEnabled++;
 
-  if (pAdvSet->param.advFiltPolicy)
-  {
-    LmgrIncWhitelistRefCount();
-  }
+    if (pAdvSet->param.advFiltPolicy) {
+        LmgrIncWhitelistRefCount();
+    }
 
-  if (pLctrSlvExtAdvMsg->enable.durMs)
-  {
-    WsfTimerStartMs(&pAdvSet->tmrAdvDur, pLctrSlvExtAdvMsg->enable.durMs);
-  }
+    if (pLctrSlvExtAdvMsg->enable.durMs) {
+        WsfTimerStartMs(&pAdvSet->tmrAdvDur, pLctrSlvExtAdvMsg->enable.durMs);
+    }
 
-  LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
+    LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -141,30 +135,28 @@ void lctrExtAdvActStart(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActSelfStart(lctrAdvSet_t *pAdvSet)
 {
-  BbStart(BB_PROT_BLE);
+    BbStart(BB_PROT_BLE);
 
-  /* Reset state. */
-  pAdvSet->maxEvents = pLctrSlvExtAdvMsg->enable.maxEvents;
-  pAdvSet->numEvents = 0;
-  pAdvSet->termReason = LL_SUCCESS;
-  pAdvSet->pExtAdvAuxPtr = NULL;
-  pAdvSet->connIndRcvd = FALSE;
-  pAdvSet->shutdown = FALSE;
-  pAdvSet->bodTermCnt = 0;
+    /* Reset state. */
+    pAdvSet->maxEvents = pLctrSlvExtAdvMsg->enable.maxEvents;
+    pAdvSet->numEvents = 0;
+    pAdvSet->termReason = LL_SUCCESS;
+    pAdvSet->pExtAdvAuxPtr = NULL;
+    pAdvSet->connIndRcvd = FALSE;
+    pAdvSet->shutdown = FALSE;
+    pAdvSet->bodTermCnt = 0;
 
-  uint8_t status;
-  if ((status = lctrSlvExtAdvBuildOp(pAdvSet, pLctrSlvExtAdvMsg->enable.durMs)) != LL_SUCCESS)
-  {
-    /* TODO suppress terminate event on failed start */
-    LmgrSendExtAdvEnableCnf(pAdvSet->handle, status);
-    lctrSendAdvSetMsg(pAdvSet, LCTR_EXT_ADV_MSG_TERMINATE);
-    return;
-  }
+    uint8_t status;
+    if ((status = lctrSlvExtAdvBuildOp(pAdvSet, pLctrSlvExtAdvMsg->enable.durMs)) != LL_SUCCESS) {
+        /* TODO suppress terminate event on failed start */
+        LmgrSendExtAdvEnableCnf(pAdvSet->handle, status);
+        lctrSendAdvSetMsg(pAdvSet, LCTR_EXT_ADV_MSG_TERMINATE);
+        return;
+    }
 
-  if (pLctrSlvExtAdvMsg->enable.durMs)
-  {
-    WsfTimerStartMs(&pAdvSet->tmrAdvDur, pLctrSlvExtAdvMsg->enable.durMs);
-  }
+    if (pLctrSlvExtAdvMsg->enable.durMs) {
+        WsfTimerStartMs(&pAdvSet->tmrAdvDur, pLctrSlvExtAdvMsg->enable.durMs);
+    }
 }
 
 /*************************************************************************************************/
@@ -176,17 +168,16 @@ void lctrExtAdvActSelfStart(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActRestart(lctrAdvSet_t *pAdvSet)
 {
-  WsfTimerStop(&pAdvSet->tmrAdvDur);
+    WsfTimerStop(&pAdvSet->tmrAdvDur);
 
-  if (pLctrSlvExtAdvMsg->enable.durMs)
-  {
-    WsfTimerStartMs(&pAdvSet->tmrAdvDur, pLctrSlvExtAdvMsg->enable.durMs);
-  }
+    if (pLctrSlvExtAdvMsg->enable.durMs) {
+        WsfTimerStartMs(&pAdvSet->tmrAdvDur, pLctrSlvExtAdvMsg->enable.durMs);
+    }
 
-  pAdvSet->maxEvents = pLctrSlvExtAdvMsg->enable.maxEvents;
-  pAdvSet->numEvents = 0;
+    pAdvSet->maxEvents = pLctrSlvExtAdvMsg->enable.maxEvents;
+    pAdvSet->numEvents = 0;
 
-  LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
+    LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -198,14 +189,14 @@ void lctrExtAdvActRestart(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActShutdown(lctrAdvSet_t *pAdvSet)
 {
-  WsfTimerStop(&pAdvSet->tmrAdvDur);
+    WsfTimerStop(&pAdvSet->tmrAdvDur);
 
-  pAdvSet->termReason = LL_SUCCESS;
-  pAdvSet->shutdown = TRUE;
+    pAdvSet->termReason = LL_SUCCESS;
+    pAdvSet->shutdown = TRUE;
 
-  /* TODO: Attempt to remove BOD immediately to reduce shutdown time. */
+    /* TODO: Attempt to remove BOD immediately to reduce shutdown time. */
 
-  /* Shutdown completes with events generated in BOD end callback. */
+    /* Shutdown completes with events generated in BOD end callback. */
 }
 
 /*************************************************************************************************/
@@ -217,16 +208,15 @@ void lctrExtAdvActShutdown(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActResetShutdown(lctrAdvSet_t *pAdvSet)
 {
-  /* LCTR_MSG_RESET is broadcasted by hciReset and the processing order between ext ADV SM and periodic ADV SM is not guaranteed. */
-  /* If ext ADV SM runs first, it will purge all info and periodic ADV SM may not run as intended.  */
-  /* So, reset cleanup of periodic advertising has to be done from extended ADV SM. */
-  if (pAdvSet->perParam.perState == LCTR_PER_ADV_STATE_ENABLED)
-  {
-    lctrPeriodicAdvActShutdown(pAdvSet);
-    lctrPeriodicAdvACleanup(pAdvSet);
-  }
+    /* LCTR_MSG_RESET is broadcasted by hciReset and the processing order between ext ADV SM and periodic ADV SM is not guaranteed. */
+    /* If ext ADV SM runs first, it will purge all info and periodic ADV SM may not run as intended.  */
+    /* So, reset cleanup of periodic advertising has to be done from extended ADV SM. */
+    if (pAdvSet->perParam.perState == LCTR_PER_ADV_STATE_ENABLED) {
+        lctrPeriodicAdvActShutdown(pAdvSet);
+        lctrPeriodicAdvACleanup(pAdvSet);
+    }
 
-  lctrExtAdvActShutdown(pAdvSet);
+    lctrExtAdvActShutdown(pAdvSet);
 }
 
 /*************************************************************************************************/
@@ -238,7 +228,7 @@ void lctrExtAdvActResetShutdown(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActAdvCnf(lctrAdvSet_t *pAdvSet)
 {
-  LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
+    LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -250,7 +240,7 @@ void lctrExtAdvActAdvCnf(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActDisallowAdvCnf(lctrAdvSet_t *pAdvSet)
 {
-  LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_ERROR_CODE_CMD_DISALLOWED);
+    LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_ERROR_CODE_CMD_DISALLOWED);
 }
 
 /*************************************************************************************************/
@@ -265,139 +255,127 @@ void lctrExtAdvActDisallowAdvCnf(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActSelfTerm(lctrAdvSet_t *pAdvSet)
 {
-  if (!pAdvSet->connIndRcvd)
-  {
-    WsfTimerStop(&pAdvSet->tmrAdvDur);
-
-    lctrExtAdvCleanup(pAdvSet);
-    BbStop(BB_PROT_BLE);
-
-    LmgrSendAdvSetTermInd(pAdvSet->handle, pAdvSet->termReason, 0, pAdvSet->numEvents);
-
-    const uint8_t LEGACY_HIGH_DUTY = (LL_ADV_EVT_PROP_LEGACY_ADV_BIT | LL_ADV_EVT_PROP_HIGH_DUTY_ADV_BIT |
-                                      LL_ADV_EVT_PROP_DIRECT_ADV_BIT | LL_ADV_EVT_PROP_CONN_ADV_BIT);
-    if ((pAdvSet->param.advEventProp & LEGACY_HIGH_DUTY) == LEGACY_HIGH_DUTY )
-    {
-      /* Legacy connection complete event doesn't include peerRpa and localRpa. */
-      lctrNotifyHostConnectInd(pAdvSet->handle, LL_ROLE_SLAVE, NULL,
-                               pAdvSet->param.peerAddrType, pAdvSet->param.peerAddr, 0, 0,
-                               LL_ERROR_CODE_ADV_TIMEOUT, 0);
-    }
-  }
-  else /* CONNECT_IND or CONNECT_REQ received */
-  {
-    BbBleData_t * const pBle = &pAdvSet->bleData;
-    BbBleSlvAdvEvent_t * const pAdv = &pBle->op.slvAdv;
-    BbBleSlvAuxAdvEvent_t * const pAuxAdv = &pAdvSet->auxBleData.op.slvAuxAdv;
-
-    uint8_t *pBuf;
-    bool_t restartAdv = FALSE;
-
-    if ((pBuf = pAdv->pRxReqBuf) != NULL)
-    {
-      /* Legacy advertising PDU. */
-
-      /* If peer address was not resolved, attempt to resolve it now. */
-      if (!BbBlePduFiltCheck(pBuf, &pBle->pduFilt, TRUE, &pAdv->filtResults))
-      {
-        restartAdv = TRUE;
-      }
-    }
-    else if ((pBuf = pAuxAdv->pRxAuxReqBuf) != NULL)
-    {
-      /* Extended advertising PDU. */
-      lctrAdvbPduHdr_t hdr;
-      uint8_t *pTempBuf = pBuf;
-      lctrConnInd_t connInd;
-
-      pTempBuf += lctrUnpackAdvbPduHdr(&hdr, pTempBuf);
-      lctrUnpackConnIndPdu(&connInd, pTempBuf);
-
-      /* If peer address was not resolved, attempt to resolve it now. */
-      bbBlePduExtFiltParams_t params;
-
-      memset(&params, 0, sizeof(bbBlePduExtFiltParams_t));
-      params.pduType = hdr.pduType;
-      params.extHdrFlags |= (LL_EXT_HDR_ADV_ADDR_BIT | LL_EXT_HDR_TGT_ADDR_BIT);    /* ScanA and AdvA are mandatory. */
-      params.peerAddr = connInd.initAddr;
-      params.peerAddrRand = hdr.txAddrRnd;
-      params.localAddr = connInd.advAddr;
-      params.localAddrRand = hdr.rxAddrRnd;
-
-      if (!BbBleExtPduFiltCheck(&params, &pBle->pduFilt, TRUE, &pAuxAdv->filtResults))
-      {
-        restartAdv = TRUE;
-      }
-    }
-
-    WSF_ASSERT(pBuf);          /* pBuf must not be NULL since conn_ind/aux_conn_req is received. */
-
-    if (restartAdv == FALSE)
-    {
-      lctrConnEstablish_t *pMsg;
-
-      if ((pMsg = (lctrConnEstablish_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-      {
-        lctrAdvbPduHdr_t hdr;
-
-        pMsg->hdr.handle = pAdvSet->handle;
-        pMsg->hdr.dispId = LCTR_DISP_CONN_IND;
-        /* pMsg->hdr.event = 0; */
-
-        /* coverity[var_deref_model] */
-        pBuf += lctrUnpackAdvbPduHdr(&hdr, pBuf);
-        lctrUnpackConnIndPdu(&pMsg->connInd, pBuf);
-
-        if (pAdv->pRxReqBuf)
-        {
-          /* Legacy advertising. */
-          BbBlePduFiltResultsGetPeerIdAddr(&pAdv->filtResults, &pMsg->peerIdAddr, &pMsg->peerIdAddrType);
-          BbBlePduFiltResultsGetPeerRpa(&pAdv->filtResults, &pMsg->peerRpa);
-          pMsg->phy = LL_PHY_LE_1M;
-        }
-        else
-        {
-          BbBlePduFiltResultsGetPeerIdAddr(&pAuxAdv->filtResults, &pMsg->peerIdAddr, &pMsg->peerIdAddrType);
-          BbBlePduFiltResultsGetPeerRpa(&pAuxAdv->filtResults, &pMsg->peerRpa);
-          pMsg->phy = pAdvSet->auxBleData.chan.rxPhy;   /* Same PHY as received CONN_IND. */
-        }
-
-        pMsg->connIndEndTsUsec   = pAdvSet->connIndEndTsUsec;
-        pMsg->localRpa       = lmgrSlvAdvCb.localRpa;
-
-        pMsg->usedChSel = pAdvSet->usedChSel;
-
-        pMsg->sendAdvSetTerm = TRUE;
-        pMsg->numExtAdvEvents = pAdvSet->numEvents;
-        pMsg->isAuxConnReq = pAdvSet->isAuxConnReq;
-
-        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    if (!pAdvSet->connIndRcvd) {
+        WsfTimerStop(&pAdvSet->tmrAdvDur);
 
         lctrExtAdvCleanup(pAdvSet);
-        /* BbStop(BB_PROT_BLE); */    /* Remains enabled; connection starts immediately afterwards. */
-      }
-      else
-      {
-        /* Do not cleanup. Restarting will reuse resources. */
-        restartAdv = TRUE;
-      }
-    }
+        BbStop(BB_PROT_BLE);
 
-    if (restartAdv == TRUE)
+        LmgrSendAdvSetTermInd(pAdvSet->handle, pAdvSet->termReason, 0, pAdvSet->numEvents);
+
+        const uint8_t LEGACY_HIGH_DUTY =
+            (LL_ADV_EVT_PROP_LEGACY_ADV_BIT | LL_ADV_EVT_PROP_HIGH_DUTY_ADV_BIT |
+             LL_ADV_EVT_PROP_DIRECT_ADV_BIT | LL_ADV_EVT_PROP_CONN_ADV_BIT);
+        if ((pAdvSet->param.advEventProp & LEGACY_HIGH_DUTY) == LEGACY_HIGH_DUTY) {
+            /* Legacy connection complete event doesn't include peerRpa and localRpa. */
+            lctrNotifyHostConnectInd(pAdvSet->handle, LL_ROLE_SLAVE, NULL,
+                                     pAdvSet->param.peerAddrType, pAdvSet->param.peerAddr, 0, 0,
+                                     LL_ERROR_CODE_ADV_TIMEOUT, 0);
+        }
+    } else /* CONNECT_IND or CONNECT_REQ received */
     {
-      /* Restart advertising. */
-      /* Reuse message. */
-      /* coverity[alias_transfer] */
-      lctrMsgHdr_t *pMsg = (lctrMsgHdr_t *)pBuf - 1;
+        BbBleData_t *const pBle = &pAdvSet->bleData;
+        BbBleSlvAdvEvent_t *const pAdv = &pBle->op.slvAdv;
+        BbBleSlvAuxAdvEvent_t *const pAuxAdv = &pAdvSet->auxBleData.op.slvAuxAdv;
 
-      pMsg->handle = pAdvSet->handle;
-      pMsg->dispId = LCTR_DISP_EXT_ADV;
-      pMsg->event = LCTR_EXT_ADV_MSG_INT_START;
-      WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+        uint8_t *pBuf;
+        bool_t restartAdv = FALSE;
 
-      BbStop(BB_PROT_BLE);
+        if ((pBuf = pAdv->pRxReqBuf) != NULL) {
+            /* Legacy advertising PDU. */
+
+            /* If peer address was not resolved, attempt to resolve it now. */
+            if (!BbBlePduFiltCheck(pBuf, &pBle->pduFilt, TRUE, &pAdv->filtResults)) {
+                restartAdv = TRUE;
+            }
+        } else if ((pBuf = pAuxAdv->pRxAuxReqBuf) != NULL) {
+            /* Extended advertising PDU. */
+            lctrAdvbPduHdr_t hdr;
+            uint8_t *pTempBuf = pBuf;
+            lctrConnInd_t connInd;
+
+            pTempBuf += lctrUnpackAdvbPduHdr(&hdr, pTempBuf);
+            lctrUnpackConnIndPdu(&connInd, pTempBuf);
+
+            /* If peer address was not resolved, attempt to resolve it now. */
+            bbBlePduExtFiltParams_t params;
+
+            memset(&params, 0, sizeof(bbBlePduExtFiltParams_t));
+            params.pduType = hdr.pduType;
+            params.extHdrFlags |= (LL_EXT_HDR_ADV_ADDR_BIT |
+                                   LL_EXT_HDR_TGT_ADDR_BIT); /* ScanA and AdvA are mandatory. */
+            params.peerAddr = connInd.initAddr;
+            params.peerAddrRand = hdr.txAddrRnd;
+            params.localAddr = connInd.advAddr;
+            params.localAddrRand = hdr.rxAddrRnd;
+
+            if (!BbBleExtPduFiltCheck(&params, &pBle->pduFilt, TRUE, &pAuxAdv->filtResults)) {
+                restartAdv = TRUE;
+            }
+        }
+
+        WSF_ASSERT(pBuf); /* pBuf must not be NULL since conn_ind/aux_conn_req is received. */
+
+        if (restartAdv == FALSE) {
+            lctrConnEstablish_t *pMsg;
+
+            if ((pMsg = (lctrConnEstablish_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+                lctrAdvbPduHdr_t hdr;
+
+                pMsg->hdr.handle = pAdvSet->handle;
+                pMsg->hdr.dispId = LCTR_DISP_CONN_IND;
+                /* pMsg->hdr.event = 0; */
+
+                /* coverity[var_deref_model] */
+                pBuf += lctrUnpackAdvbPduHdr(&hdr, pBuf);
+                lctrUnpackConnIndPdu(&pMsg->connInd, pBuf);
+
+                if (pAdv->pRxReqBuf) {
+                    /* Legacy advertising. */
+                    BbBlePduFiltResultsGetPeerIdAddr(&pAdv->filtResults, &pMsg->peerIdAddr,
+                                                     &pMsg->peerIdAddrType);
+                    BbBlePduFiltResultsGetPeerRpa(&pAdv->filtResults, &pMsg->peerRpa);
+                    pMsg->phy = LL_PHY_LE_1M;
+                } else {
+                    BbBlePduFiltResultsGetPeerIdAddr(&pAuxAdv->filtResults, &pMsg->peerIdAddr,
+                                                     &pMsg->peerIdAddrType);
+                    BbBlePduFiltResultsGetPeerRpa(&pAuxAdv->filtResults, &pMsg->peerRpa);
+                    pMsg->phy = pAdvSet->auxBleData.chan.rxPhy; /* Same PHY as received CONN_IND. */
+                }
+
+                pMsg->connIndEndTsUsec = pAdvSet->connIndEndTsUsec;
+                pMsg->localRpa = lmgrSlvAdvCb.localRpa;
+
+                pMsg->usedChSel = pAdvSet->usedChSel;
+
+                pMsg->sendAdvSetTerm = TRUE;
+                pMsg->numExtAdvEvents = pAdvSet->numEvents;
+                pMsg->isAuxConnReq = pAdvSet->isAuxConnReq;
+
+                WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+
+                lctrExtAdvCleanup(pAdvSet);
+                /* BbStop(BB_PROT_BLE); */ /* Remains enabled; connection starts immediately afterwards. */
+            } else {
+                /* Do not cleanup. Restarting will reuse resources. */
+                restartAdv = TRUE;
+            }
+        }
+
+        if (restartAdv == TRUE) {
+            /* Restart advertising. */
+            /* Reuse message. */
+            /* coverity[alias_transfer] */
+            lctrMsgHdr_t *pMsg = (lctrMsgHdr_t *)pBuf - 1;
+
+            pMsg->handle = pAdvSet->handle;
+            pMsg->dispId = LCTR_DISP_EXT_ADV;
+            pMsg->event = LCTR_EXT_ADV_MSG_INT_START;
+            WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+
+            BbStop(BB_PROT_BLE);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -409,10 +387,10 @@ void lctrExtAdvActSelfTerm(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActAdvTerm(lctrAdvSet_t *pAdvSet)
 {
-  lctrExtAdvCleanup(pAdvSet);
-  BbStop(BB_PROT_BLE);
+    lctrExtAdvCleanup(pAdvSet);
+    BbStop(BB_PROT_BLE);
 
-  LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
+    LmgrSendExtAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -424,18 +402,17 @@ void lctrExtAdvActAdvTerm(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActReset(lctrAdvSet_t *pAdvSet)
 {
-  /* LCTR_MSG_RESET is broadcasted by hciReset and the processing order between ext ADV SM and periodic ADV SM is not guaranteed. */
-  /* If ext ADV SM runs first, it will purge all info and periodic ADV SM may not run as intended.  */
-  /* So, reset cleanup of periodic advertising has to be done from extended ADV SM. */
-  if (pAdvSet->perParam.perState == LCTR_PER_ADV_STATE_ENABLED)
-  {
-    lctrPeriodicAdvActShutdown(pAdvSet);
-    lctrPeriodicAdvACleanup(pAdvSet);
-  }
+    /* LCTR_MSG_RESET is broadcasted by hciReset and the processing order between ext ADV SM and periodic ADV SM is not guaranteed. */
+    /* If ext ADV SM runs first, it will purge all info and periodic ADV SM may not run as intended.  */
+    /* So, reset cleanup of periodic advertising has to be done from extended ADV SM. */
+    if (pAdvSet->perParam.perState == LCTR_PER_ADV_STATE_ENABLED) {
+        lctrPeriodicAdvActShutdown(pAdvSet);
+        lctrPeriodicAdvACleanup(pAdvSet);
+    }
 
-  /* Although the AdvSet is freed here, some benign modifications to the context may occurs
+    /* Although the AdvSet is freed here, some benign modifications to the context may occurs
    * to complete the SM call path. */
-  lctrFreeAdvSet(pAdvSet);
+    lctrFreeAdvSet(pAdvSet);
 }
 
 /*************************************************************************************************/
@@ -447,12 +424,12 @@ void lctrExtAdvActReset(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActResetTerm(lctrAdvSet_t *pAdvSet)
 {
-  lctrExtAdvCleanup(pAdvSet);
-  BbStop(BB_PROT_BLE);
+    lctrExtAdvCleanup(pAdvSet);
+    BbStop(BB_PROT_BLE);
 
-  /* Although the AdvSet is freed here, some benign modifications to the context may occurs
+    /* Although the AdvSet is freed here, some benign modifications to the context may occurs
    * to complete the SM call path. */
-  lctrFreeAdvSet(pAdvSet);
+    lctrFreeAdvSet(pAdvSet);
 }
 
 /*************************************************************************************************/
@@ -464,10 +441,10 @@ void lctrExtAdvActResetTerm(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrExtAdvActDurationExpired(lctrAdvSet_t *pAdvSet)
 {
-  pAdvSet->termReason = LL_ERROR_CODE_ADV_TIMEOUT;
+    pAdvSet->termReason = LL_ERROR_CODE_ADV_TIMEOUT;
 
-  /* Signal shutdown, event completion occurs in lctrExtAdvActSelfTerm(). */
-  pAdvSet->shutdown = TRUE;
+    /* Signal shutdown, event completion occurs in lctrExtAdvActSelfTerm(). */
+    pAdvSet->shutdown = TRUE;
 }
 
 /*************************************************************************************************/
@@ -479,20 +456,18 @@ void lctrExtAdvActDurationExpired(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrPeriodicBuildRemapTable(lmgrChanParam_t *pChanParam)
 {
-  unsigned int chanIdx;
-  unsigned int numUsedChan = 0;
+    unsigned int chanIdx;
+    unsigned int numUsedChan = 0;
 
-  for (chanIdx = 0; chanIdx < sizeof(pChanParam->chanRemapTbl); chanIdx++)
-  {
-    if (pChanParam->chanMask & (UINT64_C(1) << chanIdx))
-    {
-      pChanParam->chanRemapTbl[numUsedChan++] = chanIdx;
+    for (chanIdx = 0; chanIdx < sizeof(pChanParam->chanRemapTbl); chanIdx++) {
+        if (pChanParam->chanMask & (UINT64_C(1) << chanIdx)) {
+            pChanParam->chanRemapTbl[numUsedChan++] = chanIdx;
+        }
     }
-  }
 
-  WSF_ASSERT(numUsedChan);          /* must have at least one channel */
+    WSF_ASSERT(numUsedChan); /* must have at least one channel */
 
-  pChanParam->numUsedChan = numUsedChan;
+    pChanParam->numUsedChan = numUsedChan;
 }
 
 /*************************************************************************************************/
@@ -504,45 +479,42 @@ void lctrPeriodicBuildRemapTable(lmgrChanParam_t *pChanParam)
 /*************************************************************************************************/
 void lctrPeriodicAdvActStart(lctrAdvSet_t *pAdvSet)
 {
-  uint8_t status;
+    uint8_t status;
 
-  BbStart(BB_PROT_BLE);
+    BbStart(BB_PROT_BLE);
 
-  pAdvSet->perParam.shutdown = FALSE;
-  pAdvSet->perParam.perAccessAddr = lctrComputeAccessAddr();
-  pAdvSet->perParam.perEventCounter = 0;
-  pAdvSet->perParam.perChanParam.chanMask = lmgrCb.chanClass;
-  LmgrBuildRemapTable(&pAdvSet->perParam.perChanParam);
-  pAdvSet->perParam.perChanParam.usedChSel = LL_CH_SEL_2;
-  pAdvSet->perParam.perChanParam.chIdentifier = (pAdvSet->perParam.perAccessAddr >> 16) ^
-                                                (pAdvSet->perParam.perAccessAddr >> 0);
-  pAdvSet->perParam.perChIdx = lctrPeriodicSelectNextChannel(&pAdvSet->perParam.perChanParam,
-                                                              pAdvSet->perParam.perEventCounter);
+    pAdvSet->perParam.shutdown = FALSE;
+    pAdvSet->perParam.perAccessAddr = lctrComputeAccessAddr();
+    pAdvSet->perParam.perEventCounter = 0;
+    pAdvSet->perParam.perChanParam.chanMask = lmgrCb.chanClass;
+    LmgrBuildRemapTable(&pAdvSet->perParam.perChanParam);
+    pAdvSet->perParam.perChanParam.usedChSel = LL_CH_SEL_2;
+    pAdvSet->perParam.perChanParam.chIdentifier = (pAdvSet->perParam.perAccessAddr >> 16) ^
+                                                  (pAdvSet->perParam.perAccessAddr >> 0);
+    pAdvSet->perParam.perChIdx = lctrPeriodicSelectNextChannel(&pAdvSet->perParam.perChanParam,
+                                                               pAdvSet->perParam.perEventCounter);
 
-  if ((status = lctrSlvPeriodicAdvBuildOp(pAdvSet)) != LL_SUCCESS)
-  {
-    lctrSendPeriodicAdvSetMsg(pAdvSet, LCTR_PER_ADV_MSG_TERMINATE);
-    LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, status);
-    return;
-  }
+    if ((status = lctrSlvPeriodicAdvBuildOp(pAdvSet)) != LL_SUCCESS) {
+        lctrSendPeriodicAdvSetMsg(pAdvSet, LCTR_PER_ADV_MSG_TERMINATE);
+        LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, status);
+        return;
+    }
 
-  pAdvSet->perParam.perAdvEnabled = TRUE;
+    pAdvSet->perParam.perAdvEnabled = TRUE;
 
-  /* Need to set the flag to add aux BOD when extened adv is already started. */
-  if (pAdvSet->state == LCTR_EXT_ADV_STATE_ENABLED && pAdvSet->auxBodUsed == FALSE)
-  {
-    pAdvSet->perParam.perAuxStart = TRUE;
-  }
+    /* Need to set the flag to add aux BOD when extened adv is already started. */
+    if (pAdvSet->state == LCTR_EXT_ADV_STATE_ENABLED && pAdvSet->auxBodUsed == FALSE) {
+        pAdvSet->perParam.perAuxStart = TRUE;
+    }
 
-  if (pAdvSet->state == LCTR_EXT_ADV_STATE_ENABLED)
-  {
-    /* The Advertising DID is required to change when a SyncInfo field is added to or removed. */
-    pAdvSet->advData.alt.ext.did = lctrCalcDID(pAdvSet->advData.pBuf, pAdvSet->advData.len);
-    pAdvSet->didPerUpdate = TRUE;
-  }
+    if (pAdvSet->state == LCTR_EXT_ADV_STATE_ENABLED) {
+        /* The Advertising DID is required to change when a SyncInfo field is added to or removed. */
+        pAdvSet->advData.alt.ext.did = lctrCalcDID(pAdvSet->advData.pBuf, pAdvSet->advData.len);
+        pAdvSet->didPerUpdate = TRUE;
+    }
 
-  LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
-  LmgrIncResetRefCount();
+    LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
+    LmgrIncResetRefCount();
 }
 
 /*************************************************************************************************/
@@ -554,8 +526,8 @@ void lctrPeriodicAdvActStart(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrPeriodicAdvActUpdate(lctrAdvSet_t *pAdvSet)
 {
-  LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
-  /* TODO cause random address to change */
+    LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
+    /* TODO cause random address to change */
 }
 
 /*************************************************************************************************/
@@ -567,7 +539,7 @@ void lctrPeriodicAdvActUpdate(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrPeriodicAdvActAdvCnf(lctrAdvSet_t *pAdvSet)
 {
-  LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
+    LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -579,7 +551,7 @@ void lctrPeriodicAdvActAdvCnf(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrPeriodicAdvActDisallowAdvCnf(lctrAdvSet_t *pAdvSet)
 {
-  LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_ERROR_CODE_CMD_DISALLOWED);
+    LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_ERROR_CODE_CMD_DISALLOWED);
 }
 
 /*************************************************************************************************/
@@ -591,20 +563,20 @@ void lctrPeriodicAdvActDisallowAdvCnf(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrPeriodicAdvActShutdown(lctrAdvSet_t *pAdvSet)
 {
-  if ((pAdvSet->state == LCTR_EXT_ADV_STATE_ENABLED) && (pAdvSet->perParam.perAdvEnabled == TRUE))
-  {
-    /* The Advertising DID is required to change when a SyncInfo field is added to or removed. */
-    pAdvSet->advData.alt.ext.did = lctrCalcDID(pAdvSet->advData.pBuf, pAdvSet->advData.len);
-    pAdvSet->didPerUpdate = TRUE;
-  }
+    if ((pAdvSet->state == LCTR_EXT_ADV_STATE_ENABLED) &&
+        (pAdvSet->perParam.perAdvEnabled == TRUE)) {
+        /* The Advertising DID is required to change when a SyncInfo field is added to or removed. */
+        pAdvSet->advData.alt.ext.did = lctrCalcDID(pAdvSet->advData.pBuf, pAdvSet->advData.len);
+        pAdvSet->didPerUpdate = TRUE;
+    }
 
-  pAdvSet->perParam.shutdown = TRUE;
-  pAdvSet->perParam.perAdvEnabled = FALSE;
-  pAdvSet->perParam.perAuxStart = FALSE;
+    pAdvSet->perParam.shutdown = TRUE;
+    pAdvSet->perParam.perAdvEnabled = FALSE;
+    pAdvSet->perParam.perAuxStart = FALSE;
 
-  /* By removing BOD from scheduler, BOD end callback will be called. */
-  /* Shutdown completes with events generated in BOD end callback.    */
-  SchRemove(&pAdvSet->perParam.perAdvBod);
+    /* By removing BOD from scheduler, BOD end callback will be called. */
+    /* Shutdown completes with events generated in BOD end callback.    */
+    SchRemove(&pAdvSet->perParam.perAdvBod);
 }
 
 /*************************************************************************************************/
@@ -616,9 +588,9 @@ void lctrPeriodicAdvActShutdown(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrPeriodicAdvActAdvTerm(lctrAdvSet_t *pAdvSet)
 {
-  lctrPeriodicAdvACleanup(pAdvSet);
+    lctrPeriodicAdvACleanup(pAdvSet);
 
-  LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
+    LmgrSendPeriodicAdvEnableCnf(pAdvSet->handle, LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -630,7 +602,7 @@ void lctrPeriodicAdvActAdvTerm(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrPeriodicAdvActResetTerm(lctrAdvSet_t *pAdvSet)
 {
-  lctrPeriodicAdvACleanup(pAdvSet);
+    lctrPeriodicAdvACleanup(pAdvSet);
 }
 
 /*************************************************************************************************/
@@ -642,20 +614,20 @@ void lctrPeriodicAdvActResetTerm(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrSlvAcadActChanMapUpdateStart(lctrAdvSet_t *pAdvSet)
 {
-  LctrAcadChanMapUpd_t *pAcadParam = &pAdvSet->acadParams[LCTR_ACAD_ID_CHAN_MAP_UPDATE].chanMapUpdate;
+    LctrAcadChanMapUpd_t *pAcadParam =
+        &pAdvSet->acadParams[LCTR_ACAD_ID_CHAN_MAP_UPDATE].chanMapUpdate;
 
-  /* A new channel map update cannot replace a currently running one. */
-  if (pAcadParam->hdr.state == LCTR_ACAD_STATE_ENABLED)
-  {
-    return;
-  }
+    /* A new channel map update cannot replace a currently running one. */
+    if (pAcadParam->hdr.state == LCTR_ACAD_STATE_ENABLED) {
+        return;
+    }
 
-  pAdvSet->perParam.updChanMask = pLctrAcadSlvMsg->chanMapUpd.chanMap;
+    pAdvSet->perParam.updChanMask = pLctrAcadSlvMsg->chanMapUpd.chanMap;
 
-  pAcadParam->chanMask = pAdvSet->perParam.updChanMask;
-  pAcadParam->instant = pAdvSet->perParam.perEventCounter + LL_MIN_INSTANT;
-  pAcadParam->hdr.len = LL_ACAD_CHAN_MAP_UPD_LEN;
-  pAcadParam->hdr.state = LCTR_ACAD_STATE_ENABLED;
+    pAcadParam->chanMask = pAdvSet->perParam.updChanMask;
+    pAcadParam->instant = pAdvSet->perParam.perEventCounter + LL_MIN_INSTANT;
+    pAcadParam->hdr.len = LL_ACAD_CHAN_MAP_UPD_LEN;
+    pAcadParam->hdr.state = LCTR_ACAD_STATE_ENABLED;
 }
 
 /*************************************************************************************************/
@@ -667,7 +639,7 @@ void lctrSlvAcadActChanMapUpdateStart(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrSlvAcadActChanMapUpdateFinish(lctrAdvSet_t *pAdvSet)
 {
-  lctrSlvAcadDisable(&pAdvSet->acadParams[LCTR_ACAD_ID_CHAN_MAP_UPDATE]);
+    lctrSlvAcadDisable(&pAdvSet->acadParams[LCTR_ACAD_ID_CHAN_MAP_UPDATE]);
 }
 
 /*************************************************************************************************/
@@ -679,10 +651,9 @@ void lctrSlvAcadActChanMapUpdateFinish(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrSlvAcadActBigCreated(lctrAdvSet_t *pAdvSet)
 {
-  if (pAdvSet->bigCreated)
-  {
-    pAdvSet->bigCreated(pAdvSet->handle);
-  }
+    if (pAdvSet->bigCreated) {
+        pAdvSet->bigCreated(pAdvSet->handle);
+    }
 }
 
 /*************************************************************************************************/
@@ -694,10 +665,9 @@ void lctrSlvAcadActBigCreated(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrSlvAcadActBigTerminated(lctrAdvSet_t *pAdvSet)
 {
-  if (pAdvSet->bigTerminated)
-  {
-    pAdvSet->bigTerminated(pAdvSet->handle);
-  }
+    if (pAdvSet->bigTerminated) {
+        pAdvSet->bigTerminated(pAdvSet->handle);
+    }
 }
 
 /*************************************************************************************************/
@@ -709,6 +679,6 @@ void lctrSlvAcadActBigTerminated(lctrAdvSet_t *pAdvSet)
 /*************************************************************************************************/
 void lctrSlvAcadDisable(lctrAcadParam_t *pAcadParam)
 {
-  memset(pAcadParam, 0, sizeof(*pAcadParam));
-  pAcadParam->hdr.state = LCTR_ACAD_STATE_DISABLED;
+    memset(pAcadParam, 0, sizeof(*pAcadParam));
+    pAcadParam->hdr.state = LCTR_ACAD_STATE_DISABLED;
 }

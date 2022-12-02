@@ -27,8 +27,7 @@
 #define MESH_CFG_MDL_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -40,22 +39,21 @@ typedef void (*meshCfgMdlSrOpReqAct_t)(uint8_t *pMsgParam, uint16_t msgParamLen,
                                        uint8_t ttl, uint16_t netKeyIndex);
 
 /*! Mesh Configuration Server control block */
-typedef struct meshCfgMdlSrCb_tag
-{
-  meshCfgMdlSrCback_t                cback;                /*!< User callback */
-  meshCfgMdlSrFriendStateChgCback_t  friendStateChgCback;  /*!< Friend State changed callback */
-  meshCfgMdlSrNetKeyDelNotifyCback_t netKeyDelNotifyCback; /*!< NetKey deleted notification callback */
-  meshCfgMdlSrPollTimeoutGetCback_t  pollTimeoutGetCback;  /*!< Poll Timeout get callback */
+typedef struct meshCfgMdlSrCb_tag {
+    meshCfgMdlSrCback_t cback; /*!< User callback */
+    meshCfgMdlSrFriendStateChgCback_t friendStateChgCback; /*!< Friend State changed callback */
+    meshCfgMdlSrNetKeyDelNotifyCback_t
+        netKeyDelNotifyCback; /*!< NetKey deleted notification callback */
+    meshCfgMdlSrPollTimeoutGetCback_t pollTimeoutGetCback; /*!< Poll Timeout get callback */
 } meshCfgMdlSrCb_t;
 
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
 
-void meshCfgMdlSrAccMsgRcvCback(uint8_t opcodeIdx, uint8_t *pMsgParam,
-                               uint16_t msgParamLen, meshAddress_t src,
-                               meshElementId_t elemId, uint8_t ttl,
-                               uint16_t netKeyIndex);
+void meshCfgMdlSrAccMsgRcvCback(uint8_t opcodeIdx, uint8_t *pMsgParam, uint16_t msgParamLen,
+                                meshAddress_t src, meshElementId_t elemId, uint8_t ttl,
+                                uint16_t netKeyIndex);
 
 void meshCfgMdlSrEmptyCback(const meshCfgMdlSrEvt_t *pEvt);
 void meshCfgMdlSrEmptyFriendStateChgCback(void);
@@ -69,8 +67,8 @@ void meshCfgMdlSrHandleBeaconGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshA
 void meshCfgMdlSrHandleBeaconSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex);
 
-void meshCfgMdlSrHandleCompositionDataGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                          uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleCompositionDataGet(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                          meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
 
 void meshCfgMdlSrHandleDefaultTtlGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                      uint8_t ttl, uint16_t netKeyIndex);
@@ -96,22 +94,22 @@ void meshCfgMdlSrHandleModelPubVirtSet(uint8_t *pMsgParam, uint16_t msgParamLen,
 
 void meshCfgMdlSrHandleModelSubscrAdd(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                       uint8_t ttl, uint16_t netKeyIndex);
-void meshCfgMdlSrHandleModelSubscrVirtAdd(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                          uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleModelSubscrVirtAdd(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                          meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
 void meshCfgMdlSrHandleModelSubscrDel(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                       uint8_t ttl, uint16_t netKeyIndex);
-void meshCfgMdlSrHandleModelSubscrVirtDel(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                          uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleModelSubscrVirtDel(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                          meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
 void meshCfgMdlSrHandleModelSubscrOvr(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                       uint8_t ttl, uint16_t netKeyIndex);
-void meshCfgMdlSrHandleModelSubscrVirtOvr(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                          uint8_t ttl, uint16_t netKeyIndex);
-void meshCfgMdlSrHandleModelSubscrDelAll(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                         uint8_t ttl, uint16_t netKeyIndex);
-void meshCfgMdlSrHandleModelSubscrSigGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                         uint8_t ttl, uint16_t netKeyIndex);
-void meshCfgMdlSrHandleModelSubscrVendorGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                            uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleModelSubscrVirtOvr(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                          meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleModelSubscrDelAll(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                         meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleModelSubscrSigGet(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                         meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleModelSubscrVendorGet(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                            meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
 
 void meshCfgMdlSrHandleNetKeyAdd(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex);
@@ -142,8 +140,8 @@ void meshCfgMdlSrHandleModelAppUnbind(uint8_t *pMsgParam, uint16_t msgParamLen, 
                                       uint8_t ttl, uint16_t netKeyIndex);
 void meshCfgMdlSrHandleModelAppSigGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                       uint8_t ttl, uint16_t netKeyIndex);
-void meshCfgMdlSrHandleModelAppVendorGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                         uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleModelAppVendorGet(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                         meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
 
 void meshCfgMdlSrHandleNodeReset(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex);
@@ -152,7 +150,6 @@ void meshCfgMdlSrHandleFriendGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshA
                                  uint8_t ttl, uint16_t netKeyIndex);
 void meshCfgMdlSrHandleFriendSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                  uint8_t ttl, uint16_t netKeyIndex);
-
 
 void meshCfgMdlSrHandleKeyRefPhaseGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                       uint8_t ttl, uint16_t netKeyIndex);
@@ -168,8 +165,8 @@ void meshCfgMdlSrHandleHbSubGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAd
 void meshCfgMdlSrHandleHbSubSet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                 uint8_t ttl, uint16_t netKeyIndex);
 
-void meshCfgMdlSrHandleLpnPollTimeoutGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
-                                         uint8_t ttl, uint16_t netKeyIndex);
+void meshCfgMdlSrHandleLpnPollTimeoutGet(uint8_t *pMsgParam, uint16_t msgParamLen,
+                                         meshAddress_t src, uint8_t ttl, uint16_t netKeyIndex);
 
 void meshCfgMdlSrHandleNwkTransGet(uint8_t *pMsgParam, uint16_t msgParamLen, meshAddress_t src,
                                    uint8_t ttl, uint16_t netKeyIndex);

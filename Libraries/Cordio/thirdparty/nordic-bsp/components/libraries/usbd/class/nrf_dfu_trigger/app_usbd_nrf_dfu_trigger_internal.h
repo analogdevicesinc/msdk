@@ -75,20 +75,19 @@ enum app_usbd_nrf_dfu_trigger_user_event_e;
  *
  * */
 typedef void (*app_usbd_nrf_dfu_trigger_user_ev_handler_t)(
-        app_usbd_class_inst_t const *              p_inst,
-        enum app_usbd_nrf_dfu_trigger_user_event_e event);
+    app_usbd_class_inst_t const *p_inst, enum app_usbd_nrf_dfu_trigger_user_event_e event);
 
 /**
  * @brief Nordic DFU Trigger part of class instance data.
  */
 typedef struct {
-    size_t const    sem_ver_size;   //!< Semantic string size
-    uint16_t const  detach_timeout; //!< Detach timeout in ms - for compatibility with DFU spec.
-    uint16_t const  transfer_size;  //!< Transfer size - for compatibility with DFU spec.
-    uint16_t const  bcd_dfu;        //!< DFU spec version.
-    uint8_t const * p_sem_ver;      //!< Pointer to semantic version string
+    size_t const sem_ver_size; //!< Semantic string size
+    uint16_t const detach_timeout; //!< Detach timeout in ms - for compatibility with DFU spec.
+    uint16_t const transfer_size; //!< Transfer size - for compatibility with DFU spec.
+    uint16_t const bcd_dfu; //!< DFU spec version.
+    uint8_t const *p_sem_ver; //!< Pointer to semantic version string
 
-    app_usbd_nrf_dfu_trigger_nordic_info_t const * p_dfu_info; //!< Pointer to Nordic DFU Info
+    app_usbd_nrf_dfu_trigger_nordic_info_t const *p_dfu_info; //!< Pointer to Nordic DFU Info
 
     app_usbd_nrf_dfu_trigger_user_ev_handler_t user_ev_handler; //!< User event handler
 } app_usbd_nrf_dfu_trigger_inst_t;
@@ -99,8 +98,8 @@ typedef struct {
  * @note For future compatibility with DFU class.
  */
 typedef enum {
-    APP_USBD_NRF_DFU_TRIGGER_STATE_IDLE,          /**< Internal module state IDLE          */
-    APP_USBD_NRF_DFU_TRIGGER_STATE_DETACH,        /**< Internal module state DETACH        */
+    APP_USBD_NRF_DFU_TRIGGER_STATE_IDLE, /**< Internal module state IDLE          */
+    APP_USBD_NRF_DFU_TRIGGER_STATE_DETACH, /**< Internal module state DETACH        */
 } app_usbd_nrf_dfu_trigger_state_t;
 
 /**
@@ -111,7 +110,6 @@ typedef struct {
     app_usbd_nrf_dfu_trigger_state_t state; //!< Internal module state
 } app_usbd_nrf_dfu_trigger_ctx_t;
 
-
 /**
  * @brief Nordic DFU Trigger configuration macro.
  *
@@ -121,14 +119,12 @@ typedef struct {
  * */
 #define APP_USBD_NRF_DFU_TRIGGER_CONFIG(iface) (iface)
 
-
 /**
  * @brief Specific class constant data for Nordic DFU Trigger.
  *
  * @ref app_usbd_nrf_dfu_trigger_inst_t
  */
 #define APP_USBD_NRF_DFU_TRIGGER_INSTANCE_SPECIFIC_DEC app_usbd_nrf_dfu_trigger_inst_t inst;
-
 
 /**
  * @brief Configures Nordic DFU Trigger instance.
@@ -140,20 +136,16 @@ typedef struct {
  * @param size                  Transfer size in bytes - left for compatibility with USB DFU spec.
  * @param bcd                   USB DFU specification version.
  */
-#define APP_USBD_NRF_DFU_TRIGGER_INST_CONFIG(user_event_handler,                                   \
-                                             p_nordic_dfu,                                         \
-                                             sem_ver_str,                                          \
-                                             timeout,                                              \
-                                             size,                                                 \
-                                             bcd)                                                  \
-    .inst = {                                                                                      \
-         .user_ev_handler   = user_event_handler,                                                  \
-         .p_dfu_info        = p_nordic_dfu,                                                        \
-         .p_sem_ver         = sem_ver_str,                                                         \
-         .sem_ver_size      = sizeof(sem_ver_str),                                                 \
-         .transfer_size     = size,                                                                \
-         .detach_timeout    = timeout,                                                             \
-         .bcd_dfu           = bcd,                                                                 \
+#define APP_USBD_NRF_DFU_TRIGGER_INST_CONFIG(user_event_handler, p_nordic_dfu, sem_ver_str, \
+                                             timeout, size, bcd)                            \
+    .inst = {                                                                               \
+        .user_ev_handler = user_event_handler,                                              \
+        .p_dfu_info = p_nordic_dfu,                                                         \
+        .p_sem_ver = sem_ver_str,                                                           \
+        .sem_ver_size = sizeof(sem_ver_str),                                                \
+        .transfer_size = size,                                                              \
+        .detach_timeout = timeout,                                                          \
+        .bcd_dfu = bcd,                                                                     \
     }
 
 /**
@@ -163,7 +155,6 @@ typedef struct {
  * */
 #define APP_USBD_NRF_DFU_TRIGGER_DATA_SPECIFIC_DEC app_usbd_nrf_dfu_trigger_ctx_t ctx;
 
-
 /**
  * @brief Public Nordic DFU Trigger class interface.
  */
@@ -172,29 +163,16 @@ extern const app_usbd_class_methods_t app_usbd_nrf_dfu_trigger_class_methods;
 /**
  * @brief Global definition of Nordic DFU Trigger instance.
  */
-#define APP_USBD_NRF_DFU_TRIGGER_GLOBAL_DEF_INTERNAL(instance_name,                                \
-                                                     interface_number,                             \
-                                                     detach_timeout,                               \
-                                                     transfer_size,                                \
-                                                     p_nordic_dfu,                                 \
-                                                     sem_ver_str,                                  \
-                                                     user_ev_handler)                              \
-    APP_USBD_CLASS_INST_NO_EP_GLOBAL_DEF(                                                          \
-        instance_name,                                                                             \
-        app_usbd_nrf_dfu_trigger,                                                                  \
-        &app_usbd_nrf_dfu_trigger_class_methods,                                                   \
-        APP_USBD_NRF_DFU_TRIGGER_CONFIG((interface_number)),                                       \
-        (APP_USBD_NRF_DFU_TRIGGER_INST_CONFIG(user_ev_handler,                                     \
-                                              p_nordic_dfu,                                        \
-                                              sem_ver_str,                                         \
-                                              detach_timeout,                                      \
-                                              transfer_size,                                       \
-                                              0x0110))                                             \
-    )
-
+#define APP_USBD_NRF_DFU_TRIGGER_GLOBAL_DEF_INTERNAL(instance_name, interface_number,             \
+                                                     detach_timeout, transfer_size, p_nordic_dfu, \
+                                                     sem_ver_str, user_ev_handler)                \
+    APP_USBD_CLASS_INST_NO_EP_GLOBAL_DEF(                                                         \
+        instance_name, app_usbd_nrf_dfu_trigger, &app_usbd_nrf_dfu_trigger_class_methods,         \
+        APP_USBD_NRF_DFU_TRIGGER_CONFIG((interface_number)),                                      \
+        (APP_USBD_NRF_DFU_TRIGGER_INST_CONFIG(user_ev_handler, p_nordic_dfu, sem_ver_str,         \
+                                              detach_timeout, transfer_size, 0x0110)))
 
 /** @} */
-
 
 #ifdef __cplusplus
 }

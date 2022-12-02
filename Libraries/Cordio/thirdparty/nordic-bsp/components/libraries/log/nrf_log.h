@@ -58,7 +58,6 @@
 #define NRF_LOG_ERROR_STRING_GET(code) ""
 #endif
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -68,15 +67,14 @@ extern "C" {
  * The severity level can be defined in a module to override the default.
  */
 #ifndef NRF_LOG_LEVEL
-    #define NRF_LOG_LEVEL NRF_LOG_DEFAULT_LEVEL
+#define NRF_LOG_LEVEL NRF_LOG_DEFAULT_LEVEL
 #endif
 
 /** @brief Initial severity if filtering is enabled.
  */
 #ifndef NRF_LOG_INITIAL_LEVEL
-    #define NRF_LOG_INITIAL_LEVEL NRF_LOG_LEVEL
+#define NRF_LOG_INITIAL_LEVEL NRF_LOG_LEVEL
 #endif
-
 
 #include "nrf_log_internal.h"
 
@@ -108,10 +106,10 @@ extern "C" {
  *  @details This macro is compiled only if @ref NRF_LOG_LEVEL includes debug logs.
  */
 
-#define NRF_LOG_ERROR(...)                     NRF_LOG_INTERNAL_ERROR(__VA_ARGS__)
-#define NRF_LOG_WARNING(...)                   NRF_LOG_INTERNAL_WARNING( __VA_ARGS__)
-#define NRF_LOG_INFO(...)                      NRF_LOG_INTERNAL_INFO( __VA_ARGS__)
-#define NRF_LOG_DEBUG(...)                     NRF_LOG_INTERNAL_DEBUG( __VA_ARGS__)
+#define NRF_LOG_ERROR(...) NRF_LOG_INTERNAL_ERROR(__VA_ARGS__)
+#define NRF_LOG_WARNING(...) NRF_LOG_INTERNAL_WARNING(__VA_ARGS__)
+#define NRF_LOG_INFO(...) NRF_LOG_INTERNAL_INFO(__VA_ARGS__)
+#define NRF_LOG_DEBUG(...) NRF_LOG_INTERNAL_DEBUG(__VA_ARGS__)
 
 /** @def NRF_LOG_INST_ERROR
  *  @brief Macro for logging error messages for a given module instance. It takes a printf-like, formatted
@@ -148,15 +146,15 @@ extern "C" {
  *
  *  @details This macro is compiled only if @ref NRF_LOG_LEVEL includes error logs.
  */
-#define NRF_LOG_INST_ERROR(p_inst,...)         NRF_LOG_INTERNAL_INST_ERROR(p_inst,__VA_ARGS__)
-#define NRF_LOG_INST_WARNING(p_inst,...)       NRF_LOG_INTERNAL_INST_WARNING(p_inst,__VA_ARGS__)
-#define NRF_LOG_INST_INFO(p_inst,...)          NRF_LOG_INTERNAL_INST_INFO(p_inst, __VA_ARGS__)
-#define NRF_LOG_INST_DEBUG(p_inst,...)         NRF_LOG_INTERNAL_INST_DEBUG(p_inst, __VA_ARGS__)
+#define NRF_LOG_INST_ERROR(p_inst, ...) NRF_LOG_INTERNAL_INST_ERROR(p_inst, __VA_ARGS__)
+#define NRF_LOG_INST_WARNING(p_inst, ...) NRF_LOG_INTERNAL_INST_WARNING(p_inst, __VA_ARGS__)
+#define NRF_LOG_INST_INFO(p_inst, ...) NRF_LOG_INTERNAL_INST_INFO(p_inst, __VA_ARGS__)
+#define NRF_LOG_INST_DEBUG(p_inst, ...) NRF_LOG_INTERNAL_INST_DEBUG(p_inst, __VA_ARGS__)
 
 /**
  * @brief Macro for logging a formatted string without any prefix or timestamp.
  */
-#define NRF_LOG_RAW_INFO(...)                  NRF_LOG_INTERNAL_RAW_INFO( __VA_ARGS__)
+#define NRF_LOG_RAW_INFO(...) NRF_LOG_INTERNAL_RAW_INFO(__VA_ARGS__)
 
 /** @def NRF_LOG_HEXDUMP_ERROR
  *  @brief Macro for logging raw bytes.
@@ -186,10 +184,10 @@ extern "C" {
  * @param p_data     Pointer to data.
  * @param len        Data length in bytes.
  */
-#define NRF_LOG_HEXDUMP_ERROR(p_data, len)   NRF_LOG_INTERNAL_HEXDUMP_ERROR(p_data, len)
+#define NRF_LOG_HEXDUMP_ERROR(p_data, len) NRF_LOG_INTERNAL_HEXDUMP_ERROR(p_data, len)
 #define NRF_LOG_HEXDUMP_WARNING(p_data, len) NRF_LOG_INTERNAL_HEXDUMP_WARNING(p_data, len)
-#define NRF_LOG_HEXDUMP_INFO(p_data, len)    NRF_LOG_INTERNAL_HEXDUMP_INFO(p_data, len)
-#define NRF_LOG_HEXDUMP_DEBUG(p_data, len)   NRF_LOG_INTERNAL_HEXDUMP_DEBUG(p_data, len)
+#define NRF_LOG_HEXDUMP_INFO(p_data, len) NRF_LOG_INTERNAL_HEXDUMP_INFO(p_data, len)
+#define NRF_LOG_HEXDUMP_DEBUG(p_data, len) NRF_LOG_INTERNAL_HEXDUMP_DEBUG(p_data, len)
 
 /** @def NRF_LOG_HEXDUMP_INST_ERROR
  *  @brief Macro for logging raw bytes for a specific module instance.
@@ -223,23 +221,26 @@ extern "C" {
  * @param p_data     Pointer to data.
  * @param len        Data length in bytes.
  */
-#define NRF_LOG_HEXDUMP_INST_ERROR(p_inst, p_data, len)   NRF_LOG_INTERNAL_HEXDUMP_INST_ERROR(p_inst, p_data, len)
-#define NRF_LOG_HEXDUMP_INST_WARNING(p_inst, p_data, len) NRF_LOG_INTERNAL_HEXDUMP_INST_WARNING(p_inst, p_data, len)
-#define NRF_LOG_HEXDUMP_INST_INFO(p_inst, p_data, len)    NRF_LOG_INTERNAL_HEXDUMP_INST_INFO(p_inst, p_data, len)
-#define NRF_LOG_HEXDUMP_INST_DEBUG(p_inst, p_data, len)   NRF_LOG_INTERNAL_HEXDUMP_INST_DEBUG(p_inst, p_data, len)
+#define NRF_LOG_HEXDUMP_INST_ERROR(p_inst, p_data, len) \
+    NRF_LOG_INTERNAL_HEXDUMP_INST_ERROR(p_inst, p_data, len)
+#define NRF_LOG_HEXDUMP_INST_WARNING(p_inst, p_data, len) \
+    NRF_LOG_INTERNAL_HEXDUMP_INST_WARNING(p_inst, p_data, len)
+#define NRF_LOG_HEXDUMP_INST_INFO(p_inst, p_data, len) \
+    NRF_LOG_INTERNAL_HEXDUMP_INST_INFO(p_inst, p_data, len)
+#define NRF_LOG_HEXDUMP_INST_DEBUG(p_inst, p_data, len) \
+    NRF_LOG_INTERNAL_HEXDUMP_INST_DEBUG(p_inst, p_data, len)
 
 /**
  * @brief Macro for logging hexdump without any prefix or timestamp.
  */
 #define NRF_LOG_RAW_HEXDUMP_INFO(p_data, len) NRF_LOG_INTERNAL_RAW_HEXDUMP_INFO(p_data, len)
 
-
 /**
  * @brief Macro for copying a string to internal logger buffer if logs are deferred.
  *
  * @param _str  String.
  */
-#define NRF_LOG_PUSH(_str)                   NRF_LOG_INTERNAL_LOG_PUSH(_str)
+#define NRF_LOG_PUSH(_str) NRF_LOG_INTERNAL_LOG_PUSH(_str)
 
 /**
  * @brief Function for copying a string to the internal logger buffer if logs are deferred.
@@ -259,7 +260,7 @@ extern "C" {
  *
  * @return Address to the location where the string is stored in the internal logger buffer.
  */
-char const * nrf_log_push(char * const p_str);
+char const *nrf_log_push(char *const p_str);
 
 /**
  * @brief Macro to be used in a formatted string to a pass float number to the log.
@@ -273,11 +274,9 @@ char const * nrf_log_push(char * const p_str);
 /**
  * @brief Macro for dissecting a float number into two numbers (integer and residuum).
  */
-#define NRF_LOG_FLOAT(val) (uint32_t)(((val) < 0 && (val) > -1.0) ? "-" : ""),   \
-                           (int32_t)(val),                                       \
-                           (int32_t)((((val) > 0) ? (val) - (int32_t)(val)       \
-                                                : (int32_t)(val) - (val))*100)
-
+#define NRF_LOG_FLOAT(val)                                              \
+    (uint32_t)(((val) < 0 && (val) > -1.0) ? "-" : ""), (int32_t)(val), \
+        (int32_t)((((val) > 0) ? (val) - (int32_t)(val) : (int32_t)(val) - (val)) * 100)
 
 /**
  * @brief Macro for registering an independent module.
@@ -285,7 +284,6 @@ char const * nrf_log_push(char * const p_str);
  * Registration creates set of dynamic (RAM) and constant variables associated with the module.
  */
 #define NRF_LOG_MODULE_REGISTER() NRF_LOG_INTERNAL_MODULE_REGISTER()
-
 
 #ifdef __cplusplus
 }

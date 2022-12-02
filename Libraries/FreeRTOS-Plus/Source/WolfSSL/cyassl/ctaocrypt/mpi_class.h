@@ -20,4 +20,3 @@
  */
 
 #include <wolfssl/wolfcrypt/mpi_class.h>
-

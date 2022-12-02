@@ -42,12 +42,11 @@
 **************************************************************************************************/
 
 /* Control block */
-typedef struct
-{
-  uint16_t        *pCccTbl[DM_CONN_MAX];  /* Pointer to descriptor value tables */
-  attsCccSet_t    *pSet;                  /* Array of CCC descriptor settings */
-  attsCccCback_t  cback;                  /* Client callback function */
-  uint8_t         setLen;                 /* Length of settings array */
+typedef struct {
+    uint16_t *pCccTbl[DM_CONN_MAX]; /* Pointer to descriptor value tables */
+    attsCccSet_t *pSet; /* Array of CCC descriptor settings */
+    attsCccCback_t cback; /* Client callback function */
+    uint8_t setLen; /* Length of settings array */
 } AttsCccCb_t;
 
 /**************************************************************************************************
@@ -71,15 +70,15 @@ static AttsCccCb_t attsCccCb;
 /*************************************************************************************************/
 static void attsCccCback(dmConnId_t connId, uint8_t idx, uint16_t handle, uint16_t value)
 {
-  attsCccEvt_t  evt;
+    attsCccEvt_t evt;
 
-  evt.hdr.event = ATTS_CCC_STATE_IND;
-  evt.hdr.param = connId;
-  evt.idx = idx;
-  evt.handle = handle;
-  evt.value = value;
+    evt.hdr.event = ATTS_CCC_STATE_IND;
+    evt.hdr.param = connId;
+    evt.idx = idx;
+    evt.handle = handle;
+    evt.value = value;
 
-  (*attsCccCb.cback)(&evt);
+    (*attsCccCb.cback)(&evt);
 }
 
 /*************************************************************************************************/
@@ -93,18 +92,17 @@ static void attsCccCback(dmConnId_t connId, uint8_t idx, uint16_t handle, uint16
 /*************************************************************************************************/
 static uint16_t *attsCccAllocTbl(dmConnId_t connId)
 {
-  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-  /* if not already allocated */
-  if (attsCccCb.pCccTbl[connId - 1] == NULL)
-  {
-    WSF_ASSERT(attsCccCb.setLen > 0);
+    /* if not already allocated */
+    if (attsCccCb.pCccTbl[connId - 1] == NULL) {
+        WSF_ASSERT(attsCccCb.setLen > 0);
 
-    /* allocate new buffer */
-    attsCccCb.pCccTbl[connId - 1] = WsfBufAlloc(attsCccCb.setLen * sizeof(uint16_t));
-  }
+        /* allocate new buffer */
+        attsCccCb.pCccTbl[connId - 1] = WsfBufAlloc(attsCccCb.setLen * sizeof(uint16_t));
+    }
 
-  return attsCccCb.pCccTbl[connId - 1];
+    return attsCccCb.pCccTbl[connId - 1];
 }
 
 /*************************************************************************************************/
@@ -118,9 +116,9 @@ static uint16_t *attsCccAllocTbl(dmConnId_t connId)
 /*************************************************************************************************/
 static uint16_t *attsCccGetTbl(dmConnId_t connId)
 {
-  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-  return attsCccCb.pCccTbl[connId - 1];
+    return attsCccCb.pCccTbl[connId - 1];
 }
 
 /*************************************************************************************************/
@@ -134,13 +132,12 @@ static uint16_t *attsCccGetTbl(dmConnId_t connId)
 /*************************************************************************************************/
 static void attsCccFreeTbl(dmConnId_t connId)
 {
-  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-  if (attsCccCb.pCccTbl[connId - 1] != NULL)
-  {
-    WsfBufFree(attsCccCb.pCccTbl[connId - 1]);
-    attsCccCb.pCccTbl[connId - 1] = NULL;
-  }
+    if (attsCccCb.pCccTbl[connId - 1] != NULL) {
+        WsfBufFree(attsCccCb.pCccTbl[connId - 1]);
+        attsCccCb.pCccTbl[connId - 1] = NULL;
+    }
 }
 
 /*************************************************************************************************/
@@ -157,37 +154,31 @@ static void attsCccFreeTbl(dmConnId_t connId)
 /*************************************************************************************************/
 static uint8_t attsCccReadValue(dmConnId_t connId, uint16_t handle, uint8_t *pValue)
 {
-  attsCccSet_t  *pSet;
-  uint16_t      *pTbl;
-  uint8_t       i;
+    attsCccSet_t *pSet;
+    uint16_t *pTbl;
+    uint8_t i;
 
-  /* find handle in handle array */
-  for (pSet = attsCccCb.pSet, i = 0; i < attsCccCb.setLen; i++, pSet++)
-  {
-    if (pSet->handle == handle)
-    {
-      break;
+    /* find handle in handle array */
+    for (pSet = attsCccCb.pSet, i = 0; i < attsCccCb.setLen; i++, pSet++) {
+        if (pSet->handle == handle) {
+            break;
+        }
     }
-  }
 
-  /* if handle not found return error */
-  if (i == attsCccCb.setLen)
-  {
-    return ATT_ERR_NOT_FOUND;
-  }
+    /* if handle not found return error */
+    if (i == attsCccCb.setLen) {
+        return ATT_ERR_NOT_FOUND;
+    }
 
-  /* get pointer to the table for this connection */
-  if ((pTbl = attsCccGetTbl(connId)) != NULL)
-  {
-    /* read value */
-    UINT16_TO_BSTREAM(pValue, pTbl[i]);
+    /* get pointer to the table for this connection */
+    if ((pTbl = attsCccGetTbl(connId)) != NULL) {
+        /* read value */
+        UINT16_TO_BSTREAM(pValue, pTbl[i]);
 
-    return ATT_SUCCESS;
-  }
-  else
-  {
-    return ATT_ERR_RESOURCES;
-  }
+        return ATT_SUCCESS;
+    } else {
+        return ATT_ERR_RESOURCES;
+    }
 }
 
 /*************************************************************************************************/
@@ -204,55 +195,47 @@ static uint8_t attsCccReadValue(dmConnId_t connId, uint16_t handle, uint8_t *pVa
 /*************************************************************************************************/
 static uint8_t attsCccWriteValue(dmConnId_t connId, uint16_t handle, uint8_t *pValue)
 {
-  attsCccSet_t  *pSet;
-  uint16_t      *pTbl;
-  uint8_t       i;
-  uint16_t      value;
-  uint16_t      prevValue;
+    attsCccSet_t *pSet;
+    uint16_t *pTbl;
+    uint8_t i;
+    uint16_t value;
+    uint16_t prevValue;
 
-  /* find handle in handle array */
-  for (pSet = attsCccCb.pSet, i = 0; i < attsCccCb.setLen; i++, pSet++)
-  {
-    if (pSet->handle == handle)
-    {
-      break;
-    }
-  }
-
-  /* if handle not found return error */
-  if (i == attsCccCb.setLen)
-  {
-    return ATT_ERR_NOT_FOUND;
-  }
-
-  BYTES_TO_UINT16(value, pValue);
-
-  /* verify value range */
-  if (((value != 0) && (value != ATT_CLIENT_CFG_NOTIFY) && (value != ATT_CLIENT_CFG_INDICATE)) ||
-      ((value != 0) && ((value & pSet->valueRange) == 0)))
-  {
-    return ATT_ERR_VALUE_RANGE;
-  }
-
-  /* get pointer to the table for this connection */
-  if ((pTbl = attsCccGetTbl(connId)) != NULL)
-  {
-    /* write value */
-    prevValue = pTbl[i];
-    pTbl[i] = value;
-
-    /* if value changed call callback */
-    if (prevValue != value)
-    {
-      attsCccCback(connId, i, handle, value);
+    /* find handle in handle array */
+    for (pSet = attsCccCb.pSet, i = 0; i < attsCccCb.setLen; i++, pSet++) {
+        if (pSet->handle == handle) {
+            break;
+        }
     }
 
-    return ATT_SUCCESS;
-  }
-  else
-  {
-    return ATT_ERR_RESOURCES;
-  }
+    /* if handle not found return error */
+    if (i == attsCccCb.setLen) {
+        return ATT_ERR_NOT_FOUND;
+    }
+
+    BYTES_TO_UINT16(value, pValue);
+
+    /* verify value range */
+    if (((value != 0) && (value != ATT_CLIENT_CFG_NOTIFY) && (value != ATT_CLIENT_CFG_INDICATE)) ||
+        ((value != 0) && ((value & pSet->valueRange) == 0))) {
+        return ATT_ERR_VALUE_RANGE;
+    }
+
+    /* get pointer to the table for this connection */
+    if ((pTbl = attsCccGetTbl(connId)) != NULL) {
+        /* write value */
+        prevValue = pTbl[i];
+        pTbl[i] = value;
+
+        /* if value changed call callback */
+        if (prevValue != value) {
+            attsCccCback(connId, i, handle, value);
+        }
+
+        return ATT_SUCCESS;
+    } else {
+        return ATT_ERR_RESOURCES;
+    }
 }
 
 /*************************************************************************************************/
@@ -269,16 +252,13 @@ static uint8_t attsCccWriteValue(dmConnId_t connId, uint16_t handle, uint8_t *pV
 /*************************************************************************************************/
 static uint8_t attsCccMainCback(dmConnId_t connId, uint8_t method, uint16_t handle, uint8_t *pValue)
 {
-  ATT_TRACE_INFO2("attsCccMainCback connId=%d handle=%d", connId, handle);
+    ATT_TRACE_INFO2("attsCccMainCback connId=%d handle=%d", connId, handle);
 
-  if (method == ATT_METHOD_READ)
-  {
-    return attsCccReadValue(connId, handle, pValue);
-  }
-  else
-  {
-    return attsCccWriteValue(connId, handle, pValue);
-  }
+    if (method == ATT_METHOD_READ) {
+        return attsCccReadValue(connId, handle, pValue);
+    } else {
+        return attsCccWriteValue(connId, handle, pValue);
+    }
 }
 
 /*************************************************************************************************/
@@ -296,11 +276,11 @@ static uint8_t attsCccMainCback(dmConnId_t connId, uint8_t method, uint16_t hand
 /*************************************************************************************************/
 void AttsCccRegister(uint8_t setLen, attsCccSet_t *pSet, attsCccCback_t cback)
 {
-  attsCccCb.setLen = setLen;
-  attsCccCb.pSet = pSet;
-  attsCccCb.cback = cback;
+    attsCccCb.setLen = setLen;
+    attsCccCb.pSet = pSet;
+    attsCccCb.cback = cback;
 
-  attsCb.cccCback = attsCccMainCback;
+    attsCb.cccCback = attsCccMainCback;
 }
 
 /*************************************************************************************************/
@@ -318,35 +298,29 @@ void AttsCccRegister(uint8_t setLen, attsCccSet_t *pSet, attsCccCback_t cback)
 /*************************************************************************************************/
 void AttsCccInitTable(dmConnId_t connId, uint16_t *pCccTbl)
 {
-  uint8_t   i;
-  uint16_t  *pTbl;
+    uint8_t i;
+    uint16_t *pTbl;
 
-  ATT_TRACE_INFO1("AttsCccInitTable connId=%d", connId);
+    ATT_TRACE_INFO1("AttsCccInitTable connId=%d", connId);
 
-  if ((pTbl = attsCccAllocTbl(connId)) != NULL)
-  {
-    /* if initializer table is passed in */
-    if (pCccTbl != NULL)
-    {
-      /* initialize table */
-      for (i = 0; i < attsCccCb.setLen; i++, pCccTbl++, pTbl++)
-      {
-        /* copy value */
-        *pTbl = *pCccTbl;
+    if ((pTbl = attsCccAllocTbl(connId)) != NULL) {
+        /* if initializer table is passed in */
+        if (pCccTbl != NULL) {
+            /* initialize table */
+            for (i = 0; i < attsCccCb.setLen; i++, pCccTbl++, pTbl++) {
+                /* copy value */
+                *pTbl = *pCccTbl;
 
-        /* execute callback for each nonzero entry in table */
-        if (*pCccTbl != 0)
-        {
-          attsCccCback(connId, i, ATT_HANDLE_NONE, *pCccTbl);
+                /* execute callback for each nonzero entry in table */
+                if (*pCccTbl != 0) {
+                    attsCccCback(connId, i, ATT_HANDLE_NONE, *pCccTbl);
+                }
+            }
+        } else {
+            /* initialize table to zero */
+            memset(pTbl, 0, (sizeof(uint16_t) * attsCccCb.setLen));
         }
-      }
     }
-    else
-    {
-      /* initialize table to zero */
-      memset(pTbl, 0, (sizeof(uint16_t) * attsCccCb.setLen));
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -361,9 +335,9 @@ void AttsCccInitTable(dmConnId_t connId, uint16_t *pCccTbl)
 /*************************************************************************************************/
 void AttsCccClearTable(dmConnId_t connId)
 {
-  ATT_TRACE_INFO1("AttsCccClearTable connId=%d", connId);
+    ATT_TRACE_INFO1("AttsCccClearTable connId=%d", connId);
 
-  attsCccFreeTbl(connId);
+    attsCccFreeTbl(connId);
 }
 
 /*************************************************************************************************/
@@ -379,19 +353,16 @@ void AttsCccClearTable(dmConnId_t connId)
 /*************************************************************************************************/
 uint16_t AttsCccGet(dmConnId_t connId, uint8_t idx)
 {
-  uint16_t      *pTbl;
+    uint16_t *pTbl;
 
-  WSF_ASSERT(idx < attsCccCb.setLen);
+    WSF_ASSERT(idx < attsCccCb.setLen);
 
-  if ((pTbl = attsCccGetTbl(connId)) != NULL)
-  {
-    /* return value from table */
-    return pTbl[idx];
-  }
-  else
-  {
-    return 0;
-  }
+    if ((pTbl = attsCccGetTbl(connId)) != NULL) {
+        /* return value from table */
+        return pTbl[idx];
+    } else {
+        return 0;
+    }
 }
 
 /*************************************************************************************************/
@@ -407,14 +378,13 @@ uint16_t AttsCccGet(dmConnId_t connId, uint8_t idx)
 /*************************************************************************************************/
 void AttsCccSet(dmConnId_t connId, uint8_t idx, uint16_t value)
 {
-  uint16_t      *pTbl;
+    uint16_t *pTbl;
 
-  WSF_ASSERT(idx < attsCccCb.setLen);
+    WSF_ASSERT(idx < attsCccCb.setLen);
 
-  if ((pTbl = attsCccGetTbl(connId)) != NULL)
-  {
-    pTbl[idx] = value;
-  }
+    if ((pTbl = attsCccGetTbl(connId)) != NULL) {
+        pTbl[idx] = value;
+    }
 }
 
 /*************************************************************************************************/
@@ -430,16 +400,15 @@ void AttsCccSet(dmConnId_t connId, uint8_t idx, uint16_t value)
 /*************************************************************************************************/
 uint16_t AttsCccEnabled(dmConnId_t connId, uint8_t idx)
 {
-  WSF_ASSERT(idx < attsCccCb.setLen);
+    WSF_ASSERT(idx < attsCccCb.setLen);
 
-  /* check security level */
-  if (DmConnSecLevel(connId) < attsCccCb.pSet[idx].secLevel)
-  {
-    return 0;
-  }
+    /* check security level */
+    if (DmConnSecLevel(connId) < attsCccCb.pSet[idx].secLevel) {
+        return 0;
+    }
 
-  /* get value */
-  return AttsCccGet(connId, idx);
+    /* get value */
+    return AttsCccGet(connId, idx);
 }
 
 /*************************************************************************************************/
@@ -453,5 +422,5 @@ uint16_t AttsCccEnabled(dmConnId_t connId, uint8_t idx)
 /*************************************************************************************************/
 uint8_t AttsGetCccTableLen(void)
 {
-  return attsCccCb.setLen;
+    return attsCccCb.setLen;
 }

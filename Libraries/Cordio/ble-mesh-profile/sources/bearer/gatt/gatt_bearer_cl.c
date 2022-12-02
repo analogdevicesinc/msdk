@@ -45,15 +45,14 @@
 **************************************************************************************************/
 
 /*! GATT Bearer Client control block */
-typedef struct
-{
-  /* Scanning parameters */
-  uint8_t       addrType;                 /*!< Type of address of device to connect to */
-  bdAddr_t      addr;                     /*!< Address of device to connect to */
-  bool_t        doConnect;                /*!< TRUE to issue connect on scan complete */
+typedef struct {
+    /* Scanning parameters */
+    uint8_t addrType; /*!< Type of address of device to connect to */
+    bdAddr_t addr; /*!< Address of device to connect to */
+    bool_t doConnect; /*!< TRUE to issue connect on scan complete */
 
-  /* GATT Connection parameters */
-  dmConnId_t    connId;                   /*!< Connection IDs */
+    /* GATT Connection parameters */
+    dmConnId_t connId; /*!< Connection IDs */
 } gattBearerClCb_t;
 
 /**************************************************************************************************
@@ -86,11 +85,10 @@ hciConnSpec_t *pGattBearerClConnCfg;
 /*************************************************************************************************/
 static void gattBearerConnect(dmEvt_t *pMsg)
 {
-  if (pMsg->hdr.status == HCI_SUCCESS)
-  {
-    /* Store connection ID. */
-    gattBearerClCb.connId = (dmConnId_t) pMsg->hdr.param;
-  }
+    if (pMsg->hdr.status == HCI_SUCCESS) {
+        /* Store connection ID. */
+        gattBearerClCb.connId = (dmConnId_t)pMsg->hdr.param;
+    }
 }
 
 /*************************************************************************************************/
@@ -102,11 +100,10 @@ static void gattBearerConnect(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void gattBearerDisconnect(meshGattProxyConnId_t connId)
 {
-  /* Check connection ID */
-  if (gattBearerClCb.connId == connId)
-  {
-    gattBearerClCb.connId = DM_CONN_ID_NONE;
-  }
+    /* Check connection ID */
+    if (gattBearerClCb.connId == connId) {
+        gattBearerClCb.connId = DM_CONN_ID_NONE;
+    }
 }
 
 /*************************************************************************************************/
@@ -120,26 +117,25 @@ static void gattBearerDisconnect(meshGattProxyConnId_t connId)
 /*************************************************************************************************/
 static void scanStop(dmEvt_t *pMsg)
 {
-  /* Check if connection is pending */
-  if (gattBearerClCb.doConnect)
-  {
-    /* Connect to peer. */
+    /* Check if connection is pending */
+    if (gattBearerClCb.doConnect) {
+        /* Connect to peer. */
 #if (BT_VER == 9)
-    DmExtConnSetScanInterval(HCI_INIT_PHY_LE_1M_BIT, &pGattBearerClCfg->scanInterval,
-                             &pGattBearerClCfg->scanWindow);
-    DmExtConnSetConnSpec(HCI_INIT_PHY_LE_1M_BIT, pGattBearerClConnCfg);
+        DmExtConnSetScanInterval(HCI_INIT_PHY_LE_1M_BIT, &pGattBearerClCfg->scanInterval,
+                                 &pGattBearerClCfg->scanWindow);
+        DmExtConnSetConnSpec(HCI_INIT_PHY_LE_1M_BIT, pGattBearerClConnCfg);
 #endif
 #if (BT_VER == 8)
-    DmConnSetConnSpec(pGattBearerClConnCfg);
+        DmConnSetConnSpec(pGattBearerClConnCfg);
 #endif
-    gattBearerClCb.connId = DmConnOpen(DM_CLIENT_ID_APP, HCI_INIT_PHY_LE_1M_BIT,
-                                       gattBearerClCb.addrType, gattBearerClCb.addr);
+        gattBearerClCb.connId = DmConnOpen(DM_CLIENT_ID_APP, HCI_INIT_PHY_LE_1M_BIT,
+                                           gattBearerClCb.addrType, gattBearerClCb.addr);
 
-    /* Reset connect flag. */
-    gattBearerClCb.doConnect = FALSE;
-  }
+        /* Reset connect flag. */
+        gattBearerClCb.doConnect = FALSE;
+    }
 
-  (void)pMsg;
+    (void)pMsg;
 }
 
 /**************************************************************************************************
@@ -153,9 +149,7 @@ static void scanStop(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-void GattBearerClInit(void)
-{
-}
+void GattBearerClInit(void) {}
 
 /*************************************************************************************************/
 /*!
@@ -166,15 +160,16 @@ void GattBearerClInit(void)
 /*************************************************************************************************/
 void GattBearerClStart(void)
 {
-  if (gattBearerClCb.connId == DM_CONN_ID_NONE)
-  {
-    /* Reset connect flag. */
-    gattBearerClCb.doConnect = FALSE;
+    if (gattBearerClCb.connId == DM_CONN_ID_NONE) {
+        /* Reset connect flag. */
+        gattBearerClCb.doConnect = FALSE;
 
-    /* Set scanning parameters and start scanning. */
-    DmScanSetInterval(HCI_SCAN_PHY_LE_1M_BIT, &pGattBearerClCfg->scanInterval, &pGattBearerClCfg->scanWindow);
-    DmScanStart(HCI_SCAN_PHY_LE_1M_BIT, pGattBearerClCfg->discMode, &pGattBearerClCfg->scanType, TRUE, 0, 0);
-  }
+        /* Set scanning parameters and start scanning. */
+        DmScanSetInterval(HCI_SCAN_PHY_LE_1M_BIT, &pGattBearerClCfg->scanInterval,
+                          &pGattBearerClCfg->scanWindow);
+        DmScanStart(HCI_SCAN_PHY_LE_1M_BIT, pGattBearerClCfg->discMode, &pGattBearerClCfg->scanType,
+                    TRUE, 0, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -186,23 +181,22 @@ void GattBearerClStart(void)
 /*************************************************************************************************/
 bool_t GattBearerClStop(void)
 {
-  uint8_t scanState;
+    uint8_t scanState;
 
-  /* Get the scan state. */
-  scanState = AppBearerGetScanState();
+    /* Get the scan state. */
+    scanState = AppBearerGetScanState();
 
-  /* Check if Scanning is started. */
-  if ((scanState == SCAN_STARTED) || (scanState == SCAN_START_REQ))
-  {
-    /* Stop scanning. */
-    DmScanStop();
+    /* Check if Scanning is started. */
+    if ((scanState == SCAN_STARTED) || (scanState == SCAN_START_REQ)) {
+        /* Stop scanning. */
+        DmScanStop();
 
-    /* Update state*/
-    AppBearerSetScanState(SCAN_STOP_REQ);
-    return TRUE;
-  }
+        /* Update state*/
+        AppBearerSetScanState(SCAN_STOP_REQ);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -215,24 +209,23 @@ bool_t GattBearerClStop(void)
  *  \return    None.
  */
 /*************************************************************************************************/
-void GattBearerClConnect(uint8_t addrType, uint8_t* pAddr)
+void GattBearerClConnect(uint8_t addrType, uint8_t *pAddr)
 {
-  uint8_t scanState;
+    uint8_t scanState;
 
-  /* Get the scan state. */
-  scanState = AppBearerGetScanState();
+    /* Get the scan state. */
+    scanState = AppBearerGetScanState();
 
-  /* Check if Scanning is started. */
-  if ((scanState == SCAN_STARTED) || (scanState == SCAN_START_REQ))
-  {
-    /* Stop scanning. */
-    DmScanStop();
+    /* Check if Scanning is started. */
+    if ((scanState == SCAN_STARTED) || (scanState == SCAN_START_REQ)) {
+        /* Stop scanning. */
+        DmScanStop();
 
-    /* Signal connect after scan stopped. */
-    gattBearerClCb.doConnect = TRUE;
-    gattBearerClCb.addrType = addrType;
-    memcpy(gattBearerClCb.addr, pAddr, sizeof(bdAddr_t));
-  }
+        /* Signal connect after scan stopped. */
+        gattBearerClCb.doConnect = TRUE;
+        gattBearerClCb.addrType = addrType;
+        memcpy(gattBearerClCb.addr, pAddr, sizeof(bdAddr_t));
+    }
 }
 
 /*************************************************************************************************/
@@ -247,28 +240,25 @@ void GattBearerClConnect(uint8_t addrType, uint8_t* pAddr)
 /*************************************************************************************************/
 void GattBearerClProcDmMsg(dmEvt_t *pMsg)
 {
-  switch (pMsg->hdr.event)
-  {
+    switch (pMsg->hdr.event) {
     case DM_CONN_OPEN_IND:
-      gattBearerConnect(pMsg);
-      break;
+        gattBearerConnect(pMsg);
+        break;
 
     case DM_CONN_CLOSE_IND:
-      if (pMsg->hdr.status == HCI_SUCCESS)
-      {
-        gattBearerDisconnect((dmConnId_t) pMsg->hdr.param);
-      }
-      break;
+        if (pMsg->hdr.status == HCI_SUCCESS) {
+            gattBearerDisconnect((dmConnId_t)pMsg->hdr.param);
+        }
+        break;
 
     case DM_EXT_SCAN_STOP_IND:
     case DM_SCAN_STOP_IND:
-      if (pMsg->hdr.status == HCI_SUCCESS)
-      {
-        scanStop(pMsg);
-      }
-      break;
+        if (pMsg->hdr.status == HCI_SUCCESS) {
+            scanStop(pMsg);
+        }
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }

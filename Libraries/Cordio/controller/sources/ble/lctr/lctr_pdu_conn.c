@@ -40,19 +40,17 @@
 /*************************************************************************************************/
 static inline bool_t lctrIsChanMaskValid(uint64_t chanMask)
 {
-  /* Valid channels are between bit 0 and bit 36. */
-  if (chanMask & (~LL_CHAN_DATA_ALL))
-  {
-    return FALSE;
-  }
+    /* Valid channels are between bit 0 and bit 36. */
+    if (chanMask & (~LL_CHAN_DATA_ALL)) {
+        return FALSE;
+    }
 
-  /* The minimum number of used channels shall be 2. */
-  if (LlMathGetNumBitsSet(chanMask) < LL_MIN_NUM_CHAN_DATA)
-  {
-    return FALSE;
-  }
+    /* The minimum number of used channels shall be 2. */
+    if (LlMathGetNumBitsSet(chanMask) < LL_MIN_NUM_CHAN_DATA) {
+        return FALSE;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -66,40 +64,35 @@ static inline bool_t lctrIsChanMaskValid(uint64_t chanMask)
 /*************************************************************************************************/
 static inline bool_t lctrIsConnUpdateParamValid(lctrConnUpdInd_t *pParam)
 {
-  /* In the range of 7.5ms to 4s. */
-  if ((pParam->interval < LL_MIN_CONN_INTERVAL) || (pParam->interval > LL_MAX_CONN_INTERVAL))
-  {
-    return FALSE;
-  }
+    /* In the range of 7.5ms to 4s. */
+    if ((pParam->interval < LL_MIN_CONN_INTERVAL) || (pParam->interval > LL_MAX_CONN_INTERVAL)) {
+        return FALSE;
+    }
 
-  /* In the range of 1.25ms to the lesser of 10ms and (connInterval - 1.25ms). */
-  if ((pParam->txWinSize < LL_MIN_TX_WIN_SIZE) ||
-      (pParam->txWinSize > WSF_MIN(LL_MAX_TX_WIN_SIZE, (pParam->interval - 1))))
-  {
-    return FALSE;
-  }
+    /* In the range of 1.25ms to the lesser of 10ms and (connInterval - 1.25ms). */
+    if ((pParam->txWinSize < LL_MIN_TX_WIN_SIZE) ||
+        (pParam->txWinSize > WSF_MIN(LL_MAX_TX_WIN_SIZE, (pParam->interval - 1)))) {
+        return FALSE;
+    }
 
-  /* In the range of 0ms to the connInterval. */
-  if (pParam->txWinOffset > (pParam->interval))
-  {
-    return FALSE;
-  }
+    /* In the range of 0ms to the connInterval. */
+    if (pParam->txWinOffset > (pParam->interval)) {
+        return FALSE;
+    }
 
-  /* In the range of 100ms to 32000ms. And it shall be larger than (1 + connSlaveLatency) * connInterval * 2. */
-  if ((pParam->timeout < LL_MIN_SUP_TIMEOUT) || (pParam->timeout > LL_MAX_SUP_TIMEOUT) ||
-      ((pParam->timeout << 2) <= ((1 + pParam->latency) * pParam->interval)))
-  {
-    return FALSE;
-  }
+    /* In the range of 100ms to 32000ms. And it shall be larger than (1 + connSlaveLatency) * connInterval * 2. */
+    if ((pParam->timeout < LL_MIN_SUP_TIMEOUT) || (pParam->timeout > LL_MAX_SUP_TIMEOUT) ||
+        ((pParam->timeout << 2) <= ((1 + pParam->latency) * pParam->interval))) {
+        return FALSE;
+    }
 
-  /* In the range of 0 to the ((connSupervisionTimeout / (connInterval*2)) - 1), checked above already.
+    /* In the range of 0 to the ((connSupervisionTimeout / (connInterval*2)) - 1), checked above already.
    * And it shall be less than 500. */
-  if (pParam->latency > LL_MAX_CONN_LATENCY)
-  {
-    return FALSE;
-  }
+    if (pParam->latency > LL_MAX_CONN_LATENCY) {
+        return FALSE;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -113,20 +106,18 @@ static inline bool_t lctrIsConnUpdateParamValid(lctrConnUpdInd_t *pParam)
 /*************************************************************************************************/
 static inline bool_t lctrIsSetMinUsedChanParamValid(lctrMinUsedChanInd_t *pParam)
 {
-  /* At least one bit shall be set. */
-  if (pParam->phys == 0)
-  {
-    return FALSE;
-  }
+    /* At least one bit shall be set. */
+    if (pParam->phys == 0) {
+        return FALSE;
+    }
 
-  /* The minimum number of used channels shall be between 2 - 37. */
-  if ((pParam->minUsedChan < LL_MIN_NUM_CHAN_DATA) ||
-      (pParam->minUsedChan > LL_MAX_NUM_CHAN_DATA))
-  {
-    return FALSE;
-  }
+    /* The minimum number of used channels shall be between 2 - 37. */
+    if ((pParam->minUsedChan < LL_MIN_NUM_CHAN_DATA) ||
+        (pParam->minUsedChan > LL_MAX_NUM_CHAN_DATA)) {
+        return FALSE;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -141,17 +132,17 @@ static inline bool_t lctrIsSetMinUsedChanParamValid(lctrMinUsedChanInd_t *pParam
 /*************************************************************************************************/
 uint8_t lctrPackAclHdr(uint8_t *pBuf, const lctrAclHdr_t *pHdr)
 {
-  const uint8_t len = sizeof(uint32_t);
+    const uint8_t len = sizeof(uint32_t);
 
-  uint16_t flags = 0;
+    uint16_t flags = 0;
 
-  flags |= (pHdr->connHandle) <<  0;
-  flags |= (pHdr->pktBound  ) << 12;
-  UINT16_TO_BSTREAM(pBuf, flags);
+    flags |= (pHdr->connHandle) << 0;
+    flags |= (pHdr->pktBound) << 12;
+    UINT16_TO_BSTREAM(pBuf, flags);
 
-  UINT16_TO_BSTREAM(pBuf, pHdr->len);
+    UINT16_TO_BSTREAM(pBuf, pHdr->len);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -166,18 +157,18 @@ uint8_t lctrPackAclHdr(uint8_t *pBuf, const lctrAclHdr_t *pHdr)
 /*************************************************************************************************/
 uint8_t lctrPackDataPduHdr(uint8_t *pBuf, const lctrDataPduHdr_t *pHdr)
 {
-  const uint8_t len = LL_DATA_HDR_LEN;
+    const uint8_t len = LL_DATA_HDR_LEN;
 
-  uint16_t hdr = 0;
+    uint16_t hdr = 0;
 
-  hdr |= (pHdr->llid    ) << 0;
-  hdr |= (pHdr->nesn & 1) << 2;
-  hdr |= (pHdr->sn   & 1) << 3;
-  hdr |= (pHdr->md   & 1) << 4;
-  hdr |= (pHdr->len     ) << 8;
-  UINT16_TO_BSTREAM(pBuf, hdr);
+    hdr |= (pHdr->llid) << 0;
+    hdr |= (pHdr->nesn & 1) << 2;
+    hdr |= (pHdr->sn & 1) << 3;
+    hdr |= (pHdr->md & 1) << 4;
+    hdr |= (pHdr->len) << 8;
+    UINT16_TO_BSTREAM(pBuf, hdr);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -192,17 +183,17 @@ uint8_t lctrPackDataPduHdr(uint8_t *pBuf, const lctrDataPduHdr_t *pHdr)
 /*************************************************************************************************/
 uint8_t lctrPackConnUpdInd(uint8_t *pBuf, const lctrConnUpdInd_t *pPdu)
 {
-  const uint8_t len = LL_CONN_UPD_IND_PDU_LEN;
+    const uint8_t len = LL_CONN_UPD_IND_PDU_LEN;
 
-  UINT8_TO_BSTREAM (pBuf, LL_PDU_CONN_UPDATE_IND);
-  UINT8_TO_BSTREAM (pBuf, pPdu->txWinSize);
-  UINT16_TO_BSTREAM(pBuf, pPdu->txWinOffset);
-  UINT16_TO_BSTREAM(pBuf, pPdu->interval);
-  UINT16_TO_BSTREAM(pBuf, pPdu->latency);
-  UINT16_TO_BSTREAM(pBuf, pPdu->timeout);
-  UINT16_TO_BSTREAM(pBuf, pPdu->instant);
+    UINT8_TO_BSTREAM(pBuf, LL_PDU_CONN_UPDATE_IND);
+    UINT8_TO_BSTREAM(pBuf, pPdu->txWinSize);
+    UINT16_TO_BSTREAM(pBuf, pPdu->txWinOffset);
+    UINT16_TO_BSTREAM(pBuf, pPdu->interval);
+    UINT16_TO_BSTREAM(pBuf, pPdu->latency);
+    UINT16_TO_BSTREAM(pBuf, pPdu->timeout);
+    UINT16_TO_BSTREAM(pBuf, pPdu->instant);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -217,17 +208,17 @@ uint8_t lctrPackConnUpdInd(uint8_t *pBuf, const lctrConnUpdInd_t *pPdu)
 /*************************************************************************************************/
 uint8_t lctrUnpackAclHdr(lctrAclHdr_t *pHdr, const uint8_t *pBuf)
 {
-  const uint8_t len = HCI_ACL_HDR_LEN;
+    const uint8_t len = HCI_ACL_HDR_LEN;
 
-  uint16_t flags;
+    uint16_t flags;
 
-  BSTREAM_TO_UINT16(flags, pBuf);
-  pHdr->connHandle = (flags >>  0) & 0x0FFF;
-  pHdr->pktBound   = (flags >> 12) & 0x0003;
+    BSTREAM_TO_UINT16(flags, pBuf);
+    pHdr->connHandle = (flags >> 0) & 0x0FFF;
+    pHdr->pktBound = (flags >> 12) & 0x0003;
 
-  BSTREAM_TO_UINT16(pHdr->len, pBuf);
+    BSTREAM_TO_UINT16(pHdr->len, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -242,19 +233,19 @@ uint8_t lctrUnpackAclHdr(lctrAclHdr_t *pHdr, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackDataPduHdr(lctrDataPduHdr_t *pHdr, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_DATA_HDR_LEN;
+    const uint8_t len = LL_DATA_HDR_LEN;
 
-  uint16_t hdr;
+    uint16_t hdr;
 
-  BSTREAM_TO_UINT16(hdr, pBuf);
+    BSTREAM_TO_UINT16(hdr, pBuf);
 
-  pHdr->llid = (hdr >> 0) & LL_DATA_HDR_LLID_MSK;
-  pHdr->nesn = (hdr >> 2) & 0x0001;
-  pHdr->sn   = (hdr >> 3) & 0x0001;
-  pHdr->md   = (hdr >> 4) & 0x0001;
-  pHdr->len  = (hdr >> 8) & LL_DATA_HDR_LEN_MSK;
+    pHdr->llid = (hdr >> 0) & LL_DATA_HDR_LLID_MSK;
+    pHdr->nesn = (hdr >> 2) & 0x0001;
+    pHdr->sn = (hdr >> 3) & 0x0001;
+    pHdr->md = (hdr >> 4) & 0x0001;
+    pHdr->len = (hdr >> 8) & LL_DATA_HDR_LEN_MSK;
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -269,17 +260,17 @@ uint8_t lctrUnpackDataPduHdr(lctrDataPduHdr_t *pHdr, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackConnUpdateIndPdu(lctrConnUpdInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_CONN_UPD_IND_PDU_LEN;
+    const uint8_t len = LL_CONN_UPD_IND_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->txWinSize, pBuf);
-  BSTREAM_TO_UINT16(pPdu->txWinOffset, pBuf);
-  BSTREAM_TO_UINT16(pPdu->interval, pBuf);
-  BSTREAM_TO_UINT16(pPdu->latency, pBuf);
-  BSTREAM_TO_UINT16(pPdu->timeout, pBuf);
-  BSTREAM_TO_UINT16(pPdu->instant, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->txWinSize, pBuf);
+    BSTREAM_TO_UINT16(pPdu->txWinOffset, pBuf);
+    BSTREAM_TO_UINT16(pPdu->interval, pBuf);
+    BSTREAM_TO_UINT16(pPdu->latency, pBuf);
+    BSTREAM_TO_UINT16(pPdu->timeout, pBuf);
+    BSTREAM_TO_UINT16(pPdu->instant, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -294,13 +285,13 @@ uint8_t lctrUnpackConnUpdateIndPdu(lctrConnUpdInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackChanMapIndPdu(lctrChanMapInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_CHAN_MAP_IND_PDU_LEN;
+    const uint8_t len = LL_CHAN_MAP_IND_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT40(pPdu->chanMask, pBuf);
-  BSTREAM_TO_UINT16(pPdu->instant, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT40(pPdu->chanMask, pBuf);
+    BSTREAM_TO_UINT16(pPdu->instant, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -315,12 +306,12 @@ uint8_t lctrUnpackChanMapIndPdu(lctrChanMapInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackTerminateIndPdu(lctrTermInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_TERMINATE_IND_PDU_LEN;
+    const uint8_t len = LL_TERMINATE_IND_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8(pPdu->errorCode, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->errorCode, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -335,12 +326,12 @@ uint8_t lctrUnpackTerminateIndPdu(lctrTermInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackUnknownRspPdu(lctrUnknownRsp_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_UNKNOWN_RSP_LEN;
+    const uint8_t len = LL_UNKNOWN_RSP_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8(pPdu->unknownType, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->unknownType, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -355,12 +346,12 @@ uint8_t lctrUnpackUnknownRspPdu(lctrUnknownRsp_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackFeaturePdu(lctrFeat_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_FEATURE_PDU_LEN;
+    const uint8_t len = LL_FEATURE_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT64(pPdu->featSet, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT64(pPdu->featSet, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -375,12 +366,12 @@ uint8_t lctrUnpackFeaturePdu(lctrFeat_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackRejectIndPdu(uint8_t *pReason, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_REJECT_IND_PDU_LEN;
+    const uint8_t len = LL_REJECT_IND_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8(*pReason, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(*pReason, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -395,14 +386,14 @@ uint8_t lctrUnpackRejectIndPdu(uint8_t *pReason, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackVersionIndPdu(lctrVerInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_VERSION_IND_PDU_LEN;
+    const uint8_t len = LL_VERSION_IND_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8(pPdu->versNr, pBuf);
-  BSTREAM_TO_UINT16(pPdu->compId, pBuf);
-  BSTREAM_TO_UINT16(pPdu->subVersNr, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->versNr, pBuf);
+    BSTREAM_TO_UINT16(pPdu->compId, pBuf);
+    BSTREAM_TO_UINT16(pPdu->subVersNr, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -417,13 +408,13 @@ uint8_t lctrUnpackVersionIndPdu(lctrVerInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackRejectExtIndPdu(lctrRejInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_REJECT_EXT_IND_PDU_LEN;
+    const uint8_t len = LL_REJECT_EXT_IND_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8(pPdu->opcode, pBuf);
-  BSTREAM_TO_UINT8(pPdu->reason, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->opcode, pBuf);
+    BSTREAM_TO_UINT8(pPdu->reason, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -438,15 +429,15 @@ uint8_t lctrUnpackRejectExtIndPdu(lctrRejInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackDataLengthPdu(lctrDataLen_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_DATA_LEN_PDU_LEN;
+    const uint8_t len = LL_DATA_LEN_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT16(pPdu->maxRxLen, pBuf);
-  BSTREAM_TO_UINT16(pPdu->maxRxTime, pBuf);
-  BSTREAM_TO_UINT16(pPdu->maxTxLen, pBuf);
-  BSTREAM_TO_UINT16(pPdu->maxTxTime, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT16(pPdu->maxRxLen, pBuf);
+    BSTREAM_TO_UINT16(pPdu->maxRxTime, pBuf);
+    BSTREAM_TO_UINT16(pPdu->maxTxLen, pBuf);
+    BSTREAM_TO_UINT16(pPdu->maxTxTime, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -461,25 +452,24 @@ uint8_t lctrUnpackDataLengthPdu(lctrDataLen_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackConnParamPdu(lctrConnParam_t *pConnParam, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_CONN_PARAM_PDU_LEN;
+    const uint8_t len = LL_CONN_PARAM_PDU_LEN;
 
-  unsigned int i;
+    unsigned int i;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT16(pConnParam->connIntervalMin, pBuf);
-  BSTREAM_TO_UINT16(pConnParam->connIntervalMax, pBuf);
-  BSTREAM_TO_UINT16(pConnParam->connLatency, pBuf);
-  BSTREAM_TO_UINT16(pConnParam->supTimeout, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT16(pConnParam->connIntervalMin, pBuf);
+    BSTREAM_TO_UINT16(pConnParam->connIntervalMax, pBuf);
+    BSTREAM_TO_UINT16(pConnParam->connLatency, pBuf);
+    BSTREAM_TO_UINT16(pConnParam->supTimeout, pBuf);
 
-  BSTREAM_TO_UINT8 (pConnParam->prefPeriod, pBuf);
-  BSTREAM_TO_UINT16(pConnParam->refConnEvtCnt, pBuf);
+    BSTREAM_TO_UINT8(pConnParam->prefPeriod, pBuf);
+    BSTREAM_TO_UINT16(pConnParam->refConnEvtCnt, pBuf);
 
-  for (i = 0; i < LCTR_OFFSET_COUNT; i++)
-  {
-    BSTREAM_TO_UINT16(pConnParam->offset[i], pBuf);
-  }
+    for (i = 0; i < LCTR_OFFSET_COUNT; i++) {
+        BSTREAM_TO_UINT16(pConnParam->offset[i], pBuf);
+    }
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -494,17 +484,17 @@ uint8_t lctrUnpackConnParamPdu(lctrConnParam_t *pConnParam, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackPhyPdu(lctrPhy_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_PHY_PDU_LEN;
+    const uint8_t len = LL_PHY_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8(pPdu->txPhys, pBuf);
-  BSTREAM_TO_UINT8(pPdu->rxPhys, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->txPhys, pBuf);
+    BSTREAM_TO_UINT8(pPdu->rxPhys, pBuf);
 
-  /* Mask out the RFU bits for PHYs. */
-  pPdu->txPhys &= LL_ALL_PHYS_MSK;
-  pPdu->rxPhys &= LL_ALL_PHYS_MSK;
+    /* Mask out the RFU bits for PHYs. */
+    pPdu->txPhys &= LL_ALL_PHYS_MSK;
+    pPdu->rxPhys &= LL_ALL_PHYS_MSK;
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -519,18 +509,18 @@ uint8_t lctrUnpackPhyPdu(lctrPhy_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackPhyUpdateIndPdu(lctrPhyUpdInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_PHY_UPD_IND_PDU_LEN;
+    const uint8_t len = LL_PHY_UPD_IND_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->masterToSlavePhy, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->slaveToMasterPhy, pBuf);
-  BSTREAM_TO_UINT16(pPdu->instant, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->masterToSlavePhy, pBuf);
+    BSTREAM_TO_UINT8(pPdu->slaveToMasterPhy, pBuf);
+    BSTREAM_TO_UINT16(pPdu->instant, pBuf);
 
-  /* Mask out the RFU bits for PHYs. */
-  pPdu->masterToSlavePhy &= LL_ALL_PHYS_MSK;
-  pPdu->slaveToMasterPhy &= LL_ALL_PHYS_MSK;
+    /* Mask out the RFU bits for PHYs. */
+    pPdu->masterToSlavePhy &= LL_ALL_PHYS_MSK;
+    pPdu->slaveToMasterPhy &= LL_ALL_PHYS_MSK;
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -545,16 +535,16 @@ uint8_t lctrUnpackPhyUpdateIndPdu(lctrPhyUpdInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackMinUsedChanIndPdu(lctrMinUsedChanInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_MIN_USED_CHAN_PDU_LEN;
+    const uint8_t len = LL_MIN_USED_CHAN_PDU_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->phys, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->minUsedChan, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->phys, pBuf);
+    BSTREAM_TO_UINT8(pPdu->minUsedChan, pBuf);
 
-  /* Mask out the RFU bits for PHYs. */
-  pPdu->phys &= LL_ALL_PHYS_MSK;
+    /* Mask out the RFU bits for PHYs. */
+    pPdu->phys &= LL_ALL_PHYS_MSK;
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -569,31 +559,30 @@ uint8_t lctrUnpackMinUsedChanIndPdu(lctrMinUsedChanInd_t *pPdu, const uint8_t *p
 /*************************************************************************************************/
 uint8_t lctrUnpackPerSyncIndPdu(lctrPerSyncInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_PERIODIC_SYNC_PDU_LEN;
-  uint8_t i;
+    const uint8_t len = LL_PERIODIC_SYNC_PDU_LEN;
+    uint8_t i;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT16 (pPdu->id, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT16(pPdu->id, pBuf);
 
-  for (i = 0; i < LL_SYNC_INFO_LEN; i++)
-  {
-    BSTREAM_TO_UINT8(pPdu->syncInfo[i], pBuf);
-  }
+    for (i = 0; i < LL_SYNC_INFO_LEN; i++) {
+        BSTREAM_TO_UINT8(pPdu->syncInfo[i], pBuf);
+    }
 
-  BSTREAM_TO_UINT16 (pPdu->ceCounter, pBuf);
-  BSTREAM_TO_UINT16 (pPdu->lastPECounter, pBuf);
+    BSTREAM_TO_UINT16(pPdu->ceCounter, pBuf);
+    BSTREAM_TO_UINT16(pPdu->lastPECounter, pBuf);
 
-  uint8_t field8;
-  BSTREAM_TO_UINT8 (field8, pBuf);
-  pPdu->sid     = (field8 >>  0) & 0x0F;
-  pPdu->aType   = (field8 >>  4) & 0x01;
-  pPdu->sca     = (field8 >>  5) & 0x07;
+    uint8_t field8;
+    BSTREAM_TO_UINT8(field8, pBuf);
+    pPdu->sid = (field8 >> 0) & 0x0F;
+    pPdu->aType = (field8 >> 4) & 0x01;
+    pPdu->sca = (field8 >> 5) & 0x07;
 
-  BSTREAM_TO_UINT8(pPdu->phy, pBuf);
-  BSTREAM_TO_BDA64(pPdu->advA, pBuf);
-  BSTREAM_TO_UINT16(pPdu->syncConnEvtCounter, pBuf);
+    BSTREAM_TO_UINT8(pPdu->phy, pBuf);
+    BSTREAM_TO_BDA64(pPdu->advA, pBuf);
+    BSTREAM_TO_UINT16(pPdu->syncConnEvtCounter, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -608,12 +597,12 @@ uint8_t lctrUnpackPerSyncIndPdu(lctrPerSyncInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackPeerScaPdu(lctrPeerSca_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_PEER_SCA_REQ_LEN;  /* LL_PEER_SCA_REQ_LEN = LL_PEER_SCA_RSP_LEN*/
+    const uint8_t len = LL_PEER_SCA_REQ_LEN; /* LL_PEER_SCA_REQ_LEN = LL_PEER_SCA_RSP_LEN*/
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->sca, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->sca, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -628,41 +617,41 @@ uint8_t lctrUnpackPeerScaPdu(lctrPeerSca_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackCisReqPdu(lctrCisReq_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_CIS_REQ_LEN;
-  uint8_t bn;
-  uint16_t sduSizeMToS;
+    const uint8_t len = LL_CIS_REQ_LEN;
+    uint8_t bn;
+    uint16_t sduSizeMToS;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->cigId, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->cisId, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->phyMToS, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->phySToM, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->cigId, pBuf);
+    BSTREAM_TO_UINT8(pPdu->cisId, pBuf);
+    BSTREAM_TO_UINT8(pPdu->phyMToS, pBuf);
+    BSTREAM_TO_UINT8(pPdu->phySToM, pBuf);
 
-  BSTREAM_TO_UINT16 (sduSizeMToS, pBuf);
-  pPdu->framing = (sduSizeMToS >> 15) & 0x01;
-  pPdu->sduSizeMToS = sduSizeMToS & 0x0FFF;
-  BSTREAM_TO_UINT16 (pPdu->sduSizeSToM, pBuf);
-  pPdu->sduSizeSToM &= 0x0FFF;
-  BSTREAM_TO_UINT24 (pPdu->sduIntervalMToS, pBuf);
-  pPdu->sduIntervalMToS &= 0xFFFFF;
-  BSTREAM_TO_UINT24 (pPdu->sduIntervalSToM, pBuf);
-  pPdu->sduIntervalSToM &= 0xFFFFF;
+    BSTREAM_TO_UINT16(sduSizeMToS, pBuf);
+    pPdu->framing = (sduSizeMToS >> 15) & 0x01;
+    pPdu->sduSizeMToS = sduSizeMToS & 0x0FFF;
+    BSTREAM_TO_UINT16(pPdu->sduSizeSToM, pBuf);
+    pPdu->sduSizeSToM &= 0x0FFF;
+    BSTREAM_TO_UINT24(pPdu->sduIntervalMToS, pBuf);
+    pPdu->sduIntervalMToS &= 0xFFFFF;
+    BSTREAM_TO_UINT24(pPdu->sduIntervalSToM, pBuf);
+    pPdu->sduIntervalSToM &= 0xFFFFF;
 
-  BSTREAM_TO_UINT16 (pPdu->plMToS, pBuf);
-  BSTREAM_TO_UINT16 (pPdu->plSToM, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->nse, pBuf);
-  BSTREAM_TO_UINT24 (pPdu->subIntervUsec, pBuf);
-  BSTREAM_TO_UINT8 (bn, pBuf);
-  pPdu->bnSToM = (bn & 0xF0) >> 4;
-  pPdu->bnMToS = bn & 0x0F;
-  BSTREAM_TO_UINT8 (pPdu->ftMToS, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->ftSToM, pBuf);
-  BSTREAM_TO_UINT16 (pPdu->isoInterval, pBuf);
-  BSTREAM_TO_UINT24 (pPdu->cisOffMinUsec, pBuf);
-  BSTREAM_TO_UINT24 (pPdu->cisOffMaxUsec, pBuf);
-  BSTREAM_TO_UINT16 (pPdu->ceRef, pBuf);
+    BSTREAM_TO_UINT16(pPdu->plMToS, pBuf);
+    BSTREAM_TO_UINT16(pPdu->plSToM, pBuf);
+    BSTREAM_TO_UINT8(pPdu->nse, pBuf);
+    BSTREAM_TO_UINT24(pPdu->subIntervUsec, pBuf);
+    BSTREAM_TO_UINT8(bn, pBuf);
+    pPdu->bnSToM = (bn & 0xF0) >> 4;
+    pPdu->bnMToS = bn & 0x0F;
+    BSTREAM_TO_UINT8(pPdu->ftMToS, pBuf);
+    BSTREAM_TO_UINT8(pPdu->ftSToM, pBuf);
+    BSTREAM_TO_UINT16(pPdu->isoInterval, pBuf);
+    BSTREAM_TO_UINT24(pPdu->cisOffMinUsec, pBuf);
+    BSTREAM_TO_UINT24(pPdu->cisOffMaxUsec, pBuf);
+    BSTREAM_TO_UINT16(pPdu->ceRef, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -677,14 +666,14 @@ uint8_t lctrUnpackCisReqPdu(lctrCisReq_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackCisRspPdu(lctrCisRsp_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_CIS_RSP_LEN;
+    const uint8_t len = LL_CIS_RSP_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT24 (pPdu->cisOffMinUsec, pBuf);
-  BSTREAM_TO_UINT24 (pPdu->cisOffMaxUsec, pBuf);
-  BSTREAM_TO_UINT16 (pPdu->ceRef, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT24(pPdu->cisOffMinUsec, pBuf);
+    BSTREAM_TO_UINT24(pPdu->cisOffMaxUsec, pBuf);
+    BSTREAM_TO_UINT16(pPdu->ceRef, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -699,16 +688,16 @@ uint8_t lctrUnpackCisRspPdu(lctrCisRsp_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackCisIndPdu(lctrCisInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_CIS_IND_LEN;
+    const uint8_t len = LL_CIS_IND_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT32 (pPdu->accessAddr, pBuf);
-  BSTREAM_TO_UINT24 (pPdu->cisOffUsec, pBuf);
-  BSTREAM_TO_UINT24 (pPdu->cigSyncDelayUsec, pBuf);
-  BSTREAM_TO_UINT24 (pPdu->cisSyncDelayUsec, pBuf);
-  BSTREAM_TO_UINT16 (pPdu->ceRef, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT32(pPdu->accessAddr, pBuf);
+    BSTREAM_TO_UINT24(pPdu->cisOffUsec, pBuf);
+    BSTREAM_TO_UINT24(pPdu->cigSyncDelayUsec, pBuf);
+    BSTREAM_TO_UINT24(pPdu->cisSyncDelayUsec, pBuf);
+    BSTREAM_TO_UINT16(pPdu->ceRef, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -723,14 +712,14 @@ uint8_t lctrUnpackCisIndPdu(lctrCisInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackCisTermPdu(lctrCisTermInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_CIS_TERM_LEN;
+    const uint8_t len = LL_CIS_TERM_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->cigId, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->cisId, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->reason, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->cigId, pBuf);
+    BSTREAM_TO_UINT8(pPdu->cisId, pBuf);
+    BSTREAM_TO_UINT8(pPdu->reason, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -745,15 +734,15 @@ uint8_t lctrUnpackCisTermPdu(lctrCisTermInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 static uint8_t lctrUnpackPwrChngIndPdu(lctrPwrChngInd_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_PWR_CHNG_IND_LEN;
+    const uint8_t len = LL_PWR_CHNG_IND_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->phy, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->limits, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->delta, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->txPower, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->phy, pBuf);
+    BSTREAM_TO_UINT8(pPdu->limits, pBuf);
+    BSTREAM_TO_UINT8(pPdu->delta, pBuf);
+    BSTREAM_TO_UINT8(pPdu->txPower, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -768,14 +757,14 @@ static uint8_t lctrUnpackPwrChngIndPdu(lctrPwrChngInd_t *pPdu, const uint8_t *pB
 /*************************************************************************************************/
 static uint8_t lctrUnpackPwrCtrlReqPdu(lctrPwrCtrlReq_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_PWR_CTRL_REQ_LEN;
+    const uint8_t len = LL_PWR_CTRL_REQ_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->phy, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->delta, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->txPower, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->phy, pBuf);
+    BSTREAM_TO_UINT8(pPdu->delta, pBuf);
+    BSTREAM_TO_UINT8(pPdu->txPower, pBuf);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -790,15 +779,15 @@ static uint8_t lctrUnpackPwrCtrlReqPdu(lctrPwrCtrlReq_t *pPdu, const uint8_t *pB
 /*************************************************************************************************/
 static uint8_t lctrUnpackPwrCtrlRspPdu(lctrPwrCtrlRsp_t *pPdu, const uint8_t *pBuf)
 {
-  const uint8_t len = LL_PWR_CTRL_RSP_LEN;
+    const uint8_t len = LL_PWR_CTRL_RSP_LEN;
 
-  pBuf += 1;        /* skip opcode */
-  BSTREAM_TO_UINT8 (pPdu->limits, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->delta, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->txPower, pBuf);
-  BSTREAM_TO_UINT8 (pPdu->apr, pBuf);
+    pBuf += 1; /* skip opcode */
+    BSTREAM_TO_UINT8(pPdu->limits, pBuf);
+    BSTREAM_TO_UINT8(pPdu->delta, pBuf);
+    BSTREAM_TO_UINT8(pPdu->txPower, pBuf);
+    BSTREAM_TO_UINT8(pPdu->apr, pBuf);
 
-  return len;
+    return len;
 }
 /*************************************************************************************************/
 /*!
@@ -813,279 +802,227 @@ static uint8_t lctrUnpackPwrCtrlRspPdu(lctrPwrCtrlRsp_t *pPdu, const uint8_t *pB
 /*************************************************************************************************/
 uint8_t lctrDecodeCtrlPdu(lctrDataPdu_t *pPdu, const uint8_t *pBuf, uint8_t role)
 {
-  uint8_t result = LL_SUCCESS;
+    uint8_t result = LL_SUCCESS;
 
-  pBuf += lctrUnpackDataPduHdr(&pPdu->hdr, pBuf);
-  pPdu->opcode = *pBuf;
+    pBuf += lctrUnpackDataPduHdr(&pPdu->hdr, pBuf);
+    pPdu->opcode = *pBuf;
 
-  switch (pPdu->opcode)
-  {
+    switch (pPdu->opcode) {
     case LL_PDU_CONN_UPDATE_IND:
-      if (role == LL_ROLE_MASTER)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackConnUpdateIndPdu(&pPdu->pld.connUpdInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrIsConnUpdateParamValid(&pPdu->pld.connUpdInd) == FALSE)
-      {
-        return LL_ERROR_CODE_INVALID_LMP_PARAMS;
-      }
-      break;
+        if (role == LL_ROLE_MASTER) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackConnUpdateIndPdu(&pPdu->pld.connUpdInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrIsConnUpdateParamValid(&pPdu->pld.connUpdInd) == FALSE) {
+            return LL_ERROR_CODE_INVALID_LMP_PARAMS;
+        }
+        break;
     case LL_PDU_CONN_PARAM_RSP:
-      if (role == LL_ROLE_SLAVE)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      /* Fallthrough */
+        if (role == LL_ROLE_SLAVE) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        /* Fallthrough */
     case LL_PDU_CONN_PARAM_REQ:
-      if ((lmgrCb.features & LL_FEAT_CONN_PARAM_REQ_PROC) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackConnParamPdu(&pPdu->pld.connParamReqRsp, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & LL_FEAT_CONN_PARAM_REQ_PROC) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackConnParamPdu(&pPdu->pld.connParamReqRsp, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_CHANNEL_MAP_IND:
-      if (role == LL_ROLE_MASTER)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackChanMapIndPdu(&pPdu->pld.chanMapInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrIsChanMaskValid(pPdu->pld.chanMapInd.chanMask) == FALSE)
-      {
-        return LL_ERROR_CODE_INVALID_LMP_PARAMS;
-      }
-      break;
+        if (role == LL_ROLE_MASTER) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackChanMapIndPdu(&pPdu->pld.chanMapInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrIsChanMaskValid(pPdu->pld.chanMapInd.chanMask) == FALSE) {
+            return LL_ERROR_CODE_INVALID_LMP_PARAMS;
+        }
+        break;
     case LL_PDU_LENGTH_REQ:
     case LL_PDU_LENGTH_RSP:
-      if (lctrUnpackDataLengthPdu(&pPdu->pld.lenRsp, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if (lctrUnpackDataLengthPdu(&pPdu->pld.lenRsp, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_TERMINATE_IND:
-      if (lctrUnpackTerminateIndPdu(&pPdu->pld.termInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if (lctrUnpackTerminateIndPdu(&pPdu->pld.termInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_UNKNOWN_RSP:
-      if (lctrUnpackUnknownRspPdu(&pPdu->pld.unknownRsp, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if (lctrUnpackUnknownRspPdu(&pPdu->pld.unknownRsp, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_FEATURE_REQ:
-      if (role == LL_ROLE_MASTER)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      /* Fallthrough */
+        if (role == LL_ROLE_MASTER) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        /* Fallthrough */
     case LL_PDU_FEATURE_RSP:
-      if (lctrUnpackFeaturePdu(&pPdu->pld.featReqRsp, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if (lctrUnpackFeaturePdu(&pPdu->pld.featReqRsp, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_SLV_FEATURE_REQ:
-      if (role == LL_ROLE_SLAVE)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if ((lmgrCb.features & LL_FEAT_SLV_INIT_FEAT_EXCH) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackFeaturePdu(&pPdu->pld.featReqRsp, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if (role == LL_ROLE_SLAVE) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if ((lmgrCb.features & LL_FEAT_SLV_INIT_FEAT_EXCH) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackFeaturePdu(&pPdu->pld.featReqRsp, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_VERSION_IND:
-      if (lctrUnpackVersionIndPdu(&pPdu->pld.verInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if (lctrUnpackVersionIndPdu(&pPdu->pld.verInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_REJECT_IND:
-      pPdu->pld.rejInd.opcode = LL_PDU_UNSPECIFIED;
-      if (lctrUnpackRejectIndPdu(&pPdu->pld.rejInd.reason, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        pPdu->pld.rejInd.opcode = LL_PDU_UNSPECIFIED;
+        if (lctrUnpackRejectIndPdu(&pPdu->pld.rejInd.reason, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_REJECT_EXT_IND:
-      if ((lmgrCb.features & LL_FEAT_EXT_REJECT_IND) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackRejectExtIndPdu(&pPdu->pld.rejInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & LL_FEAT_EXT_REJECT_IND) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackRejectExtIndPdu(&pPdu->pld.rejInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_PHY_RSP:
-      if (role == LL_ROLE_SLAVE)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      /* Fallthrough */
+        if (role == LL_ROLE_SLAVE) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        /* Fallthrough */
     case LL_PDU_PHY_REQ:
-      if ((lmgrCb.features & (LL_FEAT_LE_2M_PHY | LL_FEAT_LE_CODED_PHY)) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackPhyPdu(&pPdu->pld.phyReq, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & (LL_FEAT_LE_2M_PHY | LL_FEAT_LE_CODED_PHY)) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackPhyPdu(&pPdu->pld.phyReq, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_PHY_UPDATE_IND:
-      if (role == LL_ROLE_MASTER)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if ((lmgrCb.features & (LL_FEAT_LE_2M_PHY | LL_FEAT_LE_CODED_PHY)) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackPhyUpdateIndPdu(&pPdu->pld.phyUpdInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if (role == LL_ROLE_MASTER) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if ((lmgrCb.features & (LL_FEAT_LE_2M_PHY | LL_FEAT_LE_CODED_PHY)) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackPhyUpdateIndPdu(&pPdu->pld.phyUpdInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_MIN_USED_CHAN_IND:
-      if (role == LL_ROLE_SLAVE)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if ((lmgrCb.features & LL_FEAT_MIN_NUM_USED_CHAN) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackMinUsedChanIndPdu(&pPdu->pld.minUsedChanInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrIsSetMinUsedChanParamValid(&pPdu->pld.minUsedChanInd) == FALSE)
-      {
-        return LL_ERROR_CODE_INVALID_LMP_PARAMS;
-      }
-      break;
+        if (role == LL_ROLE_SLAVE) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if ((lmgrCb.features & LL_FEAT_MIN_NUM_USED_CHAN) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackMinUsedChanIndPdu(&pPdu->pld.minUsedChanInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrIsSetMinUsedChanParamValid(&pPdu->pld.minUsedChanInd) == FALSE) {
+            return LL_ERROR_CODE_INVALID_LMP_PARAMS;
+        }
+        break;
     case LL_PDU_PERIODIC_SYNC_IND:
-      if ((lmgrCb.features & LL_FEAT_PAST_RECIPIENT) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackPerSyncIndPdu(&pPdu->pld.perSyncInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & LL_FEAT_PAST_RECIPIENT) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackPerSyncIndPdu(&pPdu->pld.perSyncInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_PEER_SCA_REQ:
-      if ((lmgrCb.features & (LL_FEAT_SCA_UPDATE)) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackPeerScaPdu(&pPdu->pld.peerSca, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & (LL_FEAT_SCA_UPDATE)) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackPeerScaPdu(&pPdu->pld.peerSca, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_PEER_SCA_RSP:
-      if ((lmgrCb.features & (LL_FEAT_SCA_UPDATE)) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackPeerScaPdu(&pPdu->pld.peerSca, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & (LL_FEAT_SCA_UPDATE)) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackPeerScaPdu(&pPdu->pld.peerSca, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_CIS_REQ:
-      if ((lmgrCb.features & (LL_FEAT_CIS_SLAVE_ROLE)) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackCisReqPdu(&pPdu->pld.cisReq, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & (LL_FEAT_CIS_SLAVE_ROLE)) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackCisReqPdu(&pPdu->pld.cisReq, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_CIS_RSP:
-      if ((lmgrCb.features & (LL_FEAT_CIS_MASTER_ROLE)) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackCisRspPdu(&pPdu->pld.cisRsp, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & (LL_FEAT_CIS_MASTER_ROLE)) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackCisRspPdu(&pPdu->pld.cisRsp, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_CIS_IND:
-      if ((lmgrCb.features & (LL_FEAT_CIS_SLAVE_ROLE)) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackCisIndPdu(&pPdu->pld.cisInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & (LL_FEAT_CIS_SLAVE_ROLE)) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackCisIndPdu(&pPdu->pld.cisInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_CIS_TERM_IND:
-      if (((lmgrCb.features & (LL_FEAT_CIS_SLAVE_ROLE)) == 0) &&
-          ((lmgrCb.features & (LL_FEAT_CIS_MASTER_ROLE)) == 0))
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackCisTermPdu(&pPdu->pld.cisTerm, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if (((lmgrCb.features & (LL_FEAT_CIS_SLAVE_ROLE)) == 0) &&
+            ((lmgrCb.features & (LL_FEAT_CIS_MASTER_ROLE)) == 0)) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackCisTermPdu(&pPdu->pld.cisTerm, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_PWR_CHNG_IND:
-      if ((lmgrCb.features & LL_FEAT_POWER_CHANGE_IND) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackPwrChngIndPdu(&pPdu->pld.pwrChngInd, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & LL_FEAT_POWER_CHANGE_IND) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackPwrChngIndPdu(&pPdu->pld.pwrChngInd, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_PWR_CTRL_REQ:
-      if ((lmgrCb.features & LL_FEAT_POWER_CONTROL_REQUEST) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackPwrCtrlReqPdu(&pPdu->pld.pwrCtrlReq, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & LL_FEAT_POWER_CONTROL_REQUEST) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackPwrCtrlReqPdu(&pPdu->pld.pwrCtrlReq, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
     case LL_PDU_PWR_CTRL_RSP:
-      if ((lmgrCb.features & LL_FEAT_POWER_CONTROL_REQUEST) == 0)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      if (lctrUnpackPwrCtrlRspPdu(&pPdu->pld.pwrCtrlRsp, pBuf) != pPdu->hdr.len)
-      {
-        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      }
-      break;
+        if ((lmgrCb.features & LL_FEAT_POWER_CONTROL_REQUEST) == 0) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        if (lctrUnpackPwrCtrlRspPdu(&pPdu->pld.pwrCtrlRsp, pBuf) != pPdu->hdr.len) {
+            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        }
+        break;
 
     default:
-      result = LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-      break;
-  }
+        result = LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+        break;
+    }
 
-  return result;
+    return result;
 }

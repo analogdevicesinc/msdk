@@ -33,8 +33,7 @@
 #include "wsf_timer.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -42,16 +41,14 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Scheduler Server Register State entry definition */
-typedef struct mmdlSchedulerSrRegisterEntry_tag
-{
-  mmdlSchedulerRegisterEntry_t   regEntry;  /*!< Scheduler Register State entry definition */
-  bool_t                         inUse;     /*!< In use flag */
+typedef struct mmdlSchedulerSrRegisterEntry_tag {
+    mmdlSchedulerRegisterEntry_t regEntry; /*!< Scheduler Register State entry definition */
+    bool_t inUse; /*!< In use flag */
 } mmdlSchedulerSrRegisterEntry_t;
 
 /*! \brief Model Scheduler Server descriptor definition */
-typedef struct mmdlSchedulerSrDesc_tag
-{
-  mmdlSchedulerSrRegisterEntry_t registerState[MMDL_SCHEDULER_REGISTER_ENTRY_MAX + 1]; /*!< Register
+typedef struct mmdlSchedulerSrDesc_tag {
+    mmdlSchedulerSrRegisterEntry_t registerState[MMDL_SCHEDULER_REGISTER_ENTRY_MAX + 1]; /*!< Register
                                                                                         *   state
                                                                                         */
 } mmdlSchedulerSrDesc_t;
@@ -61,42 +58,40 @@ typedef struct mmdlSchedulerSrDesc_tag
  *  \note  Upon receiving this event the application having a reliable time source
  *         can start scheduling an action identified by the id field.
  */
-typedef struct mmdlSchedulerSrStartScheduleEvent_tag
-{
-  wsfMsgHdr_t                          hdr;         /*!< WSF message header */
-  meshElementId_t                      elementId;   /*!< Element ID */
-  uint8_t                              id;          /*!< Identifier of the scheduled event */
-  uint8_t                              year;        /*!< Last two digits for the Year of the event
+typedef struct mmdlSchedulerSrStartScheduleEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elementId; /*!< Element ID */
+    uint8_t id; /*!< Identifier of the scheduled event */
+    uint8_t year; /*!< Last two digits for the Year of the event
                                                      *   or ::MMDL_SCHEDULER_REGISTER_YEAR_ALL
                                                      */
-   mmdlSchedulerRegisterMonthBf_t      months;      /*!< Bit-field for months. A value of 1 for bit N
+    mmdlSchedulerRegisterMonthBf_t months; /*!< Bit-field for months. A value of 1 for bit N
                                                      *   means event occurs in month N
                                                      */
-   mmdlSchedulerRegisterDay_t          day;         /*!< Day of the event */
-   mmdlSchedulerRegisterHour_t         hour;        /*!< Hour of the event */
-   mmdlSchedulerRegisterMinute_t       minute;      /*!< Minute of the event */
-   mmdlSchedulerRegisterSecond_t       second;      /*!< Second of the event */
-   mmdlSchedulerRegisterDayOfWeekBf_t  daysOfWeek;  /*!< Bit-field for days of week. A value of 1 for bit N
+    mmdlSchedulerRegisterDay_t day; /*!< Day of the event */
+    mmdlSchedulerRegisterHour_t hour; /*!< Hour of the event */
+    mmdlSchedulerRegisterMinute_t minute; /*!< Minute of the event */
+    mmdlSchedulerRegisterSecond_t second; /*!< Second of the event */
+    mmdlSchedulerRegisterDayOfWeekBf_t
+        daysOfWeek; /*!< Bit-field for days of week. A value of 1 for bit N
                                                      *   means event occurs in day N
                                                      */
 } mmdlSchedulerSrStartScheduleEvent_t;
 
 /*! \brief Scheduler Server Model Stop Schedule event structure */
-typedef struct mmdlSchedulerSrStopScheduleEvent_tag
-{
-  wsfMsgHdr_t                          hdr;         /*!< WSF message header */
-  meshElementId_t                      elementId;   /*!< Element ID */
-  uint8_t                              id;          /*!< Identifier of the scheduled entry */
+typedef struct mmdlSchedulerSrStopScheduleEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elementId; /*!< Element ID */
+    uint8_t id; /*!< Identifier of the scheduled entry */
 } mmdlSchedulerSrStopScheduleEvent_t;
 
 /*! \brief Scheduler Server Model event callback parameters structure */
-typedef union mmdlSchedulerSrEvent_tag
-{
-  wsfMsgHdr_t                          hdr;                /*!< WSF message header */
-  mmdlSchedulerSrStartScheduleEvent_t  schedStartEvent;    /*!< Start schedule event. Valid for
+typedef union mmdlSchedulerSrEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    mmdlSchedulerSrStartScheduleEvent_t schedStartEvent; /*!< Start schedule event. Valid for
                                                             *   ::MMDL_SCHEDULER_SR_START_SCHEDULE_EVENT
                                                             */
-  mmdlSchedulerSrStopScheduleEvent_t   schedStopEvent;     /*!< Stop schedule event. Valid for
+    mmdlSchedulerSrStopScheduleEvent_t schedStopEvent; /*!< Stop schedule event. Valid for
                                                             *   ::MMDL_SCHEDULER_SR_STOP_SCHEDULE_EVENT
                                                             */
 } mmdlSchedulerSrEvent_t;

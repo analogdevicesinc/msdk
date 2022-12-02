@@ -28,7 +28,6 @@
 
 #include "common.h"
 
-
 /**
  * Time domain attack detector
  * dt, sr          Duration and samplerate of the frame
@@ -37,8 +36,7 @@
  * x               [-6..-1] Previous, [0..ns-1] Current samples
  * return          1: Attack detected  0: Otherwise
  */
-bool lc3_attdet_run(enum lc3_dt dt, enum lc3_srate sr,
-    int nbytes, lc3_attdet_analysis_t *attdet, const int16_t *x);
-
+bool lc3_attdet_run(enum lc3_dt dt, enum lc3_srate sr, int nbytes, lc3_attdet_analysis_t *attdet,
+                    const int16_t *x);
 
 #endif /* __LC3_ATTDET_H */

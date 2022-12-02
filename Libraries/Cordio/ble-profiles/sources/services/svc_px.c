@@ -48,136 +48,75 @@
 **************************************************************************************************/
 
 /* UUIDs */
-static const uint8_t svcAlLvlUuid[ATT_16_UUID_LEN] = {UINT16_TO_BYTES(ATT_UUID_ALERT_LEVEL)};
-static const uint8_t svcTxPwrUuid[ATT_16_UUID_LEN] = {UINT16_TO_BYTES(ATT_UUID_TX_POWER_LEVEL)};
+static const uint8_t svcAlLvlUuid[ATT_16_UUID_LEN] = { UINT16_TO_BYTES(ATT_UUID_ALERT_LEVEL) };
+static const uint8_t svcTxPwrUuid[ATT_16_UUID_LEN] = { UINT16_TO_BYTES(ATT_UUID_TX_POWER_LEVEL) };
 
 /**************************************************************************************************
  Service variables
 **************************************************************************************************/
 
 /* Link loss service declaration */
-static const uint8_t llsValSvc[] = {UINT16_TO_BYTES(ATT_UUID_LINK_LOSS_SERVICE)};
+static const uint8_t llsValSvc[] = { UINT16_TO_BYTES(ATT_UUID_LINK_LOSS_SERVICE) };
 static const uint16_t llsLenSvc = sizeof(llsValSvc);
 
 /* Link loss alert level characteristic */
-static const uint8_t llsValAlCh[] = {ATT_PROP_READ | ATT_PROP_WRITE, UINT16_TO_BYTES(LLS_AL_HDL), UINT16_TO_BYTES(ATT_UUID_ALERT_LEVEL)};
+static const uint8_t llsValAlCh[] = { ATT_PROP_READ | ATT_PROP_WRITE, UINT16_TO_BYTES(LLS_AL_HDL),
+                                      UINT16_TO_BYTES(ATT_UUID_ALERT_LEVEL) };
 static const uint16_t llsLenAlCh = sizeof(llsValAlCh);
 
 /* Link loss alert level */
-static uint8_t llsValAl[] = {0};
+static uint8_t llsValAl[] = { 0 };
 static const uint16_t llsLenAl = sizeof(llsValAl);
 
 /* Immediate alert service declaration */
-static const uint8_t iasValSvc[] = {UINT16_TO_BYTES(ATT_UUID_IMMEDIATE_ALERT_SERVICE)};
+static const uint8_t iasValSvc[] = { UINT16_TO_BYTES(ATT_UUID_IMMEDIATE_ALERT_SERVICE) };
 static const uint16_t iasLenSvc = sizeof(iasValSvc);
 
 /* Immediate alert alert level characteristic */
-static const uint8_t iasValAlCh[] = {ATT_PROP_WRITE_NO_RSP, UINT16_TO_BYTES(IAS_AL_HDL), UINT16_TO_BYTES(ATT_UUID_ALERT_LEVEL)};
+static const uint8_t iasValAlCh[] = { ATT_PROP_WRITE_NO_RSP, UINT16_TO_BYTES(IAS_AL_HDL),
+                                      UINT16_TO_BYTES(ATT_UUID_ALERT_LEVEL) };
 static const uint16_t iasLenAlCh = sizeof(iasValAlCh);
 
 /* Immediate alert alert level */
-static uint8_t iasValAl[] = {0};
+static uint8_t iasValAl[] = { 0 };
 static const uint16_t iasLenAl = sizeof(iasValAl);
 
 /* TX power service declaration */
-static const uint8_t txsValSvc[] = {UINT16_TO_BYTES(ATT_UUID_TX_POWER_SERVICE)};
+static const uint8_t txsValSvc[] = { UINT16_TO_BYTES(ATT_UUID_TX_POWER_SERVICE) };
 static const uint16_t txsLenSvc = sizeof(txsValSvc);
 
 /* TX power level characteristic */
-static const uint8_t txsValTxCh[] = {ATT_PROP_READ, UINT16_TO_BYTES(TXS_TX_HDL), UINT16_TO_BYTES(ATT_UUID_TX_POWER_LEVEL)};
+static const uint8_t txsValTxCh[] = { ATT_PROP_READ, UINT16_TO_BYTES(TXS_TX_HDL),
+                                      UINT16_TO_BYTES(ATT_UUID_TX_POWER_LEVEL) };
 static const uint16_t txsLenTxCh = sizeof(txsValTxCh);
 
 /* TX power level */
-static uint8_t txsValTx[] = {0};
+static uint8_t txsValTx[] = { 0 };
 static const uint16_t txsLenTx = sizeof(txsValTx);
 
 /* Attribute list */
-static const attsAttr_t pxList[] =
-{
-  {
-    attPrimSvcUuid,
-    (uint8_t *) llsValSvc,
-    (uint16_t *) &llsLenSvc,
-    sizeof(llsValSvc),
-    0,
-    ATTS_PERMIT_READ
-  },
-  {
-    attChUuid,
-    (uint8_t *) llsValAlCh,
-    (uint16_t *) &llsLenAlCh,
-    sizeof(llsValAlCh),
-    0,
-    ATTS_PERMIT_READ
-  },
-  {
-    svcAlLvlUuid,
-    llsValAl,
-    (uint16_t *) &llsLenAl,
-    sizeof(llsValAl),
-    0,
-    PX_SEC_PERMIT_READ | PX_SEC_PERMIT_WRITE
-  },
-  {
-    attPrimSvcUuid,
-    (uint8_t *) iasValSvc,
-    (uint16_t *) &iasLenSvc,
-    sizeof(iasValSvc),
-    0,
-    ATTS_PERMIT_READ
-  },
-  {
-    attChUuid,
-    (uint8_t *) iasValAlCh,
-    (uint16_t *) &iasLenAlCh,
-    sizeof(iasValAlCh),
-    0,
-    ATTS_PERMIT_READ
-  },
-  {
-    svcAlLvlUuid,
-    iasValAl,
-    (uint16_t *) &iasLenAl,
-    sizeof(iasValAl),
-    ATTS_SET_WRITE_CBACK,
-    PX_SEC_PERMIT_WRITE
-  },
-  {
-    attPrimSvcUuid,
-    (uint8_t *) txsValSvc,
-    (uint16_t *) &txsLenSvc,
-    sizeof(txsValSvc),
-    0,
-    ATTS_PERMIT_READ
-  },
-  {
-    attChUuid,
-    (uint8_t *) txsValTxCh,
-    (uint16_t *) &txsLenTxCh,
-    sizeof(txsValTxCh),
-    0,
-    ATTS_PERMIT_READ
-  },
-  {
-    svcTxPwrUuid,
-    txsValTx,
-    (uint16_t *) &txsLenTx,
-    sizeof(txsValTx),
-    0,
-    PX_SEC_PERMIT_READ
-  }
+static const attsAttr_t pxList[] = {
+    { attPrimSvcUuid, (uint8_t *)llsValSvc, (uint16_t *)&llsLenSvc, sizeof(llsValSvc), 0,
+      ATTS_PERMIT_READ },
+    { attChUuid, (uint8_t *)llsValAlCh, (uint16_t *)&llsLenAlCh, sizeof(llsValAlCh), 0,
+      ATTS_PERMIT_READ },
+    { svcAlLvlUuid, llsValAl, (uint16_t *)&llsLenAl, sizeof(llsValAl), 0,
+      PX_SEC_PERMIT_READ | PX_SEC_PERMIT_WRITE },
+    { attPrimSvcUuid, (uint8_t *)iasValSvc, (uint16_t *)&iasLenSvc, sizeof(iasValSvc), 0,
+      ATTS_PERMIT_READ },
+    { attChUuid, (uint8_t *)iasValAlCh, (uint16_t *)&iasLenAlCh, sizeof(iasValAlCh), 0,
+      ATTS_PERMIT_READ },
+    { svcAlLvlUuid, iasValAl, (uint16_t *)&iasLenAl, sizeof(iasValAl), ATTS_SET_WRITE_CBACK,
+      PX_SEC_PERMIT_WRITE },
+    { attPrimSvcUuid, (uint8_t *)txsValSvc, (uint16_t *)&txsLenSvc, sizeof(txsValSvc), 0,
+      ATTS_PERMIT_READ },
+    { attChUuid, (uint8_t *)txsValTxCh, (uint16_t *)&txsLenTxCh, sizeof(txsValTxCh), 0,
+      ATTS_PERMIT_READ },
+    { svcTxPwrUuid, txsValTx, (uint16_t *)&txsLenTx, sizeof(txsValTx), 0, PX_SEC_PERMIT_READ }
 };
 
 /* Group structure */
-static attsGroup_t svcPxGroup =
-{
-  NULL,
-  (attsAttr_t *) pxList,
-  NULL,
-  NULL,
-  PX_START_HDL,
-  PX_END_HDL
-};
+static attsGroup_t svcPxGroup = { NULL, (attsAttr_t *)pxList, NULL, NULL, PX_START_HDL, PX_END_HDL };
 
 /*************************************************************************************************/
 /*!
@@ -188,8 +127,8 @@ static attsGroup_t svcPxGroup =
 /*************************************************************************************************/
 void SvcPxAddGroup(void)
 {
-  /* add services */
-  AttsAddGroup(&svcPxGroup);
+    /* add services */
+    AttsAddGroup(&svcPxGroup);
 }
 
 /*************************************************************************************************/
@@ -201,7 +140,7 @@ void SvcPxAddGroup(void)
 /*************************************************************************************************/
 void SvcPxRemoveGroup(void)
 {
-  AttsRemoveGroup(PX_START_HDL);
+    AttsRemoveGroup(PX_START_HDL);
 }
 
 /*************************************************************************************************/
@@ -216,6 +155,6 @@ void SvcPxRemoveGroup(void)
 /*************************************************************************************************/
 void SvcPxCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback)
 {
-  svcPxGroup.readCback = readCback;
-  svcPxGroup.writeCback = writeCback;
+    svcPxGroup.readCback = readCback;
+    svcPxGroup.writeCback = writeCback;
 }

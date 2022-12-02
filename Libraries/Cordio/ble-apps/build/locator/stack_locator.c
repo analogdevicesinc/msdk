@@ -52,46 +52,46 @@
 /*************************************************************************************************/
 void StackInitLocator(void)
 {
-  wsfHandlerId_t handlerId;
+    wsfHandlerId_t handlerId;
 
-  SecInit();
-  SecAesInit();
-  SecCmacInit();
-  SecEccInit();
+    SecInit();
+    SecAesInit();
+    SecCmacInit();
+    SecEccInit();
 
-  handlerId = WsfOsSetNextHandler(HciHandler);
-  HciHandlerInit(handlerId);
+    handlerId = WsfOsSetNextHandler(HciHandler);
+    HciHandlerInit(handlerId);
 
-  handlerId = WsfOsSetNextHandler(DmHandler);
-  DmDevVsInit(0);
-  DmDevPrivInit();
-  DmConnInit();
-  DmScanInit();
-  DmConnMasterInit();
-  DmSecInit();
-  DmSecLescInit();
-  DmPrivInit();
-  DmConnCteInit();
-  DmHandlerInit(handlerId);
+    handlerId = WsfOsSetNextHandler(DmHandler);
+    DmDevVsInit(0);
+    DmDevPrivInit();
+    DmConnInit();
+    DmScanInit();
+    DmConnMasterInit();
+    DmSecInit();
+    DmSecLescInit();
+    DmPrivInit();
+    DmConnCteInit();
+    DmHandlerInit(handlerId);
 
-  L2cInit();
-  L2cMasterInit();
+    L2cInit();
+    L2cMasterInit();
 
-  handlerId = WsfOsSetNextHandler(AttHandler);
-  AttHandlerInit(handlerId);
-  AttsInit();
-  AttsIndInit();
-  AttcInit();
+    handlerId = WsfOsSetNextHandler(AttHandler);
+    AttHandlerInit(handlerId);
+    AttsInit();
+    AttsIndInit();
+    AttcInit();
 
-  handlerId = WsfOsSetNextHandler(SmpHandler);
-  SmpHandlerInit(handlerId);
-  SmpiInit();
-  SmpiScInit();
-  HciSetMaxRxAclLen(100);
+    handlerId = WsfOsSetNextHandler(SmpHandler);
+    SmpHandlerInit(handlerId);
+    SmpiInit();
+    SmpiScInit();
+    HciSetMaxRxAclLen(100);
 
-  handlerId = WsfOsSetNextHandler(AppHandler);
-  AppHandlerInit(handlerId);
+    handlerId = WsfOsSetNextHandler(AppHandler);
+    AppHandlerInit(handlerId);
 
-  handlerId = WsfOsSetNextHandler(LocatorHandler);
-  LocatorHandlerInit(handlerId);
+    handlerId = WsfOsSetNextHandler(LocatorHandler);
+    LocatorHandlerInit(handlerId);
 }

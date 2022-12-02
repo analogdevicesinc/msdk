@@ -27,8 +27,7 @@
 #define MESH_CFG_MDL_CL_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -36,67 +35,61 @@ extern "C"
 **************************************************************************************************/
 
 /*! Default timeout for Configuration Client requests */
-#define MESH_CFG_MDL_CL_OP_TIMEOUT_DEFAULT_SEC  (10)
+#define MESH_CFG_MDL_CL_OP_TIMEOUT_DEFAULT_SEC (10)
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Mesh Configuration Client WSF message events */
-enum meshCfgMdlClWsfMsgEvents
-{
-  MESH_CFG_MDL_CL_MSG_API_SEND         = MESH_CFG_MDL_CL_MSG_START, /*!< API send event */
-  MESH_CFG_MDL_CL_MSG_RSP_TMR_EXPIRED,                              /*!< Response timer expired */
+enum meshCfgMdlClWsfMsgEvents {
+    MESH_CFG_MDL_CL_MSG_API_SEND = MESH_CFG_MDL_CL_MSG_START, /*!< API send event */
+    MESH_CFG_MDL_CL_MSG_RSP_TMR_EXPIRED, /*!< Response timer expired */
 };
 
 /*! Config Client database for remote servers */
-typedef struct meshCfgMdlClRemCfgMdlSrDbEntry_tag
-{
-  meshAddress_t cfgMdlSrAddr;                      /*!< Configuration Server address */
-  uint8_t       cfgMdlSrDevKey[MESH_KEY_SIZE_128]; /*!< Configuration Server Device Key */
-  uint8_t       refCount;                          /*!< Number of requests using the entry */
+typedef struct meshCfgMdlClRemCfgMdlSrDbEntry_tag {
+    meshAddress_t cfgMdlSrAddr; /*!< Configuration Server address */
+    uint8_t cfgMdlSrDevKey[MESH_KEY_SIZE_128]; /*!< Configuration Server Device Key */
+    uint8_t refCount; /*!< Number of requests using the entry */
 } meshCfgMdlClRemCfgMdlSrDbEntry_t;
 
 /*! Mesh Configuration Client Control Block */
-typedef struct meshCfgMdlClCb_tag
-{
-  meshCfgMdlClCback_t           cback;             /*!< Upper layer procedure callback */
-  meshCfgMdlClRemCfgMdlSrDbEntry_t *pCfgMdlSrDb;   /*!< Pointer to Configuration Server database
+typedef struct meshCfgMdlClCb_tag {
+    meshCfgMdlClCback_t cback; /*!< Upper layer procedure callback */
+    meshCfgMdlClRemCfgMdlSrDbEntry_t *pCfgMdlSrDb; /*!< Pointer to Configuration Server database
                                                      *   containing remote server address and Device Key
                                                      */
-  wsfQueue_t                 opQueue;               /*!< Pending operations queue */
-  uint16_t                   opTimeoutSec;          /*!< Operation timeout in seconds */
-  uint16_t                   cfgMdlSrDbNumEntries;  /*!< Number of entries in the database */
-  uint16_t                   rspTmrUidGen;          /*!< Response timer unique ID generator */
+    wsfQueue_t opQueue; /*!< Pending operations queue */
+    uint16_t opTimeoutSec; /*!< Operation timeout in seconds */
+    uint16_t cfgMdlSrDbNumEntries; /*!< Number of entries in the database */
+    uint16_t rspTmrUidGen; /*!< Response timer unique ID generator */
 } meshCfgMdlClCb_t;
 
 /*! Mesh Configuration Client Operation request parameters */
-typedef struct meshCfgMdlClOpReqParams_tag
-{
-  void            *pNext;               /*!< Pointer to next element */
-  meshAddress_t   cfgMdlSrAddr;         /*!< Configuration Server address */
-  uint16_t        cfgMdlSrNetKeyIndex;  /*!< Identifier of the Network used to communicate with the
+typedef struct meshCfgMdlClOpReqParams_tag {
+    void *pNext; /*!< Pointer to next element */
+    meshAddress_t cfgMdlSrAddr; /*!< Configuration Server address */
+    uint16_t cfgMdlSrNetKeyIndex; /*!< Identifier of the Network used to communicate with the
                                          *   server
                                          */
-  wsfTimer_t      rspTmr;               /*!< Response timer timeout */
-  meshCfgMdlClOpId_t reqOpId;           /*!< Request operation identifier */
-  meshCfgMdlSrOpId_t rspOpId;           /*!< Response operation identifier */
-  uint8_t         apiEvt;               /*!< API event. See ::meshCfgMdlEventValues */
+    wsfTimer_t rspTmr; /*!< Response timer timeout */
+    meshCfgMdlClOpId_t reqOpId; /*!< Request operation identifier */
+    meshCfgMdlSrOpId_t rspOpId; /*!< Response operation identifier */
+    uint8_t apiEvt; /*!< API event. See ::meshCfgMdlEventValues */
 } meshCfgMdlClOpReqParams_t;
 
 /*! Mesh Configuration Client Operation Request */
-typedef struct meshCfgMdlClOpReq_tag
-{
-  wsfMsgHdr_t            hdr;             /*!< Header structure */
-  meshCfgMdlClOpReqParams_t *pReqParam;   /*!< Pointer to allocated request parameters */
-  uint8_t                *pMsgParam;      /*!< Pointer to packed message parameters */
-  uint16_t               msgParamLen;     /*!< Message parameters length in bytes */
+typedef struct meshCfgMdlClOpReq_tag {
+    wsfMsgHdr_t hdr; /*!< Header structure */
+    meshCfgMdlClOpReqParams_t *pReqParam; /*!< Pointer to allocated request parameters */
+    uint8_t *pMsgParam; /*!< Pointer to packed message parameters */
+    uint16_t msgParamLen; /*!< Message parameters length in bytes */
 } meshCfgMdlClOpReq_t;
-
 
 /*! Mesh Configuration Client operation response action handler */
 typedef bool_t (*meshCfgMdlClOpRspAct_t)(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
-                                      uint16_t msgParamLen);
+                                         uint16_t msgParamLen);
 
 /**************************************************************************************************
   Function Declarations
@@ -105,12 +98,11 @@ typedef bool_t (*meshCfgMdlClOpRspAct_t)(meshCfgMdlClOpReqParams_t *pReqParam, u
 bool_t meshCfgMdlClAddToSrDbSafe(meshAddress_t cfgMdlSrAddr, const uint8_t *pDevKey);
 void meshCfgMdlClRemFromSrDbSafe(meshAddress_t cfgMdlSrAddr);
 
-void meshCfgMdlClEmptyCback(meshCfgMdlClEvt_t* pEvt);
+void meshCfgMdlClEmptyCback(meshCfgMdlClEvt_t *pEvt);
 void meshCfgMdlClWsfMsgHandlerCback(wsfMsgHdr_t *pMsg);
 
-void meshCfgMdlClAccMsgRcvCback(uint8_t opcodeIdx, uint8_t *pMsgParam,
-                                uint16_t msgParamLen, meshAddress_t src,
-                                meshElementId_t elemId, uint8_t ttl,
+void meshCfgMdlClAccMsgRcvCback(uint8_t opcodeIdx, uint8_t *pMsgParam, uint16_t msgParamLen,
+                                meshAddress_t src, meshElementId_t elemId, uint8_t ttl,
                                 uint16_t netKeyIndex);
 bool_t meshCfgMdlClHandleBeaconStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                       uint16_t msgParamLen);
@@ -119,17 +111,17 @@ bool_t meshCfgMdlClHandleCompDataStatus(meshCfgMdlClOpReqParams_t *pReqParam, ui
 bool_t meshCfgMdlClHandleDefaultTtlStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                           uint16_t msgParamLen);
 bool_t meshCfgHandleGattProxyStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
-                                       uint16_t msgParamLen);
+                                    uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleRelayStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                      uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleModelPubStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                         uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleModelSubscrStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                            uint16_t msgParamLen);
-bool_t meshCfgMdlClHandleModelSubscrSigList(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
-                                            uint16_t msgParamLen);
-bool_t meshCfgMdlClHandleModelSubscrVendorList(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
-                                               uint16_t msgParamLen);
+bool_t meshCfgMdlClHandleModelSubscrSigList(meshCfgMdlClOpReqParams_t *pReqParam,
+                                            uint8_t *pMsgParam, uint16_t msgParamLen);
+bool_t meshCfgMdlClHandleModelSubscrVendorList(meshCfgMdlClOpReqParams_t *pReqParam,
+                                               uint8_t *pMsgParam, uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleNetKeyStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                       uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleNetKeyList(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
@@ -138,14 +130,14 @@ bool_t meshCfgMdlClHandleAppKeyStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint
                                       uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleAppKeyList(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                     uint16_t msgParamLen);
-bool_t meshCfgMdlClHandleNodeIdentityStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
-                                            uint16_t msgParamLen);
+bool_t meshCfgMdlClHandleNodeIdentityStatus(meshCfgMdlClOpReqParams_t *pReqParam,
+                                            uint8_t *pMsgParam, uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleModelAppStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                         uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleModelAppSigList(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                          uint16_t msgParamLen);
-bool_t meshCfgMdlClHandleModelAppVendorList(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
-                                            uint16_t msgParamLen);
+bool_t meshCfgMdlClHandleModelAppVendorList(meshCfgMdlClOpReqParams_t *pReqParam,
+                                            uint8_t *pMsgParam, uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleNodeResetStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                          uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleFriendStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
@@ -156,8 +148,8 @@ bool_t meshCfgMdlClHandleHbPubStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8
                                      uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleHbSubStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                      uint16_t msgParamLen);
-bool_t meshCfgMdlClHandleLpnPollTimeoutStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
-                                              uint16_t msgParamLen);
+bool_t meshCfgMdlClHandleLpnPollTimeoutStatus(meshCfgMdlClOpReqParams_t *pReqParam,
+                                              uint8_t *pMsgParam, uint16_t msgParamLen);
 bool_t meshCfgMdlClHandleNwkTransStatus(meshCfgMdlClOpReqParams_t *pReqParam, uint8_t *pMsgParam,
                                         uint16_t msgParamLen);
 

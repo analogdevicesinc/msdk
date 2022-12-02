@@ -53,15 +53,13 @@
 #include "app_util.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
  * Round up val to the next page boundary
  */
 #define ALIGN_TO_PAGE(val) ALIGN_NUM((CODE_PAGE_SIZE), (val))
-
 
 /** @brief Function for getting the start address of bank 0.
  *
@@ -71,13 +69,11 @@ extern "C"
  */
 uint32_t nrf_dfu_bank0_start_addr(void);
 
-
 /** @brief Function for getting the start address of bank 1.
  *
  * @return The start address of bank 1.
  */
 uint32_t nrf_dfu_bank1_start_addr(void);
-
 
 /** @brief Function for getting the start address of the app.
  *
@@ -85,13 +81,11 @@ uint32_t nrf_dfu_bank1_start_addr(void);
  */
 uint32_t nrf_dfu_app_start_address(void);
 
-
 /** @brief Function for getting the start address of the SoftDevice.
  *
  * @return  The start address of the SoftDevivce.
  */
 uint32_t nrf_dfu_softdevice_start_address(void);
-
 
 /** @brief Function for finding and preparing a place in flash in which to store a DFU update.
  *
@@ -121,8 +115,8 @@ uint32_t nrf_dfu_softdevice_start_address(void);
  * @retval      NRF_ERROR_NO_MEM    If there is not enough space available to receive the update.
  *                                  Nothing has been deleted.
  */
-uint32_t nrf_dfu_cache_prepare(uint32_t required_size, bool single_bank, bool keep_app, bool keep_softdevice);
-
+uint32_t nrf_dfu_cache_prepare(uint32_t required_size, bool single_bank, bool keep_app,
+                               bool keep_softdevice);
 
 /**@brief Function for making sure a SoftDevice is not recognized as such anymore.
  *
@@ -136,14 +130,13 @@ uint32_t nrf_dfu_cache_prepare(uint32_t required_size, bool single_bank, bool ke
  */
 void nrf_dfu_softdevice_invalidate(void);
 
-
 /**@brief Function for making sure a bank is not copied or booted.
  *
  * @details This also sets the size of the bank to 0.
  *
  * @param[in]  p_bank Pointer to the bank to be invalidated.
  */
-void nrf_dfu_bank_invalidate(nrf_dfu_bank_t * const p_bank);
+void nrf_dfu_bank_invalidate(nrf_dfu_bank_t *const p_bank);
 
 #ifdef __cplusplus
 }

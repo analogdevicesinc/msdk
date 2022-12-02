@@ -63,8 +63,6 @@ typedef volatile uint32_t nrf_atomic_u32_t;
  * */
 typedef volatile uint32_t nrf_atomic_flag_t;
 
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -77,7 +75,7 @@ extern "C" {
  *
  * @return Old value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_fetch_store(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_fetch_store(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Stores value to an atomic object
@@ -87,7 +85,7 @@ uint32_t nrf_atomic_u32_fetch_store(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return New value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_store(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_store(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Logical OR operation on an atomic object
@@ -97,7 +95,7 @@ uint32_t nrf_atomic_u32_store(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return Old value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_fetch_or(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_fetch_or(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Logical OR operation on an atomic object
@@ -107,7 +105,7 @@ uint32_t nrf_atomic_u32_fetch_or(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return New value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_or(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_or(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Logical AND operation on an atomic object
@@ -117,7 +115,7 @@ uint32_t nrf_atomic_u32_or(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return Old value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_fetch_and(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_fetch_and(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Logical AND operation on an atomic object
@@ -127,7 +125,7 @@ uint32_t nrf_atomic_u32_fetch_and(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return New value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_and(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_and(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Logical XOR operation on an atomic object
@@ -137,7 +135,7 @@ uint32_t nrf_atomic_u32_and(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return Old value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_fetch_xor(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_fetch_xor(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Logical XOR operation on an atomic object
@@ -147,7 +145,7 @@ uint32_t nrf_atomic_u32_fetch_xor(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return New value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_xor(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_xor(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Arithmetic ADD operation on an atomic object
@@ -157,7 +155,7 @@ uint32_t nrf_atomic_u32_xor(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return Old value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_fetch_add(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_fetch_add(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Arithmetic ADD operation on an atomic object
@@ -167,7 +165,7 @@ uint32_t nrf_atomic_u32_fetch_add(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return New value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_add(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_add(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Arithmetic SUB operation on an atomic object
@@ -177,7 +175,7 @@ uint32_t nrf_atomic_u32_add(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return Old value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_fetch_sub(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_fetch_sub(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Arithmetic SUB operation on an atomic object
@@ -187,7 +185,7 @@ uint32_t nrf_atomic_u32_fetch_sub(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return New value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_sub(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_sub(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief If value at pointer is equal to expected value, changes value at pointer to desired
@@ -203,9 +201,7 @@ uint32_t nrf_atomic_u32_sub(nrf_atomic_u32_t * p_data, uint32_t value);
  * @retval true  *p_data was equal to *p_expected
  * @retval false *p_data was not equal to *p_expected
  */
-bool nrf_atomic_u32_cmp_exch(nrf_atomic_u32_t * p_data,
-                             uint32_t *         p_expected,
-                             uint32_t           desired);
+bool nrf_atomic_u32_cmp_exch(nrf_atomic_u32_t *p_data, uint32_t *p_expected, uint32_t desired);
 
 /**
  * @brief Arithmetic SUB operation on an atomic object performed if object >= value.
@@ -215,7 +211,7 @@ bool nrf_atomic_u32_cmp_exch(nrf_atomic_u32_t * p_data,
  *
  * @return Old value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_fetch_sub_hs(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_fetch_sub_hs(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**
  * @brief Arithmetic SUB operation on an atomic object performed if object >= value.
@@ -225,7 +221,7 @@ uint32_t nrf_atomic_u32_fetch_sub_hs(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return New value stored into atomic object
  * */
-uint32_t nrf_atomic_u32_sub_hs(nrf_atomic_u32_t * p_data, uint32_t value);
+uint32_t nrf_atomic_u32_sub_hs(nrf_atomic_u32_t *p_data, uint32_t value);
 
 /**************************************************************************************************/
 
@@ -236,7 +232,7 @@ uint32_t nrf_atomic_u32_sub_hs(nrf_atomic_u32_t * p_data, uint32_t value);
  *
  * @return Old flag value
  * */
-uint32_t nrf_atomic_flag_set_fetch(nrf_atomic_flag_t * p_data);
+uint32_t nrf_atomic_flag_set_fetch(nrf_atomic_flag_t *p_data);
 
 /**
  * @brief Logic one bit flag set operation on an atomic object
@@ -245,7 +241,7 @@ uint32_t nrf_atomic_flag_set_fetch(nrf_atomic_flag_t * p_data);
  *
  * @return New flag value
  * */
-uint32_t nrf_atomic_flag_set(nrf_atomic_flag_t * p_data);
+uint32_t nrf_atomic_flag_set(nrf_atomic_flag_t *p_data);
 
 /**
  * @brief Logic one bit flag clear operation on an atomic object
@@ -254,7 +250,7 @@ uint32_t nrf_atomic_flag_set(nrf_atomic_flag_t * p_data);
  *
  * @return Old flag value
  * */
-uint32_t nrf_atomic_flag_clear_fetch(nrf_atomic_flag_t * p_data);
+uint32_t nrf_atomic_flag_clear_fetch(nrf_atomic_flag_t *p_data);
 
 /**
  * @brief Logic one bit flag clear operation on an atomic object
@@ -263,7 +259,7 @@ uint32_t nrf_atomic_flag_clear_fetch(nrf_atomic_flag_t * p_data);
  *
  * @return New flag value
  * */
-uint32_t nrf_atomic_flag_clear(nrf_atomic_flag_t * p_data);
+uint32_t nrf_atomic_flag_clear(nrf_atomic_flag_t *p_data);
 
 #ifdef __cplusplus
 }

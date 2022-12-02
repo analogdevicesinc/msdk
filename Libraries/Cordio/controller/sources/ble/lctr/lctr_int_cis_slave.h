@@ -47,12 +47,11 @@ extern "C" {
   Constants
 **************************************************************************************************/
 /*! \brief      CIS slave establishment states. */
-enum
-{
-  LCTR_CIS_SLV_EST_STATE_IDLE,                        /*!< Idle state. */
-  LCTR_CIS_SLV_EST_STATE_HOST_REPLY,                  /*!< Wait for host reply state. */
-  LCTR_CIS_SLV_EST_STATE_CIS_IND,                     /*!< Wait for LL_CIS_IND state. */
-  LCTR_CIS_SLV_EST_STATE_TOTAL                        /*!< Total CIS slave establishment states. */
+enum {
+    LCTR_CIS_SLV_EST_STATE_IDLE, /*!< Idle state. */
+    LCTR_CIS_SLV_EST_STATE_HOST_REPLY, /*!< Wait for host reply state. */
+    LCTR_CIS_SLV_EST_STATE_CIS_IND, /*!< Wait for LL_CIS_IND state. */
+    LCTR_CIS_SLV_EST_STATE_TOTAL /*!< Total CIS slave establishment states. */
 };
 
 /**************************************************************************************************

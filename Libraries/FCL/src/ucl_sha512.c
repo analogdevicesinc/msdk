@@ -45,32 +45,30 @@
 #include <ucl/ucl_retdefs.h>
 #include "ucl/bignum_ecdsa_generic_api.h"
 
-
 void _wsb_ll2b(u8 *dst, u64 src)
 {
-  dst[7] = src & 0xFF;
-  src >>= 8;
-  dst[6] = src & 0xFF;
-  src >>= 8;
-  dst[5] = src & 0xFF;
-  src >>= 8;
-  dst[4] = src & 0xFF;
-  src >>= 8;
-  dst[3] =src & 0xFF;
-  src >>= 8;
-  dst[2] = src & 0xFF;
-  src >>= 8;
-  dst[1] = src & 0xFF;
-  src >>= 8;
-  dst[0] = src & 0xFF;
+    dst[7] = src & 0xFF;
+    src >>= 8;
+    dst[6] = src & 0xFF;
+    src >>= 8;
+    dst[5] = src & 0xFF;
+    src >>= 8;
+    dst[4] = src & 0xFF;
+    src >>= 8;
+    dst[3] = src & 0xFF;
+    src >>= 8;
+    dst[2] = src & 0xFF;
+    src >>= 8;
+    dst[1] = src & 0xFF;
+    src >>= 8;
+    dst[0] = src & 0xFF;
 }
 
 void swapcpy_ll2b(u8 *dst, const u64 *src, u32 wordlen)
 {
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         _wsb_ll2b(dst, src[i]);
         dst += 8;
     }
@@ -81,8 +79,7 @@ void swapcpy_b2b64(u8 *dst, u8 *src, u32 wordlen)
     u8 tmp;
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         tmp = src[0];
         dst[0] = src[7];
         dst[7] = tmp;
@@ -124,28 +121,24 @@ int ucl_sha512_core(ucl_sha512_ctx_t *ctx, u8 *data, u32 dataLen)
     u32 indexh, partLen, i;
     if (ctx == NULL)
         return UCL_INVALID_INPUT;
-    if ((data == NULL)  || (dataLen == 0))
+    if ((data == NULL) || (dataLen == 0))
         return UCL_NOP;
     indexh = (u32)((ctx->count[1] >> 3) & 0x7F);
-    ctx->count[1]+=(u64)(dataLen << 3);
+    ctx->count[1] += (u64)(dataLen << 3);
     ctx->count[0] += ((u64)dataLen >> 29);
     partLen = 128 - indexh;
-    if (dataLen >= partLen)
-      {
+    if (dataLen >= partLen) {
         memcpy(&ctx->buffer[indexh], data, partLen);
-	swapcpy_b2b64(ctx->buffer, ctx->buffer, 16);
-        sha512_stone(ctx->state, (u64 *) ctx->buffer);
-        for (i = partLen; i + 127 < dataLen; i += 128)
-	  {
+        swapcpy_b2b64(ctx->buffer, ctx->buffer, 16);
+        sha512_stone(ctx->state, (u64 *)ctx->buffer);
+        for (i = partLen; i + 127 < dataLen; i += 128) {
             swapcpy_b2b64(ctx->buffer, &data[i], 16);
-            sha512_stone(ctx->state, (u64 *) ctx->buffer);
-	  }
+            sha512_stone(ctx->state, (u64 *)ctx->buffer);
+        }
         indexh = 0;
-      }
-    else
-      {
+    } else {
         i = 0;
-      }
+    }
     memcpy(&ctx->buffer[indexh], &data[i], dataLen - i);
     return UCL_OK;
 }
@@ -179,4 +172,4 @@ int ucl_sha512(u8 *hash, u8 *message, u32 byteLength)
     ucl_sha512_finish(hash, &ctx);
     return UCL_OK;
 }
-#endif//HASH_SHA512
+#endif //HASH_SHA512

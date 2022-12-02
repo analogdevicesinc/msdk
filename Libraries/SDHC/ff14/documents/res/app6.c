@@ -7,18 +7,15 @@
 #include "diskio.h"
 #include "ff.h"
 
-
-int test_raw_speed (
-    BYTE pdrv,      /* Physical drive number */
-    DWORD lba,      /* Start LBA for read/write test */
-    DWORD len,      /* Number of bytes to read/write (must be multiple of sz_buff) */
-    void* buff,     /* Read/write buffer */
-    UINT sz_buff    /* Size of read/write buffer (must be multiple of FF_MAX_SS) */
+int test_raw_speed(BYTE pdrv, /* Physical drive number */
+                   DWORD lba, /* Start LBA for read/write test */
+                   DWORD len, /* Number of bytes to read/write (must be multiple of sz_buff) */
+                   void *buff, /* Read/write buffer */
+                   UINT sz_buff /* Size of read/write buffer (must be multiple of FF_MAX_SS) */
 )
 {
     WORD ss;
     DWORD ofs, tmr;
-
 
 #if FF_MIN_SS != FF_MAX_SS
     if (disk_ioctl(pdrv, GET_SECTOR_SIZE, &ss) != RES_OK) {
@@ -58,4 +55,3 @@ int test_raw_speed (
     printf("Test completed.\n");
     return 1;
 }
-

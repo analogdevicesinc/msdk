@@ -32,7 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 /*!
 @file
 @brief This file contains all of the enums and definitions
@@ -67,23 +66,19 @@ The following is a typical HASH Block operation flow:
 #ifndef CRYS_HASH_H
 #define CRYS_HASH_H
 
-
 #include "ssi_pal_types.h"
 #include "crys_error.h"
 #include "crys_hash_defs.h"
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-
 
 /************************ Defines ******************************/
 /* The hash result in words
 #define CRYS_HASH_RESULT_SIZE_IN_WORDS 5*/
 /*! The maximal hash result is 512 bits for SHA512. */
-#define CRYS_HASH_RESULT_SIZE_IN_WORDS  16
+#define CRYS_HASH_RESULT_SIZE_IN_WORDS 16
 
 /*! MD5 digest result size in bytes. */
 #define CRYS_HASH_MD5_DIGEST_SIZE_IN_BYTES 16
@@ -128,14 +123,13 @@ extern "C"
 #define CRYS_HASH_BLOCK_SIZE_IN_BYTES 64
 
 /*! SHA2 hash block size in words */
-#define CRYS_HASH_SHA512_BLOCK_SIZE_IN_WORDS    32
+#define CRYS_HASH_SHA512_BLOCK_SIZE_IN_WORDS 32
 
 /*! SHA2 hash block size in bytes */
-#define CRYS_HASH_SHA512_BLOCK_SIZE_IN_BYTES    128
+#define CRYS_HASH_SHA512_BLOCK_SIZE_IN_BYTES 128
 
 /*! Maximal data size for update operation. */
 #define CRYS_HASH_UPDATE_DATA_MAX_SIZE_IN_BYTES (1 << 29)
-
 
 /************************ Enums ********************************/
 
@@ -143,18 +137,18 @@ extern "C"
 HASH operation mode
 */
 typedef enum {
-    CRYS_HASH_SHA1_mode          = 0,    /*!< SHA1. */
-    CRYS_HASH_SHA224_mode        = 1,    /*!< SHA224. */
-    CRYS_HASH_SHA256_mode        = 2,    /*!< SHA256. */
-    CRYS_HASH_SHA384_mode        = 3,    /*!< SHA384. */
-    CRYS_HASH_SHA512_mode        = 4,    /*!< SHA512. */
-    CRYS_HASH_MD5_mode           = 5,    /*!< MD5. */
+    CRYS_HASH_SHA1_mode = 0, /*!< SHA1. */
+    CRYS_HASH_SHA224_mode = 1, /*!< SHA224. */
+    CRYS_HASH_SHA256_mode = 2, /*!< SHA256. */
+    CRYS_HASH_SHA384_mode = 3, /*!< SHA384. */
+    CRYS_HASH_SHA512_mode = 4, /*!< SHA512. */
+    CRYS_HASH_MD5_mode = 5, /*!< MD5. */
     /*! Number of hash modes. */
     CRYS_HASH_NumOfModes,
     /*! Reserved. */
-    CRYS_HASH_OperationModeLast= 0x7FFFFFFF,
+    CRYS_HASH_OperationModeLast = 0x7FFFFFFF,
 
-}CRYS_HASH_OperationMode_t;
+} CRYS_HASH_OperationMode_t;
 
 /************************ Typedefs  *****************************/
 
@@ -168,12 +162,11 @@ typedef uint32_t CRYS_HASH_Result_t[CRYS_HASH_RESULT_SIZE_IN_WORDS];
 typedef struct CRYS_HASHUserContext_t {
     /*! Internal buffer */
     uint32_t buff[CRYS_HASH_USER_CTX_SIZE_IN_WORDS];
-}CRYS_HASHUserContext_t;
+} CRYS_HASHUserContext_t;
 
 /************************ Public Variables **********************/
 
 /************************ Public Functions **********************/
-
 
 /************************************************************************************************/
 /*!
@@ -186,9 +179,11 @@ and initializes the HASH Context with the cryptographic attributes that are need
 @return A non-zero value from crys_hash_error.h on failure.
 */
 CIMPORT_C CRYSError_t CRYS_HASH_Init(
-                        CRYS_HASHUserContext_t     *ContextID_ptr,         /*!< [in]  Pointer to the HASH context buffer allocated by the user that is used
+    CRYS_HASHUserContext_t *
+        ContextID_ptr, /*!< [in]  Pointer to the HASH context buffer allocated by the user that is used
                                         for the HASH machine operation. */
-                        CRYS_HASH_OperationMode_t  OperationMode           /*!< [in]  One of the supported HASH modes, as defined in CRYS_HASH_OperationMode_t. */
+    CRYS_HASH_OperationMode_t
+        OperationMode /*!< [in]  One of the supported HASH modes, as defined in CRYS_HASH_OperationMode_t. */
 );
 
 /************************************************************************************************/
@@ -202,11 +197,12 @@ It updates a HASH Context that was previously initialized by CRYS_HASH_Init or u
 */
 
 CIMPORT_C CRYSError_t CRYS_HASH_Update(
-                        CRYS_HASHUserContext_t  *ContextID_ptr,         /*!< [in]  Pointer to the HASH context buffer allocated by the user, which is used for the
+    CRYS_HASHUserContext_t *
+        ContextID_ptr, /*!< [in]  Pointer to the HASH context buffer allocated by the user, which is used for the
                                            HASH machine operation. */
-                        uint8_t                 *DataIn_ptr,            /*!< [in]  Pointer to the input data to be HASHed.
+    uint8_t *DataIn_ptr, /*!< [in]  Pointer to the input data to be HASHed.
                                                                                    it is a one contiguous memory block. */
-                        size_t                 DataInSize             /*!< [in]  Byte size of the input data. Must be > 0.
+    size_t DataInSize /*!< [in]  Byte size of the input data. Must be > 0.
                                                                                     If not a multiple of the HASH block size (64 for MD5, SHA-1 and SHA-224/256,
                                             128 for SHA-384/512), no further calls
                                                                                     to CRYS_HASH_Update are allowed in this context, and only CRYS_HASH_Finish
@@ -225,12 +221,13 @@ It "adds" a header to the data block according to the relevant HASH standard, an
 */
 
 CIMPORT_C CRYSError_t CRYS_HASH_Finish(
-                        CRYS_HASHUserContext_t  *ContextID_ptr,         /*!< [in]  Pointer to the HASH context buffer allocated by the user that is used for
+    CRYS_HASHUserContext_t *
+        ContextID_ptr, /*!< [in]  Pointer to the HASH context buffer allocated by the user that is used for
                                            the HASH machine operation. */
-                        CRYS_HASH_Result_t       HashResultBuff         /*!< [in]  Pointer to the word-aligned 64 byte buffer. The actual size of the HASH
+    CRYS_HASH_Result_t
+        HashResultBuff /*!< [in]  Pointer to the word-aligned 64 byte buffer. The actual size of the HASH
                                            result depends on CRYS_HASH_OperationMode_t. */
 );
-
 
 /************************************************************************************************/
 /*!
@@ -245,11 +242,11 @@ The function executes the following major steps:
 @return A non-zero value from crys_hash_error.h on failure.
 */
 
-CIMPORT_C CRYSError_t  CRYS_HASH_Free(
-                        CRYS_HASHUserContext_t  *ContextID_ptr         /*!< [in]  Pointer to the HASH context buffer allocated by the user that is used for
+CIMPORT_C CRYSError_t CRYS_HASH_Free(
+    CRYS_HASHUserContext_t *
+        ContextID_ptr /*!< [in]  Pointer to the HASH context buffer allocated by the user that is used for
                                          the HASH machine operation. */
 );
-
 
 /************************************************************************************************/
 /*!
@@ -263,18 +260,18 @@ Then it processes the data block, calculating the HASH. Finally, it returns the 
 @return A non-zero value from crys_hash_error.h on failure.
  */
 
-CIMPORT_C CRYSError_t CRYS_HASH  (
-                        CRYS_HASH_OperationMode_t  OperationMode,       /*!< [in]  One of the supported HASH modes, as defined in CRYS_HASH_OperationMode_t. */
-                        uint8_t                   *DataIn_ptr,          /*!< [in]  Pointer to the input data to be HASHed.
+CIMPORT_C CRYSError_t CRYS_HASH(
+    CRYS_HASH_OperationMode_t
+        OperationMode, /*!< [in]  One of the supported HASH modes, as defined in CRYS_HASH_OperationMode_t. */
+    uint8_t *DataIn_ptr, /*!< [in]  Pointer to the input data to be HASHed.
                                                                                    The size of the scatter/gather list representing the data buffer is limited
                                            to 128 entries, and the size of each entry is limited to 64KB
                                            (fragments larger than 64KB are broken into fragments <= 64KB). */
-                        size_t                   DataSize,            /*!< [in]  The size of the data to be hashed in bytes. */
-                        CRYS_HASH_Result_t         HashResultBuff       /*!< [out] Pointer to a word-aligned 64 byte buffer. The actual size of the HASH
+    size_t DataSize, /*!< [in]  The size of the data to be hashed in bytes. */
+    CRYS_HASH_Result_t
+        HashResultBuff /*!< [out] Pointer to a word-aligned 64 byte buffer. The actual size of the HASH
                                            result depends on CRYS_HASH_OperationMode_t. */
 );
-
-
 
 #ifdef __cplusplus
 }

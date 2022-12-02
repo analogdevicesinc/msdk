@@ -28,13 +28,11 @@
 #ifndef REDOSDEVIATIONS_H
 #define REDOSDEVIATIONS_H
 
-
 #if REDCONF_OUTPUT == 1
 /*  Needed for PRINT_ASSERT() and OUTPUT_CHARACTER().
 */
 #include <stdio.h>
 #endif
-
 
 #if (REDCONF_ASSERTS == 1) && (REDCONF_OUTPUT == 1)
 /** Print a formatted message for an assertion.
@@ -48,10 +46,10 @@
 
     As Rule 21.6 is required, a separate deviation record is required.
 */
-#define PRINT_ASSERT(file, line) \
-    printf("Assertion failed in \"%s\" at line %u\n\r", ((file) == NULL) ? "" : (file), (unsigned)(line))
+#define PRINT_ASSERT(file, line)                                                        \
+    printf("Assertion failed in \"%s\" at line %u\n\r", ((file) == NULL) ? "" : (file), \
+           (unsigned)(line))
 #endif
-
 
 /** Cast a value to unsigned long.
 
@@ -70,7 +68,6 @@
 */
 #define CAST_ULONG(ull) ((unsigned long)(ull))
 
-
 /** Cast a const-qualified pointer to a pointer which is *not* const-qualified.
 
     Usages of this macro deviate from MISRA C:2012 Rule 11.8.  This macro is
@@ -88,7 +85,6 @@
     As Rule 11.8 is required, a separate deviation record is required.
 */
 #define CAST_AWAY_CONST(type, ptr) ((type *)(ptr))
-
 
 /** Allocate zero-initialized (cleared) memory.
 
@@ -120,7 +116,6 @@
 */
 #define ALLOCATE_CLEARED_MEMORY(nelem, elsize) calloc(nelem, elsize)
 
-
 #if REDCONF_OUTPUT == 1
 /** Output a character to a serial port or other display device.
 
@@ -136,7 +131,6 @@
 */
 #define OUTPUT_CHARACTER(ch) (void)putchar(ch)
 #endif
-
 
 #if (REDCONF_TASK_COUNT > 1U) && (REDCONF_API_POSIX == 1)
 /** Cast a TaskHandle_t (a pointer type) to uintptr_t.
@@ -155,7 +149,6 @@
 */
 #define CAST_TASK_PTR_TO_UINTPTR(taskptr) ((uintptr_t)(taskptr))
 #endif
-
 
 /** Ignore the return value of a function (cast to void)
 
@@ -190,8 +183,7 @@
 
     As Directive 4.7 is required, a separate deviation record is required.
 */
-#define IGNORE_ERRORS(fn) ((void) (fn))
-
+#define IGNORE_ERRORS(fn) ((void)(fn))
 
 /** @brief Determine whether a pointer is aligned on a 32-bit boundary.
 
@@ -222,7 +214,6 @@
 */
 #define IS_UINT32_ALIGNED_PTR(ptr) (((uintptr_t)(ptr) & (sizeof(uint32_t) - 1U)) == 0U)
 
-
 /** @brief Cast a 32-bit aligned void pointer to a uint32 pointer.
 
     Usages of this macro deviate from MISRA C:2012 Rule 11.5 (advisory).  A
@@ -237,8 +228,6 @@
     As rule 11.5 is advisory, a deviation record is not required.  This notice
     is the only record of the deviation.
 */
-#define CAST_UINT32_PTR(ptr) ((uint32_t *) (ptr))
-
+#define CAST_UINT32_PTR(ptr) ((uint32_t *)(ptr))
 
 #endif
-

@@ -86,7 +86,7 @@ void TempMeasStart(void);
 /*************************************************************************************************/
 void TempMeasComplete(dmConnId_t connId, int16_t temp);
 
-/*! \} */    /* TEMPERATURE_SERVICE_PROFILE */
+/*! \} */ /* TEMPERATURE_SERVICE_PROFILE */
 
 #ifdef __cplusplus
 };

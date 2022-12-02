@@ -34,8 +34,7 @@
 #define MESH_SAR_RX_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -48,28 +47,25 @@ extern "C"
 typedef uint16_t meshSarRxRetVal_t;
 
 /*! Mesh SAR Rx transaction type */
-enum meshSarRxPduTypeValues
-{
-  MESH_SAR_RX_TYPE_ACCESS = 0x00, /*!< Access PDU type */
-  MESH_SAR_RX_TYPE_CTL    = 0x01  /*!< Control PDU type */
+enum meshSarRxPduTypeValues {
+    MESH_SAR_RX_TYPE_ACCESS = 0x00, /*!< Access PDU type */
+    MESH_SAR_RX_TYPE_CTL = 0x01 /*!< Control PDU type */
 };
 
 /*! Mesh SAR Rx reassembled PDU data type. See ::meshSarRxPduTypeValues */
 typedef uint8_t meshSarRxPduType_t;
 
 /*! Mesh SAR Rx reassembled PDU information */
-typedef union meshSarRxReassembledPduInfo_tag
-{
-  meshLtrAccPduInfo_t accPduInfo;  /*!< Access PDU information */
-  meshLtrCtlPduInfo_t ctlPduInfo;  /*!< Control PDU information */
+typedef union meshSarRxReassembledPduInfo_tag {
+    meshLtrAccPduInfo_t accPduInfo; /*!< Access PDU information */
+    meshLtrCtlPduInfo_t ctlPduInfo; /*!< Control PDU information */
 } meshSarRxReassembledPduInfo_t;
 
 /*! Segment information required to disassemble PDU in Friend Queue. */
-typedef struct meshSarRxSegInfoFriend_tag
-{
-  meshSeqNumber_t segSeqNo; /*!< Segment sequence number. */
-  uint16_t        offset;   /*!< Pointer to segment data in reassembled PDU. */
-  uint8_t         segO;     /*!< Segment number. */
+typedef struct meshSarRxSegInfoFriend_tag {
+    meshSeqNumber_t segSeqNo; /*!< Segment sequence number. */
+    uint16_t offset; /*!< Pointer to segment data in reassembled PDU. */
+    uint8_t segO; /*!< Segment number. */
 } meshSarRxSegInfoFriend_t;
 
 /*************************************************************************************************/
@@ -115,10 +111,10 @@ typedef bool_t (*meshSarRxLpnDstCheckCback_t)(meshAddress_t dst, uint16_t netKey
  *  \see meshSarRxReassembledPduInfo_t
  */
 /*************************************************************************************************/
-typedef void (*meshSarRxFriendPduReassembledCback_t) (meshSarRxPduType_t pduType,
-                                                      const meshSarRxReassembledPduInfo_t *pReasPduInfo,
-                                                      const meshSarRxSegInfoFriend_t *pSegInfoArray,
-                                                      uint32_t ivIndex, uint16_t seqZero, uint8_t segN);
+typedef void (*meshSarRxFriendPduReassembledCback_t)(
+    meshSarRxPduType_t pduType, const meshSarRxReassembledPduInfo_t *pReasPduInfo,
+    const meshSarRxSegInfoFriend_t *pSegInfoArray, uint32_t ivIndex, uint16_t seqZero,
+    uint8_t segN);
 
 /**************************************************************************************************
   Function Declarations

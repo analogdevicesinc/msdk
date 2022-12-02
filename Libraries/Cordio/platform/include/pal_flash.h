@@ -42,12 +42,11 @@ extern "C" {
 typedef void (*PalFlashCback_t)(bool_t status);
 
 /*! \brief      Operational states. */
-typedef enum
-{
-  PAL_FLASH_STATE_UNINIT = 0,   /*!< Uninitialized state. */
-  PAL_FLASH_STATE_ERROR  = 0,   /*!< Error state. */
-  PAL_FLASH_STATE_READY,        /*!< Ready state. */
-  PAL_FLASH_STATE_BUSY          /*!< Busy state. */
+typedef enum {
+    PAL_FLASH_STATE_UNINIT = 0, /*!< Uninitialized state. */
+    PAL_FLASH_STATE_ERROR = 0, /*!< Error state. */
+    PAL_FLASH_STATE_READY, /*!< Ready state. */
+    PAL_FLASH_STATE_BUSY /*!< Busy state. */
 } PalFlashState_t;
 
 /**************************************************************************************************
@@ -69,10 +68,10 @@ void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr);
 void PalFlashEraseSector(uint32_t size, uint32_t startAddr);
 void PalFlashEraseChip(void);
 
-/*! \} */    /* PAL_FLASH */
+/*! \} */ /* PAL_FLASH */
 
 #ifdef __cplusplus
 };
 #endif
 
-#endif  /* PAL_FLASH_H */
+#endif /* PAL_FLASH_H */

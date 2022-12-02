@@ -40,7 +40,7 @@ extern "C" {
 
 /*! \brief OS Diagnostics */
 #ifndef WSF_OS_DIAG
-#define WSF_OS_DIAG                             FALSE
+#define WSF_OS_DIAG FALSE
 #endif
 
 /**************************************************************************************************
@@ -48,28 +48,28 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Derive task from handler ID */
-#define WSF_TASK_FROM_ID(handlerID)       (((handlerID) >> 4) & 0x0F)
+#define WSF_TASK_FROM_ID(handlerID) (((handlerID) >> 4) & 0x0F)
 
 /*! \brief Derive handler from handler ID */
-#define WSF_HANDLER_FROM_ID(handlerID)    ((handlerID) & 0x0F)
+#define WSF_HANDLER_FROM_ID(handlerID) ((handlerID)&0x0F)
 
 /*! \brief Invalid Task Identifier */
-#define WSF_INVALID_TASK_ID                     0xFF
+#define WSF_INVALID_TASK_ID 0xFF
 
 /*! \brief Get Diagnostic Task Identifier */
 #if WSF_OS_DIAG == TRUE
-#define WSF_OS_GET_ACTIVE_HANDLER_ID()          WsfActiveHandler
+#define WSF_OS_GET_ACTIVE_HANDLER_ID() WsfActiveHandler
 #else
-#define WSF_OS_GET_ACTIVE_HANDLER_ID()          WSF_INVALID_TASK_ID
+#define WSF_OS_GET_ACTIVE_HANDLER_ID() WSF_INVALID_TASK_ID
 #endif /* WSF_OS_DIAG */
 
 /** @name WSF Task Events
  *
  */
 /**@{*/
-#define WSF_MSG_QUEUE_EVENT   0x01        /*!< \brief Message queued for event handler */
-#define WSF_TIMER_EVENT       0x02        /*!< \brief Timer expired for event handler */
-#define WSF_HANDLER_EVENT     0x04        /*!< \brief Event set for event handler */
+#define WSF_MSG_QUEUE_EVENT 0x01 /*!< \brief Message queued for event handler */
+#define WSF_TIMER_EVENT 0x02 /*!< \brief Timer expired for event handler */
+#define WSF_HANDLER_EVENT 0x04 /*!< \brief Event set for event handler */
 /**@}*/
 
 /**************************************************************************************************
@@ -77,13 +77,13 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Event handler ID data type */
-typedef uint8_t  wsfHandlerId_t;
+typedef uint8_t wsfHandlerId_t;
 
 /*! \brief Event handler event mask data type */
-typedef uint16_t  wsfEventMask_t;
+typedef uint16_t wsfEventMask_t;
 
 /*! \brief Task ID data type */
-typedef wsfHandlerId_t  wsfTaskId_t;
+typedef wsfHandlerId_t wsfTaskId_t;
 
 /*! \brief Task event mask data type */
 typedef uint8_t wsfTaskEvent_t;
@@ -103,11 +103,10 @@ extern wsfHandlerId_t WsfActiveHandler;
 **************************************************************************************************/
 
 /*! \brief Common message structure passed to event handler */
-typedef struct
-{
-  uint16_t        param;          /*!< \brief General purpose parameter passed to event handler */
-  uint8_t         event;          /*!< \brief General purpose event value passed to event handler */
-  uint8_t         status;         /*!< \brief General purpose status value passed to event handler */
+typedef struct {
+    uint16_t param; /*!< \brief General purpose parameter passed to event handler */
+    uint8_t event; /*!< \brief General purpose event value passed to event handler */
+    uint8_t status; /*!< \brief General purpose status value passed to event handler */
 } wsfMsgHdr_t;
 
 /**************************************************************************************************
@@ -235,7 +234,7 @@ void WsfOsEnterMainLoop(void);
 /*************************************************************************************************/
 void WsfOsRegisterSleepCheckFunc(WsfOsIdleCheckFunc_t func);
 
-/*! \} */    /* WSF_OS_API */
+/*! \} */ /* WSF_OS_API */
 
 #ifdef __cplusplus
 };

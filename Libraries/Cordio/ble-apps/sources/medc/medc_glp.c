@@ -42,10 +42,10 @@
 **************************************************************************************************/
 
 /* Start of cached glucose service handles; begins after DIS */
-#define MEDC_DISC_GLS_START         (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
+#define MEDC_DISC_GLS_START (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
 
 /* Total cached handle list length */
-#define MEDC_DISC_HDL_LIST_LEN      (MEDC_DISC_GLS_START + GLPC_GLS_HDL_LIST_LEN)
+#define MEDC_DISC_HDL_LIST_LEN (MEDC_DISC_GLS_START + GLPC_GLS_HDL_LIST_LEN)
 
 /*! Pointers into handle list for glucose service handles */
 static uint16_t *pMedcGlsHdlList = &medcCb.hdlList[MEDC_DISC_GLS_START];
@@ -58,33 +58,31 @@ WSF_CT_ASSERT(MEDC_DISC_HDL_LIST_LEN <= APP_DB_HDL_LIST_LEN);
 **************************************************************************************************/
 
 /* List of characteristics to configure after service discovery */
-static const attcDiscCfg_t medcCfgGlsList[] =
-{
-  /* Read:  glucose feature */
-  {NULL, 0, GLPC_GLS_GLF_HDL_IDX},
+static const attcDiscCfg_t medcCfgGlsList[] = {
+    /* Read:  glucose feature */
+    { NULL, 0, GLPC_GLS_GLF_HDL_IDX },
 
-  /* Write:  glucose measurement CCC descriptor  */
-  {medcCccNtfVal, sizeof(medcCccIndVal), GLPC_GLS_GLM_CCC_HDL_IDX},
+    /* Write:  glucose measurement CCC descriptor  */
+    { medcCccNtfVal, sizeof(medcCccIndVal), GLPC_GLS_GLM_CCC_HDL_IDX },
 
-  /* Write:  glucose measurement context CCC descriptor  */
-  {medcCccNtfVal, sizeof(medcCccIndVal), GLPC_GLS_GLMC_CCC_HDL_IDX},
+    /* Write:  glucose measurement context CCC descriptor  */
+    { medcCccNtfVal, sizeof(medcCccIndVal), GLPC_GLS_GLMC_CCC_HDL_IDX },
 
-  /* Write:  record access control point CCC descriptor  */
-  {medcCccIndVal, sizeof(medcCccIndVal), GLPC_GLS_RACP_CCC_HDL_IDX}
+    /* Write:  record access control point CCC descriptor  */
+    { medcCccIndVal, sizeof(medcCccIndVal), GLPC_GLS_RACP_CCC_HDL_IDX }
 };
 
 /* Characteristic configuration list length */
-#define MEDC_CFG_GLS_LIST_LEN   (sizeof(medcCfgGlsList) / sizeof(attcDiscCfg_t))
+#define MEDC_CFG_GLS_LIST_LEN (sizeof(medcCfgGlsList) / sizeof(attcDiscCfg_t))
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /* Control block */
-static struct
-{
-  wsfTimer_t  racpTimer;          /*! RACP procedure timer */
-  bool_t      inProgress;         /*! RACP procedure in progress */
+static struct {
+    wsfTimer_t racpTimer; /*! RACP procedure timer */
+    bool_t inProgress; /*! RACP procedure in progress */
 } medcGlpCb;
 
 /**************************************************************************************************
@@ -102,14 +100,7 @@ static void medcGlpBtn(dmConnId_t connId, uint8_t btn);
 **************************************************************************************************/
 
 /*! profile interface pointer */
-medcIf_t medcGlpIf =
-{
-  medcGlpInit,
-  medcGlpDiscover,
-  medcGlpConfigure,
-  medcGlpProcMsg,
-  medcGlpBtn
-};
+medcIf_t medcGlpIf = { medcGlpInit, medcGlpDiscover, medcGlpConfigure, medcGlpProcMsg, medcGlpBtn };
 
 /*************************************************************************************************/
 /*!
@@ -122,26 +113,22 @@ medcIf_t medcGlpIf =
 /*************************************************************************************************/
 static void medcGlsValueUpdate(attEvt_t *pMsg)
 {
-  if (pMsg->hdr.status == ATT_SUCCESS)
-  {
-    /* determine which profile the handle belongs to; start with most likely */
+    if (pMsg->hdr.status == ATT_SUCCESS) {
+        /* determine which profile the handle belongs to; start with most likely */
 
-    /* glucose */
-    if (GlpcGlsValueUpdate(pMedcGlsHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
+        /* glucose */
+        if (GlpcGlsValueUpdate(pMedcGlsHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* device information */
+        if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* GATT */
+        if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
     }
-    /* device information */
-    if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-    /* GATT */
-    if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -153,18 +140,18 @@ static void medcGlsValueUpdate(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcGlpInit(void)
 {
-  /* set handle list length */
-  medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
+    /* set handle list length */
+    medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
 
-  /* set autoconnect UUID */
-  medcCb.autoUuid[0] = ATT_UUID_GLUCOSE_SERVICE;
+    /* set autoconnect UUID */
+    medcCb.autoUuid[0] = ATT_UUID_GLUCOSE_SERVICE;
 
-  /* initialize timer */
-  medcGlpCb.racpTimer.handlerId = medcCb.handlerId;
-  medcGlpCb.racpTimer.msg.event = MEDC_TIMER_IND;
+    /* initialize timer */
+    medcGlpCb.racpTimer.handlerId = medcCb.handlerId;
+    medcGlpCb.racpTimer.msg.event = MEDC_TIMER_IND;
 
-  /* initialize sequence number */
-  GlpcGlsSetLastSeqNum(1);
+    /* initialize sequence number */
+    GlpcGlsSetLastSeqNum(1);
 }
 
 /*************************************************************************************************/
@@ -178,10 +165,10 @@ static void medcGlpInit(void)
 /*************************************************************************************************/
 static bool_t medcGlpDiscover(dmConnId_t connId)
 {
-  /* discover glucose service */
-  GlpcGlsDiscover(connId, pMedcGlsHdlList);
+    /* discover glucose service */
+    GlpcGlsDiscover(connId, pMedcGlsHdlList);
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -196,10 +183,9 @@ static bool_t medcGlpDiscover(dmConnId_t connId)
 /*************************************************************************************************/
 static void medcGlpConfigure(dmConnId_t connId, uint8_t status)
 {
-  /* configure glucose service */
-  AppDiscConfigure(connId, status, MEDC_CFG_GLS_LIST_LEN,
-                   (attcDiscCfg_t *) medcCfgGlsList,
-                   GLPC_GLS_HDL_LIST_LEN, pMedcGlsHdlList);
+    /* configure glucose service */
+    AppDiscConfigure(connId, status, MEDC_CFG_GLS_LIST_LEN, (attcDiscCfg_t *)medcCfgGlsList,
+                     GLPC_GLS_HDL_LIST_LEN, pMedcGlsHdlList);
 }
 
 /*************************************************************************************************/
@@ -213,63 +199,57 @@ static void medcGlpConfigure(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 static void medcGlpProcMsg(wsfMsgHdr_t *pMsg)
 {
-  switch(pMsg->event)
-  {
+    switch (pMsg->event) {
     case ATTC_READ_RSP:
     case ATTC_HANDLE_VALUE_NTF:
-      /* process value update */
-      medcGlsValueUpdate((attEvt_t *) pMsg);
-      break;
+        /* process value update */
+        medcGlsValueUpdate((attEvt_t *)pMsg);
+        break;
 
     case ATTC_WRITE_RSP:
-      /* if write to RACP was successful, start procedure timer */
-      if ((((attEvt_t *) pMsg)->hdr.status == ATT_SUCCESS) &&
-          (((attEvt_t *) pMsg)->handle == pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX]))
-      {
-        medcGlpCb.inProgress = TRUE;
-        medcGlpCb.racpTimer.msg.param = pMsg->param;    /* conn ID */
-        WsfTimerStartSec(&medcGlpCb.racpTimer, ATT_MAX_TRANS_TIMEOUT);
-      }
-      break;
+        /* if write to RACP was successful, start procedure timer */
+        if ((((attEvt_t *)pMsg)->hdr.status == ATT_SUCCESS) &&
+            (((attEvt_t *)pMsg)->handle == pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX])) {
+            medcGlpCb.inProgress = TRUE;
+            medcGlpCb.racpTimer.msg.param = pMsg->param; /* conn ID */
+            WsfTimerStartSec(&medcGlpCb.racpTimer, ATT_MAX_TRANS_TIMEOUT);
+        }
+        break;
 
     case ATTC_HANDLE_VALUE_IND:
-      /* if procedure in progress stop procedure timer */
-      if (medcGlpCb.inProgress)
-      {
-        medcGlpCb.inProgress = FALSE;
-        WsfTimerStop(&medcGlpCb.racpTimer);
-      }
+        /* if procedure in progress stop procedure timer */
+        if (medcGlpCb.inProgress) {
+            medcGlpCb.inProgress = FALSE;
+            WsfTimerStop(&medcGlpCb.racpTimer);
+        }
 
-      /* process value */
-      medcGlsValueUpdate((attEvt_t *) pMsg);
-      break;
+        /* process value */
+        medcGlsValueUpdate((attEvt_t *)pMsg);
+        break;
 
     case DM_CONN_CLOSE_IND:
-      /* if procedure in progress stop procedure timer */
-      if (medcGlpCb.inProgress)
-      {
-        medcGlpCb.inProgress = FALSE;
-        WsfTimerStop(&medcGlpCb.racpTimer);
-      }
-      break;
+        /* if procedure in progress stop procedure timer */
+        if (medcGlpCb.inProgress) {
+            medcGlpCb.inProgress = FALSE;
+            WsfTimerStop(&medcGlpCb.racpTimer);
+        }
+        break;
 
     case MEDC_TIMER_IND:
-      /* if procedure in progress then close connection */
-      if (medcGlpCb.inProgress && pMsg->param != DM_CONN_ID_NONE)
-      {
-        medcGlpCb.inProgress = FALSE;
+        /* if procedure in progress then close connection */
+        if (medcGlpCb.inProgress && pMsg->param != DM_CONN_ID_NONE) {
+            medcGlpCb.inProgress = FALSE;
 
-        /* if configured to disconnect upon ATT transaction timeout */
-        if (pAppCfg->disconnect)
-        {
-          AppConnClose((dmConnId_t)pMsg->param);
+            /* if configured to disconnect upon ATT transaction timeout */
+            if (pAppCfg->disconnect) {
+                AppConnClose((dmConnId_t)pMsg->param);
+            }
         }
-      }
-      break;
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -284,61 +264,58 @@ static void medcGlpProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void medcGlpBtn(dmConnId_t connId, uint8_t btn)
 {
-  glpcFilter_t filter;
+    glpcFilter_t filter;
 
-  /* button actions when connected */
-  if (connId != DM_CONN_ID_NONE)
-  {
-    /* handle must be set to send RACP command */
-    if (pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX] == ATT_HANDLE_NONE)
-    {
-      return;
+    /* button actions when connected */
+    if (connId != DM_CONN_ID_NONE) {
+        /* handle must be set to send RACP command */
+        if (pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX] == ATT_HANDLE_NONE) {
+            return;
+        }
+
+        switch (btn) {
+        case APP_UI_BTN_1_SHORT:
+            /* report all records */
+            GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX], CH_RACP_OPCODE_REPORT,
+                            CH_RACP_OPERATOR_ALL, NULL);
+            break;
+
+        case APP_UI_BTN_1_MED:
+            /* report records greater than sequence number */
+            filter.type = CH_RACP_GLS_FILTER_SEQ;
+            filter.param.seqNum = GlpcGlsGetLastSeqNum();
+            GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX], CH_RACP_OPCODE_REPORT,
+                            CH_RACP_OPERATOR_GTEQ, &filter);
+            break;
+
+        case APP_UI_BTN_2_SHORT:
+            /* report number of records */
+            GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX],
+                            CH_RACP_OPCODE_REPORT_NUM, CH_RACP_OPERATOR_ALL, NULL);
+            break;
+
+        case APP_UI_BTN_2_MED:
+            /* report number of records greater than sequence number */
+            filter.type = CH_RACP_GLS_FILTER_SEQ;
+            filter.param.seqNum = GlpcGlsGetLastSeqNum();
+            GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX],
+                            CH_RACP_OPCODE_REPORT_NUM, CH_RACP_OPERATOR_GTEQ, &filter);
+            break;
+
+        case APP_UI_BTN_2_LONG:
+            /* abort */
+            GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX], CH_RACP_OPCODE_ABORT,
+                            CH_RACP_OPERATOR_NULL, NULL);
+            break;
+
+        case APP_UI_BTN_2_EX_LONG:
+            /* delete all records */
+            GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX], CH_RACP_OPCODE_DELETE,
+                            CH_RACP_OPERATOR_ALL, NULL);
+            break;
+
+        default:
+            break;
+        }
     }
-
-    switch (btn)
-    {
-      case APP_UI_BTN_1_SHORT:
-        /* report all records */
-        GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX],
-                        CH_RACP_OPCODE_REPORT, CH_RACP_OPERATOR_ALL, NULL);
-        break;
-
-      case APP_UI_BTN_1_MED:
-        /* report records greater than sequence number */
-        filter.type = CH_RACP_GLS_FILTER_SEQ;
-        filter.param.seqNum = GlpcGlsGetLastSeqNum();
-        GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX],
-                        CH_RACP_OPCODE_REPORT, CH_RACP_OPERATOR_GTEQ, &filter);
-        break;
-
-      case APP_UI_BTN_2_SHORT:
-        /* report number of records */
-        GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX],
-                        CH_RACP_OPCODE_REPORT_NUM, CH_RACP_OPERATOR_ALL, NULL);
-        break;
-
-      case APP_UI_BTN_2_MED:
-        /* report number of records greater than sequence number */
-        filter.type = CH_RACP_GLS_FILTER_SEQ;
-        filter.param.seqNum = GlpcGlsGetLastSeqNum();
-        GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX],
-                        CH_RACP_OPCODE_REPORT_NUM, CH_RACP_OPERATOR_GTEQ, &filter);
-        break;
-
-      case APP_UI_BTN_2_LONG:
-        /* abort */
-        GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX],
-                        CH_RACP_OPCODE_ABORT, CH_RACP_OPERATOR_NULL, NULL);
-        break;
-
-      case APP_UI_BTN_2_EX_LONG:
-        /* delete all records */
-        GlpcGlsRacpSend(connId, pMedcGlsHdlList[GLPC_GLS_RACP_HDL_IDX],
-                        CH_RACP_OPCODE_DELETE, CH_RACP_OPERATOR_ALL, NULL);
-        break;
-
-      default:
-        break;
-    }
-  }
 }

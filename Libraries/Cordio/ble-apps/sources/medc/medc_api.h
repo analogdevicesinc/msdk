@@ -35,14 +35,13 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Profile identifier used for MedcSetProfile() */
-enum
-{
-  MEDC_ID_HRP,      /*! Heart rate profile */
-  MEDC_ID_BLP,      /*! Blood pressure profile */
-  MEDC_ID_GLP,      /*! Glucose profile */
-  MEDC_ID_WSP,      /*! Weight scale profile */
-  MEDC_ID_HTP,      /*! Health thermometer profile */
-  MEDC_ID_PLX       /*! Pulse oximeter profile */
+enum {
+    MEDC_ID_HRP, /*! Heart rate profile */
+    MEDC_ID_BLP, /*! Blood pressure profile */
+    MEDC_ID_GLP, /*! Glucose profile */
+    MEDC_ID_WSP, /*! Weight scale profile */
+    MEDC_ID_HTP, /*! Health thermometer profile */
+    MEDC_ID_PLX /*! Pulse oximeter profile */
 };
 
 /**************************************************************************************************
@@ -67,7 +66,6 @@ void MedcStart(void);
  */
 /*************************************************************************************************/
 void MedcHandlerInit(wsfHandlerId_t handlerId);
-
 
 /*************************************************************************************************/
 /*!

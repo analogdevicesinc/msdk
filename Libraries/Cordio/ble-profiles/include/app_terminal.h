@@ -48,6 +48,6 @@ void AppTerminalInit(void);
 
 /**@}*/
 
-/*! \} */    /*! APP_FRAMEWORK_UI_API */
+/*! \} */ /*! APP_FRAMEWORK_UI_API */
 
 #endif /* APP_TERMINAL_H */

@@ -42,9 +42,8 @@
 **************************************************************************************************/
 
 /*! Generic Default Transition control block type definition */
-typedef struct mmdlGenDefaultTransClCb_tag
-{
-  mmdlEventCback_t recvCback;    /*!< Model Generic Default Transition received callback */
+typedef struct mmdlGenDefaultTransClCb_tag {
+    mmdlEventCback_t recvCback; /*!< Model Generic Default Transition received callback */
 } mmdlGenDefaultTransClCb_t;
 
 /**************************************************************************************************
@@ -55,9 +54,8 @@ typedef struct mmdlGenDefaultTransClCb_tag
 wsfHandlerId_t mmdlGenDefaultTransClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlGenDefaultTransClRcvdOpcodes[] =
-{
-  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_DEFAULT_TRANS_STATUS_OPCODE)} }
+const meshMsgOpcode_t mmdlGenDefaultTransClRcvdOpcodes[] = {
+    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_DEFAULT_TRANS_STATUS_OPCODE) } }
 };
 
 /**************************************************************************************************
@@ -65,7 +63,7 @@ const meshMsgOpcode_t mmdlGenDefaultTransClRcvdOpcodes[] =
 **************************************************************************************************/
 
 /*! Level Client control block */
-static mmdlGenDefaultTransClCb_t  defaultTransClCb;
+static mmdlGenDefaultTransClCb_t defaultTransClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -87,29 +85,29 @@ static mmdlGenDefaultTransClCb_t  defaultTransClCb;
 /*************************************************************************************************/
 static void mmdlGenDefaultTransSendSet(uint16_t opcode, meshElementId_t elementId,
                                        meshAddress_t serverAddr, uint8_t ttl,
-                                       const mmdlGenDefaultTransSetParam_t *pSetParam, uint16_t appKeyIndex)
+                                       const mmdlGenDefaultTransSetParam_t *pSetParam,
+                                       uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_CL_MDL_ID,
-                                   MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH;
-  uint8_t paramMsg[MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH];
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_CL_MDL_ID, MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH;
+    uint8_t paramMsg[MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH];
 
-  if (pSetParam != NULL)
-  {
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (pSetParam != NULL) {
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, opcode);
+        UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, opcode);
 
-    /* Build param message. */
-    paramMsg[0] = pSetParam->state;
+        /* Build param message. */
+        paramMsg[0] = pSetParam->state;
 
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -126,20 +124,20 @@ static void mmdlGenDefaultTransSendSet(uint16_t opcode, meshElementId_t elementI
 static void mmdlGenDefaultTransPublishSet(uint16_t opcode, meshElementId_t elementId,
                                           const mmdlGenDefaultTransSetParam_t *pSetParam)
 {
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_CL_MDL_ID,
-                                             MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH;
-  uint8_t paramMsg[MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH];
+    meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_CL_MDL_ID,
+                                                    MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH;
+    uint8_t paramMsg[MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH];
 
-  /* Fill in the msg info parameters */
-  pubMsgInfo.elementId = elementId;
-  UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, opcode);
+    /* Fill in the msg info parameters */
+    pubMsgInfo.elementId = elementId;
+    UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, opcode);
 
-  /* Build param message. */
-  paramMsg[0] = pSetParam->state;
+    /* Build param message. */
+    paramMsg[0] = pSetParam->state;
 
-  /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-  MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
+    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+    MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
 }
 
 /*************************************************************************************************/
@@ -153,31 +151,30 @@ static void mmdlGenDefaultTransPublishSet(uint16_t opcode, meshElementId_t eleme
 /*************************************************************************************************/
 static void mmdlGenDefaultTransClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlGenDefaultTransClStatusEvent_t event;
-  uint8_t *pParams;
+    mmdlGenDefaultTransClStatusEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_GEN_DEFAULT_TRANS_MSG_LENGTH) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_GEN_DEFAULT_TRANS_CL_EVENT;
-  event.hdr.param = MMDL_GEN_DEFAULT_TRANS_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_GEN_DEFAULT_TRANS_CL_EVENT;
+    event.hdr.param = MMDL_GEN_DEFAULT_TRANS_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  event.state = pParams[0];
+    /* Extract status event parameters */
+    event.state = pParams[0];
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  defaultTransClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    defaultTransClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /**************************************************************************************************
@@ -195,11 +192,11 @@ static void mmdlGenDefaultTransClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenDefaultTransClHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Set handler ID */
-  mmdlGenDefaultTransClHandlerId = handlerId;
+    /* Set handler ID */
+    mmdlGenDefaultTransClHandlerId = handlerId;
 
-  /* Initialize control block */
-  defaultTransClCb.recvCback = MmdlEmptyCback;
+    /* Initialize control block */
+    defaultTransClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -214,31 +211,28 @@ void MmdlGenDefaultTransClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlGenDefaultTransClHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelMsgRecvEvt_t *pModelMsg;
+    meshModelMsgRecvEvt_t *pModelMsg;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-        /* Validate opcode size and value */
-        if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_DEFAULT_TRANS_OPCODES_SIZE &&
-            !memcmp(&mmdlGenDefaultTransClRcvdOpcodes[0], pModelMsg->opCode.opcodeBytes,
-                    MMDL_GEN_DEFAULT_TRANS_OPCODES_SIZE))
-        {
-          /* Process Status message */
-          mmdlGenDefaultTransClHandleStatus(pModelMsg);
+            /* Validate opcode size and value */
+            if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_DEFAULT_TRANS_OPCODES_SIZE &&
+                !memcmp(&mmdlGenDefaultTransClRcvdOpcodes[0], pModelMsg->opCode.opcodeBytes,
+                        MMDL_GEN_DEFAULT_TRANS_OPCODES_SIZE)) {
+                /* Process Status message */
+                mmdlGenDefaultTransClHandleStatus(pModelMsg);
+            }
+            break;
+
+        default:
+            MMDL_TRACE_WARN0("GEN DEFAULT TRANS CL: Invalid event message received!");
+            break;
         }
-        break;
-
-      default:
-        MMDL_TRACE_WARN0("GEN DEFAULT TRANS CL: Invalid event message received!");
-        break;
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -256,30 +250,27 @@ void MmdlGenDefaultTransClHandler(wsfMsgHdr_t *pMsg)
 void MmdlGenDefaultTransClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                               uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_CL_MDL_ID,
-                                   MMDL_GEN_DEFAULT_TRANS_GET_OPCODE);
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_CL_MDL_ID,
-                                             MMDL_GEN_DEFAULT_TRANS_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_CL_MDL_ID, MMDL_GEN_DEFAULT_TRANS_GET_OPCODE);
+    meshPubMsgInfo_t pubMsgInfo =
+        MESH_PUB_MSG_INFO(MMDL_GEN_DEFAULT_TRANS_CL_MDL_ID, MMDL_GEN_DEFAULT_TRANS_GET_OPCODE);
 
-  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
-  {
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
+        /* Fill in the msg info parameters */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Send message to the Mesh Core instantly */
-    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-  }
-  else
-  {
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+        /* Send message to the Mesh Core instantly */
+        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    } else {
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
 
-    /* Send message to the Mesh Core */
-    MeshPublishMessage(&pubMsgInfo, NULL, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshPublishMessage(&pubMsgInfo, NULL, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -298,15 +289,12 @@ void MmdlGenDefaultTransClGet(meshElementId_t elementId, meshAddress_t serverAdd
 void MmdlGenDefaultTransClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                               const mmdlGenDefaultTransSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlGenDefaultTransPublishSet(MMDL_GEN_DEFAULT_TRANS_SET_OPCODE, elementId, pSetParam);
-  }
-  else
-  {
-    mmdlGenDefaultTransSendSet(MMDL_GEN_DEFAULT_TRANS_SET_OPCODE, elementId, serverAddr, ttl, pSetParam,
-                               appKeyIndex);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlGenDefaultTransPublishSet(MMDL_GEN_DEFAULT_TRANS_SET_OPCODE, elementId, pSetParam);
+    } else {
+        mmdlGenDefaultTransSendSet(MMDL_GEN_DEFAULT_TRANS_SET_OPCODE, elementId, serverAddr, ttl,
+                                   pSetParam, appKeyIndex);
+    }
 }
 
 /*************************************************************************************************/
@@ -323,17 +311,16 @@ void MmdlGenDefaultTransClSet(meshElementId_t elementId, meshAddress_t serverAdd
  */
 /*************************************************************************************************/
 void MmdlGenDefaultTransClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                                   const mmdlGenDefaultTransSetParam_t *pSetParam, uint16_t appKeyIndex)
+                                   const mmdlGenDefaultTransSetParam_t *pSetParam,
+                                   uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlGenDefaultTransPublishSet(MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE, elementId, pSetParam);
-  }
-  else
-  {
-    mmdlGenDefaultTransSendSet(MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE, elementId, serverAddr, ttl, pSetParam,
-                               appKeyIndex);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlGenDefaultTransPublishSet(MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE, elementId,
+                                      pSetParam);
+    } else {
+        mmdlGenDefaultTransSendSet(MMDL_GEN_DEFAULT_TRANS_SET_NO_ACK_OPCODE, elementId, serverAddr,
+                                   ttl, pSetParam, appKeyIndex);
+    }
 }
 
 /*************************************************************************************************/
@@ -347,9 +334,8 @@ void MmdlGenDefaultTransClSetNoAck(meshElementId_t elementId, meshAddress_t serv
 /*************************************************************************************************/
 void MmdlGenDefaultTransClRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback*/
-  if (recvCback != NULL)
-  {
-    defaultTransClCb.recvCback = recvCback;
-  }
+    /* Store valid callback*/
+    if (recvCback != NULL) {
+        defaultTransClCb.recvCback = recvCback;
+    }
 }

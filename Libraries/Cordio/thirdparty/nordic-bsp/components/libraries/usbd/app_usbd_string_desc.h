@@ -61,8 +61,7 @@ extern "C" {
  *
  * @param[in] lang Language identifier.
  */
-#define APP_USBD_LANG(lang) \
-    ((app_usbd_langid_t) lang)
+#define APP_USBD_LANG(lang) ((app_usbd_langid_t)lang)
 
 /**
  * @brief USB Language identifier with sublanguage initialization.
@@ -71,7 +70,7 @@ extern "C" {
  * @param[in] sublang Sublanguage identifier.
  */
 #define APP_USBD_LANG_AND_SUBLANG(lang, sublang) \
-    ((app_usbd_langid_t) lang | (app_usbd_langid_t) sublang)
+    ((app_usbd_langid_t)lang | (app_usbd_langid_t)sublang)
 
 /**
  * @brief USB string initialization.
@@ -83,7 +82,11 @@ extern "C" {
  *
  * @return String descriptor initialization data.
  */
-#define APP_USBD_STRING_DESC(str) (const uint8_t *)(const char[]){str}
+#define APP_USBD_STRING_DESC(str)   \
+    (const uint8_t *)(const char[]) \
+    {                               \
+        str                         \
+    }
 
 /**
  * @brief USB raw 8-bit string initialization.
@@ -95,11 +98,13 @@ extern "C" {
  *
  * @return String descriptor initialization data.
  */
-#define APP_USBD_STRING_RAW8_DESC(...) (const uint8_t[]){                                          \
-    0x00, 0x00, /* NULL character at start to differentiate from normal string */                  \
-    (0xff & (sizeof((uint8_t[]){__VA_ARGS__}) + 2)),                                               \
-    (APP_USBD_DESCRIPTOR_STRING),                                                                  \
-    __VA_ARGS__ }
+#define APP_USBD_STRING_RAW8_DESC(...)                                                       \
+    (const uint8_t[])                                                                        \
+    {                                                                                        \
+        0x00, 0x00, /* NULL character at start to differentiate from normal string */        \
+            (0xff & (sizeof((uint8_t[]){ __VA_ARGS__ }) + 2)), (APP_USBD_DESCRIPTOR_STRING), \
+            __VA_ARGS__                                                                      \
+    }
 
 /**
  * @brief USB raw 16-bit string initialization.
@@ -111,19 +116,20 @@ extern "C" {
  *
  * @return String descriptor initialization data.
  */
-#define APP_USBD_STRING_RAW16_DESC(...) (const uint8_t *) ((const uint16_t[]){                     \
-    0x00,  /* NULL character at start to differentiate from normal string */                       \
-    (0xff & (sizeof((uint16_t[]){__VA_ARGS__}) + 2)) |                                             \
-    ((uint16_t)APP_USBD_DESCRIPTOR_STRING) << 8,                                                   \
-    __VA_ARGS__ })
+#define APP_USBD_STRING_RAW16_DESC(...)                                         \
+    (const uint8_t *)((const uint16_t[]){                                       \
+        0x00, /* NULL character at start to differentiate from normal string */ \
+        (0xff & (sizeof((uint16_t[]){ __VA_ARGS__ }) + 2)) |                    \
+            ((uint16_t)APP_USBD_DESCRIPTOR_STRING) << 8,                        \
+        __VA_ARGS__ })
 
 /**
  * @brief USB string descriptors IDs
  */
 typedef enum {
-    APP_USBD_STRING_ID_LANGIDS = 0,  /**< Supported language identifiers */
+    APP_USBD_STRING_ID_LANGIDS = 0, /**< Supported language identifiers */
 
-    /// Placeholders used only for alignement of user strings. Do not use or modify them.
+/// Placeholders used only for alignement of user strings. Do not use or modify them.
 
 #if (APP_USBD_STRING_ID_MANUFACTURER != 0)
     APP_USBD_STRING_ID_MANUFACTURER_PLACEHOLDER = APP_USBD_STRING_ID_MANUFACTURER,
@@ -145,7 +151,7 @@ typedef enum {
     APP_USBD_STRINGS_USER
 #undef X
 
-    APP_USBD_STRING_ID_CNT           /**< Total number of identifiers. */
+        APP_USBD_STRING_ID_CNT /**< Total number of identifiers. */
 } app_usbd_string_desc_idx_t;
 
 /**
@@ -155,7 +161,7 @@ typedef enum {
  * @param[in] langid Selected language for the string.
  * @return String descriptor, or NULL if it does not exist.
  * */
-uint16_t const * app_usbd_string_desc_get(uint8_t idx, uint16_t langid);
+uint16_t const *app_usbd_string_desc_get(uint8_t idx, uint16_t langid);
 
 /**
  * @brief Get string length.
@@ -165,7 +171,7 @@ uint16_t const * app_usbd_string_desc_get(uint8_t idx, uint16_t langid);
  * @param[in] p_str String descriptor pointer.
  * @return Total descriptor length in bytes.
  */
-static inline size_t app_usbd_string_desc_length(uint16_t const * p_str)
+static inline size_t app_usbd_string_desc_length(uint16_t const *p_str)
 {
     return ((const app_usbd_descriptor_string_t *)p_str)->bLength;
 }

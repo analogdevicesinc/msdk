@@ -38,12 +38,12 @@
 
 /* Configurable number of bytes in the Dynamic Service and Attribute Heap */
 #ifndef ATTS_DYN_HEAP_SIZE
-#define ATTS_DYN_HEAP_SIZE                  1280
+#define ATTS_DYN_HEAP_SIZE 1280
 #endif
 
 /* Configurable memory byte alignment Dynamic Service and Attribute Heap */
 #ifndef ATTS_DYN_ALIGNMENT
-#define ATTS_DYN_ALIGNMENT                  4
+#define ATTS_DYN_ALIGNMENT 4
 #endif
 
 /**************************************************************************************************
@@ -51,17 +51,15 @@
 **************************************************************************************************/
 
 /* Dynamic service and attributes control block */
-typedef struct
-{
-  uint8_t numServices;
-  uint8_t *pNextBuffer;
+typedef struct {
+    uint8_t numServices;
+    uint8_t *pNextBuffer;
 } attsDynCb_t;
 
 /* Dynamic service group control block */
-typedef struct
-{
-  attsGroup_t group;
-  uint16_t currentAttr;
+typedef struct {
+    attsGroup_t group;
+    uint16_t currentAttr;
 } attsDynGroupCb_t;
 
 /**************************************************************************************************
@@ -85,28 +83,26 @@ static attsDynCb_t attsDynCb;
 /*************************************************************************************************/
 static void *attsDynAlloc(uint16_t size)
 {
-  uint8_t *pMem = attsDynCb.pNextBuffer;
+    uint8_t *pMem = attsDynCb.pNextBuffer;
 
-  /* Verify enough space in heap for buffer */
-  if (pMem + size <= attsDynHeap + ATTS_DYN_HEAP_SIZE)
-  {
+    /* Verify enough space in heap for buffer */
+    if (pMem + size <= attsDynHeap + ATTS_DYN_HEAP_SIZE) {
 #if ATTS_DYN_ALIGNMENT > 1
-    /* Increase size if size not a multiple of the memory alignment */
-    if (size % ATTS_DYN_ALIGNMENT)
-    {
-      size += ATTS_DYN_ALIGNMENT - (size % ATTS_DYN_ALIGNMENT);
-    }
+        /* Increase size if size not a multiple of the memory alignment */
+        if (size % ATTS_DYN_ALIGNMENT) {
+            size += ATTS_DYN_ALIGNMENT - (size % ATTS_DYN_ALIGNMENT);
+        }
 #endif
 
-    /* Set the next buffer location */
-    attsDynCb.pNextBuffer += size;
+        /* Set the next buffer location */
+        attsDynCb.pNextBuffer += size;
 
-    return pMem;
-  }
+        return pMem;
+    }
 
-  /* Out of heap */
-  WSF_ASSERT(FALSE);
-  return NULL;
+    /* Out of heap */
+    WSF_ASSERT(FALSE);
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -120,8 +116,8 @@ static void *attsDynAlloc(uint16_t size)
 /*************************************************************************************************/
 void AttsDynInit()
 {
-  attsDynCb.numServices = 0;
-  attsDynCb.pNextBuffer = attsDynHeap;
+    attsDynCb.numServices = 0;
+    attsDynCb.pNextBuffer = attsDynHeap;
 }
 
 /*************************************************************************************************/
@@ -139,30 +135,28 @@ void AttsDynInit()
 /*************************************************************************************************/
 void *AttsDynCreateGroup(uint16_t startHandle, uint16_t endHandle)
 {
-  attsDynGroupCb_t *pGroup = NULL;
+    attsDynGroupCb_t *pGroup = NULL;
 
-  /* Allocate memory for the service control block */
-  pGroup = attsDynAlloc(sizeof(attsDynGroupCb_t));
-  WSF_ASSERT(pGroup);
+    /* Allocate memory for the service control block */
+    pGroup = attsDynAlloc(sizeof(attsDynGroupCb_t));
+    WSF_ASSERT(pGroup);
 
-  if (pGroup != NULL)
-  {
+    if (pGroup != NULL) {
+        /* Initialize the service group */
+        pGroup->group.startHandle = startHandle;
+        pGroup->group.endHandle = endHandle;
+        pGroup->group.readCback = NULL;
+        pGroup->group.writeCback = NULL;
 
-    /* Initialize the service group */
-    pGroup->group.startHandle = startHandle;
-    pGroup->group.endHandle = endHandle;
-    pGroup->group.readCback = NULL;
-    pGroup->group.writeCback = NULL;
+        /* Allocate memory for the attributes */
+        pGroup->group.pAttr = attsDynAlloc(sizeof(attsAttr_t) * (endHandle - startHandle + 1));
+        WSF_ASSERT(pGroup->group.pAttr);
 
-    /* Allocate memory for the attributes */
-    pGroup->group.pAttr = attsDynAlloc(sizeof(attsAttr_t) * (endHandle - startHandle + 1));
-    WSF_ASSERT(pGroup->group.pAttr);
+        pGroup->currentAttr = 0;
+        attsDynCb.numServices++;
+    }
 
-    pGroup->currentAttr = 0;
-    attsDynCb.numServices++;
-  }
-
-  return pGroup;
+    return pGroup;
 }
 
 /*************************************************************************************************/
@@ -179,21 +173,20 @@ void *AttsDynCreateGroup(uint16_t startHandle, uint16_t endHandle)
 /*************************************************************************************************/
 void AttsDynDeleteGroup(void *pSvcHandle)
 {
-  attsDynGroupCb_t *pGroup = pSvcHandle;
+    attsDynGroupCb_t *pGroup = pSvcHandle;
 
-  WSF_ASSERT(attsDynCb.numServices);
-  WSF_ASSERT(pGroup);
+    WSF_ASSERT(attsDynCb.numServices);
+    WSF_ASSERT(pGroup);
 
-  /* Remove the group */
-  AttsRemoveGroup(pGroup->group.startHandle);
+    /* Remove the group */
+    AttsRemoveGroup(pGroup->group.startHandle);
 
-  attsDynCb.numServices--;
+    attsDynCb.numServices--;
 
-  /* If there are no more dynamic groups, initialize the subsystem to free the memory in the heap */
-  if (attsDynCb.numServices == 0)
-  {
-    AttsDynInit();
-  }
+    /* If there are no more dynamic groups, initialize the subsystem to free the memory in the heap */
+    if (attsDynCb.numServices == 0) {
+        AttsDynInit();
+    }
 }
 
 /*************************************************************************************************/
@@ -212,12 +205,12 @@ void AttsDynDeleteGroup(void *pSvcHandle)
 /*************************************************************************************************/
 void AttsDynRegister(void *pSvcHandle, attsReadCback_t readCback, attsWriteCback_t writeCback)
 {
-  attsDynGroupCb_t *pGroup = pSvcHandle;
+    attsDynGroupCb_t *pGroup = pSvcHandle;
 
-  WSF_ASSERT(pGroup);
+    WSF_ASSERT(pGroup);
 
-  pGroup->group.readCback = readCback;
-  pGroup->group.writeCback = writeCback;
+    pGroup->group.readCback = readCback;
+    pGroup->group.writeCback = writeCback;
 }
 
 /*************************************************************************************************/
@@ -241,62 +234,53 @@ void AttsDynRegister(void *pSvcHandle, attsReadCback_t readCback, attsWriteCback
 void AttsDynAddAttr(void *pSvcHandle, const uint8_t *pUuid, const uint8_t *pValue, uint16_t len,
                     const uint16_t maxLen, uint8_t settings, uint8_t permissions)
 {
-  attsAttr_t *pAttr;
-  attsDynGroupCb_t *pGroup = pSvcHandle;
-  uint16_t handle = pGroup->group.startHandle + pGroup->currentAttr++;
+    attsAttr_t *pAttr;
+    attsDynGroupCb_t *pGroup = pSvcHandle;
+    uint16_t handle = pGroup->group.startHandle + pGroup->currentAttr++;
 
-  /* Verify inputs */
-  WSF_ASSERT(handle <= pGroup->group.endHandle);
-  WSF_ASSERT(pUuid);
-  WSF_ASSERT(len <= maxLen);
+    /* Verify inputs */
+    WSF_ASSERT(handle <= pGroup->group.endHandle);
+    WSF_ASSERT(pUuid);
+    WSF_ASSERT(len <= maxLen);
 
-  pAttr = pGroup->group.pAttr + (handle - pGroup->group.startHandle);
+    pAttr = pGroup->group.pAttr + (handle - pGroup->group.startHandle);
 
+    /* Allocate a buffer for the length of the attribute */
+    pAttr->pLen = attsDynAlloc(sizeof(uint16_t));
+    WSF_ASSERT(pAttr->pLen);
 
-  /* Allocate a buffer for the length of the attribute */
-  pAttr->pLen = attsDynAlloc(sizeof(uint16_t));
-  WSF_ASSERT(pAttr->pLen);
+    if (pAttr->pLen == NULL) {
+        return;
+    }
 
-  if (pAttr->pLen == NULL)
-  {
-    return;
-  }
+    /* Allocate a buffer for the value of the attribute */
+    pAttr->pValue = attsDynAlloc(maxLen);
+    WSF_ASSERT(pAttr->pValue);
 
-  /* Allocate a buffer for the value of the attribute */
-  pAttr->pValue = attsDynAlloc(maxLen);
-  WSF_ASSERT(pAttr->pValue);
+    if (pAttr->pValue == NULL) {
+        return;
+    }
 
-  if (pAttr->pValue == NULL)
-  {
-    return;
-  }
+    /* Set the attribute values */
+    pAttr->pUuid = pUuid;
+    pAttr->maxLen = maxLen;
+    pAttr->settings = settings;
+    pAttr->permissions = permissions;
 
-  /* Set the attribute values */
-  pAttr->pUuid = pUuid;
-  pAttr->maxLen = maxLen;
-  pAttr->settings = settings;
-  pAttr->permissions = permissions;
+    if (pValue) {
+        /* Copy the initial value */
+        memcpy(pAttr->pValue, pValue, len);
+        *pAttr->pLen = len;
+    } else {
+        /* No initial value, zero value and length */
+        memset(pAttr->pValue, 0, maxLen);
+        *pAttr->pLen = 0;
+    }
 
-
-
-  if (pValue)
-  {
-    /* Copy the initial value */
-    memcpy(pAttr->pValue, pValue, len);
-    *pAttr->pLen = len;
-  }
-  else
-  {
-    /* No initial value, zero value and length */
-    memset(pAttr->pValue, 0, maxLen);
-    *pAttr->pLen = 0;
-  }
-
-  /* Add the service when the last attribute has been added */
-  if (handle == pGroup->group.endHandle)
-  {
-    AttsAddGroup(&pGroup->group);
-  }
+    /* Add the service when the last attribute has been added */
+    if (handle == pGroup->group.endHandle) {
+        AttsAddGroup(&pGroup->group);
+    }
 }
 
 /*************************************************************************************************/
@@ -319,37 +303,35 @@ void AttsDynAddAttr(void *pSvcHandle, const uint8_t *pUuid, const uint8_t *pValu
 void AttsDynAddAttrConst(void *pSvcHandle, const uint8_t *pUuid, const uint8_t *pValue,
                          const uint16_t len, uint8_t settings, uint8_t permissions)
 {
-  attsAttr_t *pAttr;
-  attsDynGroupCb_t *pGroup = pSvcHandle;
-  uint16_t handle = pGroup->group.startHandle + pGroup->currentAttr++;
+    attsAttr_t *pAttr;
+    attsDynGroupCb_t *pGroup = pSvcHandle;
+    uint16_t handle = pGroup->group.startHandle + pGroup->currentAttr++;
 
-  /* Verify inputs */
-  WSF_ASSERT(handle <= pGroup->group.endHandle);
-  WSF_ASSERT(pValue);
-  WSF_ASSERT(pUuid);
+    /* Verify inputs */
+    WSF_ASSERT(handle <= pGroup->group.endHandle);
+    WSF_ASSERT(pValue);
+    WSF_ASSERT(pUuid);
 
-  pAttr = pGroup->group.pAttr + (handle - pGroup->group.startHandle);
+    pAttr = pGroup->group.pAttr + (handle - pGroup->group.startHandle);
 
-  /* Allocate a buffer for the length of the attribute */
-  pAttr->pLen = attsDynAlloc(sizeof(uint16_t));
-  WSF_ASSERT(pAttr->pLen);
+    /* Allocate a buffer for the length of the attribute */
+    pAttr->pLen = attsDynAlloc(sizeof(uint16_t));
+    WSF_ASSERT(pAttr->pLen);
 
-  if (pAttr->pLen == NULL)
-  {
-    return;
-  }
+    if (pAttr->pLen == NULL) {
+        return;
+    }
 
-  /* Set the attribute values */
-  *pAttr->pLen = len;
-  pAttr->pUuid = pUuid;
-  pAttr->pValue = (uint8_t *) pValue;
-  pAttr->maxLen = len;
-  pAttr->settings = settings;
-  pAttr->permissions = permissions;
+    /* Set the attribute values */
+    *pAttr->pLen = len;
+    pAttr->pUuid = pUuid;
+    pAttr->pValue = (uint8_t *)pValue;
+    pAttr->maxLen = len;
+    pAttr->settings = settings;
+    pAttr->permissions = permissions;
 
-  /* Add the service when the last attribute has been added */
-  if (handle == pGroup->group.endHandle)
-  {
-    AttsAddGroup(&pGroup->group);
-  }
+    /* Add the service when the last attribute has been added */
+    if (handle == pGroup->group.endHandle) {
+        AttsAddGroup(&pGroup->group);
+    }
 }

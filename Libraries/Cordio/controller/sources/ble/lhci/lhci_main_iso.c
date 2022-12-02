@@ -47,16 +47,14 @@
 /*************************************************************************************************/
 void LhciIsoHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  if (event & LHCI_EVT_ISO_RCVD)
-  {
-    uint8_t *pIsoBuf;
-    wsfHandlerId_t handlerId;
+    if (event & LHCI_EVT_ISO_RCVD) {
+        uint8_t *pIsoBuf;
+        wsfHandlerId_t handlerId;
 
-    while ((pIsoBuf = WsfMsgDeq(&lhciPersistCb.isoQ, &handlerId)) != NULL)
-    {
-      LlSendIsoData(pIsoBuf);
+        while ((pIsoBuf = WsfMsgDeq(&lhciPersistCb.isoQ, &handlerId)) != NULL) {
+            LlSendIsoData(pIsoBuf);
+        }
     }
-  }
 
-  LhciHandler(event, pMsg);
+    LhciHandler(event, pMsg);
 }

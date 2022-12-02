@@ -38,20 +38,18 @@
 **************************************************************************************************/
 
 /*! \brief    TX structure */
-typedef struct
-{
-  uint8_t      *pBuf;                              /*!< UART TX buffer pointer */
-  uint16_t     size;                               /*!< UART TX buffer size */
-  uint16_t     in;                                 /*!< UART TX buffer in index */
-  uint16_t     out;                                /*!< UART TX buffer out index */
-  uint16_t     crt;                                /*!< UART TX current number of bytes sent */
+typedef struct {
+    uint8_t *pBuf; /*!< UART TX buffer pointer */
+    uint16_t size; /*!< UART TX buffer size */
+    uint16_t in; /*!< UART TX buffer in index */
+    uint16_t out; /*!< UART TX buffer out index */
+    uint16_t crt; /*!< UART TX current number of bytes sent */
 } WsfBufIoUartTx_t;
 
 /*! \brief    RX structure */
-typedef struct
-{
-  WsfBufIoUartRxCback_t   cback;                   /*!< UART RX callback. */
-  uint8_t                 buf[1];                  /*!< UART RX buffer */
+typedef struct {
+    WsfBufIoUartRxCback_t cback; /*!< UART RX callback. */
+    uint8_t buf[1]; /*!< UART RX buffer */
 } WsfBufIoUartRx_t;
 
 /**************************************************************************************************
@@ -59,12 +57,11 @@ typedef struct
 **************************************************************************************************/
 
 /*! \brief    Control block. */
-static struct
-{
-  WsfBufIoUartTx_t         tx;             /*!< Platform UART TX structure */
-  WsfBufIoUartRx_t         rx;             /*!< Platform UART RX structure */
-  bool_t                   initialized;    /*!< UART RX is initialized */
-} WsfBufIoCb = {0};
+static struct {
+    WsfBufIoUartTx_t tx; /*!< Platform UART TX structure */
+    WsfBufIoUartRx_t rx; /*!< Platform UART RX structure */
+    bool_t initialized; /*!< UART RX is initialized */
+} WsfBufIoCb = { 0 };
 
 /**************************************************************************************************
   Local Functions
@@ -79,23 +76,20 @@ static struct
 /*************************************************************************************************/
 static void wsfBufIoUartTxStart(uint16_t len)
 {
-  /* If TX buffer overrun happens, send bytes only till the end of the buffer. */
-  if (WsfBufIoCb.tx.out + len > WsfBufIoCb.tx.size)
-  {
-    len = WsfBufIoCb.tx.size - WsfBufIoCb.tx.out;
-  }
+    /* If TX buffer overrun happens, send bytes only till the end of the buffer. */
+    if (WsfBufIoCb.tx.out + len > WsfBufIoCb.tx.size) {
+        len = WsfBufIoCb.tx.size - WsfBufIoCb.tx.out;
+    }
 
-  /* Check if TX length exceeds 1 octet size from UART driver. */
-  if (len <= 0xFF)
-  {
-    PalUartWriteData(PAL_UART_ID_TERMINAL, WsfBufIoCb.tx.pBuf + WsfBufIoCb.tx.out, (uint16_t)len);
-    WsfBufIoCb.tx.crt = len;
-  }
-  else
-  {
-    PalUartWriteData(PAL_UART_ID_TERMINAL, WsfBufIoCb.tx.pBuf + WsfBufIoCb.tx.out, 0xFF);
-    WsfBufIoCb.tx.crt = 0xFF;
-  }
+    /* Check if TX length exceeds 1 octet size from UART driver. */
+    if (len <= 0xFF) {
+        PalUartWriteData(PAL_UART_ID_TERMINAL, WsfBufIoCb.tx.pBuf + WsfBufIoCb.tx.out,
+                         (uint16_t)len);
+        WsfBufIoCb.tx.crt = len;
+    } else {
+        PalUartWriteData(PAL_UART_ID_TERMINAL, WsfBufIoCb.tx.pBuf + WsfBufIoCb.tx.out, 0xFF);
+        WsfBufIoCb.tx.crt = 0xFF;
+    }
 }
 
 /*************************************************************************************************/
@@ -107,18 +101,15 @@ static void wsfBufIoUartTxStart(uint16_t len)
 /*************************************************************************************************/
 static uint16_t wsfBufIoUartTxBufCount(void)
 {
-  uint16_t count;
+    uint16_t count;
 
-  if (WsfBufIoCb.tx.in >= WsfBufIoCb.tx.out)
-  {
-    count = WsfBufIoCb.tx.in - WsfBufIoCb.tx.out;
-  }
-  else
-  {
-    count = WsfBufIoCb.tx.size - WsfBufIoCb.tx.out + WsfBufIoCb.tx.in;
-  }
+    if (WsfBufIoCb.tx.in >= WsfBufIoCb.tx.out) {
+        count = WsfBufIoCb.tx.in - WsfBufIoCb.tx.out;
+    } else {
+        count = WsfBufIoCb.tx.size - WsfBufIoCb.tx.out + WsfBufIoCb.tx.in;
+    }
 
-  return count;
+    return count;
 }
 
 /*************************************************************************************************/
@@ -128,12 +119,11 @@ static uint16_t wsfBufIoUartTxBufCount(void)
 /*************************************************************************************************/
 static void wsfBufIoUartRxHandler(void)
 {
-  if (WsfBufIoCb.rx.cback)
-  {
-    WsfBufIoCb.rx.cback(WsfBufIoCb.rx.buf[0]);
-  }
-  /* Read next byte. */
-  PalUartReadData(PAL_UART_ID_TERMINAL, WsfBufIoCb.rx.buf, 1);
+    if (WsfBufIoCb.rx.cback) {
+        WsfBufIoCb.rx.cback(WsfBufIoCb.rx.buf[0]);
+    }
+    /* Read next byte. */
+    PalUartReadData(PAL_UART_ID_TERMINAL, WsfBufIoCb.rx.buf, 1);
 }
 
 /*************************************************************************************************/
@@ -143,30 +133,26 @@ static void wsfBufIoUartRxHandler(void)
 /*************************************************************************************************/
 static void wsfBufIoUartTxHandler(void)
 {
-  uint16_t count;
+    uint16_t count;
 
-  WSF_CS_INIT(cs);
-  WSF_CS_ENTER(cs);
+    WSF_CS_INIT(cs);
+    WSF_CS_ENTER(cs);
 
-  if (WsfBufIoCb.tx.out + WsfBufIoCb.tx.crt >= WsfBufIoCb.tx.size)
-  {
-    WsfBufIoCb.tx.out = WsfBufIoCb.tx.crt - (WsfBufIoCb.tx.size - WsfBufIoCb.tx.out);
-  }
-  else
-  {
-    WsfBufIoCb.tx.out += WsfBufIoCb.tx.crt;
-  }
+    if (WsfBufIoCb.tx.out + WsfBufIoCb.tx.crt >= WsfBufIoCb.tx.size) {
+        WsfBufIoCb.tx.out = WsfBufIoCb.tx.crt - (WsfBufIoCb.tx.size - WsfBufIoCb.tx.out);
+    } else {
+        WsfBufIoCb.tx.out += WsfBufIoCb.tx.crt;
+    }
 
-  WsfBufIoCb.tx.crt = 0;
+    WsfBufIoCb.tx.crt = 0;
 
-  count = wsfBufIoUartTxBufCount();
+    count = wsfBufIoUartTxBufCount();
 
-  if (count != 0)
-  {
-    wsfBufIoUartTxStart(count);
-  }
+    if (count != 0) {
+        wsfBufIoUartTxStart(count);
+    }
 
-  WSF_CS_EXIT(cs);
+    WSF_CS_EXIT(cs);
 }
 
 /**************************************************************************************************
@@ -185,28 +171,27 @@ static void wsfBufIoUartTxHandler(void)
 /*************************************************************************************************/
 uint32_t WsfBufIoUartInit(void *pBuf, uint32_t size)
 {
-  /* Skip initialization if it is already done. */
-  if (WsfBufIoCb.initialized)
-  {
-    return 0;
-  }
+    /* Skip initialization if it is already done. */
+    if (WsfBufIoCb.initialized) {
+        return 0;
+    }
 
-  WsfBufIoCb.tx.pBuf = (uint8_t *)pBuf;
-  WsfBufIoCb.tx.size = size;
+    WsfBufIoCb.tx.pBuf = (uint8_t *)pBuf;
+    WsfBufIoCb.tx.size = size;
 
-  PalUartConfig_t cfg;
-  cfg.baud   = 115200;
-  cfg.hwFlow = FALSE;
-  cfg.rdCback = wsfBufIoUartRxHandler;
-  cfg.wrCback = wsfBufIoUartTxHandler;
+    PalUartConfig_t cfg;
+    cfg.baud = 115200;
+    cfg.hwFlow = FALSE;
+    cfg.rdCback = wsfBufIoUartRxHandler;
+    cfg.wrCback = wsfBufIoUartTxHandler;
 
-  PalUartInit(PAL_UART_ID_TERMINAL, &cfg);
+    PalUartInit(PAL_UART_ID_TERMINAL, &cfg);
 
-  /* Start UART RX. */
-  PalUartReadData(PAL_UART_ID_TERMINAL, WsfBufIoCb.rx.buf, 1);
+    /* Start UART RX. */
+    PalUartReadData(PAL_UART_ID_TERMINAL, WsfBufIoCb.rx.buf, 1);
 
-  WsfBufIoCb.initialized = TRUE;
-  return WsfBufIoCb.tx.size;
+    WsfBufIoCb.initialized = TRUE;
+    return WsfBufIoCb.tx.size;
 }
 
 /*************************************************************************************************/
@@ -218,10 +203,9 @@ uint32_t WsfBufIoUartInit(void *pBuf, uint32_t size)
 /*************************************************************************************************/
 void WsfBufIoUartRegister(WsfBufIoUartRxCback_t rxCback)
 {
-  if (rxCback != NULL)
-  {
-    WsfBufIoCb.rx.cback = rxCback;
-  }
+    if (rxCback != NULL) {
+        WsfBufIoCb.rx.cback = rxCback;
+    }
 }
 
 /*************************************************************************************************/
@@ -236,55 +220,47 @@ void WsfBufIoUartRegister(WsfBufIoUartRxCback_t rxCback)
 /*************************************************************************************************/
 bool_t WsfBufIoWrite(const uint8_t *pBuf, uint32_t len)
 {
-  uint16_t end;
-  uint32_t retValue = TRUE;
+    uint16_t end;
+    uint32_t retValue = TRUE;
 
-  WSF_CS_INIT(cs);
+    WSF_CS_INIT(cs);
 
-  WSF_CS_ENTER(cs);
+    WSF_CS_ENTER(cs);
 
-  /* Check if there is enough space in TX buffer */
-  if ((WsfBufIoCb.tx.size - wsfBufIoUartTxBufCount() >= (uint16_t)len) &&
-      (WsfBufIoCb.tx.size > WsfBufIoCb.tx.crt))
-  {
-    /* Compute the space available till the end of the buffer. */
-    end = WsfBufIoCb.tx.size - WsfBufIoCb.tx.in;
+    /* Check if there is enough space in TX buffer */
+    if ((WsfBufIoCb.tx.size - wsfBufIoUartTxBufCount() >= (uint16_t)len) &&
+        (WsfBufIoCb.tx.size > WsfBufIoCb.tx.crt)) {
+        /* Compute the space available till the end of the buffer. */
+        end = WsfBufIoCb.tx.size - WsfBufIoCb.tx.in;
 
-    /* Check if overrun should happen. */
-    if (end < len)
-    {
-      /* Copy the bytes till the end of the buffer. */
-      memcpy(WsfBufIoCb.tx.pBuf + WsfBufIoCb.tx.in, pBuf, end);
-      /* Copy the remaining bytes. */
-      memcpy(WsfBufIoCb.tx.pBuf, pBuf + end, len - end);
-      /* Increment input count */
-      WsfBufIoCb.tx.in = len - end;
+        /* Check if overrun should happen. */
+        if (end < len) {
+            /* Copy the bytes till the end of the buffer. */
+            memcpy(WsfBufIoCb.tx.pBuf + WsfBufIoCb.tx.in, pBuf, end);
+            /* Copy the remaining bytes. */
+            memcpy(WsfBufIoCb.tx.pBuf, pBuf + end, len - end);
+            /* Increment input count */
+            WsfBufIoCb.tx.in = len - end;
+        } else {
+            /* Enough space till the end of the buffer. Just copy. */
+            memcpy(WsfBufIoCb.tx.pBuf + WsfBufIoCb.tx.in, pBuf, len);
+            WsfBufIoCb.tx.in += len;
+        }
+
+        if (WsfBufIoCb.tx.in == WsfBufIoCb.tx.size) {
+            WsfBufIoCb.tx.in = 0;
+        }
+
+        /* Check if UART TX is idle. */
+        if (PalUartGetState(PAL_UART_ID_TERMINAL) == PAL_UART_STATE_READY) {
+            /* Start TX */
+            wsfBufIoUartTxStart(len);
+        }
+    } else {
+        retValue = FALSE;
     }
-    else
-    {
-      /* Enough space till the end of the buffer. Just copy. */
-      memcpy(WsfBufIoCb.tx.pBuf + WsfBufIoCb.tx.in, pBuf, len);
-      WsfBufIoCb.tx.in += len;
-    }
 
-    if (WsfBufIoCb.tx.in == WsfBufIoCb.tx.size)
-    {
-      WsfBufIoCb.tx.in = 0;
-    }
+    WSF_CS_EXIT(cs);
 
-    /* Check if UART TX is idle. */
-    if (PalUartGetState(PAL_UART_ID_TERMINAL) == PAL_UART_STATE_READY)
-    {
-      /* Start TX */
-      wsfBufIoUartTxStart(len);
-    }
-  }
-  else
-  {
-    retValue = FALSE;
-  }
-
-  WSF_CS_EXIT(cs);
-
-  return retValue;
+    return retValue;
 }

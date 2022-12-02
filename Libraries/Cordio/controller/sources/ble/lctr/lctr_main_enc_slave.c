@@ -39,31 +39,24 @@
 /*************************************************************************************************/
 static void lctrSlvEncProcessDataPdu(lctrConnCtx_t *pCtx, uint8_t *pBuf)
 {
-  if (pCtx->enabled)
-  {
-    uint8_t ctrlResult, encResult;
+    if (pCtx->enabled) {
+        uint8_t ctrlResult, encResult;
 
-    if (((ctrlResult = lctrDecodeCtrlPdu(&lctrDataPdu, pBuf, pCtx->role)) == LL_SUCCESS) ||
-        ((encResult = lctrDecodeEncPdu(&lctrDataPdu, pBuf, pCtx->role)) == LL_SUCCESS))
-    {
+        if (((ctrlResult = lctrDecodeCtrlPdu(&lctrDataPdu, pBuf, pCtx->role)) == LL_SUCCESS) ||
+            ((encResult = lctrDecodeEncPdu(&lctrDataPdu, pBuf, pCtx->role)) == LL_SUCCESS)) {
 #if (LL_ENABLE_TESTER)
-      if ((llTesterCb.rxLlcpFilter & (1 << lctrDataPdu.opcode)) != 0)
-      {
-        return;
-      }
+            if ((llTesterCb.rxLlcpFilter & (1 << lctrDataPdu.opcode)) != 0) {
+                return;
+            }
 #endif
-      lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP);
+            lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP);
+        } else if ((ctrlResult == LL_ERROR_CODE_INVALID_LMP_PARAMS) ||
+                   (encResult == LL_ERROR_CODE_INVALID_LMP_PARAMS)) {
+            lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_INVALID_PARAM);
+        } else {
+            lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_UNKNOWN);
+        }
     }
-    else if ((ctrlResult == LL_ERROR_CODE_INVALID_LMP_PARAMS) ||
-             (encResult == LL_ERROR_CODE_INVALID_LMP_PARAMS))
-    {
-      lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_INVALID_PARAM);
-    }
-    else
-    {
-      lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_UNKNOWN);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -73,37 +66,35 @@ static void lctrSlvEncProcessDataPdu(lctrConnCtx_t *pCtx, uint8_t *pBuf)
 /*************************************************************************************************/
 void LctrSlvConnEncInit(void)
 {
-  /* Add LLCP SM handler. */
-  lctrSlvLlcpSmTbl[LCTR_LLCP_SM_ENCRYPT] = lctrSlvExecuteEncryptSm;
-  lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PING]    = lctrExecutePingSm;
+    /* Add LLCP SM handler. */
+    lctrSlvLlcpSmTbl[LCTR_LLCP_SM_ENCRYPT] = lctrSlvExecuteEncryptSm;
+    lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PING] = lctrExecutePingSm;
 
-  /* Add control PDU handler. */
-  if (!lctrCtrlPduHdlr)
-  {
-    lctrCtrlPduHdlr = lctrSlvEncProcessDataPdu;
-  }
+    /* Add control PDU handler. */
+    if (!lctrCtrlPduHdlr) {
+        lctrCtrlPduHdlr = lctrSlvEncProcessDataPdu;
+    }
 
-  /* Add packet encryption handlers. */
-  lctrInitCipherBlkHdlr = PalCryptoAesEnable;
+    /* Add packet encryption handlers. */
+    lctrInitCipherBlkHdlr = PalCryptoAesEnable;
 #if (!BB_ENABLE_INLINE_ENC_TX)
-  lctrPktEncryptHdlr = PalCryptoAesCcmEncrypt;
+    lctrPktEncryptHdlr = PalCryptoAesCcmEncrypt;
 #else
-  lctrSetEncryptPktCountHdlr = PalCryptoSetEncryptPacketCount;
+    lctrSetEncryptPktCountHdlr = PalCryptoSetEncryptPacketCount;
 #endif
 #if (!BB_ENABLE_INLINE_DEC_RX)
-  lctrPktDecryptHdlr = PalCryptoAesCcmDecrypt;
+    lctrPktDecryptHdlr = PalCryptoAesCcmDecrypt;
 #else
-  lctrSetDecryptPktCountHdlr = PalCryptoSetDecryptPacketCount;
+    lctrSetDecryptPktCountHdlr = PalCryptoSetDecryptPacketCount;
 #endif
 
-  /* Set supported features. */
-  lmgrPersistCb.featuresDefault |= LL_FEAT_ENCRYPTION;
-  if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_4_1)
-  {
-    lmgrPersistCb.featuresDefault |= LL_FEAT_LE_PING;
-  }
+    /* Set supported features. */
+    lmgrPersistCb.featuresDefault |= LL_FEAT_ENCRYPTION;
+    if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_4_1) {
+        lmgrPersistCb.featuresDefault |= LL_FEAT_LE_PING;
+    }
 
-  LctrSlvConnInit();
+    LctrSlvConnInit();
 }
 
 /*************************************************************************************************/
@@ -117,9 +108,9 @@ void LctrSlvConnEncInit(void)
 /*************************************************************************************************/
 uint32_t LctrGetAuthPayloadTimeout(uint16_t handle)
 {
-  lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(handle);
+    lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(handle);
 
-  return pCtx->authTimeoutMs;
+    return pCtx->authTimeoutMs;
 }
 
 /*************************************************************************************************/
@@ -134,28 +125,28 @@ uint32_t LctrGetAuthPayloadTimeout(uint16_t handle)
 /*************************************************************************************************/
 bool_t LctrSetAuthPayloadTimeout(uint16_t handle, uint32_t timeoutMs)
 {
-  lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(handle);
+    lctrConnCtx_t *pCtx = LCTR_GET_CONN_CTX(handle);
 
-  uint32_t pingPeriodMs = lctrCalcPingPeriodMs(pCtx, timeoutMs);
+    uint32_t pingPeriodMs = lctrCalcPingPeriodMs(pCtx, timeoutMs);
 
-  /* Check parameters. */
-  if (pingPeriodMs == timeoutMs)
-  {
-    LL_TRACE_WARN1("!!! Impractical authentication payload timeoutMs=%u for given connection interval", timeoutMs);
-    return FALSE;
-  }
+    /* Check parameters. */
+    if (pingPeriodMs == timeoutMs) {
+        LL_TRACE_WARN1(
+            "!!! Impractical authentication payload timeoutMs=%u for given connection interval",
+            timeoutMs);
+        return FALSE;
+    }
 
-  /* Modify operating parameters. */
-  pCtx->authTimeoutMs = timeoutMs;
-  pCtx->pingPeriodMs  = pingPeriodMs;
+    /* Modify operating parameters. */
+    pCtx->authTimeoutMs = timeoutMs;
+    pCtx->pingPeriodMs = pingPeriodMs;
 
-  /* Encryption started? */
-  if (pCtx->bleData.chan.enc.enaDecrypt)
-  {
-    /* Reset authentication payload timer. */
-    WsfTimerStartMs(&pCtx->tmrAuthTimeout, pCtx->authTimeoutMs);
-    WsfTimerStartMs(&pCtx->tmrPingTimeout, pCtx->pingPeriodMs);
-  }
+    /* Encryption started? */
+    if (pCtx->bleData.chan.enc.enaDecrypt) {
+        /* Reset authentication payload timer. */
+        WsfTimerStartMs(&pCtx->tmrAuthTimeout, pCtx->authTimeoutMs);
+        WsfTimerStartMs(&pCtx->tmrPingTimeout, pCtx->pingPeriodMs);
+    }
 
-  return TRUE;
+    return TRUE;
 }

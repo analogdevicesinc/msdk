@@ -27,32 +27,30 @@
 #ifndef REDOSSERV_H
 #define REDOSSERV_H
 
-
 #include <redostypes.h>
-
 
 /** @brief Type of access requested when opening a block device.
 */
-typedef enum
-{
-    BDEV_O_RDONLY,  /**< Open block device for read access. */
-    BDEV_O_WRONLY,  /**< Open block device for write access. */
-    BDEV_O_RDWR     /**< Open block device for read and write access. */
+typedef enum {
+    BDEV_O_RDONLY, /**< Open block device for read access. */
+    BDEV_O_WRONLY, /**< Open block device for write access. */
+    BDEV_O_RDWR /**< Open block device for read and write access. */
 } BDEVOPENMODE;
 
 REDSTATUS RedOsBDevOpen(uint8_t bVolNum, BDEVOPENMODE mode);
 REDSTATUS RedOsBDevClose(uint8_t bVolNum);
-REDSTATUS RedOsBDevRead(uint8_t bVolNum, uint64_t ullSectorStart, uint32_t ulSectorCount, void *pBuffer);
+REDSTATUS RedOsBDevRead(uint8_t bVolNum, uint64_t ullSectorStart, uint32_t ulSectorCount,
+                        void *pBuffer);
 
 #if REDCONF_READ_ONLY == 0
-REDSTATUS RedOsBDevWrite(uint8_t bVolNum, uint64_t ullSectorStart, uint32_t ulSectorCount, const void *pBuffer);
+REDSTATUS RedOsBDevWrite(uint8_t bVolNum, uint64_t ullSectorStart, uint32_t ulSectorCount,
+                         const void *pBuffer);
 REDSTATUS RedOsBDevFlush(uint8_t bVolNum);
 #endif
 
 /*  Non-standard API: for host machines only.
 */
 REDSTATUS RedOsBDevConfig(uint8_t bVolNum, const char *pszBDevSpec);
-
 
 #if REDCONF_TASK_COUNT > 1U
 REDSTATUS RedOsMutexInit(void);
@@ -81,6 +79,4 @@ void RedOsOutputString(const char *pszString);
 void RedOsAssertFail(const char *pszFileName, uint32_t ulLineNum);
 #endif
 
-
 #endif
-

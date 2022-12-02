@@ -51,17 +51,16 @@ wdxsAuCb_t wdxsAuCb;
 /*************************************************************************************************/
 void wdxsAuSend(dmConnId_t connId)
 {
-  APP_TRACE_INFO0("WDXS: AuSend");
+    APP_TRACE_INFO0("WDXS: AuSend");
 
-  /* if notification enabled */
-  if (AttsCccEnabled(connId, wdxsCb.auCccIdx))
-  {
-    /* send notification */
-    AttsHandleValueNtf(connId, WDXS_AU_HDL, wdxsAuCb.auMsgLen, wdxsAuCb.auMsgBuf);
-    wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_AU_BIT | WDXS_TX_MASK_READY_BIT);
+    /* if notification enabled */
+    if (AttsCccEnabled(connId, wdxsCb.auCccIdx)) {
+        /* send notification */
+        AttsHandleValueNtf(connId, WDXS_AU_HDL, wdxsAuCb.auMsgLen, wdxsAuCb.auMsgBuf);
+        wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_AU_BIT | WDXS_TX_MASK_READY_BIT);
 
-    wdxsAuCb.authState = WDXS_AU_STATE_WAIT_REPLY;
-  }
+        wdxsAuCb.authState = WDXS_AU_STATE_WAIT_REPLY;
+    }
 }
 
 /*************************************************************************************************/
@@ -73,22 +72,22 @@ void wdxsAuSend(dmConnId_t connId)
 /*************************************************************************************************/
 void WdxsAuSecComplete(secAes_t *pAes)
 {
-  uint8_t *p = wdxsAuCb.auMsgBuf;
+    uint8_t *p = wdxsAuCb.auMsgBuf;
 
-  /* Record the hash */
-  memcpy(wdxsAuCb.auHash, pAes->pCiphertext, WDX_AU_HASH_LEN);
+    /* Record the hash */
+    memcpy(wdxsAuCb.auHash, pAes->pCiphertext, WDX_AU_HASH_LEN);
 
-  /* Build challenge message */
-  UINT8_TO_BSTREAM(p, WDX_AU_OP_CHALLENGE);
-  memcpy(p, wdxsAuCb.auRand, WDX_AU_RAND_LEN);
-  wdxsAuCb.auMsgLen = WDX_AU_RAND_LEN + WDX_AU_HDR_LEN;
+    /* Build challenge message */
+    UINT8_TO_BSTREAM(p, WDX_AU_OP_CHALLENGE);
+    memcpy(p, wdxsAuCb.auRand, WDX_AU_RAND_LEN);
+    wdxsAuCb.auMsgLen = WDX_AU_RAND_LEN + WDX_AU_HDR_LEN;
 
-  /* Update State */
-  wdxsAuCb.authState = WDXS_AU_STATE_WAIT_REPLY;
+    /* Update State */
+    wdxsAuCb.authState = WDXS_AU_STATE_WAIT_REPLY;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_AU_BIT | WDXS_TX_MASK_READY_BIT);
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_AU_BIT | WDXS_TX_MASK_READY_BIT);
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 }
 
 /*************************************************************************************************/
@@ -100,26 +99,26 @@ void WdxsAuSecComplete(secAes_t *pAes)
 /*************************************************************************************************/
 static uint8_t wdxsAuProcStart(dmConnId_t connId, uint8_t len, uint8_t *pValue)
 {
-  /* Verify parameter length */
-  if (len != WDX_AU_PARAM_LEN_START)
-  {
-    return ATT_ERR_LENGTH;
-  }
+    /* Verify parameter length */
+    if (len != WDX_AU_PARAM_LEN_START) {
+        return ATT_ERR_LENGTH;
+    }
 
-  /* Parse parameters */
-  BSTREAM_TO_UINT8(wdxsAuCb.authLevel, pValue);
-  BSTREAM_TO_UINT8(wdxsAuCb.authMode, pValue);
+    /* Parse parameters */
+    BSTREAM_TO_UINT8(wdxsAuCb.authLevel, pValue);
+    BSTREAM_TO_UINT8(wdxsAuCb.authMode, pValue);
 
-  /* Generate random number */
-  SecRand(wdxsAuCb.auRand, WDX_AU_RAND_LEN);
+    /* Generate random number */
+    SecRand(wdxsAuCb.auRand, WDX_AU_RAND_LEN);
 
-  /* Encrypt the random number to create the hash */
-  SecAes(wdxsAuCb.sessionKey, wdxsAuCb.auRand, wdxsCb.handlerId, connId, WDXS_EVT_AU_SEC_COMPLETE);
+    /* Encrypt the random number to create the hash */
+    SecAes(wdxsAuCb.sessionKey, wdxsAuCb.auRand, wdxsCb.handlerId, connId,
+           WDXS_EVT_AU_SEC_COMPLETE);
 
-  /* Update State */
-  wdxsAuCb.authState = WDXS_AU_STATE_WAIT_SEC;
+    /* Update State */
+    wdxsAuCb.authState = WDXS_AU_STATE_WAIT_SEC;
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -131,26 +130,23 @@ static uint8_t wdxsAuProcStart(dmConnId_t connId, uint8_t len, uint8_t *pValue)
 /*************************************************************************************************/
 static uint8_t wdxsAuProcReply(uint8_t len, uint8_t *pValue)
 {
-  /* Verify parameter length */
-  if (len != WDX_AU_PARAM_LEN_REPLY)
-  {
-    return ATT_ERR_LENGTH;
-  }
-
-  if (wdxsAuCb.authState == WDXS_AU_STATE_WAIT_REPLY)
-  {
-    /* Verify [0-7] bytes of cipher text against what was sent by client */
-    if (memcmp(wdxsAuCb.auHash, pValue, WDX_AU_HASH_LEN) == 0)
-    {
-      /* Successful challenge */
-      wdxsAuCb.authState = WDXS_AU_STATE_AUTHORIZED;
-      return ATT_SUCCESS;
+    /* Verify parameter length */
+    if (len != WDX_AU_PARAM_LEN_REPLY) {
+        return ATT_ERR_LENGTH;
     }
 
-    return WDX_AU_ST_AUTH_FAILED;
-  }
+    if (wdxsAuCb.authState == WDXS_AU_STATE_WAIT_REPLY) {
+        /* Verify [0-7] bytes of cipher text against what was sent by client */
+        if (memcmp(wdxsAuCb.auHash, pValue, WDX_AU_HASH_LEN) == 0) {
+            /* Successful challenge */
+            wdxsAuCb.authState = WDXS_AU_STATE_AUTHORIZED;
+            return ATT_SUCCESS;
+        }
 
-  return WDX_AU_ST_INVALID_STATE;
+        return WDX_AU_ST_AUTH_FAILED;
+    }
+
+    return WDX_AU_ST_INVALID_STATE;
 }
 
 /*************************************************************************************************/
@@ -162,37 +158,35 @@ static uint8_t wdxsAuProcReply(uint8_t len, uint8_t *pValue)
 /*************************************************************************************************/
 uint8_t wdxsAuWrite(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  uint8_t op;
-  uint8_t status;
+    uint8_t op;
+    uint8_t status;
 
-  /* Sanity check message length */
-  if (len < WDX_AU_HDR_LEN)
-  {
-    return ATT_ERR_LENGTH;
-  }
+    /* Sanity check message length */
+    if (len < WDX_AU_HDR_LEN) {
+        return ATT_ERR_LENGTH;
+    }
 
-  /* Get Operation ID */
-  BSTREAM_TO_UINT8(op, pValue);
-  len -= WDX_AU_HDR_LEN;
+    /* Get Operation ID */
+    BSTREAM_TO_UINT8(op, pValue);
+    len -= WDX_AU_HDR_LEN;
 
-  APP_TRACE_INFO1("WDXS: AuWrite: op=%d", op);
+    APP_TRACE_INFO1("WDXS: AuWrite: op=%d", op);
 
-  switch (op)
-  {
+    switch (op) {
     case WDX_AU_OP_START:
-      status = wdxsAuProcStart(connId, (uint8_t) len, pValue);
-      break;
+        status = wdxsAuProcStart(connId, (uint8_t)len, pValue);
+        break;
 
     case WDX_AU_OP_REPLY:
-      status = wdxsAuProcReply((uint8_t) len, pValue);
-      break;
+        status = wdxsAuProcReply((uint8_t)len, pValue);
+        break;
 
     default:
-      status = ATT_ERR_RANGE;
-      break;
-  }
+        status = ATT_ERR_RANGE;
+        break;
+    }
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -207,12 +201,11 @@ uint8_t wdxsAuWrite(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 /*************************************************************************************************/
 void WdxsAuthenticationCfg(bool_t reqLevel, uint8_t *pKey)
 {
-  wdxsAuCb.reqAuthLevel = reqLevel;
+    wdxsAuCb.reqAuthLevel = reqLevel;
 
-  if (pKey)
-  {
-    memcpy(wdxsAuCb.sessionKey, pKey, WDX_AU_KEY_LEN);
-  }
+    if (pKey) {
+        memcpy(wdxsAuCb.sessionKey, pKey, WDX_AU_KEY_LEN);
+    }
 }
 
 #endif /* WDXS_AU_ENABLED */

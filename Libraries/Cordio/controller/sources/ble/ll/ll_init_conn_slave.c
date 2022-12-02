@@ -45,16 +45,16 @@
 /*************************************************************************************************/
 uint16_t LlInitConnMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-  WSF_ASSERT(pLctrRtCfg);
-  WSF_ASSERT(pFreeMem);
+    WSF_ASSERT(pLctrRtCfg);
+    WSF_ASSERT(pFreeMem);
 
-  uint16_t bytesUsed = 0;
+    uint16_t bytesUsed = 0;
 
-#if (LL_MAX_CONN > 0)       /* connections capable */
-  bytesUsed = LctrInitConnMem(pFreeMem, freeMemSize);
+#if (LL_MAX_CONN > 0) /* connections capable */
+    bytesUsed = LctrInitConnMem(pFreeMem, freeMemSize);
 #endif
 
-  return bytesUsed;
+    return bytesUsed;
 }
 
 /*************************************************************************************************/
@@ -66,10 +66,10 @@ uint16_t LlInitConnMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 /*************************************************************************************************/
 void LlConnSlaveInit(void)
 {
-  WSF_ASSERT(pLctrRtCfg);     /* Runtime configuration must be available. */
+    WSF_ASSERT(pLctrRtCfg); /* Runtime configuration must be available. */
 
-  LmgrConnInit();
-  LctrSlvConnInit();
+    LmgrConnInit();
+    LctrSlvConnInit();
 }
 
 /*************************************************************************************************/
@@ -84,6 +84,6 @@ void LlConnSlaveInit(void)
 /*************************************************************************************************/
 void LlAclRegister(llAclCback_t sendCompCback, llAclCback_t recvPendCback)
 {
-  lmgrPersistCb.sendCompCback = sendCompCback;
-  lmgrPersistCb.recvPendCback = recvPendCback;
+    lmgrPersistCb.sendCompCback = sendCompCback;
+    lmgrPersistCb.recvPendCback = recvPendCback;
 }

@@ -43,56 +43,51 @@
 /*************************************************************************************************/
 bool_t lhciScVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-  uint8_t status = HCI_SUCCESS;
-  uint8_t evtParamLen = 1;      /* default is status field only */
+    uint8_t status = HCI_SUCCESS;
+    uint8_t evtParamLen = 1; /* default is status field only */
 
-  /* Decode and consume command packet. */
-  switch (pHdr->opCode)
-  {
-    /* --- extended device commands --- */
+    /* Decode and consume command packet. */
+    switch (pHdr->opCode) {
+        /* --- extended device commands --- */
 
-    case LHCI_OPCODE_VS_SET_P256_PRIV_KEY:
-    {
-      status = LlSetP256PrivateKey(pBuf);
-      break;
+    case LHCI_OPCODE_VS_SET_P256_PRIV_KEY: {
+        status = LlSetP256PrivateKey(pBuf);
+        break;
     }
 
-    case LHCI_OPCODE_VS_VALIDATE_PUB_KEY_MODE:
-    {
-      status = LlSetValidatePublicKeyMode(pBuf[0]);
-      break;
+    case LHCI_OPCODE_VS_VALIDATE_PUB_KEY_MODE: {
+        status = LlSetValidatePublicKeyMode(pBuf[0]);
+        break;
     }
 
-    /* --- default --- */
+        /* --- default --- */
 
     default:
-      return FALSE;       /* exit dispatcher routine */
-  }
-
-  uint8_t *pEvtBuf;
-
-  /* Encode and send command complete event packet. */
-  if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL)
-  {
-    pBuf  = pEvtBuf;
-    /* pBuf += */ lhciPackCmdCompleteEvtStatus(pBuf, status);
-
-    switch (pHdr->opCode)
-    {
-      /* --- extended device commands --- */
-
-      case LHCI_OPCODE_VS_SET_P256_PRIV_KEY:
-        /* no action */
-        break;
-
-      /* --- default --- */
-
-      default:
-        break;
+        return FALSE; /* exit dispatcher routine */
     }
 
-    lhciSendCmdCmplEvt(pEvtBuf);
-  }
+    uint8_t *pEvtBuf;
 
-  return TRUE;
+    /* Encode and send command complete event packet. */
+    if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL) {
+        pBuf = pEvtBuf;
+        /* pBuf += */ lhciPackCmdCompleteEvtStatus(pBuf, status);
+
+        switch (pHdr->opCode) {
+            /* --- extended device commands --- */
+
+        case LHCI_OPCODE_VS_SET_P256_PRIV_KEY:
+            /* no action */
+            break;
+
+            /* --- default --- */
+
+        default:
+            break;
+        }
+
+        lhciSendCmdCmplEvt(pEvtBuf);
+    }
+
+    return TRUE;
 }

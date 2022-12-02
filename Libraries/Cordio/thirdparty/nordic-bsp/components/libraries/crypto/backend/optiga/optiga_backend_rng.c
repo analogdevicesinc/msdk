@@ -48,23 +48,19 @@
 #include "optiga_backend_rng.h"
 #include "optiga/optiga_crypt.h"
 
-
 /** @brief Minimal size output of random data in OPTIGA Trust X
  *
  * @details See Solution Reference Manual v1.35, section 4.4.3.4
  */
-#define OPTIGA_RNG_MIN_SIZE         (0x8)
-
+#define OPTIGA_RNG_MIN_SIZE (0x8)
 
 /** @brief Maximum size output of random data in OPTIGA Trust X
  *
  * @details See Solution Reference Manual v1.35, section 4.4.3.4
  */
-#define OPTIGA_RNG_MAX_SIZE         (0x100)
+#define OPTIGA_RNG_MAX_SIZE (0x100)
 
-
-ret_code_t nrf_crypto_rng_backend_init(void * const p_context,
-                                       void * const p_temp_buffer)
+ret_code_t nrf_crypto_rng_backend_init(void *const p_context, void *const p_temp_buffer)
 {
     UNUSED_PARAMETER(p_context);
     UNUSED_PARAMETER(p_temp_buffer);
@@ -72,50 +68,40 @@ ret_code_t nrf_crypto_rng_backend_init(void * const p_context,
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_uninit(void * const p_context)
+ret_code_t nrf_crypto_rng_backend_uninit(void *const p_context)
 {
     UNUSED_PARAMETER(p_context);
 
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_vector_generate(void      * const p_context,
-                                                  uint8_t   * const p_target,
-                                                  size_t            size,
-                                                  bool              use_mutex)
+ret_code_t nrf_crypto_rng_backend_vector_generate(void *const p_context, uint8_t *const p_target,
+                                                  size_t size, bool use_mutex)
 {
     UNUSED_PARAMETER(use_mutex);
     UNUSED_PARAMETER(p_context);
 
-    uint8_t backup[OPTIGA_RNG_MIN_SIZE] = {0};
+    uint8_t backup[OPTIGA_RNG_MIN_SIZE] = { 0 };
     optiga_lib_status_t err;
 
-    uint8_t * out_cur = p_target;
+    uint8_t *out_cur = p_target;
 
     size_t size_left = size;
     size_t cur_len = size_left;
 
-    do
-    {
+    do {
         cur_len = size_left > OPTIGA_RNG_MAX_SIZE ? OPTIGA_RNG_MAX_SIZE : size_left;
 
-        if (cur_len < OPTIGA_RNG_MIN_SIZE)
-        {
+        if (cur_len < OPTIGA_RNG_MIN_SIZE) {
             err = optiga_crypt_random(OPTIGA_RNG_TYPE_TRNG, backup, OPTIGA_RNG_MIN_SIZE);
-            if(err != OPTIGA_LIB_SUCCESS)
-            {
+            if (err != OPTIGA_LIB_SUCCESS) {
                 return NRF_ERROR_CRYPTO_INTERNAL;
             }
 
             memcpy(out_cur, backup, cur_len);
-        }
-        else
-        {
+        } else {
             err = optiga_crypt_random(OPTIGA_RNG_TYPE_TRNG, out_cur, cur_len);
-            if (err != OPTIGA_LIB_SUCCESS)
-            {
+            if (err != OPTIGA_LIB_SUCCESS) {
                 return NRF_ERROR_CRYPTO_INTERNAL;
             }
         }
@@ -123,16 +109,13 @@ ret_code_t nrf_crypto_rng_backend_vector_generate(void      * const p_context,
         out_cur += cur_len;
         size_left -= cur_len;
 
-    } while(size_left > 0);
+    } while (size_left > 0);
 
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_reseed(void   * const p_context,
-                                         void         * p_temp_buffer,
-                                         uint8_t      * p_input_data,
-                                         size_t         size)
+ret_code_t nrf_crypto_rng_backend_reseed(void *const p_context, void *p_temp_buffer,
+                                         uint8_t *p_input_data, size_t size)
 {
     UNUSED_PARAMETER(p_context);
     UNUSED_PARAMETER(p_temp_buffer);

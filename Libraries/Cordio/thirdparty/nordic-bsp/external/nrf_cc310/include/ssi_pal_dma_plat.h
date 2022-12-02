@@ -32,17 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
-
 #ifndef _SSI_PAL_DMA_PLAT_H
 #define _SSI_PAL_DMA_PLAT_H
 
 #include <stdint.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -53,8 +49,7 @@ extern "C"
  *
  * @return Virtual start address of contiguous memory
  */
-extern uint32_t SaSi_PalDmaInit(uint32_t  buffSize,
-                   uint32_t  physBuffAddr);
+extern uint32_t SaSi_PalDmaInit(uint32_t buffSize, uint32_t physBuffAddr);
 
 /**
  * @brief   free system resources created in PD_PAL_DmaInit()
@@ -68,5 +63,3 @@ extern void SaSi_PalDmaTerminate(void);
 #endif
 
 #endif
-
-

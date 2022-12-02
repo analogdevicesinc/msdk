@@ -42,12 +42,8 @@ static void dmCisSmActReject(dmCisCcb_t *pCcb, dmCisMsg_t *pMsg);
 **************************************************************************************************/
 
 /* Action set for this module */
-static const dmCisAct_t dmCisActSetSlave[] =
-{
-  dmCisSmActRequest,
-  dmCisSmActAccept,
-  dmCisSmActReject
-};
+static const dmCisAct_t dmCisActSetSlave[] = { dmCisSmActRequest, dmCisSmActAccept,
+                                               dmCisSmActReject };
 
 /*************************************************************************************************/
 /*!
@@ -62,12 +58,12 @@ static const dmCisAct_t dmCisActSetSlave[] =
 /*************************************************************************************************/
 static void dmCisSmActRequest(dmCisCcb_t *pCcb, dmCisMsg_t *pMsg)
 {
-  /* save CIS and ACL handles */
-  pCcb->cisHandle = pMsg->hciLeCisReq.cisHandle;
-  pCcb->aclHandle = pMsg->hciLeCisReq.aclHandle;
+    /* save CIS and ACL handles */
+    pCcb->cisHandle = pMsg->hciLeCisReq.cisHandle;
+    pCcb->aclHandle = pMsg->hciLeCisReq.aclHandle;
 
-  pMsg->hdr.event = DM_CIS_REQ_IND;
-  (*dmCb.cback)((dmEvt_t *) pMsg);
+    pMsg->hdr.event = DM_CIS_REQ_IND;
+    (*dmCb.cback)((dmEvt_t *)pMsg);
 }
 
 /*************************************************************************************************/
@@ -83,17 +79,14 @@ static void dmCisSmActRequest(dmCisCcb_t *pCcb, dmCisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmCisSmActAccept(dmCisCcb_t *pCcb, dmCisMsg_t *pMsg)
 {
-  /* if slave */
-  if (pCcb->role == DM_ROLE_SLAVE)
-  {
-    /* accept CIS */
-    HciLeAcceptCisReqCmd(pMsg->hdr.param);
-  }
-  else
-  {
-    /* deallocate ccb */
-    dmCisCcbDealloc(pCcb);
-  }
+    /* if slave */
+    if (pCcb->role == DM_ROLE_SLAVE) {
+        /* accept CIS */
+        HciLeAcceptCisReqCmd(pMsg->hdr.param);
+    } else {
+        /* deallocate ccb */
+        dmCisCcbDealloc(pCcb);
+    }
 }
 
 /*************************************************************************************************/
@@ -109,15 +102,14 @@ static void dmCisSmActAccept(dmCisCcb_t *pCcb, dmCisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmCisSmActReject(dmCisCcb_t *pCcb, dmCisMsg_t *pMsg)
 {
-  /* if slave */
-  if (pCcb->role == DM_ROLE_SLAVE)
-  {
-    /* reject CIS */
-    HciLeRejectCisReqCmd(pMsg->hdr.param, pMsg->apiReject.reason);
-  }
+    /* if slave */
+    if (pCcb->role == DM_ROLE_SLAVE) {
+        /* reject CIS */
+        HciLeRejectCisReqCmd(pMsg->hdr.param, pMsg->apiReject.reason);
+    }
 
-  /* deallocate ccb */
-  dmCisCcbDealloc(pCcb);
+    /* deallocate ccb */
+    dmCisCcbDealloc(pCcb);
 }
 
 /*************************************************************************************************/
@@ -132,15 +124,14 @@ static void dmCisSmActReject(dmCisCcb_t *pCcb, dmCisMsg_t *pMsg)
 /*************************************************************************************************/
 void DmCisAccept(uint16_t handle)
 {
-  wsfMsgHdr_t *pMsg;
+    wsfMsgHdr_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL)
-  {
-    pMsg->event = DM_CIS_MSG_API_ACCEPT;
-    pMsg->param = handle;
+    if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL) {
+        pMsg->event = DM_CIS_MSG_API_ACCEPT;
+        pMsg->param = handle;
 
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
+        WsfMsgSend(dmCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -156,16 +147,15 @@ void DmCisAccept(uint16_t handle)
 /*************************************************************************************************/
 void DmCisReject(uint16_t handle, uint8_t reason)
 {
-  dmCisApiReject_t *pMsg;
+    dmCisApiReject_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(dmCisApiReject_t))) != NULL)
-  {
-    pMsg->hdr.event = DM_CIS_MSG_API_REJECT;
-    pMsg->hdr.param = handle;
-    pMsg->hdr.status = pMsg->reason = reason;
+    if ((pMsg = WsfMsgAlloc(sizeof(dmCisApiReject_t))) != NULL) {
+        pMsg->hdr.event = DM_CIS_MSG_API_REJECT;
+        pMsg->hdr.param = handle;
+        pMsg->hdr.status = pMsg->reason = reason;
 
-    WsfMsgSend(dmCb.handlerId, pMsg);
-  }
+        WsfMsgSend(dmCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -177,11 +167,11 @@ void DmCisReject(uint16_t handle, uint8_t reason)
 /*************************************************************************************************/
 void DmCisSlaveInit(void)
 {
-  WsfTaskLock();
+    WsfTaskLock();
 
-  dmCisActSet[DM_CIS_ACT_SET_SLAVE] = (dmCisAct_t *) dmCisActSetSlave;
+    dmCisActSet[DM_CIS_ACT_SET_SLAVE] = (dmCisAct_t *)dmCisActSetSlave;
 
-  HciSetLeSupFeat(HCI_LE_SUP_FEAT_CIS_SLAVE, TRUE);
+    HciSetLeSupFeat(HCI_LE_SUP_FEAT_CIS_SLAVE, TRUE);
 
-  WsfTaskUnlock();
+    WsfTaskUnlock();
 }

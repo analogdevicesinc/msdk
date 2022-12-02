@@ -41,11 +41,10 @@
 #include "app_error.h"
 #include "nordic_common.h"
 
-__WEAK void assert_nrf_callback(uint16_t line_num, const uint8_t * file_name)
+__WEAK void assert_nrf_callback(uint16_t line_num, const uint8_t *file_name)
 {
-    assert_info_t assert_info =
-    {
-        .line_num    = line_num,
+    assert_info_t assert_info = {
+        .line_num = line_num,
         .p_file_name = file_name,
     };
     app_error_fault_handler(NRF_FAULT_ID_SDK_ASSERT, 0, (uint32_t)(&assert_info));

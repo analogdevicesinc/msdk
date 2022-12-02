@@ -32,8 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
 #ifndef CRYS_ECPKI_DH_H
 #define CRYS_ECPKI_DH_H
 
@@ -44,13 +42,11 @@
 @ingroup cryptocell_ecpki
 */
 
-
 #include "crys_ecpki_types.h"
 #include "crys_ecpki_error.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /***********************************************************************
@@ -72,14 +68,15 @@ Partner's public key shall be validated before using in this primitive.
 @return A non-zero value on failure as defined crys_ecpki_error.h.
 */
 CIMPORT_C CRYSError_t CRYS_ECDH_SVDP_DH(
-                        CRYS_ECPKI_UserPublKey_t *PartnerPublKey_ptr,       /*!< [in]  Pointer to a partner public key. */
-                        CRYS_ECPKI_UserPrivKey_t *UserPrivKey_ptr,          /*!< [in]  Pointer to a user private key. */
-                        uint8_t              *SharedSecretValue_ptr,    /*!< [out] Pointer to an output buffer that will contain the shared
+    CRYS_ECPKI_UserPublKey_t *PartnerPublKey_ptr, /*!< [in]  Pointer to a partner public key. */
+    CRYS_ECPKI_UserPrivKey_t *UserPrivKey_ptr, /*!< [in]  Pointer to a user private key. */
+    uint8_t
+        *SharedSecretValue_ptr, /*!< [out] Pointer to an output buffer that will contain the shared
                                                secret value. */
-                        uint32_t                 *SharedSecrValSize_ptr,    /*!< [in/out] Pointer to the size of user-passed buffer (in) and
+    uint32_t *SharedSecrValSize_ptr, /*!< [in/out] Pointer to the size of user-passed buffer (in) and
                                                                                           actual size of output of calculated shared secret value
                                               (out). */
-                        CRYS_ECDH_TempData_t     *TempBuff_ptr              /*!< [in]  Pointer to a temporary buffer. */);
+    CRYS_ECDH_TempData_t *TempBuff_ptr /*!< [in]  Pointer to a temporary buffer. */);
 
 #ifdef __cplusplus
 }

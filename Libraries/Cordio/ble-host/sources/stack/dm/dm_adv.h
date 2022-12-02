@@ -37,176 +37,160 @@ extern "C" {
 **************************************************************************************************/
 
 /* DM adv event handler messages */
-enum
-{
-  DM_ADV_MSG_API_CONFIG = DM_MSG_START(DM_ID_ADV),
-  DM_ADV_MSG_API_SET_DATA,
-  DM_ADV_MSG_API_START,
-  DM_ADV_MSG_API_STOP,
-  DM_ADV_MSG_API_REMOVE,
-  DM_ADV_MSG_API_CLEAR,
-  DM_ADV_MSG_API_SET_RAND_ADDR,
-  DM_ADV_MSG_TIMEOUT
+enum {
+    DM_ADV_MSG_API_CONFIG = DM_MSG_START(DM_ID_ADV),
+    DM_ADV_MSG_API_SET_DATA,
+    DM_ADV_MSG_API_START,
+    DM_ADV_MSG_API_STOP,
+    DM_ADV_MSG_API_REMOVE,
+    DM_ADV_MSG_API_CLEAR,
+    DM_ADV_MSG_API_SET_RAND_ADDR,
+    DM_ADV_MSG_TIMEOUT
 };
 
 /* DM adv periodic event handler messages */
-enum
-{
-  DM_ADV_PER_MSG_API_CONFIG = DM_MSG_START(DM_ID_ADV_PER),
-  DM_ADV_PER_MSG_API_SET_DATA,
-  DM_ADV_PER_MSG_API_START,
-  DM_ADV_PER_MSG_API_STOP,
+enum {
+    DM_ADV_PER_MSG_API_CONFIG = DM_MSG_START(DM_ID_ADV_PER),
+    DM_ADV_PER_MSG_API_SET_DATA,
+    DM_ADV_PER_MSG_API_START,
+    DM_ADV_PER_MSG_API_STOP,
 };
 
 /* DM advertising states */
-enum
-{
-  DM_ADV_STATE_IDLE,              /* idle */
-  DM_ADV_STATE_ADVERTISING,       /* advertising */
-  DM_ADV_STATE_STARTING_DIRECTED, /* starting high duty cycle directed advertising */
-  DM_ADV_STATE_STARTING,          /* starting undirected or low duty cycle directed advertising */
-  DM_ADV_STATE_STOPPING_DIRECTED, /* stopping high duty cycle directed advertising */
-  DM_ADV_STATE_STOPPING,          /* stopping undirected or low duty cycle directed advertising */
-  DM_ADV_STATE_REMOVING_SET,      /* removing advertising set */
-  DM_ADV_STATE_CLEARING_SETS      /* clearing all advertising sets */
+enum {
+    DM_ADV_STATE_IDLE, /* idle */
+    DM_ADV_STATE_ADVERTISING, /* advertising */
+    DM_ADV_STATE_STARTING_DIRECTED, /* starting high duty cycle directed advertising */
+    DM_ADV_STATE_STARTING, /* starting undirected or low duty cycle directed advertising */
+    DM_ADV_STATE_STOPPING_DIRECTED, /* stopping high duty cycle directed advertising */
+    DM_ADV_STATE_STOPPING, /* stopping undirected or low duty cycle directed advertising */
+    DM_ADV_STATE_REMOVING_SET, /* removing advertising set */
+    DM_ADV_STATE_CLEARING_SETS /* clearing all advertising sets */
 };
 
 /* DM periodic advertising states */
-enum
-{
-  DM_ADV_PER_STATE_IDLE,
-  DM_ADV_PER_STATE_ADVERTISING,
-  DM_ADV_PER_STATE_STARTING,
-  DM_ADV_PER_STATE_STOPPING
+enum {
+    DM_ADV_PER_STATE_IDLE,
+    DM_ADV_PER_STATE_ADVERTISING,
+    DM_ADV_PER_STATE_STARTING,
+    DM_ADV_PER_STATE_STOPPING
 };
 
 /* Uninitialized HCI handle */
-#define DM_ADV_HCI_HANDLE_NONE    0xFF
+#define DM_ADV_HCI_HANDLE_NONE 0xFF
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /* Data structure for DM_ADV_MSG_API_CONFIG */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 advHandle;
-  uint8_t                 advType;
-  uint8_t                 peerAddrType;
-  bdAddr_t                peerAddr;
-  bool_t                  scanReqNotifEna;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
+    uint8_t advType;
+    uint8_t peerAddrType;
+    bdAddr_t peerAddr;
+    bool_t scanReqNotifEna;
 } dmAdvApiConfig_t;
 
 /* Data structure for DM_ADV_MSG_API_SET_DATA */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 advHandle;
-  uint8_t                 op;
-  uint8_t                 location;
-  uint8_t                 len;
-  uint8_t                 *pData;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
+    uint8_t op;
+    uint8_t location;
+    uint8_t len;
+    uint8_t *pData;
 } dmAdvApiSetData_t;
 
 /* Data structure for DM_ADV_MSG_API_START */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 numSets;
-  uint8_t                 advHandle[DM_NUM_ADV_SETS];
-  uint16_t                duration[DM_NUM_ADV_SETS];
-  uint8_t                 maxEaEvents[DM_NUM_ADV_SETS];
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t numSets;
+    uint8_t advHandle[DM_NUM_ADV_SETS];
+    uint16_t duration[DM_NUM_ADV_SETS];
+    uint8_t maxEaEvents[DM_NUM_ADV_SETS];
 } dmAdvApiStart_t;
 
 /* Data structure for DM_ADV_MSG_API_STOP */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 numSets;
-  uint8_t                 advHandle[DM_NUM_ADV_SETS];
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t numSets;
+    uint8_t advHandle[DM_NUM_ADV_SETS];
 } dmAdvApiStop_t;
 
 /* Data structure for DM_ADV_MSG_API_REMOVE */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 advHandle;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
 } dmAdvApiRemove_t;
 
 /* Data structure for DM_ADV_MSG_API_SET_RAND_ADDR */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 advHandle;
-  bdAddr_t                addr;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
+    bdAddr_t addr;
 } dmAdvApiSetRandAddr_t;
 
 /* Data structure for DM_ADV_PER_MSG_API_CONFIG */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 advHandle;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
 } dmAdvPerApiConfig_t;
 
 /* Data structure for DM_ADV_PER_MSG_API_SET_DATA */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 advHandle;
-  uint8_t                 op;
-  uint8_t                 len;
-  uint8_t                 *pData;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
+    uint8_t op;
+    uint8_t len;
+    uint8_t *pData;
 } dmAdvPerApiSetData_t;
 
 /* Data structure for DM_ADV_PER_MSG_API_START */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 advHandle;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
 } dmAdvPerApiStart_t;
 
 /* Data structure for DM_ADV_PER_MSG_API_STOP */
-typedef struct
-{
-  wsfMsgHdr_t             hdr;
-  uint8_t                 advHandle;
+typedef struct {
+    wsfMsgHdr_t hdr;
+    uint8_t advHandle;
 } dmAdvPerApiStop_t;
 
 /* Union of all adv messages */
-typedef union
-{
-  wsfMsgHdr_t             hdr;
-  dmAdvApiConfig_t        apiConfig;
-  dmAdvApiSetData_t       apiSetData;
-  dmAdvApiStart_t         apiStart;
-  dmAdvApiStop_t          apiStop;
-  dmAdvApiRemove_t        apiRemove;
-  dmAdvApiSetRandAddr_t   apiSetRandAddr;
-  dmAdvPerApiConfig_t     apiPerConfig;
-  dmAdvPerApiSetData_t    apiPerSetData;
-  dmAdvPerApiStart_t      apiPerStart;
-  dmAdvPerApiStop_t       apiPerStop;
-  secAes_t                aes;
+typedef union {
+    wsfMsgHdr_t hdr;
+    dmAdvApiConfig_t apiConfig;
+    dmAdvApiSetData_t apiSetData;
+    dmAdvApiStart_t apiStart;
+    dmAdvApiStop_t apiStop;
+    dmAdvApiRemove_t apiRemove;
+    dmAdvApiSetRandAddr_t apiSetRandAddr;
+    dmAdvPerApiConfig_t apiPerConfig;
+    dmAdvPerApiSetData_t apiPerSetData;
+    dmAdvPerApiStart_t apiPerStart;
+    dmAdvPerApiStop_t apiPerStop;
+    secAes_t aes;
 } dmAdvMsg_t;
 
 /* Action function */
 typedef void (*dmAdvAct_t)(dmAdvMsg_t *pMsg);
 
 /* Control block for advertising module */
-typedef struct
-{
-  wsfTimer_t      advTimer;
-  uint16_t        intervalMin[DM_NUM_ADV_SETS];
-  uint16_t        intervalMax[DM_NUM_ADV_SETS];
-  uint8_t         advType[DM_NUM_ADV_SETS];
-  uint8_t         channelMap[DM_NUM_ADV_SETS];
-  uint8_t         localAddrType;
-  uint8_t         advState[DM_NUM_ADV_SETS];
-  uint16_t        advDuration[DM_NUM_ADV_SETS];
-  bool_t          advEnabled;
-  bdAddr_t        peerAddr[DM_NUM_ADV_SETS];
-  uint8_t         peerAddrType[DM_NUM_ADV_SETS];
+typedef struct {
+    wsfTimer_t advTimer;
+    uint16_t intervalMin[DM_NUM_ADV_SETS];
+    uint16_t intervalMax[DM_NUM_ADV_SETS];
+    uint8_t advType[DM_NUM_ADV_SETS];
+    uint8_t channelMap[DM_NUM_ADV_SETS];
+    uint8_t localAddrType;
+    uint8_t advState[DM_NUM_ADV_SETS];
+    uint16_t advDuration[DM_NUM_ADV_SETS];
+    bool_t advEnabled;
+    bdAddr_t peerAddr[DM_NUM_ADV_SETS];
+    uint8_t peerAddrType[DM_NUM_ADV_SETS];
 } dmAdvCb_t;
 
 extern dmAdvCb_t dmAdvCb;
@@ -263,8 +247,8 @@ void dmAdvConnected(void);
 void dmAdvConnectFailed(void);
 
 /* extended adv directed advertising interface */
-void dmExtAdvStartDirected(dmConnId_t connId, uint8_t advHandle, uint8_t advType,
-                           uint16_t duration, uint8_t maxEaEvents, uint8_t addrType, uint8_t *pAddr);
+void dmExtAdvStartDirected(dmConnId_t connId, uint8_t advHandle, uint8_t advType, uint16_t duration,
+                           uint8_t maxEaEvents, uint8_t addrType, uint8_t *pAddr);
 void dmExtAdvStopDirected(dmConnId_t connId);
 void dmExtAdvConnected(dmConnId_t connId);
 void dmExtAdvConnectFailed(dmConnId_t connId);

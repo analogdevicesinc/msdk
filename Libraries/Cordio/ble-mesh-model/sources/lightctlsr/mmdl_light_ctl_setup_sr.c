@@ -52,19 +52,18 @@
 **************************************************************************************************/
 
 /*! Scenes Setup Server message handler type definition */
-typedef void (*mmdlLightCtlSetupSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlLightCtlSetupSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlLightCtlSetupSrRcvdOpcodes[MMDL_LIGHT_CTL_SETUP_SR_NUM_RCVD_OPCODES] =
-{
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_CTL_DEFAULT_SET_OPCODE) }},
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_CTL_DEFAULT_SET_NO_ACK_OPCODE) }},
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_CTL_TEMP_RANGE_SET_OPCODE) }},
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_CTL_TEMP_RANGE_SET_NO_ACK_OPCODE) }}
+const meshMsgOpcode_t mmdlLightCtlSetupSrRcvdOpcodes[MMDL_LIGHT_CTL_SETUP_SR_NUM_RCVD_OPCODES] = {
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_CTL_DEFAULT_SET_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_CTL_DEFAULT_SET_NO_ACK_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_CTL_TEMP_RANGE_SET_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_CTL_TEMP_RANGE_SET_NO_ACK_OPCODE) } }
 };
 
 /**************************************************************************************************
@@ -72,13 +71,13 @@ const meshMsgOpcode_t mmdlLightCtlSetupSrRcvdOpcodes[MMDL_LIGHT_CTL_SETUP_SR_NUM
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlLightCtlSetupSrHandleMsg_t mmdlLightCtlSetupSrHandleMsg[MMDL_LIGHT_CTL_SETUP_SR_NUM_RCVD_OPCODES] =
-{
-  mmdlLightCtlSetupSrHandleDefaultSet,
-  mmdlLightCtlSetupSrHandleDefaultSetNoAck,
-  mmdlLightCtlSetupSrHandleRangeSet,
-  mmdlLightCtlSetupSrHandleRangeSetNoAck,
-};
+const mmdlLightCtlSetupSrHandleMsg_t
+    mmdlLightCtlSetupSrHandleMsg[MMDL_LIGHT_CTL_SETUP_SR_NUM_RCVD_OPCODES] = {
+        mmdlLightCtlSetupSrHandleDefaultSet,
+        mmdlLightCtlSetupSrHandleDefaultSetNoAck,
+        mmdlLightCtlSetupSrHandleRangeSet,
+        mmdlLightCtlSetupSrHandleRangeSetNoAck,
+    };
 
 /**************************************************************************************************
   Local Functions
@@ -95,45 +94,41 @@ const mmdlLightCtlSetupSrHandleMsg_t mmdlLightCtlSetupSrHandleMsg[MMDL_LIGHT_CTL
 /*************************************************************************************************/
 static bool_t mmdlLightCtlSetupSrProcessDefaultSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  bool_t status = FALSE;
-  mmdlLightCtlSrDesc_t *pDesc;
-  uint8_t *pMsgParam;
-  uint16_t defaultLtness;
-  uint16_t defaultTemp;
-  uint16_t defaultDeltaUV;
+    bool_t status = FALSE;
+    mmdlLightCtlSrDesc_t *pDesc;
+    uint8_t *pMsgParam;
+    uint16_t defaultLtness;
+    uint16_t defaultTemp;
+    uint16_t defaultDeltaUV;
 
-  WSF_ASSERT(pMsg != NULL);
-  WSF_ASSERT(pMsg->pMessageParams != NULL);
+    WSF_ASSERT(pMsg != NULL);
+    WSF_ASSERT(pMsg->pMessageParams != NULL);
 
-  /* Get the model instance descriptor */
-  MmdlLightCtlSrGetDesc(pMsg->elementId, &pDesc);
+    /* Get the model instance descriptor */
+    MmdlLightCtlSrGetDesc(pMsg->elementId, &pDesc);
 
-  if ((pDesc != NULL) && (pDesc->pStoredState != NULL))
-  {
-    /* Set the state value from pMessageParams buffer. */
-    pMsgParam = pMsg->pMessageParams;
-    BSTREAM_TO_UINT16(defaultLtness, pMsgParam);
-    BSTREAM_TO_UINT16(defaultTemp, pMsgParam);
-    BSTREAM_TO_UINT16(defaultDeltaUV, pMsgParam);
+    if ((pDesc != NULL) && (pDesc->pStoredState != NULL)) {
+        /* Set the state value from pMessageParams buffer. */
+        pMsgParam = pMsg->pMessageParams;
+        BSTREAM_TO_UINT16(defaultLtness, pMsgParam);
+        BSTREAM_TO_UINT16(defaultTemp, pMsgParam);
+        BSTREAM_TO_UINT16(defaultDeltaUV, pMsgParam);
 
-    if ((defaultTemp >= MMDL_LIGHT_CTL_TEMP_MIN) &&
-        (defaultTemp <= MMDL_LIGHT_CTL_TEMP_MAX))
-    {
-      status = TRUE;
-      pDesc->pStoredState->defaultTemperature = defaultTemp;
-      pDesc->pStoredState->defaultDeltaUV = defaultDeltaUV;
-      mmdlLightLightnessDefaultSrSetState(pMsg->elementId, defaultLtness,
-                                          MMDL_STATE_UPDATED_BY_CL);
+        if ((defaultTemp >= MMDL_LIGHT_CTL_TEMP_MIN) && (defaultTemp <= MMDL_LIGHT_CTL_TEMP_MAX)) {
+            status = TRUE;
+            pDesc->pStoredState->defaultTemperature = defaultTemp;
+            pDesc->pStoredState->defaultDeltaUV = defaultDeltaUV;
+            mmdlLightLightnessDefaultSrSetState(pMsg->elementId, defaultLtness,
+                                                MMDL_STATE_UPDATED_BY_CL);
 
-      /* Update default values in NVM. */
-      if(pDesc->fNvmSaveStates)
-      {
-        pDesc->fNvmSaveStates(pMsg->elementId);
-      }
+            /* Update default values in NVM. */
+            if (pDesc->fNvmSaveStates) {
+                pDesc->fNvmSaveStates(pMsg->elementId);
+            }
+        }
     }
-  }
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -147,15 +142,14 @@ static bool_t mmdlLightCtlSetupSrProcessDefaultSet(const meshModelMsgRecvEvt_t *
 /*************************************************************************************************/
 void mmdlLightCtlSetupSrHandleRangeSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  uint8_t opStatus = MMDL_RANGE_PROHIBITED;
+    uint8_t opStatus = MMDL_RANGE_PROHIBITED;
 
-  /* Change state */
-  if (mmdlLightCtlSrProcessRangeSet(pMsg, &opStatus) && (opStatus!= MMDL_RANGE_PROHIBITED))
-  {
-    /* Send Status message as a response to the Range Set message */
-    mmdlLightCtlSrSendRangeStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                                  pMsg->recvOnUnicast, opStatus);
-  }
+    /* Change state */
+    if (mmdlLightCtlSrProcessRangeSet(pMsg, &opStatus) && (opStatus != MMDL_RANGE_PROHIBITED)) {
+        /* Send Status message as a response to the Range Set message */
+        mmdlLightCtlSrSendRangeStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                                      pMsg->recvOnUnicast, opStatus);
+    }
 }
 
 /*************************************************************************************************/
@@ -169,9 +163,9 @@ void mmdlLightCtlSetupSrHandleRangeSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightCtlSetupSrHandleRangeSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-  uint8_t opStatus = MMDL_RANGE_PROHIBITED;
+    uint8_t opStatus = MMDL_RANGE_PROHIBITED;
 
-  (void)mmdlLightCtlSrProcessRangeSet(pMsg, &opStatus);
+    (void)mmdlLightCtlSrProcessRangeSet(pMsg, &opStatus);
 }
 
 /*************************************************************************************************/
@@ -185,13 +179,12 @@ void mmdlLightCtlSetupSrHandleRangeSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightCtlSetupSrHandleDefaultSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  /* Change state */
-  if (mmdlLightCtlSetupSrProcessDefaultSet(pMsg))
-  {
-    /* Send Status message as a response to the Default Set message */
-    mmdlLightCtlSrSendDefaultStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                                    pMsg->recvOnUnicast);
-  }
+    /* Change state */
+    if (mmdlLightCtlSetupSrProcessDefaultSet(pMsg)) {
+        /* Send Status message as a response to the Default Set message */
+        mmdlLightCtlSrSendDefaultStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                                        pMsg->recvOnUnicast);
+    }
 }
 
 /*************************************************************************************************/
@@ -205,7 +198,7 @@ void mmdlLightCtlSetupSrHandleDefaultSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightCtlSetupSrHandleDefaultSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-  (void)mmdlLightCtlSetupSrProcessDefaultSet(pMsg);
+    (void)mmdlLightCtlSetupSrProcessDefaultSet(pMsg);
 }
 
 /**************************************************************************************************
@@ -223,31 +216,26 @@ void mmdlLightCtlSetupSrHandleDefaultSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlLightCtlSetupSrHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelMsgRecvEvt_t *pModelMsg;
-  uint8_t opcodeIdx, opcodeSize;
+    meshModelMsgRecvEvt_t *pModelMsg;
+    uint8_t opcodeIdx, opcodeSize;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    if (pMsg->event == MESH_MODEL_EVT_MSG_RECV)
-    {
-      pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        if (pMsg->event == MESH_MODEL_EVT_MSG_RECV) {
+            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-      /* Match the received opcode */
-      for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_CTL_SETUP_SR_NUM_RCVD_OPCODES; opcodeIdx++)
-      {
-        opcodeSize = MESH_OPCODE_SIZE(pModelMsg->opCode);
-        if (!memcmp(&mmdlLightCtlSetupSrRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
-            opcodeSize))
-        {
-          /* Process message */
-          (void)mmdlLightCtlSetupSrHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
+            /* Match the received opcode */
+            for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_CTL_SETUP_SR_NUM_RCVD_OPCODES; opcodeIdx++) {
+                opcodeSize = MESH_OPCODE_SIZE(pModelMsg->opCode);
+                if (!memcmp(&mmdlLightCtlSetupSrRcvdOpcodes[opcodeIdx],
+                            pModelMsg->opCode.opcodeBytes, opcodeSize)) {
+                    /* Process message */
+                    (void)mmdlLightCtlSetupSrHandleMsg[opcodeIdx](
+                        (meshModelMsgRecvEvt_t *)pModelMsg);
+                }
+            }
+        } else {
+            MMDL_TRACE_WARN0("LIGHT CTL SETUP SR: Invalid event message received!");
         }
-      }
     }
-    else
-    {
-      MMDL_TRACE_WARN0("LIGHT CTL SETUP SR: Invalid event message received!");
-    }
-  }
 }

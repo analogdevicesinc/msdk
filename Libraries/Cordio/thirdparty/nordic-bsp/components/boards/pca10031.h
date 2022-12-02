@@ -47,23 +47,26 @@ extern "C" {
 #include "nrf_gpio.h"
 
 // LEDs definitions for PCA10031
-#define LEDS_NUMBER    3
+#define LEDS_NUMBER 3
 
-#define LED_START      21
-#define LED_RGB_RED    21
-#define LED_RGB_GREEN  22
-#define LED_RGB_BLUE   23
-#define LED_STOP       23
+#define LED_START 21
+#define LED_RGB_RED 21
+#define LED_RGB_GREEN 22
+#define LED_RGB_BLUE 23
+#define LED_STOP 23
 
 #define LEDS_ACTIVE_STATE 1
 
-#define LEDS_INV_MASK  LEDS_MASK
+#define LEDS_INV_MASK LEDS_MASK
 
-#define LED_RGB_RED_MASK    (1<<LED_RGB_RED)
-#define LED_RGB_GREEN_MASK  (1<<LED_RGB_GREEN)
-#define LED_RGB_BLUE_MASK   (1<<LED_RGB_BLUE)
+#define LED_RGB_RED_MASK (1 << LED_RGB_RED)
+#define LED_RGB_GREEN_MASK (1 << LED_RGB_GREEN)
+#define LED_RGB_BLUE_MASK (1 << LED_RGB_BLUE)
 
-#define LEDS_LIST { LED_RGB_RED, LED_RGB_GREEN, LED_RGB_BLUE}
+#define LEDS_LIST                                \
+    {                                            \
+        LED_RGB_RED, LED_RGB_GREEN, LED_RGB_BLUE \
+    }
 // defining RGB led as 3 single LEDs
 #define BSP_LED_0 LED_RGB_RED
 #define BSP_LED_1 LED_RGB_GREEN
@@ -71,15 +74,16 @@ extern "C" {
 
 // there are no user buttons
 #define BUTTONS_NUMBER 0
-#define BUTTONS_LIST {}
+#define BUTTONS_LIST \
+    {                \
+    }
 
 // UART connection with J-Link
-#define RX_PIN_NUMBER  11
-#define TX_PIN_NUMBER  9
+#define RX_PIN_NUMBER 11
+#define TX_PIN_NUMBER 9
 #define CTS_PIN_NUMBER 10
 #define RTS_PIN_NUMBER 8
-#define HWFC           true
-
+#define HWFC true
 
 #ifdef __cplusplus
 }

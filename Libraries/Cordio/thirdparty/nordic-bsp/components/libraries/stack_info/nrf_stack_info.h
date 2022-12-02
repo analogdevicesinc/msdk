@@ -58,32 +58,27 @@
 extern "C" {
 #endif
 
-
 /**
  * @brief Top (highest) stack address.
  */
-#define NRF_STACK_INFO_TOP          ((uint32_t)STACK_TOP)
-
+#define NRF_STACK_INFO_TOP ((uint32_t)STACK_TOP)
 
 /**
  * @brief Base (lowest) stack address.
  */
-#define NRF_STACK_INFO_BASE         ((uint32_t)STACK_BASE)
-
+#define NRF_STACK_INFO_BASE ((uint32_t)STACK_BASE)
 
 /**
  * @brief Function to get the current stack pointer value.
  * 
  * @return      Current stack pointer value.
  */
-#define NRF_STACK_INFO_GET_SP()     ((uint32_t)GET_SP())
-
+#define NRF_STACK_INFO_GET_SP() ((uint32_t)GET_SP())
 
 __STATIC_INLINE size_t nrf_stack_info_get_available(void);
 __STATIC_INLINE size_t nrf_stack_info_get_depth(void);
 __STATIC_INLINE bool nrf_stack_info_overflowed(void);
-__STATIC_INLINE bool nrf_stack_info_is_on_stack(void const * const p_address);
-
+__STATIC_INLINE bool nrf_stack_info_is_on_stack(void const *const p_address);
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
@@ -92,18 +87,16 @@ __STATIC_INLINE bool nrf_stack_info_is_on_stack(void const * const p_address);
  * 
  * @return      Number of available bytes on the stack.
  */
- __STATIC_INLINE size_t nrf_stack_info_get_available(void)
+__STATIC_INLINE size_t nrf_stack_info_get_available(void)
 {
     uint32_t sp = NRF_STACK_INFO_GET_SP();
-    if (sp > NRF_STACK_INFO_BASE)
-    {
+    if (sp > NRF_STACK_INFO_BASE) {
         return (size_t)(sp - NRF_STACK_INFO_BASE);
     }
 
     // Stack overflow
     return 0;
 }
-
 
 /**
  * @brief Calculate the current stack depth (occupied space).
@@ -115,7 +108,6 @@ __STATIC_INLINE size_t nrf_stack_info_get_depth(void)
     return (size_t)(NRF_STACK_INFO_TOP - NRF_STACK_INFO_GET_SP());
 }
 
-
 /**
  * @brief Function for checking if the stack is currently overflowed.
  * 
@@ -124,16 +116,14 @@ __STATIC_INLINE size_t nrf_stack_info_get_depth(void)
  * 
  * @return      true if stack is currently overflowed, false otherwise.
  */
- __STATIC_INLINE bool nrf_stack_info_overflowed(void)
- {
-    if (NRF_STACK_INFO_GET_SP() < NRF_STACK_INFO_BASE)
-    {
+__STATIC_INLINE bool nrf_stack_info_overflowed(void)
+{
+    if (NRF_STACK_INFO_GET_SP() < NRF_STACK_INFO_BASE) {
         return true;
     }
 
     return false;
- }
-
+}
 
 /**
  * @brief Function for checking if provided address is located in stack space.
@@ -142,10 +132,10 @@ __STATIC_INLINE size_t nrf_stack_info_get_depth(void)
  *
  * @return      true if address is in stack space, false otherwise.
  */
-__STATIC_INLINE bool nrf_stack_info_is_on_stack(void const * const p_address)
+__STATIC_INLINE bool nrf_stack_info_is_on_stack(void const *const p_address)
 {
-    if (((uint32_t)p_address >= NRF_STACK_INFO_BASE) && ((uint32_t)p_address <  NRF_STACK_INFO_TOP))
-    {
+    if (((uint32_t)p_address >= NRF_STACK_INFO_BASE) &&
+        ((uint32_t)p_address < NRF_STACK_INFO_TOP)) {
         return true;
     }
 

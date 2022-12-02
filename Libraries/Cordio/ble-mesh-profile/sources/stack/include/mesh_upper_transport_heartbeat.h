@@ -27,8 +27,7 @@
 #define MESH_UPPER_TRANSPORT_HEARTBEAT_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************

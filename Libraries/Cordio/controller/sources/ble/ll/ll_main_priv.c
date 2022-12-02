@@ -51,33 +51,25 @@ LctrPerSyncPendFn_t LctrMstPerSyncPending;
  *  Add device to resolving list.
  */
 /*************************************************************************************************/
-uint8_t LlAddDeviceToResolvingList(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr, const uint8_t *pPeerIrk, const uint8_t *pLocalIrk)
+uint8_t LlAddDeviceToResolvingList(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr,
+                                   const uint8_t *pPeerIrk, const uint8_t *pLocalIrk)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlAddDeviceToResolvingList");
+    LL_TRACE_INFO0("### LlApi ###  LlAddDeviceToResolvingList");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (peerAddrType > LL_ADDR_RANDOM))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
-  if ((lmgrCb.advEnabled ||
-       lmgrCb.numExtAdvEnabled ||
-       lmgrCb.numScanEnabled ||
-       lmgrCb.numInitEnabled ||
-       (LctrMstPerSyncPending && LctrMstPerSyncPending()))
-      && lmgrCb.addrResEna)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
-  uint64_t peerIdentityAddr = BstreamToBda64(pPeerIdentityAddr);
-  if (BbBleResListAdd(peerAddrType, peerIdentityAddr, pPeerIrk, pLocalIrk))
-  {
-    return LL_SUCCESS;
-  }
-  else
-  {
-    return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (peerAddrType > LL_ADDR_RANDOM)) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
+    if ((lmgrCb.advEnabled || lmgrCb.numExtAdvEnabled || lmgrCb.numScanEnabled ||
+         lmgrCb.numInitEnabled || (LctrMstPerSyncPending && LctrMstPerSyncPending())) &&
+        lmgrCb.addrResEna) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
+    uint64_t peerIdentityAddr = BstreamToBda64(pPeerIdentityAddr);
+    if (BbBleResListAdd(peerAddrType, peerIdentityAddr, pPeerIrk, pLocalIrk)) {
+        return LL_SUCCESS;
+    } else {
+        return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
+    }
 }
 
 /*************************************************************************************************/
@@ -94,31 +86,22 @@ uint8_t LlAddDeviceToResolvingList(uint8_t peerAddrType, const uint8_t *pPeerIde
 /*************************************************************************************************/
 uint8_t LlRemoveDeviceFromResolvingList(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlRemoveDeviceFromResolvingList");
+    LL_TRACE_INFO0("### LlApi ###  LlRemoveDeviceFromResolvingList");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (peerAddrType > LL_ADDR_RANDOM))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
-  if ((lmgrCb.advEnabled ||
-       lmgrCb.numExtAdvEnabled ||
-       lmgrCb.numScanEnabled ||
-       lmgrCb.numInitEnabled ||
-       (LctrMstPerSyncPending && LctrMstPerSyncPending()))
-      && lmgrCb.addrResEna)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
-  uint64_t peerIdentityAddr = BstreamToBda64(pPeerIdentityAddr);
-  if (BbBleResListRemove(peerAddrType, peerIdentityAddr))
-  {
-    return LL_SUCCESS;
-  }
-  else
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (peerAddrType > LL_ADDR_RANDOM)) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
+    if ((lmgrCb.advEnabled || lmgrCb.numExtAdvEnabled || lmgrCb.numScanEnabled ||
+         lmgrCb.numInitEnabled || (LctrMstPerSyncPending && LctrMstPerSyncPending())) &&
+        lmgrCb.addrResEna) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
+    uint64_t peerIdentityAddr = BstreamToBda64(pPeerIdentityAddr);
+    if (BbBleResListRemove(peerAddrType, peerIdentityAddr)) {
+        return LL_SUCCESS;
+    } else {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 }
 
 /*************************************************************************************************/
@@ -132,21 +115,17 @@ uint8_t LlRemoveDeviceFromResolvingList(uint8_t peerAddrType, const uint8_t *pPe
 /*************************************************************************************************/
 uint8_t LlClearResolvingList(void)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlClearResolvingList");
+    LL_TRACE_INFO0("### LlApi ###  LlClearResolvingList");
 
-  if ((lmgrCb.advEnabled ||
-       lmgrCb.numExtAdvEnabled ||
-       lmgrCb.numScanEnabled ||
-       lmgrCb.numInitEnabled ||
-       (LctrMstPerSyncPending && LctrMstPerSyncPending()))
-      && lmgrCb.addrResEna)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((lmgrCb.advEnabled || lmgrCb.numExtAdvEnabled || lmgrCb.numScanEnabled ||
+         lmgrCb.numInitEnabled || (LctrMstPerSyncPending && LctrMstPerSyncPending())) &&
+        lmgrCb.addrResEna) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  BbBleResListClear();
+    BbBleResListClear();
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -162,11 +141,11 @@ uint8_t LlClearResolvingList(void)
 /*************************************************************************************************/
 uint8_t LlReadResolvingListSize(uint8_t *pSize)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlReadResolvingListSize");
+    LL_TRACE_INFO0("### LlApi ###  LlReadResolvingListSize");
 
-  *pSize = BbBleResListGetSize();
+    *pSize = BbBleResListGetSize();
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -185,24 +164,19 @@ uint8_t LlReadResolvingListSize(uint8_t *pSize)
 /*************************************************************************************************/
 uint8_t LlReadPeerResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr, uint8_t *pRpa)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlReadPeerResolvableAddr");
+    LL_TRACE_INFO0("### LlApi ###  LlReadPeerResolvableAddr");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (addrType > LL_ADDR_RANDOM))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
-  uint64_t identityAddr = BstreamToBda64(pIdentityAddr);
-  uint64_t rpa = 0;
-  if (BbBleResListReadPeer(addrType, identityAddr, &rpa))
-  {
-    Bda64ToBstream(pRpa, rpa);
-    return LL_SUCCESS;
-  }
-  else
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (addrType > LL_ADDR_RANDOM)) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
+    uint64_t identityAddr = BstreamToBda64(pIdentityAddr);
+    uint64_t rpa = 0;
+    if (BbBleResListReadPeer(addrType, identityAddr, &rpa)) {
+        Bda64ToBstream(pRpa, rpa);
+        return LL_SUCCESS;
+    } else {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 }
 
 /*************************************************************************************************/
@@ -221,24 +195,19 @@ uint8_t LlReadPeerResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr,
 /*************************************************************************************************/
 uint8_t LlReadLocalResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr, uint8_t *pRpa)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlReadLocalResolvableAddr");
+    LL_TRACE_INFO0("### LlApi ###  LlReadLocalResolvableAddr");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (addrType > LL_ADDR_RANDOM))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
-  uint64_t identityAddr = BstreamToBda64(pIdentityAddr);
-  uint64_t rpa = 0;
-  if (BbBleResListReadLocal(addrType, identityAddr, &rpa))
-  {
-    Bda64ToBstream(pRpa, rpa);
-    return LL_SUCCESS;
-  }
-  else
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (addrType > LL_ADDR_RANDOM)) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
+    uint64_t identityAddr = BstreamToBda64(pIdentityAddr);
+    uint64_t rpa = 0;
+    if (BbBleResListReadLocal(addrType, identityAddr, &rpa)) {
+        Bda64ToBstream(pRpa, rpa);
+        return LL_SUCCESS;
+    } else {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 }
 
 /*************************************************************************************************/
@@ -256,25 +225,19 @@ uint8_t LlReadLocalResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr
 /*************************************************************************************************/
 uint8_t LlSetAddrResolutionEnable(uint8_t enable)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlSetAddrResolutionEnable");
+    LL_TRACE_INFO0("### LlApi ###  LlSetAddrResolutionEnable");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (enable > 1))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
-  if (lmgrCb.advEnabled ||
-      lmgrCb.numExtAdvEnabled ||
-      lmgrCb.numScanEnabled ||
-      lmgrCb.numInitEnabled ||
-      (LctrMstPerSyncPending && LctrMstPerSyncPending()))
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (enable > 1)) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
+    if (lmgrCb.advEnabled || lmgrCb.numExtAdvEnabled || lmgrCb.numScanEnabled ||
+        lmgrCb.numInitEnabled || (LctrMstPerSyncPending && LctrMstPerSyncPending())) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  lmgrCb.addrResEna = enable;
+    lmgrCb.addrResEna = enable;
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -290,20 +253,19 @@ uint8_t LlSetAddrResolutionEnable(uint8_t enable)
 /*************************************************************************************************/
 uint8_t LlSetResolvablePrivateAddrTimeout(uint16_t rpaTimeout)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlSetResolvablePrivateAddrTimeout");
+    LL_TRACE_INFO0("### LlApi ###  LlSetResolvablePrivateAddrTimeout");
 
-  const uint16_t rpaTimeoutMin = 1;
-  const uint16_t rpaTimeoutMax = 0xA1B8;
+    const uint16_t rpaTimeoutMin = 1;
+    const uint16_t rpaTimeoutMax = 0xA1B8;
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      ((rpaTimeout < rpaTimeoutMin) || (rpaTimeout > rpaTimeoutMax)))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((rpaTimeout < rpaTimeoutMin) || (rpaTimeout > rpaTimeoutMax))) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  LctrPrivSetResPrivAddrTimeout(rpaTimeout);
+    LctrPrivSetResPrivAddrTimeout(rpaTimeout);
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -321,31 +283,23 @@ uint8_t LlSetResolvablePrivateAddrTimeout(uint16_t rpaTimeout)
 /*************************************************************************************************/
 uint8_t LlSetPrivacyMode(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr, uint8_t privMode)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlSetPrivacyMode");
+    LL_TRACE_INFO0("### LlApi ###  LlSetPrivacyMode");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      ((peerAddrType > LL_ADDR_RANDOM) || (privMode > LL_PRIV_MODE_DEVICE)))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((peerAddrType > LL_ADDR_RANDOM) || (privMode > LL_PRIV_MODE_DEVICE))) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if ((lmgrCb.advEnabled ||
-      lmgrCb.numExtAdvEnabled ||
-      lmgrCb.numScanEnabled ||
-      lmgrCb.numInitEnabled ||
-      (LctrMstPerSyncPending && LctrMstPerSyncPending()))
-       && lmgrCb.addrResEna)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((lmgrCb.advEnabled || lmgrCb.numExtAdvEnabled || lmgrCb.numScanEnabled ||
+         lmgrCb.numInitEnabled || (LctrMstPerSyncPending && LctrMstPerSyncPending())) &&
+        lmgrCb.addrResEna) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  uint64_t peerIdentityAddr = BstreamToBda64(pPeerIdentityAddr);
-  if (BbBleResListSetPrivacyMode(peerAddrType, peerIdentityAddr, privMode))
-  {
-    return LL_SUCCESS;
-  }
-  else
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    uint64_t peerIdentityAddr = BstreamToBda64(pPeerIdentityAddr);
+    if (BbBleResListSetPrivacyMode(peerAddrType, peerIdentityAddr, privMode)) {
+        return LL_SUCCESS;
+    } else {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 }

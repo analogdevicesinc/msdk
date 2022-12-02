@@ -20,4 +20,4 @@
  */
 
 #pragma once
-void echoclient_test(void* args);
+void echoclient_test(void *args);

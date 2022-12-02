@@ -28,10 +28,22 @@
 #ifdef DEBUG
 
 /*! \brief      Parameter check. */
-#define PAL_I2S_PARAM_CHECK(expr)           { if (!(expr)) { palI2sCb.state = PAL_I2S_STATE_ERROR; return; } }
+#define PAL_I2S_PARAM_CHECK(expr)                 \
+    {                                             \
+        if (!(expr)) {                            \
+            palI2sCb.state = PAL_I2S_STATE_ERROR; \
+            return;                               \
+        }                                         \
+    }
 
 /*! \brief      Parameter check, with return value. */
-#define PAL_I2S_PARAM_CHECK_RET(expr, rv)   { if (!(expr)) { palI2sCb.state = PAL_I2S_STATE_ERROR; return (rv); } }
+#define PAL_I2S_PARAM_CHECK_RET(expr, rv)         \
+    {                                             \
+        if (!(expr)) {                            \
+            palI2sCb.state = PAL_I2S_STATE_ERROR; \
+            return (rv);                          \
+        }                                         \
+    }
 
 #else
 
@@ -49,9 +61,9 @@
 
 /*! \brief Control block. */
 struct {
-  PalI2sState_t      state:8;       /*!< Current state. */
-  PalI2sCompCback_t  compCback;     /*!< Completion callback. */
-  void               *pCtx;         /*!< Client operation context. */
+    PalI2sState_t state : 8; /*!< Current state. */
+    PalI2sCompCback_t compCback; /*!< Completion callback. */
+    void *pCtx; /*!< Client operation context. */
 } palI2sCb;
 
 /**************************************************************************************************
@@ -69,10 +81,7 @@ struct {
  *  \return     None.
  */
 /*************************************************************************************************/
-void PalI2sInit(void)
-{
-
-}
+void PalI2sInit(void) {}
 
 /*************************************************************************************************/
 /*!
@@ -81,10 +90,7 @@ void PalI2sInit(void)
  *  \return     None.
  */
 /*************************************************************************************************/
-void PalI2sDeInit(void)
-{
-
-}
+void PalI2sDeInit(void) {}
 
 /**************************************************************************************************
   Functions: Control and Status
@@ -101,7 +107,7 @@ void PalI2sDeInit(void)
 /*************************************************************************************************/
 PalI2sState_t PalI2sGetState(void)
 {
-  return palI2sCb.state;
+    return palI2sCb.state;
 }
 
 /*************************************************************************************************/
@@ -113,10 +119,7 @@ PalI2sState_t PalI2sGetState(void)
  *  \return     None.
  */
 /*************************************************************************************************/
-void PalI2sConfig(PalI2sConfig_t *pCfg)
-{
-
-}
+void PalI2sConfig(PalI2sConfig_t *pCfg) {}
 
 /*************************************************************************************************/
 /*!
@@ -125,10 +128,7 @@ void PalI2sConfig(PalI2sConfig_t *pCfg)
  *  \return     None.
  */
 /*************************************************************************************************/
-void PalI2sDeConfig(void)
-{
-
-}
+void PalI2sDeConfig(void) {}
 
 /**************************************************************************************************
   Functions: Data Transfer
@@ -144,10 +144,7 @@ void PalI2sDeConfig(void)
  *  \return     None.
  */
 /*************************************************************************************************/
-void PalI2sReadData(uint8_t *pData, uint16_t len)
-{
-
-}
+void PalI2sReadData(uint8_t *pData, uint16_t len) {}
 
 /*************************************************************************************************/
 /*!
@@ -159,7 +156,4 @@ void PalI2sReadData(uint8_t *pData, uint16_t len)
  *  \return     None.
  */
 /*************************************************************************************************/
-void PalI2sWriteData(const uint8_t *pData, uint16_t len)
-{
-
-}
+void PalI2sWriteData(const uint8_t *pData, uint16_t len) {}

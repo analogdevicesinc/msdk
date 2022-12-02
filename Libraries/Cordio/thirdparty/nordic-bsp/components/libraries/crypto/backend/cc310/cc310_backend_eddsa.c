@@ -41,8 +41,7 @@
 #include "sdk_config.h"
 #include "nordic_common.h"
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO) && \
-    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310) && \
+#if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310) && \
     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_ED25519)
 
 #include <stdint.h>
@@ -58,23 +57,20 @@
 #include "crys_ec_edw_api.h"
 #include "crys_ec_mont_edw_error.h"
 
-
-ret_code_t nrf_crypto_backend_ed25519_sign(
-    void                                  * p_context,
-    nrf_crypto_ecc_private_key_t    const * p_private_key,
-    uint8_t                         const * p_message,
-    size_t                                  message_size,
-    uint8_t                               * p_signature)
+ret_code_t nrf_crypto_backend_ed25519_sign(void *p_context,
+                                           nrf_crypto_ecc_private_key_t const *p_private_key,
+                                           uint8_t const *p_message, size_t message_size,
+                                           uint8_t *p_signature)
 {
-    ret_code_t  result;
+    ret_code_t result;
     CRYSError_t crys_error;
-    bool        mutex_locked;
-    size_t      signature_size = 2 * CRYS_ECEDW_ORD_SIZE_IN_BYTES;
+    bool mutex_locked;
+    size_t signature_size = 2 * CRYS_ECEDW_ORD_SIZE_IN_BYTES;
 
-    nrf_crypto_backend_cc310_ed25519_context_t * p_ctx =
+    nrf_crypto_backend_cc310_ed25519_context_t *p_ctx =
         (nrf_crypto_backend_cc310_ed25519_context_t *)p_context;
 
-    nrf_crypto_backend_ed25519_private_key_t * p_prv =
+    nrf_crypto_backend_ed25519_private_key_t *p_prv =
         (nrf_crypto_backend_ed25519_private_key_t *)p_private_key;
 
     mutex_locked = cc310_backend_mutex_trylock();
@@ -82,13 +78,8 @@ ret_code_t nrf_crypto_backend_ed25519_sign(
 
     cc310_backend_enable();
 
-    crys_error = CRYS_ECEDW_Sign(p_signature,
-                                 &signature_size,
-                                 p_message,
-                                 message_size,
-                                 p_prv->key,
-                                 sizeof(p_prv->key),
-                                 &p_ctx->temp_data);
+    crys_error = CRYS_ECEDW_Sign(p_signature, &signature_size, p_message, message_size, p_prv->key,
+                                 sizeof(p_prv->key), &p_ctx->temp_data);
 
     cc310_backend_disable();
 
@@ -99,21 +90,19 @@ ret_code_t nrf_crypto_backend_ed25519_sign(
     return result;
 }
 
-ret_code_t nrf_crypto_backend_ed25519_verify(
-    void                              * p_context,
-    nrf_crypto_ecc_public_key_t const * p_public_key,
-    uint8_t                     const * p_message,
-    size_t                              message_size,
-    uint8_t                     const * p_signature)
+ret_code_t nrf_crypto_backend_ed25519_verify(void *p_context,
+                                             nrf_crypto_ecc_public_key_t const *p_public_key,
+                                             uint8_t const *p_message, size_t message_size,
+                                             uint8_t const *p_signature)
 {
-    ret_code_t  result;
+    ret_code_t result;
     CRYSError_t crys_error;
-    bool        mutex_locked;
+    bool mutex_locked;
 
-    nrf_crypto_backend_cc310_ed25519_context_t * p_ctx =
+    nrf_crypto_backend_cc310_ed25519_context_t *p_ctx =
         (nrf_crypto_backend_cc310_ed25519_context_t *)p_context;
 
-    nrf_crypto_backend_ed25519_public_key_t * p_pub =
+    nrf_crypto_backend_ed25519_public_key_t *p_pub =
         (nrf_crypto_backend_ed25519_public_key_t *)p_public_key;
 
     mutex_locked = cc310_backend_mutex_trylock();
@@ -121,12 +110,8 @@ ret_code_t nrf_crypto_backend_ed25519_verify(
 
     cc310_backend_enable();
 
-    crys_error = CRYS_ECEDW_Verify(p_signature,
-                                   2 * CRYS_ECEDW_ORD_SIZE_IN_BYTES,
-                                   p_pub->key,
-                                   CRYS_ECEDW_ORD_SIZE_IN_BYTES,
-                                   (uint8_t *)p_message,
-                                   message_size,
+    crys_error = CRYS_ECEDW_Verify(p_signature, 2 * CRYS_ECEDW_ORD_SIZE_IN_BYTES, p_pub->key,
+                                   CRYS_ECEDW_ORD_SIZE_IN_BYTES, (uint8_t *)p_message, message_size,
                                    &p_ctx->temp_data);
 
     cc310_backend_disable();
@@ -137,6 +122,5 @@ ret_code_t nrf_crypto_backend_ed25519_verify(
 
     return result;
 }
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_ED25519)

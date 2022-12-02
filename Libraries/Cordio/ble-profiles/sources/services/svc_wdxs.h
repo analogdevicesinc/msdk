@@ -44,30 +44,29 @@ extern "C" {
  *
  */
 /**@{*/
-#define WDXS_START_HDL               0x240              /*!< \brief Start handle. */
-#define WDXS_END_HDL                 (WDXS_MAX_HDL - 1) /*!< \brief End handle. */
+#define WDXS_START_HDL 0x240 /*!< \brief Start handle. */
+#define WDXS_END_HDL (WDXS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Proprietary Service Handles */
-enum
-{
-  WDXS_SVC_HDL = WDXS_START_HDL,     /*!< \brief Proprietary Service Declaration */
-  WDXS_DC_CH_HDL,                    /*!< \brief WDX Device Configuration Characteristic Declaration */
-  WDXS_DC_HDL,                       /*!< \brief WDX Device Configuration Characteristic Value */
-  WDXS_DC_CH_CCC_HDL,                /*!< \brief WDX Device Configuration CCCD */
-  WDXS_FTC_CH_HDL,                   /*!< \brief WDX File Transfer Control Characteristic Declaration */
-  WDXS_FTC_HDL,                      /*!< \brief WDX File Transfer Control Characteristic Value */
-  WDXS_FTC_CH_CCC_HDL,               /*!< \brief WDX File Transfer Control CCCD */
-  WDXS_FTD_CH_HDL,                   /*!< \brief WDX File Transfer Data Characteristic Declaration */
-  WDXS_FTD_HDL,                      /*!< \brief WDX File Transfer Data Characteristic Value */
-  WDXS_FTD_CH_CCC_HDL,               /*!< \brief WDX File Transfer Data CCCD */
-  WDXS_AU_CH_HDL,                    /*!< \brief WDX Authentication Characteristic Declaration */
-  WDXS_AU_HDL,                       /*!< \brief WDX Authentication Characteristic Value */
-  WDXS_AU_CH_CCC_HDL,                /*!< \brief WDX Authentication CCCD */
-  WDXS_MAX_HDL                       /*!< \brief Maximum handle. */
+enum {
+    WDXS_SVC_HDL = WDXS_START_HDL, /*!< \brief Proprietary Service Declaration */
+    WDXS_DC_CH_HDL, /*!< \brief WDX Device Configuration Characteristic Declaration */
+    WDXS_DC_HDL, /*!< \brief WDX Device Configuration Characteristic Value */
+    WDXS_DC_CH_CCC_HDL, /*!< \brief WDX Device Configuration CCCD */
+    WDXS_FTC_CH_HDL, /*!< \brief WDX File Transfer Control Characteristic Declaration */
+    WDXS_FTC_HDL, /*!< \brief WDX File Transfer Control Characteristic Value */
+    WDXS_FTC_CH_CCC_HDL, /*!< \brief WDX File Transfer Control CCCD */
+    WDXS_FTD_CH_HDL, /*!< \brief WDX File Transfer Data Characteristic Declaration */
+    WDXS_FTD_HDL, /*!< \brief WDX File Transfer Data Characteristic Value */
+    WDXS_FTD_CH_CCC_HDL, /*!< \brief WDX File Transfer Data CCCD */
+    WDXS_AU_CH_HDL, /*!< \brief WDX Authentication Characteristic Declaration */
+    WDXS_AU_HDL, /*!< \brief WDX Authentication Characteristic Value */
+    WDXS_AU_CH_CCC_HDL, /*!< \brief WDX Authentication CCCD */
+    WDXS_MAX_HDL /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -75,10 +74,13 @@ enum
   Global Declarations
 **************************************************************************************************/
 
-extern const uint8_t wdxsDcUuid[ATT_128_UUID_LEN];          /*!< \brief WDX Device Configuration Characteristic */
-extern const uint8_t wdxsFtcUuid[ATT_128_UUID_LEN];         /*!< \brief WDX File Transfer Control Characteristic */
-extern const uint8_t wdxsFtdUuid[ATT_128_UUID_LEN];         /*!< \brief WDX File Transfer Data Characteristic */
-extern const uint8_t wdxsAuUuid[ATT_128_UUID_LEN];          /*!< \brief WDX Authentication Characteristic */
+extern const uint8_t
+    wdxsDcUuid[ATT_128_UUID_LEN]; /*!< \brief WDX Device Configuration Characteristic */
+extern const uint8_t
+    wdxsFtcUuid[ATT_128_UUID_LEN]; /*!< \brief WDX File Transfer Control Characteristic */
+extern const uint8_t
+    wdxsFtdUuid[ATT_128_UUID_LEN]; /*!< \brief WDX File Transfer Data Characteristic */
+extern const uint8_t wdxsAuUuid[ATT_128_UUID_LEN]; /*!< \brief WDX Authentication Characteristic */
 
 /**************************************************************************************************
   Function Declarations
@@ -113,7 +115,7 @@ void SvcWdxsRemoveGroup(void);
 /*************************************************************************************************/
 void SvcWdxsRegister(attsWriteCback_t writeCback);
 
-/*! \} */    /* WIRELESS_DATA_EXCHANGE_SERVICE */
+/*! \} */ /* WIRELESS_DATA_EXCHANGE_SERVICE */
 
 #ifdef __cplusplus
 }

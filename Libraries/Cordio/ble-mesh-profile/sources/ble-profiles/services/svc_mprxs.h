@@ -42,8 +42,8 @@ extern "C" {
  *
  */
 /**@{*/
-#define MPRXS_START_HDL               0x0510               /*!< \brief Start handle. */
-#define MPRXS_END_HDL                 (MPRXS_MAX_HDL - 1)  /*!< \brief End handle. */
+#define MPRXS_START_HDL 0x0510 /*!< \brief Start handle. */
+#define MPRXS_END_HDL (MPRXS_MAX_HDL - 1) /*!< \brief End handle. */
 /**@}*/
 
 /**************************************************************************************************
@@ -51,15 +51,14 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh Proxy Service handles */
-enum
-{
-  MPRXS_SVC_HDL = MPRXS_START_HDL,      /*!< Mesh Proxy Server Service declaration */
-  MPRXS_DIN_CH_HDL,                     /*!< Mesh Proxy Data In characteristic */
-  MPRXS_DIN_HDL,                        /*!< Mesh Proxy Data In */
-  MPRXS_DOUT_CH_HDL,                    /*!< Mesh Proxy Data Out characteristic */
-  MPRXS_DOUT_HDL,                       /*!< Mesh Proxy Data Out */
-  MPRXS_DOUT_CH_CCC_HDL,                /*!< Mesh Proxy Data Out Client Characteristic Configuration Descriptor */
-  MPRXS_MAX_HDL                         /*!< Max handle */
+enum {
+    MPRXS_SVC_HDL = MPRXS_START_HDL, /*!< Mesh Proxy Server Service declaration */
+    MPRXS_DIN_CH_HDL, /*!< Mesh Proxy Data In characteristic */
+    MPRXS_DIN_HDL, /*!< Mesh Proxy Data In */
+    MPRXS_DOUT_CH_HDL, /*!< Mesh Proxy Data Out characteristic */
+    MPRXS_DOUT_HDL, /*!< Mesh Proxy Data Out */
+    MPRXS_DOUT_CH_CCC_HDL, /*!< Mesh Proxy Data Out Client Characteristic Configuration Descriptor */
+    MPRXS_MAX_HDL /*!< Max handle */
 };
 
 /**************************************************************************************************
@@ -95,7 +94,7 @@ void SvcMprxsRemoveGroup(void);
 /*************************************************************************************************/
 void SvcMprxsRegister(attsWriteCback_t writeCback);
 
-/*! \} */    /* MESH_PROXY_PROFILE */
+/*! \} */ /* MESH_PROXY_PROFILE */
 
 #ifdef __cplusplus
 };

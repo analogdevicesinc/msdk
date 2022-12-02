@@ -32,7 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 #ifndef _SSI_SRAM_MAP_H_
 #define _SSI_SRAM_MAP_H_
 
@@ -46,21 +45,20 @@
 */
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*! PKA base address in the PKA SRAM. */
-#define SASI_SRAM_PKA_BASE_ADDRESS                                0x0
+#define SASI_SRAM_PKA_BASE_ADDRESS 0x0
 /*! PKA SRAM size in KB. */
-#define SASI_PKA_SRAM_SIZE_IN_KBYTES                  4
+#define SASI_PKA_SRAM_SIZE_IN_KBYTES 4
 
 /*! RND SRAM address. */
-#define SASI_SRAM_RND_HW_DMA_ADDRESS                              0x0
+#define SASI_SRAM_RND_HW_DMA_ADDRESS 0x0
 /*! Addresses 0K-2KB in SRAM reserved for RND operations. */
-#define SASI_SRAM_RND_MAX_SIZE                                    0x800
+#define SASI_SRAM_RND_MAX_SIZE 0x800
 /*! SRAM maximal size. */
-#define SASI_SRAM_MAX_SIZE                                       0x1000
+#define SASI_SRAM_MAX_SIZE 0x1000
 
 #ifdef __cplusplus
 }

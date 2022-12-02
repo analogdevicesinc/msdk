@@ -80,58 +80,52 @@
 #define MEDS_PROFILE MEDS_ID_BLP
 #endif
 
-
 /**************************************************************************************************
   Configurable Parameters
 **************************************************************************************************/
 
 /*! configurable parameters for advertising */
-static const appAdvCfg_t medsAdvCfg =
-{
-  {60000, 30000,     0},                  /*! Advertising durations in ms */
-  {   48,  1600,     0}                   /*! Advertising intervals in 0.625 ms units */
+static const appAdvCfg_t medsAdvCfg = {
+    { 60000, 30000, 0 }, /*! Advertising durations in ms */
+    { 48, 1600, 0 } /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
-static const appSlaveCfg_t medsSlaveCfg =
-{
-  1,                                      /*! Maximum connections */
+static const appSlaveCfg_t medsSlaveCfg = {
+    1, /*! Maximum connections */
 };
 
 /*! configurable parameters for security */
-static const appSecCfg_t medsSecCfg =
-{
-  DM_AUTH_BOND_FLAG | DM_AUTH_MITM_FLAG,  /*! Authentication and bonding flags */
-  0,                                      /*! Initiator key distribution flags */
-  DM_KEY_DIST_LTK,                        /*! Responder key distribution flags */
-  FALSE,                                  /*! TRUE if Out-of-band pairing data is present */
-  TRUE                                    /*! TRUE to initiate security upon connection */
+static const appSecCfg_t medsSecCfg = {
+    DM_AUTH_BOND_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
+    0, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK, /*! Responder key distribution flags */
+    FALSE, /*! TRUE if Out-of-band pairing data is present */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /*! SMP security parameter configuration */
-const smpCfg_t medsSmpCfg =
-{
-  500,                                    /* 'Repeated attempts' timeout in msec */
-  SMP_IO_DISP_YES_NO,                     /* I/O Capability */
-  7,                                      /* Minimum encryption key length */
-  16,                                     /* Maximum encryption key length */
-  1,                                      /* Attempts to trigger 'repeated attempts' timeout */
-  0,                                      /* Device authentication requirements */
-  64000,                                  /* Maximum repeated attempts timeout in msec */
-  64000,                                  /* Time msec before attemptExp decreases */
-  2                                       /* Repeated attempts multiplier exponent */
+const smpCfg_t medsSmpCfg = {
+    500, /* 'Repeated attempts' timeout in msec */
+    SMP_IO_DISP_YES_NO, /* I/O Capability */
+    7, /* Minimum encryption key length */
+    16, /* Maximum encryption key length */
+    1, /* Attempts to trigger 'repeated attempts' timeout */
+    0, /* Device authentication requirements */
+    64000, /* Maximum repeated attempts timeout in msec */
+    64000, /* Time msec before attemptExp decreases */
+    2 /* Repeated attempts multiplier exponent */
 };
 
 /*! configurable parameters for connection parameter update */
-static const appUpdateCfg_t medsUpdateCfg =
-{
-  0,                                      /*! Connection idle period in ms before attempting
+static const appUpdateCfg_t medsUpdateCfg = {
+    0, /*! Connection idle period in ms before attempting
                                               connection parameter update; set to zero to disable */
-  640,                                    /*! Minimum connection interval in 1.25ms units */
-  800,                                    /*! Maximum connection interval in 1.25ms units */
-  0,                                      /*! Connection latency */
-  900,                                    /*! Supervision timeout in 10ms units */
-  5                                       /*! Number of update attempts before giving up */
+    640, /*! Minimum connection interval in 1.25ms units */
+    800, /*! Maximum connection interval in 1.25ms units */
+    0, /*! Connection latency */
+    900, /*! Supervision timeout in 10ms units */
+    5 /*! Number of update attempts before giving up */
 };
 
 /**************************************************************************************************
@@ -139,31 +133,26 @@ static const appUpdateCfg_t medsUpdateCfg =
 **************************************************************************************************/
 
 /*! advertising data flags */
-static const uint8_t medsAdvDataFlags[] =
-{
-  DM_FLAG_LE_LIMITED_DISC |
-  DM_FLAG_LE_BREDR_NOT_SUP
-};
+static const uint8_t medsAdvDataFlags[] = { DM_FLAG_LE_LIMITED_DISC | DM_FLAG_LE_BREDR_NOT_SUP };
 
 /*! advertising data buffer (value is set in medsSetup) */
 static uint8_t medsAdvDataDisc[HCI_ADV_DATA_LEN];
 
 /*! scan data, discoverable mode */
-static const uint8_t medsScanDataDisc[] =
-{
-  /*! device name */
-  11,                                     /*! length */
-  DM_ADV_TYPE_LOCAL_NAME,                 /*! AD type */
-  'M',
-  'e',
-  'd',
-  ' ',
-  'S',
-  'e',
-  'n',
-  's',
-  'o',
-  'r'
+static const uint8_t medsScanDataDisc[] = {
+    /*! device name */
+    11, /*! length */
+    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
+    'M',
+    'e',
+    'd',
+    ' ',
+    'S',
+    'e',
+    'n',
+    's',
+    'o',
+    'r'
 };
 
 /**************************************************************************************************
@@ -184,16 +173,15 @@ medsCb_t medsCb;
 /*************************************************************************************************/
 static void medsDmCback(dmEvt_t *pDmEvt)
 {
-  dmEvt_t *pMsg;
-  uint16_t  len;
+    dmEvt_t *pMsg;
+    uint16_t len;
 
-  len = DmSizeOfEvt(pDmEvt);
+    len = DmSizeOfEvt(pDmEvt);
 
-  if ((pMsg = WsfMsgAlloc(len)) != NULL)
-  {
-    memcpy(pMsg, pDmEvt, len);
-    WsfMsgSend(medsCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(len)) != NULL) {
+        memcpy(pMsg, pDmEvt, len);
+        WsfMsgSend(medsCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -207,7 +195,7 @@ static void medsDmCback(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 static void medsAttCback(attEvt_t *pEvt)
 {
-   medsCb.pIf->procMsg((wsfMsgHdr_t*) pEvt);
+    medsCb.pIf->procMsg((wsfMsgHdr_t *)pEvt);
 }
 
 /*************************************************************************************************/
@@ -221,23 +209,21 @@ static void medsAttCback(attEvt_t *pEvt)
 /*************************************************************************************************/
 void medsCccCback(attsCccEvt_t *pEvt)
 {
-  attsCccEvt_t  *pMsg;
-  appDbHdl_t    dbHdl;
+    attsCccEvt_t *pMsg;
+    appDbHdl_t dbHdl;
 
-  /* If CCC not set from initialization and there's a device record and currently bonded */
-  if ((pEvt->handle != ATT_HANDLE_NONE) &&
-      ((dbHdl = AppDbGetHdl((dmConnId_t) pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
-      AppCheckBonded((dmConnId_t)pEvt->hdr.param))
-  {
-    /* Store value in device database. */
-    AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
-  }
+    /* If CCC not set from initialization and there's a device record and currently bonded */
+    if ((pEvt->handle != ATT_HANDLE_NONE) &&
+        ((dbHdl = AppDbGetHdl((dmConnId_t)pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
+        AppCheckBonded((dmConnId_t)pEvt->hdr.param)) {
+        /* Store value in device database. */
+        AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
+    }
 
-  if ((pMsg = WsfMsgAlloc(sizeof(attsCccEvt_t))) != NULL)
-  {
-    memcpy(pMsg, pEvt, sizeof(attsCccEvt_t));
-    WsfMsgSend(medsCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(attsCccEvt_t))) != NULL) {
+        memcpy(pMsg, pEvt, sizeof(attsCccEvt_t));
+        WsfMsgSend(medsCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -252,8 +238,8 @@ void medsCccCback(attsCccEvt_t *pEvt)
 /*************************************************************************************************/
 static void medsSetup(wsfMsgHdr_t *pMsg)
 {
-  /* start advertising; automatically set connectable/discoverable mode and bondable mode */
-  AppAdvStart(APP_MODE_AUTO_INIT);
+    /* start advertising; automatically set connectable/discoverable mode and bondable mode */
+    AppAdvStart(APP_MODE_AUTO_INIT);
 }
 
 /*************************************************************************************************/
@@ -267,53 +253,49 @@ static void medsSetup(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void medsBtnCback(uint8_t btn)
 {
-  dmConnId_t      connId;
+    dmConnId_t connId;
 
-  /* button actions when connected */
-  if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE)
-  {
-    switch (btn)
-    {
-      case APP_UI_BTN_1_LONG:
-        AppConnClose(connId);
-        break;
+    /* button actions when connected */
+    if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE) {
+        switch (btn) {
+        case APP_UI_BTN_1_LONG:
+            AppConnClose(connId);
+            break;
 
-      default:
-        /* all other button presses-- send to profile */
-        medsCb.pIf->btn(connId, btn);
-        break;
+        default:
+            /* all other button presses-- send to profile */
+            medsCb.pIf->btn(connId, btn);
+            break;
+        }
     }
-  }
-  /* button actions when not connected */
-  else
-  {
-    switch (btn)
-    {
-      case APP_UI_BTN_1_SHORT:
-        /* start or restart advertising */
-        AppAdvStart(APP_MODE_AUTO_INIT);
-        break;
+    /* button actions when not connected */
+    else {
+        switch (btn) {
+        case APP_UI_BTN_1_SHORT:
+            /* start or restart advertising */
+            AppAdvStart(APP_MODE_AUTO_INIT);
+            break;
 
-      case APP_UI_BTN_1_MED:
-        /* enter discoverable and bondable mode mode */
-        AppSetBondable(TRUE);
-        AppAdvStart(APP_MODE_DISCOVERABLE);
-        break;
+        case APP_UI_BTN_1_MED:
+            /* enter discoverable and bondable mode mode */
+            AppSetBondable(TRUE);
+            AppAdvStart(APP_MODE_DISCOVERABLE);
+            break;
 
-      case APP_UI_BTN_1_LONG:
-        /* clear all bonding info */
-        AppSlaveClearAllBondingInfo();
+        case APP_UI_BTN_1_LONG:
+            /* clear all bonding info */
+            AppSlaveClearAllBondingInfo();
 
-        /* restart advertising */
-        AppAdvStart(APP_MODE_AUTO_INIT);
-        break;
+            /* restart advertising */
+            AppAdvStart(APP_MODE_AUTO_INIT);
+            break;
 
-      default:
-        /* all other button presses-- send to profile */
-        medsCb.pIf->btn(connId, btn);
-        break;
+        default:
+            /* all other button presses-- send to profile */
+            medsCb.pIf->btn(connId, btn);
+            break;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -327,69 +309,67 @@ static void medsBtnCback(uint8_t btn)
 /*************************************************************************************************/
 static void medsProcMsg(wsfMsgHdr_t *pMsg)
 {
-  uint8_t uiEvent = APP_UI_NONE;
+    uint8_t uiEvent = APP_UI_NONE;
 
-  switch(pMsg->event)
-  {
+    switch (pMsg->event) {
     case MEDS_TIMER_IND:
-      break;
+        break;
 
     case DM_RESET_CMPL_IND:
-      AttsCalculateDbHash();
-      medsSetup(pMsg);
-      uiEvent = APP_UI_RESET_CMPL;
-      break;
+        AttsCalculateDbHash();
+        medsSetup(pMsg);
+        uiEvent = APP_UI_RESET_CMPL;
+        break;
 
     case DM_ADV_START_IND:
-      uiEvent = APP_UI_ADV_START;
-      break;
+        uiEvent = APP_UI_ADV_START;
+        break;
 
     case DM_ADV_STOP_IND:
-      uiEvent = APP_UI_ADV_STOP;
-      break;
+        uiEvent = APP_UI_ADV_STOP;
+        break;
 
     case DM_CONN_OPEN_IND:
-      uiEvent = APP_UI_CONN_OPEN;
-      break;
+        uiEvent = APP_UI_CONN_OPEN;
+        break;
 
     case DM_CONN_CLOSE_IND:
-      uiEvent = APP_UI_CONN_CLOSE;
-      break;
+        uiEvent = APP_UI_CONN_CLOSE;
+        break;
 
     case DM_SEC_PAIR_CMPL_IND:
-      uiEvent = APP_UI_SEC_PAIR_CMPL;
-      break;
+        uiEvent = APP_UI_SEC_PAIR_CMPL;
+        break;
 
     case DM_SEC_PAIR_FAIL_IND:
-      uiEvent = APP_UI_SEC_PAIR_FAIL;
-      break;
+        uiEvent = APP_UI_SEC_PAIR_FAIL;
+        break;
 
     case DM_SEC_ENCRYPT_IND:
-      uiEvent = APP_UI_SEC_ENCRYPT;
-      break;
+        uiEvent = APP_UI_SEC_ENCRYPT;
+        break;
 
     case DM_SEC_ENCRYPT_FAIL_IND:
-      uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
-      break;
+        uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
+        break;
 
     case DM_SEC_AUTH_REQ_IND:
-      AppHandlePasskey(&((dmEvt_t *)pMsg)->authReq);
-      break;
+        AppHandlePasskey(&((dmEvt_t *)pMsg)->authReq);
+        break;
 
     case DM_PRIV_CLEAR_RES_LIST_IND:
-      APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->status);
-      break;
+        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->status);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  medsCb.pIf->procMsg(pMsg);
+    medsCb.pIf->procMsg(pMsg);
 
-  if (uiEvent != APP_UI_NONE)
-  {
-    AppUiAction(uiEvent);
-  }
+    if (uiEvent != APP_UI_NONE) {
+        AppUiAction(uiEvent);
+    }
 }
 
 /*************************************************************************************************/
@@ -403,26 +383,26 @@ static void medsProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MedsHandlerInit(wsfHandlerId_t handlerId)
 {
-  APP_TRACE_INFO0("MedsHandlerInit");
+    APP_TRACE_INFO0("MedsHandlerInit");
 
-  /* store handler ID */
-  medsCb.handlerId = handlerId;
+    /* store handler ID */
+    medsCb.handlerId = handlerId;
 
-  /* Set configuration pointers */
-  pAppSlaveCfg = (appSlaveCfg_t *) &medsSlaveCfg;
-  pAppAdvCfg = (appAdvCfg_t *) &medsAdvCfg;
-  pAppSecCfg = (appSecCfg_t *) &medsSecCfg;
-  pAppUpdateCfg = (appUpdateCfg_t *) &medsUpdateCfg;
+    /* Set configuration pointers */
+    pAppSlaveCfg = (appSlaveCfg_t *)&medsSlaveCfg;
+    pAppAdvCfg = (appAdvCfg_t *)&medsAdvCfg;
+    pAppSecCfg = (appSecCfg_t *)&medsSecCfg;
+    pAppUpdateCfg = (appUpdateCfg_t *)&medsUpdateCfg;
 
-  /* Set stack configuration pointers */
-  pSmpCfg = (smpCfg_t *) &medsSmpCfg;
+    /* Set stack configuration pointers */
+    pSmpCfg = (smpCfg_t *)&medsSmpCfg;
 
-  /* Initialize application framework */
-  AppSlaveInit();
-  AppServerInit();
+    /* Initialize application framework */
+    AppSlaveInit();
+    AppServerInit();
 
-  /* Set default profile to use */
-  MedsSetProfile(MEDS_PROFILE);
+    /* Set default profile to use */
+    MedsSetProfile(MEDS_PROFILE);
 }
 
 /*************************************************************************************************/
@@ -437,29 +417,26 @@ void MedsHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MedsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  if (pMsg != NULL)
-  {
-    APP_TRACE_INFO1("Meds got evt %d", pMsg->event);
+    if (pMsg != NULL) {
+        APP_TRACE_INFO1("Meds got evt %d", pMsg->event);
 
-    /* process ATT messages */
-    if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END)
-    {
-      /* process server-related ATT messages */
-      AppServerProcAttMsg(pMsg);
+        /* process ATT messages */
+        if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
+            /* process server-related ATT messages */
+            AppServerProcAttMsg(pMsg);
+        }
+        /* process DM messages */
+        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+            /* process advertising and connection-related messages */
+            AppSlaveProcDmMsg((dmEvt_t *)pMsg);
+
+            /* process security-related messages */
+            AppSlaveSecProcDmMsg((dmEvt_t *)pMsg);
+        }
+
+        /* perform profile and user interface-related operations */
+        medsProcMsg(pMsg);
     }
-    /* process DM messages */
-    else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END)
-    {
-      /* process advertising and connection-related messages */
-      AppSlaveProcDmMsg((dmEvt_t *) pMsg);
-
-      /* process security-related messages */
-      AppSlaveSecProcDmMsg((dmEvt_t *) pMsg);
-    }
-
-    /* perform profile and user interface-related operations */
-    medsProcMsg(pMsg);
-  }
 }
 
 /*************************************************************************************************/
@@ -471,35 +448,36 @@ void MedsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MedsStart(void)
 {
-  /* Register for stack callbacks */
-  DmRegister(medsDmCback);
-  DmConnRegister(DM_CLIENT_ID_APP, medsDmCback);
-  AttRegister(medsAttCback);
-  AttConnRegister(AppServerConnCback);
+    /* Register for stack callbacks */
+    DmRegister(medsDmCback);
+    DmConnRegister(DM_CLIENT_ID_APP, medsDmCback);
+    AttRegister(medsAttCback);
+    AttConnRegister(AppServerConnCback);
 
-  /* Register for app framework callbacks */
-  AppUiBtnRegister(medsBtnCback);
+    /* Register for app framework callbacks */
+    AppUiBtnRegister(medsBtnCback);
 
-  /* Initialize attribute server database */
-  SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
-  SvcCoreAddGroup();
-  SvcDisAddGroup();
+    /* Initialize attribute server database */
+    SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
+    SvcCoreAddGroup();
+    SvcDisAddGroup();
 
-  /* set advertising and scan response data for discoverable mode */
-  AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, 0, (uint8_t *) medsAdvDataDisc);
-  AppAdvSetAdValue(APP_ADV_DATA_DISCOVERABLE, DM_ADV_TYPE_FLAGS, sizeof(medsAdvDataFlags),
-                   (uint8_t *) medsAdvDataFlags);
-  AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(medsScanDataDisc), (uint8_t *) medsScanDataDisc);
+    /* set advertising and scan response data for discoverable mode */
+    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, 0, (uint8_t *)medsAdvDataDisc);
+    AppAdvSetAdValue(APP_ADV_DATA_DISCOVERABLE, DM_ADV_TYPE_FLAGS, sizeof(medsAdvDataFlags),
+                     (uint8_t *)medsAdvDataFlags);
+    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(medsScanDataDisc),
+                  (uint8_t *)medsScanDataDisc);
 
-  /* set advertising and scan response data for connectable mode */
-  AppAdvSetData(APP_ADV_DATA_CONNECTABLE, 0, NULL);
-  AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, 0, NULL);
+    /* set advertising and scan response data for connectable mode */
+    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, 0, NULL);
+    AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, 0, NULL);
 
-  /* call profile start function */
-  medsCb.pIf->start();
+    /* call profile start function */
+    medsCb.pIf->start();
 
-  /* Reset the device */
-  DmDevReset();
+    /* Reset the device */
+    DmDevReset();
 }
 
 /*************************************************************************************************/
@@ -516,41 +494,39 @@ void MedsStart(void)
 /*************************************************************************************************/
 void MedsSetProfile(uint8_t profile)
 {
-  switch (profile)
-  {
+    switch (profile) {
 #if MEDS_BLP_INCLUDED == TRUE
     case MEDS_ID_BLP:
-      medsCb.pIf = &medsBlpIf;
-      break;
+        medsCb.pIf = &medsBlpIf;
+        break;
 #endif
 #if MEDS_WSP_INCLUDED == TRUE
     case MEDS_ID_WSP:
-      medsCb.pIf = &medsWspIf;
-      break;
+        medsCb.pIf = &medsWspIf;
+        break;
 #endif
 #if MEDS_HTP_INCLUDED == TRUE
     case MEDS_ID_HTP:
-      medsCb.pIf = &medsHtpIf;
-      break;
+        medsCb.pIf = &medsHtpIf;
+        break;
 #endif
 #if MEDS_PLX_INCLUDED == TRUE
     case MEDS_ID_PLX:
-      medsCb.pIf = &medsPlxIf;
-      break;
+        medsCb.pIf = &medsPlxIf;
+        break;
 #endif
 #if MEDS_GLP_INCLUDED == TRUE
     case MEDS_ID_GLP:
-      medsCb.pIf = &medsGlpIf;
-      break;
+        medsCb.pIf = &medsGlpIf;
+        break;
 #endif
     default:
-      APP_TRACE_WARN1("MedsSetProfile invalid profile:%d", profile);
-      medsCb.pIf = NULL;
-      break;
-  }
+        APP_TRACE_WARN1("MedsSetProfile invalid profile:%d", profile);
+        medsCb.pIf = NULL;
+        break;
+    }
 
-  if ((medsCb.pIf != NULL) && (medsCb.pIf->init != NULL))
-  {
-    medsCb.pIf->init();
-  }
+    if ((medsCb.pIf != NULL) && (medsCb.pIf->init != NULL)) {
+        medsCb.pIf->init();
+    }
 }

@@ -27,19 +27,17 @@
 #define MESH_PRV_COMMON_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
 
-void meshPrvGenerateRandomAlphanumeric(uint8_t* pOutArray, uint8_t size);
+void meshPrvGenerateRandomAlphanumeric(uint8_t *pOutArray, uint8_t size);
 uint32_t meshPrvGenerateRandomNumeric(uint8_t digits);
 bool_t meshPrvIsAlphanumericArray(uint8_t *pArray, uint8_t size);
-void meshPrvPackInOutOobToAuthArray(uint8_t* pOutOobArray16B,
-                                    meshPrvInOutOobData_t oobData,
+void meshPrvPackInOutOobToAuthArray(uint8_t *pOutOobArray16B, meshPrvInOutOobData_t oobData,
                                     uint8_t oobSize);
 
 #ifdef __cplusplus

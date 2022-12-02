@@ -39,13 +39,13 @@
 void PalCodecReadLocalSupportedCodecs(uint8_t *pNumStd, AudioStdCodecInfo_t stdCodecs[],
                                       uint8_t *pNumVs, AudioVsCodecInfo_t vsCodecs[])
 {
-  if (*pNumStd > 1) {
-    *pNumStd = 1;
-    stdCodecs[0].codecId = HCI_ID_LC3;
-  }
+    if (*pNumStd > 1) {
+        *pNumStd = 1;
+        stdCodecs[0].codecId = HCI_ID_LC3;
+    }
 
-  /* No VS codecs. */
-  *pNumVs = 0;
+    /* No VS codecs. */
+    *pNumVs = 0;
 }
 
 /*************************************************************************************************/
@@ -60,16 +60,17 @@ void PalCodecReadLocalSupportedCodecs(uint8_t *pNumStd, AudioStdCodecInfo_t stdC
  * \return  TRUE if valid, FALSE otherwise.
  */
 /*************************************************************************************************/
-bool_t PalCodecReadLocalSupportedCodecCapabilities(uint8_t codingFmt, uint16_t compId, uint16_t vsCodecId, PalAudioDir_t dir)
+bool_t PalCodecReadLocalSupportedCodecCapabilities(uint8_t codingFmt, uint16_t compId,
+                                                   uint16_t vsCodecId, PalAudioDir_t dir)
 {
-  switch (codingFmt) {
+    switch (codingFmt) {
     case HCI_ID_LC3:
-      return TRUE;
+        return TRUE;
 
     case HCI_ID_VS:
     default:
-      return FALSE;
-  }
+        return FALSE;
+    }
 }
 
 /*************************************************************************************************/
@@ -84,29 +85,30 @@ bool_t PalCodecReadLocalSupportedCodecCapabilities(uint8_t codingFmt, uint16_t c
  * \return  TRUE if valid, FALSE otherwise.
  */
 /*************************************************************************************************/
-bool_t PalCodecReadLocalSupportedControllerDelay(uint8_t codingFmt, uint16_t compId, uint16_t vsCodecId, PalAudioDir_t dir,
-    uint32_t *pMinDly, uint32_t *pMaxDly)
+bool_t PalCodecReadLocalSupportedControllerDelay(uint8_t codingFmt, uint16_t compId,
+                                                 uint16_t vsCodecId, PalAudioDir_t dir,
+                                                 uint32_t *pMinDly, uint32_t *pMaxDly)
 {
-  switch (codingFmt) {
+    switch (codingFmt) {
     case HCI_ID_LC3:
-      switch (dir) {
+        switch (dir) {
         case PAL_CODEC_DIR_INPUT:
-          *pMinDly = 1000;
-          *pMaxDly = 2000;
-          break;
+            *pMinDly = 1000;
+            *pMaxDly = 2000;
+            break;
         case PAL_CODEC_DIR_OUTPUT:
-          *pMinDly = 100;
-          *pMaxDly = 200;
-          break;
+            *pMinDly = 100;
+            *pMaxDly = 200;
+            break;
         default:
-          return HCI_ERR_UNSUP_FEAT;
-      }
-      return TRUE;
+            return HCI_ERR_UNSUP_FEAT;
+        }
+        return TRUE;
 
     case HCI_ID_VS:
     default:
-      return FALSE;
-  }
+        return FALSE;
+    }
 }
 
 /*************************************************************************************************/
@@ -121,6 +123,6 @@ bool_t PalCodecReadLocalSupportedControllerDelay(uint8_t codingFmt, uint16_t com
 /*************************************************************************************************/
 bool_t PalCodecConfigureDataPath(PalAudioDir_t dir, uint8_t dataPathId)
 {
-  /* TODO needs implementation. */
-  return TRUE;
+    /* TODO needs implementation. */
+    return TRUE;
 }

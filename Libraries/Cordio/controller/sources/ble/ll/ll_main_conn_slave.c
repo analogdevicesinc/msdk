@@ -40,30 +40,26 @@
 /*************************************************************************************************/
 uint8_t LlReadRemoteFeat(uint16_t handle)
 {
-  lctrMsgHdr_t *pMsg;
+    lctrMsgHdr_t *pMsg;
 
-  LL_TRACE_INFO1("### LlApi ###  LlReadRemoteFeat, handle=%u", handle);
+    LL_TRACE_INFO1("### LlApi ###  LlReadRemoteFeat, handle=%u", handle);
 
-  if (LctrIsProcActPended(handle, LCTR_CONN_MSG_API_REMOTE_FEATURE) == TRUE)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrIsProcActPended(handle, LCTR_CONN_MSG_API_REMOTE_FEATURE) == TRUE) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-       ((handle >= pLctrRtCfg->maxConn) ||
-       !LctrIsConnHandleEnabled(handle)))
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->handle = handle;
-    pMsg->dispId = LCTR_DISP_CONN;
-    pMsg->event  = LCTR_CONN_MSG_API_REMOTE_FEATURE;
+    if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->handle = handle;
+        pMsg->dispId = LCTR_DISP_CONN;
+        pMsg->event = LCTR_CONN_MSG_API_REMOTE_FEATURE;
 
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }

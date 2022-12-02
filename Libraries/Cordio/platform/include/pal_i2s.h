@@ -39,41 +39,37 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Operational states. */
-typedef enum
-{
-  PAL_I2S_STATE_UNINIT = 0,         /*!< Uninitialized state. */
-  PAL_I2S_STATE_ERROR  = 0,         /*!< Error state. */
-  PAL_I2S_STATE_IDLE,               /*!< Initialized state. */
-  PAL_I2S_STATE_READY,              /*!< Configured state. */
-  PAL_I2S_STATE_BUSY                /*!< Busy state. */
+typedef enum {
+    PAL_I2S_STATE_UNINIT = 0, /*!< Uninitialized state. */
+    PAL_I2S_STATE_ERROR = 0, /*!< Error state. */
+    PAL_I2S_STATE_IDLE, /*!< Initialized state. */
+    PAL_I2S_STATE_READY, /*!< Configured state. */
+    PAL_I2S_STATE_BUSY /*!< Busy state. */
 } PalI2sState_t;
 
 /*! \brief      Call signature for next buffer pointer. */
 typedef void (*PalI2sCompCback_t)(void *);
 
 /*! \brief      I2S modes. */
-typedef enum
-{
-  PAL_I2S_MODE_MASTER,              /*!< Master mode. */
-  PAL_I2S_MODE_SLAVE                /*!< Slave mode. */
+typedef enum {
+    PAL_I2S_MODE_MASTER, /*!< Master mode. */
+    PAL_I2S_MODE_SLAVE /*!< Slave mode. */
 } PalI2sMode_t;
 
 /*! \brief      Channels. */
-typedef enum
-{
-  PAL_I2S_CH_LEFT_BIT   = (1 << 0), /*!< Left channel bit. */
-  PAL_I2S_CH_RIGHT_BIT  = (1 << 1)  /*!< Right channel bit. */
+typedef enum {
+    PAL_I2S_CH_LEFT_BIT = (1 << 0), /*!< Left channel bit. */
+    PAL_I2S_CH_RIGHT_BIT = (1 << 1) /*!< Right channel bit. */
 } PalI2sChanMask_t;
 
 /*! \brief      I2S configuration. */
-typedef struct
-{
-  PalI2sMode_t      mode:8;         /*!< Mode of operation. */
-  uint32_t          rate;           /*!< Sample rate. */
-  uint8_t           bitDepth;       /*!< Sample bit depth. */
-  uint8_t           chan;           /*!< Enabled channels. */
-  PalI2sCompCback_t frmCback;       /*!< Get next read buffer callback. */
-  void              *pCtx;          /*!< Opaque operation context. */
+typedef struct {
+    PalI2sMode_t mode : 8; /*!< Mode of operation. */
+    uint32_t rate; /*!< Sample rate. */
+    uint8_t bitDepth; /*!< Sample bit depth. */
+    uint8_t chan; /*!< Enabled channels. */
+    PalI2sCompCback_t frmCback; /*!< Get next read buffer callback. */
+    void *pCtx; /*!< Opaque operation context. */
 } PalI2sConfig_t;
 
 /**************************************************************************************************
@@ -93,7 +89,7 @@ void PalI2sDeConfig(void);
 void PalI2sReadData(uint8_t *pData, uint16_t len);
 void PalI2sWriteData(const uint8_t *pData, uint16_t len);
 
-/*! \} */    /* PAL_I2S */
+/*! \} */ /* PAL_I2S */
 
 #ifdef __cplusplus
 };

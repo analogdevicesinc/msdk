@@ -56,36 +56,36 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_pdm_config_t   nrf_drv_pdm_config_t;
+typedef nrfx_pdm_config_t nrf_drv_pdm_config_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_pdm_evt_t      nrf_drv_pdm_evt_t;
+typedef nrfx_pdm_evt_t nrf_drv_pdm_evt_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_PDM_MAX_BUFFER_SIZE         NRFX_PDM_MAX_BUFFER_SIZE
+#define NRF_PDM_MAX_BUFFER_SIZE NRFX_PDM_MAX_BUFFER_SIZE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_PDM_DEFAULT_CONFIG      NRFX_PDM_DEFAULT_CONFIG
+#define NRF_DRV_PDM_DEFAULT_CONFIG NRFX_PDM_DEFAULT_CONFIG
 
 /** @brief Macro for forwarding the new implementation. */
-#define PDM_NO_ERROR                    NRFX_PDM_NO_ERROR
+#define PDM_NO_ERROR NRFX_PDM_NO_ERROR
 /** @brief Macro for forwarding the new implementation. */
-#define PDM_ERROR_OVERFLOW              NRFX_PDM_ERROR_OVERFLOW
+#define PDM_ERROR_OVERFLOW NRFX_PDM_ERROR_OVERFLOW
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pdm_error_t             nrfx_pdm_error_t
+#define nrf_drv_pdm_error_t nrfx_pdm_error_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pdm_event_handler_t     nrfx_pdm_event_handler_t
+#define nrf_drv_pdm_event_handler_t nrfx_pdm_event_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pdm_uninit              nrfx_pdm_uninit
+#define nrf_drv_pdm_uninit nrfx_pdm_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pdm_task_address_get    nrfx_pdm_task_address_get
+#define nrf_drv_pdm_task_address_get nrfx_pdm_task_address_get
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pdm_enable_check        nrfx_pdm_enable_check
+#define nrf_drv_pdm_enable_check nrfx_pdm_enable_check
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pdm_start               nrfx_pdm_start
+#define nrf_drv_pdm_start nrfx_pdm_start
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pdm_stop                nrfx_pdm_stop
+#define nrf_drv_pdm_stop nrfx_pdm_stop
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_pdm_buffer_set          nrfx_pdm_buffer_set
+#define nrf_drv_pdm_buffer_set nrfx_pdm_buffer_set
 
 /**
  * @brief Function for initializing the PDM interface.
@@ -97,11 +97,10 @@ typedef nrfx_pdm_evt_t      nrf_drv_pdm_evt_t;
  * @retval NRF_ERROR_INVALID_STATE If the driver is already initialized.
  * @retval NRF_ERROR_INVALID_PARAM If invalid parameters were specified.
  */
-__STATIC_INLINE ret_code_t nrf_drv_pdm_init(nrf_drv_pdm_config_t const * p_config,
-                                            nrf_drv_pdm_event_handler_t  event_handler)
+__STATIC_INLINE ret_code_t nrf_drv_pdm_init(nrf_drv_pdm_config_t const *p_config,
+                                            nrf_drv_pdm_event_handler_t event_handler)
 {
-    if (p_config == NULL)
-    {
+    if (p_config == NULL) {
         return NRFX_ERROR_INVALID_PARAM;
     }
     return nrfx_pdm_init(p_config, event_handler);

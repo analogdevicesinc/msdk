@@ -34,5 +34,5 @@
 /*************************************************************************************************/
 void LhciChannelSelection2Init(void)
 {
-  lhciEvtTbl[LHCI_MSG_CONN_CS2] = lhciConnCsEncodeEvtPkt;
+    lhciEvtTbl[LHCI_MSG_CONN_CS2] = lhciConnCsEncodeEvtPkt;
 }

@@ -22,7 +22,6 @@
 #include <mdct.c>
 #include "ctypes.h"
 
-
 static PyObject *mdct_forward_py(PyObject *m, PyObject *args)
 {
     PyObject *x_obj, *xd_obj, *y_obj, *d_obj;

@@ -34,16 +34,11 @@
 /*! Immediate Alert service characteristics for discovery */
 
 /*! Alert level */
-const attcDiscChar_t fmplIasAl =
-{
-  attAlChUuid,
-  ATTC_SET_REQUIRED
-};
+const attcDiscChar_t fmplIasAl = { attAlChUuid, ATTC_SET_REQUIRED };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *fmplIasDiscCharList[] =
-{
-  &fmplIasAl                  /* Alert level */
+static const attcDiscChar_t *fmplIasDiscCharList[] = {
+    &fmplIasAl /* Alert level */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
@@ -64,8 +59,8 @@ WSF_CT_ASSERT(FMPL_IAS_HDL_LIST_LEN == ((sizeof(fmplIasDiscCharList) / sizeof(at
 /*************************************************************************************************/
 void FmplIasDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attIasSvcUuid,
-                     FMPL_IAS_HDL_LIST_LEN, (attcDiscChar_t **) fmplIasDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attIasSvcUuid, FMPL_IAS_HDL_LIST_LEN,
+                       (attcDiscChar_t **)fmplIasDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -81,12 +76,10 @@ void FmplIasDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 void FmplSendAlert(dmConnId_t connId, uint16_t handle, uint8_t alert)
 {
-  uint8_t buf[1];
+    uint8_t buf[1];
 
-  if (handle != ATT_HANDLE_NONE)
-  {
-    buf[0] = alert;
-    AttcWriteCmd(connId, handle, 1, buf);
-  }
+    if (handle != ATT_HANDLE_NONE) {
+        buf[0] = alert;
+        AttcWriteCmd(connId, handle, 1, buf);
+    }
 }
-

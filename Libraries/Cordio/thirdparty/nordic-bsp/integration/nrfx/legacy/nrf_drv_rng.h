@@ -56,10 +56,10 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_rng_config_t   nrf_drv_rng_config_t;
+typedef nrfx_rng_config_t nrf_drv_rng_config_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_RNG_DEFAULT_CONFIG  NRFX_RNG_DEFAULT_CONFIG
+#define NRF_DRV_RNG_DEFAULT_CONFIG NRFX_RNG_DEFAULT_CONFIG
 
 /**
  * @brief Function for initializing the nrf_drv_rng module.
@@ -69,7 +69,7 @@ typedef nrfx_rng_config_t   nrf_drv_rng_config_t;
  * @retval  NRF_SUCCESS                             Driver was successfully initialized.
  * @retval  NRF_ERROR_MODULE_ALREADY_INITIALIZED    Driver was already initialized.
  */
-ret_code_t nrf_drv_rng_init(nrf_drv_rng_config_t const * p_config);
+ret_code_t nrf_drv_rng_init(nrf_drv_rng_config_t const *p_config);
 
 /**
  * @brief Function for uninitializing the nrf_drv_rng module.
@@ -81,7 +81,7 @@ void nrf_drv_rng_uninit(void);
  *
  * @param[out] p_bytes_available        The number of bytes currently available in the pool.
  */
-void nrf_drv_rng_bytes_available(uint8_t * p_bytes_available);
+void nrf_drv_rng_bytes_available(uint8_t *p_bytes_available);
 
 /**
  * @brief Function for getting the vector of random numbers.
@@ -93,7 +93,7 @@ void nrf_drv_rng_bytes_available(uint8_t * p_bytes_available);
  * @retval     NRF_ERROR_NOT_FOUND      If no bytes were written to the buffer because there were
  *                                      not enough bytes available in the pool.
  */
-ret_code_t nrf_drv_rng_rand(uint8_t * p_buff, uint8_t length);
+ret_code_t nrf_drv_rng_rand(uint8_t *p_buff, uint8_t length);
 
 /**
  * @brief Blocking function for getting an arbitrary array of random numbers.
@@ -104,7 +104,7 @@ ret_code_t nrf_drv_rng_rand(uint8_t * p_buff, uint8_t length);
  * @param[out] p_buff                   Pointer to uint8_t buffer for storing the bytes.
  * @param[in]  length                   Number of bytes place in p_buff.
  */
-void nrf_drv_rng_block_rand(uint8_t * p_buff, uint32_t length);
+void nrf_drv_rng_block_rand(uint8_t *p_buff, uint32_t length);
 
 /** @} */
 

@@ -43,9 +43,8 @@
 **************************************************************************************************/
 
 /*! Generic On Power Level Client control block type definition */
-typedef struct mmdlGenPowerLevelClCb_tag
-{
-  mmdlEventCback_t recvCback;    /*!< Model Generic Power Level received callback */
+typedef struct mmdlGenPowerLevelClCb_tag {
+    mmdlEventCback_t recvCback; /*!< Model Generic Power Level received callback */
 } mmdlGenPowerLevelClCb_t;
 
 /**************************************************************************************************
@@ -56,40 +55,36 @@ typedef struct mmdlGenPowerLevelClCb_tag
 wsfHandlerId_t mmdlGenPowerLevelClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlGenPowerLevelClRcvdOpcodes[MMDL_GEN_POWER_LEVEL_CL_NUM_RCVD_OPCODES] =
-{
-  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_POWER_LEVEL_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_POWERLAST_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_POWERDEFAULT_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_POWERRANGE_STATUS_OPCODE)} },
+const meshMsgOpcode_t mmdlGenPowerLevelClRcvdOpcodes[MMDL_GEN_POWER_LEVEL_CL_NUM_RCVD_OPCODES] = {
+    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_POWER_LEVEL_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_POWERLAST_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_POWERDEFAULT_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_POWERRANGE_STATUS_OPCODE) } },
 };
 
 /*! Generic Power Level Client Model Opcode Type Enum */
-enum genPowerLevelClOpcodeType
-{
-  MMDL_GEN_POWER_LEVEL_CL_STATUS_OPCODE = 0x00, /*!< Generic Power Level Status Opcode */
-  MMDL_GEN_POWER_LAST_CL_STATUS_OPCODE,         /*!< Generic Power Last Status Opcode */
-  MMDL_GEN_POWER_DEFAULT_CL_STATUS_OPCODE,      /*!< Generic Power Default Status Opcode */
-  MMDL_GEN_POWER_RANGE_CL_STATUS_OPCODE,        /*!< Generic Power Range Status Opcode */
+enum genPowerLevelClOpcodeType {
+    MMDL_GEN_POWER_LEVEL_CL_STATUS_OPCODE = 0x00, /*!< Generic Power Level Status Opcode */
+    MMDL_GEN_POWER_LAST_CL_STATUS_OPCODE, /*!< Generic Power Last Status Opcode */
+    MMDL_GEN_POWER_DEFAULT_CL_STATUS_OPCODE, /*!< Generic Power Default Status Opcode */
+    MMDL_GEN_POWER_RANGE_CL_STATUS_OPCODE, /*!< Generic Power Range Status Opcode */
 };
 
 /*! Generic Power Level Client message handler type definition */
-typedef void (*mmdlGenPowerLevelClHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlGenPowerLevelClHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlGenPowerLevelClHandleMsg_t mmdlGenPowerLevelClHandleMsg[MMDL_GEN_POWER_LEVEL_CL_NUM_RCVD_OPCODES] =
-{
-  mmdlGenPowerLevelClHandleStatus,
-  mmdlGenPowerLastClHandleStatus,
-  mmdlGenPowerDefaultClHandleStatus,
-  mmdlGenPowerRangeClHandleStatus
-};
+const mmdlGenPowerLevelClHandleMsg_t
+    mmdlGenPowerLevelClHandleMsg[MMDL_GEN_POWER_LEVEL_CL_NUM_RCVD_OPCODES] = {
+        mmdlGenPowerLevelClHandleStatus, mmdlGenPowerLastClHandleStatus,
+        mmdlGenPowerDefaultClHandleStatus, mmdlGenPowerRangeClHandleStatus
+    };
 /*! On Off Client control block */
-static mmdlGenPowerLevelClCb_t  powerLevelClCb;
+static mmdlGenPowerLevelClCb_t powerLevelClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -113,33 +108,31 @@ static void mmdlGenPowerLevelSet(meshMsgInfo_t *pMsgInfo, meshElementId_t elemen
                                  meshAddress_t serverAddr, uint8_t ttl,
                                  const mmdlGenPowerLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  uint8_t *pParams;
-  uint8_t paramMsg[MMDL_GEN_POWER_LEVEL_SET_MAX_LEN];
+    uint8_t *pParams;
+    uint8_t paramMsg[MMDL_GEN_POWER_LEVEL_SET_MAX_LEN];
 
-  if (pSetParam!= NULL)
-  {
-    pParams = paramMsg;
+    if (pSetParam != NULL) {
+        pParams = paramMsg;
 
-    /* Fill in the message information */
-    pMsgInfo->elementId = elementId;
-    pMsgInfo->dstAddr = serverAddr;
-    pMsgInfo->ttl = ttl;
-    pMsgInfo->appKeyIndex = appKeyIndex;
+        /* Fill in the message information */
+        pMsgInfo->elementId = elementId;
+        pMsgInfo->dstAddr = serverAddr;
+        pMsgInfo->ttl = ttl;
+        pMsgInfo->appKeyIndex = appKeyIndex;
 
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pParams, pSetParam->state);
-    UINT8_TO_BSTREAM(pParams, pSetParam->tid);
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pParams, pSetParam->state);
+        UINT8_TO_BSTREAM(pParams, pSetParam->tid);
 
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
-    {
-      UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
-      UINT8_TO_BSTREAM(pParams, pSetParam->delay);
+        /* Do not include transition time and delay in the message if it is not used */
+        if (pSetParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
+            UINT8_TO_BSTREAM(pParams, pSetParam->transitionTime);
+            UINT8_TO_BSTREAM(pParams, pSetParam->delay);
+        }
+
+        /* Send message to the Mesh Core */
+        MeshSendMessage(pMsgInfo, paramMsg, (uint16_t)(pParams - paramMsg), 0, 0);
     }
-
-    /* Send message to the Mesh Core */
-    MeshSendMessage(pMsgInfo, paramMsg, (uint16_t)(pParams - paramMsg), 0, 0);
-  }
 }
 
 /*************************************************************************************************/
@@ -157,22 +150,22 @@ static void mmdlGenPowerLevelSet(meshMsgInfo_t *pMsgInfo, meshElementId_t elemen
  */
 /*************************************************************************************************/
 static void mmdlGenPowerDefaultClSet(meshMsgInfo_t *pMsgInfo, meshElementId_t elementId,
-                                     meshAddress_t serverAddr, uint8_t ttl,
-                                     uint16_t appKeyIndex, mmdlGenPowerLevelState_t powerLevel)
+                                     meshAddress_t serverAddr, uint8_t ttl, uint16_t appKeyIndex,
+                                     mmdlGenPowerLevelState_t powerLevel)
 {
-  uint8_t paramMsg[MMDL_GEN_POWERDEFAULT_SET_LEN];
+    uint8_t paramMsg[MMDL_GEN_POWERDEFAULT_SET_LEN];
 
-  /* Fill in the message information */
-  pMsgInfo->elementId = elementId;
-  pMsgInfo->dstAddr = serverAddr;
-  pMsgInfo->ttl = ttl;
-  pMsgInfo->appKeyIndex = appKeyIndex;
+    /* Fill in the message information */
+    pMsgInfo->elementId = elementId;
+    pMsgInfo->dstAddr = serverAddr;
+    pMsgInfo->ttl = ttl;
+    pMsgInfo->appKeyIndex = appKeyIndex;
 
-  /* Build param message. */
-  UINT16_TO_BUF(&paramMsg[0], powerLevel);
+    /* Build param message. */
+    UINT16_TO_BUF(&paramMsg[0], powerLevel);
 
-  /* Send message to the Mesh Core */
-  MeshSendMessage(pMsgInfo, paramMsg, MMDL_GEN_POWERDEFAULT_SET_LEN, 0, 0);
+    /* Send message to the Mesh Core */
+    MeshSendMessage(pMsgInfo, paramMsg, MMDL_GEN_POWERDEFAULT_SET_LEN, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -191,28 +184,28 @@ static void mmdlGenPowerDefaultClSet(meshMsgInfo_t *pMsgInfo, meshElementId_t el
 /*************************************************************************************************/
 static void mmdlGenPowerRangeClSet(meshMsgInfo_t *pMsgInfo, meshElementId_t elementId,
                                    meshAddress_t serverAddr, uint8_t ttl,
-                                   const mmdlGenPowerRangeSetParam_t *pSetParam, uint16_t appKeyIndex)
+                                   const mmdlGenPowerRangeSetParam_t *pSetParam,
+                                   uint16_t appKeyIndex)
 {
-  uint8_t *pParam;
-  uint8_t paramMsg[MMDL_GEN_POWERRANGE_SET_LEN];
+    uint8_t *pParam;
+    uint8_t paramMsg[MMDL_GEN_POWERRANGE_SET_LEN];
 
-  if (pSetParam != NULL)
-  {
-    pParam = paramMsg;
+    if (pSetParam != NULL) {
+        pParam = paramMsg;
 
-    /* Fill in the message information */
-    pMsgInfo->elementId = elementId;
-    pMsgInfo->dstAddr = serverAddr;
-    pMsgInfo->ttl = ttl;
-    pMsgInfo->appKeyIndex = appKeyIndex;
+        /* Fill in the message information */
+        pMsgInfo->elementId = elementId;
+        pMsgInfo->dstAddr = serverAddr;
+        pMsgInfo->ttl = ttl;
+        pMsgInfo->appKeyIndex = appKeyIndex;
 
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pParam, pSetParam->powerMin);
-    UINT16_TO_BSTREAM(pParam, pSetParam->powerMax);
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pParam, pSetParam->powerMin);
+        UINT16_TO_BSTREAM(pParam, pSetParam->powerMax);
 
-    /* Send message to the Mesh Core */
-    MeshSendMessage(pMsgInfo, paramMsg, MMDL_GEN_POWERRANGE_SET_LEN, 0, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshSendMessage(pMsgInfo, paramMsg, MMDL_GEN_POWERRANGE_SET_LEN, 0, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -226,45 +219,41 @@ static void mmdlGenPowerRangeClSet(meshMsgInfo_t *pMsgInfo, meshElementId_t elem
 /*************************************************************************************************/
 void mmdlGenPowerLevelClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlGenPowerLevelClStatusEvent_t event;
-  uint8_t *pParams;
+    mmdlGenPowerLevelClStatusEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_GEN_POWER_LEVEL_STATUS_MAX_LEN &&
-      pMsg->messageParamsLen != MMDL_GEN_POWER_LEVEL_STATUS_MIN_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_GEN_POWER_LEVEL_STATUS_MAX_LEN &&
+        pMsg->messageParamsLen != MMDL_GEN_POWER_LEVEL_STATUS_MIN_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_GEN_POWER_LEVEL_CL_EVENT;
-  event.hdr.param = MMDL_GEN_POWER_LEVEL_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_GEN_POWER_LEVEL_CL_EVENT;
+    event.hdr.param = MMDL_GEN_POWER_LEVEL_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT16(event.state, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT16(event.state, pParams);
 
-  /* Check if optional parameters are present */
-  if (pMsg->messageParamsLen == MMDL_GEN_POWER_LEVEL_STATUS_MAX_LEN)
-  {
-    /* Extract target state and Remaining Time value */
-    BSTREAM_TO_UINT16(event.targetState, pParams);
-    BSTREAM_TO_UINT8(event.remainingTime, pParams);
-  }
-  else
-  {
-    event.targetState = 0;
-    event.remainingTime = 0;
-  }
+    /* Check if optional parameters are present */
+    if (pMsg->messageParamsLen == MMDL_GEN_POWER_LEVEL_STATUS_MAX_LEN) {
+        /* Extract target state and Remaining Time value */
+        BSTREAM_TO_UINT16(event.targetState, pParams);
+        BSTREAM_TO_UINT8(event.remainingTime, pParams);
+    } else {
+        event.targetState = 0;
+        event.remainingTime = 0;
+    }
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  powerLevelClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    powerLevelClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -278,31 +267,30 @@ void mmdlGenPowerLevelClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlGenPowerLastClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlGenPowerLastClStatusEvent_t event;
-  uint8_t *pParams;
+    mmdlGenPowerLastClStatusEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_GEN_POWERLAST_STATUS_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_GEN_POWERLAST_STATUS_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_GEN_POWER_LEVEL_CL_EVENT;
-  event.hdr.param = MMDL_GEN_POWER_LAST_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_GEN_POWER_LEVEL_CL_EVENT;
+    event.hdr.param = MMDL_GEN_POWER_LAST_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT16(event.lastState, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT16(event.lastState, pParams);
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  powerLevelClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    powerLevelClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -316,31 +304,30 @@ void mmdlGenPowerLastClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlGenPowerDefaultClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlGenPowerDefaultClStatusEvent_t event;
-  uint8_t *pParams;
+    mmdlGenPowerDefaultClStatusEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_GEN_POWERDEFAULT_STATUS_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_GEN_POWERDEFAULT_STATUS_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_GEN_POWER_LEVEL_CL_EVENT;
-  event.hdr.param = MMDL_GEN_POWER_DEFAULT_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_GEN_POWER_LEVEL_CL_EVENT;
+    event.hdr.param = MMDL_GEN_POWER_DEFAULT_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT16(event.state, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT16(event.state, pParams);
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  powerLevelClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    powerLevelClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -354,33 +341,32 @@ void mmdlGenPowerDefaultClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlGenPowerRangeClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlGenPowerRangeClStatusEvent_t event;
-  uint8_t *pParams;
+    mmdlGenPowerRangeClStatusEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_GEN_POWERRANGE_STATUS_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_GEN_POWERRANGE_STATUS_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_GEN_POWER_LEVEL_CL_EVENT;
-  event.hdr.param = MMDL_GEN_POWER_RANGE_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_GEN_POWER_LEVEL_CL_EVENT;
+    event.hdr.param = MMDL_GEN_POWER_RANGE_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT8(event.statusCode, pParams);
-  BSTREAM_TO_UINT16(event.powerMin, pParams);
-  BSTREAM_TO_UINT16(event.powerMax, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT8(event.statusCode, pParams);
+    BSTREAM_TO_UINT16(event.powerMin, pParams);
+    BSTREAM_TO_UINT16(event.powerMax, pParams);
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  powerLevelClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    powerLevelClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /**************************************************************************************************
@@ -398,11 +384,11 @@ void mmdlGenPowerRangeClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenPowerLevelClHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Set handler ID */
-  mmdlGenPowerLevelClHandlerId = handlerId;
+    /* Set handler ID */
+    mmdlGenPowerLevelClHandlerId = handlerId;
 
-  /* Initialize control block */
-  powerLevelClCb.recvCback = MmdlEmptyCback;
+    /* Initialize control block */
+    powerLevelClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -417,37 +403,34 @@ void MmdlGenPowerLevelClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlGenPowerLevelClHandler(wsfMsgHdr_t *pMsg)
 {
-  uint8_t opcodeIdx;
-  meshModelMsgRecvEvt_t *pModelMsg;
+    uint8_t opcodeIdx;
+    meshModelMsgRecvEvt_t *pModelMsg;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-        /* Validate opcode size and value */
-        if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_POWER_LEVEL_OPCODES_SIZE)
-        {
-          /* Match the received opcode */
-          for (opcodeIdx = 0; opcodeIdx < MMDL_GEN_POWER_LEVEL_CL_NUM_RCVD_OPCODES; opcodeIdx++)
-          {
-            if (!memcmp(&mmdlGenPowerLevelClRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
-                MMDL_GEN_POWER_LEVEL_OPCODES_SIZE))
-            {
-              /* Process message */
-              (void)mmdlGenPowerLevelClHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
+            /* Validate opcode size and value */
+            if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_POWER_LEVEL_OPCODES_SIZE) {
+                /* Match the received opcode */
+                for (opcodeIdx = 0; opcodeIdx < MMDL_GEN_POWER_LEVEL_CL_NUM_RCVD_OPCODES;
+                     opcodeIdx++) {
+                    if (!memcmp(&mmdlGenPowerLevelClRcvdOpcodes[opcodeIdx],
+                                pModelMsg->opCode.opcodeBytes, MMDL_GEN_POWER_LEVEL_OPCODES_SIZE)) {
+                        /* Process message */
+                        (void)mmdlGenPowerLevelClHandleMsg[opcodeIdx](
+                            (meshModelMsgRecvEvt_t *)pModelMsg);
+                    }
+                }
             }
-          }
+            break;
+        default:
+            MMDL_TRACE_WARN0("GEN POWER LEVEL CL: Invalid event message received!");
+            break;
         }
-        break;
-      default:
-        MMDL_TRACE_WARN0("GEN POWER LEVEL CL: Invalid event message received!");
-        break;
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -465,16 +448,17 @@ void MmdlGenPowerLevelClHandler(wsfMsgHdr_t *pMsg)
 void MmdlGenPowerLevelClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWER_LEVEL_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWER_LEVEL_GET_OPCODE);
 
-  /* Fill in the msg info parameters */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core instantly */
-  MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -493,9 +477,10 @@ void MmdlGenPowerLevelClGet(meshElementId_t elementId, meshAddress_t serverAddr,
 void MmdlGenPowerLevelClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             const mmdlGenPowerLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWER_LEVEL_SET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWER_LEVEL_SET_OPCODE);
 
-  mmdlGenPowerLevelSet(&msgInfo, elementId, serverAddr, ttl, pSetParam, appKeyIndex);
+    mmdlGenPowerLevelSet(&msgInfo, elementId, serverAddr, ttl, pSetParam, appKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -514,9 +499,10 @@ void MmdlGenPowerLevelClSet(meshElementId_t elementId, meshAddress_t serverAddr,
 void MmdlGenPowerLevelClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                  const mmdlGenPowerLevelSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWER_LEVEL_SET_NO_ACK_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWER_LEVEL_SET_NO_ACK_OPCODE);
 
-  mmdlGenPowerLevelSet(&msgInfo, elementId, serverAddr, ttl, pSetParam, appKeyIndex);
+    mmdlGenPowerLevelSet(&msgInfo, elementId, serverAddr, ttl, pSetParam, appKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -534,16 +520,17 @@ void MmdlGenPowerLevelClSetNoAck(meshElementId_t elementId, meshAddress_t server
 void MmdlGenPowerLastClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                            uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERLAST_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERLAST_GET_OPCODE);
 
-  /* Fill in the msg info parameters */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core instantly */
-  MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -561,16 +548,17 @@ void MmdlGenPowerLastClGet(meshElementId_t elementId, meshAddress_t serverAddr, 
 void MmdlGenPowerDefaultClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                               uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERDEFAULT_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERDEFAULT_GET_OPCODE);
 
-  /* Fill in the msg info parameters */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core instantly */
-  MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -589,9 +577,10 @@ void MmdlGenPowerDefaultClGet(meshElementId_t elementId, meshAddress_t serverAdd
 void MmdlGenPowerDefaultClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                               uint16_t appKeyIndex, mmdlGenPowerLevelState_t powerLevel)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERDEFAULT_SET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERDEFAULT_SET_OPCODE);
 
-  mmdlGenPowerDefaultClSet(&msgInfo, elementId, serverAddr, ttl, appKeyIndex, powerLevel);
+    mmdlGenPowerDefaultClSet(&msgInfo, elementId, serverAddr, ttl, appKeyIndex, powerLevel);
 }
 
 /*************************************************************************************************/
@@ -610,9 +599,10 @@ void MmdlGenPowerDefaultClSet(meshElementId_t elementId, meshAddress_t serverAdd
 void MmdlGenPowerDefaultClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                    uint16_t appKeyIndex, mmdlGenPowerLevelState_t powerLevel)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERDEFAULT_SET_NO_ACK_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERDEFAULT_SET_NO_ACK_OPCODE);
 
-  mmdlGenPowerDefaultClSet(&msgInfo, elementId, serverAddr, ttl, appKeyIndex, powerLevel);
+    mmdlGenPowerDefaultClSet(&msgInfo, elementId, serverAddr, ttl, appKeyIndex, powerLevel);
 }
 
 /*************************************************************************************************/
@@ -630,16 +620,17 @@ void MmdlGenPowerDefaultClSetNoAck(meshElementId_t elementId, meshAddress_t serv
 void MmdlGenPowerRangeClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERRANGE_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERRANGE_GET_OPCODE);
 
-  /* Fill in the msg info parameters */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the msg info parameters */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core instantly */
-  MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -658,9 +649,10 @@ void MmdlGenPowerRangeClGet(meshElementId_t elementId, meshAddress_t serverAddr,
 void MmdlGenPowerRangeClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             uint16_t appKeyIndex, const mmdlGenPowerRangeSetParam_t *pSetParam)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERRANGE_SET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERRANGE_SET_OPCODE);
 
-  mmdlGenPowerRangeClSet(&msgInfo, elementId, serverAddr, ttl, pSetParam, appKeyIndex);
+    mmdlGenPowerRangeClSet(&msgInfo, elementId, serverAddr, ttl, pSetParam, appKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -679,9 +671,10 @@ void MmdlGenPowerRangeClSet(meshElementId_t elementId, meshAddress_t serverAddr,
 void MmdlGenPowerRangeClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                  uint16_t appKeyIndex, const mmdlGenPowerRangeSetParam_t *pSetParam)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERRANGE_SET_NO_ACK_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_GEN_POWER_LEVEL_CL_MDL_ID, MMDL_GEN_POWERRANGE_SET_NO_ACK_OPCODE);
 
-  mmdlGenPowerRangeClSet(&msgInfo, elementId, serverAddr, ttl, pSetParam, appKeyIndex);
+    mmdlGenPowerRangeClSet(&msgInfo, elementId, serverAddr, ttl, pSetParam, appKeyIndex);
 }
 
 /*************************************************************************************************/
@@ -695,9 +688,8 @@ void MmdlGenPowerRangeClSetNoAck(meshElementId_t elementId, meshAddress_t server
 /*************************************************************************************************/
 void MmdlGenPowerLevelClRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback*/
-  if (recvCback != NULL)
-  {
-    powerLevelClCb.recvCback = recvCback;
-  }
+    /* Store valid callback*/
+    if (recvCback != NULL) {
+        powerLevelClCb.recvCback = recvCback;
+    }
 }

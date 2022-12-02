@@ -45,27 +45,27 @@
 /*************************************************************************************************/
 static uint8_t lhciPackCisEstEvt(uint8_t *pBuf, const LlCisEstInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_CIS_EST;
+    const uint8_t len = HCI_LEN_LE_CIS_EST;
 
-  UINT8_TO_BSTREAM  (pBuf, HCI_LE_CIS_EST_EVT);
-  UINT8_TO_BSTREAM  (pBuf, pEvt->status);
-  UINT16_TO_BSTREAM (pBuf, pEvt->cisHandle);
-  UINT24_TO_BSTREAM (pBuf, pEvt->cigSyncDelayUsec);
-  UINT24_TO_BSTREAM (pBuf, pEvt->cisSyncDelayUsec);
-  UINT24_TO_BSTREAM (pBuf, pEvt->transLatUsecMToS);
-  UINT24_TO_BSTREAM (pBuf, pEvt->transLatUsecSToM);
-  UINT8_TO_BSTREAM  (pBuf, pEvt->phyMToS);
-  UINT8_TO_BSTREAM  (pBuf, pEvt->phySToM);
-  UINT8_TO_BSTREAM  (pBuf, pEvt->nse);
-  UINT8_TO_BSTREAM  (pBuf, pEvt->bnMToS);
-  UINT8_TO_BSTREAM  (pBuf, pEvt->bnSToM);
-  UINT8_TO_BSTREAM  (pBuf, pEvt->ftMToS);
-  UINT8_TO_BSTREAM  (pBuf, pEvt->ftSToM);
-  UINT16_TO_BSTREAM (pBuf, pEvt->maxPduMToS);
-  UINT16_TO_BSTREAM (pBuf, pEvt->maxPduSToM);
-  UINT16_TO_BSTREAM (pBuf, pEvt->isoInterval);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_CIS_EST_EVT);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status);
+    UINT16_TO_BSTREAM(pBuf, pEvt->cisHandle);
+    UINT24_TO_BSTREAM(pBuf, pEvt->cigSyncDelayUsec);
+    UINT24_TO_BSTREAM(pBuf, pEvt->cisSyncDelayUsec);
+    UINT24_TO_BSTREAM(pBuf, pEvt->transLatUsecMToS);
+    UINT24_TO_BSTREAM(pBuf, pEvt->transLatUsecSToM);
+    UINT8_TO_BSTREAM(pBuf, pEvt->phyMToS);
+    UINT8_TO_BSTREAM(pBuf, pEvt->phySToM);
+    UINT8_TO_BSTREAM(pBuf, pEvt->nse);
+    UINT8_TO_BSTREAM(pBuf, pEvt->bnMToS);
+    UINT8_TO_BSTREAM(pBuf, pEvt->bnSToM);
+    UINT8_TO_BSTREAM(pBuf, pEvt->ftMToS);
+    UINT8_TO_BSTREAM(pBuf, pEvt->ftSToM);
+    UINT16_TO_BSTREAM(pBuf, pEvt->maxPduMToS);
+    UINT16_TO_BSTREAM(pBuf, pEvt->maxPduSToM);
+    UINT16_TO_BSTREAM(pBuf, pEvt->isoInterval);
 
-  return len;
+    return len;
 }
 
 /**************************************************************************************************
@@ -83,33 +83,27 @@ static uint8_t lhciPackCisEstEvt(uint8_t *pBuf, const LlCisEstInd_t *pEvt)
 /*************************************************************************************************/
 bool_t lhciMstCisEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
+    uint8_t *pEvtBuf = NULL;
 
-  switch (pEvt->hdr.event)
-  {
-    case LL_CIS_EST_IND:
-    {
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_CIS_EST_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-          (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CIS_EST)) != NULL)
-        {
-          lhciPackCisEstEvt(pEvtBuf, &pEvt->cisEstInd);
+    switch (pEvt->hdr.event) {
+    case LL_CIS_EST_IND: {
+        if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_CIS_EST_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CIS_EST)) != NULL) {
+                lhciPackCisEstEvt(pEvtBuf, &pEvt->cisEstInd);
+            }
         }
-      }
-      break;
+        break;
     }
 
     default:
-      break;
-  }
+        break;
+    }
 
-  if (pEvtBuf)
-  {
-    lhciSendEvt(pEvtBuf);
-    return TRUE;
-  }
+    if (pEvtBuf) {
+        lhciSendEvt(pEvtBuf);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }

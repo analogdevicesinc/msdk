@@ -43,12 +43,12 @@
 /*************************************************************************************************/
 static uint8_t lhciPackReadResAddrEvt(uint8_t *pBuf, uint8_t status, const uint8_t *pAddr)
 {
-  const uint8_t len = LHCI_LEN_LE_READ_PEER_RES_ADDR_EVT;
+    const uint8_t len = LHCI_LEN_LE_READ_PEER_RES_ADDR_EVT;
 
-  UINT8_TO_BSTREAM(pBuf, status);
-  BDA_TO_BSTREAM  (pBuf, pAddr);
+    UINT8_TO_BSTREAM(pBuf, status);
+    BDA_TO_BSTREAM(pBuf, pAddr);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -61,31 +61,30 @@ static uint8_t lhciPackReadResAddrEvt(uint8_t *pBuf, uint8_t status, const uint8
  *  \param  pParam      Pointer to parameters.
  */
 /*************************************************************************************************/
-static void lhciPrivConnSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t paramLen, uint8_t *pParam)
+static void lhciPrivConnSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t paramLen,
+                                       uint8_t *pParam)
 {
-  uint8_t *pBuf;
-  uint8_t *pEvtBuf;
+    uint8_t *pBuf;
+    uint8_t *pEvtBuf;
 
-  if ((pEvtBuf = lhciAllocCmdCmplEvt(paramLen, pCmdHdr->opCode)) == NULL)
-  {
-    return;
-  }
-  pBuf = pEvtBuf;
+    if ((pEvtBuf = lhciAllocCmdCmplEvt(paramLen, pCmdHdr->opCode)) == NULL) {
+        return;
+    }
+    pBuf = pEvtBuf;
 
-  switch (pCmdHdr->opCode)
-  {
+    switch (pCmdHdr->opCode) {
     case HCI_OPCODE_LE_READ_PEER_RES_ADDR:
     case HCI_OPCODE_LE_READ_LOCAL_RES_ADDR:
-      lhciPackReadResAddrEvt(pBuf, status, pParam);
-      break;
+        lhciPackReadResAddrEvt(pBuf, status, pParam);
+        break;
 
-    /* --- default --- */
+        /* --- default --- */
 
     default:
-      break;
-  }
+        break;
+    }
 
-  lhciSendCmdCmplEvt(pEvtBuf);
+    lhciSendCmdCmplEvt(pEvtBuf);
 }
 
 /*************************************************************************************************/
@@ -100,33 +99,30 @@ static void lhciPrivConnSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8
 /*************************************************************************************************/
 bool_t lhciPrivConnDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-  uint8_t status = HCI_SUCCESS;
-  uint8_t paramLen = 0;
-  uint8_t *pParam = NULL;
-  bdAddr_t rpa = {0};
+    uint8_t status = HCI_SUCCESS;
+    uint8_t paramLen = 0;
+    uint8_t *pParam = NULL;
+    bdAddr_t rpa = { 0 };
 
-  switch (pHdr->opCode)
-  {
-    case HCI_OPCODE_LE_READ_PEER_RES_ADDR:
-    {
-      status = LlReadPeerResolvableAddr(pBuf[0], pBuf + 1, rpa);
-      paramLen = LHCI_LEN_LE_READ_PEER_RES_ADDR_EVT;
-      pParam = (uint8_t *)rpa;
-      break;
+    switch (pHdr->opCode) {
+    case HCI_OPCODE_LE_READ_PEER_RES_ADDR: {
+        status = LlReadPeerResolvableAddr(pBuf[0], pBuf + 1, rpa);
+        paramLen = LHCI_LEN_LE_READ_PEER_RES_ADDR_EVT;
+        pParam = (uint8_t *)rpa;
+        break;
     }
-    case HCI_OPCODE_LE_READ_LOCAL_RES_ADDR:
-    {
-      status = LlReadLocalResolvableAddr(pBuf[0], pBuf + 1, rpa);
-      paramLen = LHCI_LEN_LE_READ_LOCAL_RES_ADDR_EVT;
-      pParam = (uint8_t *)rpa;
-      break;
+    case HCI_OPCODE_LE_READ_LOCAL_RES_ADDR: {
+        status = LlReadLocalResolvableAddr(pBuf[0], pBuf + 1, rpa);
+        paramLen = LHCI_LEN_LE_READ_LOCAL_RES_ADDR_EVT;
+        pParam = (uint8_t *)rpa;
+        break;
     }
 
     default:
-      return lhciPrivAdvDecodeCmdPkt(pHdr, pBuf);
-  }
+        return lhciPrivAdvDecodeCmdPkt(pHdr, pBuf);
+    }
 
-  lhciPrivConnSendCmdCmplEvt(pHdr, status, paramLen, pParam);
+    lhciPrivConnSendCmdCmplEvt(pHdr, status, paramLen, pParam);
 
-  return TRUE;
+    return TRUE;
 }

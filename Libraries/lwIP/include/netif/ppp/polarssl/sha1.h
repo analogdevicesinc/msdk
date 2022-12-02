@@ -42,13 +42,11 @@
 /**
  * \brief          SHA-1 context structure
  */
-typedef struct
-{
-    unsigned long total[2];     /*!< number of bytes processed  */
-    unsigned long state[5];     /*!< intermediate digest state  */
-    unsigned char buffer[64];   /*!< data block being processed */
-}
-sha1_context;
+typedef struct {
+    unsigned long total[2]; /*!< number of bytes processed  */
+    unsigned long state[5]; /*!< intermediate digest state  */
+    unsigned char buffer[64]; /*!< data block being processed */
+} sha1_context;
 
 #ifdef __cplusplus
 extern "C" {
@@ -59,7 +57,7 @@ extern "C" {
  *
  * \param ctx      context to be initialized
  */
-void sha1_starts( sha1_context *ctx );
+void sha1_starts(sha1_context *ctx);
 
 /**
  * \brief          SHA-1 process buffer
@@ -68,7 +66,7 @@ void sha1_starts( sha1_context *ctx );
  * \param input    buffer holding the  data
  * \param ilen     length of the input data
  */
-void sha1_update( sha1_context *ctx, const unsigned char *input, int ilen );
+void sha1_update(sha1_context *ctx, const unsigned char *input, int ilen);
 
 /**
  * \brief          SHA-1 final digest
@@ -76,7 +74,7 @@ void sha1_update( sha1_context *ctx, const unsigned char *input, int ilen );
  * \param ctx      SHA-1 context
  * \param output   SHA-1 checksum result
  */
-void sha1_finish( sha1_context *ctx, unsigned char output[20] );
+void sha1_finish(sha1_context *ctx, unsigned char output[20]);
 
 /**
  * \brief          Output = SHA-1( input buffer )
@@ -85,7 +83,7 @@ void sha1_finish( sha1_context *ctx, unsigned char output[20] );
  * \param ilen     length of the input data
  * \param output   SHA-1 checksum result
  */
-void sha1( unsigned char *input, int ilen, unsigned char output[20] );
+void sha1(unsigned char *input, int ilen, unsigned char output[20]);
 
 #ifdef __cplusplus
 }

@@ -51,17 +51,16 @@
 **************************************************************************************************/
 
 /*! Scheduler Setup Server message handler type definition */
-typedef void (*mmdlSchedulerSetupSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlSchedulerSetupSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlSchedulerSetupSrRcvdOpcodes[MMDL_SCHEDULER_SETUP_SR_NUM_RCVD_OPCODES] =
-{
-  {{ UINT8_OPCODE_TO_BYTES(MMDL_SCHEDULER_ACTION_SET_OPCODE) }},
-  {{ UINT8_OPCODE_TO_BYTES(MMDL_SCHEDULER_ACTION_SET_NO_ACK_OPCODE) }},
+const meshMsgOpcode_t mmdlSchedulerSetupSrRcvdOpcodes[MMDL_SCHEDULER_SETUP_SR_NUM_RCVD_OPCODES] = {
+    { { UINT8_OPCODE_TO_BYTES(MMDL_SCHEDULER_ACTION_SET_OPCODE) } },
+    { { UINT8_OPCODE_TO_BYTES(MMDL_SCHEDULER_ACTION_SET_NO_ACK_OPCODE) } },
 };
 
 /**************************************************************************************************
@@ -69,11 +68,10 @@ const meshMsgOpcode_t mmdlSchedulerSetupSrRcvdOpcodes[MMDL_SCHEDULER_SETUP_SR_NU
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlSchedulerSetupSrHandleMsg_t mmdlSchedulerSetupSrHandleMsg[MMDL_SCHEDULER_SETUP_SR_NUM_RCVD_OPCODES] =
-{
-  mmdlSchedulerSetupSrHandleActionSet,
-  mmdlSchedulerSetupSrHandleActionSetNoAck
-};
+const mmdlSchedulerSetupSrHandleMsg_t
+    mmdlSchedulerSetupSrHandleMsg[MMDL_SCHEDULER_SETUP_SR_NUM_RCVD_OPCODES] = {
+        mmdlSchedulerSetupSrHandleActionSet, mmdlSchedulerSetupSrHandleActionSetNoAck
+    };
 
 /**************************************************************************************************
   Local Functions
@@ -91,24 +89,22 @@ const mmdlSchedulerSetupSrHandleMsg_t mmdlSchedulerSetupSrHandleMsg[MMDL_SCHEDUL
 static inline bool_t mmdlSchedulerSetupIsValidActionSet(uint8_t index,
                                                         mmdlSchedulerRegisterEntry_t *pParam)
 {
-  /* Validate parameters. */
-  if((index > MMDL_SCHEDULER_REGISTER_ENTRY_MAX) ||
-     (pParam == NULL) ||
-     (pParam->year > MMDL_SCHEDULER_REGISTER_YEAR_ALL) ||
-     (pParam->months >= MMDL_SCHEDULER_SCHED_IN_PROHIBITED_START) ||
-     (pParam->day > MMDL_SCHEDULER_DAY_LAST) ||
-     (pParam->hour >= MMDL_SCHEDULER_HOUR_PROHIBITED_START) ||
-     (pParam->minute >= MMDL_SCHEDULER_MINUTE_PROHIBITED_START) ||
-     (pParam->second >= MMDL_SCHEDULER_SECOND_PROHIBITED_START) ||
-     (pParam->daysOfWeek >= MMDL_SCHEDULER_SCHED_ON_PROHIBITED_START) ||
-     (MMDL_SCHEDULER_ACTION_IS_RFU(pParam->action)) ||
-     ((pParam->action == MMDL_SCHEDULER_ACTION_SCENE_RECALL) &&
-      (pParam->sceneNumber == MMDL_SCENE_NUM_PROHIBITED)))
-  {
-    return FALSE;
-  }
+    /* Validate parameters. */
+    if ((index > MMDL_SCHEDULER_REGISTER_ENTRY_MAX) || (pParam == NULL) ||
+        (pParam->year > MMDL_SCHEDULER_REGISTER_YEAR_ALL) ||
+        (pParam->months >= MMDL_SCHEDULER_SCHED_IN_PROHIBITED_START) ||
+        (pParam->day > MMDL_SCHEDULER_DAY_LAST) ||
+        (pParam->hour >= MMDL_SCHEDULER_HOUR_PROHIBITED_START) ||
+        (pParam->minute >= MMDL_SCHEDULER_MINUTE_PROHIBITED_START) ||
+        (pParam->second >= MMDL_SCHEDULER_SECOND_PROHIBITED_START) ||
+        (pParam->daysOfWeek >= MMDL_SCHEDULER_SCHED_ON_PROHIBITED_START) ||
+        (MMDL_SCHEDULER_ACTION_IS_RFU(pParam->action)) ||
+        ((pParam->action == MMDL_SCHEDULER_ACTION_SCENE_RECALL) &&
+         (pParam->sceneNumber == MMDL_SCENE_NUM_PROHIBITED))) {
+        return FALSE;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -123,36 +119,33 @@ static inline bool_t mmdlSchedulerSetupIsValidActionSet(uint8_t index,
 /*************************************************************************************************/
 static void mmdlSchedulerSetupHandleAction(const meshModelMsgRecvEvt_t *pMsg, bool_t sendAck)
 {
-  mmdlSchedulerSrDesc_t *pDesc;
-  mmdlSchedulerRegisterEntry_t regEntry;
-  uint8_t index;
+    mmdlSchedulerSrDesc_t *pDesc;
+    mmdlSchedulerRegisterEntry_t regEntry;
+    uint8_t index;
 
-  /* Check if descriptor exists. */
-  mmdlSchedulerSrGetDesc(pMsg->elementId, &pDesc);
-  if(pDesc == NULL)
-  {
-    return;
-  }
-
-  /* Unpack parameters. */
-  mmdlSchedulerUnpackActionParams(pMsg->pMessageParams, &index, &regEntry);
-
-  /* Check if values are valid. */
-  if(mmdlSchedulerSetupIsValidActionSet(index, &regEntry))
-  {
-    /* Update entry. */
-    pDesc->registerState[index].regEntry = regEntry;
-
-    /* Send status if needed. */
-    if(sendAck)
-    {
-      mmdlSchedulerSrSendActionStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
-                                      pMsg->recvOnUnicast, index);
+    /* Check if descriptor exists. */
+    mmdlSchedulerSrGetDesc(pMsg->elementId, &pDesc);
+    if (pDesc == NULL) {
+        return;
     }
 
-    /* Schedule entry. */
-    mmdlSchedulerSrScheduleEvent(pMsg->elementId, index, &(pDesc->registerState[index]));
-  }
+    /* Unpack parameters. */
+    mmdlSchedulerUnpackActionParams(pMsg->pMessageParams, &index, &regEntry);
+
+    /* Check if values are valid. */
+    if (mmdlSchedulerSetupIsValidActionSet(index, &regEntry)) {
+        /* Update entry. */
+        pDesc->registerState[index].regEntry = regEntry;
+
+        /* Send status if needed. */
+        if (sendAck) {
+            mmdlSchedulerSrSendActionStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                                            pMsg->recvOnUnicast, index);
+        }
+
+        /* Schedule entry. */
+        mmdlSchedulerSrScheduleEvent(pMsg->elementId, index, &(pDesc->registerState[index]));
+    }
 }
 
 /*************************************************************************************************/
@@ -166,11 +159,10 @@ static void mmdlSchedulerSetupHandleAction(const meshModelMsgRecvEvt_t *pMsg, bo
 /*************************************************************************************************/
 void mmdlSchedulerSetupSrHandleActionSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  if(pMsg->messageParamsLen != MMDL_SCHEDULER_ACTION_SET_LEN)
-  {
-    return;
-  }
-  mmdlSchedulerSetupHandleAction(pMsg, TRUE);
+    if (pMsg->messageParamsLen != MMDL_SCHEDULER_ACTION_SET_LEN) {
+        return;
+    }
+    mmdlSchedulerSetupHandleAction(pMsg, TRUE);
 }
 
 /*************************************************************************************************/
@@ -184,11 +176,10 @@ void mmdlSchedulerSetupSrHandleActionSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlSchedulerSetupSrHandleActionSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-  if(pMsg->messageParamsLen != MMDL_SCHEDULER_ACTION_SET_NO_ACK_LEN)
-  {
-    return;
-  }
-  mmdlSchedulerSetupHandleAction(pMsg, FALSE);
+    if (pMsg->messageParamsLen != MMDL_SCHEDULER_ACTION_SET_NO_ACK_LEN) {
+        return;
+    }
+    mmdlSchedulerSetupHandleAction(pMsg, FALSE);
 }
 
 /**************************************************************************************************
@@ -206,35 +197,33 @@ void mmdlSchedulerSetupSrHandleActionSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlSchedulerSetupSrHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelEvt_t *pModelMsg;
-  uint8_t opcodeIdx;
+    meshModelEvt_t *pModelMsg;
+    uint8_t opcodeIdx;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelEvt_t *)pMsg;
 
-        /* Validate opcode size and value */
-        if (MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode) == 1)
-        {
-          /* Match the received opcode */
-          for (opcodeIdx = 0; opcodeIdx < MMDL_SCHEDULER_SETUP_SR_NUM_RCVD_OPCODES; opcodeIdx++)
-          {
-            if (mmdlSchedulerSetupSrRcvdOpcodes[opcodeIdx].opcodeBytes[0] == pModelMsg->msgRecvEvt.opCode.opcodeBytes[0])
-            {
-              /* Process message */
-              mmdlSchedulerSetupSrHandleMsg[opcodeIdx]((const meshModelMsgRecvEvt_t *)pModelMsg);
+            /* Validate opcode size and value */
+            if (MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode) == 1) {
+                /* Match the received opcode */
+                for (opcodeIdx = 0; opcodeIdx < MMDL_SCHEDULER_SETUP_SR_NUM_RCVD_OPCODES;
+                     opcodeIdx++) {
+                    if (mmdlSchedulerSetupSrRcvdOpcodes[opcodeIdx].opcodeBytes[0] ==
+                        pModelMsg->msgRecvEvt.opCode.opcodeBytes[0]) {
+                        /* Process message */
+                        mmdlSchedulerSetupSrHandleMsg[opcodeIdx](
+                            (const meshModelMsgRecvEvt_t *)pModelMsg);
+                    }
+                }
             }
-          }
-        }
-        break;
+            break;
 
-      default:
-        MMDL_TRACE_WARN0("SCHEDULER SETUP SR: Invalid event message received!");
-        break;
+        default:
+            MMDL_TRACE_WARN0("SCHEDULER SETUP SR: Invalid event message received!");
+            break;
+        }
     }
-  }
 }

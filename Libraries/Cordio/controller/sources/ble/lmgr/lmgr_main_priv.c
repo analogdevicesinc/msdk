@@ -40,6 +40,6 @@ lmgrPrivCtrlBlk_t lmgrPrivCb;
 /*************************************************************************************************/
 void LmgrPrivInit(void)
 {
-  lmgrPrivCb.resPrivAddrTimeout = LL_DEF_RES_ADDR_TO_SEC; /* seconds */
-  lmgrPrivCb.numPendingAddrRes  = 0;
+    lmgrPrivCb.resPrivAddrTimeout = LL_DEF_RES_ADDR_TO_SEC; /* seconds */
+    lmgrPrivCb.numPendingAddrRes = 0;
 }

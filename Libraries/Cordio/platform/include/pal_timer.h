@@ -39,12 +39,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Operational states. */
-typedef enum
-{
-  PAL_TIMER_STATE_UNINIT = 0,    /*!< Uninitialized state. */
-  PAL_TIMER_STATE_ERROR  = 0,    /*!< Error state. */
-  PAL_TIMER_STATE_READY,         /*!< Ready state. */
-  PAL_TIMER_STATE_BUSY           /*!< Busy state. */
+typedef enum {
+    PAL_TIMER_STATE_UNINIT = 0, /*!< Uninitialized state. */
+    PAL_TIMER_STATE_ERROR = 0, /*!< Error state. */
+    PAL_TIMER_STATE_READY, /*!< Ready state. */
+    PAL_TIMER_STATE_BUSY /*!< Busy state. */
 } PalTimerState_t;
 
 /**************************************************************************************************
@@ -71,7 +70,7 @@ uint32_t PalTimerGetExpTime(void);
 void PalTimerSleep(uint32_t expUsec);
 void PalTimerRestore(uint32_t schTime);
 
-/*! \} */    /* PAL_TIMER */
+/*! \} */ /* PAL_TIMER */
 
 #ifdef __cplusplus
 };

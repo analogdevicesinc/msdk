@@ -39,59 +39,57 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief HCI Reset sequence callback type */
-typedef void(*hciResetSeq_t)(uint8_t *pMsg, uint16_t opcode);
+typedef void (*hciResetSeq_t)(uint8_t *pMsg, uint16_t opcode);
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Per-connection structure for ACL packet accounting */
-typedef struct
-{
-  uint8_t           *pTxAclPkt;                   /*!< \brief Fragmenting TX ACL packet pointer */
-  uint8_t           *pNextTxFrag;                 /*!< \brief Next TX ACL packet fragment */
-  uint8_t           *pRxAclPkt;                   /*!< \brief RX ACL packet pointer */
-  uint8_t           *pNextRxFrag;                 /*!< \brief Next RX ACL packet fragment */
-  uint16_t          handle;                       /*!< \brief Connection handle */
-  uint16_t          txAclRemLen;                  /*!< \brief Fragmenting TX ACL packet remaining length */
-  uint16_t          rxAclRemLen;                  /*!< \brief Fragmented RX ACL packet remaining length */
-  bool_t            fragmenting;                  /*!< \brief TRUE if fragmenting a TX ACL packet */
-  bool_t            flowDisabled;                 /*!< \brief TRUE if data flow disabled */
-  uint8_t           queuedBufs;                   /*!< \brief Queued ACL buffers on this connection */
-  uint8_t           outBufs;                      /*!< \brief Outstanding ACL buffers sent to controller */
+typedef struct {
+    uint8_t *pTxAclPkt; /*!< \brief Fragmenting TX ACL packet pointer */
+    uint8_t *pNextTxFrag; /*!< \brief Next TX ACL packet fragment */
+    uint8_t *pRxAclPkt; /*!< \brief RX ACL packet pointer */
+    uint8_t *pNextRxFrag; /*!< \brief Next RX ACL packet fragment */
+    uint16_t handle; /*!< \brief Connection handle */
+    uint16_t txAclRemLen; /*!< \brief Fragmenting TX ACL packet remaining length */
+    uint16_t rxAclRemLen; /*!< \brief Fragmented RX ACL packet remaining length */
+    bool_t fragmenting; /*!< \brief TRUE if fragmenting a TX ACL packet */
+    bool_t flowDisabled; /*!< \brief TRUE if data flow disabled */
+    uint8_t queuedBufs; /*!< \brief Queued ACL buffers on this connection */
+    uint8_t outBufs; /*!< \brief Outstanding ACL buffers sent to controller */
 } hciCoreConn_t;
 
 /*! \brief Per-connection structure for OSI packet accounting */
-typedef struct
-{
-  uint16_t          handle;                       /*!< \brief Connection handle */
+typedef struct {
+    uint16_t handle; /*!< \brief Connection handle */
 } hciCoreCis_t;
 
 /*! \brief Main control block for dual-chip implementation */
-typedef struct
-{
-  hciCoreConn_t     conn[DM_CONN_MAX];            /*!< \brief Connection structures */
-  hciCoreCis_t      cis[DM_CIS_MAX];              /*!< \brief CIS structures */
-  uint8_t           leStates[HCI_LE_STATES_LEN];  /*!< \brief Controller LE supported states */
-  bdAddr_t          bdAddr;                       /*!< \brief Bluetooth device address */
-  wsfQueue_t        aclQueue;                     /*!< \brief HCI ACL TX queue */
-  hciCoreConn_t     *pConnRx;                     /*!< \brief Connection struct for current transport RX packet */
-  uint16_t          maxRxAclLen;                  /*!< \brief Maximum reassembled RX ACL packet length */
-  uint16_t          bufSize;                      /*!< \brief Controller ACL data buffer size */
-  uint8_t           aclQueueHi;                   /*!< \brief Disable flow when this many ACL buffers queued */
-  uint8_t           aclQueueLo;                   /*!< \brief Enable flow when this many ACL buffers queued */
-  uint8_t           availBufs;                    /*!< \brief Current avail ACL data buffers */
-  uint8_t           numBufs;                      /*!< \brief Controller number of ACL data buffers */
-  uint8_t           whiteListSize;                /*!< \brief Controller white list size */
-  uint8_t           numCmdPkts;                   /*!< \brief Controller command packed count */
-  uint64_t          leSupFeat;                    /*!< \brief Controller LE supported features */
-  int8_t            advTxPwr;                     /*!< \brief Controller advertising TX power */
-  uint8_t           resListSize;                  /*!< \brief Controller resolving list size */
-  uint16_t          maxAdvDataLen;                /*!< \brief Controller maximum advertisement (or scan response) data length */
-  uint8_t           numSupAdvSets;                /*!< \brief Controller maximum number of advertising sets */
-  uint8_t           perAdvListSize;               /*!< \brief Controller periodic advertising list size */
-  hciLocalVerInfo_t locVerInfo;                   /*!< \brief Controller version information */
-  hciResetSeq_t     extResetSeq;                  /*!< \brief HCI extended reset sequence callback */
+typedef struct {
+    hciCoreConn_t conn[DM_CONN_MAX]; /*!< \brief Connection structures */
+    hciCoreCis_t cis[DM_CIS_MAX]; /*!< \brief CIS structures */
+    uint8_t leStates[HCI_LE_STATES_LEN]; /*!< \brief Controller LE supported states */
+    bdAddr_t bdAddr; /*!< \brief Bluetooth device address */
+    wsfQueue_t aclQueue; /*!< \brief HCI ACL TX queue */
+    hciCoreConn_t *pConnRx; /*!< \brief Connection struct for current transport RX packet */
+    uint16_t maxRxAclLen; /*!< \brief Maximum reassembled RX ACL packet length */
+    uint16_t bufSize; /*!< \brief Controller ACL data buffer size */
+    uint8_t aclQueueHi; /*!< \brief Disable flow when this many ACL buffers queued */
+    uint8_t aclQueueLo; /*!< \brief Enable flow when this many ACL buffers queued */
+    uint8_t availBufs; /*!< \brief Current avail ACL data buffers */
+    uint8_t numBufs; /*!< \brief Controller number of ACL data buffers */
+    uint8_t whiteListSize; /*!< \brief Controller white list size */
+    uint8_t numCmdPkts; /*!< \brief Controller command packed count */
+    uint64_t leSupFeat; /*!< \brief Controller LE supported features */
+    int8_t advTxPwr; /*!< \brief Controller advertising TX power */
+    uint8_t resListSize; /*!< \brief Controller resolving list size */
+    uint16_t
+        maxAdvDataLen; /*!< \brief Controller maximum advertisement (or scan response) data length */
+    uint8_t numSupAdvSets; /*!< \brief Controller maximum number of advertising sets */
+    uint8_t perAdvListSize; /*!< \brief Controller periodic advertising list size */
+    hciLocalVerInfo_t locVerInfo; /*!< \brief Controller version information */
+    hciResetSeq_t extResetSeq; /*!< \brief HCI extended reset sequence callback */
 } hciCoreCb_t;
 
 /**************************************************************************************************

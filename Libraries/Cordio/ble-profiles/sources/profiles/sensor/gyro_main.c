@@ -38,10 +38,9 @@
 **************************************************************************************************/
 
 /*! Control block. */
-static struct
-{
-  wsfTimer_t  measTimer;
-  bool_t      measTimerStarted;
+static struct {
+    wsfTimer_t measTimer;
+    bool_t measTimerStarted;
 } gyroCb;
 
 /*************************************************************************************************/
@@ -53,48 +52,40 @@ static struct
 /*************************************************************************************************/
 static void gyroUpdateTimer(void)
 {
-  uint8_t  config;
-  uint8_t *pConfig = NULL;
-  uint8_t  period;
-  uint8_t *pPeriod = NULL;
-  uint16_t attLen = 0;
+    uint8_t config;
+    uint8_t *pConfig = NULL;
+    uint8_t period;
+    uint8_t *pPeriod = NULL;
+    uint16_t attLen = 0;
 
-  /* Get config & period. */
-  AttsGetAttr(GYRO_HANDLE_CONFIG, &attLen, &pConfig);
-  if (pConfig == NULL)
-  {
-    WSF_TRACE_ERR0("gyro: unable to read config");
-    return;
-  }
-  config = *pConfig;
-  AttsGetAttr(GYRO_HANDLE_PERIOD, &attLen, &pPeriod);
-  if (pPeriod == NULL)
-  {
-    WSF_TRACE_ERR0("gyro: unable to read period");
-    return;
-  }
-  period = *pPeriod;
-  if (period < GYRO_ATT_PERIOD_MIN)
-  {
-    period = GYRO_ATT_PERIOD_MIN;
-  }
+    /* Get config & period. */
+    AttsGetAttr(GYRO_HANDLE_CONFIG, &attLen, &pConfig);
+    if (pConfig == NULL) {
+        WSF_TRACE_ERR0("gyro: unable to read config");
+        return;
+    }
+    config = *pConfig;
+    AttsGetAttr(GYRO_HANDLE_PERIOD, &attLen, &pPeriod);
+    if (pPeriod == NULL) {
+        WSF_TRACE_ERR0("gyro: unable to read period");
+        return;
+    }
+    period = *pPeriod;
+    if (period < GYRO_ATT_PERIOD_MIN) {
+        period = GYRO_ATT_PERIOD_MIN;
+    }
 
-  if (config == GYRO_ATT_CONFIG_ENABLE)
-  {
-    if (!gyroCb.measTimerStarted)
-    {
-      gyroCb.measTimerStarted = TRUE;
-      WsfTimerStartMs(&gyroCb.measTimer, period * 10u);
+    if (config == GYRO_ATT_CONFIG_ENABLE) {
+        if (!gyroCb.measTimerStarted) {
+            gyroCb.measTimerStarted = TRUE;
+            WsfTimerStartMs(&gyroCb.measTimer, period * 10u);
+        }
+    } else {
+        if (gyroCb.measTimerStarted) {
+            gyroCb.measTimerStarted = FALSE;
+            WsfTimerStop(&gyroCb.measTimer);
+        }
     }
-  }
-  else
-  {
-    if (gyroCb.measTimerStarted)
-    {
-      gyroCb.measTimerStarted = FALSE;
-      WsfTimerStop(&gyroCb.measTimer);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -105,51 +96,43 @@ static void gyroUpdateTimer(void)
  */
 /*************************************************************************************************/
 static uint8_t gyroWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                              uint16_t offset, uint16_t len, uint8_t *pValue,
-                              attsAttr_t *pAttr)
+                              uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-  switch (handle)
-  {
-    case GYRO_HANDLE_CONFIG:
-    {
-      uint8_t config;
+    switch (handle) {
+    case GYRO_HANDLE_CONFIG: {
+        uint8_t config;
 
-      /* Check attribute value. */
-      if (len != 1)
-      {
-        return ATT_ERR_LENGTH;
-      }
-      config = *pValue;
-      if ((config != GYRO_ATT_CONFIG_DISABLE) && (config != GYRO_ATT_CONFIG_ENABLE))
-      {
-        return ATT_ERR_RANGE;
-      }
+        /* Check attribute value. */
+        if (len != 1) {
+            return ATT_ERR_LENGTH;
+        }
+        config = *pValue;
+        if ((config != GYRO_ATT_CONFIG_DISABLE) && (config != GYRO_ATT_CONFIG_ENABLE)) {
+            return ATT_ERR_RANGE;
+        }
 
-      /* Save value. */
-      AttsSetAttr(GYRO_HANDLE_CONFIG, len, pValue);
+        /* Save value. */
+        AttsSetAttr(GYRO_HANDLE_CONFIG, len, pValue);
 
-      /* Enable or disable timer. */
-      gyroUpdateTimer();
-      return ATT_SUCCESS;
+        /* Enable or disable timer. */
+        gyroUpdateTimer();
+        return ATT_SUCCESS;
     }
-    case GYRO_HANDLE_PERIOD:
-    {
-      uint8_t period;
+    case GYRO_HANDLE_PERIOD: {
+        uint8_t period;
 
-      if (len != 1)
-      {
-        return ATT_ERR_LENGTH;
-      }
-      period = *pValue;
-      if ((period < GYRO_ATT_PERIOD_MIN) || (period > GYRO_ATT_PERIOD_MAX))
-      {
-        return ATT_ERR_RANGE;
-      }
-      AttsSetAttr(GYRO_HANDLE_PERIOD, len, pValue);
-      return ATT_SUCCESS;
+        if (len != 1) {
+            return ATT_ERR_LENGTH;
+        }
+        period = *pValue;
+        if ((period < GYRO_ATT_PERIOD_MIN) || (period > GYRO_ATT_PERIOD_MAX)) {
+            return ATT_ERR_RANGE;
+        }
+        AttsSetAttr(GYRO_HANDLE_PERIOD, len, pValue);
+        return ATT_SUCCESS;
     }
-  }
-  return ATT_ERR_NOT_SUP;
+    }
+    return ATT_ERR_NOT_SUP;
 }
 
 /*************************************************************************************************/
@@ -164,12 +147,12 @@ static uint8_t gyroWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operat
 /*************************************************************************************************/
 void GyroStart(wsfHandlerId_t handlerId, uint8_t timerEvt)
 {
-  SvcGyroAddGroup();
-  SvcGyroCbackRegister(gyroWriteCback);
+    SvcGyroAddGroup();
+    SvcGyroCbackRegister(gyroWriteCback);
 
-  gyroCb.measTimer.handlerId = handlerId;
-  gyroCb.measTimer.msg.event = timerEvt;
-  gyroCb.measTimerStarted    = FALSE;
+    gyroCb.measTimer.handlerId = handlerId;
+    gyroCb.measTimer.msg.event = timerEvt;
+    gyroCb.measTimerStarted = FALSE;
 }
 
 /*************************************************************************************************/
@@ -181,10 +164,10 @@ void GyroStart(wsfHandlerId_t handlerId, uint8_t timerEvt)
 /*************************************************************************************************/
 void GyroStop(void)
 {
-  gyroCb.measTimerStarted = FALSE;
-  WsfTimerStop(&gyroCb.measTimer);
+    gyroCb.measTimerStarted = FALSE;
+    WsfTimerStop(&gyroCb.measTimer);
 
-  SvcGyroRemoveGroup();
+    SvcGyroRemoveGroup();
 }
 
 /*************************************************************************************************/
@@ -196,8 +179,8 @@ void GyroStop(void)
 /*************************************************************************************************/
 void GyroMeasStop(void)
 {
-  gyroCb.measTimerStarted = FALSE;
-  WsfTimerStop(&gyroCb.measTimer);
+    gyroCb.measTimerStarted = FALSE;
+    WsfTimerStop(&gyroCb.measTimer);
 }
 
 /*************************************************************************************************/
@@ -209,7 +192,7 @@ void GyroMeasStop(void)
 /*************************************************************************************************/
 void GyroMeasStart(void)
 {
-  gyroUpdateTimer();
+    gyroUpdateTimer();
 }
 
 /*************************************************************************************************/
@@ -226,11 +209,11 @@ void GyroMeasStart(void)
 /*************************************************************************************************/
 void GyroMeasComplete(dmConnId_t connId, int16_t x, int16_t y, int16_t z)
 {
-  gyroCb.measTimerStarted = FALSE;
+    gyroCb.measTimerStarted = FALSE;
 
-  uint8_t gyroData[6] = {UINT16_TO_BYTES(x), UINT16_TO_BYTES(y), UINT16_TO_BYTES(z)};
-  AttsSetAttr(GYRO_HANDLE_DATA, sizeof(gyroData), gyroData);
-  AttsHandleValueNtf(connId, GYRO_HANDLE_DATA, sizeof(gyroData), gyroData);
+    uint8_t gyroData[6] = { UINT16_TO_BYTES(x), UINT16_TO_BYTES(y), UINT16_TO_BYTES(z) };
+    AttsSetAttr(GYRO_HANDLE_DATA, sizeof(gyroData), gyroData);
+    AttsHandleValueNtf(connId, GYRO_HANDLE_DATA, sizeof(gyroData), gyroData);
 
-  gyroUpdateTimer();
+    gyroUpdateTimer();
 }

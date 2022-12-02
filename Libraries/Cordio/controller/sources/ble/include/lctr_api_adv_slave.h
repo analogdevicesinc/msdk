@@ -42,17 +42,16 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Slave advertising task messages for \a LCTR_DISP_ADV dispatcher. */
-enum
-{
-  /* Broadcast events */
-  LCTR_ADV_MSG_RESET                    = LCTR_MSG_RESET,   /*!< Reset API message. */
-  /* Advertising events */
-  LCTR_ADV_MSG_START,                   /*!< Advertising start API event. */
-  LCTR_ADV_MSG_STOP,                    /*!< Advertising stop API event. */
-  LCTR_ADV_MSG_INT_START,               /*!< Advertising start internal event. */
-  LCTR_ADV_MSG_TERMINATE,               /*!< Advertising BOD terminated event. */
-  LCTR_ADV_MSG_PARAM_UPD,               /*!< Advertising parameter update event. */
-  LCTR_ADV_MSG_TOTAL                    /*!< Total number of advertising events. */
+enum {
+    /* Broadcast events */
+    LCTR_ADV_MSG_RESET = LCTR_MSG_RESET, /*!< Reset API message. */
+    /* Advertising events */
+    LCTR_ADV_MSG_START, /*!< Advertising start API event. */
+    LCTR_ADV_MSG_STOP, /*!< Advertising stop API event. */
+    LCTR_ADV_MSG_INT_START, /*!< Advertising start internal event. */
+    LCTR_ADV_MSG_TERMINATE, /*!< Advertising BOD terminated event. */
+    LCTR_ADV_MSG_PARAM_UPD, /*!< Advertising parameter update event. */
+    LCTR_ADV_MSG_TOTAL /*!< Total number of advertising events. */
 };
 
 /**************************************************************************************************
@@ -60,17 +59,15 @@ enum
 **************************************************************************************************/
 
 /*! \brief      Advertising parameter message. */
-typedef struct
-{
-  lctrMsgHdr_t      hdr;                /*!< Message header. */
-  lmgrAdvParam_t    param;              /*!< Advertising parameters. */
+typedef struct {
+    lctrMsgHdr_t hdr; /*!< Message header. */
+    lmgrAdvParam_t param; /*!< Advertising parameters. */
 } lctrAdvParamMsg_t;
 
 /*! \brief      Link layer controller advertising message data. */
-typedef union
-{
-  lctrMsgHdr_t      hdr;                /*!< Message header. */
-  lctrAdvParamMsg_t advParamUpd;        /*!< Advertising parameter update. */
+typedef union {
+    lctrMsgHdr_t hdr; /*!< Message header. */
+    lctrAdvParamMsg_t advParamUpd; /*!< Advertising parameter update. */
 } LctrAdvMsg_t;
 
 /**************************************************************************************************
@@ -81,7 +78,7 @@ typedef union
 void LctrSlvAdvInit(void);
 void LctrSlvAdvDefaults(void);
 
-/*! \} */    /* LL_LCTR_API_ADV_SLV */
+/*! \} */ /* LL_LCTR_API_ADV_SLV */
 
 #ifdef __cplusplus
 };

@@ -39,54 +39,35 @@
 
 /* Characteristics for discovery */
 
-
 /*! Alert status */
-static const attcDiscChar_t paspcPassAs =
-{
-  attAsChUuid,
-  ATTC_SET_REQUIRED
-};
+static const attcDiscChar_t paspcPassAs = { attAsChUuid, ATTC_SET_REQUIRED };
 
 /*! Alert status CCC descriptor */
-static const attcDiscChar_t paspcPassAsCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t paspcPassAsCcc = { attCliChCfgUuid,
+                                               ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
 
 /*! Ringer setting */
-static const attcDiscChar_t paspcPassRs =
-{
-  attRsChUuid,
-  ATTC_SET_REQUIRED
-};
+static const attcDiscChar_t paspcPassRs = { attRsChUuid, ATTC_SET_REQUIRED };
 
 /*! Ringer setting CCC descriptor */
-static const attcDiscChar_t paspcPassRsCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t paspcPassRsCcc = { attCliChCfgUuid,
+                                               ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
 
 /*! Ringer control point */
-static const attcDiscChar_t paspcPassRcp =
-{
-  attRcpChUuid,
-  0
-};
+static const attcDiscChar_t paspcPassRcp = { attRcpChUuid, 0 };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *paspcPassDiscCharList[] =
-{
-  &paspcPassAs,                     /*! Alert status */
-  &paspcPassAsCcc,                  /*! Alert status CCC descriptor */
-  &paspcPassRs,                     /*! Ringer setting */
-  &paspcPassRsCcc,                  /*! Ringer setting CCC descriptor */
-  &paspcPassRcp                     /*! Ringer control point */
+static const attcDiscChar_t *paspcPassDiscCharList[] = {
+    &paspcPassAs, /*! Alert status */
+    &paspcPassAsCcc, /*! Alert status CCC descriptor */
+    &paspcPassRs, /*! Ringer setting */
+    &paspcPassRsCcc, /*! Ringer setting CCC descriptor */
+    &paspcPassRcp /*! Ringer control point */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
-WSF_CT_ASSERT(PASPC_PASS_HDL_LIST_LEN == ((sizeof(paspcPassDiscCharList) / sizeof(attcDiscChar_t *))));
+WSF_CT_ASSERT(PASPC_PASS_HDL_LIST_LEN ==
+              ((sizeof(paspcPassDiscCharList) / sizeof(attcDiscChar_t *))));
 
 /*************************************************************************************************/
 /*!
@@ -103,8 +84,8 @@ WSF_CT_ASSERT(PASPC_PASS_HDL_LIST_LEN == ((sizeof(paspcPassDiscCharList) / sizeo
 /*************************************************************************************************/
 void PaspcPassDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attPassSvcUuid,
-                     PASPC_PASS_HDL_LIST_LEN, (attcDiscChar_t **) paspcPassDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attPassSvcUuid, PASPC_PASS_HDL_LIST_LEN,
+                       (attcDiscChar_t **)paspcPassDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -120,13 +101,12 @@ void PaspcPassDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 void PaspcPassControl(dmConnId_t connId, uint16_t handle, uint8_t command)
 {
-  uint8_t buf[1];
+    uint8_t buf[1];
 
-  if (handle != ATT_HANDLE_NONE)
-  {
-    buf[0] = command;
-    AttcWriteCmd(connId, handle, sizeof(buf), buf);
-  }
+    if (handle != ATT_HANDLE_NONE) {
+        buf[0] = command;
+        AttcWriteCmd(connId, handle, sizeof(buf), buf);
+    }
 }
 
 /*************************************************************************************************/
@@ -144,23 +124,20 @@ void PaspcPassControl(dmConnId_t connId, uint16_t handle, uint8_t command)
 /*************************************************************************************************/
 uint8_t PaspcPassValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 {
-  uint8_t status = ATT_SUCCESS;
+    uint8_t status = ATT_SUCCESS;
 
-  /* alert status */
-  if (pMsg->handle == pHdlList[PASPC_PASS_AS_HDL_IDX])
-  {
-    APP_TRACE_INFO1("Phone alert status: 0x%02x", *pMsg->pValue);
-  }
-  /* ringer setting */
-  else if (pMsg->handle == pHdlList[PASPC_PASS_RS_HDL_IDX])
-  {
-    APP_TRACE_INFO1("Ringer setting: 0x%02x", *pMsg->pValue);
-  }
-  /* handle not found in list */
-  else
-  {
-    status = ATT_ERR_NOT_FOUND;
-  }
+    /* alert status */
+    if (pMsg->handle == pHdlList[PASPC_PASS_AS_HDL_IDX]) {
+        APP_TRACE_INFO1("Phone alert status: 0x%02x", *pMsg->pValue);
+    }
+    /* ringer setting */
+    else if (pMsg->handle == pHdlList[PASPC_PASS_RS_HDL_IDX]) {
+        APP_TRACE_INFO1("Ringer setting: 0x%02x", *pMsg->pValue);
+    }
+    /* handle not found in list */
+    else {
+        status = ATT_ERR_NOT_FOUND;
+    }
 
-  return status;
+    return status;
 }

@@ -34,6 +34,6 @@
 /*************************************************************************************************/
 void LhciPhyInit(void)
 {
-  lhciCmdTbl[LHCI_MSG_PHY] = lhciPhyDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_PHY] = lhciPhyEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_PHY] = lhciPhyDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_PHY] = lhciPhyEncodeEvtPkt;
 }

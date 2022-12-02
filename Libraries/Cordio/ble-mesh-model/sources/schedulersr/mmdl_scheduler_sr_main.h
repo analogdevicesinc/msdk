@@ -27,19 +27,27 @@
 #define MMDL_SCHEDULER_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
 /*! Initializer of a message info for the specified model ID */
-#define MSG_INFO(modelId) {{(meshSigModelId_t)modelId }, {{0,0,0}},\
-                           0xFF, NULL, MESH_ADDR_TYPE_UNASSIGNED, 0xFF, 0xFF}
+#define MSG_INFO(modelId)                                                                      \
+    {                                                                                          \
+        { (meshSigModelId_t)modelId }, { { 0, 0, 0 } }, 0xFF, NULL, MESH_ADDR_TYPE_UNASSIGNED, \
+            0xFF, 0xFF                                                                         \
+    }
 
 /*! Initializer of a publish message info for the specified model ID */
-#define PUB_MSG_INFO(modelId) {{{0,0,0}}, 0xFF , {(meshSigModelId_t)modelId}}
+#define PUB_MSG_INFO(modelId)          \
+    {                                  \
+        { { 0, 0, 0 } }, 0xFF,         \
+        {                              \
+            (meshSigModelId_t) modelId \
+        }                              \
+    }
 
 /**************************************************************************************************
   Function Declarations
@@ -55,8 +63,7 @@ void mmdlSchedulerSrScheduleEvent(meshElementId_t elementId, uint8_t index,
                                   mmdlSchedulerSrRegisterEntry_t *pEntry);
 
 void mmdlSchedulerSrSendActionStatus(meshElementId_t elementId, meshAddress_t dstAddr,
-                                     uint16_t appKeyIndex, bool_t recvOnUnicast,
-                                     uint8_t index);
+                                     uint16_t appKeyIndex, bool_t recvOnUnicast, uint8_t index);
 void mmdlSchedulerUnpackActionParams(uint8_t *pMsgParams, uint8_t *pOutIndex,
                                      mmdlSchedulerRegisterEntry_t *pOutEntry);
 

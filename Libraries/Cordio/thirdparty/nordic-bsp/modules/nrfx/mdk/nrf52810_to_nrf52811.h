@@ -47,22 +47,19 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* This file is given to prevent your SW from not compiling with the name changes between nRF52810 and nRF52811 devices.
  * It redefines the old nRF52810 names into the new ones as long as the functionality is still supported. If the
  * functionality is gone, there old names are not defined, so compilation will fail. */
- 
+
 /* Differences between latest nRF52810 headers and nRF52811 headers. */
 
 /* Interrupt service routines handlers. */
 #ifndef TWIM0_TWIS0_IRQHandler
-    #define TWIM0_TWIS0_IRQHandler      TWIM0_TWIS0_SPIM1_SPIS1_IRQHandler
+#define TWIM0_TWIS0_IRQHandler TWIM0_TWIS0_SPIM1_SPIS1_IRQHandler
 #endif
-
 
 /* Interrupt service routines index. */
 #ifndef TWIM0_TWIS0_IRQn
-    #define TWIM0_TWIS0_IRQn            TWIM0_TWIS0_SPIM1_SPIS1_IRQn
+#define TWIM0_TWIS0_IRQn TWIM0_TWIS0_SPIM1_SPIS1_IRQn
 #endif
-
 
 /*lint --flb "Leave library region" */
 
 #endif /* NRF52810_TO_NRF52811_H */
-

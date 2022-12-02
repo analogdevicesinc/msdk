@@ -53,13 +53,12 @@
  */
 APP_USBD_CLASS_FORWARD(app_usbd_hid_mouse);
 
-
 /**
  * @brief HID mouse part of class instance data.
  */
 typedef struct {
-    app_usbd_hid_inst_t hid_inst;      //!< HID instance data.
-    const uint8_t       button_count;  //!< Number of buttons mouse specific.
+    app_usbd_hid_inst_t hid_inst; //!< HID instance data.
+    const uint8_t button_count; //!< Number of buttons mouse specific.
 } app_usbd_hid_mouse_inst_t;
 
 /**
@@ -68,13 +67,13 @@ typedef struct {
 typedef struct {
     app_usbd_hid_ctx_t hid_ctx; //!< HID class context.
 
-    int16_t acc_x_axis;         //!< Mouse specific. Accumulated x axis offset.
-    int16_t acc_y_axis;         //!< Mouse specific. Accumulated y axis offset.
-    int16_t acc_scroll;         //!< Mouse specific. Accumulated scroll offset.
-    uint8_t button_state;       //!< Mouse specific. Actual button state. Bitfield of maximum 8 buttons states.
+    int16_t acc_x_axis; //!< Mouse specific. Accumulated x axis offset.
+    int16_t acc_y_axis; //!< Mouse specific. Accumulated y axis offset.
+    int16_t acc_scroll; //!< Mouse specific. Accumulated scroll offset.
+    uint8_t
+        button_state; //!< Mouse specific. Actual button state. Bitfield of maximum 8 buttons states.
     uint8_t report_buff[4];
 } app_usbd_hid_mouse_ctx_t;
-
 
 /**
  * @brief HID mouse configuration macro.
@@ -83,7 +82,6 @@ typedef struct {
  *
  */
 #define APP_USBD_HID_MOUSE_CONFIG(iface, ep) ((iface, ep))
-
 
 /**
  * @brief Specific class constant data for HID mouse class.
@@ -95,18 +93,18 @@ typedef struct {
  */
 #define APP_USBD_HID_MOUSE_DATA_SPECIFIC_DEC app_usbd_hid_mouse_ctx_t ctx;
 
-
 /**
  * @brief HID mouse descriptors config macro
  *
  * @ref app_usbd_hid_mouse_inst_t
  *
  */
-#define APP_USBD_HID_MOUSE_DSC_CONFIG(interface_number, endpoint, rep_desc) {  \
-        APP_USBD_HID_MOUSE_INTERFACE_DSC(interface_number)                     \
-        APP_USBD_HID_MOUSE_HID_DSC(rep_desc)                                   \
-        APP_USBD_HID_MOUSE_EP_DSC(endpoint)                                    \
-}
+#define APP_USBD_HID_MOUSE_DSC_CONFIG(interface_number, endpoint, rep_desc) \
+    {                                                                       \
+        APP_USBD_HID_MOUSE_INTERFACE_DSC(interface_number)                  \
+        APP_USBD_HID_MOUSE_HID_DSC(rep_desc)                                \
+        APP_USBD_HID_MOUSE_EP_DSC(endpoint)                                 \
+    }
 
 /**
  * @brief Default interval value
@@ -114,9 +112,9 @@ typedef struct {
  */
 #define APP_USBD_HID_MOUSE_DEFAULT_INTERVAL 0x01
 
-#define APP_USBD_HID_MOUSE_INTERVAL(ep)   \
-(APP_USBD_EXTRACT_INTERVAL_FLAG(ep) ? APP_USBD_EXTRACT_INTERVAL_VALUE(ep) : APP_USBD_HID_MOUSE_DEFAULT_INTERVAL)
-
+#define APP_USBD_HID_MOUSE_INTERVAL(ep)                                         \
+    (APP_USBD_EXTRACT_INTERVAL_FLAG(ep) ? APP_USBD_EXTRACT_INTERVAL_VALUE(ep) : \
+                                          APP_USBD_HID_MOUSE_DEFAULT_INTERVAL)
 
 /**
  * @brief Configure internal part of HID mouse instance.
@@ -128,23 +126,13 @@ typedef struct {
  * @param subclass_boot     Subclass boot (@ref app_usbd_hid_subclass_t).
  * @param endpoint_list     List of endpoints and intervals
  */
-#define APP_USBD_HID_MOUSE_INST_CONFIG(report_buff_in,                      \
-                                       report_buff_out,                     \
-                                       user_ev_handler,                     \
-                                       bcnt,                                \
-                                       subclass_boot,                       \
-                                       endpoint_list)                       \
-    .inst = {                                                               \
-        .hid_inst = APP_USBD_HID_INST_CONFIG(mouse_descs,                   \
-                                             subclass_boot,                 \
-                                             APP_USBD_HID_PROTO_MOUSE,      \
-                                             report_buff_in,                \
-                                             report_buff_out,               \
-                                             NULL,                          \
-                                             user_ev_handler,               \
-                                             &app_usbd_hid_mouse_methods,   \
-                                             endpoint_list),                \
-        .button_count = bcnt,                                               \
+#define APP_USBD_HID_MOUSE_INST_CONFIG(report_buff_in, report_buff_out, user_ev_handler, bcnt,     \
+                                       subclass_boot, endpoint_list)                               \
+    .inst = {                                                                                      \
+        .hid_inst = APP_USBD_HID_INST_CONFIG(                                                      \
+            mouse_descs, subclass_boot, APP_USBD_HID_PROTO_MOUSE, report_buff_in, report_buff_out, \
+            NULL, user_ev_handler, &app_usbd_hid_mouse_methods, endpoint_list),                    \
+        .button_count = bcnt,                                                                      \
     }
 
 /**
@@ -163,27 +151,16 @@ extern const app_usbd_class_methods_t app_usbd_hid_mouse_class_methods;
  * @ref  APP_USBD_HID_MOUSE_GLOBAL_DEF
  */
 /*lint -esym( 40, APP_USBD_HID_MOUSE_INTERVAL) */
-#define APP_USBD_HID_MOUSE_GLOBAL_DEF_INTERNAL(instance_name,                                        \
-                                               interface_number,                                     \
-                                               endpoint,                                             \
-                                               bcnt,                                                 \
-                                               user_ev_handler,                                      \
-                                               subclass_boot)                                        \
-    static app_usbd_hid_report_buffer_t  CONCAT_2(instance_name, _in)[1];                            \
-    static uint8_t CONCAT_2(instance_name, _ep) = {MACRO_MAP(APP_USBD_HID_MOUSE_INTERVAL,endpoint)}; \
-    APP_USBD_CLASS_INST_GLOBAL_DEF(                                                                  \
-        instance_name,                                                                               \
-        app_usbd_hid_mouse,                                                                          \
-        &app_usbd_hid_mouse_class_methods,                                                           \
-        APP_USBD_HID_MOUSE_CONFIG(interface_number, endpoint),                                       \
-        (APP_USBD_HID_MOUSE_INST_CONFIG(CONCAT_2(instance_name, _in),                                \
-                                        NULL,                                                        \
-                                        user_ev_handler,                                             \
-                                        bcnt,                                                        \
-                                        subclass_boot,                                               \
-                                        &CONCAT_2(instance_name, _ep)))                              \
-    )
-
+#define APP_USBD_HID_MOUSE_GLOBAL_DEF_INTERNAL(instance_name, interface_number, endpoint, bcnt,    \
+                                               user_ev_handler, subclass_boot)                     \
+    static app_usbd_hid_report_buffer_t CONCAT_2(instance_name, _in)[1];                           \
+    static uint8_t CONCAT_2(instance_name,                                                         \
+                            _ep) = { MACRO_MAP(APP_USBD_HID_MOUSE_INTERVAL, endpoint) };           \
+    APP_USBD_CLASS_INST_GLOBAL_DEF(                                                                \
+        instance_name, app_usbd_hid_mouse, &app_usbd_hid_mouse_class_methods,                      \
+        APP_USBD_HID_MOUSE_CONFIG(interface_number, endpoint),                                     \
+        (APP_USBD_HID_MOUSE_INST_CONFIG(CONCAT_2(instance_name, _in), NULL, user_ev_handler, bcnt, \
+                                        subclass_boot, &CONCAT_2(instance_name, _ep))))
 
 /** @} */
 

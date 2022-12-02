@@ -52,26 +52,26 @@
 wsfHandlerId_t mmdlLightLightnessSetupSrHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlLightLightnessSetupSrRcvdOpcodes[MMDL_LIGHT_LIGHTNESSSETUP_SR_NUM_RCVD_OPCODES] =
-{
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_NO_ACK_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_RANGE_SET_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_RANGE_SET_NO_ACK_OPCODE)} },
-};
+const meshMsgOpcode_t
+    mmdlLightLightnessSetupSrRcvdOpcodes[MMDL_LIGHT_LIGHTNESSSETUP_SR_NUM_RCVD_OPCODES] = {
+        { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_OPCODE) } },
+        { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_NO_ACK_OPCODE) } },
+        { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_RANGE_SET_OPCODE) } },
+        { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_RANGE_SET_NO_ACK_OPCODE) } },
+    };
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlModelHandleMsg_t mmdlLightLightnessSetupSrHandleMsg[MMDL_LIGHT_LIGHTNESSSETUP_SR_NUM_RCVD_OPCODES] =
-{
-  mmdlLightLightnessDefaultSetupSrHandleSet,
-  mmdlLightLightnessDefaultSetupSrHandleSetNoAck,
-  mmdlLightLightnessRangeSetupSrHandleSet,
-  mmdlLightLightnessRangeSetupSrHandleSetNoAck,
-};
+const mmdlModelHandleMsg_t
+    mmdlLightLightnessSetupSrHandleMsg[MMDL_LIGHT_LIGHTNESSSETUP_SR_NUM_RCVD_OPCODES] = {
+        mmdlLightLightnessDefaultSetupSrHandleSet,
+        mmdlLightLightnessDefaultSetupSrHandleSetNoAck,
+        mmdlLightLightnessRangeSetupSrHandleSet,
+        mmdlLightLightnessRangeSetupSrHandleSetNoAck,
+    };
 
 /*! Light Lightness Setup Server received callback */
 /* For future enhancement */
@@ -110,25 +110,24 @@ static void mmdlLightLightnessSetupSrRecvEmptyCback(const wsfMsgHdr_t *pEvent)
 /*************************************************************************************************/
 static bool_t mmdlLightLightnessDefaultSetupSrSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlLightLightnessState_t state;
+    mmdlLightLightnessState_t state;
 
-  MMDL_TRACE_INFO1("LIGHT LIGHTNESS SETUP SR: Set Default State on elemId %d", pMsg->elementId);
+    MMDL_TRACE_INFO1("LIGHT LIGHTNESS SETUP SR: Set Default State on elemId %d", pMsg->elementId);
 
-  WSF_ASSERT(pMsg != NULL);
-  WSF_ASSERT(pMsg->pMessageParams != NULL);
+    WSF_ASSERT(pMsg != NULL);
+    WSF_ASSERT(pMsg->pMessageParams != NULL);
 
-  /* Validate message length. It can take only one value. */
-  if (pMsg->messageParamsLen == MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN)
-  {
-    /* Set the state value from pMessageParams buffer. */
-    BYTES_TO_UINT16(state, &pMsg->pMessageParams[0]);
+    /* Validate message length. It can take only one value. */
+    if (pMsg->messageParamsLen == MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN) {
+        /* Set the state value from pMessageParams buffer. */
+        BYTES_TO_UINT16(state, &pMsg->pMessageParams[0]);
 
-    mmdlLightLightnessDefaultSrSetState(pMsg->elementId, state, MMDL_STATE_UPDATED_BY_CL);
+        mmdlLightLightnessDefaultSrSetState(pMsg->elementId, state, MMDL_STATE_UPDATED_BY_CL);
 
-    return TRUE;
-  }
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -142,26 +141,26 @@ static bool_t mmdlLightLightnessDefaultSetupSrSet(const meshModelMsgRecvEvt_t *p
 /*************************************************************************************************/
 static bool_t mmdlLightLightnessRangeSetupSrSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlLightLightnessRangeState_t rangeState;
-  uint8_t *pParams;
+    mmdlLightLightnessRangeState_t rangeState;
+    uint8_t *pParams;
 
-  MMDL_TRACE_INFO1("LIGHT LIGHTNESS SETUP SR: Set Range State on elemId %d", pMsg->elementId);
+    MMDL_TRACE_INFO1("LIGHT LIGHTNESS SETUP SR: Set Range State on elemId %d", pMsg->elementId);
 
-  WSF_ASSERT(pMsg != NULL);
-  WSF_ASSERT(pMsg->pMessageParams != NULL);
+    WSF_ASSERT(pMsg != NULL);
+    WSF_ASSERT(pMsg->pMessageParams != NULL);
 
-  /* Validate message length. It can take only one value. */
-  if (pMsg->messageParamsLen == MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN)
-  {
-    /* Set the state value from pMessageParams buffer. */
-    pParams = pMsg->pMessageParams;
-    BSTREAM_TO_UINT16(rangeState.rangeMin, pParams);
-    BSTREAM_TO_UINT16(rangeState.rangeMax, pParams);
+    /* Validate message length. It can take only one value. */
+    if (pMsg->messageParamsLen == MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN) {
+        /* Set the state value from pMessageParams buffer. */
+        pParams = pMsg->pMessageParams;
+        BSTREAM_TO_UINT16(rangeState.rangeMin, pParams);
+        BSTREAM_TO_UINT16(rangeState.rangeMax, pParams);
 
-    return mmdlLightLightnessRangeSrSetState(pMsg->elementId, &rangeState, MMDL_STATE_UPDATED_BY_CL);
-  }
+        return mmdlLightLightnessRangeSrSetState(pMsg->elementId, &rangeState,
+                                                 MMDL_STATE_UPDATED_BY_CL);
+    }
 
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -175,7 +174,7 @@ static bool_t mmdlLightLightnessRangeSetupSrSet(const meshModelMsgRecvEvt_t *pMs
 /*************************************************************************************************/
 void mmdlLightLightnessDefaultSetupSrHandleSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-  (void)mmdlLightLightnessDefaultSetupSrSet(pMsg);
+    (void)mmdlLightLightnessDefaultSetupSrSet(pMsg);
 }
 
 /*************************************************************************************************/
@@ -189,13 +188,13 @@ void mmdlLightLightnessDefaultSetupSrHandleSetNoAck(const meshModelMsgRecvEvt_t 
 /*************************************************************************************************/
 void mmdlLightLightnessDefaultSetupSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  /* Change state */
-  if (mmdlLightLightnessDefaultSetupSrSet(pMsg))
-  {
-    /* Send Status message as a response to the Set message */
-    mmdlLightLightnessDefaultSrSendStatus(MMDL_LIGHT_LIGHTNESSSETUP_SR_MDL_ID, pMsg->elementId,
-                                          pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast);
-  }
+    /* Change state */
+    if (mmdlLightLightnessDefaultSetupSrSet(pMsg)) {
+        /* Send Status message as a response to the Set message */
+        mmdlLightLightnessDefaultSrSendStatus(MMDL_LIGHT_LIGHTNESSSETUP_SR_MDL_ID, pMsg->elementId,
+                                              pMsg->srcAddr, pMsg->appKeyIndex,
+                                              pMsg->recvOnUnicast);
+    }
 }
 
 /*************************************************************************************************/
@@ -209,7 +208,7 @@ void mmdlLightLightnessDefaultSetupSrHandleSet(const meshModelMsgRecvEvt_t *pMsg
 /*************************************************************************************************/
 void mmdlLightLightnessRangeSetupSrHandleSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-  (void)mmdlLightLightnessRangeSetupSrSet(pMsg);
+    (void)mmdlLightLightnessRangeSetupSrSet(pMsg);
 }
 
 /*************************************************************************************************/
@@ -223,13 +222,12 @@ void mmdlLightLightnessRangeSetupSrHandleSetNoAck(const meshModelMsgRecvEvt_t *p
 /*************************************************************************************************/
 void mmdlLightLightnessRangeSetupSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  /* Change state */
-  if (mmdlLightLightnessRangeSetupSrSet(pMsg))
-  {
-    /* Send Status message as a response to the Set message */
-    mmdlLightLightnessRangeSrSendStatus(MMDL_LIGHT_LIGHTNESSSETUP_SR_MDL_ID, pMsg->elementId,
-                                          pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast);
-  }
+    /* Change state */
+    if (mmdlLightLightnessRangeSetupSrSet(pMsg)) {
+        /* Send Status message as a response to the Set message */
+        mmdlLightLightnessRangeSrSendStatus(MMDL_LIGHT_LIGHTNESSSETUP_SR_MDL_ID, pMsg->elementId,
+                                            pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast);
+    }
 }
 
 /**************************************************************************************************
@@ -245,11 +243,11 @@ void mmdlLightLightnessRangeSetupSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlLightLightnessSetupSrInit(void)
 {
-  MMDL_TRACE_INFO0("LIGHT LIGHTNESS SETUP SR: init");
+    MMDL_TRACE_INFO0("LIGHT LIGHTNESS SETUP SR: init");
 
-  /* Set event callbacks */
-  /* For future enhancement */
-  /* llSetupSrRecvCback = mmdlLightLightnessSetupSrRecvEmptyCback; */
+    /* Set event callbacks */
+    /* For future enhancement */
+    /* llSetupSrRecvCback = mmdlLightLightnessSetupSrRecvEmptyCback; */
 }
 
 /*************************************************************************************************/
@@ -263,8 +261,8 @@ void MmdlLightLightnessSetupSrInit(void)
 /*************************************************************************************************/
 void MmdlLightLightnessSetupSrHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Set handler ID */
-  mmdlLightLightnessSetupSrHandlerId = handlerId;
+    /* Set handler ID */
+    mmdlLightLightnessSetupSrHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -279,38 +277,34 @@ void MmdlLightLightnessSetupSrHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlLightLightnessSetupSrHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelMsgRecvEvt_t *pModelMsg;
-  uint8_t opcodeIdx;
+    meshModelMsgRecvEvt_t *pModelMsg;
+    uint8_t opcodeIdx;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-        /* Validate opcode size and value */
-        if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_LIGHT_LIGHTNESS_OPCODES_SIZE)
-        {
-          /* Match the received opcode */
-          for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_LIGHTNESSSETUP_SR_NUM_RCVD_OPCODES; opcodeIdx++)
-          {
-            if (!memcmp(&mmdlLightLightnessSetupSrRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
-                MMDL_LIGHT_LIGHTNESS_OPCODES_SIZE))
-            {
-              /* Process message */
-              (void)mmdlLightLightnessSetupSrHandleMsg[opcodeIdx](pModelMsg);
+            /* Validate opcode size and value */
+            if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_LIGHT_LIGHTNESS_OPCODES_SIZE) {
+                /* Match the received opcode */
+                for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_LIGHTNESSSETUP_SR_NUM_RCVD_OPCODES;
+                     opcodeIdx++) {
+                    if (!memcmp(&mmdlLightLightnessSetupSrRcvdOpcodes[opcodeIdx],
+                                pModelMsg->opCode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_OPCODES_SIZE)) {
+                        /* Process message */
+                        (void)mmdlLightLightnessSetupSrHandleMsg[opcodeIdx](pModelMsg);
+                    }
+                }
             }
-          }
-        }
-        break;
+            break;
 
-      default:
-        MMDL_TRACE_WARN0("LIGHT LIGHTNESS SETUP SR: Invalid event message received!");
-        break;
+        default:
+            MMDL_TRACE_WARN0("LIGHT LIGHTNESS SETUP SR: Invalid event message received!");
+            break;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -326,8 +320,8 @@ void MmdlLightLightnessSetupSrHandler(wsfMsgHdr_t *pMsg)
 void MmdlLightLightnessDefaultSetupSrSetState(meshElementId_t elementId,
                                               mmdlLightLightnessState_t targetState)
 {
-  /* Change state locally. */
-  mmdlLightLightnessDefaultSrSetState(elementId, targetState, MMDL_STATE_UPDATED_BY_APP);
+    /* Change state locally. */
+    mmdlLightLightnessDefaultSrSetState(elementId, targetState, MMDL_STATE_UPDATED_BY_APP);
 }
 
 /*************************************************************************************************/
@@ -341,10 +335,10 @@ void MmdlLightLightnessDefaultSetupSrSetState(meshElementId_t elementId,
 */
 /*************************************************************************************************/
 void MmdlLightLightnessRangeSetupSrSetState(meshElementId_t elementId,
-                                      const mmdlLightLightnessRangeState_t *pTargetState)
+                                            const mmdlLightLightnessRangeState_t *pTargetState)
 {
-  /* Change state locally. */
-  (void)mmdlLightLightnessRangeSrSetState(elementId, pTargetState, MMDL_STATE_UPDATED_BY_APP);
+    /* Change state locally. */
+    (void)mmdlLightLightnessRangeSrSetState(elementId, pTargetState, MMDL_STATE_UPDATED_BY_APP);
 }
 
 /*************************************************************************************************/
@@ -358,9 +352,9 @@ void MmdlLightLightnessRangeSetupSrSetState(meshElementId_t elementId,
 /*************************************************************************************************/
 void MmdlLightLightnessSetupSrRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback */
-  /* For future enhancement */
-  /*
+    /* Store valid callback */
+    /* For future enhancement */
+    /*
   if (recvCback != NULL)
   {
     llSetupSrRecvCback = recvCback;

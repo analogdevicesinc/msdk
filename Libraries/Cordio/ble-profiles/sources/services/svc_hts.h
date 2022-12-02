@@ -40,26 +40,25 @@ extern "C" {
  *
  */
 /**@{*/
-#define HTS_START_HDL               0x0120            /*!< \brief Start handle. */
-#define HTS_END_HDL                 (HTS_MAX_HDL - 1) /*!< \brief End handle. */
+#define HTS_START_HDL 0x0120 /*!< \brief Start handle. */
+#define HTS_END_HDL (HTS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Health Thermometer Service Handles */
-enum
-{
-  HTS_SVC_HDL = HTS_START_HDL,      /*!< \brief Health thermometer service declaration */
-  HTS_TM_CH_HDL,                    /*!< \brief Temperature measurement characteristic */
-  HTS_TM_HDL,                       /*!< \brief Temperature measurement */
-  HTS_TM_CH_CCC_HDL,                /*!< \brief Temperature measurement client characteristic configuration */
-  HTS_IT_CH_HDL,                    /*!< \brief Intermediate temperature characteristic */
-  HTS_IT_HDL,                       /*!< \brief Intermediate temperature */
-  HTS_IT_CH_CCC_HDL,                /*!< \brief Intermediate temperature client characteristic configuration */
-  HTS_TT_CH_HDL,                    /*!< \brief Temperature type characteristic */
-  HTS_TT_HDL,                       /*!< \brief Temperature type */
-  HTS_MAX_HDL                       /*!< \brief Maximum handle. */
+enum {
+    HTS_SVC_HDL = HTS_START_HDL, /*!< \brief Health thermometer service declaration */
+    HTS_TM_CH_HDL, /*!< \brief Temperature measurement characteristic */
+    HTS_TM_HDL, /*!< \brief Temperature measurement */
+    HTS_TM_CH_CCC_HDL, /*!< \brief Temperature measurement client characteristic configuration */
+    HTS_IT_CH_HDL, /*!< \brief Intermediate temperature characteristic */
+    HTS_IT_HDL, /*!< \brief Intermediate temperature */
+    HTS_IT_CH_CCC_HDL, /*!< \brief Intermediate temperature client characteristic configuration */
+    HTS_TT_CH_HDL, /*!< \brief Temperature type characteristic */
+    HTS_TT_HDL, /*!< \brief Temperature type */
+    HTS_MAX_HDL /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -97,7 +96,7 @@ void SvcHtsRemoveGroup(void);
 /*************************************************************************************************/
 void SvcHtsCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
 
-/*! \} */    /* HEALTH_THERMOMETER_SERVICE */
+/*! \} */ /* HEALTH_THERMOMETER_SERVICE */
 
 #ifdef __cplusplus
 };

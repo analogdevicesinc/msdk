@@ -44,78 +44,73 @@
 /*************************************************************************************************/
 bool_t lhciSlvBisDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-  uint8_t status = HCI_SUCCESS;
-  uint8_t paramLen = 0;
+    uint8_t status = HCI_SUCCESS;
+    uint8_t paramLen = 0;
 
-  switch (pHdr->opCode)
-  {
-    case HCI_OPCODE_LE_CREATE_BIG:
-    {
-      LlCreateBig_t param;
+    switch (pHdr->opCode) {
+    case HCI_OPCODE_LE_CREATE_BIG: {
+        LlCreateBig_t param;
 
-      BSTREAM_TO_UINT8 (param.bigHandle, pBuf);
-      BSTREAM_TO_UINT8 (param.advHandle, pBuf);
-      BSTREAM_TO_UINT8 (param.numBis, pBuf);
-      BSTREAM_TO_UINT24(param.sduInterUsec, pBuf);
-      BSTREAM_TO_UINT16(param.maxSdu, pBuf);
-      BSTREAM_TO_UINT16(param.mtlMs, pBuf);
-      BSTREAM_TO_UINT8 (param.rtn, pBuf);
-      BSTREAM_TO_UINT8 (param.phys, pBuf);
-      BSTREAM_TO_UINT8 (param.packing, pBuf);
-      BSTREAM_TO_UINT8 (param.framing, pBuf);
-      BSTREAM_TO_UINT8 (param.encrypt, pBuf);
-      memcpy(param.bcstCode, pBuf, sizeof(param.bcstCode));
+        BSTREAM_TO_UINT8(param.bigHandle, pBuf);
+        BSTREAM_TO_UINT8(param.advHandle, pBuf);
+        BSTREAM_TO_UINT8(param.numBis, pBuf);
+        BSTREAM_TO_UINT24(param.sduInterUsec, pBuf);
+        BSTREAM_TO_UINT16(param.maxSdu, pBuf);
+        BSTREAM_TO_UINT16(param.mtlMs, pBuf);
+        BSTREAM_TO_UINT8(param.rtn, pBuf);
+        BSTREAM_TO_UINT8(param.phys, pBuf);
+        BSTREAM_TO_UINT8(param.packing, pBuf);
+        BSTREAM_TO_UINT8(param.framing, pBuf);
+        BSTREAM_TO_UINT8(param.encrypt, pBuf);
+        memcpy(param.bcstCode, pBuf, sizeof(param.bcstCode));
 
-      status = LlCreateBig(&param);
-      paramLen = LHCI_LEN_CMD_STATUS_EVT;
-      break;
+        status = LlCreateBig(&param);
+        paramLen = LHCI_LEN_CMD_STATUS_EVT;
+        break;
     }
-    case HCI_OPCODE_LE_CREATE_BIG_TEST:
-    {
-      LlCreateBigTest_t param;
+    case HCI_OPCODE_LE_CREATE_BIG_TEST: {
+        LlCreateBigTest_t param;
 
-      BSTREAM_TO_UINT8 (param.bigHandle, pBuf);
-      BSTREAM_TO_UINT8 (param.advHandle, pBuf);
-      BSTREAM_TO_UINT8 (param.numBis, pBuf);
-      BSTREAM_TO_UINT24(param.sduInterUsec, pBuf);
-      BSTREAM_TO_UINT16(param.isoInter, pBuf);
-      BSTREAM_TO_UINT8 (param.nse, pBuf);
-      BSTREAM_TO_UINT16(param.maxSdu, pBuf);
-      BSTREAM_TO_UINT16(param.maxPdu, pBuf);
-      BSTREAM_TO_UINT8 (param.phys, pBuf);
-      BSTREAM_TO_UINT8 (param.packing, pBuf);
-      BSTREAM_TO_UINT8 (param.framing, pBuf);
-      BSTREAM_TO_UINT8 (param.bn, pBuf);
-      BSTREAM_TO_UINT8 (param.irc, pBuf);
-      BSTREAM_TO_UINT8 (param.pto, pBuf);
-      BSTREAM_TO_UINT8 (param.encrypt, pBuf);
-      memcpy(param.bcstCode, pBuf, sizeof(param.bcstCode));
+        BSTREAM_TO_UINT8(param.bigHandle, pBuf);
+        BSTREAM_TO_UINT8(param.advHandle, pBuf);
+        BSTREAM_TO_UINT8(param.numBis, pBuf);
+        BSTREAM_TO_UINT24(param.sduInterUsec, pBuf);
+        BSTREAM_TO_UINT16(param.isoInter, pBuf);
+        BSTREAM_TO_UINT8(param.nse, pBuf);
+        BSTREAM_TO_UINT16(param.maxSdu, pBuf);
+        BSTREAM_TO_UINT16(param.maxPdu, pBuf);
+        BSTREAM_TO_UINT8(param.phys, pBuf);
+        BSTREAM_TO_UINT8(param.packing, pBuf);
+        BSTREAM_TO_UINT8(param.framing, pBuf);
+        BSTREAM_TO_UINT8(param.bn, pBuf);
+        BSTREAM_TO_UINT8(param.irc, pBuf);
+        BSTREAM_TO_UINT8(param.pto, pBuf);
+        BSTREAM_TO_UINT8(param.encrypt, pBuf);
+        memcpy(param.bcstCode, pBuf, sizeof(param.bcstCode));
 
-      status = LlCreateBigTest(&param);
-      paramLen = LHCI_LEN_CMD_STATUS_EVT;
-      break;
+        status = LlCreateBigTest(&param);
+        paramLen = LHCI_LEN_CMD_STATUS_EVT;
+        break;
     }
-    case HCI_OPCODE_LE_TERMINATE_BIG:
-    {
-      uint8_t bigHandle;
-      uint8_t reason;
+    case HCI_OPCODE_LE_TERMINATE_BIG: {
+        uint8_t bigHandle;
+        uint8_t reason;
 
-      BSTREAM_TO_UINT8(bigHandle, pBuf);
-      BSTREAM_TO_UINT8(reason, pBuf);
+        BSTREAM_TO_UINT8(bigHandle, pBuf);
+        BSTREAM_TO_UINT8(reason, pBuf);
 
-      status = LlTerminateBig(bigHandle, reason);
-      paramLen = LHCI_LEN_CMD_STATUS_EVT;
-      break;
+        status = LlTerminateBig(bigHandle, reason);
+        paramLen = LHCI_LEN_CMD_STATUS_EVT;
+        break;
     }
 
     default:
-      return FALSE;     /* exit dispatcher routine */
-  }
+        return FALSE; /* exit dispatcher routine */
+    }
 
-  if (paramLen == LHCI_LEN_CMD_STATUS_EVT)
-  {
-    lhciSendCmdStatusEvt(pHdr, status);
-  }
+    if (paramLen == LHCI_LEN_CMD_STATUS_EVT) {
+        lhciSendCmdStatusEvt(pHdr, status);
+    }
 
-  return TRUE;
+    return TRUE;
 }

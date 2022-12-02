@@ -40,16 +40,15 @@
 /*************************************************************************************************/
 void HciLeIsoTxTest(uint16_t handle, uint8_t pldType)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ISO_TX_TEST, HCI_LEN_LE_ISO_TX_TEST)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT8_TO_BSTREAM(p, pldType);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ISO_TX_TEST, HCI_LEN_LE_ISO_TX_TEST)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, handle);
+        UINT8_TO_BSTREAM(p, pldType);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -64,16 +63,15 @@ void HciLeIsoTxTest(uint16_t handle, uint8_t pldType)
 /*************************************************************************************************/
 void HciLeIsoRxTest(uint16_t handle, uint8_t pldType)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ISO_RX_TEST, HCI_LEN_LE_ISO_RX_TEST)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT8_TO_BSTREAM(p, pldType);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ISO_RX_TEST, HCI_LEN_LE_ISO_RX_TEST)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, handle);
+        UINT8_TO_BSTREAM(p, pldType);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -87,15 +85,15 @@ void HciLeIsoRxTest(uint16_t handle, uint8_t pldType)
 /*************************************************************************************************/
 void HciLeIsoReadTestCounters(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ISO_READ_TEST_COUNTERS, HCI_LEN_LE_ISO_READ_TEST_COUNTERS)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ISO_READ_TEST_COUNTERS,
+                            HCI_LEN_LE_ISO_READ_TEST_COUNTERS)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, handle);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -109,15 +107,14 @@ void HciLeIsoReadTestCounters(uint16_t handle)
 /*************************************************************************************************/
 void HciLeIsoTestEnd(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ISO_TEST_END, HCI_LEN_LE_ISO_TEST_END)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ISO_TEST_END, HCI_LEN_LE_ISO_TEST_END)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, handle);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -131,26 +128,26 @@ void HciLeIsoTestEnd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeSetupIsoDataPathCmd(HciIsoSetupDataPath_t *pDataPathParam)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SETUP_ISO_DATA_PATH, 
-                          HCI_LEN_LE_SETUP_ISO_DATA_PATH(pDataPathParam->codecConfigLen))) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, pDataPathParam->handle);
-    UINT8_TO_BSTREAM(p, pDataPathParam->dpDir);
-    UINT8_TO_BSTREAM(p, pDataPathParam->dpId);
-    UINT8_TO_BSTREAM(p, pDataPathParam->codingFmt);
-    UINT16_TO_BSTREAM(p, pDataPathParam->compId);
-    UINT16_TO_BSTREAM(p, pDataPathParam->vsCodecId);
-    UINT24_TO_BSTREAM(p, pDataPathParam->ctrDly);
-    UINT8_TO_BSTREAM(p, pDataPathParam->codecConfigLen);
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SETUP_ISO_DATA_PATH,
+                            HCI_LEN_LE_SETUP_ISO_DATA_PATH(pDataPathParam->codecConfigLen))) !=
+        NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, pDataPathParam->handle);
+        UINT8_TO_BSTREAM(p, pDataPathParam->dpDir);
+        UINT8_TO_BSTREAM(p, pDataPathParam->dpId);
+        UINT8_TO_BSTREAM(p, pDataPathParam->codingFmt);
+        UINT16_TO_BSTREAM(p, pDataPathParam->compId);
+        UINT16_TO_BSTREAM(p, pDataPathParam->vsCodecId);
+        UINT24_TO_BSTREAM(p, pDataPathParam->ctrDly);
+        UINT8_TO_BSTREAM(p, pDataPathParam->codecConfigLen);
 
-    memcpy(p, pDataPathParam->pCodecConfig, pDataPathParam->codecConfigLen);
+        memcpy(p, pDataPathParam->pCodecConfig, pDataPathParam->codecConfigLen);
 
-    hciCmdSend(pBuf);
-  }
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -165,17 +162,16 @@ void HciLeSetupIsoDataPathCmd(HciIsoSetupDataPath_t *pDataPathParam)
 /*************************************************************************************************/
 void HciLeRemoveIsoDataPathCmd(uint16_t handle, uint8_t directionBits)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_ISO_DATA_PATH, 
-                          HCI_LEN_LE_REMOVE_ISO_DATA_PATH)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT8_TO_BSTREAM(p, directionBits);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_ISO_DATA_PATH, HCI_LEN_LE_REMOVE_ISO_DATA_PATH)) !=
+        NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, handle);
+        UINT8_TO_BSTREAM(p, directionBits);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -189,21 +185,20 @@ void HciLeRemoveIsoDataPathCmd(uint16_t handle, uint8_t directionBits)
 /*************************************************************************************************/
 void HciConfigDataPathCmd(HciConfigDataPath_t *pDataPathParam)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_CONFIG_DATA_PATH,
-                          HCI_LEN_CONFIG_DATA_PATH(pDataPathParam->configLen))) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, pDataPathParam->dpDir);
-    UINT8_TO_BSTREAM(p, pDataPathParam->dpId);
-    UINT8_TO_BSTREAM(p, pDataPathParam->configLen);
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_CONFIG_DATA_PATH,
+                            HCI_LEN_CONFIG_DATA_PATH(pDataPathParam->configLen))) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, pDataPathParam->dpDir);
+        UINT8_TO_BSTREAM(p, pDataPathParam->dpId);
+        UINT8_TO_BSTREAM(p, pDataPathParam->configLen);
 
-    memcpy(p, pDataPathParam->pConfig, pDataPathParam->configLen);
+        memcpy(p, pDataPathParam->pConfig, pDataPathParam->configLen);
 
-    hciCmdSend(pBuf);
-  }
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -215,13 +210,12 @@ void HciConfigDataPathCmd(HciConfigDataPath_t *pDataPathParam)
 /*************************************************************************************************/
 void HciReadLocalSupCodecsCmd(void)
 {
-  uint8_t *pBuf;
+    uint8_t *pBuf;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_LOCAL_SUP_CODECS,
-                          HCI_LEN_READ_LOCAL_SUP_CODECS)) != NULL)
-  {
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_LOCAL_SUP_CODECS, HCI_LEN_READ_LOCAL_SUP_CODECS)) !=
+        NULL) {
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -235,21 +229,20 @@ void HciReadLocalSupCodecsCmd(void)
 /*************************************************************************************************/
 void HciReadLocalSupCodecCapCmd(HciReadLocalSupCodecCaps_t *pCodecParam)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_LOCAL_SUP_CODEC_CAP,
-                          HCI_LEN_READ_LOCAL_SUP_CODEC_CAP)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, pCodecParam->codingFmt);
-    UINT16_TO_BSTREAM(p, pCodecParam->compId);
-    UINT16_TO_BSTREAM(p, pCodecParam->vsCodecId);
-    UINT8_TO_BSTREAM(p, pCodecParam->transType);
-    UINT8_TO_BSTREAM(p, pCodecParam->direction);
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_LOCAL_SUP_CODEC_CAP,
+                            HCI_LEN_READ_LOCAL_SUP_CODEC_CAP)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, pCodecParam->codingFmt);
+        UINT16_TO_BSTREAM(p, pCodecParam->compId);
+        UINT16_TO_BSTREAM(p, pCodecParam->vsCodecId);
+        UINT8_TO_BSTREAM(p, pCodecParam->transType);
+        UINT8_TO_BSTREAM(p, pCodecParam->direction);
 
-    hciCmdSend(pBuf);
-  }
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -263,22 +256,22 @@ void HciReadLocalSupCodecCapCmd(HciReadLocalSupCodecCaps_t *pCodecParam)
 /*************************************************************************************************/
 void HciReadLocalSupControllerDlyCmd(HciReadLocalSupControllerDly_t *pDelayParam)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_LOCAL_SUP_CONTROLLER_DLY,
-                          HCI_LEN_READ_LOCAL_SUP_CONTROLLER_DLY(pDelayParam->codecConfigLen))) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, pDelayParam->codingFmt);
-    UINT16_TO_BSTREAM(p, pDelayParam->compId);
-    UINT16_TO_BSTREAM(p, pDelayParam->vsCodecId);
-    UINT8_TO_BSTREAM(p, pDelayParam->transType);
-    UINT8_TO_BSTREAM(p, pDelayParam->direction);
-    UINT8_TO_BSTREAM(p, pDelayParam->codecConfigLen);
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_READ_LOCAL_SUP_CONTROLLER_DLY,
+                            HCI_LEN_READ_LOCAL_SUP_CONTROLLER_DLY(pDelayParam->codecConfigLen))) !=
+        NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, pDelayParam->codingFmt);
+        UINT16_TO_BSTREAM(p, pDelayParam->compId);
+        UINT16_TO_BSTREAM(p, pDelayParam->vsCodecId);
+        UINT8_TO_BSTREAM(p, pDelayParam->transType);
+        UINT8_TO_BSTREAM(p, pDelayParam->direction);
+        UINT8_TO_BSTREAM(p, pDelayParam->codecConfigLen);
 
-    memcpy(p, pDelayParam->pCodecConfig, pDelayParam->codecConfigLen);
+        memcpy(p, pDelayParam->pCodecConfig, pDelayParam->codecConfigLen);
 
-    hciCmdSend(pBuf);
-  }
+        hciCmdSend(pBuf);
+    }
 }

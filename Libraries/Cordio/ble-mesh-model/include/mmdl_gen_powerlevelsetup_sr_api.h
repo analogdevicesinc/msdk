@@ -31,8 +31,7 @@
 #define MMDL_GEN_POWER_LEVELSETUP_SR_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************

@@ -35,10 +35,9 @@
 **************************************************************************************************/
 
 /* Internal message buf structure */
-typedef struct wsfMsg_tag
-{
-  struct wsfMsg_tag   *pNext;
-  wsfHandlerId_t      handlerId;
+typedef struct wsfMsg_tag {
+    struct wsfMsg_tag *pNext;
+    wsfHandlerId_t handlerId;
 } wsfMsg_t;
 
 /*************************************************************************************************/
@@ -53,7 +52,7 @@ typedef struct wsfMsg_tag
 /*************************************************************************************************/
 void *WsfMsgDataAlloc(uint16_t len, uint8_t tailroom)
 {
-  return WsfMsgAlloc(len + tailroom);
+    return WsfMsgAlloc(len + tailroom);
 }
 
 /*************************************************************************************************/
@@ -67,17 +66,16 @@ void *WsfMsgDataAlloc(uint16_t len, uint8_t tailroom)
 /*************************************************************************************************/
 void *WsfMsgAlloc(uint16_t len)
 {
-  wsfMsg_t  *pMsg;
+    wsfMsg_t *pMsg;
 
-  pMsg = WsfBufAlloc(len + sizeof(wsfMsg_t));
+    pMsg = WsfBufAlloc(len + sizeof(wsfMsg_t));
 
-  /* hide header */
-  if (pMsg != NULL)
-  {
-    pMsg++;
-  }
+    /* hide header */
+    if (pMsg != NULL) {
+        pMsg++;
+    }
 
-  return pMsg;
+    return pMsg;
 }
 
 /*************************************************************************************************/
@@ -89,7 +87,7 @@ void *WsfMsgAlloc(uint16_t len)
 /*************************************************************************************************/
 void WsfMsgFree(void *pMsg)
 {
-  WsfBufFree(((wsfMsg_t *) pMsg) - 1);
+    WsfBufFree(((wsfMsg_t *)pMsg) - 1);
 }
 
 /*************************************************************************************************/
@@ -102,13 +100,13 @@ void WsfMsgFree(void *pMsg)
 /*************************************************************************************************/
 void WsfMsgSend(wsfHandlerId_t handlerId, void *pMsg)
 {
-  WSF_TRACE_MSG1("WsfMsgSend handlerId:%u", handlerId);
+    WSF_TRACE_MSG1("WsfMsgSend handlerId:%u", handlerId);
 
-  /* get queue for this handler and enqueue message */
-  WsfMsgEnq(WsfTaskMsgQueue(handlerId), handlerId, pMsg);
+    /* get queue for this handler and enqueue message */
+    WsfMsgEnq(WsfTaskMsgQueue(handlerId), handlerId, pMsg);
 
-  /* set task for this handler as ready to run */
-  WsfTaskSetReady(handlerId, WSF_MSG_QUEUE_EVENT);
+    /* set task for this handler as ready to run */
+    WsfTaskSetReady(handlerId, WSF_MSG_QUEUE_EVENT);
 }
 
 /*************************************************************************************************/
@@ -122,17 +120,17 @@ void WsfMsgSend(wsfHandlerId_t handlerId, void *pMsg)
 /*************************************************************************************************/
 void WsfMsgEnq(wsfQueue_t *pQueue, wsfHandlerId_t handlerId, void *pMsg)
 {
-  wsfMsg_t    *p;
+    wsfMsg_t *p;
 
-  WSF_ASSERT(pMsg != NULL);
+    WSF_ASSERT(pMsg != NULL);
 
-  /* get message header */
-  p = ((wsfMsg_t *) pMsg) - 1;
+    /* get message header */
+    p = ((wsfMsg_t *)pMsg) - 1;
 
-  /* set handler ID */
-  p->handlerId = handlerId;
+    /* set handler ID */
+    p->handlerId = handlerId;
 
-  WsfQueueEnq(pQueue, p);
+    WsfQueueEnq(pQueue, p);
 }
 
 /*************************************************************************************************/
@@ -147,17 +145,16 @@ void WsfMsgEnq(wsfQueue_t *pQueue, wsfHandlerId_t handlerId, void *pMsg)
 /*************************************************************************************************/
 void *WsfMsgDeq(wsfQueue_t *pQueue, wsfHandlerId_t *pHandlerId)
 {
-  wsfMsg_t *pMsg;
+    wsfMsg_t *pMsg;
 
-  if ((pMsg = WsfQueueDeq(pQueue)) != NULL)
-  {
-    *pHandlerId = pMsg->handlerId;
+    if ((pMsg = WsfQueueDeq(pQueue)) != NULL) {
+        *pHandlerId = pMsg->handlerId;
 
-    /* hide header */
-    pMsg++;
-  }
+        /* hide header */
+        pMsg++;
+    }
 
-  return pMsg;
+    return pMsg;
 }
 
 /*************************************************************************************************/
@@ -172,17 +169,16 @@ void *WsfMsgDeq(wsfQueue_t *pQueue, wsfHandlerId_t *pHandlerId)
 /*************************************************************************************************/
 void *WsfMsgPeek(wsfQueue_t *pQueue, wsfHandlerId_t *pHandlerId)
 {
-  wsfMsg_t *pMsg = pQueue->pHead;
+    wsfMsg_t *pMsg = pQueue->pHead;
 
-  if (pMsg != NULL)
-  {
-    *pHandlerId = pMsg->handlerId;
+    if (pMsg != NULL) {
+        *pHandlerId = pMsg->handlerId;
 
-    /* hide header */
-    pMsg++;
-  }
+        /* hide header */
+        pMsg++;
+    }
 
-  return pMsg;
+    return pMsg;
 }
 
 /*************************************************************************************************/
@@ -198,20 +194,18 @@ void *WsfMsgPeek(wsfQueue_t *pQueue, wsfHandlerId_t *pHandlerId)
 /*************************************************************************************************/
 void *WsfMsgNPeek(wsfQueue_t *pQueue, uint8_t n, wsfHandlerId_t *pHandlerId)
 {
-  wsfMsg_t *pMsg = pQueue->pHead;
+    wsfMsg_t *pMsg = pQueue->pHead;
 
-  while (pMsg && n--)
-  {
-    pMsg = pMsg->pNext;
-  }
+    while (pMsg && n--) {
+        pMsg = pMsg->pNext;
+    }
 
-  if (pMsg != NULL)
-  {
-    *pHandlerId = pMsg->handlerId;
+    if (pMsg != NULL) {
+        *pHandlerId = pMsg->handlerId;
 
-    /* hide header */
-    pMsg++;
-  }
+        /* hide header */
+        pMsg++;
+    }
 
-  return pMsg;
+    return pMsg;
 }

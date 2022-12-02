@@ -38,13 +38,12 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Current Time service enumeration of handle indexes of characteristics to be discovered */
-enum
-{
-  TIPC_CTS_CT_HDL_IDX,      /*!< \brief Current time */
-  TIPC_CTS_CT_CCC_HDL_IDX,  /*!< \brief Current time client characteristic configuration descriptor */
-  TIPC_CTS_LTI_HDL_IDX,     /*!< \brief Local time information */
-  TIPC_CTS_RTI_HDL_IDX,     /*!< \brief Reference time information */
-  TIPC_CTS_HDL_LIST_LEN     /*!< \brief Handle list length */
+enum {
+    TIPC_CTS_CT_HDL_IDX, /*!< \brief Current time */
+    TIPC_CTS_CT_CCC_HDL_IDX, /*!< \brief Current time client characteristic configuration descriptor */
+    TIPC_CTS_LTI_HDL_IDX, /*!< \brief Local time information */
+    TIPC_CTS_RTI_HDL_IDX, /*!< \brief Reference time information */
+    TIPC_CTS_HDL_LIST_LEN /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -81,7 +80,7 @@ void TipcCtsDiscover(dmConnId_t connId, uint16_t *pHdlList);
 /*************************************************************************************************/
 uint8_t TipcCtsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */    /* TIME_PROFILE */
+/*! \} */ /* TIME_PROFILE */
 
 #ifdef __cplusplus
 };

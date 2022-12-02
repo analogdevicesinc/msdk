@@ -76,16 +76,15 @@ wsfHandlerId_t appHandlerId;
 appCb_t appCb;
 
 /*! Configuration structure for incoming request actions */
-const appReqActCfg_t appReqActCfg =
-{
-  APP_ACT_ACCEPT        /*! Action for the remote connection parameter request */
+const appReqActCfg_t appReqActCfg = {
+    APP_ACT_ACCEPT /*! Action for the remote connection parameter request */
 };
 
 /*! Configuration pointer for incoming request actions on master */
-appReqActCfg_t *pAppMasterReqActCfg = (appReqActCfg_t *) &appReqActCfg;
+appReqActCfg_t *pAppMasterReqActCfg = (appReqActCfg_t *)&appReqActCfg;
 
 /*! Configurable pointer for incoming request actions on slave */
-appReqActCfg_t *pAppSlaveReqActCfg = (appReqActCfg_t *) &appReqActCfg;
+appReqActCfg_t *pAppSlaveReqActCfg = (appReqActCfg_t *)&appReqActCfg;
 
 /*************************************************************************************************/
 /*!
@@ -98,19 +97,18 @@ appReqActCfg_t *pAppSlaveReqActCfg = (appReqActCfg_t *) &appReqActCfg;
 /*************************************************************************************************/
 static void appProcMsg(wsfMsgHdr_t *pMsg)
 {
-  switch(pMsg->event)
-  {
+    switch (pMsg->event) {
     case APP_BTN_POLL_IND:
-      appUiBtnPoll();
-      break;
+        appUiBtnPoll();
+        break;
 
     case APP_UI_TIMER_IND:
-      appUiTimerExpired(pMsg);
-      break;
+        appUiTimerExpired(pMsg);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -124,9 +122,9 @@ static void appProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 bool_t appCheckBondByLtk(dmConnId_t connId)
 {
-  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-  return appConnCb[connId - 1].bondByLtk;
+    return appConnCb[connId - 1].bondByLtk;
 }
 
 /*************************************************************************************************/
@@ -140,18 +138,16 @@ bool_t appCheckBondByLtk(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t appNumConns(uint8_t role)
 {
-  appConnCb_t   *pCcb = appConnCb;
-  uint8_t       i, j;
+    appConnCb_t *pCcb = appConnCb;
+    uint8_t i, j;
 
-  for (i = DM_CONN_MAX, j = 0; i > 0; i--, pCcb++)
-  {
-    if ((pCcb->connId != DM_CONN_ID_NONE) && (DmConnRole(pCcb->connId) == role))
-    {
-      j++;
+    for (i = DM_CONN_MAX, j = 0; i > 0; i--, pCcb++) {
+        if ((pCcb->connId != DM_CONN_ID_NONE) && (DmConnRole(pCcb->connId) == role)) {
+            j++;
+        }
     }
-  }
 
-  return j;
+    return j;
 }
 
 /*************************************************************************************************/
@@ -165,9 +161,9 @@ uint8_t appNumConns(uint8_t role)
 /*************************************************************************************************/
 bool_t AppCheckBonded(dmConnId_t connId)
 {
-  WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
+    WSF_ASSERT((connId > 0) && (connId <= DM_CONN_MAX));
 
-  return appConnCb[connId - 1].bonded;
+    return appConnCb[connId - 1].bonded;
 }
 
 /*************************************************************************************************/
@@ -181,9 +177,9 @@ bool_t AppCheckBonded(dmConnId_t connId)
 /*************************************************************************************************/
 void AppHandlerInit(wsfHandlerId_t handlerId)
 {
-  appHandlerId = handlerId;
+    appHandlerId = handlerId;
 
-  AppDbInit();
+    AppDbInit();
 }
 
 /*************************************************************************************************/
@@ -198,32 +194,23 @@ void AppHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void AppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  if (pMsg != NULL)
-  {
-    APP_TRACE_INFO1("App got evt %d", pMsg->event);
+    if (pMsg != NULL) {
+        APP_TRACE_INFO1("App got evt %d", pMsg->event);
 
-    if (pMsg->event >= APP_MASTER_MSG_START)
-    {
-      /* pass event to master handler */
-      (*appCb.masterCback)(pMsg);
+        if (pMsg->event >= APP_MASTER_MSG_START) {
+            /* pass event to master handler */
+            (*appCb.masterCback)(pMsg);
+        } else if (pMsg->event >= APP_SLAVE_MSG_START) {
+            /* pass event to slave handler */
+            (*appCb.slaveCback)(pMsg);
+        } else {
+            appProcMsg(pMsg);
+        }
+    } else {
+        if (event & APP_BTN_DOWN_EVT) {
+            AppUiBtnPressed();
+        }
     }
-    else if (pMsg->event >= APP_SLAVE_MSG_START)
-    {
-      /* pass event to slave handler */
-      (*appCb.slaveCback)(pMsg);
-    }
-    else
-    {
-      appProcMsg(pMsg);
-    }
-  }
-  else
-  {
-    if (event & APP_BTN_DOWN_EVT)
-    {
-      AppUiBtnPressed();
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -239,31 +226,28 @@ void AppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void AppHandlePasskey(dmSecAuthReqIndEvt_t *pAuthReq)
 {
-  uint32_t passkey;
-  uint8_t  buf[SMP_PIN_LEN];
+    uint32_t passkey;
+    uint8_t buf[SMP_PIN_LEN];
 
-  if (pAuthReq->display)
-  {
-    /* generate random passkey, limit to 6 digit max */
-    SecRand((uint8_t *) &passkey, sizeof(uint32_t));
-    passkey %= 1000000;
+    if (pAuthReq->display) {
+        /* generate random passkey, limit to 6 digit max */
+        SecRand((uint8_t *)&passkey, sizeof(uint32_t));
+        passkey %= 1000000;
 
-    /* convert to byte buffer */
-    buf[0] = UINT32_TO_BYTE0(passkey);
-    buf[1] = UINT32_TO_BYTE1(passkey);
-    buf[2] = UINT32_TO_BYTE2(passkey);
+        /* convert to byte buffer */
+        buf[0] = UINT32_TO_BYTE0(passkey);
+        buf[1] = UINT32_TO_BYTE1(passkey);
+        buf[2] = UINT32_TO_BYTE2(passkey);
 
-    /* send authentication response to DM */
-    DmSecAuthRsp((dmConnId_t) pAuthReq->hdr.param, SMP_PIN_LEN, buf);
+        /* send authentication response to DM */
+        DmSecAuthRsp((dmConnId_t)pAuthReq->hdr.param, SMP_PIN_LEN, buf);
 
-    /* display passkey */
-    AppUiDisplayPasskey(passkey);
-  }
-  else
-  {
-    /* prompt user to enter passkey */
-    AppUiAction(APP_UI_PASSKEY_PROMPT);
-  }
+        /* display passkey */
+        AppUiDisplayPasskey(passkey);
+    } else {
+        /* prompt user to enter passkey */
+        AppUiAction(APP_UI_PASSKEY_PROMPT);
+    }
 }
 
 /*************************************************************************************************/
@@ -279,13 +263,13 @@ void AppHandlePasskey(dmSecAuthReqIndEvt_t *pAuthReq)
 /*************************************************************************************************/
 void AppHandleNumericComparison(dmSecCnfIndEvt_t *pCnfInd)
 {
-  uint32_t confirm = DmSecGetCompareValue(pCnfInd->confirm);
+    uint32_t confirm = DmSecGetCompareValue(pCnfInd->confirm);
 
-  /* display confirmation value */
-  AppUiDisplayConfirmValue(confirm);
+    /* display confirmation value */
+    AppUiDisplayConfirmValue(confirm);
 
-  /* TODO: Verify that local and peer confirmation values match */
-  DmSecCompareRsp((dmConnId_t)pCnfInd->hdr.param, TRUE);
+    /* TODO: Verify that local and peer confirmation values match */
+    DmSecCompareRsp((dmConnId_t)pCnfInd->hdr.param, TRUE);
 }
 
 /*************************************************************************************************/
@@ -299,7 +283,7 @@ void AppHandleNumericComparison(dmSecCnfIndEvt_t *pCnfInd)
 /*************************************************************************************************/
 void AppConnClose(dmConnId_t connId)
 {
-  DmConnClose(DM_CLIENT_ID_APP, connId, HCI_ERR_REMOTE_TERMINATED);
+    DmConnClose(DM_CLIENT_ID_APP, connId, HCI_ERR_REMOTE_TERMINATED);
 }
 
 /*************************************************************************************************/
@@ -314,21 +298,19 @@ void AppConnClose(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t AppConnOpenList(dmConnId_t *pConnIdList)
 {
-  appConnCb_t   *pCcb = appConnCb;
-  uint8_t       i;
-  uint8_t       pos = 0;
+    appConnCb_t *pCcb = appConnCb;
+    uint8_t i;
+    uint8_t pos = 0;
 
-  memset(pConnIdList, DM_CONN_ID_NONE, DM_CONN_MAX);
+    memset(pConnIdList, DM_CONN_ID_NONE, DM_CONN_MAX);
 
-  for (i = DM_CONN_MAX; i > 0; i--, pCcb++)
-  {
-    if (pCcb->connId != DM_CONN_ID_NONE)
-    {
-      pConnIdList[pos++] = pCcb->connId;
+    for (i = DM_CONN_MAX; i > 0; i--, pCcb++) {
+        if (pCcb->connId != DM_CONN_ID_NONE) {
+            pConnIdList[pos++] = pCcb->connId;
+        }
     }
-  }
 
-  return pos;
+    return pos;
 }
 
 /*************************************************************************************************/
@@ -340,18 +322,16 @@ uint8_t AppConnOpenList(dmConnId_t *pConnIdList)
 /*************************************************************************************************/
 dmConnId_t AppConnIsOpen(void)
 {
-  appConnCb_t   *pCcb = appConnCb;
-  uint8_t       i;
+    appConnCb_t *pCcb = appConnCb;
+    uint8_t i;
 
-  for (i = DM_CONN_MAX; i > 0; i--, pCcb++)
-  {
-    if (pCcb->connId != DM_CONN_ID_NONE)
-    {
-      return pCcb->connId;
+    for (i = DM_CONN_MAX; i > 0; i--, pCcb++) {
+        if (pCcb->connId != DM_CONN_ID_NONE) {
+            return pCcb->connId;
+        }
     }
-  }
 
-  return DM_CONN_ID_NONE;
+    return DM_CONN_ID_NONE;
 }
 
 /*************************************************************************************************/
@@ -365,7 +345,7 @@ dmConnId_t AppConnIsOpen(void)
 /*************************************************************************************************/
 appDbHdl_t AppDbGetHdl(dmConnId_t connId)
 {
-  return appConnCb[connId-1].dbHdl;
+    return appConnCb[connId - 1].dbHdl;
 }
 
 /*************************************************************************************************/
@@ -380,17 +360,16 @@ appDbHdl_t AppDbGetHdl(dmConnId_t connId)
 /*************************************************************************************************/
 void AppAddDevToResList(dmEvt_t *pMsg, dmConnId_t connId)
 {
-  dmSecKey_t *pPeerKey;
-  appDbHdl_t hdl = appConnCb[connId - 1].dbHdl;
+    dmSecKey_t *pPeerKey;
+    appDbHdl_t hdl = appConnCb[connId - 1].dbHdl;
 
-  /* if LL Privacy is supported and the peer device has distributed its IRK */
-  if (HciLlPrivacySupported() && ((pPeerKey = AppDbGetKey(hdl, DM_KEY_IRK, NULL))!= NULL))
-  {
-    /* add peer device to resolving list. If all-zero local or peer IRK is used then
+    /* if LL Privacy is supported and the peer device has distributed its IRK */
+    if (HciLlPrivacySupported() && ((pPeerKey = AppDbGetKey(hdl, DM_KEY_IRK, NULL)) != NULL)) {
+        /* add peer device to resolving list. If all-zero local or peer IRK is used then
        LL will only use or accept local or peer identity address respectively. */
-    DmPrivAddDevToResList(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr, pPeerKey->irk.key,
-                          DmSecGetLocalIrk(), TRUE, pMsg->hdr.param);
-  }
+        DmPrivAddDevToResList(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr, pPeerKey->irk.key,
+                              DmSecGetLocalIrk(), TRUE, pMsg->hdr.param);
+    }
 }
 
 /*************************************************************************************************/
@@ -414,48 +393,43 @@ void AppAddDevToResList(dmEvt_t *pMsg, dmConnId_t connId)
 /*************************************************************************************************/
 appDbHdl_t AppAddNextDevToResList(appDbHdl_t hdl)
 {
-  appDbHdl_t nextHdl;
+    appDbHdl_t nextHdl;
 
-  /* Complete restoration of the previous record. */
-  if (hdl != APP_DB_HDL_NONE)
-  {
-    if (!AppDbGetPeerRpao(hdl))
-    {
-      dmSecKey_t *pPeerKey = AppDbGetKey(hdl, DM_KEY_IRK, NULL);
+    /* Complete restoration of the previous record. */
+    if (hdl != APP_DB_HDL_NONE) {
+        if (!AppDbGetPeerRpao(hdl)) {
+            dmSecKey_t *pPeerKey = AppDbGetKey(hdl, DM_KEY_IRK, NULL);
 
-      WSF_ASSERT(pPeerKey);
+            WSF_ASSERT(pPeerKey);
 
-      /* Update device privacy mode. */
-      DmPrivSetPrivacyMode(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr, DM_PRIV_MODE_DEVICE);
-    }
-  }
-
-  /* Look for the next record with an IRK. */
-  nextHdl = AppDbGetNextRecord(hdl);
-
-  while (nextHdl != APP_DB_HDL_NONE)
-  {
-    dmSecKey_t *pPeerKey = AppDbGetKey(nextHdl, DM_KEY_IRK, NULL);
-
-    if (pPeerKey)
-    {
-      /* Add the device to the resolving list. */
-      DmPrivAddDevToResList(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr, pPeerKey->irk.key,
-                            DmSecGetLocalIrk(), FALSE, DM_CONN_ID_NONE);
-
-      return nextHdl;
+            /* Update device privacy mode. */
+            DmPrivSetPrivacyMode(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr, DM_PRIV_MODE_DEVICE);
+        }
     }
 
-    nextHdl = AppDbGetNextRecord(nextHdl);
-  }
+    /* Look for the next record with an IRK. */
+    nextHdl = AppDbGetNextRecord(hdl);
 
-  if (hdl != APP_DB_HDL_NONE)
-  {
-    /* If any device was added to the resolving list. Enable address resolution in LL. */
-    DmPrivSetAddrResEnable(TRUE);
-  }
+    while (nextHdl != APP_DB_HDL_NONE) {
+        dmSecKey_t *pPeerKey = AppDbGetKey(nextHdl, DM_KEY_IRK, NULL);
 
-  return APP_DB_HDL_NONE;
+        if (pPeerKey) {
+            /* Add the device to the resolving list. */
+            DmPrivAddDevToResList(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr, pPeerKey->irk.key,
+                                  DmSecGetLocalIrk(), FALSE, DM_CONN_ID_NONE);
+
+            return nextHdl;
+        }
+
+        nextHdl = AppDbGetNextRecord(nextHdl);
+    }
+
+    if (hdl != APP_DB_HDL_NONE) {
+        /* If any device was added to the resolving list. Enable address resolution in LL. */
+        DmPrivSetAddrResEnable(TRUE);
+    }
+
+    return APP_DB_HDL_NONE;
 }
 
 /*************************************************************************************************/
@@ -474,24 +448,22 @@ appDbHdl_t AppAddNextDevToResList(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppClearAllBondingInfo(void)
 {
-  APP_TRACE_INFO0("Clear bonding info");
+    APP_TRACE_INFO0("Clear bonding info");
 
-  /* clear bonded device info */
-  AppDbDeleteAllRecords();
+    /* clear bonded device info */
+    AppDbDeleteAllRecords();
 
-  /* if LL Privacy is supported */
-  if (HciLlPrivacySupported())
-  {
-    /* if LL Privacy has been enabled */
-    if (DmLlPrivEnabled())
-    {
-      /* make sure LL Privacy is disabled before clearing resolving list */
-      DmPrivSetAddrResEnable(FALSE);
+    /* if LL Privacy is supported */
+    if (HciLlPrivacySupported()) {
+        /* if LL Privacy has been enabled */
+        if (DmLlPrivEnabled()) {
+            /* make sure LL Privacy is disabled before clearing resolving list */
+            DmPrivSetAddrResEnable(FALSE);
+        }
+
+        /* clear resolving list */
+        DmPrivClearResList();
     }
-
-    /* clear resolving list */
-    DmPrivClearResList();
-  }
 }
 
 /*************************************************************************************************/
@@ -505,17 +477,15 @@ void AppClearAllBondingInfo(void)
 /*************************************************************************************************/
 void AppUpdatePrivacyMode(appDbHdl_t hdl)
 {
-  /* if peer device's been added to resolving list but RPA Only attribute not found on peer device */
-  if ((hdl != APP_DB_HDL_NONE) && AppDbGetPeerAddedToRl(hdl) && !AppDbGetPeerRpao(hdl))
-  {
-    dmSecKey_t *pPeerKey = AppDbGetKey(hdl, DM_KEY_IRK, NULL);
-    if (pPeerKey != NULL)
-    {
-      /* set device privacy mode for this peer device */
-      DmPrivSetPrivacyMode(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr, DM_PRIV_MODE_DEVICE);
+    /* if peer device's been added to resolving list but RPA Only attribute not found on peer device */
+    if ((hdl != APP_DB_HDL_NONE) && AppDbGetPeerAddedToRl(hdl) && !AppDbGetPeerRpao(hdl)) {
+        dmSecKey_t *pPeerKey = AppDbGetKey(hdl, DM_KEY_IRK, NULL);
+        if (pPeerKey != NULL) {
+            /* set device privacy mode for this peer device */
+            DmPrivSetPrivacyMode(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr, DM_PRIV_MODE_DEVICE);
 
-      /* make sure resolving list flag cleared */
-      AppDbSetPeerAddedToRl(hdl, FALSE);
+            /* make sure resolving list flag cleared */
+            AppDbSetPeerAddedToRl(hdl, FALSE);
+        }
     }
-  }
 }

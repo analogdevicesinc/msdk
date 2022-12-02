@@ -39,77 +39,83 @@ typedef void (*lctrActFn_t)(void);
 **************************************************************************************************/
 
 /*! \brief      State machine action table. */
-static const lctrActFn_t lctrAdvActionTbl[LCTR_ADV_STATE_TOTAL][LCTR_ADV_MSG_TOTAL] =
-{
-  { /* LCTR_ADV_STATE_DISABLED */
-    NULL,                       /* LCTR_ADV_MSG_RESET     */
-    lctrAdvActStart,            /* LCTR_ADV_MSG_START     */
-    lctrAdvActAdvCnf,           /* LCTR_ADV_MSG_STOP      */
-    lctrAdvActSelfStart,        /* LCTR_ADV_MSG_INT_START */
-    NULL,                       /* LCTR_ADV_MSG_TERMINATE */
-    lctrAdvActUpdateAdvParam    /* LCTR_ADV_MSG_PARAM_UPD */
-  },
-  { /* LCTR_ADV_STATE_ENABLED  */
-    lctrAdvActShutdown,         /* LCTR_ADV_MSG_RESET     */
-    lctrAdvActAdvCnf,           /* LCTR_ADV_MSG_START     */
-    lctrAdvActShutdown,         /* LCTR_ADV_MSG_STOP      */
-    NULL,                       /* LCTR_ADV_MSG_INT_START */
-    lctrAdvActSelfTerm,         /* LCTR_ADV_MSG_TERMINATE */
-    NULL                        /* LCTR_ADV_MSG_PARAM_UPD */
-  },
-  { /* LCTR_ADV_STATE_SHUTDOWN */
-    NULL,                       /* LCTR_ADV_MSG_RESET     */
-    lctrAdvActDisallowAdvCnf,   /* LCTR_ADV_MSG_START     */
-    lctrAdvActDisallowAdvCnf,   /* LCTR_ADV_MSG_STOP      */
-    NULL,                       /* LCTR_ADV_MSG_INT_START */
-    lctrAdvActAdvTerm,          /* LCTR_ADV_MSG_TERMINATE */
-    lctrAdvActUpdateAdvParam    /* LCTR_ADV_MSG_PARAM_UPD */
-  },
-  { /* LCTR_ADV_STATE_RESET    */
-    NULL,                       /* LCTR_ADV_MSG_RESET     */
-    lctrAdvActDisallowAdvCnf,   /* LCTR_ADV_MSG_START     */
-    lctrAdvActDisallowAdvCnf,   /* LCTR_ADV_MSG_STOP      */
-    NULL,                       /* LCTR_ADV_MSG_INT_START */
-    lctrAdvActResetTerm,        /* LCTR_ADV_MSG_TERMINATE */
-    lctrAdvActUpdateAdvParam    /* LCTR_ADV_MSG_PARAM_UPD */
-  }
+static const lctrActFn_t lctrAdvActionTbl[LCTR_ADV_STATE_TOTAL][LCTR_ADV_MSG_TOTAL] = {
+    {
+        /* LCTR_ADV_STATE_DISABLED */
+        NULL, /* LCTR_ADV_MSG_RESET     */
+        lctrAdvActStart, /* LCTR_ADV_MSG_START     */
+        lctrAdvActAdvCnf, /* LCTR_ADV_MSG_STOP      */
+        lctrAdvActSelfStart, /* LCTR_ADV_MSG_INT_START */
+        NULL, /* LCTR_ADV_MSG_TERMINATE */
+        lctrAdvActUpdateAdvParam /* LCTR_ADV_MSG_PARAM_UPD */
+    },
+    {
+        /* LCTR_ADV_STATE_ENABLED  */
+        lctrAdvActShutdown, /* LCTR_ADV_MSG_RESET     */
+        lctrAdvActAdvCnf, /* LCTR_ADV_MSG_START     */
+        lctrAdvActShutdown, /* LCTR_ADV_MSG_STOP      */
+        NULL, /* LCTR_ADV_MSG_INT_START */
+        lctrAdvActSelfTerm, /* LCTR_ADV_MSG_TERMINATE */
+        NULL /* LCTR_ADV_MSG_PARAM_UPD */
+    },
+    {
+        /* LCTR_ADV_STATE_SHUTDOWN */
+        NULL, /* LCTR_ADV_MSG_RESET     */
+        lctrAdvActDisallowAdvCnf, /* LCTR_ADV_MSG_START     */
+        lctrAdvActDisallowAdvCnf, /* LCTR_ADV_MSG_STOP      */
+        NULL, /* LCTR_ADV_MSG_INT_START */
+        lctrAdvActAdvTerm, /* LCTR_ADV_MSG_TERMINATE */
+        lctrAdvActUpdateAdvParam /* LCTR_ADV_MSG_PARAM_UPD */
+    },
+    {
+        /* LCTR_ADV_STATE_RESET    */
+        NULL, /* LCTR_ADV_MSG_RESET     */
+        lctrAdvActDisallowAdvCnf, /* LCTR_ADV_MSG_START     */
+        lctrAdvActDisallowAdvCnf, /* LCTR_ADV_MSG_STOP      */
+        NULL, /* LCTR_ADV_MSG_INT_START */
+        lctrAdvActResetTerm, /* LCTR_ADV_MSG_TERMINATE */
+        lctrAdvActUpdateAdvParam /* LCTR_ADV_MSG_PARAM_UPD */
+    }
 };
 
 /*! \brief      State machine next state table. */
-static const uint8_t lctrAdvNextStateTbl[LCTR_ADV_STATE_TOTAL][LCTR_ADV_MSG_TOTAL] =
-{
-  { /* LCTR_ADV_STATE_DISABLED */
-    LCTR_ADV_STATE_DISABLED,    /* LCTR_ADV_MSG_RESET     */
-    LCTR_ADV_STATE_ENABLED,     /* LCTR_ADV_MSG_START     */
-    LCTR_ADV_STATE_DISABLED,    /* LCTR_ADV_MSG_STOP      */
-    LCTR_ADV_STATE_ENABLED,     /* LCTR_ADV_MSG_INT_START */
-    LCTR_ADV_STATE_DISABLED,    /* LCTR_ADV_MSG_TERMINATE */
-    LCTR_ADV_STATE_DISABLED     /* LCTR_ADV_MSG_PARAM_UPD */
-  },
-  { /* LCTR_ADV_STATE_ENABLED  */
-    LCTR_ADV_STATE_RESET,       /* LCTR_ADV_MSG_RESET     */
-    LCTR_ADV_STATE_ENABLED,     /* LCTR_ADV_MSG_START     */
-    LCTR_ADV_STATE_SHUTDOWN,    /* LCTR_ADV_MSG_STOP      */
-    LCTR_ADV_STATE_ENABLED,     /* LCTR_ADV_MSG_INT_START */
-    LCTR_ADV_STATE_DISABLED,    /* LCTR_ADV_MSG_TERMINATE */
-    LCTR_ADV_STATE_ENABLED      /* LCTR_ADV_MSG_PARAM_UPD */
-  },
-  { /* LCTR_ADV_STATE_SHUTDOWN */
-    LCTR_ADV_STATE_RESET,       /* LCTR_ADV_MSG_RESET     */
-    LCTR_ADV_STATE_SHUTDOWN,    /* LCTR_ADV_MSG_START     */
-    LCTR_ADV_STATE_SHUTDOWN,    /* LCTR_ADV_MSG_STOP      */
-    LCTR_ADV_STATE_SHUTDOWN,    /* LCTR_ADV_MSG_INT_START */
-    LCTR_ADV_STATE_DISABLED,    /* LCTR_ADV_MSG_TERMINATE */
-    LCTR_ADV_STATE_SHUTDOWN     /* LCTR_ADV_MSG_PARAM_UPD */
-  },
-  { /* LCTR_ADV_STATE_RESET    */
-    LCTR_ADV_STATE_RESET,       /* LCTR_ADV_MSG_RESET     */
-    LCTR_ADV_STATE_RESET,       /* LCTR_ADV_MSG_START     */
-    LCTR_ADV_STATE_RESET,       /* LCTR_ADV_MSG_STOP      */
-    LCTR_ADV_STATE_RESET,       /* LCTR_ADV_MSG_INT_START */
-    LCTR_ADV_STATE_DISABLED,    /* LCTR_ADV_MSG_TERMINATE */
-    LCTR_ADV_STATE_RESET        /* LCTR_ADV_MSG_PARAM_UPD */
-  }
+static const uint8_t lctrAdvNextStateTbl[LCTR_ADV_STATE_TOTAL][LCTR_ADV_MSG_TOTAL] = {
+    {
+        /* LCTR_ADV_STATE_DISABLED */
+        LCTR_ADV_STATE_DISABLED, /* LCTR_ADV_MSG_RESET     */
+        LCTR_ADV_STATE_ENABLED, /* LCTR_ADV_MSG_START     */
+        LCTR_ADV_STATE_DISABLED, /* LCTR_ADV_MSG_STOP      */
+        LCTR_ADV_STATE_ENABLED, /* LCTR_ADV_MSG_INT_START */
+        LCTR_ADV_STATE_DISABLED, /* LCTR_ADV_MSG_TERMINATE */
+        LCTR_ADV_STATE_DISABLED /* LCTR_ADV_MSG_PARAM_UPD */
+    },
+    {
+        /* LCTR_ADV_STATE_ENABLED  */
+        LCTR_ADV_STATE_RESET, /* LCTR_ADV_MSG_RESET     */
+        LCTR_ADV_STATE_ENABLED, /* LCTR_ADV_MSG_START     */
+        LCTR_ADV_STATE_SHUTDOWN, /* LCTR_ADV_MSG_STOP      */
+        LCTR_ADV_STATE_ENABLED, /* LCTR_ADV_MSG_INT_START */
+        LCTR_ADV_STATE_DISABLED, /* LCTR_ADV_MSG_TERMINATE */
+        LCTR_ADV_STATE_ENABLED /* LCTR_ADV_MSG_PARAM_UPD */
+    },
+    {
+        /* LCTR_ADV_STATE_SHUTDOWN */
+        LCTR_ADV_STATE_RESET, /* LCTR_ADV_MSG_RESET     */
+        LCTR_ADV_STATE_SHUTDOWN, /* LCTR_ADV_MSG_START     */
+        LCTR_ADV_STATE_SHUTDOWN, /* LCTR_ADV_MSG_STOP      */
+        LCTR_ADV_STATE_SHUTDOWN, /* LCTR_ADV_MSG_INT_START */
+        LCTR_ADV_STATE_DISABLED, /* LCTR_ADV_MSG_TERMINATE */
+        LCTR_ADV_STATE_SHUTDOWN /* LCTR_ADV_MSG_PARAM_UPD */
+    },
+    {
+        /* LCTR_ADV_STATE_RESET    */
+        LCTR_ADV_STATE_RESET, /* LCTR_ADV_MSG_RESET     */
+        LCTR_ADV_STATE_RESET, /* LCTR_ADV_MSG_START     */
+        LCTR_ADV_STATE_RESET, /* LCTR_ADV_MSG_STOP      */
+        LCTR_ADV_STATE_RESET, /* LCTR_ADV_MSG_INT_START */
+        LCTR_ADV_STATE_DISABLED, /* LCTR_ADV_MSG_TERMINATE */
+        LCTR_ADV_STATE_RESET /* LCTR_ADV_MSG_PARAM_UPD */
+    }
 };
 
 /*************************************************************************************************/
@@ -121,12 +127,11 @@ static const uint8_t lctrAdvNextStateTbl[LCTR_ADV_STATE_TOTAL][LCTR_ADV_MSG_TOTA
 /*************************************************************************************************/
 void lctrSlvAdvExecuteSm(uint8_t event)
 {
-  LL_TRACE_INFO2("lctrSlvAdvExecuteSm: state=%u, event=%u", lctrSlvAdv.state, event);
+    LL_TRACE_INFO2("lctrSlvAdvExecuteSm: state=%u, event=%u", lctrSlvAdv.state, event);
 
-  if (lctrAdvActionTbl[lctrSlvAdv.state][event])
-  {
-    lctrAdvActionTbl[lctrSlvAdv.state][event]();
-  }
+    if (lctrAdvActionTbl[lctrSlvAdv.state][event]) {
+        lctrAdvActionTbl[lctrSlvAdv.state][event]();
+    }
 
-  lctrSlvAdv.state = lctrAdvNextStateTbl[lctrSlvAdv.state][event];
+    lctrSlvAdv.state = lctrAdvNextStateTbl[lctrSlvAdv.state][event];
 }

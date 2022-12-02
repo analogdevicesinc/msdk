@@ -27,8 +27,7 @@
 #define MESH_HT_CL_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -36,7 +35,7 @@ extern "C"
 **************************************************************************************************/
 
 /*! Health Client message handler type definition */
-typedef void (*meshHtClHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*meshHtClHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Function Declarations

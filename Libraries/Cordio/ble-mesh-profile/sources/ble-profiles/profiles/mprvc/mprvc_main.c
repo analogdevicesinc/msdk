@@ -37,7 +37,7 @@
 **************************************************************************************************/
 
 /*! Extracts the PDU type from the first byte of the Proxy PDU */
-#define EXTRACT_PDU_TYPE(byte)    ((byte) & 0x3F)
+#define EXTRACT_PDU_TYPE(byte) ((byte)&0x3F)
 
 /**************************************************************************************************
   Local Variables
@@ -50,42 +50,29 @@
 /* Characteristics for discovery */
 
 /*! Data In */
-static const attcDiscChar_t mprvsDin =
-{
-  attMprvDinChUuid,
-  ATTC_SET_REQUIRED
-};
+static const attcDiscChar_t mprvsDin = { attMprvDinChUuid, ATTC_SET_REQUIRED };
 
 /*! Data Out */
-static const attcDiscChar_t mprvsDout =
-{
-  attMprvDoutChUuid,
-  ATTC_SET_REQUIRED
-};
+static const attcDiscChar_t mprvsDout = { attMprvDoutChUuid, ATTC_SET_REQUIRED };
 
 /*! Data Out CCC descriptor */
-static const attcDiscChar_t mprvsDoutCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t mprvsDoutCcc = { attCliChCfgUuid,
+                                             ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *mprvsDiscCharList[] =
-{
-  &mprvsDin,                    /*! Data In */
-  &mprvsDout,                   /*! Data Out */
-  &mprvsDoutCcc,                /*! Data Out CCC descriptor */
+static const attcDiscChar_t *mprvsDiscCharList[] = {
+    &mprvsDin, /*! Data In */
+    &mprvsDout, /*! Data Out */
+    &mprvsDoutCcc, /*! Data Out CCC descriptor */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
 WSF_CT_ASSERT(MPRVC_MPRVS_HDL_LIST_LEN == ((sizeof(mprvsDiscCharList) / sizeof(attcDiscChar_t *))));
 
 /* Control block */
-static struct
-{
-  uint16_t       dataInHandle;              /* Data In Handle discovered by the client */
-  uint16_t       dataOutHandle;             /* Data Out Handle discovered by the client */
+static struct {
+    uint16_t dataInHandle; /* Data In Handle discovered by the client */
+    uint16_t dataOutHandle; /* Data Out Handle discovered by the client */
 } mprvcCb;
 
 /**************************************************************************************************
@@ -104,8 +91,8 @@ static struct
 /*************************************************************************************************/
 static void mprvcConnOpen(dmEvt_t *pMsg)
 {
-  mprvcCb.dataInHandle = ATT_HANDLE_NONE;
-  mprvcCb.dataOutHandle = ATT_HANDLE_NONE;
+    mprvcCb.dataInHandle = ATT_HANDLE_NONE;
+    mprvcCb.dataOutHandle = ATT_HANDLE_NONE;
 }
 
 /*************************************************************************************************/
@@ -120,8 +107,8 @@ static void mprvcConnOpen(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void mprvcConnClose(dmEvt_t *pMsg)
 {
-  /* Signal the Mesh Stack the connection ID is not available. */
-  MeshRemoveGattProxyConn((meshGattProxyConnId_t)pMsg->connClose.hdr.param);
+    /* Signal the Mesh Stack the connection ID is not available. */
+    MeshRemoveGattProxyConn((meshGattProxyConnId_t)pMsg->connClose.hdr.param);
 }
 
 /*************************************************************************************************/
@@ -136,10 +123,10 @@ static void mprvcConnClose(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void mprvcHandleWriteCnf(attEvt_t *pMsg)
 {
-  dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
+    dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-  /* Signal GATT interface is ready to transmit packets */
-  MeshSignalGattProxyIfRdy(connId);
+    /* Signal GATT interface is ready to transmit packets */
+    MeshSignalGattProxyIfRdy(connId);
 }
 
 /*************************************************************************************************/
@@ -154,16 +141,14 @@ static void mprvcHandleWriteCnf(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void mprvcHandleNotification(attEvt_t *pMsg)
 {
-  dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
+    dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-  if (pMsg->handle == mprvcCb.dataOutHandle)
-  {
-    if (EXTRACT_PDU_TYPE(pMsg->pValue[0]) ==  MESH_GATT_PROXY_PDU_TYPE_PROVISIONING)
-    {
-      /* Received GATT Write on Data Out. Send to Mesh Stack. */
-      MeshProcessGattProxyPdu((meshGattProxyConnId_t)connId, pMsg->pValue, pMsg->valueLen);
+    if (pMsg->handle == mprvcCb.dataOutHandle) {
+        if (EXTRACT_PDU_TYPE(pMsg->pValue[0]) == MESH_GATT_PROXY_PDU_TYPE_PROVISIONING) {
+            /* Received GATT Write on Data Out. Send to Mesh Stack. */
+            MeshProcessGattProxyPdu((meshGattProxyConnId_t)connId, pMsg->pValue, pMsg->valueLen);
+        }
     }
-  }
 }
 
 /**************************************************************************************************
@@ -187,8 +172,8 @@ static void mprvcHandleNotification(attEvt_t *pMsg)
 /*************************************************************************************************/
 void MprvcMprvsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attMprvSvcUuid,
-                     MPRVC_MPRVS_HDL_LIST_LEN, (attcDiscChar_t **) mprvsDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attMprvSvcUuid, MPRVC_MPRVS_HDL_LIST_LEN,
+                       (attcDiscChar_t **)mprvsDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -202,18 +187,17 @@ void MprvcMprvsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 void MprvcSendDataIn(meshGattProxyPduSendEvt_t *pEvt)
 {
-  uint8_t   buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t   bufLen;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t bufLen;
 
-  if (mprvcCb.dataInHandle != ATT_HANDLE_NONE)
-  {
-    /* Copy in Proxy PDU. */
-    bufLen = pEvt->proxyPduLen + sizeof(pEvt->proxyHdr);
-    buf[0] = pEvt->proxyHdr;
-    memcpy(&buf[1], pEvt->pProxyPdu, pEvt->proxyPduLen);
+    if (mprvcCb.dataInHandle != ATT_HANDLE_NONE) {
+        /* Copy in Proxy PDU. */
+        bufLen = pEvt->proxyPduLen + sizeof(pEvt->proxyHdr);
+        buf[0] = pEvt->proxyHdr;
+        memcpy(&buf[1], pEvt->pProxyPdu, pEvt->proxyPduLen);
 
-    AttcWriteCmd(pEvt->connId, mprvcCb.dataInHandle, bufLen, buf);
-  }
+        AttcWriteCmd(pEvt->connId, mprvcCb.dataInHandle, bufLen, buf);
+    }
 }
 
 /*************************************************************************************************/
@@ -232,11 +216,11 @@ void MprvcSendDataIn(meshGattProxyPduSendEvt_t *pEvt)
 /*************************************************************************************************/
 void MprvcSetHandles(dmConnId_t connId, uint16_t dataInHandle, uint16_t dataOutHandle)
 {
-  mprvcCb.dataInHandle = dataInHandle;
-  mprvcCb.dataOutHandle = dataOutHandle;
+    mprvcCb.dataInHandle = dataInHandle;
+    mprvcCb.dataOutHandle = dataOutHandle;
 
-  /* Signal the Mesh Stack a new interface on the connection ID is available. */
-  MeshAddGattProxyConn(connId, AttGetMtu((dmConnId_t) connId) - ATT_VALUE_NTF_LEN);
+    /* Signal the Mesh Stack a new interface on the connection ID is available. */
+    MeshAddGattProxyConn(connId, AttGetMtu((dmConnId_t)connId) - ATT_VALUE_NTF_LEN);
 }
 
 /*************************************************************************************************/
@@ -253,25 +237,24 @@ void MprvcSetHandles(dmConnId_t connId, uint16_t dataInHandle, uint16_t dataOutH
 /*************************************************************************************************/
 void MprvcProcMsg(wsfMsgHdr_t *pMsg)
 {
-  switch(pMsg->event)
-  {
+    switch (pMsg->event) {
     case DM_CONN_OPEN_IND:
-      mprvcConnOpen((dmEvt_t *) pMsg);
-      break;
+        mprvcConnOpen((dmEvt_t *)pMsg);
+        break;
 
     case DM_CONN_CLOSE_IND:
-      mprvcConnClose((dmEvt_t *) pMsg);
-      break;
+        mprvcConnClose((dmEvt_t *)pMsg);
+        break;
 
     case ATTC_WRITE_CMD_RSP:
-      mprvcHandleWriteCnf((attEvt_t *) pMsg);
-      break;
+        mprvcHandleWriteCnf((attEvt_t *)pMsg);
+        break;
 
     case ATTC_HANDLE_VALUE_NTF:
-      mprvcHandleNotification((attEvt_t *) pMsg);
-      break;
+        mprvcHandleNotification((attEvt_t *)pMsg);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }

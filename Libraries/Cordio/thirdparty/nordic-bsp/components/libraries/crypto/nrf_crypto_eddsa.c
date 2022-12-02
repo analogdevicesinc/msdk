@@ -45,114 +45,90 @@
 #include "app_util.h"
 #include "sdk_macros.h"
 
-
 #if NRF_CRYPTO_ECC_ENABLED && NRF_CRYPTO_ECC_ED25519_ENABLED
 
-
-
-ret_code_t nrf_crypto_eddsa_sign(nrf_crypto_eddsa_sign_context_t          * p_context,
-                                 nrf_crypto_ecc_private_key_t       const * p_private_key,
-                                 uint8_t                            const * p_message,
-                                 size_t                                     message_size,
-                                 uint8_t                                  * p_signature,
-                                 size_t                                   * p_signature_size)
+ret_code_t nrf_crypto_eddsa_sign(nrf_crypto_eddsa_sign_context_t *p_context,
+                                 nrf_crypto_ecc_private_key_t const *p_private_key,
+                                 uint8_t const *p_message, size_t message_size,
+                                 uint8_t *p_signature, size_t *p_signature_size)
 {
-    ret_code_t                          result = NRF_SUCCESS;
-    void                              * p_allocated_context = NULL;
+    ret_code_t result = NRF_SUCCESS;
+    void *p_allocated_context = NULL;
 
     // Get pointer to header
-    nrf_crypto_internal_ecc_key_header_t const * p_private_key_header =
+    nrf_crypto_internal_ecc_key_header_t const *p_private_key_header =
         (nrf_crypto_internal_ecc_key_header_t const *)p_private_key;
 
     // Verify parameters (zero-length message is valid per RFC 8032)
-    if (message_size > 0)
-    {
+    if (message_size > 0) {
         VERIFY_TRUE(p_message != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
     }
 
     result = nrf_crypto_internal_ecc_key_input_check(
-        p_private_key_header,
-        NRF_CRYPTO_INTERNAL_ECC_PRIVATE_KEY_INIT_VALUE);
+        p_private_key_header, NRF_CRYPTO_INTERNAL_ECC_PRIVATE_KEY_INIT_VALUE);
     VERIFY_SUCCESS(result);
 
-    result = nrf_crypto_internal_ecc_raw_output_prepare(p_signature,
-                                                        p_signature_size,
+    result = nrf_crypto_internal_ecc_raw_output_prepare(p_signature, p_signature_size,
                                                         NRF_CRYPTO_EDDSA_ED25519_SIGNATURE_SIZE);
     VERIFY_SUCCESS(result);
 
     // Allocate context if not provided
-    if (p_context == NULL && NRF_CRYPTO_BACKEND_ED25519_SIGN_CONTEXT_SIZE > 0)
-    {
+    if (p_context == NULL && NRF_CRYPTO_BACKEND_ED25519_SIGN_CONTEXT_SIZE > 0) {
         p_allocated_context = NRF_CRYPTO_ALLOC(NRF_CRYPTO_BACKEND_ED25519_SIGN_CONTEXT_SIZE);
         VERIFY_TRUE(p_allocated_context != NULL, NRF_ERROR_CRYPTO_ALLOC_FAILED);
         p_context = p_allocated_context;
     }
 
     // Execute backend implementation
-    result = nrf_crypto_backend_ed25519_sign(p_context,
-                                             p_private_key,
-                                             p_message,
-                                             message_size,
+    result = nrf_crypto_backend_ed25519_sign(p_context, p_private_key, p_message, message_size,
                                              p_signature);
 
     // Deallocate context if allocated
-    if (p_allocated_context != NULL)
-    {
+    if (p_allocated_context != NULL) {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 
     return result;
 }
 
-
-ret_code_t nrf_crypto_eddsa_verify(nrf_crypto_eddsa_verify_context_t          * p_context,
-                                   nrf_crypto_ecc_public_key_t          const * p_public_key,
-                                   uint8_t                              const * p_message,
-                                   size_t                                       message_size,
-                                   uint8_t                              const * p_signature,
-                                   size_t                                       signature_size)
+ret_code_t nrf_crypto_eddsa_verify(nrf_crypto_eddsa_verify_context_t *p_context,
+                                   nrf_crypto_ecc_public_key_t const *p_public_key,
+                                   uint8_t const *p_message, size_t message_size,
+                                   uint8_t const *p_signature, size_t signature_size)
 {
-    ret_code_t                          result = NRF_SUCCESS;
-    void                              * p_allocated_context = NULL;
+    ret_code_t result = NRF_SUCCESS;
+    void *p_allocated_context = NULL;
 
     // Get pointer to header
-    nrf_crypto_internal_ecc_key_header_t const * p_public_key_header =
+    nrf_crypto_internal_ecc_key_header_t const *p_public_key_header =
         (nrf_crypto_internal_ecc_key_header_t const *)p_public_key;
 
     // Verify parameters (zero-length message is valid per RFC 8032)
-    if (message_size > 0)
-    {
+    if (message_size > 0) {
         VERIFY_TRUE(p_message != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
     }
 
-    result = nrf_crypto_internal_ecc_key_input_check(
-        p_public_key_header,
-        NRF_CRYPTO_INTERNAL_ECC_PUBLIC_KEY_INIT_VALUE);
+    result = nrf_crypto_internal_ecc_key_input_check(p_public_key_header,
+                                                     NRF_CRYPTO_INTERNAL_ECC_PUBLIC_KEY_INIT_VALUE);
     VERIFY_SUCCESS(result);
 
-    result = nrf_crypto_internal_ecc_raw_input_check(p_signature,
-                                                     signature_size,
+    result = nrf_crypto_internal_ecc_raw_input_check(p_signature, signature_size,
                                                      NRF_CRYPTO_EDDSA_ED25519_SIGNATURE_SIZE);
     VERIFY_SUCCESS(result);
 
     // Allocate context if not provided
-    if (p_context == NULL && NRF_CRYPTO_BACKEND_ED25519_VERIFY_CONTEXT_SIZE > 0)
-    {
+    if (p_context == NULL && NRF_CRYPTO_BACKEND_ED25519_VERIFY_CONTEXT_SIZE > 0) {
         p_allocated_context = NRF_CRYPTO_ALLOC(NRF_CRYPTO_BACKEND_ED25519_VERIFY_CONTEXT_SIZE);
         VERIFY_TRUE(p_allocated_context != NULL, NRF_ERROR_CRYPTO_ALLOC_FAILED);
         p_context = p_allocated_context;
     }
 
     // Execute backend implementation
-    result = nrf_crypto_backend_ed25519_verify(p_context,
-                                               p_public_key,
-                                               p_message,
-                                               message_size,
+    result = nrf_crypto_backend_ed25519_verify(p_context, p_public_key, p_message, message_size,
                                                p_signature);
 
     // Deallocate context if allocated
-    if (p_allocated_context != NULL)
-    {
+    if (p_allocated_context != NULL) {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 

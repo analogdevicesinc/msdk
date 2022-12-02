@@ -40,27 +40,26 @@
 /*************************************************************************************************/
 void HciLeCreateBigCmd(HciCreateBig_t *pCreateBig)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CREATE_BIG, HCI_LEN_LE_CREATE_BIS)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, pCreateBig->bigHandle);
-    UINT8_TO_BSTREAM(p, pCreateBig->advHandle);
-    UINT8_TO_BSTREAM(p, pCreateBig->numBis);
-    UINT24_TO_BSTREAM(p, pCreateBig->sduInterUsec);
-    UINT16_TO_BSTREAM(p, pCreateBig->maxSdu);
-    UINT16_TO_BSTREAM(p, pCreateBig->mtlMs);
-    UINT8_TO_BSTREAM(p, pCreateBig->rtn);
-    UINT8_TO_BSTREAM(p, pCreateBig->phys);
-    UINT8_TO_BSTREAM(p, pCreateBig->packing);
-    UINT8_TO_BSTREAM(p, pCreateBig->framing);
-    UINT8_TO_BSTREAM(p, pCreateBig->encrypt);
-    memcpy(p, pCreateBig->bcstCode, sizeof(pCreateBig->bcstCode));
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CREATE_BIG, HCI_LEN_LE_CREATE_BIS)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, pCreateBig->bigHandle);
+        UINT8_TO_BSTREAM(p, pCreateBig->advHandle);
+        UINT8_TO_BSTREAM(p, pCreateBig->numBis);
+        UINT24_TO_BSTREAM(p, pCreateBig->sduInterUsec);
+        UINT16_TO_BSTREAM(p, pCreateBig->maxSdu);
+        UINT16_TO_BSTREAM(p, pCreateBig->mtlMs);
+        UINT8_TO_BSTREAM(p, pCreateBig->rtn);
+        UINT8_TO_BSTREAM(p, pCreateBig->phys);
+        UINT8_TO_BSTREAM(p, pCreateBig->packing);
+        UINT8_TO_BSTREAM(p, pCreateBig->framing);
+        UINT8_TO_BSTREAM(p, pCreateBig->encrypt);
+        memcpy(p, pCreateBig->bcstCode, sizeof(pCreateBig->bcstCode));
 
-    hciCmdSend(pBuf);
-  }
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -72,19 +71,18 @@ void HciLeCreateBigCmd(HciCreateBig_t *pCreateBig)
  *
  *  \return     None.
  */
- /*************************************************************************************************/
+/*************************************************************************************************/
 void HciTerminateBigCmd(uint8_t bigHandle, uint8_t reason)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_TERMINATE_BIG, HCI_LEN_LE_REMOVE_CIG)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, bigHandle);
-    UINT8_TO_BSTREAM(p, reason);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_TERMINATE_BIG, HCI_LEN_LE_REMOVE_CIG)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, bigHandle);
+        UINT8_TO_BSTREAM(p, reason);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -98,24 +96,24 @@ void HciTerminateBigCmd(uint8_t bigHandle, uint8_t reason)
 /*************************************************************************************************/
 void HciLeBigCreateSyncCmd(HciBigCreateSync_t *pCreateSync)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
-  uint8_t numBis = WSF_MIN(pCreateSync->numBis, sizeof(pCreateSync->bis));
+    uint8_t *pBuf;
+    uint8_t *p;
+    uint8_t numBis = WSF_MIN(pCreateSync->numBis, sizeof(pCreateSync->bis));
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_BIG_CREATE_SYNC, HCI_LEN_LE_BIG_CREATE_SYNC(numBis))) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, pCreateSync->bigHandle);
-    UINT16_TO_BSTREAM(p, pCreateSync->syncHandle);
-    UINT8_TO_BSTREAM(p, pCreateSync->encrypt);
-    memcpy(p, pCreateSync->bcstCode, sizeof(pCreateSync->bcstCode));
-    p += HCI_BC_LEN;
-    UINT8_TO_BSTREAM(p, pCreateSync->mse);
-    UINT16_TO_BSTREAM(p, pCreateSync->bigSyncTimeout);
-    UINT8_TO_BSTREAM(p, pCreateSync->numBis);
-    memcpy(p, pCreateSync->bis, numBis);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_BIG_CREATE_SYNC, HCI_LEN_LE_BIG_CREATE_SYNC(numBis))) !=
+        NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, pCreateSync->bigHandle);
+        UINT16_TO_BSTREAM(p, pCreateSync->syncHandle);
+        UINT8_TO_BSTREAM(p, pCreateSync->encrypt);
+        memcpy(p, pCreateSync->bcstCode, sizeof(pCreateSync->bcstCode));
+        p += HCI_BC_LEN;
+        UINT8_TO_BSTREAM(p, pCreateSync->mse);
+        UINT16_TO_BSTREAM(p, pCreateSync->bigSyncTimeout);
+        UINT8_TO_BSTREAM(p, pCreateSync->numBis);
+        memcpy(p, pCreateSync->bis, numBis);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -129,13 +127,13 @@ void HciLeBigCreateSyncCmd(HciBigCreateSync_t *pCreateSync)
 /*************************************************************************************************/
 void HciLeBigTerminateSync(uint8_t bigHandle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_BIG_TERMINATE_SYNC, HCI_LEN_LE_BIG_TERMINATE_SYNC)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, bigHandle);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_BIG_TERMINATE_SYNC, HCI_LEN_LE_BIG_TERMINATE_SYNC)) !=
+        NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, bigHandle);
+        hciCmdSend(pBuf);
+    }
 }

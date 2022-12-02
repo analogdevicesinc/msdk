@@ -53,32 +53,27 @@
  */
 uint8_t g_extern_serial_number[SERIAL_NUMBER_STRING_SIZE + 1];
 
-
 /**@brief Function for creating the serial number string from a regular C string.
  *
  * @param[in]  p_serial_number_string  The serial number string. Must be terminated with \0.
  */
-static void string_create(char * p_serial_number_string)
+static void string_create(char *p_serial_number_string)
 {
-
-    for (uint32_t i = 0; i < strlen(p_serial_number_string); i++)
-    {
+    for (uint32_t i = 0; i < strlen(p_serial_number_string); i++) {
         g_extern_serial_number[i] = (uint8_t)p_serial_number_string[i];
     }
 }
 
-
 void app_usbd_serial_num_generate(void)
 {
     char serial_number_string[SERIAL_NUMBER_STRING_SIZE + 1];
-    const uint16_t serial_num_high_bytes = (uint16_t)NRF_FICR->DEVICEADDR[1] | 0xC000; // The masking makes the address match the Random Static BLE address.
-    const uint32_t serial_num_low_bytes  = NRF_FICR->DEVICEADDR[0];
+    const uint16_t serial_num_high_bytes =
+        (uint16_t)NRF_FICR->DEVICEADDR[1] |
+        0xC000; // The masking makes the address match the Random Static BLE address.
+    const uint32_t serial_num_low_bytes = NRF_FICR->DEVICEADDR[0];
 
-    (void)snprintf(serial_number_string,
-                   SERIAL_NUMBER_STRING_SIZE + 1,
-                   "%04"PRIX16"%08"PRIX32,
-                   serial_num_high_bytes,
-                   serial_num_low_bytes);
+    (void)snprintf(serial_number_string, SERIAL_NUMBER_STRING_SIZE + 1, "%04" PRIX16 "%08" PRIX32,
+                   serial_num_high_bytes, serial_num_low_bytes);
 
     string_create(serial_number_string);
 }

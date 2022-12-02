@@ -51,89 +51,76 @@
 #include "nrf_log.h"
 #include "nrf_assert.h"
 
-
-
 #if defined(NRF_CRYPTO_BACKEND_NRF_SW_HASH_LITTLE_ENDIAN_DIGEST_ENABLED)
 
 #error The configuration NRF_CRYPTO_BACKEND_NRF_SW_HASH_LITTLE_ENDIAN_DIGEST_ENABLED was removed in SDK 15.1.0. Please see release notes for details on removing this error message.
 
 #endif
 
-static ret_code_t nrf_sw_backend_hash_sha256_init(void * const p_context)
+static ret_code_t nrf_sw_backend_hash_sha256_init(void *const p_context)
 {
     ret_code_t ret_val;
 
     // No parameter testing on this level.
     // This has been done on upper level.
 
-    sha256_context_t * p_backend_context
-        = &(((nrf_crypto_backend_hash_sha256_context_t *) p_context)->context);
+    sha256_context_t *p_backend_context =
+        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
 
     ret_val = sha256_init(p_backend_context);
 
     return ret_val;
 }
 
-static uint32_t nrf_sw_backend_hash_sha256_update(void     * const p_context,
-                                                  uint8_t  const * p_data,
-                                                  size_t           len)
+static uint32_t nrf_sw_backend_hash_sha256_update(void *const p_context, uint8_t const *p_data,
+                                                  size_t len)
 {
     ret_code_t ret_val;
 
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    sha256_context_t * p_backend_context
-        = &(((nrf_crypto_backend_hash_sha256_context_t * ) p_context)->context);
+    sha256_context_t *p_backend_context =
+        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
 
     ret_val = sha256_update(p_backend_context, p_data, len);
 
     return ret_val;
 }
 
-
-static uint32_t nrf_sw_backend_hash_sha256_finalize(void   * const p_context,
-                                                 uint8_t         * p_digest,
-                                                 size_t    * const p_digest_len)
+static uint32_t nrf_sw_backend_hash_sha256_finalize(void *const p_context, uint8_t *p_digest,
+                                                    size_t *const p_digest_len)
 {
     ret_code_t ret_val;
 
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    sha256_context_t * p_backend_context
-        = &(((nrf_crypto_backend_hash_sha256_context_t * )p_context)->context);
+    sha256_context_t *p_backend_context =
+        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
 
-    if (NRF_CRYPTO_HASH_SIZE_SHA256 > *p_digest_len)
-    {
+    if (NRF_CRYPTO_HASH_SIZE_SHA256 > *p_digest_len) {
         return NRF_ERROR_CRYPTO_OUTPUT_LENGTH;
     }
 
-
     ret_val = sha256_final(p_backend_context, p_digest, false);
 
-    if (ret_val != NRF_SUCCESS)
-    {
+    if (ret_val != NRF_SUCCESS) {
         return ret_val;
     }
 
     *p_digest_len = NRF_CRYPTO_HASH_SIZE_SHA256;
 
     return NRF_SUCCESS;
-
 }
 
-
-const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha256_info =
-{
-    .init_fn        = nrf_sw_backend_hash_sha256_init,
-    .update_fn      = nrf_sw_backend_hash_sha256_update,
-    .finalize_fn    = nrf_sw_backend_hash_sha256_finalize,
-    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA256,
-    .context_size   = sizeof(nrf_crypto_backend_hash_sha256_context_t),
-    .hash_mode      = NRF_CRYPTO_HASH_MODE_SHA256
+const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha256_info = {
+    .init_fn = nrf_sw_backend_hash_sha256_init,
+    .update_fn = nrf_sw_backend_hash_sha256_update,
+    .finalize_fn = nrf_sw_backend_hash_sha256_finalize,
+    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA256,
+    .context_size = sizeof(nrf_crypto_backend_hash_sha256_context_t),
+    .hash_mode = NRF_CRYPTO_HASH_MODE_SHA256
 };
-
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_SW)

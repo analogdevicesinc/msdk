@@ -46,19 +46,19 @@ void WsfAssert(uint16_t modId, uint16_t line)
 void WsfAssert(const char *pFile, uint16_t line)
 #endif
 {
-  /* Possibly unused parameters */
+    /* Possibly unused parameters */
 #if WSF_TOKEN_ENABLED == TRUE
-  (void)modId;
+    (void)modId;
 #else
-  (void)pFile;
+    (void)pFile;
 #endif
-  (void)line;
+    (void)line;
 
 #if WSF_TOKEN_ENABLED == TRUE
-  WSF_TRACE_ERR2("Assertion detected on %s:%u", modId, line);
+    WSF_TRACE_ERR2("Assertion detected on %s:%u", modId, line);
 #else
-  WSF_TRACE_ERR2("Assertion detected on %s:%u", pFile, line);
+    WSF_TRACE_ERR2("Assertion detected on %s:%u", pFile, line);
 #endif
 
-  PalSysAssertTrap();
+    PalSysAssertTrap();
 }

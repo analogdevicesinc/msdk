@@ -42,18 +42,17 @@ extern "C" {
  *
  */
 /**@{*/
-#define IPSS_START_HDL               0x0600             /*!< \brief Start handle. */
-#define IPSS_END_HDL                 (IPSS_MAX_HDL - 1) /*!< \brief End handle. */
+#define IPSS_START_HDL 0x0600 /*!< \brief Start handle. */
+#define IPSS_END_HDL (IPSS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief IP Support Service Handles */
-enum
-{
-  IPSS_SVC_HDL = IPSS_START_HDL,       /*!< \brief IP Support Server Service declaration */
-  IPSS_MAX_HDL                         /*!< \brief Maximum handle. */
+enum {
+    IPSS_SVC_HDL = IPSS_START_HDL, /*!< \brief IP Support Server Service declaration */
+    IPSS_MAX_HDL /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -91,7 +90,7 @@ void SvcIpssRemoveGroup(void);
 /*************************************************************************************************/
 void SvcIpssCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
 
-/*! \} */    /* INTERNET_PROFILE_SUPPORT_SERVICE */
+/*! \} */ /* INTERNET_PROFILE_SUPPORT_SERVICE */
 
 #ifdef __cplusplus
 };

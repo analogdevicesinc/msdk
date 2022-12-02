@@ -42,12 +42,11 @@
 **************************************************************************************************/
 
 /*! \brief      CIS ISR control block. */
-static union
-{
-  /* Added at top of structure for 32-bit alignment. */
-  uint8_t emptyPdu[LL_EMPTY_PDU_LEN];
-                                /*!< Empty PDU buffer. Used only by active operation. */
-  uint32_t align32;             /*!< Not used, declared for alignment of emptyPdu. */
+static union {
+    /* Added at top of structure for 32-bit alignment. */
+    uint8_t emptyPdu[LL_EMPTY_PDU_LEN];
+    /*!< Empty PDU buffer. Used only by active operation. */
+    uint32_t align32; /*!< Not used, declared for alignment of emptyPdu. */
 } lctrCisIsr;
 
 /*************************************************************************************************/
@@ -59,13 +58,13 @@ static union
 /*************************************************************************************************/
 static inline void lctrCisBuildEmptyPdu(lctrCisCtx_t *pCisCtx)
 {
-  pCisCtx->txHdr.llid = LL_LLID_ISO_EMPTY_PDU;
-  /* pCisCtx->txHdr.nesn = 0; */           /* FC bits already valid */
-  /* pCisCtx->txHdr.sn   = 0; */           /* FC bits already valid */
-  /* pCisCtx->txHdr.cie  = 0; */           /* already set */
-  pCisCtx->txHdr.len  = 0;
+    pCisCtx->txHdr.llid = LL_LLID_ISO_EMPTY_PDU;
+    /* pCisCtx->txHdr.nesn = 0; */ /* FC bits already valid */
+    /* pCisCtx->txHdr.sn   = 0; */ /* FC bits already valid */
+    /* pCisCtx->txHdr.cie  = 0; */ /* already set */
+    pCisCtx->txHdr.len = 0;
 
-  lctrCisPackDataPduHdr(lctrCisIsr.emptyPdu, &pCisCtx->txHdr);
+    lctrCisPackDataPduHdr(lctrCisIsr.emptyPdu, &pCisCtx->txHdr);
 }
 
 /*************************************************************************************************/
@@ -77,14 +76,14 @@ static inline void lctrCisBuildEmptyPdu(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 static inline void lctrCisBuildNullPdu(lctrCisCtx_t *pCisCtx)
 {
-  pCisCtx->txHdr.llid = LL_LLID_ISO_UNF_END_PDU;
-  /* pCisCtx->txHdr.nesn = 0; */           /* FC bits already valid */
-  pCisCtx->txHdr.sn   = 0;
-  /* pCisCtx->txHdr.cie  = 0; */           /* already set */
-  pCisCtx->txHdr.np  = 1;
-  pCisCtx->txHdr.len  = 0;
+    pCisCtx->txHdr.llid = LL_LLID_ISO_UNF_END_PDU;
+    /* pCisCtx->txHdr.nesn = 0; */ /* FC bits already valid */
+    pCisCtx->txHdr.sn = 0;
+    /* pCisCtx->txHdr.cie  = 0; */ /* already set */
+    pCisCtx->txHdr.np = 1;
+    pCisCtx->txHdr.len = 0;
 
-  lctrCisPackDataPduHdr(lctrCisIsr.emptyPdu, &pCisCtx->txHdr);
+    lctrCisPackDataPduHdr(lctrCisIsr.emptyPdu, &pCisCtx->txHdr);
 }
 
 /*************************************************************************************************/
@@ -97,14 +96,14 @@ static inline void lctrCisBuildNullPdu(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 static inline void lctrCisUpdateFlowCtrlBits(const lctrCisDataPduHdr_t *pHdr, uint8_t *pBuf)
 {
-  const uint8_t FC_BITMASK = 0xC;
+    const uint8_t FC_BITMASK = 0xC;
 
-  pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] &= ~FC_BITMASK;
+    pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] &= ~FC_BITMASK;
 
-  pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] |= (pHdr->nesn & 1) << 2;
-  pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] |= (pHdr->sn   & 1) << 3;
-  pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] |= (pHdr->cie  & 1) << 4;
-  pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] |= (pHdr->np   & 1) << 6;
+    pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] |= (pHdr->nesn & 1) << 2;
+    pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] |= (pHdr->sn & 1) << 3;
+    pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] |= (pHdr->cie & 1) << 4;
+    pBuf[LCTR_ISO_DATA_PDU_FC_OFFSET] |= (pHdr->np & 1) << 6;
 }
 
 /*************************************************************************************************/
@@ -118,45 +117,41 @@ static inline void lctrCisUpdateFlowCtrlBits(const lctrCisDataPduHdr_t *pHdr, ui
 /*************************************************************************************************/
 bool_t lctrCisProcessRxAck(lctrCisCtx_t *pCisCtx)
 {
-  bool_t result = FALSE;
+    bool_t result = FALSE;
 
-  if (pCisCtx->rxHdr.np == 1)
-  {
-    /* NULL PDU doesn't need to be acked or processed.*/
-    return result;
-  }
-
-  /* Acknowledgment of received PDU (new data PDU). */
-  if (((pCisCtx->rxHdr.sn ^ pCisCtx->txHdr.nesn) & 1) == 0)           /* bits are same */
-  {
-    /* Accept packets up to the maximum length because peer may queue packets before length change. */
-    if (pCisCtx->rxHdr.len > (pCisCtx->localDataPdu.maxRxLen + LL_DATA_MIC_LEN))
-    {
-      /* Invalid length value; ack PDU but drop it (don't process it). */
-      lctrCisIncPacketCounterRx(pCisCtx);
-      pCisCtx->txHdr.nesn++;
-      return result;
+    if (pCisCtx->rxHdr.np == 1) {
+        /* NULL PDU doesn't need to be acked or processed.*/
+        return result;
     }
 
-    if ((pCisCtx->rxHdr.len) ||
-        ((pCisCtx->rxHdr.len == 0) && (pCisCtx->rxHdr.llid == LL_LLID_ISO_UNF_END_PDU)))
+    /* Acknowledgment of received PDU (new data PDU). */
+    if (((pCisCtx->rxHdr.sn ^ pCisCtx->txHdr.nesn) & 1) == 0) /* bits are same */
     {
-      /* lctrCisIncPacketCounterRx(pCisCtx) */ /* done after decryption in lctrCisRxPendingHandler */
-      result = TRUE;
-    }
-    else /* Empty PDU. */
-    {
-      lctrCisIncPacketCounterRx(pCisCtx);
-    }
-    /* Invalid LLID value; ack PDU but drop it (don't process it). */
-    /* length of 0 and LLID of LL_LLID_EMPTY_PDU implies padding/empty PDU. */
+        /* Accept packets up to the maximum length because peer may queue packets before length change. */
+        if (pCisCtx->rxHdr.len > (pCisCtx->localDataPdu.maxRxLen + LL_DATA_MIC_LEN)) {
+            /* Invalid length value; ack PDU but drop it (don't process it). */
+            lctrCisIncPacketCounterRx(pCisCtx);
+            pCisCtx->txHdr.nesn++;
+            return result;
+        }
 
-    pCisCtx->txHdr.nesn++;
-    pCisCtx->rxFtParamList.pHead->ftParam.pduRcved = TRUE;
-    return result;
-  }
+        if ((pCisCtx->rxHdr.len) ||
+            ((pCisCtx->rxHdr.len == 0) && (pCisCtx->rxHdr.llid == LL_LLID_ISO_UNF_END_PDU))) {
+            /* lctrCisIncPacketCounterRx(pCisCtx) */ /* done after decryption in lctrCisRxPendingHandler */
+            result = TRUE;
+        } else /* Empty PDU. */
+        {
+            lctrCisIncPacketCounterRx(pCisCtx);
+        }
+        /* Invalid LLID value; ack PDU but drop it (don't process it). */
+        /* length of 0 and LLID of LL_LLID_EMPTY_PDU implies padding/empty PDU. */
 
-  return FALSE;
+        pCisCtx->txHdr.nesn++;
+        pCisCtx->rxFtParamList.pHead->ftParam.pduRcved = TRUE;
+        return result;
+    }
+
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -168,14 +163,13 @@ bool_t lctrCisProcessRxAck(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisTxPduAck(lctrCisCtx_t *pCisCtx)
 {
-  pCisCtx->txHdr.len = 0;
-  pCisCtx->txBufPendAck = FALSE;
+    pCisCtx->txHdr.len = 0;
+    pCisCtx->txBufPendAck = FALSE;
 
-  /* Remove last transmitted PDU. */
-  if (lctrCisTxQueuePop(pCisCtx))
-  {
-    pCisCtx->txDataCounter++;
-  }
+    /* Remove last transmitted PDU. */
+    if (lctrCisTxQueuePop(pCisCtx)) {
+        pCisCtx->txDataCounter++;
+    }
 }
 
 /*************************************************************************************************/
@@ -191,30 +185,26 @@ void lctrCisTxPduAck(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 bool_t lctrCisProcessTxAck(lctrCisCtx_t *pCisCtx)
 {
-  if (((pCisCtx->rxHdr.nesn ^ pCisCtx->txHdr.sn) & 1) == 1)           /* bits are different */
-  {
-    pCisCtx->txHdr.sn++;
-
-
-    if (pCisCtx->txBufPendAck)
+    if (((pCisCtx->rxHdr.nesn ^ pCisCtx->txHdr.sn) & 1) == 1) /* bits are different */
     {
-      /*** Peer ACK'ed a data PDU ***/
+        pCisCtx->txHdr.sn++;
 
-      lctrCisTxPduAck(pCisCtx);
+        if (pCisCtx->txBufPendAck) {
+            /*** Peer ACK'ed a data PDU ***/
+
+            lctrCisTxPduAck(pCisCtx);
+        } else {
+            /*** Peer ACK'ed an Empty PDU ***/
+
+            pCisCtx->txDataCounter++;
+        }
+
+        pCisCtx->txFtParamList.pHead->ftParam.pduAcked = TRUE;
+
+        return TRUE;
     }
-    else
-    {
-      /*** Peer ACK'ed an Empty PDU ***/
-
-      pCisCtx->txDataCounter++;
-    }
-
-    pCisCtx->txFtParamList.pHead->ftParam.pduAcked = TRUE;
-
-    return TRUE;
-  }
-  /* Peer NACK'ed PDU. */
-  return FALSE;
+    /* Peer NACK'ed PDU. */
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -228,11 +218,10 @@ bool_t lctrCisProcessTxAck(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 void lctrCisProcessTxAckCleanup(lctrCisCtx_t *pCisCtx)
 {
-  /* Complete buffer cleanup. */
-  if (pCisCtx->txPduIsAcked || pCisCtx->pduFlushed)
-  {
-    lctrCisTxQueuePopCleanup(pCisCtx);
-  }
+    /* Complete buffer cleanup. */
+    if (pCisCtx->txPduIsAcked || pCisCtx->pduFlushed) {
+        lctrCisTxQueuePopCleanup(pCisCtx);
+    }
 }
 
 /*************************************************************************************************/
@@ -248,93 +237,85 @@ void lctrCisProcessTxAckCleanup(lctrCisCtx_t *pCisCtx)
 /*************************************************************************************************/
 uint16_t lctrCisSetupForTx(lctrCigCtx_t *pCigCtx, uint8_t rxStatus, bool_t reqTx)
 {
-  uint16_t numTxBytes = 0;
-  lctrCisCtx_t *pCisCtx = pCigCtx->pCisCtx;
+    uint16_t numTxBytes = 0;
+    lctrCisCtx_t *pCisCtx = pCigCtx->pCisCtx;
 
 #if (LL_ENABLE_TESTER)
-  /* Invalidate access address if trigger is set. */
-  if (llTesterCb.isoAccAddrSeTrigMask &&
-      (llTesterCb.isoAccAddrSeTrigMask & (1 << pCisCtx->subEvtCounter)) &&
-      !llTesterCb.isoAccAddrInvForRx)
-  {
-    PalBbTesterInvalidateNextAccAddr(FALSE);
+    /* Invalidate access address if trigger is set. */
+    if (llTesterCb.isoAccAddrSeTrigMask &&
+        (llTesterCb.isoAccAddrSeTrigMask & (1 << pCisCtx->subEvtCounter)) &&
+        !llTesterCb.isoAccAddrInvForRx) {
+        PalBbTesterInvalidateNextAccAddr(FALSE);
 
-    if (llTesterCb.isoAccAddrInvNumTrig)
-    {
-      llTesterCb.isoAccAddrInvNumTrig--;
-      if (llTesterCb.isoAccAddrInvNumTrig == 0)
-      {
-        llTesterCb.isoAccAddrSeTrigMask = 0;
-      }
+        if (llTesterCb.isoAccAddrInvNumTrig) {
+            llTesterCb.isoAccAddrInvNumTrig--;
+            if (llTesterCb.isoAccAddrInvNumTrig == 0) {
+                llTesterCb.isoAccAddrSeTrigMask = 0;
+            }
+        }
     }
-  }
 #endif
 
-  /*** Setup for transmit ***/
+    /*** Setup for transmit ***/
 
-  /* pCisCtx->txHdr.cie  = 0; CIE bit is initialized in the lctrMstCisInitIsr or lctrSlvCisInitIsr and shall be set once for the event. */
-  pCisCtx->txHdr.np   = 0;
-  pCisCtx->txHdr.len  = 0;
-  pCisCtx->txHdr.llid = LL_LLID_ISO_UNF_END_PDU;
+    /* pCisCtx->txHdr.cie  = 0; CIE bit is initialized in the lctrMstCisInitIsr or lctrSlvCisInitIsr and shall be set once for the event. */
+    pCisCtx->txHdr.np = 0;
+    pCisCtx->txHdr.len = 0;
+    pCisCtx->txHdr.llid = LL_LLID_ISO_UNF_END_PDU;
 
-  if ((rxStatus != BB_STATUS_SUCCESS) ||
-      reqTx)
-  {
-    PalBbBleTxBufDesc_t bbDesc[3];
-    uint8_t bbDescCnt;
+    if ((rxStatus != BB_STATUS_SUCCESS) || reqTx) {
+        PalBbBleTxBufDesc_t bbDesc[3];
+        uint8_t bbDescCnt;
 
-    if (pCisCtx->isTxDone == TRUE)
-    {
-      /*** Send NULL PDU ***/
+        if (pCisCtx->isTxDone == TRUE) {
+            /*** Send NULL PDU ***/
 
-      lctrCisBuildNullPdu(pCisCtx);
+            lctrCisBuildNullPdu(pCisCtx);
 
-      PalBbBleTxBufDesc_t desc = {.pBuf = lctrCisIsr.emptyPdu, .len = sizeof(lctrCisIsr.emptyPdu)};
-      BbBleCisTxData(&desc, 1);
-      numTxBytes = desc.len;
+            PalBbBleTxBufDesc_t desc = { .pBuf = lctrCisIsr.emptyPdu,
+                                         .len = sizeof(lctrCisIsr.emptyPdu) };
+            BbBleCisTxData(&desc, 1);
+            numTxBytes = desc.len;
 
-      return numTxBytes;
-    }
+            return numTxBytes;
+        }
 
-    /* Do not remove from ARQ until acknowledged by peer. */
-    bbDescCnt = lctrCisTxQueuePeek(pCisCtx, &bbDesc[0]);
-    lctrFtParam_t *pFtParam = &pCisCtx->txFtParamList.pHead->ftParam;
+        /* Do not remove from ARQ until acknowledged by peer. */
+        bbDescCnt = lctrCisTxQueuePeek(pCisCtx, &bbDesc[0]);
+        lctrFtParam_t *pFtParam = &pCisCtx->txFtParamList.pHead->ftParam;
 
-    if (bbDescCnt > 0)
-    {
-      /* Set flow control bits. */
-      pCisCtx->txHdr.len = bbDesc[0].pBuf[LCTR_ISO_DATA_PDU_LEN_OFFSET];
-      pFtParam->pduType[pFtParam->pduCounter] = LCTR_CIS_PDU_NON_EMPTY;
-      pCisCtx->txBufPendAck = TRUE;
-      lctrCisUpdateFlowCtrlBits(&pCisCtx->txHdr, bbDesc[0].pBuf);
+        if (bbDescCnt > 0) {
+            /* Set flow control bits. */
+            pCisCtx->txHdr.len = bbDesc[0].pBuf[LCTR_ISO_DATA_PDU_LEN_OFFSET];
+            pFtParam->pduType[pFtParam->pduCounter] = LCTR_CIS_PDU_NON_EMPTY;
+            pCisCtx->txBufPendAck = TRUE;
+            lctrCisUpdateFlowCtrlBits(&pCisCtx->txHdr, bbDesc[0].pBuf);
 
 #if (LL_ENABLE_TESTER)
-      bbDesc[0].pBuf[0] ^= llTesterCb.pktLlId & 0x03;
+            bbDesc[0].pBuf[0] ^= llTesterCb.pktLlId & 0x03;
 #endif
 
-      BbBleCisTxData(&bbDesc[0], bbDescCnt);
-      numTxBytes = LL_DATA_HDR_LEN + bbDesc[0].pBuf[LCTR_ISO_DATA_PDU_LEN_OFFSET];
+            BbBleCisTxData(&bbDesc[0], bbDescCnt);
+            numTxBytes = LL_DATA_HDR_LEN + bbDesc[0].pBuf[LCTR_ISO_DATA_PDU_LEN_OFFSET];
 
-      if (pCisCtx->subEvtCounter == pCisCtx->nse)
-      {
-        pCisCtx->isoLinkQualStats.txLastSubEventPkt++;
-      }
+            if (pCisCtx->subEvtCounter == pCisCtx->nse) {
+                pCisCtx->isoLinkQualStats.txLastSubEventPkt++;
+            }
+        } else {
+            /*** Send Empty PDU ***/
+
+            lctrCisBuildEmptyPdu(pCisCtx);
+            pFtParam->pduType[pFtParam->pduCounter] = LCTR_CIS_PDU_EMPTY;
+
+            PalBbBleTxBufDesc_t desc = { .pBuf = lctrCisIsr.emptyPdu,
+                                         .len = sizeof(lctrCisIsr.emptyPdu) };
+            BbBleCisTxData(&desc, 1);
+            numTxBytes = desc.len;
+        }
     }
-    else
-    {
-      /*** Send Empty PDU ***/
+    /* else nothing to transmit */
 
-      lctrCisBuildEmptyPdu(pCisCtx);
-      pFtParam->pduType[pFtParam->pduCounter] = LCTR_CIS_PDU_EMPTY;
-
-      PalBbBleTxBufDesc_t desc = {.pBuf = lctrCisIsr.emptyPdu, .len = sizeof(lctrCisIsr.emptyPdu)};
-      BbBleCisTxData(&desc, 1);
-      numTxBytes = desc.len;
-    }
-  }
-  /* else nothing to transmit */
-
-  return numTxBytes;
+    return numTxBytes;
 }
 
 /*************************************************************************************************/
@@ -347,12 +328,10 @@ uint16_t lctrCisSetupForTx(lctrCigCtx_t *pCigCtx, uint8_t rxStatus, bool_t reqTx
 /*************************************************************************************************/
 void lctrCisRxPostProcessing(lctrCisCtx_t *pCisCtx, uint8_t *pRxBuf)
 {
-  if (pCisCtx->validRx)       /* Another buffer ready to replace the received one. */
-  {
-    lctrCisRxEnq(pRxBuf, pCisCtx->cisEvtCounter, pCisCtx->cisHandle);
-  }
-  else
-  {
-    lctrCisRxPduFree(pRxBuf);
-  }
+    if (pCisCtx->validRx) /* Another buffer ready to replace the received one. */
+    {
+        lctrCisRxEnq(pRxBuf, pCisCtx->cisEvtCounter, pCisCtx->cisHandle);
+    } else {
+        lctrCisRxPduFree(pRxBuf);
+    }
 }

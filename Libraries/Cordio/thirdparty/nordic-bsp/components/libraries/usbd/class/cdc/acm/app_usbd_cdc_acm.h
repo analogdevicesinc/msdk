@@ -78,17 +78,14 @@ extern "C" {
  *
  * @ref APP_USBD_CLASS_TYPEDEF
  */
-typedef struct { } app_usbd_cdc_acm_t;
+typedef struct {
+} app_usbd_cdc_acm_t;
 #else
 /*lint -save -e10 -e26 -e123 -e505 */
-APP_USBD_CLASS_TYPEDEF(app_usbd_cdc_acm,            \
-            APP_USBD_CDC_ACM_CONFIG(0, 0, 0, 0, 0), \
-            APP_USBD_CDC_ACM_INSTANCE_SPECIFIC_DEC, \
-            APP_USBD_CDC_ACM_DATA_SPECIFIC_DEC      \
-);
+APP_USBD_CLASS_TYPEDEF(app_usbd_cdc_acm, APP_USBD_CDC_ACM_CONFIG(0, 0, 0, 0, 0),
+                       APP_USBD_CDC_ACM_INSTANCE_SPECIFIC_DEC, APP_USBD_CDC_ACM_DATA_SPECIFIC_DEC);
 /*lint -restore*/
 #endif
-
 
 /*lint -save -e407 */
 
@@ -103,11 +100,11 @@ APP_USBD_CLASS_TYPEDEF(app_usbd_cdc_acm,            \
  * @endcode
  */
 typedef enum app_usbd_cdc_acm_user_event_e {
-    APP_USBD_CDC_ACM_USER_EVT_RX_DONE,     /**< User event RX_DONE.    */
-    APP_USBD_CDC_ACM_USER_EVT_TX_DONE,     /**< User event TX_DONE.    */
+    APP_USBD_CDC_ACM_USER_EVT_RX_DONE, /**< User event RX_DONE.    */
+    APP_USBD_CDC_ACM_USER_EVT_TX_DONE, /**< User event TX_DONE.    */
 
-    APP_USBD_CDC_ACM_USER_EVT_PORT_OPEN,   /**< User event PORT_OPEN.  */
-    APP_USBD_CDC_ACM_USER_EVT_PORT_CLOSE,  /**< User event PORT_CLOSE. */
+    APP_USBD_CDC_ACM_USER_EVT_PORT_OPEN, /**< User event PORT_OPEN.  */
+    APP_USBD_CDC_ACM_USER_EVT_PORT_CLOSE, /**< User event PORT_CLOSE. */
 } app_usbd_cdc_acm_user_event_t;
 
 /*lint -restore*/
@@ -121,24 +118,19 @@ typedef enum app_usbd_cdc_acm_user_event_e {
  * @param data_epin      DATA interface IN endpoint.
  * @param data_epout     DATA interface OUT endpoint.
  */
-#define APP_USBD_CDC_ACM_DEFAULT_DESC(comm_interface,                       \
-                                      comm_epin,                            \
-                                      data_interface,                       \
-                                      data_epin,                            \
-                                      data_epout)                           \
-    APP_USBD_CDC_IAD_DSC(comm_interface,                                    \
-                         APP_USBD_CDC_SUBCLASS_ACM,                         \
-                         APP_USBD_CDC_COMM_PROTOCOL_AT_V250)                \
-    APP_USBD_CDC_COMM_INTERFACE_DSC(comm_interface,                         \
-                                    APP_USBD_CDC_SUBCLASS_ACM,              \
-                                    APP_USBD_CDC_COMM_PROTOCOL_AT_V250)     \
-        APP_USBD_CDC_HEADER_DSC(0x0110)                                     \
-        APP_USBD_CDC_CALL_MGMT_DSC(0x03, data_interface)                    \
-        APP_USBD_CDC_ACM_DSC(0x02)                                          \
-        APP_USBD_CDC_UNION_DSC(comm_interface, data_interface)              \
-        APP_USBD_CDC_COM_EP_DSC(comm_epin, NRF_DRV_USBD_EPSIZE)             \
-    APP_USBD_CDC_DATA_INTERFACE_DSC(data_interface, 0, 0)                   \
-        APP_USBD_CDC_DATA_EP_DSC(data_epin, data_epout, NRF_DRV_USBD_EPSIZE)
+#define APP_USBD_CDC_ACM_DEFAULT_DESC(comm_interface, comm_epin, data_interface, data_epin, \
+                                      data_epout)                                           \
+    APP_USBD_CDC_IAD_DSC(comm_interface, APP_USBD_CDC_SUBCLASS_ACM,                         \
+                         APP_USBD_CDC_COMM_PROTOCOL_AT_V250)                                \
+    APP_USBD_CDC_COMM_INTERFACE_DSC(comm_interface, APP_USBD_CDC_SUBCLASS_ACM,              \
+                                    APP_USBD_CDC_COMM_PROTOCOL_AT_V250)                     \
+    APP_USBD_CDC_HEADER_DSC(0x0110)                                                         \
+    APP_USBD_CDC_CALL_MGMT_DSC(0x03, data_interface)                                        \
+    APP_USBD_CDC_ACM_DSC(0x02)                                                              \
+    APP_USBD_CDC_UNION_DSC(comm_interface, data_interface)                                  \
+    APP_USBD_CDC_COM_EP_DSC(comm_epin, NRF_DRV_USBD_EPSIZE)                                 \
+    APP_USBD_CDC_DATA_INTERFACE_DSC(data_interface, 0, 0)                                   \
+    APP_USBD_CDC_DATA_EP_DSC(data_epin, data_epout, NRF_DRV_USBD_EPSIZE)
 
 /**
  * @brief Global definition of app_usbd_cdc_acm_t class instance.
@@ -155,22 +147,10 @@ typedef enum app_usbd_cdc_acm_user_event_e {
  * @note This macro is just simplified version of @ref APP_USBD_CDC_ACM_GLOBAL_DEF_INTERNAL.
  *
  */
-#define APP_USBD_CDC_ACM_GLOBAL_DEF(instance_name,                              \
-                                    user_ev_handler,                            \
-                                    comm_ifc,                                   \
-                                    data_ifc,                                   \
-                                    comm_ein,                                   \
-                                    data_ein,                                   \
-                                    data_eout,                                  \
-                                    cdc_protocol)                               \
-    APP_USBD_CDC_ACM_GLOBAL_DEF_INTERNAL(instance_name,                         \
-                                         user_ev_handler,                       \
-                                         comm_ifc,                              \
-                                         data_ifc,                              \
-                                         comm_ein,                              \
-                                         data_ein,                              \
-                                         data_eout,                             \
-                                         cdc_protocol)                          \
+#define APP_USBD_CDC_ACM_GLOBAL_DEF(instance_name, user_ev_handler, comm_ifc, data_ifc, comm_ein, \
+                                    data_ein, data_eout, cdc_protocol)                            \
+    APP_USBD_CDC_ACM_GLOBAL_DEF_INTERNAL(instance_name, user_ev_handler, comm_ifc, data_ifc,      \
+                                         comm_ein, data_ein, data_eout, cdc_protocol)
 
 /**
  * @brief Helper function to get class instance from CDC ACM class.
@@ -180,7 +160,7 @@ typedef enum app_usbd_cdc_acm_user_event_e {
  * @return Base class instance.
  */
 static inline app_usbd_class_inst_t const *
-app_usbd_cdc_acm_class_inst_get(app_usbd_cdc_acm_t const * p_cdc_acm)
+app_usbd_cdc_acm_class_inst_get(app_usbd_cdc_acm_t const *p_cdc_acm)
 {
     return &p_cdc_acm->base;
 }
@@ -193,7 +173,7 @@ app_usbd_cdc_acm_class_inst_get(app_usbd_cdc_acm_t const * p_cdc_acm)
  * @return CDC ACM class specific request.
  */
 static inline app_usbd_cdc_acm_req_t *
-app_usbd_cdc_acm_class_request_get(app_usbd_cdc_acm_t const * p_cdc_acm)
+app_usbd_cdc_acm_class_request_get(app_usbd_cdc_acm_t const *p_cdc_acm)
 {
     return &p_cdc_acm->specific.p_data->ctx.request;
 }
@@ -206,11 +186,10 @@ app_usbd_cdc_acm_class_request_get(app_usbd_cdc_acm_t const * p_cdc_acm)
  * @return CDC ACM class handle.
  */
 static inline app_usbd_cdc_acm_t const *
-app_usbd_cdc_acm_class_get(app_usbd_class_inst_t const * p_inst)
+app_usbd_cdc_acm_class_get(app_usbd_class_inst_t const *p_inst)
 {
     return (app_usbd_cdc_acm_t const *)p_inst;
 }
-
 
 /**
  * @brief Writes data to CDC ACM serial port.
@@ -224,9 +203,8 @@ app_usbd_cdc_acm_class_get(app_usbd_class_inst_t const * p_inst)
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_cdc_acm_write(app_usbd_cdc_acm_t const * p_cdc_acm,
-                                  const void *               p_buf,
-                                  size_t                     length);
+ret_code_t app_usbd_cdc_acm_write(app_usbd_cdc_acm_t const *p_cdc_acm, const void *p_buf,
+                                  size_t length);
 
 /**
  * @brief Returns the amount of data that was read.
@@ -238,7 +216,7 @@ ret_code_t app_usbd_cdc_acm_write(app_usbd_cdc_acm_t const * p_cdc_acm,
  *
  * @return Amount of data transfered.
  */
-size_t app_usbd_cdc_acm_rx_size(app_usbd_cdc_acm_t const * p_cdc_acm);
+size_t app_usbd_cdc_acm_rx_size(app_usbd_cdc_acm_t const *p_cdc_acm);
 
 /**
  * @brief Returns the amount of data that was stored into internal buffer
@@ -250,7 +228,7 @@ size_t app_usbd_cdc_acm_rx_size(app_usbd_cdc_acm_t const * p_cdc_acm);
  *
  * @return Amount of data waiting.
  */
-size_t app_usbd_cdc_acm_bytes_stored(app_usbd_cdc_acm_t const * p_cdc_acm);
+size_t app_usbd_cdc_acm_bytes_stored(app_usbd_cdc_acm_t const *p_cdc_acm);
 
 /**
  * @brief Reads data from CDC ACM serial port.
@@ -276,9 +254,7 @@ size_t app_usbd_cdc_acm_bytes_stored(app_usbd_cdc_acm_t const * p_cdc_acm);
  * @retval NRF_ERROR_BUSY       There are already 2 buffers queued for transfers.
  * @retval other                Standard error code.
  */
-ret_code_t app_usbd_cdc_acm_read(app_usbd_cdc_acm_t const * p_cdc_acm,
-                                 void *                     p_buf,
-                                 size_t                     length);
+ret_code_t app_usbd_cdc_acm_read(app_usbd_cdc_acm_t const *p_cdc_acm, void *p_buf, size_t length);
 
 /**
  * @brief Read any data from CDC ACM port up to given buffer size
@@ -303,20 +279,19 @@ ret_code_t app_usbd_cdc_acm_read(app_usbd_cdc_acm_t const * p_cdc_acm,
  * @retval NRF_ERROR_BUSY       There is already buffer set for a transfer.
  * @retval other                Standard error code.
  */
-ret_code_t app_usbd_cdc_acm_read_any(app_usbd_cdc_acm_t const * p_cdc_acm,
-                                     void *                     p_buf,
-                                     size_t                     length);
+ret_code_t app_usbd_cdc_acm_read_any(app_usbd_cdc_acm_t const *p_cdc_acm, void *p_buf,
+                                     size_t length);
 
 /**
  * @brief Serial state notifications.
  * */
 typedef enum {
-    APP_USBD_CDC_ACM_SERIAL_STATE_DCD     = (1u << 0), /**< Notification bit DCD.    */
-    APP_USBD_CDC_ACM_SERIAL_STATE_DSR     = (1u << 1), /**< Notification bit DSR.    */
-    APP_USBD_CDC_ACM_SERIAL_STATE_BREAK   = (1u << 2), /**< Notification bit BREAK.  */
-    APP_USBD_CDC_ACM_SERIAL_STATE_RING    = (1u << 3), /**< Notification bit RING.   */
+    APP_USBD_CDC_ACM_SERIAL_STATE_DCD = (1u << 0), /**< Notification bit DCD.    */
+    APP_USBD_CDC_ACM_SERIAL_STATE_DSR = (1u << 1), /**< Notification bit DSR.    */
+    APP_USBD_CDC_ACM_SERIAL_STATE_BREAK = (1u << 2), /**< Notification bit BREAK.  */
+    APP_USBD_CDC_ACM_SERIAL_STATE_RING = (1u << 3), /**< Notification bit RING.   */
     APP_USBD_CDC_ACM_SERIAL_STATE_FRAMING = (1u << 4), /**< Notification bit FRAMING.*/
-    APP_USBD_CDC_ACM_SERIAL_STATE_PARITY  = (1u << 5), /**< Notification bit PARITY. */
+    APP_USBD_CDC_ACM_SERIAL_STATE_PARITY = (1u << 5), /**< Notification bit PARITY. */
     APP_USBD_CDC_ACM_SERIAL_STATE_OVERRUN = (1u << 6), /**< Notification bit OVERRUN.*/
 } app_usbd_cdc_acm_serial_state_t;
 
@@ -324,8 +299,8 @@ typedef enum {
  * @brief Serial line state.
  */
 typedef enum {
-    APP_USBD_CDC_ACM_LINE_STATE_DTR = (1u << 0),  /**< Line state bit DTR.*/
-    APP_USBD_CDC_ACM_LINE_STATE_RTS = (1u << 1),  /**< Line state bit RTS.*/
+    APP_USBD_CDC_ACM_LINE_STATE_DTR = (1u << 0), /**< Line state bit DTR.*/
+    APP_USBD_CDC_ACM_LINE_STATE_RTS = (1u << 1), /**< Line state bit RTS.*/
 } app_usbd_cdc_acm_line_state_t;
 
 /**
@@ -337,9 +312,9 @@ typedef enum {
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_cdc_acm_serial_state_notify(app_usbd_cdc_acm_t const *      p_cdc_acm,
+ret_code_t app_usbd_cdc_acm_serial_state_notify(app_usbd_cdc_acm_t const *p_cdc_acm,
                                                 app_usbd_cdc_acm_serial_state_t serial_state,
-                                                bool                            value);
+                                                bool value);
 
 /**
  * @brief Control line value get.
@@ -350,9 +325,9 @@ ret_code_t app_usbd_cdc_acm_serial_state_notify(app_usbd_cdc_acm_t const *      
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_cdc_acm_line_state_get(app_usbd_cdc_acm_t const *    p_cdc_acm,
+ret_code_t app_usbd_cdc_acm_line_state_get(app_usbd_cdc_acm_t const *p_cdc_acm,
                                            app_usbd_cdc_acm_line_state_t line_state,
-                                           uint32_t *                    value);
+                                           uint32_t *value);
 
 /** @} */
 #ifdef __cplusplus

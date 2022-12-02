@@ -49,33 +49,32 @@
 #include "nrf_crypto_shared.h"
 #include "cc310_backend_shared.h"
 
-
 static uint32_t m_use_count = 0;
 
 void cc310_backend_enable(void)
 {
     m_use_count++;
 
-    if (m_use_count == 1)
-    {
+    if (m_use_count == 1) {
         // Enable the CryptoCell hardware
         NRF_CRYPTOCELL->ENABLE = 1;
 
-#if defined(NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED) && (NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED == 1)
+#if defined(NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED) && \
+    (NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED == 1)
 
         // Enable the CryptoCell IRQ
         NVIC_EnableIRQ(CRYPTOCELL_IRQn);
 
-#elif defined(NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED) && (NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED == 0)
+#elif defined(NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED) && \
+    (NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED == 0)
 
         // Do nothing
 
 #else
 
-    #warning NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+#warning NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif
-
     }
 }
 
@@ -84,45 +83,39 @@ void cc310_backend_disable(void)
     m_use_count--;
 
     // If no more users. Disable HW/IRQ
-    if (m_use_count == 0)
-    {
+    if (m_use_count == 0) {
         // Disable the CryptoCell hardware
         NRF_CRYPTOCELL->ENABLE = 0;
 
-#if defined(NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED) && (NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED == 1)
+#if defined(NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED) && \
+    (NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED == 1)
 
         // Disable the CryptoCell IRQ
         NVIC_DisableIRQ(CRYPTOCELL_IRQn);
 
-#elif defined(NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED) && (NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED == 0)
+#elif defined(NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED) && \
+    (NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED == 0)
 
         // Do nothing
 
 #else
 
-        #warning NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+#warning NRF_CRYPTO_BACKEND_CC310_INTERRUPTS_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif
-
     }
 }
 
-
-uint32_t nrf_crypto_backend_cc310_rng(void * p_state, uint16_t size, uint8_t * p_data)
+uint32_t nrf_crypto_backend_cc310_rng(void *p_state, uint16_t size, uint8_t *p_data)
 {
 #if defined(NRF_CRYPTO_RNG_ENABLED) && (NRF_CRYPTO_RNG_ENABLED == 1)
 
     ret_code_t result = nrf_crypto_rng_vector_generate_no_mutex(p_data, (size_t)size);
-    if (result == NRF_SUCCESS)
-    {
+    if (result == NRF_SUCCESS) {
         return CRYS_OK;
-    }
-    else if (result == NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED)
-    {
+    } else if (result == NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED) {
         return CRYS_RND_INSTANTIATION_NOT_DONE_ERROR;
-    }
-    else
-    {
+    } else {
         return CRYS_RND_IS_NOT_SUPPORTED;
     }
 
@@ -132,10 +125,9 @@ uint32_t nrf_crypto_backend_cc310_rng(void * p_state, uint16_t size, uint8_t * p
 
 #else
 
-    #warning NRF_CRYPTO_RNG_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+#warning NRF_CRYPTO_RNG_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif // NRF_CRYPTO_RNG_ENABLED
 }
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310)

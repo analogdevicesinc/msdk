@@ -39,45 +39,41 @@
  */
 
 #include "sdk_common.h"
-#if NRF_MODULE_ENABLED(NRF_CRYPTO) && \
-    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_HW_RNG) && \
+#if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_HW_RNG) && \
     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_HW_RNG_MBEDTLS_CTR_DRBG)
 
 #include "nrf_crypto_rng.h"
 #include "nrf_drv_rng.h"
 #include "nrf_hw_backend_rng_mbedtls.h"
 
-
 // Function to convert mbedtls error codes to ret_code_t.
 static ret_code_t result_get(int mbedtls_ret_val)
 {
     ret_code_t ret_val;
-    switch (mbedtls_ret_val)
-    {
-        case 0:
-            ret_val = NRF_SUCCESS;
-            break;
+    switch (mbedtls_ret_val) {
+    case 0:
+        ret_val = NRF_SUCCESS;
+        break;
 
-        case MBEDTLS_ERR_CTR_DRBG_INPUT_TOO_BIG:
-            ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
-            break;
+    case MBEDTLS_ERR_CTR_DRBG_INPUT_TOO_BIG:
+        ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
+        break;
 
-        case MBEDTLS_ERR_CTR_DRBG_REQUEST_TOO_BIG:
-            ret_val = NRF_ERROR_CRYPTO_OUTPUT_LENGTH;
-            break;
+    case MBEDTLS_ERR_CTR_DRBG_REQUEST_TOO_BIG:
+        ret_val = NRF_ERROR_CRYPTO_OUTPUT_LENGTH;
+        break;
 
-        case MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED:
-        default:
-            ret_val = NRF_ERROR_CRYPTO_INTERNAL;
-            break;
+    case MBEDTLS_ERR_CTR_DRBG_ENTROPY_SOURCE_FAILED:
+    default:
+        ret_val = NRF_ERROR_CRYPTO_INTERNAL;
+        break;
     }
 
     return ret_val;
 }
 
-
 // Callback function used by mbed TLS to seed and reseed.
-static int entropy_callback(void * p_entropy, unsigned char * p_buffer, size_t size)
+static int entropy_callback(void *p_entropy, unsigned char *p_buffer, size_t size)
 {
     UNUSED_PARAMETER(p_entropy);
 
@@ -86,20 +82,18 @@ static int entropy_callback(void * p_entropy, unsigned char * p_buffer, size_t s
     return 0;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_init(void * const p_context, void * const p_temp_buffer)
+ret_code_t nrf_crypto_rng_backend_init(void *const p_context, void *const p_temp_buffer)
 {
-    ret_code_t                  ret_val;
-    int                         mbedtls_ret_val;
-    mbedtls_ctr_drbg_context  * p_mbedtls_context =
+    ret_code_t ret_val;
+    int mbedtls_ret_val;
+    mbedtls_ctr_drbg_context *p_mbedtls_context =
         &((nrf_crypto_backend_rng_context_t *)p_context)->mbedtls_context;
 
     UNUSED_PARAMETER(p_temp_buffer);
 
     ret_val = nrf_drv_rng_init(NULL);
 
-    if (ret_val != NRF_SUCCESS)
-    {
+    if (ret_val != NRF_SUCCESS) {
         return ret_val;
     }
 
@@ -108,21 +102,16 @@ ret_code_t nrf_crypto_rng_backend_init(void * const p_context, void * const p_te
     // Initial seeding. The nrf_crypto_rng API does not support additional entropy in the initial
     // seeding. Additional entropy can be provided using nrf_crypto_rng_backend_reseed(),
     // which calls mbedtls_ctr_drbg_reseed().
-    mbedtls_ret_val = mbedtls_ctr_drbg_seed(p_mbedtls_context,
-                                            entropy_callback,
-                                            NULL,
-                                            NULL,
-                                            0);
+    mbedtls_ret_val = mbedtls_ctr_drbg_seed(p_mbedtls_context, entropy_callback, NULL, NULL, 0);
 
     ret_val = result_get(mbedtls_ret_val);
 
     return ret_val;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_uninit(void * const p_context)
+ret_code_t nrf_crypto_rng_backend_uninit(void *const p_context)
 {
-    mbedtls_ctr_drbg_context  * p_mbedtls_context =
+    mbedtls_ctr_drbg_context *p_mbedtls_context =
         &((nrf_crypto_backend_rng_context_t *)p_context)->mbedtls_context;
 
     mbedtls_ctr_drbg_free(p_mbedtls_context);
@@ -131,14 +120,11 @@ ret_code_t nrf_crypto_rng_backend_uninit(void * const p_context)
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_vector_generate(void      * const p_context,
-                                                  uint8_t   * const p_target,
-                                                  size_t            size,
-                                                  bool              use_mutex)
+ret_code_t nrf_crypto_rng_backend_vector_generate(void *const p_context, uint8_t *const p_target,
+                                                  size_t size, bool use_mutex)
 {
-    int                         mbedtls_ret_val;
-    mbedtls_ctr_drbg_context  * p_mbedtls_context =
+    int mbedtls_ret_val;
+    mbedtls_ctr_drbg_context *p_mbedtls_context =
         &((nrf_crypto_backend_rng_context_t *)p_context)->mbedtls_context;
 
     UNUSED_PARAMETER(use_mutex);
@@ -148,14 +134,11 @@ ret_code_t nrf_crypto_rng_backend_vector_generate(void      * const p_context,
     return result_get(mbedtls_ret_val);
 }
 
-
-ret_code_t nrf_crypto_rng_backend_reseed(void   * const p_context,
-                                         void         * p_temp_buffer,
-                                         uint8_t      * p_input_data,
-                                         size_t         size)
+ret_code_t nrf_crypto_rng_backend_reseed(void *const p_context, void *p_temp_buffer,
+                                         uint8_t *p_input_data, size_t size)
 {
-    int                         mbedtls_ret_val;
-    mbedtls_ctr_drbg_context  * p_mbedtls_context =
+    int mbedtls_ret_val;
+    mbedtls_ctr_drbg_context *p_mbedtls_context =
         &((nrf_crypto_backend_rng_context_t *)p_context)->mbedtls_context;
 
     UNUSED_PARAMETER(p_temp_buffer);

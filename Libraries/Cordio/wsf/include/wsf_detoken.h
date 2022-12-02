@@ -34,27 +34,27 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Vendor specific event mask opcode. */
-#define WSF_DETOKEN_VS_SET_EVENT_MASK_OPCODE    HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3E1)
+#define WSF_DETOKEN_VS_SET_EVENT_MASK_OPCODE HCI_OPCODE(HCI_OGF_VENDOR_SPEC, 0x3E1)
 
 /*! \brief Event mask bits. */
-#define WSF_DETOKEN_ENABLE_BIT                  (1<<1)
+#define WSF_DETOKEN_ENABLE_BIT (1 << 1)
 
 /*! \brief Vendor specific token event. */
-#define WSF_DETOKEN_VS_EVT_TOKEN                0xFFF0
+#define WSF_DETOKEN_VS_EVT_TOKEN 0xFFF0
 
 /** \name Platform identifiers
  *
  */
 /**@{*/
-#define WSF_DETOKEN_TRACE_NORDIC                1
+#define WSF_DETOKEN_TRACE_NORDIC 1
 /**@}*/
 
 /** \name Parameter mask bits
  *
  */
 /**@{*/
-#define WSF_DETOKEN_PARAM_VARIABLE              0
-#define WSF_DETOKEN_PARAM_STRING                1
+#define WSF_DETOKEN_PARAM_VARIABLE 0
+#define WSF_DETOKEN_PARAM_STRING 1
 /**@}*/
 
 /**************************************************************************************************

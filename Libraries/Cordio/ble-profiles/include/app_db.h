@@ -40,7 +40,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief No device database record handle  */
-#define APP_DB_HDL_NONE                   NULL
+#define APP_DB_HDL_NONE NULL
 
 /**************************************************************************************************
   Data Types
@@ -658,7 +658,7 @@ void AppDbNvmDeleteAll(void);
 
 /**@}*/
 
-/*! \} */    /*! APP_FRAMEWORK_DB_API */
+/*! \} */ /*! APP_FRAMEWORK_DB_API */
 
 #ifdef __cplusplus
 };

@@ -44,13 +44,12 @@
 **************************************************************************************************/
 
 /*! Light Lightness Client control block type definition */
-typedef struct mmdlLightLightnessClCb_tag
-{
-  mmdlEventCback_t            recvCback;        /*!< Model Light Lightness received callback */
-}mmdlLightLightnessClCb_t;
+typedef struct mmdlLightLightnessClCb_tag {
+    mmdlEventCback_t recvCback; /*!< Model Light Lightness received callback */
+} mmdlLightLightnessClCb_t;
 
 /*! Light Lightness Client message handler type definition */
-typedef void (*mmdlLightnessClHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlLightnessClHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
@@ -60,13 +59,12 @@ typedef void (*mmdlLightnessClHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
 wsfHandlerId_t mmdlLightLightnessClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlLightLightnessClRcvdOpcodes[] =
-{
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_LINEAR_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_LAST_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_DEFAULT_STATUS_OPCODE)} },
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_RANGE_STATUS_OPCODE)} },
+const meshMsgOpcode_t mmdlLightLightnessClRcvdOpcodes[] = {
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_LINEAR_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_LAST_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_DEFAULT_STATUS_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_LIGHTNESS_RANGE_STATUS_OPCODE) } },
 };
 
 /**************************************************************************************************
@@ -74,16 +72,14 @@ const meshMsgOpcode_t mmdlLightLightnessClRcvdOpcodes[] =
 **************************************************************************************************/
 
 /* Handler functions for supported opcodes */
-const mmdlLightnessClHandleMsg_t mmdlLightLightnessClHandleMsg[MMDL_LIGHT_LIGHTNESS_CL_NUM_RCVD_OPCODES] =
-{
-  mmdlLightLightnessClHandleStatus,
-  mmdlLightLightnessLinearClHandleStatus,
-  mmdlLightLightnessLastClHandleStatus,
-  mmdlLightLightnessDefaultClHandleStatus,
-  mmdlLightLightnessRangeClHandleStatus
-};
+const mmdlLightnessClHandleMsg_t
+    mmdlLightLightnessClHandleMsg[MMDL_LIGHT_LIGHTNESS_CL_NUM_RCVD_OPCODES] = {
+        mmdlLightLightnessClHandleStatus, mmdlLightLightnessLinearClHandleStatus,
+        mmdlLightLightnessLastClHandleStatus, mmdlLightLightnessDefaultClHandleStatus,
+        mmdlLightLightnessRangeClHandleStatus
+    };
 /*! Light Lightness Client control block */
-static mmdlLightLightnessClCb_t  lightLightnessClCb;
+static mmdlLightLightnessClCb_t lightLightnessClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -105,47 +101,42 @@ static mmdlLightLightnessClCb_t  lightLightnessClCb;
  */
 /*************************************************************************************************/
 static void mmdlLightLightnessSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                            const mmdlLightLightnessSetParam_t *pSetParam, uint16_t appKeyIndex,
-                            bool_t ackRequired)
+                                  const mmdlLightLightnessSetParam_t *pSetParam,
+                                  uint16_t appKeyIndex, bool_t ackRequired)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                   MMDL_LIGHT_LIGHTNESS_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_SET_MAX_LEN;
-  uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_SET_MAX_LEN];
-  uint8_t *pCursor = paramMsg;
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_SET_MAX_LEN;
+    uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_SET_MAX_LEN];
+    uint8_t *pCursor = paramMsg;
 
-  if (pSetParam!= NULL)
-  {
-    /* Change to acknowledged set */
-    if (ackRequired)
-    {
-      UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_SET_OPCODE);
+    if (pSetParam != NULL) {
+        /* Change to acknowledged set */
+        if (ackRequired) {
+            UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_SET_OPCODE);
+        }
+
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
+
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
+        UINT8_TO_BSTREAM(pCursor, pSetParam->tid);
+
+        /* Do not include transition time and delay in the message if it is not used */
+        if (pSetParam->transitionTime == MMDL_GEN_TR_UNKNOWN) {
+            paramLen = MMDL_LIGHT_LIGHTNESS_SET_MIN_LEN;
+        } else {
+            UINT8_TO_BSTREAM(pCursor, pSetParam->transitionTime);
+            UINT8_TO_BSTREAM(pCursor, pSetParam->delay);
+        }
+
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
     }
-
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
-
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
-    UINT8_TO_BSTREAM(pCursor, pSetParam->tid);
-
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pSetParam->transitionTime == MMDL_GEN_TR_UNKNOWN)
-    {
-      paramLen = MMDL_LIGHT_LIGHTNESS_SET_MIN_LEN;
-    }
-    else
-    {
-      UINT8_TO_BSTREAM(pCursor, pSetParam->transitionTime);
-      UINT8_TO_BSTREAM(pCursor, pSetParam->delay);
-    }
-
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
-  }
 }
 
 /*************************************************************************************************/
@@ -163,48 +154,44 @@ static void mmdlLightLightnessSet(meshElementId_t elementId, meshAddress_t serve
  *  \return    None.
  */
 /*************************************************************************************************/
-static void mmdlLightLightnessLinearSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                            const mmdlLightLightnessLinearSetParam_t *pSetParam, uint16_t appKeyIndex,
-                            bool_t ackRequired)
+static void mmdlLightLightnessLinearSet(meshElementId_t elementId, meshAddress_t serverAddr,
+                                        uint8_t ttl,
+                                        const mmdlLightLightnessLinearSetParam_t *pSetParam,
+                                        uint16_t appKeyIndex, bool_t ackRequired)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                   MMDL_LIGHT_LIGHTNESS_LINEAR_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MAX_LEN;
-  uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MAX_LEN];
-  uint8_t *pCursor = paramMsg;
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
+                                          MMDL_LIGHT_LIGHTNESS_LINEAR_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MAX_LEN;
+    uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MAX_LEN];
+    uint8_t *pCursor = paramMsg;
 
-  if (pSetParam!= NULL)
-  {
-    /* Change to acknowledged set */
-    if (ackRequired)
-    {
-      UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_LINEAR_SET_OPCODE);
+    if (pSetParam != NULL) {
+        /* Change to acknowledged set */
+        if (ackRequired) {
+            UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_LINEAR_SET_OPCODE);
+        }
+
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
+
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
+        UINT8_TO_BSTREAM(pCursor, pSetParam->tid);
+
+        /* Do not include transition time and delay in the message if it is not used */
+        if (pSetParam->transitionTime == MMDL_GEN_TR_UNKNOWN) {
+            paramLen = MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MIN_LEN;
+        } else {
+            UINT8_TO_BSTREAM(pCursor, pSetParam->transitionTime);
+            UINT8_TO_BSTREAM(pCursor, pSetParam->delay);
+        }
+
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
     }
-
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
-
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
-    UINT8_TO_BSTREAM(pCursor, pSetParam->tid);
-
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pSetParam->transitionTime == MMDL_GEN_TR_UNKNOWN)
-    {
-      paramLen = MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MIN_LEN;
-    }
-    else
-    {
-      UINT8_TO_BSTREAM(pCursor, pSetParam->transitionTime);
-      UINT8_TO_BSTREAM(pCursor, pSetParam->delay);
-    }
-
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
-  }
 }
 
 /*************************************************************************************************/
@@ -222,35 +209,34 @@ static void mmdlLightLightnessLinearSet(meshElementId_t elementId, meshAddress_t
  */
 /*************************************************************************************************/
 static void mmdlLightLightnessDefaultSet(meshElementId_t elementId, meshAddress_t serverAddr,
-                                uint8_t ttl, const mmdlLightLightnessDefaultSetParam_t *pSetParam,
-                                uint16_t appKeyIndex, bool_t ackRequired)
+                                         uint8_t ttl,
+                                         const mmdlLightLightnessDefaultSetParam_t *pSetParam,
+                                         uint16_t appKeyIndex, bool_t ackRequired)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                   MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN;
-  uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN];
-  uint8_t *pCursor = paramMsg;
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
+                                          MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN;
+    uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN];
+    uint8_t *pCursor = paramMsg;
 
-  if (pSetParam != NULL)
-  {
-    /* Change to acknowledged set */
-    if (ackRequired)
-    {
-      UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_OPCODE);
+    if (pSetParam != NULL) {
+        /* Change to acknowledged set */
+        if (ackRequired) {
+            UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_OPCODE);
+        }
+
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
+
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
+
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
     }
-
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
-
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
-
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
-  }
 }
 
 /*************************************************************************************************/
@@ -268,37 +254,35 @@ static void mmdlLightLightnessDefaultSet(meshElementId_t elementId, meshAddress_
  */
 /*************************************************************************************************/
 static void mmdlLightLightnessRangeSet(meshElementId_t elementId, meshAddress_t serverAddr,
-                                         uint8_t ttl,
-                                         const mmdlLightLightnessRangeSetParam_t *pSetParam,
-                                         uint16_t appKeyIndex, bool_t ackRequired)
+                                       uint8_t ttl,
+                                       const mmdlLightLightnessRangeSetParam_t *pSetParam,
+                                       uint16_t appKeyIndex, bool_t ackRequired)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                   MMDL_LIGHT_LIGHTNESS_RANGE_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN;
-  uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN];
-  uint8_t *pCursor = paramMsg;
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_RANGE_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN;
+    uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN];
+    uint8_t *pCursor = paramMsg;
 
-  if (pSetParam != NULL)
-  {
-    /* Change to acknowledged set */
-    if (ackRequired)
-    {
-      UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_RANGE_SET_OPCODE);
+    if (pSetParam != NULL) {
+        /* Change to acknowledged set */
+        if (ackRequired) {
+            UINT16_TO_BE_BUF(msgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_RANGE_SET_OPCODE);
+        }
+
+        /* Fill in the message information */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
+
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pCursor, pSetParam->rangeMin);
+        UINT16_TO_BSTREAM(pCursor, pSetParam->rangeMax);
+
+        /* Send message to the Mesh Core */
+        MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
     }
-
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
-
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pCursor, pSetParam->rangeMin);
-    UINT16_TO_BSTREAM(pCursor, pSetParam->rangeMax);
-
-    /* Send message to the Mesh Core */
-    MeshSendMessage(&msgInfo, paramMsg, paramLen, 0, 0);
-  }
 }
 
 /*************************************************************************************************/
@@ -313,43 +297,39 @@ static void mmdlLightLightnessRangeSet(meshElementId_t elementId, meshAddress_t 
  */
 /*************************************************************************************************/
 static void mmdlLightLightnessPublishSet(meshElementId_t elementId,
-                                const mmdlLightLightnessSetParam_t *pSetParam, bool_t ackRequired)
+                                         const mmdlLightLightnessSetParam_t *pSetParam,
+                                         bool_t ackRequired)
 {
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                             MMDL_LIGHT_LIGHTNESS_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_SET_MAX_LEN;
-  uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_SET_MAX_LEN];
-  uint8_t *pCursor = paramMsg;
+    meshPubMsgInfo_t pubMsgInfo =
+        MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_SET_MAX_LEN;
+    uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_SET_MAX_LEN];
+    uint8_t *pCursor = paramMsg;
 
-  if (pSetParam != NULL)
-  {
-    /* Change to acknowledged set */
-    if (ackRequired)
-    {
-      UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_SET_OPCODE);
+    if (pSetParam != NULL) {
+        /* Change to acknowledged set */
+        if (ackRequired) {
+            UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_SET_OPCODE);
+        }
+
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
+
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
+        UINT8_TO_BSTREAM(pCursor, pSetParam->tid);
+
+        /* Do not include transition time and delay in the message if it is not used */
+        if (pSetParam->transitionTime == MMDL_GEN_TR_UNKNOWN) {
+            paramLen = MMDL_LIGHT_LIGHTNESS_SET_MIN_LEN;
+        } else {
+            UINT8_TO_BSTREAM(pCursor, pSetParam->transitionTime);
+            UINT8_TO_BSTREAM(pCursor, pSetParam->delay);
+        }
+
+        /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+        MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
     }
-
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
-
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
-    UINT8_TO_BSTREAM(pCursor, pSetParam->tid);
-
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pSetParam->transitionTime == MMDL_GEN_TR_UNKNOWN)
-    {
-      paramLen = MMDL_LIGHT_LIGHTNESS_SET_MIN_LEN;
-    }
-    else
-    {
-      UINT8_TO_BSTREAM(pCursor, pSetParam->transitionTime);
-      UINT8_TO_BSTREAM(pCursor, pSetParam->delay);
-    }
-
-    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-    MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
-  }
 }
 
 /*************************************************************************************************/
@@ -364,43 +344,39 @@ static void mmdlLightLightnessPublishSet(meshElementId_t elementId,
  */
 /*************************************************************************************************/
 static void mmdlLightLightnessLinearPublishSet(meshElementId_t elementId,
-                           const mmdlLightLightnessLinearSetParam_t *pSetParam, bool_t ackRequired)
+                                               const mmdlLightLightnessLinearSetParam_t *pSetParam,
+                                               bool_t ackRequired)
 {
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                             MMDL_LIGHT_LIGHTNESS_LINEAR_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MAX_LEN;
-  uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MAX_LEN];
-  uint8_t *pCursor = paramMsg;
+    meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
+                                                    MMDL_LIGHT_LIGHTNESS_LINEAR_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MAX_LEN;
+    uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MAX_LEN];
+    uint8_t *pCursor = paramMsg;
 
-  if (pSetParam != NULL)
-  {
-    /* Change to acknowledged set */
-    if (ackRequired)
-    {
-      UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_LINEAR_SET_OPCODE);
+    if (pSetParam != NULL) {
+        /* Change to acknowledged set */
+        if (ackRequired) {
+            UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_LINEAR_SET_OPCODE);
+        }
+
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
+
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
+        UINT8_TO_BSTREAM(pCursor, pSetParam->tid);
+
+        /* Do not include transition time and delay in the message if it is not used */
+        if (pSetParam->transitionTime == MMDL_GEN_TR_UNKNOWN) {
+            paramLen = MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MIN_LEN;
+        } else {
+            UINT8_TO_BSTREAM(pCursor, pSetParam->transitionTime);
+            UINT8_TO_BSTREAM(pCursor, pSetParam->delay);
+        }
+
+        /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+        MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
     }
-
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
-
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
-    UINT8_TO_BSTREAM(pCursor, pSetParam->tid);
-
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pSetParam->transitionTime == MMDL_GEN_TR_UNKNOWN)
-    {
-      paramLen = MMDL_LIGHT_LIGHTNESS_LINEAR_SET_MIN_LEN;
-    }
-    else
-    {
-      UINT8_TO_BSTREAM(pCursor, pSetParam->transitionTime);
-      UINT8_TO_BSTREAM(pCursor, pSetParam->delay);
-    }
-
-    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-    MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
-  }
 }
 
 /*************************************************************************************************/
@@ -414,32 +390,33 @@ static void mmdlLightLightnessLinearPublishSet(meshElementId_t elementId,
  *  \return    None.
  */
 /*************************************************************************************************/
-static void mmdlLightLightnessDefaultPublishSet(meshElementId_t elementId,
-                          const mmdlLightLightnessDefaultSetParam_t *pSetParam, bool_t ackRequired)
+static void
+mmdlLightLightnessDefaultPublishSet(meshElementId_t elementId,
+                                    const mmdlLightLightnessDefaultSetParam_t *pSetParam,
+                                    bool_t ackRequired)
 {
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                             MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN;
-  uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN];
-  uint8_t *pCursor = paramMsg;
+    meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
+                                                    MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN;
+    uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_LEN];
+    uint8_t *pCursor = paramMsg;
 
-  if (pSetParam != NULL)
-  {
-    /* Change to acknowledged set */
-    if (ackRequired)
-    {
-      UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_OPCODE);
+    if (pSetParam != NULL) {
+        /* Change to acknowledged set */
+        if (ackRequired) {
+            UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes,
+                             MMDL_LIGHT_LIGHTNESS_DEFAULT_SET_OPCODE);
+        }
+
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
+
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
+
+        /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+        MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
     }
-
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
-
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pCursor, pSetParam->lightness);
-
-    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-    MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
-  }
 }
 
 /*************************************************************************************************/
@@ -454,32 +431,31 @@ static void mmdlLightLightnessDefaultPublishSet(meshElementId_t elementId,
  */
 /*************************************************************************************************/
 static void mmdlLightLightnessRangePublishSet(meshElementId_t elementId,
-                          const mmdlLightLightnessRangeSetParam_t *pSetParam, bool_t ackRequired)
+                                              const mmdlLightLightnessRangeSetParam_t *pSetParam,
+                                              bool_t ackRequired)
 {
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                             MMDL_LIGHT_LIGHTNESS_RANGE_SET_NO_ACK_OPCODE);
-  uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN;
-  uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN];
-  uint8_t *pCursor = paramMsg;
+    meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
+                                                    MMDL_LIGHT_LIGHTNESS_RANGE_SET_NO_ACK_OPCODE);
+    uint8_t paramLen = MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN;
+    uint8_t paramMsg[MMDL_LIGHT_LIGHTNESS_RANGE_SET_LEN];
+    uint8_t *pCursor = paramMsg;
 
-  if (pSetParam != NULL)
-  {
-    /* Change to acknowledged set */
-    if (ackRequired)
-    {
-      UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_RANGE_SET_OPCODE);
+    if (pSetParam != NULL) {
+        /* Change to acknowledged set */
+        if (ackRequired) {
+            UINT16_TO_BE_BUF(pubMsgInfo.opcode.opcodeBytes, MMDL_LIGHT_LIGHTNESS_RANGE_SET_OPCODE);
+        }
+
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
+
+        /* Build param message. */
+        UINT16_TO_BSTREAM(pCursor, pSetParam->rangeMin);
+        UINT16_TO_BSTREAM(pCursor, pSetParam->rangeMax);
+
+        /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+        MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
     }
-
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
-
-    /* Build param message. */
-    UINT16_TO_BSTREAM(pCursor, pSetParam->rangeMin);
-    UINT16_TO_BSTREAM(pCursor, pSetParam->rangeMax);
-
-    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-    MeshPublishMessage(&pubMsgInfo, paramMsg, paramLen);
-  }
 }
 
 /*************************************************************************************************/
@@ -493,46 +469,42 @@ static void mmdlLightLightnessRangePublishSet(meshElementId_t elementId,
 /*************************************************************************************************/
 void mmdlLightLightnessClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlLightLightnessClEvent_t event;
-  uint8_t *pParams;
+    mmdlLightLightnessClEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_STATUS_MAX_LEN &&
-      pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_STATUS_MIN_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_STATUS_MAX_LEN &&
+        pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_STATUS_MIN_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
-  event.hdr.param = MMDL_LIGHT_LIGHTNESS_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
+    event.hdr.param = MMDL_LIGHT_LIGHTNESS_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT16(event.statusParam.actualStatusEvent.presentLightness, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT16(event.statusParam.actualStatusEvent.presentLightness, pParams);
 
-  /* Check if optional parameters are present */
-  if (pMsg->messageParamsLen == MMDL_LIGHT_LIGHTNESS_STATUS_MAX_LEN)
-  {
-    /* Extract target state and Remaining Time value */
-    BSTREAM_TO_UINT16(event.statusParam.actualStatusEvent.targetLightness, pParams);
-    BSTREAM_TO_UINT8(event.statusParam.actualStatusEvent.remainingTime, pParams);
-  }
-  else
-  {
-    /* Set state to the target state from pParams. */
-    event.statusParam.actualStatusEvent.targetLightness = 0;
-    event.statusParam.actualStatusEvent.remainingTime = 0;
-  }
+    /* Check if optional parameters are present */
+    if (pMsg->messageParamsLen == MMDL_LIGHT_LIGHTNESS_STATUS_MAX_LEN) {
+        /* Extract target state and Remaining Time value */
+        BSTREAM_TO_UINT16(event.statusParam.actualStatusEvent.targetLightness, pParams);
+        BSTREAM_TO_UINT8(event.statusParam.actualStatusEvent.remainingTime, pParams);
+    } else {
+        /* Set state to the target state from pParams. */
+        event.statusParam.actualStatusEvent.targetLightness = 0;
+        event.statusParam.actualStatusEvent.remainingTime = 0;
+    }
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -546,46 +518,42 @@ void mmdlLightLightnessClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightLightnessLinearClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlLightLightnessClEvent_t event;
-  uint8_t *pParams;
+    mmdlLightLightnessClEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_LINEAR_STATUS_MAX_LEN &&
-      pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_LINEAR_STATUS_MIN_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_LINEAR_STATUS_MAX_LEN &&
+        pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_LINEAR_STATUS_MIN_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
-  event.hdr.param = MMDL_LIGHT_LIGHTNESS_LINEAR_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
+    event.hdr.param = MMDL_LIGHT_LIGHTNESS_LINEAR_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT16(event.statusParam.linearStatusEvent.presentLightness, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT16(event.statusParam.linearStatusEvent.presentLightness, pParams);
 
-  /* Check if optional parameters are present */
-  if (pMsg->messageParamsLen == MMDL_LIGHT_LIGHTNESS_LINEAR_STATUS_MAX_LEN)
-  {
-    /* Extract target state and Remaining Time value */
-    BSTREAM_TO_UINT16(event.statusParam.linearStatusEvent.targetLightness, pParams);
-    BSTREAM_TO_UINT8(event.statusParam.linearStatusEvent.remainingTime, pParams);
-  }
-  else
-  {
-    /* Set state to the target state from pParams. */
-    event.statusParam.linearStatusEvent.targetLightness = 0;
-    event.statusParam.linearStatusEvent.remainingTime = 0;
-  }
+    /* Check if optional parameters are present */
+    if (pMsg->messageParamsLen == MMDL_LIGHT_LIGHTNESS_LINEAR_STATUS_MAX_LEN) {
+        /* Extract target state and Remaining Time value */
+        BSTREAM_TO_UINT16(event.statusParam.linearStatusEvent.targetLightness, pParams);
+        BSTREAM_TO_UINT8(event.statusParam.linearStatusEvent.remainingTime, pParams);
+    } else {
+        /* Set state to the target state from pParams. */
+        event.statusParam.linearStatusEvent.targetLightness = 0;
+        event.statusParam.linearStatusEvent.remainingTime = 0;
+    }
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -599,31 +567,30 @@ void mmdlLightLightnessLinearClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightLightnessLastClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlLightLightnessClEvent_t event;
-  uint8_t *pParams;
+    mmdlLightLightnessClEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_LAST_STATUS_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_LAST_STATUS_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
-  event.hdr.param = MMDL_LIGHT_LIGHTNESS_LAST_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
+    event.hdr.param = MMDL_LIGHT_LIGHTNESS_LAST_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT16(event.statusParam.lastStatusEvent.lightness, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT16(event.statusParam.lastStatusEvent.lightness, pParams);
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -637,31 +604,30 @@ void mmdlLightLightnessLastClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightLightnessDefaultClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlLightLightnessClEvent_t event;
-  uint8_t *pParams;
+    mmdlLightLightnessClEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_DEFAULT_STATUS_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_DEFAULT_STATUS_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
-  event.hdr.param = MMDL_LIGHT_LIGHTNESS_DEFAULT_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
+    event.hdr.param = MMDL_LIGHT_LIGHTNESS_DEFAULT_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT16(event.statusParam.defaultStatusEvent.lightness, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT16(event.statusParam.defaultStatusEvent.lightness, pParams);
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -675,33 +641,32 @@ void mmdlLightLightnessDefaultClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightLightnessRangeClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  mmdlLightLightnessClEvent_t event;
-  uint8_t *pParams;
+    mmdlLightLightnessClEvent_t event;
+    uint8_t *pParams;
 
-  /* Validate message length */
-  if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_RANGE_STATUS_LEN)
-  {
-    return;
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen != MMDL_LIGHT_LIGHTNESS_RANGE_STATUS_LEN) {
+        return;
+    }
 
-  /* Set event type and status */
-  event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
-  event.hdr.param = MMDL_LIGHT_LIGHTNESS_RANGE_CL_STATUS_EVENT;
-  event.hdr.status = MMDL_SUCCESS;
+    /* Set event type and status */
+    event.hdr.event = MMDL_LIGHT_LIGHTNESS_CL_EVENT;
+    event.hdr.param = MMDL_LIGHT_LIGHTNESS_RANGE_CL_STATUS_EVENT;
+    event.hdr.status = MMDL_SUCCESS;
 
-  pParams = pMsg->pMessageParams;
+    pParams = pMsg->pMessageParams;
 
-  /* Extract status event parameters */
-  BSTREAM_TO_UINT8(event.statusParam.rangeStatusEvent.statusCode, pParams);
-  BSTREAM_TO_UINT16(event.statusParam.rangeStatusEvent.rangeMin, pParams);
-  BSTREAM_TO_UINT16(event.statusParam.rangeStatusEvent.rangeMax, pParams);
+    /* Extract status event parameters */
+    BSTREAM_TO_UINT8(event.statusParam.rangeStatusEvent.statusCode, pParams);
+    BSTREAM_TO_UINT16(event.statusParam.rangeStatusEvent.rangeMin, pParams);
+    BSTREAM_TO_UINT16(event.statusParam.rangeStatusEvent.rangeMax, pParams);
 
-  /* Set event contents */
-  event.elementId = pMsg->elementId;
-  event.serverAddr = pMsg->srcAddr;
+    /* Set event contents */
+    event.elementId = pMsg->elementId;
+    event.serverAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    lightLightnessClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /**************************************************************************************************
@@ -719,11 +684,11 @@ void mmdlLightLightnessRangeClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlLightLightnessClHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Set handler ID */
-  mmdlLightLightnessClHandlerId = handlerId;
+    /* Set handler ID */
+    mmdlLightLightnessClHandlerId = handlerId;
 
-  /* Initialize control block */
-  lightLightnessClCb.recvCback = MmdlEmptyCback;
+    /* Initialize control block */
+    lightLightnessClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -738,35 +703,32 @@ void MmdlLightLightnessClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlLightLightnessClHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelMsgRecvEvt_t *pModelMsg;
-  uint8_t opcodeIdx, opcodeSize;
+    meshModelMsgRecvEvt_t *pModelMsg;
+    uint8_t opcodeIdx, opcodeSize;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-        /* Match the received opcode */
-        for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_LIGHTNESS_CL_NUM_RCVD_OPCODES; opcodeIdx++)
-        {
-          opcodeSize = MESH_OPCODE_SIZE(pModelMsg->opCode);
-          if (!memcmp(&mmdlLightLightnessClRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
-              opcodeSize))
-          {
-            /* Process message */
-            (void)mmdlLightLightnessClHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
-          }
+            /* Match the received opcode */
+            for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_LIGHTNESS_CL_NUM_RCVD_OPCODES; opcodeIdx++) {
+                opcodeSize = MESH_OPCODE_SIZE(pModelMsg->opCode);
+                if (!memcmp(&mmdlLightLightnessClRcvdOpcodes[opcodeIdx],
+                            pModelMsg->opCode.opcodeBytes, opcodeSize)) {
+                    /* Process message */
+                    (void)mmdlLightLightnessClHandleMsg[opcodeIdx](
+                        (meshModelMsgRecvEvt_t *)pModelMsg);
+                }
+            }
+            break;
+
+        default:
+            MESH_TRACE_WARN0("LIGHT LIGHTNESS CL: Invalid event message received!");
+            break;
         }
-        break;
-
-      default:
-        MESH_TRACE_WARN0("LIGHT LIGHTNESS CL: Invalid event message received!");
-        break;
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -782,32 +744,29 @@ void MmdlLightLightnessClHandler(wsfMsgHdr_t *pMsg)
  */
 /*************************************************************************************************/
 void MmdlLightLightnessClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                        uint16_t appKeyIndex)
+                             uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                   MMDL_LIGHT_LIGHTNESS_GET_OPCODE);
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                             MMDL_LIGHT_LIGHTNESS_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_GET_OPCODE);
+    meshPubMsgInfo_t pubMsgInfo =
+        MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_GET_OPCODE);
 
-  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
-  {
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
+        /* Fill in the msg info parameters */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Send message to the Mesh Core instantly */
-    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-  }
-  else
-  {
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+        /* Send message to the Mesh Core instantly */
+        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    } else {
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
 
-    /* Send message to the Mesh Core */
-    MeshPublishMessage(&pubMsgInfo, NULL, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshPublishMessage(&pubMsgInfo, NULL, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -824,16 +783,13 @@ void MmdlLightLightnessClGet(meshElementId_t elementId, meshAddress_t serverAddr
  */
 /*************************************************************************************************/
 void MmdlLightLightnessClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                          const mmdlLightLightnessSetParam_t *pSetParam, uint16_t appKeyIndex)
+                             const mmdlLightLightnessSetParam_t *pSetParam, uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlLightLightnessPublishSet(elementId, pSetParam, TRUE);
-  }
-  else
-  {
-    mmdlLightLightnessSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlLightLightnessPublishSet(elementId, pSetParam, TRUE);
+    } else {
+        mmdlLightLightnessSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
+    }
 }
 
 /*************************************************************************************************/
@@ -850,16 +806,14 @@ void MmdlLightLightnessClSet(meshElementId_t elementId, meshAddress_t serverAddr
  */
 /*************************************************************************************************/
 void MmdlLightLightnessClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                               const mmdlLightLightnessSetParam_t *pSetParam, uint16_t appKeyIndex)
+                                  const mmdlLightLightnessSetParam_t *pSetParam,
+                                  uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlLightLightnessPublishSet(elementId, pSetParam, FALSE);
-  }
-  else
-  {
-    mmdlLightLightnessSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlLightLightnessPublishSet(elementId, pSetParam, FALSE);
+    } else {
+        mmdlLightLightnessSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
+    }
 }
 
 /*************************************************************************************************/
@@ -875,32 +829,29 @@ void MmdlLightLightnessClSetNoAck(meshElementId_t elementId, meshAddress_t serve
  */
 /*************************************************************************************************/
 void MmdlLightLightnessLinearClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                        uint16_t appKeyIndex)
+                                   uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                  MMDL_LIGHT_LIGHTNESS_LINEAR_GET_OPCODE);
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                              MMDL_LIGHT_LIGHTNESS_LINEAR_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_LINEAR_GET_OPCODE);
+    meshPubMsgInfo_t pubMsgInfo =
+        MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_LINEAR_GET_OPCODE);
 
-  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
-  {
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
+        /* Fill in the msg info parameters */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Send message to the Mesh Core instantly */
-    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-  }
-  else
-  {
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+        /* Send message to the Mesh Core instantly */
+        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    } else {
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
 
-    /* Send message to the Mesh Core */
-    MeshPublishMessage(&pubMsgInfo, NULL, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshPublishMessage(&pubMsgInfo, NULL, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -916,18 +867,15 @@ void MmdlLightLightnessLinearClGet(meshElementId_t elementId, meshAddress_t serv
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightLightnessLinearClSet(meshElementId_t elementId, meshAddress_t serverAddr,
-                          uint8_t ttl, const mmdlLightLightnessLinearSetParam_t *pSetParam,
-                          uint16_t appKeyIndex)
+void MmdlLightLightnessLinearClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+                                   const mmdlLightLightnessLinearSetParam_t *pSetParam,
+                                   uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlLightLightnessLinearPublishSet(elementId, pSetParam, TRUE);
-  }
-  else
-  {
-    mmdlLightLightnessLinearSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlLightLightnessLinearPublishSet(elementId, pSetParam, TRUE);
+    } else {
+        mmdlLightLightnessLinearSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
+    }
 }
 
 /*************************************************************************************************/
@@ -944,17 +892,15 @@ void MmdlLightLightnessLinearClSet(meshElementId_t elementId, meshAddress_t serv
  */
 /*************************************************************************************************/
 void MmdlLightLightnessLinearClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr,
-                               uint8_t ttl, const mmdlLightLightnessLinearSetParam_t *pSetParam,
-                               uint16_t appKeyIndex)
+                                        uint8_t ttl,
+                                        const mmdlLightLightnessLinearSetParam_t *pSetParam,
+                                        uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlLightLightnessLinearPublishSet(elementId, pSetParam, FALSE);
-  }
-  else
-  {
-    mmdlLightLightnessLinearSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlLightLightnessLinearPublishSet(elementId, pSetParam, FALSE);
+    } else {
+        mmdlLightLightnessLinearSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
+    }
 }
 
 /*************************************************************************************************/
@@ -972,31 +918,28 @@ void MmdlLightLightnessLinearClSetNoAck(meshElementId_t elementId, meshAddress_t
 void MmdlLightLightnessLastClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                  uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                   MMDL_LIGHT_LIGHTNESS_LAST_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_LAST_GET_OPCODE);
 
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                             MMDL_LIGHT_LIGHTNESS_LAST_GET_OPCODE);
+    meshPubMsgInfo_t pubMsgInfo =
+        MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_LAST_GET_OPCODE);
 
-  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
-  {
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
+        /* Fill in the msg info parameters */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Send message to the Mesh Core instantly */
-    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-  }
-  else
-  {
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+        /* Send message to the Mesh Core instantly */
+        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    } else {
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
 
-    /* Send message to the Mesh Core */
-    MeshPublishMessage(&pubMsgInfo, NULL, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshPublishMessage(&pubMsgInfo, NULL, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -1014,30 +957,27 @@ void MmdlLightLightnessLastClGet(meshElementId_t elementId, meshAddress_t server
 void MmdlLightLightnessDefaultClGet(meshElementId_t elementId, meshAddress_t serverAddr,
                                     uint8_t ttl, uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                   MMDL_LIGHT_LIGHTNESS_DEFAULT_GET_OPCODE);
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                             MMDL_LIGHT_LIGHTNESS_DEFAULT_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_DEFAULT_GET_OPCODE);
+    meshPubMsgInfo_t pubMsgInfo =
+        MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_DEFAULT_GET_OPCODE);
 
-  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
-  {
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
+        /* Fill in the msg info parameters */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Send message to the Mesh Core instantly */
-    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-  }
-  else
-  {
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+        /* Send message to the Mesh Core instantly */
+        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    } else {
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
 
-    /* Send message to the Mesh Core */
-    MeshPublishMessage(&pubMsgInfo, NULL, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshPublishMessage(&pubMsgInfo, NULL, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -1058,14 +998,11 @@ void MmdlLightLightnessDefaultClSet(meshElementId_t elementId, meshAddress_t ser
                                     const mmdlLightLightnessDefaultSetParam_t *pSetParam,
                                     uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlLightLightnessDefaultPublishSet(elementId, pSetParam, TRUE);
-  }
-  else
-  {
-    mmdlLightLightnessDefaultSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlLightLightnessDefaultPublishSet(elementId, pSetParam, TRUE);
+    } else {
+        mmdlLightLightnessDefaultSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
+    }
 }
 
 /*************************************************************************************************/
@@ -1086,14 +1023,11 @@ void MmdlLightLightnessDefaultClSetNoAck(meshElementId_t elementId, meshAddress_
                                          const mmdlLightLightnessDefaultSetParam_t *pSetParam,
                                          uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlLightLightnessDefaultPublishSet(elementId, pSetParam, FALSE);
-  }
-  else
-  {
-    mmdlLightLightnessDefaultSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlLightLightnessDefaultPublishSet(elementId, pSetParam, FALSE);
+    } else {
+        mmdlLightLightnessDefaultSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
+    }
 }
 
 /*************************************************************************************************/
@@ -1108,33 +1042,30 @@ void MmdlLightLightnessDefaultClSetNoAck(meshElementId_t elementId, meshAddress_
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightLightnessRangeClGet(meshElementId_t elementId, meshAddress_t serverAddr,
-                                  uint8_t ttl, uint16_t appKeyIndex)
+void MmdlLightLightnessRangeClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+                                  uint16_t appKeyIndex)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                   MMDL_LIGHT_LIGHTNESS_RANGE_GET_OPCODE);
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID,
-                                             MMDL_LIGHT_LIGHTNESS_RANGE_GET_OPCODE);
+    meshMsgInfo_t msgInfo =
+        MESH_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_RANGE_GET_OPCODE);
+    meshPubMsgInfo_t pubMsgInfo =
+        MESH_PUB_MSG_INFO(MMDL_LIGHT_LIGHTNESS_CL_MDL_ID, MMDL_LIGHT_LIGHTNESS_RANGE_GET_OPCODE);
 
-  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
-  {
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
+        /* Fill in the msg info parameters */
+        msgInfo.elementId = elementId;
+        msgInfo.dstAddr = serverAddr;
+        msgInfo.ttl = ttl;
+        msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Send message to the Mesh Core instantly */
-    MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
-  }
-  else
-  {
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+        /* Send message to the Mesh Core instantly */
+        MeshSendMessage(&msgInfo, NULL, 0, 0, 0);
+    } else {
+        /* Fill in the msg info parameters */
+        pubMsgInfo.elementId = elementId;
 
-    /* Send message to the Mesh Core */
-    MeshPublishMessage(&pubMsgInfo, NULL, 0);
-  }
+        /* Send message to the Mesh Core */
+        MeshPublishMessage(&pubMsgInfo, NULL, 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -1154,14 +1085,11 @@ void MmdlLightLightnessRangeClSet(meshElementId_t elementId, meshAddress_t serve
                                   const mmdlLightLightnessRangeSetParam_t *pSetParam,
                                   uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlLightLightnessRangePublishSet(elementId, pSetParam, TRUE);
-  }
-  else
-  {
-    mmdlLightLightnessRangeSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlLightLightnessRangePublishSet(elementId, pSetParam, TRUE);
+    } else {
+        mmdlLightLightnessRangeSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, TRUE);
+    }
 }
 
 /*************************************************************************************************/
@@ -1182,14 +1110,11 @@ void MmdlLightLightnessRangeClSetNoAck(meshElementId_t elementId, meshAddress_t 
                                        const mmdlLightLightnessRangeSetParam_t *pSetParam,
                                        uint16_t appKeyIndex)
 {
-  if (serverAddr == MMDL_USE_PUBLICATION_ADDR)
-  {
-    mmdlLightLightnessRangePublishSet(elementId, pSetParam, FALSE);
-  }
-  else
-  {
-    mmdlLightLightnessRangeSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
-  }
+    if (serverAddr == MMDL_USE_PUBLICATION_ADDR) {
+        mmdlLightLightnessRangePublishSet(elementId, pSetParam, FALSE);
+    } else {
+        mmdlLightLightnessRangeSet(elementId, serverAddr, ttl, pSetParam, appKeyIndex, FALSE);
+    }
 }
 
 /*************************************************************************************************/
@@ -1203,9 +1128,8 @@ void MmdlLightLightnessRangeClSetNoAck(meshElementId_t elementId, meshAddress_t 
 /*************************************************************************************************/
 void MmdlLightLightnessClRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback */
-  if (recvCback != NULL)
-  {
-    lightLightnessClCb.recvCback = recvCback;
-  }
+    /* Store valid callback */
+    if (recvCback != NULL) {
+        lightLightnessClCb.recvCback = recvCback;
+    }
 }

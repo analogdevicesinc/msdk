@@ -52,7 +52,7 @@
 /** Number composite.
  * @ingroup UCL_FPA
  */
-#define UCL_ISNOT_PRIME  UCL_FALSE
+#define UCL_ISNOT_PRIME UCL_FALSE
 
 #if __mips16e
 #define __nomips16__ __attribute__((nomips16))

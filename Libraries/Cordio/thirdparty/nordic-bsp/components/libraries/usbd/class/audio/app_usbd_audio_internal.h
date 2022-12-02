@@ -73,36 +73,38 @@ enum app_usbd_audio_user_event_e;
  * @param[in] event     User event.
  *
  */
-typedef void (*app_usbd_audio_user_ev_handler_t)(app_usbd_class_inst_t const *  p_inst,
+typedef void (*app_usbd_audio_user_ev_handler_t)(app_usbd_class_inst_t const *p_inst,
                                                  enum app_usbd_audio_user_event_e event);
-
 
 /**
  * @brief Audio subclass descriptor.
  */
 
 typedef struct {
-   size_t                size;
-   uint8_t               type;
-   uint8_t const * const p_data;
+    size_t size;
+    uint8_t type;
+    uint8_t const *const p_data;
 } app_usbd_audio_subclass_desc_t;
 
 /**
  * @brief Audio class part of class instance data.
  */
 typedef struct {
+    app_usbd_audio_subclass_desc_t const *const p_format_dsc; //!< Audio class Format descriptor
+    app_usbd_audio_subclass_desc_t const
+        *const p_input_dsc; //!< Audio class Input Terminal descriptor
+    app_usbd_audio_subclass_desc_t const
+        *const p_output_dsc; //!< Audio class Output Terminal descriptor
+    app_usbd_audio_subclass_desc_t const
+        *const p_feature_dsc; //!< Audio class Feature Unit descriptor
 
-    app_usbd_audio_subclass_desc_t const * const p_format_dsc;  //!< Audio class Format descriptor
-    app_usbd_audio_subclass_desc_t const * const p_input_dsc;   //!< Audio class Input Terminal descriptor
-    app_usbd_audio_subclass_desc_t const * const p_output_dsc;  //!< Audio class Output Terminal descriptor
-    app_usbd_audio_subclass_desc_t const * const p_feature_dsc; //!< Audio class Feature Unit descriptor
+    uint8_t delay; //!< Streaming delay
+    uint16_t format; //!< FormatTag (@ref app_usbd_audio_as_iface_format_tag_t)
+    uint16_t ep_size; //!< Endpoint size
+    uint8_t terminal_link; //!< Terminal link in AS Interface Descriptor
 
-    uint8_t  delay;         //!< Streaming delay
-    uint16_t format;        //!< FormatTag (@ref app_usbd_audio_as_iface_format_tag_t)
-    uint16_t ep_size;       //!< Endpoint size
-    uint8_t  terminal_link; //!< Terminal link in AS Interface Descriptor
-
-    app_usbd_audio_subclass_t type_streaming;   //!< Streaming type MIDISTREAMING/AUDIOSTREAMING (@ref app_usbd_audio_subclass_t)
+    app_usbd_audio_subclass_t
+        type_streaming; //!< Streaming type MIDISTREAMING/AUDIOSTREAMING (@ref app_usbd_audio_subclass_t)
 
     app_usbd_audio_user_ev_handler_t user_ev_handler; //!< User event handler
 } app_usbd_audio_inst_t;
@@ -111,39 +113,37 @@ typedef struct {
  * @brief Audio class request target.
  */
 typedef enum {
-    APP_USBD_AUDIO_CLASS_REQ_IN,  /**< Audio class request IN              */
+    APP_USBD_AUDIO_CLASS_REQ_IN, /**< Audio class request IN              */
     APP_USBD_AUDIO_CLASS_REQ_OUT, /**< Audio class request OUT             */
-    APP_USBD_AUDIO_EP_REQ_IN,     /**< Audio class endpoint request IN     */
-    APP_USBD_AUDIO_EP_REQ_OUT,    /**< Audio class endpoint request OUT    */
+    APP_USBD_AUDIO_EP_REQ_IN, /**< Audio class endpoint request IN     */
+    APP_USBD_AUDIO_EP_REQ_OUT, /**< Audio class endpoint request OUT    */
 } app_usbd_audio_class_req_target_t;
 
 /**
  * @brief Audio class specific request handled via control endpoint.
  */
 typedef struct {
-    app_usbd_audio_class_req_target_t req_target;   //!< Request target
-    app_usbd_audio_req_type_t         req_type;     //!< Request type
+    app_usbd_audio_class_req_target_t req_target; //!< Request target
+    app_usbd_audio_req_type_t req_type; //!< Request type
 
-    uint8_t  control;       //!< Request control field
-    uint8_t  channel;       //!< Channel ID
-    uint8_t  interface;     //!< Interface ID
-    uint8_t  entity;        //!< Entity ID
-    uint16_t length;        //!< Request payload length
+    uint8_t control; //!< Request control field
+    uint8_t channel; //!< Channel ID
+    uint8_t interface; //!< Interface ID
+    uint8_t entity; //!< Entity ID
+    uint16_t length; //!< Request payload length
 
-    uint8_t payload[64];    //!< Request payload
+    uint8_t payload[64]; //!< Request payload
 } app_usbd_audio_req_t;
-
 
 /**
  * @brief Audio class context.
  *
  */
 typedef struct {
-    app_usbd_audio_req_t                request;        //!< Audio class request
-    bool                                streaming;      //!< Streaming flag
-    app_usbd_sof_interrupt_handler_t    sof_handler;    //!< SOF event handler
+    app_usbd_audio_req_t request; //!< Audio class request
+    bool streaming; //!< Streaming flag
+    app_usbd_sof_interrupt_handler_t sof_handler; //!< SOF event handler
 } app_usbd_audio_ctx_t;
-
 
 /**
  * @brief Audio class configuration macro.
@@ -153,9 +153,7 @@ typedef struct {
  * @param iface_control     Interface number of audio control.
  * @param iface_stream      Interface number of audio stream.
  */
-#define APP_USBD_AUDIO_CONFIG(iface_control, iface_stream)  \
-        ((iface_control),                                   \
-         (iface_stream, 0))
+#define APP_USBD_AUDIO_CONFIG(iface_control, iface_stream) ((iface_control), (iface_stream, 0))
 
 /**
  * @brief Only IN audio stream configuration.
@@ -163,9 +161,8 @@ typedef struct {
  * @param iface_control     Interface number of audio control.
  * @param iface_stream_in   Interface number of audio stream on IN endpoint.
  */
-#define APP_USBD_AUDIO_CONFIG_IN(iface_control, iface_stream_in)  \
-        ((iface_control), (iface_stream_in, NRF_DRV_USBD_EPIN8))
-
+#define APP_USBD_AUDIO_CONFIG_IN(iface_control, iface_stream_in) \
+    ((iface_control), (iface_stream_in, NRF_DRV_USBD_EPIN8))
 
 /**
  * @brief Only OUT audio stream configuration.
@@ -173,8 +170,8 @@ typedef struct {
  * @param iface_control     Interface number of audio control.
  * @param iface_stream_out  Interface number of audio stream on OUT endpoint.
  */
-#define APP_USBD_AUDIO_CONFIG_OUT(iface_control, iface_stream_out)  \
-        ((iface_control), (iface_stream_out, NRF_DRV_USBD_EPOUT8))
+#define APP_USBD_AUDIO_CONFIG_OUT(iface_control, iface_stream_out) \
+    ((iface_control), (iface_stream_out, NRF_DRV_USBD_EPOUT8))
 
 /**
  * @brief Specific class constant data for audio class.
@@ -197,28 +194,19 @@ typedef struct {
  * @param type_str                  Streaming type MIDISTREAMING/AUDIOSTREAMING.
  * @param terminal                  Terminal link in AS Interface Descriptor.
  */
- #define APP_USBD_AUDIO_INST_CONFIG(user_event_handler,             \
-                                    format_descriptor,              \
-                                    input_descriptor,               \
-                                    output_descriptor,              \
-                                    feature_descriptor,             \
-                                    dlay,                           \
-                                    frmat,                          \
-                                    ep_siz,                         \
-                                    type_str,                       \
-                                    terminal)                       \
-    .inst = {                                                       \
-         .user_ev_handler = user_event_handler,                     \
-         .p_format_dsc    = format_descriptor,                      \
-         .p_input_dsc     = input_descriptor,                       \
-         .p_output_dsc    = output_descriptor,                      \
-         .p_feature_dsc   = feature_descriptor,                     \
-         .delay           = dlay,                                   \
-         .format          = frmat,                                  \
-         .ep_size         = ep_siz,                                 \
-         .type_streaming  = type_str,                               \
-         .terminal_link   = terminal                                \
-    }
+#define APP_USBD_AUDIO_INST_CONFIG(user_event_handler, format_descriptor, input_descriptor,    \
+                                   output_descriptor, feature_descriptor, dlay, frmat, ep_siz, \
+                                   type_str, terminal)                                         \
+    .inst = { .user_ev_handler = user_event_handler,                                           \
+              .p_format_dsc = format_descriptor,                                               \
+              .p_input_dsc = input_descriptor,                                                 \
+              .p_output_dsc = output_descriptor,                                               \
+              .p_feature_dsc = feature_descriptor,                                             \
+              .delay = dlay,                                                                   \
+              .format = frmat,                                                                 \
+              .ep_size = ep_siz,                                                               \
+              .type_streaming = type_str,                                                      \
+              .terminal_link = terminal }
 
 /**
  * @brief Specific class data for audio class.
@@ -227,18 +215,15 @@ typedef struct {
  */
 #define APP_USBD_AUDIO_DATA_SPECIFIC_DEC app_usbd_audio_ctx_t ctx;
 
-
 /**
  * @brief Audio class descriptors config macro.
  *
  * @param interface_number Interface number.
  * @param ...              Extracted endpoint list.
  */
-#define APP_USBD_AUDIO_DSC_CONFIG(interface_number, ...) {              \
-    APP_USBD_AUDIO_INTERFACE_DSC(interface_number,                      \
-                                 0,                                     \
-                                 0,                                     \
-                                 APP_USBD_AUDIO_SUBCLASS_AUDIOCONTROL)  \
+#define APP_USBD_AUDIO_DSC_CONFIG(interface_number, ...)                                           \
+    {                                                                                              \
+        APP_USBD_AUDIO_INTERFACE_DSC(interface_number, 0, 0, APP_USBD_AUDIO_SUBCLASS_AUDIOCONTROL) \
     }
 
 /**
@@ -251,38 +236,17 @@ extern const app_usbd_class_methods_t app_usbd_audio_class_methods;
  * @brief Global definition of @ref app_usbd_audio_t class
  *
  */
- #define APP_USBD_AUDIO_GLOBAL_DEF_INTERNAL(instance_name,          \
-                                    interfaces_configs,             \
-                                    user_ev_handler,                \
-                                    format_descriptor,              \
-                                    input_descriptor,               \
-                                    output_descriptor,              \
-                                    feature_descriptor,             \
-                                    delay,                          \
-                                    format,                         \
-                                    ep_size,                        \
-                                    type_str,                       \
-                                    terminal_link)                  \
-    APP_USBD_CLASS_INST_GLOBAL_DEF(                                 \
-        instance_name,                                              \
-        app_usbd_audio,                                             \
-        &app_usbd_audio_class_methods,                              \
-        interfaces_configs,                                         \
-        (APP_USBD_AUDIO_INST_CONFIG(user_ev_handler,                \
-                                    format_descriptor,              \
-                                    input_descriptor,               \
-                                    output_descriptor,              \
-                                    feature_descriptor,             \
-                                    delay,                          \
-                                    format,                         \
-                                    ep_size,                        \
-                                    type_str,                       \
-                                    terminal_link))                 \
-    )
-
+#define APP_USBD_AUDIO_GLOBAL_DEF_INTERNAL(instance_name, interfaces_configs, user_ev_handler,     \
+                                           format_descriptor, input_descriptor, output_descriptor, \
+                                           feature_descriptor, delay, format, ep_size, type_str,   \
+                                           terminal_link)                                          \
+    APP_USBD_CLASS_INST_GLOBAL_DEF(                                                                \
+        instance_name, app_usbd_audio, &app_usbd_audio_class_methods, interfaces_configs,          \
+        (APP_USBD_AUDIO_INST_CONFIG(user_ev_handler, format_descriptor, input_descriptor,          \
+                                    output_descriptor, feature_descriptor, delay, format, ep_size, \
+                                    type_str, terminal_link)))
 
 /** @} */
-
 
 #ifdef __cplusplus
 }

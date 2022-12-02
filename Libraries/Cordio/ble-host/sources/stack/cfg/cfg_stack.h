@@ -24,7 +24,6 @@
 #ifndef CFG_STACK_H
 #define CFG_STACK_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -37,9 +36,9 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Stack release version label */
-#define STACK_VERSION         ((const char *)"Packetcraft Host v5.2\n")
+#define STACK_VERSION ((const char *)"Packetcraft Host v5.2\n")
 /*! \brief Stack release version number */
-#define STACK_VER_NUM         1366
+#define STACK_VER_NUM 1366
 
 /**************************************************************************************************
   HCI
@@ -49,8 +48,8 @@ extern "C" {
  *
  */
 /**@{*/
-#define HCI_VS_GENERIC        0
-#define HCI_VS_EMM            1
+#define HCI_VS_GENERIC 0
+#define HCI_VS_EMM 1
 
 /*! \brief Vendor specific target configuration */
 #ifndef HCI_VS_TARGET
@@ -64,7 +63,7 @@ extern "C" {
 /**@{*/
 #ifndef HCI_TX_DATA_TAILROOM
 /*! \brief Tx data tailroom. */
-#define HCI_TX_DATA_TAILROOM  0
+#define HCI_TX_DATA_TAILROOM 0
 #endif
 /**@}*/
 
@@ -78,47 +77,47 @@ extern "C" {
 /**@{*/
 /*! \brief Maximum number of connections */
 #ifndef DM_CONN_MAX
-#define DM_CONN_MAX              3
+#define DM_CONN_MAX 3
 #endif
 
 /*! \brief Maximum number of periodic advertising synchronizations */
 #ifndef DM_SYNC_MAX
-#define DM_SYNC_MAX              3
+#define DM_SYNC_MAX 3
 #endif
 
 /*! \brief Number of supported advertising sets: must be set to 1 for legacy advertising */
 #ifndef DM_NUM_ADV_SETS
-#define DM_NUM_ADV_SETS          1
+#define DM_NUM_ADV_SETS 1
 #endif
 
 /*! \brief Number of scanner and initiator PHYs (LE 1M, LE 2M and LE Coded): must be set to 1 for
     legacy scanner and initiator */
 #ifndef DM_NUM_PHYS
-#define DM_NUM_PHYS              1
+#define DM_NUM_PHYS 1
 #endif
 
 /*! \brief Maximum number of connected isochronous groups */
 #ifndef DM_CIG_MAX
-#define DM_CIG_MAX              2
+#define DM_CIG_MAX 2
 #endif
 
 /*! \brief Maximum number of connected isochronous streams, it is shared by CIGs */
 #ifndef DM_CIS_MAX
-#define DM_CIS_MAX              6
+#define DM_CIS_MAX 6
 #endif
 
 /*! \brief Maximum number of broadcast isochronous groups */
 #ifndef DM_BIG_MAX
-#define DM_BIG_MAX              2
+#define DM_BIG_MAX 2
 #endif
 
 /*! \brief Maximum number of broadcast isochronous streams, it is shared by BIGs */
 #ifndef DM_BIS_MAX
-#define DM_BIS_MAX              6
+#define DM_BIS_MAX 6
 #endif
 
 /*! \brief Maximum number of isochronous data paths, it is shared by CISes and BISes */
-#define DM_ISO_DATA_PATH_MAX    (DM_CIS_MAX + DM_BIS_MAX)
+#define DM_ISO_DATA_PATH_MAX (DM_CIS_MAX + DM_BIS_MAX)
 
 /**@}*/
 
@@ -132,12 +131,12 @@ extern "C" {
 /**@{*/
 /*! \brief Maximum number of connection oriented channels */
 #ifndef L2C_COC_CHAN_MAX
-#define L2C_COC_CHAN_MAX         8
+#define L2C_COC_CHAN_MAX 8
 #endif
 
 /*! \brief Maximum number of connection oriented channel registered clients */
 #ifndef L2C_COC_REG_MAX
-#define L2C_COC_REG_MAX          4
+#define L2C_COC_REG_MAX 4
 #endif
 /**@}*/
 
@@ -151,17 +150,17 @@ extern "C" {
 /**@{*/
 /*! \brief Maximum number of simultaneous ATT write commands */
 #ifndef ATT_NUM_SIMUL_WRITE_CMD
-#define ATT_NUM_SIMUL_WRITE_CMD  1
+#define ATT_NUM_SIMUL_WRITE_CMD 1
 #endif
 
 /*! \brief Maximum number of simultaneous ATT notifications */
 #ifndef ATT_NUM_SIMUL_NTF
-#define ATT_NUM_SIMUL_NTF        1
+#define ATT_NUM_SIMUL_NTF 1
 #endif
 
 /* Maximum number of EATT channels per DM connection */
 #ifndef EATT_CONN_CHAN_MAX
-#define EATT_CONN_CHAN_MAX       2
+#define EATT_CONN_CHAN_MAX 2
 #endif
 
 /**@}*/
@@ -176,7 +175,7 @@ extern "C" {
 /**@{*/
 /*! Max number of devices in the database */
 #ifndef SMP_DB_MAX_DEVICES
-#define SMP_DB_MAX_DEVICES       3
+#define SMP_DB_MAX_DEVICES 3
 #endif
 /**@}*/
 
@@ -191,7 +190,7 @@ extern "C" {
 /*************************************************************************************************/
 void StackGetVersionNumber(const char **pVersion);
 
-/*! \} */    /* STACK_INIT */
+/*! \} */ /* STACK_INIT */
 
 #ifdef __cplusplus
 };

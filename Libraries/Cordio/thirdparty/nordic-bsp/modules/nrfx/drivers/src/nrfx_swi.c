@@ -47,13 +47,11 @@
 #define NRFX_LOG_MODULE SWI
 #include <nrfx_log.h>
 
-
 // NRFX_SWI_RESERVED_MASK - SWIs reserved for use by external modules.
 #if NRFX_CHECK(NRFX_PWM_NRF52_ANOMALY_109_WORKAROUND_ENABLED)
-#define NRFX_SWI_RESERVED_MASK  ((NRFX_SWI_USED) | \
-                                 (1u << NRFX_PWM_NRF52_ANOMALY_109_EGU_INSTANCE))
+#define NRFX_SWI_RESERVED_MASK ((NRFX_SWI_USED) | (1u << NRFX_PWM_NRF52_ANOMALY_109_EGU_INSTANCE))
 #else
-#define NRFX_SWI_RESERVED_MASK  (NRFX_SWI_USED)
+#define NRFX_SWI_RESERVED_MASK (NRFX_SWI_USED)
 #endif
 
 // NRFX_SWI_DISABLED_MASK - SWIs excluded from use in <nrfx_config.h>.
@@ -87,12 +85,9 @@
 #else
 #define NRFX_SWI5_DISABLED_MASK 0u
 #endif
-#define NRFX_SWI_DISABLED_MASK  (NRFX_SWI0_DISABLED_MASK | \
-                                 NRFX_SWI1_DISABLED_MASK | \
-                                 NRFX_SWI2_DISABLED_MASK | \
-                                 NRFX_SWI3_DISABLED_MASK | \
-                                 NRFX_SWI4_DISABLED_MASK | \
-                                 NRFX_SWI5_DISABLED_MASK)
+#define NRFX_SWI_DISABLED_MASK                                                     \
+    (NRFX_SWI0_DISABLED_MASK | NRFX_SWI1_DISABLED_MASK | NRFX_SWI2_DISABLED_MASK | \
+     NRFX_SWI3_DISABLED_MASK | NRFX_SWI4_DISABLED_MASK | NRFX_SWI5_DISABLED_MASK)
 
 #if (NRFX_SWI_RESERVED_MASK & NRFX_SWI_DISABLED_MASK)
 #error "A reserved SWI configured to be disabled. Check <nrfx_config.h> and NRFX_SWI_USED."
@@ -101,46 +96,48 @@
 // NRFX_SWI_AVAILABLE_MASK - SWIs available for this module, i.e. present
 // in the hardware and neither reserved by external modules nor disabled
 // in <nrfx_config.h>.
-#define NRFX_SWI_PRESENT_MASK   ((1u << (SWI_COUNT)) - 1u)
-#define NRFX_SWI_AVAILABLE_MASK (NRFX_SWI_PRESENT_MASK &    \
-                                 ~(NRFX_SWI_RESERVED_MASK | \
-                                   NRFX_SWI_DISABLED_MASK))
+#define NRFX_SWI_PRESENT_MASK ((1u << (SWI_COUNT)) - 1u)
+#define NRFX_SWI_AVAILABLE_MASK \
+    (NRFX_SWI_PRESENT_MASK & ~(NRFX_SWI_RESERVED_MASK | NRFX_SWI_DISABLED_MASK))
 
 #if (NRFX_SWI_AVAILABLE_MASK == 0)
 #error "No available SWI instances. Check <nrfx_config.h> and NRFX_SWI_USED."
 #endif
 
-#define NRFX_SWI_IS_AVAILABLE(idx)  ((NRFX_SWI_AVAILABLE_MASK >> (idx)) & 1u)
+#define NRFX_SWI_IS_AVAILABLE(idx) ((NRFX_SWI_AVAILABLE_MASK >> (idx)) & 1u)
 
-#define NRFX_SWI_FIRST  (NRFX_SWI_IS_AVAILABLE(0) ? 0u : \
-                        (NRFX_SWI_IS_AVAILABLE(1) ? 1u : \
-                        (NRFX_SWI_IS_AVAILABLE(2) ? 2u : \
-                        (NRFX_SWI_IS_AVAILABLE(3) ? 3u : \
-                        (NRFX_SWI_IS_AVAILABLE(4) ? 4u : \
-                                                    5u)))))
-#define NRFX_SWI_LAST   (NRFX_SWI_IS_AVAILABLE(5) ? 5u : \
-                        (NRFX_SWI_IS_AVAILABLE(4) ? 4u : \
-                        (NRFX_SWI_IS_AVAILABLE(3) ? 3u : \
-                        (NRFX_SWI_IS_AVAILABLE(2) ? 2u : \
-                        (NRFX_SWI_IS_AVAILABLE(1) ? 1u : \
-                                                    0u)))))
+#define NRFX_SWI_FIRST                    \
+    (NRFX_SWI_IS_AVAILABLE(0) ?           \
+         0u :                             \
+         (NRFX_SWI_IS_AVAILABLE(1) ?      \
+              1u :                        \
+              (NRFX_SWI_IS_AVAILABLE(2) ? \
+                   2u :                   \
+                   (NRFX_SWI_IS_AVAILABLE(3) ? 3u : (NRFX_SWI_IS_AVAILABLE(4) ? 4u : 5u)))))
+#define NRFX_SWI_LAST                     \
+    (NRFX_SWI_IS_AVAILABLE(5) ?           \
+         5u :                             \
+         (NRFX_SWI_IS_AVAILABLE(4) ?      \
+              4u :                        \
+              (NRFX_SWI_IS_AVAILABLE(3) ? \
+                   3u :                   \
+                   (NRFX_SWI_IS_AVAILABLE(2) ? 2u : (NRFX_SWI_IS_AVAILABLE(1) ? 1u : 0u)))))
 
 // NRFX_SWI_EGU_COUNT - number of EGU instances to be used by this module
 // (note - if EGU is not present, EGU_COUNT is not defined).
 #if NRFX_CHECK(NRFX_EGU_ENABLED)
-#define NRFX_SWI_EGU_COUNT  EGU_COUNT
+#define NRFX_SWI_EGU_COUNT EGU_COUNT
 #else
-#define NRFX_SWI_EGU_COUNT  0
+#define NRFX_SWI_EGU_COUNT 0
 #endif
 
 // These flags are needed only for SWIs that have no corresponding EGU unit
 // (in EGU such flags are available in hardware).
 #if (NRFX_SWI_EGU_COUNT < SWI_COUNT)
-static nrfx_swi_flags_t   m_swi_flags[SWI_COUNT - NRFX_SWI_EGU_COUNT];
+static nrfx_swi_flags_t m_swi_flags[SWI_COUNT - NRFX_SWI_EGU_COUNT];
 #endif
 static nrfx_swi_handler_t m_swi_handlers[SWI_COUNT];
-static uint8_t            m_swi_allocated_mask;
-
+static uint8_t m_swi_allocated_mask;
 
 static void swi_mark_allocated(nrfx_swi_t swi)
 {
@@ -176,14 +173,12 @@ static IRQn_Type swi_irq_number_get(nrfx_swi_t swi)
 static void swi_int_enable(nrfx_swi_t swi)
 {
 #if NRFX_SWI_EGU_COUNT
-    if (swi < NRFX_SWI_EGU_COUNT)
-    {
-        NRF_EGU_Type * p_egu = nrfx_swi_egu_instance_get(swi);
+    if (swi < NRFX_SWI_EGU_COUNT) {
+        NRF_EGU_Type *p_egu = nrfx_swi_egu_instance_get(swi);
         NRFX_ASSERT(p_egu != NULL);
         nrf_egu_int_enable(p_egu, NRF_EGU_INT_ALL);
 
-        if (m_swi_handlers[swi] == NULL)
-        {
+        if (m_swi_handlers[swi] == NULL) {
             return;
         }
     }
@@ -197,16 +192,14 @@ static void swi_int_disable(nrfx_swi_t swi)
     NRFX_IRQ_DISABLE(swi_irq_number_get(swi));
 
 #if NRFX_SWI_EGU_COUNT
-    if (swi < NRFX_SWI_EGU_COUNT)
-    {
+    if (swi < NRFX_SWI_EGU_COUNT) {
         nrf_egu_int_disable(nrfx_swi_egu_instance_get(swi), NRF_EGU_INT_ALL);
     }
 #endif
 }
 
-static void swi_handler_setup(nrfx_swi_t         swi,
-                              nrfx_swi_handler_t event_handler,
-                              uint32_t           irq_priority)
+static void swi_handler_setup(nrfx_swi_t swi, nrfx_swi_handler_t event_handler,
+                              uint32_t irq_priority)
 {
     m_swi_handlers[swi] = event_handler;
     NRFX_IRQ_PRIORITY_SET(swi_irq_number_get(swi), irq_priority);
@@ -220,29 +213,24 @@ static void swi_deallocate(nrfx_swi_t swi)
     swi_mark_unallocated(swi);
 }
 
-nrfx_err_t nrfx_swi_alloc(nrfx_swi_t *       p_swi,
-                          nrfx_swi_handler_t event_handler,
-                          uint32_t           irq_priority)
+nrfx_err_t nrfx_swi_alloc(nrfx_swi_t *p_swi, nrfx_swi_handler_t event_handler,
+                          uint32_t irq_priority)
 {
     NRFX_ASSERT(p_swi != NULL);
 
     nrfx_err_t err_code;
 
-    for (nrfx_swi_t swi = NRFX_SWI_FIRST; swi <= NRFX_SWI_LAST; ++swi)
-    {
-        if (swi_is_available(swi))
-        {
+    for (nrfx_swi_t swi = NRFX_SWI_FIRST; swi <= NRFX_SWI_LAST; ++swi) {
+        if (swi_is_available(swi)) {
             bool allocated = false;
             NRFX_CRITICAL_SECTION_ENTER();
-            if (!swi_is_allocated(swi))
-            {
+            if (!swi_is_allocated(swi)) {
                 swi_mark_allocated(swi);
                 allocated = true;
             }
             NRFX_CRITICAL_SECTION_EXIT();
 
-            if (allocated)
-            {
+            if (allocated) {
                 swi_handler_setup(swi, event_handler, irq_priority);
 
                 *p_swi = swi;
@@ -274,7 +262,7 @@ void nrfx_swi_int_enable(nrfx_swi_t swi)
     swi_int_enable(swi);
 }
 
-void nrfx_swi_free(nrfx_swi_t * p_swi)
+void nrfx_swi_free(nrfx_swi_t *p_swi)
 {
     NRFX_ASSERT(p_swi != NULL);
     nrfx_swi_t swi = *p_swi;
@@ -287,10 +275,8 @@ void nrfx_swi_free(nrfx_swi_t * p_swi)
 
 void nrfx_swi_all_free(void)
 {
-    for (nrfx_swi_t swi = NRFX_SWI_FIRST; swi <= NRFX_SWI_LAST; ++swi)
-    {
-        if (swi_is_allocated(swi))
-        {
+    for (nrfx_swi_t swi = NRFX_SWI_FIRST; swi <= NRFX_SWI_LAST; ++swi) {
+        if (swi_is_allocated(swi)) {
             swi_deallocate(swi);
         }
     }
@@ -302,18 +288,15 @@ void nrfx_swi_trigger(nrfx_swi_t swi, uint8_t flag_number)
 
 #if NRFX_SWI_EGU_COUNT
 
-    NRF_EGU_Type * p_egu = nrfx_swi_egu_instance_get(swi);
+    NRF_EGU_Type *p_egu = nrfx_swi_egu_instance_get(swi);
 #if (NRFX_SWI_EGU_COUNT < SWI_COUNT)
-    if (p_egu == NULL)
-    {
+    if (p_egu == NULL) {
         m_swi_flags[swi - NRFX_SWI_EGU_COUNT] |= (1 << flag_number);
         NRFX_IRQ_PENDING_SET(swi_irq_number_get(swi));
-    }
-    else
+    } else
 #endif // (NRFX_SWI_EGU_COUNT < SWI_COUNT)
     {
-        nrf_egu_task_trigger(p_egu,
-            nrf_egu_task_trigger_get(p_egu, flag_number));
+        nrf_egu_task_trigger(p_egu, nrf_egu_task_trigger_get(p_egu, flag_number));
     }
 
 #else // -> #if !NRFX_SWI_EGU_COUNT
@@ -334,15 +317,13 @@ static void egu_irq_handler(nrfx_swi_t swi, uint8_t egu_channel_count)
     nrfx_swi_handler_t handler = m_swi_handlers[swi];
     NRFX_ASSERT(handler != NULL);
 
-    NRF_EGU_Type * p_egu = nrfx_swi_egu_instance_get(swi);
+    NRF_EGU_Type *p_egu = nrfx_swi_egu_instance_get(swi);
     NRFX_ASSERT(p_egu != NULL);
 
     nrfx_swi_flags_t flags = 0;
-    for (uint8_t i = 0; i < egu_channel_count; ++i)
-    {
+    for (uint8_t i = 0; i < egu_channel_count; ++i) {
         nrf_egu_event_t egu_event = nrf_egu_event_triggered_get(p_egu, i);
-        if (nrf_egu_event_check(p_egu, egu_event))
-        {
+        if (nrf_egu_event_check(p_egu, egu_event)) {
             flags |= (1u << i);
             nrf_egu_event_clear(p_egu, egu_event);
         }
@@ -369,7 +350,6 @@ static void swi_irq_handler(nrfx_swi_t swi)
 }
 #endif // (NRFX_SWI_EGU_COUNT < SWI_COUNT)
 
-
 #if NRFX_SWI_IS_AVAILABLE(0)
 void nrfx_swi_0_irq_handler(void)
 {
@@ -392,7 +372,7 @@ void nrfx_swi_1_irq_handler(void)
 }
 #endif // NRFX_SWI_IS_AVAILABLE(1)
 
-#if  NRFX_SWI_IS_AVAILABLE(2)
+#if NRFX_SWI_IS_AVAILABLE(2)
 void nrfx_swi_2_irq_handler(void)
 {
 #if (NRFX_SWI_EGU_COUNT > 2)

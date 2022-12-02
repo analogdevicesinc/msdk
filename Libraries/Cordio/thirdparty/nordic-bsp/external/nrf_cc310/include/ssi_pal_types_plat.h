@@ -32,7 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 /*! @file
 @brief This file contains basic type definitions that are platform dependent.
 */
@@ -44,12 +43,12 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef uintptr_t       SaSiVirtAddr_t;
-typedef uint32_t            SaSiBool_t;
-typedef uint32_t            SaSiStatus;
+typedef uintptr_t SaSiVirtAddr_t;
+typedef uint32_t SaSiBool_t;
+typedef uint32_t SaSiStatus;
 
-#define SaSiError_t         SaSiStatus
-#define SASI_INFINITE         0xFFFFFFFF
+#define SaSiError_t SaSiStatus
+#define SASI_INFINITE 0xFFFFFFFF
 
 #define CEXPORT_C
 #define CIMPORT_C

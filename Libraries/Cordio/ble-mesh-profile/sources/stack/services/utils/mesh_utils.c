@@ -45,14 +45,13 @@
 /*************************************************************************************************/
 uint8_t MeshUtilsGetLogFieldVal(uint16_t val)
 {
-  uint16_t i = val;
-  uint8_t  n = 0;
+    uint16_t i = val;
+    uint8_t n = 0;
 
-  while (i)
-  {
-    n++;
-    i >>= 1;
-  }
+    while (i) {
+        n++;
+        i >>= 1;
+    }
 
-  return n;
+    return n;
 }

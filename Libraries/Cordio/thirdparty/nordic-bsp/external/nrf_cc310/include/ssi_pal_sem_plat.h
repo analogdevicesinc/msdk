@@ -32,17 +32,11 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
-
 #ifndef _SSI_PAL_SEM_INT__H
 #define _SSI_PAL_SEM_INT__H
 
-
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 #include "ssi_pal_types.h"
 /**
@@ -55,8 +49,6 @@ extern "C"
 */
 
 typedef int DX_PAL_SEM;
-
-
 
 /*----------------------------
       PUBLIC FUNCTIONS
@@ -71,9 +63,9 @@ typedef int DX_PAL_SEM;
  *
  * @return The return values is according to operating system return values.
  */
-SaSiError_t _SaSi_PalSemCreate( DX_PAL_SEM *aSemId, uint32_t aInitialVal );
+SaSiError_t _SaSi_PalSemCreate(DX_PAL_SEM *aSemId, uint32_t aInitialVal);
 
-#define _SaSi_PalSemCreate(aSemId,aInitialVal) SASI_SUCCESS
+#define _SaSi_PalSemCreate(aSemId, aInitialVal) SASI_SUCCESS
 /**
  * @brief This function purpose is to delete a semaphore
  *
@@ -82,9 +74,9 @@ SaSiError_t _SaSi_PalSemCreate( DX_PAL_SEM *aSemId, uint32_t aInitialVal );
  *
  * @return The return values is according to operating system return values.
  */
-SaSiError_t _SaSi_PalSemDelete( DX_PAL_SEM *aSemId );
+SaSiError_t _SaSi_PalSemDelete(DX_PAL_SEM *aSemId);
 
-#define _SaSi_PalSemDelete( aSemId ) SASI_SUCCESS
+#define _SaSi_PalSemDelete(aSemId) SASI_SUCCESS
 /**
  * @brief This function purpose is to Wait for semaphore with aTimeOut. aTimeOut is
  *        specified in milliseconds.
@@ -110,11 +102,8 @@ SaSiError_t _SaSi_PalSemGive(DX_PAL_SEM aSemId);
 
 #define _SaSi_PalSemGive(aSemId) SASI_SUCCESS
 
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-
-

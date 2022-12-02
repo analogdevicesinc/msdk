@@ -68,8 +68,8 @@ static PyObject *quantize_py(PyObject *m, PyObject *args)
     float *scf;
     int lfcb_idx, hfcb_idx;
     int shape_idx, gain_idx;
-    float (*yn)[16];
-    int (*y)[16];
+    float(*yn)[16];
+    int(*y)[16];
 
     if (!PyArg_ParseTuple(args, "Oii", &scf_obj, &lfcb_idx, &hfcb_idx))
         return NULL;
@@ -81,8 +81,7 @@ static PyObject *quantize_py(PyObject *m, PyObject *args)
     y_obj = new_2d_ptr(NPY_INT, 4, 16, &y);
     yn_obj = new_2d_ptr(NPY_FLOAT, 4, 16, &yn);
 
-    quantize(scf, lfcb_idx, hfcb_idx,
-        y, yn, &shape_idx, &gain_idx);
+    quantize(scf, lfcb_idx, hfcb_idx, y, yn, &shape_idx, &gain_idx);
 
     return Py_BuildValue("NNii", y_obj, yn_obj, shape_idx, gain_idx);
 }
@@ -94,16 +93,14 @@ static PyObject *unquantize_py(PyObject *m, PyObject *args)
     int shape, gain;
     float *y, *scf;
 
-    if (!PyArg_ParseTuple(args, "iiOii",
-                &lfcb_idx, &hfcb_idx, &y_obj, &shape, &gain))
+    if (!PyArg_ParseTuple(args, "iiOii", &lfcb_idx, &hfcb_idx, &y_obj, &shape, &gain))
         return NULL;
 
     CTYPES_CHECK("lfcb_idx", (unsigned)lfcb_idx < 32);
     CTYPES_CHECK("hfcb_idx", (unsigned)hfcb_idx < 32);
     CTYPES_CHECK("y", to_1d_ptr(y_obj, NPY_FLOAT, 16, &y));
     CTYPES_CHECK("shape", (unsigned)shape < 4);
-    CTYPES_CHECK("gain",
-        (unsigned)gain < (unsigned)lc3_sns_vq_gains[shape].count);
+    CTYPES_CHECK("gain", (unsigned)gain < (unsigned)lc3_sns_vq_gains[shape].count);
 
     scf_obj = new_1d_ptr(NPY_FLOAT, 16, &scf);
 
@@ -195,13 +192,13 @@ static PyObject *get_nbits_py(PyObject *m, PyObject *args)
 
 static PyMethodDef methods[] = {
     { "sns_compute_scale_factors", compute_scale_factors_py, METH_VARARGS },
-    { "sns_resolve_codebooks"    , resolve_codebooks_py    , METH_VARARGS },
-    { "sns_quantize"             , quantize_py             , METH_VARARGS },
-    { "sns_unquantize"           , unquantize_py           , METH_VARARGS },
-    { "sns_spectral_shaping"     , spectral_shaping_py     , METH_VARARGS },
-    { "sns_analyze"              , analyze_py              , METH_VARARGS },
-    { "sns_synthesize"           , synthesize_py           , METH_VARARGS },
-    { "sns_get_nbits"            , get_nbits_py            , METH_VARARGS },
+    { "sns_resolve_codebooks", resolve_codebooks_py, METH_VARARGS },
+    { "sns_quantize", quantize_py, METH_VARARGS },
+    { "sns_unquantize", unquantize_py, METH_VARARGS },
+    { "sns_spectral_shaping", spectral_shaping_py, METH_VARARGS },
+    { "sns_analyze", analyze_py, METH_VARARGS },
+    { "sns_synthesize", synthesize_py, METH_VARARGS },
+    { "sns_get_nbits", get_nbits_py, METH_VARARGS },
     { NULL },
 };
 

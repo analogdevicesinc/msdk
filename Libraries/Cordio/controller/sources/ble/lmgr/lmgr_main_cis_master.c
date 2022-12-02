@@ -40,11 +40,11 @@ lmgrCisMstCtrlBlk_t lmgrCisMstCb;
 /*************************************************************************************************/
 void LmgrMstCisInit(void)
 {
-  memset(&lmgrCisMstCb, 0, sizeof(lmgrCisMstCb));
+    memset(&lmgrCisMstCb, 0, sizeof(lmgrCisMstCb));
 
-  lmgrCisMstCb.maxNumCis = pLctrRtCfg->maxCis;
+    lmgrCisMstCb.maxNumCis = pLctrRtCfg->maxCis;
 
-  /* lmgrCisMstCb.numCisPend = 0; */    /* Clear by default */
+    /* lmgrCisMstCb.numCisPend = 0; */ /* Clear by default */
 }
 
 /*************************************************************************************************/
@@ -56,5 +56,5 @@ void LmgrMstCisInit(void)
 /*************************************************************************************************/
 uint8_t LmgrMstCisGetMaxNumCis(void)
 {
-  return lmgrCisMstCb.maxNumCis;
+    return lmgrCisMstCb.maxNumCis;
 }

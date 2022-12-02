@@ -53,9 +53,9 @@
 
 #include "sdk_common.h"
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS) &&                   \
-        ( NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA256) || \
-          NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA512) )
+#if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS) &&              \
+    (NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA256) || \
+     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA512))
 
 #include "nrf_crypto_hmac_shared.h"
 /*lint -save -e????*/
@@ -68,7 +68,7 @@
 extern "C" {
 #endif
 
-#undef  NRF_CRYPTO_HMAC_ENABLED
+#undef NRF_CRYPTO_HMAC_ENABLED
 #define NRF_CRYPTO_HMAC_ENABLED 1
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA256)
@@ -84,12 +84,12 @@ extern "C" {
  * @note This should never be used directly. Use @ref nrf_crypto_backend_hmac_sha256_context_t
  * instead.
  */
-typedef struct
-{
-    nrf_crypto_hmac_internal_context_t  header;                                         //!< Internal nrf_crypto_hmac context.
-    mbedtls_md_context_t                mbedtls_ctx;                                    //!< Mbed TLS context object.
-    uint8_t                             md_ctx_buffer[sizeof(mbedtls_sha256_context)];  //!< Message digest buffer for mbed TLS.
-    uint16_t                            hmac_ctx_buffer[64];                            //!< Hash buffer for mbed TLS of size defined in mbedtls_sha256_info in md_internal.h.
+typedef struct {
+    nrf_crypto_hmac_internal_context_t header; //!< Internal nrf_crypto_hmac context.
+    mbedtls_md_context_t mbedtls_ctx; //!< Mbed TLS context object.
+    uint8_t md_ctx_buffer[sizeof(mbedtls_sha256_context)]; //!< Message digest buffer for mbed TLS.
+    uint16_t hmac_ctx_buffer
+        [64]; //!< Hash buffer for mbed TLS of size defined in mbedtls_sha256_info in md_internal.h.
 } nrf_crypto_backend_mbedtls_hmac_sha256_context_t;
 
 /**
@@ -97,10 +97,7 @@ typedef struct
  */
 typedef nrf_crypto_backend_mbedtls_hmac_sha256_context_t nrf_crypto_backend_hmac_sha256_context_t;
 
-
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA256)
-
-
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA512)
 
@@ -115,12 +112,12 @@ typedef nrf_crypto_backend_mbedtls_hmac_sha256_context_t nrf_crypto_backend_hmac
  * @note This should never be used directly. Use @ref nrf_crypto_backend_hmac_sha512_context_t
  * instead.
  */
-typedef struct
-{
-    nrf_crypto_hmac_internal_context_t  header;                                         //!< Internal nrf_crypto_hmac context header.
-    mbedtls_md_context_t                mbedtls_ctx;                                    //!< Mbed TLS context object.
-    uint8_t                             md_ctx_buffer[sizeof(mbedtls_sha512_context)];  //!< Message digest buffer for mbed TLS.
-    uint16_t                            hmac_ctx_buffer[128];                           //!< Hash buffer for mbed TLS of size defined in mbedtls_sha512_info in md_internal.h.
+typedef struct {
+    nrf_crypto_hmac_internal_context_t header; //!< Internal nrf_crypto_hmac context header.
+    mbedtls_md_context_t mbedtls_ctx; //!< Mbed TLS context object.
+    uint8_t md_ctx_buffer[sizeof(mbedtls_sha512_context)]; //!< Message digest buffer for mbed TLS.
+    uint16_t hmac_ctx_buffer
+        [128]; //!< Hash buffer for mbed TLS of size defined in mbedtls_sha512_info in md_internal.h.
 } nrf_crypto_backend_mbedtls_hmac_sha512_context_t;
 
 /**

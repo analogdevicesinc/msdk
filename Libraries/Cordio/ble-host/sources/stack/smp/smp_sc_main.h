@@ -38,8 +38,8 @@ extern "C" {
 **************************************************************************************************/
 
 #if WSF_TOKEN_ENABLED == TRUE || WSF_TRACE_ENABLED == TRUE
-#define SMP_TRACE_128(msg, ptr)            smpLogByteArray(msg, ptr, 16)
-#define SMP_TRACE_256(msg, ptr)            smpLogByteArray(msg, ptr, 32)
+#define SMP_TRACE_128(msg, ptr) smpLogByteArray(msg, ptr, 16)
+#define SMP_TRACE_256(msg, ptr) smpLogByteArray(msg, ptr, 32)
 #else
 #define SMP_TRACE_128(msg, ptr)
 #define SMP_TRACE_256(msg, ptr)
@@ -50,7 +50,7 @@ extern "C" {
 **************************************************************************************************/
 
 /* Number of bits in the Passkey */
-#define  SMP_PK_BIT_COUNT               20
+#define SMP_PK_BIT_COUNT 20
 
 /**************************************************************************************************
   Function Declarations
@@ -119,7 +119,8 @@ bool_t SmpScAllocScratchBuffers(smpCcb_t *pCcb);
 void SmpScFreeScratchBuffers(smpCcb_t *pCcb);
 bool_t smpScProcPairing(smpCcb_t *pCcb, uint8_t *pOob, uint8_t *pDisplay);
 void SmpReverseCpy(uint8_t *pBuf1, uint8_t *pBuf2, uint8_t len);
-void SmpScCmac(const uint8_t *pKey, uint8_t *pText, uint8_t textLen, smpCcb_t *pCcb, smpMsg_t *pMsg);
+void SmpScCmac(const uint8_t *pKey, uint8_t *pText, uint8_t textLen, smpCcb_t *pCcb,
+               smpMsg_t *pMsg);
 uint8_t *SmpScAlloc(uint8_t size, smpCcb_t *pCcb, smpMsg_t *pMsg);
 void SmpScFree(uint8_t *pBuf);
 void SmpScCalcF4(smpCcb_t *pCcb, smpMsg_t *pMsg, uint8_t *pU, uint8_t *pV, uint8_t z, uint8_t *pX);

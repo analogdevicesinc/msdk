@@ -33,20 +33,19 @@
 **************************************************************************************************/
 
 /*! \brief      Periodic list filter table entry. */
-typedef struct
-{
-  uint64_t  addr;                           /*!< Address. */
-  uint8_t   addrType;                       /*!< Address type. */
-  uint8_t   SID;                            /*!< Set ID. */
+typedef struct {
+    uint64_t addr; /*!< Address. */
+    uint8_t addrType; /*!< Address type. */
+    uint8_t SID; /*!< Set ID. */
 } bbBlePeriodicListEntry_t;
 
 /**************************************************************************************************
   Globals
 **************************************************************************************************/
 
-static bbBlePeriodicListEntry_t *pBbBlePeriodicListFilt;        /*!< Periodic list filter. */
-static uint8_t                  bbBlePeriodicListNumEntries;    /*!< Number of valid periodic list entries. */
-static uint8_t                  bbBlePeriodicListNumEntriesMax; /*!< Maximum number of periodic list entries. */
+static bbBlePeriodicListEntry_t *pBbBlePeriodicListFilt; /*!< Periodic list filter. */
+static uint8_t bbBlePeriodicListNumEntries; /*!< Number of valid periodic list entries. */
+static uint8_t bbBlePeriodicListNumEntriesMax; /*!< Maximum number of periodic list entries. */
 
 /*************************************************************************************************/
 /*!
@@ -65,29 +64,27 @@ static uint8_t                  bbBlePeriodicListNumEntriesMax; /*!< Maximum num
 /*************************************************************************************************/
 uint16_t BbBleInitPeriodicList(uint8_t numEntries, uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-  uint8_t *pAvailMem = pFreeMem;
+    uint8_t *pAvailMem = pFreeMem;
 
-  bbBlePeriodicListNumEntries     = 0;
-  bbBlePeriodicListNumEntriesMax  = 0;
+    bbBlePeriodicListNumEntries = 0;
+    bbBlePeriodicListNumEntriesMax = 0;
 
-  /* Allocate memory. */
-  if (((uint32_t)pAvailMem) & 3)
-  {
-    /* Align to next word. */
-    pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
-  }
-  pBbBlePeriodicListFilt = (bbBlePeriodicListEntry_t *)pAvailMem;
-  pAvailMem   += sizeof(bbBlePeriodicListEntry_t) * numEntries;
+    /* Allocate memory. */
+    if (((uint32_t)pAvailMem) & 3) {
+        /* Align to next word. */
+        pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
+    }
+    pBbBlePeriodicListFilt = (bbBlePeriodicListEntry_t *)pAvailMem;
+    pAvailMem += sizeof(bbBlePeriodicListEntry_t) * numEntries;
 
-  /* Check memory allocation. */
-  if (((uint32_t)(pAvailMem - pFreeMem)) > freeMemSize)
-  {
-    WSF_ASSERT(FALSE);
-    return 0;
-  }
+    /* Check memory allocation. */
+    if (((uint32_t)(pAvailMem - pFreeMem)) > freeMemSize) {
+        WSF_ASSERT(FALSE);
+        return 0;
+    }
 
-  bbBlePeriodicListNumEntriesMax = numEntries;
-  return (pAvailMem - pFreeMem);
+    bbBlePeriodicListNumEntriesMax = numEntries;
+    return (pAvailMem - pFreeMem);
 }
 
 /*************************************************************************************************/
@@ -103,19 +100,16 @@ uint16_t BbBleInitPeriodicList(uint8_t numEntries, uint8_t *pFreeMem, uint32_t f
 /*************************************************************************************************/
 bool_t BbBlePeriodicListCheckAddr(uint8_t addrType, uint64_t addr, uint8_t SID)
 {
-  for (unsigned int i = 0; i < bbBlePeriodicListNumEntries; i++)
-  {
-    if ((pBbBlePeriodicListFilt[i].addrType == addrType) &&
-        (pBbBlePeriodicListFilt[i].addr == addr) &&
-        (pBbBlePeriodicListFilt[i].SID == SID))
-    {
-      /* Peer is in periodic list, allow PDU to pass through the filter. */
-      return TRUE;
+    for (unsigned int i = 0; i < bbBlePeriodicListNumEntries; i++) {
+        if ((pBbBlePeriodicListFilt[i].addrType == addrType) &&
+            (pBbBlePeriodicListFilt[i].addr == addr) && (pBbBlePeriodicListFilt[i].SID == SID)) {
+            /* Peer is in periodic list, allow PDU to pass through the filter. */
+            return TRUE;
+        }
     }
-  }
 
-  /* Peer is not in periodic list, filter out PDU. */
-  return FALSE;
+    /* Peer is not in periodic list, filter out PDU. */
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -129,7 +123,7 @@ bool_t BbBlePeriodicListCheckAddr(uint8_t addrType, uint64_t addr, uint8_t SID)
 /*************************************************************************************************/
 uint8_t BbBlePeriodicListGetSize(void)
 {
-  return bbBlePeriodicListNumEntriesMax;
+    return bbBlePeriodicListNumEntriesMax;
 }
 
 /*************************************************************************************************/
@@ -144,7 +138,7 @@ uint8_t BbBlePeriodicListGetSize(void)
 /*************************************************************************************************/
 void BbBlePeriodicListClear(void)
 {
-  bbBlePeriodicListNumEntries = 0;
+    bbBlePeriodicListNumEntries = 0;
 }
 
 /*************************************************************************************************/
@@ -165,18 +159,17 @@ void BbBlePeriodicListClear(void)
 /*************************************************************************************************/
 bool_t BbBlePeriodicListAdd(uint8_t addrType, uint64_t addr, uint8_t SID)
 {
-  if (bbBlePeriodicListNumEntries < bbBlePeriodicListNumEntriesMax)
-  {
-    pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries].addrType = addrType;
-    pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries].addr = addr;
-    pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries].SID  = SID;
+    if (bbBlePeriodicListNumEntries < bbBlePeriodicListNumEntriesMax) {
+        pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries].addrType = addrType;
+        pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries].addr = addr;
+        pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries].SID = SID;
 
-    bbBlePeriodicListNumEntries++;
-    return TRUE;
-  }
+        bbBlePeriodicListNumEntries++;
+        return TRUE;
+    }
 
-  /* List full. */
-  return FALSE;
+    /* List full. */
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -198,23 +191,22 @@ bool_t BbBlePeriodicListAdd(uint8_t addrType, uint64_t addr, uint8_t SID)
 /*************************************************************************************************/
 bool_t BbBlePeriodicListRemove(uint8_t addrType, uint64_t addr, uint8_t SID)
 {
-  for (uint8_t i = 0; i < bbBlePeriodicListNumEntries; i++)
-  {
-    if ((pBbBlePeriodicListFilt[i].addrType == addrType) &&
-        (pBbBlePeriodicListFilt[i].addr == addr) &&
-        (pBbBlePeriodicListFilt[i].SID == SID))
-    {
-      /* If there is more than one entry, move the last entry into this slot. */
-      if ((bbBlePeriodicListNumEntries > 1) && (i != bbBlePeriodicListNumEntries - 1))
-      {
-        pBbBlePeriodicListFilt[i].addrType = pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries - 1].addrType;
-        pBbBlePeriodicListFilt[i].addr = pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries - 1].addr;
-        pBbBlePeriodicListFilt[i].SID = pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries - 1].SID;
-      }
-      bbBlePeriodicListNumEntries--;
-      return TRUE;
+    for (uint8_t i = 0; i < bbBlePeriodicListNumEntries; i++) {
+        if ((pBbBlePeriodicListFilt[i].addrType == addrType) &&
+            (pBbBlePeriodicListFilt[i].addr == addr) && (pBbBlePeriodicListFilt[i].SID == SID)) {
+            /* If there is more than one entry, move the last entry into this slot. */
+            if ((bbBlePeriodicListNumEntries > 1) && (i != bbBlePeriodicListNumEntries - 1)) {
+                pBbBlePeriodicListFilt[i].addrType =
+                    pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries - 1].addrType;
+                pBbBlePeriodicListFilt[i].addr =
+                    pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries - 1].addr;
+                pBbBlePeriodicListFilt[i].SID =
+                    pBbBlePeriodicListFilt[bbBlePeriodicListNumEntries - 1].SID;
+            }
+            bbBlePeriodicListNumEntries--;
+            return TRUE;
+        }
     }
-  }
 
-  return FALSE;
+    return FALSE;
 }

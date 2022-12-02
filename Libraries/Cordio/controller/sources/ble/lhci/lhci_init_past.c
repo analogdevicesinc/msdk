@@ -35,9 +35,8 @@
 /*************************************************************************************************/
 void LhciPastInit(void)
 {
-  if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_1)
-  {
-    lhciCmdTbl[LHCI_MSG_PAST] = lhciPastDecodeCmdPkt;
-    lhciEvtTbl[LHCI_MSG_PAST] = NULL;
-  }
+    if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_1) {
+        lhciCmdTbl[LHCI_MSG_PAST] = lhciPastDecodeCmdPkt;
+        lhciEvtTbl[LHCI_MSG_PAST] = NULL;
+    }
 }

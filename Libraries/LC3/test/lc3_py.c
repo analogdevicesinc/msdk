@@ -37,8 +37,8 @@ static PyObject *setup_encoder_py(PyObject *m, PyObject *args)
     CTYPES_CHECK("dt_us", LC3_CHECK_DT_US(dt_us));
     CTYPES_CHECK("sr_hz", LC3_CHECK_SR_HZ(sr_hz));
 
-    lc3_encoder_t encoder = lc3_setup_encoder(dt_us, sr_hz, 0,
-            malloc(lc3_encoder_size(dt_us, sr_hz)));
+    lc3_encoder_t encoder =
+        lc3_setup_encoder(dt_us, sr_hz, 0, malloc(lc3_encoder_size(dt_us, sr_hz)));
 
     PyObject *encoder_obj = from_encoder(NULL, encoder);
 
@@ -56,8 +56,7 @@ static PyObject *encode_py(PyObject *m, PyObject *args)
     if (!PyArg_ParseTuple(args, "OOi", &encoder_obj, &pcm_obj, &nbytes))
         return NULL;
 
-    lc3_encoder_t encoder =
-        lc3_setup_encoder(10000, 48000, 0, &(lc3_encoder_mem_48k_t){ });
+    lc3_encoder_t encoder = lc3_setup_encoder(10000, 48000, 0, &(lc3_encoder_mem_48k_t){});
 
     CTYPES_CHECK(NULL, encoder_obj = to_encoder(encoder_obj, encoder));
 
@@ -72,8 +71,7 @@ static PyObject *encode_py(PyObject *m, PyObject *args)
 
     from_encoder(encoder_obj, encoder);
 
-    return Py_BuildValue("N",
-        PyBytes_FromStringAndSize((const char *)out, nbytes));
+    return Py_BuildValue("N", PyBytes_FromStringAndSize((const char *)out, nbytes));
 }
 
 static PyObject *setup_decoder_py(PyObject *m, PyObject *args)
@@ -86,8 +84,8 @@ static PyObject *setup_decoder_py(PyObject *m, PyObject *args)
     CTYPES_CHECK("dt_us", LC3_CHECK_DT_US(dt_us));
     CTYPES_CHECK("sr_hz", LC3_CHECK_SR_HZ(sr_hz));
 
-    lc3_decoder_t decoder = lc3_setup_decoder(dt_us, sr_hz, 0,
-            malloc(lc3_decoder_size(dt_us, sr_hz)));
+    lc3_decoder_t decoder =
+        lc3_setup_decoder(dt_us, sr_hz, 0, malloc(lc3_decoder_size(dt_us, sr_hz)));
 
     PyObject *decoder_obj = from_decoder(NULL, decoder);
 
@@ -109,8 +107,7 @@ static PyObject *decode_py(PyObject *m, PyObject *args)
     char *in = in_obj == Py_None ? NULL : PyBytes_AsString(in_obj);
     int nbytes = in_obj == Py_None ? 0 : PyBytes_Size(in_obj);
 
-    lc3_decoder_t decoder =
-        lc3_setup_decoder(10000, 48000, 0, &(lc3_decoder_mem_48k_t){ });
+    lc3_decoder_t decoder = lc3_setup_decoder(10000, 48000, 0, &(lc3_decoder_mem_48k_t){});
 
     CTYPES_CHECK(NULL, decoder_obj = to_decoder(decoder_obj, decoder));
 
@@ -125,10 +122,10 @@ static PyObject *decode_py(PyObject *m, PyObject *args)
 }
 
 static PyMethodDef methods[] = {
-    { "setup_encoder"      , setup_encoder_py      , METH_VARARGS },
-    { "encode"             , encode_py             , METH_VARARGS },
-    { "setup_decoder"      , setup_decoder_py      , METH_VARARGS },
-    { "decode"             , decode_py             , METH_VARARGS },
+    { "setup_encoder", setup_encoder_py, METH_VARARGS },
+    { "encode", encode_py, METH_VARARGS },
+    { "setup_decoder", setup_decoder_py, METH_VARARGS },
+    { "decode", decode_py, METH_VARARGS },
     { NULL },
 };
 

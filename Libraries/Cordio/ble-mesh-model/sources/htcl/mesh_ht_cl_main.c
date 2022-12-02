@@ -44,9 +44,8 @@
 **************************************************************************************************/
 
 /*! Health Client control block type definition */
-typedef struct meshHtClCb_tag
-{
-  mmdlEventCback_t recvCback;    /*!< Health Client event callback */
+typedef struct meshHtClCb_tag {
+    mmdlEventCback_t recvCback; /*!< Health Client event callback */
 } meshHtClCb_t;
 
 /**************************************************************************************************
@@ -57,13 +56,10 @@ typedef struct meshHtClCb_tag
 wsfHandlerId_t meshHtClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t meshHtClRcvdOpcodes[] =
-{
-  { MESH_HT_CRT_STATUS_OPCODE },
-  { MESH_HT_FAULT_STATUS_OPCODE },
-  { MESH_HT_PERIOD_STATUS_OPCODE },
-  { MESH_HT_ATTENTION_STATUS_OPCODE }
-};
+const meshMsgOpcode_t meshHtClRcvdOpcodes[] = { { MESH_HT_CRT_STATUS_OPCODE },
+                                                { MESH_HT_FAULT_STATUS_OPCODE },
+                                                { MESH_HT_PERIOD_STATUS_OPCODE },
+                                                { MESH_HT_ATTENTION_STATUS_OPCODE } };
 
 /**************************************************************************************************
   Local Variables
@@ -73,16 +69,15 @@ const meshMsgOpcode_t meshHtClRcvdOpcodes[] =
 static const uint8_t htClNumOps = sizeof(meshHtClRcvdOpcodes) / sizeof(meshMsgOpcode_t);
 
 /*! Handler functions for supported opcodes */
-static const meshHtClHandleMsg_t meshHtClHandleMsg[] =
-{
-  meshHtClHandleCurrentFaultStatus,
-  meshHtClHandleFaultStatus,
-  meshHtClHandlePeriodStatus,
-  meshHtClHandleAttentionStatus,
+static const meshHtClHandleMsg_t meshHtClHandleMsg[] = {
+    meshHtClHandleCurrentFaultStatus,
+    meshHtClHandleFaultStatus,
+    meshHtClHandlePeriodStatus,
+    meshHtClHandleAttentionStatus,
 };
 
 /*! Health Client control block */
-static meshHtClCb_t  htClCb;
+static meshHtClCb_t htClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -100,49 +95,45 @@ static meshHtClCb_t  htClCb;
 /*************************************************************************************************/
 static void meshHtClHandleCrtAndRegStatus(const meshModelMsgRecvEvt_t *pMsg, bool_t isCrt)
 {
-  meshHtClFaultStatusEvt_t evt;
-  uint8_t *pParams;
+    meshHtClFaultStatusEvt_t evt;
+    uint8_t *pParams;
 
-  /* Validate message length. At least test ID and company ID must be present. */
-  if ((pMsg->messageParamsLen < (sizeof(meshHtMdlTestId_t) + sizeof(uint16_t))) ||
-      (pMsg->pMessageParams == NULL))
-  {
-    return;
-  }
+    /* Validate message length. At least test ID and company ID must be present. */
+    if ((pMsg->messageParamsLen < (sizeof(meshHtMdlTestId_t) + sizeof(uint16_t))) ||
+        (pMsg->pMessageParams == NULL)) {
+        return;
+    }
 
-  /* Extract status event parameters. */
-  pParams = pMsg->pMessageParams;
+    /* Extract status event parameters. */
+    pParams = pMsg->pMessageParams;
 
-  /* Extract Test ID. */
-  BSTREAM_TO_UINT8(evt.healthStatus.testId, pParams);
-  /* Extract Company ID. */
-  BSTREAM_TO_UINT16(evt.healthStatus.companyId, pParams);
+    /* Extract Test ID. */
+    BSTREAM_TO_UINT8(evt.healthStatus.testId, pParams);
+    /* Extract Company ID. */
+    BSTREAM_TO_UINT16(evt.healthStatus.companyId, pParams);
 
-  /* Calculate number of faults from message length. */
-  evt.healthStatus.faultIdArrayLen = pMsg->messageParamsLen -
-                                     (sizeof(meshHtMdlTestId_t) + sizeof(uint16_t));
+    /* Calculate number of faults from message length. */
+    evt.healthStatus.faultIdArrayLen =
+        pMsg->messageParamsLen - (sizeof(meshHtMdlTestId_t) + sizeof(uint16_t));
 
-  /* Point to fault array. */
-  if(evt.healthStatus.faultIdArrayLen == 0)
-  {
-    evt.healthStatus.pFaultIdArray = NULL;
-  }
-  else
-  {
-    evt.healthStatus.pFaultIdArray = pParams;
-  }
+    /* Point to fault array. */
+    if (evt.healthStatus.faultIdArrayLen == 0) {
+        evt.healthStatus.pFaultIdArray = NULL;
+    } else {
+        evt.healthStatus.pFaultIdArray = pParams;
+    }
 
-  /* Set event type and status. */
-  evt.hdr.event = MESH_HT_CL_EVENT;
-  evt.hdr.param = isCrt ? MESH_HT_CL_CURRENT_STATUS_EVENT : MESH_HT_CL_FAULT_STATUS_EVENT;
-  evt.hdr.status = MESH_HT_CL_SUCCESS;
+    /* Set event type and status. */
+    evt.hdr.event = MESH_HT_CL_EVENT;
+    evt.hdr.param = isCrt ? MESH_HT_CL_CURRENT_STATUS_EVENT : MESH_HT_CL_FAULT_STATUS_EVENT;
+    evt.hdr.status = MESH_HT_CL_SUCCESS;
 
-  /* Set addressing information. */
-  evt.elemId = pMsg->elementId;
-  evt.htSrElemAddr = pMsg->srcAddr;
+    /* Set addressing information. */
+    evt.elemId = pMsg->elementId;
+    evt.htSrElemAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  htClCb.recvCback((wsfMsgHdr_t *)&evt);
+    /* Send event to the upper layer */
+    htClCb.recvCback((wsfMsgHdr_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -156,7 +147,7 @@ static void meshHtClHandleCrtAndRegStatus(const meshModelMsgRecvEvt_t *pMsg, boo
 /*************************************************************************************************/
 void meshHtClHandleCurrentFaultStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  meshHtClHandleCrtAndRegStatus(pMsg, TRUE);
+    meshHtClHandleCrtAndRegStatus(pMsg, TRUE);
 }
 
 /*************************************************************************************************/
@@ -170,7 +161,7 @@ void meshHtClHandleCurrentFaultStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void meshHtClHandleFaultStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  meshHtClHandleCrtAndRegStatus(pMsg, FALSE);
+    meshHtClHandleCrtAndRegStatus(pMsg, FALSE);
 }
 
 /*************************************************************************************************/
@@ -184,35 +175,32 @@ void meshHtClHandleFaultStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void meshHtClHandlePeriodStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  meshHtClPeriodStatusEvt_t evt;
+    meshHtClPeriodStatusEvt_t evt;
 
-  /* Validate message length. */
-  if ((pMsg->messageParamsLen != sizeof(meshHtPeriod_t)) ||
-      (pMsg->pMessageParams == NULL))
-  {
-    return;
-  }
+    /* Validate message length. */
+    if ((pMsg->messageParamsLen != sizeof(meshHtPeriod_t)) || (pMsg->pMessageParams == NULL)) {
+        return;
+    }
 
-  /* Extract status event parameters. */
-  evt.periodDivisor = pMsg->pMessageParams[0];
+    /* Extract status event parameters. */
+    evt.periodDivisor = pMsg->pMessageParams[0];
 
-  /* Validate value. */
-  if(evt.periodDivisor > MESH_HT_PERIOD_MAX_VALUE)
-  {
-    return;
-  }
+    /* Validate value. */
+    if (evt.periodDivisor > MESH_HT_PERIOD_MAX_VALUE) {
+        return;
+    }
 
-  /* Set event type and status */
-  evt.hdr.event = MESH_HT_CL_EVENT;
-  evt.hdr.param = MESH_HT_CL_PERIOD_STATUS_EVENT;
-  evt.hdr.status = MESH_HT_CL_SUCCESS;
+    /* Set event type and status */
+    evt.hdr.event = MESH_HT_CL_EVENT;
+    evt.hdr.param = MESH_HT_CL_PERIOD_STATUS_EVENT;
+    evt.hdr.status = MESH_HT_CL_SUCCESS;
 
-  /* Set event contents */
-  evt.elemId = pMsg->elementId;
-  evt.htSrElemAddr = pMsg->srcAddr;
+    /* Set event contents */
+    evt.elemId = pMsg->elementId;
+    evt.htSrElemAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  htClCb.recvCback((wsfMsgHdr_t *)&evt);
+    /* Send event to the upper layer */
+    htClCb.recvCback((wsfMsgHdr_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -226,29 +214,27 @@ void meshHtClHandlePeriodStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void meshHtClHandleAttentionStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-  meshHtClAttentionStatusEvt_t evt;
+    meshHtClAttentionStatusEvt_t evt;
 
-  /* Validate message length. */
-  if ((pMsg->messageParamsLen != sizeof(meshHtAttTimer_t)) ||
-      (pMsg->pMessageParams == NULL))
-  {
-    return;
-  }
+    /* Validate message length. */
+    if ((pMsg->messageParamsLen != sizeof(meshHtAttTimer_t)) || (pMsg->pMessageParams == NULL)) {
+        return;
+    }
 
-  /* Extract status event parameters. */
-  evt.attTimerState = pMsg->pMessageParams[0];
+    /* Extract status event parameters. */
+    evt.attTimerState = pMsg->pMessageParams[0];
 
-  /* Set event type and status */
-  evt.hdr.event = MESH_HT_CL_EVENT;
-  evt.hdr.param = MESH_HT_CL_ATTENTION_STATUS_EVENT;
-  evt.hdr.status = MESH_HT_CL_SUCCESS;
+    /* Set event type and status */
+    evt.hdr.event = MESH_HT_CL_EVENT;
+    evt.hdr.param = MESH_HT_CL_ATTENTION_STATUS_EVENT;
+    evt.hdr.status = MESH_HT_CL_SUCCESS;
 
-  /* Set event contents */
-  evt.elemId = pMsg->elementId;
-  evt.htSrElemAddr = pMsg->srcAddr;
+    /* Set event contents */
+    evt.elemId = pMsg->elementId;
+    evt.htSrElemAddr = pMsg->srcAddr;
 
-  /* Send event to the upper layer */
-  htClCb.recvCback((wsfMsgHdr_t *)&evt);
+    /* Send event to the upper layer */
+    htClCb.recvCback((wsfMsgHdr_t *)&evt);
 }
 
 /**************************************************************************************************
@@ -266,8 +252,8 @@ void meshHtClHandleAttentionStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MeshHtClHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Set handler ID */
-  meshHtClHandlerId = handlerId;
+    /* Set handler ID */
+    meshHtClHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -279,8 +265,8 @@ void MeshHtClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MeshHtClInit(void)
 {
-  /* Initialize control block */
-  htClCb.recvCback = MmdlEmptyCback;
+    /* Initialize control block */
+    htClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -294,39 +280,34 @@ void MeshHtClInit(void)
 /*************************************************************************************************/
 void MeshHtClHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelMsgRecvEvt_t *pModelMsg;
-  uint8_t opcodeIdx;
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
-        /* Match the received opcode. */
-        for (opcodeIdx = 0; opcodeIdx < htClNumOps; opcodeIdx++)
-        {
-          /* Validate opcode size and value */
-          if (MESH_OPCODE_SIZE(pModelMsg->opCode) !=
-              MESH_OPCODE_SIZE(meshHtClRcvdOpcodes[opcodeIdx]))
-          {
-            continue;
-          }
-          if (!memcmp(&meshHtClRcvdOpcodes[opcodeIdx], &(pModelMsg->opCode),
-                      MESH_OPCODE_SIZE(meshHtClRcvdOpcodes[opcodeIdx])))
-          {
-            /* Process message. */
-            meshHtClHandleMsg[opcodeIdx]((const meshModelMsgRecvEvt_t *)pModelMsg);
-            return;
-          }
-        }
-        break;
+    meshModelMsgRecvEvt_t *pModelMsg;
+    uint8_t opcodeIdx;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+            /* Match the received opcode. */
+            for (opcodeIdx = 0; opcodeIdx < htClNumOps; opcodeIdx++) {
+                /* Validate opcode size and value */
+                if (MESH_OPCODE_SIZE(pModelMsg->opCode) !=
+                    MESH_OPCODE_SIZE(meshHtClRcvdOpcodes[opcodeIdx])) {
+                    continue;
+                }
+                if (!memcmp(&meshHtClRcvdOpcodes[opcodeIdx], &(pModelMsg->opCode),
+                            MESH_OPCODE_SIZE(meshHtClRcvdOpcodes[opcodeIdx]))) {
+                    /* Process message. */
+                    meshHtClHandleMsg[opcodeIdx]((const meshModelMsgRecvEvt_t *)pModelMsg);
+                    return;
+                }
+            }
+            break;
 
-      default:
-        MESH_TRACE_WARN0("HT CL: Invalid event message received!");
-        break;
+        default:
+            MESH_TRACE_WARN0("HT CL: Invalid event message received!");
+            break;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -340,11 +321,10 @@ void MeshHtClHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MeshHtClRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback. */
-  if (recvCback != NULL)
-  {
-    htClCb.recvCback = recvCback;
-  }
+    /* Store valid callback. */
+    if (recvCback != NULL) {
+        htClCb.recvCback = recvCback;
+    }
 }
 
 /*************************************************************************************************/
@@ -363,26 +343,23 @@ void MeshHtClRegister(mmdlEventCback_t recvCback)
 void MeshHtClFaultGet(meshElementId_t elementId, meshAddress_t htSrElemAddr, uint16_t appKeyIndex,
                       uint8_t ttl, uint16_t companyId)
 {
-  uint8_t msgParam[sizeof(uint16_t)];
+    uint8_t msgParam[sizeof(uint16_t)];
 
-  /* Configure message. */
-  meshMsgInfo_t msgInfo =
-  {
-      .modelId.sigModelId = MESH_HT_CL_MDL_ID,
-      .opcode = { MESH_HT_FAULT_GET_OPCODE },
-      .elementId = elementId,
-      .dstAddr = htSrElemAddr,
-      .pDstLabelUuid = NULL,
-      .appKeyIndex = appKeyIndex,
-      .ttl = ttl
-  };
+    /* Configure message. */
+    meshMsgInfo_t msgInfo = { .modelId.sigModelId = MESH_HT_CL_MDL_ID,
+                              .opcode = { MESH_HT_FAULT_GET_OPCODE },
+                              .elementId = elementId,
+                              .dstAddr = htSrElemAddr,
+                              .pDstLabelUuid = NULL,
+                              .appKeyIndex = appKeyIndex,
+                              .ttl = ttl };
 
-  /* Pack message parameters. */
-  UINT16_TO_BUF(msgParam, companyId);
+    /* Pack message parameters. */
+    UINT16_TO_BUF(msgParam, companyId);
 
-  /* Use Mesh API to send message. */
-  MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)msgParam, sizeof(msgParam),
-                  0, 0);
+    /* Use Mesh API to send message. */
+    MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)msgParam, sizeof(msgParam), 0,
+                    0);
 }
 
 /*************************************************************************************************/
@@ -399,40 +376,34 @@ void MeshHtClFaultGet(meshElementId_t elementId, meshAddress_t htSrElemAddr, uin
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshHtClFaultClear(meshElementId_t elementId, meshAddress_t htSrElemAddr,
-                        uint16_t appKeyIndex, uint8_t ttl, uint16_t companyId, bool_t ackRequired)
+void MeshHtClFaultClear(meshElementId_t elementId, meshAddress_t htSrElemAddr, uint16_t appKeyIndex,
+                        uint8_t ttl, uint16_t companyId, bool_t ackRequired)
 {
-  uint8_t msgParam[sizeof(uint16_t)];
+    uint8_t msgParam[sizeof(uint16_t)];
 
-  const meshMsgOpcode_t opcode = { MESH_HT_FAULT_CLEAR_OPCODE };
-  const meshMsgOpcode_t unackOpcode = { MESH_HT_FAULT_CLEAR_UNACK_OPCODE };
+    const meshMsgOpcode_t opcode = { MESH_HT_FAULT_CLEAR_OPCODE };
+    const meshMsgOpcode_t unackOpcode = { MESH_HT_FAULT_CLEAR_UNACK_OPCODE };
 
-  /* Configure message. */
-  meshMsgInfo_t msgInfo =
-  {
-      .modelId.sigModelId = MESH_HT_CL_MDL_ID,
-      .elementId = elementId,
-      .dstAddr = htSrElemAddr,
-      .pDstLabelUuid = NULL,
-      .appKeyIndex = appKeyIndex,
-      .ttl = ttl
-  };
+    /* Configure message. */
+    meshMsgInfo_t msgInfo = { .modelId.sigModelId = MESH_HT_CL_MDL_ID,
+                              .elementId = elementId,
+                              .dstAddr = htSrElemAddr,
+                              .pDstLabelUuid = NULL,
+                              .appKeyIndex = appKeyIndex,
+                              .ttl = ttl };
 
-  if(ackRequired)
-  {
-    msgInfo.opcode = opcode;
-  }
-  else
-  {
-    msgInfo.opcode = unackOpcode;
-  }
+    if (ackRequired) {
+        msgInfo.opcode = opcode;
+    } else {
+        msgInfo.opcode = unackOpcode;
+    }
 
-  /* Pack message parameters. */
-  UINT16_TO_BUF(msgParam, companyId);
+    /* Pack message parameters. */
+    UINT16_TO_BUF(msgParam, companyId);
 
-  /* Use Mesh API to send message. */
-  MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)msgParam, sizeof(msgParam),
-                  0, 0);
+    /* Use Mesh API to send message. */
+    MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)msgParam, sizeof(msgParam), 0,
+                    0);
 }
 
 /*************************************************************************************************/
@@ -454,41 +425,35 @@ void MeshHtClFaultTest(meshElementId_t elementId, meshAddress_t htSrElemAddr, ui
                        uint8_t ttl, meshHtMdlTestId_t testId, uint16_t companyId,
                        bool_t ackRequired)
 {
-  uint8_t *pMsgParam;
-  uint8_t msgParam[sizeof(meshHtMdlTestId_t) + sizeof(uint16_t)];
+    uint8_t *pMsgParam;
+    uint8_t msgParam[sizeof(meshHtMdlTestId_t) + sizeof(uint16_t)];
 
-  const meshMsgOpcode_t opcode = { MESH_HT_FAULT_TEST_OPCODE };
-  const meshMsgOpcode_t unackOpcode = { MESH_HT_FAULT_TEST_UNACK_OPCODE };
+    const meshMsgOpcode_t opcode = { MESH_HT_FAULT_TEST_OPCODE };
+    const meshMsgOpcode_t unackOpcode = { MESH_HT_FAULT_TEST_UNACK_OPCODE };
 
-  /* Configure message. */
-  meshMsgInfo_t msgInfo =
-  {
-      .modelId.sigModelId = MESH_HT_CL_MDL_ID,
-      .elementId = elementId,
-      .dstAddr = htSrElemAddr,
-      .pDstLabelUuid = NULL,
-      .appKeyIndex = appKeyIndex,
-      .ttl = ttl
-  };
+    /* Configure message. */
+    meshMsgInfo_t msgInfo = { .modelId.sigModelId = MESH_HT_CL_MDL_ID,
+                              .elementId = elementId,
+                              .dstAddr = htSrElemAddr,
+                              .pDstLabelUuid = NULL,
+                              .appKeyIndex = appKeyIndex,
+                              .ttl = ttl };
 
-  if(ackRequired)
-  {
-    msgInfo.opcode = opcode;
-  }
-  else
-  {
-    msgInfo.opcode = unackOpcode;
-  }
+    if (ackRequired) {
+        msgInfo.opcode = opcode;
+    } else {
+        msgInfo.opcode = unackOpcode;
+    }
 
-  pMsgParam = msgParam;
+    pMsgParam = msgParam;
 
-  /* Pack message parameters. */
-  UINT8_TO_BSTREAM(pMsgParam, testId);
-  UINT16_TO_BUF(pMsgParam, companyId);
+    /* Pack message parameters. */
+    UINT8_TO_BSTREAM(pMsgParam, testId);
+    UINT16_TO_BUF(pMsgParam, companyId);
 
-  /* Use Mesh API to send message. */
-  MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)msgParam, sizeof(msgParam),
-                  0, 0);
+    /* Use Mesh API to send message. */
+    MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)msgParam, sizeof(msgParam), 0,
+                    0);
 }
 
 /*************************************************************************************************/
@@ -506,20 +471,17 @@ void MeshHtClFaultTest(meshElementId_t elementId, meshAddress_t htSrElemAddr, ui
 void MeshHtClPeriodGet(meshElementId_t elementId, meshAddress_t htSrElemAddr, uint16_t appKeyIndex,
                        uint8_t ttl)
 {
-  /* Configure message. */
-  meshMsgInfo_t msgInfo =
-  {
-      .modelId.sigModelId = MESH_HT_CL_MDL_ID,
-      .opcode = { MESH_HT_PERIOD_GET_OPCODE },
-      .elementId = elementId,
-      .dstAddr = htSrElemAddr,
-      .pDstLabelUuid = NULL,
-      .appKeyIndex = appKeyIndex,
-      .ttl = ttl
-  };
+    /* Configure message. */
+    meshMsgInfo_t msgInfo = { .modelId.sigModelId = MESH_HT_CL_MDL_ID,
+                              .opcode = { MESH_HT_PERIOD_GET_OPCODE },
+                              .elementId = elementId,
+                              .dstAddr = htSrElemAddr,
+                              .pDstLabelUuid = NULL,
+                              .appKeyIndex = appKeyIndex,
+                              .ttl = ttl };
 
-  /* Use Mesh API to send message. */
-  MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)NULL, 0, 0, 0);
+    /* Use Mesh API to send message. */
+    MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -539,38 +501,31 @@ void MeshHtClPeriodGet(meshElementId_t elementId, meshAddress_t htSrElemAddr, ui
 void MeshHtClPeriodSet(meshElementId_t elementId, meshAddress_t htSrElemAddr, uint16_t appKeyIndex,
                        uint8_t ttl, meshHtPeriod_t periodState, bool_t ackRequired)
 {
-  const meshMsgOpcode_t opcode = { MESH_HT_PERIOD_SET_OPCODE };
-  const meshMsgOpcode_t unackOpcode = { MESH_HT_PERIOD_SET_UNACK_OPCODE };
+    const meshMsgOpcode_t opcode = { MESH_HT_PERIOD_SET_OPCODE };
+    const meshMsgOpcode_t unackOpcode = { MESH_HT_PERIOD_SET_UNACK_OPCODE };
 
-  /* Validate state. */
-  if(periodState > MESH_HT_PERIOD_MAX_VALUE)
-  {
-    return;
-  }
+    /* Validate state. */
+    if (periodState > MESH_HT_PERIOD_MAX_VALUE) {
+        return;
+    }
 
-  /* Configure message. */
-  meshMsgInfo_t msgInfo =
-  {
-      .modelId.sigModelId = MESH_HT_CL_MDL_ID,
-      .elementId = elementId,
-      .dstAddr = htSrElemAddr,
-      .pDstLabelUuid = NULL,
-      .appKeyIndex = appKeyIndex,
-      .ttl = ttl
-  };
+    /* Configure message. */
+    meshMsgInfo_t msgInfo = { .modelId.sigModelId = MESH_HT_CL_MDL_ID,
+                              .elementId = elementId,
+                              .dstAddr = htSrElemAddr,
+                              .pDstLabelUuid = NULL,
+                              .appKeyIndex = appKeyIndex,
+                              .ttl = ttl };
 
-  if(ackRequired)
-  {
-    msgInfo.opcode = opcode;
-  }
-  else
-  {
-    msgInfo.opcode = unackOpcode;
-  }
+    if (ackRequired) {
+        msgInfo.opcode = opcode;
+    } else {
+        msgInfo.opcode = unackOpcode;
+    }
 
-  /* Use Mesh API to send message. */
-  MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)&periodState,
-                  sizeof(periodState), 0, 0);
+    /* Use Mesh API to send message. */
+    MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)&periodState,
+                    sizeof(periodState), 0, 0);
 }
 
 /*************************************************************************************************/
@@ -588,20 +543,17 @@ void MeshHtClPeriodSet(meshElementId_t elementId, meshAddress_t htSrElemAddr, ui
 void MeshHtClAttentionGet(meshElementId_t elementId, meshAddress_t htSrElemAddr,
                           uint16_t appKeyIndex, uint8_t ttl)
 {
-  /* Configure message. */
-  meshMsgInfo_t msgInfo =
-  {
-      .modelId.sigModelId = MESH_HT_CL_MDL_ID,
-      .opcode = { MESH_HT_ATTENTION_GET_OPCODE },
-      .elementId = elementId,
-      .dstAddr = htSrElemAddr,
-      .pDstLabelUuid = NULL,
-      .appKeyIndex = appKeyIndex,
-      .ttl = ttl
-  };
+    /* Configure message. */
+    meshMsgInfo_t msgInfo = { .modelId.sigModelId = MESH_HT_CL_MDL_ID,
+                              .opcode = { MESH_HT_ATTENTION_GET_OPCODE },
+                              .elementId = elementId,
+                              .dstAddr = htSrElemAddr,
+                              .pDstLabelUuid = NULL,
+                              .appKeyIndex = appKeyIndex,
+                              .ttl = ttl };
 
-  /* Use Mesh API to send message. */
-  MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)NULL, 0, 0, 0);
+    /* Use Mesh API to send message. */
+    MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)NULL, 0, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -619,33 +571,27 @@ void MeshHtClAttentionGet(meshElementId_t elementId, meshAddress_t htSrElemAddr,
  */
 /*************************************************************************************************/
 void MeshHtClAttentionSet(meshElementId_t elementId, meshAddress_t htSrElemAddr,
-                          uint16_t appKeyIndex, uint8_t ttl, meshHtAttTimer_t  attTimerState,
+                          uint16_t appKeyIndex, uint8_t ttl, meshHtAttTimer_t attTimerState,
                           bool_t ackRequired)
 {
-  const meshMsgOpcode_t opcode = { MESH_HT_ATTENTION_SET_OPCODE };
-  const meshMsgOpcode_t unackOpcode = { MESH_HT_ATTENTION_SET_UNACK_OPCODE };
+    const meshMsgOpcode_t opcode = { MESH_HT_ATTENTION_SET_OPCODE };
+    const meshMsgOpcode_t unackOpcode = { MESH_HT_ATTENTION_SET_UNACK_OPCODE };
 
-  /* Configure message. */
-  meshMsgInfo_t msgInfo =
-  {
-      .modelId.sigModelId = MESH_HT_CL_MDL_ID,
-      .elementId = elementId,
-      .dstAddr = htSrElemAddr,
-      .pDstLabelUuid = NULL,
-      .appKeyIndex = appKeyIndex,
-      .ttl = ttl
-  };
+    /* Configure message. */
+    meshMsgInfo_t msgInfo = { .modelId.sigModelId = MESH_HT_CL_MDL_ID,
+                              .elementId = elementId,
+                              .dstAddr = htSrElemAddr,
+                              .pDstLabelUuid = NULL,
+                              .appKeyIndex = appKeyIndex,
+                              .ttl = ttl };
 
-  if(ackRequired)
-  {
-    msgInfo.opcode = opcode;
-  }
-  else
-  {
-    msgInfo.opcode = unackOpcode;
-  }
+    if (ackRequired) {
+        msgInfo.opcode = opcode;
+    } else {
+        msgInfo.opcode = unackOpcode;
+    }
 
-  /* Use Mesh API to send message. */
-  MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)&attTimerState,
-                  sizeof(attTimerState), 0, 0);
+    /* Use Mesh API to send message. */
+    MeshSendMessage((const meshMsgInfo_t *)&msgInfo, (const uint8_t *)&attTimerState,
+                    sizeof(attTimerState), 0, 0);
 }

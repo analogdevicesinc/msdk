@@ -65,7 +65,6 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
-
 /**
  * Maximum length of a derived key.
  */
@@ -75,7 +74,6 @@ extern "C" {
  * Maximum salt length.
  */
 #define ocrypto_hkdf_sha256_SALT_LENGTH_MAX (64)
-
 
 /**
  * HKDF-SHA256 algorithm.
@@ -93,11 +91,9 @@ extern "C" {
  * @param      info     Additional information.
  * @param      info_len Length of @p info.
  */
-void ocrypto_hkdf_sha256(
-    uint8_t* r, size_t r_len,
-    const uint8_t* key, size_t key_len,
-    const uint8_t* salt, size_t salt_len,
-    const uint8_t* info, size_t info_len);
+void ocrypto_hkdf_sha256(uint8_t *r, size_t r_len, const uint8_t *key, size_t key_len,
+                         const uint8_t *salt, size_t salt_len, const uint8_t *info,
+                         size_t info_len);
 
 #ifdef __cplusplus
 }

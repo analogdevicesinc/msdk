@@ -44,14 +44,12 @@
 #include "sdk_config.h"
 #include "nordic_common.h"
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO) && \
-    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && \
+#if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && \
     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
 
 #include <stdint.h>
 #include "nrf_crypto_ecc_shared.h"
 #include "nrf_crypto_eddsa_shared.h"
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -65,7 +63,6 @@ typedef uint32_t nrf_crypto_backend_ed25519_verify_context_t;
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif // #if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
 

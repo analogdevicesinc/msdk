@@ -44,10 +44,10 @@
 /*************************************************************************************************/
 uint16_t LlInitExtScanMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-  WSF_ASSERT(pLctrRtCfg);
-  WSF_ASSERT(pFreeMem);
+    WSF_ASSERT(pLctrRtCfg);
+    WSF_ASSERT(pFreeMem);
 
-  return LctrInitExtScanMem(pFreeMem, freeMemSize);
+    return LctrInitExtScanMem(pFreeMem, freeMemSize);
 }
 
 /*************************************************************************************************/
@@ -59,11 +59,11 @@ uint16_t LlInitExtScanMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 /*************************************************************************************************/
 void LlExtScanMasterInit(void)
 {
-  WSF_ASSERT(pLctrRtCfg);     /* Runtime configuration must be available. */
+    WSF_ASSERT(pLctrRtCfg); /* Runtime configuration must be available. */
 
-  LmgrMstInit();
-  LctrMstExtScanInit();
-  LctrMstPerCreateSyncInit();
-  LctrMstPerTransferSyncInit();
-  LctrMstPerScanInit();
+    LmgrMstInit();
+    LctrMstExtScanInit();
+    LctrMstPerCreateSyncInit();
+    LctrMstPerTransferSyncInit();
+    LctrMstPerScanInit();
 }

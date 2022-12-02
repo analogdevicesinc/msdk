@@ -27,8 +27,7 @@
 #define MESH_NWK_BEACON_DEFS_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -36,25 +35,25 @@ extern "C"
 **************************************************************************************************/
 
 /*! Secure Network Beacon authentication value size in bytes. */
-#define MESH_NWK_BEACON_AUTH_NUM_BYTES       8
+#define MESH_NWK_BEACON_AUTH_NUM_BYTES 8
 
 /*! Mesh Secure Network Beacon Flags byte position. */
-#define MESH_NWK_BEACON_FLAGS_BYTE_POS       1
+#define MESH_NWK_BEACON_FLAGS_BYTE_POS 1
 
 /*! Mesh Secure Network Beacon Key Refresh Bit shift */
-#define MESH_NWK_BEACON_KEY_REF_FLAG_SHIFT   0
+#define MESH_NWK_BEACON_KEY_REF_FLAG_SHIFT 0
 
 /*! Mesh Secure Network Beacon Key Refresh Bit shift */
-#define MESH_NWK_BEACON_IV_UPDT_FLAG_SHIFT   1
+#define MESH_NWK_BEACON_IV_UPDT_FLAG_SHIFT 1
 
 /*! Mesh Secure Network Beacon Network ID start byte. */
-#define MESH_NWK_BEACON_NWK_ID_START_BYTE    2
+#define MESH_NWK_BEACON_NWK_ID_START_BYTE 2
 
 /*! Mesh Secure Network Beacon IV start byte. */
-#define MESH_NWK_BEACON_IV_START_BYTE        10
+#define MESH_NWK_BEACON_IV_START_BYTE 10
 
 /*! Maximum allowed difference between received IV index and local IV index */
-#define MESH_NWK_BEACON_MAX_IV_DIFF          42
+#define MESH_NWK_BEACON_MAX_IV_DIFF 42
 
 #ifdef __cplusplus
 }

@@ -31,7 +31,7 @@
 **************************************************************************************************/
 
 /* Combine BIS statistics; use instantiation in bb_ble_bis_slave.c. */
-extern BbBleDataPktStats_t bbBisStats;    /*!< BIS packet statistics. */
+extern BbBleDataPktStats_t bbBisStats; /*!< BIS packet statistics. */
 
 /*************************************************************************************************/
 /*!
@@ -46,51 +46,50 @@ extern BbBleDataPktStats_t bbBisStats;    /*!< BIS packet statistics. */
  *  Setup for next action in the operation or complete the operation.
  */
 /*************************************************************************************************/
-static void bbMstBisRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp, uint8_t rxPhyOptions)
+static void bbMstBisRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp,
+                                uint8_t rxPhyOptions)
 {
-  BB_ISR_START();
+    BB_ISR_START();
 
-  bbBleCb.evtState += 1;
+    bbBleCb.evtState += 1;
 
-  WSF_ASSERT(BbGetCurrentBod());
+    WSF_ASSERT(BbGetCurrentBod());
 
-  BbOpDesc_t * const pCur = BbGetCurrentBod();
-  BbBleMstBisEvent_t * const pBis = &pCur->prot.pBle->op.mstBis;
+    BbOpDesc_t *const pCur = BbGetCurrentBod();
+    BbBleMstBisEvent_t *const pBis = &pCur->prot.pBle->op.mstBis;
 
-  /* Store initial Rx timestamp, regardless of receive status. */
-  pBis->startTsUsec = timestamp;
+    /* Store initial Rx timestamp, regardless of receive status. */
+    pBis->startTsUsec = timestamp;
 
-  WSF_ASSERT(bbBleCb.pRxDataBuf);
-  uint8_t *pBuf = bbBleCb.pRxDataBuf;
-  bbBleCb.pRxDataBuf = NULL;
+    WSF_ASSERT(bbBleCb.pRxDataBuf);
+    uint8_t *pBuf = bbBleCb.pRxDataBuf;
+    bbBleCb.pRxDataBuf = NULL;
 
-  pBis->rxDataCback(pCur, pBuf, status);
+    pBis->rxDataCback(pCur, pBuf, status);
 
-  if (BbGetBodTerminateFlag())
-  {
-    PalBbBleCancelTifs();
-    BbTerminateBod();
-  }
+    if (BbGetBodTerminateFlag()) {
+        PalBbBleCancelTifs();
+        BbTerminateBod();
+    }
 
-  /* Update statistics. */
-  switch (status)
-  {
+    /* Update statistics. */
+    switch (status) {
     case BB_STATUS_SUCCESS:
-      BB_INC_STAT(bbBisStats.rxData);
-      break;
+        BB_INC_STAT(bbBisStats.rxData);
+        break;
     case BB_STATUS_RX_TIMEOUT:
-      BB_INC_STAT(bbBisStats.rxDataTimeout);
-      break;
+        BB_INC_STAT(bbBisStats.rxDataTimeout);
+        break;
     case BB_STATUS_CRC_FAILED:
-      BB_INC_STAT(bbBisStats.rxDataCrc);
-      break;
+        BB_INC_STAT(bbBisStats.rxDataCrc);
+        break;
     case BB_STATUS_FAILED:
     default:
-      BB_INC_STAT(bbBisStats.errData);
-      break;
-  }
+        BB_INC_STAT(bbBisStats.errData);
+        break;
+    }
 
-  BB_ISR_MARK(bbBisStats.rxIsrUsec);
+    BB_ISR_MARK(bbBisStats.rxIsrUsec);
 }
 
 /*************************************************************************************************/
@@ -103,7 +102,7 @@ static void bbMstBisRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint3
 /*************************************************************************************************/
 static void bbMstCancelBisOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 {
-  PalBbBleCancelData();
+    PalBbBleCancelData();
 }
 
 /*************************************************************************************************/
@@ -116,25 +115,25 @@ static void bbMstCancelBisOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 /*************************************************************************************************/
 static void bbMstExecuteBisOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 {
-  BbBleMstBisEvent_t * const pBis = &pBod->prot.pBle->op.mstBis;
+    BbBleMstBisEvent_t *const pBis = &pBod->prot.pBle->op.mstBis;
 
-  PalBbBleSetChannelParam(&pBle->chan);
+    PalBbBleSetChannelParam(&pBle->chan);
 
-  /* bbBleCb.bbParam.txCback = NULL; */         /* Unused */
-  bbBleCb.bbParam.rxCback = bbMstBisRxCompCback;
-  bbBleCb.bbParam.dueUsec = BbAdjustTime(pBod->dueUsec);
-  bbBleCb.bbParam.rxTimeoutUsec = pBis->rxSyncDelayUsec;
-  PalBbBleSetDataParams(&bbBleCb.bbParam);
+    /* bbBleCb.bbParam.txCback = NULL; */ /* Unused */
+    bbBleCb.bbParam.rxCback = bbMstBisRxCompCback;
+    bbBleCb.bbParam.dueUsec = BbAdjustTime(pBod->dueUsec);
+    bbBleCb.bbParam.rxTimeoutUsec = pBis->rxSyncDelayUsec;
+    PalBbBleSetDataParams(&bbBleCb.bbParam);
 
-  bbBleCb.evtState = 0;
+    bbBleCb.evtState = 0;
 
-  pBis->execCback(pBod);
+    pBis->execCback(pBod);
 
-  if (BbGetBodTerminateFlag() &&    /* Client signaled cancel. */
-      BbGetCurrentBod())            /* Termination still pending. */
-  {
-    BbTerminateBod();
-  }
+    if (BbGetBodTerminateFlag() && /* Client signaled cancel. */
+        BbGetCurrentBod()) /* Termination still pending. */
+    {
+        BbTerminateBod();
+    }
 }
 
 /*************************************************************************************************/
@@ -146,9 +145,9 @@ static void bbMstExecuteBisOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 /*************************************************************************************************/
 void BbBleBisMasterInit(void)
 {
-  bbBleRegisterOp(BB_BLE_OP_MST_BIS_EVENT, bbMstExecuteBisOp, bbMstCancelBisOp);
+    bbBleRegisterOp(BB_BLE_OP_MST_BIS_EVENT, bbMstExecuteBisOp, bbMstCancelBisOp);
 
-  memset(&bbBisStats, 0, sizeof(bbBisStats));
+    memset(&bbBisStats, 0, sizeof(bbBisStats));
 }
 
 /*************************************************************************************************/
@@ -162,24 +161,22 @@ void BbBleBisMasterInit(void)
  *  \param      reAcq       Rx train re-acquisition required.
  */
 /*************************************************************************************************/
-void BbBleBisRxData(uint8_t *pBuf, uint16_t len, uint32_t nextPduTime, PalBbBleChan_t *pNextChan, bool_t reAcq)
+void BbBleBisRxData(uint8_t *pBuf, uint16_t len, uint32_t nextPduTime, PalBbBleChan_t *pNextChan,
+                    bool_t reAcq)
 {
-  WSF_ASSERT(!bbBleCb.pRxDataBuf);
+    WSF_ASSERT(!bbBleCb.pRxDataBuf);
 
-  bbBleCb.pRxDataBuf = pBuf;
-  bbBleCb.rxDataLen = len;
+    bbBleCb.pRxDataBuf = pBuf;
+    bbBleCb.rxDataLen = len;
 
-  bbBleSetAbsIfs(nextPduTime, pNextChan);
+    bbBleSetAbsIfs(nextPduTime, pNextChan);
 
-  if ((bbBleCb.evtState == 0) || reAcq)
-  {
-    PalBbBleRxData(pBuf, len);
-  }
-  else
-  {
-    BB_ISR_MARK(bbBisStats.rxSetupUsec);
-    PalBbBleRxTifsData(pBuf, len);
-  }
+    if ((bbBleCb.evtState == 0) || reAcq) {
+        PalBbBleRxData(pBuf, len);
+    } else {
+        BB_ISR_MARK(bbBisStats.rxSetupUsec);
+        PalBbBleRxTifsData(pBuf, len);
+    }
 }
 
 /*************************************************************************************************/
@@ -194,8 +191,8 @@ void BbBleBisRxData(uint8_t *pBuf, uint16_t len, uint32_t nextPduTime, PalBbBleC
 /*************************************************************************************************/
 void BbBleBisRxDataReAcq(uint32_t syncTime, PalBbBleChan_t *pChan)
 {
-  PalBbBleCancelTifs();
-  bbBleCb.bbParam.dueUsec = syncTime;
-  PalBbBleSetChannelParam(pChan);
-  PalBbBleSetDataParams(&bbBleCb.bbParam);
+    PalBbBleCancelTifs();
+    bbBleCb.bbParam.dueUsec = syncTime;
+    PalBbBleSetChannelParam(pChan);
+    PalBbBleSetDataParams(&bbBleCb.bbParam);
 }

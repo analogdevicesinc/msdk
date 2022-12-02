@@ -39,7 +39,7 @@
 **************************************************************************************************/
 
 #ifndef PAL_SYS_RISCV_LOAD
-#define PAL_SYS_RISCV_LOAD            0
+#define PAL_SYS_RISCV_LOAD 0
 #endif
 
 /**************************************************************************************************
@@ -66,7 +66,7 @@ static uint32_t palSysBusyCount;
 /*************************************************************************************************/
 void PalEnterCs(void)
 {
-  __disable_irq();
+    __disable_irq();
 }
 
 /*************************************************************************************************/
@@ -76,7 +76,7 @@ void PalEnterCs(void)
 /*************************************************************************************************/
 void PalExitCs(void)
 {
-  __enable_irq();
+    __enable_irq();
 }
 
 /*************************************************************************************************/
@@ -86,62 +86,64 @@ void PalExitCs(void)
 /*************************************************************************************************/
 void PalSysInit(void)
 {
-  /* Delay to prevent lockup when debugging */
+    /* Delay to prevent lockup when debugging */
 #ifdef DEBUG
-  volatile int i;
-  for(i = 0; i < 0x3FFFFF; i++) {}
+    volatile int i;
+    for (i = 0; i < 0x3FFFFF; i++) {}
 #endif
 
-  palSysAssertCount = 0;
-  PalSysAssertTrapEnable = TRUE;
-  palSysBusyCount = 0;
+    palSysAssertCount = 0;
+    PalSysAssertTrapEnable = TRUE;
+    palSysBusyCount = 0;
 
-  /* Enable wakeup sources */
-  MXC_PWRSEQ->lppwen |= (MXC_F_PWRSEQ_LPPWEN_CPU1 | MXC_F_PWRSEQ_LPPWEN_UART0 | MXC_F_PWRSEQ_LPPWEN_UART1 |
-                         MXC_F_PWRSEQ_LPPWEN_UART2 | MXC_F_PWRSEQ_LPPWEN_UART3 | MXC_F_PWRSEQ_LPPWEN_TMR0 | MXC_F_PWRSEQ_LPPWEN_TMR1);
+    /* Enable wakeup sources */
+    MXC_PWRSEQ->lppwen |=
+        (MXC_F_PWRSEQ_LPPWEN_CPU1 | MXC_F_PWRSEQ_LPPWEN_UART0 | MXC_F_PWRSEQ_LPPWEN_UART1 |
+         MXC_F_PWRSEQ_LPPWEN_UART2 | MXC_F_PWRSEQ_LPPWEN_UART3 | MXC_F_PWRSEQ_LPPWEN_TMR0 |
+         MXC_F_PWRSEQ_LPPWEN_TMR1);
 
-  PalLedInit();
-  PalLedOff(PAL_LED_ID_ERROR);
-  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  PalCryptoInit();
-  PalRtcInit();
+    PalLedInit();
+    PalLedOff(PAL_LED_ID_ERROR);
+    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+    PalCryptoInit();
+    PalRtcInit();
 
 #ifndef __riscv
 #if PAL_SYS_RISCV_LOAD
 
-  /* Halt the RISCV */
-  MXC_SYS_RISCVShutdown();
+    /* Halt the RISCV */
+    MXC_SYS_RISCVShutdown();
 
 #ifdef DEBUG
-  /* Enable RISCV debugger GPIO */
-  MXC_GPIO_Config(&gpio_cfg_rv_jtag);
+    /* Enable RISCV debugger GPIO */
+    MXC_GPIO_Config(&gpio_cfg_rv_jtag);
 #endif
 
-  /* Initialize the Semaphore peripheral */
-  MXC_SEMA_Init();
-  MXC_SEMA_InitBoxes();
+    /* Initialize the Semaphore peripheral */
+    MXC_SEMA_Init();
+    MXC_SEMA_InitBoxes();
 
-  /* Enable semaphore interrupt and clear state */
-  NVIC_ClearPendingIRQ(RISCV_IRQn);
-  NVIC_EnableIRQ(RISCV_IRQn);
+    /* Enable semaphore interrupt and clear state */
+    NVIC_ClearPendingIRQ(RISCV_IRQn);
+    NVIC_EnableIRQ(RISCV_IRQn);
 
-  /* Start the RISCV core */
-  MXC_SYS_RISCVRun();
+    /* Start the RISCV core */
+    MXC_SYS_RISCVRun();
 
-  /* Give the RISCV time to startup */
-  volatile int j;
-  for(j = 0; j < 0xFFFFFF; j++) {}
+    /* Give the RISCV time to startup */
+    volatile int j;
+    for (j = 0; j < 0xFFFFFF; j++) {}
 
 #endif
 #endif
 
 #ifdef __riscv
-  /* Initialize the Semaphore peripheral */
-  MXC_SEMA_Init();
+    /* Initialize the Semaphore peripheral */
+    MXC_SEMA_Init();
 
-  /* Enable ARM incoming interrupts */
-  NVIC_ClearPendingIRQ(PF_IRQn);
-  NVIC_EnableIRQ(PF_IRQn);
+    /* Enable ARM incoming interrupts */
+    NVIC_ClearPendingIRQ(PF_IRQn);
+    NVIC_EnableIRQ(PF_IRQn);
 
 #endif
 }
@@ -153,12 +155,11 @@ void PalSysInit(void)
 /*************************************************************************************************/
 void PalSysAssertTrap(void)
 {
-
-  PalEnterCs();
-  PalLedOn(PAL_LED_ID_ERROR);
-  palSysAssertCount++;
-  while (PalSysAssertTrapEnable);
-  PalExitCs();
+    PalEnterCs();
+    PalLedOn(PAL_LED_ID_ERROR);
+    palSysAssertCount++;
+    while (PalSysAssertTrapEnable) {}
+    PalExitCs();
 }
 
 /*************************************************************************************************/
@@ -170,7 +171,7 @@ void PalSysAssertTrap(void)
 /*************************************************************************************************/
 void PalSysSetTrap(bool_t enable)
 {
-  PalSysAssertTrapEnable = enable;
+    PalSysAssertTrapEnable = enable;
 }
 
 /*************************************************************************************************/
@@ -180,7 +181,7 @@ void PalSysSetTrap(bool_t enable)
 /*************************************************************************************************/
 uint32_t PalSysGetAssertCount(void)
 {
-  return palSysAssertCount;
+    return palSysAssertCount;
 }
 
 /*************************************************************************************************/
@@ -192,8 +193,8 @@ uint32_t PalSysGetAssertCount(void)
 /*************************************************************************************************/
 uint32_t PalSysGetStackUsage(void)
 {
-  /* Not available; stub routine. */
-  return 0;
+    /* Not available; stub routine. */
+    return 0;
 }
 
 /*************************************************************************************************/
@@ -207,16 +208,16 @@ uint32_t PalSysGetStackUsage(void)
 /*************************************************************************************************/
 void PalSysSleep(void)
 {
-  if (palSysBusyCount) {
-    /* Work pending; do not sleep yet. */
-    return;
-  }
+    if (palSysBusyCount) {
+        /* Work pending; do not sleep yet. */
+        return;
+    }
 
-  #ifdef DEBUG
-  return;
-  #endif
-  
-  MXC_LP_EnterSleepMode();
+#ifdef DEBUG
+    return;
+#endif
+
+    MXC_LP_EnterSleepMode();
 }
 
 /*************************************************************************************************/
@@ -226,9 +227,9 @@ void PalSysSleep(void)
 /*************************************************************************************************/
 void PalSysSetBusy(void)
 {
-  PalEnterCs();
-  palSysBusyCount++;
-  PalExitCs();
+    PalEnterCs();
+    palSysBusyCount++;
+    PalExitCs();
 }
 
 /*************************************************************************************************/
@@ -238,11 +239,11 @@ void PalSysSetBusy(void)
 /*************************************************************************************************/
 void PalSysSetIdle(void)
 {
-  PalEnterCs();
-  if (palSysBusyCount) {
-    palSysBusyCount--;
-  }
-  PalExitCs();
+    PalEnterCs();
+    if (palSysBusyCount) {
+        palSysBusyCount--;
+    }
+    PalExitCs();
 }
 
 /*************************************************************************************************/
@@ -254,9 +255,9 @@ void PalSysSetIdle(void)
 /*************************************************************************************************/
 bool_t PalSysIsBusy(void)
 {
-  bool_t sysIsBusy = FALSE;
-  PalEnterCs();
-  sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
-  PalExitCs();
-  return sysIsBusy;
+    bool_t sysIsBusy = FALSE;
+    PalEnterCs();
+    sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
+    PalExitCs();
+    return sysIsBusy;
 }

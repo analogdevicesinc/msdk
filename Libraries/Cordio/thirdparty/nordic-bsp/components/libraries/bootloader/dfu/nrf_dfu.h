@@ -60,9 +60,7 @@
 extern "C" {
 #endif
 
-
 #define NRF_DFU_SCHED_EVENT_DATA_SIZE (sizeof(nrf_dfu_request_t))
-
 
 /** @brief Function for initializing a DFU operation.
  *
@@ -74,7 +72,6 @@ extern "C" {
  * @retval  NRF_SUCCESS     If the DFU operation was successfully initialized.
  */
 uint32_t nrf_dfu_init(nrf_dfu_observer_t observer);
-
 
 #ifdef __cplusplus
 }

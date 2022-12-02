@@ -44,13 +44,13 @@
 /*************************************************************************************************/
 uint8_t LhciPackCmdStatusEvt(uint8_t *pBuf, uint8_t status, uint16_t opCode)
 {
-  const uint8_t len = HCI_LEN_CMD_STATUS;
+    const uint8_t len = HCI_LEN_CMD_STATUS;
 
-  UINT8_TO_BSTREAM (pBuf, status);
-  UINT8_TO_BSTREAM (pBuf, 1);       /* Num_HCI_Command_Packets is always 1 */
-  UINT16_TO_BSTREAM(pBuf, opCode);
+    UINT8_TO_BSTREAM(pBuf, status);
+    UINT8_TO_BSTREAM(pBuf, 1); /* Num_HCI_Command_Packets is always 1 */
+    UINT16_TO_BSTREAM(pBuf, opCode);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -65,12 +65,12 @@ uint8_t LhciPackCmdStatusEvt(uint8_t *pBuf, uint8_t status, uint16_t opCode)
 /*************************************************************************************************/
 uint8_t LhciPackCmdCompleteEvt(uint8_t *pBuf, uint16_t opCode)
 {
-  const uint8_t len = HCI_LEN_CMD_CMPL;
+    const uint8_t len = HCI_LEN_CMD_CMPL;
 
-  UINT8_TO_BSTREAM (pBuf, 1);       /* Num_HCI_Command_Packets is always 1 */
-  UINT16_TO_BSTREAM(pBuf, opCode);
+    UINT8_TO_BSTREAM(pBuf, 1); /* Num_HCI_Command_Packets is always 1 */
+    UINT16_TO_BSTREAM(pBuf, opCode);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -85,11 +85,11 @@ uint8_t LhciPackCmdCompleteEvt(uint8_t *pBuf, uint16_t opCode)
 /*************************************************************************************************/
 uint8_t LhciPackCmdCompleteEvtStatus(uint8_t *pBuf, uint8_t status)
 {
-  const uint8_t len = sizeof(uint8_t);
+    const uint8_t len = sizeof(uint8_t);
 
-  UINT8_TO_BSTREAM (pBuf, status);
+    UINT8_TO_BSTREAM(pBuf, status);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -103,60 +103,52 @@ uint8_t LhciPackCmdCompleteEvtStatus(uint8_t *pBuf, uint8_t status)
 /*************************************************************************************************/
 bool_t lhciLlEvtHandler(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
-  bool_t evtSent = TRUE;
-  unsigned int msg = 0;
+    uint8_t *pEvtBuf = NULL;
+    bool_t evtSent = TRUE;
+    unsigned int msg = 0;
 
-  WSF_ASSERT(lhciEvtTbl[LHCI_MSG_ADV]);    /* proper init guarantees this handler exists. */
+    WSF_ASSERT(lhciEvtTbl[LHCI_MSG_ADV]); /* proper init guarantees this handler exists. */
 
-  /* Standard event handlers. */
-  do
-  {
-    if (lhciEvtTbl[msg] && lhciEvtTbl[msg](pEvt))
-    {
-      break;
-    }
-  } while (++msg < LHCI_MSG_TOTAL);
-
-  /* Unhandled events. */
-  if (msg == LHCI_MSG_TOTAL)
-  {
-    switch (pEvt->hdr.event)
-    {
-      case LL_RESET_CNF:
-        lhciReset();
-
-        if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + LHCI_LEN_RESET_EVT)) != NULL)
-        {
-          uint8_t *pBuf = pEvtBuf;
-          pBuf += LhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_RESET);
-          lhciPackCmdCompleteEvtStatus(pBuf, pEvt->hdr.status);
+    /* Standard event handlers. */
+    do {
+        if (lhciEvtTbl[msg] && lhciEvtTbl[msg](pEvt)) {
+            break;
         }
-        break;
+    } while (++msg < LHCI_MSG_TOTAL);
 
-      case LL_ERROR_IND:
-        if ((pEvtBuf = lhciAllocEvt(HCI_HW_ERROR_EVT, HCI_LEN_HW_ERR)) != NULL)
-        {
-          UINT8_TO_BSTREAM(pEvtBuf, pEvt->hwErrorInd.code);
+    /* Unhandled events. */
+    if (msg == LHCI_MSG_TOTAL) {
+        switch (pEvt->hdr.event) {
+        case LL_RESET_CNF:
+            lhciReset();
+
+            if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + LHCI_LEN_RESET_EVT)) !=
+                NULL) {
+                uint8_t *pBuf = pEvtBuf;
+                pBuf += LhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_RESET);
+                lhciPackCmdCompleteEvtStatus(pBuf, pEvt->hdr.status);
+            }
+            break;
+
+        case LL_ERROR_IND:
+            if ((pEvtBuf = lhciAllocEvt(HCI_HW_ERROR_EVT, HCI_LEN_HW_ERR)) != NULL) {
+                UINT8_TO_BSTREAM(pEvtBuf, pEvt->hwErrorInd.code);
+            }
+            break;
+
+        default:
+            break;
         }
-        break;
 
-      default:
-        break;
+        if (pEvtBuf) {
+            lhciSendEvt(pEvtBuf);
+        } else {
+            LL_TRACE_WARN1("Unhandled, allocation failed or masked LL event=%u", pEvt->hdr.event);
+            evtSent = FALSE;
+        }
     }
 
-    if (pEvtBuf)
-    {
-      lhciSendEvt(pEvtBuf);
-    }
-    else
-    {
-      LL_TRACE_WARN1("Unhandled, allocation failed or masked LL event=%u", pEvt->hdr.event);
-      evtSent = FALSE;
-    }
-  }
-
-  return evtSent;
+    return evtSent;
 }
 
 /*************************************************************************************************/
@@ -168,15 +160,13 @@ bool_t lhciLlEvtHandler(LlEvt_t *pEvt)
 /*************************************************************************************************/
 void LhciSendEvent(uint8_t *pBuf)
 {
-  if (pBuf != NULL)
-  {
-    WsfMsgEnq(&lhciPersistCb.evtQ, 0, pBuf);
-  }
+    if (pBuf != NULL) {
+        WsfMsgEnq(&lhciPersistCb.evtQ, 0, pBuf);
+    }
 
-  if (!lhciPersistCb.evtTrPending)
-  {
-    ChciTrNeedsService(CHCI_TR_PROT_BLE);
-  }
+    if (!lhciPersistCb.evtTrPending) {
+        ChciTrNeedsService(CHCI_TR_PROT_BLE);
+    }
 }
 
 /*************************************************************************************************/
@@ -188,7 +178,7 @@ void LhciSendEvent(uint8_t *pBuf)
 /*************************************************************************************************/
 bool_t LhciIsEventPending(void)
 {
-  return lhciPersistCb.evtTrPending;
+    return lhciPersistCb.evtTrPending;
 }
 
 /*************************************************************************************************/
@@ -203,14 +193,13 @@ bool_t LhciIsEventPending(void)
 /*************************************************************************************************/
 uint8_t *lhciAllocEvt(uint8_t evtCode, uint8_t paramLen)
 {
-  uint8_t *pEvtBuf;
+    uint8_t *pEvtBuf;
 
-  if ((pEvtBuf = WsfMsgAlloc(HCI_EVT_HDR_LEN + paramLen)) != NULL)
-  {
-    pEvtBuf += lhciPackEvtHdr(pEvtBuf, evtCode, paramLen);
-  }
+    if ((pEvtBuf = WsfMsgAlloc(HCI_EVT_HDR_LEN + paramLen)) != NULL) {
+        pEvtBuf += lhciPackEvtHdr(pEvtBuf, evtCode, paramLen);
+    }
 
-  return pEvtBuf;
+    return pEvtBuf;
 }
 
 /*************************************************************************************************/
@@ -225,15 +214,14 @@ uint8_t *lhciAllocEvt(uint8_t evtCode, uint8_t paramLen)
 /*************************************************************************************************/
 uint8_t *lhciAllocCmdCmplEvt(uint8_t paramLen, uint16_t opCode)
 {
-  uint8_t *pEvtBuf;
+    uint8_t *pEvtBuf;
 
-  if ((pEvtBuf = WsfMsgAlloc(HCI_EVT_HDR_LEN + HCI_LEN_CMD_CMPL + paramLen)) != NULL)
-  {
-    pEvtBuf += lhciPackEvtHdr(pEvtBuf, HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + paramLen);
-    pEvtBuf += lhciPackCmdCompleteEvt(pEvtBuf, opCode);
-  }
+    if ((pEvtBuf = WsfMsgAlloc(HCI_EVT_HDR_LEN + HCI_LEN_CMD_CMPL + paramLen)) != NULL) {
+        pEvtBuf += lhciPackEvtHdr(pEvtBuf, HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + paramLen);
+        pEvtBuf += lhciPackCmdCompleteEvt(pEvtBuf, opCode);
+    }
 
-  return pEvtBuf;
+    return pEvtBuf;
 }
 
 /*************************************************************************************************/
@@ -249,10 +237,10 @@ uint8_t *lhciAllocCmdCmplEvt(uint8_t paramLen, uint16_t opCode)
 /*************************************************************************************************/
 uint8_t LhciPackEvtHdr(uint8_t *pBuf, uint8_t evtCode, uint8_t paramLen)
 {
-  const uint8_t len = HCI_EVT_HDR_LEN;
+    const uint8_t len = HCI_EVT_HDR_LEN;
 
-  UINT8_TO_BSTREAM(pBuf, evtCode);
-  UINT8_TO_BSTREAM(pBuf, paramLen);
+    UINT8_TO_BSTREAM(pBuf, evtCode);
+    UINT8_TO_BSTREAM(pBuf, paramLen);
 
-  return len;
+    return len;
 }

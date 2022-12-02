@@ -37,10 +37,9 @@ Data Types
 **************************************************************************************************/
 
 /* Control block. */
-typedef struct
-{
-  bool_t  svcChangedCccdIdxSet; /* Check if Service Changed CCCD index has been initialized. */
-  uint8_t svcChangedCccdIdx;    /* Stored index of Service Changed CCCD. */
+typedef struct {
+    bool_t svcChangedCccdIdxSet; /* Check if Service Changed CCCD index has been initialized. */
+    uint8_t svcChangedCccdIdx; /* Stored index of Service Changed CCCD. */
 } gattServCb_t;
 
 /**************************************************************************************************
@@ -53,32 +52,19 @@ gattServCb_t gattServCb;
 /*! GATT service characteristics for discovery */
 
 /*! Service changed */
-static const attcDiscChar_t gattSc =
-{
-  attScChUuid,
-  0
-};
+static const attcDiscChar_t gattSc = { attScChUuid, 0 };
 
 /*! Service changed client characteristic configuration descriptor */
-static const attcDiscChar_t gattScCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t gattScCcc = { attCliChCfgUuid, ATTC_SET_DESCRIPTOR };
 
 /*! Client supported features */
-static const attcDiscChar_t gattCsf =
-{
-  attGattCsfChUuid,
-  0
-};
+static const attcDiscChar_t gattCsf = { attGattCsfChUuid, 0 };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *gattDiscCharList[] =
-{
-  &gattSc,                    /* Service changed */
-  &gattScCcc,                 /* Service changed client characteristic configuration descriptor */
-  &gattCsf                    /* Client supported features */
+static const attcDiscChar_t *gattDiscCharList[] = {
+    &gattSc, /* Service changed */
+    &gattScCcc, /* Service changed client characteristic configuration descriptor */
+    &gattCsf /* Client supported features */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
@@ -98,8 +84,8 @@ WSF_CT_ASSERT(GATT_HDL_LIST_LEN == ((sizeof(gattDiscCharList) / sizeof(attcDiscC
 /*************************************************************************************************/
 void GattDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attGattSvcUuid,
-                     GATT_HDL_LIST_LEN, (attcDiscChar_t **) gattDiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attGattSvcUuid, GATT_HDL_LIST_LEN,
+                       (attcDiscChar_t **)gattDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -117,21 +103,19 @@ void GattDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 uint8_t GattValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 {
-  uint8_t status = ATT_SUCCESS;
+    uint8_t status = ATT_SUCCESS;
 
-  /* service changed */
-  if (pMsg->handle == pHdlList[GATT_SC_HDL_IDX])
-  {
-    /* perform service changed */
-    AppDiscServiceChanged(pMsg);
-  }
-  /* handle not found in list */
-  else
-  {
-    status = ATT_ERR_NOT_FOUND;
-  }
+    /* service changed */
+    if (pMsg->handle == pHdlList[GATT_SC_HDL_IDX]) {
+        /* perform service changed */
+        AppDiscServiceChanged(pMsg);
+    }
+    /* handle not found in list */
+    else {
+        status = ATT_ERR_NOT_FOUND;
+    }
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -145,8 +129,8 @@ uint8_t GattValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 /*************************************************************************************************/
 void GattSetSvcChangedIdx(uint8_t idx)
 {
-  gattServCb.svcChangedCccdIdxSet = TRUE;
-  gattServCb.svcChangedCccdIdx = idx;
+    gattServCb.svcChangedCccdIdxSet = TRUE;
+    gattServCb.svcChangedCccdIdx = idx;
 }
 
 /*************************************************************************************************/
@@ -163,38 +147,31 @@ void GattSetSvcChangedIdx(uint8_t idx)
 /*************************************************************************************************/
 void GattSendServiceChangedInd(dmConnId_t connId, uint16_t start, uint16_t end)
 {
-  uint8_t svcChangedValues[4];
-  uint8_t *p;
+    uint8_t svcChangedValues[4];
+    uint8_t *p;
 
-  if (!gattServCb.svcChangedCccdIdxSet)
-  {
-    return;
-  }
-
-  p = svcChangedValues;
-  UINT16_TO_BSTREAM(p, start);
-  UINT16_TO_BSTREAM(p, end);
-
-  /* If connection is not specified */
-  if (connId == DM_CONN_ID_NONE)
-  {
-    /* Send to all. */
-    for (connId = 1; connId <= DM_CONN_MAX; connId++)
-    {
-      if (AttsCccEnabled(connId, gattServCb.svcChangedCccdIdx))
-      {
-        AttsHandleValueInd(connId, GATT_SC_HDL, sizeof(svcChangedValues), svcChangedValues);
-      }
+    if (!gattServCb.svcChangedCccdIdxSet) {
+        return;
     }
-  }
-  else
-  {
-    /* Send to only this one. */
-    if (AttsCccEnabled(connId, gattServCb.svcChangedCccdIdx))
-    {
-      AttsHandleValueInd(connId, GATT_SC_HDL, sizeof(svcChangedValues), svcChangedValues);
+
+    p = svcChangedValues;
+    UINT16_TO_BSTREAM(p, start);
+    UINT16_TO_BSTREAM(p, end);
+
+    /* If connection is not specified */
+    if (connId == DM_CONN_ID_NONE) {
+        /* Send to all. */
+        for (connId = 1; connId <= DM_CONN_MAX; connId++) {
+            if (AttsCccEnabled(connId, gattServCb.svcChangedCccdIdx)) {
+                AttsHandleValueInd(connId, GATT_SC_HDL, sizeof(svcChangedValues), svcChangedValues);
+            }
+        }
+    } else {
+        /* Send to only this one. */
+        if (AttsCccEnabled(connId, gattServCb.svcChangedCccdIdx)) {
+            AttsHandleValueInd(connId, GATT_SC_HDL, sizeof(svcChangedValues), svcChangedValues);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -210,25 +187,22 @@ void GattSendServiceChangedInd(dmConnId_t connId, uint16_t start, uint16_t end)
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t GattReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                      uint16_t offset, attsAttr_t *pAttr)
+uint8_t GattReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                      attsAttr_t *pAttr)
 {
-  switch (handle)
-  {
-    case GATT_CSF_HDL:
-    {
-      uint8_t csf[ATT_CSF_LEN];
+    switch (handle) {
+    case GATT_CSF_HDL: {
+        uint8_t csf[ATT_CSF_LEN];
 
-      AttsCsfGetFeatures(connId, csf, sizeof(csf));
-      memcpy(pAttr->pValue, csf, ATT_CSF_LEN);
-    }
-    break;
+        AttsCsfGetFeatures(connId, csf, sizeof(csf));
+        memcpy(pAttr->pValue, csf, ATT_CSF_LEN);
+    } break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -246,21 +220,20 @@ uint8_t GattReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t GattWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                       uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+uint8_t GattWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                       uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-  uint8_t status;
+    uint8_t status;
 
-  switch (handle)
-  {
+    switch (handle) {
     case GATT_CSF_HDL:
-      status = AttsCsfWriteFeatures(connId, offset, len, pValue);
-      break;
+        status = AttsCsfWriteFeatures(connId, offset, len, pValue);
+        break;
 
     default:
-      status = ATT_SUCCESS;
-      break;
-  }
+        status = ATT_SUCCESS;
+        break;
+    }
 
-  return status;
+    return status;
 }

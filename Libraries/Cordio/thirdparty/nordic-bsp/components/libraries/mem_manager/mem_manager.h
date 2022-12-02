@@ -67,7 +67,6 @@
 extern "C" {
 #endif
 
-
 /**@brief Initializes Memory Manager.
  *
  * @details API to initialize the Memory Manager. Always call this API before using any of the other
@@ -80,7 +79,6 @@ extern "C" {
  *            module.
  */
 uint32_t nrf_mem_init(void);
-
 
 /**@brief Reserves a block of memory for the application.
  *
@@ -104,8 +102,7 @@ uint32_t nrf_mem_init(void);
  *                                     support.
  * @retval     NRF_ERROR_NO_MEM        If there is no memory available of the requested size.
  */
-uint32_t nrf_mem_reserve(uint8_t ** pp_buffer, uint32_t * p_size);
-
+uint32_t nrf_mem_reserve(uint8_t **pp_buffer, uint32_t *p_size);
 
 /**@brief 'malloc' styled memory allocation function.
  *
@@ -115,8 +112,7 @@ uint32_t nrf_mem_reserve(uint8_t ** pp_buffer, uint32_t * p_size);
  *
  * @retval     Valid memory location if the procedure was successful, else, NULL.
  */
-void * nrf_malloc(uint32_t size);
-
+void *nrf_malloc(uint32_t size);
 
 /**@brief 'calloc' styled memory allocation function.
  *
@@ -127,8 +123,7 @@ void * nrf_malloc(uint32_t size);
  *
  * @retval     Valid, zero-initialized memory location if the procedure was successful, else, NULL.
  */
-void * nrf_calloc(uint32_t nmemb, uint32_t size);
-
+void *nrf_calloc(uint32_t nmemb, uint32_t size);
 
 /**@brief Free allocated memory - standard 'free' styles API.
  *
@@ -136,8 +131,7 @@ void * nrf_calloc(uint32_t nmemb, uint32_t size);
  *
  * @param[out] p_buffer   Pointer to the memory block that is being freed.
  */
-void nrf_free(void * p_buffer);
-
+void nrf_free(void *p_buffer);
 
 /**@brief Memory reallocation (trim) function.
  *
@@ -149,7 +143,7 @@ void nrf_free(void * p_buffer);
  *
  * @retval    Pointer to memory location with trimmed size, else, NULL.
  */
-void * nrf_realloc(void *p_buffer, uint32_t size);
+void *nrf_realloc(void *p_buffer, uint32_t size);
 
 #ifdef MEM_MANAGER_ENABLE_DIAGNOSTICS
 
@@ -165,7 +159,6 @@ void * nrf_realloc(void *p_buffer, uint32_t size);
 void nrf_mem_diagnose(void);
 
 #endif // MEM_MANAGER_ENABLE_DIAGNOSTICS
-
 
 #ifdef __cplusplus
 }

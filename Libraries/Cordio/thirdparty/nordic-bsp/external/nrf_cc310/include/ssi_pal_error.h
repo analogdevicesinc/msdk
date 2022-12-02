@@ -32,7 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 #ifndef _SSI_PAL_ERROR_H
 #define _SSI_PAL_ERROR_H
 
@@ -46,32 +45,31 @@
 */
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*! PAL error base.*/
-#define SASI_PAL_BASE_ERROR                0x0F000000
+#define SASI_PAL_BASE_ERROR 0x0F000000
 
 /* Memory error returns */
 /*! Buffer 1 is greater than buffer 2 error.*/
-#define SASI_PAL_MEM_BUF1_GREATER          SASI_PAL_BASE_ERROR + 0x01UL
+#define SASI_PAL_MEM_BUF1_GREATER SASI_PAL_BASE_ERROR + 0x01UL
 /*! Buffer 2 is greater than buffer 1 error.*/
-#define SASI_PAL_MEM_BUF2_GREATER          SASI_PAL_BASE_ERROR + 0x02UL
+#define SASI_PAL_MEM_BUF2_GREATER SASI_PAL_BASE_ERROR + 0x02UL
 
 /* Semaphore error returns */
 /*! Semaphor creation failed.*/
-#define SASI_PAL_SEM_CREATE_FAILED         SASI_PAL_BASE_ERROR + 0x03UL
+#define SASI_PAL_SEM_CREATE_FAILED SASI_PAL_BASE_ERROR + 0x03UL
 /*! Semaphor deletion failed.*/
-#define SASI_PAL_SEM_DELETE_FAILED         SASI_PAL_BASE_ERROR + 0x04UL
+#define SASI_PAL_SEM_DELETE_FAILED SASI_PAL_BASE_ERROR + 0x04UL
 /*! Semaphor reached timeout.*/
-#define SASI_PAL_SEM_WAIT_TIMEOUT          SASI_PAL_BASE_ERROR + 0x05UL
+#define SASI_PAL_SEM_WAIT_TIMEOUT SASI_PAL_BASE_ERROR + 0x05UL
 /*! Semaphor wait failed.*/
-#define SASI_PAL_SEM_WAIT_FAILED           SASI_PAL_BASE_ERROR + 0x06UL
+#define SASI_PAL_SEM_WAIT_FAILED SASI_PAL_BASE_ERROR + 0x06UL
 /*! Semaphor release failed.*/
-#define SASI_PAL_SEM_RELEASE_FAILED        SASI_PAL_BASE_ERROR + 0x07UL
+#define SASI_PAL_SEM_RELEASE_FAILED SASI_PAL_BASE_ERROR + 0x07UL
 /*! PAL illegal address.*/
-#define SASI_PAL_ILLEGAL_ADDRESS       SASI_PAL_BASE_ERROR + 0x08UL
+#define SASI_PAL_ILLEGAL_ADDRESS SASI_PAL_BASE_ERROR + 0x08UL
 
 #ifdef __cplusplus
 }
@@ -80,5 +78,3 @@ extern "C"
 @}
  */
 #endif
-
-

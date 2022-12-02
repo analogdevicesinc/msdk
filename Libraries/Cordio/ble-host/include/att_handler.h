@@ -53,7 +53,6 @@ extern "C" {
 /*************************************************************************************************/
 void AttHandlerInit(wsfHandlerId_t handlerId);
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for ATT.
@@ -68,7 +67,7 @@ void AttHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 /**@}*/
 
-/*! \} */    /* STACK_EVENT */
+/*! \} */ /* STACK_EVENT */
 
 #ifdef __cplusplus
 };
