@@ -214,7 +214,7 @@
           </field>
           <field>
             <name>VDDBMON_DIS</name>
-            <description>VDDB Monitor Disable. This bit controls the Power-On Reset monitor on VDDB supply in all operating mods.</description>
+            <description>VDDB Power-On Reset Monitor Disable. This bit controls the Power-On Reset monitor on VDDB supply in all operating mods.</description>
             <bitOffset>27</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -233,15 +233,15 @@
         </fields>
       </register>
       <register>
-        <name>LPWKFL0</name>
+        <name>LPWKST0</name>
         <description>Low Power I/O Wakeup Status Register 0. This register indicates the low power wakeup status for GPIO0.</description>
         <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
-            <description>Wakeup Flags.</description>
+            <name>ST</name>
+            <description>Wakeup IRQ flags (write ones to clear). One or more of these bits will be set when the corresponding dedicated GPIO pin (s) transition (s) from low to high or high to low. If GPIO wakeup source is selected, using PM.GPIOWKEN register, and the corresponding bit is also selected in LPWKEN register, an interrupt will be gnerated to wake up the CPU from a low power mode.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>31</bitWidth>
+            <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
@@ -251,15 +251,15 @@
         <addressOffset>0x08</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>EN</name>
             <description>Enable wakeup. These bits allow wakeup from the corresponding GPIO pin (s) on transition (s) from low to high or high to low when PM.GPIOWKEN is set. Wakeup status is indicated in PPWKST register.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>31</bitWidth>
           </field>
         </fields>
       </register>
-      <register derivedFrom="LPWKFL0">
-        <name>LPWKFL1</name>
+      <register derivedFrom="LPWKST0">
+        <name>LPWKST1</name>
         <description>Low Power I/O Wakeup Status Register 1. This register indicates the low power wakeup status for GPIO1.</description>
         <addressOffset>0x0C</addressOffset>
       </register>
@@ -268,8 +268,8 @@
         <description>Low Power I/O Wakeup Enable Register 1. This register enables low power wakeup functionality for GPIO1.</description>
         <addressOffset>0x10</addressOffset>
       </register>
-      <register derivedFrom="LPWKFL0">
-        <name>LPWKFL2</name>
+      <register derivedFrom="LPWKST0">
+        <name>LPWKST2</name>
         <description>Low Power I/O Wakeup Status Register 2. This register indicates the low power wakeup status for GPIO2.</description>
         <addressOffset>0x14</addressOffset>
       </register>
@@ -278,8 +278,8 @@
         <description>Low Power I/O Wakeup Enable Register 2. This register enables low power wakeup functionality for GPIO2.</description>
         <addressOffset>0x18</addressOffset>
       </register>
-      <register derivedFrom="LPWKFL0">
-        <name>LPWKFL3</name>
+      <register derivedFrom="LPWKST0">
+        <name>LPWKST3</name>
         <description>Low Power I/O Wakeup Status Register 3. This register indicates the low power wakeup status for GPIO3.</description>
         <addressOffset>0x1C</addressOffset>
       </register>
@@ -289,7 +289,7 @@
         <addressOffset>0x20</addressOffset>
       </register>
       <register>
-        <name>LPPWKFL</name>
+        <name>LPPWKST</name>
         <description>Low Power Peripheral Wakeup Status Register.</description>
         <addressOffset>0x30</addressOffset>
         <fields>
@@ -306,26 +306,26 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>SDMA0</name>
-            <description>Smart DMA 0 Detect Wakeup Flag.</description>
+            <name>HA0</name>
+            <description>Hardware Accelerator 0 Detect Wakeup Status Flag</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>BACKUP</name>
+            <name>BBMOD</name>
             <description>Battery Back Wakeup Flag (write one to clear). This bit will be set when exiting Battery Backup Mode.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RESET</name>
+            <name>RST</name>
             <description>Reset Detect Wakeup Flag (write one to clear). This bit will be set when the external reset causes wakeup</description>
             <bitOffset>17</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>SDMA1</name>
-            <description>Smart DMA 1 Detect Wakeup Flag.</description>
+            <description>Smart DMA (1) Detect Wakeup Flag (write one to clear). This bit will be set when the SDMA IRQ transitions from low to high or high to low</description>
             <bitOffset>18</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -350,13 +350,13 @@
           </field>
           <field>
             <name>SDMA0</name>
-            <description>Smart DMA 0 Wakep Enable.</description>
+            <description>Smart DMA Wakeup Enable. This bit allows wakeup from the Smart DMA IRQ.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>SDMA1</name>
-            <description>Smart DMA 1 Wakep Enable.</description>
+            <description>Smart DMA Wakeup Enable. This bit allows wakeup from the Smart DMA IRQ.</description>
             <bitOffset>18</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -440,7 +440,43 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ICC</name>
+            <name>RAM4</name>
+            <description>System RAM block 4 Shut Down.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM5</name>
+            <description>System RAM block 5 Shut Down.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ICACHE</name>
             <description>Instruction Cache RAM Shut Down.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
@@ -458,7 +494,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ICCXIP</name>
+            <name>ICACHEXIP</name>
             <description>XiP Instruction Cache RAM Shut Down.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
@@ -476,27 +512,9 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>EMCC</name>
+            <name>SRCC</name>
             <description>System Cache RAM Shut Down.</description>
             <bitOffset>9</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>normal</name>
-                <description>Normal Operating Mode.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>shutdown</name>
-                <description>Shutdown Mode.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>MEU</name>
-            <description>MEU MEM Shut Down.</description>
-            <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
@@ -533,24 +551,6 @@
             <name>ROM</name>
             <description>ROM Shut Down.</description>
             <bitOffset>12</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>normal</name>
-                <description>Normal Operating Mode.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>shutdown</name>
-                <description>Shutdown Mode.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>MAA</name>
-            <description>MAA Shut Down.</description>
-            <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
