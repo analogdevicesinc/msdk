@@ -137,7 +137,7 @@ The MSDK installer is available for supported Operating Systems via the links be
 7. You should now see the contents of the installation directory populated with the MSDK.  
    **Note:** On MacOS, some [additional steps](#completing-the-installation-on-macos) are required.
 
-   ![Figure 10](res/Fig10.jpg)
+    ![Figure 10](res/Fig10.jpg)
 
 #### Completing the Installation on MacOS
 
@@ -1492,7 +1492,7 @@ The MSDK contains a large number of **libraries**, both third-party and in-house
 
 These libraries may also offer their _own_ Build Configuration Variables in addition to those already available in the [Build System](#build-system).  These additional build options are enabled alongside the library itself via a convenient *toggle switch* (See the **"Libraries"** section of the _[Build Configuration Variables](#build-configuration-variables-reference-table)_).
 
-Source code is located in the [Libraries](Libraries) folder of the SDK and managed with the [`Libraries/libs.mk`](Libraries/libs.mk) file, which comes pre-included in each example project.
+Source code is located in the [Libraries](Libraries) folder of the SDK and managed with the `Libraries/libs.mk` file, which comes pre-included in each example project.
 
 ### CMSIS-DSP
 
