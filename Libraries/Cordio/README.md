@@ -43,6 +43,22 @@ MAX32665 controller subsystem
 
 Consult the [Bluetooth Qualification Process](https://www.bluetooth.com/develop-with-bluetooth/qualification-listing) for further details regarding certification.
 
+## Supported Features
+
+* **LE Dual Mode Topology:** Advertise/Scan while maintaining multiple adjacent connections.
+* **2M PHY:** High speed PHY with 2 Mbps symbol rate.
+* **Coded PHY:** Forward error correction, 125 kbps or 500 kbps symbol rate.
+* **Extended Advertising:** Enhanced advertising and scanning.
+* **Periodic Advertising:** Broadcasting and receiving periodic advertisements.
+* **EATT:** Enhanced Attribute protocol.
+* **LE Secure Connections:** LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation.
+* **Data Length Extension:** Extend the maximum data length supported in a connection.
+* **LE Power Control:** Dynamic TX power control.
+
+## Features in development
+* **Direction finding:** Detect the direction of the incoming signal. Also known as Angle of Arrival (AoA) and Angle of Departure (AoD). Hardware support on MAX32655 and MAX32690, unavailable on MAX32665, software in development. 
+* **LE Audio:** Isochronous audio with Bluetooth LE. Hardare support on all platforms, software in development. 
+
 ## Frequently asked questions
 
 ### How do I change the advertising parameters?
