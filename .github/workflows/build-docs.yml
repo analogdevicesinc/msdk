@@ -142,3 +142,8 @@ jobs:
           cp -r res Documentation/
 
           mkdocs build
+          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: docs
