@@ -54,6 +54,7 @@ Consult the [Bluetooth Qualification Process](https://www.bluetooth.com/develop-
 * **LE Secure Connections:** LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation.
 * **Data Length Extension:** Extend the maximum data length supported in a connection.
 * **LE Power Control:** Dynamic TX power control.
+* **\*OTA firmware update:** Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples and the ADI Attach smart phone app for details.
 
 ## Features in development
 * **Direction finding:** Detect the direction of the incoming signal. Also known as Angle of Arrival (AoA) and Angle of Departure (AoD). Hardware support on MAX32655 and MAX32690, unavailable on MAX32665, software in development. 
@@ -131,6 +132,8 @@ To enter the lowest power states, refer to the BLE_FreeRTOS application. This wi
 
 ### How do I send unformatted data like a UART?
 Unfortunatly there is not a Bluetooth SIG defined standard for this protocol. This stack has a proprietary data transfer service that is used to transmit unformatted data between devices. Refer to the BLE_dats (BLE Data Server) for the peripheral application. You can connect to this device with the BLE_datc (BLE data client) application to see simple data transmission. Refer to the BLE_dats and BLE_dats [README](docs/Applications/BLE_datc_dats.md) for more information.
+
+### How do I additional tasks and handlers to the WSF RTOS?
 
 ## Additional Documentation
 The Cordio architecture is described [here](docs/ARCHITECTURE.md). 
