@@ -4,8 +4,6 @@ name: Build & Deploy Docs
 on:
   push:
     branches: [ "release" ]
-  pull_request:
-    branches: [ "release" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
