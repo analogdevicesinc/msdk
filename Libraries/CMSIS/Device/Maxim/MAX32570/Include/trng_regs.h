@@ -88,8 +88,8 @@ extern "C" {
  * Structure type to access the TRNG Registers.
  */
 typedef struct {
-    __IO uint32_t cn;                   /**< <tt>\b 0x00:</tt> TRNG CN Register */
-    __I  uint32_t st;                   /**< <tt>\b 0x04:</tt> TRNG ST Register */
+    __IO uint32_t ctrl;                 /**< <tt>\b 0x00:</tt> TRNG CTRL Register */
+    __I  uint32_t status;               /**< <tt>\b 0x04:</tt> TRNG STATUS Register */
     __I  uint32_t data;                 /**< <tt>\b 0x08:</tt> TRNG DATA Register */
 } mxc_trng_regs_t;
 
@@ -100,42 +100,39 @@ typedef struct {
  * @brief      TRNG Peripheral Register Offsets from the TRNG Base Peripheral Address.
  * @{
  */
-#define MXC_R_TRNG_CN                      ((uint32_t)0x00000000UL) /**< Offset from TRNG Base Address: <tt> 0x0000</tt> */
-#define MXC_R_TRNG_ST                      ((uint32_t)0x00000004UL) /**< Offset from TRNG Base Address: <tt> 0x0004</tt> */
+#define MXC_R_TRNG_CTRL                    ((uint32_t)0x00000000UL) /**< Offset from TRNG Base Address: <tt> 0x0000</tt> */
+#define MXC_R_TRNG_STATUS                  ((uint32_t)0x00000004UL) /**< Offset from TRNG Base Address: <tt> 0x0004</tt> */
 #define MXC_R_TRNG_DATA                    ((uint32_t)0x00000008UL) /**< Offset from TRNG Base Address: <tt> 0x0008</tt> */
 /**@} end of group trng_registers */
 
 /**
  * @ingroup  trng_registers
- * @defgroup TRNG_CN TRNG_CN
+ * @defgroup TRNG_CTRL TRNG_CTRL
  * @brief    TRNG Control Register.
  * @{
  */
-#define MXC_F_TRNG_CN_RND_IRQ_EN_POS                   1 /**< CN_RND_IRQ_EN Position */
-#define MXC_F_TRNG_CN_RND_IRQ_EN                       ((uint32_t)(0x1UL << MXC_F_TRNG_CN_RND_IRQ_EN_POS)) /**< CN_RND_IRQ_EN Mask */
+#define MXC_F_TRNG_CTRL_RND_IE_POS                     1 /**< CTRL_RND_IE Position */
+#define MXC_F_TRNG_CTRL_RND_IE                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RND_IE_POS)) /**< CTRL_RND_IE Mask */
 
-#define MXC_F_TRNG_CN_AESKG_POS                        3 /**< CN_AESKG Position */
-#define MXC_F_TRNG_CN_AESKG                            ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_POS)) /**< CN_AESKG Mask */
+#define MXC_F_TRNG_CTRL_AESKG_MEMPROTE_POS             4 /**< CTRL_AESKG_MEMPROTE Position */
+#define MXC_F_TRNG_CTRL_AESKG_MEMPROTE                 ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_AESKG_MEMPROTE_POS)) /**< CTRL_AESKG_MEMPROTE Mask */
 
-#define MXC_F_TRNG_CN_AESKG_MEMPROTE_POS               4 /**< CN_AESKG_MEMPROTE Position */
-#define MXC_F_TRNG_CN_AESKG_MEMPROTE                   ((uint32_t)(0x1UL << MXC_F_TRNG_CN_AESKG_MEMPROTE_POS)) /**< CN_AESKG_MEMPROTE Mask */
-
-/**@} end of group TRNG_CN_Register */
+/**@} end of group TRNG_CTRL_Register */
 
 /**
  * @ingroup  trng_registers
- * @defgroup TRNG_ST TRNG_ST
+ * @defgroup TRNG_STATUS TRNG_STATUS
  * @brief    Data. The content of this register is valid only when RNG_IS = 1. When TRNG is
  *           disabled, read returns 0x0000 0000.
  * @{
  */
-#define MXC_F_TRNG_ST_RND_RDY_POS                      0 /**< ST_RND_RDY Position */
-#define MXC_F_TRNG_ST_RND_RDY                          ((uint32_t)(0x1UL << MXC_F_TRNG_ST_RND_RDY_POS)) /**< ST_RND_RDY Mask */
+#define MXC_F_TRNG_STATUS_RND_RDY_POS                  0 /**< STATUS_RND_RDY Position */
+#define MXC_F_TRNG_STATUS_RND_RDY                      ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_RND_RDY_POS)) /**< STATUS_RND_RDY Mask */
 
-#define MXC_F_TRNG_ST_AESKGD_MEU_S_POS                 4 /**< ST_AESKGD_MEU_S Position */
-#define MXC_F_TRNG_ST_AESKGD_MEU_S                     ((uint32_t)(0x1UL << MXC_F_TRNG_ST_AESKGD_MEU_S_POS)) /**< ST_AESKGD_MEU_S Mask */
+#define MXC_F_TRNG_STATUS_AESKGD_MEU_POS               4 /**< STATUS_AESKGD_MEU Position */
+#define MXC_F_TRNG_STATUS_AESKGD_MEU                   ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_AESKGD_MEU_POS)) /**< STATUS_AESKGD_MEU Mask */
 
-/**@} end of group TRNG_ST_Register */
+/**@} end of group TRNG_STATUS_Register */
 
 /**
  * @ingroup  trng_registers

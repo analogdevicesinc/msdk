@@ -88,10 +88,10 @@ extern "C" {
  * Structure type to access the SRCC Registers.
  */
 typedef struct {
-    __I  uint32_t cache_id;             /**< <tt>\b 0x0000:</tt> SRCC CACHE_ID Register */
-    __I  uint32_t memcfg;               /**< <tt>\b 0x0004:</tt> SRCC MEMCFG Register */
+    __I  uint32_t info;                 /**< <tt>\b 0x0000:</tt> SRCC INFO Register */
+    __I  uint32_t sz;                   /**< <tt>\b 0x0004:</tt> SRCC SZ Register */
     __R  uint32_t rsv_0x8_0xff[62];
-    __IO uint32_t cache_ctrl;           /**< <tt>\b 0x0100:</tt> SRCC CACHE_CTRL Register */
+    __IO uint32_t ctrl;                 /**< <tt>\b 0x0100:</tt> SRCC CTRL Register */
     __R  uint32_t rsv_0x104_0x6ff[383];
     __IO uint32_t invalidate;           /**< <tt>\b 0x0700:</tt> SRCC INVALIDATE Register */
 } mxc_srcc_regs_t;
@@ -103,62 +103,62 @@ typedef struct {
  * @brief      SRCC Peripheral Register Offsets from the SRCC Base Peripheral Address.
  * @{
  */
-#define MXC_R_SRCC_CACHE_ID                ((uint32_t)0x00000000UL) /**< Offset from SRCC Base Address: <tt> 0x0000</tt> */
-#define MXC_R_SRCC_MEMCFG                  ((uint32_t)0x00000004UL) /**< Offset from SRCC Base Address: <tt> 0x0004</tt> */
-#define MXC_R_SRCC_CACHE_CTRL              ((uint32_t)0x00000100UL) /**< Offset from SRCC Base Address: <tt> 0x0100</tt> */
+#define MXC_R_SRCC_INFO                    ((uint32_t)0x00000000UL) /**< Offset from SRCC Base Address: <tt> 0x0000</tt> */
+#define MXC_R_SRCC_SZ                      ((uint32_t)0x00000004UL) /**< Offset from SRCC Base Address: <tt> 0x0004</tt> */
+#define MXC_R_SRCC_CTRL                    ((uint32_t)0x00000100UL) /**< Offset from SRCC Base Address: <tt> 0x0100</tt> */
 #define MXC_R_SRCC_INVALIDATE              ((uint32_t)0x00000700UL) /**< Offset from SRCC Base Address: <tt> 0x0700</tt> */
 /**@} end of group srcc_registers */
 
 /**
  * @ingroup  srcc_registers
- * @defgroup SRCC_CACHE_ID SRCC_CACHE_ID
+ * @defgroup SRCC_INFO SRCC_INFO
  * @brief    Cache ID Register.
  * @{
  */
-#define MXC_F_SRCC_CACHE_ID_RELNUM_POS                 0 /**< CACHE_ID_RELNUM Position */
-#define MXC_F_SRCC_CACHE_ID_RELNUM                     ((uint32_t)(0x3FUL << MXC_F_SRCC_CACHE_ID_RELNUM_POS)) /**< CACHE_ID_RELNUM Mask */
+#define MXC_F_SRCC_INFO_RELNUM_POS                     0 /**< INFO_RELNUM Position */
+#define MXC_F_SRCC_INFO_RELNUM                         ((uint32_t)(0x3FUL << MXC_F_SRCC_INFO_RELNUM_POS)) /**< INFO_RELNUM Mask */
 
-#define MXC_F_SRCC_CACHE_ID_PARTNUM_POS                6 /**< CACHE_ID_PARTNUM Position */
-#define MXC_F_SRCC_CACHE_ID_PARTNUM                    ((uint32_t)(0xFUL << MXC_F_SRCC_CACHE_ID_PARTNUM_POS)) /**< CACHE_ID_PARTNUM Mask */
+#define MXC_F_SRCC_INFO_PARTNUM_POS                    6 /**< INFO_PARTNUM Position */
+#define MXC_F_SRCC_INFO_PARTNUM                        ((uint32_t)(0xFUL << MXC_F_SRCC_INFO_PARTNUM_POS)) /**< INFO_PARTNUM Mask */
 
-#define MXC_F_SRCC_CACHE_ID_CCHID_POS                  10 /**< CACHE_ID_CCHID Position */
-#define MXC_F_SRCC_CACHE_ID_CCHID                      ((uint32_t)(0x3FUL << MXC_F_SRCC_CACHE_ID_CCHID_POS)) /**< CACHE_ID_CCHID Mask */
+#define MXC_F_SRCC_INFO_ID_POS                         10 /**< INFO_ID Position */
+#define MXC_F_SRCC_INFO_ID                             ((uint32_t)(0x3FUL << MXC_F_SRCC_INFO_ID_POS)) /**< INFO_ID Mask */
 
-/**@} end of group SRCC_CACHE_ID_Register */
+/**@} end of group SRCC_INFO_Register */
 
 /**
  * @ingroup  srcc_registers
- * @defgroup SRCC_MEMCFG SRCC_MEMCFG
+ * @defgroup SRCC_SZ SRCC_SZ
  * @brief    Memory Configuration Register.
  * @{
  */
-#define MXC_F_SRCC_MEMCFG_CCHSZ_POS                    0 /**< MEMCFG_CCHSZ Position */
-#define MXC_F_SRCC_MEMCFG_CCHSZ                        ((uint32_t)(0xFFFFUL << MXC_F_SRCC_MEMCFG_CCHSZ_POS)) /**< MEMCFG_CCHSZ Mask */
+#define MXC_F_SRCC_SZ_CCH_POS                          0 /**< SZ_CCH Position */
+#define MXC_F_SRCC_SZ_CCH                              ((uint32_t)(0xFFFFUL << MXC_F_SRCC_SZ_CCH_POS)) /**< SZ_CCH Mask */
 
-#define MXC_F_SRCC_MEMCFG_MEMSZ_POS                    16 /**< MEMCFG_MEMSZ Position */
-#define MXC_F_SRCC_MEMCFG_MEMSZ                        ((uint32_t)(0xFFFFUL << MXC_F_SRCC_MEMCFG_MEMSZ_POS)) /**< MEMCFG_MEMSZ Mask */
+#define MXC_F_SRCC_SZ_MEM_POS                          16 /**< SZ_MEM Position */
+#define MXC_F_SRCC_SZ_MEM                              ((uint32_t)(0xFFFFUL << MXC_F_SRCC_SZ_MEM_POS)) /**< SZ_MEM Mask */
 
-/**@} end of group SRCC_MEMCFG_Register */
+/**@} end of group SRCC_SZ_Register */
 
 /**
  * @ingroup  srcc_registers
- * @defgroup SRCC_CACHE_CTRL SRCC_CACHE_CTRL
+ * @defgroup SRCC_CTRL SRCC_CTRL
  * @brief    Cache Control and Status Register.
  * @{
  */
-#define MXC_F_SRCC_CACHE_CTRL_CACHE_EN_POS             0 /**< CACHE_CTRL_CACHE_EN Position */
-#define MXC_F_SRCC_CACHE_CTRL_CACHE_EN                 ((uint32_t)(0x1UL << MXC_F_SRCC_CACHE_CTRL_CACHE_EN_POS)) /**< CACHE_CTRL_CACHE_EN Mask */
+#define MXC_F_SRCC_CTRL_EN_POS                         0 /**< CTRL_EN Position */
+#define MXC_F_SRCC_CTRL_EN                             ((uint32_t)(0x1UL << MXC_F_SRCC_CTRL_EN_POS)) /**< CTRL_EN Mask */
 
-#define MXC_F_SRCC_CACHE_CTRL_WRITE_ALLOC_EN_POS       1 /**< CACHE_CTRL_WRITE_ALLOC_EN Position */
-#define MXC_F_SRCC_CACHE_CTRL_WRITE_ALLOC_EN           ((uint32_t)(0x1UL << MXC_F_SRCC_CACHE_CTRL_WRITE_ALLOC_EN_POS)) /**< CACHE_CTRL_WRITE_ALLOC_EN Mask */
+#define MXC_F_SRCC_CTRL_WR_ALLOC_EN_POS                1 /**< CTRL_WR_ALLOC_EN Position */
+#define MXC_F_SRCC_CTRL_WR_ALLOC_EN                    ((uint32_t)(0x1UL << MXC_F_SRCC_CTRL_WR_ALLOC_EN_POS)) /**< CTRL_WR_ALLOC_EN Mask */
 
-#define MXC_F_SRCC_CACHE_CTRL_CWFST_DIS_POS            2 /**< CACHE_CTRL_CWFST_DIS Position */
-#define MXC_F_SRCC_CACHE_CTRL_CWFST_DIS                ((uint32_t)(0x1UL << MXC_F_SRCC_CACHE_CTRL_CWFST_DIS_POS)) /**< CACHE_CTRL_CWFST_DIS Mask */
+#define MXC_F_SRCC_CTRL_CWFST_DIS_POS                  2 /**< CTRL_CWFST_DIS Position */
+#define MXC_F_SRCC_CTRL_CWFST_DIS                      ((uint32_t)(0x1UL << MXC_F_SRCC_CTRL_CWFST_DIS_POS)) /**< CTRL_CWFST_DIS Mask */
 
-#define MXC_F_SRCC_CACHE_CTRL_CACHE_RDY_POS            16 /**< CACHE_CTRL_CACHE_RDY Position */
-#define MXC_F_SRCC_CACHE_CTRL_CACHE_RDY                ((uint32_t)(0x1UL << MXC_F_SRCC_CACHE_CTRL_CACHE_RDY_POS)) /**< CACHE_CTRL_CACHE_RDY Mask */
+#define MXC_F_SRCC_CTRL_RDY_POS                        16 /**< CTRL_RDY Position */
+#define MXC_F_SRCC_CTRL_RDY                            ((uint32_t)(0x1UL << MXC_F_SRCC_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
 
-/**@} end of group SRCC_CACHE_CTRL_Register */
+/**@} end of group SRCC_CTRL_Register */
 
 /**
  * @ingroup  srcc_registers
@@ -173,8 +173,8 @@ typedef struct {
  *           always return 0.
  * @{
  */
-#define MXC_F_SRCC_INVALIDATE_IA_POS                   0 /**< INVALIDATE_IA Position */
-#define MXC_F_SRCC_INVALIDATE_IA                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_SRCC_INVALIDATE_IA_POS)) /**< INVALIDATE_IA Mask */
+#define MXC_F_SRCC_INVALIDATE_INVALID_POS              0 /**< INVALIDATE_INVALID Position */
+#define MXC_F_SRCC_INVALIDATE_INVALID                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_SRCC_INVALIDATE_INVALID_POS)) /**< INVALIDATE_INVALID Mask */
 
 /**@} end of group SRCC_INVALIDATE_Register */
 

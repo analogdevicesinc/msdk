@@ -9035,7 +9035,7 @@
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
-       <name>I2C_EN</name>
+       <name>EN</name>
        <description>I2C Enable.</description>
        <bitRange>[0:0]</bitRange>
        <access>read-write</access>
@@ -9047,13 +9047,13 @@
         </enumeratedValue>
         <enumeratedValue>
          <name>en</name>
-         <description>Enable I2C.</description>
+         <description>enable I2C.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
-       <name>MST</name>
+       <name>MST_MODE</name>
        <description>Master Mode Enable.</description>
        <bitRange>[1:1]</bitRange>
        <access>read-write</access>
@@ -9071,7 +9071,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>GEN_CALL_ADDR</name>
+       <name>GC_ADDR_EN</name>
        <description>General Call Address Enable.</description>
        <bitRange>[2:2]</bitRange>
        <access>read-write</access>
@@ -9089,7 +9089,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_MODE</name>
+       <name>IRXM_EN</name>
        <description>Interactive Receive Mode.</description>
        <bitRange>[3:3]</bitRange>
        <access>read-write</access>
@@ -9107,7 +9107,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_MODE_ACK</name>
+       <name>IRXM_ACK</name>
        <description>Data Acknowledge. This bit defines the acknowledge bit returned by the I2C receiver while IRXM = 1 HW forces ACK to 0 when IRXM = 0.</description>
        <bitRange>[4:4]</bitRange>
        <access>read-write</access>
@@ -9173,7 +9173,7 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>SW_OUT_EN</name>
+       <name>BB_EN</name>
        <description>Software Output Enable.</description>
        <bitRange>[10:10]</bitRange>
        <access>read-write</access>
@@ -9209,7 +9209,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SCL_CLK_STRETCH_DIS</name>
+       <name>CLKSTR_DIS</name>
        <description>This bit will disable slave clock stretching when set.</description>
        <bitRange>[12:12]</bitRange>
        <access>read-write</access>
@@ -9227,7 +9227,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SCL_PP_MODE</name>
+       <name>ONE_MST_MODE</name>
        <description>SCL Push-Pull Mode. This bit controls whether SCL is operated in a the I2C standard open-drain mode, or in a non-standard push-pull mode where the Hi-Z output isreplaced with Drive-1. The non-standard mode should only be used when operating as a master and communicating with slaves that are guaranteed to never drive SCL low. </description>
        <bitRange>[13:13]</bitRange>
        <access>read-write</access>
@@ -9246,6 +9246,12 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
+      <field>
+       <name>HS_EN</name>
+       <description>High speed mode enable</description>
+       <bitRange>[15:15]</bitRange>
+       <access>read-write</access>
+      </field>
      </fields>
     </register>
     <register>
@@ -9254,7 +9260,7 @@
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>BUS</name>
+       <name>BUSY</name>
        <description>Bus Status.</description>
        <bitRange>[0:0]</bitRange>
        <access>read-only</access>
@@ -9272,7 +9278,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_EMPTY</name>
+       <name>RX_EM</name>
        <description>RX empty.</description>
        <bitRange>[1:1]</bitRange>
        <access>read-only</access>
@@ -9308,7 +9314,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>TX Empty.</description>
        <bitRange>[3:3]</bitRange>
        <enumeratedValues>
@@ -9342,7 +9348,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>CLK_MODE</name>
+       <name>MST_BUSY</name>
        <description>Clock Mode.</description>
        <bitRange>[5:5]</bitRange>
        <access>read-only</access>
@@ -9371,6 +9377,7 @@
        <description>Transfer Done Interrupt.</description>
        <bitRange>[0:0]</bitRange>
        <enumeratedValues>
+        <name>INT_FL0_Done</name>
         <enumeratedValue>
          <name>inactive</name>
          <description>No Interrupt is Pending.</description>
@@ -9384,7 +9391,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_MODE</name>
+       <name>IRXM</name>
        <description>Interactive Receive Interrupt.</description>
        <bitRange>[1:1]</bitRange>
        <enumeratedValues>
@@ -9401,7 +9408,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>GEN_CALL_ADDR</name>
+       <name>GC_ADDR_MATCH</name>
        <description>Slave General Call Address Match Interrupt.</description>
        <bitRange>[2:2]</bitRange>
        <enumeratedValues>
@@ -9435,7 +9442,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>Receive Threshold Interrupt. This bit is automaticcaly cleared when RX_FIFO is below the threshold level.</description>
        <bitRange>[4:4]</bitRange>
        <enumeratedValues>
@@ -9452,7 +9459,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>Transmit Threshold Interrupt. This bit is automaticcaly cleared when TX_FIFO is above the threshold level.</description>
        <bitRange>[5:5]</bitRange>
        <enumeratedValues>
@@ -9503,7 +9510,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ARB_ER</name>
+       <name>ARB_ERR</name>
        <description>Arbritation error Interrupt.</description>
        <bitRange>[8:8]</bitRange>
        <enumeratedValues>
@@ -9520,7 +9527,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TO_ER</name>
+       <name>TO_ERR</name>
        <description>timeout Error Interrupt.</description>
        <bitRange>[9:9]</bitRange>
        <enumeratedValues>
@@ -9537,7 +9544,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADDR_NACK_ER</name>
+       <name>ADDR_NACK_ERR</name>
        <description>Address NACK Error Interrupt.</description>
        <bitRange>[10:10]</bitRange>
        <enumeratedValues>
@@ -9554,7 +9561,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DATA_ER</name>
+       <name>DATA_ERR</name>
        <description>Data NACK Error Interrupt.</description>
        <bitRange>[11:11]</bitRange>
        <enumeratedValues>
@@ -9571,7 +9578,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DO_NOT_RESP_ER</name>
+       <name>DNR_ERR</name>
        <description>Do Not Respond Error Interrupt.</description>
        <bitRange>[12:12]</bitRange>
        <enumeratedValues>
@@ -9588,7 +9595,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>START_ER</name>
+       <name>START_ERR</name>
        <description>Start Error Interrupt.</description>
        <bitRange>[13:13]</bitRange>
        <enumeratedValues>
@@ -9605,7 +9612,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>STOP_ER</name>
+       <name>STOP_ERR</name>
        <description>Stop Error Interrupt.</description>
        <bitRange>[14:14]</bitRange>
        <enumeratedValues>
@@ -9622,55 +9629,24 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_LOCK_OUT</name>
+       <name>TX_LOCKOUT</name>
        <description>Transmit Lock Out Interrupt.</description>
        <bitRange>[15:15]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>unlocked</name>
-         <description>TX FIFO not locked.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>locked</name>
-         <description>TX FIFO locked.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
+      </field>
+      <field>
+       <name>MAMI</name>
+       <description>Multiple Address Match Interrupt</description>
+       <bitRange>[21:16]</bitRange>
       </field>
       <field>
        <name>RD_ADDR_MATCH</name>
        <description>Slave Read Address Match Interrupt</description>
        <bitRange>[22:22]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>no_match</name>
-         <description>No address match.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>match</name>
-         <description>Address match.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>WR_ADDR_MATCH</name>
        <description>Slave Write Address Match Interrupt</description>
        <bitRange>[23:23]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>no_match</name>
-         <description>No address match.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>match</name>
-         <description>Address match.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -9699,7 +9675,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_MODE</name>
+       <name>IRXM</name>
        <description>Description not available.</description>
        <bitRange>[1:1]</bitRange>
        <access>read-write</access>
@@ -9717,7 +9693,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>GEN_CALL_ADDR</name>
+       <name>GC_ADDR_MATCH</name>
        <description>Slave mode general call address match received input enable.</description>
        <bitRange>[2:2]</bitRange>
        <access>read-write</access>
@@ -9753,7 +9729,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>RX FIFO Above Treshold Level Interrupt Enable.</description>
        <bitRange>[4:4]</bitRange>
        <access>read-write</access>
@@ -9771,7 +9747,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>TX FIFO Below Treshold Level Interrupt Enable.</description>
        <bitRange>[5:5]</bitRange>
        <enumeratedValues>
@@ -9823,7 +9799,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ARB_ER</name>
+       <name>ARB_ERR</name>
        <description>Master Mode Arbitration Lost Interrupt.</description>
        <bitRange>[8:8]</bitRange>
        <enumeratedValues>
@@ -9840,7 +9816,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TO_ER</name>
+       <name>TO_ERR</name>
        <description>Timeout Error Interrupt Enable.</description>
        <bitRange>[9:9]</bitRange>
        <enumeratedValues>
@@ -9874,7 +9850,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DATA_ER</name>
+       <name>DATA_ERR</name>
        <description>Master Mode Data NACK Received Interrupt.</description>
        <bitRange>[11:11]</bitRange>
        <enumeratedValues>
@@ -9891,7 +9867,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DO_NOT_RESP_ER</name>
+       <name>DNR_ERR</name>
        <description>Slave Mode Do Not Respond Interrupt.</description>
        <bitRange>[12:12]</bitRange>
        <enumeratedValues>
@@ -9908,7 +9884,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>START_ER</name>
+       <name>START_ERR</name>
        <description>Out of Sequence START condition detected interrupt.</description>
        <bitRange>[13:13]</bitRange>
        <enumeratedValues>
@@ -9925,7 +9901,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>STOP_ER</name>
+       <name>STOP_ERR</name>
        <description>Out of Sequence STOP condition detected interrupt.</description>
        <bitRange>[14:14]</bitRange>
        <enumeratedValues>
@@ -9942,55 +9918,24 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_LOCK_OUT</name>
+       <name>TX_LOCKOUT</name>
        <description>TX FIFO Locked Out Interrupt.</description>
        <bitRange>[15:15]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Interrupt disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Interrupt enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
+      </field>
+      <field>
+       <name>MAMI</name>
+       <description>Multiple Address Match Interrupt</description>
+       <bitRange>[21:16]</bitRange>
       </field>
       <field>
        <name>RD_ADDR_MATCH</name>
        <description>Slave Read Address Match Interrupt</description>
        <bitRange>[22:22]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Interrupt disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Interrupt enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
        <name>WR_ADDR_MATCH</name>
        <description>Slave Write Address Match Interrupt</description>
        <bitRange>[23:23]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Interrupt disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Interrupt enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -10000,7 +9945,7 @@
      <addressOffset>0x10</addressOffset>
      <fields>
       <field>
-       <name>RX_OVERFLOW</name>
+       <name>RX_OV</name>
        <description>Receiver Overflow Interrupt. When operating as a slave receiver, this bit is set when you reach the first data bit and the RX FIFO and shift register are both full.</description>
        <bitRange>[0:0]</bitRange>
        <enumeratedValues>
@@ -10017,7 +9962,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_UNDERFLOW</name>
+       <name>TX_UN</name>
        <description>Transmit Underflow Interrupt. When operating as a slave transmitter, this bit is set when you reach the first data bit and the TX FIFO is empty and the master is still asking for more data (i.e the master hasn't sent a NACK yet).</description>
        <bitRange>[1:1]</bitRange>
        <enumeratedValues>
@@ -10037,18 +9982,6 @@
        <name>START</name>
        <description>START Condition Status Flag.</description>
        <bitRange>[2:2]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>not_detected</name>
-         <description>START condition not detected.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>detected</name>
-         <description>START condition detected.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -10059,7 +9992,7 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>RX_OVERFLOW</name>
+       <name>RX_OV</name>
        <description>Receiver Overflow Interrupt Enable.</description>
        <bitRange>[0:0]</bitRange>
        <enumeratedValues>
@@ -10076,7 +10009,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_UNDERFLOW</name>
+       <name>TX_UN</name>
        <description>Transmit Underflow Interrupt Enable.</description>
        <bitRange>[1:1]</bitRange>
        <enumeratedValues>
@@ -10096,18 +10029,6 @@
        <name>START</name>
        <description>START Condition Interrupt Enable.</description>
        <bitRange>[2:2]</bitRange>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable START condition interrupt.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable START condition interrupt.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
      </fields>
     </register>
@@ -10117,13 +10038,13 @@
      <addressOffset>0x18</addressOffset>
      <fields>
       <field>
-       <name>RX_LEN</name>
+       <name>RX_DEPTH</name>
        <description>Receive FIFO Length.</description>
        <bitRange>[7:0]</bitRange>
        <access>read-only</access>
       </field>
       <field>
-       <name>TX_LEN</name>
+       <name>TX_DEPTH</name>
        <description>Transmit FIFO Length.</description>
        <bitRange>[15:8]</bitRange>
        <access>read-only</access>
@@ -10153,7 +10074,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FLUSH</name>
+       <name>FLUSH</name>
        <description>Receive FIFO Flush. This bit is automatically cleared to 0 after the operation. Setting this bit to 1 will affect RX_FIFO status.</description>
        <bitRange>[7:7]</bitRange>
        <enumeratedValues>
@@ -10170,7 +10091,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>THD_LVL</name>
        <description>Receive FIFO Threshold. These bits define the RX_FIFO interrupt threshold.</description>
        <bitRange>[11:8]</bitRange>
       </field>
@@ -10182,12 +10103,12 @@
      <addressOffset>0x20</addressOffset>
      <fields>
       <field>
-       <name>RX_CNT</name>
+       <name>CNT</name>
        <description>Receive Count Bits. These bits define the number of bytes to be received in a transaction, except for the case RXCNT = 0. RXCNT = 0 means 256 bytes to be received in a transaction.</description>
        <bitRange>[7:0]</bitRange>
       </field>
       <field>
-       <name>RX_FIFO</name>
+       <name>LVL</name>
        <description>Receive FIFO Count. These bits reflect the number of byte in the RX_FIFO. These bits are flushed when I2CEN = 0.</description>
        <bitRange>[11:8]</bitRange>
        <access>read-only</access>
@@ -10200,7 +10121,7 @@
      <addressOffset>0x24</addressOffset>
      <fields>
       <field>
-       <name>TX_PRELOAD</name>
+       <name>PRELOAD_MODE</name>
        <description>Transmit FIFO Preaload Mode. Setting this bit will allow for high speed application to preload the transmit FIFO prior to Slave Address Match.</description>
        <bitRange>[0:0]</bitRange>
       </field>
@@ -10222,7 +10143,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_AMGC_AFD</name>
+       <name>GC_ADDR_FLUSH_DIS</name>
        <description>TX FIFO General Call Address Match Auto Flush Disable.</description>
        <bitRange>[2:2]</bitRange>
        <enumeratedValues>
@@ -10239,7 +10160,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_AMW_AFD</name>
+       <name>WR_ADDR_FLUSH_DIS</name>
        <description>TX FIFO Slave Address Match Write Auto Flush Disable.</description>
        <bitRange>[3:3]</bitRange>
        <enumeratedValues>
@@ -10256,7 +10177,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_AMR_AFD</name>
+       <name>RD_ADDR_FLUSH_DIS</name>
        <description>TX FIFO Slave Address Match Read Auto Flush Disable.</description>
        <bitRange>[4:4]</bitRange>
        <enumeratedValues>
@@ -10273,7 +10194,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_NACK_AFD</name>
+       <name>NACK_FLUSH_DIS</name>
        <description>TX FIFO received NACK Auto Flush Disable.</description>
        <bitRange>[5:5]</bitRange>
        <enumeratedValues>
@@ -10290,7 +10211,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FLUSH</name>
+       <name>FLUSH</name>
        <description>Transmit FIFO Flush. This bit is automatically cleared to 0 after the operation.</description>
        <bitRange>[7:7]</bitRange>
        <enumeratedValues>
@@ -10307,7 +10228,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_THRESH</name>
+       <name>THD_VAL</name>
        <description>Transmit FIFO Threshold. These bits define the TX_FIFO interrupt threshold.</description>
        <bitRange>[11:8]</bitRange>
       </field>
@@ -10319,12 +10240,17 @@
      <addressOffset>0x28</addressOffset>
      <fields>
       <field>
-       <name>TX_READY</name>
+       <name>PRELOAD_RDY</name>
        <description>Transmit FIFO Preload Ready.</description>
        <bitRange>[0:0]</bitRange>
       </field>
       <field>
-       <name>TX_FIFO</name>
+       <name>LAST</name>
+       <description>Transmit Last.</description>
+       <bitRange>[1:1]</bitRange>
+      </field>
+      <field>
+       <name>LVL</name>
        <description>Transmit FIFO Count. These bits reflect the number of bytes in the TX_FIFO.</description>
        <bitRange>[11:8]</bitRange>
        <access>read-only</access>
@@ -10365,7 +10291,7 @@
        <bitRange>[2:2]</bitRange>
       </field>
       <field>
-       <name>SL_EX_ADDR</name>
+       <name>EX_ADDR_EN</name>
        <description>Slave Extend Address Select.</description>
        <bitRange>[7:7]</bitRange>
        <enumeratedValues>
@@ -10381,6 +10307,16 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
+      <field>
+       <name>CODE</name>
+       <description>Master Code.</description>
+       <bitRange>[10:8]</bitRange>
+      </field>
+      <field>
+       <name>IGN_ACK</name>
+       <description>Master Ignore Acknowledge.</description>
+       <bitRange>[12:12]</bitRange>
+      </field>
      </fields>
     </register>
     <register>
@@ -10389,7 +10325,7 @@
      <addressOffset>0x34</addressOffset>
      <fields>
       <field>
-       <name>SCL_LO</name>
+       <name>LO</name>
        <description>Clock low. In master mode, these bits define the SCL low period. In slave mode, these bits define the time SCL will be held low after data is outputted.</description>
        <bitRange>[8:0]</bitRange>
       </field>
@@ -10401,9 +10337,26 @@
      <addressOffset>0x38</addressOffset>
      <fields>
       <field>
-       <name>SCL_HI</name>
+       <name>HI</name>
        <description>Clock High. In master mode, these bits define the SCL high period.</description>
        <bitRange>[8:0]</bitRange>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>HSCLK</name>
+     <description>Clock high Register.</description>
+     <addressOffset>0x3C</addressOffset>
+     <fields>
+      <field>
+       <name>LO</name>
+       <description>Clock Low. This field sets the Hs-Mode clock low count. In Slave mode, this is the time SCL is held low after data is output on SDA.</description>
+       <bitRange>[7:0]</bitRange>
+      </field>
+      <field>
+       <name>HI</name>
+       <description>Clock High. This field sets the Hs-Mode clock high count. In Slave mode, this is the time SCL is held high after data is output on SDA</description>
+       <bitRange>[15:8]</bitRange>
       </field>
      </fields>
     </register>
@@ -10413,7 +10366,7 @@
      <addressOffset>0x40</addressOffset>
      <fields>
       <field>
-       <name>TO</name>
+       <name>SCL_TO_VAL</name>
        <description>Timeout</description>
        <bitRange>[15:0]</bitRange>
       </field>
@@ -10461,17 +10414,27 @@
      </fields>
     </register>
     <register>
-     <name>SLAVE_ADDR</name>
+     <dim>4</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>SLAVE_MULTI[%s]</name>
      <description>Slave Address Register.</description>
+     <alternateRegister>SLAVE0</alternateRegister>
      <addressOffset>0x4C</addressOffset>
+     <size>32</size>
+     <access>read-write</access>
      <fields>
       <field>
-       <name>SLAVE_ADDR</name>
+       <name>ADDR</name>
        <description>Slave Address.</description>
        <bitRange>[9:0]</bitRange>
       </field>
       <field>
-       <name>EX_ADDR</name>
+       <name>DIS</name>
+       <description>Slave Disable.</description>
+       <bitRange>[10:10]</bitRange>
+      </field>
+      <field>
+       <name>EXT_ADDR_EN</name>
        <description>Extended Address Select.</description>
        <bitRange>[15:15]</bitRange>
        <enumeratedValues>
@@ -10488,6 +10451,26 @@
        </enumeratedValues>
       </field>
      </fields>
+    </register>
+    <register>
+     <name>SLAVE0</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x4C</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE1</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x50</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE2</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x54</addressOffset>
+    </register>
+    <register>
+     <name>SLAVE3</name>
+     <description>Slave Address Register.</description>
+     <addressOffset>0x58</addressOffset>
     </register>
    </registers>
   </peripheral>
@@ -11837,43 +11820,43 @@
   <peripheral derivedFrom="PT">
    <name>PT1</name>
    <description>Pulse Train 1</description>
-   <baseAddress>0x4003C040</baseAddress>
+   <baseAddress>0x4003C030</baseAddress>
   </peripheral>
 <!--PT1 Pulse Train 1-->
   <peripheral derivedFrom="PT">
    <name>PT2</name>
    <description>Pulse Train 2</description>
-   <baseAddress>0x4003C060</baseAddress>
+   <baseAddress>0x4003C040</baseAddress>
   </peripheral>
 <!--PT2 Pulse Train 2-->
   <peripheral derivedFrom="PT">
    <name>PT3</name>
    <description>Pulse Train 3</description>
-   <baseAddress>0x4003C080</baseAddress>
+   <baseAddress>0x4003C050</baseAddress>
   </peripheral>
 <!--PT3 Pulse Train 3-->
   <peripheral derivedFrom="PT">
    <name>PT4</name>
    <description>Pulse Train 4</description>
-   <baseAddress>0x4003C0A0</baseAddress>
+   <baseAddress>0x4003C060</baseAddress>
   </peripheral>
 <!--PT4 Pulse Train 4-->
   <peripheral derivedFrom="PT">
    <name>PT5</name>
    <description>Pulse Train 5</description>
-   <baseAddress>0x4003C0C0</baseAddress>
+   <baseAddress>0x4003C070</baseAddress>
   </peripheral>
 <!--PT5 Pulse Train 5-->
   <peripheral derivedFrom="PT">
    <name>PT6</name>
    <description>Pulse Train 6</description>
-   <baseAddress>0x4003C0E0</baseAddress>
+   <baseAddress>0x4003C080</baseAddress>
   </peripheral>
 <!--PT6 Pulse Train 6-->
   <peripheral derivedFrom="PT">
    <name>PT7</name>
    <description>Pulse Train 7</description>
-   <baseAddress>0x4003C100</baseAddress>
+   <baseAddress>0x4003C090</baseAddress>
   </peripheral>
 <!--PT7 Pulse Train 7-->
   <peripheral derivedFrom="PT">
@@ -12029,8 +12012,8 @@
      </fields>
     </register>
     <register>
-     <name>INTFL</name>
-     <description>Pulse Train Interrupt Flags</description>
+     <name>STOP_INTFL</name>
+     <description>Pulse Train Stop Interrupt Flags</description>
      <addressOffset>0x0008</addressOffset>
      <access>read-write</access>
      <fields>
@@ -12093,8 +12076,8 @@
      </fields>
     </register>
     <register>
-     <name>INTEN</name>
-     <description>Pulse Train Interrupt Enable/Disable</description>
+     <name>STOP_INTEN</name>
+     <description>Pulse Train Stop Interrupt Enable/Disable</description>
      <addressOffset>0x000C</addressOffset>
      <access>read-write</access>
      <fields>
@@ -12276,56 +12259,56 @@
      <fields>
       <field>
        <name>pt0</name>
-       <description>Pulse Train 0 Stopped Interrupt Flag</description>
+       <description>Pulse Train 0 Ready Interrupt Flag</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt1</name>
-       <description>Pulse Train 1 Stopped Interrupt Flag</description>
+       <description>Pulse Train 1 Ready Interrupt Flag</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt2</name>
-       <description>Pulse Train 2 Stopped Interrupt Flag</description>
+       <description>Pulse Train 2 Ready Interrupt Flag</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt3</name>
-       <description>Pulse Train 3 Stopped Interrupt Flag</description>
+       <description>Pulse Train 3 Ready Interrupt Flag</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt4</name>
-       <description>Pulse Train 4 Stopped Interrupt Flag</description>
+       <description>Pulse Train 4 Ready Interrupt Flag</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt5</name>
-       <description>Pulse Train 5 Stopped Interrupt Flag</description>
+       <description>Pulse Train 5 Ready Interrupt Flag</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt6</name>
-       <description>Pulse Train 6 Stopped Interrupt Flag</description>
+       <description>Pulse Train 6 Ready Interrupt Flag</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt7</name>
-       <description>Pulse Train 7 Stopped Interrupt Flag</description>
+       <description>Pulse Train 7 Ready Interrupt Flag</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
@@ -12340,56 +12323,56 @@
      <fields>
       <field>
        <name>pt0</name>
-       <description>Pulse Train 0 Stopped Interrupt Enable/Disable</description>
+       <description>Pulse Train 0 Ready Interrupt Enable/Disable</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt1</name>
-       <description>Pulse Train 1 Stopped Interrupt Enable/Disable</description>
+       <description>Pulse Train 1 Ready Interrupt Enable/Disable</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt2</name>
-       <description>Pulse Train 2 Stopped Interrupt Enable/Disable</description>
+       <description>Pulse Train 2 Ready Interrupt Enable/Disable</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt3</name>
-       <description>Pulse Train 3 Stopped Interrupt Enable/Disable</description>
+       <description>Pulse Train 3 Ready Interrupt Enable/Disable</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt4</name>
-       <description>Pulse Train 4 Stopped Interrupt Enable/Disable</description>
+       <description>Pulse Train 4 Ready Interrupt Enable/Disable</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt5</name>
-       <description>Pulse Train 5 Stopped Interrupt Enable/Disable</description>
+       <description>Pulse Train 5 Ready Interrupt Enable/Disable</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt6</name>
-       <description>Pulse Train 6 Stopped Interrupt Enable/Disable</description>
+       <description>Pulse Train 6 Ready Interrupt Enable/Disable</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
        <name>pt7</name>
-       <description>Pulse Train 7 Stopped Interrupt Enable/Disable</description>
+       <description>Pulse Train 7 Ready Interrupt Enable/Disable</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
@@ -13063,7 +13046,7 @@
      <resetMask>0xFFFFFF38</resetMask>
      <fields>
       <field>
-       <name>RTCE</name>
+       <name>EN</name>
        <description>Real Time Clock Enable. This bit enables the Real Time Clock. This bit can only be written when WE=1 and BUSY =0. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13081,7 +13064,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADE</name>
+       <name>TOD_ALARM_IE</name>
        <description>Alarm Time-of-Day Interrupt Enable. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13099,7 +13082,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ASE</name>
+       <name>SSEC_ALARM_IE</name>
        <description>Alarm Sub-second Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13154,7 +13137,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RDYE</name>
+       <name>RDY_IE</name>
        <description>RTC Ready Interrupt Enable.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13172,7 +13155,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ALDF</name>
+       <name>TOD_ALARM_IF</name>
        <description>Time-of-Day Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13191,7 +13174,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ALSF</name>
+       <name>SSEC_ALARM_IF</name>
        <description>Sub-second Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13210,7 +13193,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SQE</name>
+       <name>SQW_EN</name>
        <description>Square Wave Output Enable.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13228,7 +13211,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>FT</name>
+       <name>SQW_SEL</name>
        <description>Frequency Output Selection. When SQE=1, these bits specify the output frequency on the SQW pin.</description>
        <bitOffset>9</bitOffset>
        <bitWidth>2</bitWidth>
@@ -13251,7 +13234,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ACRE</name>
+       <name>RD_EN</name>
        <description>Asynchronous Counter Read Enable.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13269,7 +13252,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>WE</name>
+       <name>WR_EN</name>
        <description>Write Enable. This register bit serves as a protection mechanism against unintentional writes to critical RTC bits.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13301,7 +13284,7 @@
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>COUNT</name>
+       <name>VBAT_TMR</name>
        <description>VBAT Timer Value. When RTC is running off of VBAT, this field is incremented every 32 seconds.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>24</bitWidth>
@@ -13314,6 +13297,42 @@
      <addressOffset>0x18</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
+      <field>
+       <name>FILTER_EN</name>
+       <description>Enable Filter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_SEL</name>
+       <description>IBIAS Select.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>2x</name>
+         <description>2x</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>4x</name>
+         <description>4x</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>HYST_EN</name>
+       <description>RTC Hysteresis Enable.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_EN</name>
+       <description>RTC IBIAS Enable.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
       <field>
        <name>BYPASS</name>
        <description>RTC Crystal Bypass</description>
@@ -13333,7 +13352,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>32KOUT</name>
+       <name>SQW_32K</name>
        <description>RTC 32kHz Square Wave Output</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -16148,15 +16167,15 @@
    </interrupt>
    <registers>
     <register>
-     <name>CR0</name>
+     <name>CTRL0</name>
      <description>Input Output Select Bits.  Each bit of IOSEL selects the pin direction for the corresponding KBDIO pin.  If IOSEL[0] = 1, KBDIO0 is an output.</description>
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
-       <name>KBDIO_0</name>
+       <name>KBDIO0</name>
        <description>Input Output Select for KBDIO0 pin.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>10</bitWidth>
+       <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
          <name>input</name>
@@ -16170,15 +16189,69 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO1</name>
+       <description>Input Output Select for KBDIO1 pin.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO2</name>
+       <description>Input Output Select for KBDIO2 pin.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO3</name>
+       <description>Input Output Select for KBDIO3 pin.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO4</name>
+       <description>Input Output Select for KBDIO4 pin.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO5</name>
+       <description>Input Output Select for KBDIO5 pin.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO6</name>
+       <description>Input Output Select for KBDIO6 pin.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO7</name>
+       <description>Input Output Select for KBDIO7 pin.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO8</name>
+       <description>Input Output Select for KBDIO8 pin.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="KBDIO0">
+       <name>KBDIO9</name>
+       <description>Input Output Select for KBDIO9 pin.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
-     <name>CR1</name>
+     <name>CTRL1</name>
      <description>Control Register 1</description>
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>AUTOEN</name>
+       <name>AUTOSCAN_EN</name>
        <description>Automatic Keyboard Scan Enable</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -16195,23 +16268,21 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field derivedFrom="AUTOEN">
-       <name>CLEAR</name>
+      <field derivedFrom="AUTOSCAN_EN">
+       <name>AUTOCLEAR</name>
        <description>Auto Clear Bit</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>OUTNB</name>
-       <description>Output Number. Number of KBDIO pins selected as outputs. NOTE:
-                                                                                                                                                                     Output pins must be allocated contiguously starting with KBDIO0 and continuing through to KBDIO7.</description>
+       <name>OUTNUM</name>
+       <description>Output Number. Number of KBDIO pins selected as outputs. Output pins must be allocated contiguously starting with KBDIO0 and continuing through to KBDIO7.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>3</bitWidth>
       </field>
       <field>
        <name>DBTM</name>
-       <description>Debounce Time. Number of milliseconds a keypress event must be active before it is considered actual. NOTE:
-                                                                                                                                                                     Debounce time values based on system running from an external 12MHz clock source with PLL0 enabled.  Other external crystal values will cause the debounce time to scale linearly.</description>
+       <description>Debounce Time. Number of milliseconds a keypress event must be active before it is considered actual. Debounce time values based on system running from an external 12MHz clock source with PLL0 enabled.  Other external crystal values will cause the debounce time to scale linearly.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>3</bitWidth>
        <enumeratedValues>
@@ -16260,7 +16331,7 @@
      </fields>
     </register>
     <register>
-     <name>SR</name>
+     <name>STATUS</name>
      <description>Status Register</description>
      <addressOffset>0x08</addressOffset>
      <access>read-only</access>
@@ -16286,12 +16357,12 @@
      </fields>
     </register>
     <register>
-     <name>IER</name>
+     <name>INTEN</name>
      <description>Interrupt Enable Register</description>
      <addressOffset>0x0C</addressOffset>
      <fields>
       <field>
-       <name>PUSHIE</name>
+       <name>PUSH</name>
        <description>Push Event Enable Bit. When set, this bit enables an interrupt to be generated on a key push event.  Automatic keyboard scan must be enabled.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -16308,14 +16379,14 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field derivedFrom="PUSHIE">
-       <name>RELEASEIE</name>
+      <field derivedFrom="PUSH">
+       <name>RELEASE</name>
        <description>Release Event Enable Bit. When set, this bit enables an interrupt to be generated on a key release event.  Automatic keyboard scan must be enabled.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="PUSHIE">
-       <name>OVERIE</name>
+      <field derivedFrom="PUSH">
+       <name>OVERRUN</name>
        <description>Overrun Event Enable Bit. When set, this bit enables an interrupt to be generated on an overrun event.  Automatic keyboard scan must be enabled.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -16323,12 +16394,12 @@
      </fields>
     </register>
     <register>
-     <name>ISR</name>
+     <name>INTFL</name>
      <description>Interrupt Status Register</description>
      <addressOffset>0x10</addressOffset>
      <fields>
       <field>
-       <name>PUSHIS</name>
+       <name>PUSH</name>
        <description>Push Interrupt Flag. This bit is set by hardware when a key has been pushed.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -16345,14 +16416,14 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field derivedFrom="PUSHIS">
-       <name>RELEASEIS</name>
+      <field derivedFrom="PUSH">
+       <name>RELEASE</name>
        <description>Release Interrupt Flag. This bit is set by hardware when a key has been released.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="PUSHIS">
-       <name>OVERIS</name>
+      <field derivedFrom="PUSH">
+       <name>OVERRUN</name>
        <description>Overrun Event Enable Bit. This bit is set by hardware when an overrun event has occurred.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -16362,7 +16433,7 @@
     <register>
      <dim>4</dim>
      <dimIncrement>4</dimIncrement>
-     <name>EVENT[%s]</name>
+     <name>EVT[%s]</name>
      <description>Key Register</description>
      <addressOffset>0x14</addressOffset>
      <access>read-only</access>
@@ -16433,6 +16504,32 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>GPIO0</name>
+     <description>General Purpose Register 0.</description>
+     <addressOffset>0x24</addressOffset>
+     <fields>
+      <field>
+       <name>ALL</name>
+       <description>Mask of all of the pins on the port.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>GPIO1</name>
+     <description>General Purpose Register 1.</description>
+     <addressOffset>0x28</addressOffset>
+     <fields>
+      <field>
+       <name>ALL</name>
+       <description>Mask of all of the pins on the port.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
       </field>
      </fields>
     </register>
@@ -17821,14 +17918,14 @@
    </interrupt>
    <registers>
     <register>
-     <name>DATA32</name>
+     <name>FIFO32</name>
      <description>Register for reading and writing the FIFO.</description>
      <addressOffset>0x00</addressOffset>
      <size>32</size>
      <access>read-write</access>
      <fields>
       <field>
-       <name>QSPIFIFO</name>
+       <name>DATA</name>
        <description>Read to pull from RX FIFO, write to put into TX FIFO.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -17838,15 +17935,15 @@
     <register>
      <dim>2</dim>
      <dimIncrement>2</dimIncrement>
-     <name>DATA16[%s]</name>
+     <name>FIFO16[%s]</name>
      <description>Register for reading and writing the FIFO.</description>
-     <alternateRegister>DATA32</alternateRegister>
+     <alternateRegister>FIFO32</alternateRegister>
      <addressOffset>0x00</addressOffset>
      <size>16</size>
      <access>read-write</access>
      <fields>
       <field>
-       <name>QSPIFIFO</name>
+       <name>DATA</name>
        <description>Read to pull from RX FIFO, write to put into TX FIFO.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>16</bitWidth>
@@ -17856,15 +17953,15 @@
     <register>
      <dim>4</dim>
      <dimIncrement>1</dimIncrement>
-     <name>DATA8[%s]</name>
+     <name>FIFO8[%s]</name>
      <description>Register for reading and writing the FIFO.</description>
-     <alternateRegister>DATA32</alternateRegister>
+     <alternateRegister>FIFO32</alternateRegister>
      <addressOffset>0x00</addressOffset>
      <size>8</size>
      <access>read-write</access>
      <fields>
       <field>
-       <name>QSPIFIFO</name>
+       <name>DATA</name>
        <description>Read to pull from RX FIFO, write to put into TX FIFO.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
@@ -17896,7 +17993,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MASTER</name>
+       <name>MST_MODE</name>
        <description>Master Mode Enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -17963,7 +18060,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SS</name>
+       <name>SS_ACTIVE</name>
        <description>Slave Select, when in Master mode selects which Slave devices are selected. More than one Slave device can be selected.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>4</bitWidth>
@@ -18019,7 +18116,7 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>CPHA</name>
+       <name>CLKPHA</name>
        <description>Clock Phase.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18037,9 +18134,27 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>CPOL</name>
+       <name>CLKPOL</name>
        <description>Clock Polarity.</description>
        <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>Normal</name>
+         <description>Normal Clock. Use when in SPI Mode 0 and Mode 1</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>Inverted</name>
+         <description>Inverted Clock. Use when in SPI Mode 2 and Mode 3</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>SCLK_FB_INV</name>
+       <description>Clock Polarity.</description>
+       <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -18061,9 +18176,84 @@
        <bitWidth>4</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>0</name>
+         <name>16</name>
          <description>16 bits per character.</description>
          <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1</name>
+         <description>1 bits per character.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>2</name>
+         <description>2 bits per character.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>3</name>
+         <description>3 bits per character.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>4</name>
+         <description>4 bits per character.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>5</name>
+         <description>5 bits per character.</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>6</name>
+         <description>6 bits per character.</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>7</name>
+         <description>7 bits per character.</description>
+         <value>7</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>8</name>
+         <description>8 bits per character.</description>
+         <value>8</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>9</name>
+         <description>9 bits per character.</description>
+         <value>9</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>10</name>
+         <description>10 bits per character.</description>
+         <value>10</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>11</name>
+         <description>11 bits per character.</description>
+         <value>11</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>12</name>
+         <description>12 bits per character.</description>
+         <value>12</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>13</name>
+         <description>13 bits per character.</description>
+         <value>13</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>14</name>
+         <description>14 bits per character.</description>
+         <value>14</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>15</name>
+         <description>15 bits per character.</description>
+         <value>15</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
@@ -18109,7 +18299,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SS_POL</name>
+       <name>SSPOL</name>
        <description>Slave Select Polarity, each Slave Select can have unique polarity.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>4</bitWidth>
@@ -18139,7 +18329,7 @@
      </fields>
     </register>
     <register>
-     <name>SS_TIME</name>
+     <name>SSTIME</name>
      <description>Register for controlling SPI peripheral/Slave Select Timing.</description>
      <addressOffset>0x10</addressOffset>
      <access>read-write</access>
@@ -18186,7 +18376,7 @@
      </fields>
     </register>
     <register>
-     <name>CLK_CFG</name>
+     <name>CLKCTRL</name>
      <description>Register for controlling SPI clock rate.</description>
      <addressOffset>0x14</addressOffset>
      <access>read-write</access>
@@ -18218,7 +18408,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SCALE</name>
+       <name>CLKDIV</name>
        <description>System Clock scale factor. Scales the AMBA clock by 2^SCALE before generating serial clock.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>4</bitWidth>
@@ -18232,7 +18422,7 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_FIFO_LEVEL</name>
+       <name>TX_THD_VAL</name>
        <description>Transmit FIFO level that will trigger a DMA request, also level for threshold status. When TX FIFO has fewer than this many bytes, the associated events and conditions are triggered.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>5</bitWidth>
@@ -18256,7 +18446,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_CLEAR</name>
+       <name>TX_FLUSH</name>
        <description>Clear TX FIFO, clear is accomplished by resetting the read and write
             pointers. This should be done when FIFO is not being accessed on the SPI side.
           .</description>
@@ -18271,14 +18461,14 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_CNT</name>
+       <name>TX_LVL</name>
        <description>Count of entries in TX FIFO.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>6</bitWidth>
        <access>read-only</access>
       </field>
       <field>
-       <name>TX_DMA_EN</name>
+       <name>TX_EN</name>
        <description>TX DMA Enable.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18296,7 +18486,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_LEVEL</name>
+       <name>RX_THD_VAL</name>
        <description>Receive FIFO level that will trigger a DMA request, also level for threshold status. When RX FIFO has more than this many bytes, the associated events and conditions are triggered.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>5</bitWidth>
@@ -18320,7 +18510,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_CLEAR</name>
+       <name>RX_FLUSH</name>
        <description>Clear RX FIFO, clear is accomplished by resetting the read and write pointers. This should be done when FIFO is not being accessed on the SPI side.</description>
        <bitOffset>23</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18333,14 +18523,14 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_CNT</name>
+       <name>RX_LVL</name>
        <description>Count of entries in RX FIFO.</description>
        <bitOffset>24</bitOffset>
        <bitWidth>6</bitWidth>
        <access>read-only</access>
       </field>
       <field>
-       <name>RX_DMA_EN</name>
+       <name>RX_EN</name>
        <description>RX DMA Enable.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18360,13 +18550,13 @@
      </fields>
     </register>
     <register>
-     <name>INT_FL</name>
+     <name>INTFL</name>
      <description>Register for reading and clearing interrupt flags. All bits are write 1 to clear.</description>
      <addressOffset>0x20</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>TX FIFO Threshold Crossed.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18379,7 +18569,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>TX FIFO Empty.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18392,7 +18582,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>RX FIFO Threshold Crossed.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18470,7 +18660,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>M_DONE</name>
+       <name>MST_DONE</name>
        <description>Master Done, set when SPI Master has completed any transactions.</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18483,7 +18673,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_OVR</name>
+       <name>TX_OV</name>
        <description>Transmit FIFO Overrun, set when the AMBA side attempts to write data to a full transmit FIFO.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18496,7 +18686,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_UND</name>
+       <name>TX_UN</name>
        <description>Transmit FIFO Underrun, set when the SPI side attempts to read data from an empty transmit FIFO.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18509,7 +18699,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_OVR</name>
+       <name>RX_OV</name>
        <description>Receive FIFO Overrun, set when the SPI side attempts to write to a full receive FIFO.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18522,7 +18712,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_UND</name>
+       <name>RX_UN</name>
        <description>Receive FIFO Underrun, set when the AMBA side attempts to read data from an empty receive FIFO.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18537,13 +18727,13 @@
      </fields>
     </register>
     <register>
-     <name>INT_EN</name>
+     <name>INTEN</name>
      <description>Register for enabling interrupts.</description>
      <addressOffset>0x24</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>TX FIFO Threshold interrupt enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18561,7 +18751,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>TX FIFO Empty interrupt enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18579,7 +18769,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>RX FIFO Threshold Crossed interrupt enable.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18687,7 +18877,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>M_DONE</name>
+       <name>MST_DONE</name>
        <description>Master Done interrupt enable.</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18705,7 +18895,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_OVR</name>
+       <name>TX_OV</name>
        <description>Transmit FIFO Overrun interrupt enable.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18723,7 +18913,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_UND</name>
+       <name>TX_UN</name>
        <description>Transmit FIFO Underrun interrupt enable.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18741,7 +18931,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_OVR</name>
+       <name>RX_OV</name>
        <description>Receive FIFO Overrun interrupt enable.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18759,7 +18949,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_UND</name>
+       <name>RX_UN</name>
        <description>Receive FIFO Underrun interrupt enable.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18779,13 +18969,13 @@
      </fields>
     </register>
     <register>
-     <name>WAKE_FL</name>
+     <name>WKFL</name>
      <description>Register for wake up flags. All bits in this register are write 1 to clear.</description>
      <addressOffset>0x28</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>Wake on TX FIFO Threshold Crossed.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18798,7 +18988,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>Wake on TX FIFO Empty.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18811,7 +19001,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>Wake on RX FIFO Threshold Crossed.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18839,13 +19029,13 @@
      </fields>
     </register>
     <register>
-     <name>WAKE_EN</name>
+     <name>WKEN</name>
      <description>Register for wake up enable.</description>
      <addressOffset>0x2C</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>Wake on TX FIFO Threshold Crossed Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18863,7 +19053,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>Wake on TX FIFO Empty Enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18881,7 +19071,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>Wake on RX FIFO Threshold Crossed Enable.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18919,7 +19109,7 @@
      </fields>
     </register>
     <register>
-     <name>STAT</name>
+     <name>STATUS</name>
      <description>SPI Status register.</description>
      <addressOffset>0x30</addressOffset>
      <access>read-only</access>
@@ -19044,8 +19234,8 @@
    </interrupt>
    <registers>
     <register>
-     <name>CFG</name>
-     <description>Configuration Register.</description>
+     <name>CTRL0</name>
+     <description>Control Register.</description>
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
@@ -19067,25 +19257,31 @@
        </enumeratedValues>
       </field>
       <field>
+       <name>THREE_WIRE</name>
+       <description>Three Wire Mode.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>MODE</name>
        <description>Defines SPI Mode, Only valid values are 0 and 3.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>2</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>SPIX_Mode_0</name>
+         <name>SPI_Mode_0</name>
          <description>SPIX Mode 0. CLK Polarity = 0, CLK Phase = 0.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>SPIX_Mode_3</name>
+         <name>SPI_Mode_3</name>
          <description>SPIX Mode 3. CLK Polarity = 1, CLK Phase = 1.</description>
          <value>3</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
-       <name>PAGE_SIZE</name>
+       <name>PGSZ</name>
        <description>Page Size.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
@@ -19113,7 +19309,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>HI_CLK</name>
+       <name>HICLK</name>
        <description>SCLK High Clocks. Number of system clocks that SCLK will be high when SCLK pulses are generated. 0 Correspond to 16 system clocks and, all other values defines the number of system clock taht SCLK will be held high.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>4</bitWidth>
@@ -19126,7 +19322,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>LO_CLK</name>
+       <name>LOCLK</name>
        <description>SCLK low Clocks. Number of system clocks that SCLK will be low when SCLK pulses are generated. 0 correspond to 16 system clocks and, all other values defines the number of system clock taht SCLK will be held low.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>4</bitWidth>
@@ -19167,7 +19363,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SSIACT</name>
+       <name>SSINACT</name>
        <description>Slaves Select Inactive Timing.</description>
        <bitOffset>18</bitOffset>
        <bitWidth>2</bitWidth>
@@ -19203,14 +19399,32 @@
      </fields>
     </register>
     <register>
-     <name>SS_POL</name>
+     <name>SSPOL</name>
      <description>SPIX Controller Slave Select Polarity Register.</description>
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>SSPOL_0</name>
+       <name>SSPOL</name>
        <description>Slave Select Polarity.</description>
        <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>lo</name>
+         <description>Active Low.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>hi</name>
+         <description>Active High.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>FCPOL</name>
+       <description>FC Polarity.</description>
+       <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -19228,12 +19442,12 @@
      </fields>
     </register>
     <register>
-     <name>GEN_CTRL</name>
+     <name>CTRL1</name>
      <description>SPIX Controller General Controller Register.</description>
      <addressOffset>0x08</addressOffset>
      <fields>
       <field>
-       <name>ENABLE</name>
+       <name>EN</name>
        <description>SPI Master enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -19275,19 +19489,19 @@
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>dis_rxfifo</name>
+         <name>DIS_RXFIFO</name>
          <description>Disable Result FIFO.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>en_rxfifo</name>
+         <name>EN_RXFIFO</name>
          <description>Enable Result FIFO.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
-       <name>BBMODE</name>
+       <name>BB_EN</name>
        <description>Bit-Bang Mode.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
@@ -19323,8 +19537,14 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SCLK_DR</name>
-       <description>SSCLK Drive and State.</description>
+       <name>FCDR</name>
+       <description>This bits reflects the state of the selected FC.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SCLKDR</name>
+       <description>SCLK Drive and State.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -19369,8 +19589,8 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>BB_DATA</name>
-       <description>No description available.</description>
+       <name>BB_DATA_OUT</name>
+       <description>Bit Bang SDIO Output.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>4</bitWidth>
        <enumeratedValues>
@@ -19425,7 +19645,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SIMPLE</name>
+       <name>SIMPLE_EN</name>
        <description>Simple Mode Enable.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>1</bitWidth>
@@ -19449,17 +19669,17 @@
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>dis</name>
+         <name>Dis</name>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>en</name>
+         <name>En</name>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
-       <name>SCLK_FB_INVERT</name>
+       <name>SCLK_FB_INV</name>
        <description>SCK Invert.</description>
        <bitOffset>25</bitOffset>
        <bitWidth>1</bitWidth>
@@ -19467,30 +19687,30 @@
      </fields>
     </register>
     <register>
-     <name>FIFO_CTRL</name>
+     <name>CTRL2</name>
      <description>SPIX Controller FIFO Control and Status Register.</description>
      <addressOffset>0x0C</addressOffset>
      <fields>
       <field>
-       <name>TX_FIFO_AE_LVL</name>
+       <name>TX_AE_LVL</name>
        <description>Transaction FIFO Almost Empty Level.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>4</bitWidth>
       </field>
       <field>
-       <name>TX_FIFO_CNT</name>
+       <name>TX_CNT</name>
        <description>Transaction FIFO Used.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
       <field>
-       <name>RX_FIFO_AF_LVL</name>
+       <name>RX_AF_LVL</name>
        <description>Results FIFO Almost Full Level.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
       <field>
-       <name>RX_FIFO_CNT</name>
+       <name>RX_CNT</name>
        <description>Result FIFO Used.</description>
        <bitOffset>24</bitOffset>
        <bitWidth>6</bitWidth>
@@ -19498,12 +19718,12 @@
      </fields>
     </register>
     <register>
-     <name>SP_CTRL</name>
+     <name>CTRL3</name>
      <description>SPIX Controller Special Control Register.</description>
      <addressOffset>0x10</addressOffset>
      <fields>
       <field>
-       <name>SAMPL</name>
+       <name>SAMPLE</name>
        <description>Setting this bit to a 1 enables the ability to drive SDIO outputs prior to the assertion of Slave Select. This bit must
                                                                          only be set when the SPIXF bus is idle and the transaction FIFO is empty. This bit is automatically cleared by hardware after the
                                                                          next slave select assertion.</description>
@@ -19511,7 +19731,13 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>SDIO_OUT</name>
+       <name>MISO_FC_EN</name>
+       <description>MISO FC Enable.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SDIO_OUT_VAL</name>
        <description>SDIO Output Value Sample Mode</description>
        <bitOffset>4</bitOffset>
        <bitWidth>4</bitWidth>
@@ -19543,7 +19769,7 @@
      </fields>
     </register>
     <register>
-     <name>INT_FL</name>
+     <name>INTFL</name>
      <description>SPIX Controller Interrupt Status Register.</description>
      <addressOffset>0x14</addressOffset>
      <fields>
@@ -19584,7 +19810,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_READY</name>
+       <name>TX_RDY</name>
        <description>Transaction Ready Interrupt Status.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -19620,7 +19846,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_AE</name>
+       <name>TX_AE</name>
        <description>Transaction FIFO Almost Empty Flag.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
@@ -19638,7 +19864,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_AF</name>
+       <name>RX_AF</name>
        <description>Results FIFO Almost Full Flag.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -19658,7 +19884,7 @@
      </fields>
     </register>
     <register>
-     <name>INT_EN</name>
+     <name>INTEN</name>
      <description>SPIX Controller Interrupt Enable Register.</description>
      <addressOffset>0x18</addressOffset>
      <fields>
@@ -19669,12 +19895,12 @@
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>en</name>
+         <name>EN</name>
          <description>Disable Transaction Stalled Interrupt.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>dis</name>
+         <name>DIS</name>
          <description>Enable Transaction Stalled Interrupt.</description>
          <value>1</value>
         </enumeratedValue>
@@ -19687,30 +19913,30 @@
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>en</name>
+         <name>EN</name>
          <description>Disable Results Stalled Interrupt.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>dis</name>
+         <name>DIS</name>
          <description>Enable Results Stalled Interrupt.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_READY</name>
+       <name>TX_RDY</name>
        <description>Transaction Ready Interrupt Enable.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>en</name>
+         <name>EN</name>
          <description>Disable FIFO Transaction Ready Interrupt.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>dis</name>
+         <name>DIS</name>
          <description>Enable FIFO Transaction Ready Interrupt.</description>
          <value>1</value>
         </enumeratedValue>
@@ -19723,54 +19949,83 @@
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>en</name>
+         <name>EN</name>
          <description>Disable Results Done Interrupt.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>dis</name>
+         <name>DIS</name>
          <description>Enable Results Done Interrupt.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_AE</name>
+       <name>TX_AE</name>
        <description>Transaction FIFO Almost Empty Interrupt Enable.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>en</name>
+         <name>EN</name>
          <description>Disable Transaction FIFO Almost Empty Interrupt.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>dis</name>
+         <name>DIS</name>
          <description>Enable Transaction FIFO Almost Empty Interrupt.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_AF</name>
+       <name>RX_AF</name>
        <description>Results FIFO Almost Full Interrupt Enable.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>en</name>
+         <name>EN</name>
          <description>Disable Results FIFO Almost Full Interrupt.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>dis</name>
+         <name>DIS</name>
          <description>Enable Results FIFO Almost Full Interrupt.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
      </fields>
+    </register>
+    <register>
+     <name>HEADER</name>
+     <description>Simple Header</description>
+     <addressOffset>0x1C</addressOffset>
+     <fields>
+      <field>
+       <name>TX_BIDIR</name>
+       <description>TX Bdirectional Header.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>14</bitWidth>
+      </field>
+      <field>
+       <name>RX_ONLY</name>
+       <description>RX Only Header.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>14</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>AUTOCTRL</name>
+     <description>Auto Control Register.</description>
+     <addressOffset>0x20</addressOffset>
+    </register>
+    <register>
+     <name>AUTOCMD</name>
+     <description>Auto Command Register.</description>
+     <addressOffset>0x24</addressOffset>
     </register>
    </registers>
   </peripheral>
@@ -19786,8 +20041,8 @@
    </addressBlock>
    <registers>
     <register>
-     <name>CFG</name>
-     <description>SPIX Configuration Register.</description>
+     <name>CTRL</name>
+     <description>SPIX Control Register.</description>
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
@@ -19833,13 +20088,13 @@
        <bitWidth>3</bitWidth>
       </field>
       <field>
-       <name>LO_CLK</name>
+       <name>LOCLK</name>
        <description>Number of system clocks that SCLK will be low when SCLK pulses are generated.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>4</bitWidth>
       </field>
       <field>
-       <name>HI_CLK</name>
+       <name>HICLK</name>
        <description>Number of system clocks that SCLK will be high when SCLK pulses are generated.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>4</bitWidth>
@@ -19873,7 +20128,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SSIACT</name>
+       <name>SSINACT</name>
        <description>Slave Select Inactive Timing.</description>
        <bitOffset>18</bitOffset>
        <bitWidth>2</bitWidth>
@@ -19903,18 +20158,18 @@
      </fields>
     </register>
     <register>
-     <name>FETCH_CTRL</name>
+     <name>FETCHCTRL</name>
      <description>SPIX Fetch Control Register.</description>
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>CMDVAL</name>
+       <name>CMD_VAL</name>
        <description>Command Value sent to target to initiate fetching from SPI flash.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>CMD_WIDTH</name>
+       <name>CMD_WDTH</name>
        <description>Command Width. Number of data I/O used to send commands.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>2</bitWidth>
@@ -19942,7 +20197,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADDR_WIDTH</name>
+       <name>ADDR_WDTH</name>
        <description>Address Width. Number of data I/O used to send address, and mode/dummy clocks.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>2</bitWidth>
@@ -19970,7 +20225,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DATA_WIDTH</name>
+       <name>DATA_WDTH</name>
        <description>Data Width. Number of data I/O used to receive data.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>2</bitWidth>
@@ -19998,7 +20253,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>FOUR_BYTE_ADDR</name>
+       <name>4BADDR</name>
        <description>Four Byte Address Mode. Enables 4-byte Flash Address Mode.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20018,7 +20273,7 @@
      </fields>
     </register>
     <register>
-     <name>MODE_CTRL</name>
+     <name>MODECTRL</name>
      <description>SPIX Mode Control Register.</description>
      <addressOffset>0x08</addressOffset>
      <fields>
@@ -20029,7 +20284,7 @@
        <bitWidth>4</bitWidth>
       </field>
       <field>
-       <name>NO_CMD</name>
+       <name>NOCMD</name>
        <description>No Command Mode.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20047,7 +20302,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MODE_SEND</name>
+       <name>EXIT_NOCMD</name>
        <description>Mode Send.</description>
        <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20055,7 +20310,7 @@
      </fields>
     </register>
     <register>
-     <name>MODE_DATA</name>
+     <name>MODEDATA</name>
      <description>SPIX Mode Data Register.</description>
      <addressOffset>0x0C</addressOffset>
      <fields>
@@ -20074,12 +20329,12 @@
      </fields>
     </register>
     <register>
-     <name>FB_CTRL</name>
+     <name>FBCTRL</name>
      <description>SPIX Feedback Control Register.</description>
      <addressOffset>0x10</addressOffset>
      <fields>
       <field>
-       <name>FB_EN</name>
+       <name>EN</name>
        <description>Enable SCLK feedback mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20097,7 +20352,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>INVERT_EN</name>
+       <name>INVERT</name>
        <description>Invert SCLK in feedback mode.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20117,7 +20372,7 @@
      </fields>
     </register>
     <register>
-     <name>IO_CTRL</name>
+     <name>IOCTRL</name>
      <description>SPIX IO Control Register.</description>
      <addressOffset>0x1C</addressOffset>
      <fields>
@@ -20176,7 +20431,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>PU_PD_CTRL</name>
+       <name>PADCTRL</name>
        <description>IO Pullup/Pulldown Control. These bits control the pullups and pulldowns associated with all SPI XiP SDIO pins.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>2</bitWidth>
@@ -20201,7 +20456,7 @@
      </fields>
     </register>
     <register>
-     <name>SEC_CTRL</name>
+     <name>MEMSECCTRL</name>
      <description>SPIX Memory Security Control Register.</description>
      <addressOffset>0x20</addressOffset>
      <fields>
@@ -20224,7 +20479,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>AUTH_DISABLE</name>
+       <name>AUTH_DIS</name>
        <description>Integrity Enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20241,10 +20496,52 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
+      <field>
+       <name>CNTOPT_EN</name>
+       <description>Enable counters optimization (when authentication is enabled).</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable counter optimization.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable counter optimization.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>INTERL_DIS</name>
+       <description>Disable authenticity interleaving (when authentication is enabled)</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable interleaving of SPIX data.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable interleaving of SPIX data.</description>
+         <value>0</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>AUTHERR_FL</name>
+       <description>Authentication Error Flag Bit.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
-     <name>BUS_IDLE</name>
+     <name>BUSIDLE</name>
      <description>Bus Idle</description>
      <addressOffset>0x24</addressOffset>
      <fields>
@@ -20263,6 +20560,115 @@
      <description>Auth Offset</description>
      <addressOffset>0x28</addressOffset>
     </register>
+    <register>
+     <name>BYPASS_MODE</name>
+     <description>Bypass Mode Register.</description>
+     <addressOffset>0x2C</addressOffset>
+     <fields>
+      <field>
+       <name>EN</name>
+       <description>Enable bypass.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FCLK_DELAY</name>
+       <description>FCLK Delay.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_NS</name>
+         <description>0ns</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>0P5_NS</name>
+         <description>0.5ns</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1P0_NS</name>
+         <description>1.0ns</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1P5_NS</name>
+         <description>1.5ns</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>2P0_NS</name>
+         <description>2.0ns</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>2P5_NS</name>
+         <description>2.5ns</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>3P0_NS</name>
+         <description>3.0ns</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>3P5_NS</name>
+         <description>3.0ns</description>
+         <value>7</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>SCLK_DELAY</name>
+       <description>SCLK Delay.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_NS</name>
+         <description>0ns</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>0P5_NS</name>
+         <description>0.5ns</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1P0_NS</name>
+         <description>1.0ns</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1P5_NS</name>
+         <description>1.5ns</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>2P0_NS</name>
+         <description>2.0ns</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>2P5_NS</name>
+         <description>2.5ns</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>3P0_NS</name>
+         <description>3.0ns</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>3P5_NS</name>
+         <description>3.0ns</description>
+         <value>7</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--SPIXFM SPIXF Master-->
@@ -20277,7 +20683,7 @@
    </addressBlock>
    <registers>
     <register>
-     <name>DATA32</name>
+     <name>FIFO32</name>
      <description>Register for reading and writing the FIFO.</description>
      <addressOffset>0x00</addressOffset>
      <size>32</size>
@@ -20294,9 +20700,9 @@
     <register>
      <dim>2</dim>
      <dimIncrement>2</dimIncrement>
-     <name>DATA16[%s]</name>
+     <name>FIFO16[%s]</name>
      <description>Register for reading and writing the FIFO.</description>
-     <alternateRegister>DATA32</alternateRegister>
+     <alternateRegister>FIFO32</alternateRegister>
      <addressOffset>0x00</addressOffset>
      <size>16</size>
      <access>read-write</access>
@@ -20312,7 +20718,7 @@
     <register>
      <dim>4</dim>
      <dimIncrement>1</dimIncrement>
-     <name>DATA8[%s]</name>
+     <name>FIFO8[%s]</name>
      <description>Register for reading and writing the FIFO.</description>
      <alternateRegister>DATA32</alternateRegister>
      <addressOffset>0x00</addressOffset>
@@ -20328,13 +20734,13 @@
      </fields>
     </register>
     <register>
-     <name>CTRL1</name>
+     <name>CTRL0</name>
      <description>Register for controlling SPI peripheral.</description>
      <addressOffset>0x04</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>SPIEN</name>
+       <name>EN</name>
        <description>SPI Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20352,7 +20758,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MMEN</name>
+       <name>MST_MODE</name>
        <description>Master Mode Enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20477,7 +20883,7 @@
      </fields>
     </register>
     <register>
-     <name>CTRL2</name>
+     <name>CTRL1</name>
      <description>Register for controlling SPI peripheral.</description>
      <addressOffset>0x08</addressOffset>
      <access>read-write</access>
@@ -20497,19 +20903,19 @@
      </fields>
     </register>
     <register>
-     <name>CTRL3</name>
+     <name>CTRL2</name>
      <description>Register for controlling SPI peripheral.</description>
      <addressOffset>0x0C</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>CPHA</name>
+       <name>CLKPHA</name>
        <description>Clock Phase.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>CPOL</name>
+       <name>CLKPOL</name>
        <description>Clock Polarity.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20637,13 +21043,13 @@
      </fields>
     </register>
     <register>
-     <name>SS_TIME</name>
+     <name>SSTIME</name>
      <description>Register for controlling SPI peripheral.</description>
      <addressOffset>0x10</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>SSACT1</name>
+       <name>PRE</name>
        <description>Slave Select Action delay 1.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
@@ -20656,7 +21062,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SSACT2</name>
+       <name>POST</name>
        <description>Slave Select Action delay 2.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>8</bitWidth>
@@ -20669,7 +21075,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SSINACT</name>
+       <name>INACT</name>
        <description>Slave Select Inactive delay.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>8</bitWidth>
@@ -20684,13 +21090,13 @@
      </fields>
     </register>
     <register>
-     <name>BRG_CTRL</name>
+     <name>BRGCTRL</name>
      <description>Register for controlling SPI clock rate.</description>
      <addressOffset>0x14</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>LOW</name>
+       <name>LO</name>
        <description>Low duty cycle control. In timer mode, reload[7:0].</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
@@ -20716,7 +21122,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SCALE</name>
+       <name>CLKDIV</name>
        <description>System Clock scale factor. Scales the AMBA clock by 2^SCALE before generating serial clock.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>4</bitWidth>
@@ -20730,10 +21136,8 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_FIFO_LEVEL</name>
-       <description>Transmit FIFO level that will trigger a DMA request, also level for
-						threshold status. When TX FIFO has fewer than this many bytes, the
-						associated events and conditions are triggered.</description>
+       <name>TX_THD_VAL</name>
+       <description>Transmit FIFO level that will trigger a DMA request, also level for threshold status. When TX FIFO has fewer than this many bytes, the associated events and conditions are triggered.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
@@ -20756,7 +21160,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_CLEAR</name>
+       <name>TX_FLUSH</name>
        <description>Clear TX FIFO, clear is accomplished by resetting the read and write
 						pointers. This should be done when FIFO is not being accessed on the SPI side.
 					</description>
@@ -20771,13 +21175,13 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_CNT</name>
+       <name>TX_LVL</name>
        <description>Count of entries in TX FIFO.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
       <field>
-       <name>TX_DMA_EN</name>
+       <name>TX_EN</name>
        <description>TX DMA Enable.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20795,7 +21199,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_LEVEL</name>
+       <name>RX_THD_LVL</name>
        <description>Receive FIFO level that will trigger a DMA request, also level for
 						threshold status. When RX FIFO has more than this many bytes, the
 						associated events and conditions are triggered.</description>
@@ -20821,7 +21225,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_CLEAR</name>
+       <name>RX_FLUSH</name>
        <description>Clear RX FIFO, clear is accomplished by resetting the read and write
 						pointers. This should be done when FIFO is not being accessed on the SPI side.</description>
        <bitOffset>23</bitOffset>
@@ -20835,13 +21239,13 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_CNT</name>
+       <name>RX_LVL</name>
        <description>Count of entries in RX FIFO.</description>
        <bitOffset>24</bitOffset>
        <bitWidth>6</bitWidth>
       </field>
       <field>
-       <name>RX_DMA_EN</name>
+       <name>RX_EN</name>
        <description>RX DMA Enable.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20861,13 +21265,13 @@
      </fields>
     </register>
     <register>
-     <name>INT_FL</name>
+     <name>INTFL</name>
      <description>Register for reading and clearing interrupt flags. All bits are write 1 to clear.</description>
      <addressOffset>0x20</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>TX FIFO Threshold Crossed.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20880,7 +21284,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>TX FIFO Empty.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20893,7 +21297,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>RX FIFO Threshold Crossed.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20971,7 +21375,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>M_DONE</name>
+       <name>MST_DONE</name>
        <description>Master Done, set when SPI Master has completed any transactions.</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
@@ -20984,7 +21388,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_OVR</name>
+       <name>TX_OV</name>
        <description>Transmit FIFO Overrun, set when the AMBA side attempts to write data
 						to a full transmit FIFO.</description>
        <bitOffset>12</bitOffset>
@@ -20998,7 +21402,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_UND</name>
+       <name>TX_UN</name>
        <description>Transmit FIFO Underrun, set when the SPI side attempts to read data
 						from an empty transmit FIFO.</description>
        <bitOffset>13</bitOffset>
@@ -21012,7 +21416,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_OVR</name>
+       <name>RX_OV</name>
        <description>Receive FIFO Overrun, set when the SPI side attempts to write to a full receive FIFO.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21025,7 +21429,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_UND</name>
+       <name>RX_UN</name>
        <description>Receive FIFO Underrun, set when the AMBA side attempts to read data from an empty receive FIFO.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21040,13 +21444,13 @@
      </fields>
     </register>
     <register>
-     <name>INT_EN</name>
+     <name>INTEN</name>
      <description>Register for enabling interrupts.</description>
      <addressOffset>0x24</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>TX FIFO Threshold interrupt enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21064,7 +21468,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>TX FIFO Empty interrupt enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21082,7 +21486,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>RX FIFO Threshold Crossed interrupt enable.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21190,7 +21594,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>M_DONE</name>
+       <name>MST_DONE</name>
        <description>Master Done interrupt enable.</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21208,7 +21612,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_OVR</name>
+       <name>TX_OV</name>
        <description>Transmit FIFO Overrun interrupt enable.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21226,7 +21630,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_UND</name>
+       <name>TX_UN</name>
        <description>Transmit FIFO Underrun interrupt enable.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21244,7 +21648,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_OVR</name>
+       <name>RX_OV</name>
        <description>Receive FIFO Overrun interrupt enable.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21262,7 +21666,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_UND</name>
+       <name>RX_UN</name>
        <description>Receive FIFO Underrun interrupt enable.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21282,13 +21686,13 @@
      </fields>
     </register>
     <register>
-     <name>WAKE_FL</name>
+     <name>WKFL</name>
      <description>Register for wake up flags. All bits in this register are write 1 to clear.</description>
      <addressOffset>0x28</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>Wake on TX FIFO Threshold Crossed.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21301,7 +21705,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>Wake on TX FIFO Empty.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21314,7 +21718,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>Wake on RX FIFO Threshold Crossed.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21342,13 +21746,13 @@
      </fields>
     </register>
     <register>
-     <name>WAKE_EN</name>
+     <name>WKEN</name>
      <description>Register for wake up enable.</description>
      <addressOffset>0x2C</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TX_THRESH</name>
+       <name>TX_THD</name>
        <description>Wake on TX FIFO Threshold Crossed Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21366,7 +21770,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_EMPTY</name>
+       <name>TX_EM</name>
        <description>Wake on TX FIFO Empty Enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21384,7 +21788,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_THRESH</name>
+       <name>RX_THD</name>
        <description>Wake on RX FIFO Threshold Crossed Enable.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21422,7 +21826,7 @@
      </fields>
     </register>
     <register>
-     <name>STAT</name>
+     <name>STATUS</name>
      <description>SPI Status register.</description>
      <addressOffset>0x30</addressOffset>
      <access>read-only</access>
@@ -21452,7 +21856,7 @@
      </fields>
     </register>
     <register>
-     <name>XMEM_CTRL</name>
+     <name>XMEMCTRL</name>
      <description>Register to control external memory.</description>
      <addressOffset>0x34</addressOffset>
      <access>read-write</access>
@@ -21476,7 +21880,7 @@
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>XMEM_EN</name>
+       <name>EN</name>
        <description>XMEM enable.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21497,7 +21901,7 @@
    </addressBlock>
    <registers>
     <register>
-     <name>CACHE_ID</name>
+     <name>INFO</name>
      <description>Cache ID Register.</description>
      <addressOffset>0x0000</addressOffset>
      <access>read-only</access>
@@ -21515,7 +21919,7 @@
        <bitWidth>4</bitWidth>
       </field>
       <field>
-       <name>CCHID</name>
+       <name>ID</name>
        <description>Cache ID. This field reflects the value of the C_ID_CACHEID configuration parameter.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>6</bitWidth>
@@ -21523,20 +21927,20 @@
      </fields>
     </register>
     <register>
-     <name>MEMCFG</name>
+     <name>SZ</name>
      <description>Memory Configuration Register.</description>
      <addressOffset>0x0004</addressOffset>
      <access>read-only</access>
      <resetValue>0x00080008</resetValue>
      <fields>
       <field>
-       <name>CCHSZ</name>
+       <name>CCH</name>
        <description>Cache Size. Indicates total size in Kbytes of cache.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>16</bitWidth>
       </field>
       <field>
-       <name>MEMSZ</name>
+       <name>MEM</name>
        <description>Main Memory Size. Indicates the total size, in units of 128 Kbytes, of code memory accessible to the cache controller.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>16</bitWidth>
@@ -21544,12 +21948,12 @@
      </fields>
     </register>
     <register>
-     <name>CACHE_CTRL</name>
+     <name>CTRL</name>
      <description>Cache Control and Status Register.</description>
      <addressOffset>0x0100</addressOffset>
      <fields>
       <field>
-       <name>CACHE_EN</name>
+       <name>EN</name>
        <description>Cache Enable. Controls whether the cache is bypassed or is in use. Changing the state of this bit will cause the instruction cache to be flushed and its contents invalidated.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21567,7 +21971,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>WRITE_ALLOC_EN</name>
+       <name>WR_ALLOC_EN</name>
        <description>Write Allocate Enable. This bit only writable while the cache is disabled.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21603,7 +22007,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>CACHE_RDY</name>
+       <name>RDY</name>
        <description>Cache Ready flag. Cleared by hardware when at any time the cache as a whole is invalidated (including a system reset). When this bit is 0, the cache is effectively in bypass mode (instruction fetches will come from main memory or from the line fill buffer). Set by hardware when the invalidate operation is complete and the cache is ready.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
@@ -21628,7 +22032,7 @@
      <addressOffset>0x0700</addressOffset>
      <fields>
       <field>
-       <name>IA</name>
+       <name>INVALID</name>
        <description>Invalidate all cache contents.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -22044,13 +22448,13 @@
    </interrupt>
    <registers>
     <register>
-     <name>CN</name>
+     <name>CTRL</name>
      <description>TRNG Control Register.</description>
      <addressOffset>0x00</addressOffset>
      <resetValue>0x00000003</resetValue>
      <fields>
       <field>
-       <name>RND_IRQ_EN</name>
+       <name>RND_IE</name>
        <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -22068,12 +22472,6 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>AESKG</name>
-       <description>AES Key Generate.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>AESKG_MEMPROTE</name>
        <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
        <bitOffset>4</bitOffset>
@@ -22082,7 +22480,7 @@
      </fields>
     </register>
     <register>
-     <name>ST</name>
+     <name>STATUS</name>
      <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
      <addressOffset>0x04</addressOffset>
      <access>read-only</access>
@@ -22106,7 +22504,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>AESKGD_MEU_S</name>
+       <name>AESKGD_MEU</name>
        <description>Automatically AES transfer on going</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>

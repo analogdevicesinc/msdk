@@ -17,15 +17,15 @@
     </interrupt>
     <registers>
       <register>
-        <name>CR0</name>
+        <name>CTRL0</name>
         <description>Input Output Select Bits.  Each bit of IOSEL selects the pin direction for the corresponding KBDIO pin.  If IOSEL[0] = 1, KBDIO0 is an output.</description>
         <addressOffset>0x00</addressOffset>
         <fields>
           <field>
-            <name>KBDIO_0</name>
+            <name>KBDIO0</name>
             <description>Input Output Select for KBDIO0 pin.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>10</bitWidth>
+            <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
                 <name>input</name>
@@ -39,15 +39,69 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO1</name>
+            <description>Input Output Select for KBDIO1 pin.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO2</name>
+            <description>Input Output Select for KBDIO2 pin.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO3</name>
+            <description>Input Output Select for KBDIO3 pin.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO4</name>
+            <description>Input Output Select for KBDIO4 pin.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO5</name>
+            <description>Input Output Select for KBDIO5 pin.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO6</name>
+            <description>Input Output Select for KBDIO6 pin.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO7</name>
+            <description>Input Output Select for KBDIO7 pin.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO8</name>
+            <description>Input Output Select for KBDIO8 pin.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="KBDIO0">
+            <name>KBDIO9</name>
+            <description>Input Output Select for KBDIO9 pin.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>
-        <name>CR1</name>
+        <name>CTRL1</name>
         <description>Control Register 1</description>
         <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>AUTOEN</name>
+            <name>AUTOSCAN_EN</name>
             <description>Automatic Keyboard Scan Enable</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -64,23 +118,21 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="AUTOEN">
-            <name>CLEAR</name>
+          <field derivedFrom="AUTOSCAN_EN">
+            <name>AUTOCLEAR</name>
             <description>Auto Clear Bit</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>OUTNB</name>
-            <description>Output Number. Number of KBDIO pins selected as outputs. NOTE:
-                                                                                                                                                                     Output pins must be allocated contiguously starting with KBDIO0 and continuing through to KBDIO7.</description>
+            <name>OUTNUM</name>
+            <description>Output Number. Number of KBDIO pins selected as outputs. Output pins must be allocated contiguously starting with KBDIO0 and continuing through to KBDIO7.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>3</bitWidth>
           </field>
           <field>
             <name>DBTM</name>
-            <description>Debounce Time. Number of milliseconds a keypress event must be active before it is considered actual. NOTE:
-                                                                                                                                                                     Debounce time values based on system running from an external 12MHz clock source with PLL0 enabled.  Other external crystal values will cause the debounce time to scale linearly.</description>
+            <description>Debounce Time. Number of milliseconds a keypress event must be active before it is considered actual. Debounce time values based on system running from an external 12MHz clock source with PLL0 enabled.  Other external crystal values will cause the debounce time to scale linearly.</description>
             <bitOffset>13</bitOffset>
             <bitWidth>3</bitWidth>
             <enumeratedValues>
@@ -129,7 +181,7 @@
         </fields>
       </register>
       <register>
-        <name>SR</name>
+        <name>STATUS</name>
         <description>Status Register</description>
         <addressOffset>0x08</addressOffset>
         <access>read-only</access>
@@ -155,12 +207,12 @@
         </fields>
       </register>
       <register>
-        <name>IER</name>
+        <name>INTEN</name>
         <description>Interrupt Enable Register</description>
         <addressOffset>0x0C</addressOffset>
         <fields>
           <field>
-            <name>PUSHIE</name>
+            <name>PUSH</name>
             <description>Push Event Enable Bit. When set, this bit enables an interrupt to be generated on a key push event.  Automatic keyboard scan must be enabled.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -177,14 +229,14 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="PUSHIE">
-            <name>RELEASEIE</name>
+          <field derivedFrom="PUSH">
+            <name>RELEASE</name>
             <description>Release Event Enable Bit. When set, this bit enables an interrupt to be generated on a key release event.  Automatic keyboard scan must be enabled.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="PUSHIE">
-            <name>OVERIE</name>
+          <field derivedFrom="PUSH">
+            <name>OVERRUN</name>
             <description>Overrun Event Enable Bit. When set, this bit enables an interrupt to be generated on an overrun event.  Automatic keyboard scan must be enabled.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -192,12 +244,12 @@
         </fields>
       </register>
       <register>
-        <name>ISR</name>
+        <name>INTFL</name>
         <description>Interrupt Status Register</description>
         <addressOffset>0x10</addressOffset>
         <fields>
           <field>
-            <name>PUSHIS</name>
+            <name>PUSH</name>
             <description>Push Interrupt Flag. This bit is set by hardware when a key has been pushed.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -214,14 +266,14 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="PUSHIS">
-            <name>RELEASEIS</name>
+          <field derivedFrom="PUSH">
+            <name>RELEASE</name>
             <description>Release Interrupt Flag. This bit is set by hardware when a key has been released.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="PUSHIS">
-            <name>OVERIS</name>
+          <field derivedFrom="PUSH">
+            <name>OVERRUN</name>
             <description>Overrun Event Enable Bit. This bit is set by hardware when an overrun event has occurred.  If the interrupt is enabled for this flag, a system interrupt will be fired.  If the interrupt enable is not set, the flag will be set, but no interrupt will fire.  This bit must be cleared by software.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -231,7 +283,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>EVENT[%s]</name>
+        <name>EVT[%s]</name>
         <description>Key Register</description>
         <addressOffset>0x14</addressOffset>
         <access>read-only</access>
@@ -302,6 +354,32 @@
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GPIO0</name>
+        <description>General Purpose Register 0.</description>
+        <addressOffset>0x24</addressOffset>
+        <fields>
+          <field>
+            <name>ALL</name>
+            <description>Mask of all of the pins on the port.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GPIO1</name>
+        <description>General Purpose Register 1.</description>
+        <addressOffset>0x28</addressOffset>
+        <fields>
+          <field>
+            <name>ALL</name>
+            <description>Mask of all of the pins on the port.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
           </field>
         </fields>
       </register>

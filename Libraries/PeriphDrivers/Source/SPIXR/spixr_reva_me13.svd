@@ -11,7 +11,7 @@
     </addressBlock>
     <registers>
       <register>
-        <name>DATA32</name>
+        <name>FIFO32</name>
         <description>Register for reading and writing the FIFO.</description>
         <addressOffset>0x00</addressOffset>
         <size>32</size>
@@ -28,9 +28,9 @@
       <register>
         <dim>2</dim>
         <dimIncrement>2</dimIncrement>
-        <name>DATA16[%s]</name>
+        <name>FIFO16[%s]</name>
         <description>Register for reading and writing the FIFO.</description>
-        <alternateRegister>DATA32</alternateRegister>
+        <alternateRegister>FIFO32</alternateRegister>
         <addressOffset>0x00</addressOffset>
         <size>16</size>
         <access>read-write</access>
@@ -46,7 +46,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>1</dimIncrement>
-        <name>DATA8[%s]</name>
+        <name>FIFO8[%s]</name>
         <description>Register for reading and writing the FIFO.</description>
         <alternateRegister>DATA32</alternateRegister>
         <addressOffset>0x00</addressOffset>
@@ -62,13 +62,13 @@
         </fields>
       </register>
       <register>
-        <name>CTRL1</name>
+        <name>CTRL0</name>
         <description>Register for controlling SPI peripheral.</description>
         <addressOffset>0x04</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>SPIEN</name>
+            <name>EN</name>
             <description>SPI Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -86,7 +86,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>MMEN</name>
+            <name>MST_MODE</name>
             <description>Master Mode Enable.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -211,7 +211,7 @@
         </fields>
       </register>
       <register>
-        <name>CTRL2</name>
+        <name>CTRL1</name>
         <description>Register for controlling SPI peripheral.</description>
         <addressOffset>0x08</addressOffset>
         <access>read-write</access>
@@ -231,19 +231,19 @@
         </fields>
       </register>
       <register>
-        <name>CTRL3</name>
+        <name>CTRL2</name>
         <description>Register for controlling SPI peripheral.</description>
         <addressOffset>0x0C</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>CPHA</name>
+            <name>CLKPHA</name>
             <description>Clock Phase.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>CPOL</name>
+            <name>CLKPOL</name>
             <description>Clock Polarity.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -371,13 +371,13 @@
         </fields>
       </register>
       <register>
-        <name>SS_TIME</name>
+        <name>SSTIME</name>
         <description>Register for controlling SPI peripheral.</description>
         <addressOffset>0x10</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>SSACT1</name>
+            <name>PRE</name>
             <description>Slave Select Action delay 1.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
@@ -390,7 +390,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSACT2</name>
+            <name>POST</name>
             <description>Slave Select Action delay 2.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>8</bitWidth>
@@ -403,7 +403,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSINACT</name>
+            <name>INACT</name>
             <description>Slave Select Inactive delay.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>8</bitWidth>
@@ -418,13 +418,13 @@
         </fields>
       </register>
       <register>
-        <name>BRG_CTRL</name>
+        <name>BRGCTRL</name>
         <description>Register for controlling SPI clock rate.</description>
         <addressOffset>0x14</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>LOW</name>
+            <name>LO</name>
             <description>Low duty cycle control. In timer mode, reload[7:0].</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
@@ -450,7 +450,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SCALE</name>
+            <name>CLKDIV</name>
             <description>System Clock scale factor. Scales the AMBA clock by 2^SCALE before generating serial clock.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>4</bitWidth>
@@ -464,10 +464,8 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>TX_FIFO_LEVEL</name>
-            <description>Transmit FIFO level that will trigger a DMA request, also level for
-						threshold status. When TX FIFO has fewer than this many bytes, the
-						associated events and conditions are triggered.</description>
+            <name>TX_THD_VAL</name>
+            <description>Transmit FIFO level that will trigger a DMA request, also level for threshold status. When TX FIFO has fewer than this many bytes, the associated events and conditions are triggered.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
@@ -490,7 +488,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_FIFO_CLEAR</name>
+            <name>TX_FLUSH</name>
             <description>Clear TX FIFO, clear is accomplished by resetting the read and write
 						pointers. This should be done when FIFO is not being accessed on the SPI side.
 					</description>
@@ -505,13 +503,13 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_FIFO_CNT</name>
+            <name>TX_LVL</name>
             <description>Count of entries in TX FIFO.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
           <field>
-            <name>TX_DMA_EN</name>
+            <name>TX_EN</name>
             <description>TX DMA Enable.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
@@ -529,7 +527,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_FIFO_LEVEL</name>
+            <name>RX_THD_LVL</name>
             <description>Receive FIFO level that will trigger a DMA request, also level for
 						threshold status. When RX FIFO has more than this many bytes, the
 						associated events and conditions are triggered.</description>
@@ -555,7 +553,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_FIFO_CLEAR</name>
+            <name>RX_FLUSH</name>
             <description>Clear RX FIFO, clear is accomplished by resetting the read and write
 						pointers. This should be done when FIFO is not being accessed on the SPI side.</description>
             <bitOffset>23</bitOffset>
@@ -569,13 +567,13 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_FIFO_CNT</name>
+            <name>RX_LVL</name>
             <description>Count of entries in RX FIFO.</description>
             <bitOffset>24</bitOffset>
             <bitWidth>6</bitWidth>
           </field>
           <field>
-            <name>RX_DMA_EN</name>
+            <name>RX_EN</name>
             <description>RX DMA Enable.</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
@@ -595,13 +593,13 @@
         </fields>
       </register>
       <register>
-        <name>INT_FL</name>
+        <name>INTFL</name>
         <description>Register for reading and clearing interrupt flags. All bits are write 1 to clear.</description>
         <addressOffset>0x20</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>TX_THRESH</name>
+            <name>TX_THD</name>
             <description>TX FIFO Threshold Crossed.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -614,7 +612,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_EMPTY</name>
+            <name>TX_EM</name>
             <description>TX FIFO Empty.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -627,7 +625,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_THRESH</name>
+            <name>RX_THD</name>
             <description>RX FIFO Threshold Crossed.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -705,7 +703,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>M_DONE</name>
+            <name>MST_DONE</name>
             <description>Master Done, set when SPI Master has completed any transactions.</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
@@ -718,7 +716,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_OVR</name>
+            <name>TX_OV</name>
             <description>Transmit FIFO Overrun, set when the AMBA side attempts to write data
 						to a full transmit FIFO.</description>
             <bitOffset>12</bitOffset>
@@ -732,7 +730,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_UND</name>
+            <name>TX_UN</name>
             <description>Transmit FIFO Underrun, set when the SPI side attempts to read data
 						from an empty transmit FIFO.</description>
             <bitOffset>13</bitOffset>
@@ -746,7 +744,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_OVR</name>
+            <name>RX_OV</name>
             <description>Receive FIFO Overrun, set when the SPI side attempts to write to a full receive FIFO.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
@@ -759,7 +757,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_UND</name>
+            <name>RX_UN</name>
             <description>Receive FIFO Underrun, set when the AMBA side attempts to read data from an empty receive FIFO.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
@@ -774,13 +772,13 @@
         </fields>
       </register>
       <register>
-        <name>INT_EN</name>
+        <name>INTEN</name>
         <description>Register for enabling interrupts.</description>
         <addressOffset>0x24</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>TX_THRESH</name>
+            <name>TX_THD</name>
             <description>TX FIFO Threshold interrupt enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -798,7 +796,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_EMPTY</name>
+            <name>TX_EM</name>
             <description>TX FIFO Empty interrupt enable.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -816,7 +814,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_THRESH</name>
+            <name>RX_THD</name>
             <description>RX FIFO Threshold Crossed interrupt enable.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -924,7 +922,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>M_DONE</name>
+            <name>MST_DONE</name>
             <description>Master Done interrupt enable.</description>
             <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
@@ -942,7 +940,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_OVR</name>
+            <name>TX_OV</name>
             <description>Transmit FIFO Overrun interrupt enable.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>1</bitWidth>
@@ -960,7 +958,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_UND</name>
+            <name>TX_UN</name>
             <description>Transmit FIFO Underrun interrupt enable.</description>
             <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
@@ -978,7 +976,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_OVR</name>
+            <name>RX_OV</name>
             <description>Receive FIFO Overrun interrupt enable.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
@@ -996,7 +994,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_UND</name>
+            <name>RX_UN</name>
             <description>Receive FIFO Underrun interrupt enable.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1016,13 +1014,13 @@
         </fields>
       </register>
       <register>
-        <name>WAKE_FL</name>
+        <name>WKFL</name>
         <description>Register for wake up flags. All bits in this register are write 1 to clear.</description>
         <addressOffset>0x28</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>TX_THRESH</name>
+            <name>TX_THD</name>
             <description>Wake on TX FIFO Threshold Crossed.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1035,7 +1033,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_EMPTY</name>
+            <name>TX_EM</name>
             <description>Wake on TX FIFO Empty.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1048,7 +1046,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_THRESH</name>
+            <name>RX_THD</name>
             <description>Wake on RX FIFO Threshold Crossed.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1076,13 +1074,13 @@
         </fields>
       </register>
       <register>
-        <name>WAKE_EN</name>
+        <name>WKEN</name>
         <description>Register for wake up enable.</description>
         <addressOffset>0x2C</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>TX_THRESH</name>
+            <name>TX_THD</name>
             <description>Wake on TX FIFO Threshold Crossed Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1100,7 +1098,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_EMPTY</name>
+            <name>TX_EM</name>
             <description>Wake on TX FIFO Empty Enable.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1118,7 +1116,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_THRESH</name>
+            <name>RX_THD</name>
             <description>Wake on RX FIFO Threshold Crossed Enable.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1156,7 +1154,7 @@
         </fields>
       </register>
       <register>
-        <name>STAT</name>
+        <name>STATUS</name>
         <description>SPI Status register.</description>
         <addressOffset>0x30</addressOffset>
         <access>read-only</access>
@@ -1186,7 +1184,7 @@
         </fields>
       </register>
       <register>
-        <name>XMEM_CTRL</name>
+        <name>XMEMCTRL</name>
         <description>Register to control external memory.</description>
         <addressOffset>0x34</addressOffset>
         <access>read-write</access>
@@ -1210,7 +1208,7 @@
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>XMEM_EN</name>
+            <name>EN</name>
             <description>XMEM enable.</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>

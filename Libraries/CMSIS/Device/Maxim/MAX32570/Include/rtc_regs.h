@@ -165,14 +165,14 @@ typedef struct {
  * @brief    RTC Control Register.
  * @{
  */
-#define MXC_F_RTC_CTRL_RTCE_POS                        0 /**< CTRL_RTCE Position */
-#define MXC_F_RTC_CTRL_RTCE                            ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_RTCE_POS)) /**< CTRL_RTCE Mask */
+#define MXC_F_RTC_CTRL_EN_POS                          0 /**< CTRL_EN Position */
+#define MXC_F_RTC_CTRL_EN                              ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_EN_POS)) /**< CTRL_EN Mask */
 
-#define MXC_F_RTC_CTRL_ADE_POS                         1 /**< CTRL_ADE Position */
-#define MXC_F_RTC_CTRL_ADE                             ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_ADE_POS)) /**< CTRL_ADE Mask */
+#define MXC_F_RTC_CTRL_TOD_ALARM_IE_POS                1 /**< CTRL_TOD_ALARM_IE Position */
+#define MXC_F_RTC_CTRL_TOD_ALARM_IE                    ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_TOD_ALARM_IE_POS)) /**< CTRL_TOD_ALARM_IE Mask */
 
-#define MXC_F_RTC_CTRL_ASE_POS                         2 /**< CTRL_ASE Position */
-#define MXC_F_RTC_CTRL_ASE                             ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_ASE_POS)) /**< CTRL_ASE Mask */
+#define MXC_F_RTC_CTRL_SSEC_ALARM_IE_POS               2 /**< CTRL_SSEC_ALARM_IE Position */
+#define MXC_F_RTC_CTRL_SSEC_ALARM_IE                   ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_SSEC_ALARM_IE_POS)) /**< CTRL_SSEC_ALARM_IE Mask */
 
 #define MXC_F_RTC_CTRL_BUSY_POS                        3 /**< CTRL_BUSY Position */
 #define MXC_F_RTC_CTRL_BUSY                            ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_BUSY_POS)) /**< CTRL_BUSY Mask */
@@ -180,32 +180,32 @@ typedef struct {
 #define MXC_F_RTC_CTRL_RDY_POS                         4 /**< CTRL_RDY Position */
 #define MXC_F_RTC_CTRL_RDY                             ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
 
-#define MXC_F_RTC_CTRL_RDYE_POS                        5 /**< CTRL_RDYE Position */
-#define MXC_F_RTC_CTRL_RDYE                            ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_RDYE_POS)) /**< CTRL_RDYE Mask */
+#define MXC_F_RTC_CTRL_RDY_IE_POS                      5 /**< CTRL_RDY_IE Position */
+#define MXC_F_RTC_CTRL_RDY_IE                          ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_RDY_IE_POS)) /**< CTRL_RDY_IE Mask */
 
-#define MXC_F_RTC_CTRL_ALDF_POS                        6 /**< CTRL_ALDF Position */
-#define MXC_F_RTC_CTRL_ALDF                            ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_ALDF_POS)) /**< CTRL_ALDF Mask */
+#define MXC_F_RTC_CTRL_TOD_ALARM_IF_POS                6 /**< CTRL_TOD_ALARM_IF Position */
+#define MXC_F_RTC_CTRL_TOD_ALARM_IF                    ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_TOD_ALARM_IF_POS)) /**< CTRL_TOD_ALARM_IF Mask */
 
-#define MXC_F_RTC_CTRL_ALSF_POS                        7 /**< CTRL_ALSF Position */
-#define MXC_F_RTC_CTRL_ALSF                            ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_ALSF_POS)) /**< CTRL_ALSF Mask */
+#define MXC_F_RTC_CTRL_SSEC_ALARM_IF_POS               7 /**< CTRL_SSEC_ALARM_IF Position */
+#define MXC_F_RTC_CTRL_SSEC_ALARM_IF                   ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_SSEC_ALARM_IF_POS)) /**< CTRL_SSEC_ALARM_IF Mask */
 
-#define MXC_F_RTC_CTRL_SQE_POS                         8 /**< CTRL_SQE Position */
-#define MXC_F_RTC_CTRL_SQE                             ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_SQE_POS)) /**< CTRL_SQE Mask */
+#define MXC_F_RTC_CTRL_SQW_EN_POS                      8 /**< CTRL_SQW_EN Position */
+#define MXC_F_RTC_CTRL_SQW_EN                          ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_SQW_EN_POS)) /**< CTRL_SQW_EN Mask */
 
-#define MXC_F_RTC_CTRL_FT_POS                          9 /**< CTRL_FT Position */
-#define MXC_F_RTC_CTRL_FT                              ((uint32_t)(0x3UL << MXC_F_RTC_CTRL_FT_POS)) /**< CTRL_FT Mask */
-#define MXC_V_RTC_CTRL_FT_FREQ1HZ                      ((uint32_t)0x0UL) /**< CTRL_FT_FREQ1HZ Value */
-#define MXC_S_RTC_CTRL_FT_FREQ1HZ                      (MXC_V_RTC_CTRL_FT_FREQ1HZ << MXC_F_RTC_CTRL_FT_POS) /**< CTRL_FT_FREQ1HZ Setting */
-#define MXC_V_RTC_CTRL_FT_FREQ512HZ                    ((uint32_t)0x1UL) /**< CTRL_FT_FREQ512HZ Value */
-#define MXC_S_RTC_CTRL_FT_FREQ512HZ                    (MXC_V_RTC_CTRL_FT_FREQ512HZ << MXC_F_RTC_CTRL_FT_POS) /**< CTRL_FT_FREQ512HZ Setting */
-#define MXC_V_RTC_CTRL_FT_FREQ4KHZ                     ((uint32_t)0x2UL) /**< CTRL_FT_FREQ4KHZ Value */
-#define MXC_S_RTC_CTRL_FT_FREQ4KHZ                     (MXC_V_RTC_CTRL_FT_FREQ4KHZ << MXC_F_RTC_CTRL_FT_POS) /**< CTRL_FT_FREQ4KHZ Setting */
+#define MXC_F_RTC_CTRL_SQW_SEL_POS                     9 /**< CTRL_SQW_SEL Position */
+#define MXC_F_RTC_CTRL_SQW_SEL                         ((uint32_t)(0x3UL << MXC_F_RTC_CTRL_SQW_SEL_POS)) /**< CTRL_SQW_SEL Mask */
+#define MXC_V_RTC_CTRL_SQW_SEL_FREQ1HZ                 ((uint32_t)0x0UL) /**< CTRL_SQW_SEL_FREQ1HZ Value */
+#define MXC_S_RTC_CTRL_SQW_SEL_FREQ1HZ                 (MXC_V_RTC_CTRL_SQW_SEL_FREQ1HZ << MXC_F_RTC_CTRL_SQW_SEL_POS) /**< CTRL_SQW_SEL_FREQ1HZ Setting */
+#define MXC_V_RTC_CTRL_SQW_SEL_FREQ512HZ               ((uint32_t)0x1UL) /**< CTRL_SQW_SEL_FREQ512HZ Value */
+#define MXC_S_RTC_CTRL_SQW_SEL_FREQ512HZ               (MXC_V_RTC_CTRL_SQW_SEL_FREQ512HZ << MXC_F_RTC_CTRL_SQW_SEL_POS) /**< CTRL_SQW_SEL_FREQ512HZ Setting */
+#define MXC_V_RTC_CTRL_SQW_SEL_FREQ4KHZ                ((uint32_t)0x2UL) /**< CTRL_SQW_SEL_FREQ4KHZ Value */
+#define MXC_S_RTC_CTRL_SQW_SEL_FREQ4KHZ                (MXC_V_RTC_CTRL_SQW_SEL_FREQ4KHZ << MXC_F_RTC_CTRL_SQW_SEL_POS) /**< CTRL_SQW_SEL_FREQ4KHZ Setting */
 
-#define MXC_F_RTC_CTRL_ACRE_POS                        14 /**< CTRL_ACRE Position */
-#define MXC_F_RTC_CTRL_ACRE                            ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_ACRE_POS)) /**< CTRL_ACRE Mask */
+#define MXC_F_RTC_CTRL_RD_EN_POS                       14 /**< CTRL_RD_EN Position */
+#define MXC_F_RTC_CTRL_RD_EN                           ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_RD_EN_POS)) /**< CTRL_RD_EN Mask */
 
-#define MXC_F_RTC_CTRL_WE_POS                          15 /**< CTRL_WE Position */
-#define MXC_F_RTC_CTRL_WE                              ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_WE_POS)) /**< CTRL_WE Mask */
+#define MXC_F_RTC_CTRL_WR_EN_POS                       15 /**< CTRL_WR_EN Position */
+#define MXC_F_RTC_CTRL_WR_EN                           ((uint32_t)(0x1UL << MXC_F_RTC_CTRL_WR_EN_POS)) /**< CTRL_WR_EN Mask */
 
 /**@} end of group RTC_CTRL_Register */
 
@@ -218,8 +218,8 @@ typedef struct {
 #define MXC_F_RTC_TRIM_TRIM_POS                        0 /**< TRIM_TRIM Position */
 #define MXC_F_RTC_TRIM_TRIM                            ((uint32_t)(0xFFUL << MXC_F_RTC_TRIM_TRIM_POS)) /**< TRIM_TRIM Mask */
 
-#define MXC_F_RTC_TRIM_COUNT_POS                       8 /**< TRIM_COUNT Position */
-#define MXC_F_RTC_TRIM_COUNT                           ((uint32_t)(0xFFFFFFUL << MXC_F_RTC_TRIM_COUNT_POS)) /**< TRIM_COUNT Mask */
+#define MXC_F_RTC_TRIM_VBAT_TMR_POS                    8 /**< TRIM_VBAT_TMR Position */
+#define MXC_F_RTC_TRIM_VBAT_TMR                        ((uint32_t)(0xFFFFFFUL << MXC_F_RTC_TRIM_VBAT_TMR_POS)) /**< TRIM_VBAT_TMR Mask */
 
 /**@} end of group RTC_TRIM_Register */
 
@@ -229,11 +229,23 @@ typedef struct {
  * @brief    RTC Oscillator Control Register.
  * @{
  */
+#define MXC_F_RTC_OSCCTRL_FILTER_EN_POS                0 /**< OSCCTRL_FILTER_EN Position */
+#define MXC_F_RTC_OSCCTRL_FILTER_EN                    ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_FILTER_EN_POS)) /**< OSCCTRL_FILTER_EN Mask */
+
+#define MXC_F_RTC_OSCCTRL_IBIAS_SEL_POS                1 /**< OSCCTRL_IBIAS_SEL Position */
+#define MXC_F_RTC_OSCCTRL_IBIAS_SEL                    ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_IBIAS_SEL_POS)) /**< OSCCTRL_IBIAS_SEL Mask */
+
+#define MXC_F_RTC_OSCCTRL_HYST_EN_POS                  2 /**< OSCCTRL_HYST_EN Position */
+#define MXC_F_RTC_OSCCTRL_HYST_EN                      ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_HYST_EN_POS)) /**< OSCCTRL_HYST_EN Mask */
+
+#define MXC_F_RTC_OSCCTRL_IBIAS_EN_POS                 3 /**< OSCCTRL_IBIAS_EN Position */
+#define MXC_F_RTC_OSCCTRL_IBIAS_EN                     ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_IBIAS_EN_POS)) /**< OSCCTRL_IBIAS_EN Mask */
+
 #define MXC_F_RTC_OSCCTRL_BYPASS_POS                   4 /**< OSCCTRL_BYPASS Position */
 #define MXC_F_RTC_OSCCTRL_BYPASS                       ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_BYPASS_POS)) /**< OSCCTRL_BYPASS Mask */
 
-#define MXC_F_RTC_OSCCTRL_32KOUT_POS                   5 /**< OSCCTRL_32KOUT Position */
-#define MXC_F_RTC_OSCCTRL_32KOUT                       ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_32KOUT_POS)) /**< OSCCTRL_32KOUT Mask */
+#define MXC_F_RTC_OSCCTRL_SQW_32K_POS                  5 /**< OSCCTRL_SQW_32K Position */
+#define MXC_F_RTC_OSCCTRL_SQW_32K                      ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_SQW_32K_POS)) /**< OSCCTRL_SQW_32K Mask */
 
 /**@} end of group RTC_OSCCTRL_Register */
 
