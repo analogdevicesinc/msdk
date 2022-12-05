@@ -8117,19 +8117,19 @@ control comes from GPIO control module</description>
   <peripheral derivedFrom="PT">
    <name>PT1</name>
    <description>Pulse Train 1</description>
-   <baseAddress>0x4003C040</baseAddress>
+   <baseAddress>0x4003C030</baseAddress>
   </peripheral>
 <!--PT1 Pulse Train 1-->
   <peripheral derivedFrom="PT">
    <name>PT2</name>
    <description>Pulse Train 2</description>
-   <baseAddress>0x4003C060</baseAddress>
+   <baseAddress>0x4003C040</baseAddress>
   </peripheral>
 <!--PT2 Pulse Train 2-->
   <peripheral derivedFrom="PT">
    <name>PT3</name>
    <description>Pulse Train 3</description>
-   <baseAddress>0x4003C080</baseAddress>
+   <baseAddress>0x4003C050</baseAddress>
   </peripheral>
 <!--PT3 Pulse Train 3-->
   <peripheral>
@@ -8223,8 +8223,8 @@ control comes from GPIO control module</description>
      </fields>
     </register>
     <register>
-     <name>INTFL</name>
-     <description>Pulse Train Interrupt Flags</description>
+     <name>STOP_INTFL</name>
+     <description>Pulse Train Stop Interrupt Flags</description>
      <addressOffset>0x0008</addressOffset>
      <access>read-write</access>
      <fields>
@@ -8259,8 +8259,8 @@ control comes from GPIO control module</description>
      </fields>
     </register>
     <register>
-     <name>INTEN</name>
-     <description>Pulse Train Interrupt Enable/Disable</description>
+     <name>STOP_INTEN</name>
+     <description>Pulse Train Stop Interrupt Enable/Disable</description>
      <addressOffset>0x000C</addressOffset>
      <access>read-write</access>
      <fields>
@@ -8355,6 +8355,78 @@ control comes from GPIO control module</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>write-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTFL</name>
+     <description>Pulse Train Ready Interrupt Flags</description>
+     <addressOffset>0x0018</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Flag</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Flag</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Flag</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Flag</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTEN</name>
+     <description>Pulse Train Ready Interrupt Enable/Disable</description>
+     <addressOffset>0x001C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Enable/Disable</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Enable/Disable</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Enable/Disable</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Enable/Disable</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
       </field>
      </fields>
     </register>
