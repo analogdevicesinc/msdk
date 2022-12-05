@@ -55,8 +55,7 @@
           </field>
         </fields>
       </register>
-      <!-- RESYNC:
-                                                                                                         Global Resync (All Pulse Trains) Control -->
+      <!-- RESYNC: Global Resync (All Pulse Trains) Control -->
       <register>
         <name>RESYNC</name>
         <description>Global Resync (All Pulse Trains) Control</description>
@@ -93,11 +92,10 @@
           </field>
         </fields>
       </register>
-      <!-- INTFL:
-                                                                                                                                                                         Pulse Train Interrupt Flags -->
+      <!-- STOP_INTFL: Pulse Train Stopped Interrupt Flags -->
       <register>
-        <name>INTFL</name>
-        <description>Pulse Train Interrupt Flags</description>
+        <name>STOP_INTFL</name>
+        <description>Pulse Train Stop Interrupt Flags</description>
         <addressOffset>0x0008</addressOffset>
         <access>read-write</access>
         <fields>
@@ -131,11 +129,10 @@
           </field>
         </fields>
       </register>
-      <!-- INTEN:
-                                                                                                                                                                         Pulse Train Interrupt Enable/Disable -->
+      <!-- STOP_INTEN: Pulse Train Stopped Interrupt Enable/Disable -->
       <register>
-        <name>INTEN</name>
-        <description>Pulse Train Interrupt Enable/Disable</description>
+        <name>STOP_INTEN</name>
+        <description>Pulse Train Stop Interrupt Enable/Disable</description>
         <addressOffset>0x000C</addressOffset>
         <access>read-write</access>
         <fields>
@@ -169,6 +166,7 @@
           </field>
         </fields>
       </register>
+      <!--SAFE_EN: Pulse Train Global Safe Enable -->
       <register>
         <name>SAFE_EN</name>
         <description>Pulse Train Global Safe Enable.</description>
@@ -201,6 +199,7 @@
           </field>
         </fields>
       </register>
+      <!--SAFE_DIS: Pulse Train Global Safe Disable-->
       <register>
         <name>SAFE_DIS</name>
         <description>Pulse Train Global Safe Disable.</description>
@@ -230,6 +229,80 @@
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
             <access>write-only</access>
+          </field>
+        </fields>
+      </register>
+      <!--READY_INTFL: Pulse Train Ready Interrupt Flags -->
+      <register>
+        <name>READY_INTFL</name>
+        <description>Pulse Train Ready Interrupt Flags</description>
+        <addressOffset>0x0018</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>pt0</name>
+            <description>Pulse Train 0 Ready Interrupt Flag</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>pt1</name>
+            <description>Pulse Train 1 Ready Interrupt Flag</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>pt2</name>
+            <description>Pulse Train 2 Ready Interrupt Flag</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>pt3</name>
+            <description>Pulse Train 3 Ready Interrupt Flag</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <!--READY_INTEN: Pulse Train Ready Interrupt Enable/Disable -->
+      <register>
+        <name>READY_INTEN</name>
+        <description>Pulse Train Ready Interrupt Enable/Disable</description>
+        <addressOffset>0x001C</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>pt0</name>
+            <description>Pulse Train 0 Ready Interrupt Enable/Disable</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>pt1</name>
+            <description>Pulse Train 1 Ready Interrupt Enable/Disable</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>pt2</name>
+            <description>Pulse Train 2 Ready Interrupt Enable/Disable</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+          <field>
+            <name>pt3</name>
+            <description>Pulse Train 3 Ready Interrupt Enable/Disable</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
           </field>
         </fields>
       </register>
