@@ -191,7 +191,7 @@ void MXC_PT_DisableInt(uint32_t pts);
 /**
  * @brief      Gets the pulse trains's Stop interrupt flags.
  *
- * @return     The Pulse Train Interrupt Flags, \ref MXC_PT_INTFL_Register Register
+ * @return     The Pulse Train Interrupt Flags, \ref MXC_PT_STOP_INTFL_Register Register
  *             for details.
  */
 uint32_t MXC_PT_GetFlags(void);
@@ -199,7 +199,7 @@ uint32_t MXC_PT_GetFlags(void);
 /**
  * @brief      Clears the pulse train's Stop interrupt flag.
  *
- * @param      flags  bits to clear, see \ref MXC_PT_INTFL_Register Register for details.
+ * @param      flags  bits to clear, see \ref MXC_PT_STOP_INTFL_Register Register for details.
  */
 void MXC_PT_ClearFlags(uint32_t flags);
 

@@ -227,4 +227,3 @@ void MXC_PT_ClearReadyFlags(uint32_t flags)
 {
     MXC_PT_RevA_ClearReadyFlags((mxc_ptg_reva_regs_t *)MXC_PTG, flags);
 }
-
