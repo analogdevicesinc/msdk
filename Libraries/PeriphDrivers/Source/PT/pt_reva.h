@@ -57,8 +57,16 @@ void MXC_PT_RevA_EnableInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts);
 void MXC_PT_RevA_DisableInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts);
 uint32_t MXC_PT_RevA_GetFlags(mxc_ptg_reva_regs_t *ptg);
 void MXC_PT_RevA_ClearFlags(mxc_ptg_reva_regs_t *ptg, uint32_t flags);
+void MXC_PT_RevA_EnableStopInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts);
+void MXC_PT_RevA_DisableStopInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts);
+uint32_t MXC_PT_RevA_GetStopFlags(mxc_ptg_reva_regs_t *ptg);
+void MXC_PT_RevA_ClearStopFlags(mxc_ptg_reva_regs_t *ptg, uint32_t flags);
 void MXC_PT_RevA_EnableRestart(unsigned start, unsigned stop, uint8_t restartIndex);
 void MXC_PT_RevA_DisableRestart(unsigned channel, uint8_t restartIndex);
 void MXC_PT_RevA_Resync(mxc_ptg_reva_regs_t *ptg, uint32_t pts);
+void MXC_PT_RevA_EnableReadyInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts);
+void MXC_PT_RevA_DisableReadyInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts);
+uint32_t MXC_PT_RevA_GetReadyFlags(mxc_ptg_reva_regs_t *ptg);
+void MXC_PT_RevA_ClearReadyFlags(mxc_ptg_reva_regs_t *ptg, uint32_t flags);
 
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_PT_PT_REVA_H_
