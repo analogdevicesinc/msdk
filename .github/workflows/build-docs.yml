@@ -1,4 +1,4 @@
-name: Build Docs
+name: Build & Deploy Docs
 
 # Controls when the workflow will run
 on:
