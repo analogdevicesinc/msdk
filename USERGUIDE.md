@@ -233,17 +233,17 @@ The MSDK offers support for multiple development environments to support the use
 
 - **System Path**:  Your system's _Path_ is a special environment variable that tells it where to search for program binaries.   It's also expected that the user has some familiarity with this concept, and how to modify the system Path if necessary.
 
-- **Build Configuration vs Project Configuration**: An MSDK project is primarily made up of two distinct systems:  The _Build System_ and the _Project Configuration System_.  
+- **Build Configuration vs Project Configuration**: An MSDK project is primarily made up of two complementary systems:  The _Build System_ and the _Project Management System_.  These systems each offer their own configuration interfaces, and it's important to note what each is used for.
 
-    It's important to note that the **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**.
+    The **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**.
 
-    Additionally, note the **Project Configuration System** offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **flashing** program binaries, and **debugging** them.  Additionally, the Project Configuration System sits _on top_ of the build system's _CLI_, allowing it to manage fundamental aspects of the build such as:
+    The **Project Management System** offers a higher level user interface (typically with a GUI) to manage the tools for **editing** source code, **flashing** program binaries, and **debugging** them on hardware.  The Project Management System sits _on top_ of the build system's _CLI_ and uses it to manage fundamental aspects of the build such as:
 
     - Setting the _Target Microcontroller_
     - Setting the _Board Support Package_
     - Configuring the _Environment_ and _System Path_ for use with the MSDK toolchain
 
-- **Integrated Development Environment (IDE)**:  An IDE combines the _Build Configuration_ and _Project Configuration_ systems and typically features a Graphical User Interface (GUI) and other development features.  The abbreviation is used frequently in the document.
+- **Integrated Development Environment (IDE)**:  An IDE combines the _Build System_ and _Project Management_ systems and typically features a Graphical User Interface (GUI) and other development features.  The abbreviation is used frequently in the document.
 
 ### Getting Started with Visual Studio Code
 
@@ -655,11 +655,11 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 16. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command and quit.
 
-## Usage
+## Project Management
 
-As discussed in [Key Concepts](#key-concepts), an MSDK project is primarily made up of two distinct systems:  The **_Build System_** and the _**Project Configuration System**_.  [Getting Started](#getting-started) demonstrates the basic usage and configuration of these systems, while this section offers a more detailed reference.
+As discussed in [Key Concepts](#key-concepts), an MSDK project is primarily made up of two distinct systems:  The **_Build System_** and the _**Project Management System**_.  [Getting Started](#getting-started) demonstrates the basic usage and configuration of these systems, while this section offers a more detailed reference.
 
-The Project Configuration System offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **flashing** program binaries, and **debugging** them in the MSDK's [supported IDEs](#supported-development-environments).  Additionally, the Project Configuration System sits _on top_ of the [build system](#build-system)'s _CLI_, allowing it to manage fundamental aspects of development such as:
+The Project Management System offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **flashing** program binaries, and **debugging** them in the MSDK's [supported IDEs](#supported-development-environments).  Additionally, the Project Management System sits _on top_ of the [build system](#build-system)'s _CLI_, allowing it to manage fundamental aspects of development such as:
 
 - Setting the _Target Microcontroller_  (`TARGET` _[Build Configuration Variable](#build-configuration-variables-reference-table)_)
 - Setting the _Board Support Package_ (`BOARD` _[Build Configuration Variable](#build-configuration-variables-reference-table)_)
@@ -1298,7 +1298,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 ## Build System
 
-As discussed in [Key Concepts](#key-concepts), an MSDK project is primarily made up of two distinct systems:  The **_Build System_** and the _**Project Configuration System**_.  [Getting Started](#getting-started) demonstrates the basic usage and configuration of these systems, while this section offers a detailed reference into the build system's **CLI** and  additional documentation on advanced project configuration options and use-cases.
+As discussed in [Key Concepts](#key-concepts), an MSDK project is primarily made up of two distinct systems:  The **_Build System_** and the _**Project Management System**_.  [Getting Started](#getting-started) demonstrates the basic usage and configuration of these systems, while this section offers a detailed reference into the build system's **CLI** and  additional documentation on advanced options and use-cases.
 
 ### Build System Overview
 
