@@ -43,7 +43,7 @@ void MXC_PT_RevA_Init(mxc_ptg_reva_regs_t *ptg, mxc_clk_scale_t clk_scale)
     ptg->enable = 0;
 
     //clear all interrupts
-    ptf->stop_intfl = ptf->stop_intfl;
+    ptg->stop_intfl = ptg->stop_intfl;
 }
 
 int MXC_PT_RevA_Shutdown(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
@@ -168,42 +168,42 @@ void MXC_PT_RevA_ClearFlags(mxc_ptg_reva_regs_t *ptg, uint32_t flags)
 
 void MXC_PT_RevA_EnableStopInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
 {
-    ptf->stop_inten |= pts;
+    ptg->stop_inten |= pts;
 }
 
 void MXC_PT_RevA_DisableStopInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
 {
-    ptf->stop_inten &= ~pts;
+    ptg->stop_inten &= ~pts;
 }
 
 uint32_t MXC_PT_RevA_GetStopFlags(mxc_ptg_reva_regs_t *ptg)
 {
-    return ptf->stop_intfl;
+    return ptg->stop_intfl;
 }
 
 void MXC_PT_RevA_ClearStopFlags(mxc_ptg_reva_regs_t *ptg, uint32_t flags)
 {
-    ptf->stop_intfl = flags;
+    ptg->stop_intfl = flags;
 }
 
 void MXC_PT_RevA_EnableReadyInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
 {
-    ptf->stop_inten |= pts;
+    ptg->stop_inten |= pts;
 }
 
 void MXC_PT_RevA_DisableReadyInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
 {
-    ptf->stop_inten &= ~pts;
+    ptg->stop_inten &= ~pts;
 }
 
 uint32_t MXC_PT_RevA_GetReadyFlags(mxc_ptg_reva_regs_t *ptg)
 {
-    return ptf->stop_intfl;
+    return ptg->stop_intfl;
 }
 
 void MXC_PT_RevA_ClearReadyFlags(mxc_ptg_reva_regs_t *ptg, uint32_t flags)
 {
-    ptf->stop_intfl = flags;
+    ptg->stop_intfl = flags;
 }
 
 void MXC_PT_RevA_EnableRestart(unsigned start, unsigned stop, uint8_t restartIndex)
