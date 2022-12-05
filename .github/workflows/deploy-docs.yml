@@ -9,19 +9,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Build the docs
-  build:
-    uses: ./.github/workflows/build-docs.yml
-  
   # Publish the docs
   publish:
     runs-on: ubuntu-latest
-    needs:
-      - build
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      
+      - uses: ./.github/workflows/build-docs.yml
 
       - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4.3.0
