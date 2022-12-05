@@ -74,9 +74,22 @@ int main(void)
 {
 	int err;
 
-	MXC_Delay(MXC_DELAY_SEC(2)); //Prevent bricks
+	MXC_Delay(MXC_DELAY_SEC(2)); //Prevent bricking device
 
-	printf("\n********** Temperature Monitor Demo **********\n");
+	printf("\n********************** Temperature Monitor Demo **********************\n");
+
+	printf("This simple example demonstrates the use of the MAX32670 as a temperature\n");
+	printf("monitor.\n\n");
+
+	printf("The device periodically measures the air temperature using an external\n");
+	printf("MAX31889 temperature sensor.\n\n");
+
+	printf("If a temperature reading exceeds the upper or lower limits, a warning message\n");
+	printf("will be printed in the terminal and the red warning LED will begin to blink.\n");
+	printf("Otherwise if the temperature is within the defined limits, the green LED\n");
+	printf("will continue to toggle each time a new measurement is taken.\n\n");
+
+	printf("Press SW3 to print the last 12 temperature readings taken.\n\n");
 
 	// Initialize Temperature Monitor
     if((err = temp_monitor_init()) != E_NO_ERROR) {
@@ -90,7 +103,7 @@ int main(void)
 
     while (1) {
     	while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))); //Make sure print statements have finished before sleeping
-        MXC_LP_EnterDeepSleepMode(); //Wait for next RTC interrupt
+        MXC_LP_EnterSleepMode(); //Wait for next RTC interrupt
     }
 
     return E_NO_ERROR;

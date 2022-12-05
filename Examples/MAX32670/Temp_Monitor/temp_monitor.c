@@ -12,19 +12,35 @@
 #include "rtc.h"
 
 /***** Definitions *****/
+/***** Modifiable defines *****/
 #define HI_TEMP_THRESHOLD     	30
 #define LO_TEMP_THRESHOLD    	15
 #define TEMP_CHECK_PERIOD 		5
-#define TR_STORAGE_PAGE 		1
+#define TR_STORAGE_PAGE 		1 	//NOTE: Be sure this value is less than the total number of flash pages in the device.
+									//If you select a higher value, consider setting LINKERFILE to $(TARGET_LC)_ram.ld in
+									//project.mk otherwise application code may get overwritten.
+
+/****** Do not Modify these Defines *****/
 #define TR_STORAGE_BASE_ADDR 	(MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE - \
 								(TR_STORAGE_PAGE * MXC_FLASH_PAGE_SIZE))
+
 #define TEMP_SENS_I2C 			MXC_I2C0
+#define TEMP_SENS_FREQ 			100000
+
+#define MSEC_TO_RSSA(msec) 		((msec * 4096) / 1000)
+#define WARN_LIGHT_PERIOD 		(0xFFFFFFFF-MSEC_TO_RSSA(250))
+
+#define TEMPERATURE_MASK 		0x0000FFFF
+#define TIMESTAMP_MASK			0xFFFFFFFF
+#define TIMESTAMP_OFFSET		16
+
 
 /***** Global Variables *****/
 static max31889_driver_t temp_sensor;
 static bool temp_warning = false;
 static uint32_t temp_readings[4];
 static uint32_t num_readings = 0;
+
 
 /******************************************************************/
 /************************ Private Functions ***********************/
@@ -47,11 +63,13 @@ static int init_flash(void)
 static void store_temp_readings(void)
 {
 	// Calculate flash address to store temperature readings at
-	int flash_addr = TR_STORAGE_BASE_ADDR + (num_readings - 4) * 4;
+	int flash_addr = TR_STORAGE_BASE_ADDR + (num_readings - 4) * sizeof(temp_readings[0]);
 
 	// Write last 4 temp readings to flash
 	MXC_ICC_Disable();
 	if(MXC_FLC_Write128(flash_addr, temp_readings) != E_NO_ERROR) {
+		//Failed to write to flash, decrement num_readings to reflect fact
+		//that the last 4 readings taken are not stored in flash
 		num_readings -= 4;
 	}
 	MXC_ICC_Enable();
@@ -66,17 +84,13 @@ static int init_temp_sensor(void)
 	if((err = MXC_I2C_Init(TEMP_SENS_I2C, 1, 0)) != E_NO_ERROR) {
 		return err;
 	}
-	MXC_I2C_SetFrequency(TEMP_SENS_I2C, 100000);
+	MXC_I2C_SetFrequency(TEMP_SENS_I2C, TEMP_SENS_FREQ);
 
 	// Get MAX31889 function pointers
 	temp_sensor = MAX31889_Open(); 
 
 	// Initialize MAX31889 temperature sensor
-	if((err = temp_sensor.init(TEMP_SENS_I2C, MAX31889_I2C_SLAVE_ADDR0)) != E_NO_ERROR) {
-		return err;
-	}
-
-	return E_NO_ERROR;
+	return temp_sensor.init(TEMP_SENS_I2C, MAX31889_I2C_SLAVE_ADDR0);
 }
 
 static void record_current_temp(uint32_t current_time)
@@ -91,7 +105,9 @@ static void record_current_temp(uint32_t current_time)
 
 	// Record current temperature with timestamp
 	temp_reading = (uint32_t) temp_reading_float;
-	temp_readings[(num_readings % 4)] = (current_time << 16) | temp_reading;
+	temp_readings[(num_readings % 4)] = (current_time << TIMESTAMP_OFFSET) | temp_reading;
+
+	// Increment readings counter (reset to 0 if flash page has been filled)
 	num_readings = (num_readings + 1) % (MXC_FLASH_PAGE_SIZE / sizeof(temp_readings[0]));
 
 	// Store temperatures to flash if 4 readings have been taken
@@ -128,7 +144,7 @@ static int start_rtc(void)
 	}
 
 	// Setup TOD alarm
-	MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG); //TOD alarm most be disabled to set period
+	MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG); //TOD alarm interrupt most be disabled to set period
 	if((err = MXC_RTC_SetTimeofdayAlarm(TEMP_CHECK_PERIOD)) != E_NO_ERROR) {
 		return err;
 	}
@@ -136,7 +152,6 @@ static int start_rtc(void)
 
 	// Enable RTC Wakeup
 	MXC_LP_EnableRTCAlarmWakeup();
-
 	NVIC_EnableIRQ(RTC_IRQn);
 	
 	// Start RTC
@@ -147,7 +162,7 @@ static void enable_warning_light(void)
 {
 	// Set subsecond alarm period and enable interrupt
 	MXC_RTC_DisableInt(MXC_RTC_INT_EN_SHORT); //SSEC alarm must be disabled to set period
-	MXC_RTC_SetSubsecondAlarm(0xFFFFFFFF - 2048);
+	MXC_RTC_SetSubsecondAlarm(WARN_LIGHT_PERIOD);
 	MXC_RTC_EnableInt(MXC_RTC_INT_EN_SHORT);
 	return;
 }
@@ -184,11 +199,13 @@ int temp_monitor_init(void)
 /***** Push Button ISR *****/
 void temp_monitor_print_temps(void)
 {
-	// Calculate the number of temperature readings currently stored in flash
 	int addr_offset;
-	int num_temp = num_readings - (num_readings % 4);
+	int num_temp;
 
-	// Determine how many temperatures to read and where in flash they're located
+	// Calculate the number of temperature readings currently stored in flash
+	num_temp = num_readings - (num_readings % 4);
+
+	// Determine how many temperatures to read (limit 12) and where in flash they're located
 	if(num_temp == 0) {
 		printf("\nNo temperatures recorded, try reading again later.\n");
 		return;
@@ -208,8 +225,8 @@ void temp_monitor_print_temps(void)
 	// Print out each temperature reading with it's timestamp
 	printf("\nLast %d temperature Readings:\n", num_temp);
 	for(int i = 0; i < num_temp; i++) {
-		time = (temps[i] & 0xFFFF0000) >> 16;
-		temp = temps[i] & 0xFFFF;
+		time = (temps[i] & TIMESTAMP_MASK) >> TIMESTAMP_OFFSET;
+		temp = temps[i] & TEMPERATURE_MASK;
 		printf("%ds - Temp: %dC\n", time, temp);
 	}
 }
