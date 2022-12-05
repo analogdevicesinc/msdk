@@ -88,8 +88,8 @@ extern "C" {
  * Structure type to access the HTMR Registers.
  */
 typedef struct {
-    __IO uint32_t lnicnt;               /**< <tt>\b 0x00:</tt> HTMR LNICNT Register */
-    __IO uint32_t shicnt;               /**< <tt>\b 0x04:</tt> HTMR SHICNT Register */
+    __IO uint32_t sec;                  /**< <tt>\b 0x00:</tt> HTMR SEC Register */
+    __IO uint32_t ssec;                 /**< <tt>\b 0x04:</tt> HTMR SSEC Register */
     __IO uint32_t ras;                  /**< <tt>\b 0x08:</tt> HTMR RAS Register */
     __IO uint32_t rssa;                 /**< <tt>\b 0x0C:</tt> HTMR RSSA Register */
     __IO uint32_t ctrl;                 /**< <tt>\b 0x10:</tt> HTMR CTRL Register */
@@ -102,8 +102,8 @@ typedef struct {
  * @brief      HTMR Peripheral Register Offsets from the HTMR Base Peripheral Address.
  * @{
  */
-#define MXC_R_HTMR_LNICNT                  ((uint32_t)0x00000000UL) /**< Offset from HTMR Base Address: <tt> 0x0000</tt> */
-#define MXC_R_HTMR_SHICNT                  ((uint32_t)0x00000004UL) /**< Offset from HTMR Base Address: <tt> 0x0004</tt> */
+#define MXC_R_HTMR_SEC                     ((uint32_t)0x00000000UL) /**< Offset from HTMR Base Address: <tt> 0x0000</tt> */
+#define MXC_R_HTMR_SSEC                    ((uint32_t)0x00000004UL) /**< Offset from HTMR Base Address: <tt> 0x0004</tt> */
 #define MXC_R_HTMR_RAS                     ((uint32_t)0x00000008UL) /**< Offset from HTMR Base Address: <tt> 0x0008</tt> */
 #define MXC_R_HTMR_RSSA                    ((uint32_t)0x0000000CUL) /**< Offset from HTMR Base Address: <tt> 0x000C</tt> */
 #define MXC_R_HTMR_CTRL                    ((uint32_t)0x00000010UL) /**< Offset from HTMR Base Address: <tt> 0x0010</tt> */
@@ -111,27 +111,27 @@ typedef struct {
 
 /**
  * @ingroup  htmr_registers
- * @defgroup HTMR_LNICNT HTMR_LNICNT
+ * @defgroup HTMR_SEC HTMR_SEC
  * @brief    HTimer Long-Interval Counter. This register contains the 32 most significant
  *           bits of the counter.
  * @{
  */
-#define MXC_F_HTMR_LNICNT_RTS_POS                      0 /**< LNICNT_RTS Position */
-#define MXC_F_HTMR_LNICNT_RTS                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_HTMR_LNICNT_RTS_POS)) /**< LNICNT_RTS Mask */
+#define MXC_F_HTMR_SEC_RTS_POS                         0 /**< SEC_RTS Position */
+#define MXC_F_HTMR_SEC_RTS                             ((uint32_t)(0xFFFFFFFFUL << MXC_F_HTMR_SEC_RTS_POS)) /**< SEC_RTS Mask */
 
-/**@} end of group HTMR_LNICNT_Register */
+/**@} end of group HTMR_SEC_Register */
 
 /**
  * @ingroup  htmr_registers
- * @defgroup HTMR_SHICNT HTMR_SHICNT
+ * @defgroup HTMR_SSEC HTMR_SSEC
  * @brief    HTimer Short Interval Counter. This counter ticks every t_htclk (16.48uS).
  *           HTIMER_SEC is incremented when this register rolls over from 0xFF to 0x00.
  * @{
  */
-#define MXC_F_HTMR_SHICNT_RTSS_POS                     0 /**< SHICNT_RTSS Position */
-#define MXC_F_HTMR_SHICNT_RTSS                         ((uint32_t)(0xFFUL << MXC_F_HTMR_SHICNT_RTSS_POS)) /**< SHICNT_RTSS Mask */
+#define MXC_F_HTMR_SSEC_RTSS_POS                       0 /**< SSEC_RTSS Position */
+#define MXC_F_HTMR_SSEC_RTSS                           ((uint32_t)(0xFFUL << MXC_F_HTMR_SSEC_RTSS_POS)) /**< SSEC_RTSS Mask */
 
-/**@} end of group HTMR_SHICNT_Register */
+/**@} end of group HTMR_SSEC_Register */
 
 /**
  * @ingroup  htmr_registers
@@ -162,14 +162,14 @@ typedef struct {
  * @brief    HTimer Control Register.
  * @{
  */
-#define MXC_F_HTMR_CTRL_EN_POS                         0 /**< CTRL_EN Position */
-#define MXC_F_HTMR_CTRL_EN                             ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_EN_POS)) /**< CTRL_EN Mask */
+#define MXC_F_HTMR_CTRL_HTEN_POS                       0 /**< CTRL_HTEN Position */
+#define MXC_F_HTMR_CTRL_HTEN                           ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_HTEN_POS)) /**< CTRL_HTEN Mask */
 
-#define MXC_F_HTMR_CTRL_LONG_AL_IE_POS                 1 /**< CTRL_LONG_AL_IE Position */
-#define MXC_F_HTMR_CTRL_LONG_AL_IE                     ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_LONG_AL_IE_POS)) /**< CTRL_LONG_AL_IE Mask */
+#define MXC_F_HTMR_CTRL_ADE_POS                        1 /**< CTRL_ADE Position */
+#define MXC_F_HTMR_CTRL_ADE                            ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_ADE_POS)) /**< CTRL_ADE Mask */
 
-#define MXC_F_HTMR_CTRL_SHORT_AL_IE_POS                2 /**< CTRL_SHORT_AL_IE Position */
-#define MXC_F_HTMR_CTRL_SHORT_AL_IE                    ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_SHORT_AL_IE_POS)) /**< CTRL_SHORT_AL_IE Mask */
+#define MXC_F_HTMR_CTRL_ASE_POS                        2 /**< CTRL_ASE Position */
+#define MXC_F_HTMR_CTRL_ASE                            ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_ASE_POS)) /**< CTRL_ASE Mask */
 
 #define MXC_F_HTMR_CTRL_BUSY_POS                       3 /**< CTRL_BUSY Position */
 #define MXC_F_HTMR_CTRL_BUSY                           ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_BUSY_POS)) /**< CTRL_BUSY Mask */
@@ -177,17 +177,17 @@ typedef struct {
 #define MXC_F_HTMR_CTRL_RDY_POS                        4 /**< CTRL_RDY Position */
 #define MXC_F_HTMR_CTRL_RDY                            ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
 
-#define MXC_F_HTMR_CTRL_RDY_IE_POS                     5 /**< CTRL_RDY_IE Position */
-#define MXC_F_HTMR_CTRL_RDY_IE                         ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_RDY_IE_POS)) /**< CTRL_RDY_IE Mask */
+#define MXC_F_HTMR_CTRL_RDYE_POS                       5 /**< CTRL_RDYE Position */
+#define MXC_F_HTMR_CTRL_RDYE                           ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_RDYE_POS)) /**< CTRL_RDYE Mask */
 
-#define MXC_F_HTMR_CTRL_ALD_IF_POS                     6 /**< CTRL_ALD_IF Position */
-#define MXC_F_HTMR_CTRL_ALD_IF                         ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_ALD_IF_POS)) /**< CTRL_ALD_IF Mask */
+#define MXC_F_HTMR_CTRL_ALDF_POS                       6 /**< CTRL_ALDF Position */
+#define MXC_F_HTMR_CTRL_ALDF                           ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_ALDF_POS)) /**< CTRL_ALDF Mask */
 
-#define MXC_F_HTMR_CTRL_ALS_IF_POS                     7 /**< CTRL_ALS_IF Position */
-#define MXC_F_HTMR_CTRL_ALS_IF                         ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_ALS_IF_POS)) /**< CTRL_ALS_IF Mask */
+#define MXC_F_HTMR_CTRL_ALSF_POS                       7 /**< CTRL_ALSF Position */
+#define MXC_F_HTMR_CTRL_ALSF                           ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_ALSF_POS)) /**< CTRL_ALSF Mask */
 
-#define MXC_F_HTMR_CTRL_WEN_POS                        15 /**< CTRL_WEN Position */
-#define MXC_F_HTMR_CTRL_WEN                            ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_WEN_POS)) /**< CTRL_WEN Mask */
+#define MXC_F_HTMR_CTRL_WE_POS                         15 /**< CTRL_WE Position */
+#define MXC_F_HTMR_CTRL_WE                             ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_WE_POS)) /**< CTRL_WE Mask */
 
 /**@} end of group HTMR_CTRL_Register */
 
