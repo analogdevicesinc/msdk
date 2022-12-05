@@ -93,6 +93,7 @@ typedef struct {
     __IO uint32_t data;                 /**< <tt>\b 0x0008:</tt> ADC DATA Register */
     __IO uint32_t intr;                 /**< <tt>\b 0x000C:</tt> ADC INTR Register */
     __IO uint32_t limit[4];             /**< <tt>\b 0x0010:</tt> ADC LIMIT Register */
+    __IO uint32_t deccnt;               /**< <tt>\b 0x0020:</tt> ADC DECCNT Register */
 } mxc_adc_regs_t;
 
 /* Register offsets for module ADC */
@@ -107,6 +108,7 @@ typedef struct {
 #define MXC_R_ADC_DATA                     ((uint32_t)0x00000008UL) /**< Offset from ADC Base Address: <tt> 0x0008</tt> */
 #define MXC_R_ADC_INTR                     ((uint32_t)0x0000000CUL) /**< Offset from ADC Base Address: <tt> 0x000C</tt> */
 #define MXC_R_ADC_LIMIT                    ((uint32_t)0x00000010UL) /**< Offset from ADC Base Address: <tt> 0x0010</tt> */
+#define MXC_R_ADC_DECCNT                   ((uint32_t)0x00000020UL) /**< Offset from ADC Base Address: <tt> 0x0020</tt> */
 /**@} end of group adc_registers */
 
 /**
@@ -173,16 +175,16 @@ typedef struct {
 #define MXC_V_ADC_CTRL_CH_SEL_VREGI                    ((uint32_t)0x10UL) /**< CTRL_CH_SEL_VREGI Value */
 #define MXC_S_ADC_CTRL_CH_SEL_VREGI                    (MXC_V_ADC_CTRL_CH_SEL_VREGI << MXC_F_ADC_CTRL_CH_SEL_POS) /**< CTRL_CH_SEL_VREGI Setting */
 
-#define MXC_F_ADC_CTRL_ADC_DIVSEL_POS                  17 /**< CTRL_ADC_DIVSEL Position */
-#define MXC_F_ADC_CTRL_ADC_DIVSEL                      ((uint32_t)(0x3UL << MXC_F_ADC_CTRL_ADC_DIVSEL_POS)) /**< CTRL_ADC_DIVSEL Mask */
-#define MXC_V_ADC_CTRL_ADC_DIVSEL_DIV1                 ((uint32_t)0x0UL) /**< CTRL_ADC_DIVSEL_DIV1 Value */
-#define MXC_S_ADC_CTRL_ADC_DIVSEL_DIV1                 (MXC_V_ADC_CTRL_ADC_DIVSEL_DIV1 << MXC_F_ADC_CTRL_ADC_DIVSEL_POS) /**< CTRL_ADC_DIVSEL_DIV1 Setting */
-#define MXC_V_ADC_CTRL_ADC_DIVSEL_DIV2                 ((uint32_t)0x1UL) /**< CTRL_ADC_DIVSEL_DIV2 Value */
-#define MXC_S_ADC_CTRL_ADC_DIVSEL_DIV2                 (MXC_V_ADC_CTRL_ADC_DIVSEL_DIV2 << MXC_F_ADC_CTRL_ADC_DIVSEL_POS) /**< CTRL_ADC_DIVSEL_DIV2 Setting */
-#define MXC_V_ADC_CTRL_ADC_DIVSEL_DIV3                 ((uint32_t)0x2UL) /**< CTRL_ADC_DIVSEL_DIV3 Value */
-#define MXC_S_ADC_CTRL_ADC_DIVSEL_DIV3                 (MXC_V_ADC_CTRL_ADC_DIVSEL_DIV3 << MXC_F_ADC_CTRL_ADC_DIVSEL_POS) /**< CTRL_ADC_DIVSEL_DIV3 Setting */
-#define MXC_V_ADC_CTRL_ADC_DIVSEL_DIV4                 ((uint32_t)0x3UL) /**< CTRL_ADC_DIVSEL_DIV4 Value */
-#define MXC_S_ADC_CTRL_ADC_DIVSEL_DIV4                 (MXC_V_ADC_CTRL_ADC_DIVSEL_DIV4 << MXC_F_ADC_CTRL_ADC_DIVSEL_POS) /**< CTRL_ADC_DIVSEL_DIV4 Setting */
+#define MXC_F_ADC_CTRL_DIVSEL_POS                      17 /**< CTRL_DIVSEL Position */
+#define MXC_F_ADC_CTRL_DIVSEL                          ((uint32_t)(0x3UL << MXC_F_ADC_CTRL_DIVSEL_POS)) /**< CTRL_DIVSEL Mask */
+#define MXC_V_ADC_CTRL_DIVSEL_DIV1                     ((uint32_t)0x0UL) /**< CTRL_DIVSEL_DIV1 Value */
+#define MXC_S_ADC_CTRL_DIVSEL_DIV1                     (MXC_V_ADC_CTRL_DIVSEL_DIV1 << MXC_F_ADC_CTRL_DIVSEL_POS) /**< CTRL_DIVSEL_DIV1 Setting */
+#define MXC_V_ADC_CTRL_DIVSEL_DIV2                     ((uint32_t)0x1UL) /**< CTRL_DIVSEL_DIV2 Value */
+#define MXC_S_ADC_CTRL_DIVSEL_DIV2                     (MXC_V_ADC_CTRL_DIVSEL_DIV2 << MXC_F_ADC_CTRL_DIVSEL_POS) /**< CTRL_DIVSEL_DIV2 Setting */
+#define MXC_V_ADC_CTRL_DIVSEL_DIV3                     ((uint32_t)0x2UL) /**< CTRL_DIVSEL_DIV3 Value */
+#define MXC_S_ADC_CTRL_DIVSEL_DIV3                     (MXC_V_ADC_CTRL_DIVSEL_DIV3 << MXC_F_ADC_CTRL_DIVSEL_POS) /**< CTRL_DIVSEL_DIV3 Setting */
+#define MXC_V_ADC_CTRL_DIVSEL_DIV4                     ((uint32_t)0x3UL) /**< CTRL_DIVSEL_DIV4 Value */
+#define MXC_S_ADC_CTRL_DIVSEL_DIV4                     (MXC_V_ADC_CTRL_DIVSEL_DIV4 << MXC_F_ADC_CTRL_DIVSEL_POS) /**< CTRL_DIVSEL_DIV4 Setting */
 
 #define MXC_F_ADC_CTRL_DATA_ALIGN_POS                  20 /**< CTRL_DATA_ALIGN Position */
 #define MXC_F_ADC_CTRL_DATA_ALIGN                      ((uint32_t)(0x1UL << MXC_F_ADC_CTRL_DATA_ALIGN_POS)) /**< CTRL_DATA_ALIGN Mask */
@@ -271,15 +273,26 @@ typedef struct {
 #define MXC_F_ADC_LIMIT_CH_HI_LIMIT                    ((uint32_t)(0x3FFUL << MXC_F_ADC_LIMIT_CH_HI_LIMIT_POS)) /**< LIMIT_CH_HI_LIMIT Mask */
 
 #define MXC_F_ADC_LIMIT_CH_SEL_POS                     24 /**< LIMIT_CH_SEL Position */
-#define MXC_F_ADC_LIMIT_CH_SEL                         ((uint32_t)(0x1FUL << MXC_F_ADC_LIMIT_CH_SEL_POS)) /**< LIMIT_CH_SEL Mask */
+#define MXC_F_ADC_LIMIT_CH_SEL                         ((uint32_t)(0xFUL << MXC_F_ADC_LIMIT_CH_SEL_POS)) /**< LIMIT_CH_SEL Mask */
 
-#define MXC_F_ADC_LIMIT_CH_LO_LIMIT_EN_POS             29 /**< LIMIT_CH_LO_LIMIT_EN Position */
+#define MXC_F_ADC_LIMIT_CH_LO_LIMIT_EN_POS             28 /**< LIMIT_CH_LO_LIMIT_EN Position */
 #define MXC_F_ADC_LIMIT_CH_LO_LIMIT_EN                 ((uint32_t)(0x1UL << MXC_F_ADC_LIMIT_CH_LO_LIMIT_EN_POS)) /**< LIMIT_CH_LO_LIMIT_EN Mask */
 
-#define MXC_F_ADC_LIMIT_CH_HI_LIMIT_EN_POS             30 /**< LIMIT_CH_HI_LIMIT_EN Position */
+#define MXC_F_ADC_LIMIT_CH_HI_LIMIT_EN_POS             29 /**< LIMIT_CH_HI_LIMIT_EN Position */
 #define MXC_F_ADC_LIMIT_CH_HI_LIMIT_EN                 ((uint32_t)(0x1UL << MXC_F_ADC_LIMIT_CH_HI_LIMIT_EN_POS)) /**< LIMIT_CH_HI_LIMIT_EN Mask */
 
 /**@} end of group ADC_LIMIT_Register */
+
+/**
+ * @ingroup  adc_registers
+ * @defgroup ADC_DECCNT ADC_DECCNT
+ * @brief    ADC Decimation Count.
+ * @{
+ */
+#define MXC_F_ADC_DECCNT_DELAY_POS                     0 /**< DECCNT_DELAY Position */
+#define MXC_F_ADC_DECCNT_DELAY                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_ADC_DECCNT_DELAY_POS)) /**< DECCNT_DELAY Mask */
+
+/**@} end of group ADC_DECCNT_Register */
 
 #ifdef __cplusplus
 }

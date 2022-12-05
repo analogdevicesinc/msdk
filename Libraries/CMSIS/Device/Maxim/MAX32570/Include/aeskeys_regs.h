@@ -1,6 +1,6 @@
 /**
- * @file    aes_regs.h
- * @brief   Registers, Bit Masks and Bit Positions for the AES Peripheral Module.
+ * @file    aeskeys_regs.h
+ * @brief   Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
  * @note    This file is @generated.
  */
 
@@ -39,8 +39,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AES_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AES_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AESKEYS_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AESKEYS_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -77,38 +77,38 @@ extern "C" {
 /* **** Definitions **** */
 
 /**
- * @ingroup     aes
- * @defgroup    aes_registers AES_Registers
- * @brief       Registers, Bit Masks and Bit Positions for the AES Peripheral Module.
+ * @ingroup     aeskeys
+ * @defgroup    aeskeys_registers AESKEYS_Registers
+ * @brief       Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
  * @details     AES Keys.
  */
 
 /**
- * @ingroup aes_registers
- * Structure type to access the AES Registers.
+ * @ingroup aeskeys_registers
+ * Structure type to access the AESKEYS Registers.
  */
 typedef struct {
-    __IO uint32_t aes_sram_key;         /**< <tt>\b 0x000:</tt> AES AES_SRAM_KEY Register */
-    __R  uint32_t rsv_0x4_0x7f[31];
-    __IO uint32_t aes_code_key;         /**< <tt>\b 0x080:</tt> AES AES_CODE_KEY Register */
-    __R  uint32_t rsv_0x84_0xff[31];
-    __IO uint32_t aes_data_key;         /**< <tt>\b 0x100:</tt> AES AES_DATA_KEY Register */
-} mxc_aes_regs_t;
+    __IO uint32_t sram_key;             /**< <tt>\b 0x00:</tt> AESKEYS SRAM_KEY Register */
+    __R  uint32_t rsv_0x4_0x1f[7];
+    __IO uint32_t code_key;             /**< <tt>\b 0x20:</tt> AESKEYS CODE_KEY Register */
+    __R  uint32_t rsv_0x24_0x3f[7];
+    __IO uint32_t data_key;             /**< <tt>\b 0x40:</tt> AESKEYS DATA_KEY Register */
+} mxc_aeskeys_regs_t;
 
-/* Register offsets for module AES */
+/* Register offsets for module AESKEYS */
 /**
- * @ingroup    aes_registers
- * @defgroup   AES_Register_Offsets Register Offsets
- * @brief      AES Peripheral Register Offsets from the AES Base Peripheral Address.
+ * @ingroup    aeskeys_registers
+ * @defgroup   AESKEYS_Register_Offsets Register Offsets
+ * @brief      AESKEYS Peripheral Register Offsets from the AESKEYS Base Peripheral Address.
  * @{
  */
-#define MXC_R_AES_AES_SRAM_KEY             ((uint32_t)0x00000000UL) /**< Offset from AES Base Address: <tt> 0x0000</tt> */
-#define MXC_R_AES_AES_CODE_KEY             ((uint32_t)0x00000080UL) /**< Offset from AES Base Address: <tt> 0x0080</tt> */
-#define MXC_R_AES_AES_DATA_KEY             ((uint32_t)0x00000100UL) /**< Offset from AES Base Address: <tt> 0x0100</tt> */
-/**@} end of group aes_registers */
+#define MXC_R_AESKEYS_SRAM_KEY             ((uint32_t)0x00000000UL) /**< Offset from AESKEYS Base Address: <tt> 0x0000</tt> */
+#define MXC_R_AESKEYS_CODE_KEY             ((uint32_t)0x00000020UL) /**< Offset from AESKEYS Base Address: <tt> 0x0020</tt> */
+#define MXC_R_AESKEYS_DATA_KEY             ((uint32_t)0x00000040UL) /**< Offset from AESKEYS Base Address: <tt> 0x0040</tt> */
+/**@} end of group aeskeys_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AES_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32570_INCLUDE_AESKEYS_REGS_H_

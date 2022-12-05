@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <name>ADC9</name>
+    <name>MSRADC</name>
     <description>Magnetic Strip Reader - 9 bit ADC</description>
     <!-- <groupName>ADC</groupName> -->
     <baseAddress>0x4002B000</baseAddress>
@@ -20,7 +20,7 @@
     <registers>
       <!-- CTRL: ADC Control -->
       <register>
-        <name>CFG</name>
+        <name>CTRL</name>
         <description>ADC Control</description>
         <addressOffset>0x0000</addressOffset>
         <access>read-write</access>
@@ -38,36 +38,20 @@
             <access>read-write</access>
             <enumeratedValues>
               <enumeratedValue>
-                <name>INVALID_000</name>
+                <name>invalid</name>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>IN0</name>
+                <name>CH1_IN</name>
                 <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>IN1</name>
+                <name>CH2_IN</name>
                 <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>IN2</name>
+                <name>CH3_IN</name>
                 <value>3</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>IN3</name>
-                <value>4</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>IN4</name>
-                <value>5</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>IN5</name>
-                <value>6</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>INVALID_111</name>
-                <value>7</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
@@ -127,48 +111,18 @@
             <description>ADC Reset.</description>
             <bitRange>[0:0]</bitRange>
             <access>read-write</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>NO_RESET</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>RESET</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>SNGLSMPL</name>
             <description>Single Sample Mode.</description>
             <bitRange>[1:1]</bitRange>
             <access>read-write</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>NO_EFFECT</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>SINGLE_SMPL</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>CONTSMPL</name>
             <description>Continuous Sample Mode Enable.</description>
             <bitRange>[2:2]</bitRange>
             <access>read-write</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>NO_CONTINUOUS_SMPL_MODE</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>CONTINUOUS_SMPL_MODE</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>ROTLIMIT</name>
@@ -266,56 +220,46 @@
             <access>read-only</access>
           </field>
           <field>
-            <name>SMPLIN</name>
+            <name>INPUT</name>
             <description>ADC Sample Pin</description>
             <bitRange>[11:9]</bitRange>
             <access>read-only</access>
             <enumeratedValues>
               <enumeratedValue>
-                <name>INVALID_000</name>
+                <name>invalid</name>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>IN0</name>
+                <name>CH1_IN</name>
                 <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>IN1</name>
+                <name>CH2_IN</name>
                 <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>IN2</name>
+                <name>CH3_IN</name>
                 <value>3</value>
               </enumeratedValue>
-              <enumeratedValue>
-                <name>IN3</name>
-                <value>4</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>IN4</name>
-                <value>5</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>IN5</name>
-                <value>6</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>INVALID_111</name>
-                <value>7</value>
-              </enumeratedValue>
             </enumeratedValues>
+          </field>
+          <field>
+            <name>INCOMPLETE</name>
+            <description>ADC Incomplete.</description>
+            <bitRange>[12:12]</bitRange>
+            <access>read-only</access>
           </field>
         </fields>
       </register>
       <!-- INTFL: ADC Interrupt Enable Register -->
       <register>
-        <name>INTR</name>
+        <name>INTEN</name>
         <description>ADC Interrupt Enable Register</description>
         <addressOffset>0x000C</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>FIFOLVL</name>
+            <name>SET_FIFOLVL</name>
             <description>Set FIFO Interrupt Level.</description>
             <bitRange>[2:0]</bitRange>
             <access>read-write</access>
@@ -355,90 +299,40 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>DMAREQEN</name>
+            <name>DMAREQ_EN</name>
             <description>DMA Request Enable.</description>
             <bitRange>[3:3]</bitRange>
             <access>read-write</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>DISABLED</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ENABLED</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>OVERFIE</name>
+            <name>FIFO_OV</name>
             <description>FIFO Overflow Interrupt Enable.</description>
             <bitRange>[6:6]</bitRange>
             <access>read-write</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>DISABLED</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ENABLED</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>UNDRFIE</name>
+            <name>FIFO_UN</name>
             <description>FIFO Underflow Interrupt Enable.</description>
             <bitRange>[7:7]</bitRange>
             <access>read-write</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>DISABLED</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ENABLED</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>FIFOLVLIE</name>
+            <name>FIFO_LVL</name>
             <description>FIFO Level Interrupt Enable.</description>
             <bitRange>[8:8]</bitRange>
             <access>read-write</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>DISABLED</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ENABLED</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>GLOBIE</name>
+            <name>GLOBAL</name>
             <description>ADC Global Interrupt Enable.</description>
             <bitRange>[9:9]</bitRange>
             <access>read-write</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>DISABLED</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ENABLED</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
         </fields>
       </register>
       <!--INTFL: MSRADC Interrupt Flag Register-->
       <register>
-        <name>STAT</name>
+        <name>INTFL</name>
         <description>ADC Interrupt Flag Register.</description>
         <access>read-write</access>
         <addressOffset>0x0010</addressOffset>
@@ -448,140 +342,42 @@
             <description>FIFO Count.</description>
             <bitRange>[3:0]</bitRange>
             <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>FIFO_EMPTY</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ONE_SAMPLE</name>
-                <value>1</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>TWO_SAMPLE</name>
-                <value>2</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>THREE_SAMPLE</name>
-                <value>3</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>FOUR_SAMPLE</name>
-                <value>4</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>FIVE_SAMPLE</name>
-                <value>5</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>SIX_SAMPLE</name>
-                <value>6</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>SEVEN_SAMPLE</name>
-                <value>7</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>EIGHT_SAMPLE</name>
-                <value>8</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>FULL</name>
+            <name>FIFO_FULL_ST</name>
             <description>FIFO Full Status.</description>
             <bitRange>[4:4]</bitRange>
             <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>FIFO_NOT_FULL</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>FIFO_FULL</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>EMPTY</name>
+            <name>FIFO_EM_ST</name>
             <description>FIFO Empty Status.</description>
             <bitRange>[5:5]</bitRange>
             <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>FIFO_NOT_EMPTY</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>FIFO_EMPTY</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>OVERFINT</name>
+            <name>FIFO_OV</name>
             <description>FIFO Overflow Status.</description>
             <bitRange>[6:6]</bitRange>
             <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>NOT_FIFO_OVERFLOW</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>FIFO_OVERFLOW</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>UNDRFINT</name>
+            <name>FIFO_UN</name>
             <description>FIFO Underflow Status.</description>
             <bitRange>[7:7]</bitRange>
             <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>NOT_FIFO_UNDERFLOW</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>FIFO_UNDERFLOW</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>FIFOLVLST</name>
+            <name>FIFO_LVL</name>
             <description>FIFO Level Status.</description>
             <bitRange>[8:8]</bitRange>
             <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>BELOW_LVL</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ABOVE_LVL</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
-            <name>GLOBINT</name>
-            <description>ADC Global Interrupt Status.</description>
+            <name>GLOBAL</name>
+            <description>ADC Global Interrupt Flag.</description>
             <bitRange>[9:9]</bitRange>
             <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>NOT_ACTIVE</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>ACTIVE</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
         </fields>
       </register>

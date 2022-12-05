@@ -88,43 +88,42 @@ extern "C" {
  * Structure type to access the CTB Registers.
  */
 typedef struct {
-    __IO uint32_t crypto_ctrl;          /**< <tt>\b 0x00:</tt> CTB CRYPTO_CTRL Register */
+    __IO uint32_t ctrl;                 /**< <tt>\b 0x00:</tt> CTB CTRL Register */
     __IO uint32_t cipher_ctrl;          /**< <tt>\b 0x04:</tt> CTB CIPHER_CTRL Register */
     __IO uint32_t hash_ctrl;            /**< <tt>\b 0x08:</tt> CTB HASH_CTRL Register */
     __IO uint32_t crc_ctrl;             /**< <tt>\b 0x0C:</tt> CTB CRC_CTRL Register */
     __IO uint32_t dma_src;              /**< <tt>\b 0x10:</tt> CTB DMA_SRC Register */
     __IO uint32_t dma_dest;             /**< <tt>\b 0x14:</tt> CTB DMA_DEST Register */
     __IO uint32_t dma_cnt;              /**< <tt>\b 0x18:</tt> CTB DMA_CNT Register */
-    __R  uint32_t rsv_0x1c;
-    __O  uint32_t crypto_din[4];        /**< <tt>\b 0x20:</tt> CTB CRYPTO_DIN Register */
-    __I  uint32_t crypto_dout[4];       /**< <tt>\b 0x30:</tt> CTB CRYPTO_DOUT Register */
+    __IO uint32_t maa_ctrl;             /**< <tt>\b 0x1C:</tt> CTB MAA_CTRL Register */
+    __O  uint32_t din[4];               /**< <tt>\b 0x20:</tt> CTB DIN Register */
+    __I  uint32_t dout[4];              /**< <tt>\b 0x30:</tt> CTB DOUT Register */
     __IO uint32_t crc_poly;             /**< <tt>\b 0x40:</tt> CTB CRC_POLY Register */
     __IO uint32_t crc_val;              /**< <tt>\b 0x44:</tt> CTB CRC_VAL Register */
-    __R  uint32_t rsv_0x48;
+    __IO uint32_t crc_prng;             /**< <tt>\b 0x48:</tt> CTB CRC_PRNG Register */
     __IO uint32_t ham_ecc;              /**< <tt>\b 0x4C:</tt> CTB HAM_ECC Register */
     __IO uint32_t cipher_init[4];       /**< <tt>\b 0x50:</tt> CTB CIPHER_INIT Register */
     __O  uint32_t cipher_key[8];        /**< <tt>\b 0x60:</tt> CTB CIPHER_KEY Register */
     __IO uint32_t hash_digest[16];      /**< <tt>\b 0x80:</tt> CTB HASH_DIGEST Register */
     __IO uint32_t hash_msg_sz[4];       /**< <tt>\b 0xC0:</tt> CTB HASH_MSG_SZ Register */
-    __IO uint32_t aad_length_0;         /**< <tt>\b 0xD0:</tt> CTB AAD_LENGTH_0 Register */
-    __IO uint32_t aad_length_1;         /**< <tt>\b 0xD4:</tt> CTB AAD_LENGTH_1 Register */
-    __IO uint32_t pld_length_0;         /**< <tt>\b 0xD8:</tt> CTB PLD_LENGTH_0 Register */
-    __IO uint32_t pld_length_1;         /**< <tt>\b 0xDC:</tt> CTB PLD_LENGTH_1 Register */
+    __IO uint32_t aad_length[2];        /**< <tt>\b 0xD0:</tt> CTB AAD_LENGTH Register */
+    __IO uint32_t pld_length[2];        /**< <tt>\b 0xD8:</tt> CTB PLD_LENGTH Register */
     __IO uint32_t tagmic[4];            /**< <tt>\b 0xE0:</tt> CTB TAGMIC Register */
-    __R  uint32_t rsv_0xf0_0xff[4];
-    __IO uint32_t sca_ctrl0;            /**< <tt>\b 0x100:</tt> CTB SCA_CTRL0 Register */
-    __IO uint32_t sca_ctrl1;            /**< <tt>\b 0x104:</tt> CTB SCA_CTRL1 Register */
-    __IO uint32_t sca_stat;             /**< <tt>\b 0x108:</tt> CTB SCA_STAT Register */
-    __IO uint32_t sca_ppx_addr;         /**< <tt>\b 0x10C:</tt> CTB SCA_PPX_ADDR Register */
-    __IO uint32_t sca_ppy_addr;         /**< <tt>\b 0x110:</tt> CTB SCA_PPY_ADDR Register */
-    __IO uint32_t sca_ppz_addr;         /**< <tt>\b 0x114:</tt> CTB SCA_PPZ_ADDR Register */
-    __IO uint32_t sca_pqx_addr;         /**< <tt>\b 0x118:</tt> CTB SCA_PQX_ADDR Register */
-    __IO uint32_t sca_pqy_addr;         /**< <tt>\b 0x11C:</tt> CTB SCA_PQY_ADDR Register */
-    __IO uint32_t sca_pqz_addr;         /**< <tt>\b 0x120:</tt> CTB SCA_PQZ_ADDR Register */
-    __IO uint32_t sca_rdsa_addr;        /**< <tt>\b 0x124:</tt> CTB SCA_RDSA_ADDR Register */
-    __IO uint32_t sca_res_addr;         /**< <tt>\b 0x128:</tt> CTB SCA_RES_ADDR Register */
-    __IO uint32_t sca_op_buff_addr;     /**< <tt>\b 0x12C:</tt> CTB SCA_OP_BUFF_ADDR Register */
-    __IO uint32_t sca_moddata;          /**< <tt>\b 0x130:</tt> CTB SCA_MODDATA Register */
+    __IO uint32_t maa_maws;             /**< <tt>\b 0xF0:</tt> CTB MAA_MAWS Register */
+    __R  uint32_t rsv_0xf4_0x6ff[387];
+    __IO uint32_t sca_ctrl0;            /**< <tt>\b 0x700:</tt> CTB SCA_CTRL0 Register */
+    __IO uint32_t sca_ctrl1;            /**< <tt>\b 0x704:</tt> CTB SCA_CTRL1 Register */
+    __IO uint32_t sca_stat;             /**< <tt>\b 0x708:</tt> CTB SCA_STAT Register */
+    __IO uint32_t sca_ppx_addr;         /**< <tt>\b 0x70C:</tt> CTB SCA_PPX_ADDR Register */
+    __IO uint32_t sca_ppy_addr;         /**< <tt>\b 0x710:</tt> CTB SCA_PPY_ADDR Register */
+    __IO uint32_t sca_ppz_addr;         /**< <tt>\b 0x714:</tt> CTB SCA_PPZ_ADDR Register */
+    __IO uint32_t sca_pqx_addr;         /**< <tt>\b 0x718:</tt> CTB SCA_PQX_ADDR Register */
+    __IO uint32_t sca_pqy_addr;         /**< <tt>\b 0x71C:</tt> CTB SCA_PQY_ADDR Register */
+    __IO uint32_t sca_pqz_addr;         /**< <tt>\b 0x720:</tt> CTB SCA_PQZ_ADDR Register */
+    __IO uint32_t sca_rdsa_addr;        /**< <tt>\b 0x724:</tt> CTB SCA_RDSA_ADDR Register */
+    __IO uint32_t sca_res_addr;         /**< <tt>\b 0x728:</tt> CTB SCA_RES_ADDR Register */
+    __IO uint32_t sca_op_buff_addr;     /**< <tt>\b 0x72C:</tt> CTB SCA_OP_BUFF_ADDR Register */
+    __IO uint32_t sca_moddata;          /**< <tt>\b 0x730:</tt> CTB SCA_MODDATA Register */
 } mxc_ctb_regs_t;
 
 /* Register offsets for module CTB */
@@ -134,115 +133,116 @@ typedef struct {
  * @brief      CTB Peripheral Register Offsets from the CTB Base Peripheral Address.
  * @{
  */
-#define MXC_R_CTB_CRYPTO_CTRL              ((uint32_t)0x00000000UL) /**< Offset from CTB Base Address: <tt> 0x0000</tt> */
+#define MXC_R_CTB_CTRL                     ((uint32_t)0x00000000UL) /**< Offset from CTB Base Address: <tt> 0x0000</tt> */
 #define MXC_R_CTB_CIPHER_CTRL              ((uint32_t)0x00000004UL) /**< Offset from CTB Base Address: <tt> 0x0004</tt> */
 #define MXC_R_CTB_HASH_CTRL                ((uint32_t)0x00000008UL) /**< Offset from CTB Base Address: <tt> 0x0008</tt> */
 #define MXC_R_CTB_CRC_CTRL                 ((uint32_t)0x0000000CUL) /**< Offset from CTB Base Address: <tt> 0x000C</tt> */
 #define MXC_R_CTB_DMA_SRC                  ((uint32_t)0x00000010UL) /**< Offset from CTB Base Address: <tt> 0x0010</tt> */
 #define MXC_R_CTB_DMA_DEST                 ((uint32_t)0x00000014UL) /**< Offset from CTB Base Address: <tt> 0x0014</tt> */
 #define MXC_R_CTB_DMA_CNT                  ((uint32_t)0x00000018UL) /**< Offset from CTB Base Address: <tt> 0x0018</tt> */
-#define MXC_R_CTB_CRYPTO_DIN               ((uint32_t)0x00000020UL) /**< Offset from CTB Base Address: <tt> 0x0020</tt> */
-#define MXC_R_CTB_CRYPTO_DOUT              ((uint32_t)0x00000030UL) /**< Offset from CTB Base Address: <tt> 0x0030</tt> */
+#define MXC_R_CTB_MAA_CTRL                 ((uint32_t)0x0000001CUL) /**< Offset from CTB Base Address: <tt> 0x001C</tt> */
+#define MXC_R_CTB_DIN                      ((uint32_t)0x00000020UL) /**< Offset from CTB Base Address: <tt> 0x0020</tt> */
+#define MXC_R_CTB_DOUT                     ((uint32_t)0x00000030UL) /**< Offset from CTB Base Address: <tt> 0x0030</tt> */
 #define MXC_R_CTB_CRC_POLY                 ((uint32_t)0x00000040UL) /**< Offset from CTB Base Address: <tt> 0x0040</tt> */
 #define MXC_R_CTB_CRC_VAL                  ((uint32_t)0x00000044UL) /**< Offset from CTB Base Address: <tt> 0x0044</tt> */
+#define MXC_R_CTB_CRC_PRNG                 ((uint32_t)0x00000048UL) /**< Offset from CTB Base Address: <tt> 0x0048</tt> */
 #define MXC_R_CTB_HAM_ECC                  ((uint32_t)0x0000004CUL) /**< Offset from CTB Base Address: <tt> 0x004C</tt> */
 #define MXC_R_CTB_CIPHER_INIT              ((uint32_t)0x00000050UL) /**< Offset from CTB Base Address: <tt> 0x0050</tt> */
 #define MXC_R_CTB_CIPHER_KEY               ((uint32_t)0x00000060UL) /**< Offset from CTB Base Address: <tt> 0x0060</tt> */
 #define MXC_R_CTB_HASH_DIGEST              ((uint32_t)0x00000080UL) /**< Offset from CTB Base Address: <tt> 0x0080</tt> */
 #define MXC_R_CTB_HASH_MSG_SZ              ((uint32_t)0x000000C0UL) /**< Offset from CTB Base Address: <tt> 0x00C0</tt> */
-#define MXC_R_CTB_AAD_LENGTH_0             ((uint32_t)0x000000D0UL) /**< Offset from CTB Base Address: <tt> 0x00D0</tt> */
-#define MXC_R_CTB_AAD_LENGTH_1             ((uint32_t)0x000000D4UL) /**< Offset from CTB Base Address: <tt> 0x00D4</tt> */
-#define MXC_R_CTB_PLD_LENGTH_0             ((uint32_t)0x000000D8UL) /**< Offset from CTB Base Address: <tt> 0x00D8</tt> */
-#define MXC_R_CTB_PLD_LENGTH_1             ((uint32_t)0x000000DCUL) /**< Offset from CTB Base Address: <tt> 0x00DC</tt> */
+#define MXC_R_CTB_AAD_LENGTH               ((uint32_t)0x000000D0UL) /**< Offset from CTB Base Address: <tt> 0x00D0</tt> */
+#define MXC_R_CTB_PLD_LENGTH               ((uint32_t)0x000000D8UL) /**< Offset from CTB Base Address: <tt> 0x00D8</tt> */
 #define MXC_R_CTB_TAGMIC                   ((uint32_t)0x000000E0UL) /**< Offset from CTB Base Address: <tt> 0x00E0</tt> */
-#define MXC_R_CTB_SCA_CTRL0                ((uint32_t)0x00000100UL) /**< Offset from CTB Base Address: <tt> 0x0100</tt> */
-#define MXC_R_CTB_SCA_CTRL1                ((uint32_t)0x00000104UL) /**< Offset from CTB Base Address: <tt> 0x0104</tt> */
-#define MXC_R_CTB_SCA_STAT                 ((uint32_t)0x00000108UL) /**< Offset from CTB Base Address: <tt> 0x0108</tt> */
-#define MXC_R_CTB_SCA_PPX_ADDR             ((uint32_t)0x0000010CUL) /**< Offset from CTB Base Address: <tt> 0x010C</tt> */
-#define MXC_R_CTB_SCA_PPY_ADDR             ((uint32_t)0x00000110UL) /**< Offset from CTB Base Address: <tt> 0x0110</tt> */
-#define MXC_R_CTB_SCA_PPZ_ADDR             ((uint32_t)0x00000114UL) /**< Offset from CTB Base Address: <tt> 0x0114</tt> */
-#define MXC_R_CTB_SCA_PQX_ADDR             ((uint32_t)0x00000118UL) /**< Offset from CTB Base Address: <tt> 0x0118</tt> */
-#define MXC_R_CTB_SCA_PQY_ADDR             ((uint32_t)0x0000011CUL) /**< Offset from CTB Base Address: <tt> 0x011C</tt> */
-#define MXC_R_CTB_SCA_PQZ_ADDR             ((uint32_t)0x00000120UL) /**< Offset from CTB Base Address: <tt> 0x0120</tt> */
-#define MXC_R_CTB_SCA_RDSA_ADDR            ((uint32_t)0x00000124UL) /**< Offset from CTB Base Address: <tt> 0x0124</tt> */
-#define MXC_R_CTB_SCA_RES_ADDR             ((uint32_t)0x00000128UL) /**< Offset from CTB Base Address: <tt> 0x0128</tt> */
-#define MXC_R_CTB_SCA_OP_BUFF_ADDR         ((uint32_t)0x0000012CUL) /**< Offset from CTB Base Address: <tt> 0x012C</tt> */
-#define MXC_R_CTB_SCA_MODDATA              ((uint32_t)0x00000130UL) /**< Offset from CTB Base Address: <tt> 0x0130</tt> */
+#define MXC_R_CTB_MAA_MAWS                 ((uint32_t)0x000000F0UL) /**< Offset from CTB Base Address: <tt> 0x00F0</tt> */
+#define MXC_R_CTB_SCA_CTRL0                ((uint32_t)0x00000700UL) /**< Offset from CTB Base Address: <tt> 0x0700</tt> */
+#define MXC_R_CTB_SCA_CTRL1                ((uint32_t)0x00000704UL) /**< Offset from CTB Base Address: <tt> 0x0704</tt> */
+#define MXC_R_CTB_SCA_STAT                 ((uint32_t)0x00000708UL) /**< Offset from CTB Base Address: <tt> 0x0708</tt> */
+#define MXC_R_CTB_SCA_PPX_ADDR             ((uint32_t)0x0000070CUL) /**< Offset from CTB Base Address: <tt> 0x070C</tt> */
+#define MXC_R_CTB_SCA_PPY_ADDR             ((uint32_t)0x00000710UL) /**< Offset from CTB Base Address: <tt> 0x0710</tt> */
+#define MXC_R_CTB_SCA_PPZ_ADDR             ((uint32_t)0x00000714UL) /**< Offset from CTB Base Address: <tt> 0x0714</tt> */
+#define MXC_R_CTB_SCA_PQX_ADDR             ((uint32_t)0x00000718UL) /**< Offset from CTB Base Address: <tt> 0x0718</tt> */
+#define MXC_R_CTB_SCA_PQY_ADDR             ((uint32_t)0x0000071CUL) /**< Offset from CTB Base Address: <tt> 0x071C</tt> */
+#define MXC_R_CTB_SCA_PQZ_ADDR             ((uint32_t)0x00000720UL) /**< Offset from CTB Base Address: <tt> 0x0720</tt> */
+#define MXC_R_CTB_SCA_RDSA_ADDR            ((uint32_t)0x00000724UL) /**< Offset from CTB Base Address: <tt> 0x0724</tt> */
+#define MXC_R_CTB_SCA_RES_ADDR             ((uint32_t)0x00000728UL) /**< Offset from CTB Base Address: <tt> 0x0728</tt> */
+#define MXC_R_CTB_SCA_OP_BUFF_ADDR         ((uint32_t)0x0000072CUL) /**< Offset from CTB Base Address: <tt> 0x072C</tt> */
+#define MXC_R_CTB_SCA_MODDATA              ((uint32_t)0x00000730UL) /**< Offset from CTB Base Address: <tt> 0x0730</tt> */
 /**@} end of group ctb_registers */
 
 /**
  * @ingroup  ctb_registers
- * @defgroup CTB_CRYPTO_CTRL CTB_CRYPTO_CTRL
+ * @defgroup CTB_CTRL CTB_CTRL
  * @brief    Crypto Control Register.
  * @{
  */
-#define MXC_F_CTB_CRYPTO_CTRL_RST_POS                  0 /**< CRYPTO_CTRL_RST Position */
-#define MXC_F_CTB_CRYPTO_CTRL_RST                      ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_RST_POS)) /**< CRYPTO_CTRL_RST Mask */
+#define MXC_F_CTB_CTRL_RST_POS                         0 /**< CTRL_RST Position */
+#define MXC_F_CTB_CTRL_RST                             ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_RST_POS)) /**< CTRL_RST Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_INTR_POS                 1 /**< CRYPTO_CTRL_INTR Position */
-#define MXC_F_CTB_CRYPTO_CTRL_INTR                     ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_INTR_POS)) /**< CRYPTO_CTRL_INTR Mask */
+#define MXC_F_CTB_CTRL_INTR_POS                        1 /**< CTRL_INTR Position */
+#define MXC_F_CTB_CTRL_INTR                            ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_INTR_POS)) /**< CTRL_INTR Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_SRC_POS                  2 /**< CRYPTO_CTRL_SRC Position */
-#define MXC_F_CTB_CRYPTO_CTRL_SRC                      ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_SRC_POS)) /**< CRYPTO_CTRL_SRC Mask */
+#define MXC_F_CTB_CTRL_SRC_POS                         2 /**< CTRL_SRC Position */
+#define MXC_F_CTB_CTRL_SRC                             ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_SRC_POS)) /**< CTRL_SRC Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_BSO_POS                  4 /**< CRYPTO_CTRL_BSO Position */
-#define MXC_F_CTB_CRYPTO_CTRL_BSO                      ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_BSO_POS)) /**< CRYPTO_CTRL_BSO Mask */
+#define MXC_F_CTB_CTRL_BSO_POS                         4 /**< CTRL_BSO Position */
+#define MXC_F_CTB_CTRL_BSO                             ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_BSO_POS)) /**< CTRL_BSO Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_BSI_POS                  5 /**< CRYPTO_CTRL_BSI Position */
-#define MXC_F_CTB_CRYPTO_CTRL_BSI                      ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_BSI_POS)) /**< CRYPTO_CTRL_BSI Mask */
+#define MXC_F_CTB_CTRL_BSI_POS                         5 /**< CTRL_BSI Position */
+#define MXC_F_CTB_CTRL_BSI                             ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_BSI_POS)) /**< CTRL_BSI Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_WAIT_EN_POS              6 /**< CRYPTO_CTRL_WAIT_EN Position */
-#define MXC_F_CTB_CRYPTO_CTRL_WAIT_EN                  ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_WAIT_EN_POS)) /**< CRYPTO_CTRL_WAIT_EN Mask */
+#define MXC_F_CTB_CTRL_WAIT_EN_POS                     6 /**< CTRL_WAIT_EN Position */
+#define MXC_F_CTB_CTRL_WAIT_EN                         ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_WAIT_EN_POS)) /**< CTRL_WAIT_EN Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_WAIT_POL_POS             7 /**< CRYPTO_CTRL_WAIT_POL Position */
-#define MXC_F_CTB_CRYPTO_CTRL_WAIT_POL                 ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_WAIT_POL_POS)) /**< CRYPTO_CTRL_WAIT_POL Mask */
+#define MXC_F_CTB_CTRL_WAIT_POL_POS                    7 /**< CTRL_WAIT_POL Position */
+#define MXC_F_CTB_CTRL_WAIT_POL                        ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_WAIT_POL_POS)) /**< CTRL_WAIT_POL Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_WRSRC_POS                8 /**< CRYPTO_CTRL_WRSRC Position */
-#define MXC_F_CTB_CRYPTO_CTRL_WRSRC                    ((uint32_t)(0x3UL << MXC_F_CTB_CRYPTO_CTRL_WRSRC_POS)) /**< CRYPTO_CTRL_WRSRC Mask */
-#define MXC_V_CTB_CRYPTO_CTRL_WRSRC_NONE               ((uint32_t)0x0UL) /**< CRYPTO_CTRL_WRSRC_NONE Value */
-#define MXC_S_CTB_CRYPTO_CTRL_WRSRC_NONE               (MXC_V_CTB_CRYPTO_CTRL_WRSRC_NONE << MXC_F_CTB_CRYPTO_CTRL_WRSRC_POS) /**< CRYPTO_CTRL_WRSRC_NONE Setting */
-#define MXC_V_CTB_CRYPTO_CTRL_WRSRC_CIPHEROUTPUT       ((uint32_t)0x1UL) /**< CRYPTO_CTRL_WRSRC_CIPHEROUTPUT Value */
-#define MXC_S_CTB_CRYPTO_CTRL_WRSRC_CIPHEROUTPUT       (MXC_V_CTB_CRYPTO_CTRL_WRSRC_CIPHEROUTPUT << MXC_F_CTB_CRYPTO_CTRL_WRSRC_POS) /**< CRYPTO_CTRL_WRSRC_CIPHEROUTPUT Setting */
-#define MXC_V_CTB_CRYPTO_CTRL_WRSRC_READFIFO           ((uint32_t)0x2UL) /**< CRYPTO_CTRL_WRSRC_READFIFO Value */
-#define MXC_S_CTB_CRYPTO_CTRL_WRSRC_READFIFO           (MXC_V_CTB_CRYPTO_CTRL_WRSRC_READFIFO << MXC_F_CTB_CRYPTO_CTRL_WRSRC_POS) /**< CRYPTO_CTRL_WRSRC_READFIFO Setting */
+#define MXC_F_CTB_CTRL_WRSRC_POS                       8 /**< CTRL_WRSRC Position */
+#define MXC_F_CTB_CTRL_WRSRC                           ((uint32_t)(0x3UL << MXC_F_CTB_CTRL_WRSRC_POS)) /**< CTRL_WRSRC Mask */
+#define MXC_V_CTB_CTRL_WRSRC_NONE                      ((uint32_t)0x0UL) /**< CTRL_WRSRC_NONE Value */
+#define MXC_S_CTB_CTRL_WRSRC_NONE                      (MXC_V_CTB_CTRL_WRSRC_NONE << MXC_F_CTB_CTRL_WRSRC_POS) /**< CTRL_WRSRC_NONE Setting */
+#define MXC_V_CTB_CTRL_WRSRC_CIPHEROUTPUT              ((uint32_t)0x1UL) /**< CTRL_WRSRC_CIPHEROUTPUT Value */
+#define MXC_S_CTB_CTRL_WRSRC_CIPHEROUTPUT              (MXC_V_CTB_CTRL_WRSRC_CIPHEROUTPUT << MXC_F_CTB_CTRL_WRSRC_POS) /**< CTRL_WRSRC_CIPHEROUTPUT Setting */
+#define MXC_V_CTB_CTRL_WRSRC_READFIFO                  ((uint32_t)0x2UL) /**< CTRL_WRSRC_READFIFO Value */
+#define MXC_S_CTB_CTRL_WRSRC_READFIFO                  (MXC_V_CTB_CTRL_WRSRC_READFIFO << MXC_F_CTB_CTRL_WRSRC_POS) /**< CTRL_WRSRC_READFIFO Setting */
 
-#define MXC_F_CTB_CRYPTO_CTRL_RDSRC_POS                10 /**< CRYPTO_CTRL_RDSRC Position */
-#define MXC_F_CTB_CRYPTO_CTRL_RDSRC                    ((uint32_t)(0x3UL << MXC_F_CTB_CRYPTO_CTRL_RDSRC_POS)) /**< CRYPTO_CTRL_RDSRC Mask */
-#define MXC_V_CTB_CRYPTO_CTRL_RDSRC_DMADISABLED        ((uint32_t)0x0UL) /**< CRYPTO_CTRL_RDSRC_DMADISABLED Value */
-#define MXC_S_CTB_CRYPTO_CTRL_RDSRC_DMADISABLED        (MXC_V_CTB_CRYPTO_CTRL_RDSRC_DMADISABLED << MXC_F_CTB_CRYPTO_CTRL_RDSRC_POS) /**< CRYPTO_CTRL_RDSRC_DMADISABLED Setting */
-#define MXC_V_CTB_CRYPTO_CTRL_RDSRC_DMAORAPB           ((uint32_t)0x1UL) /**< CRYPTO_CTRL_RDSRC_DMAORAPB Value */
-#define MXC_S_CTB_CRYPTO_CTRL_RDSRC_DMAORAPB           (MXC_V_CTB_CRYPTO_CTRL_RDSRC_DMAORAPB << MXC_F_CTB_CRYPTO_CTRL_RDSRC_POS) /**< CRYPTO_CTRL_RDSRC_DMAORAPB Setting */
-#define MXC_V_CTB_CRYPTO_CTRL_RDSRC_RNG                ((uint32_t)0x2UL) /**< CRYPTO_CTRL_RDSRC_RNG Value */
-#define MXC_S_CTB_CRYPTO_CTRL_RDSRC_RNG                (MXC_V_CTB_CRYPTO_CTRL_RDSRC_RNG << MXC_F_CTB_CRYPTO_CTRL_RDSRC_POS) /**< CRYPTO_CTRL_RDSRC_RNG Setting */
+#define MXC_F_CTB_CTRL_RDSRC_POS                       10 /**< CTRL_RDSRC Position */
+#define MXC_F_CTB_CTRL_RDSRC                           ((uint32_t)(0x3UL << MXC_F_CTB_CTRL_RDSRC_POS)) /**< CTRL_RDSRC Mask */
+#define MXC_V_CTB_CTRL_RDSRC_DMADISABLED               ((uint32_t)0x0UL) /**< CTRL_RDSRC_DMADISABLED Value */
+#define MXC_S_CTB_CTRL_RDSRC_DMADISABLED               (MXC_V_CTB_CTRL_RDSRC_DMADISABLED << MXC_F_CTB_CTRL_RDSRC_POS) /**< CTRL_RDSRC_DMADISABLED Setting */
+#define MXC_V_CTB_CTRL_RDSRC_DMAORAPB                  ((uint32_t)0x1UL) /**< CTRL_RDSRC_DMAORAPB Value */
+#define MXC_S_CTB_CTRL_RDSRC_DMAORAPB                  (MXC_V_CTB_CTRL_RDSRC_DMAORAPB << MXC_F_CTB_CTRL_RDSRC_POS) /**< CTRL_RDSRC_DMAORAPB Setting */
+#define MXC_V_CTB_CTRL_RDSRC_RNG                       ((uint32_t)0x2UL) /**< CTRL_RDSRC_RNG Value */
+#define MXC_S_CTB_CTRL_RDSRC_RNG                       (MXC_V_CTB_CTRL_RDSRC_RNG << MXC_F_CTB_CTRL_RDSRC_POS) /**< CTRL_RDSRC_RNG Setting */
 
-#define MXC_F_CTB_CRYPTO_CTRL_FLAG_MODE_POS            14 /**< CRYPTO_CTRL_FLAG_MODE Position */
-#define MXC_F_CTB_CRYPTO_CTRL_FLAG_MODE                ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_FLAG_MODE_POS)) /**< CRYPTO_CTRL_FLAG_MODE Mask */
+#define MXC_F_CTB_CTRL_FLAG_MODE_POS                   14 /**< CTRL_FLAG_MODE Position */
+#define MXC_F_CTB_CTRL_FLAG_MODE                       ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_FLAG_MODE_POS)) /**< CTRL_FLAG_MODE Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_DMADNEMSK_POS            15 /**< CRYPTO_CTRL_DMADNEMSK Position */
-#define MXC_F_CTB_CRYPTO_CTRL_DMADNEMSK                ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_DMADNEMSK_POS)) /**< CRYPTO_CTRL_DMADNEMSK Mask */
+#define MXC_F_CTB_CTRL_DMADNEMSK_POS                   15 /**< CTRL_DMADNEMSK Position */
+#define MXC_F_CTB_CTRL_DMADNEMSK                       ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_DMADNEMSK_POS)) /**< CTRL_DMADNEMSK Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_DMA_DONE_POS             24 /**< CRYPTO_CTRL_DMA_DONE Position */
-#define MXC_F_CTB_CRYPTO_CTRL_DMA_DONE                 ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_DMA_DONE_POS)) /**< CRYPTO_CTRL_DMA_DONE Mask */
+#define MXC_F_CTB_CTRL_DMA_DONE_POS                    24 /**< CTRL_DMA_DONE Position */
+#define MXC_F_CTB_CTRL_DMA_DONE                        ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_DMA_DONE_POS)) /**< CTRL_DMA_DONE Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_GLS_DONE_POS             25 /**< CRYPTO_CTRL_GLS_DONE Position */
-#define MXC_F_CTB_CRYPTO_CTRL_GLS_DONE                 ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_GLS_DONE_POS)) /**< CRYPTO_CTRL_GLS_DONE Mask */
+#define MXC_F_CTB_CTRL_GLS_DONE_POS                    25 /**< CTRL_GLS_DONE Position */
+#define MXC_F_CTB_CTRL_GLS_DONE                        ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_GLS_DONE_POS)) /**< CTRL_GLS_DONE Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_HSH_DONE_POS             26 /**< CRYPTO_CTRL_HSH_DONE Position */
-#define MXC_F_CTB_CRYPTO_CTRL_HSH_DONE                 ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_HSH_DONE_POS)) /**< CRYPTO_CTRL_HSH_DONE Mask */
+#define MXC_F_CTB_CTRL_HSH_DONE_POS                    26 /**< CTRL_HSH_DONE Position */
+#define MXC_F_CTB_CTRL_HSH_DONE                        ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_HSH_DONE_POS)) /**< CTRL_HSH_DONE Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_CPH_DONE_POS             27 /**< CRYPTO_CTRL_CPH_DONE Position */
-#define MXC_F_CTB_CRYPTO_CTRL_CPH_DONE                 ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_CPH_DONE_POS)) /**< CRYPTO_CTRL_CPH_DONE Mask */
+#define MXC_F_CTB_CTRL_CPH_DONE_POS                    27 /**< CTRL_CPH_DONE Position */
+#define MXC_F_CTB_CTRL_CPH_DONE                        ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_CPH_DONE_POS)) /**< CTRL_CPH_DONE Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_ERR_POS                  29 /**< CRYPTO_CTRL_ERR Position */
-#define MXC_F_CTB_CRYPTO_CTRL_ERR                      ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_ERR_POS)) /**< CRYPTO_CTRL_ERR Mask */
+#define MXC_F_CTB_CTRL_ERR_POS                         29 /**< CTRL_ERR Position */
+#define MXC_F_CTB_CTRL_ERR                             ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_ERR_POS)) /**< CTRL_ERR Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_RDY_POS                  30 /**< CRYPTO_CTRL_RDY Position */
-#define MXC_F_CTB_CRYPTO_CTRL_RDY                      ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_RDY_POS)) /**< CRYPTO_CTRL_RDY Mask */
+#define MXC_F_CTB_CTRL_RDY_POS                         30 /**< CTRL_RDY Position */
+#define MXC_F_CTB_CTRL_RDY                             ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_RDY_POS)) /**< CTRL_RDY Mask */
 
-#define MXC_F_CTB_CRYPTO_CTRL_DONE_POS                 31 /**< CRYPTO_CTRL_DONE Position */
-#define MXC_F_CTB_CRYPTO_CTRL_DONE                     ((uint32_t)(0x1UL << MXC_F_CTB_CRYPTO_CTRL_DONE_POS)) /**< CRYPTO_CTRL_DONE Mask */
+#define MXC_F_CTB_CTRL_DONE_POS                        31 /**< CTRL_DONE Position */
+#define MXC_F_CTB_CTRL_DONE                            ((uint32_t)(0x1UL << MXC_F_CTB_CTRL_DONE_POS)) /**< CTRL_DONE Mask */
 
-/**@} end of group CTB_CRYPTO_CTRL_Register */
+/**@} end of group CTB_CTRL_Register */
 
 /**
  * @ingroup  ctb_registers
@@ -393,14 +393,14 @@ typedef struct {
  * @brief    Crypto DMA Byte Count.
  * @{
  */
-#define MXC_F_CTB_DMA_CNT_COUNT_POS                    0 /**< DMA_CNT_COUNT Position */
-#define MXC_F_CTB_DMA_CNT_COUNT                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_DMA_CNT_COUNT_POS)) /**< DMA_CNT_COUNT Mask */
+#define MXC_F_CTB_DMA_CNT_ADDR_POS                     0 /**< DMA_CNT_ADDR Position */
+#define MXC_F_CTB_DMA_CNT_ADDR                         ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_DMA_CNT_ADDR_POS)) /**< DMA_CNT_ADDR Mask */
 
 /**@} end of group CTB_DMA_CNT_Register */
 
 /**
  * @ingroup  ctb_registers
- * @defgroup CTB_CRYPTO_DIN CTB_CRYPTO_DIN
+ * @defgroup CTB_DIN CTB_DIN
  * @brief    Crypto Data Input. Data input can be written to this register instead of using
  *           the DMA. This register writes to the FIFO. This register occupies four
  *           successive words to allow the use of multi-store instructions. Words can be
@@ -408,24 +408,24 @@ typedef struct {
  *           written. The endian swap input control bit affects this register.
  * @{
  */
-#define MXC_F_CTB_CRYPTO_DIN_DATA_POS                  0 /**< CRYPTO_DIN_DATA Position */
-#define MXC_F_CTB_CRYPTO_DIN_DATA                      ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_CRYPTO_DIN_DATA_POS)) /**< CRYPTO_DIN_DATA Mask */
+#define MXC_F_CTB_DIN_DATA_POS                         0 /**< DIN_DATA Position */
+#define MXC_F_CTB_DIN_DATA                             ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_DIN_DATA_POS)) /**< DIN_DATA Mask */
 
-/**@} end of group CTB_CRYPTO_DIN_Register */
+/**@} end of group CTB_DIN_Register */
 
 /**
  * @ingroup  ctb_registers
- * @defgroup CTB_CRYPTO_DOUT CTB_CRYPTO_DOUT
+ * @defgroup CTB_DOUT CTB_DOUT
  * @brief    Crypto Data Output. Resulting data from cipher calculation. Data is placed in
  *           the lower words of these four registers depending on the algorithm. For block
  *           cipher modes, this register holds the result of most recent encryption or
  *           decryption operation. These registers are affected by the endian swap bits.
  * @{
  */
-#define MXC_F_CTB_CRYPTO_DOUT_DATA_POS                 0 /**< CRYPTO_DOUT_DATA Position */
-#define MXC_F_CTB_CRYPTO_DOUT_DATA                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_CRYPTO_DOUT_DATA_POS)) /**< CRYPTO_DOUT_DATA Mask */
+#define MXC_F_CTB_DOUT_DATA_POS                        0 /**< DOUT_DATA Position */
+#define MXC_F_CTB_DOUT_DATA                            ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_DOUT_DATA_POS)) /**< DOUT_DATA Mask */
 
-/**@} end of group CTB_CRYPTO_DOUT_Register */
+/**@} end of group CTB_DOUT_Register */
 
 /**
  * @ingroup  ctb_registers
@@ -435,8 +435,8 @@ typedef struct {
  *           control bit.
  * @{
  */
-#define MXC_F_CTB_CRC_POLY_DATA_POS                    0 /**< CRC_POLY_DATA Position */
-#define MXC_F_CTB_CRC_POLY_DATA                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_CRC_POLY_DATA_POS)) /**< CRC_POLY_DATA Mask */
+#define MXC_F_CTB_CRC_POLY_POLY_POS                    0 /**< CRC_POLY_POLY Position */
+#define MXC_F_CTB_CRC_POLY_POLY                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_CRC_POLY_POLY_POS)) /**< CRC_POLY_POLY Mask */
 
 /**@} end of group CTB_CRC_POLY_Register */
 
@@ -452,6 +452,17 @@ typedef struct {
 #define MXC_F_CTB_CRC_VAL_VAL                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_CRC_VAL_VAL_POS)) /**< CRC_VAL_VAL Mask */
 
 /**@} end of group CTB_CRC_VAL_Register */
+
+/**
+ * @ingroup  ctb_registers
+ * @defgroup CTB_CRC_PRNG CTB_CRC_PRNG
+ * @brief    CRC PRNG Register.
+ * @{
+ */
+#define MXC_F_CTB_CRC_PRNG_PRNG_POS                    0 /**< CRC_PRNG_PRNG Position */
+#define MXC_F_CTB_CRC_PRNG_PRNG                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_CRC_PRNG_PRNG_POS)) /**< CRC_PRNG_PRNG Mask */
+
+/**@} end of group CTB_CRC_PRNG_Register */
 
 /**
  * @ingroup  ctb_registers
@@ -519,47 +530,25 @@ typedef struct {
 
 /**
  * @ingroup  ctb_registers
- * @defgroup CTB_AAD_LENGTH_0 CTB_AAD_LENGTH_0
- * @brief    .AAD Length Register 0.
+ * @defgroup CTB_AAD_LENGTH CTB_AAD_LENGTH
+ * @brief    AAD Length Registers.
  * @{
  */
-#define MXC_F_CTB_AAD_LENGTH_0_LENGTH_POS              0 /**< AAD_LENGTH_0_LENGTH Position */
-#define MXC_F_CTB_AAD_LENGTH_0_LENGTH                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_AAD_LENGTH_0_LENGTH_POS)) /**< AAD_LENGTH_0_LENGTH Mask */
+#define MXC_F_CTB_AAD_LENGTH_LENGTH_POS                0 /**< AAD_LENGTH_LENGTH Position */
+#define MXC_F_CTB_AAD_LENGTH_LENGTH                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_AAD_LENGTH_LENGTH_POS)) /**< AAD_LENGTH_LENGTH Mask */
 
-/**@} end of group CTB_AAD_LENGTH_0_Register */
+/**@} end of group CTB_AAD_LENGTH_Register */
 
 /**
  * @ingroup  ctb_registers
- * @defgroup CTB_AAD_LENGTH_1 CTB_AAD_LENGTH_1
- * @brief    .AAD Length Register 1.
+ * @defgroup CTB_PLD_LENGTH CTB_PLD_LENGTH
+ * @brief    PLD Length Registers.
  * @{
  */
-#define MXC_F_CTB_AAD_LENGTH_1_LENGTH_POS              0 /**< AAD_LENGTH_1_LENGTH Position */
-#define MXC_F_CTB_AAD_LENGTH_1_LENGTH                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_AAD_LENGTH_1_LENGTH_POS)) /**< AAD_LENGTH_1_LENGTH Mask */
+#define MXC_F_CTB_PLD_LENGTH_LENGTH_POS                0 /**< PLD_LENGTH_LENGTH Position */
+#define MXC_F_CTB_PLD_LENGTH_LENGTH                    ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_PLD_LENGTH_LENGTH_POS)) /**< PLD_LENGTH_LENGTH Mask */
 
-/**@} end of group CTB_AAD_LENGTH_1_Register */
-
-/**
- * @ingroup  ctb_registers
- * @defgroup CTB_PLD_LENGTH_0 CTB_PLD_LENGTH_0
- * @brief    .PLD Length Register 0.
- * @{
- */
-#define MXC_F_CTB_PLD_LENGTH_0_LENGTH_POS              0 /**< PLD_LENGTH_0_LENGTH Position */
-#define MXC_F_CTB_PLD_LENGTH_0_LENGTH                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_PLD_LENGTH_0_LENGTH_POS)) /**< PLD_LENGTH_0_LENGTH Mask */
-
-/**@} end of group CTB_PLD_LENGTH_0_Register */
-
-/**
- * @ingroup  ctb_registers
- * @defgroup CTB_PLD_LENGTH_1 CTB_PLD_LENGTH_1
- * @brief    .LENGTH.
- * @{
- */
-#define MXC_F_CTB_PLD_LENGTH_1_LENGTH_POS              0 /**< PLD_LENGTH_1_LENGTH Position */
-#define MXC_F_CTB_PLD_LENGTH_1_LENGTH                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_PLD_LENGTH_1_LENGTH_POS)) /**< PLD_LENGTH_1_LENGTH Mask */
-
-/**@} end of group CTB_PLD_LENGTH_1_Register */
+/**@} end of group CTB_PLD_LENGTH_Register */
 
 /**
  * @ingroup  ctb_registers
@@ -571,6 +560,17 @@ typedef struct {
 #define MXC_F_CTB_TAGMIC_LENGTH                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_TAGMIC_LENGTH_POS)) /**< TAGMIC_LENGTH Mask */
 
 /**@} end of group CTB_TAGMIC_Register */
+
+/**
+ * @ingroup  ctb_registers
+ * @defgroup CTB_MAA_MAWS CTB_MAA_MAWS
+ * @brief    MAA Word Size Register.
+ * @{
+ */
+#define MXC_F_CTB_MAA_MAWS_SIZE_POS                    0 /**< MAA_MAWS_SIZE Position */
+#define MXC_F_CTB_MAA_MAWS_SIZE                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_MAA_MAWS_SIZE_POS)) /**< MAA_MAWS_SIZE Mask */
+
+/**@} end of group CTB_MAA_MAWS_Register */
 
 /**
  * @ingroup  ctb_registers
@@ -586,6 +586,9 @@ typedef struct {
 
 #define MXC_F_CTB_SCA_CTRL0_ABORT_POS                  2 /**< SCA_CTRL0_ABORT Position */
 #define MXC_F_CTB_SCA_CTRL0_ABORT                      ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL0_ABORT_POS)) /**< SCA_CTRL0_ABORT Mask */
+
+#define MXC_F_CTB_SCA_CTRL0_AFFJAC_POS                 3 /**< SCA_CTRL0_AFFJAC Position */
+#define MXC_F_CTB_SCA_CTRL0_AFFJAC                     ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL0_AFFJAC_POS)) /**< SCA_CTRL0_AFFJAC Mask */
 
 #define MXC_F_CTB_SCA_CTRL0_ERMEM_POS                  4 /**< SCA_CTRL0_ERMEM Position */
 #define MXC_F_CTB_SCA_CTRL0_ERMEM                      ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL0_ERMEM_POS)) /**< SCA_CTRL0_ERMEM Mask */

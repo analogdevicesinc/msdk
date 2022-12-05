@@ -88,9 +88,9 @@ extern "C" {
  * Structure type to access the OWM Registers.
  */
 typedef struct {
-    __IO uint32_t cfg;                  /**< <tt>\b 0x0000:</tt> OWM CFG Register */
-    __IO uint32_t clk_div_1us;          /**< <tt>\b 0x0004:</tt> OWM CLK_DIV_1US Register */
-    __IO uint32_t ctrl_stat;            /**< <tt>\b 0x0008:</tt> OWM CTRL_STAT Register */
+    __IO uint32_t ctrl0;                /**< <tt>\b 0x0000:</tt> OWM CTRL0 Register */
+    __IO uint32_t clkdiv;               /**< <tt>\b 0x0004:</tt> OWM CLKDIV Register */
+    __IO uint32_t ctrl1;                /**< <tt>\b 0x0008:</tt> OWM CTRL1 Register */
     __IO uint32_t data;                 /**< <tt>\b 0x000C:</tt> OWM DATA Register */
     __IO uint32_t intfl;                /**< <tt>\b 0x0010:</tt> OWM INTFL Register */
     __IO uint32_t inten;                /**< <tt>\b 0x0014:</tt> OWM INTEN Register */
@@ -103,9 +103,9 @@ typedef struct {
  * @brief      OWM Peripheral Register Offsets from the OWM Base Peripheral Address.
  * @{
  */
-#define MXC_R_OWM_CFG                      ((uint32_t)0x00000000UL) /**< Offset from OWM Base Address: <tt> 0x0000</tt> */
-#define MXC_R_OWM_CLK_DIV_1US              ((uint32_t)0x00000004UL) /**< Offset from OWM Base Address: <tt> 0x0004</tt> */
-#define MXC_R_OWM_CTRL_STAT                ((uint32_t)0x00000008UL) /**< Offset from OWM Base Address: <tt> 0x0008</tt> */
+#define MXC_R_OWM_CTRL0                    ((uint32_t)0x00000000UL) /**< Offset from OWM Base Address: <tt> 0x0000</tt> */
+#define MXC_R_OWM_CLKDIV                   ((uint32_t)0x00000004UL) /**< Offset from OWM Base Address: <tt> 0x0004</tt> */
+#define MXC_R_OWM_CTRL1                    ((uint32_t)0x00000008UL) /**< Offset from OWM Base Address: <tt> 0x0008</tt> */
 #define MXC_R_OWM_DATA                     ((uint32_t)0x0000000CUL) /**< Offset from OWM Base Address: <tt> 0x000C</tt> */
 #define MXC_R_OWM_INTFL                    ((uint32_t)0x00000010UL) /**< Offset from OWM Base Address: <tt> 0x0010</tt> */
 #define MXC_R_OWM_INTEN                    ((uint32_t)0x00000014UL) /**< Offset from OWM Base Address: <tt> 0x0014</tt> */
@@ -113,72 +113,72 @@ typedef struct {
 
 /**
  * @ingroup  owm_registers
- * @defgroup OWM_CFG OWM_CFG
- * @brief    1-Wire Master Configuration.
+ * @defgroup OWM_CTRL0 OWM_CTRL0
+ * @brief    1-Wire Master Control Register.
  * @{
  */
-#define MXC_F_OWM_CFG_LONG_LINE_MODE_POS               0 /**< CFG_LONG_LINE_MODE Position */
-#define MXC_F_OWM_CFG_LONG_LINE_MODE                   ((uint32_t)(0x1UL << MXC_F_OWM_CFG_LONG_LINE_MODE_POS)) /**< CFG_LONG_LINE_MODE Mask */
+#define MXC_F_OWM_CTRL0_LL_EN_POS                      0 /**< CTRL0_LL_EN Position */
+#define MXC_F_OWM_CTRL0_LL_EN                          ((uint32_t)(0x1UL << MXC_F_OWM_CTRL0_LL_EN_POS)) /**< CTRL0_LL_EN Mask */
 
-#define MXC_F_OWM_CFG_FORCE_PRES_DET_POS               1 /**< CFG_FORCE_PRES_DET Position */
-#define MXC_F_OWM_CFG_FORCE_PRES_DET                   ((uint32_t)(0x1UL << MXC_F_OWM_CFG_FORCE_PRES_DET_POS)) /**< CFG_FORCE_PRES_DET Mask */
+#define MXC_F_OWM_CTRL0_FPRESDET_POS                   1 /**< CTRL0_FPRESDET Position */
+#define MXC_F_OWM_CTRL0_FPRESDET                       ((uint32_t)(0x1UL << MXC_F_OWM_CTRL0_FPRESDET_POS)) /**< CTRL0_FPRESDET Mask */
 
-#define MXC_F_OWM_CFG_BIT_BANG_EN_POS                  2 /**< CFG_BIT_BANG_EN Position */
-#define MXC_F_OWM_CFG_BIT_BANG_EN                      ((uint32_t)(0x1UL << MXC_F_OWM_CFG_BIT_BANG_EN_POS)) /**< CFG_BIT_BANG_EN Mask */
+#define MXC_F_OWM_CTRL0_BB_EN_POS                      2 /**< CTRL0_BB_EN Position */
+#define MXC_F_OWM_CTRL0_BB_EN                          ((uint32_t)(0x1UL << MXC_F_OWM_CTRL0_BB_EN_POS)) /**< CTRL0_BB_EN Mask */
 
-#define MXC_F_OWM_CFG_EXT_PULLUP_MODE_POS              3 /**< CFG_EXT_PULLUP_MODE Position */
-#define MXC_F_OWM_CFG_EXT_PULLUP_MODE                  ((uint32_t)(0x1UL << MXC_F_OWM_CFG_EXT_PULLUP_MODE_POS)) /**< CFG_EXT_PULLUP_MODE Mask */
+#define MXC_F_OWM_CTRL0_EXT_PU_MODE_POS                3 /**< CTRL0_EXT_PU_MODE Position */
+#define MXC_F_OWM_CTRL0_EXT_PU_MODE                    ((uint32_t)(0x1UL << MXC_F_OWM_CTRL0_EXT_PU_MODE_POS)) /**< CTRL0_EXT_PU_MODE Mask */
 
-#define MXC_F_OWM_CFG_EXT_PULLUP_ENABLE_POS            4 /**< CFG_EXT_PULLUP_ENABLE Position */
-#define MXC_F_OWM_CFG_EXT_PULLUP_ENABLE                ((uint32_t)(0x1UL << MXC_F_OWM_CFG_EXT_PULLUP_ENABLE_POS)) /**< CFG_EXT_PULLUP_ENABLE Mask */
+#define MXC_F_OWM_CTRL0_EXT_PU_EN_POS                  4 /**< CTRL0_EXT_PU_EN Position */
+#define MXC_F_OWM_CTRL0_EXT_PU_EN                      ((uint32_t)(0x1UL << MXC_F_OWM_CTRL0_EXT_PU_EN_POS)) /**< CTRL0_EXT_PU_EN Mask */
 
-#define MXC_F_OWM_CFG_SINGLE_BIT_MODE_POS              5 /**< CFG_SINGLE_BIT_MODE Position */
-#define MXC_F_OWM_CFG_SINGLE_BIT_MODE                  ((uint32_t)(0x1UL << MXC_F_OWM_CFG_SINGLE_BIT_MODE_POS)) /**< CFG_SINGLE_BIT_MODE Mask */
+#define MXC_F_OWM_CTRL0_SB_EN_POS                      5 /**< CTRL0_SB_EN Position */
+#define MXC_F_OWM_CTRL0_SB_EN                          ((uint32_t)(0x1UL << MXC_F_OWM_CTRL0_SB_EN_POS)) /**< CTRL0_SB_EN Mask */
 
-#define MXC_F_OWM_CFG_OVERDRIVE_POS                    6 /**< CFG_OVERDRIVE Position */
-#define MXC_F_OWM_CFG_OVERDRIVE                        ((uint32_t)(0x1UL << MXC_F_OWM_CFG_OVERDRIVE_POS)) /**< CFG_OVERDRIVE Mask */
+#define MXC_F_OWM_CTRL0_OD_POS                         6 /**< CTRL0_OD Position */
+#define MXC_F_OWM_CTRL0_OD                             ((uint32_t)(0x1UL << MXC_F_OWM_CTRL0_OD_POS)) /**< CTRL0_OD Mask */
 
-#define MXC_F_OWM_CFG_INT_PULLUP_ENABLE_POS            7 /**< CFG_INT_PULLUP_ENABLE Position */
-#define MXC_F_OWM_CFG_INT_PULLUP_ENABLE                ((uint32_t)(0x1UL << MXC_F_OWM_CFG_INT_PULLUP_ENABLE_POS)) /**< CFG_INT_PULLUP_ENABLE Mask */
+#define MXC_F_OWM_CTRL0_INT_PU_EN_POS                  7 /**< CTRL0_INT_PU_EN Position */
+#define MXC_F_OWM_CTRL0_INT_PU_EN                      ((uint32_t)(0x1UL << MXC_F_OWM_CTRL0_INT_PU_EN_POS)) /**< CTRL0_INT_PU_EN Mask */
 
-/**@} end of group OWM_CFG_Register */
+/**@} end of group OWM_CTRL0_Register */
 
 /**
  * @ingroup  owm_registers
- * @defgroup OWM_CLK_DIV_1US OWM_CLK_DIV_1US
+ * @defgroup OWM_CLKDIV OWM_CLKDIV
  * @brief    1-Wire Master Clock Divisor.
  * @{
  */
-#define MXC_F_OWM_CLK_DIV_1US_DIVISOR_POS              0 /**< CLK_DIV_1US_DIVISOR Position */
-#define MXC_F_OWM_CLK_DIV_1US_DIVISOR                  ((uint32_t)(0xFFUL << MXC_F_OWM_CLK_DIV_1US_DIVISOR_POS)) /**< CLK_DIV_1US_DIVISOR Mask */
+#define MXC_F_OWM_CLKDIV_DIVISOR_POS                   0 /**< CLKDIV_DIVISOR Position */
+#define MXC_F_OWM_CLKDIV_DIVISOR                       ((uint32_t)(0xFFUL << MXC_F_OWM_CLKDIV_DIVISOR_POS)) /**< CLKDIV_DIVISOR Mask */
 
-/**@} end of group OWM_CLK_DIV_1US_Register */
+/**@} end of group OWM_CLKDIV_Register */
 
 /**
  * @ingroup  owm_registers
- * @defgroup OWM_CTRL_STAT OWM_CTRL_STAT
+ * @defgroup OWM_CTRL1 OWM_CTRL1
  * @brief    1-Wire Master Control/Status.
  * @{
  */
-#define MXC_F_OWM_CTRL_STAT_START_OW_RESET_POS         0 /**< CTRL_STAT_START_OW_RESET Position */
-#define MXC_F_OWM_CTRL_STAT_START_OW_RESET             ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_START_OW_RESET_POS)) /**< CTRL_STAT_START_OW_RESET Mask */
+#define MXC_F_OWM_CTRL1_RST_POS                        0 /**< CTRL1_RST Position */
+#define MXC_F_OWM_CTRL1_RST                            ((uint32_t)(0x1UL << MXC_F_OWM_CTRL1_RST_POS)) /**< CTRL1_RST Mask */
 
-#define MXC_F_OWM_CTRL_STAT_SRA_MODE_POS               1 /**< CTRL_STAT_SRA_MODE Position */
-#define MXC_F_OWM_CTRL_STAT_SRA_MODE                   ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_SRA_MODE_POS)) /**< CTRL_STAT_SRA_MODE Mask */
+#define MXC_F_OWM_CTRL1_SRA_EN_POS                     1 /**< CTRL1_SRA_EN Position */
+#define MXC_F_OWM_CTRL1_SRA_EN                         ((uint32_t)(0x1UL << MXC_F_OWM_CTRL1_SRA_EN_POS)) /**< CTRL1_SRA_EN Mask */
 
-#define MXC_F_OWM_CTRL_STAT_BIT_BANG_OE_POS            2 /**< CTRL_STAT_BIT_BANG_OE Position */
-#define MXC_F_OWM_CTRL_STAT_BIT_BANG_OE                ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_BIT_BANG_OE_POS)) /**< CTRL_STAT_BIT_BANG_OE Mask */
+#define MXC_F_OWM_CTRL1_BB_OUT_EN_POS                  2 /**< CTRL1_BB_OUT_EN Position */
+#define MXC_F_OWM_CTRL1_BB_OUT_EN                      ((uint32_t)(0x1UL << MXC_F_OWM_CTRL1_BB_OUT_EN_POS)) /**< CTRL1_BB_OUT_EN Mask */
 
-#define MXC_F_OWM_CTRL_STAT_OW_INPUT_POS               3 /**< CTRL_STAT_OW_INPUT Position */
-#define MXC_F_OWM_CTRL_STAT_OW_INPUT                   ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OW_INPUT_POS)) /**< CTRL_STAT_OW_INPUT Mask */
+#define MXC_F_OWM_CTRL1_INPUT_ST_POS                   3 /**< CTRL1_INPUT_ST Position */
+#define MXC_F_OWM_CTRL1_INPUT_ST                       ((uint32_t)(0x1UL << MXC_F_OWM_CTRL1_INPUT_ST_POS)) /**< CTRL1_INPUT_ST Mask */
 
-#define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS           4 /**< CTRL_STAT_OD_SPEC_MODE Position */
-#define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE               ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS)) /**< CTRL_STAT_OD_SPEC_MODE Mask */
+#define MXC_F_OWM_CTRL1_OD_SPEC_ST_POS                 4 /**< CTRL1_OD_SPEC_ST Position */
+#define MXC_F_OWM_CTRL1_OD_SPEC_ST                     ((uint32_t)(0x1UL << MXC_F_OWM_CTRL1_OD_SPEC_ST_POS)) /**< CTRL1_OD_SPEC_ST Mask */
 
-#define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        5 /**< CTRL_STAT_PRESENCE_DETECT Position */
-#define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT            ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS)) /**< CTRL_STAT_PRESENCE_DETECT Mask */
+#define MXC_F_OWM_CTRL1_PRESDET_ST_POS                 5 /**< CTRL1_PRESDET_ST Position */
+#define MXC_F_OWM_CTRL1_PRESDET_ST                     ((uint32_t)(0x1UL << MXC_F_OWM_CTRL1_PRESDET_ST_POS)) /**< CTRL1_PRESDET_ST Mask */
 
-/**@} end of group OWM_CTRL_STAT_Register */
+/**@} end of group OWM_CTRL1_Register */
 
 /**
  * @ingroup  owm_registers
@@ -186,8 +186,8 @@ typedef struct {
  * @brief    1-Wire Master Data Buffer.
  * @{
  */
-#define MXC_F_OWM_DATA_TX_RX_POS                       0 /**< DATA_TX_RX Position */
-#define MXC_F_OWM_DATA_TX_RX                           ((uint32_t)(0xFFUL << MXC_F_OWM_DATA_TX_RX_POS)) /**< DATA_TX_RX Mask */
+#define MXC_F_OWM_DATA_DATA_POS                        0 /**< DATA_DATA Position */
+#define MXC_F_OWM_DATA_DATA                            ((uint32_t)(0xFFUL << MXC_F_OWM_DATA_DATA_POS)) /**< DATA_DATA Mask */
 
 /**@} end of group OWM_DATA_Register */
 
@@ -197,14 +197,14 @@ typedef struct {
  * @brief    1-Wire Master Interrupt Flags.
  * @{
  */
-#define MXC_F_OWM_INTFL_OW_RESET_DONE_POS              0 /**< INTFL_OW_RESET_DONE Position */
-#define MXC_F_OWM_INTFL_OW_RESET_DONE                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_OW_RESET_DONE_POS)) /**< INTFL_OW_RESET_DONE Mask */
+#define MXC_F_OWM_INTFL_RST_DONE_POS                   0 /**< INTFL_RST_DONE Position */
+#define MXC_F_OWM_INTFL_RST_DONE                       ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_RST_DONE_POS)) /**< INTFL_RST_DONE Mask */
 
-#define MXC_F_OWM_INTFL_TX_DATA_EMPTY_POS              1 /**< INTFL_TX_DATA_EMPTY Position */
-#define MXC_F_OWM_INTFL_TX_DATA_EMPTY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_TX_DATA_EMPTY_POS)) /**< INTFL_TX_DATA_EMPTY Mask */
+#define MXC_F_OWM_INTFL_TX_EM_POS                      1 /**< INTFL_TX_EM Position */
+#define MXC_F_OWM_INTFL_TX_EM                          ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_TX_EM_POS)) /**< INTFL_TX_EM Mask */
 
-#define MXC_F_OWM_INTFL_RX_DATA_READY_POS              2 /**< INTFL_RX_DATA_READY Position */
-#define MXC_F_OWM_INTFL_RX_DATA_READY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_RX_DATA_READY_POS)) /**< INTFL_RX_DATA_READY Mask */
+#define MXC_F_OWM_INTFL_RX_RDY_POS                     2 /**< INTFL_RX_RDY Position */
+#define MXC_F_OWM_INTFL_RX_RDY                         ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_RX_RDY_POS)) /**< INTFL_RX_RDY Mask */
 
 #define MXC_F_OWM_INTFL_LINE_SHORT_POS                 3 /**< INTFL_LINE_SHORT Position */
 #define MXC_F_OWM_INTFL_LINE_SHORT                     ((uint32_t)(0x1UL << MXC_F_OWM_INTFL_LINE_SHORT_POS)) /**< INTFL_LINE_SHORT Mask */
@@ -220,14 +220,14 @@ typedef struct {
  * @brief    1-Wire Master Interrupt Enables.
  * @{
  */
-#define MXC_F_OWM_INTEN_OW_RESET_DONE_POS              0 /**< INTEN_OW_RESET_DONE Position */
-#define MXC_F_OWM_INTEN_OW_RESET_DONE                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_OW_RESET_DONE_POS)) /**< INTEN_OW_RESET_DONE Mask */
+#define MXC_F_OWM_INTEN_RST_DONE_POS                   0 /**< INTEN_RST_DONE Position */
+#define MXC_F_OWM_INTEN_RST_DONE                       ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_RST_DONE_POS)) /**< INTEN_RST_DONE Mask */
 
-#define MXC_F_OWM_INTEN_TX_DATA_EMPTY_POS              1 /**< INTEN_TX_DATA_EMPTY Position */
-#define MXC_F_OWM_INTEN_TX_DATA_EMPTY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_TX_DATA_EMPTY_POS)) /**< INTEN_TX_DATA_EMPTY Mask */
+#define MXC_F_OWM_INTEN_TX_EM_POS                      1 /**< INTEN_TX_EM Position */
+#define MXC_F_OWM_INTEN_TX_EM                          ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_TX_EM_POS)) /**< INTEN_TX_EM Mask */
 
-#define MXC_F_OWM_INTEN_RX_DATA_READY_POS              2 /**< INTEN_RX_DATA_READY Position */
-#define MXC_F_OWM_INTEN_RX_DATA_READY                  ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_RX_DATA_READY_POS)) /**< INTEN_RX_DATA_READY Mask */
+#define MXC_F_OWM_INTEN_RX_RDY_POS                     2 /**< INTEN_RX_RDY Position */
+#define MXC_F_OWM_INTEN_RX_RDY                         ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_RX_RDY_POS)) /**< INTEN_RX_RDY Mask */
 
 #define MXC_F_OWM_INTEN_LINE_SHORT_POS                 3 /**< INTEN_LINE_SHORT Position */
 #define MXC_F_OWM_INTEN_LINE_SHORT                     ((uint32_t)(0x1UL << MXC_F_OWM_INTEN_LINE_SHORT_POS)) /**< INTEN_LINE_SHORT Mask */

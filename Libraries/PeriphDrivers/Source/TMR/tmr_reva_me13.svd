@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>TMR0</name>
+    <description>32-bit reloadable timer that can be used for timing and event counting.</description>
+    <groupName>Timers</groupName>
+    <baseAddress>0x40010000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x1000</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <interrupt>
+      <name>TMR0</name>
+      <description>TMR0 IRQ</description>
+      <value>5</value>
+    </interrupt>
+    <registers>
+      <register>
+        <name>CNT</name>
+        <description>Count.  This register stores the current timer count.</description>
+        <addressOffset>0x00</addressOffset>
+        <resetValue>0x00000001</resetValue>
+        <fields>
+          <field>
+            <name>COUNT</name>
+            <description>Count.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CMP</name>
+        <description>Compare.  This register stores the compare value, which is used to set the maximum count value to initiate a reload of the timer to 0x0001.</description>
+        <addressOffset>0x04</addressOffset>
+        <resetValue>0x0000FFFF</resetValue>
+        <fields>
+          <field>
+            <name>COMPARE</name>
+            <description>Compare.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>PWM</name>
+        <description>PWM.  This register stores the value that is compared to the current timer count.</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>PWM</name>
+            <description>PWM</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>INTFL</name>
+        <description>Clear Interrupt. Writing a value (0 or 1) to a bit in this register clears the associated interrupt.</description>
+        <addressOffset>0x0C</addressOffset>
+        <modifiedWriteValues>oneToClear</modifiedWriteValues>
+        <fields>
+          <field>
+            <name>IRQ</name>
+            <description>Clear Interrupt.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>Timer Control Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>MODE</name>
+            <description>Timer Mode.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>oneShot</name>
+                <description>One Shot Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>continuous</name>
+                <description>Continuous Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>counter</name>
+                <description>Counter Mode.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>pwm</name>
+                <description>PWM Mode.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>capture</name>
+                <description>Capture Mode.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>compare</name>
+                <description>Compare Mode.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>gated</name>
+                <description>Gated Mode.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>captureCompare</name>
+                <description>Capture/Compare Mode.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CLKDIV</name>
+            <description>Prescaler.  Set the Timer's prescaler value. The prescaler divides the PCLK input to the timer and sets the Timer's Count Clock, F_CNT_CLK = PCLK (HZ) /prescaler. The Timer's prescaler setting is a 4-bit value with pres3:pres[2:0].</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>3</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>div1</name>
+                <description>Divide by 1.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div2</name>
+                <description>Divide by 2.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div4</name>
+                <description>Divide by 4.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div8</name>
+                <description>Divide by 8.</description>
+                <value>3</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div16</name>
+                <description>Divide by 16.</description>
+                <value>4</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div32</name>
+                <description>Divide by 32.</description>
+                <value>5</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div64</name>
+                <description>Divide by 64.</description>
+                <value>6</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>div128</name>
+                <description>Divide by 128.</description>
+                <value>7</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>POL</name>
+            <description>Timer input/output polarity bit.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>activeHi</name>
+                <description>Active High.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>activeLo</name>
+                <description>Active Low.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EN</name>
+            <description>Timer Enable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CLKDIV3</name>
+            <description>MSB of prescaler value.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PWMSYNC</name>
+            <description>Timer PWM Synchronization Mode Enable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>NOLHPOL</name>
+            <description>Timer PWM output 0A polarity bit.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>NOLLPOL</name>
+            <description>Timer PWM output 0A' polarity bit.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>PWMCKBD</name>
+            <description>Timer PWM output 0A Mode Disable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>0</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>NOLCMP</name>
+        <description>Timer Non-Overlapping Compare Register.</description>
+        <addressOffset>0x14</addressOffset>
+        <fields>
+          <field>
+            <name>LO</name>
+            <description>Non-overlapping Low Compare.  The 8-bit timer count value of non-overlapping time between falling edge of PWM output 0A and next rising edge of PWM output 0A'.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>HI</name>
+            <description>Non-overlapping High Compare.  The 8-bit timer count value of non-overlapping time between falling edge of PWM output 0A' and next rising edge of PWM output 0A.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- TMR0: 32-bit reloadable timer Port 0   -->
+</device>
