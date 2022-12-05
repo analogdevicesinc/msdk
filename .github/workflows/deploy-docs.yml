@@ -11,7 +11,7 @@ on:
 jobs:
   # Build the docs
   build:
-    - uses: ./.github/workflows/build-docs.yml
+    uses: ./.github/workflows/build-docs.yml
   
   # Publish the docs
   publish:
