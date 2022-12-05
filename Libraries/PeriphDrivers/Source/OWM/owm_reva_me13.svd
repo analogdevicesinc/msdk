@@ -16,57 +16,57 @@
       <value>67</value>
     </interrupt>
     <registers>
-      <!-- CTRL0: 1-Wire Master Configuration -->
+      <!-- CFG: 1-Wire Master Configuration -->
       <register>
-        <name>CTRL0</name>
-        <description>1-Wire Master Control Register.</description>
+        <name>CFG</name>
+        <description>1-Wire Master Configuration.</description>
         <addressOffset>0x0000</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>LL_EN</name>
-            <description>Enable Long Line Mode.</description>
+            <name>long_line_mode</name>
+            <description>Long Line Mode.</description>
             <bitRange>[0:0]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>FPRESDET</name>
+            <name>force_pres_det</name>
             <description>Force Line During Presence Detect.</description>
             <bitRange>[1:1]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>BB_EN</name>
+            <name>bit_bang_en</name>
             <description>Bit Bang Enable.</description>
             <bitRange>[2:2]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>EXT_PU_MODE</name>
+            <name>ext_pullup_mode</name>
             <description>Provide an extra output control to control an external pullup.</description>
             <bitRange>[3:3]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>EXT_PU_EN</name>
+            <name>ext_pullup_enable</name>
             <description>Enable External Pullup.</description>
             <bitRange>[4:4]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>SB_EN</name>
+            <name>single_bit_mode</name>
             <description>Enable Single Bit TX/RX Mode.</description>
             <bitRange>[5:5]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>OD</name>
+            <name>overdrive</name>
             <description>Enables overdrive speed for 1-Wire operations.</description>
             <bitRange>[6:6]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>INT_PU_EN</name>
+            <name>int_pullup_enable</name>
             <description>Enable intenral pullup.</description>
             <bitRange>[7:7]</bitRange>
             <access>read-write</access>
@@ -75,13 +75,13 @@
       </register>
       <!-- CLK_DIV_1US: 1-Wire Master Clock Divisor -->
       <register>
-        <name>CLKDIV</name>
+        <name>CLK_DIV_1US</name>
         <description>1-Wire Master Clock Divisor.</description>
         <addressOffset>0x0004</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>DIVISOR</name>
+            <name>divisor</name>
             <description>Clock Divisor for 1Mhz.</description>
             <bitRange>[7:0]</bitRange>
             <access>read-write</access>
@@ -90,43 +90,43 @@
       </register>
       <!-- CTRL_STAT: 1-Wire Master Control/Status -->
       <register>
-        <name>CTRL1</name>
+        <name>CTRL_STAT</name>
         <description>1-Wire Master Control/Status.</description>
         <addressOffset>0x0008</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>RST</name>
+            <name>start_ow_reset</name>
             <description>Start OW Reset.</description>
             <bitRange>[0:0]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>SRA_EN</name>
-            <description>Enable SRA Mode.</description>
+            <name>sra_mode</name>
+            <description>SRA Mode.</description>
             <bitRange>[1:1]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>BB_OUT_EN</name>
+            <name>bit_bang_oe</name>
             <description>Bit Bang Output Enable.</description>
             <bitRange>[2:2]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>INPUT_ST</name>
+            <name>ow_input</name>
             <description>OW Input State.</description>
             <bitRange>[3:3]</bitRange>
             <access>read-only</access>
           </field>
           <field>
-            <name>OD_SPEC_ST</name>
+            <name>od_spec_mode</name>
             <description>Overdrive Spec Mode.</description>
             <bitRange>[4:4]</bitRange>
             <access>read-only</access>
           </field>
           <field>
-            <name>PRESDET_ST</name>
+            <name>presence_detect</name>
             <description>Presence Pulse Detected.</description>
             <bitRange>[5:5]</bitRange>
             <access>read-only</access>
@@ -141,7 +141,7 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>DATA</name>
+            <name>tx_rx</name>
             <description>TX/RX Buffer.</description>
             <bitRange>[7:0]</bitRange>
             <access>read-write</access>
@@ -156,31 +156,31 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>RST_DONE</name>
+            <name>ow_reset_done</name>
             <description>OW Reset Sequence Completed.</description>
             <bitRange>[0:0]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>TX_EM</name>
+            <name>tx_data_empty</name>
             <description>TX Data Empty Interrupt Flag.</description>
             <bitRange>[1:1]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>RX_RDY</name>
+            <name>rx_data_ready</name>
             <description>RX Data Ready Interrupt Flag</description>
             <bitRange>[2:2]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>LINE_SHORT</name>
+            <name>line_short</name>
             <description>OW Line Short Detected Interrupt Flag.</description>
             <bitRange>[3:3]</bitRange>
             <access>read-write</access>
           </field>
           <field>
-            <name>LINE_LOW</name>
+            <name>line_low</name>
             <description>OW Line Low Detected Interrupt Flag.</description>
             <bitRange>[4:4]</bitRange>
             <access>read-write</access>
@@ -195,35 +195,35 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>RST_DONE</name>
+            <name>ow_reset_done</name>
             <description>OW Reset Sequence Completed.</description>
             <bitRange>[0:0]</bitRange>
             <access>read-write</access>
             <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
-            <name>TX_EM</name>
+            <name>tx_data_empty</name>
             <description>Tx Data Empty Interrupt Enable.</description>
             <bitRange>[1:1]</bitRange>
             <access>read-write</access>
             <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
-            <name>RX_RDY</name>
+            <name>rx_data_ready</name>
             <description>Rx Data Ready Interrupt Enable.</description>
             <bitRange>[2:2]</bitRange>
             <access>read-write</access>
             <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
-            <name>LINE_SHORT</name>
+            <name>line_short</name>
             <description>OW Line Short Detected Interrupt Enable.</description>
             <bitRange>[3:3]</bitRange>
             <access>read-write</access>
             <modifiedWriteValues>oneToClear</modifiedWriteValues>
           </field>
           <field>
-            <name>LINE_LOW</name>
+            <name>line_low</name>
             <description>OW Line Low Detected Interrupt Enable.</description>
             <bitRange>[4:4]</bitRange>
             <access>read-write</access>

@@ -16,7 +16,7 @@
     </interrupt>
     <registers>
       <register>
-        <name>LNICNT</name>
+        <name>SEC</name>
         <description>HTimer Long-Interval Counter. This register contains the 32 most significant bits of the counter.</description>
         <addressOffset>0x00</addressOffset>
         <resetMask>0x00000000</resetMask>
@@ -30,7 +30,7 @@
         </fields>
       </register>
       <register>
-        <name>SHICNT</name>
+        <name>SSEC</name>
         <description>HTimer Short Interval Counter. This counter ticks every t_htclk (16.48uS). HTIMER_SEC is incremented when this register rolls over from 0xFF to 0x00.</description>
         <addressOffset>0x04</addressOffset>
         <resetMask>0x00000000</resetMask>
@@ -79,7 +79,7 @@
         <resetMask>0xFFFFFF38</resetMask>
         <fields>
           <field>
-            <name>EN</name>
+            <name>HTEN</name>
             <description>HTimer Enable. This bit enables the Real Time Clock. This bit can only be written when WE=1 and BUSY =0. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -97,7 +97,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>LONG_AL_IE</name>
+            <name>ADE</name>
             <description>Long Interval Alarm Interrupt Enable. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -115,7 +115,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SHORT_AL_IE</name>
+            <name>ASE</name>
             <description>Short Interval Alarm Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -170,7 +170,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RDY_IE</name>
+            <name>RDYE</name>
             <description>HTimer Ready Interrupt Enable.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
@@ -188,7 +188,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ALD_IF</name>
+            <name>ALDF</name>
             <description>Long Interval Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
@@ -207,7 +207,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ALS_IF</name>
+            <name>ALSF</name>
             <description>Short Interval Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
@@ -226,7 +226,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>WEN</name>
+            <name>WE</name>
             <description>Write Enable. This register bit serves as a protection mechanism against unintentional writes to critical HTimer bits.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>

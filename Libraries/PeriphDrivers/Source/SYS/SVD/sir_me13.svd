@@ -14,7 +14,7 @@
       <register>
         <name>SISTAT</name>
         <description>System Initialization Status Register.</description>
-        <addressOffset>0x000</addressOffset>
+        <addressOffset>0x00</addressOffset>
         <access>read-only</access>
         <fields>
           <field>
@@ -60,9 +60,9 @@
         </fields>
       </register>
       <register>
-        <name>SIADDR</name>
-        <description>System Initializartion Address Register.</description>
-        <addressOffset>0x004</addressOffset>
+        <name>ERRADDR</name>
+        <description>Read-only field set by the SIB block if a CRC error occurs during the read of the OTP memory. Contains the failing address in OTP memory (when CRCERR equals 1).</description>
+        <addressOffset>0x04</addressOffset>
         <access>read-only</access>
         <fields>
           <field>
@@ -74,7 +74,7 @@
       </register>
       <register>
         <name>FSTAT</name>
-        <description>Function Status Register.</description>
+        <description>funcstat register.</description>
         <addressOffset>0x100</addressOffset>
         <access>read-only</access>
         <fields>
@@ -127,7 +127,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SPIXIP</name>
+            <name>XIP</name>
             <description>XiP function.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
@@ -159,8 +159,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SEMA</name>
-            <description>Semaphore function.</description>
+            <name>SMPHR</name>
+            <description>SMPHR function.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -191,8 +191,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>MSRADC</name>
-            <description>MSRADC function.</description>
+            <name>ADC9</name>
+            <description>ADC9 function.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -210,22 +210,6 @@
             <name>SC</name>
             <description>SC function.</description>
             <bitOffset>10</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>NFC</name>
-            <description>NFC function.</description>
-            <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
@@ -258,13 +242,13 @@
       </register>
       <register>
         <name>SFSTAT</name>
-        <description>Security Function Status Register.</description>
+        <description>secfuncstat register.</description>
         <addressOffset>0x104</addressOffset>
         <access>read-only</access>
         <fields>
           <field>
-            <name>SECBOOT</name>
-            <description>Secure Boot Disable.</description>
+            <name>SBD</name>
+            <description>SBD function.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -279,8 +263,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SERLOAD</name>
-            <description>Serial Load Disable Function.</description>
+            <name>SLD</name>
+            <description>SLD function.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -295,8 +279,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TRNG</name>
-            <description>TRNG function disable.</description>
+            <name>TRNGD</name>
+            <description>TRNG function.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -311,8 +295,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>AES</name>
-            <description>AES function disable.</description>
+            <name>AESD</name>
+            <description>AES function.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -327,8 +311,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SHA</name>
-            <description>SHA function disable.</description>
+            <name>SHAD</name>
+            <description>SHA function.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -343,24 +327,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>MAA</name>
-            <description>MAA function disable.</description>
-            <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>no</name>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>yes</name>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>SECMODE</name>
-            <description>Security Mode disable.</description>
+            <name>SMD</name>
+            <description>SMD function.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>

@@ -363,7 +363,7 @@
         </fields>
       </register>
       <register>
-        <name>INTFL0</name>
+        <name>INT_FL0</name>
         <description>Interrupt Status Register.</description>
         <addressOffset>0x08</addressOffset>
         <fields>
@@ -676,7 +676,7 @@
         </fields>
       </register>
       <register>
-        <name>INTEN0</name>
+        <name>INT_EN0</name>
         <description>Interrupt Enable Register.</description>
         <addressOffset>0x0C</addressOffset>
         <access>read-write</access>
@@ -996,7 +996,7 @@
         </fields>
       </register>
       <register>
-        <name>INTFL1</name>
+        <name>INT_FL1</name>
         <description>Interrupt Status Register 1.</description>
         <addressOffset>0x10</addressOffset>
         <fields>
@@ -1054,7 +1054,7 @@
         </fields>
       </register>
       <register>
-        <name>INTEN1</name>
+        <name>INT_EN1</name>
         <description>Interrupt Staus Register 1.</description>
         <addressOffset>0x14</addressOffset>
         <access>read-write</access>
@@ -1113,7 +1113,7 @@
         </fields>
       </register>
       <register>
-        <name>FIFOLEN</name>
+        <name>FIFO_LEN</name>
         <description>FIFO Configuration Register.</description>
         <addressOffset>0x18</addressOffset>
         <fields>
@@ -1132,7 +1132,7 @@
         </fields>
       </register>
       <register>
-        <name>RXCTRL0</name>
+        <name>RX_CTRL0</name>
         <description>Receive Control Register 0.</description>
         <addressOffset>0x1C</addressOffset>
         <fields>
@@ -1178,7 +1178,7 @@
         </fields>
       </register>
       <register>
-        <name>RXCTRL1</name>
+        <name>RX_CTRL1</name>
         <description>Receive Control Register 1.</description>
         <addressOffset>0x20</addressOffset>
         <fields>
@@ -1196,7 +1196,7 @@
         </fields>
       </register>
       <register>
-        <name>TXCTRL0</name>
+        <name>TX_CTRL0</name>
         <description>Transmit Control Register 0.</description>
         <addressOffset>0x24</addressOffset>
         <fields>
@@ -1315,7 +1315,7 @@
         </fields>
       </register>
       <register>
-        <name>TXCTRL1</name>
+        <name>TX_CTRL1</name>
         <description>Transmit Control Register 1.</description>
         <addressOffset>0x28</addressOffset>
         <fields>
@@ -1346,7 +1346,7 @@
         </fields>
       </register>
       <register>
-        <name>MSTCTRL</name>
+        <name>MASTER_CTRL</name>
         <description>Master Control Register.</description>
         <addressOffset>0x30</addressOffset>
         <fields>
@@ -1385,7 +1385,7 @@
         </fields>
       </register>
       <register>
-        <name>CLKLO</name>
+        <name>CLK_LO</name>
         <description>Clock Low Register.</description>
         <addressOffset>0x34</addressOffset>
         <fields>
@@ -1397,7 +1397,7 @@
         </fields>
       </register>
       <register>
-        <name>CLKHI</name>
+        <name>CLK_HI</name>
         <description>Clock high Register.</description>
         <addressOffset>0x38</addressOffset>
         <fields>
