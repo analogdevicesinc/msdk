@@ -376,7 +376,7 @@
   </peripheral>
 <!--ADC 10-bit Analog to Digital Converter-->
   <peripheral>
-   <name>AESKEYS</name>
+   <name>AES</name>
    <description>AES Keys.</description>
    <baseAddress>0x40005000</baseAddress>
    <addressBlock>
@@ -386,24 +386,24 @@
    </addressBlock>
    <registers>
     <register>
-     <name>SRAM_KEY</name>
+     <name>AES_SRAM_KEY</name>
      <description>AES SRAM KEY</description>
-     <addressOffset>0x00</addressOffset>
+     <addressOffset>0x000</addressOffset>
      <size>32</size>
     </register>
     <register>
-     <name>CODE_KEY</name>
+     <name>AES_CODE_KEY</name>
      <description>AES CODE Key </description>
-     <addressOffset>0x20</addressOffset>
+     <addressOffset>0x080</addressOffset>
     </register>
     <register>
-     <name>DATA_KEY</name>
+     <name>AES_DATA_KEY</name>
      <description>AES DATA KEY</description>
-     <addressOffset>0x40</addressOffset>
+     <addressOffset>0x100</addressOffset>
     </register>
    </registers>
   </peripheral>
-<!--AESKEYS AES Keys.-->
+<!--AES AES Keys.-->
   <peripheral>
    <name>CAMERAIF</name>
    <description>Parallel Camera Interface.</description>
@@ -10648,7 +10648,7 @@
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
-       <name>RAM0</name>
+       <name>SYSRAM0ECCEN</name>
        <description>ECC System RAM Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10666,7 +10666,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RAM1</name>
+       <name>SYSRAM1ECCEN</name>
        <description>ECC System RAM Enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10684,7 +10684,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RAM2</name>
+       <name>SYSRAM2ECCEN</name>
        <description>ECC System RAM Enable.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10702,7 +10702,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RAM3</name>
+       <name>SYSRAM3ECCEN</name>
        <description>ECC System RAM Enable.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10720,7 +10720,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RAM4</name>
+       <name>SYSRAM4ECCEN</name>
        <description>ECC System RAM Enable.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10738,7 +10738,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RAM5</name>
+       <name>SYSRAM5ECCEN</name>
        <description>ECC System RAM Enable.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10756,7 +10756,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ICC</name>
+       <name>IC0ECCEN</name>
        <description>Icache0 ECC Enable.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10774,7 +10774,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ICCXIP</name>
+       <name>ICXIPECCEN</name>
        <description>IcacheXIP ECC Enable.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
