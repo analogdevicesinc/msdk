@@ -22,7 +22,7 @@
         <addressOffset>0x00</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_EN0</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -73,7 +73,7 @@
         <addressOffset>0x0C</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_OUT_EN</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -124,7 +124,7 @@
         <addressOffset>0x18</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_OUT</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -150,7 +150,7 @@
         <access>write-only</access>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_OUT_SET</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -176,7 +176,7 @@
         <access>write-only</access>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_OUT_CLR</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -190,7 +190,7 @@
         <access>read-only</access>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_IN</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -203,7 +203,7 @@
         <addressOffset>0x28</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_INT_MODE</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -228,7 +228,7 @@
         <addressOffset>0x2C</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_INT_POL</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -258,7 +258,7 @@
         <addressOffset>0x34</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_INT_EN</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -283,7 +283,7 @@
         <addressOffset>0x38</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_INT_EN_SET</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -308,7 +308,7 @@
         <addressOffset>0x3C</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_INT_EN_CLR</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -334,7 +334,7 @@
         <access>read-only</access>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_INT_STAT</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -372,7 +372,7 @@
         <addressOffset>0x4C</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_WAKE_EN</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -423,7 +423,7 @@
         <addressOffset>0x5C</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_INT_DUAL_EDGE</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -448,7 +448,7 @@
         <addressOffset>0x60</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_PAD_CFG1</name>
             <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -478,7 +478,7 @@
         <addressOffset>0x64</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_PAD_CFG2</name>
             <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -508,7 +508,7 @@
         <addressOffset>0x68</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_EN1</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -559,7 +559,7 @@
         <addressOffset>0x74</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_EN2</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -610,7 +610,7 @@
         <addressOffset>0xA8</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_HYSEN</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -623,7 +623,7 @@
         <addressOffset>0xAC</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_SRSEL</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -644,11 +644,11 @@
       </register>
       <register>
         <name>DS0</name>
-        <description>GPIO Drive Strength 0 Register. Each bit in this register selects the drive strength for the associated GPIO pin in this port. Refer to the Datasheet for sink/source current of GPIO pins in each mode.</description>
+        <description>GPIO Drive Strength  Register. Each bit in this register selects the drive strength for the associated GPIO pin in this port. Refer to the Datasheet for sink/source current of GPIO pins in each mode.</description>
         <addressOffset>0xB0</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_DS</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -673,7 +673,7 @@
         <addressOffset>0xB4</addressOffset>
         <fields>
           <field>
-            <name>ALL</name>
+            <name>GPIO_DS1</name>
             <description>Mask of all of the pins on the port.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -681,7 +681,7 @@
         </fields>
       </register>
       <register>
-        <name>PSSEL</name>
+        <name>PS</name>
         <description>GPIO Pull Select Mode.</description>
         <addressOffset>0xB8</addressOffset>
         <fields>

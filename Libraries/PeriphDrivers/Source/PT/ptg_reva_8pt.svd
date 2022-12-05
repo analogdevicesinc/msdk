@@ -9,7 +9,7 @@
     <access>read-write</access>
     <addressBlock>
       <offset>0</offset>
-      <size>0x0020</size>
+      <size>0x0018</size>
       <usage>registers</usage>
     </addressBlock>
     <interrupt>
@@ -390,134 +390,6 @@
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
             <access>write-only</access>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>READY_INTFL</name>
-        <description>Pulse Train Ready Interrupt Flags</description>
-        <addressOffset>0x0018</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>pt0</name>
-            <description>Pulse Train 0 Stopped Interrupt Flag</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt1</name>
-            <description>Pulse Train 1 Stopped Interrupt Flag</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt2</name>
-            <description>Pulse Train 2 Stopped Interrupt Flag</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt3</name>
-            <description>Pulse Train 3 Stopped Interrupt Flag</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt4</name>
-            <description>Pulse Train 4 Stopped Interrupt Flag</description>
-            <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt5</name>
-            <description>Pulse Train 5 Stopped Interrupt Flag</description>
-            <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt6</name>
-            <description>Pulse Train 6 Stopped Interrupt Flag</description>
-            <bitOffset>6</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt7</name>
-            <description>Pulse Train 7 Stopped Interrupt Flag</description>
-            <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>READY_INTEN</name>
-        <description>Pulse Train Ready Interrupt Enable/Disable</description>
-        <addressOffset>0x001C</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>pt0</name>
-            <description>Pulse Train 0 Stopped Interrupt Enable/Disable</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt1</name>
-            <description>Pulse Train 1 Stopped Interrupt Enable/Disable</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt2</name>
-            <description>Pulse Train 2 Stopped Interrupt Enable/Disable</description>
-            <bitOffset>2</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt3</name>
-            <description>Pulse Train 3 Stopped Interrupt Enable/Disable</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt4</name>
-            <description>Pulse Train 4 Stopped Interrupt Enable/Disable</description>
-            <bitOffset>4</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt5</name>
-            <description>Pulse Train 5 Stopped Interrupt Enable/Disable</description>
-            <bitOffset>5</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt6</name>
-            <description>Pulse Train 6 Stopped Interrupt Enable/Disable</description>
-            <bitOffset>6</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
-          </field>
-          <field>
-            <name>pt7</name>
-            <description>Pulse Train 7 Stopped Interrupt Enable/Disable</description>
-            <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-write</access>
           </field>
         </fields>
       </register>

@@ -11,7 +11,7 @@
     </addressBlock>
     <registers>
       <register>
-        <name>CLKCTRL</name>
+        <name>CLK</name>
         <description>LCD Clock Control Register</description>
         <addressOffset>0x000</addressOffset>
         <fields>
@@ -194,7 +194,7 @@
         <addressOffset>0x010</addressOffset>
         <fields>
           <field>
-            <name>EN</name>
+            <name>LCDEN</name>
             <description>LCD Enable</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -397,7 +397,7 @@
         <addressOffset>0x18</addressOffset>
       </register>
       <register>
-        <name>INTEN</name>
+        <name>INT_EN</name>
         <description>LCD Interrupt Enable Register.</description>
         <addressOffset>0x020</addressOffset>
         <fields>
@@ -428,8 +428,8 @@
         </fields>
       </register>
       <register>
-        <name>INTFL</name>
-        <description>LCD Interrupt Status Register.</description>
+        <name>STAT</name>
+        <description>LCD Status Register.</description>
         <addressOffset>0x024</addressOffset>
         <modifiedWriteValues>oneToClear</modifiedWriteValues>
         <fields>
