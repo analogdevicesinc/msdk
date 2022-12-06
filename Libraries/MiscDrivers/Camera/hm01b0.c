@@ -224,11 +224,7 @@ static int dump_registers(void)
     uint8_t buf[64] = {0};
     uint8_t* ptr = buf;
 
-<<<<<<< HEAD
     for (i = 0;; i++) {
-=======
-    for (i = 0; ; i++) {
->>>>>>> parent of 6f9145bfb... clang-format bot reformatting.
         if ((i != 0) && !(i % 16)) {
             *ptr = '\0';
             printf("%04X:%s\n", i - 16, buf);
