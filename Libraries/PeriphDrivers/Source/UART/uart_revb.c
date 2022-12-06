@@ -467,7 +467,7 @@ int MXC_UART_RevB_Write(mxc_uart_revb_regs_t *uart, const uint8_t *byte, int *le
     }
 
     for (; written < *len; written++) {
-        retVal = MXC_UART_WriteCharacter((mxc_uart_regs_t *)uart, byte[written]);
+        retVal = MXC_UART_WriteCharacterRaw((mxc_uart_regs_t *)uart, byte[written]);
 
         if (retVal != E_NO_ERROR) {
             *len = written;
