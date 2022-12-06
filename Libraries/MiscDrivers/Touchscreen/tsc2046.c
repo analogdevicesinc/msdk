@@ -35,6 +35,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "mxc_device.h"
 #include "tsc2046.h"
