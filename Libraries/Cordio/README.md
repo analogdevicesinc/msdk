@@ -54,7 +54,7 @@ Consult the [Bluetooth Qualification Process](https://www.bluetooth.com/develop-
 * **LE Secure Connections:** LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation.
 * **Data Length Extension:** Extend the maximum data length supported in a connection.
 * **LE Power Control:** Dynamic TX power control.
-* **\*OTA firmware update:** Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples and the ADI Attach smart phone app for details.
+* **\*OTA firmware update:** Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples, the ADI Attach smart phone app, and [BLE-PyDex](https://github.com/EdwinFairchild/BLE-PyDex) for details.
 
 ## Features in development
 * **Direction finding:** Detect the direction of the incoming signal. Also known as Angle of Arrival (AoA) and Angle of Departure (AoD). Hardware support on MAX32655 and MAX32690, unavailable on MAX32665, software in development. 
