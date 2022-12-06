@@ -202,18 +202,44 @@ This type of library should also set up the appropriate [configuration variables
 
 MSDK code should be documented using Doxygen syntax on all public functions, data structures, and variables.  See the [**DoxyGen Manual**](https://www.doxygen.nl/manual/docblocks.html) for more details on syntax for C-like languages.
 
-DoxyGen is automatically run across the MSDK code as part of the User Guide's build process.  A Peripheral API reference is generated for each target microcontroller using the Doxygen files located in `Libraries/PeriphDrivers/Documentation`, and the output is packaged as a sub-component of the User Guide.  For code maintainers no action is needed other than maintaining up to date Doxygen documentation for the MSDK.
+DoxyGen is automatically run across the MSDK code as part of the User Guide's build process.  A Peripheral API reference is generated for each target microcontroller using the Doxygen files located in `Libraries/PeriphDrivers/Documentation`, and the output is packaged as a sub-component of the User Guide when it's built.  For code maintainers no action is needed other than maintaining up to date Doxygen documentation for all source code.
 
 ### User Guide
 
-An MSDK User Guide is maintained in the [USERUIDE.md](USERGUIDE.md) file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.  
+An MSDK User Guide is maintained in the [USERUIDE.md](USERGUIDE.md) file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.
+
+When writing markdown links, relative paths should always be used.  Additionally, links to local files on the user's filesystem **cannot** be used, since the online copy of the docs will throw a 404 on them.  See [Writing Your Docs](https://www.mkdocs.org/user-guide/writing-your-docs/) for more details.
+
+Static resources such as images should be placed in the `res` folder.
 
 ### Building the Documentation
 
-The `Documentation/build.py` script can be used to fully build the documentation locally.  This script:
+#### Local Builds
+
+The `Documentation/build.py` script can be used to build the MSDK User Guide and supporting documentation locally.  This script:
 
 - Builds all the Peripheral API references using Doxygen and copies them into `Documentation`
-- Copies the User Guide markdown files into the `Documentation`
+- Copies any markdown files in the root of the repo into the `Documentation` folder.
 - Copies the `res` (resources) folder into `Documentation`
-- Builds the MSDK User Guide using [Mkdocs](https://www.mkdocs.org/)
+- Builds the MSDK User Guide using [Mkdocs](https://www.mkdocs.org/), which packages everything in `Documentation` into a static HTML/CSS/JavaScript site.
 
+To **build** the docs:
+
+1. Install Python 3
+2. `pip install -r Documentation/requirements.txt`
+3. `python Documentation/build.py`
+4. The site will be built in the `docs` folder of the repo.
+
+To **preview** the generated site:
+
+`mkdocs serve`
+
+This will open a localhost test server with live re-loading.
+
+To **configure** the generated site, use `mkdocs.yml`.  See [Mkdocs Configuration](https://www.mkdocs.org/user-guide/configuration/) for more details.
+
+#### Auto Builds and Deployment
+
+The **"Build & Deploy Docs"** Github Action will perform all the local steps above.  Additionally, it will deploy the static site to the `gh-pages` branch of the repository for use with [Github Pages](https://pages.github.com/).  When the `gh-pages` branch is updated, Pages will refresh the online copy of the documentation within ~5-10 mins.
+
+This auto-deploy procedure is triggered on every push to the `release` branch.

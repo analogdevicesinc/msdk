@@ -2,6 +2,7 @@ site_name: Analog Devices MSDK Documentation
 site_author: Analog Devices
 copyright: 'Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.'
 repo_url: https://github.com/Analog-Devices-MSDK/msdk
+edit_uri: null
 docs_dir: 'Documentation'
 site_dir: 'docs'
 nav:
