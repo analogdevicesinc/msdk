@@ -69,10 +69,10 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /* Touch screen controller interrupt signal */
 mxc_gpio_cfg_t ts_int_pin = { MXC_GPIO0, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                            MXC_GPIO_VSSEL_VDDIOH };
+                              MXC_GPIO_VSSEL_VDDIOH };
 /* Touch screen controller busy signal */
 const mxc_gpio_cfg_t ts_busy_pin = { MXC_GPIO0, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                            MXC_GPIO_VSSEL_VDDIOH };
+                                     MXC_GPIO_VSSEL_VDDIOH };
 
 /******************************************************************************/
 static int ext_flash_board_init(void)
@@ -121,14 +121,17 @@ void mxc_assert(const char *expr, const char *file, int line)
     while (1) {}
 }
 
-void TS_SPI_Init(void) {
+void TS_SPI_Init(void)
+{
     MXC_SPI_Init(TS_SPI, true, false, 2, 0, TS_SPI_FREQ);
-    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5);
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH,
+                      MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5);
     MXC_SPI_SetDataSize(TS_SPI, 8);
     MXC_SPI_SetWidth(TS_SPI, SPI_WIDTH_STANDARD);
 }
 
-void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout) {
+void TS_SPI_Transmit(uint8_t datain, uint16_t *dataout)
+{
     int i;
     uint8_t rx[2] = { 0, 0 };
     mxc_spi_req_t request;
