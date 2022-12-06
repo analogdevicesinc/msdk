@@ -195,3 +195,25 @@ An example of this is [MiscDrivers](Libraries/MiscDrivers/), which is a simple s
 More advanced libraries (including those with a large number of source files) should include a rule to build as a static library file with a [recursive Make call](https://www.gnu.org/software/make/manual/make.html#Recursion).  
 
 This type of library should also set up the appropriate [configuration variables](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration) to include that static library to the build.
+
+## Contributing Documentation
+
+### Code Maintainers
+
+MSDK code should be documented using Doxygen syntax on all public functions, data structures, and variables.  See the [**DoxyGen Manual**](https://www.doxygen.nl/manual/docblocks.html) for more details on syntax for C-like languages.
+
+DoxyGen is automatically run across the MSDK code as part of the User Guide's build process.  A Peripheral API reference is generated for each target microcontroller using the Doxygen files located in `Libraries/PeriphDrivers/Documentation`, and the output is packaged as a sub-component of the User Guide.  For code maintainers no action is needed other than maintaining up to date Doxygen documentation for the MSDK.
+
+### User Guide
+
+An MSDK User Guide is maintained in the [USERUIDE.md](USERGUIDE.md) file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.  
+
+### Building the Documentation
+
+The `Documentation/build.py` script can be used to fully build the documentation locally.  This script:
+
+- Builds all the Peripheral API references using Doxygen and copies them into `Documentation`
+- Copies the User Guide markdown files into the `Documentation`
+- Copies the `res` (resources) folder into `Documentation`
+- Builds the MSDK User Guide using [Mkdocs](https://www.mkdocs.org/)
+
