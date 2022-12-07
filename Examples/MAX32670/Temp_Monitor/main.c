@@ -51,58 +51,59 @@
 /***** Functions *****/
 void RTC_IRQHandler(void)
 {
-	int flags = MXC_RTC_GetFlags();
-	MXC_RTC_ClearFlags(flags);
+    int flags = MXC_RTC_GetFlags();
+    MXC_RTC_ClearFlags(flags);
 
-	// RTC TOD alarm --> check temperature
-	if(flags & MXC_RTC_INT_FL_LONG) {
-		temp_monitor_check_temp();
-	}
+    // RTC TOD alarm --> check temperature
+    if (flags & MXC_RTC_INT_FL_LONG) {
+        temp_monitor_check_temp();
+    }
 
-	// RTC SSEC alarm --> toggle warning light
-	if(flags & MXC_RTC_INT_FL_SHORT) {
-		temp_monitor_flash_warning_light();
-	}
+    // RTC SSEC alarm --> toggle warning light
+    if (flags & MXC_RTC_INT_FL_SHORT) {
+        temp_monitor_flash_warning_light();
+    }
 }
 
-void print_temperatures(void* pb)
+void print_temperatures(void *pb)
 {
-	temp_monitor_print_temps();
+    temp_monitor_print_temps();
 }
 
 int main(void)
 {
-	int err;
+    int err;
 
-	MXC_Delay(MXC_DELAY_SEC(2)); //Prevent bricking device
+    MXC_Delay(MXC_DELAY_SEC(2)); //Prevent bricking device
 
-	printf("\n********************** Temperature Monitor Demo **********************\n");
+    printf("\n********************** Temperature Monitor Demo **********************\n");
 
-	printf("This simple example demonstrates the use of the MAX32670 as a temperature\n");
-	printf("monitor.\n\n");
+    printf("This simple example demonstrates the use of the MAX32670 as a temperature\n");
+    printf("monitor.\n\n");
 
-	printf("The device periodically measures the air temperature using an external\n");
-	printf("MAX31889 temperature sensor.\n\n");
+    printf("The device periodically measures the air temperature using an external\n");
+    printf("MAX31889 temperature sensor.\n\n");
 
-	printf("If a temperature reading exceeds the upper or lower limits, a warning message\n");
-	printf("will be printed in the terminal and the red warning LED will begin to blink.\n");
-	printf("Otherwise if the temperature is within the defined limits, the green LED\n");
-	printf("will continue to toggle each time a new measurement is taken.\n\n");
+    printf("If a temperature reading exceeds the upper or lower limits, a warning message\n");
+    printf("will be printed in the terminal and the red warning LED will begin to blink.\n");
+    printf("Otherwise if the temperature is within the defined limits, the green LED\n");
+    printf("will continue to toggle each time a new measurement is taken.\n\n");
 
-	printf("Press SW3 to print the last 12 temperature readings taken.\n\n");
+    printf("Press SW3 to print the last 12 temperature readings taken.\n\n");
 
-	// Initialize Temperature Monitor
-    if((err = temp_monitor_init()) != E_NO_ERROR) {
+    // Initialize Temperature Monitor
+    if ((err = temp_monitor_init()) != E_NO_ERROR) {
         return err;
     }
 
     // Configure pushbutton as a wakeup source and set interrupt callback
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t*) &pb_pin[0]);
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
     PB_RegisterCallback(0, print_temperatures);
     PB_IntEnable(0);
 
     while (1) {
-    	while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))); //Make sure print statements have finished before sleeping
+        while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+        //Make sure print statements have finished before sleeping
         MXC_LP_EnterSleepMode(); //Wait for next RTC interrupt
     }
 
