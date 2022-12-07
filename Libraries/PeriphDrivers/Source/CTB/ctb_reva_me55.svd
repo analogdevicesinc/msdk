@@ -1018,10 +1018,22 @@
             <bitWidth>2</bitWidth>
           </field>
           <field>
+            <name>NRNG</name>
+            <description>Enable NIST RNG.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>CARRYPOS</name>
             <description>To set Carry location.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>10</bitWidth>
+          </field>
+          <field>
+            <name>CM_EN</name>
+            <description>Enable Countermeasure.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
