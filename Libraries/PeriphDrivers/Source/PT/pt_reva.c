@@ -44,6 +44,7 @@ void MXC_PT_RevA_Init(mxc_ptg_reva_regs_t *ptg, mxc_clk_scale_t clk_scale)
 
     //clear all interrupts
     ptg->stop_intfl = ptg->stop_intfl;
+    ptg->ready_intfl = ptg->ready_intfl;
 }
 
 int MXC_PT_RevA_Shutdown(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
