@@ -188,22 +188,22 @@ void MXC_PT_RevA_ClearStopFlags(mxc_ptg_reva_regs_t *ptg, uint32_t flags)
 
 void MXC_PT_RevA_EnableReadyInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
 {
-    ptg->stop_inten |= pts;
+    ptg->ready_inten |= pts;
 }
 
 void MXC_PT_RevA_DisableReadyInt(mxc_ptg_reva_regs_t *ptg, uint32_t pts)
 {
-    ptg->stop_inten &= ~pts;
+    ptg->ready_inten &= ~pts;
 }
 
 uint32_t MXC_PT_RevA_GetReadyFlags(mxc_ptg_reva_regs_t *ptg)
 {
-    return ptg->stop_intfl;
+    return ptg->ready_intfl;
 }
 
 void MXC_PT_RevA_ClearReadyFlags(mxc_ptg_reva_regs_t *ptg, uint32_t flags)
 {
-    ptg->stop_intfl = flags;
+    ptg->ready_intfl = flags;
 }
 
 void MXC_PT_RevA_EnableRestart(unsigned start, unsigned stop, uint8_t restartIndex)
