@@ -301,7 +301,8 @@ int MXC_UART_ReadCharacterRaw(mxc_uart_regs_t *uart);
 
 /**
  * @brief   Writes a character on the UART. If the character cannot be written because the
- *          transmit FIFO is currently full, this function returns an error.
+ *          transmit FIFO is currently full, this function returns an error. This is a
+ *          non-blocking function.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   character         The character to write
@@ -320,7 +321,7 @@ int MXC_UART_WriteCharacterRaw(mxc_uart_regs_t *uart, uint8_t character);
 int MXC_UART_ReadCharacter(mxc_uart_regs_t *uart);
 
 /**
- * @brief   Writes a character on the UART
+ * @brief   Writes a character on the UART. This is a blocking function.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   character    The character to write 

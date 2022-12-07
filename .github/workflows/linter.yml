@@ -15,16 +15,15 @@ name: Lint Code Base
 #############################
 on:
   push:
-    branches-ignore: [master, main]
-    # Remove the line above to run when pushing to master
+    branches: [master, main]
   pull_request:
     branches: [master, main]
 
   workflow_dispatch:
     
-# Prevent duplicate runs
-concurrency: 
-  group: ${{ github.ref }}
+# This allows a subsequently queued workflow run to interrupt previous runs
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
   cancel-in-progress: true
 
 ###############

@@ -310,7 +310,7 @@ int MXC_UART_ReadCharacter(mxc_uart_regs_t *uart)
 
 int MXC_UART_WriteCharacter(mxc_uart_regs_t *uart, uint8_t character)
 {
-    return MXC_UART_RevB_WriteCharacter((mxc_uart_revb_regs_t *)uart, character);
+    return MXC_UART_Common_WriteCharacter((mxc_uart_revb_regs_t *)uart, character);
 }
 
 int MXC_UART_Read(mxc_uart_regs_t *uart, uint8_t *buffer, int *len)
