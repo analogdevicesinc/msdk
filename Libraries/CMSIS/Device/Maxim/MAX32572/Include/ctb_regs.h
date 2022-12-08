@@ -633,7 +633,7 @@ typedef struct {
 #define MXC_F_CTB_SCA_CTRL1_CARRYPOS                   ((uint32_t)(0x3FFUL << MXC_F_CTB_SCA_CTRL1_CARRYPOS_POS)) /**< SCA_CTRL1_CARRYPOS Mask */
 
 #define MXC_F_CTB_SCA_CTRL1_CM_EN_POS                  20 /**< SCA_CTRL1_CM_EN Position */
-#define MXC_F_CTB_SCA_CTRL1_CM_EN                      ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL1_CM_EN_POS)) /**< SCA_CTRL1_CM_EN Mask */
+#define MXC_F_CTB_SCA_CTRL1_CM_EN                      ((uint32_t)(0xFFFUL << MXC_F_CTB_SCA_CTRL1_CM_EN_POS)) /**< SCA_CTRL1_CM_EN Mask */
 
 /**@} end of group CTB_SCA_CTRL1_Register */
 

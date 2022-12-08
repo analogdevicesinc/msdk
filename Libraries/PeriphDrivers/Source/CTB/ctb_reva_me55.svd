@@ -1033,7 +1033,7 @@
             <name>CM_EN</name>
             <description>Enable Countermeasure.</description>
             <bitOffset>20</bitOffset>
-            <bitWidth>1</bitWidth>
+            <bitWidth>12</bitWidth>
           </field>
         </fields>
       </register>
