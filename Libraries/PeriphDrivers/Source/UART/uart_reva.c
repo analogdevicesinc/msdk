@@ -520,7 +520,7 @@ int MXC_UART_RevA_Write(mxc_uart_reva_regs_t *uart, uint8_t *byte, int *len)
     int retVal;
 
     for (; written < *len; written++) {
-        retVal = MXC_UART_WriteCharacter((mxc_uart_regs_t *)uart, byte[written]);
+        retVal = MXC_UART_WriteCharacterRaw((mxc_uart_regs_t *)uart, byte[written]);
 
         if (retVal != E_NO_ERROR) {
             *len = written;

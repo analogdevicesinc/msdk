@@ -279,7 +279,7 @@ int MXC_UART_WriteCharacter(mxc_uart_regs_t *uart, uint8_t character);
 
 /**
  * @brief   Reads the next available character. If no character is available, this function
- *          will return an error.
+ *          will return an error. This is a non-blocking function.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  *
