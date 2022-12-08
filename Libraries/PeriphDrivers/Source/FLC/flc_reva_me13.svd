@@ -3,7 +3,6 @@
   <peripheral>
     <name>FLC</name>
     <description>Flash Memory Control.</description>
-    <prependToName>FLSH_</prependToName>
     <baseAddress>0x40029000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
@@ -36,7 +35,7 @@
         <resetValue>0x00000064</resetValue>
         <fields>
           <field>
-            <name>CLKDIV</name>
+            <name>DIV</name>
             <description>Flash Clock Divide. The clock is divided by this value to generate a 1MHz clock for flash controller.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
@@ -44,7 +43,7 @@
         </fields>
       </register>
       <register>
-        <name>CN</name>
+        <name>CTRL</name>
         <description>Flash Control Register.</description>
         <addressOffset>0x08</addressOffset>
         <fields>
@@ -146,7 +145,7 @@
         <addressOffset>0x24</addressOffset>
         <fields>
           <field>
-            <name>DONE</name>
+            <name>DONE_IF</name>
             <description>Flash Done Interrupt.  This bit is set to 1 upon Flash write or erase completion.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -164,7 +163,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>AF</name>
+            <name>AF_IF</name>
             <description>Flash Access Fail.  This bit is set when an attempt is made to write the flash while the flash is busy or the flash is locked. This bit can only be set to 1 by hardware.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -182,7 +181,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>DONEIE</name>
+            <name>DONE_IE</name>
             <description>Flash Done Interrupt Enable.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
@@ -200,25 +199,26 @@
             </enumeratedValues>
           </field>
           <field derivedFrom="DONEIE">
-            <name>AFIE</name>
+            <name>AF_IE</name>
+            <description>Flash Access Fail Interrupt Enable.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
       <register>
-        <name>ECC_DATA</name>
+        <name>ECCDATA</name>
         <description>ECC Data Register.</description>
         <addressOffset>0x28</addressOffset>
         <fields>
           <field>
-            <name>ECC_EVEN</name>
+            <name>EVEN</name>
             <description>Error Correction Code Odd Data.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>9</bitWidth>
           </field>
           <field>
-            <name>ECC_ODD</name>
+            <name>ODD</name>
             <description>Error Correction Code Even Data.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>9</bitWidth>
