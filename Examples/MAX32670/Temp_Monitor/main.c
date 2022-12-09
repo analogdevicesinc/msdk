@@ -33,8 +33,11 @@
 
 /**
  * @file    main.c
- * @brief   Low-Power Temp Sensor example.
- * @details This is a demo example for reading and 
+ * @brief   Low-Power Temp Monitor example.
+ * @details In this example the MCU is used monitor the air temperature. Temperature 
+ *          readings are timestamped and placed in flash. If a reading exceeds the 
+ *          user defined temperature limits a warning message will be printed to the 
+ *          terminal and the red warning light will begin to flash.  
  */
 
 /***** Included Files *****/
@@ -65,7 +68,7 @@ void RTC_IRQHandler(void)
     }
 }
 
-void print_temperatures(void *pb)
+void PB_Handler(void *pb)
 {
     temp_monitor_print_temps();
 }
@@ -74,7 +77,7 @@ int main(void)
 {
     int err;
 
-    MXC_Delay(MXC_DELAY_SEC(2)); //Prevent bricking device
+    MXC_Delay(MXC_DELAY_SEC(2)); //Delay to give debugger a connection window
 
     printf("\n********************** Temperature Monitor Demo **********************\n");
 
@@ -98,7 +101,7 @@ int main(void)
 
     // Configure pushbutton as a wakeup source and set interrupt callback
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
-    PB_RegisterCallback(0, print_temperatures);
+    PB_RegisterCallback(0, PB_Handler);
     PB_IntEnable(0);
 
     while (1) {

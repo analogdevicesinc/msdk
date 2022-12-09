@@ -1,6 +1,6 @@
 ## Description
 
-This simple example demonstrates the use of the MAX32670 as a temperature monitor.
+This simple application demonstrates the use of the MAX32670 as a temperature monitor. **NOTE: A MAX31889EVSYS is required to run the example.**
 
 The device uses the RTC to trigger periodic measurements of the air temperature. Each time the RTC time-of-day alarm expires, the latest temperature reading is taken from an external MAX31889 temperature sensor which is connected to the device via I2C. The measurment is then time-stamped with the current time in the RTC and placed in a buffer. Once four successful measurements have been taken, they are stored in flash.
 
@@ -8,7 +8,7 @@ If a temperature reading exceeds the upper or lower limits, a warning message wi
 
 Additionally, pressing push button SW3 will print the last 12 temperature readings in the terminal.
 
-The temperature limits, flash storage page, and RTC time-of-day alarm period are defined in temp_monitor.c with the HI/LO_TEMP_THRESHOLD, TR_STORAGE_PAGE, and TEMP_CHECK_PERIOD defines respectively.
+The temperature limits, flash storage page, and RTC time-of-day alarm period are defined in [temp_monitor.c](./temp_monitor.c) with the HI/LO_TEMP_THRESHOLD, TR_STORAGE_PAGE, and TEMP_CHECK_PERIOD defines respectively.
 
 ## Required Connections
 

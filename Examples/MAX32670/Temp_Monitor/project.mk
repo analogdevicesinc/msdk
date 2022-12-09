@@ -7,7 +7,7 @@
 
 # **********************************************************
 
-# Add your config here!
+# Include MAX31889 drivers from MiscDrivers library.
 SRCS+=max31889_driver.c
 
 VPATH+=$(LIBS_DIR)/MiscDrivers/TempSensor
