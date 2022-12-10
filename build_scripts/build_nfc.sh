@@ -40,7 +40,8 @@ case "$operation" in
 
 		cp ${root_dir}/Tools/SBT/bin/sign_app.exe ${root_dir}/Tools/SBT/bin/sign_app
 
-		cd ./Examples/MAX32570/$example/
+		cd ${root_dir}/Examples/MAX32570/$example/
+			echo "DEV_LIB_NFC=1" >> project.mk
 			make MFLOAT_ABI=${fp_type}
 			echo " "
 		cd $root_dir
@@ -51,7 +52,7 @@ case "$operation" in
 	clean)	
 		echo "------- Clean START : $example  -------"
 		
-		cd ./Examples/MAX32570/$example/
+		cd ${root_dir}/Examples/MAX32570/$example/
 			make clean
 			rm -rf ${root_dir}/Libraries/NFC/*/*.a
 			
@@ -73,7 +74,7 @@ case "$operation" in
 	doc)
 		echo "------- Documentation START : $example  -------"
 		
-		cd ./Examples/MAX32570/$example/Internal_Only
+		cd ${root_dir}/Examples/MAX32570/$example/Internal_Only
 		 
 			gittag=$(doc_version)
 			
