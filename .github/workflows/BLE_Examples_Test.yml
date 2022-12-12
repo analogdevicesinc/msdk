@@ -44,7 +44,7 @@ jobs:
           fetch-depth: 0
 
       # Runs a set of commands using the runners shell
-      - name: BLE examples functionality test
+      - name: TEST MAX32655
         run: |
           # Remove local modifications
           git scorch
@@ -96,12 +96,13 @@ jobs:
           # Lock hardware resources
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          
+
           cd .github/workflows/ci-tests/Examples_tests
-          chmod +x test_launcher.sh
-          ./test_launcher.sh
+          chmod +x test_launcher.sh max32655 
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
+          dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+          ./test_launcher.sh max32655 $dut_uart $dut_serial
           
       - uses: actions/upload-artifact@v3
         if: failure()
