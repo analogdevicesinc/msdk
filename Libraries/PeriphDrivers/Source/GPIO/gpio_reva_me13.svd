@@ -449,7 +449,7 @@
         <fields>
           <field>
             <name>ALL</name>
-            <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
+            <description>The two bits in GPIO_PADCTRL0 and GPIO_PADCTRL1 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
             <enumeratedValues>
@@ -479,7 +479,7 @@
         <fields>
           <field>
             <name>ALL</name>
-            <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
+            <description>The two bits in GPIO_PADCTRL0 and GPIO_PADCTRL1 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
             <enumeratedValues>
