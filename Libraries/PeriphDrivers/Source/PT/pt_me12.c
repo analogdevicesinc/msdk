@@ -153,26 +153,6 @@ void MXC_PT_SetPattern(unsigned pts, uint32_t pattern)
     MXC_PT_RevA_SetPattern(pts, pattern);
 }
 
-void MXC_PT_EnableInt(uint32_t pts)
-{
-    MXC_PT_EnableStopInt(pts);
-}
-
-void MXC_PT_DisableInt(uint32_t pts)
-{
-    MXC_PT_DisableStopInt(pts);
-}
-
-uint32_t MXC_PT_GetFlags(void)
-{
-    return MXC_PT_GetStopFlags();
-}
-
-void MXC_PT_ClearFlags(uint32_t flags)
-{
-    MXC_PT_ClearStopFlags(flags);
-}
-
 void MXC_PT_EnableStopInt(uint32_t pts)
 {
     MXC_PT_RevA_EnableStopInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
