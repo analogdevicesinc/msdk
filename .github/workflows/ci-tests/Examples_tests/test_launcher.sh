@@ -216,8 +216,8 @@ for dir in ${SUBDIRS}; do
     echo "---------------------------------------"
     echo " Validation build for ${dir}"
     echo "---------------------------------------"
-   # make -C ${dir} clean
-  #  make -C ${dir} libclean
+    make -C ${dir} clean
+    make -C ${dir} libclean
     make -C ${dir} -j8
 done
 
