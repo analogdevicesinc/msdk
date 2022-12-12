@@ -1,6 +1,8 @@
 *** settings ***
 Library    String
 Library    ../resources/serialPortReader.py
+Suite Setup        Open Ports    ${SERIAL_PORT_1}
+Suite Teardown     Close Ports 
 
 *** Variables ***
 ${SERIAL_PORT_1}    /dev/ttyUSB0

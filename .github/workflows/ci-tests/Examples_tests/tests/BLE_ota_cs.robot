@@ -1,11 +1,8 @@
 *** settings ***
 Library    String
 Library    ../resources/serialPortReader.py
-# Library    SerialLibrary      encoding=ascii
-# Library    String
-# Resource     ../resources/Serial.robot
-# Suite Setup        Serial.Open Serial Port    ${SERIAL_PORT_1}    ${SERIAL_PORT_2}    
-# Suite Teardown     Serial.Close Serial Port
+Suite Setup        Open Ports    ${SERIAL_PORT_1}    ${SERIAL_PORT_2}
+Suite Teardown     Close Ports 
 
 *** Variables ***
 ${SERIAL_PORT_1}  /dev/ttyUSB0
