@@ -98,7 +98,7 @@ jobs:
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
 
           cd .github/workflows/ci-tests/Examples_tests
-          chmod +x test_launcher.sh max32655 
+          chmod +x test_launcher.sh
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
