@@ -57,23 +57,22 @@
 /*************************************************************************************************/
 static void provisionerHandleSigModelMsg(wsfMsgHdr_t *pMsg, meshSigModelId_t modelId)
 {
-  switch (modelId)
-  {
+    switch (modelId) {
     case MESH_HT_SR_MDL_ID:
-      MeshHtSrHandler(pMsg);
-      break;
+        MeshHtSrHandler(pMsg);
+        break;
 
     case MMDL_GEN_ONOFF_CL_MDL_ID:
-      MmdlGenOnOffClHandler(pMsg);
-      break;
+        MmdlGenOnOffClHandler(pMsg);
+        break;
 
     case MMDL_LIGHT_HSL_CL_MDL_ID:
-      MmdlLightHslClHandler(pMsg);
-      break;
+        MmdlLightHslClHandler(pMsg);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -88,8 +87,8 @@ static void provisionerHandleSigModelMsg(wsfMsgHdr_t *pMsg, meshSigModelId_t mod
 /*************************************************************************************************/
 static void provisionerHandleVendorModelMsg(wsfMsgHdr_t *pMsg, meshVendorModelId_t modelId)
 {
-  (void)pMsg;
-  (void)modelId;
+    (void)pMsg;
+    (void)modelId;
 }
 
 /**************************************************************************************************
@@ -108,50 +107,43 @@ static void provisionerHandleVendorModelMsg(wsfMsgHdr_t *pMsg, meshVendorModelId
 /*************************************************************************************************/
 void ProvisionerMmdlHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        if (MESH_OPCODE_IS_VENDOR(((meshModelMsgRecvEvt_t *)pMsg)->opCode))
-        {
-          /* Handle message for SIG defined model. */
-          provisionerHandleVendorModelMsg(pMsg,
-                                          ((meshModelMsgRecvEvt_t *)pMsg)->modelId.vendorModelId);
-        }
-        else
-        {
-          /* Handle message for vendor defined model. */
-          provisionerHandleSigModelMsg(pMsg, ((meshModelMsgRecvEvt_t *)pMsg)->modelId.sigModelId);
-        }
-        break;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            if (MESH_OPCODE_IS_VENDOR(((meshModelMsgRecvEvt_t *)pMsg)->opCode)) {
+                /* Handle message for SIG defined model. */
+                provisionerHandleVendorModelMsg(
+                    pMsg, ((meshModelMsgRecvEvt_t *)pMsg)->modelId.vendorModelId);
+            } else {
+                /* Handle message for vendor defined model. */
+                provisionerHandleSigModelMsg(pMsg,
+                                             ((meshModelMsgRecvEvt_t *)pMsg)->modelId.sigModelId);
+            }
+            break;
 
-      case MESH_MODEL_EVT_PERIODIC_PUB:
-        if (((meshModelPeriodicPubEvt_t *)pMsg)->isVendorModel)
-        {
-          /* Handle message for SIG defined model. */
-          provisionerHandleVendorModelMsg(pMsg,
-                                          ((meshModelPeriodicPubEvt_t *)pMsg)->modelId.vendorModelId);
-        }
-        else
-        {
-          /* Handle message for vendor defined model. */
-          provisionerHandleSigModelMsg(pMsg, ((meshModelPeriodicPubEvt_t *)pMsg)->modelId.sigModelId);
-        }
-        break;
+        case MESH_MODEL_EVT_PERIODIC_PUB:
+            if (((meshModelPeriodicPubEvt_t *)pMsg)->isVendorModel) {
+                /* Handle message for SIG defined model. */
+                provisionerHandleVendorModelMsg(
+                    pMsg, ((meshModelPeriodicPubEvt_t *)pMsg)->modelId.vendorModelId);
+            } else {
+                /* Handle message for vendor defined model. */
+                provisionerHandleSigModelMsg(
+                    pMsg, ((meshModelPeriodicPubEvt_t *)pMsg)->modelId.sigModelId);
+            }
+            break;
 
-      case HT_SR_EVT_TMR_CBACK:
-        MeshHtSrHandler(pMsg);
-        break;
+        case HT_SR_EVT_TMR_CBACK:
+            MeshHtSrHandler(pMsg);
+            break;
 
-      default:
-        MESH_TRACE_WARN0("MMDL: Invalid event message received!");
-        break;
+        default:
+            MESH_TRACE_WARN0("MMDL: Invalid event message received!");
+            break;
+        }
     }
-  }
-  /* Handle events */
-  else if (event)
-  {
-  }
+    /* Handle events */
+    else if (event) {
+    }
 }

@@ -81,29 +81,28 @@
 **************************************************************************************************/
 
 /*! Mesh callback event length table */
-static const uint16_t meshEvtCbackLen[] =
-{
-  sizeof(wsfMsgHdr_t),                /*!< MESH_CORE_RESET_EVENT */
-  sizeof(wsfMsgHdr_t),                /*!< MESH_CORE_ERROR_EVENT */
-  sizeof(wsfMsgHdr_t),                /*!< MESH_CORE_SEND_MSG_EVENT */
-  sizeof(wsfMsgHdr_t),                /*!< MESH_CORE_PUBLISH_MSG_EVENT */
-  sizeof(meshGattConnEvt_t),          /*!< MESH_CORE_GATT_CONN_ADD_EVENT */
-  sizeof(meshGattConnEvt_t),          /*!< MESH_CORE_GATT_CONN_REMOVE_EVENT */
-  sizeof(meshGattConnEvt_t),          /*!< MESH_CORE_GATT_CONN_CLOSE_EVENT */
-  sizeof(meshGattConnEvt_t),          /*!< MESH_CORE_GATT_PROCESS_PROXY_PDU_EVENT */
-  sizeof(meshGattConnEvt_t),          /*!< MESH_CORE_GATT_SIGNAL_IF_RDY_EVENT */
-  sizeof(meshAdvIfEvt_t),             /*!< MESH_CORE_ADV_IF_ADD_EVENT */
-  sizeof(meshAdvIfEvt_t),             /*!< MESH_CORE_ADV_IF_REMOVE_EVENT */
-  sizeof(meshAdvIfEvt_t),             /*!< MESH_CORE_ADV_IF_CLOSE_EVENT */
-  sizeof(meshAdvIfEvt_t),             /*!< MESH_CORE_ADV_PROCESS_PDU_EVENT */
-  sizeof(meshAdvIfEvt_t),             /*!< MESH_CORE_ADV_SIGNAL_IF_RDY_EVENT */
-  sizeof(meshAttentionEvt_t),         /*!< MESH_CORE_ATTENTION_SET_EVENT */
-  sizeof(meshAttentionEvt_t),         /*!< MESH_CORE_ATTENTION_CHG_EVENT */
-  sizeof(meshNodeStartedEvt_t),       /*!< MESH_CORE_NODE_STARTED_EVENT */
-  sizeof(meshProxyServiceDataEvt_t),  /*!< MESH_CORE_PROXY_SERVICE_DATA_EVENT */
-  sizeof(meshProxyFilterStatusEvt_t), /*!< MESH_CORE_PROXY_FILTER_STATUS_EVENT */
-  sizeof(meshIvUpdtEvt_t),            /*!< MESH_CORE_IV_UPDATED_EVENT */
-  sizeof(meshHbInfoEvt_t),            /*!< MESH_CORE_HB_INFO_EVENT */
+static const uint16_t meshEvtCbackLen[] = {
+    sizeof(wsfMsgHdr_t), /*!< MESH_CORE_RESET_EVENT */
+    sizeof(wsfMsgHdr_t), /*!< MESH_CORE_ERROR_EVENT */
+    sizeof(wsfMsgHdr_t), /*!< MESH_CORE_SEND_MSG_EVENT */
+    sizeof(wsfMsgHdr_t), /*!< MESH_CORE_PUBLISH_MSG_EVENT */
+    sizeof(meshGattConnEvt_t), /*!< MESH_CORE_GATT_CONN_ADD_EVENT */
+    sizeof(meshGattConnEvt_t), /*!< MESH_CORE_GATT_CONN_REMOVE_EVENT */
+    sizeof(meshGattConnEvt_t), /*!< MESH_CORE_GATT_CONN_CLOSE_EVENT */
+    sizeof(meshGattConnEvt_t), /*!< MESH_CORE_GATT_PROCESS_PROXY_PDU_EVENT */
+    sizeof(meshGattConnEvt_t), /*!< MESH_CORE_GATT_SIGNAL_IF_RDY_EVENT */
+    sizeof(meshAdvIfEvt_t), /*!< MESH_CORE_ADV_IF_ADD_EVENT */
+    sizeof(meshAdvIfEvt_t), /*!< MESH_CORE_ADV_IF_REMOVE_EVENT */
+    sizeof(meshAdvIfEvt_t), /*!< MESH_CORE_ADV_IF_CLOSE_EVENT */
+    sizeof(meshAdvIfEvt_t), /*!< MESH_CORE_ADV_PROCESS_PDU_EVENT */
+    sizeof(meshAdvIfEvt_t), /*!< MESH_CORE_ADV_SIGNAL_IF_RDY_EVENT */
+    sizeof(meshAttentionEvt_t), /*!< MESH_CORE_ATTENTION_SET_EVENT */
+    sizeof(meshAttentionEvt_t), /*!< MESH_CORE_ATTENTION_CHG_EVENT */
+    sizeof(meshNodeStartedEvt_t), /*!< MESH_CORE_NODE_STARTED_EVENT */
+    sizeof(meshProxyServiceDataEvt_t), /*!< MESH_CORE_PROXY_SERVICE_DATA_EVENT */
+    sizeof(meshProxyFilterStatusEvt_t), /*!< MESH_CORE_PROXY_FILTER_STATUS_EVENT */
+    sizeof(meshIvUpdtEvt_t), /*!< MESH_CORE_IV_UPDATED_EVENT */
+    sizeof(meshHbInfoEvt_t), /*!< MESH_CORE_HB_INFO_EVENT */
 };
 
 /**************************************************************************************************
@@ -135,13 +134,13 @@ meshConfig_t *pMeshConfig;
 /*************************************************************************************************/
 static void meshExecCback(uint8_t event, uint8_t status, uint16_t param)
 {
-  wsfMsgHdr_t evt;
+    wsfMsgHdr_t evt;
 
-  evt.event = event;
-  evt.status = status;
-  evt.param = param;
+    evt.event = event;
+    evt.status = status;
+    evt.param = param;
 
-  (*meshCb.evtCback)((meshEvt_t *)&evt);
+    (*meshCb.evtCback)((meshEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -155,54 +154,52 @@ static void meshExecCback(uint8_t event, uint8_t status, uint16_t param)
 /*************************************************************************************************/
 static void meshSecAllKeyMaterialRestoreCback(bool_t isSuccess)
 {
-  meshNodeStartedEvt_t evt;
-  meshElementId_t elemId;
-  meshAddress_t primaryElemAddr;
-  uint8_t mdlIdx = 0;
-  meshModelId_t mdlId;
+    meshNodeStartedEvt_t evt;
+    meshElementId_t elemId;
+    meshAddress_t primaryElemAddr;
+    uint8_t mdlIdx = 0;
+    meshModelId_t mdlId;
 
-  WSF_ASSERT(isSuccess);
+    WSF_ASSERT(isSuccess);
 
-  MeshLocalCfgGetAddrFromElementId(0, &primaryElemAddr);
+    MeshLocalCfgGetAddrFromElementId(0, &primaryElemAddr);
 
-  evt.hdr.event = MESH_CORE_EVENT;
-  evt.hdr.param = MESH_CORE_NODE_STARTED_EVENT;
-  evt.hdr.status = isSuccess ? MESH_SUCCESS : MESH_UNKNOWN_ERROR;
-  evt.address = primaryElemAddr;
-  evt.elemCnt = pMeshConfig->elementArrayLen;
+    evt.hdr.event = MESH_CORE_EVENT;
+    evt.hdr.param = MESH_CORE_NODE_STARTED_EVENT;
+    evt.hdr.status = isSuccess ? MESH_SUCCESS : MESH_UNKNOWN_ERROR;
+    evt.address = primaryElemAddr;
+    evt.elemCnt = pMeshConfig->elementArrayLen;
 
-  MESH_TRACE_INFO0("MESH API: Node Started!");
+    MESH_TRACE_INFO0("MESH API: Node Started!");
 
-  /* Signal Network state changed. */
-  MeshNwkBeaconHandleStateChanged();
+    /* Signal Network state changed. */
+    MeshNwkBeaconHandleStateChanged();
 
-  /* Signal Heartbeat module. */
-  MeshHbPublicationStateChanged();
-  MeshHbSubscriptionStateChanged();
+    /* Signal Heartbeat module. */
+    MeshHbPublicationStateChanged();
+    MeshHbSubscriptionStateChanged();
 
-  /* Notify Periodic publishing module. */
-  for(elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++)
-  {
-    for(mdlIdx = 0; mdlIdx < pMeshConfig->pElementArray[elemId].numSigModels; mdlIdx++)
-    {
-      mdlId.isSigModel = TRUE;
-      mdlId.modelId.sigModelId = pMeshConfig->pElementArray[elemId].pSigModelArray[mdlIdx].modelId;
-      MeshAccPpChanged(elemId, &mdlId);
+    /* Notify Periodic publishing module. */
+    for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++) {
+        for (mdlIdx = 0; mdlIdx < pMeshConfig->pElementArray[elemId].numSigModels; mdlIdx++) {
+            mdlId.isSigModel = TRUE;
+            mdlId.modelId.sigModelId =
+                pMeshConfig->pElementArray[elemId].pSigModelArray[mdlIdx].modelId;
+            MeshAccPpChanged(elemId, &mdlId);
+        }
+
+        for (mdlIdx = 0; mdlIdx < pMeshConfig->pElementArray[elemId].numVendorModels; mdlIdx++) {
+            mdlId.isSigModel = FALSE;
+            mdlId.modelId.vendorModelId =
+                pMeshConfig->pElementArray[elemId].pVendorModelArray[mdlIdx].modelId;
+            MeshAccPpChanged(elemId, &mdlId);
+        }
     }
 
-    for(mdlIdx = 0; mdlIdx < pMeshConfig->pElementArray[elemId].numVendorModels; mdlIdx++)
-    {
-      mdlId.isSigModel = FALSE;
-      mdlId.modelId.vendorModelId =
-          pMeshConfig->pElementArray[elemId].pVendorModelArray[mdlIdx].modelId;
-      MeshAccPpChanged(elemId, &mdlId);
-    }
-  }
+    /* Send event to application. */
+    meshCb.evtCback((meshEvt_t *)&evt);
 
-  /* Send event to application. */
-  meshCb.evtCback((meshEvt_t *)&evt);
-
-  (void)isSuccess;
+    (void)isSuccess;
 }
 
 /*************************************************************************************************/
@@ -216,9 +213,9 @@ static void meshSecAllKeyMaterialRestoreCback(bool_t isSuccess)
 /*************************************************************************************************/
 static void meshEmptyCback(meshEvt_t *pEvt)
 {
-  (void)pEvt;
-  MESH_TRACE_WARN0("MESH API: Mesh event notification callback not set!");
-  return;
+    (void)pEvt;
+    MESH_TRACE_WARN0("MESH API: Mesh event notification callback not set!");
+    return;
 }
 
 /*************************************************************************************************/
@@ -232,8 +229,8 @@ static void meshEmptyCback(meshEvt_t *pEvt)
 /*************************************************************************************************/
 static void meshEmptyHandler(wsfMsgHdr_t *pMsg)
 {
-  (void)pMsg;
-  return;
+    (void)pMsg;
+    return;
 }
 
 /*************************************************************************************************/
@@ -247,79 +244,76 @@ static void meshEmptyHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void meshApiMsgCback(wsfMsgHdr_t *pMsg)
 {
-  switch (pMsg->event)
-  {
+    switch (pMsg->event) {
     case MESH_MSG_API_INIT:
-      break;
+        break;
 
     case MESH_MSG_API_RESET:
-      break;
+        break;
 
     case MESH_MSG_API_SEND_MSG:
-      MeshAccSendMessage(&(((meshSendMessage_t *)pMsg)->msgInfo),
-                         ((meshSendMessage_t *)pMsg)->pMsgParam,
-                         ((meshSendMessage_t *)pMsg)->msgParamLen,
-                         ((meshSendMessage_t *)pMsg)->netKeyIndex,
-                         0,
-                         0);
-      break;
+        MeshAccSendMessage(&(((meshSendMessage_t *)pMsg)->msgInfo),
+                           ((meshSendMessage_t *)pMsg)->pMsgParam,
+                           ((meshSendMessage_t *)pMsg)->msgParamLen,
+                           ((meshSendMessage_t *)pMsg)->netKeyIndex, 0, 0);
+        break;
 
     case MESH_MSG_API_PUBLISH_MSG:
-      MeshAccPublishMessage(&(((meshPublishMessage_t *)pMsg)->pubMsgInfo),
-                            ((meshPublishMessage_t *)pMsg)->pMsgParam,
-                            ((meshPublishMessage_t *)pMsg)->msgParamLen);
-      break;
+        MeshAccPublishMessage(&(((meshPublishMessage_t *)pMsg)->pubMsgInfo),
+                              ((meshPublishMessage_t *)pMsg)->pMsgParam,
+                              ((meshPublishMessage_t *)pMsg)->msgParamLen);
+        break;
 
     case MESH_MSG_API_ADD_GATT_CONN:
-      MeshGattAddProxyConn(((meshAddGattProxyConn_t *)pMsg)->connId,
-                            ((meshAddGattProxyConn_t *)pMsg)->maxProxyPdu);
-      break;
+        MeshGattAddProxyConn(((meshAddGattProxyConn_t *)pMsg)->connId,
+                             ((meshAddGattProxyConn_t *)pMsg)->maxProxyPdu);
+        break;
 
     case MESH_MSG_API_REM_GATT_CONN:
-      MeshGattRemoveProxyConn(((meshRemoveGattProxyConn_t *)pMsg)->connId);
-      break;
+        MeshGattRemoveProxyConn(((meshRemoveGattProxyConn_t *)pMsg)->connId);
+        break;
 
     case MESH_MSG_API_PROC_GATT_MSG:
-      MeshGattProcessPdu(((meshProcessGattProxyPdu_t *)pMsg)->connId,
-                         ((meshProcessGattProxyPdu_t *)pMsg)->pProxyPdu,
-                         ((meshProcessGattProxyPdu_t *)pMsg)->proxyPduLen);
-      break;
+        MeshGattProcessPdu(((meshProcessGattProxyPdu_t *)pMsg)->connId,
+                           ((meshProcessGattProxyPdu_t *)pMsg)->pProxyPdu,
+                           ((meshProcessGattProxyPdu_t *)pMsg)->proxyPduLen);
+        break;
 
     case MESH_MSG_API_SGN_GATT_IF_RDY:
-      MeshGattSignalIfReady(((meshSignalGattProxyIfRdy_t *)pMsg)->connId);
-      break;
+        MeshGattSignalIfReady(((meshSignalGattProxyIfRdy_t *)pMsg)->connId);
+        break;
 
     case MESH_MSG_API_ADD_ADV_IF:
-      MeshAdvAddInterface(((meshAddAdvIf_t *)pMsg)->advIfId);
-      break;
+        MeshAdvAddInterface(((meshAddAdvIf_t *)pMsg)->advIfId);
+        break;
 
     case MESH_MSG_API_REM_ADV_IF:
-      MeshAdvRemoveInterface(((meshRemoveAdvIf_t *)pMsg)->advIfId);
-      break;
+        MeshAdvRemoveInterface(((meshRemoveAdvIf_t *)pMsg)->advIfId);
+        break;
 
     case MESH_MSG_API_PROC_ADV_MSG:
-      MeshAdvProcessPdu(((meshProcessAdvPdu_t *)pMsg)->advIfId,
-                        ((meshProcessAdvPdu_t *)pMsg)->pAdvPdu,
-                        ((meshProcessAdvPdu_t *)pMsg)->advPduLen);
-      break;
+        MeshAdvProcessPdu(((meshProcessAdvPdu_t *)pMsg)->advIfId,
+                          ((meshProcessAdvPdu_t *)pMsg)->pAdvPdu,
+                          ((meshProcessAdvPdu_t *)pMsg)->advPduLen);
+        break;
 
     case MESH_MSG_API_SGN_ADV_IF_RDY:
-      MeshAdvSignalInterfaceReady(((meshSignalAdvIfRdy_t *)pMsg)->advIfId);
-      break;
+        MeshAdvSignalInterfaceReady(((meshSignalAdvIfRdy_t *)pMsg)->advIfId);
+        break;
 
     case MESH_MSG_API_PROXY_CFG_REQ:
-      meshProxyClCb.msgHandlerCback(pMsg);
-      break;
+        meshProxyClCb.msgHandlerCback(pMsg);
+        break;
 
     case MESH_MSG_API_ATT_SET:
-      MeshLocalCfgSetAttentionTimer(((meshAttentionSet_t *)pMsg)->elemId,
-                                    ((meshAttentionSet_t *)pMsg)->attTimeSec);
-      break;
+        MeshLocalCfgSetAttentionTimer(((meshAttentionSet_t *)pMsg)->elemId,
+                                      ((meshAttentionSet_t *)pMsg)->attTimeSec);
+        break;
 
     default:
-      MESH_TRACE_WARN0("MESH API: Invalid event message received!");
-      break;
-  }
+        MESH_TRACE_WARN0("MESH API: Invalid event message received!");
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -333,73 +327,60 @@ static void meshApiMsgCback(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static meshWsfMsgHandlerCback_t meshWsfMsgToCback(wsfMsgHdr_t *pMsg)
 {
-  /* Select handler based on event. */
-  if(pMsg->event >= MESH_LOCAL_CFG_MSG_START)
-  {
-    return meshCb.localCfgMsgCback;
-  }
+    /* Select handler based on event. */
+    if (pMsg->event >= MESH_LOCAL_CFG_MSG_START) {
+        return meshCb.localCfgMsgCback;
+    }
 
-  if(pMsg->event >= MESH_GATT_PROXY_MSG_START)
-  {
-    return meshCb.gattProxyMsgCback;
-  }
+    if (pMsg->event >= MESH_GATT_PROXY_MSG_START) {
+        return meshCb.gattProxyMsgCback;
+    }
 
-  if(pMsg->event >= MESH_PRV_BR_MSG_START)
-  {
-    return meshCb.prvBrMsgCback;
-  }
+    if (pMsg->event >= MESH_PRV_BR_MSG_START) {
+        return meshCb.prvBrMsgCback;
+    }
 
-  if(pMsg->event >= MESH_PRV_BEACON_MSG_START)
-  {
-    return meshCb.prvBeaconMsgCback;
-  }
+    if (pMsg->event >= MESH_PRV_BEACON_MSG_START) {
+        return meshCb.prvBeaconMsgCback;
+    }
 
-  if(pMsg->event >= MESH_NWK_BEACON_MSG_START)
-  {
-    return meshCb.nwkBeaconMsgCback;
-  }
+    if (pMsg->event >= MESH_NWK_BEACON_MSG_START) {
+        return meshCb.nwkBeaconMsgCback;
+    }
 
-  if(pMsg->event >= MESH_NWK_MGMT_MSG_START)
-  {
-    return meshCb.nwkMgmtMsgCback;
-  }
+    if (pMsg->event >= MESH_NWK_MGMT_MSG_START) {
+        return meshCb.nwkMgmtMsgCback;
+    }
 
-  if(pMsg->event >= MESH_NWK_MSG_START)
-  {
-    return meshCb.nwkMsgCback;
-  }
+    if (pMsg->event >= MESH_NWK_MSG_START) {
+        return meshCb.nwkMsgCback;
+    }
 
-  if(pMsg->event >= MESH_SAR_TX_MSG_START)
-  {
-    return meshCb.sarTxMsgCback;
-  }
+    if (pMsg->event >= MESH_SAR_TX_MSG_START) {
+        return meshCb.sarTxMsgCback;
+    }
 
-  if(pMsg->event >= MESH_SAR_RX_MSG_START)
-  {
-    return meshCb.sarRxMsgCback;
-  }
+    if (pMsg->event >= MESH_SAR_RX_MSG_START) {
+        return meshCb.sarRxMsgCback;
+    }
 
-  if(pMsg->event >= MESH_HB_MSG_START)
-  {
-    return meshCb.hbMsgCback;
-  }
+    if (pMsg->event >= MESH_HB_MSG_START) {
+        return meshCb.hbMsgCback;
+    }
 
-  if(pMsg->event >= MESH_ACC_MSG_START)
-  {
-    return meshCb.accMsgCback;
-  }
+    if (pMsg->event >= MESH_ACC_MSG_START) {
+        return meshCb.accMsgCback;
+    }
 
-  if(pMsg->event >= MESH_CFG_MDL_CL_MSG_START)
-  {
-    return meshCb.cfgMdlClMsgCback;
-  }
+    if (pMsg->event >= MESH_CFG_MDL_CL_MSG_START) {
+        return meshCb.cfgMdlClMsgCback;
+    }
 
-  if(pMsg->event >= MESH_FRIENDSHIP_MSG_START)
-  {
-    return meshCb.friendshipMsgCback;
-  }
+    if (pMsg->event >= MESH_FRIENDSHIP_MSG_START) {
+        return meshCb.friendshipMsgCback;
+    }
 
-  return meshCb.apiMsgCback;
+    return meshCb.apiMsgCback;
 }
 
 /**************************************************************************************************
@@ -417,27 +398,27 @@ static meshWsfMsgHandlerCback_t meshWsfMsgToCback(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MeshHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Store handler ID. */
-  meshCb.handlerId = handlerId;
+    /* Store handler ID. */
+    meshCb.handlerId = handlerId;
 
-  /* Initialize control block. */
-  meshCb.initialized = FALSE;
-  meshCb.evtCback = meshEmptyCback;
-  meshCb.apiMsgCback = meshEmptyHandler;
-  meshCb.friendshipMsgCback= meshEmptyHandler;
-  meshCb.accMsgCback= meshEmptyHandler;
-  meshCb.hbMsgCback= meshEmptyHandler;
-  meshCb.sarRxMsgCback= meshEmptyHandler;
-  meshCb.sarTxMsgCback= meshEmptyHandler;
-  meshCb.nwkMsgCback= meshEmptyHandler;
-  meshCb.nwkMgmtMsgCback= meshEmptyHandler;
-  meshCb.nwkBeaconMsgCback= meshEmptyHandler;
-  meshCb.prvBeaconMsgCback= meshEmptyHandler;
-  meshCb.prvBrMsgCback = meshEmptyHandler;
-  meshCb.gattProxyMsgCback = meshEmptyHandler;
-  meshCb.localCfgMsgCback = meshEmptyHandler;
+    /* Initialize control block. */
+    meshCb.initialized = FALSE;
+    meshCb.evtCback = meshEmptyCback;
+    meshCb.apiMsgCback = meshEmptyHandler;
+    meshCb.friendshipMsgCback = meshEmptyHandler;
+    meshCb.accMsgCback = meshEmptyHandler;
+    meshCb.hbMsgCback = meshEmptyHandler;
+    meshCb.sarRxMsgCback = meshEmptyHandler;
+    meshCb.sarTxMsgCback = meshEmptyHandler;
+    meshCb.nwkMsgCback = meshEmptyHandler;
+    meshCb.nwkMgmtMsgCback = meshEmptyHandler;
+    meshCb.nwkBeaconMsgCback = meshEmptyHandler;
+    meshCb.prvBeaconMsgCback = meshEmptyHandler;
+    meshCb.prvBrMsgCback = meshEmptyHandler;
+    meshCb.gattProxyMsgCback = meshEmptyHandler;
+    meshCb.localCfgMsgCback = meshEmptyHandler;
 
-  meshCb.cfgMdlClMsgCback = meshCfgMdlClEmptyHandler;
+    meshCb.cfgMdlClMsgCback = meshCfgMdlClEmptyHandler;
 }
 
 /*************************************************************************************************/
@@ -449,49 +430,46 @@ void MeshHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 uint32_t MeshGetRequiredMemory(void)
 {
-  uint32_t reqMemLocalCfg;
-  uint32_t reqMemNwk;
-  uint32_t reqMemRpl;
-  uint32_t reqMemSarRx;
-  uint32_t reqMemSarTx;
-  uint32_t reqMemSec;
-  uint32_t reqMemAcc;
-  uint32_t reqMem = MESH_MEM_REQ_INVALID_CFG;
+    uint32_t reqMemLocalCfg;
+    uint32_t reqMemNwk;
+    uint32_t reqMemRpl;
+    uint32_t reqMemSarRx;
+    uint32_t reqMemSarTx;
+    uint32_t reqMemSec;
+    uint32_t reqMemAcc;
+    uint32_t reqMem = MESH_MEM_REQ_INVALID_CFG;
 
-  /* Get Local Config module required memory. */
-  reqMemLocalCfg = MeshLocalCfgGetRequiredMemory();
-  /* Get Network module required memory. */
-  reqMemNwk = MeshNwkGetRequiredMemory();
-  /* Get Replay Protection module required memory. */
-  reqMemRpl = MeshRpGetRequiredMemory();
-  /* Get SAR Rx module required memory. */
-  reqMemSarRx = MeshSarRxGetRequiredMemory();
-  /* Get SAR TX module required memory. */
-  reqMemSarTx = MeshSarTxGetRequiredMemory();
-  /* Get Security module required memory. */
-  reqMemSec = MeshSecGetRequiredMemory();
-  /* Get Acces layer required memory. */
-  reqMemAcc = MeshAccGetRequiredMemory();
+    /* Get Local Config module required memory. */
+    reqMemLocalCfg = MeshLocalCfgGetRequiredMemory();
+    /* Get Network module required memory. */
+    reqMemNwk = MeshNwkGetRequiredMemory();
+    /* Get Replay Protection module required memory. */
+    reqMemRpl = MeshRpGetRequiredMemory();
+    /* Get SAR Rx module required memory. */
+    reqMemSarRx = MeshSarRxGetRequiredMemory();
+    /* Get SAR TX module required memory. */
+    reqMemSarTx = MeshSarTxGetRequiredMemory();
+    /* Get Security module required memory. */
+    reqMemSec = MeshSecGetRequiredMemory();
+    /* Get Acces layer required memory. */
+    reqMemAcc = MeshAccGetRequiredMemory();
 
-  if ((reqMemLocalCfg != MESH_MEM_REQ_INVALID_CFG) &&
-      (reqMemNwk != MESH_MEM_REQ_INVALID_CFG) &&
-      (reqMemRpl != MESH_MEM_REQ_INVALID_CFG) &&
-      (reqMemSec != MESH_MEM_REQ_INVALID_CFG) &&
-      (reqMemAcc != MESH_MEM_REQ_INVALID_CFG) &&
-      (reqMemSarRx != MESH_MEM_REQ_INVALID_CFG) &&
-      (reqMemSarTx != MESH_MEM_REQ_INVALID_CFG))
-  {
-    reqMem = (reqMemLocalCfg + reqMemNwk + reqMemRpl + reqMemSec + reqMemAcc + reqMemSarRx +
-              reqMemSarTx);
+    if ((reqMemLocalCfg != MESH_MEM_REQ_INVALID_CFG) && (reqMemNwk != MESH_MEM_REQ_INVALID_CFG) &&
+        (reqMemRpl != MESH_MEM_REQ_INVALID_CFG) && (reqMemSec != MESH_MEM_REQ_INVALID_CFG) &&
+        (reqMemAcc != MESH_MEM_REQ_INVALID_CFG) && (reqMemSarRx != MESH_MEM_REQ_INVALID_CFG) &&
+        (reqMemSarTx != MESH_MEM_REQ_INVALID_CFG)) {
+        reqMem = (reqMemLocalCfg + reqMemNwk + reqMemRpl + reqMemSec + reqMemAcc + reqMemSarRx +
+                  reqMemSarTx);
 
-    MESH_TRACE_INFO1("MESH API: Mesh Stack required memory = %u", reqMem);
+        MESH_TRACE_INFO1("MESH API: Mesh Stack required memory = %u", reqMem);
+
+        return reqMem;
+    }
+
+    MESH_TRACE_ERR0(
+        "MESH API: Get required memory failed! Check for invalid memory configuration.");
 
     return reqMem;
-  }
-
-  MESH_TRACE_ERR0("MESH API: Get required memory failed! Check for invalid memory configuration.");
-
-  return reqMem;
 }
 
 /*************************************************************************************************/
@@ -506,85 +484,83 @@ uint32_t MeshGetRequiredMemory(void)
 /*************************************************************************************************/
 uint32_t MeshInit(uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-  uint32_t reqMem;
+    uint32_t reqMem;
 
-  /* Initialize control block but leave the handler ID. */
-  meshCb.initialized = FALSE;
-  meshCb.proxyIsServer = FALSE;
-  meshCb.evtCback = meshEmptyCback;
+    /* Initialize control block but leave the handler ID. */
+    meshCb.initialized = FALSE;
+    meshCb.proxyIsServer = FALSE;
+    meshCb.evtCback = meshEmptyCback;
 
-  if ((pFreeMem == NULL) || (pMeshConfig->pMemoryConfig == NULL) ||
-      (pMeshConfig->pElementArray == NULL))
-  {
-    MESH_TRACE_ERR0("MESH API: Mesh Stack initialization failed! Invalid configuration provided.");
+    if ((pFreeMem == NULL) || (pMeshConfig->pMemoryConfig == NULL) ||
+        (pMeshConfig->pElementArray == NULL)) {
+        MESH_TRACE_ERR0(
+            "MESH API: Mesh Stack initialization failed! Invalid configuration provided.");
+
+        return 0;
+    }
+
+    /* Check if sufficient memory was provided. This function return 0 in case of fail. */
+    reqMem = MeshGetRequiredMemory();
+
+    /* Check if the provided memory is enough and aligned. */
+    if ((reqMem != 0) && (reqMem <= freeMemSize) && MESH_UTILS_IS_ALIGNED(pFreeMem)) {
+        /* Store memory buffer pointer and size. */
+        meshCb.pMemBuff = pFreeMem;
+        meshCb.memBuffSize = reqMem;
+
+        /* Initialize Security Toolbox. */
+        MeshSecToolInit();
+
+        /* Initialize sequence manager. */
+        MeshSeqInit();
+
+        /* Initialize local config */
+        MeshLocalCfgInit();
+
+        /* Initialize security. */
+        MeshSecInit();
+
+        /* Initialize advertising bearer. */
+        MeshAdvInit();
+
+        /* Initialize bearer. */
+        MeshBrInit();
+
+        /* Initialize Network. */
+        MeshNwkInit();
+
+        /* Initialize Secure Network Beacons. */
+        MeshNwkBeaconInit();
+
+        /* Initialize Network Management. */
+        MeshNwkMgmtInit();
+
+        /* Initialize Replay Protection. */
+        MeshRpInit();
+
+        /* Initialize Mesh Lower Transport. */
+        MeshLtrInit();
+
+        /* Initialize Mesh Upper Transport. */
+        MeshUtrInit();
+
+        /* Initialize Mesh Access Layer. */
+        MeshAccInit();
+        MeshAccPeriodicPubInit();
+
+        /* Register WSF message handler. */
+        meshCb.apiMsgCback = meshApiMsgCback;
+
+        /* Set initialized flag. */
+        meshCb.initialized = TRUE;
+
+        return reqMem;
+    } else {
+        MESH_TRACE_ERR0(
+            "MESH API: Mesh Stack initialization failed! Invalid configuration provided.");
+    }
 
     return 0;
-  }
-
-  /* Check if sufficient memory was provided. This function return 0 in case of fail. */
-  reqMem = MeshGetRequiredMemory();
-
-  /* Check if the provided memory is enough and aligned. */
-  if ((reqMem != 0) && (reqMem <= freeMemSize) && MESH_UTILS_IS_ALIGNED(pFreeMem))
-  {
-    /* Store memory buffer pointer and size. */
-    meshCb.pMemBuff = pFreeMem;
-    meshCb.memBuffSize = reqMem;
-
-    /* Initialize Security Toolbox. */
-    MeshSecToolInit();
-
-    /* Initialize sequence manager. */
-    MeshSeqInit();
-
-    /* Initialize local config */
-    MeshLocalCfgInit();
-
-    /* Initialize security. */
-    MeshSecInit();
-
-    /* Initialize advertising bearer. */
-    MeshAdvInit();
-
-    /* Initialize bearer. */
-    MeshBrInit();
-
-    /* Initialize Network. */
-    MeshNwkInit();
-
-    /* Initialize Secure Network Beacons. */
-    MeshNwkBeaconInit();
-
-    /* Initialize Network Management. */
-    MeshNwkMgmtInit();
-
-    /* Initialize Replay Protection. */
-    MeshRpInit();
-
-    /* Initialize Mesh Lower Transport. */
-    MeshLtrInit();
-
-    /* Initialize Mesh Upper Transport. */
-    MeshUtrInit();
-
-    /* Initialize Mesh Access Layer. */
-    MeshAccInit();
-    MeshAccPeriodicPubInit();
-
-    /* Register WSF message handler. */
-    meshCb.apiMsgCback = meshApiMsgCback;
-
-    /* Set initialized flag. */
-    meshCb.initialized = TRUE;
-
-    return reqMem;
-  }
-  else
-  {
-    MESH_TRACE_ERR0("MESH API: Mesh Stack initialization failed! Invalid configuration provided.");
-  }
-
-  return 0;
 }
 
 /*************************************************************************************************/
@@ -598,14 +574,11 @@ uint32_t MeshInit(uint8_t *pFreeMem, uint32_t freeMemSize)
 /*************************************************************************************************/
 void MeshRegister(meshCback_t meshCback)
 {
-  if (meshCback != NULL)
-  {
-    meshCb.evtCback = meshCback;
-  }
-  else
-  {
-    MESH_TRACE_ERR0("MESH API: Invalid mesh callback registered!");
-  }
+    if (meshCback != NULL) {
+        meshCb.evtCback = meshCback;
+    } else {
+        MESH_TRACE_ERR0("MESH API: Invalid mesh callback registered!");
+    }
 }
 
 /*************************************************************************************************/
@@ -617,14 +590,11 @@ void MeshRegister(meshCback_t meshCback)
 /*************************************************************************************************/
 void MeshFactoryReset(void)
 {
-  if (meshCb.initialized == TRUE)
-  {
-    MESH_TRACE_INFO0("MESH API: Mesh Factory Reset not implemented!");
-  }
-  else
-  {
-    MESH_TRACE_ERR0("MESH API: Factory Reset failed, Mesh Stack not initialized!");
-  }
+    if (meshCb.initialized == TRUE) {
+        MESH_TRACE_INFO0("MESH API: Mesh Factory Reset not implemented!");
+    } else {
+        MESH_TRACE_ERR0("MESH API: Factory Reset failed, Mesh Stack not initialized!");
+    }
 }
 
 /*************************************************************************************************/
@@ -636,26 +606,23 @@ void MeshFactoryReset(void)
 /*************************************************************************************************/
 bool_t MeshIsProvisioned(void)
 {
-  meshAddress_t addr;
+    meshAddress_t addr;
 
-  if (meshCb.initialized == TRUE)
-  {
-    MeshLocalCfgGetAddrFromElementId(0, &addr);
+    if (meshCb.initialized == TRUE) {
+        MeshLocalCfgGetAddrFromElementId(0, &addr);
 
-    if (MESH_IS_ADDR_UNICAST(addr))
-    {
-      if (MeshLocalCfgCountNetKeys() != 0)
-      {
-        return TRUE;
-      }
+        if (MESH_IS_ADDR_UNICAST(addr)) {
+            if (MeshLocalCfgCountNetKeys() != 0) {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
     }
 
+    MESH_TRACE_ERR0("MESH API: Is Provisioned failed, Mesh Stack not initialized!");
+
     return FALSE;
-  }
-
-  MESH_TRACE_ERR0("MESH API: Is Provisioned failed, Mesh Stack not initialized!");
-
-  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -667,30 +634,26 @@ bool_t MeshIsProvisioned(void)
 /*************************************************************************************************/
 void MeshStartNode(void)
 {
-  meshElementId_t elemId;
-  meshSeqNumber_t seqNumberThresh;
+    meshElementId_t elemId;
+    meshSeqNumber_t seqNumberThresh;
 
-  if (meshCb.initialized == TRUE)
-  {
-    /* Restore SEQ number to stored threshold for each element. */
-    for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++)
-    {
-      /* Read the SEQ number threshold value. */
-      seqNumberThresh = MeshLocalCfgGetSeqNumberThresh(elemId);
+    if (meshCb.initialized == TRUE) {
+        /* Restore SEQ number to stored threshold for each element. */
+        for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++) {
+            /* Read the SEQ number threshold value. */
+            seqNumberThresh = MeshLocalCfgGetSeqNumberThresh(elemId);
 
-      /* Set the current SEQ number to the threshold value. */
-      (void) MeshLocalCfgSetSeqNumber(elemId, seqNumberThresh);
+            /* Set the current SEQ number to the threshold value. */
+            (void)MeshLocalCfgSetSeqNumber(elemId, seqNumberThresh);
+        }
+
+        /* Restore key material for keys stored in NVM. */
+        MeshSecRestoreAllKeyMaterial(meshSecAllKeyMaterialRestoreCback);
+
+        MESH_TRACE_INFO0("MESH API: Node Starting!");
+    } else {
+        MESH_TRACE_ERR0("MESH API: Start Node failed, Mesh Stack not initialized!");
     }
-
-    /* Restore key material for keys stored in NVM. */
-    MeshSecRestoreAllKeyMaterial(meshSecAllKeyMaterialRestoreCback);
-
-    MESH_TRACE_INFO0("MESH API: Node Starting!");
-  }
-  else
-  {
-    MESH_TRACE_ERR0("MESH API: Start Node failed, Mesh Stack not initialized!");
-  }
 }
 
 /*************************************************************************************************/
@@ -710,134 +673,117 @@ void MeshStartNode(void)
 void MeshSendMessage(const meshMsgInfo_t *pMsgInfo, const uint8_t *pMsgParam, uint16_t msgParamLen,
                      uint32_t rndDelayMsMin, uint32_t rndDelayMsMax)
 {
-  meshElement_t *pElement;
-  meshSendMessage_t *pMsg;
-  meshModelId_t mdlId;
-  uint16_t boundNetKeyIndex;
+    meshElement_t *pElement;
+    meshSendMessage_t *pMsg;
+    meshModelId_t mdlId;
+    uint16_t boundNetKeyIndex;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if ((pMsgInfo == NULL) || ((pMsgParam == NULL) && (msgParamLen > 0)))
-    {
-      MESH_TRACE_ERR0("MESH API: Send message failed, invalid parameters!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if ((pMsgInfo == NULL) || ((pMsgParam == NULL) && (msgParamLen > 0))) {
+            MESH_TRACE_ERR0("MESH API: Send message failed, invalid parameters!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+
+        /* Check if the source address belongs to an element. */
+        MeshLocalCfgGetElementFromId(pMsgInfo->elementId, (const meshElement_t **)&pElement);
+
+        if (pElement == NULL) {
+            MESH_TRACE_ERR0("MESH API: Send message failed, invalid Element ID!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+
+        /* Destination address validation. */
+        if (MESH_IS_ADDR_UNASSIGNED(pMsgInfo->dstAddr) ||
+            (MESH_IS_ADDR_VIRTUAL(pMsgInfo->dstAddr) && (pMsgInfo->pDstLabelUuid == NULL))) {
+            MESH_TRACE_ERR0("MESH API: Send message failed, invalid destination address");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+
+        /* Opcode validation. */
+        if (MESH_OPCODE_IS_VALID(pMsgInfo->opcode) == FALSE) {
+            MESH_TRACE_ERR0("MESH API: Send message failed, invalid Opcode!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+
+        /* Construct the generic model ID. */
+        mdlId.isSigModel = !MESH_OPCODE_IS_VENDOR(pMsgInfo->opcode);
+        if (mdlId.isSigModel) {
+            mdlId.modelId.sigModelId = pMsgInfo->modelId.sigModelId;
+        } else {
+            mdlId.modelId.vendorModelId = pMsgInfo->modelId.vendorModelId;
+        }
+
+        /* Lock scheduler. */
+        WsfTaskLock();
+
+        /* Validate AppKey Index. */
+        if (!MeshLocalCfgValidateModelToAppKeyBind(pMsgInfo->elementId, &mdlId,
+                                                   pMsgInfo->appKeyIndex)) {
+            /* Unlock scheduler. */
+            WsfTaskUnlock();
+            MESH_TRACE_ERR0("MESH API: Send message failed, AppKey not bound to model instance !");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+        /* Get Bound NetKey Index. */
+        if (MeshLocalCfgGetBoundNetKeyIndex(pMsgInfo->appKeyIndex, &boundNetKeyIndex) !=
+            MESH_SUCCESS) {
+            /* Unlock scheduler. */
+            WsfTaskUnlock();
+            MESH_TRACE_ERR0("MESH API: Send message failed, NetKey not bound to AppKey !");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+
+        /* Unlock scheduler. */
+        WsfTaskUnlock();
+
+        if (msgParamLen > (MESH_ACC_MAX_PDU_SIZE - MESH_OPCODE_SIZE(pMsgInfo->opcode))) {
+            MESH_TRACE_ERR0("MESH API: Send message failed, invalid Opcode size!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+
+        if (!MESH_TTL_IS_VALID(pMsgInfo->ttl)) {
+            MESH_TRACE_ERR0("MESH API: Send message failed, invalid TTL!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+
+        if ((rndDelayMsMin >= rndDelayMsMax) && (rndDelayMsMin > 0)) {
+            MESH_TRACE_ERR0("MESH API: Send message failed, invalid delay interval!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
+            return;
+        }
+
+        if ((rndDelayMsMin == 0) && (rndDelayMsMax == 0)) {
+            /* Allocate the Stack Message and additional size for message parameters. */
+            if ((pMsg = MeshAccAllocMsg(pMsgInfo, pMsgParam, msgParamLen, boundNetKeyIndex)) !=
+                NULL) {
+                /* Set event type. */
+                pMsg->hdr.event = MESH_MSG_API_SEND_MSG;
+
+                /* Send Message. */
+                WsfMsgSend(meshCb.handlerId, pMsg);
+
+                MESH_TRACE_INFO0("MESH API: Message sent to be processed.");
+                return;
+            } else {
+                MESH_TRACE_ERR0("MESH API: Send message failed, Mesh Stack out of memory!");
+                return;
+            }
+        } else {
+            /* Send Message to be queued by the Access Layer. */
+            MeshAccSendMessage(pMsgInfo, pMsgParam, msgParamLen, boundNetKeyIndex, rndDelayMsMin,
+                               rndDelayMsMax);
+        }
     }
 
-    /* Check if the source address belongs to an element. */
-    MeshLocalCfgGetElementFromId(pMsgInfo->elementId, (const meshElement_t **)&pElement);
-
-    if (pElement == NULL)
-    {
-      MESH_TRACE_ERR0("MESH API: Send message failed, invalid Element ID!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
-    }
-
-    /* Destination address validation. */
-    if (MESH_IS_ADDR_UNASSIGNED(pMsgInfo->dstAddr) ||
-        (MESH_IS_ADDR_VIRTUAL(pMsgInfo->dstAddr) && (pMsgInfo->pDstLabelUuid == NULL)))
-    {
-      MESH_TRACE_ERR0("MESH API: Send message failed, invalid destination address");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
-    }
-
-    /* Opcode validation. */
-    if (MESH_OPCODE_IS_VALID(pMsgInfo->opcode) == FALSE)
-    {
-      MESH_TRACE_ERR0("MESH API: Send message failed, invalid Opcode!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
-    }
-
-    /* Construct the generic model ID. */
-    mdlId.isSigModel = !MESH_OPCODE_IS_VENDOR(pMsgInfo->opcode);
-    if (mdlId.isSigModel)
-    {
-      mdlId.modelId.sigModelId = pMsgInfo->modelId.sigModelId;
-    }
-    else
-    {
-      mdlId.modelId.vendorModelId = pMsgInfo->modelId.vendorModelId;
-    }
-
-    /* Lock scheduler. */
-    WsfTaskLock();
-
-    /* Validate AppKey Index. */
-    if (!MeshLocalCfgValidateModelToAppKeyBind(pMsgInfo->elementId, &mdlId, pMsgInfo->appKeyIndex))
-    {
-      /* Unlock scheduler. */
-      WsfTaskUnlock();
-      MESH_TRACE_ERR0("MESH API: Send message failed, AppKey not bound to model instance !");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
-    }
-    /* Get Bound NetKey Index. */
-    if (MeshLocalCfgGetBoundNetKeyIndex(pMsgInfo->appKeyIndex, &boundNetKeyIndex) != MESH_SUCCESS)
-    {
-      /* Unlock scheduler. */
-      WsfTaskUnlock();
-      MESH_TRACE_ERR0("MESH API: Send message failed, NetKey not bound to AppKey !");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
-    }
-
-    /* Unlock scheduler. */
-    WsfTaskUnlock();
-
-    if (msgParamLen > (MESH_ACC_MAX_PDU_SIZE - MESH_OPCODE_SIZE(pMsgInfo->opcode)))
-    {
-      MESH_TRACE_ERR0("MESH API: Send message failed, invalid Opcode size!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
-    }
-
-    if (!MESH_TTL_IS_VALID(pMsgInfo->ttl))
-    {
-      MESH_TRACE_ERR0("MESH API: Send message failed, invalid TTL!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
-    }
-
-    if ((rndDelayMsMin >= rndDelayMsMax) && (rndDelayMsMin > 0))
-    {
-      MESH_TRACE_ERR0("MESH API: Send message failed, invalid delay interval!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_SEND_MSG_EVENT);
-      return;
-    }
-
-    if ((rndDelayMsMin == 0) && (rndDelayMsMax == 0))
-    {
-      /* Allocate the Stack Message and additional size for message parameters. */
-      if ((pMsg = MeshAccAllocMsg(pMsgInfo, pMsgParam, msgParamLen, boundNetKeyIndex)) != NULL)
-      {
-        /* Set event type. */
-        pMsg->hdr.event = MESH_MSG_API_SEND_MSG;
-
-        /* Send Message. */
-        WsfMsgSend(meshCb.handlerId, pMsg);
-
-        MESH_TRACE_INFO0("MESH API: Message sent to be processed.");
-        return;
-      }
-      else
-      {
-        MESH_TRACE_ERR0("MESH API: Send message failed, Mesh Stack out of memory!");
-        return;
-      }
-    }
-    else
-    {
-      /* Send Message to be queued by the Access Layer. */
-      MeshAccSendMessage(pMsgInfo, pMsgParam, msgParamLen, boundNetKeyIndex,
-                         rndDelayMsMin, rndDelayMsMax);
-    }
-
-  }
-
-  MESH_TRACE_ERR0("MESH API: Send message failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Send message failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -851,74 +797,66 @@ void MeshSendMessage(const meshMsgInfo_t *pMsgInfo, const uint8_t *pMsgParam, ui
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshPublishMessage(meshPubMsgInfo_t *pPubMsgInfo, const uint8_t *pMsgParam, uint16_t msgParamLen)
+void MeshPublishMessage(meshPubMsgInfo_t *pPubMsgInfo, const uint8_t *pMsgParam,
+                        uint16_t msgParamLen)
 {
-  meshPublishMessage_t *pMsg;
+    meshPublishMessage_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if ((pPubMsgInfo == NULL) || ((pMsgParam == NULL) && (msgParamLen > 0)))
-    {
-      MESH_TRACE_ERR0("MESH API: Publish message failed, invalid params!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_PUBLISH_MSG_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if ((pPubMsgInfo == NULL) || ((pMsgParam == NULL) && (msgParamLen > 0))) {
+            MESH_TRACE_ERR0("MESH API: Publish message failed, invalid params!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_PUBLISH_MSG_EVENT);
+            return;
+        }
+
+        /* Check if element identifier exceeds limit. */
+        if (pPubMsgInfo->elementId >= pMeshConfig->elementArrayLen) {
+            MESH_TRACE_ERR0("MESH API: Publish message failed, invalid Element ID!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_PUBLISH_MSG_EVENT);
+            return;
+        }
+
+        if (MESH_OPCODE_IS_VALID(pPubMsgInfo->opcode) == FALSE) {
+            MESH_TRACE_ERR0("MESH API: Publish message failed, invalid Opcode!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_PUBLISH_MSG_EVENT);
+            return;
+        }
+
+        if (msgParamLen > (MESH_ACC_MAX_PDU_SIZE - MESH_OPCODE_SIZE(pPubMsgInfo->opcode))) {
+            MESH_TRACE_ERR0("MESH API: Publish message failed, invalid Opcode size!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_PUBLISH_MSG_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message and additional size for message parameters. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshPublishMessage_t) + msgParamLen)) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_PUBLISH_MSG;
+
+            /* Copy the publish message identification data. */
+            memcpy(&(pMsg->pubMsgInfo), pPubMsgInfo, sizeof(meshPubMsgInfo_t));
+
+            /* Copy the message parameters at the end of the event structure. */
+            memcpy((uint8_t *)pMsg + sizeof(meshPublishMessage_t), pMsgParam, msgParamLen);
+
+            /* Add message parameters location address. */
+            pMsg->pMsgParam = (uint8_t *)((uint8_t *)pMsg + sizeof(meshPublishMessage_t));
+
+            /* Add message parameters length. */
+            pMsg->msgParamLen = msgParamLen;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+
+            MESH_TRACE_INFO0("MESH API: Publish message sent to be processed.");
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: Publish message failed, Mesh Stack out of memory!");
+            return;
+        }
     }
 
-    /* Check if element identifier exceeds limit. */
-    if (pPubMsgInfo->elementId >= pMeshConfig->elementArrayLen)
-    {
-      MESH_TRACE_ERR0("MESH API: Publish message failed, invalid Element ID!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_PUBLISH_MSG_EVENT);
-      return;
-    }
-
-    if (MESH_OPCODE_IS_VALID(pPubMsgInfo->opcode) == FALSE)
-    {
-      MESH_TRACE_ERR0("MESH API: Publish message failed, invalid Opcode!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_PUBLISH_MSG_EVENT);
-      return;
-    }
-
-    if (msgParamLen > (MESH_ACC_MAX_PDU_SIZE - MESH_OPCODE_SIZE(pPubMsgInfo->opcode)))
-    {
-      MESH_TRACE_ERR0("MESH API: Publish message failed, invalid Opcode size!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_PUBLISH_MSG_EVENT);
-      return;
-    }
-
-    /* Allocate the Stack Message and additional size for message parameters. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshPublishMessage_t) + msgParamLen)) != NULL)
-    {
-
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_PUBLISH_MSG;
-
-      /* Copy the publish message identification data. */
-      memcpy(&(pMsg->pubMsgInfo), pPubMsgInfo, sizeof(meshPubMsgInfo_t));
-
-      /* Copy the message parameters at the end of the event structure. */
-      memcpy((uint8_t *)pMsg + sizeof(meshPublishMessage_t), pMsgParam, msgParamLen);
-
-      /* Add message parameters location address. */
-      pMsg->pMsgParam = (uint8_t *)((uint8_t *)pMsg + sizeof(meshPublishMessage_t));
-
-      /* Add message parameters length. */
-      pMsg->msgParamLen = msgParamLen;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-
-      MESH_TRACE_INFO0("MESH API: Publish message sent to be processed.");
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: Publish message failed, Mesh Stack out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: Publish message failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Publish message failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -932,13 +870,12 @@ void MeshPublishMessage(meshPubMsgInfo_t *pPubMsgInfo, const uint8_t *pMsgParam,
 /*************************************************************************************************/
 void MeshRegisterGattProxyPduSendCback(meshGattProxyPduSendCback_t cback)
 {
-  if (cback != NULL)
-  {
-    WSF_CS_INIT(cs);
-    WSF_CS_ENTER(cs);
-    MeshGattRegisterPduSendCback(cback);
-    WSF_CS_EXIT(cs);
-  }
+    if (cback != NULL) {
+        WSF_CS_INIT(cs);
+        WSF_CS_ENTER(cs);
+        MeshGattRegisterPduSendCback(cback);
+        WSF_CS_EXIT(cs);
+    }
 }
 
 /*************************************************************************************************/
@@ -955,48 +892,42 @@ void MeshRegisterGattProxyPduSendCback(meshGattProxyPduSendCback_t cback)
 /*************************************************************************************************/
 void MeshAddGattProxyConn(meshGattProxyConnId_t connId, uint16_t maxProxyPdu)
 {
-  meshAddGattProxyConn_t *pMsg;
+    meshAddGattProxyConn_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if (MESH_GATT_PROXY_CONN_ID_IS_VALID(connId) == FALSE)
-    {
-      MESH_TRACE_ERR0("MESH API: Proxy conn add failed, invalid conn ID!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_CONN_ADD_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if (MESH_GATT_PROXY_CONN_ID_IS_VALID(connId) == FALSE) {
+            MESH_TRACE_ERR0("MESH API: Proxy conn add failed, invalid conn ID!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_CONN_ADD_EVENT);
+            return;
+        }
+
+        if (maxProxyPdu < MESH_GATT_PROXY_PDU_MIN_VALUE) {
+            MESH_TRACE_ERR0("MESH API: Proxy conn add failed, invalid max proxy PDU !");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_CONN_ADD_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshAddGattProxyConn_t))) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_ADD_GATT_CONN;
+
+            /* Add Connection ID. */
+            pMsg->connId = connId;
+
+            /* Add Maximum Proxy PDU size. */
+            pMsg->maxProxyPdu = maxProxyPdu;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: Proxy conn add failed. Out of memory!");
+            return;
+        }
     }
 
-    if (maxProxyPdu < MESH_GATT_PROXY_PDU_MIN_VALUE)
-    {
-      MESH_TRACE_ERR0("MESH API: Proxy conn add failed, invalid max proxy PDU !");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_CONN_ADD_EVENT);
-      return;
-    }
-
-    /* Allocate the Stack Message. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshAddGattProxyConn_t))) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_ADD_GATT_CONN;
-
-      /* Add Connection ID. */
-      pMsg->connId = connId;
-
-      /* Add Maximum Proxy PDU size. */
-      pMsg->maxProxyPdu = maxProxyPdu;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: Proxy conn add failed. Out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: Proxy conn add failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Proxy conn add failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1012,38 +943,33 @@ void MeshAddGattProxyConn(meshGattProxyConnId_t connId, uint16_t maxProxyPdu)
 /*************************************************************************************************/
 void MeshRemoveGattProxyConn(meshGattProxyConnId_t connId)
 {
-  meshRemoveGattProxyConn_t *pMsg;
+    meshRemoveGattProxyConn_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if (MESH_GATT_PROXY_CONN_ID_IS_VALID(connId) == FALSE)
-    {
-      MESH_TRACE_ERR0("MESH API: Proxy conn remove failed, invalid conn ID!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_CONN_REMOVE_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if (MESH_GATT_PROXY_CONN_ID_IS_VALID(connId) == FALSE) {
+            MESH_TRACE_ERR0("MESH API: Proxy conn remove failed, invalid conn ID!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_CONN_REMOVE_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshRemoveGattProxyConn_t))) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_REM_GATT_CONN;
+
+            /* Add Connection ID. */
+            pMsg->connId = connId;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: Proxy conn remove failed. Out of memory!");
+            return;
+        }
     }
 
-    /* Allocate the Stack Message. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshRemoveGattProxyConn_t))) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_REM_GATT_CONN;
-
-      /* Add Connection ID. */
-      pMsg->connId = connId;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: Proxy conn remove failed. Out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: Proxy conn remove failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Proxy conn remove failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1055,7 +981,7 @@ void MeshRemoveGattProxyConn(meshGattProxyConnId_t connId)
 /*************************************************************************************************/
 bool_t MeshIsGattProxyEnabled(void)
 {
-  return (MeshLocalCfgGetGattProxyState() == MESH_GATT_PROXY_FEATURE_ENABLED);
+    return (MeshLocalCfgGetGattProxyState() == MESH_GATT_PROXY_FEATURE_ENABLED);
 }
 
 /*************************************************************************************************/
@@ -1073,53 +999,49 @@ bool_t MeshIsGattProxyEnabled(void)
 void MeshProcessGattProxyPdu(meshGattProxyConnId_t connId, const uint8_t *pProxyPdu,
                              uint16_t proxyPduLen)
 {
-  meshProcessGattProxyPdu_t *pMsg;
+    meshProcessGattProxyPdu_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if (pProxyPdu == NULL)
-    {
-      MESH_TRACE_ERR0("MESH API: Process proxy PDU failed, invalid PDU!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_PROCESS_PROXY_PDU_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if (pProxyPdu == NULL) {
+            MESH_TRACE_ERR0("MESH API: Process proxy PDU failed, invalid PDU!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM,
+                          MESH_CORE_GATT_PROCESS_PROXY_PDU_EVENT);
+            return;
+        }
+
+        if (MESH_GATT_PROXY_CONN_ID_IS_VALID(connId) == FALSE) {
+            MESH_TRACE_ERR0("MESH API: Process proxy PDU failed, invalid params!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM,
+                          MESH_CORE_GATT_PROCESS_PROXY_PDU_EVENT);
+            return;
+        }
+
+        if ((pMsg = WsfMsgAlloc(sizeof(meshProcessGattProxyPdu_t) + proxyPduLen)) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_PROC_GATT_MSG;
+
+            /* Add connection ID. */
+            pMsg->connId = connId;
+
+            /* Copy the PDU at the end of the stack message. */
+            memcpy((uint8_t *)pMsg + sizeof(meshProcessGattProxyPdu_t), pProxyPdu, proxyPduLen);
+
+            /* Add Proxy PDU location address. */
+            pMsg->pProxyPdu = (uint8_t *)((uint8_t *)pMsg + sizeof(meshProcessGattProxyPdu_t));
+
+            /* Add Proxy PDU length. */
+            pMsg->proxyPduLen = proxyPduLen;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: Process proxy PDU failed. Out of memory!");
+            return;
+        }
     }
 
-    if (MESH_GATT_PROXY_CONN_ID_IS_VALID(connId) == FALSE)
-    {
-      MESH_TRACE_ERR0("MESH API: Process proxy PDU failed, invalid params!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_PROCESS_PROXY_PDU_EVENT);
-      return;
-    }
-
-    if ((pMsg = WsfMsgAlloc(sizeof(meshProcessGattProxyPdu_t) + proxyPduLen)) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_PROC_GATT_MSG;
-
-      /* Add connection ID. */
-      pMsg->connId = connId;
-
-      /* Copy the PDU at the end of the stack message. */
-      memcpy((uint8_t *)pMsg + sizeof(meshProcessGattProxyPdu_t), pProxyPdu, proxyPduLen);
-
-      /* Add Proxy PDU location address. */
-      pMsg->pProxyPdu = (uint8_t *)((uint8_t *)pMsg + sizeof(meshProcessGattProxyPdu_t));
-
-      /* Add Proxy PDU length. */
-      pMsg->proxyPduLen = proxyPduLen;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: Process proxy PDU failed. Out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: Process proxy PDU failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Process proxy PDU failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1134,38 +1056,33 @@ void MeshProcessGattProxyPdu(meshGattProxyConnId_t connId, const uint8_t *pProxy
 /*************************************************************************************************/
 void MeshSignalGattProxyIfRdy(meshGattProxyConnId_t connId)
 {
-  meshSignalGattProxyIfRdy_t *pMsg;
+    meshSignalGattProxyIfRdy_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if (MESH_GATT_PROXY_CONN_ID_IS_VALID(connId) == FALSE)
-    {
-      MESH_TRACE_ERR0("MESH API: Signal fail, invalid GATT interface!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_SIGNAL_IF_RDY_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if (MESH_GATT_PROXY_CONN_ID_IS_VALID(connId) == FALSE) {
+            MESH_TRACE_ERR0("MESH API: Signal fail, invalid GATT interface!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_GATT_SIGNAL_IF_RDY_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshSignalGattProxyIfRdy_t))) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_SGN_GATT_IF_RDY;
+
+            /* Add Connection ID. */
+            pMsg->connId = connId;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: GATT interface signal fail. Out of memory!");
+            return;
+        }
     }
 
-    /* Allocate the Stack Message. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshSignalGattProxyIfRdy_t))) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_SGN_GATT_IF_RDY;
-
-      /* Add Connection ID. */
-      pMsg->connId = connId;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: GATT interface signal fail. Out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: GATT interface signal fail, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: GATT interface signal fail, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1179,13 +1096,12 @@ void MeshSignalGattProxyIfRdy(meshGattProxyConnId_t connId)
 /*************************************************************************************************/
 void MeshRegisterAdvIfPduSendCback(meshAdvPduSendCback_t cback)
 {
-  if (cback != NULL)
-  {
-    WSF_CS_INIT(cs);
-    WSF_CS_ENTER(cs);
-    MeshAdvRegisterPduSendCback(cback);
-    WSF_CS_EXIT(cs);
-  }
+    if (cback != NULL) {
+        WSF_CS_INIT(cs);
+        WSF_CS_ENTER(cs);
+        MeshAdvRegisterPduSendCback(cback);
+        WSF_CS_EXIT(cs);
+    }
 }
 
 /*************************************************************************************************/
@@ -1199,38 +1115,33 @@ void MeshRegisterAdvIfPduSendCback(meshAdvPduSendCback_t cback)
 /*************************************************************************************************/
 void MeshAddAdvIf(meshAdvIfId_t advIfId)
 {
-  meshAddAdvIf_t *pMsg;
+    meshAddAdvIf_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if ((MESH_ADV_IF_ID_IS_VALID(advIfId) == FALSE))
-    {
-      MESH_TRACE_ERR0("MESH API: Add ADV interface failed, invalid params!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_IF_ADD_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if ((MESH_ADV_IF_ID_IS_VALID(advIfId) == FALSE)) {
+            MESH_TRACE_ERR0("MESH API: Add ADV interface failed, invalid params!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_IF_ADD_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshAddAdvIf_t))) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_ADD_ADV_IF;
+
+            /* Add ADV Interface ID. */
+            pMsg->advIfId = advIfId;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: Add ADV interface failed. Out of memory!");
+            return;
+        }
     }
 
-    /* Allocate the Stack Message. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshAddAdvIf_t))) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_ADD_ADV_IF;
-
-      /* Add ADV Interface ID. */
-      pMsg->advIfId = advIfId;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: Add ADV interface failed. Out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: Add ADV interface failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Add ADV interface failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1244,38 +1155,33 @@ void MeshAddAdvIf(meshAdvIfId_t advIfId)
 /*************************************************************************************************/
 void MeshRemoveAdvIf(meshAdvIfId_t advIfId)
 {
-  meshRemoveAdvIf_t *pMsg;
+    meshRemoveAdvIf_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if (MESH_ADV_IF_ID_IS_VALID(advIfId) == FALSE)
-    {
-      MESH_TRACE_ERR0("MESH API: Remove ADV interface failed, invalid params!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_IF_REMOVE_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if (MESH_ADV_IF_ID_IS_VALID(advIfId) == FALSE) {
+            MESH_TRACE_ERR0("MESH API: Remove ADV interface failed, invalid params!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_IF_REMOVE_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshRemoveAdvIf_t))) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_REM_ADV_IF;
+
+            /* Add ADV Interface ID. */
+            pMsg->advIfId = advIfId;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: Remove ADV interface failed. Out of memory!");
+            return;
+        }
     }
 
-    /* Allocate the Stack Message. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshRemoveAdvIf_t))) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_REM_ADV_IF;
-
-      /* Add ADV Interface ID. */
-      pMsg->advIfId = advIfId;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: Remove ADV interface failed. Out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: Remove ADV interface failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Remove ADV interface failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1292,55 +1198,49 @@ void MeshRemoveAdvIf(meshAdvIfId_t advIfId)
 /*************************************************************************************************/
 void MeshProcessAdvPdu(meshAdvIfId_t advIfId, const uint8_t *pAdvPdu, uint8_t advPduLen)
 {
-  meshProcessAdvPdu_t *pMsg;
+    meshProcessAdvPdu_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if ((pAdvPdu == NULL) || (MESH_ADV_IF_ID_IS_VALID(advIfId) == FALSE))
-    {
-      MESH_TRACE_ERR0("MESH API: Process ADV PDU failed, invalid params!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_PROCESS_PDU_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if ((pAdvPdu == NULL) || (MESH_ADV_IF_ID_IS_VALID(advIfId) == FALSE)) {
+            MESH_TRACE_ERR0("MESH API: Process ADV PDU failed, invalid params!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_PROCESS_PDU_EVENT);
+            return;
+        }
+
+        if ((advPduLen < MESH_ADV_IF_PDU_MIN_VALUE) || (advPduLen > MESH_ADV_IF_PDU_MAX_VALUE)) {
+            MESH_TRACE_ERR0("MESH API: Process ADV PDU failed, invalid PDU length!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_PROCESS_PDU_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message and aditional size for message parameters. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshProcessAdvPdu_t) + advPduLen)) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_PROC_ADV_MSG;
+
+            /* Add ADV Interface ID. */
+            pMsg->advIfId = advIfId;
+
+            /* Copy the PDU at the end of the stack message. */
+            memcpy((uint8_t *)pMsg + sizeof(meshProcessAdvPdu_t), pAdvPdu, advPduLen);
+
+            /* Add ADV PDU location address. */
+            pMsg->pAdvPdu = (uint8_t *)((uint8_t *)pMsg + sizeof(meshProcessAdvPdu_t));
+
+            /* Add ADV PDU length. */
+            pMsg->advPduLen = advPduLen;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: Process ADV PDU failed. Out of memory!");
+            return;
+        }
     }
 
-    if ((advPduLen < MESH_ADV_IF_PDU_MIN_VALUE) || (advPduLen > MESH_ADV_IF_PDU_MAX_VALUE))
-    {
-      MESH_TRACE_ERR0("MESH API: Process ADV PDU failed, invalid PDU length!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_PROCESS_PDU_EVENT);
-      return;
-    }
-
-    /* Allocate the Stack Message and aditional size for message parameters. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshProcessAdvPdu_t) + advPduLen)) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_PROC_ADV_MSG;
-
-      /* Add ADV Interface ID. */
-      pMsg->advIfId = advIfId;
-
-      /* Copy the PDU at the end of the stack message. */
-      memcpy((uint8_t *)pMsg + sizeof(meshProcessAdvPdu_t), pAdvPdu, advPduLen);
-
-      /* Add ADV PDU location address. */
-      pMsg->pAdvPdu = (uint8_t *)((uint8_t *)pMsg + sizeof(meshProcessAdvPdu_t));
-
-      /* Add ADV PDU length. */
-      pMsg->advPduLen = advPduLen;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: Process ADV PDU failed. Out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: Process ADV PDU failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Process ADV PDU failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1354,38 +1254,33 @@ void MeshProcessAdvPdu(meshAdvIfId_t advIfId, const uint8_t *pAdvPdu, uint8_t ad
 /*************************************************************************************************/
 void MeshSignalAdvIfRdy(meshAdvIfId_t advIfId)
 {
-  meshSignalAdvIfRdy_t *pMsg;
+    meshSignalAdvIfRdy_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if (MESH_ADV_IF_ID_IS_VALID(advIfId) == FALSE)
-    {
-      MESH_TRACE_ERR0("MESH API: Signal fail, invalid ADV interface!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_SIGNAL_IF_RDY_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if (MESH_ADV_IF_ID_IS_VALID(advIfId) == FALSE) {
+            MESH_TRACE_ERR0("MESH API: Signal fail, invalid ADV interface!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ADV_SIGNAL_IF_RDY_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshSignalAdvIfRdy_t))) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_SGN_ADV_IF_RDY;
+
+            /* Add ADV Interface ID. */
+            pMsg->advIfId = advIfId;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+            return;
+        } else {
+            MESH_TRACE_ERR0("MESH API: ADV interface signal fail. Out of memory!");
+            return;
+        }
     }
 
-    /* Allocate the Stack Message. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshSignalAdvIfRdy_t))) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_SGN_ADV_IF_RDY;
-
-      /* Add ADV Interface ID. */
-      pMsg->advIfId = advIfId;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-      return;
-    }
-    else
-    {
-      MESH_TRACE_ERR0("MESH API: ADV interface signal fail. Out of memory!");
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: ADV interface signal fail, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: ADV interface signal fail, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1400,21 +1295,19 @@ void MeshSignalAdvIfRdy(meshAdvIfId_t advIfId)
 /*************************************************************************************************/
 void MeshHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  meshWsfMsgHandlerCback_t msgHandlerCback;
+    meshWsfMsgHandlerCback_t msgHandlerCback;
 
-  /* Handle message. */
-  if (pMsg != NULL)
-  {
-    /* Select handler. */
-    msgHandlerCback = meshWsfMsgToCback(pMsg);
+    /* Handle message. */
+    if (pMsg != NULL) {
+        /* Select handler. */
+        msgHandlerCback = meshWsfMsgToCback(pMsg);
 
-    /* Invoke handler. */
-    msgHandlerCback(pMsg);
-  }
-  /* Handle events. */
-  else if (event)
-  {
-  }
+        /* Invoke handler. */
+        msgHandlerCback(pMsg);
+    }
+    /* Handle events. */
+    else if (event) {
+    }
 }
 
 /*************************************************************************************************/
@@ -1427,78 +1320,73 @@ void MeshHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshLoadPrvData(const meshPrvData_t* pPrvData)
+void MeshLoadPrvData(const meshPrvData_t *pPrvData)
 {
-  wsfMsgHdr_t *pMsg;
-  meshLocalCfgRetVal_t cfgRetVal;
+    wsfMsgHdr_t *pMsg;
+    meshLocalCfgRetVal_t cfgRetVal;
 
-  if (meshCb.initialized == TRUE)
-  {
-      if (pPrvData->pDevKey == NULL)
-      {
-        MESH_TRACE_ERR0("MESH API: Provisioning load fail. DevKey pointer NULL!");
+    if (meshCb.initialized == TRUE) {
+        if (pPrvData->pDevKey == NULL) {
+            MESH_TRACE_ERR0("MESH API: Provisioning load fail. DevKey pointer NULL!");
+
+            return;
+        }
+
+        if (pPrvData->pNetKey == NULL) {
+            MESH_TRACE_ERR0("MESH API: Provisioning load fail. NetKey pointer NULL!");
+
+            return;
+        }
+
+        /* Assign a unicast address to the primary element. */
+        cfgRetVal = MeshLocalCfgSetPrimaryNodeAddress(pPrvData->primaryElementAddr);
+
+        if (cfgRetVal != MESH_SUCCESS) {
+            MESH_TRACE_WARN0(
+                "MESH API: Provisioning load fail. Unable to set Primary Element Address!");
+
+            return;
+        }
+
+        /* Set DevKey. */
+        MeshLocalCfgSetDevKey(pPrvData->pDevKey);
+
+        /* Set the Network Key and the Network Key Index. */
+        cfgRetVal = MeshLocalCfgSetNetKey(pPrvData->netKeyIndex, pPrvData->pNetKey);
+
+        if (cfgRetVal != MESH_SUCCESS) {
+            MESH_TRACE_ERR0("MESH API: Provisioning load fail. Unable to set Network Key!");
+
+            return;
+        }
+
+        /* Set the IV index. */
+        MeshLocalCfgSetIvIndex(pPrvData->ivIndex);
+
+        /* Set the IV Update procedure state. */
+        MeshLocalCfgSetIvUpdateInProgress((bool_t)(pPrvData->flags & 0x02));
+
+        /* Set the Key Refresh Phase. */
+        MeshLocalCfgSetKeyRefreshState(pPrvData->netKeyIndex, (bool_t)(pPrvData->flags & 0x01) ?
+                                                                  MESH_KEY_REFRESH_SECOND_PHASE :
+                                                                  MESH_KEY_REFRESH_NOT_ACTIVE);
+
+        if (pPrvData->flags & 0x01) {
+            MeshLocalCfgUpdateNetKey(pPrvData->netKeyIndex, pPrvData->pNetKey);
+        }
+
+        MESH_TRACE_INFO0("MESH API: Provisioning load success.");
+
+        /* Send message to Network Management. */
+        if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL) {
+            pMsg->event = MESH_NWK_MGMT_MSG_PRV_COMPLETE;
+            WsfMsgSend(meshCb.handlerId, pMsg);
+        }
 
         return;
-      }
+    }
 
-      if (pPrvData->pNetKey == NULL)
-      {
-        MESH_TRACE_ERR0("MESH API: Provisioning load fail. NetKey pointer NULL!");
-
-        return;
-      }
-
-      /* Assign a unicast address to the primary element. */
-      cfgRetVal = MeshLocalCfgSetPrimaryNodeAddress(pPrvData->primaryElementAddr);
-
-      if (cfgRetVal != MESH_SUCCESS)
-      {
-        MESH_TRACE_WARN0("MESH API: Provisioning load fail. Unable to set Primary Element Address!");
-
-        return;
-      }
-
-      /* Set DevKey. */
-      MeshLocalCfgSetDevKey(pPrvData->pDevKey);
-
-      /* Set the Network Key and the Network Key Index. */
-      cfgRetVal = MeshLocalCfgSetNetKey(pPrvData->netKeyIndex, pPrvData->pNetKey);
-
-      if (cfgRetVal != MESH_SUCCESS)
-      {
-        MESH_TRACE_ERR0("MESH API: Provisioning load fail. Unable to set Network Key!");
-
-        return;
-     }
-
-      /* Set the IV index. */
-      MeshLocalCfgSetIvIndex(pPrvData->ivIndex);
-
-      /* Set the IV Update procedure state. */
-      MeshLocalCfgSetIvUpdateInProgress((bool_t)(pPrvData->flags & 0x02));
-
-      /* Set the Key Refresh Phase. */
-      MeshLocalCfgSetKeyRefreshState(pPrvData->netKeyIndex, (bool_t)(pPrvData->flags & 0x01) ?
-                                     MESH_KEY_REFRESH_SECOND_PHASE : MESH_KEY_REFRESH_NOT_ACTIVE);
-
-      if (pPrvData->flags & 0x01)
-      {
-        MeshLocalCfgUpdateNetKey(pPrvData->netKeyIndex, pPrvData->pNetKey);
-      }
-
-      MESH_TRACE_INFO0("MESH API: Provisioning load success.");
-
-      /* Send message to Network Management. */
-      if((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t)))!= NULL)
-      {
-        pMsg->event = MESH_NWK_MGMT_MSG_PRV_COMPLETE;
-        WsfMsgSend(meshCb.handlerId, pMsg);
-      }
-
-      return;
-  }
-
-  MESH_TRACE_ERR0("MESH API: Provisioning load fail. Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Provisioning load fail. Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1513,38 +1401,33 @@ void MeshLoadPrvData(const meshPrvData_t* pPrvData)
 /*************************************************************************************************/
 void MeshAttentionSet(meshElementId_t elemId, uint8_t attTimeSec)
 {
-  meshAttentionSet_t *pMsg;
+    meshAttentionSet_t *pMsg;
 
-  if (meshCb.initialized == TRUE)
-  {
-    if (elemId >= pMeshConfig->elementArrayLen)
-    {
-      MESH_TRACE_ERR0("MESH API: Attention Set failed, invalid params!");
-      meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ATTENTION_SET_EVENT);
-      return;
+    if (meshCb.initialized == TRUE) {
+        if (elemId >= pMeshConfig->elementArrayLen) {
+            MESH_TRACE_ERR0("MESH API: Attention Set failed, invalid params!");
+            meshExecCback(MESH_CORE_EVENT, MESH_INVALID_PARAM, MESH_CORE_ATTENTION_SET_EVENT);
+            return;
+        }
+
+        /* Allocate the Stack Message. */
+        if ((pMsg = WsfMsgAlloc(sizeof(meshAttentionSet_t))) != NULL) {
+            /* Set event type. */
+            pMsg->hdr.event = MESH_MSG_API_ATT_SET;
+
+            /* Set event message parameters. */
+            pMsg->elemId = elemId;
+            pMsg->attTimeSec = attTimeSec;
+
+            /* Send Message. */
+            WsfMsgSend(meshCb.handlerId, pMsg);
+            return;
+        } else {
+            return;
+        }
     }
 
-    /* Allocate the Stack Message. */
-    if ((pMsg = WsfMsgAlloc(sizeof(meshAttentionSet_t))) != NULL)
-    {
-      /* Set event type. */
-      pMsg->hdr.event = MESH_MSG_API_ATT_SET;
-
-      /* Set event message parameters. */
-      pMsg->elemId     = elemId;
-      pMsg->attTimeSec = attTimeSec;
-
-      /* Send Message. */
-      WsfMsgSend(meshCb.handlerId, pMsg);
-      return;
-    }
-    else
-    {
-      return;
-    }
-  }
-
-  MESH_TRACE_ERR0("MESH API: Attention set failed, Mesh Stack not initialized!");
+    MESH_TRACE_ERR0("MESH API: Attention set failed, Mesh Stack not initialized!");
 }
 
 /*************************************************************************************************/
@@ -1558,20 +1441,20 @@ void MeshAttentionSet(meshElementId_t elemId, uint8_t attTimeSec)
 /*************************************************************************************************/
 uint8_t MeshAttentionGet(meshElementId_t elemId)
 {
-  uint8_t result = 0;
+    uint8_t result = 0;
 
-  /* Initialize critical section. */
-  WSF_CS_INIT(cs);
-  /* Enter critical section. */
-  WSF_CS_ENTER(cs);
+    /* Initialize critical section. */
+    WSF_CS_INIT(cs);
+    /* Enter critical section. */
+    WSF_CS_ENTER(cs);
 
-  /* Retrieve value. */
-  result = MeshLocalCfgGetAttentionTimer(elemId);
+    /* Retrieve value. */
+    result = MeshLocalCfgGetAttentionTimer(elemId);
 
-  /* Exit critical section. */
-  WSF_CS_EXIT(cs);
+    /* Exit critical section. */
+    WSF_CS_EXIT(cs);
 
-  return result;
+    return result;
 }
 
 /*************************************************************************************************/
@@ -1585,19 +1468,16 @@ uint8_t MeshAttentionGet(meshElementId_t elemId)
 /*************************************************************************************************/
 uint16_t MeshSizeOfEvt(meshEvt_t *pMeshEvt)
 {
-  uint16_t len;
+    uint16_t len;
 
-  /* If a valid DM event ID */
-  if ((pMeshEvt->hdr.event == MESH_CORE_EVENT) && (pMeshEvt->hdr.param <= MESH_CORE_MAX_EVENT))
-  {
-    len = meshEvtCbackLen[pMeshEvt->hdr.param];
-  }
-  else
-  {
-    len = sizeof(wsfMsgHdr_t);
-  }
+    /* If a valid DM event ID */
+    if ((pMeshEvt->hdr.event == MESH_CORE_EVENT) && (pMeshEvt->hdr.param <= MESH_CORE_MAX_EVENT)) {
+        len = meshEvtCbackLen[pMeshEvt->hdr.param];
+    } else {
+        len = sizeof(wsfMsgHdr_t);
+    }
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -1609,6 +1489,6 @@ uint16_t MeshSizeOfEvt(meshEvt_t *pMeshEvt)
 /*************************************************************************************************/
 void MeshGattProxyInit(void)
 {
-  /* Initialize GATT */
-  MeshBrEnableGatt();
+    /* Initialize GATT */
+    MeshBrEnableGatt();
 }

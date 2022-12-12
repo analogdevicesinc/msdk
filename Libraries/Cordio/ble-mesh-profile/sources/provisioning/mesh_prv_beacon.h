@@ -27,8 +27,7 @@
 #define MESH_PRV_BEACON_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -57,10 +56,9 @@ void MeshPrvBeaconInit(void);
  *
  *  \return    None.
  */
- /*************************************************************************************************/
+/*************************************************************************************************/
 void MeshPrvBeaconStart(meshBrInterfaceId_t brIfId, uint32_t beaconInterval, const uint8_t *pUuid,
-                        uint16_t oobInfoSrc, const uint8_t *pUriData,
-                        uint8_t uriLen);
+                        uint16_t oobInfoSrc, const uint8_t *pUriData, uint8_t uriLen);
 
 /*************************************************************************************************/
 /*!

@@ -38,7 +38,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Conflict action call signature. */
-typedef BbOpDesc_t*(*BbConflictAct_t)(BbOpDesc_t *pNewBod, BbOpDesc_t *pExistBod);
+typedef BbOpDesc_t *(*BbConflictAct_t)(BbOpDesc_t *pNewBod, BbOpDesc_t *pExistBod);
 
 /**************************************************************************************************
   Function Declarations

@@ -38,7 +38,7 @@
   Global Variables
 **************************************************************************************************/
 
-BbBleScanPktStats_t bbScanStats;          /*!< Scan packet statistics. */
+BbBleScanPktStats_t bbScanStats; /*!< Scan packet statistics. */
 
 extern const BbRtCfg_t *pBbRtCfg;
 
@@ -59,65 +59,61 @@ extern const BbRtCfg_t *pBbRtCfg;
  *      - maximum scan period
  */
 /*************************************************************************************************/
-static uint32_t bbBleCalcScanDurationUsec(BbOpDesc_t *pBod, BbBleMstAdvEvent_t *pScan, uint32_t refTime, uint32_t setupUsec)
+static uint32_t bbBleCalcScanDurationUsec(BbOpDesc_t *pBod, BbBleMstAdvEvent_t *pScan,
+                                          uint32_t refTime, uint32_t setupUsec)
 {
-  BbBleData_t * const pBle = pBod->prot.pBle;
+    BbBleData_t *const pBle = pBod->prot.pBle;
 
-  WSF_ASSERT(pBod->maxDurUsec > 0);
+    WSF_ASSERT(pBod->maxDurUsec > 0);
 
-  /* Guard time at the end of a scan window to the next BOD. */
-  /* Backoff for RX of preamble and AA which are compensated in BB driver. */
-  uint32_t totalGapUsec = BbGetSchSetupDelayUs() + setupUsec;
+    /* Guard time at the end of a scan window to the next BOD. */
+    /* Backoff for RX of preamble and AA which are compensated in BB driver. */
+    uint32_t totalGapUsec = BbGetSchSetupDelayUs() + setupUsec;
 
-  switch (pBle->chan.rxPhy)
-  {
+    switch (pBle->chan.rxPhy) {
     case BB_PHY_BLE_1M:
-      totalGapUsec += (LL_BLE_US_PER_BYTE_1M * LL_PREAMBLE_LEN_1M) + \
-                      (LL_BLE_US_PER_BYTE_1M * LL_AA_LEN);
-      break;
+        totalGapUsec +=
+            (LL_BLE_US_PER_BYTE_1M * LL_PREAMBLE_LEN_1M) + (LL_BLE_US_PER_BYTE_1M * LL_AA_LEN);
+        break;
     case BB_PHY_BLE_2M:
-      totalGapUsec += (LL_BLE_US_PER_BYTE_2M * LL_PREAMBLE_LEN_2M) + \
-                      (LL_BLE_US_PER_BYTE_2M * LL_AA_LEN);
-      break;
+        totalGapUsec +=
+            (LL_BLE_US_PER_BYTE_2M * LL_PREAMBLE_LEN_2M) + (LL_BLE_US_PER_BYTE_2M * LL_AA_LEN);
+        break;
     case BB_PHY_BLE_CODED:
-      totalGapUsec += (LL_BLE_US_PER_BIT_CODED_S8 * LL_PREAMBLE_LEN_CODED_BITS) + \
-                      (LL_BLE_US_PER_BYTE_CODED_S8 * LL_AA_LEN);
-      break;
+        totalGapUsec += (LL_BLE_US_PER_BIT_CODED_S8 * LL_PREAMBLE_LEN_CODED_BITS) +
+                        (LL_BLE_US_PER_BYTE_CODED_S8 * LL_AA_LEN);
+        break;
     default:
-      break;
-  }
-
-  if ((pScan->elapsedUsec + totalGapUsec) > pBod->maxDurUsec)
-  {
-    /* Scan window completed. */
-    pScan->elapsedUsec = pBod->maxDurUsec;
-    return 0;
-  }
-
-  uint32_t remTimeUsec = pBod->maxDurUsec - pScan->elapsedUsec;
-
-  if (pBod->pNext)
-  {
-
-    uint32_t timeToNextOpUsec = BbGetTargetTimeDelta(pBod->pNext->dueUsec, refTime);
-
-    /* Limit scanning to the edge of neighboring BOD. */
-    remTimeUsec = WSF_MIN(remTimeUsec, timeToNextOpUsec);
-
-    if (remTimeUsec < totalGapUsec)
-    {
-      pScan->elapsedUsec += remTimeUsec;
-      return 0;
+        break;
     }
-  }
 
-  /* Reduce time such that advertising exchange can complete before end of the receive window. */
-  remTimeUsec -= totalGapUsec;
+    if ((pScan->elapsedUsec + totalGapUsec) > pBod->maxDurUsec) {
+        /* Scan window completed. */
+        pScan->elapsedUsec = pBod->maxDurUsec;
+        return 0;
+    }
 
-  /* Limit scanning to the maximum scan period. */
-  remTimeUsec = WSF_MIN(remTimeUsec, (pBbRtCfg->maxScanPeriodMs * 1000));
+    uint32_t remTimeUsec = pBod->maxDurUsec - pScan->elapsedUsec;
 
-  return remTimeUsec;
+    if (pBod->pNext) {
+        uint32_t timeToNextOpUsec = BbGetTargetTimeDelta(pBod->pNext->dueUsec, refTime);
+
+        /* Limit scanning to the edge of neighboring BOD. */
+        remTimeUsec = WSF_MIN(remTimeUsec, timeToNextOpUsec);
+
+        if (remTimeUsec < totalGapUsec) {
+            pScan->elapsedUsec += remTimeUsec;
+            return 0;
+        }
+    }
+
+    /* Reduce time such that advertising exchange can complete before end of the receive window. */
+    remTimeUsec -= totalGapUsec;
+
+    /* Limit scanning to the maximum scan period. */
+    remTimeUsec = WSF_MIN(remTimeUsec, (pBbRtCfg->maxScanPeriodMs * 1000));
+
+    return remTimeUsec;
 }
 
 /*************************************************************************************************/
@@ -134,40 +130,36 @@ static uint32_t bbBleCalcScanDurationUsec(BbOpDesc_t *pBod, BbBleMstAdvEvent_t *
 /*************************************************************************************************/
 static bool_t bbContScanOp(BbOpDesc_t *pBod, BbBleMstAdvEvent_t *pScan)
 {
-  if (BbGetBodTerminateFlag())
-  {
-    /* Client terminated. */
-    return TRUE;
-  }
+    if (BbGetBodTerminateFlag()) {
+        /* Client terminated. */
+        return TRUE;
+    }
 
-  uint32_t curTime = PalBbGetCurrentTime();
-  pScan->elapsedUsec += BbGetTargetTimeDelta(curTime, bbBleCb.lastScanStartUsec);
-  bbBleCb.lastScanStartUsec = curTime;
+    uint32_t curTime = PalBbGetCurrentTime();
+    pScan->elapsedUsec += BbGetTargetTimeDelta(curTime, bbBleCb.lastScanStartUsec);
+    bbBleCb.lastScanStartUsec = curTime;
 
-  uint32_t scanDurUsec;
+    uint32_t scanDurUsec;
 
-  if ((scanDurUsec = bbBleCalcScanDurationUsec(pBod, pScan, curTime, BbGetSchSetupDelayUs())) == 0)
-  {
-    return TRUE;
-  }
+    if ((scanDurUsec = bbBleCalcScanDurationUsec(pBod, pScan, curTime, BbGetSchSetupDelayUs())) ==
+        0) {
+        return TRUE;
+    }
 
-  bbBleCb.bbParam.dueUsec = BbAdjustTime(bbBleCb.lastScanStartUsec + BbGetSchSetupDelayUs());
-  bbBleCb.bbParam.rxTimeoutUsec = scanDurUsec;
-  PalBbBleSetDataParams(&bbBleCb.bbParam);
+    bbBleCb.bbParam.dueUsec = BbAdjustTime(bbBleCb.lastScanStartUsec + BbGetSchSetupDelayUs());
+    bbBleCb.bbParam.rxTimeoutUsec = scanDurUsec;
+    PalBbBleSetDataParams(&bbBleCb.bbParam);
 
-  bbBleCb.evtState = BB_EVT_STATE_RX_ADV_IND;
+    bbBleCb.evtState = BB_EVT_STATE_RX_ADV_IND;
 
-  if (pScan->pTxReqBuf)
-  {
-    bbBleSetTifs();   /* active scan or initiating */
-  }
-  else
-  {
-    bbBleClrIfs();    /* passive scan */
-  }
-  PalBbBleRxData(pScan->pRxAdvBuf, BB_ADVB_MAX_LEN);
+    if (pScan->pTxReqBuf) {
+        bbBleSetTifs(); /* active scan or initiating */
+    } else {
+        bbBleClrIfs(); /* passive scan */
+    }
+    PalBbBleRxData(pScan->pRxAdvBuf, BB_ADVB_MAX_LEN);
 
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -181,115 +173,102 @@ static bool_t bbContScanOp(BbOpDesc_t *pBod, BbBleMstAdvEvent_t *pScan)
 /*************************************************************************************************/
 static void bbMstScanTxCompCback(uint8_t status)
 {
-  BB_ISR_START();
+    BB_ISR_START();
 
-  WSF_ASSERT(BbGetCurrentBod());
+    WSF_ASSERT(BbGetCurrentBod());
 
-  BbOpDesc_t * const pCur = BbGetCurrentBod();
-  BbBleMstAdvEvent_t * const pScan = &pCur->prot.pBle->op.mstAdv;
+    BbOpDesc_t *const pCur = BbGetCurrentBod();
+    BbBleMstAdvEvent_t *const pScan = &pCur->prot.pBle->op.mstAdv;
 
-  bool_t bodComplete = FALSE;
-  bool_t bodCont = FALSE;
+    bool_t bodComplete = FALSE;
+    bool_t bodCont = FALSE;
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-  /* Save evtState to be used later in packet forwarding. */
-  uint8_t evtState = bbBleCb.evtState;
-  BbBleSnifferPkt_t * pPkt = NULL;
-  if (bbSnifferCtx.enabled)
-  {
-    pPkt = bbSnifferCtx.snifferGetPktFn();
-  }
+    /* Save evtState to be used later in packet forwarding. */
+    uint8_t evtState = bbBleCb.evtState;
+    BbBleSnifferPkt_t *pPkt = NULL;
+    if (bbSnifferCtx.enabled) {
+        pPkt = bbSnifferCtx.snifferGetPktFn();
+    }
 #endif
 
-  switch (bbBleCb.evtState++)
-  {
-    case BB_EVT_STATE_TX_SCAN_OR_CONN_INIT:
-    {
-      switch (status)
-      {
-        case BB_STATUS_SUCCESS:
-        {
-          WSF_ASSERT(pScan->txReqCback);
-          WSF_ASSERT(pScan->pTxReqBuf);
+    switch (bbBleCb.evtState++) {
+    case BB_EVT_STATE_TX_SCAN_OR_CONN_INIT: {
+        switch (status) {
+        case BB_STATUS_SUCCESS: {
+            WSF_ASSERT(pScan->txReqCback);
+            WSF_ASSERT(pScan->pTxReqBuf);
 
-          if (pScan->txReqCback(pCur, pScan->pTxReqBuf))
-          {
-            WSF_ASSERT(pScan->pRxRspBuf);
+            if (pScan->txReqCback(pCur, pScan->pTxReqBuf)) {
+                WSF_ASSERT(pScan->pRxRspBuf);
 
-            BB_ISR_MARK(bbScanStats.rxSetupUsec);
+                BB_ISR_MARK(bbScanStats.rxSetupUsec);
 
-            bbBleClrIfs();      /* last operation in event */
-            PalBbBleRxTifsData(pScan->pRxRspBuf, BB_ADVB_MAX_LEN);
+                bbBleClrIfs(); /* last operation in event */
+                PalBbBleRxTifsData(pScan->pRxRspBuf, BB_ADVB_MAX_LEN);
 
-            /* Rx may fail; no more important statements in the !bodComplete code path */
-          }
-          else
-          {
-            bodCont = TRUE;
-          }
+                /* Rx may fail; no more important statements in the !bodComplete code path */
+            } else {
+                bodCont = TRUE;
+            }
 
-          break;
+            break;
         }
 
         case BB_STATUS_FAILED:
         default:
-          bodComplete = TRUE;
-          break;
-      }
+            bodComplete = TRUE;
+            break;
+        }
 
-      /* Update statistics. */
-      switch (status)
-      {
+        /* Update statistics. */
+        switch (status) {
         case BB_STATUS_SUCCESS:
-          BB_INC_STAT(bbScanStats.txReq);
-          break;
+            BB_INC_STAT(bbScanStats.txReq);
+            break;
         default:
-          BB_INC_STAT(bbScanStats.errScan);
-          break;
-      }
+            BB_INC_STAT(bbScanStats.errScan);
+            break;
+        }
 
-      break;
-    }
-
-    default:          /* unexpected state */
-      WSF_ASSERT(FALSE);
-      break;
-  }
-
-  if (bodCont)
-  {
-    /* Cancel TIFS timer if active. */
-    /* coverity[dead_error_condition] */
-    switch (status)
-    {
-      case BB_STATUS_SUCCESS:
-        PalBbBleCancelTifs();
-        break;
-      default:
-        /* coverity[dead_error_begin] */
         break;
     }
 
-    bodComplete = bbContScanOp(pCur, pScan);
-  }
+    default: /* unexpected state */
+        WSF_ASSERT(FALSE);
+        break;
+    }
 
-  if (bodComplete)
-  {
-    BbTerminateBod();
-  }
+    if (bodCont) {
+        /* Cancel TIFS timer if active. */
+        /* coverity[dead_error_condition] */
+        switch (status) {
+        case BB_STATUS_SUCCESS:
+            PalBbBleCancelTifs();
+            break;
+        default:
+            /* coverity[dead_error_begin] */
+            break;
+        }
+
+        bodComplete = bbContScanOp(pCur, pScan);
+    }
+
+    if (bodComplete) {
+        BbTerminateBod();
+    }
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-  if (pPkt)
-  {
-    pPkt->pktType.meta.type = BB_SNIFF_PKT_TYPE_TX;
-    pPkt->pktType.meta.status = status;
-    pPkt->pktType.meta.state = evtState;
+    if (pPkt) {
+        pPkt->pktType.meta.type = BB_SNIFF_PKT_TYPE_TX;
+        pPkt->pktType.meta.status = status;
+        pPkt->pktType.meta.state = evtState;
 
-    bbBleSnifferMstScanPktHandler(pCur, pPkt);
-  }
+        bbBleSnifferMstScanPktHandler(pCur, pPkt);
+    }
 #endif
 
-  BB_ISR_MARK(bbScanStats.txIsrUsec);
+    BB_ISR_MARK(bbScanStats.txIsrUsec);
 }
 
 /*************************************************************************************************/
@@ -305,209 +284,191 @@ static void bbMstScanTxCompCback(uint8_t status)
  *  Setup for next action in the operation or complete the operation.
  */
 /*************************************************************************************************/
-static void bbMstScanRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp, uint8_t rxPhyOptions)
+static void bbMstScanRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint32_t timestamp,
+                                 uint8_t rxPhyOptions)
 {
-  BB_ISR_START();
+    BB_ISR_START();
 
-  WSF_ASSERT(BbGetCurrentBod());
+    WSF_ASSERT(BbGetCurrentBod());
 
-  BbOpDesc_t * const pCur = BbGetCurrentBod();
-  BbBleData_t * const pBle = pCur->prot.pBle;
-  BbBleMstAdvEvent_t * const pScan = &pBle->op.mstAdv;
+    BbOpDesc_t *const pCur = BbGetCurrentBod();
+    BbBleData_t *const pBle = pCur->prot.pBle;
+    BbBleMstAdvEvent_t *const pScan = &pBle->op.mstAdv;
 
-  bool_t bodComplete = FALSE;
-  bool_t bodCont = FALSE;
-
-#if (BB_SNIFFER_ENABLED == TRUE)
-  /* Save evtState to be used later in packet forwarding. */
-  uint8_t evtState = bbBleCb.evtState;
-  BbBleSnifferPkt_t * pPkt = NULL;
-  if (bbSnifferCtx.enabled)
-  {
-    pPkt = bbSnifferCtx.snifferGetPktFn();
-  }
-#endif
-
-  switch (bbBleCb.evtState++)
-  {
-    case BB_EVT_STATE_RX_ADV_IND:
-    {
-      switch (status)
-      {
-        case BB_STATUS_SUCCESS:
-        {
-          WSF_ASSERT(pScan->rxAdvCback);
-          WSF_ASSERT(pScan->pRxAdvBuf);
-
-          pScan->advRssi = rssi;
-          pScan->advCrc = crc;
-          pScan->advStartTsUsec = timestamp;
-          pScan->advRxPhyOptions = rxPhyOptions;
-
-          bool_t pduAllow = BbBlePduFiltCheck(pScan->pRxAdvBuf, &pBle->pduFilt, FALSE, &pScan->filtResults);
-
-          if (pduAllow && pScan->rxAdvCback(pCur, pScan->pRxAdvBuf))
-          {
-            WSF_ASSERT(pScan->pTxReqBuf);
-
-            BB_ISR_MARK(bbScanStats.txSetupUsec);
-
-            PalBbBleTxBufDesc_t desc = {.pBuf = pScan->pTxReqBuf, .len = pScan->txReqLen};
-
-            bbBleSetTifs();
-            PalBbBleTxTifsData(&desc, 1);
-
-            /* Tx may fail; no more important statements in the !bodComplete code path */
-          }
-          else
-          {
-            bodCont = TRUE;
-          }
+    bool_t bodComplete = FALSE;
+    bool_t bodCont = FALSE;
 
 #if (BB_SNIFFER_ENABLED == TRUE)
-          /* Pack the rx buffer here before it is overwritten. */
-          if (pPkt)
-          {
-            memcpy(pPkt->pktType.advPkt.hdr, pScan->pRxAdvBuf, LL_ADV_HDR_LEN);
-          }
+    /* Save evtState to be used later in packet forwarding. */
+    uint8_t evtState = bbBleCb.evtState;
+    BbBleSnifferPkt_t *pPkt = NULL;
+    if (bbSnifferCtx.enabled) {
+        pPkt = bbSnifferCtx.snifferGetPktFn();
+    }
 #endif
 
-          if (pduAllow && pScan->rxAdvPostCback)
-          {
-            pScan->rxAdvPostCback(pCur, pScan->pRxAdvBuf);
-          }
+    switch (bbBleCb.evtState++) {
+    case BB_EVT_STATE_RX_ADV_IND: {
+        switch (status) {
+        case BB_STATUS_SUCCESS: {
+            WSF_ASSERT(pScan->rxAdvCback);
+            WSF_ASSERT(pScan->pRxAdvBuf);
 
-          break;
+            pScan->advRssi = rssi;
+            pScan->advCrc = crc;
+            pScan->advStartTsUsec = timestamp;
+            pScan->advRxPhyOptions = rxPhyOptions;
+
+            bool_t pduAllow =
+                BbBlePduFiltCheck(pScan->pRxAdvBuf, &pBle->pduFilt, FALSE, &pScan->filtResults);
+
+            if (pduAllow && pScan->rxAdvCback(pCur, pScan->pRxAdvBuf)) {
+                WSF_ASSERT(pScan->pTxReqBuf);
+
+                BB_ISR_MARK(bbScanStats.txSetupUsec);
+
+                PalBbBleTxBufDesc_t desc = { .pBuf = pScan->pTxReqBuf, .len = pScan->txReqLen };
+
+                bbBleSetTifs();
+                PalBbBleTxTifsData(&desc, 1);
+
+                /* Tx may fail; no more important statements in the !bodComplete code path */
+            } else {
+                bodCont = TRUE;
+            }
+
+#if (BB_SNIFFER_ENABLED == TRUE)
+            /* Pack the rx buffer here before it is overwritten. */
+            if (pPkt) {
+                memcpy(pPkt->pktType.advPkt.hdr, pScan->pRxAdvBuf, LL_ADV_HDR_LEN);
+            }
+#endif
+
+            if (pduAllow && pScan->rxAdvPostCback) {
+                pScan->rxAdvPostCback(pCur, pScan->pRxAdvBuf);
+            }
+
+            break;
         }
 
         case BB_STATUS_RX_TIMEOUT:
         case BB_STATUS_CRC_FAILED:
-          bodCont = TRUE;
-          break;
+            bodCont = TRUE;
+            break;
 
         case BB_STATUS_FAILED:
         default:
-          bodComplete = TRUE;
-          break;
-      }
+            bodComplete = TRUE;
+            break;
+        }
 
-      /* Update statistics. */
-      switch (status)
-      {
+        /* Update statistics. */
+        switch (status) {
         case BB_STATUS_SUCCESS:
-          BB_INC_STAT(bbScanStats.rxAdv);
-          break;
+            BB_INC_STAT(bbScanStats.rxAdv);
+            break;
         case BB_STATUS_RX_TIMEOUT:
-          BB_INC_STAT(bbScanStats.rxAdvTimeout);
-          break;
+            BB_INC_STAT(bbScanStats.rxAdvTimeout);
+            break;
         case BB_STATUS_CRC_FAILED:
-          BB_INC_STAT(bbScanStats.rxAdvCrc);
-          break;
+            BB_INC_STAT(bbScanStats.rxAdvCrc);
+            break;
         case BB_STATUS_FAILED:
         default:
-          BB_INC_STAT(bbScanStats.errScan);
-          break;
-      }
+            BB_INC_STAT(bbScanStats.errScan);
+            break;
+        }
 
-      break;
-    }
-
-    case BB_EVT_STATE_RX_SCAN_OR_CONN_RSP:
-    {
-      WSF_ASSERT(pScan->rxRspCback);
-      WSF_ASSERT(pScan->pRxRspBuf);
-
-      switch (status)
-      {
-        case BB_STATUS_SUCCESS:
-#if (BB_SNIFFER_ENABLED == TRUE)
-          /* If the rx was successful, pack the rx sniffer header here before it is overwritten. */
-          if (pPkt)
-          {
-            memcpy(pPkt->pktType.advPkt.hdr, pScan->pRxRspBuf, LL_ADV_HDR_LEN);
-          }
-#endif
-
-          if (BbBlePduFiltCheck(pScan->pRxRspBuf, &pBle->pduFilt, FALSE, &pScan->filtResults))
-          {
-            pScan->rxRspCback(pCur, pScan->pRxRspBuf);
-          }
-          bodCont = TRUE;
-          break;
-
-        case BB_STATUS_RX_TIMEOUT:
-        case BB_STATUS_CRC_FAILED:
-          pScan->rxRspCback(pCur, NULL);
-          bodCont = TRUE;
-          break;
-
-        case BB_STATUS_FAILED:
-        default:
-          bodComplete = TRUE;
-          break;
-      }
-
-      /* Update statistics. */
-      switch (status)
-      {
-        case BB_STATUS_SUCCESS:
-          BB_INC_STAT(bbScanStats.rxRsp);
-          break;
-        case BB_STATUS_RX_TIMEOUT:
-          BB_INC_STAT(bbScanStats.rxRspTimeout);
-          break;
-        case BB_STATUS_CRC_FAILED:
-          BB_INC_STAT(bbScanStats.rxRspCrc);
-          break;
-        case BB_STATUS_FAILED:
-        default:
-          BB_INC_STAT(bbScanStats.errScan);
-          break;
-      }
-
-      break;
-    }
-
-    default:        /* invalid state */
-      WSF_ASSERT(FALSE);
-      break;
-  }
-
-  if (bodCont)
-  {
-    /* Cancel TIFS timer if active. */
-    switch (status)
-    {
-      case BB_STATUS_SUCCESS:
-      case BB_STATUS_CRC_FAILED:
-        PalBbBleCancelTifs();
-        break;
-      default:
         break;
     }
 
-    bodComplete = bbContScanOp(pCur, pScan);
-  }
+    case BB_EVT_STATE_RX_SCAN_OR_CONN_RSP: {
+        WSF_ASSERT(pScan->rxRspCback);
+        WSF_ASSERT(pScan->pRxRspBuf);
 
-  if (bodComplete)
-  {
-    BbTerminateBod();
-  }
-
+        switch (status) {
+        case BB_STATUS_SUCCESS:
 #if (BB_SNIFFER_ENABLED == TRUE)
-  if (pPkt)
-  {
-    pPkt->pktType.meta.type = BB_SNIFF_PKT_TYPE_RX;
-    pPkt->pktType.meta.rssi = rssi;
-    pPkt->pktType.meta.timeStamp = timestamp;
-    pPkt->pktType.meta.status = status;
-    pPkt->pktType.meta.state = evtState;
-
-    bbBleSnifferMstScanPktHandler(pCur, pPkt);
-  }
+            /* If the rx was successful, pack the rx sniffer header here before it is overwritten. */
+            if (pPkt) {
+                memcpy(pPkt->pktType.advPkt.hdr, pScan->pRxRspBuf, LL_ADV_HDR_LEN);
+            }
 #endif
 
-  BB_ISR_MARK(bbScanStats.rxIsrUsec);
+            if (BbBlePduFiltCheck(pScan->pRxRspBuf, &pBle->pduFilt, FALSE, &pScan->filtResults)) {
+                pScan->rxRspCback(pCur, pScan->pRxRspBuf);
+            }
+            bodCont = TRUE;
+            break;
+
+        case BB_STATUS_RX_TIMEOUT:
+        case BB_STATUS_CRC_FAILED:
+            pScan->rxRspCback(pCur, NULL);
+            bodCont = TRUE;
+            break;
+
+        case BB_STATUS_FAILED:
+        default:
+            bodComplete = TRUE;
+            break;
+        }
+
+        /* Update statistics. */
+        switch (status) {
+        case BB_STATUS_SUCCESS:
+            BB_INC_STAT(bbScanStats.rxRsp);
+            break;
+        case BB_STATUS_RX_TIMEOUT:
+            BB_INC_STAT(bbScanStats.rxRspTimeout);
+            break;
+        case BB_STATUS_CRC_FAILED:
+            BB_INC_STAT(bbScanStats.rxRspCrc);
+            break;
+        case BB_STATUS_FAILED:
+        default:
+            BB_INC_STAT(bbScanStats.errScan);
+            break;
+        }
+
+        break;
+    }
+
+    default: /* invalid state */
+        WSF_ASSERT(FALSE);
+        break;
+    }
+
+    if (bodCont) {
+        /* Cancel TIFS timer if active. */
+        switch (status) {
+        case BB_STATUS_SUCCESS:
+        case BB_STATUS_CRC_FAILED:
+            PalBbBleCancelTifs();
+            break;
+        default:
+            break;
+        }
+
+        bodComplete = bbContScanOp(pCur, pScan);
+    }
+
+    if (bodComplete) {
+        BbTerminateBod();
+    }
+
+#if (BB_SNIFFER_ENABLED == TRUE)
+    if (pPkt) {
+        pPkt->pktType.meta.type = BB_SNIFF_PKT_TYPE_RX;
+        pPkt->pktType.meta.rssi = rssi;
+        pPkt->pktType.meta.timeStamp = timestamp;
+        pPkt->pktType.meta.status = status;
+        pPkt->pktType.meta.state = evtState;
+
+        bbBleSnifferMstScanPktHandler(pCur, pPkt);
+    }
+#endif
+
+    BB_ISR_MARK(bbScanStats.rxIsrUsec);
 }
 
 /*************************************************************************************************/
@@ -520,45 +481,40 @@ static void bbMstScanRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint
 /*************************************************************************************************/
 static void bbMstExecuteScanOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 {
-  BbBleMstAdvEvent_t * const pScan = &pBod->prot.pBle->op.mstAdv;
+    BbBleMstAdvEvent_t *const pScan = &pBod->prot.pBle->op.mstAdv;
 
-  if (pScan->preExecCback)
-  {
-    pScan->preExecCback(pBod);
-  }
+    if (pScan->preExecCback) {
+        pScan->preExecCback(pBod);
+    }
 
-  uint32_t scanDurUsec;
+    uint32_t scanDurUsec;
 
-  if ((scanDurUsec = bbBleCalcScanDurationUsec(pBod, pScan, pBod->dueUsec, 0)) == 0)
-  {
-    BbSetBodTerminateFlag();
-    return;
-  }
+    if ((scanDurUsec = bbBleCalcScanDurationUsec(pBod, pScan, pBod->dueUsec, 0)) == 0) {
+        BbSetBodTerminateFlag();
+        return;
+    }
 
-  bbBleCb.lastScanStartUsec = pBod->dueUsec;
+    bbBleCb.lastScanStartUsec = pBod->dueUsec;
 
-  PalBbBleSetChannelParam(&pBle->chan);
+    PalBbBleSetChannelParam(&pBle->chan);
 
-  bbBleCb.bbParam.txCback       = bbMstScanTxCompCback;
-  bbBleCb.bbParam.rxCback       = bbMstScanRxCompCback;
-  bbBleCb.bbParam.rxTimeoutUsec = scanDurUsec;
-  bbBleCb.bbParam.dueUsec       = BbAdjustTime(pBod->dueUsec);
-  pBod->dueUsec = bbBleCb.bbParam.dueUsec;
-  PalBbBleSetDataParams(&bbBleCb.bbParam);
+    bbBleCb.bbParam.txCback = bbMstScanTxCompCback;
+    bbBleCb.bbParam.rxCback = bbMstScanRxCompCback;
+    bbBleCb.bbParam.rxTimeoutUsec = scanDurUsec;
+    bbBleCb.bbParam.dueUsec = BbAdjustTime(pBod->dueUsec);
+    pBod->dueUsec = bbBleCb.bbParam.dueUsec;
+    PalBbBleSetDataParams(&bbBleCb.bbParam);
 
-  bbBleCb.evtState = 0;
+    bbBleCb.evtState = 0;
 
-  if (pScan->pTxReqBuf)
-  {
-    bbBleSetTifs();   /* active scan or initiating */
-  }
-  else
-  {
-    bbBleClrIfs();    /* passive scan */
-  }
-  PalBbBleRxData(pScan->pRxAdvBuf, BB_ADVB_MAX_LEN);
+    if (pScan->pTxReqBuf) {
+        bbBleSetTifs(); /* active scan or initiating */
+    } else {
+        bbBleClrIfs(); /* passive scan */
+    }
+    PalBbBleRxData(pScan->pRxAdvBuf, BB_ADVB_MAX_LEN);
 
-  /* Rx may fail; no more important statements in the !bodComplete code path */
+    /* Rx may fail; no more important statements in the !bodComplete code path */
 }
 
 /*************************************************************************************************/
@@ -571,7 +527,7 @@ static void bbMstExecuteScanOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 /*************************************************************************************************/
 static void bbMstCancelScanOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 {
-  PalBbBleCancelData();
+    PalBbBleCancelData();
 }
 
 /*************************************************************************************************/
@@ -583,9 +539,9 @@ static void bbMstCancelScanOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 /*************************************************************************************************/
 void BbBleScanMasterInit(void)
 {
-  bbBleRegisterOp(BB_BLE_OP_MST_ADV_EVENT, bbMstExecuteScanOp, bbMstCancelScanOp);
+    bbBleRegisterOp(BB_BLE_OP_MST_ADV_EVENT, bbMstExecuteScanOp, bbMstCancelScanOp);
 
-  memset(&bbScanStats, 0, sizeof(bbScanStats));
+    memset(&bbScanStats, 0, sizeof(bbScanStats));
 }
 
 /*************************************************************************************************/
@@ -595,5 +551,5 @@ void BbBleScanMasterInit(void)
 /*************************************************************************************************/
 void BbBleGetScanStats(BbBleScanPktStats_t *pStats)
 {
-  *pStats = bbScanStats;
+    *pStats = bbScanStats;
 }

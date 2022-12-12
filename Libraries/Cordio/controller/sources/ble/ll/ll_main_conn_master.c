@@ -49,50 +49,42 @@
 /*************************************************************************************************/
 uint8_t LlSetChannelMap(uint16_t handle, const uint8_t *pChanMap)
 {
-  lctrChanMapUpdate_t *pMsg;
-  uint64_t chanMap;
+    lctrChanMapUpdate_t *pMsg;
+    uint64_t chanMap;
 
-  LL_TRACE_INFO1("### LlApi ###  LlSetChannelMap, handle=%u", handle);
+    LL_TRACE_INFO1("### LlApi ###  LlSetChannelMap, handle=%u", handle);
 
-  if (LctrIsProcActPended(handle, LCTR_CONN_MSG_API_CHAN_MAP_UPDATE) == TRUE)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrIsProcActPended(handle, LCTR_CONN_MSG_API_CHAN_MAP_UPDATE) == TRUE) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-       ((handle >= pLctrRtCfg->maxConn) ||
-       !LctrIsConnHandleEnabled(handle)))
-  {
-    return LL_ERROR_CODE_UNKNOWN_CONN_ID;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((handle >= pLctrRtCfg->maxConn) || !LctrIsConnHandleEnabled(handle))) {
+        return LL_ERROR_CODE_UNKNOWN_CONN_ID;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (LctrGetRole(handle) != LL_ROLE_MASTER))
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (LctrGetRole(handle) != LL_ROLE_MASTER)) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  BSTREAM_TO_UINT64(chanMap, pChanMap);
-  chanMap &= lmgrCb.chanClass;
+    BSTREAM_TO_UINT64(chanMap, pChanMap);
+    chanMap &= lmgrCb.chanClass;
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (LlMathGetNumBitsSet(chanMap) < 2))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (LlMathGetNumBitsSet(chanMap) < 2)) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if ((pMsg = (lctrChanMapUpdate_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.handle = handle;
-    pMsg->hdr.dispId = LCTR_DISP_CONN;
-    pMsg->hdr.event  = LCTR_CONN_MSG_API_CHAN_MAP_UPDATE;
+    if ((pMsg = (lctrChanMapUpdate_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.handle = handle;
+        pMsg->hdr.dispId = LCTR_DISP_CONN;
+        pMsg->hdr.event = LCTR_CONN_MSG_API_CHAN_MAP_UPDATE;
 
-    pMsg->chanMap = chanMap;
+        pMsg->chanMap = chanMap;
 
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -110,62 +102,64 @@ uint8_t LlSetChannelMap(uint16_t handle, const uint8_t *pChanMap)
 /*************************************************************************************************/
 uint8_t LlCreateConn(const LlInitParam_t *pInitParam, const LlConnSpec_t *pConnSpec)
 {
-  lctrInitiateMsg_t *pMsg;
-  const uint16_t scanRangeMin = 0x0004;
-  const uint16_t scanRangeMax = 0x4000;
-  const uint8_t filterPolicyMax = LL_SCAN_FILTER_WL_BIT;
-  const uint8_t addrTypeMax = ((lmgrCb.features & LL_FEAT_PRIVACY) != 0) ? LL_ADDR_RANDOM_IDENTITY : LL_ADDR_RANDOM;
+    lctrInitiateMsg_t *pMsg;
+    const uint16_t scanRangeMin = 0x0004;
+    const uint16_t scanRangeMax = 0x4000;
+    const uint8_t filterPolicyMax = LL_SCAN_FILTER_WL_BIT;
+    const uint8_t addrTypeMax =
+        ((lmgrCb.features & LL_FEAT_PRIVACY) != 0) ? LL_ADDR_RANDOM_IDENTITY : LL_ADDR_RANDOM;
 
-  LL_TRACE_INFO2("### LlApi ###  LlCreateConn: scanInterval=%u, scanWindow=%u", pInitParam->scanInterval, pInitParam->scanWindow);
-  LL_TRACE_INFO2("                             connIntervalMin=%u, connIntervalMax=%u", pConnSpec->connIntervalMin, pConnSpec->connIntervalMax);
-  LL_TRACE_INFO2("                             connLatency=%u, supTimeout=%u", pConnSpec->connLatency, pConnSpec->supTimeout);
+    LL_TRACE_INFO2("### LlApi ###  LlCreateConn: scanInterval=%u, scanWindow=%u",
+                   pInitParam->scanInterval, pInitParam->scanWindow);
+    LL_TRACE_INFO2("                             connIntervalMin=%u, connIntervalMax=%u",
+                   pConnSpec->connIntervalMin, pConnSpec->connIntervalMax);
+    LL_TRACE_INFO2("                             connLatency=%u, supTimeout=%u",
+                   pConnSpec->connLatency, pConnSpec->supTimeout);
 
-  WSF_ASSERT(pInitParam->pPeerAddr);    /* not NULL */
-  WSF_ASSERT(pConnSpec);    /* not NULL */
+    WSF_ASSERT(pInitParam->pPeerAddr); /* not NULL */
+    WSF_ASSERT(pConnSpec); /* not NULL */
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsLegacyCommandAllowed())
-  {
-    LL_TRACE_WARN0("Extended Advertising/Scanning operation enabled; legacy commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsLegacyCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Extended Advertising/Scanning operation enabled; legacy commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((pInitParam->scanInterval > scanRangeMax) || (pInitParam->scanWindow > pInitParam->scanInterval) || (scanRangeMin > pInitParam->scanWindow) ||
-      (pInitParam->filterPolicy > filterPolicyMax) ||
-      ((pInitParam->filterPolicy == LL_SCAN_FILTER_NONE) && (pInitParam->peerAddrType > addrTypeMax)) ||
-      (pInitParam->ownAddrType > addrTypeMax) ||
-      (LctrValidateConnSpec(pConnSpec) != LL_SUCCESS))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((pInitParam->scanInterval > scanRangeMax) ||
+        (pInitParam->scanWindow > pInitParam->scanInterval) ||
+        (scanRangeMin > pInitParam->scanWindow) || (pInitParam->filterPolicy > filterPolicyMax) ||
+        ((pInitParam->filterPolicy == LL_SCAN_FILTER_NONE) &&
+         (pInitParam->peerAddrType > addrTypeMax)) ||
+        (pInitParam->ownAddrType > addrTypeMax) ||
+        (LctrValidateConnSpec(pConnSpec) != LL_SUCCESS)) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsAddressTypeAvailable(pInitParam->ownAddrType))
-  {
-    LL_TRACE_WARN1("Address type invalid or not available, ownAddrType=%u", pInitParam->ownAddrType);
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsAddressTypeAvailable(pInitParam->ownAddrType)) {
+        LL_TRACE_WARN1("Address type invalid or not available, ownAddrType=%u",
+                       pInitParam->ownAddrType);
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.dispId = LCTR_DISP_INIT;
-    pMsg->hdr.event = LCTR_INIT_MSG_INITIATE;
+    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.dispId = LCTR_DISP_INIT;
+        pMsg->hdr.event = LCTR_INIT_MSG_INITIATE;
 
-    pMsg->connSpec = *pConnSpec;
+        pMsg->connSpec = *pConnSpec;
 
-    pMsg->scanParam.scanInterval = pInitParam->scanInterval;
-    pMsg->scanParam.scanWindow = pInitParam->scanWindow;
-    /* pMsg->scanParam.scanType = LL_SCAN_ACTIVE; */    /* not used */
-    pMsg->scanParam.ownAddrType = pInitParam->ownAddrType;
-    pMsg->scanParam.scanFiltPolicy = pInitParam->filterPolicy;
+        pMsg->scanParam.scanInterval = pInitParam->scanInterval;
+        pMsg->scanParam.scanWindow = pInitParam->scanWindow;
+        /* pMsg->scanParam.scanType = LL_SCAN_ACTIVE; */ /* not used */
+        pMsg->scanParam.ownAddrType = pInitParam->ownAddrType;
+        pMsg->scanParam.scanFiltPolicy = pInitParam->filterPolicy;
 
-    pMsg->peerAddrType = pInitParam->peerAddrType;
-    pMsg->peerAddr = BstreamToBda64(pInitParam->pPeerAddr);
+        pMsg->peerAddrType = pInitParam->peerAddrType;
+        pMsg->peerAddr = BstreamToBda64(pInitParam->pPeerAddr);
 
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -178,23 +172,19 @@ uint8_t LlCreateConn(const LlInitParam_t *pInitParam, const LlConnSpec_t *pConnS
 /*************************************************************************************************/
 void LlCreateConnCancel(void)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlCreateConnCancel");
+    LL_TRACE_INFO0("### LlApi ###  LlCreateConnCancel");
 
-  lctrMsgHdr_t *pMsg;
+    lctrMsgHdr_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    if (lmgrCb.useExtCmds)
-    {
-      pMsg->dispId = LCTR_DISP_EXT_INIT;
+    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        if (lmgrCb.useExtCmds) {
+            pMsg->dispId = LCTR_DISP_EXT_INIT;
+        } else {
+            pMsg->dispId = LCTR_DISP_INIT;
+        }
+        /* LCTR_EXT_INIT_MSG_INITIATE_CANCEL and LCTR_INIT_MSG_INITIATE_CANCEL shall be aligned. */
+        pMsg->event = LCTR_INIT_MSG_INITIATE_CANCEL;
+
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
     }
-    else
-    {
-      pMsg->dispId = LCTR_DISP_INIT;
-    }
-    /* LCTR_EXT_INIT_MSG_INITIATE_CANCEL and LCTR_INIT_MSG_INITIATE_CANCEL shall be aligned. */
-    pMsg->event = LCTR_INIT_MSG_INITIATE_CANCEL;
-
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
 }

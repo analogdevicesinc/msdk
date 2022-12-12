@@ -47,9 +47,9 @@
 **************************************************************************************************/
 
 /*! Mesh Stack Test event notification callback */
-static void meshTestEmptyCback (meshTestEvt_t *pEvt)
+static void meshTestEmptyCback(meshTestEvt_t *pEvt)
 {
-  (void)pEvt;
+    (void)pEvt;
 }
 
 /**************************************************************************************************
@@ -65,8 +65,8 @@ static void meshTestEmptyCback (meshTestEvt_t *pEvt)
 /*************************************************************************************************/
 void MeshTestInit(void)
 {
-  meshTestCb.listenMask = MESH_TEST_LISTEN_OFF;
-  meshTestCb.testCback = meshTestEmptyCback;
+    meshTestCb.listenMask = MESH_TEST_LISTEN_OFF;
+    meshTestCb.testCback = meshTestEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -80,7 +80,7 @@ void MeshTestInit(void)
 /*************************************************************************************************/
 void MeshTestRegister(meshTestCback_t meshTestCback)
 {
-  meshTestCb.testCback = meshTestCback;
+    meshTestCb.testCback = meshTestCback;
 }
 
 /*************************************************************************************************/
@@ -94,7 +94,7 @@ void MeshTestRegister(meshTestCback_t meshTestCback)
 /*************************************************************************************************/
 void MeshTestSetListenMask(uint16_t mask)
 {
-  meshTestCb.listenMask = mask;
+    meshTestCb.listenMask = mask;
 }
 
 /*************************************************************************************************/
@@ -106,11 +106,11 @@ void MeshTestSetListenMask(uint16_t mask)
 /*************************************************************************************************/
 void MeshTestRpClearList(void)
 {
-  /* Clear replay protection list. */
-  MeshRpClearList();
+    /* Clear replay protection list. */
+    MeshRpClearList();
 
-  /* Clear SAR history. */
-  MeshSarRxHistoryReset();
+    /* Clear SAR history. */
+    MeshSarRxHistoryReset();
 }
 
 /*************************************************************************************************/
@@ -127,19 +127,18 @@ void MeshTestRpClearList(void)
 /*************************************************************************************************/
 uint16_t MeshTestAlterNetKeyListSize(uint16_t listSize)
 {
-  if ((listSize != 0) && (listSize < pMeshConfig->pMemoryConfig->netKeyListSize))
-  {
-    MeshTestLocalCfgAlterNetKeyListSize(listSize);
-    MeshTestSecAlterNetKeyListSize(listSize);
+    if ((listSize != 0) && (listSize < pMeshConfig->pMemoryConfig->netKeyListSize)) {
+        MeshTestLocalCfgAlterNetKeyListSize(listSize);
+        MeshTestSecAlterNetKeyListSize(listSize);
 
-    return listSize;
-  }
+        return listSize;
+    }
 
-  /* Set actual netKey list size. */
-  MeshTestLocalCfgAlterNetKeyListSize(pMeshConfig->pMemoryConfig->netKeyListSize);
-  MeshTestSecAlterNetKeyListSize(pMeshConfig->pMemoryConfig->netKeyListSize);
+    /* Set actual netKey list size. */
+    MeshTestLocalCfgAlterNetKeyListSize(pMeshConfig->pMemoryConfig->netKeyListSize);
+    MeshTestSecAlterNetKeyListSize(pMeshConfig->pMemoryConfig->netKeyListSize);
 
-  return pMeshConfig->pMemoryConfig->netKeyListSize;
+    return pMeshConfig->pMemoryConfig->netKeyListSize;
 }
 
 /*************************************************************************************************/
@@ -161,25 +160,25 @@ uint16_t MeshTestAlterNetKeyListSize(uint16_t listSize)
 void MeshTestSendCtlMsg(meshAddress_t dstAddr, uint16_t netKeyIndex, uint8_t opcode, uint8_t ttl,
                         bool_t ackRequired, const uint8_t *pCtlPdu, uint16_t pduLen)
 {
-  meshUtrCtlPduInfo_t ctlPduInfo;
+    meshUtrCtlPduInfo_t ctlPduInfo;
 
-  /* Set primary element address as source address. */
-  MeshLocalCfgGetAddrFromElementId(0, &ctlPduInfo.src);
+    /* Set primary element address as source address. */
+    MeshLocalCfgGetAddrFromElementId(0, &ctlPduInfo.src);
 
-  /* Set ctlPduInfo. */
-  ctlPduInfo.dst = dstAddr;
-  ctlPduInfo.netKeyIndex = netKeyIndex;
-  ctlPduInfo.opcode = opcode;
-  ctlPduInfo.ttl = ttl;
-  ctlPduInfo.ackRequired = ackRequired;
-  ctlPduInfo.pCtlPdu = pCtlPdu;
-  ctlPduInfo.pduLen = pduLen;
-  ctlPduInfo.friendLpnAddr = MESH_ADDR_TYPE_UNASSIGNED;
-  ctlPduInfo.ifPassthr = FALSE;
-  ctlPduInfo.prioritySend = FALSE;
+    /* Set ctlPduInfo. */
+    ctlPduInfo.dst = dstAddr;
+    ctlPduInfo.netKeyIndex = netKeyIndex;
+    ctlPduInfo.opcode = opcode;
+    ctlPduInfo.ttl = ttl;
+    ctlPduInfo.ackRequired = ackRequired;
+    ctlPduInfo.pCtlPdu = pCtlPdu;
+    ctlPduInfo.pduLen = pduLen;
+    ctlPduInfo.friendLpnAddr = MESH_ADDR_TYPE_UNASSIGNED;
+    ctlPduInfo.ifPassthr = FALSE;
+    ctlPduInfo.prioritySend = FALSE;
 
-  /* Send CTL PDU. */
-  MeshUtrSendCtlPdu(&ctlPduInfo);
+    /* Send CTL PDU. */
+    MeshUtrSendCtlPdu(&ctlPduInfo);
 }
 
 /*************************************************************************************************/
@@ -194,7 +193,7 @@ void MeshTestSendCtlMsg(meshAddress_t dstAddr, uint16_t netKeyIndex, uint8_t opc
 /*************************************************************************************************/
 void MeshTestSendNwkBeacon(uint16_t netKeyIndex)
 {
-  MeshNwkBeaconTriggerSend(netKeyIndex);
+    MeshNwkBeaconTriggerSend(netKeyIndex);
 }
 
 #endif //defined(MESH_ENABLE_TEST)

@@ -30,10 +30,8 @@
  * 
  */
 
-
 #ifndef __REMOTE_EXT_H__
 #define __REMOTE_EXT_H__
-
 
 #ifndef HAVE_REMOTE
 #error Please do not include this file directly. Just define HAVE_REMOTE and then include pcap.h
@@ -59,15 +57,10 @@ extern "C" {
 	they are placed here.
 */
 
-
-
 // All this stuff is public
 /*! \addtogroup remote_struct
 	\{
 */
-
-
-
 
 /*!
 	\brief Defines the maximum buffer size in which address, port, interface names are kept.
@@ -78,11 +71,9 @@ extern "C" {
 */
 #define PCAP_BUF_SIZE 1024
 
-
 /*! \addtogroup remote_source_ID
 	\{
 */
-
 
 /*!
 	\brief Internal representation of the type of source in use (file, 
@@ -111,8 +102,6 @@ extern "C" {
 /*!
 	\}
 */
-
-
 
 /*! \addtogroup remote_source_string
 
@@ -151,7 +140,6 @@ extern "C" {
 	\{
 */
 
-
 /*!
 	\brief String that will be used to determine the type of source in use (file,
 	remote/local interface).
@@ -180,10 +168,6 @@ extern "C" {
 	\}
 */
 
-
-
-
-
 /*!
 	\addtogroup remote_open_flags
 	\{
@@ -200,7 +184,7 @@ extern "C" {
 	flag does not work on the "any" device; if an argument of "any" is supplied,
 	the 'promisc' flag is ignored.
 */
-#define PCAP_OPENFLAG_PROMISCUOUS		1
+#define PCAP_OPENFLAG_PROMISCUOUS 1
 
 /*!
 	\brief Defines if the data trasfer (in case of a remote
@@ -214,8 +198,7 @@ extern "C" {
 	This flag is meaningless if the source is not a remote interface.
 	In that case, it is simply ignored.
 */
-#define PCAP_OPENFLAG_DATATX_UDP			2
-
+#define PCAP_OPENFLAG_DATATX_UDP 2
 
 /*!
 	\brief Defines if the remote probe will capture its own generated traffic.
@@ -225,7 +208,7 @@ extern "C" {
 	If this flag is turned on, the RPCAP traffic is excluded from the capture, so that
 	the trace returned back to the collector is does not include this traffic.
 */
-#define PCAP_OPENFLAG_NOCAPTURE_RPCAP	4
+#define PCAP_OPENFLAG_NOCAPTURE_RPCAP 4
 
 /*!
 	\brief Defines if the local adapter will capture its own generated traffic.
@@ -234,7 +217,7 @@ extern "C" {
 	This is usefult when building applications like bridges, that should ignore the traffic
 	they just sent.
 */
-#define PCAP_OPENFLAG_NOCAPTURE_LOCAL	8
+#define PCAP_OPENFLAG_NOCAPTURE_LOCAL 8
 
 /*!
 	\brief This flag configures the adapter for maximum responsiveness.
@@ -245,12 +228,11 @@ extern "C" {
 	PCAP_OPENFLAG_MAX_RESPONSIVENESS flag, the capture driver will copy the packets as soon as the application 
 	is ready to receive them. This is suggested for real time applications (like, for example, a bridge) 
 	that need the best responsiveness.*/
-#define PCAP_OPENFLAG_MAX_RESPONSIVENESS	16
+#define PCAP_OPENFLAG_MAX_RESPONSIVENESS 16
 
 /*!
 	\}
 */
-
 
 /*!
 	\addtogroup remote_samp_methods
@@ -262,7 +244,7 @@ extern "C" {
 
 	In this case, no sampling algorithms are applied to the current capture.
 */
-#define PCAP_SAMP_NOSAMP	0
+#define PCAP_SAMP_NOSAMP 0
 
 /*!
 	\brief It defines that only 1 out of N packets must be returned to the user.
@@ -272,7 +254,7 @@ extern "C" {
 	In other words, if 'value = 10', the first packet is returned to the caller, while
 	the following 9 are discarded.
 */
-#define PCAP_SAMP_1_EVERY_N	1
+#define PCAP_SAMP_1_EVERY_N 1
 
 /*!
 	\brief It defines that we have to return 1 packet every N milliseconds.
@@ -287,7 +269,6 @@ extern "C" {
 /*!
 	\}
 */
-
 
 /*!
 	\addtogroup remote_auth_methods
@@ -318,9 +299,6 @@ extern "C" {
 	\}
 */
 
-
-
-
 /*!
 
 	\brief This structure keeps the information needed to autheticate
@@ -335,9 +313,8 @@ extern "C" {
 	in that case, the functions which requires such a structure can accept
 	a NULL pointer as well.
 */
-struct pcap_rmtauth
-{
-	/*!
+struct pcap_rmtauth {
+    /*!
 		\brief Type of the authentication required.
 
 		In order to provide maximum flexibility, we can support different types
@@ -346,25 +323,24 @@ struct pcap_rmtauth
 		\link remote_auth_methods Remote Authentication Methods Section\endlink.
 
 	*/
-	int type;
-	/*!
+    int type;
+    /*!
 		\brief Zero-terminated string containing the username that has to be 
 		used on the remote machine for authentication.
 		
 		This field is meaningless in case of the RPCAP_RMTAUTH_NULL authentication
 		and it can be NULL.
 	*/
-	char *username;
-	/*!
+    char *username;
+    /*!
 		\brief Zero-terminated string containing the password that has to be 
 		used on the remote machine for authentication.
 		
 		This field is meaningless in case of the RPCAP_RMTAUTH_NULL authentication
 		and it can be NULL.
 	*/
-	char *password;
+    char *password;
 };
-
 
 /*!
 	\brief This structure defines the information related to sampling.
@@ -377,36 +353,28 @@ struct pcap_rmtauth
 	In other words, packets are filtered first, then the sampling process selects a
 	subset of the 'filtered' packets and it returns them to the caller.
 */
-struct pcap_samp
-{
-	/*!
+struct pcap_samp {
+    /*!
 		Method used for sampling. Currently, the supported methods are listed in the
 		\link remote_samp_methods Sampling Methods Section\endlink.
 	*/
-	int method;
+    int method;
 
-	/*!
+    /*!
 		This value depends on the sampling method defined. For its meaning, please check
 		at the \link remote_samp_methods Sampling Methods Section\endlink.
 	*/
-	int value;
+    int value;
 };
-
-
-
 
 //! Maximum lenght of an host name (needed for the RPCAP active mode)
 #define RPCAP_HOSTLIST_SIZE 1024
-
 
 /*!
 	\}
 */ // end of public documentation
 
-
 // Exported functions
-
-
 
 /** \name New WinPcap functions
 
@@ -414,21 +382,23 @@ struct pcap_samp
 	WinPcap programs because of their easiness of use.
  */
 //\{
-pcap_t *pcap_open(const char *source, int snaplen, int flags, int read_timeout, struct pcap_rmtauth *auth, char *errbuf);
-int pcap_createsrcstr(char *source, int type, const char *host, const char *port, const char *name, char *errbuf);
-int pcap_parsesrcstr(const char *source, int *type, char *host, char *port, char *name, char *errbuf);
+pcap_t *pcap_open(const char *source, int snaplen, int flags, int read_timeout,
+                  struct pcap_rmtauth *auth, char *errbuf);
+int pcap_createsrcstr(char *source, int type, const char *host, const char *port, const char *name,
+                      char *errbuf);
+int pcap_parsesrcstr(const char *source, int *type, char *host, char *port, char *name,
+                     char *errbuf);
 int pcap_findalldevs_ex(char *source, struct pcap_rmtauth *auth, pcap_if_t **alldevs, char *errbuf);
 struct pcap_samp *pcap_setsampling(pcap_t *p);
 
 //\}
 // End of new winpcap functions
 
-
-
 /** \name Remote Capture functions
  */
-//\{ 
-SOCKET pcap_remoteact_accept(const char *address, const char *port, const char *hostlist, char *connectinghost, struct pcap_rmtauth *auth, char *errbuf);
+//\{
+SOCKET pcap_remoteact_accept(const char *address, const char *port, const char *hostlist,
+                             char *connectinghost, struct pcap_rmtauth *auth, char *errbuf);
 int pcap_remoteact_list(char *hostlist, char sep, int size, char *errbuf);
 int pcap_remoteact_close(const char *host, char *errbuf);
 void pcap_remoteact_cleanup();
@@ -439,6 +409,4 @@ void pcap_remoteact_cleanup();
 }
 #endif
 
-
 #endif
-

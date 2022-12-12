@@ -40,23 +40,22 @@ extern "C" {
  *
  */
 /**@{*/
-#define WSS_START_HDL               0x0100            /*!< \brief Start handle. */
-#define WSS_END_HDL                 (WSS_MAX_HDL - 1) /*!< \brief End handle. */
+#define WSS_START_HDL 0x0100 /*!< \brief Start handle. */
+#define WSS_END_HDL (WSS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Weight Scale Service Handles */
-enum
-{
-  WSS_SVC_HDL = WSS_START_HDL,      /*!< \brief Weight scale service declaration */
-  WSS_WM_CH_HDL,                    /*!< \brief Weight measurement characteristic */
-  WSS_WM_HDL,                       /*!< \brief Weight measurement */
-  WSS_WM_CH_CCC_HDL,                /*!< \brief Weight measurement client characteristic configuration */
-  WSS_WSF_CH_HDL,                   /*!< \brief Weight scale feature characteristic */
-  WSS_WSF_HDL,                      /*!< \brief Weight scale feature */
-  WSS_MAX_HDL                       /*!< \brief Maximum handle. */
+enum {
+    WSS_SVC_HDL = WSS_START_HDL, /*!< \brief Weight scale service declaration */
+    WSS_WM_CH_HDL, /*!< \brief Weight measurement characteristic */
+    WSS_WM_HDL, /*!< \brief Weight measurement */
+    WSS_WM_CH_CCC_HDL, /*!< \brief Weight measurement client characteristic configuration */
+    WSS_WSF_CH_HDL, /*!< \brief Weight scale feature characteristic */
+    WSS_WSF_HDL, /*!< \brief Weight scale feature */
+    WSS_MAX_HDL /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -94,7 +93,7 @@ void SvcWssRemoveGroup(void);
 /*************************************************************************************************/
 void SvcWssCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
 
-/*! \} */    /* WEIGHT_SCALE_SERVICE */
+/*! \} */ /* WEIGHT_SCALE_SERVICE */
 
 #ifdef __cplusplus
 };

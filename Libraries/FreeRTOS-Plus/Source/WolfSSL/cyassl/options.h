@@ -17,77 +17,75 @@ extern "C" {
 #endif
 
 #ifndef WOLFSSL_OPTIONS_IGNORE_SYS
-#undef  _POSIX_THREADS
+#undef _POSIX_THREADS
 #define _POSIX_THREADS
 #endif
 
-#undef  HAVE_THREAD_LS
+#undef HAVE_THREAD_LS
 #define HAVE_THREAD_LS
 
 #ifndef WOLFSSL_OPTIONS_IGNORE_SYS
-#undef  _THREAD_SAFE
+#undef _THREAD_SAFE
 #define _THREAD_SAFE
 #endif
 
-#undef  HAVE_AESGCM
+#undef HAVE_AESGCM
 #define HAVE_AESGCM
 
-#undef  WOLFSSL_SHA512
+#undef WOLFSSL_SHA512
 #define WOLFSSL_SHA512
 
-#undef  WOLFSSL_SHA384
+#undef WOLFSSL_SHA384
 #define WOLFSSL_SHA384
 
-#undef  NO_DSA
+#undef NO_DSA
 #define NO_DSA
 
-#undef  HAVE_ECC
+#undef HAVE_ECC
 #define HAVE_ECC
 
-#undef  TFM_ECC256
+#undef TFM_ECC256
 #define TFM_ECC256
 
-#undef  ECC_SHAMIR
+#undef ECC_SHAMIR
 #define ECC_SHAMIR
 
-#undef  NO_PSK
+#undef NO_PSK
 #define NO_PSK
 
-#undef  NO_RC4
+#undef NO_RC4
 #define NO_RC4
 
-#undef  NO_MD4
+#undef NO_MD4
 #define NO_MD4
 
-#undef  NO_HC128
+#undef NO_HC128
 #define NO_HC128
 
-#undef  NO_RABBIT
+#undef NO_RABBIT
 #define NO_RABBIT
 
-#undef  HAVE_POLY1305
+#undef HAVE_POLY1305
 #define HAVE_POLY1305
 
-#undef  HAVE_ONE_TIME_AUTH
+#undef HAVE_ONE_TIME_AUTH
 #define HAVE_ONE_TIME_AUTH
 
-#undef  HAVE_CHACHA
+#undef HAVE_CHACHA
 #define HAVE_CHACHA
 
-#undef  HAVE_HASHDRBG
+#undef HAVE_HASHDRBG
 #define HAVE_HASHDRBG
 
-#undef  NO_PWDBASED
+#undef NO_PWDBASED
 #define NO_PWDBASED
 
-#undef  USE_FAST_MATH
+#undef USE_FAST_MATH
 #define USE_FAST_MATH
 
-#undef  WOLFSSL_X86_64_BUILD
+#undef WOLFSSL_X86_64_BUILD
 #define WOLFSSL_X86_64_BUILD
-
 
 #ifdef __cplusplus
 }
 #endif
-

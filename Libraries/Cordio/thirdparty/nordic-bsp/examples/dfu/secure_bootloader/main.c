@@ -64,8 +64,8 @@
 #include "app_timer.h"
 #include "nrf_clock.h"
 
-#define LAIRD_LED_SIO    13
-#define LAIRD_LED        0b10000000000000       //Bit-mask format
+#define LAIRD_LED_SIO 13
+#define LAIRD_LED 0b10000000000000 //Bit-mask format
 
 /* Timer used to blink LED on DFU progress. */
 APP_TIMER_DEF(m_dfu_progress_led_timer);
@@ -84,13 +84,11 @@ static void on_error(void)
     NVIC_SystemReset();
 }
 
-
-void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t * p_file_name)
+void app_error_handler(uint32_t error_code, uint32_t line_num, const uint8_t *p_file_name)
 {
     NRF_LOG_ERROR("%s:%d", p_file_name, line_num);
     on_error();
 }
-
 
 void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
 {
@@ -98,26 +96,22 @@ void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info)
     on_error();
 }
 
-
 void app_error_handler_bare(uint32_t error_code)
 {
     NRF_LOG_ERROR("Received an error: 0x%08x!", error_code);
     on_error();
 }
 
-
-static void dfu_progress_led_timeout_handler(void * p_context)
+static void dfu_progress_led_timeout_handler(void *p_context)
 {
     app_timer_id_t timer = (app_timer_id_t)p_context;
 
-    uint32_t err_code = app_timer_start(timer,
-                                        APP_TIMER_TICKS(DFU_LED_CONFIG_PROGRESS_BLINK_MS),
-                                        p_context);
+    uint32_t err_code =
+        app_timer_start(timer, APP_TIMER_TICKS(DFU_LED_CONFIG_PROGRESS_BLINK_MS), p_context);
     APP_ERROR_CHECK(err_code);
 
     nrf_gpio_pin_toggle(LAIRD_LED_SIO);
 }
-
 
 /**
  * @brief Function notifies certain events in DFU process.
@@ -127,77 +121,70 @@ static void dfu_observer(nrf_dfu_evt_type_t evt_type)
     static bool timer_created = false;
     uint32_t err_code;
 
-    if (!timer_created)
-    {
-        err_code = app_timer_create(&m_dfu_progress_led_timer,
-                                    APP_TIMER_MODE_SINGLE_SHOT,
+    if (!timer_created) {
+        err_code = app_timer_create(&m_dfu_progress_led_timer, APP_TIMER_MODE_SINGLE_SHOT,
                                     dfu_progress_led_timeout_handler);
         APP_ERROR_CHECK(err_code);
         timer_created = true;
     }
 
-    switch (evt_type)
-    {
-        case NRF_DFU_EVT_DFU_FAILED:
-        case NRF_DFU_EVT_DFU_ABORTED:
-            err_code = led_softblink_stop();
-            APP_ERROR_CHECK(err_code);
+    switch (evt_type) {
+    case NRF_DFU_EVT_DFU_FAILED:
+    case NRF_DFU_EVT_DFU_ABORTED:
+        err_code = led_softblink_stop();
+        APP_ERROR_CHECK(err_code);
 
-            err_code = app_timer_stop(m_dfu_progress_led_timer);
-            APP_ERROR_CHECK(err_code);
+        err_code = app_timer_stop(m_dfu_progress_led_timer);
+        APP_ERROR_CHECK(err_code);
 
-            err_code = led_softblink_start(LAIRD_LED);
-            APP_ERROR_CHECK(err_code);
-            break;
-        case NRF_DFU_EVT_DFU_INITIALIZED:
-            nrf_gpio_cfg(LAIRD_LED_SIO, NRF_GPIO_PIN_DIR_INPUT, NRF_GPIO_PIN_INPUT_CONNECT, NRF_GPIO_PIN_NOPULL, NRF_GPIO_PIN_S0S1, NRF_GPIO_PIN_NOSENSE);
+        err_code = led_softblink_start(LAIRD_LED);
+        APP_ERROR_CHECK(err_code);
+        break;
+    case NRF_DFU_EVT_DFU_INITIALIZED:
+        nrf_gpio_cfg(LAIRD_LED_SIO, NRF_GPIO_PIN_DIR_INPUT, NRF_GPIO_PIN_INPUT_CONNECT,
+                     NRF_GPIO_PIN_NOPULL, NRF_GPIO_PIN_S0S1, NRF_GPIO_PIN_NOSENSE);
 
-            if (!nrf_clock_lf_is_running())
-            {
-                nrf_clock_task_trigger(NRF_CLOCK_TASK_LFCLKSTART);
-            }
-            err_code = app_timer_init();
-            APP_ERROR_CHECK(err_code);
-
-            led_sb_init_params_t led_sb_init_param = LED_SB_INIT_DEFAULT_PARAMS(LAIRD_LED);
-
-            uint32_t ticks = APP_TIMER_TICKS(DFU_LED_CONFIG_TRANSPORT_INACTIVE_BREATH_MS);
-            led_sb_init_param.p_leds_port    = BSP_LED_1_PORT;
-            led_sb_init_param.on_time_ticks  = ticks;
-            led_sb_init_param.off_time_ticks = ticks;
-            led_sb_init_param.duty_cycle_max = 255;
-            led_sb_init_param.active_high = true;
-
-            err_code = led_softblink_init(&led_sb_init_param);
-            APP_ERROR_CHECK(err_code);
-
-            err_code = led_softblink_start(LAIRD_LED);
-            APP_ERROR_CHECK(err_code);
-            break;
-        case NRF_DFU_EVT_TRANSPORT_ACTIVATED:
-        {
-            uint32_t ticks = APP_TIMER_TICKS(DFU_LED_CONFIG_TRANSPORT_ACTIVE_BREATH_MS);
-            led_softblink_off_time_set(ticks);
-            led_softblink_on_time_set(ticks);
+        if (!nrf_clock_lf_is_running()) {
+            nrf_clock_task_trigger(NRF_CLOCK_TASK_LFCLKSTART);
         }
-            break;
-        case NRF_DFU_EVT_TRANSPORT_DEACTIVATED:
-        {
-            uint32_t ticks =  APP_TIMER_TICKS(DFU_LED_CONFIG_PROGRESS_BLINK_MS);
-            err_code = led_softblink_stop();
-            APP_ERROR_CHECK(err_code);
+        err_code = app_timer_init();
+        APP_ERROR_CHECK(err_code);
 
-            err_code = app_timer_start(m_dfu_progress_led_timer, ticks, m_dfu_progress_led_timer);
-            APP_ERROR_CHECK(err_code);
-            break;
-        }
-        case NRF_DFU_EVT_DFU_STARTED:
-            break;
-        default:
-            break;
+        led_sb_init_params_t led_sb_init_param = LED_SB_INIT_DEFAULT_PARAMS(LAIRD_LED);
+
+        uint32_t ticks = APP_TIMER_TICKS(DFU_LED_CONFIG_TRANSPORT_INACTIVE_BREATH_MS);
+        led_sb_init_param.p_leds_port = BSP_LED_1_PORT;
+        led_sb_init_param.on_time_ticks = ticks;
+        led_sb_init_param.off_time_ticks = ticks;
+        led_sb_init_param.duty_cycle_max = 255;
+        led_sb_init_param.active_high = true;
+
+        err_code = led_softblink_init(&led_sb_init_param);
+        APP_ERROR_CHECK(err_code);
+
+        err_code = led_softblink_start(LAIRD_LED);
+        APP_ERROR_CHECK(err_code);
+        break;
+    case NRF_DFU_EVT_TRANSPORT_ACTIVATED: {
+        uint32_t ticks = APP_TIMER_TICKS(DFU_LED_CONFIG_TRANSPORT_ACTIVE_BREATH_MS);
+        led_softblink_off_time_set(ticks);
+        led_softblink_on_time_set(ticks);
+    } break;
+    case NRF_DFU_EVT_TRANSPORT_DEACTIVATED: {
+        uint32_t ticks = APP_TIMER_TICKS(DFU_LED_CONFIG_PROGRESS_BLINK_MS);
+        err_code = led_softblink_stop();
+        APP_ERROR_CHECK(err_code);
+
+        err_code = app_timer_start(m_dfu_progress_led_timer, ticks, m_dfu_progress_led_timer);
+        APP_ERROR_CHECK(err_code);
+        break;
+    }
+    case NRF_DFU_EVT_DFU_STARTED:
+        break;
+    default:
+        break;
     }
 }
-
 
 /**@brief Function for application main entry. */
 int main(void)
@@ -213,7 +200,7 @@ int main(void)
     ret_val = nrf_bootloader_flash_protect(BOOTLOADER_START_ADDR, BOOTLOADER_SIZE, false);
     APP_ERROR_CHECK(ret_val);
 
-    (void) NRF_LOG_INIT(nrf_bootloader_dfu_timer_counter_get);
+    (void)NRF_LOG_INIT(nrf_bootloader_dfu_timer_counter_get);
     NRF_LOG_DEFAULT_BACKENDS_INIT();
 
     NRF_LOG_INFO("Inside main");

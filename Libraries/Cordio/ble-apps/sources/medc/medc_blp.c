@@ -41,10 +41,10 @@
 **************************************************************************************************/
 
 /* Start of cached blood pressure service handles; begins after DIS */
-#define MEDC_DISC_BPS_START         (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
+#define MEDC_DISC_BPS_START (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
 
 /* Total cached handle list length */
-#define MEDC_DISC_HDL_LIST_LEN      (MEDC_DISC_BPS_START + BLPC_BPS_HDL_LIST_LEN)
+#define MEDC_DISC_HDL_LIST_LEN (MEDC_DISC_BPS_START + BLPC_BPS_HDL_LIST_LEN)
 
 /*! Pointers into handle list for blood pressure service handles */
 static uint16_t *pMedcBpsHdlList = &medcCb.hdlList[MEDC_DISC_BPS_START];
@@ -57,20 +57,19 @@ WSF_CT_ASSERT(MEDC_DISC_HDL_LIST_LEN <= APP_DB_HDL_LIST_LEN);
 **************************************************************************************************/
 
 /* List of characteristics to configure after service discovery */
-static const attcDiscCfg_t medcCfgBpsList[] =
-{
-  /* Read:  Blood pressure feature */
-  {NULL, 0, BLPC_BPS_BPF_HDL_IDX},
+static const attcDiscCfg_t medcCfgBpsList[] = {
+    /* Read:  Blood pressure feature */
+    { NULL, 0, BLPC_BPS_BPF_HDL_IDX },
 
-  /* Write:  Blood pressure measurement CCC descriptor  */
-  {medcCccIndVal, sizeof(medcCccIndVal), BLPC_BPS_BPM_CCC_HDL_IDX},
+    /* Write:  Blood pressure measurement CCC descriptor  */
+    { medcCccIndVal, sizeof(medcCccIndVal), BLPC_BPS_BPM_CCC_HDL_IDX },
 
-  /* Write:  Intermediate cuff pressure CCC descriptor  */
-  {medcCccNtfVal, sizeof(medcCccNtfVal), BLPC_BPS_ICP_CCC_HDL_IDX},
+    /* Write:  Intermediate cuff pressure CCC descriptor  */
+    { medcCccNtfVal, sizeof(medcCccNtfVal), BLPC_BPS_ICP_CCC_HDL_IDX },
 };
 
 /* Characteristic configuration list length */
-#define MEDC_CFG_BPS_LIST_LEN   (sizeof(medcCfgBpsList) / sizeof(attcDiscCfg_t))
+#define MEDC_CFG_BPS_LIST_LEN (sizeof(medcCfgBpsList) / sizeof(attcDiscCfg_t))
 
 /**************************************************************************************************
   Local Functions
@@ -87,14 +86,7 @@ static void medcBlpBtn(dmConnId_t connId, uint8_t btn);
 **************************************************************************************************/
 
 /*! profile interface pointer */
-medcIf_t medcBlpIf =
-{
-  medcBlpInit,
-  medcBlpDiscover,
-  medcBlpConfigure,
-  medcBlpProcMsg,
-  medcBlpBtn
-};
+medcIf_t medcBlpIf = { medcBlpInit, medcBlpDiscover, medcBlpConfigure, medcBlpProcMsg, medcBlpBtn };
 
 /*************************************************************************************************/
 /*!
@@ -107,26 +99,22 @@ medcIf_t medcBlpIf =
 /*************************************************************************************************/
 static void medcBpsValueUpdate(attEvt_t *pMsg)
 {
-  if (pMsg->hdr.status == ATT_SUCCESS)
-  {
-    /* determine which profile the handle belongs to; start with most likely */
+    if (pMsg->hdr.status == ATT_SUCCESS) {
+        /* determine which profile the handle belongs to; start with most likely */
 
-    /* blood pressure */
-    if (BlpcBpsValueUpdate(pMedcBpsHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
+        /* blood pressure */
+        if (BlpcBpsValueUpdate(pMedcBpsHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* device information */
+        if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* GATT */
+        if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
     }
-    /* device information */
-    if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-    /* GATT */
-    if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -140,17 +128,16 @@ static void medcBpsValueUpdate(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcBlpProcMsg(wsfMsgHdr_t *pMsg)
 {
-  switch(pMsg->event)
-  {
+    switch (pMsg->event) {
     case ATTC_READ_RSP:
     case ATTC_HANDLE_VALUE_NTF:
     case ATTC_HANDLE_VALUE_IND:
-      medcBpsValueUpdate((attEvt_t *) pMsg);
-      break;
+        medcBpsValueUpdate((attEvt_t *)pMsg);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -162,11 +149,11 @@ static void medcBlpProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void medcBlpInit(void)
 {
-  /* set handle list length */
-  medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
+    /* set handle list length */
+    medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
 
-  /* set autoconnect UUID */
-  medcCb.autoUuid[0] = ATT_UUID_BLOOD_PRESSURE_SERVICE;
+    /* set autoconnect UUID */
+    medcCb.autoUuid[0] = ATT_UUID_BLOOD_PRESSURE_SERVICE;
 }
 
 /*************************************************************************************************/
@@ -180,10 +167,10 @@ static void medcBlpInit(void)
 /*************************************************************************************************/
 static bool_t medcBlpDiscover(dmConnId_t connId)
 {
-  /* discover blood pressure service */
-  BlpcBpsDiscover(connId, pMedcBpsHdlList);
+    /* discover blood pressure service */
+    BlpcBpsDiscover(connId, pMedcBpsHdlList);
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -198,10 +185,9 @@ static bool_t medcBlpDiscover(dmConnId_t connId)
 /*************************************************************************************************/
 static void medcBlpConfigure(dmConnId_t connId, uint8_t status)
 {
-  /* configure blood pressure service */
-  AppDiscConfigure(connId, status, MEDC_CFG_BPS_LIST_LEN,
-                   (attcDiscCfg_t *) medcCfgBpsList,
-                   BLPC_BPS_HDL_LIST_LEN, pMedcBpsHdlList);
+    /* configure blood pressure service */
+    AppDiscConfigure(connId, status, MEDC_CFG_BPS_LIST_LEN, (attcDiscCfg_t *)medcCfgBpsList,
+                     BLPC_BPS_HDL_LIST_LEN, pMedcBpsHdlList);
 }
 
 /*************************************************************************************************/
@@ -216,5 +202,5 @@ static void medcBlpConfigure(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 static void medcBlpBtn(dmConnId_t connId, uint8_t btn)
 {
-  return;
+    return;
 }

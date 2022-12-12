@@ -34,10 +34,10 @@
 **************************************************************************************************/
 
 /*! Max number of active timers */
-#define UI_TIMER_WSF_MAX_TIMERS           3
+#define UI_TIMER_WSF_MAX_TIMERS 3
 
 /*! Unused timer ID */
-#define UI_TIMER_WSF_UNUSED               0
+#define UI_TIMER_WSF_UNUSED 0
 
 /**************************************************************************************************
   Local Variables
@@ -60,24 +60,22 @@ wsfHandlerId_t iuTimerWsfHandlerId;
 /*************************************************************************************************/
 static wsfTimer_t *uiTimerAddTimer(uint8_t event)
 {
-  wsfTimer_t *pTimer = uiTimerList;
-  int8_t i;
+    wsfTimer_t *pTimer = uiTimerList;
+    int8_t i;
 
-  for (i = 0; i < UI_TIMER_WSF_MAX_TIMERS; i++, pTimer++)
-  {
-    if (pTimer->msg.event == UI_TIMER_WSF_UNUSED)
-    {
-      pTimer->msg.event = event;
-      pTimer->handlerId = iuTimerWsfHandlerId;
+    for (i = 0; i < UI_TIMER_WSF_MAX_TIMERS; i++, pTimer++) {
+        if (pTimer->msg.event == UI_TIMER_WSF_UNUSED) {
+            pTimer->msg.event = event;
+            pTimer->handlerId = iuTimerWsfHandlerId;
 
-      return pTimer;
+            return pTimer;
+        }
     }
-  }
 
-  /* If ASSERT happens, increase UI_TIMER_WSF_MAX_TIMERS to needed number of active timers. */
-  WSF_ASSERT(0);
+    /* If ASSERT happens, increase UI_TIMER_WSF_MAX_TIMERS to needed number of active timers. */
+    WSF_ASSERT(0);
 
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -92,23 +90,20 @@ static wsfTimer_t *uiTimerAddTimer(uint8_t event)
 /*************************************************************************************************/
 static wsfTimer_t *uiTimerGetTimerByEvent(uint8_t event, bool_t addTimer)
 {
-  wsfTimer_t *pTimer = uiTimerList;
-  int8_t i;
+    wsfTimer_t *pTimer = uiTimerList;
+    int8_t i;
 
-  for (i = 0; i < UI_TIMER_WSF_MAX_TIMERS; i++, pTimer++)
-  {
-    if (pTimer->msg.event == event)
-    {
-      return pTimer;
+    for (i = 0; i < UI_TIMER_WSF_MAX_TIMERS; i++, pTimer++) {
+        if (pTimer->msg.event == event) {
+            return pTimer;
+        }
     }
-  }
 
-  if (addTimer)
-  {
-    return uiTimerAddTimer(event);
-  }
+    if (addTimer) {
+        return uiTimerAddTimer(event);
+    }
 
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -122,7 +117,7 @@ static wsfTimer_t *uiTimerGetTimerByEvent(uint8_t event, bool_t addTimer)
 /*************************************************************************************************/
 void uiTimerWsfHandlerInit(wsfHandlerId_t handlerId)
 {
-  iuTimerWsfHandlerId = handlerId;
+    iuTimerWsfHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -137,17 +132,16 @@ void uiTimerWsfHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 static void uiTimerWsfHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  uint8_t timerEvent = pMsg->event;
-  wsfTimer_t *pTimer = uiTimerGetTimerByEvent(timerEvent, FALSE);
+    uint8_t timerEvent = pMsg->event;
+    wsfTimer_t *pTimer = uiTimerGetTimerByEvent(timerEvent, FALSE);
 
-  if (pTimer)
-  {
-    /* Free the timer */
-    pTimer->msg.event = UI_TIMER_WSF_UNUSED;
+    if (pTimer) {
+        /* Free the timer */
+        pTimer->msg.event = UI_TIMER_WSF_UNUSED;
 
-    /* Process the timer event */
-    UiProcEvent(timerEvent);
-  }
+        /* Process the timer event */
+        UiProcEvent(timerEvent);
+    }
 }
 
 /*************************************************************************************************/
@@ -162,12 +156,11 @@ static void uiTimerWsfHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void UiTimerStart(uint8_t event, uint32_t ms)
 {
-  wsfTimer_t *pTimer = uiTimerGetTimerByEvent(event, TRUE);
+    wsfTimer_t *pTimer = uiTimerGetTimerByEvent(event, TRUE);
 
-  if (pTimer)
-  {
-    WsfTimerStartMs(pTimer, ms);
-  }
+    if (pTimer) {
+        WsfTimerStartMs(pTimer, ms);
+    }
 }
 
 /*************************************************************************************************/
@@ -181,14 +174,13 @@ void UiTimerStart(uint8_t event, uint32_t ms)
 /*************************************************************************************************/
 void UiTimerStop(uint8_t event)
 {
-  wsfTimer_t *pTimer = uiTimerGetTimerByEvent(event, FALSE);
+    wsfTimer_t *pTimer = uiTimerGetTimerByEvent(event, FALSE);
 
-  if (pTimer)
-  {
-    /* Stop and free the timer */
-    WsfTimerStop(pTimer);
-    pTimer->msg.event = UI_TIMER_WSF_UNUSED;
-  }
+    if (pTimer) {
+        /* Stop and free the timer */
+        WsfTimerStop(pTimer);
+        pTimer->msg.event = UI_TIMER_WSF_UNUSED;
+    }
 }
 
 /*************************************************************************************************/
@@ -200,10 +192,10 @@ void UiTimerStop(uint8_t event)
 /*************************************************************************************************/
 void UiTimerInit(void)
 {
-  /* Clear timers */
-  memset(uiTimerList, 0, sizeof(uiTimerList));
+    /* Clear timers */
+    memset(uiTimerList, 0, sizeof(uiTimerList));
 
-  /* Start timer handler */
-  iuTimerWsfHandlerId = WsfOsSetNextHandler(uiTimerWsfHandler);
-  uiTimerWsfHandlerInit(iuTimerWsfHandlerId);
+    /* Start timer handler */
+    iuTimerWsfHandlerId = WsfOsSetNextHandler(uiTimerWsfHandler);
+    uiTimerWsfHandlerInit(iuTimerWsfHandlerId);
 }

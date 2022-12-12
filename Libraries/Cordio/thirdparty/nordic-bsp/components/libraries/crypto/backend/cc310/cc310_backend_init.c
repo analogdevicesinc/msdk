@@ -52,7 +52,6 @@
  */
 void cc310_backend_enable(void);
 
-
 /**@internal @brief Function to disable CC310 (in HW)
  */
 void cc310_backend_disable(void);
@@ -60,15 +59,14 @@ void cc310_backend_disable(void);
 static uint32_t init_result_get(uint32_t crys_error)
 {
     uint32_t ret_val = NRF_ERROR_INTERNAL;
-    switch (crys_error)
-    {
-        case CRYS_OK:
-            ret_val = NRF_SUCCESS;
-            break;
+    switch (crys_error) {
+    case CRYS_OK:
+        ret_val = NRF_SUCCESS;
+        break;
 
-        default:
-            ret_val = NRF_ERROR_INTERNAL;
-            break;
+    default:
+        ret_val = NRF_ERROR_INTERNAL;
+        break;
     }
 
     return ret_val;
@@ -76,7 +74,7 @@ static uint32_t init_result_get(uint32_t crys_error)
 
 static ret_code_t cc310_backend_init(void)
 {
-    uint32_t    ret_val;
+    uint32_t ret_val;
     CRYSError_t crys_error;
 
     cc310_backend_mutex_init();
@@ -104,13 +102,12 @@ static ret_code_t cc310_backend_init(void)
 
 #else
 
-    #warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+#warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif // NRF_CRYPTO_RNG_AUTO_INIT_ENABLED
 
     return ret_val;
 }
-
 
 static ret_code_t cc310_backend_uninit(void)
 {
@@ -126,7 +123,7 @@ static ret_code_t cc310_backend_uninit(void)
 
 #else
 
-    #warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+#warning NRF_CRYPTO_RNG_AUTO_INIT_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif // NRF_CRYPTO_RNG_AUTO_INIT_ENABLED
 
@@ -141,11 +138,9 @@ static ret_code_t cc310_backend_uninit(void)
     return NRF_SUCCESS;
 }
 
-
-CRYPTO_BACKEND_REGISTER(nrf_crypto_backend_info_t const cc310_backend) =
-{
-    .init_fn    = cc310_backend_init,
-    .uninit_fn  = cc310_backend_uninit,
+CRYPTO_BACKEND_REGISTER(nrf_crypto_backend_info_t const cc310_backend) = {
+    .init_fn = cc310_backend_init,
+    .uninit_fn = cc310_backend_uninit,
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310)

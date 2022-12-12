@@ -41,100 +41,94 @@
 /*************************************************************************************************/
 void lctrMstConnExecuteSm(lctrConnCtx_t *pCtx, uint8_t event)
 {
-  switch (pCtx->state)
-  {
+    switch (pCtx->state) {
     case LCTR_CONN_STATE_ESTABLISHED_READY:
-      switch (event)
-      {
+        switch (event) {
         case LCTR_CONN_DATA_PENDING:
-          lctrMstReloadDataPdu(pCtx);
-          break;
+            lctrMstReloadDataPdu(pCtx);
+            break;
         case LCTR_CONN_MST_ESTABLISH:
         case LCTR_CONN_TERM_SUP_TIMEOUT:
         case LCTR_CONN_TERM_MIC_FAILED:
-          /* Data path related events. */
-          break;
+            /* Data path related events. */
+            break;
         default:
-          /* Invoke LLCP child state machine */
-          lctrMstLlcpExecuteSm(pCtx, event);
-          break;
-      }
-      break;
+            /* Invoke LLCP child state machine */
+            lctrMstLlcpExecuteSm(pCtx, event);
+            break;
+        }
+        break;
 
     case LCTR_CONN_STATE_INITIALIZED:
-      switch (event)
-      {
+        switch (event) {
         case LCTR_CONN_MST_ESTABLISH:
-          LL_TRACE_INFO2("lctrMstConnExecuteSm: handle=%u, state=%u, event=MST_ESTABLISH", LCTR_GET_CONN_HANDLE(pCtx), pCtx->state);
+            LL_TRACE_INFO2("lctrMstConnExecuteSm: handle=%u, state=%u, event=MST_ESTABLISH",
+                           LCTR_GET_CONN_HANDLE(pCtx), pCtx->state);
 
-          lctrMstSetEstablishConn(pCtx);
-          lctrStoreConnFailEstablishTerminateReason(pCtx);        /* default termination reason */
+            lctrMstSetEstablishConn(pCtx);
+            lctrStoreConnFailEstablishTerminateReason(pCtx); /* default termination reason */
 
-          if (lctrGetConnOpFlag(pCtx, LL_OP_MODE_FLAG_ENA_VER_LLCP_STARTUP))
-          {
-            /* Queue version exchange. */
-            lctrLlcpExecuteCommonSm(pCtx, LCTR_CONN_LLCP_VERSION_EXCH);
-          }
-
-          if (lctrGetConnOpFlag(pCtx, LL_OP_MODE_FLAG_ENA_FEAT_LLCP_STARTUP))
-          {
-            /* Queue feature exchange. */
-            lctrLlcpExecuteCommonSm(pCtx, LCTR_CONN_LLCP_FEATURE_EXCH);
-          }
-
-          if (lctrGetConnOpFlag(pCtx, LL_OP_MODE_FLAG_ENA_LEN_LLCP_STARTUP))
-          {
-            /* Only send initial length feature if the default is an extended length. */
-            if ((pCtx->localDataPdu.maxTxLen  > LL_MAX_DATA_LEN_MIN)  ||
-                (pCtx->localDataPdu.maxTxTime > LL_MAX_DATA_TIME_MIN))
-            {
-              lctrLlcpExecuteCommonSm(pCtx, LCTR_CONN_LLCP_LENGTH_EXCH);
+            if (lctrGetConnOpFlag(pCtx, LL_OP_MODE_FLAG_ENA_VER_LLCP_STARTUP)) {
+                /* Queue version exchange. */
+                lctrLlcpExecuteCommonSm(pCtx, LCTR_CONN_LLCP_VERSION_EXCH);
             }
-          }
 
-          lctrNotifyHostConnectInd(LCTR_GET_CONN_HANDLE(pCtx), LL_ROLE_MASTER,
-              &pLctrConnMsg->connEstablish.connInd, pLctrConnMsg->connEstablish.peerIdAddrType,
-              pLctrConnMsg->connEstablish.peerIdAddr, pLctrConnMsg->connEstablish.peerRpa,
-              pLctrConnMsg->connEstablish.localRpa, LL_SUCCESS, pCtx->usedChSel);
+            if (lctrGetConnOpFlag(pCtx, LL_OP_MODE_FLAG_ENA_FEAT_LLCP_STARTUP)) {
+                /* Queue feature exchange. */
+                lctrLlcpExecuteCommonSm(pCtx, LCTR_CONN_LLCP_FEATURE_EXCH);
+            }
 
-          pCtx->state = LCTR_CONN_STATE_ESTABLISHED_READY;
-          break;
+            if (lctrGetConnOpFlag(pCtx, LL_OP_MODE_FLAG_ENA_LEN_LLCP_STARTUP)) {
+                /* Only send initial length feature if the default is an extended length. */
+                if ((pCtx->localDataPdu.maxTxLen > LL_MAX_DATA_LEN_MIN) ||
+                    (pCtx->localDataPdu.maxTxTime > LL_MAX_DATA_TIME_MIN)) {
+                    lctrLlcpExecuteCommonSm(pCtx, LCTR_CONN_LLCP_LENGTH_EXCH);
+                }
+            }
+
+            lctrNotifyHostConnectInd(
+                LCTR_GET_CONN_HANDLE(pCtx), LL_ROLE_MASTER, &pLctrConnMsg->connEstablish.connInd,
+                pLctrConnMsg->connEstablish.peerIdAddrType, pLctrConnMsg->connEstablish.peerIdAddr,
+                pLctrConnMsg->connEstablish.peerRpa, pLctrConnMsg->connEstablish.localRpa,
+                LL_SUCCESS, pCtx->usedChSel);
+
+            pCtx->state = LCTR_CONN_STATE_ESTABLISHED_READY;
+            break;
 
         default:
-          break;
-      }
-      break;
+            break;
+        }
+        break;
 
     case LCTR_CONN_STATE_TERMINATING:
-      switch (event)
-      {
+        switch (event) {
         case LCTR_CONN_TMR_LLCP_RSP_EXP:
-          pCtx->llcpNotifyMask &= ~(1 << LCTR_PROC_CMN_TERM);
-          lctrStoreLlcpTimeoutTerminateReason(pCtx);
-          pCtx->llcpState = LCTR_LLCP_STATE_IDLE;  /* Stop waiting to send TERMINATE_IND. */
-          break;
+            pCtx->llcpNotifyMask &= ~(1 << LCTR_PROC_CMN_TERM);
+            lctrStoreLlcpTimeoutTerminateReason(pCtx);
+            pCtx->llcpState = LCTR_LLCP_STATE_IDLE; /* Stop waiting to send TERMINATE_IND. */
+            break;
         default:
-          break;
-      }
-      break;
+            break;
+        }
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  /* State-less events. */
-  switch (event)
-  {
+    /* State-less events. */
+    switch (event) {
     case LCTR_CONN_TERMINATED:
-      LL_TRACE_INFO2("lctrMstConnExecuteSm: handle=%u, state=%u, event=TERMINATED", LCTR_GET_CONN_HANDLE(pCtx), pCtx->state);
-      lctrNotifyHostDisconnectInd(pCtx);
-      /* Fallthrough. */
+        LL_TRACE_INFO2("lctrMstConnExecuteSm: handle=%u, state=%u, event=TERMINATED",
+                       LCTR_GET_CONN_HANDLE(pCtx), pCtx->state);
+        lctrNotifyHostDisconnectInd(pCtx);
+        /* Fallthrough. */
     case LCTR_CONN_INIT_CANCELED:
-      SchRmRemove(LCTR_GET_CONN_HANDLE(pCtx));
-      lctrFreeConnCtx(pCtx);
-      break;
+        SchRmRemove(LCTR_GET_CONN_HANDLE(pCtx));
+        lctrFreeConnCtx(pCtx);
+        break;
     default:
-      lctrConnStatelessEventHandler(pCtx, event);
-      break;
-  }
+        lctrConnStatelessEventHandler(pCtx, event);
+        break;
+    }
 }

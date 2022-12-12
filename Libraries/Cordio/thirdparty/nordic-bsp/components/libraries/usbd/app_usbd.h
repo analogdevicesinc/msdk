@@ -79,9 +79,9 @@ extern "C" {
 /**
  * @brief SOF event handling modes.
  */
-#define APP_USBD_SOF_HANDLING_NORMAL_QUEUE    0 //!< Push SOF events into event queue.
-#define APP_USBD_SOF_HANDLING_COMPRESS_QUEUE  1 //!< Compress SOF events.
-#define APP_USBD_SOF_HANDLING_INTERRUPT       2 //!< Handle SOF events in interrupt.
+#define APP_USBD_SOF_HANDLING_NORMAL_QUEUE 0 //!< Push SOF events into event queue.
+#define APP_USBD_SOF_HANDLING_COMPRESS_QUEUE 1 //!< Compress SOF events.
+#define APP_USBD_SOF_HANDLING_INTERRUPT 2 //!< Handle SOF events in interrupt.
 
 /**
  * @brief Configuration passed to @ref app_usbd_init.
@@ -101,7 +101,7 @@ typedef struct {
      * @note This field is available only when USB internal queue is disabled
      *       (see @ref APP_USBD_CONFIG_EVENT_QUEUE_ENABLE).
      */
-    void (*ev_handler)(app_usbd_internal_evt_t const * const p_event);
+    void (*ev_handler)(app_usbd_internal_evt_t const *const p_event);
 #endif
 
 #if (APP_USBD_CONFIG_EVENT_QUEUE_ENABLE) || defined(__SDK_DOXYGEN__)
@@ -124,7 +124,7 @@ typedef struct {
      *       It means that if the event type is @ref APP_USBD_EVT_DRV_SETUP,
      *       there would not be setup field present in the event structure.
      */
-    void (*ev_isr_handler)(app_usbd_internal_evt_t const * const p_event, bool queued);
+    void (*ev_isr_handler)(app_usbd_internal_evt_t const *const p_event, bool queued);
 #endif
 
     /**
@@ -161,7 +161,6 @@ typedef struct {
     bool enable_sof;
 } app_usbd_config_t;
 
-
 #if (APP_USBD_PROVIDE_SOF_TIMESTAMP) || defined(__SDK_DOXYGEN__)
 /**
  * @brief Timestamp function for the logger.
@@ -182,7 +181,7 @@ uint32_t app_usbd_sof_timestamp_get(void);
  * @param p_config  Configuration. NULL pointer might be passed here and default
  *                  configuration will be applied then.
  */
-ret_code_t app_usbd_init(app_usbd_config_t const * p_config);
+ret_code_t app_usbd_init(app_usbd_config_t const *p_config);
 
 /**
  * @brief USB library un-initialization.
@@ -310,8 +309,7 @@ bool app_usbd_active_check(void);
  *
  * Function to be called on each event to be processed by the library.
  */
-void app_usbd_event_execute(app_usbd_internal_evt_t const * const p_event);
-
+void app_usbd_event_execute(app_usbd_internal_evt_t const *const p_event);
 
 #if (APP_USBD_CONFIG_EVENT_QUEUE_ENABLE) || defined(__SDK_DOXYGEN__)
 /**
@@ -343,7 +341,7 @@ bool app_usbd_event_queue_process(void);
  * @retval NRF_SUCCESS         Instance successfully added.
  * @retval NRF_ERROR_BUSY      Endpoint(s) not available.
  */
-ret_code_t app_usbd_class_append(app_usbd_class_inst_t const * p_cinst);
+ret_code_t app_usbd_class_append(app_usbd_class_inst_t const *p_cinst);
 
 /**
  * @brief Remove class instance.
@@ -360,7 +358,7 @@ ret_code_t app_usbd_class_append(app_usbd_class_inst_t const * p_cinst);
  * @retval NRF_SUCCESS         Instance successfully removed.
  * @retval NRF_ERROR_NOT_FOUND Instance not found in the instance chain.
  */
-ret_code_t app_usbd_class_remove(app_usbd_class_inst_t const * p_cinst);
+ret_code_t app_usbd_class_remove(app_usbd_class_inst_t const *p_cinst);
 
 /**
  * @brief Remove all class instances.
@@ -399,9 +397,8 @@ ret_code_t app_usbd_class_remove_all(void);
  * @retval NRF_SUCCESS             New handler successfully set
  * @retval NRF_ERROR_INVALID_PARAM p_cinst is not the same as currently set for the endpoint
  */
-ret_code_t app_usbd_ep_handler_set(app_usbd_class_inst_t const * p_cinst,
-                                   nrf_drv_usbd_ep_t             ep,
-                                   app_usbd_ep_event_handler_t   handler);
+ret_code_t app_usbd_ep_handler_set(app_usbd_class_inst_t const *p_cinst, nrf_drv_usbd_ep_t ep,
+                                   app_usbd_ep_event_handler_t handler);
 
 /**
  * @brief Register class instance as the one that requires SOF events.
@@ -416,7 +413,7 @@ ret_code_t app_usbd_ep_handler_set(app_usbd_class_inst_t const * p_cinst,
  *
  * @sa app_usbd_class_sof_unregister
  */
-ret_code_t app_usbd_class_sof_register(app_usbd_class_inst_t const * p_cinst);
+ret_code_t app_usbd_class_sof_register(app_usbd_class_inst_t const *p_cinst);
 
 /**
  * @brief Unregister class instance from SOF processing instances list.
@@ -431,7 +428,7 @@ ret_code_t app_usbd_class_sof_register(app_usbd_class_inst_t const * p_cinst);
  *
  * @sa app_usbd_class_sof_register
  */
-ret_code_t app_usbd_class_sof_unregister(app_usbd_class_inst_t const * p_cinst);
+ret_code_t app_usbd_class_sof_unregister(app_usbd_class_inst_t const *p_cinst);
 
 /**
  * @brief Register class instance as the one that requires SOF events in interrupt.
@@ -447,7 +444,7 @@ ret_code_t app_usbd_class_sof_unregister(app_usbd_class_inst_t const * p_cinst);
  *
  * @sa app_usbd_class_sof_interrupt_unregister
  */
-ret_code_t app_usbd_class_sof_interrupt_register(app_usbd_class_inst_t const * p_cinst,
+ret_code_t app_usbd_class_sof_interrupt_register(app_usbd_class_inst_t const *p_cinst,
                                                  app_usbd_sof_interrupt_handler_t handler);
 
 /**
@@ -463,8 +460,7 @@ ret_code_t app_usbd_class_sof_interrupt_register(app_usbd_class_inst_t const * p
  *
  * @sa app_usbd_class_sof_interrupt_register
  */
-ret_code_t app_usbd_class_sof_interrupt_unregister(app_usbd_class_inst_t const * p_cinst);
-
+ret_code_t app_usbd_class_sof_interrupt_unregister(app_usbd_class_inst_t const *p_cinst);
 
 /**
  * @brief Register class on remote wake-up feature.
@@ -473,7 +469,7 @@ ret_code_t app_usbd_class_sof_interrupt_unregister(app_usbd_class_inst_t const *
  *
  * @retval NRF_SUCCESS Instance that requires remote wake-up registered.
  */
-ret_code_t app_usbd_class_rwu_register(app_usbd_class_inst_t const * const p_inst);
+ret_code_t app_usbd_class_rwu_register(app_usbd_class_inst_t const *const p_inst);
 
 /**
  * @brief Unregister class from remote wake-up feature.
@@ -482,7 +478,7 @@ ret_code_t app_usbd_class_rwu_register(app_usbd_class_inst_t const * const p_ins
  *
  * @retval NRF_SUCCESS Instance that requires remote wake-up removed.
  */
-ret_code_t app_usbd_class_rwu_unregister(app_usbd_class_inst_t const * const p_inst);
+ret_code_t app_usbd_class_rwu_unregister(app_usbd_class_inst_t const *const p_inst);
 
 /**
  * @brief Check if there is any class with remote wakeup.
@@ -509,11 +505,9 @@ bool app_usbd_class_rwu_enabled_check(void);
  * @retval NRF_SUCCESS          Descriptor successfully found.
  * @retval NRF_ERROR_NOT_FOUND  Descriptor not found.
  * */
-ret_code_t app_usbd_class_descriptor_find(app_usbd_class_inst_t const * const p_cinst,
-                                          uint8_t                             desc_type,
-                                          uint8_t                             desc_index,
-                                          uint8_t                           * p_desc,
-                                          size_t                            * p_desc_len);
+ret_code_t app_usbd_class_descriptor_find(app_usbd_class_inst_t const *const p_cinst,
+                                          uint8_t desc_type, uint8_t desc_index, uint8_t *p_desc,
+                                          size_t *p_desc_len);
 
 /**
  * @brief Standard set interface request handle.
@@ -527,9 +521,7 @@ ret_code_t app_usbd_class_descriptor_find(app_usbd_class_inst_t const * const p_
  *
  * @note Selected interface to reset has to be part of given class.
  * */
-ret_code_t app_usbd_interface_ep_reset(app_usbd_class_inst_t const * const p_cinst,
-                                       uint8_t iface);
-
+ret_code_t app_usbd_interface_ep_reset(app_usbd_class_inst_t const *const p_cinst, uint8_t iface);
 
 /**
  * @brief Enable selected endpoint.
@@ -553,7 +545,7 @@ void app_usbd_ep_disable(nrf_drv_usbd_ep_t ep);
  * Functions that helps to iterate through internally chained classes.
  * @{
  */
-    /**
+/**
      * @brief Get first class instance in the list.
      *
      * Get first instance from the list of active class instances.
@@ -561,9 +553,9 @@ void app_usbd_ep_disable(nrf_drv_usbd_ep_t ep);
      *
      * @return First instance in the list or NULL if there are no instances available.
      */
-    app_usbd_class_inst_t const * app_usbd_class_first_get(void);
+app_usbd_class_inst_t const *app_usbd_class_first_get(void);
 
-    /**
+/**
      * @brief Get next instance in the list.
      *
      * Get the next instance from the list of active instances.
@@ -573,14 +565,14 @@ void app_usbd_ep_disable(nrf_drv_usbd_ep_t ep);
      *
      * @return Next instance to the given one or NULL if there is no more instances in the list.
      */
-    static inline app_usbd_class_inst_t const * app_usbd_class_next_get(
-            app_usbd_class_inst_t const * const p_cinst)
-    {
-        ASSERT(NULL != p_cinst);
-        return app_usbd_class_data_access(p_cinst)->p_next;
-    }
+static inline app_usbd_class_inst_t const *
+app_usbd_class_next_get(app_usbd_class_inst_t const *const p_cinst)
+{
+    ASSERT(NULL != p_cinst);
+    return app_usbd_class_data_access(p_cinst)->p_next;
+}
 
-    /**
+/**
      * @brief Get first instance in SOF list.
      *
      * Start iteration through the list of instances that require SOF event processing.
@@ -589,9 +581,9 @@ void app_usbd_ep_disable(nrf_drv_usbd_ep_t ep);
      *
      * @sa app_usbd_class_first_get
      */
-    app_usbd_class_inst_t const * app_usbd_class_sof_first_get(void);
+app_usbd_class_inst_t const *app_usbd_class_sof_first_get(void);
 
-    /**
+/**
      * @brief Get next instance in the SOF list.
      *
      * Get the next instance from the list of instances requiring SOF event processing.
@@ -601,14 +593,14 @@ void app_usbd_ep_disable(nrf_drv_usbd_ep_t ep);
      *
      * @return Next instance to the given one or NULL if there is no more instances in the list.
      */
-    static inline app_usbd_class_inst_t const * app_usbd_class_sof_next_get(
-            app_usbd_class_inst_t const * const p_cinst)
-    {
-        ASSERT(NULL != p_cinst);
-        return app_usbd_class_data_access(p_cinst)->p_sof_next;
-    }
+static inline app_usbd_class_inst_t const *
+app_usbd_class_sof_next_get(app_usbd_class_inst_t const *const p_cinst)
+{
+    ASSERT(NULL != p_cinst);
+    return app_usbd_class_data_access(p_cinst)->p_sof_next;
+}
 
-    /**
+/**
      * @brief Get first instance in SOF interrupt list.
      *
      * Start iteration through the list of instances that require SOF processing in interrupt.
@@ -617,9 +609,9 @@ void app_usbd_ep_disable(nrf_drv_usbd_ep_t ep);
      *
      * @sa app_usbd_class_first_get
      */
-    app_usbd_class_inst_t const * app_usbd_class_sof_interrupt_first_get(void);
+app_usbd_class_inst_t const *app_usbd_class_sof_interrupt_first_get(void);
 
-    /**
+/**
      * @brief Get next instance in the SOF interrupt list.
      *
      * Get the next instance from the list of instances requiring SOF processing in interrupt.
@@ -629,12 +621,12 @@ void app_usbd_ep_disable(nrf_drv_usbd_ep_t ep);
      *
      * @return Next instance to the given one or NULL if there is no more instances in the list.
      */
-    static inline app_usbd_class_inst_t const * app_usbd_class_sof_interrupt_next_get(
-            app_usbd_class_inst_t const * const p_cinst)
-    {
-        ASSERT(NULL != p_cinst);
-        return app_usbd_class_data_access(p_cinst)->p_sof_next;
-    }
+static inline app_usbd_class_inst_t const *
+app_usbd_class_sof_interrupt_next_get(app_usbd_class_inst_t const *const p_cinst)
+{
+    ASSERT(NULL != p_cinst);
+    return app_usbd_class_data_access(p_cinst)->p_sof_next;
+}
 /** @} */
 
 /**
@@ -649,8 +641,7 @@ void app_usbd_ep_disable(nrf_drv_usbd_ep_t ep);
  *
  * @return Pointer to the class structure that cointain given interface or NULL if not found.
  */
-app_usbd_class_inst_t const * app_usbd_iface_find(uint8_t iface, uint8_t * p_iface_idx);
-
+app_usbd_class_inst_t const *app_usbd_iface_find(uint8_t iface, uint8_t *p_iface_idx);
 
 /**
  * @name Communicate with interfaces, endpoints and instances inside usbd library
@@ -658,7 +649,7 @@ app_usbd_class_inst_t const * app_usbd_iface_find(uint8_t iface, uint8_t * p_ifa
  * @{
  */
 
-    /**
+/**
      * @brief Call interface event handler.
      *
      * Call event handler for selected interface.
@@ -668,12 +659,10 @@ app_usbd_class_inst_t const * app_usbd_iface_find(uint8_t iface, uint8_t * p_ifa
      *
      * @return Operation status.
      */
-    ret_code_t app_usbd_iface_call(
-        app_usbd_class_inst_t const * const p_class_inst,
-        uint8_t iface_idx,
-        app_usbd_complex_evt_t const * const p_event);
+ret_code_t app_usbd_iface_call(app_usbd_class_inst_t const *const p_class_inst, uint8_t iface_idx,
+                               app_usbd_complex_evt_t const *const p_event);
 
-    /**
+/**
      * @brief Call endpoint event handler.
      *
      * Call event handler for the selected endpoint.
@@ -682,18 +671,18 @@ app_usbd_class_inst_t const * app_usbd_iface_find(uint8_t iface, uint8_t * p_ifa
      *
      * @return Operation status.
      */
-    ret_code_t app_usbd_ep_call(nrf_drv_usbd_ep_t ep, app_usbd_complex_evt_t const * const p_event);
+ret_code_t app_usbd_ep_call(nrf_drv_usbd_ep_t ep, app_usbd_complex_evt_t const *const p_event);
 
-    /**
+/**
      * @brief Auxiliary function that process event by every instance in the list.
      *
      * This function ignores the result of called handler.
      *
      * @param p_event Event to pass to every instance.
      */
-    void app_usbd_all_call(app_usbd_complex_evt_t const * const p_event);
+void app_usbd_all_call(app_usbd_complex_evt_t const *const p_event);
 
-    /**
+/**
      * @brief Call interface event handlers and stop when served.
      *
      * Call event handlers from instances as long as we get result different than @ref NRF_ERROR_NOT_SUPPORTED
@@ -701,7 +690,7 @@ app_usbd_class_inst_t const * app_usbd_iface_find(uint8_t iface, uint8_t * p_ifa
      *
      * @return Operation status or @ref NRF_ERROR_NOT_SUPPORTED if none of instances in the list can support given event.
      */
-    ret_code_t app_usbd_all_until_served_call(app_usbd_complex_evt_t const * const p_event);
+ret_code_t app_usbd_all_until_served_call(app_usbd_complex_evt_t const *const p_event);
 /** @} */
 
 /**
@@ -718,9 +707,8 @@ app_usbd_class_inst_t const * app_usbd_iface_find(uint8_t iface, uint8_t * p_ifa
  *
  * @sa app_usbd_ep_handled_transfer
  */
-ret_code_t app_usbd_ep_transfer(
-    nrf_drv_usbd_ep_t                     ep,
-    nrf_drv_usbd_transfer_t const * const p_transfer);
+ret_code_t app_usbd_ep_transfer(nrf_drv_usbd_ep_t ep,
+                                nrf_drv_usbd_transfer_t const *const p_transfer);
 
 /**
  * @brief Set up an endpoint handled transfer.
@@ -734,10 +722,8 @@ ret_code_t app_usbd_ep_transfer(
  *                                 data transfer on the endpoint.
  * @return Values returned by @ref nrf_drv_usbd_ep_handled_transfer.
  */
-ret_code_t app_usbd_ep_handled_transfer(
-    nrf_drv_usbd_ep_t                         ep,
-    nrf_drv_usbd_handler_desc_t const * const p_handler);
-
+ret_code_t app_usbd_ep_handled_transfer(nrf_drv_usbd_ep_t ep,
+                                        nrf_drv_usbd_handler_desc_t const *const p_handler);
 
 /**
  * @brief Select interface
@@ -754,11 +740,8 @@ ret_code_t app_usbd_ep_handled_transfer(
  *
  * @return Standard error code.
  */
-ret_code_t app_usbd_iface_select(
-    app_usbd_class_inst_t const * const p_inst,
-    uint8_t                             iface_idx,
-    uint8_t                             alternate);
-
+ret_code_t app_usbd_iface_select(app_usbd_class_inst_t const *const p_inst, uint8_t iface_idx,
+                                 uint8_t alternate);
 
 /**
  * @brief Deselect interface.
@@ -773,9 +756,7 @@ ret_code_t app_usbd_iface_select(
  * @param[in,out] p_inst    Instance of the class.
  * @param[in]     iface_idx Index of the interface inside class structure.
  */
-void app_usbd_iface_deselect(
-    app_usbd_class_inst_t const * const p_inst,
-    uint8_t                             iface_idx);
+void app_usbd_iface_deselect(app_usbd_class_inst_t const *const p_inst, uint8_t iface_idx);
 
 /**
  * @brief Get selected interface.
@@ -789,9 +770,7 @@ void app_usbd_iface_deselect(
  *
  * @return Selected alternate interface setting.
  */
-uint8_t app_usbd_iface_selection_get(
-    app_usbd_class_inst_t const * const p_inst,
-    uint8_t                             iface_idx);
+uint8_t app_usbd_iface_selection_get(app_usbd_class_inst_t const *const p_inst, uint8_t iface_idx);
 
 /**
  * @brief Select alternate configuration 0 for all interfaces.

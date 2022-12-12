@@ -43,17 +43,18 @@
  *  \return Packet length.
  */
 /*************************************************************************************************/
-static uint8_t lhciPackEnhancedReadPwrLevel(uint8_t *pBuf, uint8_t status, uint16_t handle, int8_t curPwr, int8_t maxPwr, uint8_t phy)
+static uint8_t lhciPackEnhancedReadPwrLevel(uint8_t *pBuf, uint8_t status, uint16_t handle,
+                                            int8_t curPwr, int8_t maxPwr, uint8_t phy)
 {
-  const uint8_t len = LHCI_LEN_LE_READ_ENH_TX_POWER_EVT;
+    const uint8_t len = LHCI_LEN_LE_READ_ENH_TX_POWER_EVT;
 
-  UINT8_TO_BSTREAM (pBuf, status);
-  UINT16_TO_BSTREAM(pBuf, handle);
-  UINT8_TO_BSTREAM (pBuf, phy);
-  UINT8_TO_BSTREAM (pBuf, curPwr);
-  UINT8_TO_BSTREAM (pBuf, maxPwr);
+    UINT8_TO_BSTREAM(pBuf, status);
+    UINT16_TO_BSTREAM(pBuf, handle);
+    UINT8_TO_BSTREAM(pBuf, phy);
+    UINT8_TO_BSTREAM(pBuf, curPwr);
+    UINT8_TO_BSTREAM(pBuf, maxPwr);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -67,47 +68,45 @@ static uint8_t lhciPackEnhancedReadPwrLevel(uint8_t *pBuf, uint8_t status, uint1
  *  \param  handle      Connection handle.
  */
 /*************************************************************************************************/
-void lhciPclSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t paramLen, uint8_t *pParam, uint16_t handle)
+void lhciPclSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t paramLen, uint8_t *pParam,
+                           uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *pEvtBuf;
+    uint8_t *pBuf;
+    uint8_t *pEvtBuf;
 
-  if ((pEvtBuf = lhciAllocCmdCmplEvt(paramLen, pCmdHdr->opCode)) == NULL)
-  {
-    return;
-  }
-  pBuf = pEvtBuf;
+    if ((pEvtBuf = lhciAllocCmdCmplEvt(paramLen, pCmdHdr->opCode)) == NULL) {
+        return;
+    }
+    pBuf = pEvtBuf;
 
-  switch (pCmdHdr->opCode)
-  {
-    /* --- command completion with status and connHandle parameters --- */
+    switch (pCmdHdr->opCode) {
+        /* --- command completion with status and connHandle parameters --- */
 
     case HCI_OPCODE_LE_SET_TX_POWER_REPORT_ENABLE:
     case HCI_OPCODE_LE_SET_PATH_LOSS_REPORTING_PARAMS:
     case HCI_OPCODE_LE_SET_PATH_LOSS_REPORTING_ENABLE:
-      pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
-      UINT16_TO_BSTREAM(pBuf, handle);
-      break;
+        pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
+        UINT16_TO_BSTREAM(pBuf, handle);
+        break;
 
     /* --- status --- */
-    case HCI_OPCODE_LE_READ_ENHANCED_TX_POWER:
-    {
-      int8_t curPwr = 0;
-      int8_t maxPwr = 0;
-      uint8_t phy;
-      BSTREAM_TO_UINT8(phy, pParam);
-      status = LlGetEnhTxPowerLevel(handle, phy, &curPwr, &maxPwr);
-      lhciPackEnhancedReadPwrLevel(pBuf, status, handle, curPwr, maxPwr, phy);
-      break;
+    case HCI_OPCODE_LE_READ_ENHANCED_TX_POWER: {
+        int8_t curPwr = 0;
+        int8_t maxPwr = 0;
+        uint8_t phy;
+        BSTREAM_TO_UINT8(phy, pParam);
+        status = LlGetEnhTxPowerLevel(handle, phy, &curPwr, &maxPwr);
+        lhciPackEnhancedReadPwrLevel(pBuf, status, handle, curPwr, maxPwr, phy);
+        break;
     }
 
-    /* --- default --- */
+        /* --- default --- */
 
     default:
-      break;
-  }
+        break;
+    }
 
-  lhciSendCmdCmplEvt(pEvtBuf);
+    lhciSendCmdCmplEvt(pEvtBuf);
 }
 
 /*************************************************************************************************/
@@ -130,86 +129,78 @@ void lhciPclSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t paramLen,
 /*************************************************************************************************/
 bool_t lhciPclDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-  uint8_t status = HCI_SUCCESS;
-  uint8_t paramLen = 0;
-  uint8_t *pParam = NULL;
-  uint16_t handle = 0;
+    uint8_t status = HCI_SUCCESS;
+    uint8_t paramLen = 0;
+    uint8_t *pParam = NULL;
+    uint16_t handle = 0;
 
-  switch (pHdr->opCode)
-  {
-    /* --- connection status --- */
+    switch (pHdr->opCode) {
+        /* --- connection status --- */
 
     case HCI_OPCODE_LE_READ_ENHANCED_TX_POWER:
-      BSTREAM_TO_UINT16(handle, pBuf);
-      paramLen = LHCI_LEN_LE_READ_ENH_TX_POWER_EVT;
-      pParam = pBuf;
-      break;
-
+        BSTREAM_TO_UINT16(handle, pBuf);
+        paramLen = LHCI_LEN_LE_READ_ENH_TX_POWER_EVT;
+        pParam = pBuf;
+        break;
 
     /* --- remote device management --- */
-    case HCI_OPCODE_LE_READ_REMOTE_TX_POWER:
-    {
-      uint8_t phy;
-      BSTREAM_TO_UINT16(handle, pBuf);
-      BSTREAM_TO_UINT8 (phy, pBuf);
-      status = LlPowerCtrlReq(handle, 0, phy);
-      paramLen = LHCI_LEN_CMD_STATUS_EVT;
-      break;
+    case HCI_OPCODE_LE_READ_REMOTE_TX_POWER: {
+        uint8_t phy;
+        BSTREAM_TO_UINT16(handle, pBuf);
+        BSTREAM_TO_UINT8(phy, pBuf);
+        status = LlPowerCtrlReq(handle, 0, phy);
+        paramLen = LHCI_LEN_CMD_STATUS_EVT;
+        break;
     }
-    case HCI_OPCODE_LE_SET_TX_POWER_REPORT_ENABLE:
-    {
-      uint8_t enableLocal;
-      uint8_t enableRemote;
-      BSTREAM_TO_UINT16(handle, pBuf);
-      BSTREAM_TO_UINT8 (enableLocal, pBuf);
-      BSTREAM_TO_UINT8 (enableRemote, pBuf);
-      status = LlSetTxPowerReporting(handle, enableLocal, enableRemote);
-      paramLen = LHCI_LEN_LE_SET_TX_POWER_REPORT_EVT;
-      break;
+    case HCI_OPCODE_LE_SET_TX_POWER_REPORT_ENABLE: {
+        uint8_t enableLocal;
+        uint8_t enableRemote;
+        BSTREAM_TO_UINT16(handle, pBuf);
+        BSTREAM_TO_UINT8(enableLocal, pBuf);
+        BSTREAM_TO_UINT8(enableRemote, pBuf);
+        status = LlSetTxPowerReporting(handle, enableLocal, enableRemote);
+        paramLen = LHCI_LEN_LE_SET_TX_POWER_REPORT_EVT;
+        break;
     }
-    case HCI_OPCODE_LE_SET_PATH_LOSS_REPORTING_PARAMS:
-    {
-      int8_t highThreshold;
-      int8_t highHysteresis;
-      int8_t lowThreshold;
-      int8_t lowHysteresis;
-      uint16_t minTimeSpent;
+    case HCI_OPCODE_LE_SET_PATH_LOSS_REPORTING_PARAMS: {
+        int8_t highThreshold;
+        int8_t highHysteresis;
+        int8_t lowThreshold;
+        int8_t lowHysteresis;
+        uint16_t minTimeSpent;
 
-      BSTREAM_TO_UINT16(handle, pBuf);
-      BSTREAM_TO_INT8  (highThreshold, pBuf);
-      BSTREAM_TO_INT8  (highHysteresis, pBuf);
-      BSTREAM_TO_INT8  (lowThreshold, pBuf);
-      BSTREAM_TO_INT8  (lowHysteresis, pBuf);
-      BSTREAM_TO_UINT16(minTimeSpent, pBuf);
-      status = LlSetPathLossReportingParams(handle, highThreshold, highHysteresis, lowThreshold, lowHysteresis, minTimeSpent);
-      paramLen = LHCI_LEN_LE_SET_PATH_LOSS_REPORTING_PARAMS;
-      break;
+        BSTREAM_TO_UINT16(handle, pBuf);
+        BSTREAM_TO_INT8(highThreshold, pBuf);
+        BSTREAM_TO_INT8(highHysteresis, pBuf);
+        BSTREAM_TO_INT8(lowThreshold, pBuf);
+        BSTREAM_TO_INT8(lowHysteresis, pBuf);
+        BSTREAM_TO_UINT16(minTimeSpent, pBuf);
+        status = LlSetPathLossReportingParams(handle, highThreshold, highHysteresis, lowThreshold,
+                                              lowHysteresis, minTimeSpent);
+        paramLen = LHCI_LEN_LE_SET_PATH_LOSS_REPORTING_PARAMS;
+        break;
     }
-    case HCI_OPCODE_LE_SET_PATH_LOSS_REPORTING_ENABLE:
-    {
-      uint8_t enable;
+    case HCI_OPCODE_LE_SET_PATH_LOSS_REPORTING_ENABLE: {
+        uint8_t enable;
 
-      BSTREAM_TO_UINT16(handle, pBuf);
-      BSTREAM_TO_INT8  (enable, pBuf);
-      status = LlSetPathLossReportingEnable(handle, enable);
-      paramLen = LHCI_LEN_LE_SET_PATH_LOSS_REPORTING_ENABLE;
-      break;
+        BSTREAM_TO_UINT16(handle, pBuf);
+        BSTREAM_TO_INT8(enable, pBuf);
+        status = LlSetPathLossReportingEnable(handle, enable);
+        paramLen = LHCI_LEN_LE_SET_PATH_LOSS_REPORTING_ENABLE;
+        break;
     }
 
-    /* --- default --- */
+        /* --- default --- */
 
     default:
-      return FALSE;       /* exit dispatcher routine */
-  }
+        return FALSE; /* exit dispatcher routine */
+    }
 
-  if (paramLen == LHCI_LEN_CMD_STATUS_EVT)
-  {
-    lhciSendCmdStatusEvt(pHdr, status);
-  }
-  else
-  {
-    lhciPclSendCmdCmplEvt(pHdr, status, paramLen, pParam, handle);
-  }
+    if (paramLen == LHCI_LEN_CMD_STATUS_EVT) {
+        lhciSendCmdStatusEvt(pHdr, status);
+    } else {
+        lhciPclSendCmdCmplEvt(pHdr, status, paramLen, pParam, handle);
+    }
 
-  return TRUE;
+    return TRUE;
 }

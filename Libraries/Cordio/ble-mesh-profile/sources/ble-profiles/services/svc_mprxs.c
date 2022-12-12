@@ -42,7 +42,7 @@
 
 /*! Characteristic write permissions */
 #ifndef MPRXS_SEC_PERMIT_WRITE
-#define MPRXS_SEC_PERMIT_WRITE  (ATTS_PERMIT_WRITE)
+#define MPRXS_SEC_PERMIT_WRITE (ATTS_PERMIT_WRITE)
 #endif
 
 /**************************************************************************************************
@@ -50,11 +50,12 @@
 **************************************************************************************************/
 
 /* Mesh Proxy service declaration */
-static const uint8_t mprxsValSvc[] = {UINT16_TO_BYTES(ATT_UUID_MESH_PROXY_SERVICE)};
+static const uint8_t mprxsValSvc[] = { UINT16_TO_BYTES(ATT_UUID_MESH_PROXY_SERVICE) };
 static const uint16_t mprxsLenSvc = sizeof(mprxsValSvc);
 
 /* Mesh Proxy Data In characteristic */
-static const uint8_t mprxsValDataInCh[] = {ATT_PROP_WRITE_NO_RSP, UINT16_TO_BYTES(MPRXS_DIN_HDL), UINT16_TO_BYTES(ATT_UUID_MESH_PROXY_DATA_IN)};
+static const uint8_t mprxsValDataInCh[] = { ATT_PROP_WRITE_NO_RSP, UINT16_TO_BYTES(MPRXS_DIN_HDL),
+                                            UINT16_TO_BYTES(ATT_UUID_MESH_PROXY_DATA_IN) };
 static const uint16_t mprxsLenDataInCh = sizeof(mprxsValDataInCh);
 
 /* Mesh Proxy Data In */
@@ -63,7 +64,8 @@ static const uint8_t mprxsValDataIn[] = { 0 };
 static const uint16_t mprxsLenDataIn = sizeof(mprxsValDataIn);
 
 /* Mesh Proxy Data Out characteristic */
-static const uint8_t mprxsValDataOutCh[] = {ATT_PROP_NOTIFY, UINT16_TO_BYTES(MPRXS_DOUT_HDL), UINT16_TO_BYTES(ATT_UUID_MESH_PROXY_DATA_OUT)};
+static const uint8_t mprxsValDataOutCh[] = { ATT_PROP_NOTIFY, UINT16_TO_BYTES(MPRXS_DOUT_HDL),
+                                             UINT16_TO_BYTES(ATT_UUID_MESH_PROXY_DATA_OUT) };
 static const uint16_t mprxsLenDataOutCh = sizeof(mprxsValDataOutCh);
 
 /* Mesh Proxy Data Out */
@@ -72,79 +74,35 @@ static const uint8_t mprxsValDataOut[] = { 0 };
 static const uint16_t mprxsLenDataOut = sizeof(mprxsValDataOut);
 
 /* Mesh Proxy Data Out client characteristic configuration */
-static uint8_t mprxsValDataOutChCcc[] = {UINT16_TO_BYTES(0x0000) };
+static uint8_t mprxsValDataOutChCcc[] = { UINT16_TO_BYTES(0x0000) };
 static const uint16_t mprxsLenDataOutChCcc = sizeof(mprxsValDataOutChCcc);
 
-
 /* Attribute list for MPRXS group */
-static const attsAttr_t mprxsList[] =
-{
-  /* Mesh Proxy Service declaration */
-  {
-    attPrimSvcUuid,
-    (uint8_t *) mprxsValSvc,
-    (uint16_t *) &mprxsLenSvc,
-    sizeof(mprxsValSvc),
-    0,
-    ATTS_PERMIT_READ
-  },
-  /* Mesh Proxy DataIn characteristic */
-  {
-    attChUuid,
-    (uint8_t *)mprxsValDataInCh,
-    (uint16_t *) &mprxsLenDataInCh,
-    sizeof(mprxsValDataInCh),
-    0,
-    ATTS_PERMIT_READ
-  },
-  /* Mesh Proxy DataIn value */
-  {
-    attMprxDinChUuid,
-    (uint8_t *)mprxsValDataIn,
-    (uint16_t *) &mprxsLenDataIn,
-    ATT_DEFAULT_PAYLOAD_LEN,
-    (ATTS_SET_VARIABLE_LEN | ATTS_SET_WRITE_CBACK),
-    MPRXS_SEC_PERMIT_WRITE
-  },
-  /* Mesh Proxy DataOut characteristic */
-  {
-    attChUuid,
-    (uint8_t *)mprxsValDataOutCh,
-    (uint16_t *)&mprxsLenDataOutCh,
-    sizeof(mprxsValDataOutCh),
-    0,
-    ATTS_PERMIT_READ
-  },
-  /* Mesh Proxy DataOut value */
-  {
-    attMprxDoutChUuid,
-    (uint8_t *)mprxsValDataOut,
-    (uint16_t *)&mprxsLenDataOut,
-    ATT_DEFAULT_PAYLOAD_LEN,
-    ATTS_SET_VARIABLE_LEN,
-    0
-  },
-  /* Characteristic CCC descriptor */
-  {
-    attCliChCfgUuid,
-    mprxsValDataOutChCcc,
-    (uint16_t *)&mprxsLenDataOutChCcc,
-    sizeof(mprxsValDataOutChCcc),
-    ATTS_SET_CCC,
-    (ATTS_PERMIT_READ | MPRXS_SEC_PERMIT_WRITE)
-  },
+static const attsAttr_t mprxsList[] = {
+    /* Mesh Proxy Service declaration */
+    { attPrimSvcUuid, (uint8_t *)mprxsValSvc, (uint16_t *)&mprxsLenSvc, sizeof(mprxsValSvc), 0,
+      ATTS_PERMIT_READ },
+    /* Mesh Proxy DataIn characteristic */
+    { attChUuid, (uint8_t *)mprxsValDataInCh, (uint16_t *)&mprxsLenDataInCh,
+      sizeof(mprxsValDataInCh), 0, ATTS_PERMIT_READ },
+    /* Mesh Proxy DataIn value */
+    { attMprxDinChUuid, (uint8_t *)mprxsValDataIn, (uint16_t *)&mprxsLenDataIn,
+      ATT_DEFAULT_PAYLOAD_LEN, (ATTS_SET_VARIABLE_LEN | ATTS_SET_WRITE_CBACK),
+      MPRXS_SEC_PERMIT_WRITE },
+    /* Mesh Proxy DataOut characteristic */
+    { attChUuid, (uint8_t *)mprxsValDataOutCh, (uint16_t *)&mprxsLenDataOutCh,
+      sizeof(mprxsValDataOutCh), 0, ATTS_PERMIT_READ },
+    /* Mesh Proxy DataOut value */
+    { attMprxDoutChUuid, (uint8_t *)mprxsValDataOut, (uint16_t *)&mprxsLenDataOut,
+      ATT_DEFAULT_PAYLOAD_LEN, ATTS_SET_VARIABLE_LEN, 0 },
+    /* Characteristic CCC descriptor */
+    { attCliChCfgUuid, mprxsValDataOutChCcc, (uint16_t *)&mprxsLenDataOutChCcc,
+      sizeof(mprxsValDataOutChCcc), ATTS_SET_CCC, (ATTS_PERMIT_READ | MPRXS_SEC_PERMIT_WRITE) },
 };
 
 /* MPRXS group structure */
-static attsGroup_t svcMprxsGroup =
-{
-  NULL,
-  (attsAttr_t *) mprxsList,
-  NULL,
-  NULL,
-  MPRXS_START_HDL,
-  MPRXS_END_HDL
-};
+static attsGroup_t svcMprxsGroup = { NULL, (attsAttr_t *)mprxsList, NULL,
+                                     NULL, MPRXS_START_HDL,         MPRXS_END_HDL };
 
 /*************************************************************************************************/
 /*!
@@ -155,7 +113,7 @@ static attsGroup_t svcMprxsGroup =
 /*************************************************************************************************/
 void SvcMprxsAddGroup(void)
 {
-  AttsAddGroup(&svcMprxsGroup);
+    AttsAddGroup(&svcMprxsGroup);
 }
 
 /*************************************************************************************************/
@@ -167,7 +125,7 @@ void SvcMprxsAddGroup(void)
 /*************************************************************************************************/
 void SvcMprxsRemoveGroup(void)
 {
-  AttsRemoveGroup(MPRXS_START_HDL);
+    AttsRemoveGroup(MPRXS_START_HDL);
 }
 
 /*************************************************************************************************/
@@ -181,5 +139,5 @@ void SvcMprxsRemoveGroup(void)
 /*************************************************************************************************/
 void SvcMprxsRegister(attsWriteCback_t writeCback)
 {
-  svcMprxsGroup.writeCback = writeCback;
+    svcMprxsGroup.writeCback = writeCback;
 }

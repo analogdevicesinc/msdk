@@ -43,47 +43,42 @@
 /*************************************************************************************************/
 static bool_t LlIsBigCreateSyncParamsValid(LlBigCreateSync_t *pParam)
 {
-  const uint8_t MAX_BIG_HANDLE = 0xEF;
-  const uint16_t MAX_SYNC_HANDLE = 0x0EFF;
-  const uint8_t MAX_ENCRYPTION = 0x01;
-  const uint8_t MAX_MSE = 0x1F;
-  const uint16_t MIN_BIG_SYNC_TIMEOUT = 0x000A;
-  const uint16_t MAX_BIG_SYNC_TIMEOUT = 0x4000;
-  const uint8_t MIN_BIS = LL_MIN_BIS;
-  const uint8_t MAX_BIS = 0x1F;
+    const uint8_t MAX_BIG_HANDLE = 0xEF;
+    const uint16_t MAX_SYNC_HANDLE = 0x0EFF;
+    const uint8_t MAX_ENCRYPTION = 0x01;
+    const uint8_t MAX_MSE = 0x1F;
+    const uint16_t MIN_BIG_SYNC_TIMEOUT = 0x000A;
+    const uint16_t MAX_BIG_SYNC_TIMEOUT = 0x4000;
+    const uint8_t MIN_BIS = LL_MIN_BIS;
+    const uint8_t MAX_BIS = 0x1F;
 
-  if (pParam->bigHandle > MAX_BIG_HANDLE)
-  {
-    LL_TRACE_WARN1("bigHandle=%u out of range", pParam->bigHandle);
-    return FALSE;
-  }
-  if (pParam->syncHandle > MAX_SYNC_HANDLE)
-  {
-    LL_TRACE_WARN1("syncHandle=%u out of range", pParam->syncHandle);
-    return FALSE;
-  }
-  if (pParam->encrypt > MAX_ENCRYPTION)
-  {
-    LL_TRACE_WARN1("encrypt=%u out of range", pParam->encrypt);
-    return FALSE;
-  }
-  if (pParam->mse > MAX_MSE)
-  {
-    LL_TRACE_WARN1("mse=%u out of range", pParam->mse);
-    return FALSE;
-  }
-  if ((pParam->bigSyncTimeout < MIN_BIG_SYNC_TIMEOUT) || (pParam->bigSyncTimeout > MAX_BIG_SYNC_TIMEOUT))
-  {
-    LL_TRACE_WARN1("bigSyncTimeout=%u out of range", pParam->bigSyncTimeout);
-    return FALSE;
-  }
-  if ((pParam->numBis < MIN_BIS) || (pParam->numBis > MAX_BIS))
-  {
-    LL_TRACE_WARN1("numBis=%u out of range", pParam->numBis);
-    return FALSE;
-  }
+    if (pParam->bigHandle > MAX_BIG_HANDLE) {
+        LL_TRACE_WARN1("bigHandle=%u out of range", pParam->bigHandle);
+        return FALSE;
+    }
+    if (pParam->syncHandle > MAX_SYNC_HANDLE) {
+        LL_TRACE_WARN1("syncHandle=%u out of range", pParam->syncHandle);
+        return FALSE;
+    }
+    if (pParam->encrypt > MAX_ENCRYPTION) {
+        LL_TRACE_WARN1("encrypt=%u out of range", pParam->encrypt);
+        return FALSE;
+    }
+    if (pParam->mse > MAX_MSE) {
+        LL_TRACE_WARN1("mse=%u out of range", pParam->mse);
+        return FALSE;
+    }
+    if ((pParam->bigSyncTimeout < MIN_BIG_SYNC_TIMEOUT) ||
+        (pParam->bigSyncTimeout > MAX_BIG_SYNC_TIMEOUT)) {
+        LL_TRACE_WARN1("bigSyncTimeout=%u out of range", pParam->bigSyncTimeout);
+        return FALSE;
+    }
+    if ((pParam->numBis < MIN_BIS) || (pParam->numBis > MAX_BIS)) {
+        LL_TRACE_WARN1("numBis=%u out of range", pParam->numBis);
+        return FALSE;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /**************************************************************************************************
@@ -101,15 +96,14 @@ static bool_t LlIsBigCreateSyncParamsValid(LlBigCreateSync_t *pParam)
 /*************************************************************************************************/
 uint8_t LlBigCreateSync(LlBigCreateSync_t *pCreateSync)
 {
-  LL_TRACE_INFO2("### LlApi ###  LlBigCreateSync bigHandle=%u syncHandle=%u", pCreateSync->bigHandle, pCreateSync->syncHandle);
+    LL_TRACE_INFO2("### LlApi ###  LlBigCreateSync bigHandle=%u syncHandle=%u",
+                   pCreateSync->bigHandle, pCreateSync->syncHandle);
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (LlIsBigCreateSyncParamsValid(pCreateSync) == FALSE))
-  {
-    return LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && (LlIsBigCreateSyncParamsValid(pCreateSync) == FALSE)) {
+        return LL_ERROR_CODE_PARAM_OUT_OF_MANDATORY_RANGE;
+    }
 
-  return LctrMstBigCreateSync(pCreateSync);
+    return LctrMstBigCreateSync(pCreateSync);
 }
 
 /*************************************************************************************************/
@@ -122,7 +116,7 @@ uint8_t LlBigCreateSync(LlBigCreateSync_t *pCreateSync)
 /*************************************************************************************************/
 void LlBigTerminateSync(uint8_t bigHandle)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlBigTerminateSync bigHandle=%u", bigHandle);
+    LL_TRACE_INFO1("### LlApi ###  LlBigTerminateSync bigHandle=%u", bigHandle);
 
-  LctrMstBigTerminateSync(bigHandle);
+    LctrMstBigTerminateSync(bigHandle);
 }

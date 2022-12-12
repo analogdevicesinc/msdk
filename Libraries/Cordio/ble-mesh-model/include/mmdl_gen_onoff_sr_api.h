@@ -33,8 +33,7 @@
 #include "wsf_timer.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -42,55 +41,49 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Number of stored states (Present + Target) */
-#define MMDL_GEN_ONOFF_STATE_CNT             2
+#define MMDL_GEN_ONOFF_STATE_CNT 2
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Model On Off Server Status parameters structure */
-typedef struct mmdlGenOnOffStatusParam_tag
-{
-  mmdlGenOnOffState_t   presentOnOff;       /*!< Present On Off State */
-  mmdlGenOnOffState_t   targetOnOff;        /*!< Target On Off State */
-  uint8_t               remainingTime;      /*!< Remaining time */
+typedef struct mmdlGenOnOffStatusParam_tag {
+    mmdlGenOnOffState_t presentOnOff; /*!< Present On Off State */
+    mmdlGenOnOffState_t targetOnOff; /*!< Target On Off State */
+    uint8_t remainingTime; /*!< Remaining time */
 } mmdlGenOnOffStatusParam_t;
 
 /*! \brief Generic OnOff Server Model State Update event structure */
-typedef struct mmdlGenOnOffSrStateUpdate_tag
-{
-  wsfMsgHdr_t           hdr;                /*!< WSF message header */
-  meshElementId_t       elemId;             /*!< Element identifier */
-  mmdlStateUpdateSrc_t  stateUpdateSource;  /*!< Updated state source */
-  mmdlGenOnOffState_t   state;              /*!< Updated state */
+typedef struct mmdlGenOnOffSrStateUpdate_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlStateUpdateSrc_t stateUpdateSource; /*!< Updated state source */
+    mmdlGenOnOffState_t state; /*!< Updated state */
 } mmdlGenOnOffSrStateUpdate_t;
 
 /*! \brief Generic OnOff Server Model Current State event structure */
-typedef struct mmdlGenOnOffSrCurrentState_tag
-{
-  wsfMsgHdr_t           hdr;                /*!< WSF message header */
-  meshElementId_t       elemId;             /*!< Element identifier */
-  mmdlGenOnOffState_t   state;              /*!< Updated state */
+typedef struct mmdlGenOnOffSrCurrentState_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlGenOnOffState_t state; /*!< Updated state */
 } mmdlGenOnOffSrCurrentState_t;
 
 /*! \brief Generic OnOff Server Model event callback parameters structure */
-typedef union mmdlGenOnOffSrEvent_tag
-{
-  wsfMsgHdr_t hdr;                                /*!< WSF message header */
-  mmdlGenOnOffSrStateUpdate_t  statusEvent;       /*!< State updated event. Used for
+typedef union mmdlGenOnOffSrEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    mmdlGenOnOffSrStateUpdate_t statusEvent; /*!< State updated event. Used for
                                                    *   ::MMDL_GEN_ONOFF_SR_STATE_UPDATE_EVENT.
                                                    */
-  mmdlGenOnOffSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
+    mmdlGenOnOffSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
                                                    *   from the upper layer. Used for
                                                    *   ::MMDL_GEN_ONOFF_SR_CURRENT_STATE_EVENT.
                                                    */
 } mmdlGenOnOffSrEvent_t;
 
-
 /*! \brief Model Generic OnOff Server descriptor definition */
-typedef struct mmdlGenOnOffSrDesc_tag
-{
-  mmdlGenOnOffState_t       *pStoredStates;       /*!< Pointer to the structure that stores
+typedef struct mmdlGenOnOffSrDesc_tag {
+    mmdlGenOnOffState_t *pStoredStates; /*!< Pointer to the structure that stores
                                                    *   current state and scene data. First
                                                    *   value is always the current one.
                                                    *   Second value is the target state.
@@ -100,35 +93,35 @@ typedef struct mmdlGenOnOffSrDesc_tag
                                                    *   Structure will store :MMDL_NUM_OF_SCENES +
                                                    *   MMDL_GEN_ONOFF_STATE_CNT states.
                                                    */
-  mmdlNvmSaveHandler_t      fNvmSaveStates;       /*!< Pointer to function that saves
+    mmdlNvmSaveHandler_t fNvmSaveStates; /*!< Pointer to function that saves
                                                    *   Model instance states in NVM
                                                    */
-  wsfTimer_t                transitionTimer;      /*!< WSF Timer for delay and state transition */
-  wsfTimer_t                msgRcvdTimer;         /*!< Timer to manage received logically group
+    wsfTimer_t transitionTimer; /*!< WSF Timer for delay and state transition */
+    wsfTimer_t msgRcvdTimer; /*!< Timer to manage received logically group
                                                    * messages.
                                                    */
-  uint32_t                  remainingTimeMs;      /*!< Time remaining until the current state is
+    uint32_t remainingTimeMs; /*!< Time remaining until the current state is
                                                    *   replaced with the target state. If set to 0,
                                                    *   the target state is ignored. Unit is 1 ms.
                                                    */
-  uint8_t                   delay5Ms;             /*!< Delay until the transition to the new state
+    uint8_t delay5Ms; /*!< Delay until the transition to the new state
                                                    *   begins. Unit is 5 ms.
                                                    */
-  uint8_t                   transactionId;        /*!< Transaction Identifier used to logically group a
+    uint8_t transactionId; /*!< Transaction Identifier used to logically group a
                                                    *   series of messages.
                                                    */
-  meshAddress_t             srcAddr;              /*!< Source address of the logically grouped series of
+    meshAddress_t srcAddr; /*!< Source address of the logically grouped series of
                                                    *   messages.
                                                    */
-  bool_t                    ackPending;           /*!< TRUE if an ACK is pending for the last received
+    bool_t ackPending; /*!< TRUE if an ACK is pending for the last received
                                                    *   message.
                                                    */
-  bool_t                    ackForUnicast;        /*!< TRUE if the last message was received as a unicast,
+    bool_t ackForUnicast; /*!< TRUE if the last message was received as a unicast,
                                                    *   FALSE otherwise.
                                                    */
-  uint16_t                  ackAppKeyIndex;       /*!< AppKeyIndex used for the last received message.
+    uint16_t ackAppKeyIndex; /*!< AppKeyIndex used for the last received message.
                                                    */
-  mmdlStateUpdateSrc_t      updateSource;         /*!< State update source. Cached for transitions.
+    mmdlStateUpdateSrc_t updateSource; /*!< State update source. Cached for transitions.
                                                    */
 } mmdlGenOnOffSrDesc_t;
 

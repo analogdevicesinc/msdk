@@ -61,16 +61,13 @@
 extern "C" {
 #endif
 
-
 /**@internal @brief Function to enable CC310 (in HW)
  */
 void cc310_bl_backend_enable(void);
 
-
 /**@internal @brief Function to disable CC310 (in HW)
  */
 void cc310_bl_backend_disable(void);
-
 
 #ifdef __cplusplus
 }

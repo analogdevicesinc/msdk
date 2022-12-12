@@ -121,19 +121,17 @@ extern "C" {
 
 #include "lc3_private.h"
 
-
 /**
  * Limitations
  * - On the bitrate, in bps, of a stream
  * - On the size of the frames in bytes
  */
 
-#define LC3_MIN_BITRATE    16000
-#define LC3_MAX_BITRATE   320000
+#define LC3_MIN_BITRATE 16000
+#define LC3_MAX_BITRATE 320000
 
-#define LC3_MIN_FRAME_BYTES   20
-#define LC3_MAX_FRAME_BYTES  400
-
+#define LC3_MIN_FRAME_BYTES 20
+#define LC3_MAX_FRAME_BYTES 400
 
 /**
  * Parameters check
@@ -141,13 +139,10 @@ extern "C" {
  *   LC3_CHECK_SR_HZ(sr)  True when samplerate in Hz is suitable
  */
 
-#define LC3_CHECK_DT_US(us) \
-    ( ((us) == 7500) || ((us) == 10000) )
+#define LC3_CHECK_DT_US(us) (((us) == 7500) || ((us) == 10000))
 
 #define LC3_CHECK_SR_HZ(sr) \
-    ( ((sr) ==  8000) || ((sr) == 16000) || ((sr) == 24000) || \
-      ((sr) == 32000) || ((sr) == 48000)                       )
-
+    (((sr) == 8000) || ((sr) == 16000) || ((sr) == 24000) || ((sr) == 32000) || ((sr) == 48000))
 
 /**
  * PCM Sample Format
@@ -161,14 +156,12 @@ enum lc3_pcm_format {
     LC3_PCM_FORMAT_S24,
 };
 
-
 /**
  * Handle
  */
 
 typedef struct lc3_encoder *lc3_encoder_t;
 typedef struct lc3_decoder *lc3_decoder_t;
-
 
 /**
  * Static memory of encoder context
@@ -184,7 +177,6 @@ typedef LC3_ENCODER_MEM_T(10000, 48000) lc3_encoder_mem_48k_t;
 
 typedef LC3_DECODER_MEM_T(10000, 16000) lc3_decoder_mem_16k_t;
 typedef LC3_DECODER_MEM_T(10000, 48000) lc3_decoder_mem_48k_t;
-
 
 /**
  * Return the number of PCM samples in a frame
@@ -243,8 +235,7 @@ unsigned lc3_encoder_size(int dt_us, int sr_hz);
  * samplerate `sr_hz`. The size of the context needed, given by
  * `lc3_encoder_size()` will be set accordingly to `sr_pcm_hz`.
  */
-lc3_encoder_t lc3_setup_encoder(
-    int dt_us, int sr_hz, int sr_pcm_hz, void *mem);
+lc3_encoder_t lc3_setup_encoder(int dt_us, int sr_hz, int sr_pcm_hz, void *mem);
 
 /**
  * Encode a frame
@@ -255,8 +246,8 @@ lc3_encoder_t lc3_setup_encoder(
  * out             Output buffer of `nbytes` size
  * return          0: On success  -1: Wrong parameters
  */
-int lc3_encode(lc3_encoder_t encoder, enum lc3_pcm_format fmt,
-    const void *pcm, int stride, int nbytes, void *out);
+int lc3_encode(lc3_encoder_t encoder, enum lc3_pcm_format fmt, const void *pcm, int stride,
+               int nbytes, void *out);
 
 /**
  * Return size needed for an decoder
@@ -283,8 +274,7 @@ unsigned lc3_decoder_size(int dt_us, int sr_hz);
  * samplerate `sr_hz`. The size of the context needed, given by
  * `lc3_decoder_size()` will be set accordingly to `sr_pcm_hz`.
  */
-lc3_decoder_t lc3_setup_decoder(
-    int dt_us, int sr_hz, int sr_pcm_hz, void *mem);
+lc3_decoder_t lc3_setup_decoder(int dt_us, int sr_hz, int sr_pcm_hz, void *mem);
 
 /**
  * Decode a frame
@@ -294,9 +284,8 @@ lc3_decoder_t lc3_setup_decoder(
  * pcm, stride     Output PCM samples, and count between two consecutives
  * return          0: On success  1: PLC operated  -1: Wrong parameters
  */
-int lc3_decode(lc3_decoder_t decoder, const void *in, int nbytes,
-    enum lc3_pcm_format fmt, void *pcm, int stride);
-
+int lc3_decode(lc3_decoder_t decoder, const void *in, int nbytes, enum lc3_pcm_format fmt,
+               void *pcm, int stride);
 
 #ifdef __cplusplus
 }

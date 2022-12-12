@@ -46,15 +46,15 @@
 /*************************************************************************************************/
 static uint8_t lhciPackCisReqEvt(uint8_t *pBuf, const LlCisReqInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_CIS_REQ;
+    const uint8_t len = HCI_LEN_LE_CIS_REQ;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_CIS_REQ_EVT);
-  UINT16_TO_BSTREAM (pBuf, pEvt->aclHandle);
-  UINT16_TO_BSTREAM(pBuf, pEvt->cisHandle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->cigId);
-  UINT8_TO_BSTREAM (pBuf, pEvt->cisId);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_CIS_REQ_EVT);
+    UINT16_TO_BSTREAM(pBuf, pEvt->aclHandle);
+    UINT16_TO_BSTREAM(pBuf, pEvt->cisHandle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->cigId);
+    UINT8_TO_BSTREAM(pBuf, pEvt->cisId);
 
-  return len;
+    return len;
 }
 
 /**************************************************************************************************
@@ -72,30 +72,26 @@ static uint8_t lhciPackCisReqEvt(uint8_t *pBuf, const LlCisReqInd_t *pEvt)
 /*************************************************************************************************/
 bool_t lhciSlvCisEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
+    uint8_t *pEvtBuf = NULL;
 
-  switch (pEvt->hdr.event)
-  {
+    switch (pEvt->hdr.event) {
     case LL_CIS_REQ_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_CIS_REQ_EVT) << LHCI_BYTE_TO_BITS(3))) &&
-         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CIS_REQ)) != NULL)
-        {
-          lhciPackCisReqEvt(pEvtBuf, &pEvt->cisReqInd);
+        if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_CIS_REQ_EVT) << LHCI_BYTE_TO_BITS(3))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CIS_REQ)) != NULL) {
+                lhciPackCisReqEvt(pEvtBuf, &pEvt->cisReqInd);
+            }
         }
-      }
-      break;
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  if (pEvtBuf)
-  {
-    lhciSendEvt(pEvtBuf);
-    return TRUE;
-  }
+    if (pEvtBuf) {
+        lhciSendEvt(pEvtBuf);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }

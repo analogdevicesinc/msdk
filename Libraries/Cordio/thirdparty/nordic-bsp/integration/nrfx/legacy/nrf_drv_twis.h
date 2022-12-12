@@ -56,74 +56,74 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_twis_t         nrf_drv_twis_t;
+typedef nrfx_twis_t nrf_drv_twis_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_twis_config_t  nrf_drv_twis_config_t;
+typedef nrfx_twis_config_t nrf_drv_twis_config_t;
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_twis_evt_t     nrf_drv_twis_evt_t;
+typedef nrfx_twis_evt_t nrf_drv_twis_evt_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_TWIS_INSTANCE               NRFX_TWIS_INSTANCE
+#define NRF_DRV_TWIS_INSTANCE NRFX_TWIS_INSTANCE
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_TWIS_DEFAULT_CONFIG         NRFX_TWIS_DEFAULT_CONFIG
+#define NRF_DRV_TWIS_DEFAULT_CONFIG NRFX_TWIS_DEFAULT_CONFIG
 
 /** @brief Macro for forwarding the new implementation. */
-#define TWIS_EVT_READ_REQ                   NRFX_TWIS_EVT_READ_REQ
+#define TWIS_EVT_READ_REQ NRFX_TWIS_EVT_READ_REQ
 /** @brief Macro for forwarding the new implementation. */
-#define TWIS_EVT_READ_DONE                  NRFX_TWIS_EVT_READ_DONE
+#define TWIS_EVT_READ_DONE NRFX_TWIS_EVT_READ_DONE
 /** @brief Macro for forwarding the new implementation. */
-#define TWIS_EVT_READ_ERROR                 NRFX_TWIS_EVT_READ_ERROR
+#define TWIS_EVT_READ_ERROR NRFX_TWIS_EVT_READ_ERROR
 /** @brief Macro for forwarding the new implementation. */
-#define TWIS_EVT_WRITE_REQ                  NRFX_TWIS_EVT_WRITE_REQ
+#define TWIS_EVT_WRITE_REQ NRFX_TWIS_EVT_WRITE_REQ
 /** @brief Macro for forwarding the new implementation. */
-#define TWIS_EVT_WRITE_DONE                 NRFX_TWIS_EVT_WRITE_DONE
+#define TWIS_EVT_WRITE_DONE NRFX_TWIS_EVT_WRITE_DONE
 /** @brief Macro for forwarding the new implementation. */
-#define TWIS_EVT_WRITE_ERROR                NRFX_TWIS_EVT_WRITE_ERROR
+#define TWIS_EVT_WRITE_ERROR NRFX_TWIS_EVT_WRITE_ERROR
 /** @brief Macro for forwarding the new implementation. */
-#define TWIS_EVT_GENERAL_ERROR              NRFX_TWIS_EVT_GENERAL_ERROR
+#define TWIS_EVT_GENERAL_ERROR NRFX_TWIS_EVT_GENERAL_ERROR
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_evt_type_t             nrfx_twis_evt_type_t
+#define nrf_drv_twis_evt_type_t nrfx_twis_evt_type_t
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_TWIS_ERROR_OVERFLOW         NRFX_TWIS_ERROR_OVERFLOW
+#define NRF_DRV_TWIS_ERROR_OVERFLOW NRFX_TWIS_ERROR_OVERFLOW
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_TWIS_ERROR_DATA_NACK        NRFX_TWIS_ERROR_DATA_NACK
+#define NRF_DRV_TWIS_ERROR_DATA_NACK NRFX_TWIS_ERROR_DATA_NACK
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_TWIS_ERROR_OVERREAD         NRFX_TWIS_ERROR_OVERREAD
+#define NRF_DRV_TWIS_ERROR_OVERREAD NRFX_TWIS_ERROR_OVERREAD
 /** @brief Macro for forwarding the new implementation. */
 #define NRF_DRV_TWIS_ERROR_UNEXPECTED_EVENT NRFX_TWIS_ERROR_UNEXPECTED_EVENT
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_error_t                nrfx_twis_error_t
+#define nrf_drv_twis_error_t nrfx_twis_error_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_event_handler_t        nrfx_twis_event_handler_t
+#define nrf_drv_twis_event_handler_t nrfx_twis_event_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_init                   nrfx_twis_init
+#define nrf_drv_twis_init nrfx_twis_init
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_uninit                 nrfx_twis_uninit
+#define nrf_drv_twis_uninit nrfx_twis_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_enable                 nrfx_twis_enable
+#define nrf_drv_twis_enable nrfx_twis_enable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_disable                nrfx_twis_disable
+#define nrf_drv_twis_disable nrfx_twis_disable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_error_get_and_clear    nrfx_twis_error_get_and_clear
+#define nrf_drv_twis_error_get_and_clear nrfx_twis_error_get_and_clear
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_tx_prepare             nrfx_twis_tx_prepare
+#define nrf_drv_twis_tx_prepare nrfx_twis_tx_prepare
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_tx_amount              nrfx_twis_tx_amount
+#define nrf_drv_twis_tx_amount nrfx_twis_tx_amount
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_rx_prepare             nrfx_twis_rx_prepare
+#define nrf_drv_twis_rx_prepare nrfx_twis_rx_prepare
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_rx_amount              nrfx_twis_rx_amount
+#define nrf_drv_twis_rx_amount nrfx_twis_rx_amount
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_is_busy                nrfx_twis_is_busy
+#define nrf_drv_twis_is_busy nrfx_twis_is_busy
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_is_waiting_tx_buff     nrfx_twis_is_waiting_tx_buff
+#define nrf_drv_twis_is_waiting_tx_buff nrfx_twis_is_waiting_tx_buff
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_is_waiting_rx_buff     nrfx_twis_is_waiting_rx_buff
+#define nrf_drv_twis_is_waiting_rx_buff nrfx_twis_is_waiting_rx_buff
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_is_pending_tx          nrfx_twis_is_pending_tx
+#define nrf_drv_twis_is_pending_tx nrfx_twis_is_pending_tx
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_twis_is_pending_rx          nrfx_twis_is_pending_rx
+#define nrf_drv_twis_is_pending_rx nrfx_twis_is_pending_rx
 
 /** @} */
 

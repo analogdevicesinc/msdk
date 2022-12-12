@@ -32,16 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 #ifndef CRYS_POLY_ERROR_H
 #define CRYS_POLY_ERROR_H
-
 
 #include "crys_error.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*!
@@ -52,18 +49,17 @@ extern "C"
 @ingroup crys_poly
 */
 
-
 /************************ Defines ******************************/
 
 /*! The CRYS POLY module errors base address - 0x00F02500 */
 /*! Invalid key. */
-#define CRYS_POLY_KEY_INVALID_ERROR               (CRYS_POLY_MODULE_ERROR_BASE + 0x01UL)
+#define CRYS_POLY_KEY_INVALID_ERROR (CRYS_POLY_MODULE_ERROR_BASE + 0x01UL)
 /*! Invalid input data. */
-#define CRYS_POLY_DATA_INVALID_ERROR              (CRYS_POLY_MODULE_ERROR_BASE + 0x02UL)
+#define CRYS_POLY_DATA_INVALID_ERROR (CRYS_POLY_MODULE_ERROR_BASE + 0x02UL)
 /*! Illegal input data size. */
-#define CRYS_POLY_DATA_SIZE_INVALID_ERROR         (CRYS_POLY_MODULE_ERROR_BASE + 0x03UL)
+#define CRYS_POLY_DATA_SIZE_INVALID_ERROR (CRYS_POLY_MODULE_ERROR_BASE + 0x03UL)
 /*! MAC calculation error. */
-#define CRYS_POLY_MAC_CALCULATION_ERROR           (CRYS_POLY_MODULE_ERROR_BASE + 0x04UL)
+#define CRYS_POLY_MAC_CALCULATION_ERROR (CRYS_POLY_MODULE_ERROR_BASE + 0x04UL)
 
 /************************ Enums ********************************/
 
@@ -79,11 +75,8 @@ extern "C"
 }
 #endif
 
-
 /**
 @}
   */
 
 #endif
-
-

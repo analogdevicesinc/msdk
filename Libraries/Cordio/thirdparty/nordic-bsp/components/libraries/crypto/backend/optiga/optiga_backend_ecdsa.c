@@ -55,101 +55,76 @@
 #include "ecdsa_utils.h"
 /*lint -restore*/
 
-ret_code_t nrf_crypto_backend_optiga_sign(
-    void           * p_context,
-    void     const * p_private_key,
-    uint8_t  const * p_data,
-    size_t           data_size,
-    uint8_t        * p_signature)
+ret_code_t nrf_crypto_backend_optiga_sign(void *p_context, void const *p_private_key,
+                                          uint8_t const *p_data, size_t data_size,
+                                          uint8_t *p_signature)
 {
     optiga_lib_status_t res = OPTIGA_LIB_ERROR;
-    nrf_crypto_backend_optiga_ecc_private_key_t * p_prv =
-            (nrf_crypto_backend_optiga_ecc_private_key_t *)p_private_key;
+    nrf_crypto_backend_optiga_ecc_private_key_t *p_prv =
+        (nrf_crypto_backend_optiga_ecc_private_key_t *)p_private_key;
 
     optiga_key_id_t oid = p_prv->oid;
 
     uint16_t der_sig_len = NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE + ECDSA_RS_MAX_ASN1_OVERHEAD;
-    uint8_t der_sig[NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE + ECDSA_RS_MAX_ASN1_OVERHEAD] = {0};
+    uint8_t der_sig[NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE + ECDSA_RS_MAX_ASN1_OVERHEAD] = { 0 };
 
     res = optiga_crypt_ecdsa_sign((uint8_t *)p_data, data_size, oid, der_sig, &der_sig_len);
-    if(res != OPTIGA_LIB_SUCCESS) {
+    if (res != OPTIGA_LIB_SUCCESS) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
     // convert signature to format suitable for nrf_crypto
-    if (!asn1_to_ecdsa_rs(der_sig, der_sig_len,
-                          p_signature, NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE))
-    {
+    if (!asn1_to_ecdsa_rs(der_sig, der_sig_len, p_signature,
+                          NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE)) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_backend_optiga_verify(
-    void           * p_context,
-    void     const * p_public_key,
-    uint8_t  const * p_data,
-    size_t           data_size,
-    uint8_t  const * p_signature)
+ret_code_t nrf_crypto_backend_optiga_verify(void *p_context, void const *p_public_key,
+                                            uint8_t const *p_data, size_t data_size,
+                                            uint8_t const *p_signature)
 {
-    nrf_crypto_backend_secp256r1_public_key_t * p_pub =
-            (nrf_crypto_backend_secp256r1_public_key_t *)p_public_key;
+    nrf_crypto_backend_secp256r1_public_key_t *p_pub =
+        (nrf_crypto_backend_secp256r1_public_key_t *)p_public_key;
 
     optiga_key_id_t oid = p_pub->oid;
 
     size_t der_sig_len = NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE + ECDSA_RS_MAX_ASN1_OVERHEAD;
-    uint8_t der_sig[NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE + ECDSA_RS_MAX_ASN1_OVERHEAD] = {0};
+    uint8_t der_sig[NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE + ECDSA_RS_MAX_ASN1_OVERHEAD] = { 0 };
 
-    const size_t rs_size = NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE/2;
+    const size_t rs_size = NRF_CRYPTO_ECDSA_SECP256R1_SIGNATURE_SIZE / 2;
 
     optiga_lib_status_t res = OPTIGA_LIB_ERROR;
 
     // Convert signature to DER format needed by OPTIGA
-    if (!ecdsa_rs_to_asn1_integers(p_signature,
-                                   p_signature + rs_size,
-                                   rs_size,
-                                   der_sig,
-                                   &der_sig_len))
-    {
-        return  NRF_ERROR_CRYPTO_INTERNAL;
+    if (!ecdsa_rs_to_asn1_integers(p_signature, p_signature + rs_size, rs_size, der_sig,
+                                   &der_sig_len)) {
+        return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
-    if (oid == NRF_CRYPTO_INFINEON_PUBKEY_HOST_OID)
-    {
+    if (oid == NRF_CRYPTO_INFINEON_PUBKEY_HOST_OID) {
         // Create magic OID for pubkey from host
-        public_key_from_host_t pub_key = {
-            .public_key = p_pub->raw_pubkey,
-            .length = NRF_CRYPTO_ECC_SECP256R1_RAW_PUBLIC_KEY_SIZE + 4,   // public key + DER BITSTRING header
-            .curve = OPTIGA_ECC_NIST_P_256
-        };
+        public_key_from_host_t pub_key = { .public_key = p_pub->raw_pubkey,
+                                           .length = NRF_CRYPTO_ECC_SECP256R1_RAW_PUBLIC_KEY_SIZE +
+                                                     4, // public key + DER BITSTRING header
+                                           .curve = OPTIGA_ECC_NIST_P_256 };
 
-        res = optiga_crypt_ecdsa_verify((uint8_t *)p_data,
-                                        data_size,
-                                        der_sig,
-                                        der_sig_len,
-                                        OPTIGA_CRYPT_HOST_DATA,
-                                        &pub_key);
-    }
-    else
-    {
+        res = optiga_crypt_ecdsa_verify((uint8_t *)p_data, data_size, der_sig, der_sig_len,
+                                        OPTIGA_CRYPT_HOST_DATA, &pub_key);
+    } else {
         // Public key is in OPTIGA, referenced by OID
-        res = optiga_crypt_ecdsa_verify((uint8_t *)p_data,
-                                        data_size,
-                                        der_sig,
-                                        der_sig_len,
-                                        OPTIGA_CRYPT_OID_DATA,
-                                        &oid);
+        res = optiga_crypt_ecdsa_verify((uint8_t *)p_data, data_size, der_sig, der_sig_len,
+                                        OPTIGA_CRYPT_OID_DATA, &oid);
     }
 
     // consider everything that is not success a signature failure
-    if (res != OPTIGA_LIB_SUCCESS)
-    {
+    if (res != OPTIGA_LIB_SUCCESS) {
         return NRF_ERROR_CRYPTO_ECDSA_INVALID_SIGNATURE;
     }
 
     return NRF_SUCCESS;
 }
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OPTIGA)

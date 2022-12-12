@@ -70,7 +70,7 @@ void AtpsSetAntennaIds(dmConnId_t connId, uint8_t numAntenna, uint8_t *pAntennaI
 /*************************************************************************************************/
 void AtpsProcDmMsg(dmEvt_t *pEvt);
 
-/*! \} */    /* ASSET_TRACKING_PROFILE_SERVER */
+/*! \} */ /* ASSET_TRACKING_PROFILE_SERVER */
 
 #ifdef __cplusplus
 };

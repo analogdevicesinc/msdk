@@ -36,8 +36,8 @@
 /*************************************************************************************************/
 void LlScanMasterInit(void)
 {
-  WSF_ASSERT(pLctrRtCfg);     /* Runtime configuration must be available. */
+    WSF_ASSERT(pLctrRtCfg); /* Runtime configuration must be available. */
 
-  LmgrMstInit();
-  LctrMstScanInit();
+    LmgrMstInit();
+    LctrMstScanInit();
 }

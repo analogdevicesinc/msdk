@@ -28,8 +28,7 @@
 #include "mesh_cfg_mdl_cl_api.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -54,7 +53,7 @@ void appMeshCfgMdlClTerminalInit(void);
  *  \return    None.
  */
 /*************************************************************************************************/
-void appMeshCfgMdlClTerminalProcMsg(meshCfgMdlClEvt_t* pMsg);
+void appMeshCfgMdlClTerminalProcMsg(meshCfgMdlClEvt_t *pMsg);
 
 #ifdef __cplusplus
 }

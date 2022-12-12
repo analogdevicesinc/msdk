@@ -38,29 +38,28 @@
 /*************************************************************************************************/
 bool_t lhciMstConnEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
+    uint8_t *pEvtBuf = NULL;
 
-  switch (pEvt->hdr.event)
-  {
+    switch (pEvt->hdr.event) {
     case LL_CREATE_CONN_CANCEL_CNF:
-      if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + LHCI_LEN_LE_CREATE_CONN_CANCEL_EVT)) != NULL)
-      {
-        uint8_t *pBuf = pEvtBuf;
-        pBuf += lhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_CREATE_CONN_CANCEL);
-        lhciPackCmdCompleteEvtStatus(pBuf, pEvt->createConnCancelCnf.status);
-      }
-      break;
+        if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT,
+                                    HCI_LEN_CMD_CMPL + LHCI_LEN_LE_CREATE_CONN_CANCEL_EVT)) !=
+            NULL) {
+            uint8_t *pBuf = pEvtBuf;
+            pBuf += lhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_CREATE_CONN_CANCEL);
+            lhciPackCmdCompleteEvtStatus(pBuf, pEvt->createConnCancelCnf.status);
+        }
+        break;
 
     default:
-      /* Fall back to slave connection handler. */
-      return lhciConnEncodeEvtPkt(pEvt);     /* exit routine */
-  }
+        /* Fall back to slave connection handler. */
+        return lhciConnEncodeEvtPkt(pEvt); /* exit routine */
+    }
 
-  if (pEvtBuf)
-  {
-    lhciSendEvt(pEvtBuf);
-    return TRUE;
-  }
+    if (pEvtBuf) {
+        lhciSendEvt(pEvtBuf);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }

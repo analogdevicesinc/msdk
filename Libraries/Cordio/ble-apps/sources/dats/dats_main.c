@@ -44,7 +44,7 @@
 #include "util/calc128.h"
 #include "gatt/gatt_api.h"
 #include "dats/dats_api.h"
-#if WDXS_INCLUDED  == TRUE
+#if WDXS_INCLUDED == TRUE
 #include "wsf_efs.h"
 #include "svc_wdxs.h"
 #include "wdxs/wdxs_api.h"
@@ -58,24 +58,23 @@
 #if (BT_VER > 8)
 
 /* PHY Test Modes */
-#define DATS_PHY_1M                       1
-#define DATS_PHY_2M                       2
-#define DATS_PHY_CODED                    3
+#define DATS_PHY_1M 1
+#define DATS_PHY_2M 2
+#define DATS_PHY_CODED 3
 
 #endif /* BT_VER */
 
 /*! Enumeration of client characteristic configuration descriptors */
-enum
-{
+enum {
 #if WDXS_INCLUDED == TRUE
-  WDXS_DC_CH_CCC_IDX,             /*! WDXS DC service, service changed characteristic */
-  WDXS_FTC_CH_CCC_IDX,            /*! WDXS FTC  service, service changed characteristic */
-  WDXS_FTD_CH_CCC_IDX,            /*! WDXS FTD service, service changed characteristic */
-  WDXS_AU_CH_CCC_IDX,             /*! WDXS AU service, service changed characteristic */
+    WDXS_DC_CH_CCC_IDX, /*! WDXS DC service, service changed characteristic */
+    WDXS_FTC_CH_CCC_IDX, /*! WDXS FTC  service, service changed characteristic */
+    WDXS_FTD_CH_CCC_IDX, /*! WDXS FTD service, service changed characteristic */
+    WDXS_AU_CH_CCC_IDX, /*! WDXS AU service, service changed characteristic */
 #endif /* WDXS_INCLUDED */
-  DATS_GATT_SC_CCC_IDX,           /*! GATT service, service changed characteristic */
-  DATS_WP_DAT_CCC_IDX,            /*! Arm Ltd. proprietary service, data transfer characteristic */
-  DATS_NUM_CCC_IDX
+    DATS_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
+    DATS_WP_DAT_CCC_IDX, /*! Arm Ltd. proprietary service, data transfer characteristic */
+    DATS_NUM_CCC_IDX
 };
 
 /**************************************************************************************************
@@ -83,104 +82,94 @@ enum
 **************************************************************************************************/
 
 /*! configurable parameters for advertising */
-static const appAdvCfg_t datsAdvCfg =
-{
-  {30000,     0,     0},                  /*! Advertising durations in ms */
-  {   96,  1600,     0}                   /*! Advertising intervals in 0.625 ms units */
+static const appAdvCfg_t datsAdvCfg = {
+    { 30000, 0, 0 }, /*! Advertising durations in ms */
+    { 96, 1600, 0 } /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
-static const appSlaveCfg_t datsSlaveCfg =
-{
-  1,                                      /*! Maximum connections */
+static const appSlaveCfg_t datsSlaveCfg = {
+    1, /*! Maximum connections */
 };
 
 /*! configurable parameters for security */
-static const appSecCfg_t datsSecCfg =
-{
-  DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG,    /*! Authentication and bonding flags */
-  DM_KEY_DIST_IRK,                        /*! Initiator key distribution flags */
-  DM_KEY_DIST_LTK | DM_KEY_DIST_IRK,      /*! Responder key distribution flags */
-  FALSE,                                  /*! TRUE if Out-of-band pairing data is present */
-  TRUE                                    /*! TRUE to initiate security upon connection */
+static const appSecCfg_t datsSecCfg = {
+    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
+    DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
+    FALSE, /*! TRUE if Out-of-band pairing data is present */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
 static const bool_t datsSendOobData = FALSE;
 
 /*! SMP security parameter configuration */
-static const smpCfg_t datsSmpCfg =
-{
-  500,                                    /*! 'Repeated attempts' timeout in msec */
-  SMP_IO_NO_IN_NO_OUT,                    /*! I/O Capability */
-  7,                                      /*! Minimum encryption key length */
-  16,                                     /*! Maximum encryption key length */
-  1,                                      /*! Attempts to trigger 'repeated attempts' timeout */
-  0,                                      /*! Device authentication requirements */
-  64000,                                  /*! Maximum repeated attempts timeout in msec */
-  64000,                                  /*! Time msec before attemptExp decreases */
-  2                                       /*! Repeated attempts multiplier exponent */
+static const smpCfg_t datsSmpCfg = {
+    500, /*! 'Repeated attempts' timeout in msec */
+    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
+    7, /*! Minimum encryption key length */
+    16, /*! Maximum encryption key length */
+    1, /*! Attempts to trigger 'repeated attempts' timeout */
+    0, /*! Device authentication requirements */
+    64000, /*! Maximum repeated attempts timeout in msec */
+    64000, /*! Time msec before attemptExp decreases */
+    2 /*! Repeated attempts multiplier exponent */
 };
 
 /*! configurable parameters for connection parameter update */
-static const appUpdateCfg_t datsUpdateCfg =
-{
-  0,                                      /*! Connection idle period in ms before attempting
+static const appUpdateCfg_t datsUpdateCfg = {
+    0, /*! Connection idle period in ms before attempting
                                               connection parameter update; set to zero to disable */
-  640,                                    /*! Minimum connection interval in 1.25ms units */
-  800,                                    /*! Maximum connection interval in 1.25ms units */
-  3,                                      /*! Connection latency */
-  900,                                    /*! Supervision timeout in 10ms units */
-  5                                       /*! Number of update attempts before giving up */
+    640, /*! Minimum connection interval in 1.25ms units */
+    800, /*! Maximum connection interval in 1.25ms units */
+    3, /*! Connection latency */
+    900, /*! Supervision timeout in 10ms units */
+    5 /*! Number of update attempts before giving up */
 };
 
 /*! ATT configurable parameters (increase MTU) */
-static const attCfg_t datsAttCfg =
-{
-  15,                               /* ATT server service discovery connection idle timeout in seconds */
-  241,                              /* desired ATT MTU */
-  ATT_MAX_TRANS_TIMEOUT,            /* transcation timeout in seconds */
-  4                                 /* number of queued prepare writes supported by server */
+static const attCfg_t datsAttCfg = {
+    15, /* ATT server service discovery connection idle timeout in seconds */
+    241, /* desired ATT MTU */
+    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
+    4 /* number of queued prepare writes supported by server */
 };
 
 /*! local IRK */
-static uint8_t localIrk[] =
-{
-  0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93, 0x35, 0x4E, 0x7C, 0x57, 0x08, 0xE2, 0xA3, 0x85
-};
+static uint8_t localIrk[] = { 0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93,
+                              0x35, 0x4E, 0x7C, 0x57, 0x08, 0xE2, 0xA3, 0x85 };
 
 /**************************************************************************************************
   Advertising Data
 **************************************************************************************************/
 
 /*! advertising data, discoverable mode */
-static const uint8_t datsAdvDataDisc[] =
-{
-  /*! flags */
-  2,                                      /*! length */
-  DM_ADV_TYPE_FLAGS,                      /*! AD type */
-  DM_FLAG_LE_GENERAL_DISC |               /*! flags */
-  DM_FLAG_LE_BREDR_NOT_SUP,
+static const uint8_t datsAdvDataDisc[] = {
+    /*! flags */
+    2, /*! length */
+    DM_ADV_TYPE_FLAGS, /*! AD type */
+    DM_FLAG_LE_GENERAL_DISC | /*! flags */
+        DM_FLAG_LE_BREDR_NOT_SUP,
 
-  /*! manufacturer specific data */
-  3,                                      /*! length */
-  DM_ADV_TYPE_MANUFACTURER,               /*! AD type */
-  UINT16_TO_BYTES(HCI_ID_ANALOG)     /*! company ID */
+    /*! manufacturer specific data */
+    3, /*! length */
+    DM_ADV_TYPE_MANUFACTURER, /*! AD type */
+    UINT16_TO_BYTES(HCI_ID_ANALOG) /*! company ID */
 };
 
 /*! scan data, discoverable mode */
-static const uint8_t datsScanDataDisc[] =
-{
-  /*! device name */
-  8,                                      /*! length */
-  DM_ADV_TYPE_LOCAL_NAME,                 /*! AD type */
-  'D',
-  'a',
-  't',
-  'a',
-  ' ',
-  'T',
-  'X'
+static const uint8_t datsScanDataDisc[] = {
+    /*! device name */
+    8, /*! length */
+    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
+    'D',
+    'a',
+    't',
+    'a',
+    ' ',
+    'T',
+    'X'
 };
 
 /**************************************************************************************************
@@ -188,17 +177,16 @@ static const uint8_t datsScanDataDisc[] =
 **************************************************************************************************/
 
 /*! client characteristic configuration descriptors settings, indexed by above enumeration */
-static const attsCccSet_t datsCccSet[DATS_NUM_CCC_IDX] =
-{
-  /* cccd handle          value range               security level */
+static const attsCccSet_t datsCccSet[DATS_NUM_CCC_IDX] = {
+/* cccd handle          value range               security level */
 #if WDXS_INCLUDED == TRUE
-  {WDXS_DC_CH_CCC_HDL,    ATT_CLIENT_CFG_NOTIFY,    DM_SEC_LEVEL_NONE},   /* WDXS_DC_CH_CCC_IDX */
-  {WDXS_FTC_CH_CCC_HDL,   ATT_CLIENT_CFG_NOTIFY,    DM_SEC_LEVEL_NONE},   /* WDXS_FTC_CH_CCC_IDX */
-  {WDXS_FTD_CH_CCC_HDL,   ATT_CLIENT_CFG_NOTIFY,    DM_SEC_LEVEL_NONE},   /* WDXS_FTD_CH_CCC_IDX */
-  {WDXS_AU_CH_CCC_HDL,    ATT_CLIENT_CFG_NOTIFY,    DM_SEC_LEVEL_NONE},   /* WDXS_AU_CH_CCC_IDX */
+    { WDXS_DC_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* WDXS_DC_CH_CCC_IDX */
+    { WDXS_FTC_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* WDXS_FTC_CH_CCC_IDX */
+    { WDXS_FTD_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* WDXS_FTD_CH_CCC_IDX */
+    { WDXS_AU_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* WDXS_AU_CH_CCC_IDX */
 #endif /* WDXS_INCLUDED */
-  {GATT_SC_CH_CCC_HDL,    ATT_CLIENT_CFG_INDICATE,  DM_SEC_LEVEL_NONE},   /* DATS_GATT_SC_CCC_IDX */
-  {WP_DAT_CH_CCC_HDL,     ATT_CLIENT_CFG_NOTIFY,    DM_SEC_LEVEL_NONE}    /* DATS_WP_DAT_CCC_IDX */
+    { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE }, /* DATS_GATT_SC_CCC_IDX */
+    { WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE } /* DATS_WP_DAT_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -206,14 +194,13 @@ static const attsCccSet_t datsCccSet[DATS_NUM_CCC_IDX] =
 **************************************************************************************************/
 
 /*! application control block */
-static struct
-{
-  wsfHandlerId_t    handlerId;          /* WSF handler ID */
+static struct {
+    wsfHandlerId_t handlerId; /* WSF handler ID */
 #if (BT_VER > 8)
-  uint8_t           phyMode;            /*! PHY Test Mode */
+    uint8_t phyMode; /*! PHY Test Mode */
 #endif /* BT_VER */
-  appDbHdl_t        resListRestoreHdl;  /*! Resolving List last restored handle */
-  bool_t            restoringResList;   /*! Restoring resolving list from NVM */
+    appDbHdl_t resListRestoreHdl; /*! Resolving List last restored handle */
+    bool_t restoringResList; /*! Restoring resolving list from NVM */
 } datsCb;
 
 /* LESC OOB configuration */
@@ -230,13 +217,12 @@ static dmSecLescOobCfg_t *datsOobCfg;
 /*************************************************************************************************/
 static void datsSendData(dmConnId_t connId)
 {
-  uint8_t str[] = "hello back";
+    uint8_t str[] = "hello back";
 
-  if (AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX))
-  {
-    /* send notification */
-    AttsHandleValueNtf(connId, WP_DAT_HDL, sizeof(str), str);
-  }
+    if (AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX)) {
+        /* send notification */
+        AttsHandleValueNtf(connId, WP_DAT_HDL, sizeof(str), str);
+    }
 }
 
 /*************************************************************************************************/
@@ -250,44 +236,35 @@ static void datsSendData(dmConnId_t connId)
 /*************************************************************************************************/
 static void datsDmCback(dmEvt_t *pDmEvt)
 {
-  dmEvt_t   *pMsg;
-  uint16_t  len;
+    dmEvt_t *pMsg;
+    uint16_t len;
 
-  if (pDmEvt->hdr.event == DM_SEC_ECC_KEY_IND)
-  {
-    DmSecSetEccKey(&pDmEvt->eccMsg.data.key);
+    if (pDmEvt->hdr.event == DM_SEC_ECC_KEY_IND) {
+        DmSecSetEccKey(&pDmEvt->eccMsg.data.key);
 
-    /* If the local device sends OOB data. */
-    if (datsSendOobData)
-    {
-      uint8_t oobLocalRandom[SMP_RAND_LEN];
-      SecRand(oobLocalRandom, SMP_RAND_LEN);
-      DmSecCalcOobReq(oobLocalRandom, pDmEvt->eccMsg.data.key.pubKey_x);
-    }
-  }
-  else if (pDmEvt->hdr.event == DM_SEC_CALC_OOB_IND)
-  {
-    if (datsOobCfg == NULL)
-    {
-      datsOobCfg = WsfBufAlloc(sizeof(dmSecLescOobCfg_t));
-    }
+        /* If the local device sends OOB data. */
+        if (datsSendOobData) {
+            uint8_t oobLocalRandom[SMP_RAND_LEN];
+            SecRand(oobLocalRandom, SMP_RAND_LEN);
+            DmSecCalcOobReq(oobLocalRandom, pDmEvt->eccMsg.data.key.pubKey_x);
+        }
+    } else if (pDmEvt->hdr.event == DM_SEC_CALC_OOB_IND) {
+        if (datsOobCfg == NULL) {
+            datsOobCfg = WsfBufAlloc(sizeof(dmSecLescOobCfg_t));
+        }
 
-    if (datsOobCfg)
-    {
-      Calc128Cpy(datsOobCfg->localConfirm, pDmEvt->oobCalcInd.confirm);
-      Calc128Cpy(datsOobCfg->localRandom, pDmEvt->oobCalcInd.random);
-    }
-  }
-  else
-  {
-    len = DmSizeOfEvt(pDmEvt);
+        if (datsOobCfg) {
+            Calc128Cpy(datsOobCfg->localConfirm, pDmEvt->oobCalcInd.confirm);
+            Calc128Cpy(datsOobCfg->localRandom, pDmEvt->oobCalcInd.random);
+        }
+    } else {
+        len = DmSizeOfEvt(pDmEvt);
 
-    if ((pMsg = WsfMsgAlloc(len)) != NULL)
-    {
-      memcpy(pMsg, pDmEvt, len);
-      WsfMsgSend(datsCb.handlerId, pMsg);
+        if ((pMsg = WsfMsgAlloc(len)) != NULL) {
+            memcpy(pMsg, pDmEvt, len);
+            WsfMsgSend(datsCb.handlerId, pMsg);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -301,18 +278,17 @@ static void datsDmCback(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 static void datsAttCback(attEvt_t *pEvt)
 {
-  attEvt_t  *pMsg;
+    attEvt_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL)
-  {
-    memcpy(pMsg, pEvt, sizeof(attEvt_t));
-    pMsg->pValue = (uint8_t *)(pMsg + 1);
-    memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
-    WsfMsgSend(datsCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
+        memcpy(pMsg, pEvt, sizeof(attEvt_t));
+        pMsg->pValue = (uint8_t *)(pMsg + 1);
+        memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
+        WsfMsgSend(datsCb.handlerId, pMsg);
+    }
 
 #if WDXS_INCLUDED == TRUE
-  WdxsAttCback(pEvt);
+    WdxsAttCback(pEvt);
 #endif /* WDXS_INCLUDED */
 }
 
@@ -327,17 +303,16 @@ static void datsAttCback(attEvt_t *pEvt)
 /*************************************************************************************************/
 static void datsCccCback(attsCccEvt_t *pEvt)
 {
-  appDbHdl_t    dbHdl;
+    appDbHdl_t dbHdl;
 
-  /* If CCC not set from initialization and there's a device record and currently bonded */
-  if ((pEvt->handle != ATT_HANDLE_NONE) &&
-      ((dbHdl = AppDbGetHdl((dmConnId_t) pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
-      AppCheckBonded((dmConnId_t)pEvt->hdr.param))
-  {
-    /* Store value in device database. */
-    AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
-    AppDbNvmStoreCccTbl(dbHdl);
-  }
+    /* If CCC not set from initialization and there's a device record and currently bonded */
+    if ((pEvt->handle != ATT_HANDLE_NONE) &&
+        ((dbHdl = AppDbGetHdl((dmConnId_t)pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
+        AppCheckBonded((dmConnId_t)pEvt->hdr.param)) {
+        /* Store value in device database. */
+        AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
+        AppDbNvmStoreCccTbl(dbHdl);
+    }
 }
 
 /*************************************************************************************************/
@@ -347,16 +322,16 @@ static void datsCccCback(attsCccEvt_t *pEvt)
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                          uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                         uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-  /* print received data */
-  APP_TRACE_INFO0((const char*) pValue);
+    /* print received data */
+    APP_TRACE_INFO0((const char *)pValue);
 
-  /* send back some data */
-  datsSendData(connId);
+    /* send back some data */
+    datsSendData(connId);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -371,14 +346,13 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
 /*************************************************************************************************/
 static void datsPrivAddDevToResList(appDbHdl_t dbHdl)
 {
-  dmSecKey_t *pPeerKey;
+    dmSecKey_t *pPeerKey;
 
-  /* if peer IRK present */
-  if ((pPeerKey = AppDbGetKey(dbHdl, DM_KEY_IRK, NULL)) != NULL)
-  {
-    /* set advertising peer address */
-    AppSetAdvPeerAddr(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr);
-  }
+    /* if peer IRK present */
+    if ((pPeerKey = AppDbGetKey(dbHdl, DM_KEY_IRK, NULL)) != NULL) {
+        /* set advertising peer address */
+        AppSetAdvPeerAddr(pPeerKey->irk.addrType, pPeerKey->irk.bdAddr);
+    }
 }
 
 /*************************************************************************************************/
@@ -393,16 +367,14 @@ static void datsPrivAddDevToResList(appDbHdl_t dbHdl)
 /*************************************************************************************************/
 static void datsPrivRemDevFromResListInd(dmEvt_t *pMsg)
 {
-  if (pMsg->hdr.status == HCI_SUCCESS)
-  {
-    if (AppDbGetHdl((dmConnId_t) pMsg->hdr.param) != APP_DB_HDL_NONE)
-    {
-      uint8_t addrZeros[BDA_ADDR_LEN] = { 0 };
+    if (pMsg->hdr.status == HCI_SUCCESS) {
+        if (AppDbGetHdl((dmConnId_t)pMsg->hdr.param) != APP_DB_HDL_NONE) {
+            uint8_t addrZeros[BDA_ADDR_LEN] = { 0 };
 
-      /* clear advertising peer address and its type */
-      AppSetAdvPeerAddr(HCI_ADDR_TYPE_PUBLIC, addrZeros);
+            /* clear advertising peer address and its type */
+            AppSetAdvPeerAddr(HCI_ADDR_TYPE_PUBLIC, addrZeros);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -417,7 +389,7 @@ static void datsPrivRemDevFromResListInd(dmEvt_t *pMsg)
 /*************************************************************************************************/
 void datsDisplayStackVersion(const char *pVersion)
 {
-  APP_TRACE_INFO1("Stack Version: %s", pVersion);
+    APP_TRACE_INFO1("Stack Version: %s", pVersion);
 }
 
 /*************************************************************************************************/
@@ -432,20 +404,20 @@ void datsDisplayStackVersion(const char *pVersion)
 /*************************************************************************************************/
 static void datsSetup(dmEvt_t *pMsg)
 {
+    /* Initialize control information */
+    datsCb.restoringResList = FALSE;
 
-  /* Initialize control information */
-  datsCb.restoringResList = FALSE;
+    /* set advertising and scan response data for discoverable mode */
+    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
+    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(datsScanDataDisc),
+                  (uint8_t *)datsScanDataDisc);
 
-  /* set advertising and scan response data for discoverable mode */
-  AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(datsAdvDataDisc), (uint8_t *) datsAdvDataDisc);
-  AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(datsScanDataDisc), (uint8_t *) datsScanDataDisc);
+    /* set advertising and scan response data for connectable mode */
+    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
+    AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, sizeof(datsScanDataDisc), (uint8_t *)datsScanDataDisc);
 
-  /* set advertising and scan response data for connectable mode */
-  AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(datsAdvDataDisc), (uint8_t *) datsAdvDataDisc);
-  AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, sizeof(datsScanDataDisc), (uint8_t *) datsScanDataDisc);
-
-  /* start advertising; automatically set connectable/discoverable mode and bondable mode */
-  AppAdvStart(APP_MODE_AUTO_INIT);
+    /* start advertising; automatically set connectable/discoverable mode and bondable mode */
+    AppAdvStart(APP_MODE_AUTO_INIT);
 }
 
 /*************************************************************************************************/
@@ -459,18 +431,15 @@ static void datsSetup(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void datsRestoreResolvingList(dmEvt_t *pMsg)
 {
-  /* Restore first device to resolving list in Controller. */
-  datsCb.resListRestoreHdl = AppAddNextDevToResList(APP_DB_HDL_NONE);
+    /* Restore first device to resolving list in Controller. */
+    datsCb.resListRestoreHdl = AppAddNextDevToResList(APP_DB_HDL_NONE);
 
-  if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE)
-  {
-    /* No device to restore.  Setup application. */
-    datsSetup(pMsg);
-  }
-  else
-  {
-    datsCb.restoringResList = TRUE;
-  }
+    if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
+        /* No device to restore.  Setup application. */
+        datsSetup(pMsg);
+    } else {
+        datsCb.restoringResList = TRUE;
+    }
 }
 
 /*************************************************************************************************/
@@ -484,25 +453,21 @@ static void datsRestoreResolvingList(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void datsPrivAddDevToResListInd(dmEvt_t *pMsg)
 {
-  /* Check if in the process of restoring the Device List from NV */
-  if (datsCb.restoringResList)
-  {
-    /* Set the advertising peer address. */
-    datsPrivAddDevToResList(datsCb.resListRestoreHdl);
+    /* Check if in the process of restoring the Device List from NV */
+    if (datsCb.restoringResList) {
+        /* Set the advertising peer address. */
+        datsPrivAddDevToResList(datsCb.resListRestoreHdl);
 
-    /* Retore next device to resolving list in Controller. */
-    datsCb.resListRestoreHdl = AppAddNextDevToResList(datsCb.resListRestoreHdl);
+        /* Retore next device to resolving list in Controller. */
+        datsCb.resListRestoreHdl = AppAddNextDevToResList(datsCb.resListRestoreHdl);
 
-    if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE)
-    {
-      /* No additional device to restore. Setup application. */
-      datsSetup(pMsg);
+        if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
+            /* No additional device to restore. Setup application. */
+            datsSetup(pMsg);
+        }
+    } else {
+        datsPrivAddDevToResList(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
     }
-  }
-  else
-  {
-    datsPrivAddDevToResList(AppDbGetHdl((dmConnId_t) pMsg->hdr.param));
-  }
 }
 
 /*************************************************************************************************/
@@ -516,114 +481,108 @@ static void datsPrivAddDevToResListInd(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void datsProcMsg(dmEvt_t *pMsg)
 {
-  uint8_t uiEvent = APP_UI_NONE;
+    uint8_t uiEvent = APP_UI_NONE;
 
-  switch(pMsg->hdr.event)
-  {
+    switch (pMsg->hdr.event) {
     case DM_RESET_CMPL_IND:
-      AttsCalculateDbHash();
-      DmSecGenerateEccKeyReq();
-      AppDbNvmReadAll();
-      datsRestoreResolvingList(pMsg);
-      uiEvent = APP_UI_RESET_CMPL;
-      break;
+        AttsCalculateDbHash();
+        DmSecGenerateEccKeyReq();
+        AppDbNvmReadAll();
+        datsRestoreResolvingList(pMsg);
+        uiEvent = APP_UI_RESET_CMPL;
+        break;
 
     case DM_ADV_START_IND:
-      uiEvent = APP_UI_ADV_START;
-      break;
+        uiEvent = APP_UI_ADV_START;
+        break;
 
     case DM_ADV_STOP_IND:
-      uiEvent = APP_UI_ADV_STOP;
-      break;
+        uiEvent = APP_UI_ADV_STOP;
+        break;
 
     case DM_CONN_OPEN_IND:
-      uiEvent = APP_UI_CONN_OPEN;
+        uiEvent = APP_UI_CONN_OPEN;
 #if (BT_VER > 8)
-      datsCb.phyMode = DATS_PHY_1M;
+        datsCb.phyMode = DATS_PHY_1M;
 #endif /* BT_VER */
-      break;
+        break;
 
     case DM_CONN_CLOSE_IND:
-      uiEvent = APP_UI_CONN_CLOSE;
-      break;
+        uiEvent = APP_UI_CONN_CLOSE;
+        break;
 
     case DM_SEC_PAIR_CMPL_IND:
-      DmSecGenerateEccKeyReq();
-      AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t) pMsg->hdr.param));
-      uiEvent = APP_UI_SEC_PAIR_CMPL;
-      break;
+        DmSecGenerateEccKeyReq();
+        AppDbNvmStoreBond(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
+        uiEvent = APP_UI_SEC_PAIR_CMPL;
+        break;
 
     case DM_SEC_PAIR_FAIL_IND:
-      DmSecGenerateEccKeyReq();
-      uiEvent = APP_UI_SEC_PAIR_FAIL;
-      break;
+        DmSecGenerateEccKeyReq();
+        uiEvent = APP_UI_SEC_PAIR_FAIL;
+        break;
 
     case DM_SEC_ENCRYPT_IND:
-      uiEvent = APP_UI_SEC_ENCRYPT;
-      break;
+        uiEvent = APP_UI_SEC_ENCRYPT;
+        break;
 
     case DM_SEC_ENCRYPT_FAIL_IND:
-      uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
-      break;
+        uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
+        break;
 
     case DM_SEC_AUTH_REQ_IND:
 
-      if (pMsg->authReq.oob)
-      {
-        dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
+        if (pMsg->authReq.oob) {
+            dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-        /* TODO: Perform OOB Exchange with the peer. */
+            /* TODO: Perform OOB Exchange with the peer. */
 
+            /* TODO: Fill datsOobCfg peerConfirm and peerRandom with value passed out of band */
 
-        /* TODO: Fill datsOobCfg peerConfirm and peerRandom with value passed out of band */
+            if (datsOobCfg != NULL) {
+                DmSecSetOob(connId, datsOobCfg);
+            }
 
-        if (datsOobCfg != NULL)
-        {
-          DmSecSetOob(connId, datsOobCfg);
+            DmSecAuthRsp(connId, 0, NULL);
+        } else {
+            AppHandlePasskey(&pMsg->authReq);
         }
-
-        DmSecAuthRsp(connId, 0, NULL);
-      }
-      else
-      {
-        AppHandlePasskey(&pMsg->authReq);
-      }
-      break;
+        break;
 
     case DM_SEC_COMPARE_IND:
-      AppHandleNumericComparison(&pMsg->cnfInd);
-      break;
+        AppHandleNumericComparison(&pMsg->cnfInd);
+        break;
 
     case DM_PRIV_ADD_DEV_TO_RES_LIST_IND:
-      datsPrivAddDevToResListInd(pMsg);
-      break;
+        datsPrivAddDevToResListInd(pMsg);
+        break;
 
     case DM_PRIV_REM_DEV_FROM_RES_LIST_IND:
-      datsPrivRemDevFromResListInd(pMsg);
-      break;
+        datsPrivRemDevFromResListInd(pMsg);
+        break;
 
     case DM_ADV_NEW_ADDR_IND:
-      break;
+        break;
 
     case DM_PRIV_CLEAR_RES_LIST_IND:
-      APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
-      break;
+        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
+        break;
 
 #if (BT_VER > 8)
     case DM_PHY_UPDATE_IND:
-      APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy, pMsg->phyUpdate.txPhy);
-      datsCb.phyMode = pMsg->phyUpdate.rxPhy;
-      break;
+        APP_TRACE_INFO2("DM_PHY_UPDATE_IND - RX: %d, TX: %d", pMsg->phyUpdate.rxPhy,
+                        pMsg->phyUpdate.txPhy);
+        datsCb.phyMode = pMsg->phyUpdate.rxPhy;
+        break;
 #endif /* BT_VER */
 
     default:
-      break;
-  }
+        break;
+    }
 
-  if (uiEvent != APP_UI_NONE)
-  {
-    AppUiAction(uiEvent);
-  }
+    if (uiEvent != APP_UI_NONE) {
+        AppUiAction(uiEvent);
+    }
 }
 
 /*************************************************************************************************/
@@ -637,25 +596,25 @@ static void datsProcMsg(dmEvt_t *pMsg)
 /*************************************************************************************************/
 void DatsHandlerInit(wsfHandlerId_t handlerId)
 {
-  APP_TRACE_INFO0("DatsHandlerInit");
+    APP_TRACE_INFO0("DatsHandlerInit");
 
-  /* store handler ID */
-  datsCb.handlerId = handlerId;
+    /* store handler ID */
+    datsCb.handlerId = handlerId;
 
-  /* Set configuration pointers */
-  pAppSlaveCfg = (appSlaveCfg_t *) &datsSlaveCfg;
-  pAppAdvCfg = (appAdvCfg_t *) &datsAdvCfg;
-  pAppSecCfg = (appSecCfg_t *) &datsSecCfg;
-  pAppUpdateCfg = (appUpdateCfg_t *) &datsUpdateCfg;
-  pSmpCfg = (smpCfg_t *) &datsSmpCfg;
-  pAttCfg = (attCfg_t *) &datsAttCfg;
+    /* Set configuration pointers */
+    pAppSlaveCfg = (appSlaveCfg_t *)&datsSlaveCfg;
+    pAppAdvCfg = (appAdvCfg_t *)&datsAdvCfg;
+    pAppSecCfg = (appSecCfg_t *)&datsSecCfg;
+    pAppUpdateCfg = (appUpdateCfg_t *)&datsUpdateCfg;
+    pSmpCfg = (smpCfg_t *)&datsSmpCfg;
+    pAttCfg = (attCfg_t *)&datsAttCfg;
 
-  /* Initialize application framework */
-  AppSlaveInit();
-  AppServerInit();
+    /* Initialize application framework */
+    AppSlaveInit();
+    AppServerInit();
 
-  /* Set IRK for the local device */
-  DmSecSetLocalIrk(localIrk);
+    /* Set IRK for the local device */
+    DmSecSetLocalIrk(localIrk);
 }
 
 /*************************************************************************************************/
@@ -670,94 +629,86 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
 static void datsBtnCback(uint8_t btn)
 {
 #if WDXS_INCLUDED == TRUE
-  static uint8_t waveform = WDXS_STREAM_WAVEFORM_SINE;
+    static uint8_t waveform = WDXS_STREAM_WAVEFORM_SINE;
 #endif /* WDXS_INCLUDED */
 
 #if (BT_VER > 8)
-  dmConnId_t      connId;
-  if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE)
+    dmConnId_t connId;
+    if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE)
 #else
-  if (AppConnIsOpen() != DM_CONN_ID_NONE)
+    if (AppConnIsOpen() != DM_CONN_ID_NONE)
 #endif /* BT_VER */
-  {
-    switch (btn)
     {
+        switch (btn) {
 #if (BT_VER > 8)
-      case APP_UI_BTN_2_SHORT:
+        case APP_UI_BTN_2_SHORT:
 
-        /* Toggle PHY Test Mode */
-        if (datsCb.phyMode == DATS_PHY_1M)
-        {
-          APP_TRACE_INFO0("2 MBit TX and RX PHY Requested");
-          DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_2M_BIT, HCI_PHY_LE_2M_BIT, HCI_PHY_OPTIONS_NONE);
-        }
-        else if (datsCb.phyMode == DATS_PHY_2M)
-        {
-          APP_TRACE_INFO0("LE Coded TX and RX PHY Requested");
-          DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT, HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_NONE);
-        }
-        else
-        {
-          APP_TRACE_INFO0("1 MBit TX and RX PHY Requested");
-          DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_1M_BIT, HCI_PHY_LE_1M_BIT, HCI_PHY_OPTIONS_NONE);
-        }
-        break;
+            /* Toggle PHY Test Mode */
+            if (datsCb.phyMode == DATS_PHY_1M) {
+                APP_TRACE_INFO0("2 MBit TX and RX PHY Requested");
+                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_2M_BIT, HCI_PHY_LE_2M_BIT,
+                         HCI_PHY_OPTIONS_NONE);
+            } else if (datsCb.phyMode == DATS_PHY_2M) {
+                APP_TRACE_INFO0("LE Coded TX and RX PHY Requested");
+                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_CODED_BIT,
+                         HCI_PHY_LE_CODED_BIT, HCI_PHY_OPTIONS_NONE);
+            } else {
+                APP_TRACE_INFO0("1 MBit TX and RX PHY Requested");
+                DmSetPhy(connId, HCI_ALL_PHY_ALL_PREFERENCES, HCI_PHY_LE_1M_BIT, HCI_PHY_LE_1M_BIT,
+                         HCI_PHY_OPTIONS_NONE);
+            }
+            break;
 
 #endif /* BT_VER */
 
 #if WDXS_INCLUDED == TRUE
-      case APP_UI_BTN_1_SHORT:
-        /* Change stream waveform */
-        waveform++;
+        case APP_UI_BTN_1_SHORT:
+            /* Change stream waveform */
+            waveform++;
 
-        if (waveform > WDXS_STREAM_WAVEFORM_SAWTOOTH)
-          waveform = WDXS_STREAM_WAVEFORM_SINE;
+            if (waveform > WDXS_STREAM_WAVEFORM_SAWTOOTH)
+                waveform = WDXS_STREAM_WAVEFORM_SINE;
 
-        wdxsSetStreamWaveform(waveform);
-        break;
+            wdxsSetStreamWaveform(waveform);
+            break;
 #endif /* WDXS_INCLUDED */
 
-      default:
-        break;
-    }
-  }
-  else
-  {
-    switch (btn)
-    {
-      case APP_UI_BTN_1_SHORT:
-        /* start advertising */
-        AppAdvStart(APP_MODE_AUTO_INIT);
-        break;
-
-      case APP_UI_BTN_1_MED:
-        /* Enter bondable mode */
-        AppSetBondable(TRUE);
-        break;
-
-      case APP_UI_BTN_1_LONG:
-        /* clear all bonding info */
-        AppSlaveClearAllBondingInfo();
-        AppDbNvmDeleteAll();
-        break;
-
-      case APP_UI_BTN_1_EX_LONG:
-        {
-          const char *pVersion;
-          StackGetVersionNumber(&pVersion);
-          datsDisplayStackVersion(pVersion);
+        default:
+            break;
         }
-        break;
+    } else {
+        switch (btn) {
+        case APP_UI_BTN_1_SHORT:
+            /* start advertising */
+            AppAdvStart(APP_MODE_AUTO_INIT);
+            break;
 
-      case APP_UI_BTN_2_SHORT:
-        /* stop advertising */
-        AppAdvStop();
-        break;
+        case APP_UI_BTN_1_MED:
+            /* Enter bondable mode */
+            AppSetBondable(TRUE);
+            break;
 
-      default:
-        break;
+        case APP_UI_BTN_1_LONG:
+            /* clear all bonding info */
+            AppSlaveClearAllBondingInfo();
+            AppDbNvmDeleteAll();
+            break;
+
+        case APP_UI_BTN_1_EX_LONG: {
+            const char *pVersion;
+            StackGetVersionNumber(&pVersion);
+            datsDisplayStackVersion(pVersion);
+        } break;
+
+        case APP_UI_BTN_2_SHORT:
+            /* stop advertising */
+            AppAdvStop();
+            break;
+
+        default:
+            break;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -771,11 +722,10 @@ static void datsBtnCback(uint8_t btn)
 /*************************************************************************************************/
 static void datsWsfBufDiagnostics(WsfBufDiag_t *pInfo)
 {
-  if (pInfo->type == WSF_BUF_ALLOC_FAILED)
-  {
-    APP_TRACE_INFO2("Dats got WSF Buffer Allocation Failure - Task: %d Len: %d",
-                     pInfo->param.alloc.taskId, pInfo->param.alloc.len);
-  }
+    if (pInfo->type == WSF_BUF_ALLOC_FAILED) {
+        APP_TRACE_INFO2("Dats got WSF Buffer Allocation Failure - Task: %d Len: %d",
+                        pInfo->param.alloc.taskId, pInfo->param.alloc.len);
+    }
 }
 
 /*************************************************************************************************/
@@ -790,34 +740,31 @@ static void datsWsfBufDiagnostics(WsfBufDiag_t *pInfo)
 /*************************************************************************************************/
 void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  if (pMsg != NULL)
-  {
-    APP_TRACE_INFO1("Dats got evt %d", pMsg->event);
+    if (pMsg != NULL) {
+        APP_TRACE_INFO1("Dats got evt %d", pMsg->event);
 
-    /* process ATT messages */
-    if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END)
-    {
-      /* process server-related ATT messages */
-      AppServerProcAttMsg(pMsg);
-    }
-    /* process DM messages */
-    else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END)
-    {
-      /* process advertising and connection-related messages */
-      AppSlaveProcDmMsg((dmEvt_t *) pMsg);
+        /* process ATT messages */
+        if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
+            /* process server-related ATT messages */
+            AppServerProcAttMsg(pMsg);
+        }
+        /* process DM messages */
+        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+            /* process advertising and connection-related messages */
+            AppSlaveProcDmMsg((dmEvt_t *)pMsg);
 
-      /* process security-related messages */
-      AppSlaveSecProcDmMsg((dmEvt_t *) pMsg);
+            /* process security-related messages */
+            AppSlaveSecProcDmMsg((dmEvt_t *)pMsg);
 
 #if WDXS_INCLUDED == TRUE
-      /* process WDXS-related messages */
-      WdxsProcDmMsg((dmEvt_t*) pMsg);
+            /* process WDXS-related messages */
+            WdxsProcDmMsg((dmEvt_t *)pMsg);
 #endif /* WDXS_INCLUDED */
-    }
+        }
 
-    /* perform profile and user interface-related operations */
-    datsProcMsg((dmEvt_t *) pMsg);
-  }
+        /* perform profile and user interface-related operations */
+        datsProcMsg((dmEvt_t *)pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -829,50 +776,50 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void DatsStart(void)
 {
-  /* Register for stack callbacks */
-  DmRegister(datsDmCback);
-  DmConnRegister(DM_CLIENT_ID_APP, datsDmCback);
-  AttRegister(datsAttCback);
-  AttConnRegister(AppServerConnCback);
-  AttsCccRegister(DATS_NUM_CCC_IDX, (attsCccSet_t *) datsCccSet, datsCccCback);
+    /* Register for stack callbacks */
+    DmRegister(datsDmCback);
+    DmConnRegister(DM_CLIENT_ID_APP, datsDmCback);
+    AttRegister(datsAttCback);
+    AttConnRegister(AppServerConnCback);
+    AttsCccRegister(DATS_NUM_CCC_IDX, (attsCccSet_t *)datsCccSet, datsCccCback);
 
-  /* Initialize attribute server database */
-  SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
-  SvcCoreAddGroup();
-  SvcWpCbackRegister(NULL, datsWpWriteCback);
-  SvcWpAddGroup();
+    /* Initialize attribute server database */
+    SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
+    SvcCoreAddGroup();
+    SvcWpCbackRegister(NULL, datsWpWriteCback);
+    SvcWpAddGroup();
 
-  /* Set Service Changed CCCD index. */
-  GattSetSvcChangedIdx(DATS_GATT_SC_CCC_IDX);
+    /* Set Service Changed CCCD index. */
+    GattSetSvcChangedIdx(DATS_GATT_SC_CCC_IDX);
 
-  /* Register for app framework button callbacks */
-  AppUiBtnRegister(datsBtnCback);
+    /* Register for app framework button callbacks */
+    AppUiBtnRegister(datsBtnCback);
 
 #if WDXS_INCLUDED == TRUE
 
-  /* Initialize the OTA File Media */
-  WdxsOtaMediaInit();
+    /* Initialize the OTA File Media */
+    WdxsOtaMediaInit();
 
-  /* Initialize the WDXS Stream */
-  wdxsStreamInit();
+    /* Initialize the WDXS Stream */
+    wdxsStreamInit();
 
-  /* Set the WDXS CCC Identifiers */
-  WdxsSetCccIdx(WDXS_DC_CH_CCC_IDX, WDXS_AU_CH_CCC_IDX, WDXS_FTC_CH_CCC_IDX, WDXS_FTD_CH_CCC_IDX);
+    /* Set the WDXS CCC Identifiers */
+    WdxsSetCccIdx(WDXS_DC_CH_CCC_IDX, WDXS_AU_CH_CCC_IDX, WDXS_FTC_CH_CCC_IDX, WDXS_FTD_CH_CCC_IDX);
 
 #if (BT_VER > 8)
-  WdxsPhyInit();
+    WdxsPhyInit();
 #endif /* BT_VER */
 
 #endif /* WDXS_INCLUDED */
 
 #if (BT_VER > 8)
-  DmPhyInit();
+    DmPhyInit();
 #endif /* BT_VER */
 
-  WsfNvmInit();
+    WsfNvmInit();
 
-  WsfBufDiagRegister(datsWsfBufDiagnostics);
+    WsfBufDiagRegister(datsWsfBufDiagnostics);
 
-  /* Reset the device */
-  DmDevReset();
+    /* Reset the device */
+    DmDevReset();
 }

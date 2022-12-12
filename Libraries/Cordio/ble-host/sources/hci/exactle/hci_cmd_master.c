@@ -46,7 +46,7 @@
 /*************************************************************************************************/
 void HciLeSetScanEnableCmd(uint8_t enable, uint8_t filterDup)
 {
-  LlScanEnable(enable, filterDup);
+    LlScanEnable(enable, filterDup);
 }
 
 /*************************************************************************************************/
@@ -59,19 +59,19 @@ void HciLeSetScanEnableCmd(uint8_t enable, uint8_t filterDup)
 void HciLeSetScanParamCmd(uint8_t scanType, uint16_t scanInterval, uint16_t scanWindow,
                           uint8_t ownAddrType, uint8_t scanFiltPolicy)
 {
-  LlScanParam_t param;
-  uint8_t status;
+    LlScanParam_t param;
+    uint8_t status;
 
-  param.scanType = scanType;
-  param.scanInterval = scanInterval;
-  param.scanWindow = scanWindow;
-  param.ownAddrType = ownAddrType;
-  param.scanFiltPolicy = scanFiltPolicy;
+    param.scanType = scanType;
+    param.scanInterval = scanInterval;
+    param.scanWindow = scanWindow;
+    param.ownAddrType = ownAddrType;
+    param.scanFiltPolicy = scanFiltPolicy;
 
-  status = LlSetScanParam(&param);
-  (void)status;
+    status = LlSetScanParam(&param);
+    (void)status;
 
-  WSF_ASSERT(status == LL_SUCCESS);
+    WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -85,16 +85,16 @@ void HciLeCreateConnCmd(uint16_t scanInterval, uint16_t scanWindow, uint8_t filt
                         uint8_t peerAddrType, uint8_t *pPeerAddr, uint8_t ownAddrType,
                         hciConnSpec_t *pConnSpec)
 {
-  LlInitParam_t initParam;
+    LlInitParam_t initParam;
 
-  initParam.scanInterval = scanInterval;
-  initParam.scanWindow = scanWindow;
-  initParam.filterPolicy = filterPolicy;
-  initParam.ownAddrType = ownAddrType;
-  initParam.peerAddrType = peerAddrType;
-  initParam.pPeerAddr = pPeerAddr;
+    initParam.scanInterval = scanInterval;
+    initParam.scanWindow = scanWindow;
+    initParam.filterPolicy = filterPolicy;
+    initParam.ownAddrType = ownAddrType;
+    initParam.peerAddrType = peerAddrType;
+    initParam.pPeerAddr = pPeerAddr;
 
-  LlCreateConn(&initParam, (LlConnSpec_t *)pConnSpec);
+    LlCreateConn(&initParam, (LlConnSpec_t *)pConnSpec);
 }
 
 /*************************************************************************************************/
@@ -106,5 +106,5 @@ void HciLeCreateConnCmd(uint16_t scanInterval, uint16_t scanWindow, uint8_t filt
 /*************************************************************************************************/
 void HciLeCreateConnCancelCmd(void)
 {
-  LlCreateConnCancel();
+    LlCreateConnCancel();
 }

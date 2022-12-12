@@ -67,8 +67,7 @@ extern "C" {
 typedef nrf_crypto_rng_internal_context_t nrf_crypto_backend_rng_context_t;
 
 /** @internal @brief Fallback dummy temp buffer type in case no backend is selected . */
-typedef struct
-{
+typedef struct {
     uint32_t reserved;
 } nrf_crypto_backend_rng_temp_buffer_t;
 

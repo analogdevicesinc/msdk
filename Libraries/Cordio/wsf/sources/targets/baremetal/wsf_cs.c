@@ -63,7 +63,7 @@ uint16_t wsfCsStatsWatermarkUsec = 0;
 /*************************************************************************************************/
 uint32_t WsfCsStatsGetCsWaterMark(void)
 {
-  return wsfCsStatsWatermarkUsec;
+    return wsfCsStatsWatermarkUsec;
 }
 
 /*************************************************************************************************/
@@ -73,9 +73,9 @@ uint32_t WsfCsStatsGetCsWaterMark(void)
 /*************************************************************************************************/
 static void wsfCsStatsEnter(void)
 {
-  /* N.B. Code path must not use critical sections. */
+    /* N.B. Code path must not use critical sections. */
 
-  wsfCsStatsStartTimeValid = PalBbGetTimestamp(&wsfCsStatsStartTime);
+    wsfCsStatsStartTimeValid = PalBbGetTimestamp(&wsfCsStatsStartTime);
 }
 
 /*************************************************************************************************/
@@ -85,23 +85,20 @@ static void wsfCsStatsEnter(void)
 /*************************************************************************************************/
 static void wsfCsStatsExit(void)
 {
-  /* N.B. Code path must not use critical sections. */
+    /* N.B. Code path must not use critical sections. */
 
-  if (wsfCsStatsStartTimeValid != TRUE)
-  {
-    return;
-  }
-
-  uint32_t exitTime;
-
-  if (PalBbGetTimestamp(&exitTime))
-  {
-    uint32_t durUsec = exitTime - wsfCsStatsStartTime;
-    if (durUsec > wsfCsStatsWatermarkUsec)
-    {
-      wsfCsStatsWatermarkUsec = durUsec;
+    if (wsfCsStatsStartTimeValid != TRUE) {
+        return;
     }
-  }
+
+    uint32_t exitTime;
+
+    if (PalBbGetTimestamp(&exitTime)) {
+        uint32_t durUsec = exitTime - wsfCsStatsStartTime;
+        if (durUsec > wsfCsStatsWatermarkUsec) {
+            wsfCsStatsWatermarkUsec = durUsec;
+        }
+    }
 }
 
 #endif
@@ -113,15 +110,14 @@ static void wsfCsStatsExit(void)
 /*************************************************************************************************/
 void WsfCsEnter(void)
 {
-  if (wsfCsNesting == 0)
-  {
-    PalEnterCs();
+    if (wsfCsNesting == 0) {
+        PalEnterCs();
 
 #if (WSF_CS_STATS == TRUE)
-    wsfCsStatsEnter();
+        wsfCsStatsEnter();
 #endif
-  }
-  wsfCsNesting++;
+    }
+    wsfCsNesting++;
 }
 
 /*************************************************************************************************/
@@ -131,15 +127,14 @@ void WsfCsEnter(void)
 /*************************************************************************************************/
 void WsfCsExit(void)
 {
-  WSF_ASSERT(wsfCsNesting != 0);
+    WSF_ASSERT(wsfCsNesting != 0);
 
-  wsfCsNesting--;
-  if (wsfCsNesting == 0)
-  {
+    wsfCsNesting--;
+    if (wsfCsNesting == 0) {
 #if (WSF_CS_STATS == TRUE)
-    wsfCsStatsExit();
+        wsfCsStatsExit();
 #endif
 
-    PalExitCs();
-  }
+        PalExitCs();
+    }
 }

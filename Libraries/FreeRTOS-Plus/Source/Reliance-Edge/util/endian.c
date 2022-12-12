@@ -27,7 +27,6 @@
 */
 #include <redfs.h>
 
-
 #ifdef REDCONF_ENDIAN_SWAP
 
 /** @brief Reverse the byte order of a 64-bit number.
@@ -36,18 +35,19 @@
 
     @retval @p ullToRev with its bytes reversed.
 */
-uint64_t RedRev64(
-    uint64_t    ullToRev)
+uint64_t RedRev64(uint64_t ullToRev)
 {
-    uint64_t    ullRet = ullToRev;
+    uint64_t ullRet = ullToRev;
 
-    ullRet = ((ullRet & UINT64_SUFFIX(0x00000000FFFFFFFF)) << 32U) | ((ullRet & UINT64_SUFFIX(0xFFFFFFFF00000000)) >> 32U);
-    ullRet = ((ullRet & UINT64_SUFFIX(0x0000FFFF0000FFFF)) << 16U) | ((ullRet & UINT64_SUFFIX(0xFFFF0000FFFF0000)) >> 16U);
-    ullRet = ((ullRet & UINT64_SUFFIX(0x00FF00FF00FF00FF)) <<  8U) | ((ullRet & UINT64_SUFFIX(0xFF00FF00FF00FF00)) >>  8U);
+    ullRet = ((ullRet & UINT64_SUFFIX(0x00000000FFFFFFFF)) << 32U) |
+             ((ullRet & UINT64_SUFFIX(0xFFFFFFFF00000000)) >> 32U);
+    ullRet = ((ullRet & UINT64_SUFFIX(0x0000FFFF0000FFFF)) << 16U) |
+             ((ullRet & UINT64_SUFFIX(0xFFFF0000FFFF0000)) >> 16U);
+    ullRet = ((ullRet & UINT64_SUFFIX(0x00FF00FF00FF00FF)) << 8U) |
+             ((ullRet & UINT64_SUFFIX(0xFF00FF00FF00FF00)) >> 8U);
 
     return ullRet;
 }
-
 
 /** @brief Reverse the byte order of a 32-bit number.
 
@@ -55,15 +55,11 @@ uint64_t RedRev64(
 
     @retval @p ulToRev with its bytes reversed.
 */
-uint32_t RedRev32(
-    uint32_t    ulToRev)
+uint32_t RedRev32(uint32_t ulToRev)
 {
-    return   ((ulToRev & 0x000000FFU) << 24U)
-           | ((ulToRev & 0x0000FF00U) <<  8U)
-           | ((ulToRev & 0x00FF0000U) >>  8U)
-           | ((ulToRev & 0xFF000000U) >> 24U);
+    return ((ulToRev & 0x000000FFU) << 24U) | ((ulToRev & 0x0000FF00U) << 8U) |
+           ((ulToRev & 0x00FF0000U) >> 8U) | ((ulToRev & 0xFF000000U) >> 24U);
 }
-
 
 /** @brief Reverse the byte order of a 16-bit number.
 
@@ -71,12 +67,9 @@ uint32_t RedRev32(
 
     @retval @p uToRev with its bytes reversed.
 */
-uint16_t RedRev16(
-    uint16_t    uToRev)
+uint16_t RedRev16(uint16_t uToRev)
 {
-    return   ((uToRev & 0xFF00U) >> 8U)
-           | ((uToRev & 0x00FFU) << 8U);
+    return ((uToRev & 0xFF00U) >> 8U) | ((uToRev & 0x00FFU) << 8U);
 }
 
 #endif
-

@@ -27,8 +27,7 @@
 #define MMDL_GEN_POWER_ONOFF_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -36,9 +35,8 @@ extern "C"
 **************************************************************************************************/
 
 /*! Models states at PowerUp structure */
-typedef struct mmdlPowerUpStates_tag
-{
-  mmdlGenOnPowerUpState_t onPowerUp;        /*!< Value of the OnPowerUp State */
+typedef struct mmdlPowerUpStates_tag {
+    mmdlGenOnPowerUpState_t onPowerUp; /*!< Value of the OnPowerUp State */
 } mmdlPowerUpStates_t;
 
 /**************************************************************************************************

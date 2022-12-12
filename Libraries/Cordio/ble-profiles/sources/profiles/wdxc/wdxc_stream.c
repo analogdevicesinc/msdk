@@ -53,16 +53,15 @@ extern wdxcCb_t wdxcCb;
 /*************************************************************************************************/
 void WdxcStreamStart(dmConnId_t connId, uint16_t fileHdl)
 {
-  wdxcConnCb_t *pConnCb = &wdxcCb.conn[connId - 1];
+    wdxcConnCb_t *pConnCb = &wdxcCb.conn[connId - 1];
 
-  /* Verify WDXC is Idle */
-  if (pConnCb->fileHdl == WSF_EFS_INVALID_HANDLE)
-  {
-    pConnCb->fileHdl = fileHdl;
+    /* Verify WDXC is Idle */
+    if (pConnCb->fileHdl == WSF_EFS_INVALID_HANDLE) {
+        pConnCb->fileHdl = fileHdl;
 
-    /* Send a get request with len set the MTU length (offset is ignored for streams) */
-    WdxcFtcSendGetReq(connId, fileHdl, 0, AttGetMtu(connId), 0);
-  }
+        /* Send a get request with len set the MTU length (offset is ignored for streams) */
+        WdxcFtcSendGetReq(connId, fileHdl, 0, AttGetMtu(connId), 0);
+    }
 }
 
 /*************************************************************************************************/
@@ -74,11 +73,11 @@ void WdxcStreamStart(dmConnId_t connId, uint16_t fileHdl)
 /*************************************************************************************************/
 void WdxcStreamStop(dmConnId_t connId)
 {
-  wdxcConnCb_t *pConnCb = &wdxcCb.conn[connId - 1];
+    wdxcConnCb_t *pConnCb = &wdxcCb.conn[connId - 1];
 
-  /* Send an abort to stop the stream */
-  WdxcFtcSendAbort(connId, pConnCb->fileHdl);
+    /* Send an abort to stop the stream */
+    WdxcFtcSendAbort(connId, pConnCb->fileHdl);
 
-  /* Set file handle to invalid to indicate no file operation is in progress */
-  pConnCb->fileHdl = WSF_EFS_INVALID_HANDLE;
+    /* Set file handle to invalid to indicate no file operation is in progress */
+    pConnCb->fileHdl = WSF_EFS_INVALID_HANDLE;
 }

@@ -39,35 +39,33 @@ extern "C" {
   Macros
 **************************************************************************************************/
 /*! \brief      Resolve the extended initiate handle from the context pointer. */
-#define LCTR_GET_EXT_INIT_HANDLE(pCtx)  (pCtx - lctrMstExtInitTbl)
+#define LCTR_GET_EXT_INIT_HANDLE(pCtx) (pCtx - lctrMstExtInitTbl)
 
 /**************************************************************************************************
   Constants
 **************************************************************************************************/
 
 /*! \brief      Master initiate states. */
-enum
-{
-  LCTR_EXT_INIT_STATE_DISABLED,             /*!< Initiate disabled state. */
-  LCTR_EXT_INIT_STATE_ENABLED,              /*!< Initiate enabled state. */
-  LCTR_EXT_INIT_STATE_SHUTDOWN,             /*!< Initiate shutdown in progress. */
-  LCTR_EXT_INIT_STATE_RESET,                /*!< Initiate reset in progress. */
-  LCTR_EXT_INIT_STATE_TOTAL                 /*!< Total number of initiate states. */
+enum {
+    LCTR_EXT_INIT_STATE_DISABLED, /*!< Initiate disabled state. */
+    LCTR_EXT_INIT_STATE_ENABLED, /*!< Initiate enabled state. */
+    LCTR_EXT_INIT_STATE_SHUTDOWN, /*!< Initiate shutdown in progress. */
+    LCTR_EXT_INIT_STATE_RESET, /*!< Initiate reset in progress. */
+    LCTR_EXT_INIT_STATE_TOTAL /*!< Total number of initiate states. */
 };
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 /*! \brief      Extended initiating control block. */
-typedef struct
-{
-  /* Initiate */
-  uint64_t          peerAddr;           /*!< Initiating peer address. */
-  uint8_t           peerAddrType;       /*!< Initiating peer address type. */
-  uint8_t           estConnPhys;        /*!< PHYs which established connections. */
+typedef struct {
+    /* Initiate */
+    uint64_t peerAddr; /*!< Initiating peer address. */
+    uint8_t peerAddrType; /*!< Initiating peer address type. */
+    uint8_t estConnPhys; /*!< PHYs which established connections. */
 
-  /* State. */
-  uint8_t           enaPhys;            /*!< Enabled PHYs. */
+    /* State. */
+    uint8_t enaPhys; /*!< Enabled PHYs. */
 
 } lctrExtInitCtrlBlk_t;
 
@@ -86,8 +84,10 @@ extern lctrExtInitCtrlBlk_t lctrMstExtInit;
 void lctrMstExtInitExecuteSm(lctrExtScanCtx_t *pExtInitCtx, uint8_t event);
 
 /* Builder */
-uint8_t lctrMstExtInitiateBuildOp(lctrExtScanCtx_t *pExtInitCtx, LlConnSpec_t *pConnSpec, uint64_t peerAddr, uint8_t peerAddrType);
-uint8_t lctrMstAuxInitiateBuildOp(lctrExtScanCtx_t *pExtInitCtx, LlConnSpec_t *pConnSpec, uint64_t peerAddr, uint8_t peerAddrType);
+uint8_t lctrMstExtInitiateBuildOp(lctrExtScanCtx_t *pExtInitCtx, LlConnSpec_t *pConnSpec,
+                                  uint64_t peerAddr, uint8_t peerAddrType);
+uint8_t lctrMstAuxInitiateBuildOp(lctrExtScanCtx_t *pExtInitCtx, LlConnSpec_t *pConnSpec,
+                                  uint64_t peerAddr, uint8_t peerAddrType);
 void lctrMstExtInitiateOpCommit(lctrExtScanCtx_t *pExtInitCtx);
 
 /* ISR: Initiate packet handlers */
@@ -113,7 +113,8 @@ void lctrExtInitActDisallowCancel(lctrExtScanCtx_t *pExtInitCtx);
 /* Helper routines. */
 void lctrMstExtInitCleanupOp(lctrExtScanCtx_t *pExtInitCtx);
 void lctrScanNotifyHostInitiateError(uint8_t reason, uint8_t peerAddrType, uint64_t peerAddr);
-uint8_t lctrExtInitSetupInitiate(lctrExtScanCtx_t *pExtInitCtx, uint8_t peerAddrType, uint64_t peerAddr, uint8_t filtPolicy, uint8_t ownAddrType);
+uint8_t lctrExtInitSetupInitiate(lctrExtScanCtx_t *pExtInitCtx, uint8_t peerAddrType,
+                                 uint64_t peerAddr, uint8_t filtPolicy, uint8_t ownAddrType);
 
 /* Messaging */
 void lctrSendExtInitMsg(lctrExtScanCtx_t *pExtScanCtx, uint8_t event);

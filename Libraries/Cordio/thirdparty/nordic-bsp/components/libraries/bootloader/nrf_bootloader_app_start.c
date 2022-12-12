@@ -51,7 +51,8 @@ void nrf_bootloader_app_start_final(uint32_t start_addr);
 
 void nrf_bootloader_app_start(void)
 {
-    uint32_t start_addr = MBR_SIZE; // Always boot from end of MBR. If a SoftDevice is present, it will boot the app.
+    uint32_t start_addr =
+        MBR_SIZE; // Always boot from end of MBR. If a SoftDevice is present, it will boot the app.
     NRF_LOG_DEBUG("Running nrf_bootloader_app_start with address: 0x%08x", start_addr);
     uint32_t err_code;
 
@@ -59,16 +60,15 @@ void nrf_bootloader_app_start(void)
     // Notice that this disables only 'external' interrupts (positive IRQn).
     NRF_LOG_DEBUG("Disabling interrupts. NVIC->ICER[0]: 0x%x", NVIC->ICER[0]);
 
-    NVIC->ICER[0]=0xFFFFFFFF;
-    NVIC->ICPR[0]=0xFFFFFFFF;
+    NVIC->ICER[0] = 0xFFFFFFFF;
+    NVIC->ICPR[0] = 0xFFFFFFFF;
 #if defined(__NRF_NVIC_ISER_COUNT) && __NRF_NVIC_ISER_COUNT == 2
-    NVIC->ICER[1]=0xFFFFFFFF;
-    NVIC->ICPR[1]=0xFFFFFFFF;
+    NVIC->ICER[1] = 0xFFFFFFFF;
+    NVIC->ICPR[1] = 0xFFFFFFFF;
 #endif
 
     err_code = nrf_dfu_mbr_irq_forward_address_set();
-    if (err_code != NRF_SUCCESS)
-    {
+    if (err_code != NRF_SUCCESS) {
         NRF_LOG_ERROR("Failed running nrf_dfu_mbr_irq_forward_address_set()");
     }
 

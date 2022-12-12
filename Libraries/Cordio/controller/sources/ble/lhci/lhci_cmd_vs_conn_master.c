@@ -44,46 +44,42 @@
 /*************************************************************************************************/
 bool_t lhciMstConnVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 {
-  uint8_t status = HCI_SUCCESS;
-  uint8_t evtParamLen = 1;      /* default is status field only */
+    uint8_t status = HCI_SUCCESS;
+    uint8_t evtParamLen = 1; /* default is status field only */
 
-  /* Decode and consume command packet. */
-  switch (pHdr->opCode)
-  {
-    /* --- extended device commands --- */
+    /* Decode and consume command packet. */
+    switch (pHdr->opCode) {
+        /* --- extended device commands --- */
 
-    case LHCI_OPCODE_VS_SET_CHAN_MAP:
-    {
-      uint16_t handle;
-      BSTREAM_TO_UINT16(handle, pBuf);
-      status = LlSetChannelMap(handle, pBuf);
-      break;
-    }
-
-    /* --- default --- */
-
-    default:
-      return FALSE;       /* exit dispatcher routine */
-  }
-
-  uint8_t *pEvtBuf;
-
-  /* Encode and send command complete event packet. */
-  if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL)
-  {
-    pBuf  = pEvtBuf;
-    /* pBuf += */ lhciPackCmdCompleteEvtStatus(pBuf, status);
-
-    switch (pHdr->opCode)
-    {
-      /* --- default --- */
-
-      default:
+    case LHCI_OPCODE_VS_SET_CHAN_MAP: {
+        uint16_t handle;
+        BSTREAM_TO_UINT16(handle, pBuf);
+        status = LlSetChannelMap(handle, pBuf);
         break;
     }
 
-    lhciSendCmdCmplEvt(pEvtBuf);
-  }
+        /* --- default --- */
 
-  return TRUE;
+    default:
+        return FALSE; /* exit dispatcher routine */
+    }
+
+    uint8_t *pEvtBuf;
+
+    /* Encode and send command complete event packet. */
+    if ((pEvtBuf = lhciAllocCmdCmplEvt(evtParamLen, pHdr->opCode)) != NULL) {
+        pBuf = pEvtBuf;
+        /* pBuf += */ lhciPackCmdCompleteEvtStatus(pBuf, status);
+
+        switch (pHdr->opCode) {
+            /* --- default --- */
+
+        default:
+            break;
+        }
+
+        lhciSendCmdCmplEvt(pEvtBuf);
+    }
+
+    return TRUE;
 }

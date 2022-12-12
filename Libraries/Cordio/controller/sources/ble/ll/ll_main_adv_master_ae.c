@@ -44,18 +44,17 @@
 /*************************************************************************************************/
 static bool_t llValidateScanParam(const LlExtScanParam_t *pParam)
 {
-  const uint16_t rangeMin = 0x0004;         /*  2.5 ms */
-  /* const uint16_t rangeMax = 0xFFFF; */   /* 40.959375 ms */
-  const uint8_t scanTypeMax = LL_SCAN_ACTIVE;
+    const uint16_t rangeMin = 0x0004; /*  2.5 ms */
+    /* const uint16_t rangeMax = 0xFFFF; */ /* 40.959375 ms */
+    const uint8_t scanTypeMax = LL_SCAN_ACTIVE;
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-     ((pParam->scanInterval < pParam->scanWindow) || (pParam->scanWindow < rangeMin) ||
-      (pParam->scanType > scanTypeMax)))
-  {
-    return FALSE;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((pParam->scanInterval < pParam->scanWindow) || (pParam->scanWindow < rangeMin) ||
+         (pParam->scanType > scanTypeMax))) {
+        return FALSE;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -72,83 +71,71 @@ static bool_t llValidateScanParam(const LlExtScanParam_t *pParam)
  *  Set the extended scan parameters to be used on the primary advertising channel.
  */
 /*************************************************************************************************/
-uint8_t LlSetExtScanParam(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_t scanPhys, const LlExtScanParam_t param[])
+uint8_t LlSetExtScanParam(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_t scanPhys,
+                          const LlExtScanParam_t param[])
 {
-  const uint8_t scanFiltPolicyMax = ((lmgrCb.features & LL_FEAT_EXT_SCAN_FILT_POLICY) != 0) ? LL_SCAN_FILTER_WL_OR_RES_INIT : LL_SCAN_FILTER_WL_BIT;
-  const uint8_t ownAddrTypeMax = ((lmgrCb.features & LL_FEAT_PRIVACY) != 0) ? LL_ADDR_RANDOM_IDENTITY : LL_ADDR_RANDOM;
-  const uint8_t validScanPhys = LL_PHYS_LE_1M_BIT | LL_PHYS_LE_CODED_BIT;
+    const uint8_t scanFiltPolicyMax = ((lmgrCb.features & LL_FEAT_EXT_SCAN_FILT_POLICY) != 0) ?
+                                          LL_SCAN_FILTER_WL_OR_RES_INIT :
+                                          LL_SCAN_FILTER_WL_BIT;
+    const uint8_t ownAddrTypeMax =
+        ((lmgrCb.features & LL_FEAT_PRIVACY) != 0) ? LL_ADDR_RANDOM_IDENTITY : LL_ADDR_RANDOM;
+    const uint8_t validScanPhys = LL_PHYS_LE_1M_BIT | LL_PHYS_LE_CODED_BIT;
 
-  LL_TRACE_INFO1("### LlApi ###  LlSetExtScanParam, scanPhys=0x%02x", scanPhys);
+    LL_TRACE_INFO1("### LlApi ###  LlSetExtScanParam, scanPhys=0x%02x", scanPhys);
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if (lmgrCb.numScanEnabled || lmgrCb.numInitEnabled)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (lmgrCb.numScanEnabled || lmgrCb.numInitEnabled) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-     ((ownAddrType > ownAddrTypeMax) ||
-      (scanFiltPolicy > scanFiltPolicyMax) ||
-      (scanPhys & ~validScanPhys)))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((ownAddrType > ownAddrTypeMax) || (scanFiltPolicy > scanFiltPolicyMax) ||
+         (scanPhys & ~validScanPhys))) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      ((scanPhys & LL_PHYS_LE_CODED_BIT) && ((lmgrCb.features & LL_FEAT_LE_CODED_PHY) == 0)))
-  {
-    return LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((scanPhys & LL_PHYS_LE_CODED_BIT) && ((lmgrCb.features & LL_FEAT_LE_CODED_PHY) == 0))) {
+        return LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE;
+    }
 
-  if (LL_API_PARAM_CHECK == 1)
-  {
+    if (LL_API_PARAM_CHECK == 1) {
+        unsigned int i = 0;
+        if (scanPhys & LL_PHYS_LE_1M_BIT) {
+            if (!llValidateScanParam(&param[i])) {
+                return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+            }
+            i++;
+        }
+        if (scanPhys & LL_PHYS_LE_CODED_BIT) {
+            if (!llValidateScanParam(&param[i])) {
+                return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+            }
+            i++;
+        }
+    }
+
     unsigned int i = 0;
-    if (scanPhys & LL_PHYS_LE_1M_BIT)
-    {
-      if (!llValidateScanParam(&param[i]))
-      {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-      }
-      i++;
+    if (scanPhys & LL_PHYS_LE_1M_BIT) {
+        LctrMstExtScanSetScanPhy(LCTR_SCAN_PHY_1M);
+        LctrMstExtScanSetParam(LCTR_SCAN_PHY_1M, ownAddrType, scanFiltPolicy, &param[i++]);
+    } else {
+        LctrMstExtScanClearScanPhy(LCTR_SCAN_PHY_1M);
     }
-    if (scanPhys & LL_PHYS_LE_CODED_BIT)
-    {
-      if (!llValidateScanParam(&param[i]))
-      {
-        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-      }
-      i++;
+    if (scanPhys & LL_PHYS_LE_CODED_BIT) {
+        LctrMstExtScanSetScanPhy(LCTR_SCAN_PHY_CODED);
+        LctrMstExtScanSetParam(LCTR_SCAN_PHY_CODED, ownAddrType, scanFiltPolicy, &param[i++]);
+    } else {
+        LctrMstExtScanClearScanPhy(LCTR_SCAN_PHY_CODED);
     }
-  }
+    lmgrCb.numExtScanPhys = i;
 
-  unsigned int i = 0;
-  if (scanPhys & LL_PHYS_LE_1M_BIT)
-  {
-    LctrMstExtScanSetScanPhy(LCTR_SCAN_PHY_1M);
-    LctrMstExtScanSetParam(LCTR_SCAN_PHY_1M, ownAddrType, scanFiltPolicy, &param[i++]);
-  }
-  else
-  {
-    LctrMstExtScanClearScanPhy(LCTR_SCAN_PHY_1M);
-  }
-  if (scanPhys & LL_PHYS_LE_CODED_BIT)
-  {
-    LctrMstExtScanSetScanPhy(LCTR_SCAN_PHY_CODED);
-    LctrMstExtScanSetParam(LCTR_SCAN_PHY_CODED, ownAddrType, scanFiltPolicy, &param[i++]);
-  }
-  else
-  {
-    LctrMstExtScanClearScanPhy(LCTR_SCAN_PHY_CODED);
-  }
-  lmgrCb.numExtScanPhys = i;
-
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -165,77 +152,67 @@ uint8_t LlSetExtScanParam(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_t s
 /*************************************************************************************************/
 void LlExtScanEnable(uint8_t enable, uint8_t filterDup, uint16_t duration, uint16_t period)
 {
-  const unsigned int durMsPerUnit = 10;
-  const unsigned int perMsPerUnit = 1280;
-  const unsigned int filterDupMax = LL_SCAN_FILTER_DUP_ENABLE_PERIODIC;
+    const unsigned int durMsPerUnit = 10;
+    const unsigned int perMsPerUnit = 1280;
+    const unsigned int filterDupMax = LL_SCAN_FILTER_DUP_ENABLE_PERIODIC;
 
-  lctrExtScanEnableMsg_t *pMsg;
-  uint32_t durMs = duration * durMsPerUnit;
-  uint32_t perMs = period * perMsPerUnit;
+    lctrExtScanEnableMsg_t *pMsg;
+    uint32_t durMs = duration * durMsPerUnit;
+    uint32_t perMs = period * perMsPerUnit;
 
-  LL_TRACE_INFO2("### LlApi ###  LlExtScanEnable: enable=%u, filterDup=%u", enable, filterDup);
+    LL_TRACE_INFO2("### LlApi ###  LlExtScanEnable: enable=%u, filterDup=%u", enable, filterDup);
 
-  WSF_ASSERT(lmgrCb.extScanEnaDelayCnt == 0);
-  lmgrCb.extScanEnaDelayCnt = lmgrCb.numExtScanPhys;
-  lmgrCb.extScanEnaStatus = LL_SUCCESS;
+    WSF_ASSERT(lmgrCb.extScanEnaDelayCnt == 0);
+    lmgrCb.extScanEnaDelayCnt = lmgrCb.numExtScanPhys;
+    lmgrCb.extScanEnaStatus = LL_SUCCESS;
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    lmgrCb.extScanEnaDelayCnt = 1;
-    LmgrSendExtScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
-    return;
-  }
-
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (enable == TRUE))
-  {
-    if (filterDup > filterDupMax)
-    {
-      lmgrCb.extScanEnaDelayCnt = 1;
-      LmgrSendExtScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
-      return;
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        lmgrCb.extScanEnaDelayCnt = 1;
+        LmgrSendExtScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
+        return;
     }
 
-    if ((filterDup == LL_SCAN_FILTER_DUP_ENABLE_PERIODIC) &&
-         ((perMs == 0) || (durMs == 0)))
-    {
-      lmgrCb.extScanEnaDelayCnt = 1;
-      LmgrSendExtScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
-      return;
+    if ((LL_API_PARAM_CHECK == 1) && (enable == TRUE)) {
+        if (filterDup > filterDupMax) {
+            lmgrCb.extScanEnaDelayCnt = 1;
+            LmgrSendExtScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
+            return;
+        }
+
+        if ((filterDup == LL_SCAN_FILTER_DUP_ENABLE_PERIODIC) && ((perMs == 0) || (durMs == 0))) {
+            lmgrCb.extScanEnaDelayCnt = 1;
+            LmgrSendExtScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
+            return;
+        }
+
+        /* Ensure period > duration. */
+        if (((perMs != 0) && (durMs != 0)) && (durMs >= perMs)) {
+            lmgrCb.extScanEnaDelayCnt = 1;
+            LmgrSendExtScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
+            return;
+        }
     }
 
-    /* Ensure period > duration. */
-    if (((perMs != 0) && (durMs != 0)) &&
-         (durMs >= perMs))
-    {
-      lmgrCb.extScanEnaDelayCnt = 1;
-      LmgrSendExtScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
-      return;
+    if ((LL_API_PARAM_CHECK == 1) && (!LctrMstExtScanValidateParam())) {
+        lmgrCb.extScanEnaDelayCnt = 1;
+        LmgrSendExtScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
+        return;
     }
-  }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      (!LctrMstExtScanValidateParam()))
-  {
-    lmgrCb.extScanEnaDelayCnt = 1;
-    LmgrSendExtScanEnableCnf(LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS);
-    return;
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        /* pMsg->hdr.handle = -1; */ /* Subsystem broadcast message */
+        pMsg->hdr.dispId = LCTR_DISP_EXT_SCAN;
+        pMsg->hdr.event = enable ? LCTR_EXT_SCAN_MSG_DISCOVER_ENABLE :
+                                   LCTR_EXT_SCAN_MSG_DISCOVER_DISABLE;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    /* pMsg->hdr.handle = -1; */     /* Subsystem broadcast message */
-    pMsg->hdr.dispId = LCTR_DISP_EXT_SCAN;
-    pMsg->hdr.event = enable ? LCTR_EXT_SCAN_MSG_DISCOVER_ENABLE : LCTR_EXT_SCAN_MSG_DISCOVER_DISABLE;
+        pMsg->filtDup = filterDup;
+        pMsg->durMs = durMs;
+        pMsg->perMs = perMs;
 
-    pMsg->filtDup = filterDup;
-    pMsg->durMs = durMs;
-    pMsg->perMs = perMs;
-
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -249,60 +226,53 @@ void LlExtScanEnable(uint8_t enable, uint8_t filterDup, uint16_t duration, uint1
 /*************************************************************************************************/
 uint8_t LlPeriodicAdvCreateSync(const LlPerAdvCreateSyncCmd_t *pParam)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlPeriodicAdvCreateSync advSID=%u", pParam->advSID);
+    LL_TRACE_INFO1("### LlApi ###  LlPeriodicAdvCreateSync advSID=%u", pParam->advSID);
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      ((pParam->advAddrType > LL_ADDR_RANDOM) ||
-      (pParam->advSID > LL_MAX_ADV_SID) ||
-      (pParam->skip > LL_SYNC_MAX_SKIP) ||
-      (pParam->options & ~LL_PER_ADV_CREATE_SYNC_OPTIONS_BITS) ||
-      (pParam->syncTimeOut > LL_SYNC_MAX_TIMEOUT) ||
-      (pParam->syncTimeOut < LL_SYNC_MIN_TIMEOUT)))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((pParam->advAddrType > LL_ADDR_RANDOM) || (pParam->advSID > LL_MAX_ADV_SID) ||
+         (pParam->skip > LL_SYNC_MAX_SKIP) ||
+         (pParam->options & ~LL_PER_ADV_CREATE_SYNC_OPTIONS_BITS) ||
+         (pParam->syncTimeOut > LL_SYNC_MAX_TIMEOUT) ||
+         (pParam->syncTimeOut < LL_SYNC_MIN_TIMEOUT))) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if (LctrMstPerIsSyncDisabled() == FALSE)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrMstPerIsSyncDisabled() == FALSE) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if (LctrMstPerIsSync(pParam->advSID, pParam->advAddrType, BstreamToBda64(pParam->pAdvAddr)))
-  {
-    return LL_ERROR_CODE_ACL_CONN_ALREADY_EXISTS;
-  }
+    if (LctrMstPerIsSync(pParam->advSID, pParam->advAddrType, BstreamToBda64(pParam->pAdvAddr))) {
+        return LL_ERROR_CODE_ACL_CONN_ALREADY_EXISTS;
+    }
 
-  if (lctrMstPerGetNumPerScanCtx() >= LL_MAX_PER_SCAN)
-  {
-    return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-  }
+    if (lctrMstPerGetNumPerScanCtx() >= LL_MAX_PER_SCAN) {
+        return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
+    }
 
-  lctrPerCreateSyncMsg_t *pMsg;
+    lctrPerCreateSyncMsg_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.dispId = LCTR_DISP_PER_CREATE_SYNC;
-    pMsg->hdr.event  = LCTR_CREATE_SYNC_MSG_CREATE;
+    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.dispId = LCTR_DISP_PER_CREATE_SYNC;
+        pMsg->hdr.event = LCTR_CREATE_SYNC_MSG_CREATE;
 
-    pMsg->advAddr = BstreamToBda64(pParam->pAdvAddr);
-    pMsg->advAddrType = pParam->advAddrType;
-    pMsg->advSID = pParam->advSID;
-    pMsg->filterPolicy = pParam->options & 0x01;
-    pMsg->repDisabled = (pParam->options >> 1) & 0x01;
-    pMsg->skip = pParam->skip;
-    pMsg->syncTimeOut = pParam->syncTimeOut;
+        pMsg->advAddr = BstreamToBda64(pParam->pAdvAddr);
+        pMsg->advAddrType = pParam->advAddrType;
+        pMsg->advSID = pParam->advSID;
+        pMsg->filterPolicy = pParam->options & 0x01;
+        pMsg->repDisabled = (pParam->options >> 1) & 0x01;
+        pMsg->skip = pParam->skip;
+        pMsg->syncTimeOut = pParam->syncTimeOut;
 
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -314,31 +284,28 @@ uint8_t LlPeriodicAdvCreateSync(const LlPerAdvCreateSyncCmd_t *pParam)
 /*************************************************************************************************/
 uint8_t LlPeriodicAdvCreateSyncCancel(void)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlPeriodicAdvCreateSyncCancel");
+    LL_TRACE_INFO0("### LlApi ###  LlPeriodicAdvCreateSyncCancel");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  /* Command is disallowed if there is no create sync pending. */
-  if (!LctrMstPerIsSyncPending())
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    /* Command is disallowed if there is no create sync pending. */
+    if (!LctrMstPerIsSyncPending()) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  LctrPerScanMsg_t *pMsg;
+    LctrPerScanMsg_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.dispId = LCTR_DISP_PER_CREATE_SYNC;
-    pMsg->hdr.event  = LCTR_CREATE_SYNC_MSG_CANCEL;
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.dispId = LCTR_DISP_PER_CREATE_SYNC;
+        pMsg->hdr.event = LCTR_CREATE_SYNC_MSG_CANCEL;
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -352,42 +319,35 @@ uint8_t LlPeriodicAdvCreateSyncCancel(void)
 /*************************************************************************************************/
 uint8_t LlPeriodicAdvTerminateSync(uint16_t syncHandle)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlPeriodicAdvTerminateSync, syncHandle=0x%02x", syncHandle);
+    LL_TRACE_INFO1("### LlApi ###  LlPeriodicAdvTerminateSync, syncHandle=0x%02x", syncHandle);
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      syncHandle > LL_SYNC_MAX_HANDLE)
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && syncHandle > LL_SYNC_MAX_HANDLE) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !lctrMstPerIsSyncHandleValid(syncHandle))
-  {
-    return LL_ERROR_CODE_UNKNOWN_ADV_ID;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !lctrMstPerIsSyncHandleValid(syncHandle)) {
+        return LL_ERROR_CODE_UNKNOWN_ADV_ID;
+    }
 
-  if (LctrMstPerIsSyncPending())
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrMstPerIsSyncPending()) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  LctrPerScanMsg_t *pMsg;
+    LctrPerScanMsg_t *pMsg;
 
-  if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL)
-  {
-    pMsg->hdr.dispId = LCTR_DISP_PER_SCAN;
-    pMsg->hdr.event  = LCTR_PER_SCAN_MSG_TERMINATE;
-    pMsg->hdr.handle = syncHandle;
-    WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-  }
-  return LL_SUCCESS;
+    if ((pMsg = WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
+        pMsg->hdr.dispId = LCTR_DISP_PER_SCAN;
+        pMsg->hdr.event = LCTR_PER_SCAN_MSG_TERMINATE;
+        pMsg->hdr.handle = syncHandle;
+        WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
+    }
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -401,45 +361,38 @@ uint8_t LlPeriodicAdvTerminateSync(uint16_t syncHandle)
 /*************************************************************************************************/
 uint8_t LlAddDeviceToPeriodicAdvList(const LlDevicePerAdvList_t *pParam)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlAddDeviceToPeriodicAdvList");
+    LL_TRACE_INFO0("### LlApi ###  LlAddDeviceToPeriodicAdvList");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if (lmgrCb.numPlFilterEnabled)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (lmgrCb.numPlFilterEnabled) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      ((pParam->advAddrType > LL_ADDR_RANDOM) ||
-       (pParam->advSID > LL_MAX_ADV_SID)))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((pParam->advAddrType > LL_ADDR_RANDOM) || (pParam->advSID > LL_MAX_ADV_SID))) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if (LctrMstPerIsSyncPending())
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrMstPerIsSyncPending()) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  uint64_t addr = BstreamToBda64(pParam->pAdvAddr);
+    uint64_t addr = BstreamToBda64(pParam->pAdvAddr);
 
-  if (BbBlePeriodicListCheckAddr(pParam->advAddrType, addr, pParam->advSID))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if (BbBlePeriodicListCheckAddr(pParam->advAddrType, addr, pParam->advSID)) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if (!BbBlePeriodicListAdd(pParam->advAddrType, addr, pParam->advSID))
-  {
-    return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-  }
+    if (!BbBlePeriodicListAdd(pParam->advAddrType, addr, pParam->advSID)) {
+        return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -453,39 +406,33 @@ uint8_t LlAddDeviceToPeriodicAdvList(const LlDevicePerAdvList_t *pParam)
 /*************************************************************************************************/
 uint8_t LlRemoveDeviceFromPeriodicAdvList(const LlDevicePerAdvList_t *pParam)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlRemoveDeviceFromPeriodicAdvList");
+    LL_TRACE_INFO0("### LlApi ###  LlRemoveDeviceFromPeriodicAdvList");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if (lmgrCb.numPlFilterEnabled)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (lmgrCb.numPlFilterEnabled) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-      ((pParam->advAddrType > LL_ADDR_RANDOM) ||
-       (pParam->advSID > LL_MAX_ADV_SID)))
-  {
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
+    if ((LL_API_PARAM_CHECK == 1) &&
+        ((pParam->advAddrType > LL_ADDR_RANDOM) || (pParam->advSID > LL_MAX_ADV_SID))) {
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
 
-  if (LctrMstPerIsSyncPending())
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrMstPerIsSyncPending()) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  uint64_t addr = BstreamToBda64(pParam->pAdvAddr);
-  if (!BbBlePeriodicListRemove(pParam->advAddrType, addr, pParam->advSID))
-  {
-    return LL_ERROR_CODE_UNKNOWN_ADV_ID;
-  }
+    uint64_t addr = BstreamToBda64(pParam->pAdvAddr);
+    if (!BbBlePeriodicListRemove(pParam->advAddrType, addr, pParam->advSID)) {
+        return LL_ERROR_CODE_UNKNOWN_ADV_ID;
+    }
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -497,27 +444,24 @@ uint8_t LlRemoveDeviceFromPeriodicAdvList(const LlDevicePerAdvList_t *pParam)
 /*************************************************************************************************/
 uint8_t LlClearPeriodicAdvList(void)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlClearPeriodicAdvList");
-  if ((LL_API_PARAM_CHECK == 1) &&
-       !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    LL_TRACE_INFO0("### LlApi ###  LlClearPeriodicAdvList");
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if (lmgrCb.numPlFilterEnabled)
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (lmgrCb.numPlFilterEnabled) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if (LctrMstPerIsSyncPending())
-  {
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (LctrMstPerIsSyncPending()) {
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  BbBlePeriodicListClear();
+    BbBlePeriodicListClear();
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -531,17 +475,15 @@ uint8_t LlClearPeriodicAdvList(void)
 /*************************************************************************************************/
 uint8_t LlReadPeriodicAdvListSize(uint8_t *pListSize)
 {
-  LL_TRACE_INFO0("### LlApi ###  LlReadPeriodicAdvListSize");
+    LL_TRACE_INFO0("### LlApi ###  LlReadPeriodicAdvListSize");
 
-  if ((LL_API_PARAM_CHECK == 1) &&
-       !LmgrIsExtCommandAllowed())
-  {
-    LL_TRACE_WARN0("Legacy Advertising/Scanning operation enabled; extended commands not available");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if ((LL_API_PARAM_CHECK == 1) && !LmgrIsExtCommandAllowed()) {
+        LL_TRACE_WARN0(
+            "Legacy Advertising/Scanning operation enabled; extended commands not available");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  *pListSize = BbBlePeriodicListGetSize();
+    *pListSize = BbBlePeriodicListGetSize();
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
-

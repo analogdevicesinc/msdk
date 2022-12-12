@@ -40,52 +40,36 @@
 /*************************************************************************************************/
 static void lctrMstEncProcessDataPdu(lctrConnCtx_t *pCtx, uint8_t *pBuf)
 {
-  if (pCtx->enabled)
-  {
-    uint8_t ctrlResult, encResult;
+    if (pCtx->enabled) {
+        uint8_t ctrlResult, encResult;
 
-    if (((ctrlResult = lctrDecodeCtrlPdu(&lctrDataPdu, pBuf, pCtx->role)) == LL_SUCCESS) ||
-        ((encResult = lctrDecodeEncPdu(&lctrDataPdu, pBuf, pCtx->role)) == LL_SUCCESS))
-    {
+        if (((ctrlResult = lctrDecodeCtrlPdu(&lctrDataPdu, pBuf, pCtx->role)) == LL_SUCCESS) ||
+            ((encResult = lctrDecodeEncPdu(&lctrDataPdu, pBuf, pCtx->role)) == LL_SUCCESS)) {
 #if (LL_ENABLE_TESTER)
-      if ((llTesterCb.rxLlcpFilter & (1 << lctrDataPdu.opcode)) != 0)
-      {
-        return;
-      }
+            if ((llTesterCb.rxLlcpFilter & (1 << lctrDataPdu.opcode)) != 0) {
+                return;
+            }
 #endif
-      if (pCtx->role == LL_ROLE_MASTER)
-      {
-        lctrMstConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP);
-      }
-      else
-      {
-        lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP);
-      }
+            if (pCtx->role == LL_ROLE_MASTER) {
+                lctrMstConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP);
+            } else {
+                lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP);
+            }
+        } else if ((ctrlResult == LL_ERROR_CODE_INVALID_LMP_PARAMS) ||
+                   (encResult == LL_ERROR_CODE_INVALID_LMP_PARAMS)) {
+            if (pCtx->role == LL_ROLE_MASTER) {
+                lctrMstConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_INVALID_PARAM);
+            } else {
+                lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_INVALID_PARAM);
+            }
+        } else {
+            if (pCtx->role == LL_ROLE_MASTER) {
+                lctrMstConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_UNKNOWN);
+            } else {
+                lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_UNKNOWN);
+            }
+        }
     }
-    else if ((ctrlResult == LL_ERROR_CODE_INVALID_LMP_PARAMS) ||
-             (encResult == LL_ERROR_CODE_INVALID_LMP_PARAMS))
-    {
-      if (pCtx->role == LL_ROLE_MASTER)
-      {
-        lctrMstConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_INVALID_PARAM);
-      }
-      else
-      {
-        lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_INVALID_PARAM);
-      }
-    }
-    else
-    {
-      if (pCtx->role == LL_ROLE_MASTER)
-      {
-        lctrMstConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_UNKNOWN);
-      }
-      else
-      {
-        lctrSlvConnExecuteSm(pCtx, LCTR_CONN_MSG_RX_LLCP_UNKNOWN);
-      }
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -95,32 +79,31 @@ static void lctrMstEncProcessDataPdu(lctrConnCtx_t *pCtx, uint8_t *pBuf)
 /*************************************************************************************************/
 void LctrMstConnEncInit(void)
 {
-  LctrMstConnInit();
+    LctrMstConnInit();
 
-  /* Add LLCP SM handler. */
-  lctrMstLlcpSmTbl[LCTR_LLCP_SM_ENCRYPT] = lctrMstExecuteEncryptSm;
-  lctrMstLlcpSmTbl[LCTR_LLCP_SM_PING]    = lctrExecutePingSm;
+    /* Add LLCP SM handler. */
+    lctrMstLlcpSmTbl[LCTR_LLCP_SM_ENCRYPT] = lctrMstExecuteEncryptSm;
+    lctrMstLlcpSmTbl[LCTR_LLCP_SM_PING] = lctrExecutePingSm;
 
-  /* Add control PDU handler. */
-  lctrCtrlPduHdlr = lctrMstEncProcessDataPdu;
+    /* Add control PDU handler. */
+    lctrCtrlPduHdlr = lctrMstEncProcessDataPdu;
 
-  /* Add packet encryption handlers. */
-  lctrInitCipherBlkHdlr = PalCryptoAesEnable;
+    /* Add packet encryption handlers. */
+    lctrInitCipherBlkHdlr = PalCryptoAesEnable;
 #if (!BB_ENABLE_INLINE_ENC_TX)
-  lctrPktEncryptHdlr = PalCryptoAesCcmEncrypt;
+    lctrPktEncryptHdlr = PalCryptoAesCcmEncrypt;
 #else
-  lctrSetEncryptPktCountHdlr = PalCryptoSetEncryptPacketCount;
+    lctrSetEncryptPktCountHdlr = PalCryptoSetEncryptPacketCount;
 #endif
 #if (!BB_ENABLE_INLINE_DEC_RX)
-  lctrPktDecryptHdlr = PalCryptoAesCcmDecrypt;
+    lctrPktDecryptHdlr = PalCryptoAesCcmDecrypt;
 #else
-  lctrSetDecryptPktCountHdlr = PalCryptoSetDecryptPacketCount;
+    lctrSetDecryptPktCountHdlr = PalCryptoSetDecryptPacketCount;
 #endif
 
-  /* Set supported features. */
-  lmgrPersistCb.featuresDefault |= LL_FEAT_ENCRYPTION;
-  if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_4_1)
-  {
-    lmgrPersistCb.featuresDefault |= LL_FEAT_LE_PING;
-  }
+    /* Set supported features. */
+    lmgrPersistCb.featuresDefault |= LL_FEAT_ENCRYPTION;
+    if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_4_1) {
+        lmgrPersistCb.featuresDefault |= LL_FEAT_LE_PING;
+    }
 }

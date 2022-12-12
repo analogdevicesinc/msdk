@@ -30,7 +30,7 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
+
 #ifndef _HID_KBD_H_
 #define _HID_KBD_H_
 
@@ -50,7 +50,8 @@
  *  \param    report_descriptor   pointer to the descriptor to be used in response to getdescriptor requests
  *  \return   Zero (0) for success, non-zero for failure
  */
-int hidkbd_init(const MXC_USB_interface_descriptor_t *if_desc, const hid_descriptor_t *hid_descriptor, const uint8_t *report_descriptor);
+int hidkbd_init(const MXC_USB_interface_descriptor_t *if_desc,
+                const hid_descriptor_t *hid_descriptor, const uint8_t *report_descriptor);
 
 /** 
  *  \brief    Set the specified configuration

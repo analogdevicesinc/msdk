@@ -59,26 +59,26 @@ extern "C" {
 typedef nrfx_wdt_config_t nrf_drv_wdt_config_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_WDT_DEAFULT_CONFIG  NRFX_WDT_DEAFULT_CONFIG
+#define NRF_DRV_WDT_DEAFULT_CONFIG NRFX_WDT_DEAFULT_CONFIG
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_wdt_event_handler_t     nrfx_wdt_event_handler_t
+#define nrf_wdt_event_handler_t nrfx_wdt_event_handler_t
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_wdt_channel_id      nrfx_wdt_channel_id
+#define nrf_drv_wdt_channel_id nrfx_wdt_channel_id
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_wdt_channel_alloc   nrfx_wdt_channel_alloc
+#define nrf_drv_wdt_channel_alloc nrfx_wdt_channel_alloc
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_wdt_enable          nrfx_wdt_enable
+#define nrf_drv_wdt_enable nrfx_wdt_enable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_wdt_feed            nrfx_wdt_feed
+#define nrf_drv_wdt_feed nrfx_wdt_feed
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_wdt_channel_feed    nrfx_wdt_channel_feed
+#define nrf_drv_wdt_channel_feed nrfx_wdt_channel_feed
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_wdt_ppi_task_addr   nrfx_wdt_ppi_task_addr
+#define nrf_drv_wdt_ppi_task_addr nrfx_wdt_ppi_task_addr
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_wdt_ppi_event_addr  nrfx_wdt_ppi_event_addr
+#define nrf_drv_wdt_ppi_event_addr nrfx_wdt_ppi_event_addr
 
 /**
  * @brief This function initializes watchdog.
@@ -91,11 +91,10 @@ typedef nrfx_wdt_config_t nrf_drv_wdt_config_t;
  *
  * @return NRF_SUCCESS on success, otherwise an error code.
  */
-__STATIC_INLINE ret_code_t nrf_drv_wdt_init(nrf_drv_wdt_config_t const * p_config,
-                                            nrf_wdt_event_handler_t      wdt_event_handler)
+__STATIC_INLINE ret_code_t nrf_drv_wdt_init(nrf_drv_wdt_config_t const *p_config,
+                                            nrf_wdt_event_handler_t wdt_event_handler)
 {
-    if (p_config == NULL)
-    {
+    if (p_config == NULL) {
         static const nrfx_wdt_config_t default_config = NRFX_WDT_DEAFULT_CONFIG;
         p_config = &default_config;
     }

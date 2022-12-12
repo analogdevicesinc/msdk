@@ -32,17 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
-
 #ifndef _SSI_PAL_MUTEX_PLAT_H
 #define _SSI_PAL_MUTEX_PLAT_H
 
 #include <stdint.h>
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 /**
 * @brief File Description:
@@ -55,17 +51,12 @@ extern "C"
 
 typedef uint32_t SaSi_PalMutex;
 
-
-
 /*----------------------------
       PUBLIC FUNCTIONS
 -----------------------------------*/
-
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-
-

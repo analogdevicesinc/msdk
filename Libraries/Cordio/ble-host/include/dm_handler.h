@@ -53,7 +53,6 @@ extern "C" {
 /*************************************************************************************************/
 void DmHandlerInit(wsfHandlerId_t handlerId);
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for DM.
@@ -68,7 +67,7 @@ void DmHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 /**@}*/
 
-/*! \} */    /* STACK_DM_API */
+/*! \} */ /* STACK_DM_API */
 
 #ifdef __cplusplus
 };

@@ -33,8 +33,7 @@
 #include "wsf_timer.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -42,44 +41,43 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Number of stored states */
-#define MMDL_SCENE_STATE_CNT             1
+#define MMDL_SCENE_STATE_CNT 1
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Model Scene Server descriptor definition */
-typedef struct mmdlSceneSrDesc_tag
-{
-  mmdlSceneNumber_t *pStoredScenes;   /*!< Pointer to the structure that stores
+typedef struct mmdlSceneSrDesc_tag {
+    mmdlSceneNumber_t *pStoredScenes; /*!< Pointer to the structure that stores
                                        *   current scene and scene register.
                                        *   Structure will store ::MMDL_NUM_OF_SCENES +
                                        *   MMDL_SCENE_STATE_CNT states.
                                        */
-  wsfTimer_t        transitionTimer;  /*!< WSF Timer for delay and state transition */
-  wsfTimer_t        msgRcvdTimer;     /*!< Timer to manage received logically group messages */
-  uint32_t          remainingTimeMs;  /*!< Time remaining until the current state is
+    wsfTimer_t transitionTimer; /*!< WSF Timer for delay and state transition */
+    wsfTimer_t msgRcvdTimer; /*!< Timer to manage received logically group messages */
+    uint32_t remainingTimeMs; /*!< Time remaining until the current state is
                                        *   replaced with the target state. If set to 0,
                                        *   the target state is ignored. Unit is 1 ms.
                                        */
-  uint8_t           targetSceneIdx;   /*!< Target scene index in scene register */
-  uint8_t           delay5Ms;         /*!< Delay until the transition to the new state
+    uint8_t targetSceneIdx; /*!< Target scene index in scene register */
+    uint8_t delay5Ms; /*!< Delay until the transition to the new state
                                        *   begins. Unit is 5 ms.
                                        */
-  uint8_t           transactionId;    /*!< Transaction Identifier used to logically group a
+    uint8_t transactionId; /*!< Transaction Identifier used to logically group a
                                        *   series of messages.
                                        */
-  meshAddress_t     srcAddr;          /*!< Source address of the logically grouped series of
+    meshAddress_t srcAddr; /*!< Source address of the logically grouped series of
                                        *   messages.
                                        */
-  bool_t            ackPending;       /*!< TRUE if an ACK is pending for the last received
+    bool_t ackPending; /*!< TRUE if an ACK is pending for the last received
                                        *   message.
                                        */
-  bool_t            ackForUnicast;    /*!< TRUE if the delayed message was received as a unicast,
+    bool_t ackForUnicast; /*!< TRUE if the delayed message was received as a unicast,
                                        *   FALSE otherwise.
                                        */
-  mmdlSceneStatus_t delayedStatus;    /*!< Status of delayed command.*/
-  uint16_t          ackAppKeyIndex;   /*!< AppKeyIndex used for the last received message. */
+    mmdlSceneStatus_t delayedStatus; /*!< Status of delayed command.*/
+    uint16_t ackAppKeyIndex; /*!< AppKeyIndex used for the last received message. */
 } mmdlSceneSrDesc_t;
 
 /**************************************************************************************************

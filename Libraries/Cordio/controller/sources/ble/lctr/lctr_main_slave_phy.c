@@ -34,6 +34,6 @@
 /*************************************************************************************************/
 void LctrSlvPhyConnInit(void)
 {
-  /* Add LLCP SM handler. */
-  lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PHY_UPD] = lctrSlvLlcpExecutePhyUpdateSm;
+    /* Add LLCP SM handler. */
+    lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PHY_UPD] = lctrSlvLlcpExecutePhyUpdateSm;
 }

@@ -44,7 +44,6 @@
 extern "C" {
 #endif
 
-
 /**
  * @defgroup app_usbd_hid_generic_desc USB HID generic descriptors
  * @ingroup app_usbd_hid_generic
@@ -61,31 +60,21 @@ extern "C" {
  * @param subclass          Subclass type @ref app_usbd_hid_subclass_t.
  * @param protocol          Protocol type @ref app_usbd_hid_protocol_t.
  */
-#define APP_USBD_HID_GENERIC_INTERFACE_DSC(interface_number,        \
-                                           endpoints_num,           \
-                                           subclass,                \
-                                           protocol)                \
-        APP_USBD_HID_INTERFACE_DSC(interface_number,                \
-                                   endpoints_num,                   \
-                                   subclass,                        \
-                                   protocol)                        \
+#define APP_USBD_HID_GENERIC_INTERFACE_DSC(interface_number, endpoints_num, subclass, protocol) \
+    APP_USBD_HID_INTERFACE_DSC(interface_number, endpoints_num, subclass, protocol)
 
 /**
  * @brief Initializer of HID descriptor for HID generic class.
  *
  * @param ...   Report descriptor item.
  */
-#define APP_USBD_HID_GENERIC_HID_DSC(...)   \
-        APP_USBD_HID_HID_DSC(__VA_ARGS__)
+#define APP_USBD_HID_GENERIC_HID_DSC(...) APP_USBD_HID_HID_DSC(__VA_ARGS__)
 /**
  * @brief Initializer of endpoint descriptor for HID generic class.
  *
  * @param endpoint  Endpoint number.
  */
-#define APP_USBD_HID_GENERIC_EP_DSC(endpoint) \
-        APP_USBD_HID_EP_DSC(endpoint, NRF_DRV_USBD_EPSIZE, 1)
-
-
+#define APP_USBD_HID_GENERIC_EP_DSC(endpoint) APP_USBD_HID_EP_DSC(endpoint, NRF_DRV_USBD_EPSIZE, 1)
 
 /** @} */
 

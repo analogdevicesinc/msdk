@@ -26,14 +26,14 @@
 **************************************************************************************************/
 
 #ifndef PAL_BB_LED_ENABLED
-#define PAL_BB_LED_ENABLED    1
+#define PAL_BB_LED_ENABLED 1
 #endif
 
-#define PAL_BB_LED_TX         0x81
-#define PAL_BB_LED_RX         0x82
-#define PAL_BB_LED_RX_OK      0x84
-#define PAL_BB_LED_RX_TO      0x88
-#define PAL_BB_LED_RX_CRC     0x90
+#define PAL_BB_LED_TX 0x81
+#define PAL_BB_LED_RX 0x82
+#define PAL_BB_LED_RX_OK 0x84
+#define PAL_BB_LED_RX_TO 0x88
+#define PAL_BB_LED_RX_CRC 0x90
 
 /**************************************************************************************************
   Local Variables
@@ -41,19 +41,16 @@
 
 /*! \brief      Control block. */
 static struct {
-  bool_t init;
+    bool_t init;
 } palLedCb;
 
 /**************************************************************************************************
   Functions: Initialization
 **************************************************************************************************/
 
-
-
 /**************************************************************************************************
   Functions: Status and Control
 **************************************************************************************************/
-
 
 /*************************************************************************************************/
 /*!
@@ -66,10 +63,10 @@ static struct {
 /*************************************************************************************************/
 static void palLedOn(uint8_t led)
 {
-  /* Make sure we have enough LEDs */
-  if(num_leds > led) {
-    LED_On(led);
-  }
+    /* Make sure we have enough LEDs */
+    if (num_leds > led) {
+        LED_On(led);
+    }
 }
 
 /*************************************************************************************************/
@@ -83,10 +80,10 @@ static void palLedOn(uint8_t led)
 /*************************************************************************************************/
 static void palLedOff(uint8_t led)
 {
-  /* Make sure we have enough LEDs */
-  if(num_leds > led) {
-    LED_Off(led);
-  }
+    /* Make sure we have enough LEDs */
+    if (num_leds > led) {
+        LED_Off(led);
+    }
 }
 
 /*************************************************************************************************/
@@ -98,8 +95,8 @@ static void palLedOff(uint8_t led)
 /*************************************************************************************************/
 void PalLedInit(void)
 {
-  LED_Init();
-  palLedCb.init = TRUE;
+    LED_Init();
+    palLedCb.init = TRUE;
 }
 
 /*************************************************************************************************/
@@ -111,11 +108,10 @@ void PalLedInit(void)
 /*************************************************************************************************/
 void PalLedDeInit(void)
 {
-  palLedOff(0);
-  palLedOff(1);
-  palLedCb.init = FALSE;
+    palLedOff(0);
+    palLedOff(1);
+    palLedCb.init = FALSE;
 }
-
 
 /*************************************************************************************************/
 /*!
@@ -128,35 +124,35 @@ void PalLedDeInit(void)
 /*************************************************************************************************/
 void PalLedOn(uint8_t ledId)
 {
-  if(!palLedCb.init) {
-    return;
-  }
+    if (!palLedCb.init) {
+        return;
+    }
 
-  switch (ledId) {
+    switch (ledId) {
     case PAL_LED_ID_CPU_ACTIVE:
 #ifndef __riscv
-      palLedOn(1);
+        palLedOn(1);
 #else
-      palLedOn(0);
+        palLedOn(0);
 #endif
-      return;
+        return;
     case PAL_LED_ID_ERROR:
-      palLedOn(0);
-      return;
+        palLedOn(0);
+        return;
 
     default:
-      break;
-  }
+        break;
+    }
 
 #if (PAL_BB_LED_ENABLED == 1)
-    if(ledId & 0x80){
-      /* Remap the mask for the BB LEDs */
-      int i;
-      for(i = 0; i < 7; i++) {
-        if(ledId & (0x1 << i)) {
-          palLedOn(2+i);
+    if (ledId & 0x80) {
+        /* Remap the mask for the BB LEDs */
+        int i;
+        for (i = 0; i < 7; i++) {
+            if (ledId & (0x1 << i)) {
+                palLedOn(2 + i);
+            }
         }
-      }
     }
 #endif
 }
@@ -172,35 +168,35 @@ void PalLedOn(uint8_t ledId)
 /*************************************************************************************************/
 void PalLedOff(uint8_t ledId)
 {
-  if(!palLedCb.init) {
-    return;
-  }
+    if (!palLedCb.init) {
+        return;
+    }
 
-  switch (ledId) {
+    switch (ledId) {
     case PAL_LED_ID_CPU_ACTIVE:
 #ifndef __riscv
-      palLedOff(1);
+        palLedOff(1);
 #else
-      palLedOff(0);
+        palLedOff(0);
 #endif
-      return;
+        return;
     case PAL_LED_ID_ERROR:
-      palLedOff(0);
-      return;
+        palLedOff(0);
+        return;
 
     default:
-      break;
-  }
+        break;
+    }
 
 #if (PAL_BB_LED_ENABLED == 1)
-    if(ledId & 0x80){
-      /* Remap the mask for the BB LEDs */
-      int i;
-      for(i = 0; i < 7; i++) {
-        if(ledId & (0x1 << i)) {
-          palLedOff(2+i);
+    if (ledId & 0x80) {
+        /* Remap the mask for the BB LEDs */
+        int i;
+        for (i = 0; i < 7; i++) {
+            if (ledId & (0x1 << i)) {
+                palLedOff(2 + i);
+            }
         }
-      }
     }
 #endif
 }

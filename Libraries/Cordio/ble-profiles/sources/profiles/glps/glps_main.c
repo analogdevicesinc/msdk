@@ -40,17 +40,16 @@
 **************************************************************************************************/
 
 /* Control block */
-static struct
-{
-  uint8_t       operand[GLPS_OPERAND_MAX];  /* Stored operand filter data */
-  glpsRec_t     *pCurrRec;                  /* Pointer to current measurement record */
-  bool_t        inProgress;                 /* TRUE if RACP procedure in progress */
-  bool_t        txReady;                    /* TRUE if ready to send next notification or indication */
-  bool_t        aborting;                   /* TRUE if abort procedure in progress */
-  uint8_t       glmCccIdx;                  /* Glucose measurement CCCD index */
-  uint8_t       glmcCccIdx;                 /* Glucose measurement context CCCD index */
-  uint8_t       racpCccIdx;                 /* Record access control point CCCD index */
-  uint8_t       oper;                       /* Stored operator */
+static struct {
+    uint8_t operand[GLPS_OPERAND_MAX]; /* Stored operand filter data */
+    glpsRec_t *pCurrRec; /* Pointer to current measurement record */
+    bool_t inProgress; /* TRUE if RACP procedure in progress */
+    bool_t txReady; /* TRUE if ready to send next notification or indication */
+    bool_t aborting; /* TRUE if abort procedure in progress */
+    uint8_t glmCccIdx; /* Glucose measurement CCCD index */
+    uint8_t glmcCccIdx; /* Glucose measurement context CCCD index */
+    uint8_t racpCccIdx; /* Record access control point CCCD index */
+    uint8_t oper; /* Stored operator */
 } glpsCb;
 
 /*************************************************************************************************/
@@ -65,44 +64,41 @@ static struct
 /*************************************************************************************************/
 static uint8_t glpsBuildGlm(uint8_t *pBuf, glpsGlm_t *pGlm)
 {
-  uint8_t   *p = pBuf;
-  uint8_t   flags = pGlm->flags;
+    uint8_t *p = pBuf;
+    uint8_t flags = pGlm->flags;
 
-  /* flags */
-  UINT8_TO_BSTREAM(p, flags);
+    /* flags */
+    UINT8_TO_BSTREAM(p, flags);
 
-  /* sequence number */
-  UINT16_TO_BSTREAM(p, pGlm->seqNum);
+    /* sequence number */
+    UINT16_TO_BSTREAM(p, pGlm->seqNum);
 
-  /* base time */
-  UINT16_TO_BSTREAM(p, pGlm->baseTime.year);
-  UINT8_TO_BSTREAM(p, pGlm->baseTime.month);
-  UINT8_TO_BSTREAM(p, pGlm->baseTime.day);
-  UINT8_TO_BSTREAM(p, pGlm->baseTime.hour);
-  UINT8_TO_BSTREAM(p, pGlm->baseTime.min);
-  UINT8_TO_BSTREAM(p, pGlm->baseTime.sec);
+    /* base time */
+    UINT16_TO_BSTREAM(p, pGlm->baseTime.year);
+    UINT8_TO_BSTREAM(p, pGlm->baseTime.month);
+    UINT8_TO_BSTREAM(p, pGlm->baseTime.day);
+    UINT8_TO_BSTREAM(p, pGlm->baseTime.hour);
+    UINT8_TO_BSTREAM(p, pGlm->baseTime.min);
+    UINT8_TO_BSTREAM(p, pGlm->baseTime.sec);
 
-  /* time offset */
-  if (flags & CH_GLM_FLAG_TIME_OFFSET)
-  {
-    UINT16_TO_BSTREAM(p, pGlm->timeOffset);
-  }
+    /* time offset */
+    if (flags & CH_GLM_FLAG_TIME_OFFSET) {
+        UINT16_TO_BSTREAM(p, pGlm->timeOffset);
+    }
 
-  /* glucose concentration, type, and sample location */
-  if (flags & CH_GLM_FLAG_CONC_TYPE_LOC)
-  {
-    UINT16_TO_BSTREAM(p, pGlm->concentration);
-    UINT8_TO_BSTREAM(p, pGlm->typeSampleLoc);
-  }
+    /* glucose concentration, type, and sample location */
+    if (flags & CH_GLM_FLAG_CONC_TYPE_LOC) {
+        UINT16_TO_BSTREAM(p, pGlm->concentration);
+        UINT8_TO_BSTREAM(p, pGlm->typeSampleLoc);
+    }
 
-  /* sensor status annunciation */
-  if (flags & CH_GLM_FLAG_SENSOR_STATUS)
-  {
-    UINT16_TO_BSTREAM(p, pGlm->sensorStatus);
-  }
+    /* sensor status annunciation */
+    if (flags & CH_GLM_FLAG_SENSOR_STATUS) {
+        UINT16_TO_BSTREAM(p, pGlm->sensorStatus);
+    }
 
-  /* return length */
-  return (uint8_t) (p - pBuf);
+    /* return length */
+    return (uint8_t)(p - pBuf);
 }
 
 /*************************************************************************************************/
@@ -117,62 +113,55 @@ static uint8_t glpsBuildGlm(uint8_t *pBuf, glpsGlm_t *pGlm)
 /*************************************************************************************************/
 static uint8_t glpsBuildGlmc(uint8_t *pBuf, glpsGlmc_t *pGlmc)
 {
-  uint8_t   *p = pBuf;
-  uint8_t   flags = pGlmc->flags;
+    uint8_t *p = pBuf;
+    uint8_t flags = pGlmc->flags;
 
-  /* flags */
-  UINT8_TO_BSTREAM(p, flags);
+    /* flags */
+    UINT8_TO_BSTREAM(p, flags);
 
-  /* sequence number */
-  UINT16_TO_BSTREAM(p, pGlmc->seqNum);
+    /* sequence number */
+    UINT16_TO_BSTREAM(p, pGlmc->seqNum);
 
-  /* extended flags present */
-  if (flags & CH_GLMC_FLAG_EXT)
-  {
-    UINT8_TO_BSTREAM(p, pGlmc->extFlags);
-  }
+    /* extended flags present */
+    if (flags & CH_GLMC_FLAG_EXT) {
+        UINT8_TO_BSTREAM(p, pGlmc->extFlags);
+    }
 
-  /* carbohydrate id and carbohydrate present */
-  if (flags & CH_GLMC_FLAG_CARB)
-  {
-    UINT8_TO_BSTREAM(p, pGlmc->carbId);
-    UINT16_TO_BSTREAM(p, pGlmc->carb);
-  }
+    /* carbohydrate id and carbohydrate present */
+    if (flags & CH_GLMC_FLAG_CARB) {
+        UINT8_TO_BSTREAM(p, pGlmc->carbId);
+        UINT16_TO_BSTREAM(p, pGlmc->carb);
+    }
 
-  /* meal present */
-  if (flags & CH_GLMC_FLAG_MEAL)
-  {
-    UINT8_TO_BSTREAM(p, pGlmc->meal);
-  }
+    /* meal present */
+    if (flags & CH_GLMC_FLAG_MEAL) {
+        UINT8_TO_BSTREAM(p, pGlmc->meal);
+    }
 
-  /* tester-health present */
-  if (flags & CH_GLMC_FLAG_TESTER)
-  {
-    UINT8_TO_BSTREAM(p, pGlmc->testerHealth);
-  }
+    /* tester-health present */
+    if (flags & CH_GLMC_FLAG_TESTER) {
+        UINT8_TO_BSTREAM(p, pGlmc->testerHealth);
+    }
 
-  /* exercise duration and exercise intensity present */
-  if (flags & CH_GLMC_FLAG_EXERCISE)
-  {
-    UINT16_TO_BSTREAM(p, pGlmc->exerDuration);
-    UINT8_TO_BSTREAM(p, pGlmc->exerIntensity);
-  }
+    /* exercise duration and exercise intensity present */
+    if (flags & CH_GLMC_FLAG_EXERCISE) {
+        UINT16_TO_BSTREAM(p, pGlmc->exerDuration);
+        UINT8_TO_BSTREAM(p, pGlmc->exerIntensity);
+    }
 
-  /* medication ID and medication present */
-  if (flags & CH_GLMC_FLAG_MED)
-  {
-    UINT8_TO_BSTREAM(p, pGlmc->medicationId);
-    UINT16_TO_BSTREAM(p, pGlmc->medication);
-  }
+    /* medication ID and medication present */
+    if (flags & CH_GLMC_FLAG_MED) {
+        UINT8_TO_BSTREAM(p, pGlmc->medicationId);
+        UINT16_TO_BSTREAM(p, pGlmc->medication);
+    }
 
-  /* hba1c present */
-  if (flags & CH_GLMC_FLAG_HBA1C)
-  {
-    UINT16_TO_BSTREAM(p, pGlmc->hba1c);
-  }
+    /* hba1c present */
+    if (flags & CH_GLMC_FLAG_HBA1C) {
+        UINT16_TO_BSTREAM(p, pGlmc->hba1c);
+    }
 
-  /* return length */
-  return (uint8_t) (p - pBuf);
+    /* return length */
+    return (uint8_t)(p - pBuf);
 }
 
 /*************************************************************************************************/
@@ -187,15 +176,15 @@ static uint8_t glpsBuildGlmc(uint8_t *pBuf, glpsGlmc_t *pGlmc)
 /*************************************************************************************************/
 void glpsSendMeasContext(dmConnId_t connId, glpsRec_t *pRec)
 {
-  uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t len;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t len;
 
-  /* build glucose measurement context characteristic */
-  len = glpsBuildGlmc(buf, &glpsCb.pCurrRec->context);
+    /* build glucose measurement context characteristic */
+    len = glpsBuildGlmc(buf, &glpsCb.pCurrRec->context);
 
-  /* send notification */
-  AttsHandleValueNtf(connId, GLS_GLMC_HDL, len, buf);
-  glpsCb.txReady = FALSE;
+    /* send notification */
+    AttsHandleValueNtf(connId, GLS_GLMC_HDL, len, buf);
+    glpsCb.txReady = FALSE;
 }
 
 /*************************************************************************************************/
@@ -210,15 +199,15 @@ void glpsSendMeasContext(dmConnId_t connId, glpsRec_t *pRec)
 /*************************************************************************************************/
 void glpsSendMeas(dmConnId_t connId, glpsRec_t *pRec)
 {
-  uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t len;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t len;
 
-  /* build glucose measurement characteristic */
-  len = glpsBuildGlm(buf, &glpsCb.pCurrRec->meas);
+    /* build glucose measurement characteristic */
+    len = glpsBuildGlm(buf, &glpsCb.pCurrRec->meas);
 
-  /* send notification */
-  AttsHandleValueNtf(connId, GLS_GLM_HDL, len, buf);
-  glpsCb.txReady = FALSE;
+    /* send notification */
+    AttsHandleValueNtf(connId, GLS_GLM_HDL, len, buf);
+    glpsCb.txReady = FALSE;
 }
 
 /*************************************************************************************************/
@@ -234,17 +223,17 @@ void glpsSendMeas(dmConnId_t connId, glpsRec_t *pRec)
 /*************************************************************************************************/
 void glpsRacpSendRsp(dmConnId_t connId, uint8_t opcode, uint8_t status)
 {
-  uint8_t buf[GLPS_RACP_RSP_LEN];
+    uint8_t buf[GLPS_RACP_RSP_LEN];
 
-  /* build response */
-  buf[0] = CH_RACP_OPCODE_RSP;
-  buf[1] = CH_RACP_OPERATOR_NULL;
-  buf[2] = opcode;
-  buf[3] = status;
+    /* build response */
+    buf[0] = CH_RACP_OPCODE_RSP;
+    buf[1] = CH_RACP_OPERATOR_NULL;
+    buf[2] = opcode;
+    buf[3] = status;
 
-  /* send indication */
-  AttsHandleValueInd(connId, GLS_RACP_HDL, GLPS_RACP_RSP_LEN, buf);
-  glpsCb.txReady = FALSE;
+    /* send indication */
+    AttsHandleValueInd(connId, GLS_RACP_HDL, GLPS_RACP_RSP_LEN, buf);
+    glpsCb.txReady = FALSE;
 }
 
 /*************************************************************************************************/
@@ -259,17 +248,17 @@ void glpsRacpSendRsp(dmConnId_t connId, uint8_t opcode, uint8_t status)
 /*************************************************************************************************/
 void glpsRacpSendNumRecRsp(dmConnId_t connId, uint16_t numRec)
 {
-  uint8_t buf[GLPS_RACP_NUM_REC_RSP_LEN];
+    uint8_t buf[GLPS_RACP_NUM_REC_RSP_LEN];
 
-  /* build response */
-  buf[0] = CH_RACP_OPCODE_NUM_RSP;
-  buf[1] = CH_RACP_OPERATOR_NULL;
-  buf[2] = UINT16_TO_BYTE0(numRec);
-  buf[3] = UINT16_TO_BYTE1(numRec);
+    /* build response */
+    buf[0] = CH_RACP_OPCODE_NUM_RSP;
+    buf[1] = CH_RACP_OPERATOR_NULL;
+    buf[2] = UINT16_TO_BYTE0(numRec);
+    buf[3] = UINT16_TO_BYTE1(numRec);
 
-  /* send indication */
-  AttsHandleValueInd(connId, GLS_RACP_HDL, GLPS_RACP_RSP_LEN, buf);
-  glpsCb.txReady = FALSE;
+    /* send indication */
+    AttsHandleValueInd(connId, GLS_RACP_HDL, GLPS_RACP_RSP_LEN, buf);
+    glpsCb.txReady = FALSE;
 }
 
 /*************************************************************************************************/
@@ -283,12 +272,12 @@ void glpsRacpSendNumRecRsp(dmConnId_t connId, uint16_t numRec)
 /*************************************************************************************************/
 static void glpsConnOpen(dmEvt_t *pMsg)
 {
-  /* initialize */
-  glpsCb.pCurrRec = NULL;
-  glpsCb.aborting = FALSE;
-  glpsCb.inProgress = FALSE;
-  glpsCb.txReady = FALSE;
-  glpsCb.oper = CH_RACP_OPERATOR_NULL;
+    /* initialize */
+    glpsCb.pCurrRec = NULL;
+    glpsCb.aborting = FALSE;
+    glpsCb.inProgress = FALSE;
+    glpsCb.txReady = FALSE;
+    glpsCb.oper = CH_RACP_OPERATOR_NULL;
 }
 
 /*************************************************************************************************/
@@ -302,8 +291,8 @@ static void glpsConnOpen(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void glpsConnClose(dmEvt_t *pMsg)
 {
-  glpsCb.pCurrRec = NULL;
-  glpsCb.aborting = FALSE;
+    glpsCb.pCurrRec = NULL;
+    glpsCb.aborting = FALSE;
 }
 
 /*************************************************************************************************/
@@ -317,48 +306,41 @@ static void glpsConnClose(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void glpsHandleValueCnf(attEvt_t *pMsg)
 {
-  dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
-  glpsCb.txReady = TRUE;
+    dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
+    glpsCb.txReady = TRUE;
 
-  /* if aborting finish that up */
-  if (glpsCb.aborting)
-  {
-    glpsCb.aborting = FALSE;
-    glpsRacpSendRsp(connId, CH_RACP_OPCODE_ABORT, CH_RACP_RSP_SUCCESS);
-  }
-
-  /* if this is for RACP indication */
-  if (pMsg->handle == GLS_RACP_HDL)
-  {
-    /* procedure no longer in progress */
-    glpsCb.inProgress = FALSE;
-  }
-  /* if this is for measurement or context notification */
-  else if (pMsg->handle == GLS_GLM_HDL || pMsg->handle == GLS_GLMC_HDL)
-  {
-    if (glpsCb.pCurrRec != NULL)
-    {
-      /* if measurement was sent and there is context to send */
-      if (pMsg->handle == GLS_GLM_HDL && AttsCccEnabled(connId, glpsCb.glmcCccIdx) &&
-          (glpsCb.pCurrRec->meas.flags & CH_GLM_FLAG_CONTEXT_INFO))
-      {
-        /* send context */
-        glpsSendMeasContext(connId, glpsCb.pCurrRec);
-      }
-      /* else if there is another record */
-      else if (glpsDbGetNextRecord(glpsCb.oper, glpsCb.operand,
-                                   glpsCb.pCurrRec, &glpsCb.pCurrRec) == CH_RACP_RSP_SUCCESS)
-      {
-        /* send measurement */
-        glpsSendMeas(connId, glpsCb.pCurrRec);
-      }
-      /* else all records sent; send RACP response */
-      else
-      {
-        glpsRacpSendRsp(connId, CH_RACP_OPCODE_REPORT, CH_RACP_RSP_SUCCESS);
-      }
+    /* if aborting finish that up */
+    if (glpsCb.aborting) {
+        glpsCb.aborting = FALSE;
+        glpsRacpSendRsp(connId, CH_RACP_OPCODE_ABORT, CH_RACP_RSP_SUCCESS);
     }
-  }
+
+    /* if this is for RACP indication */
+    if (pMsg->handle == GLS_RACP_HDL) {
+        /* procedure no longer in progress */
+        glpsCb.inProgress = FALSE;
+    }
+    /* if this is for measurement or context notification */
+    else if (pMsg->handle == GLS_GLM_HDL || pMsg->handle == GLS_GLMC_HDL) {
+        if (glpsCb.pCurrRec != NULL) {
+            /* if measurement was sent and there is context to send */
+            if (pMsg->handle == GLS_GLM_HDL && AttsCccEnabled(connId, glpsCb.glmcCccIdx) &&
+                (glpsCb.pCurrRec->meas.flags & CH_GLM_FLAG_CONTEXT_INFO)) {
+                /* send context */
+                glpsSendMeasContext(connId, glpsCb.pCurrRec);
+            }
+            /* else if there is another record */
+            else if (glpsDbGetNextRecord(glpsCb.oper, glpsCb.operand, glpsCb.pCurrRec,
+                                         &glpsCb.pCurrRec) == CH_RACP_RSP_SUCCESS) {
+                /* send measurement */
+                glpsSendMeas(connId, glpsCb.pCurrRec);
+            }
+            /* else all records sent; send RACP response */
+            else {
+                glpsRacpSendRsp(connId, CH_RACP_OPCODE_REPORT, CH_RACP_RSP_SUCCESS);
+            }
+        }
+    }
 }
 
 /*************************************************************************************************/
@@ -375,76 +357,60 @@ static void glpsHandleValueCnf(attEvt_t *pMsg)
 /*************************************************************************************************/
 static uint8_t glpsRacpOperCheck(uint8_t oper, uint16_t len, uint8_t *pOperand)
 {
-  uint8_t status = CH_RACP_RSP_SUCCESS;
-  uint8_t filterType;
-  uint8_t filterLen = 0;
+    uint8_t status = CH_RACP_RSP_SUCCESS;
+    uint8_t filterType;
+    uint8_t filterLen = 0;
 
-  /* these operators have no operands */
-  if (oper == CH_RACP_OPERATOR_ALL || oper == CH_RACP_OPERATOR_FIRST ||
-      oper == CH_RACP_OPERATOR_LAST || oper == CH_RACP_OPERATOR_NULL)
-  {
-    if (len != 0)
-    {
-      status = CH_RACP_RSP_INV_OPERAND;
-    }
-  }
-  /* remaining operators must have operands */
-  else if (oper == CH_RACP_OPERATOR_LTEQ || oper == CH_RACP_OPERATOR_GTEQ ||
-           oper == CH_RACP_OPERATOR_RANGE)
-  {
-    if (len == 0)
-    {
-      status = CH_RACP_RSP_INV_OPERAND;
-    }
-    else
-    {
-      filterType = *pOperand;
-      len--;
-
-      /* operand length depends on filter type */
-      if (filterType == CH_RACP_GLS_FILTER_SEQ)
-      {
-        filterLen = CH_RACP_GLS_FILTER_SEQ_LEN;
-      }
-      else if (filterType == CH_RACP_GLS_FILTER_TIME)
-      {
-        filterLen = CH_RACP_GLS_FILTER_TIME_LEN;
-      }
-      else
-      {
-        status = CH_RACP_RSP_OPERAND_NOT_SUP;
-      }
-
-      if (status == CH_RACP_RSP_SUCCESS)
-      {
-        /* range operator has two filters, others have one */
-        if (oper == CH_RACP_OPERATOR_RANGE)
-        {
-          filterLen *= 2;
+    /* these operators have no operands */
+    if (oper == CH_RACP_OPERATOR_ALL || oper == CH_RACP_OPERATOR_FIRST ||
+        oper == CH_RACP_OPERATOR_LAST || oper == CH_RACP_OPERATOR_NULL) {
+        if (len != 0) {
+            status = CH_RACP_RSP_INV_OPERAND;
         }
-
-        /* verify length */
-        if (len != filterLen)
-        {
-          status = CH_RACP_RSP_INV_OPERAND;
-        }
-      }
     }
-  }
-  /* unknown operator */
-  else
-  {
-    status = CH_RACP_RSP_OPERATOR_NOT_SUP;
-  }
+    /* remaining operators must have operands */
+    else if (oper == CH_RACP_OPERATOR_LTEQ || oper == CH_RACP_OPERATOR_GTEQ ||
+             oper == CH_RACP_OPERATOR_RANGE) {
+        if (len == 0) {
+            status = CH_RACP_RSP_INV_OPERAND;
+        } else {
+            filterType = *pOperand;
+            len--;
 
-  /* store operator and operand */
-  if (status == CH_RACP_RSP_SUCCESS)
-  {
-    glpsCb.oper = oper;
-    memcpy(glpsCb.operand, pOperand, len);
-  }
+            /* operand length depends on filter type */
+            if (filterType == CH_RACP_GLS_FILTER_SEQ) {
+                filterLen = CH_RACP_GLS_FILTER_SEQ_LEN;
+            } else if (filterType == CH_RACP_GLS_FILTER_TIME) {
+                filterLen = CH_RACP_GLS_FILTER_TIME_LEN;
+            } else {
+                status = CH_RACP_RSP_OPERAND_NOT_SUP;
+            }
 
-  return status;
+            if (status == CH_RACP_RSP_SUCCESS) {
+                /* range operator has two filters, others have one */
+                if (oper == CH_RACP_OPERATOR_RANGE) {
+                    filterLen *= 2;
+                }
+
+                /* verify length */
+                if (len != filterLen) {
+                    status = CH_RACP_RSP_INV_OPERAND;
+                }
+            }
+        }
+    }
+    /* unknown operator */
+    else {
+        status = CH_RACP_RSP_OPERATOR_NOT_SUP;
+    }
+
+    /* store operator and operand */
+    if (status == CH_RACP_RSP_SUCCESS) {
+        glpsCb.oper = oper;
+        memcpy(glpsCb.operand, pOperand, len);
+    }
+
+    return status;
 }
 
 /*************************************************************************************************/
@@ -460,19 +426,18 @@ static uint8_t glpsRacpOperCheck(uint8_t oper, uint16_t len, uint8_t *pOperand)
 /*************************************************************************************************/
 static void glpsRacpReport(dmConnId_t connId, uint8_t oper, uint8_t *pOperand)
 {
-  uint8_t status;
+    uint8_t status;
 
-  /* if record found */
-  if ((status = glpsDbGetNextRecord(oper, pOperand, NULL, &glpsCb.pCurrRec)) == CH_RACP_RSP_SUCCESS)
-  {
-    /* send measurement */
-    glpsSendMeas(connId, glpsCb.pCurrRec);
-  }
-  /* if not successful send response */
-  else
-  {
-    glpsRacpSendRsp(connId, CH_RACP_OPCODE_REPORT, status);
-  }
+    /* if record found */
+    if ((status = glpsDbGetNextRecord(oper, pOperand, NULL, &glpsCb.pCurrRec)) ==
+        CH_RACP_RSP_SUCCESS) {
+        /* send measurement */
+        glpsSendMeas(connId, glpsCb.pCurrRec);
+    }
+    /* if not successful send response */
+    else {
+        glpsRacpSendRsp(connId, CH_RACP_OPCODE_REPORT, status);
+    }
 }
 
 /*************************************************************************************************/
@@ -488,13 +453,13 @@ static void glpsRacpReport(dmConnId_t connId, uint8_t oper, uint8_t *pOperand)
 /*************************************************************************************************/
 static void glpsRacpDelete(dmConnId_t connId, uint8_t oper, uint8_t *pOperand)
 {
-  uint8_t status;
+    uint8_t status;
 
-  /* delete records */
-  status = glpsDbDeleteRecords(oper, pOperand);
+    /* delete records */
+    status = glpsDbDeleteRecords(oper, pOperand);
 
-  /* send response */
-  glpsRacpSendRsp(connId, CH_RACP_OPCODE_DELETE, status);
+    /* send response */
+    glpsRacpSendRsp(connId, CH_RACP_OPCODE_DELETE, status);
 }
 
 /*************************************************************************************************/
@@ -508,22 +473,18 @@ static void glpsRacpDelete(dmConnId_t connId, uint8_t oper, uint8_t *pOperand)
 /*************************************************************************************************/
 static void glpsRacpAbort(dmConnId_t connId)
 {
-  /* if operation in progress */
-  if (glpsCb.inProgress)
-  {
-    /* abort operation and clean up */
-    glpsCb.pCurrRec = NULL;
-  }
+    /* if operation in progress */
+    if (glpsCb.inProgress) {
+        /* abort operation and clean up */
+        glpsCb.pCurrRec = NULL;
+    }
 
-  /* send response */
-  if (glpsCb.txReady)
-  {
-    glpsRacpSendRsp(connId, CH_RACP_OPCODE_ABORT, CH_RACP_RSP_SUCCESS);
-  }
-  else
-  {
-    glpsCb.aborting = TRUE;
-  }
+    /* send response */
+    if (glpsCb.txReady) {
+        glpsRacpSendRsp(connId, CH_RACP_OPCODE_ABORT, CH_RACP_RSP_SUCCESS);
+    } else {
+        glpsCb.aborting = TRUE;
+    }
 }
 
 /*************************************************************************************************/
@@ -540,21 +501,18 @@ static void glpsRacpAbort(dmConnId_t connId)
 /*************************************************************************************************/
 static void glpsRacpReportNum(dmConnId_t connId, uint8_t oper, uint8_t *pOperand)
 {
-  uint8_t status;
-  uint8_t numRec = 0;
+    uint8_t status;
+    uint8_t numRec = 0;
 
-  /* get number of records */
-  status = glpsDbGetNumRecords(oper, pOperand, &numRec);
+    /* get number of records */
+    status = glpsDbGetNumRecords(oper, pOperand, &numRec);
 
-  if (status == CH_RACP_RSP_SUCCESS)
-  {
-    /* send response */
-    glpsRacpSendNumRecRsp(connId, numRec);
-  }
-  else
-  {
-    glpsRacpSendRsp(connId, CH_RACP_OPCODE_REPORT_NUM, status);
-  }
+    if (status == CH_RACP_RSP_SUCCESS) {
+        /* send response */
+        glpsRacpSendNumRecRsp(connId, numRec);
+    } else {
+        glpsRacpSendRsp(connId, CH_RACP_OPCODE_REPORT_NUM, status);
+    }
 }
 
 /*************************************************************************************************/
@@ -567,27 +525,23 @@ static void glpsRacpReportNum(dmConnId_t connId, uint8_t oper, uint8_t *pOperand
 /*************************************************************************************************/
 static void glpsToggleBondingFlag(void)
 {
-  uint8_t *pGlpsFlagsValue;
-  uint16_t len;
+    uint8_t *pGlpsFlagsValue;
+    uint16_t len;
 
-  /* Get flags */
-  if (AttsGetAttr(GLS_GLF_HDL, &len, &pGlpsFlagsValue) == ATT_SUCCESS)
-  {
-    uint16_t glpsFlags;
+    /* Get flags */
+    if (AttsGetAttr(GLS_GLF_HDL, &len, &pGlpsFlagsValue) == ATT_SUCCESS) {
+        uint16_t glpsFlags;
 
-    BYTES_TO_UINT16(glpsFlags, pGlpsFlagsValue);
+        BYTES_TO_UINT16(glpsFlags, pGlpsFlagsValue);
 
-    if (glpsFlags & CH_GLF_MULTI_BOND)
-    {
-      glpsFlags &= ~CH_GLF_MULTI_BOND;
+        if (glpsFlags & CH_GLF_MULTI_BOND) {
+            glpsFlags &= ~CH_GLF_MULTI_BOND;
+        } else {
+            glpsFlags |= CH_GLF_MULTI_BOND;
+        }
+
+        GlpsSetFeature(glpsFlags);
     }
-    else
-    {
-      glpsFlags |= CH_GLF_MULTI_BOND;
-    }
-
-    GlpsSetFeature(glpsFlags);
-  }
 }
 
 /*************************************************************************************************/
@@ -601,7 +555,7 @@ static void glpsToggleBondingFlag(void)
 /*************************************************************************************************/
 void GlpsInit(void)
 {
-  glpsDbInit();
+    glpsDbInit();
 }
 
 /*************************************************************************************************/
@@ -616,23 +570,22 @@ void GlpsInit(void)
 /*************************************************************************************************/
 void GlpsProcMsg(wsfMsgHdr_t *pMsg)
 {
-  switch(pMsg->event)
-  {
+    switch (pMsg->event) {
     case DM_CONN_OPEN_IND:
-      glpsConnOpen((dmEvt_t *) pMsg);
-      break;
+        glpsConnOpen((dmEvt_t *)pMsg);
+        break;
 
     case DM_CONN_CLOSE_IND:
-      glpsConnClose((dmEvt_t *) pMsg);
-      break;
+        glpsConnClose((dmEvt_t *)pMsg);
+        break;
 
     case ATTS_HANDLE_VALUE_CNF:
-      glpsHandleValueCnf((attEvt_t *) pMsg);
-      break;
+        glpsHandleValueCnf((attEvt_t *)pMsg);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -647,54 +600,50 @@ void GlpsProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void GlpsBtn(dmConnId_t connId, uint8_t btn)
 {
-  /* button actions when connected */
-  if (connId != DM_CONN_ID_NONE)
-  {
-    switch (btn)
-    {
-      case APP_UI_BTN_2_MED:
-        /* Toggle medication quantity, for test purposes only */
-        glpsDbToggleMedicationUnits();
-        break;
+    /* button actions when connected */
+    if (connId != DM_CONN_ID_NONE) {
+        switch (btn) {
+        case APP_UI_BTN_2_MED:
+            /* Toggle medication quantity, for test purposes only */
+            glpsDbToggleMedicationUnits();
+            break;
 
-      case APP_UI_BTN_2_LONG:
-        /* generate a new record */
-        glpsDbGenerateRecord();
-        break;
+        case APP_UI_BTN_2_LONG:
+            /* generate a new record */
+            glpsDbGenerateRecord();
+            break;
 
-      default:
-        break;
+        default:
+            break;
+        }
     }
-  }
-  /* button actions when not connected */
-  else
-  {
-    switch (btn)
-    {
-      case APP_UI_BTN_2_SHORT:
-        /* Toggle bonding flag */
-        glpsToggleBondingFlag();
-        break;
+    /* button actions when not connected */
+    else {
+        switch (btn) {
+        case APP_UI_BTN_2_SHORT:
+            /* Toggle bonding flag */
+            glpsToggleBondingFlag();
+            break;
 
-      case APP_UI_BTN_2_MED:
-        /* Toggle medication quantity, for test purposes only */
-        glpsDbToggleMedicationUnits();
-        break;
+        case APP_UI_BTN_2_MED:
+            /* Toggle medication quantity, for test purposes only */
+            glpsDbToggleMedicationUnits();
+            break;
 
-      case APP_UI_BTN_2_LONG:
-        /* generate a new record */
-        glpsDbGenerateRecord();
-        break;
+        case APP_UI_BTN_2_LONG:
+            /* generate a new record */
+            glpsDbGenerateRecord();
+            break;
 
-      case APP_UI_BTN_2_EX_LONG:
-        /* delete all records */
-        glpsDbDeleteRecords(CH_RACP_OPERATOR_ALL, NULL);
-        break;
+        case APP_UI_BTN_2_EX_LONG:
+            /* delete all records */
+            glpsDbDeleteRecords(CH_RACP_OPERATOR_ALL, NULL);
+            break;
 
-      default:
-        break;
+        default:
+            break;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -705,83 +654,76 @@ void GlpsBtn(dmConnId_t connId, uint8_t btn)
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t GlpsRacpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                           uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+uint8_t GlpsRacpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                           uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-  uint8_t opcode;
-  uint8_t oper;
-  uint8_t status;
+    uint8_t opcode;
+    uint8_t oper;
+    uint8_t status;
 
-  /* sanity check on length */
-  if (len < GLPS_RACP_MIN_WRITE_LEN)
-  {
-    return ATT_ERR_LENGTH;
-  }
-
-  /* if control point not configured for indication */
-  if (!AttsCccEnabled(connId, glpsCb.racpCccIdx))
-  {
-    return GLS_ERR_CCCD;
-  }
-
-  /* parse opcode and operator and adjust remaining parameter length */
-  BSTREAM_TO_UINT8(opcode, pValue);
-  BSTREAM_TO_UINT8(oper, pValue);
-  len -= 2;
-
-  /* handle a procedure in progress */
-  if (opcode != CH_RACP_OPCODE_ABORT && glpsCb.inProgress)
-  {
-    return GLS_ERR_IN_PROGRESS;
-  }
-
-  /* handle record request when notifications not enabled */
-  if (opcode == CH_RACP_OPCODE_REPORT && !AttsCccEnabled(connId, glpsCb.glmCccIdx))
-  {
-    return GLS_ERR_CCCD;
-  }
-
-  /* verify operands */
-  if ((status = glpsRacpOperCheck(oper, len, pValue)) == CH_RACP_RSP_SUCCESS)
-  {
-    switch (opcode)
-    {
-      /* report records */
-      case CH_RACP_OPCODE_REPORT:
-        glpsRacpReport(connId, oper, pValue);
-        break;
-
-      /* delete records */
-      case CH_RACP_OPCODE_DELETE:
-        glpsRacpDelete(connId, oper, pValue);
-        break;
-
-      /* abort current operation */
-      case CH_RACP_OPCODE_ABORT:
-        glpsRacpAbort(connId);
-        break;
-
-      /* report number of records */
-      case CH_RACP_OPCODE_REPORT_NUM:
-        glpsRacpReportNum(connId, oper, pValue);
-        break;
-
-      /* unsupported opcode */
-      default:
-        glpsRacpSendRsp(connId, opcode, CH_RACP_RSP_OPCODE_NOT_SUP);
-        break;
+    /* sanity check on length */
+    if (len < GLPS_RACP_MIN_WRITE_LEN) {
+        return ATT_ERR_LENGTH;
     }
-  }
-  /* else invalid operands; send response with failure status */
-  else
-  {
-    glpsRacpSendRsp(connId, opcode, status);
-  }
 
-  /* procedure now in progress */
-  glpsCb.inProgress = TRUE;
+    /* if control point not configured for indication */
+    if (!AttsCccEnabled(connId, glpsCb.racpCccIdx)) {
+        return GLS_ERR_CCCD;
+    }
 
-  return ATT_SUCCESS;
+    /* parse opcode and operator and adjust remaining parameter length */
+    BSTREAM_TO_UINT8(opcode, pValue);
+    BSTREAM_TO_UINT8(oper, pValue);
+    len -= 2;
+
+    /* handle a procedure in progress */
+    if (opcode != CH_RACP_OPCODE_ABORT && glpsCb.inProgress) {
+        return GLS_ERR_IN_PROGRESS;
+    }
+
+    /* handle record request when notifications not enabled */
+    if (opcode == CH_RACP_OPCODE_REPORT && !AttsCccEnabled(connId, glpsCb.glmCccIdx)) {
+        return GLS_ERR_CCCD;
+    }
+
+    /* verify operands */
+    if ((status = glpsRacpOperCheck(oper, len, pValue)) == CH_RACP_RSP_SUCCESS) {
+        switch (opcode) {
+        /* report records */
+        case CH_RACP_OPCODE_REPORT:
+            glpsRacpReport(connId, oper, pValue);
+            break;
+
+        /* delete records */
+        case CH_RACP_OPCODE_DELETE:
+            glpsRacpDelete(connId, oper, pValue);
+            break;
+
+        /* abort current operation */
+        case CH_RACP_OPCODE_ABORT:
+            glpsRacpAbort(connId);
+            break;
+
+        /* report number of records */
+        case CH_RACP_OPCODE_REPORT_NUM:
+            glpsRacpReportNum(connId, oper, pValue);
+            break;
+
+        /* unsupported opcode */
+        default:
+            glpsRacpSendRsp(connId, opcode, CH_RACP_RSP_OPCODE_NOT_SUP);
+            break;
+        }
+    }
+    /* else invalid operands; send response with failure status */
+    else {
+        glpsRacpSendRsp(connId, opcode, status);
+    }
+
+    /* procedure now in progress */
+    glpsCb.inProgress = TRUE;
+
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -795,9 +737,9 @@ uint8_t GlpsRacpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation
 /*************************************************************************************************/
 void GlpsSetFeature(uint16_t feature)
 {
-  uint8_t buf[2] = {UINT16_TO_BYTES(feature)};
+    uint8_t buf[2] = { UINT16_TO_BYTES(feature) };
 
-  AttsSetAttr(GLS_GLF_HDL, sizeof(buf), buf);
+    AttsSetAttr(GLS_GLF_HDL, sizeof(buf), buf);
 }
 
 /*************************************************************************************************/
@@ -813,8 +755,7 @@ void GlpsSetFeature(uint16_t feature)
 /*************************************************************************************************/
 void GlpsSetCccIdx(uint8_t glmCccIdx, uint8_t glmcCccIdx, uint8_t racpCccIdx)
 {
-  glpsCb.glmCccIdx = glmCccIdx;
-  glpsCb.glmcCccIdx = glmCccIdx;
-  glpsCb.racpCccIdx = racpCccIdx;
+    glpsCb.glmCccIdx = glmCccIdx;
+    glpsCb.glmcCccIdx = glmCccIdx;
+    glpsCb.racpCccIdx = racpCccIdx;
 }
-

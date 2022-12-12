@@ -84,7 +84,6 @@ __STATIC_INLINE bool cc310_backend_mutex_trylock(void)
     return nrf_mtx_trylock(&g_cc310_mutex);
 }
 
-
 /**@internal @brief Unlock a CC310 mutex.
  *
  * This function _must_ only be called when holding the lock. Unlocking a mutex which you do not
@@ -98,7 +97,6 @@ __STATIC_INLINE void cc310_backend_mutex_unlock(void)
 
 #endif // SUPPRESS_INLINE_IMPLEMENTATION
 
-
 #ifdef __cplusplus
 }
 #endif
@@ -108,4 +106,3 @@ __STATIC_INLINE void cc310_backend_mutex_unlock(void)
 /** @} */
 
 #endif // CC310_BACKEND_MUTEX_H__
-

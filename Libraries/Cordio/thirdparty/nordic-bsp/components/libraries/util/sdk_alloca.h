@@ -49,37 +49,34 @@
 #ifndef SDK_ALLOCA_H__
 #define SDK_ALLOCA_H__
 
-
 #if defined(__SDK_DOXYGEN__)
-    /** @brief Set to one it alloca() function is available on this platform and it is correctly defined
+/** @brief Set to one it alloca() function is available on this platform and it is correctly defined
      *  by this header file.
      */
-    #define SDK_ALLOCA_DEFINED 1
+#define SDK_ALLOCA_DEFINED 1
 #elif defined(__GNUC__)
-    #if defined(__SES_ARM)
-        // SES does not have definition of alloca(), but it have working GCC's __builtin_alloca().
-        #if !defined(alloca)
-            #define alloca(size) __builtin_alloca((size))
-        #endif
-    #else
-        // alloca() can be defined in <malloc.h> on some platforms, but if not then try standard <alloca.h> header file.
-        #include <malloc.h>
-        #if !defined(alloca)
-            #include <alloca.h>
-        #endif
-    #endif
-    #define SDK_ALLOCA_DEFINED 1
-#elif defined(__IAR_SYSTEMS_ICC__)
-    // IAR does not support alloca() function.
-    #define SDK_ALLOCA_DEFINED 0
+#if defined(__SES_ARM)
+// SES does not have definition of alloca(), but it have working GCC's __builtin_alloca().
+#if !defined(alloca)
+#define alloca(size) __builtin_alloca((size))
+#endif
 #else
-    // All other supported compilers have alloca() definition in <alloca.h> header file.
-    #include <alloca.h>
-    #define SDK_ALLOCA_DEFINED 1
+// alloca() can be defined in <malloc.h> on some platforms, but if not then try standard <alloca.h> header file.
+#include <malloc.h>
+#if !defined(alloca)
+#include <alloca.h>
+#endif
+#endif
+#define SDK_ALLOCA_DEFINED 1
+#elif defined(__IAR_SYSTEMS_ICC__)
+// IAR does not support alloca() function.
+#define SDK_ALLOCA_DEFINED 0
+#else
+// All other supported compilers have alloca() definition in <alloca.h> header file.
+#include <alloca.h>
+#define SDK_ALLOCA_DEFINED 1
 #endif
 
-
 /*lint -"d__builtin_alloca=(void*)" */
-
 
 #endif // NRF_ALLOCA_H__

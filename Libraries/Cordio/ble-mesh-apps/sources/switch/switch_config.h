@@ -30,8 +30,7 @@
 #include "mesh_prv_sr_api.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -40,16 +39,11 @@ extern "C"
 
 /*! Mesh Advertising Interface ID */
 #ifndef SWITCH_ADV_IF_ID
-#define SWITCH_ADV_IF_ID                   0
+#define SWITCH_ADV_IF_ID 0
 #endif
 
 /*! Switch number of elements. */
-enum
-{
-  SWITCH_ELEMENT_0,
-  SWITCH_ELEMENT_1,
-  SWITCH_ELEMENT_COUNT
-};
+enum { SWITCH_ELEMENT_0, SWITCH_ELEMENT_1, SWITCH_ELEMENT_COUNT };
 
 /**************************************************************************************************
   Global Variables

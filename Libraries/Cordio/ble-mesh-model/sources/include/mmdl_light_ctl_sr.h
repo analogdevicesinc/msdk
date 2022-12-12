@@ -29,8 +29,7 @@
 #include "mmdl_light_ctl_temp_sr_api.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -62,8 +61,8 @@ void MmdlLightCtlSrSetBoundLtLtness(meshElementId_t elementId, uint16_t ltness);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightCtlSrSetBoundTemp(meshElementId_t elementId, mmdlLightCtlTempSrState_t * pState,
-                                mmdlLightCtlTempSrState_t * pTargetState);
+void MmdlLightCtlSrSetBoundTemp(meshElementId_t elementId, mmdlLightCtlTempSrState_t *pState,
+                                mmdlLightCtlTempSrState_t *pTargetState);
 
 /*************************************************************************************************/
 /*!

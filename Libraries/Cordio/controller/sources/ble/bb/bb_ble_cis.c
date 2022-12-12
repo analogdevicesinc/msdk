@@ -31,7 +31,7 @@
   Global Variables
 **************************************************************************************************/
 
-BbBleDataPktStats_t bbCisStats;          /*!< CIS packet statistics. */
+BbBleDataPktStats_t bbCisStats; /*!< CIS packet statistics. */
 
 /*************************************************************************************************/
 /*!
@@ -47,19 +47,16 @@ BbBleDataPktStats_t bbCisStats;          /*!< CIS packet statistics. */
 /*************************************************************************************************/
 void BbBleCisTxData(PalBbBleTxBufDesc_t descs[], uint8_t cnt)
 {
-  if ((BbGetCurrentBod()->prot.pBle->chan.opType == BB_BLE_OP_MST_CIS_EVENT) &&
-      (bbBleCb.evtState == 0))
-  {
-    bbBleSetTifs();     /* master always Rx's after Tx */
-    PalBbBleTxData(descs, cnt);
-  }
-  else
-  {
-    BB_ISR_MARK(bbCisStats.txSetupUsec);
-    /* TODO set only if master or if slave and Rx may follow in CE. */
-    bbBleSetTifs();
-    PalBbBleTxTifsData(descs, cnt);
-  }
+    if ((BbGetCurrentBod()->prot.pBle->chan.opType == BB_BLE_OP_MST_CIS_EVENT) &&
+        (bbBleCb.evtState == 0)) {
+        bbBleSetTifs(); /* master always Rx's after Tx */
+        PalBbBleTxData(descs, cnt);
+    } else {
+        BB_ISR_MARK(bbCisStats.txSetupUsec);
+        /* TODO set only if master or if slave and Rx may follow in CE. */
+        bbBleSetTifs();
+        PalBbBleTxTifsData(descs, cnt);
+    }
 }
 
 /*************************************************************************************************/
@@ -80,17 +77,16 @@ void BbBleCisTxData(PalBbBleTxBufDesc_t descs[], uint8_t cnt)
 /*************************************************************************************************/
 void BbBleCisRxData(uint8_t *pBuf, uint16_t len)
 {
-  WSF_ASSERT(!bbBleCb.pRxCisDataBuf);
+    WSF_ASSERT(!bbBleCb.pRxCisDataBuf);
 
-  bbBleCb.pRxCisDataBuf = pBuf;
-  bbBleCb.rxCisDataLen = len;
+    bbBleCb.pRxCisDataBuf = pBuf;
+    bbBleCb.rxCisDataLen = len;
 
-  if ((BbGetCurrentBod()->prot.pBle->chan.opType == BB_BLE_OP_SLV_CIS_EVENT) &&
-      (bbBleCb.evtState == 0))
-  {
-    bbBleSetTifs();       /* slave always Tx's after Rx */
-    PalBbBleRxData(pBuf, len);
-  }
+    if ((BbGetCurrentBod()->prot.pBle->chan.opType == BB_BLE_OP_SLV_CIS_EVENT) &&
+        (bbBleCb.evtState == 0)) {
+        bbBleSetTifs(); /* slave always Tx's after Rx */
+        PalBbBleRxData(pBuf, len);
+    }
 }
 
 /*************************************************************************************************/
@@ -100,5 +96,5 @@ void BbBleCisRxData(uint8_t *pBuf, uint16_t len)
 /*************************************************************************************************/
 void BbBleGetCisStats(BbBleDataPktStats_t *pStats)
 {
-  *pStats = bbCisStats;
+    *pStats = bbCisStats;
 }

@@ -32,8 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
 #ifndef _SSI_PAL_BARRIER_H
 #define _SSI_PAL_BARRIER_H
 
@@ -68,4 +66,3 @@ void SaSi_PalRmb(void);
 @}
  */
 #endif
-

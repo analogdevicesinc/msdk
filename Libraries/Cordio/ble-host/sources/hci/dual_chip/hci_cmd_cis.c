@@ -39,39 +39,37 @@
 /*************************************************************************************************/
 void HciLeSetCigParamsCmd(HciCisCigParams_t *pCigParam)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
-  HciCisCisParams_t *pCisParam;
+    uint8_t *pBuf;
+    uint8_t *p;
+    HciCisCisParams_t *pCisParam;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_CIG_PARAMS,
-                          HCI_LEN_LE_SET_CIG_PARAMS(pCigParam->numCis))) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, pCigParam->cigId);
-    UINT24_TO_BSTREAM(p, pCigParam->sduIntervalMToS);
-    UINT24_TO_BSTREAM(p, pCigParam->sduIntervalSToM);
-    UINT8_TO_BSTREAM(p, pCigParam->sca);
-    UINT8_TO_BSTREAM(p, pCigParam->packing);
-    UINT8_TO_BSTREAM(p, pCigParam->framing);
-    UINT16_TO_BSTREAM(p, pCigParam->transLatMToS);
-    UINT16_TO_BSTREAM(p, pCigParam->transLatSToM);
-    UINT8_TO_BSTREAM(p, pCigParam->numCis);
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_CIG_PARAMS,
+                            HCI_LEN_LE_SET_CIG_PARAMS(pCigParam->numCis))) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, pCigParam->cigId);
+        UINT24_TO_BSTREAM(p, pCigParam->sduIntervalMToS);
+        UINT24_TO_BSTREAM(p, pCigParam->sduIntervalSToM);
+        UINT8_TO_BSTREAM(p, pCigParam->sca);
+        UINT8_TO_BSTREAM(p, pCigParam->packing);
+        UINT8_TO_BSTREAM(p, pCigParam->framing);
+        UINT16_TO_BSTREAM(p, pCigParam->transLatMToS);
+        UINT16_TO_BSTREAM(p, pCigParam->transLatSToM);
+        UINT8_TO_BSTREAM(p, pCigParam->numCis);
 
-    pCisParam = pCigParam->pCisParam;
+        pCisParam = pCigParam->pCisParam;
 
-    for (uint8_t i = pCigParam->numCis; i > 0; i--, pCisParam++)
-    {
-      UINT8_TO_BSTREAM(p, pCisParam->cisId);
-      UINT16_TO_BSTREAM(p, pCisParam->sduSizeMToS);
-      UINT16_TO_BSTREAM(p, pCisParam->sduSizeSToM);
-      UINT8_TO_BSTREAM(p, pCisParam->phyMToS);
-      UINT8_TO_BSTREAM(p, pCisParam->phySToM);
-      UINT8_TO_BSTREAM(p, pCisParam->rteMToS);
-      UINT8_TO_BSTREAM(p, pCisParam->rteSToM);
+        for (uint8_t i = pCigParam->numCis; i > 0; i--, pCisParam++) {
+            UINT8_TO_BSTREAM(p, pCisParam->cisId);
+            UINT16_TO_BSTREAM(p, pCisParam->sduSizeMToS);
+            UINT16_TO_BSTREAM(p, pCisParam->sduSizeSToM);
+            UINT8_TO_BSTREAM(p, pCisParam->phyMToS);
+            UINT8_TO_BSTREAM(p, pCisParam->phySToM);
+            UINT8_TO_BSTREAM(p, pCisParam->rteMToS);
+            UINT8_TO_BSTREAM(p, pCisParam->rteSToM);
+        }
+
+        hciCmdSend(pBuf);
     }
-
-    hciCmdSend(pBuf);
-  }
 }
 
 /*************************************************************************************************/
@@ -86,22 +84,20 @@ void HciLeSetCigParamsCmd(HciCisCigParams_t *pCigParam)
 /*************************************************************************************************/
 void HciLeCreateCisCmd(uint8_t numCis, HciCisCreateCisParams_t *pCreateCisParam)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CREATE_CIS, HCI_LEN_LE_CREATE_CIS(numCis))) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, numCis);
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_CREATE_CIS, HCI_LEN_LE_CREATE_CIS(numCis))) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, numCis);
 
-    for (; numCis > 0; numCis--, pCreateCisParam++)
-    {
-      UINT16_TO_BSTREAM(p, *pCreateCisParam->pCisHandle);
-      UINT16_TO_BSTREAM(p, *pCreateCisParam->pAclHandle);
+        for (; numCis > 0; numCis--, pCreateCisParam++) {
+            UINT16_TO_BSTREAM(p, *pCreateCisParam->pCisHandle);
+            UINT16_TO_BSTREAM(p, *pCreateCisParam->pAclHandle);
+        }
+
+        hciCmdSend(pBuf);
     }
-
-    hciCmdSend(pBuf);
-  }
 }
 
 /*************************************************************************************************/
@@ -115,15 +111,14 @@ void HciLeCreateCisCmd(uint8_t numCis, HciCisCreateCisParams_t *pCreateCisParam)
 /*************************************************************************************************/
 void HciLeRemoveCigCmd(uint8_t cigId)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_CIG, HCI_LEN_LE_REMOVE_CIG)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT8_TO_BSTREAM(p, cigId);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REMOVE_CIG, HCI_LEN_LE_REMOVE_CIG)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT8_TO_BSTREAM(p, cigId);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -137,15 +132,14 @@ void HciLeRemoveCigCmd(uint8_t cigId)
 /*************************************************************************************************/
 void HciLeAcceptCisReqCmd(uint16_t handle)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ACCEPT_CIS_REQ, HCI_LEN_LE_ACCEPT_CIS_REQ)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_ACCEPT_CIS_REQ, HCI_LEN_LE_ACCEPT_CIS_REQ)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, handle);
+        hciCmdSend(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -160,14 +154,13 @@ void HciLeAcceptCisReqCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeRejectCisReqCmd(uint16_t handle, uint8_t reason)
 {
-  uint8_t *pBuf;
-  uint8_t *p;
+    uint8_t *pBuf;
+    uint8_t *p;
 
-  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REJECT_CIS_REQ, HCI_LEN_LE_REJECT_CIS_REQ)) != NULL)
-  {
-    p = pBuf + HCI_CMD_HDR_LEN;
-    UINT16_TO_BSTREAM(p, handle);
-    UINT8_TO_BSTREAM(p, reason);
-    hciCmdSend(pBuf);
-  }
+    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_REJECT_CIS_REQ, HCI_LEN_LE_REJECT_CIS_REQ)) != NULL) {
+        p = pBuf + HCI_CMD_HDR_LEN;
+        UINT16_TO_BSTREAM(p, handle);
+        UINT8_TO_BSTREAM(p, reason);
+        hciCmdSend(pBuf);
+    }
 }

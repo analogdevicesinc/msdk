@@ -37,11 +37,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! HEX format '0x' or '0X' check */
-#define WSTR_IS_HEX_FORMAT(c) (((char)(c)[0] == '0') && \
-                               (((char)(c)[1] == 'x') || ((char)(c)[1] == 'X')))
+#define WSTR_IS_HEX_FORMAT(c) \
+    (((char)(c)[0] == '0') && (((char)(c)[1] == 'x') || ((char)(c)[1] == 'X')))
 
 /*! Binary format '0b' check */
-#define WSTR_IS_BIN_FORMAT(c)  (((char)(c)[0] == '0') && ((char)(c)[1] == 'b'))
+#define WSTR_IS_BIN_FORMAT(c) (((char)(c)[0] == '0') && ((char)(c)[1] == 'b'))
 
 /*************************************************************************************************/
 /*!
@@ -101,7 +101,7 @@ void WStrFormatHex(char *pBuf, uint32_t val, uint8_t len);
 /*************************************************************************************************/
 void WStrHexToArray(const char *pStr, uint8_t *pBuf, uint16_t len);
 
-/*! \} */    /* WSF_UTIL_API */
+/*! \} */ /* WSF_UTIL_API */
 
 #ifdef __cplusplus
 }

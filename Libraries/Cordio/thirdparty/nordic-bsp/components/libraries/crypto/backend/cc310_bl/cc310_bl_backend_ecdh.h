@@ -59,7 +59,6 @@ typedef uint32_t nrf_crypto_backend_secp224r1_ecdh_context_t;
 #define NRF_CRYPTO_BACKEND_SECP224R1_ECDH_CONTEXT_SIZE 0
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
 #define nrf_crypto_backend_secp256r1_ecdh_compute NULL
 typedef uint32_t nrf_crypto_backend_secp256r1_ecdh_context_t;

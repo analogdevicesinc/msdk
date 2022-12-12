@@ -33,12 +33,11 @@
 **************************************************************************************************/
 
 /*! \brief  Scheduler task events. */
-enum
-{
-  SCH_EVENT_BOD_COMPLETE = (1 << 0),    /*!< BOD completion event. */
-  SCH_EVENT_BOD_ABORT    = (1 << 1),    /*!< BOD abort event. */
-  SCH_EVENT_BOD_CURTAIL  = (1 << 2),    /*!< BOD curtail event. */
-  SCH_EVENT_BOD_LOAD     = (1 << 3),    /*!< BOD load event. */
+enum {
+    SCH_EVENT_BOD_COMPLETE = (1 << 0), /*!< BOD completion event. */
+    SCH_EVENT_BOD_ABORT = (1 << 1), /*!< BOD abort event. */
+    SCH_EVENT_BOD_CURTAIL = (1 << 2), /*!< BOD curtail event. */
+    SCH_EVENT_BOD_LOAD = (1 << 3), /*!< BOD load event. */
 };
 
 /**************************************************************************************************
@@ -55,8 +54,8 @@ SchCtrlBlk_t schCb;
 /*************************************************************************************************/
 static void schBodCompHandler(void)
 {
-  WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_COMPLETE);
-  schCb.eventSetFlagCount++;
+    WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_COMPLETE);
+    schCb.eventSetFlagCount++;
 }
 
 /*************************************************************************************************/
@@ -66,8 +65,8 @@ static void schBodCompHandler(void)
 /*************************************************************************************************/
 static void schBodAbortHandler(void)
 {
-  WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_ABORT);
-  schCb.eventSetFlagCount++;
+    WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_ABORT);
+    schCb.eventSetFlagCount++;
 }
 
 /*************************************************************************************************/
@@ -77,8 +76,8 @@ static void schBodAbortHandler(void)
 /*************************************************************************************************/
 static void schBodCurtailHandler(void)
 {
-  WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_CURTAIL);
-  schCb.eventSetFlagCount++;
+    WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_CURTAIL);
+    schCb.eventSetFlagCount++;
 }
 
 /*************************************************************************************************/
@@ -88,85 +87,73 @@ static void schBodCurtailHandler(void)
 /*************************************************************************************************/
 static void schBodLoadHandler(void)
 {
-  BbOpDesc_t* pNextBod = schCb.pHead;
+    BbOpDesc_t *pNextBod = schCb.pHead;
 
-  if (schCb.eventSetFlagCount)
-  {
-    WSF_ASSERT(pNextBod);
-    /* Delay loading after event flag is cleared. */
-    WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_LOAD);
-    schCb.delayLoadCount++;
-    schCb.delayLoadTotalCount++;
-    if (schCb.delayLoadCount > schCb.delayLoadWatermarkCount)
-    {
-      schCb.delayLoadWatermarkCount = schCb.delayLoadCount;
+    if (schCb.eventSetFlagCount) {
+        WSF_ASSERT(pNextBod);
+        /* Delay loading after event flag is cleared. */
+        WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_LOAD);
+        schCb.delayLoadCount++;
+        schCb.delayLoadTotalCount++;
+        if (schCb.delayLoadCount > schCb.delayLoadWatermarkCount) {
+            schCb.delayLoadWatermarkCount = schCb.delayLoadCount;
+        }
+
+        return;
     }
 
-    return;
-  }
-
-  /* Try load head if scheduler is idle. */
-  if (schCb.state == SCH_STATE_IDLE)
-  {
-    if (!schTryLoadHead())
-    {
-      /* Head load failed. */
-      schBodAbortHandler();
+    /* Try load head if scheduler is idle. */
+    if (schCb.state == SCH_STATE_IDLE) {
+        if (!schTryLoadHead()) {
+            /* Head load failed. */
+            schBodAbortHandler();
+        }
+        /* Move to next BOD. */
+        pNextBod = pNextBod->pNext;
     }
-    /* Move to next BOD. */
-    pNextBod = pNextBod->pNext;
-  }
 #if SCH_TIMER_REQUIRED == TRUE
-  /* If head is executed, check cur tail operation is needed or not. */
-  else
-  {
-    /* Head BOD and next BOD must exist. */
-    WSF_ASSERT(schCb.pHead);
-    WSF_ASSERT(schCb.pHead->pNext);
-    pNextBod = pNextBod->pNext;
+    /* If head is executed, check cur tail operation is needed or not. */
+    else {
+        /* Head BOD and next BOD must exist. */
+        WSF_ASSERT(schCb.pHead);
+        WSF_ASSERT(schCb.pHead->pNext);
+        pNextBod = pNextBod->pNext;
 
-    /* Skip curtail load if next BOD has same or lower priority than current BOD. */
-    if ((pNextBod->reschPolicy) >= (schCb.pHead->reschPolicy))
-    {
-      /* Delay loading until idle state. */
-      WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_LOAD);
-      schCb.delayLoadCount++;
-      schCb.delayLoadTotalCount++;
-      if (schCb.delayLoadCount > schCb.delayLoadWatermarkCount)
-      {
-        schCb.delayLoadWatermarkCount = schCb.delayLoadCount;
-      }
-      return;
+        /* Skip curtail load if next BOD has same or lower priority than current BOD. */
+        if ((pNextBod->reschPolicy) >= (schCb.pHead->reschPolicy)) {
+            /* Delay loading until idle state. */
+            WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_LOAD);
+            schCb.delayLoadCount++;
+            schCb.delayLoadTotalCount++;
+            if (schCb.delayLoadCount > schCb.delayLoadWatermarkCount) {
+                schCb.delayLoadWatermarkCount = schCb.delayLoadCount;
+            }
+            return;
+        }
+
+        if (!schTryCurTailLoadNext()) {
+            /* Curtail load failed. */
+            schBodAbortHandler();
+        }
+        /* Move to the next next BOD. */
+        pNextBod = pNextBod->pNext;
     }
 
-    if (!schTryCurTailLoadNext())
-    {
-      /* Curtail load failed. */
-      schBodAbortHandler();
-    }
-    /* Move to the next next BOD. */
-    pNextBod = pNextBod->pNext;
-  }
+    /* If pNextBod exists, it should start scheduler timer. */
+    if (pNextBod) {
+        uint32_t execTimeUsec = schGetTimeToExecBod(pNextBod);
 
-  /* If pNextBod exists, it should start scheduler timer. */
-  if (pNextBod)
-  {
-    uint32_t execTimeUsec = schGetTimeToExecBod(pNextBod);
-
-    if (execTimeUsec)
-    {
-      /* Always stop existing timer first for simplicity. */
-      PalTimerStop();
-      PalTimerStart(execTimeUsec);
+        if (execTimeUsec) {
+            /* Always stop existing timer first for simplicity. */
+            PalTimerStop();
+            PalTimerStart(execTimeUsec);
+        } else {
+            /* If this happens, it means there's something wrong with the scheduler list. */
+            LL_TRACE_WARN0("Next BOD overlaps with current BOD");
+            /* Send scheduler load event. */
+            SchLoadHandler();
+        }
     }
-    else
-    {
-      /* If this happens, it means there's something wrong with the scheduler list. */
-      LL_TRACE_WARN0("Next BOD overlaps with current BOD");
-      /* Send scheduler load event. */
-      SchLoadHandler();
-    }
-  }
 #endif
 }
 
@@ -177,7 +164,7 @@ static void schBodLoadHandler(void)
 /*************************************************************************************************/
 void SchLoadHandler(void)
 {
-  WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_LOAD);
+    WsfSetEvent(schCb.handlerId, SCH_EVENT_BOD_LOAD);
 }
 
 /*************************************************************************************************/
@@ -187,9 +174,9 @@ void SchLoadHandler(void)
 /*************************************************************************************************/
 void SchInit(void)
 {
-  memset(&schCb, 0, sizeof(schCb));
-  SchReset();
-  PalTimerInit(schBodLoadHandler);
+    memset(&schCb, 0, sizeof(schCb));
+    SchReset();
+    PalTimerInit(schBodLoadHandler);
 }
 
 /*************************************************************************************************/
@@ -205,11 +192,11 @@ void SchInit(void)
 /*************************************************************************************************/
 void SchHandlerInit(wsfHandlerId_t handlerId)
 {
-  SchInit();
+    SchInit();
 
-  schCb.handlerId = handlerId;
+    schCb.handlerId = handlerId;
 
-  BbRegister(schBodCompHandler);
+    BbRegister(schBodCompHandler);
 }
 
 /*************************************************************************************************/
@@ -219,12 +206,12 @@ void SchHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void SchReset(void)
 {
-  schCb.state = SCH_STATE_IDLE;
-  schCb.pHead = NULL;
-  schCb.pTail = NULL;
-  schCb.schHandlerWatermarkUsec = 0;
-  schCb.delayLoadWatermarkCount = 0;
-  schCb.delayLoadTotalCount = 0;
+    schCb.state = SCH_STATE_IDLE;
+    schCb.pHead = NULL;
+    schCb.pTail = NULL;
+    schCb.schHandlerWatermarkUsec = 0;
+    schCb.delayLoadWatermarkCount = 0;
+    schCb.delayLoadTotalCount = 0;
 }
 
 /*************************************************************************************************/
@@ -237,91 +224,81 @@ void SchReset(void)
 /*************************************************************************************************/
 void SchHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  /* Unused parameters */
-  (void)pMsg;
+    /* Unused parameters */
+    (void)pMsg;
 
-  /* Assume scheduler clock started. */
-  uint32_t startTime = PalBbGetCurrentTime();
+    /* Assume scheduler clock started. */
+    uint32_t startTime = PalBbGetCurrentTime();
 
-  while (event != 0)
-  {
-    BbOpDesc_t *pBod = schCb.pHead;
+    while (event != 0) {
+        BbOpDesc_t *pBod = schCb.pHead;
 
-    if (!pBod)
-    {
-      schCb.eventSetFlagCount = 0;
-      schCb.state = SCH_STATE_IDLE;
-      return;
-    }
+        if (!pBod) {
+            schCb.eventSetFlagCount = 0;
+            schCb.state = SCH_STATE_IDLE;
+            return;
+        }
 
-    if (event & SCH_EVENT_BOD_COMPLETE)
-    {
-      WSF_ASSERT(schCb.state == SCH_STATE_EXEC);
-      WSF_ASSERT(schCb.eventSetFlagCount);
+        if (event & SCH_EVENT_BOD_COMPLETE) {
+            WSF_ASSERT(schCb.state == SCH_STATE_EXEC);
+            WSF_ASSERT(schCb.eventSetFlagCount);
 
-      /*** Complete current BOD ***/
+            /*** Complete current BOD ***/
 
-      schCb.state = SCH_STATE_IDLE;
-      schRemoveHead();
-      if (pBod->endCback)
-      {
-        pBod->endCback(pBod);
-      }
-      schCb.eventSetFlagCount--;
+            schCb.state = SCH_STATE_IDLE;
+            schRemoveHead();
+            if (pBod->endCback) {
+                pBod->endCback(pBod);
+            }
+            schCb.eventSetFlagCount--;
 
 #if SCH_TIMER_REQUIRED == FALSE
-      schBodLoadHandler();
+            schBodLoadHandler();
 #endif
-      event &= ~SCH_EVENT_BOD_COMPLETE;
-    }
+            event &= ~SCH_EVENT_BOD_COMPLETE;
+        }
 
-    else if (event & SCH_EVENT_BOD_ABORT)
-    {
-      WSF_ASSERT(schCb.state == SCH_STATE_IDLE);
-      WSF_ASSERT(schCb.eventSetFlagCount);
+        else if (event & SCH_EVENT_BOD_ABORT) {
+            WSF_ASSERT(schCb.state == SCH_STATE_IDLE);
+            WSF_ASSERT(schCb.eventSetFlagCount);
 
-      /*** Abort current BOD ***/
+            /*** Abort current BOD ***/
 
-      schRemoveHead();
-      if (pBod->abortCback)
-      {
-        pBod->abortCback(pBod);
-      }
-      schCb.eventSetFlagCount--;
+            schRemoveHead();
+            if (pBod->abortCback) {
+                pBod->abortCback(pBod);
+            }
+            schCb.eventSetFlagCount--;
 
 #if SCH_TIMER_REQUIRED == FALSE
-      schBodLoadHandler();
+            schBodLoadHandler();
 #endif
-      event &= ~SCH_EVENT_BOD_ABORT;
+            event &= ~SCH_EVENT_BOD_ABORT;
+        }
+
+        else if (event & SCH_EVENT_BOD_CURTAIL) {
+            WSF_ASSERT(schCb.eventSetFlagCount);
+
+            /*** Complete previous BOD ***/
+            schRemoveHead();
+            if (pBod->endCback) {
+                pBod->endCback(pBod);
+            }
+            schCb.eventSetFlagCount--;
+            event &= ~SCH_EVENT_BOD_CURTAIL;
+        }
+
+        else if (event & SCH_EVENT_BOD_LOAD) {
+            schBodLoadHandler();
+            event &= ~SCH_EVENT_BOD_LOAD;
+        }
     }
 
-    else if (event & SCH_EVENT_BOD_CURTAIL)
-    {
-      WSF_ASSERT(schCb.eventSetFlagCount);
-
-      /*** Complete previous BOD ***/
-      schRemoveHead();
-      if (pBod->endCback)
-      {
-        pBod->endCback(pBod);
-      }
-      schCb.eventSetFlagCount--;
-      event &= ~SCH_EVENT_BOD_CURTAIL;
+    uint32_t endTime = PalBbGetCurrentTime();
+    uint32_t durUsec = BbGetTargetTimeDelta(endTime, startTime);
+    if (schCb.schHandlerWatermarkUsec < durUsec) {
+        schCb.schHandlerWatermarkUsec = durUsec;
     }
-
-    else if (event & SCH_EVENT_BOD_LOAD)
-    {
-      schBodLoadHandler();
-      event &= ~SCH_EVENT_BOD_LOAD;
-    }
-  }
-
-  uint32_t endTime = PalBbGetCurrentTime();
-  uint32_t durUsec = BbGetTargetTimeDelta(endTime, startTime);
-  if (schCb.schHandlerWatermarkUsec < durUsec)
-  {
-    schCb.schHandlerWatermarkUsec = durUsec;
-  }
 }
 
 /*************************************************************************************************/
@@ -335,38 +312,31 @@ void SchHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static bool_t schLoadBod(BbOpDesc_t *pBod)
 {
-  bool_t loaded = FALSE;
+    bool_t loaded = FALSE;
 
-  if (schDueTimeInFuture(pBod))
-  {
-    /* Setup BB services. */
-    BbExecuteBod(pBod);
-    schCb.delayLoadCount = 0;
+    if (schDueTimeInFuture(pBod)) {
+        /* Setup BB services. */
+        BbExecuteBod(pBod);
+        schCb.delayLoadCount = 0;
 
-    if (!BbGetBodTerminateFlag())
-    {
-      loaded = TRUE;
+        if (!BbGetBodTerminateFlag()) {
+            loaded = TRUE;
+        } else {
+            LL_TRACE_WARN1("!!! BOD terminated on startup, pBod=0x%08x", pBod);
+
+            if (schCb.eventSetFlagCount) {
+                /* Termination or failure is scheduled to complete at next task event. */
+                loaded = TRUE;
+            }
+
+            BbCancelBod();
+        }
+    } else {
+        /* This might occur due to the delay of conflict resolution. */
+        LL_TRACE_ERR1("!!! Head element in the past, pBod=0x%08x", pBod);
     }
-    else
-    {
-      LL_TRACE_WARN1("!!! BOD terminated on startup, pBod=0x%08x", pBod);
 
-      if (schCb.eventSetFlagCount)
-      {
-        /* Termination or failure is scheduled to complete at next task event. */
-        loaded = TRUE;
-      }
-
-      BbCancelBod();
-    }
-  }
-  else
-  {
-    /* This might occur due to the delay of conflict resolution. */
-    LL_TRACE_ERR1("!!! Head element in the past, pBod=0x%08x", pBod);
-  }
-
-  return loaded;
+    return loaded;
 }
 
 /*************************************************************************************************/
@@ -378,31 +348,29 @@ static bool_t schLoadBod(BbOpDesc_t *pBod)
 /*************************************************************************************************/
 bool_t schTryCurTailLoadNext(void)
 {
-  bool_t loaded = TRUE;
+    bool_t loaded = TRUE;
 
-  /* It should only be called when scheduler is in execute state. */
-  WSF_ASSERT(schCb.state == SCH_STATE_EXEC);
-  /* Head BOD and next BOD must exist. */
-  WSF_ASSERT(schCb.pHead);
-  WSF_ASSERT(schCb.pHead->pNext);
+    /* It should only be called when scheduler is in execute state. */
+    WSF_ASSERT(schCb.state == SCH_STATE_EXEC);
+    /* Head BOD and next BOD must exist. */
+    WSF_ASSERT(schCb.pHead);
+    WSF_ASSERT(schCb.pHead->pNext);
 
-  if (schCb.pHead->pNext)
-  {
-    /* Hard stop head BOD and load next BOD. */
-    BbCancelBod();
-    schBodCurtailHandler();
+    if (schCb.pHead->pNext) {
+        /* Hard stop head BOD and load next BOD. */
+        BbCancelBod();
+        schBodCurtailHandler();
 
-    schCb.state = SCH_STATE_EXEC;
+        schCb.state = SCH_STATE_EXEC;
 
-    /* Try load next BOD. */
-    if (!(schLoadBod(schCb.pHead->pNext)))
-    {
-      schCb.state = SCH_STATE_IDLE;
-      loaded = FALSE;
+        /* Try load next BOD. */
+        if (!(schLoadBod(schCb.pHead->pNext))) {
+            schCb.state = SCH_STATE_IDLE;
+            loaded = FALSE;
+        }
     }
-  }
 
-  return loaded;
+    return loaded;
 }
 
 /*************************************************************************************************/
@@ -414,28 +382,26 @@ bool_t schTryCurTailLoadNext(void)
 /*************************************************************************************************/
 bool_t schTryLoadHead(void)
 {
-  bool_t loaded = TRUE;
+    bool_t loaded = TRUE;
 
-  /* It should only be called when scheduler is in idle state. */
-  WSF_ASSERT(schCb.state == SCH_STATE_IDLE);
+    /* It should only be called when scheduler is in idle state. */
+    WSF_ASSERT(schCb.state == SCH_STATE_IDLE);
 
 #if SCH_TIMER_REQUIRED == TRUE
-  /* Head BOD must exist. */
-  WSF_ASSERT(schCb.pHead);
+    /* Head BOD must exist. */
+    WSF_ASSERT(schCb.pHead);
 #endif
 
-  if (schCb.pHead)
-  {
-    schCb.state = SCH_STATE_EXEC;
+    if (schCb.pHead) {
+        schCb.state = SCH_STATE_EXEC;
 
-    if (!schLoadBod(schCb.pHead))
-    {
-      schCb.state = SCH_STATE_IDLE;
-      loaded = FALSE;
+        if (!schLoadBod(schCb.pHead)) {
+            schCb.state = SCH_STATE_IDLE;
+            loaded = FALSE;
+        }
     }
-  }
 
-  return loaded;
+    return loaded;
 }
 
 /*************************************************************************************************/
@@ -447,7 +413,7 @@ bool_t schTryLoadHead(void)
 /*************************************************************************************************/
 uint16_t SchStatsGetHandlerWatermarkUsec(void)
 {
-  return schCb.schHandlerWatermarkUsec;
+    return schCb.schHandlerWatermarkUsec;
 }
 
 /*************************************************************************************************/
@@ -459,7 +425,7 @@ uint16_t SchStatsGetHandlerWatermarkUsec(void)
 /*************************************************************************************************/
 uint16_t SchStatsGetDelayLoadWatermarkCount(void)
 {
-  return schCb.delayLoadWatermarkCount;
+    return schCb.delayLoadWatermarkCount;
 }
 
 /*************************************************************************************************/
@@ -471,5 +437,5 @@ uint16_t SchStatsGetDelayLoadWatermarkCount(void)
 /*************************************************************************************************/
 uint32_t SchStatsGetDelayLoadTotalCount(void)
 {
-  return schCb.delayLoadTotalCount;
+    return schCb.delayLoadTotalCount;
 }

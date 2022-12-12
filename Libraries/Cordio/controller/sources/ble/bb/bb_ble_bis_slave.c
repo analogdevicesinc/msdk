@@ -32,7 +32,7 @@
   Global Variables
 **************************************************************************************************/
 
-BbBleDataPktStats_t bbBisStats;   /*!< BIS packet statistics. */
+BbBleDataPktStats_t bbBisStats; /*!< BIS packet statistics. */
 
 /*************************************************************************************************/
 /*!
@@ -45,25 +45,24 @@ BbBleDataPktStats_t bbBisStats;   /*!< BIS packet statistics. */
 /*************************************************************************************************/
 static void bbSlvBisTxCompCback(uint8_t status)
 {
-  BB_ISR_START();
+    BB_ISR_START();
 
-  bbBleCb.evtState += 1;
+    bbBleCb.evtState += 1;
 
-  WSF_ASSERT(BbGetCurrentBod());
+    WSF_ASSERT(BbGetCurrentBod());
 
-  BbOpDesc_t * const pCur = BbGetCurrentBod();
-  BbBleSlvBisEvent_t * const pBis = &pCur->prot.pBle->op.slvBis;
+    BbOpDesc_t *const pCur = BbGetCurrentBod();
+    BbBleSlvBisEvent_t *const pBis = &pCur->prot.pBle->op.slvBis;
 
-  pBis->txDataCback(pCur, status);
-  BB_INC_STAT(bbBisStats.txData);
+    pBis->txDataCback(pCur, status);
+    BB_INC_STAT(bbBisStats.txData);
 
-  if (BbGetBodTerminateFlag())
-  {
-    PalBbBleCancelTifs();
-    BbTerminateBod();
-  }
+    if (BbGetBodTerminateFlag()) {
+        PalBbBleCancelTifs();
+        BbTerminateBod();
+    }
 
-  BB_ISR_MARK(bbBisStats.txIsrUsec);
+    BB_ISR_MARK(bbBisStats.txIsrUsec);
 }
 
 /*************************************************************************************************/
@@ -76,7 +75,7 @@ static void bbSlvBisTxCompCback(uint8_t status)
 /*************************************************************************************************/
 static void bbSlvCancelBisOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 {
-  PalBbBleCancelData();
+    PalBbBleCancelData();
 }
 
 /*************************************************************************************************/
@@ -89,26 +88,26 @@ static void bbSlvCancelBisOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 /*************************************************************************************************/
 static void bbSlvExecuteBisOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 {
-  BbBleSlvBisEvent_t * const pBis = &pBod->prot.pBle->op.slvBis;
+    BbBleSlvBisEvent_t *const pBis = &pBod->prot.pBle->op.slvBis;
 
-  PalBbBleSetChannelParam(&pBle->chan);
+    PalBbBleSetChannelParam(&pBle->chan);
 
-  bbBleCb.bbParam.txCback = bbSlvBisTxCompCback;
-  /* bbBleCb.bbParam.rxCback = NULL; */         /* Unused */
-  bbBleCb.bbParam.dueUsec = BbAdjustTime(pBod->dueUsec);
-  pBod->dueUsec = bbBleCb.bbParam.dueUsec;
-  /* bbBleCb.bbParam.rxTimeoutUsec = 0; */      /* Unused */
-  PalBbBleSetDataParams(&bbBleCb.bbParam);
+    bbBleCb.bbParam.txCback = bbSlvBisTxCompCback;
+    /* bbBleCb.bbParam.rxCback = NULL; */ /* Unused */
+    bbBleCb.bbParam.dueUsec = BbAdjustTime(pBod->dueUsec);
+    pBod->dueUsec = bbBleCb.bbParam.dueUsec;
+    /* bbBleCb.bbParam.rxTimeoutUsec = 0; */ /* Unused */
+    PalBbBleSetDataParams(&bbBleCb.bbParam);
 
-  bbBleCb.evtState = 0;
+    bbBleCb.evtState = 0;
 
-  pBis->execCback(pBod);
+    pBis->execCback(pBod);
 
-  if (BbGetBodTerminateFlag() &&    /* Client signaled cancel. */
-      BbGetCurrentBod())            /* Termination still pending. */
-  {
-    BbTerminateBod();
-  }
+    if (BbGetBodTerminateFlag() && /* Client signaled cancel. */
+        BbGetCurrentBod()) /* Termination still pending. */
+    {
+        BbTerminateBod();
+    }
 }
 
 /*************************************************************************************************/
@@ -120,9 +119,9 @@ static void bbSlvExecuteBisOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
 /*************************************************************************************************/
 void BbBleBisSlaveInit(void)
 {
-  bbBleRegisterOp(BB_BLE_OP_SLV_BIS_EVENT, bbSlvExecuteBisOp, bbSlvCancelBisOp);
+    bbBleRegisterOp(BB_BLE_OP_SLV_BIS_EVENT, bbSlvExecuteBisOp, bbSlvCancelBisOp);
 
-  memset(&bbBisStats, 0, sizeof(bbBisStats));
+    memset(&bbBisStats, 0, sizeof(bbBisStats));
 }
 
 /*************************************************************************************************/
@@ -135,17 +134,15 @@ void BbBleBisSlaveInit(void)
  *  \param      pNextChan   Next PDU channel.
  */
 /*************************************************************************************************/
-void BbBleBisTxData(PalBbBleTxBufDesc_t descs[], uint8_t cnt, uint32_t nextPduTime, PalBbBleChan_t *pNextChan)
+void BbBleBisTxData(PalBbBleTxBufDesc_t descs[], uint8_t cnt, uint32_t nextPduTime,
+                    PalBbBleChan_t *pNextChan)
 {
-  bbBleSetAbsIfs(nextPduTime, pNextChan);
+    bbBleSetAbsIfs(nextPduTime, pNextChan);
 
-  if (bbBleCb.evtState == 0)
-  {
-    PalBbBleTxData(descs, cnt);
-  }
-  else
-  {
-    BB_ISR_MARK(bbBisStats.txSetupUsec);
-    PalBbBleTxTifsData(descs, cnt);
-  }
+    if (bbBleCb.evtState == 0) {
+        PalBbBleTxData(descs, cnt);
+    } else {
+        BB_ISR_MARK(bbBisStats.txSetupUsec);
+        PalBbBleTxTifsData(descs, cnt);
+    }
 }

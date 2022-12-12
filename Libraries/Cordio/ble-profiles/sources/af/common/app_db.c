@@ -37,91 +37,89 @@
 **************************************************************************************************/
 
 /*! App DB NVM version id. */
-#define APP_DB_NVM_VERSION                    0x0001
+#define APP_DB_NVM_VERSION 0x0001
 
 /*! App DB NVM base identifiers. */
-#define APP_DB_NVM_BASE                       0x1000
-#define APP_DB_NVM_RECORD_BASE                (APP_DB_NVM_BASE)
+#define APP_DB_NVM_BASE 0x1000
+#define APP_DB_NVM_RECORD_BASE (APP_DB_NVM_BASE)
 
 /*! App DB NVM record parameter indicies. */
-#define APP_DB_NVM_IN_USE_ID                  0
-#define APP_DB_NVM_PEER_ADDR_ID               1
-#define APP_DB_NVM_ADDR_TYPE_ID               2
-#define APP_DB_NVM_PEER_IRK_ID                3
-#define APP_DB_NVM_PEER_CSRK_ID               4
-#define APP_DB_NVM_KV_MASK_ID                 5
-#define APP_DB_NVM_VALID_ID                   6
-#define APP_DB_NVM_PEER_RAPO_ID               7
-#define APP_DB_NVM_LOCAL_LTK_ID               8
-#define APP_DB_NVM_LOCAL_SEC_LVL_ID           9
-#define APP_DB_NVM_PEER_ADDR_RES_ID           10
-#define APP_DB_NVM_PEER_LTK_ID                11
-#define APP_DB_NVM_PEER_SEC_LVL_ID            12
-#define APP_DB_NVM_CCC_TBL_ID                 13
-#define APP_DB_NVM_PEER_SIGN_CTR_ID           14
-#define APP_DB_NVM_CAS_ID                     15
-#define APP_DB_NVM_CSF_ID                     16
-#define APP_DB_NVM_CACHE_HASH_ID              17
-#define APP_DB_NVM_HASH_ID                    18
-#define APP_DB_NVM_HDL_LIST_ID                19
-#define APP_DB_NVM_DISC_STATUS_ID             20
+#define APP_DB_NVM_IN_USE_ID 0
+#define APP_DB_NVM_PEER_ADDR_ID 1
+#define APP_DB_NVM_ADDR_TYPE_ID 2
+#define APP_DB_NVM_PEER_IRK_ID 3
+#define APP_DB_NVM_PEER_CSRK_ID 4
+#define APP_DB_NVM_KV_MASK_ID 5
+#define APP_DB_NVM_VALID_ID 6
+#define APP_DB_NVM_PEER_RAPO_ID 7
+#define APP_DB_NVM_LOCAL_LTK_ID 8
+#define APP_DB_NVM_LOCAL_SEC_LVL_ID 9
+#define APP_DB_NVM_PEER_ADDR_RES_ID 10
+#define APP_DB_NVM_PEER_LTK_ID 11
+#define APP_DB_NVM_PEER_SEC_LVL_ID 12
+#define APP_DB_NVM_CCC_TBL_ID 13
+#define APP_DB_NVM_PEER_SIGN_CTR_ID 14
+#define APP_DB_NVM_CAS_ID 15
+#define APP_DB_NVM_CSF_ID 16
+#define APP_DB_NVM_CACHE_HASH_ID 17
+#define APP_DB_NVM_HASH_ID 18
+#define APP_DB_NVM_HDL_LIST_ID 19
+#define APP_DB_NVM_DISC_STATUS_ID 20
 
 /* Max parameter index. */
-#define APP_DB_NVM_HDL_MAX                    64
+#define APP_DB_NVM_HDL_MAX 64
 
 /*! Macro to generate NVM id from a record parameter index and record index. */
-#define DBNV_ID(p, i)                         (APP_DB_NVM_RECORD_BASE + (APP_DB_NVM_HDL_MAX * i) + p)
+#define DBNV_ID(p, i) (APP_DB_NVM_RECORD_BASE + (APP_DB_NVM_HDL_MAX * i) + p)
 
 /*! Invalid index */
-#define APP_DB_INDEX_INVALID                  0xFF
+#define APP_DB_INDEX_INVALID 0xFF
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Database record */
-typedef struct
-{
-  /*! Common for all roles */
-  bdAddr_t     peerAddr;                      /*! Peer address */
-  uint8_t      addrType;                      /*! Peer address type */
-  dmSecIrk_t   peerIrk;                       /*! Peer IRK */
-  dmSecCsrk_t  peerCsrk;                      /*! Peer CSRK */
-  uint8_t      keyValidMask;                  /*! Valid keys in this record */
-  bool_t       inUse;                         /*! TRUE if record in use */
-  bool_t       valid;                         /*! TRUE if record is valid */
-  bool_t       peerAddedToRl;                 /*! TRUE if peer device's been added to resolving list */
-  bool_t       peerRpao;                      /*! TRUE if RPA Only attribute's present on peer device */
+typedef struct {
+    /*! Common for all roles */
+    bdAddr_t peerAddr; /*! Peer address */
+    uint8_t addrType; /*! Peer address type */
+    dmSecIrk_t peerIrk; /*! Peer IRK */
+    dmSecCsrk_t peerCsrk; /*! Peer CSRK */
+    uint8_t keyValidMask; /*! Valid keys in this record */
+    bool_t inUse; /*! TRUE if record in use */
+    bool_t valid; /*! TRUE if record is valid */
+    bool_t peerAddedToRl; /*! TRUE if peer device's been added to resolving list */
+    bool_t peerRpao; /*! TRUE if RPA Only attribute's present on peer device */
 
-  /*! For slave local device */
-  dmSecLtk_t   localLtk;                      /*! Local LTK */
-  uint8_t      localLtkSecLevel;              /*! Local LTK security level */
-  bool_t       peerAddrRes;                   /*! TRUE if address resolution's supported on peer device (master) */
+    /*! For slave local device */
+    dmSecLtk_t localLtk; /*! Local LTK */
+    uint8_t localLtkSecLevel; /*! Local LTK security level */
+    bool_t peerAddrRes; /*! TRUE if address resolution's supported on peer device (master) */
 
-  /*! For master local device */
-  dmSecLtk_t   peerLtk;                       /*! Peer LTK */
-  uint8_t      peerLtkSecLevel;               /*! Peer LTK security level */
+    /*! For master local device */
+    dmSecLtk_t peerLtk; /*! Peer LTK */
+    uint8_t peerLtkSecLevel; /*! Peer LTK security level */
 
-  /*! for ATT server local device */
-  uint16_t     cccTbl[APP_DB_NUM_CCCD];       /*! Client characteristic configuration descriptors */
-  uint32_t     peerSignCounter;               /*! Peer Sign Counter */
-  uint8_t      changeAwareState;              /*! Peer client awareness to state change in database */
-  uint8_t      csf[ATT_CSF_LEN];              /*! Peer client supported features record */
+    /*! for ATT server local device */
+    uint16_t cccTbl[APP_DB_NUM_CCCD]; /*! Client characteristic configuration descriptors */
+    uint32_t peerSignCounter; /*! Peer Sign Counter */
+    uint8_t changeAwareState; /*! Peer client awareness to state change in database */
+    uint8_t csf[ATT_CSF_LEN]; /*! Peer client supported features record */
 
-  /*! for ATT client */
-  bool_t       cacheByHash;                   /*! TRUE if cached handles are maintained by comparing database hash */
-  uint8_t      dbHash[ATT_DATABASE_HASH_LEN]; /*! Peer database hash */
-  uint16_t     hdlList[APP_DB_HDL_LIST_LEN];  /*! Cached handle list */
-  uint8_t      discStatus;                    /*! Service discovery and configuration status */
+    /*! for ATT client */
+    bool_t cacheByHash; /*! TRUE if cached handles are maintained by comparing database hash */
+    uint8_t dbHash[ATT_DATABASE_HASH_LEN]; /*! Peer database hash */
+    uint16_t hdlList[APP_DB_HDL_LIST_LEN]; /*! Cached handle list */
+    uint8_t discStatus; /*! Service discovery and configuration status */
 } appDbRec_t;
 
 /*! Database type */
-typedef struct
-{
-  appDbRec_t  rec[APP_DB_NUM_RECS];               /*! Device database records */
-  char        devName[ATT_DEFAULT_PAYLOAD_LEN];   /*! Device name */
-  uint8_t     devNameLen;                         /*! Device name length */
-  uint8_t     dbHash[ATT_DATABASE_HASH_LEN];      /*! Device GATT database hash */
+typedef struct {
+    appDbRec_t rec[APP_DB_NUM_RECS]; /*! Device database records */
+    char devName[ATT_DEFAULT_PAYLOAD_LEN]; /*! Device name */
+    uint8_t devNameLen; /*! Device name length */
+    uint8_t dbHash[ATT_DATABASE_HASH_LEN]; /*! Device GATT database hash */
 } appDb_t;
 
 /**************************************************************************************************
@@ -145,23 +143,20 @@ static appDbRec_t *pAppDbNewRec = appDb.rec;
 /*************************************************************************************************/
 static uint8_t appDbFindIndx(appDbHdl_t hdl)
 {
-  appDbRec_t  *pRec = (appDbRec_t *) hdl;
-  uint8_t     i;
+    appDbRec_t *pRec = (appDbRec_t *)hdl;
+    uint8_t i;
 
-  if (pRec && pRec->inUse)
-  {
-    /* Find record index. */
-    for (i = 0; i < APP_DB_NUM_RECS; i++)
-    {
-      if (&appDb.rec[i] == pRec)
-      {
-        return i;
-      }
+    if (pRec && pRec->inUse) {
+        /* Find record index. */
+        for (i = 0; i < APP_DB_NUM_RECS; i++) {
+            if (&appDb.rec[i] == pRec) {
+                return i;
+            }
+        }
     }
-  }
 
-  /* Record does not exist */
-  return APP_DB_INDEX_INVALID;
+    /* Record does not exist */
+    return APP_DB_INDEX_INVALID;
 }
 
 /*************************************************************************************************/
@@ -173,7 +168,7 @@ static uint8_t appDbFindIndx(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbInit(void)
 {
-  return;
+    return;
 }
 
 /*************************************************************************************************/
@@ -188,41 +183,37 @@ void AppDbInit(void)
 /*************************************************************************************************/
 appDbHdl_t AppDbNewRecord(uint8_t addrType, uint8_t *pAddr)
 {
-  appDbRec_t  *pRec = appDb.rec;
-  uint8_t     i;
+    appDbRec_t *pRec = appDb.rec;
+    uint8_t i;
 
-  /* find a free record */
-  for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++)
-  {
-    if (!pRec->inUse)
-    {
-      break;
+    /* find a free record */
+    for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++) {
+        if (!pRec->inUse) {
+            break;
+        }
     }
-  }
 
-  /* if all records were allocated */
-  if (i == 0)
-  {
-    /* overwrite a record */
-    pRec = pAppDbNewRec;
+    /* if all records were allocated */
+    if (i == 0) {
+        /* overwrite a record */
+        pRec = pAppDbNewRec;
 
-    /* get next record to overwrite */
-    pAppDbNewRec++;
-    if (pAppDbNewRec == &appDb.rec[APP_DB_NUM_RECS])
-    {
-      pAppDbNewRec = appDb.rec;
+        /* get next record to overwrite */
+        pAppDbNewRec++;
+        if (pAppDbNewRec == &appDb.rec[APP_DB_NUM_RECS]) {
+            pAppDbNewRec = appDb.rec;
+        }
     }
-  }
 
-  /* initialize record */
-  memset(pRec, 0, sizeof(appDbRec_t));
-  pRec->inUse = TRUE;
-  pRec->addrType = addrType;
-  BdaCpy(pRec->peerAddr, pAddr);
-  pRec->peerAddedToRl = FALSE;
-  pRec->peerRpao = FALSE;
+    /* initialize record */
+    memset(pRec, 0, sizeof(appDbRec_t));
+    pRec->inUse = TRUE;
+    pRec->addrType = addrType;
+    BdaCpy(pRec->peerAddr, pAddr);
+    pRec->peerAddedToRl = FALSE;
+    pRec->peerRpao = FALSE;
 
-  return (appDbHdl_t) pRec;
+    return (appDbHdl_t)pRec;
 }
 
 /*************************************************************************************************/
@@ -237,41 +228,36 @@ appDbHdl_t AppDbNewRecord(uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 appDbHdl_t AppDbGetNextRecord(appDbHdl_t hdl)
 {
-  appDbRec_t  *pRec;
+    appDbRec_t *pRec;
 
-  /* if first record is requested */
-  if (hdl == APP_DB_HDL_NONE)
-  {
-    pRec = appDb.rec;
-  }
-  /* if valid record passed in */
-  else if (AppDbRecordInUse(hdl))
-  {
-    pRec = (appDbRec_t *)hdl;
-    pRec++;
-  }
-  /* invalid record passed in */
-  else
-  {
-    return APP_DB_HDL_NONE;
-  }
-
-  /* look for next valid record */
-  while (pRec < &appDb.rec[APP_DB_NUM_RECS])
-  {
-    /* if record is in use */
-    if (pRec->inUse && pRec->valid)
-    {
-      /* record found */
-      return (appDbHdl_t)pRec;
+    /* if first record is requested */
+    if (hdl == APP_DB_HDL_NONE) {
+        pRec = appDb.rec;
+    }
+    /* if valid record passed in */
+    else if (AppDbRecordInUse(hdl)) {
+        pRec = (appDbRec_t *)hdl;
+        pRec++;
+    }
+    /* invalid record passed in */
+    else {
+        return APP_DB_HDL_NONE;
     }
 
-    /* look for next record */
-    pRec++;
-  }
+    /* look for next valid record */
+    while (pRec < &appDb.rec[APP_DB_NUM_RECS]) {
+        /* if record is in use */
+        if (pRec->inUse && pRec->valid) {
+            /* record found */
+            return (appDbHdl_t)pRec;
+        }
 
-  /* end of records */
-  return APP_DB_HDL_NONE;
+        /* look for next record */
+        pRec++;
+    }
+
+    /* end of records */
+    return APP_DB_HDL_NONE;
 }
 
 /*************************************************************************************************/
@@ -285,7 +271,7 @@ appDbHdl_t AppDbGetNextRecord(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbDeleteRecord(appDbHdl_t hdl)
 {
-  ((appDbRec_t *) hdl)->inUse = FALSE;
+    ((appDbRec_t *)hdl)->inUse = FALSE;
 }
 
 /*************************************************************************************************/
@@ -301,8 +287,8 @@ void AppDbDeleteRecord(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbValidateRecord(appDbHdl_t hdl, uint8_t keyMask)
 {
-  ((appDbRec_t *) hdl)->valid = TRUE;
-  ((appDbRec_t *) hdl)->keyValidMask = keyMask;
+    ((appDbRec_t *)hdl)->valid = TRUE;
+    ((appDbRec_t *)hdl)->keyValidMask = keyMask;
 }
 
 /*************************************************************************************************/
@@ -317,10 +303,9 @@ void AppDbValidateRecord(appDbHdl_t hdl, uint8_t keyMask)
 /*************************************************************************************************/
 void AppDbCheckValidRecord(appDbHdl_t hdl)
 {
-  if (((appDbRec_t *) hdl)->valid == FALSE)
-  {
-    AppDbDeleteRecord(hdl);
-  }
+    if (((appDbRec_t *)hdl)->valid == FALSE) {
+        AppDbDeleteRecord(hdl);
+    }
 }
 
 /*************************************************************************************************/
@@ -334,19 +319,17 @@ void AppDbCheckValidRecord(appDbHdl_t hdl)
 /*************************************************************************************************/
 bool_t AppDbRecordInUse(appDbHdl_t hdl)
 {
-  appDbRec_t  *pRec = appDb.rec;
-  uint8_t     i;
+    appDbRec_t *pRec = appDb.rec;
+    uint8_t i;
 
-  /* see if record is in database record list */
-  for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++)
-  {
-    if (pRec->inUse && pRec->valid && (pRec == ((appDbRec_t *)hdl)))
-    {
-      return TRUE;
+    /* see if record is in database record list */
+    for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++) {
+        if (pRec->inUse && pRec->valid && (pRec == ((appDbRec_t *)hdl))) {
+            return TRUE;
+        }
     }
-  }
 
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -360,19 +343,17 @@ bool_t AppDbRecordInUse(appDbHdl_t hdl)
 /*************************************************************************************************/
 bool_t AppDbCheckBonded(void)
 {
-  appDbRec_t  *pRec = appDb.rec;
-  uint8_t     i;
+    appDbRec_t *pRec = appDb.rec;
+    uint8_t i;
 
-  /* find a record */
-  for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++)
-  {
-    if (pRec->inUse)
-    {
-      return TRUE;
+    /* find a record */
+    for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++) {
+        if (pRec->inUse) {
+            return TRUE;
+        }
     }
-  }
 
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -384,14 +365,13 @@ bool_t AppDbCheckBonded(void)
 /*************************************************************************************************/
 void AppDbDeleteAllRecords(void)
 {
-  appDbRec_t  *pRec = appDb.rec;
-  uint8_t     i;
+    appDbRec_t *pRec = appDb.rec;
+    uint8_t i;
 
-  /* set in use to false for all records */
-  for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++)
-  {
-    pRec->inUse = FALSE;
-  }
+    /* set in use to false for all records */
+    for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++) {
+        pRec->inUse = FALSE;
+    }
 }
 
 /*************************************************************************************************/
@@ -406,20 +386,18 @@ void AppDbDeleteAllRecords(void)
 /*************************************************************************************************/
 appDbHdl_t AppDbFindByAddr(uint8_t addrType, uint8_t *pAddr)
 {
-  appDbRec_t  *pRec = appDb.rec;
-  uint8_t     peerAddrType = DmHostAddrType(addrType);
-  uint8_t     i;
+    appDbRec_t *pRec = appDb.rec;
+    uint8_t peerAddrType = DmHostAddrType(addrType);
+    uint8_t i;
 
-  /* find matching record */
-  for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++)
-  {
-    if (pRec->inUse && (pRec->addrType == peerAddrType) && BdaCmp(pRec->peerAddr, pAddr))
-    {
-      return (appDbHdl_t) pRec;
+    /* find matching record */
+    for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++) {
+        if (pRec->inUse && (pRec->addrType == peerAddrType) && BdaCmp(pRec->peerAddr, pAddr)) {
+            return (appDbHdl_t)pRec;
+        }
     }
-  }
 
-  return APP_DB_HDL_NONE;
+    return APP_DB_HDL_NONE;
 }
 
 /*************************************************************************************************/
@@ -434,20 +412,18 @@ appDbHdl_t AppDbFindByAddr(uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 appDbHdl_t AppDbFindByLtkReq(uint16_t encDiversifier, uint8_t *pRandNum)
 {
-  appDbRec_t  *pRec = appDb.rec;
-  uint8_t     i;
+    appDbRec_t *pRec = appDb.rec;
+    uint8_t i;
 
-  /* find matching record */
-  for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++)
-  {
-    if (pRec->inUse && (pRec->localLtk.ediv == encDiversifier) &&
-        (memcmp(pRec->localLtk.rand, pRandNum, SMP_RAND8_LEN) == 0))
-    {
-      return (appDbHdl_t) pRec;
+    /* find matching record */
+    for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++) {
+        if (pRec->inUse && (pRec->localLtk.ediv == encDiversifier) &&
+            (memcmp(pRec->localLtk.rand, pRandNum, SMP_RAND8_LEN) == 0)) {
+            return (appDbHdl_t)pRec;
+        }
     }
-  }
 
-  return APP_DB_HDL_NONE;
+    return APP_DB_HDL_NONE;
 }
 
 /*************************************************************************************************/
@@ -463,37 +439,35 @@ appDbHdl_t AppDbFindByLtkReq(uint16_t encDiversifier, uint8_t *pRandNum)
 /*************************************************************************************************/
 dmSecKey_t *AppDbGetKey(appDbHdl_t hdl, uint8_t type, uint8_t *pSecLevel)
 {
-  dmSecKey_t *pKey = NULL;
+    dmSecKey_t *pKey = NULL;
 
-  /* if key valid */
-  if ((type & ((appDbRec_t *) hdl)->keyValidMask) != 0)
-  {
-    switch(type)
-    {
-      case DM_KEY_LOCAL_LTK:
-        *pSecLevel = ((appDbRec_t *) hdl)->localLtkSecLevel;
-        pKey = (dmSecKey_t *) &((appDbRec_t *) hdl)->localLtk;
-        break;
+    /* if key valid */
+    if ((type & ((appDbRec_t *)hdl)->keyValidMask) != 0) {
+        switch (type) {
+        case DM_KEY_LOCAL_LTK:
+            *pSecLevel = ((appDbRec_t *)hdl)->localLtkSecLevel;
+            pKey = (dmSecKey_t *)&((appDbRec_t *)hdl)->localLtk;
+            break;
 
-      case DM_KEY_PEER_LTK:
-        *pSecLevel = ((appDbRec_t *) hdl)->peerLtkSecLevel;
-        pKey = (dmSecKey_t *) &((appDbRec_t *) hdl)->peerLtk;
-        break;
+        case DM_KEY_PEER_LTK:
+            *pSecLevel = ((appDbRec_t *)hdl)->peerLtkSecLevel;
+            pKey = (dmSecKey_t *)&((appDbRec_t *)hdl)->peerLtk;
+            break;
 
-      case DM_KEY_IRK:
-        pKey = (dmSecKey_t *)&((appDbRec_t *)hdl)->peerIrk;
-        break;
+        case DM_KEY_IRK:
+            pKey = (dmSecKey_t *)&((appDbRec_t *)hdl)->peerIrk;
+            break;
 
-      case DM_KEY_CSRK:
-        pKey = (dmSecKey_t *)&((appDbRec_t *)hdl)->peerCsrk;
-        break;
+        case DM_KEY_CSRK:
+            pKey = (dmSecKey_t *)&((appDbRec_t *)hdl)->peerCsrk;
+            break;
 
-      default:
-        break;
+        default:
+            break;
+        }
     }
-  }
 
-  return pKey;
+    return pKey;
 }
 
 /*************************************************************************************************/
@@ -508,36 +482,35 @@ dmSecKey_t *AppDbGetKey(appDbHdl_t hdl, uint8_t type, uint8_t *pSecLevel)
 /*************************************************************************************************/
 void AppDbSetKey(appDbHdl_t hdl, dmSecKeyIndEvt_t *pKey)
 {
-  switch(pKey->type)
-  {
+    switch (pKey->type) {
     case DM_KEY_LOCAL_LTK:
-      ((appDbRec_t *) hdl)->localLtkSecLevel = pKey->secLevel;
-      ((appDbRec_t *) hdl)->localLtk = pKey->keyData.ltk;
-      break;
+        ((appDbRec_t *)hdl)->localLtkSecLevel = pKey->secLevel;
+        ((appDbRec_t *)hdl)->localLtk = pKey->keyData.ltk;
+        break;
 
     case DM_KEY_PEER_LTK:
-      ((appDbRec_t *) hdl)->peerLtkSecLevel = pKey->secLevel;
-      ((appDbRec_t *) hdl)->peerLtk = pKey->keyData.ltk;
-      break;
+        ((appDbRec_t *)hdl)->peerLtkSecLevel = pKey->secLevel;
+        ((appDbRec_t *)hdl)->peerLtk = pKey->keyData.ltk;
+        break;
 
     case DM_KEY_IRK:
-      ((appDbRec_t *)hdl)->peerIrk = pKey->keyData.irk;
+        ((appDbRec_t *)hdl)->peerIrk = pKey->keyData.irk;
 
-      /* make sure peer record is stored using its identity address */
-      ((appDbRec_t *)hdl)->addrType = pKey->keyData.irk.addrType;
-      BdaCpy(((appDbRec_t *)hdl)->peerAddr, pKey->keyData.irk.bdAddr);
-      break;
+        /* make sure peer record is stored using its identity address */
+        ((appDbRec_t *)hdl)->addrType = pKey->keyData.irk.addrType;
+        BdaCpy(((appDbRec_t *)hdl)->peerAddr, pKey->keyData.irk.bdAddr);
+        break;
 
     case DM_KEY_CSRK:
-      ((appDbRec_t *)hdl)->peerCsrk = pKey->keyData.csrk;
+        ((appDbRec_t *)hdl)->peerCsrk = pKey->keyData.csrk;
 
-      /* sign counter must be initialized to zero when CSRK is generated */
-      ((appDbRec_t *)hdl)->peerSignCounter = 0;
-      break;
+        /* sign counter must be initialized to zero when CSRK is generated */
+        ((appDbRec_t *)hdl)->peerSignCounter = 0;
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -551,7 +524,7 @@ void AppDbSetKey(appDbHdl_t hdl, dmSecKeyIndEvt_t *pKey)
 /*************************************************************************************************/
 uint8_t *AppDbGetPeerDbHash(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *) hdl)->dbHash;
+    return ((appDbRec_t *)hdl)->dbHash;
 }
 
 /*************************************************************************************************/
@@ -566,9 +539,9 @@ uint8_t *AppDbGetPeerDbHash(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetPeerDbHash(appDbHdl_t hdl, uint8_t *pDbHash)
 {
-  WSF_ASSERT(pDbHash != NULL);
+    WSF_ASSERT(pDbHash != NULL);
 
-  memcpy(((appDbRec_t *) hdl)->dbHash, pDbHash, ATT_DATABASE_HASH_LEN);
+    memcpy(((appDbRec_t *)hdl)->dbHash, pDbHash, ATT_DATABASE_HASH_LEN);
 }
 
 /*************************************************************************************************/
@@ -582,7 +555,7 @@ void AppDbSetPeerDbHash(appDbHdl_t hdl, uint8_t *pDbHash)
 /*************************************************************************************************/
 bool_t AppDbIsCacheCheckedByHash(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *) hdl)->cacheByHash;
+    return ((appDbRec_t *)hdl)->cacheByHash;
 }
 
 /*************************************************************************************************/
@@ -597,7 +570,7 @@ bool_t AppDbIsCacheCheckedByHash(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetCacheByHash(appDbHdl_t hdl, bool_t cacheByHash)
 {
-  ((appDbRec_t *) hdl)->cacheByHash = cacheByHash;
+    ((appDbRec_t *)hdl)->cacheByHash = cacheByHash;
 }
 
 /*************************************************************************************************/
@@ -611,7 +584,7 @@ void AppDbSetCacheByHash(appDbHdl_t hdl, bool_t cacheByHash)
 /*************************************************************************************************/
 uint16_t *AppDbGetCccTbl(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *) hdl)->cccTbl;
+    return ((appDbRec_t *)hdl)->cccTbl;
 }
 
 /*************************************************************************************************/
@@ -627,9 +600,9 @@ uint16_t *AppDbGetCccTbl(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetCccTblValue(appDbHdl_t hdl, uint16_t idx, uint16_t value)
 {
-  WSF_ASSERT(idx < APP_DB_NUM_CCCD);
+    WSF_ASSERT(idx < APP_DB_NUM_CCCD);
 
-  ((appDbRec_t *) hdl)->cccTbl[idx] = value;
+    ((appDbRec_t *)hdl)->cccTbl[idx] = value;
 }
 
 /*************************************************************************************************/
@@ -645,8 +618,8 @@ void AppDbSetCccTblValue(appDbHdl_t hdl, uint16_t idx, uint16_t value)
 /*************************************************************************************************/
 void AppDbGetCsfRecord(appDbHdl_t hdl, uint8_t *pChangeAwareState, uint8_t **pCsf)
 {
-  *pChangeAwareState = ((appDbRec_t *)hdl)->changeAwareState;
-  *pCsf = ((appDbRec_t *) hdl)->csf;
+    *pChangeAwareState = ((appDbRec_t *)hdl)->changeAwareState;
+    *pCsf = ((appDbRec_t *)hdl)->csf;
 }
 
 /*************************************************************************************************/
@@ -662,11 +635,10 @@ void AppDbGetCsfRecord(appDbHdl_t hdl, uint8_t *pChangeAwareState, uint8_t **pCs
 /*************************************************************************************************/
 void AppDbSetCsfRecord(appDbHdl_t hdl, uint8_t changeAwareState, uint8_t *pCsf)
 {
-  if ((pCsf != NULL) && (hdl != APP_DB_HDL_NONE))
-  {
-    ((appDbRec_t *) hdl)->changeAwareState = changeAwareState;
-    memcpy(&((appDbRec_t *) hdl)->csf, pCsf, ATT_CSF_LEN);
-  }
+    if ((pCsf != NULL) && (hdl != APP_DB_HDL_NONE)) {
+        ((appDbRec_t *)hdl)->changeAwareState = changeAwareState;
+        memcpy(&((appDbRec_t *)hdl)->csf, pCsf, ATT_CSF_LEN);
+    }
 }
 
 /*************************************************************************************************/
@@ -682,21 +654,17 @@ void AppDbSetCsfRecord(appDbHdl_t hdl, uint8_t changeAwareState, uint8_t *pCsf)
 /*************************************************************************************************/
 void AppDbSetClientChangeAwareState(appDbHdl_t hdl, uint8_t state)
 {
-  if (hdl == APP_DB_HDL_NONE)
-  {
-    appDbRec_t  *pRec = appDb.rec;
-    uint8_t     i;
+    if (hdl == APP_DB_HDL_NONE) {
+        appDbRec_t *pRec = appDb.rec;
+        uint8_t i;
 
-    /* Set all clients status to change-unaware. */
-    for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++)
-    {
-      pRec->changeAwareState = state;
+        /* Set all clients status to change-unaware. */
+        for (i = APP_DB_NUM_RECS; i > 0; i--, pRec++) {
+            pRec->changeAwareState = state;
+        }
+    } else {
+        ((appDbRec_t *)hdl)->changeAwareState = state;
     }
-  }
-  else
-  {
-    ((appDbRec_t *) hdl)->changeAwareState = state;
-  }
 }
 
 /*************************************************************************************************/
@@ -708,7 +676,7 @@ void AppDbSetClientChangeAwareState(appDbHdl_t hdl, uint8_t state)
 /*************************************************************************************************/
 uint8_t *AppDbGetDbHash(void)
 {
-  return appDb.dbHash;
+    return appDb.dbHash;
 }
 
 /*************************************************************************************************/
@@ -722,10 +690,9 @@ uint8_t *AppDbGetDbHash(void)
 /*************************************************************************************************/
 void AppDbSetDbHash(uint8_t *pHash)
 {
-  if (pHash != NULL)
-  {
-    memcpy(appDb.dbHash, pHash, ATT_DATABASE_HASH_LEN);
-  }
+    if (pHash != NULL) {
+        memcpy(appDb.dbHash, pHash, ATT_DATABASE_HASH_LEN);
+    }
 }
 
 /*************************************************************************************************/
@@ -739,7 +706,7 @@ void AppDbSetDbHash(uint8_t *pHash)
 /*************************************************************************************************/
 uint8_t AppDbGetDiscStatus(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *) hdl)->discStatus;
+    return ((appDbRec_t *)hdl)->discStatus;
 }
 
 /*************************************************************************************************/
@@ -754,7 +721,7 @@ uint8_t AppDbGetDiscStatus(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetDiscStatus(appDbHdl_t hdl, uint8_t status)
 {
-  ((appDbRec_t *) hdl)->discStatus = status;
+    ((appDbRec_t *)hdl)->discStatus = status;
 }
 
 /*************************************************************************************************/
@@ -768,7 +735,7 @@ void AppDbSetDiscStatus(appDbHdl_t hdl, uint8_t status)
 /*************************************************************************************************/
 uint16_t *AppDbGetHdlList(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *) hdl)->hdlList;
+    return ((appDbRec_t *)hdl)->hdlList;
 }
 
 /*************************************************************************************************/
@@ -783,7 +750,7 @@ uint16_t *AppDbGetHdlList(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetHdlList(appDbHdl_t hdl, uint16_t *pHdlList)
 {
-  memcpy(((appDbRec_t *) hdl)->hdlList, pHdlList, sizeof(((appDbRec_t *) hdl)->hdlList));
+    memcpy(((appDbRec_t *)hdl)->hdlList, pHdlList, sizeof(((appDbRec_t *)hdl)->hdlList));
 }
 
 /*************************************************************************************************/
@@ -797,17 +764,14 @@ void AppDbSetHdlList(appDbHdl_t hdl, uint16_t *pHdlList)
 /*************************************************************************************************/
 char *AppDbGetDevName(uint8_t *pLen)
 {
-  /* if first character of name is NULL assume it is uninitialized */
-  if (appDb.devName[0] == 0)
-  {
-    *pLen = 0;
-    return NULL;
-  }
-  else
-  {
-    *pLen = appDb.devNameLen;
-    return appDb.devName;
-  }
+    /* if first character of name is NULL assume it is uninitialized */
+    if (appDb.devName[0] == 0) {
+        *pLen = 0;
+        return NULL;
+    } else {
+        *pLen = appDb.devNameLen;
+        return appDb.devName;
+    }
 }
 
 /*************************************************************************************************/
@@ -822,10 +786,10 @@ char *AppDbGetDevName(uint8_t *pLen)
 /*************************************************************************************************/
 void AppDbSetDevName(uint8_t len, char *pStr)
 {
-  /* check for maximum device length */
-  len = (len <= sizeof(appDb.devName)) ? len : sizeof(appDb.devName);
+    /* check for maximum device length */
+    len = (len <= sizeof(appDb.devName)) ? len : sizeof(appDb.devName);
 
-  memcpy(appDb.devName, pStr, len);
+    memcpy(appDb.devName, pStr, len);
 }
 
 /*************************************************************************************************/
@@ -839,7 +803,7 @@ void AppDbSetDevName(uint8_t len, char *pStr)
 /*************************************************************************************************/
 bool_t AppDbGetPeerAddrRes(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *)hdl)->peerAddrRes;
+    return ((appDbRec_t *)hdl)->peerAddrRes;
 }
 
 /*************************************************************************************************/
@@ -854,7 +818,7 @@ bool_t AppDbGetPeerAddrRes(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetPeerAddrRes(appDbHdl_t hdl, uint8_t addrRes)
 {
-  ((appDbRec_t *)hdl)->peerAddrRes = addrRes;
+    ((appDbRec_t *)hdl)->peerAddrRes = addrRes;
 }
 
 /*************************************************************************************************/
@@ -868,7 +832,7 @@ void AppDbSetPeerAddrRes(appDbHdl_t hdl, uint8_t addrRes)
 /*************************************************************************************************/
 uint32_t AppDbGetPeerSignCounter(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *)hdl)->peerSignCounter;
+    return ((appDbRec_t *)hdl)->peerSignCounter;
 }
 
 /*************************************************************************************************/
@@ -883,7 +847,7 @@ uint32_t AppDbGetPeerSignCounter(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetPeerSignCounter(appDbHdl_t hdl, uint32_t signCounter)
 {
-  ((appDbRec_t *)hdl)->peerSignCounter = signCounter;
+    ((appDbRec_t *)hdl)->peerSignCounter = signCounter;
 }
 
 /*************************************************************************************************/
@@ -897,7 +861,7 @@ void AppDbSetPeerSignCounter(appDbHdl_t hdl, uint32_t signCounter)
 /*************************************************************************************************/
 bool_t AppDbGetPeerAddedToRl(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *)hdl)->peerAddedToRl;
+    return ((appDbRec_t *)hdl)->peerAddedToRl;
 }
 
 /*************************************************************************************************/
@@ -912,7 +876,7 @@ bool_t AppDbGetPeerAddedToRl(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetPeerAddedToRl(appDbHdl_t hdl, bool_t peerAddedToRl)
 {
-  ((appDbRec_t *)hdl)->peerAddedToRl = peerAddedToRl;
+    ((appDbRec_t *)hdl)->peerAddedToRl = peerAddedToRl;
 }
 
 /*************************************************************************************************/
@@ -926,7 +890,7 @@ void AppDbSetPeerAddedToRl(appDbHdl_t hdl, bool_t peerAddedToRl)
 /*************************************************************************************************/
 bool_t AppDbGetPeerRpao(appDbHdl_t hdl)
 {
-  return ((appDbRec_t *)hdl)->peerRpao;
+    return ((appDbRec_t *)hdl)->peerRpao;
 }
 
 /*************************************************************************************************/
@@ -941,7 +905,7 @@ bool_t AppDbGetPeerRpao(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbSetPeerRpao(appDbHdl_t hdl, bool_t peerRpao)
 {
-  ((appDbRec_t *)hdl)->peerRpao = peerRpao;
+    ((appDbRec_t *)hdl)->peerRpao = peerRpao;
 }
 
 /*************************************************************************************************/
@@ -955,15 +919,14 @@ void AppDbSetPeerRpao(appDbHdl_t hdl, bool_t peerRpao)
 /*************************************************************************************************/
 void AppDbNvmStorePeerRpao(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, &pRec->peerRpao, sizeof(bool_t), NULL);
-  }
+        WsfNvmWriteData(nvmId, &pRec->peerRpao, sizeof(bool_t), NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -977,15 +940,14 @@ void AppDbNvmStorePeerRpao(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStoreCccTbl(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_CCC_TBL_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_CCC_TBL_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->cccTbl, sizeof(uint16_t) * APP_DB_NUM_CCCD, NULL);
-  }
+        WsfNvmWriteData(nvmId, (uint8_t *)&pRec->cccTbl, sizeof(uint16_t) * APP_DB_NUM_CCCD, NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -999,19 +961,19 @@ void AppDbNvmStoreCccTbl(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStoreHdlList(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_HDL_LIST_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_HDL_LIST_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->hdlList, sizeof(uint16_t) * APP_DB_HDL_LIST_LEN, NULL);
+        WsfNvmWriteData(nvmId, (uint8_t *)&pRec->hdlList, sizeof(uint16_t) * APP_DB_HDL_LIST_LEN,
+                        NULL);
 
-    nvmId = DBNV_ID(APP_DB_NVM_DISC_STATUS_ID, recIndex);
+        nvmId = DBNV_ID(APP_DB_NVM_DISC_STATUS_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, &pRec->discStatus, sizeof(uint8_t), NULL);
-  }
+        WsfNvmWriteData(nvmId, &pRec->discStatus, sizeof(uint8_t), NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -1025,15 +987,14 @@ void AppDbNvmStoreHdlList(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStorePeerSignCounter(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_SIGN_CTR_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_SIGN_CTR_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->peerSignCounter, sizeof(uint32_t), NULL);
-  }
+        WsfNvmWriteData(nvmId, (uint8_t *)&pRec->peerSignCounter, sizeof(uint32_t), NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -1047,15 +1008,14 @@ void AppDbNvmStorePeerSignCounter(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStorePeerAddrRes(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_ADDR_RES_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_PEER_ADDR_RES_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->peerAddrRes, sizeof(bool_t), NULL);
-  }
+        WsfNvmWriteData(nvmId, (uint8_t *)&pRec->peerAddrRes, sizeof(bool_t), NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -1069,15 +1029,14 @@ void AppDbNvmStorePeerAddrRes(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStoreChangeAwareState(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_CAS_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_CAS_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->changeAwareState, sizeof(uint8_t), NULL);
-  }
+        WsfNvmWriteData(nvmId, (uint8_t *)&pRec->changeAwareState, sizeof(uint8_t), NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -1091,15 +1050,14 @@ void AppDbNvmStoreChangeAwareState(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStoreCsfRecord(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_CSF_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_CSF_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) pRec->csf, ATT_CSF_LEN, NULL);
-  }
+        WsfNvmWriteData(nvmId, (uint8_t *)pRec->csf, ATT_CSF_LEN, NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -1113,15 +1071,14 @@ void AppDbNvmStoreCsfRecord(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, (uint8_t*) &pRec->cacheByHash, sizeof(bool_t), NULL);
-  }
+        WsfNvmWriteData(nvmId, (uint8_t *)&pRec->cacheByHash, sizeof(bool_t), NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -1135,15 +1092,14 @@ void AppDbNvmStoreCacheByHash(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStoreDbHash(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[recIndex];
-    uint32_t nvmId = DBNV_ID(APP_DB_NVM_HASH_ID, recIndex);
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[recIndex];
+        uint32_t nvmId = DBNV_ID(APP_DB_NVM_HASH_ID, recIndex);
 
-    WsfNvmWriteData(nvmId, pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
-  }
+        WsfNvmWriteData(nvmId, pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -1157,54 +1113,58 @@ void AppDbNvmStoreDbHash(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmStoreBond(appDbHdl_t hdl)
 {
-  uint8_t i = appDbFindIndx(hdl);
+    uint8_t i = appDbFindIndx(hdl);
 
-  if (i != APP_DB_INDEX_INVALID)
-  {
-    appDbRec_t *pRec = &appDb.rec[i];
+    if (i != APP_DB_INDEX_INVALID) {
+        appDbRec_t *pRec = &appDb.rec[i];
 
-    if (pRec->inUse && pRec->valid)
-    {
-      bool_t valid = FALSE;
+        if (pRec->inUse && pRec->valid) {
+            bool_t valid = FALSE;
 
-      /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
-      /*  - First ensure valid FALSE before writing parameters. */
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
+            /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
+            /*  - First ensure valid FALSE before writing parameters. */
+            WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
 
-      /* Write record parameters. */
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t), NULL);
+            /* Write record parameters. */
+            WsfNvmWriteData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t),
+                            NULL);
 
-      if (pRec->keyValidMask & DM_KEY_LOCAL_LTK)
-      {
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t*) &pRec->localLtk, sizeof(dmSecLtk_t), NULL);
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
-      }
+            if (pRec->keyValidMask & DM_KEY_LOCAL_LTK) {
+                WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t *)&pRec->localLtk,
+                                sizeof(dmSecLtk_t), NULL);
+                WsfNvmWriteData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel,
+                                sizeof(uint8_t), NULL);
+            }
 
-      if (pRec->keyValidMask & DM_KEY_PEER_LTK)
-      {
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t*) &pRec->peerLtk, sizeof(dmSecLtk_t), NULL);
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
-      }
+            if (pRec->keyValidMask & DM_KEY_PEER_LTK) {
+                WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t *)&pRec->peerLtk,
+                                sizeof(dmSecLtk_t), NULL);
+                WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel,
+                                sizeof(uint8_t), NULL);
+            }
 
-      if (pRec->keyValidMask & DM_KEY_IRK)
-      {
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_IRK_ID, i), (uint8_t*) &pRec->peerIrk, sizeof(dmSecIrk_t), NULL);
-      }
+            if (pRec->keyValidMask & DM_KEY_IRK) {
+                WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_IRK_ID, i), (uint8_t *)&pRec->peerIrk,
+                                sizeof(dmSecIrk_t), NULL);
+            }
 
-      if (pRec->keyValidMask & DM_KEY_CSRK)
-      {
-        WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_CSRK_ID, i), (uint8_t*) &pRec->peerCsrk, sizeof(dmSecCsrk_t), NULL);
-      }
+            if (pRec->keyValidMask & DM_KEY_CSRK) {
+                WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_CSRK_ID, i), (uint8_t *)&pRec->peerCsrk,
+                                sizeof(dmSecCsrk_t), NULL);
+            }
 
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t), NULL);
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t), NULL);
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t), NULL);
+            WsfNvmWriteData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t),
+                            NULL);
+            WsfNvmWriteData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t),
+                            NULL);
+            WsfNvmWriteData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash,
+                            sizeof(bool_t), NULL);
 
-      /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
-      /*  - Second set valid TRUE after writing parameters. */
-      WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &pRec->valid, sizeof(bool_t), NULL);
+            /* Protect against corrupt bond state due to incomplete writes (power failure, crash, etc.). */
+            /*  - Second set valid TRUE after writing parameters. */
+            WsfNvmWriteData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &pRec->valid, sizeof(bool_t), NULL);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -1216,64 +1176,75 @@ void AppDbNvmStoreBond(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmReadAll(void)
 {
-  uint8_t i;
+    uint8_t i;
 
-  /* Read all records. */
-  for (i = 0; i < APP_DB_NUM_RECS; i++)
-  {
-    bool_t valid = FALSE;
-    appDbRec_t *pRec = &appDb.rec[i];
+    /* Read all records. */
+    for (i = 0; i < APP_DB_NUM_RECS; i++) {
+        bool_t valid = FALSE;
+        appDbRec_t *pRec = &appDb.rec[i];
 
-    /* Verify record is valid. */
-    WsfNvmReadData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
+        /* Verify record is valid. */
+        WsfNvmReadData(DBNV_ID(APP_DB_NVM_VALID_ID, i), &valid, sizeof(bool_t), NULL);
 
-    if (valid && valid != 0xFF)
-    {
-      pRec->inUse = TRUE;
-      pRec->valid = TRUE;
+        if (valid && valid != 0xFF) {
+            pRec->inUse = TRUE;
+            pRec->valid = TRUE;
 
-      /* Read bonding parameters. */
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t), NULL);
+            /* Read bonding parameters. */
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_ADDR_ID, i), pRec->peerAddr, sizeof(bdAddr_t),
+                           NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_ADDR_TYPE_ID, i), &pRec->addrType, sizeof(uint8_t),
+                           NULL);
 
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t), NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_KV_MASK_ID, i), &pRec->keyValidMask, sizeof(uint8_t),
+                           NULL);
 
-      if (pRec->keyValidMask & DM_KEY_LOCAL_LTK)
-      {
-        WsfNvmReadData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t*) &pRec->localLtk, sizeof(dmSecLtk_t), NULL);
-        WsfNvmReadData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel, sizeof(uint8_t), NULL);
-      }
+            if (pRec->keyValidMask & DM_KEY_LOCAL_LTK) {
+                WsfNvmReadData(DBNV_ID(APP_DB_NVM_LOCAL_LTK_ID, i), (uint8_t *)&pRec->localLtk,
+                               sizeof(dmSecLtk_t), NULL);
+                WsfNvmReadData(DBNV_ID(APP_DB_NVM_LOCAL_SEC_LVL_ID, i), &pRec->localLtkSecLevel,
+                               sizeof(uint8_t), NULL);
+            }
 
-      if (pRec->keyValidMask & DM_KEY_PEER_LTK)
-      {
-        WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t*) &pRec->peerLtk, sizeof(dmSecLtk_t), NULL);
-        WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel, sizeof(uint8_t), NULL);
-      }
+            if (pRec->keyValidMask & DM_KEY_PEER_LTK) {
+                WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_LTK_ID, i), (uint8_t *)&pRec->peerLtk,
+                               sizeof(dmSecLtk_t), NULL);
+                WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_SEC_LVL_ID, i), &pRec->peerLtkSecLevel,
+                               sizeof(uint8_t), NULL);
+            }
 
-      if (pRec->keyValidMask & DM_KEY_IRK)
-      {
-        WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_IRK_ID, i), (uint8_t*) &pRec->peerIrk, sizeof(dmSecIrk_t), NULL);
-      }
+            if (pRec->keyValidMask & DM_KEY_IRK) {
+                WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_IRK_ID, i), (uint8_t *)&pRec->peerIrk,
+                               sizeof(dmSecIrk_t), NULL);
+            }
 
-      if (pRec->keyValidMask & DM_KEY_CSRK)
-      {
-        WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_CSRK_ID, i), (uint8_t*) &pRec->peerCsrk, sizeof(dmSecCsrk_t), NULL);
-      }
+            if (pRec->keyValidMask & DM_KEY_CSRK) {
+                WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_CSRK_ID, i), (uint8_t *)&pRec->peerCsrk,
+                               sizeof(dmSecCsrk_t), NULL);
+            }
 
-      /* Read additional parameters. */
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, i), &pRec->peerRpao, sizeof(bool_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CCC_TBL_ID, i), (uint8_t*) pRec->cccTbl, sizeof(uint16_t) * APP_DB_NUM_CCCD, NULL);
+            /* Read additional parameters. */
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_RAPO_ID, i), &pRec->peerRpao, sizeof(bool_t),
+                           NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_CCC_TBL_ID, i), (uint8_t *)pRec->cccTbl,
+                           sizeof(uint16_t) * APP_DB_NUM_CCCD, NULL);
 
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_HDL_LIST_ID, i), (uint8_t*) &pRec->hdlList, sizeof(uint16_t) * APP_DB_HDL_LIST_LEN, NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_DISC_STATUS_ID, i), &pRec->discStatus, sizeof(uint8_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_ADDR_RES_ID, i), &pRec->peerAddrRes, sizeof(bool_t), NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_HDL_LIST_ID, i), (uint8_t *)&pRec->hdlList,
+                           sizeof(uint16_t) * APP_DB_HDL_LIST_LEN, NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_DISC_STATUS_ID, i), &pRec->discStatus,
+                           sizeof(uint8_t), NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_PEER_ADDR_RES_ID, i), &pRec->peerAddrRes,
+                           sizeof(bool_t), NULL);
 
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CAS_ID, i), &pRec->changeAwareState, sizeof(uint8_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CSF_ID, i), pRec->csf, ATT_CSF_LEN, NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t), NULL);
-      WsfNvmReadData(DBNV_ID(APP_DB_NVM_HASH_ID, i), pRec->dbHash, ATT_DATABASE_HASH_LEN, NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_CAS_ID, i), &pRec->changeAwareState, sizeof(uint8_t),
+                           NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_CSF_ID, i), pRec->csf, ATT_CSF_LEN, NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_CACHE_HASH_ID, i), &pRec->cacheByHash, sizeof(bool_t),
+                           NULL);
+            WsfNvmReadData(DBNV_ID(APP_DB_NVM_HASH_ID, i), pRec->dbHash, ATT_DATABASE_HASH_LEN,
+                           NULL);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -1287,12 +1258,11 @@ void AppDbNvmReadAll(void)
 /*************************************************************************************************/
 void AppDbNvmDeleteRec(appDbHdl_t hdl)
 {
-  uint8_t recIndex = appDbFindIndx(hdl);
+    uint8_t recIndex = appDbFindIndx(hdl);
 
-  if (recIndex != APP_DB_INDEX_INVALID)
-  {
-    WsfNvmEraseData(DBNV_ID(APP_DB_NVM_VALID_ID, recIndex), NULL);
-  }
+    if (recIndex != APP_DB_INDEX_INVALID) {
+        WsfNvmEraseData(DBNV_ID(APP_DB_NVM_VALID_ID, recIndex), NULL);
+    }
 }
 
 /*************************************************************************************************/
@@ -1304,11 +1274,10 @@ void AppDbNvmDeleteRec(appDbHdl_t hdl)
 /*************************************************************************************************/
 void AppDbNvmDeleteAll(void)
 {
-  uint8_t i;
+    uint8_t i;
 
-  /* Delete all records. */
-  for (i = 0; i < APP_DB_NUM_RECS; i++)
-  {
-    WsfNvmEraseData(DBNV_ID(APP_DB_NVM_VALID_ID, i), NULL);
-  }
+    /* Delete all records. */
+    for (i = 0; i < APP_DB_NUM_RECS; i++) {
+        WsfNvmEraseData(DBNV_ID(APP_DB_NVM_VALID_ID, i), NULL);
+    }
 }

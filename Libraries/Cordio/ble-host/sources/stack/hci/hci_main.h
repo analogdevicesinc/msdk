@@ -37,44 +37,41 @@ extern "C" {
 **************************************************************************************************/
 
 /* Message types for HCI event handler */
-#define HCI_MSG_CMD_TIMEOUT       1         /* Command timeout timer expired */
+#define HCI_MSG_CMD_TIMEOUT 1 /* Command timeout timer expired */
 
 /* Event types for HCI event handler */
-#define HCI_EVT_RX                0x01      /* Data received on rx queue */
+#define HCI_EVT_RX 0x01 /* Data received on rx queue */
 
 /* Number of times to send HCI_RAND_CMD on reset to prefill random buffer */
-#define HCI_RESET_RAND_CNT        4
+#define HCI_RESET_RAND_CNT 4
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /* Type used in number of completed packets event type */
-typedef struct
-{
-  uint16_t              handle;
-  uint16_t              num;
+typedef struct {
+    uint16_t handle;
+    uint16_t num;
 } hciNumPkts_t;
 
 /* Type for HCI number of completed packets event */
-typedef struct
-{
-  uint8_t               numHandles;
-  hciNumPkts_t          numPkts[1];
+typedef struct {
+    uint8_t numHandles;
+    hciNumPkts_t numPkts[1];
 } hciNumCmplPktsEvt_t;
 
 /* Main control block of the HCI subsystem */
-typedef struct
-{
-  wsfQueue_t            rxQueue;
-  hciEvtCback_t         evtCback;
-  hciSecCback_t         secCback;
-  hciAclCback_t         aclCback;
-  hciFlowCback_t        flowCback;
-  hciIsoCback_t         isoCback;
-  hciFlowCback_t        isoFlowCback;
-  wsfHandlerId_t        handlerId;
-  bool_t                resetting;
+typedef struct {
+    wsfQueue_t rxQueue;
+    hciEvtCback_t evtCback;
+    hciSecCback_t secCback;
+    hciAclCback_t aclCback;
+    hciFlowCback_t flowCback;
+    hciIsoCback_t isoCback;
+    hciFlowCback_t isoFlowCback;
+    wsfHandlerId_t handlerId;
+    bool_t resetting;
 } hciCb_t;
 
 /**************************************************************************************************

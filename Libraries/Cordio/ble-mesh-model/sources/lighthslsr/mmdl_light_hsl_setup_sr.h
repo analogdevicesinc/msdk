@@ -27,8 +27,7 @@
 #define MMDL_LIGHT_HSL_SETUP_SR_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************

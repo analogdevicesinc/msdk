@@ -50,37 +50,33 @@
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_HASH)
 
-static ret_code_t verify_context(nrf_crypto_hash_internal_context_t * const p_context)
+static ret_code_t verify_context(nrf_crypto_hash_internal_context_t *const p_context)
 {
-    if (p_context == NULL)
-    {
+    if (p_context == NULL) {
         return NRF_ERROR_CRYPTO_CONTEXT_NULL;
     }
 
-    if (p_context->init_val != NRF_CRYPTO_HASH_INIT_VALUE)
-    {
+    if (p_context->init_val != NRF_CRYPTO_HASH_INIT_VALUE) {
         return NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
     }
 
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_hash_init(nrf_crypto_hash_context_t * const p_context,
-                                nrf_crypto_hash_info_t    const * p_info)
+ret_code_t nrf_crypto_hash_init(nrf_crypto_hash_context_t *const p_context,
+                                nrf_crypto_hash_info_t const *p_info)
 {
-    ret_code_t                              ret_val;
-    nrf_crypto_hash_internal_context_t    * p_int_context;
+    ret_code_t ret_val;
+    nrf_crypto_hash_internal_context_t *p_int_context;
 
     VERIFY_TRUE(p_context != NULL, NRF_ERROR_CRYPTO_CONTEXT_NULL);
     VERIFY_TRUE(p_info != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
 
-    p_int_context = (nrf_crypto_hash_internal_context_t *) p_context;
+    p_int_context = (nrf_crypto_hash_internal_context_t *)p_context;
     p_int_context->p_info = p_info;
 
     ret_val = p_info->init_fn(p_context);
-    if (ret_val != NRF_SUCCESS)
-    {
+    if (ret_val != NRF_SUCCESS) {
         return ret_val;
     }
 
@@ -89,26 +85,22 @@ ret_code_t nrf_crypto_hash_init(nrf_crypto_hash_context_t * const p_context,
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_hash_update(nrf_crypto_hash_context_t   * const p_context,
-                                  uint8_t                     const * p_data,
-                                  size_t                              data_size)
+ret_code_t nrf_crypto_hash_update(nrf_crypto_hash_context_t *const p_context, uint8_t const *p_data,
+                                  size_t data_size)
 {
-    ret_code_t                              ret_val;
-    nrf_crypto_hash_internal_context_t    * p_int_context
-        = (nrf_crypto_hash_internal_context_t *) p_context;
+    ret_code_t ret_val;
+    nrf_crypto_hash_internal_context_t *p_int_context =
+        (nrf_crypto_hash_internal_context_t *)p_context;
 
     ret_val = verify_context(p_int_context);
-    if (ret_val != NRF_SUCCESS)
-    {
+    if (ret_val != NRF_SUCCESS) {
         return ret_val;
     }
 
     VERIFY_TRUE(p_data != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
-    
+
     // Allow zero size input
-    if (data_size == 0)
-    {
+    if (data_size == 0) {
         return NRF_SUCCESS;
     }
 
@@ -117,67 +109,62 @@ ret_code_t nrf_crypto_hash_update(nrf_crypto_hash_context_t   * const p_context,
     return ret_val;
 }
 
-
-ret_code_t nrf_crypto_hash_finalize(nrf_crypto_hash_context_t * const p_context,
-                                    uint8_t                         * p_digest,
-                                    size_t                    * const p_digest_size)
+ret_code_t nrf_crypto_hash_finalize(nrf_crypto_hash_context_t *const p_context, uint8_t *p_digest,
+                                    size_t *const p_digest_size)
 {
-    ret_code_t                              ret_val;
-    nrf_crypto_hash_internal_context_t    * p_int_context
-        = (nrf_crypto_hash_internal_context_t *) p_context;
+    ret_code_t ret_val;
+    nrf_crypto_hash_internal_context_t *p_int_context =
+        (nrf_crypto_hash_internal_context_t *)p_context;
 
     ret_val = verify_context(p_int_context);
-    if (ret_val != NRF_SUCCESS)
-    {
+    if (ret_val != NRF_SUCCESS) {
         return ret_val;
     }
 
     VERIFY_TRUE(p_digest != NULL, NRF_ERROR_CRYPTO_OUTPUT_NULL);
-    VERIFY_TRUE(*p_digest_size >= p_int_context->p_info->digest_size, NRF_ERROR_CRYPTO_OUTPUT_LENGTH);
+    VERIFY_TRUE(*p_digest_size >= p_int_context->p_info->digest_size,
+                NRF_ERROR_CRYPTO_OUTPUT_LENGTH);
 
     ret_val = p_int_context->p_info->finalize_fn(p_context, p_digest, p_digest_size);
 
     return ret_val;
 }
 
-
-ret_code_t nrf_crypto_hash_calculate(nrf_crypto_hash_context_t    * const p_context,
-                                     nrf_crypto_hash_info_t       const * p_info,
-                                     uint8_t                      const * p_data,
-                                     size_t                               data_size,
-                                     uint8_t                            * p_digest,
-                                     size_t                       * const p_digest_size)
+ret_code_t nrf_crypto_hash_calculate(nrf_crypto_hash_context_t *const p_context,
+                                     nrf_crypto_hash_info_t const *p_info, uint8_t const *p_data,
+                                     size_t data_size, uint8_t *p_digest,
+                                     size_t *const p_digest_size)
 {
-    ret_code_t                      ret_val;
-    nrf_crypto_hash_context_t     * p_ctx  = (nrf_crypto_hash_context_t *)p_context;
-    void                          * p_allocated_context = NULL;
+    ret_code_t ret_val;
+    nrf_crypto_hash_context_t *p_ctx = (nrf_crypto_hash_context_t *)p_context;
+    void *p_allocated_context = NULL;
 
 // Internal allocation of context not available for CC310_BL in order to save code size.
-#if defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED) && (NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED == 1)
-    
+#if defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED) && \
+    (NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED == 1)
+
     // Do nothing
-    
-#elif defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED) && (NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED == 0)
-    
+
+#elif defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED) && \
+    (NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED == 0)
+
     // Validate input. Only validate input parameters that are used locally, others are validated
     // in the init, update and/or finalize functions.
     VERIFY_TRUE(p_info != NULL, NRF_ERROR_CRYPTO_INPUT_NULL);
 
     // Allocate context if needed (not provided by the user).
-    if (p_context == NULL)
-    {
+    if (p_context == NULL) {
         p_allocated_context = NRF_CRYPTO_ALLOC(p_info->context_size);
-        if (p_allocated_context == NULL)
-        {
+        if (p_allocated_context == NULL) {
             return NRF_ERROR_CRYPTO_ALLOC_FAILED;
         }
         p_ctx = (nrf_crypto_hash_context_t *)p_allocated_context;
     }
-    
+
 #else
 
-    #warning NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
-    
+#warning NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+
 #endif // NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256_ENABLED
 
     ret_val = nrf_crypto_hash_init(p_ctx, p_info);
@@ -191,8 +178,7 @@ ret_code_t nrf_crypto_hash_calculate(nrf_crypto_hash_context_t    * const p_cont
 
 #if !NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256)
     // Free context if allocated internally
-    if (p_allocated_context != NULL)
-    {
+    if (p_allocated_context != NULL) {
         NRF_CRYPTO_FREE(p_allocated_context);
     }
 #endif // !NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256)

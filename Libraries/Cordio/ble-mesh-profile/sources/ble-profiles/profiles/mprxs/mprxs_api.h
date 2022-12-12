@@ -87,7 +87,7 @@ void MprxsSetCccIdx(uint8_t dataOutCccIdx);
 /*************************************************************************************************/
 void MprxsSendDataOut(meshGattProxyPduSendEvt_t *pEvt);
 
-/*! \} */    /* MESH_PROXY_PROFILE */
+/*! \} */ /* MESH_PROXY_PROFILE */
 
 #ifdef __cplusplus
 };

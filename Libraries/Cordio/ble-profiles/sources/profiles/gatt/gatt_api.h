@@ -38,12 +38,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Enumeration of handle indexes of characteristics to be discovered */
-enum
-{
-  GATT_SC_HDL_IDX,          /*!< \brief Service changed */
-  GATT_SC_CCC_HDL_IDX,      /*!< \brief Service changed client characteristic configuration descriptor */
-  GATT_CSF_HDL_IDX,         /*!< \brief Client Supported Features */
-  GATT_HDL_LIST_LEN         /*!< \brief Handle list length */
+enum {
+    GATT_SC_HDL_IDX, /*!< \brief Service changed */
+    GATT_SC_CCC_HDL_IDX, /*!< \brief Service changed client characteristic configuration descriptor */
+    GATT_CSF_HDL_IDX, /*!< \brief Client Supported Features */
+    GATT_HDL_LIST_LEN /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -93,8 +92,8 @@ uint8_t GattValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t GattReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                      uint16_t offset, attsAttr_t *pAttr);
+uint8_t GattReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                      attsAttr_t *pAttr);
 
 /*************************************************************************************************/
 /*!
@@ -111,8 +110,8 @@ uint8_t GattReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t GattWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                       uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
+uint8_t GattWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                       uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
 
 /*************************************************************************************************/
 /*!
@@ -139,7 +138,7 @@ void GattSetSvcChangedIdx(uint8_t idx);
 /*************************************************************************************************/
 void GattSendServiceChangedInd(dmConnId_t connId, uint16_t start, uint16_t end);
 
-/*! \} */    /* GATT_PROFILE */
+/*! \} */ /* GATT_PROFILE */
 
 #ifdef __cplusplus
 };

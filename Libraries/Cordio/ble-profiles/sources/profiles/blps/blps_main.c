@@ -38,13 +38,12 @@
 **************************************************************************************************/
 
 /* Control block */
-static struct
-{
-  wsfTimer_t    measTimer;            /* periodic measurement timer */
-  appBpm_t      bpm;                  /* blood pressure measurement */
-  blpsCfg_t     cfg;                  /* configurable parameters */
-  uint8_t       bpmFlags;             /* blood pressure measurement flags */
-  uint8_t       icpFlags;             /* intermediate cuff pressure flags */
+static struct {
+    wsfTimer_t measTimer; /* periodic measurement timer */
+    appBpm_t bpm; /* blood pressure measurement */
+    blpsCfg_t cfg; /* configurable parameters */
+    uint8_t bpmFlags; /* blood pressure measurement flags */
+    uint8_t icpFlags; /* intermediate cuff pressure flags */
 } blpsCb;
 
 /*************************************************************************************************/
@@ -59,48 +58,44 @@ static struct
 /*************************************************************************************************/
 static uint8_t blpsBuildBpm(uint8_t *pBuf, appBpm_t *pBpm)
 {
-  uint8_t   *p = pBuf;
-  uint8_t   flags = pBpm->flags;
+    uint8_t *p = pBuf;
+    uint8_t flags = pBpm->flags;
 
-  /* flags */
-  UINT8_TO_BSTREAM(p, flags);
+    /* flags */
+    UINT8_TO_BSTREAM(p, flags);
 
-  /* measurement */
-  UINT16_TO_BSTREAM(p, pBpm->systolic);
-  UINT16_TO_BSTREAM(p, pBpm->diastolic);
-  UINT16_TO_BSTREAM(p, pBpm->map);
+    /* measurement */
+    UINT16_TO_BSTREAM(p, pBpm->systolic);
+    UINT16_TO_BSTREAM(p, pBpm->diastolic);
+    UINT16_TO_BSTREAM(p, pBpm->map);
 
-  /* time stamp */
-  if (flags & CH_BPM_FLAG_TIMESTAMP)
-  {
-    UINT16_TO_BSTREAM(p, pBpm->timestamp.year);
-    UINT8_TO_BSTREAM(p, pBpm->timestamp.month);
-    UINT8_TO_BSTREAM(p, pBpm->timestamp.day);
-    UINT8_TO_BSTREAM(p, pBpm->timestamp.hour);
-    UINT8_TO_BSTREAM(p, pBpm->timestamp.min);
-    UINT8_TO_BSTREAM(p, pBpm->timestamp.sec);
-  }
+    /* time stamp */
+    if (flags & CH_BPM_FLAG_TIMESTAMP) {
+        UINT16_TO_BSTREAM(p, pBpm->timestamp.year);
+        UINT8_TO_BSTREAM(p, pBpm->timestamp.month);
+        UINT8_TO_BSTREAM(p, pBpm->timestamp.day);
+        UINT8_TO_BSTREAM(p, pBpm->timestamp.hour);
+        UINT8_TO_BSTREAM(p, pBpm->timestamp.min);
+        UINT8_TO_BSTREAM(p, pBpm->timestamp.sec);
+    }
 
-  /* pulse rate */
-  if (flags & CH_BPM_FLAG_PULSE_RATE)
-  {
-    UINT16_TO_BSTREAM(p, pBpm->pulseRate);
-  }
+    /* pulse rate */
+    if (flags & CH_BPM_FLAG_PULSE_RATE) {
+        UINT16_TO_BSTREAM(p, pBpm->pulseRate);
+    }
 
-  /* user id */
-  if (flags & CH_BPM_FLAG_USER_ID)
-  {
-    UINT8_TO_BSTREAM(p, pBpm->userId);
-  }
+    /* user id */
+    if (flags & CH_BPM_FLAG_USER_ID) {
+        UINT8_TO_BSTREAM(p, pBpm->userId);
+    }
 
-  /* measurement status */
-  if (flags & CH_BPM_FLAG_MEAS_STATUS)
-  {
-    UINT16_TO_BSTREAM(p, pBpm->measStatus);
-  }
+    /* measurement status */
+    if (flags & CH_BPM_FLAG_MEAS_STATUS) {
+        UINT16_TO_BSTREAM(p, pBpm->measStatus);
+    }
 
-  /* return length */
-  return (uint8_t) (p - pBuf);
+    /* return length */
+    return (uint8_t)(p - pBuf);
 }
 
 /*************************************************************************************************/
@@ -115,8 +110,8 @@ static uint8_t blpsBuildBpm(uint8_t *pBuf, appBpm_t *pBpm)
 /*************************************************************************************************/
 void BlpsInit(wsfHandlerId_t handlerId, blpsCfg_t *pCfg)
 {
-  blpsCb.measTimer.handlerId = handlerId;
-  blpsCb.cfg = *pCfg;
+    blpsCb.measTimer.handlerId = handlerId;
+    blpsCb.cfg = *pCfg;
 }
 
 /*************************************************************************************************/
@@ -134,13 +129,13 @@ void BlpsInit(wsfHandlerId_t handlerId, blpsCfg_t *pCfg)
 /*************************************************************************************************/
 void BlpsMeasStart(dmConnId_t connId, uint8_t timerEvt, uint8_t icpCccIdx)
 {
-  /* initialize control block */
-  blpsCb.measTimer.msg.param = connId;
-  blpsCb.measTimer.msg.event = timerEvt;
-  blpsCb.measTimer.msg.status = icpCccIdx;
+    /* initialize control block */
+    blpsCb.measTimer.msg.param = connId;
+    blpsCb.measTimer.msg.event = timerEvt;
+    blpsCb.measTimer.msg.status = icpCccIdx;
 
-  /* start timer */
-  WsfTimerStartMs(&blpsCb.measTimer, blpsCb.cfg.period);
+    /* start timer */
+    WsfTimerStartMs(&blpsCb.measTimer, blpsCb.cfg.period);
 }
 
 /*************************************************************************************************/
@@ -152,8 +147,8 @@ void BlpsMeasStart(dmConnId_t connId, uint8_t timerEvt, uint8_t icpCccIdx)
 /*************************************************************************************************/
 void BlpsMeasStop(void)
 {
-  /* stop timer */
-  WsfTimerStop(&blpsCb.measTimer);
+    /* stop timer */
+    WsfTimerStop(&blpsCb.measTimer);
 }
 
 /*************************************************************************************************/
@@ -169,27 +164,26 @@ void BlpsMeasStop(void)
 /*************************************************************************************************/
 void BlpsMeasComplete(dmConnId_t connId, uint8_t bpmCccIdx)
 {
-  uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t len;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t len;
 
-  /* stop periodic measurement */
-  BlpsMeasStop();
+    /* stop periodic measurement */
+    BlpsMeasStop();
 
-  /* if indications enabled  */
-  if (AttsCccEnabled(connId, bpmCccIdx))
-  {
-    /* read blood pressure measurement sensor data */
-    AppHwBpmRead(FALSE, &blpsCb.bpm);
+    /* if indications enabled  */
+    if (AttsCccEnabled(connId, bpmCccIdx)) {
+        /* read blood pressure measurement sensor data */
+        AppHwBpmRead(FALSE, &blpsCb.bpm);
 
-    /* set flags */
-    blpsCb.bpm.flags = blpsCb.bpmFlags;
+        /* set flags */
+        blpsCb.bpm.flags = blpsCb.bpmFlags;
 
-    /* build blood pressure measurement characteristic */
-    len = blpsBuildBpm(buf, &blpsCb.bpm);
+        /* build blood pressure measurement characteristic */
+        len = blpsBuildBpm(buf, &blpsCb.bpm);
 
-    /* send blood pressure measurement indication */
-    AttsHandleValueInd(connId, BPS_BPM_HDL, len, buf);
-  }
+        /* send blood pressure measurement indication */
+        AttsHandleValueInd(connId, BPS_BPM_HDL, len, buf);
+    }
 }
 
 /*************************************************************************************************/
@@ -204,27 +198,26 @@ void BlpsMeasComplete(dmConnId_t connId, uint8_t bpmCccIdx)
 /*************************************************************************************************/
 void BlpsProcMsg(wsfMsgHdr_t *pMsg)
 {
-  uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
-  uint8_t len;
+    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+    uint8_t len;
 
-  /* if notifications enabled (note ccc idx is stored in hdr.status) */
-  if (AttsCccEnabled((dmConnId_t) pMsg->param, pMsg->status))
-  {
-    /* read blood pressure measurement sensor data */
-    AppHwBpmRead(TRUE, &blpsCb.bpm);
+    /* if notifications enabled (note ccc idx is stored in hdr.status) */
+    if (AttsCccEnabled((dmConnId_t)pMsg->param, pMsg->status)) {
+        /* read blood pressure measurement sensor data */
+        AppHwBpmRead(TRUE, &blpsCb.bpm);
 
-    /* set flags */
-    blpsCb.bpm.flags = blpsCb.icpFlags;
+        /* set flags */
+        blpsCb.bpm.flags = blpsCb.icpFlags;
 
-    /* build blood pressure measurement characteristic */
-    len = blpsBuildBpm(buf, &blpsCb.bpm);
+        /* build blood pressure measurement characteristic */
+        len = blpsBuildBpm(buf, &blpsCb.bpm);
 
-    /* send intermediate cuff pressure notification */
-    AttsHandleValueNtf((dmConnId_t) pMsg->param, BPS_ICP_HDL, len, buf);
+        /* send intermediate cuff pressure notification */
+        AttsHandleValueNtf((dmConnId_t)pMsg->param, BPS_ICP_HDL, len, buf);
 
-    /* restart timer */
-    WsfTimerStartMs(&blpsCb.measTimer, blpsCb.cfg.period);
-  }
+        /* restart timer */
+        WsfTimerStartMs(&blpsCb.measTimer, blpsCb.cfg.period);
+    }
 }
 
 /*************************************************************************************************/
@@ -238,7 +231,7 @@ void BlpsProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void BlpsSetBpmFlags(uint8_t flags)
 {
-  blpsCb.bpmFlags = flags;
+    blpsCb.bpmFlags = flags;
 }
 
 /*************************************************************************************************/
@@ -252,5 +245,5 @@ void BlpsSetBpmFlags(uint8_t flags)
 /*************************************************************************************************/
 void BlpsSetIcpFlags(uint8_t flags)
 {
-  blpsCb.icpFlags = flags;
+    blpsCb.icpFlags = flags;
 }

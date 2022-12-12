@@ -32,16 +32,13 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 #ifndef CRYS_CHACHA_POLY_ERROR_H
 #define CRYS_CHACHA_POLY_ERROR_H
-
 
 #include "crys_error.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*!
@@ -52,27 +49,25 @@ extern "C"
 @ingroup crys_chacha_poly
 */
 
-
-
 /************************ Defines ******************************/
 
 /*! The CRYS CHACHA POLY module errors base address - 0x00F02400. */
 /*! Invalid Additional data. */
-#define CRYS_CHACHA_POLY_ADATA_INVALID_ERROR                    (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x01UL)
+#define CRYS_CHACHA_POLY_ADATA_INVALID_ERROR (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x01UL)
 /*! Invalid input data. */
-#define CRYS_CHACHA_POLY_DATA_INVALID_ERROR                     (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x02UL)
+#define CRYS_CHACHA_POLY_DATA_INVALID_ERROR (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x02UL)
 /*! Illegal encryption mode. */
-#define CRYS_CHACHA_POLY_ENC_MODE_INVALID_ERROR                 (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x03UL)
+#define CRYS_CHACHA_POLY_ENC_MODE_INVALID_ERROR (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x03UL)
 /*! Illegal data size. */
-#define CRYS_CHACHA_POLY_DATA_SIZE_INVALID_ERROR                (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x04UL)
+#define CRYS_CHACHA_POLY_DATA_SIZE_INVALID_ERROR (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x04UL)
 /*! Key generation error. */
-#define CRYS_CHACHA_POLY_GEN_KEY_ERROR                  (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x05UL)
+#define CRYS_CHACHA_POLY_GEN_KEY_ERROR (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x05UL)
 /*! CHACHA Key generation error. */
-#define CRYS_CHACHA_POLY_ENCRYPTION_ERROR               (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x06UL)
+#define CRYS_CHACHA_POLY_ENCRYPTION_ERROR (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x06UL)
 /*! Authentication error. */
-#define CRYS_CHACHA_POLY_AUTH_ERROR                     (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x07UL)
+#define CRYS_CHACHA_POLY_AUTH_ERROR (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x07UL)
 /*! MAC comparison error. */
-#define CRYS_CHACHA_POLY_MAC_ERROR                              (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x08UL)
+#define CRYS_CHACHA_POLY_MAC_ERROR (CRYS_CHACHA_POLY_MODULE_ERROR_BASE + 0x08UL)
 
 /************************ Enums ********************************/
 
@@ -91,5 +86,3 @@ extern "C"
 @}
  */
 #endif
-
-

@@ -32,7 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 /*! @file
 @brief This file contains all of the enums and definitions that are used for the
 CryptoCell AES APIs, as well as the APIs themselves.
@@ -48,14 +47,11 @@ CryptoCell AES APIs, as well as the APIs themselves.
 #include "ssi_aes_error.h"
 #include "ssi_aes_defs.h"
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /************************ Defines ******************************/
-
 
 /************************ Enums ********************************/
 
@@ -71,54 +67,54 @@ typedef enum {
     SASI_AES_NUM_OF_ENCRYPT_MODES,
     /*! Reserved. */
     SASI_AES_ENCRYPT_MODE_LAST = 0x7FFFFFFF
-}SaSiAesEncryptMode_t;
+} SaSiAesEncryptMode_t;
 
 /*!
 AES operation mode.
 */
 typedef enum {
-    SASI_AES_MODE_ECB          = 0,     /*!< ECB mode. */
-    SASI_AES_MODE_CBC          = 1,     /*!< CBC mode. */
-    SASI_AES_MODE_CBC_MAC      = 2,     /*!< CBC-MAC mode. */
-    SASI_AES_MODE_CTR          = 3,     /*!< CTR mode. */
-    SASI_AES_MODE_XCBC_MAC     = 4,     /*!< XCBC-MAC mode. */
-    SASI_AES_MODE_CMAC         = 5,     /*!< CMAC mode. */
-    SASI_AES_MODE_XTS          = 6,     /*!< XTS mode. */
-    SASI_AES_MODE_CBC_CTS      = 7,     /*!< CBC-CTS mode. */
-    SASI_AES_MODE_OFB          = 8,     /*!< OFB mode. */
+    SASI_AES_MODE_ECB = 0, /*!< ECB mode. */
+    SASI_AES_MODE_CBC = 1, /*!< CBC mode. */
+    SASI_AES_MODE_CBC_MAC = 2, /*!< CBC-MAC mode. */
+    SASI_AES_MODE_CTR = 3, /*!< CTR mode. */
+    SASI_AES_MODE_XCBC_MAC = 4, /*!< XCBC-MAC mode. */
+    SASI_AES_MODE_CMAC = 5, /*!< CMAC mode. */
+    SASI_AES_MODE_XTS = 6, /*!< XTS mode. */
+    SASI_AES_MODE_CBC_CTS = 7, /*!< CBC-CTS mode. */
+    SASI_AES_MODE_OFB = 8, /*!< OFB mode. */
 
     /*! Maximal number of AES modes */
     SASI_AES_NUM_OF_OPERATION_MODES,
     /*! Reserved. */
     SASI_AES_OPERATION_MODE_LAST = 0x7FFFFFFF
-}SaSiAesOperationMode_t;
+} SaSiAesOperationMode_t;
 
 /*!
 AES padding type.
 */
 typedef enum {
-       SASI_AES_PADDING_NONE  = 0,      /*!< No padding. */
-       SASI_AES_PADDING_PKCS7 = 1,      /*!< PKCS7 padding. */
+    SASI_AES_PADDING_NONE = 0, /*!< No padding. */
+    SASI_AES_PADDING_PKCS7 = 1, /*!< PKCS7 padding. */
 
     /*! Maximal number of AES padding modes */
-       SASI_AES_NUM_OF_PADDING_TYPES,
+    SASI_AES_NUM_OF_PADDING_TYPES,
     /*! Reserved. */
-       SASI_AES_PADDING_TYPE_LAST = 0x7FFFFFFF
-}SaSiAesPaddingType_t;
+    SASI_AES_PADDING_TYPE_LAST = 0x7FFFFFFF
+} SaSiAesPaddingType_t;
 
 /*!
 AES key type.
 */
 typedef enum {
-    SASI_AES_USER_KEY          = 0,     /*!< user key. */
-    SASI_AES_PLATFORM_KEY      = 1,     /*!< Kplt hardware key. */
-    SASI_AES_CUSTOMER_KEY      = 2,     /*!< Kcst hardware key. */
+    SASI_AES_USER_KEY = 0, /*!< user key. */
+    SASI_AES_PLATFORM_KEY = 1, /*!< Kplt hardware key. */
+    SASI_AES_CUSTOMER_KEY = 2, /*!< Kcst hardware key. */
 
     /*! Maximal number of AES key types */
     SASI_AES_NUM_OF_KEY_TYPES,
     /*! Reserved. */
     SASI_AES_KEY_TYPE_LAST = 0x7FFFFFFF
-}SaSiAesKeyType_t;
+} SaSiAesKeyType_t;
 
 /************************ Typedefs  ****************************/
 
@@ -136,23 +132,21 @@ typedef uint8_t SaSiAesKeyBuffer_t[SASI_AES_KEY_MAX_SIZE_IN_BYTES];
 typedef struct SaSiAesUserContext_t {
     /*! Context buffer for internal usage. */
     uint32_t buff[SASI_AES_USER_CTX_SIZE_IN_WORDS];
-}SaSiAesUserContext_t;
-
+} SaSiAesUserContext_t;
 
 /*! AES User Key Data. */
 typedef struct SaSiAesUserKeyData_t {
-    uint8_t * pKey;     /*!< Pointer to the key. */
-    size_t    keySize;  /*!< The key size in bytes. Valid values:
+    uint8_t *pKey; /*!< Pointer to the key. */
+    size_t keySize; /*!< The key size in bytes. Valid values:
                       <ul><li> For XTS mode - 32 or 64 byte, indicating the full size of the double key (2x128 or 2x256 bit).</li>
                       <li>For XCBC-MAC mode - 16 byte (limited by the standard).</li>
                       <li>For all other modes - 16, 24 or 32 byte.</li></ul> */
-}SaSiAesUserKeyData_t;
+} SaSiAesUserKeyData_t;
 
 /*! AES HW Key Data - this structure is likely to be changed when we'll start using it. */
 typedef struct SaSiAesHwKeyData_t {
-    size_t slotNumber;      /*!< Slot number. */
-}SaSiAesHwKeyData_t;
-
+    size_t slotNumber; /*!< Slot number. */
+} SaSiAesHwKeyData_t;
 
 /************************ Functions *****************************/
 
@@ -163,17 +157,18 @@ typedef struct SaSiAesHwKeyData_t {
 @return SASI_OK on success,
 @return A non-zero value from ssi_aes_error.h on failure.
 */
-CIMPORT_C SaSiError_t  SaSi_AesInit(
-    SaSiAesUserContext_t * pContext,            /*!< [in]  Pointer to the AES context buffer that is allocated by the caller and initialized by this API.
+CIMPORT_C SaSiError_t SaSi_AesInit(
+    SaSiAesUserContext_t *
+        pContext, /*!< [in]  Pointer to the AES context buffer that is allocated by the caller and initialized by this API.
                                    Should be used in all subsequent calls that are part of the same operation. */
-    SaSiAesEncryptMode_t   encryptDecryptFlag,  /*!< [in]  A flag specifying whether an AES Encrypt (SASI_AES_Encrypt) or Decrypt (SASI_AES_Decrypt) operation should be performed.
+    SaSiAesEncryptMode_t
+        encryptDecryptFlag, /*!< [in]  A flag specifying whether an AES Encrypt (SASI_AES_Encrypt) or Decrypt (SASI_AES_Decrypt) operation should be performed.
                                    Must be set to CRYS_AES_Encrypt in CBC-MAC, XCBC-MAC and CMAC modes. */
-    SaSiAesOperationMode_t operationMode,       /*!< [in]  The operation cipher/mode. */
-    SaSiAesPaddingType_t   paddingType          /*!< [in]  The padding type for AES operation:
+    SaSiAesOperationMode_t operationMode, /*!< [in]  The operation cipher/mode. */
+    SaSiAesPaddingType_t paddingType /*!< [in]  The padding type for AES operation:
                                 <ul><li> NONE  - supported for all operation modes.</li>
                                 <li> PKCS7 - supported for ECB, CBC, CBC-MAC operation modes.</li></ul> */
 );
-
 
 /*!
 @brief This function sets the key information for the AES operation, in the context that was initialized by SaSi_AesInit.
@@ -182,14 +177,14 @@ different than 128/256 msb bits, according to the key size).
 @return SASI_OK on success,
 @return A non-zero value from ssi_aes_error.h on failure.
 */
-CIMPORT_C SaSiError_t  SaSi_AesSetKey(
-    SaSiAesUserContext_t * pContext,        /*!< [in]  Pointer to the AES context, after it was initialized by SaSi_AesInit. */
-    SaSiAesKeyType_t       keyType,         /*!< [in]  The type of key to be used for the AES operation.
+CIMPORT_C SaSiError_t SaSi_AesSetKey(
+    SaSiAesUserContext_t *
+        pContext, /*!< [in]  Pointer to the AES context, after it was initialized by SaSi_AesInit. */
+    SaSiAesKeyType_t keyType, /*!< [in]  The type of key to be used for the AES operation.
                                Currently only SASI_AES_USER_KEY is supported - the key is plaintext and provided in the pKeyData parameter. */
-    void *                 pKeyData,        /*!< [in]  Pointer to the key data structure (to be casted to the relevant struct type). */
-    size_t                 keyDataSize      /*!< [in]  The size of data passed in pKeyData in bytes. */
+    void *pKeyData, /*!< [in]  Pointer to the key data structure (to be casted to the relevant struct type). */
+    size_t keyDataSize /*!< [in]  The size of data passed in pKeyData in bytes. */
 );
-
 
 /*!
 @brief This function sets the IV, counter or tweak data for the following AES operation on the same context.
@@ -201,14 +196,13 @@ CIMPORT_C SaSiError_t  SaSi_AesSetKey(
 @return A non-zero value from ssi_aes_error.h on failure.
 */
 CIMPORT_C SaSiError_t SaSi_AesSetIv(
-    SaSiAesUserContext_t * pContext,    /*!< [in]  Pointer to the AES context. */
-    SaSiAesIv_t            pIV          /*!< [in]  Pointer to the buffer of the IV, counter or tweak.
+    SaSiAesUserContext_t *pContext, /*!< [in]  Pointer to the AES context. */
+    SaSiAesIv_t pIV /*!< [in]  Pointer to the buffer of the IV, counter or tweak.
                             <ul><li> For CBC, CBC-CTS, OFB and CBC-MAC modes - the IV value.</li>
                             <li> For CTR mode - the counter.</li>
                             <li> For XTS mode - the tweak value.</li>
                             <li> For all other modes - N/A. </li></ul>*/
 );
-
 
 /*!
 @brief This function retrieves the current IV, counter or tweak from the AES context.
@@ -217,14 +211,13 @@ CIMPORT_C SaSiError_t SaSi_AesSetIv(
 @return A non-zero value from ssi_aes_error.h on failure.
 */
 CIMPORT_C SaSiError_t SaSi_AesGetIv(
-    SaSiAesUserContext_t * pContext,    /*!< [in]  Pointer to the AES context. */
-    SaSiAesIv_t            pIV          /*!< [out] Pointer to the buffer of the IV, counter or tweak.
+    SaSiAesUserContext_t *pContext, /*!< [in]  Pointer to the AES context. */
+    SaSiAesIv_t pIV /*!< [out] Pointer to the buffer of the IV, counter or tweak.
                             <ul><li> For CBC, CBC-CTS, OFB and CBC-MAC modes - the IV value.</li>
                             <li> For CTR mode - the counter.</li>
                             <li> For XTS mode - the tweak value.</li>
                             <li> For all other modes - N/A. </li></ul> */
 );
-
 
 /*!
 @brief This function performs an AES operation on an input data buffer, according to the configuration defined in the context parameter.
@@ -235,24 +228,25 @@ CIMPORT_C SaSiError_t SaSi_AesGetIv(
 @return SASI_OK on success,
 @return A non-zero value from ssi_aes_error.h on failure.
 */
-CIMPORT_C SaSiError_t  SaSi_AesBlock(
-    SaSiAesUserContext_t * pContext,    /*!< [in]  Pointer to the AES context. */
-    uint8_t *              pDataIn,     /*!< [in]  Pointer to the buffer of the input data to the AES. The pointer does not need to be aligned.
+CIMPORT_C SaSiError_t SaSi_AesBlock(
+    SaSiAesUserContext_t *pContext, /*!< [in]  Pointer to the AES context. */
+    uint8_t *
+        pDataIn, /*!< [in]  Pointer to the buffer of the input data to the AES. The pointer does not need to be aligned.
                                For TZ, the size of the scatter/gather list representing the data buffer is limited to 128 entries,
                                and the size of each entry is limited to 64KB (fragments larger than 64KB are broken into fragments <= 64KB).
                                For ARM CryptoCell 3xx, The buffer must be contiguous and limited to 64KB. */
-    size_t                 dataInSize,  /*!< [in]  Size of the input data in bytes.
+    size_t dataInSize, /*!< [in]  Size of the input data in bytes.
                             <ul><li> For all modes except XTS, must be multiple of 16 bytes.</li>
                             <li> For XTS mode, only the following data sizes are supported: 64, 512, 520, 521, 1024 and 4096 bytes.
                                  The data passed in a single SaSi_AesBlock call is considered to be a single XTS unit.
                                  All subsequent calls to this API with the same context must use the same data size. </li></ul>*/
-    uint8_t *              pDataOut     /*!< [out] Pointer to the output buffer. The pointer does not need to be aligned.
+    uint8_t
+        *pDataOut /*!< [out] Pointer to the output buffer. The pointer does not need to be aligned.
                                For CBC-MAC, XCBC-MAC, CMAC modes it may be NULL.
                                For TZ, the size of the scatter/gather list representing the data buffer is limited to 128 entries,
                                and the size of each entry is limited to 64KB (fragments larger than 64KB are broken into fragments <= 64KB).
                                For ARM CryptoCell 3xx, The buffer must be contiguous and limited to 64KB. */
 );
-
 
 /*!
 @brief This function is used to finish AES operation.
@@ -265,9 +259,9 @@ CIMPORT_C SaSiError_t  SaSi_AesBlock(
 @return SASI_OK on success,
 @return A non-zero value from ssi_aes_error.h on failure.
 */
-CIMPORT_C SaSiError_t  SaSi_AesFinish(
-    SaSiAesUserContext_t * pContext,       /*!< [in]  Pointer to the AES context. */
-    size_t                 dataSize,       /*!< [in]  The size of the input data in bytes.
+CIMPORT_C SaSiError_t SaSi_AesFinish(
+    SaSiAesUserContext_t *pContext, /*!< [in]  Pointer to the AES context. */
+    size_t dataSize, /*!< [in]  The size of the input data in bytes.
                                <ul><li> For CBC-CTS mode, must be > 16. Can be <=16 only if this is the only data (no previous calls were
                                         made to SaSi_AesBlock with the same context).</li>
                                <li> For XTS mode, the data size must conform to the dataInSize rules as listed for XTS under the
@@ -279,19 +273,19 @@ CIMPORT_C SaSiError_t  SaSi_AesFinish(
                                  <li> Must be >= 16 and a multiple of 16 bytes, if direction is SASI_AES_DECRYPT and padding type
                                    is SASI_AES_PADDING_PKCS7.</li>
                                  <li> Must be a multiple of 16 bytes, otherwise. </li></ul></ul>*/
-    uint8_t *              pDataIn,        /*!< [in]  Pointer of the input data buffer.
+    uint8_t *pDataIn, /*!< [in]  Pointer of the input data buffer.
                               For TZ, the size of the scatter/gather list representing the data buffer is limited to 128 entries,
                               and the size of each entry is limited to 64KB (fragments larger than 64KB are broken into fragments <= 64KB).
                               For ARM CryptoCell 3xx, The buffer must be contiguous and limited to 64KB. */
-    size_t                 dataInBuffSize, /*!< [in]  Size of pDataIn buffer in bytes.
+    size_t dataInBuffSize, /*!< [in]  Size of pDataIn buffer in bytes.
                                <ul><li> Must be >= dataSize. </li>
                                <li> According to padding type, must be >= dataSize + padding. For PKCS7, padding size is
                                 maximum SASI_AES_BLOCK_SIZE_IN_BYTES. </li></ul>*/
-    uint8_t *              pDataOut,       /*!< [out] Pointer to the output buffer.
+    uint8_t *pDataOut, /*!< [out] Pointer to the output buffer.
                               For TZ, the size of the scatter/gather list representing the data buffer is limited to 128 entries,
                               and the size of each entry is limited to 64KB (fragments larger than 64KB are broken into fragments <= 64KB).
                               For ARM CryptoCell 3xx, The buffer must be contiguous and limited to 64KB. */
-    size_t *               dataOutBuffSize /*!< [in,out]  In - Size of pDataOut buffer in bytes.
+    size_t *dataOutBuffSize /*!< [in,out]  In - Size of pDataOut buffer in bytes.
                               The output buffer size must be no less than:
                                <ul><li> For CBC-MAC, XCBC-MAC, CMAC modes - 16 bytes (for MAC result).</li>
                                <li> For non-MAC modes - dataInBuffSize.</li></ul>
@@ -303,17 +297,15 @@ CIMPORT_C SaSiError_t  SaSi_AesFinish(
                                <li> For CBC-MAC, XCBC-MAC, CMAC modes - always 16 bytes. </li></ul>*/
 );
 
-
 /*!
 @brief This function releases and crears resources after AES operations.
 
 @return SASI_OK on success,
 @return A non-zero value from ssi_aes_error.h on failure.
 */
-CIMPORT_C SaSiError_t  SaSi_AesFree(
-    SaSiAesUserContext_t * pContext     /*!< [in] Pointer to the AES context. */
+CIMPORT_C SaSiError_t SaSi_AesFree(
+    SaSiAesUserContext_t *pContext /*!< [in] Pointer to the AES context. */
 );
-
 
 #ifdef __cplusplus
 }
@@ -322,4 +314,3 @@ CIMPORT_C SaSiError_t  SaSi_AesFree(
 @}
  */
 #endif /* #ifndef SSI_AES_H */
-

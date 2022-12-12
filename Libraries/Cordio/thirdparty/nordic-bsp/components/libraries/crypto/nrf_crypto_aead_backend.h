@@ -82,16 +82,16 @@ typedef nrf_crypto_aead_internal_context_t nrf_crypto_backend_chacha_poly_contex
 #endif
 
 /** @internal @brief Union holding a AEAD context. */
-typedef union
-{
-    nrf_crypto_backend_aes_ccm_context_t      ccm_context;          /**< @brief Holds context for AES CCM. */
-    nrf_crypto_backend_aes_ccm_star_context_t ccm_star_context;     /**< @brief Holds context for AES CCM*. */
-    nrf_crypto_backend_aes_eax_context_t      eax_context;          /**< @brief Holds context for AES EAX. */
-    nrf_crypto_backend_aes_gcm_context_t      gcm_context;          /**< @brief Holds context for AES GCM. */
+typedef union {
+    nrf_crypto_backend_aes_ccm_context_t ccm_context; /**< @brief Holds context for AES CCM. */
+    nrf_crypto_backend_aes_ccm_star_context_t
+        ccm_star_context; /**< @brief Holds context for AES CCM*. */
+    nrf_crypto_backend_aes_eax_context_t eax_context; /**< @brief Holds context for AES EAX. */
+    nrf_crypto_backend_aes_gcm_context_t gcm_context; /**< @brief Holds context for AES GCM. */
 
-    nrf_crypto_backend_chacha_poly_context_t  chacha_poly_context;  /**< @brief Holds context for ChaCha-Poly. */
+    nrf_crypto_backend_chacha_poly_context_t
+        chacha_poly_context; /**< @brief Holds context for ChaCha-Poly. */
 } nrf_crypto_backend_aead_context_t;
-
 
 #ifdef __cplusplus
 }

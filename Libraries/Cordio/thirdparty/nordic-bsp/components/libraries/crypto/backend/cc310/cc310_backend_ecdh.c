@@ -54,34 +54,29 @@
 #include "cc310_backend_shared.h"
 #include "cc310_backend_ecdh.h"
 
-
-ret_code_t nrf_crypto_backend_cc310_ecdh_compute(
-    void       * p_context,
-    void const * p_private_key,
-    void const * p_public_key,
-    uint8_t    * p_shared_secret)
+ret_code_t nrf_crypto_backend_cc310_ecdh_compute(void *p_context, void const *p_private_key,
+                                                 void const *p_public_key, uint8_t *p_shared_secret)
 {
-    ret_code_t    result;
-    CRYSError_t   crys_error;
-    uint32_t      shared_secret_size;
-    uint8_t       aligned_buffer[(NRF_CRYPTO_ECDH_SHARED_SECRET_MAX_SIZE + 3) & ~3];
-    uint8_t     * p_output_buffer;
-    bool          mutex_locked;
+    ret_code_t result;
+    CRYSError_t crys_error;
+    uint32_t shared_secret_size;
+    uint8_t aligned_buffer[(NRF_CRYPTO_ECDH_SHARED_SECRET_MAX_SIZE + 3) & ~3];
+    uint8_t *p_output_buffer;
+    bool mutex_locked;
 
-    nrf_crypto_backend_cc310_ecdh_compute_context_t * p_ctx =
+    nrf_crypto_backend_cc310_ecdh_compute_context_t *p_ctx =
         (nrf_crypto_backend_cc310_ecdh_compute_context_t *)p_context;
 
-    nrf_crypto_backend_cc310_ecc_private_key_t  * p_prv =
+    nrf_crypto_backend_cc310_ecc_private_key_t *p_prv =
         (nrf_crypto_backend_cc310_ecc_private_key_t *)p_private_key;
 
-    nrf_crypto_backend_cc310_ecc_public_key_t   * p_pub =
+    nrf_crypto_backend_cc310_ecc_public_key_t *p_pub =
         (nrf_crypto_backend_cc310_ecc_public_key_t *)p_public_key;
 
-    nrf_crypto_ecc_curve_info_t const * p_info = p_prv->header.p_info;
+    nrf_crypto_ecc_curve_info_t const *p_info = p_prv->header.p_info;
 
     result = nrf_crypto_backend_cc310_ecc_public_key_convert(p_pub, &p_ctx->key_build_temp_data);
-    if (result != NRF_SUCCESS)
-    {
+    if (result != NRF_SUCCESS) {
         return result;
     }
 
@@ -91,35 +86,31 @@ ret_code_t nrf_crypto_backend_cc310_ecdh_compute(
     {
         shared_secret_size = (shared_secret_size + 3) & ~3;
         p_output_buffer = &aligned_buffer[0];
-    }
-    else
-    {
+    } else {
         p_output_buffer = p_shared_secret;
     }
 
     mutex_locked = cc310_backend_mutex_trylock();
-    if (!mutex_locked)
-    {
+    if (!mutex_locked) {
         return NRF_ERROR_CRYPTO_BUSY;
     }
 
     cc310_backend_enable();
 
-    crys_error = CRYS_ECDH_SVDP_DH(&p_pub->key.cc310_public_key,
-                                   &p_prv->private_key,
-                                   p_output_buffer,
-                                   &shared_secret_size,
-                                   &p_ctx->temp_data);
+    crys_error = CRYS_ECDH_SVDP_DH(&p_pub->key.cc310_public_key, &p_prv->private_key,
+                                   p_output_buffer, &shared_secret_size, &p_ctx->temp_data);
 
     cc310_backend_disable();
 
     cc310_backend_mutex_unlock();
 
-    if (p_output_buffer != p_shared_secret)
-    {
+    if (p_output_buffer != p_shared_secret) {
         //lint -save -e645 (Symbol 'aligned_buffer' may not have been initialized)
-        memcpy(p_shared_secret,
-            &aligned_buffer[3 - ((p_info->raw_private_key_size + 3) & 3)], // Bytes at the beginning that were added during padding are now skipped
+        memcpy(
+            p_shared_secret,
+            &aligned_buffer
+                [3 - ((p_info->raw_private_key_size + 3) &
+                      3)], // Bytes at the beginning that were added during padding are now skipped
             p_info->raw_private_key_size);
         //lint -restore
     }
@@ -128,48 +119,40 @@ ret_code_t nrf_crypto_backend_cc310_ecdh_compute(
     return result;
 }
 
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_CURVE25519)
 
-ret_code_t nrf_crypto_backend_cc310_curve25519_ecdh_compute(
-    void       * p_context,
-    void const * p_private_key,
-    void const * p_public_key,
-    uint8_t    * p_shared_secret)
+ret_code_t nrf_crypto_backend_cc310_curve25519_ecdh_compute(void *p_context,
+                                                            void const *p_private_key,
+                                                            void const *p_public_key,
+                                                            uint8_t *p_shared_secret)
 {
-    ret_code_t    result;
-    CRYSError_t   crys_error;
-    bool          mutex_locked;
+    ret_code_t result;
+    CRYSError_t crys_error;
+    bool mutex_locked;
 
-    nrf_crypto_backend_cc310_curve25519_context_t * p_ctx =
+    nrf_crypto_backend_cc310_curve25519_context_t *p_ctx =
         (nrf_crypto_backend_cc310_curve25519_context_t *)p_context;
 
-    nrf_crypto_backend_curve25519_private_key_t   * p_prv =
+    nrf_crypto_backend_curve25519_private_key_t *p_prv =
         (nrf_crypto_backend_curve25519_private_key_t *)p_private_key;
 
-    nrf_crypto_backend_curve25519_public_key_t    * p_pub =
+    nrf_crypto_backend_curve25519_public_key_t *p_pub =
         (nrf_crypto_backend_curve25519_public_key_t *)p_public_key;
 
-    nrf_crypto_ecc_curve_info_t const * p_info              = p_prv->header.p_info;
-    size_t                              shared_secret_size  = p_info->raw_private_key_size;
-    size_t                              pub_key_size        = sizeof(p_pub->key);
-    size_t                              prv_key_size        = sizeof(p_prv->key);
+    nrf_crypto_ecc_curve_info_t const *p_info = p_prv->header.p_info;
+    size_t shared_secret_size = p_info->raw_private_key_size;
+    size_t pub_key_size = sizeof(p_pub->key);
+    size_t prv_key_size = sizeof(p_prv->key);
 
     mutex_locked = cc310_backend_mutex_trylock();
-    if (!mutex_locked)
-    {
+    if (!mutex_locked) {
         return NRF_ERROR_CRYPTO_BUSY;
     }
 
     cc310_backend_enable();
 
-    crys_error = CRYS_ECMONT_Scalarmult(p_shared_secret,
-                                        &shared_secret_size,
-                                        p_prv->key,
-                                        prv_key_size,
-                                        p_pub->key,
-                                        pub_key_size,
-                                        &p_ctx->temp_data);
+    crys_error = CRYS_ECMONT_Scalarmult(p_shared_secret, &shared_secret_size, p_prv->key,
+                                        prv_key_size, p_pub->key, pub_key_size, &p_ctx->temp_data);
 
     cc310_backend_disable();
 
@@ -184,7 +167,6 @@ ret_code_t nrf_crypto_backend_cc310_curve25519_ecdh_compute(
     result = nrf_crypto_backend_cc310_ecc_error_convert(crys_error);
     return result;
 }
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_ECC_CURVE25519)
 

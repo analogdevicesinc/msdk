@@ -37,17 +37,14 @@
 /*************************************************************************************************/
 void lctrExtInitActShutdown(lctrExtScanCtx_t *pExtInitCtx)
 {
-  pExtInitCtx->shutdown = TRUE;
+    pExtInitCtx->shutdown = TRUE;
 
-  if (!pExtInitCtx->auxOpPending)
-  {
-    SchRemove(&pExtInitCtx->scanBod);
-  }
-  else
-  {
-    SchRemove(&pExtInitCtx->auxScanBod);
-  }
-  /* Shutdown completes with events generated in BOD end callback. */
+    if (!pExtInitCtx->auxOpPending) {
+        SchRemove(&pExtInitCtx->scanBod);
+    } else {
+        SchRemove(&pExtInitCtx->auxScanBod);
+    }
+    /* Shutdown completes with events generated in BOD end callback. */
 }
 
 /*************************************************************************************************/
@@ -59,46 +56,36 @@ void lctrExtInitActShutdown(lctrExtScanCtx_t *pExtInitCtx)
 /*************************************************************************************************/
 void lctrExtInitActScanTerm(lctrExtScanCtx_t *pExtInitCtx)
 {
-  for (unsigned i = 0; i < LCTR_SCAN_PHY_TOTAL; i++)
-  {
-    if (lctrMstExtInit.enaPhys & (1 << i))
-    {
-      if ((lctrMstExtInit.estConnPhys & (1 << i)) == 0)
-      {
-        lctrConnCtx_t *pConnCtx = LCTR_GET_CONN_CTX(lctrMstExtInitTbl[i].data.init.connHandle);
+    for (unsigned i = 0; i < LCTR_SCAN_PHY_TOTAL; i++) {
+        if (lctrMstExtInit.enaPhys & (1 << i)) {
+            if ((lctrMstExtInit.estConnPhys & (1 << i)) == 0) {
+                lctrConnCtx_t *pConnCtx =
+                    LCTR_GET_CONN_CTX(lctrMstExtInitTbl[i].data.init.connHandle);
 
-        if (pConnCtx->enabled == TRUE)
-        {
-          /* Cleanup unused initiate PHY connection context. */
-          lctrSendConnMsg(pConnCtx, LCTR_CONN_INIT_CANCELED);
+                if (pConnCtx->enabled == TRUE) {
+                    /* Cleanup unused initiate PHY connection context. */
+                    lctrSendConnMsg(pConnCtx, LCTR_CONN_INIT_CANCELED);
+                }
+            }
         }
-      }
     }
-  }
 
-  lctrMstExtInitCleanupOp(pExtInitCtx);
+    lctrMstExtInitCleanupOp(pExtInitCtx);
 
-  if (pExtInitCtx->state != LCTR_EXT_INIT_STATE_RESET)
-  {
-    LlCreateConnCancelCnf_t evt =
-    {
-        .hdr =
-        {
-            .event  = LL_CREATE_CONN_CANCEL_CNF,
-            .status = LL_SUCCESS
-        },
+    if (pExtInitCtx->state != LCTR_EXT_INIT_STATE_RESET) {
+        LlCreateConnCancelCnf_t evt = {
+            .hdr = { .event = LL_CREATE_CONN_CANCEL_CNF, .status = LL_SUCCESS },
 
-        .status = LL_SUCCESS,
-    };
+            .status = LL_SUCCESS,
+        };
 
-    LL_TRACE_INFO0("### LlEvent ###  LL_EXT_CREATE_CONN_CANCEL_CNF, status=LL_SUCCESS");
+        LL_TRACE_INFO0("### LlEvent ###  LL_EXT_CREATE_CONN_CANCEL_CNF, status=LL_SUCCESS");
 
-    LmgrSendEvent((LlEvt_t *)&evt);
-    /* Send connection complete event after response to create connection cancel command. */
-    lctrScanNotifyHostInitiateError(LL_ERROR_CODE_UNKNOWN_CONN_ID,
-        lctrMstExtInit.peerAddrType,
-        lctrMstExtInit.peerAddr);
-  }
+        LmgrSendEvent((LlEvt_t *)&evt);
+        /* Send connection complete event after response to create connection cancel command. */
+        lctrScanNotifyHostInitiateError(LL_ERROR_CODE_UNKNOWN_CONN_ID, lctrMstExtInit.peerAddrType,
+                                        lctrMstExtInit.peerAddr);
+    }
 }
 
 /*************************************************************************************************/
@@ -110,9 +97,10 @@ void lctrExtInitActScanTerm(lctrExtScanCtx_t *pExtInitCtx)
 /*************************************************************************************************/
 void lctrExtInitActDisallowInitiate(lctrExtScanCtx_t *pExtInitCtx)
 {
-  lctrInitiateMsg_t *pInitMsg = (lctrInitiateMsg_t *)pLctrMsg;
+    lctrInitiateMsg_t *pInitMsg = (lctrInitiateMsg_t *)pLctrMsg;
 
-  lctrScanNotifyHostInitiateError(LL_ERROR_CODE_CMD_DISALLOWED, pInitMsg->peerAddrType, pInitMsg->peerAddr);
+    lctrScanNotifyHostInitiateError(LL_ERROR_CODE_CMD_DISALLOWED, pInitMsg->peerAddrType,
+                                    pInitMsg->peerAddr);
 }
 
 /*************************************************************************************************/
@@ -124,18 +112,14 @@ void lctrExtInitActDisallowInitiate(lctrExtScanCtx_t *pExtInitCtx)
 /*************************************************************************************************/
 void lctrExtInitActDisallowCancel(lctrExtScanCtx_t *pExtInitCtx)
 {
-  LlCreateConnCancelCnf_t evt =
-  {
-    .hdr =
-    {
-      .event  = LL_CREATE_CONN_CANCEL_CNF,
-      .status = LL_ERROR_CODE_CMD_DISALLOWED
-    },
+    LlCreateConnCancelCnf_t evt = {
+        .hdr = { .event = LL_CREATE_CONN_CANCEL_CNF, .status = LL_ERROR_CODE_CMD_DISALLOWED },
 
-    .status = LL_ERROR_CODE_CMD_DISALLOWED,
-  };
+        .status = LL_ERROR_CODE_CMD_DISALLOWED,
+    };
 
-  LL_TRACE_INFO0("### LlEvent ###  LL_EXT_CREATE_CONN_CANCEL_CNF, status=LL_ERROR_CODE_CMD_DISALLOWED");
+    LL_TRACE_INFO0(
+        "### LlEvent ###  LL_EXT_CREATE_CONN_CANCEL_CNF, status=LL_ERROR_CODE_CMD_DISALLOWED");
 
-  LmgrSendEvent((LlEvt_t *)&evt);
+    LmgrSendEvent((LlEvt_t *)&evt);
 }

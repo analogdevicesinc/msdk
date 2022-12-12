@@ -27,8 +27,7 @@
 #define MESH_SAR_TX_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -36,11 +35,10 @@ extern "C"
 **************************************************************************************************/
 
 /*! Mesh SAR Tx transaction event status enumeration */
-enum meshSarTxEventStatus
-{
-  MESH_SAR_TX_EVENT_SUCCESS   = 0x00,  /*!< SAR Tx transaction completed without errors */
-  MESH_SAR_TX_EVENT_TIMEOUT   = 0x01,  /*!< SAR Tx transaction timed out */
-  MESH_SAR_TX_EVENT_REJECTED  = 0x02,  /*!< SAR Tx transaction rejected */
+enum meshSarTxEventStatus {
+    MESH_SAR_TX_EVENT_SUCCESS = 0x00, /*!< SAR Tx transaction completed without errors */
+    MESH_SAR_TX_EVENT_TIMEOUT = 0x01, /*!< SAR Tx transaction timed out */
+    MESH_SAR_TX_EVENT_REJECTED = 0x02, /*!< SAR Tx transaction rejected */
 };
 
 /*! Mesh SAR Tx transaction event status. See ::meshSarTxEventStatus */
@@ -153,9 +151,7 @@ bool_t MeshSarTxStartSegAccTransaction(meshLtrAccPduInfo_t *pLtrPduInfo);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshSarTxProcessBlockAck(meshAddress_t remoteAddress,
-                              uint16_t seqZero,
-                              bool_t oboFlag,
+void MeshSarTxProcessBlockAck(meshAddress_t remoteAddress, uint16_t seqZero, bool_t oboFlag,
                               meshSarTxBlockAck_t blockAck);
 
 /*************************************************************************************************/

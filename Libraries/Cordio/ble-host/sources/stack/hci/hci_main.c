@@ -48,7 +48,7 @@ hciCb_t hciCb;
 /*************************************************************************************************/
 void HciEvtRegister(hciEvtCback_t evtCback)
 {
-  hciCb.evtCback = evtCback;
+    hciCb.evtCback = evtCback;
 }
 
 /*************************************************************************************************/
@@ -62,7 +62,7 @@ void HciEvtRegister(hciEvtCback_t evtCback)
 /*************************************************************************************************/
 void HciSecRegister(hciSecCback_t secCback)
 {
-  hciCb.secCback = secCback;
+    hciCb.secCback = secCback;
 }
 
 /*************************************************************************************************/
@@ -77,8 +77,8 @@ void HciSecRegister(hciSecCback_t secCback)
 /*************************************************************************************************/
 void HciAclRegister(hciAclCback_t aclCback, hciFlowCback_t flowCback)
 {
-  hciCb.aclCback = aclCback;
-  hciCb.flowCback = flowCback;
+    hciCb.aclCback = aclCback;
+    hciCb.flowCback = flowCback;
 }
 
 /*************************************************************************************************/
@@ -93,8 +93,8 @@ void HciAclRegister(hciAclCback_t aclCback, hciFlowCback_t flowCback)
 /*************************************************************************************************/
 void HciIsoRegister(hciAclCback_t isoCback, hciFlowCback_t flowCback)
 {
-  hciCb.isoCback = isoCback;
-  hciCb.isoFlowCback = flowCback;
+    hciCb.isoCback = isoCback;
+    hciCb.isoFlowCback = flowCback;
 }
 
 /*************************************************************************************************/
@@ -108,14 +108,14 @@ void HciIsoRegister(hciAclCback_t isoCback, hciFlowCback_t flowCback)
 /*************************************************************************************************/
 void HciHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* store handler ID */
-  hciCb.handlerId = handlerId;
+    /* store handler ID */
+    hciCb.handlerId = handlerId;
 
-  /* init rx queue */
-  WSF_QUEUE_INIT(&hciCb.rxQueue);
+    /* init rx queue */
+    WSF_QUEUE_INIT(&hciCb.rxQueue);
 
-  /* perform other hci initialization */
-  HciCoreInit();
+    /* perform other hci initialization */
+    HciCoreInit();
 }
 
 /*************************************************************************************************/
@@ -130,5 +130,5 @@ void HciHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void HciHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  HciCoreHandler(event, pMsg);
+    HciCoreHandler(event, pMsg);
 }

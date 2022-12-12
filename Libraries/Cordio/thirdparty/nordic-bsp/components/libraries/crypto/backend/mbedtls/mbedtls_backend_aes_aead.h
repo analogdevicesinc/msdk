@@ -71,20 +71,19 @@ extern "C" {
 #error "Duplicate definition of AES CCM mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_CCM_ENABLED 1
-#undef  NRF_CRYPTO_AEAD_ENABLED
+#undef NRF_CRYPTO_AEAD_ENABLED
 #define NRF_CRYPTO_AEAD_ENABLED 1
-#undef  NRF_CRYPTO_MBEDTLS_AES_AEAD_ENABLED
+#undef NRF_CRYPTO_MBEDTLS_AES_AEAD_ENABLED
 #define NRF_CRYPTO_MBEDTLS_AES_AEAD_ENABLED 1
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_CCM_128_ENABLED  1
-#define NRF_CRYPTO_AES_CCM_192_ENABLED  1
-#define NRF_CRYPTO_AES_CCM_256_ENABLED  1
+#define NRF_CRYPTO_AES_CCM_128_ENABLED 1
+#define NRF_CRYPTO_AES_CCM_192_ENABLED 1
+#define NRF_CRYPTO_AES_CCM_256_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aead_internal_context_t header;   /**< Common header for context. */
-    mbedtls_ccm_context                context;  /**< AES CCM context internal to mbed TLS. */
+typedef struct {
+    nrf_crypto_aead_internal_context_t header; /**< Common header for context. */
+    mbedtls_ccm_context context; /**< AES CCM context internal to mbed TLS. */
 } nrf_crypto_backend_aes_ccm_context_t;
 #endif
 
@@ -94,20 +93,19 @@ typedef struct
 #error "Duplicate definition of AES GCM mode. More than one backend enabled");
 #endif
 #define NRF_CRYPTO_AES_GCM_ENABLED 1
-#undef  NRF_CRYPTO_AEAD_ENABLED
+#undef NRF_CRYPTO_AEAD_ENABLED
 #define NRF_CRYPTO_AEAD_ENABLED 1
-#undef  NRF_CRYPTO_MBEDTLS_AES_AEAD_ENABLED
+#undef NRF_CRYPTO_MBEDTLS_AES_AEAD_ENABLED
 #define NRF_CRYPTO_MBEDTLS_AES_AEAD_ENABLED 1
 
 /* defines for test purposes */
-#define NRF_CRYPTO_AES_GCM_128_ENABLED  1
-#define NRF_CRYPTO_AES_GCM_192_ENABLED  1
-#define NRF_CRYPTO_AES_GCM_256_ENABLED  1
+#define NRF_CRYPTO_AES_GCM_128_ENABLED 1
+#define NRF_CRYPTO_AES_GCM_192_ENABLED 1
+#define NRF_CRYPTO_AES_GCM_256_ENABLED 1
 
-typedef struct
-{
-    nrf_crypto_aead_internal_context_t header;   /**< Common header for context. */
-    mbedtls_gcm_context                context;  /**< AES GCM context internal to mbed TLS. */
+typedef struct {
+    nrf_crypto_aead_internal_context_t header; /**< Common header for context. */
+    mbedtls_gcm_context context; /**< AES GCM context internal to mbed TLS. */
 } nrf_crypto_backend_aes_gcm_context_t;
 #endif
 
@@ -115,9 +113,8 @@ typedef struct
 }
 #endif
 
-#endif  // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS)
+#endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS)
 
 /** @} */
 
 #endif // MBEDTLS_BACKEND_AES_AEAD_H__
-

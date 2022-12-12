@@ -35,5 +35,5 @@
 /*************************************************************************************************/
 void LlPhyMasterInit(void)
 {
-  LctrMstPhyConnInit();
+    LctrMstPhyConnInit();
 }

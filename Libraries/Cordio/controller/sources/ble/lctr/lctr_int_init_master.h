@@ -44,13 +44,12 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Master initiate states. */
-enum
-{
-  LCTR_INIT_STATE_DISABLED,             /*!< Initiate disabled state. */
-  LCTR_INIT_STATE_ENABLED,              /*!< Initiate enabled state. */
-  LCTR_INIT_STATE_SHUTDOWN,             /*!< Scan shutdown in progress. */
-  LCTR_INIT_STATE_RESET,                /*!< Scan reset in progress. */
-  LCTR_INIT_STATE_TOTAL                 /*!< Total number of scan states. */
+enum {
+    LCTR_INIT_STATE_DISABLED, /*!< Initiate disabled state. */
+    LCTR_INIT_STATE_ENABLED, /*!< Initiate enabled state. */
+    LCTR_INIT_STATE_SHUTDOWN, /*!< Scan shutdown in progress. */
+    LCTR_INIT_STATE_RESET, /*!< Scan reset in progress. */
+    LCTR_INIT_STATE_TOTAL /*!< Total number of scan states. */
 };
 
 /**************************************************************************************************

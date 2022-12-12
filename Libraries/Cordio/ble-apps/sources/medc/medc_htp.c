@@ -41,10 +41,10 @@
 **************************************************************************************************/
 
 /* Start of cached health thermometer service handles; begins after DIS */
-#define MEDC_DISC_HTS_START         (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
+#define MEDC_DISC_HTS_START (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
 
 /* Total cached handle list length */
-#define MEDC_DISC_HDL_LIST_LEN      (MEDC_DISC_HTS_START + HTPC_HTS_HDL_LIST_LEN)
+#define MEDC_DISC_HDL_LIST_LEN (MEDC_DISC_HTS_START + HTPC_HTS_HDL_LIST_LEN)
 
 /*! Pointers into handle list for health thermometer service handles */
 static uint16_t *pMedcHtsHdlList = &medcCb.hdlList[MEDC_DISC_HTS_START];
@@ -57,20 +57,19 @@ WSF_CT_ASSERT(MEDC_DISC_HDL_LIST_LEN <= APP_DB_HDL_LIST_LEN);
 **************************************************************************************************/
 
 /* List of characteristics to configure after service discovery */
-static const attcDiscCfg_t medcCfgHtsList[] =
-{
-  /* Read:  Temperature type */
-  {NULL, 0, HTPC_HTS_TT_HDL_IDX},
+static const attcDiscCfg_t medcCfgHtsList[] = {
+    /* Read:  Temperature type */
+    { NULL, 0, HTPC_HTS_TT_HDL_IDX },
 
-  /* Write:  Temperature measurement CCC descriptor  */
-  {medcCccIndVal, sizeof(medcCccIndVal), HTPC_HTS_TM_CCC_HDL_IDX},
+    /* Write:  Temperature measurement CCC descriptor  */
+    { medcCccIndVal, sizeof(medcCccIndVal), HTPC_HTS_TM_CCC_HDL_IDX },
 
-  /* Write:  Intermediate temperature CCC descriptor  */
-  {medcCccNtfVal, sizeof(medcCccNtfVal), HTPC_HTS_IT_CCC_HDL_IDX},
+    /* Write:  Intermediate temperature CCC descriptor  */
+    { medcCccNtfVal, sizeof(medcCccNtfVal), HTPC_HTS_IT_CCC_HDL_IDX },
 };
 
 /* Characteristic configuration list length */
-#define MEDC_CFG_HTS_LIST_LEN   (sizeof(medcCfgHtsList) / sizeof(attcDiscCfg_t))
+#define MEDC_CFG_HTS_LIST_LEN (sizeof(medcCfgHtsList) / sizeof(attcDiscCfg_t))
 
 /**************************************************************************************************
   Local Functions
@@ -87,14 +86,7 @@ static void medcHtpBtn(dmConnId_t connId, uint8_t btn);
 **************************************************************************************************/
 
 /*! profile interface pointer */
-medcIf_t medcHtpIf =
-{
-  medcHtpInit,
-  medcHtpDiscover,
-  medcHtpConfigure,
-  medcHtpProcMsg,
-  medcHtpBtn
-};
+medcIf_t medcHtpIf = { medcHtpInit, medcHtpDiscover, medcHtpConfigure, medcHtpProcMsg, medcHtpBtn };
 
 /*************************************************************************************************/
 /*!
@@ -107,26 +99,22 @@ medcIf_t medcHtpIf =
 /*************************************************************************************************/
 static void medcHtsValueUpdate(attEvt_t *pMsg)
 {
-  if (pMsg->hdr.status == ATT_SUCCESS)
-  {
-    /* determine which profile the handle belongs to; start with most likely */
+    if (pMsg->hdr.status == ATT_SUCCESS) {
+        /* determine which profile the handle belongs to; start with most likely */
 
-    /* health thermometer */
-    if (HtpcHtsValueUpdate(pMedcHtsHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
+        /* health thermometer */
+        if (HtpcHtsValueUpdate(pMedcHtsHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* device information */
+        if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* GATT */
+        if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
     }
-    /* device information */
-    if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-    /* GATT */
-    if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -140,17 +128,16 @@ static void medcHtsValueUpdate(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcHtpProcMsg(wsfMsgHdr_t *pMsg)
 {
-  switch(pMsg->event)
-  {
+    switch (pMsg->event) {
     case ATTC_READ_RSP:
     case ATTC_HANDLE_VALUE_NTF:
     case ATTC_HANDLE_VALUE_IND:
-      medcHtsValueUpdate((attEvt_t *) pMsg);
-      break;
+        medcHtsValueUpdate((attEvt_t *)pMsg);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -162,11 +149,11 @@ static void medcHtpProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void medcHtpInit(void)
 {
-  /* set handle list length */
-  medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
+    /* set handle list length */
+    medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
 
-  /* set autoconnect UUID */
-  medcCb.autoUuid[0] = ATT_UUID_HEALTH_THERM_SERVICE;
+    /* set autoconnect UUID */
+    medcCb.autoUuid[0] = ATT_UUID_HEALTH_THERM_SERVICE;
 }
 
 /*************************************************************************************************/
@@ -180,10 +167,10 @@ static void medcHtpInit(void)
 /*************************************************************************************************/
 static bool_t medcHtpDiscover(dmConnId_t connId)
 {
-  /* discover health thermometer service */
-  HtpcHtsDiscover(connId, pMedcHtsHdlList);
+    /* discover health thermometer service */
+    HtpcHtsDiscover(connId, pMedcHtsHdlList);
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -198,10 +185,9 @@ static bool_t medcHtpDiscover(dmConnId_t connId)
 /*************************************************************************************************/
 static void medcHtpConfigure(dmConnId_t connId, uint8_t status)
 {
-  /* configure health thermometer service */
-  AppDiscConfigure(connId, status, MEDC_CFG_HTS_LIST_LEN,
-                   (attcDiscCfg_t *) medcCfgHtsList,
-                   HTPC_HTS_HDL_LIST_LEN, pMedcHtsHdlList);
+    /* configure health thermometer service */
+    AppDiscConfigure(connId, status, MEDC_CFG_HTS_LIST_LEN, (attcDiscCfg_t *)medcCfgHtsList,
+                     HTPC_HTS_HDL_LIST_LEN, pMedcHtsHdlList);
 }
 
 /*************************************************************************************************/
@@ -216,5 +202,5 @@ static void medcHtpConfigure(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 static void medcHtpBtn(dmConnId_t connId, uint8_t btn)
 {
-  return;
+    return;
 }

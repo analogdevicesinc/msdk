@@ -33,5 +33,5 @@
 /*************************************************************************************************/
 void LlChannelSelection2Init(void)
 {
-  LctrChannelSelection2Init();
+    LctrChannelSelection2Init();
 }

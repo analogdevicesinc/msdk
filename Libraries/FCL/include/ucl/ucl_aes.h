@@ -40,7 +40,7 @@
 extern "C" {
 #endif /* __cplusplus  */
 
-  /** @file ucl_aes.h
+/** @file ucl_aes.h
    * @defgroup UCL_AES AES
    * The AES, see FIPS-197.
    *
@@ -57,59 +57,57 @@ extern "C" {
    * @see UCL_OPERATION_MODES
    * @ingroup UCL_BLOCK_CIPHER */
 
-  /** <b>AES Block Size</b>.
+/** <b>AES Block Size</b>.
    * The byte length of the DES core data block.
    * @ingroup UCL_AES */
 #define UCL_AES_BLOCKSIZE 16
 
-  /** <b>128-bits AES Key byte length</b>.
+/** <b>128-bits AES Key byte length</b>.
    * @ingroup UCL_AES */
 #define UCL_AES_KEYLEN_128 16
-  /** <b>192-bits AES Key byte length</b>.
+/** <b>192-bits AES Key byte length</b>.
    * @ingroup UCL_AES */
 #define UCL_AES_KEYLEN_192 24
-  /** <b>256-bits AES Key byte length</b>.
+/** <b>256-bits AES Key byte length</b>.
    * @ingroup UCL_AES */
 #define UCL_AES_KEYLEN_256 32
 
-  /** <b>AES maximum round number</b>.
+/** <b>AES maximum round number</b>.
    * @ingroup UCL_AES */
-#define UCL_AES_MAXNR   14
+#define UCL_AES_MAXNR 14
 
-  /** <b>AES Key</b>.
+/** <b>AES Key</b>.
    * @ingroup UCL_AES */
-  struct ucl_aes_key
-  {
-    u32 rd_key[4 *(UCL_AES_MAXNR + 1)]; /**< Round key.        */
-    int rounds;                         /**< Number of rounds. */
-  };
+struct ucl_aes_key {
+    u32 rd_key[4 * (UCL_AES_MAXNR + 1)]; /**< Round key.        */
+    int rounds; /**< Number of rounds. */
+};
 
-  /** <b>AES Key</b>.
+/** <b>AES Key</b>.
    * @ingroup UCL_AES */
-  typedef struct ucl_aes_key ucl_aes_key_t;
+typedef struct ucl_aes_key ucl_aes_key_t;
 
-  typedef struct ucl_aes_key AES_KEY;
+typedef struct ucl_aes_key AES_KEY;
 
-  /** <b>AES Context</b>.
+/** <b>AES Context</b>.
    * This structure is involved in the operation modes.
    * @see UCL_OPERATION_MODES
    *
    * @ingroup UCL_AES */
-  struct ucl_aes_ctx
-  {
-    int mode;                     /**< Ciphering Mode.    */
+struct ucl_aes_ctx {
+    int mode; /**< Ciphering Mode.    */
     u8 memory[UCL_AES_BLOCKSIZE]; /**< Intermediate state.*/
-    u32 index;                    /**< index.             */
-    u8 origin_key[UCL_AES_KEYLEN_256];/**<origin key, w/o modification*/
+    u32 index; /**< index.             */
+    u8 origin_key[UCL_AES_KEYLEN_256]; /**<origin key, w/o modification*/
     int origin_keylen;
-    ucl_aes_key_t key;            /**< AES Sub-keys.      */
-  };
+    ucl_aes_key_t key; /**< AES Sub-keys.      */
+};
 
-  /** <b>AES Context</b>.
+/** <b>AES Context</b>.
    * @ingroup UCL_AES */
-  typedef struct ucl_aes_ctx ucl_aes_ctx_t;
+typedef struct ucl_aes_ctx ucl_aes_ctx_t;
 
-  /** <b>AES for Single Block</b>.
+/** <b>AES for Single Block</b>.
    * The complete AES for only one block.
    *
    * @param[out] dst    Output Block (encrypted/decrypted)
@@ -130,12 +128,12 @@ extern "C" {
    *
    * @ingroup UCL_AES
    */
-  int ucl_aes(u8 *dst, u8 *src, u8 *key, u32 keylen, int mode);
+int ucl_aes(u8 *dst, u8 *src, u8 *key, u32 keylen, int mode);
 
-  int aes_set_ekey(AES_KEY *key, const u8 *userKey, const int len);
-  int aes_set_dkey(AES_KEY *key, const u8 *userKey, const int len);
-  int aes_encrypt(u8 *out, const u8 *in, const AES_KEY *key);
-  int aes_decrypt(u8 *out, const u8 *in, const AES_KEY *key);
+int aes_set_ekey(AES_KEY *key, const u8 *userKey, const int len);
+int aes_set_dkey(AES_KEY *key, const u8 *userKey, const int len);
+int aes_encrypt(u8 *out, const u8 *in, const AES_KEY *key);
+int aes_decrypt(u8 *out, const u8 *in, const AES_KEY *key);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus  */

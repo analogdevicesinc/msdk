@@ -51,23 +51,17 @@
 wsfHandlerId_t meshHtSrHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t meshHtSrRcvdOpcodes[] =
-{
-  { MESH_HT_FAULT_GET_OPCODE },
-  { MESH_HT_FAULT_CLEAR_UNACK_OPCODE },
-  { MESH_HT_FAULT_CLEAR_OPCODE },
-  { MESH_HT_FAULT_TEST_OPCODE },
-  { MESH_HT_FAULT_TEST_UNACK_OPCODE },
-  { MESH_HT_PERIOD_GET_OPCODE },
-  { MESH_HT_PERIOD_SET_UNACK_OPCODE },
-  { MESH_HT_PERIOD_SET_OPCODE },
-  { MESH_HT_ATTENTION_GET_OPCODE },
-  { MESH_HT_ATTENTION_SET_OPCODE },
-  { MESH_HT_ATTENTION_SET_UNACK_OPCODE },
+const meshMsgOpcode_t meshHtSrRcvdOpcodes[] = {
+    { MESH_HT_FAULT_GET_OPCODE },           { MESH_HT_FAULT_CLEAR_UNACK_OPCODE },
+    { MESH_HT_FAULT_CLEAR_OPCODE },         { MESH_HT_FAULT_TEST_OPCODE },
+    { MESH_HT_FAULT_TEST_UNACK_OPCODE },    { MESH_HT_PERIOD_GET_OPCODE },
+    { MESH_HT_PERIOD_SET_UNACK_OPCODE },    { MESH_HT_PERIOD_SET_OPCODE },
+    { MESH_HT_ATTENTION_GET_OPCODE },       { MESH_HT_ATTENTION_SET_OPCODE },
+    { MESH_HT_ATTENTION_SET_UNACK_OPCODE },
 };
 
 /*! Generic On Off Server Control Block */
-meshHtSrCb_t  htSrCb;
+meshHtSrCb_t htSrCb;
 
 /**************************************************************************************************
   Local Variables
@@ -77,19 +71,11 @@ meshHtSrCb_t  htSrCb;
 static const uint8_t htSrNumOps = sizeof(meshHtSrRcvdOpcodes) / sizeof(meshMsgOpcode_t);
 
 /*! Handler functions for supported opcodes */
-static const meshHtSrHandleMsg_t meshHtSrHandleMsg[] =
-{
-  meshHtSrHandleFaultGet,
-  meshHtSrHandleFaultClearUnack,
-  meshHtSrHandleFaultClear,
-  meshHtSrHandleFaultTest,
-  meshHtSrHandleFaultTestUnack,
-  meshHtSrHandlePeriodGet,
-  meshHtSrHandlePeriodSetUnack,
-  meshHtSrHandlePeriodSet,
-  meshHtSrHandleAttentionGet,
-  meshHtSrHandleAttentionSet,
-  meshHtSrHandleAttentionSetUnack,
+static const meshHtSrHandleMsg_t meshHtSrHandleMsg[] = {
+    meshHtSrHandleFaultGet,       meshHtSrHandleFaultClearUnack,   meshHtSrHandleFaultClear,
+    meshHtSrHandleFaultTest,      meshHtSrHandleFaultTestUnack,    meshHtSrHandlePeriodGet,
+    meshHtSrHandlePeriodSetUnack, meshHtSrHandlePeriodSet,         meshHtSrHandleAttentionGet,
+    meshHtSrHandleAttentionSet,   meshHtSrHandleAttentionSetUnack,
 };
 
 /**************************************************************************************************
@@ -107,25 +93,23 @@ static const meshHtSrHandleMsg_t meshHtSrHandleMsg[] =
 /*************************************************************************************************/
 static void meshHtSrHandleCrtHtTmrCback(meshElementId_t elementId)
 {
-  meshHtSrDescriptor_t *pDesc = NULL;
+    meshHtSrDescriptor_t *pDesc = NULL;
 
-  /* Get model instance descriptor */
-  meshHtSrGetDesc(elementId, &pDesc);
+    /* Get model instance descriptor */
+    meshHtSrGetDesc(elementId, &pDesc);
 
-  if(pDesc == NULL)
-  {
-    return;
-  }
+    if (pDesc == NULL) {
+        return;
+    }
 
-  /* Publish current health. */
-  meshHtSrPublishCrtHt(elementId);
+    /* Publish current health. */
+    meshHtSrPublishCrtHt(elementId);
 
-  /* Check if timer needs restart. */
-  if((pDesc->fastPubOn) && (pDesc->fastPeriodDiv != 0) && (pDesc->pubPeriodMs != 0))
-  {
-    /* Restart publication timer. */
-    WsfTimerStartMs(&(pDesc->fastPubTmr), FAST_PUB_TIME(pDesc));
-  }
+    /* Check if timer needs restart. */
+    if ((pDesc->fastPubOn) && (pDesc->fastPeriodDiv != 0) && (pDesc->pubPeriodMs != 0)) {
+        /* Restart publication timer. */
+        WsfTimerStartMs(&(pDesc->fastPubTmr), FAST_PUB_TIME(pDesc));
+    }
 }
 
 /*************************************************************************************************/
@@ -145,76 +129,64 @@ static void meshHtSrRemoveFault(meshElementId_t elementId, uint16_t companyId,
                                 meshHtMdlTestId_t recentTestId, meshHtFaultId_t faultId,
                                 bool_t removeAll)
 {
-  meshHtSrDescriptor_t *pDesc;
-  uint8_t cidx, fidx;
-  bool_t faultsPresent = FALSE;
-  bool_t compMatch = FALSE;
+    meshHtSrDescriptor_t *pDesc;
+    uint8_t cidx, fidx;
+    bool_t faultsPresent = FALSE;
+    bool_t compMatch = FALSE;
 
-  /* Get descriptor */
-  meshHtSrGetDesc(elementId, &pDesc);
+    /* Get descriptor */
+    meshHtSrGetDesc(elementId, &pDesc);
 
-  if(pDesc == NULL)
-  {
-    MESH_TRACE_WARN0("HT SR: Fault remove invalid element id");
-    return;
-  }
+    if (pDesc == NULL) {
+        MESH_TRACE_WARN0("HT SR: Fault remove invalid element id");
+        return;
+    }
 
-  /* Search matching companyId. */
-  for(cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++)
-  {
-    if((pDesc->faultStateArray[cidx].companyId == companyId) && !compMatch)
-    {
-      compMatch = TRUE;
+    /* Search matching companyId. */
+    for (cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++) {
+        if ((pDesc->faultStateArray[cidx].companyId == companyId) && !compMatch) {
+            compMatch = TRUE;
 
-      /* Set recent test identifier. */
-      pDesc->faultStateArray[cidx].testId = recentTestId;
+            /* Set recent test identifier. */
+            pDesc->faultStateArray[cidx].testId = recentTestId;
 
-      if(!removeAll)
-      {
-        if(faultId != MESH_HT_MODEL_FAULT_NO_FAULT)
-        {
-          /* Search matching entries in current fault array. */
-          for(fidx = 0; fidx < MESH_HT_SR_MAX_NUM_FAULTS; fidx++)
-          {
-            if(pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] == faultId)
-            {
-              /* Clear fault. */
-              pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] = MESH_HT_MODEL_FAULT_NO_FAULT;
-              break;
+            if (!removeAll) {
+                if (faultId != MESH_HT_MODEL_FAULT_NO_FAULT) {
+                    /* Search matching entries in current fault array. */
+                    for (fidx = 0; fidx < MESH_HT_SR_MAX_NUM_FAULTS; fidx++) {
+                        if (pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] == faultId) {
+                            /* Clear fault. */
+                            pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] =
+                                MESH_HT_MODEL_FAULT_NO_FAULT;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                /* Reset all. */
+                memset(pDesc->faultStateArray[cidx].crtFaultIdArray, MESH_HT_MODEL_FAULT_NO_FAULT,
+                       MESH_HT_SR_MAX_NUM_FAULTS);
             }
-          }
-        }
-      }
-      else
-      {
-        /* Reset all. */
-        memset(pDesc->faultStateArray[cidx].crtFaultIdArray, MESH_HT_MODEL_FAULT_NO_FAULT,
-               MESH_HT_SR_MAX_NUM_FAULTS);
-      }
-      /* Check if fast publication is not on. This happens on calling this function
+            /* Check if fast publication is not on. This happens on calling this function
        * when no faults where initially present.
        */
-      if(!(pDesc->fastPubOn))
-      {
-        return;
-      }
+            if (!(pDesc->fastPubOn)) {
+                return;
+            }
+        }
+        if (!faultsPresent) {
+            faultsPresent = htSrGetNumFaults(pDesc->faultStateArray[cidx].crtFaultIdArray) != 0;
+        }
     }
-    if(!faultsPresent)
-    {
-      faultsPresent = htSrGetNumFaults(pDesc->faultStateArray[cidx].crtFaultIdArray) != 0;
+    /* Check if fast publishing needs disabling. */
+    if ((pDesc->fastPubOn) && !faultsPresent) {
+        pDesc->fastPubOn = FALSE;
+        /* Stop timer. */
+        WsfTimerStop(&(pDesc->fastPubTmr));
     }
-  }
-  /* Check if fast publishing needs disabling. */
-  if((pDesc->fastPubOn) && !faultsPresent)
-  {
-    pDesc->fastPubOn = FALSE;
-    /* Stop timer. */
-    WsfTimerStop(&(pDesc->fastPubTmr));
-  }
-  if(!compMatch)
-  {
-    MESH_TRACE_WARN0("HT SR: Remove fault, no matching company found");
-  }
+    if (!compMatch) {
+        MESH_TRACE_WARN0("HT SR: Remove fault, no matching company found");
+    }
 }
 
 /**************************************************************************************************
@@ -232,8 +204,8 @@ static void meshHtSrRemoveFault(meshElementId_t elementId, uint16_t companyId,
 /*************************************************************************************************/
 void MeshHtSrHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* Set handler ID. */
-  meshHtSrHandlerId = handlerId;
+    /* Set handler ID. */
+    meshHtSrHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -245,44 +217,40 @@ void MeshHtSrHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MeshHtSrInit(void)
 {
-  meshHtSrDescriptor_t *pDesc;
-  meshElementId_t elemId;
-  uint16_t cidx;
+    meshHtSrDescriptor_t *pDesc;
+    meshElementId_t elemId;
+    uint16_t cidx;
 
-  for(elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++)
-  {
-    /* Get descriptor. */
-    meshHtSrGetDesc(elemId, &pDesc);
+    for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++) {
+        /* Get descriptor. */
+        meshHtSrGetDesc(elemId, &pDesc);
 
-    if(pDesc == NULL)
-    {
-      if(elemId == 0)
-      {
-        MESH_TRACE_WARN0("HT SR: Specification mandates Health Server on primary element. ");
-      }
-      continue;
+        if (pDesc == NULL) {
+            if (elemId == 0) {
+                MESH_TRACE_WARN0(
+                    "HT SR: Specification mandates Health Server on primary element. ");
+            }
+            continue;
+        }
+
+        /* Reset internals. */
+        pDesc->fastPeriodDiv = 0x00;
+        pDesc->fastPubOn = FALSE;
+        pDesc->fastPubTmr.handlerId = meshHtSrHandlerId;
+        pDesc->fastPubTmr.msg.event = HT_SR_EVT_TMR_CBACK;
+        pDesc->fastPubTmr.msg.param = elemId;
+        for (cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++) {
+            pDesc->faultStateArray[cidx].testId = 0x00;
+            memset(pDesc->faultStateArray[cidx].crtFaultIdArray, MESH_HT_MODEL_FAULT_NO_FAULT,
+                   MESH_HT_SR_MAX_NUM_FAULTS);
+            memset(pDesc->faultStateArray[cidx].regFaultIdArray, MESH_HT_MODEL_FAULT_NO_FAULT,
+                   MESH_HT_SR_MAX_NUM_FAULTS);
+        }
     }
 
-    /* Reset internals. */
-    pDesc->fastPeriodDiv = 0x00;
-    pDesc->fastPubOn = FALSE;
-    pDesc->fastPubTmr.handlerId = meshHtSrHandlerId;
-    pDesc->fastPubTmr.msg.event = HT_SR_EVT_TMR_CBACK;
-    pDesc->fastPubTmr.msg.param = elemId;
-    for(cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++)
-    {
-      pDesc->faultStateArray[cidx].testId = 0x00;
-      memset(pDesc->faultStateArray[cidx].crtFaultIdArray, MESH_HT_MODEL_FAULT_NO_FAULT,
-             MESH_HT_SR_MAX_NUM_FAULTS);
-      memset(pDesc->faultStateArray[cidx].regFaultIdArray, MESH_HT_MODEL_FAULT_NO_FAULT,
-             MESH_HT_SR_MAX_NUM_FAULTS);
-    }
-  }
-
-  /* Set event callback. */
-  htSrCb.recvCback = MmdlEmptyCback;
+    /* Set event callback. */
+    htSrCb.recvCback = MmdlEmptyCback;
 }
-
 
 /*************************************************************************************************/
 /*!
@@ -296,11 +264,10 @@ void MeshHtSrInit(void)
 /*************************************************************************************************/
 void MeshHtSrRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback. */
-  if (recvCback != NULL)
-  {
-    htSrCb.recvCback = recvCback;
-  }
+    /* Store valid callback. */
+    if (recvCback != NULL) {
+        htSrCb.recvCback = recvCback;
+    }
 }
 
 /*************************************************************************************************/
@@ -314,95 +281,81 @@ void MeshHtSrRegister(mmdlEventCback_t recvCback)
 /*************************************************************************************************/
 void MeshHtSrHandler(wsfMsgHdr_t *pMsg)
 {
-  meshHtSrDescriptor_t *pDesc;
-  meshModelEvt_t *pModelMsg;
-  uint8_t opcodeIdx;
-  bool_t restartTmr = FALSE;
+    meshHtSrDescriptor_t *pDesc;
+    meshModelEvt_t *pModelMsg;
+    uint8_t opcodeIdx;
+    bool_t restartTmr = FALSE;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelEvt_t *)pMsg;
 
-        /* Match the received opcode. */
-        for (opcodeIdx = 0; opcodeIdx < htSrNumOps; opcodeIdx++)
-        {
-          /* Validate opcode size and value */
-          if (MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode) !=
-              MESH_OPCODE_SIZE(meshHtSrRcvdOpcodes[opcodeIdx]))
-          {
-            continue;
-          }
-          if (!memcmp(&meshHtSrRcvdOpcodes[opcodeIdx], &(pModelMsg->msgRecvEvt.opCode),
-                      MESH_OPCODE_SIZE(meshHtSrRcvdOpcodes[opcodeIdx])))
-          {
-            /* Process message. */
-            meshHtSrHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
-            return;
-          }
-        }
-        break;
-
-      case MESH_MODEL_EVT_PERIODIC_PUB:
-        pModelMsg = (meshModelEvt_t *)pMsg;
-
-        /* Get descriptor. */
-        meshHtSrGetDesc(pModelMsg->periodicPubEvt.elementId, &pDesc);
-
-        /* Unexpected. */
-        if(pDesc == NULL)
-        {
-          return;
-        }
-
-        /* Check if new publication period differs from stored. */
-        if(pModelMsg->periodicPubEvt.nextPubTimeMs != pDesc->pubPeriodMs)
-        {
-          /* Copy new publication period. */
-          pDesc->pubPeriodMs = pModelMsg->periodicPubEvt.nextPubTimeMs;
-          restartTmr = TRUE;
-        }
-
-        /* Check if publication is not disabled. */
-        if(pModelMsg->periodicPubEvt.nextPubTimeMs != 0)
-        {
-          /* Check if fast publication is on and divisor is non zero. */
-          if((pDesc->fastPubOn) && (pDesc->fastPeriodDiv != 0))
-          {
-            if(restartTmr)
-            {
-              /* Publish current health at the beginning of the new fast period. */
-              meshHtSrPublishCrtHt(pModelMsg->periodicPubEvt.elementId);
-
-              /* Start fast publication timer. */
-              WsfTimerStartMs(&(pDesc->fastPubTmr), FAST_PUB_TIME(pDesc));
+            /* Match the received opcode. */
+            for (opcodeIdx = 0; opcodeIdx < htSrNumOps; opcodeIdx++) {
+                /* Validate opcode size and value */
+                if (MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode) !=
+                    MESH_OPCODE_SIZE(meshHtSrRcvdOpcodes[opcodeIdx])) {
+                    continue;
+                }
+                if (!memcmp(&meshHtSrRcvdOpcodes[opcodeIdx], &(pModelMsg->msgRecvEvt.opCode),
+                            MESH_OPCODE_SIZE(meshHtSrRcvdOpcodes[opcodeIdx]))) {
+                    /* Process message. */
+                    meshHtSrHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
+                    return;
+                }
             }
-          }
-          else
-          {
-            /* Publish current health on publication period expired event. */
-            meshHtSrPublishCrtHt(pModelMsg->periodicPubEvt.elementId);
-          }
-        }
-        else
-        {
-          /* Stop fast publication timer. */
-          WsfTimerStop(&(pDesc->fastPubTmr));
-        }
-        break;
+            break;
 
-      case HT_SR_EVT_TMR_CBACK:
-        meshHtSrHandleCrtHtTmrCback((meshElementId_t)(pMsg->param));
-        break;
+        case MESH_MODEL_EVT_PERIODIC_PUB:
+            pModelMsg = (meshModelEvt_t *)pMsg;
 
-      default:
-        MESH_TRACE_WARN0("HT SR: Invalid event message received!");
-        break;
+            /* Get descriptor. */
+            meshHtSrGetDesc(pModelMsg->periodicPubEvt.elementId, &pDesc);
+
+            /* Unexpected. */
+            if (pDesc == NULL) {
+                return;
+            }
+
+            /* Check if new publication period differs from stored. */
+            if (pModelMsg->periodicPubEvt.nextPubTimeMs != pDesc->pubPeriodMs) {
+                /* Copy new publication period. */
+                pDesc->pubPeriodMs = pModelMsg->periodicPubEvt.nextPubTimeMs;
+                restartTmr = TRUE;
+            }
+
+            /* Check if publication is not disabled. */
+            if (pModelMsg->periodicPubEvt.nextPubTimeMs != 0) {
+                /* Check if fast publication is on and divisor is non zero. */
+                if ((pDesc->fastPubOn) && (pDesc->fastPeriodDiv != 0)) {
+                    if (restartTmr) {
+                        /* Publish current health at the beginning of the new fast period. */
+                        meshHtSrPublishCrtHt(pModelMsg->periodicPubEvt.elementId);
+
+                        /* Start fast publication timer. */
+                        WsfTimerStartMs(&(pDesc->fastPubTmr), FAST_PUB_TIME(pDesc));
+                    }
+                } else {
+                    /* Publish current health on publication period expired event. */
+                    meshHtSrPublishCrtHt(pModelMsg->periodicPubEvt.elementId);
+                }
+            } else {
+                /* Stop fast publication timer. */
+                WsfTimerStop(&(pDesc->fastPubTmr));
+            }
+            break;
+
+        case HT_SR_EVT_TMR_CBACK:
+            meshHtSrHandleCrtHtTmrCback((meshElementId_t)(pMsg->param));
+            break;
+
+        default:
+            MESH_TRACE_WARN0("HT SR: Invalid event message received!");
+            break;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -421,26 +374,24 @@ void MeshHtSrHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MeshHtSrSetCompanyId(meshElementId_t elementId, uint8_t faultStateIndex, uint16_t companyId)
 {
-  meshHtSrDescriptor_t *pDesc;
+    meshHtSrDescriptor_t *pDesc;
 
-  /* Get descriptor */
-  meshHtSrGetDesc(elementId, &pDesc);
+    /* Get descriptor */
+    meshHtSrGetDesc(elementId, &pDesc);
 
-  if (pDesc == NULL)
-  {
-    MESH_TRACE_WARN0("HT SR: Set Company ID, invalid element id");
-    return;
-  }
+    if (pDesc == NULL) {
+        MESH_TRACE_WARN0("HT SR: Set Company ID, invalid element id");
+        return;
+    }
 
-  /* Check for range. */
-  if (faultStateIndex >= MESH_HT_SR_MAX_NUM_COMP)
-  {
-    MESH_TRACE_WARN0("HT SR: Set Company ID, invalid entry index");
-    return;
-  }
+    /* Check for range. */
+    if (faultStateIndex >= MESH_HT_SR_MAX_NUM_COMP) {
+        MESH_TRACE_WARN0("HT SR: Set Company ID, invalid entry index");
+        return;
+    }
 
-  /* Set company ID. */
-  pDesc->faultStateArray[faultStateIndex].companyId = companyId;
+    /* Set company ID. */
+    pDesc->faultStateArray[faultStateIndex].companyId = companyId;
 }
 
 /*************************************************************************************************/
@@ -458,105 +409,90 @@ void MeshHtSrSetCompanyId(meshElementId_t elementId, uint8_t faultStateIndex, ui
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshHtSrAddFault(meshElementId_t elementId, uint16_t companyId,
-                      meshHtMdlTestId_t recentTestId, meshHtFaultId_t faultId)
+void MeshHtSrAddFault(meshElementId_t elementId, uint16_t companyId, meshHtMdlTestId_t recentTestId,
+                      meshHtFaultId_t faultId)
 {
-  meshHtSrDescriptor_t *pDesc;
-  uint8_t cidx, fidx;
-  uint8_t crtFaultEmptyPos = MESH_HT_SR_MAX_NUM_FAULTS;
-  uint8_t regFaultEmptyPos = MESH_HT_SR_MAX_NUM_FAULTS;
-  bool_t crtFaultExists = FALSE, regFaultExists = FALSE;
+    meshHtSrDescriptor_t *pDesc;
+    uint8_t cidx, fidx;
+    uint8_t crtFaultEmptyPos = MESH_HT_SR_MAX_NUM_FAULTS;
+    uint8_t regFaultEmptyPos = MESH_HT_SR_MAX_NUM_FAULTS;
+    bool_t crtFaultExists = FALSE, regFaultExists = FALSE;
 
-  /* Get descriptor */
-  meshHtSrGetDesc(elementId, &pDesc);
+    /* Get descriptor */
+    meshHtSrGetDesc(elementId, &pDesc);
 
-  if(pDesc == NULL)
-  {
-    MESH_TRACE_WARN0("HT SR: Fault add invalid element id");
-    return;
-  }
-
-  /* Search matching companyId. */
-  for(cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++)
-  {
-    if(pDesc->faultStateArray[cidx].companyId == companyId)
-    {
-      /* Set recent test identifier. */
-      pDesc->faultStateArray[cidx].testId = recentTestId;
-
-      /* Do not add No Fault identifiers. */
-      if(faultId == MESH_HT_MODEL_FAULT_NO_FAULT)
-      {
+    if (pDesc == NULL) {
+        MESH_TRACE_WARN0("HT SR: Fault add invalid element id");
         return;
-      }
-
-      /* Search empty entries in current and registered fault arrays. */
-      for(fidx = 0; fidx < MESH_HT_SR_MAX_NUM_FAULTS; fidx++)
-      {
-        /* Check if duplicate exists. */
-        if(pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] == faultId)
-        {
-          crtFaultExists = TRUE;
-        }
-
-        /* Check if duplicate exists in registered fault. */
-        if(pDesc->faultStateArray[cidx].regFaultIdArray[fidx] == faultId)
-        {
-          regFaultExists = TRUE;
-        }
-
-        /* Find empty position. */
-        if((crtFaultEmptyPos == MESH_HT_SR_MAX_NUM_FAULTS) &&
-           (pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] == MESH_HT_MODEL_FAULT_NO_FAULT))
-        {
-          crtFaultEmptyPos = fidx;
-        }
-        /* Find empty position. */
-        if((regFaultEmptyPos == MESH_HT_SR_MAX_NUM_FAULTS) &&
-           (pDesc->faultStateArray[cidx].regFaultIdArray[fidx] == MESH_HT_MODEL_FAULT_NO_FAULT))
-        {
-          regFaultEmptyPos = fidx;
-        }
-      }
-
-      /* Store current fault */
-      if((crtFaultEmptyPos < MESH_HT_SR_MAX_NUM_FAULTS) && (!crtFaultExists))
-      {
-        pDesc->faultStateArray[cidx].crtFaultIdArray[crtFaultEmptyPos] = faultId;
-      }
-      else
-      {
-        MESH_TRACE_INFO0("HT SR: Add fault, current fault array full");
-      }
-
-      /* Store registered fault */
-      if((regFaultEmptyPos < MESH_HT_SR_MAX_NUM_FAULTS) && (!regFaultExists))
-      {
-        pDesc->faultStateArray[cidx].regFaultIdArray[regFaultEmptyPos] = faultId;
-      }
-      else
-      {
-        MESH_TRACE_INFO0("HT SR: Add fault, registered fault array full");
-      }
-
-      /* Check if no fault condition was present. */
-      if(!(pDesc->fastPubOn))
-      {
-        pDesc->fastPubOn = TRUE;
-
-        if((pDesc->fastPeriodDiv != 0) && (pDesc->pubPeriodMs != 0))
-        {
-          /* Publish Current Health Status. */
-          meshHtSrPublishCrtHt(elementId);
-          /* Start publication timer. */
-          WsfTimerStartMs(&(pDesc->fastPubTmr), FAST_PUB_TIME(pDesc));
-        }
-      }
-
-      return;
     }
-  }
-  MESH_TRACE_WARN0("HT SR: Add fault, no matching company found");
+
+    /* Search matching companyId. */
+    for (cidx = 0; cidx < MESH_HT_SR_MAX_NUM_COMP; cidx++) {
+        if (pDesc->faultStateArray[cidx].companyId == companyId) {
+            /* Set recent test identifier. */
+            pDesc->faultStateArray[cidx].testId = recentTestId;
+
+            /* Do not add No Fault identifiers. */
+            if (faultId == MESH_HT_MODEL_FAULT_NO_FAULT) {
+                return;
+            }
+
+            /* Search empty entries in current and registered fault arrays. */
+            for (fidx = 0; fidx < MESH_HT_SR_MAX_NUM_FAULTS; fidx++) {
+                /* Check if duplicate exists. */
+                if (pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] == faultId) {
+                    crtFaultExists = TRUE;
+                }
+
+                /* Check if duplicate exists in registered fault. */
+                if (pDesc->faultStateArray[cidx].regFaultIdArray[fidx] == faultId) {
+                    regFaultExists = TRUE;
+                }
+
+                /* Find empty position. */
+                if ((crtFaultEmptyPos == MESH_HT_SR_MAX_NUM_FAULTS) &&
+                    (pDesc->faultStateArray[cidx].crtFaultIdArray[fidx] ==
+                     MESH_HT_MODEL_FAULT_NO_FAULT)) {
+                    crtFaultEmptyPos = fidx;
+                }
+                /* Find empty position. */
+                if ((regFaultEmptyPos == MESH_HT_SR_MAX_NUM_FAULTS) &&
+                    (pDesc->faultStateArray[cidx].regFaultIdArray[fidx] ==
+                     MESH_HT_MODEL_FAULT_NO_FAULT)) {
+                    regFaultEmptyPos = fidx;
+                }
+            }
+
+            /* Store current fault */
+            if ((crtFaultEmptyPos < MESH_HT_SR_MAX_NUM_FAULTS) && (!crtFaultExists)) {
+                pDesc->faultStateArray[cidx].crtFaultIdArray[crtFaultEmptyPos] = faultId;
+            } else {
+                MESH_TRACE_INFO0("HT SR: Add fault, current fault array full");
+            }
+
+            /* Store registered fault */
+            if ((regFaultEmptyPos < MESH_HT_SR_MAX_NUM_FAULTS) && (!regFaultExists)) {
+                pDesc->faultStateArray[cidx].regFaultIdArray[regFaultEmptyPos] = faultId;
+            } else {
+                MESH_TRACE_INFO0("HT SR: Add fault, registered fault array full");
+            }
+
+            /* Check if no fault condition was present. */
+            if (!(pDesc->fastPubOn)) {
+                pDesc->fastPubOn = TRUE;
+
+                if ((pDesc->fastPeriodDiv != 0) && (pDesc->pubPeriodMs != 0)) {
+                    /* Publish Current Health Status. */
+                    meshHtSrPublishCrtHt(elementId);
+                    /* Start publication timer. */
+                    WsfTimerStartMs(&(pDesc->fastPubTmr), FAST_PUB_TIME(pDesc));
+                }
+            }
+
+            return;
+        }
+    }
+    MESH_TRACE_WARN0("HT SR: Add fault, no matching company found");
 }
 
 /*************************************************************************************************/
@@ -574,7 +510,7 @@ void MeshHtSrAddFault(meshElementId_t elementId, uint16_t companyId,
 void MeshHtSrRemoveFault(meshElementId_t elementId, uint16_t companyId,
                          meshHtMdlTestId_t recentTestId, meshHtFaultId_t faultId)
 {
-  meshHtSrRemoveFault(elementId, companyId, recentTestId, faultId, FALSE);
+    meshHtSrRemoveFault(elementId, companyId, recentTestId, faultId, FALSE);
 }
 
 /*************************************************************************************************/
@@ -591,7 +527,7 @@ void MeshHtSrRemoveFault(meshElementId_t elementId, uint16_t companyId,
 void MeshHtSrClearFaults(meshElementId_t elementId, uint16_t companyId,
                          meshHtMdlTestId_t recentTestId)
 {
-  meshHtSrRemoveFault(elementId, companyId, recentTestId, MESH_HT_MODEL_FAULT_NO_FAULT, TRUE);
+    meshHtSrRemoveFault(elementId, companyId, recentTestId, MESH_HT_MODEL_FAULT_NO_FAULT, TRUE);
 }
 
 /*************************************************************************************************/
@@ -617,7 +553,7 @@ void MeshHtSrSignalTestEnd(meshElementId_t elementId, uint16_t companyId,
                            meshAddress_t meshHtClAddr, uint16_t appKeyIndex, bool_t useTtlZero,
                            bool_t unicastReq)
 {
-  /* Send status. */
-  meshHtSrSendFaultStatus(companyId, elementId, meshHtClAddr, appKeyIndex,
-                          useTtlZero ? 0 : MESH_USE_DEFAULT_TTL, unicastReq);
+    /* Send status. */
+    meshHtSrSendFaultStatus(companyId, elementId, meshHtClAddr, appKeyIndex,
+                            useTtlZero ? 0 : MESH_USE_DEFAULT_TTL, unicastReq);
 }

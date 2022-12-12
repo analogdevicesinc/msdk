@@ -53,7 +53,6 @@ extern "C" {
 /*************************************************************************************************/
 void HciHandlerInit(wsfHandlerId_t handlerId);
 
-
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for HCI.
@@ -67,7 +66,7 @@ void HciHandlerInit(wsfHandlerId_t handlerId);
 void HciHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 /**@}*/
-/*! \} */    /* STACK_HCI_API */
+/*! \} */ /* STACK_HCI_API */
 
 #ifdef __cplusplus
 };

@@ -43,22 +43,20 @@ typedef void (*PalIoExpRdRegCompCback_t)(bool_t status, uint8_t portValue);
 typedef void (*PalIoExpWrRegCompCback_t)(bool_t status);
 
 /*! \brief      Operational states. */
-typedef enum
-{
-  PAL_IO_EXP_STATE_UNINIT = 0,  /*!< Uninitialized state. */
-  PAL_IO_EXP_STATE_ERROR  = 0,  /*!< Error state. */
-  PAL_IO_EXP_STATE_INIT   = 1,  /*!< Initialized state. */
-  PAL_IO_EXP_STATE_READY  = 2,  /*!< Ready state. */
-  PAL_IO_EXP_STATE_BUSY   = 3,  /*!< Busy state. */
+typedef enum {
+    PAL_IO_EXP_STATE_UNINIT = 0, /*!< Uninitialized state. */
+    PAL_IO_EXP_STATE_ERROR = 0, /*!< Error state. */
+    PAL_IO_EXP_STATE_INIT = 1, /*!< Initialized state. */
+    PAL_IO_EXP_STATE_READY = 2, /*!< Ready state. */
+    PAL_IO_EXP_STATE_BUSY = 3, /*!< Busy state. */
 } PalIoExpState_t;
 
 /*! \brief      Operations. */
-typedef enum
-{
-  PAL_IO_EXP_OP_INPUT          = 0x00,       /*!< Input Port. Read only. */
-  PAL_IO_EXP_OP_OUTPUT         = 0x01,       /*!< Output Port. Read/write. */
-  PAL_IO_EXP_OP_POL_INV        = 0x02,       /*!< Polarity Inversion. Read/write. */
-  PAL_IO_EXP_OP_CONFIG         = 0x03        /*!< Configuration. Read/write. */
+typedef enum {
+    PAL_IO_EXP_OP_INPUT = 0x00, /*!< Input Port. Read only. */
+    PAL_IO_EXP_OP_OUTPUT = 0x01, /*!< Output Port. Read/write. */
+    PAL_IO_EXP_OP_POL_INV = 0x02, /*!< Polarity Inversion. Read/write. */
+    PAL_IO_EXP_OP_CONFIG = 0x03 /*!< Configuration. Read/write. */
 } PalIoOp_t;
 
 /**************************************************************************************************
@@ -69,7 +67,8 @@ typedef enum
 void PalIoExpInit(void);
 void PalIoExpDeInit(void);
 uint8_t PalIoExpRegisterDevice(uint8_t subAddr);
-void  PalIoExpRegisterCback(uint8_t devHandle, PalIoExpRdRegCompCback_t rdCback, PalIoExpWrRegCompCback_t wrCback);
+void PalIoExpRegisterCback(uint8_t devHandle, PalIoExpRdRegCompCback_t rdCback,
+                           PalIoExpWrRegCompCback_t wrCback);
 
 /* Control and Status */
 PalIoExpState_t PalIoExpGetState(uint8_t devHandle);
@@ -78,7 +77,7 @@ PalIoExpState_t PalIoExpGetState(uint8_t devHandle);
 void PalIoExpRead(uint8_t devHandle, PalIoOp_t op);
 void PalIoExpWrite(uint8_t devHandle, PalIoOp_t op, uint8_t value);
 
-/*! \} */    /* PAL_IO_EXP */
+/*! \} */ /* PAL_IO_EXP */
 
 #ifdef __cplusplus
 };

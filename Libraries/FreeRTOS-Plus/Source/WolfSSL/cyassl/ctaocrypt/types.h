@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-
 #ifndef CTAO_CRYPT_TYPES_H
 #define CTAO_CRYPT_TYPES_H
 
@@ -28,12 +27,11 @@
 #include <wolfssl/wolfcrypt/types.h>
 
 /* compatibility macros */
-#define CYASSL_WORD_SIZE    WOLFSSL_WORD_SIZE
-#define CYASSL_BIT_SIZE     WOLFSSL_BIT_SIZE
-#define CYASSL_MAX_16BIT    WOLFSSL_MAX_16BIT
+#define CYASSL_WORD_SIZE WOLFSSL_WORD_SIZE
+#define CYASSL_BIT_SIZE WOLFSSL_BIT_SIZE
+#define CYASSL_MAX_16BIT WOLFSSL_MAX_16BIT
 #define CYASSL_MAX_ERROR_SZ WOLFSSL_MAX_ERROR_SZ
-#define cyassl_word         wolfssl_word
+#define cyassl_word wolfssl_word
 #define CYASSL_MAX_ERROR_SZ WOLFSSL_MAX_ERROR_SZ
 
 #endif /* CTAO_CRYPT_TYPES_H */
-

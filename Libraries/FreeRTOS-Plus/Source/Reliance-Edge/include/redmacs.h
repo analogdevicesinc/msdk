@@ -27,28 +27,27 @@
 #ifndef REDMACS_H
 #define REDMACS_H
 
-
 #ifndef NULL
 #define NULL ((void *)0)
 #endif
 
 #ifndef UINT8_MAX
-#define UINT8_MAX   (0xFFU)
+#define UINT8_MAX (0xFFU)
 #endif
 #ifndef UINT16_MAX
-#define UINT16_MAX  (0xFFFFU)
+#define UINT16_MAX (0xFFFFU)
 #endif
 #ifndef UINT32_MAX
-#define UINT32_MAX  (0xFFFFFFFFU)
+#define UINT32_MAX (0xFFFFFFFFU)
 #endif
 #ifndef UINT64_MAX
-#define UINT64_MAX  UINT64_SUFFIX(0xFFFFFFFFFFFFFFFF)
+#define UINT64_MAX UINT64_SUFFIX(0xFFFFFFFFFFFFFFFF)
 #endif
 #ifndef INT32_MAX
-#define INT32_MAX   (0x7FFFFFFF)
+#define INT32_MAX (0x7FFFFFFF)
 #endif
 #ifndef INT64_MAX
-#define INT64_MAX   INT64_SUFFIX(0x7FFFFFFFFFFFFFFF)
+#define INT64_MAX INT64_SUFFIX(0x7FFFFFFFFFFFFFFF)
 #endif
 
 #ifndef true
@@ -60,7 +59,7 @@
 
 #define SECTOR_SIZE_MIN (256U)
 
-#if   REDCONF_BLOCK_SIZE == 256U
+#if REDCONF_BLOCK_SIZE == 256U
 #define BLOCK_SIZE_P2 8U
 #elif REDCONF_BLOCK_SIZE == 512U
 #define BLOCK_SIZE_P2 9U
@@ -84,20 +83,18 @@
 
 #define REDMIN(a, b) (((a) < (b)) ? (a) : (b))
 
-#define INODE_INVALID       (0U) /* General-purpose invalid inode number (must be zero). */
-#define INODE_FIRST_VALID   (2U) /* First valid inode number. */
-#define INODE_ROOTDIR       (INODE_FIRST_VALID) /* Inode number of the root directory. */
+#define INODE_INVALID (0U) /* General-purpose invalid inode number (must be zero). */
+#define INODE_FIRST_VALID (2U) /* First valid inode number. */
+#define INODE_ROOTDIR (INODE_FIRST_VALID) /* Inode number of the root directory. */
 
 /*  Expands to a "const" qualifier when the volume count is one, otherwise
     expands to nothing.  This is useful for variables that never change in
     single-volume configurations but do change in multi-volume configurations.
 */
 #if REDCONF_VOLUME_COUNT == 1U
-  #define CONST_IF_ONE_VOLUME const
+#define CONST_IF_ONE_VOLUME const
 #else
-  #define CONST_IF_ONE_VOLUME
+#define CONST_IF_ONE_VOLUME
 #endif
 
-
 #endif
-

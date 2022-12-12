@@ -29,7 +29,6 @@
 
 #if REDCONF_API_POSIX == 1
 
-
 /** @brief Determine the length of a name, terminated either by a null or a path
            separator character.
 
@@ -37,19 +36,14 @@
 
     @return The length of the name.
 */
-uint32_t RedNameLen(
-    const char *pszName)
+uint32_t RedNameLen(const char *pszName)
 {
-    uint32_t    ulIdx = 0U;
+    uint32_t ulIdx = 0U;
 
-    if(pszName == NULL)
-    {
+    if (pszName == NULL) {
         REDERROR();
-    }
-    else
-    {
-        while((pszName[ulIdx] != '\0') && (pszName[ulIdx] != REDCONF_PATH_SEPARATOR))
-        {
+    } else {
+        while ((pszName[ulIdx] != '\0') && (pszName[ulIdx] != REDCONF_PATH_SEPARATOR)) {
             ulIdx++;
         }
     }
@@ -58,4 +52,3 @@ uint32_t RedNameLen(
 }
 
 #endif
-

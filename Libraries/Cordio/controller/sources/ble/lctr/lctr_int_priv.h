@@ -37,9 +37,8 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Slave advertising state context. */
-typedef struct
-{
-  wsfTimer_t        tmrResPrivAddrTimeout;    /*!< Resolvable private address timeout timer. */
+typedef struct {
+    wsfTimer_t tmrResPrivAddrTimeout; /*!< Resolvable private address timeout timer. */
 } lctrPrivCtx_t;
 
 /**************************************************************************************************
@@ -47,7 +46,6 @@ typedef struct
 **************************************************************************************************/
 
 extern lctrPrivCtx_t lctrPriv;
-
 
 #ifdef __cplusplus
 };

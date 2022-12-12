@@ -82,7 +82,7 @@ extern "C" {
 /*! \addtogroup BB_API_BOD
  *  \{ */
 
-/*! \} */    /* BB_API_BOD */
+/*! \} */ /* BB_API_BOD */
 
 /**************************************************************************************************
   Data Types
@@ -92,21 +92,21 @@ extern "C" {
  *  \{ */
 
 /*! \brief      BB runtime configuration parameters. */
-typedef struct
-{
-  /* Common */
-  uint16_t  clkPpm;                 /*!< Clock accuracy in PPM. */
-  uint8_t   rfSetupDelayUs;         /*!< RF setup delay in microseconds. */
+typedef struct {
+    /* Common */
+    uint16_t clkPpm; /*!< Clock accuracy in PPM. */
+    uint8_t rfSetupDelayUs; /*!< RF setup delay in microseconds. */
 
-  /* BLE */
-  uint16_t  maxScanPeriodMs;        /*!< Maximum duration to scan in a scan interval. */
+    /* BLE */
+    uint16_t maxScanPeriodMs; /*!< Maximum duration to scan in a scan interval. */
 
-  /* Scheduler */
-  uint16_t  schSetupDelayUs;        /*!< Operation setup delay in microseconds. */
-  uint32_t  BbTimerBoundaryUs;      /*!< BB timer tick boundary translated in microseconds before wraparound. */
+    /* Scheduler */
+    uint16_t schSetupDelayUs; /*!< Operation setup delay in microseconds. */
+    uint32_t
+        BbTimerBoundaryUs; /*!< BB timer tick boundary translated in microseconds before wraparound. */
 } BbRtCfg_t;
 
-/*! \} */    /* BB_API_INIT */
+/*! \} */ /* BB_API_INIT */
 
 /*! \addtogroup BB_API_BOD
  *  \{ */
@@ -127,16 +127,15 @@ typedef void (*BbProtCback_t)(void);
 typedef void (*BbLowPowerCback_t)(void);
 
 /*! \brief      BOD rescheduling policy (listed in priority order). */
-typedef enum
-{
-  BB_RESCH_FIXED_PREFERRED,         /*!< BOD is fixed (rescheduling has limited recoverable consequences). */
-  BB_RESCH_FIXED,                   /*!< BOD is fixed (rescheduling has recoverable consequences). */
-  BB_RESCH_MOVEABLE_PREFERRED,      /*!< BOD is movable (rescheduling has minor consequences). */
-  BB_RESCH_MOVEABLE,                /*!< BOD is movable (rescheduling has no consequences). */
-  BB_RESCH_BACKGROUND               /*!< BOD is single background task. */
+typedef enum {
+    BB_RESCH_FIXED_PREFERRED, /*!< BOD is fixed (rescheduling has limited recoverable consequences). */
+    BB_RESCH_FIXED, /*!< BOD is fixed (rescheduling has recoverable consequences). */
+    BB_RESCH_MOVEABLE_PREFERRED, /*!< BOD is movable (rescheduling has minor consequences). */
+    BB_RESCH_MOVEABLE, /*!< BOD is movable (rescheduling has no consequences). */
+    BB_RESCH_BACKGROUND /*!< BOD is single background task. */
 } BbReschPol_t;
 
-/*! \} */    /* BB_API_BOD */
+/*! \} */ /* BB_API_BOD */
 
 /*! \addtogroup BB_API_BOD
  *  \{ */
@@ -146,33 +145,31 @@ struct BbBleData_tag;
 struct Bb154Data_tag;
 
 /*! \brief      Baseband operation descriptor (BOD). */
-typedef struct BbOpDesc_tag
-{
-  struct BbOpDesc_tag *pPrev;       /*!< Previous BOD. */
-  struct BbOpDesc_tag *pNext;       /*!< Next BOD. */
+typedef struct BbOpDesc_tag {
+    struct BbOpDesc_tag *pPrev; /*!< Previous BOD. */
+    struct BbOpDesc_tag *pNext; /*!< Next BOD. */
 
-  uint32_t      dueUsec;            /*!< Absolute clock due time in microseconds. */
-  uint32_t      minDurUsec;         /*!< Minimum required duration in microseconds. */
-  uint32_t      maxDurUsec;         /*!< Maximum required duration in microseconds. */
+    uint32_t dueUsec; /*!< Absolute clock due time in microseconds. */
+    uint32_t minDurUsec; /*!< Minimum required duration in microseconds. */
+    uint32_t maxDurUsec; /*!< Maximum required duration in microseconds. */
 
-  BbReschPol_t  reschPolicy:8;      /*!< Rescheduling policy. */
+    BbReschPol_t reschPolicy : 8; /*!< Rescheduling policy. */
 
-  PalBbProt_t   protId:8;           /*!< Protocol type. */
+    PalBbProt_t protId : 8; /*!< Protocol type. */
 
-  BbBodCback_t  endCback;           /*!< End of BOD callback (when BOD ends). */
-  BbBodCback_t  abortCback;         /*!< Abort BOD callback (when BOD is removed before beginning). */
+    BbBodCback_t endCback; /*!< End of BOD callback (when BOD ends). */
+    BbBodCback_t abortCback; /*!< Abort BOD callback (when BOD is removed before beginning). */
 
-  void          *pCtx;              /*!< Client defined context. */
-  uint16_t      *pDataLen;          /*!< Pointer to client data length. */
+    void *pCtx; /*!< Client defined context. */
+    uint16_t *pDataLen; /*!< Pointer to client data length. */
 
-  union
-  {
-    struct BbBleData_tag *pBle;     /*!< BLE operation data. */
-    struct Bb154Data_tag *p154;     /*!< 802.15.4 operation data. */
-  } prot;                           /*!< Protocol specific data. */
+    union {
+        struct BbBleData_tag *pBle; /*!< BLE operation data. */
+        struct Bb154Data_tag *p154; /*!< 802.15.4 operation data. */
+    } prot; /*!< Protocol specific data. */
 } BbOpDesc_t;
 
-/*! \} */    /* BB_API_BOD */
+/*! \} */ /* BB_API_BOD */
 
 /**************************************************************************************************
   Function Declarations
@@ -238,7 +235,7 @@ void BbRegisterProt(PalBbProt_t protId, BbBodCback_t execOpCback, BbBodCback_t c
 /*************************************************************************************************/
 void BbRegisterProtLowPower(PalBbProt_t protId, BbLowPowerCback_t lowPowerOpCback);
 
-/*! \} */    /* BB_API_INIT */
+/*! \} */ /* BB_API_INIT */
 
 /*! \addtogroup BB_API_CTRL
  *  \{ */
@@ -408,7 +405,7 @@ uint32_t BbGetTargetTimeDelta(uint32_t targetUsec, uint32_t refUsec);
 /*************************************************************************************************/
 uint8_t BbGetActiveProtocol(void);
 
-/*! \} */    /* BB_API_CTRL */
+/*! \} */ /* BB_API_CTRL */
 
 #ifdef __cplusplus
 };

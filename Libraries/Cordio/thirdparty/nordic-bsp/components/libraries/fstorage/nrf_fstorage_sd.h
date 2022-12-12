@@ -57,7 +57,6 @@
 extern "C" {
 #endif
 
-
 /**@brief   API implementation that uses the SoftDevice.
  *
  * @details An fstorage instance with this API implementation can be initialized by providing
@@ -65,7 +64,6 @@ extern "C" {
  *          The structure is defined in @c nrf_fstorage_sd.c.
  */
 extern nrf_fstorage_api_t nrf_fstorage_sd;
-
 
 #ifdef __cplusplus
 }

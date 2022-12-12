@@ -43,16 +43,16 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Master SKD offset. */
-#define LCTR_SKD_M_OFFS         0
+#define LCTR_SKD_M_OFFS 0
 
 /*! \brief      Master IV offset. */
-#define LCTR_IV_M_OFFS          0
+#define LCTR_IV_M_OFFS 0
 
 /*! \brief      Slave SKD offset. */
-#define LCTR_SKD_S_OFFS         (LL_SKD_LEN / 2)
+#define LCTR_SKD_S_OFFS (LL_SKD_LEN / 2)
 
 /*! \brief      Slave IV offset. */
-#define LCTR_IV_S_OFFS          (LL_IV_LEN / 2)
+#define LCTR_IV_S_OFFS (LL_IV_LEN / 2)
 
 /**************************************************************************************************
   Function Declarations

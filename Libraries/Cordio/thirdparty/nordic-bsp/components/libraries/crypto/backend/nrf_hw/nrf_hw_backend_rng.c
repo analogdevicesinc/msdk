@@ -39,19 +39,16 @@
  */
 
 #include "sdk_common.h"
-#if NRF_MODULE_ENABLED(NRF_CRYPTO) && \
-    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_HW_RNG) && \
+#if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_HW_RNG) && \
     !NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_NRF_HW_RNG_MBEDTLS_CTR_DRBG)
 
 #include "nrf_crypto_rng.h"
 #include "nrf_drv_rng.h"
 
-
-ret_code_t nrf_crypto_rng_backend_init(void * const p_context,
-                                       void * const p_temp_buffer)
+ret_code_t nrf_crypto_rng_backend_init(void *const p_context, void *const p_temp_buffer)
 {
     ret_code_t ret_val;
-    
+
     UNUSED_PARAMETER(p_context);
     UNUSED_PARAMETER(p_temp_buffer);
 
@@ -60,21 +57,17 @@ ret_code_t nrf_crypto_rng_backend_init(void * const p_context,
     return ret_val;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_uninit(void * const p_context)
+ret_code_t nrf_crypto_rng_backend_uninit(void *const p_context)
 {
     UNUSED_PARAMETER(p_context);
-    
+
     nrf_drv_rng_uninit();
 
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_vector_generate(void      * const p_context,
-                                                  uint8_t   * const p_target,
-                                                  size_t            size,
-                                                  bool              use_mutex)
+ret_code_t nrf_crypto_rng_backend_vector_generate(void *const p_context, uint8_t *const p_target,
+                                                  size_t size, bool use_mutex)
 {
     UNUSED_PARAMETER(use_mutex);
     UNUSED_PARAMETER(p_context);
@@ -84,17 +77,14 @@ ret_code_t nrf_crypto_rng_backend_vector_generate(void      * const p_context,
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_rng_backend_reseed(void   * const p_context,
-                                         void         * p_temp_buffer,
-                                         uint8_t      * p_input_data,
-                                         size_t         size)
+ret_code_t nrf_crypto_rng_backend_reseed(void *const p_context, void *p_temp_buffer,
+                                         uint8_t *p_input_data, size_t size)
 {
     UNUSED_PARAMETER(p_context);
     UNUSED_PARAMETER(p_temp_buffer);
     UNUSED_PARAMETER(p_input_data);
     UNUSED_PARAMETER(size);
-    
+
     return NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
 }
 

@@ -39,8 +39,7 @@
 #define INTERRUPT_PRIORITY_IS_VALID(pri) ((pri) < 8)
 #endif
 
-static inline void NRFX_IRQ_PRIORITY_SET(IRQn_Type irq_number,
-                                          uint8_t   priority)
+static inline void NRFX_IRQ_PRIORITY_SET(IRQn_Type irq_number, uint8_t priority)
 {
     NVIC_SetPriority(irq_number, priority);
 }

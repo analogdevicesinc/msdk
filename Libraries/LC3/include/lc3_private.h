@@ -22,7 +22,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-
 /**
  * Return number of samples, delayed samples and
  * encoded spectrum coefficients within a frame
@@ -30,19 +29,14 @@
  * - For decoding, keep 18 ms of history, aligned on frames, and a frame
  */
 
-#define __LC3_NS(dt_us, sr_hz) \
-    ( (dt_us * sr_hz) / 1000 / 1000 )
+#define __LC3_NS(dt_us, sr_hz) ((dt_us * sr_hz) / 1000 / 1000)
 
 #define __LC3_ND(dt_us, sr_hz) \
-    ( (dt_us) == 7500 ? 23 * __LC3_NS(dt_us, sr_hz) / 30 \
-                      :  5 * __LC3_NS(dt_us, sr_hz) /  8 )
+    ((dt_us) == 7500 ? 23 * __LC3_NS(dt_us, sr_hz) / 30 : 5 * __LC3_NS(dt_us, sr_hz) / 8)
 
-#define __LC3_NT(sr_hz) \
-    ( (5 * sr_hz) / 4000 )
+#define __LC3_NT(sr_hz) ((5 * sr_hz) / 4000)
 
-#define __LC3_NH(dt_us, sr_hz) \
-    ( ((3 - ((dt_us) >= 10000)) + 1) * __LC3_NS(dt_us, sr_hz) )
-
+#define __LC3_NH(dt_us, sr_hz) (((3 - ((dt_us) >= 10000)) + 1) * __LC3_NS(dt_us, sr_hz))
 
 /**
  * Frame duration 7.5ms or 10ms
@@ -68,7 +62,6 @@ enum lc3_srate {
 
     LC3_NUM_SRATE,
 };
-
 
 /**
  * Encoder state and memory
@@ -111,16 +104,15 @@ struct lc3_encoder {
     float *xs, *xd, s[0];
 };
 
-#define LC3_ENCODER_BUFFER_COUNT(dt_us, sr_hz) \
-    ( ( __LC3_NS(dt_us, sr_hz) + __LC3_NT(sr_hz) ) / 2 + \
-        __LC3_NS(dt_us, sr_hz) + __LC3_ND(dt_us, sr_hz) )
+#define LC3_ENCODER_BUFFER_COUNT(dt_us, sr_hz)                                 \
+    ((__LC3_NS(dt_us, sr_hz) + __LC3_NT(sr_hz)) / 2 + __LC3_NS(dt_us, sr_hz) + \
+     __LC3_ND(dt_us, sr_hz))
 
-#define LC3_ENCODER_MEM_T(dt_us, sr_hz) \
-    struct { \
-        struct lc3_encoder __e; \
+#define LC3_ENCODER_MEM_T(dt_us, sr_hz)                    \
+    struct {                                               \
+        struct lc3_encoder __e;                            \
         float __s[LC3_ENCODER_BUFFER_COUNT(dt_us, sr_hz)]; \
     }
-
 
 /**
  * Decoder state and memory
@@ -129,7 +121,7 @@ struct lc3_encoder {
 typedef struct lc3_ltpf_synthesis {
     bool active;
     int pitch;
-    float c[2*12], x[12];
+    float c[2 * 12], x[12];
 } lc3_ltpf_synthesis_t;
 
 typedef struct lc3_plc_state {
@@ -149,14 +141,12 @@ struct lc3_decoder {
 };
 
 #define LC3_DECODER_BUFFER_COUNT(dt_us, sr_hz) \
-    ( __LC3_NH(dt_us, sr_hz) + __LC3_ND(dt_us, sr_hz) + \
-      __LC3_NS(dt_us, sr_hz) )
+    (__LC3_NH(dt_us, sr_hz) + __LC3_ND(dt_us, sr_hz) + __LC3_NS(dt_us, sr_hz))
 
-#define LC3_DECODER_MEM_T(dt_us, sr_hz) \
-    struct { \
-        struct lc3_decoder __d; \
+#define LC3_DECODER_MEM_T(dt_us, sr_hz)                    \
+    struct {                                               \
+        struct lc3_decoder __d;                            \
         float __s[LC3_DECODER_BUFFER_COUNT(dt_us, sr_hz)]; \
     }
-
 
 #endif /* __LC3_PRIVATE_H */

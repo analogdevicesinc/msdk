@@ -1,2 +1,1 @@
 /* ecdsa.h for openssl */
-

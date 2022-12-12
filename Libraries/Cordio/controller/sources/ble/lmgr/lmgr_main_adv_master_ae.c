@@ -35,33 +35,26 @@
 /*************************************************************************************************/
 void LmgrSendExtScanEnableCnf(uint8_t status)
 {
-  if ((lmgrCb.extScanEnaStatus == LL_SUCCESS) && (status != LL_SUCCESS))
-  {
-    /* Store first error. */
-    lmgrCb.extScanEnaStatus = status;
-  }
+    if ((lmgrCb.extScanEnaStatus == LL_SUCCESS) && (status != LL_SUCCESS)) {
+        /* Store first error. */
+        lmgrCb.extScanEnaStatus = status;
+    }
 
-  if ((lmgrCb.extScanEnaDelayCnt == 0) ||   /* Suppress event. */
-      (--lmgrCb.extScanEnaDelayCnt > 0))    /* Wait for last scanner. */
-  {
-    /* Delay until all enable confirms received. */
-    return;
-  }
-
-  LlExtScanEnableCnf_t evt =
-  {
-    .hdr =
+    if ((lmgrCb.extScanEnaDelayCnt == 0) || /* Suppress event. */
+        (--lmgrCb.extScanEnaDelayCnt > 0)) /* Wait for last scanner. */
     {
-      .event  = LL_EXT_SCAN_ENABLE_CNF,
-      .status = lmgrCb.extScanEnaStatus
-    },
+        /* Delay until all enable confirms received. */
+        return;
+    }
 
-    .status = lmgrCb.extScanEnaStatus
-  };
+    LlExtScanEnableCnf_t evt = { .hdr = { .event = LL_EXT_SCAN_ENABLE_CNF,
+                                          .status = lmgrCb.extScanEnaStatus },
 
-  LL_TRACE_INFO1("### LlEvent ###  LL_EXT_SCAN_ENABLE_CNF, status=%u", lmgrCb.extScanEnaStatus);
+                                 .status = lmgrCb.extScanEnaStatus };
 
-  LmgrSendEvent((LlEvt_t *)&evt);
+    LL_TRACE_INFO1("### LlEvent ###  LL_EXT_SCAN_ENABLE_CNF, status=%u", lmgrCb.extScanEnaStatus);
+
+    LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -71,15 +64,11 @@ void LmgrSendExtScanEnableCnf(uint8_t status)
 /*************************************************************************************************/
 void LmgrSendScanTimeoutInd(void)
 {
-  wsfMsgHdr_t evt =
-  {
-    .event  = LL_SCAN_TIMEOUT_IND,
-    .status = LL_SUCCESS
-  };
+    wsfMsgHdr_t evt = { .event = LL_SCAN_TIMEOUT_IND, .status = LL_SUCCESS };
 
-  LL_TRACE_INFO0("### LlEvent ###  LL_SCAN_TIMEOUT_IND");
+    LL_TRACE_INFO0("### LlEvent ###  LL_SCAN_TIMEOUT_IND");
 
-  LmgrSendEvent((LlEvt_t *)&evt);
+    LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -91,13 +80,15 @@ void LmgrSendScanTimeoutInd(void)
 /*************************************************************************************************/
 void LmgrSendExtAdvRptInd(LlExtAdvReportInd_t *pEvt)
 {
-  pEvt->hdr.param = 0;
-  pEvt->hdr.event = LL_EXT_ADV_REPORT_IND;
-  pEvt->hdr.status = LL_SUCCESS;
+    pEvt->hdr.param = 0;
+    pEvt->hdr.event = LL_EXT_ADV_REPORT_IND;
+    pEvt->hdr.status = LL_SUCCESS;
 
-  LL_TRACE_INFO2("### LlEvent ###  LL_EXT_ADV_REPORT_IND, status=LL_SUCCESS, eventType=%u, SID=%u", pEvt->eventType, pEvt->advSID);
+    LL_TRACE_INFO2(
+        "### LlEvent ###  LL_EXT_ADV_REPORT_IND, status=LL_SUCCESS, eventType=%u, SID=%u",
+        pEvt->eventType, pEvt->advSID);
 
-  LmgrSendEvent((LlEvt_t *)pEvt);
+    LmgrSendEvent((LlEvt_t *)pEvt);
 }
 
 /*************************************************************************************************/
@@ -111,13 +102,14 @@ void LmgrSendExtAdvRptInd(LlExtAdvReportInd_t *pEvt)
 /*************************************************************************************************/
 void LmgrSendPerAdvRptInd(LlPerAdvReportInd_t *pEvt)
 {
-  pEvt->hdr.param = 0;
-  pEvt->hdr.event = LL_PER_ADV_REPORT_IND;
-  pEvt->hdr.status = LL_SUCCESS;
+    pEvt->hdr.param = 0;
+    pEvt->hdr.event = LL_PER_ADV_REPORT_IND;
+    pEvt->hdr.status = LL_SUCCESS;
 
-  LL_TRACE_INFO2("### LlEvent ###  LL_PER_ADV_REPORT_IND, handle=%u dataLen=%u ", pEvt->syncHandle, pEvt->len);
+    LL_TRACE_INFO2("### LlEvent ###  LL_PER_ADV_REPORT_IND, handle=%u dataLen=%u ",
+                   pEvt->syncHandle, pEvt->len);
 
-  LmgrSendEvent((LlEvt_t *)pEvt);
+    LmgrSendEvent((LlEvt_t *)pEvt);
 }
 
 /*************************************************************************************************/
@@ -131,7 +123,7 @@ void LmgrSendPerAdvRptInd(LlPerAdvReportInd_t *pEvt)
 /*************************************************************************************************/
 void LmgrSendSyncEstInd(uint8_t status, uint16_t handle, lmgrPerAdvSyncEstdInd_t *pEvt)
 {
-  LlPerAdvSyncEstdCnf_t evt =
+    LlPerAdvSyncEstdCnf_t evt =
   {
     .hdr =
     {
@@ -146,11 +138,12 @@ void LmgrSendSyncEstInd(uint8_t status, uint16_t handle, lmgrPerAdvSyncEstdInd_t
     .advClkAccuracy = pEvt->advClkAccuracy
   };
 
-  BdaCpy(evt.addr, pEvt->addr);
+    BdaCpy(evt.addr, pEvt->addr);
 
-  LL_TRACE_INFO3("### LlEvent ###  LL_PER_ADV_SYNC_ESTD_IND, handle=%u status=%u advSID=%u", handle, status, pEvt->advSID);
+    LL_TRACE_INFO3("### LlEvent ###  LL_PER_ADV_SYNC_ESTD_IND, handle=%u status=%u advSID=%u",
+                   handle, status, pEvt->advSID);
 
-  LmgrSendEvent((LlEvt_t *)&evt);
+    LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -162,7 +155,7 @@ void LmgrSendSyncEstInd(uint8_t status, uint16_t handle, lmgrPerAdvSyncEstdInd_t
 /*************************************************************************************************/
 void LmgrSendSyncLostInd(uint16_t handle)
 {
-  LlPerAdvSyncLostInd_t evt =
+    LlPerAdvSyncLostInd_t evt =
   {
     .hdr =
     {
@@ -171,7 +164,7 @@ void LmgrSendSyncLostInd(uint16_t handle)
     .syncHandle = handle,
   };
 
-  LL_TRACE_INFO1("### LlEvent ###  LL_PER_ADV_SYNC_LOST_IND, handle=%u", handle);
+    LL_TRACE_INFO1("### LlEvent ###  LL_PER_ADV_SYNC_LOST_IND, handle=%u", handle);
 
-  LmgrSendEvent((LlEvt_t *)&evt);
+    LmgrSendEvent((LlEvt_t *)&evt);
 }

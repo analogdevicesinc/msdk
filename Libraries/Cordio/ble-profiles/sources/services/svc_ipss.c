@@ -42,7 +42,7 @@
 
 /*! Characteristic write permissions */
 #ifndef IPSS_SEC_PERMIT_WRITE
-#define IPSS_SEC_PERMIT_WRITE  (ATTS_PERMIT_WRITE | ATTS_PERMIT_WRITE_ENC)
+#define IPSS_SEC_PERMIT_WRITE (ATTS_PERMIT_WRITE | ATTS_PERMIT_WRITE_ENC)
 #endif
 
 /**************************************************************************************************
@@ -50,33 +50,19 @@
 **************************************************************************************************/
 
 /* IP Support service declaration */
-static const uint8_t ipssValSvc[] = {UINT16_TO_BYTES(ATT_UUID_IP_SUPPORT_SERVICE)};
+static const uint8_t ipssValSvc[] = { UINT16_TO_BYTES(ATT_UUID_IP_SUPPORT_SERVICE) };
 static const uint16_t ipssLenSvc = sizeof(ipssValSvc);
 
 /* Attribute list for IPSS group */
-static const attsAttr_t ipssList[] =
-{
-  /* IP Support Service declaration */
-  {
-    attPrimSvcUuid,
-    (uint8_t *) ipssValSvc,
-    (uint16_t *) &ipssLenSvc,
-    sizeof(ipssValSvc),
-    0,
-    ATTS_PERMIT_READ
-  },
+static const attsAttr_t ipssList[] = {
+    /* IP Support Service declaration */
+    { attPrimSvcUuid, (uint8_t *)ipssValSvc, (uint16_t *)&ipssLenSvc, sizeof(ipssValSvc), 0,
+      ATTS_PERMIT_READ },
 };
 
 /* IPSS group structure */
-static attsGroup_t svcIpssGroup =
-{
-  NULL,
-  (attsAttr_t *) ipssList,
-  NULL,
-  NULL,
-  IPSS_START_HDL,
-  IPSS_END_HDL
-};
+static attsGroup_t svcIpssGroup = { NULL, (attsAttr_t *)ipssList, NULL,
+                                    NULL, IPSS_START_HDL,         IPSS_END_HDL };
 
 /*************************************************************************************************/
 /*!
@@ -87,7 +73,7 @@ static attsGroup_t svcIpssGroup =
 /*************************************************************************************************/
 void SvcIpssAddGroup(void)
 {
-  AttsAddGroup(&svcIpssGroup);
+    AttsAddGroup(&svcIpssGroup);
 }
 
 /*************************************************************************************************/
@@ -99,7 +85,7 @@ void SvcIpssAddGroup(void)
 /*************************************************************************************************/
 void SvcIpssRemoveGroup(void)
 {
-  AttsRemoveGroup(IPSS_START_HDL);
+    AttsRemoveGroup(IPSS_START_HDL);
 }
 
 /*************************************************************************************************/
@@ -113,6 +99,6 @@ void SvcIpssRemoveGroup(void)
 /*************************************************************************************************/
 void SvcIpssCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback)
 {
-  svcIpssGroup.readCback = readCback;
-  svcIpssGroup.writeCback = writeCback;
+    svcIpssGroup.readCback = readCback;
+    svcIpssGroup.writeCback = writeCback;
 }

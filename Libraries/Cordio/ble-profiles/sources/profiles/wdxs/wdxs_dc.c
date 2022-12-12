@@ -50,15 +50,14 @@ wdxsDcCb_t wdxsDcCb;
 /*************************************************************************************************/
 void wdxsDcSend(dmConnId_t connId)
 {
-  APP_TRACE_INFO0("WDXS: DcSend");
+    APP_TRACE_INFO0("WDXS: DcSend");
 
-  /* if notification enabled */
-  if (AttsCccEnabled(connId, wdxsCb.dcCccIdx))
-  {
-    /* send notification */
-    AttsHandleValueNtf(connId, WDXS_DC_HDL, wdxsDcCb.dcMsgLen, wdxsDcCb.dcMsgBuf);
-    wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_DC_BIT | WDXS_TX_MASK_READY_BIT);
-  }
+    /* if notification enabled */
+    if (AttsCccEnabled(connId, wdxsCb.dcCccIdx)) {
+        /* send notification */
+        AttsHandleValueNtf(connId, WDXS_DC_HDL, wdxsDcCb.dcMsgLen, wdxsDcCb.dcMsgBuf);
+        wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_DC_BIT | WDXS_TX_MASK_READY_BIT);
+    }
 }
 
 /*************************************************************************************************/
@@ -70,29 +69,28 @@ void wdxsDcSend(dmConnId_t connId)
 /*************************************************************************************************/
 uint8_t wdxsDcUpdateConnParam(dmConnId_t connId, uint8_t status)
 {
-  uint8_t *p;
+    uint8_t *p;
 
-  /* if update already waiting to be sent */
-  if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT)
-  {
-    return ATT_ERR_IN_PROGRESS;
-  }
+    /* if update already waiting to be sent */
+    if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT) {
+        return ATT_ERR_IN_PROGRESS;
+    }
 
-  /* build update to global buffer */
-  p = wdxsDcCb.dcMsgBuf;
-  UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
-  UINT8_TO_BSTREAM(p, WDX_DC_ID_CONN_PARAM);
-  UINT8_TO_BSTREAM(p, status);
-  UINT16_TO_BSTREAM(p, wdxsCb.connInterval);
-  UINT16_TO_BSTREAM(p, wdxsCb.connLatency);
-  UINT16_TO_BSTREAM(p, wdxsCb.supTimeout);
-  wdxsDcCb.dcMsgLen = WDX_DC_LEN_CONN_PARAM + WDX_DC_HDR_LEN;
+    /* build update to global buffer */
+    p = wdxsDcCb.dcMsgBuf;
+    UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
+    UINT8_TO_BSTREAM(p, WDX_DC_ID_CONN_PARAM);
+    UINT8_TO_BSTREAM(p, status);
+    UINT16_TO_BSTREAM(p, wdxsCb.connInterval);
+    UINT16_TO_BSTREAM(p, wdxsCb.connLatency);
+    UINT16_TO_BSTREAM(p, wdxsCb.supTimeout);
+    wdxsDcCb.dcMsgLen = WDX_DC_LEN_CONN_PARAM + WDX_DC_HDR_LEN;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -104,28 +102,27 @@ uint8_t wdxsDcUpdateConnParam(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 uint8_t wdxsDcUpdatePhy(dmConnId_t connId, uint8_t status)
 {
-  uint8_t *p;
+    uint8_t *p;
 
-  /* if update already waiting to be sent */
-  if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT)
-  {
-    return ATT_ERR_IN_PROGRESS;
-  }
+    /* if update already waiting to be sent */
+    if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT) {
+        return ATT_ERR_IN_PROGRESS;
+    }
 
-  /* build update to global buffer */
-  p = wdxsDcCb.dcMsgBuf;
-  UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
-  UINT8_TO_BSTREAM(p, WDX_DC_ID_PHY);
-  UINT8_TO_BSTREAM(p, status);
-  UINT8_TO_BSTREAM(p, wdxsCb.txPhy);
-  UINT8_TO_BSTREAM(p, wdxsCb.rxPhy);
-  wdxsDcCb.dcMsgLen = WDX_DC_LEN_PHY + WDX_DC_HDR_LEN;
+    /* build update to global buffer */
+    p = wdxsDcCb.dcMsgBuf;
+    UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
+    UINT8_TO_BSTREAM(p, WDX_DC_ID_PHY);
+    UINT8_TO_BSTREAM(p, status);
+    UINT8_TO_BSTREAM(p, wdxsCb.txPhy);
+    UINT8_TO_BSTREAM(p, wdxsCb.rxPhy);
+    wdxsDcCb.dcMsgLen = WDX_DC_LEN_PHY + WDX_DC_HDR_LEN;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -137,25 +134,24 @@ uint8_t wdxsDcUpdatePhy(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 uint8_t wdxsDcUpdateDiagnosticsComplete(dmConnId_t connId)
 {
-  uint8_t *p;
+    uint8_t *p;
 
-  /* if update already waiting to be sent */
-  if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT)
-  {
-    return ATT_ERR_IN_PROGRESS;
-  }
+    /* if update already waiting to be sent */
+    if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT) {
+        return ATT_ERR_IN_PROGRESS;
+    }
 
-  /* build update to global buffer */
-  p = wdxsDcCb.dcMsgBuf;
-  UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
-  UINT8_TO_BSTREAM(p, WDX_DC_ID_DIAGNOSTICS_COMPLETE);
-  wdxsDcCb.dcMsgLen = WDX_DC_LEN_DIAG_COMPLETE + WDX_DC_HDR_LEN;
+    /* build update to global buffer */
+    p = wdxsDcCb.dcMsgBuf;
+    UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
+    UINT8_TO_BSTREAM(p, WDX_DC_ID_DIAGNOSTICS_COMPLETE);
+    wdxsDcCb.dcMsgLen = WDX_DC_LEN_DIAG_COMPLETE + WDX_DC_HDR_LEN;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -167,24 +163,23 @@ uint8_t wdxsDcUpdateDiagnosticsComplete(dmConnId_t connId)
 /*************************************************************************************************/
 static uint8_t wdxsDcSetConnParamReq(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  hciConnSpec_t connSpec;
+    hciConnSpec_t connSpec;
 
-  /* verify parameter length */
-  if (len != WDX_DC_LEN_CONN_PARAM_REQ)
-  {
-    return ATT_ERR_LENGTH;
-  }
+    /* verify parameter length */
+    if (len != WDX_DC_LEN_CONN_PARAM_REQ) {
+        return ATT_ERR_LENGTH;
+    }
 
-  /* parse parameters */
-  BSTREAM_TO_UINT16(connSpec.connIntervalMin, pValue);
-  BSTREAM_TO_UINT16(connSpec.connIntervalMax, pValue);
-  BSTREAM_TO_UINT16(connSpec.connLatency, pValue);
-  BSTREAM_TO_UINT16(connSpec.supTimeout, pValue);
+    /* parse parameters */
+    BSTREAM_TO_UINT16(connSpec.connIntervalMin, pValue);
+    BSTREAM_TO_UINT16(connSpec.connIntervalMax, pValue);
+    BSTREAM_TO_UINT16(connSpec.connLatency, pValue);
+    BSTREAM_TO_UINT16(connSpec.supTimeout, pValue);
 
-  /* request update to connection parameters */
-  DmConnUpdate(connId, &connSpec);
+    /* request update to connection parameters */
+    DmConnUpdate(connId, &connSpec);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -196,7 +191,7 @@ static uint8_t wdxsDcSetConnParamReq(dmConnId_t connId, uint16_t len, uint8_t *p
 /*************************************************************************************************/
 static uint8_t wdxsDcSetEnterDiadnostics(dmConnId_t connId)
 {
-  return wdxsDcUpdateDiagnosticsComplete(connId);
+    return wdxsDcUpdateDiagnosticsComplete(connId);
 }
 
 /*************************************************************************************************/
@@ -208,8 +203,8 @@ static uint8_t wdxsDcSetEnterDiadnostics(dmConnId_t connId)
 /*************************************************************************************************/
 static uint8_t wdxsDcSetDisconnectReq(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  AppConnClose(connId);
-  return ATT_SUCCESS;
+    AppConnClose(connId);
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -221,24 +216,22 @@ static uint8_t wdxsDcSetDisconnectReq(dmConnId_t connId, uint16_t len, uint8_t *
 /*************************************************************************************************/
 static uint8_t wdxsDcSetSecurityReq(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  uint8_t secLevel;
+    uint8_t secLevel;
 
-  /* verify parameter length */
-  if (len != WDX_DC_LEN_SEC_LEVEL)
-  {
-    return ATT_ERR_LENGTH;
-  }
+    /* verify parameter length */
+    if (len != WDX_DC_LEN_SEC_LEVEL) {
+        return ATT_ERR_LENGTH;
+    }
 
-  /* parse parameters */
-  BSTREAM_TO_UINT8(secLevel, pValue);
+    /* parse parameters */
+    BSTREAM_TO_UINT8(secLevel, pValue);
 
-  /* Enable Security */
-  if (DmConnSecLevel(connId) != DM_SEC_LEVEL_NONE)
-  {
-    DmSecSlaveReq(connId, secLevel);
-  }
+    /* Enable Security */
+    if (DmConnSecLevel(connId) != DM_SEC_LEVEL_NONE) {
+        DmSecSlaveReq(connId, secLevel);
+    }
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -250,8 +243,8 @@ static uint8_t wdxsDcSetSecurityReq(dmConnId_t connId, uint16_t len, uint8_t *pV
 /*************************************************************************************************/
 static uint8_t wdxsDcSetServiceChanged(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  /* TBD */
-  return ATT_ERR_NOT_SUP;
+    /* TBD */
+    return ATT_ERR_NOT_SUP;
 }
 
 /*************************************************************************************************/
@@ -263,8 +256,8 @@ static uint8_t wdxsDcSetServiceChanged(dmConnId_t connId, uint16_t len, uint8_t 
 /*************************************************************************************************/
 static uint8_t wdxsDcSetDeleteBonds(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  /* TBD */
-  return ATT_ERR_NOT_SUP;
+    /* TBD */
+    return ATT_ERR_NOT_SUP;
 }
 
 /*************************************************************************************************/
@@ -276,9 +269,9 @@ static uint8_t wdxsDcSetDeleteBonds(dmConnId_t connId, uint16_t len, uint8_t *pV
 /*************************************************************************************************/
 static uint8_t wdxsDcSetDisconnectAndReset(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  wdxsDcCb.doReset = TRUE;
-  AppConnClose(connId);
-  return ATT_SUCCESS;
+    wdxsDcCb.doReset = TRUE;
+    AppConnClose(connId);
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -290,7 +283,7 @@ static uint8_t wdxsDcSetDisconnectAndReset(dmConnId_t connId, uint16_t len, uint
 /*************************************************************************************************/
 static uint8_t wdxsDcGetConnParam(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  return wdxsDcUpdateConnParam(connId, HCI_SUCCESS);
+    return wdxsDcUpdateConnParam(connId, HCI_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -302,26 +295,25 @@ static uint8_t wdxsDcGetConnParam(dmConnId_t connId, uint16_t len, uint8_t *pVal
 /*************************************************************************************************/
 static uint8_t wdxsDcGetSecurityLevel(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  uint8_t *p;
+    uint8_t *p;
 
-  /* if update already waiting to be sent */
-  if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT)
-  {
-    return ATT_ERR_IN_PROGRESS;
-  }
+    /* if update already waiting to be sent */
+    if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT) {
+        return ATT_ERR_IN_PROGRESS;
+    }
 
-  /* build update to global buffer */
-  p = wdxsDcCb.dcMsgBuf;
-  UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
-  UINT8_TO_BSTREAM(p, WDX_DC_ID_CONN_SEC_LEVEL);
-  UINT8_TO_BSTREAM(p, DmConnSecLevel(connId));
-  wdxsDcCb.dcMsgLen = WDX_DC_LEN_SEC_LEVEL + WDX_DC_HDR_LEN;
+    /* build update to global buffer */
+    p = wdxsDcCb.dcMsgBuf;
+    UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
+    UINT8_TO_BSTREAM(p, WDX_DC_ID_CONN_SEC_LEVEL);
+    UINT8_TO_BSTREAM(p, DmConnSecLevel(connId));
+    wdxsDcCb.dcMsgLen = WDX_DC_LEN_SEC_LEVEL + WDX_DC_HDR_LEN;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -333,26 +325,25 @@ static uint8_t wdxsDcGetSecurityLevel(dmConnId_t connId, uint16_t len, uint8_t *
 /*************************************************************************************************/
 static uint8_t wdxsDcGetAttMtu(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  uint8_t *p;
+    uint8_t *p;
 
-  /* if update already waiting to be sent */
-  if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT)
-  {
-    return ATT_ERR_IN_PROGRESS;
-  }
+    /* if update already waiting to be sent */
+    if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT) {
+        return ATT_ERR_IN_PROGRESS;
+    }
 
-  /* build update to global buffer */
-  p = wdxsDcCb.dcMsgBuf;
-  UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
-  UINT8_TO_BSTREAM(p, WDX_DC_ID_ATT_MTU);
-  UINT16_TO_BSTREAM(p, AttGetMtu(connId));
-  wdxsDcCb.dcMsgLen = WDX_DC_LEN_ATT_MTU + WDX_DC_HDR_LEN;
+    /* build update to global buffer */
+    p = wdxsDcCb.dcMsgBuf;
+    UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
+    UINT8_TO_BSTREAM(p, WDX_DC_ID_ATT_MTU);
+    UINT16_TO_BSTREAM(p, AttGetMtu(connId));
+    wdxsDcCb.dcMsgLen = WDX_DC_LEN_ATT_MTU + WDX_DC_HDR_LEN;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -364,28 +355,27 @@ static uint8_t wdxsDcGetAttMtu(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 /*************************************************************************************************/
 static uint8_t wdxsDcGetBatteryLevel(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  uint8_t *p;
+    uint8_t *p;
 
-  /* if update already waiting to be sent */
-  if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT)
-  {
-    return ATT_ERR_IN_PROGRESS;
-  }
+    /* if update already waiting to be sent */
+    if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT) {
+        return ATT_ERR_IN_PROGRESS;
+    }
 
-  /* build update to global buffer */
-  p = wdxsDcCb.dcMsgBuf;
-  UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
-  UINT8_TO_BSTREAM(p, WDX_DC_ID_BATTERY_LEVEL);
+    /* build update to global buffer */
+    p = wdxsDcCb.dcMsgBuf;
+    UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
+    UINT8_TO_BSTREAM(p, WDX_DC_ID_BATTERY_LEVEL);
 
-  /* add battery level */
-  AppHwBattRead(p);
-  wdxsDcCb.dcMsgLen = WDX_DC_LEN_BATTERY_LEVEL + WDX_DC_HDR_LEN;
+    /* add battery level */
+    AppHwBattRead(p);
+    wdxsDcCb.dcMsgLen = WDX_DC_LEN_BATTERY_LEVEL + WDX_DC_HDR_LEN;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -397,31 +387,30 @@ static uint8_t wdxsDcGetBatteryLevel(dmConnId_t connId, uint16_t len, uint8_t *p
 /*************************************************************************************************/
 static uint8_t wdxsDcGetDeviceModel(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  uint8_t *p;
+    uint8_t *p;
 
-  /* TODO: Add Device Model */
-  char *pModelTxt = WDXS_DEVICE_MODEL;
+    /* TODO: Add Device Model */
+    char *pModelTxt = WDXS_DEVICE_MODEL;
 
-  /* if update already waiting to be sent */
-  if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT)
-  {
-    return ATT_ERR_IN_PROGRESS;
-  }
+    /* if update already waiting to be sent */
+    if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT) {
+        return ATT_ERR_IN_PROGRESS;
+    }
 
-  /* build update to global buffer */
-  p = wdxsDcCb.dcMsgBuf;
-  UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
-  UINT8_TO_BSTREAM(p, WDX_DC_ID_MODEL_NUMBER);
-  /* Potential buffer overrun is intentional to zero out fixed length field */
-  /* coverity[overrun-buffer-arg] */
-  WstrnCpy((char *)p, pModelTxt, WDX_DC_LEN_DEVICE_MODEL);
-  wdxsDcCb.dcMsgLen = WDX_DC_LEN_DEVICE_MODEL + WDX_DC_HDR_LEN;
+    /* build update to global buffer */
+    p = wdxsDcCb.dcMsgBuf;
+    UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
+    UINT8_TO_BSTREAM(p, WDX_DC_ID_MODEL_NUMBER);
+    /* Potential buffer overrun is intentional to zero out fixed length field */
+    /* coverity[overrun-buffer-arg] */
+    WstrnCpy((char *)p, pModelTxt, WDX_DC_LEN_DEVICE_MODEL);
+    wdxsDcCb.dcMsgLen = WDX_DC_LEN_DEVICE_MODEL + WDX_DC_HDR_LEN;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -433,32 +422,31 @@ static uint8_t wdxsDcGetDeviceModel(dmConnId_t connId, uint16_t len, uint8_t *pV
 /*************************************************************************************************/
 static uint8_t wdxsDcGetFirmwareRev(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  uint8_t *p;
+    uint8_t *p;
 
-  /* TODO: Add Firmware Revision */
-  char *pFirmwareRev = "1.0";
+    /* TODO: Add Firmware Revision */
+    char *pFirmwareRev = "1.0";
 
-  /* if update already waiting to be sent */
-  if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT)
-  {
-    return ATT_ERR_IN_PROGRESS;
-  }
+    /* if update already waiting to be sent */
+    if (wdxsCb.txReadyMask & WDXS_TX_MASK_DC_BIT) {
+        return ATT_ERR_IN_PROGRESS;
+    }
 
-  /* build update to global buffer */
-  p = wdxsDcCb.dcMsgBuf;
-  UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
-  UINT8_TO_BSTREAM(p, WDX_DC_ID_FIRMWARE_REV);
+    /* build update to global buffer */
+    p = wdxsDcCb.dcMsgBuf;
+    UINT8_TO_BSTREAM(p, WDX_DC_OP_UPDATE);
+    UINT8_TO_BSTREAM(p, WDX_DC_ID_FIRMWARE_REV);
 
-  /* Potential buffer overrun is intentional to zero out fixed length field */
-  /* coverity[overrun-buffer-arg] */
-  WstrnCpy((char *)p, pFirmwareRev, WDX_DC_LEN_FIRMWARE_REV);
-  wdxsDcCb.dcMsgLen = WDX_DC_LEN_FIRMWARE_REV + WDX_DC_HDR_LEN;
+    /* Potential buffer overrun is intentional to zero out fixed length field */
+    /* coverity[overrun-buffer-arg] */
+    WstrnCpy((char *)p, pFirmwareRev, WDX_DC_LEN_FIRMWARE_REV);
+    wdxsDcCb.dcMsgLen = WDX_DC_LEN_FIRMWARE_REV + WDX_DC_HDR_LEN;
 
-  /* Indicate TX Ready */
-  wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
-  WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
+    /* Indicate TX Ready */
+    wdxsCb.txReadyMask |= WDXS_TX_MASK_DC_BIT;
+    WsfSetEvent(wdxsCb.handlerId, WDXS_EVT_TX_PATH);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -470,125 +458,115 @@ static uint8_t wdxsDcGetFirmwareRev(dmConnId_t connId, uint16_t len, uint8_t *pV
 /*************************************************************************************************/
 uint8_t wdxsDcWrite(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-  uint8_t op;
-  uint8_t id;
-  uint8_t status = ATT_SUCCESS;
+    uint8_t op;
+    uint8_t id;
+    uint8_t status = ATT_SUCCESS;
 
-  /* sanity check on message length */
-  if (len < WDX_DC_HDR_LEN)
-  {
-    return ATT_ERR_LENGTH;
-  }
-
-  /* verify notifications are enabled */
-  if (!AttsCccEnabled(connId, wdxsCb.dcCccIdx))
-  {
-    return ATT_ERR_CCCD;
-  }
-
-  /* get operation and parameter ID */
-  BSTREAM_TO_UINT8(op, pValue);
-  BSTREAM_TO_UINT8(id, pValue);
-
-  /* skip over header (note pValue was incremented above) */
-  len -= WDX_DC_HDR_LEN;
-
-  /* set operation */
-  if (op == WDX_DC_OP_SET)
-  {
-    switch (id)
-    {
-      case WDX_DC_ID_CONN_UPDATE_REQ:
-        status = wdxsDcSetConnParamReq(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_DISCONNECT_REQ:
-        status = wdxsDcSetDisconnectReq(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_SECURITY_REQ:
-        status = wdxsDcSetSecurityReq(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_SERVICE_CHANGED:
-        status = wdxsDcSetServiceChanged(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_DELETE_BONDS:
-        status = wdxsDcSetDeleteBonds(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_ENTER_DIAGNOSTICS:
-        status = wdxsDcSetEnterDiadnostics(connId);
-        break;
-
-      case WDX_DC_ID_DISCONNECT_AND_RESET:
-        status = wdxsDcSetDisconnectAndReset(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_PHY_UPDATE_REQ:
-        /* if device configuration phy callback registered */
-        if (wdxsDcCb.phyWriteCback != NULL)
-        {
-          status = (*wdxsDcCb.phyWriteCback)(connId, op, id, len, pValue);
-          break;
-        }
-        /* else fall through */
-
-      default:
-        status = ATT_ERR_RANGE;
-        break;
+    /* sanity check on message length */
+    if (len < WDX_DC_HDR_LEN) {
+        return ATT_ERR_LENGTH;
     }
-  }
-  /* get operation */
-  else if (op == WDX_DC_OP_GET)
-  {
-    switch (id)
-    {
-      case WDX_DC_ID_CONN_PARAM:
-        status = wdxsDcGetConnParam(connId, len, pValue);
-        break;
 
-      case WDX_DC_ID_CONN_SEC_LEVEL:
-        status = wdxsDcGetSecurityLevel(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_ATT_MTU:
-        status = wdxsDcGetAttMtu(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_BATTERY_LEVEL:
-        status = wdxsDcGetBatteryLevel(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_MODEL_NUMBER:
-        status = wdxsDcGetDeviceModel(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_FIRMWARE_REV:
-        status = wdxsDcGetFirmwareRev(connId, len, pValue);
-        break;
-
-      case WDX_DC_ID_PHY:
-        /* if device configuration phy callback registered */
-        if (wdxsDcCb.phyWriteCback != NULL)
-        {
-          status = (*wdxsDcCb.phyWriteCback)(connId, op, id, len, pValue);
-          break;
-        }
-        /* else fall through */
-
-      default:
-        status = ATT_ERR_RANGE;
-        break;
+    /* verify notifications are enabled */
+    if (!AttsCccEnabled(connId, wdxsCb.dcCccIdx)) {
+        return ATT_ERR_CCCD;
     }
-  }
-  else
-  {
-    status = ATT_ERR_RANGE;
-  }
 
-  return status;
+    /* get operation and parameter ID */
+    BSTREAM_TO_UINT8(op, pValue);
+    BSTREAM_TO_UINT8(id, pValue);
+
+    /* skip over header (note pValue was incremented above) */
+    len -= WDX_DC_HDR_LEN;
+
+    /* set operation */
+    if (op == WDX_DC_OP_SET) {
+        switch (id) {
+        case WDX_DC_ID_CONN_UPDATE_REQ:
+            status = wdxsDcSetConnParamReq(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_DISCONNECT_REQ:
+            status = wdxsDcSetDisconnectReq(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_SECURITY_REQ:
+            status = wdxsDcSetSecurityReq(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_SERVICE_CHANGED:
+            status = wdxsDcSetServiceChanged(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_DELETE_BONDS:
+            status = wdxsDcSetDeleteBonds(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_ENTER_DIAGNOSTICS:
+            status = wdxsDcSetEnterDiadnostics(connId);
+            break;
+
+        case WDX_DC_ID_DISCONNECT_AND_RESET:
+            status = wdxsDcSetDisconnectAndReset(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_PHY_UPDATE_REQ:
+            /* if device configuration phy callback registered */
+            if (wdxsDcCb.phyWriteCback != NULL) {
+                status = (*wdxsDcCb.phyWriteCback)(connId, op, id, len, pValue);
+                break;
+            }
+            /* else fall through */
+
+        default:
+            status = ATT_ERR_RANGE;
+            break;
+        }
+    }
+    /* get operation */
+    else if (op == WDX_DC_OP_GET) {
+        switch (id) {
+        case WDX_DC_ID_CONN_PARAM:
+            status = wdxsDcGetConnParam(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_CONN_SEC_LEVEL:
+            status = wdxsDcGetSecurityLevel(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_ATT_MTU:
+            status = wdxsDcGetAttMtu(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_BATTERY_LEVEL:
+            status = wdxsDcGetBatteryLevel(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_MODEL_NUMBER:
+            status = wdxsDcGetDeviceModel(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_FIRMWARE_REV:
+            status = wdxsDcGetFirmwareRev(connId, len, pValue);
+            break;
+
+        case WDX_DC_ID_PHY:
+            /* if device configuration phy callback registered */
+            if (wdxsDcCb.phyWriteCback != NULL) {
+                status = (*wdxsDcCb.phyWriteCback)(connId, op, id, len, pValue);
+                break;
+            }
+            /* else fall through */
+
+        default:
+            status = ATT_ERR_RANGE;
+            break;
+        }
+    } else {
+        status = ATT_ERR_RANGE;
+    }
+
+    return status;
 }
 
 /*************************************************************************************************/
@@ -602,7 +580,7 @@ uint8_t wdxsDcWrite(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 /*************************************************************************************************/
 void wdxsDcPhyRegister(wdxsDcPhyWriteCback_t cback)
 {
-  wdxsDcCb.phyWriteCback = cback;
+    wdxsDcCb.phyWriteCback = cback;
 }
 
-#endif  /* WDXS_DC_ENABLED */
+#endif /* WDXS_DC_ENABLED */

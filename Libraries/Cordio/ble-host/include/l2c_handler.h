@@ -90,7 +90,7 @@ void L2cCocHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
 /**@}*/
 
-/*! \} */    /* STACK_EVENT */
+/*! \} */ /* STACK_EVENT */
 
 #ifdef __cplusplus
 };

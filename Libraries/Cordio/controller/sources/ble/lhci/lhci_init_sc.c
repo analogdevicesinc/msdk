@@ -34,6 +34,6 @@
 /*************************************************************************************************/
 void LhciScInit(void)
 {
-  lhciCmdTbl[LHCI_MSG_SC] = lhciScDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_SC] = lhciScEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_SC] = lhciScDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_SC] = lhciScEncodeEvtPkt;
 }

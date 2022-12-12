@@ -38,10 +38,9 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Enumeration of handle indexes of characteristics to be discovered for immediate alert service */
-enum
-{
-  FMPL_IAS_AL_HDL_IDX,          /*!< \brief Alert level */
-  FMPL_IAS_HDL_LIST_LEN         /*!< \brief Handle list length */
+enum {
+    FMPL_IAS_AL_HDL_IDX, /*!< \brief Alert level */
+    FMPL_IAS_HDL_LIST_LEN /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -76,7 +75,7 @@ void FmplIasDiscover(dmConnId_t connId, uint16_t *pHdlList);
 /*************************************************************************************************/
 void FmplSendAlert(dmConnId_t connId, uint16_t handle, uint8_t alert);
 
-/*! \} */    /* FIND_ME_PROFILE */
+/*! \} */ /* FIND_ME_PROFILE */
 
 #ifdef __cplusplus
 };

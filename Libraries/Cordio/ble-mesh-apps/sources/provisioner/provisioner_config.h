@@ -26,8 +26,7 @@
 #define PROVISIONER_CONFIG_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -36,11 +35,11 @@ extern "C"
 
 /*! Mesh Configuration Client timeout in seconds. */
 #ifndef PROVISIONER_CFG_CL_TIMEOUT
-#define PROVISIONER_CFG_CL_TIMEOUT        10
+#define PROVISIONER_CFG_CL_TIMEOUT 10
 #endif
 
 /*! Light number of elements. */
-#define PROVISIONER_ELEMENT_COUNT         1
+#define PROVISIONER_ELEMENT_COUNT 1
 
 /**************************************************************************************************
   Global Variables

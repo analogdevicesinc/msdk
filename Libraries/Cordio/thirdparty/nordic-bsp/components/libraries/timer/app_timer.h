@@ -87,18 +87,22 @@ extern "C" {
  */
 #define APP_TIMER_LOG_NAME app_timer
 
-#define APP_TIMER_CLOCK_FREQ            32768                     /**< Clock frequency of the RTC timer used to implement the app timer module. */
-#define APP_TIMER_MIN_TIMEOUT_TICKS     5                         /**< Minimum value of the timeout_ticks parameter of app_timer_start(). */
+#define APP_TIMER_CLOCK_FREQ \
+    32768 /**< Clock frequency of the RTC timer used to implement the app timer module. */
+#define APP_TIMER_MIN_TIMEOUT_TICKS \
+    5 /**< Minimum value of the timeout_ticks parameter of app_timer_start(). */
 
 #ifdef RTX
-#define APP_TIMER_NODE_SIZE             40                        /**< Size of app_timer.timer_node_t (used to allocate data). */
+#define APP_TIMER_NODE_SIZE 40 /**< Size of app_timer.timer_node_t (used to allocate data). */
 #else
-#define APP_TIMER_NODE_SIZE             32                        /**< Size of app_timer.timer_node_t (used to allocate data). */
+#define APP_TIMER_NODE_SIZE 32 /**< Size of app_timer.timer_node_t (used to allocate data). */
 #endif // RTX
 
-#define APP_TIMER_SCHED_EVENT_DATA_SIZE sizeof(app_timer_event_t) /**< Size of event data when scheduler is used. */
+#define APP_TIMER_SCHED_EVENT_DATA_SIZE \
+    sizeof(app_timer_event_t) /**< Size of event data when scheduler is used. */
 
-#define APP_TIMER_MAX_CNT_VAL          RTC_COUNTER_COUNTER_Msk    /**< Maximum counter value that can be returned by @ref app_timer_cnt_get. */
+#define APP_TIMER_MAX_CNT_VAL \
+    RTC_COUNTER_COUNTER_Msk /**< Maximum counter value that can be returned by @ref app_timer_cnt_get. */
 
 /**@brief Convert milliseconds to timer ticks.
  *
@@ -110,15 +114,13 @@ extern "C" {
  * @return     Number of timer ticks.
  */
 #ifndef FREERTOS
-#define APP_TIMER_TICKS(MS)                                \
-            ((uint32_t)ROUNDED_DIV(                        \
-            (MS) * (uint64_t)APP_TIMER_CLOCK_FREQ,         \
-            1000 * (APP_TIMER_CONFIG_RTC_FREQUENCY + 1)))
+#define APP_TIMER_TICKS(MS)                                       \
+    ((uint32_t)ROUNDED_DIV((MS) * (uint64_t)APP_TIMER_CLOCK_FREQ, \
+                           1000 * (APP_TIMER_CONFIG_RTC_FREQUENCY + 1)))
 #else
 #include "FreeRTOSConfig.h"
-#define APP_TIMER_TICKS(MS) (uint32_t)ROUNDED_DIV((MS)*configTICK_RATE_HZ,1000)
+#define APP_TIMER_TICKS(MS) (uint32_t) ROUNDED_DIV((MS)*configTICK_RATE_HZ, 1000)
 #endif
-
 
 /**
  * @brief Create a timer identifier and statically allocate memory for the timer.
@@ -128,66 +130,62 @@ extern "C" {
 #define APP_TIMER_DEF(timer_id) _APP_TIMER_DEF(timer_id)
 
 /**@brief Application time-out handler type. */
-typedef void (*app_timer_timeout_handler_t)(void * p_context);
+typedef void (*app_timer_timeout_handler_t)(void *p_context);
 
 #ifdef APP_TIMER_V2
 /**
  * @brief app_timer control block
  */
-typedef struct
-{
-    nrf_sortlist_item_t         list_item;     /**< Token used by sortlist. */
-    uint64_t                    end_val;       /**< RTC counter value when timer expires. */
-    uint32_t                    repeat_period; /**< Repeat period (0 if single shot mode). */
-    app_timer_timeout_handler_t handler;       /**< User handler. */
-    void *                      p_context;     /**< User context. */
-    NRF_LOG_INSTANCE_PTR_DECLARE(p_log)        /**< Pointer to instance of the logger object (Conditionally compiled). */
-    volatile bool               active;        /**< Flag indicating that timer is active. */
+typedef struct {
+    nrf_sortlist_item_t list_item; /**< Token used by sortlist. */
+    uint64_t end_val; /**< RTC counter value when timer expires. */
+    uint32_t repeat_period; /**< Repeat period (0 if single shot mode). */
+    app_timer_timeout_handler_t handler; /**< User handler. */
+    void *p_context; /**< User context. */
+    NRF_LOG_INSTANCE_PTR_DECLARE(
+        p_log) /**< Pointer to instance of the logger object (Conditionally compiled). */
+    volatile bool active; /**< Flag indicating that timer is active. */
 } app_timer_t;
 
 /**@brief Timer ID type.
  * Never declare a variable of this type, but use the macro @ref APP_TIMER_DEF instead.*/
-typedef app_timer_t * app_timer_id_t;
+typedef app_timer_t *app_timer_id_t;
 
-#define _APP_TIMER_DEF(timer_id)                                                              \
-    NRF_LOG_INSTANCE_REGISTER(APP_TIMER_LOG_NAME, timer_id,                                   \
-                              APP_TIMER_CONFIG_INFO_COLOR,                                    \
-                              APP_TIMER_CONFIG_DEBUG_COLOR,                                   \
-                              APP_TIMER_CONFIG_INITIAL_LOG_LEVEL,                             \
-                              APP_TIMER_CONFIG_LOG_ENABLED ?                                  \
-                                         APP_TIMER_CONFIG_LOG_LEVEL : NRF_LOG_SEVERITY_NONE); \
-    static app_timer_t CONCAT_2(timer_id,_data) = {                                           \
-            .active = false,                                                                  \
-            NRF_LOG_INSTANCE_PTR_INIT(p_log, APP_TIMER_LOG_NAME, timer_id)                    \
-    };                                                                                        \
-    static const app_timer_id_t timer_id = &CONCAT_2(timer_id,_data)
+#define _APP_TIMER_DEF(timer_id)                                                                \
+    NRF_LOG_INSTANCE_REGISTER(APP_TIMER_LOG_NAME, timer_id, APP_TIMER_CONFIG_INFO_COLOR,        \
+                              APP_TIMER_CONFIG_DEBUG_COLOR, APP_TIMER_CONFIG_INITIAL_LOG_LEVEL, \
+                              APP_TIMER_CONFIG_LOG_ENABLED ? APP_TIMER_CONFIG_LOG_LEVEL :       \
+                                                             NRF_LOG_SEVERITY_NONE);            \
+    static app_timer_t CONCAT_2(timer_id, _data) = {                                            \
+        .active = false, NRF_LOG_INSTANCE_PTR_INIT(p_log, APP_TIMER_LOG_NAME, timer_id)         \
+    };                                                                                          \
+    static const app_timer_id_t timer_id = &CONCAT_2(timer_id, _data)
 
 #else //APP_TIMER_V2
-typedef struct app_timer_t { uint32_t data[CEIL_DIV(APP_TIMER_NODE_SIZE, sizeof(uint32_t))]; } app_timer_t;
+typedef struct app_timer_t {
+    uint32_t data[CEIL_DIV(APP_TIMER_NODE_SIZE, sizeof(uint32_t))];
+} app_timer_t;
 
 /**@brief Timer ID type.
  * Never declare a variable of this type, but use the macro @ref APP_TIMER_DEF instead.*/
-typedef app_timer_t * app_timer_id_t;
+typedef app_timer_t *app_timer_id_t;
 
-#define _APP_TIMER_DEF(timer_id)                                      \
-    static app_timer_t CONCAT_2(timer_id,_data) = { {0} };           \
-    static const app_timer_id_t timer_id = &CONCAT_2(timer_id,_data)
+#define _APP_TIMER_DEF(timer_id)                              \
+    static app_timer_t CONCAT_2(timer_id, _data) = { { 0 } }; \
+    static const app_timer_id_t timer_id = &CONCAT_2(timer_id, _data)
 
 #endif
 
-
 /**@brief Structure passed to app_scheduler. */
-typedef struct
-{
+typedef struct {
     app_timer_timeout_handler_t timeout_handler;
-    void *                      p_context;
+    void *p_context;
 } app_timer_event_t;
 
 /**@brief Timer modes. */
-typedef enum
-{
-    APP_TIMER_MODE_SINGLE_SHOT,                 /**< The timer will expire only once. */
-    APP_TIMER_MODE_REPEATED                     /**< The timer will restart each time it expires. */
+typedef enum {
+    APP_TIMER_MODE_SINGLE_SHOT, /**< The timer will expire only once. */
+    APP_TIMER_MODE_REPEATED /**< The timer will restart each time it expires. */
 } app_timer_mode_t;
 
 /**@brief Function for initializing the timer module.
@@ -215,8 +213,7 @@ ret_code_t app_timer_init(void);
  * @attention The FreeRTOS and RTX app_timer implementation does not allow app_timer_create to
  *       be called on the previously initialized instance.
  */
-ret_code_t app_timer_create(app_timer_id_t const *      p_timer_id,
-                            app_timer_mode_t            mode,
+ret_code_t app_timer_create(app_timer_id_t const *p_timer_id, app_timer_mode_t mode,
                             app_timer_timeout_handler_t timeout_handler);
 
 /**@brief Function for starting a timer.
@@ -239,7 +236,7 @@ ret_code_t app_timer_create(app_timer_id_t const *      p_timer_id,
  * @note When calling this method on a timer that is already running, the second start operation
  *       is ignored.
  */
-ret_code_t app_timer_start(app_timer_id_t timer_id, uint32_t timeout_ticks, void * p_context);
+ret_code_t app_timer_start(app_timer_id_t timer_id, uint32_t timeout_ticks, void *p_context);
 
 /**@brief Function for stopping the specified timer.
  *
@@ -274,9 +271,7 @@ uint32_t app_timer_cnt_get(void);
  *
  * @return    Number of ticks from ticks_from to ticks_to.
  */
-uint32_t app_timer_cnt_diff_compute(uint32_t   ticks_to,
-                                    uint32_t   ticks_from);
-
+uint32_t app_timer_cnt_diff_compute(uint32_t ticks_to, uint32_t ticks_from);
 
 /**@brief Function for getting the maximum observed operation queue utilization.
  *

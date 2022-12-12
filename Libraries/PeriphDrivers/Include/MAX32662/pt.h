@@ -222,7 +222,9 @@ void MXC_PT_ClearStopFlags(uint32_t flags);
  *                   Bit1-\>pt1... etc, 1 will enable the interrupt, 0 to leave
  *                   a PT channel in its current state.
  */
-inline __attribute__((deprecated("Use MXC_PT_EnableStopInt instead.  See pt.h for more details."))) void MXC_PT_EnableInt(uint32_t pts) 
+inline
+    __attribute__((deprecated("Use MXC_PT_EnableStopInt instead.  See pt.h for more details."))) void
+    MXC_PT_EnableInt(uint32_t pts)
 {
     MXC_PT_EnableStopInt(pts);
 }
@@ -238,7 +240,9 @@ inline __attribute__((deprecated("Use MXC_PT_EnableStopInt instead.  See pt.h fo
  *                   Bit1-\>pt1... etc, 1 will disable the interrupt, 0 to leave
  *                   a PT channel in its current state.
  */
-inline __attribute__((deprecated("Use MXC_PT_DisableStopInt instead.  See pt.h for more details."))) void MXC_PT_DisableInt(uint32_t pts)
+inline __attribute__((
+    deprecated("Use MXC_PT_DisableStopInt instead.  See pt.h for more details."))) void
+MXC_PT_DisableInt(uint32_t pts)
 {
     MXC_PT_DisableStopInt(pts);
 }
@@ -252,7 +256,9 @@ inline __attribute__((deprecated("Use MXC_PT_DisableStopInt instead.  See pt.h f
  * @return     The Pulse Train Interrupt Flags, \ref MXC_PT_STOP_INTFL_Register Register
  *             for details.
  */
-inline __attribute__((deprecated("Use MXC_PT_GetStopFlags instead.  See pt.h for more details."))) uint32_t MXC_PT_GetFlags(void)
+inline __attribute__((deprecated("Use MXC_PT_GetStopFlags instead.  See pt.h for more details.")))
+uint32_t
+MXC_PT_GetFlags(void)
 {
     return MXC_PT_GetStopFlags();
 }
@@ -265,7 +271,9 @@ inline __attribute__((deprecated("Use MXC_PT_GetStopFlags instead.  See pt.h for
  *
  * @param      flags  bits to clear, see \ref MXC_PT_STOP_INTFL_Register Register for details.
  */
-inline __attribute__((deprecated("Use MXC_PT_ClearStopFlags instead.  See pt.h for more details."))) void MXC_PT_ClearFlags(uint32_t flags)
+inline __attribute__((
+    deprecated("Use MXC_PT_ClearStopFlags instead.  See pt.h for more details."))) void
+MXC_PT_ClearFlags(uint32_t flags)
 {
     MXC_PT_ClearStopFlags(flags);
 }

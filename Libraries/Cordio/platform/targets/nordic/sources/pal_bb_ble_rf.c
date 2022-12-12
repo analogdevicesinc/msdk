@@ -29,16 +29,16 @@
 **************************************************************************************************/
 
 /*! \brief      Minimum RF path compensation (in 0.1dBm units). */
-#define BB_BLE_MIN_PATH_COMP        -1280
+#define BB_BLE_MIN_PATH_COMP -1280
 
 /*! \brief      Minimum RF path compensation (in 1dBm units). */
-#define BB_BLE_MIN_PATH_COMP_DBM    -128
+#define BB_BLE_MIN_PATH_COMP_DBM -128
 
 /*! \brief      Maximum RF path compensation (in 0.1dBm units). */
-#define BB_BLE_MAX_PATH_COMP        1280
+#define BB_BLE_MAX_PATH_COMP 1280
 
 /*! \brief      Binary divide with 10 divisor (n[max]=0xFFFFFFFF). */
-#define BB_BLE_MATH_DIV_10(n)       ((uint32_t)(((uint64_t)(n) * UINT64_C(419431)) >> 22))
+#define BB_BLE_MATH_DIV_10(n) ((uint32_t)(((uint64_t)(n)*UINT64_C(419431)) >> 22))
 
 /**************************************************************************************************
   Constants
@@ -46,18 +46,18 @@
 
 #if defined(NRF52840_XXAA) || defined(NRF52832_XXAA)
 /* \brief   Minimum Tx power level (expressed in 1dBm units). */
-static const int8_t bbBleMinTxPwr = -40;  /* -40dBm */
+static const int8_t bbBleMinTxPwr = -40; /* -40dBm */
 #else
 /* \brief   Minimum Tx power level (expressed in 1dBm units). */
-static const int8_t bbBleMinTxPwr = -30;  /* -30dBm */
+static const int8_t bbBleMinTxPwr = -30; /* -30dBm */
 #endif
 
 #if defined(NRF52840_XXAA)
 /* \brief   Maximum Tx power level (expressed in 1dBm units). */
-static const int8_t bbBleMaxTxPwr = 9;    /*  +9dBm */
+static const int8_t bbBleMaxTxPwr = 9; /*  +9dBm */
 #else
 /* \brief   Maximum Tx power level (expressed in 1dBm units). */
-static const int8_t bbBleMaxTxPwr = 4;    /*  +4dBm */
+static const int8_t bbBleMaxTxPwr = 4; /*  +4dBm */
 #endif
 
 /**************************************************************************************************
@@ -79,9 +79,9 @@ int16_t bbBleRxPathComp = -1280;
 /*************************************************************************************************/
 int8_t PalRadioGetRxRfPathComp(void)
 {
-  uint16_t pathCompUnsigned = (uint16_t)(bbBleTxPathComp - BB_BLE_MIN_PATH_COMP);
+    uint16_t pathCompUnsigned = (uint16_t)(bbBleTxPathComp - BB_BLE_MIN_PATH_COMP);
 
-  return (int16_t)BB_BLE_MATH_DIV_10(pathCompUnsigned) + BB_BLE_MIN_PATH_COMP_DBM;
+    return (int16_t)BB_BLE_MATH_DIV_10(pathCompUnsigned) + BB_BLE_MIN_PATH_COMP_DBM;
 }
 
 /*************************************************************************************************/
@@ -91,8 +91,8 @@ int8_t PalRadioGetRxRfPathComp(void)
 /*************************************************************************************************/
 void PalRadioInitPathComp(void)
 {
-  bbBleTxPathComp = 0;
-  bbBleRxPathComp = 0;
+    bbBleTxPathComp = 0;
+    bbBleRxPathComp = 0;
 }
 
 /*************************************************************************************************/
@@ -105,8 +105,8 @@ void PalRadioInitPathComp(void)
 /*************************************************************************************************/
 void PalRadioGetSupTxPower(int8_t *pMinTxPwr, int8_t *pMaxTxPwr)
 {
-  *pMinTxPwr = bbBleMinTxPwr;
-  *pMaxTxPwr = bbBleMaxTxPwr;
+    *pMinTxPwr = bbBleMinTxPwr;
+    *pMaxTxPwr = bbBleMaxTxPwr;
 }
 
 /*************************************************************************************************/
@@ -119,8 +119,8 @@ void PalRadioGetSupTxPower(int8_t *pMinTxPwr, int8_t *pMaxTxPwr)
 /*************************************************************************************************/
 void PalRadioReadRfPathComp(int16_t *pTxPathComp, int16_t *pRxPathComp)
 {
-  *pTxPathComp = bbBleTxPathComp;
-  *pRxPathComp = bbBleRxPathComp;
+    *pTxPathComp = bbBleTxPathComp;
+    *pRxPathComp = bbBleRxPathComp;
 }
 
 /*************************************************************************************************/
@@ -135,10 +135,10 @@ void PalRadioReadRfPathComp(int16_t *pTxPathComp, int16_t *pRxPathComp)
 /*************************************************************************************************/
 bool_t PalRadioWriteRfPathComp(int16_t txPathComp, int16_t rxPathComp)
 {
-  bbBleTxPathComp = txPathComp;
-  bbBleRxPathComp = rxPathComp;
+    bbBleTxPathComp = txPathComp;
+    bbBleRxPathComp = rxPathComp;
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -157,48 +157,82 @@ bool_t PalRadioWriteRfPathComp(int16_t txPathComp, int16_t rxPathComp)
 int8_t PalRadioGetActualTxPower(int8_t txPwr, bool_t compFlag)
 {
 #if defined(NRF52840_XXAA)
-  if      (txPwr >=   9)  {  txPwr =   9;  }
-  else if (txPwr >=   8)  {  txPwr =   8;  }
-  else if (txPwr >=   7)  {  txPwr =   7;  }
-  else if (txPwr >=   6)  {  txPwr =   6;  }
-  else if (txPwr >=   5)  {  txPwr =   5;  }
-  else if (txPwr >=   4)  {  txPwr =   4;  }
-  else if (txPwr >=   3)  {  txPwr =   3;  }
-  else if (txPwr >=   2)  {  txPwr =   2;  }
-  else if (txPwr >=   0)  {  txPwr =   0;  }
-  else if (txPwr >=  -4)  {  txPwr =  -4;  }
-  else if (txPwr >=  -8)  {  txPwr =  -8;  }
-  else if (txPwr >= -12)  {  txPwr = -12;  }
-  else if (txPwr >= -16)  {  txPwr = -16;  }
-  else if (txPwr >= -20)  {  txPwr = -20;  }
-  else                    {  txPwr = -40;  }
+    if (txPwr >= 9) {
+        txPwr = 9;
+    } else if (txPwr >= 8) {
+        txPwr = 8;
+    } else if (txPwr >= 7) {
+        txPwr = 7;
+    } else if (txPwr >= 6) {
+        txPwr = 6;
+    } else if (txPwr >= 5) {
+        txPwr = 5;
+    } else if (txPwr >= 4) {
+        txPwr = 4;
+    } else if (txPwr >= 3) {
+        txPwr = 3;
+    } else if (txPwr >= 2) {
+        txPwr = 2;
+    } else if (txPwr >= 0) {
+        txPwr = 0;
+    } else if (txPwr >= -4) {
+        txPwr = -4;
+    } else if (txPwr >= -8) {
+        txPwr = -8;
+    } else if (txPwr >= -12) {
+        txPwr = -12;
+    } else if (txPwr >= -16) {
+        txPwr = -16;
+    } else if (txPwr >= -20) {
+        txPwr = -20;
+    } else {
+        txPwr = -40;
+    }
 #elif defined(NRF52832_XXAA)
-  if      (txPwr >=   4)  {  txPwr =   4;  }
-  else if (txPwr >=   3)  {  txPwr =   3;  }
-  else if (txPwr >=   0)  {  txPwr =   0;  }
-  else if (txPwr >=  -4)  {  txPwr =  -4;  }
-  else if (txPwr >=  -8)  {  txPwr =  -8;  }
-  else if (txPwr >= -12)  {  txPwr = -12;  }
-  else if (txPwr >= -16)  {  txPwr = -16;  }
-  else if (txPwr >= -20)  {  txPwr = -20;  }
-  else                    {  txPwr = -40;  }
+    if (txPwr >= 4) {
+        txPwr = 4;
+    } else if (txPwr >= 3) {
+        txPwr = 3;
+    } else if (txPwr >= 0) {
+        txPwr = 0;
+    } else if (txPwr >= -4) {
+        txPwr = -4;
+    } else if (txPwr >= -8) {
+        txPwr = -8;
+    } else if (txPwr >= -12) {
+        txPwr = -12;
+    } else if (txPwr >= -16) {
+        txPwr = -16;
+    } else if (txPwr >= -20) {
+        txPwr = -20;
+    } else {
+        txPwr = -40;
+    }
 #else
-  if      (txPwr >=   4)  {  txPwr =   4;  }
-  else if (txPwr >=   0)  {  txPwr =   0;  }
-  else if (txPwr >=  -4)  {  txPwr =  -4;  }
-  else if (txPwr >=  -8)  {  txPwr =  -8;  }
-  else if (txPwr >= -12)  {  txPwr = -12;  }
-  else if (txPwr >= -16)  {  txPwr = -16;  }
-  else if (txPwr >= -20)  {  txPwr = -20;  }
-  else                    {  txPwr = -30;  }
+    if (txPwr >= 4) {
+        txPwr = 4;
+    } else if (txPwr >= 0) {
+        txPwr = 0;
+    } else if (txPwr >= -4) {
+        txPwr = -4;
+    } else if (txPwr >= -8) {
+        txPwr = -8;
+    } else if (txPwr >= -12) {
+        txPwr = -12;
+    } else if (txPwr >= -16) {
+        txPwr = -16;
+    } else if (txPwr >= -20) {
+        txPwr = -20;
+    } else {
+        txPwr = -30;
+    }
 #endif
 
-  if (compFlag)
-  {
-    txPwr += PalRadioGetRxRfPathComp();
-  }
+    if (compFlag) {
+        txPwr += PalRadioGetRxRfPathComp();
+    }
 
-  return txPwr;
+    return txPwr;
 }
 
 /*************************************************************************************************/
@@ -216,88 +250,152 @@ int8_t PalRadioGetActualTxPower(int8_t txPwr, bool_t compFlag)
 /*************************************************************************************************/
 int8_t PalRadioIncreasePower(int8_t reqPwr, int8_t delta)
 {
-  /* An increase in power. The controller will always increase one step if possible. */
-  if (delta > 0)
-  {
+    /* An increase in power. The controller will always increase one step if possible. */
+    if (delta > 0) {
 #if defined(NRF52840_XXAA)
-         if (reqPwr >    8)  {  reqPwr =   9;  }
-    else if (reqPwr >   7)  {  reqPwr =    8;  }
-    else if (reqPwr >   6)  {  reqPwr =    7;  }
-    else if (reqPwr >   5)  {  reqPwr =    6;  }
-    else if (reqPwr >   4)  {  reqPwr =    5;  }
-    else if (reqPwr >   3)  {  reqPwr =    4;  }
-    else if (reqPwr >   2)  {  reqPwr =    3;  }
-    else if (reqPwr >   0)  {  reqPwr =    2;  }
-    else if (reqPwr >  -4)  {  reqPwr =    0;  }
-    else if (reqPwr >  -8)  {  reqPwr =   -4;  }
-    else if (reqPwr > -12)  {  reqPwr =   -8;  }
-    else if (reqPwr > -16)  {  reqPwr =  -12;  }
-    else if (reqPwr > -20)  {  reqPwr =  -16;  }
-    else                     {  reqPwr = -20;  }
+        if (reqPwr > 8) {
+            reqPwr = 9;
+        } else if (reqPwr > 7) {
+            reqPwr = 8;
+        } else if (reqPwr > 6) {
+            reqPwr = 7;
+        } else if (reqPwr > 5) {
+            reqPwr = 6;
+        } else if (reqPwr > 4) {
+            reqPwr = 5;
+        } else if (reqPwr > 3) {
+            reqPwr = 4;
+        } else if (reqPwr > 2) {
+            reqPwr = 3;
+        } else if (reqPwr > 0) {
+            reqPwr = 2;
+        } else if (reqPwr > -4) {
+            reqPwr = 0;
+        } else if (reqPwr > -8) {
+            reqPwr = -4;
+        } else if (reqPwr > -12) {
+            reqPwr = -8;
+        } else if (reqPwr > -16) {
+            reqPwr = -12;
+        } else if (reqPwr > -20) {
+            reqPwr = -16;
+        } else {
+            reqPwr = -20;
+        }
 #elif defined(NRF52832_XXAA)
-    if      (reqPwr >   3)  {  reqPwr =   4;  }
-    else if (reqPwr >   2)  {  reqPwr =   3;  }
-    else if (reqPwr >   0)  {  reqPwr =   2;  }
-    else if (reqPwr >  -4)  {  reqPwr =   0;  }
-    else if (reqPwr >  -8)  {  reqPwr =  -4;  }
-    else if (reqPwr > -12)  {  reqPwr =  -8;  }
-    else if (reqPwr > -16)  {  reqPwr = -12;  }
-    else if (reqPwr > -20)  {  reqPwr = -16;  }
-    else                    {  reqPwr = -20;  }
+        if (reqPwr > 3) {
+            reqPwr = 4;
+        } else if (reqPwr > 2) {
+            reqPwr = 3;
+        } else if (reqPwr > 0) {
+            reqPwr = 2;
+        } else if (reqPwr > -4) {
+            reqPwr = 0;
+        } else if (reqPwr > -8) {
+            reqPwr = -4;
+        } else if (reqPwr > -12) {
+            reqPwr = -8;
+        } else if (reqPwr > -16) {
+            reqPwr = -12;
+        } else if (reqPwr > -20) {
+            reqPwr = -16;
+        } else {
+            reqPwr = -20;
+        }
 #else
-         if (reqPwr >   0)  {  reqPwr =   4;  }
-    else if (reqPwr >  -4)  {  reqPwr =   0;  }
-    else if (reqPwr >  -8)  {  reqPwr =  -4;  }
-    else if (reqPwr > -12)  {  reqPwr =  -8;  }
-    else if (reqPwr > -16)  {  reqPwr = -12;  }
-    else if (reqPwr > -20)  {  reqPwr = -16;  }
-    else                    {  reqPwr = -20;  }
+        if (reqPwr > 0) {
+            reqPwr = 4;
+        } else if (reqPwr > -4) {
+            reqPwr = 0;
+        } else if (reqPwr > -8) {
+            reqPwr = -4;
+        } else if (reqPwr > -12) {
+            reqPwr = -8;
+        } else if (reqPwr > -16) {
+            reqPwr = -12;
+        } else if (reqPwr > -20) {
+            reqPwr = -16;
+        } else {
+            reqPwr = -20;
+        }
 #endif
-  }
-  /* A decrease in power. The controller will decrease to higher step if reqPwer is inbetween two steps. */
-  else if (delta < 0)
-  {
+    }
+    /* A decrease in power. The controller will decrease to higher step if reqPwer is inbetween two steps. */
+    else if (delta < 0) {
 #if defined(NRF52840_XXAA)
-    if      (reqPwr <= -40) { reqPwr = -40; }
-    else if (reqPwr <= -20) { reqPwr = -20; }
-    else if (reqPwr <= -16) { reqPwr = -16; }
-    else if (reqPwr <= -12) { reqPwr = -12; }
-    else if (reqPwr <=  -8) { reqPwr =  -8; }
-    else if (reqPwr <=  -4) { reqPwr =  -4; }
-    else if (reqPwr <=   0) { reqPwr =   0; }
-    else if (reqPwr <=   2) { reqPwr =   2; }
-    else if (reqPwr <=   3) { reqPwr =   3; }
-    else if (reqPwr <=   4) { reqPwr =   4; }
-    else if (reqPwr <=   5) { reqPwr =   5; }
-    else if (reqPwr <=   6) { reqPwr =   6; }
-    else if (reqPwr <=   7) { reqPwr =   7; }
-    else if (reqPwr <=   8) { reqPwr =   8; }
-    else                    { reqPwr =   9; }
+        if (reqPwr <= -40) {
+            reqPwr = -40;
+        } else if (reqPwr <= -20) {
+            reqPwr = -20;
+        } else if (reqPwr <= -16) {
+            reqPwr = -16;
+        } else if (reqPwr <= -12) {
+            reqPwr = -12;
+        } else if (reqPwr <= -8) {
+            reqPwr = -8;
+        } else if (reqPwr <= -4) {
+            reqPwr = -4;
+        } else if (reqPwr <= 0) {
+            reqPwr = 0;
+        } else if (reqPwr <= 2) {
+            reqPwr = 2;
+        } else if (reqPwr <= 3) {
+            reqPwr = 3;
+        } else if (reqPwr <= 4) {
+            reqPwr = 4;
+        } else if (reqPwr <= 5) {
+            reqPwr = 5;
+        } else if (reqPwr <= 6) {
+            reqPwr = 6;
+        } else if (reqPwr <= 7) {
+            reqPwr = 7;
+        } else if (reqPwr <= 8) {
+            reqPwr = 8;
+        } else {
+            reqPwr = 9;
+        }
 #elif defined(NRF52832_XXAA)
-    if      (reqPwr <= -40) { reqPwr = -40; }
-    else if (reqPwr <= -20) {reqPwr = -20; }
-    else if (reqPwr <= -16) {reqPwr = -16; }
-    else if (reqPwr <= -12) {reqPwr = -12; }
-    else if (reqPwr <=  -8) {reqPwr =  -8; }
-    else if (reqPwr <=  -4) {reqPwr =  -4; }
-    else if (reqPwr <=   0) {reqPwr =   0; }
-    else if (reqPwr <=   3) {reqPwr =   3; }
-    else                    {reqPwr =   4; }
+        if (reqPwr <= -40) {
+            reqPwr = -40;
+        } else if (reqPwr <= -20) {
+            reqPwr = -20;
+        } else if (reqPwr <= -16) {
+            reqPwr = -16;
+        } else if (reqPwr <= -12) {
+            reqPwr = -12;
+        } else if (reqPwr <= -8) {
+            reqPwr = -8;
+        } else if (reqPwr <= -4) {
+            reqPwr = -4;
+        } else if (reqPwr <= 0) {
+            reqPwr = 0;
+        } else if (reqPwr <= 3) {
+            reqPwr = 3;
+        } else {
+            reqPwr = 4;
+        }
 #else
-    if      (reqPwr <= -30) {reqPwr = -30; }
-    else if (reqPwr <= -20) {reqPwr = -20; }
-    else if (reqPwr <= -16) {reqPwr = -16; }
-    else if (reqPwr <= -12) {reqPwr = -12; }
-    else if (reqPwr <=  -8) {reqPwr =  -8; }
-    else if (reqPwr <=  -4) {reqPwr =  -4; }
-    else if (reqPwr <=   0) {reqPwr =   0; }
-    else                    {reqPwr =   4; }
+        if (reqPwr <= -30) {
+            reqPwr = -30;
+        } else if (reqPwr <= -20) {
+            reqPwr = -20;
+        } else if (reqPwr <= -16) {
+            reqPwr = -16;
+        } else if (reqPwr <= -12) {
+            reqPwr = -12;
+        } else if (reqPwr <= -8) {
+            reqPwr = -8;
+        } else if (reqPwr <= -4) {
+            reqPwr = -4;
+        } else if (reqPwr <= 0) {
+            reqPwr = 0;
+        } else {
+            reqPwr = 4;
+        }
 #endif
-  }
-  else
-  {
-    /* No change. */
-  }
+    } else {
+        /* No change. */
+    }
 
-  return reqPwr;
+    return reqPwr;
 }

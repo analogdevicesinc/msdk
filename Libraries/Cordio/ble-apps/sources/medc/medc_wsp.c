@@ -38,26 +38,24 @@
 #include "udsc/udsc_api.h"
 #include "medc/medc_main.h"
 
-
 /**************************************************************************************************
   ATT Client Discovery Data
 **************************************************************************************************/
 
 /*! Discovery states:  enumeration of services to be discovered */
-enum
-{
-  MEDC_DISC_WSP_UDS_SVC,       /*! User data service */
-  MEDC_DISC_WSP_WSS_SVC,       /*! Weight scale service */
+enum {
+    MEDC_DISC_WSP_UDS_SVC, /*! User data service */
+    MEDC_DISC_WSP_WSS_SVC, /*! Weight scale service */
 };
 
 /* Start of cached weight scale service handles; begins after DIS */
-#define MEDC_DISC_WSS_START         (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
+#define MEDC_DISC_WSS_START (MEDC_DISC_DIS_START + DIS_HDL_LIST_LEN)
 
 /* Start of User Data Service handles; begins after weight scale serivce */
-#define MEDC_DISC_UDS_START         (MEDC_DISC_WSS_START + WSPC_WSS_HDL_LIST_LEN)
+#define MEDC_DISC_UDS_START (MEDC_DISC_WSS_START + WSPC_WSS_HDL_LIST_LEN)
 
 /* Total cached handle list length */
-#define MEDC_DISC_HDL_LIST_LEN      (MEDC_DISC_UDS_START + UDSC_HDL_LIST_LEN)
+#define MEDC_DISC_HDL_LIST_LEN (MEDC_DISC_UDS_START + UDSC_HDL_LIST_LEN)
 
 /*! Pointers into handle list for weight scale service handles */
 static uint16_t *pMedcWssHdlList = &medcCb.hdlList[MEDC_DISC_WSS_START];
@@ -76,23 +74,22 @@ WSF_CT_ASSERT(MEDC_DISC_HDL_LIST_LEN <= APP_DB_HDL_LIST_LEN);
 **************************************************************************************************/
 
 /* List of characteristics to configure after service discovery */
-static const attcDiscCfg_t medcCfgWssList[] =
-{
-  /* Read:  Weight scale feature */
-  {NULL, 0, MEDC_DISC_WSS_START + WSPC_WSS_WSF_HDL_IDX},
+static const attcDiscCfg_t medcCfgWssList[] = {
+    /* Read:  Weight scale feature */
+    { NULL, 0, MEDC_DISC_WSS_START + WSPC_WSS_WSF_HDL_IDX },
 
-  /* Write:  Weight scale measurement CCC descriptor  */
-  {medcCccIndVal, sizeof(medcCccIndVal), MEDC_DISC_WSS_START + WSPC_WSS_WSM_CCC_HDL_IDX},
+    /* Write:  Weight scale measurement CCC descriptor  */
+    { medcCccIndVal, sizeof(medcCccIndVal), MEDC_DISC_WSS_START + WSPC_WSS_WSM_CCC_HDL_IDX },
 
-  /* Write:  Database Change Interval CCC descriptor  */
-  {medcCccNtfVal, sizeof(medcCccNtfVal), MEDC_DISC_UDS_START + UDSC_DCBI_CCC_HDL_IDX},
+    /* Write:  Database Change Interval CCC descriptor  */
+    { medcCccNtfVal, sizeof(medcCccNtfVal), MEDC_DISC_UDS_START + UDSC_DCBI_CCC_HDL_IDX },
 
-  /* Write:  User Data Service Control Point CCC descriptor  */
-  {medcCccIndVal, sizeof(medcCccIndVal), MEDC_DISC_UDS_START + UDSC_UCP_CCC_HDL_IDX}
+    /* Write:  User Data Service Control Point CCC descriptor  */
+    { medcCccIndVal, sizeof(medcCccIndVal), MEDC_DISC_UDS_START + UDSC_UCP_CCC_HDL_IDX }
 };
 
 /* Characteristic configuration list length */
-#define MEDC_CFG_WSS_LIST_LEN   (sizeof(medcCfgWssList) / sizeof(attcDiscCfg_t))
+#define MEDC_CFG_WSS_LIST_LEN (sizeof(medcCfgWssList) / sizeof(attcDiscCfg_t))
 
 /**************************************************************************************************
   Local Functions
@@ -109,14 +106,7 @@ static void medcWspBtn(dmConnId_t connId, uint8_t btn);
 **************************************************************************************************/
 
 /*! profile interface pointer */
-medcIf_t medcWspIf =
-{
-  medcWspInit,
-  medcWspDiscover,
-  medcWspConfigure,
-  medcWspProcMsg,
-  medcWspBtn
-};
+medcIf_t medcWspIf = { medcWspInit, medcWspDiscover, medcWspConfigure, medcWspProcMsg, medcWspBtn };
 
 /*************************************************************************************************/
 /*!
@@ -129,31 +119,26 @@ medcIf_t medcWspIf =
 /*************************************************************************************************/
 static void medcWssValueUpdate(attEvt_t *pMsg)
 {
-  if (pMsg->hdr.status == ATT_SUCCESS)
-  {
-    /* determine which profile the handle belongs to; start with most likely */
+    if (pMsg->hdr.status == ATT_SUCCESS) {
+        /* determine which profile the handle belongs to; start with most likely */
 
-    /* weight scale */
-    if (WspcWssValueUpdate(pMedcWssHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
+        /* weight scale */
+        if (WspcWssValueUpdate(pMedcWssHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* user data service */
+        if (UdscValueUpdate(pMedcUdsHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* device information */
+        if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
+        /* GATT */
+        if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS) {
+            return;
+        }
     }
-    /* user data service */
-    if (UdscValueUpdate(pMedcUdsHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-    /* device information */
-    if (DisValueUpdate(pMedcDisHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-    /* GATT */
-    if (GattValueUpdate(pMedcGattHdlList, pMsg) == ATT_SUCCESS)
-    {
-      return;
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -167,27 +152,26 @@ static void medcWssValueUpdate(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void medcWspProcMsg(wsfMsgHdr_t *pMsg)
 {
-  switch(pMsg->event)
-  {
+    switch (pMsg->event) {
     case DM_CONN_CLOSE_IND:
-      /* initialize discovery state */
-      pMedcWspDiscState = MEDC_DISC_WSP_UDS_SVC;
+        /* initialize discovery state */
+        pMedcWspDiscState = MEDC_DISC_WSP_UDS_SVC;
 
-      /* Notify UDSC the connection closed */
-      UdscClose();
-      break;
+        /* Notify UDSC the connection closed */
+        UdscClose();
+        break;
 
     case ATTC_HANDLE_VALUE_IND:
-      medcWssValueUpdate((attEvt_t *) pMsg);
-      break;
+        medcWssValueUpdate((attEvt_t *)pMsg);
+        break;
 
     case MEDC_TIMER_IND:
-      APP_TRACE_INFO0("medcWspProcMsg - Timeout waiting for UDS control point response.");
-      break;
+        APP_TRACE_INFO0("medcWspProcMsg - Timeout waiting for UDS control point response.");
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -202,9 +186,10 @@ static void medcWspProcMsg(wsfMsgHdr_t *pMsg)
  *  \return None
  */
 /*************************************************************************************************/
-static void medcWspUdsRspCallback(dmConnId_t connId, uint8_t opcode, uint8_t response, uint8_t index)
+static void medcWspUdsRspCallback(dmConnId_t connId, uint8_t opcode, uint8_t response,
+                                  uint8_t index)
 {
-  APP_TRACE_INFO3("medcWspUdsRspCallback - op: %d  rsp: %d  index: %d", opcode, response, index);
+    APP_TRACE_INFO3("medcWspUdsRspCallback - op: %d  rsp: %d  index: %d", opcode, response, index);
 }
 
 /*************************************************************************************************/
@@ -216,15 +201,15 @@ static void medcWspUdsRspCallback(dmConnId_t connId, uint8_t opcode, uint8_t res
 /*************************************************************************************************/
 static void medcWspInit(void)
 {
-  /* set handle list length */
-  medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
+    /* set handle list length */
+    medcCb.hdlListLen = MEDC_DISC_HDL_LIST_LEN;
 
-  /* set autoconnect UUID */
-  medcCb.autoUuid[0] = ATT_UUID_WEIGHT_SCALE_SERVICE;
-  medcCb.autoUuid[1] = ATT_UUID_USER_DATA_SERVICE;
+    /* set autoconnect UUID */
+    medcCb.autoUuid[0] = ATT_UUID_WEIGHT_SCALE_SERVICE;
+    medcCb.autoUuid[1] = ATT_UUID_USER_DATA_SERVICE;
 
-  /* Register the UDS Control Point Callback */
-  UdscInit(medcCb.handlerId, MEDC_TIMER_IND, medcWspUdsRspCallback);
+    /* Register the UDS Control Point Callback */
+    UdscInit(medcCb.handlerId, MEDC_TIMER_IND, medcWspUdsRspCallback);
 }
 
 /*************************************************************************************************/
@@ -238,22 +223,20 @@ static void medcWspInit(void)
 /*************************************************************************************************/
 static bool_t medcWspDiscover(dmConnId_t connId)
 {
-  if (pMedcWspDiscState == MEDC_DISC_WSP_UDS_SVC)
-  {
-    /* user data service */
-    UdscDiscover(connId, pMedcUdsHdlList);
-    pMedcWspDiscState++;
-    return FALSE;
-  }
+    if (pMedcWspDiscState == MEDC_DISC_WSP_UDS_SVC) {
+        /* user data service */
+        UdscDiscover(connId, pMedcUdsHdlList);
+        pMedcWspDiscState++;
+        return FALSE;
+    }
 
-  if (pMedcWspDiscState == MEDC_DISC_WSP_WSS_SVC)
-  {
-    /* discover weight scale service */
-    WspcWssDiscover(connId, pMedcWssHdlList);
-    pMedcWspDiscState++;
-  }
+    if (pMedcWspDiscState == MEDC_DISC_WSP_WSS_SVC) {
+        /* discover weight scale service */
+        WspcWssDiscover(connId, pMedcWssHdlList);
+        pMedcWspDiscState++;
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -268,10 +251,9 @@ static bool_t medcWspDiscover(dmConnId_t connId)
 /*************************************************************************************************/
 static void medcWspConfigure(dmConnId_t connId, uint8_t status)
 {
-  /* configure weight scale service */
-  AppDiscConfigure(connId, status, MEDC_CFG_WSS_LIST_LEN,
-                   (attcDiscCfg_t *) medcCfgWssList,
-                   WSPC_WSS_HDL_LIST_LEN, medcCb.hdlList);
+    /* configure weight scale service */
+    AppDiscConfigure(connId, status, MEDC_CFG_WSS_LIST_LEN, (attcDiscCfg_t *)medcCfgWssList,
+                     WSPC_WSS_HDL_LIST_LEN, medcCb.hdlList);
 }
 
 /*************************************************************************************************/
@@ -286,30 +268,29 @@ static void medcWspConfigure(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 static void medcWspBtn(dmConnId_t connId, uint8_t btn)
 {
-  switch (btn)
-  {
+    switch (btn) {
     case APP_UI_BTN_2_SHORT:
-      UdscRegisterNewUser(connId, pMedcUdsHdlList[UDSC_UCP_IDX], 1234);
-      break;
+        UdscRegisterNewUser(connId, pMedcUdsHdlList[UDSC_UCP_IDX], 1234);
+        break;
     case APP_UI_BTN_2_MED:
-      UdscConsent(connId, pMedcUdsHdlList[UDSC_UCP_IDX], 2, 1234);
-      break;
+        UdscConsent(connId, pMedcUdsHdlList[UDSC_UCP_IDX], 2, 1234);
+        break;
     case APP_UI_BTN_2_LONG:
-      UdscDeleteUserData(connId, pMedcUdsHdlList[UDSC_UCP_IDX]);
-      break;
+        UdscDeleteUserData(connId, pMedcUdsHdlList[UDSC_UCP_IDX]);
+        break;
     case APP_UI_BTN_2_EX_LONG:
-      UdscDeleteUserData(connId, pMedcUdsHdlList[UDSC_UCP_IDX]);
-      break;
+        UdscDeleteUserData(connId, pMedcUdsHdlList[UDSC_UCP_IDX]);
+        break;
     case APP_UI_BTN_1_SHORT:
-      UdscReadDatabaseChangeIncrement(connId, pMedcUdsHdlList[UDSC_DBCI_HDL_IDX]);
-      break;
+        UdscReadDatabaseChangeIncrement(connId, pMedcUdsHdlList[UDSC_DBCI_HDL_IDX]);
+        break;
     case APP_UI_BTN_1_MED:
-      UdscReadUserIndex(connId, pMedcUdsHdlList[UDSC_UI_HDL_IDX]);
-      break;
+        UdscReadUserIndex(connId, pMedcUdsHdlList[UDSC_UI_HDL_IDX]);
+        break;
     case APP_UI_BTN_1_EX_LONG:
-      UdscWriteDatabaseChangeIncrement(connId, pMedcUdsHdlList[UDSC_DBCI_HDL_IDX], 1);
-      break;
+        UdscWriteDatabaseChangeIncrement(connId, pMedcUdsHdlList[UDSC_DBCI_HDL_IDX], 1);
+        break;
     default:
-      break;
-  }
+        break;
+    }
 }

@@ -55,52 +55,49 @@ static ret_code_t result_get(CRYSError_t error)
 {
     ret_code_t ret_val;
 
-    switch (error)
-    {
-        case CRYS_OK:
-            ret_val = NRF_SUCCESS;
-            break;
+    switch (error) {
+    case CRYS_OK:
+        ret_val = NRF_SUCCESS;
+        break;
 
-        /*! Invalid Additional data. */
-        case CRYS_CHACHA_POLY_DATA_INVALID_ERROR:
-        case CRYS_CHACHA_POLY_ADATA_INVALID_ERROR:
-            ret_val = NRF_ERROR_CRYPTO_INPUT_NULL;
-            break;
+    /*! Invalid Additional data. */
+    case CRYS_CHACHA_POLY_DATA_INVALID_ERROR:
+    case CRYS_CHACHA_POLY_ADATA_INVALID_ERROR:
+        ret_val = NRF_ERROR_CRYPTO_INPUT_NULL;
+        break;
 
-        /*! Illegal encryption mode. */
-        case CRYS_CHACHA_POLY_ENC_MODE_INVALID_ERROR:
-            ret_val = NRF_ERROR_CRYPTO_INVALID_PARAM;
-            break;
+    /*! Illegal encryption mode. */
+    case CRYS_CHACHA_POLY_ENC_MODE_INVALID_ERROR:
+        ret_val = NRF_ERROR_CRYPTO_INVALID_PARAM;
+        break;
 
-        /*! Illegal data size. */
-        case CRYS_CHACHA_POLY_DATA_SIZE_INVALID_ERROR:
-            ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
-            break;
+    /*! Illegal data size. */
+    case CRYS_CHACHA_POLY_DATA_SIZE_INVALID_ERROR:
+        ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
+        break;
 
-        /*! MAC comparison error. */
-        case CRYS_CHACHA_POLY_MAC_ERROR:
-            ret_val = NRF_ERROR_CRYPTO_AEAD_INVALID_MAC;
-            break;
+    /*! MAC comparison error. */
+    case CRYS_CHACHA_POLY_MAC_ERROR:
+        ret_val = NRF_ERROR_CRYPTO_AEAD_INVALID_MAC;
+        break;
 
-        default:
-            ret_val = NRF_ERROR_CRYPTO_INTERNAL;
-            break;
+    default:
+        ret_val = NRF_ERROR_CRYPTO_INTERNAL;
+        break;
     }
     return ret_val;
 }
 
-static ret_code_t backend_cc310_init(void * const p_context, uint8_t * p_key)
+static ret_code_t backend_cc310_init(void *const p_context, uint8_t *p_key)
 {
-    nrf_crypto_backend_chacha_poly_context_t * p_ctx =
+    nrf_crypto_backend_chacha_poly_context_t *p_ctx =
         (nrf_crypto_backend_chacha_poly_context_t *)p_context;
 
-    if (!nrfx_is_in_ram(p_ctx))
-    {
+    if (!nrfx_is_in_ram(p_ctx)) {
         return NRF_ERROR_CRYPTO_INPUT_LOCATION;
     }
 
-    if (p_ctx->header.p_info->key_size != NRF_CRYPTO_KEY_SIZE_256)
-    {
+    if (p_ctx->header.p_info->key_size != NRF_CRYPTO_KEY_SIZE_256) {
         return NRF_ERROR_CRYPTO_KEY_SIZE;
     }
 
@@ -108,87 +105,63 @@ static ret_code_t backend_cc310_init(void * const p_context, uint8_t * p_key)
     return NRF_SUCCESS;
 }
 
-static inline ret_code_t backend_cc310_uninit(void * const p_context)
+static inline ret_code_t backend_cc310_uninit(void *const p_context)
 {
     return NRF_SUCCESS;
 }
 
-static ret_code_t backend_cc310_crypt(void * const           p_context,
-                                      nrf_crypto_operation_t operation,
-                                      uint8_t *              p_nonce,
-                                      uint8_t                nonce_size,
-                                      uint8_t *              p_adata,
-                                      size_t                 adata_size,
-                                      uint8_t *              p_data_in,
-                                      size_t                 data_in_size,
-                                      uint8_t *              p_data_out,
-                                      uint8_t *              p_mac,
-                                      uint8_t                mac_size)
+static ret_code_t backend_cc310_crypt(void *const p_context, nrf_crypto_operation_t operation,
+                                      uint8_t *p_nonce, uint8_t nonce_size, uint8_t *p_adata,
+                                      size_t adata_size, uint8_t *p_data_in, size_t data_in_size,
+                                      uint8_t *p_data_out, uint8_t *p_mac, uint8_t mac_size)
 
 {
     CRYSError_t result;
-    ret_code_t  ret_val;
-    bool        mutex_locked;
+    ret_code_t ret_val;
+    bool mutex_locked;
 
     CRYS_CHACHA_EncryptMode_t operation_cc310;
 
-    nrf_crypto_backend_chacha_poly_context_t * p_ctx =
+    nrf_crypto_backend_chacha_poly_context_t *p_ctx =
         (nrf_crypto_backend_chacha_poly_context_t *)p_context;
 
     mutex_locked = cc310_backend_mutex_trylock();
     VERIFY_TRUE(mutex_locked, NRF_ERROR_CRYPTO_BUSY);
 
-    if ((adata_size == 0) || (data_in_size == 0))
-    {
+    if ((adata_size == 0) || (data_in_size == 0)) {
         ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
         goto exit;
     }
 
-    if (mac_size   != NRF_CRYPTO_CHACHA_POLY_MAC_SIZE)
-    {
+    if (mac_size != NRF_CRYPTO_CHACHA_POLY_MAC_SIZE) {
         ret_val = NRF_ERROR_CRYPTO_AEAD_MAC_SIZE;
         goto exit;
     }
 
-    if (nonce_size != NRF_CRYPTO_CHACHA_POLY_NONCE_SIZE)
-    {
+    if (nonce_size != NRF_CRYPTO_CHACHA_POLY_NONCE_SIZE) {
         ret_val = NRF_ERROR_CRYPTO_AEAD_NONCE_SIZE;
         goto exit;
     }
 
-    if (!nrfx_is_in_ram(p_data_in) || !nrfx_is_in_ram(p_data_out) ||
-        !nrfx_is_in_ram(p_mac)          || !nrfx_is_in_ram(p_adata)      ||
-        !nrfx_is_in_ram(p_nonce))
-    {
+    if (!nrfx_is_in_ram(p_data_in) || !nrfx_is_in_ram(p_data_out) || !nrfx_is_in_ram(p_mac) ||
+        !nrfx_is_in_ram(p_adata) || !nrfx_is_in_ram(p_nonce)) {
         ret_val = NRF_ERROR_CRYPTO_INPUT_LOCATION;
         goto exit;
     }
 
-    if (operation == NRF_CRYPTO_DECRYPT)
-    {
+    if (operation == NRF_CRYPTO_DECRYPT) {
         operation_cc310 = CRYS_CHACHA_Decrypt;
-    }
-    else if (operation == NRF_CRYPTO_ENCRYPT)
-    {
+    } else if (operation == NRF_CRYPTO_ENCRYPT) {
         operation_cc310 = CRYS_CHACHA_Encrypt;
-    }
-    else
-    {
+    } else {
         ret_val = NRF_ERROR_CRYPTO_INVALID_PARAM;
         goto exit;
     }
 
     cc310_backend_enable();
 
-    result = CRYS_CHACHA_POLY(p_nonce,
-                              p_ctx->key,
-                              operation_cc310,
-                              p_adata,
-                              adata_size,
-                              p_data_in,
-                              data_in_size,
-                              p_data_out,
-                              (uint32_t *)p_mac);
+    result = CRYS_CHACHA_POLY(p_nonce, p_ctx->key, operation_cc310, p_adata, adata_size, p_data_in,
+                              data_in_size, p_data_out, (uint32_t *)p_mac);
     cc310_backend_disable();
 
     ret_val = result_get(result);
@@ -198,17 +171,14 @@ exit:
     return ret_val;
 }
 
-nrf_crypto_aead_info_t const g_nrf_crypto_chacha_poly_256_info =
-{
-    .key_size  = NRF_CRYPTO_KEY_SIZE_256,
-    .mode      = NRF_CRYPTO_AEAD_MODE_CHACHA_POLY,
+nrf_crypto_aead_info_t const g_nrf_crypto_chacha_poly_256_info = {
+    .key_size = NRF_CRYPTO_KEY_SIZE_256,
+    .mode = NRF_CRYPTO_AEAD_MODE_CHACHA_POLY,
 
-    .init_fn   = backend_cc310_init,
+    .init_fn = backend_cc310_init,
     .uninit_fn = backend_cc310_uninit,
-    .crypt_fn  = backend_cc310_crypt
+    .crypt_fn = backend_cc310_crypt
 };
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_CC310_CHACHA_POLY_AEAD)
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO)
-

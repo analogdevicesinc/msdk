@@ -36,8 +36,8 @@
 /*************************************************************************************************/
 void LlAdvSlaveInit(void)
 {
-  WSF_ASSERT(pLctrRtCfg);     /* Runtime configuration must be available. */
+    WSF_ASSERT(pLctrRtCfg); /* Runtime configuration must be available. */
 
-  LmgrSlvInit();
-  LctrSlvAdvInit();
+    LmgrSlvInit();
+    LctrSlvAdvInit();
 }

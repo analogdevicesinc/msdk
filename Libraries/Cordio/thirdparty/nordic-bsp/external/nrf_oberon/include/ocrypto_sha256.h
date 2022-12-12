@@ -67,16 +67,14 @@ extern "C" {
  */
 #define ocrypto_sha256_BYTES (32)
 
-
 /**@cond */
 typedef struct {
     uint32_t h[8];
-    uint8_t  padded[64];
+    uint8_t padded[64];
     uint32_t length;
-    size_t   bytes;
+    size_t bytes;
 } ocrypto_sha256_ctx;
 /**@endcond */
-
 
 /**@name Incremental SHA-256 generator
  * 
@@ -91,8 +89,7 @@ typedef struct {
  *
  * @param[out] ctx Generator state.
  */
-void ocrypto_sha256_init(
-    ocrypto_sha256_ctx *ctx);
+void ocrypto_sha256_init(ocrypto_sha256_ctx *ctx);
 
 /**
  * SHA-256 incremental data input.
@@ -108,9 +105,7 @@ void ocrypto_sha256_init(
  * @remark Initialization of the generator state @p ctx through
  *         @c ocrypto_sha256_init is required before this function can be called.
  */
-void ocrypto_sha256_update(
-    ocrypto_sha256_ctx *ctx,
-    const uint8_t *in, size_t in_len);
+void ocrypto_sha256_update(ocrypto_sha256_ctx *ctx, const uint8_t *in, size_t in_len);
 
 /**
  * SHA-256 output.
@@ -128,9 +123,7 @@ void ocrypto_sha256_update(
  *         @c ocrypto_sha256_update and @c ocrypto_sha256_final unless it is
  *         reinitialized using @c ocrypto_sha256_init.
  */
-void ocrypto_sha256_final(
-    ocrypto_sha256_ctx *ctx,
-    uint8_t r[ocrypto_sha256_BYTES]);
+void ocrypto_sha256_final(ocrypto_sha256_ctx *ctx, uint8_t r[ocrypto_sha256_BYTES]);
 /**@}*/
 
 /**
@@ -142,9 +135,7 @@ void ocrypto_sha256_final(
  * @param      in     Input data.
  * @param      in_len Length of @p in.
  */
-void ocrypto_sha256(
-    uint8_t r[ocrypto_sha256_BYTES],
-    const uint8_t *in, size_t in_len);
+void ocrypto_sha256(uint8_t r[ocrypto_sha256_BYTES], const uint8_t *in, size_t in_len);
 
 #ifdef __cplusplus
 }

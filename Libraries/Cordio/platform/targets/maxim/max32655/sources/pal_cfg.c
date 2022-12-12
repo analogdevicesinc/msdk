@@ -24,39 +24,41 @@
 
 /*! \brief  LL configuration. */
 typedef struct {
-  /* Advertiser */
-  uint8_t  maxAdvSets;              /*!< Maximum number of advertising sets. */
-  uint8_t  maxAdvReports;           /*!< Maximum number of pending legacy or extended advertising reports. */
-  uint16_t maxExtAdvDataLen;        /*!< Maximum extended advertising data size. */
-  uint8_t  defExtAdvDataFragLen;    /*!< Default extended advertising data fragmentation size. */
-  uint16_t auxDelayUsec;            /*!< Additional Auxiliary Offset delay above T_MAFS in microseconds. */
-  uint16_t auxPtrOffsetUsec;        /*!< Delay of auxiliary packet in microseconds from the time specified by auxPtr. */
-  /* Scanner */
-  uint8_t  maxScanReqRcvdEvt;       /*!< Maximum scan request received events. */
-  uint16_t maxExtScanDataLen;       /*!< Maximum extended scan data size. */
-  /* Connection */
-  uint8_t  maxConn;                 /*!< Maximum number of connections. */
-  uint8_t  numTxBufs;               /*!< Default number of transmit buffers. */
-  uint8_t  numRxBufs;               /*!< Default number of receive buffers. */
-  uint16_t maxAclLen;               /*!< Maximum ACL buffer size. */
-  int8_t   defTxPwrLvl;             /*!< Default Tx power level for connections. */
-  uint8_t  ceJitterUsec;            /*!< Allowable CE jitter on a slave (account for master's sleep clock resolution). */
-  /* ISO */
-  uint8_t   numIsoTxBuf;            /*!< Default number of ISO transmit buffers. */
-  uint8_t   numIsoRxBuf;            /*!< Default number of ISO receive buffers. */
-  uint16_t  maxIsoBufLen;           /*!< Maximum ISO buffer size between host and controller. */
-  uint16_t  maxIsoPduLen;           /*!< Maximum ISO PDU size between controllers. */
+    /* Advertiser */
+    uint8_t maxAdvSets; /*!< Maximum number of advertising sets. */
+    uint8_t maxAdvReports; /*!< Maximum number of pending legacy or extended advertising reports. */
+    uint16_t maxExtAdvDataLen; /*!< Maximum extended advertising data size. */
+    uint8_t defExtAdvDataFragLen; /*!< Default extended advertising data fragmentation size. */
+    uint16_t auxDelayUsec; /*!< Additional Auxiliary Offset delay above T_MAFS in microseconds. */
+    uint16_t
+        auxPtrOffsetUsec; /*!< Delay of auxiliary packet in microseconds from the time specified by auxPtr. */
+    /* Scanner */
+    uint8_t maxScanReqRcvdEvt; /*!< Maximum scan request received events. */
+    uint16_t maxExtScanDataLen; /*!< Maximum extended scan data size. */
+    /* Connection */
+    uint8_t maxConn; /*!< Maximum number of connections. */
+    uint8_t numTxBufs; /*!< Default number of transmit buffers. */
+    uint8_t numRxBufs; /*!< Default number of receive buffers. */
+    uint16_t maxAclLen; /*!< Maximum ACL buffer size. */
+    int8_t defTxPwrLvl; /*!< Default Tx power level for connections. */
+    uint8_t
+        ceJitterUsec; /*!< Allowable CE jitter on a slave (account for master's sleep clock resolution). */
+    /* ISO */
+    uint8_t numIsoTxBuf; /*!< Default number of ISO transmit buffers. */
+    uint8_t numIsoRxBuf; /*!< Default number of ISO receive buffers. */
+    uint16_t maxIsoBufLen; /*!< Maximum ISO buffer size between host and controller. */
+    uint16_t maxIsoPduLen; /*!< Maximum ISO PDU size between controllers. */
 
-  /* CIS */
-  uint8_t   maxCig;                 /*!< Maximum number of CIG. */
-  uint8_t   maxCis;                 /*!< Maximum number of CIS, it is shared by the CIGs. */
-  uint16_t  cisSubEvtSpaceDelay;    /*!< Subevent spacing above T_MSS. */
+    /* CIS */
+    uint8_t maxCig; /*!< Maximum number of CIG. */
+    uint8_t maxCis; /*!< Maximum number of CIS, it is shared by the CIGs. */
+    uint16_t cisSubEvtSpaceDelay; /*!< Subevent spacing above T_MSS. */
 
-  /* BIS*/
-  uint8_t   maxBig;                 /*!< Maximum number of BIG. */
-  uint8_t   maxBis;                 /*!< Maximum number of BIS. */
-  /* DTM */
-  uint16_t dtmRxSyncMs;             /*!< DTM Rx synchronization window in milliseconds. */
+    /* BIS*/
+    uint8_t maxBig; /*!< Maximum number of BIG. */
+    uint8_t maxBis; /*!< Maximum number of BIS. */
+    /* DTM */
+    uint16_t dtmRxSyncMs; /*!< DTM Rx synchronization window in milliseconds. */
 } PalCfgLl_t;
 
 /**************************************************************************************************
@@ -64,8 +66,13 @@ typedef struct {
 **************************************************************************************************/
 
 /*! \brief convert uint32_t to little endian byte stream, incrementing four bytes. */
-#define PAL_UINT32_TO_BSTREAM(p, n)   {*(p)++ = (uint8_t)(n); *(p)++ = (uint8_t)((n) >> 8); \
-                                       *(p)++ = (uint8_t)((n) >> 16); *(p)++ = (uint8_t)((n) >> 24);}
+#define PAL_UINT32_TO_BSTREAM(p, n)    \
+    {                                  \
+        *(p)++ = (uint8_t)(n);         \
+        *(p)++ = (uint8_t)((n) >> 8);  \
+        *(p)++ = (uint8_t)((n) >> 16); \
+        *(p)++ = (uint8_t)((n) >> 24); \
+    }
 
 /**************************************************************************************************
   Functions
@@ -81,13 +88,13 @@ typedef struct {
  *  \param      stableModIdxRxSup   Rx stable modulation index supported.
  */
 /*************************************************************************************************/
-void palCfgGetBlePhyFeatures(uint8_t *pPhy2mSup, uint8_t *pPhyCodedSup,
-                             uint8_t *pStableModIdxTxSup, uint8_t *pStableModIdxRxSup)
+void palCfgGetBlePhyFeatures(uint8_t *pPhy2mSup, uint8_t *pPhyCodedSup, uint8_t *pStableModIdxTxSup,
+                             uint8_t *pStableModIdxRxSup)
 {
-  *pPhy2mSup          = TRUE;
-  *pPhyCodedSup       = TRUE;
-  *pStableModIdxTxSup = FALSE;
-  *pStableModIdxRxSup = FALSE;
+    *pPhy2mSup = TRUE;
+    *pPhyCodedSup = TRUE;
+    *pStableModIdxTxSup = FALSE;
+    *pStableModIdxRxSup = FALSE;
 }
 
 /*************************************************************************************************/
@@ -99,32 +106,32 @@ void palCfgGetBlePhyFeatures(uint8_t *pPhy2mSup, uint8_t *pPhyCodedSup,
 /*************************************************************************************************/
 void palCfgLoadLlParams(uint8_t *pConfig)
 {
-  PalCfgLl_t *pCfg = (PalCfgLl_t *)pConfig;
+    PalCfgLl_t *pCfg = (PalCfgLl_t *)pConfig;
 
-  const uint16_t advDataLen     = LL_MAX_ADV_DATA_LEN;
-  const uint16_t connDataLen    = 512;
-  const uint16_t numTxBufs      = 16;
+    const uint16_t advDataLen = LL_MAX_ADV_DATA_LEN;
+    const uint16_t connDataLen = 512;
+    const uint16_t numTxBufs = 16;
 
-  pCfg->maxAdvSets            = 2;
-  pCfg->maxAdvReports         = 4;
-  pCfg->maxExtAdvDataLen      = advDataLen;
-  /* pCfg->defExtAdvDataFragLen */  /* Use default. */
-  pCfg->auxDelayUsec          = 0;
-  pCfg->maxScanReqRcvdEvt     = 4;
-  pCfg->maxExtScanDataLen     = advDataLen;
-  pCfg->maxConn               = 4;
-  pCfg->maxAclLen             = connDataLen;
-  pCfg->numTxBufs             = numTxBufs;
-  pCfg->numRxBufs             = 8;
-  pCfg->numIsoTxBuf           = 8;
-  pCfg->numIsoRxBuf           = 8;
-  pCfg->maxIsoBufLen          = 512;
-  pCfg->maxIsoPduLen          = 251;
-  pCfg->maxCig                = 2;
-  pCfg->maxCis                = 2;
-  pCfg->cisSubEvtSpaceDelay   = 0;
-  pCfg->maxBig                = 2;
-  pCfg->maxBis                = 2;
+    pCfg->maxAdvSets = 2;
+    pCfg->maxAdvReports = 4;
+    pCfg->maxExtAdvDataLen = advDataLen;
+    /* pCfg->defExtAdvDataFragLen */ /* Use default. */
+    pCfg->auxDelayUsec = 0;
+    pCfg->maxScanReqRcvdEvt = 4;
+    pCfg->maxExtScanDataLen = advDataLen;
+    pCfg->maxConn = 4;
+    pCfg->maxAclLen = connDataLen;
+    pCfg->numTxBufs = numTxBufs;
+    pCfg->numRxBufs = 8;
+    pCfg->numIsoTxBuf = 8;
+    pCfg->numIsoRxBuf = 8;
+    pCfg->maxIsoBufLen = 512;
+    pCfg->maxIsoPduLen = 251;
+    pCfg->maxCig = 2;
+    pCfg->maxCis = 2;
+    pCfg->cisSubEvtSpaceDelay = 0;
+    pCfg->maxBig = 2;
+    pCfg->maxBis = 2;
 }
 
 /*************************************************************************************************/
@@ -136,21 +143,21 @@ void palCfgLoadLlParams(uint8_t *pConfig)
 /*************************************************************************************************/
 void palCfgLoadBdAddress(uint8_t *pDevAddr)
 {
-  uint32_t id[MXC_SYS_USN_CHECKSUM_LEN/4];
-  uint32_t checksum[MXC_SYS_USN_CHECKSUM_LEN/4];
+    uint32_t id[MXC_SYS_USN_CHECKSUM_LEN / 4];
+    uint32_t checksum[MXC_SYS_USN_CHECKSUM_LEN / 4];
 
-  if(MXC_SYS_GetUSN((uint8_t*)id, (uint8_t*)checksum) != E_NO_ERROR) {
-    PalSysAssertTrap();
-  }
+    if (MXC_SYS_GetUSN((uint8_t *)id, (uint8_t *)checksum) != E_NO_ERROR) {
+        PalSysAssertTrap();
+    }
 
-  /* MA-L assigend by IEEE to Maxim Integrated Products */
-  pDevAddr[5] = 0x00;
-  pDevAddr[4] = 0x18;
-  pDevAddr[3] = 0x80;
+    /* MA-L assigend by IEEE to Maxim Integrated Products */
+    pDevAddr[5] = 0x00;
+    pDevAddr[4] = 0x18;
+    pDevAddr[3] = 0x80;
 
-  pDevAddr[2] = checksum[2];
-  pDevAddr[1] = checksum[1];
-  pDevAddr[0] = checksum[0];
+    pDevAddr[2] = checksum[2];
+    pDevAddr[1] = checksum[1];
+    pDevAddr[0] = checksum[0];
 }
 
 /*************************************************************************************************/
@@ -162,20 +169,20 @@ void palCfgLoadBdAddress(uint8_t *pDevAddr)
 /*************************************************************************************************/
 void palCfgLoadExtMac154Address(uint8_t *pDevAddr)
 {
-  unsigned int devAddrLen = 8;
-  uint8_t id[MXC_SYS_USN_CHECKSUM_LEN];
-  uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
+    unsigned int devAddrLen = 8;
+    uint8_t id[MXC_SYS_USN_CHECKSUM_LEN];
+    uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
 
-  if(MXC_SYS_GetUSN(id, checksum) != E_NO_ERROR) {
-    PalSysAssertTrap();
-  }
+    if (MXC_SYS_GetUSN(id, checksum) != E_NO_ERROR) {
+        PalSysAssertTrap();
+    }
 
-  /* Set the device address */
-  unsigned int i = 0;
-  while (i < devAddrLen) {
-    pDevAddr[i] = checksum[i];
-    i++;
-  }
+    /* Set the device address */
+    unsigned int i = 0;
+    while (i < devAddrLen) {
+        pDevAddr[i] = checksum[i];
+        i++;
+    }
 }
 
 /*************************************************************************************************/
@@ -187,8 +194,8 @@ void palCfgLoadExtMac154Address(uint8_t *pDevAddr)
 /*************************************************************************************************/
 void PalCfgSetDeviceUuid(uint8_t *pBuf)
 {
-  /* Not used on this platform. */
-  (void)pBuf;
+    /* Not used on this platform. */
+    (void)pBuf;
 }
 
 /*************************************************************************************************/
@@ -202,26 +209,26 @@ void PalCfgSetDeviceUuid(uint8_t *pBuf)
 /*************************************************************************************************/
 void PalCfgLoadData(uint8_t cfgId, uint8_t *pBuf, uint32_t len)
 {
-  (void)len;
+    (void)len;
 
-  switch (cfgId) {
+    switch (cfgId) {
     case PAL_CFG_ID_BD_ADDR:
-      palCfgLoadBdAddress(pBuf);
-      break;
+        palCfgLoadBdAddress(pBuf);
+        break;
 
     case PAL_CFG_ID_BLE_PHY:
-      palCfgGetBlePhyFeatures(pBuf, pBuf + 1, pBuf + 2, pBuf + 3);
-      break;
+        palCfgGetBlePhyFeatures(pBuf, pBuf + 1, pBuf + 2, pBuf + 3);
+        break;
 
     case PAL_CFG_ID_LL_PARAM:
-      palCfgLoadLlParams(pBuf);
-      break;
+        palCfgLoadLlParams(pBuf);
+        break;
 
     case PAL_CFG_ID_MAC_ADDR:
-      palCfgLoadExtMac154Address(pBuf);
-      break;
+        palCfgLoadExtMac154Address(pBuf);
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 }

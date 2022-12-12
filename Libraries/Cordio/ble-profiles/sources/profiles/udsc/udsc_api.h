@@ -38,35 +38,34 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief UDSC service enumeration of handle indexes of characteristics to be discovered */
-enum
-{
-  UDSC_DBCI_HDL_IDX,               /*!< \brief Database Change Interval */
-  UDSC_DCBI_CCC_HDL_IDX,           /*!< \brief Database Change Interval CCC descriptor */
-  UDSC_UI_HDL_IDX,                 /*!< \brief User Index */
-  UDSC_UCP_IDX,                    /*!< \brief User Control Point */
-  UDSC_UCP_CCC_HDL_IDX,            /*!< \brief User Control Point CCC descriptor */
-  UDSC_HDL_LIST_LEN                /*!< \brief Handle list length */
+enum {
+    UDSC_DBCI_HDL_IDX, /*!< \brief Database Change Interval */
+    UDSC_DCBI_CCC_HDL_IDX, /*!< \brief Database Change Interval CCC descriptor */
+    UDSC_UI_HDL_IDX, /*!< \brief User Index */
+    UDSC_UCP_IDX, /*!< \brief User Control Point */
+    UDSC_UCP_CCC_HDL_IDX, /*!< \brief User Control Point CCC descriptor */
+    UDSC_HDL_LIST_LEN /*!< \brief Handle list length */
 };
 
 /** \name User Control Point Opcodes
  *
  */
 /**@{*/
-#define UDSC_UCP_OPCODE_RNU              0x01    /*!< \brief Register New User */
-#define UDSC_UCP_OPCODE_CONSENT          0x02    /*!< \brief Consent */
-#define UDSC_UCP_OPCODE_DUD              0x03    /*!< \brief Delete User Data */
-#define UDSC_UCP_OPCODE_RESPONSE         0x20    /*!< \brief Command Response */
+#define UDSC_UCP_OPCODE_RNU 0x01 /*!< \brief Register New User */
+#define UDSC_UCP_OPCODE_CONSENT 0x02 /*!< \brief Consent */
+#define UDSC_UCP_OPCODE_DUD 0x03 /*!< \brief Delete User Data */
+#define UDSC_UCP_OPCODE_RESPONSE 0x20 /*!< \brief Command Response */
 /**@}*/
 
 /** \name User Control Point Response Values
  *
  */
 /**@{*/
-#define UDSC_UCP_RSP_SUCCESS             0x01    /*!< \brief Success */
-#define UDSC_UCP_RSP_OP_NOT_SUPPORTED    0x02    /*!< \brief Opcode not supported */
-#define UDSC_UCP_RSP_INVALID_PARAMETER   0x03    /*!< \brief Invalid Parameter */
-#define UDSC_UCP_RSP_OP_FAILED           0x04    /*!< \brief Operation Failed */
-#define UDSC_UCP_RSP_NOT_AUTHORIZED      0x05    /*!< \brief User Not Authorized */
+#define UDSC_UCP_RSP_SUCCESS 0x01 /*!< \brief Success */
+#define UDSC_UCP_RSP_OP_NOT_SUPPORTED 0x02 /*!< \brief Opcode not supported */
+#define UDSC_UCP_RSP_INVALID_PARAMETER 0x03 /*!< \brief Invalid Parameter */
+#define UDSC_UCP_RSP_OP_FAILED 0x04 /*!< \brief Operation Failed */
+#define UDSC_UCP_RSP_NOT_AUTHORIZED 0x05 /*!< \brief User Not Authorized */
 /**@}*/
 
 /**************************************************************************************************
@@ -219,7 +218,7 @@ void UdscClose(void);
 /*************************************************************************************************/
 void UdscInit(wsfHandlerId_t handlerId, uint8_t timerEvent, UdsRspCback_t rspCback);
 
-/*! \} */    /* USER_DATA_PROFILE */
+/*! \} */ /* USER_DATA_PROFILE */
 
 #ifdef __cplusplus
 };

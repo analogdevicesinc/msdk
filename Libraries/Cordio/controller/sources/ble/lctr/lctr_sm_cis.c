@@ -52,40 +52,36 @@
 /*************************************************************************************************/
 static uint8_t lctrRemapEvent(lctrCisCtx_t *pCisCtx, uint8_t event)
 {
-  switch (event)
-  {
-    /*** Peer messages ***/
+    switch (event) {
+        /*** Peer messages ***/
 
-    /*** Host messages ***/
+        /*** Host messages ***/
 
-    case LCTR_CONN_MSG_API_DISCONNECT:
-    {
-      lctrCisStoreDisconnectReason(pCisCtx);
-      return LCTR_CIS_MSG_CIS_DISC;
+    case LCTR_CONN_MSG_API_DISCONNECT: {
+        lctrCisStoreDisconnectReason(pCisCtx);
+        return LCTR_CIS_MSG_CIS_DISC;
     }
 
     /*** Internal messages ***/
-    case LCTR_CONN_TERM_SUP_TIMEOUT:
-    {
-      lctrCisStoreConnTimeoutTerminateReason(pCisCtx);
-      return LCTR_CIS_MSG_CIS_CONN_FAIL;
+    case LCTR_CONN_TERM_SUP_TIMEOUT: {
+        lctrCisStoreConnTimeoutTerminateReason(pCisCtx);
+        return LCTR_CIS_MSG_CIS_CONN_FAIL;
     }
-    case LCTR_CIS_MSG_CIS_TERM_MIC_FAILED:
-    {
-      lctrCisStoreMicFailedTerminateReason(pCisCtx);
-      return LCTR_CIS_MSG_CIS_CONN_FAIL;
+    case LCTR_CIS_MSG_CIS_TERM_MIC_FAILED: {
+        lctrCisStoreMicFailedTerminateReason(pCisCtx);
+        return LCTR_CIS_MSG_CIS_CONN_FAIL;
     }
     case LCTR_CIS_MSG_CIS_EST:
-      return LCTR_CIS_MSG_CIS_EST;
+        return LCTR_CIS_MSG_CIS_EST;
     case LCTR_CIS_MSG_CIS_EST_FAIL:
-      return LCTR_CIS_MSG_CIS_EST_FAIL;
+        return LCTR_CIS_MSG_CIS_EST_FAIL;
     case LCTR_CIS_MSG_CIS_CLOSED:
-      return LCTR_CIS_MSG_CIS_CLOSED;
+        return LCTR_CIS_MSG_CIS_CLOSED;
 
     default:
-      break;
-  }
-  return LCTR_CIS_MSG_INVALID;
+        break;
+    }
+    return LCTR_CIS_MSG_INVALID;
 }
 
 /**************************************************************************************************
@@ -101,69 +97,65 @@ static uint8_t lctrRemapEvent(lctrCisCtx_t *pCisCtx, uint8_t event)
  *************************************************************************************************/
 void lctrCisExecuteSm(lctrCisCtx_t *pCisCtx, uint8_t event)
 {
-  if ((event = lctrRemapEvent(pCisCtx, event)) == LCTR_CIS_MSG_INVALID)
-  {
-    return;
-  }
+    if ((event = lctrRemapEvent(pCisCtx, event)) == LCTR_CIS_MSG_INVALID) {
+        return;
+    }
 
-  LL_TRACE_INFO3("lctrCisExecuteSm: handle=%d state=%u, event=%u", pCisCtx->cisHandle, pCisCtx->state, event);
+    LL_TRACE_INFO3("lctrCisExecuteSm: handle=%d state=%u, event=%u", pCisCtx->cisHandle,
+                   pCisCtx->state, event);
 
-  switch (pCisCtx->state)
-  {
+    switch (pCisCtx->state) {
     case LCTR_CIS_STATE_IDLE:
-      switch (event)
-      {
+        switch (event) {
         case LCTR_CIS_MSG_CIS_EST:
-          lctrCisActCisEst(pCisCtx);
-          pCisCtx->state = LCTR_CIS_STATE_EST;
-          break;
+            lctrCisActCisEst(pCisCtx);
+            pCisCtx->state = LCTR_CIS_STATE_EST;
+            break;
         case LCTR_CIS_MSG_CIS_EST_FAIL:
-          lctrCisActCisEstFail(pCisCtx);
-          pCisCtx->state = LCTR_CIS_STATE_IDLE;
-          break;
+            lctrCisActCisEstFail(pCisCtx);
+            pCisCtx->state = LCTR_CIS_STATE_IDLE;
+            break;
         default:
-          LL_TRACE_INFO1("Invalid event in the LCTR_CIS_STATE_IDLE, event=%u", event);
-          break;
-      }
-      break;
+            LL_TRACE_INFO1("Invalid event in the LCTR_CIS_STATE_IDLE, event=%u", event);
+            break;
+        }
+        break;
 
     case LCTR_CIS_STATE_EST:
-      switch (event)
-      {
+        switch (event) {
         case LCTR_CIS_MSG_CIS_DISC:
-          lctrCisActDisc(pCisCtx);
-          pCisCtx->state = LCTR_CIS_STATE_SHUTDOWN;
-          break;
+            lctrCisActDisc(pCisCtx);
+            pCisCtx->state = LCTR_CIS_STATE_SHUTDOWN;
+            break;
         case LCTR_CIS_MSG_CIS_CONN_FAIL:
-          lctrCisActFail(pCisCtx);
-          pCisCtx->state = LCTR_CIS_STATE_IDLE;
-          break;
+            lctrCisActFail(pCisCtx);
+            pCisCtx->state = LCTR_CIS_STATE_IDLE;
+            break;
         case LCTR_CIS_MSG_CIS_CLOSED:
-          lctrCisActClosed(pCisCtx);
-          pCisCtx->state = LCTR_CIS_STATE_IDLE;
-          break;
-
-        default:
-          LL_TRACE_INFO1("Invalid event in the LCTR_CIS_STATE_EST, event=%u", event);
-          break;
-      }
-      break;
-
-      case LCTR_CIS_STATE_SHUTDOWN:
-        switch (event)
-        {
-          case LCTR_CIS_MSG_CIS_CLOSED:
             lctrCisActClosed(pCisCtx);
             pCisCtx->state = LCTR_CIS_STATE_IDLE;
             break;
 
-          default:
+        default:
+            LL_TRACE_INFO1("Invalid event in the LCTR_CIS_STATE_EST, event=%u", event);
+            break;
+        }
+        break;
+
+    case LCTR_CIS_STATE_SHUTDOWN:
+        switch (event) {
+        case LCTR_CIS_MSG_CIS_CLOSED:
+            lctrCisActClosed(pCisCtx);
+            pCisCtx->state = LCTR_CIS_STATE_IDLE;
+            break;
+
+        default:
             LL_TRACE_INFO1("Invalid event in the LCTR_CIS_STATE_SHUTDOWN, event=%u", event);
             break;
         }
         break;
 
     default:
-      break;
-  }
+        break;
+    }
 }

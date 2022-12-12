@@ -39,29 +39,27 @@
 **************************************************************************************************/
 
 /*! \brief battery level initialization value */
-#define BAS_BATT_LEVEL_INIT           0xFF
+#define BAS_BATT_LEVEL_INIT 0xFF
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! \brief Connection control block */
-typedef struct
-{
-  dmConnId_t    connId;               /*! \brief Connection ID */
-  bool_t        battToSend;           /*! \brief battery measurement ready to be sent on this channel */
-  uint8_t       sentBattLevel;        /*! \brief value of last sent battery level */
+typedef struct {
+    dmConnId_t connId; /*! \brief Connection ID */
+    bool_t battToSend; /*! \brief battery measurement ready to be sent on this channel */
+    uint8_t sentBattLevel; /*! \brief value of last sent battery level */
 } basConn_t;
 
 /*! \brief Control block */
-static struct
-{
-  basConn_t         conn[DM_CONN_MAX];    /*! \brief connection control block */
-  wsfTimer_t        measTimer;            /*! \brief periodic measurement timer */
-  basCfg_t          cfg;                  /*! \brief configurable parameters */
-  uint16_t          currCount;            /*! \brief current measurement period count */
-  bool_t            txReady;              /*! \brief TRUE if ready to send notifications */
-  uint8_t           measBattLevel;        /*! \brief value of last measured battery level */
+static struct {
+    basConn_t conn[DM_CONN_MAX]; /*! \brief connection control block */
+    wsfTimer_t measTimer; /*! \brief periodic measurement timer */
+    basCfg_t cfg; /*! \brief configurable parameters */
+    uint16_t currCount; /*! \brief current measurement period count */
+    bool_t txReady; /*! \brief TRUE if ready to send notifications */
+    uint8_t measBattLevel; /*! \brief value of last measured battery level */
 } basCb;
 
 /*************************************************************************************************/
@@ -73,17 +71,15 @@ static struct
 /*************************************************************************************************/
 static bool_t basNoConnActive(void)
 {
-  basConn_t     *pConn = basCb.conn;
-  uint8_t       i;
+    basConn_t *pConn = basCb.conn;
+    uint8_t i;
 
-  for (i = 0; i < DM_CONN_MAX; i++, pConn++)
-  {
-    if (pConn->connId != DM_CONN_ID_NONE)
-    {
-      return FALSE;
+    for (i = 0; i < DM_CONN_MAX; i++, pConn++) {
+        if (pConn->connId != DM_CONN_ID_NONE) {
+            return FALSE;
+        }
     }
-  }
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -95,16 +91,14 @@ static bool_t basNoConnActive(void)
 /*************************************************************************************************/
 static void basSetupToSend(void)
 {
-  basConn_t     *pConn = basCb.conn;
-  uint8_t       i;
+    basConn_t *pConn = basCb.conn;
+    uint8_t i;
 
-  for (i = 0; i < DM_CONN_MAX; i++, pConn++)
-  {
-    if (pConn->connId != DM_CONN_ID_NONE)
-    {
-      pConn->battToSend = TRUE;
+    for (i = 0; i < DM_CONN_MAX; i++, pConn++) {
+        if (pConn->connId != DM_CONN_ID_NONE) {
+            pConn->battToSend = TRUE;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -118,21 +112,18 @@ static void basSetupToSend(void)
 /*************************************************************************************************/
 static basConn_t *basFindNextToSend(uint8_t cccIdx)
 {
-  basConn_t    *pConn = basCb.conn;
-  uint8_t       i;
+    basConn_t *pConn = basCb.conn;
+    uint8_t i;
 
-  for (i = 0; i < DM_CONN_MAX; i++, pConn++)
-  {
-    if (pConn->connId != DM_CONN_ID_NONE && pConn->battToSend &&
-        pConn->sentBattLevel != basCb.measBattLevel)
-    {
-      if (AttsCccEnabled(pConn->connId, cccIdx))
-      {
-        return pConn;
-      }
+    for (i = 0; i < DM_CONN_MAX; i++, pConn++) {
+        if (pConn->connId != DM_CONN_ID_NONE && pConn->battToSend &&
+            pConn->sentBattLevel != basCb.measBattLevel) {
+            if (AttsCccEnabled(pConn->connId, cccIdx)) {
+                return pConn;
+            }
+        }
     }
-  }
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -146,10 +137,10 @@ static basConn_t *basFindNextToSend(uint8_t cccIdx)
 /*************************************************************************************************/
 static void basSendPeriodicBattlevel(basConn_t *pConn)
 {
-  BasSendBattLevel(pConn->connId, basCb.measTimer.msg.status, basCb.measBattLevel);
-  pConn->sentBattLevel = basCb.measBattLevel;
-  pConn->battToSend = FALSE;
-  basCb.txReady = FALSE;
+    BasSendBattLevel(pConn->connId, basCb.measTimer.msg.status, basCb.measBattLevel);
+    pConn->sentBattLevel = basCb.measBattLevel;
+    pConn->battToSend = FALSE;
+    basCb.txReady = FALSE;
 }
 
 /*************************************************************************************************/
@@ -163,7 +154,7 @@ static void basSendPeriodicBattlevel(basConn_t *pConn)
 /*************************************************************************************************/
 static void basConnOpen(dmEvt_t *pMsg)
 {
-  basCb.txReady = TRUE;
+    basCb.txReady = TRUE;
 }
 
 /*************************************************************************************************/
@@ -177,18 +168,16 @@ static void basConnOpen(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void basHandleValueCnf(attEvt_t *pMsg)
 {
-  basConn_t  *pConn;
+    basConn_t *pConn;
 
-  if (pMsg->hdr.status == ATT_SUCCESS && pMsg->handle == BATT_LVL_HDL)
-  {
-    basCb.txReady = TRUE;
+    if (pMsg->hdr.status == ATT_SUCCESS && pMsg->handle == BATT_LVL_HDL) {
+        basCb.txReady = TRUE;
 
-    /* find next connection to send (note ccc idx is stored in timer status) */
-    if ((pConn = basFindNextToSend(basCb.measTimer.msg.status)) != NULL)
-    {
-      basSendPeriodicBattlevel(pConn);
+        /* find next connection to send (note ccc idx is stored in timer status) */
+        if ((pConn = basFindNextToSend(basCb.measTimer.msg.status)) != NULL) {
+            basSendPeriodicBattlevel(pConn);
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -203,36 +192,32 @@ static void basHandleValueCnf(attEvt_t *pMsg)
 /*************************************************************************************************/
 void basMeasTimerExp(wsfMsgHdr_t *pMsg)
 {
-  basConn_t  *pConn;
+    basConn_t *pConn;
 
-  /* if there are active connections */
-  if (basNoConnActive() == FALSE)
-  {
-    if (--basCb.currCount == 0)
-    {
-      /* reset count */
-      basCb.currCount = basCb.cfg.count;
+    /* if there are active connections */
+    if (basNoConnActive() == FALSE) {
+        if (--basCb.currCount == 0) {
+            /* reset count */
+            basCb.currCount = basCb.cfg.count;
 
-      /* set up battery measurement to be sent on all connections */
-      basSetupToSend();
+            /* set up battery measurement to be sent on all connections */
+            basSetupToSend();
 
-      /* read battery measurement sensor data */
-      AppHwBattRead(&basCb.measBattLevel);
+            /* read battery measurement sensor data */
+            AppHwBattRead(&basCb.measBattLevel);
 
-      /* if ready to send measurements */
-      if (basCb.txReady)
-      {
-        /* find next connection to send (note ccc idx is stored in timer status) */
-        if ((pConn = basFindNextToSend(pMsg->status)) != NULL)
-        {
-          basSendPeriodicBattlevel(pConn);
+            /* if ready to send measurements */
+            if (basCb.txReady) {
+                /* find next connection to send (note ccc idx is stored in timer status) */
+                if ((pConn = basFindNextToSend(pMsg->status)) != NULL) {
+                    basSendPeriodicBattlevel(pConn);
+                }
+            }
         }
-      }
-    }
 
-    /* restart timer */
-    WsfTimerStartSec(&basCb.measTimer, basCb.cfg.period);
-  }
+        /* restart timer */
+        WsfTimerStartSec(&basCb.measTimer, basCb.cfg.period);
+    }
 }
 
 /*************************************************************************************************/
@@ -247,8 +232,8 @@ void basMeasTimerExp(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void BasInit(wsfHandlerId_t handlerId, basCfg_t *pCfg)
 {
-  basCb.measTimer.handlerId = handlerId;
-  basCb.cfg = *pCfg;
+    basCb.measTimer.handlerId = handlerId;
+    basCb.cfg = *pCfg;
 }
 
 /*************************************************************************************************/
@@ -265,22 +250,21 @@ void BasInit(wsfHandlerId_t handlerId, basCfg_t *pCfg)
 /*************************************************************************************************/
 void BasMeasBattStart(dmConnId_t connId, uint8_t timerEvt, uint8_t battCccIdx)
 {
-  /* if this is first connection */
-  if (basNoConnActive())
-  {
-    /* initialize control block */
-    basCb.measTimer.msg.event = timerEvt;
-    basCb.measTimer.msg.status = battCccIdx;
-    basCb.measBattLevel = BAS_BATT_LEVEL_INIT;
-    basCb.currCount = basCb.cfg.count;
+    /* if this is first connection */
+    if (basNoConnActive()) {
+        /* initialize control block */
+        basCb.measTimer.msg.event = timerEvt;
+        basCb.measTimer.msg.status = battCccIdx;
+        basCb.measBattLevel = BAS_BATT_LEVEL_INIT;
+        basCb.currCount = basCb.cfg.count;
 
-    /* start timer */
-    WsfTimerStartSec(&basCb.measTimer, basCb.cfg.period);
-  }
+        /* start timer */
+        WsfTimerStartSec(&basCb.measTimer, basCb.cfg.period);
+    }
 
-  /* set conn id and last sent battery level */
-  basCb.conn[connId - 1].connId = connId;
-  basCb.conn[connId - 1].sentBattLevel = BAS_BATT_LEVEL_INIT;
+    /* set conn id and last sent battery level */
+    basCb.conn[connId - 1].connId = connId;
+    basCb.conn[connId - 1].sentBattLevel = BAS_BATT_LEVEL_INIT;
 }
 
 /*************************************************************************************************/
@@ -294,16 +278,15 @@ void BasMeasBattStart(dmConnId_t connId, uint8_t timerEvt, uint8_t battCccIdx)
 /*************************************************************************************************/
 void BasMeasBattStop(dmConnId_t connId)
 {
-  /* clear connection */
-  basCb.conn[connId - 1].connId = DM_CONN_ID_NONE;
-  basCb.conn[connId - 1].battToSend = FALSE;
+    /* clear connection */
+    basCb.conn[connId - 1].connId = DM_CONN_ID_NONE;
+    basCb.conn[connId - 1].battToSend = FALSE;
 
-  /* if no remaining connections */
-  if (basNoConnActive())
-  {
-    /* stop timer */
-    WsfTimerStop(&basCb.measTimer);
-  }
+    /* if no remaining connections */
+    if (basNoConnActive()) {
+        /* stop timer */
+        WsfTimerStop(&basCb.measTimer);
+    }
 }
 
 /*************************************************************************************************/
@@ -317,18 +300,13 @@ void BasMeasBattStop(dmConnId_t connId)
 /*************************************************************************************************/
 void BasProcMsg(wsfMsgHdr_t *pMsg)
 {
-  if (pMsg->event == DM_CONN_OPEN_IND)
-  {
-    basConnOpen((dmEvt_t *) pMsg);
-  }
-  else if (pMsg->event == ATTS_HANDLE_VALUE_CNF)
-  {
-    basHandleValueCnf((attEvt_t *) pMsg);
-  }
-  else if (pMsg->event == basCb.measTimer.msg.event)
-  {
-    basMeasTimerExp(pMsg);
-  }
+    if (pMsg->event == DM_CONN_OPEN_IND) {
+        basConnOpen((dmEvt_t *)pMsg);
+    } else if (pMsg->event == ATTS_HANDLE_VALUE_CNF) {
+        basHandleValueCnf((attEvt_t *)pMsg);
+    } else if (pMsg->event == basCb.measTimer.msg.event) {
+        basMeasTimerExp(pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -344,10 +322,9 @@ void BasProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void BasSendBattLevel(dmConnId_t connId, uint8_t idx, uint8_t level)
 {
-  if (AttsCccEnabled(connId, idx))
-  {
-    AttsHandleValueNtf(connId, BATT_LVL_HDL, CH_BATT_LEVEL_LEN, &level);
-  }
+    if (AttsCccEnabled(connId, idx)) {
+        AttsHandleValueNtf(connId, BATT_LVL_HDL, CH_BATT_LEVEL_LEN, &level);
+    }
 }
 
 /*************************************************************************************************/
@@ -358,11 +335,11 @@ void BasSendBattLevel(dmConnId_t connId, uint8_t idx, uint8_t level)
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t BasReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
-                     uint16_t offset, attsAttr_t *pAttr)
+uint8_t BasReadCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
+                     attsAttr_t *pAttr)
 {
-  /* read the battery level and set attribute value */
-  AppHwBattRead(pAttr->pValue);
+    /* read the battery level and set attribute value */
+    AppHwBattRead(pAttr->pValue);
 
-  return ATT_SUCCESS;
+    return ATT_SUCCESS;
 }

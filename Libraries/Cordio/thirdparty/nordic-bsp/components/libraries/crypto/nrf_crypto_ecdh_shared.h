@@ -47,11 +47,9 @@
 
 #include "sdk_errors.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 /** @internal @brief Function pointer for backend implementation of ECDH.
  *
@@ -64,12 +62,10 @@ extern "C" {
  * @param[in]  p_public_key    Pointer to public key.
  * @param[out] p_shared_secret Pointer where to put generated shared secret.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecdh_compute_fn_t)(
-    void       * p_context,
-    void const * p_private_key,
-    void const * p_public_key,
-    uint8_t    * p_shared_secret);
-
+typedef ret_code_t (*nrf_crypto_backend_ecdh_compute_fn_t)(void *p_context,
+                                                           void const *p_private_key,
+                                                           void const *p_public_key,
+                                                           uint8_t *p_shared_secret);
 
 #ifdef __cplusplus
 }

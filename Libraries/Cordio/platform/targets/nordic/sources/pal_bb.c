@@ -62,14 +62,14 @@ static bbDrvIrqCback_t palBbRadioIrqCbackTbl[BB_PROT_NUM];
 /*************************************************************************************************/
 void PalBbInit(void)
 {
-  palBbEnableCnt = 0;
+    palBbEnableCnt = 0;
 
-  /* Cycle radio peripheral power to guarantee known radio state. */
-  NRF_RADIO->POWER = 0;
-  NRF_RADIO->POWER = 1;
+    /* Cycle radio peripheral power to guarantee known radio state. */
+    NRF_RADIO->POWER = 0;
+    NRF_RADIO->POWER = 1;
 
-  memset(palBbTimerIrqCbackTbl, 0, sizeof(palBbTimerIrqCbackTbl));
-  memset(palBbRadioIrqCbackTbl, 0, sizeof(palBbRadioIrqCbackTbl));
+    memset(palBbTimerIrqCbackTbl, 0, sizeof(palBbTimerIrqCbackTbl));
+    memset(palBbRadioIrqCbackTbl, 0, sizeof(palBbRadioIrqCbackTbl));
 }
 
 /*************************************************************************************************/
@@ -82,7 +82,7 @@ void PalBbInit(void)
 /*************************************************************************************************/
 void PalBbEnable(void)
 {
-  palBbEnableCnt++;
+    palBbEnableCnt++;
 }
 
 /*************************************************************************************************/
@@ -95,10 +95,9 @@ void PalBbEnable(void)
 /*************************************************************************************************/
 void PalBbDisable(void)
 {
-  if (palBbEnableCnt)
-  {
-    palBbEnableCnt--;
-  }
+    if (palBbEnableCnt) {
+        palBbEnableCnt--;
+    }
 }
 
 /*************************************************************************************************/
@@ -110,18 +109,18 @@ void PalBbDisable(void)
 /*************************************************************************************************/
 void PalBbLoadCfg(PalBbCfg_t *pCfg)
 {
-  pCfg->clkPpm = 20;
-  pCfg->rfSetupDelayUsec  = BB_RF_SETUP_DELAY_US;
-  pCfg->maxScanPeriodMsec = BB_MAX_SCAN_PERIOD_MS;
-  pCfg->schSetupDelayUsec = BB_SCH_SETUP_DELAY_US;
+    pCfg->clkPpm = 20;
+    pCfg->rfSetupDelayUsec = BB_RF_SETUP_DELAY_US;
+    pCfg->maxScanPeriodMsec = BB_MAX_SCAN_PERIOD_MS;
+    pCfg->schSetupDelayUsec = BB_SCH_SETUP_DELAY_US;
 #if (BB_CLK_RATE_HZ == 32768)
-  pCfg->BbTimerBoundaryUsec = BB_RTC_MAX_VALUE_US;
+    pCfg->BbTimerBoundaryUsec = BB_RTC_MAX_VALUE_US;
 #elif (BB_CLK_RATE_HZ == 8000000)
-  pCfg->BbTimerBoundaryUsec = BB_TIMER_8MHZ_MAX_VALUE_US;
+    pCfg->BbTimerBoundaryUsec = BB_TIMER_8MHZ_MAX_VALUE_US;
 #elif (BB_CLK_RATE_HZ == 1000000)
-  pCfg->BbTimerBoundaryUsec = BB_TIMER_1MHZ_MAX_VALUE_US;
+    pCfg->BbTimerBoundaryUsec = BB_TIMER_1MHZ_MAX_VALUE_US;
 #else
-  #error "Unsupported platform."
+#error "Unsupported platform."
 #endif
 }
 
@@ -136,23 +135,19 @@ void PalBbLoadCfg(PalBbCfg_t *pCfg)
 /*************************************************************************************************/
 uint32_t PalBbGetCurrentTime(void)
 {
-  if (palBbEnableCnt > 0)
-  {
-    if (USE_RTC_BB_CLK)
-    {
-      /* return the RTC counter value */
-      return BB_TICKS_TO_US(NRF_RTC1->COUNTER);
-    }
-    else
-    {
-      /* Capture current TIMER0 count to capture register 3 */
-      nrf_timer_task_trigger(NRF_TIMER0, NRF_TIMER_TASK_CAPTURE3);
+    if (palBbEnableCnt > 0) {
+        if (USE_RTC_BB_CLK) {
+            /* return the RTC counter value */
+            return BB_TICKS_TO_US(NRF_RTC1->COUNTER);
+        } else {
+            /* Capture current TIMER0 count to capture register 3 */
+            nrf_timer_task_trigger(NRF_TIMER0, NRF_TIMER_TASK_CAPTURE3);
 
-      /* Read and return the captured count value from capture register 3 */
-      return BB_TICKS_TO_US(nrf_timer_cc_read(NRF_TIMER0, NRF_TIMER_CC_CHANNEL3));
+            /* Read and return the captured count value from capture register 3 */
+            return BB_TICKS_TO_US(nrf_timer_cc_read(NRF_TIMER0, NRF_TIMER_CC_CHANNEL3));
+        }
     }
-  }
-  return 0;
+    return 0;
 }
 
 /*************************************************************************************************/
@@ -171,26 +166,22 @@ uint32_t PalBbGetCurrentTime(void)
 /*************************************************************************************************/
 bool_t PalBbGetTimestamp(uint32_t *pTime)
 {
-  if (palBbEnableCnt == 0)
-  {
-    return FALSE;
-  }
+    if (palBbEnableCnt == 0) {
+        return FALSE;
+    }
 
-  if (USE_RTC_BB_CLK && pTime)
-  {
-    /* return the RTC counter value */
-    *pTime = NRF_RTC1->COUNTER;
-  }
-  else if (pTime)
-  {
-    /* Capture current TIMER0 count to capture register 3 */
-    nrf_timer_task_trigger(NRF_TIMER0, NRF_TIMER_TASK_CAPTURE3);
+    if (USE_RTC_BB_CLK && pTime) {
+        /* return the RTC counter value */
+        *pTime = NRF_RTC1->COUNTER;
+    } else if (pTime) {
+        /* Capture current TIMER0 count to capture register 3 */
+        nrf_timer_task_trigger(NRF_TIMER0, NRF_TIMER_TASK_CAPTURE3);
 
-    /* Read and return the captured count value from capture register 3 */
-    *pTime = nrf_timer_cc_read(NRF_TIMER0, NRF_TIMER_CC_CHANNEL3);
-  }
+        /* Read and return the captured count value from capture register 3 */
+        *pTime = nrf_timer_cc_read(NRF_TIMER0, NRF_TIMER_CC_CHANNEL3);
+    }
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -204,8 +195,8 @@ bool_t PalBbGetTimestamp(uint32_t *pTime)
 /*************************************************************************************************/
 void PalBbRegisterProtIrq(uint8_t protId, bbDrvIrqCback_t timerCback, bbDrvIrqCback_t radioCback)
 {
-  palBbRadioIrqCbackTbl[protId] = radioCback;
-  palBbTimerIrqCbackTbl[protId] = timerCback;
+    palBbRadioIrqCbackTbl[protId] = radioCback;
+    palBbTimerIrqCbackTbl[protId] = timerCback;
 }
 
 /*************************************************************************************************/
@@ -217,7 +208,7 @@ void PalBbRegisterProtIrq(uint8_t protId, bbDrvIrqCback_t timerCback, bbDrvIrqCb
 /*************************************************************************************************/
 void PalBbSetProtId(uint8_t protId)
 {
-  palBbProtId = protId;
+    palBbProtId = protId;
 }
 
 /*************************************************************************************************/
@@ -227,10 +218,9 @@ void PalBbSetProtId(uint8_t protId)
 /*************************************************************************************************/
 void RADIO_IRQHandler(void)
 {
-  if (palBbRadioIrqCbackTbl[palBbProtId])
-  {
-    palBbRadioIrqCbackTbl[palBbProtId]();
-  }
+    if (palBbRadioIrqCbackTbl[palBbProtId]) {
+        palBbRadioIrqCbackTbl[palBbProtId]();
+    }
 }
 
 /*************************************************************************************************/
@@ -240,8 +230,7 @@ void RADIO_IRQHandler(void)
 /*************************************************************************************************/
 void TIMER0_IRQHandler(void)
 {
-  if (palBbTimerIrqCbackTbl[palBbProtId])
-  {
-    palBbTimerIrqCbackTbl[palBbProtId]();
-  }
+    if (palBbTimerIrqCbackTbl[palBbProtId]) {
+        palBbTimerIrqCbackTbl[palBbProtId]();
+    }
 }

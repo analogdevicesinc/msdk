@@ -34,12 +34,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! WSF message event starting value */
-#define MEDS_MSG_START             0xA0
+#define MEDS_MSG_START 0xA0
 
 /*! WSF message event enumeration */
-enum
-{
-  MEDS_TIMER_IND = MEDS_MSG_START,    /*! Timer expired */
+enum {
+    MEDS_TIMER_IND = MEDS_MSG_START, /*! Timer expired */
 };
 
 /**************************************************************************************************
@@ -53,19 +52,17 @@ typedef void (*medsProcMsgCback_t)(wsfMsgHdr_t *pMsg);
 typedef void (*medsBtnCback_t)(dmConnId_t connId, uint8_t btn);
 
 /*! profile interface structure */
-typedef struct
-{
-  medsInitCback_t       init;
-  medsStartCback_t      start;
-  medsProcMsgCback_t    procMsg;
-  medsBtnCback_t        btn;
+typedef struct {
+    medsInitCback_t init;
+    medsStartCback_t start;
+    medsProcMsgCback_t procMsg;
+    medsBtnCback_t btn;
 } medsIf_t;
 
 /*! application control block */
-typedef struct
-{
-  medsIf_t          *pIf;                           /*! Profile interface */
-  wsfHandlerId_t    handlerId;                      /*! WSF hander ID */
+typedef struct {
+    medsIf_t *pIf; /*! Profile interface */
+    wsfHandlerId_t handlerId; /*! WSF hander ID */
 } medsCb_t;
 
 /**************************************************************************************************
@@ -76,11 +73,11 @@ typedef struct
 extern medsCb_t medsCb;
 
 /*! profile interface pointers */
-extern medsIf_t medsBlpIf;          /* blood pressure profile */
-extern medsIf_t medsWspIf;          /* weight scale profile */
-extern medsIf_t medsHtpIf;          /* health thermometer profile */
-extern medsIf_t medsPlxIf;          /* pulse oximeter profile */
-extern medsIf_t medsGlpIf;          /* glucose profile */
+extern medsIf_t medsBlpIf; /* blood pressure profile */
+extern medsIf_t medsWspIf; /* weight scale profile */
+extern medsIf_t medsHtpIf; /* health thermometer profile */
+extern medsIf_t medsPlxIf; /* pulse oximeter profile */
+extern medsIf_t medsGlpIf; /* glucose profile */
 
 /**************************************************************************************************
   Function Declarations
@@ -93,4 +90,3 @@ void medsCccCback(attsCccEvt_t *pEvt);
 #endif
 
 #endif /* MEDS_MAIN_H */
-

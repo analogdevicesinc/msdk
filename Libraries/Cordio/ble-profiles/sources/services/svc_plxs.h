@@ -42,29 +42,28 @@ extern "C" {
  *
  */
 /**@{*/
-#define PLXS_START_HDL               0x04A0             /*!< \brief Start handle. */
-#define PLXS_END_HDL                 (PLXS_MAX_HDL - 1) /*!< \brief End handle. */
+#define PLXS_START_HDL 0x04A0 /*!< \brief Start handle. */
+#define PLXS_END_HDL (PLXS_MAX_HDL - 1) /*!< \brief End handle. */
 
 /**************************************************************************************************
  Handles
 **************************************************************************************************/
 
 /*! \brief Pulse Oximiter Service Handles */
-enum
-{
-  PLXS_SVC_HDL = PLXS_START_HDL,       /*!< \brief Pulse Oximiter Server Service declaration */
-  PLXS_FEATURES_CH_HDL,                /*!< \brief Pulse Oximiter Features characteristic */
-  PLXS_FEATURES_HDL,                   /*!< \brief Pulse Oximiter Features */
-  PLXS_SPOT_CHECK_CH_HDL,              /*!< \brief Pulse Oximiter Spot Check Measurement characteristic */
-  PLXS_SPOT_CHECK_HDL,                 /*!< \brief Pulse Oximiter Spot Check Measurement */
-  PLXS_SPOT_CHECK_CH_CCC_HDL,          /*!< \brief Pulse Oximiter Spot Check Measurement Client Characteristic Configuration Descriptor */
-  PLXS_CONTINUOUS_CH_HDL,              /*!< \brief Pulse Oximiter Continuous Measurement characteristic */
-  PLXS_CONTINUOUS_HDL,                 /*!< \brief Pulse Oximiter Continuous Measurement */
-  PLXS_CONTINUOUS_CH_CCC_HDL,          /*!< \brief Pulse Oximiter Continuous Measurement Client Characteristic Configuration Descriptor */
-  PLXS_RECORD_ACCESS_CH_HDL,           /*!< \brief Pulse Oximiter Record Access Control Point characteristic */
-  PLXS_RECORD_ACCESS_HDL,              /*!< \brief Pulse Oximiter Record Access Control Point  */
-  PLXS_RECORD_ACCESS_CH_CCC_HDL,       /*!< \brief Pulse Oximiter Record Access Control Point Client Characteristic Configuration Descriptor */
-  PLXS_MAX_HDL                         /*!< \brief Maximum handle. */
+enum {
+    PLXS_SVC_HDL = PLXS_START_HDL, /*!< \brief Pulse Oximiter Server Service declaration */
+    PLXS_FEATURES_CH_HDL, /*!< \brief Pulse Oximiter Features characteristic */
+    PLXS_FEATURES_HDL, /*!< \brief Pulse Oximiter Features */
+    PLXS_SPOT_CHECK_CH_HDL, /*!< \brief Pulse Oximiter Spot Check Measurement characteristic */
+    PLXS_SPOT_CHECK_HDL, /*!< \brief Pulse Oximiter Spot Check Measurement */
+    PLXS_SPOT_CHECK_CH_CCC_HDL, /*!< \brief Pulse Oximiter Spot Check Measurement Client Characteristic Configuration Descriptor */
+    PLXS_CONTINUOUS_CH_HDL, /*!< \brief Pulse Oximiter Continuous Measurement characteristic */
+    PLXS_CONTINUOUS_HDL, /*!< \brief Pulse Oximiter Continuous Measurement */
+    PLXS_CONTINUOUS_CH_CCC_HDL, /*!< \brief Pulse Oximiter Continuous Measurement Client Characteristic Configuration Descriptor */
+    PLXS_RECORD_ACCESS_CH_HDL, /*!< \brief Pulse Oximiter Record Access Control Point characteristic */
+    PLXS_RECORD_ACCESS_HDL, /*!< \brief Pulse Oximiter Record Access Control Point  */
+    PLXS_RECORD_ACCESS_CH_CCC_HDL, /*!< \brief Pulse Oximiter Record Access Control Point Client Characteristic Configuration Descriptor */
+    PLXS_MAX_HDL /*!< \brief Maximum handle. */
 };
 /**@}*/
 
@@ -102,7 +101,7 @@ void SvcPlxsRemoveGroup(void);
 /*************************************************************************************************/
 void SvcPlxsCbackRegister(attsReadCback_t readCback, attsWriteCback_t writeCback);
 
-/*! \} */    /* PULSE_OXIMITER_SERVICE */
+/*! \} */ /* PULSE_OXIMITER_SERVICE */
 
 #ifdef __cplusplus
 };

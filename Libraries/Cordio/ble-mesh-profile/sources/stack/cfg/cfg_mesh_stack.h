@@ -25,7 +25,6 @@
 #ifndef CFG_MESH_STACK_H
 #define CFG_MESH_STACK_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -37,7 +36,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh Stack Release Types */
-#define MESH_STACK_VERSION         ((const char *)"Packetcraft Mesh v1.0")
+#define MESH_STACK_VERSION ((const char *)"Packetcraft Mesh v1.0")
 
 /**************************************************************************************************
   Bearer
@@ -45,22 +44,22 @@ extern "C" {
 
 /*! Maximum number of connections */
 #ifndef MESH_GATT_MAX_CONNECTIONS
-#define MESH_GATT_MAX_CONNECTIONS         DM_CONN_MAX
+#define MESH_GATT_MAX_CONNECTIONS DM_CONN_MAX
 #endif
 
 /*! Maximum number of advertising interfaces supported */
 #ifndef MESH_ADV_MAX_INTERFACES
-#define MESH_ADV_MAX_INTERFACES           1
+#define MESH_ADV_MAX_INTERFACES 1
 #endif
 
 /*! Queue size for each advertising interface */
 #ifndef MESH_ADV_QUEUE_SIZE
-#define MESH_ADV_QUEUE_SIZE               10
+#define MESH_ADV_QUEUE_SIZE 10
 #endif
 
 /*! Queue size for each GATT interface */
 #ifndef MESH_GATT_QUEUE_SIZE
-#define MESH_GATT_QUEUE_SIZE              5
+#define MESH_GATT_QUEUE_SIZE 5
 #endif
 
 /**************************************************************************************************

@@ -68,20 +68,18 @@ extern "C" {
 /**
  * @brief Endpoint configuration.
  */
-typedef struct
-{
+typedef struct {
     nrf_drv_usbd_ep_t address; //!< Endpoint address
 } app_usbd_class_ep_conf_t;
 
 /**
  * @brief Interface configuration.
  */
-typedef struct
-{
-    uint8_t number;    //!< Interface number
-    uint8_t ep_cnt;    //!< Endpoint number
+typedef struct {
+    uint8_t number; //!< Interface number
+    uint8_t ep_cnt; //!< Endpoint number
     uint8_t ep_offset; //!< Offset of the first endpoint
-                       /**< Offset in bytes of the first endpoint.
+    /**< Offset in bytes of the first endpoint.
                         *   The offset is calculated from the address of this interface structure
                         */
 } app_usbd_class_iface_conf_t;
@@ -89,31 +87,28 @@ typedef struct
 /**
  * @brief Instance variable data.
  */
-typedef struct
-{
-    app_usbd_class_inst_t const       * p_next;           //!< Pointer to the next instance
-    app_usbd_class_inst_t const       * p_sof_next;       //!< Pointer to the next SOF event requiring instance
-    app_usbd_sof_interrupt_handler_t    sof_handler;      //!< Instance specific SOF interrupt handler
+typedef struct {
+    app_usbd_class_inst_t const *p_next; //!< Pointer to the next instance
+    app_usbd_class_inst_t const *p_sof_next; //!< Pointer to the next SOF event requiring instance
+    app_usbd_sof_interrupt_handler_t sof_handler; //!< Instance specific SOF interrupt handler
 } app_usbd_class_data_t;
 
 /**
  * @brief Class descriptor context.
  */
-typedef struct
-{
-    uint32_t   line;        //!< Number of line to resume writing descriptors from
-    uint8_t    data_buffer; //!< Data from last call of feeder
+typedef struct {
+    uint32_t line; //!< Number of line to resume writing descriptors from
+    uint8_t data_buffer; //!< Data from last call of feeder
 } app_usbd_class_descriptor_ctx_t;
 
 /**
  * @brief Class descriptor state.
  */
-typedef struct
-{
-    uint8_t  *                          p_buffer;     //!< Pointer to buffer
-    uint32_t                            current_size; //!< Current size of descriptor
-    uint32_t                            maximum_size; //!< Maximum size of descriptor
-    app_usbd_class_descriptor_ctx_t *   p_context;    //!< Pointer to context
+typedef struct {
+    uint8_t *p_buffer; //!< Pointer to buffer
+    uint32_t current_size; //!< Current size of descriptor
+    uint32_t maximum_size; //!< Maximum size of descriptor
+    app_usbd_class_descriptor_ctx_t *p_context; //!< Pointer to context
 } app_usbd_class_descriptor_state_t;
 
 /**
@@ -131,8 +126,8 @@ typedef struct {
      *
      * @note If given event is not supported by class, return @ref NRF_ERROR_NOT_SUPPORTED
      */
-    ret_code_t (* event_handler)(app_usbd_class_inst_t const * const p_inst,
-                                 app_usbd_complex_evt_t const * const p_event);
+    ret_code_t (*event_handler)(app_usbd_class_inst_t const *const p_inst,
+                                app_usbd_complex_evt_t const *const p_event);
 
     /**
      * @brief Instance feed descriptors.
@@ -145,11 +140,8 @@ typedef struct {
      *
      * @return True if not finished feeding the descriptor, false if done.
      */
-    bool (* feed_descriptors)(app_usbd_class_descriptor_ctx_t  * p_ctx,
-                              app_usbd_class_inst_t const      * p_inst,
-                              uint8_t                          * p_buff,
-                              size_t                             max_size);
-
+    bool (*feed_descriptors)(app_usbd_class_descriptor_ctx_t *p_ctx,
+                             app_usbd_class_inst_t const *p_inst, uint8_t *p_buff, size_t max_size);
 
     /**
      * @brief Select interface
@@ -177,9 +169,8 @@ typedef struct {
      *         to proceed the request - just like there would be NULL pointer in this field.
      *         Any other kind of error would make library to STALL the request.
      */
-    ret_code_t (* iface_select)(app_usbd_class_inst_t const * const p_inst,
-                                uint8_t iface_idx,
-                                uint8_t alternate);
+    ret_code_t (*iface_select)(app_usbd_class_inst_t const *const p_inst, uint8_t iface_idx,
+                               uint8_t alternate);
 
     /**
      * @brief Deselect interface.
@@ -201,7 +192,7 @@ typedef struct {
      * @param[in,out] p_inst    Instance of the class.
      * @param[in]     iface_idx Index of the interface inside class structure.
      */
-    void (* iface_deselect)(app_usbd_class_inst_t const * const p_inst, uint8_t iface_idx);
+    void (*iface_deselect)(app_usbd_class_inst_t const *const p_inst, uint8_t iface_idx);
 
     /**
      * @brief Get current interface.
@@ -221,7 +212,7 @@ typedef struct {
      * @note If this function pointer it NULL default procedure would return alternate interface
      *       value 0.
      */
-    uint8_t (* iface_selection_get)(app_usbd_class_inst_t const * const p_inst, uint8_t iface_idx);
+    uint8_t (*iface_selection_get)(app_usbd_class_inst_t const *const p_inst, uint8_t iface_idx);
 
 } app_usbd_class_methods_t;
 
@@ -230,24 +221,21 @@ typedef struct {
  *
  * The structure of base class instance.
  */
-struct app_usbd_class_inst_s
-{
-    app_usbd_class_data_t          * p_data;          //!< Pointer to non-constant data
-    app_usbd_class_methods_t const * p_class_methods; //!< Class interface methods
-    struct
-    {
-        uint8_t cnt;      //!< Number of defined interfaces
+struct app_usbd_class_inst_s {
+    app_usbd_class_data_t *p_data; //!< Pointer to non-constant data
+    app_usbd_class_methods_t const *p_class_methods; //!< Class interface methods
+    struct {
+        uint8_t cnt; //!< Number of defined interfaces
         uint8_t config[]; //!< Interface configuration data followed by endpoint data
     } iface; //!< Interface structure
 };
-
 
 /**
  * @brief Get total number of interfaces.
  *
  *
  */
-static inline uint8_t app_usbd_class_iface_count_get(app_usbd_class_inst_t const * const p_inst)
+static inline uint8_t app_usbd_class_iface_count_get(app_usbd_class_inst_t const *const p_inst)
 {
     return p_inst->iface.cnt;
 }
@@ -265,18 +253,16 @@ static inline uint8_t app_usbd_class_iface_count_get(app_usbd_class_inst_t const
  *                  Technically it is the index of the interface in the class description array.
  * @return Pointer to the interface configuration parameters or NULL if given index is out of interface scope for given class.
  */
-static inline app_usbd_class_iface_conf_t const * app_usbd_class_iface_get(
-        app_usbd_class_inst_t const * const p_inst,
-        uint8_t iface_idx)
+static inline app_usbd_class_iface_conf_t const *
+app_usbd_class_iface_get(app_usbd_class_inst_t const *const p_inst, uint8_t iface_idx)
 {
     ASSERT(NULL != p_inst);
-    if (iface_idx >= (app_usbd_class_iface_count_get(p_inst)))
-    {
+    if (iface_idx >= (app_usbd_class_iface_count_get(p_inst))) {
         return NULL;
     }
 
-    app_usbd_class_iface_conf_t const * p_interface =
-            (app_usbd_class_iface_conf_t const * )(p_inst->iface.config);
+    app_usbd_class_iface_conf_t const *p_interface =
+        (app_usbd_class_iface_conf_t const *)(p_inst->iface.config);
     return &(p_interface[iface_idx]);
 }
 
@@ -287,8 +273,8 @@ static inline app_usbd_class_iface_conf_t const * app_usbd_class_iface_get(
  *
  * @return Interface number from interface configuration structure.
  */
-static inline uint8_t app_usbd_class_iface_number_get(
-        app_usbd_class_iface_conf_t const * const p_iface)
+static inline uint8_t
+app_usbd_class_iface_number_get(app_usbd_class_iface_conf_t const *const p_iface)
 {
     return p_iface->number;
 }
@@ -300,8 +286,8 @@ static inline uint8_t app_usbd_class_iface_number_get(
  *
  * @return Number of endpoints used by given interface.
  */
-static inline uint8_t app_usbd_class_iface_ep_count_get(
-        app_usbd_class_iface_conf_t const * const p_iface)
+static inline uint8_t
+app_usbd_class_iface_ep_count_get(app_usbd_class_iface_conf_t const *const p_iface)
 {
     return p_iface->ep_cnt;
 }
@@ -316,18 +302,16 @@ static inline uint8_t app_usbd_class_iface_ep_count_get(
  *
  * @sa app_usbd_class_iface_get
  */
-static inline app_usbd_class_ep_conf_t const * app_usbd_class_iface_ep_get(
-        app_usbd_class_iface_conf_t const * const p_iface,
-        uint8_t ep_idx)
+static inline app_usbd_class_ep_conf_t const *
+app_usbd_class_iface_ep_get(app_usbd_class_iface_conf_t const *const p_iface, uint8_t ep_idx)
 {
     ASSERT(NULL != p_iface);
-    if (ep_idx >= p_iface->ep_cnt)
-    {
+    if (ep_idx >= p_iface->ep_cnt) {
         return NULL;
     }
 
-    app_usbd_class_ep_conf_t const * p_ep =
-            (app_usbd_class_ep_conf_t const * )(((uint8_t const *)p_iface) + p_iface->ep_offset);
+    app_usbd_class_ep_conf_t const *p_ep =
+        (app_usbd_class_ep_conf_t const *)(((uint8_t const *)p_iface) + p_iface->ep_offset);
     return &(p_ep[ep_idx]);
 }
 
@@ -340,19 +324,17 @@ static inline app_usbd_class_ep_conf_t const * app_usbd_class_iface_ep_get(
  * @return Endpoint index or number of endpoints if not found.
  *
  */
-static inline  uint8_t app_usbd_class_iface_ep_idx_get(
-        app_usbd_class_iface_conf_t const * const p_iface,
-        nrf_drv_usbd_ep_t ep_address)
+static inline uint8_t
+app_usbd_class_iface_ep_idx_get(app_usbd_class_iface_conf_t const *const p_iface,
+                                nrf_drv_usbd_ep_t ep_address)
 {
     ASSERT(NULL != p_iface);
-    app_usbd_class_ep_conf_t const * p_ep =
-            (app_usbd_class_ep_conf_t const * )(((uint8_t const *)p_iface) + p_iface->ep_offset);
+    app_usbd_class_ep_conf_t const *p_ep =
+        (app_usbd_class_ep_conf_t const *)(((uint8_t const *)p_iface) + p_iface->ep_offset);
 
     uint8_t i;
-    for (i = 0; i < p_iface->ep_cnt; ++i)
-    {
-        if (ep_address == p_ep[i].address)
-        {
+    for (i = 0; i < p_iface->ep_cnt; ++i) {
+        if (ep_address == p_ep[i].address) {
             break;
         }
     }
@@ -367,7 +349,7 @@ static inline  uint8_t app_usbd_class_iface_ep_idx_get(
  *
  * @return Endpoint address
  */
-static inline nrf_drv_usbd_ep_t app_usbd_class_ep_address_get(app_usbd_class_ep_conf_t const * p_ep)
+static inline nrf_drv_usbd_ep_t app_usbd_class_ep_address_get(app_usbd_class_ep_conf_t const *p_ep)
 {
     return (nrf_drv_usbd_ep_t)p_ep->address;
 }
@@ -378,8 +360,8 @@ static inline nrf_drv_usbd_ep_t app_usbd_class_ep_address_get(app_usbd_class_ep_
  * @param p_inst Instance pointer.
  * @return Pointer to writable instance data.
  */
-static inline app_usbd_class_data_t * app_usbd_class_data_access(
-        app_usbd_class_inst_t const * const p_inst)
+static inline app_usbd_class_data_t *
+app_usbd_class_data_access(app_usbd_class_inst_t const *const p_inst)
 {
     return p_inst->p_data;
 }
@@ -390,7 +372,7 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  * Functions to be used as a mapping macro for @ref MACRO_MAP, @ref MACRO_MAP_FOR or @ref MACRO_MAP_FOR_PARAM
  * @{
  */
-    /**
+/**
      * @brief Count the number of endpoints in given configuration.
      *
      * Config should be given as a interface configuration in a brackets:
@@ -404,10 +386,10 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
      *
      * @return Number of endpoints in interface. This is computed value - can be used by compiler but not by preprocessor.
      */
-    #define APP_USBD_CLASS_CONF_IFACE_EP_COUNT_(iface_config)   \
-                        (NUM_VA_ARGS(BRACKET_EXTRACT(iface_config)) - 1)
+#define APP_USBD_CLASS_CONF_IFACE_EP_COUNT_(iface_config) \
+    (NUM_VA_ARGS(BRACKET_EXTRACT(iface_config)) - 1)
 
-    /**
+/**
      * @brief Adds the number of endpoints in given config to the current value.
      *
      * This is basically @ref APP_USBD_CLASS_CONF_IFACE_EP_COUNT_ with plus sign added.
@@ -418,14 +400,14 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
      *
      * @sa APP_USBD_CLASS_CONF_IFACE_EP_COUNT_
      */
-    #define APP_USBD_CLASS_CONF_IFACE_EP_PLUS_COUNT_(iface_config)  \
-                        + APP_USBD_CLASS_CONF_IFACE_EP_COUNT_(iface_config)
+#define APP_USBD_CLASS_CONF_IFACE_EP_PLUS_COUNT_(iface_config) \
+    +APP_USBD_CLASS_CONF_IFACE_EP_COUNT_(iface_config)
 
-    /**
+/**
      * @brief Create variable for endpoint.
      */
 
-    /**
+/**
      * @brief Extract endpoints given interface configuration.
      *
      * This macro gets single endpoint configuration and extracts all the endpoints.
@@ -436,33 +418,31 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
      * @param iface_config Single interface configuration in brackets.
      *                     The format should be similar like described in @ref APP_USBD_CLASS_CONF_IFACE_EP_COUNT_.
      */
-    #define APP_USBD_CLASS_IFACE_EP_EXTRACT_(iface_config)                  \
-        CONCAT_2(APP_USBD_CLASS_IFACE_EP_EXTRACT_,                          \
-                NUM_VA_ARGS_IS_MORE_THAN_1(BRACKET_EXTRACT(iface_config)))  \
-                (BRACKET_EXTRACT(iface_config))
+#define APP_USBD_CLASS_IFACE_EP_EXTRACT_(iface_config)                  \
+    CONCAT_2(APP_USBD_CLASS_IFACE_EP_EXTRACT_,                          \
+             NUM_VA_ARGS_IS_MORE_THAN_1(BRACKET_EXTRACT(iface_config))) \
+    (BRACKET_EXTRACT(iface_config))
 
-    /**
+/**
      * @brief Auxiliary macro for @ref APP_USBD_CLASS_IFACE_EP_EXTRACT_
      *
      * This macro is called when interface has no endpoints.
      */
-    #define APP_USBD_CLASS_IFACE_EP_EXTRACT_0(iface_nr)
+#define APP_USBD_CLASS_IFACE_EP_EXTRACT_0(iface_nr)
 
-    /**
+/**
      * @brief Auxiliary macro for @ref APP_USBD_CLASS_IFACE_EP_EXTRACT_
      *
      * This macro is called when interface has at least one endpoint.
      */
-    #define APP_USBD_CLASS_IFACE_EP_EXTRACT_1(...)              \
-                APP_USBD_CLASS_IFACE_EP_EXTRACT_1_(__VA_ARGS__)
+#define APP_USBD_CLASS_IFACE_EP_EXTRACT_1(...) APP_USBD_CLASS_IFACE_EP_EXTRACT_1_(__VA_ARGS__)
 
-    #define APP_USBD_CLASS_IFACE_EP_EXTRACT_1_(iface_nr, ...)   \
-                MACRO_MAP_REC(APP_USBD_CLASS_IFACE_EP_EXTRACT_1__, __VA_ARGS__)
-    
-    #define APP_USBD_CLASS_IFACE_EP_EXTRACT_1__(ep) \
-                {(nrf_drv_usbd_ep_t) (ep)}, 
+#define APP_USBD_CLASS_IFACE_EP_EXTRACT_1_(iface_nr, ...) \
+    MACRO_MAP_REC(APP_USBD_CLASS_IFACE_EP_EXTRACT_1__, __VA_ARGS__)
 
-    /**
+#define APP_USBD_CLASS_IFACE_EP_EXTRACT_1__(ep) { (nrf_drv_usbd_ep_t)(ep) },
+
+/**
      * @brief Generate configuration for single interface.
      *
      * This macro extract configuration for single interface.
@@ -473,45 +453,44 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
      * @param N             Currently processed configuration.
      * @param iface_configs All interfaces configuration in brackets.
      */
-    #define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_(iface_config, N, iface_configs)  \
-        CONCAT_2(APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_,                            \
-                NUM_VA_ARGS_IS_MORE_THAN_1(BRACKET_EXTRACT(iface_config)))        \
-                (N, iface_configs, BRACKET_EXTRACT(iface_config))
+#define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_(iface_config, N, iface_configs) \
+    CONCAT_2(APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_,                           \
+             NUM_VA_ARGS_IS_MORE_THAN_1(BRACKET_EXTRACT(iface_config)))      \
+    (N, iface_configs, BRACKET_EXTRACT(iface_config))
 
-    /**
+/**
      * @brief Macro used when there was an error extracting number of configs.
      *
      * Throws a syntax error.
      */
-    #define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_x(iface_config, N, iface_configs) \
-        [N] = !!!iface_config!!!
-    /**
+#define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_x(iface_config, N, iface_configs) \
+    [N] = !!!iface_config !!!
+/**
      * @brief Auxiliary macro for @ref APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_
      *
      * This macro is called when interface has no endpoints.
      */
-    #define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_0(N, iface_configs, iface_nr)   \
-        APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_0_(N, iface_configs, iface_nr)
-    #define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_0_(N, iface_configs, iface_nr)  \
-        { .number = iface_nr, .ep_cnt = 0, .ep_offset = 0 },
+#define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_0(N, iface_configs, iface_nr) \
+    APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_0_(N, iface_configs, iface_nr)
+#define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_0_(N, iface_configs, iface_nr) \
+    { .number = iface_nr, .ep_cnt = 0, .ep_offset = 0 },
 
-    /**
+/**
      * @brief Auxiliary macro for @ref APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_
      *
      * This macro is called when interface has at last one endpoint.
      */
-    #define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_1(N, iface_configs, ...)    \
-        APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_1_(N, iface_configs, __VA_ARGS__)
-    #define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_1_(N, iface_configs, iface_nr, ...)     \
-        { .number = iface_nr, .ep_cnt = NUM_VA_ARGS(__VA_ARGS__),                       \
-          .ep_offset = APP_USBD_CLASS_CONF_TOTAL_EP_COUNT_N(N, iface_configs) *         \
-                       sizeof(app_usbd_class_ep_conf_t)                                 \
-                       + ((NUM_VA_ARGS(BRACKET_EXTRACT(iface_configs)) - N) *           \
-                               sizeof(app_usbd_class_iface_conf_t))                     \
-        },
+#define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_1(N, iface_configs, ...) \
+    APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_1_(N, iface_configs, __VA_ARGS__)
+#define APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_1_(N, iface_configs, iface_nr, ...) \
+    { .number = iface_nr,                                                       \
+      .ep_cnt = NUM_VA_ARGS(__VA_ARGS__),                                       \
+      .ep_offset = APP_USBD_CLASS_CONF_TOTAL_EP_COUNT_N(N, iface_configs) *     \
+                       sizeof(app_usbd_class_ep_conf_t) +                       \
+                   ((NUM_VA_ARGS(BRACKET_EXTRACT(iface_configs)) - N) *         \
+                    sizeof(app_usbd_class_iface_conf_t)) },
 
 /** @} */
-
 
 /**
  * @name Macros that uses mapping macros internally
@@ -563,9 +542,8 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  * @return Comma separated initialization data for all interfaces.
  */
 /*lint -emacro( (40), APP_USBD_CLASS_IFACES_CONFIG_EXTRACT) */
-#define APP_USBD_CLASS_IFACES_CONFIG_EXTRACT(iface_configs)     \
-    MACRO_MAP_FOR_PARAM(iface_configs,                          \
-                        APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_,   \
+#define APP_USBD_CLASS_IFACES_CONFIG_EXTRACT(iface_configs)                  \
+    MACRO_MAP_FOR_PARAM(iface_configs, APP_USBD_CLASS_IFACE_CONFIG_EXTRACT_, \
                         BRACKET_EXTRACT(iface_configs))
 
 /**
@@ -582,9 +560,7 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
 #define APP_USBD_CLASS_IFACES_EP_EXTRACT(iface_configs) \
     MACRO_MAP(APP_USBD_CLASS_IFACE_EP_EXTRACT_, BRACKET_EXTRACT(iface_configs))
 
-
 /** @} */
-
 
 /**
  * @brief USBD instance of class mnemonic.
@@ -644,9 +620,6 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  */
 #define APP_USBD_CLASS_DATA_SPECIFIC_DEC_NONE APP_USBD_CLASS_INSTANCE_SPECIFIC_DEC_NONE
 
-
-
-
 /**
  * @brief Instance structure declaration.
  *
@@ -676,45 +649,39 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  *
  * @sa APP_USBD_CLASS_TYPEDEF
  */
-#define APP_USBD_CLASS_INSTANCE_TYPEDEF(type_name, interfaces_configs, class_config_dec)     \
-    typedef union CONCAT_2(type_name, _u)                                                    \
-    {                                                                                        \
-        app_usbd_class_inst_t base;                                                          \
-        struct                                                                               \
-        {                                                                                    \
-            APP_USBD_CLASS_DATA_TYPE(type_name) * p_data;                                    \
-            app_usbd_class_methods_t const * p_class_methods;                                \
-            struct                                                                           \
-            {                                                                                \
-                uint8_t cnt;                                                                 \
-                app_usbd_class_iface_conf_t                                                  \
-                                config[NUM_VA_ARGS(BRACKET_EXTRACT(interfaces_configs))];    \
-                app_usbd_class_ep_conf_t                                                     \
-                                ep[APP_USBD_CLASS_CONF_TOTAL_EP_COUNT(interfaces_configs)];  \
-            } iface;                                                                         \
-            class_config_dec                                                                 \
-        } specific;                                                                          \
+#define APP_USBD_CLASS_INSTANCE_TYPEDEF(type_name, interfaces_configs, class_config_dec) \
+    typedef union CONCAT_2(type_name, _u) {                                              \
+        app_usbd_class_inst_t base;                                                      \
+        struct {                                                                         \
+            APP_USBD_CLASS_DATA_TYPE(type_name) * p_data;                                \
+            app_usbd_class_methods_t const *p_class_methods;                             \
+            struct {                                                                     \
+                uint8_t cnt;                                                             \
+                app_usbd_class_iface_conf_t                                              \
+                    config[NUM_VA_ARGS(BRACKET_EXTRACT(interfaces_configs))];            \
+                app_usbd_class_ep_conf_t                                                 \
+                    ep[APP_USBD_CLASS_CONF_TOTAL_EP_COUNT(interfaces_configs)];          \
+            } iface;                                                                     \
+            class_config_dec                                                             \
+        } specific;                                                                      \
     } APP_USBD_CLASS_INSTANCE_TYPE(type_name)
 
 /**
  * @brief Same as @ref APP_USBD_CLASS_INSTANCE_TYPEDEF but for class with EP0 only.
  */
-#define APP_USBD_CLASS_INSTANCE_NO_EP_TYPEDEF(type_name, interfaces_configs, class_config_dec)  \
-    typedef union CONCAT_2(type_name, _u)                                                       \
-    {                                                                                           \
-        app_usbd_class_inst_t base;                                                             \
-        struct                                                                                  \
-        {                                                                                       \
-            APP_USBD_CLASS_DATA_TYPE(type_name) * p_data;                                       \
-            app_usbd_class_methods_t const * p_class_methods;                                   \
-            struct                                                                              \
-            {                                                                                   \
-                uint8_t cnt;                                                                    \
-                app_usbd_class_iface_conf_t                                                     \
-                                config[NUM_VA_ARGS(BRACKET_EXTRACT(interfaces_configs))];       \
-            } iface;                                                                            \
-            class_config_dec                                                                    \
-        } specific;                                                                             \
+#define APP_USBD_CLASS_INSTANCE_NO_EP_TYPEDEF(type_name, interfaces_configs, class_config_dec) \
+    typedef union CONCAT_2(type_name, _u) {                                                    \
+        app_usbd_class_inst_t base;                                                            \
+        struct {                                                                               \
+            APP_USBD_CLASS_DATA_TYPE(type_name) * p_data;                                      \
+            app_usbd_class_methods_t const *p_class_methods;                                   \
+            struct {                                                                           \
+                uint8_t cnt;                                                                   \
+                app_usbd_class_iface_conf_t                                                    \
+                    config[NUM_VA_ARGS(BRACKET_EXTRACT(interfaces_configs))];                  \
+            } iface;                                                                           \
+            class_config_dec                                                                   \
+        } specific;                                                                            \
     } APP_USBD_CLASS_INSTANCE_TYPE(type_name)
 
 /**
@@ -736,12 +703,10 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  * @sa APP_USBD_CLASS_TYPEDEF
  */
 #define APP_USBD_CLASS_DATA_TYPEDEF(type_name, class_data_dec) \
-    typedef struct                                             \
-    {                                                          \
+    typedef struct {                                           \
         app_usbd_class_data_t base;                            \
         class_data_dec                                         \
-    }APP_USBD_CLASS_DATA_TYPE(type_name)
-
+    } APP_USBD_CLASS_DATA_TYPE(type_name)
 
 /**
  * @brief Declare all data types required by the class instance.
@@ -769,11 +734,9 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
 /**
  * @brief Same as @ref APP_USBD_CLASS_TYPEDEF but for class with EP0 only.
  */
-#define APP_USBD_CLASS_NO_EP_TYPEDEF(type_name,                                                \
-                                     interface_configs,                                        \
-                                     class_config_dec,                                         \
-                                     class_data_dec)                                           \
-    APP_USBD_CLASS_DATA_TYPEDEF(type_name, class_data_dec);                                    \
+#define APP_USBD_CLASS_NO_EP_TYPEDEF(type_name, interface_configs, class_config_dec, \
+                                     class_data_dec)                                 \
+    APP_USBD_CLASS_DATA_TYPEDEF(type_name, class_data_dec);                          \
     APP_USBD_CLASS_INSTANCE_NO_EP_TYPEDEF(type_name, interface_configs, class_config_dec)
 
 /**
@@ -797,40 +760,32 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  *
  * @note It should not be used directly in the final application. See @ref APP_USBD_CLASS_INST_DEF instead.
  */
-#define APP_USBD_CLASS_INSTANCE_INITVAL(p_ram_data,                                     \
-                                        class_methods,                                  \
-                                        interfaces_configs,                             \
-                                        class_config_part)                              \
-    {                                                                                   \
-        .specific = {                                                                   \
-            .p_data = p_ram_data,                                                       \
-            .p_class_methods = class_methods,                                           \
-            .iface = {                                                                  \
-                .cnt    = NUM_VA_ARGS(BRACKET_EXTRACT(interfaces_configs)),             \
-                .config = { APP_USBD_CLASS_IFACES_CONFIG_EXTRACT(interfaces_configs) }, \
-                .ep     = { APP_USBD_CLASS_IFACES_EP_EXTRACT(interfaces_configs) }      \
-            },                                                                          \
-            BRACKET_EXTRACT(class_config_part)                                          \
-        }                                                                               \
+#define APP_USBD_CLASS_INSTANCE_INITVAL(p_ram_data, class_methods, interfaces_configs,         \
+                                        class_config_part)                                     \
+    {                                                                                          \
+        .specific = {                                                                          \
+            .p_data = p_ram_data,                                                              \
+            .p_class_methods = class_methods,                                                  \
+            .iface = { .cnt = NUM_VA_ARGS(BRACKET_EXTRACT(interfaces_configs)),                \
+                       .config = { APP_USBD_CLASS_IFACES_CONFIG_EXTRACT(interfaces_configs) }, \
+                       .ep = { APP_USBD_CLASS_IFACES_EP_EXTRACT(interfaces_configs) } },       \
+            BRACKET_EXTRACT(class_config_part)                                                 \
+        }                                                                                      \
     }
 
 /**
  * @brief Same as @ref APP_USBD_CLASS_INSTANCE_INITVAL but for class with EP0 only.
  */
-#define APP_USBD_CLASS_INSTANCE_NO_EP_INITVAL(p_ram_data,                               \
-                                              class_methods,                            \
-                                              interfaces_configs,                       \
-                                              class_config_part)                        \
-    {                                                                                   \
-        .specific = {                                                                   \
-            .p_data = p_ram_data,                                                       \
-            .p_class_methods = class_methods,                                           \
-            .iface = {                                                                  \
-                .cnt    = NUM_VA_ARGS(BRACKET_EXTRACT(interfaces_configs)),             \
-                .config = { APP_USBD_CLASS_IFACES_CONFIG_EXTRACT(interfaces_configs) }  \
-            },                                                                          \
-            BRACKET_EXTRACT(class_config_part)                                          \
-        }                                                                               \
+#define APP_USBD_CLASS_INSTANCE_NO_EP_INITVAL(p_ram_data, class_methods, interfaces_configs,     \
+                                              class_config_part)                                 \
+    {                                                                                            \
+        .specific = {                                                                            \
+            .p_data = p_ram_data,                                                                \
+            .p_class_methods = class_methods,                                                    \
+            .iface = { .cnt = NUM_VA_ARGS(BRACKET_EXTRACT(interfaces_configs)),                  \
+                       .config = { APP_USBD_CLASS_IFACES_CONFIG_EXTRACT(interfaces_configs) } }, \
+            BRACKET_EXTRACT(class_config_part)                                                   \
+        }                                                                                        \
     }
 
 /**
@@ -910,19 +865,12 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  *                           It would be extracted from brackets and placed in initialization part of configuration structure.
  *                           See detailed description of this macro for more informations.
  */
-#define APP_USBD_CLASS_INST_DEF(instance_name,                                  \
-                                type_name,                                      \
-                                class_methods,                                  \
-                                interfaces_configs,                             \
-                                class_config_part)                              \
-    static APP_USBD_CLASS_DATA_TYPE(type_name) CONCAT_2(instance_name, _data);  \
-    static const APP_USBD_CLASS_INSTANCE_TYPE(type_name) instance_name =        \
-        APP_USBD_CLASS_INSTANCE_INITVAL(                                        \
-            &CONCAT_2(instance_name, _data),                                    \
-            class_methods,                                                      \
-            interfaces_configs,                                                 \
-            class_config_part)
-
+#define APP_USBD_CLASS_INST_DEF(instance_name, type_name, class_methods, interfaces_configs, \
+                                class_config_part)                                           \
+    static APP_USBD_CLASS_DATA_TYPE(type_name) CONCAT_2(instance_name, _data);               \
+    static const APP_USBD_CLASS_INSTANCE_TYPE(type_name) instance_name =                     \
+        APP_USBD_CLASS_INSTANCE_INITVAL(&CONCAT_2(instance_name, _data), class_methods,      \
+                                        interfaces_configs, class_config_part)
 
 /**
  * @brief Define the base class instance in global scope.
@@ -936,34 +884,21 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  * @param interfaces_configs See documentation for @ref APP_USBD_CLASS_INST_DEF
  * @param class_config_part  See documentation for @ref APP_USBD_CLASS_INST_DEF
  */
-#define APP_USBD_CLASS_INST_GLOBAL_DEF(instance_name,                           \
-                                       type_name,                               \
-                                       class_methods,                           \
-                                       interfaces_configs,                      \
-                                       class_config_part)                       \
-    static APP_USBD_CLASS_DATA_TYPE(type_name) CONCAT_2(instance_name, _data);  \
-    const APP_USBD_CLASS_INSTANCE_TYPE(type_name) instance_name =               \
-        APP_USBD_CLASS_INSTANCE_INITVAL(                                        \
-            &CONCAT_2(instance_name, _data),                                    \
-            class_methods,                                                      \
-            interfaces_configs,                                                 \
-            class_config_part)
+#define APP_USBD_CLASS_INST_GLOBAL_DEF(instance_name, type_name, class_methods,                    \
+                                       interfaces_configs, class_config_part)                      \
+    static APP_USBD_CLASS_DATA_TYPE(type_name) CONCAT_2(instance_name, _data);                     \
+    const APP_USBD_CLASS_INSTANCE_TYPE(type_name) instance_name = APP_USBD_CLASS_INSTANCE_INITVAL( \
+        &CONCAT_2(instance_name, _data), class_methods, interfaces_configs, class_config_part)
 
 /**
  * @brief Same as @ref APP_USBD_CLASS_INST_GLOBAL_DEF but for class with EP0 only.
  */
-#define APP_USBD_CLASS_INST_NO_EP_GLOBAL_DEF(instance_name,                     \
-                                             type_name,                         \
-                                             class_methods,                     \
-                                             interfaces_configs,                \
-                                             class_config_part)                 \
-    static APP_USBD_CLASS_DATA_TYPE(type_name) CONCAT_2(instance_name, _data);  \
-    const APP_USBD_CLASS_INSTANCE_TYPE(type_name) instance_name =               \
-        APP_USBD_CLASS_INSTANCE_NO_EP_INITVAL(                                  \
-            &CONCAT_2(instance_name, _data),                                    \
-            class_methods,                                                      \
-            interfaces_configs,                                                 \
-            class_config_part)
+#define APP_USBD_CLASS_INST_NO_EP_GLOBAL_DEF(instance_name, type_name, class_methods,         \
+                                             interfaces_configs, class_config_part)           \
+    static APP_USBD_CLASS_DATA_TYPE(type_name) CONCAT_2(instance_name, _data);                \
+    const APP_USBD_CLASS_INSTANCE_TYPE(type_name) instance_name =                             \
+        APP_USBD_CLASS_INSTANCE_NO_EP_INITVAL(&CONCAT_2(instance_name, _data), class_methods, \
+                                              interfaces_configs, class_config_part)
 /**
  * @brief Access class specific configuration.
  *
@@ -1012,8 +947,7 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  * @param[in] p_ctx Class descriptor context.
  */
 
-#define APP_USBD_CLASS_DESCRIPTOR_INIT(p_ctx)       \
-    (p_ctx)->line = 0;
+#define APP_USBD_CLASS_DESCRIPTOR_INIT(p_ctx) (p_ctx)->line = 0;
 
 /**
  * @brief Begin class descriptor.
@@ -1023,31 +957,27 @@ static inline app_usbd_class_data_t * app_usbd_class_data_access(
  * @param[in] max_size Size of the buffer.
  */
 
-#define APP_USBD_CLASS_DESCRIPTOR_BEGIN(p_ctx, p_buff, max_size)            \
-    ASSERT((p_ctx) != NULL);                                                \
-    app_usbd_class_descriptor_state_t this_descriptor_feed;                 \
-    this_descriptor_feed.p_buffer     = (p_buff);                           \
-    this_descriptor_feed.current_size = 0;                                  \
-    this_descriptor_feed.maximum_size = (max_size);                         \
-    this_descriptor_feed.p_context    = (p_ctx);                            \
-    switch ((this_descriptor_feed.p_context)->line)                         \
-    {                                                                       \
-        case 0:                                                             \
-            ;
+#define APP_USBD_CLASS_DESCRIPTOR_BEGIN(p_ctx, p_buff, max_size) \
+    ASSERT((p_ctx) != NULL);                                     \
+    app_usbd_class_descriptor_state_t this_descriptor_feed;      \
+    this_descriptor_feed.p_buffer = (p_buff);                    \
+    this_descriptor_feed.current_size = 0;                       \
+    this_descriptor_feed.maximum_size = (max_size);              \
+    this_descriptor_feed.p_context = (p_ctx);                    \
+    switch ((this_descriptor_feed.p_context)->line) {            \
+    case 0:;
 
 /**
  * @brief Yield class descriptor
  *
  */
 
-#define APP_USBD_CLASS_DESCRIPTOR_YIELD()                   \
-do                                                          \
-{                                                           \
-        (this_descriptor_feed.p_context)->line = __LINE__;  \
-        return true;                                        \
-        case __LINE__:                                      \
-            ;                                               \
-} while (0)
+#define APP_USBD_CLASS_DESCRIPTOR_YIELD()                  \
+    do {                                                   \
+        (this_descriptor_feed.p_context)->line = __LINE__; \
+        return true;                                       \
+    case __LINE__:;                                        \
+    } while (0)
 
 /*lint -emacro(438 527, APP_USBD_CLASS_DESCRIPTOR_END)*/
 
@@ -1058,12 +988,11 @@ do                                                          \
  * No other operations in feeder function can be done after calling it.
  */
 
-#define APP_USBD_CLASS_DESCRIPTOR_END()             \
-        APP_USBD_CLASS_DESCRIPTOR_YIELD();          \
-    }                                               \
-    (this_descriptor_feed.p_context)->line = 0;     \
+#define APP_USBD_CLASS_DESCRIPTOR_END()         \
+    APP_USBD_CLASS_DESCRIPTOR_YIELD();          \
+    }                                           \
+    (this_descriptor_feed.p_context)->line = 0; \
     return false;
-
 
 /**
  * @brief Write descriptor using protothreads.
@@ -1078,21 +1007,18 @@ do                                                          \
  *
  * @param data Byte to be written to buffer.
  */
-#define APP_USBD_CLASS_DESCRIPTOR_WRITE(data)                                           \
-do                                                                                      \
-{                                                                                       \
-    (this_descriptor_feed.p_context)->data_buffer = (data);                             \
-    if (this_descriptor_feed.current_size >= this_descriptor_feed.maximum_size)         \
-    {                                                                                   \
-        APP_USBD_CLASS_DESCRIPTOR_YIELD();                                              \
-    }                                                                                   \
-    if(this_descriptor_feed.p_buffer != NULL)                                           \
-    {                                                                                   \
-        *(this_descriptor_feed.p_buffer + this_descriptor_feed.current_size) =          \
-            (this_descriptor_feed.p_context)->data_buffer;                              \
-    }                                                                                   \
-    this_descriptor_feed.current_size++;                                                \
-} while(0);
+#define APP_USBD_CLASS_DESCRIPTOR_WRITE(data)                                         \
+    do {                                                                              \
+        (this_descriptor_feed.p_context)->data_buffer = (data);                       \
+        if (this_descriptor_feed.current_size >= this_descriptor_feed.maximum_size) { \
+            APP_USBD_CLASS_DESCRIPTOR_YIELD();                                        \
+        }                                                                             \
+        if (this_descriptor_feed.p_buffer != NULL) {                                  \
+            *(this_descriptor_feed.p_buffer + this_descriptor_feed.current_size) =    \
+                (this_descriptor_feed.p_context)->data_buffer;                        \
+        }                                                                             \
+        this_descriptor_feed.current_size++;                                          \
+    } while (0);
 
 /** @} */
 

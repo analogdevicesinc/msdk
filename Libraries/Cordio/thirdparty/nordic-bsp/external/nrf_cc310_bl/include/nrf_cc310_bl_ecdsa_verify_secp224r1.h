@@ -52,34 +52,29 @@ extern "C" {
 
 /**@brief Structure holding the secp224r1 public key represented by X,Y coordinates (uncompressed).
 */
-typedef struct
-{
-    uint8_t x[28];  //!< Public key X coordinate in big-endian format.
-    uint8_t y[28];  //!< Public key Y coordinate in big-endian format.
+typedef struct {
+    uint8_t x[28]; //!< Public key X coordinate in big-endian format.
+    uint8_t y[28]; //!< Public key Y coordinate in big-endian format.
 
 } nrf_cc310_bl_ecc_public_key_secp224r1_t;
 
-
 /**@brief Structure holding secp224r1 signature represented by R,S.
 */
-typedef struct
-{
-    uint8_t r[28];  //!< Signature R part in big-endian format.
-    uint8_t s[28];  //!< Signature S part in big-endian format.
+typedef struct {
+    uint8_t r[28]; //!< Signature R part in big-endian format.
+    uint8_t s[28]; //!< Signature S part in big-endian format.
 
 } nrf_cc310_bl_ecc_signature_secp224r1_t;
-
 
 /**@brief   Type definition for a context structure for running an ECDSA verify operation using
  *          curve secp224r1.
  */
-typedef struct
-{
-    uint32_t    init_val;                                                           //!< Value indicating the initialized state of the context structure.
-    uint8_t     context_buffer[NRF_CC310_BL_ECDSA_VERIFY_CONTEXT_SIZE_SECP224R1];   //!< Buffer containing the required memory for running the ECDSA verify operation.
+typedef struct {
+    uint32_t init_val; //!< Value indicating the initialized state of the context structure.
+    uint8_t context_buffer
+        [NRF_CC310_BL_ECDSA_VERIFY_CONTEXT_SIZE_SECP224R1]; //!< Buffer containing the required memory for running the ECDSA verify operation.
 
-}  nrf_cc310_bl_ecdsa_verify_context_secp224r1_t;
-
+} nrf_cc310_bl_ecdsa_verify_context_secp224r1_t;
 
 /**@brief Function for initializing the context information for an ECDSA verify operation
  *        using curve secp224r1.
@@ -96,9 +91,8 @@ typedef struct
  * @retval CRYS_ECDSA_VERIFY_SIGNER_PUBL_KEY_VALIDATION_TAG_ERROR  p_public_key was NULL.
  */
 CRYSError_t nrf_cc310_bl_ecdsa_verify_init_secp224r1(
-    nrf_cc310_bl_ecdsa_verify_context_secp224r1_t   * const p_context,
-    nrf_cc310_bl_ecc_public_key_secp224r1_t   const * const p_public_key);
-
+    nrf_cc310_bl_ecdsa_verify_context_secp224r1_t *const p_context,
+    nrf_cc310_bl_ecc_public_key_secp224r1_t const *const p_public_key);
 
 /**@brief Function for executing an ECDSA verify on secp224r1 with hash input.
  *
@@ -121,11 +115,9 @@ CRYSError_t nrf_cc310_bl_ecdsa_verify_init_secp224r1(
  * @retval CRYS_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR          Signature verification failed.
  */
 CRYSError_t nrf_cc310_bl_ecdsa_verify_hash_secp224r1(
-    nrf_cc310_bl_ecdsa_verify_context_secp224r1_t  * const p_context,
-    nrf_cc310_bl_ecc_signature_secp224r1_t   const * const p_signature,
-    uint8_t                                  const * const p_hash,
-    uint32_t                                               hash_len);
-
+    nrf_cc310_bl_ecdsa_verify_context_secp224r1_t *const p_context,
+    nrf_cc310_bl_ecc_signature_secp224r1_t const *const p_signature, uint8_t const *const p_hash,
+    uint32_t hash_len);
 
 /**@brief Function for executing an ECDSA verify on secp224r1 with hash input in integrated form.
  *
@@ -152,11 +144,10 @@ CRYSError_t nrf_cc310_bl_ecdsa_verify_hash_secp224r1(
  * @retval CRYS_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR          Signature verification failed.
  */
 CRYSError_t nrf_cc310_bl_ecdsa_verify_secp224r1(
-    nrf_cc310_bl_ecdsa_verify_context_secp224r1_t  * const p_context,
-    nrf_cc310_bl_ecc_public_key_secp224r1_t  const * const p_public_key,
-    nrf_cc310_bl_ecc_signature_secp224r1_t   const * const p_signature,
-    uint8_t                                  const * const p_hash,
-    uint32_t                                               hash_len);
+    nrf_cc310_bl_ecdsa_verify_context_secp224r1_t *const p_context,
+    nrf_cc310_bl_ecc_public_key_secp224r1_t const *const p_public_key,
+    nrf_cc310_bl_ecc_signature_secp224r1_t const *const p_signature, uint8_t const *const p_hash,
+    uint32_t hash_len);
 
 #ifdef __cplusplus
 }

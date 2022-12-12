@@ -68,19 +68,15 @@ extern "C" {
  * @retval      nothing, but will cause the exterior function to return @p err_code if @p statement
  *              is false.
  */
-#define NRF_CRYPTO_VERIFY_TRUE_DEALLOCATE(statement, err_code, p_memory)    \
-do                                                                          \
-{                                                                           \
-    if (!(statement))                                                       \
-    {                                                                       \
-        if (p_memory != NULL)                                               \
-        {                                                                   \
-            NRF_CRYPTO_FREE(p_memory);                                      \
-        }                                                                   \
-        return err_code;                                                    \
-    }                                                                       \
-} while (0)
-
+#define NRF_CRYPTO_VERIFY_TRUE_DEALLOCATE(statement, err_code, p_memory) \
+    do {                                                                 \
+        if (!(statement)) {                                              \
+            if (p_memory != NULL) {                                      \
+                NRF_CRYPTO_FREE(p_memory);                               \
+            }                                                            \
+            return err_code;                                             \
+        }                                                                \
+    } while (0)
 
 /**
  * @internal @brief Macro for verifying that a function returned NRF_SUCCESS. It will cause the
@@ -94,10 +90,9 @@ do                                                                          \
 #ifdef DISABLE_PARAM_CHECK
 #define NRF_CRYPTO_VERIFY_SUCCESS_DEALLOCATE()
 #else
-#define NRF_CRYPTO_VERIFY_SUCCESS_DEALLOCATE(err_code, p_memory)                       \
+#define NRF_CRYPTO_VERIFY_SUCCESS_DEALLOCATE(err_code, p_memory) \
     NRF_CRYPTO_VERIFY_TRUE_DEALLOCATE((err_code) == NRF_SUCCESS, (err_code), p_memory)
 #endif /* DISABLE_PARAM_CHECK */
-
 
 /**
  * @internal @brief Generate a vector with random data of given size.
@@ -112,8 +107,7 @@ do                                                                          \
  *
  * @retval      See return values for @ref nrf_crypto_rng_vector_generate.
  */
-ret_code_t nrf_crypto_rng_vector_generate_no_mutex(uint8_t * const p_target, size_t size);
-
+ret_code_t nrf_crypto_rng_vector_generate_no_mutex(uint8_t *const p_target, size_t size);
 
 /**
  * @internal @brief Generate a vector of constrained random data of given size, between the
@@ -132,11 +126,10 @@ ret_code_t nrf_crypto_rng_vector_generate_no_mutex(uint8_t * const p_target, siz
  *
  * @retval      See return values for @ref nrf_crypto_rng_vector_generate_in_range.
  */
-ret_code_t nrf_crypto_rng_vector_generate_in_range_no_mutex(uint8_t         * const p_target,
-                                                            uint8_t   const * const p_min,
-                                                            uint8_t   const * const p_max,
-                                                            size_t                  size);
-
+ret_code_t nrf_crypto_rng_vector_generate_in_range_no_mutex(uint8_t *const p_target,
+                                                            uint8_t const *const p_min,
+                                                            uint8_t const *const p_max,
+                                                            size_t size);
 
 /** @internal @brief Swap bytes order inside provided buffer (in place).
  *
@@ -145,8 +138,7 @@ ret_code_t nrf_crypto_rng_vector_generate_in_range_no_mutex(uint8_t         * co
  * @param[in,out]   p_buffer    Buffer with data to swap.
  * @param[in]       size        Number of bytes in @p p_buffer.
  */
-void nrf_crypto_internal_swap_endian_in_place(uint8_t * p_buffer, size_t size);
-
+void nrf_crypto_internal_swap_endian_in_place(uint8_t *p_buffer, size_t size);
 
 /** @internal @brief Copy from one buffer to another and swap byte order.
  *
@@ -156,8 +148,7 @@ void nrf_crypto_internal_swap_endian_in_place(uint8_t * p_buffer, size_t size);
  * @param[in]    p_in    Destination buffer with swapped bytes.
  * @param[in]    size    Number of bytes in @p p_out and @p p_in.
  */
-void nrf_crypto_internal_swap_endian(uint8_t * p_out, uint8_t const * p_in, size_t size);
-
+void nrf_crypto_internal_swap_endian(uint8_t *p_out, uint8_t const *p_in, size_t size);
 
 /** @internal @brief Swap bytes order inside buffer containing two integers (in place).
  *
@@ -166,8 +157,7 @@ void nrf_crypto_internal_swap_endian(uint8_t * p_out, uint8_t const * p_in, size
  * @param[in,out]   p_buffer    Buffer with data to swap.
  * @param[in]       part_size   Number of bytes in single integer which is half of size of @p p_buffer.
  */
-void nrf_crypto_internal_double_swap_endian_in_place(uint8_t * p_buffer, size_t part_size);
-
+void nrf_crypto_internal_double_swap_endian_in_place(uint8_t *p_buffer, size_t part_size);
 
 /** @internal @brief Copy from one buffer containing two integers to another and swap byte order of each integer.
  *
@@ -177,8 +167,7 @@ void nrf_crypto_internal_double_swap_endian_in_place(uint8_t * p_buffer, size_t 
  * @param[in]    p_in       Destination buffer with swapped bytes.
  * @param[in]    part_size  Number of bytes in single integer which is half of size of @p p_out and @p p_in.
  */
-void nrf_crypto_internal_double_swap_endian(uint8_t * p_out, uint8_t const * p_in, size_t part_size);
-
+void nrf_crypto_internal_double_swap_endian(uint8_t *p_out, uint8_t const *p_in, size_t part_size);
 
 #ifdef __cplusplus
 }

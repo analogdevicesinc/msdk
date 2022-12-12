@@ -30,6 +30,6 @@
 **************************************************************************************************/
 
 /*! \brief    Switch Application version. */
-#define SWITCH_VERSION              ((const char *)"switch_mesh1.0_0.07.14")
+#define SWITCH_VERSION ((const char *)"switch_mesh1.0_0.07.14")
 
 #endif /* SWITCH_VERSION_H */

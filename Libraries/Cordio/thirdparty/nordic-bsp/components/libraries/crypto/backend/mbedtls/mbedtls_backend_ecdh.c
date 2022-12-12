@@ -60,49 +60,38 @@
 #include "mbedtls/ecdh.h"
 /*lint -restore*/
 
-
-ret_code_t nrf_crypto_backend_mbedtls_ecdh_compute(
-    void       * p_context,
-    void const * p_private_key,
-    void const * p_public_key,
-    uint8_t    * p_shared_secret)
+ret_code_t nrf_crypto_backend_mbedtls_ecdh_compute(void *p_context, void const *p_private_key,
+                                                   void const *p_public_key,
+                                                   uint8_t *p_shared_secret)
 {
-    int               result;
-    mbedtls_mpi       shared_secret_mpi;
+    int result;
+    mbedtls_mpi shared_secret_mpi;
     mbedtls_ecp_group group;
 
-    nrf_crypto_backend_mbedtls_ecc_private_key_t const * p_prv =
-            (nrf_crypto_backend_mbedtls_ecc_private_key_t const *)p_private_key;
+    nrf_crypto_backend_mbedtls_ecc_private_key_t const *p_prv =
+        (nrf_crypto_backend_mbedtls_ecc_private_key_t const *)p_private_key;
 
-    nrf_crypto_backend_mbedtls_ecc_public_key_t  const * p_pub =
-            (nrf_crypto_backend_mbedtls_ecc_public_key_t const *)p_public_key;
+    nrf_crypto_backend_mbedtls_ecc_public_key_t const *p_pub =
+        (nrf_crypto_backend_mbedtls_ecc_public_key_t const *)p_public_key;
 
-    nrf_crypto_ecc_curve_info_t const * p_info = p_prv->header.p_info;
+    nrf_crypto_ecc_curve_info_t const *p_info = p_prv->header.p_info;
 
-    if (!nrf_crypto_backend_mbedtls_ecc_group_load(&group, p_info))
-    {
+    if (!nrf_crypto_backend_mbedtls_ecc_group_load(&group, p_info)) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
 
     mbedtls_mpi_init(&shared_secret_mpi);
-    result = mbedtls_ecdh_compute_shared(&group,
-                                         &shared_secret_mpi,
-                                         &p_pub->key,
-                                         &p_prv->key,
-                                         nrf_crypto_backend_mbedtls_ecc_mbedtls_rng,
-                                         NULL);
+    result = mbedtls_ecdh_compute_shared(&group, &shared_secret_mpi, &p_pub->key, &p_prv->key,
+                                         nrf_crypto_backend_mbedtls_ecc_mbedtls_rng, NULL);
 
-    if (result == 0)
-    {
-        result = mbedtls_mpi_write_binary(&shared_secret_mpi,
-                                          p_shared_secret,
+    if (result == 0) {
+        result = mbedtls_mpi_write_binary(&shared_secret_mpi, p_shared_secret,
                                           p_info->raw_private_key_size);
     }
 
 #if NRF_CRYPTO_ECC_CURVE25519_ENABLED && !NRF_MODULE_ENABLED(NRF_CRYPTO_CURVE25519_BIG_ENDIAN)
 
-    if (p_info == &g_nrf_crypto_ecc_curve25519_curve_info)
-    {
+    if (p_info == &g_nrf_crypto_ecc_curve25519_curve_info) {
         nrf_crypto_internal_swap_endian_in_place(p_shared_secret,
                                                  NRF_CRYPTO_ECDH_CURVE25519_SHARED_SECRET_SIZE);
     }
@@ -112,13 +101,10 @@ ret_code_t nrf_crypto_backend_mbedtls_ecdh_compute(
     mbedtls_mpi_free(&shared_secret_mpi);
     mbedtls_ecp_group_free(&group);
 
-    if (result != 0)
-    {
+    if (result != 0) {
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
     return NRF_SUCCESS;
 }
 
-
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS)
-

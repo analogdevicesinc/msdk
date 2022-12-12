@@ -31,7 +31,7 @@
  *
  *
  ******************************************************************************/
- 
+
 #ifndef _USB_H_
 #define _USB_H_
 
@@ -51,7 +51,7 @@
  * not be available on hardware which lacks detection of that specific condition.
  *
  */
-#define MAXUSB_STATUS_VBUS_ON    0x1
+#define MAXUSB_STATUS_VBUS_ON 0x1
 #define MAXUSB_STATUS_HIGH_SPEED 0x2
 
 /*
@@ -63,53 +63,53 @@
  *
  */
 typedef enum {
-  MAXUSB_EP_TYPE_DISABLED = 0,
-  MAXUSB_EP_TYPE_OUT      = 1,
-  MAXUSB_EP_TYPE_IN       = 2,
-  MAXUSB_EP_TYPE_CONTROL  = 3
+    MAXUSB_EP_TYPE_DISABLED = 0,
+    MAXUSB_EP_TYPE_OUT = 1,
+    MAXUSB_EP_TYPE_IN = 2,
+    MAXUSB_EP_TYPE_CONTROL = 3
 } maxusb_ep_type_t;
 
 /*
  * USB events. Register for callbacks with usb_register_callback().
  */
 typedef enum {
-  MAXUSB_EVENT_DPACT = 0, /* D+ Activity */
-  MAXUSB_EVENT_RWUDN,     /* Remote Wake-Up Signaling Done */
-  MAXUSB_EVENT_BACT,      /* Bus Active */
-  MAXUSB_EVENT_BRST,      /* Bus Reset */
-  MAXUSB_EVENT_SUSP,      /* Suspend */
-  MAXUSB_EVENT_NOVBUS,    /* No VBUS - VBUSDET signal makes 0 -> 1 transition i.e. VBUS not present */
-  MAXUSB_EVENT_VBUS,      /* VBUS present */
-  MAXUSB_EVENT_BRSTDN,    /* Bus Reset Done */
-  MAXUSB_EVENT_SUDAV,     /* Setup Data Available */
-  MAXUSB_NUM_EVENTS
+    MAXUSB_EVENT_DPACT = 0, /* D+ Activity */
+    MAXUSB_EVENT_RWUDN, /* Remote Wake-Up Signaling Done */
+    MAXUSB_EVENT_BACT, /* Bus Active */
+    MAXUSB_EVENT_BRST, /* Bus Reset */
+    MAXUSB_EVENT_SUSP, /* Suspend */
+    MAXUSB_EVENT_NOVBUS, /* No VBUS - VBUSDET signal makes 0 -> 1 transition i.e. VBUS not present */
+    MAXUSB_EVENT_VBUS, /* VBUS present */
+    MAXUSB_EVENT_BRSTDN, /* Bus Reset Done */
+    MAXUSB_EVENT_SUDAV, /* Setup Data Available */
+    MAXUSB_NUM_EVENTS
 } maxusb_event_t;
 
 /*
  * USB events flags.
  */
 typedef struct {
-  /* Non-endpoint events */
-  unsigned int dpact  : 1;
-  unsigned int rwudn  : 1;
-  unsigned int bact   : 1;
-  unsigned int brst   : 1;
-  unsigned int susp   : 1;
-  unsigned int novbus : 1;
-  unsigned int vbus   : 1;
-  unsigned int brstdn : 1;
-  unsigned int sudav  : 1;
+    /* Non-endpoint events */
+    unsigned int dpact : 1;
+    unsigned int rwudn : 1;
+    unsigned int bact : 1;
+    unsigned int brst : 1;
+    unsigned int susp : 1;
+    unsigned int novbus : 1;
+    unsigned int vbus : 1;
+    unsigned int brstdn : 1;
+    unsigned int sudav : 1;
 } maxusb_usbio_events_t;
 
 /*
  * USB Request Type
  */
 typedef enum {
-  MAXUSB_TYPE_TRANS = 0,  /* The request will complete once the requested amount
+    MAXUSB_TYPE_TRANS = 0, /* The request will complete once the requested amount
                            * of data has been received, or when a packet is
                            * received containing less than max packet.
                            */
-  MAXUSB_TYPE_PKT         /* The request will complete each time a packet is
+    MAXUSB_TYPE_PKT /* The request will complete each time a packet is
                            * received. The caller is responsible for zero-packet
                            * handling
                            */
@@ -120,17 +120,16 @@ typedef enum {
  * the transaction status and can be observed when the callback is called.
  */
 typedef struct {
-  unsigned int ep;
-  uint8_t *data;
-  unsigned int reqlen; // requested / max length
-  unsigned int actlen; // actual length transacted
-  int error_code;
-  void (*callback)(void *);
-  void *cbdata;
-  maxusb_req_type_t type;
-  void *driver_xtra; /* driver-specific data, do not modify */
+    unsigned int ep;
+    uint8_t *data;
+    unsigned int reqlen; // requested / max length
+    unsigned int actlen; // actual length transacted
+    int error_code;
+    void (*callback)(void *);
+    void *cbdata;
+    maxusb_req_type_t type;
+    void *driver_xtra; /* driver-specific data, do not modify */
 } MXC_USB_Req_t;
-
 
 /**************************** Function Prototypes *****************************/
 

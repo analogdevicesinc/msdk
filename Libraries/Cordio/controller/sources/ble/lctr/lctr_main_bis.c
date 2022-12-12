@@ -35,7 +35,7 @@
 **************************************************************************************************/
 
 /*! \brief  Queue header. */
-#define LCTR_Q_ELEM_LEN  4
+#define LCTR_Q_ELEM_LEN 4
 
 /**************************************************************************************************
   Globals
@@ -63,27 +63,24 @@ lctrBigCtx_t *pLctrBigTbl;
  *  \return Length of header.
  */
 /*************************************************************************************************/
-static uint8_t lctrAssembleBisDataPdu(uint8_t *pBuf, uint16_t pduLen, LlIsoLlid_t llid, lctrIsoSegHdr_t *pSegHdr)
+static uint8_t lctrAssembleBisDataPdu(uint8_t *pBuf, uint16_t pduLen, LlIsoLlid_t llid,
+                                      lctrIsoSegHdr_t *pSegHdr)
 {
-  uint8_t hdrLen;
+    uint8_t hdrLen;
 
-  /* All additional fields must be zero'ed since flow control bits will be or'ed in at transmit. */
-  lctrBisDataPduHdr_t dataHdr =
-  {
-    .llid = llid,
-    .cssn = 0,      /* Completed in ISR. */
-    .cstf = 0,      /* Completed in ISR. */
-    .len = pduLen
-  };
+    /* All additional fields must be zero'ed since flow control bits will be or'ed in at transmit. */
+    lctrBisDataPduHdr_t dataHdr = { .llid = llid,
+                                    .cssn = 0, /* Completed in ISR. */
+                                    .cstf = 0, /* Completed in ISR. */
+                                    .len = pduLen };
 
-  hdrLen = lctrBisPackDataPduHdr(pBuf, &dataHdr);
+    hdrLen = lctrBisPackDataPduHdr(pBuf, &dataHdr);
 
-  if (pSegHdr)
-  {
-    hdrLen += lctrIsoPackSegHdr(pBuf, pSegHdr);
-  }
+    if (pSegHdr) {
+        hdrLen += lctrIsoPackSegHdr(pBuf, pSegHdr);
+    }
 
-  return hdrLen;
+    return hdrLen;
 }
 
 /*************************************************************************************************/
@@ -96,82 +93,75 @@ static uint8_t lctrAssembleBisDataPdu(uint8_t *pBuf, uint16_t pduLen, LlIsoLlid_
  *  \param  pDesc       Fragmentation descriptor.
  */
 /*************************************************************************************************/
-static void lctrBisFragmentIsoSdu(lctrBisCtx_t *pBisCtx, lctrIsoHdr_t *pIsoHdr, uint8_t *pIsoBuf, lctrIsoTxBufDesc_t *pDesc)
+static void lctrBisFragmentIsoSdu(lctrBisCtx_t *pBisCtx, lctrIsoHdr_t *pIsoHdr, uint8_t *pIsoBuf,
+                                  lctrIsoTxBufDesc_t *pDesc)
 {
-  lctrBigCtx_t *pBigCtx = pBisCtx->pBigCtx;
+    lctrBigCtx_t *pBigCtx = pBisCtx->pBigCtx;
 
-  pDesc->isoLen  = pIsoHdr->sduLen;
-  pDesc->fragLen = pBisCtx->pBigCtx->maxPdu;
-  pDesc->fragCnt = 0;
-  pDesc->pIsoSdu = pIsoBuf;
-  pDesc->pPduBuf = pIsoBuf + (HCI_ISO_HDR_LEN + HCI_ISO_DL_MIN_LEN) + ((pIsoHdr->tsFlag) ? HCI_ISO_TS_LEN : 0);
+    pDesc->isoLen = pIsoHdr->sduLen;
+    pDesc->fragLen = pBisCtx->pBigCtx->maxPdu;
+    pDesc->fragCnt = 0;
+    pDesc->pIsoSdu = pIsoBuf;
+    pDesc->pPduBuf =
+        pIsoBuf + (HCI_ISO_HDR_LEN + HCI_ISO_DL_MIN_LEN) + ((pIsoHdr->tsFlag) ? HCI_ISO_TS_LEN : 0);
 
-  uint8_t *pSduBuf = pDesc->pPduBuf;
-  uint16_t fragOffset = 0;
+    uint8_t *pSduBuf = pDesc->pPduBuf;
+    uint16_t fragOffset = 0;
 
-  if (pDesc->isoLen > 0)
-  {
-    while (fragOffset < pDesc->isoLen)
-    {
-      const uint16_t dataRem = pDesc->isoLen - fragOffset;
-      const uint16_t fragSize = WSF_MIN(dataRem, pDesc->fragLen);
-      fragOffset += fragSize;
+    if (pDesc->isoLen > 0) {
+        while (fragOffset < pDesc->isoLen) {
+            const uint16_t dataRem = pDesc->isoLen - fragOffset;
+            const uint16_t fragSize = WSF_MIN(dataRem, pDesc->fragLen);
+            fragOffset += fragSize;
 
-      LlIsoLlid_t llid;
+            LlIsoLlid_t llid;
 
-      if (pBigCtx->framing == LL_ISO_PDU_TYPE_UNFRAMED)
-      {
-        llid = (fragOffset == pDesc->isoLen) ? LL_LLID_ISO_UNF_END_PDU : LL_LLID_ISO_UNF_CONT_PDU;
-      }
-      else
-      {
-        llid = LL_LLID_ISO_FRA_PDU;
-      }
+            if (pBigCtx->framing == LL_ISO_PDU_TYPE_UNFRAMED) {
+                llid = (fragOffset == pDesc->isoLen) ? LL_LLID_ISO_UNF_END_PDU :
+                                                       LL_LLID_ISO_UNF_CONT_PDU;
+            } else {
+                llid = LL_LLID_ISO_FRA_PDU;
+            }
 
-      pDesc->frag[pDesc->fragCnt].hdrLen = lctrAssembleBisDataPdu(pDesc->frag[pDesc->fragCnt].hdr, fragSize, llid, NULL);
+            pDesc->frag[pDesc->fragCnt].hdrLen =
+                lctrAssembleBisDataPdu(pDesc->frag[pDesc->fragCnt].hdr, fragSize, llid, NULL);
 
-      uint64_t pktCtr = (pBisCtx->pBigCtx->eventCounter * pBisCtx->pBigCtx->bn) + pDesc->fragCnt;
-      pBisCtx->chan.enc.pTxPktCounter = &pktCtr;
+            uint64_t pktCtr =
+                (pBisCtx->pBigCtx->eventCounter * pBisCtx->pBigCtx->bn) + pDesc->fragCnt;
+            pBisCtx->chan.enc.pTxPktCounter = &pktCtr;
 
-      /* Set the new packet counter for inline encryption. */
-      if (lctrSetEncryptPktCountHdlr)
-      {
-        lctrSetEncryptPktCountHdlr(&pBisCtx->chan.enc, pktCtr);
-      }
+            /* Set the new packet counter for inline encryption. */
+            if (lctrSetEncryptPktCountHdlr) {
+                lctrSetEncryptPktCountHdlr(&pBisCtx->chan.enc, pktCtr);
+            }
 
-      if (lctrPktEncryptHdlr &&
-          lctrPktEncryptHdlr(&pBisCtx->chan.enc,
-                             pDesc->frag[pDesc->fragCnt].hdr,
-                             pSduBuf,
-                             pDesc->frag[pDesc->fragCnt].trl))
-      {
-        pDesc->frag[pDesc->fragCnt].trlLen = LL_DATA_MIC_LEN;
+            if (lctrPktEncryptHdlr &&
+                lctrPktEncryptHdlr(&pBisCtx->chan.enc, pDesc->frag[pDesc->fragCnt].hdr, pSduBuf,
+                                   pDesc->frag[pDesc->fragCnt].trl)) {
+                pDesc->frag[pDesc->fragCnt].trlLen = LL_DATA_MIC_LEN;
 
-        #if (LL_ENABLE_TESTER)
-          pDesc->frag[pDesc->fragCnt].trl[0] ^= (llTesterCb.pktMic >>  0) & 0xFF;
-          pDesc->frag[pDesc->fragCnt].trl[1] ^= (llTesterCb.pktMic >>  8) & 0xFF;
-          pDesc->frag[pDesc->fragCnt].trl[2] ^= (llTesterCb.pktMic >> 16) & 0xFF;
-          pDesc->frag[pDesc->fragCnt].trl[3] ^= (llTesterCb.pktMic >> 24) & 0xFF;
-        #endif
-      }
-      else
-      {
-        pDesc->frag[pDesc->fragCnt].trlLen = 0;
-      }
+#if (LL_ENABLE_TESTER)
+                pDesc->frag[pDesc->fragCnt].trl[0] ^= (llTesterCb.pktMic >> 0) & 0xFF;
+                pDesc->frag[pDesc->fragCnt].trl[1] ^= (llTesterCb.pktMic >> 8) & 0xFF;
+                pDesc->frag[pDesc->fragCnt].trl[2] ^= (llTesterCb.pktMic >> 16) & 0xFF;
+                pDesc->frag[pDesc->fragCnt].trl[3] ^= (llTesterCb.pktMic >> 24) & 0xFF;
+#endif
+            } else {
+                pDesc->frag[pDesc->fragCnt].trlLen = 0;
+            }
 
-      pSduBuf += fragSize;
-      pDesc->fragCnt++;
+            pSduBuf += fragSize;
+            pDesc->fragCnt++;
+        }
+    } else {
+        /* Zero length SDU. */
+
+        pDesc->frag[0].hdrLen =
+            lctrAssembleBisDataPdu(pDesc->frag[0].hdr, 0, LL_LLID_ISO_UNF_END_PDU, NULL);
+        pDesc->frag[0].trlLen = 0;
+
+        pDesc->fragCnt = 1;
     }
-  }
-  else
-  {
-    /* Zero length SDU. */
-
-    pDesc->frag[0].hdrLen = lctrAssembleBisDataPdu(pDesc->frag[0].hdr, 0, LL_LLID_ISO_UNF_END_PDU, NULL);
-    pDesc->frag[0].trlLen = 0;
-
-    pDesc->fragCnt = 1;
-  }
 }
 
 /*************************************************************************************************/
@@ -185,22 +175,20 @@ static void lctrBisFragmentIsoSdu(lctrBisCtx_t *pBisCtx, lctrIsoHdr_t *pIsoHdr, 
 /*************************************************************************************************/
 lctrBigCtx_t *lctrAllocBigCtx(uint8_t bigHandle)
 {
-  for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++)
-  {
-    lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
+    for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++) {
+        lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
 
-    if (!pBigCtx->enabled)
-    {
-      memset(pBigCtx, 0, sizeof(lctrBigCtx_t));
+        if (!pBigCtx->enabled) {
+            memset(pBigCtx, 0, sizeof(lctrBigCtx_t));
 
-      pBigCtx->enabled = TRUE;
-      pBigCtx->handle = bigHandle;
+            pBigCtx->enabled = TRUE;
+            pBigCtx->handle = bigHandle;
 
-      return pBigCtx;
+            return pBigCtx;
+        }
     }
-  }
 
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -212,44 +200,40 @@ lctrBigCtx_t *lctrAllocBigCtx(uint8_t bigHandle)
 /*************************************************************************************************/
 void lctrFreeBigCtx(lctrBigCtx_t *pBigCtx)
 {
-  WSF_ASSERT(pBigCtx->enabled);
+    WSF_ASSERT(pBigCtx->enabled);
 
-  pBigCtx->enabled = FALSE;
+    pBigCtx->enabled = FALSE;
 
-  /* Free all BIS context associated with the BIG. */
-  for (unsigned int i = 0; i < pBigCtx->numBis; i++)
-  {
-    lctrBisCtx_t *pBisCtx = pBigCtx->pBisCtx[i];
+    /* Free all BIS context associated with the BIG. */
+    for (unsigned int i = 0; i < pBigCtx->numBis; i++) {
+        lctrBisCtx_t *pBisCtx = pBigCtx->pBisCtx[i];
 
-    switch (pBigCtx->role)
-    {
-      case LL_ROLE_SLAVE:
-        lctrBisSetDataPath(pBisCtx, LL_ISO_DATA_DIR_INPUT, LL_ISO_DATA_PATH_DISABLED);
-        lctrNotifyIsoTxComplete(pBigCtx);
-        break;
-      case LL_ROLE_MASTER:
-        lctrBisSetDataPath(pBisCtx, LL_ISO_DATA_DIR_OUTPUT, LL_ISO_DATA_PATH_DISABLED);
-        break;
-      default:
-        break;
+        switch (pBigCtx->role) {
+        case LL_ROLE_SLAVE:
+            lctrBisSetDataPath(pBisCtx, LL_ISO_DATA_DIR_INPUT, LL_ISO_DATA_PATH_DISABLED);
+            lctrNotifyIsoTxComplete(pBigCtx);
+            break;
+        case LL_ROLE_MASTER:
+            lctrBisSetDataPath(pBisCtx, LL_ISO_DATA_DIR_OUTPUT, LL_ISO_DATA_PATH_DISABLED);
+            break;
+        default:
+            break;
+        }
+
+        lctrFreeBisCtx(pBisCtx);
     }
 
-    lctrFreeBisCtx(pBisCtx);
-  }
-
-  /* Flush BIG Control PDUs. */
-  switch (pBigCtx->role)
-  {
+    /* Flush BIG Control PDUs. */
+    switch (pBigCtx->role) {
     case LL_ROLE_SLAVE:
-      while (!WsfQueueEmpty(&pBigCtx->roleData.slv.txCtrlQ))
-      {
-        lctrBigTxCtrlQueuePopCleanup(pBigCtx);
-      }
-      break;
+        while (!WsfQueueEmpty(&pBigCtx->roleData.slv.txCtrlQ)) {
+            lctrBigTxCtrlQueuePopCleanup(pBigCtx);
+        }
+        break;
     case LL_ROLE_MASTER:
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -263,18 +247,15 @@ void lctrFreeBigCtx(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 uint8_t lctrBigIsPerAdvUsed(uint8_t advHandle)
 {
-  for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++)
-  {
-    lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
+    for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++) {
+        lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
 
-    if ((pBigCtx->enabled) &&
-        (pBigCtx->role == LL_ROLE_SLAVE) &&
-        (pBigCtx->roleData.slv.pAdvSet))
-    {
-      return TRUE;
+        if ((pBigCtx->enabled) && (pBigCtx->role == LL_ROLE_SLAVE) &&
+            (pBigCtx->roleData.slv.pAdvSet)) {
+            return TRUE;
+        }
     }
-  }
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -288,17 +269,14 @@ uint8_t lctrBigIsPerAdvUsed(uint8_t advHandle)
 /*************************************************************************************************/
 lctrBigCtx_t *lctrFindBigByHandle(uint8_t bigHandle)
 {
-  for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++)
-  {
-    lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
+    for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++) {
+        lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
 
-    if ((pBigCtx->enabled) &&
-        (pBigCtx->handle == bigHandle))
-    {
-      return pBigCtx;
+        if ((pBigCtx->enabled) && (pBigCtx->handle == bigHandle)) {
+            return pBigCtx;
+        }
     }
-  }
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -312,17 +290,15 @@ lctrBigCtx_t *lctrFindBigByHandle(uint8_t bigHandle)
 /*************************************************************************************************/
 lctrBigCtx_t *lctrFindBigBySyncHandle(uint16_t syncHandle)
 {
-  for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++)
-  {
-    lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
+    for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++) {
+        lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
 
-    if ((pBigCtx->enabled) &&
-        (pBigCtx->roleData.mst.pPerScanCtx == LCTR_GET_PER_SCAN_CTX(syncHandle)))
-    {
-      return pBigCtx;
+        if ((pBigCtx->enabled) &&
+            (pBigCtx->roleData.mst.pPerScanCtx == LCTR_GET_PER_SCAN_CTX(syncHandle))) {
+            return pBigCtx;
+        }
     }
-  }
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -334,17 +310,14 @@ lctrBigCtx_t *lctrFindBigBySyncHandle(uint16_t syncHandle)
 /*************************************************************************************************/
 bool_t lctrIsBigSynchronizing(void)
 {
-  for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++)
-  {
-    lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
+    for (unsigned int i = 0; i < pLctrRtCfg->maxBig; i++) {
+        lctrBigCtx_t *pBigCtx = &pLctrBigTbl[i];
 
-    if ((pBigCtx->enabled) &&
-        (pBigCtx->state == LCTR_MST_BIG_STATE_SYNCING))
-    {
-      return TRUE;
+        if ((pBigCtx->enabled) && (pBigCtx->state == LCTR_MST_BIG_STATE_SYNCING)) {
+            return TRUE;
+        }
     }
-  }
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -358,30 +331,28 @@ bool_t lctrIsBigSynchronizing(void)
 /*************************************************************************************************/
 lctrBisCtx_t *lctrAllocBisCtx(lctrBigCtx_t *pBigCtx)
 {
-  for (unsigned int i = 0; i < pLctrRtCfg->maxBis; i++)
-  {
-    lctrBisCtx_t *pBisCtx = &pLctrBisTbl[i];
+    for (unsigned int i = 0; i < pLctrRtCfg->maxBis; i++) {
+        lctrBisCtx_t *pBisCtx = &pLctrBisTbl[i];
 
-    if (!pBisCtx->enabled)
-    {
-      memset(pBisCtx, 0, sizeof(lctrBisCtx_t));
+        if (!pBisCtx->enabled) {
+            memset(pBisCtx, 0, sizeof(lctrBisCtx_t));
 
-      /* State and context. */
-      pBisCtx->enabled = TRUE;
-      pBisCtx->handle = LCTR_FIRST_BIS_HANDLE + i;
-      pBisCtx->pBigCtx = pBigCtx;
-      pBisCtx->bisNum = pBigCtx->numBis + 1;
+            /* State and context. */
+            pBisCtx->enabled = TRUE;
+            pBisCtx->handle = LCTR_FIRST_BIS_HANDLE + i;
+            pBisCtx->pBigCtx = pBigCtx;
+            pBisCtx->bisNum = pBigCtx->numBis + 1;
 
-      pBisCtx->path = LL_ISO_DATA_PATH_DISABLED;
+            pBisCtx->path = LL_ISO_DATA_PATH_DISABLED;
 
-      /* Parent context. */
-      pBigCtx->pBisCtx[pBigCtx->numBis++] = pBisCtx;
+            /* Parent context. */
+            pBigCtx->pBisCtx[pBigCtx->numBis++] = pBisCtx;
 
-      return pBisCtx;
+            return pBisCtx;
+        }
     }
-  }
 
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -391,9 +362,7 @@ lctrBisCtx_t *lctrAllocBisCtx(lctrBigCtx_t *pBigCtx)
  *  \param      pBisCtx       BIS context to free.
  */
 /*************************************************************************************************/
-void lctrCleanupBisCtx(lctrBisCtx_t *pBisCtx)
-{
-}
+void lctrCleanupBisCtx(lctrBisCtx_t *pBisCtx) {}
 
 /*************************************************************************************************/
 /*!
@@ -404,39 +373,36 @@ void lctrCleanupBisCtx(lctrBisCtx_t *pBisCtx)
 /*************************************************************************************************/
 void lctrFreeBisCtx(lctrBisCtx_t *pBisCtx)
 {
-  WSF_ASSERT(pBisCtx->enabled);
-  pBisCtx->enabled = FALSE;
+    WSF_ASSERT(pBisCtx->enabled);
+    pBisCtx->enabled = FALSE;
 
-  uint8_t *pPdu;
+    uint8_t *pPdu;
 
-  /* Flush remaining packets. */
-  switch (pBisCtx->pBigCtx->role)
-  {
+    /* Flush remaining packets. */
+    switch (pBisCtx->pBigCtx->role) {
     case LL_ROLE_MASTER:
-      while ((pPdu = lctrBisDequeueRxDataPdu(pBisCtx, NULL)) != NULL)
-      {
-        lctrBisRxIsoDataPduFree(pPdu);
-      }
+        while ((pPdu = lctrBisDequeueRxDataPdu(pBisCtx, NULL)) != NULL) {
+            lctrBisRxIsoDataPduFree(pPdu);
+        }
 
-      lctrIsoalRxDataPathClear(&pBisCtx->roleData.mst.isoalRxCtx, pBisCtx->pBigCtx->framing);
-      break;
+        lctrIsoalRxDataPathClear(&pBisCtx->roleData.mst.isoalRxCtx, pBisCtx->pBigCtx->framing);
+        break;
     case LL_ROLE_SLAVE:
-      while (!WsfQueueEmpty(&pBisCtx->roleData.slv.txDataQ))
-      {
-        lctrBisTxQueuePopCleanup(pBisCtx, 1);
-      }
+        while (!WsfQueueEmpty(&pBisCtx->roleData.slv.txDataQ)) {
+            lctrBisTxQueuePopCleanup(pBisCtx, 1);
+        }
 
-      /* Free any IsoalTxPendQ */
-      void *pIsoBuf;
-      uint8_t handlerId;
-      while ((pIsoBuf = WsfMsgDeq(&pBisCtx->roleData.slv.isoalTxCtx.pendingSduQ, &handlerId)) != NULL)
-      {
-        WsfMsgFree(pIsoBuf);
-      }
-      break;
+        /* Free any IsoalTxPendQ */
+        void *pIsoBuf;
+        uint8_t handlerId;
+        while ((pIsoBuf = WsfMsgDeq(&pBisCtx->roleData.slv.isoalTxCtx.pendingSduQ, &handlerId)) !=
+               NULL) {
+            WsfMsgFree(pIsoBuf);
+        }
+        break;
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -450,18 +416,15 @@ void lctrFreeBisCtx(lctrBisCtx_t *pBisCtx)
 /*************************************************************************************************/
 lctrBisCtx_t *lctrFindBisByHandle(uint16_t bisHandle)
 {
-  for (unsigned int i = 0; i < pLctrRtCfg->maxBis; i++)
-  {
-    lctrBisCtx_t *pBisCtx = &pLctrBisTbl[i];
+    for (unsigned int i = 0; i < pLctrRtCfg->maxBis; i++) {
+        lctrBisCtx_t *pBisCtx = &pLctrBisTbl[i];
 
-    if ((pBisCtx->enabled) &&
-        (pBisCtx->handle == bisHandle))
-    {
-      return pBisCtx;
+        if ((pBisCtx->enabled) && (pBisCtx->handle == bisHandle)) {
+            return pBisCtx;
+        }
     }
-  }
 
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -473,19 +436,17 @@ lctrBisCtx_t *lctrFindBisByHandle(uint16_t bisHandle)
 /*************************************************************************************************/
 uint8_t lctrGetNumAvailBisCtx(void)
 {
-  uint8_t count = 0;
+    uint8_t count = 0;
 
-  for (unsigned int i = 0; i < pLctrRtCfg->maxBis; i++)
-  {
-    lctrBisCtx_t *pBisCtx = &pLctrBisTbl[i];
+    for (unsigned int i = 0; i < pLctrRtCfg->maxBis; i++) {
+        lctrBisCtx_t *pBisCtx = &pLctrBisTbl[i];
 
-    if (pBisCtx->enabled == FALSE)
-    {
-      count++;
+        if (pBisCtx->enabled == FALSE) {
+            count++;
+        }
     }
-  }
 
-  return count;
+    return count;
 }
 
 /*************************************************************************************************/
@@ -500,33 +461,33 @@ uint8_t lctrGetNumAvailBisCtx(void)
 /*************************************************************************************************/
 uint32_t lctrComputeBisAccessAddr(uint32_t seedAccAddr, uint8_t bisNum)
 {
-  uint32_t accAddr = seedAccAddr;
-  uint16_t div;
-  uint32_t dw = 0;
-  uint8_t d0, d1, d2, d3, d4, d5, d6;
+    uint32_t accAddr = seedAccAddr;
+    uint16_t div;
+    uint32_t dw = 0;
+    uint8_t d0, d1, d2, d3, d4, d5, d6;
 
-  d0 = d1 = d2 = d3 = d4 = d5 = d6 = 0;
+    d0 = d1 = d2 = d3 = d4 = d5 = d6 = 0;
 
-  /* Diversifier = ((35 * n) + 42) MOD 128 */
-  const uint16_t term = (35 * bisNum) + 42;
-  div = term - ((term >> 7) * 128);
+    /* Diversifier = ((35 * n) + 42) MOD 128 */
+    const uint16_t term = (35 * bisNum) + 42;
+    div = term - ((term >> 7) * 128);
 
-  d0 = div & 1;
-  d1 = (div >> 1) & 1;
-  d2 = (div >> 2) & 1;
-  d3 = (div >> 3) & 1;
-  d4 = (div >> 4) & 1;
-  d5 = (div >> 5) & 1;
-  d6 = (div >> 6) & 1;
+    d0 = div & 1;
+    d1 = (div >> 1) & 1;
+    d2 = (div >> 2) & 1;
+    d3 = (div >> 3) & 1;
+    d4 = (div >> 4) & 1;
+    d5 = (div >> 5) & 1;
+    d6 = (div >> 6) & 1;
 
-  /* DW = D0D0D0D0D0D0D1D6_D10D5D40D3D20_00000000_00000000b  Note the digit after the letter is the index of the D. */
-  dw = ((d0 << 31) | (d0 << 30) | (d0 << 29) | (d0 << 28) | (d0 << 27)  | (d0 << 26) | (d1 << 25) | (d6 << 24) | \
-        (d1 << 23) | (d5 << 21) | (d4 << 20) | (d3 << 18) | (d2 << 17));
+    /* DW = D0D0D0D0D0D0D1D6_D10D5D40D3D20_00000000_00000000b  Note the digit after the letter is the index of the D. */
+    dw = ((d0 << 31) | (d0 << 30) | (d0 << 29) | (d0 << 28) | (d0 << 27) | (d0 << 26) | (d1 << 25) |
+          (d6 << 24) | (d1 << 23) | (d5 << 21) | (d4 << 20) | (d3 << 18) | (d2 << 17));
 
-  /* SAA bit-wise XORed with DW */
-  accAddr ^= dw;
+    /* SAA bit-wise XORed with DW */
+    accAddr ^= dw;
 
-  return accAddr;
+    return accAddr;
 }
 
 /*************************************************************************************************/
@@ -540,53 +501,54 @@ uint32_t lctrComputeBisAccessAddr(uint32_t seedAccAddr, uint8_t bisNum)
  *  \param      phy             PHY.
  */
 /*************************************************************************************************/
-void lctrSetupBisContext(lctrBisCtx_t *pBisCtx, uint32_t seedAccAddr, uint16_t baseCrcInit, uint64_t chMap, LlPhy_t phy)
+void lctrSetupBisContext(lctrBisCtx_t *pBisCtx, uint32_t seedAccAddr, uint16_t baseCrcInit,
+                         uint64_t chMap, LlPhy_t phy)
 {
-  pBisCtx->chan.opType = (pBisCtx->pBigCtx->role == LL_ROLE_SLAVE) ? BB_BLE_OP_SLV_BIS_EVENT : BB_BLE_OP_MST_BIS_EVENT;
+    pBisCtx->chan.opType = (pBisCtx->pBigCtx->role == LL_ROLE_SLAVE) ? BB_BLE_OP_SLV_BIS_EVENT :
+                                                                       BB_BLE_OP_MST_BIS_EVENT;
 
-  uint32_t accAddr = lctrComputeBisAccessAddr(seedAccAddr, pBisCtx->bisNum);
+    uint32_t accAddr = lctrComputeBisAccessAddr(seedAccAddr, pBisCtx->bisNum);
 
-  pBisCtx->chSelInfo.chanMask = chMap;
-  pBisCtx->chSelInfo.usedChSel = LL_CH_SEL_2;
-  pBisCtx->chSelInfo.chIdentifier = (accAddr >> 16) ^ (accAddr >> 0);
-  LmgrBuildRemapTable(&pBisCtx->chSelInfo);
+    pBisCtx->chSelInfo.chanMask = chMap;
+    pBisCtx->chSelInfo.usedChSel = LL_CH_SEL_2;
+    pBisCtx->chSelInfo.chIdentifier = (accAddr >> 16) ^ (accAddr >> 0);
+    LmgrBuildRemapTable(&pBisCtx->chSelInfo);
 
-  pBisCtx->chan.accAddr = accAddr;
-  pBisCtx->chan.crcInit = (baseCrcInit << 8) | pBisCtx->bisNum;
-  pBisCtx->chan.txPower = lmgrCb.advTxPwr;
-  pBisCtx->chan.txPhy = pBisCtx->chan.rxPhy = phy;
-  pBisCtx->chan.initTxPhyOptions = BB_PHY_OPTIONS_DEFAULT;
-  pBisCtx->chan.tifsTxPhyOptions = BB_PHY_OPTIONS_DEFAULT;
-  /* pBisCtx->chan.peerTxStableModIdx = FALSE; */
+    pBisCtx->chan.accAddr = accAddr;
+    pBisCtx->chan.crcInit = (baseCrcInit << 8) | pBisCtx->bisNum;
+    pBisCtx->chan.txPower = lmgrCb.advTxPwr;
+    pBisCtx->chan.txPhy = pBisCtx->chan.rxPhy = phy;
+    pBisCtx->chan.initTxPhyOptions = BB_PHY_OPTIONS_DEFAULT;
+    pBisCtx->chan.tifsTxPhyOptions = BB_PHY_OPTIONS_DEFAULT;
+    /* pBisCtx->chan.peerTxStableModIdx = FALSE; */
 
 #if (LL_ENABLE_TESTER)
-  pBisCtx->chan.accAddrRx = pBisCtx->chan.accAddr ^ llTesterCb.dataAccessAddrRx;
-  pBisCtx->chan.accAddrTx = pBisCtx->chan.accAddr ^ llTesterCb.dataAccessAddrTx;
-  pBisCtx->chan.crcInitRx = pBisCtx->chan.crcInit ^ llTesterCb.dataCrcInitRx;
-  pBisCtx->chan.crcInitTx = pBisCtx->chan.crcInit ^ llTesterCb.dataCrcInitTx;
+    pBisCtx->chan.accAddrRx = pBisCtx->chan.accAddr ^ llTesterCb.dataAccessAddrRx;
+    pBisCtx->chan.accAddrTx = pBisCtx->chan.accAddr ^ llTesterCb.dataAccessAddrTx;
+    pBisCtx->chan.crcInitRx = pBisCtx->chan.crcInit ^ llTesterCb.dataCrcInitRx;
+    pBisCtx->chan.crcInitTx = pBisCtx->chan.crcInit ^ llTesterCb.dataCrcInitTx;
 #endif
 
-  if (pBisCtx->pBigCtx->encrypt)
-  {
-    pBisCtx->chan.enc.enaEncrypt = TRUE;
-    pBisCtx->chan.enc.enaDecrypt = TRUE;
-    pBisCtx->chan.enc.enaAuth = TRUE;
-    pBisCtx->chan.enc.nonceMode = PAL_BB_NONCE_MODE_EXT64_CNTR;
+    if (pBisCtx->pBigCtx->encrypt) {
+        pBisCtx->chan.enc.enaEncrypt = TRUE;
+        pBisCtx->chan.enc.enaDecrypt = TRUE;
+        pBisCtx->chan.enc.enaAuth = TRUE;
+        pBisCtx->chan.enc.nonceMode = PAL_BB_NONCE_MODE_EXT64_CNTR;
 
-    memcpy(pBisCtx->chan.enc.iv, pBisCtx->pBigCtx->giv, LL_IV_LEN);
-    pBisCtx->chan.enc.iv[0] ^= accAddr >>  0;
-    pBisCtx->chan.enc.iv[1] ^= accAddr >>  8;
-    pBisCtx->chan.enc.iv[2] ^= accAddr >> 16;
-    pBisCtx->chan.enc.iv[3] ^= accAddr >> 24;
+        memcpy(pBisCtx->chan.enc.iv, pBisCtx->pBigCtx->giv, LL_IV_LEN);
+        pBisCtx->chan.enc.iv[0] ^= accAddr >> 0;
+        pBisCtx->chan.enc.iv[1] ^= accAddr >> 8;
+        pBisCtx->chan.enc.iv[2] ^= accAddr >> 16;
+        pBisCtx->chan.enc.iv[3] ^= accAddr >> 24;
 
-    memcpy(pBisCtx->chan.enc.sk, pBisCtx->pBigCtx->bleData.chan.enc.sk, PAL_CRYPTO_LL_KEY_LEN);
+        memcpy(pBisCtx->chan.enc.sk, pBisCtx->pBigCtx->bleData.chan.enc.sk, PAL_CRYPTO_LL_KEY_LEN);
 
-    /* The directionBit shall be set to 1 for Broadcast Isochronous PDUs. */
-    pBisCtx->chan.enc.dir = 1;
-    pBisCtx->chan.enc.type = PAL_BB_TYPE_BIS;
+        /* The directionBit shall be set to 1 for Broadcast Isochronous PDUs. */
+        pBisCtx->chan.enc.dir = 1;
+        pBisCtx->chan.enc.type = PAL_BB_TYPE_BIS;
 
-    lctrInitCipherBlkHdlr(&pBisCtx->chan.enc, pBisCtx->handle, 1);
-  }
+        lctrInitCipherBlkHdlr(&pBisCtx->chan.enc, pBisCtx->handle, 1);
+    }
 }
 
 /*************************************************************************************************/
@@ -598,19 +560,19 @@ void lctrSetupBisContext(lctrBisCtx_t *pBisCtx, uint32_t seedAccAddr, uint16_t b
 /*************************************************************************************************/
 void lctrSelectBigChannels(lctrBigCtx_t *pBigCtx)
 {
-  /* Select BIS channels. */
-  for (unsigned int i = 0; i < pBigCtx->numBis; i++)
-  {
-    lctrBisCtx_t * const pBisCtx = pBigCtx->pBisCtx[i];
-    pBisCtx->chan.chanIdx = LmgrSelectNextChannel(&pBisCtx->chSelInfo, pBigCtx->eventCounter, 0, TRUE);
-  }
+    /* Select BIS channels. */
+    for (unsigned int i = 0; i < pBigCtx->numBis; i++) {
+        lctrBisCtx_t *const pBisCtx = pBigCtx->pBisCtx[i];
+        pBisCtx->chan.chanIdx =
+            LmgrSelectNextChannel(&pBisCtx->chSelInfo, pBigCtx->eventCounter, 0, TRUE);
+    }
 
-  /* Select BIG Control channel. */
-  pBigCtx->ctrChan.chanIdx = LmgrSelectNextChannel(&pBigCtx->ctrChSelInfo, pBigCtx->eventCounter, 0, TRUE);
+    /* Select BIG Control channel. */
+    pBigCtx->ctrChan.chanIdx =
+        LmgrSelectNextChannel(&pBigCtx->ctrChSelInfo, pBigCtx->eventCounter, 0, TRUE);
 
-  /* Setup BOD for next BIG Event. */
-  pBigCtx->bleData.chan.chanIdx = pBigCtx->pBisCtx[0]->chan.chanIdx;
-
+    /* Setup BOD for next BIG Event. */
+    pBigCtx->bleData.chan.chanIdx = pBigCtx->pBisCtx[0]->chan.chanIdx;
 }
 
 /*************************************************************************************************/
@@ -623,17 +585,16 @@ void lctrSelectBigChannels(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrRemapBigChannels(lctrBigCtx_t *pBigCtx, uint64_t chanMap)
 {
-  /* Select BIS channels. */
-  for (unsigned int i = 0; i < pBigCtx->numBis; i++)
-  {
-    lctrBisCtx_t * const pBisCtx = pBigCtx->pBisCtx[i];
-    pBisCtx->chSelInfo.chanMask = chanMap;
-    LmgrBuildRemapTable(&pBisCtx->chSelInfo);
-  }
+    /* Select BIS channels. */
+    for (unsigned int i = 0; i < pBigCtx->numBis; i++) {
+        lctrBisCtx_t *const pBisCtx = pBigCtx->pBisCtx[i];
+        pBisCtx->chSelInfo.chanMask = chanMap;
+        LmgrBuildRemapTable(&pBisCtx->chSelInfo);
+    }
 
-  /* Select BIG Control channel. */
-  pBigCtx->ctrChSelInfo.chanMask = chanMap;
-  LmgrBuildRemapTable(&pBigCtx->ctrChSelInfo);
+    /* Select BIG Control channel. */
+    pBigCtx->ctrChSelInfo.chanMask = chanMap;
+    LmgrBuildRemapTable(&pBigCtx->ctrChSelInfo);
 }
 
 /*************************************************************************************************/
@@ -647,27 +608,26 @@ void lctrRemapBigChannels(lctrBigCtx_t *pBigCtx, uint64_t chanMap)
 /*************************************************************************************************/
 void lctrBisTxIsoPduQueue(lctrBisCtx_t *pBisCtx, lctrIsoHdr_t *pIsoHdr, uint8_t *pIsoSdu)
 {
-  lctrIsoTxBufDesc_t *pDesc;
+    lctrIsoTxBufDesc_t *pDesc;
 
-  if ((pDesc = lctrAllocIsoTxBufDesc()) == NULL)
-  {
-    LL_TRACE_ERR1("Failed to allocate transmit buffer descriptor: bisHandle=%u", pIsoHdr->handle);
-    WsfMsgFree(pIsoSdu);
-    if (!pBisCtx->test.enabled)
-    {
-      uint16_t handle = pIsoHdr->handle;
-      uint16_t numSdu = 1;
+    if ((pDesc = lctrAllocIsoTxBufDesc()) == NULL) {
+        LL_TRACE_ERR1("Failed to allocate transmit buffer descriptor: bisHandle=%u",
+                      pIsoHdr->handle);
+        WsfMsgFree(pIsoSdu);
+        if (!pBisCtx->test.enabled) {
+            uint16_t handle = pIsoHdr->handle;
+            uint16_t numSdu = 1;
 
-      lmgrPersistCb.sendIsoCompCback(1, &handle, &numSdu);
+            lmgrPersistCb.sendIsoCompCback(1, &handle, &numSdu);
+        }
+        lctrIsoSduTxIncAvailBuf();
+
+        lctrNotifyHostHwErrInd(LL_ERROR_CODE_MEM_CAP_EXCEEDED);
+        return;
     }
-    lctrIsoSduTxIncAvailBuf();
 
-    lctrNotifyHostHwErrInd(LL_ERROR_CODE_MEM_CAP_EXCEEDED);
-    return;
-  }
-
-  lctrBisFragmentIsoSdu(pBisCtx, pIsoHdr, pIsoSdu, pDesc);
-  WsfMsgEnq(&pBisCtx->roleData.slv.txDataQ, pIsoHdr->handle, (uint8_t *)pDesc);
+    lctrBisFragmentIsoSdu(pBisCtx, pIsoHdr, pIsoSdu, pDesc);
+    WsfMsgEnq(&pBisCtx->roleData.slv.txDataQ, pIsoHdr->handle, (uint8_t *)pDesc);
 }
 
 /*************************************************************************************************/
@@ -683,69 +643,61 @@ void lctrBisTxIsoPduQueue(lctrBisCtx_t *pBisCtx, lctrIsoHdr_t *pIsoHdr, uint8_t 
 /*************************************************************************************************/
 uint8_t lctrBisTxQueuePeek(lctrBisCtx_t *pBisCtx, uint8_t burstIdx, PalBbBleTxBufDesc_t *descs)
 {
-  wsfHandlerId_t handlerId;
-  lctrIsoTxBufDesc_t *pDesc;
-  uint8_t descCnt = 0;
-  uint8_t sduCnt = 0;
+    wsfHandlerId_t handlerId;
+    lctrIsoTxBufDesc_t *pDesc;
+    uint8_t descCnt = 0;
+    uint8_t sduCnt = 0;
 
-  if (burstIdx > pBisCtx->pBigCtx->bn)
-  {
-    /* Advance to the pre-transmission PDU. */
-    burstIdx += pBisCtx->pBigCtx->pto * pBisCtx->pBigCtx->bn;
-  }
+    if (burstIdx > pBisCtx->pBigCtx->bn) {
+        /* Advance to the pre-transmission PDU. */
+        burstIdx += pBisCtx->pBigCtx->pto * pBisCtx->pBigCtx->bn;
+    }
 
-  /* Do not remove from queue until burst completes. */
-  while ((pDesc = WsfMsgNPeek(&pBisCtx->roleData.slv.txDataQ, sduCnt++, &handlerId)) != NULL)
-  {
-    if (pDesc->isoLen > 0)
-    {
-      unsigned int numFrag = LlMathDivideUint32RoundUp(pDesc->isoLen, pDesc->fragLen);
+    /* Do not remove from queue until burst completes. */
+    while ((pDesc = WsfMsgNPeek(&pBisCtx->roleData.slv.txDataQ, sduCnt++, &handlerId)) != NULL) {
+        if (pDesc->isoLen > 0) {
+            unsigned int numFrag = LlMathDivideUint32RoundUp(pDesc->isoLen, pDesc->fragLen);
 
-      if (burstIdx >= numFrag)
-      {
-        /* Advance to next SDU. */
-        burstIdx -= numFrag;
-        continue;
-      }
+            if (burstIdx >= numFrag) {
+                /* Advance to next SDU. */
+                burstIdx -= numFrag;
+                continue;
+            }
 
-      uint8_t  fragCnt  = burstIdx;
-      uint16_t fragOffs = pDesc->fragLen * fragCnt;
+            uint8_t fragCnt = burstIdx;
+            uint16_t fragOffs = pDesc->fragLen * fragCnt;
 
-      if (fragOffs < pDesc->isoLen)
-      {
-        uint16_t fragSize = WSF_MIN(pDesc->isoLen - fragOffs, pDesc->fragLen);
+            if (fragOffs < pDesc->isoLen) {
+                uint16_t fragSize = WSF_MIN(pDesc->isoLen - fragOffs, pDesc->fragLen);
 
-        descs[0].len  = pDesc->frag[fragCnt].hdrLen;
-        descs[0].pBuf = pDesc->frag[fragCnt].hdr;
-        descs[1].len  = fragSize;
-        descs[1].pBuf = pDesc->pPduBuf + fragOffs;
-        descs[2].pBuf = NULL;
-        descCnt = 2;
-        if (pDesc->frag[fragCnt].trlLen)
-        {
-          descs[2].len  = pDesc->frag[fragCnt].trlLen;
-          descs[2].pBuf = pDesc->frag[fragCnt].trl;
-          descCnt = 3;
+                descs[0].len = pDesc->frag[fragCnt].hdrLen;
+                descs[0].pBuf = pDesc->frag[fragCnt].hdr;
+                descs[1].len = fragSize;
+                descs[1].pBuf = pDesc->pPduBuf + fragOffs;
+                descs[2].pBuf = NULL;
+                descCnt = 2;
+                if (pDesc->frag[fragCnt].trlLen) {
+                    descs[2].len = pDesc->frag[fragCnt].trlLen;
+                    descs[2].pBuf = pDesc->frag[fragCnt].trl;
+                    descCnt = 3;
+                }
+
+                /* Exit loop. */
+                break;
+            }
+        } else {
+            /* Zero length PDU. */
+            descs[0].len = pDesc->frag[0].hdrLen;
+            descs[0].pBuf = pDesc->frag[0].hdr;
+            descs[1].pBuf = NULL;
+            descCnt = 1;
+
+            /* Exit loop. */
+            break;
         }
-
-        /* Exit loop. */
-        break;
-      }
     }
-    else
-    {
-      /* Zero length PDU. */
-      descs[0].len  = pDesc->frag[0].hdrLen;
-      descs[0].pBuf = pDesc->frag[0].hdr;
-      descs[1].pBuf = NULL;
-      descCnt = 1;
 
-      /* Exit loop. */
-      break;
-    }
-  }
-
-  return descCnt;
+    return descCnt;
 }
 
 /*************************************************************************************************/
@@ -758,31 +710,28 @@ uint8_t lctrBisTxQueuePeek(lctrBisCtx_t *pBisCtx, uint8_t burstIdx, PalBbBleTxBu
 /*************************************************************************************************/
 void lctrBisTxQueuePopCleanup(lctrBisCtx_t *pBisCtx, uint8_t numFrag)
 {
-  lctrIsoTxBufDesc_t *pDesc;
-  wsfHandlerId_t handlerId;
+    lctrIsoTxBufDesc_t *pDesc;
+    wsfHandlerId_t handlerId;
 
-  while (numFrag-- &&
-         ((pDesc = WsfMsgPeek(&pBisCtx->roleData.slv.txDataQ, &handlerId)) != NULL))
-  {
-    pDesc->fragCnt++;
+    while (numFrag-- &&
+           ((pDesc = WsfMsgPeek(&pBisCtx->roleData.slv.txDataQ, &handlerId)) != NULL)) {
+        pDesc->fragCnt++;
 
-    if ((pDesc->fragLen * pDesc->fragCnt) >= pDesc->isoLen)  /* last fragment */
-    {
-      WsfMsgDeq(&pBisCtx->roleData.slv.txDataQ, &handlerId);
-      WsfMsgFree(pDesc->pIsoSdu);
-      lctrFreeIsoTxBufDesc(pDesc);
-      lctrIsoSduTxIncAvailBuf();
-
-      if (pBisCtx->path == LL_ISO_DATA_PATH_HCI)
-      {
-        /* ISO Test does not send Tx Complete notifications. */
-        if (!pBisCtx->test.enabled)
+        if ((pDesc->fragLen * pDesc->fragCnt) >= pDesc->isoLen) /* last fragment */
         {
-          pBisCtx->roleData.slv.numTxSduComp++;
+            WsfMsgDeq(&pBisCtx->roleData.slv.txDataQ, &handlerId);
+            WsfMsgFree(pDesc->pIsoSdu);
+            lctrFreeIsoTxBufDesc(pDesc);
+            lctrIsoSduTxIncAvailBuf();
+
+            if (pBisCtx->path == LL_ISO_DATA_PATH_HCI) {
+                /* ISO Test does not send Tx Complete notifications. */
+                if (!pBisCtx->test.enabled) {
+                    pBisCtx->roleData.slv.numTxSduComp++;
+                }
+            }
         }
-      }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -796,19 +745,16 @@ void lctrBisTxQueuePopCleanup(lctrBisCtx_t *pBisCtx, uint8_t numFrag)
 /*************************************************************************************************/
 uint8_t *lctrBigTxCtrlAlloc(uint8_t pduLen)
 {
-  uint8_t *pBuf;
+    uint8_t *pBuf;
 
-  if ((pBuf = WsfBufAlloc(LCTR_Q_ELEM_LEN
-                          + sizeof(uint32_t)    /* ReTx data with padding */
-                          + LL_DATA_HDR_LEN
-                          + sizeof(uint8_t)     /* Opcode */
-                          + pduLen)) == NULL)
-  {
-    return NULL;
-  }
+    if ((pBuf = WsfBufAlloc(LCTR_Q_ELEM_LEN + sizeof(uint32_t) /* ReTx data with padding */
+                            + LL_DATA_HDR_LEN + sizeof(uint8_t) /* Opcode */
+                            + pduLen)) == NULL) {
+        return NULL;
+    }
 
-  /* Return pointer to start of header. */
-  return pBuf + LCTR_Q_ELEM_LEN + sizeof(uint32_t);
+    /* Return pointer to start of header. */
+    return pBuf + LCTR_Q_ELEM_LEN + sizeof(uint32_t);
 }
 
 /*************************************************************************************************/
@@ -822,16 +768,16 @@ uint8_t *lctrBigTxCtrlAlloc(uint8_t pduLen)
 /*************************************************************************************************/
 void lctrBigTxCtrlQueue(lctrBigCtx_t *pBigCtx, uint8_t *pBuf, uint8_t numReTx)
 {
-  /* Recover start of buffer. */
-  pBuf -= sizeof(uint32_t);
+    /* Recover start of buffer. */
+    pBuf -= sizeof(uint32_t);
 
-  /* First byte is the retransmission number. */
-  pBuf[0] = numReTx;
+    /* First byte is the retransmission number. */
+    pBuf[0] = numReTx;
 
-  /* Recover start of queue element. */
-  pBuf -= LCTR_Q_ELEM_LEN;
+    /* Recover start of queue element. */
+    pBuf -= LCTR_Q_ELEM_LEN;
 
-  WsfQueuePush(&pBigCtx->roleData.slv.txCtrlQ, pBuf);
+    WsfQueuePush(&pBigCtx->roleData.slv.txCtrlQ, pBuf);
 }
 
 /*************************************************************************************************/
@@ -845,17 +791,16 @@ void lctrBigTxCtrlQueue(lctrBigCtx_t *pBigCtx, uint8_t *pBuf, uint8_t numReTx)
 /*************************************************************************************************/
 uint8_t *lctrBigTxCtrlQueuePeek(lctrBigCtx_t *pBigCtx)
 {
-  uint8_t *pBuf;
+    uint8_t *pBuf;
 
-  /* Queue peek. */
-  if ((pBuf = pBigCtx->roleData.slv.txCtrlQ.pHead) != NULL)
-  {
-    /* Return pointer to start of header. */
-    return pBuf + LCTR_Q_ELEM_LEN + sizeof(uint32_t);
-  }
+    /* Queue peek. */
+    if ((pBuf = pBigCtx->roleData.slv.txCtrlQ.pHead) != NULL) {
+        /* Return pointer to start of header. */
+        return pBuf + LCTR_Q_ELEM_LEN + sizeof(uint32_t);
+    }
 
-  /* No more BIS Control PDUs. */
-  return NULL;
+    /* No more BIS Control PDUs. */
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -867,26 +812,24 @@ uint8_t *lctrBigTxCtrlQueuePeek(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrBigTxCtrlQueuePop(lctrBigCtx_t *pBigCtx)
 {
-  uint8_t *pBuf;
+    uint8_t *pBuf;
 
-  /* Queue peek. */
-  pBuf = pBigCtx->roleData.slv.txCtrlQ.pHead;
+    /* Queue peek. */
+    pBuf = pBigCtx->roleData.slv.txCtrlQ.pHead;
 
-  if (pBuf)
-  {
-    /* Recover start buffer. */
-    pBuf += LCTR_Q_ELEM_LEN;
+    if (pBuf) {
+        /* Recover start buffer. */
+        pBuf += LCTR_Q_ELEM_LEN;
 
-    /* Decrease retransmission count. */
-    pBuf[0]--;
+        /* Decrease retransmission count. */
+        pBuf[0]--;
 
-    if (pBuf[0] == 0)
-    {
-      /* No more retransmissions; cleanup and skip to next BIS Control PDU. */
-      lctrBigTxCtrlQueuePopCleanup(pBigCtx);
-      pBigCtx->bcp.cssn++;
+        if (pBuf[0] == 0) {
+            /* No more retransmissions; cleanup and skip to next BIS Control PDU. */
+            lctrBigTxCtrlQueuePopCleanup(pBigCtx);
+            pBigCtx->bcp.cssn++;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -898,12 +841,11 @@ void lctrBigTxCtrlQueuePop(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrBigTxCtrlQueuePopCleanup(lctrBigCtx_t *pBigCtx)
 {
-  uint8_t *pBuf = WsfQueueDeq(&pBigCtx->roleData.slv.txCtrlQ);
+    uint8_t *pBuf = WsfQueueDeq(&pBigCtx->roleData.slv.txCtrlQ);
 
-  if (pBuf)
-  {
-    WsfBufFree(pBuf);
-  }
+    if (pBuf) {
+        WsfBufFree(pBuf);
+    }
 }
 
 /*************************************************************************************************/
@@ -915,27 +857,25 @@ void lctrBigTxCtrlQueuePopCleanup(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 uint8_t *lctrBisRxIsoDataPduAlloc(void)
 {
-  const uint32_t allocLen = HCI_ISO_DL_MAX_LEN + pLctrRtCfg->maxIsoSduLen + BB_DATA_PDU_TAILROOM;
+    const uint32_t allocLen = HCI_ISO_DL_MAX_LEN + pLctrRtCfg->maxIsoSduLen + BB_DATA_PDU_TAILROOM;
 
-  if (lmgrIsoCb.availRxBuf == 0)
-  {
-    /* Flow control Rx path. */
-    return NULL;
-  }
+    if (lmgrIsoCb.availRxBuf == 0) {
+        /* Flow control Rx path. */
+        return NULL;
+    }
 
-  uint8_t *pPdu;
+    uint8_t *pPdu;
 
-  /* Use LL_ISO_PDU_MAX_LEN to ensure use of data buffers located in the large pool. */
-  if ((pPdu = (uint8_t*)WsfMsgAlloc(allocLen)) != NULL)
-  {
-    /* Return start of ISO Data PDU. */
-    pPdu += LCTR_ISO_SDU_START_OFFSET;
+    /* Use LL_ISO_PDU_MAX_LEN to ensure use of data buffers located in the large pool. */
+    if ((pPdu = (uint8_t *)WsfMsgAlloc(allocLen)) != NULL) {
+        /* Return start of ISO Data PDU. */
+        pPdu += LCTR_ISO_SDU_START_OFFSET;
 
-    /* Do not claim buffer until committed. */
-    /* lctrIsoDataRxDecAvailBuf(); */
-  }
+        /* Do not claim buffer until committed. */
+        /* lctrIsoDataRxDecAvailBuf(); */
+    }
 
-  return pPdu;
+    return pPdu;
 }
 
 /*************************************************************************************************/
@@ -951,11 +891,11 @@ uint8_t *lctrBisRxIsoDataPduAlloc(void)
 /*************************************************************************************************/
 uint8_t *lctrBisRxIsoSduDeq(lctrBisCtx_t *pBisCtx)
 {
-  wsfHandlerId_t bisHandle;
+    wsfHandlerId_t bisHandle;
 
-  uint8_t *pSdu = WsfMsgDeq(&pBisCtx->roleData.mst.rxIsoSduQ, &bisHandle);
+    uint8_t *pSdu = WsfMsgDeq(&pBisCtx->roleData.mst.rxIsoSduQ, &bisHandle);
 
-  return pSdu;
+    return pSdu;
 }
 
 /*************************************************************************************************/
@@ -968,8 +908,8 @@ uint8_t *lctrBisRxIsoSduDeq(lctrBisCtx_t *pBisCtx)
 /*************************************************************************************************/
 void lctrBisRxIsoSduEnq(lctrBisCtx_t *pBisCtx, uint8_t *pSdu)
 {
-  WsfMsgEnq(&pBisCtx->roleData.mst.rxIsoSduQ, pBisCtx->handle, pSdu);
-  lctrIsoDataRxDecAvailBuf();
+    WsfMsgEnq(&pBisCtx->roleData.mst.rxIsoSduQ, pBisCtx->handle, pSdu);
+    lctrIsoDataRxDecAvailBuf();
 }
 
 /*************************************************************************************************/
@@ -981,8 +921,8 @@ void lctrBisRxIsoSduEnq(lctrBisCtx_t *pBisCtx, uint8_t *pSdu)
 /*************************************************************************************************/
 void lctrBisRxIsoDataPduFree(uint8_t *pPdu)
 {
-  /* Recover start of buffer. */
-  WsfMsgFree(pPdu - LCTR_ISO_SDU_START_OFFSET);
+    /* Recover start of buffer. */
+    WsfMsgFree(pPdu - LCTR_ISO_SDU_START_OFFSET);
 }
 
 /*************************************************************************************************/
@@ -996,7 +936,7 @@ void lctrBisRxIsoDataPduFree(uint8_t *pPdu)
 /*************************************************************************************************/
 void lctrBisEnqueueRxDataPdu(lctrBisCtx_t *pBisCtx, uint8_t *pRxBuf, uint64_t evtCtr)
 {
-  WsfMsgEnq(&pBisCtx->roleData.mst.rxDataQ, (uint8_t)evtCtr, pRxBuf - LCTR_ISO_SDU_START_OFFSET);
+    WsfMsgEnq(&pBisCtx->roleData.mst.rxDataQ, (uint8_t)evtCtr, pRxBuf - LCTR_ISO_SDU_START_OFFSET);
 }
 
 /*************************************************************************************************/
@@ -1011,20 +951,18 @@ void lctrBisEnqueueRxDataPdu(lctrBisCtx_t *pBisCtx, uint8_t *pRxBuf, uint64_t ev
 /*************************************************************************************************/
 uint8_t *lctrBisDequeueRxDataPdu(lctrBisCtx_t *pBisCtx, uint8_t *pEvtCtrLsb)
 {
-  uint8_t *pBuf;
-  uint8_t temp8;
+    uint8_t *pBuf;
+    uint8_t temp8;
 
-  if (pEvtCtrLsb == NULL)
-  {
-    pEvtCtrLsb = &temp8;
-  }
+    if (pEvtCtrLsb == NULL) {
+        pEvtCtrLsb = &temp8;
+    }
 
-  if ((pBuf = WsfMsgDeq(&pBisCtx->roleData.mst.rxDataQ, pEvtCtrLsb)) == NULL)
-  {
-    return NULL;
-  }
+    if ((pBuf = WsfMsgDeq(&pBisCtx->roleData.mst.rxDataQ, pEvtCtrLsb)) == NULL) {
+        return NULL;
+    }
 
-  return pBuf + LCTR_ISO_SDU_START_OFFSET;
+    return pBuf + LCTR_ISO_SDU_START_OFFSET;
 }
 
 /*************************************************************************************************/
@@ -1039,31 +977,29 @@ uint8_t *lctrBisDequeueRxDataPdu(lctrBisCtx_t *pBisCtx, uint8_t *pEvtCtrLsb)
 /*************************************************************************************************/
 uint8_t lctrBisTxTest(lctrBisCtx_t *pBisCtx, uint8_t pldType)
 {
-  uint8_t status = LL_SUCCESS;
+    uint8_t status = LL_SUCCESS;
 
-  if (pBisCtx->test.enabled || pBisCtx->test.term)
-  {
-    LL_TRACE_WARN0("Invalid ISO Test state, test mode already enabled");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (pBisCtx->test.enabled || pBisCtx->test.term) {
+        LL_TRACE_WARN0("Invalid ISO Test state, test mode already enabled");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  if (lmgrIsoCb.availTxBuf == 0)
-  {
-    LL_TRACE_WARN0("Out of memory, no ISO Tx buffers available");
-    return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
-  }
+    if (lmgrIsoCb.availTxBuf == 0) {
+        LL_TRACE_WARN0("Out of memory, no ISO Tx buffers available");
+        return LL_ERROR_CODE_MEM_CAP_EXCEEDED;
+    }
 
-  /* BIS Data PDU generation occurs ever SDU Interval in lctrSlvBigEndOp(). */
+    /* BIS Data PDU generation occurs ever SDU Interval in lctrSlvBigEndOp(). */
 
-  pBisCtx->test.enabled = TRUE;
-  pBisCtx->test.term = FALSE;
-  pBisCtx->test.util.framed.payloadCtr = 0;
+    pBisCtx->test.enabled = TRUE;
+    pBisCtx->test.term = FALSE;
+    pBisCtx->test.util.framed.payloadCtr = 0;
 #if (LL_ENABLE_TESTER)
-  pBisCtx->test.util.framed.payloadCtr = llTesterCb.isoTxTestNumInit;
+    pBisCtx->test.util.framed.payloadCtr = llTesterCb.isoTxTestNumInit;
 #endif
-  pBisCtx->test.pldType = pldType;
+    pBisCtx->test.pldType = pldType;
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -1078,21 +1014,20 @@ uint8_t lctrBisTxTest(lctrBisCtx_t *pBisCtx, uint8_t pldType)
 /*************************************************************************************************/
 uint8_t lctrBisRxTest(lctrBisCtx_t *pBisCtx, uint8_t pldType)
 {
-  uint8_t status = LL_SUCCESS;
+    uint8_t status = LL_SUCCESS;
 
-  if (pBisCtx->test.enabled || pBisCtx->test.term)
-  {
-    LL_TRACE_WARN0("Invalid ISO Test state, test mode already enabled");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (pBisCtx->test.enabled || pBisCtx->test.term) {
+        LL_TRACE_WARN0("Invalid ISO Test state, test mode already enabled");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  pBisCtx->test.enabled = TRUE;
-  pBisCtx->test.term = FALSE;
-  pBisCtx->test.pendInit = TRUE;
-  pBisCtx->test.pldType = pldType;
-  memset(&pBisCtx->roleData.mst.stats, 0, sizeof(pBisCtx->roleData.mst.stats));
+    pBisCtx->test.enabled = TRUE;
+    pBisCtx->test.term = FALSE;
+    pBisCtx->test.pendInit = TRUE;
+    pBisCtx->test.pldType = pldType;
+    memset(&pBisCtx->roleData.mst.stats, 0, sizeof(pBisCtx->roleData.mst.stats));
 
-  return status;
+    return status;
 }
 
 /*************************************************************************************************/
@@ -1107,15 +1042,14 @@ uint8_t lctrBisRxTest(lctrBisCtx_t *pBisCtx, uint8_t pldType)
 /*************************************************************************************************/
 uint8_t LctrBisReadTestCounters(lctrBisCtx_t *pBisCtx, LlIsoTestCtrs_t *pStats)
 {
-  if (pBisCtx->test.enabled == FALSE)
-  {
-    LL_TRACE_WARN0("Invalid ISO Test state, test mode must be enabled");
-    return LL_ERROR_CODE_CMD_DISALLOWED;
-  }
+    if (pBisCtx->test.enabled == FALSE) {
+        LL_TRACE_WARN0("Invalid ISO Test state, test mode must be enabled");
+        return LL_ERROR_CODE_CMD_DISALLOWED;
+    }
 
-  *pStats = pBisCtx->roleData.mst.stats;
+    *pStats = pBisCtx->roleData.mst.stats;
 
-  return LL_SUCCESS;
+    return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -1130,45 +1064,45 @@ uint8_t LctrBisReadTestCounters(lctrBisCtx_t *pBisCtx, LlIsoTestCtrs_t *pStats)
 /*************************************************************************************************/
 uint16_t LctrInitBisMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-  uint8_t *pAvailMem = pFreeMem;
+    uint8_t *pAvailMem = pFreeMem;
 
-  /*** Advertising Set Context ***/
+    /*** Advertising Set Context ***/
 
-  if (((uint32_t)pAvailMem) & 3)
-  {
-    /* Align to next word. */
-    pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
-  }
+    if (((uint32_t)pAvailMem) & 3) {
+        /* Align to next word. */
+        pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
+    }
 
-  LL_TRACE_INFO2("    RAM: %u x %u bytes -- BIS context", pLctrRtCfg->maxBis, sizeof(lctrBisCtx_t));
+    LL_TRACE_INFO2("    RAM: %u x %u bytes -- BIS context", pLctrRtCfg->maxBis,
+                   sizeof(lctrBisCtx_t));
 
-  /* Allocate BIS context memory. */
-  pLctrBisTbl = (lctrBisCtx_t *)pAvailMem;
-  pAvailMem += sizeof(lctrBisCtx_t) * pLctrRtCfg->maxBis;
+    /* Allocate BIS context memory. */
+    pLctrBisTbl = (lctrBisCtx_t *)pAvailMem;
+    pAvailMem += sizeof(lctrBisCtx_t) * pLctrRtCfg->maxBis;
 
-  if (((uint32_t)pAvailMem) & 3)
-  {
-    /* Align to next word. */
-    pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
-  }
+    if (((uint32_t)pAvailMem) & 3) {
+        /* Align to next word. */
+        pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
+    }
 
-  LL_TRACE_INFO2("    RAM: %u x %u bytes -- BIG context", pLctrRtCfg->maxBig, sizeof(lctrBigCtx_t));
+    LL_TRACE_INFO2("    RAM: %u x %u bytes -- BIG context", pLctrRtCfg->maxBig,
+                   sizeof(lctrBigCtx_t));
 
-  /* Allocate BIG context memory. */
-  pLctrBigTbl = (lctrBigCtx_t *)pAvailMem;
-  pAvailMem += sizeof(lctrBigCtx_t) * pLctrRtCfg->maxBig;
+    /* Allocate BIG context memory. */
+    pLctrBigTbl = (lctrBigCtx_t *)pAvailMem;
+    pAvailMem += sizeof(lctrBigCtx_t) * pLctrRtCfg->maxBig;
 
-  if (((uint32_t)(pAvailMem - pFreeMem)) > freeMemSize)
-  {
-    LL_TRACE_ERR2("LctrInitBisMem: failed to allocate BIG, need=%u available=%u", (pAvailMem - pFreeMem), freeMemSize);
-    WSF_ASSERT(FALSE);
-    return 0;
-  }
+    if (((uint32_t)(pAvailMem - pFreeMem)) > freeMemSize) {
+        LL_TRACE_ERR2("LctrInitBisMem: failed to allocate BIG, need=%u available=%u",
+                      (pAvailMem - pFreeMem), freeMemSize);
+        WSF_ASSERT(FALSE);
+        return 0;
+    }
 
-  lmgrPersistCb.bisCtxSize = sizeof(lctrBisCtx_t);
-  lmgrPersistCb.bigCtxSize = sizeof(lctrBigCtx_t);
+    lmgrPersistCb.bisCtxSize = sizeof(lctrBisCtx_t);
+    lmgrPersistCb.bigCtxSize = sizeof(lctrBigCtx_t);
 
-  return (pAvailMem - pFreeMem);
+    return (pAvailMem - pFreeMem);
 }
 
 /*************************************************************************************************/
@@ -1180,32 +1114,28 @@ uint16_t LctrInitBisMem(uint8_t *pFreeMem, uint32_t freeMemSize)
 /*************************************************************************************************/
 void lctrNotifyIsoTxComplete(lctrBigCtx_t *pBigCtx)
 {
-  uint8_t numHandles = 0;
-  uint16_t handle[LL_MAX_BIS] = { 0 };
-  uint16_t numSdu[LL_MAX_BIS] = { 0 };
+    uint8_t numHandles = 0;
+    uint16_t handle[LL_MAX_BIS] = { 0 };
+    uint16_t numSdu[LL_MAX_BIS] = { 0 };
 
-  /* Tally total transmitted SDUs. */
-  for (unsigned int i = 0; i < pBigCtx->numBis; i++)
-  {
-    lctrBisCtx_t * const pBisCtx = pBigCtx->pBisCtx[i];
+    /* Tally total transmitted SDUs. */
+    for (unsigned int i = 0; i < pBigCtx->numBis; i++) {
+        lctrBisCtx_t *const pBisCtx = pBigCtx->pBisCtx[i];
 
-    if (pBisCtx->path == LL_ISO_DATA_PATH_HCI)
-    {
-      if (pBisCtx->roleData.slv.numTxSduComp)
-      {
-        handle[numHandles] = pBisCtx->handle;
-        numSdu[numHandles] = pBisCtx->roleData.slv.numTxSduComp;
-        pBisCtx->roleData.slv.numTxSduComp = 0;
-        numHandles++;
-      }
+        if (pBisCtx->path == LL_ISO_DATA_PATH_HCI) {
+            if (pBisCtx->roleData.slv.numTxSduComp) {
+                handle[numHandles] = pBisCtx->handle;
+                numSdu[numHandles] = pBisCtx->roleData.slv.numTxSduComp;
+                pBisCtx->roleData.slv.numTxSduComp = 0;
+                numHandles++;
+            }
+        }
     }
-  }
 
-  if (numHandles)
-  {
-    /* Notify host completed SDUs. */
-    lmgrPersistCb.sendIsoCompCback(numHandles, handle, numSdu);
-  }
+    if (numHandles) {
+        /* Notify host completed SDUs. */
+        lmgrPersistCb.sendIsoCompCback(numHandles, handle, numSdu);
+    }
 }
 
 /*************************************************************************************************/
@@ -1219,22 +1149,24 @@ void lctrNotifyIsoTxComplete(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrBisCalcGroupSessionKey(const uint8_t *pGSKD, const uint8_t *pBC, uint8_t *pGSK)
 {
-  static const uint8_t big1[PAL_CRYPTO_LL_KEY_LEN] = { 0x31, 0x47, 0x49, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-  static const uint8_t big2[4] = { 0x32, 0x47, 0x49, 0x42 };
-  static const uint8_t big3[4] = { 0x33, 0x47, 0x49, 0x42 };
-  uint8_t igltk[PAL_CRYPTO_LL_KEY_LEN];
-  uint8_t gltk[PAL_CRYPTO_LL_KEY_LEN];
-  uint8_t ik[PAL_CRYPTO_LL_KEY_LEN];
+    static const uint8_t big1[PAL_CRYPTO_LL_KEY_LEN] = { 0x31, 0x47, 0x49, 0x42, 0x00, 0x00,
+                                                         0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                         0x00, 0x00, 0x00, 0x00 };
+    static const uint8_t big2[4] = { 0x32, 0x47, 0x49, 0x42 };
+    static const uint8_t big3[4] = { 0x33, 0x47, 0x49, 0x42 };
+    uint8_t igltk[PAL_CRYPTO_LL_KEY_LEN];
+    uint8_t gltk[PAL_CRYPTO_LL_KEY_LEN];
+    uint8_t ik[PAL_CRYPTO_LL_KEY_LEN];
 
-  /* IGLTK = h7("BIG1", Broadcast_Code) */
-  PalCryptoAesCmac(big1, igltk, pBC, 16);
+    /* IGLTK = h7("BIG1", Broadcast_Code) */
+    PalCryptoAesCmac(big1, igltk, pBC, 16);
 
-  /* GLTK = h6(IGLTK, "BIG2") */
-  PalCryptoAesCmac(igltk, gltk, big2, 4);
+    /* GLTK = h6(IGLTK, "BIG2") */
+    PalCryptoAesCmac(igltk, gltk, big2, 4);
 
-  /* GSK = h8(GLTK, GSKD, "BIG3") */
-  PalCryptoAesCmac(pGSKD, ik, gltk, 16);
-  PalCryptoAesCmac(ik, pGSK, big3, 4);
+    /* GSK = h8(GLTK, GSKD, "BIG3") */
+    PalCryptoAesCmac(pGSKD, ik, gltk, 16);
+    PalCryptoAesCmac(ik, pGSK, big3, 4);
 }
 
 /*************************************************************************************************/
@@ -1250,71 +1182,63 @@ void lctrBisCalcGroupSessionKey(const uint8_t *pGSKD, const uint8_t *pBC, uint8_
 /*************************************************************************************************/
 uint8_t lctrBisSetDataPath(lctrBisCtx_t *pBisCtx, LlIsoDataPathDir_t dpDir, LlIsoDataPath_t dpId)
 {
-  if (pBisCtx->path == dpId)
-  {
-    /* No change. */
+    if (pBisCtx->path == dpId) {
+        /* No change. */
+        return LL_SUCCESS;
+    }
+
+    /*** Stop current data path. ***/
+
+    switch (pBisCtx->path) {
+    case LL_ISO_DATA_PATH_VS:
+        if (!lctrCodecHdlr.stop) {
+            return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+        }
+        lctrCodecHdlr.stop(pBisCtx->handle);
+        break;
+    case LL_ISO_DATA_PATH_DISABLED:
+    case LL_ISO_DATA_PATH_HCI:
+    default:
+        /* No action required. */
+        break;
+    }
+
+    /*** Start new data path. ***/
+
+    pBisCtx->path = dpId;
+
+    switch (dpId) {
+    case LL_ISO_DATA_PATH_VS:
+        if (lctrCodecHdlr.start) {
+            PalCodecSreamParam_t param = { .dir = (dpDir == LL_ISO_DATA_DIR_INPUT) ?
+                                                      PAL_CODEC_DIR_INPUT :
+                                                      PAL_CODEC_DIR_OUTPUT,
+                                           .chMask = PAL_CODEC_CH_LEFT_BIT | PAL_CODEC_CH_RIGHT_BIT,
+                                           .intervalUsec = pBisCtx->pBigCtx->isoInterUsec,
+                                           .pktCtr = (pBisCtx->pBigCtx->eventCounter + 1) *
+                                                     pBisCtx->pBigCtx->bn,
+                                           .rdyCback = lctrIsoSendCodecSdu };
+
+            if (!lctrCodecHdlr.start(pBisCtx->handle, &param)) {
+                LL_TRACE_WARN1("Failed to start the codec, dpId=%u", dpId);
+                pBisCtx->path = LL_ISO_DATA_PATH_DISABLED;
+                return LL_ERROR_CODE_CONN_REJ_LIMITED_RESOURCES;
+            }
+        } else {
+            LL_TRACE_WARN1("Codec not found, dpId=%u", dpId);
+            return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+        }
+        break;
+    case LL_ISO_DATA_PATH_DISABLED:
+    case LL_ISO_DATA_PATH_HCI:
+        /* No action required. */
+        break;
+    default:
+        LL_TRACE_WARN1("Unknown Data Path, dpId=%u", dpId);
+        return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
+    }
+
     return LL_SUCCESS;
-  }
-
-  /*** Stop current data path. ***/
-
-  switch (pBisCtx->path)
-  {
-  case LL_ISO_DATA_PATH_VS:
-    if (!lctrCodecHdlr.stop)
-    {
-      return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
-    lctrCodecHdlr.stop(pBisCtx->handle);
-    break;
-  case LL_ISO_DATA_PATH_DISABLED:
-  case LL_ISO_DATA_PATH_HCI:
-  default:
-    /* No action required. */
-    break;
-  }
-
-  /*** Start new data path. ***/
-
-  pBisCtx->path = dpId;
-
-  switch (dpId)
-  {
-  case LL_ISO_DATA_PATH_VS:
-    if (lctrCodecHdlr.start)
-    {
-      PalCodecSreamParam_t param =
-      {
-        .dir          = (dpDir == LL_ISO_DATA_DIR_INPUT) ? PAL_CODEC_DIR_INPUT : PAL_CODEC_DIR_OUTPUT,
-        .chMask       = PAL_CODEC_CH_LEFT_BIT | PAL_CODEC_CH_RIGHT_BIT,
-        .intervalUsec = pBisCtx->pBigCtx->isoInterUsec,
-        .pktCtr       = (pBisCtx->pBigCtx->eventCounter + 1) * pBisCtx->pBigCtx->bn,
-        .rdyCback     = lctrIsoSendCodecSdu
-      };
-
-      if (!lctrCodecHdlr.start(pBisCtx->handle, &param))
-      {
-        LL_TRACE_WARN1("Failed to start the codec, dpId=%u", dpId);
-        pBisCtx->path = LL_ISO_DATA_PATH_DISABLED;
-        return LL_ERROR_CODE_CONN_REJ_LIMITED_RESOURCES;
-      }
-    }
-    else
-    {
-      LL_TRACE_WARN1("Codec not found, dpId=%u", dpId);
-      return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-    }
-    break;
-  case LL_ISO_DATA_PATH_DISABLED:
-  case LL_ISO_DATA_PATH_HCI:
-    /* No action required. */
-    break;
-  default:
-    LL_TRACE_WARN1("Unknown Data Path, dpId=%u", dpId);
-    return LL_ERROR_CODE_INVALID_HCI_CMD_PARAMS;
-  }
-
-  return LL_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -1328,47 +1252,45 @@ uint8_t lctrBisSetDataPath(lctrBisCtx_t *pBisCtx, LlIsoDataPathDir_t dpDir, LlIs
  *  \return TRUE if more subevents pending, FALSE otherwise.
  */
 /*************************************************************************************************/
-bool_t lctrSlvBisCalcNextIdxSequential(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCtx, uint8_t numSePkts)
+bool_t lctrSlvBisCalcNextIdxSequential(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCtx,
+                                       uint8_t numSePkts)
 {
-  /* Burst loop. */
+    /* Burst loop. */
 
-  pSeCtx->burstIdx++;
+    pSeCtx->burstIdx++;
 
-  if (pSeCtx->burstIdx >= pBigCtx->bn)      /* Last burst */
-  {
-    pSeCtx->burstIdx = 0;
-
-    /* Retransmission loop. */
-
-    pSeCtx->repIdx++;
-
-    if (pSeCtx->repIdx >= pBigCtx->irc)     /* Last retransmission */
+    if (pSeCtx->burstIdx >= pBigCtx->bn) /* Last burst */
     {
-      pSeCtx->repIdx = 0;
+        pSeCtx->burstIdx = 0;
 
-      if (numSePkts < pBigCtx->nse)
-      {
-        /* Pretransmission loop. */
+        /* Retransmission loop. */
 
-        pSeCtx->ptIdx++;
-        numSePkts++;
-      }
-      else
-      {
-        /* BIS loop. */
+        pSeCtx->repIdx++;
 
-        pSeCtx->bisEvtIdx++;
-
-        if (pSeCtx->bisEvtIdx >= pBigCtx->numBis)   /* Last BIS */
+        if (pSeCtx->repIdx >= pBigCtx->irc) /* Last retransmission */
         {
-          /* Control SubEvent */
-          return FALSE;
-        }
-      }
-    }
-  }
+            pSeCtx->repIdx = 0;
 
-  return TRUE;
+            if (numSePkts < pBigCtx->nse) {
+                /* Pretransmission loop. */
+
+                pSeCtx->ptIdx++;
+                numSePkts++;
+            } else {
+                /* BIS loop. */
+
+                pSeCtx->bisEvtIdx++;
+
+                if (pSeCtx->bisEvtIdx >= pBigCtx->numBis) /* Last BIS */
+                {
+                    /* Control SubEvent */
+                    return FALSE;
+                }
+            }
+        }
+    }
+
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -1382,45 +1304,45 @@ bool_t lctrSlvBisCalcNextIdxSequential(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCt
  *  \return TRUE if more subevents pending, FALSE otherwise.
  */
 /*************************************************************************************************/
-bool_t lctrSlvBisCalcNextIdxInterleaved(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCtx, uint8_t numSePkts)
+bool_t lctrSlvBisCalcNextIdxInterleaved(lctrBigCtx_t *pBigCtx, lctrSeCtx_t *pSeCtx,
+                                        uint8_t numSePkts)
 {
-  /* BIS loop. */
+    /* BIS loop. */
 
-  pSeCtx->bisEvtIdx++;
+    pSeCtx->bisEvtIdx++;
 
-  if (pSeCtx->bisEvtIdx >= pBigCtx->numBis)   /* Last BIS */
-  {
-    pSeCtx->bisEvtIdx = 0;
-
-    /* Burst loop. */
-
-    pSeCtx->burstIdx++;
-
-    if (pSeCtx->burstIdx >= pBigCtx->bn)      /* Last burst */
+    if (pSeCtx->bisEvtIdx >= pBigCtx->numBis) /* Last BIS */
     {
-      pSeCtx->burstIdx = 0;
+        pSeCtx->bisEvtIdx = 0;
 
-      /* Retransmission loop. */
+        /* Burst loop. */
 
-      pSeCtx->repIdx++;
+        pSeCtx->burstIdx++;
 
-      if (pSeCtx->repIdx >= pBigCtx->irc)     /* Last retransmission */
-      {
-        pSeCtx->repIdx = 0;
-
-        /* Pretransmission loop. */
-
-        pSeCtx->ptIdx++;
-        numSePkts++;
-
-        if (numSePkts > pBigCtx->nse)
+        if (pSeCtx->burstIdx >= pBigCtx->bn) /* Last burst */
         {
-          /* Control SubEvent */
-          return FALSE;
-        }
-      }
-    }
-  }
+            pSeCtx->burstIdx = 0;
 
-  return TRUE;
+            /* Retransmission loop. */
+
+            pSeCtx->repIdx++;
+
+            if (pSeCtx->repIdx >= pBigCtx->irc) /* Last retransmission */
+            {
+                pSeCtx->repIdx = 0;
+
+                /* Pretransmission loop. */
+
+                pSeCtx->ptIdx++;
+                numSePkts++;
+
+                if (numSePkts > pBigCtx->nse) {
+                    /* Control SubEvent */
+                    return FALSE;
+                }
+            }
+        }
+    }
+
+    return TRUE;
 }

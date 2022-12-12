@@ -31,8 +31,7 @@
 #define MMDL_GEN_BATTERY_CL_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "mmdl_defs.h"
@@ -42,22 +41,20 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Generic Battery Client Model Status event structure */
-typedef struct mmdlGenBatteryClStatusEvent_tag
-{
-  wsfMsgHdr_t          hdr;             /*!< WSF message header */
-  meshElementId_t      elementId;       /*!< Element ID */
-  meshAddress_t        serverAddr;      /*!< Server Address */
-  uint8_t              state;           /*!< Received published state */
-  uint32_t             timeToDischarge; /*!< Received published time to discharge state */
-  uint32_t             timeToCharge;    /*!< Received published time to charge state */
-  uint8_t              flags;           /*!< Received published flag state */
+typedef struct mmdlGenBatteryClStatusEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elementId; /*!< Element ID */
+    meshAddress_t serverAddr; /*!< Server Address */
+    uint8_t state; /*!< Received published state */
+    uint32_t timeToDischarge; /*!< Received published time to discharge state */
+    uint32_t timeToCharge; /*!< Received published time to charge state */
+    uint8_t flags; /*!< Received published flag state */
 } mmdlGenBatteryClStatusEvent_t;
 
 /*! \brief Generic Battery Client Model event callback parameters structure */
-typedef union mmdlGenBatteryClEvent_tag
-{
-  wsfMsgHdr_t                   hdr;         /*!< WSF message header */
-  mmdlGenBatteryClStatusEvent_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlGenBatteryClEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    mmdlGenBatteryClStatusEvent_t statusEvent; /*!< State updated event. Used for
                                               *   ::MMDL_GEN_BATTERY_CL_STATUS_EVENT.
                                               */
 } mmdlGenBatteryClEvent_t;
@@ -81,7 +78,7 @@ typedef void (*mmdlGenBatteryClRecvCback_t)(const wsfMsgHdr_t *pEvent);
 extern wsfHandlerId_t mmdlGenBatteryClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t  mmdlGenBatteryClRcvdOpcodes[];
+extern const meshMsgOpcode_t mmdlGenBatteryClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations

@@ -28,64 +28,59 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Bearer advertising states. */
-enum bearerSlots
-{
-  BR_ADV_SLOT,    /*! ADV bearer slot index */
-  BR_GATT_SLOT,   /*! GATT bearer slot index */
-  BR_NUM_SLOTS    /*! Number of bearer scheduler slots */
+enum bearerSlots {
+    BR_ADV_SLOT, /*! ADV bearer slot index */
+    BR_GATT_SLOT, /*! GATT bearer slot index */
+    BR_NUM_SLOTS /*! Number of bearer scheduler slots */
 };
 
 /*! Bearer advertising states. */
-enum bearerAdvStateValues
-{
-  ADV_STOPPED,    /*!< Advertising stopped */
-  ADV_STARTED,    /*!< Advertising started */
-  ADV_STOP_REQ,   /*!< Advertising stop request was sent */
-  ADV_START_REQ   /*!< Advertising start request was sent */
+enum bearerAdvStateValues {
+    ADV_STOPPED, /*!< Advertising stopped */
+    ADV_STARTED, /*!< Advertising started */
+    ADV_STOP_REQ, /*!< Advertising stop request was sent */
+    ADV_START_REQ /*!< Advertising start request was sent */
 };
 
 /*! Bearer scanning states */
-enum bearerScanStateValues
-{
-  SCAN_STOPPED,   /*!< Scanning stopped */
-  SCAN_STARTED,   /*!< Scanning started */
-  SCAN_STOP_REQ,  /*!< Scan stop request was sent */
-  SCAN_START_REQ  /*!< Scan start request was sent */
+enum bearerScanStateValues {
+    SCAN_STOPPED, /*!< Scanning stopped */
+    SCAN_STARTED, /*!< Scanning started */
+    SCAN_STOP_REQ, /*!< Scan stop request was sent */
+    SCAN_START_REQ /*!< Scan start request was sent */
 };
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
-typedef void (*brStartFunc_t) (void);
-typedef bool_t (*brStopFunc_t) (void);
+typedef void (*brStartFunc_t)(void);
+typedef bool_t (*brStopFunc_t)(void);
 typedef void (*appBearerCback_t)(uint8_t slot);
 typedef void (*brDmEvtCback_t)(dmEvt_t *pDmEvt);
 
 /*! Scheduler entry */
-typedef struct
-{
-  brStartFunc_t          pStartFunc;           /*!< Bearer Start function */
-  brStopFunc_t           pStopFunc;            /*!< Bearer Stop function */
-  brDmEvtCback_t         dmCback;              /*!< Bearer DM event handler */
-  uint32_t               minSlotTimeInMs;      /*!< Minimum scheduled time in ms */
-  bool_t                 enabled;              /*!< Specifies if the slot is enabled */
+typedef struct {
+    brStartFunc_t pStartFunc; /*!< Bearer Start function */
+    brStopFunc_t pStopFunc; /*!< Bearer Stop function */
+    brDmEvtCback_t dmCback; /*!< Bearer DM event handler */
+    uint32_t minSlotTimeInMs; /*!< Minimum scheduled time in ms */
+    bool_t enabled; /*!< Specifies if the slot is enabled */
 } brSchedulerEntry_t;
 
 /*! App Bearer control block */
-typedef struct
-{
-  appBearerCback_t    pAppCback;               /*!< Application callback */
-  brSchedulerEntry_t  schTable[BR_NUM_SLOTS];  /*!< Bearer slots table */
-  uint8_t             runningSlot;             /*!< Running slot index */
-  uint8_t             pendingSlot;             /*!< Pending slot index */
-  uint8_t             advState;                /*!< Advertising state.
+typedef struct {
+    appBearerCback_t pAppCback; /*!< Application callback */
+    brSchedulerEntry_t schTable[BR_NUM_SLOTS]; /*!< Bearer slots table */
+    uint8_t runningSlot; /*!< Running slot index */
+    uint8_t pendingSlot; /*!< Pending slot index */
+    uint8_t advState; /*!< Advertising state.
                                                 *   See ::bearerAdvStateValues
                                                 */
-  uint8_t             scanState;               /*!< Scanning state.
+    uint8_t scanState; /*!< Scanning state.
                                                 *   See ::bearerScanStateValues
                                                 */
-  wsfTimer_t          schedulerTimer;          /*!< Scheduler WSF timer */
+    wsfTimer_t schedulerTimer; /*!< Scheduler WSF timer */
 } appBrCb_t;
 
 /**************************************************************************************************

@@ -86,7 +86,7 @@ uint16_t AppParamRead(uint16_t id, uint16_t valueLen, uint8_t *pValue);
 
 /**@}*/
 
-/*! \} */    /*! APP_FRAMEWORK_PARAM_API */
+/*! \} */ /*! APP_FRAMEWORK_PARAM_API */
 
 #ifdef __cplusplus
 };

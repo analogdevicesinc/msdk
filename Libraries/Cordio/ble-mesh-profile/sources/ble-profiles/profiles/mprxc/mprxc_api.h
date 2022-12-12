@@ -39,12 +39,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Mesh Proxy service enumeration of handle indexes of characteristics to be discovered */
-enum
-{
-  MPRXC_MPRXS_DIN_HDL_IDX,        /*!< Data In */
-  MPRXC_MPRXS_DOUT_HDL_IDX,       /*!< Data Out  */
-  MPRXC_MPRXS_DOUT_CCC_HDL_IDX,   /*!< Data Out CCC descriptor */
-  MPRXC_MPRXS_HDL_LIST_LEN        /*!< Handle list length */
+enum {
+    MPRXC_MPRXS_DIN_HDL_IDX, /*!< Data In */
+    MPRXC_MPRXS_DOUT_HDL_IDX, /*!< Data Out  */
+    MPRXC_MPRXS_DOUT_CCC_HDL_IDX, /*!< Data Out CCC descriptor */
+    MPRXC_MPRXS_HDL_LIST_LEN /*!< Handle list length */
 };
 
 /**************************************************************************************************
@@ -65,7 +64,6 @@ enum
  */
 /*************************************************************************************************/
 void MprxcMprxsDiscover(dmConnId_t connId, uint16_t *pHdlList);
-
 
 /*************************************************************************************************/
 /*!
@@ -104,7 +102,7 @@ void MprxcSendDataIn(meshGattProxyPduSendEvt_t *pEvt);
 /*************************************************************************************************/
 void MprxcProcMsg(wsfMsgHdr_t *pMsg);
 
-/*! \} */    /* MESH_PROXY_PROFILE */
+/*! \} */ /* MESH_PROXY_PROFILE */
 
 #ifdef __cplusplus
 };

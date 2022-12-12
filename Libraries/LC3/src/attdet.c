@@ -18,23 +18,21 @@
 
 #include "attdet.h"
 
-
 /**
  * Time domain attack detector
  */
-bool lc3_attdet_run(enum lc3_dt dt, enum lc3_srate sr,
-    int nbytes, struct lc3_attdet_analysis *attdet, const int16_t *x)
+bool lc3_attdet_run(enum lc3_dt dt, enum lc3_srate sr, int nbytes,
+                    struct lc3_attdet_analysis *attdet, const int16_t *x)
 {
     /* --- Check enabling --- */
 
     const int nbytes_ranges[LC3_NUM_DT][LC3_NUM_SRATE - LC3_SRATE_32K][2] = {
-            [LC3_DT_7M5] = { { 61,     149 }, {  75,     149 } },
-            [LC3_DT_10M] = { { 81, INT_MAX }, { 100, INT_MAX } },
+        [LC3_DT_7M5] = { { 61, 149 }, { 75, 149 } },
+        [LC3_DT_10M] = { { 81, INT_MAX }, { 100, INT_MAX } },
     };
 
-    if (sr < LC3_SRATE_32K ||
-            nbytes < nbytes_ranges[dt][sr - LC3_SRATE_32K][0] ||
-            nbytes > nbytes_ranges[dt][sr - LC3_SRATE_32K][1]   )
+    if (sr < LC3_SRATE_32K || nbytes < nbytes_ranges[dt][sr - LC3_SRATE_32K][0] ||
+        nbytes > nbytes_ranges[dt][sr - LC3_SRATE_32K][1])
         return 0;
 
     /* --- Filtering & Energy calculation --- */

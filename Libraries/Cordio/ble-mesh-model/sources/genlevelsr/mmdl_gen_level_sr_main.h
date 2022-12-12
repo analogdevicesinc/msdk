@@ -27,8 +27,7 @@
 #define MMDL_GEN_LEVEL_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************

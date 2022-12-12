@@ -32,15 +32,11 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
-
 #ifndef _SSI_PAL_FILE_H
 #define _SSI_PAL_FILE_H
 
-
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "ssi_pal_types.h"
@@ -55,35 +51,33 @@ extern "C"
 */
 
 /**** ----- Files General Definitions ----- ****/
-typedef enum
-{
-    SASI_PAL_Read   =               0,   /* "r", read only */
-    SASI_PAL_ReadAndWrite     =     1,   /* "r+", read and write */
-    SASI_PAL_Write  =               2,   /* "w", write only */
-    SASI_PAL_WriteAndRead =         3,   /* "w+", write and read */
-    SASI_PAL_Append =               4,   /* "a", append to the end of file */
-    SASI_PAL_AppendAndRead  =       5,   /* "a+", append (to the end of file) and read */
-    SASI_PAL_ReadBinary     =       6,   /* "rb", read binary  */
-    SASI_PAL_ReadAndWriteBinary =   7,   /* "r+b" read and write binary */
-    SASI_PAL_WriteBinary  =         8,   /* "wb" write binary */
-    SASI_PAL_WriteAndReadBinary =   9,   /* "w+b" write and read binary */
-    SASI_PAL_AppendBinary =         10,   /* "ab" append binary */
-    SASI_PAL_AppendAndReadBinary  = 11,    /* "a+b" append and read binary */
+typedef enum {
+    SASI_PAL_Read = 0, /* "r", read only */
+    SASI_PAL_ReadAndWrite = 1, /* "r+", read and write */
+    SASI_PAL_Write = 2, /* "w", write only */
+    SASI_PAL_WriteAndRead = 3, /* "w+", write and read */
+    SASI_PAL_Append = 4, /* "a", append to the end of file */
+    SASI_PAL_AppendAndRead = 5, /* "a+", append (to the end of file) and read */
+    SASI_PAL_ReadBinary = 6, /* "rb", read binary  */
+    SASI_PAL_ReadAndWriteBinary = 7, /* "r+b" read and write binary */
+    SASI_PAL_WriteBinary = 8, /* "wb" write binary */
+    SASI_PAL_WriteAndReadBinary = 9, /* "w+b" write and read binary */
+    SASI_PAL_AppendBinary = 10, /* "ab" append binary */
+    SASI_PAL_AppendAndReadBinary = 11, /* "a+b" append and read binary */
 
-    SASI_PAL_DummyMode  = 0x7FFFFFFF
+    SASI_PAL_DummyMode = 0x7FFFFFFF
 
-}SaSi_PalFileMode_t;
+} SaSi_PalFileMode_t;
 
 /* Definitions for SEEK positions */
 
-#define SASI_PAL_SEEK_START 0     /* Seek from start of file */
-#define SASI_PAL_SEEK_CUR   1     /* Seek from current position */
-#define SASI_PAL_SEEK_END   2     /* Seek from end of file */
+#define SASI_PAL_SEEK_START 0 /* Seek from start of file */
+#define SASI_PAL_SEEK_CUR 1 /* Seek from current position */
+#define SASI_PAL_SEEK_END 2 /* Seek from end of file */
 
 /* Definition for DxFile */
-typedef struct _SaSiFile_t*  SaSiFile_t;
+typedef struct _SaSiFile_t *SaSiFile_t;
 /**** ------------------------------------- ****/
-
 
 /*----------------------------
       PUBLIC FUNCTIONS
@@ -99,10 +93,10 @@ typedef struct _SaSiFile_t*  SaSiFile_t;
  * @return The function returns a FILE handle to the opened file, in case of failure
  *         the function will return NULL
  */
-SaSiFile_t SaSi_PalFileCreate(  char *aFileName  );
+SaSiFile_t SaSi_PalFileCreate(char *aFileName);
 
 /* Definition for SaSi_PalFileCreate */
-#define SaSi_PalFileCreate(aFileName)   _SaSi_PalFileCreate(aFileName)
+#define SaSi_PalFileCreate(aFileName) _SaSi_PalFileCreate(aFileName)
 /**
  * @brief This function purpose is to create a new file. The function will delete a file
  *        If it is already exist.
@@ -114,10 +108,10 @@ SaSiFile_t SaSi_PalFileCreate(  char *aFileName  );
  * @return The function returns a FILE handle to the opened file, in case of failure
  *         the function will return NULL
  */
-SaSiFile_t SaSi_PalFOpen(   char *aFileName, SaSi_PalFileMode_t aFileMode  );
+SaSiFile_t SaSi_PalFOpen(char *aFileName, SaSi_PalFileMode_t aFileMode);
 
 /* Definition for fopen */
-#define SaSi_PalFOpen(aFileName, aFileMode)      _SaSi_PalFOpen(aFileName, aFileMode)
+#define SaSi_PalFOpen(aFileName, aFileMode) _SaSi_PalFOpen(aFileName, aFileMode)
 /**
  * @brief This function purpose is to close a file (pointed by aFileHandle), The function
  *        will dissociate the file from the handle.
@@ -127,10 +121,10 @@ SaSiFile_t SaSi_PalFOpen(   char *aFileName, SaSi_PalFileMode_t aFileMode  );
  *
  * @return The return values is according to operating system return values.
  */
-SaSiError_t SaSi_PalFClose( SaSiFile_t aFileHandle  );
+SaSiError_t SaSi_PalFClose(SaSiFile_t aFileHandle);
 
 /* Definition for fclose */
-#define SaSi_PalFClose(aFileHandle)   _SaSi_PalFClose(aFileHandle)
+#define SaSi_PalFClose(aFileHandle) _SaSi_PalFClose(aFileHandle)
 
 /**
  * @brief This function purpose is to change the file pointer position according to aOffset
@@ -142,10 +136,11 @@ SaSiError_t SaSi_PalFClose( SaSiFile_t aFileHandle  );
  *
  * @return The return values is according to operating system return values.
  */
-SaSiError_t SaSi_PalFSeek(  SaSiFile_t aFileHandle, int32_t aOffset, uint8_t aSeekOrigin );
+SaSiError_t SaSi_PalFSeek(SaSiFile_t aFileHandle, int32_t aOffset, uint8_t aSeekOrigin);
 
 /* Definition for fseek */
-#define SaSi_PalFSeek(aFileHandle ,aOffset, aSeekOrigin)    _SaSi_PalFSeek(aFileHandle, aOffset, aSeekOrigin)
+#define SaSi_PalFSeek(aFileHandle, aOffset, aSeekOrigin) \
+    _SaSi_PalFSeek(aFileHandle, aOffset, aSeekOrigin)
 
 /**
  * @brief This function purpose is to return the file pointer position
@@ -155,10 +150,10 @@ SaSiError_t SaSi_PalFSeek(  SaSiFile_t aFileHandle, int32_t aOffset, uint8_t aSe
  *
  * @return The file pointer position
  */
-uint32_t SaSi_PalFTell( SaSiFile_t aFileHandle );
+uint32_t SaSi_PalFTell(SaSiFile_t aFileHandle);
 
 /* definition for SaSi_PalFTell */
-#define SaSi_PalFTell(aFileHandle)  _SaSi_PalFTell(aFileHandle)
+#define SaSi_PalFTell(aFileHandle) _SaSi_PalFTell(aFileHandle)
 
 /**
  * @brief This function purpose is to read aSize of bytes from the file and write it
@@ -172,10 +167,10 @@ uint32_t SaSi_PalFTell( SaSiFile_t aFileHandle );
  *
  * @return The number of bytes read from the file
  */
-uint32_t SaSi_PalFRead(SaSiFile_t aFileHandle, void *aBuffer, uint32_t aSize );
+uint32_t SaSi_PalFRead(SaSiFile_t aFileHandle, void *aBuffer, uint32_t aSize);
 
 /* Definition for fread */
-#define SaSi_PalFRead(aFileHandle, aBuffer, aSize)   _SaSi_PalFRead(aFileHandle, aBuffer, aSize)
+#define SaSi_PalFRead(aFileHandle, aBuffer, aSize) _SaSi_PalFRead(aFileHandle, aBuffer, aSize)
 /**
  * @brief This function purpose is to write aSize bytes from aBuffer to the file pointed
  *        by aFileHandle.
@@ -187,9 +182,9 @@ uint32_t SaSi_PalFRead(SaSiFile_t aFileHandle, void *aBuffer, uint32_t aSize );
  *
  * @return The number of bytes written to the file
  */
-uint32_t SaSi_PalFWrite(    SaSiFile_t aFileHandle, const void *aBuffer, uint32_t aSize );
+uint32_t SaSi_PalFWrite(SaSiFile_t aFileHandle, const void *aBuffer, uint32_t aSize);
 
-#define SaSi_PalFWrite(aFileHandle, aBuffer, aSize)  _SaSi_PalFWrite(aFileHandle, aBuffer, aSize)
+#define SaSi_PalFWrite(aFileHandle, aBuffer, aSize) _SaSi_PalFWrite(aFileHandle, aBuffer, aSize)
 /**
  * @brief This function purpose is to save all buffered data to disk
  *
@@ -198,10 +193,10 @@ uint32_t SaSi_PalFWrite(    SaSiFile_t aFileHandle, const void *aBuffer, uint32_
  *
  * @return The return values is according to operating system return values.
  */
-SaSiError_t SaSi_PalFFlush( SaSiFile_t aFileHandle  );
+SaSiError_t SaSi_PalFFlush(SaSiFile_t aFileHandle);
 
 /* Definition for fflush */
-#define SaSi_PalFFlush(aFileHandle)   _SaSi_PalFFlush(aFileHandle)
+#define SaSi_PalFFlush(aFileHandle) _SaSi_PalFFlush(aFileHandle)
 
 /**
  * @brief This function purpose is to return the file size
@@ -213,13 +208,10 @@ SaSiError_t SaSi_PalFFlush( SaSiFile_t aFileHandle  );
  * @return The function will return SASI_SUCCESS in case of success, else errors from
  *         ssi_pal_error.h is returned.
  */
-SaSiError_t SaSi_PalFGetFileSize(   SaSiFile_t aFileHandle, uint32_t *aFileSize  );
-
+SaSiError_t SaSi_PalFGetFileSize(SaSiFile_t aFileHandle, uint32_t *aFileSize);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-
-

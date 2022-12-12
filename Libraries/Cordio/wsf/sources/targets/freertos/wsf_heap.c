@@ -36,14 +36,14 @@
 **************************************************************************************************/
 
 #ifndef WSF_HEAP_SIZE
-#define WSF_HEAP_SIZE       0x18000
+#define WSF_HEAP_SIZE 0x18000
 #endif
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
-static void* freeStartAddr = 0;
+static void *freeStartAddr = 0;
 static uint32_t freeLen = 0;
 
 /*************************************************************************************************/
@@ -69,11 +69,11 @@ void WsfHeapAlloc(uint32_t size)
     /* Round up to nearest multiple of 4 for word alignment */
     size = (size + 3) & ~3;
 
-    if(freeStartAddr == 0) {
+    if (freeStartAddr == 0) {
         wsfHeapInit();
     }
 
-    if(freeLen < size) {
+    if (freeLen < size) {
         WSF_ASSERT(FALSE);
     }
 
@@ -90,7 +90,7 @@ void WsfHeapAlloc(uint32_t size)
 /*************************************************************************************************/
 void *WsfHeapGetFreeStartAddress(void)
 {
-    if(freeStartAddr == 0) {
+    if (freeStartAddr == 0) {
         wsfHeapInit();
     }
 

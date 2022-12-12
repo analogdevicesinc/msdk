@@ -60,13 +60,13 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Length of the buffer statistics array */
-#define WSF_BUF_STATS_MAX_LEN       128
+#define WSF_BUF_STATS_MAX_LEN 128
 
 /*! \brief Max number of pools can allocate */
-#define WSF_BUF_STATS_MAX_POOL      32
+#define WSF_BUF_STATS_MAX_POOL 32
 
 /*! \brief Failure Codes */
-#define WSF_BUF_ALLOC_FAILED        1
+#define WSF_BUF_ALLOC_FAILED 1
 
 #ifndef WSF_BUF_STATS
 /*! \brief Enable buffer allocation statistics. */
@@ -78,38 +78,33 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Buffer pool descriptor structure */
-typedef struct
-{
-  uint16_t   len;                  /*!< \brief Length of buffers in pool */
-  uint8_t    num;                  /*!< \brief Number of buffers in pool */
+typedef struct {
+    uint16_t len; /*!< \brief Length of buffers in pool */
+    uint8_t num; /*!< \brief Number of buffers in pool */
 } wsfBufPoolDesc_t;
 
 /*! \brief Pool statistics */
-typedef struct
-{
-  uint16_t   bufSize;              /*!< \brief Pool buffer size. */
-  uint8_t    numBuf;               /*!< \brief Total number of buffers. */
-  uint8_t    numAlloc;             /*!< \brief Number of outstanding allocations. */
-  uint8_t    maxAlloc;             /*!< \brief High allocation watermark. */
-  uint16_t   maxReqLen;            /*!< \brief Maximum requested buffer length. */
+typedef struct {
+    uint16_t bufSize; /*!< \brief Pool buffer size. */
+    uint8_t numBuf; /*!< \brief Total number of buffers. */
+    uint8_t numAlloc; /*!< \brief Number of outstanding allocations. */
+    uint8_t maxAlloc; /*!< \brief High allocation watermark. */
+    uint16_t maxReqLen; /*!< \brief Maximum requested buffer length. */
 } WsfBufPoolStat_t;
 
 /*! \brief WSF buffer diagnostics - buffer allocation failure */
-typedef struct
-{
-  uint8_t    taskId;               /*!< \brief Task handler ID where failure occured */
-  uint16_t   len;                  /*!< \brief Length of buffer being allocated */
+typedef struct {
+    uint8_t taskId; /*!< \brief Task handler ID where failure occured */
+    uint16_t len; /*!< \brief Length of buffer being allocated */
 } wsfBufDiagAllocFail_t;
 
 /*! \brief WSF buffer diagnostics message */
-typedef struct
-{
-  union
-  {
-    wsfBufDiagAllocFail_t alloc;   /*!< \brief Buffer allocation failure */
-  } param;                         /*!< \brief Union of diagnostic data types. */
+typedef struct {
+    union {
+        wsfBufDiagAllocFail_t alloc; /*!< \brief Buffer allocation failure */
+    } param; /*!< \brief Union of diagnostic data types. */
 
-  uint8_t type;                    /*!< \brief Type of error */
+    uint8_t type; /*!< \brief Type of error */
 } WsfBufDiag_t;
 
 /**************************************************************************************************
@@ -222,7 +217,7 @@ void WsfBufGetPoolStats(WsfBufPoolStat_t *pStat, uint8_t numPool);
 /*************************************************************************************************/
 void WsfBufDiagRegister(WsfBufDiagCback_t callback);
 
-/*! \} */    /* WSF_BUF_API */
+/*! \} */ /* WSF_BUF_API */
 
 #ifdef __cplusplus
 };

@@ -41,13 +41,13 @@
 /*************************************************************************************************/
 static uint8_t lhciPackEncChangeEvt(uint8_t *pBuf, const LlEncChangeInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_ENC_CHANGE;
+    const uint8_t len = HCI_LEN_ENC_CHANGE;
 
-  UINT8_TO_BSTREAM (pBuf, pEvt->status);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->enabled);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->enabled);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -62,12 +62,12 @@ static uint8_t lhciPackEncChangeEvt(uint8_t *pBuf, const LlEncChangeInd_t *pEvt)
 /*************************************************************************************************/
 static uint8_t lhciPackEncKeyRefreshEvt(uint8_t *pBuf, const LlEncKeyRefreshInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_ENC_KEY_REFRESH_CMPL;
+    const uint8_t len = HCI_LEN_ENC_KEY_REFRESH_CMPL;
 
-  UINT8_TO_BSTREAM (pBuf, pEvt->status);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->status);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -82,15 +82,15 @@ static uint8_t lhciPackEncKeyRefreshEvt(uint8_t *pBuf, const LlEncKeyRefreshInd_
 /*************************************************************************************************/
 static uint8_t lhciPackLtkReqEvt(uint8_t *pBuf, const LlLtkReqInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_LTK_REQ;
+    const uint8_t len = HCI_LEN_LE_LTK_REQ;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_LTK_REQ_EVT);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  memcpy(pBuf, pEvt->randNum, sizeof(pEvt->randNum));
-  pBuf += sizeof(pEvt->randNum);
-  UINT16_TO_BSTREAM(pBuf, pEvt->encDiversifier);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_LTK_REQ_EVT);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    memcpy(pBuf, pEvt->randNum, sizeof(pEvt->randNum));
+    pBuf += sizeof(pEvt->randNum);
+    UINT16_TO_BSTREAM(pBuf, pEvt->encDiversifier);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -105,11 +105,11 @@ static uint8_t lhciPackLtkReqEvt(uint8_t *pBuf, const LlLtkReqInd_t *pEvt)
 /*************************************************************************************************/
 static uint8_t lhciPackAuthPayloadTimeoutEvt(uint8_t *pBuf, const LlAuthPayloadTimeoutInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_AUTH_PAYLOAD_TIMEOUT;
+    const uint8_t len = HCI_LEN_AUTH_PAYLOAD_TIMEOUT;
 
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -123,64 +123,57 @@ static uint8_t lhciPackAuthPayloadTimeoutEvt(uint8_t *pBuf, const LlAuthPayloadT
 /*************************************************************************************************/
 bool_t lhciSlvEncEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
+    uint8_t *pEvtBuf = NULL;
 
-  switch (pEvt->hdr.event)
-  {
+    switch (pEvt->hdr.event) {
     case LL_ENC_CHANGE_IND:
-      if (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_ENC_CHANGE) << LHCI_BYTE_TO_BITS(0)))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_ENC_CHANGE_EVT, HCI_LEN_ENC_CHANGE)) != NULL)
-        {
-          lhciPackEncChangeEvt(pEvtBuf, &pEvt->encChangeInd);
+        if (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_ENC_CHANGE) << LHCI_BYTE_TO_BITS(0))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_ENC_CHANGE_EVT, HCI_LEN_ENC_CHANGE)) != NULL) {
+                lhciPackEncChangeEvt(pEvtBuf, &pEvt->encChangeInd);
+            }
         }
-      }
-      break;
+        break;
     case LL_ENC_KEY_REFRESH_IND:
-      if (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_ENC_KEY_REFRESH_CMPL) << LHCI_BYTE_TO_BITS(5)))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_ENC_KEY_REFRESH_CMPL_EVT, HCI_LEN_ENC_KEY_REFRESH_CMPL)) != NULL)
-        {
-          lhciPackEncKeyRefreshEvt(pEvtBuf, &pEvt->keyRefreshInd);
+        if (lhciCb.evtMsk &
+            ((uint64_t)(HCI_EVT_MASK_ENC_KEY_REFRESH_CMPL) << LHCI_BYTE_TO_BITS(5))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_ENC_KEY_REFRESH_CMPL_EVT,
+                                        HCI_LEN_ENC_KEY_REFRESH_CMPL)) != NULL) {
+                lhciPackEncKeyRefreshEvt(pEvtBuf, &pEvt->keyRefreshInd);
+            }
         }
-      }
-      break;
+        break;
     case LL_LTK_REQ_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_LTK_REQ_EVT) << LHCI_BYTE_TO_BITS(0))) &&
-         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_LTK_REQ)) != NULL)
-        {
-          lhciPackLtkReqEvt(pEvtBuf, &pEvt->ltkReqInd);
+        if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_LTK_REQ_EVT) << LHCI_BYTE_TO_BITS(0))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_LTK_REQ)) != NULL) {
+                lhciPackLtkReqEvt(pEvtBuf, &pEvt->ltkReqInd);
+            }
         }
-      }
-      /* If the event could not be sent, process it as a negative reply. */
-      if (!pEvtBuf)
-      {
-        LlLtkReqNegReply(pEvt->ltkReqInd.handle);
-      }
-      break;
+        /* If the event could not be sent, process it as a negative reply. */
+        if (!pEvtBuf) {
+            LlLtkReqNegReply(pEvt->ltkReqInd.handle);
+        }
+        break;
     case LL_AUTH_PAYLOAD_TIMEOUT_IND:
-      if (lhciCb.evtMskPg2 & ((uint64_t)(HCI_EVT_MASK_AUTH_PAYLOAD_TIMEOUT) << LHCI_BYTE_TO_BITS(2)))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_AUTH_PAYLOAD_TIMEOUT_EVT, HCI_LEN_AUTH_PAYLOAD_TIMEOUT)) != NULL)
-        {
-          lhciPackAuthPayloadTimeoutEvt(pEvtBuf, &pEvt->authPayloadTimeoutInd);
+        if (lhciCb.evtMskPg2 &
+            ((uint64_t)(HCI_EVT_MASK_AUTH_PAYLOAD_TIMEOUT) << LHCI_BYTE_TO_BITS(2))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_AUTH_PAYLOAD_TIMEOUT_EVT,
+                                        HCI_LEN_AUTH_PAYLOAD_TIMEOUT)) != NULL) {
+                lhciPackAuthPayloadTimeoutEvt(pEvtBuf, &pEvt->authPayloadTimeoutInd);
+            }
         }
-      }
-      break;
+        break;
 
     case LL_LTK_REQ_NEG_REPLY_CNF:
     case LL_LTK_REQ_REPLY_CNF:
     default:
-      break;
-  }
+        break;
+    }
 
-  if (pEvtBuf)
-  {
-    lhciSendEvt(pEvtBuf);
-    return TRUE;
-  }
+    if (pEvtBuf) {
+        lhciSendEvt(pEvtBuf);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }

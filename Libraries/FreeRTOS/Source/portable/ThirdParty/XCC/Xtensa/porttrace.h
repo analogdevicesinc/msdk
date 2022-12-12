@@ -35,7 +35,7 @@
 #define PORTTRACE_H
 
 #if configUSE_TRACE_FACILITY_2
-    #error "You need to download the FreeRTOS_trace patch that overwrites this file"
+#error "You need to download the FreeRTOS_trace patch that overwrites this file"
 #endif
 
 #define porttracePrint(nelements)

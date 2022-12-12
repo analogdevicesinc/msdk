@@ -38,13 +38,13 @@
 /*************************************************************************************************/
 static uint8_t lhciPackUsedChSelEvt(uint8_t *pBuf, const LlChSelInd_t *pEvt)
 {
-  const uint8_t len = HCI_LEN_LE_CH_SEL_ALGO;
+    const uint8_t len = HCI_LEN_LE_CH_SEL_ALGO;
 
-  UINT8_TO_BSTREAM (pBuf, HCI_LE_CH_SEL_ALGO_EVT);
-  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-  UINT8_TO_BSTREAM (pBuf, pEvt->usedChSel);
+    UINT8_TO_BSTREAM(pBuf, HCI_LE_CH_SEL_ALGO_EVT);
+    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+    UINT8_TO_BSTREAM(pBuf, pEvt->usedChSel);
 
-  return len;
+    return len;
 }
 
 /*************************************************************************************************/
@@ -58,30 +58,27 @@ static uint8_t lhciPackUsedChSelEvt(uint8_t *pBuf, const LlChSelInd_t *pEvt)
 /*************************************************************************************************/
 bool_t lhciConnCsEncodeEvtPkt(LlEvt_t *pEvt)
 {
-  uint8_t *pEvtBuf = NULL;
+    uint8_t *pEvtBuf = NULL;
 
-  switch (pEvt->hdr.event)
-  {
+    switch (pEvt->hdr.event) {
     case LL_CH_SEL_ALGO_IND:
-      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_CH_SEL_ALGO_EVT) << LHCI_BYTE_TO_BITS(2))) &&
-         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
-      {
-        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CH_SEL_ALGO)) != NULL)
-        {
-          lhciPackUsedChSelEvt(pEvtBuf, &pEvt->usedChSelInd);
+        if ((lhciCb.leEvtMsk &
+             ((uint64_t)(HCI_EVT_MASK_LE_CH_SEL_ALGO_EVT) << LHCI_BYTE_TO_BITS(2))) &&
+            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
+            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_CH_SEL_ALGO)) != NULL) {
+                lhciPackUsedChSelEvt(pEvtBuf, &pEvt->usedChSelInd);
+            }
         }
-      }
-      break;
+        break;
 
     default:
-      break;
-  }
+        break;
+    }
 
-  if (pEvtBuf)
-  {
-    lhciSendEvt(pEvtBuf);
-    return TRUE;
-  }
+    if (pEvtBuf) {
+        lhciSendEvt(pEvtBuf);
+        return TRUE;
+    }
 
-  return FALSE;
+    return FALSE;
 }

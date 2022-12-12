@@ -29,8 +29,7 @@
 #include "mmdl_light_ctl_temp_sr_api.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -47,7 +46,8 @@ extern "C"
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightCtlTemperatureSrSetTemperature(meshElementId_t elementId, mmdlLightCtlTempSrState_t * pState);
+void MmdlLightCtlTemperatureSrSetTemperature(meshElementId_t elementId,
+                                             mmdlLightCtlTempSrState_t *pState);
 
 /*************************************************************************************************/
 /*!
@@ -62,8 +62,8 @@ void MmdlLightCtlTemperatureSrSetTemperature(meshElementId_t elementId, mmdlLigh
  */
 /*************************************************************************************************/
 void MmdlLightCtlTemperatureSrSetBoundState(meshElementId_t elementId,
-                                            mmdlLightCtlTempSrState_t * pState,
-                                            mmdlLightCtlTempSrState_t * pTargetState);
+                                            mmdlLightCtlTempSrState_t *pState,
+                                            mmdlLightCtlTempSrState_t *pTargetState);
 
 #ifdef __cplusplus
 }

@@ -55,8 +55,7 @@ void app_util_disable_irq(void)
 void app_util_enable_irq(void)
 {
     m_in_critical_region--;
-    if (m_in_critical_region == 0)
-    {
+    if (m_in_critical_region == 0) {
         __enable_irq();
     }
 }
@@ -69,7 +68,7 @@ void app_util_critical_region_enter(uint8_t *p_nested)
 
 #if defined(SOFTDEVICE_PRESENT)
     /* return value can be safely ignored */
-    (void) sd_nvic_critical_region_enter(p_nested);
+    (void)sd_nvic_critical_region_enter(p_nested);
 #else
     app_util_disable_irq();
 #endif
@@ -83,12 +82,11 @@ void app_util_critical_region_exit(uint8_t nested)
 
 #if defined(SOFTDEVICE_PRESENT)
     /* return value can be safely ignored */
-    (void) sd_nvic_critical_region_exit(nested);
+    (void)sd_nvic_critical_region_exit(nested);
 #else
     app_util_enable_irq();
 #endif
 }
-
 
 uint8_t privilege_level_get(void)
 {
@@ -96,32 +94,25 @@ uint8_t privilege_level_get(void)
     /* the Cortex-M0 has no concept of privilege */
     return APP_LEVEL_PRIVILEGED;
 #elif __CORTEX_M == (0x04U)
-    uint32_t isr_vector_num = __get_IPSR() & IPSR_ISR_Msk ;
-    if (0 == isr_vector_num)
-    {
+    uint32_t isr_vector_num = __get_IPSR() & IPSR_ISR_Msk;
+    if (0 == isr_vector_num) {
         /* Thread Mode, check nPRIV */
         int32_t control = __get_CONTROL();
         return control & CONTROL_nPRIV_Msk ? APP_LEVEL_UNPRIVILEGED : APP_LEVEL_PRIVILEGED;
-    }
-    else
-    {
+    } else {
         /* Handler Mode, always privileged */
         return APP_LEVEL_PRIVILEGED;
     }
 #endif
 }
 
-
 uint8_t current_int_priority_get(void)
 {
-    uint32_t isr_vector_num = __get_IPSR() & IPSR_ISR_Msk ;
-    if (isr_vector_num > 0)
-    {
+    uint32_t isr_vector_num = __get_IPSR() & IPSR_ISR_Msk;
+    if (isr_vector_num > 0) {
         int32_t irq_type = ((int32_t)isr_vector_num - EXTERNAL_INT_VECTOR_OFFSET);
         return (NVIC_GetPriority((IRQn_Type)irq_type) & 0xFF);
-    }
-    else
-    {
+    } else {
         return APP_IRQ_PRIORITY_THREAD;
     }
 }

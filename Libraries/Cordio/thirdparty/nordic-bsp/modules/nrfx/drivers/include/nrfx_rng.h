@@ -55,10 +55,9 @@ extern "C" {
  */
 
 /** @brief Struct for RNG configuration. */
-typedef struct
-{
-    bool     error_correction : 1;  /**< Error correction flag. */
-    uint8_t  interrupt_priority;    /**< Interrupt priority. */
+typedef struct {
+    bool error_correction : 1; /**< Error correction flag. */
+    uint8_t interrupt_priority; /**< Interrupt priority. */
 } nrfx_rng_config_t;
 
 /**
@@ -70,14 +69,14 @@ typedef struct
  *            { ...
  *        @endcode
  */
-#define NRFX_RNG_DEFAULT_CONFIG                             \
-{                                                           \
-    .error_correction   = NRFX_RNG_CONFIG_ERROR_CORRECTION, \
-    .interrupt_priority = NRFX_RNG_CONFIG_IRQ_PRIORITY,     \
-}
+#define NRFX_RNG_DEFAULT_CONFIG                               \
+    {                                                         \
+        .error_correction = NRFX_RNG_CONFIG_ERROR_CORRECTION, \
+        .interrupt_priority = NRFX_RNG_CONFIG_IRQ_PRIORITY,   \
+    }
 
 /** @brief RNG driver event handler type. */
-typedef void (* nrfx_rng_evt_handler_t)(uint8_t rng_data);
+typedef void (*nrfx_rng_evt_handler_t)(uint8_t rng_data);
 
 /**
  * @brief Function for initializing the nrfx_rng module.
@@ -88,7 +87,7 @@ typedef void (* nrfx_rng_evt_handler_t)(uint8_t rng_data);
  * @retval NRFX_SUCCESS                   Driver was successfully initialized.
  * @retval NRFX_ERROR_ALREADY_INITIALIZED Driver was already initialized.
  */
-nrfx_err_t nrfx_rng_init(nrfx_rng_config_t const * p_config, nrfx_rng_evt_handler_t handler);
+nrfx_err_t nrfx_rng_init(nrfx_rng_config_t const *p_config, nrfx_rng_evt_handler_t handler);
 
 /**
  * @brief Function for starting the generation of random values.
@@ -109,9 +108,7 @@ void nrfx_rng_uninit(void);
 
 /** @} */
 
-
 void nrfx_rng_irq_handler(void);
-
 
 #ifdef __cplusplus
 }

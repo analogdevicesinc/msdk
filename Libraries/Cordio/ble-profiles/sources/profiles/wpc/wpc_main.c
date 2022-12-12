@@ -38,30 +38,22 @@
  */
 
 /* UUIDs */
-static const uint8_t wpcP1SvcUuid[] = {ATT_UUID_P1_SERVICE};    /*! Proprietary service P1 */
-static const uint8_t wpcD1ChUuid[] = {ATT_UUID_D1_DATA};        /*! Proprietary data D1 */
+static const uint8_t wpcP1SvcUuid[] = { ATT_UUID_P1_SERVICE }; /*! Proprietary service P1 */
+static const uint8_t wpcD1ChUuid[] = { ATT_UUID_D1_DATA }; /*! Proprietary data D1 */
 
 /* Characteristics for discovery */
 
 /*! Proprietary data */
-static const attcDiscChar_t wpcP1Dat =
-{
-  wpcD1ChUuid,
-  ATTC_SET_REQUIRED | ATTC_SET_UUID_128
-};
+static const attcDiscChar_t wpcP1Dat = { wpcD1ChUuid, ATTC_SET_REQUIRED | ATTC_SET_UUID_128 };
 
 /*! Proprietary data descriptor */
-static const attcDiscChar_t wpcP1datCcc =
-{
-  attCliChCfgUuid,
-  ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR
-};
+static const attcDiscChar_t wpcP1datCcc = { attCliChCfgUuid,
+                                            ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *wpcP1DiscCharList[] =
-{
-  &wpcP1Dat,                  /*! Proprietary data */
-  &wpcP1datCcc                /*! Proprietary data descriptor */
+static const attcDiscChar_t *wpcP1DiscCharList[] = {
+    &wpcP1Dat, /*! Proprietary data */
+    &wpcP1datCcc /*! Proprietary data descriptor */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
@@ -82,7 +74,6 @@ WSF_CT_ASSERT(WPC_P1_HDL_LIST_LEN == ((sizeof(wpcP1DiscCharList) / sizeof(attcDi
 /*************************************************************************************************/
 void WpcP1Discover(dmConnId_t connId, uint16_t *pHdlList)
 {
-  AppDiscFindService(connId, ATT_128_UUID_LEN, (uint8_t *) wpcP1SvcUuid,
-                     WPC_P1_HDL_LIST_LEN, (attcDiscChar_t **) wpcP1DiscCharList, pHdlList);
+    AppDiscFindService(connId, ATT_128_UUID_LEN, (uint8_t *)wpcP1SvcUuid, WPC_P1_HDL_LIST_LEN,
+                       (attcDiscChar_t **)wpcP1DiscCharList, pHdlList);
 }
-

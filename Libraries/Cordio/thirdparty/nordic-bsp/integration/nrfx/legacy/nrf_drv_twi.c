@@ -43,42 +43,42 @@
 #include <hal/nrf_gpio.h>
 
 #ifdef TWIM_PRESENT
-#define INSTANCE_COUNT   TWIM_COUNT
+#define INSTANCE_COUNT TWIM_COUNT
 #else
-#define INSTANCE_COUNT   TWI_COUNT
+#define INSTANCE_COUNT TWI_COUNT
 #endif
 
-#define SCL_PIN_INIT_CONF                                     \
-    ( (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_S0D1     << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Pullup    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Connect  << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Input      << GPIO_PIN_CNF_DIR_Pos))
+#define SCL_PIN_INIT_CONF                                      \
+    ((GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) | \
+     (GPIO_PIN_CNF_DRIVE_S0D1 << GPIO_PIN_CNF_DRIVE_Pos) |     \
+     (GPIO_PIN_CNF_PULL_Pullup << GPIO_PIN_CNF_PULL_Pos) |     \
+     (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |  \
+     (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos))
 
-#define SDA_PIN_INIT_CONF        SCL_PIN_INIT_CONF
+#define SDA_PIN_INIT_CONF SCL_PIN_INIT_CONF
 
-#define SDA_PIN_UNINIT_CONF                                     \
-    ( (GPIO_PIN_CNF_SENSE_Disabled   << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_H0H1       << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Disabled    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Input        << GPIO_PIN_CNF_DIR_Pos))
+#define SDA_PIN_UNINIT_CONF                                      \
+    ((GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) |   \
+     (GPIO_PIN_CNF_DRIVE_H0H1 << GPIO_PIN_CNF_DRIVE_Pos) |       \
+     (GPIO_PIN_CNF_PULL_Disabled << GPIO_PIN_CNF_PULL_Pos) |     \
+     (GPIO_PIN_CNF_INPUT_Disconnect << GPIO_PIN_CNF_INPUT_Pos) | \
+     (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos))
 
-#define SCL_PIN_UNINIT_CONF      SDA_PIN_UNINIT_CONF
+#define SCL_PIN_UNINIT_CONF SDA_PIN_UNINIT_CONF
 
-#define SCL_PIN_INIT_CONF_CLR                                 \
-    ( (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) \
-    | (GPIO_PIN_CNF_DRIVE_S0D1     << GPIO_PIN_CNF_DRIVE_Pos) \
-    | (GPIO_PIN_CNF_PULL_Pullup    << GPIO_PIN_CNF_PULL_Pos)  \
-    | (GPIO_PIN_CNF_INPUT_Connect  << GPIO_PIN_CNF_INPUT_Pos) \
-    | (GPIO_PIN_CNF_DIR_Output     << GPIO_PIN_CNF_DIR_Pos))
+#define SCL_PIN_INIT_CONF_CLR                                  \
+    ((GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) | \
+     (GPIO_PIN_CNF_DRIVE_S0D1 << GPIO_PIN_CNF_DRIVE_Pos) |     \
+     (GPIO_PIN_CNF_PULL_Pullup << GPIO_PIN_CNF_PULL_Pos) |     \
+     (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |  \
+     (GPIO_PIN_CNF_DIR_Output << GPIO_PIN_CNF_DIR_Pos))
 
-#define SDA_PIN_INIT_CONF_CLR    SCL_PIN_INIT_CONF_CLR
+#define SDA_PIN_INIT_CONF_CLR SCL_PIN_INIT_CONF_CLR
 
 static nrf_drv_twi_evt_handler_t m_handlers[INSTANCE_COUNT];
-static void *                    m_contexts[INSTANCE_COUNT];
+static void *m_contexts[INSTANCE_COUNT];
 
-static void twi_clear_bus(nrf_drv_twi_config_t const * p_config)
+static void twi_clear_bus(nrf_drv_twi_config_t const *p_config)
 {
     NRF_GPIO->PIN_CNF[p_config->scl] = SCL_PIN_INIT_CONF;
     NRF_GPIO->PIN_CNF[p_config->sda] = SDA_PIN_INIT_CONF;
@@ -91,16 +91,11 @@ static void twi_clear_bus(nrf_drv_twi_config_t const * p_config)
 
     nrf_delay_us(4);
 
-    for (int i = 0; i < 9; i++)
-    {
-        if (nrf_gpio_pin_read(p_config->sda))
-        {
-            if (i == 0)
-            {
+    for (int i = 0; i < 9; i++) {
+        if (nrf_gpio_pin_read(p_config->sda)) {
+            if (i == 0) {
                 return;
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -115,78 +110,58 @@ static void twi_clear_bus(nrf_drv_twi_config_t const * p_config)
 }
 
 #ifdef TWIM_PRESENT
-static void twim_evt_handler(nrfx_twim_evt_t const * p_event,
-                             void *                  p_context)
+static void twim_evt_handler(nrfx_twim_evt_t const *p_event, void *p_context)
 {
     uint32_t inst_idx = (uint32_t)p_context;
-    nrf_drv_twi_evt_t const event =
-    {
-        .type = (nrf_drv_twi_evt_type_t)p_event->type,
-        .xfer_desc =
-        {
-            .type = (nrf_drv_twi_xfer_type_t)p_event->xfer_desc.type,
-            .address          = p_event->xfer_desc.address,
-            .primary_length   = p_event->xfer_desc.primary_length,
-            .secondary_length = p_event->xfer_desc.secondary_length,
-            .p_primary_buf    = p_event->xfer_desc.p_primary_buf,
-            .p_secondary_buf  = p_event->xfer_desc.p_secondary_buf,
-        }
-    };
+    nrf_drv_twi_evt_t const event = { .type = (nrf_drv_twi_evt_type_t)p_event->type,
+                                      .xfer_desc = {
+                                          .type = (nrf_drv_twi_xfer_type_t)p_event->xfer_desc.type,
+                                          .address = p_event->xfer_desc.address,
+                                          .primary_length = p_event->xfer_desc.primary_length,
+                                          .secondary_length = p_event->xfer_desc.secondary_length,
+                                          .p_primary_buf = p_event->xfer_desc.p_primary_buf,
+                                          .p_secondary_buf = p_event->xfer_desc.p_secondary_buf,
+                                      } };
     m_handlers[inst_idx](&event, m_contexts[inst_idx]);
 }
 #endif // TWIM_PRESENT
 
 #ifdef TWI_PRESENT
-static void twi_evt_handler(nrfx_twi_evt_t const * p_event,
-                            void *                 p_context)
+static void twi_evt_handler(nrfx_twi_evt_t const *p_event, void *p_context)
 {
     uint32_t inst_idx = (uint32_t)p_context;
-    nrf_drv_twi_evt_t const event =
-    {
-        .type = (nrf_drv_twi_evt_type_t)p_event->type,
-        .xfer_desc =
-        {
-            .type = (nrf_drv_twi_xfer_type_t)p_event->xfer_desc.type,
-            .address          = p_event->xfer_desc.address,
-            .primary_length   = p_event->xfer_desc.primary_length,
-            .secondary_length = p_event->xfer_desc.secondary_length,
-            .p_primary_buf    = p_event->xfer_desc.p_primary_buf,
-            .p_secondary_buf  = p_event->xfer_desc.p_secondary_buf,
-        }
-    };
+    nrf_drv_twi_evt_t const event = { .type = (nrf_drv_twi_evt_type_t)p_event->type,
+                                      .xfer_desc = {
+                                          .type = (nrf_drv_twi_xfer_type_t)p_event->xfer_desc.type,
+                                          .address = p_event->xfer_desc.address,
+                                          .primary_length = p_event->xfer_desc.primary_length,
+                                          .secondary_length = p_event->xfer_desc.secondary_length,
+                                          .p_primary_buf = p_event->xfer_desc.p_primary_buf,
+                                          .p_secondary_buf = p_event->xfer_desc.p_secondary_buf,
+                                      } };
     m_handlers[inst_idx](&event, m_contexts[inst_idx]);
 }
 #endif // TWI_PRESENT
 
-ret_code_t nrf_drv_twi_init(nrf_drv_twi_t const *        p_instance,
-                            nrf_drv_twi_config_t const * p_config,
-                            nrf_drv_twi_evt_handler_t    event_handler,
-                            void *                       p_context)
+ret_code_t nrf_drv_twi_init(nrf_drv_twi_t const *p_instance, nrf_drv_twi_config_t const *p_config,
+                            nrf_drv_twi_evt_handler_t event_handler, void *p_context)
 {
     uint32_t inst_idx = p_instance->inst_idx;
     m_handlers[inst_idx] = event_handler;
     m_contexts[inst_idx] = p_context;
 
-    if(p_config->clear_bus_init)
-    {
+    if (p_config->clear_bus_init) {
         /* Send clocks (max 9) until slave device back from stuck mode */
         twi_clear_bus(p_config);
     }
 
     ret_code_t result = 0;
-    if (NRF_DRV_TWI_USE_TWIM)
-    {
-        result = nrfx_twim_init(&p_instance->u.twim,
-                                (nrfx_twim_config_t const *)p_config,
-                                event_handler ? twim_evt_handler : NULL,
-                                (void *)inst_idx);
-    }
-    else if (NRF_DRV_TWI_USE_TWI)
-    {
-        result = nrfx_twi_init(&p_instance->u.twi,
-                               (nrfx_twi_config_t const *)p_config,
-                               event_handler ? twi_evt_handler : NULL,
-                               (void *)inst_idx);
+    if (NRF_DRV_TWI_USE_TWIM) {
+        result = nrfx_twim_init(&p_instance->u.twim, (nrfx_twim_config_t const *)p_config,
+                                event_handler ? twim_evt_handler : NULL, (void *)inst_idx);
+    } else if (NRF_DRV_TWI_USE_TWI) {
+        result = nrfx_twi_init(&p_instance->u.twi, (nrfx_twi_config_t const *)p_config,
+                               event_handler ? twi_evt_handler : NULL, (void *)inst_idx);
     }
     return result;
 }

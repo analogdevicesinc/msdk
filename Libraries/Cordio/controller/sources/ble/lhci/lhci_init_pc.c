@@ -30,9 +30,8 @@
 /*************************************************************************************************/
 void LhciPowerControlInit(void)
 {
-  if (!lhciCmdTbl[LHCI_MSG_PC])
-  {
-    lhciCmdTbl[LHCI_MSG_PC] = lhciPclDecodeCmdPkt;
-    lhciEvtTbl[LHCI_MSG_PC] = lhciPclEncodeEvtPkt;
-  }
+    if (!lhciCmdTbl[LHCI_MSG_PC]) {
+        lhciCmdTbl[LHCI_MSG_PC] = lhciPclDecodeCmdPkt;
+        lhciEvtTbl[LHCI_MSG_PC] = lhciPclEncodeEvtPkt;
+    }
 }

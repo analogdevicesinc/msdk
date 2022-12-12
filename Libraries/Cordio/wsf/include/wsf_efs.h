@@ -38,77 +38,76 @@ extern "C" {
 
 /*! \brief Max Number of Files and Media */
 #ifndef WSF_EFS_MAX_FILES
-#define WSF_EFS_MAX_FILES                   6
+#define WSF_EFS_MAX_FILES 6
 #endif
 
 /*! \brief Max Number of Media */
 #ifndef WSF_EFS_MAX_MEDIA
-#define WSF_EFS_MAX_MEDIA                   4
+#define WSF_EFS_MAX_MEDIA 4
 #endif
 
 /** \name Status Codes
  *
  */
 /**@{*/
-#define WSF_EFS_SUCCESS                     0             /*!< \brief Success */
-#define WSF_EFS_FAILURE                     1             /*!< \brief Failure */
-#define WSF_EFS_GET_FAILED                  0xFFFF        /*!< \brief Get operation failure */
-#define WSF_EFS_PUT_FAILED                  0xFFFF        /*!< \brief PUT operation failure */
+#define WSF_EFS_SUCCESS 0 /*!< \brief Success */
+#define WSF_EFS_FAILURE 1 /*!< \brief Failure */
+#define WSF_EFS_GET_FAILED 0xFFFF /*!< \brief Get operation failure */
+#define WSF_EFS_PUT_FAILED 0xFFFF /*!< \brief PUT operation failure */
 /**@}*/
-
 
 /** \name  Invalid Parameter Identifiers
  *
  */
 /**@{*/
-#define WSF_EFS_INVALID_HANDLE              0xFFFF        /*!< \brief Invalid Handle */
-#define WSF_EFS_INVALID_OFFSET              0xFFFFFFFF    /*!< \brief Invalid Offset */
-#define WSF_EFS_INVALID_SIZE                0xFFFFFFFF    /*!< \brief Invalid Size */
-#define WSF_EFS_INVALID_MEDIA               0xFF          /*!< \brief Invalid Media */
+#define WSF_EFS_INVALID_HANDLE 0xFFFF /*!< \brief Invalid Handle */
+#define WSF_EFS_INVALID_OFFSET 0xFFFFFFFF /*!< \brief Invalid Offset */
+#define WSF_EFS_INVALID_SIZE 0xFFFFFFFF /*!< \brief Invalid Size */
+#define WSF_EFS_INVALID_MEDIA 0xFF /*!< \brief Invalid Media */
 /**@}*/
 
 /** \name File Types
  *
  */
 /**@{*/
-#define WSF_EFS_FILE_TYPE_BULK              0             /*!< \brief Bulk File Type */
-#define WSF_EFS_FILE_TYPE_STREAM            1             /*!< \brief Stream File Type */
+#define WSF_EFS_FILE_TYPE_BULK 0 /*!< \brief Bulk File Type */
+#define WSF_EFS_FILE_TYPE_STREAM 1 /*!< \brief Stream File Type */
 /**@}*/
 
 /*! \brief Offset to WsfEfsAddFile indicating any file offset can be used */
-#define WSF_EFS_FILE_OFFSET_ANY             0xFFFFFFFF
+#define WSF_EFS_FILE_OFFSET_ANY 0xFFFFFFFF
 
 /** \name File Permissions
  *
  */
 /**@{*/
-#define WSF_EFS_REMOTE_PERMISSIONS_MASK     0xFF          /*!< \brief Remote Permissions */
-#define WSF_EFS_REMOTE_GET_PERMITTED        0x01          /*!< \brief Remote Get Permitted */
-#define WSF_EFS_REMOTE_PUT_PERMITTED        0x02          /*!< \brief Remote Put Permitted */
-#define WSF_EFS_REMOTE_ERASE_PERMITTED      0x04          /*!< \brief Remote Erase Permitted */
-#define WSF_EFS_REMOTE_VERIFY_PERMITTED     0x08          /*!< \brief Remote Verify Permitted */
-#define WSF_EFS_LOCAL_GET_PERMITTED         0x0100        /*!< \brief Local Get Permitted */
-#define WSF_EFS_LOCAL_PUT_PERMITTED         0x0200        /*!< \brief Local Put Permitted */
-#define WSF_EFS_LOCAL_ERASE_PERMITTED       0x0400        /*!< \brief Local Erase Permitted */
-#define WSF_EFS_REMOTE_VISIBLE              0x0800        /*!< \brief File Visible via Remote WDXS */
+#define WSF_EFS_REMOTE_PERMISSIONS_MASK 0xFF /*!< \brief Remote Permissions */
+#define WSF_EFS_REMOTE_GET_PERMITTED 0x01 /*!< \brief Remote Get Permitted */
+#define WSF_EFS_REMOTE_PUT_PERMITTED 0x02 /*!< \brief Remote Put Permitted */
+#define WSF_EFS_REMOTE_ERASE_PERMITTED 0x04 /*!< \brief Remote Erase Permitted */
+#define WSF_EFS_REMOTE_VERIFY_PERMITTED 0x08 /*!< \brief Remote Verify Permitted */
+#define WSF_EFS_LOCAL_GET_PERMITTED 0x0100 /*!< \brief Local Get Permitted */
+#define WSF_EFS_LOCAL_PUT_PERMITTED 0x0200 /*!< \brief Local Put Permitted */
+#define WSF_EFS_LOCAL_ERASE_PERMITTED 0x0400 /*!< \brief Local Erase Permitted */
+#define WSF_EFS_REMOTE_VISIBLE 0x0800 /*!< \brief File Visible via Remote WDXS */
 /**@}*/
 
 /*! \brief File name length in bytes */
-#define WSF_EFS_NAME_LEN                    16
+#define WSF_EFS_NAME_LEN 16
 
 /*! \brief File version length in bytes */
-#define WSF_EFS_VERSION_LEN                 16
+#define WSF_EFS_VERSION_LEN 16
 
 /** \name Standard Media Specific Command Identifiers
  *
  */
 /**@{*/
-#define WSF_EFS_WDXS_PUT_COMPLETE_CMD       0x00          /*!< \brief Put Complete */
-#define WSF_EFS_VALIDATE_CMD                0x01          /*!< \brief Validate Req for the file */
+#define WSF_EFS_WDXS_PUT_COMPLETE_CMD 0x00 /*!< \brief Put Complete */
+#define WSF_EFS_VALIDATE_CMD 0x01 /*!< \brief Validate Req for the file */
 /**@}*/
 
 /*! \brief Media Specific Command Identifiers reserved for applications begin at 0x80 */
-#define WSF_EFS_USER_CMD                    0x80
+#define WSF_EFS_USER_CMD 0x80
 
 /**************************************************************************************************
   Data Types
@@ -118,30 +117,27 @@ extern "C" {
 typedef uint16_t wsfEfsHandle_t;
 
 /*! \brief File attributes data type */
-typedef struct
-{
-  char     name[WSF_EFS_NAME_LEN];       /*!< \brief File name string. */
-  char     version[WSF_EFS_VERSION_LEN]; /*!< \brief File version string. */
-  uint16_t permissions;                  /*!< \brief File permissions. */
-  uint8_t  type;                         /*!< \brief File type. */
+typedef struct {
+    char name[WSF_EFS_NAME_LEN]; /*!< \brief File name string. */
+    char version[WSF_EFS_VERSION_LEN]; /*!< \brief File version string. */
+    uint16_t permissions; /*!< \brief File permissions. */
+    uint8_t type; /*!< \brief File type. */
 } wsfEsfAttributes_t;
 
 /*! \brief File control block data type */
-typedef struct
-{
-  uint32_t           maxSize;    /*!< \brief File maximum size. */
-  uint32_t           address;    /*!< \brief File storage address. */
-  uint8_t            media;      /*!< \brief File media. */
-  uint32_t           size;       /*!< \brief File size. */
-  wsfEsfAttributes_t attributes; /*!< \brief File attributes. */
+typedef struct {
+    uint32_t maxSize; /*!< \brief File maximum size. */
+    uint32_t address; /*!< \brief File storage address. */
+    uint8_t media; /*!< \brief File media. */
+    uint32_t size; /*!< \brief File size. */
+    wsfEsfAttributes_t attributes; /*!< \brief File attributes. */
 } wsfEfsControl_t;
 
 /*! \brief File Listing Information */
-typedef struct
-{
-  wsfEfsHandle_t     handle;     /*!< \brief File handle. */
-  uint32_t           size;       /*!< \brief File size. */
-  wsfEsfAttributes_t attributes; /*!< \brief File attributes. */
+typedef struct {
+    wsfEfsHandle_t handle; /*!< \brief File handle. */
+    uint32_t size; /*!< \brief File size. */
+    wsfEsfAttributes_t attributes; /*!< \brief File attributes. */
 } wsfEfsFileInfo_t;
 
 /*************************************************************************************************/
@@ -204,16 +200,15 @@ typedef uint8_t wsfMediaWriteFunc_t(const uint8_t *pBuf, uint8_t *pAddress, uint
 typedef uint8_t wsfMediaHandleCmdFunc_t(uint8_t cmd, uint32_t param);
 
 /*! \brief Media Control data type */
-typedef struct
-{
-  uint32_t                startAddress;  /*!< \brief Start address. */
-  uint32_t                endAddress;    /*!< \brief End address. */
-  uint32_t                pageSize;      /*!< \brief Page size. */
-  wsfMediaInitFunc_t      *init;         /*!< \brief Media intialization callback. */
-  wsfMediaEraseFunc_t     *erase;        /*!< \brief Media erase callback. */
-  wsfMediaReadFunc_t      *read;         /*!< \brief Media read callback. */
-  wsfMediaWriteFunc_t     *write;        /*!< \brief Media write callback. */
-  wsfMediaHandleCmdFunc_t *handleCmd;    /*!< \brief Media command handler callback. */
+typedef struct {
+    uint32_t startAddress; /*!< \brief Start address. */
+    uint32_t endAddress; /*!< \brief End address. */
+    uint32_t pageSize; /*!< \brief Page size. */
+    wsfMediaInitFunc_t *init; /*!< \brief Media intialization callback. */
+    wsfMediaEraseFunc_t *erase; /*!< \brief Media erase callback. */
+    wsfMediaReadFunc_t *read; /*!< \brief Media read callback. */
+    wsfMediaWriteFunc_t *write; /*!< \brief Media write callback. */
+    wsfMediaHandleCmdFunc_t *handleCmd; /*!< \brief Media command handler callback. */
 } wsfEfsMedia_t;
 
 /*! \brief Pointer to Media Control data type */
@@ -244,7 +239,8 @@ void WsfEfsInit(void);
  *  \return File Handle, or WSF_EFS_INVALID_HANDLE.
  */
 /*************************************************************************************************/
-wsfEfsHandle_t WsfEfsAddFile(uint32_t maxSize, uint8_t media, wsfEsfAttributes_t *pAttr, uint32_t offset);
+wsfEfsHandle_t WsfEfsAddFile(uint32_t maxSize, uint8_t media, wsfEsfAttributes_t *pAttr,
+                             uint32_t offset);
 
 /*************************************************************************************************/
 /*!
@@ -422,7 +418,7 @@ uint16_t WsfEfsGetFilePermissions(wsfEfsHandle_t handle);
 /*************************************************************************************************/
 uint8_t WsfEfsMediaSpecificCommand(wsfEfsHandle_t handle, uint8_t cmd, uint32_t param);
 
-/*! \} */    /* WSF_EFS_API */
+/*! \} */ /* WSF_EFS_API */
 
 #ifdef __cplusplus
 }

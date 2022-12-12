@@ -50,116 +50,86 @@
 #include "nrf_crypto_shared.h"
 #include "cc310_bl_backend_ecc.h"
 
-
 #if defined(NRF_CRYPTO_BACKEND_CC310_BL_ECC_LITTLE_ENDIAN_ENABLED)
 
 #error The configuration NRF_CRYPTO_BACKEND_CC310_BL_ECC_LITTLE_ENDIAN_ENABLED was removed in SDK 15.1.0. Please see release notes for details on removing this error message.
 
 #endif
 
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
-
-ret_code_t nrf_crypto_backend_secp224r1_public_key_from_raw(
-    void          * p_public_key,
-    uint8_t const * p_raw_data)
+ret_code_t nrf_crypto_backend_secp224r1_public_key_from_raw(void *p_public_key,
+                                                            uint8_t const *p_raw_data)
 {
-    nrf_crypto_backend_secp224r1_public_key_t * p_pub =
+    nrf_crypto_backend_secp224r1_public_key_t *p_pub =
         (nrf_crypto_backend_secp224r1_public_key_t *)p_public_key;
 
-    memcpy(&p_pub->public_key.x[0],
-           &p_raw_data[0],
-           NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE);
-    memcpy(&p_pub->public_key.y[0],
-           &p_raw_data[NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE],
+    memcpy(&p_pub->public_key.x[0], &p_raw_data[0], NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE);
+    memcpy(&p_pub->public_key.y[0], &p_raw_data[NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE],
            NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE);
 
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_backend_secp224r1_public_key_to_raw(
-    void const * p_public_key,
-    uint8_t    * p_raw_data)
+ret_code_t nrf_crypto_backend_secp224r1_public_key_to_raw(void const *p_public_key,
+                                                          uint8_t *p_raw_data)
 {
-    nrf_crypto_backend_secp224r1_public_key_t const * p_pub =
+    nrf_crypto_backend_secp224r1_public_key_t const *p_pub =
         (nrf_crypto_backend_secp224r1_public_key_t const *)p_public_key;
 
-    memcpy(&p_raw_data[0],
-           &p_pub->public_key.x[0],
-           NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE);
-    memcpy(&p_raw_data[NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE],
-           &p_pub->public_key.y[0],
+    memcpy(&p_raw_data[0], &p_pub->public_key.x[0], NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE);
+    memcpy(&p_raw_data[NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE], &p_pub->public_key.y[0],
            NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE);
 
     return NRF_SUCCESS;
 }
 
-
-nrf_crypto_ecc_curve_info_t const g_nrf_crypto_ecc_secp224r1_curve_info =
-{
-    .public_key_size      = sizeof(nrf_crypto_backend_secp224r1_public_key_t),
-    .private_key_size     = 0,
-    .curve_type           = NRF_CRYPTO_ECC_SECP224R1_CURVE_TYPE,
+nrf_crypto_ecc_curve_info_t const g_nrf_crypto_ecc_secp224r1_curve_info = {
+    .public_key_size = sizeof(nrf_crypto_backend_secp224r1_public_key_t),
+    .private_key_size = 0,
+    .curve_type = NRF_CRYPTO_ECC_SECP224R1_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_SECP224R1_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size  = NRF_CRYPTO_ECC_SECP224R1_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size = NRF_CRYPTO_ECC_SECP224R1_RAW_PUBLIC_KEY_SIZE,
 };
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP224R1)
 
-
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
 
-
-ret_code_t nrf_crypto_backend_secp256r1_public_key_from_raw(
-    void          * p_public_key,
-    uint8_t const * p_raw_data)
+ret_code_t nrf_crypto_backend_secp256r1_public_key_from_raw(void *p_public_key,
+                                                            uint8_t const *p_raw_data)
 {
-    nrf_crypto_backend_secp256r1_public_key_t * p_pub =
+    nrf_crypto_backend_secp256r1_public_key_t *p_pub =
         (nrf_crypto_backend_secp256r1_public_key_t *)p_public_key;
 
-    memcpy(&p_pub->public_key.x[0],
-           &p_raw_data[0],
-           NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE);
-    memcpy(&p_pub->public_key.y[0],
-           &p_raw_data[NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE],
+    memcpy(&p_pub->public_key.x[0], &p_raw_data[0], NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE);
+    memcpy(&p_pub->public_key.y[0], &p_raw_data[NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE],
            NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE);
 
     return NRF_SUCCESS;
 }
 
-
-ret_code_t nrf_crypto_backend_secp256r1_public_key_to_raw(
-    void const * p_public_key,
-    uint8_t    * p_raw_data)
+ret_code_t nrf_crypto_backend_secp256r1_public_key_to_raw(void const *p_public_key,
+                                                          uint8_t *p_raw_data)
 {
-    nrf_crypto_backend_secp256r1_public_key_t const * p_pub =
+    nrf_crypto_backend_secp256r1_public_key_t const *p_pub =
         (nrf_crypto_backend_secp256r1_public_key_t const *)p_public_key;
 
-    memcpy(&p_raw_data[0],
-           &p_pub->public_key.x[0],
-           NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE);
-    memcpy(&p_raw_data[NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE],
-           &p_pub->public_key.y[0],
+    memcpy(&p_raw_data[0], &p_pub->public_key.x[0], NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE);
+    memcpy(&p_raw_data[NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE], &p_pub->public_key.y[0],
            NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE);
 
     return NRF_SUCCESS;
 }
 
-
-nrf_crypto_ecc_curve_info_t const g_nrf_crypto_ecc_secp256r1_curve_info =
-{
-    .public_key_size      = sizeof(nrf_crypto_backend_secp256r1_public_key_t),
-    .private_key_size     = 0,
-    .curve_type           = NRF_CRYPTO_ECC_SECP256R1_CURVE_TYPE,
+nrf_crypto_ecc_curve_info_t const g_nrf_crypto_ecc_secp256r1_curve_info = {
+    .public_key_size = sizeof(nrf_crypto_backend_secp256r1_public_key_t),
+    .private_key_size = 0,
+    .curve_type = NRF_CRYPTO_ECC_SECP256R1_CURVE_TYPE,
     .raw_private_key_size = NRF_CRYPTO_ECC_SECP256R1_RAW_PRIVATE_KEY_SIZE,
-    .raw_public_key_size  = NRF_CRYPTO_ECC_SECP256R1_RAW_PUBLIC_KEY_SIZE,
+    .raw_public_key_size = NRF_CRYPTO_ECC_SECP256R1_RAW_PUBLIC_KEY_SIZE,
 };
 
-
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_ECC_SECP256R1)
-
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL)

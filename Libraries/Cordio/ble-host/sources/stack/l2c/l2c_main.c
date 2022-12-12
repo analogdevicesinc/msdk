@@ -55,7 +55,7 @@ l2cCb_t l2cCb;
 /*************************************************************************************************/
 static void l2cDefaultDataCback(uint16_t handle, uint16_t len, uint8_t *pPacket)
 {
-  L2C_TRACE_WARN0("rcvd data on uregistered cid");
+    L2C_TRACE_WARN0("rcvd data on uregistered cid");
 }
 
 /*************************************************************************************************/
@@ -72,7 +72,7 @@ static void l2cDefaultDataCback(uint16_t handle, uint16_t len, uint8_t *pPacket)
 /*************************************************************************************************/
 static void l2cDefaultDataCidCback(uint16_t handle, uint16_t cid, uint16_t len, uint8_t *pPacket)
 {
-  L2C_TRACE_WARN1("unknown cid=0x%04x", cid);
+    L2C_TRACE_WARN1("unknown cid=0x%04x", cid);
 }
 
 /*************************************************************************************************/
@@ -86,7 +86,7 @@ static void l2cDefaultDataCidCback(uint16_t handle, uint16_t cid, uint16_t len, 
 /*************************************************************************************************/
 static void l2cDefaultCtrlCback(wsfMsgHdr_t *pMsg)
 {
-  return;
+    return;
 }
 
 /*************************************************************************************************/
@@ -102,28 +102,22 @@ static void l2cDefaultCtrlCback(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void l2cRxSignalingPkt(uint16_t handle, uint16_t len, uint8_t *pPacket)
 {
-  uint8_t role;
-  dmConnId_t connId;
+    uint8_t role;
+    dmConnId_t connId;
 
-  if ((connId = DmConnIdByHandle(handle)) == DM_CONN_ID_NONE)
-  {
-    return;
-  }
+    if ((connId = DmConnIdByHandle(handle)) == DM_CONN_ID_NONE) {
+        return;
+    }
 
-  role = DmConnRole(connId);
+    role = DmConnRole(connId);
 
-  if ((role == DM_ROLE_MASTER) && (l2cCb.masterRxSignalingPkt != NULL))
-  {
-    (*l2cCb.masterRxSignalingPkt)(handle, len, pPacket);
-  }
-  else if ((role == DM_ROLE_SLAVE) && (l2cCb.slaveRxSignalingPkt != NULL))
-  {
-    (*l2cCb.slaveRxSignalingPkt)(handle, len, pPacket);
-  }
-  else
-  {
-    L2C_TRACE_ERR1("Invalid role configuration: role=%d", role);
-  }
+    if ((role == DM_ROLE_MASTER) && (l2cCb.masterRxSignalingPkt != NULL)) {
+        (*l2cCb.masterRxSignalingPkt)(handle, len, pPacket);
+    } else if ((role == DM_ROLE_SLAVE) && (l2cCb.slaveRxSignalingPkt != NULL)) {
+        (*l2cCb.slaveRxSignalingPkt)(handle, len, pPacket);
+    } else {
+        L2C_TRACE_ERR1("Invalid role configuration: role=%d", role);
+    }
 }
 
 /*************************************************************************************************/
@@ -137,60 +131,54 @@ void l2cRxSignalingPkt(uint16_t handle, uint16_t len, uint8_t *pPacket)
 /*************************************************************************************************/
 static void l2cHciAclCback(uint8_t *pPacket)
 {
-  uint16_t  handle;
-  uint16_t  hciLen;
-  uint16_t  cid;
-  uint16_t  l2cLen;
-  uint8_t   *p = pPacket;
+    uint16_t handle;
+    uint16_t hciLen;
+    uint16_t cid;
+    uint16_t l2cLen;
+    uint8_t *p = pPacket;
 
-  /* parse HCI handle and length */
-  BSTREAM_TO_UINT16(handle, p);
-  handle &= HCI_HANDLE_MASK;
-  BSTREAM_TO_UINT16(hciLen, p);
+    /* parse HCI handle and length */
+    BSTREAM_TO_UINT16(handle, p);
+    handle &= HCI_HANDLE_MASK;
+    BSTREAM_TO_UINT16(hciLen, p);
 
-  /* parse L2CAP length */
-  if (hciLen >= L2C_HDR_LEN)
-  {
-    BSTREAM_TO_UINT16(l2cLen, p);
-  }
-  else
-  {
-    l2cLen = 0;
-  }
-
-  /* verify L2CAP length vs HCI length */
-  if (hciLen == (l2cLen + L2C_HDR_LEN))
-  {
-    /* parse CID */
-    BSTREAM_TO_UINT16(cid, p);
-
-    switch (cid)
-    {
-      case L2C_CID_LE_SIGNALING:
-        (*l2cCb.l2cSignalingCback)(handle, l2cLen, pPacket);
-        break;
-
-      case L2C_CID_ATT:
-        (*l2cCb.attDataCback)(handle, l2cLen, pPacket);
-        break;
-
-      case L2C_CID_SMP:
-        (*l2cCb.smpDataCback)(handle, l2cLen, pPacket);
-        break;
-
-      default:
-        (*l2cCb.l2cDataCidCback)(handle, cid, l2cLen, pPacket);
-        break;
+    /* parse L2CAP length */
+    if (hciLen >= L2C_HDR_LEN) {
+        BSTREAM_TO_UINT16(l2cLen, p);
+    } else {
+        l2cLen = 0;
     }
-  }
-  /* else length mismatch */
-  else
-  {
-    L2C_TRACE_WARN2("length mismatch: l2c=%u hci=%u", l2cLen, hciLen);
-  }
 
-  /* deallocate buffer */
-  WsfMsgFree(pPacket);
+    /* verify L2CAP length vs HCI length */
+    if (hciLen == (l2cLen + L2C_HDR_LEN)) {
+        /* parse CID */
+        BSTREAM_TO_UINT16(cid, p);
+
+        switch (cid) {
+        case L2C_CID_LE_SIGNALING:
+            (*l2cCb.l2cSignalingCback)(handle, l2cLen, pPacket);
+            break;
+
+        case L2C_CID_ATT:
+            (*l2cCb.attDataCback)(handle, l2cLen, pPacket);
+            break;
+
+        case L2C_CID_SMP:
+            (*l2cCb.smpDataCback)(handle, l2cLen, pPacket);
+            break;
+
+        default:
+            (*l2cCb.l2cDataCidCback)(handle, cid, l2cLen, pPacket);
+            break;
+        }
+    }
+    /* else length mismatch */
+    else {
+        L2C_TRACE_WARN2("length mismatch: l2c=%u hci=%u", l2cLen, hciLen);
+    }
+
+    /* deallocate buffer */
+    WsfMsgFree(pPacket);
 }
 
 /*************************************************************************************************/
@@ -205,23 +193,22 @@ static void l2cHciAclCback(uint8_t *pPacket)
 /*************************************************************************************************/
 static void l2cHciFlowCback(uint16_t handle, bool_t flowDisabled)
 {
-  wsfMsgHdr_t hdr;
+    wsfMsgHdr_t hdr;
 
-  L2C_TRACE_INFO2("flowDisabled=%u handle=%u", flowDisabled, handle);
+    L2C_TRACE_INFO2("flowDisabled=%u handle=%u", flowDisabled, handle);
 
-  /* get conn ID for handle */
-  if ((hdr.param = DmConnIdByHandle(handle)) != DM_CONN_ID_NONE)
-  {
-    /* execute higher layer flow control callbacks */
-    hdr.event = flowDisabled;
-    (*l2cCb.attCtrlCback)(&hdr);
-    hdr.event = flowDisabled;
-    (*l2cCb.smpCtrlCback)(&hdr);
+    /* get conn ID for handle */
+    if ((hdr.param = DmConnIdByHandle(handle)) != DM_CONN_ID_NONE) {
+        /* execute higher layer flow control callbacks */
+        hdr.event = flowDisabled;
+        (*l2cCb.attCtrlCback)(&hdr);
+        hdr.event = flowDisabled;
+        (*l2cCb.smpCtrlCback)(&hdr);
 
-    /* execute connection oriented channel flow control callback */
-    hdr.event = flowDisabled;
-    (*l2cCb.l2cCocCtrlCback)(&hdr);
-  }
+        /* execute connection oriented channel flow control callback */
+        hdr.event = flowDisabled;
+        (*l2cCb.l2cCocCtrlCback)(&hdr);
+    }
 }
 
 /*************************************************************************************************/
@@ -237,22 +224,21 @@ static void l2cHciFlowCback(uint16_t handle, bool_t flowDisabled)
 /*************************************************************************************************/
 void l2cSendCmdReject(uint16_t handle, uint8_t identifier, uint16_t reason)
 {
-  uint8_t *pPacket;
-  uint8_t *p;
+    uint8_t *pPacket;
+    uint8_t *p;
 
-  /* allocate msg buffer */
-  if ((pPacket = l2cMsgAlloc(L2C_SIG_PKT_BASE_LEN + L2C_SIG_CMD_REJ_LEN)) != NULL)
-  {
-    /* build message */
-    p = pPacket + L2C_PAYLOAD_START;
-    UINT8_TO_BSTREAM(p, L2C_SIG_CMD_REJ);         /* command code */
-    UINT8_TO_BSTREAM(p, identifier);              /* identifier */
-    UINT16_TO_BSTREAM(p, L2C_SIG_CMD_REJ_LEN);    /* parameter length */
-    UINT16_TO_BSTREAM(p, reason);                 /* reason */
+    /* allocate msg buffer */
+    if ((pPacket = l2cMsgAlloc(L2C_SIG_PKT_BASE_LEN + L2C_SIG_CMD_REJ_LEN)) != NULL) {
+        /* build message */
+        p = pPacket + L2C_PAYLOAD_START;
+        UINT8_TO_BSTREAM(p, L2C_SIG_CMD_REJ); /* command code */
+        UINT8_TO_BSTREAM(p, identifier); /* identifier */
+        UINT16_TO_BSTREAM(p, L2C_SIG_CMD_REJ_LEN); /* parameter length */
+        UINT16_TO_BSTREAM(p, reason); /* reason */
 
-    /* send packet */
-    L2cDataReq(L2C_CID_LE_SIGNALING, handle, (L2C_SIG_HDR_LEN + L2C_SIG_CMD_REJ_LEN), pPacket);
-  }
+        /* send packet */
+        L2cDataReq(L2C_CID_LE_SIGNALING, handle, (L2C_SIG_HDR_LEN + L2C_SIG_CMD_REJ_LEN), pPacket);
+    }
 }
 
 /*************************************************************************************************/
@@ -266,7 +252,7 @@ void l2cSendCmdReject(uint16_t handle, uint8_t identifier, uint16_t reason)
 /*************************************************************************************************/
 void *l2cMsgAlloc(uint16_t len)
 {
-  return WsfMsgDataAlloc(len, HCI_TX_DATA_TAILROOM);
+    return WsfMsgDataAlloc(len, HCI_TX_DATA_TAILROOM);
 }
 
 /*************************************************************************************************/
@@ -278,18 +264,18 @@ void *l2cMsgAlloc(uint16_t len)
 /*************************************************************************************************/
 void L2cInit(void)
 {
-  /* Initialize control block */
-  l2cCb.attDataCback = l2cDefaultDataCback;
-  l2cCb.smpDataCback = l2cDefaultDataCback;
-  l2cCb.l2cSignalingCback = l2cRxSignalingPkt;
-  l2cCb.attCtrlCback = l2cDefaultCtrlCback;
-  l2cCb.smpCtrlCback = l2cDefaultCtrlCback;
-  l2cCb.l2cCocCtrlCback = l2cDefaultCtrlCback;
-  l2cCb.l2cDataCidCback = l2cDefaultDataCidCback;
-  l2cCb.identifier = 1;
+    /* Initialize control block */
+    l2cCb.attDataCback = l2cDefaultDataCback;
+    l2cCb.smpDataCback = l2cDefaultDataCback;
+    l2cCb.l2cSignalingCback = l2cRxSignalingPkt;
+    l2cCb.attCtrlCback = l2cDefaultCtrlCback;
+    l2cCb.smpCtrlCback = l2cDefaultCtrlCback;
+    l2cCb.l2cCocCtrlCback = l2cDefaultCtrlCback;
+    l2cCb.l2cDataCidCback = l2cDefaultDataCidCback;
+    l2cCb.identifier = 1;
 
-  /* Register with HCI */
-  HciAclRegister(l2cHciAclCback, l2cHciFlowCback);
+    /* Register with HCI */
+    HciAclRegister(l2cHciAclCback, l2cHciFlowCback);
 }
 
 /*************************************************************************************************/
@@ -305,21 +291,18 @@ void L2cInit(void)
 /*************************************************************************************************/
 void L2cRegister(uint16_t cid, l2cDataCback_t dataCback, l2cCtrlCback_t ctrlCback)
 {
-  WSF_ASSERT((cid == L2C_CID_ATT) || (cid == L2C_CID_SMP));
+    WSF_ASSERT((cid == L2C_CID_ATT) || (cid == L2C_CID_SMP));
 
-  /* store the callbacks */
-  if (cid == L2C_CID_ATT)
-  {
-    /* registering for attribute protocol */
-    l2cCb.attDataCback = dataCback;
-    l2cCb.attCtrlCback = ctrlCback;
-  }
-  else
-  {
-    /* registering for security manager protocol */
-    l2cCb.smpDataCback = dataCback;
-    l2cCb.smpCtrlCback = ctrlCback;
-  }
+    /* store the callbacks */
+    if (cid == L2C_CID_ATT) {
+        /* registering for attribute protocol */
+        l2cCb.attDataCback = dataCback;
+        l2cCb.attCtrlCback = ctrlCback;
+    } else {
+        /* registering for security manager protocol */
+        l2cCb.smpDataCback = dataCback;
+        l2cCb.smpCtrlCback = ctrlCback;
+    }
 }
 
 /*************************************************************************************************/
@@ -336,16 +319,16 @@ void L2cRegister(uint16_t cid, l2cDataCback_t dataCback, l2cCtrlCback_t ctrlCbac
 /*************************************************************************************************/
 void L2cDataReq(uint16_t cid, uint16_t handle, uint16_t len, uint8_t *pPacket)
 {
-  uint8_t *p = pPacket;
+    uint8_t *p = pPacket;
 
-  /* Set HCI header */
-  UINT16_TO_BSTREAM(p, handle);
-  UINT16_TO_BSTREAM(p, (len + L2C_HDR_LEN));
+    /* Set HCI header */
+    UINT16_TO_BSTREAM(p, handle);
+    UINT16_TO_BSTREAM(p, (len + L2C_HDR_LEN));
 
-  /* Set L2CAP header */
-  UINT16_TO_BSTREAM(p, len);
-  UINT16_TO_BSTREAM(p, cid);
+    /* Set L2CAP header */
+    UINT16_TO_BSTREAM(p, len);
+    UINT16_TO_BSTREAM(p, cid);
 
-  /* Send to HCI */
-  HciSendAclData(pPacket);
+    /* Send to HCI */
+    HciSendAclData(pPacket);
 }

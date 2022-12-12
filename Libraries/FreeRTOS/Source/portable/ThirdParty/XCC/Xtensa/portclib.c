@@ -33,19 +33,17 @@
 
 #include "semphr.h"
 
-typedef SemaphoreHandle_t       _Rmtx;
+typedef SemaphoreHandle_t _Rmtx;
 
 //-----------------------------------------------------------------------------
 //  Override this and set to nonzero to enable locking.
 //-----------------------------------------------------------------------------
 int32_t _xclib_use_mt = 1;
 
-
 //-----------------------------------------------------------------------------
 //  Init lock.
 //-----------------------------------------------------------------------------
-void
-_Mtxinit(_Rmtx * mtx)
+void _Mtxinit(_Rmtx *mtx)
 {
     *mtx = xSemaphoreCreateRecursiveMutex();
 }
@@ -53,8 +51,7 @@ _Mtxinit(_Rmtx * mtx)
 //-----------------------------------------------------------------------------
 //  Destroy lock.
 //-----------------------------------------------------------------------------
-void
-_Mtxdst(_Rmtx * mtx)
+void _Mtxdst(_Rmtx *mtx)
 {
     if ((mtx != NULL) && (*mtx != NULL)) {
         vSemaphoreDelete(*mtx);
@@ -64,8 +61,7 @@ _Mtxdst(_Rmtx * mtx)
 //-----------------------------------------------------------------------------
 //  Lock.
 //-----------------------------------------------------------------------------
-void
-_Mtxlock(_Rmtx * mtx)
+void _Mtxlock(_Rmtx *mtx)
 {
     if ((mtx != NULL) && (*mtx != NULL)) {
         xSemaphoreTakeRecursive(*mtx, portMAX_DELAY);
@@ -75,8 +71,7 @@ _Mtxlock(_Rmtx * mtx)
 //-----------------------------------------------------------------------------
 //  Unlock.
 //-----------------------------------------------------------------------------
-void
-_Mtxunlock(_Rmtx * mtx)
+void _Mtxunlock(_Rmtx *mtx)
 {
     if ((mtx != NULL) && (*mtx != NULL)) {
         xSemaphoreGiveRecursive(*mtx);
@@ -86,22 +81,21 @@ _Mtxunlock(_Rmtx * mtx)
 //-----------------------------------------------------------------------------
 //  Called by malloc() to allocate blocks of memory from the heap.
 //-----------------------------------------------------------------------------
-void *
-_sbrk_r (struct _reent * reent, int32_t incr)
+void *_sbrk_r(struct _reent *reent, int32_t incr)
 {
     extern char _end;
     extern char _heap_sentry;
-    static char * _heap_sentry_ptr = &_heap_sentry;
-    static char * heap_ptr;
-    char * base;
+    static char *_heap_sentry_ptr = &_heap_sentry;
+    static char *heap_ptr;
+    char *base;
 
     if (!heap_ptr)
-        heap_ptr = (char *) &_end;
+        heap_ptr = (char *)&_end;
 
     base = heap_ptr;
     if (heap_ptr + incr >= _heap_sentry_ptr) {
         reent->_errno = ENOMEM;
-        return (char *) -1;
+        return (char *)-1;
     }
 
     heap_ptr += incr;
@@ -111,18 +105,12 @@ _sbrk_r (struct _reent * reent, int32_t incr)
 //-----------------------------------------------------------------------------
 //  Global initialization for C library.
 //-----------------------------------------------------------------------------
-void
-vPortClibInit(void)
-{
-}
+void vPortClibInit(void) {}
 
 //-----------------------------------------------------------------------------
 //  Per-thread cleanup stub provided for linking, does nothing.
 //-----------------------------------------------------------------------------
-void
-_reclaim_reent(void * ptr)
-{
-}
+void _reclaim_reent(void *ptr) {}
 
 #endif /* XSHAL_CLIB == XTHAL_CLIB_XCLIB */
 
@@ -137,13 +125,12 @@ _reclaim_reent(void * ptr)
 #include "semphr.h"
 
 static SemaphoreHandle_t xClibMutex;
-static uint32_t  ulClibInitDone = 0;
+static uint32_t ulClibInitDone = 0;
 
 //-----------------------------------------------------------------------------
 //  Get C library lock.
 //-----------------------------------------------------------------------------
-void
-__malloc_lock(struct _reent * ptr)
+void __malloc_lock(struct _reent *ptr)
 {
     if (!ulClibInitDone)
         return;
@@ -154,8 +141,7 @@ __malloc_lock(struct _reent * ptr)
 //-----------------------------------------------------------------------------
 //  Release C library lock.
 //-----------------------------------------------------------------------------
-void
-__malloc_unlock(struct _reent * ptr)
+void __malloc_unlock(struct _reent *ptr)
 {
     if (!ulClibInitDone)
         return;
@@ -167,18 +153,15 @@ __malloc_unlock(struct _reent * ptr)
 //  Lock for environment. Since we have only one global lock we can just call
 //  the malloc() lock function.
 //-----------------------------------------------------------------------------
-void
-__env_lock(struct _reent * ptr)
+void __env_lock(struct _reent *ptr)
 {
     __malloc_lock(ptr);
 }
 
-
 //-----------------------------------------------------------------------------
 //  Unlock environment.
 //-----------------------------------------------------------------------------
-void
-__env_unlock(struct _reent * ptr)
+void __env_unlock(struct _reent *ptr)
 {
     __malloc_unlock(ptr);
 }
@@ -186,22 +169,21 @@ __env_unlock(struct _reent * ptr)
 //-----------------------------------------------------------------------------
 //  Called by malloc() to allocate blocks of memory from the heap.
 //-----------------------------------------------------------------------------
-void *
-_sbrk_r (struct _reent * reent, int32_t incr)
+void *_sbrk_r(struct _reent *reent, int32_t incr)
 {
     extern char _end;
     extern char _heap_sentry;
-    static char * _heap_sentry_ptr = &_heap_sentry;
-    static char * heap_ptr;
-    char * base;
+    static char *_heap_sentry_ptr = &_heap_sentry;
+    static char *heap_ptr;
+    char *base;
 
     if (!heap_ptr)
-        heap_ptr = (char *) &_end;
+        heap_ptr = (char *)&_end;
 
     base = heap_ptr;
     if (heap_ptr + incr >= _heap_sentry_ptr) {
         reent->_errno = ENOMEM;
-        return (char *) -1;
+        return (char *)-1;
     }
 
     heap_ptr += incr;
@@ -211,13 +193,12 @@ _sbrk_r (struct _reent * reent, int32_t incr)
 //-----------------------------------------------------------------------------
 //  Global initialization for C library.
 //-----------------------------------------------------------------------------
-void
-vPortClibInit(void)
+void vPortClibInit(void)
 {
     configASSERT(!ulClibInitDone);
 
     xClibMutex = xSemaphoreCreateRecursiveMutex();
-    ulClibInitDone  = 1;
+    ulClibInitDone = 1;
 }
 
 #endif /* XSHAL_CLIB == XTHAL_CLIB_NEWLIB */

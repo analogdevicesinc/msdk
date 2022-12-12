@@ -128,7 +128,7 @@ void *WsfMsgPeek(wsfQueue_t *pQueue, wsfHandlerId_t *pHandlerId);
 /*************************************************************************************************/
 void *WsfMsgNPeek(wsfQueue_t *pQueue, uint8_t n, wsfHandlerId_t *pHandlerId);
 
-/*! \} */    /* WSF_MSG_API */
+/*! \} */ /* WSF_MSG_API */
 
 #ifdef __cplusplus
 };

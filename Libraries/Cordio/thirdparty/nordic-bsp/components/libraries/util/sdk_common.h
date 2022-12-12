@@ -65,7 +65,6 @@
 extern "C" {
 #endif
 
-
 /** @} */
 /** @endcond */
 
@@ -74,4 +73,3 @@ extern "C" {
 #endif
 
 #endif // SDK_COMMON_H__
-

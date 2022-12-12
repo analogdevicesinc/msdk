@@ -27,27 +27,20 @@
 #ifndef REDEXCLUDE_H
 #define REDEXCLUDE_H
 
+#define DELETE_SUPPORTED                                                    \
+    ((REDCONF_READ_ONLY == 0) &&                                            \
+     ((REDCONF_API_POSIX == 1) &&                                           \
+      ((REDCONF_API_POSIX_RMDIR == 1) || (REDCONF_API_POSIX_UNLINK == 1) || \
+       ((REDCONF_API_POSIX_RENAME == 1) && (REDCONF_RENAME_ATOMIC == 1)))))
 
-#define DELETE_SUPPORTED \
-  ( \
-       (REDCONF_READ_ONLY == 0) \
-    && (    (REDCONF_API_POSIX == 1) \
-         && (    (REDCONF_API_POSIX_RMDIR == 1) \
-              || (REDCONF_API_POSIX_UNLINK == 1) \
-              || ((REDCONF_API_POSIX_RENAME == 1) && (REDCONF_RENAME_ATOMIC == 1)))))
+#define TRUNCATE_SUPPORTED                                                \
+    ((REDCONF_READ_ONLY == 0) &&                                          \
+     (((REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_FTRUNCATE == 1)) || \
+      ((REDCONF_API_FSE == 1) && (REDCONF_API_FSE_TRUNCATE == 1))))
 
-#define TRUNCATE_SUPPORTED \
-  ( \
-       (REDCONF_READ_ONLY == 0) \
-    && (    ((REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_FTRUNCATE == 1)) \
-         || ((REDCONF_API_FSE == 1) && (REDCONF_API_FSE_TRUNCATE == 1))))
-
-#define FORMAT_SUPPORTED \
-    ( \
-         (REDCONF_READ_ONLY == 0) \
-      && (    ((REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_FORMAT == 1)) \
-           || ((REDCONF_API_FSE == 1) && (REDCONF_API_FSE_FORMAT == 1)) \
-           || (REDCONF_IMAGE_BUILDER == 1)))
+#define FORMAT_SUPPORTED                                               \
+    ((REDCONF_READ_ONLY == 0) &&                                       \
+     (((REDCONF_API_POSIX == 1) && (REDCONF_API_POSIX_FORMAT == 1)) || \
+      ((REDCONF_API_FSE == 1) && (REDCONF_API_FSE_FORMAT == 1)) || (REDCONF_IMAGE_BUILDER == 1)))
 
 #endif
-

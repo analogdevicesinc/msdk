@@ -50,7 +50,6 @@
 #include "nrf_log.h"
 #include "sdk_config.h"
 
-
 // Enabling the NRF_BOOTLOADER_READ_PROTECT define is untested.
 // Read-protecting the bootloader requires certain functions to run from RAM.
 // In GCC and SES this is done automatically when the define is enabled. You will
@@ -60,13 +59,13 @@
 #define NRF_BOOTLOADER_READ_PROTECT 0
 #endif
 
-
-#define HANDLER_MODE_EXIT 0xFFFFFFF9 // When this is jumped to, the CPU will exit interrupt context
-                                     // (handler mode), and pop values from the stack into registers.
-                                     // See ARM's documentation for "Exception entry and return".
-#define EXCEPTION_STACK_WORD_COUNT 8 // The number of words popped from the stack when
-                                     // HANDLER_MODE_EXIT is branched to.
-
+#define HANDLER_MODE_EXIT \
+    0xFFFFFFF9 // When this is jumped to, the CPU will exit interrupt context \
+        // (handler mode), and pop values from the stack into registers.      \
+        // See ARM's documentation for "Exception entry and return".
+#define EXCEPTION_STACK_WORD_COUNT \
+    8 // The number of words popped from the stack when \
+        // HANDLER_MODE_EXIT is branched to.
 
 /**@brief Function that sets the stack pointer and link register, and starts executing a particular address.
  *
@@ -74,22 +73,21 @@
  * @param[in]  new_lr   The new value to set in the link register.
  * @param[in]  addr     The address to execute.
  */
-#if defined ( __CC_ARM )
+#if defined(__CC_ARM)
 __ASM __STATIC_INLINE void jump_to_addr(uint32_t new_msp, uint32_t new_lr, uint32_t addr)
 {
     MSR MSP, R0;
-    MOV LR,  R1;
-    BX       R2;
+    MOV LR, R1;
+    BX R2;
 }
 #else
 __STATIC_INLINE void jump_to_addr(uint32_t new_msp, uint32_t new_lr, uint32_t addr)
 {
-    __ASM volatile ("MSR MSP, %[arg]" : : [arg] "r" (new_msp));
-    __ASM volatile ("MOV LR,  %[arg]" : : [arg] "r" (new_lr) : "lr");
-    __ASM volatile ("BX       %[arg]" : : [arg] "r" (addr));
+    __ASM volatile("MSR MSP, %[arg]" : : [arg] "r"(new_msp));
+    __ASM volatile("MOV LR,  %[arg]" : : [arg] "r"(new_lr) : "lr");
+    __ASM volatile("BX       %[arg]" : : [arg] "r"(addr));
 }
 #endif
-
 
 /**@brief Function for booting an app as if the chip was reset.
  *
@@ -98,13 +96,19 @@ __STATIC_INLINE void jump_to_addr(uint32_t new_msp, uint32_t new_lr, uint32_t ad
 __STATIC_INLINE void app_start(uint32_t vector_table_addr)
 {
     const uint32_t current_isr_num = (__get_IPSR() & IPSR_ISR_Msk);
-    const uint32_t new_msp         = *((uint32_t *)(vector_table_addr));                    // The app's Stack Pointer is found as the first word of the vector table.
-    const uint32_t reset_handler   = *((uint32_t *)(vector_table_addr + sizeof(uint32_t))); // The app's Reset Handler is found as the second word of the vector table.
-    const uint32_t new_lr          = 0xFFFFFFFF;
+    const uint32_t new_msp = *((
+        uint32_t
+            *)(vector_table_addr)); // The app's Stack Pointer is found as the first word of the vector table.
+    const uint32_t reset_handler = *((
+        uint32_t
+            *)(vector_table_addr +
+               sizeof(
+                   uint32_t))); // The app's Reset Handler is found as the second word of the vector table.
+    const uint32_t new_lr = 0xFFFFFFFF;
 
-    __set_CONTROL(0x00000000);   // Set CONTROL to its reset value 0.
-    __set_PRIMASK(0x00000000);   // Set PRIMASK to its reset value 0.
-    __set_BASEPRI(0x00000000);   // Set BASEPRI to its reset value 0.
+    __set_CONTROL(0x00000000); // Set CONTROL to its reset value 0.
+    __set_PRIMASK(0x00000000); // Set PRIMASK to its reset value 0.
+    __set_BASEPRI(0x00000000); // Set BASEPRI to its reset value 0.
     __set_FAULTMASK(0x00000000); // Set FAULTMASK to its reset value 0.
 
     ASSERT(current_isr_num == 0); // If this is triggered, the CPU is currently in an interrupt.
@@ -116,16 +120,17 @@ __STATIC_INLINE void app_start(uint32_t vector_table_addr)
 #if NRF_BOOTLOADER_READ_PROTECT
 #ifdef __ICCARM__
 __ramfunc
-#elif  defined ( __GNUC__ ) || defined ( __SES_ARM )
+#elif defined(__GNUC__) || defined(__SES_ARM)
 __attribute__((noinline, long_call, section(".data")))
-#elif  defined ( __CC_ARM )
-#warning "Keil requires changes to project settings to run this file from RAM. Ignore this warning if configuration has been made."
+#elif defined(__CC_ARM)
+#warning \
+    "Keil requires changes to project settings to run this file from RAM. Ignore this warning if configuration has been made."
 #endif
 #endif
-ret_code_t nrf_bootloader_flash_protect(uint32_t address, uint32_t size, bool read_protect)
+    ret_code_t
+    nrf_bootloader_flash_protect(uint32_t address, uint32_t size, bool read_protect)
 {
-    if ((size & (CODE_PAGE_SIZE - 1)) || (address > BOOTLOADER_SETTINGS_ADDRESS))
-    {
+    if ((size & (CODE_PAGE_SIZE - 1)) || (address > BOOTLOADER_SETTINGS_ADDRESS)) {
         return NRF_ERROR_INVALID_PARAM;
     }
 
@@ -134,14 +139,12 @@ ret_code_t nrf_bootloader_flash_protect(uint32_t address, uint32_t size, bool re
     // Protect using ACL.
     static uint32_t acl_instance = 0;
 
-    uint32_t const wmask  = (ACL_ACL_PERM_WRITE_Disable << ACL_ACL_PERM_WRITE_Pos);
+    uint32_t const wmask = (ACL_ACL_PERM_WRITE_Disable << ACL_ACL_PERM_WRITE_Pos);
     uint32_t const rwmask = wmask | (ACL_ACL_PERM_READ_Disable << ACL_ACL_PERM_READ_Pos);
-    uint32_t const mask   = read_protect ? rwmask: wmask;
+    uint32_t const mask = read_protect ? rwmask : wmask;
 
-    do
-    {
-        if (acl_instance >= ACL_REGIONS_COUNT)
-        {
+    do {
+        if (acl_instance >= ACL_REGIONS_COUNT) {
             return NRF_ERROR_NO_MEM;
         }
 
@@ -151,36 +154,35 @@ ret_code_t nrf_bootloader_flash_protect(uint32_t address, uint32_t size, bool re
 
         acl_instance++;
 
-    } while (NRF_ACL->ACL[acl_instance - 1].ADDR != address
-          || NRF_ACL->ACL[acl_instance - 1].SIZE != size
-          || NRF_ACL->ACL[acl_instance - 1].PERM != mask); // Check whether the acl_instance has been used before.
+    } while (NRF_ACL->ACL[acl_instance - 1].ADDR != address ||
+             NRF_ACL->ACL[acl_instance - 1].SIZE != size ||
+             NRF_ACL->ACL[acl_instance - 1].PERM !=
+                 mask); // Check whether the acl_instance has been used before.
 
-#elif defined (BPROT_PRESENT)
+#elif defined(BPROT_PRESENT)
 
     // Protect using BPROT. BPROT does not support read protection.
     uint32_t pagenum_start = address / CODE_PAGE_SIZE;
-    uint32_t pagenum_end   = pagenum_start + ((size - 1) / CODE_PAGE_SIZE);
+    uint32_t pagenum_end = pagenum_start + ((size - 1) / CODE_PAGE_SIZE);
 
-    for (uint32_t i = pagenum_start; i <= pagenum_end; i++)
-    {
+    for (uint32_t i = pagenum_start; i <= pagenum_end; i++) {
         uint32_t config_index = i / 32;
-        uint32_t mask         = (1 << (i - config_index * 32));
+        uint32_t mask = (1 << (i - config_index * 32));
 
-        switch (config_index)
-        {
-            case 0:
-                NRF_BPROT->CONFIG0 = mask;
-                break;
-            case 1:
-                NRF_BPROT->CONFIG1 = mask;
-                break;
+        switch (config_index) {
+        case 0:
+            NRF_BPROT->CONFIG0 = mask;
+            break;
+        case 1:
+            NRF_BPROT->CONFIG1 = mask;
+            break;
 #if BPROT_REGIONS_NUM > 64
-            case 2:
-                NRF_BPROT->CONFIG2 = mask;
-                break;
-            case 3:
-                NRF_BPROT->CONFIG3 = mask;
-                break;
+        case 2:
+            NRF_BPROT->CONFIG2 = mask;
+            break;
+        case 3:
+            NRF_BPROT->CONFIG3 = mask;
+            break;
 #endif
         }
     }
@@ -190,23 +192,23 @@ ret_code_t nrf_bootloader_flash_protect(uint32_t address, uint32_t size, bool re
     return NRF_SUCCESS;
 }
 
-
 #if NRF_BOOTLOADER_READ_PROTECT
 #ifdef __ICCARM__
 __ramfunc
-#elif  defined ( __GNUC__ ) || defined ( __SES_ARM )
+#elif defined(__GNUC__) || defined(__SES_ARM)
 __attribute__((noinline, long_call, section(".data")))
-#elif  defined ( __CC_ARM )
-#warning "Keil requires changes to project settings to run this file from RAM. Ignore this warning if configuration has been made."
+#elif defined(__CC_ARM)
+#warning \
+    "Keil requires changes to project settings to run this file from RAM. Ignore this warning if configuration has been made."
 #endif
 #endif
-void nrf_bootloader_app_start_final(uint32_t vector_table_addr)
+    void
+    nrf_bootloader_app_start_final(uint32_t vector_table_addr)
 {
     ret_code_t ret_val;
 
     // Protect MBR & bootloader code and params pages.
-    if (NRF_BOOTLOADER_READ_PROTECT)
-    {
+    if (NRF_BOOTLOADER_READ_PROTECT) {
         ret_val = nrf_bootloader_flash_protect(0, MBR_SIZE, NRF_BOOTLOADER_READ_PROTECT);
     }
 
@@ -214,27 +216,23 @@ void nrf_bootloader_app_start_final(uint32_t vector_table_addr)
     uint32_t area_size;
 
     area_size = BOOTLOADER_SIZE + NRF_MBR_PARAMS_PAGE_SIZE;
-    if (!NRF_BL_DFU_ALLOW_UPDATE_FROM_APP && !NRF_BL_DFU_ENTER_METHOD_BUTTONLESS && !NRF_DFU_TRANSPORT_BLE)
-    {
+    if (!NRF_BL_DFU_ALLOW_UPDATE_FROM_APP && !NRF_BL_DFU_ENTER_METHOD_BUTTONLESS &&
+        !NRF_DFU_TRANSPORT_BLE) {
         area_size += BOOTLOADER_SETTINGS_PAGE_SIZE;
     }
 
-    ret_val = nrf_bootloader_flash_protect(BOOTLOADER_START_ADDR,
-                                           area_size,
-                                           NRF_BOOTLOADER_READ_PROTECT);
+    ret_val =
+        nrf_bootloader_flash_protect(BOOTLOADER_START_ADDR, area_size, NRF_BOOTLOADER_READ_PROTECT);
 
-    if (!NRF_BOOTLOADER_READ_PROTECT && (ret_val != NRF_SUCCESS))
-    {
+    if (!NRF_BOOTLOADER_READ_PROTECT && (ret_val != NRF_SUCCESS)) {
         NRF_LOG_ERROR("Could not protect bootloader and settings pages, 0x%x.", ret_val);
     }
     APP_ERROR_CHECK(ret_val);
 
-    ret_val = nrf_bootloader_flash_protect(0,
-                    nrf_dfu_bank0_start_addr() + ALIGN_TO_PAGE(s_dfu_settings.bank_0.image_size),
-                    false);
+    ret_val = nrf_bootloader_flash_protect(
+        0, nrf_dfu_bank0_start_addr() + ALIGN_TO_PAGE(s_dfu_settings.bank_0.image_size), false);
 
-    if (!NRF_BOOTLOADER_READ_PROTECT && (ret_val != NRF_SUCCESS))
-    {
+    if (!NRF_BOOTLOADER_READ_PROTECT && (ret_val != NRF_SUCCESS)) {
         NRF_LOG_ERROR("Could not protect SoftDevice and application, 0x%x.", ret_val);
     }
     APP_ERROR_CHECK(ret_val);

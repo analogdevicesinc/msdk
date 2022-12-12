@@ -44,26 +44,24 @@
 
 #define NRF_LOG_MODULE_NAME sortlist
 #if NRF_SORTLIST_CONFIG_LOG_ENABLED
-    #define NRF_LOG_LEVEL       NRF_SORTLIST_CONFIG_LOG_LEVEL
-    #define NRF_LOG_INFO_COLOR  NRF_SORTLIST_CONFIG_INFO_COLOR
-    #define NRF_LOG_DEBUG_COLOR NRF_SORTLIST_CONFIG_DEBUG_COLOR
+#define NRF_LOG_LEVEL NRF_SORTLIST_CONFIG_LOG_LEVEL
+#define NRF_LOG_INFO_COLOR NRF_SORTLIST_CONFIG_INFO_COLOR
+#define NRF_LOG_DEBUG_COLOR NRF_SORTLIST_CONFIG_DEBUG_COLOR
 #else
-    #define NRF_LOG_LEVEL       0
+#define NRF_LOG_LEVEL 0
 #endif // NRF_SORTLIST_CONFIG_LOG_ENABLED
 #include "nrf_log.h"
 NRF_LOG_MODULE_REGISTER();
 
-void nrf_sortlist_add(nrf_sortlist_t const * p_list, nrf_sortlist_item_t * p_item)
+void nrf_sortlist_add(nrf_sortlist_t const *p_list, nrf_sortlist_item_t *p_item)
 {
     ASSERT(p_list);
     ASSERT(p_item);
 
-    nrf_sortlist_item_t ** pp_curr = &(p_list->p_cb->p_head);
+    nrf_sortlist_item_t **pp_curr = &(p_list->p_cb->p_head);
 
-    while(*pp_curr != NULL)
-    {
-        if(!(p_list->compare_func(*pp_curr, p_item)))
-        {
+    while (*pp_curr != NULL) {
+        if (!(p_list->compare_func(*pp_curr, p_item))) {
             break;
         }
         pp_curr = &((*pp_curr)->p_next);
@@ -72,46 +70,43 @@ void nrf_sortlist_add(nrf_sortlist_t const * p_list, nrf_sortlist_item_t * p_ite
     p_item->p_next = *pp_curr;
     *pp_curr = p_item;
 
-    NRF_LOG_INFO("List:%s, adding element:%08X after:%08X, before:%08X",
-                                  p_list->p_name, p_item, *pp_curr, p_item->p_next);
+    NRF_LOG_INFO("List:%s, adding element:%08X after:%08X, before:%08X", p_list->p_name, p_item,
+                 *pp_curr, p_item->p_next);
 }
 
-nrf_sortlist_item_t * nrf_sortlist_pop(nrf_sortlist_t const * p_list)
+nrf_sortlist_item_t *nrf_sortlist_pop(nrf_sortlist_t const *p_list)
 {
     ASSERT(p_list);
-    nrf_sortlist_item_t * ret = p_list->p_cb->p_head;
-    if (p_list->p_cb->p_head != NULL)
-    {
+    nrf_sortlist_item_t *ret = p_list->p_cb->p_head;
+    if (p_list->p_cb->p_head != NULL) {
         p_list->p_cb->p_head = p_list->p_cb->p_head->p_next;
     }
     NRF_LOG_INFO("List:%s, poping element:%08X", p_list->p_name, ret);
     return ret;
 }
 
-nrf_sortlist_item_t const * nrf_sortlist_peek(nrf_sortlist_t const * p_list)
+nrf_sortlist_item_t const *nrf_sortlist_peek(nrf_sortlist_t const *p_list)
 {
     ASSERT(p_list);
     return p_list->p_cb->p_head;
 }
 
-nrf_sortlist_item_t const * nrf_sortlist_next(nrf_sortlist_item_t const * p_item)
+nrf_sortlist_item_t const *nrf_sortlist_next(nrf_sortlist_item_t const *p_item)
 {
     ASSERT(p_item);
     return p_item->p_next;
 }
 
-bool nrf_sortlist_remove(nrf_sortlist_t const * p_list, nrf_sortlist_item_t * p_item)
+bool nrf_sortlist_remove(nrf_sortlist_t const *p_list, nrf_sortlist_item_t *p_item)
 {
     ASSERT(p_list);
     ASSERT(p_item);
     bool ret = false;
 
-    nrf_sortlist_item_t ** pp_curr = &(p_list->p_cb->p_head);
+    nrf_sortlist_item_t **pp_curr = &(p_list->p_cb->p_head);
 
-    while(*pp_curr != NULL)
-    {
-        if(*pp_curr == p_item)
-        {
+    while (*pp_curr != NULL) {
+        if (*pp_curr == p_item) {
             *pp_curr = p_item->p_next;
             ret = true;
             break;
@@ -119,8 +114,8 @@ bool nrf_sortlist_remove(nrf_sortlist_t const * p_list, nrf_sortlist_item_t * p_
         pp_curr = &((*pp_curr)->p_next);
     }
 
-    NRF_LOG_INFO("List:%s, removing element:%08X %s",
-                                  p_list->p_name, p_item, ret ? "succeeded" : "not found");
+    NRF_LOG_INFO("List:%s, removing element:%08X %s", p_list->p_name, p_item,
+                 ret ? "succeeded" : "not found");
     return ret;
 }
 #endif //NRF_SORTLIST_ENABLED

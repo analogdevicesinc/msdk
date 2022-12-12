@@ -44,9 +44,9 @@
 #include "nrfx.h"
 
 #ifndef NRFX_USBD_ERRATA_ENABLE
- #ifdef NRF_DRV_USBD_ERRATA_ENABLE
-  #define NRFX_USBD_ERRATA_ENABLE NRF_DRV_USBD_ERRATA_ENABLE
- #endif
+#ifdef NRF_DRV_USBD_ERRATA_ENABLE
+#define NRFX_USBD_ERRATA_ENABLE NRF_DRV_USBD_ERRATA_ENABLE
+#endif
 #endif
 
 #include "../src/nrfx_usbd_errata.h"
@@ -55,16 +55,16 @@
 #define NRF_DRV_USBD_ERRATA_ENABLE NRFX_USBD_ERRATA_ENABLE
 #endif
 
-#define nrf_drv_usbd_errata_type_52840 			nrfx_usbd_errata_type_52840
-#define nrf_drv_usbd_errata_type_52840_proto1	nrfx_usbd_errata_type_52840_proto1
-#define nrf_drv_usbd_errata_type_52840_fp1		nrfx_usbd_errata_type_52840_fp1
-#define nrf_drv_usbd_errata_type_52840_fp2		nrfx_usbd_errata_type_52840_fp2
-#define nrf_drv_usbd_errata_104					nrfx_usbd_errata_104
-#define nrf_drv_usbd_errata_154					nrfx_usbd_errata_154
-#define nrf_drv_usbd_errata_166					nrfx_usbd_errata_166
-#define nrf_drv_usbd_errata_171					nrfx_usbd_errata_171
-#define nrf_drv_usbd_errata_187					nrfx_usbd_errata_187
-#define nrf_drv_usbd_errata_sizeepout_rw		nrfx_usbd_errata_sizeepout_rw
-#define nrf_drv_usb_errata_199					nrfx_usb_errata_199
+#define nrf_drv_usbd_errata_type_52840 nrfx_usbd_errata_type_52840
+#define nrf_drv_usbd_errata_type_52840_proto1 nrfx_usbd_errata_type_52840_proto1
+#define nrf_drv_usbd_errata_type_52840_fp1 nrfx_usbd_errata_type_52840_fp1
+#define nrf_drv_usbd_errata_type_52840_fp2 nrfx_usbd_errata_type_52840_fp2
+#define nrf_drv_usbd_errata_104 nrfx_usbd_errata_104
+#define nrf_drv_usbd_errata_154 nrfx_usbd_errata_154
+#define nrf_drv_usbd_errata_166 nrfx_usbd_errata_166
+#define nrf_drv_usbd_errata_171 nrfx_usbd_errata_171
+#define nrf_drv_usbd_errata_187 nrfx_usbd_errata_187
+#define nrf_drv_usbd_errata_sizeepout_rw nrfx_usbd_errata_sizeepout_rw
+#define nrf_drv_usb_errata_199 nrfx_usb_errata_199
 
 #endif /* NRF_DRV_USBD_ERRATA_H__ */

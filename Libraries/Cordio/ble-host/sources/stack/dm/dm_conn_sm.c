@@ -34,81 +34,70 @@
 **************************************************************************************************/
 
 /*! Column position of next state */
-#define DM_CONN_NEXT_STATE          0
+#define DM_CONN_NEXT_STATE 0
 
 /*! Column position of action */
-#define DM_CONN_ACTION              1
+#define DM_CONN_ACTION 1
 
 /*! Number of columns in the state machine state tables */
-#define DM_CONN_NUM_COLS            2
+#define DM_CONN_NUM_COLS 2
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! DM Conn state machine state tables */
-static const uint8_t dmConnStateTbl[DM_CONN_SM_NUM_STATES][DM_CONN_NUM_MSGS][DM_CONN_NUM_COLS] =
-{
-  /* Idle state */
-  {
-  /* Event                                    Next state                   Action */
-  /* API_OPEN */                             {DM_CONN_SM_ST_CONNECTING,    DM_CONN_SM_ACT_OPEN},
-  /* API_CLOSE */                            {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_NONE},
-  /* API_ACCEPT */                           {DM_CONN_SM_ST_ACCEPTING,     DM_CONN_SM_ACT_ACCEPT},
-  /* HCI_LE_CONN_CMPL_FAIL */                {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CONN_CMPL */                     {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_CONN_ACCEPTED},
-  /* HCI_DISCONNECT_CMPL */                  {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CONN_UPDATE_CMPL */              {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */   {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_NONE}
-  },
-  /* Connecting state */
-  {
-  /* Event                                    Next state                   Action */
-  /* API_OPEN */                             {DM_CONN_SM_ST_CONNECTING,    DM_CONN_SM_ACT_NONE},
-  /* API_CLOSE */                            {DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_CANCEL_OPEN},
-  /* API_ACCEPT */                           {DM_CONN_SM_ST_CONNECTING,    DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CONN_CMPL_FAIL */                {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_CONN_FAILED},
-  /* HCI_LE_CONN_CMPL */                     {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_CONN_OPENED},
-  /* HCI_DISCONNECT_CMPL */                  {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_CONN_FAILED},
-  /* HCI_LE_CONN_UPDATE_CMPL */              {DM_CONN_SM_ST_CONNECTING,    DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */   {DM_CONN_SM_ST_CONNECTING,    DM_CONN_SM_ACT_NONE}
-  },
-  /* Accepting state */
-  {
-  /* Event                                    Next state                   Action */
-  /* API_OPEN */                             {DM_CONN_SM_ST_ACCEPTING,     DM_CONN_SM_ACT_NONE},
-  /* API_CLOSE */                            {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_CANCEL_ACCEPT},
-  /* API_ACCEPT */                           {DM_CONN_SM_ST_ACCEPTING,     DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CONN_CMPL_FAIL */                {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_ACCEPT_FAILED},
-  /* HCI_LE_CONN_CMPL */                     {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_CONN_ACCEPTED},
-  /* HCI_DISCONNECT_CMPL */                  {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_ACCEPT_FAILED},
-  /* HCI_LE_CONN_UPDATE_CMPL */              {DM_CONN_SM_ST_ACCEPTING,     DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */   {DM_CONN_SM_ST_ACCEPTING,     DM_CONN_SM_ACT_NONE}
-  },
-  /* Connected state */
-  {
-  /* Event                                    Next state                   Action */
-  /* API_OPEN */                             {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_NONE},
-  /* API_CLOSE */                            {DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_CLOSE},
-  /* API_ACCEPT */                           {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CONN_CMPL_FAIL */                {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CONN_CMPL */                     {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_NONE},
-  /* HCI_DISCONNECT_CMPL */                  {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_CONN_CLOSED},
-  /* HCI_LE_CONN_UPDATE_CMPL */              {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_HCI_UPDATED},
-  /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */   {DM_CONN_SM_ST_CONNECTED,     DM_CONN_SM_ACT_NONE}
-  },
-  /* Disconnecting state */
-  {
-  /* Event                                    Next state                   Action */
-  /* API_OPEN */                             {DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE},
-  /* API_CLOSE */                            {DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE},
-  /* API_ACCEPT */                           {DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CONN_CMPL_FAIL */                {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_CONN_CLOSED},
-  /* HCI_LE_CONN_CMPL */                     {DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_CLOSE},
-  /* HCI_DISCONNECT_CMPL */                  {DM_CONN_SM_ST_IDLE,          DM_CONN_SM_ACT_CONN_CLOSED},
-  /* HCI_LE_CONN_UPDATE_CMPL */              {DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE},
-  /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */   {DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE}
-  }
+static const uint8_t dmConnStateTbl[DM_CONN_SM_NUM_STATES][DM_CONN_NUM_MSGS][DM_CONN_NUM_COLS] = {
+    /* Idle state */
+    { /* Event                                    Next state                   Action */
+      /* API_OPEN */ { DM_CONN_SM_ST_CONNECTING, DM_CONN_SM_ACT_OPEN },
+      /* API_CLOSE */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_NONE },
+      /* API_ACCEPT */ { DM_CONN_SM_ST_ACCEPTING, DM_CONN_SM_ACT_ACCEPT },
+      /* HCI_LE_CONN_CMPL_FAIL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CONN_CMPL */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_CONN_ACCEPTED },
+      /* HCI_DISCONNECT_CMPL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CONN_UPDATE_CMPL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_NONE } },
+    /* Connecting state */
+    { /* Event                                    Next state                   Action */
+      /* API_OPEN */ { DM_CONN_SM_ST_CONNECTING, DM_CONN_SM_ACT_NONE },
+      /* API_CLOSE */ { DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_CANCEL_OPEN },
+      /* API_ACCEPT */ { DM_CONN_SM_ST_CONNECTING, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CONN_CMPL_FAIL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_CONN_FAILED },
+      /* HCI_LE_CONN_CMPL */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_CONN_OPENED },
+      /* HCI_DISCONNECT_CMPL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_CONN_FAILED },
+      /* HCI_LE_CONN_UPDATE_CMPL */ { DM_CONN_SM_ST_CONNECTING, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */ { DM_CONN_SM_ST_CONNECTING, DM_CONN_SM_ACT_NONE } },
+    /* Accepting state */
+    { /* Event                                    Next state                   Action */
+      /* API_OPEN */ { DM_CONN_SM_ST_ACCEPTING, DM_CONN_SM_ACT_NONE },
+      /* API_CLOSE */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_CANCEL_ACCEPT },
+      /* API_ACCEPT */ { DM_CONN_SM_ST_ACCEPTING, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CONN_CMPL_FAIL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_ACCEPT_FAILED },
+      /* HCI_LE_CONN_CMPL */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_CONN_ACCEPTED },
+      /* HCI_DISCONNECT_CMPL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_ACCEPT_FAILED },
+      /* HCI_LE_CONN_UPDATE_CMPL */ { DM_CONN_SM_ST_ACCEPTING, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */ { DM_CONN_SM_ST_ACCEPTING, DM_CONN_SM_ACT_NONE } },
+    /* Connected state */
+    { /* Event                                    Next state                   Action */
+      /* API_OPEN */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_NONE },
+      /* API_CLOSE */ { DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_CLOSE },
+      /* API_ACCEPT */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CONN_CMPL_FAIL */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CONN_CMPL */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_NONE },
+      /* HCI_DISCONNECT_CMPL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_CONN_CLOSED },
+      /* HCI_LE_CONN_UPDATE_CMPL */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_HCI_UPDATED },
+      /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */ { DM_CONN_SM_ST_CONNECTED, DM_CONN_SM_ACT_NONE } },
+    /* Disconnecting state */
+    { /* Event                                    Next state                   Action */
+      /* API_OPEN */ { DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE },
+      /* API_CLOSE */ { DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE },
+      /* API_ACCEPT */ { DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CONN_CMPL_FAIL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_CONN_CLOSED },
+      /* HCI_LE_CONN_CMPL */ { DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_CLOSE },
+      /* HCI_DISCONNECT_CMPL */ { DM_CONN_SM_ST_IDLE, DM_CONN_SM_ACT_CONN_CLOSED },
+      /* HCI_LE_CONN_UPDATE_CMPL */ { DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE },
+      /* HCI_LE_CREATE_CONN_CANCEL_CMD_CMPL */ { DM_CONN_SM_ST_DISCONNECTING, DM_CONN_SM_ACT_NONE } }
 };
 
 /**************************************************************************************************
@@ -130,33 +119,30 @@ dmConnAct_t *dmConnActSet[DM_CONN_NUM_ACT_SETS];
 /*************************************************************************************************/
 void dmConnSmExecute(dmConnCcb_t *pCcb, dmConnMsg_t *pMsg)
 {
-  dmConnAct_t       *actSet;
-  uint8_t           action;
-  uint8_t           event;
+    dmConnAct_t *actSet;
+    uint8_t action;
+    uint8_t event;
 
-  DM_TRACE_INFO2("dmConnSmExecute event=%d state=%d", pMsg->hdr.event, pCcb->state);
+    DM_TRACE_INFO2("dmConnSmExecute event=%d state=%d", pMsg->hdr.event, pCcb->state);
 
-  /* get the event */
-  event = DM_MSG_MASK(pMsg->hdr.event);
+    /* get the event */
+    event = DM_MSG_MASK(pMsg->hdr.event);
 
-  /* get action */
-  action = dmConnStateTbl[pCcb->state][event][DM_CONN_ACTION];
+    /* get action */
+    action = dmConnStateTbl[pCcb->state][event][DM_CONN_ACTION];
 
-  /* set next state */
-  pCcb->state = dmConnStateTbl[pCcb->state][event][DM_CONN_NEXT_STATE];
+    /* set next state */
+    pCcb->state = dmConnStateTbl[pCcb->state][event][DM_CONN_NEXT_STATE];
 
-  /* look up action set */
-  actSet = dmConnActSet[DM_CONN_ACT_SET_ID(action)];
+    /* look up action set */
+    actSet = dmConnActSet[DM_CONN_ACT_SET_ID(action)];
 
-  /* if action set present */
-  if (actSet != NULL)
-  {
-    /* execute action function in action set */
-    (*actSet[DM_CONN_ACT_ID(action)])(pCcb, pMsg);
-  }
-  else
-  {
-     /* no action */
-     dmConnSmActNone(pCcb, pMsg);
-  }
+    /* if action set present */
+    if (actSet != NULL) {
+        /* execute action function in action set */
+        (*actSet[DM_CONN_ACT_ID(action)])(pCcb, pMsg);
+    } else {
+        /* no action */
+        dmConnSmActNone(pCcb, pMsg);
+    }
 }

@@ -62,10 +62,7 @@ extern "C" {
  *
  * @retval 0 If @p sk is a legal secret key.
  */
-int ocrypto_ecdsa_p256_public_key(
-    uint8_t pk[64],
-    const uint8_t sk[32]);
-
+int ocrypto_ecdsa_p256_public_key(uint8_t pk[64], const uint8_t sk[32]);
 
 /**
  * ECDSA P-256 signature generation.
@@ -78,12 +75,8 @@ int ocrypto_ecdsa_p256_public_key(
  *
  * @retval 0 If @p ek is a valid session key.
  */
-int ocrypto_ecdsa_p256_sign(
-    uint8_t sig[64],
-    const uint8_t *m, size_t mlen,
-    const uint8_t sk[32],
-    const uint8_t ek[32]);
-
+int ocrypto_ecdsa_p256_sign(uint8_t sig[64], const uint8_t *m, size_t mlen, const uint8_t sk[32],
+                            const uint8_t ek[32]);
 
 /**
  * ECDSA P-256 signature generation from hash.
@@ -95,11 +88,8 @@ int ocrypto_ecdsa_p256_sign(
  *
  * @retval 0 If @p ek is a valid session key.
  */
-int ocrypto_ecdsa_p256_sign_hash(uint8_t sig[64],
-                                 const uint8_t hash[32],
-                                 const uint8_t sk[32],
+int ocrypto_ecdsa_p256_sign_hash(uint8_t sig[64], const uint8_t hash[32], const uint8_t sk[32],
                                  const uint8_t ek[32]);
-
 
 /**
  * ECDSA P-256 signature verification.
@@ -112,11 +102,8 @@ int ocrypto_ecdsa_p256_sign_hash(uint8_t sig[64],
  * @retval 0  If signature is valid.
  * @retval -1 Otherwise.
  */
-int ocrypto_ecdsa_p256_verify(
-    const uint8_t sig[64],
-    const uint8_t *m, size_t mlen,
-    const uint8_t pk[64]);
-
+int ocrypto_ecdsa_p256_verify(const uint8_t sig[64], const uint8_t *m, size_t mlen,
+                              const uint8_t pk[64]);
 
 /**
  * ECDSA P-256 signature verification from hash.
@@ -128,10 +115,8 @@ int ocrypto_ecdsa_p256_verify(
  * @retval 0  If signature is valid.
 *  @retval -1 Otherwise.
  */
-int ocrypto_ecdsa_p256_verify_hash(const uint8_t sig[64],
-                                   const uint8_t hash[32],
+int ocrypto_ecdsa_p256_verify_hash(const uint8_t sig[64], const uint8_t hash[32],
                                    const uint8_t pk[64]);
-
 
 #ifdef __cplusplus
 }

@@ -27,15 +27,13 @@
 #ifndef REDMISC_H
 #define REDMISC_H
 
-
 /** @brief Type of an inode or handle.
 
     Used to indicate the actual or expected type of an inode or handle.
 */
-typedef enum
-{
-    FTYPE_FILE,     /**< Type is file. */
-    FTYPE_DIR,      /**< Type is directory. */
+typedef enum {
+    FTYPE_FILE, /**< Type is file. */
+    FTYPE_DIR, /**< Type is directory. */
 
     /** Type is either file or directory: used only to indicate an expected
         type, never as an actual type.
@@ -43,6 +41,4 @@ typedef enum
     FTYPE_EITHER
 } FTYPE;
 
-
 #endif
-

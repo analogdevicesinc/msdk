@@ -35,6 +35,6 @@
 /*************************************************************************************************/
 void LhciBisSlaveInit(void)
 {
-  lhciCmdTbl[LHCI_MSG_BIS_SLV] = lhciSlvBisDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_BIS_SLV] = lhciSlvBigEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_BIS_SLV] = lhciSlvBisDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_BIS_SLV] = lhciSlvBigEncodeEvtPkt;
 }

@@ -52,17 +52,14 @@ extern "C" {
 
 /**@brief Structure to hold SHA-256 context information.
  */
-typedef struct
-{
-    uint32_t    init_val;
-    uint8_t     context_buffer[NRF_CC310_BL_HASH_CONTEXT_BUFFER_SIZE_SHA256];
+typedef struct {
+    uint32_t init_val;
+    uint8_t context_buffer[NRF_CC310_BL_HASH_CONTEXT_BUFFER_SIZE_SHA256];
 } nrf_cc310_bl_hash_context_sha256_t;
-
 
 /**@brief Array to hold SHA-256 hash digest.
  */
 typedef uint8_t nrf_cc310_bl_hash_digest_sha256_t[NRF_CC310_BL_SHA256_DIGEST_SIZE_IN_BYTES];
-
 
 /**@brief Function for initializing the SHA-256 context.
  *
@@ -74,9 +71,7 @@ typedef uint8_t nrf_cc310_bl_hash_digest_sha256_t[NRF_CC310_BL_SHA256_DIGEST_SIZ
  * @retval CRYS_OK If call was successful.
  * @retval  CRYS_HASH_INVALID_USER_CONTEXT_POINTER_ERROR    p_hash_context was NULL.
  */
-CRYSError_t nrf_cc310_bl_hash_sha256_init(
-    nrf_cc310_bl_hash_context_sha256_t * const p_hash_context);
-
+CRYSError_t nrf_cc310_bl_hash_sha256_init(nrf_cc310_bl_hash_context_sha256_t *const p_hash_context);
 
 /** @brief Function for running an update to the SHA-256 hash calculation.
  *
@@ -88,11 +83,9 @@ CRYSError_t nrf_cc310_bl_hash_sha256_init(
  * @retval CRYS_HASH_USER_CONTEXT_CORRUPTED_ERROR          p_hash_context not initialized.
  * @retval CRYS_HASH_LAST_BLOCK_ALREADY_PROCESSED_ERROR    p_hash_context already finalized.
  */
-CRYSError_t nrf_cc310_bl_hash_sha256_update(
-    nrf_cc310_bl_hash_context_sha256_t  * const p_hash_context,
-    uint8_t                             const * p_src,
-    uint32_t                                    len);
-
+CRYSError_t
+nrf_cc310_bl_hash_sha256_update(nrf_cc310_bl_hash_context_sha256_t *const p_hash_context,
+                                uint8_t const *p_src, uint32_t len);
 
 /** @brief Function for finalizing the hash calculation.
  *
@@ -107,9 +100,9 @@ CRYSError_t nrf_cc310_bl_hash_sha256_update(
  * @retval  CRYS_HASH_USER_CONTEXT_CORRUPTED_ERROR          p_hash_context was corrupted.
  * @retval  CRYS_HASH_INVALID_RESULT_BUFFER_POINTER_ERROR   p_digest was NULL.
  */
-CRYSError_t nrf_cc310_bl_hash_sha256_finalize(
-    nrf_cc310_bl_hash_context_sha256_t    * const p_hash_context,
-    nrf_cc310_bl_hash_digest_sha256_t     * const p_digest);
+CRYSError_t
+nrf_cc310_bl_hash_sha256_finalize(nrf_cc310_bl_hash_context_sha256_t *const p_hash_context,
+                                  nrf_cc310_bl_hash_digest_sha256_t *const p_digest);
 
 #ifdef __cplusplus
 }

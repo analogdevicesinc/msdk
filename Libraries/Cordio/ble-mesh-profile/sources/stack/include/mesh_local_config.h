@@ -37,8 +37,7 @@
 #include "mesh_local_config_types.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -62,8 +61,9 @@ typedef uint16_t meshLocalCfgRetVal_t;
  *  \return    None.
  */
 /*************************************************************************************************/
-typedef void (*meshLocalCfgFriendSubscrEventNotifyCback_t) (meshLocalCfgFriendSubscrEvent_t event,
-                                                            const meshLocalCfgFriendSubscrEventParams_t *pEventParams);
+typedef void (*meshLocalCfgFriendSubscrEventNotifyCback_t)(
+    meshLocalCfgFriendSubscrEvent_t event,
+    const meshLocalCfgFriendSubscrEventParams_t *pEventParams);
 
 /**************************************************************************************************
   Function Declarations
@@ -334,7 +334,8 @@ meshLocalCfgRetVal_t MeshLocalCfgSetPublishAppKeyIndex(meshElementId_t elementId
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshLocalCfgMdlClearPublishAppKeyIndex(meshElementId_t elementId, const meshModelId_t *pModelId);
+void MeshLocalCfgMdlClearPublishAppKeyIndex(meshElementId_t elementId,
+                                            const meshModelId_t *pModelId);
 
 /*************************************************************************************************/
 /*!
@@ -363,9 +364,9 @@ meshLocalCfgRetVal_t MeshLocalCfgGetPublishAppKeyIndex(meshElementId_t elementId
  *  \return    Success or error reason. \see meshLocalCfgRetVal_t
  */
 /*************************************************************************************************/
-meshLocalCfgRetVal_t MeshLocalCfgSetPublishFriendshipCredFlag(meshElementId_t elementId,
-                                                              const meshModelId_t *pModelId,
-                                                              meshPublishFriendshipCred_t friendshipCredFlag);
+meshLocalCfgRetVal_t
+MeshLocalCfgSetPublishFriendshipCredFlag(meshElementId_t elementId, const meshModelId_t *pModelId,
+                                         meshPublishFriendshipCred_t friendshipCredFlag);
 
 /*************************************************************************************************/
 /*!
@@ -379,9 +380,9 @@ meshLocalCfgRetVal_t MeshLocalCfgSetPublishFriendshipCredFlag(meshElementId_t el
  *  \return     Success or error reason. \see meshLocalCfgRetVal_t
  */
 /*************************************************************************************************/
-meshLocalCfgRetVal_t MeshLocalCfgGetPublishFriendshipCredFlag(meshElementId_t elementId,
-                                                              const meshModelId_t *pModelId,
-                                                              meshPublishFriendshipCred_t *pOutFriendshipCredFlag);
+meshLocalCfgRetVal_t
+MeshLocalCfgGetPublishFriendshipCredFlag(meshElementId_t elementId, const meshModelId_t *pModelId,
+                                         meshPublishFriendshipCred_t *pOutFriendshipCredFlag);
 
 /*************************************************************************************************/
 /*!
@@ -395,8 +396,7 @@ meshLocalCfgRetVal_t MeshLocalCfgGetPublishFriendshipCredFlag(meshElementId_t el
  */
 /*************************************************************************************************/
 meshLocalCfgRetVal_t MeshLocalCfgSetPublishTtl(meshElementId_t elementId,
-                                               const meshModelId_t *pModelId,
-                                               uint8_t publishTtl);
+                                               const meshModelId_t *pModelId, uint8_t publishTtl);
 
 /*************************************************************************************************/
 /*!
@@ -440,9 +440,9 @@ meshLocalCfgRetVal_t MeshLocalCfgSetPublishRetransCount(meshElementId_t elementI
  *  \return     Success or error reason. \see meshLocalCfgRetVal_t
  */
 /*************************************************************************************************/
-meshLocalCfgRetVal_t MeshLocalCfgGetPublishRetransCount(meshElementId_t elementId,
-                                                        const meshModelId_t *pModelId,
-                                                        meshPublishRetransCount_t *pOutRetransCount);
+meshLocalCfgRetVal_t
+MeshLocalCfgGetPublishRetransCount(meshElementId_t elementId, const meshModelId_t *pModelId,
+                                   meshPublishRetransCount_t *pOutRetransCount);
 
 /*************************************************************************************************/
 /*!
@@ -459,9 +459,9 @@ meshLocalCfgRetVal_t MeshLocalCfgGetPublishRetransCount(meshElementId_t elementI
  *             retransmitInterval = (publishRetransSteps + 1) * 50.
  */
 /*************************************************************************************************/
-meshLocalCfgRetVal_t MeshLocalCfgSetPublishRetransIntvlSteps(meshElementId_t elementId,
-                                                             const meshModelId_t *pModelId,
-                                                             meshPublishRetransIntvlSteps_t retransSteps);
+meshLocalCfgRetVal_t
+MeshLocalCfgSetPublishRetransIntvlSteps(meshElementId_t elementId, const meshModelId_t *pModelId,
+                                        meshPublishRetransIntvlSteps_t retransSteps);
 
 /*************************************************************************************************/
 /*!
@@ -478,9 +478,9 @@ meshLocalCfgRetVal_t MeshLocalCfgSetPublishRetransIntvlSteps(meshElementId_t ele
  *              retransmitInterval = (publishRetransSteps + 1) * 50.
  */
 /*************************************************************************************************/
-meshLocalCfgRetVal_t MeshLocalCfgGetPublishRetransIntvlSteps(meshElementId_t elementId,
-                                                             const meshModelId_t *pModelId,
-                                                             meshPublishRetransIntvlSteps_t *pOutRetransSteps);
+meshLocalCfgRetVal_t
+MeshLocalCfgGetPublishRetransIntvlSteps(meshElementId_t elementId, const meshModelId_t *pModelId,
+                                        meshPublishRetransIntvlSteps_t *pOutRetransSteps);
 
 /*************************************************************************************************/
 /*!
@@ -531,8 +531,7 @@ meshLocalCfgRetVal_t MeshLocalCfgGetNextAddressFromSubscrList(meshElementId_t el
 /*************************************************************************************************/
 bool_t MeshLocalCfgFindAddrInModelSubscrList(meshElementId_t elementId,
                                              const meshModelId_t *pModelId,
-                                             meshAddress_t subscrAddr,
-                                             const uint8_t *pLabelUuid);
+                                             meshAddress_t subscrAddr, const uint8_t *pLabelUuid);
 
 /*************************************************************************************************/
 /*!
@@ -610,8 +609,7 @@ meshLocalCfgRetVal_t MeshLocalCfgRemoveAllFromSubscrList(meshElementId_t element
 /*************************************************************************************************/
 meshLocalCfgRetVal_t MeshLocalCfgGetSubscrListSize(meshElementId_t elementId,
                                                    const meshModelId_t *pModelId,
-                                                   uint8_t *pOutNumAddr,
-                                                   uint8_t *pOutTotalSize);
+                                                   uint8_t *pOutNumAddr, uint8_t *pOutTotalSize);
 
 /*************************************************************************************************/
 /*!
@@ -1139,7 +1137,8 @@ meshGattProxyStates_t MeshLocalCfgGetGattProxyState(void);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MeshLocalCfgSetNodeIdentityState(uint16_t netKeyIndex, meshNodeIdentityStates_t nodeIdentityState);
+void MeshLocalCfgSetNodeIdentityState(uint16_t netKeyIndex,
+                                      meshNodeIdentityStates_t nodeIdentityState);
 
 /*************************************************************************************************/
 /*!
@@ -1562,8 +1561,7 @@ uint8_t MeshLocalCfgGetRelayRetransmitIntvlSteps(void);
  *  \return    Success or error reason. \see meshLocalCfgRetVal_t
  */
 /*************************************************************************************************/
-meshLocalCfgRetVal_t MeshLocalCfgSetSeqNumber(meshElementId_t elementId,
-                                              meshSeqNumber_t seqNumber);
+meshLocalCfgRetVal_t MeshLocalCfgSetSeqNumber(meshElementId_t elementId, meshSeqNumber_t seqNumber);
 
 /*************************************************************************************************/
 /*!
@@ -1634,14 +1632,14 @@ void MeshLocalCfgSetIvIndex(uint32_t ivIndex);
 /*************************************************************************************************/
 void MeshLocalCfgSetIvUpdateInProgress(bool_t ivUpdtInProg);
 
-  /*************************************************************************************************/
-  /*!
+/*************************************************************************************************/
+/*!
    *  \brief  Erase configuration.
    *
    *  \return None.
    */
-  /*************************************************************************************************/
-  void MeshLocalCfgEraseNvm(void);
+/*************************************************************************************************/
+void MeshLocalCfgEraseNvm(void);
 
 #ifdef __cplusplus
 }

@@ -54,19 +54,15 @@
   Macros
 **************************************************************************************************/
 
-#define SENSOR_MSG_START    0xA0
+#define SENSOR_MSG_START 0xA0
 
-enum
-{
-  SENSOR_GYRO_TIMER_IND = SENSOR_MSG_START,
-  SENSOR_TEMP_TIMER_IND
-};
+enum { SENSOR_GYRO_TIMER_IND = SENSOR_MSG_START, SENSOR_TEMP_TIMER_IND };
 
 /*! Advertising timer timeout */
-#define SENSOR_ADV_TIMEOUT_SEC          30000
+#define SENSOR_ADV_TIMEOUT_SEC 30000
 
 /*! MAX ACL receive length */
-#define SENSOR_MAX_RX_ACL_LEN           100
+#define SENSOR_MAX_RX_ACL_LEN 100
 
 /***************************************************************************************************
   Global Variables
@@ -83,38 +79,34 @@ static sensorExtCback_t sensorExtCback;
 **************************************************************************************************/
 
 /*! configurable parameters for slave */
-static const appAdvCfg_t sensorAdvCfg =
-{
-  {SENSOR_ADV_TIMEOUT_SEC, 0, 0},         /*! Advertising durations in ms */
-  {200,                    0, 0},         /*! Advertising intervals in 0.625 ms units */
+static const appAdvCfg_t sensorAdvCfg = {
+    { SENSOR_ADV_TIMEOUT_SEC, 0, 0 }, /*! Advertising durations in ms */
+    { 200, 0, 0 }, /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
-static appSlaveCfg_t sensorSlaveCfg =
-{
-  1                                       /*! Maximum connections */
+static appSlaveCfg_t sensorSlaveCfg = {
+    1 /*! Maximum connections */
 };
 
 /*! configurable parameters for security */
-static const appSecCfg_t sensorSecCfg =
-{
-  DM_AUTH_BOND_FLAG,                      /*! Authentication and bonding flags */
-  0,                                      /*! Initiator key distribution flags */
-  DM_KEY_DIST_LTK,                        /*! Responder key distribution flags */
-  FALSE,                                  /*! TRUE if Out-of-band pairing data is present */
-  FALSE                                   /*! TRUE to initiate security upon connection */
+static const appSecCfg_t sensorSecCfg = {
+    DM_AUTH_BOND_FLAG, /*! Authentication and bonding flags */
+    0, /*! Initiator key distribution flags */
+    DM_KEY_DIST_LTK, /*! Responder key distribution flags */
+    FALSE, /*! TRUE if Out-of-band pairing data is present */
+    FALSE /*! TRUE to initiate security upon connection */
 };
 
 /*! configurable parameters for connection parameter update */
-static const appUpdateCfg_t sensorUpdateCfg =
-{
-  0,                                      /*! Connection idle period in ms before attempting
+static const appUpdateCfg_t sensorUpdateCfg = {
+    0, /*! Connection idle period in ms before attempting
                                              connection parameter update; set to zero to disable */
-  640,                                    /*! Minimum connection interval in 1.25ms units */
-  800,                                    /*! Maximum connection interval in 1.25ms units */
-  0,                                      /*! Connection latency */
-  900,                                    /*! Supervision timeout in 10ms units */
-  5                                       /*! Number of update attempts before giving up */
+    640, /*! Minimum connection interval in 1.25ms units */
+    800, /*! Maximum connection interval in 1.25ms units */
+    0, /*! Connection latency */
+    900, /*! Supervision timeout in 10ms units */
+    5 /*! Number of update attempts before giving up */
 };
 
 /**************************************************************************************************
@@ -125,39 +117,31 @@ static const appUpdateCfg_t sensorUpdateCfg =
 static uint8_t sensorAdvDataDisc[HCI_ADV_DATA_LEN]; /* value is set in sensorStart() */
 static uint8_t sensorAdvDataConn[HCI_ADV_DATA_LEN]; /* value is set in sensorStart() */
 
-static const uint8_t sensorAdvDataFlags[] =
-{
-  DM_FLAG_LE_LIMITED_DISC | DM_FLAG_LE_BREDR_NOT_SUP
-};
+static const uint8_t sensorAdvDataFlags[] = { DM_FLAG_LE_LIMITED_DISC | DM_FLAG_LE_BREDR_NOT_SUP };
 
 /* scan data */
 static uint8_t sensorScanDataDisc[HCI_ADV_DATA_LEN]; /* value is set in sensorStart() */
 static uint8_t sensorScanDataConn[HCI_ADV_DATA_LEN]; /* value is set in sensorStart() */
-static const char sensorScanDataLocalName[] =
-{
-  'S', 'e', 'n', 's', 'o', 'r'
-};
+static const char sensorScanDataLocalName[] = { 'S', 'e', 'n', 's', 'o', 'r' };
 
 /**************************************************************************************************
   CCC Data
 **************************************************************************************************/
 
 /* enumeration of client characteristic configuration descriptors */
-enum
-{
-  APPS_MAIN_GYRO_DATA_CLIENT_CHR_CONFIG_CCC_IDX,
-  APPS_MAIN_GYRO_TEMPDATA_CLIENT_CHR_CONFIG_CCC_IDX,
-  APPS_MAIN_TEMP_DATA_CLIENT_CHR_CONFIG_CCC_IDX,
-  APPS_MAIN_NUM_CCC_IDX
+enum {
+    APPS_MAIN_GYRO_DATA_CLIENT_CHR_CONFIG_CCC_IDX,
+    APPS_MAIN_GYRO_TEMPDATA_CLIENT_CHR_CONFIG_CCC_IDX,
+    APPS_MAIN_TEMP_DATA_CLIENT_CHR_CONFIG_CCC_IDX,
+    APPS_MAIN_NUM_CCC_IDX
 };
 
 /* client characteristic configuration descriptors settings, indexed by above enumeration */
-static const attsCccSet_t MainSensor_CccSet[APPS_MAIN_NUM_CCC_IDX] =
-{
-  /* cccd handle                           value range             security level */
-  {GYRO_HANDLE_DATA_CLIENT_CHR_CONFIG,     ATT_CLIENT_CFG_NOTIFY,  DM_SEC_LEVEL_NONE},
-  {GYRO_HANDLE_TEMPDATA_CLIENT_CHR_CONFIG, ATT_CLIENT_CFG_NOTIFY,  DM_SEC_LEVEL_NONE},
-  {TEMP_HANDLE_DATA_CLIENT_CHR_CONFIG,     ATT_CLIENT_CFG_NOTIFY,  DM_SEC_LEVEL_NONE}
+static const attsCccSet_t MainSensor_CccSet[APPS_MAIN_NUM_CCC_IDX] = {
+    /* cccd handle                           value range             security level */
+    { GYRO_HANDLE_DATA_CLIENT_CHR_CONFIG, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE },
+    { GYRO_HANDLE_TEMPDATA_CLIENT_CHR_CONFIG, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE },
+    { TEMP_HANDLE_DATA_CLIENT_CHR_CONFIG, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }
 };
 
 /*************************************************************************************************/
@@ -171,16 +155,15 @@ static const attsCccSet_t MainSensor_CccSet[APPS_MAIN_NUM_CCC_IDX] =
 /*************************************************************************************************/
 static void sensorDmCback(dmEvt_t *pDmEvt)
 {
-  dmEvt_t *pMsg;
-  uint16_t  len;
+    dmEvt_t *pMsg;
+    uint16_t len;
 
-  len = DmSizeOfEvt(pDmEvt);
+    len = DmSizeOfEvt(pDmEvt);
 
-  if ((pMsg = WsfMsgAlloc(len)) != NULL)
-  {
-    memcpy(pMsg, pDmEvt, len);
-    WsfMsgSend(sensorHandlerId, pMsg);
-  }
+    if ((pMsg = WsfMsgAlloc(len)) != NULL) {
+        memcpy(pMsg, pDmEvt, len);
+        WsfMsgSend(sensorHandlerId, pMsg);
+    }
 }
 
 /*************************************************************************************************/
@@ -194,7 +177,7 @@ static void sensorDmCback(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 static void sensorAttCback(attEvt_t *pEvt)
 {
-  return;
+    return;
 }
 
 /*************************************************************************************************/
@@ -208,37 +191,29 @@ static void sensorAttCback(attEvt_t *pEvt)
 /*************************************************************************************************/
 static void sensorCccCback(attsCccEvt_t *pEvt)
 {
-  APP_TRACE_INFO3("ccc state ind value:%d handle:%d idx:%d", pEvt->value, pEvt->handle, pEvt->idx);
+    APP_TRACE_INFO3("ccc state ind value:%d handle:%d idx:%d", pEvt->value, pEvt->handle,
+                    pEvt->idx);
 
-  switch (pEvt->idx)
-  {
-    case APPS_MAIN_GYRO_DATA_CLIENT_CHR_CONFIG_CCC_IDX:
-    {
-      if (pEvt->value == ATT_CLIENT_CFG_NOTIFY)
-      {
-        GyroMeasStart();
-      }
-      else
-      {
-        GyroMeasStop();
-      }
-      break;
+    switch (pEvt->idx) {
+    case APPS_MAIN_GYRO_DATA_CLIENT_CHR_CONFIG_CCC_IDX: {
+        if (pEvt->value == ATT_CLIENT_CFG_NOTIFY) {
+            GyroMeasStart();
+        } else {
+            GyroMeasStop();
+        }
+        break;
     }
-    case APPS_MAIN_TEMP_DATA_CLIENT_CHR_CONFIG_CCC_IDX:
-    {
-      if (pEvt->value == ATT_CLIENT_CFG_NOTIFY)
-      {
-        TempMeasStart();
-      }
-      else
-      {
-        TempMeasStop();
-      }
-      break;
+    case APPS_MAIN_TEMP_DATA_CLIENT_CHR_CONFIG_CCC_IDX: {
+        if (pEvt->value == ATT_CLIENT_CFG_NOTIFY) {
+            TempMeasStart();
+        } else {
+            TempMeasStop();
+        }
+        break;
     }
     default:
-      break;
-  }
+        break;
+    }
 }
 
 /*************************************************************************************************/
@@ -250,19 +225,19 @@ static void sensorCccCback(attsCccEvt_t *pEvt)
 /*************************************************************************************************/
 static void sensorSetSystemId(void)
 {
-  uint8_t *bdaddr = HciGetBdAddr();
-  uint8_t  sys_id[8];
+    uint8_t *bdaddr = HciGetBdAddr();
+    uint8_t sys_id[8];
 
-  /* Formatted according to GATT specification for System ID characteristic (0x2A23). */
-  sys_id[0] = bdaddr[0];
-  sys_id[1] = bdaddr[1];
-  sys_id[2] = bdaddr[2];
-  sys_id[3] = 0xFE;
-  sys_id[4] = 0xFF;
-  sys_id[5] = bdaddr[3];
-  sys_id[6] = bdaddr[4];
-  sys_id[7] = bdaddr[5];
-  AttsSetAttr(DIS_SID_HDL, sizeof(sys_id), sys_id);
+    /* Formatted according to GATT specification for System ID characteristic (0x2A23). */
+    sys_id[0] = bdaddr[0];
+    sys_id[1] = bdaddr[1];
+    sys_id[2] = bdaddr[2];
+    sys_id[3] = 0xFE;
+    sys_id[4] = 0xFF;
+    sys_id[5] = bdaddr[3];
+    sys_id[6] = bdaddr[4];
+    sys_id[7] = bdaddr[5];
+    AttsSetAttr(DIS_SID_HDL, sizeof(sys_id), sys_id);
 }
 
 /*************************************************************************************************/
@@ -277,34 +252,36 @@ static void sensorSetSystemId(void)
 /*************************************************************************************************/
 static void sensorSetup(wsfMsgHdr_t *pMsg)
 {
-  /* set advertising response data for discoverable mode */
-  memset(sensorAdvDataDisc, 0, sizeof(sensorAdvDataDisc));
-  AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, 0, (uint8_t *) sensorAdvDataDisc);
-  AppAdvSetAdValue(APP_ADV_DATA_DISCOVERABLE, DM_ADV_TYPE_FLAGS, sizeof(sensorAdvDataFlags),
-                   (uint8_t *) sensorAdvDataFlags);
+    /* set advertising response data for discoverable mode */
+    memset(sensorAdvDataDisc, 0, sizeof(sensorAdvDataDisc));
+    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, 0, (uint8_t *)sensorAdvDataDisc);
+    AppAdvSetAdValue(APP_ADV_DATA_DISCOVERABLE, DM_ADV_TYPE_FLAGS, sizeof(sensorAdvDataFlags),
+                     (uint8_t *)sensorAdvDataFlags);
 
-  /* set scan response data for discoverable mode */
-  memset(sensorScanDataDisc, 0, sizeof(sensorScanDataDisc));
-  AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, 0, (uint8_t *) sensorScanDataDisc);
-  AppAdvSetAdValue(APP_SCAN_DATA_DISCOVERABLE, DM_ADV_TYPE_LOCAL_NAME, sizeof(sensorScanDataLocalName), (uint8_t *) sensorScanDataLocalName);
+    /* set scan response data for discoverable mode */
+    memset(sensorScanDataDisc, 0, sizeof(sensorScanDataDisc));
+    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, 0, (uint8_t *)sensorScanDataDisc);
+    AppAdvSetAdValue(APP_SCAN_DATA_DISCOVERABLE, DM_ADV_TYPE_LOCAL_NAME,
+                     sizeof(sensorScanDataLocalName), (uint8_t *)sensorScanDataLocalName);
 
-  /* set advertising response data for connectable mode */
-  memset(sensorAdvDataConn, 0, sizeof(sensorAdvDataConn));
-  AppAdvSetData(APP_ADV_DATA_CONNECTABLE, 0, (uint8_t *) sensorAdvDataConn);
-  AppAdvSetAdValue(APP_ADV_DATA_CONNECTABLE, DM_ADV_TYPE_FLAGS, sizeof(sensorAdvDataFlags),
-                   (uint8_t *) sensorAdvDataFlags);
+    /* set advertising response data for connectable mode */
+    memset(sensorAdvDataConn, 0, sizeof(sensorAdvDataConn));
+    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, 0, (uint8_t *)sensorAdvDataConn);
+    AppAdvSetAdValue(APP_ADV_DATA_CONNECTABLE, DM_ADV_TYPE_FLAGS, sizeof(sensorAdvDataFlags),
+                     (uint8_t *)sensorAdvDataFlags);
 
-  /* set scan response data for connectable mode */
-  memset(sensorScanDataConn, 0, sizeof(sensorScanDataConn));
-  AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, 0, (uint8_t *) sensorScanDataConn);
-  AppAdvSetAdValue(APP_SCAN_DATA_CONNECTABLE, DM_ADV_TYPE_LOCAL_NAME, sizeof(sensorScanDataLocalName), (uint8_t *) sensorScanDataLocalName);
+    /* set scan response data for connectable mode */
+    memset(sensorScanDataConn, 0, sizeof(sensorScanDataConn));
+    AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, 0, (uint8_t *)sensorScanDataConn);
+    AppAdvSetAdValue(APP_SCAN_DATA_CONNECTABLE, DM_ADV_TYPE_LOCAL_NAME,
+                     sizeof(sensorScanDataLocalName), (uint8_t *)sensorScanDataLocalName);
 
-  /* set system ID according to BDADDR */
-  sensorSetSystemId();
+    /* set system ID according to BDADDR */
+    sensorSetSystemId();
 
-  /* start advertising */
-  AppSetAdvType(DM_ADV_CONN_UNDIRECT);
-  AppAdvStart(APP_MODE_AUTO_INIT);
+    /* start advertising */
+    AppSetAdvType(DM_ADV_CONN_UNDIRECT);
+    AppAdvStart(APP_MODE_AUTO_INIT);
 }
 
 /*************************************************************************************************/
@@ -318,37 +295,33 @@ static void sensorSetup(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void sensorBtnCback(uint8_t btn)
 {
-  dmConnId_t connId;
+    dmConnId_t connId;
 
-  /* button actions when connected */
-  connId = AppConnIsOpen();
-  if (connId != DM_CONN_ID_NONE)
-  {
-    switch (btn)
-    {
-      /* ignore button when connected */
-      case APP_UI_BTN_1_SHORT:
-        break;
+    /* button actions when connected */
+    connId = AppConnIsOpen();
+    if (connId != DM_CONN_ID_NONE) {
+        switch (btn) {
+        /* ignore button when connected */
+        case APP_UI_BTN_1_SHORT:
+            break;
 
-      default:
-        break;
+        default:
+            break;
+        }
     }
-  }
-  /* button actions when not connected */
-  else
-  {
-    switch (btn)
-    {
-      case APP_UI_BTN_1_SHORT:
-        /* start connectable advertising and reset timer */
-        AppAdvStop();
-        AppAdvStart(APP_MODE_CONNECTABLE);
-        break;
+    /* button actions when not connected */
+    else {
+        switch (btn) {
+        case APP_UI_BTN_1_SHORT:
+            /* start connectable advertising and reset timer */
+            AppAdvStop();
+            AppAdvStart(APP_MODE_CONNECTABLE);
+            break;
 
-      default:
-        break;
+        default:
+            break;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -362,88 +335,73 @@ static void sensorBtnCback(uint8_t btn)
 /*************************************************************************************************/
 static void sensorProcMsg(wsfMsgHdr_t *pMsg)
 {
-  uint8_t uiEvent = APP_UI_NONE;
+    uint8_t uiEvent = APP_UI_NONE;
 
-  switch (pMsg->event)
-  {
-    case DM_RESET_CMPL_IND:
-    {
-      AttsCalculateDbHash();
-      sensorSetup(pMsg);
-      uiEvent = APP_UI_RESET_CMPL;
-      break;
+    switch (pMsg->event) {
+    case DM_RESET_CMPL_IND: {
+        AttsCalculateDbHash();
+        sensorSetup(pMsg);
+        uiEvent = APP_UI_RESET_CMPL;
+        break;
     }
 
-    case DM_CONN_OPEN_IND:
-    {
-      GyroMeasStart();
-      TempMeasStart();
-      uiEvent = APP_UI_CONN_OPEN;
-      break;
+    case DM_CONN_OPEN_IND: {
+        GyroMeasStart();
+        TempMeasStart();
+        uiEvent = APP_UI_CONN_OPEN;
+        break;
     }
 
-    case DM_CONN_CLOSE_IND:
-    {
-      GyroMeasStop();
-      TempMeasStop();
-      uiEvent = APP_UI_CONN_CLOSE;
-      break;
+    case DM_CONN_CLOSE_IND: {
+        GyroMeasStop();
+        TempMeasStop();
+        uiEvent = APP_UI_CONN_CLOSE;
+        break;
     }
 
-    case DM_ADV_START_IND:
-    {
-      uiEvent = APP_UI_ADV_START;
-      break;
+    case DM_ADV_START_IND: {
+        uiEvent = APP_UI_ADV_START;
+        break;
     }
 
-    case DM_ADV_STOP_IND:
-    {
-      uiEvent = APP_UI_ADV_STOP;
-      break;
+    case DM_ADV_STOP_IND: {
+        uiEvent = APP_UI_ADV_STOP;
+        break;
     }
 
-    case SENSOR_GYRO_TIMER_IND:
-    {
-      dmConnId_t connId = AppConnIsOpen();
-      if (connId != DM_CONN_ID_NONE)
-      {
-        int16_t x, y, z;
-        if (AppReadGyro(&x, &y, &z))
-        {
-          GyroMeasComplete(connId, x, y, z);
+    case SENSOR_GYRO_TIMER_IND: {
+        dmConnId_t connId = AppConnIsOpen();
+        if (connId != DM_CONN_ID_NONE) {
+            int16_t x, y, z;
+            if (AppReadGyro(&x, &y, &z)) {
+                GyroMeasComplete(connId, x, y, z);
+            }
         }
-      }
-      break;
+        break;
     }
 
-    case SENSOR_TEMP_TIMER_IND:
-    {
-      dmConnId_t connId = AppConnIsOpen();
-      if (connId != DM_CONN_ID_NONE)
-      {
-        int16_t temp;
-        if (AppReadTemp(&temp))
-        {
-          TempMeasComplete(connId, temp);
+    case SENSOR_TEMP_TIMER_IND: {
+        dmConnId_t connId = AppConnIsOpen();
+        if (connId != DM_CONN_ID_NONE) {
+            int16_t temp;
+            if (AppReadTemp(&temp)) {
+                TempMeasComplete(connId, temp);
+            }
         }
-      }
-      break;
+        break;
     }
 
     default:
-      break;
-  }
+        break;
+    }
 
+    if (uiEvent != APP_UI_NONE) {
+        AppUiAction(uiEvent);
+    }
 
-  if (uiEvent != APP_UI_NONE)
-  {
-    AppUiAction(uiEvent);
-  }
-
-  if (sensorExtCback != NULL)
-  {
-    sensorExtCback(pMsg);
-  }
+    if (sensorExtCback != NULL) {
+        sensorExtCback(pMsg);
+    }
 }
 
 #ifndef APP_SENSOR_OVERRIDE
@@ -460,14 +418,14 @@ static void sensorProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 bool_t AppReadGyro(int16_t *pX, int16_t *pY, int16_t *pZ)
 {
-  static int16_t x = -100;
-  static int16_t y = 0;
-  static int16_t z = 100;
-  *pX = x++;
-  *pY = y++;
-  *pZ = z++;
+    static int16_t x = -100;
+    static int16_t y = 0;
+    static int16_t z = 100;
+    *pX = x++;
+    *pY = y++;
+    *pZ = z++;
 
-  return TRUE;
+    return TRUE;
 }
 
 /*************************************************************************************************/
@@ -481,9 +439,9 @@ bool_t AppReadGyro(int16_t *pX, int16_t *pY, int16_t *pZ)
 /*************************************************************************************************/
 bool_t AppReadTemp(int16_t *pTemp)
 {
-  static int16_t temp = 0;
-  *pTemp = temp++;
-  return TRUE;
+    static int16_t temp = 0;
+    *pTemp = temp++;
+    return TRUE;
 }
 #endif
 
@@ -498,18 +456,18 @@ bool_t AppReadTemp(int16_t *pTemp)
 /*************************************************************************************************/
 void SensorHandlerInit(wsfHandlerId_t handlerId)
 {
-  /* store handler ID */
-  sensorHandlerId = handlerId;
+    /* store handler ID */
+    sensorHandlerId = handlerId;
 
-  /* Set configuration pointers */
-  pAppAdvCfg    = (appAdvCfg_t *)&sensorAdvCfg;
-  pAppSlaveCfg  = (appSlaveCfg_t *)&sensorSlaveCfg;
-  pAppSecCfg    = (appSecCfg_t *)&sensorSecCfg;
-  pAppUpdateCfg = (appUpdateCfg_t *)&sensorUpdateCfg;
+    /* Set configuration pointers */
+    pAppAdvCfg = (appAdvCfg_t *)&sensorAdvCfg;
+    pAppSlaveCfg = (appSlaveCfg_t *)&sensorSlaveCfg;
+    pAppSecCfg = (appSecCfg_t *)&sensorSecCfg;
+    pAppUpdateCfg = (appUpdateCfg_t *)&sensorUpdateCfg;
 
-  /* Initialize application framework */
-  AppSlaveInit();
-  AppServerInit();
+    /* Initialize application framework */
+    AppSlaveInit();
+    AppServerInit();
 }
 
 /*************************************************************************************************/
@@ -524,29 +482,26 @@ void SensorHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void SensorHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-  if (pMsg != NULL)
-  {
-    APP_TRACE_INFO1("sensor got evt %d", pMsg->event);
+    if (pMsg != NULL) {
+        APP_TRACE_INFO1("sensor got evt %d", pMsg->event);
 
-    /* process ATT messages */
-    if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END)
-    {
-      /* process server-related ATT messages */
-      AppServerProcAttMsg(pMsg);
+        /* process ATT messages */
+        if (pMsg->event >= ATT_CBACK_START && pMsg->event <= ATT_CBACK_END) {
+            /* process server-related ATT messages */
+            AppServerProcAttMsg(pMsg);
+        }
+        /* process DM messages */
+        else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END) {
+            /* process advertising and connection-related messages */
+            AppSlaveProcDmMsg((dmEvt_t *)pMsg);
+
+            /* process security-related messages */
+            AppSlaveSecProcDmMsg((dmEvt_t *)pMsg);
+        }
+
+        /* perform profile and user interface-related operations */
+        sensorProcMsg(pMsg);
     }
-    /* process DM messages */
-    else if (pMsg->event >= DM_CBACK_START && pMsg->event <= DM_CBACK_END)
-    {
-      /* process advertising and connection-related messages */
-      AppSlaveProcDmMsg((dmEvt_t *) pMsg);
-
-      /* process security-related messages */
-      AppSlaveSecProcDmMsg((dmEvt_t *) pMsg);
-    }
-
-    /* perform profile and user interface-related operations */
-    sensorProcMsg(pMsg);
-  }
 }
 
 /*************************************************************************************************/
@@ -558,35 +513,35 @@ void SensorHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void sensorStackInit(void)
 {
-  SecInit();
-  SecAesInit();
-  SecCmacInit();
-  SecEccInit();
+    SecInit();
+    SecAesInit();
+    SecCmacInit();
+    SecEccInit();
 
-  HciHandlerInit(WsfOsSetNextHandler(HciHandler));
+    HciHandlerInit(WsfOsSetNextHandler(HciHandler));
 
-  DmDevVsInit(0);
-  DmAdvInit();
-  DmConnInit();
-  DmConnSlaveInit();
-  DmSecInit();
-  DmHandlerInit(WsfOsSetNextHandler(DmHandler));
+    DmDevVsInit(0);
+    DmAdvInit();
+    DmConnInit();
+    DmConnSlaveInit();
+    DmSecInit();
+    DmHandlerInit(WsfOsSetNextHandler(DmHandler));
 
-  L2cSlaveHandlerInit(WsfOsSetNextHandler(L2cSlaveHandler));
-  L2cInit();
-  L2cSlaveInit();
+    L2cSlaveHandlerInit(WsfOsSetNextHandler(L2cSlaveHandler));
+    L2cInit();
+    L2cSlaveInit();
 
-  AttHandlerInit(WsfOsSetNextHandler(AttHandler));
-  AttsInit();
-  AttsIndInit();
+    AttHandlerInit(WsfOsSetNextHandler(AttHandler));
+    AttsInit();
+    AttsIndInit();
 
-  SmpHandlerInit(WsfOsSetNextHandler(SmpHandler));
-  SmprInit();
-  SmprScInit();
-  HciSetMaxRxAclLen(SENSOR_MAX_RX_ACL_LEN);
+    SmpHandlerInit(WsfOsSetNextHandler(SmpHandler));
+    SmprInit();
+    SmprScInit();
+    HciSetMaxRxAclLen(SENSOR_MAX_RX_ACL_LEN);
 
-  AppHandlerInit(WsfOsSetNextHandler(AppHandler));
-  SensorHandlerInit(WsfOsSetNextHandler(SensorHandler));
+    AppHandlerInit(WsfOsSetNextHandler(AppHandler));
+    SensorHandlerInit(WsfOsSetNextHandler(SensorHandler));
 }
 
 /*************************************************************************************************/
@@ -598,32 +553,32 @@ static void sensorStackInit(void)
 /*************************************************************************************************/
 void SensorStart(void)
 {
-  APP_TRACE_INFO0("sensor starting app");
+    APP_TRACE_INFO0("sensor starting app");
 
-  /* Initialize stack */
-  sensorStackInit();
+    /* Initialize stack */
+    sensorStackInit();
 
-  /* Register for stack callbacks */
-  DmRegister(sensorDmCback);
-  DmConnRegister(DM_CLIENT_ID_APP, sensorDmCback);
-  AttRegister(sensorAttCback);
-  AttConnRegister(AppServerConnCback);
+    /* Register for stack callbacks */
+    DmRegister(sensorDmCback);
+    DmConnRegister(DM_CLIENT_ID_APP, sensorDmCback);
+    AttRegister(sensorAttCback);
+    AttConnRegister(AppServerConnCback);
 
-  /* Register for app framework callbacks */
-  AppUiBtnRegister(sensorBtnCback);
+    /* Register for app framework callbacks */
+    AppUiBtnRegister(sensorBtnCback);
 
-  /* Initialize attribute server database */
-  SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
-  SvcCoreAddGroup();
-  SvcDisAddGroup();
-  GyroStart(sensorHandlerId, SENSOR_GYRO_TIMER_IND);
-  TempStart(sensorHandlerId, SENSOR_TEMP_TIMER_IND);
+    /* Initialize attribute server database */
+    SvcCoreGattCbackRegister(GattReadCback, GattWriteCback);
+    SvcCoreAddGroup();
+    SvcDisAddGroup();
+    GyroStart(sensorHandlerId, SENSOR_GYRO_TIMER_IND);
+    TempStart(sensorHandlerId, SENSOR_TEMP_TIMER_IND);
 
-  /* set up CCCD table and callback */
-  AttsCccRegister(APPS_MAIN_NUM_CCC_IDX, (attsCccSet_t *) MainSensor_CccSet, sensorCccCback);
+    /* set up CCCD table and callback */
+    AttsCccRegister(APPS_MAIN_NUM_CCC_IDX, (attsCccSet_t *)MainSensor_CccSet, sensorCccCback);
 
-  /* Reset the device */
-  DmDevReset();
+    /* Reset the device */
+    DmDevReset();
 }
 
 /*************************************************************************************************/
@@ -637,6 +592,5 @@ void SensorStart(void)
 /*************************************************************************************************/
 void SensorRegisterExtensionCback(sensorExtCback_t extCback)
 {
-  sensorExtCback = extCback;
+    sensorExtCback = extCback;
 }
-

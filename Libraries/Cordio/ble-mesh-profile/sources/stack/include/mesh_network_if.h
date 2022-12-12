@@ -27,8 +27,7 @@
 #define MESH_NETWORK_IF_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**************************************************************************************************
@@ -39,29 +38,26 @@ extern "C"
  *
  * \brief Types used while adding or removing an address from the interface filter lists.
  */
-enum meshNwkFilterType
-{
-  MESH_NWK_WHITE_LIST = 0,   /*!< Filter type is white list */
-  MESH_NWK_BLACK_LIST = 1,   /*!< Filter type is black list */
+enum meshNwkFilterType {
+    MESH_NWK_WHITE_LIST = 0, /*!< Filter type is white list */
+    MESH_NWK_BLACK_LIST = 1, /*!< Filter type is black list */
 };
 
 /*! Mesh Newtork layer interface filter type. See ::meshNwkFilterType */
 typedef uint8_t meshNwkFilterType_t;
 
 /*! Mesh Network interface filter definition */
-typedef struct meshNwkIfFilter_tag
-{
-  meshNwkFilterType_t filterType;     /*!< Fiter type */
-  uint16_t            filterSize;     /*!< Size of an interface filter */
-  meshAddress_t       *pAddrList;     /*!< Pointer to list of addresses */
+typedef struct meshNwkIfFilter_tag {
+    meshNwkFilterType_t filterType; /*!< Fiter type */
+    uint16_t filterSize; /*!< Size of an interface filter */
+    meshAddress_t *pAddrList; /*!< Pointer to list of addresses */
 } meshNwkIfFilter_t;
 
 /*! Mesh Network interface definition */
-typedef struct meshNwkIf_tag
-{
-  meshBrInterfaceId_t brIfId;        /*!< Interface ID */
-  meshBrType_t        brIfType;      /*!< Interface type: together with ID form unique pair */
-  meshNwkIfFilter_t   outputFilter;  /*!< Output filter for the interface */
+typedef struct meshNwkIf_tag {
+    meshBrInterfaceId_t brIfId; /*!< Interface ID */
+    meshBrType_t brIfType; /*!< Interface type: together with ID form unique pair */
+    meshNwkIfFilter_t outputFilter; /*!< Output filter for the interface */
 } meshNwkIf_t;
 
 /**************************************************************************************************
@@ -77,7 +73,7 @@ typedef struct meshNwkIf_tag
  *  \return    Pointer ::meshNwkIf_t, or NULL if interface does not exist.
  */
 /*************************************************************************************************/
-meshNwkIf_t* MeshNwkIfGet(meshBrInterfaceId_t brIfId);
+meshNwkIf_t *MeshNwkIfGet(meshBrInterfaceId_t brIfId);
 
 /*************************************************************************************************/
 /*!

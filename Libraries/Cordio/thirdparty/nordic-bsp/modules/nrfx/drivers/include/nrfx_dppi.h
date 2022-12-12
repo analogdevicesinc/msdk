@@ -67,7 +67,7 @@ void nrfx_dppi_free(void);
  * @retval NRFX_SUCCESS      The channel was successfully allocated.
  * @retval NRFX_ERROR_NO_MEM There is no available channel to be used.
  */
-nrfx_err_t nrfx_dppi_channel_alloc(uint8_t * p_channel);
+nrfx_err_t nrfx_dppi_channel_alloc(uint8_t *p_channel);
 
 /**
  * @brief Function for freeing a DPPI channel.
@@ -109,7 +109,7 @@ nrfx_err_t nrfx_dppi_channel_disable(uint8_t channel);
  * @retval NRFX_SUCCESS      The channel group was successfully allocated.
  * @retval NRFX_ERROR_NO_MEM There is no available channel group to be used.
  */
-nrfx_err_t nrfx_dppi_group_alloc(nrf_dppi_channel_group_t * p_group);
+nrfx_err_t nrfx_dppi_group_alloc(nrf_dppi_channel_group_t *p_group);
 
 /**
  * @brief Function for freeing a DPPI channel group.
@@ -131,8 +131,7 @@ nrfx_err_t nrfx_dppi_group_free(nrf_dppi_channel_group_t group);
  * @retval NRFX_SUCCESS             The channel was successfully included.
  * @retval NRFX_ERROR_INVALID_PARAM The specified group or channel is not allocated.
  */
-nrfx_err_t nrfx_dppi_channel_include_in_group(uint8_t                  channel,
-                                              nrf_dppi_channel_group_t group);
+nrfx_err_t nrfx_dppi_channel_include_in_group(uint8_t channel, nrf_dppi_channel_group_t group);
 
 /**
  * @brief Function for removing a DPPI channel from a channel group.
@@ -143,8 +142,7 @@ nrfx_err_t nrfx_dppi_channel_include_in_group(uint8_t                  channel,
  * @retval NRFX_SUCCESS             The channel was successfully removed.
  * @retval NRFX_ERROR_INVALID_PARAM The specified group or channel is not allocated.
  */
-nrfx_err_t nrfx_dppi_channel_remove_from_group(uint8_t                  channel,
-                                               nrf_dppi_channel_group_t group);
+nrfx_err_t nrfx_dppi_channel_remove_from_group(uint8_t channel, nrf_dppi_channel_group_t group);
 
 /**
  * @brief Function for clearing a DPPI channel group.

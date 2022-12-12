@@ -51,7 +51,6 @@
 #include <stdbool.h>
 #include "sdk_errors.h"
 
-
 /**@brief Function for using hardware to protect flash from writing and reading.
  *
  * @details This function will apply write/erase protection to a specific area. Read

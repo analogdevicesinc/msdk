@@ -56,11 +56,9 @@
 #include "micro_ecc_backend_ecdsa.h"
 #include "optiga_backend_ecdsa.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 #if !NRF_CRYPTO_ECC_SECP160R1_ENABLED
 // Context sizes are zero for disabled functionality
@@ -241,7 +239,6 @@ typedef uint8_t nrf_crypto_backend_curve25519_verify_context_t;
 #define nrf_crypto_backend_curve25519_sign NULL
 #define nrf_crypto_backend_curve25519_verify NULL
 #endif
-
 
 #ifdef __cplusplus
 }

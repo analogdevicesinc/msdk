@@ -41,21 +41,20 @@
 #include "nrf_drv_uart.h"
 
 #ifdef UARTE_PRESENT
-#define INSTANCE_COUNT   UARTE_COUNT
+#define INSTANCE_COUNT UARTE_COUNT
 #else
-#define INSTANCE_COUNT   UART_COUNT
+#define INSTANCE_COUNT UART_COUNT
 #endif
 
 static nrf_uart_event_handler_t m_handlers[INSTANCE_COUNT];
-static void *                   m_contexts[INSTANCE_COUNT];
+static void *m_contexts[INSTANCE_COUNT];
 
 #if defined(UARTE_PRESENT) && defined(UART_PRESENT)
 uint8_t nrf_drv_uart_use_easy_dma[INSTANCE_COUNT];
 #endif
 
 #if defined(NRF_DRV_UART_WITH_UARTE)
-static void uarte_evt_handler(nrfx_uarte_event_t const * p_event,
-                              void *                     p_context)
+static void uarte_evt_handler(nrfx_uarte_event_t const *p_event, void *p_context)
 {
     uint32_t inst_idx = (uint32_t)p_context;
     nrf_drv_uart_event_t event =
@@ -79,8 +78,7 @@ static void uarte_evt_handler(nrfx_uarte_event_t const * p_event,
 #endif // defined(NRF_DRV_UART_WITH_UARTE)
 
 #if defined(NRF_DRV_UART_WITH_UART)
-static void uart_evt_handler(nrfx_uart_event_t const * p_event,
-                             void *                    p_context)
+static void uart_evt_handler(nrfx_uart_event_t const *p_event, void *p_context)
 {
     uint32_t inst_idx = (uint32_t)p_context;
     nrf_drv_uart_event_t event =
@@ -103,9 +101,9 @@ static void uart_evt_handler(nrfx_uart_event_t const * p_event,
 }
 #endif // defined(NRF_DRV_UART_WITH_UART)
 
-ret_code_t nrf_drv_uart_init(nrf_drv_uart_t const *        p_instance,
-                             nrf_drv_uart_config_t const * p_config,
-                             nrf_uart_event_handler_t      event_handler)
+ret_code_t nrf_drv_uart_init(nrf_drv_uart_t const *p_instance,
+                             nrf_drv_uart_config_t const *p_config,
+                             nrf_uart_event_handler_t event_handler)
 {
     uint32_t inst_idx = p_instance->inst_idx;
     m_handlers[inst_idx] = event_handler;
@@ -113,8 +111,7 @@ ret_code_t nrf_drv_uart_init(nrf_drv_uart_t const *        p_instance,
 
 #if defined(NRF_DRV_UART_WITH_UARTE) && defined(NRF_DRV_UART_WITH_UART)
 #ifdef NRF52840_XXAA
-    if (inst_idx == 1)
-    {
+    if (inst_idx == 1) {
         ASSERT(p_config->use_easy_dma);
     }
 #endif
@@ -125,16 +122,11 @@ ret_code_t nrf_drv_uart_init(nrf_drv_uart_t const *        p_instance,
     config.p_context = (void *)inst_idx;
 
     ret_code_t result = 0;
-    if (NRF_DRV_UART_USE_UARTE)
-    {
-        result = nrfx_uarte_init(&p_instance->uarte,
-                                 (nrfx_uarte_config_t const *)&config,
+    if (NRF_DRV_UART_USE_UARTE) {
+        result = nrfx_uarte_init(&p_instance->uarte, (nrfx_uarte_config_t const *)&config,
                                  event_handler ? uarte_evt_handler : NULL);
-    }
-    else if (NRF_DRV_UART_USE_UART)
-    {
-        result = nrfx_uart_init(&p_instance->uart,
-                                (nrfx_uart_config_t const *)&config,
+    } else if (NRF_DRV_UART_USE_UART) {
+        result = nrfx_uart_init(&p_instance->uart, (nrfx_uart_config_t const *)&config,
                                 event_handler ? uart_evt_handler : NULL);
     }
     return result;

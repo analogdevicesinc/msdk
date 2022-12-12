@@ -32,7 +32,6 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-
 /*!
 @file
 @brief This file contains all of the enums and definitions that are used for the
@@ -50,29 +49,25 @@
 #include "crys_rnd.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /*! Definitions for error returns from SaSi_LibInit or SaSi_LibFini functions. */
 typedef enum {
-        SA_SILIB_RET_OK = 0, /*!< Success defintion.*/
-        SA_SILIB_RET_EINVAL_CTX_PTR, /*!< Illegal context pointer.*/
-        SA_SILIB_RET_EINVAL_WORK_BUF_PTR, /*!< Illegal work buffer pointer.*/
-        SA_SILIB_RET_HAL, /*!< Error returned from HAL layer.*/
-        SA_SILIB_RET_PAL, /*!< Error returned from PAL layer.*/
-        SA_SILIB_RET_EINVAL_HW_VERSION,    /*!< Invalid HW version. */
-        SA_SILIB_RET_EINVAL_HW_SIGNATURE,  /*!< Invalid HW signature. */
-        SA_SILIB_RESERVE32B = 0x7FFFFFFFL  /*!< Reserved.*/
+    SA_SILIB_RET_OK = 0, /*!< Success defintion.*/
+    SA_SILIB_RET_EINVAL_CTX_PTR, /*!< Illegal context pointer.*/
+    SA_SILIB_RET_EINVAL_WORK_BUF_PTR, /*!< Illegal work buffer pointer.*/
+    SA_SILIB_RET_HAL, /*!< Error returned from HAL layer.*/
+    SA_SILIB_RET_PAL, /*!< Error returned from PAL layer.*/
+    SA_SILIB_RET_EINVAL_HW_VERSION, /*!< Invalid HW version. */
+    SA_SILIB_RET_EINVAL_HW_SIGNATURE, /*!< Invalid HW signature. */
+    SA_SILIB_RESERVE32B = 0x7FFFFFFFL /*!< Reserved.*/
 } SA_SilibRetCode_t;
 
-
 /*! Internal defintion for the product register. */
-#define DX_VERSION_PRODUCT_BIT_SHIFT    0x18UL
+#define DX_VERSION_PRODUCT_BIT_SHIFT 0x18UL
 /*! Internal defintion for the product register size. */
-#define DX_VERSION_PRODUCT_BIT_SIZE     0x8UL
-
-
+#define DX_VERSION_PRODUCT_BIT_SIZE 0x8UL
 
 /*!
 @brief This function Perform global initialization of the ARM CryptoCell 3xx runtime library;
@@ -98,4 +93,3 @@ void SaSi_LibFini(void);
 @}
  */
 #endif /*__DX_CCLIB_H__*/
-

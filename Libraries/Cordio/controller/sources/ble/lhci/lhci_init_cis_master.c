@@ -35,6 +35,6 @@
 /*************************************************************************************************/
 void LhciCisMasterInit(void)
 {
-  lhciCmdTbl[LHCI_MSG_CIS_MST] = lhciMstCisDecodeCmdPkt;
-  lhciEvtTbl[LHCI_MSG_CIS_MST] = lhciMstCisEncodeEvtPkt;
+    lhciCmdTbl[LHCI_MSG_CIS_MST] = lhciMstCisDecodeCmdPkt;
+    lhciEvtTbl[LHCI_MSG_CIS_MST] = lhciMstCisEncodeEvtPkt;
 }

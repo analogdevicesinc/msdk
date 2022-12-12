@@ -46,7 +46,6 @@
 #include "nrf_dfu_req_handler.h"
 #include "nrf_dfu_transport.h"
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -73,34 +72,31 @@ extern "C" {
 /**
  * Prototype for function for sending response over serial DFU transport.
  */
-typedef ret_code_t (*nrf_serial_rsp_func_t)(uint8_t const * p_data, uint32_t length);
+typedef ret_code_t (*nrf_serial_rsp_func_t)(uint8_t const *p_data, uint32_t length);
 
 /**
  * Prototype for function for freeing RX buffer.
  *
  * Function is called when input data is processed.
  */
-typedef void (*nrf_serial_rx_buf_free_func_t)(void * p_buf);
-
+typedef void (*nrf_serial_rx_buf_free_func_t)(void *p_buf);
 
 /**@brief   DFU serial transport layer state.
  *
  * @details This structure contains status information related to the serial transport layer type.
  */
-typedef struct
-{
-    uint16_t                      pkt_notif_target;
-    uint16_t                      pkt_notif_target_count;
-    nrf_serial_rsp_func_t         rsp_func;
+typedef struct {
+    uint16_t pkt_notif_target;
+    uint16_t pkt_notif_target_count;
+    nrf_serial_rsp_func_t rsp_func;
     nrf_serial_rx_buf_free_func_t payload_free_func;
-    uint32_t                      mtu;
-    uint8_t *                     p_rsp_buf;
-    nrf_dfu_transport_t const *   p_low_level_transport;
+    uint32_t mtu;
+    uint8_t *p_rsp_buf;
+    nrf_dfu_transport_t const *p_low_level_transport;
 } nrf_dfu_serial_t;
 
-void nrf_dfu_serial_on_packet_received(nrf_dfu_serial_t       * p_transport,
-                                       uint8_t          const * p_data,
-                                       uint32_t                 length);
+void nrf_dfu_serial_on_packet_received(nrf_dfu_serial_t *p_transport, uint8_t const *p_data,
+                                       uint32_t length);
 
 /** @} */
 

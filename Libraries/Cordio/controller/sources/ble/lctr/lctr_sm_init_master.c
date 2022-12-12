@@ -39,61 +39,67 @@ typedef void (*lctrActFn_t)(void);
 **************************************************************************************************/
 /*! \brief      Initiate state machine action table.
  */
-static const lctrActFn_t lctrInitActionTbl[LCTR_INIT_STATE_TOTAL][LCTR_INIT_MSG_TOTAL] =
-{
-  { /* LCTR_INIT_STATE_DISABLED */
-    NULL,                       /* LCTR_INIT_MSG_RESET */
-    lctrInitActInitiate,        /* LCTR_INIT_MSG_INITIATE */
-    lctrInitActDisallowCancel,  /* LCTR_INIT_MSG_INITIATE_CANCEL */
-    NULL,                       /* LCTR_INIT_MSG_TERMINATE */
-  },
-  { /* LCTR_INIT_STATE_ENABLED */
-    lctrInitActShutdown,        /* LCTR_INIT_MSG_RESET */
-    lctrInitActDisallowInitiate,/* LCTR_INIT_MSG_INITIATE */
-    lctrInitActShutdown,        /* LCTR_INIT_MSG_INITIATE_CANCEL */
-    lctrInitActConnect,         /* LCTR_INIT_MSG_TERMINATE */
-  },
-  { /* LCTR_INIT_STATE_SHUTDOWN */
-    NULL,                       /* LCTR_INIT_MSG_RESET */
-    lctrInitActDisallowInitiate,/* LCTR_INIT_MSG_INITIATE */
-    NULL,                       /* LCTR_INIT_MSG_INITIATE_CANCEL */
-    lctrInitActScanTerm,        /* LCTR_INIT_MSG_TERMINATE */
-  },
-  { /* LCTR_INIT_STATE_RESET */
-    NULL,                       /* LCTR_INIT_MSG_RESET */
-    lctrInitActDisallowInitiate,/* LCTR_INIT_MSG_INITIATE */
-    lctrInitActDisallowCancel,  /* LCTR_INIT_MSG_INITIATE_CANCEL */
-    lctrInitActResetTerm,       /* LCTR_INIT_MSG_TERMINATE */
-  }
+static const lctrActFn_t lctrInitActionTbl[LCTR_INIT_STATE_TOTAL][LCTR_INIT_MSG_TOTAL] = {
+    {
+        /* LCTR_INIT_STATE_DISABLED */
+        NULL, /* LCTR_INIT_MSG_RESET */
+        lctrInitActInitiate, /* LCTR_INIT_MSG_INITIATE */
+        lctrInitActDisallowCancel, /* LCTR_INIT_MSG_INITIATE_CANCEL */
+        NULL, /* LCTR_INIT_MSG_TERMINATE */
+    },
+    {
+        /* LCTR_INIT_STATE_ENABLED */
+        lctrInitActShutdown, /* LCTR_INIT_MSG_RESET */
+        lctrInitActDisallowInitiate, /* LCTR_INIT_MSG_INITIATE */
+        lctrInitActShutdown, /* LCTR_INIT_MSG_INITIATE_CANCEL */
+        lctrInitActConnect, /* LCTR_INIT_MSG_TERMINATE */
+    },
+    {
+        /* LCTR_INIT_STATE_SHUTDOWN */
+        NULL, /* LCTR_INIT_MSG_RESET */
+        lctrInitActDisallowInitiate, /* LCTR_INIT_MSG_INITIATE */
+        NULL, /* LCTR_INIT_MSG_INITIATE_CANCEL */
+        lctrInitActScanTerm, /* LCTR_INIT_MSG_TERMINATE */
+    },
+    {
+        /* LCTR_INIT_STATE_RESET */
+        NULL, /* LCTR_INIT_MSG_RESET */
+        lctrInitActDisallowInitiate, /* LCTR_INIT_MSG_INITIATE */
+        lctrInitActDisallowCancel, /* LCTR_INIT_MSG_INITIATE_CANCEL */
+        lctrInitActResetTerm, /* LCTR_INIT_MSG_TERMINATE */
+    }
 };
 
 /*! \brief      Initiation state machine next state table. */
-static const uint8_t lctrInitNextStateTbl[LCTR_INIT_STATE_TOTAL][LCTR_INIT_MSG_TOTAL] =
-{
-  { /* LCTR_INIT_STATE_DISABLED */
-    LCTR_INIT_STATE_DISABLED,   /* LCTR_INIT_MSG_RESET */
-    LCTR_INIT_STATE_ENABLED,    /* LCTR_INIT_MSG_INITIATE */
-    LCTR_INIT_STATE_DISABLED,   /* LCTR_INIT_MSG_INITIATE_CANCEL */
-    LCTR_INIT_STATE_DISABLED,   /* LCTR_INIT_MSG_TERMINATE */
-  },
-  { /* LCTR_INIT_STATE_ENABLED */
-    LCTR_INIT_STATE_RESET,      /* LCTR_INIT_MSG_RESET */
-    LCTR_INIT_STATE_ENABLED,    /* LCTR_INIT_MSG_INITIATE */
-    LCTR_INIT_STATE_SHUTDOWN,   /* LCTR_INIT_MSG_INITIATE_CANCEL */
-    LCTR_INIT_STATE_DISABLED,   /* LCTR_INIT_MSG_TERMINATE */
-  },
-  { /* LCTR_INIT_STATE_SHUTDOWN */
-    LCTR_INIT_STATE_RESET,      /* LCTR_INIT_MSG_RESET */
-    LCTR_INIT_STATE_SHUTDOWN,   /* LCTR_INIT_MSG_INITIATE */
-    LCTR_INIT_STATE_SHUTDOWN,   /* LCTR_INIT_MSG_INITIATE_CANCEL */
-    LCTR_INIT_STATE_DISABLED,   /* LCTR_INIT_MSG_TERMINATE */
-  },
-  { /* LCTR_INIT_STATE_RESET */
-    LCTR_INIT_STATE_RESET,      /* LCTR_INIT_MSG_RESET */
-    LCTR_INIT_STATE_RESET,      /* LCTR_INIT_MSG_INITIATE */
-    LCTR_INIT_STATE_RESET,      /* LCTR_INIT_MSG_INITIATE_CANCEL */
-    LCTR_INIT_STATE_DISABLED,   /* LCTR_INIT_MSG_TERMINATE */
-  }
+static const uint8_t lctrInitNextStateTbl[LCTR_INIT_STATE_TOTAL][LCTR_INIT_MSG_TOTAL] = {
+    {
+        /* LCTR_INIT_STATE_DISABLED */
+        LCTR_INIT_STATE_DISABLED, /* LCTR_INIT_MSG_RESET */
+        LCTR_INIT_STATE_ENABLED, /* LCTR_INIT_MSG_INITIATE */
+        LCTR_INIT_STATE_DISABLED, /* LCTR_INIT_MSG_INITIATE_CANCEL */
+        LCTR_INIT_STATE_DISABLED, /* LCTR_INIT_MSG_TERMINATE */
+    },
+    {
+        /* LCTR_INIT_STATE_ENABLED */
+        LCTR_INIT_STATE_RESET, /* LCTR_INIT_MSG_RESET */
+        LCTR_INIT_STATE_ENABLED, /* LCTR_INIT_MSG_INITIATE */
+        LCTR_INIT_STATE_SHUTDOWN, /* LCTR_INIT_MSG_INITIATE_CANCEL */
+        LCTR_INIT_STATE_DISABLED, /* LCTR_INIT_MSG_TERMINATE */
+    },
+    {
+        /* LCTR_INIT_STATE_SHUTDOWN */
+        LCTR_INIT_STATE_RESET, /* LCTR_INIT_MSG_RESET */
+        LCTR_INIT_STATE_SHUTDOWN, /* LCTR_INIT_MSG_INITIATE */
+        LCTR_INIT_STATE_SHUTDOWN, /* LCTR_INIT_MSG_INITIATE_CANCEL */
+        LCTR_INIT_STATE_DISABLED, /* LCTR_INIT_MSG_TERMINATE */
+    },
+    {
+        /* LCTR_INIT_STATE_RESET */
+        LCTR_INIT_STATE_RESET, /* LCTR_INIT_MSG_RESET */
+        LCTR_INIT_STATE_RESET, /* LCTR_INIT_MSG_INITIATE */
+        LCTR_INIT_STATE_RESET, /* LCTR_INIT_MSG_INITIATE_CANCEL */
+        LCTR_INIT_STATE_DISABLED, /* LCTR_INIT_MSG_TERMINATE */
+    }
 };
 
 /*************************************************************************************************/
@@ -105,12 +111,11 @@ static const uint8_t lctrInitNextStateTbl[LCTR_INIT_STATE_TOTAL][LCTR_INIT_MSG_T
 /*************************************************************************************************/
 void lctrMstInitExecuteSm(uint8_t event)
 {
-  LL_TRACE_INFO2("lctrMstInitExecuteSm: state=%u, event=%u", lctrMstInit.state, event);
+    LL_TRACE_INFO2("lctrMstInitExecuteSm: state=%u, event=%u", lctrMstInit.state, event);
 
-  if (lctrInitActionTbl[lctrMstInit.state][event])
-  {
-    lctrInitActionTbl[lctrMstInit.state][event]();
-  }
+    if (lctrInitActionTbl[lctrMstInit.state][event]) {
+        lctrInitActionTbl[lctrMstInit.state][event]();
+    }
 
-  lctrMstInit.state = lctrInitNextStateTbl[lctrMstInit.state][event];
+    lctrMstInit.state = lctrInitNextStateTbl[lctrMstInit.state][event];
 }

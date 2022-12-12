@@ -35,19 +35,19 @@
 
 #if (WSF_MS_PER_TICK == 10)
 /* convert seconds to timer ticks */
-#define WSF_TIMER_SEC_TO_TICKS(sec)         (100 * (sec) + 1)
+#define WSF_TIMER_SEC_TO_TICKS(sec) (100 * (sec) + 1)
 
 /* convert milliseconds to timer ticks */
 /* Extra tick should be added to guarantee waiting time is longer than the specified ms. */
-#define WSF_TIMER_MS_TO_TICKS(ms)           (((uint32_t)(((uint64_t)(ms) * (uint64_t)(419431)) >> 22)) + 1)
+#define WSF_TIMER_MS_TO_TICKS(ms) (((uint32_t)(((uint64_t)(ms) * (uint64_t)(419431)) >> 22)) + 1)
 
 #elif (WSF_MS_PER_TICK == 1)
 /* convert seconds to timer ticks */
-#define WSF_TIMER_SEC_TO_TICKS(sec)         (1000 * (sec) + 1)
+#define WSF_TIMER_SEC_TO_TICKS(sec) (1000 * (sec) + 1)
 
 /* convert milliseconds to timer ticks */
 /* Extra tick should be added to guarantee waiting time is longer than the specified ms. */
-#define WSF_TIMER_MS_TO_TICKS(ms)           ((uint64_t)(ms) + 1)
+#define WSF_TIMER_MS_TO_TICKS(ms) ((uint64_t)(ms) + 1)
 #else
 #error "WSF_TIMER_MS_TO_TICKS() and WSF_TIMER_SEC_TO_TICKS not defined for WSF_MS_PER_TICK"
 #endif
@@ -56,7 +56,7 @@
   Global Variables
 **************************************************************************************************/
 
-wsfQueue_t  wsfTimerTimerQueue;     /*!< Timer queue */
+wsfQueue_t wsfTimerTimerQueue; /*!< Timer queue */
 
 /*************************************************************************************************/
 /*!
@@ -67,29 +67,26 @@ wsfQueue_t  wsfTimerTimerQueue;     /*!< Timer queue */
 /*************************************************************************************************/
 static void wsfTimerRemove(wsfTimer_t *pTimer)
 {
-  wsfTimer_t  *pElem;
-  wsfTimer_t  *pPrev = NULL;
+    wsfTimer_t *pElem;
+    wsfTimer_t *pPrev = NULL;
 
-  pElem = (wsfTimer_t *) wsfTimerTimerQueue.pHead;
+    pElem = (wsfTimer_t *)wsfTimerTimerQueue.pHead;
 
-  /* find timer in queue */
-  while (pElem != NULL)
-  {
-    if (pElem == pTimer)
-    {
-      break;
+    /* find timer in queue */
+    while (pElem != NULL) {
+        if (pElem == pTimer) {
+            break;
+        }
+        pPrev = pElem;
+        pElem = pElem->pNext;
     }
-    pPrev = pElem;
-    pElem = pElem->pNext;
-  }
 
-  /* if timer found remove from queue */
-  if (pElem != NULL)
-  {
-    WsfQueueRemove(&wsfTimerTimerQueue, pTimer, pPrev);
+    /* if timer found remove from queue */
+    if (pElem != NULL) {
+        WsfQueueRemove(&wsfTimerTimerQueue, pTimer, pPrev);
 
-    pTimer->isStarted = FALSE;
-  }
+        pTimer->isStarted = FALSE;
+    }
 }
 
 /*************************************************************************************************/
@@ -102,39 +99,36 @@ static void wsfTimerRemove(wsfTimer_t *pTimer)
 /*************************************************************************************************/
 static void wsfTimerInsert(wsfTimer_t *pTimer, wsfTimerTicks_t ticks)
 {
-  wsfTimer_t  *pElem;
-  wsfTimer_t  *pPrev = NULL;
+    wsfTimer_t *pElem;
+    wsfTimer_t *pPrev = NULL;
 
-  /* task schedule lock */
-  WsfTaskLock();
+    /* task schedule lock */
+    WsfTaskLock();
 
-  /* if timer is already running stop it first */
-  if (pTimer->isStarted)
-  {
-    wsfTimerRemove(pTimer);
-  }
-
-  pTimer->isStarted = TRUE;
-  pTimer->ticks = ticks;
-
-  pElem = (wsfTimer_t *) wsfTimerTimerQueue.pHead;
-
-  /* find insertion point in queue */
-  while (pElem != NULL)
-  {
-    if (pTimer->ticks < pElem->ticks)
-    {
-      break;
+    /* if timer is already running stop it first */
+    if (pTimer->isStarted) {
+        wsfTimerRemove(pTimer);
     }
-    pPrev = pElem;
-    pElem = pElem->pNext;
-  }
 
-  /* insert timer into queue */
-  WsfQueueInsert(&wsfTimerTimerQueue, pTimer, pPrev);
+    pTimer->isStarted = TRUE;
+    pTimer->ticks = ticks;
 
-  /* task schedule unlock */
-  WsfTaskUnlock();
+    pElem = (wsfTimer_t *)wsfTimerTimerQueue.pHead;
+
+    /* find insertion point in queue */
+    while (pElem != NULL) {
+        if (pTimer->ticks < pElem->ticks) {
+            break;
+        }
+        pPrev = pElem;
+        pElem = pElem->pNext;
+    }
+
+    /* insert timer into queue */
+    WsfQueueInsert(&wsfTimerTimerQueue, pTimer, pPrev);
+
+    /* task schedule unlock */
+    WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -148,24 +142,21 @@ static void wsfTimerInsert(wsfTimer_t *pTimer, wsfTimerTicks_t ticks)
 /*************************************************************************************************/
 static wsfTimerTicks_t wsfTimerNextExpiration(void)
 {
-  wsfTimerTicks_t ticks;
+    wsfTimerTicks_t ticks;
 
-  /* task schedule lock */
-  WsfTaskLock();
+    /* task schedule lock */
+    WsfTaskLock();
 
-  if (wsfTimerTimerQueue.pHead == NULL)
-  {
-    ticks = 0;
-  }
-  else
-  {
-    ticks = ((wsfTimer_t *) wsfTimerTimerQueue.pHead)->ticks;
-  }
+    if (wsfTimerTimerQueue.pHead == NULL) {
+        ticks = 0;
+    } else {
+        ticks = ((wsfTimer_t *)wsfTimerTimerQueue.pHead)->ticks;
+    }
 
-  /* task schedule unlock */
-  WsfTaskUnlock();
+    /* task schedule unlock */
+    WsfTaskUnlock();
 
-  return ticks;
+    return ticks;
 }
 
 /*************************************************************************************************/
@@ -176,7 +167,7 @@ static wsfTimerTicks_t wsfTimerNextExpiration(void)
 /*************************************************************************************************/
 void WsfTimerInit(void)
 {
-  WSF_QUEUE_INIT(&wsfTimerTimerQueue);
+    WSF_QUEUE_INIT(&wsfTimerTimerQueue);
 }
 
 /*************************************************************************************************/
@@ -189,10 +180,11 @@ void WsfTimerInit(void)
 /*************************************************************************************************/
 void WsfTimerStartSec(wsfTimer_t *pTimer, wsfTimerTicks_t sec)
 {
-  WSF_TRACE_INFO2("WsfTimerStartSec pTimer:0x%x ticks:%u", (uint32_t)pTimer, WSF_TIMER_SEC_TO_TICKS(sec));
+    WSF_TRACE_INFO2("WsfTimerStartSec pTimer:0x%x ticks:%u", (uint32_t)pTimer,
+                    WSF_TIMER_SEC_TO_TICKS(sec));
 
-  /* insert timer into queue */
-  wsfTimerInsert(pTimer, WSF_TIMER_SEC_TO_TICKS(sec));
+    /* insert timer into queue */
+    wsfTimerInsert(pTimer, WSF_TIMER_SEC_TO_TICKS(sec));
 }
 
 /*************************************************************************************************/
@@ -205,10 +197,11 @@ void WsfTimerStartSec(wsfTimer_t *pTimer, wsfTimerTicks_t sec)
 /*************************************************************************************************/
 void WsfTimerStartMs(wsfTimer_t *pTimer, wsfTimerTicks_t ms)
 {
-  WSF_TRACE_INFO2("WsfTimerStartMs pTimer:0x%x ticks:%u", (uint32_t)pTimer, WSF_TIMER_MS_TO_TICKS(ms));
+    WSF_TRACE_INFO2("WsfTimerStartMs pTimer:0x%x ticks:%u", (uint32_t)pTimer,
+                    WSF_TIMER_MS_TO_TICKS(ms));
 
-  /* insert timer into queue */
-  wsfTimerInsert(pTimer, WSF_TIMER_MS_TO_TICKS(ms));
+    /* insert timer into queue */
+    wsfTimerInsert(pTimer, WSF_TIMER_MS_TO_TICKS(ms));
 }
 
 /*************************************************************************************************/
@@ -220,15 +213,15 @@ void WsfTimerStartMs(wsfTimer_t *pTimer, wsfTimerTicks_t ms)
 /*************************************************************************************************/
 void WsfTimerStop(wsfTimer_t *pTimer)
 {
-  WSF_TRACE_INFO1("WsfTimerStop pTimer:0x%x", pTimer);
+    WSF_TRACE_INFO1("WsfTimerStop pTimer:0x%x", pTimer);
 
-  /* task schedule lock */
-  WsfTaskLock();
+    /* task schedule lock */
+    WsfTaskLock();
 
-  wsfTimerRemove(pTimer);
+    wsfTimerRemove(pTimer);
 
-  /* task schedule unlock */
-  WsfTaskUnlock();
+    /* task schedule unlock */
+    WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -240,34 +233,30 @@ void WsfTimerStop(wsfTimer_t *pTimer)
 /*************************************************************************************************/
 void WsfTimerUpdate(wsfTimerTicks_t ticks)
 {
-  wsfTimer_t  *pElem;
+    wsfTimer_t *pElem;
 
-  /* task schedule lock */
-  WsfTaskLock();
+    /* task schedule lock */
+    WsfTaskLock();
 
-  pElem = (wsfTimer_t *) wsfTimerTimerQueue.pHead;
+    pElem = (wsfTimer_t *)wsfTimerTimerQueue.pHead;
 
-  /* iterate over timer queue */
-  while (pElem != NULL)
-  {
-    /* decrement ticks while preventing underflow */
-    if (pElem->ticks > ticks)
-    {
-      pElem->ticks -= ticks;
+    /* iterate over timer queue */
+    while (pElem != NULL) {
+        /* decrement ticks while preventing underflow */
+        if (pElem->ticks > ticks) {
+            pElem->ticks -= ticks;
+        } else {
+            pElem->ticks = 0;
+
+            /* timer expired; set task for this timer as ready */
+            WsfTaskSetReady(pElem->handlerId, WSF_TIMER_EVENT);
+        }
+
+        pElem = pElem->pNext;
     }
-    else
-    {
-      pElem->ticks = 0;
 
-      /* timer expired; set task for this timer as ready */
-      WsfTaskSetReady(pElem->handlerId, WSF_TIMER_EVENT);
-    }
-
-    pElem = pElem->pNext;
-  }
-
-  /* task schedule unlock */
-  WsfTaskUnlock();
+    /* task schedule unlock */
+    WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -281,37 +270,35 @@ void WsfTimerUpdate(wsfTimerTicks_t ticks)
 /*************************************************************************************************/
 wsfTimer_t *WsfTimerServiceExpired(wsfTaskId_t taskId)
 {
-  wsfTimer_t  *pElem;
-  wsfTimer_t  *pPrev = NULL;
+    wsfTimer_t *pElem;
+    wsfTimer_t *pPrev = NULL;
 
-  /* Unused parameters */
-  (void)taskId;
+    /* Unused parameters */
+    (void)taskId;
 
-  /* task schedule lock */
-  WsfTaskLock();
+    /* task schedule lock */
+    WsfTaskLock();
 
-  /* find expired timers in queue */
-  if (((pElem = (wsfTimer_t *) wsfTimerTimerQueue.pHead) != NULL) &&
-      (pElem->ticks == 0))
-  {
-    /* remove timer from queue */
-    WsfQueueRemove(&wsfTimerTimerQueue, pElem, pPrev);
+    /* find expired timers in queue */
+    if (((pElem = (wsfTimer_t *)wsfTimerTimerQueue.pHead) != NULL) && (pElem->ticks == 0)) {
+        /* remove timer from queue */
+        WsfQueueRemove(&wsfTimerTimerQueue, pElem, pPrev);
 
-    pElem->isStarted = FALSE;
+        pElem->isStarted = FALSE;
+
+        /* task schedule unlock */
+        WsfTaskUnlock();
+
+        WSF_TRACE_INFO1("Timer expired pTimer:0x%x", pElem);
+
+        /* return timer */
+        return pElem;
+    }
 
     /* task schedule unlock */
     WsfTaskUnlock();
 
-    WSF_TRACE_INFO1("Timer expired pTimer:0x%x", pElem);
-
-    /* return timer */
-    return pElem;
-  }
-
-  /* task schedule unlock */
-  WsfTaskUnlock();
-
-  return NULL;
+    return NULL;
 }
 
 /*************************************************************************************************/
@@ -320,15 +307,11 @@ wsfTimer_t *WsfTimerServiceExpired(wsfTaskId_t taskId)
  *              go to sleep.
  */
 /*************************************************************************************************/
-void WsfTimerSleep(void)
-{
-}
+void WsfTimerSleep(void) {}
 
 /*************************************************************************************************/
 /*!
  *  \brief      Update WSF timer based on elapsed RTC ticks.
  */
 /*************************************************************************************************/
-void WsfTimerSleepUpdate(void)
-{
-}
+void WsfTimerSleepUpdate(void) {}

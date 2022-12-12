@@ -40,8 +40,7 @@
 /*************************************************************************************************/
 void MeshGetVersionNumber(const char **ppOutVersion)
 {
-  if (ppOutVersion != NULL)
-  {
-   *ppOutVersion = MESH_STACK_VERSION;
-  }
+    if (ppOutVersion != NULL) {
+        *ppOutVersion = MESH_STACK_VERSION;
+    }
 }

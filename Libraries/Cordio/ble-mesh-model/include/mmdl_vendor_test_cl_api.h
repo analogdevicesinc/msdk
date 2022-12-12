@@ -31,8 +31,7 @@
 #define MMDL_VENDOR_TEST_CL_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "mmdl_defs.h"
@@ -42,33 +41,29 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Vendor Test Client Model Event Status */
-enum mmdlVendorTestClEventStatus
-{
-  MMDL_VENDOR_TEST_CL_SUCCESS         = 0x00, /*!< Success event status */
+enum mmdlVendorTestClEventStatus {
+    MMDL_VENDOR_TEST_CL_SUCCESS = 0x00, /*!< Success event status */
 };
 
 /*! \brief Vendor Test Client Model Event Type Enum */
-enum vendorTestClEventType
-{
-  MMDL_VENDOR_TEST_CL_STATUS_EVENT    = 0x00, /*!< Vendor Test Status Event */
+enum vendorTestClEventType {
+    MMDL_VENDOR_TEST_CL_STATUS_EVENT = 0x00, /*!< Vendor Test Status Event */
 };
 
 /*! \brief Vendor Test Client Model Status event structure */
-typedef struct mmdlVendorTestClStatusEvent_tag
-{
-  wsfMsgHdr_t          hdr;               /*!< WSF message header */
-  meshElementId_t      elementId;         /*!< Element ID */
-  meshAddress_t        serverAddr;        /*!< Server Address */
-  uint8_t              ttl;               /*!< TTL of the received message. */
-  uint8_t              *pMsgParams;       /*!< Received published state */
-  uint16_t             messageParamsLen;  /*!< Message parameters data length */
+typedef struct mmdlVendorTestClStatusEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elementId; /*!< Element ID */
+    meshAddress_t serverAddr; /*!< Server Address */
+    uint8_t ttl; /*!< TTL of the received message. */
+    uint8_t *pMsgParams; /*!< Received published state */
+    uint16_t messageParamsLen; /*!< Message parameters data length */
 } mmdlVendorTestClStatusEvent_t;
 
 /*! \brief Vendor Test Client Model event callback parameters structure */
-typedef union mmdlVendorTestClEvent_tag
-{
-  wsfMsgHdr_t                   hdr;         /*!< WSF message header */
-  mmdlVendorTestClStatusEvent_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlVendorTestClEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    mmdlVendorTestClStatusEvent_t statusEvent; /*!< State updated event. Used for
                                               *   ::MMDL_VENDOR_TEST_CL_STATUS_EVENT.
                                               */
 } mmdlVendorTestClEvent_t;
@@ -92,7 +87,7 @@ typedef void (*mmdlVendorTestClRecvCback_t)(const mmdlVendorTestClEvent_t *pEven
 extern wsfHandlerId_t mmdlVendorTestClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t  mmdlVendorTestClRcvdOpcodes[];
+extern const meshMsgOpcode_t mmdlVendorTestClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations

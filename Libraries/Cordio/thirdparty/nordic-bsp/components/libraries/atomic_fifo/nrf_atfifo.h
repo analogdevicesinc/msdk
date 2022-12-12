@@ -109,11 +109,10 @@ extern "C" {
  *
  * A structure that holds the read and write position used by the FIFO head and tail.
  */
-typedef struct nrf_atfifo_postag_pos_s
-{
+typedef struct nrf_atfifo_postag_pos_s {
     uint16_t wr; //!< First free space to write the data
     uint16_t rd; //!< A place after the last data to read
-}nrf_atfifo_postag_pos_t;
+} nrf_atfifo_postag_pos_t;
 
 /**
  * @brief End data index tag.
@@ -122,11 +121,10 @@ typedef struct nrf_atfifo_postag_pos_s
  * To properly realize atomic data committing, the whole variable has to be
  * accessed atomically.
  */
-typedef union nrf_atfifo_postag_u
-{
-    uint32_t                tag; //!< Whole tag, used for atomic, 32-bit access
+typedef union nrf_atfifo_postag_u {
+    uint32_t tag; //!< Whole tag, used for atomic, 32-bit access
     nrf_atfifo_postag_pos_t pos; //!< Structure that holds reading and writing position separately
-}nrf_atfifo_postag_t;
+} nrf_atfifo_postag_t;
 
 /**
  * @brief The FIFO instance.
@@ -134,15 +132,15 @@ typedef union nrf_atfifo_postag_u
  * The instance of atomic FIFO.
  * Used with all FIFO functions.
  */
-typedef struct nrf_atfifo_s
-{
-    void                * p_buf;        //!< Pointer to the data buffer
-    nrf_atfifo_postag_t   tail;         //!< Read and write tail position tag
-    nrf_atfifo_postag_t   head;         //!< Read and write head position tag
-    uint16_t              buf_size;     //!< FIFO size in number of bytes (has to be divisible by @c item_size)
-    uint16_t              item_size;    //!< Size of a single FIFO item
-    NRF_LOG_INSTANCE_PTR_DECLARE(p_log) //!< Pointer to instance of the logger object (Conditionally compiled).
-}nrf_atfifo_t;
+typedef struct nrf_atfifo_s {
+    void *p_buf; //!< Pointer to the data buffer
+    nrf_atfifo_postag_t tail; //!< Read and write tail position tag
+    nrf_atfifo_postag_t head; //!< Read and write head position tag
+    uint16_t buf_size; //!< FIFO size in number of bytes (has to be divisible by @c item_size)
+    uint16_t item_size; //!< Size of a single FIFO item
+    NRF_LOG_INSTANCE_PTR_DECLARE(
+        p_log) //!< Pointer to instance of the logger object (Conditionally compiled).
+} nrf_atfifo_t;
 
 /**
  * @brief FIFO write operation item context.
@@ -150,22 +148,18 @@ typedef struct nrf_atfifo_s
  * Context structure used to mark an allocated space in FIFO that is ready for put.
  * All the data required to properly put allocated and written data.
  */
-typedef struct nrf_atfifo_item_put_s
-{
+typedef struct nrf_atfifo_item_put_s {
     nrf_atfifo_postag_t last_tail; //!< Tail tag value that was here when opening the FIFO to write
-}nrf_atfifo_item_put_t;
-
+} nrf_atfifo_item_put_t;
 
 /**
  * @brief FIFO read operation item context.
  *
  * Context structure used to mark an opened get operation to properly free an item after reading.
  */
-typedef struct nrf_atfifo_rcontext_s
-{
+typedef struct nrf_atfifo_rcontext_s {
     nrf_atfifo_postag_t last_head; //!< Head tag value that was here when opening the FIFO to read
-}nrf_atfifo_item_get_t;
-
+} nrf_atfifo_item_get_t;
 
 /** @brief Name of the module used for logger messaging.
  */
@@ -181,7 +175,7 @@ typedef struct nrf_atfifo_rcontext_s
  * @ref nrf_atfifo_init function.
  * @{
  */
-    /**
+/**
      * @brief Macro for generating the name for a data buffer.
      *
      * The name of the data buffer that would be created by
@@ -194,9 +188,9 @@ typedef struct nrf_atfifo_rcontext_s
      * @note This is auxiliary internal macro and in normal usage
      *       it should not be called.
      */
-    #define NRF_ATFIFO_BUF_NAME(fifo_id) CONCAT_2(fifo_id, _data)
+#define NRF_ATFIFO_BUF_NAME(fifo_id) CONCAT_2(fifo_id, _data)
 
-    /**
+/**
      * @brief Macro for generating the name for a FIFO instance.
      *
      * The name of the instance variable that will be created by the
@@ -209,9 +203,9 @@ typedef struct nrf_atfifo_rcontext_s
      * @note This is auxiliary internal macro and in normal usage
      *       it should not be called.
      */
-    #define NRF_ATFIFO_INST_NAME(fifo_id) CONCAT_2(fifo_id, _inst)
+#define NRF_ATFIFO_INST_NAME(fifo_id) CONCAT_2(fifo_id, _inst)
 
-    /**
+/**
      * @brief Macro for creating an instance.
      *
      * Creates the FIFO object variable itself.
@@ -235,21 +229,18 @@ typedef struct nrf_atfifo_rcontext_s
      * @param[in] item_cnt     Capacity of the created FIFO in maximum number of items that may be stored.
      *                         The phisical size of the buffer will be 1 element bigger.
      */
-    #define NRF_ATFIFO_DEF(fifo_id, storage_type, item_cnt)                                     \
-        static storage_type NRF_ATFIFO_BUF_NAME(fifo_id)[(item_cnt)+1];                         \
-        NRF_LOG_INSTANCE_REGISTER(NRF_ATFIFO_LOG_NAME, fifo_id,                                 \
-                                  NRF_ATFIFO_CONFIG_INFO_COLOR,                                 \
-                                  NRF_ATFIFO_CONFIG_DEBUG_COLOR,                                \
-                                  NRF_ATFIFO_CONFIG_LOG_INIT_FILTER_LEVEL,                      \
-                                  NRF_ATFIFO_CONFIG_LOG_ENABLED ?                               \
-                                          NRF_ATFIFO_CONFIG_LOG_LEVEL : NRF_LOG_SEVERITY_NONE); \
-        static nrf_atfifo_t NRF_ATFIFO_INST_NAME(fifo_id) = {                                   \
-                .p_buf = NULL,                                                                  \
-                NRF_LOG_INSTANCE_PTR_INIT(p_log, NRF_ATFIFO_LOG_NAME, fifo_id)                  \
-        };                                                                                      \
-        static nrf_atfifo_t * const fifo_id = &NRF_ATFIFO_INST_NAME(fifo_id)
+#define NRF_ATFIFO_DEF(fifo_id, storage_type, item_cnt)                                            \
+    static storage_type NRF_ATFIFO_BUF_NAME(fifo_id)[(item_cnt) + 1];                              \
+    NRF_LOG_INSTANCE_REGISTER(                                                                     \
+        NRF_ATFIFO_LOG_NAME, fifo_id, NRF_ATFIFO_CONFIG_INFO_COLOR, NRF_ATFIFO_CONFIG_DEBUG_COLOR, \
+        NRF_ATFIFO_CONFIG_LOG_INIT_FILTER_LEVEL,                                                   \
+        NRF_ATFIFO_CONFIG_LOG_ENABLED ? NRF_ATFIFO_CONFIG_LOG_LEVEL : NRF_LOG_SEVERITY_NONE);      \
+    static nrf_atfifo_t NRF_ATFIFO_INST_NAME(fifo_id) = {                                          \
+        .p_buf = NULL, NRF_LOG_INSTANCE_PTR_INIT(p_log, NRF_ATFIFO_LOG_NAME, fifo_id)              \
+    };                                                                                             \
+    static nrf_atfifo_t *const fifo_id = &NRF_ATFIFO_INST_NAME(fifo_id)
 
-    /**
+/**
      * @brief Macro for initializing the FIFO that was previously declared by the macro.
      *
      * Use this macro to simplify FIFO initialization.
@@ -261,13 +252,9 @@ typedef struct nrf_atfifo_rcontext_s
      *
      * @return Value from the @ref nrf_atfifo_init function.
      */
-    #define NRF_ATFIFO_INIT(fifo_id)                \
-        nrf_atfifo_init(                            \
-            fifo_id,                                \
-            NRF_ATFIFO_BUF_NAME(fifo_id),           \
-            sizeof(NRF_ATFIFO_BUF_NAME(fifo_id)),   \
-            sizeof(NRF_ATFIFO_BUF_NAME(fifo_id)[0]) \
-        )
+#define NRF_ATFIFO_INIT(fifo_id)                                                                 \
+    nrf_atfifo_init(fifo_id, NRF_ATFIFO_BUF_NAME(fifo_id), sizeof(NRF_ATFIFO_BUF_NAME(fifo_id)), \
+                    sizeof(NRF_ATFIFO_BUF_NAME(fifo_id)[0]))
 
 /** @} */
 
@@ -289,7 +276,8 @@ typedef struct nrf_atfifo_rcontext_s
  * Buffer size must be able to hold one element more than the designed FIFO capacity.
  * This one, empty element is used for overflow checking.
  */
-ret_code_t nrf_atfifo_init(nrf_atfifo_t * const p_fifo, void * p_buf, uint16_t buf_size, uint16_t item_size);
+ret_code_t nrf_atfifo_init(nrf_atfifo_t *const p_fifo, void *p_buf, uint16_t buf_size,
+                           uint16_t item_size);
 
 /**
  * @brief Function for clearing the FIFO.
@@ -317,7 +305,7 @@ ret_code_t nrf_atfifo_init(nrf_atfifo_t * const p_fifo, void * p_buf, uint16_t b
  *                        write head was only moved. It will be copied into read tail when the reading operation
  *                        is flushed.
  */
-ret_code_t nrf_atfifo_clear(nrf_atfifo_t * const p_fifo);
+ret_code_t nrf_atfifo_clear(nrf_atfifo_t *const p_fifo);
 
 /**
  * @brief Function for atomically putting data into the FIFO.
@@ -340,7 +328,8 @@ ret_code_t nrf_atfifo_clear(nrf_atfifo_t * const p_fifo);
  * To avoid data copying, you can use the @ref nrf_atfifo_item_alloc and @ref nrf_atfifo_item_put
  * functions pair.
  */
-ret_code_t nrf_atfifo_alloc_put(nrf_atfifo_t * const p_fifo, void const * const p_var, size_t size, bool * const p_visible);
+ret_code_t nrf_atfifo_alloc_put(nrf_atfifo_t *const p_fifo, void const *const p_var, size_t size,
+                                bool *const p_visible);
 
 /**
  * @brief Function for opening the FIFO for writing.
@@ -353,7 +342,7 @@ ret_code_t nrf_atfifo_alloc_put(nrf_atfifo_t * const p_fifo, void const * const 
  * @return Pointer to the space where variable data can be stored.
  *         NULL if there is no space in the buffer.
  */
-void * nrf_atfifo_item_alloc(nrf_atfifo_t * const p_fifo, nrf_atfifo_item_put_t * p_context);
+void *nrf_atfifo_item_alloc(nrf_atfifo_t *const p_fifo, nrf_atfifo_item_put_t *p_context);
 
 /**
  * @brief Function for closing the writing operation.
@@ -369,7 +358,7 @@ void * nrf_atfifo_item_alloc(nrf_atfifo_t * const p_fifo, nrf_atfifo_item_put_t 
  * @retval false The internal commit was marked, but the writing operation interrupted another writing operation.
  *               The data will be available to read when the interrupted operation is committed.
  */
-bool nrf_atfifo_item_put(nrf_atfifo_t * const p_fifo, nrf_atfifo_item_put_t * p_context);
+bool nrf_atfifo_item_put(nrf_atfifo_t *const p_fifo, nrf_atfifo_item_put_t *p_context);
 
 /**
  * @brief Function for getting a single value from the FIFO.
@@ -385,7 +374,8 @@ bool nrf_atfifo_item_put(nrf_atfifo_t * const p_fifo, nrf_atfifo_item_put_t * p_
  * @retval NRF_SUCCESS         Element was successfully copied from the FIFO memory.
  * @retval NRF_ERROR_NOT_FOUND No data in the FIFO.
  */
-ret_code_t nrf_atfifo_get_free(nrf_atfifo_t * const p_fifo, void * const p_var, size_t size, bool * p_released);
+ret_code_t nrf_atfifo_get_free(nrf_atfifo_t *const p_fifo, void *const p_var, size_t size,
+                               bool *p_released);
 
 /**
  * @brief Function for opening the FIFO for reading.
@@ -397,7 +387,7 @@ ret_code_t nrf_atfifo_get_free(nrf_atfifo_t * const p_fifo, void * const p_var, 
  *
  * @return Pointer to data buffer or NULL if there is no data in the FIFO.
  */
-void * nrf_atfifo_item_get(nrf_atfifo_t * const p_fifo, nrf_atfifo_item_get_t * p_context);
+void *nrf_atfifo_item_get(nrf_atfifo_t *const p_fifo, nrf_atfifo_item_get_t *p_context);
 
 /**
  * @brief Function for closing the reading operation.
@@ -412,8 +402,7 @@ void * nrf_atfifo_item_get(nrf_atfifo_t * const p_fifo, nrf_atfifo_item_get_t * 
  * @retval true  This operation is not generated in the middle of another read operation and the write head will be updated to the read head (space is released).
  * @retval false This operation was performed in the middle of another read operation and the write buffer head was not moved (no space is released).
  */
-bool nrf_atfifo_item_free(nrf_atfifo_t * const p_fifo, nrf_atfifo_item_get_t * p_context);
-
+bool nrf_atfifo_item_free(nrf_atfifo_t *const p_fifo, nrf_atfifo_item_get_t *p_context);
 
 /** @} */
 

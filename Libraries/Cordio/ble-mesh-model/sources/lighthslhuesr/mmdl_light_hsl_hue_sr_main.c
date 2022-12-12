@@ -53,30 +53,29 @@
 **************************************************************************************************/
 
 /*! Light HSL Set Message TID index */
-#define MMDL_SET_TID_IDX          2
+#define MMDL_SET_TID_IDX 2
 
 /*! Light HSL Set Message TID index */
-#define MMDL_SET_TRANSITION_IDX   3
+#define MMDL_SET_TRANSITION_IDX 3
 
 /*! Light HSL Set Message TID index */
-#define MMDL_SET_DELAY_IDX        4
+#define MMDL_SET_DELAY_IDX 4
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Light HSL Hue Server control block type definition */
-typedef struct mmdlLightHslHueSrCb_tag
-{
-  mmdlBindResolve_t         fResolveBind;         /*!< Pointer to the function that checks
+typedef struct mmdlLightHslHueSrCb_tag {
+    mmdlBindResolve_t fResolveBind; /*!< Pointer to the function that checks
                                                    *   and resolves a bind triggered by a
                                                    *   change in this model instance
                                                    */
-  mmdlEventCback_t          recvCback;            /*!< Model Scene Server received callback */
-}mmdlLightHslHueSrCb_t;
+    mmdlEventCback_t recvCback; /*!< Model Scene Server received callback */
+} mmdlLightHslHueSrCb_t;
 
 /*! Light HSL Hue Server message handler type definition */
-typedef void (*mmdlLightHslHueSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlLightHslHueSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
@@ -86,11 +85,10 @@ typedef void (*mmdlLightHslHueSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg)
 wsfHandlerId_t mmdlLightHslHueSrHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlLightHslHueSrRcvdOpcodes[MMDL_LIGHT_HSL_HUE_SR_NUM_RCVD_OPCODES] =
-{
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_HUE_GET_OPCODE) }},
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_HUE_SET_OPCODE) }},
-  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_HUE_SET_NO_ACK_OPCODE) }},
+const meshMsgOpcode_t mmdlLightHslHueSrRcvdOpcodes[MMDL_LIGHT_HSL_HUE_SR_NUM_RCVD_OPCODES] = {
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_HUE_GET_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_HUE_SET_OPCODE) } },
+    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_HUE_SET_NO_ACK_OPCODE) } },
 };
 
 /**************************************************************************************************
@@ -98,15 +96,13 @@ const meshMsgOpcode_t mmdlLightHslHueSrRcvdOpcodes[MMDL_LIGHT_HSL_HUE_SR_NUM_RCV
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlLightHslHueSrHandleMsg_t mmdlLightHslHueSrHandleMsg[MMDL_LIGHT_HSL_HUE_SR_NUM_RCVD_OPCODES] =
-{
-  mmdlLightHslHueSrHandleGet,
-  mmdlLightHslHueSrHandleSet,
-  mmdlLightHslHueSrHandleSetNoAck
-};
+const mmdlLightHslHueSrHandleMsg_t
+    mmdlLightHslHueSrHandleMsg[MMDL_LIGHT_HSL_HUE_SR_NUM_RCVD_OPCODES] = {
+        mmdlLightHslHueSrHandleGet, mmdlLightHslHueSrHandleSet, mmdlLightHslHueSrHandleSetNoAck
+    };
 
 /*! Light HSL Hue Server Control Block */
-static mmdlLightHslHueSrCb_t  hueCb;
+static mmdlLightHslHueSrCb_t hueCb;
 
 /**************************************************************************************************
   Local Functions
@@ -124,27 +120,25 @@ static mmdlLightHslHueSrCb_t  hueCb;
 /*************************************************************************************************/
 static void mmdlLightHslHueSrGetDesc(meshElementId_t elementId, mmdlLightHslHueSrDesc_t **ppOutDesc)
 {
-  uint8_t modelIdx;
+    uint8_t modelIdx;
 
-  *ppOutDesc = NULL;
+    *ppOutDesc = NULL;
 
-  /* Check if element exists. */
-  if (elementId >= pMeshConfig->elementArrayLen)
-  {
-    return;
-  }
-
-  /* Look for the model instance */
-  for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx ++)
-  {
-    if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
-        MMDL_LIGHT_HSL_HUE_SR_MDL_ID)
-    {
-      /* Matching model ID on elementId */
-      *ppOutDesc = pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
-      break;
+    /* Check if element exists. */
+    if (elementId >= pMeshConfig->elementArrayLen) {
+        return;
     }
-  }
+
+    /* Look for the model instance */
+    for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx++) {
+        if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
+            MMDL_LIGHT_HSL_HUE_SR_MDL_ID) {
+            /* Matching model ID on elementId */
+            *ppOutDesc =
+                pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
+            break;
+        }
+    }
 }
 
 /*************************************************************************************************/
@@ -164,20 +158,20 @@ static void mmdlLightHslHueSrGetDesc(meshElementId_t elementId, mmdlLightHslHueS
  */
 /*************************************************************************************************/
 static void mmdlLightHslHueSrSendMessage(meshElementId_t elementId, meshAddress_t serverAddr,
-                                      uint8_t ttl, uint16_t appKeyIndex, const uint8_t *pParam,
-                                      uint8_t paramLen, uint16_t opcode, bool_t recvOnUnicast)
+                                         uint8_t ttl, uint16_t appKeyIndex, const uint8_t *pParam,
+                                         uint8_t paramLen, uint16_t opcode, bool_t recvOnUnicast)
 {
-  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_HSL_HUE_SR_MDL_ID, opcode);
+    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_HSL_HUE_SR_MDL_ID, opcode);
 
-  /* Fill in the message information */
-  msgInfo.elementId = elementId;
-  msgInfo.dstAddr = serverAddr;
-  msgInfo.ttl = ttl;
-  msgInfo.appKeyIndex = appKeyIndex;
+    /* Fill in the message information */
+    msgInfo.elementId = elementId;
+    msgInfo.dstAddr = serverAddr;
+    msgInfo.ttl = ttl;
+    msgInfo.appKeyIndex = appKeyIndex;
 
-  /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-  MeshSendMessage(&msgInfo, (uint8_t *)pParam, paramLen, MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
-                  MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(recvOnUnicast));
+    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+    MeshSendMessage(&msgInfo, (uint8_t *)pParam, paramLen, MMDL_STATUS_RSP_MIN_SEND_DELAY_MS,
+                    MMDL_STATUS_RSP_MAX_SEND_DELAY_MS(recvOnUnicast));
 }
 
 /*************************************************************************************************/
@@ -193,15 +187,15 @@ static void mmdlLightHslHueSrSendMessage(meshElementId_t elementId, meshAddress_
  */
 /*************************************************************************************************/
 static void mmdlLightHslHueSrPublishMessage(meshElementId_t elementId, const uint8_t *pParam,
-                                         uint8_t paramLen, uint16_t opcode)
+                                            uint8_t paramLen, uint16_t opcode)
 {
-  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_HSL_HUE_SR_MDL_ID, opcode);
+    meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_HSL_HUE_SR_MDL_ID, opcode);
 
-  /* Fill in the msg info parameters */
-  pubMsgInfo.elementId = elementId;
+    /* Fill in the msg info parameters */
+    pubMsgInfo.elementId = elementId;
 
-  /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-  MeshPublishMessage(&pubMsgInfo, (uint8_t *)pParam, paramLen);
+    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+    MeshPublishMessage(&pubMsgInfo, (uint8_t *)pParam, paramLen);
 }
 
 /*************************************************************************************************/
@@ -218,46 +212,44 @@ static void mmdlLightHslHueSrPublishMessage(meshElementId_t elementId, const uin
  */
 /*************************************************************************************************/
 static void mmdlLightHslHueSrSetPresentState(meshElementId_t elementId,
-                                             mmdlLightHslHueSrDesc_t *pDesc,
-                                             uint16_t hue, mmdlStateUpdateSrc_t stateUpdateSrc)
+                                             mmdlLightHslHueSrDesc_t *pDesc, uint16_t hue,
+                                             mmdlStateUpdateSrc_t stateUpdateSrc)
 {
-  mmdlLightHslHueSrStateUpdate_t event;
-  int16_t level;
+    mmdlLightHslHueSrStateUpdate_t event;
+    int16_t level;
 
-  /* Update State */
-  pDesc->pStoredState->presentHue = hue;
+    /* Update State */
+    pDesc->pStoredState->presentHue = hue;
 
-  /* Update State on bound main element state */
-  if (stateUpdateSrc != MMDL_STATE_UPDATED_BY_BIND)
-  {
-    MmdlLightHslSrSetBoundHue(pDesc->mainElementId, pDesc->pStoredState->presentHue,
-                              pDesc->pStoredState->targetHue);
-  }
+    /* Update State on bound main element state */
+    if (stateUpdateSrc != MMDL_STATE_UPDATED_BY_BIND) {
+        MmdlLightHslSrSetBoundHue(pDesc->mainElementId, pDesc->pStoredState->presentHue,
+                                  pDesc->pStoredState->targetHue);
+    }
 
-  /* Update Generic Level state on target element */
-  level = hue - 0x8000;
-  MmdlGenLevelSrSetBoundState(elementId, level);
+    /* Update Generic Level state on target element */
+    level = hue - 0x8000;
+    MmdlGenLevelSrSetBoundState(elementId, level);
 
-  /* Check for bindings on this state. Trigger bindings */
-  if ((stateUpdateSrc != MMDL_STATE_UPDATED_BY_BIND) &&
-      (stateUpdateSrc != MMDL_STATE_UPDATED_BY_SCENE) && (hueCb.fResolveBind))
-  {
-    hueCb.fResolveBind(elementId, MMDL_STATE_LT_HSL_HUE, &pDesc->pStoredState->presentHue);
-  }
+    /* Check for bindings on this state. Trigger bindings */
+    if ((stateUpdateSrc != MMDL_STATE_UPDATED_BY_BIND) &&
+        (stateUpdateSrc != MMDL_STATE_UPDATED_BY_SCENE) && (hueCb.fResolveBind)) {
+        hueCb.fResolveBind(elementId, MMDL_STATE_LT_HSL_HUE, &pDesc->pStoredState->presentHue);
+    }
 
-  /* Publish state change */
-  MmdlLightHslHueSrPublish(elementId);
+    /* Publish state change */
+    MmdlLightHslHueSrPublish(elementId);
 
-  /* Set event type */
-  event.hdr.event = MMDL_LIGHT_HSL_SR_EVENT;
-  event.hdr.param = MMDL_LIGHT_HSL_HUE_SR_STATE_UPDATE_EVENT;
+    /* Set event type */
+    event.hdr.event = MMDL_LIGHT_HSL_SR_EVENT;
+    event.hdr.param = MMDL_LIGHT_HSL_HUE_SR_STATE_UPDATE_EVENT;
 
-  /* Set event parameters */
-  event.elemId = elementId;
-  event.state = pDesc->pStoredState->presentHue;
+    /* Set event parameters */
+    event.elemId = elementId;
+    event.state = pDesc->pStoredState->presentHue;
 
-  /* Send event to the upper layer */
-  hueCb.recvCback((wsfMsgHdr_t *)&event);
+    /* Send event to the upper layer */
+    hueCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -274,59 +266,50 @@ static void mmdlLightHslHueSrSetPresentState(meshElementId_t elementId,
  */
 /*************************************************************************************************/
 static void mmdlLightHslHueSrSetState(meshElementId_t elementId, uint16_t hue,
-                                       uint32_t transitionMs, uint8_t delay5Ms,
-                                       mmdlStateUpdateSrc_t stateUpdateSrc)
+                                      uint32_t transitionMs, uint8_t delay5Ms,
+                                      mmdlStateUpdateSrc_t stateUpdateSrc)
 {
-  mmdlLightHslHueSrDesc_t *pDesc = NULL;
+    mmdlLightHslHueSrDesc_t *pDesc = NULL;
 
-  /* Get model instance descriptor */
-  mmdlLightHslHueSrGetDesc(elementId, &pDesc);
+    /* Get model instance descriptor */
+    mmdlLightHslHueSrGetDesc(elementId, &pDesc);
 
-  if ((pDesc != NULL) && (pDesc->pStoredState != NULL))
-  {
-    MMDL_TRACE_INFO3("LIGHT HSL HUE SR: Set TargetHue=0x%X TimeRem=%d ms, Delay=0x%X",
-                     hue, transitionMs, delay5Ms);
+    if ((pDesc != NULL) && (pDesc->pStoredState != NULL)) {
+        MMDL_TRACE_INFO3("LIGHT HSL HUE SR: Set TargetHue=0x%X TimeRem=%d ms, Delay=0x%X", hue,
+                         transitionMs, delay5Ms);
 
-    /* Update descriptor */
-    pDesc->remainingTimeMs = transitionMs;
-    pDesc->delay5Ms = delay5Ms;
-    pDesc->pStoredState->targetHue = hue;
+        /* Update descriptor */
+        pDesc->remainingTimeMs = transitionMs;
+        pDesc->delay5Ms = delay5Ms;
+        pDesc->pStoredState->targetHue = hue;
 
-    /* Check if the set is delayed */
-    if (pDesc->delay5Ms > 0)
-    {
-      /* Start Timer */
-      WsfTimerStartMs(&pDesc->transitionTimer, DELAY_5MS_TO_MS(pDesc->delay5Ms));
+        /* Check if the set is delayed */
+        if (pDesc->delay5Ms > 0) {
+            /* Start Timer */
+            WsfTimerStartMs(&pDesc->transitionTimer, DELAY_5MS_TO_MS(pDesc->delay5Ms));
+        }
+        /* Check if state will change after a transition or immediately */
+        else if (pDesc->remainingTimeMs > 0) {
+            /* Start Timer */
+            if (pDesc->steps > 0) {
+                /* If transition is divided into steps, use defined timer update interval */
+                WsfTimerStartMs(&pDesc->transitionTimer, MMDL_TRANSITION_STATE_UPDATE_INTERVAL);
+            } else {
+                WsfTimerStartMs(&pDesc->transitionTimer, pDesc->remainingTimeMs);
+            }
+
+            /* Update State on bound main element state */
+            MmdlLightHslSrSetBoundHue(pDesc->mainElementId, pDesc->pStoredState->presentHue,
+                                      pDesc->pStoredState->targetHue);
+        } else {
+            /* Stop transition */
+            if (pDesc->transitionTimer.isStarted) {
+                WsfTimerStop(&pDesc->transitionTimer);
+            }
+
+            mmdlLightHslHueSrSetPresentState(elementId, pDesc, hue, stateUpdateSrc);
+        }
     }
-    /* Check if state will change after a transition or immediately */
-    else if (pDesc->remainingTimeMs > 0)
-    {
-      /* Start Timer */
-      if (pDesc->steps > 0)
-      {
-        /* If transition is divided into steps, use defined timer update interval */
-        WsfTimerStartMs(&pDesc->transitionTimer, MMDL_TRANSITION_STATE_UPDATE_INTERVAL);
-      }
-      else
-      {
-        WsfTimerStartMs(&pDesc->transitionTimer, pDesc->remainingTimeMs);
-      }
-
-      /* Update State on bound main element state */
-      MmdlLightHslSrSetBoundHue(pDesc->mainElementId, pDesc->pStoredState->presentHue,
-                                pDesc->pStoredState->targetHue);
-    }
-    else
-    {
-      /* Stop transition */
-      if (pDesc->transitionTimer.isStarted)
-      {
-        WsfTimerStop(&pDesc->transitionTimer);
-      }
-
-      mmdlLightHslHueSrSetPresentState(elementId, pDesc, hue, stateUpdateSrc);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -342,70 +325,61 @@ static void mmdlLightHslHueSrSetState(meshElementId_t elementId, uint16_t hue,
  */
 /*************************************************************************************************/
 static void mmdlLightHslHueSrSendStatus(meshElementId_t elementId, meshAddress_t dstAddr,
-                                       uint16_t appKeyIndex, bool_t recvOnUnicast)
+                                        uint16_t appKeyIndex, bool_t recvOnUnicast)
 {
-  uint8_t msgParams[MMDL_LIGHT_HSL_HUE_STATUS_MAX_LEN];
-  mmdlLightHslHueSrDesc_t *pDesc = NULL;
-  uint8_t *pMsgParams, tranTime;
+    uint8_t msgParams[MMDL_LIGHT_HSL_HUE_STATUS_MAX_LEN];
+    mmdlLightHslHueSrDesc_t *pDesc = NULL;
+    uint8_t *pMsgParams, tranTime;
 
-  /* Get the model instance descriptor */
-  mmdlLightHslHueSrGetDesc(elementId, &pDesc);
+    /* Get the model instance descriptor */
+    mmdlLightHslHueSrGetDesc(elementId, &pDesc);
 
+    if ((pDesc != NULL) && (pDesc->pStoredState != NULL)) {
+        pMsgParams = msgParams;
 
-  if ((pDesc != NULL) && (pDesc->pStoredState != NULL))
-  {
-    pMsgParams = msgParams;
+        /* Copy the message parameters from the descriptor */
+        UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredState->presentHue);
 
-    /* Copy the message parameters from the descriptor */
-    UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredState->presentHue);
+        if (pDesc->remainingTimeMs > 0) {
+            UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredState->targetHue);
 
-    if (pDesc->remainingTimeMs > 0)
-    {
-      UINT16_TO_BSTREAM(pMsgParams, pDesc->pStoredState->targetHue);
+            if (pDesc->delay5Ms == 0) {
+                /* Timer is running the transition */
+                if (pDesc->steps > 0) {
+                    /* Transition is divided into steps. Compute remaining time based on remaining steps. */
+                    tranTime = MmdlGenDefaultTimeMsToTransTime(
+                        pDesc->transitionTimer.ticks * WSF_MS_PER_TICK +
+                        (pDesc->steps - 1) * MMDL_TRANSITION_STATE_UPDATE_INTERVAL);
+                } else {
+                    tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->transitionTimer.ticks *
+                                                               WSF_MS_PER_TICK);
+                }
+            } else {
+                /* Timer is running the delay. Transition did not start. */
+                tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->remainingTimeMs);
+            }
 
-      if (pDesc->delay5Ms == 0)
-      {
-        /* Timer is running the transition */
-        if (pDesc->steps > 0)
-        {
-          /* Transition is divided into steps. Compute remaining time based on remaining steps. */
-          tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->transitionTimer.ticks * WSF_MS_PER_TICK +
-                     (pDesc->steps - 1) * MMDL_TRANSITION_STATE_UPDATE_INTERVAL);
+            UINT8_TO_BSTREAM(pMsgParams, tranTime);
         }
-        else
-        {
-          tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->transitionTimer.ticks * WSF_MS_PER_TICK);
+
+        if (dstAddr != MMDL_USE_PUBLICATION_ADDR) {
+            MMDL_TRACE_INFO3(
+                "LIGHT HSL HUE SR: Send Hue Status Present=0x%X Target=0x%X remTime=%d",
+                pDesc->pStoredState->presentHue, pDesc->pStoredState->targetHue,
+                pDesc->remainingTimeMs);
+
+            mmdlLightHslHueSrSendMessage(elementId, dstAddr, MESH_USE_DEFAULT_TTL, appKeyIndex,
+                                         msgParams, (uint8_t)(pMsgParams - msgParams),
+                                         MMDL_LIGHT_HSL_HUE_STATUS_OPCODE, recvOnUnicast);
+        } else {
+            MMDL_TRACE_INFO3("LIGHT HSL HUE SR: Publish Hue Present=0x%X Target=0x%X remTime=%d",
+                             pDesc->pStoredState->presentHue, pDesc->pStoredState->targetHue,
+                             pDesc->remainingTimeMs);
+
+            mmdlLightHslHueSrPublishMessage(elementId, msgParams, (uint8_t)(pMsgParams - msgParams),
+                                            MMDL_LIGHT_HSL_HUE_STATUS_OPCODE);
         }
-      }
-      else
-      {
-        /* Timer is running the delay. Transition did not start. */
-        tranTime = MmdlGenDefaultTimeMsToTransTime(pDesc->remainingTimeMs);
-      }
-
-      UINT8_TO_BSTREAM(pMsgParams, tranTime);
     }
-
-    if (dstAddr != MMDL_USE_PUBLICATION_ADDR)
-    {
-      MMDL_TRACE_INFO3("LIGHT HSL HUE SR: Send Hue Status Present=0x%X Target=0x%X remTime=%d",
-                       pDesc->pStoredState->presentHue, pDesc->pStoredState->targetHue,
-                       pDesc->remainingTimeMs);
-
-      mmdlLightHslHueSrSendMessage(elementId, dstAddr, MESH_USE_DEFAULT_TTL, appKeyIndex, msgParams,
-                                (uint8_t)(pMsgParams - msgParams), MMDL_LIGHT_HSL_HUE_STATUS_OPCODE,
-                                recvOnUnicast);
-    }
-    else
-    {
-      MMDL_TRACE_INFO3("LIGHT HSL HUE SR: Publish Hue Present=0x%X Target=0x%X remTime=%d",
-                       pDesc->pStoredState->presentHue, pDesc->pStoredState->targetHue,
-                       pDesc->remainingTimeMs);
-
-      mmdlLightHslHueSrPublishMessage(elementId, msgParams, (uint8_t)(pMsgParams - msgParams),
-                                   MMDL_LIGHT_HSL_HUE_STATUS_OPCODE);
-    }
-  }
 }
 
 /*************************************************************************************************/
@@ -419,12 +393,12 @@ static void mmdlLightHslHueSrSendStatus(meshElementId_t elementId, meshAddress_t
 /*************************************************************************************************/
 void mmdlLightHslHueSrHandleGet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  /* Validate message length */
-  if (pMsg->messageParamsLen == 0)
-  {
-    /* Send Status message as a response to the Get message */
-    mmdlLightHslHueSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast);
-  }
+    /* Validate message length */
+    if (pMsg->messageParamsLen == 0) {
+        /* Send Status message as a response to the Get message */
+        mmdlLightHslHueSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                                    pMsg->recvOnUnicast);
+    }
 }
 
 /*************************************************************************************************/
@@ -439,113 +413,99 @@ void mmdlLightHslHueSrHandleGet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static bool_t mmdlLightHslHueSrProcessSet(const meshModelMsgRecvEvt_t *pMsg, bool_t ackRequired)
 {
-  uint16_t hue;
-  mmdlLightHslHueSrDesc_t *pDesc = NULL;
-  mmdlLightHslSrDesc_t *pHslDesc = NULL;
-  uint8_t tid;
-  uint32_t transMs;
-  uint32_t delayMs;
+    uint16_t hue;
+    mmdlLightHslHueSrDesc_t *pDesc = NULL;
+    mmdlLightHslSrDesc_t *pHslDesc = NULL;
+    uint8_t tid;
+    uint32_t transMs;
+    uint32_t delayMs;
 
-  WSF_ASSERT(pMsg != NULL);
-  WSF_ASSERT(pMsg->pMessageParams != NULL);
+    WSF_ASSERT(pMsg != NULL);
+    WSF_ASSERT(pMsg->pMessageParams != NULL);
 
-  /* Validate message length. It can take only min and max values. */
-  if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_HUE_SET_MAX_LEN &&
-      pMsg->messageParamsLen != MMDL_LIGHT_HSL_HUE_SET_MIN_LEN)
-  {
-    return FALSE;
-  }
-
-  /* Extract parameters */
-  BYTES_TO_UINT16(hue, pMsg->pMessageParams);
-
-  /* Check if it contains optional parameters */
-  if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_HUE_SET_MAX_LEN)
-  {
-    /* Check prohibited values for Transition Time */
-    if (TRANSITION_TIME_STEPS(pMsg->pMessageParams[MMDL_SET_TRANSITION_IDX]) ==
-        MMDL_GEN_TR_UNKNOWN)
-    {
-      return FALSE;
-    }
-  }
-
-  /* Get the model instance descriptor */
-  mmdlLightHslHueSrGetDesc(pMsg->elementId, &pDesc);
-
-  if ((pDesc != NULL) && (pDesc->pStoredState != NULL))
-  {
-    WsfTimerStartMs(&pDesc->msgRcvdTimer, MSG_RCVD_TIMEOUT_MS);
-
-    /* Get Transaction ID */
-    tid = pMsg->pMessageParams[MMDL_SET_TID_IDX];
-
-    /* Validate message against last transaction */
-    if ((pMsg->srcAddr == pDesc->srcAddr) && (tid == pDesc->transactionId))
-    {
-      return FALSE;
+    /* Validate message length. It can take only min and max values. */
+    if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_HUE_SET_MAX_LEN &&
+        pMsg->messageParamsLen != MMDL_LIGHT_HSL_HUE_SET_MIN_LEN) {
+        return FALSE;
     }
 
-    /* Get the HSL instance descriptor */
-    MmdlLightHslSrGetDesc(pDesc->mainElementId, &pHslDesc);
-
-    if ((pHslDesc != NULL) && (pHslDesc->pStoredState != NULL))
-    {
-      /* Check if target state is in range */
-      if (hue < pHslDesc->pStoredState->minHue)
-      {
-        hue = pHslDesc->pStoredState->minHue;
-      }
-      else if (hue > pHslDesc->pStoredState->maxHue)
-      {
-        hue = pHslDesc->pStoredState->maxHue;
-      }
-    }
-
-    /* Update last transaction fields and restart 6 seconds timer */
-    pDesc->ackPending = ackRequired;
-    pDesc->srcAddr = pMsg->srcAddr;
-    pDesc->transactionId = tid;
-    pDesc->ackAppKeyIndex = pMsg->appKeyIndex;
-    pDesc->ackForUnicast = pMsg->recvOnUnicast;
+    /* Extract parameters */
+    BYTES_TO_UINT16(hue, pMsg->pMessageParams);
 
     /* Check if it contains optional parameters */
-    if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_HUE_SET_MAX_LEN)
-    {
-      /* Get Transition time */
-      transMs = MmdlGenDefaultTransTimeToMs(pMsg->pMessageParams[MMDL_SET_TRANSITION_IDX]);
-      delayMs = pMsg->pMessageParams[MMDL_SET_DELAY_IDX];
-    }
-    else
-    {
-      /* Get Default Transition time from the Main element */
-      transMs = MmdlGenDefaultTransGetTime(pDesc->mainElementId);
-      delayMs = 0;
+    if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_HUE_SET_MAX_LEN) {
+        /* Check prohibited values for Transition Time */
+        if (TRANSITION_TIME_STEPS(pMsg->pMessageParams[MMDL_SET_TRANSITION_IDX]) ==
+            MMDL_GEN_TR_UNKNOWN) {
+            return FALSE;
+        }
     }
 
-    /* Check if target state is different from current state */
-    if (hue == pDesc->pStoredState->presentHue)
-    {
-      /* Transition is considered complete*/
-      transMs = 0;
+    /* Get the model instance descriptor */
+    mmdlLightHslHueSrGetDesc(pMsg->elementId, &pDesc);
+
+    if ((pDesc != NULL) && (pDesc->pStoredState != NULL)) {
+        WsfTimerStartMs(&pDesc->msgRcvdTimer, MSG_RCVD_TIMEOUT_MS);
+
+        /* Get Transaction ID */
+        tid = pMsg->pMessageParams[MMDL_SET_TID_IDX];
+
+        /* Validate message against last transaction */
+        if ((pMsg->srcAddr == pDesc->srcAddr) && (tid == pDesc->transactionId)) {
+            return FALSE;
+        }
+
+        /* Get the HSL instance descriptor */
+        MmdlLightHslSrGetDesc(pDesc->mainElementId, &pHslDesc);
+
+        if ((pHslDesc != NULL) && (pHslDesc->pStoredState != NULL)) {
+            /* Check if target state is in range */
+            if (hue < pHslDesc->pStoredState->minHue) {
+                hue = pHslDesc->pStoredState->minHue;
+            } else if (hue > pHslDesc->pStoredState->maxHue) {
+                hue = pHslDesc->pStoredState->maxHue;
+            }
+        }
+
+        /* Update last transaction fields and restart 6 seconds timer */
+        pDesc->ackPending = ackRequired;
+        pDesc->srcAddr = pMsg->srcAddr;
+        pDesc->transactionId = tid;
+        pDesc->ackAppKeyIndex = pMsg->appKeyIndex;
+        pDesc->ackForUnicast = pMsg->recvOnUnicast;
+
+        /* Check if it contains optional parameters */
+        if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_HUE_SET_MAX_LEN) {
+            /* Get Transition time */
+            transMs = MmdlGenDefaultTransTimeToMs(pMsg->pMessageParams[MMDL_SET_TRANSITION_IDX]);
+            delayMs = pMsg->pMessageParams[MMDL_SET_DELAY_IDX];
+        } else {
+            /* Get Default Transition time from the Main element */
+            transMs = MmdlGenDefaultTransGetTime(pDesc->mainElementId);
+            delayMs = 0;
+        }
+
+        /* Check if target state is different from current state */
+        if (hue == pDesc->pStoredState->presentHue) {
+            /* Transition is considered complete*/
+            transMs = 0;
+        }
+
+        /* Determine the number of transition steps */
+        pDesc->steps = transMs / MMDL_TRANSITION_STATE_UPDATE_INTERVAL;
+
+        if (pDesc->steps > 0) {
+            /* Compute the transition step increment */
+            pDesc->transitionStep = (hue - pDesc->pStoredState->presentHue) / pDesc->steps;
+        }
+
+        /* Change state. Hue element is always after the Main element */
+        mmdlLightHslHueSrSetState(pMsg->elementId, hue, transMs, delayMs, MMDL_STATE_UPDATED_BY_CL);
+
+        return (pDesc->delay5Ms == 0);
     }
 
-    /* Determine the number of transition steps */
-    pDesc->steps = transMs / MMDL_TRANSITION_STATE_UPDATE_INTERVAL;
-
-    if (pDesc->steps > 0)
-    {
-      /* Compute the transition step increment */
-      pDesc->transitionStep = (hue - pDesc->pStoredState->presentHue) / pDesc->steps;
-    }
-
-    /* Change state. Hue element is always after the Main element */
-    mmdlLightHslHueSrSetState(pMsg->elementId, hue, transMs, delayMs, MMDL_STATE_UPDATED_BY_CL);
-
-    return (pDesc->delay5Ms == 0);
-  }
-
-  return FALSE;
+    return FALSE;
 }
 
 /*************************************************************************************************/
@@ -559,12 +519,12 @@ static bool_t mmdlLightHslHueSrProcessSet(const meshModelMsgRecvEvt_t *pMsg, boo
 /*************************************************************************************************/
 void mmdlLightHslHueSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 {
-  /* Change state */
-  if (mmdlLightHslHueSrProcessSet(pMsg, TRUE))
-  {
-    /* Send Status message as a response to the Set message */
-    mmdlLightHslHueSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex, pMsg->recvOnUnicast);
-  }
+    /* Change state */
+    if (mmdlLightHslHueSrProcessSet(pMsg, TRUE)) {
+        /* Send Status message as a response to the Set message */
+        mmdlLightHslHueSrSendStatus(pMsg->elementId, pMsg->srcAddr, pMsg->appKeyIndex,
+                                    pMsg->recvOnUnicast);
+    }
 }
 
 /*************************************************************************************************/
@@ -578,7 +538,7 @@ void mmdlLightHslHueSrHandleSet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightHslHueSrHandleSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 {
-  (void)mmdlLightHslHueSrProcessSet(pMsg, FALSE);
+    (void)mmdlLightHslHueSrProcessSet(pMsg, FALSE);
 }
 
 /*************************************************************************************************/
@@ -592,68 +552,58 @@ void mmdlLightHslHueSrHandleSetNoAck(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 static void mmdlLightHslHueSrHandleTmrCback(meshElementId_t elementId)
 {
-  mmdlLightHslHueSrDesc_t *pDesc = NULL;
+    mmdlLightHslHueSrDesc_t *pDesc = NULL;
 
-  /* Get model instance descriptor */
-  mmdlLightHslHueSrGetDesc(elementId, &pDesc);
+    /* Get model instance descriptor */
+    mmdlLightHslHueSrGetDesc(elementId, &pDesc);
 
-  if ((pDesc != NULL) && (pDesc->pStoredState != NULL))
-  {
-    if (pDesc->delay5Ms != 0)
-    {
-      /* Reset Delay */
-      pDesc->delay5Ms = 0;
+    if ((pDesc != NULL) && (pDesc->pStoredState != NULL)) {
+        if (pDesc->delay5Ms != 0) {
+            /* Reset Delay */
+            pDesc->delay5Ms = 0;
 
-      /* Timeout. Set state. */
-      mmdlLightHslHueSrSetState(elementId, pDesc->pStoredState->targetHue, pDesc->remainingTimeMs, 0,
-                                pDesc->updateSource);
+            /* Timeout. Set state. */
+            mmdlLightHslHueSrSetState(elementId, pDesc->pStoredState->targetHue,
+                                      pDesc->remainingTimeMs, 0, pDesc->updateSource);
 
+            /* Send Status if it was a delayed Acknowledged Set */
+            if (pDesc->ackPending) {
+                mmdlLightHslHueSrSendStatus(elementId, pDesc->srcAddr, pDesc->ackAppKeyIndex,
+                                            pDesc->ackForUnicast);
+            }
+        } else if (pDesc->remainingTimeMs != 0) {
+            if (pDesc->steps > 0) {
+                uint16_t state;
+                uint32_t remainingTimeMs;
 
-      /* Send Status if it was a delayed Acknowledged Set */
-      if (pDesc->ackPending)
-      {
-        mmdlLightHslHueSrSendStatus(elementId, pDesc->srcAddr, pDesc->ackAppKeyIndex,
-                                 pDesc->ackForUnicast);
-      }
-    }
-    else if (pDesc->remainingTimeMs != 0)
-    {
-      if (pDesc->steps > 0)
-      {
-        uint16_t state;
-        uint32_t remainingTimeMs;
+                /* Transition is divided into steps. Decrement the remaining time and steps */
+                pDesc->steps--;
+                remainingTimeMs = pDesc->remainingTimeMs - MMDL_TRANSITION_STATE_UPDATE_INTERVAL;
 
-        /* Transition is divided into steps. Decrement the remaining time and steps */
-        pDesc->steps--;
-        remainingTimeMs = pDesc->remainingTimeMs - MMDL_TRANSITION_STATE_UPDATE_INTERVAL;
+                /* Compute intermediate state value */
+                state = pDesc->pStoredState->presentHue + pDesc->transitionStep;
 
-        /* Compute intermediate state value */
-        state = pDesc->pStoredState->presentHue + pDesc->transitionStep;
+                /* Update present state only. */
+                mmdlLightHslHueSrSetPresentState(elementId, pDesc, state, pDesc->updateSource);
 
-        /* Update present state only. */
-        mmdlLightHslHueSrSetPresentState(elementId, pDesc, state, pDesc->updateSource);
-
-        if (pDesc->steps == 1)
-        {
-          /* Next is the last step.
+                if (pDesc->steps == 1) {
+                    /* Next is the last step.
            * Program the remaining time (can be more than MMDL_TRANSITION_STATE_UPDATE_INTERVAL).
            * Also, the last step increment can be greater then the intermediate ones.
            */
-          pDesc->steps = 0;
-        }
+                    pDesc->steps = 0;
+                }
 
-        /* Program next transition */
-        mmdlLightHslHueSrSetState(elementId, pDesc->pStoredState->targetHue, remainingTimeMs, 0,
-                                  pDesc->updateSource);
-      }
-      else
-      {
-        /* Timeout. Set state. */
-        mmdlLightHslHueSrSetState(elementId, pDesc->pStoredState->targetHue, 0, 0,
-                                  pDesc->updateSource);
-      }
+                /* Program next transition */
+                mmdlLightHslHueSrSetState(elementId, pDesc->pStoredState->targetHue,
+                                          remainingTimeMs, 0, pDesc->updateSource);
+            } else {
+                /* Timeout. Set state. */
+                mmdlLightHslHueSrSetState(elementId, pDesc->pStoredState->targetHue, 0, 0,
+                                          pDesc->updateSource);
+            }
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -668,16 +618,15 @@ static void mmdlLightHslHueSrHandleTmrCback(meshElementId_t elementId)
 /*************************************************************************************************/
 static void mmdlLightHslHueSrHandleMsgRcvdTmrCback(meshElementId_t elementId)
 {
-  mmdlLightHslHueSrDesc_t *pDesc = NULL;
+    mmdlLightHslHueSrDesc_t *pDesc = NULL;
 
-  /* Get model instance descriptor */
-  mmdlLightHslHueSrGetDesc(elementId, &pDesc);
+    /* Get model instance descriptor */
+    mmdlLightHslHueSrGetDesc(elementId, &pDesc);
 
-  if ((pDesc != NULL) && (pDesc->pStoredState != NULL))
-  {
-    /* Reset source address and transaction ID for last stored transaction */
-    pDesc->srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
-  }
+    if ((pDesc != NULL) && (pDesc->pStoredState != NULL)) {
+        /* Reset source address and transaction ID for last stored transaction */
+        pDesc->srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
+    }
 }
 
 /*************************************************************************************************/
@@ -693,14 +642,14 @@ static void mmdlLightHslHueSrHandleMsgRcvdTmrCback(meshElementId_t elementId)
 /*************************************************************************************************/
 static void mmdlBindResolveLightHslHue2GenLevel(meshElementId_t tgtElementId, void *pStateValue)
 {
-  uint16_t hue;
-  int16_t level;
+    uint16_t hue;
+    int16_t level;
 
-  hue = *(uint16_t *)pStateValue;
-  level = hue - 0x8000;
+    hue = *(uint16_t *)pStateValue;
+    level = hue - 0x8000;
 
-  /* Update Generic Level state on target element */
-  MmdlGenLevelSrSetBoundState(tgtElementId, level);
+    /* Update Generic Level state on target element */
+    MmdlGenLevelSrSetBoundState(tgtElementId, level);
 }
 
 /*************************************************************************************************/
@@ -716,12 +665,12 @@ static void mmdlBindResolveLightHslHue2GenLevel(meshElementId_t tgtElementId, vo
 /*************************************************************************************************/
 static void mmdlBindResolveGenLevel2LightHslHue(meshElementId_t tgtElementId, void *pStateValue)
 {
-  int16_t level;
+    int16_t level;
 
-  level = *(uint16_t *)pStateValue;
+    level = *(uint16_t *)pStateValue;
 
-  /* Change state locally. No transition time or delay is allowed. */
-  mmdlLightHslHueSrSetState(tgtElementId, level + 0x8000, 0, 0, MMDL_STATE_UPDATED_BY_BIND);
+    /* Change state locally. No transition time or delay is allowed. */
+    mmdlLightHslHueSrSetState(tgtElementId, level + 0x8000, 0, 0, MMDL_STATE_UPDATED_BY_BIND);
 }
 
 /**************************************************************************************************
@@ -737,36 +686,34 @@ static void mmdlBindResolveGenLevel2LightHslHue(meshElementId_t tgtElementId, vo
 /*************************************************************************************************/
 void MmdlLightHslHueSrInit(void)
 {
-  meshElementId_t elemId;
-  mmdlLightHslHueSrDesc_t *pDesc = NULL;
+    meshElementId_t elemId;
+    mmdlLightHslHueSrDesc_t *pDesc = NULL;
 
-  MMDL_TRACE_INFO0("LIGHT HSL HUE SR: init");
+    MMDL_TRACE_INFO0("LIGHT HSL HUE SR: init");
 
-  /* Set event callbacks */
-  hueCb.recvCback = MmdlEmptyCback;
-  hueCb.fResolveBind = MmdlBindResolve;
+    /* Set event callbacks */
+    hueCb.recvCback = MmdlEmptyCback;
+    hueCb.fResolveBind = MmdlBindResolve;
 
-  /* Initialize timers */
-  for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++)
-  {
-    /* Get the model instance descriptor */
-    mmdlLightHslHueSrGetDesc(elemId, &pDesc);
+    /* Initialize timers */
+    for (elemId = 0; elemId < pMeshConfig->elementArrayLen; elemId++) {
+        /* Get the model instance descriptor */
+        mmdlLightHslHueSrGetDesc(elemId, &pDesc);
 
-    if ((pDesc != NULL) && (pDesc->pStoredState != NULL))
-    {
-      pDesc->srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
+        if ((pDesc != NULL) && (pDesc->pStoredState != NULL)) {
+            pDesc->srcAddr = MESH_ADDR_TYPE_UNASSIGNED;
 
-      /* Set transition timer parameters*/
-      pDesc->transitionTimer.handlerId = mmdlLightHslHueSrHandlerId;
-      pDesc->transitionTimer.msg.event = MMDL_LIGHT_HSL_HUE_SR_EVT_TMR_CBACK;
-      pDesc->transitionTimer.msg.param = elemId;
+            /* Set transition timer parameters*/
+            pDesc->transitionTimer.handlerId = mmdlLightHslHueSrHandlerId;
+            pDesc->transitionTimer.msg.event = MMDL_LIGHT_HSL_HUE_SR_EVT_TMR_CBACK;
+            pDesc->transitionTimer.msg.param = elemId;
 
-      /* Set msg Received timer parameters*/
-      pDesc->msgRcvdTimer.handlerId = mmdlLightHslHueSrHandlerId;
-      pDesc->msgRcvdTimer.msg.event = MMDL_LIGHT_HSL_HUE_SR_MSG_RCVD_TMR_CBACK;
-      pDesc->msgRcvdTimer.msg.param = elemId;
+            /* Set msg Received timer parameters*/
+            pDesc->msgRcvdTimer.handlerId = mmdlLightHslHueSrHandlerId;
+            pDesc->msgRcvdTimer.msg.event = MMDL_LIGHT_HSL_HUE_SR_MSG_RCVD_TMR_CBACK;
+            pDesc->msgRcvdTimer.msg.param = elemId;
+        }
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -780,7 +727,7 @@ void MmdlLightHslHueSrInit(void)
 /*************************************************************************************************/
 void MmdlLightHslHueSrHandlerInit(wsfHandlerId_t handlerId)
 {
-  mmdlLightHslHueSrHandlerId = handlerId;
+    mmdlLightHslHueSrHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -794,55 +741,49 @@ void MmdlLightHslHueSrHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlLightHslHueSrHandler(wsfMsgHdr_t *pMsg)
 {
-  meshModelEvt_t *pModelMsg;
-  uint8_t opcodeIdx, opcodeSize;
+    meshModelEvt_t *pModelMsg;
+    uint8_t opcodeIdx, opcodeSize;
 
-  /* Handle message */
-  if (pMsg != NULL)
-  {
-    switch (pMsg->event)
-    {
-      case MESH_MODEL_EVT_MSG_RECV:
-        pModelMsg = (meshModelEvt_t *)pMsg;
+    /* Handle message */
+    if (pMsg != NULL) {
+        switch (pMsg->event) {
+        case MESH_MODEL_EVT_MSG_RECV:
+            pModelMsg = (meshModelEvt_t *)pMsg;
 
-        /* Match the received opcode */
-        for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_HSL_HUE_SR_NUM_RCVD_OPCODES; opcodeIdx++)
-        {
-          opcodeSize = MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode);
-          if (!memcmp(&mmdlLightHslHueSrRcvdOpcodes[opcodeIdx],
-                      pModelMsg->msgRecvEvt.opCode.opcodeBytes,
-                      opcodeSize))
-          {
-            /* Process message */
-            (void)mmdlLightHslHueSrHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
-          }
+            /* Match the received opcode */
+            for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_HSL_HUE_SR_NUM_RCVD_OPCODES; opcodeIdx++) {
+                opcodeSize = MESH_OPCODE_SIZE(pModelMsg->msgRecvEvt.opCode);
+                if (!memcmp(&mmdlLightHslHueSrRcvdOpcodes[opcodeIdx],
+                            pModelMsg->msgRecvEvt.opCode.opcodeBytes, opcodeSize)) {
+                    /* Process message */
+                    (void)mmdlLightHslHueSrHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
+                }
+            }
+            break;
+
+        case MESH_MODEL_EVT_PERIODIC_PUB:
+            pModelMsg = (meshModelEvt_t *)pMsg;
+
+            /* Check if periodic publishing was not disabled. */
+            if (pModelMsg->periodicPubEvt.nextPubTimeMs != 0) {
+                /* Publishing is requested part of the periodic publishing. */
+                MmdlLightHslHueSrPublish(pModelMsg->periodicPubEvt.elementId);
+            }
+            break;
+
+        case MMDL_LIGHT_HSL_HUE_SR_EVT_TMR_CBACK:
+            mmdlLightHslHueSrHandleTmrCback((meshElementId_t)pMsg->param);
+            break;
+
+        case MMDL_LIGHT_HSL_HUE_SR_MSG_RCVD_TMR_CBACK:
+            mmdlLightHslHueSrHandleMsgRcvdTmrCback((meshElementId_t)pMsg->param);
+            break;
+
+        default:
+            MMDL_TRACE_WARN0("LIGHT HSL HUE SR: Invalid event message received!");
+            break;
         }
-        break;
-
-      case MESH_MODEL_EVT_PERIODIC_PUB:
-        pModelMsg = (meshModelEvt_t *)pMsg;
-
-        /* Check if periodic publishing was not disabled. */
-        if(pModelMsg->periodicPubEvt.nextPubTimeMs != 0)
-        {
-          /* Publishing is requested part of the periodic publishing. */
-          MmdlLightHslHueSrPublish(pModelMsg->periodicPubEvt.elementId);
-        }
-        break;
-
-      case MMDL_LIGHT_HSL_HUE_SR_EVT_TMR_CBACK:
-        mmdlLightHslHueSrHandleTmrCback((meshElementId_t)pMsg->param);
-        break;
-
-      case MMDL_LIGHT_HSL_HUE_SR_MSG_RCVD_TMR_CBACK:
-        mmdlLightHslHueSrHandleMsgRcvdTmrCback((meshElementId_t)pMsg->param);
-        break;
-
-      default:
-        MMDL_TRACE_WARN0("LIGHT HSL HUE SR: Invalid event message received!");
-        break;
     }
-  }
 }
 
 /*************************************************************************************************/
@@ -856,8 +797,8 @@ void MmdlLightHslHueSrHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MmdlLightHslHueSrPublish(meshElementId_t elementId)
 {
-  /* Publish Status */
-  mmdlLightHslHueSrSendStatus(elementId, MMDL_USE_PUBLICATION_ADDR, 0, FALSE);
+    /* Publish Status */
+    mmdlLightHslHueSrSendStatus(elementId, MMDL_USE_PUBLICATION_ADDR, 0, FALSE);
 }
 
 /*************************************************************************************************/
@@ -872,8 +813,8 @@ void MmdlLightHslHueSrPublish(meshElementId_t elementId)
 /*************************************************************************************************/
 void MmdlLightHslHueSrSetHue(meshElementId_t elementId, uint16_t hue)
 {
-  /* Change state locally. No transition time or delay is allowed. */
-  mmdlLightHslHueSrSetState(elementId, hue, 0, 0, MMDL_STATE_UPDATED_BY_APP);
+    /* Change state locally. No transition time or delay is allowed. */
+    mmdlLightHslHueSrSetState(elementId, hue, 0, 0, MMDL_STATE_UPDATED_BY_APP);
 }
 
 /*************************************************************************************************/
@@ -887,11 +828,10 @@ void MmdlLightHslHueSrSetHue(meshElementId_t elementId, uint16_t hue)
 /*************************************************************************************************/
 void MmdlLightHslHueSrRegister(mmdlEventCback_t recvCback)
 {
-  /* Store valid callback*/
-  if (recvCback != NULL)
-  {
-    hueCb.recvCback = recvCback;
-  }
+    /* Store valid callback*/
+    if (recvCback != NULL) {
+        hueCb.recvCback = recvCback;
+    }
 }
 
 /*************************************************************************************************/
@@ -906,13 +846,13 @@ void MmdlLightHslHueSrRegister(mmdlEventCback_t recvCback)
 /*************************************************************************************************/
 void MmdlLightHslHueSrBind2GenLevel(meshElementId_t hueElemId, meshElementId_t glvElemId)
 {
-  /* Add Light HSL Hue -> Generic Level binding */
-  MmdlAddBind(MMDL_STATE_LT_HSL_HUE, MMDL_STATE_GEN_LEVEL, hueElemId, glvElemId,
-              mmdlBindResolveLightHslHue2GenLevel);
+    /* Add Light HSL Hue -> Generic Level binding */
+    MmdlAddBind(MMDL_STATE_LT_HSL_HUE, MMDL_STATE_GEN_LEVEL, hueElemId, glvElemId,
+                mmdlBindResolveLightHslHue2GenLevel);
 
-  /* Add Generic Level -> Light HSL Hue binding */
-  MmdlAddBind(MMDL_STATE_GEN_LEVEL, MMDL_STATE_LT_HSL_HUE, glvElemId, hueElemId,
-              mmdlBindResolveGenLevel2LightHslHue);
+    /* Add Generic Level -> Light HSL Hue binding */
+    MmdlAddBind(MMDL_STATE_GEN_LEVEL, MMDL_STATE_LT_HSL_HUE, glvElemId, hueElemId,
+                mmdlBindResolveGenLevel2LightHslHue);
 }
 
 /*************************************************************************************************/
@@ -929,15 +869,14 @@ void MmdlLightHslHueSrBind2GenLevel(meshElementId_t hueElemId, meshElementId_t g
 void MmdlLightHslHueSrSetBoundState(meshElementId_t elementId, uint16_t presentHue,
                                     uint16_t targetHue)
 {
-  mmdlLightHslHueSrDesc_t *pDesc = NULL;
+    mmdlLightHslHueSrDesc_t *pDesc = NULL;
 
-  /* Get model instance descriptor */
-  mmdlLightHslHueSrGetDesc(elementId, &pDesc);
+    /* Get model instance descriptor */
+    mmdlLightHslHueSrGetDesc(elementId, &pDesc);
 
-  if ((pDesc != NULL) && (pDesc->pStoredState != NULL))
-  {
-    /* Update descriptor */
-    pDesc->pStoredState->targetHue = targetHue;
-    mmdlLightHslHueSrSetPresentState(elementId, pDesc, presentHue, MMDL_STATE_UPDATED_BY_BIND);
-  }
+    if ((pDesc != NULL) && (pDesc->pStoredState != NULL)) {
+        /* Update descriptor */
+        pDesc->pStoredState->targetHue = targetHue;
+        mmdlLightHslHueSrSetPresentState(elementId, pDesc, presentHue, MMDL_STATE_UPDATED_BY_BIND);
+    }
 }

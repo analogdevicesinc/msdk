@@ -31,8 +31,7 @@
 #define MMDL_LIGHT_LIGHTNESS_SR_API_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include "mmdl_lightlightness_defs.h"
@@ -42,53 +41,49 @@ extern "C"
 **************************************************************************************************/
 
 /*! \brief Number of stored states (Actual + Linear + Target + Last + Default + RangeMin + RangeMax) */
-#define MMDL_LIGHT_LIGHTNESS_STATE_CNT             7
+#define MMDL_LIGHT_LIGHTNESS_STATE_CNT 7
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Union of Light Lightness states */
-typedef union
-{
-  mmdlLightLightnessState_t       state;              /*!< State */
-  mmdlLightLightnessRangeState_t  rangeState;         /*!< Range state */
+typedef union {
+    mmdlLightLightnessState_t state; /*!< State */
+    mmdlLightLightnessRangeState_t rangeState; /*!< Range state */
 } mmdlLightLightnessStates_t;
 
 /*! \brief Light Lightness Server Model State Update event structure */
-typedef struct mmdlLightLightnessSrStateUpdate_tag
-{
-  wsfMsgHdr_t                       hdr;                /*!< WSF message header */
-  meshElementId_t                   elemId;             /*!< Element identifier */
-  mmdlStateUpdateSrc_t              stateUpdateSource;  /*!< Updated state source */
-  mmdlLightLightnessStates_t        lightnessState;     /*!< Updated state union */
+typedef struct mmdlLightLightnessSrStateUpdate_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlStateUpdateSrc_t stateUpdateSource; /*!< Updated state source */
+    mmdlLightLightnessStates_t lightnessState; /*!< Updated state union */
 } mmdlLightLightnessSrStateUpdate_t;
 
 /*! \brief Light Lightness Server Model Current State event structure */
-typedef struct mmdlLightLightnessSrCurrentState_tag
-{
-  wsfMsgHdr_t                       hdr;                /*!< WSF message header */
-  meshElementId_t                   elemId;             /*!< Element identifier */
-  mmdlLightLightnessStates_t        lightnessState;     /*!< Current state union */
+typedef struct mmdlLightLightnessSrCurrentState_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    meshElementId_t elemId; /*!< Element identifier */
+    mmdlLightLightnessStates_t lightnessState; /*!< Current state union */
 } mmdlLightLightnessSrCurrentState_t;
 
 /*! \brief Light Lightness Server Model event callback parameters structure */
-typedef union mmdlLightLightnessSrEvent_tag
-{
-  wsfMsgHdr_t                        hdr;               /*!< WSF message header */
-  mmdlLightLightnessSrStateUpdate_t  statusEvent;       /*!< State updated event. Used for
+typedef union mmdlLightLightnessSrEvent_tag {
+    wsfMsgHdr_t hdr; /*!< WSF message header */
+    mmdlLightLightnessSrStateUpdate_t statusEvent; /*!< State updated event. Used for
                                                          *   ::MMDL_LIGHT_LIGHTNESS_SR_STATE_UPDATE_EVENT.
                                                          */
-  mmdlLightLightnessSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
+    mmdlLightLightnessSrCurrentState_t
+        currentStateEvent; /*!< Current state event. Sent after a Get request
                                                          *   from the upper layer. Used for
                                                          *   ::MMDL_LIGHT_LIGHTNESS_SR_CURRENT_STATE_EVENT.
                                                          */
 } mmdlLightLightnessSrEvent_t;
 
 /*! \brief Light Lightness Server descriptor definition */
-typedef struct mmdlLightLightnessSrDesc_tag
-{
-  mmdlLightLightnessState_t *pStoredStates;   /*!< Pointer to the structure that stores
+typedef struct mmdlLightLightnessSrDesc_tag {
+    mmdlLightLightnessState_t *pStoredStates; /*!< Pointer to the structure that stores
                                                *   current state and scene data. First
                                                *   value is always the current one.
                                                *   Second value is the target state.
@@ -98,37 +93,37 @@ typedef struct mmdlLightLightnessSrDesc_tag
                                                *   Structure will store :MMDL_NUM_OF_SCENES + 2
                                                *   states.
                                                */
-  mmdlNvmSaveHandler_t      fNvmSaveStates;   /*!< Pointer to function that saves
+    mmdlNvmSaveHandler_t fNvmSaveStates; /*!< Pointer to function that saves
                                                *   Model instance states in NVM
                                                */
-  wsfTimer_t                transitionTimer;  /*!< WSF Timer for delay and state transition */
-  wsfTimer_t                msgRcvdTimer;     /*!< Timer to manage received logically group
+    wsfTimer_t transitionTimer; /*!< WSF Timer for delay and state transition */
+    wsfTimer_t msgRcvdTimer; /*!< Timer to manage received logically group
                                                *   messages.
                                                */
-  uint32_t                  remainingTimeMs;  /*!< Time remaining until the current state is
+    uint32_t remainingTimeMs; /*!< Time remaining until the current state is
                                                *   replaced with the target state. If set to 0,
                                                *   the target state is ignored. Unit is 1 ms.
                                                */
-  int16_t                   transitionStep;   /*!< Transition state update step */
-  uint16_t                  steps;            /*!< The number of transition steps */
-  uint8_t                   delay5Ms;         /*!< Delay until the transition to the new state
+    int16_t transitionStep; /*!< Transition state update step */
+    uint16_t steps; /*!< The number of transition steps */
+    uint8_t delay5Ms; /*!< Delay until the transition to the new state
                                                *   begins. Unit is 5 ms.
                                                */
-  uint8_t                   transactionId;    /*!< Transaction Identifier used to logically group a
+    uint8_t transactionId; /*!< Transaction Identifier used to logically group a
                                                *   series of messages.
                                                */
-  meshAddress_t             srcAddr;          /*!< Source address of the logically grouped series
+    meshAddress_t srcAddr; /*!< Source address of the logically grouped series
                                                *   of messages.
                                                */
-  bool_t                    ackPending;       /*!< TRUE if an ACK is pending for the last received
+    bool_t ackPending; /*!< TRUE if an ACK is pending for the last received
                                                *   message.
                                                */
-  bool_t                    ackForUnicast;    /*!< TRUE if the last message was received as a
+    bool_t ackForUnicast; /*!< TRUE if the last message was received as a
                                                *   unicast, FALSE otherwise.
                                                */
-  uint16_t                  ackAppKeyIndex;   /*!< AppKeyIndex used for the last received message. */
-  uint8_t                   transitionType;   /*!< Transition type - Actual or Linear */
-  mmdlStateUpdateSrc_t      updateSource;     /*!< State update source. Cached for transitions.
+    uint16_t ackAppKeyIndex; /*!< AppKeyIndex used for the last received message. */
+    uint8_t transitionType; /*!< Transition type - Actual or Linear */
+    mmdlStateUpdateSrc_t updateSource; /*!< State update source. Cached for transitions.
                                                */
 } mmdlLightLightnessSrDesc_t;
 
@@ -220,8 +215,7 @@ void MmdlLightLightnessSrGetState(meshElementId_t elementId);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlLightLightnessSrSetState(meshElementId_t elementId,
-                                  mmdlLightLightnessState_t targetState);
+void MmdlLightLightnessSrSetState(meshElementId_t elementId, mmdlLightLightnessState_t targetState);
 
 /*************************************************************************************************/
 /*!

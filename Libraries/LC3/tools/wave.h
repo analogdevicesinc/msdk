@@ -22,7 +22,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-
 /**
  * Read WAVE file header
  * fp              Opened file, moved after header on return
@@ -33,8 +32,8 @@
  * nframes         Return count of frames
  * return          0: Ok  -1: Bad or unsupported WAVE File
  */
-int wave_read_header(FILE *fp, int *bitdepth, int *samplesize,
-    int *samplerate, int *nchannels, int *nframes);
+int wave_read_header(FILE *fp, int *bitdepth, int *samplesize, int *samplerate, int *nchannels,
+                     int *nframes);
 
 /**
  * Read PCM samples from wave file
@@ -44,8 +43,7 @@ int wave_read_header(FILE *fp, int *bitdepth, int *samplesize,
  * buffer          Output buffer of `nchannels * count` interleaved samples
  * return          Number of frames read
  */
-int wave_read_pcm(FILE *fp, int samplesize,
-    int nch, int count, void *_buffer);
+int wave_read_pcm(FILE *fp, int samplesize, int nch, int count, void *_buffer);
 
 /**
  * Write WAVE file header
@@ -56,8 +54,8 @@ int wave_read_pcm(FILE *fp, int samplesize,
  * nchannels       Number of channels
  * nframes         Count of frames
  */
-void wave_write_header(FILE *fp, int bitdepth, int samplesize,
-    int samplerate, int nchannels, int nframes);
+void wave_write_header(FILE *fp, int bitdepth, int samplesize, int samplerate, int nchannels,
+                       int nframes);
 
 /**
  * Write PCM samples to wave file
@@ -66,8 +64,6 @@ void wave_write_header(FILE *fp, int bitdepth, int samplesize,
  * pcm, nch        PCM frames, as 'nch' interleaved samples
  * off, count      Offset and count of frames
  */
-void wave_write_pcm(FILE *fp, int samplesize,
-    const void *pcm, int nch, int off, int count);
-
+void wave_write_pcm(FILE *fp, int samplesize, const void *pcm, int nch, int off, int count);
 
 #endif /* __WAVE_H */
