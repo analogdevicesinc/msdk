@@ -96,6 +96,9 @@ jobs:
           # Lock hardware resources
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
           python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          
           cd .github/workflows/ci-tests/Examples_tests
           chmod +x test_launcher.sh
           ./test_launcher.sh
@@ -110,5 +113,19 @@ jobs:
       - name: unlock
         if: always()
         run: |
-          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
+          # MAX32655 0
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_0.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          fi
+          # MAX232655 1
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_1.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          fi
+          # MAX32665
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32665_13.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          fi
+          # MAX32690
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32690_w1.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+          fi

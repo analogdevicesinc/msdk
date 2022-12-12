@@ -44,9 +44,8 @@ def close_ports():
         except Exception as err:
             write_to_console("Port 2 was not open to begin with \r\n")
 #--------------------------------------------------------------------------------------
-def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
+def expect_and_timeout(send=None,expect=None, timeout=10, port=None):
     attempt_count=0
-    #decide which port to use for this instance of the method call
     while True:
         attempt_count+=1
         timeStart = time.time()   
@@ -55,11 +54,14 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
         if used_ports[port].is_open == True:
             #flush junk
             used_ports[port].write(bytes("\n", encoding='utf-8'))
+            time.sleep(0.1)
             used_ports[port].reset_input_buffer()
             used_ports[port].reset_output_buffer()
-            #time.sleep(0.1)
+            time.sleep(0.1)
             used_ports[port].read_all()
-           # time.sleep(0.1)
+            time.sleep(0.1)
+            used_ports[port].write(bytes("\n", encoding='utf-8'))
+            
             # send data if any
             
             if send != None:
@@ -68,7 +70,11 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
                 used_ports[port].write(bytes(send, encoding='utf-8'))
             # read lines
             while (time.time()-timeStart) < timeout:
-                x=used_ports[port].readline().decode("utf-8")
+                try:
+                    x=used_ports[port].readline().decode("utf-8")
+                except Exception as err:
+                    x=""
+                    write_to_console("Decode error, maybe junk data in serial", True)
                 x=str(x)
                 if x != "":
                     write_to_console(x,False)
@@ -90,10 +96,14 @@ def read_all(expect=None,timeout=10,port=None):
             time.sleep(0.1)
         if used_ports[port].is_open == True:
             while (time.time()-timeStart) < timeout:
-                x=used_ports[port].readline().decode("utf-8")
+                try:
+                    x=used_ports[port].readline().decode("utf-8")
+                except Exception as err:
+                    x=""
+                    write_to_console("Decode error, maybe junk data in serial", True)
                 x=str(x)
                 if x != "":
-                    write_to_console(x)
+                    write_to_console(x,False)
                     if expect in x:                       
                         BuiltIn().pass_execution(".")
             # timed out
