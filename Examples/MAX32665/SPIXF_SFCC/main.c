@@ -125,7 +125,7 @@ void spixf_cfg_setup()
 
 void start_timer(void)
 {
-	while(MXC_RTC_GetTime(&start_sec, &start_ssec) == E_BUSY);
+    while (MXC_RTC_GetTime(&start_sec, &start_ssec) == E_BUSY) {}
 }
 
 void stop_timer(int test_num, uint32_t *sec_elapsed, uint32_t *ssec_elapsed)
@@ -142,9 +142,9 @@ void stop_timer(int test_num, uint32_t *sec_elapsed, uint32_t *ssec_elapsed)
         *ssec_elapsed -= MXC_F_RTC_SSEC_SSEC;
     }
 
-	// Print Results
-	printf("Test %d Complete!\n", test_num);
-	printf("Execution Time: %d.%ds\n\n", *sec_elapsed, SSEC_TO_MSEC(*ssec_elapsed));
+    // Print Results
+    printf("Test %d Complete!\n", test_num);
+    printf("Execution Time: %d.%ds\n\n", *sec_elapsed, SSEC_TO_MSEC(*ssec_elapsed));
 }
 
 /* ************************************************************************** */
@@ -214,7 +214,7 @@ int main(void)
         fail++;
     }
 
-    // Set function pointer to the base address of the external 
+    // Set function pointer to the base address of the external
     // flash chip (where the sample function is stored)
     func = (void (*)(void))(MXC_XIP_MEM_BASE | 0x1);
 
