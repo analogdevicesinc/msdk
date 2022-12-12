@@ -96,8 +96,8 @@ __attribute__((section(".xip_section"))) void icc_test_func(void)
 /******************************************************************************/
 void spixf_cfg_setup()
 {
-    // Disable the SPIXFC before setting the SPIXF
-    MXC_SPIXF_Disable();
+    MXC_SPIXF_Disable(); // Disable the SPIXFC before setting the SPIXF
+
     MXC_SPIXF_SetSPIFrequency(EXT_FLASH_BAUD);
     MXC_SPIXF_SetMode(MXC_SPIXF_MODE_0);
     MXC_SPIXF_SetSSPolActiveLow();
@@ -126,8 +126,6 @@ void spixf_cfg_setup()
 void start_timer(void)
 {
 	while(MXC_RTC_GetTime(&start_sec, &start_ssec) == E_BUSY);
-
-	return;
 }
 
 void stop_timer(int test_num, uint32_t* sec_elapsed, uint32_t* ssec_elapsed)
@@ -144,11 +142,9 @@ void stop_timer(int test_num, uint32_t* sec_elapsed, uint32_t* ssec_elapsed)
 		*ssec_elapsed -= MXC_F_RTC_SSEC_SSEC;
 	}
 
-	//Print Results
+	// Print Results
 	printf("Test %d Complete!\n", test_num);
 	printf("Execution Time: %d.%ds\n\n", *sec_elapsed, SSEC_TO_MSEC(*ssec_elapsed));
-
-	return;
 }
 
 /* ************************************************************************** */
@@ -176,7 +172,7 @@ int main(void)
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("External flash initialization Failed\n");
         printf("Example Failed\n");
-        while (1) {}
+        return E_UNINITIALIZED;
     }
     printf("%s Initialized.\n", EXT_FLASH_NAME);
     Ext_Flash_Reset();
@@ -185,30 +181,30 @@ int main(void)
     if ((id = Ext_Flash_ID()) != EXT_FLASH_EXP_ID) {
         printf("Error verifying external flash ID: 0x%x\n", id);
         printf("Example Failed\n");
-        while (1) {}
+        return E_NONE_AVAIL;
     }
 
     // Erase sector of external flash to store test function
     if ((err = Ext_Flash_Erase(0x00000, Ext_Flash_Erase_64K)) != E_NO_ERROR) {
         printf("Flash erase failed with error code: %d\n", err);
         printf("Example Failed\n");
-        while (1) {}
+        return err;
     }
 
     // Enable Quad mode if necessary
     if (EXT_FLASH_SPIXFC_WIDTH == Ext_Flash_DataLine_Quad) {
-        if (Ext_Flash_Quad(1) != E_NO_ERROR) {
+        if ((err = Ext_Flash_Quad(1)) != E_NO_ERROR) {
             printf("Error enabling quad mode\n\n");
-            while (1) {}
+            return err;
         }
     } else {
-        if (Ext_Flash_Quad(0) != E_NO_ERROR) {
+        if ((err = Ext_Flash_Quad(0)) != E_NO_ERROR) {
             printf("Error disabling quad mode\n\n");
-            while (1) {}
+            return err;
         }
     }
 
-    // Load test function into external flash and set function pointer to it's location
+    // Load test function into external flash
     printf("Loading test function into external flash.\n\n", (uint32_t)(&__load_length_xip),
            &__load_start_xip);
     if ((err = Ext_Flash_Program_Page(EXT_FLASH_ADDR, &__load_start_xip,
@@ -217,6 +213,9 @@ int main(void)
         printf("Error Programming: %d\n", err);
         fail++;
     }
+
+    // Set function pointer to the base address of the external 
+    // flash chip (where the sample function is stored)
     func = (void (*)(void))(MXC_XIP_MEM_BASE | 0x1);
 
     // Setup SPIX
@@ -225,14 +224,14 @@ int main(void)
     printf("Setup complete. Press SW2 to run SFCC test.\n\n");
     while (!PB_Get(0)) {}
 
-    /***** ICC Enabled Test *****/
+    /***** Test #1 - ICC Enabled Test *****/
     MXC_ICC_EnableInst(MXC_SFCC);
     printf("Running test function with SFCC enabled.\n");
     start_timer();
 	func();
 	stop_timer(1, &test1_sec, &test1_ssec);
 
-    /***** ICC Disabled Test *****/
+    /***** TEST #2 - ICC Disabled Test *****/
     MXC_ICC_DisableInst(MXC_SFCC);
     printf("Running test function with SFCC disabled.\n");
     printf("This will take a few minutes...\n");

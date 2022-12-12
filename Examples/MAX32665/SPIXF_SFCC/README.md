@@ -1,8 +1,8 @@
 ## Description
 
-This example demonstrates the performance benefits of using Instruction Cache Controller in conjunction with SPIXF.
+The SPI Execute-in-Place Flash (SPIXF) peripheral enables code stored in an external flash chip to be executed transparently. The SPIXF comes with a dedicated cache controller, the SPIXF Cache Controller (SFCC), that enables faster code execution when executing instructions stored in external flash. The purpose of this example is to demonstrate the improvement in code execution time when the SFCC is enabled.
 
-A sample function which performs a multiplication operation repeatedly is loaded into the MX25 external flash chip. The function is then called twice, once with the SFCC enabled and once with the SFCC disabled. For each function call, the RTC is used measure execution time and the results are compared after both tests have completed.
+To demonstrate, a sample function is loaded into the MX25 external flash chip. The function is then called twice, once with the SFCC enabled (Test 1) and once with the SFCC disabled (Test 2). For each function call, the RTC measures the execution time of each function call. After both function calls have completed, the execution times are compared. If Test 1 has a faster execution time than Test 2 a success message will be printed to the terminal.
 
 ## Required Connections
 
