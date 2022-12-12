@@ -86,7 +86,7 @@ static int MXC_CTB_Cipher_EncDecAsc(mxc_ctb_cipher_req_t *req);
 int MXC_CTB_RevA_Init(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features)
 {
     ctb_regs->ctrl = MXC_F_CTB_REVA_CTRL_RST;
-    while(ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RST);
+    while(ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RST) {}
 
     ctb_regs->ctrl |= MXC_F_CTB_REVA_CTRL_FLAG_MODE;
 
