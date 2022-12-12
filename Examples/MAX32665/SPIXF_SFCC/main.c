@@ -128,19 +128,19 @@ void start_timer(void)
 	while(MXC_RTC_GetTime(&start_sec, &start_ssec) == E_BUSY);
 }
 
-void stop_timer(int test_num, uint32_t* sec_elapsed, uint32_t* ssec_elapsed)
+void stop_timer(int test_num, uint32_t *sec_elapsed, uint32_t *ssec_elapsed)
 {
-	// Get time at the end of execution
-	while(MXC_RTC_GetTime(&stop_sec, &stop_ssec) == E_BUSY);
+    // Get time at the end of execution
+    while (MXC_RTC_GetTime(&stop_sec, &stop_ssec) == E_BUSY) {}
 
-	// Calculate the elapsed seconds and sub-seconds
-	*sec_elapsed = stop_sec - start_sec;
-	*ssec_elapsed = (MXC_F_RTC_SSEC_SSEC - start_ssec) + stop_ssec;
+    // Calculate the elapsed seconds and sub-seconds
+    *sec_elapsed = stop_sec - start_sec;
+    *ssec_elapsed = (MXC_F_RTC_SSEC_SSEC - start_ssec) + stop_ssec;
 
-	if(*ssec_elapsed > MXC_F_RTC_SSEC_SSEC) {
-		*sec_elapsed += 1;
-		*ssec_elapsed -= MXC_F_RTC_SSEC_SSEC;
-	}
+    if (*ssec_elapsed > MXC_F_RTC_SSEC_SSEC) {
+        *sec_elapsed += 1;
+        *ssec_elapsed -= MXC_F_RTC_SSEC_SSEC;
+    }
 
 	// Print Results
 	printf("Test %d Complete!\n", test_num);
@@ -150,21 +150,21 @@ void stop_timer(int test_num, uint32_t* sec_elapsed, uint32_t* ssec_elapsed)
 /* ************************************************************************** */
 int main(void)
 {
-	int err;
-	uint32_t id;
-	void (*func)(void);
-	uint32_t test1_sec, test1_ssec;
-	uint32_t test2_sec, test2_ssec;
+    int err;
+    uint32_t id;
+    void (*func)(void);
+    uint32_t test1_sec, test1_ssec;
+    uint32_t test2_sec, test2_ssec;
 
     printf("\n\n********************* SPIXF/SFCC Example *********************\n");
     printf("This example demonstrates the performance benefits of enabling the\n");
     printf("SFCC when executing from the %s external flash chip.\n\n", EXT_FLASH_NAME);
 
     // Initialize the RTC (used as an execution timer)
-    if(MXC_RTC_Init(0,0) != E_NO_ERROR) {
-    	printf("Failed to initialize RTC.\n");
-    	printf("Examples failed.\n");
-    	return E_BAD_STATE;
+    if (MXC_RTC_Init(0, 0) != E_NO_ERROR) {
+        printf("Failed to initialize RTC.\n");
+        printf("Examples failed.\n");
+        return E_BAD_STATE;
     }
     MXC_RTC_Start();
 
@@ -228,22 +228,22 @@ int main(void)
     MXC_ICC_EnableInst(MXC_SFCC);
     printf("Running test function with SFCC enabled.\n");
     start_timer();
-	func();
-	stop_timer(1, &test1_sec, &test1_ssec);
+    func();
+    stop_timer(1, &test1_sec, &test1_ssec);
 
     /***** TEST #2 - ICC Disabled Test *****/
     MXC_ICC_DisableInst(MXC_SFCC);
     printf("Running test function with SFCC disabled.\n");
     printf("This will take a few minutes...\n");
     start_timer();
-	func();
-	stop_timer(2, &test2_sec, &test2_ssec);
+    func();
+    stop_timer(2, &test2_sec, &test2_ssec);
 
     // Compare execution times
     if (test1_sec < test2_sec) {
         printf("Example Succeeded\n\n");
-    } else if(test1_sec == test2_sec && test1_ssec < test2_ssec) {
-    	printf("Example Succeeded\n\n");
+    } else if (test1_sec == test2_sec && test1_ssec < test2_ssec) {
+        printf("Example Succeeded\n\n");
     } else {
         printf("Example Failed\n\n");
     }
