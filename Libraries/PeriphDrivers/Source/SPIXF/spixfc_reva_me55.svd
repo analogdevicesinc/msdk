@@ -145,7 +145,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSIACT</name>
+            <name>SSINACT</name>
             <description>Slaves Select Inactive Timing.</description>
             <bitOffset>18</bitOffset>
             <bitWidth>2</bitWidth>
@@ -186,7 +186,7 @@
         <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>SS_POL</name>
+            <name>SSPOL</name>
             <description>Slave Select Polarity.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -204,7 +204,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>FC_POL</name>
+            <name>FCPOL</name>
             <description>FC Polarity.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
@@ -283,7 +283,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>BBMODE</name>
+            <name>BB_EN</name>
             <description>Bit-Bang Mode.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
@@ -372,7 +372,7 @@
           </field>
           <field>
             <name>BB_DATA_OUT</name>
-            <description>No description available.</description>
+            <description>Bit Bang SDIO Output.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>4</bitWidth>
             <enumeratedValues>
@@ -427,7 +427,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SIMPLE</name>
+            <name>SIMPLE_EN</name>
             <description>Simple Mode Enable.</description>
             <bitOffset>20</bitOffset>
             <bitWidth>1</bitWidth>
@@ -519,7 +519,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>SDIO_OUT</name>
+            <name>SDIO_OUT_VAL</name>
             <description>SDIO Output Value Sample Mode</description>
             <bitOffset>4</bitOffset>
             <bitWidth>4</bitWidth>
@@ -628,7 +628,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_FIFO_AE</name>
+            <name>TX_AE</name>
             <description>Transaction FIFO Almost Empty Flag.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
@@ -646,7 +646,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_FIFO_AF</name>
+            <name>RX_AF</name>
             <description>Results FIFO Almost Full Flag.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
@@ -743,7 +743,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_FIFO_AE</name>
+            <name>TX_AE</name>
             <description>Transaction FIFO Almost Empty Interrupt Enable.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
@@ -761,7 +761,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_FIFO_AF</name>
+            <name>RX_AF</name>
             <description>Results FIFO Almost Full Interrupt Enable.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
@@ -781,7 +781,7 @@
         </fields>
       </register>
       <register>
-        <name>SIMPLE_HEADER</name>
+        <name>HEADER</name>
         <description>Simple Header</description>
         <addressOffset>0x1C</addressOffset>
         <fields>
@@ -800,33 +800,16 @@
         </fields>
       </register>
       <register>
-        <name>AUTOCN</name>
+        <name>AUTOCTRL</name>
         <description>Auto Control Register.</description>
         <addressOffset>0x20</addressOffset>
-        <fields>
-          <field>
-            <name>AUTOCN</name>
-            <description>TBD</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
       </register>
       <register>
         <name>AUTOCMD</name>
         <description>Auto Command Register.</description>
         <addressOffset>0x24</addressOffset>
-        <fields>
-          <field>
-            <name>AUTOCMD</name>
-            <description>TBD</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
-          </field>
-        </fields>
       </register>
     </registers>
   </peripheral>
-  <!-- SPIXFC:
-                                                                         SPI XiP Master controller          -->
+  <!-- SPIXFC: SPI XiP Master controller-->
 </device>

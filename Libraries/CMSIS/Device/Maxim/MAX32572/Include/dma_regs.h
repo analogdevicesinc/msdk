@@ -126,7 +126,7 @@ typedef struct {
 /**
  * @ingroup  dma_registers
  * @defgroup DMA_INTEN DMA_INTEN
- * @brief    DMA Control Register.
+ * @brief    DMA Interrupt Enable Register.
  * @{
  */
 #define MXC_F_DMA_INTEN_CH0_POS                        0 /**< INTEN_CH0 Position */
@@ -182,7 +182,7 @@ typedef struct {
 /**
  * @ingroup  dma_registers
  * @defgroup DMA_INTFL DMA_INTFL
- * @brief    DMA Interrupt Register.
+ * @brief    DMA Interrupt Flag Register.
  * @{
  */
 #define MXC_F_DMA_INTFL_CH0_POS                        0 /**< INTFL_CH0 Position */

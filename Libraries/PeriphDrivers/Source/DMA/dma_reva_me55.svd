@@ -77,7 +77,7 @@
     <registers>
       <register>
         <name>INTEN</name>
-        <description>DMA Control Register.</description>
+        <description>DMA Interrupt Enable Register.</description>
         <addressOffset>0x000</addressOffset>
         <fields>
           <field>
@@ -192,7 +192,7 @@
       </register>
       <register>
         <name>INTFL</name>
-        <description>DMA Interrupt Register.</description>
+        <description>DMA Interrupt Flag Register.</description>
         <addressOffset>0x004</addressOffset>
         <access>read-only</access>
         <fields>

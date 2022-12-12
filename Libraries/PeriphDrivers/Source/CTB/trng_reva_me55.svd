@@ -72,7 +72,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>AESKGD_MEU_S</name>
+            <name>AESKGD_MEU</name>
             <description>Automatically AES transfer on going</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>

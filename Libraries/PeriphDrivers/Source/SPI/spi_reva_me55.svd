@@ -396,7 +396,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SS_POL</name>
+            <name>SSPOL</name>
             <description>Slave Select Polarity, each Slave Select can have unique polarity.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>4</bitWidth>
@@ -565,7 +565,7 @@
             <access>read-only</access>
           </field>
           <field>
-            <name>DMA_TX_EN</name>
+            <name>TX_EN</name>
             <description>TX DMA Enable.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
@@ -627,7 +627,7 @@
             <access>read-only</access>
           </field>
           <field>
-            <name>DMA_RX_EN</name>
+            <name>RX_EN</name>
             <description>RX DMA Enable.</description>
             <bitOffset>31</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1206,7 +1206,7 @@
         </fields>
       </register>
       <register>
-        <name>STAT</name>
+        <name>STATUS</name>
         <description>SPI Status register.</description>
         <addressOffset>0x30</addressOffset>
         <access>read-only</access>

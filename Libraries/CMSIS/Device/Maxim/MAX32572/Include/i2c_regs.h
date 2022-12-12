@@ -181,8 +181,8 @@ typedef struct {
 #define MXC_F_I2C_CTRL_SDA_POS                         9 /**< CTRL_SDA Position */
 #define MXC_F_I2C_CTRL_SDA                             ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_SDA_POS)) /**< CTRL_SDA Mask */
 
-#define MXC_F_I2C_CTRL_BB_MODE_POS                     10 /**< CTRL_BB_MODE Position */
-#define MXC_F_I2C_CTRL_BB_MODE                         ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_BB_MODE_POS)) /**< CTRL_BB_MODE Mask */
+#define MXC_F_I2C_CTRL_BB_EN_POS                       10 /**< CTRL_BB_EN Position */
+#define MXC_F_I2C_CTRL_BB_EN                           ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_BB_EN_POS)) /**< CTRL_BB_EN Mask */
 
 #define MXC_F_I2C_CTRL_READ_POS                        11 /**< CTRL_READ Position */
 #define MXC_F_I2C_CTRL_READ                            ((uint32_t)(0x1UL << MXC_F_I2C_CTRL_READ_POS)) /**< CTRL_READ Mask */
@@ -511,11 +511,11 @@ typedef struct {
 #define MXC_F_I2C_MSTCTRL_EX_ADDR_EN_POS               7 /**< MSTCTRL_EX_ADDR_EN Position */
 #define MXC_F_I2C_MSTCTRL_EX_ADDR_EN                   ((uint32_t)(0x1UL << MXC_F_I2C_MSTCTRL_EX_ADDR_EN_POS)) /**< MSTCTRL_EX_ADDR_EN Mask */
 
-#define MXC_F_I2C_MSTCTRL_MST_CODE_POS                 8 /**< MSTCTRL_MST_CODE Position */
-#define MXC_F_I2C_MSTCTRL_MST_CODE                     ((uint32_t)(0x7UL << MXC_F_I2C_MSTCTRL_MST_CODE_POS)) /**< MSTCTRL_MST_CODE Mask */
+#define MXC_F_I2C_MSTCTRL_CODE_POS                     8 /**< MSTCTRL_CODE Position */
+#define MXC_F_I2C_MSTCTRL_CODE                         ((uint32_t)(0x7UL << MXC_F_I2C_MSTCTRL_CODE_POS)) /**< MSTCTRL_CODE Mask */
 
-#define MXC_F_I2C_MSTCTRL_MST_IGN_ACK_POS              12 /**< MSTCTRL_MST_IGN_ACK Position */
-#define MXC_F_I2C_MSTCTRL_MST_IGN_ACK                  ((uint32_t)(0x1UL << MXC_F_I2C_MSTCTRL_MST_IGN_ACK_POS)) /**< MSTCTRL_MST_IGN_ACK Mask */
+#define MXC_F_I2C_MSTCTRL_IGN_ACK_POS                  12 /**< MSTCTRL_IGN_ACK Position */
+#define MXC_F_I2C_MSTCTRL_IGN_ACK                      ((uint32_t)(0x1UL << MXC_F_I2C_MSTCTRL_IGN_ACK_POS)) /**< MSTCTRL_IGN_ACK Mask */
 
 /**@} end of group I2C_MSTCTRL_Register */
 

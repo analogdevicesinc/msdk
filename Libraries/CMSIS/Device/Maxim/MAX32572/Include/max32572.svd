@@ -168,7 +168,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADC_DIVSEL</name>
+       <name>DIVSEL</name>
        <description>Scales the external inputs, all inputs are scaled the same</description>
        <bitRange>[18:17]</bitRange>
        <access>read-write</access>
@@ -375,6 +375,67 @@
    </registers>
   </peripheral>
 <!--ADC 10-bit Analog to Digital Converter-->
+  <peripheral>
+   <name>AESKEYS</name>
+   <description>AES Key Registers.</description>
+   <baseAddress>0x40005000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>KEY0</name>
+     <description>AES Key 0.</description>
+     <addressOffset>0x00</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY1</name>
+     <description>AES Key 1.</description>
+     <addressOffset>0x04</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY2</name>
+     <description>AES Key 2.</description>
+     <addressOffset>0x08</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY3</name>
+     <description>AES Key 3.</description>
+     <addressOffset>0x0C</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY4</name>
+     <description>AES Key 4.</description>
+     <addressOffset>0x10</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY5</name>
+     <description>AES Key 5.</description>
+     <addressOffset>0x14</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY6</name>
+     <description>AES Key 6.</description>
+     <addressOffset>0x18</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY7</name>
+     <description>AES Key 7.</description>
+     <addressOffset>0x1C</addressOffset>
+     <size>32</size>
+    </register>
+   </registers>
+  </peripheral>
+<!--AESKEYS AES Key Registers.-->
   <peripheral>
    <name>MSRADC</name>
    <description>Magnetic Strip Reader - 9 bit ADC</description>
@@ -2282,10 +2343,22 @@
        <bitWidth>2</bitWidth>
       </field>
       <field>
+       <name>NRNG</name>
+       <description>Enable NIST RNG.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>CARRYPOS</name>
        <description>To set Carry location.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>10</bitWidth>
+      </field>
+      <field>
+       <name>CM_EN</name>
+       <description>Enable Countermeasure.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>12</bitWidth>
       </field>
      </fields>
     </register>
@@ -2502,6 +2575,34 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>SCA_NRNG</name>
+     <description>SCA NIST RNG Address Register.</description>
+     <addressOffset>0x734</addressOffset>
+     <resetValue>0x0</resetValue>
+     <fields>
+      <field>
+       <name>ADDR</name>
+       <description>Starting SRAM address where up to 32 words of NIST washed RNG data is stored.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SCA_WASH</name>
+     <description>SCA Wash Register.</description>
+     <addressOffset>0x738</addressOffset>
+     <resetValue>0x0</resetValue>
+     <fields>
+      <field>
+       <name>ADDR</name>
+       <description>Starting SRAM address where up to 1 word of random is stored for SRAM washing.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--CTB The Cryptographic Toolbox is a combination of cryptographic engines and a secure cryptographic accelerator (SCA) used to provide advanced cryptographic security.-->
@@ -2582,7 +2683,7 @@
    <registers>
     <register>
      <name>INTEN</name>
-     <description>DMA Control Register.</description>
+     <description>DMA Interrupt Enable Register.</description>
      <addressOffset>0x000</addressOffset>
      <fields>
       <field>
@@ -2697,7 +2798,7 @@
     </register>
     <register>
      <name>INTFL</name>
-     <description>DMA Interrupt Register.</description>
+     <description>DMA Interrupt Flag Register.</description>
      <addressOffset>0x004</addressOffset>
      <access>read-only</access>
      <fields>
@@ -5151,7 +5252,7 @@
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5202,7 +5303,7 @@
      <addressOffset>0x0C</addressOffset>
      <fields>
       <field>
-       <name>EN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5253,7 +5354,7 @@
      <addressOffset>0x18</addressOffset>
      <fields>
       <field>
-       <name>GPIO_OUT</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5279,7 +5380,7 @@
      <access>write-only</access>
      <fields>
       <field>
-       <name>GPIO_OUT_SET</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5305,7 +5406,7 @@
      <access>write-only</access>
      <fields>
       <field>
-       <name>GPIO_OUT_CLR</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5319,7 +5420,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>GPIO_IN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5332,7 +5433,7 @@
      <addressOffset>0x28</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTMODE</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5357,7 +5458,7 @@
      <addressOffset>0x2C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTPOL</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5387,7 +5488,7 @@
      <addressOffset>0x34</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTEN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5412,7 +5513,7 @@
      <addressOffset>0x38</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTEN_SET</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5437,7 +5538,7 @@
      <addressOffset>0x3C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTEN_CLR</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5463,7 +5564,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>GPIO_INTFL</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5501,7 +5602,7 @@
      <addressOffset>0x4C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_WKEN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5552,7 +5653,7 @@
      <addressOffset>0x5C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_DUALEDGE</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5573,12 +5674,12 @@
     </register>
     <register>
      <name>PADCTRL0</name>
-     <description>GPIO Input Mode Config 1. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
+     <description>GPIO Input Mode Config 0. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
      <addressOffset>0x60</addressOffset>
      <fields>
       <field>
-       <name>GPIO_PADCTRL0</name>
-       <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
+       <name>ALL</name>
+       <description>The two bits in GPIO_PADCTRL0 and GPIO_PADCTRL1 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
        <enumeratedValues>
@@ -5603,12 +5704,12 @@
     </register>
     <register>
      <name>PADCTRL1</name>
-     <description>GPIO Input Mode Config 2. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
+     <description>GPIO Input Mode Config 1. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
      <addressOffset>0x64</addressOffset>
      <fields>
       <field>
-       <name>GPIO_PADCTRL1</name>
-       <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
+       <name>ALL</name>
+       <description>The two bits in GPIO_PADCTRL0 and GPIO_PADCTRL1 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
        <enumeratedValues>
@@ -5637,7 +5738,7 @@
      <addressOffset>0x68</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN1</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5688,7 +5789,7 @@
      <addressOffset>0x74</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN2</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5739,7 +5840,7 @@
      <addressOffset>0xA8</addressOffset>
      <fields>
       <field>
-       <name>GPIO_HYSEN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5752,7 +5853,7 @@
      <addressOffset>0xAC</addressOffset>
      <fields>
       <field>
-       <name>GPIO_SRSEL</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5777,7 +5878,7 @@
      <addressOffset>0xB0</addressOffset>
      <fields>
       <field>
-       <name>GPIO_DS0</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5802,7 +5903,7 @@
      <addressOffset>0xB4</addressOffset>
      <fields>
       <field>
-       <name>GPIO_DS1</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5810,7 +5911,7 @@
      </fields>
     </register>
     <register>
-     <name>PS</name>
+     <name>PSSEL</name>
      <description>GPIO Pull Select Mode.</description>
      <addressOffset>0xB8</addressOffset>
      <fields>
@@ -5865,13 +5966,13 @@
    </interrupt>
    <registers>
     <register>
-     <name>SEC</name>
+     <name>LONG</name>
      <description>HTimer Long-Interval Counter. This register contains the 32 most significant bits of the counter.</description>
      <addressOffset>0x00</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>RTS</name>
+       <name>CNT</name>
        <description>HTimer Long Interval Counter.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5879,13 +5980,13 @@
      </fields>
     </register>
     <register>
-     <name>SSEC</name>
-     <description>HTimer Short Interval Counter. This counter ticks every t_htclk (16.48uS). HTIMER_SEC is incremented when this register rolls over from 0xFF to 0x00.</description>
+     <name>SHORT</name>
+     <description>HTimer Short Interval Counter. This counter ticks every t_htclk (16.48uS). HTIMER_LONG is incremented when this register rolls over from 0xFF to 0x00.</description>
      <addressOffset>0x04</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>RTSS</name>
+       <name>CNT</name>
        <description>HTimer Short Interval Counter.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
@@ -5893,27 +5994,27 @@
      </fields>
     </register>
     <register>
-     <name>RAS</name>
+     <name>LONGA</name>
      <description>Long Interval Alarm.</description>
      <addressOffset>0x08</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>RAS</name>
-       <description>HTimer Long Interval Alarm. An Alarm is triggered when this value matches HTIMER_SEC[19:0]</description>
+       <name>ALARM</name>
+       <description>HTimer Long Interval Alarm. An Alarm is triggered when this value matches HTMR_LONG</description>
        <bitOffset>0</bitOffset>
        <bitWidth>20</bitWidth>
       </field>
      </fields>
     </register>
     <register>
-     <name>RSSA</name>
+     <name>SHORTA</name>
      <description>HTimer Short Interval Alarm. This register contains the reload value for the short interval alarm, HTIMER_CTRL.alarm_ss_fl is raised on rollover.</description>
      <addressOffset>0x0C</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>RSSA</name>
+       <name>ALARM</name>
        <description>This register contains the reload value for the short interval alarm.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5928,7 +6029,7 @@
      <resetMask>0xFFFFFF38</resetMask>
      <fields>
       <field>
-       <name>HTEN</name>
+       <name>EN</name>
        <description>HTimer Enable. This bit enables the Real Time Clock. This bit can only be written when WE=1 and BUSY =0. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -5946,7 +6047,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADE</name>
+       <name>LONGA_IE</name>
        <description>Long Interval Alarm Interrupt Enable. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -5964,7 +6065,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ASE</name>
+       <name>SHORTA_IE</name>
        <description>Short Interval Alarm Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6019,7 +6120,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RDYE</name>
+       <name>RDY_IE</name>
        <description>HTimer Ready Interrupt Enable.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6037,7 +6138,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ALDF</name>
+       <name>LONGA_IF</name>
        <description>Long Interval Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6056,7 +6157,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ALSF</name>
+       <name>SHORTA_IF</name>
        <description>Short Interval Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6075,7 +6176,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>WE</name>
+       <name>WR_EN</name>
        <description>Write Enable. This register bit serves as a protection mechanism against unintentional writes to critical HTimer bits.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6369,7 +6470,7 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>BB_MODE</name>
+       <name>BB_EN</name>
        <description>Software Output Enable.</description>
        <bitRange>[10:10]</bitRange>
        <access>read-write</access>
@@ -7504,12 +7605,12 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MST_CODE</name>
+       <name>CODE</name>
        <description>Master Code.</description>
        <bitRange>[10:8]</bitRange>
       </field>
       <field>
-       <name>MST_IGN_ACK</name>
+       <name>IGN_ACK</name>
        <description>Master Ignore Acknowledge.</description>
        <bitRange>[12:12]</bitRange>
       </field>
@@ -8010,523 +8111,6 @@
   </peripheral>
 <!--OTP One-Time Programmable (OTP) Memory Controller.-->
   <peripheral>
-   <name>PTG</name>
-   <description>Pulse Train Generation</description>
-   <groupName>Pulse_Train</groupName>
-   <baseAddress>0x4003C000</baseAddress>
-   <size>32</size>
-   <access>read-write</access>
-   <addressBlock>
-    <offset>0</offset>
-    <size>0x0020</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <interrupt>
-    <name>PT</name>
-    <description>Pulse Train IRQ</description>
-    <value>59</value>
-   </interrupt>
-   <registers>
-    <register>
-     <name>ENABLE</name>
-     <description>Global Enable/Disable Controls for All Pulse Trains</description>
-     <addressOffset>0x0000</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Enable/Disable control for PT0</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Enable/Disable control for PT1</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Enable/Disable control for PT2</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Enable/Disable control for PT3</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt4</name>
-       <description>Enable/Disable control for PT4</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt5</name>
-       <description>Enable/Disable control for PT5</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt6</name>
-       <description>Enable/Disable control for PT6</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt7</name>
-       <description>Enable/Disable control for PT7</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>RESYNC</name>
-     <description>Global Resync (All Pulse Trains) Control</description>
-     <addressOffset>0x0004</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Resync control for PT0</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Resync control for PT1</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Resync control for PT2</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Resync control for PT3</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt4</name>
-       <description>Resync control for PT4</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt5</name>
-       <description>Resync control for PT5</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt6</name>
-       <description>Resync control for PT6</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt7</name>
-       <description>Resync control for PT7</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INTFL</name>
-     <description>Pulse Train Interrupt Flags</description>
-     <addressOffset>0x0008</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Pulse Train 0 Stopped Interrupt Flag</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Pulse Train 1 Stopped Interrupt Flag</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Pulse Train 2 Stopped Interrupt Flag</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Pulse Train 3 Stopped Interrupt Flag</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt4</name>
-       <description>Pulse Train 4 Stopped Interrupt Flag</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt5</name>
-       <description>Pulse Train 5 Stopped Interrupt Flag</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt6</name>
-       <description>Pulse Train 6 Stopped Interrupt Flag</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt7</name>
-       <description>Pulse Train 7 Stopped Interrupt Flag</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INTEN</name>
-     <description>Pulse Train Interrupt Enable/Disable</description>
-     <addressOffset>0x000C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Pulse Train 0 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Pulse Train 1 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Pulse Train 2 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Pulse Train 3 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt4</name>
-       <description>Pulse Train 4 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt5</name>
-       <description>Pulse Train 5 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt6</name>
-       <description>Pulse Train 6 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt7</name>
-       <description>Pulse Train 7 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>SAFE_EN</name>
-     <description>Pulse Train Global Safe Enable.</description>
-     <addressOffset>0x0010</addressOffset>
-     <access>write-only</access>
-     <fields>
-      <field>
-       <name>PT0</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT1</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT2</name>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT3</name>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT4</name>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT5</name>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT6</name>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT7</name>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>SAFE_DIS</name>
-     <description>Pulse Train Global Safe Disable.</description>
-     <addressOffset>0x0014</addressOffset>
-     <access>write-only</access>
-     <fields>
-      <field>
-       <name>PT0</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT1</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT2</name>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT3</name>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT4</name>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT5</name>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT6</name>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT7</name>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>READY_INTFL</name>
-     <description>Pulse Train Ready Interrupt Flags</description>
-     <addressOffset>0x0018</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Pulse Train 0 Stopped Interrupt Flag</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Pulse Train 1 Stopped Interrupt Flag</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Pulse Train 2 Stopped Interrupt Flag</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Pulse Train 3 Stopped Interrupt Flag</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt4</name>
-       <description>Pulse Train 4 Stopped Interrupt Flag</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt5</name>
-       <description>Pulse Train 5 Stopped Interrupt Flag</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt6</name>
-       <description>Pulse Train 6 Stopped Interrupt Flag</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt7</name>
-       <description>Pulse Train 7 Stopped Interrupt Flag</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>READY_INTEN</name>
-     <description>Pulse Train Ready Interrupt Enable/Disable</description>
-     <addressOffset>0x001C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Pulse Train 0 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Pulse Train 1 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Pulse Train 2 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Pulse Train 3 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt4</name>
-       <description>Pulse Train 4 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt5</name>
-       <description>Pulse Train 5 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt6</name>
-       <description>Pulse Train 6 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt7</name>
-       <description>Pulse Train 7 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-<!--PTG Pulse Train Generation-->
-  <peripheral>
    <name>PT</name>
    <description>Pulse Train</description>
    <groupName>Pulse_Train</groupName>
@@ -8793,43 +8377,43 @@
   <peripheral derivedFrom="PT">
    <name>PT1</name>
    <description>Pulse Train 1</description>
-   <baseAddress>0x4003C040</baseAddress>
+   <baseAddress>0x4003C030</baseAddress>
   </peripheral>
 <!--PT1 Pulse Train 1-->
   <peripheral derivedFrom="PT">
    <name>PT2</name>
    <description>Pulse Train 2</description>
-   <baseAddress>0x4003C060</baseAddress>
+   <baseAddress>0x4003C040</baseAddress>
   </peripheral>
 <!--PT2 Pulse Train 2-->
   <peripheral derivedFrom="PT">
    <name>PT3</name>
    <description>Pulse Train 3</description>
-   <baseAddress>0x4003C080</baseAddress>
+   <baseAddress>0x4003C050</baseAddress>
   </peripheral>
 <!--PT3 Pulse Train 3-->
   <peripheral derivedFrom="PT">
    <name>PT4</name>
    <description>Pulse Train 4</description>
-   <baseAddress>0x4003C0A0</baseAddress>
+   <baseAddress>0x4003C060</baseAddress>
   </peripheral>
 <!--PT4 Pulse Train 4-->
   <peripheral derivedFrom="PT">
    <name>PT5</name>
    <description>Pulse Train 5</description>
-   <baseAddress>0x4003C0C0</baseAddress>
+   <baseAddress>0x4003C070</baseAddress>
   </peripheral>
 <!--PT5 Pulse Train 5-->
   <peripheral derivedFrom="PT">
    <name>PT6</name>
    <description>Pulse Train 6</description>
-   <baseAddress>0x4003C0E0</baseAddress>
+   <baseAddress>0x4003C080</baseAddress>
   </peripheral>
 <!--PT6 Pulse Train 6-->
   <peripheral derivedFrom="PT">
    <name>PT7</name>
    <description>Pulse Train 7</description>
-   <baseAddress>0x4003C100</baseAddress>
+   <baseAddress>0x4003C090</baseAddress>
   </peripheral>
 <!--PT7 Pulse Train 7-->
   <peripheral derivedFrom="PT">
@@ -8838,6 +8422,523 @@
    <baseAddress />
   </peripheral>
 <!--PT8 Pulse Train 8-->
+  <peripheral>
+   <name>PTG</name>
+   <description>Pulse Train Generation</description>
+   <groupName>Pulse_Train</groupName>
+   <baseAddress>0x4003C000</baseAddress>
+   <size>32</size>
+   <access>read-write</access>
+   <addressBlock>
+    <offset>0</offset>
+    <size>0x0020</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <interrupt>
+    <name>PT</name>
+    <description>Pulse Train IRQ</description>
+    <value>59</value>
+   </interrupt>
+   <registers>
+    <register>
+     <name>ENABLE</name>
+     <description>Global Enable/Disable Controls for All Pulse Trains</description>
+     <addressOffset>0x0000</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Enable/Disable control for PT0</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Enable/Disable control for PT1</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Enable/Disable control for PT2</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Enable/Disable control for PT3</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Enable/Disable control for PT4</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Enable/Disable control for PT5</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Enable/Disable control for PT6</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Enable/Disable control for PT7</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>RESYNC</name>
+     <description>Global Resync (All Pulse Trains) Control</description>
+     <addressOffset>0x0004</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Resync control for PT0</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Resync control for PT1</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Resync control for PT2</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Resync control for PT3</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Resync control for PT4</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Resync control for PT5</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Resync control for PT6</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Resync control for PT7</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>STOP_INTFL</name>
+     <description>Pulse Train Stop Interrupt Flags</description>
+     <addressOffset>0x0008</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Stopped Interrupt Flag</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Stopped Interrupt Flag</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Stopped Interrupt Flag</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Stopped Interrupt Flag</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Pulse Train 4 Stopped Interrupt Flag</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Pulse Train 5 Stopped Interrupt Flag</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Pulse Train 6 Stopped Interrupt Flag</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Pulse Train 7 Stopped Interrupt Flag</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>STOP_INTEN</name>
+     <description>Pulse Train Stop Interrupt Enable/Disable</description>
+     <addressOffset>0x000C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Pulse Train 4 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Pulse Train 5 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Pulse Train 6 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Pulse Train 7 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SAFE_EN</name>
+     <description>Pulse Train Global Safe Enable.</description>
+     <addressOffset>0x0010</addressOffset>
+     <access>write-only</access>
+     <fields>
+      <field>
+       <name>PT0</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT1</name>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT2</name>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT3</name>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT4</name>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT5</name>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT6</name>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT7</name>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SAFE_DIS</name>
+     <description>Pulse Train Global Safe Disable.</description>
+     <addressOffset>0x0014</addressOffset>
+     <access>write-only</access>
+     <fields>
+      <field>
+       <name>PT0</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT1</name>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT2</name>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT3</name>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT4</name>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT5</name>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT6</name>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT7</name>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTFL</name>
+     <description>Pulse Train Ready Interrupt Flags</description>
+     <addressOffset>0x0018</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Flag</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Flag</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Flag</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Flag</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Pulse Train 4 Ready Interrupt Flag</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Pulse Train 5 Ready Interrupt Flag</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Pulse Train 6 Ready Interrupt Flag</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Pulse Train 7 Ready Interrupt Flag</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTEN</name>
+     <description>Pulse Train Ready Interrupt Enable/Disable</description>
+     <addressOffset>0x001C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Enable/Disable</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Enable/Disable</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Enable/Disable</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Enable/Disable</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Pulse Train 4 Ready Interrupt Enable/Disable</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Pulse Train 5 Ready Interrupt Enable/Disable</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Pulse Train 6 Ready Interrupt Enable/Disable</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Pulse Train 7 Ready Interrupt Enable/Disable</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--PTG Pulse Train Generation-->
   <peripheral>
    <name>PWRSEQ</name>
    <description>Power Sequencer / Low Power Control Register.</description>
@@ -9661,7 +9762,7 @@
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>VRTC_TMR</name>
+       <name>VBAT_TMR</name>
        <description>VBAT Timer Value. When RTC is running off of VBAT, this field is incremented every 32 seconds.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>24</bitWidth>
@@ -10387,6 +10488,12 @@
        <name>DFD_STDBY_EN</name>
        <description>Digital Fault Dector Stand by Enable</description>
        <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DFD_NMI_STDBY_EN</name>
+       <description>Digital Fault Dector Stand by Enable</description>
+       <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -11352,7 +11459,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>EXTSCTRL_ST</name>
+       <name>EXTSCTRL</name>
        <description>External Sensor Control Register Status.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11370,7 +11477,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>INTSCTRL_ST</name>
+       <name>INTSCTRL</name>
        <description>Internal Sensor Control Register Status.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11388,7 +11495,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SECALM_ST</name>
+       <name>SECALM</name>
        <description>Security Alarm Register Status.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11406,7 +11513,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MEUCTRL_ST</name>
+       <name>MEUCTRL</name>
        <description>Security Alarm Register Status.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11438,7 +11545,7 @@
       </field>
       <field>
        <name>SDBYTE_EN</name>
-       <description>Self-Destruct Byte ENable.</description>
+       <description>Self-Destruct Byte Enable.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -11592,7 +11699,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SSIACT</name>
+       <name>SSINACT</name>
        <description>Slaves Select Inactive Timing.</description>
        <bitOffset>18</bitOffset>
        <bitWidth>2</bitWidth>
@@ -11633,7 +11740,7 @@
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>SS_POL</name>
+       <name>SSPOL</name>
        <description>Slave Select Polarity.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11651,7 +11758,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>FC_POL</name>
+       <name>FCPOL</name>
        <description>FC Polarity.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11730,7 +11837,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>BBMODE</name>
+       <name>BB_EN</name>
        <description>Bit-Bang Mode.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11819,7 +11926,7 @@
       </field>
       <field>
        <name>BB_DATA_OUT</name>
-       <description>No description available.</description>
+       <description>Bit Bang SDIO Output.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>4</bitWidth>
        <enumeratedValues>
@@ -11874,7 +11981,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SIMPLE</name>
+       <name>SIMPLE_EN</name>
        <description>Simple Mode Enable.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11966,7 +12073,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>SDIO_OUT</name>
+       <name>SDIO_OUT_VAL</name>
        <description>SDIO Output Value Sample Mode</description>
        <bitOffset>4</bitOffset>
        <bitWidth>4</bitWidth>
@@ -12075,7 +12182,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_AE</name>
+       <name>TX_AE</name>
        <description>Transaction FIFO Almost Empty Flag.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12093,7 +12200,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_AF</name>
+       <name>RX_AF</name>
        <description>Results FIFO Almost Full Flag.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12190,7 +12297,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_AE</name>
+       <name>TX_AE</name>
        <description>Transaction FIFO Almost Empty Interrupt Enable.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12208,7 +12315,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_AF</name>
+       <name>RX_AF</name>
        <description>Results FIFO Almost Full Interrupt Enable.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12228,7 +12335,7 @@
      </fields>
     </register>
     <register>
-     <name>SIMPLE_HEADER</name>
+     <name>HEADER</name>
      <description>Simple Header</description>
      <addressOffset>0x1C</addressOffset>
      <fields>
@@ -12247,30 +12354,14 @@
      </fields>
     </register>
     <register>
-     <name>AUTOCN</name>
+     <name>AUTOCTRL</name>
      <description>Auto Control Register.</description>
      <addressOffset>0x20</addressOffset>
-     <fields>
-      <field>
-       <name>AUTOCN</name>
-       <description>TBD</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
     </register>
     <register>
      <name>AUTOCMD</name>
      <description>Auto Command Register.</description>
      <addressOffset>0x24</addressOffset>
-     <fields>
-      <field>
-       <name>AUTOCMD</name>
-       <description>TBD</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
     </register>
    </registers>
   </peripheral>
@@ -12432,7 +12523,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SSIACT</name>
+       <name>SSINACT</name>
        <description>Slave Select Inactive Timing.</description>
        <bitOffset>18</bitOffset>
        <bitWidth>2</bitWidth>
@@ -12467,13 +12558,13 @@
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>CMDVAL</name>
+       <name>CMD_VAL</name>
        <description>Command Value sent to target to initiate fetching from SPI flash.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>CMDWTH</name>
+       <name>CMD_WDTH</name>
        <description>Command Width. Number of data I/O used to send commands.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>2</bitWidth>
@@ -12501,7 +12592,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADDR_WIDTH</name>
+       <name>ADDR_WDTH</name>
        <description>Address Width. Number of data I/O used to send address, and mode/dummy clocks.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>2</bitWidth>
@@ -12529,7 +12620,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DATA_WIDTH</name>
+       <name>DATA_WDTH</name>
        <description>Data Width. Number of data I/O used to receive data.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>2</bitWidth>
@@ -12619,13 +12710,13 @@
      <addressOffset>0x0C</addressOffset>
      <fields>
       <field>
-       <name>MDDATA</name>
+       <name>DATA</name>
        <description>Mode Data. Specifies the data to send with the Dummy/Mode clocks.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>16</bitWidth>
       </field>
       <field>
-       <name>MDOUT_EN</name>
+       <name>OUT_EN</name>
        <description>Mode Output Enable. Output enable state for each corresponding data bit in MD_DATA. 0: output enable off, I/O is tristate and 1: Output enable on, I/O is driving MD_DATA.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>16</bitWidth>
@@ -12638,7 +12729,7 @@
      <addressOffset>0x10</addressOffset>
      <fields>
       <field>
-       <name>FB_EN</name>
+       <name>EN</name>
        <description>Enable SCLK feedback mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12783,7 +12874,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>AUTH_DISABLE</name>
+       <name>AUTH_DIS</name>
        <description>Integrity Enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13372,7 +13463,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SS_POL</name>
+       <name>SSPOL</name>
        <description>Slave Select Polarity, each Slave Select can have unique polarity.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>4</bitWidth>
@@ -13541,7 +13632,7 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>DMA_TX_EN</name>
+       <name>TX_EN</name>
        <description>TX DMA Enable.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13603,7 +13694,7 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>DMA_RX_EN</name>
+       <name>RX_EN</name>
        <description>RX DMA Enable.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
@@ -14182,7 +14273,7 @@
      </fields>
     </register>
     <register>
-     <name>STAT</name>
+     <name>STATUS</name>
      <description>SPI Status register.</description>
      <addressOffset>0x30</addressOffset>
      <access>read-only</access>
@@ -17797,7 +17888,7 @@
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>AUTOEN</name>
+       <name>AUTOSCAN_EN</name>
        <description>Automatic Keyboard Scan Enable</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -17814,8 +17905,8 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field derivedFrom="AUTOEN">
-       <name>CLEAR</name>
+      <field derivedFrom="AUTOSCAN_EN">
+       <name>AUTOCLEAR</name>
        <description>Auto Clear Bit</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
