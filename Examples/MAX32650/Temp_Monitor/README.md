@@ -34,7 +34,7 @@ will be printed in the terminal and the red warning LED will begin to blink.
 Otherwise if the temperature is within the defined limits, the green LED
 will continue to toggle each time a new measurement is taken.
 
-Press SW3 to print the last 12 temperature readings taken.
+Press SW2 to print the last 12 temperature readings taken.
 ```
 
 Additonally you should see either LED 0 or LED 1 being toggled periodically.
