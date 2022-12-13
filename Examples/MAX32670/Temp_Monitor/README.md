@@ -8,7 +8,7 @@ If a temperature reading exceeds the upper or lower limits, a warning message wi
 
 Additionally, pressing push button SW3 will print the last 12 temperature readings in the terminal.
 
-The temperature limits, flash storage page, and RTC time-of-day alarm period are defined in [temp_monitor.c](./temp_monitor.c) with the HI/LO_TEMP_THRESHOLD, TR_STORAGE_PAGE, and TEMP_CHECK_PERIOD defines respectively.
+The temperature limits, flash storage page, and RTC time-of-day alarm period are defined in [temp_monitor.c](./temp_monitor.c) with the HI/LO\_TEMP\_THRESHOLD, TR\_STORAGE\_PAGE, and TEMP\_CHECK\_PERIOD defines respectively.
 
 ## Required Connections
 
