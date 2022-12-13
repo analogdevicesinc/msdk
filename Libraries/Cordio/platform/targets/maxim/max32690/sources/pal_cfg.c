@@ -139,7 +139,7 @@ void palCfgLoadLlParams(uint8_t *pConfig)
   const uint16_t numTxBufs      = 4;
 
   pCfg->maxAdvSets            = 1;
-  pCfg->maxAdvReports         = 1;
+  pCfg->maxAdvReports         = 2;
   pCfg->maxExtAdvDataLen      = advDataLen;
   /* pCfg->defExtAdvDataFragLen */  /* Use default. */
   pCfg->auxDelayUsec          = 0;
