@@ -91,6 +91,16 @@ static void sharp_mip_send_payload(sharp_mip_dev* dev, uint8_t* payload, uint32_
 }
 
 /***** Functions *****/
+void sharp_mip_onoff(sharp_mip_dev* dev, int on)
+{
+	if(on) {
+	    MXC_GPIO_OutSet(dev->init_param.on_off_port, dev->init_param.on_off_pin);
+	}
+	else {
+	    MXC_GPIO_OutClr(dev->init_param.on_off_port, dev->init_param.on_off_pin);
+	}
+}
+
 int sharp_mip_configure(sharp_mip_dev* dev, sharp_mip_init_param_t* init_param, display_comm_api* comm_api)
 {
     int err = DISP_E_SUCCESS;
@@ -109,6 +119,19 @@ int sharp_mip_init(sharp_mip_dev* dev)
         return DISP_E_NOT_CONFIGURED;
     }
 	dev->comm_api.init();
+
+    mxc_gpio_cfg_t gpio_cfg;
+    gpio_cfg.pad = MXC_GPIO_PAD_NONE;
+    gpio_cfg.func = MXC_GPIO_FUNC_OUT;
+    gpio_cfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    gpio_cfg.port = dev->init_param.on_off_port;
+    gpio_cfg.mask = dev->init_param.on_off_pin;
+    MXC_GPIO_Config(&gpio_cfg);
+
+    sharp_mip_onoff(dev, 1);
+    sharp_mip_onoff(dev, 0);
+    sharp_mip_onoff(dev, 1);
+
 	return DISP_E_SUCCESS;
 }
 

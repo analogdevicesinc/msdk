@@ -1,9 +1,9 @@
 ## Description
 
-A basic OLED Display program that use [LVGL Graphics Library](https://lvgl.io/).
+A basic Display program that use [LVGL Graphics Library](https://lvgl.io/).
 
 This example
--   Works in FTHR Board that has CFAL12832C OLED Display.
+-   Works in EvKit-V1 Board that has [LS013B7DH03 Monochrome LCD Display](https://www.sharpsde.com/products/displays/model/ls013b7dh03/).
 -   Uses LVGL graphic library to generate graphics.
 
 To create LVGL compatible fonts and images use [Font Converter](https://lvgl.io/tools/fontconverter) and [Bitmap Converter](https://lvgl.io/tools/imageconverter)
@@ -21,5 +21,5 @@ Please check project.mk to learn how compile lvgl in MSDK
 The Console UART of the device will output these messages:
 
 ```
-OLED demo
+Display demo
 ```
