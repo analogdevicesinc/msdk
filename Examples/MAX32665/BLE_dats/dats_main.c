@@ -342,7 +342,7 @@ static void trimStart(void)
     /* Start the 32 kHz crystal trim procedure */
     err = MXC_WUT_TrimCrystalAsync(wutTrimCb);
     if (err != E_NO_ERROR) {
-        APP_TRACE_INFO1("Error starting 32kHz crystal trim %d", err);
+        APP_TRACE_INFO1("Error starting 32kHz crystal trim %d ", err);
     }
 }
 

@@ -42,17 +42,31 @@ jobs:
         with:
           submodules: false
           fetch-depth: 0
+      
+      - name: Lock max32655 and max32665
+        if: ${{ always() }}
+        run: |          
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+      - name: Init submodules
+        run: |
+          git scorch
+          # Update the submodules, this will use ssh
+          git submodule init
+          git submodule sync
+          git submodule update --init --recursive
 
       # Runs a set of commands using the runners shell
-      - name: BLE examples functionality test
+      - name: BLE Functional Test
         run: |
+
           BLE_FILES_CHANGED=0
           
           # Check for changes made to these files
           WATCH_FILES="\
           Examples/MAX32655/BLE \
           Libraries/libs.mk \
-          Libraries/Cordio \
           Libraries/CMSIS/Device/Maxim/MAX32655 \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
           Libraries/PeriphDrivers/periphdriver.mk \
@@ -86,24 +100,118 @@ jobs:
           fi
           
           echo "Running Test"
+
+          cd .github/workflows/ci-tests/Examples_tests
+          chmod +x local_testLauncher.sh
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
+          dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+          ./local_testLauncher.sh max32655 $dut_uart $dut_serial
+      
+      # Unlock even when cancelled or failed
+      - name: unlock MAX32655 and MAX32655 boards
+        if: always()
+        run: |
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_0.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          fi
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_1.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          fi
+      # Runs a set of commands using the runners shell
+
+      - name: Lock max32655 and max32665
+        if: ${{ always() }}
+        run: |          
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+ 
+      - name: TEST MAX32665
+        run: |
+          # Remove local modifications
+
+
+          BLE_FILES_CHANGED=0
           
-          # Lock hardware resources
-          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
-          cp -r .github/workflows/ci-tests/Examples_tests .
-          chmod +x Examples_tests/local_testLauncher.sh
-          cd Examples_tests/
-          ./local_testLauncher.sh
+          # Check for changes made to these files
+          WATCH_FILES="\
+          Examples/MAX32665/BLE \
+          Libraries/libs.mk \
+          Libraries/CMSIS/Device/Maxim/MAX32665 \
+          Libraries/PeriphDrivers/libPeriphDriver.mk \
+          Libraries/PeriphDrivers/periphdriver.mk \
+          Libraries/PeriphDrivers/max32665_files.mk \
+          Libraries/PeriphDrivers/Source \
+          Libraries/PeriphDrivers/Include/MAX32665 \
+          Libraries/BlePhy/MAX32665 \
+          Libraries/Boards/MAX32665"
           
+          # Get the diff from main
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          
+          echo "Watching these locations and files"
+          echo $WATCH_FILES
+          
+          echo "Checking the following changes"
+          echo $CHANGE_FILES
+          
+          # Assume we want to actually run the workflow if no files changed
+          if [[ "$CHANGE_FILES" != "" ]]; then
+            for watch_file in $WATCH_FILES; do 
+              if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
+                BLE_FILES_CHANGED=1
+              fi
+            done
+            if [[ $BLE_FILES_CHANGED -eq 0 ]]
+            then
+              echo "Skipping Test"
+              exit 0
+            fi
+          fi
+          
+          echo "Running Test"
+          
+          cd .github/workflows/ci-tests/Examples_tests
+          chmod +x local_testLauncher.sh
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
+          dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+          ./local_testLauncher.sh max32665 $dut_uart $dut_serial          
+      # Unlock even when cancelled or failed
+      - name: unlock MAX32655 and MAX32665 boards
+        if: always()
+        run: |
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32665_13.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          fi
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_0.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          fi
+          
+                
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
             name: failure-report
-            path: Examples_tests/results/
+            path: .github/workflows/ci-tests/Examples_tests/results/
       
       # Unlock even when cancelled or failed
       - name: unlock
         if: always()
         run: |
-          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/btm-ci/Workspace/Resource_Share/Resource_Share.py /home/btm-ci/Workspace/Resource_Share/max32655_0.txt
+          # MAX32655 0
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_0.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          fi
+          # MAX232655 1
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_1.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          fi
+          # MAX32665
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32665_13.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          fi
+          # MAX32690
+          if [ -f "/home/$USER/Workspace/Resource_Share/max32690_w1.txt" ]; then
+            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+          fi
