@@ -6,9 +6,9 @@
 
 The Keyword Spotting Demo software demonstrates recognition of a number of keywords using MAX78000 EVKIT.  
 
-A new option `-DSEND_MIC_OUT_SDCARD` has been add to [`project.mk`](project.mk) to enable saving the detected sound snippets to SD card interface of the MAX78000 Feather board. This feature is not available for MAX7800 EVKIT.
+A new option `-DSEND_MIC_OUT_SDCARD` has been added to [`project.mk`](project.mk) to enable saving the detected sound snippets to SD card interface of the MAX78000 Feather board. This feature is not available for MAX7800 EVKIT.
 
-The KWS20 demo software utilizes 2nd version of Google speech commands dataset which consists of 35 keywords and more than 100K utterances:
+The KWS20 demo software utilizes 2nd version of the Google speech commands dataset which consists of 35 keywords and more than 100K utterances:
 
 https://storage.cloud.google.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz
 
@@ -20,9 +20,7 @@ The following 20 keyword subset from the complete dataset is used for this demo:
 
 The rest of the keywords and unrecognized words fall into the "**Unknown**" category. 
 
-To improve the unknown detection, the model in version 3.2 is trained with an additional 100hrs of speech data from LibriSpeech (https://www.openslr.org/resources/12/train-clean-100.tar.gz), segmented to 1-sec audio data and labeled as unknown.
-
-
+To improve the unknown detection, the model in version 3.2 is trained with an additional speech dataset from LibriSpeech (http://us.openslr.org/resources/12/dev-clean.tar.gz), segmented to 1-sec audio data and labeled as unknown.
 
 ## Keyword Spotting Demo Software
 
@@ -51,7 +49,7 @@ BOARD=EvKit_V1
 endif
 ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in [`project.mk`](project.mk):
+To compile code for the MAX78000 Feather board enable **BOARD=FTHR_RevA** in [`project.mk`](project.mk):
 
 ```bash
 # Specify the board used
@@ -61,7 +59,7 @@ BOARD=FTHR_RevA
 endif
 ```
 
-**Note: If you are using Eclipse, please also make sure to change the value of `BOARD` environment variable to `FTHR_RevA` by right clicking on *"[project name] > Properties > C/C++ Build > Environment > BOARD"***
+**Note: If you are using Eclipse, please also make sure to change the value of the `BOARD` environment variable to `FTHR_RevA` by right-clicking on *"[project name] > Properties > C/C++ Build > Environment > BOARD"***
 
 <img src="Resources/eclipse_board.png" style="zoom:33%;" />
 
@@ -69,14 +67,14 @@ endif
 
 ### Load firmware image to MAX78000 EVKIT
 
-Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
+Connect the USB cable to CN1 (USB/PWR) and turn ON the power switch (SW1).
 
-Connect PICO adapter to JH5 SWD header.
+Connect the PICO adapter to the JH5 SWD header.
 
 If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
 
 ```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000elf reset exit"
 ```
 
 If using Linux, perform this step:
@@ -85,15 +83,15 @@ If using Linux, perform this step:
 ./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
 ```
 
-**Make sure to remove PICO adapter once firmware is loaded.**
+**Make sure to remove the PICO adapter once the firmware is loaded.**
 
 ### MAX78000 EVKIT jumper setting
 
-Make sure to install jumper at JP20-CLK (INT position) as shown bellow:
+Make sure to install the jumper at JP20-CLK (INT position) as shown below:
 
 <img src="Resources/I2S_jumper.png" style="zoom:25%;" />
 
-Note: On board external oscillator Y3 is used to generate I2S clock. The I2S sample rate is 16kHz to match speech samples of the dataset.
+Note: On board, external oscillator Y3 is used to generate an I2S clock. The I2S sample rate is 16kHz to match speech samples of the dataset.
 
 ### MAX78000 EVKIT operations
 
@@ -105,15 +103,15 @@ The TFT display shows that it is ready. Press PB1 to start:
 
 
 
-Once RED LED2 turns on, the initialization is complete and it is ready to accept keywords. If PICO adapter is still connected to SWD, disconnect it and power cycle.
+Once RED LED2 turns on, the initialization is complete and it is ready to accept keywords. If the PICO adapter is still connected to SWD, disconnect it and power cycle.
 
-Following words can be detected:
+The following words can be detected:
 
  ['**up', 'down', 'left', 'right', 'stop', 'go', 'yes', 'no', 'on', 'off', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'zero**']
 
  The MAX78000 KWS20 demo firmware recognizes keywords and reports result and confidence level.
 
-The microphone (U15) is located between JH4 and JH5 headers on EVKIT, (MK1) between J5 and J7 audio connectors on MAX78000 Feather board.
+The microphone (U15) is located between JH4 and JH5 headers on EVKIT, (MK1) between J5 and J7 audio connectors on the MAX78000 Feather board.
 
 
 
@@ -123,7 +121,7 @@ The microphone (U15) is located between JH4 and JH5 headers on EVKIT, (MK1) betw
 
 ### Load firmware image to MAX78000 Feather
 
-Connect USB cable to CN1 USB connector.
+Connect the USB cable to the CN1 USB connector.
 
 If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
 
@@ -141,7 +139,7 @@ If using Linux, perform this step:
 
 The KWS20 demo starts automatically after power-up or pressing the reset button (SW4).
 The TFT display is optional and not supplied with the MAX78000 Feather board.
-Users should use PC terminal program to observe KWS20 demo result as described in the "Using Debug Terminal" section.
+Users should use the PC terminal program to observe the KWS20 demo result as described in the "Using Debug Terminal" section.
 
 The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
 
@@ -149,7 +147,7 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
-To compile code with enabled TFT feature use following setting in [`project.mk`](project.mk):
+To compile code with the enabled TFT feature use the following setting in [`project.mk`](project.mk):
 
 ```bash
 ifeq "$(BOARD)" "FTHR_RevA"
@@ -157,14 +155,14 @@ PROJ_CFLAGS += -DENABLE_TFT
 endif
 ```
 
-***Note: If SD card option is enabled, the TFT support will automatically be disabled regardless of above setting.***
+***Note: If the SD card option is enabled, the TFT support will automatically be disabled regardless of the above setting.***
 
-While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
-Press PB1 (SW1) button to start demo.
+While using the TFT display keep its power switch in the "ON" position. The TFT "Reset" button also can be used as Feather reset.
+Press PB1 (SW1) button to start the demo.
 
 <img src="Resources/feather_tft.jpg" style="zoom:25%;" />
 
-The PB1 (SW1) button is located as shown in picture bellow:
+The PB1 (SW1) button is located as shown in the picture below:
 
 ![](Resources/pb1_button.jpg)
 
@@ -172,15 +170,15 @@ The PB1 (SW1) button is located as shown in picture bellow:
 
 ### Using Debug Terminal
 
-Debug terminal shows more information on status and detected words. 
+Debug terminal shows more status information and detected words. 
 
 The USB cable connected to CN1 (USB/PWR) provides power and serial communication.
 
-To configure PC terminal program select correct COM port and settings as follow:
+To configure the PC terminal program select the correct COM port and settings as follow:
 
 ![](Resources/Terminal2.png)
 
-After turning on power or pressing reset button the following message will appear in terminal window:
+After turning on power or pressing the reset button the following message will appear in the terminal window:
 
 ![](Resources/Terminal1.png)
 
@@ -192,7 +190,7 @@ Terminal display after detecting words:
 
 
 
-The software components of KWS20 demo are shown in diagram below:
+The software components of the KWS20 demo are shown in the diagram below:
 
 ![](Resources/Diagram.png)
 
@@ -200,7 +198,7 @@ The software components of KWS20 demo are shown in diagram below:
 
 ## CNN Model
 
-The KWS20 v.3 Convolutional Neural Network (CNN) model consists of **1D** CNN with 8 layers and one fully connected layer to recognize keyword from 20 words dictionary used for training.
+The KWS20 v.3 Convolutional Neural Network (CNN) model consists of **1D** CNN with 8 layers and one fully connected layer to recognize keywords from 20 words dictionary used for training.
 
 ```python
 class AI85KWS20Netv3(nn.Module):
@@ -285,11 +283,11 @@ To invoke network training execute the script:
 (ai8x-training) $ ./scripts/train_kws20_v3.sh
 ```
 
-If this is the first time, and the dataset does not exist locally, the scrip will automatically download Google speech commands dataset (1 second keyword .wav files , sampled at 16KHz, 16-bit) into /data/KWS/raw, and process it to make appropriate training, test and validation dataset integrated in /data/KWS/process/dataset.pt. The processing step expands training dataset by using augmentation techniques like adding white noise, random time shift and stretch to improve training results. In addition, each 16000 sample word example is padded with zeros to make it 128x128=16384 speech samples. The augmentation process triples the size of dataset and could take 30min to complete.
+If this is the first time, and the dataset does not exist locally, the scrip will automatically download the Google speech commands dataset (1-second keyword .wav files, sampled at 16KHz, 16-bit) into /data/KWS/raw, and process it to make appropriate training, test and validation dataset integrated into /data/KWS/process/dataset2.pt. To improve the detection of unknown keywords, it also downloads an additional speech dataset from librispeech and segments them into 1-second audio files to be labeled as unknown. The processing step expands the training dataset by using augmentation techniques like adding white noise, random time shift, and stretch to improve training results. In addition, each 16000 sample word example is padded with zeros to make it 128x128=16384 speech samples. The augmentation process triples the size of the dataset and could take 30min to complete.
 
 Details of network training methodology are described in [AI8X Model Training and Quantization](https://github.com/MaximIntegratedAI/ai8x-synthesis/blob/master/README.md)
 
-After training unquantized network can be evaluated by executing script:
+After training unquantized network can be evaluated by executing the script:
 
 ```bash
 (ai8x-training) $ ./scripts/evaluate_kws20_v3.sh
@@ -309,19 +307,19 @@ Details of quantization are described in [AI8X Model Training and Quantization](
 
 ## Network Synthesis
 
-The network synthesis script generates a pass/fail C example code which includes necessary functions to initialize MAX78000 CNN accelerator, to load quantized CNN weights and input samples and to unload classification results. A sample input with the expected result is part of this automatically generated code to verify.  Following script generates all example projects including **kws20_v3**:
+The network synthesis script generates a pass/fail C example code which includes necessary functions to initialize the MAX78000 CNN accelerator, load quantized CNN weights and input samples, and unload classification results. A sample input with the expected result is part of this automatically generated code to verify.  The following script generates all example projects including **kws20_v3**:
 
 ```bash
 (ai8x-synthesis) $ ./gen-demos-max78000.sh
 ```
 
-The **kws20_v3** bare-bone C code is partially used in KWS20 Demo. In particular, CNN initialization, weights (kernels) and helper functions to load/unload weights and samples are ported from **kws20_v3** to KWS20 Demo.
+The **kws20_v3** bare-bone C code is partially used in KWS20 Demo. In particular, CNN initialization, weights (kernels), and helper functions to load/unload weights and samples are ported from **kws20_v3** to KWS20 Demo.
 
 
 
 ## KWS20 Demo Code
 
-KWS20 demo works in two modes:  Using microphone (real-time), or offline processing:
+KWS20 demo works in two modes:  Using a microphone (real-time), or offline processing:
 
 ```c
 #define ENABLE_MIC_PROCESSING
@@ -329,7 +327,7 @@ KWS20 demo works in two modes:  Using microphone (real-time), or offline process
 
 ### Microphone Mode
 
-In this mode, EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  In the main loop, I2S buffer is checked and samples are stored in  **pChunkBuff** buffer.  
+In this mode, EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  In the main loop, the I2S buffer is checked and samples are stored in  **pChunkBuffonboard** buffer.  
 
 ### CODEC Mode
 
@@ -345,7 +343,7 @@ PROJ_CFLAGS+=-DENABLE_CODEC_MIC
 
 ### Offline Mode
 
-if **ENABLE_MIC_PROCESSING** is not defined, a header file containing the 16-bit samples (e.g. **kws_five.h**) should be included in the project to be used as the input . To create a header file from a wav file, use included utilities to record a wav file and convert it to header file. 
+if **ENABLE_MIC_PROCESSING** is not defined, a header file containing the 16-bit samples (e.g. **kws_five.h**) should be included in the project to be used as the input . To create a header file from a wav file, use included utilities to record a wav file and convert it to the header file. 
 
 ```bash
 # record 1sec of 16-bit 16KHz sampled wav file 
@@ -356,17 +354,17 @@ $ python RealtimeAudio.py -i voicefile.wav -o voicefile.h
 
 ### Saving Sound Snippets to SD Card
 
-The following option has been add to [`project.mk`](project.mk). To enable saving the detected sound snippets to SD card make sure the `PROJ_CFLAGS" line is uncommented.
+The following option has been added to [`project.mk`](project.mk). To enable saving the detected sound snippets to the SD card make sure the `PROJ_CFLAGS" line is uncommented.
 
 ```make
 # If enabled, it saves out the Mic samples used for inference to SDCARD
 PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
 ```
 
-When this mode is enabled, a new sequential directory is created on the SD card on every power up or reset.
+When this mode is enabled, a new sequential directory is created on the SD card on every power-up or reset.
 ![directory](Resources/SDcard_files.PNG)
 
-After a few moment, the green LED lights up and upon detecting a new word, the LED blinks and a file is created with 8-bit sample recorded audio. The file name includes an index and the detected word. If the detection has low confidence, the file name will have a "_L" suffix. (for example `0003_RIGHT_L`)
+After a few moments, the green LED lights up and upon detecting a new word, the LED blinks and a file is created with 8-bit sample recorded audio. The file name includes an index and the detected word. If the detection has low confidence, the file name will have a "_L" suffix. (for example `0003_RIGHT_L`)
 
 ![snippets](Resources/soundSnippet.PNG)
 
@@ -396,9 +394,9 @@ To convert all the files in a directory and all its subdirectories:
 $ python bin2wav.py -a -d <folder name>
 ```
 
-When option `-a` is used, each file is converted to wav file once and subsequent execution of the command skips all the files that have previously been converted to wave files.
+When option `-a` is used, each file is converted to a wav file once and subsequent execution of the command skips all the files that have previously been converted to wave files.
 
-***Note 1: When `SEND_MIC_OUT_SDCARD` is selected, the Wake Up Timer (WUT) is disabled.***
+***Note 1: When `SEND_MIC_OUT_SDCARD` is selected, the Wake-Up Timer (WUT) is disabled.***
 
 ***Note 2: When `SEND_MIC_OUT_SDCARD` is selected, the `ENABLE_TFT` is disabled regardless of make options.***
 
@@ -423,13 +421,13 @@ The following parameters in the firmware can be tuned:
 
 When the average absolute values of samples during the last 128 samples go above a threshold, the beginning of a word is marked. 
 
-The end of a word is signaled when the **SILENCE_COUNTER_THRESHOLD** back-to-back chunks of samples with an average absolute threshold lower than **THRESHOLD_LOW** is observed. 
+The end of a word is signaled when the **SILENCE_COUNTER_THRESHOLD** back-to-back chunks of samples with an average absolute threshold lower than **THRESHOLD_LOW** are observed. 
 
-The CNN requires 1sec worth of samples (128*128) to start processing. This window starts at **PREAMBLE_SIZE** samples prior to the beginning of the word, and ends after 16384 samples. If the end of a word is determined earlier, the pAI85Buffer sample buffer is padded with zeros.
+The CNN requires 1sec worth of samples (128*128) to start processing. This window starts at **PREAMBLE_SIZE** samples before the beginning of the word and ends after 16384 samples. If the end of a word is determined earlier, the pAI85Buffer sample buffer is padded with zeros.
 
 The CNN-related API functions are in **cnn.c**. They are used to load weights and data, start CNN, wait for CNN to complete processing, and unload the result. 
 
-If a new network is developed and synthesized, the new weight file and related API functions are needed to be ported from automatically generated kws20 example project. Furthermore, if the input layer or organization of 128x128 sample sets in the trained network is changed, **AddTranspose()** function should be changed to reflect the new sample data arrangement in CNN memory.
+If a new network is developed and synthesized, the new weight file and related API functions are needed to be ported from the automatically generated kws20 example project. Furthermore, if the input layer or organization of 128x128 sample sets in the trained network is changed, **AddTranspose()** function should be changed to reflect the new sample data arrangement in CNN memory.
 
 ### References
 
