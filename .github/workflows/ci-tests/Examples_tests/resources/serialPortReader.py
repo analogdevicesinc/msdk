@@ -68,7 +68,7 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
             # read lines
             while (time.time()-timeStart) < timeout:
                 try:
-                    x=used_ports[port].read(5000).decode("utf-8",'ignore')
+                    x=used_ports[port].read(10000).decode("utf-8",'ignore')
                 except Exception as err:
                     pass
                 x=str(x)
