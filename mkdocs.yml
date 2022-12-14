@@ -9,6 +9,7 @@ nav:
   - Home: 'index.md'
   - User Guide: 'USERGUIDE.md'
   - Contributing: 'CONTRIBUTING.md'
+  - License: 'LICENSE.md'
 theme:
   name: readthedocs
 markdown_extensions:
