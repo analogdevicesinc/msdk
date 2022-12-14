@@ -72,7 +72,7 @@
 #endif
 #include <math.h>
 
-#define VERSION "3.2.0 (11/28/22)" // trained with background noise and more unknown keywords
+#define VERSION "3.2.1 (12/13/22)" // trained with background noise and more unknown keywords
 /* **** Definitions **** */
 #define CLOCK_SOURCE 0 // 0: IPO,  1: ISO, 2: IBRO
 #define SLEEP_MODE 0 // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
