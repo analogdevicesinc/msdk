@@ -2,19 +2,19 @@
 
 ## Introduction
 
-The **Maxim Microcontrollers SDK (MSDK)**, now a part of Analog Devices, contains tools and resources to develop firmware for the [MAX-series of microcontrollers](https://www.maximintegrated.com/en/products/microcontrollers.html).  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.
+The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984).  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.
 
 **This repository** contains the latest ***source code*** of the MSDK and is used for *development*.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used to build, program, and debug the contents of this repo on hardware.
 
 ## Installation
 
-The full MSDK is available via an Automatic Installer, and installation instructions can be found in the [MSDK User Guide](USERGUIDE.md).
+The full MSDK is available via an Automatic Installer, and installation instructions can be found in the [MSDK User Guide](Documentation/USERGUIDE.md).
 
 Users who would like to use the latest beeding-edge _development_ resources can follow [Developing from the Repo](#developing-from-the-repo) below, but this should only be done **_after_** installing the full MSDK above.
 
 ## Contributing
 
-Contributions to the MSDK are welcome.  See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions to the MSDK are welcome.  See [CONTRIBUTING.md](Documentation/CONTRIBUTING.md) for guidelines.
 
 ## Developing from the Repo
 
@@ -72,7 +72,7 @@ This repo can be cloned using [Git](https://git-scm.com/) to obtain the latest d
 
 This repository contains the MSDK's *source code* only.  In order to develop on it directly the toolchain must be made available at the same file-paths as the full MSDK installation.  The easiest way to do this is to retrieve the toolchain with the automatic installer and then create symbolic links.  This section walks through the process.
 
-1. Install the MSDK via the [Automatic Installer](USERGUIDE.md#installation) for your OS if you haven't already.
+1. Install the MSDK via the [Automatic Installer](Documentation/USERGUIDE.md#installation) for your OS if you haven't already.
 
     At ***minimum***, install the following components:
     * GNU RISC-V Embedded GCC
