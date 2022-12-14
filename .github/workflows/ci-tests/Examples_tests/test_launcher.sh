@@ -5,7 +5,7 @@ mkdir results
 cd ../../../../
 MSDK_DIR=$(pwd)
 failedTestList=" "
-numOfFailedTests=0
+export numOfFailedTests=0
 
 if [ $(hostname) == "wall-e" ]; then
     # main ME17 device used to test the rest
@@ -20,7 +20,7 @@ if [ $(hostname) == "wall-e" ]; then
     dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906 0409170246dfc09500000000000000000000000097969906)
     # List of serail devices associated with each DUT msut correlate with device list above
     #dut_list_serial=(D30A1X9X)
-    dut_list_serial=(D3073ICQ D30A1X9X D30ALJPW)
+    dut_list_serial=(D309ZDEM D30A1X9X D30ALJPW)
     # WALL-E  paths
     export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
     export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
@@ -175,6 +175,10 @@ function erase_all_devices() {
     erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     # erase DUTs
     erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+    erase_with_openocd max32655 04091702d4f18ac600000000000000000000000097969906
+    erase_with_openocd max32655 04091702f7f18a2900000000000000000000000097969906
+    erase_with_openocd max32665 0409000098d9439b00000000000000000000000097969906
+    erase_with_openocd max32690 0409170246dfc09500000000000000000000000097969906
 }
 function project_marker() {
     echo "=============================================================================="
@@ -194,20 +198,26 @@ erase_all_devices
 # connections with office devices
 printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
-perl -i -pe "s/\'D\'/\'C\'/g" dats_main.c
+perl -i -pe "s/\'D\'/\'X\'/g" dats_main.c
 
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
-perl -i -pe "s/\'D\'/\'C\'/g" datc_main.c
+perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
 
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
-perl -i -pe "s/\'S\'/\'P\'/g" datc_main.c
+perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
 
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-perl -i -pe "s/\'S\'/\'P\'/g" dats_main.c
+perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
 
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
-perl -i -pe "s/\'S\'/\'P\'/g" dats_main.c
+perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
 
+# change advertising name to scan for on the main device client apps
+cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
+
+cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
 
 # build BLE examples
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
@@ -302,6 +312,8 @@ echo "> Flashing BLE_dats on DUT $DUT_NAME_UPP"
 flash_with_openocd $DUT_NAME_LOWER $DUT_ID
 
 # Flash MAIN_DEVICE with BLE_datc
+cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+make -j8
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
 printf "> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
 flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
@@ -395,8 +407,8 @@ erase_all_devices
 echo "=============================================================================="
 echo "=============================================================================="
 if [ "$numOfFailedTests" -ne "0" ]; then
-    echo "Test completed with $numOfFailedTests failed tests located in: "
-    echo " $failedTestList | "
+    echo "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList" >> results.txt
+   
 else
     echo "Relax! ALL TESTS PASSED"
 fi
