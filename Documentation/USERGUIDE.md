@@ -723,16 +723,15 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 16. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command and quit.
 
-## Project Management
+## Development Guide
 
 As discussed in [Key Concepts](#key-concepts), an MSDK project is primarily made up of two distinct systems:  The **_Build System_** and the _**Project Management System**_.  [Getting Started](#getting-started) demonstrates the basic usage and configuration of these systems, while this section offers a more detailed reference.
 
-The Project Management System offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **flashing** program binaries, and **debugging** them in the MSDK's [supported IDEs](#supported-development-environments).  Additionally, the Project Management System sits _on top_ of the [build system](#build-system)'s _CLI_, allowing it to manage fundamental aspects of development such as:
+MSDK development primarily involves using the Project Management System, which offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **flashing** program binaries, and **debugging** for the MSDK's [supported IDEs](#supported-development-environments).  Additionally, the Project Management System sits _on top_ of the [Build System](#build-system)'s _CLI_, allowing it to manage fundamental build variables aspects of development such as:
 
 - Setting the _Target Microcontroller_  (`TARGET` _[Build Configuration Variable](#build-configuration-variables-reference-table)_)
 - Setting the _Board Support Package_ (`BOARD` _[Build Configuration Variable](#build-configuration-variables-reference-table)_)
 - Configuring the _Environment_ and _System Path_ for use with the MSDK toolchain (`MAXIM_PATH` _[Build Configuration Variable](#build-configuration-variables-reference-table)_)
-- Searching the MSDK for relevant source code and function definitions to use for editor look-ups
 
 ### Board Support Packages
 
