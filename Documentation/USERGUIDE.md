@@ -755,15 +755,13 @@ The name of the BSP is the name of the folder.  For example, the MAX78000 suppor
 | [MAX32666FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666fthr.html) | `FTHR`         |
 | MAX32666FTHR2                                                | `FTHR2`        |
 | [MAX32670EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32670evkit.html) | `EvKit_V1`     |
-| [MAX32672EVKIT](| [MAX32672EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672evkit.html) | `EvKit_V1`     |
-) | `EvKit_V1`     |
+| [MAX32672EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672evkit.html) | `EvKit_V1`     |
 | [MAX32672FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672fthr.html) | `FTHR`         |
 | [MAX32675EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32675evkit.html) | `EvKit_V1`     |
 | MAX32675FTHR                                                 | `FTHR_Apps_B`  |
 | [MAX32680EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32680evkit.html) | `EvKit_V1`     |
 | MAX32690EVKIT                                                | `EvKit_V1`     |
-| [MAX78000EVKIT](| [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html) | `EvKit_V1`     |
-) | `EvKit_V1`     |
+| [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html) | `EvKit_V1`     |
 | [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html) | `FTHR_RevA`    |
 | [MAXREFDES178](https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html) | `MAXREFDES178` |
 | [MAX78002EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html) | `EvKit_V1`     |
