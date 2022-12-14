@@ -70,6 +70,7 @@
 #include "tft_ssd2119.h"
 #include "bitmap.h"
 #endif
+#include <math.h>
 
 #define VERSION "3.2.0 (11/28/22)" // trained with background noise and more unknown keywords
 /* **** Definitions **** */
@@ -92,6 +93,10 @@
 #undef ENABLE_TFT
 #warning !!! TFT cannot be used when SD card is enabled  !!!
 #endif
+#endif
+
+#ifdef ENABLE_TFT
+#define DISPLAY_AUDIO // displays audio waveform on TFT
 #endif
 
 /* Enable/Disable Features */
@@ -165,7 +170,7 @@
 volatile uint32_t cnn_time; // Stopwatch
 volatile uint32_t fileCount = 0;
 
-#ifdef SEND_MIC_OUT_SDCARD
+#if defined(SEND_MIC_OUT_SDCARD) || defined(DISPLAY_AUDIO)
 int8_t serialMicBuff[SAMPLE_SIZE];
 int8_t snippet[SAMPLE_SIZE];
 int serialMicBufIndex = 0;
@@ -260,6 +265,22 @@ void WUT_IRQHandler()
     tot_usec += WUT_USEC;
     //LED_On(LED2);
     //LED_Off(LED2);
+}
+#endif
+
+#ifdef DISPLAY_AUDIO
+static uint32_t setColor(int r, int g, int b)
+{
+    uint32_t color;
+
+#ifdef BOARD_EVKIT_V1
+    color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
+#endif
+#ifdef BOARD_FTHR_REVA
+    color = RGB(r, g, b); // convert to RGB565
+#endif
+
+    return color;
 }
 #endif
 
@@ -700,6 +721,54 @@ int main(void)
                 Min = 0;
                 //------------------------------------------------------------
 
+#ifdef DISPLAY_AUDIO
+
+                uint32_t color;
+                int i, j;
+                char buff[TFT_BUFF_SIZE];
+                double db;
+                int32_t x, y, energy;
+                int32_t lasty;
+                int32_t h0, h1;
+
+                lasty = 140;
+                x = 0;
+                energy = 0;
+
+                color = setColor(255, 255, 0); // yellow
+
+                /* Down sample to display according to the TFT width */
+                for (i = 0; i < SAMPLE_SIZE; i+= (SAMPLE_SIZE / 320)){
+                    y = serialMicBuff[(serialMicBufIndex + i + 30*CHUNK) % SAMPLE_SIZE]; // offset to align
+
+                    /* Total energy */
+                    energy += y*y;
+
+                    y = 140 - y; // vertical offset on TFT
+
+                    if (lasty < y){
+                        h0 = lasty;
+                        h1 = y;
+                    }
+                    else{
+                        h0 = y;
+                        h1 = lasty;
+                    }
+
+                    /* Draw a line */
+                    for (j = h0; j <= h1; j++){
+                        MXC_TFT_WritePixel(x, j, 1, 1, color);
+                    }
+                    lasty = y;
+                    x++;
+                }
+
+                memset(buff, 32, TFT_BUFF_SIZE);
+                db = 10*log10((double)energy);
+                TFT_Print(buff, 240, 30, font_2, snprintf(buff, sizeof(buff), "%0.1fdB",(double)db));
+
+#endif
+
 #ifdef SEND_MIC_OUT_SDCARD
                 /**
                  *
@@ -851,8 +920,6 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
                 TFT_Print(buff, 20, 30, font_2,
                           snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
                                    (double)100.0 * max / 32768.0));
-            TFT_Print(buff, 1, 50, font_1,
-                      snprintf(buff, sizeof(buff), "__________________________ "));
             //TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
         } else {
             /* uncomment to show the next 4 top classes */
@@ -867,7 +934,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
         max_index = -1;
 
         if (top == 4) {
-            TFT_Print(buff, 20, 200, font_1,
+            TFT_Print(buff, 20, 215, font_1,
                       snprintf(buff, sizeof(buff), "Sample Min: %d    Max: %d", Min, Max));
         }
 
@@ -1134,7 +1201,7 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
 
         /* Convert to 8 bit unsigned */
         pBuff[chunkCount] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
-#ifdef SEND_MIC_OUT_SDCARD
+#if defined(SEND_MIC_OUT_SDCARD) || defined(DISPLAY_AUDIO)
         serialMicBuff[serialMicBufIndex++] = (sample)*SAMPLE_SCALE_FACTOR / 256;
         serialMicBufIndex = serialMicBufIndex % SAMPLE_SIZE;
 #endif
@@ -1166,17 +1233,17 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
     return 1;
 }
 
-static int16_t x0, x1, Coeff;
-static int32_t y0, y1;
+static int16_t x_0, x_1, Coeff;
+static int32_t y_0, y_1;
 
 /************************************************************************************/
 void HPF_init(void)
 {
     Coeff = 32604; //0.995
-    x0 = 0;
-    y0 = 0;
-    y1 = y0;
-    x1 = x0;
+    x_0 = 0;
+    y_0 = 0;
+    y_1 = y_0;
+    x_1 = x_0;
 }
 
 /************************************************************************************/
@@ -1188,26 +1255,26 @@ int16_t HPF(int16_t input)
     /* a 1st order IIR high pass filter (100 Hz cutoff frequency)  */
     /* y(n)=x(n)-x(n-1)+A*y(n-1) and A =.995*2^15 */
 
-    x0 = input;
+    x_0 = input;
 
-    tmp = (Coeff * y1);
+    tmp = (Coeff * y_1);
     Acc = (int16_t)((tmp + (1 << 14)) >> 15);
-    y0 = x0 - x1 + Acc;
+    y_0 = x_0 - x_1 + Acc;
 
     /* Clipping */
-    if (y0 > 32767) {
-        y0 = 32767;
+    if (y_0 > 32767) {
+        y_0 = 32767;
     }
 
-    if (y0 < -32768) {
-        y0 = -32768;
+    if (y_0 < -32768) {
+        y_0 = -32768;
     }
 
     /* Update filter state */
-    y1 = y0;
-    x1 = x0;
+    y_1 = y_0;
+    x_1 = x_0;
 
-    output = (int16_t)y0;
+    output = (int16_t)y_0;
 
     return (output);
 }
