@@ -1,21 +1,35 @@
 #!/bin/bash
 
-# Target under test
-export CMSIS_DAP_ID_1=04091702d4f18ac600000000000000000000000097969906
 export TARGET_1_LC=max32655
 export TARGET_1_UC=MAX32655
-export devSerial_1=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -b 1-7 | rev)"
 export TARGET_1_CFG=${TARGET_1_LC}.cfg
-# Helper device for connected tests
-export CMSIS_DAP_ID_2=04091702f7f18a2900000000000000000000000097969906
-export devSerial_2=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D3073ICQ' | rev | cut -b 1-7 | rev)"
+
 export TARGET_2_LC=max32655
 export TARGET_2_UC=MAX32655
 export TARGET_2_CFG=${TARGET_2_LC}.cfg
 
+if [ `hostname` == "yingcai-OptiPlex-790" ]; then
+    # Target under test
+    export CMSIS_DAP_ID_1=0444170169c5c14600000000000000000000000097969906
+    export devSerial_1=/dev/tty"$(ls -la /dev/serial/by-id | grep -n 'D3073IDG' | awk -F tty '{print $2}')"
+    # Helper device for connected tests
+    export CMSIS_DAP_ID_2=044417016bd8439a00000000000000000000000097969906
+    export devSerial_2=/dev/tty"$(ls -la /dev/serial/by-id | grep -n 'D309ZDE9' | awk -F tty '{print $2}')"
+elif [ `hostname` == "wall-e" ]; then
+    # Target under test
+    export CMSIS_DAP_ID_1=04091702d4f18ac600000000000000000000000097969906
+    export devSerial_1=/dev/tty"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | awk -F tty '{print $2}')"
+    # Helper device for connected tests
+    export CMSIS_DAP_ID_2=04091702f7f18a2900000000000000000000000097969906
+    export devSerial_2=/dev/tty"$(ls -la /dev/serial/by-id | grep -n 'D3073ICQ' | awk -F tty '{print $2}')"
+else
+    echo "Unknown hostname!"
+    exit 1
+fi
+
 echo ">>>> device_1 serial port : $devSerial_1"
 echo ">>>> device_2 serial port : $devSerial_2"
-
+echo 
 
 export TEST_BOARD=EvKit_V1
 export EXAMPLE_TEST_PATH=$(pwd)
@@ -23,13 +37,14 @@ cd ../
 export MSDK_DIR=$(pwd)
 export VERBOSE_TEST=1
 export failedTestList=" "
+
 #************************************************************** Change this when testing locally **************************
 # LPARM
 #export OPENOCD_TOOL_PATH= home/lparm/Tools/openocd/tcl
 # WALL-E
-export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
-export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
-export ROBOT=/home/btm-ci/.local/bin/robot
+export OPENOCD_TCL_PATH=/home/$USER/Tools/openocd/tcl
+export OPENOCD=/home/$USER/Tools/openocd/src/openocd
+export ROBOT=/home/$USER/.local/bin/robot
 # Local
 # export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
 # export OPENOCD=/home/eddie/workspace/openocd/src/openocd
@@ -128,9 +143,11 @@ perl -i -pe "s/\'S\'/\'P\'/g" dats_main.c
 cd $MSDK_DIR/Examples
 SUBDIRS=$(find . -type d -name "BLE*")
 for dir in ${SUBDIRS}; do
-    echo "---------------------------------------"
+    echo 
+    echo "-----------------------------------------------------------------------------------------"
     echo " Validation build for ${dir}"
-    echo "---------------------------------------"
+    echo "-----------------------------------------------------------------------------------------"
+    echo 
     make -C ${dir} clean
     make -C ${dir} libclean
     make -C ${dir} -j8

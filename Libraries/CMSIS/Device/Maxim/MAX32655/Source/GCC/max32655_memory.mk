@@ -3,17 +3,8 @@ $(info ---INFO enter Libraries/CMSIS/Device/Maxim/MAX32655/Source/GCC/max32655_m
 #ARM_SRAM_SIZE  ?= 0x10000		# 64
 #RISCV_RAM_SIZE ?= 0x0C000		# 48
 
-# X
-#ARM_SRAM_SIZE  ?= 0x14000		# 64 + 16, allocate the ARM core more space
-#RISCV_RAM_SIZE ?= 0x08000		# 32
-
-# OK
 ARM_SRAM_SIZE  ?= 0x11000		# 64 + 4, allocate the ARM core more space
 RISCV_RAM_SIZE ?= 0x0B000		# 48 - 4
-
-# X
-#ARM_SRAM_SIZE  ?= 0x12000		# 64 + 8, allocate the ARM core more space
-#RISCV_RAM_SIZE ?= 0x0A000		# 48 - 8
 
 # NOTE: sysram3 16 KB is reserved for RISCV cache, ICC1 if RISC-V core in use
 DUAL_CORE_RAM_SIZE ?= 0x1C000   # 64 + 48
