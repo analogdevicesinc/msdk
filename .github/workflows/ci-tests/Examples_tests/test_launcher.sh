@@ -11,44 +11,38 @@ if [ $(hostname) == "wall-e" ]; then
     # main ME17 device used to test the rest
     MAIN_DEVICE_NAME_UPPER=MAX32655
     MAIN_DEVICE_NAME_LOWER=max32655
-    MAIN_DEVICE_ID=04091702d4f18ac600000000000000000000000097969906
-    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev | cut -d "/" -f1 | rev)"
 
-    # List of devices under test
-    dut_list=(max32655 max32665 max32690)
-    # List of serial IDs for DUT, must correlate with list above
-    dut_list_ID=(04091702f7f18a2900000000000000000000000097969906 0409000098d9439b00000000000000000000000097969906 0409170246dfc09500000000000000000000000097969906)
-    # List of serail devices associated with each DUT msut correlate with device list above
-    #dut_list_serial=(D30A1X9X)
-    dut_list_serial=(D309ZDEM D30A1X9X D30ALJPW)
+    FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+    MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
+    main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
+    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
+
     # WALL-E  paths
     export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
     export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
     export ROBOT=/home/btm-ci/.local/bin/robot
+
+    #get all device IDs to make sure nothing is running and attempts connection
+    DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
+    DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+    DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+    DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
 
 # Local- eddie desktop
 else
     # main ME17 device used to test the rest
     MAIN_DEVICE_NAME_UPPER=MAX32655
     MAIN_DEVICE_NAME_LOWER=max32655
-    MAIN_DEVICE_ID=0409170287da432d00000000000000000000000097969906
-    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDEM' | rev | cut -d "/" -f1 | rev)"
+    FILE=/home/$USER/boards_config.json
+    MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_0']['daplink'])"`
+    main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_0']['uart0'])"`
+    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
 
-    # List of devices under test
-    #dut_list=(max32665)
-    dut_list=(max32665 max32690)
-    # List of serial IDs for DUT, must correlate with list above
-    #dut_list_ID=(0409000098d9439b00000000000000000000000097969906)
-    dut_list_ID=(04091702bdf10c0400000000000000000000000097969906 0409170228a74ea700000000000000000000000097969906)
-    # List of serail devices associated with each DUT msut correlate with device list above
-    #dut_list_serial=(D30A1X9X)
-    dut_list_serial=(D30A1X9Z D30ALJQS)
     # local paths
     export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
     export OPENOCD=/home/eddie/workspace/openocd/src/openocd
     export ROBOT=/home/eddie/.local/bin/robot
 fi
-
 
 # setup  all DUT varaibles
 DUT_NAME_LOWER=$1
@@ -92,6 +86,23 @@ function flash_with_openocd() {
         $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;max32xxx mass_erase 0" -c "program $1.elf verify reset exit" >/dev/null &
         openocd_dapLink_pid=$!
     fi
+    if [[ $1 != "max32690" ]]; then
+    softreset_with_openocd $DUT_NAME_LOWER $DUT_ID
+
+}
+# Function accepts parameters: device, CMSIS_DAP_ID_x
+function softreset_with_openocd() {
+    
+    set +e
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;" -c "reset exit" >/dev/null &
+    openocd_dapLink_pid=$!
+    # wait for openocd to finish
+    while kill -0 $openocd_dapLink_pid; do
+        sleep 1
+        # we can add a timeout here if we want
+    done
+    set -e
+  
 }
 # Function accepts parameters:device , CMSIS_DAP_ID_x
 function erase_with_openocd() {
@@ -175,10 +186,12 @@ function erase_all_devices() {
     erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     # erase DUTs
     erase_with_openocd $DUT_NAME_LOWER $DUT_ID
-    erase_with_openocd max32655 04091702d4f18ac600000000000000000000000097969906
-    erase_with_openocd max32655 04091702f7f18a2900000000000000000000000097969906
-    erase_with_openocd max32665 0409000098d9439b00000000000000000000000097969906
-    erase_with_openocd max32690 0409170246dfc09500000000000000000000000097969906
+    if [ $(hostname) == "wall-e" ]; then
+        erase_with_openocd max32655 04091702d4f18ac600000000000000000000000097969906
+        erase_with_openocd max32655 04091702f7f18a2900000000000000000000000097969906
+        erase_with_openocd max32665 0409000098d9439b00000000000000000000000097969906
+        erase_with_openocd max32690 0409170246dfc09500000000000000000000000097969906
+    fi
 }
 function project_marker() {
     echo "=============================================================================="
@@ -197,39 +210,75 @@ erase_all_devices
 # change advertising name for projects under test to avoid
 # connections with office devices
 printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
-perl -i -pe "s/\'D\'/\'X\'/g" dats_main.c
+if [ $(hostname) == "wall-e" ]; then
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+    perl -i -pe "s/\'D\'/\'X\'/g" dats_main.c
 
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
-perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+    perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
 
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
-perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+    perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
 
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+    perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
 
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
-perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+    perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
 
-# change advertising name to scan for on the main device client apps
-cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
-perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
+    # change advertising name to scan for on the main device client apps
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+    perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
 
-cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
 
-# build BLE examples
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
-SUBDIRS=$(find . -type d -name "BLE*")
-for dir in ${SUBDIRS}; do
-    echo "---------------------------------------"
-    echo " Validation build for ${dir}"
-    echo "---------------------------------------"
-    make -C ${dir} clean
-    make -C ${dir} libclean
-    make -C ${dir} -j8
-done
+    # build BLE examples
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
+    SUBDIRS=$(find . -type d -name "BLE*")
+    for dir in ${SUBDIRS}; do
+        echo "---------------------------------------"
+        echo " Validation build for ${dir}"
+        echo "---------------------------------------"
+        make -C ${dir} clean
+        make -C ${dir} libclean
+        make -C ${dir} -j8
+    done
+else
+ cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+    perl -i -pe "s/\'D\'/\'Z\'/g" dats_main.c
+
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+    perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
+
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+    perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
+
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+    perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
+
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+    perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
+
+    # change advertising name to scan for on the main device client apps
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+    perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
+
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
+
+    # build BLE examples
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
+    SUBDIRS=$(find . -type d -name "BLE*")
+    for dir in ${SUBDIRS}; do
+        echo "---------------------------------------"
+        echo " Validation build for ${dir}"
+        echo "---------------------------------------"
+    #    make -C ${dir} clean
+    #   make -C ${dir} libclean
+        make -C ${dir} -j8
+    done
+fi
 
 # directory for test resutls
 cd $EXAMPLE_TEST_PATH/results/
