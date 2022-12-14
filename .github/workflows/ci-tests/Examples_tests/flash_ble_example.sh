@@ -82,16 +82,16 @@ export failedTestList=" "
 
 if [ `hostname` == "wall-e" ] 
 then
-    export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
-    export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
-    export ROBOT=/home/btm-ci/.local/bin/robot
+    export OPENOCD_TCL_PATH=/home/$USER/Tools/openocd/tcl
+    export OPENOCD=/home/$USER/Tools/openocd/src/openocd
+    export ROBOT=/home/$USER/.local/bin/robot
 else
     #export OPENOCD_TCL_PATH=/home/$USER/softwares/openocd/tcl
     export OPENOCD_TCL_PATH=/home/$USER/Tools/openocd/tcl
     export OPENOCD=/home/$USER/Tools/openocd/src/openocd
     #export OPENOCD=/home/$USER/softwares/openocd/src/openocd    # Open On-Chip Debugger 0.11.0+dev-g124409881-dirty (2022-08-31-12:17)
     #export OPENOCD=/home/$USER/MaximSDK/Tools/OpenOCD/openocd  # Open On-Chip Debugger 0.11.0+dev-g2de3186d7 (2022-06-17-06:44)
-    export ROBOT=/home/btm-ci/.local/bin/robot
+    export ROBOT=/home/$USER/.local/bin/robot
 fi
 
 function script_clean_up()
