@@ -19,6 +19,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+     # Clean and remove any local modifications
       - name: Clean
         continue-on-error: true
         run: |
@@ -36,20 +37,25 @@ jobs:
           fi
 
           set -e
-
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
           submodules: false
           fetch-depth: 0
       
-      - name: Lock max32655 and max32665
+      # Locks all board preventing them from being used during a test
+      # even if only one board is being tested. This is so that another job
+      # does not possibly used one of the free boards that may connect to the 
+      #current board undertest
+      - name: Lock All Boards
         if: ${{ always() }}
         run: |          
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_0.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
- 
-      # Runs a set of commands using the runners shell
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+
+      # ME17
       - name: TEST MAX32655
         run: |
           # Remove local modifications
@@ -106,24 +112,7 @@ jobs:
           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
           ./test_launcher.sh max32655 $dut_uart $dut_serial
       
-      # Unlock even when cancelled or failed
-      - name: unlock MAX32655 and MAX32655 boards
-        if: always()
-        run: |
-          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_0.txt" ]; then
-            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          fi
-          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_1.txt" ]; then
-            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          fi
-      # Runs a set of commands using the runners shell
-
-      - name: Lock max32655 and max32665
-        if: ${{ always() }}
-        run: |          
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
- 
+      # ME14
       - name: TEST MAX32665
         run: |
           # Remove local modifications
@@ -179,18 +168,65 @@ jobs:
           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
           ./test_launcher.sh max32665 $dut_uart $dut_serial          
-      # Unlock even when cancelled or failed
-      - name: unlock MAX32655 and MAX32665 boards
-        if: always()
+      
+      # ME18
+      - name: TEST MAX32690
         run: |
-          if [ -f "/home/$USER/Workspace/Resource_Share/max32665_13.txt" ]; then
-            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          fi
-          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_0.txt" ]; then
-            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          # Remove local modifications
+          git scorch
+          # Update the submodules, this will use ssh
+          git submodule init
+          git submodule sync
+          git submodule update --init --recursive
+
+          BLE_FILES_CHANGED=0
+          
+          # Check for changes made to these files
+          WATCH_FILES="\
+          Examples/MAX32690/BLE \
+          Libraries/libs.mk \
+          Libraries/CMSIS/Device/Maxim/MAX32690 \
+          Libraries/PeriphDrivers/libPeriphDriver.mk \
+          Libraries/PeriphDrivers/periphdriver.mk \
+          Libraries/PeriphDrivers/max32690_files.mk \
+          Libraries/PeriphDrivers/Source \
+          Libraries/PeriphDrivers/Include/MAX32690 \
+          Libraries/BlePhy/MAX32690 \
+          Libraries/Boards/MAX32690"
+          
+          # Get the diff from main
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          
+          echo "Watching these locations and files"
+          echo $WATCH_FILES
+          
+          echo "Checking the following changes"
+          echo $CHANGE_FILES
+          
+          # Assume we want to actually run the workflow if no files changed
+          if [[ "$CHANGE_FILES" != "" ]]; then
+            for watch_file in $WATCH_FILES; do 
+              if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
+                BLE_FILES_CHANGED=1
+              fi
+            done
+            if [[ $BLE_FILES_CHANGED -eq 0 ]]
+            then
+              echo "Skipping Test"
+              exit 0
+            fi
           fi
           
-                
+          echo "Running Test"
+          
+          cd .github/workflows/ci-tests/Examples_tests
+          chmod +x test_launcher.sh
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
+          dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`            
+          ./test_launcher.sh max32690 $dut_uart $dut_serial          
+      
+      # Save test reports
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -198,22 +234,15 @@ jobs:
             path: .github/workflows/ci-tests/Examples_tests/results/
       
       # Unlock even when cancelled or failed
-      - name: unlock
+      # This needs some work, if the job is cancelled or times out because it could not get a LOCK
+      # it then jumps here and removes all locks, that were set by a different job   
+      - name: Unlock All Boards
         if: always()
         run: |
-          # MAX32655 0
-          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_0.txt" ]; then
-            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          fi
-          # MAX232655 1
-          if [ -f "/home/$USER/Workspace/Resource_Share/max32655_1.txt" ]; then
-            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          fi
-          # MAX32665
-          if [ -f "/home/$USER/Workspace/Resource_Share/max32665_13.txt" ]; then
-            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          fi
-          # MAX32690
-          if [ -f "/home/$USER/Workspace/Resource_Share/max32690_w1.txt" ]; then
-            python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-          fi
+
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+
+          
