@@ -132,9 +132,7 @@ jobs:
           mkdir -p $DEST/MAX78002 && cp -r $SOURCE/MAX78002 $DEST/
 
           echo "Copying root markdown folders..."
-          cp USERGUIDE.md Documentation/
-          cp CONTRIBUTING.md Documentation/
-          cp -r res Documentation/
+          cp -r *.md test/
 
           mkdocs build
 

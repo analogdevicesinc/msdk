@@ -8,9 +8,6 @@ Libraries/PeriphDrivers/bin/MAX78000/softfp_riscv/libPeriphDriver_softfp.a
 Libraries/PeriphDrivers/Documentation/MAX*
 docs
 Documentation/Libraries
-Documentation/res
-Documentation/CONTRIBUTING.md
-Documentation/USERGUIDE.md
 Examples/MAX78000/PowerTest
 __pycache__
 msdk-internal
