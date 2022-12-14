@@ -82,6 +82,20 @@ void vAssertCalled(const char *const pcFileName, uint32_t ulLine)
     __asm volatile("cpsie i");
 }
 
+void vApplicationMallocFailedHook( void )
+{
+    volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
+
+    __asm volatile("cpsid i");
+    {
+        /* You can step out of this function to debug the assertion by using
+        the debugger to set ulSetToNonZeroInDebuggerToContinue to a non-zero
+        value. */
+        while (ulSetToNonZeroInDebuggerToContinue == 0) {}
+    }
+    __asm volatile("cpsie i");   
+}
+
 /* =| vApplicationIdleHook |==============================
  *
  *  Call the user defined function from within the idle task.  This
@@ -94,12 +108,12 @@ void vAssertCalled(const char *const pcFileName, uint32_t ulLine)
  */
 void vApplicationIdleHook(void)
 {
+    #if (DEBUG == 0)
     /* Sleep while idle */
     LED_Off(SLEEP_LED);
-
     MXC_LP_EnterSleepMode();
-
     LED_On(SLEEP_LED);
+    #endif
 }
 
 /* =| main |==============================================

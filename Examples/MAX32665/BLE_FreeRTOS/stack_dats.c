@@ -287,28 +287,6 @@ void setInterruptPriority(void)
     NVIC_SetPriority(GPIO1_IRQn, (configMAX_PRIORITIES - 0));
 }
 
-void trim32k(void)
-{
-    /* Start the 32 MHz crystal and the BLE DBB counter to trim the 32 kHz crystal */
-    PalBbEnable();
-
-    NVIC_EnableIRQ(WUT_IRQn);
-
-    /* Output buffered square wave of 32 kHz clock to GPIO */
-    // MXC_RTC_SquareWaveStart(MXC_RTC_F_32KHZ);
-
-    /* Execute the trim procedure */
-    wutTrimComplete = 0;
-    if (MXC_WUT_TrimCrystalAsync(wutTrimCb) != E_NO_ERROR) {
-        APP_TRACE_INFO0("Error with 32k trim");
-    } else {
-        while (!wutTrimComplete) {}
-    }
-
-    /* Shutdown the 32 MHz crystal and the BLE DBB */
-    PalBbDisable();
-}
-
 /*************************************************************************************************/
 /*!
  *  \brief      Initialize BLE.
@@ -372,8 +350,6 @@ void bleStartup(void)
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     LlSetBdAddr((uint8_t *)&bdAddr);
 #endif
-
-    trim32k();
 
     setInterruptPriority();
 
