@@ -5,7 +5,7 @@ mkdir results
 cd ../../../../
 MSDK_DIR=$(pwd)
 failedTestList=" "
-export numOfFailedTests=0
+numOfFailedTests=0
 
 if [ $(hostname) == "wall-e" ]; then
     # main ME17 device used to test the rest
@@ -400,14 +400,12 @@ set -e
 erase_with_openocd $DUT_NAME_LOWER $DUT_ID
 erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
-
-
 erase_all_devices
 
 echo "=============================================================================="
 echo "=============================================================================="
 if [ "$numOfFailedTests" -ne "0" ]; then
-    echo "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList" >> results.txt
+    echo "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
    
 else
     echo "Relax! ALL TESTS PASSED"
