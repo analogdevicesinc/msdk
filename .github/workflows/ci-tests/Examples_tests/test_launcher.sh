@@ -88,6 +88,7 @@ function flash_with_openocd() {
     fi
     if [[ $1 != "max32690" ]]; then
     softreset_with_openocd $DUT_NAME_LOWER $DUT_ID
+    fi
 
 }
 # Function accepts parameters: device, CMSIS_DAP_ID_x
