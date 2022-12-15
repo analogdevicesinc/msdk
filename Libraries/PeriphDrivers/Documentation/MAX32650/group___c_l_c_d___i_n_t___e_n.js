@@ -1,0 +1,27 @@
+var group___c_l_c_d___i_n_t___e_n =
+[
+    [ "MXC_F_CLCD_INT_EN_ADDR_RDY_IE", "group___c_l_c_d___i_n_t___e_n.html#gac91a55e35a8fc983b3dee2cd05a09f90", null ],
+    [ "MXC_F_CLCD_INT_EN_ADDR_RDY_IE_POS", "group___c_l_c_d___i_n_t___e_n.html#gab1eaf5723a625629745f510a4715baa1", null ],
+    [ "MXC_F_CLCD_INT_EN_BUS_ERROR_IE", "group___c_l_c_d___i_n_t___e_n.html#ga5882c659579558bb16cf5465dc9d0801", null ],
+    [ "MXC_F_CLCD_INT_EN_BUS_ERROR_IE_POS", "group___c_l_c_d___i_n_t___e_n.html#ga777436a83e24b78f76f101b64c5bbef3", null ],
+    [ "MXC_F_CLCD_INT_EN_UNDERFLOW_IE", "group___c_l_c_d___i_n_t___e_n.html#gaac55aa30b40ff5c7de670596945517fe", null ],
+    [ "MXC_F_CLCD_INT_EN_UNDERFLOW_IE_POS", "group___c_l_c_d___i_n_t___e_n.html#ga8f7e3c5c566b83150cba50015ea9a132", null ],
+    [ "MXC_F_CLCD_INT_EN_VCI_IE", "group___c_l_c_d___i_n_t___e_n.html#ga85e3d1f7e40fc10b53456a6f9f5ffd87", null ],
+    [ "MXC_F_CLCD_INT_EN_VCI_IE_POS", "group___c_l_c_d___i_n_t___e_n.html#gada4f73f6d0500d34475e65a0cd299970", null ],
+    [ "MXC_S_CLCD_INT_EN_ADDR_RDY_IE_DIS", "group___c_l_c_d___i_n_t___e_n.html#ga5781cf26007dc678ca610a885ed9cd8c", null ],
+    [ "MXC_S_CLCD_INT_EN_ADDR_RDY_IE_EN", "group___c_l_c_d___i_n_t___e_n.html#gacd9e39e1c6a1758570f498bdf41631ea", null ],
+    [ "MXC_S_CLCD_INT_EN_BUS_ERROR_IE_DIS", "group___c_l_c_d___i_n_t___e_n.html#gad2b8991c48ef7662d87779a54a62d289", null ],
+    [ "MXC_S_CLCD_INT_EN_BUS_ERROR_IE_EN", "group___c_l_c_d___i_n_t___e_n.html#ga1a00664c6750a97eb96120ef816af5c2", null ],
+    [ "MXC_S_CLCD_INT_EN_UNDERFLOW_IE_DIS", "group___c_l_c_d___i_n_t___e_n.html#ga48ff41afd1f2949dbbf7361b98866e8a", null ],
+    [ "MXC_S_CLCD_INT_EN_UNDERFLOW_IE_EN", "group___c_l_c_d___i_n_t___e_n.html#ga20a209145cd9c1878d7df5629e23b16d", null ],
+    [ "MXC_S_CLCD_INT_EN_VCI_IE_DIS", "group___c_l_c_d___i_n_t___e_n.html#ga0067ff7aac3bc37a9e8fa1a8613492d4", null ],
+    [ "MXC_S_CLCD_INT_EN_VCI_IE_EN", "group___c_l_c_d___i_n_t___e_n.html#ga6a7ec2dfa59709b220261554c9c78b31", null ],
+    [ "MXC_V_CLCD_INT_EN_ADDR_RDY_IE_DIS", "group___c_l_c_d___i_n_t___e_n.html#gaabd204d8172a4ec7e05dfdcb002831d4", null ],
+    [ "MXC_V_CLCD_INT_EN_ADDR_RDY_IE_EN", "group___c_l_c_d___i_n_t___e_n.html#ga30fd1c16399bbc24b7e8a6208aac0c90", null ],
+    [ "MXC_V_CLCD_INT_EN_BUS_ERROR_IE_DIS", "group___c_l_c_d___i_n_t___e_n.html#ga9e44b3bbdaf99719d697f3130a11a2d2", null ],
+    [ "MXC_V_CLCD_INT_EN_BUS_ERROR_IE_EN", "group___c_l_c_d___i_n_t___e_n.html#ga4d0a780c146c558da578946a20a9336e", null ],
+    [ "MXC_V_CLCD_INT_EN_UNDERFLOW_IE_DIS", "group___c_l_c_d___i_n_t___e_n.html#ga3e80c060b089b3f8fe1aa3a5a53fda08", null ],
+    [ "MXC_V_CLCD_INT_EN_UNDERFLOW_IE_EN", "group___c_l_c_d___i_n_t___e_n.html#gaeda2bfefedb0b2b9ae48b8126507e4e6", null ],
+    [ "MXC_V_CLCD_INT_EN_VCI_IE_DIS", "group___c_l_c_d___i_n_t___e_n.html#ga7b151e2eba76d5ae8c05f9ec68ba9568", null ],
+    [ "MXC_V_CLCD_INT_EN_VCI_IE_EN", "group___c_l_c_d___i_n_t___e_n.html#gac666dbff58734b7d634c307bbc430b2c", null ]
+];

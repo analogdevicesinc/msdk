@@ -1,0 +1,27 @@
+var group___s_p_i_x_f_c___s_p_c_t_r_l =
+[
+    [ "MXC_F_SPIXFC_SPCTRL_SAMPL", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gacd895c1752c7ff306b65cbce7dc89481", null ],
+    [ "MXC_F_SPIXFC_SPCTRL_SAMPL_POS", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga7d0d6d355ddaebe32c52cd70349b89db", null ],
+    [ "MXC_F_SPIXFC_SPCTRL_SCLKINH3", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gac8c6922683b739695b92fe453f6ede78", null ],
+    [ "MXC_F_SPIXFC_SPCTRL_SCLKINH3_POS", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gabeea3ce4191040a3dd37409eeb97e909", null ],
+    [ "MXC_F_SPIXFC_SPCTRL_SDIOOE", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga04aad439623fb6cf63e8fb4c9d1ea14b", null ],
+    [ "MXC_F_SPIXFC_SPCTRL_SDIOOE_POS", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga98fe85db4a13884a4cb39f316f541893", null ],
+    [ "MXC_F_SPIXFC_SPCTRL_SDIOOUT", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gaa78289098181770f0b76b55f905aa78c", null ],
+    [ "MXC_F_SPIXFC_SPCTRL_SDIOOUT_POS", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga5904d6a5d33ce55586bce59bc600702c", null ],
+    [ "MXC_S_SPIXFC_SPCTRL_SDIOOE_SDIO0", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gaaee4a164689c0899008e2997ae5fe375", null ],
+    [ "MXC_S_SPIXFC_SPCTRL_SDIOOE_SDIO1", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga7cc359250a0b3911becbc6d108d62f40", null ],
+    [ "MXC_S_SPIXFC_SPCTRL_SDIOOE_SDIO2", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga009b1687cfbfcfff61f5775b0b32c7a1", null ],
+    [ "MXC_S_SPIXFC_SPCTRL_SDIOOE_SDIO3", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga6ca403b324f7d7f5f552d44d89ed8fbe", null ],
+    [ "MXC_S_SPIXFC_SPCTRL_SDIOOUT_SDIO0", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gad7f8626e2f903e63b2fa0d03279f9b1c", null ],
+    [ "MXC_S_SPIXFC_SPCTRL_SDIOOUT_SDIO1", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gad70521d8033587d12bb8c260407516e7", null ],
+    [ "MXC_S_SPIXFC_SPCTRL_SDIOOUT_SDIO2", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga3bfe3ce7bca02aa7768ef4db7bdefb14", null ],
+    [ "MXC_S_SPIXFC_SPCTRL_SDIOOUT_SDIO3", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gabdde52cd8b9c72594e6bc8ff7cbcf110", null ],
+    [ "MXC_V_SPIXFC_SPCTRL_SDIOOE_SDIO0", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga706e7b21d26c1f93b34c7ee044dece95", null ],
+    [ "MXC_V_SPIXFC_SPCTRL_SDIOOE_SDIO1", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gae605f37724bd56e79e6b06ae07cf3883", null ],
+    [ "MXC_V_SPIXFC_SPCTRL_SDIOOE_SDIO2", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga716b17eaa6709f1d5bde325eb6d30f3e", null ],
+    [ "MXC_V_SPIXFC_SPCTRL_SDIOOE_SDIO3", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gaaa7cf5fe16b7c13ed00d661c41f4e0af", null ],
+    [ "MXC_V_SPIXFC_SPCTRL_SDIOOUT_SDIO0", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gaf224704d4cc922f3416b59ec378682ef", null ],
+    [ "MXC_V_SPIXFC_SPCTRL_SDIOOUT_SDIO1", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga1d2dbbe71d3a37e5f555751168bf692b", null ],
+    [ "MXC_V_SPIXFC_SPCTRL_SDIOOUT_SDIO2", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#ga0804b614317b8c9462fdde6df1d1af9b", null ],
+    [ "MXC_V_SPIXFC_SPCTRL_SDIOOUT_SDIO3", "group___s_p_i_x_f_c___s_p_c_t_r_l.html#gad45bfc611d31898f1b5324f4df555429", null ]
+];

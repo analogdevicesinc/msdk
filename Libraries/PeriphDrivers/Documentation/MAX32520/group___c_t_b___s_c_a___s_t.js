@@ -1,0 +1,25 @@
+var group___c_t_b___s_c_a___s_t =
+[
+    [ "MXC_F_CTB_SCA_ST_ALUNEG1", "group___c_t_b___s_c_a___s_t.html#ga3ece362c552eaf0485256ea747a43775", null ],
+    [ "MXC_F_CTB_SCA_ST_ALUNEG1_POS", "group___c_t_b___s_c_a___s_t.html#gaa5c321e3ceb555e853de0c5b959d3025", null ],
+    [ "MXC_F_CTB_SCA_ST_ALUNEG2", "group___c_t_b___s_c_a___s_t.html#ga3be47bf276b652bae6968c0677128800", null ],
+    [ "MXC_F_CTB_SCA_ST_ALUNEG2_POS", "group___c_t_b___s_c_a___s_t.html#ga0fd6da959c91b0c2ba051d6e85992f23", null ],
+    [ "MXC_F_CTB_SCA_ST_BUSY", "group___c_t_b___s_c_a___s_t.html#gaab8cdb5f047c156ce38007b9c6e626be", null ],
+    [ "MXC_F_CTB_SCA_ST_BUSY_POS", "group___c_t_b___s_c_a___s_t.html#ga8b39ebf0b7fab53af8aa09aa30f9c15c", null ],
+    [ "MXC_F_CTB_SCA_ST_CARRY", "group___c_t_b___s_c_a___s_t.html#gaafe4004d00f7b1025547cb56791c9030", null ],
+    [ "MXC_F_CTB_SCA_ST_CARRY_POS", "group___c_t_b___s_c_a___s_t.html#ga15ac16e31f4a6297fbe017cc04e19f4b", null ],
+    [ "MXC_F_CTB_SCA_ST_COMPERR", "group___c_t_b___s_c_a___s_t.html#gae1c1aace459a1c7a2ed94155a72579e2", null ],
+    [ "MXC_F_CTB_SCA_ST_COMPERR_POS", "group___c_t_b___s_c_a___s_t.html#ga9b724c6ffa4453e725419ec0be5f26a9", null ],
+    [ "MXC_F_CTB_SCA_ST_FSMERR", "group___c_t_b___s_c_a___s_t.html#ga4dbb13c17fc67d0b94bcf676fd760cff", null ],
+    [ "MXC_F_CTB_SCA_ST_FSMERR_POS", "group___c_t_b___s_c_a___s_t.html#gacdacf2546110ade9716f75245d3e5686", null ],
+    [ "MXC_F_CTB_SCA_ST_GTE2I2", "group___c_t_b___s_c_a___s_t.html#gab6ae0a610096fcf83690c7054a2faec3", null ],
+    [ "MXC_F_CTB_SCA_ST_GTE2I2_POS", "group___c_t_b___s_c_a___s_t.html#ga2ba4a484723a3cd8f02a1a174f9e8140", null ],
+    [ "MXC_F_CTB_SCA_ST_MEMERR", "group___c_t_b___s_c_a___s_t.html#gad1b61e0df84fbe852453fc86fd58d50b", null ],
+    [ "MXC_F_CTB_SCA_ST_MEMERR_POS", "group___c_t_b___s_c_a___s_t.html#ga2b4657dcbc9b8cceaf0ed8497c0b3011", null ],
+    [ "MXC_F_CTB_SCA_ST_PVF1", "group___c_t_b___s_c_a___s_t.html#ga26d2a68d51614ca762565b6a85c4a8fb", null ],
+    [ "MXC_F_CTB_SCA_ST_PVF1_POS", "group___c_t_b___s_c_a___s_t.html#gae837dc84487ccd70c6b2a6d05c9ee931", null ],
+    [ "MXC_F_CTB_SCA_ST_PVF2", "group___c_t_b___s_c_a___s_t.html#ga77e71f607fb0905c9ba545a772be7fce", null ],
+    [ "MXC_F_CTB_SCA_ST_PVF2_POS", "group___c_t_b___s_c_a___s_t.html#gaa80878382a039fcff463d652134b6c78", null ],
+    [ "MXC_F_CTB_SCA_ST_SCAIF", "group___c_t_b___s_c_a___s_t.html#ga2efb32e0d7ebbd5c25a4d3b288325755", null ],
+    [ "MXC_F_CTB_SCA_ST_SCAIF_POS", "group___c_t_b___s_c_a___s_t.html#gad0e4cc891a555cd8b4010c486b0e8a73", null ]
+];

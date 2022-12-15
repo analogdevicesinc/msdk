@@ -1,0 +1,25 @@
+var group___g_c_r___e_c_c___c_e_d =
+[
+    [ "MXC_F_GCR_ECC_CED_FL0ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#gabec945a441164de711ba59747c761145", null ],
+    [ "MXC_F_GCR_ECC_CED_FL0ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#ga4b1754f44896b7732e0e7da6df9a1851", null ],
+    [ "MXC_F_GCR_ECC_CED_FL1ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#gad293b029d9107b7268d1d1ce4c40c5ad", null ],
+    [ "MXC_F_GCR_ECC_CED_FL1ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#gacdce4c5e94bbc846c45f7b1b8567d7fc", null ],
+    [ "MXC_F_GCR_ECC_CED_IC0ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#gaae15df78ba59a91feed67ccf295eff5e", null ],
+    [ "MXC_F_GCR_ECC_CED_IC0ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#gaf9540e6ac1d5ba47a2317d343340ae8a", null ],
+    [ "MXC_F_GCR_ECC_CED_IC1ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#gaf66e78f892dea8a011f271a44a56a1ca", null ],
+    [ "MXC_F_GCR_ECC_CED_IC1ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#ga91527d97fe02ccede2542ece37360641", null ],
+    [ "MXC_F_GCR_ECC_CED_ICXIPECCNDED", "group___g_c_r___e_c_c___c_e_d.html#gae293c31d896d7b8699843fd0dcc9542b", null ],
+    [ "MXC_F_GCR_ECC_CED_ICXIPECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#gad5c70d1398c5f53687cd38e2da3a3e87", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM0ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#ga4ec60d96af4e85d00da196ad75587159", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM0ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#ga43b6831a0624c8f40e86305d862a4248", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM1ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#ga54276af76dbc9731d4ad3215896f0acd", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM1ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#ga587570fc196827597dace3509216c6a2", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM2ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#ga67632b721628a72d83953a435c7e68e2", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM2ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#gaf750b5a193c9066b1de62ffa31061a73", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM3ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#gaed5e72b4163c51e9facc84d0e78c8ae2", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM3ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#gacebced6179ecd0cdbd685c1073d9ca01", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM4ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#ga41e7a6697b02aa69fe807b6fa34afb87", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM4ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#gade02ab8556cc3786ce52c732ee97404e", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM5ECCNDED", "group___g_c_r___e_c_c___c_e_d.html#ga746901c7d85d9d037bc317e578612dd6", null ],
+    [ "MXC_F_GCR_ECC_CED_SYSRAM5ECCNDED_POS", "group___g_c_r___e_c_c___c_e_d.html#ga1b03f7e241e2b28fbf12511b1b240f34", null ]
+];

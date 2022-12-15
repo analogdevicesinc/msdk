@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>MAX78002 Documentation</title>
+		<style>
+			a:hover, a:focus {
+				color: #6e2585;
+			}
+			a:active, a:hover {
+				outline: 0;
+			}
+			a {
+				color: #00b2a9;
+				text-decoration: none;
+			}
+			body {
+				font-family: Arial,Helvetica,sans-serif;
+				color: #6c6f70;
+			}
+			h1 {
+				font-size: 150%;
+				color: #000;
+			}
+			h2 {
+				font-size: 125%;
+				color: #6e2585;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>MAX78002 Documentation</h1>
+		<hr>
+
+		Please visit Maxim's MAX78002 GitHub repository for:
+		<ol>
+			<li><a href=''>The latest versions of all files - No location</a></li>
+			<li><a href=''>Instructions for getting started with the evaluation kit - No location</a></li>
+		</ol>
+			
+		Additional information can be found in the following links.
+
+		<h2>SDK</h2>
+		<ul>
+			<li id='periph'></li>
+			<li>Toolchain</li>
+			<ul>
+				<li id='eclipse'></li>
+				<li id='gnu-arm'></li>
+				<li id='gnu-riscv'></li>
+				<li id='mingw'></li>
+				<li id='openocd'></li>
+				<li id='sbt'></li>
+				<li id='bmp-converter'></li>
+				<li id='free-rtos'></li>
+			</ul>
+		</ul>
+		<hr>
+
+		<h2>Example Applications</h2>
+		The following examples can be found in the <a href='../Examples/MAX78002'>Examples/MAX78002</a> directory of the SDK installation:
+		<ul>
+			<li><a href='../Examples/MAX78002/ADC/README.md'>ADC</a> - Analog-to-Digital Converter</li>
+			<li><a href='../Examples/MAX78002/AES/README.md'>AES</a> - Advanced Encryption Standard</li>
+			<li><a href='../Examples/MAX78002/ARM-DSP/README.md'>DSP</a> - Digital Signal Processing</li>
+			<li>CNN - Convolutional Neural Network</li>
+			<ul>
+				<li><a href='../Examples/MAX78002/CNN/cifar-100-effnet2/README.md'>cifar-100-effnet2</a> - Object Classification using 100 Choices</li>
+				<li><a href='../Examples/MAX78002/CNN/cifar-100-mobilenet-v2-0.75/README.md'>cifar-100-mobilenet-v2-0.75</a> - Object Classification using 100 Choices</li>
+				<li><a href='../Examples/MAX78002/CNN/imagenet/README.md'>imagenet</a></li>
+			</ul>
+			<li><a href='../Examples/MAX78002/CRC/README.md'>CRC</a> - Cyclic Redundancy Check</li>
+			<li><a href='../Examples/MAX78002/CSI2/README.md'>CSI2</a> - MIPI CSI-2 D-PHY</li>
+			<li><a href='../Examples/MAX78002/CameraIF/README.md'>CameraIF</a> - Parallel Camera Interface</li>
+			<li><a href='../Examples/MAX78002/CameraIF_Debayer/README.md'>CameraIF_Debayer</a> - Interface to the Bayer-patterned HM0360 camera</li>
+			<li><a href='../Examples/MAX78002/DMA/README.md'>DMA</a> - Direct Memory Access</li>
+			<li><a href='../Examples/MAX78002/ECC/README.md'>ECC</a> - Error Correction Code</li>
+			<li><a href='../Examples/MAX78002/Flash/README.md'>Flash</a> - Flash Memory</li>
+			<li><a href='../Examples/MAX78002/Flash_CLI/README.md'>Flash_CLI</a> - Flash Memory - Demonstrates the storage of non-volatile data</li>
+			<li><a href='../Examples/MAX78002/FreeRTOSDemo/README.md'>FreeRTOSDemo</a></li>
+			<li><a href='../Examples/MAX78002/GPIO/README.md'>GPIO</a> - General Purpose Input/Output</li>
+			<li><a href='../Examples/MAX78002/Hello_World/README.md'>Hello_World</a></li>
+			<li><a href='../Examples/MAX78002/ImgCapture/README.md'>ImgCapture</a> - Image capturing from the Parallel Camera Interface</li>
+			<li><a href='../Examples/MAX78002/I2C/README.md'>I2C</a> - The Standard 2-Wire Serial Protocol</li>
+			<li><a href='../Examples/MAX78002/I2C_MNGR/README.md'>I2C_MNGR</a> - Demonstration of managing simultaneous I2C transaction requests</li>
+			<li><a href='../Examples/MAX78002/I2C_SCAN/README.md'>I2C_SCAN</a> - Demonstration of discovering I2C devices on the bus</li>
+			<li><a href='../Examples/MAX78002/I2C_Sensor/README.md'>I2C_Sensor</a> - Demonstration of communicating with an I2C temperature sensor</li>
+			<li><a href='../Examples/MAX78002/I2S/README.md'>I2S</a> - Inter-IC Sound</li>
+			<li><a href='../Examples/MAX78002/I2S_DMA/README.md'>I2S_DMA</a> - Inter-IC Sound DMA</li>
+			<li><a href='../Examples/MAX78002/ICC/README.md'>ICC</a> - Internal Cache Controller</li>
+			<li><a href='../Examples/MAX78002/LP/README.md'>LP</a> - Low Power</li>
+			<li><a href='../Examples/MAX78002/LPCMP/README.md'>LPCMP</a> - Low Power Comparator</li>
+			<li><a href='../Examples/MAX78002/Pulse_Train/README.md'>Pulse_Train</a></li>
+			<li><a href='../Examples/MAX78002/RTC/README.md'>RTC</a> - Real Time Clock</li>
+			<li><a href='../Examples/MAX78002/RTC_Backup/README.md'>RTC_Backup</a> - Real Time Clock in Backup Mode</li>
+			<li><a href='../Examples/MAX78002/SDHC_FAT/README.md'>SDHC_FAT</a></li>
+			<li><a href='../Examples/MAX78002/SDHC_Raw/README.md'>SDHC_Raw</a></li>
+			<li><a href='../Examples/MAX78002/SPI/README.md'>SPI</a> - Serial Peripheral Interface</li>
+			<li><a href='../Examples/MAX78002/TFT_Demo/README.md'>TFT_Demo</a> - Thin-Film Transistor Display</li>
+			<li><a href='../Examples/MAX78002/TMR/README.md'>TMR</a> - General Purpose Timer</li>
+			<li><a href='../Examples/MAX78002/TRNG/README.md'>TRNG</a> - True Random Number Generator</li>
+			<li><a href='../Examples/MAX78002/UART/README.md'>UART</a> - Universal Asynchronous Receiver/Transmitter</li>
+			<li><a href='../Examples/MAX78002/USB_CDCACM/README.md'>USB_CDCACM</a> -USB Virtual COM port</li>
+			<li><a href='../Examples/MAX78002/USB_CompositeDevice_MSC_CDC/README.md'>USB_CompositeDevice_MSC_CDC</a> - USB composite device with mass storage device and virtual COM port</li>
+			<li><a href='../Examples/MAX78002/USB_CompositeDevice_MSC_HID/README.md'>USB_CompositeDevice_MSC_HID</a> - USB composite device with mass storage device and keyboard</li>
+			<li><a href='../Examples/MAX78002/USB_HIDKeyboard/README.md'>USB_HIDKeyboard</a></li>
+			<li><a href='../Examples/MAX78002/USB_MassStorage/README.md'>USB_MassStorage</a></li>
+			<li><a href='../Examples/MAX78002/USB_MassStorage_ThroughPut/README.md'>USB_MassStorage_ThroughPut</a> - Emulated mass storage device for throughput testing</li>
+			<li><a href='../Examples/MAX78002/WUT/README.md'>WUT</a> - Wake Up Timer</li>
+			<li><a href='../Examples/MAX78002/Watchdog/README.md'>Watchdog</a></li>
+			<li><a href='../Examples/MAX78002/WearLeveling/README.md'>WearLeveling</a> - Flash Wear Leveling</li>
+		</ul>
+		<hr>
+
+		<h2>Device Information</h2>
+		Additional information about the MAX78002 can be found in these documents:
+		<ul>
+			<li>IC Datasheet - Coming Soon!</a></li>
+			<li>IC User Guide - Coming Soon!</a></li>
+			<li>Evaluation Kit Schematic - Coming Soon!</a></li>
+		</ul>
+
+		<script type="text/javascript">
+
+			function addLink(testFile, url, passText, failText, dom)
+			{
+				var img = new Image();
+				img.onerror = function() {
+					dom.innerHTML += failText;
+				};
+				img.onload = function() {
+					dom.innerHTML += '<a href="' + url + '">' + passText + '</a>';
+				};
+				img.src = testFile;
+				console.log('Test');
+				console.log(img.currentSrc);
+			}
+
+			addLink('../Libraries/PeriphDrivers/Documentation/MAX78002/doc.png',
+				    '../Libraries/PeriphDrivers/Documentation/MAX78002/index.html',
+				    'Peripheral API', 
+				    'The periheral API documentation has not been installed.', 
+				    document.getElementById('periph')
+				);
+
+			addLink('../Tools/Eclipse/cdt/plugins/org.eclipse.platform_4.13.0.v20190916-1045/splash.bmp',
+				    '../Tools/Eclipse/cdt/readme/readme_eclipse.html',
+				    'Eclipse', 
+				    'Eclipse has not been installed.', 
+				    document.getElementById('eclipse')
+				);
+
+			addLink('../Tools/GNUTools/blank.bmp',
+				    'https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm',
+				    'GNU Tools for ARM', 
+				    'The GNU Tools for ARM have not been installed.', 
+				    document.getElementById('gnu-arm')
+				);
+
+			addLink('../Tools/xPack/blank.bmp',
+				    '../Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/README.md',
+				    'GNU Tools for RISC-V', 
+				    'The GNU Tools for RISC-V have not been installed.', 
+				    document.getElementById('gnu-riscv')
+				);
+
+			addLink('../Libraries/FreeRTOS/Documentation/blank.bmp',
+				    '../Libraries/FreeRTOS/readme.txt',
+				    'Free-RTOS', 
+				    'The Free-RTOS libraries have not been installed.', 
+				    document.getElementById('free-rtos')
+				);
+			addLink('../Tools/BitmapConverter/docs/blank.bmp',
+				    '../Tools/BitmapConverter/docs/README.md',
+				    'Bitmap Converter', 
+				    'The bitmap converter has not been installed.', 
+				    document.getElementById('bmp-converter')
+				);
+			addLink('../Tools/SBT/docs/blank.bmp',
+				    '../Tools/SBT/docs/UG7236Rev1_MaximSDK_Secure_Boot_Tool_User_Guide.pdf',
+				    'Secure Boot Tools', 
+				    'The secure boot tools have not been installed.', 
+				    document.getElementById('sbt')
+				);
+			addLink('../Tools/OpenOCD/blank.bmp',
+				    'http://openocd.org/doc/html/index.html',
+				    'OpenOCD', 
+				    'OpenOCD has not been installed.', 
+				    document.getElementById('openocd')
+				);
+			addLink('../Tools/MSYS2/msys2.ico',
+				    'https://www.msys2.org/docs/what-is-msys2/',
+				    'MSYS2 (Building Platform for Windows)', 
+				    'The MSYS2 package has not been installed.', 
+				    document.getElementById('mingw')
+				);
+	</script>
+	</body>
+</html>

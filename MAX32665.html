@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>MAX32665 Documentation</title>
+		<style>
+			a:hover, a:focus {
+				color: #6e2585;
+			}
+			a:active, a:hover {
+				outline: 0;
+			}
+			a {
+				color: #00b2a9;
+				text-decoration: none;
+			}
+			body {
+				font-family: Arial,Helvetica,sans-serif;
+				color: #6c6f70;
+			}
+			h1 {
+				font-size: 150%;
+				color: #000;
+			}
+			h2 {
+				font-size: 125%;
+				color: #6e2585;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1>MAX32665 Documentation</h1>
+		<hr>
+
+		<h2>SDK</h2>
+		<ul>
+			<li id='periph'></li>
+			<li>Toolchain</li>
+			<ul>
+				<li id='eclipse'></li>
+				<li id='gnu-arm'></li>
+				<!-- This device does not have a Risc-V core <li id='gnu-riscv'></li> -->
+				<li id='mingw'></li>
+				<li id='openocd'></li>
+				<li id='sbt'></li>
+				<li id='bmp-converter'></li>
+				<li id='free-rtos'></li>
+			</ul>
+		</ul>
+		<hr>
+
+		<h2>Example Applications</h2>
+		The following examples can be found in the <a href='../Examples/MAX32665'>Examples/MAX32665</a> directory of the SDK installation:
+		<ul>
+			<li><a href='../Examples/MAX32665/ADC/README.md'>ADC</a> - Analog-to-Digital Converter</li>
+			<li><a href='../Examples/MAX32665/AES/README.md'>AES</a> - Advanced Encryption Standard</li>
+			<li><a href='../Examples/MAX32665/ARM-DSP/README.md'>DSP</a> - Digital Signal Processing</li>
+			<li><a href='../Examples/MAX32665/BLE_datc/README.md'>BLE_datc</a> - Bluetooth Data Client</li>
+			<li><a href='../Examples/MAX32665/BLE_dats/README.md'>BLE_dats</a> - Bluetooth Data Server</li>
+			<li><a href='../Examples/MAX32665/BLE_fcc/README.md'>BLE_fcc</a> - Bluetooth Sample for FCC Testing</li>
+			<li><a href='../Examples/MAX32665/BLE_fit/README.md'>BLE_fit</a> - Bluetooth Fitness Device</li>
+			<li><a href='../Examples/MAX32665/BLE_FreeRTOS/README.md'>BLE_FreeRTOS</a> - BLE and Free-RTOS Application</li>
+			<li><a href='../Examples/MAX32665/BLE_mcs/README.md'>BLE_mcs</a> - Maxim custom Bluetooth Profile and Services</li>
+			<li><a href='../Examples/MAX32665/BLE_otac/README.md'>BLE_otac</a> - Bluetooth Data Client with Over-the-Air Updates</li>
+			<li><a href='../Examples/MAX32665/BLE_otas/README.md'>BLE_otas</a> - Bluetooth Data Server with Over-the-Air Updates</li>
+			<li><a href='../Examples/MAX32665/BLE_periph/README.md'>BLE_periph</a> - Bluetooth Peripheral</li>
+			<li><a href='../Examples/MAX32665/BLE4_ctr/README.md'>BLE4_ctr</a> - Bluetooth v4.2 Controller</li>
+			<li><a href='../Examples/MAX32665/BLE5_ctr/README.md'>BLE5_ctr</a> - Bluetooth v5.2 Controller</li>
+			<li><a href='../Examples/MAX32665/Bootloader/README.md'>Bootloader</a></li>
+			<li><a href='../Examples/MAX32665/Bootloader_Host/README.md'>Bootloader_Host</a></li>
+			<li><a href='../Examples/MAX32665/CRC/README.md'>CRC</a> - Cyclic Redundancy Check</li>
+			<li><a href='../Examples/MAX32665/DES/README.md'>DES</a> - Data Encryption Standard</li>
+			<li><a href='../Examples/MAX32665/DMA/README.md'>DMA</a> - Direct Memory Access</li>
+			<li><a href='../Examples/MAX32665/ECC/README.md'>ECC</a> - Error Correction Code</li>
+			<li><a href='../Examples/MAX32665/Flash/README.md'>Flash</a> - Flash Memory</li>
+			<li><a href='../Examples/MAX32665/Flash_CLI/README.md'>Flash-CLI</a> - Flash Memory - Demonstration of storing non-volatile data</li>
+			<li><a href='../Examples/MAX32665/FreeRTOSDemo/README.md'>FreeRTOSDemo</a></li>
+			<li><a href='../Examples/MAX32665/GPIO/README.md'>GPIO</a> - General Purpose Input/Output</li>
+			<li><a href='../Examples/MAX32665/Hash/README.md'>Hash</a> - CTB Hash</li>
+			<li><a href='../Examples/MAX32665/Hello_World/README.md'>Hello_World</a></li>
+			<li><a href='../Examples/MAX32665/HTMR/README.md'>HTMR</a> - High Speed Timer</li>
+			<li><a href='../Examples/MAX32665/I2C/README.md'>I2C</a> - The Standard 2-Wire Serial Protocol</li>
+			<li><a href='../Examples/MAX32665/I2C_MNGR/README.md'>I2C_MNGR</a> - Demonstration of managing simultaneous I2C transaction requests</li>
+			<li><a href='../Examples/MAX32665/I2C_SCAN/README.md'>I2C_SCAN</a> - Demonstration of discovering I2C devices on the bus</li>
+			<li><a href='../Examples/MAX32665/I2C_Sensor/README.md'>I2C_Sensor</a> - Demonstration of communicating with an I2C temperature sensor</li>
+			<li><a href='../Examples/MAX32665/ICC/README.md'>ICC</a> - Internal Cache Controller</li>
+			<li><a href='../Examples/MAX32665/LP/README.md'>LP</a> - Low Power</li>
+			<li><a href='../Examples/MAX32665/MAA/README.md'>MAA</a> - Modular Arithmetic Accelerator</li>
+			<li><a href='../Examples/MAX32665/OWM/README.md'>OWM</a> - 1-Wire Protocol</li>
+			<li><a href='../Examples/MAX32665/Pulse_Train/README.md'>Pulse_Train</a></li>
+			<li><a href='../Examples/MAX32665/RPU/README.md'>RPU</a> - Resource Protection Unit</li>
+			<li><a href='../Examples/MAX32665/RTC/README.md'>RTC</a> - Real Time Clock</li>
+			<li><a href='../Examples/MAX32665/RTC_Backup/README.md'>RTC_Backup</a> - Demonstration of the RTC running in Backup mode</li>
+			<li><a href='../Examples/MAX32665/SCPA_OTP_Dump/README.md'>SCPA_OTP_Dump</a> - Secure Communication Protocal Applet</li>
+			<li><a href='../Examples/MAX32665/SDHC_FAT/README.md'>SDHC_FAT</a></li>
+			<li><a href='../Examples/MAX32665/SDHC_Raw/README.md'>SDHC_Raw</a></li>
+			<li><a href='../Examples/MAX32665/Semaphore/README.md'>Semaphore</a></li>
+			<li><a href='../Examples/MAX32665/SPI/README.md'>SPI</a> - Serial Peripheral Interface</li>
+			<li><a href='../Examples/MAX32665/SPIXF/README.md'>SPIXF</a> - SPI Execute-in-Place Flash</li>
+			<li><a href='../Examples/MAX32665/SPIXR/README.md'>SPIXR</a> - SPI Execute-in-Place RAM</li>
+			<li><a href='../Examples/MAX32665/SRCC/README.md'>SRCC</a> - SPIXR Cache Controller</li>
+			<li><a href='../Examples/MAX32665/TMR/README.md'>TMR</a> - General Purpose Timer</li>
+			<li><a href='../Examples/MAX32665/TRNG/README.md'>TRNG</a> - True Random Number Generator</li>
+			<li><a href='../Examples/MAX32665/UART/README.md'>UART</a> - Universal Asynchronous Receiver/Transmitter</li>
+			<li><a href='../Examples/MAX32665/USB_CDCACM/README.md'>USB_CDCACM</a> - USB CDC-ACM Driver Class</li>
+			<li><a href='../Examples/MAX32665/USB_CompositeDevice_MSC_CDC/README.md'>USB_CompositeDevice_MSC_CDC</a> - USB Composite Device with Mass Storage and CDC-ACM Driver Class</li>
+			<li><a href='../Examples/MAX32665/USB_CompositeDevice_MSC_HID/README.md'>USB_CompositeDevice_MSC_HID</a> - USB Composite Device with Mass Storage and HID Driver Class</li>
+			<li><a href='../Examples/MAX32665/USB_HIDKeyboard/README.md'>USB_HIDKeyboard</a> - USB HID Driver Class</li>
+			<li><a href='../Examples/MAX32665/USB_MassStorage/README.md'>USB_MassStorage</a> - USB Mass Storage Driver Class</li>
+			<li><a href='../Examples/MAX32665/Watchdog/README.md'>Watchdog</a></li>
+			<li><a href='../Examples/MAX32665/WearLeveling/README.md'>WearLeveling</a></li>
+			<li><a href='../Examples/MAX32665/WUT/README.md'>WUT</a> - Wake Up Timer</li>
+		</ul>
+		<hr>
+
+		<h2>Device Information</h2>
+		Additional information about the MAX32665 can be found in these documents:
+		<ul>
+			<li><a href='https://datasheets.maximintegrated.com/en/ds/MAX32665-MAX32668.pdf'>IC Datasheet</a></li>
+			<li><a href='https://pdfserv.maximintegrated.com/en/an/UG6971-MAX32665-MAX32668.pdf'>IC User Guide</a></li>
+			<li>Evaluation Kit Schematic - Coming Soon!</li>
+		</ul>
+
+		<script type="text/javascript">
+
+			function addLink(testFile, url, passText, failText, dom)
+			{
+				var img = new Image();
+				img.onerror = function() {
+					dom.innerHTML += failText;
+				};
+				img.onload = function() {
+					dom.innerHTML += '<a href="' + url + '">' + passText + '</a>';
+				};
+				img.src = testFile;
+				console.log('Test');
+				console.log(img.currentSrc);
+			}
+
+			addLink('../Libraries/PeriphDrivers/Documentation/MAX32665/doc.png',
+				    '../Libraries/PeriphDrivers/Documentation/MAX32665/index.html',
+				    'Peripheral API', 
+				    'The periheral API documentation has not been installed.', 
+				    document.getElementById('periph')
+				);
+
+			addLink('../Tools/Eclipse/cdt/plugins/org.eclipse.platform_4.13.0.v20190916-1045/splash.bmp',
+				    '../Tools/Eclipse/cdt/readme/readme_eclipse.html',
+				    'Eclipse', 
+				    'Eclipse has not been installed.', 
+				    document.getElementById('eclipse')
+				);
+
+			addLink('../Tools/GNUTools/blank.bmp',
+				    'https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm',
+				    'GNU Tools for ARM', 
+				    'The GNU Tools for ARM have not been installed.', 
+				    document.getElementById('gnu-arm')
+				);
+
+			/* This device does not have a RV core.
+			addLink('../Tools/xPack/blank.bmp',
+				    '../Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/README.md',
+				    'GNU Tools for RISC-V', 
+				    'The GNU Tools for RISC-V have not been installed.', 
+				    document.getElementById('gnu-riscv')
+				);
+			*/
+
+			addLink('../Libraries/FreeRTOS/Documentation/blank.bmp',
+				    '../Libraries/FreeRTOS/readme.txt',
+				    'Free-RTOS', 
+				    'The Free-RTOS libraries have not been installed.', 
+				    document.getElementById('free-rtos')
+				);
+			addLink('../Tools/BitmapConverter/docs/blank.bmp',
+				    '../Tools/BitmapConverter/docs/README.md',
+				    'Bitmap Converter', 
+				    'The bitmap converter has not been installed.', 
+				    document.getElementById('bmp-converter')
+				);
+			addLink('../Tools/SBT/docs/blank.bmp',
+				    '../Tools/SBT/docs/UG7236Rev1_MaximSDK_Secure_Boot_Tool_User_Guide.pdf',
+				    'Secure Boot Tools', 
+				    'The secure boot tools have not been installed.', 
+				    document.getElementById('sbt')
+				);
+			addLink('../Tools/OpenOCD/blank.bmp',
+				    'http://openocd.org/doc/html/index.html',
+				    'OpenOCD', 
+				    'OpenOCD has not been installed.', 
+				    document.getElementById('openocd')
+				);
+			addLink('../Tools/MSYS2/msys2.ico',
+				    'https://www.msys2.org/docs/what-is-msys2/',
+				    'MSYS2 (Building Platform for Windows)', 
+				    'The MSYS2 package has not been installed.', 
+				    document.getElementById('mingw')
+				);
+	</script>
+	</body>
+</html>

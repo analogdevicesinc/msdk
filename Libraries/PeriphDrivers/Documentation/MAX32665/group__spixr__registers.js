@@ -1,0 +1,36 @@
+var group__spixr__registers =
+[
+    [ "Register Offsets", "group___s_p_i_x_r___register___offsets.html", "group___s_p_i_x_r___register___offsets" ],
+    [ "SPIXR_DATA32", "group___s_p_i_x_r___d_a_t_a32.html", "group___s_p_i_x_r___d_a_t_a32" ],
+    [ "SPIXR_DATA16", "group___s_p_i_x_r___d_a_t_a16.html", "group___s_p_i_x_r___d_a_t_a16" ],
+    [ "SPIXR_DATA8", "group___s_p_i_x_r___d_a_t_a8.html", "group___s_p_i_x_r___d_a_t_a8" ],
+    [ "SPIXR_CTRL1", "group___s_p_i_x_r___c_t_r_l1.html", "group___s_p_i_x_r___c_t_r_l1" ],
+    [ "SPIXR_CTRL2", "group___s_p_i_x_r___c_t_r_l2.html", "group___s_p_i_x_r___c_t_r_l2" ],
+    [ "SPIXR_CTRL3", "group___s_p_i_x_r___c_t_r_l3.html", "group___s_p_i_x_r___c_t_r_l3" ],
+    [ "SPIXR_CTRL4", "group___s_p_i_x_r___c_t_r_l4.html", "group___s_p_i_x_r___c_t_r_l4" ],
+    [ "SPIXR_BRG_CTRL", "group___s_p_i_x_r___b_r_g___c_t_r_l.html", "group___s_p_i_x_r___b_r_g___c_t_r_l" ],
+    [ "SPIXR_DMA", "group___s_p_i_x_r___d_m_a.html", "group___s_p_i_x_r___d_m_a" ],
+    [ "SPIXR_IRQ", "group___s_p_i_x_r___i_r_q.html", "group___s_p_i_x_r___i_r_q" ],
+    [ "SPIXR_IRQE", "group___s_p_i_x_r___i_r_q_e.html", "group___s_p_i_x_r___i_r_q_e" ],
+    [ "SPIXR_WAKE", "group___s_p_i_x_r___w_a_k_e.html", "group___s_p_i_x_r___w_a_k_e" ],
+    [ "SPIXR_WAKEE", "group___s_p_i_x_r___w_a_k_e_e.html", "group___s_p_i_x_r___w_a_k_e_e" ],
+    [ "SPIXR_STAT", "group___s_p_i_x_r___s_t_a_t.html", "group___s_p_i_x_r___s_t_a_t" ],
+    [ "SPIXR_XMEM_CTRL", "group___s_p_i_x_r___x_m_e_m___c_t_r_l.html", "group___s_p_i_x_r___x_m_e_m___c_t_r_l" ],
+    [ "mxc_spixr_regs_t", "group__spixr__registers.html#structmxc__spixr__regs__t", [
+      [ "brg_ctrl", "group__spixr__registers.html#a240de718f8032e2ea5f09f3c6d5dda8e", null ],
+      [ "ctrl1", "group__spixr__registers.html#adef50da3520f7ff420a0ef7fdaa17256", null ],
+      [ "ctrl2", "group__spixr__registers.html#af8524d8c395fc8a6799a944d793f6245", null ],
+      [ "ctrl3", "group__spixr__registers.html#a54231319a86f336883cece7855774f08", null ],
+      [ "ctrl4", "group__spixr__registers.html#a1a84c7d6ab5d45734686aa6ae071f210", null ],
+      [ "data16", "group__spixr__registers.html#ae11b73e624e946ab2645f23538ec2083", null ],
+      [ "data32", "group__spixr__registers.html#a2daee9060df10c8ab4143e9d17ae4a7d", null ],
+      [ "data8", "group__spixr__registers.html#a7cb0501c3f4c44f074057ea0a162aa18", null ],
+      [ "dma", "group__spixr__registers.html#aab1cd293f21e42b2e6b96937ad70f02a", null ],
+      [ "irq", "group__spixr__registers.html#aa671ffe586ea2e351ded9065244b3cb1", null ],
+      [ "irqe", "group__spixr__registers.html#aadb643229aed05672752865527049b37", null ],
+      [ "stat", "group__spixr__registers.html#a165ffa7e0db53fbc622c375b63a436d7", null ],
+      [ "wake", "group__spixr__registers.html#ab5ad45e7963302c38facdd90464e7399", null ],
+      [ "wakee", "group__spixr__registers.html#af2275e9bdb62dab845c57d9bd8fb6cdc", null ],
+      [ "xmem_ctrl", "group__spixr__registers.html#a2e8ab3ee8704199e0318e8d247a2a57d", null ]
+    ] ]
+];

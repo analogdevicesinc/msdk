@@ -1,0 +1,27 @@
+var group___s_p_i_x_r___b_r_g___c_t_r_l =
+[
+    [ "MXC_F_SPIXR_BRG_CTRL_HI", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#gada5b87fe20f4b833b01e8bd44dcea01d", null ],
+    [ "MXC_F_SPIXR_BRG_CTRL_HI_POS", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga0d6d4c7594fdb9943c0731258a82bf98", null ],
+    [ "MXC_F_SPIXR_BRG_CTRL_LO", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga114eb55744d3df26efbb7836c00e3b8b", null ],
+    [ "MXC_F_SPIXR_BRG_CTRL_LO_POS", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga489c7d4c2d8b341421f82168902fdb8a", null ],
+    [ "MXC_F_SPIXR_BRG_CTRL_SCALE", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga9382e7732d19135a9f6cf6273b5558c6", null ],
+    [ "MXC_F_SPIXR_BRG_CTRL_SCALE_POS", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#gaa2b4a5e1c784ce920daaf80f2aa83150", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV1", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga76d01710a7c434e15019d17b8fd6f041", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV128", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#gaa7965793eef948e099d169dac142238d", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV16", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga3274c19b778446603ed9e32a24d58a8f", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV2", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga29b0e3aa20f924f5f7af987b5bcfa316", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV256", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga45f3afd6d65e8028f4c3b8df1cfcc1c0", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV32", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#gabfa7fe3a8e7d607bf5a41f2a9b1b745c", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV4", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga76e512fad19222acfbcc86a211283853", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV64", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga70724c147292cfc1b22b615643a8ab78", null ],
+    [ "MXC_S_SPIXR_BRG_CTRL_SCALE_DIV8", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga7b55c9f97975e05ac5067ce5c6694235", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV1", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#gaa5690b95836728a288ec069c4cfb5fa5", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV128", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga879dfd5ebf9acce695fd12705ccc3d9b", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV16", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga30847ec26e6ea1f124c07b282cb2653d", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV2", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga8a9e3175ae7beef2cef52c4604f31dab", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV256", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga15c854a34154330d631dd93cbdf64cd7", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV32", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga026b275d270a0659f10262bf114f6273", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV4", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#ga7589c82a637f3708745387bf9cf04429", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV64", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#gadb580fc821a65bc46f5e321cdcf5b6c4", null ],
+    [ "MXC_V_SPIXR_BRG_CTRL_SCALE_DIV8", "group___s_p_i_x_r___b_r_g___c_t_r_l.html#gaf571f0734189c21d7dc9276d5eb800b2", null ]
+];

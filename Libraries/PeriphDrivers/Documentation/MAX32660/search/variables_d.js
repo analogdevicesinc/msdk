@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['scon_0',['scon',['../group__gcr__registers.html#a5f664fe0f3d93dab91cd3fa4c0e51fe0',1,'mxc_gcr_regs_t']]],
+  ['sec_1',['sec',['../group__rtc__registers.html#a42840f18466e61b7fe0bde5d005a6a66',1,'mxc_rtc_regs_t']]],
+  ['sladdr_2',['sladdr',['../group__i2c__registers.html#a67d5cc922c2cf2646f66e0bd4a8aa0c2',1,'mxc_i2c_regs_t']]],
+  ['source_3',['source',['../group__dma.html#a9c4d24b378766662986e428f67363a9a',1,'mxc_dma_srcdst_t']]],
+  ['speed_4',['speed',['../structmsr__decoded__track__t.html#a12633132d07532aac2bd05fa1d5c8a72',1,'msr_decoded_track_t']]],
+  ['spi_5',['spi',['../group__spi.html#a43bd328124d967686e9583453c3ac8e9',1,'_mxc_spi_req_t']]],
+  ['sr_6',['sr',['../group__gpio__registers.html#a27bd59373a3c3b2a4e9322fde99f6f4c',1,'mxc_gpio_regs_t']]],
+  ['src_7',['src',['../group__dma__registers.html#a5890dac9c6bb3a6c532b52c63ca1713e',1,'mxc_dma_ch_regs_t']]],
+  ['src_5frld_8',['src_rld',['../group__dma__registers.html#a92598dd96e6b6b30ad03ead30492fd2b',1,'mxc_dma_ch_regs_t']]],
+  ['srcinc_5fen_9',['srcinc_en',['../group__dma.html#a181aad23cc2d98a44ddd08089ae3d866',1,'mxc_dma_config_t']]],
+  ['srcwd_10',['srcwd',['../group__dma.html#a780afeabecd08d49f84a4f4e821f459c',1,'mxc_dma_config_t']]],
+  ['ss_5ftime_11',['ss_time',['../group__spi__registers.html#a86e747d72e3f115caa508519dc0a79ea',1,'mxc_spi_regs_t']]],
+  ['ssdeassert_12',['ssDeassert',['../group__spi.html#adb4142c0e7b81c866fb886ca32811d59',1,'_mxc_spi_req_t']]],
+  ['ssec_13',['ssec',['../group__rtc__registers.html#af870823382d0f91f08ffe578e2ab3583',1,'mxc_rtc_regs_t']]],
+  ['ssel_14',['ssel',['../group__spimss.html#ad4ca6358ae581fb4a2f11827985dac5f',1,'mxc_spimss_req']]],
+  ['ssidx_15',['ssIdx',['../group__spi.html#a265582641e03d3e8aab76429d632d7bd',1,'_mxc_spi_req_t']]],
+  ['stat_16',['stat',['../group__dma__registers.html#aa0708e7b79dc84bf8216aacafae5155e',1,'mxc_dma_ch_regs_t::stat()'],['../group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7',1,'mxc_spi_regs_t::stat()'],['../group__uart__registers.html#a165ffa7e0db53fbc622c375b63a436d7',1,'mxc_uart_regs_t::stat()']]],
+  ['status_17',['status',['../group__i2c__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_i2c_regs_t::status()'],['../group__sir__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9',1,'mxc_sir_regs_t::status()']]],
+  ['sys_5fie_18',['sys_ie',['../group__gcr__registers.html#a3699c77b378713d51134839d21c39285',1,'mxc_gcr_regs_t']]],
+  ['sys_5fstat_19',['sys_stat',['../group__gcr__registers.html#ae1b4175765059418079435bdeb905542',1,'mxc_gcr_regs_t']]]
+];

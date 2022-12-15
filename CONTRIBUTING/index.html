@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Contributing - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Contributing";
+        var mkdocs_page_input_path = "CONTRIBUTING.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../USERGUIDE/">User Guide</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Contributing</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#development-flow">Development Flow</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#contribution-guidelines">Contribution Guidelines</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#style-guide">Style Guide</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#running-the-linter-formatter">Running the Linter &amp; Formatter</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#cpplint">cpplint</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#clang-format">clang-format</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#contributing-examples">Contributing Examples</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#contributing-libraries">Contributing Libraries</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#self-locating-makefile">Self-Locating Makefile</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#simple-libraries">Simple Libraries</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#advanced-libraries">Advanced Libraries</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#contributing-documentation">Contributing Documentation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#code-maintainers">Code Maintainers</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#user-guide">User Guide</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#building-the-documentation">Building the Documentation</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#local-builds">Local Builds</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#auto-builds-and-deployment">Auto Builds and Deployment</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Contributing</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/CONTRIBUTING.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="analog-devices-msdk-development-and-contribution-guidelines">Analog Devices MSDK Development and Contribution Guidelines</h1>
+<h2 id="development-flow">Development Flow</h2>
+<p>Development for the MSDK also follows the official <a href="https://docs.github.com/en/get-started/quickstart/github-flow">GitHub development flow guidelines</a>.</p>
+<p>For beginners, <a href="https://learngitbranching.js.org/">learngitbranching.js.org</a> is a great hands-on starting resource.</p>
+<h2 id="contribution-guidelines">Contribution Guidelines</h2>
+<p>The MSDK follows the <a href="https://docs.github.com/en/get-started/quickstart/contributing-to-projects">GitHub contribution guidelines</a>.  </p>
+<p>External contributions from outside the <a href="https://github.com/Analog-Devices-MSDK">Analog Devices organization</a> should be made via a Pull Request opened from a fork.  Internal contributions should also preferrably use a fork where possible.</p>
+<p>If a direct branch on the mainline MSDK repo is made, the following branch naming conventions should be used when possible:</p>
+<ul>
+<li>Bugfix/ticket: <code>fix/ticketnumber</code></li>
+<li>New feature: <code>feature/branchname</code></li>
+<li>Generic development branch: <code>dev/branchname</code></li>
+<li>New and/or modified example branch: <code>example/branchname</code></li>
+</ul>
+<h2 id="style-guide">Style Guide</h2>
+<p>The MSDK code-base, for the most-part, follows the <a href="https://www.kernel.org/doc/html/v4.10/process/coding-style.html#linux-kernel-coding-style">Linux Kernel coding style</a> <em>and</em> <a href="https://google.github.io/styleguide/cppguide.html">Google's C++ Style Guide</a> with the following exception(s):</p>
+<ul>
+<li>Indentations are 4 spaces.</li>
+</ul>
+<p>Formatting and styling is enforced via <a href="https://www.kernel.org/doc/html/latest/process/clang-format.html">clang-format</a> <strong>version 14</strong> and <a href="https://github.com/cpplint/cpplint">cpplint</a>, which automatically run checks against all PRs.  A PR cannot be merged until it passes these checks.</p>
+<h3 id="running-the-linter-formatter">Running the Linter &amp; Formatter</h3>
+<p>Both utilities can be run locally.  cpplint should be run first, then clang-format.  Additionally, both should be run from the root directory of the MSDK repo so that their config files are loaded properly.</p>
+<p>clang-format rules are loaded from the <strong>.clang-format</strong> and cpplint rules are loaded from <strong>CPPLINT.cfg</strong> in the root directory of the repo.  As a result, the utilities must also be run from the root directory of the repo.</p>
+<h4 id="cpplint">cpplint</h4>
+<p><a href="https://github.com/cpplint/cpplint">cpplint</a> enforces good code practices by scanning for common mistakes and ensuring certain higher-level code patterns are followed.  It's a good idea to resolve the errors found by cpplint before before running clang-format, which deals with lower-level code styling and syntax patterns.</p>
+<ol>
+<li>
+<p><code>cd</code> into the root directory of the MSDK repo.</p>
+</li>
+<li>
+<p>Run cpplint.</p>
+<p>To run cpplint on a <strong>file</strong>, use <code>cpplint &lt;filepath&gt;</code>.</p>
+<pre class="codehilite"><code>$ cpplint Examples/MAX78000/Hello_World/main.c
+Done processing Examples/MAX78000/Hello_World/main.c
+</code></pre>
+
+<p>To recursively run cpplint on an <strong>entire directory</strong>, use <code>cpplint --recursive &lt;filepath&gt;</code>.</p>
+<pre class="codehilite"><code>$ cpplint --recursive Examples/MAX78000
+
+Examples/MAX78000/ADC/example_config.h:1:  #ifndef header guard has wrong style, please use: EXAMPLES_MAX78000_ADC_EXAMPLE_CONFIG_H_  [build/header_guard] [5]
+Examples/MAX78000/ADC/example_config.h:14:  #endif line should be &quot;#endif  // EXAMPLES_MAX78000_ADC_EXAMPLE_CONFIG_H_&quot;  [build/header_guard] [5]
+Done processing Examples/MAX78000/ADC/example_config.h
+Done processing Examples/MAX78000/ADC/main.c
+Done processing Examples/MAX78000/AES/main.c
+Done processing Examples/MAX78000/ARM-DSP/arm_bayes_example/arm_bayes_example_f32.c
+...
+</code></pre>
+
+</li>
+<li>
+<p>Resolve any errors.</p>
+</li>
+<li>
+<p><code>git add</code> and <code>git commit</code> any changes to your code.</p>
+</li>
+</ol>
+<h4 id="clang-format">clang-format</h4>
+<p><a href="https://www.kernel.org/doc/html/latest/process/clang-format.html">clang-format</a> is a code formatter and style checker that enforces a common style for the code-base.
+<strong>The MSDK uses version 14</strong>, which is sometimes not available by default on some Linux distributions.  It can be retrieved from <a href="https://apt.llvm.org/">https://apt.llvm.org/</a>. </p>
+<ol>
+<li>
+<p><code>cd</code> into the root directory of the MSDK repo.</p>
+</li>
+<li>
+<p>Run clang-format.</p>
+<p>To run a clang-format <strong><em>check</em></strong> on a file, use the <code>-n</code> "dry-run" flag.  </p>
+<p><code>clang-format-14 --style=file --Werror --verbose -n &lt;filename&gt;</code></p>
+<p>For example:</p>
+<pre class="codehilite"><code>$ clang-format-14 --style=file --Werror --verbose -n Examples/MAX78000/CRC/main.c
+
+Formatting [1/1] Examples/MAX78000/CRC/main.c
+Examples/MAX78000/CRC/main.c:86:40: error: code should be clang-formatted [-Wclang-format-violations]
+    for (i = 0; i &lt; DATA_LENGTH; i++) { array[i] = i; }
+                                    ^
+</code></pre>
+
+<p>To <em>apply</em> the formatter to automatically format a file, use the <code>-i</code> flag.</p>
+<p><code>clang-format-14 --style=file --Werror --verbose -i &lt;filename&gt;</code></p>
+<p>For example:</p>
+<pre class="codehilite"><code>$ clang-format-14 --style=file --verbose -i Examples/MAX78000/CRC/main.c
+Formatting [1/1] Examples/MAX78000/CRC/main.c
+</code></pre>
+
+<p>This will apply the formatter and overwrite the file.  Check the formatter's work using <code>git diff</code>.</p>
+<pre class="codehilite"><code class="language-diff">$ diff --git a/Examples/MAX78000/CRC/main.c b/Examples/MAX78000/CRC/main.c
+index 1dda1feed..c16ceb962 100644
+--- a/Examples/MAX78000/CRC/main.c
++++ b/Examples/MAX78000/CRC/main.c
+@@ -83,7 +83,9 @@ void Test_CRC(int asynchronous)
+
+    printf(asynchronous ? &quot;TEST CRC ASYNC\n&quot; : &quot;TEST CRC SYNC\n&quot;);
+
+-    for (i = 0; i &lt; DATA_LENGTH; i++) { array[i] = i; }
++    for (i = 0; i &lt; DATA_LENGTH; i++) {
++        array[i] = i;
++    }
+</code></pre>
+
+<p>To apply the formatter to multiple files, the <code>*</code> and <code>**</code> wildcard characters can be used.  <code>*</code> matches any file or folder, and <code>**</code> <em>recursively</em> matches any file or folder.</p>
+<p>To recursively run clang-format on all C files in an entire directory, use:</p>
+<p><code>clang-format-14 --style=file --verbose -n &lt;filepath&gt;/**/*.c</code>.</p>
+<p>For example:</p>
+<pre class="codehilite"><code>$ clang-format-14 --style=file --verbose -i Examples/MAX78000/ARM-DSP/**/*.c
+
+Formatting [1/24] Examples/MAX78000/ARM-DSP/arm_bayes_example/arm_bayes_example_f32.c
+Formatting [2/24] Examples/MAX78000/ARM-DSP/arm_class_marks_example/arm_class_marks_example_f32.c
+Formatting [3/24] Examples/MAX78000/ARM-DSP/arm_convolution_example/arm_convolution_example_f32.c
+Formatting [4/24] Examples/MAX78000/ARM-DSP/arm_convolution_example/math_helper.c
+Formatting [5/24] Examples/MAX78000/ARM-DSP/arm_dotproduct_example_f32/arm_dotproduct_example_f32.c
+...
+</code></pre>
+
+<p>... which runs the formatter for all C files in the <code>Examples/MAX78000/ARM-DSP</code> directory <em>and all its subdirectories</em>.  It should be noted that <code>**</code> is not supported on native Windows, but <code>*</code> is.</p>
+</li>
+<li>
+<p><code>git add</code> and <code>git commit</code> any changes to your code.  Now, it's ready for a PR!  The same checks will be automatically run against any PRs that are opened in the MSDK, and they must pass before the code can be approved.</p>
+</li>
+</ol>
+<h2 id="contributing-examples">Contributing Examples</h2>
+<ol>
+<li>
+<p>First, ensure that the example project has been linted and formatted to follow the <a href="#style-guide">Style Guide</a></p>
+</li>
+<li>
+<p>Copy the example project into the <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples">Examples</a> folder of the SDK for the applicable target microcontrollers.</p>
+</li>
+<li>
+<p><code>git add</code> and <code>git commit</code> the Example project.  <strong>Commit your project files before running MSDKGen.</strong></p>
+</li>
+<li>
+<p>Run the <a href="https://github.com/Analog-Devices-MSDK/MSDKGen">MSDKGen</a> utility to ensure the example project's support files are updated to the latest version.</p>
+<pre class="codehilite"><code>python msdkgen.py update-all --projects yourprojectname --overwrite
+</code></pre>
+
+</li>
+<li>
+<p>Re-test the project if applicable.</p>
+</li>
+<li>
+<p>If the updated files break any projects they can be restored to the previously working version using the <code>git restore</code> command.</p>
+<p>For example, the command below will restore all files in your current working directory.</p>
+<pre class="codehilite"><code>git restore **
+</code></pre>
+
+<p>The <code>git diff</code> command can also be used to inspect local changes to help identify the root cause. Ex:</p>
+<pre class="codehilite"><code>git diff ./
+</code></pre>
+
+</li>
+</ol>
+<h2 id="contributing-libraries">Contributing Libraries</h2>
+<p>Libraries should be added to the <a href="Libraries">Libraries</a> sub-folder of the MSDK.</p>
+<ul>
+<li>
+<p>All libraries should include a <code>libraryname.mk</code> file that can be added to <code>Libraries/libs.mk</code> via a toggle-switch.  The filename should match the name of library as closely as possible, and expose any required <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration">configuration variables</a>.</p>
+</li>
+<li>
+<p>If necessary, a library may also include a "core" Makefile or set of Makefiles to build it as a standalone static library file.  The naming convention is <code>lib&lt;libraryname&gt;.a</code>.</p>
+</li>
+</ul>
+<h3 id="self-locating-makefile">Self-Locating Makefile</h3>
+<p>The first thing that the <code>libraryname.mk</code> file should do is locate its own directory and store it in a variable.  The code snippet can be used to achieve this.</p>
+<pre class="codehilite"><code class="language-makefile">ifeq &quot;$(LIBRARYNAME_DIR)&quot; &quot;&quot;
+# If LIBRARYNAME_DIR is not specified, this Makefile will locate itself.
+LIBRARYNAME_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+endif
+</code></pre>
+
+<p>All filepaths for the library should then use this <code>$(LIBRARYNAME_DIR)</code>-type variable as their "root" for all filepaths.  This is a safe and reliable way to self-reference internal library files.</p>
+<p>For an example, see the <code>Libraries/PeriphDrivers/periphdriver.mk</code> file.</p>
+<h3 id="simple-libraries">Simple Libraries</h3>
+<p>For simple libraries, it may be sufficient to just add the library's source files to the build using <code>VPATH</code> and <code>IPATH</code>.</p>
+<p>For example:</p>
+<pre class="codehilite"><code class="language-makefile">IPATH += $(LIBRARY_NAME_DIR)/include
+VPATH += $(LIBRARY_NAME_DIR)/src
+SRCS += libfile1.c
+SRCS += libfile2.c
+</code></pre>
+
+<p>An example of this is <a href="Libraries/MiscDrivers/">MiscDrivers</a>, which is a simple source-file-only library.  It gets its source code selectively added to the build via <code>Libraries/Boards/MAX78000/EvKit_V1/board.mk</code> files.</p>
+<h3 id="advanced-libraries">Advanced Libraries</h3>
+<p>More advanced libraries (including those with a large number of source files) should include a rule to build as a static library file with a <a href="https://www.gnu.org/software/make/manual/make.html#Recursion">recursive Make call</a>.  </p>
+<p>This type of library should also set up the appropriate <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration">configuration variables</a> to include that static library to the build.</p>
+<h2 id="contributing-documentation">Contributing Documentation</h2>
+<h3 id="code-maintainers">Code Maintainers</h3>
+<p>MSDK code should be documented using Doxygen syntax on all public functions, data structures, and variables.  See the <a href="https://www.doxygen.nl/manual/docblocks.html"><strong>DoxyGen Manual</strong></a> for more details on syntax for C-like languages.</p>
+<p>DoxyGen is automatically run across the MSDK code as part of the User Guide's build process.  A Peripheral API reference is generated for each target microcontroller using the Doxygen files located in <code>Libraries/PeriphDrivers/Documentation</code>, and the output is packaged as a sub-component of the User Guide when it's built.  For code maintainers no action is needed other than maintaining up to date Doxygen documentation for all source code.</p>
+<h3 id="user-guide">User Guide</h3>
+<p>An MSDK User Guide is maintained in the <a href="../USERGUIDE/">USERUIDE.md</a> file.  This document contains higher-level usage info for the MSDK.  If a part, IDE, or library is supported by the MSDK then there should be some relevant info in the User Guide covering its setup, configuration, and usage.</p>
+<p>When writing markdown links, relative paths should always be used.  Additionally, links to local files on the user's filesystem <strong>cannot</strong> be used, since the online copy of the docs will throw a 404 on them.  See <a href="https://www.mkdocs.org/user-guide/writing-your-docs/">Writing Your Docs</a> for more details.</p>
+<p>Static resources such as images should be placed in the <code>res</code> folder.</p>
+<h3 id="building-the-documentation">Building the Documentation</h3>
+<h4 id="local-builds">Local Builds</h4>
+<p>The <code>Documentation/build.py</code> script can be used to build the MSDK User Guide and supporting documentation locally.  This script:</p>
+<ul>
+<li>Builds all the Peripheral API references using Doxygen and copies them into <code>Documentation</code></li>
+<li>Copies any markdown files in the root of the repo into the <code>Documentation</code> folder.</li>
+<li>Copies the <code>res</code> (resources) folder into <code>Documentation</code></li>
+<li>Builds the MSDK User Guide using <a href="https://www.mkdocs.org/">Mkdocs</a>, which packages everything in <code>Documentation</code> into a static HTML/CSS/JavaScript site.</li>
+</ul>
+<p>To <strong>build</strong> the docs:</p>
+<ol>
+<li>Install Python 3</li>
+<li><code>pip install -r Documentation/requirements.txt</code></li>
+<li><code>python Documentation/build.py</code></li>
+<li>The site will be built in the <code>docs</code> folder of the repo.</li>
+</ol>
+<p>To <strong>preview</strong> the generated site:</p>
+<p><code>mkdocs serve</code></p>
+<p>This will open a localhost test server with live re-loading.</p>
+<p>To <strong>configure</strong> the generated site, use <code>mkdocs.yml</code>.  See <a href="https://www.mkdocs.org/user-guide/configuration/">Mkdocs Configuration</a> for more details.</p>
+<h4 id="auto-builds-and-deployment">Auto Builds and Deployment</h4>
+<p>The <strong>"Build &amp; Deploy Docs"</strong> Github Action will perform all the local steps above.  Additionally, it will deploy the static site to the <code>gh-pages</code> branch of the repository for use with <a href="https://pages.github.com/">Github Pages</a>.  When the <code>gh-pages</code> branch is updated, Pages will refresh the online copy of the documentation within ~5-10 mins.</p>
+<p>This auto-deploy procedure is triggered on every push to the <code>release</code> branch.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../USERGUIDE/" class="btn btn-neutral float-left" title="User Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../LICENSE/" class="btn btn-neutral float-right" title="License">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../USERGUIDE/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../LICENSE/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

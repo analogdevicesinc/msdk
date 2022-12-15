@@ -1,0 +1,25 @@
+var group___h_p_b___m_t_r =
+[
+    [ "MXC_F_HPB_MTR_LATENCY", "group___h_p_b___m_t_r.html#ga97e46ea56e57a9d8d2128d62a7ce7e32", null ],
+    [ "MXC_F_HPB_MTR_LATENCY_POS", "group___h_p_b___m_t_r.html#ga2dcdc93928ca0095e50ca06e25134e14", null ],
+    [ "MXC_F_HPB_MTR_RCSH", "group___h_p_b___m_t_r.html#ga3b08cb3aca3cbef4818ca1e044767864", null ],
+    [ "MXC_F_HPB_MTR_RCSH_POS", "group___h_p_b___m_t_r.html#ga66fb8d6558fd3bdda18d23da0450cbb2", null ],
+    [ "MXC_F_HPB_MTR_RCSHI", "group___h_p_b___m_t_r.html#gae66d1e7a976b5688521df72153082126", null ],
+    [ "MXC_F_HPB_MTR_RCSHI_POS", "group___h_p_b___m_t_r.html#gae4111a523297d696f42031c09f0a8ee3", null ],
+    [ "MXC_F_HPB_MTR_RCSS", "group___h_p_b___m_t_r.html#ga07e343135597716274881abbbf3162e5", null ],
+    [ "MXC_F_HPB_MTR_RCSS_POS", "group___h_p_b___m_t_r.html#gad205006aca46ae3ed0afd14165752faf", null ],
+    [ "MXC_F_HPB_MTR_WCSH", "group___h_p_b___m_t_r.html#ga36b66ad8a3c85116fab4ef9f27826f68", null ],
+    [ "MXC_F_HPB_MTR_WCSH_POS", "group___h_p_b___m_t_r.html#gab634d38cceb0c9a2d4d3b1d6bdf2cec6", null ],
+    [ "MXC_F_HPB_MTR_WCSHI", "group___h_p_b___m_t_r.html#ga93ad658b61b0bfe9f9fddbcc0aa4797a", null ],
+    [ "MXC_F_HPB_MTR_WCSHI_POS", "group___h_p_b___m_t_r.html#ga15d6e8a62bd614cfc2a4fe26c31c9a8f", null ],
+    [ "MXC_F_HPB_MTR_WCSS", "group___h_p_b___m_t_r.html#gada141bbe9f32342fcfea19524b890bd4", null ],
+    [ "MXC_F_HPB_MTR_WCSS_POS", "group___h_p_b___m_t_r.html#ga82beb412780f42e17cffea9684698928", null ],
+    [ "MXC_S_HPB_MTR_LATENCY_3CLK", "group___h_p_b___m_t_r.html#ga6bc2954a9960d9bab3bb975eec971ac1", null ],
+    [ "MXC_S_HPB_MTR_LATENCY_4CLK", "group___h_p_b___m_t_r.html#ga590d1159ce7ca4fe0049fdc0f2d127c8", null ],
+    [ "MXC_S_HPB_MTR_LATENCY_5CLK", "group___h_p_b___m_t_r.html#ga1e17fd20e51b581f108dccf8666ce0b1", null ],
+    [ "MXC_S_HPB_MTR_LATENCY_6CLK", "group___h_p_b___m_t_r.html#ga487a8cf35bad9abc14b7a1f507531769", null ],
+    [ "MXC_V_HPB_MTR_LATENCY_3CLK", "group___h_p_b___m_t_r.html#ga1b4face2b546adfdeb7d5c5813fadb29", null ],
+    [ "MXC_V_HPB_MTR_LATENCY_4CLK", "group___h_p_b___m_t_r.html#ga936dbf85964cbd12942446a284522417", null ],
+    [ "MXC_V_HPB_MTR_LATENCY_5CLK", "group___h_p_b___m_t_r.html#ga71bc69768cd8b95cbe6951c993460416", null ],
+    [ "MXC_V_HPB_MTR_LATENCY_6CLK", "group___h_p_b___m_t_r.html#ga917ccd87024804516650251ccafafdb1", null ]
+];

@@ -1,0 +1,25 @@
+var group___a_e_s___c_t_r_l =
+[
+    [ "MXC_F_AES_CTRL_DMA_RX_EN", "group___a_e_s___c_t_r_l.html#ga96941145c2e88bc7de705cd082e3f1c5", null ],
+    [ "MXC_F_AES_CTRL_DMA_RX_EN_POS", "group___a_e_s___c_t_r_l.html#gabec73a9b8cd87ae56064f72fff0e4028", null ],
+    [ "MXC_F_AES_CTRL_DMA_TX_EN", "group___a_e_s___c_t_r_l.html#ga8ef4b8e999ebf570e340e99ca9c40226", null ],
+    [ "MXC_F_AES_CTRL_DMA_TX_EN_POS", "group___a_e_s___c_t_r_l.html#gac66530826f3e8c41bb236b10a2554a56", null ],
+    [ "MXC_F_AES_CTRL_EN", "group___a_e_s___c_t_r_l.html#ga74286f7750a3f9e89399ec0ca671e7a5", null ],
+    [ "MXC_F_AES_CTRL_EN_POS", "group___a_e_s___c_t_r_l.html#ga198dcda1044a85561e7177fef241490c", null ],
+    [ "MXC_F_AES_CTRL_INPUT_FLUSH", "group___a_e_s___c_t_r_l.html#ga397ef2811b83658cca821b366ac633e9", null ],
+    [ "MXC_F_AES_CTRL_INPUT_FLUSH_POS", "group___a_e_s___c_t_r_l.html#gad2ede3788cb1bc4f8f0b87b6caf3190a", null ],
+    [ "MXC_F_AES_CTRL_KEY_SIZE", "group___a_e_s___c_t_r_l.html#ga28fbd261ed18696bea90cd76c652d947", null ],
+    [ "MXC_F_AES_CTRL_KEY_SIZE_POS", "group___a_e_s___c_t_r_l.html#gab65e9a74ffeda6ca894d3925d1741da8", null ],
+    [ "MXC_F_AES_CTRL_OUTPUT_FLUSH", "group___a_e_s___c_t_r_l.html#ga1fa229af9c05be1ac4d9b13ddf06aab8", null ],
+    [ "MXC_F_AES_CTRL_OUTPUT_FLUSH_POS", "group___a_e_s___c_t_r_l.html#ga5a7fe398deca551f25e781e74bddb1ec", null ],
+    [ "MXC_F_AES_CTRL_START", "group___a_e_s___c_t_r_l.html#gaba35bdc81da5db74d4f415b10bc0ded4", null ],
+    [ "MXC_F_AES_CTRL_START_POS", "group___a_e_s___c_t_r_l.html#ga6672976d64fe0849bf223245ec781db4", null ],
+    [ "MXC_F_AES_CTRL_TYPE", "group___a_e_s___c_t_r_l.html#ga30307f4187a51ad23ac3b5869f7463e0", null ],
+    [ "MXC_F_AES_CTRL_TYPE_POS", "group___a_e_s___c_t_r_l.html#ga7a8606fc8dad5b3b4961a7f6e3d41e95", null ],
+    [ "MXC_S_AES_CTRL_KEY_SIZE_AES128", "group___a_e_s___c_t_r_l.html#ga42d3625bbcb20035fece37f3f297875d", null ],
+    [ "MXC_S_AES_CTRL_KEY_SIZE_AES192", "group___a_e_s___c_t_r_l.html#ga92f0c7b92228426677407083e1fcaef1", null ],
+    [ "MXC_S_AES_CTRL_KEY_SIZE_AES256", "group___a_e_s___c_t_r_l.html#ga4f04fb8846173f4beb05e127c2f21752", null ],
+    [ "MXC_V_AES_CTRL_KEY_SIZE_AES128", "group___a_e_s___c_t_r_l.html#ga910dfbd4a362f48dbb57df5367d0c6b7", null ],
+    [ "MXC_V_AES_CTRL_KEY_SIZE_AES192", "group___a_e_s___c_t_r_l.html#ga90c0e3ead33c8570398979ead4925f2e", null ],
+    [ "MXC_V_AES_CTRL_KEY_SIZE_AES256", "group___a_e_s___c_t_r_l.html#ga1e00660a6093bc2d3b1497be1be045df", null ]
+];

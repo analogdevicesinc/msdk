@@ -1,0 +1,25 @@
+var group___g_c_r___register___offsets =
+[
+    [ "MXC_R_GCR_APB_ASYNC", "group___g_c_r___register___offsets.html#gaffd868e2c4eceac14af7fdc6ea8991eb", null ],
+    [ "MXC_R_GCR_BTLE_LDOCR", "group___g_c_r___register___offsets.html#ga622b6e71c4f878df05a691868272b36a", null ],
+    [ "MXC_R_GCR_BTLE_LDODCR", "group___g_c_r___register___offsets.html#ga28664bb6ab52de56f6adf094e70bb9be", null ],
+    [ "MXC_R_GCR_CLKCN", "group___g_c_r___register___offsets.html#gae89193311663a9523afef5242262423a", null ],
+    [ "MXC_R_GCR_ECC_CED", "group___g_c_r___register___offsets.html#ga92a141f940f3e6b93e4a8b62bb9e7204", null ],
+    [ "MXC_R_GCR_ECC_ER", "group___g_c_r___register___offsets.html#ga5acd3b4dae3fd302be4837ad0840768f", null ],
+    [ "MXC_R_GCR_ECC_ERRAD", "group___g_c_r___register___offsets.html#ga7cd3a1bb85b3e62196ed2e8a23d09381", null ],
+    [ "MXC_R_GCR_ECC_IRQEN", "group___g_c_r___register___offsets.html#gafcddcb1d3921beb70798fe86f2de7223", null ],
+    [ "MXC_R_GCR_EVENT_EN", "group___g_c_r___register___offsets.html#ga46600f08e12904f291172a83c7203615", null ],
+    [ "MXC_R_GCR_GP0", "group___g_c_r___register___offsets.html#ga8b62bb3b092f297bc3f9bdf8692873af", null ],
+    [ "MXC_R_GCR_MEMCKCN", "group___g_c_r___register___offsets.html#ga1cc1b3fc6ae62dc988b6368259b1e182", null ],
+    [ "MXC_R_GCR_MEMZCN", "group___g_c_r___register___offsets.html#ga66ccc34443056006979aa08808a59de1", null ],
+    [ "MXC_R_GCR_PCKDIV", "group___g_c_r___register___offsets.html#ga545a6cb3d60df435e1b04d1165d34410", null ],
+    [ "MXC_R_GCR_PERCKCN0", "group___g_c_r___register___offsets.html#gae3d065945f0a5ff3dd6ec566b6bca5cf", null ],
+    [ "MXC_R_GCR_PERCKCN1", "group___g_c_r___register___offsets.html#ga3f9648475b2207229450869a3c70b61e", null ],
+    [ "MXC_R_GCR_PM", "group___g_c_r___register___offsets.html#ga0dd4a149d0b485a1d62b76e66c421d6b", null ],
+    [ "MXC_R_GCR_REVISION", "group___g_c_r___register___offsets.html#ga6e92d22536ef09f919044a404735d467", null ],
+    [ "MXC_R_GCR_RSTR0", "group___g_c_r___register___offsets.html#gaac4ead88ad26b2fddb1991e09f56500b", null ],
+    [ "MXC_R_GCR_RSTR1", "group___g_c_r___register___offsets.html#gab0cc3eb05816fd1dc5bb6c4192c14859", null ],
+    [ "MXC_R_GCR_SCON", "group___g_c_r___register___offsets.html#ga98e64d90d4694441200c7dbbcffe8d43", null ],
+    [ "MXC_R_GCR_SYSSIE", "group___g_c_r___register___offsets.html#ga378b9d180550c4b9824c389d7b82167c", null ],
+    [ "MXC_R_GCR_SYSST", "group___g_c_r___register___offsets.html#ga5607af439a40e18f737013e4b8ec8ef5", null ]
+];
