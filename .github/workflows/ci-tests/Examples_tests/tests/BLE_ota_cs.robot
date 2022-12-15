@@ -22,7 +22,7 @@ File Discovery Test
 File Transfer Test
     [Timeout]    60s
     sleep    2
-    Expect And Timeout Simple    btn 2 m\n    >>> File transfer complete    20    ${SERIAL_PORT_1}
+    Expect And Timeout    btn 2 m\n    >>> File transfer complete    20    ${SERIAL_PORT_1}
 
 File Verification Test
     [Timeout]    30S

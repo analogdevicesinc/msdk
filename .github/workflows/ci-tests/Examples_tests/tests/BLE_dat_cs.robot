@@ -40,7 +40,7 @@ Write Secure Characteristic Test
 Speed Test  
     [Timeout]     190s
     sleep    2
-    Expect And Timeout Simple    btn 2 x\n    bits transferred in    40    ${SERIAL_PORT_1}
+    Expect And Timeout    btn 2 x\n    bits transferred in    40    ${SERIAL_PORT_1}
 
 
 Phy Switching Test 
