@@ -214,7 +214,7 @@ static struct {
 static dmSecLescOobCfg_t *datsOobCfg;
 
 /* Timer for trimming of the 32 kHz crystal */
-static wsfTimer_t* trimTimer = NULL;
+static wsfTimer_t *trimTimer = NULL;
 
 extern void setAdvTxPower(void);
 
@@ -675,8 +675,8 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
 
     /* Setup 32 kHz crystal trim timer */
 
-    if(trimTimer == NULL) {
-        trimTimer = (wsfTimer_t*) WsfBufAlloc(sizeof(wsfTimer_t));
+    if (trimTimer == NULL) {
+        trimTimer = (wsfTimer_t *)WsfBufAlloc(sizeof(wsfTimer_t));
     }
     trimTimer->handlerId = handlerId;
     trimTimer->msg.event = TRIM_TIMER_EVT;

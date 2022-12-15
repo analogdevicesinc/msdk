@@ -86,7 +86,7 @@ void vAssertCalled(const char *const pcFileName, uint32_t ulLine)
     __asm volatile("cpsie i");
 }
 
-void vApplicationMallocFailedHook( void )
+void vApplicationMallocFailedHook(void)
 {
     volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 
@@ -97,7 +97,7 @@ void vApplicationMallocFailedHook( void )
         value. */
         while (ulSetToNonZeroInDebuggerToContinue == 0) {}
     }
-    __asm volatile("cpsie i");   
+    __asm volatile("cpsie i");
 }
 
 /* =| vApplicationIdleHook |==============================
@@ -112,12 +112,12 @@ void vApplicationMallocFailedHook( void )
  */
 void vApplicationIdleHook(void)
 {
-    #if (DEBUG == 0)
+#if (DEBUG == 0)
     /* Sleep while idle */
     LED_Off(SLEEP_LED);
     MXC_LP_EnterSleepMode();
     LED_On(SLEEP_LED);
-    #endif
+#endif
 }
 
 /* =| turnOffUnused |==========================
