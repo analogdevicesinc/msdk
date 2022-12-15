@@ -90,6 +90,10 @@ void vApplicationMallocFailedHook(void)
 {
     volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 
+    /* configTOTAL_HEAP_SIZE is not large enough for the current application
+     * heap usage
+     */
+
     __asm volatile("cpsid i");
     {
         /* You can step out of this function to debug the assertion by using

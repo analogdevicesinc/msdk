@@ -36,7 +36,13 @@
 **************************************************************************************************/
 
 #ifndef WSF_HEAP_SIZE
-#define WSF_HEAP_SIZE       0x10000
+#if(PAL_CFG_LL_MAX == 1)
+/* Larger link layer configurations will require more heap space. */
+#define WSF_HEAP_SIZE       0x18000
+#else
+/* This is the minimum heap size. */
+#define WSF_HEAP_SIZE       0x8000
+#endif
 #endif
 
 /**************************************************************************************************
