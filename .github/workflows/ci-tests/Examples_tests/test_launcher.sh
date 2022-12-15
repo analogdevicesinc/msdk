@@ -86,7 +86,7 @@ function flash_with_openocd() {
         $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;max32xxx mass_erase 0" -c "program $1.elf verify reset exit" >/dev/null &
         openocd_dapLink_pid=$!
     fi
-    if [[ $1 != "max32690" ]]; then
+    if [[ $1 == "max32690" ]]; then
     softreset_with_openocd $DUT_NAME_LOWER $DUT_ID
     fi
 
