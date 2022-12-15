@@ -17,14 +17,14 @@ def open_ports(port_1=None , port_2=None):
     if port_1 != None :
         
         write_to_console(f"Trying to open port: {port_1}",True) 
-        used_ports[port_1] = serial.Serial(port=port_1,baudrate=115200, timeout=120)
+        used_ports[port_1] = serial.Serial(port=port_1,baudrate=115200, timeout=0)
         while used_ports[port_1].is_open != True:
             time.sleep(0.1)
         write_to_console(f"Serial Port {port_1} Opened Succesfully",True)
         
     if port_2!= None :
         write_to_console(f"Trying to open port: {port_2}" , True)
-        used_ports[port_2] = serial.Serial(port=port_2,baudrate=115200, timeout=120)
+        used_ports[port_2] = serial.Serial(port=port_2,baudrate=115200, timeout=0)
         while used_ports[port_2].is_open != True:
             time.sleep(0.1)
         write_to_console(f"Serial Port {port_2} Opened Succesfully",True)
@@ -57,9 +57,8 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
             #flush junk
             used_ports[port].reset_input_buffer()
             used_ports[port].reset_output_buffer()
-            used_ports[port].write(bytes("\n", encoding='utf-8'))
             time.sleep(0.1)
-            
+            used_ports[port].write(bytes("\n", encoding='utf-8'))
             # send data if any
             if send != None:
                 time.sleep(0.1)
@@ -69,7 +68,7 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
             # read lines
             while (time.time()-timeStart) < timeout:
                 try:
-                    x=used_ports[port].readline().decode("utf-8",'ignore')
+                    x=used_ports[port].read(10000).decode("utf-8",'ignore')
                 except Exception as err:
                     pass
                 x=str(x)
@@ -82,7 +81,6 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
                 break
     write_to_console("\r\n-------\r\n",False)
     BuiltIn().fail(".")
-
 #--------------------------------------------------------------------------------------
 def read_all(expect=None,timeout=10,port=None):
     global used_ports

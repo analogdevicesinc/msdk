@@ -77,11 +77,10 @@ function flash_with_openocd() {
         # we can add a timeout here if we want
     done
     set -e
-    # Attempt to verify the image, prevent exit on error
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; flash verify_image $1.elf; reset; exit"
 
     # Check the return value to see if we received an error
     if [ "$?" -ne "0" ]; then
+        printf "> Verify failed , flashibng again \r\n"
         # Reprogram the device if the verify failed
         $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;max32xxx mass_erase 0" -c "program $1.elf verify reset exit" >/dev/null &
         openocd_dapLink_pid=$!
@@ -92,10 +91,20 @@ function flash_with_openocd() {
 
 }
 # Function accepts parameters: device, CMSIS_DAP_ID_x
+function flash_with_openocd_fast() {
+    # mass erase and flash
+    set +e
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;max32xxx mass_erase 0" -c "program $1.elf verify reset exit" >/dev/null &
+    openocd_dapLink_pid=$!
+    set -e
+  
+
+}
+# Function accepts parameters: device, CMSIS_DAP_ID_x
 function softreset_with_openocd() {
     
     set +e
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;" -c "reset exit" >/dev/null &
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init;reset exit"  >/dev/null &
     openocd_dapLink_pid=$!
     # wait for openocd to finish
     while kill -0 $openocd_dapLink_pid; do
@@ -277,7 +286,7 @@ else
         echo "---------------------------------------"
     #    make -C ${dir} clean
     #   make -C ${dir} libclean
-        make -C ${dir} -j8
+    #    make -C ${dir} -j8
     done
 fi
 
@@ -357,19 +366,20 @@ done # end non connected tests
 erase_all_devices
 #--------------------------start Datc/Dats conencted tests
 
-# flash DUT with BLE_dats
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
-echo "> Flashing BLE_dats on DUT $DUT_NAME_UPP"
-flash_with_openocd $DUT_NAME_LOWER $DUT_ID
 
 # Flash MAIN_DEVICE with BLE_datc
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
 make -j8
+
+# flash client first because it takes longer
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
 printf "> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
-flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-# Run robot test
-# give them time to connect
+flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+
+# flash DUT with BLE_dats
+cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
+printf "> Flashing BLE_dats on DUT $DUT_NAME_UPPER \r\n"
+flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID
 
 # directory for resuilts logs
 cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
