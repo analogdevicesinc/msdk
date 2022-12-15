@@ -17,14 +17,14 @@ def open_ports(port_1=None , port_2=None):
     if port_1 != None :
         
         write_to_console(f"Trying to open port: {port_1}",True) 
-        used_ports[port_1] = serial.Serial(port=port_1,baudrate=115200, timeout=0)
+        used_ports[port_1] = serial.Serial(port=port_1,baudrate=115200, timeout=120)
         while used_ports[port_1].is_open != True:
             time.sleep(0.1)
         write_to_console(f"Serial Port {port_1} Opened Succesfully",True)
         
     if port_2!= None :
         write_to_console(f"Trying to open port: {port_2}" , True)
-        used_ports[port_2] = serial.Serial(port=port_2,baudrate=115200, timeout=0)
+        used_ports[port_2] = serial.Serial(port=port_2,baudrate=115200, timeout=120)
         while used_ports[port_2].is_open != True:
             time.sleep(0.1)
         write_to_console(f"Serial Port {port_2} Opened Succesfully",True)
@@ -58,18 +58,18 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
             used_ports[port].reset_input_buffer()
             used_ports[port].reset_output_buffer()
             used_ports[port].write(bytes("\n", encoding='utf-8'))
-            time.sleep(0.5)
-            temp=used_ports[port].read_all()
+            time.sleep(0.1)
+            
             # send data if any
             if send != None:
                 time.sleep(0.1)
                 # start test, send command
                 used_ports[port].write(bytes(send, encoding='utf-8'))
-                time.sleep(0.3)
+                time.sleep(0.2)
             # read lines
             while (time.time()-timeStart) < timeout:
                 try:
-                    x=used_ports[port].read(10000).decode("utf-8",'ignore')
+                    x=used_ports[port].readline().decode("utf-8",'ignore')
                 except Exception as err:
                     pass
                 x=str(x)
