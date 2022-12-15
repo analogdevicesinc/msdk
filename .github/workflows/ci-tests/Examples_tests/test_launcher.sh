@@ -354,6 +354,7 @@ for dir in ./*/; do
 
 done # end non connected tests
 
+erase_all_devices
 #--------------------------start Datc/Dats conencted tests
 
 # flash DUT with BLE_dats
