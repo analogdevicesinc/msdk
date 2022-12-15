@@ -81,6 +81,43 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
                 break
     write_to_console("\r\n-------\r\n",False)
     BuiltIn().fail(".")
+    
+def expect_and_timeout_simple(send=None,expect=None, timeout= 10, port=None):
+    attempt_count=0
+    x=""
+    #decide which port to use for this instance of the method call
+    while True:
+        attempt_count+=1
+        timeStart = time.time()
+        while used_ports[port].is_open != True:
+            time.sleep(0.1)
+        if used_ports[port].is_open == True:
+            #flush junk
+            used_ports[port].reset_input_buffer()
+            used_ports[port].reset_output_buffer()
+            time.sleep(0.1)
+            used_ports[port].write(bytes("\n", encoding='utf-8'))
+            # send data if any
+            if send != None:
+                time.sleep(0.1)
+                # start test, send command
+                used_ports[port].write(bytes(send, encoding='utf-8'))
+                time.sleep(0.2)
+            # read lines
+            while (time.time()-timeStart) < timeout:
+                try:
+                    x=used_ports[port].read(10000).decode("utf-8",'ignore')
+                except Exception as err:
+                    pass
+                x=str(x)
+                
+                if str(expect) in x:
+                    BuiltIn().pass_execution(".")
+
+            if attempt_count == 2:
+                break
+    write_to_console("\r\n-------\r\n",False)
+    BuiltIn().fail(".")
 #--------------------------------------------------------------------------------------
 def read_all(expect=None,timeout=10,port=None):
     global used_ports
