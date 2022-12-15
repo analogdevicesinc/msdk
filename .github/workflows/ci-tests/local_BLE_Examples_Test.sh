@@ -2,7 +2,7 @@
 
 echo "#############################################################################################"
 echo "# Match the test in BLE_Examples_Test.yml                                                   #"
-echo "# Usage: local_BLE_Examples_Test.sh /path/of/msdk"
+echo "# Usage: local_BLE_Examples_Test.sh /path/of/msdk                                           #"
 echo "#############################################################################################"
 echo
 
@@ -21,10 +21,11 @@ if [ ! -d "$1" ]; then
     exit 2
 fi
 
-BLE_FILES_CHANGED=0
-
 cd $MSDK
 echo "PWD=$(pwd)"
+
+#--------------------------------------------------------------------------------------------------
+BLE_FILES_CHANGED=0
 
 # Check for changes made to these files
 WATCH_FILES="\

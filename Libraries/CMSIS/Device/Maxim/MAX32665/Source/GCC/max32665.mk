@@ -34,6 +34,8 @@
  #
  ###############################################################################
 
+$(info ---INFO enter Libraries/CMSIS/Device/Maxim/MAX32665/source/GCC/max32665.mk)
+
 ifeq "$(CMSIS_ROOT)" ""
 $(error CMSIS_ROOT must be specified)
 endif
@@ -89,3 +91,5 @@ LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32665/Source/GCC
 
 # Include the rules and goals for building
 include $(CMSIS_ROOT)/Device/Maxim/MAX32665/Source/GCC/gcc.mk
+
+$(info ---INFO exit  Libraries/CMSIS/Device/Maxim/MAX32665/source/GCC/max32665.mk)

@@ -104,7 +104,8 @@ endif
 
 
 include ./project.mk
-$(info Loaded project.mk)
+$(info ---INFO USE_RF_PHY=$(USE_RF_PHY))
+export USE_RF_PHY
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
