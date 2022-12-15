@@ -1,0 +1,143 @@
+name: Build & Deploy Docs
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ "release" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        
+      - name: Setup Python
+        uses: actions/setup-python@v2.3.3
+        with:
+          cache: pip
+          
+      - name: Install mkdocs
+        run: pip install mkdocs
+
+      - name: Doxygen (MAX32520)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32520_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32650)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32650_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+      
+      - name: Doxygen (MAX32655)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32655_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32660)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32660_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32665)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32665_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32670)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32670_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32672)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32672_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32675)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32675_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32680)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32680_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX78000)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max78000_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX78002)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max78002_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Build User Guide
+        run: | # Build Documentation Folder and run mkdocs
+          SOURCE=Libraries/PeriphDrivers/Documentation
+          DEST=Documentation/$SOURCE
+
+          echo "Copying Periph Driver APIs..."
+          mkdir -p $DEST/MAX32520 && cp -r $SOURCE/MAX32520 $DEST/
+          mkdir -p $DEST/MAX32650 && cp -r $SOURCE/MAX32650 $DEST/
+          mkdir -p $DEST/MAX32655 && cp -r $SOURCE/MAX32655 $DEST/
+          mkdir -p $DEST/MAX32660 && cp -r $SOURCE/MAX32660 $DEST/
+          mkdir -p $DEST/MAX32665 && cp -r $SOURCE/MAX32665 $DEST/
+          mkdir -p $DEST/MAX32670 && cp -r $SOURCE/MAX32670 $DEST/
+          mkdir -p $DEST/MAX32672 && cp -r $SOURCE/MAX32672 $DEST/
+          mkdir -p $DEST/MAX32675 && cp -r $SOURCE/MAX32675 $DEST/
+          mkdir -p $DEST/MAX32680 && cp -r $SOURCE/MAX32680 $DEST/
+          mkdir -p $DEST/MAX78000 && cp -r $SOURCE/MAX78000 $DEST/
+          mkdir -p $DEST/MAX78002 && cp -r $SOURCE/MAX78002 $DEST/
+
+          echo "Copying any root markdown files into Documentation..."
+          cp -r *.md Documentation/
+
+          mkdocs build
+
+      - name: Publish
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: docs # Deploy the built docs folder
