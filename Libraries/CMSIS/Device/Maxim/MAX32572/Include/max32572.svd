@@ -1130,18 +1130,13 @@
    </addressBlock>
    <registers>
     <register>
-     <name>rsv0</name>
-     <description>RFU</description>
-     <addressOffset>0x00</addressOffset>
-    </register>
-    <register>
-     <name>BB_SIR2</name>
+     <name>BBSIR2</name>
      <description>System Init. Configuration Register 2.</description>
      <addressOffset>0x08</addressOffset>
      <access>read-only</access>
     </register>
     <register>
-     <name>BB_SIR3</name>
+     <name>BBSIR3</name>
      <description>System Init. Configuration Register 3.</description>
      <addressOffset>0x0C</addressOffset>
      <access>read-only</access>
@@ -4031,9 +4026,26 @@
       <field>
        <name>CRYPTOCLK_DIV</name>
        <description>Cryptographic clock divider</description>
-       <bitOffset>15</bitOffset>
+       <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
-       <access>read-only</access>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>non_div</name>
+         <description>The cryptographic accelerator clock is running in non-divided mode.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div</name>
+         <description>The cryptographic accelerator clock is running in divided mode.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>IPO_DIV</name>
+       <description>IPO Divider.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
          <name>non_div</name>
