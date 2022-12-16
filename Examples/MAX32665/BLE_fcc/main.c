@@ -39,6 +39,13 @@
 #include "pal_cfg.h"
 #include "tmr.h"
 
+// TODO: remove USE_RF_PHY after fully remove BlePhy.
+#if USE_RF_PHY == 1
+#include "pal_bb_afe.h"
+#include "pal_bb_dbb.h"
+#include "pal_bb_phy.h"
+#endif
+
 /**************************************************************************************************
   Definitions
 **************************************************************************************************/
@@ -70,13 +77,14 @@ static uint8_t txFreqHopCh;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
-
+#if USE_RF_PHY != 1
 /*! \brief Physical layer functions. */
 extern void llc_api_set_txpower(int8_t power);
 extern void dbb_seq_select_rf_channel(uint32_t rf_channel);
 extern uint8_t dbb_seq_get_rfpower(int8_t rf_power);
 extern void llc_api_tx_ldo_setup(void);
 extern void llc_api_set_phy(uint8_t phy, uint8_t phy_options);
+#endif
 
 extern volatile int8_t tx_rfpower_idx;
 extern volatile int8_t tx_rfpower_on;
@@ -244,6 +252,48 @@ static void processConsoleRX(uint8_t rxByte)
             break;
         }
 
+#if USE_RF_PHY == 1
+        switch (param) {
+        case '0':
+            PalBbAfeSetTxPower(-15);
+            LlSetAdvTxPower(-15);
+            APP_TRACE_INFO1("Power set to -15, Amp_coef = %x", PalBbAfeGetTxPowerPa(-15));
+            break;
+        case '1':
+            PalBbAfeSetTxPower(-10);
+            LlSetAdvTxPower(-10);
+            APP_TRACE_INFO1("Power set to -10, Amp_coef = %x", PalBbAfeGetTxPowerPa(-10));
+            break;
+        case '2':
+            PalBbAfeSetTxPower(-5);
+            LlSetAdvTxPower(-5);
+            APP_TRACE_INFO1("Power set to -5, Amp_coef = %x", PalBbAfeGetTxPowerPa(-5));
+            break;
+        case '3':
+            PalBbAfeSetTxPower(-2);
+            LlSetAdvTxPower(-2);
+            APP_TRACE_INFO1("Power set to -2, Amp_coef = %x", PalBbAfeGetTxPowerPa(-2));
+            break;
+        case '4':
+            PalBbAfeSetTxPower(0);
+            LlSetAdvTxPower(0);
+            APP_TRACE_INFO1("Power set to 0, Amp_coef = %x", PalBbAfeGetTxPowerPa(0));
+            break;
+        case '5':
+            PalBbAfeSetTxPower(2);
+            LlSetAdvTxPower(2);
+            APP_TRACE_INFO1("Power set to 2, Amp_coef = %x", PalBbAfeGetTxPowerPa(2));
+            break;
+        case '6':
+            PalBbAfeSetTxPower(4);
+            LlSetAdvTxPower(4);
+            APP_TRACE_INFO1("Power set to 4.5, Amp_coef = %x", PalBbAfeGetTxPowerPa(4));
+            break;
+        default:
+            APP_TRACE_INFO0("Invalid selection");
+            break;
+        }
+#else // USE_RF_PHY != 1
         switch (param) {
         case '0':
             llc_api_set_txpower(-15);
@@ -284,6 +334,8 @@ static void processConsoleRX(uint8_t rxByte)
             APP_TRACE_INFO0("Invalid selection");
             break;
         }
+#endif // USE_RF_PHY
+
         cmd = 0;
         param = 0;
         break;
@@ -299,6 +351,33 @@ static void processConsoleRX(uint8_t rxByte)
             break;
         }
 
+#if USE_RF_PHY == 1
+        switch (param) {
+        case '0':
+            PalBbDbbSetChannel(0);
+            APP_TRACE_INFO0("Channel set to 0 (2402M)");
+            break;
+        case '1':
+            PalBbDbbSetChannel(19);
+            APP_TRACE_INFO0("Channel set to 19 (2440M)");
+            break;
+        case '2':
+            PalBbDbbSetChannel(33);
+            APP_TRACE_INFO0("Channel set to 33 (2468M)");
+            break;
+        case '3':
+            PalBbDbbSetChannel(36);
+            APP_TRACE_INFO0("Channel set to 36 (2474M)");
+            break;
+        case '4':
+            PalBbDbbSetChannel(39);
+            APP_TRACE_INFO0("Channel set to 39 (2480M)");
+            break;
+        default:
+            APP_TRACE_INFO0("Invalid selection");
+            break;
+        }
+#else // USE_RF_PHY != 1
         switch (param) {
         case '0':
             dbb_seq_select_rf_channel(0);
@@ -324,12 +403,17 @@ static void processConsoleRX(uint8_t rxByte)
             APP_TRACE_INFO0("Invalid selection");
             break;
         }
+#endif // USE_RF_PHY
 
         APP_TRACE_INFO0("Starting PRBS9 TX");
 
         PalBbEnable();
 
+#if USE_RF_PHY == 1
+        PalBbAfeTxSetup();
+#else
         llc_api_tx_ldo_setup();
+#endif
 
         /* Enable constant TX */
         MXC_R_TX_CTRL = 0x1;
@@ -387,7 +471,11 @@ static void processConsoleRX(uint8_t rxByte)
             break;
         }
 
+#if USE_RF_PHY == 1
+        PalBbPhySet(phy, BB_PHY_OPTIONS_DEFAULT);
+#else
         llc_api_set_phy(phy, BB_PHY_OPTIONS_DEFAULT);
+#endif
 
         cmd = 0;
         param = 0;

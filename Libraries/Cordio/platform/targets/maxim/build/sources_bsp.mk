@@ -67,10 +67,19 @@ endif
 INC_DIRS 	+= \
 	$(PERIPH_DRIVER_INCLUDE_DIR)
 
+ifneq ($(CHIP_UC),MAX32665)
+
 ifneq ($(USE_EXACTLE),0)
 ifeq ($(RISCV_CORE),)
 LIBS      += $(BSP_DIR)/BlePhy/$(CHIP_UC)/libphy.a
 else
 LIBS      += $(BSP_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
 endif
+endif
+
+else
+
+RF_PHY_ROOT := $(BSP_DIR)/RF-PHY
+include $(RF_PHY_ROOT)/$(CHIP_UC)/build/sources.mk
+
 endif

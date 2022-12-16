@@ -31,6 +31,8 @@
  #
  ###############################################################################
 
+$(info ---INFO enter Libraries/FCL/libfcl.mk)
+
 # This is the name of the build output file
 PROJECT_NAME=libfcl
 
@@ -92,3 +94,5 @@ MAKECMDGOALS=lib
 
 # Include the rules for building for this target
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
+
+$(info ---INFO exit  Libraries/FCL/libfcl.mk)

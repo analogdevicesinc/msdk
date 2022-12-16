@@ -21,8 +21,10 @@ Tools/MSYS2
 *.o
 *.d
 /**/make.log
+/**/temp.log
 /**/.idea/
 session.txt.log
 flash.log
 Libraries/NFC
 Libraries/EMV
+Examples_tests/

@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<device>
+  <peripheral>
+    <name>dbb_ctrl</name>
+    <description>DIBS Control Config</description>
+    <baseAddress>TODO-base</baseAddress>
+    <size>16</size>
+    <registers>
+      <register>
+        <name>dbb_ctrl_version</name>
+        <description>version</description>
+        <addressOffset>0x0000</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>minor</name>
+            <description>Version register minor</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>major</name>
+            <description>version register major</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>dbb_ctrl_rst</name>
+        <description>Digital baseband reset</description>
+        <addressOffset>0x0002</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>rst</name>
+            <description>reset</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ant_sel</name>
+            <description>ant_sel.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>tx_ctrl_dbb_en_dly</name>
+        <description>When a transmit needs to start automatically after Tifs</description>
+        <addressOffset>0x0004</addressOffset>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>tx_ctrl_rffe_en_dly[%s]</name>
+        <description>RFE enable dly [1]: the delay between the start of the SPI sequencer or the POWER on. RFE enable delay [2]: the delay between the start of the second burst and the POWER on. (if the RFE enable delay [2] = 0 there is no second burst)</description>
+        <addressOffset>0x0008</addressOffset>
+      </register>
+      <register>
+        <name>tx_ctrl_dbb_dis_dly</name>
+        <description>the delay for disabling the DBB</description>
+        <addressOffset>0x0010</addressOffset>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>tx_ctrl_rffe_dis_dly[%s]</name>
+        <description>RFE disable dly [1]: the delay between the start of the SPI sequencer or the POWER on. RFE disable delay [2]: the delay between the start of the second burst and the POWER on. (if the RFE disable delay [2] = 0 there is no second burst)</description>
+        <addressOffset>0x0014</addressOffset>
+      </register>
+      <register>
+        <name>tx_ctrl_cmd</name>
+        <description>cmd</description>
+        <addressOffset>0x001c</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>enable</name>
+            <description>Direct register control enable of TX transmission</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>disable</name>
+            <description>Direct register control disable of TX transmission</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>stop</name>
+            <description>Stops the automatic timing for TIFS</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>tx_ctrl_debug_en_tx_on_sfd_to</name>
+        <description>Besides RX received also enable TX on SFD timeout (used for debugging only)</description>
+        <addressOffset>0x001e</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>rx_ctrl_dbb_en_dly</name>
+        <description>When a transmit needs to start automatically after Tifs</description>
+        <addressOffset>0x0020</addressOffset>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>rx_ctrl_rffe_en_dly[%s]</name>
+        <description>RFE enable dly [1]: the delay between the start of the SPI sequencer or the POWER on. RFE enable delay [2]: the delay between the start of the second burst and the POWER on. (if the RFE enable delay [2] = 0 there is no second burst)</description>
+        <addressOffset>0x0024</addressOffset>
+      </register>
+      <register>
+        <name>rx_ctrl_dbb_dis_dly</name>
+        <description>the delay for disabling the DBB</description>
+        <addressOffset>0x002c</addressOffset>
+      </register>
+      <register>
+        <dim>2</dim>
+        <dimIncrement>4</dimIncrement>
+        <name>rx_ctrl_rffe_dis_dly[%s]</name>
+        <description>RFE disable dly [1]: the delay between the start of the SPI sequencer or the POWER on. RFE disable delay [2]: the delay between the start of the second burst and the POWER on. (if the RFE disable delay [2] = 0 there is no second burst)</description>
+        <addressOffset>0x0030</addressOffset>
+      </register>
+      <register>
+        <name>rx_ctrl_cmd</name>
+        <description>cmd</description>
+        <addressOffset>0x0038</addressOffset>
+        <fields>
+          <field>
+            <name>enable</name>
+            <description>Direct register control enable of RX transmission</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>disable</name>
+            <description>Direct register control disable of RX transmission</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>stop</name>
+            <description>Stops the automatic timing for TIFS</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>tx_pmu_wake_up_dly</name>
+        <description>wake_up_dly</description>
+        <addressOffset>0x003c</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>stab</name>
+            <description>The delay between the wake up event and turning off the isolation</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>unused</name>
+            <description>unused</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>iso</name>
+            <description>The delay between turning off the isolation and signalling that the power is on</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>tx_pmu_ctrl</name>
+        <description>ctrl</description>
+        <addressOffset>0x003e</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>pwr_gating_on</name>
+            <description>Actually do power gating, if off the power on signal is still toggled and is used to start the actual TX or RX</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>wakeup</name>
+            <description>Register controlled wakeup</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>sleep</name>
+            <description>Register controlled sleep</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>rffe_pmu_wake_up_dly</name>
+        <description>wake_up_dly</description>
+        <addressOffset>0x0040</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>stab</name>
+            <description>The delay between the wake up event and turning off the isolation</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>unused</name>
+            <description>unused</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>iso</name>
+            <description>The delay between turning off the isolation and signalling that the power is on</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>rffe_pmu_ctrl</name>
+        <description>ctrl</description>
+        <addressOffset>0x0042</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>pwr_gating_on</name>
+            <description>Actually do power gating, if off the power on signal is still toggled and is used to start the actual TX or RX</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>wakeup</name>
+            <description>Register controlled wakeup</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>sleep</name>
+            <description>Register controlled sleep</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>rx_pmu_wake_up_dly</name>
+        <description>wake_up_dly</description>
+        <addressOffset>0x0044</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>stab</name>
+            <description>The delay between the wake up event and turning off the isolation</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>unused</name>
+            <description>unused</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>iso</name>
+            <description>The delay between turning off the isolation and signalling that the power is on</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>rx_pmu_ctrl</name>
+        <description>ctrl</description>
+        <addressOffset>0x0046</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>pwr_gating_on</name>
+            <description>Actually do power gating, if off the power on signal is still toggled and is used to start the actual TX or RX</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>wakeup</name>
+            <description>Register controlled wakeup</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>sleep</name>
+            <description>Register controlled sleep</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>gen_pmu_status</name>
+        <description>status</description>
+        <addressOffset>0x0048</addressOffset>
+        <fields>
+          <field>
+            <name>tx</name>
+            <description>Status shows if the power domain is not in the asleep mode</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rfe</name>
+            <description>Status shows if the power domain is not in the asleep mode</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx</name>
+            <description>Status shows if the power domain is not in the asleep mode</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>event_timing_cntr_clk_mult_p</name>
+        <description>Counter clock rate multiplier multiplier value (the multiplier value can never be higher then the corresponding divider value)</description>
+        <addressOffset>0x004c</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>event_timing_cntr_clk_div_q</name>
+        <description>Counter clock rate multiplier divider value </description>
+        <addressOffset>0x004e</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>event_timing_cntr_val</name>
+        <description>Counter value (counter runs on  clock determined by the counter clock rate multiplier)</description>
+        <addressOffset>0x0050</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_tx_enable_time</name>
+        <description>Time corresponding to the counter when the TX enable event should be given</description>
+        <addressOffset>0x0054</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_rx_enable_time</name>
+        <description>Time corresponding to the counter when the RX enable event should be given</description>
+        <addressOffset>0x0058</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_gp_event_time</name>
+        <description>Time corresponding to the counter when the general purpose event should be given</description>
+        <addressOffset>0x005c</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_tx_enable_delta_time</name>
+        <description>Time corresponding to the counter between two TX enable events starting from "tx_enable_time"  (a value of 0 disables repetitive events, any other value enables them)  </description>
+        <addressOffset>0x0060</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_rx_enable_delta_time</name>
+        <description>Time corresponding to the counter between two RX enable events starting from "rx_enable_time"  (a value of 0 disables repetitive events, any other value enables them)  </description>
+        <addressOffset>0x0064</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_gp_event_delta_time</name>
+        <description>Time corresponding to the counter between two general purpose events starting from "gp_event_time"  (a value of 0 disables repetitive events, any other value enables them)  </description>
+        <addressOffset>0x0068</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_ctrl</name>
+        <description>ctrl</description>
+        <addressOffset>0x006c</addressOffset>
+        <fields>
+          <field>
+            <name>enable</name>
+            <description>Counter, event timing and timestamping enable</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rst</name>
+            <description>Resets counter and event timing logic</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>set_tx_enable_time</name>
+            <description>Set  TX enable time (enables timed event)</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>set_rx_enable_time</name>
+            <description>Set  RX enable time (enables timed event)</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>set_gp_event_time</name>
+            <description>Set general purpose event time (enables timed event)</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>stop_tx_enable_event</name>
+            <description>Stop TX enable event (stops timed event)</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>stop_rx_enable_event</name>
+            <description>Stop RX enable event (stops timed event)</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>stop_gp_event</name>
+            <description>Stop general purpose event (stops timed event)</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>event_timing_timestamp_tx_done</name>
+        <description>Event timestamp derived from the counter</description>
+        <addressOffset>0x0070</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_timestamp_rx_received</name>
+        <description>Event timestamp derived from the counter</description>
+        <addressOffset>0x0074</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_timestamp_rx_sfd_det</name>
+        <description>Event timestamp derived from the counter</description>
+        <addressOffset>0x0078</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_timestamp_rx_sfd_to</name>
+        <description>Event timestamp derived from the counter</description>
+        <addressOffset>0x007c</addressOffset>
+      </register>
+      <register>
+        <name>event_timing_timestamp_rx_energy_det</name>
+        <description>Event timestamp derived from the counter</description>
+        <addressOffset>0x0080</addressOffset>
+      </register>
+      <register>
+        <name>events_status</name>
+        <description>status</description>
+        <addressOffset>0x0084</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>tx_done</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_received</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_energy_det</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_sfd_det</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_sfd_to</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rfe_spim_rdy</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>invalid_addr</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>gp_event</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>tx_aes_done</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_aes_done</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>decrypt_fail</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_sfd2_de</name>
+            <description>debug purpose: read out if an event occurred.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>events_irq_test</name>
+        <description>irq_test</description>
+        <addressOffset>0x0086</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>tx_done</name>
+            <description>debug purpose: a pulse is generated to test the interrupt</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_received</name>
+            <description>debug purpose: a pulse is generated to test the interrupt</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_energy_det</name>
+            <description>debug purpose: a pulse is generated to test the interrupt</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_sfd_det</name>
+            <description>debug purpose: a pulse is generated to test the interrupt</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_sfd_to</name>
+            <description>debug purpose: a pulse is generated to test the interrupt</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rfe_spim_rdy</name>
+            <description>debug purpose: a pulse is generated to test the interrupt</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>invalid_addr</name>
+            <description>debug purpose: a pulse is generated to test the interrupt</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>gp_event</name>
+            <description>debug purpose: a pulse is generated to test the interrupt</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>tx_aes_done</name>
+            <description>debug purpose: a pulse is generated to test the interrupt.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_aes_done</name>
+            <description>debug purpose: a pulse is generated to test the interrupt.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>decrypt_fail</name>
+            <description>debug purpose: a pulse is generated to test the interrupt.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rx_sfd2_de</name>
+            <description>debug purpose: a pulse is generated to test the interrupt.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>cmu_gating_on</name>
+        <description>Clock gating on</description>
+        <addressOffset>0x0088</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>cmu_main_mult_p</name>
+        <description>The rate multiplier multiplier value (the multiplier value can never be higher then the corresponding divider value)</description>
+        <addressOffset>0x008a</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>cmu_main_div_q</name>
+        <description>The rate multiplier divider value </description>
+        <addressOffset>0x008c</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>cmu_phy_mult_p</name>
+        <description>The rate multiplier multiplier value (the multiplier value can never be higher then the corresponding divider value)</description>
+        <addressOffset>0x008e</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>cmu_phy_div_q</name>
+        <description>The rate multiplier divider value </description>
+        <addressOffset>0x0090</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>cmu_dl_mult_p</name>
+        <description>The rate multiplier multiplier value (the multiplier value can never be higher then the corresponding divider value)</description>
+        <addressOffset>0x0092</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>cmu_dl_div_q</name>
+        <description>The rate multiplier divider value </description>
+        <addressOffset>0x0094</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>aes_st</name>
+        <description>AES status.</description>
+        <addressOffset>0x0100</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>aes_aad</name>
+        <description>AES address.</description>
+        <addressOffset>0x0104</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>aes_ctrl</name>
+        <description>AES control.</description>
+        <addressOffset>0x010C</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <dim>16</dim>
+        <dimIncrement>1</dimIncrement>
+        <name>aes_key</name>
+        <description>AES key.</description>
+        <addressOffset>0x0110</addressOffset>
+        <size>8</size>
+      </register>
+      <register>
+        <dim>16</dim>
+        <dimIncrement>1</dimIncrement>
+        <name>aes_ctr_blk</name>
+        <description>AES counter block.</description>
+        <addressOffset>0x0120</addressOffset>
+        <size>8</size>
+      </register>
+    </registers>
+  </peripheral>
+</device>

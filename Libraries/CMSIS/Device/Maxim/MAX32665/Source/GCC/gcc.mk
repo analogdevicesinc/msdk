@@ -31,6 +31,8 @@
  #
  ###############################################################################
 
+$(info ---INFO enter Libraries/CMSIS/Device/Maxim/MAX32665/source/GCC/gcc.mk)
+
 # The build directory
 ifeq "$(BUILD_DIR)" ""
 BUILD_DIR=$(CURDIR)/build
@@ -192,6 +194,12 @@ ifneq (${MAKECMDGOALS},release)
 ifneq (${DEBUG},0)
 CFLAGS+=-g3 -ggdb -DDEBUG
 endif
+endif
+
+# Use Libraries/RF-PHY instead of Libraries/BlePhy
+$(info ---INFO USE_RF_PHY=$(USE_RF_PHY))
+ifeq ($(USE_RF_PHY), 1)
+PROJ_CFLAGS += -DUSE_RF_PHY=1
 endif
 
 CFLAGS+=$(PROJ_CFLAGS)
@@ -454,3 +462,4 @@ debug:
 	@echo
 	@echo IPATH = ${IPATH}
 
+$(info ---INFO exit  Libraries/CMSIS/Device/Maxim/MAX32665/source/GCC/gcc.mk)

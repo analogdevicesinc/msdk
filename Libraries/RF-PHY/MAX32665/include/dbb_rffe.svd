@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<device>
+  <peripheral>
+    <name>dbb_rffe</name>
+    <description>DIBS RFFE IC Config</description>
+    <baseAddress>TODO-base</baseAddress>
+    <size>16</size>
+    <registers>
+      <register>
+        <name>rffe_ifc_version</name>
+        <description>version</description>
+        <addressOffset>0x0000</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>minor</name>
+            <description>Version register minor</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>major</name>
+            <description>version register major</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>rffe_ifc_rffe_version</name>
+        <description>Select the output mode to the RFFE: '00' = PR400 1G RFFE mode, '01' =  the PR400 2G RFFE mode, '10' = PAN 1G RFFE mode, '11' = PAN 2G mode</description>
+        <addressOffset>0x0002</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>version</name>
+            <description>version</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>PR400_1G</name>
+                <description>PR400_1G.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PR400_2G</name>
+                <description>PR400_2G.</description>
+                <value>1</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAN_1G</name>
+                <description>PAN_1G.</description>
+                <value>2</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>PAN_2G</name>
+                <description>PAN_2G.</description>
+                <value>3</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>general_param</name>
+        <description>param</description>
+        <addressOffset>0x0004</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>byp_cdc</name>
+            <description>Bypass the clock domain crossing module</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>swap_iq</name>
+            <description>Swap I and Q signals</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>swap_am_fm</name>
+            <description>Swap AM and FM signals</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>general_delay_freq</name>
+        <description>delay_freq</description>
+        <addressOffset>0x0006</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>low</name>
+            <description>Delay of data for programmable frequency divider</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+          <field>
+            <name>high</name>
+            <description>Delay of data for frequency DAC</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>6</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>general_delay_amp</name>
+        <description>Delay of amplitude data</description>
+        <addressOffset>0x0008</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>general_spi_invert_csn</name>
+        <description>When set to '1', the SPI chip select line is inverted.</description>
+        <addressOffset>0x000a</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>general_skip_sdmod</name>
+        <description>skip_sdmod</description>
+        <addressOffset>0x000c</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>div</name>
+            <description>Skip sigma delta modulation of frequency output for divider.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>amp</name>
+            <description>Skip sigma delta modulation of amplitude output.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>tx_seq_ena_seq_lngth_total</name>
+        <description>The value set the number of commands that are send to the AFE</description>
+        <addressOffset>0x0010</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>tx_seq_ena_seq_lngth_part</name>
+        <description>The value set the number of commands that are send to the AFE before going into wait mode</description>
+        <addressOffset>0x0012</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>16</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>tx_seq_ena_cmd</name>
+        <description>AFE enable commands</description>
+        <addressOffset>0x0014</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>tx_seq_dis_seq_lngth_total</name>
+        <description>The value set the number of commands that are send to the AFE</description>
+        <addressOffset>0x0034</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>tx_seq_dis_seq_lngth_part</name>
+        <description>The value set the number of commands that are send to the AFE before going into wait mode</description>
+        <addressOffset>0x0036</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>16</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>tx_seq_dis_cmd</name>
+        <description>AFE disable commands</description>
+        <addressOffset>0x0038</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>tx_seq_spi</name>
+        <description>spi</description>
+        <addressOffset>0x0058</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>clk_rate</name>
+            <description>The value devides the clock</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>endianess</name>
+            <description>When it is set to '0' it will send out the data from lsb to msb</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>cpol</name>
+            <description>When it is set to '1' The inactive clock is HIGH</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>cpha</name>
+            <description>When it is set to '0' the data is sampled on the first clock edge; When it is set to '1' the data is sampled on the second clock edge</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>enable</name>
+            <description>enables SPI master module when set to '1'</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>rx_seq_ena_seq_lngth_total</name>
+        <description>The value set the number of commands that are send to the AFE</description>
+        <addressOffset>0x005c</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>rx_seq_ena_seq_lngth_part</name>
+        <description>The value set the number of commands that are send to the AFE before going into wait mode</description>
+        <addressOffset>0x005e</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>16</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>rx_seq_ena_cmd</name>
+        <description>AFE enable commands</description>
+        <addressOffset>0x0060</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>rx_seq_dis_seq_lngth_total</name>
+        <description>The value set the number of commands that are send to the AFE</description>
+        <addressOffset>0x0080</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>rx_seq_dis_seq_lngth_part</name>
+        <description>The value set the number of commands that are send to the AFE before going into wait mode</description>
+        <addressOffset>0x0082</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>16</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>rx_seq_dis_cmd</name>
+        <description>AFE disable commands</description>
+        <addressOffset>0x0084</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>rx_seq_spi</name>
+        <description>spi</description>
+        <addressOffset>0x00a4</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>clk_rate</name>
+            <description>The value devides the clock</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>endianess</name>
+            <description>When it is set to '0' it will send out the data from lsb to msb</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>cpol</name>
+            <description>When it is set to '1' The inactive clock is HIGH</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>cpha</name>
+            <description>When it is set to '0' the data is sampled on the first clock edge; When it is set to '1' the data is sampled on the second clock edge</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>enable</name>
+            <description>enables SPI master module when set to '1'</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>rffe_spim_cfg</name>
+        <description>cfg</description>
+        <addressOffset>0x00a8</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>clk_rate</name>
+            <description>The value divides the clock</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>endianess</name>
+            <description>When it is set to '0' it will send out the data from lsb to msb</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>cpol</name>
+            <description>When it is set to '1' The inactive clock is HIGH</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>cpha</name>
+            <description>When it is set to '0' the data is sampled on the first clock edge; When it is set to '1' the data is sampled on the second clock edge</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>enable</name>
+            <description>enables SPI master module when set to '1'</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>rffe_spim_data_out</name>
+        <description>The data to be sent via spi to the AFE.</description>
+        <addressOffset>0x00aa</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>rffe_spim_start_transaction</name>
+        <description>The start pulse to start a new spi transaction.</description>
+        <addressOffset>0x00ac</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>rffe_spim_data_in</name>
+        <description>The data received via spi from  the AFE.</description>
+        <addressOffset>0x00ae</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>agc_spi_cfg</name>
+        <description>cfg</description>
+        <addressOffset>0x00b0</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>clk_rate</name>
+            <description>The value divides the clock</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>4</bitWidth>
+          </field>
+          <field>
+            <name>endianess</name>
+            <description>When it is set to '0' it will send out the data from lsb to msb</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>cpol</name>
+            <description>When it is set to '1' The inactive clock is HIGH</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>cpha</name>
+            <description>When it is set to '0' the data is sampled on the first clock edge; When it is set to '1' the data is sampled on the second clock edge</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>enable</name>
+            <description>enables SPI master module when set to '1'</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>agc_enc5_gain_addr</name>
+        <description>The target address for the gain settings to be written to</description>
+        <addressOffset>0x00b4</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>agc_enc5_gain_table</name>
+        <description>The settings for the AFE gain register per gain step, format is 4 LPF, MX2, MX1, LNA</description>
+        <addressOffset>0x00b6</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>agc_enc5_gain_table_db</name>
+        <description>Setting the AFE gain in db for the RSSI block</description>
+        <addressOffset>0x00c6</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>agc_enc5_ready_tmr</name>
+        <description>Set the amount of time that it takes to set the AFE front-end gain after a new gain has been written to the FIFO</description>
+        <addressOffset>0x00d6</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>agc_enc5_offs_i_addr</name>
+        <description>The target address for the dc offset setting for the I branch channel</description>
+        <addressOffset>0x00d8</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>agc_enc5_offs_q_addr</name>
+        <description>The target address for the dc offset setting for the Q branch channel</description>
+        <addressOffset>0x00da</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>agc_enc5_dc_offs</name>
+        <description>dc_offs</description>
+        <addressOffset>0x00dc</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>enable</name>
+            <description>If 1 then no DC offset is written when the AGC changes gain setting</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>bypass_en</name>
+            <description>Use the software controled registers offs_*_bypass to set the DC offset values send to the AFE and bypass the values generated by the AGC DC offset algorithm</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>agc_enc5_offs_i_bypass</name>
+        <description>Software diffined offsets per gain step for the I channel</description>
+        <addressOffset>0x00de</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>agc_enc5_offs_q_bypass</name>
+        <description>Software diffined offsets per gain step for the Q channel</description>
+        <addressOffset>0x00ee</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>agc_enc5_curr_dc_offs_i</name>
+        <description>Current values of the DC offset algorithm per gain step for the I channel</description>
+        <addressOffset>0x00fe</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>8</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>agc_enc5_curr_dc_offs_q</name>
+        <description>Current values of the DC offset algorithm per gain step for the Q channel</description>
+        <addressOffset>0x010e</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>general2_skip_fir_amp</name>
+        <description>skip_amplitude FIR filter</description>
+        <addressOffset>0x0120</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>general2_fir_coefficients</name>
+        <description>FIR filter coefficients *signed*</description>
+        <addressOffset>0x0122</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>general2_fir_scalingfactor</name>
+        <description>FIR filter scalingfactor</description>
+        <addressOffset>0x012a</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>anti_alias_am_skip_fir</name>
+        <description>Skip anti-alias FIR filter in amplitude path</description>
+        <addressOffset>0x012c</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>anti_alias_am_coeff</name>
+        <description>FIR filter coefficients</description>
+        <addressOffset>0x012e</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>anti_alias_am_scalingfactor</name>
+        <description>FIR filter scalingfactor</description>
+        <addressOffset>0x0136</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>anti_alias_fm_skip_fir</name>
+        <description>Skip Anti-alias filter in FM path (for BTLE speed mode)</description>
+        <addressOffset>0x0138</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <dim>4</dim>
+        <dimIncrement>2</dimIncrement>
+        <name>anti_alias_fm_coeff</name>
+        <description>FIR filter coefficients (FM path anti-alias filter) </description>
+        <addressOffset>0x013a</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>anti_alias_fm_scalingfactor</name>
+        <description>FIR filter scalingfactor (FM path anti-alias filter) </description>
+        <addressOffset>0x0142</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>cdc_clk_div_en</name>
+        <description>Enable CDC clock divide-by-2 to enable DBB@16MHz</description>
+        <addressOffset>0x0144</addressOffset>
+        <size>16</size>
+      </register>
+      <register>
+        <name>iq_ctrl</name>
+        <description>iq_ctrl</description>
+        <addressOffset>0x0164</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>enable</name>
+            <description>Enable the IQ measurement.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>done</name>
+            <description>IQ measurement complete.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>iq_data</name>
+        <description>iq_data</description>
+        <addressOffset>0x0168</addressOffset>
+        <size>16</size>
+      </register>
+    </registers>
+  </peripheral>
+</device>

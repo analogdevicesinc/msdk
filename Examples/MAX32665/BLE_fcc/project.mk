@@ -10,6 +10,10 @@
 # Enable CORDIO library
 LIB_CORDIO = 1
 
+# Use Libraries/RF-PHY instead of Libraries/BlePhy
+# DON'T CHANGE THIS!
+USE_RF_PHY = 1
+
 # TRACE option
 # Set to 1 to enable serial port trace messages
 # Set to 0 to disable

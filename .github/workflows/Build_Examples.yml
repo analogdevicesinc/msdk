@@ -60,6 +60,9 @@ jobs:
           SUBDIRS=$(find . -type d -not -path "./MAX3257*" -name "Hello_World")
           for dir in ${SUBDIRS}
           do
+            echo "-----------------------------------------------------------------------------------------"
+            echo "Build ${dir}"
+            echo "-----------------------------------------------------------------------------------------"
             make -C ${dir} clean
             make -C ${dir} libclean
             make -C ${dir} -j8
@@ -78,6 +81,9 @@ jobs:
 
           for dir in ${SUBDIRS}
           do
-              make -C ${dir} clean
-              make -C ${dir} -j8
+            echo "-----------------------------------------------------------------------------------------"
+            echo "Build ${dir}"
+            echo "-----------------------------------------------------------------------------------------"
+            make -C ${dir} clean
+            make -C ${dir} -j8
           done
