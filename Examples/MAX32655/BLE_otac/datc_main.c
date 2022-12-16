@@ -656,7 +656,7 @@ static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uin
     // APP_TRACE_INFO2("Sending addr: 0x%08X len: 0x%04X", address, len);
 
     /* Send the address and data, add the length of the address to the length */
-    WdxcFtdSendBlock(connId, len+sizeof(uint32_t), addrData);
+    WdxcFtdSendBlock(connId, len + sizeof(uint32_t), addrData);
 
     /* Increment the address of the data that we're sending */
     datcCb.blockOffset[connId - 1] += len;
@@ -684,9 +684,7 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
         MXC_TMR_SW_Start(MXC_TMR2);
         datcCb.sendingFile[connId - 1] = TRUE;
         uint32_t address = datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT;
-        datcSendBlock(
-            connId, address, BLOCK_SIZE,
-            (uint8_t *)&datcCb.fileData[address]);
+        datcSendBlock(connId, address, BLOCK_SIZE, (uint8_t *)&datcCb.fileData[address]);
     } else if (op == WDX_FTC_OP_EOF) {
         if (handle == WDX_FLIST_HANDLE) {
             /* on discovery completion we can send the header */
@@ -999,9 +997,7 @@ static void datcProcMsg(dmEvt_t *pMsg)
 
                 /* Keep writing the file */
                 uint32_t address = datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT;
-                datcSendBlock(
-                    connId, address, blockSize,
-                    (uint8_t *)&datcCb.fileData[address]);
+                datcSendBlock(connId, address, blockSize, (uint8_t *)&datcCb.fileData[address]);
             }
         }
         break;
