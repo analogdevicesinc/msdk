@@ -67,8 +67,6 @@
 #define I2C_SLAVE_ADDR 0x51
 #define I2C_BYTES 255
 
-typedef enum { FAILED, PASSED } test_t;
-
 /***** Globals *****/
 static uint8_t Stxdata[I2C_BYTES];
 static uint8_t Srxdata[I2C_BYTES];
@@ -187,9 +185,9 @@ int verifyData()
         }
     }
     if (fails > 0) {
-        return FAILED;
+        return E_FAIL;
     } else {
-        return PASSED;
+        return E_NO_ERROR;
     }
 }
 
@@ -208,14 +206,14 @@ int main()
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
         printf("Failed to initialize master.\n");
-        return FAILED;
+        return error;
     }
 
     //Setup the I2CS
     error = MXC_I2C_Init(I2C_SLAVE, 0, I2C_SLAVE_ADDR);
     if (error != E_NO_ERROR) {
         printf("Failed to initialize slave.\n");
-        return FAILED;
+        return error;
     }
 
     MXC_NVIC_SetVector(I2C1_IRQn, I2C1_IRQHandler);
@@ -249,7 +247,7 @@ int main()
 
     if ((error = MXC_I2C_SlaveTransactionAsync(I2C_SLAVE, slaveHandler)) != 0) {
         printf("Error Starting Slave Transaction %d\n", error);
-        return FAILED;
+        return error;
     }
 
 #ifdef MASTERDMA
@@ -262,13 +260,13 @@ int main()
 
     if ((error = MXC_I2C_MasterTransactionDMA(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
-        return FAILED;
+        return error;
     }
     while (DMA_FLAG == 0) {}
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
-        return FAILED;
+        return error;
     }
 
     while (I2C_FLAG == 1) {}
@@ -279,9 +277,10 @@ int main()
     printf("\n");
     if (verifyData()) {
         printf("\n-->I2C Transaction Successful\n");
-        return 0;
     } else {
         printf("\n-->I2C Transaction Failed\n");
-        return -1;
+        return E_FAIL;
     }
+
+    return E_NO_ERROR;
 }

@@ -282,7 +282,7 @@ int main(void)
         printf("Flash mass erase is verified.\n");
     } else {
         printf("Failed!  Flash mass erase failed.\n");
-        return -1;
+        return E_FAIL;
     }
 
     /*
@@ -310,7 +310,7 @@ int main(void)
         error = MXC_FLC_Write32(testaddr, testval);
         if (error != E_NO_ERROR) {
             printf("Failure writing 0x%x to ADDR: 0x%x with error code %i\n", i, testaddr, error);
-            return -1;
+            return error;
         }
 
         // Read test data
@@ -353,7 +353,7 @@ int main(void)
     if (error) {
         printf("Failed to erase page %i (ADDR: 0x%x) with error code %i\n", page, erase_addr,
                error);
-        return -1;
+        return error;
     }
 
     if (check_erased(erase_addr, MXC_FLASH_PAGE_SIZE)) {
@@ -362,7 +362,7 @@ int main(void)
         printf("Erasure of page %i (ADDR: 0x%x) failed...  Function call completed, but contents "
                "were not fully erased.\n",
                page, erase_addr);
-        return -1;
+        return E_FAIL;
     }
 
     // Erase partial pages or wide range of pages and keep the data on the page not inbetween start and end.
@@ -378,7 +378,7 @@ int main(void)
         printf("Successfully verified partial erasure.\n");
     } else {
         printf("Failed to verify partial erasure!\n");
-        return -1;
+        return E_FAIL;
     }
 
     // Flash modifications are complete, so the ICC can be re-enabled.
@@ -386,5 +386,5 @@ int main(void)
 
     printf("Example succeeded!\n");
 
-    return 0;
+    return E_NO_ERROR;
 }

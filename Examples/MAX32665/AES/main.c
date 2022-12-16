@@ -275,11 +275,10 @@ int main(void)
     printf("\n");
     if (fail == 0) {
         printf("Example Succeeded\n");
-        return 0;
     } else {
         printf("Example Failed\n");
-        return -1;
+        return E_FAIL;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

@@ -221,7 +221,7 @@ int main(void)
     if (fail) {
         printf("Example failed!\n");
         LED_On(0);
-        return -1;
+        return E_FAIL;
     } else {
         printf("Example succeeded!\n");
         LED_On(1);

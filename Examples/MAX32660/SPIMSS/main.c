@@ -132,7 +132,7 @@ int main(void)
             Console_Init();
             printf("Error configuring SPI\n");
             while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) {}
-            while (1) {}
+            return E_FAIL;
         }
 
         req.tx_data = txData;
@@ -150,14 +150,14 @@ int main(void)
             Console_Init();
             printf("SPIMSS Asynchronus Transaction failed with error code : %d", spimssFlag);
             while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) {}
-            while (1) {}
+            return err;
         }
         while (spimssFlag == 1) {}
         if (spimssFlag != 0) {
             Console_Init();
             printf("SPIMSS Asynchronus Transaction failed with error code : %d", spimssFlag);
             while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) {}
-            while (1) {}
+            return E_FAIL;
         }
 #endif
 #ifdef SYNC
@@ -165,7 +165,7 @@ int main(void)
             Console_Init();
             printf("SPIMSS Transaction failed with error code:%d\n", err);
             while (MXC_UART_Busy(MXC_UART_GET_UART(CONSOLE_UART))) {}
-            while (1) {}
+            return err;
         }
 #endif
 
@@ -211,13 +211,12 @@ int main(void)
 
     if (fails != 0) {
         printf("\nTest failed!\n");
-        return -1;
+        return E_FAIL;
     } else {
         printf("\nTest successful!\n");
         LED_Init();
         LED_On(0);
-        return 0;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

@@ -227,7 +227,8 @@ int main(void)
         printf("Example Succeeded\n");
     } else {
         printf("Example Failed\n");
+        return E_FAIL;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }
