@@ -36,7 +36,6 @@
 #include "gcr_regs.h"
 #include "mcr_regs.h"
 #include "lp.h"
-#include "nvic_table.h"
 
 void MXC_LP_EnterSleepMode(void)
 {
