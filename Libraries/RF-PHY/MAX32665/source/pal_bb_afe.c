@@ -1318,7 +1318,10 @@ static void palBbAfeCalFmGain(uint32_t target, uint8_t phy)
         }
     } else {
         /* Apply the linear fit for the first 18 channels */
-        for (ch = 0; ch < 19; ch++) { palBbAfeCb.txCh[ch].f_dev_2M = (trim0 - ch * diff0) >> 7; }
+        for (ch = 0; ch < 19; ch++)
+        {
+            palBbAfeCb.txCh[ch].f_dev_2M = (trim0 - ch * diff0) >> 7;
+        }
 
         /* Apply the linear fit for the remaining channels */
         for (ch = 0; ch <= 20; ch++) {
