@@ -30,25 +30,28 @@
  * ownership rights.
  *
  *************************************************************************** */
-#ifndef __riscv
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
 #include "gcr_regs.h"
 #include "mcr_regs.h"
 #include "lp.h"
+#include "nvic_table.h"
 
 void MXC_LP_EnterSleepMode(void)
 {
+#ifndef __riscv
     MXC_LP_ClearWakeStatus();
 
-    /* Clear SLEEPDEEP bit */
+    /* Clear SLEEPDEEP bit on the Arm core*/
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
+#endif
 
     /* Go into Sleep mode and wait for an interrupt to wake the processor */
     __WFI();
 }
 
+#ifndef __riscv
 void MXC_LP_EnterLowPowerMode(void)
 {
     MXC_LP_ClearWakeStatus();
