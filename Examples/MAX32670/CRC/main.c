@@ -138,11 +138,10 @@ int main(void)
 
     if (fail) {
         printf("\nExample Failed\n");
-        return -1;
+        return E_FAIL;
     } else {
         printf("\nExample Succeeded\n");
-        return 0;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

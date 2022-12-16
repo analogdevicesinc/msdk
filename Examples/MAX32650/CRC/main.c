@@ -83,7 +83,7 @@ int main(void)
 
     if (MXC_TPU_CRC_Config() != E_SUCCESS) {
         printf("Failed CRYPTO_Crc_Config()\n");
-        return -1;
+        return E_FAIL;
     }
 
     printf("CRC16:\n");
@@ -94,7 +94,7 @@ int main(void)
     //Generate hardware result
     if (MXC_TPU_CRC(data, len, MXC_TPU_CRC16, &hw_crc) != E_SUCCESS) {
         printf("Failed CRYPTO_CRC()\n");
-        return -1;
+        return E_FAIL;
     }
 
     printf("Calculated CRC = 0x%08x\n", hw_crc);
@@ -102,7 +102,7 @@ int main(void)
 
     if (hw_crc != sw_crc) {
         printf("CRC Failed!\n");
-        return -1;
+        return E_FAIL;
     } else {
         printf("CRC Passed!\n");
     }
@@ -112,7 +112,7 @@ int main(void)
     //Call CRYPTO_Crc_Config() again to reset
     if (MXC_TPU_CRC_Config() != E_SUCCESS) {
         printf("Failed CRYPTO_Crc_Config()\n");
-        return -1;
+        return E_FAIL;
     }
 
     printf("CRC32:\n");
@@ -123,7 +123,7 @@ int main(void)
     //Generate hardware result
     if (MXC_TPU_CRC(data, len, MXC_TPU_CRC32_ETHERNET, &hw_crc) != E_SUCCESS) {
         printf("Failed CRYPTO_CRC()\n");
-        return -1;
+        return E_FAIL;
     }
 
     printf("Calculated CRC = 0x%08x\n", hw_crc);
@@ -131,13 +131,12 @@ int main(void)
 
     if (hw_crc != sw_crc) {
         printf("CRC Failed!\n");
-        return -1;
+        return E_FAIL;
     } else {
         printf("CRC Passed!\n");
-        return 0;
     }
 
     printf("\nExample complete.\n");
 
-    return 0;
+    return E_NO_ERROR;
 }

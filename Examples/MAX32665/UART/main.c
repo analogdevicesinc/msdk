@@ -154,14 +154,14 @@ int main(void)
     if (error < E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        return -1;
+        return error;
     }
 
     error = MXC_UART_Init(MXC_UART1, UART_BAUD, MAP_A);
     if (error < E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        return -1;
+        return error;
     }
 
     printf("-->UART Initialized\n\n");
@@ -193,7 +193,7 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
-        return -1;
+        return error;
     }
 
 #ifdef DMA
@@ -205,7 +205,7 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
-        return -1;
+        return error;
     }
 
 #ifdef DMA
@@ -235,12 +235,11 @@ int main(void)
     if (fail == 0) {
         printf("-->EXAMPLE SUCCEEDED\n");
         LED_On(1);
-        return 0;
     } else {
         printf("-->EXAMPLE FAILED\n");
         LED_On(0);
-        return -1;
+        return E_FAIL;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

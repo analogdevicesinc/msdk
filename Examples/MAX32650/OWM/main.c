@@ -176,11 +176,10 @@ int main(void)
     if ((retval = ow_romid_test(1))) {
         printf("Overdrive results: %d; %08x; %08x \n", retval, MXC_OWM->cfg, MXC_OWM->intfl);
         printf("Example Failed\n");
-        return -1;
+        return E_FAIL;
     } else {
         printf("Example Succeeded\n");
-        return 0;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }
