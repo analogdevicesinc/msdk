@@ -42,6 +42,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "mxc_device.h"
+#include "mxc_errors.h"
 #include "board.h"
 #include "tpu.h"
 
@@ -274,11 +275,10 @@ int main(void)
 
     if (fail == 0) {
         printf("\nExample Succeeded\n");
-        return 0;
     } else {
         printf("\nExample Failed\n");
-        return -1;
+        return E_FAIL;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

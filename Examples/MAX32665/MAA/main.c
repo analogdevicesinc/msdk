@@ -111,7 +111,7 @@ int main(void)
     if (retval != E_SUCCESS) {
         printf("Failed MAA_Init().\n");
         printf("Example Failed\n");
-        while (1) {}
+        return retval;
     }
 
     len = findLength(len);
@@ -121,7 +121,7 @@ int main(void)
     if (retval != E_SUCCESS) {
         printf("Failed MAA_Compute().\n");
         printf("Example Failed\n");
-        while (1) {}
+        return retval;
     }
 
     //Fit into four byte array
@@ -145,11 +145,10 @@ int main(void)
     printf("\n");
     if (fail == 0) {
         printf("Example Succeeded\n");
-        return 0;
     } else {
         printf("Example Failed\n");
-        return -1;
+        return E_FAIL;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }
