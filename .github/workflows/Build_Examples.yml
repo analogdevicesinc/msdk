@@ -49,14 +49,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build_Examples
         run: |
-          # Remove local modifications
-          git scorch
-
-          # Update the submodules, this will use ssh
-          git submodule init
-          git submodule sync
-          git submodule update --init --recursive
-          
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
@@ -76,7 +68,7 @@ jobs:
           # Find all of the examples, 
           # Exclude the MAX32572, currently in development
           # Exclude the MAX32570, examples are located in another repo
-          SUBDIRS=$(find . -mindepth 3 -not -path "./MAX3257*"  -name "?akefile" -printf '%h\n')
+          SUBDIRS=$(find . -mindepth 3 -not \( -path "./MAX3257*" -o -path "./MAX*/UCL*" \) -name "?akefile" -printf '%h\n')
 
           # Exclude some examples
           SUBDIRS=${SUBDIRS//"./MAX32672/Display/lvgl-8.0.2/tests"/}

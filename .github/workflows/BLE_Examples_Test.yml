@@ -58,6 +58,7 @@ jobs:
       # ME17
       - name: TEST MAX32655
         run: |
+
           # Remove local modifications
           git scorch
           # Update the submodules, this will use ssh
@@ -67,12 +68,14 @@ jobs:
           cd Libraries/Cordio
           git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
           cd ../../
+
           BLE_FILES_CHANGED=0
           
           # Check for changes made to these files
           WATCH_FILES="\
           Examples/MAX32655/BLE \
           Libraries/libs.mk \
+          Libraries/Cordio \
           Libraries/CMSIS/Device/Maxim/MAX32655 \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
           Libraries/PeriphDrivers/periphdriver.mk \

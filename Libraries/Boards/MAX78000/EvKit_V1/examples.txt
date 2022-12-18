@@ -1,5 +1,18 @@
 ADC
 AES
+ARM-DSP/arm_bayes_example
+ARM-DSP/arm_class_marks_example
+ARM-DSP/arm_convolution_example
+ARM-DSP/arm_dotproduct_example_f32
+ARM-DSP/arm_fft_bin_example
+ARM-DSP/arm_fir_example
+ARM-DSP/arm_graphic_equalizer_example
+ARM-DSP/arm_linear_interp_example
+ARM-DSP/arm_matrix_example
+ARM-DSP/arm_signal_converge_example
+ARM-DSP/arm_sin_cos_example
+ARM-DSP/arm_svm_example
+ARM-DSP/arm_variance_example
 CNN/UNet-demo
 CNN/cats-dogs_demo
 CNN/cats-vs-dogs
@@ -21,6 +34,7 @@ CNN/rps-demo
 CNN/snake_game_demo
 CRC
 CameraIF
+CameraIF_Debayer
 DMA
 ECC
 Flash
@@ -33,6 +47,7 @@ I2C_SCAN
 I2S
 I2S_DMA
 ICC
+ImgCapture
 LP
 LPCMP
 Pulse_Train

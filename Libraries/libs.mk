@@ -50,16 +50,6 @@ INIT_ENCRYPTED  ?= 1
 INIT_PERIPHERAL ?= 1
 INIT_BROADCASTER?= 1
 
-# For the Controller in the RISC-V core in the split host and controller
-ifeq "$(RISCV_CORE)" "1"
-ifeq "$(BLE_CONTROLLER)" "1"
-ifeq "$(HOST_PROJECT)" "BLE_fit"
-INIT_ENCRYPTED = 0
-$(info ---INFO INIT_ENCRYPTED=$(INIT_ENCRYPTED))
-endif  # PROJECT
-endif  # BLE_CONTROLLER
-endif  # RISCV_CORE
-
 # Enter standby mode when idle
 STANDBY_ENABLED ?= 0
 
@@ -175,12 +165,12 @@ LIB_NFC_PCD_RF_DRIVER_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_rf_driver_$(TARGET_UC)
 
 ifeq ("$(wildcard $(LIB_NFC_PCD_PBM_DIR))","")
 $(warning Warning: Failed to locate $(LIB_NFC_PCD_PBM_DIR))
-$(error NFC libraries not found.  Please install the NFC package to $(LIBS_DIR)/NFC)
+$(error NFC libraries not found (Only available via NDA).  Please install the NFC package to $(LIBS_DIR)/NFC)
 endif
 
 ifeq ("$(wildcard $(LIB_NFC_PCD_RF_DRIVER_DIR))","")
 $(warning Warning: Failed to locate $(LIB_NFC_PCD_RF_DRIVER_DIR))
-$(error NFC libraries not found.  Please install the NFC package to $(LIBS_DIR)/NFC)
+$(error NFC libraries not found (Only available via NDA).  Please install the NFC package to $(LIBS_DIR)/NFC)
 endif
 
 ifneq ($(DEV_LIB_NFC),1)
@@ -216,9 +206,25 @@ ifeq ($(LIB_EMV), 1)
 EMV_DIR ?= $(LIBS_DIR)/EMV
 
 ifeq ("$(wildcard $(EMV_DIR))","")
-$(error EMV library not found. Please install the EMV package to $(EMV_DIR))
+$(error EMV library not found (Only available via NDA). Please install the EMV package to $(EMV_DIR))
 endif
 
 include $(EMV_DIR)/emv.mk
+endif
+# ************************
+
+# UCL (Disabled by default)
+# Only available via NDA
+# ************************
+LIB_UCL ?= 0
+ifeq ($(LIB_UCL), 1)
+
+UCL_DIR ?= $(LIBS_DIR)/UCL
+ifeq ("$(wildcard $(UCL_DIR))","")
+$(error UCL not found (Only available via NDA). Please install the UCL package to $(UCL_DIR))
+endif
+
+include $(UCL_DIR)/ucl.mk
+
 endif
 # ************************

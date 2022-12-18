@@ -14,6 +14,18 @@ Use the pc_utility/grab_image.py script to grab the camera data and create a png
 -   Close Jumper JP45 (TFT_DC).
 -   Close Jumper JP46 (TFT_CS) to P0_3.
 
+## Build Configuration
+
+This example supports the following cameras:
+
+* OV7962 (Default)
+* HM0360 (MONO), for color use the CameraIF_Debayer example
+* OV5640
+* HM01B0
+
+To change the camera the project builds for, set the `CAMERA` build [configuration variable](.vscode/README.md#build-configuration) in [project.mk](project.mk)
+
+
 ## Expected Output
 
 The Console UART of the device will output these messages when streaming to the TFT Display:

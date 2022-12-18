@@ -1,3 +1,0 @@
-[submodule "Libraries/Cordio"]
-	path = Libraries/Cordio
-	url = git@github.com:Analog-Devices-MSDK/Libraries-cordio.git

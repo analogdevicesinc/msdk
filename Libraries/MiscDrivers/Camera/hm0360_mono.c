@@ -433,12 +433,11 @@ static const uint16_t default_regs[][2] = {
 
     // CONTEXT A START
     //
-    {   0x3500  ,   0x03    },  // PLL1CFG                  //74
+    {   0x3500  ,   0x74    },  // * PLL1CFG
     {   0x3501  ,   0x0A    },  // PLL2CFG
-    {   0x3502  ,   0x77    },  // PLL3CFG
-
-    {   0x3503  ,   0x01    },  // FRAME_LENGTH_LINES_H                                                         //01
-    {   0x3504  ,   0x1c    },  // FRAME_LENGTH_LINES_L                                                         //E0
+    {   0x3502  ,   0x77    },  // * PLL3CFG
+    {   0x3503  ,   0x00    },  // * FRAME_LENGTH_LINES_H
+    {   0x3504  ,   0x8E    },  // * FRAME_LENGTH_LINES_L                                                        //E0
 
     {   0x3505  ,   0x03    },  // LINE_LENGTH_PCK_H                                                            //03
     {   0x3506  ,   0x00    },  // LINE_LENGTH_PCK_L                                                            //00
@@ -508,14 +507,14 @@ static const uint16_t default_regs[][2] = {
 
 // Start of Context B
 //{0x355A, 0x74},  // clk_tb_div[1:0]=/1, plcko_div[3:2]=/1, clk_i2c_div[5:4]=/8, pll_pre_div=1
-    {0x355A, 0x7c},  // clk_tb_div[1:0]=/1, plcko_div[3:2]=/4, clk_i2c_div[5:4]=/8, pll_pre_div=1,  pclk=6MHz
+//    {0x355A, 0x7c},  // clk_tb_div[1:0]=/1, plcko_div[3:2]=/4, clk_i2c_div[5:4]=/8, pll_pre_div=1,  pclk=6MHz
 //{0x355A, 0x33},  // clk_tb_div[1:0]=/8, plcko_div[3:2]=/1, clk_i2c_div[5:4]=/8, pll_pre_div=0, pclk=3MHz
 //{0x355A, 0x03},  // clk_tb_div[1:0]=/8, plcko_div[3:2]=/1, clk_i2c_div[5:4]=/2, pll_pre_div=0, pclk=3MHz
-
-    {0x355B, 0x0A},
-    {0x355C, 0x77},
-    {0x355D, 0x00},
-    {0x355E, 0x8E},
+    {   0x355A  ,   0x74    },  // * PLL1CFG
+    {   0x355B  ,   0x0A    },  // PLL2CFG
+    {   0x355C  ,   0x77    },  // * PLL3CFG
+    {   0x355D  ,   0x00    },  // * FRAME_LENGTH_LINES_H
+    {   0x355E  ,   0x8E    },  // * FRAME_LENGTH_LINES_L
     {0x355F, 0x03},
     {0x3560, 0x00},
     {0x3561, 0x02},

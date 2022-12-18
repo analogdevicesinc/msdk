@@ -22,7 +22,9 @@ CAMERA=OV7692
 # CAMERA=HM0360_COLOR
 # CAMERA=HM01B0
 
-# Set higher optimization level (faster code but shouldn't be used while debugging)
+# Set a higher optimization level.  The increased performance
+# is required for the CameraIF DMA code to work within the
+# timing requirements of the Parallel Camera Interface.
 MXC_OPTIMIZE_CFLAGS=-O2
 
 ifeq ($(CONSOLE),1)

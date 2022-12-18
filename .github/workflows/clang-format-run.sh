@@ -2,13 +2,8 @@
 
 CLANG_VERSION=14
 
-# Remove the submodules
-set +e
-git submodule deinit --force --all
-set -e
-
 # Find the C files
-CFILES=$(find . -iname "*.c" -not -regex ".*/Libraries/\(\(FCL\)|\(FreeRTOS\)|\(lwIP\)|\(littleFS\)|\(LC3\)|\(FreeRTOS-Plus\)\)/.*")
+CFILES=$(find . -iname "*.c" -not -name "*cnn.c" -a -not -name "*softmax.c" -a -not -regex ".*/Libraries/\(Cordio\|FCL\|FreeRTOS\|FreeRTOS\-Plus\|LC3\|littlefs\|lwIP\|MAXUSB\|SDHC\)/.*")
 
 for c_file in ${CFILES}
 do
@@ -25,7 +20,7 @@ done
 
 
 # Reformat all of the header files
-HFILES=$(find . -iname "*.h" -not -name "*regs*" -a -not -regex ".*/Libraries/\(\(FCL\)|\(FreeRTOS\)|\(lwIP\)|\(littleFS\)|\(LC3\)|\(FreeRTOS-Plus\)\)/.*")
+HFILES=$(find . -iname "*.h" -not -name "*regs*" -a -not -name "*weights.h" -a -not -name "*cnn.h" -a -not -name "*sampledata.h" -a -not -name "*sampleoutput.h" -a -not -regex ".*/Libraries/\(Cordio\|FCL\|FreeRTOS\|FreeRTOS\-Plus\|LC3\|littlefs\|lwIP\|MAXUSB\|SDHC\)/.*")
 for h_file in ${HFILES}
 do
   clang-format-${CLANG_VERSION} --verbose -style=file -i ${h_file}

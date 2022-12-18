@@ -45,9 +45,9 @@
 #include "mxc_assert.h"
 #include "mxc_device.h"
 #include "flc.h"
-
 #include "flash.h"
 #include "lfs.h"
+#include "ecc_regs.h"
 
 /***** Definitions *****/
 #define APP_PAGE_CNT 8 ///< Flash memory blocks reserved for the app code
@@ -106,6 +106,8 @@ const struct lfs_config cfg = {
 int main(void)
 {
     int error_status = E_NO_ERROR;
+
+    MXC_ECC->en = 0; // Disable ECC on Flash, ICC, and SRAM
 
     printf("\n\n***** MAX32670 Wear Leveling *****\n");
 
