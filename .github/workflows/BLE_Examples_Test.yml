@@ -66,6 +66,7 @@ jobs:
           git submodule update --init --recursive
           cd Libraries/Cordio
           git checkout 91cef69d49e5db8b32602b089007ab1aafe26900
+          cd ../../
           BLE_FILES_CHANGED=0
           
           # Check for changes made to these files
@@ -124,6 +125,7 @@ jobs:
           git submodule update --init --recursive
           cd Libraries/Cordio
           git checkout 91cef69d49e5db8b32602b089007ab1aafe26900
+          cd ../../
 
           BLE_FILES_CHANGED=0
           
@@ -183,6 +185,7 @@ jobs:
           git submodule update --init --recursive
           cd Libraries/Cordio
           git checkout 91cef69d49e5db8b32602b089007ab1aafe26900
+          cd ../../
 
           BLE_FILES_CHANGED=0
           
