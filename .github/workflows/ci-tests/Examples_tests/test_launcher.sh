@@ -94,7 +94,7 @@ function flash_with_openocd() {
 function flash_with_openocd_fast() {
     # mass erase and flash
     set +e
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;max32xxx mass_erase 0" -c "program $1.elf verify reset exit" >/dev/null &
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 333$3" -c "telnet_port 444$3" -c "tcl_port 666$3" -c "init; reset halt;max32xxx mass_erase 0" -c "program $1.elf verify reset exit" >/dev/null &
     openocd_dapLink_pid=$!
     set -e
   
@@ -201,6 +201,14 @@ function erase_all_devices() {
         erase_with_openocd max32655 04091702f7f18a2900000000000000000000000097969906
         erase_with_openocd max32665 0409000098d9439b00000000000000000000000097969906
         erase_with_openocd max32690 0409170246dfc09500000000000000000000000097969906
+    else
+        FILE=/home/$USER/boards_config.json    
+        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
+        erase_with_openocd max32655 $DEVICE2
+        erase_with_openocd max32665 $DEVICE3
+        erase_with_openocd max32690 $DEVICE4
     fi
 }
 function project_marker() {
@@ -374,12 +382,12 @@ make -j8
 # flash client first because it takes longer
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
 printf "> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
-flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
 
 # flash DUT with BLE_dats
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
 printf "> Flashing BLE_dats on DUT $DUT_NAME_UPPER \r\n"
-flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID
+flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
 
 # directory for resuilts logs
 cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
