@@ -345,7 +345,7 @@ for dir in ./*/; do
             ;;
 
         "BLE_otac")
-            run_notConntectedTest
+          #  run_notConntectedTest
             ;;
 
         "BLE_otas")

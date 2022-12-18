@@ -65,7 +65,7 @@ jobs:
           git submodule sync
           git submodule update --init --recursive
           cd Libraries/Cordio
-          git checkout 91cef69d49e5db8b32602b089007ab1aafe26900
+          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
           cd ../../
           BLE_FILES_CHANGED=0
           
@@ -124,7 +124,7 @@ jobs:
           git submodule sync
           git submodule update --init --recursive
           cd Libraries/Cordio
-          git checkout 91cef69d49e5db8b32602b089007ab1aafe26900
+          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
           cd ../../
 
           BLE_FILES_CHANGED=0
@@ -184,7 +184,7 @@ jobs:
           git submodule sync
           git submodule update --init --recursive
           cd Libraries/Cordio
-          git checkout 91cef69d49e5db8b32602b089007ab1aafe26900
+          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
           cd ../../
 
           BLE_FILES_CHANGED=0
