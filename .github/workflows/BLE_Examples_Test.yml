@@ -67,7 +67,7 @@ jobs:
           
           # Check for changes made to these files
           WATCH_FILES="\
-          .github/workflows/ci-tests/Examples_tests\
+          .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32655/BLE \
           Libraries/libs.mk \
           Libraries/Cordio \
@@ -131,7 +131,7 @@ jobs:
           
           # Check for changes made to these files
           WATCH_FILES="\
-          .github/workflows/ci-tests/Examples_tests\
+          .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32665/BLE \
           Libraries/libs.mk \
           Libraries/CMSIS/Device/Maxim/MAX32665 \
@@ -190,7 +190,7 @@ jobs:
           RUN_TEST=0
           # Check for changes made to these files
           WATCH_FILES="\
-          .github/workflows/ci-tests/Examples_tests\
+          .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32690/BLE \
           Libraries/libs.mk \
           Libraries/CMSIS/Device/Maxim/MAX32690 \
