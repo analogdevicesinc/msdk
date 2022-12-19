@@ -68,6 +68,7 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
     while True:
         attempt_count+=1
         timeStart = time.time()
+        char_list=[]
         while used_ports[port].is_open != True:
             time.sleep(0.1)
         if used_ports[port].is_open == True:
@@ -79,9 +80,11 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
             # send data if any
             if send != None:
                 time.sleep(0.1)
+                char_list = list(send)
+                for char in char_list:
                 # start test, send command
-                used_ports[port].write(bytes(send, encoding='utf-8'))
-                time.sleep(0.2)
+                    used_ports[port].write(bytes(char, encoding='utf-8'))
+                    time.sleep(0.2)
             # read lines
             while (time.time()-timeStart) < timeout:
                 try:
