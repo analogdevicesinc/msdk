@@ -67,7 +67,7 @@ jobs:
           git submodule update --init --recursive
           cd Libraries/Cordio
           git stash
-          git checkout 3a78194d466c7982c78dbc8e019921d982f5924d
+          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
           cd ../../
 
           BLE_FILES_CHANGED=0
@@ -129,7 +129,7 @@ jobs:
           git submodule update --init --recursive
           cd Libraries/Cordio
           git stash
-          git checkout 3a78194d466c7982c78dbc8e019921d982f5924d
+          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
           cd ../../
 
           BLE_FILES_CHANGED=0
@@ -190,7 +190,7 @@ jobs:
           git submodule update --init --recursive
           cd Libraries/Cordio
           git stash
-          git checkout 3a78194d466c7982c78dbc8e019921d982f5924d
+          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
           cd ../../
 
           BLE_FILES_CHANGED=0
