@@ -11,7 +11,7 @@
 MXC_OPTIMIZE_CFLAGS=-Os
 
 # Strip debug symbols
-DEBUG=1
+DEBUG=0
 
 SRCS += boot_lower.S
 LINKERFILE = bootloader.ld
