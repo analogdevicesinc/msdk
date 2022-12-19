@@ -61,14 +61,6 @@ jobs:
 
           # Remove local modifications
           git scorch
-          # Update the submodules, this will use ssh
-          git submodule init
-          git submodule sync
-          git submodule update --init --recursive
-          cd Libraries/Cordio
-          git stash
-          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
-          cd ../../
 
           BLE_FILES_CHANGED=0
           
@@ -123,14 +115,6 @@ jobs:
         run: |
           # Remove local modifications
           git scorch
-          # Update the submodules, this will use ssh
-          git submodule init
-          git submodule sync
-          git submodule update --init --recursive
-          cd Libraries/Cordio
-          git stash
-          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
-          cd ../../
 
           BLE_FILES_CHANGED=0
           
@@ -184,14 +168,6 @@ jobs:
         run: |
           # Remove local modifications
           git scorch
-          # Update the submodules, this will use ssh
-          git submodule init
-          git submodule sync
-          git submodule update --init --recursive
-          cd Libraries/Cordio
-          git stash
-          git checkout 55b7bdcb76ec8ca3f4b7454fd2137cac01970cb0
-          cd ../../
 
           BLE_FILES_CHANGED=0
           
