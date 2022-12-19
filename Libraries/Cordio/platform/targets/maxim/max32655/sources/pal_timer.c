@@ -26,7 +26,7 @@
 #include "gcr_regs.h"
 #include "mxc_device.h"
 #include "wsf_trace.h"
-
+#include "pal_rtc.h"
 
 /**************************************************************************************************
   Macros
@@ -61,7 +61,7 @@
 #define PAL_SLEEP_TMR                   MXC_TMR_GET_TMR(PAL_SLEEP_TMR_IDX)
 #define PAL_SLEEP_TMR_IRQn              MXC_TMR_GET_IRQ(PAL_SLEEP_TMR_IDX)
 
-#define PAL_TMR_CALIB_TIME              100000
+#define PAL_TMR_SETUP_US                330
 
 /**************************************************************************************************
   Global Variables
@@ -71,7 +71,6 @@
 static struct {
   PalTimerState_t     state;           /*!< State. */
   PalTimerCompCback_t expCback;        /*!< Timer expiry call back function. */
-  int                 usecDiff;        /*!< Adjustment factor for timer. */
 } palTimerCb;
 
 /**************************************************************************************************
@@ -153,8 +152,6 @@ void TMR0_IRQHandler(void)
 void PalTimerInit(PalTimerCompCback_t expCback)
 {
   mxc_tmr_cfg_t tmr_cfg;
-  bool_t palBbState;
-  uint32_t tickStart, tickEnd;
 
   PAL_TIMER_CHECK(palTimerCb.state == PAL_TIMER_STATE_UNINIT);
   PAL_TIMER_CHECK(expCback != NULL);
@@ -167,7 +164,7 @@ void PalTimerInit(PalTimerCompCback_t expCback)
 
   tmr_cfg.pres = TMR_PRES_1;
   tmr_cfg.mode = TMR_MODE_ONESHOT;
-  tmr_cfg.clock = MXC_TMR_APB_CLK;
+  tmr_cfg.clock = MXC_TMR_32K_CLK;
 
   tmr_cfg.bitMode = TMR_BIT_MODE_32;
   tmr_cfg.pol = 0;
@@ -178,30 +175,6 @@ void PalTimerInit(PalTimerCompCback_t expCback)
 
   MXC_TMR_Stop(PAL_TMR);
   MXC_TMR_Init(PAL_TMR, &tmr_cfg, FALSE);
-
-  /* Make sure the BB clock is running */
-  if(PalBbGetCurrentTime() == 0) {
-    palBbState = FALSE;
-    PalBbEnable();
-  } else{
-    palBbState = TRUE;
-  }
-
-  /* Wait for the clock to run */
-  while(PalBbGetCurrentTime() == 0) {}
-
-  /* Save the ticks for PAL_TMR_CALIB_TIME usec */
-  tickStart = PalBbGetCurrentTime();
-  MXC_TMR_Delay(PAL_TMR, PAL_TMR_CALIB_TIME);
-  tickEnd = PalBbGetCurrentTime();
-
-  /* Save the difference */
-  palTimerCb.usecDiff = PAL_TMR_CALIB_TIME - (tickEnd - tickStart);
-
-  /* Restore the BB state */
-  if(!palBbState) {
-    PalBbDisable();
-  }
   
   palTimerCb.expCback = expCback;
   palTimerCb.state = PAL_TIMER_STATE_READY;
@@ -281,18 +254,27 @@ void PalTimerStart(uint32_t expUsec)
 {
   PAL_TIMER_CHECK(palTimerCb.state == PAL_TIMER_STATE_READY);
   PAL_TIMER_CHECK(expUsec != 0);
+  uint64_t compareValue;
 
   /* Make sure we don't wrap the timeout */
   if(expUsec == 0) {
     expUsec = 1;
   }
 
-  /* Convert the time based on our calibration */
-  expUsec += (expUsec/PAL_TMR_CALIB_TIME)*palTimerCb.usecDiff;
-
-  /* Convert the start time to ticks */
   MXC_TMR_SetCount(PAL_TMR, 0);
-  MXC_TMR_SetCompare(PAL_TMR, PeripheralClock/1000000 * expUsec);
+
+  if(expUsec > PAL_TMR_SETUP_US) {
+    expUsec -= PAL_TMR_SETUP_US;
+  }
+
+  /* Calculate the compare value */
+  compareValue = ((uint64_t)expUsec * (uint64_t)PAL_RTC_TICKS_PER_SEC) / (uint64_t)1000000;
+
+  /* Make sure we get at least 1 tick */
+  if(compareValue == 0) {
+    compareValue = 1;
+  }
+  MXC_TMR_SetCompare(PAL_TMR, compareValue);
 
   /* Clear and enable interrupts */
   MXC_TMR_ClearFlags(PAL_TMR);
@@ -335,6 +317,7 @@ void PalTimerStop(void)
 void PalTimerSleep(uint32_t expUsec)
 {
   mxc_tmr_cfg_t tmr_cfg;
+  uint64_t compareValue;
 
   /* Configure timer */
   tmr_cfg.pres = TMR_PRES_1;
@@ -350,10 +333,20 @@ void PalTimerSleep(uint32_t expUsec)
 
   MXC_TMR_Stop(PAL_SLEEP_TMR);
   MXC_TMR_Init(PAL_SLEEP_TMR, &tmr_cfg, FALSE);
-
-  /* Convert the start time to ticks */
   MXC_TMR_SetCount(PAL_SLEEP_TMR, 0);
-  MXC_TMR_SetCompare(PAL_SLEEP_TMR, PeripheralClock/1000000 * expUsec);
+
+  if(expUsec > PAL_TMR_SETUP_US) {
+    expUsec -= PAL_TMR_SETUP_US;
+  }
+
+  /* Calculate the compare value */
+  compareValue = ((uint64_t)expUsec * (uint64_t)PAL_RTC_TICKS_PER_SEC) / (uint64_t)1000000;
+
+  /* Make sure we get at least 1 tick */
+  if(compareValue == 0) {
+    compareValue = 1;
+  }
+  MXC_TMR_SetCompare(PAL_SLEEP_TMR, compareValue);
 
   /* Clear and enable interrupts */
   MXC_TMR_ClearFlags(PAL_SLEEP_TMR);
@@ -381,18 +374,23 @@ void PalTimerSleep(uint32_t expUsec)
 /*************************************************************************************************/
 uint32_t PalTimerGetExpTime(void)
 {
-  uint32_t time;
-
+  uint64_t time;
+  uint32_t compare, count;
   /* See if the timer is currently running */
   if(palTimerCb.state != PAL_TIMER_STATE_BUSY) {
     return 0;
   }
 
-  time = MXC_TMR_GetCompare(PAL_TMR) - MXC_TMR_GetCount(PAL_TMR);
-  time /= (PeripheralClock/1000000);
+  /* See if the timer is enabled */
+  if(!(PAL_TMR->ctrl0 & MXC_F_TMR_CTRL0_EN_A)) {
+    return 0;
+  }
+  count = MXC_TMR_GetCount(PAL_TMR);
+  compare = MXC_TMR_GetCompare(PAL_TMR) + PAL_TMR_SETUP_US;
+  time = compare - count;
 
-  /* Adjust time based on the calibrated value */
-  time = time - ((time/PAL_TMR_CALIB_TIME)*palTimerCb.usecDiff);
-  
+  /* Convert back to us */
+  time = ((uint64_t)time * (uint64_t)1000000) / (uint64_t)PAL_RTC_TICKS_PER_SEC;
+
   return time;
 }
