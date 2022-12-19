@@ -8,7 +8,7 @@ export devSerial_1=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDFB' | rev |
 export TARGET_1_CFG=${TARGET_1_LC}.cfg
 # Helper device for connected tests
 export CMSIS_DAP_ID_2=04091702f7f18a2900000000000000000000000097969906
-export devSerial_2=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D3073ICQ' | rev | cut -d "/" -f1 | rev)"
+export devSerial_2=/dev/"$(ls -la /dev/serial/by-id | grep -n 'D309ZDEM' | rev | cut -d "/" -f1 | rev)"
 export TARGET_2_LC=max32655
 export TARGET_2_UC=MAX32655
 export TARGET_2_CFG=${TARGET_2_LC}.cfg
