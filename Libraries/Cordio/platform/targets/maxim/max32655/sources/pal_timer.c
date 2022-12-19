@@ -61,7 +61,7 @@
 #define PAL_SLEEP_TMR                   MXC_TMR_GET_TMR(PAL_SLEEP_TMR_IDX)
 #define PAL_SLEEP_TMR_IRQn              MXC_TMR_GET_IRQ(PAL_SLEEP_TMR_IDX)
 
-#define PAL_TMR_SETUP_TICKS             9
+#define PAL_TMR_SETUP_US                300
 
 /**************************************************************************************************
   Global Variables
@@ -263,13 +263,15 @@ void PalTimerStart(uint32_t expUsec)
 
   MXC_TMR_SetCount(PAL_TMR, 0);
 
+  if(expUsec > PAL_TMR_SETUP_US) {
+    expUsec -= PAL_TMR_SETUP_US;
+  }
+
   /* Calculate the compare value */
   compareValue = ((uint64_t)expUsec * (uint64_t)PAL_RTC_TICKS_PER_SEC) / (uint64_t)1000000;
 
-  /* Account for setup time */
-  if (compareValue > PAL_TMR_SETUP_TICKS) {
-    compareValue -= PAL_TMR_SETUP_TICKS;
-  } else {
+  /* Make sure we get at least 1 tick */
+  if(compareValue == 0) {
     compareValue = 1;
   }
   MXC_TMR_SetCompare(PAL_TMR, compareValue);
@@ -333,13 +335,15 @@ void PalTimerSleep(uint32_t expUsec)
   MXC_TMR_Init(PAL_SLEEP_TMR, &tmr_cfg, FALSE);
   MXC_TMR_SetCount(PAL_SLEEP_TMR, 0);
 
+  if(expUsec > PAL_TMR_SETUP_US) {
+    expUsec -= PAL_TMR_SETUP_US;
+  }
+
   /* Calculate the compare value */
   compareValue = ((uint64_t)expUsec * (uint64_t)PAL_RTC_TICKS_PER_SEC) / (uint64_t)1000000;
 
-  /* Account for setup time */
-  if (compareValue > PAL_TMR_SETUP_TICKS) {
-    compareValue -= PAL_TMR_SETUP_TICKS;
-  } else {
+  /* Make sure we get at least 1 tick */
+  if(compareValue == 0) {
     compareValue = 1;
   }
   MXC_TMR_SetCompare(PAL_SLEEP_TMR, compareValue);
@@ -371,7 +375,7 @@ void PalTimerSleep(uint32_t expUsec)
 uint32_t PalTimerGetExpTime(void)
 {
   uint64_t time;
-
+  uint32_t compare, count;
   /* See if the timer is currently running */
   if(palTimerCb.state != PAL_TIMER_STATE_BUSY) {
     return 0;
@@ -381,18 +385,12 @@ uint32_t PalTimerGetExpTime(void)
   if(!(PAL_TMR->ctrl0 & MXC_F_TMR_CTRL0_EN_A)) {
     return 0;
   }
+  count = MXC_TMR_GetCount(PAL_TMR);
+  compare = MXC_TMR_GetCompare(PAL_TMR) + PAL_TMR_SETUP_US;
+  time = compare - count;
 
-  time = MXC_TMR_GetCompare(PAL_TMR) - MXC_TMR_GetCount(PAL_TMR);
+  /* Convert back to us */
+  time = ((uint64_t)time * (uint64_t)1000000) / (uint64_t)PAL_RTC_TICKS_PER_SEC;
 
-  /* Account for the setup time */
-  if(time > PAL_TMR_SETUP_TICKS) {
-    time -= PAL_TMR_SETUP_TICKS;
-
-    /* Convert back to us */
-    time = ((uint64_t)time * (uint64_t)1000000) / (uint64_t)PAL_RTC_TICKS_PER_SEC;
-  } else {
-    return 0;
-  }
-  
   return time;
 }
