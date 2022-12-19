@@ -83,7 +83,9 @@ void Test_CRC(int asynchronous)
 
     printf(asynchronous ? "TEST CRC ASYNC\n" : "TEST CRC SYNC\n");
 
-    for (i = 0; i < DATA_LENGTH; i++) { array[i] = i; }
+    for (i = 0; i < DATA_LENGTH; i++) {
+        array[i] = i;
+    }
 
     // define the CRC parameters
     mxc_crc_req_t crc_req = {
