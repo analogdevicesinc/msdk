@@ -18,6 +18,7 @@
 /*************************************************************************************************/
 
 #include <string.h>
+#include <stdlib.h>
 #include "mxc_device.h"
 #include "wsf_types.h"
 #include "util/wstr.h"
@@ -240,9 +241,8 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
                             crcResult);
             return WDX_FTC_ST_VERIFICATION;
         }
-
-        APP_TRACE_INFO2("Header CRC: 0x%08X Calculated CRC: 0x%08X", fileHeader.fileCRC,
-                            crcResult);
+        APP_TRACE_INFO1("CRC From File : 0x%08x", fileHeader.fileCRC);
+        APP_TRACE_INFO1("CRC Calculated: 0x%08X", crcResult);
 
         /* if crc are ok write it to end of file*/
         err += MXC_FLC_Write((WDXS_FileMedia.startAddress + verifyLen), sizeof(crcResult),
