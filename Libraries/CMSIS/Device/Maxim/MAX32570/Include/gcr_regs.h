@@ -173,14 +173,14 @@ typedef struct {
 #define MXC_F_GCR_SYSCTRL_FPU_DIS_POS                  5 /**< SYSCTRL_FPU_DIS Position */
 #define MXC_F_GCR_SYSCTRL_FPU_DIS                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_FPU_DIS_POS)) /**< SYSCTRL_FPU_DIS Mask */
 
-#define MXC_F_GCR_SYSCTRL_ICC0_FLUSH_POS               6 /**< SYSCTRL_ICC0_FLUSH Position */
-#define MXC_F_GCR_SYSCTRL_ICC0_FLUSH                   ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_ICC0_FLUSH_POS)) /**< SYSCTRL_ICC0_FLUSH Mask */
+#define MXC_F_GCR_SYSCTRL_ICC_FLUSH_POS                6 /**< SYSCTRL_ICC_FLUSH Position */
+#define MXC_F_GCR_SYSCTRL_ICC_FLUSH                    ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_ICC_FLUSH_POS)) /**< SYSCTRL_ICC_FLUSH Mask */
 
-#define MXC_F_GCR_SYSCTRL_EMCC_FLUSH_POS               7 /**< SYSCTRL_EMCC_FLUSH Position */
-#define MXC_F_GCR_SYSCTRL_EMCC_FLUSH                   ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_EMCC_FLUSH_POS)) /**< SYSCTRL_EMCC_FLUSH Mask */
+#define MXC_F_GCR_SYSCTRL_SRCC_FLUSH_POS               7 /**< SYSCTRL_SRCC_FLUSH Position */
+#define MXC_F_GCR_SYSCTRL_SRCC_FLUSH                   ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_SRCC_FLUSH_POS)) /**< SYSCTRL_SRCC_FLUSH Mask */
 
-#define MXC_F_GCR_SYSCTRL_EMCC_DIS_POS                 9 /**< SYSCTRL_EMCC_DIS Position */
-#define MXC_F_GCR_SYSCTRL_EMCC_DIS                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_EMCC_DIS_POS)) /**< SYSCTRL_EMCC_DIS Mask */
+#define MXC_F_GCR_SYSCTRL_SRCC_DIS_POS                 9 /**< SYSCTRL_SRCC_DIS Position */
+#define MXC_F_GCR_SYSCTRL_SRCC_DIS                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_SRCC_DIS_POS)) /**< SYSCTRL_SRCC_DIS Mask */
 
 #define MXC_F_GCR_SYSCTRL_CCHK_POS                     13 /**< SYSCTRL_CCHK Position */
 #define MXC_F_GCR_SYSCTRL_CCHK                         ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK_POS)) /**< SYSCTRL_CCHK Mask */

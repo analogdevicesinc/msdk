@@ -2919,6 +2919,11 @@
           <value>0x02</value>
          </enumeratedValue>
          <enumeratedValue>
+          <name>SPI2RX</name>
+          <description>SPI2 RX</description>
+          <value>0x03</value>
+         </enumeratedValue>
+         <enumeratedValue>
           <name>UART0RX</name>
           <description>UART0 RX</description>
           <value>0x04</value>
@@ -2954,9 +2959,9 @@
           <value>0x0A</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>MSRADC</name>
-          <description>MSR 9 bit ADC.</description>
-          <value>0x0B</value>
+          <name>CAMERAIF</name>
+          <description>CameraIF</description>
+          <value>0x0D</value>
          </enumeratedValue>
          <enumeratedValue>
           <name>UART2RX</name>
@@ -2964,8 +2969,8 @@
           <value>0x0E</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>SPI2RX</name>
-          <description>SPI2 RX</description>
+          <name>SPI3RX</name>
+          <description>SPI3 RX</description>
           <value>0x0F</value>
          </enumeratedValue>
          <enumeratedValue>
@@ -3024,6 +3029,21 @@
           <value>0x1B</value>
          </enumeratedValue>
          <enumeratedValue>
+          <name>UART3RX</name>
+          <description>UART3 RX</description>
+          <value>0x1C</value>
+         </enumeratedValue>
+         <enumeratedValue>
+          <name>UART4RX</name>
+          <description>UART4 RX</description>
+          <value>0x1D</value>
+         </enumeratedValue>
+         <enumeratedValue>
+          <name>UART5RX</name>
+          <description>UART5 RX</description>
+          <value>0x1E</value>
+         </enumeratedValue>
+         <enumeratedValue>
           <name>SPI0TX</name>
           <description>SPI0 TX</description>
           <value>0x21</value>
@@ -3032,6 +3052,11 @@
           <name>SPI1TX</name>
           <description>SPI1 TX</description>
           <value>0x22</value>
+         </enumeratedValue>
+         <enumeratedValue>
+          <name>SPI2TX</name>
+          <description>SPI2 TX</description>
+          <value>0x23</value>
          </enumeratedValue>
          <enumeratedValue>
           <name>UART0TX</name>
@@ -3069,7 +3094,7 @@
           <value>0x2E</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>SPI2TX</name>
+          <name>SPI3TX</name>
           <description>SPI3 TX</description>
           <value>0x2F</value>
          </enumeratedValue>
@@ -3127,6 +3152,21 @@
           <name>USBTXEP11</name>
           <description>USB Endpoint 11 TX</description>
           <value>0x3B</value>
+         </enumeratedValue>
+         <enumeratedValue>
+          <name>UART3TX</name>
+          <description>UART3 TX</description>
+          <value>0x3C</value>
+         </enumeratedValue>
+         <enumeratedValue>
+          <name>UART4TX</name>
+          <description>UART4 TX</description>
+          <value>0x3D</value>
+         </enumeratedValue>
+         <enumeratedValue>
+          <name>UART5TX</name>
+          <description>UART5 TX</description>
+          <value>0x3E</value>
          </enumeratedValue>
         </enumeratedValues>
        </field>
@@ -5651,7 +5691,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ICC0_FLUSH</name>
+       <name>ICC_FLUSH</name>
        <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M4. </description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -5669,7 +5709,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>EMCC_FLUSH</name>
+       <name>SRCC_FLUSH</name>
        <description>Data Cache Flush. The system cache (s) will be flushed when this bit is set. </description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
@@ -5687,7 +5727,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>EMCC_DIS</name>
+       <name>SRCC_DIS</name>
        <description>Data Cache Disable. The system cache (s) will be completely disabled when this bit is set.</description>
        <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10626,193 +10666,6 @@
    </addressBlock>
    <registers>
     <register>
-     <name>ECCEN</name>
-     <description>ECC Enable Register</description>
-     <addressOffset>0x00</addressOffset>
-     <fields>
-      <field>
-       <name>RAM0</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RAM1</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RAM2</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RAM3</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RAM4</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RAM5</name>
-       <description>ECC System RAM Enable.</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>ICC</name>
-       <description>Icache0 ECC Enable.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>ICCXIP</name>
-       <description>IcacheXIP ECC Enable.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>FLASH0</name>
-       <description>Flash0 ECC Enable.</description>
-       <bitOffset>11</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>FLASH1</name>
-       <description>Flash1 ECC Enable.</description>
-       <bitOffset>12</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>PDOWN</name>
      <description>PDOWN Drive Strength</description>
      <addressOffset>0x08</addressOffset>
@@ -10855,7 +10708,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>PADPUP</name>
+       <name>PADPUP_RST</name>
        <description>Enable the Reset Pad Pull Up Resistors</description>
        <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>

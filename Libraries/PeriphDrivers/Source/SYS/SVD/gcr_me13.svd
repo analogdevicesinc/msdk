@@ -95,7 +95,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ICC0_FLUSH</name>
+            <name>ICC_FLUSH</name>
             <description>Code Cache Flush. This bit is used to flush the code caches and the instruction buffer of the Cortex-M4. </description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
@@ -113,7 +113,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>EMCC_FLUSH</name>
+            <name>SRCC_FLUSH</name>
             <description>Data Cache Flush. The system cache (s) will be flushed when this bit is set. </description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
@@ -131,7 +131,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>EMCC_DIS</name>
+            <name>SRCC_DIS</name>
             <description>Data Cache Disable. The system cache (s) will be completely disabled when this bit is set.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>

@@ -390,6 +390,11 @@
                   <value>0x02</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>SPI2RX</name>
+                  <description>SPI2 RX</description>
+                  <value>0x03</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>UART0RX</name>
                   <description>UART0 RX</description>
                   <value>0x04</value>
@@ -425,9 +430,9 @@
                   <value>0x0A</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>MSRADC</name>
-                  <description>MSR 9 bit ADC.</description>
-                  <value>0x0B</value>
+                  <name>CAMERAIF</name>
+                  <description>CameraIF</description>
+                  <value>0x0D</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>UART2RX</name>
@@ -435,8 +440,8 @@
                   <value>0x0E</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>SPI2RX</name>
-                  <description>SPI2 RX</description>
+                  <name>SPI3RX</name>
+                  <description>SPI3 RX</description>
                   <value>0x0F</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -495,6 +500,21 @@
                   <value>0x1B</value>
                 </enumeratedValue>
                 <enumeratedValue>
+                  <name>UART3RX</name>
+                  <description>UART3 RX</description>
+                  <value>0x1C</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART4RX</name>
+                  <description>UART4 RX</description>
+                  <value>0x1D</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART5RX</name>
+                  <description>UART5 RX</description>
+                  <value>0x1E</value>
+                </enumeratedValue>
+                <enumeratedValue>
                   <name>SPI0TX</name>
                   <description>SPI0 TX</description>
                   <value>0x21</value>
@@ -503,6 +523,11 @@
                   <name>SPI1TX</name>
                   <description>SPI1 TX</description>
                   <value>0x22</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>SPI2TX</name>
+                  <description>SPI2 TX</description>
+                  <value>0x23</value>
                 </enumeratedValue>
                 <enumeratedValue>
                   <name>UART0TX</name>
@@ -540,7 +565,7 @@
                   <value>0x2E</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>SPI2TX</name>
+                  <name>SPI3TX</name>
                   <description>SPI3 TX</description>
                   <value>0x2F</value>
                 </enumeratedValue>
@@ -598,6 +623,21 @@
                   <name>USBTXEP11</name>
                   <description>USB Endpoint 11 TX</description>
                   <value>0x3B</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART3TX</name>
+                  <description>UART3 TX</description>
+                  <value>0x3C</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART4TX</name>
+                  <description>UART4 TX</description>
+                  <value>0x3D</value>
+                </enumeratedValue>
+                <enumeratedValue>
+                  <name>UART5TX</name>
+                  <description>UART5 TX</description>
+                  <value>0x3E</value>
                 </enumeratedValue>
               </enumeratedValues>
             </field>
