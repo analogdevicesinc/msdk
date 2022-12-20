@@ -150,7 +150,7 @@ static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
 static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
 {
     int err = 0;
-    
+
     err += MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t *)pBuf);
     /* verify data was written*/
     err += memcmp(pAddress, pBuf, size);
