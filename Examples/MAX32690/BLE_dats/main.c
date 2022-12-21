@@ -241,13 +241,12 @@ int main(void)
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     LlSetBdAddr((uint8_t *)&bdAddr);
-#endif
 
     /* Start the 32 MHz crystal and the BLE DBB counter to trim the 32 kHz crystal */
     PalBbEnable();
 
     /* Output buffered square wave of 32 kHz clock to GPIO */
-    MXC_RTC_SquareWaveStart(MXC_RTC_F_32KHZ);
+    // MXC_RTC_SquareWaveStart(MXC_RTC_F_32KHZ);
 
     /* Execute the trim procedure */
     wutTrimComplete = 0;
@@ -256,6 +255,7 @@ int main(void)
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */
     PalBbDisable();
+#endif
 
     StackInitDats();
     DatsStart();
