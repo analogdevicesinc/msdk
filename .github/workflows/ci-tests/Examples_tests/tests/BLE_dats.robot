@@ -9,10 +9,10 @@ ${SERIAL_PORT_1}    None
 
 
 *** test cases ***
-
-
 Stop Advertising Test
     [Timeout]    30s
+    # inital sleep to allow device time to boot up after programming
+    sleep    5
     Expect And Timeout    btn 2 s\n      >>> Advertising stopped <<<    10    ${SERIAL_PORT_1}
 
 
