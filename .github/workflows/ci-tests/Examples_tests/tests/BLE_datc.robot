@@ -9,10 +9,12 @@ ${SERIAL_PORT_1}    /dev/ttyUSB0
 
 
 *** test cases ***
+Initial Connection Test Server
+    [Timeout]     30s
+    Read ALL     Scanning started    30    ${SERIAL_PORT_1}
+
 Stop Scanning Test
-    [Timeout]    30s
-    # inital sleep to allow device time to boot up after programming
-    sleep     5s  
+    [Timeout]    30s  
     Expect And Timeout    btn 1 s\n      >>> Scanning stopped <<<    10    ${SERIAL_PORT_1}
 
 Button Press Test

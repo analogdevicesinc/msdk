@@ -8,10 +8,13 @@ Suite Teardown     Close Ports
 ${SERIAL_PORT_1}    None
 
 *** test cases ***
+Initial Connection Test
+    [Timeout]    30s
+    Read All     Advertising started     30    ${SERIAL_PORT_1}
+
 Stop Advertising Test
     [Timeout]    30s
-    # inital sleep to allow device time to boot up after programming
-    sleep    5  
+    # inital sleep to allow device time to boot up after programming 
     Expect And Timeout    btn 2 s\n      >>> Advertising stopped <<<    10    ${SERIAL_PORT_1}
 
 

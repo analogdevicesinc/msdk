@@ -8,10 +8,13 @@ Suite Teardown     Close Ports
 ${SERIAL_PORT_1}    None
 
 *** test cases ***
+Initial Connection Test
+    [Timeout]    30s
+    Read All     Advertising started     30    ${SERIAL_PORT_1}
+
 Button S Press Test
     [Timeout]    30s
     # inital sleep to allow device time to boot up after programming
-    Sleep     5s
     Expect And Timeout    btn 1 s\n      mcsAppBtnCback; 2    5    ${SERIAL_PORT_1}
 
 Button M Press Test

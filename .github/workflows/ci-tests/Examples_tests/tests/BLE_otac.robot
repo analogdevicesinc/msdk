@@ -8,10 +8,12 @@ Suite Teardown     Close Ports
 ${SERIAL_PORT_1}    None
 
 *** test cases ***
+Initial Connection Test
+    [Timeout]    30s
+    Read All     Scanning started     30    ${SERIAL_PORT_1}
+
 Stop Scanning Test
     [Timeout]    30s
-    # inital sleep to allow device time to boot up after programming
-    Sleep    5s
     Expect And Timeout     btn 1 s\n     >>> Scanning stopped <<<    5    ${SERIAL_PORT_1}
 
 Connection ID Test
