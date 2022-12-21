@@ -32,6 +32,7 @@
 #include "wsf_timer.h"
 #include "wsf_trace.h"
 #include "wsf_bufio.h"
+#include "wsf_cs.h"
 #include "bb_ble_sniffer_api.h"
 #include "pal_bb.h"
 #include "pal_cfg.h"
@@ -126,13 +127,19 @@ static void mainWsfInit(void)
 
     /* Initial buffer configuration. */
     uint16_t memUsed;
+    WsfCsEnter();
     memUsed = WsfBufInit(numPools, poolDesc);
     WsfHeapAlloc(memUsed);
+    WsfCsExit();
+
     WsfOsInit();
     WsfTimerInit();
 #if (WSF_TRACE_ENABLED == TRUE)
+    WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
+    WsfCsExit();
+    
     WsfTraceRegisterHandler(WsfBufIoWrite);
     WsfTraceEnable(TRUE);
 #endif
@@ -183,10 +190,13 @@ int main(void)
     mainWsfInit();
 
 #if (WSF_TRACE_ENABLED == TRUE)
+    WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
+    WsfCsExit();
 #endif
 
+    WsfCsEnter();
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,
                             .rlSizeCfg = 4,
@@ -197,6 +207,7 @@ int main(void)
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
+    WsfCsExit();
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));

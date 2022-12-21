@@ -228,11 +228,9 @@ int main(void)
 
     uint32_t memUsed;
     WsfCsEnter();
-
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
     WsfCsExit();
-
 
     mainWsfInit();
     AppTerminalInit();
@@ -247,12 +245,9 @@ int main(void)
                             .pFreeMem = WsfHeapGetFreeStartAddress(),
                             .freeMemAvail = WsfHeapCountAvailable() };
 
-
     memUsed = LlInit(&llCfg);
     WsfHeapAlloc(memUsed);
-
     WsfCsExit();
-
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
