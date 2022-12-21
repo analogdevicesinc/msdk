@@ -9,9 +9,7 @@ ${SERIAL_PORT_1}    None
 
 
 *** test cases ***
-Initial Output
-    [Timeout]     40s
-    Read ALL     Advertising started    10    ${SERIAL_PORT_1}
+
 
 Stop Advertising Test
     [Timeout]    30s
