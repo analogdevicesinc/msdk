@@ -247,7 +247,7 @@ jobs:
         if: failure()
         with:
             name: failure-report
-            path: .github/workflows/ci-tests/Examples_tests/results/
+            path: Examples/MAX32690/BLE_fit/build
       
       # Unlock even when cancelled or failed
       # This needs some work, if the job is cancelled or times out because it could not get a LOCK

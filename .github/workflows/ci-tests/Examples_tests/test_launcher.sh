@@ -313,16 +313,16 @@ for dir in ./*/; do
         case $PROJECT_NAME in
 
         "BLE_datc")
-            run_notConntectedTest
+       #     run_notConntectedTest
 
             ;;
 
         "BLE_dats")
-            run_notConntectedTest
+      #      run_notConntectedTest
             ;;
 
         "BLE_mcs")
-            run_notConntectedTest
+      #      run_notConntectedTest
             ;;
 
         "BLE_fit")
