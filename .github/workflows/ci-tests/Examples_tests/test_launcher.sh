@@ -258,7 +258,7 @@ if [ $(hostname) == "wall-e" ]; then
         echo "---------------------------------------"
         make -C ${dir} clean
         make -C ${dir} libclean
-        make -C ${dir} -j8
+        make -C ${dir} VERBOSE=1 -j8
     done
 else
  cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
