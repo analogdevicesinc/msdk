@@ -117,7 +117,7 @@ def read_all(expect=None,timeout=10,port=None):
             time.sleep(0.1)
         if used_ports[port].is_open == True:
             while (time.time()-timeStart) < timeout:
-                x=used_ports[port].readline().decode("utf-8")
+                x=used_ports[port].readline().decode("utf-8", 'ignore')
                 x=str(x)
                 if x != "":
                     write_to_console(x,False)
