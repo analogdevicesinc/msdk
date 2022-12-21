@@ -117,7 +117,7 @@ jobs:
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
             dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-            ./test_launcher.sh max32655 $dut_uart $dut_serial
+          #  ./test_launcher.sh max32655 $dut_uart $dut_serial
           fi
       
       # ME14
@@ -178,7 +178,7 @@ jobs:
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
             dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-            ./test_launcher.sh max32665 $dut_uart $dut_serial          
+          #  ./test_launcher.sh max32665 $dut_uart $dut_serial          
           fi
       # ME18
       - name: TEST MAX32690
