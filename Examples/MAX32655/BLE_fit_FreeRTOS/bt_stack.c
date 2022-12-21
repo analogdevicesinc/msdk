@@ -342,7 +342,7 @@ void btStartup(void)
 #endif
 
     uint32_t memUsed;
-    WsfCsEnter():
+    WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
     WsfCsExit();
