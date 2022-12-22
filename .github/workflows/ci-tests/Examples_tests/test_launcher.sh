@@ -1,54 +1,68 @@
 #!/bin/bash
 
 EXAMPLE_TEST_PATH=$(pwd)
-mkdir results
 cd ../../../../
 MSDK_DIR=$(pwd)
 failedTestList=" "
 numOfFailedTests=0
 
+#***************************************** Initial setup ********************************************
+#****************************************************************************************************
 if [ $(hostname) == "wall-e" ]; then
-    # main ME17 device used to test the rest
-    MAIN_DEVICE_NAME_UPPER=MAX32655
-    MAIN_DEVICE_NAME_LOWER=max32655
-
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-    MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
-    main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
-    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
-
     # WALL-E  paths
     export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
     export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
     export ROBOT=/home/btm-ci/.local/bin/robot
 
-    #get all device IDs to make sure nothing is running and attempts connection
-    DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
-    DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-    DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-    DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
-
-# Local- eddie desktop
 else
-    # main ME17 device used to test the rest
-    MAIN_DEVICE_NAME_UPPER=MAX32655
-    MAIN_DEVICE_NAME_LOWER=max32655
+    # Local- eddie desktop
     FILE=/home/$USER/boards_config.json
-    MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_0']['daplink'])"`
-    main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_0']['uart0'])"`
-    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
-
     # local paths
     export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
     export OPENOCD=/home/eddie/workspace/openocd/src/openocd
     export ROBOT=/home/eddie/.local/bin/robot
 fi
+# Main device is used as client during connected tests
+MAIN_DEVICE_NAME_UPPER=MAX32655
+MAIN_DEVICE_NAME_LOWER=max32655
+MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
+main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
+MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
 
-# setup  all DUT varaibles
+#get all device IDs 
+DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
+DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
+
+# setup  all DUT varaibles passed into the scripts as arguments
+# eg: test_launcher max32655 DT30DZ0 440002342304433434r323452354696
 DUT_NAME_LOWER=$1
 DUT_NAME_UPPER=$(echo $DUT_NAME_LOWER | tr '[:lower:]' '[:upper:]')
 DUT_SERIAL_PORT=/dev/$(ls -la /dev/serial/by-id | grep -n $2 | rev | cut -d "/" -f1 | rev)
 DUT_ID=$3
+
+# Directories needed for robotframework logs
+cd $EXAMPLE_TEST_PATH
+if [[ -e results ]]
+then
+    echo "results folder exists"
+else
+    mkdir $EXAMPLE_TEST_PATH/results
+fi
+
+cd $EXAMPLE_TEST_PATH/results
+mkdir $DUT_NAME_UPPER
+cd $DUT_NAME_UPPER
+mkdir BLE_dat_cs
+mkdir BLE_datc
+mkdir BLE_dats
+mkdir BLE_fit
+mkdir BLE_FreeRTOS
+mkdir BLE_mcs
+mkdir BLE_otac
+mkdir BLE_ota_cs
 
 
 #***************************************** Helper functions *****************************************
@@ -62,10 +76,12 @@ function script_clean_up() {
 
     set -e
 }
-
+#----------------------------------------------------------------------------------------------------
+#used to kill any openocd instances should the script exit prematurely
 trap script_clean_up EXIT SIGINT
 
-# Function accepts parameters: device, CMSIS_DAP_ID_x
+#----------------------------------------------------------------------------------------------------
+# Function accepts parameters: device, CMSIS-DAP serial #
 function flash_with_openocd() {
     # mass erase and flash
     set +e
@@ -85,12 +101,10 @@ function flash_with_openocd() {
         $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt;max32xxx mass_erase 0" -c "program $1.elf verify reset exit" >/dev/null &
         openocd_dapLink_pid=$!
     fi
-    if [[ $1 == "max32690" ]]; then
-    softreset_with_openocd $DUT_NAME_LOWER $DUT_ID
-    fi
 
 }
-# Function accepts parameters: device, CMSIS_DAP_ID_x
+#----------------------------------------------------------------------------------------------------
+# Function accepts parameters: device, CMSIS-DAP serial #
 function flash_with_openocd_fast() {
     # mass erase and flash
     set +e
@@ -100,7 +114,8 @@ function flash_with_openocd_fast() {
   
 
 }
-# Function accepts parameters: device, CMSIS_DAP_ID_x
+#----------------------------------------------------------------------------------------------------
+# Function accepts parameters: device, CMSIS-DAP serial #
 function softreset_with_openocd() {
     
     set +e
@@ -114,7 +129,8 @@ function softreset_with_openocd() {
     set -e
   
 }
-# Function accepts parameters:device , CMSIS_DAP_ID_x
+#----------------------------------------------------------------------------------------------------
+# Function accepts parameters:device , CMSIS-DAP serial #
 function erase_with_openocd() {
     printf "> Erasing $1 : $2 \r\n"
     $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 0;" -c " exit" &
@@ -132,7 +148,7 @@ function erase_with_openocd() {
     fi
 
 }
-
+#----------------------------------------------------------------------------------------------------
 function run_notConntectedTest() {
     project_marker
     cd $PROJECT_NAME
@@ -144,7 +160,6 @@ function run_notConntectedTest() {
     #place to store robotframework results
 
     cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER
-    mkdir $PROJECT_NAME
 
     cd $EXAMPLE_TEST_PATH/tests
     # do not let a single failed test stop the testing of the rest
@@ -162,7 +177,7 @@ function run_notConntectedTest() {
     # get back to target directory
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
 }
-
+#----------------------------------------------------------------------------------------------------
 function flash_bootloader() {
     #------ -----------Build & Flash Bootloader onto Device 2  : ME17
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
@@ -190,25 +205,14 @@ function flash_bootloader() {
         openocd_dapLink_pid=$!
     fi
 }
-
+#----------------------------------------------------------------------------------------------------
 function erase_all_devices() {
-
-    if [ $(hostname) == "wall-e" ]; then
-        erase_with_openocd max32655 $DEVICE1
-        erase_with_openocd max32655 $DEVICE2
-        erase_with_openocd max32665 $DEVICE3
-        erase_with_openocd max32690 $DEVICE4
-    else
-        FILE=/home/$USER/boards_config.json    
-        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
-        erase_with_openocd max32655 $DEVICE2
-        erase_with_openocd max32665 $DEVICE3
-        erase_with_openocd max32690 $DEVICE4
-    fi
+    erase_with_openocd max32655 $DEVICE1
+    erase_with_openocd max32655 $DEVICE2
+    erase_with_openocd max32665 $DEVICE3
+    erase_with_openocd max32690 $DEVICE4
 }
-
+#----------------------------------------------------------------------------------------------------
 function project_marker() {
     echo "=============================================================================="
     printf "> Start of testing $DUT_NAME_LOWER ($DUT_NAME_UPPER) \r\n> ID:$DUT_ID \r\n> Port:$DUT_SERIAL_PORT \r\n\r\n"
@@ -216,10 +220,6 @@ function project_marker() {
 
 #***************************************** Start of test script *************************************
 #****************************************************************************************************
-
-# remove old robtoframework logs
-cd $EXAMPLE_TEST_PATH/results/
-rm -rf *
 
 erase_all_devices
 
@@ -285,20 +285,17 @@ else
 
     # build BLE examples
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
-    SUBDIRS=$(find . -type d -name "BLE*")
+    SUBDIRS=$(find . -type d -name "BLE_*")
     for dir in ${SUBDIRS}; do
         echo "---------------------------------------"
         echo " Validation build for ${dir}"
         echo "---------------------------------------"
-    #    make -C ${dir} clean
+    #   make -C ${dir} clean
     #   make -C ${dir} libclean
-    #    make -C ${dir} -j8
+        make -C ${dir} -j8
     done
 fi
 
-# directory for test resutls
-cd $EXAMPLE_TEST_PATH/results/
-mkdir $DUT_NAME_UPPER
 # enter current device under test directory
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
 
@@ -314,7 +311,6 @@ for dir in ./*/; do
 
         "BLE_datc")
             run_notConntectedTest
-
             ;;
 
         "BLE_dats")
@@ -332,14 +328,10 @@ for dir in ./*/; do
         "BLE_fcc")
 
             #Nothing to do here, no test for fcc
-            #project is built up top and that will detect a failure if any
-
             ;;
 
         "BLE_FreeRTOS")
-            if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-                run_notConntectedTest
-            fi
+            run_notConntectedTest
             ;;
 
         "BLE_otac")
@@ -353,10 +345,6 @@ for dir in ./*/; do
 
         "BLE_periph")
             # No buttons implemented for this example so lets just make sure it builds, so we can ship it
-            # cd $PROJECT_NAME
-            # make -j8
-            # let "numOfFailedTests+=$?"
-
             ;;
 
         *) ;;
@@ -387,9 +375,6 @@ cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
 printf "> Flashing BLE_dats on DUT $DUT_NAME_UPPER \r\n"
 flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
 
-# directory for resuilts logs
-cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
-mkdir BLE_dat_cs
 cd $EXAMPLE_TEST_PATH/tests
 # runs desired test
 set +e
@@ -408,9 +393,6 @@ erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
 #--------------------------start Otac/Otas conencted tests
 
-# directory for resuilts logs
-cd $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/
-mkdir BLE_ota_cs
 cd $EXAMPLE_TEST_PATH/tests
 
 # flash Firmware V1 BLE_otas  onto DUT
