@@ -75,6 +75,7 @@ function initial_setup(){
     mkdir $DUT_NAME_UPPER
     ls
     cd $DUT_NAME_UPPER
+    pwd
     mkdir BLE_dat_cs
     mkdir BLE_datc
     mkdir BLE_dats
