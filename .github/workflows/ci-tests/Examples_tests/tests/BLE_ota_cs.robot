@@ -30,9 +30,9 @@ File Verification Test
     Expect And Timeout    btn 2 l\n    >>> Verify complete status: 0 <<<    2    ${SERIAL_PORT_1}
    
 Peer Device Reset Test
-    [Timeout]    30s
+    [Timeout]    40s
     sleep    1s
-    Expect And Timeout   btn 2 x\n    >>> Scanning started <<<    10    ${SERIAL_PORT_1}
+    Expect And Timeout   btn 2 x\n    >>> Scanning started <<<    30    ${SERIAL_PORT_1}
 
 Firmware Update Verification Test
     [Timeout]    60s     
