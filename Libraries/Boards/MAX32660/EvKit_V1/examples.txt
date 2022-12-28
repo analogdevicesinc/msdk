@@ -28,6 +28,7 @@ Info_Block_Usecase
 LP
 RTC
 RTC_Backup
+SecureROM_BL_Host
 SPI
 SPIMSS
 SPI_MasterSlave
