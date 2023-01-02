@@ -247,7 +247,7 @@ This option can be used to configure _all_ Eclipse projects to use the developme
 
 ### Environment Setup (Command-Line)
 
-If you have not previously the command-line, see [Setup (Command-Line)](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#setup-command-line_1) in the User Guide.
+If you have not previously configured the command-line, see [Setup (Command-Line)](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#setup-command-line_1) in the User Guide.
 
 To configure the command-line for use with the development repo:
 
