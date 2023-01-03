@@ -465,7 +465,7 @@ static bool_t mainCheckServiceTokens(void)
 
 #if (WSF_TOKEN_ENABLED == TRUE) || (BB_SNIFFER_ENABLED == TRUE)
     eventPending = LhciIsEventPending();
-    #endif
+#endif
 
 #if WSF_TOKEN_ENABLED == TRUE
     /* Allow only a single token to be processed at a time. */

@@ -139,7 +139,7 @@ static void mainWsfInit(void)
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
     WsfCsExit();
-    
+
     WsfTraceRegisterHandler(WsfBufIoWrite);
     WsfTraceEnable(TRUE);
 #endif
