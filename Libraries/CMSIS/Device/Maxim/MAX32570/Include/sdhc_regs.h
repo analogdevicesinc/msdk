@@ -88,14 +88,14 @@ extern "C" {
  * Structure type to access the SDHC Registers.
  */
 typedef struct {
-    __IO uint32_t sdma;                 /**< <tt>\b 0x00:</tt> SDHC SDMA Register */
-    __IO uint16_t blk_size;             /**< <tt>\b 0x04:</tt> SDHC BLK_SIZE Register */
-    __IO uint16_t blk_cnt;              /**< <tt>\b 0x06:</tt> SDHC BLK_CNT Register */
-    __IO uint32_t arg_1;                /**< <tt>\b 0x08:</tt> SDHC ARG_1 Register */
-    __IO uint16_t trans;                /**< <tt>\b 0x0C:</tt> SDHC TRANS Register */
-    __IO uint16_t cmd;                  /**< <tt>\b 0x0E:</tt> SDHC CMD Register */
-    __IO uint32_t resp[4];              /**< <tt>\b 0x010:</tt> SDHC RESP Register */
-    __IO uint32_t buffer;               /**< <tt>\b 0x20:</tt> SDHC BUFFER Register */
+    __IO uint32_t sdma;                 /**< <tt>\b 0x000:</tt> SDHC SDMA Register */
+    __IO uint16_t blk_size;             /**< <tt>\b 0x004:</tt> SDHC BLK_SIZE Register */
+    __IO uint16_t blk_cnt;              /**< <tt>\b 0x006:</tt> SDHC BLK_CNT Register */
+    __IO uint32_t arg_1;                /**< <tt>\b 0x008:</tt> SDHC ARG_1 Register */
+    __IO uint16_t trans;                /**< <tt>\b 0x00C:</tt> SDHC TRANS Register */
+    __IO uint16_t cmd;                  /**< <tt>\b 0x00E:</tt> SDHC CMD Register */
+    __IO uint16_t resp[8];              /**< <tt>\b 0x010:</tt> SDHC RESP Register */
+    __IO uint32_t buffer;               /**< <tt>\b 0x020:</tt> SDHC BUFFER Register */
     __I  uint32_t present;              /**< <tt>\b 0x024:</tt> SDHC PRESENT Register */
     __IO uint8_t  host_cn_1;            /**< <tt>\b 0x028:</tt> SDHC HOST_CN_1 Register */
     __IO uint8_t  pwr;                  /**< <tt>\b 0x029:</tt> SDHC PWR Register */
@@ -295,7 +295,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SDHC_RESP_CMD_RESP_POS                   0 /**< RESP_CMD_RESP Position */
-#define MXC_F_SDHC_RESP_CMD_RESP                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_SDHC_RESP_CMD_RESP_POS)) /**< RESP_CMD_RESP Mask */
+#define MXC_F_SDHC_RESP_CMD_RESP                       ((uint16_t)(0xFFFFUL << MXC_F_SDHC_RESP_CMD_RESP_POS)) /**< RESP_CMD_RESP Mask */
 
 /**@} end of group SDHC_RESP_Register */
 

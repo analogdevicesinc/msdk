@@ -93,6 +93,8 @@ typedef struct {
     __IO uint32_t ras;                  /**< <tt>\b 0x08:</tt> HTMR RAS Register */
     __IO uint32_t rssa;                 /**< <tt>\b 0x0C:</tt> HTMR RSSA Register */
     __IO uint32_t ctrl;                 /**< <tt>\b 0x10:</tt> HTMR CTRL Register */
+    __IO uint32_t trim;                 /**< <tt>\b 0x14:</tt> HTMR TRIM Register */
+    __IO uint32_t oscctrl;              /**< <tt>\b 0x18:</tt> HTMR OSCCTRL Register */
 } mxc_htmr_regs_t;
 
 /* Register offsets for module HTMR */
@@ -107,6 +109,8 @@ typedef struct {
 #define MXC_R_HTMR_RAS                     ((uint32_t)0x00000008UL) /**< Offset from HTMR Base Address: <tt> 0x0008</tt> */
 #define MXC_R_HTMR_RSSA                    ((uint32_t)0x0000000CUL) /**< Offset from HTMR Base Address: <tt> 0x000C</tt> */
 #define MXC_R_HTMR_CTRL                    ((uint32_t)0x00000010UL) /**< Offset from HTMR Base Address: <tt> 0x0010</tt> */
+#define MXC_R_HTMR_TRIM                    ((uint32_t)0x00000014UL) /**< Offset from HTMR Base Address: <tt> 0x0014</tt> */
+#define MXC_R_HTMR_OSCCTRL                 ((uint32_t)0x00000018UL) /**< Offset from HTMR Base Address: <tt> 0x0018</tt> */
 /**@} end of group htmr_registers */
 
 /**
@@ -190,6 +194,46 @@ typedef struct {
 #define MXC_F_HTMR_CTRL_WEN                            ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_WEN_POS)) /**< CTRL_WEN Mask */
 
 /**@} end of group HTMR_CTRL_Register */
+
+/**
+ * @ingroup  htmr_registers
+ * @defgroup HTMR_TRIM HTMR_TRIM
+ * @brief    HTimer Trim Register.
+ * @{
+ */
+#define MXC_F_HTMR_TRIM_TRIM_POS                       0 /**< TRIM_TRIM Position */
+#define MXC_F_HTMR_TRIM_TRIM                           ((uint32_t)(0xFFUL << MXC_F_HTMR_TRIM_TRIM_POS)) /**< TRIM_TRIM Mask */
+
+#define MXC_F_HTMR_TRIM_VBAT_TMR_POS                   8 /**< TRIM_VBAT_TMR Position */
+#define MXC_F_HTMR_TRIM_VBAT_TMR                       ((uint32_t)(0xFFFFFFUL << MXC_F_HTMR_TRIM_VBAT_TMR_POS)) /**< TRIM_VBAT_TMR Mask */
+
+/**@} end of group HTMR_TRIM_Register */
+
+/**
+ * @ingroup  htmr_registers
+ * @defgroup HTMR_OSCCTRL HTMR_OSCCTRL
+ * @brief    HTimer Oscillator Control Register.
+ * @{
+ */
+#define MXC_F_HTMR_OSCCTRL_FILTER_EN_POS               0 /**< OSCCTRL_FILTER_EN Position */
+#define MXC_F_HTMR_OSCCTRL_FILTER_EN                   ((uint32_t)(0x1UL << MXC_F_HTMR_OSCCTRL_FILTER_EN_POS)) /**< OSCCTRL_FILTER_EN Mask */
+
+#define MXC_F_HTMR_OSCCTRL_IBIAS_SEL_POS               1 /**< OSCCTRL_IBIAS_SEL Position */
+#define MXC_F_HTMR_OSCCTRL_IBIAS_SEL                   ((uint32_t)(0x1UL << MXC_F_HTMR_OSCCTRL_IBIAS_SEL_POS)) /**< OSCCTRL_IBIAS_SEL Mask */
+
+#define MXC_F_HTMR_OSCCTRL_HYST_EN_POS                 2 /**< OSCCTRL_HYST_EN Position */
+#define MXC_F_HTMR_OSCCTRL_HYST_EN                     ((uint32_t)(0x1UL << MXC_F_HTMR_OSCCTRL_HYST_EN_POS)) /**< OSCCTRL_HYST_EN Mask */
+
+#define MXC_F_HTMR_OSCCTRL_IBIAS_EN_POS                3 /**< OSCCTRL_IBIAS_EN Position */
+#define MXC_F_HTMR_OSCCTRL_IBIAS_EN                    ((uint32_t)(0x1UL << MXC_F_HTMR_OSCCTRL_IBIAS_EN_POS)) /**< OSCCTRL_IBIAS_EN Mask */
+
+#define MXC_F_HTMR_OSCCTRL_BYPASS_POS                  4 /**< OSCCTRL_BYPASS Position */
+#define MXC_F_HTMR_OSCCTRL_BYPASS                      ((uint32_t)(0x1UL << MXC_F_HTMR_OSCCTRL_BYPASS_POS)) /**< OSCCTRL_BYPASS Mask */
+
+#define MXC_F_HTMR_OSCCTRL_SQW_32K_POS                 5 /**< OSCCTRL_SQW_32K Position */
+#define MXC_F_HTMR_OSCCTRL_SQW_32K                     ((uint32_t)(0x1UL << MXC_F_HTMR_OSCCTRL_SQW_32K_POS)) /**< OSCCTRL_SQW_32K Mask */
+
+/**@} end of group HTMR_OSCCTRL_Register */
 
 #ifdef __cplusplus
 }

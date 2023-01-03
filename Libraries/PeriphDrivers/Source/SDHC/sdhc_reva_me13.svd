@@ -17,7 +17,7 @@
       <register>
         <name>SDMA</name>
         <description>SDMA System Address / Argument 2.</description>
-        <addressOffset>0x00</addressOffset>
+        <addressOffset>0x000</addressOffset>
         <size>32</size>
         <fields>
           <field>
@@ -31,7 +31,7 @@
       <register>
         <name>BLK_SIZE</name>
         <description>Block Size.</description>
-        <addressOffset>0x04</addressOffset>
+        <addressOffset>0x004</addressOffset>
         <size>16</size>
         <fields>
           <field>
@@ -51,7 +51,7 @@
       <register>
         <name>BLK_CNT</name>
         <description>Block Count.</description>
-        <addressOffset>0x06</addressOffset>
+        <addressOffset>0x006</addressOffset>
         <size>16</size>
         <fields>
           <field>
@@ -65,7 +65,7 @@
       <register>
         <name>ARG_1</name>
         <description>Argument 1.</description>
-        <addressOffset>0x08</addressOffset>
+        <addressOffset>0x008</addressOffset>
         <size>32</size>
         <fields>
           <field>
@@ -79,7 +79,7 @@
       <register>
         <name>TRANS</name>
         <description>Transfer Mode.</description>
-        <addressOffset>0x0C</addressOffset>
+        <addressOffset>0x00C</addressOffset>
         <size>16</size>
         <fields>
           <field>
@@ -176,7 +176,7 @@
       <register>
         <name>CMD</name>
         <description>Command.</description>
-        <addressOffset>0x0E</addressOffset>
+        <addressOffset>0x00E</addressOffset>
         <size>16</size>
         <fields>
           <field>
@@ -218,25 +218,25 @@
         </fields>
       </register>
       <register>
-        <dim>4</dim>
-        <dimIncrement>4</dimIncrement>
+        <dim>8</dim>
+        <dimIncrement>2</dimIncrement>
         <name>RESP[%s]</name>
         <description>Response 0 Register 0-7.</description>
         <addressOffset>0x010</addressOffset>
-        <size>32</size>
+        <size>16</size>
         <fields>
           <field>
             <name>CMD_RESP</name>
             <description>Command Response.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>32</bitWidth>
+            <bitWidth>16</bitWidth>
           </field>
         </fields>
       </register>
       <register>
         <name>BUFFER</name>
         <description>Buffer Data Port.</description>
-        <addressOffset>0x20</addressOffset>
+        <addressOffset>0x020</addressOffset>
         <size>32</size>
         <fields>
           <field>

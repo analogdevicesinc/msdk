@@ -323,7 +323,7 @@
           </field>
           <field>
             <name>DFD_EN</name>
-            <description>Digital Fault Dector Enable</description>
+            <description>Digital Fault Detector Enable</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -335,13 +335,7 @@
           </field>
           <field>
             <name>DFD_STDBY_EN</name>
-            <description>Digital Fault Dector Stand by Enable</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>DFD_NMI_STDBY_EN</name>
-            <description>Digital Fault Dector Stand by Enable</description>
+            <description>Digital Fault Detector Stand by Enable</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>

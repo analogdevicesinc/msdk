@@ -265,6 +265,9 @@ typedef struct {
 #define MXC_F_GCR_RST0_USB_POS                         23 /**< RST0_USB Position */
 #define MXC_F_GCR_RST0_USB                             ((uint32_t)(0x1UL << MXC_F_GCR_RST0_USB_POS)) /**< RST0_USB Mask */
 
+#define MXC_F_GCR_RST0_TRNG_POS                        24 /**< RST0_TRNG Position */
+#define MXC_F_GCR_RST0_TRNG                            ((uint32_t)(0x1UL << MXC_F_GCR_RST0_TRNG_POS)) /**< RST0_TRNG Mask */
+
 #define MXC_F_GCR_RST0_ADC_POS                         26 /**< RST0_ADC Position */
 #define MXC_F_GCR_RST0_ADC                             ((uint32_t)(0x1UL << MXC_F_GCR_RST0_ADC_POS)) /**< RST0_ADC Mask */
 
@@ -1075,7 +1078,7 @@ typedef struct {
 #define MXC_F_GCR_NFCLDOCTRL_DISCH_POS                 9 /**< NFCLDOCTRL_DISCH Position */
 #define MXC_F_GCR_NFCLDOCTRL_DISCH                     ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_DISCH_POS)) /**< NFCLDOCTRL_DISCH Mask */
 
-#define MXC_F_GCR_NFCLDOCTRL_EN_DLY_POS                15 /**< NFCLDOCTRL_EN_DLY Position */
+#define MXC_F_GCR_NFCLDOCTRL_EN_DLY_POS                13 /**< NFCLDOCTRL_EN_DLY Position */
 #define MXC_F_GCR_NFCLDOCTRL_EN_DLY                    ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_EN_DLY_POS)) /**< NFCLDOCTRL_EN_DLY Mask */
 
 #define MXC_F_GCR_NFCLDOCTRL_BYP_EN_DLY_POS            14 /**< NFCLDOCTRL_BYP_EN_DLY Position */

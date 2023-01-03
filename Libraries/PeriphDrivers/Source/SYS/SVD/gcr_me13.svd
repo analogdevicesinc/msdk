@@ -330,6 +330,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="DMA">
+            <name>TRNG</name>
+            <description>TRNG Reset. Setting this bit resets the TRNG block.</description>
+            <bitOffset>24</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="DMA">
             <name>ADC</name>
             <description>Analog to Digital Reset.</description>
             <bitOffset>26</bitOffset>
@@ -2064,7 +2070,7 @@
           <field>
             <name>EN_DLY</name>
             <description>TBD</description>
-            <bitOffset>15</bitOffset>
+            <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>

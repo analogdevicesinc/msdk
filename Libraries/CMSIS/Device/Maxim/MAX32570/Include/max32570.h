@@ -164,7 +164,7 @@ typedef enum {
     RSV81_IRQn, /* 0x61  0x0184  97: Reserved */
     ECC_IRQn, /* 0x62  0x0188  98: Error Correction */
     RSV83_IRQn, /* 0x63  0x018C  99: Reserved */
-    RSV84_IRQn, /* 0x64  0x0190  100: Reserved */
+    SCA_IRQn, /* 0x64  0x0190  100: SCA */
     RSV85_IRQn, /* 0x65  0x0194  101: Reserved */
     RSV86_IRQn, /* 0x66  0x0198  102: Reserved */
     FLC1_IRQn, /* 0x67  0x019C  103: Flash Control 1 */
@@ -472,11 +472,8 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                       Magstripe Reader ADC */
-#define MXC_BASE_ADC9 ((uint32_t)0x4002B000UL)
-#define MXC_ADC9 ((mxc_adc9_regs_t *)MXC_BASE_ADC9)
-
-#define MXC_BASE_MSRADC MXC_BASE_ADC9
-#define MXC_MSRADC MXC_ADC9
+#define MXC_BASE_MSRADC ((uint32_t)0x4002B000UL)
+#define MXC_MSRADC ((mxc_msradc_regs_t *)MXC_BASE_MSRADC)
 
 /******************************************************************************/
 /*                                                                 Smart Card */

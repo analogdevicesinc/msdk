@@ -514,7 +514,7 @@
           <field>
             <name>USBFIFO</name>
             <description>USB FIFO Shut Down.</description>
-            <bitOffset>11</bitOffset>
+            <bitOffset>12</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
@@ -532,7 +532,7 @@
           <field>
             <name>ROM</name>
             <description>ROM Shut Down.</description>
-            <bitOffset>12</bitOffset>
+            <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>

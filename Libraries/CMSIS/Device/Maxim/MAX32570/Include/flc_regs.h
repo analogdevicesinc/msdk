@@ -93,8 +93,8 @@ typedef struct {
     __IO uint32_t ctrl;                 /**< <tt>\b 0x08:</tt> FLC CTRL Register */
     __R  uint32_t rsv_0xc_0x23[6];
     __IO uint32_t intr;                 /**< <tt>\b 0x24:</tt> FLC INTR Register */
-    __IO uint32_t eccdata;              /**< <tt>\b 0x28:</tt> FLC ECCDATA Register */
-    __R  uint32_t rsv_0x2c;
+    __R  uint32_t rsv_0x28;
+    __IO uint32_t eccdata;              /**< <tt>\b 0x2C:</tt> FLC ECCDATA Register */
     __IO uint32_t data[4];              /**< <tt>\b 0x30:</tt> FLC DATA Register */
 } mxc_flc_regs_t;
 
@@ -109,7 +109,7 @@ typedef struct {
 #define MXC_R_FLC_CLKDIV                   ((uint32_t)0x00000004UL) /**< Offset from FLC Base Address: <tt> 0x0004</tt> */
 #define MXC_R_FLC_CTRL                     ((uint32_t)0x00000008UL) /**< Offset from FLC Base Address: <tt> 0x0008</tt> */
 #define MXC_R_FLC_INTR                     ((uint32_t)0x00000024UL) /**< Offset from FLC Base Address: <tt> 0x0024</tt> */
-#define MXC_R_FLC_ECCDATA                  ((uint32_t)0x00000028UL) /**< Offset from FLC Base Address: <tt> 0x0028</tt> */
+#define MXC_R_FLC_ECCDATA                  ((uint32_t)0x0000002CUL) /**< Offset from FLC Base Address: <tt> 0x002C</tt> */
 #define MXC_R_FLC_DATA                     ((uint32_t)0x00000030UL) /**< Offset from FLC Base Address: <tt> 0x0030</tt> */
 /**@} end of group flc_registers */
 

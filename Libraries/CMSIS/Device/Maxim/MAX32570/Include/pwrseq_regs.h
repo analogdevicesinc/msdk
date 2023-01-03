@@ -284,10 +284,10 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPMEMSD_MEU_POS                   11 /**< LPMEMSD_MEU Position */
 #define MXC_F_PWRSEQ_LPMEMSD_MEU                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_MEU_POS)) /**< LPMEMSD_MEU Mask */
 
-#define MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS               11 /**< LPMEMSD_USBFIFO Position */
+#define MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS               12 /**< LPMEMSD_USBFIFO Position */
 #define MXC_F_PWRSEQ_LPMEMSD_USBFIFO                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS)) /**< LPMEMSD_USBFIFO Mask */
 
-#define MXC_F_PWRSEQ_LPMEMSD_ROM_POS                   12 /**< LPMEMSD_ROM Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM_POS                   13 /**< LPMEMSD_ROM Position */
 #define MXC_F_PWRSEQ_LPMEMSD_ROM                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM_POS)) /**< LPMEMSD_ROM Mask */
 
 #define MXC_F_PWRSEQ_LPMEMSD_MAA_POS                   15 /**< LPMEMSD_MAA Position */

@@ -198,7 +198,7 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="DONEIE">
+          <field derivedFrom="DONE_IE">
             <name>AF_IE</name>
             <description>Flash Access Fail Interrupt Enable.</description>
             <bitOffset>9</bitOffset>
@@ -209,7 +209,7 @@
       <register>
         <name>ECCDATA</name>
         <description>ECC Data Register.</description>
-        <addressOffset>0x28</addressOffset>
+        <addressOffset>0x2C</addressOffset>
         <fields>
           <field>
             <name>EVEN</name>
