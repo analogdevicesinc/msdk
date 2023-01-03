@@ -174,7 +174,7 @@ typedef enum {
     RSV92_IRQn, /* 0x6C  0x01B0 108: Reserved */
     RSV93_IRQn, /* 0x6D  0x01B4 109: Reserved */
     RSV94_IRQn, /* 0x6E  0x01B8 110: Reserved */
-    PUF_IRQn, /* 0x6F  0x01BC 111: Physically Uncloneable Function */
+    RSV95_IRQn, /* 0x6F  0x01BC 111: Reserved */
     RSV96_IRQn, /* 0x70  0x01C0 112: Reserved */
     RSV97_IRQn, /* 0x71  0x01C4 113: Reserved */
     RSV98_IRQn, /* 0x72  0x01C8 114: Reserved */
@@ -388,11 +388,6 @@ typedef enum {
 /*                                                              Misc Control  */
 #define MXC_BASE_MCR ((uint32_t)0x40006C00UL)
 #define MXC_MCR ((mxc_mcr_regs_t *)MXC_BASE_MCR)
-
-/******************************************************************************/
-/*                                                     PUF Secure Controller  */
-#define MXC_BASE_PUF ((uint32_t)0x40007000UL)
-#define MXC_PUF ((mxc_puf_regs_t *)MXC_BASE_PUF)
 
 /******************************************************************************/
 /*                                                                       GPIO */
