@@ -115,4 +115,4 @@ arm-none-eabi-gcc-ar rcs -o ../../libphy_hard.a obj/pal_bb.o obj/pal_bb_ble.o ob
 arm-none-eabi-strip --strip-unneeded ../../libphy_hard.a
 +++ Copying: ../../libphy_hard.a to msdk
 cp ../../libphy_hard.a ../../../../../Libraries/BlePhy/MAX32690/libphy_hard.a
-revision: 52e307e
+revision: d3f6d97
