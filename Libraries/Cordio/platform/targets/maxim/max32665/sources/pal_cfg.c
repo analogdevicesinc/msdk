@@ -22,6 +22,10 @@
 #include "ll_defs.h"
 #include "mxc_sys.h"
 
+#ifndef PAL_CFG_LL_MAX
+#define PAL_CFG_LL_MAX 0
+#endif
+
 /*! \brief  LL configuration. */
 typedef struct {
   /* Advertiser */
@@ -101,6 +105,8 @@ void palCfgLoadLlParams(uint8_t *pConfig)
 {
   PalCfgLl_t *pCfg = (PalCfgLl_t *)pConfig;
 
+#if PAL_CFG_LL_MAX
+  /* Maximum LL configuration, best features, consumes lots of SRAM */
   const uint16_t advDataLen     = LL_MAX_ADV_DATA_LEN;
   const uint16_t connDataLen    = 512;
   const uint16_t numTxBufs      = 16;
@@ -125,6 +131,35 @@ void palCfgLoadLlParams(uint8_t *pConfig)
   pCfg->cisSubEvtSpaceDelay   = 0;
   pCfg->maxBig                = 2;
   pCfg->maxBis                = 6;
+
+#else
+  /* Minimum LL configuration, less features, conserves SRAM */
+  const uint16_t advDataLen     = 256;
+  const uint16_t connDataLen    = 256;
+  const uint16_t numTxBufs      = 4;
+
+  pCfg->maxAdvSets            = 1;
+  pCfg->maxAdvReports         = 2;
+  pCfg->maxExtAdvDataLen      = advDataLen;
+  /* pCfg->defExtAdvDataFragLen */  /* Use default. */
+  pCfg->auxDelayUsec          = 0;
+  pCfg->maxScanReqRcvdEvt     = 1;
+  pCfg->maxExtScanDataLen     = advDataLen;
+  pCfg->maxConn               = 1;
+  pCfg->maxAclLen             = connDataLen;
+  pCfg->numTxBufs             = numTxBufs;
+  pCfg->numRxBufs             = numTxBufs;
+  pCfg->numIsoTxBuf           = 0;
+  pCfg->numIsoRxBuf           = 0;
+  pCfg->maxIsoBufLen          = 0;
+  pCfg->maxIsoPduLen          = 0;
+  pCfg->maxCig                = 0;
+  pCfg->maxCis                = 0;
+  pCfg->cisSubEvtSpaceDelay   = 0;
+  pCfg->maxBig                = 0;
+  pCfg->maxBis                = 0;
+
+#endif
 }
 
 /*************************************************************************************************/
@@ -142,7 +177,6 @@ void palCfgLoadBdAddress(uint8_t *pDevAddr)
   if(MXC_SYS_GetUSN(id, checksum) != E_NO_ERROR) {
     PalSysAssertTrap();	
   }
-
 
   /* MA-L assigend by IEEE to Maxim Integrated Products */
   pDevAddr[5] = 0x00;
@@ -168,7 +202,7 @@ void palCfgLoadExtMac154Address(uint8_t *pDevAddr)
   uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
 
   if(MXC_SYS_GetUSN(id, checksum) != E_NO_ERROR) {
-    PalSysAssertTrap();	
+    PalSysAssertTrap();
   }
 
   /* Set the device address */
