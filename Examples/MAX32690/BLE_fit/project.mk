@@ -12,3 +12,11 @@ LIB_CORDIO = 1
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
+
+AUTOSEARCH = 0
+
+SRCS += stack_fit.c
+SRCS += fit_main.c
+SRCS += main.c
+
+# DEBUG=1
