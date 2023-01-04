@@ -341,6 +341,7 @@ void bleStartup(void)
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
     LlSetBdAddr((uint8_t *)&bdAddr);
+#endif
 
     setInterruptPriority();
 
