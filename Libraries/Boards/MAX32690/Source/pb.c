@@ -76,9 +76,9 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
             gpio4_callback = callback;
             gpio4_pb = pb;
 
+            MXC_PWRSEQ->lpwkst4 = pb_pin[gpio4_pb].mask;
             MXC_PWRSEQ->lpwken4 |= pb_pin[pb].mask;
             NVIC_EnableIRQ(GPIOWAKE_IRQn);
-
             return E_NO_ERROR;
         }
 
@@ -119,6 +119,7 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
             gpio4_callback = callback;
             gpio4_pb = pb;
 
+            MXC_PWRSEQ->lpwkst4 = pb_pin[gpio4_pb].mask;
             MXC_PWRSEQ->lpwken4 |= pb_pin[pb].mask;
             NVIC_EnableIRQ(GPIOWAKE_IRQn);
 
