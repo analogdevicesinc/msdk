@@ -3,7 +3,7 @@
 CLANG_VERSION=14
 
 # Find the C files
-CFILES=$(find . -iname "*.c" -not -regex ".*/Libraries/\(\(FCL\)|\(FreeRTOS\)|\(lwIP\)|\(littleFS\)|\(FreeRTOS-Plus\)|\(LC3\)|\(SDHC\)|\(MAXUSB\)|\(Cordio\)|\)/*")
+CFILES=$(find . -iname "*.c" -not -name "*cnn.c" -a -not -name "*softmax.c" -a -not -regex ".*/Libraries/\(Cordio\|FCL\|FreeRTOS\|FreeRTOS\-Plus\|LC3\|littlefs\|lwIP\|MAXUSB\|SDHC\)/.*")
 
 for c_file in ${CFILES}
 do
@@ -20,7 +20,7 @@ done
 
 
 # Reformat all of the header files
-HFILES=$(find . -iname "*.h" -not -name "*regs*" -a -not -regex ".*/Libraries/\(\(FCL\)|\(FreeRTOS\)|\(lwIP\)|\(littleFS\)|\(FreeRTOS-Plus\)|\(LC3\)|\(SDHC\)|\(MAXUSB\)|\(Cordio\)|\)/*")
+HFILES=$(find . -iname "*.h" -not -name "*regs*" -a -not -name "*weights.h" -a -not -name "*cnn.h" -a -not -name "*sampledata.h" -a -not -name "*sampleoutput.h" -a -not -regex ".*/Libraries/\(Cordio\|FCL\|FreeRTOS\|FreeRTOS\-Plus\|LC3\|littlefs\|lwIP\|MAXUSB\|SDHC\)/.*")
 for h_file in ${HFILES}
 do
   clang-format-${CLANG_VERSION} --verbose -style=file -i ${h_file}
