@@ -1,7 +1,7 @@
 ## Description
 
-The Analog Devices Inc. (ADI) secure microcontroller has special bootloader, it is called as "Secure ROM Bootloader"
-this bootloaders provide firmware update function by secure way. The security related staff is handle by SDK and SDK tools.
+The Analog Devices Inc. (ADI) secure microcontroller has special bootloader, it is called as "Secure ROM Bootloader".
+This bootloaders provide firmware update function by secure way. The security related staff is handle by SDK and SDK tools.
 This example is a reference that demonstrate communication with ADI Secure ROM bootloaders.
 
 In this example host will be MAX32670 and target will be MAX32520. 
