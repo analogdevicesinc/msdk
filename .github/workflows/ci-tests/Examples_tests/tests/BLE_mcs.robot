@@ -1,24 +1,23 @@
 *** settings ***
-Library    SerialLibrary      encoding=ascii
 Library    String
-Resource     ../resources/Serial.robot
-Suite Setup        Serial.Open Serial Port    ${SERIAL_PORT_1}    NONE    
-Suite Teardown     Serial.Close Serial Port
+Library    ../resources/serialPortReader.py
+Suite Setup        Open Ports    ${SERIAL_PORT_1}
+Suite Teardown     Close Ports 
 
 *** Variables ***
 ${SERIAL_PORT_1}    None
-${VERBOSE}     None
 
 *** test cases ***
-Button Press Tests
+Button S Press Test
     [Timeout]    30s
     # inital sleep to allow device time to boot up after programming
     Sleep     5s
-    Serial.Send    btn 1 s\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    mcsAppBtnCback; 2    5    ${SERIAL_PORT_1}
+    Expect And Timeout    btn 1 s\n      mcsAppBtnCback; 2    5    ${SERIAL_PORT_1}
 
-    Serial.Send    btn 1 m\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    mcsAppBtnCback; 3    5    ${SERIAL_PORT_1}
+Button M Press Test
+    [Timeout]    30s
+    Expect And Timeout    btn 1 m\n      mcsAppBtnCback; 3    5    ${SERIAL_PORT_1}
     
-    Serial.Send    btn 1 l\n    ${SERIAL_PORT_1}
-    Serial.Expect And Timeout    mcsAppBtnCback; 4    5    ${SERIAL_PORT_1}
+Button L Press Test
+    [Timeout]    30s
+    Expect And Timeout    btn 1 l\n      mcsAppBtnCback; 4    5    ${SERIAL_PORT_1}
