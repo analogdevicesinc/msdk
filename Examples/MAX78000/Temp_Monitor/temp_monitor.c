@@ -66,7 +66,6 @@
 #define HEARTBEAT_LED 1
 #endif
 
-
 #define TEMP_SENS_FREQ 100000
 
 #define MSEC_TO_RSSA(msec) ((msec * 4096) / 1000)
