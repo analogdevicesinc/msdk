@@ -86,7 +86,7 @@ static int MXC_CTB_Cipher_EncDecAsc(mxc_ctb_cipher_req_t *req);
 int MXC_CTB_RevA_Init(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features)
 {
     ctb_regs->ctrl = MXC_F_CTB_REVA_CTRL_RST;
-    while(ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RST) {}
+    while (ctb_regs->ctrl & MXC_F_CTB_REVA_CTRL_RST) {}
 
     ctb_regs->ctrl |= MXC_F_CTB_REVA_CTRL_FLAG_MODE;
 
@@ -103,9 +103,9 @@ int MXC_CTB_RevA_Init(mxc_ctb_reva_regs_t *ctb_regs, uint32_t features)
 
     if (features & MXC_CTB_REVA_FEATURE_HASH) {
         MXC_FreeLock((void *)&MXC_CTB_Callbacks[HSH_ID]);
-    } else if(!(enabled_features & MXC_CTB_REVA_FEATURE_HASH)) {
+    } else if (!(enabled_features & MXC_CTB_REVA_FEATURE_HASH)) {
         // Hash has not been initialized previously and is
-        // not initialized in this call to MXC_CTB_Init, 
+        // not initialized in this call to MXC_CTB_Init,
         // clear hash_ctrl reg.
         ctb_regs->hash_ctrl = 0;
     }
