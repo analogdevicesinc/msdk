@@ -387,6 +387,6 @@ uint32_t PalTimerGetExpTime(void)
   } else {
     return 0;
   }
-  
+
   return time;
 }

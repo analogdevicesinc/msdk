@@ -112,6 +112,10 @@ void *WsfHeapGetFreeStartAddress(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountAvailable(void)
 {
+    if(freeStartAddr == 0) {
+        wsfHeapInit();
+    }
+
     return freeLen;
 }
 
@@ -124,5 +128,9 @@ uint32_t WsfHeapCountAvailable(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountUsed(void)
 {
+    if(freeStartAddr == 0) {
+        wsfHeapInit();
+    }
+
     return (WSF_HEAP_SIZE - freeLen);
 }
