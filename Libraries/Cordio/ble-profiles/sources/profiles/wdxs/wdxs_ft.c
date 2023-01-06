@@ -361,11 +361,16 @@ uint8_t wdxsFtdWrite(dmConnId_t connId, uint16_t len, uint8_t *pValue)
   {
     return ATT_ERR_LENGTH;
   }
+  
+  /* Parse the address from the data */
+  len -= sizeof(uint32_t);
+  uint32_t address;
+  memcpy(&address, pValue, sizeof(uint32_t));
 
   /* verify more data is expected */
   if (wdxsCb.ftLen >= len)
   {
-    WsfEfsPut(wdxsCb.ftHandle, wdxsCb.ftOffset, pValue, len);
+    WsfEfsPut(wdxsCb.ftHandle, address, &pValue[sizeof(uint32_t)], len);
 
     /* update remaining length of put request */
     wdxsCb.ftOffset += len;
