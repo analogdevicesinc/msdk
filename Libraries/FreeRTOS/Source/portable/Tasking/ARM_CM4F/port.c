@@ -83,7 +83,7 @@ static void prvSetupTimerInterrupt( void );
 /*
  * Exception handlers.
  */
-void SysTick_Handler( void );
+__IRQ void SysTick_Handler( void );
 
 /*
  * Functions defined in port_asm.asm.
@@ -233,7 +233,7 @@ void vPortExitCritical( void )
 }
 /*-----------------------------------------------------------*/
 
-void SysTick_Handler( void )
+__IRQ void SysTick_Handler( void )
 {
 uint32_t ulDummy;
 

@@ -153,31 +153,31 @@ int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
 }
 
 //******************************************************************************
-void GPIO0_IRQHandler(void)
+__IRQ void GPIO0_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
 }
 
 //******************************************************************************
-void GPIO1_IRQHandler(void)
+__IRQ void GPIO1_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
 }
 
 //******************************************************************************
-void GPIO2_IRQHandler(void)
+__IRQ void GPIO2_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
 }
 
 //******************************************************************************
-void GPIO3_IRQHandler(void)
+__IRQ void GPIO3_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO3));
 }
 
 //******************************************************************************
-void GPIOWAKE_IRQHandler(void)
+__IRQ void GPIOWAKE_IRQHandler(void)
 {
     /* Clear the interrupt status */
     MXC_PWRSEQ->lpwkst4 = pb_pin[gpio4_pb].mask;
