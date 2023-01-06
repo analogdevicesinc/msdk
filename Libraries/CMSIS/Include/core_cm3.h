@@ -101,11 +101,11 @@ extern "C" {
 
 #endif
 
-#if (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || (defined ( __GNUC__ ))
+#if (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || (defined(__GNUC__))
 #define __IRQ __attribute__((interrupt("IRQ")))
-#elif defined ( __CC_ARM )
+#elif defined(__CC_ARM)
 #define __IRQ __irq
-#elif defined ( __ICCARM__ )
+#elif defined(__ICCARM__)
 #define __IRQ __irq __arm
 #else
 /* #error "Unsupported compiler!" */
