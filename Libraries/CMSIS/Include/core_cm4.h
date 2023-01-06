@@ -109,6 +109,7 @@ extern "C" {
 #define __IRQ __irq __arm
 #else
 /* #error "Unsupported compiler!" */
+#define __IRQ
 #endif
 
 /** __FPU_USED indicates whether an FPU is used or not. For this, __FPU_PRESENT has to be checked prior to making use of FPU specific registers and functions.

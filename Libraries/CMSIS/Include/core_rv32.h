@@ -100,6 +100,8 @@ extern "C" {
 
 #endif
 
+#define __IRQ __attribute__((interrupt("machine")))
+
 /** __FPU_USED indicates whether an FPU is used or not. For this, __FPU_PRESENT has to be checked prior to making use of FPU specific registers and functions.
 */
 #if defined(__CC_ARM)
