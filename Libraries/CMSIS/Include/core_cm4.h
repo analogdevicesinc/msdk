@@ -101,6 +101,17 @@ extern "C" {
 
 #endif
 
+#if (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || \
+    (defined ( __GNUC__ ))
+  #define __IRQ __attribute__((interrupt("IRQ")))
+#elif defined ( __CC_ARM )
+  #define __IRQ __irq
+#elif defined ( __ICCARM__ )
+  #define __IRQ __irq __arm
+#else
+  /* #error "Unsupported compiler!" */
+#endif
+
 /** __FPU_USED indicates whether an FPU is used or not. For this, __FPU_PRESENT has to be checked prior to making use of FPU specific registers and functions.
 */
 #if defined(__CC_ARM)
