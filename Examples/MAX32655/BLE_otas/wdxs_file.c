@@ -41,8 +41,10 @@
 #define FW_VERSION 1
 #endif
 #define EXT_FLASH_PAGE_SIZE 256
-#define EXT_FLASH_SECTOR_SIZE ((uint32_t)0x00010000)
+#define EXT_FLASH_SECTOR_SIZE ((uint32_t)0x0001000)
 #define HEADER_LOCATION ((uint32_t)0x00000000)
+#define ERASE_DELAY 50 // ms
+
 static volatile uint32_t verifyLen;
 static volatile uint8_t *lastWriteAddr;
 static volatile uint32_t lastWriteLen;
@@ -50,6 +52,7 @@ static uint32_t crcResult;
 
 static uint32_t eraseAddress, eraseSectors;
 wsfHandlerId_t eraseHandlerId;
+wsfTimer_t eraseTimer;
 
 /* Prototypes for file functions */
 static uint8_t wdxsFileInitMedia(void);
@@ -73,25 +76,31 @@ static const wsfEfsMedia_t WDXS_FileMedia = {
     /*   wsfMediaHandleCmdFunc_t *handleCmd;    Media command handler callback. */ wsfFileHandle
 };
 
+/*************************************************************************************************/
+/*!
+ *  \brief  WSF event handler for file erase.
+ *
+ *  \param  event   WSF event mask.
+ *  \param  pMsg    WSF message.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
 void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-
     if(eraseSectors) {
         APP_TRACE_INFO1(">>> Erasing address 0x%x in external flash <<<", eraseAddress);
 
-        /* TODO: Check for ongoing erase, start the next erase */
-        Ext_Flash_Erase(eraseAddress, Ext_Flash_Erase_64K);
+        /* TODO: Once this is non-blocking, check for ongoing erase, start the next erase */
+        Ext_Flash_Erase(eraseAddress, Ext_Flash_Erase_4K);
         eraseSectors--;
         eraseAddress += EXT_FLASH_SECTOR_SIZE;
 
         /* Continue next erase */
-        wsfMsgHdr_t *pMsg;
-        if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL)
-        {
-            WsfMsgSend(eraseHandlerId, pMsg);
-        }
+        WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
     } else {
         /* Erase is complete */
+        APP_TRACE_INFO0(">>> External flash erase complete <<<");
     }
 }
 
@@ -114,7 +123,7 @@ static uint8_t wdxsFileInitMedia(void)
 
     /* Setup the erase handler */
     eraseHandlerId = WsfOsSetNextHandler(wdxsFileEraseHandler);
-
+    eraseTimer.handlerId = eraseHandlerId;
     return WSF_EFS_SUCCESS;
 }
 
@@ -136,18 +145,19 @@ static uint8_t wdxsFileErase(uint8_t *address, uint32_t size)
     if (fileHeader.fileLen != 0) {
         /* calculate sectors needed to erase */
         sectors = (fileHeader.fileLen / EXT_FLASH_SECTOR_SIZE) + 1;
-        APP_TRACE_INFO1(">>> Initiating erase of %d 64K sectors in external flash <<<", sectors);
+        APP_TRACE_INFO1(">>> Initiating erase of %d 4K sectors in external flash <<<", sectors);
 
         /* Setup the erase handler variables */
         eraseAddress = address32;
         eraseSectors = sectors;
 
-        /* Start the erase */
-        wsfMsgHdr_t *pMsg;
-        if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL)
-        {
-            WsfMsgSend(eraseHandlerId, pMsg);
-        }
+        /* Initiate the erase */
+        Ext_Flash_Erase(eraseAddress, Ext_Flash_Erase_4K);
+        eraseSectors--;
+        eraseAddress += EXT_FLASH_SECTOR_SIZE;
+
+        /* Wait ERASE_DELAY ms before staring next erase */
+        WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
 
         /* TODO: We will have to disconnect the completion of this with the 
         erase actually being complete */
