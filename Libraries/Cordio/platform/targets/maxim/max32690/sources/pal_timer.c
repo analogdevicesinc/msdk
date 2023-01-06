@@ -86,17 +86,17 @@ static struct {
  */
 /*************************************************************************************************/
 #if   (PAL_TMR_IDX == 5)
-void TMR5_IRQHandler(void)
+__IRQ void TMR5_IRQHandler(void)
 #elif (PAL_TMR_IDX == 4)
-void TMR4_IRQHandler(void)
+__IRQ void TMR4_IRQHandler(void)
 #elif (PAL_TMR_IDX == 3)
-void TMR3_IRQHandler(void)
+__IRQ void TMR3_IRQHandler(void)
 #elif (PAL_TMR_IDX == 2)
-void TMR2_IRQHandler(void)
+__IRQ void TMR2_IRQHandler(void)
 #elif (PAL_TMR_IDX == 1)
-void TMR1_IRQHandler(void)
+__IRQ void TMR1_IRQHandler(void)
 #else
-void TMR0_IRQHandler(void)
+__IRQ void TMR0_IRQHandler(void)
 #endif
 {
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
@@ -123,17 +123,17 @@ void TMR0_IRQHandler(void)
  */
 /*************************************************************************************************/
 #if   (PAL_SLEEP_TMR_IDX == 5)
-void TMR5_IRQHandler(void)
+__IRQ void TMR5_IRQHandler(void)
 #elif (PAL_SLEEP_TMR_IDX == 4)
-void TMR4_IRQHandler(void)
+__IRQ void TMR4_IRQHandler(void)
 #elif (PAL_SLEEP_TMR_IDX == 3)
-void TMR3_IRQHandler(void)
+__IRQ void TMR3_IRQHandler(void)
 #elif (PAL_SLEEP_TMR_IDX == 2)
-void TMR2_IRQHandler(void)
+__IRQ void TMR2_IRQHandler(void)
 #elif (PAL_SLEEP_TMR_IDX == 1)
-void TMR1_IRQHandler(void)
+__IRQ void TMR1_IRQHandler(void)
 #else
-void TMR0_IRQHandler(void)
+__IRQ void TMR0_IRQHandler(void)
 #endif
 {
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
