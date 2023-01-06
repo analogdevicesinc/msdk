@@ -88,7 +88,7 @@ static const wsfEfsMedia_t WDXS_FileMedia = {
 /*************************************************************************************************/
 void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-    if(eraseSectors) {
+    if (eraseSectors) {
         APP_TRACE_INFO1(">>> Erasing address 0x%x in external flash <<<", eraseAddress);
 
         /* TODO: Once this is non-blocking, check for ongoing erase, start the next erase */
@@ -141,7 +141,7 @@ static uint8_t wdxsFileErase(uint8_t *address, uint32_t size)
 {
     uint32_t address32 = (uint32_t)address;
     uint32_t sectors = 0; // hard coded for now because image has no len data
-    
+
     if (fileHeader.fileLen != 0) {
         /* calculate sectors needed to erase */
         sectors = (fileHeader.fileLen / EXT_FLASH_SECTOR_SIZE) + 1;
