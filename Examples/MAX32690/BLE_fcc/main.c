@@ -116,7 +116,7 @@ static uint8_t *getPhyStr(uint8_t phy)
  *  \return None.
  */
 /*************************************************************************************************/
-void TMR2_IRQHandler(void)
+__IRQ void TMR2_IRQHandler(void)
 {
     int res;
 

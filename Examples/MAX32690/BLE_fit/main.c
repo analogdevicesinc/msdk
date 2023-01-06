@@ -139,7 +139,7 @@ static void mainWsfInit(void)
 *  \return None.
 */
 /*************************************************************************************************/
-void WUT0_IRQHandler(void)
+__IRQ void WUT0_IRQHandler(void)
 {
     MXC_WUT_Handler();
 }

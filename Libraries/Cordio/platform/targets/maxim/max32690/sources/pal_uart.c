@@ -68,7 +68,7 @@ static struct {
  *  \return     None.
  */
 /*************************************************************************************************/
-void UART0_IRQHandler(void)
+__IRQ void UART0_IRQHandler(void)
 {
   int result;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
@@ -76,7 +76,7 @@ void UART0_IRQHandler(void)
   (void)result;
   PAL_SYS_ASSERT(result == 0);
 }
-void UART1_IRQHandler(void)
+__IRQ void UART1_IRQHandler(void)
 {
   int result;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
@@ -84,7 +84,7 @@ void UART1_IRQHandler(void)
   (void)result;
   PAL_SYS_ASSERT(result == 0);
 }
-void UART2_IRQHandler(void)
+__IRQ void UART2_IRQHandler(void)
 {
   int result;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
@@ -92,7 +92,7 @@ void UART2_IRQHandler(void)
   (void)result;
   PAL_SYS_ASSERT(result == 0);
 }
-void UART3_IRQHandler(void)
+__IRQ void UART3_IRQHandler(void)
 {
   int result;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
@@ -111,7 +111,7 @@ void UART3_IRQHandler(void)
 #if defined(HCI_TR_MAIL) && (HCI_TR_MAIL != 0)
 #ifdef __riscv
 /* RISCV */
-void PF_IRQHandler(void)
+__IRQ void PF_IRQHandler(void)
 {
   /* Clear interrupt state */
   MXC_SEMA->irq1 &= ~(MXC_F_SEMA_IRQ1_RV32_IRQ);
@@ -123,7 +123,7 @@ void PF_IRQHandler(void)
 }
 #else
 /* ARM */
-void RISCV_IRQHandler(void)
+__IRQ void RISCV_IRQHandler(void)
 {
   /* Clear interrupt state */
   MXC_SEMA->irq0 &= ~(MXC_F_SEMA_IRQ0_CM4_IRQ);
