@@ -12,7 +12,7 @@ The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://ww
 
 The MSDK is available via an Automatic Installer.  See the ["Installation"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation) in the MSDK User Guide for instructions.
 
-Users who would like to use the latest beeding-edge _development_ resources can follow [Developing from the Repo](#developing-from-the-repo) below, but this should only be done **_after_** installing the release MSDK above.
+Users who would like to use the latest bleeding-edge _development_ resources can follow [Developing from the Repo](#developing-from-the-repo) below, but this should only be done **_after_** installing the release MSDK above.
 
 ## Contributing
 
