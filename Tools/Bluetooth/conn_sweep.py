@@ -109,8 +109,8 @@ results.write("# PER limit     : "+str(args.limit)+"\n")
 results.write("packetLen,phy,atten,txPower,perMaster,perSlave\n")
 
 # Create the BLE_hci objects
-hciSlave = BLE_hci(Namespace(serialPort=args.slaveSerial, baud=115200))
-hciMaster = BLE_hci(Namespace(serialPort=args.masterSerial, baud=115200))
+hciSlave = BLE_hci(Namespace(serialPort=args.slaveSerial, monPort="", baud=115200))
+hciMaster = BLE_hci(Namespace(serialPort=args.masterSerial, monPort="", baud=115200))
 
 perMax = 0
 

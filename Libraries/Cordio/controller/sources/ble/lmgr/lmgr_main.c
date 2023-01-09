@@ -24,6 +24,7 @@
 #include "ll_math.h"
 #include "lmgr_api.h"
 #include "lhci_api.h"
+#include "lctr_api.h"
 #include "wsf_assert.h"
 #include "wsf_math.h"
 #include <string.h>
@@ -48,40 +49,47 @@ lmgrCtrlBlk_t lmgrCb;
 /*************************************************************************************************/
 void LmgrSetDefaults(void)
 {
-    /* Ensure reset shuts down resources. */
-    WSF_ASSERT(lmgrCb.numConnEnabled == 0);
-    WSF_ASSERT(lmgrCb.advEnabled == FALSE);
-    WSF_ASSERT(lmgrCb.numExtAdvEnabled == 0);
-    WSF_ASSERT(lmgrCb.numScanEnabled == 0);
-    WSF_ASSERT(lmgrCb.numInitEnabled == 0);
-    WSF_ASSERT(lmgrCb.numWlFilterEnabled == 0);
-    WSF_ASSERT(lmgrCb.numPlFilterEnabled == 0);
-    WSF_ASSERT(lmgrCb.testEnabled == FALSE);
+  /* Ensure reset shuts down resources. */
+  WSF_ASSERT(lmgrCb.numConnEnabled == 0);
+  WSF_ASSERT(lmgrCb.advEnabled == FALSE);
+  WSF_ASSERT(lmgrCb.numExtAdvEnabled == 0);
+  WSF_ASSERT(lmgrCb.numScanEnabled == 0);
+  WSF_ASSERT(lmgrCb.numInitEnabled == 0);
+  WSF_ASSERT(lmgrCb.numWlFilterEnabled == 0);
+  WSF_ASSERT(lmgrCb.numPlFilterEnabled == 0);
+  WSF_ASSERT(lmgrCb.testEnabled == FALSE);
 
-    memset(&lmgrCb, 0, sizeof(lmgrCb));
+  memset(&lmgrCb, 0, sizeof(lmgrCb));
 
-    lmgrCb.features = lmgrPersistCb.featuresDefault;
+  lmgrCb.features = lmgrPersistCb.featuresDefault;
 
-    lmgrCb.opModeFlags =
-        /* LL_OP_MODE_FLAG_ENA_VER_LLCP_STARTUP | */ /* disabled */
-        /* LL_OP_MODE_FLAG_SLV_REQ_IMMED_ACK | */ /* disabled */
-        /* LL_OP_MODE_FLAG_BYPASS_CE_GUARD | */ /* disabled */
-        /* LL_OP_MODE_FLAG_MST_RETX_AFTER_RX_NACK | */ /* disabled */
-        /* LL_OP_MODE_FLAG_MST_IGNORE_CP_RSP | */ /* disabled */
-        /* LL_OP_MODE_FLAG_MST_UNCOND_CP_RSP | */ /* disabled */
-        /* LL_OP_MODE_FLAG_REQ_SYM_PHY | */ /* disabled */
-        /* LL_OP_MODE_FLAG_ENA_FEAT_LLCP_STARTUP | */ /* disabled */
-        /* LL_OP_MODE_FLAG_SLV_DELAY_LLCP_STARTUP | */ /* disabled */
-        LL_OP_MODE_FLAG_ENA_SLV_LATENCY_WAKEUP | LL_OP_MODE_FLAG_ENA_LEN_LLCP_STARTUP |
-        LL_OP_MODE_FLAG_ENA_ADV_DLY | LL_OP_MODE_FLAG_ENA_SCAN_BACKOFF | LL_OP_MODE_FLAG_ENA_WW |
-        LL_OP_MODE_FLAG_ENA_SLV_LATENCY | LL_OP_MODE_FLAG_ENA_SLV_AUX_SCAN_RSP_ADI |
-        LL_OP_MODE_FLAG_ENA_MST_CIS_NULL_PDU |
-        /* LL_OP_MODE_FLAG_ENA_SLV_AUX_IND_ADVA | */ /* disabled */
-        LL_OP_MODE_FLAG_ENA_ADV_CHAN_RAND |
-        /* LL_OP_MODE_DISABLE_POWER_MONITOR |  */ /* disabled */
-        LL_OP_MODE_FLAG_ENA_LLCP_TIMER | LL_OP_MODE_FLAG_SLV_CRC_CLOSE;
+  lmgrCb.opModeFlags =
+    /* LL_OP_MODE_FLAG_ENA_VER_LLCP_STARTUP | */        /* disabled */
+    /* LL_OP_MODE_FLAG_SLV_REQ_IMMED_ACK | */           /* disabled */
+    /* LL_OP_MODE_FLAG_BYPASS_CE_GUARD | */             /* disabled */
+    /* LL_OP_MODE_FLAG_MST_RETX_AFTER_RX_NACK | */      /* disabled */
+    /* LL_OP_MODE_FLAG_MST_IGNORE_CP_RSP | */           /* disabled */
+    /* LL_OP_MODE_FLAG_MST_UNCOND_CP_RSP | */           /* disabled */
+    /* LL_OP_MODE_FLAG_REQ_SYM_PHY | */                 /* disabled */
+    /* LL_OP_MODE_FLAG_ENA_FEAT_LLCP_STARTUP | */       /* disabled */
+    /* LL_OP_MODE_FLAG_SLV_DELAY_LLCP_STARTUP | */      /* disabled */
+    LL_OP_MODE_FLAG_ENA_SLV_LATENCY_WAKEUP |
+    LL_OP_MODE_FLAG_ENA_LEN_LLCP_STARTUP |
+    LL_OP_MODE_FLAG_ENA_ADV_DLY |
+    LL_OP_MODE_FLAG_ENA_SCAN_BACKOFF |
+    LL_OP_MODE_FLAG_ENA_WW |
+    LL_OP_MODE_FLAG_ENA_SLV_LATENCY |
+    LL_OP_MODE_FLAG_ENA_SLV_AUX_SCAN_RSP_ADI |
+    LL_OP_MODE_FLAG_ENA_MST_CIS_NULL_PDU |
+    /* LL_OP_MODE_FLAG_ENA_SLV_AUX_IND_ADVA | */        /* disabled */
+    LL_OP_MODE_FLAG_ENA_ADV_CHAN_RAND |
+    /* LL_OP_MODE_DISABLE_POWER_MONITOR |  */           /* disabled */
+    LL_OP_MODE_FLAG_ENA_LLCP_TIMER |
+    LL_OP_MODE_FLAG_SLV_CRC_CLOSE;
 
-    lmgrCb.chanClass = LL_CHAN_DATA_ALL;
+  lmgrCb.chanClass = LL_CHAN_DATA_ALL;
+
+  lmgrCb.advTxPwr = pLctrRtCfg->defTxPwrLvl;
 }
 
 /*************************************************************************************************/

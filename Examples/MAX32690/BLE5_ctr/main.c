@@ -32,6 +32,7 @@
 #include "wsf_timer.h"
 #include "wsf_trace.h"
 #include "wsf_bufio.h"
+#include "wsf_cs.h"
 #include "bb_ble_sniffer_api.h"
 #include "pal_bb.h"
 #include "pal_cfg.h"
@@ -108,7 +109,9 @@ static void mainWsfInit(void)
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
     /* Use single pool for data buffers. */
+#if (BT_VER > 9)
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
+#endif
 
     /* Ensure pool buffers are ordered correctly. */
     WSF_ASSERT(maxRptBufSize < dataBufSize);
@@ -126,13 +129,19 @@ static void mainWsfInit(void)
 
     /* Initial buffer configuration. */
     uint16_t memUsed;
+    WsfCsEnter();
     memUsed = WsfBufInit(numPools, poolDesc);
     WsfHeapAlloc(memUsed);
+    WsfCsExit();
+
     WsfOsInit();
     WsfTimerInit();
 #if (WSF_TRACE_ENABLED == TRUE)
+    WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
+    WsfCsExit();
+
     WsfTraceRegisterHandler(WsfBufIoWrite);
     WsfTraceEnable(TRUE);
 #endif
@@ -183,10 +192,13 @@ int main(void)
     mainWsfInit();
 
 #if (WSF_TRACE_ENABLED == TRUE)
+    WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
+    WsfCsExit();
 #endif
 
+    WsfCsEnter();
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,
                             .rlSizeCfg = 4,
@@ -197,6 +209,7 @@ int main(void)
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
+    WsfCsExit();
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));

@@ -321,14 +321,46 @@ static void wdxsFtcProcAbort(dmConnId_t connId, uint16_t handle)
 /*************************************************************************************************/
 uint8_t wdxsFtdWrite(dmConnId_t connId, uint16_t len, uint8_t *pValue)
 {
-    /* verify put operation in progress */
-    if (wdxsCb.ftInProgress != WDX_FTC_OP_PUT_REQ) {
-        return ATT_ERR_UNLIKELY;
-    }
+  /* verify put operation in progress */
+  if (wdxsCb.ftInProgress != WDX_FTC_OP_PUT_REQ)
+  {
+    return ATT_ERR_UNLIKELY;
+  }
 
-    /* verify data length */
-    if (len <= WDX_FTD_HDR_LEN) {
-        return ATT_ERR_LENGTH;
+  /* verify data length */
+  if (len <= WDX_FTD_HDR_LEN)
+  {
+    return ATT_ERR_LENGTH;
+  }
+  
+  /* Parse the address from the data */
+  len -= sizeof(uint32_t);
+  uint32_t address;
+  memcpy(&address, pValue, sizeof(uint32_t));
+
+  /* verify more data is expected */
+  if (wdxsCb.ftLen >= len)
+  {
+    WsfEfsPut(wdxsCb.ftHandle, address, &pValue[sizeof(uint32_t)], len);
+
+    /* update remaining length of put request */
+    wdxsCb.ftOffset += len;
+    wdxsCb.ftLen -= len;
+
+    /* if end of put req reached */
+    if (wdxsCb.ftLen == 0)
+    {
+      if (wdxsCb.ftOffset == wdxsCb.ftTotalLen)
+      {
+        /* Call the media specific WDXS Put Complete command */
+        WsfEfsMediaSpecificCommand(wdxsCb.ftHandle, WSF_EFS_WDXS_PUT_COMPLETE_CMD, wdxsCb.ftTotalLen);
+      }
+
+      /* put req done */
+      wdxsCb.ftInProgress = WDX_FTC_OP_NONE;
+
+      /* send eof */
+      wdxsFtcSendRsp(connId, WDX_FTC_OP_EOF, wdxsCb.ftHandle, 0);
     }
 
     /* verify more data is expected */
