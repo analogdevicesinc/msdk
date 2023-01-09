@@ -386,6 +386,7 @@ uint8_t wdxsFtdWrite(dmConnId_t connId, uint16_t len, uint8_t *pValue)
             wdxsFtcSendRsp(connId, WDX_FTC_OP_EOF, wdxsCb.ftHandle, 0);
         }
     }
+  }
 
     return ATT_SUCCESS;
 }
