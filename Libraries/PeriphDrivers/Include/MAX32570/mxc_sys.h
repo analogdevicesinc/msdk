@@ -206,8 +206,6 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_NFC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_NFC clock */
     MXC_SYS_PERIPH_CLOCK_EMAC =
         (MXC_F_GCR_PCLKDIS1_EMAC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_EMAC clock */
-    MXC_SYS_PERIPH_CLOCK_HA1 =
-        (MXC_F_GCR_PCLKDIS1_HA1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_HA1 clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
