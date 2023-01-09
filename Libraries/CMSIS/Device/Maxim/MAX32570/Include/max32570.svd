@@ -7191,14 +7191,14 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
-       <name>DVS</name>
-       <description>DVS Reset.</description>
+       <name>CPU2</name>
+       <description>CPU2 Reset.</description>
        <bitOffset>30</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
-       <name>SIMO</name>
-       <description>SIMO Reset.</description>
+       <name>CPU1</name>
+       <description>CPU1 Reset.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -7342,14 +7342,14 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
-       <name>SDMA1</name>
-       <description>SDMA1 Clock Disable.</description>
+       <name>CPU2</name>
+       <description>CPU2 Clock Disable</description>
        <bitOffset>30</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
-       <name>PCIF</name>
-       <description>PCIF Clock Disable</description>
+       <name>CPU1</name>
+       <description>CPU1 Clock Disable</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>

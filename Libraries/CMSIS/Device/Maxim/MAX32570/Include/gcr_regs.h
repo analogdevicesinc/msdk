@@ -803,11 +803,11 @@ typedef struct {
 #define MXC_F_GCR_RST1_HTMR1_POS                       29 /**< RST1_HTMR1 Position */
 #define MXC_F_GCR_RST1_HTMR1                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_HTMR1_POS)) /**< RST1_HTMR1 Mask */
 
-#define MXC_F_GCR_RST1_DVS_POS                         30 /**< RST1_DVS Position */
-#define MXC_F_GCR_RST1_DVS                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_DVS_POS)) /**< RST1_DVS Mask */
+#define MXC_F_GCR_RST1_CPU2_POS                        30 /**< RST1_CPU2 Position */
+#define MXC_F_GCR_RST1_CPU2                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_CPU2_POS)) /**< RST1_CPU2 Mask */
 
-#define MXC_F_GCR_RST1_SIMO_POS                        31 /**< RST1_SIMO Position */
-#define MXC_F_GCR_RST1_SIMO                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SIMO_POS)) /**< RST1_SIMO Mask */
+#define MXC_F_GCR_RST1_CPU1_POS                        31 /**< RST1_CPU1 Position */
+#define MXC_F_GCR_RST1_CPU1                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_CPU1_POS)) /**< RST1_CPU1 Mask */
 
 /**@} end of group GCR_RST1_Register */
 
@@ -877,11 +877,11 @@ typedef struct {
 #define MXC_F_GCR_PCLKDIS1_EMAC_POS                    29 /**< PCLKDIS1_EMAC Position */
 #define MXC_F_GCR_PCLKDIS1_EMAC                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_EMAC_POS)) /**< PCLKDIS1_EMAC Mask */
 
-#define MXC_F_GCR_PCLKDIS1_SDMA1_POS                   30 /**< PCLKDIS1_SDMA1 Position */
-#define MXC_F_GCR_PCLKDIS1_SDMA1                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SDMA1_POS)) /**< PCLKDIS1_SDMA1 Mask */
+#define MXC_F_GCR_PCLKDIS1_CPU2_POS                    30 /**< PCLKDIS1_CPU2 Position */
+#define MXC_F_GCR_PCLKDIS1_CPU2                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_CPU2_POS)) /**< PCLKDIS1_CPU2 Mask */
 
-#define MXC_F_GCR_PCLKDIS1_PCIF_POS                    31 /**< PCLKDIS1_PCIF Position */
-#define MXC_F_GCR_PCLKDIS1_PCIF                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_PCIF_POS)) /**< PCLKDIS1_PCIF Mask */
+#define MXC_F_GCR_PCLKDIS1_CPU1_POS                    31 /**< PCLKDIS1_CPU1 Position */
+#define MXC_F_GCR_PCLKDIS1_CPU1                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_CPU1_POS)) /**< PCLKDIS1_CPU1 Mask */
 
 /**@} end of group GCR_PCLKDIS1_Register */
 
