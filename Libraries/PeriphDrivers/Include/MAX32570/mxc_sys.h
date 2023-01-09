@@ -97,7 +97,6 @@ typedef enum {
     MXC_SYS_RESET1_SC1 = (MXC_F_GCR_RST1_SC1_POS + 32), /**< Reset SC1*/
     MXC_SYS_RESET1_NFC = (MXC_F_GCR_RST1_NFC_POS + 32), /**< Reset NFC*/
     MXC_SYS_RESET1_EMAC = (MXC_F_GCR_RST1_EMAC_POS + 32), /**< Reset EMAC*/
-    MXC_SYS_RESET1_PCIF = (MXC_F_GCR_RST1_PCIF_POS + 32), /**< Reset PCIF*/
     MXC_SYS_RESET1_HTMR0 = (MXC_F_GCR_RST1_HTMR0_POS + 32), /**< Reset HTMR0*/
     MXC_SYS_RESET1_HTMR1 = (MXC_F_GCR_RST1_HTMR1_POS + 32), /**< Reset HTMR1*/
     MXC_SYS_RESET1_AC = (MXC_F_GCR_RST1_AC_POS + 32), /**< Reset AC*/
@@ -209,8 +208,6 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_EMAC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_EMAC clock */
     MXC_SYS_PERIPH_CLOCK_HA1 =
         (MXC_F_GCR_PCLKDIS1_HA1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_HA1 clock */
-    MXC_SYS_PERIPH_CLOCK_PCIF =
-        (MXC_F_GCR_PCLKDIS1_PCIF_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_PCIF clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
