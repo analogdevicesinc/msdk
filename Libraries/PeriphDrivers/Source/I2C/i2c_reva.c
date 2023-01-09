@@ -1383,6 +1383,7 @@ unsigned int MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c,
 
         i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH;
         i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+        i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
         interruptEnables = MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL1_RX_OV |
                            MXC_I2C_REVA_ERROR;
     }
@@ -1404,8 +1405,9 @@ unsigned int MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c,
                 callback(i2c, MXC_I2C_REVA_EVT_MASTER_RD, NULL);
             }
 
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH;
             i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
             interruptEnables = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL1_TX_UN |
                                MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT | MXC_I2C_REVA_ERROR;
         } else {
@@ -1413,7 +1415,7 @@ unsigned int MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c,
                 callback(i2c, MXC_I2C_REVA_EVT_MASTER_WR, NULL);
             }
 
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH;
             i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
             interruptEnables = MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL1_RX_OV |
                                MXC_I2C_REVA_ERROR;
