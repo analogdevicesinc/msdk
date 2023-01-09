@@ -1745,6 +1745,21 @@
         </fields>
       </register>
       <register>
+        <name>SHARED_BUS</name>
+        <description>Shared Bus Register.</description>
+        <addressOffset>0x0E0</addressOffset>
+        <size>16</size>
+        <fields>
+          <field>
+            <name>INT_SIGNALS</name>
+            <description>Interrupt Signal For Each Slot.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-only</access>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>SLOT_INT</name>
         <description>Slot Interrupt Status.</description>
         <addressOffset>0x0FC</addressOffset>

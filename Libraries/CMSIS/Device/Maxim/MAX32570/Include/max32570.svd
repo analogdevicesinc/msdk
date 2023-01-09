@@ -6712,6 +6712,48 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>ROM1_WS</name>
+       <description>ROM1 Wait State Enable</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM0_WS</name>
+       <description>System RAM 0 Wait State Enable</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM1_WS</name>
+       <description>System RAM 1 Wait State Enable</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM2_WS</name>
+       <description>System RAM 2 Wait State Enable</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM3_WS</name>
+       <description>System RAM 3 Wait State Enable</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM4_WS</name>
+       <description>System RAM 4 Wait State Enable</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM5_WS</name>
+       <description>System RAM 5 Wait State Enable</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>RAM0LS_EN</name>
        <description>System RAM 0 Light Sleep Mode.</description>
        <bitOffset>16</bitOffset>
@@ -6947,6 +6989,24 @@
        <name>CODEINTERR</name>
        <description>Code Integrity Error Flag. This bit indicates a code integrity error has occured in XiP interface. </description>
        <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>norm</name>
+         <description>Normal Operating Condition.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>code</name>
+         <description>Code Integrity Error.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>DATAINTERR</name>
+       <description>Data Integrity Error Flag. This bit indicates a data integrity error has occured in XiP interface. </description>
+       <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -15511,6 +15571,21 @@
        <description>Driver Strength Select Value.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>2</bitWidth>
+       <access>read-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SHARED_BUS</name>
+     <description>Shared Bus Register.</description>
+     <addressOffset>0x0E0</addressOffset>
+     <size>16</size>
+     <fields>
+      <field>
+       <name>INT_SIGNALS</name>
+       <description>Interrupt Signal For Each Slot.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
        <access>read-only</access>
       </field>
      </fields>

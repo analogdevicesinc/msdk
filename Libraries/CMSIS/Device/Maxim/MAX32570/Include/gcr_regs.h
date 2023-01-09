@@ -582,6 +582,27 @@ typedef struct {
 #define MXC_F_GCR_MEMCTRL_SRAM_WS_POS                  4 /**< MEMCTRL_SRAM_WS Position */
 #define MXC_F_GCR_MEMCTRL_SRAM_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_SRAM_WS_POS)) /**< MEMCTRL_SRAM_WS Mask */
 
+#define MXC_F_GCR_MEMCTRL_ROM1_WS_POS                  7 /**< MEMCTRL_ROM1_WS Position */
+#define MXC_F_GCR_MEMCTRL_ROM1_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROM1_WS_POS)) /**< MEMCTRL_ROM1_WS Mask */
+
+#define MXC_F_GCR_MEMCTRL_RAM0_WS_POS                  8 /**< MEMCTRL_RAM0_WS Position */
+#define MXC_F_GCR_MEMCTRL_RAM0_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM0_WS_POS)) /**< MEMCTRL_RAM0_WS Mask */
+
+#define MXC_F_GCR_MEMCTRL_RAM1_WS_POS                  9 /**< MEMCTRL_RAM1_WS Position */
+#define MXC_F_GCR_MEMCTRL_RAM1_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM1_WS_POS)) /**< MEMCTRL_RAM1_WS Mask */
+
+#define MXC_F_GCR_MEMCTRL_RAM2_WS_POS                  10 /**< MEMCTRL_RAM2_WS Position */
+#define MXC_F_GCR_MEMCTRL_RAM2_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM2_WS_POS)) /**< MEMCTRL_RAM2_WS Mask */
+
+#define MXC_F_GCR_MEMCTRL_RAM3_WS_POS                  11 /**< MEMCTRL_RAM3_WS Position */
+#define MXC_F_GCR_MEMCTRL_RAM3_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM3_WS_POS)) /**< MEMCTRL_RAM3_WS Mask */
+
+#define MXC_F_GCR_MEMCTRL_RAM4_WS_POS                  12 /**< MEMCTRL_RAM4_WS Position */
+#define MXC_F_GCR_MEMCTRL_RAM4_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM4_WS_POS)) /**< MEMCTRL_RAM4_WS Mask */
+
+#define MXC_F_GCR_MEMCTRL_RAM5_WS_POS                  13 /**< MEMCTRL_RAM5_WS Position */
+#define MXC_F_GCR_MEMCTRL_RAM5_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM5_WS_POS)) /**< MEMCTRL_RAM5_WS Mask */
+
 #define MXC_F_GCR_MEMCTRL_RAM0LS_EN_POS                16 /**< MEMCTRL_RAM0LS_EN Position */
 #define MXC_F_GCR_MEMCTRL_RAM0LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM0LS_EN_POS)) /**< MEMCTRL_RAM0LS_EN Mask */
 
@@ -695,6 +716,9 @@ typedef struct {
 
 #define MXC_F_GCR_SYSST_CODEINTERR_POS                 1 /**< SYSST_CODEINTERR Position */
 #define MXC_F_GCR_SYSST_CODEINTERR                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_CODEINTERR_POS)) /**< SYSST_CODEINTERR Mask */
+
+#define MXC_F_GCR_SYSST_DATAINTERR_POS                 2 /**< SYSST_DATAINTERR Position */
+#define MXC_F_GCR_SYSST_DATAINTERR                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_DATAINTERR_POS)) /**< SYSST_DATAINTERR Mask */
 
 #define MXC_F_GCR_SYSST_SCMEMF_POS                     5 /**< SYSST_SCMEMF Position */
 #define MXC_F_GCR_SYSST_SCMEMF                         ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_SCMEMF_POS)) /**< SYSST_SCMEMF Mask */

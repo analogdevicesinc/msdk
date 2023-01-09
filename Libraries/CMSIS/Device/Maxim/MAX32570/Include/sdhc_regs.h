@@ -130,7 +130,9 @@ typedef struct {
     __I  uint16_t preset_5;             /**< <tt>\b 0x06A:</tt> SDHC PRESET_5 Register */
     __I  uint16_t preset_6;             /**< <tt>\b 0x06C:</tt> SDHC PRESET_6 Register */
     __I  uint16_t preset_7;             /**< <tt>\b 0x06E:</tt> SDHC PRESET_7 Register */
-    __R  uint32_t rsv_0x70_0xfb[35];
+    __R  uint32_t rsv_0x70_0xdf[28];
+    __IO uint16_t shared_bus;           /**< <tt>\b 0x0E0:</tt> SDHC SHARED_BUS Register */
+    __R  uint16_t rsv_0xe2_0xfb[13];
     __I  uint16_t slot_int;             /**< <tt>\b 0x0FC:</tt> SDHC SLOT_INT Register */
     __IO uint16_t host_cn_ver;          /**< <tt>\b 0x0FE:</tt> SDHC HOST_CN_VER Register */
 } mxc_sdhc_regs_t;
@@ -182,6 +184,7 @@ typedef struct {
 #define MXC_R_SDHC_PRESET_5                ((uint32_t)0x0000006AUL) /**< Offset from SDHC Base Address: <tt> 0x006A</tt> */
 #define MXC_R_SDHC_PRESET_6                ((uint32_t)0x0000006CUL) /**< Offset from SDHC Base Address: <tt> 0x006C</tt> */
 #define MXC_R_SDHC_PRESET_7                ((uint32_t)0x0000006EUL) /**< Offset from SDHC Base Address: <tt> 0x006E</tt> */
+#define MXC_R_SDHC_SHARED_BUS              ((uint32_t)0x000000E0UL) /**< Offset from SDHC Base Address: <tt> 0x00E0</tt> */
 #define MXC_R_SDHC_SLOT_INT                ((uint32_t)0x000000FCUL) /**< Offset from SDHC Base Address: <tt> 0x00FC</tt> */
 #define MXC_R_SDHC_HOST_CN_VER             ((uint32_t)0x000000FEUL) /**< Offset from SDHC Base Address: <tt> 0x00FE</tt> */
 /**@} end of group sdhc_registers */
@@ -1138,6 +1141,17 @@ typedef struct {
 #define MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH_POS)) /**< PRESET_7_DRIVER_STRENGTH Mask */
 
 /**@} end of group SDHC_PRESET_7_Register */
+
+/**
+ * @ingroup  sdhc_registers
+ * @defgroup SDHC_SHARED_BUS SDHC_SHARED_BUS
+ * @brief    Shared Bus Register.
+ * @{
+ */
+#define MXC_F_SDHC_SHARED_BUS_INT_SIGNALS_POS          0 /**< SHARED_BUS_INT_SIGNALS Position */
+#define MXC_F_SDHC_SHARED_BUS_INT_SIGNALS              ((uint16_t)(0x1UL << MXC_F_SDHC_SHARED_BUS_INT_SIGNALS_POS)) /**< SHARED_BUS_INT_SIGNALS Mask */
+
+/**@} end of group SDHC_SHARED_BUS_Register */
 
 /**
  * @ingroup  sdhc_registers
