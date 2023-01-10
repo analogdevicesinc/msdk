@@ -843,6 +843,10 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
     uint32_t numToWrite, numToRead, flags;
     mxc_uart_req_t *req;
 
+    // For PER ci test, need to replace this return value to 0.
+    // sed -i "s/MAGIC_RETURN = E_INVALID/MAGIC_RETURN = 0/g" Libraries/PeriphDrivers/Source/UART/uart_revb.c
+    int MAGIC_RETURN = E_INVALID;
+
     int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
 
     if (uartNum < 0) {
@@ -860,7 +864,7 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
     if (flags & MXC_UART_REVB_ERRINT_FL & uart->int_en) {
         MXC_UART_AsyncStop((mxc_uart_regs_t *)uart);
         MXC_UART_AsyncCallback((mxc_uart_regs_t *)uart, E_COMM_ERR);
-        return E_INVALID;
+        return MAGIC_RETURN;
     }
 
     req = (mxc_uart_req_t *)AsyncTxRequests[uartNum];
