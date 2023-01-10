@@ -21,5 +21,16 @@ INIT_OBSERVER = 0
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
 
-# Use local linkerfile
-LINKERFILE = ota.ld
+AUTOSEARCH=0
+VPATH += .
+SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
+
+USE_INTERNAL_FLASH ?=0
+ifeq ($(USE_INTERNAL_FLASH), 1)
+LINKERFILE = ota_internal_mem.ld
+SRCS:=$(subst wdxs_file_ext.c,wdxs_file_int.c,${SRCS})
+else
+LINKERFILE = ota_external_mem.ld
+SRCS:=$(subst wdxs_file_int.c,wdxs_file_ext.c,${SRCS})
+
+endif
