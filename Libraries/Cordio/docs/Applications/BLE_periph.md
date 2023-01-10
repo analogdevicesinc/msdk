@@ -104,10 +104,82 @@ Push buttons are not implemented in this example.
 
 ## GAP Peripheral / Slave Role
 
+### Advertising interval
+The advertising interval is configurable in this structure. We can define multiple interverals, each with their own duration. In this case we will advertise at a short interval (96\*0.625ms = 60ms) for 30 seconds. We will then transition to a long interval (1600\*0.625 ms = 1000 ms) indefinetly. Longer advertising intervals will conserve power, but increase the latency when communicating with scanning devices or creating connections.
+
+```c
+/*! configurable parameters for advertising */
+static const appAdvCfg_t periphAdvCfg = {
+    { 30000, 0,    0 }, /*! Advertising durations in ms, 0 corresponds to infinite */
+    { 96,    1600, 0 }  /*! Advertising intervals in 0.625 ms units */
+};
+```
+
+Applications can also set a definite advertising duration with will cause the device to stop advertising at the end of the duation. The application can restart advertising by calling AppAdvStart().
+
+### Advertising data
+
+Applications can define the advertising data with this structure. This information will be broadcast in every advertising event. Each portion of the advertising data is defined by a length byte, a type byte, and the data. In this case we're advertising the flags that the device is discoverable and BR/EDR (Bluetooth Classic) is not supported. We're also advertising the device name "Periph". 
+
+```c
+/*! advertising data, discoverable mode */
+static const uint8_t periphAdvDataDisc[] = {
+    /*! flags */
+    2, /*! length */
+    DM_ADV_TYPE_FLAGS, /*! AD type */
+    DM_FLAG_LE_GENERAL_DISC | /*! flags */
+        DM_FLAG_LE_BREDR_NOT_SUP,
+    /*! device name */
+    7, /*! length */
+    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
+    'P', 'e', 'r', 'i', 'p', 'h'
+};
+```
+
 ## GATT Server
+
+## MTU size and Throughput
+
+Each layer of the stack has parameters that will bottleneck the throughput of the system. The ATT layer defines a Maximum Transmission Unit (MTU) to indiate the maximum length of an ATT packet. 
+
+``` c
+/*! ATT configurable parameters (increase MTU) 
+ * ATT_MAX_TRANS_TIMEOUT = 30 seconds
+ */
+static const attCfg_t periphAttCfg = {
+    15, /* ATT server service discovery connection idle timeout in seconds */
+    241, /* desired ATT MTU */
+    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
+    4 /* number of queued prepare writes supported by server */
+};
+```
+
+This MaxRxAclLen defines the maximum reassembled RX Asynchronous Connection-Orientated Logical(ACL) packet length. Packets received at the HCI layer must be buffered until the entire ACL packet has been received. Once the entire ACL packet has been received, the HCI layer will send the packet to the L2CAP layer.
+```c
+/*************************************************************************************************/
+/*!
+ *  \brief  Set the maximum reassembled RX ACL packet length.  Minimum value is 27.
+ *
+ *  \param  len     ACL packet length.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void HciSetMaxRxAclLen(uint16_t len);
+```
+
+The MTU must be less than or equal to the MaxRxAclLen - L2C Header Length (4 bytes).
+``` c
+  /* if configured MTU size is larger than maximum RX PDU length */
+  if (pAttCfg->mtu > (HciGetMaxRxAclLen() - L2C_HDR_LEN))
+  {
+    /* notify app about MTU misconfiguration */
+    attExecCallback(0, DM_ERROR_IND, 0, DM_ERR_ATT_RX_PDU_LEN_EXCEEDED, 0);
+  }
+```
 
 ## Callbacks
 
 ## Adding WSF events and handlers
 
-## MTU size and Throughput
+
