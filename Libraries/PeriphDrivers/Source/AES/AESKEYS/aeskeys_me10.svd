@@ -14,7 +14,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>AES_KEY0[%s]</name>
+        <name>KEY0[%s]</name>
         <description>AES Key 0.</description>
         <addressOffset>0x00</addressOffset>
         <size>32</size>
@@ -22,7 +22,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>AES_KEY1[%s]</name>
+        <name>KEY1[%s]</name>
         <description>AES Key 1.</description>
         <addressOffset>0x20</addressOffset>
         <size>32</size>
@@ -30,7 +30,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>AES_KEY2[%s]</name>
+        <name>KEY2[%s]</name>
         <description>AES Key 2.</description>
         <addressOffset>0x100</addressOffset>
         <size>32</size>
@@ -38,7 +38,7 @@
       <register>
         <dim>4</dim>
         <dimIncrement>4</dimIncrement>
-        <name>AES_KEY3[%s]</name>
+        <name>KEY3[%s]</name>
         <description>AES Key 3.</description>
         <addressOffset>0x180</addressOffset>
         <size>32</size>
