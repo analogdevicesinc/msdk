@@ -167,5 +167,5 @@ int MXC_AES_DecryptAsync(mxc_aes_req_t *req)
 
 void MXC_AES_SetExtKey(const void *key, mxc_aes_keys_t len)
 {
-    return MXC_AES_RevB_SetExtKey(key, len);
+    return MXC_AES_RevB_SetExtKey((mxc_aeskeys_revb_regs_t *)MXC_AESKEYS, len);
 }

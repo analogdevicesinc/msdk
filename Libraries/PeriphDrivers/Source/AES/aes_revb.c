@@ -41,7 +41,7 @@
 
 #include "dma.h"
 #include "aes_regs.h"
-#include "aes_key_regs.h"
+#include "aeskeys_regs.h"
 #include "aes_revb.h"
 #include "trng_revb.h"
 
@@ -412,7 +412,7 @@ void MXC_AES_RevB_DMACallback(int ch, int error)
     }
 }
 
-void MXC_AES_RevB_SetExtKey(mxc_aes_key_revb_regs_t *aeskey, const void *key, mxc_aes_keys_t len)
+void MXC_AES_RevB_SetExtKey(mxc_aeskeys_revb_regs_t *aeskeys, const void *key, mxc_aes_keys_t len)
 {
     int numBytes;
 
@@ -425,5 +425,5 @@ void MXC_AES_RevB_SetExtKey(mxc_aes_key_revb_regs_t *aeskey, const void *key, mx
     }
 
     /* TODO: Figure out if this is the correct byte ordering */
-    memcpy32r((void *)&(aeskey->aes_key0), key, numBytes);
+    memcpy32r((void *)&(aeskeys->key0), key, numBytes);
 }
