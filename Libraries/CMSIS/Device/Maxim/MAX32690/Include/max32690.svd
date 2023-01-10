@@ -867,7 +867,7 @@
   </peripheral>
 <!--ADC Inter-Integrated Circuit.-->
   <peripheral>
-   <name>AES_KEY</name>
+   <name>AESKEYS</name>
    <description>AES Key Registers.</description>
    <baseAddress>0x40005000</baseAddress>
    <addressBlock>
@@ -877,56 +877,32 @@
    </addressBlock>
    <registers>
     <register>
-     <name>AES_KEY0</name>
+     <name>KEY0</name>
      <description>AES Key 0.</description>
-     <addressOffset>0x00</addressOffset>
-     <size>32</size>
+     <addressOffset>0x000</addressOffset>
+     <size>128</size>
     </register>
     <register>
-     <name>AES_KEY1</name>
+     <name>KEY1</name>
      <description>AES Key 1.</description>
-     <addressOffset>0x04</addressOffset>
-     <size>32</size>
+     <addressOffset>0x010</addressOffset>
+     <size>128</size>
     </register>
     <register>
-     <name>AES_KEY2</name>
-     <description>AES Key 2.</description>
-     <addressOffset>0x08</addressOffset>
-     <size>32</size>
+     <name>PUF_KEY1</name>
+     <description>PUF Key 1.</description>
+     <addressOffset>0x020</addressOffset>
+     <size>256</size>
     </register>
     <register>
-     <name>AES_KEY3</name>
-     <description>AES Key 3.</description>
-     <addressOffset>0x0C</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY4</name>
-     <description>AES Key 4.</description>
-     <addressOffset>0x10</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY5</name>
-     <description>AES Key 5.</description>
-     <addressOffset>0x14</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY6</name>
-     <description>AES Key 6.</description>
-     <addressOffset>0x18</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY7</name>
-     <description>AES Key 7.</description>
-     <addressOffset>0x1C</addressOffset>
-     <size>32</size>
+     <name>PUF_KEY2</name>
+     <description>PUF Key 2.</description>
+     <addressOffset>0x040</addressOffset>
+     <size>256</size>
     </register>
    </registers>
   </peripheral>
-<!--AES_KEY AES Key Registers.-->
+<!--AESKEYS AES Key Registers.-->
   <peripheral>
    <name>CAN0</name>
    <description>Controller Area Network Registers</description>
@@ -10064,6 +10040,181 @@ memory.
   </peripheral>
 <!--I2S Inter-IC Sound Interface.-->
   <peripheral>
+   <name>ICC0</name>
+   <description>Instruction Cache Controller Registers</description>
+   <baseAddress>0x4002A000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x800</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>INFO</name>
+     <description>Cache ID Register.</description>
+     <addressOffset>0x0000</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>RELNUM</name>
+       <description>Release Number. Identifies the RTL release version.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>6</bitWidth>
+      </field>
+      <field>
+       <name>PARTNUM</name>
+       <description>Part Number. This field reflects the value of C_ID_PART_NUMBER configuration parameter.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>ID</name>
+       <description>Cache ID. This field reflects the value of the C_ID_CACHEID configuration parameter.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>6</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SZ</name>
+     <description>Memory Configuration Register.</description>
+     <addressOffset>0x0004</addressOffset>
+     <access>read-only</access>
+     <resetValue>0x00080008</resetValue>
+     <fields>
+      <field>
+       <name>CCH</name>
+       <description>Cache Size. Indicates total size in Kbytes of cache.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>16</bitWidth>
+      </field>
+      <field>
+       <name>MEM</name>
+       <description>Main Memory Size. Indicates the total size, in units of 128 Kbytes, of code memory accessible to the cache controller.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>16</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>CTRL</name>
+     <description>Cache Control and Status Register.</description>
+     <addressOffset>0x0100</addressOffset>
+     <fields>
+      <field>
+       <name>EN</name>
+       <description>Cache Enable. Controls whether the cache is bypassed or is in use. Changing the state of this bit will cause the instruction cache to be flushed and its contents invalidated.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Cache Bypassed. Instruction data is stored in the line fill buffer but is not written to main cache memory array.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Cache Enabled.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>RDY</name>
+       <description>Cache Ready flag. Cleared by hardware when at any time the cache as a whole is invalidated (including a system reset). When this bit is 0, the cache is effectively in bypass mode (instruction fetches will come from main memory or from the line fill buffer). Set by hardware when the invalidate operation is complete and the cache is ready.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-only</access>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>notReady</name>
+         <description>Not Ready.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>ready</name>
+         <description>Ready.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INVALIDATE</name>
+     <description>Invalidate All Registers.</description>
+     <addressOffset>0x0700</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>INVALID</name>
+       <description>Invalidate.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--ICC0 Instruction Cache Controller Registers-->
+  <peripheral>
+   <name>LPCMP</name>
+   <description>Low Power Comparator</description>
+   <baseAddress>0x40088000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <interrupt>
+    <name>LPCMP</name>
+    <description>Low Power Comparato</description>
+    <value>103</value>
+   </interrupt>
+   <registers>
+    <register>
+     <dim>3</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>CTRL[%s]</name>
+     <description>Comparator Control Register.</description>
+     <addressOffset>0x00</addressOffset>
+     <fields>
+      <field>
+       <name>EN</name>
+       <description>Comparator Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>POL</name>
+       <description>Polarity Select</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>INT_EN</name>
+       <description>IRQ Enable.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>OUT</name>
+       <description>Raw Compartor Input.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>INT_FL</name>
+       <description>IRQ Flag</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--LPCMP Low Power Comparator-->
+  <peripheral>
    <name>LPGCR</name>
    <description>Low Power Global Control.</description>
    <baseAddress>0x40080000</baseAddress>
@@ -10829,7 +10980,7 @@ memory.
       <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[5:5]</bitRange>
+       <bitRange>[7:7]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -10932,372 +11083,6 @@ memory.
    </registers>
   </peripheral>
 <!--OWM 1-Wire Master Interface.-->
-  <peripheral>
-   <name>PUF</name>
-   <description>PUF Registers</description>
-   <baseAddress>0x40007000</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x400</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <registers>
-    <register>
-     <name>CTRL</name>
-     <description>PUF Control Register.</description>
-     <addressOffset>0x0000</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>PUF_EN</name>
-       <description>PUF Controller Enable.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY_CLR_EN</name>
-       <description>Key Clear Enable or PUFSEC Disable</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY0_GEN_EN</name>
-       <description>PUF Key0 Generation Enable.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY1_GEN_EN</name>
-       <description>PUF Key1 Generation Enable.</description>
-       <bitOffset>9</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEYGEN_ERR_IE</name>
-       <description>Key Generation Error Interrupt Enable.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY0_DN_IE</name>
-       <description>Key0 Done Interrupt Enable.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY1_DN_IE</name>
-       <description>Key1 Done Interrupt Enable </description>
-       <bitOffset>25</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>STAT</name>
-     <description>PUF Status Register.</description>
-     <addressOffset>0x0004</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>BUSY</name>
-       <description>PUF Controller Busy.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>MAGIC_ERR</name>
-       <description>PUF Magic Word Error.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEYGEN_EN_ERR</name>
-       <description>PUF Magic Word Error.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEYGEN_ERR</name>
-       <description>PUF Magic Word Error.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>ADC_FREQ_FL</name>
-       <description>ADC Frequency Flag</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY0_INIT_ERR</name>
-       <description>PUF Key0 Initialization Error.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY0_CNST_ERR</name>
-       <description> PUF Key0 Constant Key Mismatch Error</description>
-       <bitOffset>9</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY1_INIT_ERR</name>
-       <description>PUF Key1 Initialization Error.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY1_CNST_ERR</name>
-       <description> PUF Key1 Constant Key Mismatch Error</description>
-       <bitOffset>17</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY0_DN</name>
-       <description>Key0 Done.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>KEY1_DN</name>
-       <description>Key1 Done.</description>
-       <bitOffset>25</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-<!--PUF PUF Registers-->
-  <peripheral>
-   <name>PTG</name>
-   <description>Pulse Train Generation</description>
-   <groupName>Pulse_Train</groupName>
-   <baseAddress>0x4003C000</baseAddress>
-   <size>32</size>
-   <access>read-write</access>
-   <addressBlock>
-    <offset>0</offset>
-    <size>0x0018</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <interrupt>
-    <name>PT</name>
-    <description>Pulse Train IRQ</description>
-    <value>59</value>
-   </interrupt>
-   <registers>
-    <register>
-     <name>ENABLE</name>
-     <description>Global Enable/Disable Controls for All Pulse Trains</description>
-     <addressOffset>0x0000</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Enable/Disable control for PT0</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Enable/Disable control for PT1</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Enable/Disable control for PT2</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Enable/Disable control for PT3</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>RESYNC</name>
-     <description>Global Resync (All Pulse Trains) Control</description>
-     <addressOffset>0x0004</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Resync control for PT0</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Resync control for PT1</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Resync control for PT2</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Resync control for PT3</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INTFL</name>
-     <description>Pulse Train Interrupt Flags</description>
-     <addressOffset>0x0008</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Pulse Train 0 Stopped Interrupt Flag</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Pulse Train 1 Stopped Interrupt Flag</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Pulse Train 2 Stopped Interrupt Flag</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Pulse Train 3 Stopped Interrupt Flag</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INTEN</name>
-     <description>Pulse Train Interrupt Enable/Disable</description>
-     <addressOffset>0x000C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Pulse Train 0 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Pulse Train 1 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Pulse Train 2 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Pulse Train 3 Stopped Interrupt Enable/Disable</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>SAFE_EN</name>
-     <description>Pulse Train Global Safe Enable.</description>
-     <addressOffset>0x0010</addressOffset>
-     <access>write-only</access>
-     <fields>
-      <field>
-       <name>PT0</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT1</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT2</name>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT3</name>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>SAFE_DIS</name>
-     <description>Pulse Train Global Safe Disable.</description>
-     <addressOffset>0x0014</addressOffset>
-     <access>write-only</access>
-     <fields>
-      <field>
-       <name>PT0</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT1</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT2</name>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-      <field>
-       <name>PT3</name>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>write-only</access>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-<!--PTG Pulse Train Generation-->
   <peripheral>
    <name>PT</name>
    <description>Pulse Train</description>
@@ -11565,139 +11350,1042 @@ memory.
   <peripheral derivedFrom="PT">
    <name>PT1</name>
    <description>Pulse Train 1</description>
-   <baseAddress>0x4003C040</baseAddress>
+   <baseAddress>0x4003C030</baseAddress>
   </peripheral>
 <!--PT1 Pulse Train 1-->
   <peripheral derivedFrom="PT">
    <name>PT2</name>
    <description>Pulse Train 2</description>
-   <baseAddress>0x4003C060</baseAddress>
+   <baseAddress>0x4003C040</baseAddress>
   </peripheral>
 <!--PT2 Pulse Train 2-->
   <peripheral derivedFrom="PT">
    <name>PT3</name>
    <description>Pulse Train 3</description>
-   <baseAddress>0x4003C080</baseAddress>
+   <baseAddress>0x4003C050</baseAddress>
   </peripheral>
 <!--PT3 Pulse Train 3-->
+  <peripheral derivedFrom="PT">
+   <name>PT4</name>
+   <description>Pulse Train 4</description>
+   <baseAddress>0x4003C060</baseAddress>
+  </peripheral>
+<!--PT4 Pulse Train 4-->
+  <peripheral derivedFrom="PT">
+   <name>PT5</name>
+   <description>Pulse Train 5</description>
+   <baseAddress>0x4003C070</baseAddress>
+  </peripheral>
+<!--PT5 Pulse Train 5-->
+  <peripheral derivedFrom="PT">
+   <name>PT6</name>
+   <description>Pulse Train 6</description>
+   <baseAddress>0x4003C080</baseAddress>
+  </peripheral>
+<!--PT6 Pulse Train 6-->
+  <peripheral derivedFrom="PT">
+   <name>PT7</name>
+   <description>Pulse Train 7</description>
+   <baseAddress>0x4003C090</baseAddress>
+  </peripheral>
+<!--PT7 Pulse Train 7-->
+  <peripheral derivedFrom="PT">
+   <name>PT8</name>
+   <description>Pulse Train 8</description>
+   <baseAddress>0x4003C0A0</baseAddress>
+  </peripheral>
+<!--PT8 Pulse Train 8-->
+  <peripheral derivedFrom="PT">
+   <name>PT9</name>
+   <description>Pulse Train 9</description>
+   <baseAddress>0x4003C0B0</baseAddress>
+  </peripheral>
+<!--PT9 Pulse Train 9-->
+  <peripheral derivedFrom="PT">
+   <name>PT10</name>
+   <description>Pulse Train 10</description>
+   <baseAddress>0x4003C0C0</baseAddress>
+  </peripheral>
+<!--PT10 Pulse Train 10-->
+  <peripheral derivedFrom="PT">
+   <name>PT11</name>
+   <description>Pulse Train 11</description>
+   <baseAddress>0x4003C0D0</baseAddress>
+  </peripheral>
+<!--PT11 Pulse Train 11-->
+  <peripheral derivedFrom="PT">
+   <name>PT12</name>
+   <description>Pulse Train 12</description>
+   <baseAddress>0x4003C0E0</baseAddress>
+  </peripheral>
+<!--PT12 Pulse Train 12-->
+  <peripheral derivedFrom="PT">
+   <name>PT13</name>
+   <description>Pulse Train 13</description>
+   <baseAddress>0x4003C0F0</baseAddress>
+  </peripheral>
+<!--PT13 Pulse Train 13-->
+  <peripheral derivedFrom="PT">
+   <name>PT14</name>
+   <description>Pulse Train 14</description>
+   <baseAddress>0x4003C100</baseAddress>
+  </peripheral>
+<!--PT14 Pulse Train 14-->
+  <peripheral derivedFrom="PT">
+   <name>PT15</name>
+   <description>Pulse Train 15</description>
+   <baseAddress>0x4003C110</baseAddress>
+  </peripheral>
+<!--PT15 Pulse Train 15-->
   <peripheral>
-   <name>ICC0</name>
-   <description>Instruction Cache Controller Registers</description>
-   <baseAddress>0x4002A000</baseAddress>
+   <name>PTG</name>
+   <description>Pulse Train Generation</description>
+   <groupName>Pulse_Train</groupName>
+   <baseAddress>0x4003C000</baseAddress>
+   <size>32</size>
+   <access>read-write</access>
    <addressBlock>
-    <offset>0x00</offset>
-    <size>0x800</size>
+    <offset>0</offset>
+    <size>0x0020</size>
     <usage>registers</usage>
    </addressBlock>
+   <interrupt>
+    <name>PT</name>
+    <description>Pulse Train IRQ</description>
+    <value>59</value>
+   </interrupt>
    <registers>
     <register>
-     <name>INFO</name>
-     <description>Cache ID Register.</description>
+     <name>ENABLE</name>
+     <description>Global Enable/Disable Controls for All Pulse Trains</description>
      <addressOffset>0x0000</addressOffset>
-     <access>read-only</access>
-     <fields>
-      <field>
-       <name>RELNUM</name>
-       <description>Release Number. Identifies the RTL release version.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>6</bitWidth>
-      </field>
-      <field>
-       <name>PARTNUM</name>
-       <description>Part Number. This field reflects the value of C_ID_PART_NUMBER configuration parameter.</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>4</bitWidth>
-      </field>
-      <field>
-       <name>ID</name>
-       <description>Cache ID. This field reflects the value of the C_ID_CACHEID configuration parameter.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>6</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>SZ</name>
-     <description>Memory Configuration Register.</description>
-     <addressOffset>0x0004</addressOffset>
-     <access>read-only</access>
-     <resetValue>0x00080008</resetValue>
-     <fields>
-      <field>
-       <name>CCH</name>
-       <description>Cache Size. Indicates total size in Kbytes of cache.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>16</bitWidth>
-      </field>
-      <field>
-       <name>MEM</name>
-       <description>Main Memory Size. Indicates the total size, in units of 128 Kbytes, of code memory accessible to the cache controller.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>16</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>CTRL</name>
-     <description>Cache Control and Status Register.</description>
-     <addressOffset>0x0100</addressOffset>
-     <fields>
-      <field>
-       <name>EN</name>
-       <description>Cache Enable. Controls whether the cache is bypassed or is in use. Changing the state of this bit will cause the instruction cache to be flushed and its contents invalidated.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Cache Bypassed. Instruction data is stored in the line fill buffer but is not written to main cache memory array.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Cache Enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>RDY</name>
-       <description>Cache Ready flag. Cleared by hardware when at any time the cache as a whole is invalidated (including a system reset). When this bit is 0, the cache is effectively in bypass mode (instruction fetches will come from main memory or from the line fill buffer). Set by hardware when the invalidate operation is complete and the cache is ready.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-only</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>notReady</name>
-         <description>Not Ready.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ready</name>
-         <description>Ready.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INVALIDATE</name>
-     <description>Invalidate All Registers.</description>
-     <addressOffset>0x0700</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>INVALID</name>
-       <description>Invalidate.</description>
+       <name>pt0</name>
+       <description>Enable/Disable control for PT0</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Enable/Disable control for PT1</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Enable/Disable control for PT2</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Enable/Disable control for PT3</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Enable/Disable control for PT4</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Enable/Disable control for PT5</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Enable/Disable control for PT6</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Enable/Disable control for PT7</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt8</name>
+       <description>Enable/Disable control for PT8</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt9</name>
+       <description>Enable/Disable control for PT9</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt10</name>
+       <description>Enable/Disable control for PT10</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt11</name>
+       <description>Enable/Disable control for PT11</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt12</name>
+       <description>Enable/Disable control for PT12</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt13</name>
+       <description>Enable/Disable control for PT13</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt14</name>
+       <description>Enable/Disable control for PT14</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt15</name>
+       <description>Enable/Disable control for PT15</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>RESYNC</name>
+     <description>Global Resync (All Pulse Trains) Control</description>
+     <addressOffset>0x0004</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Resync control for PT0</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Resync control for PT1</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Resync control for PT2</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Resync control for PT3</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Resync control for PT4</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Resync control for PT5</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Resync control for PT6</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Resync control for PT7</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt8</name>
+       <description>Resync control for PT8</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt9</name>
+       <description>Resync control for PT9</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt10</name>
+       <description>Resync control for PT10</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt11</name>
+       <description>Resync control for PT11</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt12</name>
+       <description>Resync control for PT12</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt13</name>
+       <description>Resync control for PT13</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt14</name>
+       <description>Resync control for PT14</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt15</name>
+       <description>Resync control for PT15</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>STOP_INTFL</name>
+     <description>Pulse Train Interrupt Flags</description>
+     <addressOffset>0x0008</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Stopped Interrupt Flag</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Stopped Interrupt Flag</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Stopped Interrupt Flag</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Stopped Interrupt Flag</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Pulse Train 4 Stopped Interrupt Flag</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Pulse Train 5 Stopped Interrupt Flag</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Pulse Train 6 Stopped Interrupt Flag</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Pulse Train 7 Stopped Interrupt Flag</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt8</name>
+       <description>Pulse Train 8 Stopped Interrupt Flag</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt9</name>
+       <description>Pulse Train 9 Stopped Interrupt Flag</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt10</name>
+       <description>Pulse Train 10 Stopped Interrupt Flag</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt11</name>
+       <description>Pulse Train 11 Stopped Interrupt Flag</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt12</name>
+       <description>Pulse Train 12 Stopped Interrupt Flag</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt13</name>
+       <description>Pulse Train 13 Stopped Interrupt Flag</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt14</name>
+       <description>Pulse Train 14 Stopped Interrupt Flag</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt15</name>
+       <description>Pulse Train 15 Stopped Interrupt Flag</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>STOP_INTEN</name>
+     <description>Pulse Train Interrupt Enable/Disable</description>
+     <addressOffset>0x000C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Pulse Train 4 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Pulse Train 5 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Pulse Train 6 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Pulse Train 7 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt8</name>
+       <description>Pulse Train 8 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt9</name>
+       <description>Pulse Train 9 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt10</name>
+       <description>Pulse Train 10 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt11</name>
+       <description>Pulse Train 11 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt12</name>
+       <description>Pulse Train 12 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt13</name>
+       <description>Pulse Train 13 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt14</name>
+       <description>Pulse Train 14 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt15</name>
+       <description>Pulse Train 15 Stopped Interrupt Enable/Disable</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SAFE_EN</name>
+     <description>Pulse Train Global Safe Enable.</description>
+     <addressOffset>0x0010</addressOffset>
+     <access>write-only</access>
+     <fields>
+      <field>
+       <name>PT0</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT1</name>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT2</name>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT3</name>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT4</name>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT5</name>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT6</name>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT7</name>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT8</name>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT9</name>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT10</name>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT11</name>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT12</name>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT13</name>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT14</name>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT15</name>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SAFE_DIS</name>
+     <description>Pulse Train Global Safe Disable.</description>
+     <addressOffset>0x0014</addressOffset>
+     <access>write-only</access>
+     <fields>
+      <field>
+       <name>PT0</name>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT1</name>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT2</name>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT3</name>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT4</name>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT5</name>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT6</name>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT7</name>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT8</name>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT9</name>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT10</name>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT11</name>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT12</name>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT13</name>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT14</name>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+      <field>
+       <name>PT15</name>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>write-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTFL</name>
+     <description>Pulse Train Ready Interrupt Flags</description>
+     <addressOffset>0x0018</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Flag</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Flag</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Flag</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Flag</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Pulse Train 4 Ready Interrupt Flag</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Pulse Train 5 Ready Interrupt Flag</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Pulse Train 6 Ready Interrupt Flag</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Pulse Train 7 Ready Interrupt Flag</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt8</name>
+       <description>Pulse Train 8 Ready Interrupt Flag</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt9</name>
+       <description>Pulse Train 9 Ready Interrupt Flag</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt10</name>
+       <description>Pulse Train 10 Ready Interrupt Flag</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt11</name>
+       <description>Pulse Train 11 Ready Interrupt Flag</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt12</name>
+       <description>Pulse Train 12 Ready Interrupt Flag</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt13</name>
+       <description>Pulse Train 13 Ready Interrupt Flag</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt14</name>
+       <description>Pulse Train 14 Ready Interrupt Flag</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt15</name>
+       <description>Pulse Train 15 Ready Interrupt Flag</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTEN</name>
+     <description>Pulse Train Ready Interrupt Enable/Disable</description>
+     <addressOffset>0x001C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Enable/Disable</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Enable/Disable</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Enable/Disable</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Enable/Disable</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt4</name>
+       <description>Pulse Train 4 Ready Interrupt Enable/Disable</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt5</name>
+       <description>Pulse Train 5 Ready Interrupt Enable/Disable</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt6</name>
+       <description>Pulse Train 6 Ready Interrupt Enable/Disable</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt7</name>
+       <description>Pulse Train 7 Ready Interrupt Enable/Disable</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt8</name>
+       <description>Pulse Train 8 Ready Interrupt Enable/Disable</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt9</name>
+       <description>Pulse Train 9 Ready Interrupt Enable/Disable</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt10</name>
+       <description>Pulse Train 10 Ready Interrupt Enable/Disable</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt11</name>
+       <description>Pulse Train 11 Ready Interrupt Enable/Disable</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt12</name>
+       <description>Pulse Train 12 Ready Interrupt Enable/Disable</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt13</name>
+       <description>Pulse Train 13 Ready Interrupt Enable/Disable</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt14</name>
+       <description>Pulse Train 14 Ready Interrupt Enable/Disable</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt15</name>
+       <description>Pulse Train 15 Ready Interrupt Enable/Disable</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
       </field>
      </fields>
     </register>
    </registers>
   </peripheral>
-<!--ICC0 Instruction Cache Controller Registers-->
+<!--PTG Pulse Train Generation-->
   <peripheral>
    <name>PWRSEQ</name>
    <description>Power Sequencer / Low Power Control Register.</description>
@@ -12233,63 +12921,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
    </registers>
   </peripheral>
 <!--PWRSEQ Power Sequencer / Low Power Control Register.-->
-  <peripheral>
-   <name>LPCMP</name>
-   <description>Low Power Comparator</description>
-   <baseAddress>0x40088000</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x400</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <interrupt>
-    <name>LPCMP</name>
-    <description>Low Power Comparato</description>
-    <value>103</value>
-   </interrupt>
-   <registers>
-    <register>
-     <dim>3</dim>
-     <dimIncrement>4</dimIncrement>
-     <name>CTRL[%s]</name>
-     <description>Comparator Control Register.</description>
-     <addressOffset>0x00</addressOffset>
-     <fields>
-      <field>
-       <name>EN</name>
-       <description>Comparator Enable.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>POL</name>
-       <description>Polarity Select</description>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>INT_EN</name>
-       <description>IRQ Enable.</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>OUT</name>
-       <description>Raw Compartor Input.</description>
-       <bitOffset>14</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>INT_FL</name>
-       <description>IRQ Flag</description>
-       <bitOffset>15</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-<!--LPCMP Low Power Comparator-->
   <peripheral>
    <name>RTC</name>
    <description>Real Time Clock and Alarm.</description>
