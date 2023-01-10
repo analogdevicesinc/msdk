@@ -1,11 +1,11 @@
 /**
- * @file    aes_key_regs.h
- * @brief   Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
- * @note    This file is @deprecated.
+ * @file    aeskeys_regs.h
+ * @brief   Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
+ * @note    This file is @generated.
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37,10 +37,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_AES_KEY_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_AES_KEY_REGS_H_
-
-#warning "DEPRECATED(1-10-2023): aes_key_regs.h - Scheduled for removal. Please use aeskeys_regs.h."
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_AESKEYS_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_AESKEYS_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -77,41 +75,41 @@ extern "C" {
 /* **** Definitions **** */
 
 /**
- * @ingroup     aes_key
- * @defgroup    aes_key_registers AES_KEY_Registers
- * @brief       Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
+ * @ingroup     aeskeys
+ * @defgroup    aeskeys_registers AESKEYS_Registers
+ * @brief       Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
  * @details     AES Key Registers.
  */
 
 /**
- * @ingroup aes_key_registers
- * Structure type to access the AES_KEY Registers.
+ * @ingroup aeskeys_registers
+ * Structure type to access the AESKEYS Registers.
  */
-typedef struct __attribute__((deprecated("struct and aes_key_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023"))) {
-    __IO uint32_t aes_key0;             /**< <tt>\b 0x000:</tt> AES_KEY AES_KEY0 Register */
+typedef struct {
+    __IO uint32_t key0;                 /**< <tt>\b 0x000:</tt> AESKEYS KEY0 Register */
     __R  uint32_t rsv_0x4_0x7f[31];
-    __IO uint32_t aes_key1;             /**< <tt>\b 0x080:</tt> AES_KEY AES_KEY1 Register */
+    __IO uint32_t key1;                 /**< <tt>\b 0x080:</tt> AESKEYS KEY1 Register */
     __R  uint32_t rsv_0x84_0xff[31];
-    __IO uint32_t aes_key2;             /**< <tt>\b 0x100:</tt> AES_KEY AES_KEY2 Register */
+    __IO uint32_t key2;                 /**< <tt>\b 0x100:</tt> AESKEYS KEY2 Register */
     __R  uint32_t rsv_0x104_0x17f[31];
-    __IO uint32_t aes_key3;             /**< <tt>\b 0x180:</tt> AES_KEY AES_KEY3 Register */
-} mxc_aes_key_regs_t;
+    __IO uint32_t key3;                 /**< <tt>\b 0x180:</tt> AESKEYS KEY3 Register */
+} mxc_aeskeys_regs_t;
 
-/* Register offsets for module AES_KEY */
+/* Register offsets for module AESKEYS */
 /**
- * @ingroup    aes_key_registers
- * @defgroup   AES_KEY_Register_Offsets Register Offsets
- * @brief      AES_KEY Peripheral Register Offsets from the AES_KEY Base Peripheral Address.
+ * @ingroup    aeskeys_registers
+ * @defgroup   AESKEYS_Register_Offsets Register Offsets
+ * @brief      AESKEYS Peripheral Register Offsets from the AESKEYS Base Peripheral Address.
  * @{
  */
-#define MXC_R_AES_KEY_AES_KEY0             ((uint32_t)0x00000000UL) /**< Offset from AES_KEY Base Address: <tt> 0x0000</tt> */
-#define MXC_R_AES_KEY_AES_KEY1             ((uint32_t)0x00000080UL) /**< Offset from AES_KEY Base Address: <tt> 0x0080</tt> */
-#define MXC_R_AES_KEY_AES_KEY2             ((uint32_t)0x00000100UL) /**< Offset from AES_KEY Base Address: <tt> 0x0100</tt> */
-#define MXC_R_AES_KEY_AES_KEY3             ((uint32_t)0x00000180UL) /**< Offset from AES_KEY Base Address: <tt> 0x0180</tt> */
-/**@} end of group aes_key_registers */
+#define MXC_R_AESKEYS_KEY0                 ((uint32_t)0x00000000UL) /**< Offset from AESKEYS Base Address: <tt> 0x0000</tt> */
+#define MXC_R_AESKEYS_KEY1                 ((uint32_t)0x00000080UL) /**< Offset from AESKEYS Base Address: <tt> 0x0080</tt> */
+#define MXC_R_AESKEYS_KEY2                 ((uint32_t)0x00000100UL) /**< Offset from AESKEYS Base Address: <tt> 0x0100</tt> */
+#define MXC_R_AESKEYS_KEY3                 ((uint32_t)0x00000180UL) /**< Offset from AESKEYS Base Address: <tt> 0x0180</tt> */
+/**@} end of group aeskeys_registers */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_AES_KEY_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32665_INCLUDE_AESKEYS_REGS_H_
