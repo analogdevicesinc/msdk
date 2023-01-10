@@ -37,7 +37,7 @@
 #include <stdint.h>
 #include "aes.h"
 #include "aes_revb_regs.h"
-#include "aeskey_revb_regs.h"
+#include "aeskeys_revb_regs.h"
 #include "trng_revb_regs.h"
 
 /**
