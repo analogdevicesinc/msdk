@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <!-- AES -->
-    <name>AES_KEY</name>
+    <!-- AESKEYS-->
+    <name>AESKEYS</name>
     <description>AES Key Registers.</description>
-    <baseAddress>0x40005000</baseAddress>
+    <baseAddress>0x40007800</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
       <size>0x400</size>
@@ -12,30 +12,30 @@
     </addressBlock>
     <registers>
       <register>
-        <name>AES_KEY0</name>
+        <name>KEY0</name>
         <description>AES Key 0.</description>
         <addressOffset>0x000</addressOffset>
-        <size>128</size>
+        <size>32</size>
       </register>
       <register>
-        <name>AES_KEY1</name>
+        <name>KEY1</name>
         <description>AES Key 1.</description>
-        <addressOffset>0x010</addressOffset>
-        <size>128</size>
+        <addressOffset>0x080</addressOffset>
+        <size>32</size>
       </register>
       <register>
-        <name>PUF_KEY1</name>
-        <description>PUF Key 1.</description>
-        <addressOffset>0x020</addressOffset>
-        <size>256</size>
+        <name>KEY2</name>
+        <description>AES Key 2.</description>
+        <addressOffset>0x100</addressOffset>
+        <size>32</size>
       </register>
       <register>
-        <name>PUF_KEY2</name>
-        <description>PUF Key 2.</description>
-        <addressOffset>0x040</addressOffset>
-        <size>256</size>
+        <name>KEY3</name>
+        <description>AES Key 3.</description>
+        <addressOffset>0x180</addressOffset>
+        <size>32</size>
       </register>
     </registers>
   </peripheral>
-  <!-- AES -->
+  <!-- AESKEYS-->
 </device>
