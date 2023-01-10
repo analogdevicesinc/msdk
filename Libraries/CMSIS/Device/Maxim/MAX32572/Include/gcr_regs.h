@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -312,11 +312,8 @@ typedef struct {
 #define MXC_F_GCR_CLKCTRL_SYSCLK_RDY_POS               13 /**< CLKCTRL_SYSCLK_RDY Position */
 #define MXC_F_GCR_CLKCTRL_SYSCLK_RDY                   ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_SYSCLK_RDY_POS)) /**< CLKCTRL_SYSCLK_RDY Mask */
 
-#define MXC_F_GCR_CLKCTRL_CRYPTOCLK_DIV_POS            12 /**< CLKCTRL_CRYPTOCLK_DIV Position */
+#define MXC_F_GCR_CLKCTRL_CRYPTOCLK_DIV_POS            15 /**< CLKCTRL_CRYPTOCLK_DIV Position */
 #define MXC_F_GCR_CLKCTRL_CRYPTOCLK_DIV                ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_CRYPTOCLK_DIV_POS)) /**< CLKCTRL_CRYPTOCLK_DIV Mask */
-
-#define MXC_F_GCR_CLKCTRL_IPO_DIV_POS                  14 /**< CLKCTRL_IPO_DIV Position */
-#define MXC_F_GCR_CLKCTRL_IPO_DIV                      ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_IPO_DIV_POS)) /**< CLKCTRL_IPO_DIV Mask */
 
 #define MXC_F_GCR_CLKCTRL_ERFO_EN_POS                  16 /**< CLKCTRL_ERFO_EN Position */
 #define MXC_F_GCR_CLKCTRL_ERFO_EN                      ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_ERFO_EN_POS)) /**< CLKCTRL_ERFO_EN Mask */
@@ -515,17 +512,8 @@ typedef struct {
 #define MXC_F_GCR_MEMCTRL_FWS_POS                      0 /**< MEMCTRL_FWS Position */
 #define MXC_F_GCR_MEMCTRL_FWS                          ((uint32_t)(0x7UL << MXC_F_GCR_MEMCTRL_FWS_POS)) /**< MEMCTRL_FWS Mask */
 
-#define MXC_F_GCR_MEMCTRL_RAM4_WS_POS                  4 /**< MEMCTRL_RAM4_WS Position */
-#define MXC_F_GCR_MEMCTRL_RAM4_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM4_WS_POS)) /**< MEMCTRL_RAM4_WS Mask */
-
-#define MXC_F_GCR_MEMCTRL_RAM5_WS_POS                  5 /**< MEMCTRL_RAM5_WS Position */
-#define MXC_F_GCR_MEMCTRL_RAM5_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM5_WS_POS)) /**< MEMCTRL_RAM5_WS Mask */
-
-#define MXC_F_GCR_MEMCTRL_RAM6_WS_POS                  6 /**< MEMCTRL_RAM6_WS Position */
-#define MXC_F_GCR_MEMCTRL_RAM6_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM6_WS_POS)) /**< MEMCTRL_RAM6_WS Mask */
-
-#define MXC_F_GCR_MEMCTRL_ROM1_WS_POS                  7 /**< MEMCTRL_ROM1_WS Position */
-#define MXC_F_GCR_MEMCTRL_ROM1_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROM1_WS_POS)) /**< MEMCTRL_ROM1_WS Mask */
+#define MXC_F_GCR_MEMCTRL_SRAM_WS_POS                  4 /**< MEMCTRL_SRAM_WS Position */
+#define MXC_F_GCR_MEMCTRL_SRAM_WS                      ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_SRAM_WS_POS)) /**< MEMCTRL_SRAM_WS Mask */
 
 #define MXC_F_GCR_MEMCTRL_RAM0LS_EN_POS                16 /**< MEMCTRL_RAM0LS_EN Position */
 #define MXC_F_GCR_MEMCTRL_RAM0LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_RAM0LS_EN_POS)) /**< MEMCTRL_RAM0LS_EN Mask */

@@ -343,8 +343,8 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                   AES Keys */
-#define MXC_BASE_AESKEY ((uint32_t)0x40005000UL)
-#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
+#define MXC_BASE_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_AESKEYS ((mxc_aes_key_regs_t *)MXC_BASE_AESKEYS)
 
 /******************************************************************************/
 /*                                        Trim System Initalization Register */

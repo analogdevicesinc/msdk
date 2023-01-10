@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -126,7 +126,7 @@ typedef struct {
 /**
  * @ingroup  dma_registers
  * @defgroup DMA_INTEN DMA_INTEN
- * @brief    DMA Interrupt Enable Register.
+ * @brief    DMA Control Register.
  * @{
  */
 #define MXC_F_DMA_INTEN_CH0_POS                        0 /**< INTEN_CH0 Position */
@@ -182,7 +182,7 @@ typedef struct {
 /**
  * @ingroup  dma_registers
  * @defgroup DMA_INTFL DMA_INTFL
- * @brief    DMA Interrupt Flag Register.
+ * @brief    DMA Interrupt Register.
  * @{
  */
 #define MXC_F_DMA_INTFL_CH0_POS                        0 /**< INTFL_CH0 Position */

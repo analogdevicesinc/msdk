@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -86,9 +86,10 @@ extern "C" {
  * Structure type to access the TRIMSIR Registers.
  */
 typedef struct {
-    __R  uint32_t rsv_0x0_0x7[2];
-    __I  uint32_t bbsir2;               /**< <tt>\b 0x08:</tt> TRIMSIR BBSIR2 Register */
-    __I  uint32_t bbsir3;               /**< <tt>\b 0x0C:</tt> TRIMSIR BBSIR3 Register */
+    __IO uint32_t rsv0;                 /**< <tt>\b 0x00:</tt> TRIMSIR RSV0 Register */
+    __R  uint32_t rsv_0x4;
+    __I  uint32_t bb_sir2;              /**< <tt>\b 0x08:</tt> TRIMSIR BB_SIR2 Register */
+    __I  uint32_t bb_sir3;              /**< <tt>\b 0x0C:</tt> TRIMSIR BB_SIR3 Register */
 } mxc_trimsir_regs_t;
 
 /* Register offsets for module TRIMSIR */
@@ -98,8 +99,9 @@ typedef struct {
  * @brief      TRIMSIR Peripheral Register Offsets from the TRIMSIR Base Peripheral Address.
  * @{
  */
-#define MXC_R_TRIMSIR_BBSIR2               ((uint32_t)0x00000008UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0008</tt> */
-#define MXC_R_TRIMSIR_BBSIR3               ((uint32_t)0x0000000CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x000C</tt> */
+#define MXC_R_TRIMSIR_RSV0                 ((uint32_t)0x00000000UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0000</tt> */
+#define MXC_R_TRIMSIR_BB_SIR2              ((uint32_t)0x00000008UL) /**< Offset from TRIMSIR Base Address: <tt> 0x0008</tt> */
+#define MXC_R_TRIMSIR_BB_SIR3              ((uint32_t)0x0000000CUL) /**< Offset from TRIMSIR Base Address: <tt> 0x000C</tt> */
 /**@} end of group trimsir_registers */
 
 #ifdef __cplusplus

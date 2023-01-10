@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -255,8 +255,8 @@ typedef struct {
 #define MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8      ((uint32_t)0x7UL) /**< INTEN_SET_FIFOLVL_AT_LEAST_8 Value */
 #define MXC_S_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8      (MXC_V_MSRADC_INTEN_SET_FIFOLVL_AT_LEAST_8 << MXC_F_MSRADC_INTEN_SET_FIFOLVL_POS) /**< INTEN_SET_FIFOLVL_AT_LEAST_8 Setting */
 
-#define MXC_F_MSRADC_INTEN_DMAREQ_POS                  3 /**< INTEN_DMAREQ Position */
-#define MXC_F_MSRADC_INTEN_DMAREQ                      ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_DMAREQ_POS)) /**< INTEN_DMAREQ Mask */
+#define MXC_F_MSRADC_INTEN_DMAREQ_EN_POS               3 /**< INTEN_DMAREQ_EN Position */
+#define MXC_F_MSRADC_INTEN_DMAREQ_EN                   ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_DMAREQ_EN_POS)) /**< INTEN_DMAREQ_EN Mask */
 
 #define MXC_F_MSRADC_INTEN_FIFO_OV_POS                 6 /**< INTEN_FIFO_OV Position */
 #define MXC_F_MSRADC_INTEN_FIFO_OV                     ((uint32_t)(0x1UL << MXC_F_MSRADC_INTEN_FIFO_OV_POS)) /**< INTEN_FIFO_OV Mask */

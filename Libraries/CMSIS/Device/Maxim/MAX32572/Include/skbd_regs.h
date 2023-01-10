@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -158,11 +158,11 @@ typedef struct {
  * @brief    Control Register 1
  * @{
  */
-#define MXC_F_SKBD_CTRL1_AUTOSCAN_EN_POS               0 /**< CTRL1_AUTOSCAN_EN Position */
-#define MXC_F_SKBD_CTRL1_AUTOSCAN_EN                   ((uint32_t)(0x1UL << MXC_F_SKBD_CTRL1_AUTOSCAN_EN_POS)) /**< CTRL1_AUTOSCAN_EN Mask */
+#define MXC_F_SKBD_CTRL1_AUTOEN_POS                    0 /**< CTRL1_AUTOEN Position */
+#define MXC_F_SKBD_CTRL1_AUTOEN                        ((uint32_t)(0x1UL << MXC_F_SKBD_CTRL1_AUTOEN_POS)) /**< CTRL1_AUTOEN Mask */
 
-#define MXC_F_SKBD_CTRL1_AUTOCLEAR_POS                 1 /**< CTRL1_AUTOCLEAR Position */
-#define MXC_F_SKBD_CTRL1_AUTOCLEAR                     ((uint32_t)(0x1UL << MXC_F_SKBD_CTRL1_AUTOCLEAR_POS)) /**< CTRL1_AUTOCLEAR Mask */
+#define MXC_F_SKBD_CTRL1_CLEAR_POS                     1 /**< CTRL1_CLEAR Position */
+#define MXC_F_SKBD_CTRL1_CLEAR                         ((uint32_t)(0x1UL << MXC_F_SKBD_CTRL1_CLEAR_POS)) /**< CTRL1_CLEAR Mask */
 
 #define MXC_F_SKBD_CTRL1_OUTNUM_POS                    8 /**< CTRL1_OUTNUM Position */
 #define MXC_F_SKBD_CTRL1_OUTNUM                        ((uint32_t)(0x7UL << MXC_F_SKBD_CTRL1_OUTNUM_POS)) /**< CTRL1_OUTNUM Mask */
