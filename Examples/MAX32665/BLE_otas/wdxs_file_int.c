@@ -184,6 +184,33 @@ static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
     return WSF_EFS_SUCCESS;
 }
 
+/*************************************************************************************************/
+/*!
+ *  \brief  File Write function.
+ *
+ *  \param  pBuf     Buffer with data to be written.
+ *  \param  address  Address in media to write to.
+ *  \param  size     Size of pBuf in bytes.
+ *
+ *  \return Status of the operation.
+ */
+/*************************************************************************************************/
+static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
+{
+    int err = 0;
+    err += MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t *)pBuf);
+    /* verify data was written*/
+    err += memcmp(pAddress, pBuf, size);
+
+    if (err == E_NO_ERROR) {
+        lastWriteAddr = pAddress;
+        lastWriteLen = size;
+        APP_TRACE_INFO2("Int. Flash: Wrote %d bytes @ 0x%x", size, pAddress);
+        return WSF_EFS_SUCCESS;
+    }
+    APP_TRACE_ERR1("Error writing to flash 0x%08X", (uint32_t)pAddress);
+    return err;
+}
 // http://home.thep.lu.se/~bjorn/crc/
 /*************************************************************************************************/
 /*!
@@ -221,33 +248,6 @@ void crc32(const void *data, size_t n_bytes, uint32_t *crc)
         *crc = table[(uint8_t)*crc ^ ((uint8_t *)data)[i]] ^ *crc >> 8;
     }
 }
-/*************************************************************************************************/
-/*!
- *  \brief  File Write function.
- *
- *  \param  pBuf     Buffer with data to be written.
- *  \param  address  Address in media to write to.
- *  \param  size     Size of pBuf in bytes.
- *
- *  \return Status of the operation.
- */
-/*************************************************************************************************/
-static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
-{
-    int err = 0;
-    err += MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t *)pBuf);
-    /* verify data was written*/
-    err += memcmp(pAddress, pBuf, size);
-
-    if (err == E_NO_ERROR) {
-        lastWriteAddr = pAddress;
-        lastWriteLen = size;
-        APP_TRACE_INFO2("Int. Flash: Wrote %d bytes @ 0x%x", size, pAddress);
-        return WSF_EFS_SUCCESS;
-    }
-    APP_TRACE_ERR1("Error writing to flash 0x%08X", (uint32_t)pAddress);
-    return err;
-}
 
 /*************************************************************************************************/
 /*!
@@ -268,20 +268,26 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
     } break;
     case WSF_EFS_VALIDATE_CMD:
     default: {
+        /* Validate the image with CRC32 */
+        uint32_t crcResult = 0;
         int err = 0;
+
         verifyLen = ((uint32_t)lastWriteAddr + lastWriteLen) - WDXS_FileMedia.startAddress;
-        crc32((const void *)WDXS_FileMedia.startAddress, verifyLen, &crcResult);
 
         APP_TRACE_INFO2("CRC start addr: 0x%08X Len: 0x%08X", WDXS_FileMedia.startAddress,
                         verifyLen);
+
+        crc32((const void *)WDXS_FileMedia.startAddress, verifyLen, &crcResult);
+
         APP_TRACE_INFO1("CRC From File : 0x%08x", fileHeader.fileCRC);
         APP_TRACE_INFO1("CRC Calculated: 0x%08X", crcResult);
+
         /* Check the calculated CRC32 against what was received, 32 bits is 4 bytes */
         if (fileHeader.fileCRC != crcResult) {
             APP_TRACE_INFO0("Update file verification failure");
-            crcResult = 0;
             return WDX_FTC_ST_VERIFICATION;
         }
+
         /* if crc are ok write it to end of file*/
         err += MXC_FLC_Write((WDXS_FileMedia.startAddress + verifyLen), sizeof(crcResult),
                              (uint32_t)&crcResult);
