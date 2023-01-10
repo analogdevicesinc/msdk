@@ -430,7 +430,7 @@ flash_bootloader
 # change firmware version and rebuild
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
 # change firmware version to verify otas worked
-perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file.c
+perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file_ext.c
 make -j8
 
 # since  MAIN_DEVICE and DUT are not the same chip we need to make sure the
