@@ -1,0 +1,16 @@
+For using the bench daughterboard in a standalone configuration
+
+Console UART is UART 2, Map B.
+
+RX - 0.28 (J12.5)
+TX - 0.29 (J12.6)
+
+PB Pins
+PB0 - 0.24 (J12.1)
+PB1 - 0.25 (J12.2)
+
+LED Pins
+LED0 - 0.26 (J12.3)
+LED1 - 0.27 (J12.4)
+
+Test Mode P1.0 is found at J12.8

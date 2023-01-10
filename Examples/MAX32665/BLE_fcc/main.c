@@ -82,6 +82,15 @@ extern void llc_api_set_phy(uint8_t phy, uint8_t phy_options);
 extern volatile int8_t tx_rfpower_idx;
 extern volatile int8_t tx_rfpower_on;
 
+extern volatile uint32_t dbbDebugData[2048];
+extern volatile uint32_t dbbDebugDataTstamp[2*2048];
+extern volatile int32_t rx_dtm_offset;
+extern volatile uint32_t sig_detect_timeout;
+extern volatile uint32_t cfohpf_ed_timeout;
+extern volatile uint8_t agc_freeze_timer;
+extern volatile uint8_t sig_detect_init_timer;
+extern volatile uint8_t sig_detect_rst_timer;
+
 /*************************************************************************************************/
 /*!
  *  \fn     Get PHY String.
@@ -226,7 +235,7 @@ static void processConsoleRX(uint8_t rxByte)
     case '3':
 
         APP_TRACE_INFO1("Receive RF channel 39 (2480M), %s, forever ..", getPhyStr());
-        res = LlEnhancedRxTest(39, phy, 0, 0);
+        res = LlEnhancedRxTest(39, phy, 0, 37);
         APP_TRACE_INFO2("res = %u %s", res, res == LL_SUCCESS ? "(SUCCESS)" : "(FAIL)");
         cmd = 0;
         break;

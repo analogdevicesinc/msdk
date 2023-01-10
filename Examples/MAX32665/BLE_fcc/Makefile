@@ -339,6 +339,34 @@ ifeq ($(SBT),1)
 include $(MAXIM_PATH)/Tools/SBT/SBT-config.mk
 endif
 
+################################################################################
+# RF-PHY Library Options
+#DEBUG_FPGA_RISCV   ?= 0
+#RFFE_EXTERNAL      ?= 0
+#SEQUENCER_IRQ_TEST ?= 0
+#FORCE_PMU_WAKEUP   ?= 0
+
+#PROJ_CFLAGS += -DDEBUG
+#PROJ_CFLAGS += -DDTM_TIMING
+#PROJ_CFLAGS += -DLL_DBG_PIN_ENABLED
+#PROJ_CFLAGS += -DDEBUG_FPGA_RISCV
+#PROJ_CFLAGS += -DRFFE_EXTERNAL
+#PROJ_CFLAGS += -DSEQUENCER_IRQ_TEST
+#PROJ_CFLAGS += -DFORCE_PMU_WAKEUP
+#PROJ_CFLAGS += -DBB_CLK_RATE_HZ=1000000
+
+#RFPHY_DIR ?= $(LIBS_DIR)/RF-PHY-closed/$(TARGET_UC)
+#DEBUG_DIR ?= $(MAXIM_PATH)/../RF-PHY-VScode/Libraries/RF-PHY/debug
+#export LIBS_DIR
+#export RFPHY_DIR
+#export DEBUG_DIR
+
+#VPATH += $(DEBUG_DIR)
+#IPATH += $(DEBUG_DIR)
+
+#include $(RFPHY_DIR)/../rf-phy_files.mk
+#include $(RFPHY_DIR)/../rf-phy.mk
+
 # *******************************************************************************
 # Libraries
 
@@ -363,7 +391,6 @@ endif
 # - LIB_SDHC : Include the SDHC library
 
 include $(LIBS_DIR)/libs.mk
-
 
 # *******************************************************************************
 # Rules

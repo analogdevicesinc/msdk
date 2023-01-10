@@ -52,6 +52,22 @@ static BbRtCfg_t mainBbRtCfg;
 /*! \brief  Persistent LL runtime configuration. */
 static LlRtCfg_t mainLlRtCfg;
 
+extern volatile int8_t tx_rfpower_idx;
+extern volatile int8_t tx_rfpower_on;
+
+extern volatile uint32_t dbbRxPhyData[1024];
+extern volatile uint32_t dbbDebugData[1024];
+extern volatile uint32_t dbbDebugDataTstamp[2*1024];
+extern volatile int32_t rx_dtm_offset;
+extern volatile uint32_t sig_detect_timeout;
+extern volatile uint32_t cfohpf_ed_timeout;
+extern volatile uint8_t agc_freeze_timer;
+extern volatile uint8_t sig_detect_init_timer;
+extern volatile uint8_t sig_detect_rst_timer;
+extern volatile int dbg_capture_sel;
+extern volatile int dbg_capture_len;
+extern volatile int dbg_capture_dly;
+
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
