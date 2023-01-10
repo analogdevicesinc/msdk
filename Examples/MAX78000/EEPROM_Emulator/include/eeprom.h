@@ -42,14 +42,8 @@
 #include "mxc_device.h"
 
 /***** Definitions *****/
-#ifdef BOARD_EVKIT_V1
-#define EEPROM_I2C MXC_I2C2
-#else
-#define EEPROM_I2C MXC_I2C1
-#endif
-
 #define EEPROM_ADDR 0x24
-#define EEPROM_I2C_IRQN MXC_I2C_GET_IRQ(MXC_I2C_GET_IDX(EEPROM_I2C))
+#define EEPROM_I2C_IRQN(i2c) MXC_I2C_GET_IRQ(MXC_I2C_GET_IDX(i2c))
 #define EEPROM_I2C_FREQ 100000
 #define EEPROM_FIFO_DEPTH MXC_I2C_FIFO_DEPTH
 
@@ -67,8 +61,21 @@
 extern volatile bool eeprom_txn_done;
 
 /***** Functions *****/
-int eeprom_init(mxc_gpio_cfg_t rdy_pin);
+/*
+ * @brief Initializes the components of the EEPROM emulator
+ *
+ * @param eeprom_i2c 	Pointer to the I2C instance for EEPROM to communicate with
+ * @param rdy_pin    	Struct containing information about the GPIO pin used as
+ * 						the ready signal. (Only need port and pin to be initialized
+ * 						before calling this function.)
+ *
+ * @return Success/fail. See \ref MXC_Error_Codes for list of error codes.
+ */
+int eeprom_init(mxc_i2c_regs_t* eeprom_i2c, mxc_gpio_cfg_t rdy_pin);
 
+/*
+ * @brief Prepares the EEPROM for next transaction with the master device.
+ */
 void eeprom_prep_for_txn(void);
 
 

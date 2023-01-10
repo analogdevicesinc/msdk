@@ -41,6 +41,7 @@
 
 /***** Type Definitions *****/
 typedef struct {
+	mxc_i2c_regs_t* i2c; //Pointer
 	uint16_t write_addr; //Address to start storing data at
 	uint16_t read_addr; //Address to read data from
 	bool write_op; //Read/write operation state variable
@@ -64,20 +65,26 @@ void eeprom_cleanup(int err);
 
 static void I2C_Handler(void)
 {
-	MXC_I2C_AsyncHandler(EEPROM_I2C);
+	MXC_I2C_AsyncHandler(eeprom.i2c);
 }
 
-int eeprom_init(mxc_gpio_cfg_t rdy_pin)
+int eeprom_init(mxc_i2c_regs_t* eeprom_i2c, mxc_gpio_cfg_t rdy_pin)
 {
 	int err;
 
+	// Check for bad params
+	if(eeprom_i2c == NULL) {
+		return E_NULL_PTR;
+	}
+	eeprom.i2c = eeprom_i2c;
+
 	// Initialize I2C Slave
-	err = MXC_I2C_Init(EEPROM_I2C, 0, EEPROM_ADDR);
+	err = MXC_I2C_Init(eeprom.i2c, 0, EEPROM_ADDR);
 	if (err != E_NO_ERROR) {
 		printf("Failed to initialize I2C slave.\n");
 		return err;
 	}
-	MXC_I2C_SetFrequency(EEPROM_I2C, EEPROM_I2C_FREQ);
+	MXC_I2C_SetFrequency(eeprom.i2c, EEPROM_I2C_FREQ);
 
 	// Initialize cache
 	err = cache_init(&cache, EEPROM_BASE_ADDR);
@@ -86,25 +93,36 @@ int eeprom_init(mxc_gpio_cfg_t rdy_pin)
 		return err;
 	}
 
+	// Initialize pin used for ready signal
 	eeprom.rdy_pin = rdy_pin;
 	eeprom.rdy_pin.func = MXC_GPIO_FUNC_OUT;
 	eeprom.rdy_pin.pad = MXC_GPIO_PAD_NONE;
-	eeprom.rdy_pin.vssel = MXC_GPIO_VSSEL_VDDIOH;
-	MXC_GPIO_Config(&eeprom.rdy_pin);
+	eeprom.rdy_pin.vssel = MXC_GPIO_VSSEL_VDDIO;
+
+	err = MXC_GPIO_Config(&eeprom.rdy_pin);
+	if(err != E_NO_ERROR) {
+		printf("Failed to initialize ready signal.");
+		return err;
+	}
+
+	MXC_GPIO_OutClr(eeprom.rdy_pin.port, eeprom.rdy_pin.mask);
 
 	// Enable I2C Interrupt
-	MXC_NVIC_SetVector(EEPROM_I2C_IRQN, I2C_Handler);
-	NVIC_EnableIRQ(EEPROM_I2C_IRQN);
+	MXC_NVIC_SetVector(EEPROM_I2C_IRQN(eeprom.i2c), I2C_Handler);
+	NVIC_EnableIRQ(EEPROM_I2C_IRQN(eeprom.i2c));
 
 	return E_NO_ERROR;
 }
 
 void eeprom_prep_for_txn(void)
 {
+	// De-assert transaction status variable
 	eeprom_txn_done = false;
 
-	MXC_I2C_SlaveTransactionAsync(EEPROM_I2C, eeprom_handler);
+	// Prep I2C for transaction with master
+	MXC_I2C_SlaveTransactionAsync(eeprom.i2c, eeprom_handler);
 
+	// Assert the ready signal
 	MXC_GPIO_OutSet(eeprom.rdy_pin.port, eeprom.rdy_pin.mask);
 }
 
@@ -112,44 +130,56 @@ int eeprom_handler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t evt, void * retVal
 {
 	int err = *((int*) retVal);
 
-	if(i2c != EEPROM_I2C) {
+	// Check for valid params
+	if(i2c != eeprom.i2c) {
 		return E_INVALID;
 	}
 
 	switch(evt) {
 		case MXC_I2C_EVT_MASTER_WR:	//Prepare to receive data from the master
+			// Transaction started --> de-assert ready signal
 			MXC_GPIO_OutClr(eeprom.rdy_pin.port, eeprom.rdy_pin.mask);
 
+			// Reset EEPROM state variables
 			eeprom.write_op = true;
 			eeprom.overflow = false;
 			eeprom.num_rx = 0;
 			break;
 
-		case MXC_I2C_EVT_MASTER_RD: //Prepare to send data to the master
+		case MXC_I2C_EVT_MASTER_RD:
+			// Transaction (re)started --> de-assert ready signal
 			MXC_GPIO_OutClr(eeprom.rdy_pin.port, eeprom.rdy_pin.mask);
 
+			// Check if a read address was received
 			if (eeprom.write_op == true) {
-				if (eeprom.num_rx < EEPROM_ADDR_SIZE) {
-					return E_BAD_STATE;
+				// Read all bytes from RXFIFO
+				if(MXC_I2C_GetRXFIFOAvailable(eeprom.i2c) != 0) {
+					eeprom_receive_data();
 				}
 
-				eeprom.read_addr = eeprom.rx_buf[0] << 8 | eeprom.rx_buf[1];
+				// Make sure we received a valid number of bytes to reset the Read Addr
+				if (eeprom.num_rx >= EEPROM_ADDR_SIZE) {
+					eeprom.read_addr = eeprom.rx_buf[0] << 8 | eeprom.rx_buf[1];;
+				}
 			}
 
 			eeprom.write_op = false;
 			break;
 
-		case MXC_I2C_EVT_UNDERFLOW: //(Re)fill I2C TX FIFO
+		case MXC_I2C_EVT_UNDERFLOW:
 		case MXC_I2C_EVT_TX_THRESH:
+			//(Re)fill I2C TX FIFO
 			eeprom_send_data();
 			break;
 
-		case MXC_I2C_EVT_OVERFLOW:	//Read data from I2C RX FIFO
+		case MXC_I2C_EVT_OVERFLOW:
 		case MXC_I2C_EVT_RX_THRESH:
+			//Read data from I2C RX FIFO
 			eeprom_receive_data();
 			break;
 
-		case MXC_I2C_EVT_TRANS_COMP: //Reset EEPROM state and process data as necessary
+		case MXC_I2C_EVT_TRANS_COMP: 
+			//TXN complete --> Reset EEPROM state and process data as necessary
 			eeprom_txn_done = true;
 			eeprom_cleanup(err);
 			break;
@@ -173,12 +203,12 @@ void eeprom_send_data(void)
 	}
 
 	// Get the number of bytes available in the I2C TX FIFO
-	tx_avail = MXC_I2C_GetTXFIFOAvailable(EEPROM_I2C);
+	tx_avail = MXC_I2C_GetTXFIFOAvailable(eeprom.i2c);
 
 	// Check whether there are enough bytes in the cache to fill the FIFO
 	if(EEPROM_RAW_ADDR(eeprom.read_addr) + tx_avail >= cache.end_addr) {
 		// Not enough bytes in cache, write remaining bytes in cache to FIFO
-		num_written = MXC_I2C_WriteTXFIFO(EEPROM_I2C,
+		num_written = MXC_I2C_WriteTXFIFO(eeprom.i2c,
 										&cache.cache[CACHE_IDX(eeprom.read_addr)],
 										cache.end_addr - EEPROM_RAW_ADDR(eeprom.read_addr));
 
@@ -196,7 +226,7 @@ void eeprom_send_data(void)
 	}
 
 	// Write remaining bytes to I2C TX FIFO
-	eeprom.read_addr += MXC_I2C_WriteTXFIFO(EEPROM_I2C,
+	eeprom.read_addr += MXC_I2C_WriteTXFIFO(eeprom.i2c,
 									  	  &cache.cache[CACHE_IDX(eeprom.read_addr)],
 										  tx_avail);
 }
@@ -204,18 +234,18 @@ void eeprom_send_data(void)
 void eeprom_receive_data(void)
 {
 	int rx_avail;
-	rx_avail = MXC_I2C_GetRXFIFOAvailable(EEPROM_I2C);
+	rx_avail = MXC_I2C_GetRXFIFOAvailable(eeprom.i2c);
 
 	// Check whether receive buffer will overflow
 	if((rx_avail + eeprom.num_rx) > EEPROM_RX_BUF_SIZE) {
 		eeprom.overflow = true;
-		rx_avail -= MXC_I2C_ReadRXFIFO(EEPROM_I2C, &eeprom.rx_buf[eeprom.num_rx],
+		rx_avail -= MXC_I2C_ReadRXFIFO(eeprom.i2c, &eeprom.rx_buf[eeprom.num_rx],
 						   	   	   	   EEPROM_RX_BUF_SIZE - eeprom.num_rx);
 		eeprom.num_rx = EEPROM_ADDR_SIZE;
 	}
 
 	// Read remaining characters in FIFO
-	eeprom.num_rx += MXC_I2C_ReadRXFIFO(EEPROM_I2C, &eeprom.rx_buf[eeprom.num_rx], rx_avail);
+	eeprom.num_rx += MXC_I2C_ReadRXFIFO(eeprom.i2c, &eeprom.rx_buf[eeprom.num_rx], rx_avail);
 }
 
 void eeprom_store_data(void)
@@ -275,7 +305,7 @@ void eeprom_cleanup(int err)
 		if (eeprom.write_op) {
 			// Write Operation
 			// Read remaining characters if any remain in FIFO
-			fifo_avail = MXC_I2C_GetRXFIFOAvailable(EEPROM_I2C);
+			fifo_avail = MXC_I2C_GetRXFIFOAvailable(eeprom.i2c);
 			if(fifo_avail) {
 				eeprom_receive_data();
 			}
@@ -285,7 +315,7 @@ void eeprom_cleanup(int err)
 		} else {
 			// Read Operation
 			// Decrement read counter if there are unsent data bytes
-			eeprom.read_addr -= EEPROM_FIFO_DEPTH - MXC_I2C_GetTXFIFOAvailable(EEPROM_I2C);
+			eeprom.read_addr -= EEPROM_FIFO_DEPTH - MXC_I2C_GetTXFIFOAvailable(eeprom.i2c);
 		}
 	}
 
@@ -295,6 +325,4 @@ void eeprom_cleanup(int err)
 	eeprom.write_op = false;
 	eeprom.num_rx = 0;
 	eeprom.overflow = false;
-
-	MXC_Delay(50);
 }

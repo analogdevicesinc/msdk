@@ -45,6 +45,17 @@
 #include "include/eeprom.h"
 #include "mxc_errors.h"
 
+/***** Definitions *****/
+#ifdef BOARD_EVKIT_V1
+#define EEPROM_I2C MXC_I2C2
+#define SYNC_PIN_PORT MXC_GPIO2
+#define SYNC_PIN_MASK MXC_GPIO_PIN_4
+#else
+#define EEPROM_I2C MXC_I2C1
+#define SYNC_PIN_PORT MXC_GPIO0
+#define SYNC_PIN_MASK MXC_GPIO_PIN_19
+#endif
+
 /***** Functions *****/
 int main(void)
 {
@@ -52,11 +63,11 @@ int main(void)
 	printf("\n********************  EEPROM Emulator Demo *******************\n");
 
 	mxc_gpio_cfg_t sync_pin;
-	sync_pin.port = MXC_GPIO0;
-	sync_pin.mask = MXC_GPIO_PIN_19;
+	sync_pin.port = SYNC_PIN_PORT;
+	sync_pin.mask = SYNC_PIN_MASK;
 
 	// Initialize EEPROM Emulator
-	if ((err = eeprom_init(sync_pin)) != E_NO_ERROR) {
+	if ((err = eeprom_init(EEPROM_I2C, sync_pin)) != E_NO_ERROR) {
 		printf("Failed to initialize EEPROM Emulator!\n");
 		return err;
 	}
