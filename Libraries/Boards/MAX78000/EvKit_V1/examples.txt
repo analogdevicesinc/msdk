@@ -37,6 +37,7 @@ CameraIF
 CameraIF_Debayer
 DMA
 ECC
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo
