@@ -87,7 +87,7 @@ extern "C" {
  * @ingroup aes_registers
  * Structure type to access the AES Registers.
  */
-typedef struct __attribute__((deprecated("struct and aes_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023"))) {
+typedef struct __attribute__((deprecated("mxc_aes_regs_t struct and aes_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023"))) {
     __IO uint32_t aes_sram_key;         /**< <tt>\b 0x000:</tt> AES AES_SRAM_KEY Register */
     __R  uint32_t rsv_0x4_0x7f[31];
     __IO uint32_t aes_code_key;         /**< <tt>\b 0x080:</tt> AES AES_CODE_KEY Register */
