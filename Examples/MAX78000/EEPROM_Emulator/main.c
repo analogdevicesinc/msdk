@@ -59,24 +59,24 @@
 /***** Functions *****/
 int main(void)
 {
-	int err;
-	printf("\n********************  EEPROM Emulator Demo *******************\n");
+    int err;
+    printf("\n********************  EEPROM Emulator Demo *******************\n");
 
-	mxc_gpio_cfg_t sync_pin;
-	sync_pin.port = SYNC_PIN_PORT;
-	sync_pin.mask = SYNC_PIN_MASK;
+    mxc_gpio_cfg_t sync_pin;
+    sync_pin.port = SYNC_PIN_PORT;
+    sync_pin.mask = SYNC_PIN_MASK;
 
-	// Initialize EEPROM Emulator
-	if ((err = eeprom_init(EEPROM_I2C, sync_pin)) != E_NO_ERROR) {
-		printf("Failed to initialize EEPROM Emulator!\n");
-		return err;
-	}
+    // Initialize EEPROM Emulator
+    if ((err = eeprom_init(EEPROM_I2C, sync_pin)) != E_NO_ERROR) {
+        printf("Failed to initialize EEPROM Emulator!\n");
+        return err;
+    }
 
     while (1) {
-    	// Start next slave transaction
-    	eeprom_prep_for_txn();
+        // Start next slave transaction
+        eeprom_prep_for_txn();
 
-    	// Wait for slave transaction to finish
-    	while(!eeprom_txn_done);
+        // Wait for slave transaction to finish
+        while (!eeprom_txn_done) {}
     }
 }

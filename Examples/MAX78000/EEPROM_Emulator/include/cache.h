@@ -42,9 +42,9 @@
 
 /***** Type Definitions *****/
 typedef struct {
-	uint8_t cache[MXC_FLASH_PAGE_SIZE];
-	uint32_t start_addr;
-	uint32_t end_addr;
+    uint8_t cache[MXC_FLASH_PAGE_SIZE];
+    uint32_t start_addr;
+    uint32_t end_addr;
 } cache_t;
 
 /***** Functions *****/
@@ -56,7 +56,7 @@ typedef struct {
  *
  * @return Success/fail. See \ref MXC_Error_Codes for list of error codes.
  */
-int cache_init(cache_t* cache, uint32_t init_addr);
+int cache_init(cache_t *cache, uint32_t init_addr);
 
 /*
  * @brief Store data currently in cache to flash and load the next flash page into the cache.
@@ -66,6 +66,6 @@ int cache_init(cache_t* cache, uint32_t init_addr);
  *
  * @return Success/fail. See \ref MXC_Error_Codes for list of error codes.
  */
-int cache_refresh(cache_t* cache, uint32_t next_addr);
+int cache_refresh(cache_t *cache, uint32_t next_addr);
 
 #endif // EXAMPLES_MAX78000_EEPROM_EMULATOR_CACHE_H_

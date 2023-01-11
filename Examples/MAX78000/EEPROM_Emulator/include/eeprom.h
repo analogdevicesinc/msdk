@@ -49,8 +49,7 @@
 
 #define EEPROM_NUM_FLASH_PG 4
 #define EEPROM_FLASH_SZ (EEPROM_NUM_FLASH_PG * MXC_FLASH_PAGE_SIZE)
-#define EEPROM_BASE_ADDR ((MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) -\
-						  EEPROM_FLASH_SZ)
+#define EEPROM_BASE_ADDR ((MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - EEPROM_FLASH_SZ)
 #define EEPROM_RAW_ADDR(read_addr) (EEPROM_BASE_ADDR + read_addr)
 
 #define EEPROM_MAX_DATA_RX 64
@@ -71,12 +70,11 @@ extern volatile bool eeprom_txn_done;
  *
  * @return Success/fail. See \ref MXC_Error_Codes for list of error codes.
  */
-int eeprom_init(mxc_i2c_regs_t* eeprom_i2c, mxc_gpio_cfg_t rdy_pin);
+int eeprom_init(mxc_i2c_regs_t *eeprom_i2c, mxc_gpio_cfg_t rdy_pin);
 
 /*
  * @brief Prepares the EEPROM for next transaction with the master device.
  */
 void eeprom_prep_for_txn(void);
-
 
 #endif // EXAMPLES_MAX78000_EEPROM_EMULATOR_EEPROM_H_

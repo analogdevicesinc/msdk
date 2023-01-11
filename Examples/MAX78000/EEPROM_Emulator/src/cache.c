@@ -37,64 +37,65 @@
 #include <string.h>
 #include "flc.h"
 
-int cache_init(cache_t* cache, uint32_t init_addr)
+int cache_init(cache_t *cache, uint32_t init_addr)
 {
-	int err;
+    int err;
 
-	if(cache == NULL) {
-		return E_NULL_PTR;
-	} else if(init_addr < MXC_FLASH_MEM_BASE || init_addr > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
-		return E_BAD_PARAM;
-	}
+    if (cache == NULL) {
+        return E_NULL_PTR;
+    } else if (init_addr < MXC_FLASH_MEM_BASE ||
+               init_addr > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
+        return E_BAD_PARAM;
+    }
 
-	// Configure FLC
-	err = MXC_FLC_Init();
-	if (err != E_NO_ERROR) {
-		printf("Failed to initialize flash controller.\n");
-		return err;
-	}
+    // Configure FLC
+    err = MXC_FLC_Init();
+    if (err != E_NO_ERROR) {
+        printf("Failed to initialize flash controller.\n");
+        return err;
+    }
 
-	// Get starting address of flash page
-	init_addr -= init_addr % MXC_FLASH_PAGE_SIZE;
+    // Get starting address of flash page
+    init_addr -= init_addr % MXC_FLASH_PAGE_SIZE;
 
-	// Initialize cache values and starting address
-	memcpy((void*)cache->cache, (void*)init_addr, MXC_FLASH_PAGE_SIZE);
-	cache->start_addr = init_addr;
-	cache->end_addr = init_addr + MXC_FLASH_PAGE_SIZE;
+    // Initialize cache values and starting address
+    memcpy((void *)cache->cache, (void *)init_addr, MXC_FLASH_PAGE_SIZE);
+    cache->start_addr = init_addr;
+    cache->end_addr = init_addr + MXC_FLASH_PAGE_SIZE;
 
-	return E_NO_ERROR;
+    return E_NO_ERROR;
 }
 
-
-int cache_refresh(cache_t* cache, uint32_t next_addr)
+int cache_refresh(cache_t *cache, uint32_t next_addr)
 {
-	int err;
+    int err;
 
-	if(cache == NULL) {
-		return E_NULL_PTR;
-	} else if(next_addr < MXC_FLASH_MEM_BASE || next_addr > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
-		return E_BAD_PARAM;
-	}
+    if (cache == NULL) {
+        return E_NULL_PTR;
+    } else if (next_addr < MXC_FLASH_MEM_BASE ||
+               next_addr > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
+        return E_BAD_PARAM;
+    }
 
-	// Erase flash page before copying cache contents to it
-	err = MXC_FLC_PageErase(cache->start_addr);
-	if(err != E_NO_ERROR) {
-		return err;
-	}
+    // Erase flash page before copying cache contents to it
+    err = MXC_FLC_PageErase(cache->start_addr);
+    if (err != E_NO_ERROR) {
+        return err;
+    }
 
-	// Copy contents of cache to erase flash page
-	err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t*) cache->cache);
-	if(err != E_NO_ERROR) {
-		return err;
-	}
+    // Copy contents of cache to erase flash page
+    err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t *)cache->cache);
+    if (err != E_NO_ERROR) {
+        return err;
+    }
 
-	// Get starting address of flash page
-	next_addr -= next_addr % MXC_FLASH_PAGE_SIZE;
+    // Get starting address of flash page
+    next_addr -= next_addr % MXC_FLASH_PAGE_SIZE;
 
-	// Initialize cache values and starting address
-	memcpy((void*)cache->cache, (void*)next_addr, MXC_FLASH_PAGE_SIZE);
-	cache->start_addr = next_addr;
-	cache->end_addr = next_addr + MXC_FLASH_PAGE_SIZE;
+    // Initialize cache values and starting address
+    memcpy((void *)cache->cache, (void *)next_addr, MXC_FLASH_PAGE_SIZE);
+    cache->start_addr = next_addr;
+    cache->end_addr = next_addr + MXC_FLASH_PAGE_SIZE;
 
-	return E_NO_ERROR;
+    return E_NO_ERROR;
 }
