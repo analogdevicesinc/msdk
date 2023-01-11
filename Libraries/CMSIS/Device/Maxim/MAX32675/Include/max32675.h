@@ -248,6 +248,15 @@ typedef enum {
 #define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
 
 /******************************************************************************/
+/*                                                                   AES Keys */
+#define MXC_BASE_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
+
+// DEPRECATED(1-10-2023): Scheduled for removal.
+#define MXC_BASE_AESKEY MXC_BASE_AESKEYS
+#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
+
+/******************************************************************************/
 /*                                                      Error Correcting Code */
 #define MXC_BASE_ECC ((uint32_t)0x40105400UL)
 #define MXC_ECC ((mxc_ecc_regs_t *)MXC_BASE_ECC)
@@ -276,15 +285,6 @@ typedef enum {
 /*                                                                        AES */
 #define MXC_BASE_AES ((uint32_t)0x40007400UL)
 #define MXC_AES ((mxc_aes_regs_t *)MXC_BASE_AES)
-
-/******************************************************************************/
-/*                                                                   AES Keys */
-#define MXC_BASE_AESKEYS ((uint32_t)0x40007800UL)
-#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
-
-// DEPRECATED(1-10-2023): Scheduled for removal.
-#define MXC_BASE_AESKEY MXC_BASE_AESKEYS
-#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
 
 /******************************************************************************/
 /*                                                                       GPIO */
