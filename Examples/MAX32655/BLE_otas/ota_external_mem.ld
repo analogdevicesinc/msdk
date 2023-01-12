@@ -31,15 +31,16 @@
  *
  ******************************************************************************/
 
-BOOTLOADER_ORIGIN = 0x10000000;
 BOOTLOADER_LEN = 0x4000;
-FLASH_SECTION_LEN = 0x40000 - BOOTLOADER_LEN;
-FLASH0_ORIGIN = BOOTLOADER_ORIGIN + BOOTLOADER_LEN;
-FLASH0_LEN = 0x40000;
+FLASH_SECTION_LEN = 0x80000 - BOOTLOADER_LEN;
+FLASH_MAIN_ORIGIN = 0x10000000 + BOOTLOADER_LEN;
+FLASH_MAIN_LEN = FLASH_SECTION_LEN - _PAL_NVM_SIZE;
+PAL_NVM_ORIGIN = FLASH_MAIN_ORIGIN + FLASH_SECTION_LEN - _PAL_NVM_SIZE;
+
 MEMORY {
-    FLASH      (rx) : ORIGIN = BOOTLOADER_ORIGIN,   LENGTH = BOOTLOADER_LEN
-    FLASH0     (rx) : ORIGIN = FLASH0_ORIGIN,       LENGTH = FLASH0_LEN
-    FLASH1     (rx) : ORIGIN = 0x10040000,          LENGTH = 0x40000
+    BOOT       (rx) : ORIGIN = 0x10000000,          LENGTH = BOOTLOADER_LEN
+    FLASH      (rx) : ORIGIN = FLASH_MAIN_ORIGIN,   LENGTH = FLASH_MAIN_LEN
+    PAL_NVM_DB (r)  : ORIGIN = PAL_NVM_ORIGIN,      LENGTH = _PAL_NVM_SIZE
     SRAM      (rwx) : ORIGIN = 0x20000000,          LENGTH = 0x20000
 }
 
@@ -60,20 +61,6 @@ SECTIONS {
         _etext = .;
     } > FLASH
 
-    .flash0 (NOLOAD) :
-    {
-        _flash0 = ALIGN(., 4); 
-        . = . + FLASH_SECTION_LEN;
-        _eflash0 = ALIGN(., 4);
-    } > FLASH0
-
-    .flash1 (NOLOAD) :
-    {
-        _flash1 = ALIGN(., 4); 
-        . = . + FLASH_SECTION_LEN;
-        _eflash1 = ALIGN(., 4);
-    } > FLASH1
-    
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
     .ARM.exidx :
@@ -122,6 +109,15 @@ SECTIONS {
         *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM
+
+    .pal_nvm_db :
+    {
+    /* Align to the sector size */
+    . = ALIGN(0x2000);
+    __pal_nvm_db_start__ = .;
+    . = . + _PAL_NVM_SIZE;
+    __pal_nvm_db_end__ = .;
+    } > PAL_NVM_DB
 
     /* Set stack top to end of RAM, and stack limit move down by
      * size of stack_dummy section */

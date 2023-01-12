@@ -23,14 +23,15 @@ MXC_OPTIMIZE_CFLAGS = -Os
 
 AUTOSEARCH=0
 VPATH += .
-SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
+SRCS += stack_dats.c 
+SRCS += dats_main.c
+SRCS += main.c
 
 USE_INTERNAL_FLASH ?=0
 ifeq ($(USE_INTERNAL_FLASH), 1)
 LINKERFILE = ota_internal_mem.ld
-SRCS:=$(subst wdxs_file_ext.c,wdxs_file_int.c,${SRCS})
+SRCS += wdxs_file_int.c
 else
 LINKERFILE = ota_external_mem.ld
-SRCS:=$(subst wdxs_file_int.c,wdxs_file_ext.c,${SRCS})
-
+SRCS += wdxs_file_ext.c
 endif
