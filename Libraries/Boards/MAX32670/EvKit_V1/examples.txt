@@ -29,6 +29,7 @@ RTC
 SPI
 SPI_Usecase
 SPI_MasterSlave
+Temp_Monitor
 TMR
 TRNG
 UART
