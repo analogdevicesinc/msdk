@@ -110,8 +110,8 @@ void wdxsFtcSend(dmConnId_t connId)
   if (AttsCccEnabled(connId, wdxsCb.ftcCccIdx))
   {
     /* send notification */
-    AttsHandleValueNtf(connId, WDXS_FTC_HDL, wdxsCb.ftcMsgLen, wdxsCb.ftcMsgBuf);
     wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_FTC_BIT | WDXS_TX_MASK_READY_BIT);
+    AttsHandleValueNtf(connId, WDXS_FTC_HDL, wdxsCb.ftcMsgLen, wdxsCb.ftcMsgBuf);
   }
 }
 
@@ -498,8 +498,8 @@ void wdxsFtdSend(dmConnId_t connId)
         }
 
         /* send notification */
-        AttsHandleValueNtfZeroCpy(connId, WDXS_FTD_HDL, (uint16_t)readLen, pBuf);
         wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_READY_BIT);
+        AttsHandleValueNtfZeroCpy(connId, WDXS_FTD_HDL, (uint16_t)readLen, pBuf);
       }
       else
       {
