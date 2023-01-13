@@ -1298,9 +1298,8 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
     // I2C_EVT_TRANS_COMP
     // I2C_EVT_UNDERFLOW
     // I2C_EVT_OVERFLOW
-    if (!(int_en[0] &
-          (MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH | MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH |
-           MXC_F_I2C_REVA_INTFL0_ADDR_MATCH))) {
+    if (!(int_en[0] & (MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH | MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH |
+                       MXC_F_I2C_REVA_INTFL0_ADDR_MATCH))) {
         // The STOPERR/STARTERR interrupt that's enabled here could fire before we are addressed
         // (fires anytime a stop/start is detected out of sequence).
         if (tFlags & MXC_I2C_REVA_ERROR) {
@@ -1403,8 +1402,8 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
 
         i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH;
         i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
-        int_en[0] = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT | 
-                   MXC_I2C_REVA_ERROR;
+        int_en[0] = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT |
+                    MXC_I2C_REVA_ERROR;
         int_en[1] = MXC_F_I2C_REVA_INTFL1_TX_UN;
     }
 
@@ -1418,7 +1417,7 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
             i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
             i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
 
-            int_en[0] = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT | 
+            int_en[0] = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT |
                         MXC_I2C_REVA_ERROR;
             int_en[1] = MXC_F_I2C_REVA_INTFL1_TX_UN;
         } else {
