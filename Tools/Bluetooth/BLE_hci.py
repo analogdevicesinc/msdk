@@ -136,11 +136,6 @@ class BLE_hci:
     def __init__(self, args):
         
         try:
-            if "id" in vars(args).keys():
-                self.id = args.id
-            else:
-                self.id = "-"
-                
             # Open serial port
             serialPort = args.serialPort
             self.port = serial.Serial(
@@ -267,11 +262,7 @@ class BLE_hci:
         if(print_evt):
             for i in range(0,packet_len):
                 status_string += '%02X'%payload[i]
-
-            if self.id == "-":
-                print(str(datetime.datetime.now()) + "  <", status_string)
-            else:
-                print(str(datetime.datetime.now()) + f" {self.id}<", status_string)
+            print(str(datetime.datetime.now()) + " <", status_string)
 
         return status_string
 
@@ -294,19 +285,16 @@ class BLE_hci:
      # Send a HCI command to the serial port. Will add a small delay and wait for
      # and print an HCI event by default.
     ################################################################################
-    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=3):
+    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True):
         # Send the command and data
         if(print_cmd):
-            if self.id == "-":
-                print(str(datetime.datetime.now()) + "  >", packet)
-            else:
-                print(str(datetime.datetime.now()) + f" {self.id}>", packet)
+          print(str(datetime.datetime.now()) + " >", packet)
 
         self.port.write(bytearray.fromhex(packet))
         sleep(delay)
 
         if(resp):
-            return self.wait_event(timeout=timeout)
+            return self.wait_event()
 
 
     ## Parse connection stats event.
@@ -314,30 +302,6 @@ class BLE_hci:
      # Parses a connection stats event and prints the results.
     ################################################################################
     def parseConnStatsEvt(self, evt):
-        """
-        Example:
-            2023-01-04 12:41:48.018410 2> 01FDFF00
-            2023-01-04 12:41:48.029006 2< 040E2001FDFF00880000000100000000000000880000000000000000000A0016000700
-
-            rxDataOk   : 136
-            rxDataCRC  : 1
-            rxDataTO   : 0
-            txData     : 136
-            errTrans   : 0
-            PER        : 0.73 %
-
-            2023-01-04 16:04:27.486935 1> 01FDFF00
-            2023-01-04 16:04:27.497405 1< 040E2001FDFF0000000000000000000000000000000000000000000000000000000000
-            rxDataOk   : 0
-            rxDataCRC  : 0
-            rxDataTO   : 0
-            txData     : 0
-            errTrans   : 0
-            perMaster  :  100.0
-
-        :param evt:
-        :return: per
-        """
         try:
             # Offset into the event where the stats start, each stat is 32 bits, or
             # 8 hex nibbles
@@ -364,8 +328,8 @@ class BLE_hci:
         print("errTrans   : "+str(errTrans))
 
         per = 100.0
-        if (rxDataCRC+rxDataTO+rxDataOk) != 0:
-            per = round(float((rxDataCRC+rxDataTO)/(rxDataCRC+rxDataTO+rxDataOk))*100, 2)
+        if((rxDataCRC+rxDataTO+rxDataOk) != 0):
+            per = round(float((rxDataCRC+rxDataTO)/(rxDataCRC+rxDataTO+rxDataOk))*100,2)
             print("PER        : "+str(per)+" %")
 
         return per
@@ -383,10 +347,10 @@ class BLE_hci:
                 msg = msg.replace("\r\n", "")
                 if msg != "":
                     if first:
-                        print(f'\n{str(datetime.datetime.now())} {self.id}  {msg}')
+                        print(f'\n{str(datetime.datetime.now())} - {msg}')
                         first = False
                     else:
-                        print(f'{str(datetime.datetime.now())} {self.id}  {msg}')
+                        print(f'{str(datetime.datetime.now())} - {msg}')
 
 
     ## Get connection stats.
@@ -692,7 +656,7 @@ class BLE_hci:
      # Sends HCI command to switch PHYs. Assumes that we can't do asymmetric PHY settings.
      # Assumes we're using connection handle 0000
     ################################################################################
-    def phyFunc(self, args, timeout=3):
+    def phyFunc(self, args):
         # Convert PHY options to bits
         phy="01"
         phyOptions="0000"
@@ -708,7 +672,7 @@ class BLE_hci:
             print("Invalid PHY selection, using 1M")
 
         self.send_command("01322007"+"0000"+"00"+phy+phy+phyOptions)
-        self.wait_events(timeout)
+        self.wait_events(3)
 
     ## Rest function.
      #
@@ -878,11 +842,8 @@ class BLE_hci:
      #
      # Sends HCI commands.
     ################################################################################
-    def cmdFunc(self,args, timeout=None):
-        if timeout is None:
-            self.send_command(args.cmd)
-        else:
-            self.send_command(args.cmd, timeout=timeout)
+    def cmdFunc(self,args):
+        self.send_command(args.cmd)
 
     ## Read register function.
      #
