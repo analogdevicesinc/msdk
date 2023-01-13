@@ -27,6 +27,7 @@
 #include "wsf_efs.h"
 #include "wsf_cs.h"
 #include "wsf_msg.h"
+#include "wsf_buf.h"
 #include "util/bstream.h"
 #include "svc_wdxs.h"
 #include "wdxs/wdxs_api.h"
@@ -37,6 +38,7 @@
 #include "app_api.h"
 #include "flc.h"
 #include "Ext_Flash.h"
+
 #ifndef FW_VERSION
 #define FW_VERSION 1
 #endif
@@ -238,9 +240,15 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     static bool_t savedHeader = FALSE;
     int err = 0;
     uint8_t attempts = 2;
-    uint8_t *tempBuff = (uint8_t *)malloc(size);
+    uint8_t *tempBuff = (uint8_t *)WsfBufAlloc(size);
     /* helps silence compiler warnings over discarded const qualifier */
     uint32_t addressToBuf = (uint32_t)pBuf;
+
+    if(tempBuff == NULL) {
+        APP_TRACE_INFO0("Failed to malloc buffer");
+        WSF_ASSERT(0);
+    }
+
     /* write the header in flash device */
     if (!savedHeader) {
         err += Ext_Flash_Program_Page(HEADER_LOCATION, (uint8_t *)&fileHeader, sizeof(fileHeader_t),
@@ -250,6 +258,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
                               Ext_Flash_DataLine_Quad);
         if (memcmp(tempBuff, (uint8_t *)&fileHeader, sizeof(fileHeader_t)) != 0) {
             APP_TRACE_INFO0("Error writting header to external flash");
+            WSF_ASSERT(0);
         }
         savedHeader = TRUE;
     }
@@ -280,7 +289,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
         err = WSF_EFS_FAILURE;
     }
 
-    free(tempBuff);
+    WsfBufFree(tempBuff);
     return err;
 }
 
