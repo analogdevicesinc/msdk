@@ -55,6 +55,10 @@
 
 extern void bleStartup(void);
 
+#ifndef DEBUG
+#define printf(...)
+#endif
+
 /***** Functions *****/
 
 /* =| vAssertCalled |==============================

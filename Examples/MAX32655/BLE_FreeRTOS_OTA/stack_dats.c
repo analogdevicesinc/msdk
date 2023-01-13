@@ -341,13 +341,18 @@ void bleStartup(void)
 #endif
 
     uint32_t memUsed;
+
+
+    mainWsfInit();
+
+#if (WSF_TRACE_ENABLED == TRUE)
     WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
     WsfCsExit();
 
-    mainWsfInit();
     AppTerminalInit();
+#endif
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();
