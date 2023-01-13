@@ -124,6 +124,26 @@ int main(void)
     volatile int i;
     for (i = 0; i < 0x3FFFFF; i++) {}
 
+    /* Setup the unused GPIO high */
+    mxc_gpio_cfg_t lpGpio;
+
+    /* Set the wakeup pins high */
+    lpGpio.port = MXC_GPIO3;
+    lpGpio.mask = (0x3);
+    lpGpio.func = MXC_GPIO_FUNC_OUT;
+    lpGpio.pad = MXC_GPIO_PAD_NONE;
+    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIO;
+    MXC_GPIO_Config(&lpGpio);
+    MXC_GPIO_OutSet(MXC_GPIO3, 0x3);
+
+    lpGpio.port = MXC_GPIO0;
+    lpGpio.mask = (0xE7F3FFF0);
+    lpGpio.func = MXC_GPIO_FUNC_OUT;
+    lpGpio.pad = MXC_GPIO_PAD_NONE;
+    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIO;
+    MXC_GPIO_Config(&lpGpio);
+    MXC_GPIO_OutSet(MXC_GPIO0, 0xE7F3FFF0);
+
     /* Start the BLE application */
     bleStartup();
 
