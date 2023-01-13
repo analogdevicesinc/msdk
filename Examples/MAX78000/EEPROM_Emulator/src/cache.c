@@ -59,7 +59,7 @@ int cache_init(cache_t *cache, uint32_t init_addr)
     init_addr -= init_addr % MXC_FLASH_PAGE_SIZE;
 
     // Initialize cache values and starting address
-    memcpy((void *)cache->cache, (void *)init_addr, MXC_FLASH_PAGE_SIZE);
+    memcpy(cache->cache, (void *)init_addr, MXC_FLASH_PAGE_SIZE);
     cache->start_addr = init_addr;
     cache->end_addr = init_addr + MXC_FLASH_PAGE_SIZE;
 
@@ -93,7 +93,7 @@ int cache_refresh(cache_t *cache, uint32_t next_addr)
     next_addr -= next_addr % MXC_FLASH_PAGE_SIZE;
 
     // Initialize cache values and starting address
-    memcpy((void *)cache->cache, (void *)next_addr, MXC_FLASH_PAGE_SIZE);
+    memcpy(cache->cache, (void *)next_addr, MXC_FLASH_PAGE_SIZE);
     cache->start_addr = next_addr;
     cache->end_addr = next_addr + MXC_FLASH_PAGE_SIZE;
 

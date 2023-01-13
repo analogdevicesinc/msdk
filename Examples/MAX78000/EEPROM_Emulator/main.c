@@ -33,8 +33,11 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   EEPROM_Emulator Example
+ * @details This example can be used to emulate the behavior of
+ *          an EEPROM chip with an I2C interface. See README for
+ *          details on how to perform read and write operations
+ *          with the device.
  */
 
 /***** Includes *****/

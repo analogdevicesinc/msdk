@@ -1,18 +1,20 @@
 ## Description
 
-This example utilizes the MAX78000 to emulate a 32KiB EEPROM chip.
+This example utilizes the MAX78000 to emulate a 32KiB EEPROM chip with an I2C interface.
 
 This "EEEPROM" can only perform read and write operations.
 
-To write to the EEPROM, transmit a master write command followed by two write address bytes, and finally the data bytes. The write address is a 16-bit address, with the first address byte as the MSB and the second as the LSB. You may transmit as many data bytes as you wish, however only the last 64 data bytes will be stored. If you write past the end of the EEPROM address space, the write will continue at the beginning of the EEPROM address space.
+To write to the EEPROM, transmit a master write command followed by two write address bytes, and finally the data bytes. The write address is a 16-bit address, with the first address byte as the MSB and the second as the LSB. The EEPROM emulator is able to receive up to 64 bytes per write operation. If you write past the end of the EEPROM address space, the write will continue at the beginning of the EEPROM address space.
 
-To read from the EEPROM, simply issue a master read command and the device will begin transmitting its stored data from where the previous read operation left off. It is also possible to specify where the read operation will start by issuing a master write command followed by the two byte read address (same format as the write address), then a repeated start and master read command. Once you have received all the bytes you need, issue a NACK+STOP. If you read past the end of the EEPROM address space, the write will continue at the beginning of the EEPROM address space.
+Unlike write operations, the EEPROM determines the location of the read based on the value of an internal read address pointer. The read pointer is initialized to address 0x0000 and increments by 1 after transmitting the value at the current address. For example, if the value of the read pointer was initially 0x0000 and you read 8 bytes, the device will transmit bytes 0x0000-0x0007 and the final value of the read pointer will be 0x0008 which is where the next read operation will start from.
+
+To initiate a read operation simply transmit a master read command. The device will then begin transmitting bytes starting from the current read pointer. If, however, you do not wish to read from the current address of the read pointer, you may set the read pointer by initiating the read operation with a master write command followed by the new two byte address of the read pointer (same format as the write address). Then, issue a repeated start and master read command. The device will then begin transmitting bytes starting from the new read pointer. Read operations will continue until a NACK+STOP is issued by the master. If you read past the end of the EEPROM address space, the read will continue at the beginning of the EEPROM address space.
 
 The default slave address of the EEPROM is 0x24. This can be modified by changing the value of the EEPROM_ADDR define in include/eeprom.h.
 
 To help with syncronization, a "Ready Signal" is output from a GPIO pin. When the signal is high, the EEPROM is not currently processing a transaction and is ready for the next transaction to begin. When the signal is low, the EEPROM has either not been initialized or is currently still processing the previous transaction, and thus is not ready to process the next transaction.
 
-**** NOTE ****: Due to the limitations of the flash controller, this example was implemented with a pseudo-cache. The cache copies the current page being operated on into volatile memory, where all reads and writes are performed. The cache is only written back to flash when there is a cache miss. So, if you wish to ensure the data you have written gets stored in flash, you will need to perform a read or write operation on another flash page. For reference, the flash memory used as EEPROM memory in this example is made up of four 8KiB flash pages.
+**** NOTE ****: Due to the limitations of the flash controller, this example was implemented with a pseudo-cache. The cache copies the current page being operated on into volatile memory, where all reads and writes are performed. The cache is only written back to flash when there is a cache miss. So, to ensure the data you have written gets stored in flash, you will need to perform a read or write operation on another flash page. For reference, the flash memory used as EEPROM memory in this example is made up of four 8KiB flash pages.
 
 ## Setup
 
