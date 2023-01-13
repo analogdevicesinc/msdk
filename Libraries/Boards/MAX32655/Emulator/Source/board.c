@@ -135,10 +135,7 @@ int Console_Shutdown(void)
 }
 
 /******************************************************************************/
-void GPIO_PrepForSleep(void)
-{
-
-}
+void GPIO_PrepForSleep(void) {}
 
 /******************************************************************************/
 void NMI_Handler(void)
