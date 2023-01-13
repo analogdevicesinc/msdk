@@ -55,15 +55,11 @@ extern "C" {
 #endif
 
 #ifndef HCI_UART
-#define HCI_UART 0  /// ME1 TO ME17 TEST BOARD
+#define HCI_UART 0 /// ME18 TO ME17 TEST BOARD
 #endif
 
 #ifndef TERMINAL_UART
 #define TERMINAL_UART CONSOLE_UART
-#endif
-
-#ifndef USER_UART
-#define USER_UART 1
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
@@ -75,19 +71,13 @@ extern "C" {
 
 #define WLP_V1 /// Used in examples to control program flow
 
-/**
- *  A reference to LED1 (RED LED in the RGB LED) of the board.
- *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
- */
-#define LED1 0
-#define LED_RED LED1
 
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
  */
-#define LED2 1
-#define LED_GREEN LED2
+#define LED0 0
+#define LED_GREEN LED0
 
 /**
  * \brief   Initialize the BSP and board interfaces.
@@ -113,21 +103,6 @@ int Console_Shutdown(void);
  * \returns #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
  */
 int Console_PrepForSleep(void);
-
-/*
- * @brief Initialize the SPI interface used to communicate with the TFT Controller
- */
-void TFT_SPI_Init(void);
-
-/*
- * @brief Send command or parameter information to TFT controller
- *
- * @param datain    Buffer containing data to send to TFT controller
- * @param count     Number of bytes to send
- * @param data      True - data in datain are data/parameter bytes, False - data in datain
- *                         is a command
- */
-void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data);
 
 #ifdef __cplusplus
 }
