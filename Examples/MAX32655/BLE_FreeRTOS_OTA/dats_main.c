@@ -194,9 +194,18 @@ static const uint8_t datsAdvDataDisc[] = {
 /*! scan data, discoverable mode */
 static const uint8_t datsScanDataDisc[] = {
     /*! device name */
-    5, /*! length */
+    14, /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
-    'Z',
+    'F',
+    'r',
+    'e',
+    'e',
+    'R',
+    'T',
+    'O',
+    'S',
+    '_',
+    'O',
     'T',
     'A',
     'S'
