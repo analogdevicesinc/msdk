@@ -22,6 +22,33 @@ This Bootloader application needs to be loaded prior to loading this application
 will run on top of the Bootloader. The linker file included with this application must be used
 to properly setup the memory sections to coincide with the Bootloader.
 
+### Tickless mode
+Uncomment the following line in **project.mk** to enable tickless mode. This will utilize standby mode
+between events to minimize the power consumption. Debug will be difficult in this mode, as the ARM debugger
+will be power down most of the time. Reset the device just prior to debugging again.
+
+``` bash
+# Un-comment this line to enable tickless mode, standby mode between events
+PROJ_CFLAGS += -DUSE_TICKLESS_IDLE=1
+```
+
+### Minimize code space
+Set the following variables to 0 in **project.mk** to minimize the code space.
+
+```bash
+# Set to zero to minimize code size. This will disable debugging features.
+DEBUG = 0
+
+# Set to zero to minimize code size. This will disable the serial port trace messages.
+TRACE = 0
+```
+
+``` bash
+arm-none-eabi-size --format=berkeley build/max32655.elf
+   text    data     bss     dec     hex filename
+ 139008       0  153432  292440   47658 build/max32655.elf
+```
+
 ### Board Selection
 
 Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
