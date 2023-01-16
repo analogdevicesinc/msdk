@@ -173,16 +173,16 @@ typedef struct {
 #define MXC_V_ADC_CTRL_CH_SEL_VREGI                    ((uint32_t)0x10UL) /**< CTRL_CH_SEL_VREGI Value */
 #define MXC_S_ADC_CTRL_CH_SEL_VREGI                    (MXC_V_ADC_CTRL_CH_SEL_VREGI << MXC_F_ADC_CTRL_CH_SEL_POS) /**< CTRL_CH_SEL_VREGI Setting */
 
-#define MXC_F_ADC_CTRL_ADC_DIVSEL_POS                  17 /**< CTRL_ADC_DIVSEL Position */
-#define MXC_F_ADC_CTRL_ADC_DIVSEL                      ((uint32_t)(0x3UL << MXC_F_ADC_CTRL_ADC_DIVSEL_POS)) /**< CTRL_ADC_DIVSEL Mask */
-#define MXC_V_ADC_CTRL_ADC_DIVSEL_DIV1                 ((uint32_t)0x0UL) /**< CTRL_ADC_DIVSEL_DIV1 Value */
-#define MXC_S_ADC_CTRL_ADC_DIVSEL_DIV1                 (MXC_V_ADC_CTRL_ADC_DIVSEL_DIV1 << MXC_F_ADC_CTRL_ADC_DIVSEL_POS) /**< CTRL_ADC_DIVSEL_DIV1 Setting */
-#define MXC_V_ADC_CTRL_ADC_DIVSEL_DIV2                 ((uint32_t)0x1UL) /**< CTRL_ADC_DIVSEL_DIV2 Value */
-#define MXC_S_ADC_CTRL_ADC_DIVSEL_DIV2                 (MXC_V_ADC_CTRL_ADC_DIVSEL_DIV2 << MXC_F_ADC_CTRL_ADC_DIVSEL_POS) /**< CTRL_ADC_DIVSEL_DIV2 Setting */
-#define MXC_V_ADC_CTRL_ADC_DIVSEL_DIV3                 ((uint32_t)0x2UL) /**< CTRL_ADC_DIVSEL_DIV3 Value */
-#define MXC_S_ADC_CTRL_ADC_DIVSEL_DIV3                 (MXC_V_ADC_CTRL_ADC_DIVSEL_DIV3 << MXC_F_ADC_CTRL_ADC_DIVSEL_POS) /**< CTRL_ADC_DIVSEL_DIV3 Setting */
-#define MXC_V_ADC_CTRL_ADC_DIVSEL_DIV4                 ((uint32_t)0x3UL) /**< CTRL_ADC_DIVSEL_DIV4 Value */
-#define MXC_S_ADC_CTRL_ADC_DIVSEL_DIV4                 (MXC_V_ADC_CTRL_ADC_DIVSEL_DIV4 << MXC_F_ADC_CTRL_ADC_DIVSEL_POS) /**< CTRL_ADC_DIVSEL_DIV4 Setting */
+#define MXC_F_ADC_CTRL_DIVSEL_POS                      17 /**< CTRL_DIVSEL Position */
+#define MXC_F_ADC_CTRL_DIVSEL                          ((uint32_t)(0x3UL << MXC_F_ADC_CTRL_DIVSEL_POS)) /**< CTRL_DIVSEL Mask */
+#define MXC_V_ADC_CTRL_DIVSEL_DIV1                     ((uint32_t)0x0UL) /**< CTRL_DIVSEL_DIV1 Value */
+#define MXC_S_ADC_CTRL_DIVSEL_DIV1                     (MXC_V_ADC_CTRL_DIVSEL_DIV1 << MXC_F_ADC_CTRL_DIVSEL_POS) /**< CTRL_DIVSEL_DIV1 Setting */
+#define MXC_V_ADC_CTRL_DIVSEL_DIV2                     ((uint32_t)0x1UL) /**< CTRL_DIVSEL_DIV2 Value */
+#define MXC_S_ADC_CTRL_DIVSEL_DIV2                     (MXC_V_ADC_CTRL_DIVSEL_DIV2 << MXC_F_ADC_CTRL_DIVSEL_POS) /**< CTRL_DIVSEL_DIV2 Setting */
+#define MXC_V_ADC_CTRL_DIVSEL_DIV3                     ((uint32_t)0x2UL) /**< CTRL_DIVSEL_DIV3 Value */
+#define MXC_S_ADC_CTRL_DIVSEL_DIV3                     (MXC_V_ADC_CTRL_DIVSEL_DIV3 << MXC_F_ADC_CTRL_DIVSEL_POS) /**< CTRL_DIVSEL_DIV3 Setting */
+#define MXC_V_ADC_CTRL_DIVSEL_DIV4                     ((uint32_t)0x3UL) /**< CTRL_DIVSEL_DIV4 Value */
+#define MXC_S_ADC_CTRL_DIVSEL_DIV4                     (MXC_V_ADC_CTRL_DIVSEL_DIV4 << MXC_F_ADC_CTRL_DIVSEL_POS) /**< CTRL_DIVSEL_DIV4 Setting */
 
 #define MXC_F_ADC_CTRL_DATA_ALIGN_POS                  20 /**< CTRL_DATA_ALIGN Position */
 #define MXC_F_ADC_CTRL_DATA_ALIGN                      ((uint32_t)(0x1UL << MXC_F_ADC_CTRL_DATA_ALIGN_POS)) /**< CTRL_DATA_ALIGN Mask */

@@ -93,8 +93,8 @@ typedef struct {
     __IO uint32_t ctrl3;                /**< <tt>\b 0x10:</tt> SPIXFC CTRL3 Register */
     __IO uint32_t intfl;                /**< <tt>\b 0x14:</tt> SPIXFC INTFL Register */
     __IO uint32_t inten;                /**< <tt>\b 0x18:</tt> SPIXFC INTEN Register */
-    __IO uint32_t simple_header;        /**< <tt>\b 0x1C:</tt> SPIXFC SIMPLE_HEADER Register */
-    __IO uint32_t autocn;               /**< <tt>\b 0x20:</tt> SPIXFC AUTOCN Register */
+    __IO uint32_t header;               /**< <tt>\b 0x1C:</tt> SPIXFC HEADER Register */
+    __IO uint32_t autoctrl;             /**< <tt>\b 0x20:</tt> SPIXFC AUTOCTRL Register */
     __IO uint32_t autocmd;              /**< <tt>\b 0x24:</tt> SPIXFC AUTOCMD Register */
 } mxc_spixfc_regs_t;
 
@@ -112,8 +112,8 @@ typedef struct {
 #define MXC_R_SPIXFC_CTRL3                 ((uint32_t)0x00000010UL) /**< Offset from SPIXFC Base Address: <tt> 0x0010</tt> */
 #define MXC_R_SPIXFC_INTFL                 ((uint32_t)0x00000014UL) /**< Offset from SPIXFC Base Address: <tt> 0x0014</tt> */
 #define MXC_R_SPIXFC_INTEN                 ((uint32_t)0x00000018UL) /**< Offset from SPIXFC Base Address: <tt> 0x0018</tt> */
-#define MXC_R_SPIXFC_SIMPLE_HEADER         ((uint32_t)0x0000001CUL) /**< Offset from SPIXFC Base Address: <tt> 0x001C</tt> */
-#define MXC_R_SPIXFC_AUTOCN                ((uint32_t)0x00000020UL) /**< Offset from SPIXFC Base Address: <tt> 0x0020</tt> */
+#define MXC_R_SPIXFC_HEADER                ((uint32_t)0x0000001CUL) /**< Offset from SPIXFC Base Address: <tt> 0x001C</tt> */
+#define MXC_R_SPIXFC_AUTOCTRL              ((uint32_t)0x00000020UL) /**< Offset from SPIXFC Base Address: <tt> 0x0020</tt> */
 #define MXC_R_SPIXFC_AUTOCMD               ((uint32_t)0x00000024UL) /**< Offset from SPIXFC Base Address: <tt> 0x0024</tt> */
 /**@} end of group spixfc_registers */
 
@@ -172,16 +172,16 @@ typedef struct {
 #define MXC_V_SPIXFC_CTRL0_SSACT_8_CLKS                ((uint32_t)0x3UL) /**< CTRL0_SSACT_8_CLKS Value */
 #define MXC_S_SPIXFC_CTRL0_SSACT_8_CLKS                (MXC_V_SPIXFC_CTRL0_SSACT_8_CLKS << MXC_F_SPIXFC_CTRL0_SSACT_POS) /**< CTRL0_SSACT_8_CLKS Setting */
 
-#define MXC_F_SPIXFC_CTRL0_SSIACT_POS                  18 /**< CTRL0_SSIACT Position */
-#define MXC_F_SPIXFC_CTRL0_SSIACT                      ((uint32_t)(0x3UL << MXC_F_SPIXFC_CTRL0_SSIACT_POS)) /**< CTRL0_SSIACT Mask */
-#define MXC_V_SPIXFC_CTRL0_SSIACT_4_CLKS               ((uint32_t)0x0UL) /**< CTRL0_SSIACT_4_CLKS Value */
-#define MXC_S_SPIXFC_CTRL0_SSIACT_4_CLKS               (MXC_V_SPIXFC_CTRL0_SSIACT_4_CLKS << MXC_F_SPIXFC_CTRL0_SSIACT_POS) /**< CTRL0_SSIACT_4_CLKS Setting */
-#define MXC_V_SPIXFC_CTRL0_SSIACT_6_CLKS               ((uint32_t)0x1UL) /**< CTRL0_SSIACT_6_CLKS Value */
-#define MXC_S_SPIXFC_CTRL0_SSIACT_6_CLKS               (MXC_V_SPIXFC_CTRL0_SSIACT_6_CLKS << MXC_F_SPIXFC_CTRL0_SSIACT_POS) /**< CTRL0_SSIACT_6_CLKS Setting */
-#define MXC_V_SPIXFC_CTRL0_SSIACT_8_CLKS               ((uint32_t)0x2UL) /**< CTRL0_SSIACT_8_CLKS Value */
-#define MXC_S_SPIXFC_CTRL0_SSIACT_8_CLKS               (MXC_V_SPIXFC_CTRL0_SSIACT_8_CLKS << MXC_F_SPIXFC_CTRL0_SSIACT_POS) /**< CTRL0_SSIACT_8_CLKS Setting */
-#define MXC_V_SPIXFC_CTRL0_SSIACT_12_CLKS              ((uint32_t)0x3UL) /**< CTRL0_SSIACT_12_CLKS Value */
-#define MXC_S_SPIXFC_CTRL0_SSIACT_12_CLKS              (MXC_V_SPIXFC_CTRL0_SSIACT_12_CLKS << MXC_F_SPIXFC_CTRL0_SSIACT_POS) /**< CTRL0_SSIACT_12_CLKS Setting */
+#define MXC_F_SPIXFC_CTRL0_SSINACT_POS                 18 /**< CTRL0_SSINACT Position */
+#define MXC_F_SPIXFC_CTRL0_SSINACT                     ((uint32_t)(0x3UL << MXC_F_SPIXFC_CTRL0_SSINACT_POS)) /**< CTRL0_SSINACT Mask */
+#define MXC_V_SPIXFC_CTRL0_SSINACT_4_CLKS              ((uint32_t)0x0UL) /**< CTRL0_SSINACT_4_CLKS Value */
+#define MXC_S_SPIXFC_CTRL0_SSINACT_4_CLKS              (MXC_V_SPIXFC_CTRL0_SSINACT_4_CLKS << MXC_F_SPIXFC_CTRL0_SSINACT_POS) /**< CTRL0_SSINACT_4_CLKS Setting */
+#define MXC_V_SPIXFC_CTRL0_SSINACT_6_CLKS              ((uint32_t)0x1UL) /**< CTRL0_SSINACT_6_CLKS Value */
+#define MXC_S_SPIXFC_CTRL0_SSINACT_6_CLKS              (MXC_V_SPIXFC_CTRL0_SSINACT_6_CLKS << MXC_F_SPIXFC_CTRL0_SSINACT_POS) /**< CTRL0_SSINACT_6_CLKS Setting */
+#define MXC_V_SPIXFC_CTRL0_SSINACT_8_CLKS              ((uint32_t)0x2UL) /**< CTRL0_SSINACT_8_CLKS Value */
+#define MXC_S_SPIXFC_CTRL0_SSINACT_8_CLKS              (MXC_V_SPIXFC_CTRL0_SSINACT_8_CLKS << MXC_F_SPIXFC_CTRL0_SSINACT_POS) /**< CTRL0_SSINACT_8_CLKS Setting */
+#define MXC_V_SPIXFC_CTRL0_SSINACT_12_CLKS             ((uint32_t)0x3UL) /**< CTRL0_SSINACT_12_CLKS Value */
+#define MXC_S_SPIXFC_CTRL0_SSINACT_12_CLKS             (MXC_V_SPIXFC_CTRL0_SSINACT_12_CLKS << MXC_F_SPIXFC_CTRL0_SSINACT_POS) /**< CTRL0_SSINACT_12_CLKS Setting */
 
 #define MXC_F_SPIXFC_CTRL0_IOSMPL_POS                  20 /**< CTRL0_IOSMPL Position */
 #define MXC_F_SPIXFC_CTRL0_IOSMPL                      ((uint32_t)(0xFUL << MXC_F_SPIXFC_CTRL0_IOSMPL_POS)) /**< CTRL0_IOSMPL Mask */
@@ -194,11 +194,11 @@ typedef struct {
  * @brief    SPIX Controller Slave Select Polarity Register.
  * @{
  */
-#define MXC_F_SPIXFC_SSPOL_SS_POL_POS                  0 /**< SSPOL_SS_POL Position */
-#define MXC_F_SPIXFC_SSPOL_SS_POL                      ((uint32_t)(0x1UL << MXC_F_SPIXFC_SSPOL_SS_POL_POS)) /**< SSPOL_SS_POL Mask */
+#define MXC_F_SPIXFC_SSPOL_SSPOL_POS                   0 /**< SSPOL_SSPOL Position */
+#define MXC_F_SPIXFC_SSPOL_SSPOL                       ((uint32_t)(0x1UL << MXC_F_SPIXFC_SSPOL_SSPOL_POS)) /**< SSPOL_SSPOL Mask */
 
-#define MXC_F_SPIXFC_SSPOL_FC_POL_POS                  8 /**< SSPOL_FC_POL Position */
-#define MXC_F_SPIXFC_SSPOL_FC_POL                      ((uint32_t)(0x1UL << MXC_F_SPIXFC_SSPOL_FC_POL_POS)) /**< SSPOL_FC_POL Mask */
+#define MXC_F_SPIXFC_SSPOL_FCPOL_POS                   8 /**< SSPOL_FCPOL Position */
+#define MXC_F_SPIXFC_SSPOL_FCPOL                       ((uint32_t)(0x1UL << MXC_F_SPIXFC_SSPOL_FCPOL_POS)) /**< SSPOL_FCPOL Mask */
 
 /**@} end of group SPIXFC_SSPOL_Register */
 
@@ -217,8 +217,8 @@ typedef struct {
 #define MXC_F_SPIXFC_CTRL1_RX_FIFO_EN_POS              2 /**< CTRL1_RX_FIFO_EN Position */
 #define MXC_F_SPIXFC_CTRL1_RX_FIFO_EN                  ((uint32_t)(0x1UL << MXC_F_SPIXFC_CTRL1_RX_FIFO_EN_POS)) /**< CTRL1_RX_FIFO_EN Mask */
 
-#define MXC_F_SPIXFC_CTRL1_BBMODE_POS                  3 /**< CTRL1_BBMODE Position */
-#define MXC_F_SPIXFC_CTRL1_BBMODE                      ((uint32_t)(0x1UL << MXC_F_SPIXFC_CTRL1_BBMODE_POS)) /**< CTRL1_BBMODE Mask */
+#define MXC_F_SPIXFC_CTRL1_BB_EN_POS                   3 /**< CTRL1_BB_EN Position */
+#define MXC_F_SPIXFC_CTRL1_BB_EN                       ((uint32_t)(0x1UL << MXC_F_SPIXFC_CTRL1_BB_EN_POS)) /**< CTRL1_BB_EN Mask */
 
 #define MXC_F_SPIXFC_CTRL1_SSDR_POS                    4 /**< CTRL1_SSDR Position */
 #define MXC_F_SPIXFC_CTRL1_SSDR                        ((uint32_t)(0x1UL << MXC_F_SPIXFC_CTRL1_SSDR_POS)) /**< CTRL1_SSDR Mask */
@@ -262,8 +262,8 @@ typedef struct {
 #define MXC_V_SPIXFC_CTRL1_BB_DATA_OUT_EN_SDIO3        ((uint32_t)0x3UL) /**< CTRL1_BB_DATA_OUT_EN_SDIO3 Value */
 #define MXC_S_SPIXFC_CTRL1_BB_DATA_OUT_EN_SDIO3        (MXC_V_SPIXFC_CTRL1_BB_DATA_OUT_EN_SDIO3 << MXC_F_SPIXFC_CTRL1_BB_DATA_OUT_EN_POS) /**< CTRL1_BB_DATA_OUT_EN_SDIO3 Setting */
 
-#define MXC_F_SPIXFC_CTRL1_SIMPLE_POS                  20 /**< CTRL1_SIMPLE Position */
-#define MXC_F_SPIXFC_CTRL1_SIMPLE                      ((uint32_t)(0x1UL << MXC_F_SPIXFC_CTRL1_SIMPLE_POS)) /**< CTRL1_SIMPLE Mask */
+#define MXC_F_SPIXFC_CTRL1_SIMPLE_EN_POS               20 /**< CTRL1_SIMPLE_EN Position */
+#define MXC_F_SPIXFC_CTRL1_SIMPLE_EN                   ((uint32_t)(0x1UL << MXC_F_SPIXFC_CTRL1_SIMPLE_EN_POS)) /**< CTRL1_SIMPLE_EN Mask */
 
 #define MXC_F_SPIXFC_CTRL1_SIMPLE_RX_POS               21 /**< CTRL1_SIMPLE_RX Position */
 #define MXC_F_SPIXFC_CTRL1_SIMPLE_RX                   ((uint32_t)(0x1UL << MXC_F_SPIXFC_CTRL1_SIMPLE_RX_POS)) /**< CTRL1_SIMPLE_RX Mask */
@@ -311,8 +311,8 @@ typedef struct {
 #define MXC_F_SPIXFC_CTRL3_MISO_FC_EN_POS              1 /**< CTRL3_MISO_FC_EN Position */
 #define MXC_F_SPIXFC_CTRL3_MISO_FC_EN                  ((uint32_t)(0x1UL << MXC_F_SPIXFC_CTRL3_MISO_FC_EN_POS)) /**< CTRL3_MISO_FC_EN Mask */
 
-#define MXC_F_SPIXFC_CTRL3_SDIO_OUT_POS                4 /**< CTRL3_SDIO_OUT Position */
-#define MXC_F_SPIXFC_CTRL3_SDIO_OUT                    ((uint32_t)(0xFUL << MXC_F_SPIXFC_CTRL3_SDIO_OUT_POS)) /**< CTRL3_SDIO_OUT Mask */
+#define MXC_F_SPIXFC_CTRL3_SDIO_OUT_VAL_POS            4 /**< CTRL3_SDIO_OUT_VAL Position */
+#define MXC_F_SPIXFC_CTRL3_SDIO_OUT_VAL                ((uint32_t)(0xFUL << MXC_F_SPIXFC_CTRL3_SDIO_OUT_VAL_POS)) /**< CTRL3_SDIO_OUT_VAL Mask */
 
 #define MXC_F_SPIXFC_CTRL3_SDIO_OUT_EN_POS             8 /**< CTRL3_SDIO_OUT_EN Position */
 #define MXC_F_SPIXFC_CTRL3_SDIO_OUT_EN                 ((uint32_t)(0xFUL << MXC_F_SPIXFC_CTRL3_SDIO_OUT_EN_POS)) /**< CTRL3_SDIO_OUT_EN Mask */
@@ -340,11 +340,11 @@ typedef struct {
 #define MXC_F_SPIXFC_INTFL_RX_DONE_POS                 3 /**< INTFL_RX_DONE Position */
 #define MXC_F_SPIXFC_INTFL_RX_DONE                     ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTFL_RX_DONE_POS)) /**< INTFL_RX_DONE Mask */
 
-#define MXC_F_SPIXFC_INTFL_TX_FIFO_AE_POS              4 /**< INTFL_TX_FIFO_AE Position */
-#define MXC_F_SPIXFC_INTFL_TX_FIFO_AE                  ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTFL_TX_FIFO_AE_POS)) /**< INTFL_TX_FIFO_AE Mask */
+#define MXC_F_SPIXFC_INTFL_TX_AE_POS                   4 /**< INTFL_TX_AE Position */
+#define MXC_F_SPIXFC_INTFL_TX_AE                       ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTFL_TX_AE_POS)) /**< INTFL_TX_AE Mask */
 
-#define MXC_F_SPIXFC_INTFL_RX_FIFO_AF_POS              5 /**< INTFL_RX_FIFO_AF Position */
-#define MXC_F_SPIXFC_INTFL_RX_FIFO_AF                  ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTFL_RX_FIFO_AF_POS)) /**< INTFL_RX_FIFO_AF Mask */
+#define MXC_F_SPIXFC_INTFL_RX_AF_POS                   5 /**< INTFL_RX_AF Position */
+#define MXC_F_SPIXFC_INTFL_RX_AF                       ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTFL_RX_AF_POS)) /**< INTFL_RX_AF Mask */
 
 /**@} end of group SPIXFC_INTFL_Register */
 
@@ -366,49 +366,27 @@ typedef struct {
 #define MXC_F_SPIXFC_INTEN_RX_DONE_POS                 3 /**< INTEN_RX_DONE Position */
 #define MXC_F_SPIXFC_INTEN_RX_DONE                     ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTEN_RX_DONE_POS)) /**< INTEN_RX_DONE Mask */
 
-#define MXC_F_SPIXFC_INTEN_TX_FIFO_AE_POS              4 /**< INTEN_TX_FIFO_AE Position */
-#define MXC_F_SPIXFC_INTEN_TX_FIFO_AE                  ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTEN_TX_FIFO_AE_POS)) /**< INTEN_TX_FIFO_AE Mask */
+#define MXC_F_SPIXFC_INTEN_TX_AE_POS                   4 /**< INTEN_TX_AE Position */
+#define MXC_F_SPIXFC_INTEN_TX_AE                       ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTEN_TX_AE_POS)) /**< INTEN_TX_AE Mask */
 
-#define MXC_F_SPIXFC_INTEN_RX_FIFO_AF_POS              5 /**< INTEN_RX_FIFO_AF Position */
-#define MXC_F_SPIXFC_INTEN_RX_FIFO_AF                  ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTEN_RX_FIFO_AF_POS)) /**< INTEN_RX_FIFO_AF Mask */
+#define MXC_F_SPIXFC_INTEN_RX_AF_POS                   5 /**< INTEN_RX_AF Position */
+#define MXC_F_SPIXFC_INTEN_RX_AF                       ((uint32_t)(0x1UL << MXC_F_SPIXFC_INTEN_RX_AF_POS)) /**< INTEN_RX_AF Mask */
 
 /**@} end of group SPIXFC_INTEN_Register */
 
 /**
  * @ingroup  spixfc_registers
- * @defgroup SPIXFC_SIMPLE_HEADER SPIXFC_SIMPLE_HEADER
+ * @defgroup SPIXFC_HEADER SPIXFC_HEADER
  * @brief    Simple Header
  * @{
  */
-#define MXC_F_SPIXFC_SIMPLE_HEADER_TX_BIDIR_POS        0 /**< SIMPLE_HEADER_TX_BIDIR Position */
-#define MXC_F_SPIXFC_SIMPLE_HEADER_TX_BIDIR            ((uint32_t)(0x3FFFUL << MXC_F_SPIXFC_SIMPLE_HEADER_TX_BIDIR_POS)) /**< SIMPLE_HEADER_TX_BIDIR Mask */
+#define MXC_F_SPIXFC_HEADER_TX_BIDIR_POS               0 /**< HEADER_TX_BIDIR Position */
+#define MXC_F_SPIXFC_HEADER_TX_BIDIR                   ((uint32_t)(0x3FFFUL << MXC_F_SPIXFC_HEADER_TX_BIDIR_POS)) /**< HEADER_TX_BIDIR Mask */
 
-#define MXC_F_SPIXFC_SIMPLE_HEADER_RX_ONLY_POS         16 /**< SIMPLE_HEADER_RX_ONLY Position */
-#define MXC_F_SPIXFC_SIMPLE_HEADER_RX_ONLY             ((uint32_t)(0x3FFFUL << MXC_F_SPIXFC_SIMPLE_HEADER_RX_ONLY_POS)) /**< SIMPLE_HEADER_RX_ONLY Mask */
+#define MXC_F_SPIXFC_HEADER_RX_ONLY_POS                16 /**< HEADER_RX_ONLY Position */
+#define MXC_F_SPIXFC_HEADER_RX_ONLY                    ((uint32_t)(0x3FFFUL << MXC_F_SPIXFC_HEADER_RX_ONLY_POS)) /**< HEADER_RX_ONLY Mask */
 
-/**@} end of group SPIXFC_SIMPLE_HEADER_Register */
-
-/**
- * @ingroup  spixfc_registers
- * @defgroup SPIXFC_AUTOCN SPIXFC_AUTOCN
- * @brief    Auto Control Register.
- * @{
- */
-#define MXC_F_SPIXFC_AUTOCN_AUTOCN_POS                 0 /**< AUTOCN_AUTOCN Position */
-#define MXC_F_SPIXFC_AUTOCN_AUTOCN                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_SPIXFC_AUTOCN_AUTOCN_POS)) /**< AUTOCN_AUTOCN Mask */
-
-/**@} end of group SPIXFC_AUTOCN_Register */
-
-/**
- * @ingroup  spixfc_registers
- * @defgroup SPIXFC_AUTOCMD SPIXFC_AUTOCMD
- * @brief    Auto Command Register.
- * @{
- */
-#define MXC_F_SPIXFC_AUTOCMD_AUTOCMD_POS               0 /**< AUTOCMD_AUTOCMD Position */
-#define MXC_F_SPIXFC_AUTOCMD_AUTOCMD                   ((uint32_t)(0xFFFFFFFFUL << MXC_F_SPIXFC_AUTOCMD_AUTOCMD_POS)) /**< AUTOCMD_AUTOCMD Mask */
-
-/**@} end of group SPIXFC_AUTOCMD_Register */
+/**@} end of group SPIXFC_HEADER_Register */
 
 #ifdef __cplusplus
 }

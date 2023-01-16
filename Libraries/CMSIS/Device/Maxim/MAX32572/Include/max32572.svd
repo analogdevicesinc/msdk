@@ -168,7 +168,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADC_DIVSEL</name>
+       <name>DIVSEL</name>
        <description>Scales the external inputs, all inputs are scaled the same</description>
        <bitRange>[18:17]</bitRange>
        <access>read-write</access>
@@ -730,7 +730,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DMAREQ_EN</name>
+       <name>DMAREQ</name>
        <description>DMA Request Enable.</description>
        <bitRange>[3:3]</bitRange>
        <access>read-write</access>
@@ -929,7 +929,7 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>ACEN</name>
+       <name>AC_EN</name>
        <description>Auto-calibration Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -947,7 +947,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ACRUN</name>
+       <name>AC_RUN</name>
        <description>Autocalibration Run.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -1013,30 +1013,10 @@
        <bitWidth>12</bitWidth>
       </field>
       <field>
-       <name>TRIM</name>
+       <name>AC_TRIM</name>
        <description>150MHz HFIO Auto Calibration Trim</description>
        <bitOffset>23</bitOffset>
        <bitWidth>9</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>FCTRL2</name>
-     <description>Register 2.</description>
-     <addressOffset>0x08</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>MSR_R1</name>
-       <description>MSR R1</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>2</bitWidth>
-      </field>
-      <field>
-       <name>MSR_R2</name>
-       <description>MSR R2</description>
-       <bitOffset>18</bitOffset>
-       <bitWidth>2</bitWidth>
       </field>
      </fields>
     </register>
@@ -1102,6 +1082,40 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>TRIMCTRL</name>
+     <description>MSR ADC Trim Register.</description>
+     <addressOffset>0x20</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>MSR_R1</name>
+       <description>MSR R1</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+      <field>
+       <name>MSR_R2</name>
+       <description>MSR R2</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>3</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ERFOKS</name>
+     <description>ERFO Kick Start Register.</description>
+     <addressOffset>0x24</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>CTRL</name>
+       <description>Kick Start Control.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>16</bitWidth>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--FCR Function Control Register.-->
@@ -1116,18 +1130,13 @@
    </addressBlock>
    <registers>
     <register>
-     <name>rsv0</name>
-     <description>RFU</description>
-     <addressOffset>0x00</addressOffset>
-    </register>
-    <register>
-     <name>BB_SIR2</name>
+     <name>BBSIR2</name>
      <description>System Init. Configuration Register 2.</description>
      <addressOffset>0x08</addressOffset>
      <access>read-only</access>
     </register>
     <register>
-     <name>BB_SIR3</name>
+     <name>BBSIR3</name>
      <description>System Init. Configuration Register 3.</description>
      <addressOffset>0x0C</addressOffset>
      <access>read-only</access>
@@ -2329,10 +2338,22 @@
        <bitWidth>2</bitWidth>
       </field>
       <field>
+       <name>NRNG</name>
+       <description>Enable NIST RNG.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>CARRYPOS</name>
        <description>To set Carry location.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>10</bitWidth>
+      </field>
+      <field>
+       <name>CM_EN</name>
+       <description>Enable Countermeasure.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>12</bitWidth>
       </field>
      </fields>
     </register>
@@ -2549,6 +2570,34 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>SCA_NRNG</name>
+     <description>SCA NIST RNG Address Register.</description>
+     <addressOffset>0x734</addressOffset>
+     <resetValue>0x0</resetValue>
+     <fields>
+      <field>
+       <name>ADDR</name>
+       <description>Starting SRAM address where up to 32 words of NIST washed RNG data is stored.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SCA_WASH</name>
+     <description>SCA Wash Register.</description>
+     <addressOffset>0x738</addressOffset>
+     <resetValue>0x0</resetValue>
+     <fields>
+      <field>
+       <name>ADDR</name>
+       <description>Starting SRAM address where up to 1 word of random is stored for SRAM washing.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--CTB The Cryptographic Toolbox is a combination of cryptographic engines and a secure cryptographic accelerator (SCA) used to provide advanced cryptographic security.-->
@@ -2629,7 +2678,7 @@
    <registers>
     <register>
      <name>INTEN</name>
-     <description>DMA Control Register.</description>
+     <description>DMA Interrupt Enable Register.</description>
      <addressOffset>0x000</addressOffset>
      <fields>
       <field>
@@ -2744,7 +2793,7 @@
     </register>
     <register>
      <name>INTFL</name>
-     <description>DMA Interrupt Register.</description>
+     <description>DMA Interrupt Flag Register.</description>
      <addressOffset>0x004</addressOffset>
      <access>read-only</access>
      <fields>
@@ -3977,9 +4026,26 @@
       <field>
        <name>CRYPTOCLK_DIV</name>
        <description>Cryptographic clock divider</description>
-       <bitOffset>15</bitOffset>
+       <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
-       <access>read-only</access>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>non_div</name>
+         <description>The cryptographic accelerator clock is running in non-divided mode.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div</name>
+         <description>The cryptographic accelerator clock is running in divided mode.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>IPO_DIV</name>
+       <description>IPO Divider.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
          <name>non_div</name>
@@ -4435,9 +4501,27 @@
        <bitWidth>3</bitWidth>
       </field>
       <field>
-       <name>SRAM_WS</name>
-       <description>SYSRAM WS Select.</description>
+       <name>RAM4_WS</name>
+       <description>System RAM4 WS Select.</description>
        <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM5_WS</name>
+       <description>System RAM5 WS Select.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM6_WS</name>
+       <description>System RAM6 WS Select.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ROM1_WS</name>
+       <description>ROM1 WS Select.</description>
+       <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -5180,7 +5264,7 @@
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5231,7 +5315,7 @@
      <addressOffset>0x0C</addressOffset>
      <fields>
       <field>
-       <name>EN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5282,7 +5366,7 @@
      <addressOffset>0x18</addressOffset>
      <fields>
       <field>
-       <name>GPIO_OUT</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5308,7 +5392,7 @@
      <access>write-only</access>
      <fields>
       <field>
-       <name>GPIO_OUT_SET</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5334,7 +5418,7 @@
      <access>write-only</access>
      <fields>
       <field>
-       <name>GPIO_OUT_CLR</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5348,7 +5432,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>GPIO_IN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5361,7 +5445,7 @@
      <addressOffset>0x28</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTMODE</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5386,7 +5470,7 @@
      <addressOffset>0x2C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTPOL</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5416,7 +5500,7 @@
      <addressOffset>0x34</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTEN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5441,7 +5525,7 @@
      <addressOffset>0x38</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTEN_SET</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5466,7 +5550,7 @@
      <addressOffset>0x3C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_INTEN_CLR</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5492,7 +5576,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>GPIO_INTFL</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5530,7 +5614,7 @@
      <addressOffset>0x4C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_WKEN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5581,7 +5665,7 @@
      <addressOffset>0x5C</addressOffset>
      <fields>
       <field>
-       <name>GPIO_DUALEDGE</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5602,12 +5686,12 @@
     </register>
     <register>
      <name>PADCTRL0</name>
-     <description>GPIO Input Mode Config 1. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
+     <description>GPIO Input Mode Config 0. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
      <addressOffset>0x60</addressOffset>
      <fields>
       <field>
-       <name>GPIO_PADCTRL0</name>
-       <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
+       <name>ALL</name>
+       <description>The two bits in GPIO_PADCTRL0 and GPIO_PADCTRL1 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
        <enumeratedValues>
@@ -5632,12 +5716,12 @@
     </register>
     <register>
      <name>PADCTRL1</name>
-     <description>GPIO Input Mode Config 2. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
+     <description>GPIO Input Mode Config 1. Each bit in this register enables the weak pull-up for the associated GPIO pin in this port.</description>
      <addressOffset>0x64</addressOffset>
      <fields>
       <field>
-       <name>GPIO_PADCTRL1</name>
-       <description>The two bits in GPIO_PAD_CFG1 and GPIO_PAD_CFG2 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
+       <name>ALL</name>
+       <description>The two bits in GPIO_PADCTRL0 and GPIO_PADCTRL1 for each GPIO pin work together to determine the pad mode when the GPIO is set to input mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
        <enumeratedValues>
@@ -5666,7 +5750,7 @@
      <addressOffset>0x68</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN1</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5717,7 +5801,7 @@
      <addressOffset>0x74</addressOffset>
      <fields>
       <field>
-       <name>GPIO_EN2</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5768,7 +5852,7 @@
      <addressOffset>0xA8</addressOffset>
      <fields>
       <field>
-       <name>GPIO_HYSEN</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5781,7 +5865,7 @@
      <addressOffset>0xAC</addressOffset>
      <fields>
       <field>
-       <name>GPIO_SRSEL</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5806,7 +5890,7 @@
      <addressOffset>0xB0</addressOffset>
      <fields>
       <field>
-       <name>GPIO_DS0</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5831,7 +5915,7 @@
      <addressOffset>0xB4</addressOffset>
      <fields>
       <field>
-       <name>GPIO_DS1</name>
+       <name>ALL</name>
        <description>Mask of all of the pins on the port.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5839,7 +5923,7 @@
      </fields>
     </register>
     <register>
-     <name>PS</name>
+     <name>PSSEL</name>
      <description>GPIO Pull Select Mode.</description>
      <addressOffset>0xB8</addressOffset>
      <fields>
@@ -5894,13 +5978,13 @@
    </interrupt>
    <registers>
     <register>
-     <name>SEC</name>
+     <name>LONG</name>
      <description>HTimer Long-Interval Counter. This register contains the 32 most significant bits of the counter.</description>
      <addressOffset>0x00</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>RTS</name>
+       <name>CNT</name>
        <description>HTimer Long Interval Counter.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5908,13 +5992,13 @@
      </fields>
     </register>
     <register>
-     <name>SSEC</name>
-     <description>HTimer Short Interval Counter. This counter ticks every t_htclk (16.48uS). HTIMER_SEC is incremented when this register rolls over from 0xFF to 0x00.</description>
+     <name>SHORT</name>
+     <description>HTimer Short Interval Counter. This counter ticks every t_htclk (16.48uS). HTIMER_LONG is incremented when this register rolls over from 0xFF to 0x00.</description>
      <addressOffset>0x04</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>RTSS</name>
+       <name>CNT</name>
        <description>HTimer Short Interval Counter.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
@@ -5922,27 +6006,27 @@
      </fields>
     </register>
     <register>
-     <name>RAS</name>
+     <name>LONGA</name>
      <description>Long Interval Alarm.</description>
      <addressOffset>0x08</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>RAS</name>
-       <description>HTimer Long Interval Alarm. An Alarm is triggered when this value matches HTIMER_SEC[19:0]</description>
+       <name>ALARM</name>
+       <description>HTimer Long Interval Alarm. An Alarm is triggered when this value matches HTMR_LONG</description>
        <bitOffset>0</bitOffset>
        <bitWidth>20</bitWidth>
       </field>
      </fields>
     </register>
     <register>
-     <name>RSSA</name>
+     <name>SHORTA</name>
      <description>HTimer Short Interval Alarm. This register contains the reload value for the short interval alarm, HTIMER_CTRL.alarm_ss_fl is raised on rollover.</description>
      <addressOffset>0x0C</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>RSSA</name>
+       <name>ALARM</name>
        <description>This register contains the reload value for the short interval alarm.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -5957,7 +6041,7 @@
      <resetMask>0xFFFFFF38</resetMask>
      <fields>
       <field>
-       <name>HTEN</name>
+       <name>EN</name>
        <description>HTimer Enable. This bit enables the Real Time Clock. This bit can only be written when WE=1 and BUSY =0. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -5975,7 +6059,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADE</name>
+       <name>LONGA_IE</name>
        <description>Long Interval Alarm Interrupt Enable. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -5993,7 +6077,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ASE</name>
+       <name>SHORTA_IE</name>
        <description>Short Interval Alarm Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6048,7 +6132,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RDYE</name>
+       <name>RDY_IE</name>
        <description>HTimer Ready Interrupt Enable.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6066,7 +6150,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ALDF</name>
+       <name>LONGA_IF</name>
        <description>Long Interval Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6085,7 +6169,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ALSF</name>
+       <name>SHORTA_IF</name>
        <description>Short Interval Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6104,7 +6188,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>WE</name>
+       <name>WR_EN</name>
        <description>Write Enable. This register bit serves as a protection mechanism against unintentional writes to critical HTimer bits.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6398,7 +6482,7 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>BB_MODE</name>
+       <name>BB_EN</name>
        <description>Software Output Enable.</description>
        <bitRange>[10:10]</bitRange>
        <access>read-write</access>
@@ -7533,12 +7617,12 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MST_CODE</name>
+       <name>CODE</name>
        <description>Master Code.</description>
        <bitRange>[10:8]</bitRange>
       </field>
       <field>
-       <name>MST_IGN_ACK</name>
+       <name>IGN_ACK</name>
        <description>Master Ignore Acknowledge.</description>
        <bitRange>[12:12]</bitRange>
       </field>
@@ -7723,12 +7807,12 @@
   </peripheral>
 <!--I2C2 Inter-Integrated Circuit. 2-->
   <peripheral>
-   <name>ICC0</name>
-   <description>Instruction Cache Controller Registers</description>
-   <baseAddress>0x4002A000</baseAddress>
+   <name>SFCC</name>
+   <description>SPIXF Cache Controller Registers</description>
+   <baseAddress>0x4002F000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
-    <size>0x800</size>
+    <size>0x1000</size>
     <usage>registers</usage>
    </addressBlock>
    <registers>
@@ -7839,7 +7923,7 @@
     </register>
    </registers>
   </peripheral>
-<!--ICC0 Instruction Cache Controller Registers-->
+<!--SFCC SPIXF Cache Controller Registers-->
   <peripheral>
    <name>OTP</name>
    <description>One-Time Programmable (OTP) Memory Controller.</description>
@@ -9690,7 +9774,7 @@
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>VRTC_TMR</name>
+       <name>VBAT_TMR</name>
        <description>VBAT Timer Value. When RTC is running off of VBAT, this field is incremented every 32 seconds.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>24</bitWidth>
@@ -10416,6 +10500,12 @@
        <name>DFD_STDBY_EN</name>
        <description>Digital Fault Dector Stand by Enable</description>
        <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DFD_NMI_STDBY_EN</name>
+       <description>Digital Fault Dector Stand by Enable</description>
+       <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -11381,7 +11471,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>EXTSCTRL_ST</name>
+       <name>EXTSCTRL</name>
        <description>External Sensor Control Register Status.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11399,7 +11489,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>INTSCTRL_ST</name>
+       <name>INTSCTRL</name>
        <description>Internal Sensor Control Register Status.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11417,7 +11507,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SECALM_ST</name>
+       <name>SECALM</name>
        <description>Security Alarm Register Status.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11435,7 +11525,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MEUCTRL_ST</name>
+       <name>MEUCTRL</name>
        <description>Security Alarm Register Status.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11467,7 +11557,7 @@
       </field>
       <field>
        <name>SDBYTE_EN</name>
-       <description>Self-Destruct Byte ENable.</description>
+       <description>Self-Destruct Byte Enable.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -11621,7 +11711,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SSIACT</name>
+       <name>SSINACT</name>
        <description>Slaves Select Inactive Timing.</description>
        <bitOffset>18</bitOffset>
        <bitWidth>2</bitWidth>
@@ -11662,7 +11752,7 @@
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>SS_POL</name>
+       <name>SSPOL</name>
        <description>Slave Select Polarity.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11680,7 +11770,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>FC_POL</name>
+       <name>FCPOL</name>
        <description>FC Polarity.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11759,7 +11849,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>BBMODE</name>
+       <name>BB_EN</name>
        <description>Bit-Bang Mode.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11848,7 +11938,7 @@
       </field>
       <field>
        <name>BB_DATA_OUT</name>
-       <description>No description available.</description>
+       <description>Bit Bang SDIO Output.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>4</bitWidth>
        <enumeratedValues>
@@ -11903,7 +11993,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SIMPLE</name>
+       <name>SIMPLE_EN</name>
        <description>Simple Mode Enable.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>1</bitWidth>
@@ -11995,7 +12085,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>SDIO_OUT</name>
+       <name>SDIO_OUT_VAL</name>
        <description>SDIO Output Value Sample Mode</description>
        <bitOffset>4</bitOffset>
        <bitWidth>4</bitWidth>
@@ -12104,7 +12194,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_AE</name>
+       <name>TX_AE</name>
        <description>Transaction FIFO Almost Empty Flag.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12122,7 +12212,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_AF</name>
+       <name>RX_AF</name>
        <description>Results FIFO Almost Full Flag.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12219,7 +12309,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>TX_FIFO_AE</name>
+       <name>TX_AE</name>
        <description>Transaction FIFO Almost Empty Interrupt Enable.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12237,7 +12327,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_FIFO_AF</name>
+       <name>RX_AF</name>
        <description>Results FIFO Almost Full Interrupt Enable.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12257,7 +12347,7 @@
      </fields>
     </register>
     <register>
-     <name>SIMPLE_HEADER</name>
+     <name>HEADER</name>
      <description>Simple Header</description>
      <addressOffset>0x1C</addressOffset>
      <fields>
@@ -12276,30 +12366,14 @@
      </fields>
     </register>
     <register>
-     <name>AUTOCN</name>
+     <name>AUTOCTRL</name>
      <description>Auto Control Register.</description>
      <addressOffset>0x20</addressOffset>
-     <fields>
-      <field>
-       <name>AUTOCN</name>
-       <description>TBD</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
     </register>
     <register>
      <name>AUTOCMD</name>
      <description>Auto Command Register.</description>
      <addressOffset>0x24</addressOffset>
-     <fields>
-      <field>
-       <name>AUTOCMD</name>
-       <description>TBD</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
     </register>
    </registers>
   </peripheral>
@@ -12461,7 +12535,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SSIACT</name>
+       <name>SSINACT</name>
        <description>Slave Select Inactive Timing.</description>
        <bitOffset>18</bitOffset>
        <bitWidth>2</bitWidth>
@@ -12496,13 +12570,13 @@
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>CMDVAL</name>
+       <name>CMD_VAL</name>
        <description>Command Value sent to target to initiate fetching from SPI flash.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>CMDWTH</name>
+       <name>CMD_WDTH</name>
        <description>Command Width. Number of data I/O used to send commands.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>2</bitWidth>
@@ -12530,7 +12604,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ADDR_WIDTH</name>
+       <name>ADDR_WDTH</name>
        <description>Address Width. Number of data I/O used to send address, and mode/dummy clocks.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>2</bitWidth>
@@ -12558,7 +12632,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DATA_WIDTH</name>
+       <name>DATA_WDTH</name>
        <description>Data Width. Number of data I/O used to receive data.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>2</bitWidth>
@@ -12648,13 +12722,13 @@
      <addressOffset>0x0C</addressOffset>
      <fields>
       <field>
-       <name>MDDATA</name>
+       <name>DATA</name>
        <description>Mode Data. Specifies the data to send with the Dummy/Mode clocks.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>16</bitWidth>
       </field>
       <field>
-       <name>MDOUT_EN</name>
+       <name>OUT_EN</name>
        <description>Mode Output Enable. Output enable state for each corresponding data bit in MD_DATA. 0: output enable off, I/O is tristate and 1: Output enable on, I/O is driving MD_DATA.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>16</bitWidth>
@@ -12667,7 +12741,7 @@
      <addressOffset>0x10</addressOffset>
      <fields>
       <field>
-       <name>FB_EN</name>
+       <name>EN</name>
        <description>Enable SCLK feedback mode.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12812,7 +12886,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>AUTH_DISABLE</name>
+       <name>AUTH_DIS</name>
        <description>Integrity Enable.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13401,7 +13475,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SS_POL</name>
+       <name>SSPOL</name>
        <description>Slave Select Polarity, each Slave Select can have unique polarity.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>4</bitWidth>
@@ -13570,7 +13644,7 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>DMA_TX_EN</name>
+       <name>TX_EN</name>
        <description>TX DMA Enable.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -13632,7 +13706,7 @@
        <access>read-only</access>
       </field>
       <field>
-       <name>DMA_RX_EN</name>
+       <name>RX_EN</name>
        <description>RX DMA Enable.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
@@ -14211,7 +14285,7 @@
      </fields>
     </register>
     <register>
-     <name>STAT</name>
+     <name>STATUS</name>
      <description>SPI Status register.</description>
      <addressOffset>0x30</addressOffset>
      <access>read-only</access>
@@ -17826,7 +17900,7 @@
      <addressOffset>0x04</addressOffset>
      <fields>
       <field>
-       <name>AUTOEN</name>
+       <name>AUTOSCAN_EN</name>
        <description>Automatic Keyboard Scan Enable</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -17843,8 +17917,8 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field derivedFrom="AUTOEN">
-       <name>CLEAR</name>
+      <field derivedFrom="AUTOSCAN_EN">
+       <name>AUTOCLEAR</name>
        <description>Auto Clear Bit</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -18260,7 +18334,7 @@
                                      
                                      modified for this type of cooperative sharing, and the use of semaphores is exclusively within the software domain.-->
   <peripheral>
-   <name>SC0</name>
+   <name>SCN</name>
    <description>Smart Card Interface.</description>
    <groupName>SCN</groupName>
    <baseAddress>0x4002C000</baseAddress>
@@ -18697,6 +18771,6 @@
     </register>
    </registers>
   </peripheral>
-<!--SC0 Smart Card Interface.-->
+<!--SCN Smart Card Interface.-->
  </peripherals>
 </device>

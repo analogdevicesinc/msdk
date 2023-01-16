@@ -122,6 +122,8 @@ typedef struct {
     __IO uint32_t sca_res_addr;         /**< <tt>\b 0x728:</tt> CTB SCA_RES_ADDR Register */
     __IO uint32_t sca_op_buff_addr;     /**< <tt>\b 0x72C:</tt> CTB SCA_OP_BUFF_ADDR Register */
     __IO uint32_t sca_moddata;          /**< <tt>\b 0x730:</tt> CTB SCA_MODDATA Register */
+    __IO uint32_t sca_nrng;             /**< <tt>\b 0x734:</tt> CTB SCA_NRNG Register */
+    __IO uint32_t sca_wash;             /**< <tt>\b 0x738:</tt> CTB SCA_WASH Register */
 } mxc_ctb_regs_t;
 
 /* Register offsets for module CTB */
@@ -166,6 +168,8 @@ typedef struct {
 #define MXC_R_CTB_SCA_RES_ADDR             ((uint32_t)0x00000728UL) /**< Offset from CTB Base Address: <tt> 0x0728</tt> */
 #define MXC_R_CTB_SCA_OP_BUFF_ADDR         ((uint32_t)0x0000072CUL) /**< Offset from CTB Base Address: <tt> 0x072C</tt> */
 #define MXC_R_CTB_SCA_MODDATA              ((uint32_t)0x00000730UL) /**< Offset from CTB Base Address: <tt> 0x0730</tt> */
+#define MXC_R_CTB_SCA_NRNG                 ((uint32_t)0x00000734UL) /**< Offset from CTB Base Address: <tt> 0x0734</tt> */
+#define MXC_R_CTB_SCA_WASH                 ((uint32_t)0x00000738UL) /**< Offset from CTB Base Address: <tt> 0x0738</tt> */
 /**@} end of group ctb_registers */
 
 /**
@@ -626,8 +630,14 @@ typedef struct {
 #define MXC_F_CTB_SCA_CTRL1_RESSELECT_POS              3 /**< SCA_CTRL1_RESSELECT Position */
 #define MXC_F_CTB_SCA_CTRL1_RESSELECT                  ((uint32_t)(0x3UL << MXC_F_CTB_SCA_CTRL1_RESSELECT_POS)) /**< SCA_CTRL1_RESSELECT Mask */
 
+#define MXC_F_CTB_SCA_CTRL1_NRNG_POS                   5 /**< SCA_CTRL1_NRNG Position */
+#define MXC_F_CTB_SCA_CTRL1_NRNG                       ((uint32_t)(0x1UL << MXC_F_CTB_SCA_CTRL1_NRNG_POS)) /**< SCA_CTRL1_NRNG Mask */
+
 #define MXC_F_CTB_SCA_CTRL1_CARRYPOS_POS               8 /**< SCA_CTRL1_CARRYPOS Position */
 #define MXC_F_CTB_SCA_CTRL1_CARRYPOS                   ((uint32_t)(0x3FFUL << MXC_F_CTB_SCA_CTRL1_CARRYPOS_POS)) /**< SCA_CTRL1_CARRYPOS Mask */
+
+#define MXC_F_CTB_SCA_CTRL1_CM_EN_POS                  20 /**< SCA_CTRL1_CM_EN Position */
+#define MXC_F_CTB_SCA_CTRL1_CM_EN                      ((uint32_t)(0xFFFUL << MXC_F_CTB_SCA_CTRL1_CM_EN_POS)) /**< SCA_CTRL1_CM_EN Mask */
 
 /**@} end of group CTB_SCA_CTRL1_Register */
 
@@ -781,6 +791,28 @@ typedef struct {
 #define MXC_F_CTB_SCA_MODDATA_DATA                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_SCA_MODDATA_DATA_POS)) /**< SCA_MODDATA_DATA Mask */
 
 /**@} end of group CTB_SCA_MODDATA_Register */
+
+/**
+ * @ingroup  ctb_registers
+ * @defgroup CTB_SCA_NRNG CTB_SCA_NRNG
+ * @brief    SCA NIST RNG Address Register.
+ * @{
+ */
+#define MXC_F_CTB_SCA_NRNG_ADDR_POS                    0 /**< SCA_NRNG_ADDR Position */
+#define MXC_F_CTB_SCA_NRNG_ADDR                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_SCA_NRNG_ADDR_POS)) /**< SCA_NRNG_ADDR Mask */
+
+/**@} end of group CTB_SCA_NRNG_Register */
+
+/**
+ * @ingroup  ctb_registers
+ * @defgroup CTB_SCA_WASH CTB_SCA_WASH
+ * @brief    SCA Wash Register.
+ * @{
+ */
+#define MXC_F_CTB_SCA_WASH_ADDR_POS                    0 /**< SCA_WASH_ADDR Position */
+#define MXC_F_CTB_SCA_WASH_ADDR                        ((uint32_t)(0xFFFFFFFFUL << MXC_F_CTB_SCA_WASH_ADDR_POS)) /**< SCA_WASH_ADDR Mask */
+
+/**@} end of group CTB_SCA_WASH_Register */
 
 #ifdef __cplusplus
 }
