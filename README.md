@@ -6,11 +6,11 @@ The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://ww
 
 * [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
 
-**This repository** contains the latest **_source code_** of the MSDK and is used for *development*.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used to build, program, and debug the contents of this repo on hardware.
+**This repository** contains the latest **_source code_** of the MSDK and is being used for _development_.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used for building, programming, and debugging.
 
 ## Installation
 
-The MSDK is available via an Automatic Installer.  See the ["Installation"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation) in the MSDK User Guide for instructions.
+The MSDK source code is bundled alongside its toolchain into releases that are available via an Automatic Installer.  See the ["Installation"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation) section in the MSDK User Guide for instructions.
 
 Users who would like to use the latest bleeding-edge _development_ resources can follow [Developing from the Repo](#developing-from-the-repo) below, but this should only be done **_after_** installing the release MSDK above.
 
@@ -30,7 +30,7 @@ This repo can be cloned using [Git](https://git-scm.com/) to obtain the latest d
 
 2. Add an SSH key to your Github account.  See the [Github Docs on SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) for instructions.
 
-3. Open a terminal on your system.
+3. Open a terminal.
 
 4. `cd` into a directory **_without any spaces in its filepath_**.
 
@@ -74,7 +74,7 @@ This repo can be cloned using [Git](https://git-scm.com/) to obtain the latest d
 
 This repository contains the MSDK's *source code* only.  In order to develop on it directly the toolchain must be made available at the same file-paths as the full MSDK installation.  The easiest way to do this is to retrieve the toolchain with the automatic installer and then create symbolic links.  This section walks through the process.
 
-1. Install the MSDK via the [Automatic Installer](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation) for your OS if you haven't already.
+1. Install the MSDK via the [Automatic Installer](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation).
 
     At ***minimum***, install the following components:
     * GNU RISC-V Embedded GCC
