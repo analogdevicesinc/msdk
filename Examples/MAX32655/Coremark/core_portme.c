@@ -45,6 +45,7 @@ void start_time(void)
 {
     printf("\n\nSystemCoreClock %u\n", (unsigned int)SystemCoreClock);
 
+    MXC_ICC->ctrl |= MXC_F_ICC_CTRL_EN;
     if (MXC_ICC->ctrl & MXC_F_ICC_CTRL_EN) {
         printf("I-Cache enabled\n");
     }
