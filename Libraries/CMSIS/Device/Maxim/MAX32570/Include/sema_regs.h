@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
@@ -100,7 +100,13 @@ typedef struct {
     __IO uint32_t mail1;                /**< <tt>\b 0x4C:</tt> SEMA MAIL1 Register */
     __IO uint32_t irq2;                 /**< <tt>\b 0x50:</tt> SEMA IRQ2 Register */
     __IO uint32_t mail2;                /**< <tt>\b 0x54:</tt> SEMA MAIL2 Register */
-    __R  uint32_t rsv_0x58_0xff[42];
+    __IO uint32_t irq3;                 /**< <tt>\b 0x58:</tt> SEMA IRQ3 Register */
+    __IO uint32_t mail3;                /**< <tt>\b 0x5C:</tt> SEMA MAIL3 Register */
+    __IO uint32_t irq4;                 /**< <tt>\b 0x60:</tt> SEMA IRQ4 Register */
+    __IO uint32_t mail4;                /**< <tt>\b 0x64:</tt> SEMA MAIL4 Register */
+    __IO uint32_t irq5;                 /**< <tt>\b 0x68:</tt> SEMA IRQ5 Register */
+    __IO uint32_t mail5;                /**< <tt>\b 0x6C:</tt> SEMA MAIL5 Register */
+    __R  uint32_t rsv_0x70_0xff[36];
     __IO uint32_t status;               /**< <tt>\b 0x100:</tt> SEMA STATUS Register */
 } mxc_sema_regs_t;
 
@@ -118,6 +124,12 @@ typedef struct {
 #define MXC_R_SEMA_MAIL1                   ((uint32_t)0x0000004CUL) /**< Offset from SEMA Base Address: <tt> 0x004C</tt> */
 #define MXC_R_SEMA_IRQ2                    ((uint32_t)0x00000050UL) /**< Offset from SEMA Base Address: <tt> 0x0050</tt> */
 #define MXC_R_SEMA_MAIL2                   ((uint32_t)0x00000054UL) /**< Offset from SEMA Base Address: <tt> 0x0054</tt> */
+#define MXC_R_SEMA_IRQ3                    ((uint32_t)0x00000058UL) /**< Offset from SEMA Base Address: <tt> 0x0058</tt> */
+#define MXC_R_SEMA_MAIL3                   ((uint32_t)0x0000005CUL) /**< Offset from SEMA Base Address: <tt> 0x005C</tt> */
+#define MXC_R_SEMA_IRQ4                    ((uint32_t)0x00000060UL) /**< Offset from SEMA Base Address: <tt> 0x0060</tt> */
+#define MXC_R_SEMA_MAIL4                   ((uint32_t)0x00000064UL) /**< Offset from SEMA Base Address: <tt> 0x0064</tt> */
+#define MXC_R_SEMA_IRQ5                    ((uint32_t)0x00000068UL) /**< Offset from SEMA Base Address: <tt> 0x0068</tt> */
+#define MXC_R_SEMA_MAIL5                   ((uint32_t)0x0000006CUL) /**< Offset from SEMA Base Address: <tt> 0x006C</tt> */
 #define MXC_R_SEMA_STATUS                  ((uint32_t)0x00000100UL) /**< Offset from SEMA Base Address: <tt> 0x0100</tt> */
 /**@} end of group sema_registers */
 
@@ -206,6 +218,81 @@ typedef struct {
 #define MXC_F_SEMA_MAIL2_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL2_DATA_POS)) /**< MAIL2_DATA Mask */
 
 /**@} end of group SEMA_MAIL2_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ3 SEMA_IRQ3
+ * @brief    Semaphore IRQ3 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ3_EN_POS                         0 /**< IRQ3_EN Position */
+#define MXC_F_SEMA_IRQ3_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ3_EN_POS)) /**< IRQ3_EN Mask */
+
+#define MXC_F_SEMA_IRQ3_RV32_IRQ_POS                   16 /**< IRQ3_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ3_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ3_RV32_IRQ_POS)) /**< IRQ3_RV32_IRQ Mask */
+
+/**@} end of group SEMA_IRQ3_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL3 SEMA_MAIL3
+ * @brief    Semaphore Mailbox 3 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL3_DATA_POS                      0 /**< MAIL3_DATA Position */
+#define MXC_F_SEMA_MAIL3_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL3_DATA_POS)) /**< MAIL3_DATA Mask */
+
+/**@} end of group SEMA_MAIL3_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ4 SEMA_IRQ4
+ * @brief    Semaphore IRQ4 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ4_EN_POS                         0 /**< IRQ4_EN Position */
+#define MXC_F_SEMA_IRQ4_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ4_EN_POS)) /**< IRQ4_EN Mask */
+
+#define MXC_F_SEMA_IRQ4_RV32_IRQ_POS                   16 /**< IRQ4_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ4_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ4_RV32_IRQ_POS)) /**< IRQ4_RV32_IRQ Mask */
+
+/**@} end of group SEMA_IRQ4_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL4 SEMA_MAIL4
+ * @brief    Semaphore Mailbox 4 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL4_DATA_POS                      0 /**< MAIL4_DATA Position */
+#define MXC_F_SEMA_MAIL4_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL4_DATA_POS)) /**< MAIL4_DATA Mask */
+
+/**@} end of group SEMA_MAIL4_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ5 SEMA_IRQ5
+ * @brief    Semaphore IRQ5 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ5_EN_POS                         0 /**< IRQ5_EN Position */
+#define MXC_F_SEMA_IRQ5_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ5_EN_POS)) /**< IRQ5_EN Mask */
+
+#define MXC_F_SEMA_IRQ5_RV32_IRQ_POS                   16 /**< IRQ5_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ5_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ5_RV32_IRQ_POS)) /**< IRQ5_RV32_IRQ Mask */
+
+/**@} end of group SEMA_IRQ5_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL5 SEMA_MAIL5
+ * @brief    Semaphore Mailbox 5 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL5_DATA_POS                      0 /**< MAIL5_DATA Position */
+#define MXC_F_SEMA_MAIL5_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL5_DATA_POS)) /**< MAIL5_DATA Mask */
+
+/**@} end of group SEMA_MAIL5_Register */
 
 /**
  * @ingroup  sema_registers

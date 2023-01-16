@@ -64,6 +64,7 @@
 #endif
 
 typedef enum {
+#ifndef __riscv // not RISC-V
     NonMaskableInt_IRQn = -14,
     HardFault_IRQn = -13,
     MemoryManagement_IRQn = -12,
@@ -175,6 +176,69 @@ typedef enum {
     RSV92_IRQn, /* 0x6C  0x01B0  108: Reserved */
     HTMR0_IRQn, /* 0x6D  0x01B4  109: HTimer0 */
     HTMR1_IRQn, /* 0x6E  0x01B8  110: HTimer1 */
+#else // __riscv
+    HardFault_IRQn = 3, /* 0x03,3 HardFault */
+    RSV4_IRQn = 4, /* 0x04,4 Reserved */
+    RSV5_IRQn, /* 0x05,5 Reserved */
+    MSRADC_IRQn, /* 0x06,6 Magstripe DSP */
+    RSV7_IRQn, /* 0x07,7 Reserved */
+    RSV8_IRQn, /* 0x08,8 Reserved */
+    RSV9_IRQn, /* 0x09,9 Reserved */
+    RSV10_IRQn, /* 0x0A,10 Reserved */
+    RSV11_IRQn, /* 0x0B,11 Reserved */
+    RSV12_IRQn, /* 0x0C,12 Reserved */
+    TMR5_IRQn, /* 0x0D,13 Timer 5 */
+    RSV14_IRQn, /* 0x0E,14 Reserved */
+    RSV15_IRQn, /* 0x0F,15 Reserved */
+    CM4_IRQn, /* 0x10,16 CM4 */
+    RSV17_IRQn, /* 0x11,17 Reserved */
+    RSV18_IRQn, /* 0x12,18 Reserved */
+    RSV19_IRQn, /* 0x13,19 Reserved */
+    RSV20_IRQn, /* 0x14,20 Reserved */
+    RSV21_IRQn, /* 0x15,21 Reserved */
+    RSV22_IRQn, /* 0x16,22 Reserved */
+    RSV23_IRQn, /* 0x17,23 Reserved */
+    RSV24_IRQn, /* 0x18,24 Reserved */
+    GPIO0_IRQn, /* 0x19,25 GPIO0 */
+    GPIO1_IRQn, /* 0x1A,26 GPIO1 */
+    RSV27_IRQn, /* 0x1B,27 Reserved */
+    RSV28_IRQn, /* 0x1C,28 Reserved */
+    RSV29_IRQn, /* 0x1D,29 Reserved */
+    RSV30_IRQn, /* 0x1E,30 Reserved */
+    RSV31_IRQn, /* 0x1F,31 Reserved */
+    RSV32_IRQn, /* 0x20,32 Reserved */
+    RSV33_IRQn, /* 0x21,33 Reserved */
+    RSV34_IRQn, /* 0x22,34 Reserved */
+    RSV35_IRQn, /* 0x23,35 Reserved */
+    RSV36_IRQn, /* 0x24,36 Reserved */
+    RSV37_IRQn, /* 0x25,37 Reserved */
+    RSV38_IRQn, /* 0x26,38 Reserved */
+    RSV39_IRQn, /* 0x27,39 Reserved */
+    RSV40_IRQn, /* 0x28,40 Reserved */
+    RSV41_IRQn, /* 0x29,41 Reserved */
+    RSV42_IRQn, /* 0x2A,42 Reserved */
+    RSV43_IRQn, /* 0x2B,43 Reserved */
+    RSV44_IRQn, /* 0x2C,44 Reserved */
+    RSV45_IRQn, /* 0x2D,45 Reserved */
+    RSV46_IRQn, /* 0x2E,46 Reserved */
+    RSV47_IRQn, /* 0x2F,47 Reserved */
+    RSV48_IRQn, /* 0x30,48 Reserved */
+    RSV49_IRQn, /* 0x31,49 Reserved */
+    RSV50_IRQn, /* 0x32,50 Reserved */
+    RSV51_IRQn, /* 0x33,51 Reserved */
+    RSV52_IRQn, /* 0x34,52 Reserved */
+    RSV53_IRQn, /* 0x35,53 Reserved */
+    RSV54_IRQn, /* 0x36,54 Reserved */
+    RSV55_IRQn, /* 0x37,55 Reserved */
+    RSV56_IRQn, /* 0x38,56 Reserved */
+    RSV57_IRQn, /* 0x39,57 Reserved */
+    RSV58_IRQn, /* 0x3A,58 Reserved */
+    RSV59_IRQn, /* 0x3B,59 Reserved */
+    RSV60_IRQn, /* 0x3C,60 Reserved */
+    RSV61_IRQn, /* 0x3D,61 Reserved */
+    RSV62_IRQn, /* 0x3E,62 Reserved */
+    RSV63_IRQn, /* 0x3F,63 Reserved */
+#endif // __riscv
     MXC_IRQ_EXT_COUNT
 } IRQn_Type;
 

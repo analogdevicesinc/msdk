@@ -123,6 +123,99 @@
         </fields>
       </register>
       <register>
+        <name>irq3</name>
+        <description>Semaphore IRQ3 register.</description>
+        <addressOffset>0x58</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>en</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rv32_irq</name>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>mail3</name>
+        <description>Semaphore Mailbox 3 register.</description>
+        <addressOffset>0x5C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>data</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>irq4</name>
+        <description>Semaphore IRQ4 register.</description>
+        <addressOffset>0x60</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>en</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rv32_irq</name>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>mail4</name>
+        <description>Semaphore Mailbox 4 register.</description>
+        <addressOffset>0x64</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>data</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>irq5</name>
+        <description>Semaphore IRQ5 register.</description>
+        <addressOffset>0x68</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>en</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>rv32_irq</name>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>mail5</name>
+        <description>Semaphore Mailbox 5 register.</description>
+        <addressOffset>0x6C</addressOffset>
+        <size>32</size>
+        <fields>
+          <field>
+            <name>data</name>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>status</name>
         <description>Semaphore status bits. 0 indicates the semaphore is free, 1 indicates taken.</description>
         <addressOffset>0x100</addressOffset>
