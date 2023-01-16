@@ -728,6 +728,7 @@ class BLE_hci:
      # Sends HCI command for the transmitter test.
     ################################################################################
     def txTestFunc(self, args):
+        
         channel="%0.2X"%int(args.channel)
         packetLength="%0.2X"%int(args.packetLength)
         payload="%0.2X"%int(args.payload)
