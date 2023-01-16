@@ -349,8 +349,8 @@ void WdxsFileInit(void)
     WstrnCpy(attr.version, versionString, WSF_EFS_VERSION_LEN);
 
     /* Add a file for the stream */
-    otaFileHdl =  WsfEfsAddFile(WDXS_FileMedia.endAddress - WDXS_FileMedia.startAddress, WDX_FLASH_MEDIA, &attr,
-                  0);
+    otaFileHdl = WsfEfsAddFile(WDXS_FileMedia.endAddress - WDXS_FileMedia.startAddress,
+                               WDX_FLASH_MEDIA, &attr, 0);
     APP_TRACE_INFO1("File Hdl: %d", otaFileHdl);
 }
 

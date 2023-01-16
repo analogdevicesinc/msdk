@@ -702,12 +702,11 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
             datcCb.fileVerified[connId - 1] = FALSE;
         else
             datcCb.fileVerified[connId - 1] = TRUE;
-    }else if (op == WDX_FTC_ST_ERASE_COMPLETE)
-    {
+    } else if (op == WDX_FTC_ST_ERASE_COMPLETE) {
         APP_TRACE_INFO0(">>> Starting file transfer <<<");
         /* Put file request */
         WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle, BLOCK_OFFSET_INIT,
-                            FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE, FALSE,0);
+                          FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE, FALSE, 0);
     }
 }
 /*************************************************************************************************/
