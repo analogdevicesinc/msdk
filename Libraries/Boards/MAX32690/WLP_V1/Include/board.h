@@ -71,7 +71,6 @@ extern "C" {
 
 #define WLP_V1 /// Used in examples to control program flow
 
-
 /**
  *  A reference to LED2 (GREEN LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
