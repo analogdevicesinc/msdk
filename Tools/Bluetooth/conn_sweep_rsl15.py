@@ -205,11 +205,14 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
 
         sleep(int(args.delay))
 
+
+
         packetsReceived = hciSlave.endTestFunc(None)
         hciMaster.endTestFunc(Namespace(noPrint=True))
 
-
-        packetsTransmitted = 1000
+        
+        packetsTransmitted = float(phy) * 1e6 / (float(packetLen) // 2 )
+        print("packets tx: ", packetsTransmitted)
 
         # need to get total TX packets sent
 
@@ -227,7 +230,8 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
             results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
         else:
             print(colored('Error: Packet Error Rate Evaluated as NoneType Aborting Test', 'red'))
-            exit()
+            sys.exit(1)
+
 # Reset the devices
 hciSlave.resetFunc(None)
 hciMaster.resetFunc(None)
