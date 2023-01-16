@@ -69,7 +69,7 @@ static bool_t wdxsFileRead(uint16_t handle, uint32_t offset, uint32_t *pReadLen,
  *  \return None.
  */
 /*************************************************************************************************/
-static uint8_t wdxsInitializeForPut(dmConnId_t connId, uint16_t handle)
+static uint8_t wdxsInitializeForPut(dmConnId_t connId, uint16_t handle, bool_t erase)
 {
   uint32_t availableSize = WsfEfsGetFileMaxSize(handle);
 
@@ -83,7 +83,7 @@ static uint8_t wdxsInitializeForPut(dmConnId_t connId, uint16_t handle)
   }
 
   /* Erase on offset of zero */
-  if (wdxsCb.ftOffset == 0)
+  if (wdxsCb.ftOffset == 0 && erase)
   {
     WsfEfsErase(handle);
   }
@@ -216,6 +216,7 @@ static void wdxsFtcProcGetReq(dmConnId_t connId, uint16_t handle, uint16_t len, 
 static void wdxsFtcProcPutReq(dmConnId_t connId, uint16_t handle, uint16_t len, uint8_t *pValue)
 {
   uint8_t status;
+  bool_t erase ;
 
   /* verify operation not already in progress */
   if (wdxsCb.ftInProgress != WDX_FTC_OP_NONE)
@@ -234,12 +235,13 @@ static void wdxsFtcProcPutReq(dmConnId_t connId, uint16_t handle, uint16_t len, 
     BSTREAM_TO_UINT32(wdxsCb.ftOffset, pValue);
     BSTREAM_TO_UINT32(wdxsCb.ftLen, pValue);
     BSTREAM_TO_UINT32(wdxsCb.ftTotalLen, pValue);
+    BSTREAM_TO_UINT8(erase, pValue);
     BSTREAM_TO_UINT8(wdxsCb.ftPrefXferType, pValue);
 
     APP_TRACE_INFO3("WDXS: FTC PutReq handle=%d offset=%d, len=%d", handle, wdxsCb.ftOffset, wdxsCb.ftLen);
 
     /* Initialize transfer*/
-    status = wdxsInitializeForPut(connId, handle);
+    status = wdxsInitializeForPut(connId, handle,erase);
   }
 
   APP_TRACE_INFO2("WDXS: FTC PutReq handle=%d status=%d", handle, status);
@@ -306,7 +308,12 @@ static void wdxsFtcProcEraseReq(dmConnId_t connId, uint16_t handle)
   else
   {
     /* do file erase */
+    /* TODO: Define a callback for the erase complete. Don't send the response at the end of this function.
+     * This will allow us to complete the erase before we start writing to flash.
+     */
     WsfEfsErase(handle);
+
+    return;
   }
 
   /* send response */

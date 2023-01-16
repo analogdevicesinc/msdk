@@ -37,6 +37,7 @@
 #include "att_api.h"
 #include "app_api.h"
 #include "flc.h"
+#include "pal_timer.h"
 
 #ifndef FW_VERSION
 #define FW_VERSION 1
@@ -50,6 +51,7 @@ static volatile uint32_t verifyLen;
 static volatile uint8_t *lastWriteAddr;
 static volatile uint32_t lastWriteLen;
 
+
 static uint32_t eraseAddress, erasePages;
 wsfHandlerId_t eraseHandlerId;
 wsfTimer_t eraseTimer;
@@ -62,6 +64,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param);
 
 static fileHeader_t fileHeader = { .fileCRC = 0, .fileLen = 0 };
+wsfEfsHandle_t otaFileHdl;
 #define HEADER_LEN (sizeof(fileHeader_t))
 /* Use the second half of the flash space for scratch space */
 static const wsfEfsMedia_t WDXS_FileMedia = {
@@ -105,8 +108,10 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         /* Continue next erase */
         WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
     } else {
-        /* Erase is complete */
+        /* Erase is complete, send response */
         APP_TRACE_INFO0(">>> Internal flash erase complete <<<");
+        wdxsFtcSendRsp(1, WDX_FTC_ST_ERASE_COMPLETE, otaFileHdl, WDX_FTC_ST_SUCCESS);
+
     }
 }
 /*************************************************************************************************/
@@ -204,9 +209,13 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
 {
     int err = 0;
     uint32_t count = 0;
+    volatile int i =0;
+
+    /* Wait until the scheduler is active, indicating that we're done with the connection event */
+    //while(PalTimerGetState() != PAL_TIMER_STATE_BUSY) {}
 
     //128bit fragments
-    uint8_t fragment = 16;
+    uint8_t fragment = 32;
     while (size >= fragment) {
         WsfCsEnter();
         err += MXC_FLC_Write((uint32_t)pAddress, fragment, (uint32_t *)pBuf);
@@ -215,6 +224,8 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
         pAddress += fragment;
         pBuf += fragment;
         count += fragment;
+        for(i =0 ; i <0xFFF;i++);
+       
     }
     if (size) {
         WsfCsEnter();
@@ -375,8 +386,9 @@ void WdxsFileInit(void)
     WstrnCpy(attr.version, versionString, WSF_EFS_VERSION_LEN);
 
     /* Add a file for the stream */
-    WsfEfsAddFile(WDXS_FileMedia.endAddress - WDXS_FileMedia.startAddress, WDX_FLASH_MEDIA, &attr,
+    otaFileHdl = WsfEfsAddFile(WDXS_FileMedia.endAddress - WDXS_FileMedia.startAddress, WDX_FLASH_MEDIA, &attr,
                   0);
+    APP_TRACE_INFO1("File Hdl: %d", otaFileHdl);
 }
 
 /*************************************************************************************************/

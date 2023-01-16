@@ -230,13 +230,14 @@ void WdxcFtcSendVerifyFile(dmConnId_t connId, uint16_t fileHdl);
  *  \param  offset          The offset from the beginning of the file in bytes
  *  \param  len             The number of bytes to put
  *  \param  fileSize        The size of the file in bytes
+ *  \param  erase           Erase file operation
  *  \param  type            reserved
  *
  *  \return None.
  */
 /*************************************************************************************************/
 void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
-                       uint32_t len, uint32_t fileSize, uint8_t type);
+                       uint32_t len, uint32_t fileSize, bool_t erase, uint8_t type);
 
 /*************************************************************************************************/
 /*!

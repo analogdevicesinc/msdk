@@ -134,7 +134,7 @@ void WdxcFtcSendVerifyFile(dmConnId_t connId, uint16_t fileHdl)
  */
 /*************************************************************************************************/
 void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
-                       uint32_t len, uint32_t fileSize, uint8_t type)
+                       uint32_t len, uint32_t fileSize, bool_t erase, uint8_t type)
 {
   uint8_t   buf[WDX_FTC_PUT_LEN];
   uint8_t   *p = buf;
@@ -150,6 +150,7 @@ void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
   UINT32_TO_BSTREAM(p, offset);
   UINT32_TO_BSTREAM(p, len);
   UINT32_TO_BSTREAM(p, fileSize);
+  UINT8_TO_BSTREAM(p, erase);
   UINT8_TO_BSTREAM(p, type);
 
   AttcWriteReq(connId, handle, WDX_FTC_PUT_LEN, buf);
