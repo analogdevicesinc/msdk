@@ -394,11 +394,28 @@ To convert all the files in a directory and all its subdirectories:
 $ python bin2wav.py -a -d <folder name>
 ```
 
-When option `-a` is used, each file is converted to a wav file once and subsequent execution of the command skips all the files that have previously been converted to wave files.
+When option `-a` is used, each file is converted to a .wav file once and subsequent execution of the command skips all the files that have previously been converted to wave files.
 
 ***Note 1: When `SEND_MIC_OUT_SDCARD` is selected, the Wake-Up Timer (WUT) is disabled.***
 
 ***Note 2: When `SEND_MIC_OUT_SDCARD` is selected, the `ENABLE_TFT` is disabled regardless of make options.***
+
+### Sending Sound Snippets to serial
+
+To send the snippets to the serial port in binary format, uncomment the following line in [`project.mk`](project.mk). 
+
+```make
+# If enabled, it sends out the Mic samples used for inference to the serial port
+PROJ_CFLAGS+=-DSEND_MIC_OUT_SERIAL
+```
+
+A utility (`capture_serial_bin.py`) is provided in the `/Utility` folder to capture the serial snippets and save them as  .wav files:
+
+```bash
+$ python capture_serial_bin.py -c COM3 -o out.wav
+```
+
+The snippets will be stored with incremental tags.
 
 ### KWS20 Demo Firmware Structure
 
@@ -406,7 +423,7 @@ The following figure shows the processing in KWS20 Demo firmware:
 
 ![](Resources/KWS_Demo_flowchart.png)
 
-Collected samples from mic/file are 18/16 bit signed and are converted to 8-bit signed to feed into CNN. If Microphone mode, a high pass filter is used to filter out the DC level in captured samples. Scaled samples are stored in **pPreambleCircBuffer** circular buffer in chunks of 128 samples (bytes). 
+Collected samples from mic/file are 18/16 bit signed and are converted to 8-bit signed to feed into CNN. If Microphone mode, a high pass filter is used to filter out the DC level in captured samples. Scaled samples are stored in **micBuff** circular buffer in chunks of 128 samples (bytes). 
 
 The following parameters in the firmware can be tuned:
 
@@ -419,7 +436,7 @@ The following parameters in the firmware can be tuned:
 #define INFERENCE_THRESHOLD   		49 		// min probability (0-100) to accept an inference
 ```
 
-When the average absolute values of samples during the last 128 samples go above a threshold, the beginning of a word is marked. 
+When the average absolute values of samples during the last 128 samples go above a threshold, the beginning of an utterance is marked. 
 
 The end of a word is signaled when the **SILENCE_COUNTER_THRESHOLD** back-to-back chunks of samples with an average absolute threshold lower than **THRESHOLD_LOW** are observed. 
 

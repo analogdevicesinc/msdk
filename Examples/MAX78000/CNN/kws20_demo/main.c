@@ -112,13 +112,15 @@
 #undef ENABLE_PRINT_ENVELOPE // print is slow with live mic data
 #endif
 
+#define CON_BAUD 1 * 115200
+
 /*-----------------------------*/
 /* keep following unchanged */
 #define SAMPLE_SIZE 16384 // size of input vector for CNN, keep it multiple of 128
 #define CHUNK \
     128 // number of data points to read at a time and average for threshold, keep multiple of 128
 #define TRANSPOSE_WIDTH 128 // width of 2d data model to be used for transpose
-#define NUM_OUTPUTS 21 // number of classes
+#define NUM_OUTPUTS CNN_NUM_OUTPUTS // number of classes
 #define I2S_RX_BUFFER_SIZE 64 // I2S buffer size
 #define TFT_BUFF_SIZE 50 // TFT buffer size
 /*-----------------------------*/
@@ -170,16 +172,17 @@
 volatile uint32_t cnn_time; // Stopwatch
 volatile uint32_t fileCount = 0;
 
-#if defined(SEND_MIC_OUT_SDCARD) || defined(DISPLAY_AUDIO)
-int8_t serialMicBuff[SAMPLE_SIZE];
-int8_t snippet[SAMPLE_SIZE];
-int serialMicBufIndex = 0;
-#endif
+int8_t micBuff[SAMPLE_SIZE];
+int micBufIndex = 0;
+
+int utteranceIndex = 0;
+uint16_t utteranceAvg = 0;
+int zeroPad = 0;
 
 static int32_t ml_data[NUM_OUTPUTS];
 static q15_t ml_softmax[NUM_OUTPUTS];
 uint8_t pAI85Buffer[SAMPLE_SIZE];
-uint8_t pPreambleCircBuffer[PREAMBLE_SIZE];
+
 int16_t Max, Min;
 uint16_t thresholdHigh = THRESHOLD_HIGH;
 uint16_t thresholdLow = THRESHOLD_LOW;
@@ -232,7 +235,7 @@ extern int writeSoundSnippet(char *snippetFilename, unsigned int snippetLength, 
 #endif
 void fail(void);
 uint8_t cnn_load_data(uint8_t *pIn);
-uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg);
+uint8_t MicReadChunk(uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
@@ -268,6 +271,29 @@ void WUT_IRQHandler()
 }
 #endif
 
+int console_UART_init(uint32_t baud)
+{
+    mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+    int err;
+    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    NVIC_SetPriority(MXC_UART_GET_IRQ(CONSOLE_UART), 1);
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+
+    if ((err = MXC_UART_Init(ConsoleUart, baud, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
+        return err;
+    }
+
+    return 0;
+}
+
+#ifdef SEND_MIC_OUT_SERIAL
+static void console_uart_send_byte(uint8_t value)
+{
+    while (MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), value) == E_OVERFLOW) {}
+}
+#endif
+
 #ifdef DISPLAY_AUDIO
 static uint32_t setColor(int r, int g, int b)
 {
@@ -294,7 +320,6 @@ int main(void)
     uint8_t pChunkBuff[CHUNK];
 
     uint16_t avg = 0;
-    uint16_t preambleCounter = 0;
     uint16_t ai85Counter = 0;
     uint16_t wordCounter = 0;
 
@@ -348,6 +373,9 @@ int main(void)
 #endif
 #endif
 
+    // Initialize UART
+    console_UART_init(CON_BAUD);
+
     /* Enable peripheral, enable CNN interrupt, turn on CNN clock */
     /* CNN clock: 50 MHz div 1 */
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
@@ -358,10 +386,8 @@ int main(void)
     PR_INFO("\n\nANALOG DEVICES \nKeyword Spotting Demo\nVer. %s \n", VERSION);
     PR_INFO("\n***** Init *****\n");
     memset(pAI85Buffer, 0x0, sizeof(pAI85Buffer));
-    memset(pPreambleCircBuffer, 0x0, sizeof(pPreambleCircBuffer));
 
     PR_DEBUG("pChunkBuff: %d\n", sizeof(pChunkBuff));
-    PR_DEBUG("pPreambleCircBuffer: %d\n", sizeof(pPreambleCircBuffer));
     PR_DEBUG("pAI85Buffer: %d\n", sizeof(pAI85Buffer));
 #ifdef SEND_MIC_OUT_SDCARD
     /* SD card support */
@@ -465,7 +491,7 @@ int main(void)
 #endif
 
         /* Read from Mic driver to get CHUNK worth of samples, otherwise next sample*/
-        if (MicReadChunk(pChunkBuff, &avg) == 0) {
+        if (MicReadChunk(&avg) == 0) {
 #ifdef WUT_ENABLE
 #ifdef ENERGY
 
@@ -494,16 +520,13 @@ int main(void)
 
         sampleCounter += CHUNK;
 
+        /* wait for at least PREAMBLE_SIZE samples before detecting the utterance */
+        if (sampleCounter < PREAMBLE_SIZE)
+            continue;
+
 #ifdef ENABLE_SILENCE_DETECTION // disable to start collecting data immediately.
 
-        /* copy the preamble data*/
-        /* add the new chunk to the end of circular buffer*/
-        memcpy(&pPreambleCircBuffer[preambleCounter], pChunkBuff, sizeof(uint8_t) * CHUNK);
-
-        /* increment circular buffer pointer*/
-        preambleCounter = (preambleCounter + CHUNK) % (PREAMBLE_SIZE);
-
-        /* Display average envelope as a bar */
+            /* Display average envelope as a bar */
 #ifdef ENABLE_PRINT_ENVELOPE
         PR_DEBUG("%.6d|", sampleCounter);
 
@@ -524,32 +547,11 @@ int main(void)
             if (avg >= thresholdHigh) {
                 /* switch to keyword data collection*/
                 procState = KEYWORD;
-                PR_DEBUG("%.6d Word starts from index: %d, avg:%d > %d \n", sampleCounter,
-                         sampleCounter - PREAMBLE_SIZE - CHUNK, avg, thresholdHigh);
 
-                /* reorder circular buffer according to time at the beginning of pAI85Buffer */
-                if (preambleCounter == 0) {
-                    /* copy latest samples afterwards */
-                    if (AddTranspose(&pPreambleCircBuffer[0], pAI85Buffer, PREAMBLE_SIZE,
-                                     SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
-                        PR_DEBUG("ERROR: Transpose ended early \n");
-                    }
-                } else {
-                    /* copy oldest samples to the beginning*/
-                    if (AddTranspose(&pPreambleCircBuffer[preambleCounter], pAI85Buffer,
-                                     PREAMBLE_SIZE - preambleCounter, SAMPLE_SIZE,
-                                     TRANSPOSE_WIDTH)) {
-                        PR_DEBUG("ERROR: Transpose ended early \n");
-                    }
+                /* record the average and index of the begining of the word */
+                utteranceAvg = avg;
+                utteranceIndex = micBufIndex;
 
-                    /* copy latest samples afterwards */
-                    if (AddTranspose(&pPreambleCircBuffer[0], pAI85Buffer, preambleCounter,
-                                     SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
-                        PR_DEBUG("ERROR: Transpose ended early \n");
-                    }
-                }
-
-                /* preamble is copied and state is changed, start adding keyword samples next run */
                 ai85Counter += PREAMBLE_SIZE;
                 continue;
             }
@@ -559,9 +561,6 @@ int main(void)
 #endif //#ifdef ENABLE_SILENCE_DETECTION
         {
             uint8_t ret = 0;
-
-            /* add sample, rearrange buffer */
-            ret = AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE, TRANSPOSE_WIDTH);
 
             /* increment number of stored samples */
             ai85Counter += CHUNK;
@@ -586,21 +585,78 @@ int main(void)
 #endif
             {
                 memset(pChunkBuff, 0, CHUNK);
-                PR_DEBUG("%.6d: Word ends, Appends %d zeros \n", sampleCounter,
-                         SAMPLE_SIZE - ai85Counter);
-                ret = 0;
 
-                while (!ret) {
-                    ret =
-                        AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE, TRANSPOSE_WIDTH);
-                    ai85Counter += CHUNK;
-                }
+                zeroPad = SAMPLE_SIZE - ai85Counter;
+                ai85Counter = SAMPLE_SIZE;
             }
 
             /* if enough samples are collected, start CNN */
             if (ai85Counter >= SAMPLE_SIZE) {
                 int16_t out_class = -1;
                 double probability = 0;
+
+                /* end of the utterance */
+                int endIndex =
+                    (utteranceIndex + SAMPLE_SIZE - PREAMBLE_SIZE - zeroPad) % SAMPLE_SIZE;
+
+                PR_DEBUG("Word starts from index %d to %d, padded with %d zeros, avg:%d > %d \n",
+                         utteranceIndex, endIndex, zeroPad, utteranceAvg, thresholdHigh);
+
+                // zero padding
+                memset(pChunkBuff, 0, CHUNK);
+
+                /* PREAMBLE copy  */
+                if (utteranceIndex - PREAMBLE_SIZE >= 0) {
+                    if (AddTranspose((uint8_t *)&micBuff[utteranceIndex - PREAMBLE_SIZE],
+                                     pAI85Buffer, PREAMBLE_SIZE, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+                } else {
+                    /* copy oldest samples to the beginning*/
+                    if (AddTranspose(
+                            (uint8_t *)&micBuff[SAMPLE_SIZE - PREAMBLE_SIZE + utteranceIndex],
+                            pAI85Buffer, PREAMBLE_SIZE - utteranceIndex, SAMPLE_SIZE,
+                            TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+
+                    /* copy latest samples afterwards */
+                    if (AddTranspose((uint8_t *)&micBuff[0], pAI85Buffer, utteranceIndex,
+                                     SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+                }
+
+                /* Utterance copy */
+                if (utteranceIndex < endIndex) {
+                    /* copy from utternace to the end */
+                    if (AddTranspose((uint8_t *)&micBuff[utteranceIndex], pAI85Buffer,
+                                     endIndex - utteranceIndex, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+                    // copy zero padding
+                    while (!ret) {
+                        ret = AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE,
+                                           TRANSPOSE_WIDTH);
+                    }
+                } else {
+                    /* copy from utternace to the end*/
+                    if (AddTranspose((uint8_t *)&micBuff[utteranceIndex], pAI85Buffer,
+                                     SAMPLE_SIZE - utteranceIndex, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+
+                    /* copy from begining*/
+                    if (AddTranspose((uint8_t *)&micBuff[0], pAI85Buffer, endIndex, SAMPLE_SIZE,
+                                     TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+                    // copy zero padding
+                    while (!ret) {
+                        ret = AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE,
+                                           TRANSPOSE_WIDTH);
+                    }
+                }
 
                 /* reset counters */
                 ai85Counter = 0;
@@ -738,8 +794,7 @@ int main(void)
 
                 /* Down sample to display according to the TFT width */
                 for (i = 0; i < SAMPLE_SIZE; i += (SAMPLE_SIZE / 320)) {
-                    y = serialMicBuff[(serialMicBufIndex + i + 30 * CHUNK) %
-                                      SAMPLE_SIZE]; // offset to align
+                    y = micBuff[(micBufIndex + i + 30 * CHUNK) % SAMPLE_SIZE]; // offset to align
 
                     /* Total energy */
                     energy += y * y;
@@ -785,8 +840,8 @@ int main(void)
 
                 int i = 0;
                 for (i = 0; i < SAMPLE_SIZE; i++) {
-                    // printf("%d\n",serialMicBuff[(serialMicBufIndex+i)%SAMPLE_SIZE]);
-                    snippet[i] = serialMicBuff[(serialMicBufIndex + i) % SAMPLE_SIZE];
+                    // printf("%d\n", micBuff[(micBufIndex + i) % SAMPLE_SIZE]);
+                    snippet[i] = micBuff[(micBufIndex + i) % SAMPLE_SIZE];
                 }
                 if (ret && out_class != 20) {
                     // Word detected with high confidence
@@ -805,6 +860,22 @@ int main(void)
                 LED_Off(LED_RED);
                 LED_On(LED_GREEN);
 #endif
+
+#ifdef SEND_MIC_OUT_SERIAL
+                printf("START: %d\n", micBufIndex);
+
+                int k = 0;
+                for (k = 0; k < SAMPLE_SIZE; k++)
+                    // printf("%d\n", micBuff[(micBufIndex + k) % SAMPLE_SIZE]);
+                    console_uart_send_byte(micBuff[(micBufIndex + k) % SAMPLE_SIZE]);
+
+                printf("END\n");
+#endif
+
+                /* clear the buffer */
+                memset(micBuff, 0, SAMPLE_SIZE);
+                micBufIndex = 0;
+                //sampleCounter = 0;  // comment to start immediately after the last utterance
             }
         }
 
@@ -1145,7 +1216,7 @@ int8_t MicReader(int16_t *sample)
 }
 #else // #ifndef ENABLE_MIC_PROCESSING
 /* **************************************************************************** */
-uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
+uint8_t MicReadChunk(uint16_t *avg)
 {
     static uint16_t chunkCount = 0;
     static uint16_t sum = 0;
@@ -1199,15 +1270,10 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
         }
 
         /* Convert to 8 bit unsigned */
-        pBuff[chunkCount] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
-#if defined(SEND_MIC_OUT_SDCARD) || defined(DISPLAY_AUDIO)
-        serialMicBuff[serialMicBufIndex++] = (sample)*SAMPLE_SCALE_FACTOR / 256;
-        serialMicBufIndex = serialMicBufIndex % SAMPLE_SIZE;
-#endif
-        temp = (int8_t)pBuff[chunkCount];
-
+        micBuff[micBufIndex] = (sample)*SAMPLE_SCALE_FACTOR / 256;
         chunkCount++;
 
+        temp = (int8_t)micBuff[micBufIndex];
         /* record max and min */
         if (temp > Max) {
             Max = temp;
@@ -1216,6 +1282,8 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
         if (temp < Min) {
             Min = temp;
         }
+
+        micBufIndex = (micBufIndex + 1) % SAMPLE_SIZE;
     }
 
     /* if not enough samples, return 0 */
