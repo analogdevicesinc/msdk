@@ -175,6 +175,10 @@ volatile uint32_t fileCount = 0;
 int8_t micBuff[SAMPLE_SIZE];
 int micBufIndex = 0;
 
+#if defined(SEND_MIC_OUT_SDCARD)
+int8_t snippet[SAMPLE_SIZE];
+#endif
+
 int utteranceIndex = 0;
 uint16_t utteranceAvg = 0;
 int zeroPad = 0;
@@ -796,7 +800,7 @@ int main(void)
                 for (i = 0; i < SAMPLE_SIZE; i += (SAMPLE_SIZE / 320)) {
                     y = micBuff[(micBufIndex + i + 30 * CHUNK) % SAMPLE_SIZE]; // offset to align
 
-                    /* Total energy */
+                    /* Energy of downsampled signal */
                     energy += y * y;
 
                     y = 140 - y; // vertical offset on TFT
@@ -818,7 +822,8 @@ int main(void)
                 }
 
                 memset(buff, 32, TFT_BUFF_SIZE);
-                db = 10 * log10((double)energy);
+                /* rms */
+                db = 10 * log10((double)energy / 320);
                 TFT_Print(buff, 240, 30, font_2,
                           snprintf(buff, sizeof(buff), "%0.1fdB", (double)db));
 #endif
