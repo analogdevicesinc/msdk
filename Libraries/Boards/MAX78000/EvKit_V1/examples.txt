@@ -35,6 +35,7 @@ CNN/snake_game_demo
 CRC
 CameraIF
 CameraIF_Debayer
+Coremark
 DMA
 ECC
 Flash

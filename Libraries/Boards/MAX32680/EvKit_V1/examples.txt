@@ -16,6 +16,7 @@ AES
 AFE_ADC
 BLE4_ctr
 BLE_dats
+Coremark
 CRC
 DMA
 Flash

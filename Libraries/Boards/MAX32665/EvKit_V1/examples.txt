@@ -26,6 +26,7 @@ BLE_otas
 BLE_periph
 Bootloader
 Bootloader_Host
+Coremark
 CRC
 DES
 DMA

@@ -12,6 +12,7 @@ ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 Bootloader_Host
+Coremark
 DMA
 Flash
 Flash_CLI

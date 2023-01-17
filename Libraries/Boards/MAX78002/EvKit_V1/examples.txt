@@ -15,6 +15,7 @@ ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 CameraIF
 CameraIF_Debayer
+Coremark
 CNN/camvid_unet
 CNN/cats-dogs
 CNN/cats-dogs_demo

@@ -26,6 +26,7 @@ BLE_otac
 BLE_otas
 BLE_periph
 Bootloader
+Coremark
 CRC
 DMA
 Dual_core_sync/Dual_core_sync_arm
