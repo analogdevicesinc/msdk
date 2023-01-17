@@ -48,6 +48,7 @@ from time import sleep
 import datetime
 import readline
 import threading
+from termcolor import colored
 
 # Setup the default serial port settings
 defaultBaud=115200
@@ -351,8 +352,89 @@ class BLE_hci:
                         first = False
                     else:
                         print(f'{str(datetime.datetime.now())} - {msg}')
+    def getDataFromConnStatEvent(self, statEvt, dataLabel):
+        
+        #all data values are 8 bytes offset from each other starting at 14
+        offsetLut = {
+            'rxDataOk' : 14,
+            'rxDataCRC' : 22,
+            'rxDataTO' : 30,
+            'txData' : 38,
+            'errTrans' : 46
+        }
+        
+        assert dataLabel in offsetLut
+
+        off = offsetLut[dataLabel]
+
+        return int(statEvt[6+off:8+off]+statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
+    
+    def getConnectionStats(self, retries=5) -> dict | None:
+        connStats = {}
+        for i in range(retries):
+            statEvt = self.send_command("01FDFF00")
+
+            if(retries != 5):
+                # Delay to clear pending events
+                self.wait_events(1)
+                
+            if statEvt is not None:
+
+                connStats['rxDataOk']  = self.getDataFromConnStatEvent(statEvt, 'rxDataOk')
+                connStats['rxDataCRC'] = self.getDataFromConnStatEvent(statEvt, 'rxDataCRC')
+                connStats['rxDataTO'] = self.getDataFromConnStatEvent(statEvt, 'rxDataTO')
+                connStats['txData']    = self.getDataFromConnStatEvent(statEvt, 'txData')
+                connStats['errTrans'] = self.getDataFromConnStatEvent(statEvt, 'errTrans')
 
 
+                if((connStats['rxDataCRC'] + connStats['rxDataTO'] + connStats['rxDataOk']) != 0):
+                    per = round(float(( connStats['rxDataCRC'] + connStats['rxDataTO'])/( connStats['rxDataCRC'] +connStats['rxDataTO'] + connStats['rxDataOk'])) *100 , 2)
+                else:
+                    connStats['per'] = 100.0
+                
+                
+                break
+
+
+        # while((per == None) and (retries > 0)):
+        #     # Send the command to get the connection stats, save the event
+        #     statEvt = self.send_command("01FDFF00")
+
+        #     if(retries != 5):
+        #         # Delay to clear pending events
+        #         self.wait_events(1)
+                
+        #     if statEvt is not None:
+
+        #         # Offset into the event where the stats start, each stat is 32 bits, or
+        #         # 8 hex nibbles
+        #         off = 14
+        #         connStats['rxDataOk']  = int(statEvt[6+off:8+off]+statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
+        #         off += 8
+        #         connStats['rxDataCRC'] = int(statEvt[6+off:8+off] + statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
+        #         off += 8
+        #         connStats['rxDataTO']  = int(statEvt[6+off:8+off]+statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
+        #         off += 8
+        #         connStats['txData']    = int(statEvt[6+off:8+off]+statEvt[4+off:6+off] + statEvt[2+off:4+off] + statEvt[0+off:2+off],16)
+        #         off += 8
+        #         connStats['errTrans']  = int(statEvt[6+off:8+off]+statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
+        #         connStats['per']
+                
+        #     if((connStats['rxDataCRC'] + connStats['rxDataTO'] + connStats['rxDataOk']) != 0):
+        #         per = round(float(( connStats['rxDataCRC'] + connStats['rxDataTO'])/( connStats['rxDataCRC'] +connStats['rxDataTO'] + connStats['rxDataOk'])) *100 , 2)
+        #     else:
+        #         connStats['per'] = 100.0
+
+        #     retries = retries - 1
+
+        if retries == 0:
+            print(colored('Warning: Failed to get connection stats', 'yellow'))
+            return None
+        else:
+            return connStats
+    
+        
+        pass
     ## Get connection stats.
      #
      # Send the command to get the connection stats, parse the return value, return the PER.
@@ -374,7 +456,8 @@ class BLE_hci:
             per = self.parseConnStatsEvt(statEvt)
 
             retries = retries - 1
-
+        if retries == 0 and per is None:
+            print(colored('Warning: Failed to get connection stats', 'yellow'))
         return per
 
 
@@ -771,7 +854,9 @@ class BLE_hci:
         # Parse the event and print the number of received packets
         evtData = int(evtString, 16)
         rxPackets = int((evtData & 0xFF00)>>8)+int((evtData & 0xFF)<<8)
-        print("Received PKTS  : "+str(rxPackets))
+        if(args is None or  vars(args).get('noPrint') is not True):
+            print("Received PKTS  : "+str(rxPackets))
+
         return rxPackets
 
     ## txPower function.
