@@ -722,7 +722,6 @@ int main(void)
                 //------------------------------------------------------------
 
 #ifdef DISPLAY_AUDIO
-
                 uint32_t color;
                 int i, j;
                 char buff[TFT_BUFF_SIZE];
@@ -767,7 +766,6 @@ int main(void)
                 db = 10 * log10((double)energy);
                 TFT_Print(buff, 240, 30, font_2,
                           snprintf(buff, sizeof(buff), "%0.1fdB", (double)db));
-
 #endif
 
 #ifdef SEND_MIC_OUT_SDCARD
