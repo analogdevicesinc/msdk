@@ -173,7 +173,6 @@ extern "C"
 #define WDX_FTC_ST_INVALID_OP_DATA     3           /*!< \brief Invalid operation data */
 #define WDX_FTC_ST_IN_PROGRESS         4           /*!< \brief Operation in progress */
 #define WDX_FTC_ST_VERIFICATION        5           /*!< \brief Verification failure */
-#define WDX_FTC_ST_ERASE_COMPLETE      6           /*1< \brief Erase operation complete */
 /**@}*/
 
 /** \name File Transfer Control Transport
@@ -255,7 +254,7 @@ extern "C"
 #define WDX_FTC_ABORT_LEN              3           /*!< \brief Abort message length. */
 #define WDX_FTC_ERASE_LEN              3           /*!< \brief Erase message length. */
 #define WDX_FTC_VERIFY_LEN             3           /*!< \brief Verify message length. */
-#define WDX_FTC_PUT_LEN                17          /*!< \brief Put message length. */
+#define WDX_FTC_PUT_LEN                16          /*!< \brief Put message length. */
 #define WDX_FTC_GET_LEN                12          /*!< \brief Get message length. */
 /**@}*/
 

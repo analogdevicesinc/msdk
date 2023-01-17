@@ -615,7 +615,6 @@ static void datcDiscGapCmpl(dmConnId_t connId)
 static void datcWdxcFtdCallback(dmConnId_t connId, uint16_t fileHdl, uint16_t len, uint8_t *pData)
 {
 }
-
 /*************************************************************************************************/
 /*!
  *  \brief  Send file header.
@@ -632,7 +631,6 @@ static void sendFileHeader(dmConnId_t connId)
                      (uint8_t *)&fileHeader);
     }
 }
-
 /*************************************************************************************************/
 /*!
  *  \brief  Send a block of file data to the peer. Combines the address with the data.
@@ -661,7 +659,6 @@ static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uin
     /* Increment the address of the data that we're sending */
     datcCb.blockOffset[connId - 1] += len;
 }
-
 /*************************************************************************************************/
 /*!
  *  \brief  WDXC File Transfer Control Callback.
@@ -678,15 +675,19 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
     APP_TRACE_INFO2("FTC op: %d status: %d", op, status);
 
     if (op == WDX_FTC_OP_PUT_RSP) {
+        /* Start timer */
+        APP_TRACE_INFO0(">>> Starting file transfer <<<\n");
+
         MXC_TMR_SW_Start(MXC_TMR2);
         datcCb.sendingFile[connId - 1] = TRUE;
         uint32_t address = datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT;
         datcSendBlock(connId, address, BLOCK_SIZE, (uint8_t *)&datcCb.fileData[address]);
+
     } else if (op == WDX_FTC_OP_EOF) {
         if (handle == WDX_FLIST_HANDLE) {
-            /* File discovery complete */
             /* on discovery completion we can send the header */
             sendFileHeader(connId);
+            /* File discovery complete */
             APP_TRACE_INFO0(">>> File discovery complete <<<\n");
         } else {
             /* Stop timer, calculate time and Bps */
@@ -702,11 +703,6 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
             datcCb.fileVerified[connId - 1] = FALSE;
         else
             datcCb.fileVerified[connId - 1] = TRUE;
-    } else if (op == WDX_FTC_ST_ERASE_COMPLETE) {
-        APP_TRACE_INFO0(">>> Starting file transfer <<<");
-        /* Put file request */
-        WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle, BLOCK_OFFSET_INIT,
-                          FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE, FALSE, 0);
     }
 }
 /*************************************************************************************************/
@@ -798,9 +794,10 @@ static void datcBtnCback(uint8_t btn)
                 (datcCb.sendingFile[connId - 1] == FALSE)) {
                 /* Start the WDXC data stream */
                 datcCb.blockOffset[connId - 1] = BLOCK_OFFSET_INIT;
-                APP_TRACE_INFO0(">>> Sending erase request <<<\n");
-                dmConnId_t connId = datcCb.btnConnId;
-                WdxcFtcSendEraseFile(connId, datcCb.fileList[connId - 1][0].handle);
+
+                /* Put file request */
+                WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle, BLOCK_OFFSET_INIT,
+                                  FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE, 0);
             }
             break;
 
