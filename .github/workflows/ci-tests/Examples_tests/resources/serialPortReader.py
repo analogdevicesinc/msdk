@@ -83,9 +83,11 @@ def expect_and_timeout(send=None,expect=None, timeout= 10, port=None):
                 char_list = list(send)
                 for char in char_list:
                 # start test, send command
-                    time.sleep(0.1)
                     used_ports[port].write(bytes(char, encoding='utf-8'))
+                    time.sleep(0.1)
             # read lines
+            #wait for command to be sent and reply to start coming
+            time.sleep(0.5)
             while (time.time()-timeStart) < timeout:
                 try:
                     x=used_ports[port].read(10000).decode("utf-8",'ignore')
