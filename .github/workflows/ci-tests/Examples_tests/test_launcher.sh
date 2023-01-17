@@ -184,11 +184,11 @@ function run_notConntectedTest() {
 }
 #****************************************************************************************************
 function flash_bootloader() {
-    #------ -----------Build & Flash Bootloader onto Device 2  : ME17
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
-    make -j8
+    make clean
+    make USE_INTERNAL_FLASH=$1 -j8
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader/build
-    printf "> Flashing Bootloader on DUT\r\n\r\n"
+    printf ">>>>>>>   Flashing Bootloader on DUT\r\n\r\n"
     #not using the flash_with_openocd function here because that causes the application code to be erased and only
     #bootloader to remain
     set +e
@@ -303,9 +303,9 @@ else
         echo "---------------------------------------"
         echo " Validation build for ${dir}"
         echo "---------------------------------------"
-    #   make -C ${dir} clean
+      make -C ${dir} clean
     #   make -C ${dir} libclean
-        make -C ${dir} -j8
+       make -C ${dir} -j8
     done
 fi
 
@@ -372,7 +372,7 @@ done # end non connected tests
 #*********************************** Start of Datc/s connected tests ********************************
 #****************************************************************************************************
 
-erase_all_devices
+ erase_all_devices
 
 # Flash MAIN_DEVICE with BLE_datc
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
@@ -415,52 +415,140 @@ erase_with_openocd $DUT_NAME_LOWER $DUT_ID
 erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
 #****************************************************************************************************
-#*********************************** Start of OTAC/s connected tests ********************************
+#*********************************** Start of OTAC/s connected tests  (external flash) **************
 #****************************************************************************************************
 
-cd $EXAMPLE_TEST_PATH/tests
+if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
 
-# flash Firmware V1 BLE_otas  onto DUT
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-printf "> Flashing BLE_otas on DUT $DUT_NAME_UPP\r\n\r\n"
-flash_with_openocd $DUT_NAME_LOWER $DUT_ID
+    #make sure all files have correct settings
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+    perl -i -pe "s/FW_VERSION 2/FW_VERSION 1/g" wdxs_file_ext.c
+    sed -i "s/USE_INTERNAL_FLASH ?=1/USE_INTERNAL_FLASH ?=0/g" project.mk
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
+    sed -i "s/USE_INTERNAL_FLASH ?=1/USE_INTERNAL_FLASH ?=0/g" project.mk
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
+    sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
+    sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
 
-flash_bootloader
+    sleep 1
+    # Make OTAS V1 and flash
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+    make clean
+    make USE_INTERNAL_FLASH=0 -j8
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
+    printf ">>>>>>>> Flashing BLE_otas V1 on DUT $DUT_NAME_UPP\r\n\r\n"
+    flash_with_openocd $DUT_NAME_LOWER $DUT_ID
 
-# change firmware version and rebuild
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-# change firmware version to verify otas worked
-if [[ $DUT_NAME_UPPER != "MAX32665" ]]; then
-perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file_ext.c
-else
-perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file_int.c
+    # Flash bootloader also make sure it uses external flash version
+    flash_bootloader 0
+
+    # change OTAS firmware version and rebuild
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+    # change firmware version to verify otas worked
+    perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file_ext.c
+    make clean
+    make USE_INTERNAL_FLASH=0 -j8
+
+    # make OTAC 
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
+    make clean
+    make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8
+
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+    printf ">>>>>>> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
+    flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+    printf ">>>>>>> Flashing done"
+
+    #revert files back
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+    sed -i 's/TARGET='"$DUT_NAME_UPPER"'//' project.mk
+    sed -i 's/TARGET_UC='"$DUT_NAME_UPPER"'//' project.mk
+    sed -i 's/TARGET_LC='"$DUT_NAME_LOWER"'//' project.mk
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+    perl -i -pe "s/FW_VERSION 2/FW_VERSION 1/g" wdxs_file_ext.c
+    # give time to connect
+    sleep 1
+
+    set +e
+    # runs desired test
+    cd $EXAMPLE_TEST_PATH/tests
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot
+    let "testResult=$?"
+    if [ "$testResult" -ne "0" ]; then
+        # update failed test count
+        let "numOfFailedTests+=$testResult"
+        failedTestList+="| BLE_ota_cs_ext ($DUT_NAME_UPPER) "
+        # test failed, save elfs datc/s
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+        cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_ext.elf"
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
+        cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_ext.elf"
+    fi
+    set -e
+
+    # make sure to erase main device and current DUT to it does not store bonding info
+    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+ #   erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 fi
-make -j8
 
-# since  MAIN_DEVICE and DUT are not the same chip we need to make sure the
-# FW update binary is built for the DUT's mcu and not the  MAIN_DEVICE mcu
-# modify project.mk's recursive 'MAKE' call that builds the FW update bin
+#****************************************************************************************************
+#*********************************** Start of OTAC/s connected tests (internal flash) ***************
+#****************************************************************************************************
+
+erase_all_devices
+
+#make sure all files have correct settings
+cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+perl -i -pe "s/FW_VERSION 2/FW_VERSION 1/g" wdxs_file_int.c
+sed -i "s/USE_INTERNAL_FLASH ?=0/USE_INTERNAL_FLASH ?=1/g" project.mk
+cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
+sed -i "s/USE_INTERNAL_FLASH ?=0/USE_INTERNAL_FLASH ?=1/g" project.mk
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-
 #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
 sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
 sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
+
+sleep 1
+# Make OTAS V1 and flash
+cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+make clean
+make USE_INTERNAL_FLASH=1 -j8
+cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
+printf ">>>>>>>> Flashing BLE_otas V1 on DUT $DUT_NAME_UPP\r\n\r\n"
+flash_with_openocd $DUT_NAME_LOWER $DUT_ID
+
+# Flash bootloader also make sure it uses external flash version
+flash_bootloader 1
+
+# change OTAS firmware version and rebuild
+cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+# change firmware version to verify otas worked
+perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file_int.c
+make clean
+make USE_INTERNAL_FLASH=1 -j8
+
+# make OTAC 
+cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
 # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
 make clean
 make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8
 
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
-printf "> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
+printf ">>>>>>> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
 flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-printf "Flashing done"
+printf ">>>>>>> Flashing done"
 
-#revert files back, took me days to find this bug
+#revert files back
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
 sed -i 's/TARGET='"$DUT_NAME_UPPER"'//' project.mk
 sed -i 's/TARGET_UC='"$DUT_NAME_UPPER"'//' project.mk
 sed -i 's/TARGET_LC='"$DUT_NAME_LOWER"'//' project.mk
+cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+perl -i -pe "s/FW_VERSION 2/FW_VERSION 1/g" wdxs_file_int.c
 # give time to connect
-sleep 15
+sleep 1
 
 set +e
 # runs desired test
@@ -470,25 +558,22 @@ let "testResult=$?"
 if [ "$testResult" -ne "0" ]; then
     # update failed test count
     let "numOfFailedTests+=$testResult"
-    failedTestList+="| BLE_ota_cs ($DUT_NAME_UPPER) "
+    failedTestList+="| BLE_ota_cs_int ($DUT_NAME_UPPER) "
     # test failed, save elfs datc/s
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
-    cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client.elf"
+    cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_int.elf"
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-    cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server.elf"
+    cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_int.elf"
 fi
 set -e
 
-# make sure to erase main device and current DUT to it does not store bonding info
-erase_with_openocd $DUT_NAME_LOWER $DUT_ID
-erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
 erase_all_devices
 
 echo "=============================================================================="
 echo "=============================================================================="
 if [ "$numOfFailedTests" -ne "0" ]; then
-    echo "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+    printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
    
 else
     echo "Relax! ALL TESTS PASSED"
@@ -496,3 +581,4 @@ fi
 echo "=============================================================================="
 echo "=============================================================================="
 exit $numOfFailedTests
+
