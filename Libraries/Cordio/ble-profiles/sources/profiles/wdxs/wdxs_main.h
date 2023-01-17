@@ -202,6 +202,15 @@ void wdxsFtcSend(dmConnId_t connId);
 
 /*************************************************************************************************/
 /*!
+ *  \brief  Send a file transfer response message.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void wdxsFtcSendRsp(dmConnId_t connId, uint8_t op, uint16_t handle, uint8_t status);
+
+/*************************************************************************************************/
+/*!
  *  \brief  Send a file transfer data characteristic notification.
  *
  *  \param  connId   DM connection identifier.

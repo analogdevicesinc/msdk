@@ -62,6 +62,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param);
 
 static fileHeader_t fileHeader = { .fileCRC = 0, .fileLen = 0 };
+wsfEfsHandle_t otaFileHdl;
 #define HEADER_LEN (sizeof(fileHeader_t))
 /* Use the second half of the flash space for scratch space */
 static const wsfEfsMedia_t WDXS_FileMedia = {
@@ -101,6 +102,7 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     } else {
         /* Erase is complete */
         APP_TRACE_INFO0(">>> External flash erase complete <<<");
+        wdxsFtcSendRsp(1, WDX_FTC_OP_PUT_RSP, otaFileHdl, WDX_FTC_ST_SUCCESS);
     }
 }
 
