@@ -74,7 +74,7 @@ Connect the PICO adapter to the JH5 SWD header.
 If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
 
 ```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000elf reset exit"
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
 ```
 
 If using Linux, perform this step:
