@@ -94,7 +94,11 @@ extern uint32_t _binary_fw_update_bin_end;
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
-
+typedef struct {
+    uint32_t fileLen;
+    uint32_t fileCRC;
+} fileHeader_t;
+fileHeader_t fileHeader;
 /*! application control block */
 struct {
     uint16_t hdlList[DM_CONN_MAX][APP_DB_HDL_LIST_LEN]; /*! Cached handle list */
@@ -611,7 +615,50 @@ static void datcDiscGapCmpl(dmConnId_t connId)
 static void datcWdxcFtdCallback(dmConnId_t connId, uint16_t fileHdl, uint16_t len, uint8_t *pData)
 {
 }
+/*************************************************************************************************/
+/*!
+ *  \brief  Send file header.
+ *
+ *  \param  connId    Connection identifier.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void sendFileHeader(dmConnId_t connId)
+{
+    if (pDatcWpHdlList[connId - 1][WPC_P1_DAT_HDL_IDX] != ATT_HANDLE_NONE) {
+        AttcWriteCmd(connId, pDatcWpHdlList[connId - 1][WPC_P1_DAT_HDL_IDX], sizeof(fileHeader_t),
+                     (uint8_t *)&fileHeader);
+    }
+}
+/*************************************************************************************************/
+/*!
+ *  \brief  Send a block of file data to the peer. Combines the address with the data.
+ *
+ *  \param  connId    Connection identifier.
+ *  \param  address   Address of the block.
+ *  \param  len       Length of the data.
+ *  \param  pData     Pointer to the data to send.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uint8_t *pData)
+{
+    uint8_t addrData[BLOCK_SIZE + sizeof(uint32_t)];
 
+    /* Insert the address into the block */
+    memcpy(addrData, &address, sizeof(uint32_t));
+    memcpy(&addrData[sizeof(uint32_t)], pData, len);
+
+    // APP_TRACE_INFO2("Sending addr: 0x%08X len: 0x%04X", address, len);
+
+    /* Send the address and data, add the length of the address to the length */
+    WdxcFtdSendBlock(connId, len + sizeof(uint32_t), addrData);
+
+    /* Increment the address of the data that we're sending */
+    datcCb.blockOffset[connId - 1] += len;
+}
 /*************************************************************************************************/
 /*!
  *  \brief  WDXC File Transfer Control Callback.
@@ -633,15 +680,15 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
 
         MXC_TMR_SW_Start(MXC_TMR2);
         datcCb.sendingFile[connId - 1] = TRUE;
-        WdxcFtdSendBlock(
-            connId, BLOCK_SIZE,
-            (uint8_t *)&datcCb.fileData[datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT]);
-        datcCb.blockOffset[connId - 1] += BLOCK_SIZE;
+        uint32_t address = datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT;
+        datcSendBlock(connId, address, BLOCK_SIZE, (uint8_t *)&datcCb.fileData[address]);
+
     } else if (op == WDX_FTC_OP_EOF) {
         if (handle == WDX_FLIST_HANDLE) {
+            /* on discovery completion we can send the header */
+            sendFileHeader(connId);
             /* File discovery complete */
             APP_TRACE_INFO0(">>> File discovery complete <<<\n");
-
         } else {
             /* Stop timer, calculate time and Bps */
             uint32_t usec = MXC_TMR_SW_Stop(MXC_TMR2);
@@ -652,10 +699,12 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
         }
     } else if (op == WDX_FTC_OP_VERIFY_RSP) {
         APP_TRACE_INFO1(">>> Verify complete status: %d <<<\n", status);
-        datcCb.fileVerified[connId - 1] = TRUE;
+        if (status)
+            datcCb.fileVerified[connId - 1] = FALSE;
+        else
+            datcCb.fileVerified[connId - 1] = TRUE;
     }
 }
-
 /*************************************************************************************************/
 /*!
  *  \brief  Button press callback.
@@ -746,10 +795,9 @@ static void datcBtnCback(uint8_t btn)
                 /* Start the WDXC data stream */
                 datcCb.blockOffset[connId - 1] = BLOCK_OFFSET_INIT;
 
-                /* 4 byte CRC */
+                /* Put file request */
                 WdxcFtcSendPutReq(connId, datcCb.fileList[connId - 1][0].handle, BLOCK_OFFSET_INIT,
-                                  FILE_SIZE + CRC32_LEN, BLOCK_OFFSET_INIT + FILE_SIZE + CRC32_LEN,
-                                  0);
+                                  FILE_SIZE, BLOCK_OFFSET_INIT + FILE_SIZE, 0);
             }
             break;
 
@@ -938,32 +986,16 @@ static void datcProcMsg(dmEvt_t *pMsg)
         if ((((attEvt_t *)pMsg)->hdr.status == ATT_SUCCESS) &&
             (((attEvt_t *)pMsg)->handle == pDatcWdxHdlList[connId - 1][WDXC_FTD_HDL_IDX])) {
             if (datcCb.sendingFile[connId - 1] == TRUE) {
-                if (datcCb.blockOffset[connId - 1] >= FILE_SIZE) {
-                    uint32_t blockSize;
-                    if ((datcCb.blockOffset[connId - 1] + BLOCK_SIZE) > (FILE_SIZE + CRC32_LEN)) {
-                        blockSize = FILE_SIZE + CRC32_LEN - datcCb.blockOffset[connId - 1];
-                    } else {
-                        blockSize = BLOCK_SIZE;
-                    }
-
-                    /* Write the CRC */
-                    WdxcFtdSendBlock(connId, blockSize, (uint8_t *)(&datcCb.fileCRC));
-                    datcCb.blockOffset[connId - 1] += blockSize;
-
+                uint32_t blockSize;
+                if ((datcCb.blockOffset[connId - 1] + BLOCK_SIZE) > FILE_SIZE) {
+                    blockSize = FILE_SIZE - datcCb.blockOffset[connId - 1];
                 } else {
-                    uint32_t blockSize;
-                    if ((datcCb.blockOffset[connId - 1] + BLOCK_SIZE) > FILE_SIZE) {
-                        blockSize = FILE_SIZE - datcCb.blockOffset[connId - 1];
-                    } else {
-                        blockSize = BLOCK_SIZE;
-                    }
-
-                    /* Keep writing the file */
-                    WdxcFtdSendBlock(connId, blockSize,
-                                     (uint8_t *)&datcCb.fileData[datcCb.blockOffset[connId - 1] -
-                                                                 BLOCK_OFFSET_INIT]);
-                    datcCb.blockOffset[connId - 1] += blockSize;
+                    blockSize = BLOCK_SIZE;
                 }
+
+                /* Keep writing the file */
+                uint32_t address = datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT;
+                datcSendBlock(connId, address, blockSize, (uint8_t *)&datcCb.fileData[address]);
             }
         }
         break;
@@ -1174,6 +1206,8 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
     /* Calculate the update image CRC */
     datcCb.fileCRC = 0;
     crc32(datcCb.fileData, FILE_SIZE, &datcCb.fileCRC);
+    fileHeader.fileCRC = datcCb.fileCRC;
+    fileHeader.fileLen = FILE_SIZE;
     APP_TRACE_INFO2("File addr: %08X file size: %08X", (uint32_t)datcCb.fileData, FILE_SIZE);
     APP_TRACE_INFO1("Update File CRC: 0x%08X", datcCb.fileCRC);
 
@@ -1255,7 +1289,8 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
     if (pMsg != NULL) {
-        if (pMsg->event <= ATT_CBACK_END) { /* process ATT messages */
+        /* process ATT messages */
+        if (pMsg->event <= ATT_CBACK_END) {
             /* process discovery-related ATT messages */
             AppDiscProcAttMsg((attEvt_t *)pMsg);
 

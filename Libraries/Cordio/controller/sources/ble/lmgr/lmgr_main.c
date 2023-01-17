@@ -24,6 +24,7 @@
 #include "ll_math.h"
 #include "lmgr_api.h"
 #include "lhci_api.h"
+#include "lctr_api.h"
 #include "wsf_assert.h"
 #include "wsf_math.h"
 #include <string.h>
@@ -87,6 +88,8 @@ void LmgrSetDefaults(void)
     LL_OP_MODE_FLAG_SLV_CRC_CLOSE;
 
   lmgrCb.chanClass = LL_CHAN_DATA_ALL;
+
+  lmgrCb.advTxPwr = pLctrRtCfg->defTxPwrLvl;
 }
 
 /*************************************************************************************************/
