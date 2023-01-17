@@ -68,6 +68,21 @@ int starts_with(char *a, char *b)
     return 1;
 }
 
+int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len) 
+{
+    int err = E_NO_ERROR;
+    for (int i = 0; i < len; i++) {
+        // Wait until FIFO has space for the character.
+        while (MXC_UART_GetTXFIFOAvailable(uart) < 1) {}
+
+        if ((err = MXC_UART_WriteCharacterRaw(uart, bytes[i])) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    return E_NO_ERROR;
+}
+
 // Initialize the serial console and transmits the "*SYNC*" string out of the UART port.
 // This function will block until the host sends the "*SYNC*" string back in response.
 int console_init(void)
@@ -118,12 +133,11 @@ int send_msg(const char *msg)
     int len = strlen(msg);
 
     // Transmit message string
-    if ((ret = MXC_UART_Write(Con_Uart, (uint8_t *)msg, &len)) != E_NO_ERROR) {
+    if ((ret = MXC_UART_WriteBytes(Con_Uart, (uint8_t *)msg, len)) != E_NO_ERROR) {
         return ret;
     }
     // Transmit newline to complete the message.
-    len = 1;
-    if ((ret = MXC_UART_Write(Con_Uart, (uint8_t *)"\n", &len)) != E_NO_ERROR) {
+    if ((ret = MXC_UART_WriteBytes(Con_Uart, (uint8_t *)"\n", 1)) != E_NO_ERROR) {
         return ret;
     }
 
