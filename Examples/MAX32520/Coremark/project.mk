@@ -9,8 +9,8 @@
 
 # Add your config here!
 
-IPATH+=./coremark
-VPATH+=./coremark
+IPATH+=$(MAXIM_PATH)/Libraries/Coremark
+VPATH+=$(MAXIM_PATH)/Libraries/Coremark
 
 MXC_OPTIMIZE_CFLAGS=-O2
 
