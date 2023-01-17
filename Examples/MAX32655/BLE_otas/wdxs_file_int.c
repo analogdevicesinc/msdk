@@ -208,7 +208,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     uint32_t count = 0;
 
     //128bit fragments
-    uint8_t fragment = 16;
+    uint8_t fragment = 32;
     while (size >= fragment) {
         WsfCsEnter();
         err += MXC_FLC_Write((uint32_t)pAddress, fragment, (uint32_t *)pBuf);
@@ -217,6 +217,8 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
         pAddress += fragment;
         pBuf += fragment;
         count += fragment;
+        /* yield so OS can service interrupts */
+        MXC_Delay(MXC_DELAY_MSEC(1));
     }
     if (size) {
         WsfCsEnter();
