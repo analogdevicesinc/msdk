@@ -207,7 +207,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     int err = 0;
     uint32_t count = 0;
 
-    //128bit fragments
+    //256bit fragments
     uint8_t fragment = 32;
     while (size >= fragment) {
         WsfCsEnter();
