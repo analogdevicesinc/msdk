@@ -62,6 +62,10 @@ extern "C" {
 #define TERMINAL_UART CONSOLE_UART
 #endif
 
+#ifndef USER_UART
+#define USER_UART 1
+#endif
+
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON 0 /// Active state of LEDs
 
@@ -77,6 +81,7 @@ extern "C" {
  */
 #define LED0 0
 #define LED_GREEN LED0
+#define LED_RED LED0
 
 /**
  * \brief   Initialize the BSP and board interfaces.
