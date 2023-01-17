@@ -738,25 +738,25 @@ int main(void)
                 color = setColor(255, 255, 0); // yellow
 
                 /* Down sample to display according to the TFT width */
-                for (i = 0; i < SAMPLE_SIZE; i+= (SAMPLE_SIZE / 320)){
-                    y = serialMicBuff[(serialMicBufIndex + i + 30*CHUNK) % SAMPLE_SIZE]; // offset to align
+                for (i = 0; i < SAMPLE_SIZE; i += (SAMPLE_SIZE / 320)) {
+                    y = serialMicBuff[(serialMicBufIndex + i + 30 * CHUNK) %
+                                      SAMPLE_SIZE]; // offset to align
 
                     /* Total energy */
-                    energy += y*y;
+                    energy += y * y;
 
                     y = 140 - y; // vertical offset on TFT
 
-                    if (lasty < y){
+                    if (lasty < y) {
                         h0 = lasty;
                         h1 = y;
-                    }
-                    else{
+                    } else {
                         h0 = y;
                         h1 = lasty;
                     }
 
                     /* Draw a line */
-                    for (j = h0; j <= h1; j++){
+                    for (j = h0; j <= h1; j++) {
                         MXC_TFT_WritePixel(x, j, 1, 1, color);
                     }
                     lasty = y;
@@ -764,8 +764,9 @@ int main(void)
                 }
 
                 memset(buff, 32, TFT_BUFF_SIZE);
-                db = 10*log10((double)energy);
-                TFT_Print(buff, 240, 30, font_2, snprintf(buff, sizeof(buff), "%0.1fdB",(double)db));
+                db = 10 * log10((double)energy);
+                TFT_Print(buff, 240, 30, font_2,
+                          snprintf(buff, sizeof(buff), "%0.1fdB", (double)db));
 
 #endif
 
