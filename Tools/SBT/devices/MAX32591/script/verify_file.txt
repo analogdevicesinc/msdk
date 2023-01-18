@@ -1,0 +1,15 @@
+#
+# # char is used to comment line
+#
+write-only %MAXIM_SBT_DIR%\devices\MAX32591\script\scpa_nand_applet.s19
+execute-code 00920000
+# 
+# erase-data %PARAM_2% 00000000 means initialize flash
+# 
+erase-data 10000000 00000000
+#
+# Compare file data with in flash
+# PARAM_1: filename 
+# PARAM_2: flash addr
+# yes    : means dump response of message 
+verify-file %PARAM_1% %PARAM_2% yes

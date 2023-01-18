@@ -70,35 +70,35 @@ static struct {
 /*************************************************************************************************/
 void UART0_IRQHandler(void)
 {
-  int result0;
+  int result;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result0 = MXC_UART_AsyncHandler(MXC_UART0);
-  (void)result0;
-  PAL_SYS_ASSERT(result0 == 0);
+  result = MXC_UART_AsyncHandler(MXC_UART0);
+  (void)result;
+  PAL_SYS_ASSERT(result == 0);
 }
 void UART1_IRQHandler(void)
 {
-  int result1;
+  int result;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result1 = MXC_UART_AsyncHandler(MXC_UART1);
-  (void)result1;
-  PAL_SYS_ASSERT(result1 == 0);
+  result = MXC_UART_AsyncHandler(MXC_UART1);
+  (void)result;
+  PAL_SYS_ASSERT(result == 0);
 }
 void UART2_IRQHandler(void)
 {
-  int result2;
+  int result;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result2 = MXC_UART_AsyncHandler(MXC_UART2);
-  (void)result2;
-  PAL_SYS_ASSERT(result2 == 0);
+  result = MXC_UART_AsyncHandler(MXC_UART2);
+  (void)result;
+  PAL_SYS_ASSERT(result == 0);
 }
 void UART3_IRQHandler(void)
 {
-  int result3;
+  int result;
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  result3 = MXC_UART_AsyncHandler(MXC_UART3);
-  (void)result3;
-  PAL_SYS_ASSERT(result3 == 0);
+  result = MXC_UART_AsyncHandler(MXC_UART3);
+  (void)result;
+  PAL_SYS_ASSERT(result == 0);
 }
 
 /*************************************************************************************************/
